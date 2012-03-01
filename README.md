@@ -1,6 +1,6 @@
 # Foxhole
 
-Built on [Starling](http://gamua.com/starling/) for Adobe AIR and Flash Player, Foxhole consists of various UI controls designed for mobile. Foxhole name comes from the fact that I develop these components "under fire" for real projects, mostly games. Documentation is sparse. APIs may change completely and on a whim. They're not necessarily fully-featured. Use at your own risk.
+Built on [Starling](http://gamua.com/starling/) for Adobe AIR and Flash Player, Foxhole consists of various UI controls designed for mobile. Foxhole's name comes from the fact that I develop these components "under fire" for real projects, mostly games. Documentation is sparse. APIs may change completely and on a whim. They're not necessarily fully-featured. Use at your own risk.
 
 ## Available Components
 
