@@ -38,6 +38,7 @@ package org.josht.starling.foxhole.controls
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.text.BitmapFont;
 	
 	public class Button extends FoxholeControl implements IToggle
 	{
@@ -51,6 +52,8 @@ package org.josht.starling.foxhole.controls
 		public static const ICON_POSITION_RIGHT:String = "right";
 		public static const ICON_POSITION_BOTTOM:String = "bottom";
 		public static const ICON_POSITION_LEFT:String = "left";
+		public static const ICON_POSITION_LEFT_BASELINE:String = "leftBaseline";
+		public static const ICON_POSITION_RIGHT_BASELINE:String = "rightBaseline";
 		
 		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
 		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
@@ -1147,7 +1150,7 @@ package org.josht.starling.foxhole.controls
 				this.currentIcon.y = this.labelField.y;
 				this.labelField.y = this.currentIcon.y + this.currentIcon.height + this._gap;
 			}
-			else if(this._iconPosition == ICON_POSITION_RIGHT)
+			else if(this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
 			{
 				if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
 				{
@@ -1171,7 +1174,7 @@ package org.josht.starling.foxhole.controls
 				}
 				this.currentIcon.y = this.labelField.y + this.labelField.height + this._gap;
 			}
-			else if(this._iconPosition == ICON_POSITION_LEFT)
+			else if(this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE)
 			{
 				this.currentIcon.x = this.labelField.x;
 				this.labelField.x = this.currentIcon.x + this.currentIcon.width + this._gap;
@@ -1180,6 +1183,12 @@ package org.josht.starling.foxhole.controls
 			if(this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_RIGHT)
 			{
 				this.currentIcon.y = this.labelField.y + this.labelField.height - this.currentIcon.height;
+			}
+			else if(this._iconPosition == ICON_POSITION_LEFT_BASELINE || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
+			{
+				const font:BitmapFont = this.labelField.textFormat.font;
+				const formatSize:Number = this.labelField.textFormat.size;
+				this.currentIcon.y = this.labelField.y + (formatSize / font.size) * font.base - this.currentIcon.height;
 			}
 			else
 			{
