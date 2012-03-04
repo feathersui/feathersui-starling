@@ -32,7 +32,7 @@ The following external libraries are required. Other versions of the same librar
 * [GTween](http://gskinner.com/libraries/gtween/) v2.01
 * [as3-signals](https://github.com/robertpenner/as3-signals) v0.9 BETA
 
-# Tips
+## Tips
 
 At this time, the components do not have default skins. All skins need to be set manually, and you're likely to see runtime errors if certain skins are omitted.
 
