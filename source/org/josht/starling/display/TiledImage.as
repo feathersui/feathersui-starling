@@ -1,5 +1,7 @@
 package org.josht.starling.display
 {
+	import flash.geom.Rectangle;
+	
 	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;
 
@@ -105,6 +107,23 @@ package org.josht.starling.display
 			this.refreshImages();
 		}
 		
+		private var _clipContent:Boolean = false;
+
+		public function get clipContent():Boolean
+		{
+			return this._clipContent;
+		}
+
+		public function set clipContent(value:Boolean):void
+		{
+			if(this._clipContent == value)
+			{
+				return;
+			}
+			this._clipContent = value;
+			this.refreshScrollRect();
+		}
+		
 		public function setSize(width:Number, height:Number):void
 		{
 			this._width = width;
@@ -172,6 +191,27 @@ package org.josht.starling.display
 					xPosition = 0;
 					yPosition += scaledTextureHeight;
 				}
+			}
+			
+			this.refreshScrollRect();
+		}
+		
+		private function refreshScrollRect():void
+		{
+			if(this._clipContent)
+			{
+				var scrollRect:Rectangle = this.scrollRect;
+				if(!scrollRect)
+				{
+					scrollRect = new Rectangle();
+				}
+				scrollRect.width = this._width;
+				scrollRect.height = this._height;
+				this.scrollRect = scrollRect;
+			}
+			else
+			{
+				this.scrollRect = null;
 			}
 		}
 	}
