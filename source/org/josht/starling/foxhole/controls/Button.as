@@ -29,6 +29,7 @@ package org.josht.starling.foxhole.controls
 	
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.IToggle;
+	import org.josht.starling.text.BitmapFont;
 	import org.josht.starling.foxhole.text.BitmapFontTextFormat;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
@@ -1186,9 +1187,10 @@ package org.josht.starling.foxhole.controls
 			}
 			else if(this._iconPosition == ICON_POSITION_LEFT_BASELINE || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
 			{
-				const font:BitmapFont = this.labelField.textFormat.font;
+				const font:starling.text.BitmapFont = this.labelField.textFormat.font;
 				const formatSize:Number = this.labelField.textFormat.size;
-				this.currentIcon.y = this.labelField.y + (formatSize / font.size) * font.base - this.currentIcon.height;
+				const baseline:Number = (font is org.josht.starling.text.BitmapFont) ? org.josht.starling.text.BitmapFont(font).base : font.lineHeight;
+				this.currentIcon.y = this.labelField.y + (formatSize / font.size) * baseline - this.currentIcon.height;
 			}
 			else
 			{

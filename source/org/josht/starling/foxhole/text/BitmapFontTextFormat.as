@@ -28,14 +28,14 @@ package org.josht.starling.foxhole.text
 
 	public class BitmapFontTextFormat
 	{
-		public function BitmapFontTextFormat(font:BitmapFont, size:Number = NaN, color:uint = uint.MAX_VALUE)
+		public function BitmapFontTextFormat(font:starling.text.BitmapFont, size:Number = NaN, color:uint = uint.MAX_VALUE)
 		{
 			this.font = font;
 			this.size = size;
 			this.color = color;
 		}
 		
-		public var font:BitmapFont;
+		public var font:starling.text.BitmapFont;
 		public var color:uint;
 		public var size:Number;
 		public var letterSpacing:Number = 0;
