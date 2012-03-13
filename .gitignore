@@ -1,0 +1,7 @@
+.DS_Store
+*.swc
+*.stackdump
+._*
+*.local.properties
+output
+third-party
