@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="foxhole-starling" default="build" basedir=".">
+	
+	<!-- build.local.properties and sdk.local.proprties are optional files that
+		can be used to override the default properties. -->
+	<property file="./sdk.local.properties"/>
+	<property file="./sdk.properties"/>
+	<property file="./build.local.properties"/>
+	<property file="./build.properties"/>
+
+	<target name="build">
+		<delete file="${swc.output}"/>
+		<echo message="Building foxhole-starling.swc"/>
+		<java jar="${compc}" dir="${basedir}" fork="true" failonerror="true">
+			<arg line="+flexlib='${flexframework.root}'"/>
+			<arg line="--source-path+='source'"/>
+			<arg line="--include-sources+='source'"/>
+			<arg line="--source-path+='${starling.root}'"/>
+			<arg line="--source-path+='${signals.root}'"/>
+			<arg line="--source-path+='${gtween.root}'"/>
+			<arg line="--external-library-path+='${flexframework.lib}'"/>
+			<arg line="--output '${swc.output}'"/>
+		</java>
+	</target>
+</project>
