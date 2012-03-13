@@ -79,8 +79,9 @@ package org.josht.starling.foxhole.controls
 			if(this._onSkin)
 			{
 				this._onSkin.scrollRect = null;
+				this.onSkinOriginalWidth = this._onSkin.width;
 				this.onSkinOriginalHeight = this._onSkin.height;
-				this._onSkin.scrollRect = new Rectangle(0, 0, this._onSkin.width, this._onSkin.height);
+				this._onSkin.scrollRect = new Rectangle();
 				this.addChildAt(this._onSkin, 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
@@ -108,8 +109,9 @@ package org.josht.starling.foxhole.controls
 			if(this._offSkin)
 			{
 				this._offSkin.scrollRect = null;
+				this.offSkinOriginalWidth = this._offSkin.width
 				this.offSkinOriginalHeight = this._offSkin.height;
-				this._offSkin.scrollRect = new Rectangle(0, 0, this._offSkin.width, this._offSkin.height);
+				this._offSkin.scrollRect = new Rectangle();
 				this.addChildAt(this._offSkin, 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
@@ -192,7 +194,9 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		protected var onSkinOriginalWidth:Number = NaN;
 		protected var onSkinOriginalHeight:Number = NaN;
+		protected var offSkinOriginalWidth:Number = NaN;
 		protected var offSkinOriginalHeight:Number = NaN;
 		
 		private var _backgroundBounds:Point;
@@ -470,8 +474,6 @@ package org.josht.starling.foxhole.controls
 				this.offSkin.scaleX = this.offSkin.scaleY = skinScale;
 			}
 			
-			this.onSkin.x = 0;
-			this.offSkin.x = this._width - this.offSkin.width;
 			this.offSkin.y = this.onSkin.y = 0;
 		}
 		
@@ -512,18 +514,19 @@ package org.josht.starling.foxhole.controls
 			currentScrollRect.x = -thumbOffset - (maxLabelWidth - this.offLabelField.width) / 2;
 			this.offLabelField.scrollRect = currentScrollRect;
 			
+			const onSkinScaledWidth:Number = this.onSkinOriginalWidth * this._onSkin.scaleX;
 			//if the on and off skins are transparent, we don't want them to overlap at all
 			currentScrollRect = this._onSkin.scrollRect;
-			currentScrollRect.width = Math.min(this._onSkin.width, middleOfThumb);
+			currentScrollRect.width = Math.min(onSkinScaledWidth, middleOfThumb);
 			currentScrollRect.height = this._height;
 			this._onSkin.scrollRect = currentScrollRect;
 			
-			const offSkinStart:Number = this._width - this._offSkin.width;
-			this._offSkin.x = Math.max(this._width - this._offSkin.width, middleOfThumb);
+			const offSkinScaledWidth:Number = this.offSkinOriginalWidth * this._offSkin.scaleX;
+			this._offSkin.x = Math.max(this._width - offSkinScaledWidth, middleOfThumb);
 			currentScrollRect = this._offSkin.scrollRect;
-			currentScrollRect.width = Math.min(this._offSkin.width, this._width - middleOfThumb);
+			currentScrollRect.width = Math.min(offSkinScaledWidth, this._width - middleOfThumb);
 			currentScrollRect.height = this._height;
-			currentScrollRect.x = this._offSkin.width - currentScrollRect.width;
+			currentScrollRect.x = offSkinScaledWidth - currentScrollRect.width;
 			this._offSkin.scrollRect = currentScrollRect;
 		}
 		
