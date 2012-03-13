@@ -49,6 +49,7 @@ package org.josht.starling.foxhole.controls
 		private var _isTextOrFontInvalid:Boolean = false;
 		
 		private var _lastFont:BitmapFont;
+		private var _lastColor:uint = uint.MAX_VALUE;
 		
 		private var _textFormat:BitmapFontTextFormat;
 
@@ -62,11 +63,13 @@ package org.josht.starling.foxhole.controls
 			this._textFormat = value;
 			if(this._textFormat)
 			{
-				if(this._textFormat.font != this._lastFont)
+				if(this._textFormat.font != this._lastFont ||
+					this._textFormat.color != this._lastColor)
 				{
 					this._isTextOrFontInvalid = true;
 				}
 				this._lastFont = this._textFormat.font;
+				this._lastColor = this._textFormat.color;
 			}
 			this._isLayoutInvalid = true;
 			super.invalidate();
