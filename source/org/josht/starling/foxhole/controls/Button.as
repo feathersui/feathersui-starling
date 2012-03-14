@@ -29,8 +29,8 @@ package org.josht.starling.foxhole.controls
 	
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.IToggle;
-	import org.josht.starling.text.BitmapFont;
 	import org.josht.starling.foxhole.text.BitmapFontTextFormat;
+	import org.josht.starling.text.BitmapFont;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 	
@@ -766,6 +766,30 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		private var _autoFlatten:Boolean = true;
+
+		public function get autoFlatten():Boolean
+		{
+			return this._autoFlatten;
+		}
+
+		public function set autoFlatten(value:Boolean):void
+		{
+			if(this._autoFlatten == value)
+			{
+				return;
+			}
+			this._autoFlatten = value;
+			if(!this._autoFlatten)
+			{
+				this.unflatten();
+			}
+			else
+			{
+				this.flatten();
+			}
+		}
+
 		protected var _onPress:Signal = new Signal(Button);
 		
 		public function get onPress():ISignal
@@ -844,6 +868,11 @@ package org.josht.starling.foxhole.controls
 				}
 				this.labelField.validate();
 				this.layoutContent();
+			}
+			
+			if(this._autoFlatten)
+			{
+				this.flatten();
 			}
 		}
 		
