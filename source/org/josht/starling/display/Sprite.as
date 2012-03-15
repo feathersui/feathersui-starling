@@ -126,7 +126,7 @@ package org.josht.starling.display
 				if(this._scrollRect.contains(localPoint.x, localPoint.y) &&
 					originalBounds.contains(localPoint.x, localPoint.y))
 				{
-					return this;
+					return super.hitTest(localPoint, forTouch);
 				}
 				return null;
 			}
