@@ -35,7 +35,7 @@ package org.josht.starling.display
 	import starling.textures.Texture;
 	import starling.utils.transformCoords;
 	
-	public class Image extends starling.display.Image
+	public class Image extends starling.display.Image implements IDisplayObjectWithScrollRect
 	{
 		private static var helperPoint:Point = new Point();
 		private static var helperMatrix:Matrix = new Matrix();
