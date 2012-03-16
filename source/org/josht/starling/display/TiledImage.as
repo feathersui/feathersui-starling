@@ -206,8 +206,8 @@ package org.josht.starling.display
 			for(var i:int = 0; i < imageCount; i++)
 			{
 				var image:Image = this._images[i];
-				image.x = xPosition;
-				image.y = yPosition;
+				image.x = Math.floor(xPosition);
+				image.y = Math.floor(yPosition);
 				image.scaleX = image.scaleY = this._textureScale;
 				xPosition += scaledTextureWidth;
 				if(xPosition >= this._width)

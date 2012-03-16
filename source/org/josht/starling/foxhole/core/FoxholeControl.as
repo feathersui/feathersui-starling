@@ -94,6 +94,16 @@ package org.josht.starling.foxhole.core
 		private var _isAllInvalid:Boolean = false;
 		private var _invalidationFlags:Dictionary = new Dictionary(true);
 		
+		override public function set x(value:Number):void
+		{
+			super.x = Math.round(value);
+		}
+		
+		override public function set y(value:Number):void
+		{
+			super.y = Math.round(value);
+		}
+		
 		protected var _isEnabled:Boolean = true;
 
 		public function get isEnabled():Boolean

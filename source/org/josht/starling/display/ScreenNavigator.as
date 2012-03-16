@@ -47,6 +47,16 @@ package org.josht.starling.display
 			super();
 		}
 		
+		override public function set x(value:Number):void
+		{
+			super.x = Math.round(value);
+		}
+		
+		override public function set y(value:Number):void
+		{
+			super.y = Math.round(value);
+		}
+		
 		private var _activeScreenID:String;
 		
 		public function get activeScreenID():String

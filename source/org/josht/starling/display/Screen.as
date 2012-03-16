@@ -44,6 +44,16 @@ package org.josht.starling.display
 			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 		}
 		
+		override public function set x(value:Number):void
+		{
+			super.x = Math.round(value);
+		}
+		
+		override public function set y(value:Number):void
+		{
+			super.y = Math.round(value);
+		}
+		
 		private var _originalWidth:Number = NaN;
 		
 		public function get originalWidth():Number
