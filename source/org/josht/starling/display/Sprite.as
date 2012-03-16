@@ -28,8 +28,6 @@ package org.josht.starling.display
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
-	import spark.primitives.Rect;
-	
 	import starling.core.RenderSupport;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
