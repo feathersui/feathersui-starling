@@ -31,13 +31,16 @@ package org.josht.starling.foxhole.controls
 	import flash.geom.Rectangle;
 	import flash.system.Capabilities;
 	
+	import org.josht.starling.display.IDisplayObjectWithScrollRect;
 	import org.josht.starling.display.Image;
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.IToggle;
 	import org.josht.starling.foxhole.text.BitmapFontTextFormat;
+	import org.josht.starling.text.BitmapFont;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 	
+	import starling.display.DisplayObject;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -45,6 +48,9 @@ package org.josht.starling.foxhole.controls
 	public class ToggleSwitch extends FoxholeControl implements IToggle
 	{
 		private static const MINIMUM_DRAG_DISTANCE:Number = 0.04;
+		
+		public static const LABEL_ALIGN_MIDDLE:String = "middle";
+		public static const LABEL_ALIGN_BASELINE:String = "baseline";
 		
 		public function ToggleSwitch()
 		{
@@ -57,14 +63,14 @@ package org.josht.starling.foxhole.controls
 		protected var offLabelField:Label;
 		protected var sampleThumbSkin:Image;
 		
-		protected var _onSkin:Image;
+		protected var _onSkin:DisplayObject;
 		
-		public function get onSkin():Image
+		public function get onSkin():DisplayObject
 		{
 			return this._onSkin;
 		}
 		
-		public function set onSkin(value:Image):void
+		public function set onSkin(value:DisplayObject):void
 		{
 			if(this._onSkin == value)
 			{
@@ -78,23 +84,30 @@ package org.josht.starling.foxhole.controls
 			this._onSkin = value;
 			if(this._onSkin)
 			{
-				this._onSkin.scrollRect = null;
+				if(this._onSkin is IDisplayObjectWithScrollRect)
+				{
+					var scrollRectSkin:IDisplayObjectWithScrollRect = IDisplayObjectWithScrollRect(this._onSkin);
+					scrollRectSkin.scrollRect = null;
+				}
 				this.onSkinOriginalWidth = this._onSkin.width;
 				this.onSkinOriginalHeight = this._onSkin.height;
-				this._onSkin.scrollRect = new Rectangle();
+				if(scrollRectSkin)
+				{
+					scrollRectSkin.scrollRect = new Rectangle();
+				}
 				this.addChildAt(this._onSkin, 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
-		protected var _offSkin:Image;
+		protected var _offSkin:DisplayObject;
 		
-		public function get offSkin():Image
+		public function get offSkin():DisplayObject
 		{
 			return this._offSkin;
 		}
 		
-		public function set offSkin(value:Image):void
+		public function set offSkin(value:DisplayObject):void
 		{
 			if(this._offSkin == value)
 			{
@@ -108,10 +121,17 @@ package org.josht.starling.foxhole.controls
 			this._offSkin = value;
 			if(this._offSkin)
 			{
-				this._offSkin.scrollRect = null;
+				if(this._offSkin is IDisplayObjectWithScrollRect)
+				{
+					var scrollRectSkin:IDisplayObjectWithScrollRect = IDisplayObjectWithScrollRect(this._offSkin);
+					scrollRectSkin.scrollRect = null;
+				}
 				this.offSkinOriginalWidth = this._offSkin.width
 				this.offSkinOriginalHeight = this._offSkin.height;
-				this._offSkin.scrollRect = new Rectangle();
+				if(scrollRectSkin)
+				{
+					scrollRectSkin.scrollRect = new Rectangle();
+				}
 				this.addChildAt(this._offSkin, 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
@@ -194,6 +214,23 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		private var _labelAlign:String = LABEL_ALIGN_BASELINE;
+
+		public function get labelAlign():String
+		{
+			return this._labelAlign;
+		}
+
+		public function set labelAlign(value:String):void
+		{
+			if(this._labelAlign == value)
+			{
+				return;
+			}
+			this._labelAlign = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
 		protected var onSkinOriginalWidth:Number = NaN;
 		protected var onSkinOriginalHeight:Number = NaN;
 		protected var offSkinOriginalWidth:Number = NaN;
@@ -347,13 +384,13 @@ package org.josht.starling.foxhole.controls
 			
 			if(isNaN(this._width))
 			{
-				this._width = 150;
+				this._width = this.onSkinOriginalWidth + this.offSkinOriginalWidth;
 				sizeInvalid = true;
 			}
 			
 			if(isNaN(this._height))
 			{
-				this._height = 50;
+				this._height = Math.max(this.onSkinOriginalWidth, this.offSkinOriginalHeight);
 				sizeInvalid = true;
 			}
 			
@@ -480,11 +517,21 @@ package org.josht.starling.foxhole.controls
 		private function drawLabels():void
 		{
 			const maxLabelWidth:Number = Math.max(0, this._width - this.thumb.width - 2 * this._contentPadding);
-			var labelHeight:Number = Math.max(this.onLabelField.height, this.offLabelField.height);
+			var totalLabelHeight:Number = Math.max(this.onLabelField.height, this.offLabelField.height);
+			var labelHeight:Number;
+			if(this._labelAlign == LABEL_ALIGN_MIDDLE || !(this.defaultTextFormat.font is BitmapFont))
+			{
+				labelHeight = totalLabelHeight;
+			}
+			else //baseline
+			{
+				const fontScale:Number = isNaN(this._defaultTextFormat.size) ? 1 : (this._defaultTextFormat.size / this._defaultTextFormat.font.size);
+				labelHeight = fontScale * BitmapFont(this._defaultTextFormat.font).base;
+			}
 			
 			var onScrollRect:Rectangle = this.onLabelField.scrollRect;
 			onScrollRect.width = maxLabelWidth;
-			onScrollRect.height = labelHeight;
+			onScrollRect.height = totalLabelHeight;
 			this.onLabelField.scrollRect = onScrollRect;
 			
 			this.onLabelField.x = this._contentPadding;
@@ -492,7 +539,7 @@ package org.josht.starling.foxhole.controls
 			
 			var offScrollRect:Rectangle = this.offLabelField.scrollRect;
 			offScrollRect.width = maxLabelWidth;
-			offScrollRect.height = labelHeight;
+			offScrollRect.height = totalLabelHeight;
 			this.offLabelField.scrollRect = offScrollRect;
 			
 			this.offLabelField.x = this._width - this._contentPadding - maxLabelWidth;
@@ -507,27 +554,39 @@ package org.josht.starling.foxhole.controls
 			const middleOfThumb:Number = this.thumb.x + this.thumb.width / 2;
 			
 			var currentScrollRect:Rectangle = this.onLabelField.scrollRect;
-			currentScrollRect.x = halfWidth - thumbOffset - (maxLabelWidth - this.onLabelField.width) / 2;
+			currentScrollRect.x = this._width - this.thumb.width - thumbOffset - (maxLabelWidth - this.onLabelField.width) / 2;
 			this.onLabelField.scrollRect = currentScrollRect;
 			
 			currentScrollRect = this.offLabelField.scrollRect;
 			currentScrollRect.x = -thumbOffset - (maxLabelWidth - this.offLabelField.width) / 2;
 			this.offLabelField.scrollRect = currentScrollRect;
 			
-			const onSkinScaledWidth:Number = this.onSkinOriginalWidth * this._onSkin.scaleX;
-			//if the on and off skins are transparent, we don't want them to overlap at all
-			currentScrollRect = this._onSkin.scrollRect;
-			currentScrollRect.width = Math.min(onSkinScaledWidth, middleOfThumb);
-			currentScrollRect.height = this._height;
-			this._onSkin.scrollRect = currentScrollRect;
+			if(this._onSkin is IDisplayObjectWithScrollRect)
+			{
+				const onSkinScaledWidth:Number = this.onSkinOriginalWidth * this._onSkin.scaleX;
+				//if the on and off skins are transparent, we don't want them to overlap at all
+				var scrollRectSkin:IDisplayObjectWithScrollRect = IDisplayObjectWithScrollRect(this._onSkin);
+				currentScrollRect = scrollRectSkin.scrollRect;
+				currentScrollRect.width = Math.min(onSkinScaledWidth, middleOfThumb);
+				currentScrollRect.height = this._height;
+				scrollRectSkin.scrollRect = currentScrollRect;
+			}
 			
-			const offSkinScaledWidth:Number = this.offSkinOriginalWidth * this._offSkin.scaleX;
-			this._offSkin.x = Math.max(this._width - offSkinScaledWidth, middleOfThumb);
-			currentScrollRect = this._offSkin.scrollRect;
-			currentScrollRect.width = Math.min(offSkinScaledWidth, this._width - middleOfThumb);
-			currentScrollRect.height = this._height;
-			currentScrollRect.x = offSkinScaledWidth - currentScrollRect.width;
-			this._offSkin.scrollRect = currentScrollRect;
+			if(this._offSkin is IDisplayObjectWithScrollRect)
+			{
+				const offSkinScaledWidth:Number = this.offSkinOriginalWidth * this._offSkin.scaleX;
+				this._offSkin.x = Math.max(this._width - offSkinScaledWidth, middleOfThumb);
+				scrollRectSkin = IDisplayObjectWithScrollRect(this._offSkin);
+				currentScrollRect = scrollRectSkin.scrollRect;
+				currentScrollRect.width = Math.min(offSkinScaledWidth, this._width - middleOfThumb);
+				currentScrollRect.height = this._height;
+				currentScrollRect.x = offSkinScaledWidth - currentScrollRect.width;
+				scrollRectSkin.scrollRect = currentScrollRect;
+			}
+			else
+			{
+				this._offSkin.x = this._width - this._offSkin.width;
+			}
 		}
 		
 		private function touchHandler(event:TouchEvent):void
