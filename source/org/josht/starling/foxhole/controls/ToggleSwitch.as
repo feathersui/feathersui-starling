@@ -567,8 +567,8 @@ package org.josht.starling.foxhole.controls
 				//if the on and off skins are transparent, we don't want them to overlap at all
 				var scrollRectSkin:IDisplayObjectWithScrollRect = IDisplayObjectWithScrollRect(this._onSkin);
 				currentScrollRect = scrollRectSkin.scrollRect;
-				currentScrollRect.width = Math.min(onSkinScaledWidth, middleOfThumb);
-				currentScrollRect.height = this._height;
+				currentScrollRect.width = Math.min(onSkinScaledWidth, middleOfThumb) / this._onSkin.scaleX;
+				currentScrollRect.height = this._height / this._onSkin.scaleX;
 				scrollRectSkin.scrollRect = currentScrollRect;
 			}
 			
@@ -578,9 +578,9 @@ package org.josht.starling.foxhole.controls
 				this._offSkin.x = Math.max(this._width - offSkinScaledWidth, middleOfThumb);
 				scrollRectSkin = IDisplayObjectWithScrollRect(this._offSkin);
 				currentScrollRect = scrollRectSkin.scrollRect;
-				currentScrollRect.width = Math.min(offSkinScaledWidth, this._width - middleOfThumb);
-				currentScrollRect.height = this._height;
-				currentScrollRect.x = offSkinScaledWidth - currentScrollRect.width;
+				currentScrollRect.width = Math.min(offSkinScaledWidth, this._width - middleOfThumb) / this._offSkin.scaleX;
+				currentScrollRect.height = this._height / this._onSkin.scaleX;
+				currentScrollRect.x = this.offSkinOriginalWidth - currentScrollRect.width;
 				scrollRectSkin.scrollRect = currentScrollRect;
 			}
 			else
