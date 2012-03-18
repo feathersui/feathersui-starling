@@ -33,22 +33,77 @@ package org.josht.starling.foxhole.core
 	import starling.core.Starling;
 	import starling.events.Event;
 	
+	/**
+	 * Base class for all Foxhole UI controls. Implements invalidation and sets
+	 * up some basic template functions like <code>initialize()</code> and
+	 * <code>draw()</code>.
+	 */
 	public class FoxholeControl extends Sprite
 	{
+		/**
+		 * Flag to indicate that everything is invalid and should be redrawn.
+		 */
 		public static const INVALIDATION_FLAG_ALL:String = "all";
+		
+		/**
+		 * Invalidation flag to indicate that the state has changed. Used by
+		 * <code>isEnabled</code>, but may be used for other control states too.
+		 * 
+		 * @see isEnabled
+		 */
 		public static const INVALIDATION_FLAG_STATE:String = "state";
+		
+		/**
+		 * Invalidation flag to indicate that the dimensions of the UI control
+		 * have changed.
+		 */
 		public static const INVALIDATION_FLAG_SIZE:String = "size";
+		
+		/**
+		 * Invalidation flag to indicate that the styles or visual appearance of
+		 * the UI control has changed.
+		 */
 		public static const INVALIDATION_FLAG_STYLES:String = "styles";
+		
+		/**
+		 * Invalidation flag to indicate that the primary data displayed by the
+		 * UI control has changed.
+		 */
 		public static const INVALIDATION_FLAG_DATA:String = "data";
+		
+		/**
+		 * Invalidation flag to indicate that the scroll position of the UI
+		 * control has changed.
+		 */
 		public static const INVALIDATION_FLAG_SCROLL:String = "scroll";
+		
+		/**
+		 * Invalidation flag to indicate that the selection of the UI control
+		 * has changed.
+		 */
 		public static const INVALIDATION_FLAG_SELECTED:String = "selected";
 		
+		/**
+		 * @private
+		 * A display object that fires frame events that trigger validation.
+		 */
 		private static const ENTER_FRAME_DISPLAY_OBJECT:Shape = new Shape();
 		
+		/**
+		 * Flag to indicate that the call later queue is being processed.
+		 */
 		protected static var isCallingLater:Boolean = false;
 		
+		/**
+		 * @private
+		 * The queue of functions to be called later.
+		 */
 		private static var callLaterQueue:Vector.<CallLaterQueueItem>;
 		
+		/**
+		 * Calls a function later, within one frame. Used for invalidation of
+		 * UI controls when properties change.
+		 */
 		protected static function callLater(method:Function, arguments:Array = null):void
 		{
 			if(!callLaterQueue)
@@ -66,6 +121,10 @@ package org.josht.starling.foxhole.core
 			}
 		}
 		
+		/**
+		 * @private
+		 * Processes functions in the queue that are to be called later.
+		 */
 		private static function callLater_frameEventHandler(event:flash.events.Event):void
 		{
 			isCallingLater = true;
@@ -83,34 +142,76 @@ package org.josht.starling.foxhole.core
 			isCallingLater = false;
 		}
 		
+		/**
+		 * Constructor.
+		 */
 		public function FoxholeControl()
 		{
 			super();
 			this.addEventListener(starling.events.Event.ADDED_TO_STAGE, addedToStageHandler);
 		}
 		
+		/**
+		 * @private
+		 * Flag indicating if the <code>initialize()</code> function has been called yet.
+		 */
 		private var _isInitialized:Boolean = false;
+		
+		/**
+		 * @private
+		 * A counter for the number of times <code>invalidate()</code> has been
+		 * called during validation. If it gets called too many times, the UI
+		 * control will automatically stop to avoid hanging.
+		 */
 		private var _invalidateCount:int;
+		
+		/**
+		 * @private
+		 * A flag that indicates that everything is invalid. If true, no other
+		 * flags will need to be tracked.
+		 */
 		private var _isAllInvalid:Boolean = false;
+		
+		/**
+		 * @private
+		 * The current invalidation flags.
+		 */
 		private var _invalidationFlags:Dictionary = new Dictionary(true);
 		
+		/**
+		 * @private
+		 * Pixel snapping.
+		 */
 		override public function set x(value:Number):void
 		{
 			super.x = Math.round(value);
 		}
 		
+		/**
+		 * @private
+		 * Pixel snapping.
+		 */
 		override public function set y(value:Number):void
 		{
 			super.y = Math.round(value);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _isEnabled:Boolean = true;
-
+		
+		/**
+		 * Indicates whether the control is interactive or not.
+		 */
 		public function get isEnabled():Boolean
 		{
 			return _isEnabled;
 		}
-
+		
+		/**
+		 * @private
+		 */
 		public function set isEnabled(value:Boolean):void
 		{
 			if(this._isEnabled == value)
@@ -121,13 +222,22 @@ package org.josht.starling.foxhole.core
 			this.invalidate(INVALIDATION_FLAG_STATE);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _width:Number = NaN;
-
+		
+		/**
+		 * @inheritDoc
+		 */
 		override public function get width():Number
 		{
 			return this._width;
 		}
-
+		
+		/**
+		 * @private
+		 */
 		override public function set width(value:Number):void
 		{
 			if(this._width == value)
@@ -138,13 +248,22 @@ package org.josht.starling.foxhole.core
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _height:Number = NaN;
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function get height():Number
 		{
 			return this._height;
 		}
 		
+		/**
+		 * @private
+		 */
 		override public function set height(value:Number):void
 		{
 			if(this._height == value)
@@ -155,8 +274,20 @@ package org.josht.starling.foxhole.core
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 		
+		/**
+		 * @private
+		 * Flag to indicate that the control is currently validating.
+		 */
 		private var _isValidating:Boolean = false;
-
+		
+		/**
+		 * When called, the UI control will redraw within one frame.
+		 * Invalidation limits processing so that multiple property changes only
+		 * trigger a single redraw.
+		 * 
+		 * <p>If the UI control isn't on the display list, it will never redraw.
+		 * The control will automatically invalidate once it has been added.</p>
+		 */
 		public function invalidate(...rest:Array):void
 		{
 			if(!this.stage)
@@ -194,6 +325,10 @@ package org.josht.starling.foxhole.core
 			}
 		}
 		
+		/**
+		 * Immediately validates the control, which triggers a redraw, if one
+		 * is pending.
+		 */
 		public function validate():void
 		{
 			if(!this.stage || !this.isInvalid())
@@ -210,6 +345,11 @@ package org.josht.starling.foxhole.core
 			this._isValidating = false;
 		}
 		
+		/**
+		 * Indicates whether the control is invalid or not. You may optionally
+		 * pass in a specific flag to check if that particular flag is set. If
+		 * the "all" flag is set, the result will always be true.
+		 */
 		public function isInvalid(flag:String = null):Boolean	
 		{
 			if(this._isAllInvalid)
@@ -227,16 +367,28 @@ package org.josht.starling.foxhole.core
 			return this._invalidationFlags[flag];
 		}
 		
+		/**
+		 * Override to initialize the UI control. Should be used to create
+		 * children and set up event listeners.
+		 */
 		protected function initialize():void
 		{
 			
 		}
 		
+		/**
+		 * Override to customize layout and to adjust properties of children.
+		 */
 		protected function draw():void
 		{
 			
 		}
 		
+		/**
+		 * @private
+		 * Initialize the control, if it hasn't been initialized yet. Then,
+		 * invalidate.
+		 */
 		private function addedToStageHandler(event:starling.events.Event):void
 		{
 			if(event.target != this)
