@@ -104,13 +104,22 @@ package org.josht.starling.foxhole.core
 		 * Calls a function later, within one frame. Used for invalidation of
 		 * UI controls when properties change.
 		 */
-		protected static function callLater(method:Function, arguments:Array = null):void
+		protected static function callLater(target:FoxholeControl, method:Function, arguments:Array = null):void
 		{
 			if(!callLaterQueue)
 			{
 				callLaterQueue = new <CallLaterQueueItem>[];
 			}
-			callLaterQueue.push(new CallLaterQueueItem(method, arguments));
+			const queueLength:int = callLaterQueue.length;
+			for(var i:int = 0; i < queueLength; i++)
+			{
+				var item:CallLaterQueueItem = callLaterQueue[i];
+				if(target.contains(item.target))
+				{
+					break;
+				}
+			}
+			callLaterQueue.splice(i, 0, new CallLaterQueueItem(target, method, arguments));
 			if(!ENTER_FRAME_DISPLAY_OBJECT.hasEventListener(flash.events.Event.ENTER_FRAME))
 			{
 				Starling.current.nativeStage.invalidate();
@@ -315,13 +324,13 @@ package org.josht.starling.foxhole.core
 					trace("Stopping out of control invalidation. Control may not invalidate() more than 10 ten times during validate() step.");
 					return;
 				}
-				callLater(this.invalidate, rest);
+				callLater(this, this.invalidate, rest);
 				return;
 			}
 			this._invalidateCount = 0;
 			if(!isInvalidAlready)
 			{
-				callLater(validate);
+				callLater(this, validate);
 			}
 		}
 		
@@ -404,15 +413,18 @@ package org.josht.starling.foxhole.core
 		}
 	}
 }
+import org.josht.starling.foxhole.core.FoxholeControl;
 
 class CallLaterQueueItem
 {
-	public function CallLaterQueueItem(method:Function, parameters:Array)
+	public function CallLaterQueueItem(target:FoxholeControl, method:Function, parameters:Array)
 	{
+		this.target = target;
 		this.method = method;
 		this.parameters = parameters;
 	}
 	
+	public var target:FoxholeControl;
 	public var method:Function;
 	public var parameters:Array;
 }
