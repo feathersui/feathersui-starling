@@ -382,22 +382,23 @@ package org.josht.starling.foxhole.controls
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 			
+			if(stylesInvalid || stateInvalid)
+			{
+				this.refreshLabelStyles();
+				this.refreshThumbProperties();
+			}
+			
 			if(isNaN(this._width))
 			{
-				this._width = this.onSkinOriginalWidth + this.offSkinOriginalWidth;
+				this.thumb.validate();
+				this._width = this.onSkinOriginalWidth + this.offSkinOriginalWidth - this.thumb.width;
 				sizeInvalid = true;
 			}
 			
 			if(isNaN(this._height))
 			{
-				this._height = Math.max(this.onSkinOriginalWidth, this.offSkinOriginalHeight);
+				this._height = Math.max(this.onSkinOriginalHeight, this.offSkinOriginalHeight);
 				sizeInvalid = true;
-			}
-			
-			if(stylesInvalid || stateInvalid)
-			{
-				this.refreshLabelStyles();
-				this.refreshThumbProperties();
 			}
 			
 			if(stylesInvalid || sizeInvalid || stateInvalid)
@@ -502,15 +503,10 @@ package org.josht.starling.foxhole.controls
 		private function scaleSkins():void
 		{
 			const skinScale:Number = this._height / Math.max(this.onSkinOriginalHeight, this.offSkinOriginalHeight);
-			if(this.onSkin.scaleX != skinScale)
-			{
-				this.onSkin.scaleX = this.onSkin.scaleY = skinScale;
-			}
-			if(this.offSkin.scaleX != skinScale)
-			{
-				this.offSkin.scaleX = this.offSkin.scaleY = skinScale;
-			}
-			
+			this.onSkin.width = this.onSkinOriginalWidth * skinScale;
+			this.onSkin.height = this.onSkinOriginalHeight * skinScale;
+			this.offSkin.width = this.offSkinOriginalWidth * skinScale;
+			this.offSkin.height = this.offSkinOriginalHeight * skinScale;
 			this.offSkin.y = this.onSkin.y = 0;
 		}
 		
