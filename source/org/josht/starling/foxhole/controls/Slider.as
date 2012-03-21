@@ -290,7 +290,7 @@ package org.josht.starling.foxhole.controls
 					}
 					else
 					{
-						this._height = this.track.width;
+						this._height = this.track.height;
 					}
 				}
 				sizeInvalid = true;
@@ -304,6 +304,7 @@ package org.josht.starling.foxhole.controls
 			
 			if(dataInvalid || stylesInvalid || sizeInvalid)
 			{
+				this.thumb.validate(); //this will auto-size the thumb, if needed
 				if(this._direction == DIRECTION_HORIZONTAL)
 				{
 					const trackScrollableWidth:Number = this._width - this.thumb.width;
