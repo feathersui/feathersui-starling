@@ -132,11 +132,25 @@ package org.josht.starling.display
 			const loaderInfo:LoaderInfo = Starling.current.nativeStage.loaderInfo;
 			if(isNaN(this._originalWidth))
 			{
-				this._originalWidth = loaderInfo.width
+				try
+				{
+					this._originalWidth = loaderInfo.width
+				} 
+				catch(error:Error) 
+				{
+					this._originalWidth = this.stage.stageWidth;
+				}
 			}
 			if(isNaN(this._originalHeight))
 			{
-				this._originalHeight = loaderInfo.height;
+				try
+				{
+					this._originalHeight = loaderInfo.height;
+				} 
+				catch(error:Error) 
+				{
+					this._originalHeight = this.stage.stageHeight;
+				}
 			}
 			this._pixelScaleRatio = calculateScaleRatioToFit(originalWidth, originalHeight, this.stage.stageWidth, this.stage.stageHeight);
 			this._dpiScaleRatio = this._originalDPI / Capabilities.screenDPI;
