@@ -302,9 +302,12 @@ package org.josht.starling.foxhole.controls
 				this.track.height = this._height;
 			}
 			
+			//this will auto-size the thumb, if needed
+			this.thumb.validate();
+			
 			if(dataInvalid || stylesInvalid || sizeInvalid)
 			{
-				this.thumb.validate(); //this will auto-size the thumb, if needed
+				this.thumb.validate(); 
 				if(this._direction == DIRECTION_HORIZONTAL)
 				{
 					const trackScrollableWidth:Number = this._width - this.thumb.width;
@@ -319,7 +322,6 @@ package org.josht.starling.foxhole.controls
 				}
 			}
 			
-			this.thumb.validate();
 			this.track.validate();
 		}
 		
@@ -409,7 +411,7 @@ package org.josht.starling.foxhole.controls
 					const trackScrollableHeight:Number = this._height - this.thumb.height;
 					const yOffset:Number = location.y - this._touchStartY;
 					const yPosition:Number = Math.min(Math.max(0, this._thumbStartY + yOffset), trackScrollableHeight);
-					percentage = xPosition / trackScrollableWidth;
+					percentage = yPosition / trackScrollableHeight;
 				}
 				
 				this.value = this._minimum + percentage * (this._maximum - this._minimum);
