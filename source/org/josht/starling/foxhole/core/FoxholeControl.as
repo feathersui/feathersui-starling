@@ -29,6 +29,8 @@ package org.josht.starling.foxhole.core
 	import flash.utils.Dictionary;
 	
 	import org.josht.starling.display.Sprite;
+	import org.osflash.signals.ISignal;
+	import org.osflash.signals.Signal;
 	
 	import starling.core.Starling;
 	import starling.events.Event;
@@ -249,12 +251,7 @@ package org.josht.starling.foxhole.core
 		 */
 		override public function set width(value:Number):void
 		{
-			if(this._width == value)
-			{
-				return;
-			}
-			this._width = value;
-			this.invalidate(INVALIDATION_FLAG_SIZE);
+			this.setSize(value, this._height);
 		}
 		
 		/**
@@ -275,12 +272,20 @@ package org.josht.starling.foxhole.core
 		 */
 		override public function set height(value:Number):void
 		{
-			if(this._height == value)
-			{
-				return;
-			}
-			this._height = value;
-			this.invalidate(INVALIDATION_FLAG_SIZE);
+			this.setSize(this._width, value);
+		}
+		
+		/**
+		 * @private
+		 */
+		private var _onResize:Signal = new Signal(FoxholeControl);
+		
+		/**
+		 * Dispatched when the width or height of the control changes.
+		 */
+		public function get onResize():ISignal
+		{
+			return this._onResize;
 		}
 		
 		/**
@@ -374,6 +379,29 @@ package org.josht.starling.foxhole.core
 				return false;
 			}
 			return this._invalidationFlags[flag];
+		}
+		
+		/**
+		 * Sets both the width and the height of the control.
+		 */
+		public function setSize(width:Number, height:Number):void
+		{
+			var resized:Boolean = false;
+			if(this._width != width)
+			{
+				this._width = width;
+				resized = true;
+			}
+			if(this._height != height)
+			{
+				this._height = height;
+				resized = true;
+			}
+			if(resized)
+			{
+				this.invalidate(INVALIDATION_FLAG_SIZE);
+				this._onResize.dispatch(this);
+			}
 		}
 		
 		/**
