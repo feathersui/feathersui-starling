@@ -91,6 +91,8 @@ package org.josht.starling.foxhole.controls
 				}
 				this.onSkinOriginalWidth = this._onSkin.width;
 				this.onSkinOriginalHeight = this._onSkin.height;
+				this.onSkinOriginalScaleX = this._onSkin.scaleX;
+				this.onSkinOriginalScaleY = this._onSkin.scaleY;
 				if(scrollRectSkin)
 				{
 					scrollRectSkin.scrollRect = new Rectangle();
@@ -128,6 +130,8 @@ package org.josht.starling.foxhole.controls
 				}
 				this.offSkinOriginalWidth = this._offSkin.width
 				this.offSkinOriginalHeight = this._offSkin.height;
+				this.offSkinOriginalScaleX = this._offSkin.scaleX;
+				this.offSkinOriginalScaleY = this._offSkin.scaleY;
 				if(scrollRectSkin)
 				{
 					scrollRectSkin.scrollRect = new Rectangle();
@@ -233,8 +237,12 @@ package org.josht.starling.foxhole.controls
 
 		protected var onSkinOriginalWidth:Number = NaN;
 		protected var onSkinOriginalHeight:Number = NaN;
+		protected var onSkinOriginalScaleX:Number = NaN;
+		protected var onSkinOriginalScaleY:Number = NaN;
 		protected var offSkinOriginalWidth:Number = NaN;
 		protected var offSkinOriginalHeight:Number = NaN;
+		protected var offSkinOriginalScaleX:Number = NaN;
+		protected var offSkinOriginalScaleY:Number = NaN;
 		
 		private var _backgroundBounds:Point;
 		
@@ -388,9 +396,10 @@ package org.josht.starling.foxhole.controls
 				this.refreshThumbProperties();
 			}
 			
+			this.thumb.validate();
+			
 			if(isNaN(this._width))
 			{
-				this.thumb.validate();
 				this._width = this.onSkinOriginalWidth + this.offSkinOriginalWidth - this.thumb.width;
 				sizeInvalid = true;
 			}
@@ -404,11 +413,9 @@ package org.josht.starling.foxhole.controls
 			if(stylesInvalid || sizeInvalid || stateInvalid)
 			{
 				this.scaleSkins();
-				this.thumb.y = this._contentPadding;
+				this.thumb.y = (this._height - this.thumb.height) / 2;
 				this.drawLabels();
 			}
-			
-			this.thumb.validate();
 			
 			if(sizeInvalid || stylesInvalid || dataInvalid)
 			{
@@ -503,10 +510,10 @@ package org.josht.starling.foxhole.controls
 		private function scaleSkins():void
 		{
 			const skinScale:Number = this._height / Math.max(this.onSkinOriginalHeight, this.offSkinOriginalHeight);
-			this.onSkin.width = this.onSkinOriginalWidth * skinScale;
-			this.onSkin.height = this.onSkinOriginalHeight * skinScale;
-			this.offSkin.width = this.offSkinOriginalWidth * skinScale;
-			this.offSkin.height = this.offSkinOriginalHeight * skinScale;
+			this.onSkin.scaleX = this.onSkinOriginalScaleX * skinScale;
+			this.onSkin.scaleY = this.onSkinOriginalScaleY * skinScale;
+			this.offSkin.scaleX = this.offSkinOriginalScaleX * skinScale;
+			this.offSkin.scaleY = this.offSkinOriginalScaleY * skinScale;
 			this.offSkin.y = this.onSkin.y = 0;
 		}
 		
