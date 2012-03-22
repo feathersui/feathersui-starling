@@ -42,7 +42,6 @@ package org.josht.starling.foxhole.controls
 	{
 		public function Label()
 		{
-			this.touchable = false;
 		}
 		
 		private var _isLayoutInvalid:Boolean = false;
@@ -158,7 +157,6 @@ package org.josht.starling.foxhole.controls
 					continue;
 				}
 				charDisplay = charData.createImage();
-				charDisplay.touchable = false;
 				this.addChild(charDisplay);
 				this._characters.push(charDisplay);
 			}
