@@ -292,7 +292,7 @@ package org.josht.starling.foxhole.controls
 			if(this._defaultSkin && this._defaultSkin.parent != this)
 			{
 				this._defaultSkin.visible = false;
-				this.addChild(this._defaultSkin);
+				this.addChildAt(this._defaultSkin, 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -322,7 +322,7 @@ package org.josht.starling.foxhole.controls
 			if(this._defaultSelectedSkin && this._defaultSelectedSkin.parent != this)
 			{
 				this._defaultSelectedSkin.visible = false;
-				this.addChild(this._defaultSelectedSkin);
+				this.addChildAt(this._defaultSelectedSkin, 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -351,7 +351,7 @@ package org.josht.starling.foxhole.controls
 			if(this._upSkin && this._upSkin.parent != this)
 			{
 				this._upSkin.visible = false;
-				this.addChild(this._upSkin);
+				this.addChildAt(this._upSkin, 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -380,7 +380,7 @@ package org.josht.starling.foxhole.controls
 			if(this._downSkin && this._downSkin.parent != this)
 			{
 				this._downSkin.visible = false;
-				this.addChild(this._downSkin);
+				this.addChildAt(this._downSkin, 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -409,7 +409,7 @@ package org.josht.starling.foxhole.controls
 			if(this._disabledSkin && this._disabledSkin.parent != this)
 			{
 				this._disabledSkin.visible = false;
-				this.addChild(this._disabledSkin);
+				this.addChildAt(this._disabledSkin, 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -438,7 +438,7 @@ package org.josht.starling.foxhole.controls
 			if(this._selectedUpSkin && this._selectedUpSkin.parent != this)
 			{
 				this._selectedUpSkin.visible = false;
-				this.addChild(this._selectedUpSkin);
+				this.addChildAt(this._selectedUpSkin, 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -467,7 +467,7 @@ package org.josht.starling.foxhole.controls
 			if(this._selectedDownSkin && this._selectedDownSkin.parent != this)
 			{
 				this._selectedDownSkin.visible = false;
-				this.addChild(this._selectedDownSkin);
+				this.addChildAt(this._selectedDownSkin, 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -780,11 +780,8 @@ package org.josht.starling.foxhole.controls
 				return;
 			}
 			this._autoFlatten = value;
-			if(!this._autoFlatten)
-			{
-				this.unflatten();
-			}
-			else
+			this.unflatten();
+			if(this._autoFlatten)
 			{
 				this.flatten();
 			}
@@ -849,6 +846,40 @@ package org.josht.starling.foxhole.controls
 				}
 				this.refreshIcon();
 				this.refreshLabelStyles();
+				this.labelField.validate();
+				if(isNaN(this._width))
+				{
+					if(this.currentIcon && this.label)
+					{
+						this._width = this.currentIcon.width + this.gap + this.labelField.width;
+					}
+					else if(this.currentIcon)
+					{
+						this._width = this.currentIcon.width;
+					}
+					else if(this.labelField)
+					{
+						this._width = this.labelField.width;
+					}
+					sizeInvalid = true;
+				}
+				
+				if(isNaN(this._height))
+				{
+					if(this.currentIcon && this.label)
+					{
+						this._height = Math.max(this.currentIcon.height, this.labelField.height);
+					}
+					else if(this.currentIcon)
+					{
+						this._height = this.currentIcon.height;
+					}
+					else if(this.labelField)
+					{
+						this._height = this.labelField.height;
+					}
+					sizeInvalid = true;
+				}
 			}
 			
 			if(stylesInvalid || stateInvalid || sizeInvalid)
@@ -872,6 +903,7 @@ package org.josht.starling.foxhole.controls
 			
 			if(this._autoFlatten)
 			{
+				this.unflatten();
 				this.flatten();
 			}
 		}
@@ -1065,13 +1097,6 @@ package org.josht.starling.foxhole.controls
 		
 		protected function refreshLabelStyles():void
 		{	
-			//make sure the label is always on top.
-			var topChildIndex:int = this.numChildren - 1;
-			if(this.getChildIndex(this.labelField) != topChildIndex)
-			{
-				this.setChildIndex(this.labelField, topChildIndex);
-			}
-			
 			var format:BitmapFontTextFormat;
 			if(this._currentState == STATE_UP)
 			{
@@ -1226,7 +1251,8 @@ package org.josht.starling.foxhole.controls
 				const font:starling.text.BitmapFont = this.labelField.textFormat.font;
 				const formatSize:Number = this.labelField.textFormat.size;
 				const baseline:Number = (font is org.josht.starling.text.BitmapFont) ? org.josht.starling.text.BitmapFont(font).base : font.lineHeight;
-				this.currentIcon.y = this.labelField.y + (formatSize / font.size) * baseline - this.currentIcon.height;
+				const fontSizeScale:Number = isNaN(formatSize) ? 1 : (formatSize / font.size);
+				this.currentIcon.y = this.labelField.y + fontSizeScale * baseline - this.currentIcon.height;
 			}
 			else
 			{
