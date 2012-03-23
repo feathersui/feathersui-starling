@@ -24,24 +24,13 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package org.josht.starling.foxhole.controls
 {	
-	import flash.geom.Point;
-	import flash.geom.Rectangle;
-	import flash.system.Capabilities;
-	import flash.utils.Dictionary;
-	import flash.utils.getTimer;
-	
-	import org.josht.starling.display.Sprite;
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.data.ListCollection;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 	
-	import starling.core.Starling;
 	import starling.display.DisplayObject;
-	import starling.events.Event;
-	import starling.events.Touch;
 	import starling.events.TouchEvent;
-	import starling.events.TouchPhase;
 	
 	public class List extends FoxholeControl
 	{
@@ -49,21 +38,14 @@ package org.josht.starling.foxhole.controls
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 		
-		private static const INVALIDATION_FLAG_ITEM_RENDERER:String = "itemRenderer";
-		private static const INVALIDATION_FLAG_CLIPPING:String = "clipping";
-		
-		private static const MINIMUM_DRAG_DISTANCE:Number = 0.04;
-		private static const FRICTION:Number = 0.5;
-		
 		public function List()
 		{
 			super();
-			
-			this.addEventListener(TouchEvent.TOUCH, touchHandler);
 		}
 		
 		private var _background:DisplayObject;
-		private var _itemRendererContainer:Sprite;
+		private var _scroller:Scroller;
+		private var _dataContainer:ListDataContainer;
 		
 		private var _verticalScrollPosition:Number = 0;
 		
@@ -103,15 +85,7 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			if(this._dataProvider)
-			{
-				this._dataProvider.onChange.remove(dataProvider_onChange);
-			}
 			this._dataProvider = value;
-			if(this._dataProvider)
-			{
-				this._dataProvider.onChange.add(dataProvider_onChange);
-			}
 			this.verticalScrollPosition = 0; //reset the scroll position
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -146,23 +120,6 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 		
-		private var _rowHeight:Number = NaN;
-		
-		public function get rowHeight():Number
-		{
-			return this._rowHeight;
-		}
-		
-		public function set rowHeight(value:Number):void
-		{
-			if(this._rowHeight == value)
-			{
-				return;
-			}
-			this._rowHeight = value;
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
-		}
-		
 		private var _isSelectable:Boolean = true;
 		
 		public function get isSelectable():Boolean
@@ -176,11 +133,8 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			if(!value)
-			{
-				this.selectedIndex = -1;
-			}
 			this._isSelectable = value;
+			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
 		
 		private var _selectedIndex:int = -1;
@@ -230,21 +184,10 @@ package org.josht.starling.foxhole.controls
 				return;
 			}
 			this._clipContent = value;
-			this.invalidate(INVALIDATION_FLAG_CLIPPING);
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
-		private var _touchPointID:int = -1;
-		private var _startTouchTime:int;
-		private var _startTouchY:Number;
-		private var _startVerticalScrollPosition:Number;
-		private var _targetVerticalScrollPosition:Number;
-		
-		private var _autoScrolling:Boolean = false;
 		private var _isMoving:Boolean = false;
-		
-		private var _inactiveRenderers:Vector.<IListItemRenderer> = new <IListItemRenderer>[];
-		private var _activeRenderers:Vector.<IListItemRenderer> = new <IListItemRenderer>[];
-		private var _rendererMap:Dictionary = new Dictionary(true);
 		
 		private var _onChange:Signal = new Signal(List);
 		
@@ -387,7 +330,7 @@ package org.josht.starling.foxhole.controls
 			}
 			
 			this._itemRendererType = value;
-			this.invalidate(INVALIDATION_FLAG_ITEM_RENDERER);
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
 		private var _itemRendererFunction:Function;
@@ -405,7 +348,7 @@ package org.josht.starling.foxhole.controls
 			}
 			
 			this._itemRendererFunction = value;
-			this.invalidate(INVALIDATION_FLAG_ITEM_RENDERER);
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		public function setItemRendererProperty(propertyName:String, propertyValue:Object):void
@@ -441,133 +384,66 @@ package org.josht.starling.foxhole.controls
 		
 		override protected function initialize():void
 		{
-			if(!this._itemRendererContainer)
+			if(!this._scroller)
 			{
-				this._itemRendererContainer = new Sprite();
-				this.addChild(this._itemRendererContainer);
+				this._scroller = new Scroller();
+				this._scroller.verticalScrollPolicy = Scroller.SCROLL_POLICY_AUTO;
+				this._scroller.horizontalScrollPolicy = Scroller.SCROLL_POLICY_OFF;
+				this._scroller.onScroll.add(scroller_onScroll);
+				this.addChild(this._scroller);
+			}
+			
+			if(!this._dataContainer)
+			{
+				this._dataContainer = new ListDataContainer();
+				this._dataContainer.owner = this;
+				this._dataContainer.onChange.add(dataContainer_onChange);
+				this._dataContainer.onItemTouch.add(dataContainer_onItemTouch);
+				this._scroller.viewPort = this._dataContainer;
 			}
 		}
 		
 		override protected function draw():void
 		{
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
-			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			var scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
-			const selectionInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SELECTED);
-			const itemRendererInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_ITEM_RENDERER);
-			const clippingInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_CLIPPING);
-			
-			if(isNaN(this._width))
-			{
-				this._width = 320;
-				sizeInvalid = true;
-			}
-			if(isNaN(this._height))
-			{
-				this._height = 320;
-				sizeInvalid = true;
-			}
 			
 			if(sizeInvalid || stylesInvalid || stateInvalid)
 			{
 				this.refreshBackgroundSkin();
 			}
 			
-			if(dataInvalid || sizeInvalid || itemRendererInvalid || scrollInvalid)
+			if(!isNaN(this._width))
 			{
-				if((dataInvalid || itemRendererInvalid) && isNaN(this._rowHeight) && this._dataProvider && this._dataProvider.length > 0)
-				{
-					const typicalRenderer:IListItemRenderer = this.createRenderer(this._dataProvider.getItemAt(0), 0, true);
-					this.refreshOneItemRendererStyles(typicalRenderer);
-					if(typicalRenderer is FoxholeControl)
-					{
-						FoxholeControl(typicalRenderer).validate();
-					}
-					this._rowHeight = DisplayObject(typicalRenderer).height;
-					this.destroyRenderer(typicalRenderer);
-				}
-				this.refreshScrollBounds();
-				this.refreshRenderers(itemRendererInvalid);
-				this.drawRenderers();
+				this._dataContainer.width = this._width - 2 * this._contentPadding;
+			}
+			this._dataContainer.selectedIndex = this._selectedIndex;
+			this._dataContainer.dataProvider = this._dataProvider;
+			this._dataContainer.itemRendererType = this._itemRendererType;
+			this._dataContainer.itemRendererFunction = this._itemRendererFunction;
+			this._dataContainer.itemRendererProperties = this._itemRendererProperties;
+			this._dataContainer.validate();
+			if(isNaN(this._width))
+			{
+				this.width = this._dataContainer.width + 2 * this._contentPadding;
+			}
+			if(isNaN(this._height))
+			{
+				this.height = this._dataContainer.height + 2 * this._contentPadding;
 			}
 			
-			if(dataInvalid || sizeInvalid || itemRendererInvalid || stylesInvalid)
-			{
-				this.refreshItemRendererStyles();
-			}
-			
-			if(dataInvalid || selectionInvalid)
-			{
-				this.refreshSelection();
-			}
-			
-			var rendererCount:int = this._activeRenderers.length;
-			for(var i:int = 0; i < rendererCount; i++)
-			{
-				var itemRenderer:DisplayObject = DisplayObject(this._activeRenderers[i]);
-				if(itemRenderer is FoxholeControl)
-				{
-					FoxholeControl(itemRenderer).validate();
-				}
-			}
-			
-			if(dataInvalid || scrollInvalid || clippingInvalid)
-			{
-				this.scrollContent();
-			}
-		}
-		
-		protected function itemToItemRenderer(item:Object):IListItemRenderer
-		{
-			return IListItemRenderer(this._rendererMap[item]);
-		}
-		
-		protected function refreshItemRendererStyles():void
-		{
-			for each(var renderer:IListItemRenderer in this._activeRenderers)
-			{
-				this.refreshOneItemRendererStyles(renderer);
-			}
-		}
-		
-		protected function refreshOneItemRendererStyles(renderer:IListItemRenderer):void
-		{
-			const displayRenderer:DisplayObject = DisplayObject(renderer);
-			for(var propertyName:String in this._itemRendererProperties)
-			{
-				if(displayRenderer.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._itemRendererProperties[propertyName];
-					displayRenderer[propertyName] = propertyValue;
-				}
-			}
-		}
-		
-		protected function refreshScrollBounds():void
-		{
-			var availableHeight:Number = this._height - 2 * this._contentPadding;
-			if(this._dataProvider)
-			{
-				var contentHeight:Number = this._dataProvider.length * this._rowHeight;
-				this._maxVerticalScrollPosition = Math.max(0, contentHeight - availableHeight);
-			}
-			else
-			{
-				this._maxVerticalScrollPosition = 0;
-			}
-		}
-		
-		protected function refreshSelection():void
-		{
-			var itemCount:int = this._dataProvider ? this._dataProvider.length : 0;
-			for(var i:int = 0; i < itemCount; i++)
-			{
-				var item:Object = this._dataProvider.getItemAt(i);
-				var renderer:IListItemRenderer = this.itemToItemRenderer(item);
-				renderer.isSelected = this._selectedIndex == i;
-			}
+			this._scroller.width = this._width - 2 * this._contentPadding;
+			this._scroller.height = this._height - 2 * this._contentPadding;
+			this._scroller.x = this._contentPadding;
+			this._scroller.y = this._contentPadding;
+			this._scroller.clipContent = this._clipContent;
+			this._scroller.verticalAlign = this._verticalAlign;
+			this._scroller.verticalScrollPosition = this._verticalScrollPosition;
+			this._scroller.validate();
+			this._maxVerticalScrollPosition = this._scroller.maxVerticalScrollPosition;
+			this._verticalScrollPosition = this._scroller.verticalScrollPosition;
 		}
 		
 		protected function refreshBackgroundSkin():void
@@ -586,333 +462,19 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
-		protected function scrollContent():void
-		{	
-			this._itemRendererContainer.x = this._contentPadding;
-			this._itemRendererContainer.y = this._contentPadding;
-			
-			const contentWidth:Number = this._width - 2 * this._contentPadding;
-			const contentHeight:Number = this._height - 2 * this._contentPadding;
-			if(this._clipContent)
-			{
-				if(!this._itemRendererContainer.scrollRect)
-				{
-					this._itemRendererContainer.scrollRect = new Rectangle();
-				}
-				
-				const scrollRect:Rectangle = this._itemRendererContainer.scrollRect;
-				scrollRect.width = contentWidth;
-				scrollRect.height = contentHeight;
-				scrollRect.y = this._verticalScrollPosition;
-			}
-			else
-			{
-				if(this._itemRendererContainer.scrollRect)
-				{
-					this._itemRendererContainer.scrollRect = null;
-				}
-				this._itemRendererContainer.y -= this._verticalScrollPosition;
-			}
-		}
-		
-		protected function drawRenderers():void
-		{	
-			const contentWidth:Number = this._width - 2 * this._contentPadding;
-			const availableContentHeight:Number = this._height - 2 * this._contentPadding;
-			const actualContentHeight:Number = this._dataProvider.length * this._rowHeight
-			var offsetY:Number = 0;
-			if(actualContentHeight < availableContentHeight)
-			{
-				if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
-				{
-					offsetY = (availableContentHeight - actualContentHeight) / 2;
-				}
-				else if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
-				{
-					offsetY = availableContentHeight - actualContentHeight;	
-				}
-			}
-			
-			const itemCount:int = this._activeRenderers.length;
-			for(var i:int = 0; i < itemCount; i++)
-			{
-				var renderer:IListItemRenderer = this._activeRenderers[i];
-				var displayRenderer:DisplayObject = DisplayObject(renderer);
-				displayRenderer.width = contentWidth;
-				displayRenderer.height = this._rowHeight;
-				displayRenderer.y = offsetY + this._rowHeight * renderer.index;
-			}
-		}
-		
-		protected function refreshRenderers(cellRendererTypeIsInvalid:Boolean):void
+		protected function scroller_onScroll(scroller:Scroller):void
 		{
-			if(!cellRendererTypeIsInvalid)
-			{
-				this._inactiveRenderers = this._activeRenderers;
-			}
-			this._activeRenderers = new <IListItemRenderer>[];
-			
-			if(this._dataProvider)
-			{
-				var unrenderedData:Array = this.findUnrenderedData();
-				this.recoverInactiveRenderers();
-				this.renderUnrenderedData(unrenderedData);
-				this.freeInactiveRenderers();
-			}
+			this.verticalScrollPosition = this._scroller.verticalScrollPosition;
 		}
 		
-		private function findUnrenderedData():Array
+		protected function dataContainer_onChange(dataContainer:ListDataContainer):void
 		{
-			var unrenderedData:Array = [];
-			var itemCount:int = this._dataProvider ? this._dataProvider.length : 0;
-			for(var i:int = 0; i < itemCount; i++)
-			{
-				var item:Object = this._dataProvider.getItemAt(i);
-				var renderer:IListItemRenderer = IListItemRenderer(this._rendererMap[item]);
-				if(renderer)
-				{
-					this._activeRenderers.push(renderer);
-					this._inactiveRenderers.splice(this._inactiveRenderers.indexOf(renderer), 1);
-				}
-				else
-				{
-					unrenderedData.push(item);
-				}
-			}
-			return unrenderedData;
+			this.selectedIndex = this._dataContainer.selectedIndex;
 		}
 		
-		private function renderUnrenderedData(unrenderedData:Array):void
+		protected function dataContainer_onItemTouch(dataContainer:ListDataContainer, item:Object, index:int, event:TouchEvent):void
 		{
-			var itemCount:int = unrenderedData.length;
-			for(var i:int = 0; i < itemCount; i++)
-			{
-				var item:Object = unrenderedData[i];
-				var index:int = this._dataProvider.getItemIndex(item);
-				this.createRenderer(item, index);
-			}
-		}
-		
-		private function recoverInactiveRenderers():void
-		{
-			var itemCount:int = this._inactiveRenderers.length;
-			for(var i:int = 0; i < itemCount; i++)
-			{
-				var renderer:IListItemRenderer = this._inactiveRenderers[i];
-				delete this._rendererMap[renderer.data];
-			}
-		}
-		
-		private function freeInactiveRenderers():void
-		{
-			var itemCount:int = this._inactiveRenderers.length;
-			for(var i:int = 0; i < itemCount; i++)
-			{
-				var renderer:IListItemRenderer = this._inactiveRenderers.shift();
-				this.destroyRenderer(renderer);
-			}
-		}
-		
-		private function createRenderer(item:Object, index:int, isTemporary:Boolean = false):IListItemRenderer
-		{
-			if(this._inactiveRenderers.length == 0)
-			{
-				var renderer:IListItemRenderer;
-				if(this._itemRendererFunction != null)
-				{
-					renderer = IListItemRenderer(this._itemRendererFunction(item));
-				}
-				else
-				{
-					renderer = new this._itemRendererType();
-				}
-				const displayRenderer:DisplayObject = DisplayObject(renderer);
-				displayRenderer.addEventListener(TouchEvent.TOUCH, renderer_touchHandler);
-				this._itemRendererContainer.addChild(displayRenderer);
-			}
-			else
-			{
-				renderer = this._inactiveRenderers.shift();
-			}
-			renderer.data = item;
-			renderer.index = index;
-			renderer.owner = this;
-			
-			if(!isTemporary)
-			{
-				this._rendererMap[item] = renderer;
-				this._activeRenderers.push(renderer);
-			}
-			
-			return renderer;
-		}
-		
-		private function destroyRenderer(renderer:IListItemRenderer):void
-		{
-			const displayRenderer:DisplayObject = DisplayObject(renderer);
-			displayRenderer.removeEventListener(TouchEvent.TOUCH, renderer_touchHandler);
-			this._itemRendererContainer.removeChild(displayRenderer);
-		}
-		
-		private function updateScrollFromTouchPosition(touchX:Number, touchY:Number):void
-		{
-			var offset:Number = this._startTouchY - touchY;
-			var position:Number = this._startVerticalScrollPosition + offset;
-			if(this._verticalScrollPosition < 0)
-			{
-				position /= 2;
-			}
-			else if(position > this._maxVerticalScrollPosition)
-			{
-				position -= (position - this._maxVerticalScrollPosition) / 2;
-			}
-			
-			var oldPosition:Number = this._verticalScrollPosition;
-			this.verticalScrollPosition = position;
-		}
-		
-		private function finishScrolling():void
-		{
-			if(!this._autoScrolling)
-			{
-				var maxDifference:Number = this._verticalScrollPosition - this._maxVerticalScrollPosition;
-				if(maxDifference >= 1)
-				{
-					this._autoScrolling = true;
-					this.addEventListener(Event.ENTER_FRAME, enterFrameHandler);
-					this._targetVerticalScrollPosition = this._maxVerticalScrollPosition;
-				}
-				else if(this._verticalScrollPosition < 0)
-				{
-					this._autoScrolling = true;
-					this.addEventListener(Event.ENTER_FRAME, enterFrameHandler);
-					this._targetVerticalScrollPosition = 0;
-				}
-				else
-				{
-					//we should never get here, but there have been some weird
-					//cases where selection doesn't work
-					this._isMoving = false;
-					this._autoScrolling = false;
-				}
-			}
-			else
-			{
-				this.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
-				this._autoScrolling = false;
-				this._isMoving = false;
-			}
-		}
-		
-		private function enterFrameHandler(event:Event):void
-		{
-			var difference:Number = this._verticalScrollPosition - this._targetVerticalScrollPosition;
-			var offset:Number = difference * FRICTION;
-			this.verticalScrollPosition -= offset;
-			if(Math.abs(difference) < 1)
-			{
-				this.finishScrolling();
-				return;
-			}
-		}
-		
-		private function touchHandler(event:TouchEvent):void
-		{
-			if(!this._isEnabled)
-			{
-				return;
-			}
-			const touch:Touch = event.getTouch(this);
-			if(!touch || (this._touchPointID >= 0 && touch.id != this._touchPointID))
-			{
-				return;
-			}
-			const location:Point = touch.getLocation(this);
-			if(touch.phase == TouchPhase.BEGAN)
-			{
-				if(this._autoScrolling)
-				{
-					this._autoScrolling = false;
-					this.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
-				}
-				
-				this._touchPointID = touch.id;
-				this._startTouchTime = getTimer();
-				this._startTouchY = location.y;
-				this._startVerticalScrollPosition = this._verticalScrollPosition;
-				this._isMoving = false;
-			}
-			else if(touch.phase == TouchPhase.MOVED)
-			{
-				const inchesMoved:Number = Math.abs(location.y - this._startTouchY) / Capabilities.screenDPI;
-				if(!this._isMoving && inchesMoved >= MINIMUM_DRAG_DISTANCE)
-				{
-					this._isMoving = true;
-				}
-				if(this._isMoving)
-				{
-					if(!this._autoScrolling)
-					{
-						this.updateScrollFromTouchPosition(location.x, location.y);
-					}
-				}
-			}
-			else if(touch.phase == TouchPhase.ENDED)
-			{
-				this._touchPointID = -1;
-				if(this._verticalScrollPosition <= 0 || this._verticalScrollPosition >= this._maxVerticalScrollPosition)
-				{
-					this.finishScrolling();
-					return;
-				}
-				
-				const distance:Number = location.y - this._startTouchY;
-				const pixelsPerMS:Number = distance / (getTimer() - this._startTouchTime); 
-				var pixelsPerFrame:Number = 1.5 * (pixelsPerMS * 1000) / Starling.current.nativeStage.frameRate;
-				this._targetVerticalScrollPosition = this._verticalScrollPosition;
-				
-				//TODO: there's probably some physics equation for this...
-				while(Math.abs(pixelsPerFrame) >= 1)
-				{
-					this._targetVerticalScrollPosition -= pixelsPerFrame;
-					if(this._targetVerticalScrollPosition < 0 || this._targetVerticalScrollPosition > this._maxVerticalScrollPosition)
-					{
-						pixelsPerFrame /= 2;
-						this._targetVerticalScrollPosition += pixelsPerFrame;
-					}
-					pixelsPerFrame *= (1 - FRICTION);
-				}
-			}
-		}
-		
-		private function dataProvider_onChange(data:ListCollection):void
-		{
-			this.invalidate(INVALIDATION_FLAG_DATA);
-		}
-		
-		private function renderer_touchHandler(event:TouchEvent):void
-		{
-			if(!this._isEnabled)
-			{
-				return;
-			}
-			
-			const renderer:IListItemRenderer = IListItemRenderer(event.currentTarget);
-			const displayRenderer:DisplayObject = DisplayObject(renderer);
-			const touch:Touch = event.getTouch(displayRenderer);
-			if(this._isSelectable && !this._isMoving && touch && touch.phase == TouchPhase.ENDED)
-			{
-				const location:Point = touch.getLocation(displayRenderer);
-				const isInBounds:Boolean = location.x >= 0 && location.y >= 0 && 
-					location.x < displayRenderer.width / displayRenderer.scaleX &&
-					location.y < displayRenderer.height / displayRenderer.scaleY;
-				if(isInBounds)
-				{
-					this.selectedIndex = renderer.index;
-				}
-			}
-			
-			this._onItemTouch.dispatch(this, renderer.data, renderer.index, event);
+			this._onItemTouch.dispatch(this, item, index, event);
 		}
 	}
 }
