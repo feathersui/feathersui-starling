@@ -1,8 +1,30 @@
+/*
+Copyright (c) 2012 Josh Tynjala
+
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without
+restriction, including without limitation the rights to use,
+copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+*/
 package org.josht.starling.foxhole.controls
 {
-	import com.gskinner.motion.GTween;
 	import com.gskinner.motion.easing.Exponential;
-	import com.gskinner.motion.easing.Sine;
 	
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -11,6 +33,7 @@ package org.josht.starling.foxhole.controls
 	
 	import org.josht.starling.display.Sprite;
 	import org.josht.starling.foxhole.core.FoxholeControl;
+	import org.josht.starling.motion.GTween;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 	
@@ -36,7 +59,7 @@ package org.josht.starling.foxhole.controls
 		protected static const INVALIDATION_FLAG_CLIPPING:String = "clipping";
 		
 		private static const MINIMUM_DRAG_DISTANCE:Number = 0.04;
-		private static const FRICTION:Number = 0.99;
+		private static const FRICTION:Number = 0.9925;
 		
 		public function Scroller()
 		{
@@ -104,6 +127,7 @@ package org.josht.starling.foxhole.controls
 
 		public function set horizontalScrollPosition(value:Number):void
 		{
+			value = Math.round(value);
 			if(this._horizontalScrollPosition == value)
 			{
 				return;
@@ -163,6 +187,7 @@ package org.josht.starling.foxhole.controls
 		
 		public function set verticalScrollPosition(value:Number):void
 		{
+			value = Math.round(value);
 			if(this._verticalScrollPosition == value)
 			{
 				return;
@@ -246,8 +271,8 @@ package org.josht.starling.foxhole.controls
 			{
 				if(this._viewPort)
 				{
-					this._maxHorizontalScrollPosition = Math.max(0, this._viewPort.width - this._width);
-					this._maxVerticalScrollPosition = Math.max(0, this._viewPort.height - this._height);
+					this._maxHorizontalScrollPosition = Math.round(Math.max(0, this._viewPort.width - this._width));
+					this._maxVerticalScrollPosition = Math.round(Math.max(0, this._viewPort.height - this._height));
 				}
 				else
 				{
@@ -371,7 +396,7 @@ package org.josht.starling.foxhole.controls
 					horizontalScrollPosition: targetHorizontalScrollPosition
 				},
 				{
-					ease: Sine.easeOut,
+					ease: Exponential.easeOut,
 					onComplete: horizontalAutoScrollTween_onComplete
 				});
 			}
@@ -384,7 +409,7 @@ package org.josht.starling.foxhole.controls
 			{
 				targetVerticalScrollPosition = 0;
 			}
-			else if(this._verticalScrollPosition >= this._maxVerticalScrollPosition)
+			else if(this._verticalScrollPosition > this._maxVerticalScrollPosition)
 			{
 				targetVerticalScrollPosition = this._maxVerticalScrollPosition;
 			}
@@ -402,7 +427,7 @@ package org.josht.starling.foxhole.controls
 					verticalScrollPosition: targetVerticalScrollPosition
 				},
 				{
-					ease: Sine.easeOut,
+					ease: Exponential.easeOut,
 					onComplete: verticalAutoScrollTween_onComplete
 				});
 			}
@@ -557,12 +582,12 @@ package org.josht.starling.foxhole.controls
 				this._touchPointID = -1;
 				var isFinishingHorizontally:Boolean = false;
 				var isFinishingVertically:Boolean = false;
-				if(this._horizontalScrollPosition <= 0 || this._horizontalScrollPosition >= this._maxHorizontalScrollPosition)
+				if(this._horizontalScrollPosition < 0 || this._horizontalScrollPosition > this._maxHorizontalScrollPosition)
 				{
 					isFinishingHorizontally = true;
 					this.finishScrollingHorizontally();
 				}
-				if(this._verticalScrollPosition <= 0 || this._verticalScrollPosition >= this._maxVerticalScrollPosition)
+				if(this._verticalScrollPosition < 0 || this._verticalScrollPosition > this._maxVerticalScrollPosition)
 				{
 					isFinishingVertically = true;
 					this.finishScrollingVertically();
