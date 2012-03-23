@@ -92,6 +92,23 @@ package org.josht.starling.foxhole.controls
 			this._isLayoutInvalid = true;
 			super.invalidate();
 		}
+		
+		private var _smoothing:String = TextureSmoothing.BILINEAR;
+
+		public function get smoothing():String
+		{
+			return this._smoothing;
+		}
+
+		public function set smoothing(value:String):void
+		{
+			if(this._smoothing == value)
+			{
+				return;
+			}
+			this._smoothing = value;
+			super.invalidate();
+		}
 
 		private var _characters:Vector.<Image> = new <Image>[];
 		
@@ -111,16 +128,14 @@ package org.josht.starling.foxhole.controls
 		override protected function draw():void
 		{
 			this.rebuildCharacters();
-			if(this._textFormat)
+			const color:uint = this._textFormat ? this._textFormat.color : uint.MAX_VALUE;
+			for each(var charDisplay:Image in this._characters)
 			{
-				var color:uint = this._textFormat.color;
 				if(color != uint.MAX_VALUE)
 				{
-					for each(var charDisplay:Image in this._characters)
-					{
-						charDisplay.color = color;
-					}
+					charDisplay.color = color;
 				}
+				charDisplay.smoothing = this.smoothing;
 			}
 			this.layout();
 			
