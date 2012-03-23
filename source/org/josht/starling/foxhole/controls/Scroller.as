@@ -39,6 +39,7 @@ package org.josht.starling.foxhole.controls
 	
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
+	import starling.display.Quad;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -65,11 +66,15 @@ package org.josht.starling.foxhole.controls
 		{
 			super();
 			
+			this._background = new Quad(10, 10, 0xff00ff);
+			this._background.alpha = 0;
+			this.addChild(this._background);
 			this._viewPortWrapper = new Sprite();
 			this.addChild(this._viewPortWrapper);
 			this.addEventListener(TouchEvent.TOUCH, touchHandler);
 		}
 		
+		private var _background:Quad;
 		private var _touchPointID:int = -1;
 		private var _startTouchTime:int;
 		private var _startTouchX:Number;
@@ -85,12 +90,12 @@ package org.josht.starling.foxhole.controls
 		private var _viewPortWrapper:Sprite;
 		
 		private var _viewPort:DisplayObject;
-
+		
 		public function get viewPort():DisplayObject
 		{
 			return this._viewPort;
 		}
-
+		
 		public function set viewPort(value:DisplayObject):void
 		{
 			if(this._viewPort == value)
@@ -119,12 +124,12 @@ package org.josht.starling.foxhole.controls
 		}
 		
 		private var _horizontalScrollPosition:Number = 0;
-
+		
 		public function get horizontalScrollPosition():Number
 		{
 			return this._horizontalScrollPosition;
 		}
-
+		
 		public function set horizontalScrollPosition(value:Number):void
 		{
 			value = Math.round(value);
@@ -145,12 +150,12 @@ package org.josht.starling.foxhole.controls
 		}
 		
 		private var _horizontalScrollPolicy:String = SCROLL_POLICY_AUTO;
-
+		
 		public function get horizontalScrollPolicy():String
 		{
 			return this._horizontalScrollPolicy;
 		}
-
+		
 		public function set horizontalScrollPolicy(value:String):void
 		{
 			if(this._horizontalScrollPolicy == value)
@@ -261,11 +266,18 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._onScroll;
 		}
-
+		
 		override protected function draw():void
 		{
+			const sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			const scrollInvalid:Boolean = dataInvalid || this.isInvalid(INVALIDATION_FLAG_SCROLL);
+			
+			if(sizeInvalid)
+			{
+				this._background.width = this._width;
+				this._background.height = this._height;
+			}
 			
 			if(dataInvalid)
 			{
@@ -392,13 +404,13 @@ package org.josht.starling.foxhole.controls
 			if(!isNaN(targetHorizontalScrollPosition))
 			{
 				this._horizontalAutoScrollTween = new GTween(this, 0.24,
-				{
-					horizontalScrollPosition: targetHorizontalScrollPosition
-				},
-				{
-					ease: Exponential.easeOut,
-					onComplete: horizontalAutoScrollTween_onComplete
-				});
+					{
+						horizontalScrollPosition: targetHorizontalScrollPosition
+					},
+					{
+						ease: Exponential.easeOut,
+						onComplete: horizontalAutoScrollTween_onComplete
+					});
 			}
 		}
 		
@@ -423,13 +435,13 @@ package org.josht.starling.foxhole.controls
 			if(!isNaN(targetVerticalScrollPosition))
 			{
 				this._verticalAutoScrollTween = new GTween(this, 0.24,
-				{
-					verticalScrollPosition: targetVerticalScrollPosition
-				},
-				{
-					ease: Exponential.easeOut,
-					onComplete: verticalAutoScrollTween_onComplete
-				});
+					{
+						verticalScrollPosition: targetVerticalScrollPosition
+					},
+					{
+						ease: Exponential.easeOut,
+						onComplete: verticalAutoScrollTween_onComplete
+					});
 			}
 		}
 		
@@ -457,13 +469,13 @@ package org.josht.starling.foxhole.controls
 				this._horizontalAutoScrollTween = null;
 			}
 			this._horizontalAutoScrollTween = new GTween(this, frameCount / frameRate,
-			{
-				horizontalScrollPosition: targetHorizontalScrollPosition
-			},
-			{
-				ease: Exponential.easeOut,
-				onComplete: horizontalAutoScrollTween_onComplete
-			});
+				{
+					horizontalScrollPosition: targetHorizontalScrollPosition
+				},
+				{
+					ease: Exponential.easeOut,
+					onComplete: horizontalAutoScrollTween_onComplete
+				});
 		}
 		
 		protected function throwVertically(pixelsPerMS:Number):void
@@ -490,13 +502,13 @@ package org.josht.starling.foxhole.controls
 				this._verticalAutoScrollTween = null;
 			}
 			this._verticalAutoScrollTween = new GTween(this, frameCount / frameRate,
-			{
-				verticalScrollPosition: targetVerticalScrollPosition
-			},
-			{
-				ease: Exponential.easeOut,
-				onComplete: verticalAutoScrollTween_onComplete
-			});
+				{
+					verticalScrollPosition: targetVerticalScrollPosition
+				},
+				{
+					ease: Exponential.easeOut,
+					onComplete: verticalAutoScrollTween_onComplete
+				});
 		}
 		
 		protected function viewPort_onResize(viewPort:FoxholeControl):void
