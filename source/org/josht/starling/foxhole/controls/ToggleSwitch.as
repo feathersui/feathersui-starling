@@ -521,7 +521,7 @@ package org.josht.starling.foxhole.controls
 			const maxLabelWidth:Number = Math.max(0, this._width - this.thumb.width - 2 * this._contentPadding);
 			var totalLabelHeight:Number = Math.max(this.onLabelField.height, this.offLabelField.height);
 			var labelHeight:Number;
-			if(this._labelAlign == LABEL_ALIGN_MIDDLE || !(this.defaultTextFormat.font is BitmapFont))
+			if(this._labelAlign == LABEL_ALIGN_MIDDLE || !this._defaultTextFormat || !(this._defaultTextFormat.font is BitmapFont))
 			{
 				labelHeight = totalLabelHeight;
 			}
