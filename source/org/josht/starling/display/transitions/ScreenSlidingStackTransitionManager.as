@@ -24,10 +24,10 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package org.josht.starling.display.transitions
 {
-	import com.gskinner.motion.GTween;
 	import com.gskinner.motion.easing.Sine;
 	
 	import org.josht.starling.display.ScreenNavigator;
+	import org.josht.starling.motion.GTween;
 	
 	import starling.display.DisplayObject;
 
