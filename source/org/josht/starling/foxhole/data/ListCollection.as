@@ -34,35 +34,35 @@ package org.josht.starling.foxhole.data
 			this.data = data;
 		}
 		
-		private var _onChange:Signal = new Signal(ListCollection);
+		protected var _onChange:Signal = new Signal(ListCollection);
 		
 		public function get onChange():ISignal
 		{
 			return this._onChange;
 		}
 		
-		private var _onAdd:Signal = new Signal(ListCollection, int);
+		protected var _onAdd:Signal = new Signal(ListCollection, int);
 		
 		public function get onAdd():ISignal
 		{
 			return this._onAdd;
 		}
 		
-		private var _onRemove:Signal = new Signal(ListCollection, int);
+		protected var _onRemove:Signal = new Signal(ListCollection, int);
 		
 		public function get onRemove():ISignal
 		{
 			return this._onRemove;
 		}
 		
-		private var _onReplace:Signal = new Signal(ListCollection, int);
+		protected var _onReplace:Signal = new Signal(ListCollection, int);
 		
 		public function get onReplace():ISignal
 		{
 			return this._onReplace;
 		}
 		
-		private var _onReset:Signal = new Signal(ListCollection);
+		protected var _onReset:Signal = new Signal(ListCollection);
 		
 		public function get onReset():ISignal
 		{

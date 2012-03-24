@@ -189,21 +189,21 @@ package org.josht.starling.foxhole.controls
 		
 		private var _isMoving:Boolean = false;
 		
-		private var _onChange:Signal = new Signal(List);
+		protected var _onChange:Signal = new Signal(List);
 		
 		public function get onChange():ISignal
 		{
 			return this._onChange;
 		}
 		
-		private var _onScroll:Signal = new Signal(List);
+		protected var _onScroll:Signal = new Signal(List);
 		
 		public function get onScroll():ISignal
 		{
 			return this._onScroll;
 		}
 		
-		private var _onItemTouch:Signal = new Signal(List, Object, int, TouchEvent);
+		protected var _onItemTouch:Signal = new Signal(List, Object, int, TouchEvent);
 		
 		public function get onItemTouch():ISignal
 		{

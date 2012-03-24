@@ -166,7 +166,7 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STAGE_SIZE);
 		}
 		
-		private var _onChange:Signal = new Signal(PickerList);
+		protected var _onChange:Signal = new Signal(PickerList);
 		
 		public function get onChange():ISignal
 		{

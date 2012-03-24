@@ -346,7 +346,7 @@ package org.josht.starling.foxhole.controls
 		private var _touchStartX:Number;
 		private var _isSelectionChangedByUser:Boolean = false;
 		
-		private var _onChange:Signal = new Signal(ToggleSwitch);
+		protected var _onChange:Signal = new Signal(ToggleSwitch);
 		
 		public function get onChange():ISignal
 		{

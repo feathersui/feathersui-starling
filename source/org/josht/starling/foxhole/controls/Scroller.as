@@ -260,7 +260,7 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_CLIPPING);
 		}
 		
-		private var _onScroll:Signal = new Signal(Scroller);
+		protected var _onScroll:Signal = new Signal(Scroller);
 		
 		public function get onScroll():ISignal
 		{

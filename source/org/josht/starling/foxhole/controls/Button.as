@@ -801,7 +801,7 @@ package org.josht.starling.foxhole.controls
 			return this._onRelease;
 		}
 		
-		private var _onChange:Signal = new Signal(Button);
+		protected var _onChange:Signal = new Signal(Button);
 		
 		public function get onChange():ISignal
 		{

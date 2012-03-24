@@ -50,7 +50,7 @@ package org.josht.starling.foxhole.controls
 		protected var track:Button;
 		protected var thumb:Button;
 		
-		private var _onChange:Signal = new Signal(Slider);
+		protected var _onChange:Signal = new Signal(Slider);
 		
 		public function get onChange():ISignal
 		{

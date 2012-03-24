@@ -97,7 +97,7 @@ package org.josht.starling.foxhole.core
 			this.selectedItem = this._items[value];
 		}
 		
-		private var _onChange:Signal = new Signal(ToggleGroup);
+		protected var _onChange:Signal = new Signal(ToggleGroup);
 		
 		public function get onChange():ISignal
 		{

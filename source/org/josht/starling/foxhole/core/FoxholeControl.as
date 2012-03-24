@@ -278,7 +278,7 @@ package org.josht.starling.foxhole.core
 		/**
 		 * @private
 		 */
-		private var _onResize:Signal = new Signal(FoxholeControl);
+		protected var _onResize:Signal = new Signal(FoxholeControl);
 		
 		/**
 		 * Dispatched when the width or height of the control changes.

@@ -194,14 +194,14 @@ package org.josht.starling.foxhole.controls
 			this._onChange.dispatch(this);
 		}
 		
-		private var _onChange:Signal = new Signal(ListDataContainer);
+		protected var _onChange:Signal = new Signal(ListDataContainer);
 		
 		public function get onChange():ISignal
 		{
 			return this._onChange;
 		}
 		
-		private var _onItemTouch:Signal = new Signal(ListDataContainer, Object, int, TouchEvent);
+		protected var _onItemTouch:Signal = new Signal(ListDataContainer, Object, int, TouchEvent);
 		
 		public function get onItemTouch():ISignal
 		{
