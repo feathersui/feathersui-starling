@@ -24,55 +24,18 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package org.josht.starling.display
 {
+	import flash.geom.Rectangle;
+	
 	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;
 
 	public class Scale9Image extends Sprite
 	{
-		public function Scale9Image(topLeft:Texture, topCenter:Texture, topRight:Texture,
-			middleLeft:Texture, middleCenter:Texture, middleRight:Texture,
-			bottomLeft:Texture, bottomCenter:Texture, bottomRight:Texture)
+		public function Scale9Image(texture:Texture, scale9Grid:Rectangle)
 		{
 			super();
-			
-			this._topLeftImage = new Image(topLeft);
-			this._topLeftImage.smoothing = TextureSmoothing.NONE;
-			this.addChild(this._topLeftImage);
-			this._topCenterImage = new Image(topCenter);
-			this._topCenterImage.smoothing = TextureSmoothing.NONE;
-			this.addChild(this._topCenterImage);
-			this._topRightImage = new Image(topRight);
-			this._topRightImage.smoothing = TextureSmoothing.NONE;
-			this.addChild(this._topRightImage);
-			
-			this._middleLeftImage = new Image(middleLeft);
-			this._middleLeftImage.smoothing = TextureSmoothing.NONE;
-			this.addChild(this._middleLeftImage);
-			this._middleCenterImage = new Image(middleCenter);
-			this._middleCenterImage.smoothing = TextureSmoothing.NONE;
-			this.addChild(this._middleCenterImage);
-			this._middleRightImage = new Image(middleRight);
-			this._middleRightImage.smoothing = TextureSmoothing.NONE;
-			this.addChild(this._middleRightImage);
-			
-			this._bottomLeftImage = new Image(bottomLeft);
-			this._bottomLeftImage.smoothing = TextureSmoothing.NONE;
-			this.addChild(this._bottomLeftImage);
-			this._bottomCenterImage = new Image(bottomCenter);
-			this._bottomCenterImage.smoothing = TextureSmoothing.NONE;
-			this.addChild(this._bottomCenterImage);
-			this._bottomRightImage = new Image(bottomRight);
-			this._bottomRightImage.smoothing = TextureSmoothing.NONE;
-			this.addChild(this._bottomRightImage);
-			
-			this._leftWidth = Math.max(this._topLeftImage.width, this._middleLeftImage.width, this._bottomLeftImage.width);
-			this._centerWidth = Math.max(this._topCenterImage.width, this._middleCenterImage.width, this._bottomCenterImage.width);
-			this._rightWidth = Math.max(this._topRightImage.width, this._middleRightImage.width, this._bottomRightImage.width);
-			this._topHeight = Math.max(this._topLeftImage.height, this._topCenterImage.height, this._topRightImage.height);
-			this._middleHeight = Math.max(this._middleLeftImage.height, this._middleCenterImage.height, this._middleRightImage.height);
-			this._bottomHeight = Math.max(this._bottomLeftImage.height, this._bottomCenterImage.height, this._bottomRightImage.height);
-			this._originalWidth = this._leftWidth + this._centerWidth + this._rightWidth;
-			this._originalHeight = this._topHeight + this._middleHeight + this._bottomHeight;
+			this.saveWidthAndHeight(texture, scale9Grid);
+			this.createImages(texture);
 			
 			this.refreshLayout();
 		}
@@ -117,8 +80,6 @@ package org.josht.starling.display
 		private var _topHeight:Number;
 		private var _middleHeight:Number;
 		private var _bottomHeight:Number;
-		private var _originalWidth:Number;
-		private var _originalHeight:Number;
 		
 		private var _topLeftImage:Image;
 		private var _topCenterImage:Image;
@@ -131,10 +92,76 @@ package org.josht.starling.display
 		private var _bottomLeftImage:Image;
 		private var _bottomCenterImage:Image;
 		private var _bottomRightImage:Image;
+		
+		private function saveWidthAndHeight(texture:Texture, scale9Grid:Rectangle):void
+		{
+			const textureFrame:Rectangle = texture.frame;
+			this._leftWidth = scale9Grid.x;
+			this._centerWidth = scale9Grid.width;
+			this._rightWidth = textureFrame.width - scale9Grid.width - scale9Grid.x;
+			this._topHeight = scale9Grid.y;
+			this._middleHeight = scale9Grid.height;
+			this._bottomHeight = textureFrame.height - scale9Grid.height - scale9Grid.y;
+		}
+		
+		private function createImages(texture:Texture):void
+		{
+			//start by creating the subtextures
+			const topLeftRegion:Rectangle = new Rectangle(0, 0, this._leftWidth, this._topHeight);
+			const topLeft:Texture = Texture.fromTexture(texture, topLeftRegion);
+			const topCenterRegion:Rectangle = new Rectangle(this._leftWidth, 0, this._centerWidth, this._topHeight);
+			const topCenter:Texture = Texture.fromTexture(texture, topCenterRegion);
+			const topRightRegion:Rectangle = new Rectangle(this._leftWidth + this._centerWidth, 0, this._rightWidth, this._topHeight);
+			const topRight:Texture = Texture.fromTexture(texture, topRightRegion);
+			
+			const middleLeftRegion:Rectangle = new Rectangle(0, this._topHeight, this._leftWidth, this._middleHeight);
+			const middleLeft:Texture = Texture.fromTexture(texture, middleLeftRegion);
+			const middleCenterRegion:Rectangle = new Rectangle(this._leftWidth, this._topHeight, this._centerWidth, this._middleHeight);
+			const middleCenter:Texture = Texture.fromTexture(texture, middleCenterRegion);
+			const middleRightRegion:Rectangle = new Rectangle(this._leftWidth + this._centerWidth, this._topHeight, this._rightWidth, this._middleHeight);
+			const middleRight:Texture = Texture.fromTexture(texture, middleRightRegion);
+			
+			const bottomLeftRegion:Rectangle = new Rectangle(0, this._topHeight + this._middleHeight, this._leftWidth, this._bottomHeight);
+			const bottomLeft:Texture = Texture.fromTexture(texture, bottomLeftRegion);
+			const bottomCenterRegion:Rectangle = new Rectangle(this._leftWidth, this._topHeight + this._middleHeight, this._centerWidth, this._bottomHeight);
+			const bottomCenter:Texture = Texture.fromTexture(texture, bottomCenterRegion);
+			const bottomRightRegion:Rectangle = new Rectangle(this._leftWidth + this._centerWidth, this._topHeight + this._middleHeight, this._rightWidth, this._bottomHeight);
+			const bottomRight:Texture = Texture.fromTexture(texture, bottomRightRegion);
+			
+			//then pass them to the images
+			this._topLeftImage = new Image(topLeft);
+			this._topLeftImage.smoothing = TextureSmoothing.NONE;
+			this.addChild(this._topLeftImage);
+			this._topCenterImage = new Image(topCenter);
+			this._topCenterImage.smoothing = TextureSmoothing.NONE;
+			this.addChild(this._topCenterImage);
+			this._topRightImage = new Image(topRight);
+			this._topRightImage.smoothing = TextureSmoothing.NONE;
+			this.addChild(this._topRightImage);
+			
+			this._middleLeftImage = new Image(middleLeft);
+			this._middleLeftImage.smoothing = TextureSmoothing.NONE;
+			this.addChild(this._middleLeftImage);
+			this._middleCenterImage = new Image(middleCenter);
+			this._middleCenterImage.smoothing = TextureSmoothing.NONE;
+			this.addChild(this._middleCenterImage);
+			this._middleRightImage = new Image(middleRight);
+			this._middleRightImage.smoothing = TextureSmoothing.NONE;
+			this.addChild(this._middleRightImage);
+			
+			this._bottomLeftImage = new Image(bottomLeft);
+			this._bottomLeftImage.smoothing = TextureSmoothing.NONE;
+			this.addChild(this._bottomLeftImage);
+			this._bottomCenterImage = new Image(bottomCenter);
+			this._bottomCenterImage.smoothing = TextureSmoothing.NONE;
+			this.addChild(this._bottomCenterImage);
+			this._bottomRightImage = new Image(bottomRight);
+			this._bottomRightImage.smoothing = TextureSmoothing.NONE;
+			this.addChild(this._bottomRightImage);
+		}
 
 		private function refreshLayout():void
 		{
-			var leftWidth:Number = Math.max(this._topLeftImage.width, this._middleLeftImage.width, this._bottomLeftImage.width); 
 			if(isNaN(this._width))
 			{
 				this._width = this._leftWidth + this._centerWidth + this._rightWidth;
