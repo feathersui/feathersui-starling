@@ -610,7 +610,7 @@ package org.josht.starling.foxhole.controls
 			if(this._defaultSelectedIcon && this._defaultSelectedIcon != this._defaultIcon &&
 				this._defaultSelectedIcon != this._upIcon && this._defaultSelectedIcon != this._downIcon &&
 				this._defaultSelectedIcon != this._selectedUpIcon  && this._defaultSelectedIcon != this._selectedDownIcon &&
-				this._defaultIcon != this._disabledIcon)
+				this._defaultSelectedIcon != this._disabledIcon)
 			{
 				this.removeChild(this._defaultSelectedIcon);
 			}
@@ -695,7 +695,9 @@ package org.josht.starling.foxhole.controls
 				return;
 			}
 			
-			if(this._disabledIcon && this._disabledIcon != this._upIcon && this._disabledIcon != this._downIcon)
+			if(this._disabledIcon && this._disabledIcon != this._defaultIcon && this._disabledIcon != this._defaultSelectedIcon &&
+				this._disabledIcon != this._upIcon && this._disabledIcon != this._downIcon &&
+				this._disabledIcon != this._selectedUpIcon && this._disabledIcon != this._selectedDownIcon)
 			{
 				this.removeChild(this._disabledIcon);
 			}
@@ -1015,6 +1017,7 @@ package org.josht.starling.foxhole.controls
 		
 		protected function refreshIcon():void
 		{
+			this.currentIcon = null;
 			if(this._currentState == STATE_UP)
 			{
 				this.currentIcon = this._upIcon;
