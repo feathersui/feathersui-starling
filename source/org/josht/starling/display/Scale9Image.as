@@ -34,7 +34,8 @@ package org.josht.starling.display
 		public function Scale9Image(texture:Texture, scale9Grid:Rectangle)
 		{
 			super();
-			this.saveWidthAndHeight(texture, scale9Grid);
+			this._scale9Grid = scale9Grid;
+			this.saveWidthAndHeight(texture);
 			this.createImages(texture);
 			
 			this.refreshLayout();
@@ -74,6 +75,7 @@ package org.josht.starling.display
 			this.refreshLayout();
 		}
 		
+		private var _scale9Grid:Rectangle;
 		private var _leftWidth:Number;
 		private var _centerWidth:Number;
 		private var _rightWidth:Number;
@@ -93,40 +95,67 @@ package org.josht.starling.display
 		private var _bottomCenterImage:Image;
 		private var _bottomRightImage:Image;
 		
-		private function saveWidthAndHeight(texture:Texture, scale9Grid:Rectangle):void
+		private function saveWidthAndHeight(texture:Texture):void
 		{
 			const textureFrame:Rectangle = texture.frame;
-			this._leftWidth = scale9Grid.x;
-			this._centerWidth = scale9Grid.width;
-			this._rightWidth = textureFrame.width - scale9Grid.width - scale9Grid.x;
-			this._topHeight = scale9Grid.y;
-			this._middleHeight = scale9Grid.height;
-			this._bottomHeight = textureFrame.height - scale9Grid.height - scale9Grid.y;
+			this._leftWidth = this._scale9Grid.x;
+			this._centerWidth = this._scale9Grid.width;
+			this._rightWidth = textureFrame.width - this._scale9Grid.width - this._scale9Grid.x;
+			this._topHeight = this._scale9Grid.y;
+			this._middleHeight = this._scale9Grid.height;
+			this._bottomHeight = textureFrame.height - this._scale9Grid.height - this._scale9Grid.y;
 		}
 		
 		private function createImages(texture:Texture):void
 		{
 			//start by creating the subtextures
-			const topLeftRegion:Rectangle = new Rectangle(0, 0, this._leftWidth, this._topHeight);
-			const topLeft:Texture = Texture.fromTexture(texture, topLeftRegion);
-			const topCenterRegion:Rectangle = new Rectangle(this._leftWidth, 0, this._centerWidth, this._topHeight);
-			const topCenter:Texture = Texture.fromTexture(texture, topCenterRegion);
-			const topRightRegion:Rectangle = new Rectangle(this._leftWidth + this._centerWidth, 0, this._rightWidth, this._topHeight);
-			const topRight:Texture = Texture.fromTexture(texture, topRightRegion);
 			
-			const middleLeftRegion:Rectangle = new Rectangle(0, this._topHeight, this._leftWidth, this._middleHeight);
-			const middleLeft:Texture = Texture.fromTexture(texture, middleLeftRegion);
-			const middleCenterRegion:Rectangle = new Rectangle(this._leftWidth, this._topHeight, this._centerWidth, this._middleHeight);
+			const textureFrame:Rectangle = texture.frame;
+			
+			const regionLeftWidth:Number = this._leftWidth + textureFrame.x;
+			const regionTopHeight:Number = this._topHeight + textureFrame.y;
+			const regionRightWidth:Number = this._rightWidth - (textureFrame.width - texture.width) - textureFrame.x;
+			const regionBottomHeight:Number = this._bottomHeight - (textureFrame.height - texture.height) - textureFrame.y;
+			
+			const hasLeftFrame:Boolean = regionLeftWidth != this._leftWidth;
+			const hasTopFrame:Boolean = regionTopHeight != this._topHeight;
+			const hasRightFrame:Boolean = regionRightWidth != this._rightWidth;
+			const hasBottomFrame:Boolean = regionBottomHeight != this._bottomHeight;
+			
+			const topLeftRegion:Rectangle = new Rectangle(0, 0, regionLeftWidth, regionTopHeight);
+			const topLeftFrame:Rectangle = (hasLeftFrame || hasTopFrame) ? new Rectangle(textureFrame.x, textureFrame.y, this._leftWidth, this._topHeight) : null;
+			const topLeft:Texture = Texture.fromTexture(texture, topLeftRegion, topLeftFrame);
+			
+			const topCenterRegion:Rectangle = new Rectangle(regionLeftWidth, 0, this._centerWidth, regionTopHeight);
+			const topCenterFrame:Rectangle = hasTopFrame ? new Rectangle(0, textureFrame.y, this._centerWidth, this._topHeight) : null;
+			const topCenter:Texture = Texture.fromTexture(texture, topCenterRegion, topCenterFrame);
+			
+			const topRightRegion:Rectangle = new Rectangle(regionLeftWidth + this._centerWidth, 0, regionRightWidth, regionTopHeight);
+			const topRightFrame:Rectangle = (hasTopFrame || hasRightFrame) ? new Rectangle(0, textureFrame.y, this._rightWidth, this._topHeight) : null;
+			const topRight:Texture = Texture.fromTexture(texture, topRightRegion, topRightFrame);
+			
+			const middleLeftRegion:Rectangle = new Rectangle(0, regionTopHeight, regionLeftWidth, this._middleHeight);
+			const middleLeftFrame:Rectangle = hasLeftFrame ? new Rectangle(textureFrame.x, 0, this._leftWidth, this._middleHeight) : null;
+			const middleLeft:Texture = Texture.fromTexture(texture, middleLeftRegion, middleLeftFrame);
+			
+			const middleCenterRegion:Rectangle = new Rectangle(regionLeftWidth, regionTopHeight, this._centerWidth, this._middleHeight);
 			const middleCenter:Texture = Texture.fromTexture(texture, middleCenterRegion);
-			const middleRightRegion:Rectangle = new Rectangle(this._leftWidth + this._centerWidth, this._topHeight, this._rightWidth, this._middleHeight);
-			const middleRight:Texture = Texture.fromTexture(texture, middleRightRegion);
 			
-			const bottomLeftRegion:Rectangle = new Rectangle(0, this._topHeight + this._middleHeight, this._leftWidth, this._bottomHeight);
-			const bottomLeft:Texture = Texture.fromTexture(texture, bottomLeftRegion);
-			const bottomCenterRegion:Rectangle = new Rectangle(this._leftWidth, this._topHeight + this._middleHeight, this._centerWidth, this._bottomHeight);
-			const bottomCenter:Texture = Texture.fromTexture(texture, bottomCenterRegion);
-			const bottomRightRegion:Rectangle = new Rectangle(this._leftWidth + this._centerWidth, this._topHeight + this._middleHeight, this._rightWidth, this._bottomHeight);
-			const bottomRight:Texture = Texture.fromTexture(texture, bottomRightRegion);
+			const middleRightRegion:Rectangle = new Rectangle(regionLeftWidth + this._centerWidth, regionTopHeight, regionRightWidth, this._middleHeight);
+			const middleRightFrame:Rectangle = hasRightFrame ? new Rectangle(0, 0, this._rightWidth, this._middleHeight) : null;
+			const middleRight:Texture = Texture.fromTexture(texture, middleRightRegion, middleRightFrame);
+			
+			const bottomLeftRegion:Rectangle = new Rectangle(0, regionTopHeight + this._middleHeight, regionLeftWidth, regionBottomHeight);
+			const bottomLeftFrame:Rectangle = (hasLeftFrame || hasBottomFrame) ? new Rectangle(textureFrame.x, 0, this._leftWidth, this._bottomHeight) : null;
+			const bottomLeft:Texture = Texture.fromTexture(texture, bottomLeftRegion, bottomLeftFrame);
+			
+			const bottomCenterRegion:Rectangle = new Rectangle(regionLeftWidth, regionTopHeight + this._middleHeight, this._centerWidth, regionBottomHeight);
+			const bottomCenterFrame:Rectangle = hasBottomFrame ? new Rectangle(0, 0, this._centerWidth, this._bottomHeight) : null;
+			const bottomCenter:Texture = Texture.fromTexture(texture, bottomCenterRegion, bottomCenterFrame);
+			
+			const bottomRightRegion:Rectangle = new Rectangle(regionLeftWidth + this._centerWidth, regionTopHeight + this._middleHeight, regionRightWidth, regionBottomHeight);
+			const bottomRightFrame:Rectangle = (hasBottomFrame || hasRightFrame) ? new Rectangle(0, 0, this._rightWidth, this._bottomHeight) : null;
+			const bottomRight:Texture = Texture.fromTexture(texture, bottomRightRegion, bottomRightFrame);
 			
 			//then pass them to the images
 			this._topLeftImage = new Image(topLeft);
