@@ -108,7 +108,10 @@ package org.josht.starling.display
 				{
 					localPoint.x += this._scrollRect.x;
 					localPoint.y += this._scrollRect.y;
-					return super.hitTest(localPoint, forTouch);
+					var result:DisplayObject = super.hitTest(localPoint, forTouch);
+					localPoint.x -= this._scrollRect.x;
+					localPoint.y -= this._scrollRect.y;
+					return result;
 				}
 				return null;
 			}
