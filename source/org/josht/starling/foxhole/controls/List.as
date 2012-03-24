@@ -315,7 +315,7 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
-		private var _itemRendererType:Class;
+		private var _itemRendererType:Class = SimpleItemRenderer;
 		
 		public function get itemRendererType():Class
 		{
@@ -363,7 +363,7 @@ package org.josht.starling.foxhole.controls
 			{
 				return this._labelFunction(item) as String;
 			}
-			else if(this._labelField != null)
+			else if(this._labelField != null && item && item.hasOwnProperty(this._labelField))
 			{
 				return item[this._labelField] as String;
 			}
