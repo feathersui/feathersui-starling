@@ -281,17 +281,6 @@ package org.josht.starling.foxhole.controls
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const stageSizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STAGE_SIZE);
 			
-			if(isNaN(this._width))
-			{
-				this._width = 160;
-				sizeInvalid = true;
-			}
-			if(isNaN(this._height))
-			{
-				this._height = 22;
-				sizeInvalid = true;
-			}
-			
 			if(stylesInvalid)
 			{
 				this.refreshButtonProperties();
@@ -328,6 +317,17 @@ package org.josht.starling.foxhole.controls
 			}
 			
 			this._button.validate();
+			
+			if(isNaN(this._width))
+			{
+				this._width = this._button.width;
+				sizeInvalid = true;
+			}
+			if(isNaN(this._height))
+			{
+				this._height = this._button.height;
+				sizeInvalid = true;
+			}
 			
 			if(stageSizeInvalid)
 			{
