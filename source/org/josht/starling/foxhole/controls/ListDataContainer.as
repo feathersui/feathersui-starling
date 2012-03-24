@@ -137,6 +137,23 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_ITEM_RENDERER);
 		}
 		
+		private var _typicalItem:Object = null;
+		
+		public function get typicalItem():Object
+		{
+			return this._typicalItem;
+		}
+		
+		public function set typicalItem(value:Object):void
+		{
+			if(this._typicalItem == value)
+			{
+				return;
+			}
+			this._typicalItem = value;
+			this.invalidate(INVALIDATION_FLAG_ITEM_RENDERER);
+		}
+		
 		private var _rowHeight:Number = NaN;
 		
 		private var _itemRendererProperties:Object = {};
@@ -218,20 +235,31 @@ package org.josht.starling.foxhole.controls
 			
 			if(sizeInvalid || dataInvalid || stylesInvalid || itemRendererInvalid)
 			{
-				if((dataInvalid || itemRendererInvalid) && isNaN(this._rowHeight) && this._dataProvider && this._dataProvider.length > 0)
+				if(isNaN(this._width) || isNaN(this._rowHeight))
 				{
-					const typicalRenderer:IListItemRenderer = this.createRenderer(this._dataProvider.getItemAt(0), 0, true);
-					this.refreshOneItemRendererStyles(typicalRenderer);
-					if(typicalRenderer is FoxholeControl)
+					var typicalItem:Object = this._typicalItem;
+					if(!typicalItem && this._dataProvider && this._dataProvider.length > 0)
 					{
-						FoxholeControl(typicalRenderer).validate();
+						typicalItem = this._dataProvider.getItemAt(0);
 					}
-					if(isNaN(this._width))
+					if(typicalItem)
 					{
-						this.width = DisplayObject(typicalRenderer).width;
+						const typicalRenderer:IListItemRenderer = this.createRenderer(typicalItem, 0, true);
+						this.refreshOneItemRendererStyles(typicalRenderer);
+						if(typicalRenderer is FoxholeControl)
+						{
+							FoxholeControl(typicalRenderer).validate();
+						}
+						if(isNaN(this._width))
+						{
+							this.width = DisplayObject(typicalRenderer).width;
+						}
+						if(isNaN(this._rowHeight))
+						{
+							this._rowHeight = DisplayObject(typicalRenderer).height;
+						}
+						this.destroyRenderer(typicalRenderer);
 					}
-					this._rowHeight = DisplayObject(typicalRenderer).height;
-					this.destroyRenderer(typicalRenderer);
 				}
 				
 				this.height = this._dataProvider ? (this._rowHeight * this._dataProvider.length) : 0;

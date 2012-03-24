@@ -350,6 +350,23 @@ package org.josht.starling.foxhole.controls
 			this._itemRendererFunction = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
+		
+		private var _typicalItem:Object = null;
+		
+		public function get typicalItem():Object
+		{
+			return this._typicalItem;
+		}
+		
+		public function set typicalItem(value:Object):void
+		{
+			if(this._typicalItem == value)
+			{
+				return;
+			}
+			this._typicalItem = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
 
 		public function setItemRendererProperty(propertyName:String, propertyValue:Object):void
 		{
@@ -424,6 +441,7 @@ package org.josht.starling.foxhole.controls
 			this._dataContainer.itemRendererType = this._itemRendererType;
 			this._dataContainer.itemRendererFunction = this._itemRendererFunction;
 			this._dataContainer.itemRendererProperties = this._itemRendererProperties;
+			this._dataContainer.typicalItem = this._typicalItem;
 			this._dataContainer.validate();
 			if(isNaN(this._width))
 			{
