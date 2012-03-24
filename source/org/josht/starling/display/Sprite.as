@@ -119,9 +119,7 @@ package org.josht.starling.display
 					var child:DisplayObject = this.getChildAt(i);
 					getTransformationMatrix(child, helperMatrix);
 					
-					transformCoords(helperMatrix, localX, localY, helperPoint);
-					helperPoint.x += this._scrollRect.x;
-					helperPoint.y += this._scrollRect.y;
+					transformCoords(helperMatrix, localX + this._scrollRect.x, localY + this._scrollRect.y, helperPoint);
 					var target:DisplayObject = child.hitTest(helperPoint, forTouch);
 					
 					if (target) return target;
