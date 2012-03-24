@@ -310,12 +310,6 @@ package org.josht.starling.foxhole.controls
 				this._button.isEnabled = this.isEnabled;
 			}
 			
-			if(sizeInvalid)
-			{
-				this._button.width = this._width;
-				this._button.height = this._height;
-			}
-			
 			this._button.validate();
 			
 			if(isNaN(this._width))
@@ -327,6 +321,12 @@ package org.josht.starling.foxhole.controls
 			{
 				this._height = this._button.height;
 				sizeInvalid = true;
+			}
+			
+			if(sizeInvalid)
+			{
+				this._button.width = this._width;
+				this._button.height = this._height;
 			}
 			
 			if(stageSizeInvalid)
