@@ -861,6 +861,7 @@ package org.josht.starling.foxhole.controls
 					{
 						this._width = this.labelField.width;
 					}
+					this._width += 2 * this._contentPadding;
 					sizeInvalid = true;
 				}
 				
@@ -878,6 +879,7 @@ package org.josht.starling.foxhole.controls
 					{
 						this._height = this.labelField.height;
 					}
+					this._height += 2 * this._contentPadding;
 					sizeInvalid = true;
 				}
 			}
