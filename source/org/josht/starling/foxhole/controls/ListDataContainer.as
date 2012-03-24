@@ -446,10 +446,8 @@ package org.josht.starling.foxhole.controls
 			if(this._isSelectable && !this._isScrolling && touch && touch.phase == TouchPhase.ENDED)
 			{
 				const location:Point = touch.getLocation(displayRenderer);
-				const isInBounds:Boolean = location.x >= 0 && location.y >= 0 && 
-					location.x < displayRenderer.width / displayRenderer.scaleX &&
-					location.y < displayRenderer.height / displayRenderer.scaleY;
-				if(isInBounds)
+				location.y += this.owner.verticalScrollPosition;
+				if(displayRenderer.hitTest(location))
 				{
 					this.selectedIndex = renderer.index;
 				}
