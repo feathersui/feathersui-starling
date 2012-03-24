@@ -328,6 +328,7 @@ package org.josht.starling.foxhole.controls
 				this._button.width = this._width;
 				this._button.height = this._height;
 			}
+			this._button.validate();
 			
 			if(stageSizeInvalid)
 			{
