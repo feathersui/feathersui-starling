@@ -293,7 +293,7 @@ package org.josht.starling.foxhole.controls
 				}
 			}
 			
-			if(scrollInvalid)
+			if(sizeInvalid || dataInvalid || scrollInvalid)
 			{
 				this.scrollContent();
 			}
@@ -339,6 +339,7 @@ package org.josht.starling.foxhole.controls
 				scrollRect.height = this._height;
 				scrollRect.x = this._horizontalScrollPosition - offsetX;
 				scrollRect.y = this._verticalScrollPosition - offsetY;
+				this._viewPortWrapper.scrollRect = scrollRect;
 			}
 			else
 			{
