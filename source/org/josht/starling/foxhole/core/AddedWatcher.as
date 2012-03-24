@@ -32,9 +32,9 @@ package org.josht.starling.foxhole.core
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 
-	public class PropertyInitializer
+	public class AddedWatcher
 	{
-		public function PropertyInitializer(root:DisplayObject)
+		public function AddedWatcher(root:DisplayObject)
 		{
 			this._root = root;
 			this._root.addEventListener(Event.ADDED, addedHandler);
