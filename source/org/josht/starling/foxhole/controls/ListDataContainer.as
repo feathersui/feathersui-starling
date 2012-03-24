@@ -211,11 +211,12 @@ package org.josht.starling.foxhole.controls
 		override protected function draw():void
 		{
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			const sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const selectionInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SELECTED);
 			const itemRendererInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_ITEM_RENDERER);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			
-			if(dataInvalid || stylesInvalid || itemRendererInvalid)
+			if(sizeInvalid || dataInvalid || stylesInvalid || itemRendererInvalid)
 			{
 				if((dataInvalid || itemRendererInvalid) && isNaN(this._rowHeight) && this._dataProvider && this._dataProvider.length > 0)
 				{
