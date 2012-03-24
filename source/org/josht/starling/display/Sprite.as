@@ -110,8 +110,8 @@ package org.josht.starling.display
 				}
 				
 				//now, check each of the children
-				var localX:Number = localPoint.x;
-				var localY:Number = localPoint.y;
+				var localX:Number = localPoint.x + this._scrollRect.x;
+				var localY:Number = localPoint.y + this._scrollRect.y;
 				
 				var numChildren:int = this.numChildren
 				for (var i:int=numChildren-1; i>=0; --i) // front to back!
@@ -119,7 +119,7 @@ package org.josht.starling.display
 					var child:DisplayObject = this.getChildAt(i);
 					getTransformationMatrix(child, helperMatrix);
 					
-					transformCoords(helperMatrix, localX + this._scrollRect.x, localY + this._scrollRect.y, helperPoint);
+					transformCoords(helperMatrix, localX, localY, helperPoint);
 					var target:DisplayObject = child.hitTest(helperPoint, forTouch);
 					
 					if (target) return target;
