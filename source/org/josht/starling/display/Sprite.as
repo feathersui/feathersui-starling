@@ -104,27 +104,12 @@ package org.josht.starling.display
 					return null;
 				
 				//make sure we're in the bounds of this sprite first
-				if(!this.getBounds(this, helperRect).containsPoint(localPoint))
+				if(this.getBounds(this, helperRect).containsPoint(localPoint))
 				{
-					return null;
+					localPoint.x += this._scrollRect.x;
+					localPoint.y += this._scrollRect.y;
+					return super.hitTest(localPoint, forTouch);
 				}
-				
-				//now, check each of the children
-				var localX:Number = localPoint.x + this._scrollRect.x;
-				var localY:Number = localPoint.y + this._scrollRect.y;
-				
-				var numChildren:int = this.numChildren
-				for (var i:int=numChildren-1; i>=0; --i) // front to back!
-				{
-					var child:DisplayObject = this.getChildAt(i);
-					getTransformationMatrix(child, helperMatrix);
-					
-					transformCoords(helperMatrix, localX, localY, helperPoint);
-					var target:DisplayObject = child.hitTest(helperPoint, forTouch);
-					
-					if (target) return target;
-				}
-				
 				return null;
 			}
 			return super.hitTest(localPoint, forTouch);
