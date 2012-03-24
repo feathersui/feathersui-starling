@@ -59,39 +59,23 @@ package org.josht.starling.display
 		
 		override public function getBounds(targetSpace:DisplayObject, resultRect:Rectangle=null):Rectangle
 		{
+			resultRect = super.getBounds(targetSpace, resultRect);
 			if(this._scrollRect)
 			{
-				if(!resultRect)
-				{
-					resultRect = new Rectangle();
-				}
 				if(targetSpace == this)
 				{
-					resultRect.x = 0;
-					resultRect.y = 0;
 					resultRect.width = this._scrollRect.width;
 					resultRect.height = this._scrollRect.height;
 				}
 				else
 				{
 					this.getTransformationMatrix(targetSpace, helperMatrix);
-					
-					helperPoint.x = -this._scrollRect.x;
-					helperPoint.y = -this._scrollRect.y;
-					transformCoords(helperMatrix, helperPoint.x, helperPoint.y, helperPoint);
-					resultRect.x = helperPoint.x;
-					resultRect.y = helperPoint.y;
-					
-					helperPoint.x = this._scrollRect.width - this._scrollRect.x;
-					helperPoint.y = this._scrollRect.height - this._scrollRect.y;
-					transformCoords(helperMatrix, helperPoint.x, helperPoint.y, helperPoint);
-					resultRect.width = helperPoint.x - resultRect.x;
-					resultRect.height = helperPoint.y - resultRect.y;
+					resultRect.width = helperMatrix.a * this._scrollRect.width + helperMatrix.c * this._scrollRect.height;
+					resultRect.height = helperMatrix.d * this._scrollRect.height + helperMatrix.b * this._scrollRect.width;
 				}
-				return resultRect;
 			}
 			
-			return super.getBounds(targetSpace, resultRect);
+			return resultRect;
 		}
 		
 		override public function render(support:RenderSupport, alpha:Number):void
@@ -100,8 +84,6 @@ package org.josht.starling.display
 			{
 				support.finishQuadBatch();
 				this.getBounds(this.stage, helperRect);
-				helperRect.x += this._scrollRect.x * this.scaleX;
-				helperRect.y += this._scrollRect.y * this.scaleY;
 				support.translateMatrix(-this._scrollRect.x, -this._scrollRect.y);
 				Starling.context.setScissorRectangle(helperRect);
 			}
@@ -118,14 +100,33 @@ package org.josht.starling.display
 		{
 			if(this._scrollRect)
 			{
-				const originalBounds:Rectangle = super.getBounds(this, helperRect);
-				localPoint.x += this._scrollRect.x;
-				localPoint.y += this._scrollRect.y;
-				if(this._scrollRect.contains(localPoint.x, localPoint.y) &&
-					originalBounds.contains(localPoint.x, localPoint.y))
+				if (forTouch && (!visible || !touchable))
+					return null;
+				
+				//make sure we're in the bounds of this sprite first
+				if(!this.getBounds(this, helperRect).containsPoint(localPoint))
 				{
-					return super.hitTest(localPoint, forTouch);
+					return null;
 				}
+				
+				//now, check each of the children
+				var localX:Number = localPoint.x;
+				var localY:Number = localPoint.y;
+				
+				var numChildren:int = this.numChildren
+				for (var i:int=numChildren-1; i>=0; --i) // front to back!
+				{
+					var child:DisplayObject = this.getChildAt(i);
+					getTransformationMatrix(child, helperMatrix);
+					
+					transformCoords(helperMatrix, localX, localY, helperPoint);
+					helperPoint.x += this._scrollRect.x;
+					helperPoint.y += this._scrollRect.y;
+					var target:DisplayObject = child.hitTest(helperPoint, forTouch);
+					
+					if (target) return target;
+				}
+				
 				return null;
 			}
 			return super.hitTest(localPoint, forTouch);
