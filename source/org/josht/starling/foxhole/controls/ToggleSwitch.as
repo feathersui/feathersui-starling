@@ -217,6 +217,32 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		protected var _onTextFormat:BitmapFontTextFormat;
+		
+		public function get onTextFormat():BitmapFontTextFormat
+		{
+			return this._onTextFormat;
+		}
+		
+		public function set onTextFormat(value:BitmapFontTextFormat):void
+		{
+			this._onTextFormat = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+		
+		protected var _offTextFormat:BitmapFontTextFormat;
+		
+		public function get offTextFormat():BitmapFontTextFormat
+		{
+			return this._offTextFormat;
+		}
+		
+		public function set offTextFormat(value:BitmapFontTextFormat):void
+		{
+			this._offTextFormat = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+		
 		private var _labelAlign:String = LABEL_ALIGN_BASELINE;
 
 		public function get labelAlign():String
@@ -391,7 +417,8 @@ package org.josht.starling.foxhole.controls
 			
 			if(stylesInvalid || stateInvalid)
 			{
-				this.refreshLabelStyles();
+				this.refreshOnLabelStyles();
+				this.refreshOffLabelStyles();
 				this.refreshThumbProperties();
 			}
 			
@@ -461,12 +488,12 @@ package org.josht.starling.foxhole.controls
 			this.updateScrollRects();
 		}
 		
-		protected function refreshLabelStyles():void
+		protected function refreshOnLabelStyles():void
 		{	
 			//no need to style the label field if there's no text to display
 			if(!this._showLabels || !this._showThumb)
 			{
-				this.onLabelField.visible = this.offLabelField.visible = false;
+				this.onLabelField.visible = false;
 				return;
 			}
 			
@@ -475,6 +502,10 @@ package org.josht.starling.foxhole.controls
 			{
 				format = this._disabledTextFormat;
 			}
+			if(!format && this._onTextFormat)
+			{
+				format = this._onTextFormat;
+			}
 			if(!format)
 			{
 				format = this._defaultTextFormat;
@@ -482,15 +513,45 @@ package org.josht.starling.foxhole.controls
 			
 			if(!format)
 			{
-				throw new IllegalOperationError("No text format defined for state \"" + (this._isEnabled ? "Enabled" : "Disabled") + "\" and there is no default value.");
+				throw new IllegalOperationError("No text format defined for toggle switch on label and there is no default value.");
 			}
 			this.onLabelField.textFormat = format;
-			this.offLabelField.textFormat = format;
 			this.onLabelField.text = this._onText;
-			this.offLabelField.text = this._offText;
 			this.onLabelField.validate();
+			this.onLabelField.visible = true;
+		}
+		
+		protected function refreshOffLabelStyles():void
+		{	
+			//no need to style the label field if there's no text to display
+			if(!this._showLabels || !this._showThumb)
+			{
+				this.offLabelField.visible = false;
+				return;
+			}
+			
+			var format:BitmapFontTextFormat;
+			if(!this._isEnabled)
+			{
+				format = this._disabledTextFormat;
+			}
+			if(!format && this._offTextFormat)
+			{
+				format = this._offTextFormat;
+			}
+			if(!format)
+			{
+				format = this._defaultTextFormat;
+			}
+			
+			if(!format)
+			{
+				throw new IllegalOperationError("No text format defined for toggle switch off label and there is no default value.");
+			}
+			this.offLabelField.textFormat = format;
+			this.offLabelField.text = this._offText;
 			this.offLabelField.validate();
-			this.onLabelField.visible = this.offLabelField.visible = true;
+			this.offLabelField.visible = true;
 		}
 		
 		protected function refreshThumbProperties():void
