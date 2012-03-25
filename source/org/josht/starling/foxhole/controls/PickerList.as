@@ -332,13 +332,18 @@ package org.josht.starling.foxhole.controls
 			
 			if(stageSizeInvalid)
 			{
-				this._list.width = this.stage.stageWidth - 2 * this._popUpPadding;
-				this._list.height = this.stage.stageHeight - 2 * this._popUpPadding;
-				this._list.x = this._popUpPadding;
-				this._list.y = this._popUpPadding;
+				this.resizeAndPositionList();
 			}
 			this._list.validate();
 			this._selectedIndex = this._list.selectedIndex;
+		}
+		
+		protected function resizeAndPositionList():void
+		{
+			this._list.width = this.stage.stageWidth - 2 * this._popUpPadding;
+			this._list.height = this.stage.stageHeight - 2 * this._popUpPadding;
+			this._list.x = this._popUpPadding;
+			this._list.y = this._popUpPadding;
 		}
 		
 		protected function refreshButtonProperties():void
@@ -379,11 +384,13 @@ package org.josht.starling.foxhole.controls
 		
 		protected function button_onRelease(button:Button):void
 		{
-			this._list.verticalScrollPosition = 0;
 			PopUpManager.addPopUp(this._list, this.stage, false);
+			this.resizeAndPositionList();
+			this._list.scrollToDisplayIndex(this._selectedIndex);
+			this._list.validate();
+			
 			this.stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
 			Starling.current.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler, false, int.MAX_VALUE, true);
-			this.invalidate(INVALIDATION_FLAG_STAGE_SIZE);
 			this._hasBeenScrolled = false;
 		}
 		
