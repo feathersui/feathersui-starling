@@ -59,23 +59,32 @@ package org.josht.starling.display
 		
 		override public function getBounds(targetSpace:DisplayObject, resultRect:Rectangle=null):Rectangle
 		{
-			resultRect = super.getBounds(targetSpace, resultRect);
 			if(this._scrollRect)
 			{
+				if(!resultRect)
+				{
+					resultRect = new Rectangle();
+				}
 				if(targetSpace == this)
 				{
+					resultRect.x = 0;
+					resultRect.y = 0;
 					resultRect.width = this._scrollRect.width;
 					resultRect.height = this._scrollRect.height;
 				}
 				else
 				{
 					this.getTransformationMatrix(targetSpace, helperMatrix);
+					transformCoords(helperMatrix, 0, 0, helperPoint);
+					resultRect.x = helperPoint.x;
+					resultRect.y = helperPoint.y;
 					resultRect.width = helperMatrix.a * this._scrollRect.width + helperMatrix.c * this._scrollRect.height;
 					resultRect.height = helperMatrix.d * this._scrollRect.height + helperMatrix.b * this._scrollRect.width;
 				}
+				return resultRect;
 			}
 			
-			return resultRect;
+			return super.getBounds(targetSpace, resultRect);
 		}
 		
 		override public function render(support:RenderSupport, alpha:Number):void
@@ -100,9 +109,6 @@ package org.josht.starling.display
 		{
 			if(this._scrollRect)
 			{
-				if (forTouch && (!visible || !touchable))
-					return null;
-				
 				//make sure we're in the bounds of this sprite first
 				if(this.getBounds(this, helperRect).containsPoint(localPoint))
 				{
