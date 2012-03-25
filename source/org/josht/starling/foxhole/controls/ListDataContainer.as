@@ -383,9 +383,11 @@ package org.josht.starling.foxhole.controls
 		{
 			if(!cellRendererTypeIsInvalid)
 			{
+				var temp:Vector.<IListItemRenderer> = this._inactiveRenderers;
 				this._inactiveRenderers = this._activeRenderers;
+				this._activeRenderers = temp;
 			}
-			this._activeRenderers = new <IListItemRenderer>[];
+			this._activeRenderers.length = 0;
 			
 			if(this._dataProvider)
 			{
@@ -403,7 +405,7 @@ package org.josht.starling.foxhole.controls
 			var endIndex:int = this._dataProvider ? this._dataProvider.length : 0;
 			if(this._useVirtualLayout && !isNaN(this._visibleHeight))
 			{
-				endIndex = Math.min(endIndex, Math.ceil(this._verticalScrollPosition / this._rowHeight) + Math.ceil(this._visibleHeight / this._rowHeight)); 
+				endIndex = Math.min(endIndex, startIndex + Math.ceil(this._visibleHeight / this._rowHeight) + 1); 
 			}
 			for(var i:int = startIndex; i < endIndex; i++)
 			{
