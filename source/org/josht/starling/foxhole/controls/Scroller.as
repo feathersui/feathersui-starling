@@ -279,7 +279,7 @@ package org.josht.starling.foxhole.controls
 				this._background.height = this._height;
 			}
 			
-			if(dataInvalid)
+			if(sizeInvalid || dataInvalid)
 			{
 				if(this._viewPort)
 				{
@@ -291,6 +291,8 @@ package org.josht.starling.foxhole.controls
 					this._maxHorizontalScrollPosition = 0;
 					this._maxVerticalScrollPosition = 0;
 				}
+				this._horizontalScrollPosition = Math.min(this._horizontalScrollPosition, this._maxHorizontalScrollPosition);
+				this._verticalScrollPosition = Math.min(this._verticalScrollPosition, this._maxVerticalScrollPosition);
 			}
 			
 			if(sizeInvalid || dataInvalid || scrollInvalid)
@@ -405,13 +407,13 @@ package org.josht.starling.foxhole.controls
 			if(!isNaN(targetHorizontalScrollPosition))
 			{
 				this._horizontalAutoScrollTween = new GTween(this, 0.24,
-					{
-						horizontalScrollPosition: targetHorizontalScrollPosition
-					},
-					{
-						ease: Exponential.easeOut,
-						onComplete: horizontalAutoScrollTween_onComplete
-					});
+				{
+					horizontalScrollPosition: targetHorizontalScrollPosition
+				},
+				{
+					ease: Exponential.easeOut,
+					onComplete: horizontalAutoScrollTween_onComplete
+				});
 			}
 		}
 		
@@ -436,13 +438,13 @@ package org.josht.starling.foxhole.controls
 			if(!isNaN(targetVerticalScrollPosition))
 			{
 				this._verticalAutoScrollTween = new GTween(this, 0.24,
-					{
-						verticalScrollPosition: targetVerticalScrollPosition
-					},
-					{
-						ease: Exponential.easeOut,
-						onComplete: verticalAutoScrollTween_onComplete
-					});
+				{
+					verticalScrollPosition: targetVerticalScrollPosition
+				},
+				{
+					ease: Exponential.easeOut,
+					onComplete: verticalAutoScrollTween_onComplete
+				});
 			}
 		}
 		
@@ -470,13 +472,13 @@ package org.josht.starling.foxhole.controls
 				this._horizontalAutoScrollTween = null;
 			}
 			this._horizontalAutoScrollTween = new GTween(this, frameCount / frameRate,
-				{
-					horizontalScrollPosition: targetHorizontalScrollPosition
-				},
-				{
-					ease: Exponential.easeOut,
-					onComplete: horizontalAutoScrollTween_onComplete
-				});
+			{
+				horizontalScrollPosition: targetHorizontalScrollPosition
+			},
+			{
+				ease: Exponential.easeOut,
+				onComplete: horizontalAutoScrollTween_onComplete
+			});
 		}
 		
 		protected function throwVertically(pixelsPerMS:Number):void
@@ -503,13 +505,13 @@ package org.josht.starling.foxhole.controls
 				this._verticalAutoScrollTween = null;
 			}
 			this._verticalAutoScrollTween = new GTween(this, frameCount / frameRate,
-				{
-					verticalScrollPosition: targetVerticalScrollPosition
-				},
-				{
-					ease: Exponential.easeOut,
-					onComplete: verticalAutoScrollTween_onComplete
-				});
+			{
+				verticalScrollPosition: targetVerticalScrollPosition
+			},
+			{
+				ease: Exponential.easeOut,
+				onComplete: verticalAutoScrollTween_onComplete
+			});
 		}
 		
 		protected function viewPort_onResize(viewPort:FoxholeControl):void
