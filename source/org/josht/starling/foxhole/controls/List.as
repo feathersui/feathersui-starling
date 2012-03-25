@@ -47,6 +47,8 @@ package org.josht.starling.foxhole.controls
 		private var _scroller:Scroller;
 		private var _dataContainer:ListDataContainer;
 		
+		private var _scrollToIndex:int = -1;
+		
 		private var _verticalScrollPosition:Number = 0;
 		
 		public function get verticalScrollPosition():Number
@@ -408,6 +410,12 @@ package org.josht.starling.foxhole.controls
 			return "";
 		}
 		
+		public function scrollToDisplayIndex(index:int):void
+		{
+			this._scrollToIndex = index;
+			this.invalidate(INVALIDATION_FLAG_SCROLL);
+		}
+		
 		override public function dispose():void
 		{
 			this._onChange.removeAll();
@@ -477,6 +485,14 @@ package org.josht.starling.foxhole.controls
 			if(isNaN(this._height))
 			{
 				this.height = this._dataContainer.height + 2 * this._contentPadding;
+			}
+			
+			if(this._scrollToIndex >= 0 && this._dataProvider)
+			{
+				const rowHeight:Number = this._dataContainer.height / this._dataProvider.length;
+				const visibleRowCount:int = Math.ceil(this._dataContainer.visibleHeight / rowHeight);
+				this.verticalScrollPosition = rowHeight * Math.max(0, Math.min(this._dataProvider.length - visibleRowCount, this._scrollToIndex - visibleRowCount / 2));
+				this._scrollToIndex = -1;
 			}
 			
 			this._scroller.width = this._width - 2 * this._contentPadding;
