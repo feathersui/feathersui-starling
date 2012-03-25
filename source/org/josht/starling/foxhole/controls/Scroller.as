@@ -34,12 +34,14 @@ package org.josht.starling.foxhole.controls
 	import org.josht.starling.display.Sprite;
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.motion.GTween;
+	import org.josht.utils.math.clamp;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 	
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
+	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -267,6 +269,11 @@ package org.josht.starling.foxhole.controls
 			return this._onScroll;
 		}
 		
+		override protected function initialize():void
+		{
+			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
+		}
+		
 		override protected function draw():void
 		{
 			const sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
@@ -281,6 +288,17 @@ package org.josht.starling.foxhole.controls
 			
 			if(sizeInvalid || dataInvalid)
 			{
+				//stop animating. this is a serious change.
+				if(this._horizontalAutoScrollTween)
+				{
+					this._horizontalAutoScrollTween.paused = true;
+					this._horizontalAutoScrollTween = null;
+				}
+				if(this._verticalAutoScrollTween)
+				{
+					this._verticalAutoScrollTween.paused = true;
+					this._verticalAutoScrollTween = null;
+				}
 				if(this._viewPort)
 				{
 					this._maxHorizontalScrollPosition = Math.round(Math.max(0, this._viewPort.width - this._width));
@@ -291,8 +309,8 @@ package org.josht.starling.foxhole.controls
 					this._maxHorizontalScrollPosition = 0;
 					this._maxVerticalScrollPosition = 0;
 				}
-				this._horizontalScrollPosition = Math.min(this._horizontalScrollPosition, this._maxHorizontalScrollPosition);
-				this._verticalScrollPosition = Math.min(this._verticalScrollPosition, this._maxVerticalScrollPosition);
+				this._horizontalScrollPosition = clamp(this._horizontalScrollPosition, 0, this._maxHorizontalScrollPosition);
+				this._verticalScrollPosition = clamp(this._verticalScrollPosition, 0, this._maxVerticalScrollPosition);
 			}
 			
 			if(sizeInvalid || dataInvalid || scrollInvalid)
@@ -544,7 +562,7 @@ package org.josht.starling.foxhole.controls
 				return;
 			}
 			const touch:Touch = event.getTouch(this);
-			if(!touch || (this._touchPointID >= 0 && touch.id != this._touchPointID))
+			if(!touch || (this._touchPointID < 0 && touch.phase != TouchPhase.BEGAN) || (this._touchPointID >= 0 && touch.id != this._touchPointID))
 			{
 				return;
 			}
@@ -625,6 +643,26 @@ package org.josht.starling.foxhole.controls
 					this.throwVertically(verticalDragDistance / dragDuration);
 				}
 			}
+		}
+		
+		private function removedFromStageHandler(event:Event):void
+		{
+			this._touchPointID = -1;
+			if(this._verticalAutoScrollTween)
+			{
+				this._verticalAutoScrollTween.paused = true;
+				this._verticalAutoScrollTween = null;
+			}
+			if(this._horizontalAutoScrollTween)
+			{
+				this._horizontalAutoScrollTween.paused = true;
+				this._horizontalAutoScrollTween = null;
+			}
+			
+			//if we stopped the animation while the list was outside the scroll
+			//bounds, then let's account for that
+			this._horizontalScrollPosition = clamp(this._horizontalScrollPosition, 0, this._maxHorizontalScrollPosition);
+			this._verticalScrollPosition = clamp(this._verticalScrollPosition, 0, this._maxVerticalScrollPosition);
 		}
 	}
 }
