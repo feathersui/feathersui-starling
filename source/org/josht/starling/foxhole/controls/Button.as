@@ -842,10 +842,7 @@ package org.josht.starling.foxhole.controls
 			
 			if(stylesInvalid || stateInvalid || isNaN(this._width) || isNaN(this._height))
 			{
-				if(this.refreshSkin())
-				{
-					sizeInvalid = true;
-				}
+				this.refreshSkin();
 				this.refreshIcon();
 				this.refreshLabelStyles();
 				this.labelField.validate();
@@ -864,6 +861,10 @@ package org.josht.starling.foxhole.controls
 						this._width = this.labelField.width;
 					}
 					this._width += 2 * this._contentPadding;
+					if(this.currentSkin)
+					{
+						this._width = Math.max(this._width, this.currentSkin.width);
+					}
 					sizeInvalid = true;
 				}
 				
@@ -882,6 +883,10 @@ package org.josht.starling.foxhole.controls
 						this._height = this.labelField.height;
 					}
 					this._height += 2 * this._contentPadding;
+					if(this.currentSkin)
+					{
+						this._height = Math.max(this._height, this.currentSkin.height);
+					}
 					sizeInvalid = true;
 				}
 			}
@@ -912,7 +917,7 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
-		protected function refreshSkin():Boolean
+		protected function refreshSkin():void
 		{	
 			this.currentSkin = null;
 			if(this._currentState == STATE_UP)
@@ -991,28 +996,14 @@ package org.josht.starling.foxhole.controls
 				}
 			}
 			
-			var resized:Boolean = false;
 			if(this.currentSkin)
 			{
 				this.currentSkin.visible = true;
-				
-				//set default width and height values if nothing was passed in
-				if(isNaN(this._width))
-				{
-					this._width = this.currentSkin.width;
-					resized = true;
-				}
-				if(isNaN(this._height))
-				{
-					this._height = this.currentSkin.height;
-					resized = true;
-				}
 			}
 			else
 			{
 				trace("No skin defined for state \"" + this._currentState + "\" and there is no default value.");
 			}
-			return resized;
 		}
 		
 		protected function refreshIcon():void
