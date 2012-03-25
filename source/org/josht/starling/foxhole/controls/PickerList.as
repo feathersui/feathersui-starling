@@ -410,10 +410,11 @@ package org.josht.starling.foxhole.controls
 			}
 			
 			const location:Point = touch.getLocation(displayRenderer);
-			const isInBounds:Boolean = location.x >= 0 && location.y >= 0 && 
-				location.x < (displayRenderer.width / displayRenderer.scaleX) &&
-				location.y < (displayRenderer.height / displayRenderer.scaleY);		
-			if(isInBounds)
+			if(this._list.clipContent) //TODO: fix this
+			{
+				location.y += this._list.verticalScrollPosition;
+			}
+			if(displayRenderer.hitTest(location))
 			{
 				this.closePopUpList();
 			}

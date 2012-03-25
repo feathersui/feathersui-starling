@@ -525,7 +525,7 @@ package org.josht.starling.foxhole.controls
 			if(this._isSelectable && !this._isScrolling && touch && touch.phase == TouchPhase.ENDED)
 			{
 				const location:Point = touch.getLocation(displayRenderer);
-				if(this.parent.y == 0) //TODO: fix this
+				if(this._owner.clipContent) //TODO: fix this
 				{
 					location.y += this.owner.verticalScrollPosition;
 				}
