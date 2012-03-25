@@ -414,7 +414,7 @@ package org.josht.starling.foxhole.controls
 			{
 				location.y += this._list.verticalScrollPosition;
 			}
-			if(displayRenderer.hitTest(location))
+			if(displayRenderer.hitTest(location, true))
 			{
 				this.closePopUpList();
 			}

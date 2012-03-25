@@ -669,9 +669,7 @@ package org.josht.starling.foxhole.controls
 				return;
 			}
 			const location:Point = touch.getLocation(this);
-			const isInBounds:Boolean = location.x >= 0 && location.y >= 0 && 
-				location.x < this._width && location.y < this._height;
-			if(isInBounds)
+			if(this.hitTest(location, true))
 			{
 				this.isSelected = !this._isSelected;
 				this._isSelectionChangedByUser = true;

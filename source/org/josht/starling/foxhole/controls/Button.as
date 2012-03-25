@@ -1277,8 +1277,7 @@ package org.josht.starling.foxhole.controls
 				return;
 			}
 			const location:Point = touch.getLocation(this);
-			const isInBounds:Boolean = location.x >= 0 && location.y >= 0 && 
-				location.x < this._width && location.y < this._height;
+			const isInBounds:Boolean = this.hitTest(location, true) != null;
 			if(touch.phase == TouchPhase.BEGAN)
 			{
 				this.currentState = STATE_DOWN;

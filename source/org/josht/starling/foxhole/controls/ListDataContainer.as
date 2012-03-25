@@ -529,7 +529,7 @@ package org.josht.starling.foxhole.controls
 				{
 					location.y += this.owner.verticalScrollPosition;
 				}
-				if(displayRenderer.hitTest(location))
+				if(displayRenderer.hitTest(location, true))
 				{
 					this.selectedIndex = renderer.index;
 				}
