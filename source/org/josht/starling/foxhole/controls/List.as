@@ -367,6 +367,23 @@ package org.josht.starling.foxhole.controls
 			this._typicalItem = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
+		
+		private var _useVirtualLayout:Boolean = true;
+		
+		public function get useVirtualLayout():Boolean
+		{
+			return this._useVirtualLayout;
+		}
+		
+		public function set useVirtualLayout(value:Boolean):void
+		{
+			if(this._useVirtualLayout == value)
+			{
+				return;
+			}
+			this._useVirtualLayout = value;
+			this.invalidate(INVALIDATION_FLAG_SCROLL);
+		}
 
 		public function setItemRendererProperty(propertyName:String, propertyValue:Object):void
 		{
@@ -436,12 +453,22 @@ package org.josht.starling.foxhole.controls
 			{
 				this._dataContainer.width = this._width - 2 * this._contentPadding;
 			}
+			if(!isNaN(this._height))
+			{
+				this._dataContainer.visibleHeight = this._height - 2 * contentPadding;
+			}
+			else
+			{
+				this._dataContainer.visibleHeight = NaN;
+			}
 			this._dataContainer.selectedIndex = this._selectedIndex;
 			this._dataContainer.dataProvider = this._dataProvider;
 			this._dataContainer.itemRendererType = this._itemRendererType;
 			this._dataContainer.itemRendererFunction = this._itemRendererFunction;
 			this._dataContainer.itemRendererProperties = this._itemRendererProperties;
 			this._dataContainer.typicalItem = this._typicalItem;
+			this._dataContainer.useVirtualLayout = this._useVirtualLayout;
+			this._dataContainer.verticalScrollPosition = this._verticalScrollPosition;
 			this._dataContainer.validate();
 			if(isNaN(this._width))
 			{

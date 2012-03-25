@@ -173,6 +173,57 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		private var _useVirtualLayout:Boolean = true;
+
+		public function get useVirtualLayout():Boolean
+		{
+			return this._useVirtualLayout;
+		}
+
+		public function set useVirtualLayout(value:Boolean):void
+		{
+			if(this._useVirtualLayout == value)
+			{
+				return;
+			}
+			this._useVirtualLayout = value;
+			this.invalidate(INVALIDATION_FLAG_SCROLL);
+		}
+		
+		private var _verticalScrollPosition:Number = 0;
+		
+		public function get verticalScrollPosition():Number
+		{
+			return this._verticalScrollPosition;
+		}
+		
+		public function set verticalScrollPosition(value:Number):void
+		{
+			if(this._verticalScrollPosition == value)
+			{
+				return;
+			}
+			this._verticalScrollPosition = value;
+			this.invalidate(INVALIDATION_FLAG_SCROLL);
+		}
+		
+		private var _visibleHeight:Number = NaN;
+
+		public function get visibleHeight():Number
+		{
+			return this._visibleHeight;
+		}
+
+		public function set visibleHeight(value:Number):void
+		{
+			if(this._visibleHeight == value)
+			{
+				return;
+			}
+			this._visibleHeight = value;
+			this.invalidate(INVALIDATION_FLAG_SCROLL);
+		}
+
 		private var _isSelectable:Boolean = true;
 		
 		public function get isSelectable():Boolean
@@ -228,50 +279,45 @@ package org.josht.starling.foxhole.controls
 		override protected function draw():void
 		{
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			const scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
 			const sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const selectionInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SELECTED);
 			const itemRendererInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_ITEM_RENDERER);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			
-			if(sizeInvalid || dataInvalid || stylesInvalid || itemRendererInvalid)
+			if(isNaN(this._width) || isNaN(this._rowHeight))
 			{
-				if(isNaN(this._width) || isNaN(this._rowHeight))
+				var typicalItem:Object = this._typicalItem;
+				if(!typicalItem && this._dataProvider && this._dataProvider.length > 0)
 				{
-					var typicalItem:Object = this._typicalItem;
-					if(!typicalItem && this._dataProvider && this._dataProvider.length > 0)
-					{
-						typicalItem = this._dataProvider.getItemAt(0);
-					}
-					if(typicalItem)
-					{
-						const typicalRenderer:IListItemRenderer = this.createRenderer(typicalItem, 0, true);
-						this.refreshOneItemRendererStyles(typicalRenderer);
-						if(typicalRenderer is FoxholeControl)
-						{
-							FoxholeControl(typicalRenderer).validate();
-						}
-						if(isNaN(this._width))
-						{
-							this.width = DisplayObject(typicalRenderer).width;
-						}
-						if(isNaN(this._rowHeight))
-						{
-							this._rowHeight = DisplayObject(typicalRenderer).height;
-						}
-						this.destroyRenderer(typicalRenderer);
-					}
+					typicalItem = this._dataProvider.getItemAt(0);
 				}
-				
-				this.height = this._dataProvider ? (this._rowHeight * this._dataProvider.length) : 0;
-				this.refreshRenderers(itemRendererInvalid);
-				this.drawRenderers();
-				this.refreshItemRendererStyles();
+				if(typicalItem)
+				{
+					const typicalRenderer:IListItemRenderer = this.createRenderer(typicalItem, 0, true);
+					this.refreshOneItemRendererStyles(typicalRenderer);
+					if(typicalRenderer is FoxholeControl)
+					{
+						FoxholeControl(typicalRenderer).validate();
+					}
+					if(isNaN(this._width))
+					{
+						this.width = DisplayObject(typicalRenderer).width;
+					}
+					if(isNaN(this._rowHeight))
+					{
+						this._rowHeight = DisplayObject(typicalRenderer).height;
+					}
+					this.destroyRenderer(typicalRenderer);
+				}
 			}
 			
-			if(dataInvalid || selectionInvalid)
-			{
-				this.refreshSelection();
-			}
+			this.height = this._dataProvider ? (this._rowHeight * this._dataProvider.length) : 0;
+			this.refreshRenderers(itemRendererInvalid);
+			this.drawRenderers();
+			this.refreshItemRendererStyles();
+			
+			this.refreshSelection();
 			
 			var rendererCount:int = this._activeRenderers.length;
 			for(var i:int = 0; i < rendererCount; i++)
@@ -312,12 +358,9 @@ package org.josht.starling.foxhole.controls
 		
 		protected function refreshSelection():void
 		{
-			var itemCount:int = this._dataProvider ? this._dataProvider.length : 0;
-			for(var i:int = 0; i < itemCount; i++)
+			for each(var renderer:IListItemRenderer in this._activeRenderers)
 			{
-				var item:Object = this._dataProvider.getItemAt(i);
-				var renderer:IListItemRenderer = this.itemToItemRenderer(item);
-				renderer.isSelected = this._selectedIndex == i;
+				renderer.isSelected = renderer.index == this._selectedIndex;
 			}
 		}
 		
@@ -355,9 +398,14 @@ package org.josht.starling.foxhole.controls
 		
 		private function findUnrenderedData():Array
 		{
+			var startIndex:int = Math.max(0, this._useVirtualLayout ? (this._verticalScrollPosition / this._rowHeight) : 0);
 			var unrenderedData:Array = [];
-			var itemCount:int = this._dataProvider ? this._dataProvider.length : 0;
-			for(var i:int = 0; i < itemCount; i++)
+			var endIndex:int = this._dataProvider ? this._dataProvider.length : 0;
+			if(this._useVirtualLayout && !isNaN(this._visibleHeight))
+			{
+				endIndex = Math.min(endIndex, Math.ceil(this._verticalScrollPosition / this._rowHeight) + Math.ceil(this._visibleHeight / this._rowHeight)); 
+			}
+			for(var i:int = startIndex; i < endIndex; i++)
 			{
 				var item:Object = this._dataProvider.getItemAt(i);
 				var renderer:IListItemRenderer = IListItemRenderer(this._rendererMap[item]);
@@ -475,7 +523,10 @@ package org.josht.starling.foxhole.controls
 			if(this._isSelectable && !this._isScrolling && touch && touch.phase == TouchPhase.ENDED)
 			{
 				const location:Point = touch.getLocation(displayRenderer);
-				location.y += this.owner.verticalScrollPosition;
+				if(this.parent.y == 0) //TODO: fix this
+				{
+					location.y += this.owner.verticalScrollPosition;
+				}
 				if(displayRenderer.hitTest(location))
 				{
 					this.selectedIndex = renderer.index;
