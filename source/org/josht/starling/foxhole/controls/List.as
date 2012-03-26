@@ -136,6 +136,10 @@ package org.josht.starling.foxhole.controls
 				return;
 			}
 			this._isSelectable = value;
+			if(!this._isSelectable)
+			{
+				this.selectedIndex = -1;
+			}
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
 		
@@ -469,6 +473,7 @@ package org.josht.starling.foxhole.controls
 			{
 				this._dataContainer.visibleHeight = NaN;
 			}
+			this._dataContainer.isSelectable = this._isSelectable;
 			this._dataContainer.selectedIndex = this._selectedIndex;
 			this._dataContainer.dataProvider = this._dataProvider;
 			this._dataContainer.itemRendererType = this._itemRendererType;
