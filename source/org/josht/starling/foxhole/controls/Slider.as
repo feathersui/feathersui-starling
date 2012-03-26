@@ -83,11 +83,11 @@ package org.josht.starling.foxhole.controls
 		
 		public function set value(newValue:Number):void
 		{
-			newValue = clamp(newValue, this._minimum, this._maximum);
 			if(this._step != 0)
 			{
 				newValue = roundToNearest(newValue, this._step);
 			}
+			newValue = clamp(newValue, this._minimum, this._maximum);
 			if(this._value == newValue)
 			{
 				return;
