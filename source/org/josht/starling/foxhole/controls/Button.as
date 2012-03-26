@@ -1174,11 +1174,11 @@ package org.josht.starling.foxhole.controls
 			}
 			else if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
 			{
-				displayObject.x = this._width - this._contentPadding - displayObject.width;
+				displayObject.x = Math.round(this._width - this._contentPadding - displayObject.width);
 			}
 			else //center
 			{
-				displayObject.x = (this._width - displayObject.width) / 2;
+				displayObject.x = Math.round((this._width - displayObject.width) / 2);
 			}
 			if(this._verticalAlign == VERTICAL_ALIGN_TOP)
 			{
@@ -1186,11 +1186,11 @@ package org.josht.starling.foxhole.controls
 			}
 			else if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
 			{
-				displayObject.y = this._height - this._contentPadding - displayObject.height;
+				displayObject.y = Math.round(this._height - this._contentPadding - displayObject.height);
 			}
 			else //middle
 			{
-				displayObject.y = (this._height - displayObject.height) / 2;
+				displayObject.y = Math.round((this._height - displayObject.height) / 2);
 			}
 		}
 		
@@ -1198,49 +1198,81 @@ package org.josht.starling.foxhole.controls
 		{
 			if(this._iconPosition == ICON_POSITION_TOP)
 			{
-				this.currentIcon.y = this.labelField.y;
-				this.labelField.y = this.currentIcon.y + this.currentIcon.height + this._gap;
+				if(this._gap == Number.POSITIVE_INFINITY)
+				{
+					this.currentIcon.y = this._contentPadding;
+					this.labelField.y = this._height - this._contentPadding - this.labelField.height;
+				}
+				else
+				{
+					this.currentIcon.y = this.labelField.y;
+					this.labelField.y += this.currentIcon.height + this._gap;
+				}
 			}
 			else if(this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
 			{
-				if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
+				if(this._gap == Number.POSITIVE_INFINITY)
 				{
-					this.labelField.x -= this.currentIcon.width + this._gap;
+					this.labelField.x = this._contentPadding;
+					this.currentIcon.x = this._width - this._contentPadding - this.currentIcon.width;
 				}
-				else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
+				else
 				{
-					this.labelField.x -= (this.currentIcon.width + this._gap) / 2;
+					if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
+					{
+						this.labelField.x -= this.currentIcon.width + this._gap;
+					}
+					else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
+					{
+						this.labelField.x -= (this.currentIcon.width + this._gap) / 2;
+					}
+					this.currentIcon.x = Math.round(this.labelField.x + this.labelField.width + this._gap);
 				}
-				this.currentIcon.x = this.labelField.x + this.labelField.width + this._gap;
 			}
 			else if(this._iconPosition == ICON_POSITION_BOTTOM)
 			{
-				if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
+				if(this._gap == Number.POSITIVE_INFINITY)
 				{
-					this.labelField.y -= this.currentIcon.height + this._gap;
+					this.labelField.y = this._contentPadding;
+					this.currentIcon.y = Math.round(this._height - this._contentPadding - this.currentIcon.height);
 				}
-				else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
+				else
 				{
-					this.labelField.y -= (this.currentIcon.height + this._gap) / 2;
+					if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
+					{
+						this.labelField.y -= this.currentIcon.height + this._gap;
+					}
+					else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
+					{
+						this.labelField.y -= (this.currentIcon.height + this._gap) / 2;
+					}
+					this.currentIcon.y = Math.round(this.labelField.y + this.labelField.height + this._gap);
 				}
-				this.currentIcon.y = this.labelField.y + this.labelField.height + this._gap;
 			}
 			else if(this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE)
 			{
-				if(this._horizontalAlign == HORIZONTAL_ALIGN_LEFT)
+				if(this._gap == Number.POSITIVE_INFINITY)
 				{
-					this.labelField.x += this._gap + this.currentIcon.width;
+					this.currentIcon.x = this._contentPadding;
+					this.labelField.x = this._width - this._contentPadding - this.labelField.width;
 				}
-				else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
+				else
 				{
-					this.labelField.x += (this._gap + this.currentIcon.width) / 2;
+					if(this._horizontalAlign == HORIZONTAL_ALIGN_LEFT)
+					{
+						this.labelField.x += this._gap + this.currentIcon.width;
+					}
+					else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
+					{
+						this.labelField.x += (this._gap + this.currentIcon.width) / 2;
+					}
+					this.currentIcon.x = Math.round(this.labelField.x - this._gap - this.currentIcon.width);
 				}
-				this.currentIcon.x = this.labelField.x - this._gap - this.currentIcon.width;
 			}
 			
 			if(this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_RIGHT)
 			{
-				this.currentIcon.y = this.labelField.y + this.labelField.height - this.currentIcon.height;
+				this.currentIcon.y = Math.round(this.labelField.y + (this.labelField.height - this.currentIcon.height) / 2);
 			}
 			else if(this._iconPosition == ICON_POSITION_LEFT_BASELINE || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
 			{
@@ -1248,11 +1280,22 @@ package org.josht.starling.foxhole.controls
 				const formatSize:Number = this.labelField.textFormat.size;
 				const baseline:Number = (font is org.josht.starling.text.BitmapFont) ? org.josht.starling.text.BitmapFont(font).base : font.lineHeight;
 				const fontSizeScale:Number = isNaN(formatSize) ? 1 : (formatSize / font.size);
-				this.currentIcon.y = this.labelField.y + fontSizeScale * baseline - this.currentIcon.height;
+				this.currentIcon.y = Math.round(this.labelField.y + fontSizeScale * baseline - this.currentIcon.height);
 			}
 			else
 			{
-				this.currentIcon.x = this.labelField.x + (this.labelField.width - this.currentIcon.width) / 2;
+				if(this._horizontalAlign == HORIZONTAL_ALIGN_LEFT)
+				{
+					this.currentIcon.x = this.labelField.x;
+				}
+				else if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
+				{
+					this.currentIcon.x = this.labelField.x + this.labelField.width - this.currentIcon.width;
+				}
+				else
+				{
+					this.currentIcon.x = Math.round(this.labelField.x + (this.labelField.width - this.currentIcon.width) / 2);
+				}
 			}
 		}
 		
