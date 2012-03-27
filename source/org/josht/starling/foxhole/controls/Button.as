@@ -41,38 +41,124 @@ package org.josht.starling.foxhole.controls
 	import starling.events.TouchPhase;
 	import starling.text.BitmapFont;
 	
+	/**
+	 * A push (or optionally, toggle) button control.
+	 */
 	public class Button extends FoxholeControl implements IToggle
 	{
+		/**
+		 * @private
+		 */
 		protected static const STATE_UP:String = "up";
+		
+		/**
+		 * @private
+		 */
 		protected static const STATE_DOWN:String = "down";
+		
+		/**
+		 * @private
+		 */
 		protected static const STATE_DISABLED:String = "disabled";
+		
+		/**
+		 * @private
+		 */
 		protected static const STATE_SELECTED_UP:String = "selectedUp";
+		
+		/**
+		 * @private
+		 */
 		protected static const STATE_SELECTED_DOWN:String = "selectedDown";
 		
+		/**
+		 * The icon will be positioned above the label.
+		 */
 		public static const ICON_POSITION_TOP:String = "top";
+		
+		/**
+		 * The icon will be positioned to the right of the label.
+		 */
 		public static const ICON_POSITION_RIGHT:String = "right";
+		
+		/**
+		 * The icon will be positioned below the label.
+		 */
 		public static const ICON_POSITION_BOTTOM:String = "bottom";
+		
+		/**
+		 * The icon will be positioned to the left of the label.
+		 */
 		public static const ICON_POSITION_LEFT:String = "left";
+		
+		/**
+		 * The icon will be positioned to the left the label, and the bottom of
+		 * the icon will be aligned to the baseline of the label text.
+		 */
 		public static const ICON_POSITION_LEFT_BASELINE:String = "leftBaseline";
+		
+		/**
+		 * The icon will be positioned to the right the label, and the bottom of
+		 * the icon will be aligned to the baseline of the label text.
+		 */
 		public static const ICON_POSITION_RIGHT_BASELINE:String = "rightBaseline";
 		
+		/**
+		 * The icon and label will be aligned horizontally to the left edge of the button.
+		 */
 		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
+		
+		/**
+		 * The icon and label will be aligned horizontally to the center of the button.
+		 */
 		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
+		
+		/**
+		 * The icon and label will be aligned horizontally to the right edge of the button.
+		 */
 		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
 		
+		/**
+		 * The icon and label will be aligned vertically to the top edge of the button.
+		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
+		
+		/**
+		 * The icon and label will be aligned vertically to the middle of the button.
+		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
+		
+		/**
+		 * The icon and label will be aligned vertically to the bottom edge of the button.
+		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 		
+		/**
+		 * Constructor.
+		 */
 		public function Button()
 		{
 			this.addEventListener(TouchEvent.TOUCH, touchHandler);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var labelField:Label;
+		
+		/**
+		 * @private
+		 */
 		protected var currentSkin:DisplayObject;
+		
+		/**
+		 * @private
+		 */
 		protected var currentIcon:DisplayObject;
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function set isEnabled(value:Boolean):void
 		{
 			if(super.isEnabled == value)
@@ -97,13 +183,22 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _currentState:String = STATE_UP;
 		
+		/**
+		 * @private
+		 */
 		protected function get currentState():String
 		{
 			return _currentState;
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function set currentState(value:String):void
 		{
 			if(this._isSelected && value.indexOf("selected") < 0)
@@ -126,13 +221,22 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STATE);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _label:String = "";
 		
+		/**
+		 * The text displayed on the button.
+		 */
 		public function get label():String
 		{
 			return this._label;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set label(value:String):void
 		{
 			if(!value)
@@ -148,25 +252,46 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _isToggle:Boolean = false;
 		
+		/**
+		 * Determines if the button may be selected or unselected when clicked.
+		 */
 		public function get isToggle():Boolean
 		{
 			return this._isToggle;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set isToggle(value:Boolean):void
 		{
 			this._isToggle = value;
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _isSelected:Boolean = false;
 		
+		/**
+		 * Indicates if the button is selected or not. The button may be
+		 * selected programmatically, even if <code>isToggle</code> is false.
+		 * 
+		 * @see isToggle
+		 */
 		public function get isSelected():Boolean
 		{
 			return this._isSelected;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set isSelected(value:Boolean):void
 		{
 			this._isSelected = value;
@@ -175,13 +300,22 @@ package org.josht.starling.foxhole.controls
 			this._onChange.dispatch(this);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _iconPosition:String = ICON_POSITION_LEFT;
 		
+		/**
+		 * The location of the icon, relative to the label.
+		 */
 		public function get iconPosition():String
 		{
 			return this._iconPosition;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set iconPosition(value:String):void
 		{
 			if(this._iconPosition == value)
@@ -192,13 +326,31 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _gap:Number = 10;
 		
+		/**
+		 * The space, in pixels, between the icon and the label. Applies to
+		 * either horizontal or vertical spacing, depending on the value of
+		 * <code>iconPosition</code>.
+		 * 
+		 * <p>If <code>gap</code> is set to <code>Number.POSITIVE_INFINITY</code>,
+		 * the label and icon will be positioned as far apart as possible. In
+		 * other words, they will be positioned at the edges of the button,
+		 * adjusted for padding.</p>
+		 * 
+		 * @see iconPosition
+		 */
 		public function get gap():Number
 		{
 			return this._gap;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set gap(value:Number):void
 		{
 			if(this._gap == value)
@@ -209,13 +361,23 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _horizontalAlign:String = HORIZONTAL_ALIGN_CENTER;
 		
+		/**
+		 * The location where the button's content is aligned horizontally (on
+		 * the x-axis).
+		 */
 		public function get horizontalAlign():String
 		{
 			return this._horizontalAlign;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set horizontalAlign(value:String):void
 		{
 			if(this._horizontalAlign == value)
@@ -226,13 +388,23 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _verticalAlign:String = VERTICAL_ALIGN_MIDDLE;
 		
+		/**
+		 * The location where the button's content is aligned vertically (on
+		 * the y-axis).
+		 */
 		public function get verticalAlign():String
 		{
 			return _verticalAlign;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set verticalAlign(value:String):void
 		{
 			if(this._verticalAlign == value)
@@ -243,13 +415,23 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _contentPadding:Number = 0;
 		
+		/**
+		 * The minimum space, in pixels, between the button's edges and the
+		 * button's content.
+		 */
 		public function get contentPadding():Number
 		{
 			return _contentPadding;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set contentPadding(value:Number):void
 		{
 			if(this._contentPadding == value)
@@ -260,20 +442,46 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * Determines if a pressed button should remain in the down state if a
+		 * touch moves outside of the button's bounds. Useful for controls like
+		 * <code>Slider</code> and <code>ToggleSwitch</code> to keep a thumb in
+		 * the down state while it is dragged around.
+		 */
 		public var keepDownStateOnRollOut:Boolean = false;
 		
+		/**
+		 * @private
+		 */
 		protected function get stateNames():Vector.<String>
 		{
 			return Vector.<String>([STATE_UP, STATE_DOWN, STATE_DISABLED, STATE_SELECTED_UP, STATE_SELECTED_DOWN]);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _defaultSkin:DisplayObject;
 		
+		/**
+		 * The skin used when no other skin is defined for the current state.
+		 * Intended for use when multiple states should use the same skin.
+		 * 
+		 * @see upSkin
+		 * @see downSkin
+		 * @see disabledSkin
+		 * @see defaultSelectedSkin
+		 * @see selectedUpSkin
+		 * @see selectedDownSkin
+		 */
 		public function get defaultSkin():DisplayObject
 		{
 			return this._defaultSkin;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set defaultSkin(value:DisplayObject):void
 		{
 			if(this._defaultSkin == value)
@@ -297,13 +505,29 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _defaultSelectedSkin:DisplayObject;
 		
+		/**
+		 * The skin used when no other skin is defined for the current state
+		 * when the button is selected. Has a higher priority than
+		 * <code>defaultSkin</code>, but a lower priority than other selected
+		 * skins.
+		 * 
+		 * @see defaultSkin
+		 * @see selectedUpSkin
+		 * @see selectedDownSkin
+		 */
 		public function get defaultSelectedSkin():DisplayObject
 		{
 			return this._defaultSelectedSkin;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set defaultSelectedSkin(value:DisplayObject):void
 		{
 			if(this._defaultSelectedSkin == value)
@@ -327,13 +551,25 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _upSkin:DisplayObject;
 		
+		/**
+		 * The skin used for the button's up state. If <code>null</code>, then
+		 * <code>defaultSkin</code> is used instead.
+		 * 
+		 * @see defaultSkin
+		 */
 		public function get upSkin():DisplayObject
 		{
 			return this._upSkin;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set upSkin(value:DisplayObject):void
 		{
 			if(this._upSkin == value)
@@ -356,13 +592,25 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _downSkin:DisplayObject;
 		
+		/**
+		 * The skin used for the button's down state. If <code>null</code>, then
+		 * <code>defaultSkin</code> is used instead.
+		 * 
+		 * @see defaultSkin
+		 */
 		public function get downSkin():DisplayObject
 		{
 			return this._downSkin;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set downSkin(value:DisplayObject):void
 		{
 			if(this._downSkin == value)
@@ -385,13 +633,25 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _disabledSkin:DisplayObject;
 		
+		/**
+		 * The skin used for the button's disabled state. If <code>null</code>,
+		 * then <code>defaultSkin</code> is used instead.
+		 * 
+		 * @see defaultSkin
+		 */
 		public function get disabledSkin():DisplayObject
 		{
 			return this._disabledSkin;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set disabledSkin(value:DisplayObject):void
 		{
 			if(this._disabledSkin == value)
@@ -414,13 +674,28 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _selectedUpSkin:DisplayObject;
 		
+		/**
+		 * The skin used for the button's up state when the button is selected.
+		 * If <code>null</code>, then <code>defaultSelectedSkin</code> is used
+		 * instead. If <code>defaultSelectedSkin</code> is also
+		 * <code>null</code>, then <code>defaultSkin</code> is used.
+		 * 
+		 * @see defaultSkin
+		 * @see defaultSelectedSkin
+		 */
 		public function get selectedUpSkin():DisplayObject
 		{
 			return this._selectedUpSkin;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set selectedUpSkin(value:DisplayObject):void
 		{
 			if(this._selectedUpSkin == value)
@@ -443,13 +718,28 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _selectedDownSkin:DisplayObject;
 		
+		/**
+		 * The skin used for the button's down state when the button is
+		 * selected. If <code>null</code>, then <code>defaultSelectedSkin</code>
+		 * is used instead. If <code>defaultSelectedSkin</code> is also
+		 * <code>null</code>, then <code>defaultSkin</code> is used.
+		 * 
+		 * @see defaultSkin
+		 * @see defaultSelectedSkin
+		 */
 		public function get selectedDownSkin():DisplayObject
 		{
 			return this._selectedDownSkin;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set selectedDownSkin(value:DisplayObject):void
 		{
 			if(this._selectedDownSkin == value)
@@ -472,104 +762,221 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _defaultTextFormat:BitmapFontTextFormat;
 		
+		/**
+		 * The text format used when no other text format is defined for the
+		 * current state. Intended for use when multiple states should use the
+		 * same text format.
+		 * 
+		 * @see upTextFormat
+		 * @see downTextFormat
+		 * @see disabledTextFormat
+		 * @see defaultSelectedTextFormat
+		 * @see selectedUpTextFormat
+		 * @see selectedDownTextFormat
+		 */
 		public function get defaultTextFormat():BitmapFontTextFormat
 		{
 			return this._defaultTextFormat;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set defaultTextFormat(value:BitmapFontTextFormat):void
 		{
 			this._defaultTextFormat = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _upTextFormat:BitmapFontTextFormat;
 		
+		/**
+		 * The text format used for the button's up state. If <code>null</code>,
+		 * then <code>defaultTextFormat</code> is used instead.
+		 * 
+		 * @see defaultTextFormat
+		 */
 		public function get upTextFormat():BitmapFontTextFormat
 		{
 			return this._upTextFormat;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set upTextFormat(value:BitmapFontTextFormat):void
 		{
 			this._upTextFormat = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _downTextFormat:BitmapFontTextFormat;
 		
+		/**
+		 * The text format used for the button's down state. If <code>null</code>,
+		 * then <code>defaultTextFormat</code> is used instead.
+		 * 
+		 * @see defaultTextFormat
+		 */
 		public function get downTextFormat():BitmapFontTextFormat
 		{
 			return this._downTextFormat;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set downTextFormat(value:BitmapFontTextFormat):void
 		{
 			this._downTextFormat = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _disabledTextFormat:BitmapFontTextFormat;
 		
+		/**
+		 * The text format used for the button's disabled state. If <code>null</code>,
+		 * then <code>defaultTextFormat</code> is used instead.
+		 * 
+		 * @see defaultTextFormat
+		 */
 		public function get disabledTextFormat():BitmapFontTextFormat
 		{
 			return this._disabledTextFormat;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set disabledTextFormat(value:BitmapFontTextFormat):void
 		{
 			this._disabledTextFormat = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _defaultSelectedTextFormat:BitmapFontTextFormat;
 		
+		/**
+		 * The text format used when no other text format is defined for the
+		 * current state when the button is selected. Has a higher priority than
+		 * <code>defaultTextFormat</code>, but a lower priority than other
+		 * selected text formats.
+		 * 
+		 * @see defaultTextFormat
+		 * @see selectedUpTextFormat
+		 * @see selectedDownTextFormat
+		 */
 		public function get defaultSelectedTextFormat():BitmapFontTextFormat
 		{
 			return this._defaultSelectedTextFormat;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set defaultSelectedTextFormat(value:BitmapFontTextFormat):void
 		{
 			this._defaultSelectedTextFormat = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _selectedUpTextFormat:BitmapFontTextFormat;
 		
+		/**
+		 * The text format used for the button's up state when the button is
+		 * selected. If <code>null</code>, then <code>defaultSelectedTextFormat</code>
+		 * is used instead. If <code>defaultSelectedTextFormat</code> is also
+		 * <code>null</code>, then <code>defaultTextFormat</code> is used.
+		 * 
+		 * @see defaultTextFormat
+		 * @see defaultSelectedTextFormat
+		 */
 		public function get selectedUpTextFormat():BitmapFontTextFormat
 		{
 			return this._selectedUpTextFormat;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set selectedUpTextFormat(value:BitmapFontTextFormat):void
 		{
 			this._selectedUpTextFormat = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _selectedDownTextFormat:BitmapFontTextFormat;
 		
+		/**
+		 * The text format used for the button's down state when the button is
+		 * selected. If <code>null</code>, then <code>defaultSelectedTextFormat</code>
+		 * is used instead. If <code>defaultSelectedTextFormat</code> is also
+		 * <code>null</code>, then <code>defaultTextFormat</code> is used.
+		 * 
+		 * @see defaultTextFormat
+		 * @see defaultSelectedTextFormat
+		 */
 		public function get selectedDownTextFormat():BitmapFontTextFormat
 		{
 			return this._selectedDownTextFormat;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set selectedDownTextFormat(value:BitmapFontTextFormat):void
 		{
 			this._selectedDownTextFormat = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _defaultIcon:DisplayObject;
 		
+		/**
+		 * The icon used when no other icon is defined for the current state.
+		 * Intended for use when multiple states should use the same icon.
+		 * 
+		 * @see upIcon
+		 * @see downIcon
+		 * @see disabledIcon
+		 * @see defaultSelectedIcon
+		 * @see selectedUpIcon
+		 * @see selectedDownIcon
+		 */
 		public function get defaultIcon():DisplayObject
 		{
 			return this._defaultIcon;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set defaultIcon(value:DisplayObject):void
 		{
 			if(this._defaultIcon == value)
@@ -593,13 +1000,29 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _defaultSelectedIcon:DisplayObject;
 		
+		/**
+		 * The icon used when no other icon is defined for the current state
+		 * when the button is selected. Has a higher priority than
+		 * <code>defaultIcon</code>, but a lower priority than other selected
+		 * icons.
+		 * 
+		 * @see defaultIcon
+		 * @see selectedUpIcon
+		 * @see selectedDownIcon
+		 */
 		public function get defaultSelectedIcon():DisplayObject
 		{
 			return this._defaultSelectedIcon;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set defaultSelectedIcon(value:DisplayObject):void
 		{
 			if(this._defaultSelectedIcon == value)
@@ -623,13 +1046,25 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _upIcon:DisplayObject;
 		
+		/**
+		 * The icon used for the button's up state. If <code>null</code>, then
+		 * <code>defaultIcon</code> is used instead.
+		 * 
+		 * @see defaultIcon
+		 */
 		public function get upIcon():DisplayObject
 		{
 			return this._upIcon;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set upIcon(value:DisplayObject):void
 		{
 			if(this._upIcon == value)
@@ -652,13 +1087,25 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _downIcon:DisplayObject;
 		
+		/**
+		 * The icon used for the button's down state. If <code>null</code>, then
+		 * <code>defaultIcon</code> is used instead.
+		 * 
+		 * @see defaultIcon
+		 */
 		public function get downIcon():DisplayObject
 		{
 			return this._downIcon;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set downIcon(value:DisplayObject):void
 		{
 			if(this._downIcon == value)
@@ -681,13 +1128,25 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _disabledIcon:DisplayObject;
 		
+		/**
+		 * The icon used for the button's disabled state. If <code>null</code>, then
+		 * <code>defaultIcon</code> is used instead.
+		 * 
+		 * @see defaultIcon
+		 */
 		public function get disabledIcon():DisplayObject
 		{
 			return this._disabledIcon;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set disabledIcon(value:DisplayObject):void
 		{
 			if(this._disabledIcon == value)
@@ -710,13 +1169,28 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _selectedUpIcon:DisplayObject;
 		
+		/**
+		 * The icon used for the button's up state when the button is
+		 * selected. If <code>null</code>, then <code>defaultSelectedIcon</code>
+		 * is used instead. If <code>defaultSelectedIcon</code> is also
+		 * <code>null</code>, then <code>defaultIcon</code> is used.
+		 * 
+		 * @see defaultIcon
+		 * @see defaultSelectedIcon
+		 */
 		public function get selectedUpIcon():DisplayObject
 		{
 			return this._selectedUpIcon;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set selectedUpIcon(value:DisplayObject):void
 		{
 			if(this._selectedUpIcon == value)
@@ -739,13 +1213,28 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _selectedDownIcon:DisplayObject;
 		
+		/**
+		 * The icon used for the button's down state when the button is
+		 * selected. If <code>null</code>, then <code>defaultSelectedIcon</code>
+		 * is used instead. If <code>defaultSelectedIcon</code> is also
+		 * <code>null</code>, then <code>defaultIcon</code> is used.
+		 * 
+		 * @see defaultIcon
+		 * @see defaultSelectedIcon
+		 */
 		public function get selectedDownIcon():DisplayObject
 		{
 			return this._selectedDownIcon;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set selectedDownIcon(value:DisplayObject):void
 		{
 			if(this._selectedDownIcon == value)
@@ -768,13 +1257,24 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _autoFlatten:Boolean = false;
-
+		
+		/**
+		 * Determines if the button should automatically call <code>flatten()</code>
+		 * after it finishes drawing. In some cases, this will improve
+		 * performance.
+		 */
 		public function get autoFlatten():Boolean
 		{
 			return this._autoFlatten;
 		}
-
+		
+		/**
+		 * @private
+		 */
 		public function set autoFlatten(value:Boolean):void
 		{
 			if(this._autoFlatten == value)
@@ -788,28 +1288,51 @@ package org.josht.starling.foxhole.controls
 				this.flatten();
 			}
 		}
-
+		
+		/**
+		 * @private
+		 */
 		protected var _onPress:Signal = new Signal(Button);
 		
+		/**
+		 * Dispatched when the button enters the down state.
+		 */
 		public function get onPress():ISignal
 		{
 			return this._onPress;
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _onRelease:Signal = new Signal(Button);
 		
+		/**
+		 * Dispatched when the button is released while the touch is still
+		 * within the button's bounds (a tap or click that should trigger the
+		 * button).
+		 */
 		public function get onRelease():ISignal
 		{
 			return this._onRelease;
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _onChange:Signal = new Signal(Button);
 		
+		/**
+		 * Dispatched when the button is selected or unselected.
+		 */
 		public function get onChange():ISignal
 		{
 			return this._onChange;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function dispose():void
 		{
 			this._onPress.removeAll();
@@ -818,6 +1341,9 @@ package org.josht.starling.foxhole.controls
 			super.dispose();
 		}
 		
+		/**
+		 * @private
+		 */
 		override protected function initialize():void
 		{
 			if(!this.labelField)
@@ -827,6 +1353,9 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		override protected function draw():void
 		{
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
@@ -917,6 +1446,9 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function refreshSkin():void
 		{	
 			this.currentSkin = null;
@@ -1006,6 +1538,9 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function refreshIcon():void
 		{
 			this.currentIcon = null;
@@ -1091,6 +1626,9 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function refreshLabelStyles():void
 		{	
 			var format:BitmapFontTextFormat;
@@ -1133,6 +1671,9 @@ package org.josht.starling.foxhole.controls
 			this.labelField.textFormat = format;
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function scaleSkin():void
 		{
 			if(!this.currentSkin)
@@ -1149,6 +1690,9 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function layoutContent():void
 		{
 			if(this.label && this.currentIcon)
@@ -1166,6 +1710,9 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function positionLabelOrIcon(displayObject:DisplayObject):void
 		{
 			if(this._horizontalAlign == HORIZONTAL_ALIGN_LEFT)
@@ -1194,6 +1741,9 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		private function positionLabelAndIcon():void
 		{
 			if(this._iconPosition == ICON_POSITION_TOP)
@@ -1299,6 +1849,9 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		private function touchHandler(event:TouchEvent):void
 		{
 			if(!this._isEnabled)
