@@ -289,7 +289,7 @@ package org.josht.starling.foxhole.controls
 		
 		/**
 		 * A set of key/value pairs to be passed down to the slider's thumb
-		 * instance. The track is a Foxhole Button control.
+		 * instance. The thumb is a Foxhole Button control.
 		 */
 		public function get thumbProperties():Object
 		{
