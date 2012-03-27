@@ -30,8 +30,15 @@ package org.josht.starling.motion
 	import starling.animation.Juggler;
 	import starling.core.Starling;
 	
+	/**
+	 * A subclass of GTween that uses Starling jugglers instead of updating on
+	 * its own enterFrame event.
+	 */
 	public class GTween extends com.gskinner.motion.GTween implements IAnimatable
 	{
+		/**
+		 * Constructor.
+		 */
 		public function GTween(target:Object=null, duration:Number=1, values:Object=null, props:Object=null, pluginData:Object=null)
 		{
 			if(!props.hasOwnProperty("juggler"))
@@ -41,18 +48,35 @@ package org.josht.starling.motion
 			super(target, duration, values, props, pluginData);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _juggler:Juggler;
-
+		
+		/**
+		 * The juggler instance to use. When changed, the tween will
+		 * automatically pause.
+		 */
 		public function get juggler():Juggler
 		{
 			return this._juggler;
 		}
 
+		/**
+		 * @private
+		 */
 		public function set juggler(value:Juggler):void
 		{
+			if(this._juggler && !this._paused)
+			{
+				this.paused = true;
+			}
 			this._juggler = value;
 		}
 		
+		/**
+		 * @private
+		 */
 		override public function set paused(value:Boolean):void
 		{
 			if(this._paused == value)
@@ -76,6 +100,9 @@ package org.josht.starling.motion
 			}
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function advanceTime(time:Number):void
 		{
 			this.position = this._position + (this.useFrames ? timeScaleAll : time) * this.timeScale;
