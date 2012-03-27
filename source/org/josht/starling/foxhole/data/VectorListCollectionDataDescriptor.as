@@ -26,48 +26,78 @@ package org.josht.starling.foxhole.data
 {
 	import flash.errors.IllegalOperationError;
 	
+	/**
+	 * An <code>IListCollectionDataDescriptor</code> implementation for Vectors.
+	 * 
+	 * @see ListCollection
+	 * @see IListCollectionDataDescriptor
+	 */
 	public class VectorListCollectionDataDescriptor implements IListCollectionDataDescriptor
 	{
+		/**
+		 * Constructor.
+		 */
 		public function VectorListCollectionDataDescriptor()
 		{
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function getLength(data:Object):int
 		{
 			this.checkForCorrectDataType(data);
 			return (data as Vector.<*>).length;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function getItemAt(data:Object, index:int):Object
 		{
 			this.checkForCorrectDataType(data);
 			return (data as Vector.<*>)[index];
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function setItemAt(data:Object, item:Object, index:int):void
 		{
 			this.checkForCorrectDataType(data);
 			(data as Vector.<*>)[index] = item;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function addItemAt(data:Object, item:Object, index:int):void
 		{
 			this.checkForCorrectDataType(data);
 			(data as Vector.<*>).splice(index, 0, item);
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function removeItemAt(data:Object, index:int):Object
 		{
 			this.checkForCorrectDataType(data);
 			return (data as Vector.<*>).splice(index, 1)[0];
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function getItemIndex(data:Object, item:Object):int
 		{
 			this.checkForCorrectDataType(data);
 			return (data as Vector.<*>).indexOf(item);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function checkForCorrectDataType(data:Object):void
 		{
 			if(!(data is Vector.<*>))

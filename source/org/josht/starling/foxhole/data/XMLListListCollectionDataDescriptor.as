@@ -26,30 +26,53 @@ package org.josht.starling.foxhole.data
 {
 	import flash.errors.IllegalOperationError;
 	
+	/**
+	 * An <code>IListCollectionDataDescriptor</code> implementation for
+	 * XMLLists. Has some limitations due to certain things that cannot be done
+	 * to XMLLists.
+	 * 
+	 * @see ListCollection
+	 * @see IListCollectionDataDescriptor
+	 */
 	public class XMLListListCollectionDataDescriptor implements IListCollectionDataDescriptor
 	{
+		/**
+		 * Constructor.
+		 */
 		public function XMLListListCollectionDataDescriptor()
 		{
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function getLength(data:Object):int
 		{
 			this.checkForCorrectDataType(data);
 			return (data as XMLList).length();
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function getItemAt(data:Object, index:int):Object
 		{
 			this.checkForCorrectDataType(data);
 			return data[index];
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function setItemAt(data:Object, item:Object, index:int):void
 		{
 			this.checkForCorrectDataType(data);
 			data[index] = XML(item);
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function addItemAt(data:Object, item:Object, index:int):void
 		{
 			this.checkForCorrectDataType(data);
@@ -57,6 +80,9 @@ package org.josht.starling.foxhole.data
 			trace("Warning: addItemAt() for XMLList always adds items to the end.");
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function removeItemAt(data:Object, index:int):Object
 		{
 			this.checkForCorrectDataType(data);
@@ -65,6 +91,9 @@ package org.josht.starling.foxhole.data
 			return item;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function getItemIndex(data:Object, item:Object):int
 		{
 			this.checkForCorrectDataType(data);
@@ -81,6 +110,9 @@ package org.josht.starling.foxhole.data
 			return -1;
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function checkForCorrectDataType(data:Object):void
 		{
 			if(!(data is XMLList))

@@ -27,55 +27,115 @@ package org.josht.starling.foxhole.data
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 
+	/**
+	 * Wraps a data source with a common API for use with Foxhole lists.
+	 * Supports custom "data descriptors" so that unexpected data sources may be
+	 * used. Supports Arrays, Vectors, and XMLLists automatically.
+	 * 
+	 * @see ArrayListCollectionDataDescriptor
+	 * @see VectorListCollectionDataDescriptor
+	 * @see XMLListListCollectionDataDescriptor
+	 */
 	public class ListCollection
 	{
+		/**
+		 * Constructor
+		 */
 		public function ListCollection(data:Object = null)
 		{
 			this.data = data;
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _onChange:Signal = new Signal(ListCollection);
 		
+		/**
+		 * Dispatched when the underlying data source changes and the list will
+		 * need to redraw the data.
+		 */
 		public function get onChange():ISignal
 		{
 			return this._onChange;
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _onAdd:Signal = new Signal(ListCollection, int);
 		
+		/**
+		 * Dispatched when an item is added to the collection.
+		 */
 		public function get onAdd():ISignal
 		{
 			return this._onAdd;
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _onRemove:Signal = new Signal(ListCollection, int);
 		
+		/**
+		 * Dispatched when an item is removed from the collection.
+		 */
 		public function get onRemove():ISignal
 		{
 			return this._onRemove;
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _onReplace:Signal = new Signal(ListCollection, int);
 		
+		/**
+		 * Dispatched when an item is replaced in the collection.
+		 */
 		public function get onReplace():ISignal
 		{
 			return this._onReplace;
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _onReset:Signal = new Signal(ListCollection);
 		
+		/**
+		 * Dispatched when the collection has changed drastically, such as when
+		 * the underlying data source is replaced completely.
+		 */
 		public function get onReset():ISignal
 		{
 			return this._onReset;
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _data:Object;
-
+		
+		/**
+		 * The data source for this collection. May be any type of data, but a
+		 * <code>dataDescriptor</code> needs to be provided to translate from
+		 * the data source's APIs to something that can be understood by
+		 * <code>ListCollection</code>.
+		 * 
+		 * <p>Data sources of type Array, Vector, and XMLList are automatically
+		 * detected, and no <code>dataDescriptor</code> needs to be set if the
+		 * <code>ListCollection</code> uses one of these types.
+		 */
 		public function get data():Object
 		{
 			return _data;
 		}
-
+		
+		/**
+		 * @private
+		 */
 		public function set data(value:Object):void
 		{
 			if(this._data == value)
@@ -100,13 +160,24 @@ package org.josht.starling.foxhole.data
 			this._onChange.dispatch(this);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _dataDescriptor:IListCollectionDataDescriptor;
 
+		/**
+		 * Describes the underlying data source by translating APIs.
+		 * 
+		 * @see IListCollectionDataDescriptor
+		 */
 		public function get dataDescriptor():IListCollectionDataDescriptor
 		{
 			return this._dataDescriptor;
 		}
-
+		
+		/**
+		 * @private
+		 */
 		public function set dataDescriptor(value:IListCollectionDataDescriptor):void
 		{
 			if(this._dataDescriptor == value)
@@ -118,21 +189,34 @@ package org.josht.starling.foxhole.data
 			this._onChange.dispatch(this);
 		}
 
+		/**
+		 * The number of items in the collection.
+		 */
 		public function get length():int
 		{
 			return this._dataDescriptor.getLength(this._data);
 		}
 		
+		/**
+		 * Returns the item at the specified index in the collection.
+		 */
 		public function getItemAt(index:int):Object
 		{
 			return this._dataDescriptor.getItemAt(this._data, index);
 		}
 		
+		/**
+		 * Determines which index the item appears at within the collection. If
+		 * the item isn't in the collection, returns <code>-1</code>.
+		 */
 		public function getItemIndex(item:Object):int
 		{
 			return this._dataDescriptor.getItemIndex(this._data, item);
 		}
 		
+		/**
+		 * Adds an item to the collection, at the specified index.
+		 */
 		public function addItemAt(item:Object, index:int):void
 		{
 			this._dataDescriptor.addItemAt(this._data, item, index);
@@ -140,6 +224,10 @@ package org.josht.starling.foxhole.data
 			this._onAdd.dispatch(this, index);
 		}
 		
+		/**
+		 * Removes the item at the specified index from the collection and
+		 * returns it.
+		 */
 		public function removeItemAt(index:int):Object
 		{
 			const item:Object = this._dataDescriptor.removeItemAt(this._data, index);
@@ -148,6 +236,9 @@ package org.josht.starling.foxhole.data
 			return item;
 		}
 		
+		/**
+		 * Removes a specific item from the collection.
+		 */
 		public function removeItem(item:Object):void
 		{
 			const index:int = this.getItemIndex(item);
@@ -157,6 +248,9 @@ package org.josht.starling.foxhole.data
 			}
 		}
 		
+		/**
+		 * Replaces the item at the specified index with a new item.
+		 */
 		public function setItemAt(item:Object, index:int):void
 		{
 			this._dataDescriptor.setItemAt(this._data, item, index);
@@ -164,21 +258,33 @@ package org.josht.starling.foxhole.data
 			this._onChange.dispatch(this);
 		}
 		
+		/**
+		 * Adds an item to the end of the collection.
+		 */
 		public function push(item:Object):void
 		{
 			this.addItemAt(item, this.length);
 		}
 		
+		/**
+		 * Removes the item from the end of the collection and returns it.
+		 */
 		public function pop():Object
 		{
 			return this.removeItemAt(this.length - 1);
 		}
 		
+		/**
+		 * Adds an item to the beginning of the collection.
+		 */
 		public function unshift(item:Object):void
 		{
 			this.addItemAt(item, 0);
 		}
 		
+		/**
+		 * Removed the item from the beginning of the collection and returns it. 
+		 */
 		public function shift():Object
 		{
 			return this.removeItemAt(0);
