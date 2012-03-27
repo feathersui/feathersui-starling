@@ -163,7 +163,7 @@ package org.josht.starling.display
 		private var _textureScale:Number = 1;
 		
 		/**
-		 * The amount to scale the texture.
+		 * The amount to scale the texture. Useful for DPI changes.
 		 */
 		public function get textureScale():Number
 		{
