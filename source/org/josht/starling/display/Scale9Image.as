@@ -37,7 +37,7 @@ package org.josht.starling.display
 			this._scale9Grid = scale9Grid;
 			this.saveWidthAndHeight(texture);
 			this.createImages(texture);
-			
+			this.refreshProperties();
 			this.refreshLayout();
 		}
 		
@@ -90,6 +90,23 @@ package org.josht.starling.display
 			}
 			this._textureScale = value;
 			this.refreshLayout();
+		}
+		
+		private var _smoothing:String = TextureSmoothing.BILINEAR;
+
+		public function get smoothing():String
+		{
+			return this._smoothing;
+		}
+
+		public function set smoothing(value:String):void
+		{
+			if(this._smoothing == value)
+			{
+				return;
+			}
+			this._smoothing = value;
+			this.refreshProperties();
 		}
 		
 		private var _scale9Grid:Rectangle;
@@ -176,34 +193,40 @@ package org.josht.starling.display
 			
 			//then pass them to the images
 			this._topLeftImage = new Image(topLeft);
-			this._topLeftImage.smoothing = TextureSmoothing.NONE;
 			this.addChild(this._topLeftImage);
 			this._topCenterImage = new Image(topCenter);
-			this._topCenterImage.smoothing = TextureSmoothing.NONE;
 			this.addChild(this._topCenterImage);
 			this._topRightImage = new Image(topRight);
-			this._topRightImage.smoothing = TextureSmoothing.NONE;
 			this.addChild(this._topRightImage);
 			
 			this._middleLeftImage = new Image(middleLeft);
-			this._middleLeftImage.smoothing = TextureSmoothing.NONE;
 			this.addChild(this._middleLeftImage);
 			this._middleCenterImage = new Image(middleCenter);
-			this._middleCenterImage.smoothing = TextureSmoothing.NONE;
 			this.addChild(this._middleCenterImage);
 			this._middleRightImage = new Image(middleRight);
-			this._middleRightImage.smoothing = TextureSmoothing.NONE;
 			this.addChild(this._middleRightImage);
 			
 			this._bottomLeftImage = new Image(bottomLeft);
-			this._bottomLeftImage.smoothing = TextureSmoothing.NONE;
 			this.addChild(this._bottomLeftImage);
 			this._bottomCenterImage = new Image(bottomCenter);
-			this._bottomCenterImage.smoothing = TextureSmoothing.NONE;
 			this.addChild(this._bottomCenterImage);
 			this._bottomRightImage = new Image(bottomRight);
-			this._bottomRightImage.smoothing = TextureSmoothing.NONE;
 			this.addChild(this._bottomRightImage);
+		}
+		
+		private function refreshProperties():void
+		{
+			this._topLeftImage.smoothing = this._smoothing;
+			this._topCenterImage.smoothing = this._smoothing;
+			this._topRightImage.smoothing = this._smoothing;
+			
+			this._middleLeftImage.smoothing = this._smoothing;
+			this._middleCenterImage.smoothing = this._smoothing;
+			this._middleRightImage.smoothing = this._smoothing;
+			
+			this._bottomLeftImage.smoothing = this._smoothing;
+			this._bottomCenterImage.smoothing = this._smoothing;
+			this._bottomRightImage.smoothing = this._smoothing;
 		}
 
 		private function refreshLayout():void
@@ -228,7 +251,7 @@ package org.josht.starling.display
 			this._topCenterImage.scaleX = this._topCenterImage.scaleY = this._textureScale;
 			this._topCenterImage.x = scaledLeftWidth;
 			this._topCenterImage.y = scaledTopHeight - this._topCenterImage.height;
-			this._topCenterImage.width = Math.max(0, this._width - scaledLeftWidth - scaledRightWidth);
+			this._topCenterImage.width = Math.max(0, Math.ceil(this._width - scaledLeftWidth - scaledRightWidth));
 			this._topRightImage.scaleX = this._topRightImage.scaleY = this._textureScale;
 			this._topRightImage.x = this._width - scaledRightWidth;
 			this._topRightImage.y = scaledTopHeight - this._topRightImage.height;
@@ -236,16 +259,16 @@ package org.josht.starling.display
 			this._middleLeftImage.scaleX = this._middleLeftImage.scaleY = this._textureScale;
 			this._middleLeftImage.x = scaledLeftWidth - this._middleLeftImage.width;
 			this._middleLeftImage.y = scaledTopHeight;
-			this._middleLeftImage.height = Math.max(0, this._height - scaledTopHeight - scaledBottomHeight);
+			this._middleLeftImage.height = Math.max(0, Math.ceil(this._height - scaledTopHeight - scaledBottomHeight));
 			this._middleCenterImage.scaleX = this._middleCenterImage.scaleY = this._textureScale;
 			this._middleCenterImage.x = scaledLeftWidth;
 			this._middleCenterImage.y = scaledTopHeight;
-			this._middleCenterImage.width = Math.max(0, this._width - scaledLeftWidth - scaledRightWidth);
-			this._middleCenterImage.height = Math.max(0, this._height - scaledTopHeight - scaledBottomHeight);
+			this._middleCenterImage.width = Math.max(0, Math.ceil(this._width - scaledLeftWidth - scaledRightWidth));
+			this._middleCenterImage.height = Math.max(0, Math.ceil(this._height - scaledTopHeight - scaledBottomHeight));
 			this._middleRightImage.x = this._width - scaledRightWidth;
 			this._middleRightImage.scaleX = this._middleRightImage.scaleY = this._textureScale;
 			this._middleRightImage.y = scaledTopHeight;
-			this._middleRightImage.height = Math.max(0, this._height - scaledTopHeight - scaledBottomHeight);
+			this._middleRightImage.height = Math.max(0, Math.ceil(this._height - scaledTopHeight - scaledBottomHeight));
 			
 			this._bottomLeftImage.scaleX = this._bottomLeftImage.scaleY = this._textureScale;
 			this._bottomLeftImage.x = scaledLeftWidth - this._bottomLeftImage.width;
@@ -253,7 +276,7 @@ package org.josht.starling.display
 			this._bottomCenterImage.scaleX = this._bottomCenterImage.scaleY = this._textureScale;
 			this._bottomCenterImage.x = scaledLeftWidth;
 			this._bottomCenterImage.y = this._height - scaledBottomHeight;
-			this._bottomCenterImage.width = Math.max(0, this._width - scaledLeftWidth - scaledRightWidth);
+			this._bottomCenterImage.width = Math.max(0, Math.ceil(this._width - scaledLeftWidth - scaledRightWidth));
 			this._bottomRightImage.scaleX = this._bottomRightImage.scaleY = this._textureScale;
 			this._bottomRightImage.x = this._width - scaledRightWidth;
 			this._bottomRightImage.y = this._height - scaledBottomHeight;
