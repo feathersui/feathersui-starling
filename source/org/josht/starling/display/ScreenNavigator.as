@@ -36,47 +36,75 @@ package org.josht.starling.display
 	 * A "view stack"-like container that supports navigation between screens
 	 * (any display object) through events.
 	 * 
-	 * @see ScreenNavigatorItem 
-	 * 
-	 * @author Josh Tynjala (joshblog.net)
+	 * @see ScreenNavigatorItem
+	 * @see Screen
 	 */
 	public class ScreenNavigator extends Sprite
 	{
+		/**
+		 * Constructor.
+		 */
 		public function ScreenNavigator()
 		{
 			super();
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function set x(value:Number):void
 		{
 			super.x = Math.round(value);
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function set y(value:Number):void
 		{
 			super.y = Math.round(value);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _activeScreenID:String;
 		
+		/**
+		 * The string identifier for the currently active screen.
+		 */
 		public function get activeScreenID():String
 		{
 			return this._activeScreenID;
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _activeScreen:DisplayObject;
 		
+		/**
+		 * A reference to the currently active screen.
+		 */
 		public function get activeScreen():DisplayObject
 		{
 			return this._activeScreen;
 		}
 		
+		/**
+		 * A function that is called when the <code>ScreenNavigator</code> is
+		 * changing screens.
+		 */
 		public var transition:Function = defaultTransition;
 		
 		private var _screens:Object = {};
 		private var _screenEvents:Object = {};
 		
-		
+		/**
+		 * The identifier of the "default" screen.
+		 * 
+		 * @see showDefaultScreen
+		 */
 		public var defaultScreenID:String;
 		
 		private var _transitionIsActive:Boolean = false;
@@ -84,23 +112,37 @@ package org.josht.starling.display
 		private var _nextScreenID:String = null;
 		private var _clearAfterTransition:Boolean = false;
 		
+		/**
+		 * @private
+		 */
 		private var _onChange:Signal = new Signal(ScreenNavigator, DisplayObject);
 		
+		/**
+		 * Dispatched when the active screen changes.
+		 */
 		public function get onChange():ISignal
 		{
 			return this._onChange;
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _onClear:Signal = new Signal(ScreenNavigator);
 		
+		/**
+		 * Dispatched when the current screen is removed and there is no active
+		 * screen. 
+		 */
 		public function get onClear():ISignal
 		{
 			return this._onClear;
 		}
 		
 		/**
-		 * Displays a screen and returns a reference to it. If a previous transition is running,
-		 * the new screen will be queued, and no reference will be returned.
+		 * Displays a screen and returns a reference to it. If a previous
+		 * transition is running, the new screen will be queued, and no
+		 * reference will be returned.
 		 */
 		public function showScreen(id:String):DisplayObject
 		{
@@ -178,6 +220,11 @@ package org.josht.starling.display
 			return this._activeScreen;
 		}
 		
+		/**
+		 * Shows the "default" screen.
+		 * 
+		 * @see defaultScreenID
+		 */
 		public function showDefaultScreen():DisplayObject
 		{
 			if(!this.defaultScreenID)
@@ -187,6 +234,10 @@ package org.josht.starling.display
 			return this.showScreen(this.defaultScreenID);
 		}
 		
+		/**
+		 * Removes the current screen, leaving the <code>ScreenNavigator</code>
+		 * empty.
+		 */
 		public function clearScreen():void
 		{
 			if(this._transitionIsActive)
@@ -200,6 +251,9 @@ package org.josht.starling.display
 			this._onClear.dispatch(this);
 		}
 		
+		/**
+		 * @private
+		 */
 		private function clearScreenInternal(displayTransition:Boolean):void
 		{
 			if(!this._activeScreen)
@@ -251,6 +305,9 @@ package org.josht.starling.display
 			this._activeScreenID = null;
 		}
 		
+		/**
+		 * Registers a new screen by its identifier.
+		 */
 		public function addScreen(id:String, item:ScreenNavigatorItem):void
 		{
 			if(this._screens.hasOwnProperty(id))
@@ -267,6 +324,9 @@ package org.josht.starling.display
 			this._screens[id] = item;
 		}
 		
+		/**
+		 * Removes an existing screen using its identifier.
+		 */
 		public function removeScreen(id:String):void
 		{
 			if(!this._screens.hasOwnProperty(id))
@@ -276,12 +336,18 @@ package org.josht.starling.display
 			delete this._screens[id];
 		}
 		
+		/**
+		 * @private
+		 */
 		private function defaultTransition(oldScreen:DisplayObject, newScreen:DisplayObject, completeHandler:Function):void
 		{
 			//in short, do nothing
 			completeHandler();
 		}
 		
+		/**
+		 * @private
+		 */
 		private function transitionComplete():void
 		{
 			if(this._previousScreenInTransition)
@@ -305,6 +371,9 @@ package org.josht.starling.display
 			this._clearAfterTransition = false;
 		}
 		
+		/**
+		 * @private
+		 */
 		private function createScreenListener(screenID:String):Function
 		{
 			const self:ScreenNavigator = this;

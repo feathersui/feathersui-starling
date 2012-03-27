@@ -37,55 +37,102 @@ package org.josht.starling.display
 	import starling.events.Event;
 	import starling.events.ResizeEvent;
 	
+	/**
+	 * Provides useful capabilities for a menu screen displayed by
+	 * <code>ScreenNavigator</code>.
+	 * 
+	 * @see ScreenNavigator
+	 */
 	public class Screen extends Sprite
 	{
+		/**
+		 * Constructor.
+		 */
 		public function Screen()
 		{
 			super();
 			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function set x(value:Number):void
 		{
 			super.x = Math.round(value);
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function set y(value:Number):void
 		{
 			super.y = Math.round(value);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _originalWidth:Number = NaN;
 		
+		/**
+		 * The original intended width of the application. If not set manually,
+		 * <code>loaderInfo.width</code> is automatically detected (to get
+		 * width value from <code>[SWF]</code> metadata.
+		 */
 		public function get originalWidth():Number
 		{
 			return this._originalWidth;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set originalWidth(value:Number):void
 		{
 			this._originalWidth = value;
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _originalHeight:Number = NaN;
 		
+		/**
+		 * The original intended height of the application. If not set manually,
+		 * <code>loaderInfo.height</code> is automatically detected (to get
+		 * height value from <code>[SWF]</code> metadata.
+		 */
 		public function get originalHeight():Number
 		{
 			return this._originalHeight;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set originalHeight(value:Number):void
 		{
 			this._originalHeight = value;
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _originalDPI:int = 168;
 		
+		/**
+		 * The original intended DPI of the application. This value cannot be
+		 * automatically detected and it must be set manually.
+		 */
 		public function get originalDPI():int
 		{
 			return this._originalDPI;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set originalDPI(value:int):void
 		{
 			this._originalDPI = value;
@@ -93,41 +140,95 @@ package org.josht.starling.display
 		
 		private var _initialized:Boolean = false;
 		
+		/**
+		 * @private
+		 */
 		private var _pixelScale:Number = 1;
 		
+		/**
+		 * Uses <code>originalWidth</code>, <code>originalHeight</code>,
+		 * <code>stage.stageWidth</code>, and <code>stage.stageHeight</code>,
+		 * to calculate a scale value that will allow all content will fit
+		 * within the current stage bounds using the same relative layout. This
+		 * scale value does not account for differences between the original DPI
+		 * and the current device's DPI.
+		 */
 		protected function get pixelScale():Number
 		{
 			return this._pixelScale;
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _dpiScale:Number = 1;
 		
+		/**
+		 * Uses <code>originalDPI</code> and <code>Capabilities.screenDPI</code>
+		 * to calculate a scale value to allow all content to be the same
+		 * physical size (in inches). Using this value will have a much larger
+		 * effect on the layout of the content, but it can ensure that
+		 * interactive items won't be scaled too small to affect the accuracy
+		 * of touches. Likewise, it won't scale items to become ridiculously
+		 * physically large. Most useful when targeting many different platforms
+		 * with the same code.
+		 */
 		protected function get dpiScale():Number
 		{
 			return this._dpiScale;
 		}
 		
+		/**
+		 * Callback for the back hardware key. Automatically handles keyboard
+		 * events to cancel to default behavior.
+		 */
 		protected var backButtonHandler:Function;
 		
+		/**
+		 * Callback for the menu hardware key. Automatically handles keyboard
+		 * events to cancel to default behavior.
+		 */
 		protected var menuButtonHandler:Function;
 		
+		/**
+		 * Callback for the search hardware key. Automatically handles keyboard
+		 * events to cancel to default behavior.
+		 */
 		protected var searchButtonHandler:Function;
 		
+		/**
+		 * Override this function to create and initialize the children to be
+		 * displayed in this screen.
+		 */
 		protected function initialize():void
 		{
 			
 		}
 		
+		/**
+		 * Override this function to size and position this screen's content.
+		 * This function will be called again every time that the stage changes
+		 * size. On Android and other platforms, this can happen many times on
+		 * startup. On desktop platforms with resizable windows, this may be
+		 * useful for setting up fluid layouts.
+		 */
 		protected function layout():void
 		{
 			
 		}
 		
+		/**
+		 * Override this function to clean up anything when this screen is
+		 * removed from the display list.
+		 */
 		protected function destroy():void
 		{
 			
 		}
 		
+		/**
+		 * @private
+		 */
 		private function refreshScaleRatio():void
 		{
 			const loaderInfo:LoaderInfo = DisplayObjectContainer(Starling.current.nativeStage.root).getChildAt(0).loaderInfo;
@@ -157,6 +258,9 @@ package org.josht.starling.display
 			this._dpiScale = Capabilities.screenDPI / this._originalDPI;
 		}
 		
+		/**
+		 * @private
+		 */
 		private function addedToStageHandler(event:Event):void
 		{
 			this.removeEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
@@ -172,12 +276,18 @@ package org.josht.starling.display
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		private function stage_resizeHandler(event:ResizeEvent):void
 		{
 			this.refreshScaleRatio();
 			this.layout();
 		}
 		
+		/**
+		 * @private
+		 */
 		private function stage_keyDownHandler(event:KeyboardEvent):void
 		{
 			//we're accessing Keyboard.BACK (and others) using a string because
@@ -208,6 +318,9 @@ package org.josht.starling.display
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		private function removedFromStageHandler(event:Event):void
 		{
 			this.removeEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
