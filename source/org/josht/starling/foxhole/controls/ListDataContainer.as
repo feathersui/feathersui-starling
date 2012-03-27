@@ -37,6 +37,10 @@ package org.josht.starling.foxhole.controls
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	
+	/**
+	 * @private
+	 * Used internally by List. Not meant to be used on its own.
+	 */
 	public class ListDataContainer extends FoxholeControl
 	{
 		protected static const INVALIDATION_FLAG_ITEM_RENDERER:String = "itemRenderer";

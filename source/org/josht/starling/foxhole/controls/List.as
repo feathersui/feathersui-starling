@@ -32,12 +32,32 @@ package org.josht.starling.foxhole.controls
 	import starling.display.DisplayObject;
 	import starling.events.TouchEvent;
 	
+	/**
+	 * Displays a one-dimensional list of items. Supports scrolling.
+	 */
 	public class List extends FoxholeControl
 	{
+		/**
+		 * If the list content does not fill the entire available vertical
+		 * space, it will be aligned to the top.
+		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
+		
+		/**
+		 * If the list content does not fill the entire available vertical
+		 * space, it will be aligned to the middle.
+		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
+		
+		/**
+		 * If the list content does not fill the entire available vertical
+		 * space, it will be aligned to the bottom.
+		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 		
+		/**
+		 * Constructor.
+		 */
 		public function List()
 		{
 			super();
@@ -47,15 +67,28 @@ package org.josht.starling.foxhole.controls
 		private var _scroller:Scroller;
 		private var _dataContainer:ListDataContainer;
 		
+		/**
+		 * @private
+		 */
 		private var _scrollToIndex:int = -1;
 		
+		/**
+		 * @private
+		 */
 		private var _verticalScrollPosition:Number = 0;
 		
+		/**
+		 * The number of pixels the list has been scrolled vertically (on
+		 * the y-axis).
+		 */
 		public function get verticalScrollPosition():Number
 		{
 			return this._verticalScrollPosition;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set verticalScrollPosition(value:Number):void
 		{
 			if(this._verticalScrollPosition == value)
@@ -67,20 +100,41 @@ package org.josht.starling.foxhole.controls
 			this._onScroll.dispatch(this);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _maxVerticalScrollPosition:Number = 0;
 		
+		/**
+		 * The maximum number of pixels the list may be scrolled vertically (on
+		 * the y-axis). This value is automatically calculated based on the
+		 * total combined height of the list's item renderers. The
+		 * <code>verticalScrollPosition</code> property may have a higher value
+		 * than the maximum due to elastic edges. However, once the user stops
+		 * interacting with the list, it will automatically animate back to the
+		 * maximum (or minimum, if below 0).
+		 */
 		public function get maxVerticalScrollPosition():Number
 		{
 			return this._maxVerticalScrollPosition;
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _dataProvider:ListCollection;
 		
+		/**
+		 * The collection of data displayed by the list.
+		 */
 		public function get dataProvider():ListCollection
 		{
 			return this._dataProvider;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set dataProvider(value:ListCollection):void
 		{
 			if(this._dataProvider == value)
@@ -92,13 +146,23 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _labelField:String = "label";
 		
+		/**
+		 * The field in each item that contains the label text. If the item does
+		 * not have this field, then the field name is ignored.
+		 */
 		public function get labelField():String
 		{
 			return this._labelField;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set labelField(value:String):void
 		{
 			if(this._labelField == value)
@@ -109,26 +173,44 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _labelFunction:Function;
 		
+		/**
+		 * A function used to generate a label for a specific item.
+		 */
 		public function get labelFunction():Function
 		{
 			return this._labelFunction;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set labelFunction(value:Function):void
 		{
 			this._labelFunction = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _isSelectable:Boolean = true;
 		
+		/**
+		 * Determines if an item in the list may be selected.
+		 */
 		public function get isSelectable():Boolean
 		{
 			return this._isSelectable;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set isSelectable(value:Boolean):void
 		{
 			if(this._isSelectable == value)
@@ -143,13 +225,23 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _selectedIndex:int = -1;
 		
+		/**
+		 * The index of the currently selected item. Returns -1 if no item is
+		 * selected.
+		 */
 		public function get selectedIndex():int
 		{
 			return this._selectedIndex;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set selectedIndex(value:int):void
 		{
 			if(this._selectedIndex == value)
@@ -161,6 +253,9 @@ package org.josht.starling.foxhole.controls
 			this._onChange.dispatch(this);
 		}
 		
+		/**
+		 * The currently selected item. Returns null if no item is selected.
+		 */
 		public function get selectedItem():Object
 		{
 			if(!this._dataProvider || this._selectedIndex < 0 || this._selectedIndex >= this._dataProvider.length)
@@ -171,18 +266,36 @@ package org.josht.starling.foxhole.controls
 			return this._dataProvider.getItemAt(this._selectedIndex);
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set selectedItem(value:Object):void
 		{
 			this.selectedIndex = this._dataProvider.getItemIndex(value);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _clipContent:Boolean = false;
 		
+		/**
+		 * If true, the list's content will be clipped to the lists's bounds. In
+		 * other words, anything appearing outside the list's bounds will
+		 * not be visible.
+		 * 
+		 * <p>To improve performance, turn off clipping and place other display
+		 * objects over the edges of the list to hide the content that
+		 * bleeds outside of the list's bounds.</p>
+		 */
 		public function get clipContent():Boolean
 		{
 			return this._clipContent;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set clipContent(value:Boolean):void
 		{
 			if(this._clipContent == value)
@@ -195,34 +308,67 @@ package org.josht.starling.foxhole.controls
 		
 		private var _isMoving:Boolean = false;
 		
+		/**
+		 * @private
+		 */
 		protected var _onChange:Signal = new Signal(List);
 		
+		/**
+		 * Dispatched when the selected item changes.
+		 */
 		public function get onChange():ISignal
 		{
 			return this._onChange;
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _onScroll:Signal = new Signal(List);
 		
+		/**
+		 * Dispatched when the list is scrolled.
+		 */
 		public function get onScroll():ISignal
 		{
 			return this._onScroll;
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _onItemTouch:Signal = new Signal(List, Object, int, TouchEvent);
 		
+		/**
+		 * Dispatched when an item in the list is touched (in any touch phase).
+		 */
 		public function get onItemTouch():ISignal
 		{
 			return this._onItemTouch;
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _itemRendererProperties:Object = {};
 
+		/**
+		 * A set of key/value pairs to be passed down to all of the list's item
+		 * renderers. These values are shared by each item renderer, so values
+		 * that cannot be shared (such as display objects that need to be added
+		 * to the display list) should be passed to item renderers in another
+		 * way (such as with an <code>AddedWatcher</code>).
+		 * 
+		 * @see AddedWatcher
+		 */
 		public function get itemRendererProperties():Object
 		{
 			return this._itemRendererProperties;
 		}
 
+		/**
+		 * @private
+		 */
 		public function set itemRendererProperties(value:Object):void
 		{
 			if(this._itemRendererProperties == value)
@@ -233,13 +379,22 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _backgroundSkin:DisplayObject;
-
+		
+		/**
+		 * A display object displayed behind the item renderers.
+		 */
 		public function get backgroundSkin():DisplayObject
 		{
 			return this._backgroundSkin;
 		}
-
+		
+		/**
+		 * @private
+		 */
 		public function set backgroundSkin(value:DisplayObject):void
 		{
 			if(this._backgroundSkin == value)
@@ -259,14 +414,23 @@ package org.josht.starling.foxhole.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-
+		
+		/**
+		 * @private
+		 */
 		private var _backgroundDisabledSkin:DisplayObject;
-
+		
+		/**
+		 * A background to display when the list is disabled.
+		 */
 		public function get backgroundDisabledSkin():DisplayObject
 		{
 			return this._backgroundDisabledSkin;
 		}
-
+		
+		/**
+		 * @private
+		 */
 		public function set backgroundDisabledSkin(value:DisplayObject):void
 		{
 			if(this._backgroundDisabledSkin == value)
@@ -287,13 +451,22 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _contentPadding:Number = 0;
 		
+		/**
+		 * The space, in pixels, around the edges of the list's content.
+		 */
 		public function get contentPadding():Number
 		{
 			return _contentPadding;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set contentPadding(value:Number):void
 		{
 			if(this._contentPadding == value)
@@ -304,13 +477,27 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _verticalAlign:String = VERTICAL_ALIGN_TOP;
 		
+		/**
+		 * If the list's content height is less than the list's height, it will
+		 * be aligned to the top, middle, or bottom of the list.
+		 * 
+		 * @see VERTICAL_ALIGN_TOP
+		 * @see VERTICAL_ALIGN_MIDDLE
+		 * @see VERTICAL_ALIGN_BOTTOM
+		 */
 		public function get verticalAlign():String
 		{
 			return _verticalAlign;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set verticalAlign(value:String):void
 		{
 			if(this._verticalAlign == value)
@@ -321,13 +508,22 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _itemRendererType:Class = SimpleItemRenderer;
 		
+		/**
+		 * The class used to instantiate item renderers.
+		 */
 		public function get itemRendererType():Class
 		{
 			return this._itemRendererType;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set itemRendererType(value:Class):void
 		{
 			if(this._itemRendererType == value)
@@ -339,13 +535,25 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _itemRendererFunction:Function;
 		
+		/**
+		 * A function called that is expected to return a new item renderer. Has
+		 * a higher priority than <code>itemRendererType</core>.
+		 * 
+		 * @see itemRendererType
+		 */
 		public function get itemRendererFunction():Function
 		{
 			return this._itemRendererFunction;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set itemRendererFunction(value:Function):void
 		{
 			if(this._itemRendererFunction === value)
@@ -357,13 +565,24 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _typicalItem:Object = null;
 		
+		/**
+		 * Used to auto-size the list. If the list's width or height is NaN, the
+		 * list will try to automatically pick an ideal size. This item is
+		 * used in that process to create a sample item renderer.
+		 */
 		public function get typicalItem():Object
 		{
 			return this._typicalItem;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set typicalItem(value:Object):void
 		{
 			if(this._typicalItem == value)
@@ -374,13 +593,25 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _useVirtualLayout:Boolean = true;
 		
+		/**
+		 * Determines if the list creates item renderers for every single item
+		 * (<code>false</code>), or if it only creates enough item renderers to
+		 * fill the list's bounds (<code>true</code>). If virtual layout is
+		 * enabled, item renderers are reused, and their data may change.
+		 */
 		public function get useVirtualLayout():Boolean
 		{
 			return this._useVirtualLayout;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set useVirtualLayout(value:Boolean):void
 		{
 			if(this._useVirtualLayout == value)
@@ -390,13 +621,22 @@ package org.josht.starling.foxhole.controls
 			this._useVirtualLayout = value;
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
-
+		
+		/**
+		 * Sets a property value for all item renderers.
+		 */
 		public function setItemRendererProperty(propertyName:String, propertyValue:Object):void
 		{
 			this._itemRendererProperties[propertyName] = propertyValue;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * Using <code>labelField</code> and <code>labelFunction</code>,
+		 * generates a label for a particular item. May be called by item
+		 * renderers or externally. Item renderers will not receive a generated
+		 * label value automatically.
+		 */
 		public function itemToLabel(item:Object):String
 		{
 			if(this._labelFunction != null)
@@ -414,12 +654,18 @@ package org.josht.starling.foxhole.controls
 			return "";
 		}
 		
+		/**
+		 * Scrolls the list so that the specified item is visible.
+		 */
 		public function scrollToDisplayIndex(index:int):void
 		{
 			this._scrollToIndex = index;
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function dispose():void
 		{
 			this._onChange.removeAll();
@@ -428,6 +674,9 @@ package org.josht.starling.foxhole.controls
 			super.dispose();
 		}
 		
+		/**
+		 * @private
+		 */
 		override protected function initialize():void
 		{
 			if(!this._scroller)
@@ -449,6 +698,9 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		override protected function draw():void
 		{
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
@@ -512,6 +764,9 @@ package org.josht.starling.foxhole.controls
 			this._verticalScrollPosition = this._scroller.verticalScrollPosition;
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function refreshBackgroundSkin():void
 		{
 			var backgroundSkin:DisplayObject = this._backgroundSkin;
@@ -528,16 +783,25 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function scroller_onScroll(scroller:Scroller):void
 		{
 			this.verticalScrollPosition = this._scroller.verticalScrollPosition;
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function dataContainer_onChange(dataContainer:ListDataContainer):void
 		{
 			this.selectedIndex = this._dataContainer.selectedIndex;
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function dataContainer_onItemTouch(dataContainer:ListDataContainer, item:Object, index:int, event:TouchEvent):void
 		{
 			this._onItemTouch.dispatch(this, item, index, event);
