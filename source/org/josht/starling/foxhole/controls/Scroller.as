@@ -24,7 +24,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package org.josht.starling.foxhole.controls
 {
-	import com.gskinner.motion.easing.Sine;
+	import com.gskinner.motion.easing.Exponential;
 	
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -437,7 +437,7 @@ package org.josht.starling.foxhole.controls
 					horizontalScrollPosition: targetHorizontalScrollPosition
 				},
 				{
-					ease: Sine.easeOut,
+					ease: Exponential.easeOut,
 					onComplete: horizontalAutoScrollTween_onComplete
 				});
 			}
@@ -468,7 +468,7 @@ package org.josht.starling.foxhole.controls
 					verticalScrollPosition: targetVerticalScrollPosition
 				},
 				{
-					ease: Sine.easeOut,
+					ease: Exponential.easeOut,
 					onComplete: verticalAutoScrollTween_onComplete
 				});
 			}
@@ -502,7 +502,7 @@ package org.josht.starling.foxhole.controls
 				horizontalScrollPosition: targetHorizontalScrollPosition
 			},
 			{
-				ease: Sine.easeOut,
+				ease: Exponential.easeOut,
 				onComplete: horizontalAutoScrollTween_onComplete
 			});
 		}
@@ -535,7 +535,7 @@ package org.josht.starling.foxhole.controls
 				verticalScrollPosition: targetVerticalScrollPosition
 			},
 			{
-				ease: Sine.easeOut,
+				ease: Exponential.easeOut,
 				onComplete: verticalAutoScrollTween_onComplete
 			});
 		}
