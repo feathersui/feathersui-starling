@@ -26,8 +26,14 @@ package org.josht.starling.foxhole.text
 {
 	import starling.text.BitmapFont;
 
+	/**
+	 * Customizes a bitmap font for use by a Foxhole Label.
+	 */
 	public class BitmapFontTextFormat
 	{
+		/**
+		 * Constructor.
+		 */
 		public function BitmapFontTextFormat(font:starling.text.BitmapFont, size:Number = NaN, color:uint = uint.MAX_VALUE)
 		{
 			this.font = font;
@@ -35,10 +41,32 @@ package org.josht.starling.foxhole.text
 			this.color = color;
 		}
 		
+		/**
+		 * The BitmapFont instance to use.
+		 */
 		public var font:starling.text.BitmapFont;
+		
+		/**
+		 * The multiply color.
+		 */
 		public var color:uint;
+		
+		/**
+		 * The size at which to display the bitmap font. Set to <code>NaN</code>
+		 * to use the default size in the BitmapFont instance.
+		 */
 		public var size:Number;
+		
+		/**
+		 * The number of extra pixels between characters. May be positive or
+		 * negative.
+		 */
 		public var letterSpacing:Number = 0;
+		
+		/**
+		 * Determines if the kerning values defined in the BitmapFont instance
+		 * will be used for layout.
+		 */
 		public var isKerningEnabled:Boolean = true;
 	}
 }
