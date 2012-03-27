@@ -46,24 +46,80 @@ package org.josht.starling.foxhole.controls
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	
+	/**
+	 * Allows horizontal and vertical scrolling of a viewport (which may be any
+	 * Starling display object). Will react to the <code>onResize</code> signal
+	 * dispatched by Foxhole controls.
+	 */
 	public class Scroller extends FoxholeControl
 	{
+		/**
+		 * The scroller may scroll.
+		 */
 		public static const SCROLL_POLICY_AUTO:String = "auto";
+		
+		/**
+		 * The scroll does not scroll at all.
+		 */
 		public static const SCROLL_POLICY_OFF:String = "off";
 		
+		/**
+		 * Aligns the viewport to the left, if the viewport's width is smaller
+		 * than the scroller's width.
+		 */
 		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
+		
+		/**
+		 * Aligns the viewport to the center, if the viewport's width is smaller
+		 * than the scroller's width.
+		 */
 		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
+		
+		/**
+		 * Aligns the viewport to the right, if the viewport's width is smaller
+		 * than the scroller's width.
+		 */
 		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
 		
+		/**
+		 * Aligns the viewport to the top, if the viewport's height is smaller
+		 * than the scroller's height.
+		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
+		
+		/**
+		 * Aligns the viewport to the middle, if the viewport's height is smaller
+		 * than the scroller's height.
+		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
+		
+		/**
+		 * Aligns the viewport to the bottom, if the viewport's height is smaller
+		 * than the scroller's height.
+		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 		
-		protected static const INVALIDATION_FLAG_CLIPPING:String = "clipping";
+		/**
+		 * Flag to indicate that the clipping has changed.
+		 */
+		public static const INVALIDATION_FLAG_CLIPPING:String = "clipping";
 		
+		/**
+		 * @private
+		 * The minimum physical distance (in inches) that a touch must move
+		 * before the scroller starts scrolling.
+		 */
 		private static const MINIMUM_DRAG_DISTANCE:Number = 0.04;
+		
+		/**
+		 * @private
+		 * The friction applied every frame when the scroller is "thrown".
+		 */
 		private static const FRICTION:Number = 0.9925;
 		
+		/**
+		 * Constructor.
+		 */
 		public function Scroller()
 		{
 			super();
@@ -95,13 +151,22 @@ package org.josht.starling.foxhole.controls
 		
 		private var _viewPortWrapper:Sprite;
 		
+		/**
+		 * @private
+		 */
 		private var _viewPort:DisplayObject;
 		
+		/**
+		 * The display object displayed and scrolled within the Scroller.
+		 */
 		public function get viewPort():DisplayObject
 		{
 			return this._viewPort;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set viewPort(value:DisplayObject):void
 		{
 			if(this._viewPort == value)
@@ -129,13 +194,23 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _horizontalScrollPosition:Number = 0;
 		
+		/**
+		 * The number of pixels the scroller has been scrolled horizontally (on
+		 * the x-axis).
+		 */
 		public function get horizontalScrollPosition():Number
 		{
 			return this._horizontalScrollPosition;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set horizontalScrollPosition(value:Number):void
 		{
 			value = Math.round(value);
@@ -148,20 +223,42 @@ package org.josht.starling.foxhole.controls
 			this._onScroll.dispatch(this);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _maxHorizontalScrollPosition:Number = 0;
 		
+		/**
+		 * The maximum number of pixels the scroller may be scrolled
+		 * horizontally (on the x-axis). This value is automatically calculated
+		 * based on the width of the viewport. The <code>horizontalScrollPosition</code>
+		 * property may have a higher value than the maximum due to elastic
+		 * edges. However, once the user stops interacting with the scroller,
+		 * it will automatically animate back to the maximum (or minimum, if
+		 * below 0).
+		 */
 		public function get maxHorizontalScrollPosition():Number
 		{
 			return this._maxHorizontalScrollPosition;
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _horizontalScrollPolicy:String = SCROLL_POLICY_AUTO;
 		
+		/**
+		 * Determines whether the scroller may scroll horizontally (on the
+		 * x-axis) or not.
+		 */
 		public function get horizontalScrollPolicy():String
 		{
 			return this._horizontalScrollPolicy;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set horizontalScrollPolicy(value:String):void
 		{
 			if(this._horizontalScrollPolicy == value)
@@ -172,13 +269,27 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _horizontalAlign:String = HORIZONTAL_ALIGN_LEFT;
 		
+		/**
+		 * If the viewport's width is less than the scroller's width, it will
+		 * be aligned to the left, center, or right of the scroller.
+		 * 
+		 * @see HORIZONTAL_ALIGN_LEFT
+		 * @see HORIZONTAL_ALIGN_CENTER
+		 * @see HORIZONTAL_ALIGN_RIGHT
+		 */
 		public function get horizontalAlign():String
 		{
 			return _horizontalAlign;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set horizontalAlign(value:String):void
 		{
 			if(this._horizontalAlign == value)
@@ -189,13 +300,23 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _verticalScrollPosition:Number = 0;
 		
+		/**
+		 * The number of pixels the scroller has been scrolled vertically (on
+		 * the y-axis).
+		 */
 		public function get verticalScrollPosition():Number
 		{
 			return this._verticalScrollPosition;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set verticalScrollPosition(value:Number):void
 		{
 			value = Math.round(value);
@@ -208,6 +329,15 @@ package org.josht.starling.foxhole.controls
 			this._onScroll.dispatch(this);
 		}
 		
+		/**
+		 * The maximum number of pixels the scroller may be scrolled vertically
+		 * (on the y-axis). This value is automatically calculated based on the 
+		 * height of the viewport. The <code>verticalScrollPosition</code>
+		 * property may have a higher value than the maximum due to elastic
+		 * edges. However, once the user stops interacting with the scroller,
+		 * it will automatically animate back to the maximum (or minimum, if
+		 * below 0).
+		 */
 		private var _maxVerticalScrollPosition:Number = 0;
 		
 		public function get maxVerticalScrollPosition():Number
@@ -215,13 +345,23 @@ package org.josht.starling.foxhole.controls
 			return this._maxVerticalScrollPosition;
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _verticalScrollPolicy:String = SCROLL_POLICY_AUTO;
 		
+		/**
+		 * Determines whether the scroller may scroll vertically (on the
+		 * y-axis) or not.
+		 */
 		public function get verticalScrollPolicy():String
 		{
 			return this._verticalScrollPolicy;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set verticalScrollPolicy(value:String):void
 		{
 			if(this._verticalScrollPolicy == value)
@@ -232,13 +372,27 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _verticalAlign:String = VERTICAL_ALIGN_TOP;
 		
+		/**
+		 * If the viewport's height is less than the scroller's height, it will
+		 * be aligned to the top, middle, or bottom of the scroller.
+		 * 
+		 * @see VERTICAL_ALIGN_TOP
+		 * @see VERTICAL_ALIGN_MIDDLE
+		 * @see VERTICAL_ALIGN_BOTTOM
+		 */
 		public function get verticalAlign():String
 		{
 			return _verticalAlign;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set verticalAlign(value:String):void
 		{
 			if(this._verticalAlign == value)
@@ -249,13 +403,28 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _clipContent:Boolean = false;
 		
+		/**
+		 * If true, the viewport will be clipped to the scroller's bounds. In
+		 * other words, anything appearing outside the scroller's bounds will
+		 * not be visible.
+		 * 
+		 * <p>To improve performance, turn off clipping and place other display
+		 * objects over the edges of the scroller to hide the content that
+		 * bleeds outside of the scroller's bounds.</p>
+		 */
 		public function get clipContent():Boolean
 		{
 			return this._clipContent;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set clipContent(value:Boolean):void
 		{
 			if(this._clipContent == value)
@@ -266,18 +435,30 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_CLIPPING);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _onScroll:Signal = new Signal(Scroller);
 		
+		/**
+		 * Dispatched when the scroller scrolls in either direction.
+		 */
 		public function get onScroll():ISignal
 		{
 			return this._onScroll;
 		}
 		
+		/**
+		 * @private
+		 */
 		override protected function initialize():void
 		{
 			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 		}
 		
+		/**
+		 * @private
+		 */
 		override protected function draw():void
 		{
 			const sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
@@ -327,6 +508,9 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function scrollContent():void
 		{	
 			var offsetX:Number = 0;
@@ -380,6 +564,9 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function updateHorizontalScrollFromTouchPosition(touchX:Number):void
 		{
 			const offset:Number = this._startTouchX - touchX;
@@ -396,6 +583,9 @@ package org.josht.starling.foxhole.controls
 			this.horizontalScrollPosition = position;
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function updateVerticalScrollFromTouchPosition(touchY:Number):void
 		{
 			const offset:Number = this._startTouchY - touchY;
@@ -412,6 +602,9 @@ package org.josht.starling.foxhole.controls
 			this.verticalScrollPosition = position;
 		}
 		
+		/**
+		 * @private
+		 */
 		private function finishScrollingHorizontally():void
 		{
 			var targetHorizontalScrollPosition:Number = NaN;
@@ -443,6 +636,9 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		private function finishScrollingVertically():void
 		{
 			var targetVerticalScrollPosition:Number = NaN;
@@ -474,6 +670,9 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function throwHorizontally(pixelsPerMS:Number):void
 		{
 			const frameRate:int = Starling.current.nativeStage.frameRate;
@@ -507,6 +706,9 @@ package org.josht.starling.foxhole.controls
 			});
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function throwVertically(pixelsPerMS:Number):void
 		{
 			const frameRate:int = Starling.current.nativeStage.frameRate;
@@ -540,11 +742,17 @@ package org.josht.starling.foxhole.controls
 			});
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function viewPort_onResize(viewPort:FoxholeControl):void
 		{
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function horizontalAutoScrollTween_onComplete(tween:GTween):void
 		{
 			if(this._horizontalAutoScrollTween == tween)
@@ -554,6 +762,9 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function verticalAutoScrollTween_onComplete(tween:GTween):void
 		{
 			if(this._verticalAutoScrollTween == tween)
@@ -563,6 +774,9 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function touchHandler(event:TouchEvent):void
 		{
 			if(!this._isEnabled)
@@ -663,6 +877,9 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		private function removedFromStageHandler(event:Event):void
 		{
 			this._touchPointID = -1;
