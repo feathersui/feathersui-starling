@@ -768,7 +768,7 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
-		private var _autoFlatten:Boolean = true;
+		private var _autoFlatten:Boolean = false;
 
 		public function get autoFlatten():Boolean
 		{
