@@ -29,8 +29,14 @@ package org.josht.starling.display
 	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;
 
+	/**
+	 * Takes a texture and automatically creates a scale-9 grid of subtextures.
+	 */
 	public class Scale9Image extends Sprite
 	{
+		/**
+		 * Constructor.
+		 */
 		public function Scale9Image(texture:Texture, scale9Grid:Rectangle)
 		{
 			super();
@@ -41,13 +47,22 @@ package org.josht.starling.display
 			this.refreshLayout();
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _width:Number = NaN;
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function get width():Number
 		{
 			return this._width;
 		}
 		
+		/**
+		 * @private
+		 */
 		override public function set width(value:Number):void
 		{
 			if(this._width == value)
@@ -58,13 +73,22 @@ package org.josht.starling.display
 			this.refreshLayout();
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _height:Number = NaN;
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function get height():Number
 		{
 			return this._height;
 		}
 		
+		/**
+		 * @private
+		 */
 		override public function set height(value:Number):void
 		{
 			if(this._height == value)
@@ -75,13 +99,22 @@ package org.josht.starling.display
 			this.refreshLayout();
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _textureScale:Number = 1;
-
+		
+		/**
+		 * The amount to scale the texture. Useful for DPI changes.
+		 */
 		public function get textureScale():Number
 		{
 			return this._textureScale;
 		}
-
+		
+		/**
+		 * @private
+		 */
 		public function set textureScale(value:Number):void
 		{
 			if(this._textureScale == value)
@@ -92,13 +125,22 @@ package org.josht.starling.display
 			this.refreshLayout();
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _smoothing:String = TextureSmoothing.BILINEAR;
-
+		
+		/**
+		 * The smoothing value to pass to the subtextures.
+		 */
 		public function get smoothing():String
 		{
 			return this._smoothing;
 		}
-
+		
+		/**
+		 * @private
+		 */
 		public function set smoothing(value:String):void
 		{
 			if(this._smoothing == value)
@@ -129,6 +171,9 @@ package org.josht.starling.display
 		private var _bottomCenterImage:Image;
 		private var _bottomRightImage:Image;
 		
+		/**
+		 * @private
+		 */
 		private function saveWidthAndHeight(texture:Texture):void
 		{
 			const textureFrame:Rectangle = texture.frame;
@@ -140,6 +185,9 @@ package org.josht.starling.display
 			this._bottomHeight = textureFrame.height - this._scale9Grid.height - this._scale9Grid.y;
 		}
 		
+		/**
+		 * @private
+		 */
 		private function createImages(texture:Texture):void
 		{
 			//start by creating the subtextures
@@ -214,6 +262,9 @@ package org.josht.starling.display
 			this.addChild(this._bottomRightImage);
 		}
 		
+		/**
+		 * @private
+		 */
 		private function refreshProperties():void
 		{
 			this._topLeftImage.smoothing = this._smoothing;
@@ -228,7 +279,10 @@ package org.josht.starling.display
 			this._bottomCenterImage.smoothing = this._smoothing;
 			this._bottomRightImage.smoothing = this._smoothing;
 		}
-
+		
+		/**
+		 * @private
+		 */
 		private function refreshLayout():void
 		{
 			const scaledLeftWidth:Number = this._leftWidth * this._textureScale;
