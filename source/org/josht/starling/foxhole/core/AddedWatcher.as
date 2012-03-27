@@ -31,35 +31,64 @@ package org.josht.starling.foxhole.core
 	
 	import starling.display.DisplayObject;
 	import starling.events.Event;
-
+	
+	/**
+	 * Watches a container on the display list. As new display objects are
+	 * added, if they match a specific type, they will be passed to initializer
+	 * functions to set properties, call methods, or otherwise modify them.
+	 * Useful for initializing skins and styles on UI controls.
+	 * 
+	 * <p>If a display object matches multiple types that have initializers, the
+	 * initializers will be executed in order following the inheritance chain.</p>
+	 */
 	public class AddedWatcher
 	{
+		/**
+		 * Constructor.
+		 */
 		public function AddedWatcher(root:DisplayObject)
 		{
 			this._root = root;
 			this._root.addEventListener(Event.ADDED, addedHandler);
 		}
 		
+		/**
+		 * The minimum base class required before the AddedWatcher will check
+		 * to see if a particular display object has any initializers.
+		 */
 		public var requiredBaseClass:Class = FoxholeControl;
 		
 		private var _root:DisplayObject;
 		private var _typeMap:Dictionary = new Dictionary(true);
 		
+		/**
+		 * Sets the initializer for a specific class.
+		 */
 		public function setInitializerForClass(type:Class, initializer:Function):void
 		{
 			this._typeMap[type] = initializer;
 		}
 		
+		/**
+		 * If an initializer exists for a specific class, it will be returned.
+		 */
 		public function getInitializerForClass(type:Class):Function
 		{
 			return this._typeMap[type];
 		}
 		
+		/**
+		 * If an initializer exists for a specific class, it will be removed
+		 * completely.
+		 */
 		public function clearInitializerForClass(type:Class):void
 		{
 			delete this._typeMap[type];
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function applyAllStyles(target:DisplayObject):void
 		{
 			var combinedStyles:Object = {};
@@ -84,6 +113,9 @@ package org.josht.starling.foxhole.core
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function addedHandler(event:Event):void
 		{
 			var target:DisplayObject = (event.target as requiredBaseClass) as DisplayObject;
