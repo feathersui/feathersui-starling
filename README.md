@@ -1,6 +1,10 @@
 # Foxhole
 
-Built on [Starling](http://gamua.com/starling/) for Adobe AIR and Flash Player, Foxhole consists of various UI controls designed for mobile, developed by [Josh Tynjala](http://twitter.com/joshtynjala). Foxhole's name comes from the fact that the author develops these components "under fire" for real projects, mostly games. Documentation is sparse. APIs may change drastically on a whim. The components aren't necessarily fully-featured. Use at your own risk.
+Built on [Starling](http://gamua.com/starling/) for Adobe AIR and Flash Player, Foxhole consists of various UI controls designed for mobile, developed by [Josh Tynjala](http://twitter.com/joshtynjala). Foxhole's name comes from the fact that the author develops these components "under fire" for real projects, mostly games.
+
+Documentation is sparse. APIs may change drastically, on a whim. The components aren't necessarily fully-featured. Use at your own risk.
+
+To get started, you might want to check out the [Foxhole for Starling Examples](https://github.com/joshtynjala/foxhole-starling-examples). The [Foxhole Kitchen Sink example](https://github.com/joshtynjala/foxhole-starling-examples/tree/master/KitchenSink), in particular, highlights every component and offers a good overview of how the author uses Foxhole.
 
 ## Available Components
 
@@ -38,14 +42,18 @@ The following external libraries are required. Other versions of the same librar
 * [GTween](http://gskinner.com/libraries/gtween/) v2.01
 * [as3-signals](https://github.com/robertpenner/as3-signals) v0.9 BETA
 
+## Quick Links
+
+* [Foxhole for Starling Examples](https://github.com/joshtynjala/foxhole-starling-examples)
+* [Getting Started Article](https://github.com/joshtynjala/foxhole-starling/wiki/Getting-Started)
+* [Official Foxhole Q&A thread on the Starling Forums](http://forum.starling-framework.org/topic/official-foxhole-components-qa)
+
 ## Tips
 
-* At this time, the components do not have default skins. All skins need to be set manually, and you're likely to see runtime errors if certain skins are omitted.
+* The components do not have default skins. However, you can try out one of the themes included with the [Foxhole for Starling Examples](https://github.com/joshtynjala/foxhole-starling-examples).
 
 * In most cases any Starling display object is acceptable as a skin. However, the `ToggleSwitch` control works best with skins that supports `scrollRect` (it's not required, but recommended). Starling's core display objects do not implement `scrollRect` at this time. Subclasses of `Sprite` and `Image` with basic (but somewhat incomplete) implementations are included with Foxhole.
 
 * Bitmap fonts are required for all text displayed in these UI controls. Use `BitmapFontTextFormat` to customize the text styles. `BitmapFont` from Starling has been subclassed to add the missing `base` property defined in `*.fnt` files.
 
-* An Ant build script is included. Add files `sdk.local.properties` to override the location of the Flex SDK and `build.local.properties` to override the locations of the required third-party libraries.
-
-* If the currently limited documentation doesn't answer any questions you may have, feel free to ask on the [Official Foxhole Q&A thread on the Starling Forums](http://forum.starling-framework.org/topic/official-foxhole-components-qa).
+* An Ant build script is included. Add a file called `sdk.local.properties` to override the location of the Flex SDK and `build.local.properties` to override the locations of the required third-party libraries.
