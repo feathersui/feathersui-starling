@@ -26,11 +26,24 @@ package org.josht.starling.foxhole.core
 {
 	import org.osflash.signals.ISignal;
 
+	/**
+	 * An interface for something that may be selected.
+	 */
 	public interface IToggle
 	{
+		/**
+		 * Indicates if the IToggle is selected or not.
+		 */
 		function get isSelected():Boolean;
+		
+		/**
+		 * @private
+		 */
 		function set isSelected(value:Boolean):void;
 		
+		/**
+		 * Dispatched when the selection changes.
+		 */
 		function get onChange():ISignal;
 	}
 }

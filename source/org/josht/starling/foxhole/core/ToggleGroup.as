@@ -32,9 +32,18 @@ package org.josht.starling.foxhole.core
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
-
+	
+	/**
+	 * Controls the selection of two or more IToggle instances where only one
+	 * may be selected at a time.
+	 * 
+	 * @see IToggle
+	 */
 	public class ToggleGroup extends EventDispatcher
 	{
+		/**
+		 * Constructor.
+		 */
 		public function ToggleGroup()
 		{
 		}
@@ -43,13 +52,22 @@ package org.josht.starling.foxhole.core
 		
 		private var _items:Vector.<IToggle> = new Vector.<IToggle>;
 		
+		/**
+		 * @private
+		 */
 		private var _selectedItem:IToggle;
-
+		
+		/**
+		 * The currently selected toggle.
+		 */
 		public function get selectedItem():IToggle
 		{
 			return this._selectedItem;
 		}
-
+		
+		/**
+		 * @private
+		 */
 		public function set selectedItem(value:IToggle):void
 		{
 			this._selectedIndex = this._items.indexOf(value);
@@ -81,13 +99,22 @@ package org.josht.starling.foxhole.core
 			this._onChange.dispatch(this);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _selectedIndex:int = -1;
-
+		
+		/**
+		 * The index of the currently selected toggle.
+		 */
 		public function get selectedIndex():int
 		{
 			return this._selectedIndex;
 		}
-
+		
+		/**
+		 * @private
+		 */
 		public function set selectedIndex(value:int):void
 		{
 			if(value < 0 || value >= this._items.length)
@@ -97,13 +124,23 @@ package org.josht.starling.foxhole.core
 			this.selectedItem = this._items[value];
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _onChange:Signal = new Signal(ToggleGroup);
 		
+		/**
+		 * Dispatched when the selection changes.
+		 */
 		public function get onChange():ISignal
 		{
 			return this._onChange;
 		}
 		
+		/**
+		 * Adds a toggle to the group. If it is the first one, it is
+		 * automatically selected.
+		 */
 		public function addItem(item:IToggle):void
 		{
 			if(!item)
@@ -128,6 +165,9 @@ package org.josht.starling.foxhole.core
 			item.onChange.add(item_onChange);
 		}
 		
+		/**
+		 * Removes a toggle from the group.
+		 */
 		public function removeItem(item:IToggle):void
 		{
 			const index:int = this._items.indexOf(item);
@@ -143,6 +183,9 @@ package org.josht.starling.foxhole.core
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		private function item_onChange(item:IToggle):void
 		{
 			if(this._ignoreChanges)
