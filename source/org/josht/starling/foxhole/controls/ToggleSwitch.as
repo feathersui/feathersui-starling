@@ -451,10 +451,10 @@ package org.josht.starling.foxhole.controls
 		
 		protected function updateSelection():void
 		{
-			var xPosition:Number = this.contentPadding;
+			var xPosition:Number = Math.ceil(this.contentPadding);
 			if(this._isSelected)
 			{
-				xPosition = this._width - this.thumb.width - this._contentPadding;
+				xPosition = Math.floor(this._width - this.thumb.width - this._contentPadding);
 			}
 			
 			//stop the tween, no matter what
@@ -699,7 +699,7 @@ package org.josht.starling.foxhole.controls
 			else if(touch.phase == TouchPhase.MOVED)
 			{
 				const xOffset:Number = location.x - this._touchStartX;
-				const xPosition:Number = Math.min(Math.max(this._contentPadding, this._thumbStartX + xOffset), trackScrollableWidth);
+				const xPosition:int = Math.min(Math.max(this._contentPadding, this._thumbStartX + xOffset), trackScrollableWidth);
 				this.thumb.x = xPosition;
 				this.updateScrollRects();
 			}
