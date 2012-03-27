@@ -27,10 +27,17 @@ package org.josht.starling.text
 	import starling.text.BitmapFont;
 	import starling.textures.Texture;
 	
+	/**
+	 * A subclass of Starling's BitmapFont class to expose the baseline value.
+	 * Will be removed if and when Starling adds support.
+	 */
 	public class BitmapFont extends starling.text.BitmapFont
 	{
 		private var mBase:Number;
-		
+	
+		/**
+		 * Constructor.
+		 */
 		public function BitmapFont(texture:Texture, fontXml:XML=null)
 		{
 			super(texture, fontXml);
@@ -40,12 +47,22 @@ package org.josht.starling.text
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		private function parseFontXml(fontXml:XML):void
 		{
 			mBase = parseFloat(fontXml.common.attribute("base"));
 		}
 		
+		/**
+		 * The baseline value for the font.
+		 */
 		public function get base():Number { return mBase; }
+		
+		/**
+		 * @private
+		 */
 		public function set base(value:Number):void { mBase = value; }
 	}
 }
