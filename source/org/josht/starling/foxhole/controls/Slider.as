@@ -37,11 +37,25 @@ package org.josht.starling.foxhole.controls
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	
+	/**
+	 * Select a value between a minimum and a maximum by dragging a thumb over
+	 * the bounds of a track.
+	 */
 	public class Slider extends FoxholeControl
 	{
+		/**
+		 * The slider's thumb may be dragged horizontally (on the x-axis).
+		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
+		
+		/**
+		 * The slider's thumb may be dragged vertically (on the y-axis).
+		 */
 		public static const DIRECTION_VERTICAL:String = "vertical";
 		
+		/**
+		 * Constructor.
+		 */
 		public function Slider()
 		{
 			super();
@@ -50,20 +64,36 @@ package org.josht.starling.foxhole.controls
 		protected var track:Button;
 		protected var thumb:Button;
 		
+		/**
+		 * @private
+		 */
 		protected var _onChange:Signal = new Signal(Slider);
 		
+		/**
+		 * Dispatched when the <code>value</code> property changes.
+		 */
 		public function get onChange():ISignal
 		{
 			return this._onChange;
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _direction:String = DIRECTION_HORIZONTAL;
 		
+		/**
+		 * Determines if the slider's thumb can be dragged horizontally or
+		 * vertically. Does not change the width and height of the slider.
+		 */
 		public function get direction():String
 		{
 			return this._direction;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set direction(value:String):void
 		{
 			if(this._direction == value)
@@ -74,13 +104,22 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _value:Number = 0;
 		
+		/**
+		 * The value of the slider, between the minimum and maximum.
+		 */
 		public function get value():Number
 		{
 			return this._value;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set value(newValue:Number):void
 		{
 			if(this._step != 0)
@@ -100,13 +139,22 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _minimum:Number = 0;
 		
+		/**
+		 * The slider's value will not go lower than the minimum.
+		 */
 		public function get minimum():Number
 		{
 			return this._minimum;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set minimum(value:Number):void
 		{
 			if(this._minimum == value)
@@ -117,13 +165,22 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _maximum:Number = 0;
 		
+		/**
+		 * The slider's value will not go higher than the maximum.
+		 */
 		public function get maximum():Number
 		{
 			return this._maximum;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set maximum(value:Number):void
 		{
 			if(this._maximum == value)
@@ -134,13 +191,23 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _step:Number = 0;
 		
+		/**
+		 * As the slider's thumb is dragged, the value is snapped to a multiple
+		 * of the step.
+		 */
 		public function get step():Number
 		{
 			return this._step;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set step(value:Number):void
 		{
 			if(this._step == value)
@@ -150,16 +217,34 @@ package org.josht.starling.foxhole.controls
 			this._step = value;
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var isDragging:Boolean = false;
+		
+		/**
+		 * Determines if the slider dispatches the onChange signal every time
+		 * the thumb moves, or only once it stops moving.
+		 */
 		public var liveDragging:Boolean = true;
 		
+		/**
+		 * @private
+		 */
 		private var _showThumb:Boolean = true;
 		
+		/**
+		 * Determines if the thumb should be displayed. This stops interaction
+		 * while still displaying the track.
+		 */
 		public function get showThumb():Boolean
 		{
 			return this._showThumb;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set showThumb(value:Boolean):void
 		{
 			if(this._showThumb == value)
@@ -169,14 +254,24 @@ package org.josht.starling.foxhole.controls
 			this._showThumb = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-
+		
+		/**
+		 * @private
+		 */
 		private var _trackProperties:Object = {};
-
+		
+		/**
+		 * A set of key/value pairs to be passed down to the slider's track
+		 * instance. The track is a Foxhole Button control.
+		 */
 		public function get trackProperties():Object
 		{
 			return this._trackProperties;
 		}
-
+		
+		/**
+		 * @private
+		 */
 		public function set trackProperties(value:Object):void
 		{
 			if(this._trackProperties == value)
@@ -186,14 +281,24 @@ package org.josht.starling.foxhole.controls
 			this._trackProperties = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-
+		
+		/**
+		 * @private
+		 */
 		private var _thumbProperties:Object = {};
-
+		
+		/**
+		 * A set of key/value pairs to be passed down to the slider's thumb
+		 * instance. The track is a Foxhole Button control.
+		 */
 		public function get thumbProperties():Object
 		{
 			return this._thumbProperties;
 		}
-
+		
+		/**
+		 * @private
+		 */
 		public function set thumbProperties(value:Object):void
 		{
 			if(this._thumbProperties == value)
@@ -210,24 +315,38 @@ package org.josht.starling.foxhole.controls
 		private var _thumbStartX:Number = NaN;
 		private var _thumbStartY:Number = NaN;
 		
+		/**
+		 * Sets a single property on the slider's thumb instance. The thumb is
+		 * a Foxhole Button control.
+		 */
 		public function setThumbProperty(propertyName:String, propertyValue:Object):void
 		{
 			this._thumbProperties[propertyName] = propertyValue;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * Sets a single property on the slider's track instance. The track is
+		 * a Foxhole Button control.
+		 */
 		public function setTrackProperty(propertyName:String, propertyValue:Object):void
 		{
 			this._trackProperties[propertyName] = propertyValue;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function dispose():void
 		{
 			this._onChange.removeAll();
 			super.dispose();
 		}
-
+		
+		/**
+		 * @private
+		 */
 		override protected function initialize():void
 		{
 			if(!this.track)
@@ -248,6 +367,9 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		override protected function draw():void
 		{
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
@@ -325,6 +447,9 @@ package org.josht.starling.foxhole.controls
 			this.track.validate();
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function refreshThumbStyles():void
 		{
 			for(var propertyName:String in this._thumbProperties)
@@ -338,6 +463,9 @@ package org.josht.starling.foxhole.controls
 			this.thumb.visible = this._showThumb;
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function refreshTrackStyles():void
 		{
 			for(var propertyName:String in this._trackProperties)
@@ -350,6 +478,9 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		private function track_touchHandler(event:TouchEvent):void
 		{
 			if(!this._isEnabled)
@@ -375,6 +506,9 @@ package org.josht.starling.foxhole.controls
 			this.value = this._minimum + percentage * (this._maximum - this._minimum);
 		}
 		
+		/**
+		 * @private
+		 */
 		private function thumb_touchHandler(event:TouchEvent):void
 		{
 			if(!this._isEnabled)
