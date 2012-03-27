@@ -53,7 +53,7 @@ package org.josht.starling.foxhole.controls
 		private var _button:Button;
 		private var _list:List;
 		
-		private var _isInteracting:Boolean = false;
+		private var _touchID:int = -1;
 		private var _hasBeenScrolled:Boolean = false;
 		
 		private var _dataProvider:ListCollection;
@@ -401,7 +401,7 @@ package org.josht.starling.foxhole.controls
 		
 		protected function list_onScroll(list:List):void
 		{
-			if(this._isInteracting)
+			if(this._touchID >= 0)
 			{
 				this._hasBeenScrolled = true;
 			}
@@ -411,7 +411,7 @@ package org.josht.starling.foxhole.controls
 		{
 			const displayRenderer:DisplayObject = DisplayObject(event.currentTarget);
 			const touch:Touch = event.getTouch(displayRenderer);
-			if(this._hasBeenScrolled || !touch || touch.phase != TouchPhase.ENDED)
+			if(this._hasBeenScrolled || !touch || this._touchID != touch.id || touch.phase != TouchPhase.ENDED)
 			{
 				return;
 			}
@@ -430,18 +430,18 @@ package org.josht.starling.foxhole.controls
 		protected function list_touchHandler(event:TouchEvent):void
 		{
 			const touch:Touch = event.getTouch(this._list);
-			if(!touch || touch.id != 0)
+			if(!touch)
 			{
 				return;
 			}
 			if(touch.phase == TouchPhase.BEGAN)
 			{
-				this._isInteracting = true;
+				this._touchID = touch.id;
 				this._hasBeenScrolled = false;
 			}
-			else if(touch.phase == TouchPhase.ENDED)
+			else if(this._touchID == touch.id && touch.phase == TouchPhase.ENDED)
 			{
-				this._isInteracting = false;
+				this._touchID = -1;
 			}
 		}
 		
