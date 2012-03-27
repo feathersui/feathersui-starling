@@ -28,16 +28,46 @@ package org.josht.starling.foxhole.controls
 
 	public interface IListItemRenderer
 	{
+		/**
+		 * An item from the list's data provider. The data may change if this
+		 * item renderer is reused for a new item because it's no longer needed
+		 * for the original item.
+		 */
 		function get data():Object;
+		
+		/**
+		 * @private
+		 */
 		function set data(value:Object):void;
 		
+		/**
+		 * The index (numeric position, starting from zero) of the item within
+		 * the list's data provider. Like the <code>data</code> property, this
+		 * value may change if this item renderer is reused by the list for a
+		 * different item.
+		 */
 		function get index():int;
+		
+		/**
+		 * @private
+		 */
 		function set index(value:int):void;
 		
 		function get isSelected():Boolean;
+		
+		/**
+		 * @private
+		 */
 		function set isSelected(value:Boolean):void;
 		
+		/**
+		 * The list that contains this item renderer.
+		 */
 		function get owner():List;
+		
+		/**
+		 * @private
+		 */
 		function set owner(value:List):void;
 	}
 }
