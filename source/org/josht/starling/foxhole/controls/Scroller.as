@@ -24,7 +24,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package org.josht.starling.foxhole.controls
 {
-	import com.gskinner.motion.easing.Exponential;
+	import com.gskinner.motion.easing.Sine;
 	
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -78,11 +78,15 @@ package org.josht.starling.foxhole.controls
 		
 		private var _background:Quad;
 		private var _touchPointID:int = -1;
-		private var _startTouchTime:int;
 		private var _startTouchX:Number;
 		private var _startTouchY:Number;
 		private var _startHorizontalScrollPosition:Number;
 		private var _startVerticalScrollPosition:Number;
+		private var _previousTouchTime:int;
+		private var _previousTouchX:Number;
+		private var _previousTouchY:Number;
+		private var _velocityX:Number;
+		private var _velocityY:Number;
 		
 		private var _horizontalAutoScrollTween:GTween;
 		private var _verticalAutoScrollTween:GTween;
@@ -279,6 +283,7 @@ package org.josht.starling.foxhole.controls
 			const sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			const scrollInvalid:Boolean = dataInvalid || this.isInvalid(INVALIDATION_FLAG_SCROLL);
+			const clippingInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_CLIPPING);
 			
 			if(sizeInvalid)
 			{
@@ -299,6 +304,9 @@ package org.josht.starling.foxhole.controls
 					this._verticalAutoScrollTween.paused = true;
 					this._verticalAutoScrollTween = null;
 				}
+				this._touchPointID = -1;
+				this._velocityX = 0;
+				this._velocityY = 0;
 				if(this._viewPort)
 				{
 					this._maxHorizontalScrollPosition = Math.round(Math.max(0, this._viewPort.width - this._width));
@@ -313,7 +321,7 @@ package org.josht.starling.foxhole.controls
 				this._verticalScrollPosition = clamp(this._verticalScrollPosition, 0, this._maxVerticalScrollPosition);
 			}
 			
-			if(sizeInvalid || dataInvalid || scrollInvalid)
+			if(sizeInvalid || dataInvalid || scrollInvalid || clippingInvalid)
 			{
 				this.scrollContent();
 			}
@@ -429,7 +437,7 @@ package org.josht.starling.foxhole.controls
 					horizontalScrollPosition: targetHorizontalScrollPosition
 				},
 				{
-					ease: Exponential.easeOut,
+					ease: Sine.easeOut,
 					onComplete: horizontalAutoScrollTween_onComplete
 				});
 			}
@@ -460,7 +468,7 @@ package org.josht.starling.foxhole.controls
 					verticalScrollPosition: targetVerticalScrollPosition
 				},
 				{
-					ease: Exponential.easeOut,
+					ease: Sine.easeOut,
 					onComplete: verticalAutoScrollTween_onComplete
 				});
 			}
@@ -494,7 +502,7 @@ package org.josht.starling.foxhole.controls
 				horizontalScrollPosition: targetHorizontalScrollPosition
 			},
 			{
-				ease: Exponential.easeOut,
+				ease: Sine.easeOut,
 				onComplete: horizontalAutoScrollTween_onComplete
 			});
 		}
@@ -527,7 +535,7 @@ package org.josht.starling.foxhole.controls
 				verticalScrollPosition: targetVerticalScrollPosition
 			},
 			{
-				ease: Exponential.easeOut,
+				ease: Sine.easeOut,
 				onComplete: verticalAutoScrollTween_onComplete
 			});
 		}
@@ -581,9 +589,11 @@ package org.josht.starling.foxhole.controls
 				}
 				
 				this._touchPointID = touch.id;
-				this._startTouchTime = getTimer();
-				this._startTouchX = location.x;
-				this._startTouchY = location.y;
+				this._velocityX = 0;
+				this._velocityY = 0;
+				this._previousTouchTime = getTimer();
+				this._previousTouchX = this._startTouchX = location.x;
+				this._previousTouchY = this._startTouchY = location.y;
 				this._startHorizontalScrollPosition = this._horizontalScrollPosition;
 				this._startVerticalScrollPosition = this._verticalScrollPosition;
 				this._isDraggingHorizontally = false;
@@ -591,6 +601,17 @@ package org.josht.starling.foxhole.controls
 			}
 			else if(touch.phase == TouchPhase.MOVED)
 			{
+				const now:int = getTimer();
+				const timeOffset:int = now - this._previousTouchTime;
+				if(timeOffset > 0)
+				{
+					this._velocityX = (location.x - this._previousTouchX) / timeOffset;
+					this._velocityY = (location.y - this._previousTouchY) / timeOffset;
+					this._previousTouchTime = now
+					this._previousTouchX = location.x;
+					this._previousTouchY = location.y;
+				}
+				
 				const horizontalInchesMoved:Number = Math.abs(location.x - this._startTouchX) / Capabilities.screenDPI;
 				const verticalInchesMoved:Number = Math.abs(location.y - this._startTouchY) / Capabilities.screenDPI;
 				if(this._horizontalScrollPolicy != SCROLL_POLICY_OFF && !this._isDraggingHorizontally && horizontalInchesMoved >= MINIMUM_DRAG_DISTANCE)
@@ -630,17 +651,14 @@ package org.josht.starling.foxhole.controls
 					return;
 				}
 				
-				const dragDuration:int = getTimer() - this._startTouchTime;
 				if(!isFinishingHorizontally && this._horizontalScrollPolicy != SCROLL_POLICY_OFF)
 				{
-					const horizontalDragDistance:Number = location.x - this._startTouchX;
-					this.throwHorizontally(horizontalDragDistance / dragDuration);
+					this.throwHorizontally(this._velocityX);
 				}
 				
 				if(!isFinishingVertically && this._verticalScrollPolicy != SCROLL_POLICY_OFF)
 				{
-					const verticalDragDistance:Number = location.y - this._startTouchY;
-					this.throwVertically(verticalDragDistance / dragDuration);
+					this.throwVertically(this._velocityY);
 				}
 			}
 		}
@@ -648,6 +666,8 @@ package org.josht.starling.foxhole.controls
 		private function removedFromStageHandler(event:Event):void
 		{
 			this._touchPointID = -1;
+			this._velocityX = 0;
+			this._velocityY = 0;
 			if(this._verticalAutoScrollTween)
 			{
 				this._verticalAutoScrollTween.paused = true;
