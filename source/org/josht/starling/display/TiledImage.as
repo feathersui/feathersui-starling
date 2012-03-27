@@ -29,8 +29,15 @@ package org.josht.starling.display
 	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;
 
+	/**
+	 * Tiles a texture to fill, and possibly overflow, the specified bounds. May
+	 * be clipped.
+	 */
 	public class TiledImage extends Sprite
 	{
+		/**
+		 * Constructor.
+		 */
 		public function TiledImage(texture:Texture)
 		{
 			super();
@@ -40,13 +47,22 @@ package org.josht.starling.display
 		private var _imageContainer:Sprite;
 		private var _images:Vector.<Image> = new <Image>[];
 		
+		/**
+		 * @private
+		 */
 		private var _width:Number = 100;
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function get width():Number
 		{
 			return this._width;
 		}
 		
+		/**
+		 * @private
+		 */
 		override public function set width(value:Number):void
 		{
 			if(this._width == value)
@@ -57,13 +73,22 @@ package org.josht.starling.display
 			this.refreshImages();
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _height:Number = 100;
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function get height():Number
 		{
 			return this._height;
 		}
 		
+		/**
+		 * @private
+		 */
 		override public function set height(value:Number):void
 		{
 			if(this._height == value)
@@ -74,13 +99,22 @@ package org.josht.starling.display
 			this.refreshImages();
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _texture:Texture;
 		
+		/**
+		 * The texture to tile.
+		 */
 		public function get texture():Texture
 		{
 			return this._texture;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set texture(value:Texture):void 
 		{ 
 			if(value == null)
@@ -93,14 +127,23 @@ package org.josht.starling.display
 				this.refreshImages();
 			}
 		}
-			
+		
+		/**
+		 * @private
+		 */
 		private var _smoothing:String = TextureSmoothing.BILINEAR;
 		
+		/**
+		 * The smoothing value to pass to the tiled images.
+		 */
 		public function get smoothing():String
 		{
 			return this._smoothing;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set smoothing(value:String):void 
 		{
 			if(TextureSmoothing.isValid(value))
@@ -114,13 +157,22 @@ package org.josht.starling.display
 			this.refreshImageProperties();
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _textureScale:Number = 1;
-
+		
+		/**
+		 * The amount to scale the texture.
+		 */
 		public function get textureScale():Number
 		{
 			return this._textureScale;
 		}
-
+		
+		/**
+		 * @private
+		 */
 		public function set textureScale(value:Number):void
 		{
 			if(this._textureScale == value)
@@ -131,13 +183,23 @@ package org.josht.starling.display
 			this.refreshImages();
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _clipContent:Boolean = false;
-
+		
+		/**
+		 * Determines if the tiled content should be clipped to the width and
+		 * height.
+		 */
 		public function get clipContent():Boolean
 		{
 			return this._clipContent;
 		}
-
+		
+		/**
+		 * @private
+		 */
 		public function set clipContent(value:Boolean):void
 		{
 			if(this._clipContent == value)
@@ -148,13 +210,19 @@ package org.josht.starling.display
 			this.refreshScrollRect();
 		}
 		
+		/**
+		 * Set both the width and height in one call.
+		 */
 		public function setSize(width:Number, height:Number):void
 		{
 			this._width = width;
 			this._height = height;
 			this.refreshImages();
 		}
-
+		
+		/**
+		 * @private
+		 */
 		private function refreshImages():void
 		{
 			const scaledTextureWidth:Number = Math.floor(this._texture.width * this._textureScale);
@@ -188,6 +256,9 @@ package org.josht.starling.display
 			this.refreshLayout();
 		}
 		
+		/**
+		 * @private
+		 */
 		private function refreshImageProperties():void
 		{
 			for each(var image:Image in this._images)
@@ -196,6 +267,9 @@ package org.josht.starling.display
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		private function refreshLayout():void
 		{
 			const scaledTextureWidth:Number = Math.floor(this._texture.width * this._textureScale);
@@ -220,6 +294,9 @@ package org.josht.starling.display
 			this.refreshScrollRect();
 		}
 		
+		/**
+		 * @private
+		 */
 		private function refreshScrollRect():void
 		{
 			if(this._clipContent)
