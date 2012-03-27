@@ -44,31 +44,71 @@ package org.josht.starling.foxhole.controls
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	
+	/**
+	 * Similar to a light switch. May be selected or not, like a check box.
+	 */
 	public class ToggleSwitch extends FoxholeControl implements IToggle
 	{
+		/**
+		 * @private
+		 * The minimum physical distance (in inches) that a touch must move
+		 * before the scroller starts scrolling.
+		 */
 		private static const MINIMUM_DRAG_DISTANCE:Number = 0.04;
 		
+		/**
+		 * The ON and OFF labels will be aligned to the middle vertically,
+		 * based on the full character height of the font.
+		 */
 		public static const LABEL_ALIGN_MIDDLE:String = "middle";
+		
+		/**
+		 * The ON and OFF labels will be aligned to the middle vertically,
+		 * based on only the baseline vlaue of the font. 
+		 */
 		public static const LABEL_ALIGN_BASELINE:String = "baseline";
 		
+		/**
+		 * Constructor.
+		 */
 		public function ToggleSwitch()
 		{
 			super();
 			this.addEventListener(TouchEvent.TOUCH, touchHandler);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var thumb:Button;
-		protected var onLabelField:Label;
-		protected var offLabelField:Label;
-		protected var sampleThumbSkin:Image;
 		
+		/**
+		 * @private
+		 */
+		protected var onLabelField:Label;
+		
+		/**
+		 * @private
+		 */
+		protected var offLabelField:Label;
+		
+		/**
+		 * @private
+		 */
 		protected var _onSkin:DisplayObject;
 		
+		/**
+		 * The background skin for the left side of the toggle switch, where the
+		 * ON label is displayed.
+		 */
 		public function get onSkin():DisplayObject
 		{
 			return this._onSkin;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set onSkin(value:DisplayObject):void
 		{
 			if(this._onSkin == value)
@@ -101,13 +141,23 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _offSkin:DisplayObject;
 		
+		/**
+		 * The background skin for the right side of the toggle switch, where
+		 * the OFF label is displayed.
+		 */
 		public function get offSkin():DisplayObject
 		{
 			return this._offSkin;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set offSkin(value:DisplayObject):void
 		{
 			if(this._offSkin == value)
@@ -140,13 +190,24 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _contentPadding:Number = 0;
 		
+		/**
+		 * Space, in pixels, around the edges of the labels. The labels are
+		 * scrolled during animations, and they will be cut off this many pixels
+		 * from the edge of the toggle switch.
+		 */
 		public function get contentPadding():Number
 		{
 			return _contentPadding;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set contentPadding(value:Number):void
 		{
 			if(this._contentPadding == value)
@@ -157,13 +218,23 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _showLabels:Boolean = true;
 		
+		/**
+		 * Determines if the labels should be drawn. The onSkin and offSkin
+		 * backgrounds may include the text instead.
+		 */
 		public function get showLabels():Boolean
 		{
 			return _showLabels;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set showLabels(value:Boolean):void
 		{
 			if(this._showLabels == value)
@@ -174,13 +245,23 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _showThumb:Boolean = true;
 		
+		/**
+		 * Determines if the thumb should be displayed. This stops interaction
+		 * while still displaying the background.
+		 */
 		public function get showThumb():Boolean
 		{
 			return this._showThumb;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set showThumb(value:Boolean):void
 		{
 			if(this._showThumb == value)
@@ -191,65 +272,120 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _defaultTextFormat:BitmapFontTextFormat;
 		
+		/**
+		 * The text format used to display the labels, if no higher priority
+		 * format is available. For the ON label, <code>onTextFormat</code>
+		 * takes priority. For the OFF label, <code>offTextFormat</code> takes
+		 * priority.
+		 * 
+		 * @see onTextFormat
+		 * @see offTextFormat
+		 */
 		public function get defaultTextFormat():BitmapFontTextFormat
 		{
 			return this._defaultTextFormat;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set defaultTextFormat(value:BitmapFontTextFormat):void
 		{
 			this._defaultTextFormat = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _disabledTextFormat:BitmapFontTextFormat;
 		
+		/**
+		 * The text format used to display the labels if the toggle switch is
+		 * disabled. If <code>null</code>, then <code>defaultTextFormat</code>
+		 * will be used instead.
+		 */
 		public function get disabledTextFormat():BitmapFontTextFormat
 		{
 			return this._disabledTextFormat;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set disabledTextFormat(value:BitmapFontTextFormat):void
 		{
 			this._disabledTextFormat = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _onTextFormat:BitmapFontTextFormat;
 		
+		/**
+		 * The text format used to display the ON label. If <code>null</code>,
+		 * then <code>defaultTextFormat</code> will be used instead.
+		 */
 		public function get onTextFormat():BitmapFontTextFormat
 		{
 			return this._onTextFormat;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set onTextFormat(value:BitmapFontTextFormat):void
 		{
 			this._onTextFormat = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _offTextFormat:BitmapFontTextFormat;
 		
+		/**
+		 * The text format used to display the OFF label. If <code>null</code>,
+		 * then <code>defaultTextFormat</code> will be used instead.
+		 */
 		public function get offTextFormat():BitmapFontTextFormat
 		{
 			return this._offTextFormat;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set offTextFormat(value:BitmapFontTextFormat):void
 		{
 			this._offTextFormat = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _labelAlign:String = LABEL_ALIGN_BASELINE;
-
+		
+		/**
+		 * The vertical alignment of the label.
+		 */
 		public function get labelAlign():String
 		{
 			return this._labelAlign;
 		}
-
+		
+		/**
+		 * @private
+		 */
 		public function set labelAlign(value:String):void
 		{
 			if(this._labelAlign == value)
@@ -259,25 +395,64 @@ package org.josht.starling.foxhole.controls
 			this._labelAlign = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-
+		
+		/**
+		 * @private
+		 */
 		protected var onSkinOriginalWidth:Number = NaN;
+		
+		/**
+		 * @private
+		 */
 		protected var onSkinOriginalHeight:Number = NaN;
+		
+		/**
+		 * @private
+		 */
 		protected var onSkinOriginalScaleX:Number = NaN;
+		
+		/**
+		 * @private
+		 */
 		protected var onSkinOriginalScaleY:Number = NaN;
+		
+		/**
+		 * @private
+		 */
 		protected var offSkinOriginalWidth:Number = NaN;
+		
+		/**
+		 * @private
+		 */
 		protected var offSkinOriginalHeight:Number = NaN;
+		
+		/**
+		 * @private
+		 */
 		protected var offSkinOriginalScaleX:Number = NaN;
+		/**
+		 * @private
+		 */
 		protected var offSkinOriginalScaleY:Number = NaN;
 		
 		private var _backgroundBounds:Point;
 		
+		/**
+		 * @private
+		 */
 		private var _isSelected:Boolean = false;
 		
+		/**
+		 * Indicates if the toggle switch is selected (ON) or not (OFF).
+		 */
 		public function get isSelected():Boolean
 		{
 			return this._isSelected;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set isSelected(value:Boolean):void
 		{
 			//normally, we'd check to see if selected actually changed or not
@@ -294,13 +469,22 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _onText:String = "ON";
 		
+		/**
+		 * The text to display in the ON label.
+		 */
 		public function get onText():String
 		{
 			return this._onText;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set onText(value:String):void
 		{
 			if(!value)
@@ -316,13 +500,22 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _offText:String = "OFF";
 		
+		/**
+		 * The text to display in the OFF label.
+		 */
 		public function get offText():String
 		{
 			return this._offText;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set offText(value:String):void
 		{
 			if(!value)
@@ -346,20 +539,36 @@ package org.josht.starling.foxhole.controls
 		private var _touchStartX:Number;
 		private var _isSelectionChangedByUser:Boolean = false;
 		
+		/**
+		 * @private
+		 */
 		protected var _onChange:Signal = new Signal(ToggleSwitch);
 		
+		/**
+		 * Dispatched when the selection changes.
+		 */
 		public function get onChange():ISignal
 		{
 			return this._onChange;
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _thumbProperties:Object = {};
 		
+		/**
+		 * A set of key/value pairs to be passed down to the toggle switch's
+		 * thumb instance. The thumb is a Foxhole Button control.
+		 */
 		public function get thumbProperties():Object
 		{
 			return this._thumbProperties;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set thumbProperties(value:Object):void
 		{
 			if(this._thumbProperties == value)
@@ -370,18 +579,28 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * Sets a single property on the toggle switch's thumb instance. The
+		 * thumb is a Foxhole Button control.
+		 */
 		public function setThumbProperty(propertyName:String, propertyValue:Object):void
 		{
 			this._thumbProperties[propertyName] = propertyValue;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function dispose():void
 		{
 			this._onChange.removeAll();
 			super.dispose();
 		}
 		
+		/**
+		 * @private
+		 */
 		override protected function initialize():void
 		{
 			if(!this.offLabelField)
@@ -408,6 +627,9 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		override protected function draw():void
 		{
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
@@ -449,6 +671,9 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function updateSelection():void
 		{
 			var xPosition:Number = Math.ceil(this.contentPadding);
@@ -488,6 +713,9 @@ package org.josht.starling.foxhole.controls
 			this.updateScrollRects();
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function refreshOnLabelStyles():void
 		{	
 			//no need to style the label field if there's no text to display
@@ -521,6 +749,9 @@ package org.josht.starling.foxhole.controls
 			this.onLabelField.visible = true;
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function refreshOffLabelStyles():void
 		{	
 			//no need to style the label field if there's no text to display
@@ -554,6 +785,9 @@ package org.josht.starling.foxhole.controls
 			this.offLabelField.visible = true;
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function refreshThumbProperties():void
 		{
 			for(var propertyName:String in this._thumbProperties)
@@ -567,6 +801,9 @@ package org.josht.starling.foxhole.controls
 			this.thumb.visible = this._showThumb;
 		}
 		
+		/**
+		 * @private
+		 */
 		private function scaleSkins():void
 		{
 			const skinScale:Number = this._height / Math.max(this.onSkinOriginalHeight, this.offSkinOriginalHeight);
@@ -577,6 +814,9 @@ package org.josht.starling.foxhole.controls
 			this.offSkin.y = this.onSkin.y = 0;
 		}
 		
+		/**
+		 * @private
+		 */
 		private function drawLabels():void
 		{
 			const maxLabelWidth:Number = Math.max(0, this._width - this.thumb.width - 2 * this._contentPadding);
@@ -609,6 +849,9 @@ package org.josht.starling.foxhole.controls
 			this.offLabelField.y = (this._height - labelHeight) / 2;
 		}
 		
+		/**
+		 * @private
+		 */
 		private function updateScrollRects():void
 		{
 			const maxLabelWidth:Number = Math.max(0, this._width - this.thumb.width - 2 * this._contentPadding);
@@ -652,6 +895,9 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		private function touchHandler(event:TouchEvent):void
 		{
 			if(this._ignoreTapHandler)
@@ -676,6 +922,9 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		private function thumb_touchHandler(event:TouchEvent):void
 		{
 			if(!this._isEnabled)
@@ -716,11 +965,17 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		private function selectionTween_onChange(tween:GTween):void
 		{
 			this.updateScrollRects();
 		}
 		
+		/**
+		 * @private
+		 */
 		private function selectionTween_onComplete(tween:GTween):void
 		{
 			this._selectionChangeTween = null;
