@@ -24,6 +24,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package org.josht.starling.display
 {
+	import flash.display.DisplayObjectContainer;
 	import flash.display.LoaderInfo;
 	import flash.events.KeyboardEvent;
 	import flash.system.Capabilities;
@@ -92,18 +93,18 @@ package org.josht.starling.display
 		
 		private var _initialized:Boolean = false;
 		
-		private var _pixelScaleRatio:Number = 1;
+		private var _pixelScale:Number = 1;
 		
-		protected function get pixelScaleRatio():Number
+		protected function get pixelScale():Number
 		{
-			return this._pixelScaleRatio;
+			return this._pixelScale;
 		}
 		
-		private var _dpiScaleRatio:Number = 1;
+		private var _dpiScale:Number = 1;
 		
-		protected function get dpiScaleRatio():Number
+		protected function get dpiScale():Number
 		{
-			return this._dpiScaleRatio;
+			return this._dpiScale;
 		}
 		
 		protected var backButtonHandler:Function;
@@ -129,7 +130,7 @@ package org.josht.starling.display
 		
 		private function refreshScaleRatio():void
 		{
-			const loaderInfo:LoaderInfo = Starling.current.nativeStage.loaderInfo;
+			const loaderInfo:LoaderInfo = DisplayObjectContainer(Starling.current.nativeStage.root).getChildAt(0).loaderInfo;
 			if(isNaN(this._originalWidth))
 			{
 				try
@@ -152,8 +153,8 @@ package org.josht.starling.display
 					this._originalHeight = this.stage.stageHeight;
 				}
 			}
-			this._pixelScaleRatio = calculateScaleRatioToFit(originalWidth, originalHeight, this.stage.stageWidth, this.stage.stageHeight);
-			this._dpiScaleRatio = this._originalDPI / Capabilities.screenDPI;
+			this._pixelScale = calculateScaleRatioToFit(originalWidth, originalHeight, this.stage.stageWidth, this.stage.stageHeight);
+			this._dpiScale = Capabilities.screenDPI / this._originalDPI;
 		}
 		
 		private function addedToStageHandler(event:Event):void
