@@ -50,13 +50,22 @@ package org.josht.starling.foxhole.controls
 		private var _lastFont:BitmapFont;
 		private var _lastColor:uint = uint.MAX_VALUE;
 		
+		/**
+		 * @private
+		 */
 		private var _textFormat:BitmapFontTextFormat;
-
+		
+		/**
+		 * The font and styles used to draw the text.
+		 */
 		public function get textFormat():BitmapFontTextFormat
 		{
 			return this._textFormat;
 		}
-
+		
+		/**
+		 * @private
+		 */
 		public function set textFormat(value:BitmapFontTextFormat):void
 		{
 			this._textFormat = value;
@@ -74,13 +83,22 @@ package org.josht.starling.foxhole.controls
 			super.invalidate();
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _text:String = "";
-
+		
+		/**
+		 * The text to display.
+		 */
 		public function get text():String
 		{
 			return this._text;
 		}
-
+		
+		/**
+		 * @private
+		 */
 		public function set text(value:String):void
 		{
 			if(this._text == value)
@@ -93,13 +111,22 @@ package org.josht.starling.foxhole.controls
 			super.invalidate();
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _smoothing:String = TextureSmoothing.BILINEAR;
-
+		
+		/**
+		 * A smoothing value passed to each character.
+		 */
 		public function get smoothing():String
 		{
 			return this._smoothing;
 		}
-
+		
+		/**
+		 * @private
+		 */
 		public function set smoothing(value:String):void
 		{
 			if(this._smoothing == value)
@@ -112,6 +139,9 @@ package org.josht.starling.foxhole.controls
 
 		private var _characters:Vector.<Image> = new <Image>[];
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function invalidate(...rest:Array):void
 		{
 			this._isTextOrFontInvalid = true;
@@ -119,12 +149,18 @@ package org.josht.starling.foxhole.controls
 			super.invalidate.apply(this, rest);
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function dispose():void
 		{
 			this._lastFont = null;
 			super.dispose();
 		}
 		
+		/**
+		 * @private
+		 */
 		override protected function draw():void
 		{
 			this.rebuildCharacters();
@@ -143,6 +179,9 @@ package org.josht.starling.foxhole.controls
 			this._isTextOrFontInvalid = false;
 		}
 		
+		/**
+		 * @private
+		 */
 		private function rebuildCharacters():void
 		{
 			if(!this._isTextOrFontInvalid)
@@ -176,7 +215,10 @@ package org.josht.starling.foxhole.controls
 				this._characters.push(charDisplay);
 			}
 		}
-	
+		
+		/**
+		 * @private
+		 */
 		private function layout():void
 		{
 			if(!this._isLayoutInvalid || !this._textFormat)
