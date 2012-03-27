@@ -35,29 +35,47 @@ package org.josht.starling.display
 	import starling.textures.Texture;
 	import starling.utils.transformCoords;
 	
+	/**
+	 * Adds <code>scrollRect</code> to <code>Image</code>.
+	 */
 	public class Image extends starling.display.Image implements IDisplayObjectWithScrollRect
 	{
 		private static var helperPoint:Point = new Point();
 		private static var helperMatrix:Matrix = new Matrix();
 		private static var helperRect:Rectangle = new Rectangle();
 		
+		/**
+		 * Constructor.
+		 */
 		public function Image(texture:Texture)
 		{
 			super(texture);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _scrollRect:Rectangle;
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function get scrollRect():Rectangle
 		{
 			return this._scrollRect;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set scrollRect(value:Rectangle):void
 		{
 			this._scrollRect = value;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function getBounds(targetSpace:DisplayObject, resultRect:Rectangle=null):Rectangle
 		{
 			if(this._scrollRect)
@@ -87,6 +105,9 @@ package org.josht.starling.display
 			return super.getBounds(targetSpace, resultRect);
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function render(support:RenderSupport, alpha:Number):void
 		{
 			if(this._scrollRect)
