@@ -35,13 +35,23 @@ package org.josht.starling.foxhole.core
 	import starling.display.Stage;
 	import starling.events.Event;
 	import starling.textures.Texture;
-
+	
+	/**
+	 * Adds a display object as a pop-up to the stage.
+	 */
 	public class PopUpManager
 	{
 		private static const POPUP_TO_OVERLAY:Dictionary = new Dictionary(true);
 		
+		/**
+		 * The texture for the repeating background overlay. This may change in
+		 * a future version to allow other types of display objects.
+		 */
 		public static var overlaySkin:Texture;
 		
+		/**
+		 * Adds a pop-up to the stage.
+		 */
 		public static function addPopUp(popUp:DisplayObject, stage:Stage, isCentered:Boolean = true):void
 		{
 			var overlay:TiledImage;
@@ -62,6 +72,9 @@ package org.josht.starling.foxhole.core
 			}
 		}
 		
+		/**
+		 * Removes a pop-up from the stage.
+		 */
 		public static function removePopUp(popUp:DisplayObject, dispose:Boolean = false):void
 		{
 			const overlay:DisplayObject = DisplayObject(POPUP_TO_OVERLAY[popUp]);
@@ -74,6 +87,9 @@ package org.josht.starling.foxhole.core
 			popUp.removeFromParent(false);
 		}
 		
+		/**
+		 * @private
+		 */
 		private static function centerPopUp(popUp:DisplayObject, stage:Stage):void
 		{
 			popUp.x = (stage.stageWidth - popUp.width) / 2;
