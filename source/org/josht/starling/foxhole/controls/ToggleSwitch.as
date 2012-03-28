@@ -739,12 +739,11 @@ package org.josht.starling.foxhole.controls
 				format = this._defaultTextFormat;
 			}
 			
-			if(!format)
-			{
-				throw new IllegalOperationError("No text format defined for toggle switch on label and there is no default value.");
-			}
-			this.onLabelField.textFormat = format;
 			this.onLabelField.text = this._onText;
+			if(format)
+			{
+				this.onLabelField.textFormat = format;
+			}
 			this.onLabelField.validate();
 			this.onLabelField.visible = true;
 		}
@@ -775,12 +774,11 @@ package org.josht.starling.foxhole.controls
 				format = this._defaultTextFormat;
 			}
 			
-			if(!format)
-			{
-				throw new IllegalOperationError("No text format defined for toggle switch off label and there is no default value.");
-			}
-			this.offLabelField.textFormat = format;
 			this.offLabelField.text = this._offText;
+			if(format)
+			{
+				this.offLabelField.textFormat = format;
+			}
 			this.offLabelField.validate();
 			this.offLabelField.visible = true;
 		}
