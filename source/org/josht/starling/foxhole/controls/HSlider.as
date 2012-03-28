@@ -25,7 +25,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 package org.josht.starling.foxhole.controls
 {
 	/**
-	 * A horizontal slider <code>Slider</code>.
+	 * A horizontal slider.
 	 */
 	public class HSlider extends Slider
 	{

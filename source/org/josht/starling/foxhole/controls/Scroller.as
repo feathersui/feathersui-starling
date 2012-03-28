@@ -330,6 +330,11 @@ package org.josht.starling.foxhole.controls
 		}
 		
 		/**
+		 * @private
+		 */
+		private var _maxVerticalScrollPosition:Number = 0;
+		
+		/**
 		 * The maximum number of pixels the scroller may be scrolled vertically
 		 * (on the y-axis). This value is automatically calculated based on the 
 		 * height of the viewport. The <code>verticalScrollPosition</code>
@@ -338,8 +343,6 @@ package org.josht.starling.foxhole.controls
 		 * it will automatically animate back to the maximum (or minimum, if
 		 * below 0).
 		 */
-		private var _maxVerticalScrollPosition:Number = 0;
-		
 		public function get maxVerticalScrollPosition():Number
 		{
 			return this._maxVerticalScrollPosition;

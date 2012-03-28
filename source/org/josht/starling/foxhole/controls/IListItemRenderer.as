@@ -26,6 +26,9 @@ package org.josht.starling.foxhole.controls
 {
 	import flash.geom.Rectangle;
 
+	/**
+	 * Interface to implement a renderer for a list item.
+	 */
 	public interface IListItemRenderer
 	{
 		/**
@@ -53,6 +56,9 @@ package org.josht.starling.foxhole.controls
 		 */
 		function set index(value:int):void;
 		
+		/**
+		 * Indicates if the item is selected.
+		 */
 		function get isSelected():Boolean;
 		
 		/**

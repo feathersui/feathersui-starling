@@ -542,7 +542,7 @@ package org.josht.starling.foxhole.controls
 		
 		/**
 		 * A function called that is expected to return a new item renderer. Has
-		 * a higher priority than <code>itemRendererType</core>.
+		 * a higher priority than <code>itemRendererType</code>.
 		 * 
 		 * @see itemRendererType
 		 */

@@ -61,7 +61,14 @@ package org.josht.starling.foxhole.controls
 			super();
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var track:Button;
+		
+		/**
+		 * @private
+		 */
 		protected var thumb:Button;
 		
 		/**

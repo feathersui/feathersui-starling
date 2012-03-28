@@ -38,7 +38,7 @@ package org.josht.starling.display.transitions
 	public class ScreenFadeTransitionManager
 	{
 		/**
-		 * Constructor
+		 * Constructor.
 		 */
 		public function ScreenFadeTransitionManager(navigator:ScreenNavigator)
 		{

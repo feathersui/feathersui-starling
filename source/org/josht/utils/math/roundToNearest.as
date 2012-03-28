@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2010 Josh Tynjala
+Copyright (c) 2012 Josh Tynjala
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation

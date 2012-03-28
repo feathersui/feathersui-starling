@@ -126,7 +126,7 @@ package org.josht.starling.foxhole.data
 		 * 
 		 * <p>Data sources of type Array, Vector, and XMLList are automatically
 		 * detected, and no <code>dataDescriptor</code> needs to be set if the
-		 * <code>ListCollection</code> uses one of these types.
+		 * <code>ListCollection</code> uses one of these types.</p>
 		 */
 		public function get data():Object
 		{
