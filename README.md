@@ -1,10 +1,8 @@
 # Foxhole
 
-Built on [Starling](http://gamua.com/starling/) for Adobe AIR and Flash Player, Foxhole consists of various UI controls designed for mobile, developed by [Josh Tynjala](http://twitter.com/joshtynjala). Foxhole's name comes from the fact that the author develops these components "under fire" for real projects, mostly games.
+Built on [Starling](http://gamua.com/starling/) for Adobe AIR and Flash Player, Foxhole consists of various UI controls designed for mobile, developed by [Josh Tynjala](http://twitter.com/joshtynjala). The author develops Foxhole to support real-world mobile applications that he develops, mostly games.
 
-Documentation is sparse. APIs may change drastically, on a whim. The components aren't necessarily fully-featured. Use at your own risk.
-
-To get started, you might want to check out the [Foxhole for Starling Examples](https://github.com/joshtynjala/foxhole-starling-examples). The [Foxhole Kitchen Sink example](https://github.com/joshtynjala/foxhole-starling-examples/tree/master/KitchenSink), in particular, highlights every component and offers a good overview of how the author uses Foxhole.
+To get started, you might want to check out the [API Documentation](http://www.flashtoolbox.com/foxhole-starling/documentation/) and the [Foxhole for Starling Examples](https://github.com/joshtynjala/foxhole-starling-examples).
 
 ## Available Components
 
@@ -45,6 +43,7 @@ The following external libraries are required. Other versions of the same librar
 ## Quick Links
 
 * [Foxhole for Starling Examples](https://github.com/joshtynjala/foxhole-starling-examples)
+* [API Documentation](http://www.flashtoolbox.com/foxhole-starling/documentation/)
 * [Getting Started Article](https://github.com/joshtynjala/foxhole-starling/wiki/Getting-Started)
 * [Official Foxhole Q&A thread on the Starling Forums](http://forum.starling-framework.org/topic/official-foxhole-components-qa)
 
