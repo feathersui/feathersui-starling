@@ -792,6 +792,8 @@ package org.josht.starling.foxhole.controls
 				return;
 			}
 			const location:Point = touch.getLocation(this);
+			const now:int = getTimer();
+			const timeOffset:int = now - this._previousTouchTime;
 			if(touch.phase == TouchPhase.BEGAN)
 			{
 				if(this._horizontalAutoScrollTween)
@@ -818,8 +820,6 @@ package org.josht.starling.foxhole.controls
 			}
 			else if(touch.phase == TouchPhase.MOVED)
 			{
-				const now:int = getTimer();
-				const timeOffset:int = now - this._previousTouchTime;
 				if(timeOffset > 0)
 				{
 					this._velocityX = (location.x - this._previousTouchX) / timeOffset;
@@ -850,6 +850,11 @@ package org.josht.starling.foxhole.controls
 			}
 			else if(touch.phase == TouchPhase.ENDED)
 			{
+				if(timeOffset > 0)
+				{
+					this._velocityX = (location.x - this._previousTouchX) / timeOffset;
+					this._velocityY = (location.y - this._previousTouchY) / timeOffset;
+				}
 				this._touchPointID = -1;
 				var isFinishingHorizontally:Boolean = false;
 				var isFinishingVertically:Boolean = false;
