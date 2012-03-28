@@ -38,8 +38,9 @@ package org.josht.starling.foxhole.core
 	 * functions to set properties, call methods, or otherwise modify them.
 	 * Useful for initializing skins and styles on UI controls.
 	 * 
-	 * <p>If a display object matches multiple types that have initializers, the
-	 * initializers will be executed in order following the inheritance chain.</p>
+	 * <p>If a display object matches multiple types that have initializers, and
+	 * <code>exactTypeMatching</code> is diabled, the initializers will be
+	 * executed in order following the inheritance chain.</p>
 	 */
 	public class AddedWatcher
 	{
@@ -57,6 +58,12 @@ package org.josht.starling.foxhole.core
 		 * to see if a particular display object has any initializers.
 		 */
 		public var requiredBaseClass:Class = FoxholeControl;
+		
+		/**
+		 * If disabled, initializers for all classes in a target's inheritance
+		 * chain will be run. This setting has a performance impact on mobile.
+		 */
+		public var exactTypeMatching:Boolean = true;
 		
 		private var _root:DisplayObject;
 		private var _typeMap:Dictionary = new Dictionary(true);
@@ -91,18 +98,20 @@ package org.josht.starling.foxhole.core
 		 */
 		protected function applyAllStyles(target:DisplayObject):void
 		{
-			var combinedStyles:Object = {};
-			const description:XML = describeType(target);
-			const extendedClasses:XMLList = description.extendsClass;
-			for(var i:int = extendedClasses.length() - 1; i >= 0; i--)
+			if(!this.exactTypeMatching)
 			{
-				var extendedClass:XML = extendedClasses[i];
-				var typeName:String = extendedClass.attribute("type").toString();
-				var type:Class = Class(getDefinitionByName(typeName));
-				var initializer:Function = this._typeMap[type];
-				if(initializer != null)
+				const description:XML = describeType(target);
+				const extendedClasses:XMLList = description.extendsClass;
+				for(var i:int = extendedClasses.length() - 1; i >= 0; i--)
 				{
-					initializer(target);
+					var extendedClass:XML = extendedClasses[i];
+					var typeName:String = extendedClass.attribute("type").toString();
+					var type:Class = Class(getDefinitionByName(typeName));
+					var initializer:Function = this._typeMap[type];
+					if(initializer != null)
+					{
+						initializer(target);
+					}
 				}
 			}
 			type = Object(target).constructor;
