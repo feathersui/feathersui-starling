@@ -41,10 +41,20 @@ package org.josht.starling.foxhole.controls
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	
+	/**
+	 * A combo-box like list control. Displayed as a button. The list appears
+	 * on tap as a full-screen overlay.
+	 */
 	public class PickerList extends FoxholeControl
 	{
+		/**
+		 * @private
+		 */
 		private static const INVALIDATION_FLAG_STAGE_SIZE:String = "stageSize";
 		
+		/**
+		 * Constructor.
+		 */
 		public function PickerList()
 		{
 			super();
@@ -56,13 +66,22 @@ package org.josht.starling.foxhole.controls
 		private var _touchID:int = -1;
 		private var _hasBeenScrolled:Boolean = false;
 		
+		/**
+		 * @private
+		 */
 		private var _dataProvider:ListCollection;
-
+		
+		/**
+		 * @copy List#dataProvider
+		 */
 		public function get dataProvider():ListCollection
 		{
 			return this._dataProvider;
 		}
-
+		
+		/**
+		 * @private
+		 */
 		public function set dataProvider(value:ListCollection):void
 		{
 			if(this._dataProvider == value)
@@ -81,13 +100,22 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _selectedIndex:int = -1;
-
+		
+		/**
+		 * @copy List#selectedIndex
+		 */
 		public function get selectedIndex():int
 		{
 			return this._selectedIndex;
 		}
-
+		
+		/**
+		 * @private
+		 */
 		public function set selectedIndex(value:int):void
 		{
 			if(this._selectedIndex == value)
@@ -99,6 +127,9 @@ package org.josht.starling.foxhole.controls
 			this._onChange.dispatch(this);
 		}
 		
+		/**
+		 * @copy List#selectedItem
+		 */
 		public function get selectedItem():Object
 		{
 			if(!this._dataProvider)
@@ -107,7 +138,10 @@ package org.josht.starling.foxhole.controls
 			}
 			return this._dataProvider.getItemAt(this._selectedIndex);
 		}
-
+		
+		/**
+		 * @private
+		 */
 		public function set selectedItem(value:Object):void
 		{
 			if(!this._dataProvider)
@@ -119,13 +153,22 @@ package org.josht.starling.foxhole.controls
 			this.selectedIndex = this._dataProvider.getItemIndex(value);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _labelField:String = "label";
-
+		
+		/**
+		 * @copy List#labelField
+		 */
 		public function get labelField():String
 		{
 			return this._labelField;
 		}
-
+		
+		/**
+		 * @private
+		 */
 		public function set labelField(value:String):void
 		{
 			if(this._labelField == value)
@@ -135,27 +178,46 @@ package org.josht.starling.foxhole.controls
 			this._labelField = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
-
+		
+		/**
+		 * @private
+		 */
 		private var _labelFunction:Function;
-
+		
+		/**
+		 * @copy List#labelFunction
+		 */
 		public function get labelFunction():Function
 		{
 			return this._labelFunction;
 		}
-
+		
+		/**
+		 * @private
+		 */
 		public function set labelFunction(value:Function):void
 		{
 			this._labelFunction = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _popUpPadding:Number = 20;
-
+		
+		/**
+		 * The space, in pixels, around the edges of the pop-up list as it fills
+		 * the stage.
+		 */
 		public function get popUpPadding():Number
 		{
 			return this._popUpPadding;
 		}
-
+		
+		/**
+		 * @private
+		 */
 		public function set popUpPadding(value:Number):void
 		{
 			if(this._popUpPadding == value)
@@ -166,20 +228,36 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STAGE_SIZE);
 		}
 		
+		/**
+		 * @private
+		 */
 		protected var _onChange:Signal = new Signal(PickerList);
 		
+		/**
+		 * @copy List#onChange
+		 */
 		public function get onChange():ISignal
 		{
 			return this._onChange;
 		}
-
+		
+		/**
+		 * @private
+		 */
 		private var _buttonProperties:Object = {};
 		
+		/**
+		 * A set of key/value pairs to be passed down to the picker's button
+		 * instance. It is a Foxhole Button control.
+		 */
 		public function get buttonProperties():Object
 		{
 			return this._buttonProperties;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set buttonProperties(value:Object):void
 		{
 			if(this._buttonProperties == value)
@@ -190,13 +268,23 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _listProperties:Object = {};
 		
+		/**
+		 * A set of key/value pairs to be passed down to the picker's internal
+		 * List instance. The track is a Foxhole Button control.
+		 */
 		public function get listProperties():Object
 		{
 			return this._listProperties;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set listProperties(value:Object):void
 		{
 			if(this._listProperties == value)
@@ -207,13 +295,22 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @private
+		 */
 		private var _itemRendererProperties:Object = {};
 		
+		/**
+		 * @copy List#itemRendererProperties
+		 */
 		public function get itemRendererProperties():Object
 		{
 			return this._itemRendererProperties;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set itemRendererProperties(value:Object):void
 		{
 			if(this._itemRendererProperties == value)
@@ -224,18 +321,27 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * Sets a single property on the pickers's button instance.
+		 */
 		public function setButtonProperty(propertyName:String, propertyValue:Object):void
 		{
 			this._buttonProperties[propertyName] = propertyValue;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * Sets a single property on the pickers's internal list instance.
+		 */
 		public function setListProperty(propertyName:String, propertyValue:Object):void
 		{
 			this._listProperties[propertyName] = propertyValue;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @copy List#setItemRendererProperty
+		 */
 		public function setItemRendererProperty(propertyName:String, propertyValue:Object):void
 		{
 			//pssst... pass it on
@@ -243,17 +349,26 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
+		/**
+		 * @copy List#itemToLabel
+		 */
 		public function itemToLabel(item:Object):String
 		{
 			return this._list.itemToLabel(item);
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function dispose():void
 		{
 			this._onChange.removeAll();
 			super.dispose();
 		}
-
+		
+		/**
+		 * @private
+		 */
 		override protected function initialize():void
 		{
 			if(!this._button)
@@ -273,6 +388,9 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		override protected function draw():void
 		{
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
@@ -338,6 +456,9 @@ package org.josht.starling.foxhole.controls
 			this._selectedIndex = this._list.selectedIndex;
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function resizeAndPositionList():void
 		{
 			this._list.width = this.stage.stageWidth - 2 * this._popUpPadding;
@@ -346,6 +467,9 @@ package org.josht.starling.foxhole.controls
 			this._list.y = this._popUpPadding;
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function refreshButtonProperties():void
 		{
 			for(var propertyName:String in this._buttonProperties)
@@ -358,6 +482,9 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function refreshListProperties():void
 		{
 			for(var propertyName:String in this._listProperties)
@@ -371,6 +498,9 @@ package org.josht.starling.foxhole.controls
 			this._list.itemRendererProperties = this._itemRendererProperties;
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function closePopUpList():void
 		{
 			this._list.validate();
@@ -382,6 +512,9 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function button_onRelease(button:Button):void
 		{
 			PopUpManager.addPopUp(this._list, this.stage, false);
@@ -394,11 +527,17 @@ package org.josht.starling.foxhole.controls
 			this._hasBeenScrolled = false;
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function list_onChange(list:List):void
 		{
 			this.selectedIndex = this._list.selectedIndex;
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function list_onScroll(list:List):void
 		{
 			if(this._touchID >= 0)
@@ -407,6 +546,9 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function list_onItemTouch(list:List, item:Object, index:int, event:TouchEvent):void
 		{
 			const displayRenderer:DisplayObject = DisplayObject(event.currentTarget);
@@ -427,6 +569,9 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function list_touchHandler(event:TouchEvent):void
 		{
 			const touch:Touch = event.getTouch(this._list);
@@ -445,6 +590,9 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		private function stage_keyDownHandler(event:KeyboardEvent):void
 		{
 			if(event.keyCode != Keyboard.BACK && event.keyCode != Keyboard.ESCAPE)
@@ -458,6 +606,9 @@ package org.josht.starling.foxhole.controls
 			this.closePopUpList();
 		}
 		
+		/**
+		 * @private
+		 */
 		private function stage_resizeHandler(event:ResizeEvent):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STAGE_SIZE);
