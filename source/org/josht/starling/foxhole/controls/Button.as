@@ -1664,11 +1664,10 @@ package org.josht.starling.foxhole.controls
 				}
 			}
 			
-			if(!format && this._label)
+			if(format)
 			{
-				throw new IllegalOperationError("No text format defined for state \"" + this._currentState + "\" and there is no default value.");
+				this.labelField.textFormat = format;
 			}
-			this.labelField.textFormat = format;
 		}
 		
 		/**
