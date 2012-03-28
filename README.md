@@ -21,7 +21,7 @@ A sliding on/off switch. A common alternative to a checkbox in mobile environmen
 A typical horizontal or vertical slider control.
 
 ### List
-A touch-based, vertical list control. Has elastic edges and you can "fling" it.
+A touch-based, vertical list control. Has elastic edges and you can "throw" it.
 
 ### PickerList
 A control similar to a combo box. Appears as a button when closed. The list is displayed as a fullscreen overlay on top of the stage.
