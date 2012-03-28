@@ -31,8 +31,16 @@ package org.josht.starling.display.transitions
 	
 	import starling.display.DisplayObject;
 	
+	/**
+	 * A transition for <code>ScreenNavigator</code> that fades out the old
+	 * screen and slides in the new screen from the right or left (depending on
+	 * if the manager determines if this is a push or a pop).
+	 */
 	public class OldFadeNewSlideTransitionManager
 	{
+		/**
+		 * Constructor.
+		 */
 		public function OldFadeNewSlideTransitionManager(navigator:ScreenNavigator, quickStack:Class = null)
 		{
 			if(!navigator)
@@ -52,14 +60,29 @@ package org.josht.starling.display.transitions
 		private var _activeTransition:GTween;
 		private var _savedCompleteHandler:Function;
 		
+		/**
+		 * The duration of the transition.
+		 */
 		public var duration:Number = 0.25;
+		
+		/**
+		 * The GTween easing function to use.
+		 */
 		public var ease:Function = Sine.easeOut;
 		
+		/**
+		 * Removes all saved classes from the stack that are used to determine
+		 * which side of the <code>ScreenNavigator</code> the new screen will
+		 * slide in from.
+		 */
 		public function clearStack():void
 		{
 			this._stack.length = 0;
 		}
 		
+		/**
+		 * @private
+		 */
 		private function onTransition(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
 		{
 			if(!oldScreen)
@@ -122,6 +145,9 @@ package org.josht.starling.display.transitions
 			});
 		}
 		
+		/**
+		 * @private
+		 */
 		private function activeTransition_onChange(tween:GTween):void
 		{
 			var oldScreen:DisplayObject = DisplayObject(tween.data);
@@ -131,6 +157,9 @@ package org.josht.starling.display.transitions
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		private function activeTransition_onComplete(tween:GTween):void
 		{
 			this._activeTransition = null;

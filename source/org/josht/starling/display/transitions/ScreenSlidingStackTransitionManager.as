@@ -30,9 +30,18 @@ package org.josht.starling.display.transitions
 	import org.josht.starling.motion.GTween;
 	
 	import starling.display.DisplayObject;
-
+	
+	/**
+	 * A transition for <code>ScreenNavigator</code> that slides out the old
+	 * screen and slides in the new screen at the same time. The slide starts
+	 * from the right or left, depending on if the manager determines if the
+	 * transition is a push or a pop.
+	 */
 	public class ScreenSlidingStackTransitionManager
 	{
+		/**
+		 * Constructor.
+		 */
 		public function ScreenSlidingStackTransitionManager(navigator:ScreenNavigator, quickStack:Class = null)
 		{
 			if(!navigator)
@@ -52,14 +61,29 @@ package org.josht.starling.display.transitions
 		private var _activeTransition:GTween;
 		private var _savedCompleteHandler:Function;
 		
+		/**
+		 * The duration of the transition.
+		 */
 		public var duration:Number = 0.25;
+		
+		/**
+		 * The GTween easing function to use.
+		 */
 		public var ease:Function = Sine.easeOut;
 		
+		/**
+		 * Removes all saved classes from the stack that are used to determine
+		 * which side of the <code>ScreenNavigator</code> the new screen will
+		 * slide in from.
+		 */
 		public function clearStack():void
 		{
 			this._stack.length = 0;
 		}
 		
+		/**
+		 * @private
+		 */
 		private function onTransition(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
 		{
 			if(!oldScreen || !newScreen)
@@ -115,6 +139,9 @@ package org.josht.starling.display.transitions
 			});
 		}
 		
+		/**
+		 * @private
+		 */
 		private function activeTransitionPush_onChange(tween:GTween):void
 		{
 			var newScreen:DisplayObject = DisplayObject(tween.target);
@@ -122,6 +149,9 @@ package org.josht.starling.display.transitions
 			oldScreen.x = newScreen.x - this._navigator.stage.stageWidth;
 		}
 		
+		/**
+		 * @private
+		 */
 		private function activeTransitionPop_onChange(tween:GTween):void
 		{
 			var newScreen:DisplayObject = DisplayObject(tween.target);
@@ -129,6 +159,9 @@ package org.josht.starling.display.transitions
 			oldScreen.x = newScreen.x + this._navigator.stage.stageWidth;
 		}
 		
+		/**
+		 * @private
+		 */
 		private function activeTransition_onComplete(tween:GTween):void
 		{
 			this._activeTransition = null;

@@ -30,9 +30,16 @@ package org.josht.starling.display.transitions
 	import org.josht.starling.motion.GTween;
 	
 	import starling.display.DisplayObject;
-
+	
+	/**
+	 * A transition for <code>ScreenNavigator</code> that fades out the old
+	 * screen and fades in the new screen.
+	 */
 	public class ScreenFadeTransitionManager
 	{
+		/**
+		 * Constructor
+		 */
 		public function ScreenFadeTransitionManager(navigator:ScreenNavigator)
 		{
 			if(!navigator)
@@ -47,9 +54,19 @@ package org.josht.starling.display.transitions
 		private var _activeTransition:GTween;
 		private var _savedCompleteHandler:Function;
 		
+		/**
+		 * The duration of the transition.
+		 */
 		public var duration:Number = 0.25;
+		
+		/**
+		 * The GTween easing function to use.
+		 */
 		public var ease:Function = Sine.easeOut;
 		
+		/**
+		 * @private
+		 */
 		private function onTransition(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
 		{
 			if(!oldScreen && !newScreen)
@@ -96,6 +113,9 @@ package org.josht.starling.display.transitions
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		private function activeTransition_onChange(tween:GTween):void
 		{
 			var oldScreen:DisplayObject = tween.data as DisplayObject;
@@ -106,6 +126,9 @@ package org.josht.starling.display.transitions
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		private function activeTransition_onComplete(tween:GTween):void
 		{
 			this._activeTransition = null;
