@@ -143,6 +143,8 @@ package org.josht.starling.foxhole.controls
 		private var _previousTouchY:Number;
 		private var _velocityX:Number;
 		private var _velocityY:Number;
+		private var _previousVelocityX:Number;
+		private var _previousVelocityY:Number;
 		
 		private var _horizontalAutoScrollTween:GTween;
 		private var _verticalAutoScrollTween:GTween;
@@ -489,8 +491,8 @@ package org.josht.starling.foxhole.controls
 					this._verticalAutoScrollTween = null;
 				}
 				this._touchPointID = -1;
-				this._velocityX = 0;
-				this._velocityY = 0;
+				this._velocityX = this._previousVelocityX = 0;
+				this._velocityY = this._previousVelocityY = 0;
 				if(this._viewPort)
 				{
 					this._maxHorizontalScrollPosition = Math.round(Math.max(0, this._viewPort.width - this._width));
@@ -808,8 +810,8 @@ package org.josht.starling.foxhole.controls
 				}
 				
 				this._touchPointID = touch.id;
-				this._velocityX = 0;
-				this._velocityY = 0;
+				this._velocityX = this._previousVelocityX = 0;
+				this._velocityY = this._previousVelocityY = 0;
 				this._previousTouchTime = getTimer();
 				this._previousTouchX = this._startTouchX = location.x;
 				this._previousTouchY = this._startTouchY = location.y;
@@ -822,6 +824,9 @@ package org.josht.starling.foxhole.controls
 			{
 				if(timeOffset > 0)
 				{
+					//we're keeping two velocity updates to improve accuracy
+					this._previousVelocityX = this._velocityX;
+					this._previousVelocityY = this._velocityY;
 					this._velocityX = (location.x - this._previousTouchX) / timeOffset;
 					this._velocityY = (location.y - this._previousTouchY) / timeOffset;
 					this._previousTouchTime = now
@@ -852,6 +857,8 @@ package org.josht.starling.foxhole.controls
 			{
 				if(timeOffset > 0)
 				{
+					this._previousVelocityX = this._velocityX;
+					this._previousVelocityY = this._velocityY;
 					this._velocityX = (location.x - this._previousTouchX) / timeOffset;
 					this._velocityY = (location.y - this._previousTouchY) / timeOffset;
 				}
@@ -875,12 +882,13 @@ package org.josht.starling.foxhole.controls
 				
 				if(!isFinishingHorizontally && this._horizontalScrollPolicy != SCROLL_POLICY_OFF)
 				{
-					this.throwHorizontally(this._velocityX);
+					//take the average for more accuracy
+					this.throwHorizontally((this._velocityX + this._previousVelocityX) / 2);
 				}
 				
 				if(!isFinishingVertically && this._verticalScrollPolicy != SCROLL_POLICY_OFF)
 				{
-					this.throwVertically(this._velocityY);
+					this.throwVertically((this._velocityY + this._previousVelocityY) / 2);
 				}
 			}
 		}
@@ -891,8 +899,8 @@ package org.josht.starling.foxhole.controls
 		private function removedFromStageHandler(event:Event):void
 		{
 			this._touchPointID = -1;
-			this._velocityX = 0;
-			this._velocityY = 0;
+			this._velocityX = this._previousVelocityX = 0;
+			this._velocityY = this._previousVelocityY = 0;
 			if(this._verticalAutoScrollTween)
 			{
 				this._verticalAutoScrollTween.paused = true;
