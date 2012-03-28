@@ -784,56 +784,67 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function touchHandler(event:TouchEvent):void
 		{
-			if(!this._isEnabled)
+			if(!this._isEnabled || this._touchPointID >= 0)
 			{
 				return;
 			}
 			const touch:Touch = event.getTouch(this);
-			if(!touch || (this._touchPointID < 0 && touch.phase != TouchPhase.BEGAN) || (this._touchPointID >= 0 && touch.id != this._touchPointID))
+			if(!touch || touch.phase != TouchPhase.BEGAN)
 			{
 				return;
 			}
 			const location:Point = touch.getLocation(this);
+			if(this._horizontalAutoScrollTween)
+			{
+				this._horizontalAutoScrollTween.paused = true;
+				this._horizontalAutoScrollTween = null
+			}
+			if(this._verticalAutoScrollTween)
+			{
+				this._verticalAutoScrollTween.paused = true;
+				this._verticalAutoScrollTween = null
+			}
+			
+			this._touchPointID = touch.id;
+			this._velocityX = this._previousVelocityX = 0;
+			this._velocityY = this._previousVelocityY = 0;
+			this._previousTouchTime = getTimer();
+			this._previousTouchX = this._startTouchX = location.x;
+			this._previousTouchY = this._startTouchY = location.y;
+			this._startHorizontalScrollPosition = this._horizontalScrollPosition;
+			this._startVerticalScrollPosition = this._verticalScrollPosition;
+			this._isDraggingHorizontally = false;
+			this._isDraggingVertically = false;
+			
+			//we need to listen on the stage because if we scroll the bottom or
+			//right edge past the top of the scroller, it gets stuck and we stop
+			//receiving touch events for "this".
+			this.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
+		}
+		
+		private function stage_touchHandler(event:TouchEvent):void
+		{
+			const touch:Touch = event.getTouch(this.stage);
+			if(!touch || (touch.phase != TouchPhase.MOVED && touch.phase != TouchPhase.ENDED) || (this._touchPointID >= 0 && touch.id != this._touchPointID))
+			{
+				return;
+			}
 			const now:int = getTimer();
 			const timeOffset:int = now - this._previousTouchTime;
-			if(touch.phase == TouchPhase.BEGAN)
+			const location:Point = touch.getLocation(this);
+			if(timeOffset > 0)
 			{
-				if(this._horizontalAutoScrollTween)
-				{
-					this._horizontalAutoScrollTween.paused = true;
-					this._horizontalAutoScrollTween = null
-				}
-				if(this._verticalAutoScrollTween)
-				{
-					this._verticalAutoScrollTween.paused = true;
-					this._verticalAutoScrollTween = null
-				}
-				
-				this._touchPointID = touch.id;
-				this._velocityX = this._previousVelocityX = 0;
-				this._velocityY = this._previousVelocityY = 0;
-				this._previousTouchTime = getTimer();
-				this._previousTouchX = this._startTouchX = location.x;
-				this._previousTouchY = this._startTouchY = location.y;
-				this._startHorizontalScrollPosition = this._horizontalScrollPosition;
-				this._startVerticalScrollPosition = this._verticalScrollPosition;
-				this._isDraggingHorizontally = false;
-				this._isDraggingVertically = false;
+				//we're keeping two velocity updates to improve accuracy
+				this._previousVelocityX = this._velocityX;
+				this._previousVelocityY = this._velocityY;
+				this._velocityX = (location.x - this._previousTouchX) / timeOffset;
+				this._velocityY = (location.y - this._previousTouchY) / timeOffset;
+				this._previousTouchTime = now
+				this._previousTouchX = location.x;
+				this._previousTouchY = location.y;
 			}
-			else if(touch.phase == TouchPhase.MOVED)
+			if(touch.phase == TouchPhase.MOVED)
 			{
-				if(timeOffset > 0)
-				{
-					//we're keeping two velocity updates to improve accuracy
-					this._previousVelocityX = this._velocityX;
-					this._previousVelocityY = this._velocityY;
-					this._velocityX = (location.x - this._previousTouchX) / timeOffset;
-					this._velocityY = (location.y - this._previousTouchY) / timeOffset;
-					this._previousTouchTime = now
-					this._previousTouchX = location.x;
-					this._previousTouchY = location.y;
-				}
-				
 				const horizontalInchesMoved:Number = Math.abs(location.x - this._startTouchX) / Capabilities.screenDPI;
 				const verticalInchesMoved:Number = Math.abs(location.y - this._startTouchY) / Capabilities.screenDPI;
 				if(this._horizontalScrollPolicy != SCROLL_POLICY_OFF && !this._isDraggingHorizontally && horizontalInchesMoved >= MINIMUM_DRAG_DISTANCE)
@@ -855,13 +866,7 @@ package org.josht.starling.foxhole.controls
 			}
 			else if(touch.phase == TouchPhase.ENDED)
 			{
-				if(timeOffset > 0)
-				{
-					this._previousVelocityX = this._velocityX;
-					this._previousVelocityY = this._velocityY;
-					this._velocityX = (location.x - this._previousTouchX) / timeOffset;
-					this._velocityY = (location.y - this._previousTouchY) / timeOffset;
-				}
+				this.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
 				this._touchPointID = -1;
 				var isFinishingHorizontally:Boolean = false;
 				var isFinishingVertically:Boolean = false;
