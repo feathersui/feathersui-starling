@@ -50,6 +50,7 @@ package org.josht.starling.foxhole.controls
 			super();
 		}
 		
+		private var _unrenderedData:Array = [];
 		private var _inactiveRenderers:Vector.<IListItemRenderer> = new <IListItemRenderer>[];
 		private var _activeRenderers:Vector.<IListItemRenderer> = new <IListItemRenderer>[];
 		private var _rendererMap:Dictionary = new Dictionary(true);
@@ -370,6 +371,10 @@ package org.josht.starling.foxhole.controls
 		
 		protected function drawRenderers():void
 		{	
+			if(!this._dataProvider)
+			{
+				return;
+			}
 			const actualContentHeight:Number = this._dataProvider.length * this._rowHeight
 			
 			const itemCount:int = this._activeRenderers.length;
@@ -393,23 +398,20 @@ package org.josht.starling.foxhole.controls
 			}
 			this._activeRenderers.length = 0;
 			
-			if(this._dataProvider)
-			{
-				var unrenderedData:Array = this.findUnrenderedData();
-				this.recoverInactiveRenderers();
-				this.renderUnrenderedData(unrenderedData);
-				this.freeInactiveRenderers();
-			}
+			this.findUnrenderedData();
+			this.recoverInactiveRenderers();
+			this.renderUnrenderedData();
+			this.freeInactiveRenderers();
 		}
 		
-		private function findUnrenderedData():Array
+		private function findUnrenderedData():void
 		{
-			var startIndex:int = Math.max(0, this._useVirtualLayout ? (this._verticalScrollPosition / this._rowHeight) : 0);
-			var unrenderedData:Array = [];
+			var startIndex:int = 0;
 			var endIndex:int = this._dataProvider ? this._dataProvider.length : 0;
-			if(this._useVirtualLayout && !isNaN(this._visibleHeight))
+			if(this._useVirtualLayout && !isNaN(this._visibleHeight) && endIndex * this._rowHeight > this._visibleHeight)
 			{
-				endIndex = Math.min(endIndex, startIndex + Math.ceil(this._visibleHeight / this._rowHeight) + 1); 
+				startIndex = Math.max(startIndex, this._verticalScrollPosition / this._rowHeight);
+				endIndex = Math.min(endIndex, startIndex + Math.ceil(this._visibleHeight / this._rowHeight) + 1);
 			}
 			for(var i:int = startIndex; i < endIndex; i++)
 			{
@@ -422,18 +424,17 @@ package org.josht.starling.foxhole.controls
 				}
 				else
 				{
-					unrenderedData.push(item);
+					this._unrenderedData.push(item);
 				}
 			}
-			return unrenderedData;
 		}
 		
-		private function renderUnrenderedData(unrenderedData:Array):void
+		private function renderUnrenderedData():void
 		{
-			var itemCount:int = unrenderedData.length;
+			var itemCount:int = this._unrenderedData.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
-				var item:Object = unrenderedData[i];
+				var item:Object = this._unrenderedData.shift();
 				var index:int = this._dataProvider.getItemIndex(item);
 				this.createRenderer(item, index);
 			}
