@@ -225,8 +225,8 @@ package org.josht.starling.display
 		 */
 		private function refreshImages():void
 		{
-			const scaledTextureWidth:Number = Math.floor(this._texture.width * this._textureScale);
-			const scaledTextureHeight:Number = Math.floor(this._texture.height * this._textureScale);
+			const scaledTextureWidth:Number = this._texture.width * this._textureScale;
+			const scaledTextureHeight:Number = this._texture.height * this._textureScale;
 			const xImageCount:int = Math.ceil(this._width / scaledTextureWidth);
 			const yImageCount:int = Math.ceil(this._height / scaledTextureHeight);
 			const imageCount:int = xImageCount * yImageCount;
@@ -272,16 +272,16 @@ package org.josht.starling.display
 		 */
 		private function refreshLayout():void
 		{
-			const scaledTextureWidth:Number = Math.floor(this._texture.width * this._textureScale);
-			const scaledTextureHeight:Number = Math.floor(this._texture.height * this._textureScale);
+			const scaledTextureWidth:Number = this._texture.width * this._textureScale;
+			const scaledTextureHeight:Number = this._texture.height * this._textureScale;
 			var xPosition:Number = 0;
 			var yPosition:Number = 0;
 			const imageCount:int = this._images.length;
 			for(var i:int = 0; i < imageCount; i++)
 			{
 				var image:Image = this._images[i];
-				image.x = Math.floor(xPosition);
-				image.y = Math.floor(yPosition);
+				image.x = xPosition;
+				image.y = yPosition;
 				image.scaleX = image.scaleY = this._textureScale;
 				xPosition += scaledTextureWidth;
 				if(xPosition >= this._width)

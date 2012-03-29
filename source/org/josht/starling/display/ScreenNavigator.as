@@ -50,22 +50,6 @@ package org.josht.starling.display
 		}
 		
 		/**
-		 * @inheritDoc
-		 */
-		override public function set x(value:Number):void
-		{
-			super.x = Math.round(value);
-		}
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function set y(value:Number):void
-		{
-			super.y = Math.round(value);
-		}
-		
-		/**
 		 * @private
 		 */
 		private var _activeScreenID:String;

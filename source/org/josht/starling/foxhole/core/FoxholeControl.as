@@ -191,24 +191,6 @@ package org.josht.starling.foxhole.core
 		
 		/**
 		 * @private
-		 * Pixel snapping.
-		 */
-		override public function set x(value:Number):void
-		{
-			super.x = Math.round(value);
-		}
-		
-		/**
-		 * @private
-		 * Pixel snapping.
-		 */
-		override public function set y(value:Number):void
-		{
-			super.y = Math.round(value);
-		}
-		
-		/**
-		 * @private
 		 */
 		protected var _isEnabled:Boolean = true;
 		

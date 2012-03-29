@@ -439,13 +439,13 @@ package org.josht.starling.foxhole.controls
 				this.thumb.validate(); 
 				if(this._direction == DIRECTION_HORIZONTAL)
 				{
-					const trackScrollableWidth:Number = Math.floor(this._width - this.thumb.width);
+					const trackScrollableWidth:Number = this._width - this.thumb.width;
 					this.thumb.x = (trackScrollableWidth * (this._value - this._minimum) / (this._maximum - this._minimum));
 					this.thumb.y = (this._height - this.thumb.height) / 2;
 				}
 				else //vertical
 				{
-					const trackScrollableHeight:Number = Math.floor(this._height - this.thumb.height);
+					const trackScrollableHeight:Number = this._height - this.thumb.height;
 					this.thumb.x = (this._width - this.thumb.width) / 2;
 					this.thumb.y = (trackScrollableHeight * (this._value - this._minimum) / (this._maximum - this._minimum));
 				}

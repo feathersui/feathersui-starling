@@ -676,10 +676,10 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function updateSelection():void
 		{
-			var xPosition:Number = Math.ceil(this.contentPadding);
+			var xPosition:Number = this._contentPadding;
 			if(this._isSelected)
 			{
-				xPosition = Math.floor(this._width - this.thumb.width - this._contentPadding);
+				xPosition = this._width - this.thumb.width - this._contentPadding;
 			}
 			
 			//stop the tween, no matter what
@@ -884,7 +884,7 @@ package org.josht.starling.foxhole.controls
 				currentScrollRect = scrollRectSkin.scrollRect;
 				currentScrollRect.width = Math.min(offSkinScaledWidth, this._width - middleOfThumb) / this._offSkin.scaleX;
 				currentScrollRect.height = this._height / this._onSkin.scaleX;
-				currentScrollRect.x = this.offSkinOriginalWidth - currentScrollRect.width;
+				currentScrollRect.x = Math.max(0, this.offSkinOriginalWidth - currentScrollRect.width);
 				scrollRectSkin.scrollRect = currentScrollRect;
 			}
 			else
@@ -946,7 +946,7 @@ package org.josht.starling.foxhole.controls
 			else if(touch.phase == TouchPhase.MOVED)
 			{
 				const xOffset:Number = location.x - this._touchStartX;
-				const xPosition:int = Math.min(Math.max(this._contentPadding, this._thumbStartX + xOffset), trackScrollableWidth);
+				const xPosition:Number = Math.min(Math.max(this._contentPadding, this._thumbStartX + xOffset), trackScrollableWidth);
 				this.thumb.x = xPosition;
 				this.updateScrollRects();
 			}

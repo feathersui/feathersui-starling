@@ -215,7 +215,6 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function set horizontalScrollPosition(value:Number):void
 		{
-			value = Math.round(value);
 			if(this._horizontalScrollPosition == value)
 			{
 				return;
@@ -321,7 +320,6 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function set verticalScrollPosition(value:Number):void
 		{
-			value = Math.round(value);
 			if(this._verticalScrollPosition == value)
 			{
 				return;
@@ -495,8 +493,8 @@ package org.josht.starling.foxhole.controls
 				this._velocityY = this._previousVelocityY = 0;
 				if(this._viewPort)
 				{
-					this._maxHorizontalScrollPosition = Math.round(Math.max(0, this._viewPort.width - this._width));
-					this._maxVerticalScrollPosition = Math.round(Math.max(0, this._viewPort.height - this._height));
+					this._maxHorizontalScrollPosition = Math.max(0, this._viewPort.width - this._width);
+					this._maxVerticalScrollPosition = Math.max(0, this._viewPort.height - this._height);
 				}
 				else
 				{

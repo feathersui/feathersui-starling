@@ -311,7 +311,7 @@ package org.josht.starling.foxhole.controls
 					}
 					if(isNaN(this._rowHeight))
 					{
-						this._rowHeight = Math.floor(DisplayObject(typicalRenderer).height);
+						this._rowHeight = DisplayObject(typicalRenderer).height;
 					}
 					this.destroyRenderer(typicalRenderer);
 				}
