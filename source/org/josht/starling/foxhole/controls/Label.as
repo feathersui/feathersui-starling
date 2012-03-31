@@ -138,6 +138,7 @@ package org.josht.starling.foxhole.controls
 		}
 
 		private var _characters:Vector.<Image> = new <Image>[];
+		private var _cache:Vector.<Image> = new <Image>[];
 		
 		/**
 		 * @inheritDoc
@@ -188,16 +189,21 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			while(this._characters.length > 0)
-			{
-				var charDisplay:Image = this._characters.shift();
-				this.removeChild(charDisplay);
-			}
 			
 			if(!this._textFormat)
 			{
+				while(this._characters.length > 0)
+				{
+					var charDisplay:Image = this._characters.shift();
+					this.removeChild(charDisplay);
+				}
 				return;
 			}
+			
+			const temp:Vector.<Image> = this._cache;
+			this._cache = this._characters;
+			this._characters = temp;
+			this._characters.length = 0;
 			
 			const font:BitmapFont = this._textFormat.font;
 			const charCount:int = this._text.length;
@@ -210,9 +216,23 @@ package org.josht.starling.foxhole.controls
 					trace("Missing character " + String.fromCharCode(charID) + " in font " + font.name + ".");
 					continue;
 				}
-				charDisplay = charData.createImage();
+				if(this._cache.length > 0)
+				{
+					charDisplay = this._cache.shift();
+					charDisplay.texture = charData.texture;
+					charDisplay.readjustSize();
+				}
+				else
+				{
+					charDisplay = charData.createImage();
+				}
 				this.addChild(charDisplay);
 				this._characters.push(charDisplay);
+			}
+			while(this._cache.length > 0)
+			{
+				charDisplay = this._cache.shift();
+				this.removeChild(charDisplay);
 			}
 		}
 		
