@@ -1385,14 +1385,21 @@ package org.josht.starling.foxhole.controls
 					{
 						this._width = this.currentIcon.width;
 					}
-					else if(this.labelField)
+					else if(this.label)
 					{
 						this._width = this.labelField.width;
 					}
 					this._width += 2 * this._contentPadding;
 					if(this.currentSkin)
 					{
-						this._width = Math.max(this._width, this.currentSkin.width);
+						if(isNaN(this._width))
+						{
+							this._width = this.currentSkin.width;
+						}
+						else
+						{
+							this._width = Math.max(this._width, this.currentSkin.width);
+						}
 					}
 					sizeInvalid = true;
 				}
@@ -1407,14 +1414,21 @@ package org.josht.starling.foxhole.controls
 					{
 						this._height = this.currentIcon.height;
 					}
-					else if(this.labelField)
+					else if(this.label)
 					{
 						this._height = this.labelField.height;
 					}
 					this._height += 2 * this._contentPadding;
 					if(this.currentSkin)
 					{
-						this._height = Math.max(this._height, this.currentSkin.height);
+						if(isNaN(this._height))
+						{
+							this._height = this.currentSkin.height;
+						}
+						else
+						{
+							this._height = Math.max(this._height, this.currentSkin.height);
+						}
 					}
 					sizeInvalid = true;
 				}
