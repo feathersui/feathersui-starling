@@ -32,6 +32,7 @@ package org.josht.starling.foxhole.core
 	
 	import starling.display.DisplayObject;
 	import starling.display.Image;
+	import starling.display.Quad;
 	import starling.display.Stage;
 	import starling.events.Event;
 	import starling.textures.Texture;
@@ -44,20 +45,23 @@ package org.josht.starling.foxhole.core
 		private static const POPUP_TO_OVERLAY:Dictionary = new Dictionary(true);
 		
 		/**
-		 * The texture for the repeating background overlay. This may change in
-		 * a future version to allow other types of display objects.
+		 * A function that returns a display object to use as a modal overlay.
 		 */
-		public static var overlaySkin:Texture;
+		public static var overlayFactory:Function = function():DisplayObject
+		{
+			const quad:Quad = new Quad(100, 100, 0x000000);
+			quad.alpha = 0;
+			return quad;
+		};
 		
 		/**
 		 * Adds a pop-up to the stage.
 		 */
 		public static function addPopUp(popUp:DisplayObject, stage:Stage, isCentered:Boolean = true):void
 		{
-			var overlay:TiledImage;
-			if(overlaySkin)
+			if(overlayFactory != null)
 			{
-				overlay = new TiledImage(overlaySkin);
+				var overlay:DisplayObject = overlayFactory();
 				overlay.width = stage.stageWidth;
 				overlay.height = stage.stageHeight;
 				stage.addChild(overlay);
