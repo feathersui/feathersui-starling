@@ -675,6 +675,19 @@ package org.josht.starling.foxhole.controls
 		}
 		
 		/**
+		 * If the user is dragging the scroll, calling stopScrolling() will
+		 * cause the list to ignore the drag.
+		 */
+		public function stopScrolling():void
+		{
+			if(!this._scroller)
+			{
+				return;
+			}
+			this._scroller.stopScrolling();
+		}
+		
+		/**
 		 * @private
 		 */
 		override protected function initialize():void
