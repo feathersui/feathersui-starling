@@ -175,7 +175,6 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			this.invalidate(INVALIDATION_FLAG_DATA);
 			if(this._viewPort)
 			{
 				if(this._viewPort is FoxholeControl)
