@@ -24,12 +24,9 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package org.josht.starling.foxhole.controls
 {
-	import flash.system.System;
-	
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.text.BitmapFontTextFormat;
 	
-	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.text.BitmapChar;
 	import starling.text.BitmapFont;
@@ -44,11 +41,10 @@ package org.josht.starling.foxhole.controls
 		{
 		}
 		
-		private var _isLayoutInvalid:Boolean = false;
-		private var _isTextOrFontInvalid:Boolean = false;
+		private var _characters:Vector.<Image> = new <Image>[];
+		private var _cache:Vector.<Image> = new <Image>[];
 		
 		private var _lastFont:BitmapFont;
-		private var _lastColor:uint = uint.MAX_VALUE;
 		
 		/**
 		 * @private
@@ -68,19 +64,20 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function set textFormat(value:BitmapFontTextFormat):void
 		{
+			if(this._textFormat == value)
+			{
+				return;
+			}
 			this._textFormat = value;
 			if(this._textFormat)
 			{
-				if(this._textFormat.font != this._lastFont ||
-					this._textFormat.color != this._lastColor)
+				if(this._textFormat.font != this._lastFont)
 				{
-					this._isTextOrFontInvalid = true;
+					this.invalidate(INVALIDATION_FLAG_DATA);
 				}
 				this._lastFont = this._textFormat.font;
-				this._lastColor = this._textFormat.color;
 			}
-			this._isLayoutInvalid = true;
-			super.invalidate();
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
 		/**
@@ -106,9 +103,7 @@ package org.josht.starling.foxhole.controls
 				return;
 			}
 			this._text = value;
-			this._isTextOrFontInvalid = true;
-			this._isLayoutInvalid = true;
-			super.invalidate();
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 		
 		/**
@@ -134,20 +129,7 @@ package org.josht.starling.foxhole.controls
 				return;
 			}
 			this._smoothing = value;
-			super.invalidate();
-		}
-
-		private var _characters:Vector.<Image> = new <Image>[];
-		private var _cache:Vector.<Image> = new <Image>[];
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function invalidate(...rest:Array):void
-		{
-			this._isTextOrFontInvalid = true;
-			this._isLayoutInvalid = true;
-			super.invalidate.apply(this, rest);
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
 		/**
@@ -164,20 +146,24 @@ package org.josht.starling.foxhole.controls
 		 */
 		override protected function draw():void
 		{
-			this.rebuildCharacters();
-			const color:uint = this._textFormat ? this._textFormat.color : uint.MAX_VALUE;
-			for each(var charDisplay:Image in this._characters)
+			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			
+			if(dataInvalid)
 			{
-				if(color != uint.MAX_VALUE)
+				this.rebuildCharacters();
+			}
+			
+			if(dataInvalid || stylesInvalid)
+			{
+				const color:uint = this._textFormat ? this._textFormat.color : uint.MAX_VALUE;
+				for each(var charDisplay:Image in this._characters)
 				{
 					charDisplay.color = color;
+					charDisplay.smoothing = this.smoothing;
 				}
-				charDisplay.smoothing = this.smoothing;
+				this.layout();
 			}
-			this.layout();
-			
-			this._isLayoutInvalid = false;
-			this._isTextOrFontInvalid = false;
 		}
 		
 		/**
@@ -185,11 +171,6 @@ package org.josht.starling.foxhole.controls
 		 */
 		private function rebuildCharacters():void
 		{
-			if(!this._isTextOrFontInvalid)
-			{
-				return;
-			}
-			
 			if(!this._textFormat)
 			{
 				while(this._characters.length > 0)
@@ -241,10 +222,6 @@ package org.josht.starling.foxhole.controls
 		 */
 		private function layout():void
 		{
-			if(!this._isLayoutInvalid || !this._textFormat)
-			{
-				return;
-			}
 			const font:BitmapFont = this._textFormat.font;
 			const customSize:Number = this._textFormat.size;
 			const customLetterSpacing:Number = this._textFormat.letterSpacing;
