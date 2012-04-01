@@ -278,10 +278,15 @@ package org.josht.starling.foxhole.controls
 				lastCharID = charID;
 				characterIndex++;
 			}
-		
+			
+			const oldWidth:Number = this._width;
+			const oldHeight:Number = this._height;
 			this._width = currentX;
 			this._height = Math.max(maxY, font.lineHeight * scale);
-	
+			if(this._width != oldWidth || this._height != oldHeight)
+			{
+				this._onResize.dispatch(this);
+			}
 		}
 	}
 }
