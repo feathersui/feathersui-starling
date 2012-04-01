@@ -201,7 +201,7 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function set currentState(value:String):void
 		{
-			if(this._isSelected && value.indexOf("selected") < 0)
+			if(this._isEnabled && this._isSelected && value.indexOf("selected") < 0)
 			{
 				value = "selected" + String.fromCharCode(value.substr(0, 1).charCodeAt(0) - 32) + value.substr(1);
 			}
