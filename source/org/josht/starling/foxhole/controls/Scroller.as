@@ -485,6 +485,62 @@ package org.josht.starling.foxhole.controls
 		}
 		
 		/**
+		 * Throws the scroller to the specified position. If you want to throw
+		 * in one direction, pass in NaN or the current scroll position for the
+		 * value that you do not want to change.
+		 */
+		public function throwTo(targetHorizontalScrollPosition:Number = NaN, targetVerticalScrollPosition:Number = NaN, duration:Number = 0.25):void
+		{
+			if(!isNaN(targetHorizontalScrollPosition))
+			{
+				if(this._horizontalAutoScrollTween)
+				{
+					this._horizontalAutoScrollTween.paused = true;
+					this._horizontalAutoScrollTween = null;
+				}
+				if(this._horizontalScrollPosition != targetHorizontalScrollPosition)
+				{
+					this._horizontalAutoScrollTween = new GTween(this, duration,
+					{
+						horizontalScrollPosition: targetHorizontalScrollPosition
+					},
+					{
+						ease: Exponential.easeOut,
+						onComplete: horizontalAutoScrollTween_onComplete
+					});
+				}
+				else
+				{
+					this.finishScrollingHorizontally();
+				}
+			}
+			
+			if(!isNaN(targetVerticalScrollPosition))
+			{
+				if(this._verticalAutoScrollTween)
+				{
+					this._verticalAutoScrollTween.paused = true;
+					this._verticalAutoScrollTween = null;
+				}
+				if(this._verticalScrollPosition != targetVerticalScrollPosition)
+				{
+					this._verticalAutoScrollTween = new GTween(this, duration,
+					{
+						verticalScrollPosition: targetVerticalScrollPosition
+					},
+					{
+						ease: Exponential.easeOut,
+						onComplete: verticalAutoScrollTween_onComplete
+					});
+				}
+				else
+				{
+					this.finishScrollingVertically();
+				}
+			}
+		}
+		
+		/**
 		 * @private
 		 */
 		override protected function initialize():void
@@ -682,22 +738,7 @@ package org.josht.starling.foxhole.controls
 			}
 			
 			this._isDraggingHorizontally = false;
-			if(this._horizontalAutoScrollTween)
-			{
-				this._horizontalAutoScrollTween.paused = false;
-				this._horizontalAutoScrollTween = null;
-			}
-			if(!isNaN(targetHorizontalScrollPosition))
-			{
-				this._horizontalAutoScrollTween = new GTween(this, 0.24,
-				{
-					horizontalScrollPosition: targetHorizontalScrollPosition
-				},
-				{
-					ease: Exponential.easeOut,
-					onComplete: horizontalAutoScrollTween_onComplete
-				});
-			}
+			this.throwTo(targetHorizontalScrollPosition, NaN, 0.24);
 		}
 		
 		/**
@@ -716,22 +757,7 @@ package org.josht.starling.foxhole.controls
 			}
 			
 			this._isDraggingVertically = false;
-			if(this._verticalAutoScrollTween)
-			{
-				this._verticalAutoScrollTween.paused = false;
-				this._verticalAutoScrollTween = null;
-			}
-			if(!isNaN(targetVerticalScrollPosition))
-			{
-				this._verticalAutoScrollTween = new GTween(this, 0.24,
-				{
-					verticalScrollPosition: targetVerticalScrollPosition
-				},
-				{
-					ease: Exponential.easeOut,
-					onComplete: verticalAutoScrollTween_onComplete
-				});
-			}
+			this.throwTo(NaN, targetVerticalScrollPosition, 0.24);
 		}
 		
 		/**
@@ -763,20 +789,7 @@ package org.josht.starling.foxhole.controls
 				pixelsPerFrame *= FRICTION;
 				frameCount++;
 			}
-			
-			if(this._horizontalAutoScrollTween)
-			{
-				this._horizontalAutoScrollTween.paused = false;
-				this._horizontalAutoScrollTween = null;
-			}
-			this._horizontalAutoScrollTween = new GTween(this, frameCount / frameRate,
-			{
-				horizontalScrollPosition: targetHorizontalScrollPosition
-			},
-			{
-				ease: Exponential.easeOut,
-				onComplete: horizontalAutoScrollTween_onComplete
-			});
+			this.throwTo(targetHorizontalScrollPosition, NaN, frameCount / frameRate);
 		}
 		
 		/**
@@ -808,20 +821,7 @@ package org.josht.starling.foxhole.controls
 				pixelsPerFrame *= FRICTION;
 				frameCount++;
 			}
-			
-			if(this._verticalAutoScrollTween)
-			{
-				this._verticalAutoScrollTween.paused = false;
-				this._verticalAutoScrollTween = null;
-			}
-			this._verticalAutoScrollTween = new GTween(this, frameCount / frameRate,
-			{
-				verticalScrollPosition: targetVerticalScrollPosition
-			},
-			{
-				ease: Exponential.easeOut,
-				onComplete: verticalAutoScrollTween_onComplete
-			});
+			this.throwTo(NaN, targetVerticalScrollPosition, frameCount / frameRate);
 		}
 		
 		/**
