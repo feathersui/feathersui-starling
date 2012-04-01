@@ -837,11 +837,8 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function horizontalAutoScrollTween_onComplete(tween:GTween):void
 		{
-			if(this._horizontalAutoScrollTween == tween)
-			{
-				this._horizontalAutoScrollTween = null;
-				this.finishScrollingHorizontally();
-			}
+			this._horizontalAutoScrollTween = null;
+			this.finishScrollingHorizontally();
 		}
 		
 		/**
@@ -849,11 +846,8 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function verticalAutoScrollTween_onComplete(tween:GTween):void
 		{
-			if(this._verticalAutoScrollTween == tween)
-			{
-				this._verticalAutoScrollTween = null;
-				this.finishScrollingVertically();
-			}
+			this._verticalAutoScrollTween = null;
+			this.finishScrollingVertically();
 		}
 		
 		/**
