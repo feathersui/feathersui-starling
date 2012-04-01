@@ -34,7 +34,7 @@ package org.josht.starling.foxhole.text
 		/**
 		 * Constructor.
 		 */
-		public function BitmapFontTextFormat(font:starling.text.BitmapFont, size:Number = NaN, color:uint = uint.MAX_VALUE)
+		public function BitmapFontTextFormat(font:starling.text.BitmapFont, size:Number = NaN, color:uint = 0xffffff)
 		{
 			this.font = font;
 			this.size = size;
