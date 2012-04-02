@@ -76,8 +76,16 @@ package org.josht.starling.foxhole.data
 		public function addItemAt(data:Object, item:Object, index:int):void
 		{
 			this.checkForCorrectDataType(data);
-			data += item;
-			trace("Warning: addItemAt() for XMLList always adds items to the end.");
+			
+			//wow, this is weird. unless I have failed epicly, I can find no 
+			//other way to insert an element into an XMLList at a specific index.
+			const dataClone:XMLList = (data as XMLList).copy();
+			data[index] = item;
+			const listLength:int = dataClone.length();
+			for(var i:int = index; i < listLength; i++)
+			{
+				data[i + 1] = dataClone[i];
+			}
 		}
 		
 		/**
