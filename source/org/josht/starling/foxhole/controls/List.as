@@ -63,9 +63,9 @@ package org.josht.starling.foxhole.controls
 			super();
 		}
 		
-		private var _background:DisplayObject;
-		private var _scroller:Scroller;
-		private var _dataContainer:ListDataContainer;
+		protected var _background:DisplayObject;
+		protected var _scroller:Scroller;
+		protected var _dataContainer:ListDataContainer;
 		
 		/**
 		 * @private
@@ -350,6 +350,33 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
+		private var _scrollerProperties:Object = {};
+		
+		/**
+		 * A set of key/value pairs to be passed down to the list's scroller
+		 * instance. The scroller is a Foxhole Scroller control.
+		 */
+		public function get scrollerProperties():Object
+		{
+			return this._scrollerProperties;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set scrollerProperties(value:Object):void
+		{
+			if(this._scrollerProperties == value)
+			{
+				return;
+			}
+			this._scrollerProperties = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+		
+		/**
+		 * @private
+		 */
 		private var _itemRendererProperties:Object = {};
 
 		/**
@@ -623,7 +650,20 @@ package org.josht.starling.foxhole.controls
 		}
 		
 		/**
-		 * Sets a property value for all item renderers.
+		 * Sets a single property on the list's scroller instance. The
+		 * scroller is a Foxhole Scroller control.
+		 */
+		public function setScrollerProperty(propertyName:String, propertyValue:Object):void
+		{
+			this._scrollerProperties[propertyName] = propertyValue;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+		
+		/**
+		 * Sets a property value for all of the list's item renderers. This
+		 * property will be shared by all item renderers, so skins and similar
+		 * objects that can only be used in one place should be initialized in
+		 * a different way.
 		 */
 		public function setItemRendererProperty(propertyName:String, propertyValue:Object):void
 		{
@@ -721,6 +761,11 @@ package org.josht.starling.foxhole.controls
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 			
+			if(stylesInvalid)
+			{
+				this.refreshScrollerStyles();
+			}
+			
 			if(sizeInvalid || stylesInvalid || stateInvalid)
 			{
 				this.refreshBackgroundSkin();
@@ -775,6 +820,21 @@ package org.josht.starling.foxhole.controls
 			this._scroller.validate();
 			this._maxVerticalScrollPosition = this._scroller.maxVerticalScrollPosition;
 			this._verticalScrollPosition = this._scroller.verticalScrollPosition;
+		}
+		
+		/**
+		 * @private
+		 */
+		protected function refreshScrollerStyles():void
+		{
+			for(var propertyName:String in this._scrollerProperties)
+			{
+				if(this._scroller.hasOwnProperty(propertyName))
+				{
+					var propertyValue:Object = this._scrollerProperties[propertyName];
+					this._scroller[propertyName] = propertyValue;
+				}
+			}
 		}
 		
 		/**
