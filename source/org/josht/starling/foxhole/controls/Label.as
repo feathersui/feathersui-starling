@@ -222,6 +222,10 @@ package org.josht.starling.foxhole.controls
 		 */
 		private function layout():void
 		{
+			if(!this._textFormat)
+			{
+				return;
+			}
 			const font:BitmapFont = this._textFormat.font;
 			const customSize:Number = this._textFormat.size;
 			const customLetterSpacing:Number = this._textFormat.letterSpacing;
