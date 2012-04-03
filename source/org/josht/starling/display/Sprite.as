@@ -70,7 +70,26 @@ package org.josht.starling.display
 		public function set scrollRect(value:Rectangle):void
 		{
 			this._scrollRect = value;
+			if(this._scrollRect)
+			{
+				if(!this._scaledScrollRectXY)
+				{
+					this._scaledScrollRectXY = new Point();
+				}
+				if(!this._scissorRect)
+				{
+					this._scissorRect = new Rectangle();
+				}
+			}
+			else
+			{
+				this._scaledScrollRectXY = null;
+				this._scissorRect = null;
+			}
 		}
+		
+		private var _scaledScrollRectXY:Point;
+		private var _scissorRect:Rectangle;
 		
 		/**
 		 * @inheritDoc
@@ -114,23 +133,28 @@ package org.josht.starling.display
 			if(this._scrollRect)
 			{
 				support.finishQuadBatch();
-				this.getBounds(this.stage, helperRect);
+				this.getBounds(this.stage, this._scissorRect);
+				
+				this.getTransformationMatrix(this.stage, helperMatrix);
+				this._scaledScrollRectXY.x = this._scrollRect.x * helperMatrix.a;
+				this._scaledScrollRectXY.y = this._scrollRect.y * helperMatrix.d;
+				
 				const oldRect:Rectangle = ScrollRectManager.currentScissorRect;
 				if(oldRect)
 				{
-					helperRect.x += ScrollRectManager.scrollRectOffsetX;
-					helperRect.y += ScrollRectManager.scrollRectOffsetY;
-					helperRect = helperRect.intersection(oldRect);
+					this._scissorRect.x += ScrollRectManager.scrollRectOffsetX;
+					this._scissorRect.y += ScrollRectManager.scrollRectOffsetY;
+					this._scissorRect = this._scissorRect.intersection(oldRect);
 				}
 				//isEmpty() && <= 0 don't work here for some reason
-				if(helperRect.width < 1 || helperRect.height < 1)
+				if(this._scissorRect.width < 1 || this._scissorRect.height < 1)
 				{
 					render = false;
 				}
-				Starling.context.setScissorRectangle(helperRect);
-				ScrollRectManager.currentScissorRect = helperRect.clone();
-				ScrollRectManager.scrollRectOffsetX -= this._scrollRect.x;
-				ScrollRectManager.scrollRectOffsetY -= this._scrollRect.y;
+				Starling.context.setScissorRectangle(this._scissorRect);
+				ScrollRectManager.currentScissorRect = this._scissorRect;
+				ScrollRectManager.scrollRectOffsetX -= this._scaledScrollRectXY.x;
+				ScrollRectManager.scrollRectOffsetY -= this._scaledScrollRectXY.y;
 				support.translateMatrix(-this._scrollRect.x, -this._scrollRect.y);
 			}
 			if(render)
@@ -141,8 +165,8 @@ package org.josht.starling.display
 			{
 				support.finishQuadBatch();
 				support.translateMatrix(this._scrollRect.x, this._scrollRect.y);
-				ScrollRectManager.scrollRectOffsetX += this._scrollRect.x;
-				ScrollRectManager.scrollRectOffsetY += this._scrollRect.y;
+				ScrollRectManager.scrollRectOffsetX += this._scaledScrollRectXY.x;
+				ScrollRectManager.scrollRectOffsetY += this._scaledScrollRectXY.y;
 				ScrollRectManager.currentScissorRect = oldRect;
 				Starling.context.setScissorRectangle(oldRect);
 			}
