@@ -43,7 +43,7 @@ package org.josht.starling.display
 			this._scale9Grid = scale9Grid;
 			this.saveWidthAndHeight(texture);
 			this.createImages(texture);
-			this.refreshProperties();
+			this.refreshProperties(false);
 			this.refreshLayout();
 		}
 		
@@ -148,7 +148,24 @@ package org.josht.starling.display
 				return;
 			}
 			this._smoothing = value;
-			this.refreshProperties();
+			this.refreshProperties(true);
+		}
+		
+		private var _autoFlatten:Boolean = true;
+		
+		public function get autoFlatten():Boolean
+		{
+			return this._autoFlatten;
+		}
+		
+		public function set autoFlatten(value:Boolean):void
+		{
+			if(this._autoFlatten == value)
+			{
+				return;
+			}
+			this._autoFlatten = value;
+			this.refreshLayout();
 		}
 		
 		private var _scale9Grid:Rectangle;
@@ -170,7 +187,7 @@ package org.josht.starling.display
 		private var _bottomLeftImage:Image;
 		private var _bottomCenterImage:Image;
 		private var _bottomRightImage:Image;
-		
+
 		/**
 		 * @private
 		 */
@@ -265,7 +282,7 @@ package org.josht.starling.display
 		/**
 		 * @private
 		 */
-		private function refreshProperties():void
+		private function refreshProperties(canAutoFlatten:Boolean):void
 		{
 			this._topLeftImage.smoothing = this._smoothing;
 			this._topCenterImage.smoothing = this._smoothing;
@@ -278,6 +295,11 @@ package org.josht.starling.display
 			this._bottomLeftImage.smoothing = this._smoothing;
 			this._bottomCenterImage.smoothing = this._smoothing;
 			this._bottomRightImage.smoothing = this._smoothing;
+			
+			if(canAutoFlatten && this._autoFlatten)
+			{
+				this.flatten();
+			}
 		}
 		
 		/**
@@ -334,6 +356,11 @@ package org.josht.starling.display
 			this._bottomRightImage.scaleX = this._bottomRightImage.scaleY = this._textureScale;
 			this._bottomRightImage.x = this._width - scaledRightWidth;
 			this._bottomRightImage.y = this._height - scaledBottomHeight;
+			
+			if(this._autoFlatten)
+			{
+				this.flatten();
+			}
 		}
 	}
 }
