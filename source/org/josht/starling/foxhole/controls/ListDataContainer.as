@@ -485,6 +485,10 @@ package org.josht.starling.foxhole.controls
 			renderer.data = item;
 			renderer.index = index;
 			renderer.owner = this.owner;
+			if(renderer is FoxholeControl)
+			{
+				FoxholeControl(renderer).isEnabled = this._isEnabled;
+			}
 			
 			if(!isTemporary)
 			{

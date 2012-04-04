@@ -783,6 +783,7 @@ package org.josht.starling.foxhole.controls
 			{
 				this._dataContainer.visibleHeight = NaN;
 			}
+			this._dataContainer.isEnabled = this._isEnabled;
 			this._dataContainer.isSelectable = this._isSelectable;
 			this._dataContainer.selectedIndex = this._selectedIndex;
 			this._dataContainer.dataProvider = this._dataProvider;
@@ -810,6 +811,7 @@ package org.josht.starling.foxhole.controls
 				this._scrollToIndex = -1;
 			}
 			
+			this._scroller.isEnabled = this._isEnabled;
 			this._scroller.width = this._width - 2 * this._contentPadding;
 			this._scroller.height = this._height - 2 * this._contentPadding;
 			this._scroller.x = this._contentPadding;

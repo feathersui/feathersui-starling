@@ -797,6 +797,7 @@ package org.josht.starling.foxhole.controls
 				}
 			}
 			this.thumb.visible = this._showThumb;
+			this.thumb.isEnabled = this._isEnabled;
 		}
 		
 		/**
