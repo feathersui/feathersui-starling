@@ -37,6 +37,7 @@ package org.josht.starling.foxhole.controls
 		public function SimpleItemRenderer()
 		{
 			super();
+			this.isToggle = true;
 		}
 		
 		/**

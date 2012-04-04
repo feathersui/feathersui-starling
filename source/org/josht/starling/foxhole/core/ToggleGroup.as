@@ -29,8 +29,6 @@ package org.josht.starling.foxhole.core
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 	
-	import starling.display.DisplayObject;
-	import starling.events.Event;
 	import starling.events.EventDispatcher;
 	
 	/**
@@ -50,19 +48,58 @@ package org.josht.starling.foxhole.core
 		
 		private var _ignoreChanges:Boolean = false;
 		
-		private var _items:Vector.<IToggle> = new Vector.<IToggle>;
+		private var _isSelectionRequired:Boolean = true;
 		
-		/**
-		 * @private
-		 */
-		private var _selectedItem:IToggle;
+		public function get isSelectionRequired():Boolean
+		{
+			return this._isSelectionRequired;
+		}
+		
+		public function set isSelectionRequired(value:Boolean):void
+		{
+			if(this._isSelectionRequired == value)
+			{
+				return;
+			}
+			this._isSelectionRequired = value;
+			if(this._isSelectionRequired && this._selectedIndex < 0 && this._items.length > 0)
+			{
+				this.selectedIndex = 0;
+			}
+		}
+		
+		private var _isEnabled:Boolean = true;
+		
+		public function get isEnabled():Boolean
+		{
+			return this._isEnabled;
+		}
+		
+		public function set isEnabled(value:Boolean):void
+		{
+			if(this._isEnabled == value)
+			{
+				return;
+			}
+			this._isEnabled = value;
+			if(!this._isEnabled)
+			{
+				this.selectedItem = null;
+			}
+		}
+		
+		private var _items:Vector.<IToggle> = new Vector.<IToggle>;
 		
 		/**
 		 * The currently selected toggle.
 		 */
 		public function get selectedItem():IToggle
 		{
-			return this._selectedItem;
+			if(this._selectedIndex < 0)
+			{
+				return null;
+			}
+			return this._items[this._selectedIndex];
 		}
 		
 		/**
@@ -70,33 +107,7 @@ package org.josht.starling.foxhole.core
 		 */
 		public function set selectedItem(value:IToggle):void
 		{
-			this._selectedIndex = this._items.indexOf(value);
-			if(this._selectedIndex >= 0)
-			{
-				this._selectedItem = value;
-			}
-			else if(!value)
-			{
-				this._selectedItem = null;
-			}
-			else
-			{
-				throw new IllegalOperationError("Cannot select an item that isn't registered with this ToggleGroup.");
-			}
-			this._ignoreChanges = true;
-			for each(var item:IToggle in this._items)
-			{
-				if(item == value)
-				{
-					item.isSelected = true;
-				}
-				else
-				{
-					item.isSelected = false;
-				}
-			}
-			this._ignoreChanges = false;
-			this._onChange.dispatch(this);
+			this.selectedIndex = this._items.indexOf(value);
 		}
 		
 		/**
@@ -117,11 +128,26 @@ package org.josht.starling.foxhole.core
 		 */
 		public function set selectedIndex(value:int):void
 		{
-			if(value < 0 || value >= this._items.length)
+			if(this._isSelectionRequired && (value < 0 || value >= this._items.length))
 			{
 				throw new RangeError("Index " + value + " is out of range " + this._items.length + " for ToggleGroup.");
 			}
-			this.selectedItem = this._items[value];
+			this._selectedIndex = this._isEnabled ? value : -1;
+			const selectedItem:IToggle = this._selectedIndex < 0 ? null : this._items[this._selectedIndex];
+			this._ignoreChanges = true;
+			for each(var item:IToggle in this._items)
+			{
+				if(item == selectedItem)
+				{
+					item.isSelected = true;
+				}
+				else
+				{
+					item.isSelected = false;
+				}
+			}
+			this._ignoreChanges = false;
+			this._onChange.dispatch(this);
 		}
 		
 		/**
@@ -154,7 +180,7 @@ package org.josht.starling.foxhole.core
 				throw new IllegalOperationError("Cannot add an item to a ToggleGroup more than once.");
 			}
 			this._items.push(item);
-			if(!this._selectedItem)
+			if(this._selectedIndex < 0 && this._isSelectionRequired)
 			{
 				this.selectedItem = item;
 			}
@@ -176,10 +202,16 @@ package org.josht.starling.foxhole.core
 				return;
 			}
 			item.onChange.remove(item_onChange);
-			this._items.splice(index, 1);
-			if(this._selectedItem == item)
+			if(this._selectedIndex >= this._items.length)
 			{
-				this.selectedIndex = -1;
+				if(this._isSelectionRequired)
+				{
+					this.selectedIndex = this._items.length - 1;
+				}
+				else
+				{
+					this.selectedIndex = -1;
+				}
 			}
 		}
 		
@@ -193,11 +225,12 @@ package org.josht.starling.foxhole.core
 				return;
 			}
 			
-			if(item.isSelected || this._selectedItem == item)
+			const index:int = this._items.indexOf(item);
+			if(item.isSelected || this._selectedIndex == index)
 			{
-				this.selectedItem = item;
+				this.selectedIndex = index;
 			}
 		}
-
+		
 	}
 }

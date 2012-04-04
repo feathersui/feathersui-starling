@@ -242,11 +242,11 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
+			this._isSelectable = value;
 			if(!value)
 			{
 				this.selectedIndex = -1;
 			}
-			this._isSelectable = value;
 		}
 		
 		private var _selectedIndex:int = -1;
@@ -473,6 +473,7 @@ package org.josht.starling.foxhole.controls
 				{
 					renderer = new this._itemRendererType();
 				}
+				renderer.onChange.add(renderer_onChange);
 				const displayRenderer:DisplayObject = DisplayObject(renderer);
 				displayRenderer.addEventListener(TouchEvent.TOUCH, renderer_touchHandler);
 				this.addChild(displayRenderer);
@@ -511,6 +512,17 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 		
+		private function renderer_onChange(renderer:IListItemRenderer):void
+		{
+			if(!this._isSelectable || this._isScrolling)
+			{
+				//reset to the old value
+				renderer.isSelected = this._selectedIndex == renderer.index;
+				return;
+			}
+			this.selectedIndex = renderer.index;
+		}
+		
 		private function renderer_touchHandler(event:TouchEvent):void
 		{
 			if(!this._isEnabled)
@@ -526,18 +538,6 @@ package org.josht.starling.foxhole.controls
 				//if this flag gets set to true before the touch phase ends, we
 				//won't change selection.
 				this._isScrolling = false;
-			}
-			if(this._isSelectable && !this._isScrolling && touch && touch.phase == TouchPhase.ENDED)
-			{
-				const location:Point = touch.getLocation(displayRenderer);
-				if(this._owner.clipContent) //TODO: fix this
-				{
-					location.y += this.owner.verticalScrollPosition;
-				}
-				if(displayRenderer.hitTest(location, true))
-				{
-					this.selectedIndex = renderer.index;
-				}
 			}
 			
 			this._onItemTouch.dispatch(this, renderer.data, renderer.index, event);

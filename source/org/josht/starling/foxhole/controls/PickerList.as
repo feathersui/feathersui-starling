@@ -28,6 +28,7 @@ package org.josht.starling.foxhole.controls
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
 	
+	import org.josht.starling.display.ScrollRectManager;
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.PopUpManager;
 	import org.josht.starling.foxhole.data.ListCollection;
@@ -559,10 +560,7 @@ package org.josht.starling.foxhole.controls
 			}
 			
 			const location:Point = touch.getLocation(displayRenderer);
-			if(this._list.clipContent) //TODO: fix this
-			{
-				location.y += this._list.verticalScrollPosition;
-			}
+			ScrollRectManager.adjustTouchLocation(location, displayRenderer);
 			if(displayRenderer.hitTest(location, true))
 			{
 				this.closePopUpList();

@@ -27,6 +27,7 @@ package org.josht.starling.foxhole.controls
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Point;
 	
+	import org.josht.starling.display.ScrollRectManager;
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.IToggle;
 	import org.josht.starling.foxhole.text.BitmapFontTextFormat;
@@ -294,6 +295,10 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function set isSelected(value:Boolean):void
 		{
+			if(this._isSelected == value)
+			{
+				return;
+			}
 			this._isSelected = value;
 			this.currentState = this.currentState;
 			this.invalidate(INVALIDATION_FLAG_STATE, INVALIDATION_FLAG_SELECTED);
@@ -1877,6 +1882,7 @@ package org.josht.starling.foxhole.controls
 				return;
 			}
 			const location:Point = touch.getLocation(this);
+			ScrollRectManager.adjustTouchLocation(location, this);
 			const isInBounds:Boolean = this.hitTest(location, true) != null;
 			if(touch.phase == TouchPhase.BEGAN)
 			{
@@ -1899,7 +1905,7 @@ package org.josht.starling.foxhole.controls
 				this.currentState = STATE_UP;
 				if(isInBounds)
 				{
-					this.onRelease.dispatch(this);
+					this._onRelease.dispatch(this);
 					if(this._isToggle)
 					{
 						this.isSelected = !this._isSelected;

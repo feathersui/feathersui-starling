@@ -25,11 +25,13 @@ OTHER DEALINGS IN THE SOFTWARE.
 package org.josht.starling.foxhole.controls
 {
 	import flash.geom.Rectangle;
+	
+	import org.josht.starling.foxhole.core.IToggle;
 
 	/**
 	 * Interface to implement a renderer for a list item.
 	 */
-	public interface IListItemRenderer
+	public interface IListItemRenderer extends IToggle
 	{
 		/**
 		 * An item from the list's data provider. The data may change if this
@@ -55,16 +57,6 @@ package org.josht.starling.foxhole.controls
 		 * @private
 		 */
 		function set index(value:int):void;
-		
-		/**
-		 * Indicates if the item is selected.
-		 */
-		function get isSelected():Boolean;
-		
-		/**
-		 * @private
-		 */
-		function set isSelected(value:Boolean):void;
 		
 		/**
 		 * The list that contains this item renderer.
