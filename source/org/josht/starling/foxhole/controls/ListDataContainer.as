@@ -228,6 +228,8 @@ package org.josht.starling.foxhole.controls
 			this._visibleHeight = value;
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
+		
+		private var _ignoreSelectionChanges:Boolean = false;
 
 		private var _isSelectable:Boolean = true;
 		
@@ -363,10 +365,12 @@ package org.josht.starling.foxhole.controls
 		
 		protected function refreshSelection():void
 		{
+			this._ignoreSelectionChanges = true;
 			for each(var renderer:IListItemRenderer in this._activeRenderers)
 			{
 				renderer.isSelected = renderer.index == this._selectedIndex;
 			}
+			this._ignoreSelectionChanges = false;
 		}
 		
 		protected function drawRenderers():void
@@ -518,6 +522,10 @@ package org.josht.starling.foxhole.controls
 		
 		private function renderer_onChange(renderer:IListItemRenderer):void
 		{
+			if(this._ignoreSelectionChanges)
+			{
+				return;
+			}
 			if(!this._isSelectable || this._isScrolling || this._selectedIndex == renderer.index)
 			{
 				//reset to the old value

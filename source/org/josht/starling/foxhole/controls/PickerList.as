@@ -124,7 +124,7 @@ package org.josht.starling.foxhole.controls
 				return;
 			}
 			this._selectedIndex = value;
-			this.invalidate(INVALIDATION_FLAG_DATA);
+			this.invalidate(INVALIDATION_FLAG_SELECTED);
 			this._onChange.dispatch(this);
 		}
 		
@@ -397,6 +397,7 @@ package org.josht.starling.foxhole.controls
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
+			const selectionInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SELECTED);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const stageSizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STAGE_SIZE);
 			
@@ -409,11 +410,13 @@ package org.josht.starling.foxhole.controls
 			if(dataInvalid)
 			{
 				this._list.dataProvider = this._dataProvider;
-				this._list.selectedIndex = this.selectedIndex;
 				this._list.labelField = this._labelField;
 				this._list.labelFunction = this._labelFunction;
 				this._hasBeenScrolled = false;
-				
+			}
+			
+			if(selectionInvalid)
+			{
 				if(this._selectedIndex >= 0)
 				{
 					this._button.label = this.itemToLabel(this.selectedItem);
@@ -422,6 +425,7 @@ package org.josht.starling.foxhole.controls
 				{
 					this._button.label = "";
 				}
+				this._list.selectedIndex = this._selectedIndex;
 			}
 			
 			if(stateInvalid)
@@ -454,7 +458,6 @@ package org.josht.starling.foxhole.controls
 				this.resizeAndPositionList();
 			}
 			this._list.validate();
-			this._selectedIndex = this._list.selectedIndex;
 		}
 		
 		/**
