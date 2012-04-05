@@ -24,10 +24,14 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package org.josht.starling.display
 {
+	import flash.geom.Matrix;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
+	import starling.display.DisplayObject;
 	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;
+	import starling.utils.transformCoords;
 
 	/**
 	 * Tiles a texture to fill, and possibly overflow, the specified bounds. May
@@ -35,14 +39,20 @@ package org.josht.starling.display
 	 */
 	public class TiledImage extends Sprite
 	{
+		private static var helperPoint:Point = new Point();
+		private static var helperMatrix:Matrix = new Matrix();
+		
 		/**
 		 * Constructor.
 		 */
 		public function TiledImage(texture:Texture)
 		{
 			super();
+			this._hitArea = new Rectangle();
 			this.texture = texture;
 		}
+		
+		private var _hitArea:Rectangle;
 		
 		private var _imageContainer:Sprite;
 		private var _images:Vector.<Image> = new <Image>[];
@@ -69,7 +79,7 @@ package org.josht.starling.display
 			{
 				return;
 			}
-			this._width = value;
+			this._width = this._hitArea.width = value;
 			this.refreshImages();
 		}
 		
@@ -95,7 +105,7 @@ package org.josht.starling.display
 			{
 				return;
 			}
-			this._height = value;
+			this._height = this._hitArea.height = value;
 			this.refreshImages();
 		}
 		
@@ -211,6 +221,68 @@ package org.josht.starling.display
 		}
 		
 		/**
+		* @inheritDoc
+		*/
+		public override function getBounds(targetSpace:DisplayObject, resultRect:Rectangle=null):Rectangle
+		{
+			if(!resultRect)
+			{
+				resultRect = new Rectangle();
+			}
+			
+			var minX:Number = Number.MAX_VALUE, maxX:Number = -Number.MAX_VALUE;
+			var minY:Number = Number.MAX_VALUE, maxY:Number = -Number.MAX_VALUE;
+			
+			if (targetSpace == this) // optimization
+			{
+				minX = this._hitArea.x;
+				minY = this._hitArea.y;
+				maxX = this._hitArea.width;
+				maxY = this._hitArea.height;
+			}
+			else
+			{
+				getTransformationMatrix(targetSpace, helperMatrix);
+				
+				transformCoords(helperMatrix, this._hitArea.x, this._hitArea.y, helperPoint);
+				minX = minX < helperPoint.x ? minX : helperPoint.x;
+				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
+				minY = minY < helperPoint.y ? minY : helperPoint.y;
+				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
+				
+				transformCoords(helperMatrix, this._hitArea.x, this._hitArea.height, helperPoint);
+				minX = minX < helperPoint.x ? minX : helperPoint.x;
+				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
+				minY = minY < helperPoint.y ? minY : helperPoint.y;
+				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
+				
+				transformCoords(helperMatrix, this._hitArea.width, this._hitArea.y, helperPoint);
+				minX = minX < helperPoint.x ? minX : helperPoint.x;
+				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
+				minY = minY < helperPoint.y ? minY : helperPoint.y;
+				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
+				
+				transformCoords(helperMatrix, this._hitArea.width, this._hitArea.height, helperPoint);
+				minX = minX < helperPoint.x ? minX : helperPoint.x;
+				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
+				minY = minY < helperPoint.y ? minY : helperPoint.y;
+				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
+			}
+			
+			resultRect.x = minX;
+			resultRect.y = minY;
+			resultRect.width  = maxX - minX;
+			resultRect.height = maxY - minY;
+			
+			return resultRect;
+		}
+		
+		override public function hitTest(localPoint:Point, forTouch:Boolean=false):DisplayObject
+		{
+			return this._hitArea.containsPoint(localPoint) ? this : null;
+		}
+		
+		/**
 		 * Set both the width and height in one call.
 		 */
 		public function setSize(width:Number, height:Number):void
@@ -237,6 +309,7 @@ package org.josht.starling.display
 				if(i < imageCount && this._images.length < imageCount)
 				{
 					var image:Image = new Image(this._texture);
+					image.touchable = false;
 					this.addChild(image);
 					this._images.push(image);
 				}

@@ -24,6 +24,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package org.josht.starling.foxhole.controls
 {
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
 	import org.josht.starling.foxhole.core.FoxholeControl;
@@ -45,7 +46,7 @@ package org.josht.starling.foxhole.controls
 		{
 		}
 		
-		private var _hitArea:Quad;
+		private var _hitArea:Rectangle;
 		private var _characters:Vector.<Image> = new <Image>[];
 		private var _cache:Vector.<Image> = new <Image>[];
 		
@@ -147,13 +148,19 @@ package org.josht.starling.foxhole.controls
 		}
 		
 		/**
+		 * @inheritDoc
+		 */
+		override public function hitTest(localPoint:Point, forTouch:Boolean=false):DisplayObject
+		{
+			return this._hitArea.containsPoint(localPoint) ? this : null;
+		}
+		
+		/**
 		 * @private
 		 */
 		override protected function initialize():void
 		{
-			this._hitArea = new Quad(10, 10, 0xff00ff);
-			this._hitArea.alpha = 0;
-			this.addChild(this._hitArea);
+			this._hitArea = new Rectangle();
 		}
 		
 		/**
