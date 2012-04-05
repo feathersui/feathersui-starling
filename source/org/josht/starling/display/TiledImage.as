@@ -277,8 +277,15 @@ package org.josht.starling.display
 			return resultRect;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function hitTest(localPoint:Point, forTouch:Boolean=false):DisplayObject
 		{
+			if(forTouch && (!this.visible || !this.touchable))
+			{
+				return null;
+			}
 			return this._hitArea.containsPoint(localPoint) ? this : null;
 		}
 		

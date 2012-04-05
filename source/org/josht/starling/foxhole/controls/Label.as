@@ -24,6 +24,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package org.josht.starling.foxhole.controls
 {
+	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
@@ -36,12 +37,16 @@ package org.josht.starling.foxhole.controls
 	import starling.text.BitmapChar;
 	import starling.text.BitmapFont;
 	import starling.textures.TextureSmoothing;
+	import starling.utils.transformCoords;
 
 	/**
 	 * Displays a single-line of text. Cannot be clipped.
 	 */
 	public class Label extends FoxholeControl
 	{
+		private static const helperMatrix:Matrix = new Matrix();
+		private static const helperPoint:Point = new Point();
+		
 		public function Label()
 		{
 		}
@@ -150,8 +155,69 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @inheritDoc
 		 */
+		public override function getBounds(targetSpace:DisplayObject, resultRect:Rectangle=null):Rectangle
+		{
+			if(!resultRect)
+			{
+				resultRect = new Rectangle();
+			}
+			
+			var minX:Number = Number.MAX_VALUE, maxX:Number = -Number.MAX_VALUE;
+			var minY:Number = Number.MAX_VALUE, maxY:Number = -Number.MAX_VALUE;
+			
+			if (targetSpace == this) // optimization
+			{
+				minX = this._hitArea.x;
+				minY = this._hitArea.y;
+				maxX = this._hitArea.width;
+				maxY = this._hitArea.height;
+			}
+			else
+			{
+				getTransformationMatrix(targetSpace, helperMatrix);
+				
+				transformCoords(helperMatrix, this._hitArea.x, this._hitArea.y, helperPoint);
+				minX = minX < helperPoint.x ? minX : helperPoint.x;
+				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
+				minY = minY < helperPoint.y ? minY : helperPoint.y;
+				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
+				
+				transformCoords(helperMatrix, this._hitArea.x, this._hitArea.height, helperPoint);
+				minX = minX < helperPoint.x ? minX : helperPoint.x;
+				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
+				minY = minY < helperPoint.y ? minY : helperPoint.y;
+				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
+				
+				transformCoords(helperMatrix, this._hitArea.width, this._hitArea.y, helperPoint);
+				minX = minX < helperPoint.x ? minX : helperPoint.x;
+				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
+				minY = minY < helperPoint.y ? minY : helperPoint.y;
+				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
+				
+				transformCoords(helperMatrix, this._hitArea.width, this._hitArea.height, helperPoint);
+				minX = minX < helperPoint.x ? minX : helperPoint.x;
+				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
+				minY = minY < helperPoint.y ? minY : helperPoint.y;
+				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
+			}
+			
+			resultRect.x = minX;
+			resultRect.y = minY;
+			resultRect.width  = maxX - minX;
+			resultRect.height = maxY - minY;
+			
+			return resultRect;
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
 		override public function hitTest(localPoint:Point, forTouch:Boolean=false):DisplayObject
 		{
+			if(forTouch && (!this.visible || !this.touchable))
+			{
+				return null;
+			}
 			return this._hitArea.containsPoint(localPoint) ? this : null;
 		}
 		
