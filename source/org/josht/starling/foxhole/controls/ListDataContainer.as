@@ -518,7 +518,7 @@ package org.josht.starling.foxhole.controls
 		
 		private function renderer_onChange(renderer:IListItemRenderer):void
 		{
-			if(!this._isSelectable || this._isScrolling)
+			if(!this._isSelectable || this._isScrolling || this._selectedIndex == renderer.index)
 			{
 				//reset to the old value
 				renderer.isSelected = this._selectedIndex == renderer.index;
