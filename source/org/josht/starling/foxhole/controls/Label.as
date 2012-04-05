@@ -49,9 +49,9 @@ package org.josht.starling.foxhole.controls
 		
 		public function Label()
 		{
+			this.isQuickHitAreaEnabled = true;
 		}
 		
-		private var _hitArea:Rectangle;
 		private var _characters:Vector.<Image> = new <Image>[];
 		private var _cache:Vector.<Image> = new <Image>[];
 		
@@ -150,84 +150,6 @@ package org.josht.starling.foxhole.controls
 		{
 			this._lastFont = null;
 			super.dispose();
-		}
-		
-		/**
-		 * @inheritDoc
-		 */
-		public override function getBounds(targetSpace:DisplayObject, resultRect:Rectangle=null):Rectangle
-		{
-			if(!resultRect)
-			{
-				resultRect = new Rectangle();
-			}
-			
-			const boundsRectangle:Rectangle = this.scrollRect ? this.scrollRect : this._hitArea;
-			var minX:Number = Number.MAX_VALUE, maxX:Number = -Number.MAX_VALUE;
-			var minY:Number = Number.MAX_VALUE, maxY:Number = -Number.MAX_VALUE;
-			
-			if (targetSpace == this) // optimization
-			{
-				minX = boundsRectangle.x;
-				minY = boundsRectangle.y;
-				maxX = boundsRectangle.width;
-				maxY = boundsRectangle.height;
-			}
-			else
-			{
-				getTransformationMatrix(targetSpace, helperMatrix);
-				
-				transformCoords(helperMatrix, boundsRectangle.x, boundsRectangle.y, helperPoint);
-				minX = minX < helperPoint.x ? minX : helperPoint.x;
-				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
-				minY = minY < helperPoint.y ? minY : helperPoint.y;
-				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
-				
-				transformCoords(helperMatrix, this._hitArea.x, this._hitArea.height, helperPoint);
-				minX = minX < helperPoint.x ? minX : helperPoint.x;
-				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
-				minY = minY < helperPoint.y ? minY : helperPoint.y;
-				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
-				
-				transformCoords(helperMatrix, boundsRectangle.width, boundsRectangle.y, helperPoint);
-				minX = minX < helperPoint.x ? minX : helperPoint.x;
-				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
-				minY = minY < helperPoint.y ? minY : helperPoint.y;
-				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
-				
-				transformCoords(helperMatrix, boundsRectangle.width, boundsRectangle.height, helperPoint);
-				minX = minX < helperPoint.x ? minX : helperPoint.x;
-				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
-				minY = minY < helperPoint.y ? minY : helperPoint.y;
-				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
-			}
-			
-			resultRect.x = minX;
-			resultRect.y = minY;
-			resultRect.width  = maxX - minX;
-			resultRect.height = maxY - minY;
-			
-			return resultRect;
-		}
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function hitTest(localPoint:Point, forTouch:Boolean=false):DisplayObject
-		{
-			if(forTouch && (!this.visible || !this.touchable))
-			{
-				return null;
-			}
-			return this._hitArea.containsPoint(localPoint) ? this : null;
-		}
-		
-		/**
-		 * @private
-		 */
-		override protected function initialize():void
-		{
-			this._hitArea = new Rectangle();
 		}
 		
 		/**
@@ -350,16 +272,7 @@ package org.josht.starling.foxhole.controls
 				characterIndex++;
 			}
 			
-			const oldWidth:Number = this._width;
-			const oldHeight:Number = this._height;
-			this._width = currentX;
-			this._height = Math.max(maxY, font.lineHeight * scale);
-			this._hitArea.width = this._width;
-			this._hitArea.height = this._height;
-			if(this._width != oldWidth || this._height != oldHeight)
-			{
-				this._onResize.dispatch(this);
-			}
+			this.setSizeInternal(currentX, Math.max(maxY, font.lineHeight * scale), false);
 		}
 	}
 }

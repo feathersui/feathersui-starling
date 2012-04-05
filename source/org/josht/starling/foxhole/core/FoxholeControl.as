@@ -172,6 +172,31 @@ package org.josht.starling.foxhole.core
 		
 		/**
 		 * @private
+		 */
+		private var _isQuickHitAreaEnabled:Boolean = false;
+
+		/**
+		 * Similar to mouseChildren on the classic display list. If true,
+		 * children cannot dispatch touch events, but hit tests will be much
+		 * faster.
+		 */
+		public function get isQuickHitAreaEnabled():Boolean
+		{
+			return this._isQuickHitAreaEnabled;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set isQuickHitAreaEnabled(value:Boolean):void
+		{
+			this._isQuickHitAreaEnabled = value;
+		}
+		
+		private var _hitArea:Rectangle = new Rectangle();
+		
+		/**
+		 * @private
 		 * Flag indicating if the <code>initialize()</code> function has been called yet.
 		 */
 		private var _isInitialized:Boolean = false;
@@ -241,7 +266,7 @@ package org.josht.starling.foxhole.core
 		 */
 		override public function set width(value:Number):void
 		{
-			this.setSize(value, this._height);
+			this.setSizeInternal(value, this._height, true);
 		}
 		
 		/**
@@ -262,7 +287,7 @@ package org.josht.starling.foxhole.core
 		 */
 		override public function set height(value:Number):void
 		{
-			this.setSize(this._width, value);
+			this.setSizeInternal(this._width, value, true);
 		}
 		
 		/**
@@ -284,34 +309,19 @@ package org.josht.starling.foxhole.core
 		 */
 		private var _isValidating:Boolean = false;
 		
-		
-		override public function getBounds(targetSpace:DisplayObject, resultRect:Rectangle=null):Rectangle
+		/**
+		 * @inheritDoc
+		 */
+		public override function getBounds(targetSpace:DisplayObject, resultRect:Rectangle=null):Rectangle
 		{
+			if(this.scrollRect)
+			{
+				return super.getBounds(targetSpace, resultRect);
+			}
+			
 			if(!resultRect)
 			{
 				resultRect = new Rectangle();
-			}
-			
-			const scrollRect:Rectangle = this.scrollRect;
-			if(scrollRect)
-			{
-				if(targetSpace == this)
-				{
-					resultRect.x = 0;
-					resultRect.y = 0;
-					resultRect.width = scrollRect.width;
-					resultRect.height = scrollRect.height;
-				}
-				else
-				{
-					this.getTransformationMatrix(targetSpace, helperMatrix);
-					transformCoords(helperMatrix, 0, 0, helperPoint);
-					resultRect.x = helperPoint.x;
-					resultRect.y = helperPoint.y;
-					resultRect.width = helperMatrix.a * scrollRect.width + helperMatrix.c * scrollRect.height;
-					resultRect.height = helperMatrix.d * scrollRect.height + helperMatrix.b * scrollRect.width;
-				}
-				return resultRect;
 			}
 			
 			var minX:Number = Number.MAX_VALUE, maxX:Number = -Number.MAX_VALUE;
@@ -319,33 +329,34 @@ package org.josht.starling.foxhole.core
 			
 			if (targetSpace == this) // optimization
 			{
-				minX = minY = 0;
-				maxX = this._width;
-				maxY = this._height;
+				minX = this._hitArea.x;
+				minY = this._hitArea.y;
+				maxX = this._hitArea.x + this._hitArea.width;
+				maxY = this._hitArea.y + this._hitArea.height;
 			}
 			else
 			{
-				getTransformationMatrix(targetSpace, helperMatrix);
+				this.getTransformationMatrix(targetSpace, helperMatrix);
 				
-				transformCoords(helperMatrix, 0, 0, helperPoint);
+				transformCoords(helperMatrix, this._hitArea.x, this._hitArea.y, helperPoint);
 				minX = minX < helperPoint.x ? minX : helperPoint.x;
 				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
 				minY = minY < helperPoint.y ? minY : helperPoint.y;
 				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
 				
-				transformCoords(helperMatrix, 0, this._height, helperPoint);
+				transformCoords(helperMatrix, this._hitArea.x, this._hitArea.y + this._hitArea.height, helperPoint);
 				minX = minX < helperPoint.x ? minX : helperPoint.x;
 				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
 				minY = minY < helperPoint.y ? minY : helperPoint.y;
 				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
 				
-				transformCoords(helperMatrix, this._width, 0, helperPoint);
+				transformCoords(helperMatrix, this._hitArea.x + this._hitArea.width, this._hitArea.y, helperPoint);
 				minX = minX < helperPoint.x ? minX : helperPoint.x;
 				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
 				minY = minY < helperPoint.y ? minY : helperPoint.y;
 				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
 				
-				transformCoords(helperMatrix, this._width, this._height, helperPoint);
+				transformCoords(helperMatrix, this._hitArea.x + this._hitArea.width, this._hitArea.y + this._hitArea.height, helperPoint);
 				minX = minX < helperPoint.x ? minX : helperPoint.x;
 				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
 				minY = minY < helperPoint.y ? minY : helperPoint.y;
@@ -358,6 +369,22 @@ package org.josht.starling.foxhole.core
 			resultRect.height = maxY - minY;
 			
 			return resultRect;
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function hitTest(localPoint:Point, forTouch:Boolean=false):DisplayObject
+		{
+			if(this._isQuickHitAreaEnabled)
+			{
+				if(forTouch && (!this.visible || !this.touchable))
+				{
+					return null;
+				}
+				return this._hitArea.containsPoint(localPoint) ? this : null;
+			}
+			return super.hitTest(localPoint, forTouch);
 		}
 		
 		/**
@@ -452,6 +479,14 @@ package org.josht.starling.foxhole.core
 		 */
 		public function setSize(width:Number, height:Number):void
 		{
+			this.setSizeInternal(width, height, true);
+		}
+		
+		/**
+		 * Sets the width and height of the control without invalidating.
+		 */
+		protected function setSizeInternal(width:Number, height:Number, canInvalidate:Boolean):void
+		{
 			var resized:Boolean = false;
 			if(this._width != width)
 			{
@@ -463,9 +498,14 @@ package org.josht.starling.foxhole.core
 				this._height = height;
 				resized = true;
 			}
+			this._hitArea.width = this._width;
+			this._hitArea.height = this._height;
 			if(resized)
 			{
-				this.invalidate(INVALIDATION_FLAG_SIZE);
+				if(canInvalidate)
+				{
+					this.invalidate(INVALIDATION_FLAG_SIZE);
+				}
 				this._onResize.dispatch(this);
 			}
 		}

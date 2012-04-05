@@ -397,32 +397,35 @@ package org.josht.starling.foxhole.controls
 			
 			//the slider will autosize based on the track skin (or track
 			//properties) if width or height wasn't defined.
-			if(isNaN(this._width) || isNaN(this._height))
+			var newWidth:Number = this._width;
+			var newHeight:Number = this._height;
+			if(isNaN(newWidth) || isNaN(newHeight))
 			{
 				this.track.validate();
-				if(isNaN(this._width))
+				if(isNaN(newWidth))
 				{
 					if(isNaN(this.track.width))
 					{
-						this._width = 160;
+						newWidth = 160;
 					}
 					else
 					{
-						this._width = this.track.width;
+						newWidth = this.track.width;
 					}
 				}
-				if(isNaN(this._height))
+				if(isNaN(newHeight))
 				{
 					if(isNaN(this.track.height))
 					{
-						this._height = 22;
+						newHeight = 22;
 					}
 					else
 					{
-						this._height = this.track.height;
+						newHeight = this.track.height;
 					}
 				}
 				sizeInvalid = true;
+				this.setSizeInternal(newWidth, newHeight, false);
 			}
 			
 			if(stylesInvalid || sizeInvalid)

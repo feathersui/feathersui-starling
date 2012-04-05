@@ -139,6 +139,7 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function Button()
 		{
+			this.isQuickHitAreaEnabled = true;
 			this.addEventListener(TouchEvent.TOUCH, touchHandler);
 		}
 		
@@ -1380,63 +1381,67 @@ package org.josht.starling.foxhole.controls
 				this.refreshIcon();
 				this.refreshLabelStyles();
 				this.labelField.validate();
-				if(isNaN(this._width))
+				var newWidth:Number = this._width;
+				var newHeight:Number = this._height;
+				if(isNaN(newWidth))
 				{
 					if(this.currentIcon && this.label)
 					{
-						this._width = this.currentIcon.width + this.gap + this.labelField.width;
+						newWidth = this.currentIcon.width + this.gap + this.labelField.width;
 					}
 					else if(this.currentIcon)
 					{
-						this._width = this.currentIcon.width;
+						newWidth = this.currentIcon.width;
 					}
 					else if(this.label)
 					{
-						this._width = this.labelField.width;
+						newWidth = this.labelField.width;
 					}
-					this._width += 2 * this._contentPadding;
+					newWidth += 2 * this._contentPadding;
 					if(this.currentSkin)
 					{
-						if(isNaN(this._width))
+						if(isNaN(newWidth))
 						{
-							this._width = this.currentSkin.width;
+							newWidth = this.currentSkin.width;
 						}
 						else
 						{
-							this._width = Math.max(this._width, this.currentSkin.width);
+							newWidth = Math.max(newWidth, this.currentSkin.width);
 						}
 					}
 					sizeInvalid = true;
 				}
 				
-				if(isNaN(this._height))
+				if(isNaN(newHeight))
 				{
 					if(this.currentIcon && this.label)
 					{
-						this._height = Math.max(this.currentIcon.height, this.labelField.height);
+						newHeight = Math.max(this.currentIcon.height, this.labelField.height);
 					}
 					else if(this.currentIcon)
 					{
-						this._height = this.currentIcon.height;
+						newHeight = this.currentIcon.height;
 					}
 					else if(this.label)
 					{
-						this._height = this.labelField.height;
+						newHeight = this.labelField.height;
 					}
-					this._height += 2 * this._contentPadding;
+					newHeight += 2 * this._contentPadding;
 					if(this.currentSkin)
 					{
-						if(isNaN(this._height))
+						if(isNaN(newHeight))
 						{
-							this._height = this.currentSkin.height;
+							newHeight = this.currentSkin.height;
 						}
 						else
 						{
-							this._height = Math.max(this._height, this.currentSkin.height);
+							newHeight = Math.max(newHeight, this.currentSkin.height);
 						}
 					}
 					sizeInvalid = true;
 				}
+				
+				this.setSizeInternal(newWidth, newHeight, false);
 			}
 			
 			if(stylesInvalid || stateInvalid || sizeInvalid)

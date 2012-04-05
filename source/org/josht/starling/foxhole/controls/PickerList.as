@@ -435,15 +435,21 @@ package org.josht.starling.foxhole.controls
 			
 			this._button.validate();
 			
-			if(isNaN(this._width))
+			var newWidth:Number = this._width;
+			var newHeight:Number = this._height;
+			if(isNaN(newWidth) || isNaN(newHeight))
 			{
-				this._width = this._button.width;
-				sizeInvalid = true;
-			}
-			if(isNaN(this._height))
-			{
-				this._height = this._button.height;
-				sizeInvalid = true;
+				if(isNaN(newWidth))
+				{
+					newWidth = this._button.width;
+					sizeInvalid = true;
+				}
+				if(isNaN(this._height))
+				{
+					newHeight = this._button.height;
+					sizeInvalid = true;
+				}
+				this.setSizeInternal(newWidth, newHeight, false);
 			}
 			
 			if(sizeInvalid)

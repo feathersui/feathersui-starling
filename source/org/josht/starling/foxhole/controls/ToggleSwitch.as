@@ -646,16 +646,22 @@ package org.josht.starling.foxhole.controls
 			
 			this.thumb.validate();
 			
-			if(isNaN(this._width))
+			var newWidth:Number = this._width;
+			var newHeight:Number = this._height;
+			if(isNaN(newWidth) || isNaN(newHeight))
 			{
-				this._width = this.onSkinOriginalWidth + this.offSkinOriginalWidth - this.thumb.width;
-				sizeInvalid = true;
-			}
-			
-			if(isNaN(this._height))
-			{
-				this._height = Math.max(this.onSkinOriginalHeight, this.offSkinOriginalHeight);
-				sizeInvalid = true;
+				if(isNaN(newWidth))
+				{
+					newWidth = this.onSkinOriginalWidth + this.offSkinOriginalWidth - this.thumb.width;
+					sizeInvalid = true;
+				}
+				
+				if(isNaN(newHeight))
+				{
+					newHeight = Math.max(this.onSkinOriginalHeight, this.offSkinOriginalHeight);
+					sizeInvalid = true;
+				}
+				this.setSizeInternal(newWidth, newHeight, false);
 			}
 			
 			if(stylesInvalid || sizeInvalid || stateInvalid)

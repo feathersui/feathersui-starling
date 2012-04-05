@@ -225,45 +225,49 @@ package org.josht.starling.display
 		*/
 		public override function getBounds(targetSpace:DisplayObject, resultRect:Rectangle=null):Rectangle
 		{
+			if(this.scrollRect)
+			{
+				return super.getBounds(targetSpace, resultRect);
+			}
+			
 			if(!resultRect)
 			{
 				resultRect = new Rectangle();
 			}
 			
-			const boundsRectangle:Rectangle = this.scrollRect ? this.scrollRect : this._hitArea;
 			var minX:Number = Number.MAX_VALUE, maxX:Number = -Number.MAX_VALUE;
 			var minY:Number = Number.MAX_VALUE, maxY:Number = -Number.MAX_VALUE;
 			
 			if (targetSpace == this) // optimization
 			{
-				minX = boundsRectangle.x;
-				minY = boundsRectangle.y;
-				maxX = boundsRectangle.width;
-				maxY = boundsRectangle.height;
+				minX = this._hitArea.x;
+				minY = this._hitArea.y;
+				maxX = this._hitArea.x + this._hitArea.width;
+				maxY = this._hitArea.y + this._hitArea.height;
 			}
 			else
 			{
-				getTransformationMatrix(targetSpace, helperMatrix);
+				this.getTransformationMatrix(targetSpace, helperMatrix);
 				
-				transformCoords(helperMatrix, boundsRectangle.x, boundsRectangle.y, helperPoint);
+				transformCoords(helperMatrix, this._hitArea.x, this._hitArea.y, helperPoint);
 				minX = minX < helperPoint.x ? minX : helperPoint.x;
 				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
 				minY = minY < helperPoint.y ? minY : helperPoint.y;
 				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
 				
-				transformCoords(helperMatrix, this._hitArea.x, this._hitArea.height, helperPoint);
+				transformCoords(helperMatrix, this._hitArea.x, this._hitArea.y + this._hitArea.height, helperPoint);
 				minX = minX < helperPoint.x ? minX : helperPoint.x;
 				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
 				minY = minY < helperPoint.y ? minY : helperPoint.y;
 				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
 				
-				transformCoords(helperMatrix, boundsRectangle.width, boundsRectangle.y, helperPoint);
+				transformCoords(helperMatrix, this._hitArea.x + this._hitArea.width, this._hitArea.y, helperPoint);
 				minX = minX < helperPoint.x ? minX : helperPoint.x;
 				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
 				minY = minY < helperPoint.y ? minY : helperPoint.y;
 				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
 				
-				transformCoords(helperMatrix, boundsRectangle.width, boundsRectangle.height, helperPoint);
+				transformCoords(helperMatrix, this._hitArea.x + this._hitArea.width, this._hitArea.y + this._hitArea.height, helperPoint);
 				minX = minX < helperPoint.x ? minX : helperPoint.x;
 				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
 				minY = minY < helperPoint.y ? minY : helperPoint.y;

@@ -794,13 +794,20 @@ package org.josht.starling.foxhole.controls
 			this._dataContainer.useVirtualLayout = this._useVirtualLayout;
 			this._dataContainer.verticalScrollPosition = this._verticalScrollPosition;
 			this._dataContainer.validate();
-			if(isNaN(this._width))
+			
+			var newWidth:Number = this._width;
+			var newHeight:Number = this._height;
+			if(isNaN(newWidth) || isNaN(newHeight))
 			{
-				this.width = this._dataContainer.width + 2 * this._contentPadding;
-			}
-			if(isNaN(this._height))
-			{
-				this.height = this._dataContainer.height + 2 * this._contentPadding;
+				if(isNaN(newWidth))
+				{
+					newWidth = this._dataContainer.width + 2 * this._contentPadding;
+				}
+				if(isNaN(newHeight))
+				{
+					newHeight = this._dataContainer.height + 2 * this._contentPadding;
+				}
+				this.setSizeInternal(newWidth, newHeight, false);
 			}
 			
 			if(this._scrollToIndex >= 0 && this._dataProvider)

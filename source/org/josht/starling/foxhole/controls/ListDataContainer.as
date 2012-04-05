@@ -292,7 +292,9 @@ package org.josht.starling.foxhole.controls
 			const itemRendererInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_ITEM_RENDERER);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			
-			if(isNaN(this._width) || isNaN(this._rowHeight))
+			var newWidth:Number = this._width;
+			var newHeight:Number = this._height;
+			if(isNaN(newWidth) || isNaN(this._rowHeight))
 			{
 				var typicalItem:Object = this._typicalItem;
 				if(!typicalItem && this._dataProvider && this._dataProvider.length > 0)
@@ -307,9 +309,9 @@ package org.josht.starling.foxhole.controls
 					{
 						FoxholeControl(typicalRenderer).validate();
 					}
-					if(isNaN(this._width))
+					if(isNaN(newWidth))
 					{
-						this.width = DisplayObject(typicalRenderer).width;
+						newWidth = DisplayObject(typicalRenderer).width;
 					}
 					if(isNaN(this._rowHeight))
 					{
@@ -318,8 +320,12 @@ package org.josht.starling.foxhole.controls
 					this.destroyRenderer(typicalRenderer);
 				}
 			}
+			if(dataInvalid || isNaN(newHeight))
+			{
+				newHeight = this._dataProvider ? (this._rowHeight * this._dataProvider.length) : 0;
+			}
+			this.setSizeInternal(newWidth, newHeight, false);
 			
-			this.height = this._dataProvider ? (this._rowHeight * this._dataProvider.length) : 0;
 			this.refreshRenderers(itemRendererInvalid);
 			this.drawRenderers();
 			this.refreshItemRendererStyles();
