@@ -26,6 +26,9 @@ package org.josht.starling.foxhole.core
 {
 	import flash.display.Shape;
 	import flash.events.Event;
+	import flash.geom.Matrix;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
 	
 	import org.josht.starling.display.Sprite;
@@ -33,7 +36,9 @@ package org.josht.starling.foxhole.core
 	import org.osflash.signals.Signal;
 	
 	import starling.core.Starling;
+	import starling.display.DisplayObject;
 	import starling.events.Event;
+	import starling.utils.transformCoords;
 	
 	/**
 	 * Base class for all Foxhole UI controls. Implements invalidation and sets
@@ -42,6 +47,9 @@ package org.josht.starling.foxhole.core
 	 */
 	public class FoxholeControl extends Sprite
 	{
+		private static const helperMatrix:Matrix = new Matrix();
+		private static const helperPoint:Point = new Point();
+		
 		/**
 		 * Flag to indicate that everything is invalid and should be redrawn.
 		 */
@@ -275,6 +283,82 @@ package org.josht.starling.foxhole.core
 		 * Flag to indicate that the control is currently validating.
 		 */
 		private var _isValidating:Boolean = false;
+		
+		
+		override public function getBounds(targetSpace:DisplayObject, resultRect:Rectangle=null):Rectangle
+		{
+			if(!resultRect)
+			{
+				resultRect = new Rectangle();
+			}
+			
+			const scrollRect:Rectangle = this.scrollRect;
+			if(scrollRect)
+			{
+				if(targetSpace == this)
+				{
+					resultRect.x = 0;
+					resultRect.y = 0;
+					resultRect.width = scrollRect.width;
+					resultRect.height = scrollRect.height;
+				}
+				else
+				{
+					this.getTransformationMatrix(targetSpace, helperMatrix);
+					transformCoords(helperMatrix, 0, 0, helperPoint);
+					resultRect.x = helperPoint.x;
+					resultRect.y = helperPoint.y;
+					resultRect.width = helperMatrix.a * scrollRect.width + helperMatrix.c * scrollRect.height;
+					resultRect.height = helperMatrix.d * scrollRect.height + helperMatrix.b * scrollRect.width;
+				}
+				return resultRect;
+			}
+			
+			var minX:Number = Number.MAX_VALUE, maxX:Number = -Number.MAX_VALUE;
+			var minY:Number = Number.MAX_VALUE, maxY:Number = -Number.MAX_VALUE;
+			
+			if (targetSpace == this) // optimization
+			{
+				minX = minY = 0;
+				maxX = this._width;
+				maxY = this._height;
+			}
+			else
+			{
+				getTransformationMatrix(targetSpace, helperMatrix);
+				
+				transformCoords(helperMatrix, 0, 0, helperPoint);
+				minX = minX < helperPoint.x ? minX : helperPoint.x;
+				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
+				minY = minY < helperPoint.y ? minY : helperPoint.y;
+				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
+				
+				transformCoords(helperMatrix, 0, this._height, helperPoint);
+				minX = minX < helperPoint.x ? minX : helperPoint.x;
+				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
+				minY = minY < helperPoint.y ? minY : helperPoint.y;
+				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
+				
+				transformCoords(helperMatrix, this._width, 0, helperPoint);
+				minX = minX < helperPoint.x ? minX : helperPoint.x;
+				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
+				minY = minY < helperPoint.y ? minY : helperPoint.y;
+				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
+				
+				transformCoords(helperMatrix, this._width, this._height, helperPoint);
+				minX = minX < helperPoint.x ? minX : helperPoint.x;
+				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
+				minY = minY < helperPoint.y ? minY : helperPoint.y;
+				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
+			}
+			
+			resultRect.x = minX;
+			resultRect.y = minY;
+			resultRect.width  = maxX - minX;
+			resultRect.height = maxY - minY;
+			
+			return resultRect;
+		}
 		
 		/**
 		 * When called, the UI control will redraw within one frame.
