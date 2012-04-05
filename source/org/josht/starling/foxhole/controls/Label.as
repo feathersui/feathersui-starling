@@ -24,10 +24,14 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package org.josht.starling.foxhole.controls
 {
+	import flash.geom.Rectangle;
+	
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.text.BitmapFontTextFormat;
 	
+	import starling.display.DisplayObject;
 	import starling.display.Image;
+	import starling.display.Quad;
 	import starling.text.BitmapChar;
 	import starling.text.BitmapFont;
 	import starling.textures.TextureSmoothing;
@@ -41,6 +45,7 @@ package org.josht.starling.foxhole.controls
 		{
 		}
 		
+		private var _hitArea:Quad;
 		private var _characters:Vector.<Image> = new <Image>[];
 		private var _cache:Vector.<Image> = new <Image>[];
 		
@@ -144,6 +149,16 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
+		override protected function initialize():void
+		{
+			this._hitArea = new Quad(10, 10, 0xff00ff);
+			this._hitArea.alpha = 0;
+			this.addChild(this._hitArea);
+		}
+		
+		/**
+		 * @private
+		 */
 		override protected function draw():void
 		{
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
@@ -206,6 +221,7 @@ package org.josht.starling.foxhole.controls
 				else
 				{
 					charDisplay = charData.createImage();
+					charDisplay.touchable = false;
 				}
 				this.addChild(charDisplay);
 				this._characters.push(charDisplay);
@@ -264,6 +280,8 @@ package org.josht.starling.foxhole.controls
 			const oldHeight:Number = this._height;
 			this._width = currentX;
 			this._height = Math.max(maxY, font.lineHeight * scale);
+			this._hitArea.width = this._width;
+			this._hitArea.height = this._height;
 			if(this._width != oldWidth || this._height != oldHeight)
 			{
 				this._onResize.dispatch(this);

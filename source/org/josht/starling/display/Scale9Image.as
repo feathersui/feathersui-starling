@@ -26,6 +26,8 @@ package org.josht.starling.display
 {
 	import flash.geom.Rectangle;
 	
+	import starling.display.DisplayObject;
+	import starling.display.Quad;
 	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;
 
@@ -40,6 +42,10 @@ package org.josht.starling.display
 		public function Scale9Image(texture:Texture, scale9Grid:Rectangle)
 		{
 			super();
+			this._hitArea = new Quad(100, 100, 0xff00ff);
+			this._hitArea.alpha = 0;
+			this.addChild(this._hitArea);
+			
 			this._scale9Grid = scale9Grid;
 			this.saveWidthAndHeight(texture);
 			this.createImages(texture);
@@ -176,6 +182,8 @@ package org.josht.starling.display
 		private var _middleHeight:Number;
 		private var _bottomHeight:Number;
 		
+		private var _hitArea:Quad;
+		
 		private var _topLeftImage:Image;
 		private var _topCenterImage:Image;
 		private var _topRightImage:Image;
@@ -187,6 +195,14 @@ package org.josht.starling.display
 		private var _bottomLeftImage:Image;
 		private var _bottomCenterImage:Image;
 		private var _bottomRightImage:Image;
+		
+		/**
+		 * @inheritDoc
+		 */
+		public override function getBounds(targetSpace:DisplayObject, resultRect:Rectangle=null):Rectangle
+		{
+			return this._hitArea.getBounds(targetSpace, resultRect);
+		}
 
 		/**
 		 * @private
@@ -258,24 +274,33 @@ package org.josht.starling.display
 			
 			//then pass them to the images
 			this._topLeftImage = new Image(topLeft);
+			this._topLeftImage.touchable = false;
 			this.addChild(this._topLeftImage);
 			this._topCenterImage = new Image(topCenter);
+			this._topCenterImage.touchable = false;
 			this.addChild(this._topCenterImage);
 			this._topRightImage = new Image(topRight);
+			this._topRightImage.touchable = false;
 			this.addChild(this._topRightImage);
 			
 			this._middleLeftImage = new Image(middleLeft);
+			this._middleLeftImage.touchable = false;
 			this.addChild(this._middleLeftImage);
 			this._middleCenterImage = new Image(middleCenter);
+			this._middleLeftImage.touchable = false;
 			this.addChild(this._middleCenterImage);
 			this._middleRightImage = new Image(middleRight);
+			this._middleRightImage.touchable = false;
 			this.addChild(this._middleRightImage);
 			
 			this._bottomLeftImage = new Image(bottomLeft);
+			this._bottomLeftImage.touchable = false;
 			this.addChild(this._bottomLeftImage);
 			this._bottomCenterImage = new Image(bottomCenter);
+			this._bottomCenterImage.touchable = false;
 			this.addChild(this._bottomCenterImage);
 			this._bottomRightImage = new Image(bottomRight);
+			this._bottomRightImage.touchable = false;
 			this.addChild(this._bottomRightImage);
 		}
 		
@@ -357,6 +382,8 @@ package org.josht.starling.display
 			this._bottomRightImage.x = this._width - scaledRightWidth;
 			this._bottomRightImage.y = this._height - scaledBottomHeight;
 			
+			this._hitArea.width = this._width;
+			this._hitArea.height = this._height;
 			if(this._autoFlatten)
 			{
 				this.flatten();
