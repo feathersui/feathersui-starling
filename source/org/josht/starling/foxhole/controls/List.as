@@ -283,10 +283,6 @@ package org.josht.starling.foxhole.controls
 		 * If true, the list's content will be clipped to the lists's bounds. In
 		 * other words, anything appearing outside the list's bounds will
 		 * not be visible.
-		 * 
-		 * <p>To improve performance, turn off clipping and place other display
-		 * objects over the edges of the list to hide the content that
-		 * bleeds outside of the list's bounds.</p>
 		 */
 		public function get clipContent():Boolean
 		{
