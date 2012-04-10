@@ -13,6 +13,7 @@ package org.josht.starling.foxhole.controls
 		{
 			super();
 			this.text = "0";
+			this.touchable = false;
 			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 		}
 		
