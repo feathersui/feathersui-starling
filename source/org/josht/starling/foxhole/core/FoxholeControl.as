@@ -483,7 +483,8 @@ package org.josht.starling.foxhole.core
 		}
 		
 		/**
-		 * Sets the width and height of the control without invalidating.
+		 * Sets the width and height of the control, with the option of
+		 * invalidating or not.
 		 */
 		protected function setSizeInternal(width:Number, height:Number, canInvalidate:Boolean):void
 		{
