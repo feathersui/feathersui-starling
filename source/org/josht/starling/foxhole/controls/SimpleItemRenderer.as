@@ -24,6 +24,9 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package org.josht.starling.foxhole.controls
 {
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
+
 	/**
 	 * The default item renderer for List.
 	 * 
@@ -31,6 +34,11 @@ package org.josht.starling.foxhole.controls
 	 */
 	public class SimpleItemRenderer extends Button implements IListItemRenderer
 	{
+		/**
+		 * @private
+		 */
+		private static const DOWN_STATE_DELAY_MS:int = 250;
+		
 		/**
 		 * Constructor.
 		 */
@@ -109,8 +117,47 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
+			if(this._owner)
+			{
+				this._owner.onScroll.remove(owner_onScroll);
+			}
 			this._owner = value;
+			if(this._owner)
+			{
+				this._owner.onScroll.add(owner_onScroll);
+			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+		
+		/**
+		 * @private
+		 */
+		private var _delayedCurrentState:String;
+		
+		/**
+		 * @private
+		 */
+		private var _stateDelayTimer:Timer;
+		
+		/**
+		 * @private
+		 */
+		override protected function set currentState(value:String):void
+		{
+			if(this._stateDelayTimer)
+			{
+				this._delayedCurrentState = value;
+				return;
+			}
+			else if(!this._stateDelayTimer && value.toLowerCase().indexOf("down") >= 0)
+			{
+				this._delayedCurrentState = value;
+				this._stateDelayTimer = new Timer(DOWN_STATE_DELAY_MS, 1);
+				this._stateDelayTimer.addEventListener(TimerEvent.TIMER_COMPLETE, stateDelayTimer_timerCompleteHandler);
+				this._stateDelayTimer.start();
+				return;
+			}
+			super.currentState = value;
 		}
 		
 		/**
@@ -131,6 +178,38 @@ package org.josht.starling.foxhole.controls
 				}
 			}
 			super.draw();
+		}
+		
+		/**
+		 * @private
+		 */
+		protected function owner_onScroll(list:List):void
+		{
+			const state:String = this.isSelected ? Button.STATE_SELECTED_UP : Button.STATE_UP;
+			if(this._currentState != state)
+			{
+				super.currentState = state;
+			}
+			this._touchPointID = -1;
+			if(!this._stateDelayTimer)
+			{
+				return;
+			}
+			this._delayedCurrentState = null;
+			this._stateDelayTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, stateDelayTimer_timerCompleteHandler);
+			this._stateDelayTimer.stop();
+			this._stateDelayTimer = null;
+		}
+		
+		/**
+		 * @private
+		 */
+		private function stateDelayTimer_timerCompleteHandler(event:TimerEvent):void
+		{
+			this._stateDelayTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, stateDelayTimer_timerCompleteHandler);
+			this._stateDelayTimer = null;
+			super.currentState = this._delayedCurrentState;
+			this._delayedCurrentState = null;
 		}
 	}
 }
