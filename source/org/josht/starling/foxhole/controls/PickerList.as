@@ -232,6 +232,34 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
+		private var _typicalItem:Object = null;
+		
+		/**
+		 * Used to auto-size the list. If the list's width or height is NaN, the
+		 * list will try to automatically pick an ideal size. This item is
+		 * used in that process to create a sample item renderer.
+		 */
+		public function get typicalItem():Object
+		{
+			return this._typicalItem;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set typicalItem(value:Object):void
+		{
+			if(this._typicalItem == value)
+			{
+				return;
+			}
+			this._typicalItem = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+		
+		/**
+		 * @private
+		 */
 		protected var _onChange:Signal = new Signal(PickerList);
 		
 		/**
@@ -415,30 +443,26 @@ package org.josht.starling.foxhole.controls
 				this._hasBeenScrolled = false;
 			}
 			
-			if(selectionInvalid)
-			{
-				if(this._selectedIndex >= 0)
-				{
-					this._button.label = this.itemToLabel(this.selectedItem);
-				}
-				else
-				{
-					this._button.label = "";
-				}
-				this._list.selectedIndex = this._selectedIndex;
-			}
-			
 			if(stateInvalid)
 			{
 				this._button.isEnabled = this.isEnabled;
 			}
 			
-			this._button.validate();
-			
 			var newWidth:Number = this._width;
 			var newHeight:Number = this._height;
+			var usedTypicalItem:Boolean = false;
 			if(isNaN(newWidth) || isNaN(newHeight))
 			{
+				if(this._typicalItem)
+				{
+					usedTypicalItem = true;
+					this._button.label = this.itemToLabel(this._typicalItem);
+				}
+				else
+				{
+					this.refreshButtonLabel();
+				}
+				this._button.validate();
 				if(isNaN(newWidth))
 				{
 					newWidth = this._button.width;
@@ -450,6 +474,12 @@ package org.josht.starling.foxhole.controls
 					sizeInvalid = true;
 				}
 				this.setSizeInternal(newWidth, newHeight, false);
+			}
+			
+			if(selectionInvalid || usedTypicalItem)
+			{
+				this.refreshButtonLabel();
+				this._list.selectedIndex = this._selectedIndex;
 			}
 			
 			if(sizeInvalid)
@@ -464,6 +494,21 @@ package org.josht.starling.foxhole.controls
 				this.resizeAndPositionList();
 			}
 			this._list.validate();
+		}
+		
+		/**
+		 * @private
+		 */
+		protected function refreshButtonLabel():void
+		{
+			if(this._selectedIndex >= 0)
+			{
+				this._button.label = this.itemToLabel(this.selectedItem);
+			}
+			else
+			{
+				this._button.label = "";
+			}
 		}
 		
 		/**
