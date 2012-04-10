@@ -159,6 +159,11 @@ package org.josht.starling.foxhole.controls
 		protected var currentIcon:DisplayObject;
 		
 		/**
+		 * @private
+		 */
+		protected var _touchPointID:int = -1;
+		
+		/**
 		 * @inheritDoc
 		 */
 		override public function set isEnabled(value:Boolean):void
@@ -1767,7 +1772,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private function positionLabelAndIcon():void
+		protected function positionLabelAndIcon():void
 		{
 			if(this._iconPosition == ICON_POSITION_TOP)
 			{
@@ -1882,7 +1887,7 @@ package org.josht.starling.foxhole.controls
 				return;
 			}
 			const touch:Touch = event.getTouch(this);
-			if(!touch)
+			if(!touch || (this._touchPointID >= 0 && this._touchPointID != touch.id))
 			{
 				return;
 			}
@@ -1892,6 +1897,7 @@ package org.josht.starling.foxhole.controls
 			if(touch.phase == TouchPhase.BEGAN)
 			{
 				this.currentState = STATE_DOWN;
+				this._touchPointID = touch.id;
 				this._onPress.dispatch(this);
 			}
 			else if(touch.phase == TouchPhase.MOVED)
@@ -1907,6 +1913,7 @@ package org.josht.starling.foxhole.controls
 			}
 			else if(touch.phase == TouchPhase.ENDED)
 			{
+				this._touchPointID = -1;
 				this.currentState = STATE_UP;
 				if(isInBounds)
 				{
