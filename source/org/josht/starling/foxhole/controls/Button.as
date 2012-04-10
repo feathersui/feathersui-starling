@@ -1392,7 +1392,8 @@ package org.josht.starling.foxhole.controls
 				{
 					if(this.currentIcon && this.label)
 					{
-						newWidth = this.currentIcon.width + this.gap + this.labelField.width;
+						const adjustedGap:Number = this._gap == Number.POSITIVE_INFINITY ? this._contentPadding : this._gap;
+						newWidth = this.currentIcon.width + adjustedGap + this.labelField.width;
 					}
 					else if(this.currentIcon)
 					{
