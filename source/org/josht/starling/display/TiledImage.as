@@ -166,6 +166,32 @@ package org.josht.starling.display
 			}
 			this.refreshImageProperties();
 		}
+
+		/**
+		 * @private
+		 */
+		private var _color:uint = 0xffffff;
+
+		/**
+		 * The color value to pass to the tiled images.
+		 */
+		public function get color():uint
+		{
+			return this._color;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set color(value:uint):void
+		{
+			if(this._color == value)
+			{
+				return;
+			}
+			this._color = value;
+			this.refreshImageProperties();
+		}
 		
 		/**
 		 * @private
@@ -349,6 +375,7 @@ package org.josht.starling.display
 			for each(var image:Image in this._images)
 			{
 				image.smoothing = this._smoothing;
+				image.color = this._color;
 			}
 		}
 		

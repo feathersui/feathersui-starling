@@ -141,7 +141,7 @@ package org.josht.starling.display
 		private var _smoothing:String = TextureSmoothing.BILINEAR;
 		
 		/**
-		 * The smoothing value to pass to the subtextures.
+		 * The smoothing value to pass to the images.
 		 */
 		public function get smoothing():String
 		{
@@ -158,6 +158,32 @@ package org.josht.starling.display
 				return;
 			}
 			this._smoothing = value;
+			this.refreshProperties(true);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _color:uint = 0xffffff;
+
+		/**
+		 * The color value to pass to the images.
+		 */
+		public function get color():uint
+		{
+			return this._color;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set color(value:uint):void
+		{
+			if(this._color == value)
+			{
+				return;
+			}
+			this._color = value;
 			this.refreshProperties(true);
 		}
 		
@@ -390,6 +416,18 @@ package org.josht.starling.display
 			this._bottomLeftImage.smoothing = this._smoothing;
 			this._bottomCenterImage.smoothing = this._smoothing;
 			this._bottomRightImage.smoothing = this._smoothing;
+
+			this._topLeftImage.color = this._color;
+			this._topCenterImage.color = this._color;
+			this._topRightImage.color = this._color;
+
+			this._middleLeftImage.color = this._color;
+			this._middleCenterImage.color = this._color;
+			this._middleRightImage.color = this._color;
+
+			this._bottomLeftImage.color = this._color;
+			this._bottomCenterImage.color = this._color;
+			this._bottomRightImage.color = this._color;
 			
 			if(canAutoFlatten && this._autoFlatten)
 			{
