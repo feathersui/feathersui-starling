@@ -29,13 +29,15 @@ package org.josht.starling.display
 	import flash.geom.Rectangle;
 	
 	import starling.display.DisplayObject;
-	import starling.display.Quad;
 	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;
 	import starling.utils.transformCoords;
 
 	/**
-	 * Takes a texture and automatically creates a scale-9 grid of subtextures.
+	 * Scales an image with nine regions to maintain the aspect ratio of the
+	 * corners regions. The top and bottom regions stretch horizontally, and the
+	 * left and right regions scale vertically. The center region stretches in
+	 * both directions to fill the remaining space.
 	 */
 	public class Scale9Image extends Sprite
 	{
@@ -186,14 +188,23 @@ package org.josht.starling.display
 			this._color = value;
 			this.refreshProperties(true);
 		}
-		
+
+		/**
+		 * @private
+		 */
 		private var _autoFlatten:Boolean = true;
-		
+
+		/**
+		 * Automatically flattens after layout or property changes to, generally, improve performance.
+		 */
 		public function get autoFlatten():Boolean
 		{
 			return this._autoFlatten;
 		}
-		
+
+		/**
+		 * @private
+		 */
 		public function set autoFlatten(value:Boolean):void
 		{
 			if(this._autoFlatten == value)
