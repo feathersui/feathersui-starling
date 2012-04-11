@@ -366,6 +366,10 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
+			if(!value)
+			{
+				value = {};
+			}
 			this._scrollerProperties = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -397,6 +401,10 @@ package org.josht.starling.foxhole.controls
 			if(this._itemRendererProperties == value)
 			{
 				return;
+			}
+			if(!value)
+			{
+				value = {};
 			}
 			this._itemRendererProperties = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);

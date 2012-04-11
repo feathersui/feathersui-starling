@@ -575,6 +575,10 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
+			if(!value)
+			{
+				value = {};
+			}
 			this._thumbProperties = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}

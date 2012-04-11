@@ -285,6 +285,10 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
+			if(!value)
+			{
+				value = {};
+			}
 			this._trackProperties = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -311,6 +315,10 @@ package org.josht.starling.foxhole.controls
 			if(this._thumbProperties == value)
 			{
 				return;
+			}
+			if(!value)
+			{
+				value = {};
 			}
 			this._thumbProperties = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
