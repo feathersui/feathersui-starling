@@ -236,6 +236,7 @@ package org.josht.starling.foxhole.controls
 		{
 			if(!this._textFormat)
 			{
+				this.setSizeInternal(0, 0, false);
 				return;
 			}
 			const font:BitmapFont = this._textFormat.font;
