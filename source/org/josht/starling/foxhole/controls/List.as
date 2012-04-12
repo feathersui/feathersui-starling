@@ -477,7 +477,7 @@ package org.josht.starling.foxhole.controls
 			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin.parent != this)
 			{
 				this._backgroundDisabledSkin.visible = false;
-				this.addChildAt(this._backgroundSkin, 0);
+				this.addChildAt(this._backgroundDisabledSkin, 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -859,8 +859,15 @@ package org.josht.starling.foxhole.controls
 			var backgroundSkin:DisplayObject = this._backgroundSkin;
 			if(!this._isEnabled && this._backgroundDisabledSkin)
 			{
-				this._backgroundSkin.visible = false;
+				if(this._backgroundSkin)
+				{
+					this._backgroundSkin.visible = false;
+				}
 				backgroundSkin = this._backgroundDisabledSkin;
+			}
+			else if(this._backgroundDisabledSkin)
+			{
+				this._backgroundDisabledSkin.visible = false;
 			}
 			if(backgroundSkin)
 			{
