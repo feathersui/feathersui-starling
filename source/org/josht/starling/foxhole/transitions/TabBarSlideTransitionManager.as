@@ -26,8 +26,6 @@ package org.josht.starling.foxhole.transitions
 {
 	import com.gskinner.motion.easing.Sine;
 
-	import flash.utils.getTimer;
-
 	import org.josht.starling.display.ScreenNavigator;
 	import org.josht.starling.foxhole.controls.TabBar;
 	import org.josht.starling.motion.GTween;
@@ -81,8 +79,6 @@ package org.josht.starling.foxhole.transitions
 		 */
 		private function onTransition(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
 		{
-			trace("on transition:", getTimer())
-
 			this._oldScreen = oldScreen;
 			this._newScreen = newScreen;
 			this._savedCompleteHandler = onComplete;
