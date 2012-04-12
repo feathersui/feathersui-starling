@@ -481,9 +481,9 @@ package org.josht.starling.foxhole.controls
 				for each(var tab:Button in this.activeTabs)
 				{
 					tab.validate();
-					newWidth += tab.width;
+					newWidth = Math.max(tab.width, newWidth);
 				}
-				newWidth += (this.activeTabs.length - 1) * this._gap;
+				newWidth = this.activeTabs.length * (newWidth + this._gap) - this._gap;
 			}
 
 			if(isNaN(newHeight))
@@ -504,19 +504,23 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function layoutTabs():void
 		{
-			var position:Number = 0;
 			const tabCount:int = this.activeTabs.length;
+			const tabSize:Number = (this._direction == DIRECTION_VERTICAL ? this._height : this._width) / tabCount
+			var position:Number = 0;
 			for(var i:int = 0; i < tabCount; i++)
 			{
 				var tab:Button = this.activeTabs[i];
-				tab.validate();
 				if(this._direction == DIRECTION_VERTICAL)
 				{
+					tab.width = this._width;
+					tab.height = tabSize;
 					tab.y = position;
 					position += tab.height + this._gap;
 				}
 				else //horizontal
 				{
+					tab.width = tabSize;
+					tab.height = this._height;
 					tab.x = position;
 					position += tab.width + this._gap;
 				}
