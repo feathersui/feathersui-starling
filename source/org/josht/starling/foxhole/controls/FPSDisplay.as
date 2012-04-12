@@ -31,8 +31,14 @@ package org.josht.starling.foxhole.controls
 	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
 
+	/**
+	 * Displays the frames per second.
+	 */
 	public class FPSDisplay extends Label implements IAnimatable
 	{
+		/**
+		 * Constructor.
+		 */
 		public function FPSDisplay()
 		{
 			super();
@@ -44,9 +50,16 @@ package org.josht.starling.foxhole.controls
 		private var _frameCount:int = 0;
 		private var _elapsedTime:Number = 0;
 		private var _nativeStage:Stage;
-		
+
+		/**
+		 * If true, will display both the actual frame rate, and the target
+		 * frame rate of the stage.
+		 */
 		public var showTargetFPS:Boolean = false
-		
+
+		/**
+		 * @private
+		 */
 		public function advanceTime(time:Number):void
 		{
 			this._frameCount++;
@@ -58,14 +71,20 @@ package org.josht.starling.foxhole.controls
 				this._elapsedTime = this._frameCount = 0;
 			}
 		}
-		
+
+		/**
+		 * @private
+		 */
 		private function addedToStageHandler(event:Event):void
 		{
 			this._nativeStage = Starling.current.nativeStage;
 			Starling.juggler.add(this);
 			this.addEventListener(starling.events.Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 		}
-		
+
+		/**
+		 * @private
+		 */
 		private function removedFromStageHandler(event:Event):void
 		{
 			Starling.juggler.remove(this);

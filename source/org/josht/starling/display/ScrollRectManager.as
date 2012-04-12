@@ -5,13 +5,36 @@ package org.josht.starling.display
 	import flash.geom.Rectangle;
 	
 	import starling.display.DisplayObject;
-	
+
+	/**
+	 * Utilities for working with display objects that have a <code>scrollRect</code>.
+	 *
+	 * @see IDisplayObjectWithScrollRect
+	 */
 	public class ScrollRectManager
 	{
+		/**
+		 * @private
+		 */
 		public static var scrollRectOffsetX:Number = 0;
+
+		/**
+		 * @private
+		 */
 		public static var scrollRectOffsetY:Number = 0;
+
+		/**
+		 * @private
+		 */
 		public static var currentScissorRect:Rectangle;
-		
+
+		/**
+		 * Adjusts the result of the <code>getLocation()</code> method on the
+		 * <code>Touch</code> class to account for <code>scrollRect</code> on
+		 * the target's parent or any other containing display object.
+		 *
+		 * @see starling.events.Touch#getLocation()
+		 */
 		public static function adjustTouchLocation(location:Point, target:DisplayObject):void
 		{
 			var matrix:Matrix;
