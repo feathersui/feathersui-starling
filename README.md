@@ -32,6 +32,9 @@ A state machine for menu systems. Uses events or signals to trigger navigation b
 ### Screen
 An abstract class for implementing a single screen within a menu developed with `ScreenNavigator`. Includes common helper functionality, including back/menu/search hardware key callbacks, calculating scale from original resolution to current stage size, and template functions for initialize, layout and destroy.
 
+### ScreenHeader
+A header that displays a title along with a horizontal regions on the sides for additional UI controls. The left side is typically for navigation (to display a back button, for example) and the right for additional actions.
+
 ## Dependencies
 
 The following external libraries are required. Other versions of the same library may work, but the version displayed below is the one currently used by the author.

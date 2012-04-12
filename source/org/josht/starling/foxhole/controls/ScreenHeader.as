@@ -30,9 +30,10 @@ package org.josht.starling.foxhole.controls
 	import starling.display.DisplayObject;
 
 	/**
-	 * A header that displays a title along with a horizontal regions for
-	 * additional UI controls on the sides. The Left side is for navigation and
-	 * the right for additional actions.
+	 * A header that displays a title along with a horizontal regions on the
+	 * sides for additional UI controls. The left side is typically for
+	 * navigation (to display a back button, for example) and the right for
+	 * additional actions.
 	 */
 	public class ScreenHeader extends FoxholeControl
 	{
