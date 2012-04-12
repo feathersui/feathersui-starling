@@ -434,13 +434,12 @@ package org.josht.starling.foxhole.controls
 		{
 			var needsWidth:Boolean = isNaN(this._width);
 			var needsHeight:Boolean = isNaN(this._height);
-			var newWidth:Number = needsWidth ? (2 * this._contentPadding) : this._width;
-			var newHeight:Number = needsHeight ? 0 : this._height;
-
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
 			}
+			var newWidth:Number = needsWidth ? (2 * this._contentPadding) : this._width;
+			var newHeight:Number = needsHeight ? 0 : this._height;
 
 			for each(var item:DisplayObject in this._leftItems)
 			{
