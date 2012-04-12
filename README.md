@@ -6,7 +6,7 @@ To get started, you might want to check out the [API Documentation](http://www.f
 
 ## Available Components
 
-Foxhole includes The following UI controls:
+Foxhole includes the following UI controls:
 
 ### Label
 A single-line, non-interactive text control. Uses bitmap fonts. A simplified replacement for `starling.text.TextField` that is built on `FoxholeControl`.
