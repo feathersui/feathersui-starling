@@ -1785,8 +1785,15 @@ package org.josht.starling.foxhole.controls
 				}
 				else
 				{
-					this.currentIcon.y = this.labelField.y;
-					this.labelField.y += this.currentIcon.height + this._gap;
+					if(this._verticalAlign == VERTICAL_ALIGN_TOP)
+					{
+						this.labelField.y += this.currentIcon.height + this._gap;
+					}
+					else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
+					{
+						this.labelField.y += (this.currentIcon.height + this._gap) / 2;
+					}
+					this.currentIcon.y = this.labelField.y - this.currentIcon.height - this._gap;
 				}
 			}
 			else if(this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
