@@ -471,6 +471,31 @@ package org.josht.starling.foxhole.controls
 			{
 				return false;
 			}
+
+			var newWidth:Number = this._width;
+			var newHeight:Number = this._height;
+
+			if(isNaN(newWidth))
+			{
+				newWidth = 0;
+				for each(var tab:Button in this.activeTabs)
+				{
+					tab.validate();
+					newWidth += tab.width;
+				}
+				newWidth += (this.activeTabs.length - 1) * this._gap;
+			}
+
+			if(isNaN(newHeight))
+			{
+				var newHeight:Number = 0;
+				for each(var tab:Button in this.activeTabs)
+				{
+					tab.validate();
+					newHeight = Math.max(tab.height, newHeight);
+				}
+			}
+			this.setSizeInternal(newWidth, newHeight, false);
 			return true;
 		}
 
