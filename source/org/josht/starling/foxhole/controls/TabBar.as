@@ -488,8 +488,8 @@ package org.josht.starling.foxhole.controls
 
 			if(isNaN(newHeight))
 			{
-				var newHeight:Number = 0;
-				for each(var tab:Button in this.activeTabs)
+				newHeight = 0;
+				for each(tab in this.activeTabs)
 				{
 					tab.validate();
 					newHeight = Math.max(tab.height, newHeight);
