@@ -26,6 +26,9 @@ A touch-based, vertical list control. Has elastic edges and you can "throw" it.
 ### PickerList
 A control similar to a combo box. Appears as a button when closed. The list is displayed as a fullscreen overlay on top of the stage.
 
+### TabBar
+A line of tabs, where one may be selected at a time.
+
 ### ScreenNavigator
 A state machine for menu systems. Uses events or signals to trigger navigation between screens or to call functions. Includes very simple dependency injection.
 
