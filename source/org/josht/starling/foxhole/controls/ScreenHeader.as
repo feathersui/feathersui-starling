@@ -237,6 +237,7 @@ package org.josht.starling.foxhole.controls
 			if(this._backgroundSkin && this._backgroundSkin.parent != this)
 			{
 				this._backgroundSkin.visible = false;
+				this._backgroundSkin.touchable = false;
 				this.addChildAt(this._backgroundSkin, 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
@@ -273,6 +274,7 @@ package org.josht.starling.foxhole.controls
 			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin.parent != this)
 			{
 				this._backgroundDisabledSkin.visible = false;
+				this._backgroundDisabledSkin.touchable = false;
 				this.addChildAt(this._backgroundDisabledSkin, 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
@@ -313,6 +315,7 @@ package org.josht.starling.foxhole.controls
 			{
 				this._titleLabel = new Label();
 				this._titleLabel.name = "foxhole-header-title";
+				this._titleLabel.touchable = false;
 				this.addChild(this._titleLabel);
 			}
 		}
@@ -423,16 +426,19 @@ package org.josht.starling.foxhole.controls
 				if(this._backgroundSkin)
 				{
 					this._backgroundSkin.visible = false;
+					this._backgroundSkin.touchable = false;
 				}
 				backgroundSkin = this._backgroundDisabledSkin;
 			}
 			else if(this._backgroundDisabledSkin)
 			{
 				this._backgroundDisabledSkin.visible = false;
+				this._backgroundDisabledSkin.touchable = false;
 			}
 			if(backgroundSkin)
 			{
 				backgroundSkin.visible = true;
+				backgroundSkin.touchable = true;
 				backgroundSkin.width = this._width;
 				backgroundSkin.height = this._height;
 			}
