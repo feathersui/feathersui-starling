@@ -1422,14 +1422,14 @@ package org.josht.starling.foxhole.controls
 
 		protected function autoSizeIfNeeded():Boolean
 		{
-			const needsWidth:Boolean = isNaN(this._explicitWidth);
-			const needsHeight:Boolean = isNaN(this._explicitHeight);
+			const needsWidth:Boolean = isNaN(this.explicitWidth);
+			const needsHeight:Boolean = isNaN(this.explicitHeight);
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
 			}
 			this.labelField.validate();
-			var newWidth:Number = this._explicitWidth;
+			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
 			{
 				if(this.currentIcon && this.label)
@@ -1459,7 +1459,7 @@ package org.josht.starling.foxhole.controls
 				}
 			}
 
-			var newHeight:Number = this._explicitHeight;
+			var newHeight:Number = this.explicitHeight;
 			if(needsHeight)
 			{
 				if(this.currentIcon && this.label)
@@ -1725,13 +1725,13 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			if(this.currentSkin.width != this._actualWidth)
+			if(this.currentSkin.width != this.actualWidth)
 			{
-				this.currentSkin.width = this._actualWidth;
+				this.currentSkin.width = this.actualWidth;
 			}
-			if(this.currentSkin.height != this._actualHeight)
+			if(this.currentSkin.height != this.actualHeight)
 			{
-				this.currentSkin.height = this._actualHeight;
+				this.currentSkin.height = this.actualHeight;
 			}
 		}
 		
@@ -1766,11 +1766,11 @@ package org.josht.starling.foxhole.controls
 			}
 			else if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
 			{
-				displayObject.x = this._actualWidth - this._contentPadding - displayObject.width;
+				displayObject.x = this.actualWidth - this._contentPadding - displayObject.width;
 			}
 			else //center
 			{
-				displayObject.x = (this._actualWidth - displayObject.width) / 2;
+				displayObject.x = (this.actualWidth - displayObject.width) / 2;
 			}
 			if(this._verticalAlign == VERTICAL_ALIGN_TOP)
 			{
@@ -1778,11 +1778,11 @@ package org.josht.starling.foxhole.controls
 			}
 			else if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
 			{
-				displayObject.y = this._actualHeight - this._contentPadding - displayObject.height;
+				displayObject.y = this.actualHeight - this._contentPadding - displayObject.height;
 			}
 			else //middle
 			{
-				displayObject.y = (this._actualHeight - displayObject.height) / 2;
+				displayObject.y = (this.actualHeight - displayObject.height) / 2;
 			}
 		}
 		
@@ -1796,7 +1796,7 @@ package org.josht.starling.foxhole.controls
 				if(this._gap == Number.POSITIVE_INFINITY)
 				{
 					this.currentIcon.y = this._contentPadding;
-					this.labelField.y = this._actualHeight - this._contentPadding - this.labelField.height;
+					this.labelField.y = this.actualHeight - this._contentPadding - this.labelField.height;
 				}
 				else
 				{
@@ -1816,7 +1816,7 @@ package org.josht.starling.foxhole.controls
 				if(this._gap == Number.POSITIVE_INFINITY)
 				{
 					this.labelField.x = this._contentPadding;
-					this.currentIcon.x = this._actualWidth - this._contentPadding - this.currentIcon.width;
+					this.currentIcon.x = this.actualWidth - this._contentPadding - this.currentIcon.width;
 				}
 				else
 				{
@@ -1836,7 +1836,7 @@ package org.josht.starling.foxhole.controls
 				if(this._gap == Number.POSITIVE_INFINITY)
 				{
 					this.labelField.y = this._contentPadding;
-					this.currentIcon.y = this._actualHeight - this._contentPadding - this.currentIcon.height;
+					this.currentIcon.y = this.actualHeight - this._contentPadding - this.currentIcon.height;
 				}
 				else
 				{
@@ -1856,7 +1856,7 @@ package org.josht.starling.foxhole.controls
 				if(this._gap == Number.POSITIVE_INFINITY)
 				{
 					this.currentIcon.x = this._contentPadding;
-					this.labelField.x = this._actualWidth - this._contentPadding - this.labelField.width;
+					this.labelField.x = this.actualWidth - this._contentPadding - this.labelField.width;
 				}
 				else
 				{

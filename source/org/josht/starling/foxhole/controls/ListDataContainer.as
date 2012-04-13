@@ -316,7 +316,7 @@ package org.josht.starling.foxhole.controls
 
 		protected function autoSizeIfNeeded():Boolean
 		{
-			const needsTypicalItemWidth:Boolean = isNaN(this._explicitWidth) && isNaN(this._typicalItemWidth);
+			const needsTypicalItemWidth:Boolean = isNaN(this.explicitWidth) && isNaN(this._typicalItemWidth);
 			const needsRowHeight:Boolean = isNaN(this._rowHeight);
 
 			if(needsTypicalItemWidth || needsRowHeight)
@@ -345,7 +345,7 @@ package org.josht.starling.foxhole.controls
 					this.destroyRenderer(typicalRenderer);
 				}
 			}
-			var newWidth:Number = isNaN(this._explicitWidth) ? this._typicalItemWidth : this._explicitWidth;
+			var newWidth:Number = isNaN(this.explicitWidth) ? this._typicalItemWidth : this.explicitWidth;
 			var newHeight:Number = isNaN(this._rowHeight) ? 0 : (this._rowHeight * this._dataProvider.length);
 			this.setSizeInternal(newWidth, newHeight, false);
 			return true;
@@ -400,7 +400,7 @@ package org.josht.starling.foxhole.controls
 			{
 				var renderer:IListItemRenderer = this._activeRenderers[i];
 				var displayRenderer:DisplayObject = DisplayObject(renderer);
-				displayRenderer.width = this._actualWidth;
+				displayRenderer.width = this.actualWidth;
 				displayRenderer.height = this._rowHeight;
 				displayRenderer.y = this._rowHeight * renderer.index;
 			}

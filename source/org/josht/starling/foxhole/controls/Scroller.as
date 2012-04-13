@@ -562,8 +562,8 @@ package org.josht.starling.foxhole.controls
 			
 			if(sizeInvalid)
 			{
-				this._background.width = this._actualWidth;
-				this._background.height = this._actualHeight;
+				this._background.width = this.actualWidth;
+				this._background.height = this.actualHeight;
 			}
 			
 			if(sizeInvalid || dataInvalid)
@@ -584,8 +584,8 @@ package org.josht.starling.foxhole.controls
 				this._velocityY = this._previousVelocityY = 0;
 				if(this._viewPort)
 				{
-					this._maxHorizontalScrollPosition = Math.max(0, this._viewPort.width - this._actualWidth);
-					this._maxVerticalScrollPosition = Math.max(0, this._viewPort.height - this._actualHeight);
+					this._maxHorizontalScrollPosition = Math.max(0, this._viewPort.width - this.actualWidth);
+					this._maxVerticalScrollPosition = Math.max(0, this._viewPort.height - this.actualHeight);
 				}
 				else
 				{
@@ -607,15 +607,15 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			const needsWidth:Boolean = isNaN(this._explicitWidth);
-			const needsHeight:Boolean = isNaN(this._explicitHeight);
+			const needsWidth:Boolean = isNaN(this.explicitWidth);
+			const needsHeight:Boolean = isNaN(this.explicitHeight);
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
 			}
 
-			var newWidth:Number = this._explicitWidth;
-			var newHeight:Number = this._explicitHeight;
+			var newWidth:Number = this.explicitWidth;
+			var newHeight:Number = this.explicitHeight;
 			if(needsWidth)
 			{
 				newWidth = this._viewPort.width;
@@ -639,22 +639,22 @@ package org.josht.starling.foxhole.controls
 			{
 				if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
 				{
-					offsetX = (this._actualWidth - this._viewPort.width) / 2;
+					offsetX = (this.actualWidth - this._viewPort.width) / 2;
 				}
 				else if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
 				{
-					offsetX = this._actualWidth - this._viewPort.width;
+					offsetX = this.actualWidth - this._viewPort.width;
 				}
 			}
 			if(this._maxVerticalScrollPosition == 0)
 			{
 				if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
 				{
-					offsetY = (this._actualHeight - this._viewPort.height) / 2;
+					offsetY = (this.actualHeight - this._viewPort.height) / 2;
 				}
 				else if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
 				{
-					offsetY = this._actualHeight - this._viewPort.height;
+					offsetY = this.actualHeight - this._viewPort.height;
 				}
 			}
 			if(this._clipContent)
@@ -667,8 +667,8 @@ package org.josht.starling.foxhole.controls
 				}
 				
 				const scrollRect:Rectangle = this._viewPortWrapper.scrollRect;
-				scrollRect.width = this._actualWidth;
-				scrollRect.height = this._actualHeight;
+				scrollRect.width = this.actualWidth;
+				scrollRect.height = this.actualHeight;
 				scrollRect.x = this._horizontalScrollPosition - offsetX;
 				scrollRect.y = this._verticalScrollPosition - offsetY;
 				this._viewPortWrapper.scrollRect = scrollRect;

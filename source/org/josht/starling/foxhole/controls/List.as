@@ -776,13 +776,13 @@ package org.josht.starling.foxhole.controls
 				this.refreshBackgroundSkin();
 			}
 			
-			if(!isNaN(this._explicitWidth))
+			if(!isNaN(this.explicitWidth))
 			{
-				this._dataContainer.width = this._explicitWidth - 2 * this._contentPadding;
+				this._dataContainer.width = this.explicitWidth - 2 * this._contentPadding;
 			}
-			if(!isNaN(this._explicitHeight))
+			if(!isNaN(this.explicitHeight))
 			{
-				this._dataContainer.visibleHeight = this._explicitHeight - 2 * contentPadding;
+				this._dataContainer.visibleHeight = this.explicitHeight - 2 * contentPadding;
 			}
 			else
 			{
@@ -811,8 +811,8 @@ package org.josht.starling.foxhole.controls
 			}
 			
 			this._scroller.isEnabled = this._isEnabled;
-			this._scroller.width = this._actualWidth - 2 * this._contentPadding;
-			this._scroller.height = this._actualHeight - 2 * this._contentPadding;
+			this._scroller.width = this.actualWidth - 2 * this._contentPadding;
+			this._scroller.height = this.actualHeight - 2 * this._contentPadding;
 			this._scroller.x = this._contentPadding;
 			this._scroller.y = this._contentPadding;
 			this._scroller.clipContent = this._clipContent;
@@ -828,15 +828,15 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			const needsWidth:Boolean = isNaN(this._explicitWidth);
-			const needsHeight:Boolean = isNaN(this._explicitHeight);
+			const needsWidth:Boolean = isNaN(this.explicitWidth);
+			const needsHeight:Boolean = isNaN(this.explicitHeight);
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
 			}
 
-			var newWidth:Number = this._explicitWidth;
-			var newHeight:Number = this._explicitHeight;
+			var newWidth:Number = this.explicitWidth;
+			var newHeight:Number = this.explicitHeight;
 			if(needsWidth)
 			{
 				newWidth = this._dataContainer.width + 2 * this._contentPadding;
@@ -885,8 +885,8 @@ package org.josht.starling.foxhole.controls
 			if(backgroundSkin)
 			{
 				backgroundSkin.visible = true;
-				backgroundSkin.width = this._actualWidth;
-				backgroundSkin.height = this._actualHeight;
+				backgroundSkin.width = this.actualWidth;
+				backgroundSkin.height = this.actualHeight;
 			}
 		}
 		

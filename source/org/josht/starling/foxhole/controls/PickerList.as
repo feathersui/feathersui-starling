@@ -449,11 +449,11 @@ package org.josht.starling.foxhole.controls
 				//explicit dimensions aren't set.
 				//set this before buttonProperties is used because it might
 				//contain width or height changes.
-				if(isNaN(this._explicitWidth))
+				if(isNaN(this.explicitWidth))
 				{
 					this._button.width = NaN;
 				}
-				if(isNaN(this._explicitHeight))
+				if(isNaN(this.explicitHeight))
 				{
 					this._button.height = NaN;
 				}
@@ -489,8 +489,8 @@ package org.josht.starling.foxhole.controls
 			
 			if(sizeInvalid)
 			{
-				this._button.width = this._actualWidth;
-				this._button.height = this._actualHeight;
+				this._button.width = this.actualWidth;
+				this._button.height = this.actualHeight;
 			}
 			
 			if(stageSizeInvalid)
@@ -505,8 +505,8 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			const needsWidth:Boolean = isNaN(this._explicitWidth);
-			const needsHeight:Boolean = isNaN(this._explicitHeight);
+			const needsWidth:Boolean = isNaN(this.explicitWidth);
+			const needsHeight:Boolean = isNaN(this.explicitHeight);
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -522,8 +522,8 @@ package org.josht.starling.foxhole.controls
 			}
 			this._button.validate();
 
-			var newWidth:Number = this._explicitWidth;
-			var newHeight:Number = this._explicitHeight;
+			var newWidth:Number = this.explicitWidth;
+			var newHeight:Number = this.explicitHeight;
 			if(needsWidth)
 			{
 				newWidth = this._button.width;

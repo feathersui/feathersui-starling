@@ -249,21 +249,30 @@ package org.josht.starling.foxhole.core
 		}
 
 		/**
-		 * private
+		 * The width value explicitly set by calling the width setter or
+		 * setSize().
 		 */
-		protected var _explicitWidth:Number = NaN;
+		protected var explicitWidth:Number = NaN;
+
+		/**
+		 * The final width value that should be used for layout. If the width
+		 * has been explicitly set, then that value is used. If not, the actual
+		 * width will be calculated automatically. Each component has different
+		 * automatic sizing behavior, but it's usually based on the component's
+		 * skin or content, including text or sub-components.
+		 */
+		protected var actualWidth:Number = NaN;
 		
 		/**
-		 * @private
-		 */
-		protected var _actualWidth:Number = NaN;
-		
-		/**
-		 * @inheritDoc
+		 * The width of the component. This could be a value that was set
+		 * explicitly, or the component will automatically resize if no explicit
+		 * width value is provided. Each component has a different automatic
+		 * sizing behavior, but it's usually based on the component's skin or
+		 * content, including text or sub-components.
 		 */
 		override public function get width():Number
 		{
-			return this._actualWidth;
+			return this.actualWidth;
 		}
 		
 		/**
@@ -271,26 +280,35 @@ package org.josht.starling.foxhole.core
 		 */
 		override public function set width(value:Number):void
 		{
-			this._explicitWidth = value;
-			this.setSizeInternal(value, this._actualHeight, true);
+			this.explicitWidth = value;
+			this.setSizeInternal(value, this.actualHeight, true);
 		}
 
 		/**
-		 * @private
+		 * The height value explicitly set by calling the height setter or
+		 * setSize().
 		 */
-		protected var _explicitHeight:Number = NaN;
-		
+		protected var explicitHeight:Number = NaN;
+
 		/**
-		 * @private
+		 * The final height value that should be used for layout. If the height
+		 * has been explicitly set, then that value is used. If not, the actual
+		 * height will be calculated automatically. Each component has different
+		 * automatic sizing behavior, but it's usually based on the component's
+		 * skin or content, including text or sub-components.
 		 */
-		protected var _actualHeight:Number = NaN;
-		
+		protected var actualHeight:Number = NaN;
+
 		/**
-		 * @inheritDoc
+		 * The height of the component. This could be a value that was set
+		 * explicitly, or the component will automatically resize if no explicit
+		 * height value is provided. Each component has a different automatic
+		 * sizing behavior, but it's usually based on the component's skin or
+		 * content, including text or sub-components.
 		 */
 		override public function get height():Number
 		{
-			return this._actualHeight;
+			return this.actualHeight;
 		}
 		
 		/**
@@ -298,8 +316,8 @@ package org.josht.starling.foxhole.core
 		 */
 		override public function set height(value:Number):void
 		{
-			this._explicitHeight = value;
-			this.setSizeInternal(this._explicitWidth, value, true);
+			this.explicitHeight = value;
+			this.setSizeInternal(this.explicitWidth, value, true);
 		}
 		
 		/**
@@ -491,8 +509,8 @@ package org.josht.starling.foxhole.core
 		 */
 		public function setSize(width:Number, height:Number):void
 		{
-			this._explicitWidth = width;
-			this._explicitHeight = height;
+			this.explicitWidth = width;
+			this.explicitHeight = height;
 			this.setSizeInternal(width, height, true);
 		}
 		
@@ -503,23 +521,23 @@ package org.josht.starling.foxhole.core
 		protected function setSizeInternal(width:Number, height:Number, canInvalidate:Boolean):void
 		{
 			var resized:Boolean = false;
-			if(!isNaN(this._explicitWidth))
+			if(!isNaN(this.explicitWidth))
 			{
-				width = this._explicitWidth;
+				width = this.explicitWidth;
 			}
-			if(!isNaN(this._explicitHeight))
+			if(!isNaN(this.explicitHeight))
 			{
-				height = this._explicitHeight;
+				height = this.explicitHeight;
 			}
-			if(this._actualWidth != width)
+			if(this.actualWidth != width)
 			{
-				this._actualWidth = width;
+				this.actualWidth = width;
 				this._hitArea.width = width;
 				resized = true;
 			}
-			if(this._actualHeight != height)
+			if(this.actualHeight != height)
 			{
-				this._actualHeight = height;
+				this.actualHeight = height;
 				this._hitArea.height = height;
 				resized = true;
 			}

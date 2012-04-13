@@ -465,15 +465,15 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			const needsWidth:Boolean = isNaN(this._explicitWidth);
-			const needsHeight:Boolean = isNaN(this._explicitHeight);
+			const needsWidth:Boolean = isNaN(this.explicitWidth);
+			const needsHeight:Boolean = isNaN(this.explicitHeight);
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
 			}
 
-			var newWidth:Number = this._explicitWidth;
-			var newHeight:Number = this._explicitHeight;
+			var newWidth:Number = this.explicitWidth;
+			var newHeight:Number = this.explicitHeight;
 			if(needsWidth)
 			{
 				newWidth = 0;
@@ -504,14 +504,14 @@ package org.josht.starling.foxhole.controls
 		protected function layoutTabs():void
 		{
 			const tabCount:int = this.activeTabs.length;
-			const tabSize:Number = (this._direction == DIRECTION_VERTICAL ? this._actualHeight : this._actualWidth) / tabCount
+			const tabSize:Number = (this._direction == DIRECTION_VERTICAL ? this.actualHeight : this.actualWidth) / tabCount
 			var position:Number = 0;
 			for(var i:int = 0; i < tabCount; i++)
 			{
 				var tab:Button = this.activeTabs[i];
 				if(this._direction == DIRECTION_VERTICAL)
 				{
-					tab.width = this._actualWidth;
+					tab.width = this.actualWidth;
 					tab.height = tabSize;
 					tab.y = position;
 					position += tab.height + this._gap;
@@ -519,7 +519,7 @@ package org.josht.starling.foxhole.controls
 				else //horizontal
 				{
 					tab.width = tabSize;
-					tab.height = this._actualHeight;
+					tab.height = this.actualHeight;
 					tab.x = position;
 					position += tab.width + this._gap;
 				}

@@ -409,13 +409,13 @@ package org.josht.starling.foxhole.controls
 			
 			if(stylesInvalid || sizeInvalid)
 			{
-				if(!isNaN(this._explicitWidth))
+				if(!isNaN(this.explicitWidth))
 				{
-					this.track.width = this._explicitWidth;
+					this.track.width = this.explicitWidth;
 				}
-				if(!isNaN(this._explicitHeight))
+				if(!isNaN(this.explicitHeight))
 				{
-					this.track.height = this._explicitHeight;
+					this.track.height = this.explicitHeight;
 				}
 			}
 
@@ -426,14 +426,14 @@ package org.josht.starling.foxhole.controls
 
 				if(this._direction == DIRECTION_HORIZONTAL)
 				{
-					const trackScrollableWidth:Number = this._actualWidth - this.thumb.width;
+					const trackScrollableWidth:Number = this.actualWidth - this.thumb.width;
 					this.thumb.x = (trackScrollableWidth * (this._value - this._minimum) / (this._maximum - this._minimum));
-					this.thumb.y = (this._actualHeight - this.thumb.height) / 2;
+					this.thumb.y = (this.actualHeight - this.thumb.height) / 2;
 				}
 				else //vertical
 				{
-					const trackScrollableHeight:Number = this._actualHeight - this.thumb.height;
-					this.thumb.x = (this._actualWidth - this.thumb.width) / 2;
+					const trackScrollableHeight:Number = this.actualHeight - this.thumb.height;
+					this.thumb.x = (this.actualWidth - this.thumb.width) / 2;
 					this.thumb.y = (trackScrollableHeight * (this._value - this._minimum) / (this._maximum - this._minimum));
 				}
 			}
@@ -444,14 +444,14 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			const needsWidth:Boolean = isNaN(this._explicitWidth);
-			const needsHeight:Boolean = isNaN(this._explicitHeight);
+			const needsWidth:Boolean = isNaN(this.explicitWidth);
+			const needsHeight:Boolean = isNaN(this.explicitHeight);
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
 			}
-			var newWidth:Number = this._explicitWidth;
-			var newHeight:Number = this._explicitHeight;
+			var newWidth:Number = this.explicitWidth;
+			var newHeight:Number = this.explicitHeight;
 			this.track.validate();
 			if(needsWidth)
 			{
@@ -514,11 +514,11 @@ package org.josht.starling.foxhole.controls
 			var percentage:Number;
 			if(this._direction == DIRECTION_HORIZONTAL)
 			{
-				percentage = location.x / this._actualWidth;
+				percentage = location.x / this.actualWidth;
 			}
 			else //vertical
 			{
-				percentage = location.y / this._actualHeight;
+				percentage = location.y / this.actualHeight;
 			}
 			
 			this.value = this._minimum + percentage * (this._maximum - this._minimum);
@@ -553,14 +553,14 @@ package org.josht.starling.foxhole.controls
 				var percentage:Number;
 				if(this._direction == DIRECTION_HORIZONTAL)
 				{
-					const trackScrollableWidth:Number = this._actualWidth - this.thumb.width;
+					const trackScrollableWidth:Number = this.actualWidth - this.thumb.width;
 					const xOffset:Number = location.x - this._touchStartX;
 					const xPosition:Number = Math.min(Math.max(0, this._thumbStartX + xOffset), trackScrollableWidth);
 					percentage = xPosition / trackScrollableWidth;
 				}
 				else //vertical
 				{
-					const trackScrollableHeight:Number = this._actualHeight - this.thumb.height;
+					const trackScrollableHeight:Number = this.actualHeight - this.thumb.height;
 					const yOffset:Number = location.y - this._touchStartY;
 					const yPosition:Number = Math.min(Math.max(0, this._thumbStartY + yOffset), trackScrollableHeight);
 					percentage = yPosition / trackScrollableHeight;
