@@ -468,6 +468,9 @@ package org.josht.starling.foxhole.controls
 		{
 			return Vector.<String>([STATE_UP, STATE_DOWN, STATE_DISABLED, STATE_SELECTED_UP, STATE_SELECTED_DOWN]);
 		}
+
+		protected var _originalSkinWidth:Number = NaN;
+		protected var _originalSkinHeight:Number = NaN;
 		
 		/**
 		 * @private
@@ -1446,16 +1449,13 @@ package org.josht.starling.foxhole.controls
 					newWidth = this.labelField.width;
 				}
 				newWidth += 2 * this._contentPadding;
-				if(this.currentSkin)
+				if(isNaN(newWidth))
 				{
-					if(isNaN(newWidth))
-					{
-						newWidth = this.currentSkin.width;
-					}
-					else
-					{
-						newWidth = Math.max(newWidth, this.currentSkin.width);
-					}
+					newWidth = this._originalSkinWidth;
+				}
+				else if(!isNaN(this._originalSkinWidth))
+				{
+					newWidth = Math.max(newWidth, this._originalSkinWidth);
 				}
 			}
 
@@ -1475,16 +1475,13 @@ package org.josht.starling.foxhole.controls
 					newHeight = this.labelField.height;
 				}
 				newHeight += 2 * this._contentPadding;
-				if(this.currentSkin)
+				if(isNaN(newHeight))
 				{
-					if(isNaN(newHeight))
-					{
-						newHeight = this.currentSkin.height;
-					}
-					else
-					{
-						newHeight = Math.max(newHeight, this.currentSkin.height);
-					}
+					newHeight = this._originalSkinHeight;
+				}
+				else if(!isNaN(this._originalSkinHeight))
+				{
+					newHeight = Math.max(newHeight, this._originalSkinHeight);
 				}
 			}
 
@@ -1577,6 +1574,14 @@ package org.josht.starling.foxhole.controls
 			if(this.currentSkin)
 			{
 				this.currentSkin.visible = true;
+				if(isNaN(this._originalSkinWidth))
+				{
+					this._originalSkinWidth = this.currentSkin.width;
+				}
+				if(isNaN(this._originalSkinHeight))
+				{
+					this._originalSkinHeight = this.currentSkin.height;
+				}
 			}
 			else
 			{
