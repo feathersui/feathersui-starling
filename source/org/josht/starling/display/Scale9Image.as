@@ -27,7 +27,8 @@ package org.josht.starling.display
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	
+
+	import starling.core.RenderSupport;
 	import starling.display.DisplayObject;
 	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;
@@ -51,13 +52,13 @@ package org.josht.starling.display
 		{
 			super();
 			this._hitArea = new Rectangle();
-			
 			this._scale9Grid = scale9Grid;
 			this.saveWidthAndHeight(texture);
 			this.createImages(texture);
-			this.refreshProperties(false);
-			this.refreshLayout();
 		}
+
+		private var _propertiesChanged:Boolean = true;
+		private var _layoutChanged:Boolean = true;
 		
 		/**
 		 * @private
@@ -69,6 +70,10 @@ package org.josht.starling.display
 		 */
 		override public function get width():Number
 		{
+			if(isNaN(this._width))
+			{
+				this._width = (this._leftWidth + this._centerWidth + this._rightWidth) * this._textureScale;
+			}
 			return this._width;
 		}
 		
@@ -82,7 +87,7 @@ package org.josht.starling.display
 				return;
 			}
 			this._width = value;
-			this.refreshLayout();
+			this._layoutChanged = true;
 		}
 		
 		/**
@@ -95,6 +100,10 @@ package org.josht.starling.display
 		 */
 		override public function get height():Number
 		{
+			if(isNaN(this._height))
+			{
+				this._height = (this._topHeight + this._middleHeight + this._bottomHeight) * this._textureScale;
+			}
 			return this._height;
 		}
 		
@@ -108,7 +117,7 @@ package org.josht.starling.display
 				return;
 			}
 			this._height = value;
-			this.refreshLayout();
+			this._layoutChanged = true;
 		}
 		
 		/**
@@ -134,7 +143,7 @@ package org.josht.starling.display
 				return;
 			}
 			this._textureScale = value;
-			this.refreshLayout();
+			this._layoutChanged = true;
 		}
 		
 		/**
@@ -160,7 +169,7 @@ package org.josht.starling.display
 				return;
 			}
 			this._smoothing = value;
-			this.refreshProperties(true);
+			this._propertiesChanged = true;
 		}
 
 		/**
@@ -186,7 +195,7 @@ package org.josht.starling.display
 				return;
 			}
 			this._color = value;
-			this.refreshProperties(true);
+			this._propertiesChanged = true;
 		}
 
 		/**
@@ -212,7 +221,6 @@ package org.josht.starling.display
 				return;
 			}
 			this._autoFlatten = value;
-			this.refreshLayout();
 		}
 		
 		private var _scale9Grid:Rectangle;
@@ -414,99 +422,88 @@ package org.josht.starling.display
 		/**
 		 * @private
 		 */
-		private function refreshProperties(canAutoFlatten:Boolean):void
+		override public function render(support:RenderSupport, alpha:Number):void
 		{
-			this._topLeftImage.smoothing = this._smoothing;
-			this._topCenterImage.smoothing = this._smoothing;
-			this._topRightImage.smoothing = this._smoothing;
-			
-			this._middleLeftImage.smoothing = this._smoothing;
-			this._middleCenterImage.smoothing = this._smoothing;
-			this._middleRightImage.smoothing = this._smoothing;
-			
-			this._bottomLeftImage.smoothing = this._smoothing;
-			this._bottomCenterImage.smoothing = this._smoothing;
-			this._bottomRightImage.smoothing = this._smoothing;
-
-			this._topLeftImage.color = this._color;
-			this._topCenterImage.color = this._color;
-			this._topRightImage.color = this._color;
-
-			this._middleLeftImage.color = this._color;
-			this._middleCenterImage.color = this._color;
-			this._middleRightImage.color = this._color;
-
-			this._bottomLeftImage.color = this._color;
-			this._bottomCenterImage.color = this._color;
-			this._bottomRightImage.color = this._color;
-			
-			if(canAutoFlatten && this._autoFlatten)
+			if(this._propertiesChanged)
 			{
-				this.flatten();
+				this._topLeftImage.smoothing = this._smoothing;
+				this._topCenterImage.smoothing = this._smoothing;
+				this._topRightImage.smoothing = this._smoothing;
+
+				this._middleLeftImage.smoothing = this._smoothing;
+				this._middleCenterImage.smoothing = this._smoothing;
+				this._middleRightImage.smoothing = this._smoothing;
+
+				this._bottomLeftImage.smoothing = this._smoothing;
+				this._bottomCenterImage.smoothing = this._smoothing;
+				this._bottomRightImage.smoothing = this._smoothing;
+
+				this._topLeftImage.color = this._color;
+				this._topCenterImage.color = this._color;
+				this._topRightImage.color = this._color;
+
+				this._middleLeftImage.color = this._color;
+				this._middleCenterImage.color = this._color;
+				this._middleRightImage.color = this._color;
+
+				this._bottomLeftImage.color = this._color;
+				this._bottomCenterImage.color = this._color;
+				this._bottomRightImage.color = this._color;
+
+				this._propertiesChanged = false;
 			}
-		}
-		
-		/**
-		 * @private
-		 */
-		private function refreshLayout():void
-		{
-			const scaledLeftWidth:Number = this._leftWidth * this._textureScale;
-			const scaledTopHeight:Number = this._topHeight * this._textureScale;
-			const scaledRightWidth:Number = this._rightWidth * this._textureScale;
-			const scaledBottomHeight:Number = this._bottomHeight * this._textureScale;
-			if(isNaN(this._width))
+
+			if(this._layoutChanged)
 			{
-				this._width = this._leftWidth + this._centerWidth + this._rightWidth * this._textureScale;
+				const scaledLeftWidth:Number = this._leftWidth * this._textureScale;
+				const scaledTopHeight:Number = this._topHeight * this._textureScale;
+				const scaledRightWidth:Number = this._rightWidth * this._textureScale;
+				const scaledBottomHeight:Number = this._bottomHeight * this._textureScale;
+
+				this._topLeftImage.scaleX = this._topLeftImage.scaleY = this._textureScale;
+				this._topLeftImage.x = scaledLeftWidth - this._topLeftImage.width;
+				this._topLeftImage.y = scaledTopHeight - this._topLeftImage.height;
+				this._topCenterImage.scaleX = this._topCenterImage.scaleY = this._textureScale;
+				this._topCenterImage.x = scaledLeftWidth;
+				this._topCenterImage.y = scaledTopHeight - this._topCenterImage.height;
+				this._topCenterImage.width = Math.max(0, this._width - scaledLeftWidth - scaledRightWidth);
+				this._topRightImage.scaleX = this._topRightImage.scaleY = this._textureScale;
+				this._topRightImage.x = this._width - scaledRightWidth;
+				this._topRightImage.y = scaledTopHeight - this._topRightImage.height;
+
+				this._middleLeftImage.scaleX = this._middleLeftImage.scaleY = this._textureScale;
+				this._middleLeftImage.x = scaledLeftWidth - this._middleLeftImage.width;
+				this._middleLeftImage.y = scaledTopHeight;
+				this._middleLeftImage.height = Math.max(0, this._height - scaledTopHeight - scaledBottomHeight);
+				this._middleCenterImage.scaleX = this._middleCenterImage.scaleY = this._textureScale;
+				this._middleCenterImage.x = scaledLeftWidth;
+				this._middleCenterImage.y = scaledTopHeight;
+				this._middleCenterImage.width = Math.max(0, this._width - scaledLeftWidth - scaledRightWidth);
+				this._middleCenterImage.height = Math.max(0, this._height - scaledTopHeight - scaledBottomHeight);
+				this._middleRightImage.x = this._width - scaledRightWidth;
+				this._middleRightImage.scaleX = this._middleRightImage.scaleY = this._textureScale;
+				this._middleRightImage.y = scaledTopHeight;
+				this._middleRightImage.height = Math.max(0, this._height - scaledTopHeight - scaledBottomHeight);
+
+				this._bottomLeftImage.scaleX = this._bottomLeftImage.scaleY = this._textureScale;
+				this._bottomLeftImage.x = scaledLeftWidth - this._bottomLeftImage.width;
+				this._bottomLeftImage.y = this._height - scaledBottomHeight;
+				this._bottomCenterImage.scaleX = this._bottomCenterImage.scaleY = this._textureScale;
+				this._bottomCenterImage.x = scaledLeftWidth;
+				this._bottomCenterImage.y = this._height - scaledBottomHeight;
+				this._bottomCenterImage.width = Math.max(0, this._width - scaledLeftWidth - scaledRightWidth);
+				this._bottomRightImage.scaleX = this._bottomRightImage.scaleY = this._textureScale;
+				this._bottomRightImage.x = this._width - scaledRightWidth;
+				this._bottomRightImage.y = this._height - scaledBottomHeight;
+
+				this._layoutChanged = false;
 			}
-			
-			if(isNaN(this._height))
-			{
-				this._height = this._topHeight + this._middleHeight + this._bottomHeight * this._textureScale;
-			}
-			
-			this._topLeftImage.scaleX = this._topLeftImage.scaleY = this._textureScale;
-			this._topLeftImage.x = scaledLeftWidth - this._topLeftImage.width;
-			this._topLeftImage.y = scaledTopHeight - this._topLeftImage.height;
-			this._topCenterImage.scaleX = this._topCenterImage.scaleY = this._textureScale;
-			this._topCenterImage.x = scaledLeftWidth;
-			this._topCenterImage.y = scaledTopHeight - this._topCenterImage.height;
-			this._topCenterImage.width = Math.max(0, this._width - scaledLeftWidth - scaledRightWidth);
-			this._topRightImage.scaleX = this._topRightImage.scaleY = this._textureScale;
-			this._topRightImage.x = this._width - scaledRightWidth;
-			this._topRightImage.y = scaledTopHeight - this._topRightImage.height;
-			
-			this._middleLeftImage.scaleX = this._middleLeftImage.scaleY = this._textureScale;
-			this._middleLeftImage.x = scaledLeftWidth - this._middleLeftImage.width;
-			this._middleLeftImage.y = scaledTopHeight;
-			this._middleLeftImage.height = Math.max(0, this._height - scaledTopHeight - scaledBottomHeight);
-			this._middleCenterImage.scaleX = this._middleCenterImage.scaleY = this._textureScale;
-			this._middleCenterImage.x = scaledLeftWidth;
-			this._middleCenterImage.y = scaledTopHeight;
-			this._middleCenterImage.width = Math.max(0, this._width - scaledLeftWidth - scaledRightWidth);
-			this._middleCenterImage.height = Math.max(0, this._height - scaledTopHeight - scaledBottomHeight);
-			this._middleRightImage.x = this._width - scaledRightWidth;
-			this._middleRightImage.scaleX = this._middleRightImage.scaleY = this._textureScale;
-			this._middleRightImage.y = scaledTopHeight;
-			this._middleRightImage.height = Math.max(0, this._height - scaledTopHeight - scaledBottomHeight);
-			
-			this._bottomLeftImage.scaleX = this._bottomLeftImage.scaleY = this._textureScale;
-			this._bottomLeftImage.x = scaledLeftWidth - this._bottomLeftImage.width;
-			this._bottomLeftImage.y = this._height - scaledBottomHeight;
-			this._bottomCenterImage.scaleX = this._bottomCenterImage.scaleY = this._textureScale;
-			this._bottomCenterImage.x = scaledLeftWidth;
-			this._bottomCenterImage.y = this._height - scaledBottomHeight;
-			this._bottomCenterImage.width = Math.max(0, this._width - scaledLeftWidth - scaledRightWidth);
-			this._bottomRightImage.scaleX = this._bottomRightImage.scaleY = this._textureScale;
-			this._bottomRightImage.x = this._width - scaledRightWidth;
-			this._bottomRightImage.y = this._height - scaledBottomHeight;
-			
-			this._hitArea.width = this._width;
-			this._hitArea.height = this._height;
+
 			if(this._autoFlatten)
 			{
 				this.flatten();
 			}
+			super.render(support, alpha);
 		}
 	}
 }

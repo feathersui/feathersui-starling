@@ -28,6 +28,7 @@ package org.josht.starling.display
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
+	import starling.core.RenderSupport;
 	import starling.display.DisplayObject;
 	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;
@@ -60,17 +61,16 @@ package org.josht.starling.display
 		public function Scale3Image(texture:Texture, firstRegionSize:Number, secondRegionSize:Number, direction:String = DIRECTION_HORIZONTAL)
 		{
 			super();
-
 			this._hitArea = new Rectangle();
-
 			this._firstRegionSize = firstRegionSize;
 			this._secondRegionSize = secondRegionSize;
 			this._direction = direction;
 
 			this.createImages(texture);
-			this.refreshProperties(false);
-			this.refreshLayout();
 		}
+
+		private var _propertiesChanged:Boolean = true;
+		private var _layoutChanged:Boolean = true;
 
 		/**
 		 * @private
@@ -82,6 +82,17 @@ package org.josht.starling.display
 		 */
 		override public function get width():Number
 		{
+			if(isNaN(this._width))
+			{
+				if(this._direction == DIRECTION_VERTICAL)
+				{
+					this._width = this._oppositeEdgeSize * this._textureScale;
+				}
+				else
+				{
+					this._width = (this._firstRegionSize + this._secondRegionSize + this._thirdRegionSize) * this._textureScale;
+				}
+			}
 			return this._width;
 		}
 
@@ -95,7 +106,7 @@ package org.josht.starling.display
 				return;
 			}
 			this._width = value;
-			this.refreshLayout();
+			this._layoutChanged = true;
 		}
 
 		/**
@@ -108,6 +119,17 @@ package org.josht.starling.display
 		 */
 		override public function get height():Number
 		{
+			if(isNaN(this._height))
+			{
+				if(this._direction == DIRECTION_VERTICAL)
+				{
+					this._height = (this._firstRegionSize + this._secondRegionSize + this._thirdRegionSize) * this._textureScale;
+				}
+				else
+				{
+					this._height = this._oppositeEdgeSize * this._textureScale;
+				}
+			}
 			return this._height;
 		}
 
@@ -121,7 +143,7 @@ package org.josht.starling.display
 				return;
 			}
 			this._height = value;
-			this.refreshLayout();
+			this._layoutChanged = true;
 		}
 
 		/**
@@ -147,7 +169,7 @@ package org.josht.starling.display
 				return;
 			}
 			this._textureScale = value;
-			this.refreshLayout();
+			this._layoutChanged = true;
 		}
 
 		/**
@@ -173,7 +195,7 @@ package org.josht.starling.display
 				return;
 			}
 			this._smoothing = value;
-			this.refreshProperties(true);
+			this._propertiesChanged = true;
 		}
 
 		/**
@@ -199,7 +221,7 @@ package org.josht.starling.display
 				return;
 			}
 			this._color = value;
-			this.refreshProperties(true);
+			this._propertiesChanged = true;
 		}
 
 		/**
@@ -225,7 +247,6 @@ package org.josht.starling.display
 				return;
 			}
 			this._autoFlatten = value;
-			this.refreshLayout();
 		}
 
 		private var _hitArea:Rectangle;
@@ -389,77 +410,59 @@ package org.josht.starling.display
 		/**
 		 * @private
 		 */
-		private function refreshProperties(canAutoFlatten:Boolean):void
+		override public function render(support:RenderSupport, alpha:Number):void
 		{
-			this._firstImage.smoothing = this._smoothing;
-			this._secondImage.smoothing = this._smoothing;
-			this._thirdImage.smoothing = this._smoothing;
-
-			this._firstImage.color = this._color;
-			this._secondImage.color = this._color;
-			this._thirdImage.color = this._color;
-
-			if(canAutoFlatten && this._autoFlatten)
+			if(this._propertiesChanged)
 			{
-				this.flatten();
-			}
-		}
+				this._firstImage.smoothing = this._smoothing;
+				this._secondImage.smoothing = this._smoothing;
+				this._thirdImage.smoothing = this._smoothing;
 
-		/**
-		 * @private
-		 */
-		private function refreshLayout():void
-		{
-			if(this._direction == DIRECTION_VERTICAL)
+				this._firstImage.color = this._color;
+				this._secondImage.color = this._color;
+				this._thirdImage.color = this._color;
+				this._propertiesChanged = false;
+			}
+
+			if(this._layoutChanged)
 			{
-				var scaledOppositeEdgeSize:Number = isNaN(this._width) ? (this._oppositeEdgeSize * this._textureScale) : this._width;
-				var oppositeEdgeScale:Number = scaledOppositeEdgeSize / this._oppositeEdgeSize;
-				var scaledFirstRegionSize:Number = this._firstRegionSize * oppositeEdgeScale;
-				var scaledSecondRegionSize:Number = this._secondRegionSize * oppositeEdgeScale;
-				var scaledThirdRegionSize:Number = this._thirdRegionSize * oppositeEdgeScale;
-
-				this._firstImage.width = this._secondImage.width = this._thirdImage.width = scaledOppositeEdgeSize;
-				this._firstImage.height = scaledFirstRegionSize;
-				this._thirdImage.height = scaledThirdRegionSize;
-				if(isNaN(this._width))
+				if(this._direction == DIRECTION_VERTICAL)
 				{
-					this._width = scaledOppositeEdgeSize;
-				}
-				if(isNaN(this._height))
-				{
-					this._height = scaledFirstRegionSize + scaledSecondRegionSize + scaledThirdRegionSize;
-				}
+					var scaledOppositeEdgeSize:Number = this.width;
+					var oppositeEdgeScale:Number = scaledOppositeEdgeSize / this._oppositeEdgeSize;
+					var scaledFirstRegionSize:Number = this._firstRegionSize * oppositeEdgeScale;
+					var scaledSecondRegionSize:Number = this._secondRegionSize * oppositeEdgeScale;
+					var scaledThirdRegionSize:Number = this._thirdRegionSize * oppositeEdgeScale;
 
-				this._firstImage.y = 0;
-				this._secondImage.y = scaledFirstRegionSize;
-				this._secondImage.height = Math.max(0, this._height - scaledFirstRegionSize - scaledThirdRegionSize);
-				this._thirdImage.y = this._height - scaledThirdRegionSize;
+					this._firstImage.width = this._secondImage.width = this._thirdImage.width = scaledOppositeEdgeSize;
+					this._firstImage.height = scaledFirstRegionSize;
+					this._thirdImage.height = scaledThirdRegionSize;
+
+					this._firstImage.y = 0;
+					this._secondImage.y = scaledFirstRegionSize;
+					this._secondImage.height = Math.max(0, this._height - scaledFirstRegionSize - scaledThirdRegionSize);
+					this._thirdImage.y = this._height - scaledThirdRegionSize;
+				}
+				else //horizontal
+				{
+					scaledOppositeEdgeSize = this.height;
+					oppositeEdgeScale = scaledOppositeEdgeSize / this._oppositeEdgeSize;
+					scaledFirstRegionSize = this._firstRegionSize * oppositeEdgeScale;
+					scaledSecondRegionSize = this._secondRegionSize * oppositeEdgeScale;
+					scaledThirdRegionSize = this._thirdRegionSize * oppositeEdgeScale;
+
+					this._firstImage.width = scaledFirstRegionSize;
+					this._thirdImage.width = scaledThirdRegionSize;
+					this._firstImage.height = this._secondImage.height = this._thirdImage.height = scaledOppositeEdgeSize;
+
+					this._firstImage.x = 0;
+					this._secondImage.x = scaledFirstRegionSize;
+					this._secondImage.width = Math.max(0, this._width - scaledFirstRegionSize - scaledThirdRegionSize);
+					this._thirdImage.x = this._width - scaledThirdRegionSize;
+				}
+				this._layoutChanged = false;
 			}
-			else //horizontal
-			{
-				scaledOppositeEdgeSize = isNaN(this._height) ? (this._oppositeEdgeSize * this._textureScale) : this._height;
-				oppositeEdgeScale = scaledOppositeEdgeSize / this._oppositeEdgeSize;
-				scaledFirstRegionSize = this._firstRegionSize * oppositeEdgeScale;
-				scaledSecondRegionSize = this._secondRegionSize * oppositeEdgeScale;
-				scaledThirdRegionSize = this._thirdRegionSize * oppositeEdgeScale;
-
-				this._firstImage.width = scaledFirstRegionSize;
-				this._thirdImage.width = scaledThirdRegionSize;
-				this._firstImage.height = this._secondImage.height = this._thirdImage.height = scaledOppositeEdgeSize;
-				if(isNaN(this._width))
-				{
-					this._width = scaledFirstRegionSize + scaledSecondRegionSize + scaledThirdRegionSize;
-				}
-				if(isNaN(this._height))
-				{
-					this._height = scaledOppositeEdgeSize;
-				}
-
-				this._firstImage.x = 0;
-				this._secondImage.x = scaledFirstRegionSize;
-				this._secondImage.width = Math.max(0, this._width - scaledFirstRegionSize - scaledThirdRegionSize);
-				this._thirdImage.x = this._width - scaledThirdRegionSize;
-			}
+			super.render(support, alpha);
 		}
 	}
 }

@@ -27,7 +27,8 @@ package org.josht.starling.display
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	
+
+	import starling.core.RenderSupport;
 	import starling.display.DisplayObject;
 	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;
@@ -51,10 +52,13 @@ package org.josht.starling.display
 			this._hitArea = new Rectangle();
 			this.texture = texture;
 		}
+
+		private var _propertiesChanged:Boolean = true;
+		private var _layoutChanged:Boolean = true;
+		private var _clippingChanged:Boolean = true;
 		
 		private var _hitArea:Rectangle;
-		
-		private var _imageContainer:Sprite;
+
 		private var _images:Vector.<Image> = new <Image>[];
 		
 		/**
@@ -80,7 +84,7 @@ package org.josht.starling.display
 				return;
 			}
 			this._width = this._hitArea.width = value;
-			this.refreshImages();
+			this._layoutChanged = true;
 		}
 		
 		/**
@@ -106,7 +110,7 @@ package org.josht.starling.display
 				return;
 			}
 			this._height = this._hitArea.height = value;
-			this.refreshImages();
+			this._layoutChanged = true;
 		}
 		
 		/**
@@ -134,7 +138,7 @@ package org.josht.starling.display
 			else if(value != this._texture)
 			{
 				this._texture = value;
-				this.refreshImages();
+				this._layoutChanged = true;
 			}
 		}
 		
@@ -162,9 +166,9 @@ package org.josht.starling.display
 			}
 			else
 			{
-				throw new ArgumentError("Invalid smoothing mode: " + smoothing);
+				throw new ArgumentError("Invalid smoothing mode: " + value);
 			}
-			this.refreshImageProperties();
+			this._propertiesChanged = true;
 		}
 
 		/**
@@ -190,7 +194,7 @@ package org.josht.starling.display
 				return;
 			}
 			this._color = value;
-			this.refreshImageProperties();
+			this._propertiesChanged = true;
 		}
 		
 		/**
@@ -216,7 +220,7 @@ package org.josht.starling.display
 				return;
 			}
 			this._textureScale = value;
-			this.refreshImages();
+			this._layoutChanged = true;
 		}
 		
 		/**
@@ -243,7 +247,7 @@ package org.josht.starling.display
 				return;
 			}
 			this._clipContent = value;
-			this.refreshScrollRect();
+			this._clippingChanged = true;
 		}
 		
 		/**
@@ -325,107 +329,94 @@ package org.josht.starling.display
 		 */
 		public function setSize(width:Number, height:Number):void
 		{
-			this._width = width;
-			this._height = height;
-			this.refreshImages();
+			this.width = width;
+			this.height = height;
 		}
 		
 		/**
 		 * @private
 		 */
-		private function refreshImages():void
+		override public function render(support:RenderSupport, alpha:Number):void
 		{
-			const scaledTextureWidth:Number = this._texture.width * this._textureScale;
-			const scaledTextureHeight:Number = this._texture.height * this._textureScale;
-			const xImageCount:int = Math.ceil(this._width / scaledTextureWidth);
-			const yImageCount:int = Math.ceil(this._height / scaledTextureHeight);
-			const imageCount:int = xImageCount * yImageCount;
-			const loopCount:int = Math.max(this._images.length, imageCount);
-			
-			for(var i:int = 0; i < loopCount; i++)
+			if(this._layoutChanged)
 			{
-				if(i < imageCount && this._images.length < imageCount)
+				const scaledTextureWidth:Number = this._texture.width * this._textureScale;
+				const scaledTextureHeight:Number = this._texture.height * this._textureScale;
+				const xImageCount:int = Math.ceil(this._width / scaledTextureWidth);
+				const yImageCount:int = Math.ceil(this._height / scaledTextureHeight);
+				const imageCount:int = xImageCount * yImageCount;
+				const loopCount:int = Math.max(this._images.length, imageCount);
+
+				for(var i:int = 0; i < loopCount; i++)
 				{
-					var image:Image = new Image(this._texture);
-					image.touchable = false;
-					this.addChild(image);
-					this._images.push(image);
+					if(i < imageCount && this._images.length < imageCount)
+					{
+						var image:Image = new Image(this._texture);
+						image.touchable = false;
+						this.addChild(image);
+						this._images.push(image);
+					}
+					else if(i >= imageCount)
+					{
+						image = this._images.pop();
+						image.removeFromParent(true);
+					}
+					else
+					{
+						image = this._images[i];
+						image.texture = this._texture;
+					}
 				}
-				else if(i >= imageCount)
+
+				var xPosition:Number = 0;
+				var yPosition:Number = 0;
+				for(i = 0; i < imageCount; i++)
 				{
-					image = this._images.pop();
-					image.removeFromParent(true);
+					image = this._images[i];
+					image.x = xPosition;
+					image.y = yPosition;
+					image.scaleX = image.scaleY = this._textureScale;
+					xPosition += scaledTextureWidth;
+					if(xPosition >= this._width)
+					{
+						xPosition = 0;
+						yPosition += scaledTextureHeight;
+					}
+				}
+			}
+
+			if(this._propertiesChanged || this._layoutChanged)
+			{
+				for each(image in this._images)
+				{
+					image.smoothing = this._smoothing;
+					image.color = this._color;
+				}
+			}
+
+			if(this._clippingChanged || this._layoutChanged)
+			{
+				if(this._clipContent)
+				{
+					var scrollRect:Rectangle = this.scrollRect;
+					if(!scrollRect)
+					{
+						scrollRect = new Rectangle();
+					}
+					scrollRect.width = this._width;
+					scrollRect.height = this._height;
+					this.scrollRect = scrollRect;
 				}
 				else
 				{
-					image = this._images[i];
-					image.texture = this._texture;
+					this.scrollRect = null;
 				}
 			}
+			this._layoutChanged = false;
+			this._propertiesChanged = false;
+			this._clippingChanged = false;
 			
-			this.refreshImageProperties();
-			this.refreshLayout();
-		}
-		
-		/**
-		 * @private
-		 */
-		private function refreshImageProperties():void
-		{
-			for each(var image:Image in this._images)
-			{
-				image.smoothing = this._smoothing;
-				image.color = this._color;
-			}
-		}
-		
-		/**
-		 * @private
-		 */
-		private function refreshLayout():void
-		{
-			const scaledTextureWidth:Number = this._texture.width * this._textureScale;
-			const scaledTextureHeight:Number = this._texture.height * this._textureScale;
-			var xPosition:Number = 0;
-			var yPosition:Number = 0;
-			const imageCount:int = this._images.length;
-			for(var i:int = 0; i < imageCount; i++)
-			{
-				var image:Image = this._images[i];
-				image.x = xPosition;
-				image.y = yPosition;
-				image.scaleX = image.scaleY = this._textureScale;
-				xPosition += scaledTextureWidth;
-				if(xPosition >= this._width)
-				{
-					xPosition = 0;
-					yPosition += scaledTextureHeight;
-				}
-			}
-			
-			this.refreshScrollRect();
-		}
-		
-		/**
-		 * @private
-		 */
-		private function refreshScrollRect():void
-		{
-			if(this._clipContent)
-			{
-				var scrollRect:Rectangle = this.scrollRect;
-				if(!scrollRect)
-				{
-					scrollRect = new Rectangle();
-				}
-				scrollRect.width = this._width;
-				scrollRect.height = this._height;
-				this.scrollRect = scrollRect;
-			}
-			else
-			{
-				this.scrollRect = null;
-			}
+			super.render(support,  alpha);
 		}
 	}
 }
