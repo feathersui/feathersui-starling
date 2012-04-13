@@ -264,11 +264,11 @@ package org.josht.starling.foxhole.core
 		protected var actualWidth:Number = NaN;
 		
 		/**
-		 * The width of the component. This could be a value that was set
-		 * explicitly, or the component will automatically resize if no explicit
-		 * width value is provided. Each component has a different automatic
-		 * sizing behavior, but it's usually based on the component's skin or
-		 * content, including text or sub-components.
+		 * The width of the component, in pixels. This could be a value that was
+		 * set explicitly, or the component will automatically resize if no
+		 * explicit width value is provided. Each component has a different
+		 * automatic sizing behavior, but it's usually based on the component's
+		 * skin or content, including text or sub-components.
 		 */
 		override public function get width():Number
 		{
@@ -300,11 +300,11 @@ package org.josht.starling.foxhole.core
 		protected var actualHeight:Number = NaN;
 
 		/**
-		 * The height of the component. This could be a value that was set
-		 * explicitly, or the component will automatically resize if no explicit
-		 * height value is provided. Each component has a different automatic
-		 * sizing behavior, but it's usually based on the component's skin or
-		 * content, including text or sub-components.
+		 * The height of the component, in pixels. This could be a value that
+		 * was set explicitly, or the component will automatically resize if no
+		 * explicit height value is provided. Each component has a different
+		 * automatic sizing behavior, but it's usually based on the component's
+		 * skin or content, including text or sub-components.
 		 */
 		override public function get height():Number
 		{
@@ -318,6 +318,64 @@ package org.josht.starling.foxhole.core
 		{
 			this.explicitHeight = value;
 			this.setSizeInternal(this.explicitWidth, value, true);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _minWidth:Number = 0;
+
+		/**
+		 * The minimum recommend width to be used for self-measurement and,
+		 * optionally, by the parent who is resizing this component. A width
+		 * value that is smaller than <code>minWidth</code> may be set
+		 * explicitly, and it will not be affected by this value.
+		 */
+		public function get minWidth():Number
+		{
+			return this._minWidth;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set minWidth(value:Number):void
+		{
+			if(this._minWidth == value)
+			{
+				return;
+			}
+			this._minWidth = value;
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _minHeight:Number = 0;
+
+		/**
+		 * The minimum recommend height to be used for self-measurement and,
+		 * optionally, by the parent who is resizing this component. A height
+		 * value that is smaller than <code>minHeight</code> may be set
+		 * explicitly, and it will not be affected by this value.
+		 */
+		public function get minHeight():Number
+		{
+			return this._minHeight;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set minHeight(value:Number):void
+		{
+			if(this._minHeight == value)
+			{
+				return;
+			}
+			this._minHeight = value;
+			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 		
 		/**
@@ -516,7 +574,7 @@ package org.josht.starling.foxhole.core
 		
 		/**
 		 * Sets the width and height of the control, with the option of
-		 * invalidating or not.
+		 * invalidating or not. Intended to be used for automatic resizing.
 		 */
 		protected function setSizeInternal(width:Number, height:Number, canInvalidate:Boolean):void
 		{
@@ -525,9 +583,17 @@ package org.josht.starling.foxhole.core
 			{
 				width = this.explicitWidth;
 			}
+			else
+			{
+				width = Math.max(this._minWidth, width);
+			}
 			if(!isNaN(this.explicitHeight))
 			{
 				height = this.explicitHeight;
+			}
+			else
+			{
+				height = Math.max(this._minHeight, height);
 			}
 			if(this.actualWidth != width)
 			{
