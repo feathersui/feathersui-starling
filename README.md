@@ -53,6 +53,10 @@ The following external libraries are required. Other versions of the same librar
 * [Getting Started Article](https://github.com/joshtynjala/foxhole-starling/wiki/Getting-Started)
 * [Official Foxhole Q&A thread on the Starling Forums](http://forum.starling-framework.org/topic/official-foxhole-components-qa)
 
+## Important Note
+
+The core architecture and non-private APIs of Foxhole for Starling are still under active design and development. Basically, for the time being, absolutely everything is subject to change, and updating to new revisions may result in broken content. If something breaks after you update to the latest revision, and you can't figure out the new way to do something, please ask in the [Q&A thread](http://forum.starling-framework.org/topic/official-foxhole-components-qa) I have set up at the Starling Forum.
+
 ## Tips
 
 * The components do not have default skins. However, you can try out one of the themes included with the [Foxhole for Starling Examples](https://github.com/joshtynjala/foxhole-starling-examples).
