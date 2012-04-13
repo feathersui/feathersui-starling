@@ -249,6 +249,32 @@ package org.josht.starling.display
 			this._clipContent = value;
 			this._clippingChanged = true;
 		}
+
+		/**
+		 * @private
+		 */
+		private var _autoFlatten:Boolean = true;
+
+		/**
+		 * Automatically flattens after layout or property changes to,
+		 * generally, improve performance. Not compatible with clipContent.
+		 */
+		public function get autoFlatten():Boolean
+		{
+			return this._autoFlatten;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set autoFlatten(value:Boolean):void
+		{
+			if(this._autoFlatten == value)
+			{
+				return;
+			}
+			this._autoFlatten = value;
+		}
 		
 		/**
 		* @inheritDoc
@@ -411,6 +437,10 @@ package org.josht.starling.display
 				{
 					this.scrollRect = null;
 				}
+			}
+			if((this._layoutChanged || this._propertiesChanged || this._clippingChanged) && this._autoFlatten && !this._clipContent)
+			{
+				this.flatten();
 			}
 			this._layoutChanged = false;
 			this._propertiesChanged = false;

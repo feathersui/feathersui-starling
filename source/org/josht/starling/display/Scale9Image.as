@@ -449,8 +449,6 @@ package org.josht.starling.display
 				this._bottomLeftImage.color = this._color;
 				this._bottomCenterImage.color = this._color;
 				this._bottomRightImage.color = this._color;
-
-				this._propertiesChanged = false;
 			}
 
 			if(this._layoutChanged)
@@ -495,14 +493,14 @@ package org.josht.starling.display
 				this._bottomRightImage.scaleX = this._bottomRightImage.scaleY = this._textureScale;
 				this._bottomRightImage.x = this._width - scaledRightWidth;
 				this._bottomRightImage.y = this._height - scaledBottomHeight;
-
-				this._layoutChanged = false;
 			}
 
-			if(this._autoFlatten)
+			if((this._layoutChanged || this._propertiesChanged) && this._autoFlatten)
 			{
 				this.flatten();
 			}
+			this._propertiesChanged = false;
+			this._layoutChanged = false;
 			super.render(support, alpha);
 		}
 	}

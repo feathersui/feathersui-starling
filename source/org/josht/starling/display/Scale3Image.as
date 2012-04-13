@@ -421,7 +421,6 @@ package org.josht.starling.display
 				this._firstImage.color = this._color;
 				this._secondImage.color = this._color;
 				this._thirdImage.color = this._color;
-				this._propertiesChanged = false;
 			}
 
 			if(this._layoutChanged)
@@ -460,8 +459,13 @@ package org.josht.starling.display
 					this._secondImage.width = Math.max(0, this._width - scaledFirstRegionSize - scaledThirdRegionSize);
 					this._thirdImage.x = this._width - scaledThirdRegionSize;
 				}
-				this._layoutChanged = false;
 			}
+			if((this._layoutChanged || this._propertiesChanged) && this._autoFlatten)
+			{
+				this.flatten();
+			}
+			this._propertiesChanged = false;
+			this._layoutChanged = false;
 			super.render(support, alpha);
 		}
 	}
