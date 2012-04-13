@@ -404,67 +404,65 @@ package org.josht.starling.foxhole.controls
 			{
 				this.thumb.isEnabled = this.track.isEnabled = this._isEnabled;
 			}
-			
-			//the slider will autosize based on the track skin (or track
-			//properties) if width or height wasn't defined.
-			var newWidth:Number = this._width;
-			var newHeight:Number = this._height;
-			if(isNaN(newWidth) || isNaN(newHeight))
-			{
-				this.track.validate();
-				if(isNaN(newWidth))
-				{
-					if(isNaN(this.track.width))
-					{
-						newWidth = 160;
-					}
-					else
-					{
-						newWidth = this.track.width;
-					}
-				}
-				if(isNaN(newHeight))
-				{
-					if(isNaN(this.track.height))
-					{
-						newHeight = 22;
-					}
-					else
-					{
-						newHeight = this.track.height;
-					}
-				}
-				sizeInvalid = true;
-				this.setSizeInternal(newWidth, newHeight, false);
-			}
+
+			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 			
 			if(stylesInvalid || sizeInvalid)
 			{
-				this.track.width = this._width;
-				this.track.height = this._height;
+				if(!isNaN(this._explicitWidth))
+				{
+					this.track.width = this._explicitWidth;
+				}
+				if(!isNaN(this._explicitHeight))
+				{
+					this.track.height = this._explicitHeight;
+				}
 			}
-			
-			//this will auto-size the thumb, if needed
-			this.thumb.validate();
-			
+
 			if(dataInvalid || stylesInvalid || sizeInvalid)
 			{
-				this.thumb.validate(); 
+				//this will auto-size the thumb, if needed
+				this.thumb.validate();
+
 				if(this._direction == DIRECTION_HORIZONTAL)
 				{
-					const trackScrollableWidth:Number = this._width - this.thumb.width;
+					const trackScrollableWidth:Number = this._actualWidth - this.thumb.width;
 					this.thumb.x = (trackScrollableWidth * (this._value - this._minimum) / (this._maximum - this._minimum));
-					this.thumb.y = (this._height - this.thumb.height) / 2;
+					this.thumb.y = (this._actualHeight - this.thumb.height) / 2;
 				}
 				else //vertical
 				{
-					const trackScrollableHeight:Number = this._height - this.thumb.height;
-					this.thumb.x = (this._width - this.thumb.width) / 2;
+					const trackScrollableHeight:Number = this._actualHeight - this.thumb.height;
+					this.thumb.x = (this._actualWidth - this.thumb.width) / 2;
 					this.thumb.y = (trackScrollableHeight * (this._value - this._minimum) / (this._maximum - this._minimum));
 				}
 			}
-			
+		}
+
+		/**
+		 * @private
+		 */
+		protected function autoSizeIfNeeded():Boolean
+		{
+			const needsWidth:Boolean = isNaN(this._explicitWidth);
+			const needsHeight:Boolean = isNaN(this._explicitHeight);
+			if(!needsWidth && !needsHeight)
+			{
+				return false;
+			}
+			var newWidth:Number = this._explicitWidth;
+			var newHeight:Number = this._explicitHeight;
 			this.track.validate();
+			if(needsWidth)
+			{
+				newWidth = this.track.width;
+			}
+			if(needsHeight)
+			{
+				newHeight = this.track.height;
+			}
+			this.setSizeInternal(newWidth, newHeight, false);
+			return true;
 		}
 		
 		/**
@@ -516,11 +514,11 @@ package org.josht.starling.foxhole.controls
 			var percentage:Number;
 			if(this._direction == DIRECTION_HORIZONTAL)
 			{
-				percentage = location.x / this._width; 
+				percentage = location.x / this._actualWidth;
 			}
 			else //vertical
 			{
-				percentage = location.y / this._height;
+				percentage = location.y / this._actualHeight;
 			}
 			
 			this.value = this._minimum + percentage * (this._maximum - this._minimum);
@@ -555,14 +553,14 @@ package org.josht.starling.foxhole.controls
 				var percentage:Number;
 				if(this._direction == DIRECTION_HORIZONTAL)
 				{
-					const trackScrollableWidth:Number = this._width - this.thumb.width;
+					const trackScrollableWidth:Number = this._actualWidth - this.thumb.width;
 					const xOffset:Number = location.x - this._touchStartX;
 					const xPosition:Number = Math.min(Math.max(0, this._thumbStartX + xOffset), trackScrollableWidth);
 					percentage = xPosition / trackScrollableWidth;
 				}
 				else //vertical
 				{
-					const trackScrollableHeight:Number = this._height - this.thumb.height;
+					const trackScrollableHeight:Number = this._actualHeight - this.thumb.height;
 					const yOffset:Number = location.y - this._touchStartY;
 					const yPosition:Number = Math.min(Math.max(0, this._thumbStartY + yOffset), trackScrollableHeight);
 					percentage = yPosition / trackScrollableHeight;

@@ -432,14 +432,14 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = isNaN(this._width);
-			var needsHeight:Boolean = isNaN(this._height);
+			const needsWidth:Boolean = isNaN(this._explicitWidth);
+			const needsHeight:Boolean = isNaN(this._explicitHeight);
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
 			}
-			var newWidth:Number = needsWidth ? (2 * this._contentPadding) : this._width;
-			var newHeight:Number = needsHeight ? 0 : this._height;
+			var newWidth:Number = needsWidth ? (2 * this._contentPadding) : this._explicitWidth;
+			var newHeight:Number = needsHeight ? 0 : this._explicitHeight;
 
 			for each(var item:DisplayObject in this._leftItems)
 			{
@@ -514,8 +514,8 @@ package org.josht.starling.foxhole.controls
 			{
 				backgroundSkin.visible = true;
 				backgroundSkin.touchable = true;
-				backgroundSkin.width = this._width;
-				backgroundSkin.height = this._height;
+				backgroundSkin.width = this._actualWidth;
+				backgroundSkin.height = this._actualHeight;
 			}
 		}
 
@@ -538,7 +538,7 @@ package org.josht.starling.foxhole.controls
 					FoxholeControl(item).validate();
 				}
 				item.x = positionX;
-				item.y = (this._height - item.height) / 2;
+				item.y = (this._actualHeight - item.height) / 2;
 				positionX += item.width + this._gap;
 			}
 
@@ -553,7 +553,7 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			var positionX:Number = this._width - this._contentPadding;
+			var positionX:Number = this._actualWidth - this._contentPadding;
 			const itemCount:int = this._rightItems.length;
 			for(var i:int = itemCount - 1; i >= 0; i--)
 			{
@@ -564,7 +564,7 @@ package org.josht.starling.foxhole.controls
 				}
 				positionX -= item.width;
 				item.x = positionX;
-				item.y = (this._height - item.height) / 2;
+				item.y = (this._actualHeight - item.height) / 2;
 				positionX -= this._gap;
 			}
 		}
@@ -585,13 +585,13 @@ package org.josht.starling.foxhole.controls
 			}
 			else if(this._titleAlign == TITLE_ALIGN_PREFER_RIGHT && (!this._rightItems || this._rightItems.length == 0))
 			{
-				this._titleLabel.x = this._width - this._contentPadding - this._titleLabel.width;
+				this._titleLabel.x = this._actualWidth - this._contentPadding - this._titleLabel.width;
 			}
 			else
 			{
-				this._titleLabel.x = (this._width - this._titleLabel.width) / 2;
+				this._titleLabel.x = (this._actualWidth - this._titleLabel.width) / 2;
 			}
-			this._titleLabel.y = (this._height - this._titleLabel.height) / 2;
+			this._titleLabel.y = (this._actualHeight - this._titleLabel.height) / 2;
 		}
 	}
 }

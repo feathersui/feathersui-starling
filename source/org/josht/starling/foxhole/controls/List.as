@@ -776,13 +776,13 @@ package org.josht.starling.foxhole.controls
 				this.refreshBackgroundSkin();
 			}
 			
-			if(!isNaN(this._width))
+			if(!isNaN(this._explicitWidth))
 			{
-				this._dataContainer.width = this._width - 2 * this._contentPadding;
+				this._dataContainer.width = this._explicitWidth - 2 * this._contentPadding;
 			}
-			if(!isNaN(this._height))
+			if(!isNaN(this._explicitHeight))
 			{
-				this._dataContainer.visibleHeight = this._height - 2 * contentPadding;
+				this._dataContainer.visibleHeight = this._explicitHeight - 2 * contentPadding;
 			}
 			else
 			{
@@ -800,20 +800,7 @@ package org.josht.starling.foxhole.controls
 			this._dataContainer.verticalScrollPosition = this._verticalScrollPosition;
 			this._dataContainer.validate();
 			
-			var newWidth:Number = this._width;
-			var newHeight:Number = this._height;
-			if(isNaN(newWidth) || isNaN(newHeight))
-			{
-				if(isNaN(newWidth))
-				{
-					newWidth = this._dataContainer.width + 2 * this._contentPadding;
-				}
-				if(isNaN(newHeight))
-				{
-					newHeight = this._dataContainer.height + 2 * this._contentPadding;
-				}
-				this.setSizeInternal(newWidth, newHeight, false);
-			}
+			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 			
 			if(this._scrollToIndex >= 0 && this._dataProvider)
 			{
@@ -824,8 +811,8 @@ package org.josht.starling.foxhole.controls
 			}
 			
 			this._scroller.isEnabled = this._isEnabled;
-			this._scroller.width = this._width - 2 * this._contentPadding;
-			this._scroller.height = this._height - 2 * this._contentPadding;
+			this._scroller.width = this._actualWidth - 2 * this._contentPadding;
+			this._scroller.height = this._actualHeight - 2 * this._contentPadding;
 			this._scroller.x = this._contentPadding;
 			this._scroller.y = this._contentPadding;
 			this._scroller.clipContent = this._clipContent;
@@ -834,6 +821,32 @@ package org.josht.starling.foxhole.controls
 			this._scroller.validate();
 			this._maxVerticalScrollPosition = this._scroller.maxVerticalScrollPosition;
 			this._verticalScrollPosition = this._scroller.verticalScrollPosition;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function autoSizeIfNeeded():Boolean
+		{
+			const needsWidth:Boolean = isNaN(this._explicitWidth);
+			const needsHeight:Boolean = isNaN(this._explicitHeight);
+			if(!needsWidth && !needsHeight)
+			{
+				return false;
+			}
+
+			var newWidth:Number = this._explicitWidth;
+			var newHeight:Number = this._explicitHeight;
+			if(needsWidth)
+			{
+				newWidth = this._dataContainer.width + 2 * this._contentPadding;
+			}
+			if(needsHeight)
+			{
+				newHeight = this._dataContainer.height + 2 * this._contentPadding;
+			}
+			this.setSizeInternal(newWidth, newHeight, false);
+			return true;
 		}
 		
 		/**
@@ -872,8 +885,8 @@ package org.josht.starling.foxhole.controls
 			if(backgroundSkin)
 			{
 				backgroundSkin.visible = true;
-				backgroundSkin.width = this._width;
-				backgroundSkin.height = this._height;
+				backgroundSkin.width = this._actualWidth;
+				backgroundSkin.height = this._actualHeight;
 			}
 		}
 		

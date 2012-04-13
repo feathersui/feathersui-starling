@@ -461,36 +461,11 @@ package org.josht.starling.foxhole.controls
 			{
 				this._button.isEnabled = this.isEnabled;
 			}
+
+			var autoSized:Boolean = this.autoSizeIfNeeded();
+			sizeInvalid = autoSized || sizeInvalid;
 			
-			var newWidth:Number = this._width;
-			var newHeight:Number = this._height;
-			var usedTypicalItem:Boolean = false;
-			if(isNaN(newWidth) || isNaN(newHeight))
-			{
-				if(this._typicalItem)
-				{
-					usedTypicalItem = true;
-					this._button.label = this.itemToLabel(this._typicalItem);
-				}
-				else
-				{
-					this.refreshButtonLabel();
-				}
-				this._button.validate();
-				if(isNaN(newWidth))
-				{
-					newWidth = this._button.width;
-					sizeInvalid = true;
-				}
-				if(isNaN(this._height))
-				{
-					newHeight = this._button.height;
-					sizeInvalid = true;
-				}
-				this.setSizeInternal(newWidth, newHeight, false);
-			}
-			
-			if(selectionInvalid || usedTypicalItem)
+			if(selectionInvalid || autoSized)
 			{
 				this.refreshButtonLabel();
 				this._list.selectedIndex = this._selectedIndex;
@@ -498,8 +473,14 @@ package org.josht.starling.foxhole.controls
 			
 			if(sizeInvalid)
 			{
-				this._button.width = this._width;
-				this._button.height = this._height;
+				if(!isNaN(this._explicitWidth))
+				{
+					this._button.width = this._explicitWidth;
+				}
+				if(!isNaN(this._explicitHeight))
+				{
+					this._button.height = this._explicitHeight;
+				}
 			}
 			this._button.validate();
 			
@@ -508,6 +489,43 @@ package org.josht.starling.foxhole.controls
 				this.resizeAndPositionList();
 			}
 			this._list.validate();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function autoSizeIfNeeded():Boolean
+		{
+			const needsWidth:Boolean = isNaN(this._explicitWidth);
+			const needsHeight:Boolean = isNaN(this._explicitHeight);
+			if(!needsWidth && !needsHeight)
+			{
+				return false;
+			}
+
+			if(this._typicalItem)
+			{
+				this._button.label = this.itemToLabel(this._typicalItem);
+			}
+			else
+			{
+				this.refreshButtonLabel();
+			}
+			this._button.validate();
+			trace(this._button.label, this._button.width);
+
+			var newWidth:Number = this._explicitWidth;
+			var newHeight:Number = this._explicitHeight;
+			if(needsWidth)
+			{
+				newWidth = this._button.width;
+			}
+			if(needsHeight)
+			{
+				newHeight = this._button.height;
+			}
+			this.setSizeInternal(newWidth, newHeight, false);
+			return true;
 		}
 		
 		/**

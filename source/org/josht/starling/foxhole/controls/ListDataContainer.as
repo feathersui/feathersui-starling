@@ -141,6 +141,8 @@ package org.josht.starling.foxhole.controls
 			this._itemRendererFunction = value;
 			this.invalidate(INVALIDATION_FLAG_ITEM_RENDERER);
 		}
+
+		private var _typicalItemWidth:Number = NaN;
 		
 		private var _typicalItem:Object = null;
 		
@@ -156,6 +158,7 @@ package org.josht.starling.foxhole.controls
 				return;
 			}
 			this._typicalItem = value;
+			this._typicalItemWidth = NaN;
 			this.invalidate(INVALIDATION_FLAG_ITEM_RENDERER);
 		}
 		
@@ -287,44 +290,12 @@ package org.josht.starling.foxhole.controls
 		{
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			const scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
-			const sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
+			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const selectionInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SELECTED);
 			const itemRendererInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_ITEM_RENDERER);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
-			
-			var newWidth:Number = this._width;
-			var newHeight:Number = this._height;
-			if(isNaN(newWidth) || isNaN(this._rowHeight))
-			{
-				var typicalItem:Object = this._typicalItem;
-				if(!typicalItem && this._dataProvider && this._dataProvider.length > 0)
-				{
-					typicalItem = this._dataProvider.getItemAt(0);
-				}
-				if(typicalItem)
-				{
-					const typicalRenderer:IListItemRenderer = this.createRenderer(typicalItem, 0, true);
-					this.refreshOneItemRendererStyles(typicalRenderer);
-					if(typicalRenderer is FoxholeControl)
-					{
-						FoxholeControl(typicalRenderer).validate();
-					}
-					if(isNaN(newWidth))
-					{
-						newWidth = DisplayObject(typicalRenderer).width;
-					}
-					if(isNaN(this._rowHeight))
-					{
-						this._rowHeight = DisplayObject(typicalRenderer).height;
-					}
-					this.destroyRenderer(typicalRenderer);
-				}
-			}
-			if(dataInvalid || isNaN(newHeight))
-			{
-				newHeight = this._dataProvider ? (this._rowHeight * this._dataProvider.length) : 0;
-			}
-			this.setSizeInternal(newWidth, newHeight, false);
+
+			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 			
 			this.refreshRenderers(itemRendererInvalid);
 			this.drawRenderers();
@@ -341,6 +312,43 @@ package org.josht.starling.foxhole.controls
 					FoxholeControl(itemRenderer).validate();
 				}
 			}
+		}
+
+		protected function autoSizeIfNeeded():Boolean
+		{
+			const needsTypicalItemWidth:Boolean = isNaN(this._explicitWidth) && isNaN(this._typicalItemWidth);
+			const needsRowHeight:Boolean = isNaN(this._rowHeight);
+
+			if(needsTypicalItemWidth || needsRowHeight)
+			{
+				var typicalItem:Object = this._typicalItem;
+				if(!typicalItem && this._dataProvider && this._dataProvider.length > 0)
+				{
+					typicalItem = this._dataProvider.getItemAt(0);
+				}
+				if(typicalItem)
+				{
+					const typicalRenderer:IListItemRenderer = this.createRenderer(typicalItem, 0, true);
+					this.refreshOneItemRendererStyles(typicalRenderer);
+					if(typicalRenderer is FoxholeControl)
+					{
+						FoxholeControl(typicalRenderer).validate();
+					}
+					if(needsTypicalItemWidth)
+					{
+						this._typicalItemWidth = DisplayObject(typicalRenderer).width;
+					}
+					if(needsRowHeight)
+					{
+						this._rowHeight = DisplayObject(typicalRenderer).height;
+					}
+					this.destroyRenderer(typicalRenderer);
+				}
+			}
+			var newWidth:Number = isNaN(this._explicitWidth) ? this._typicalItemWidth : this._explicitWidth;
+			var newHeight:Number = isNaN(this._rowHeight) ? 0 : (this._rowHeight * this._dataProvider.length);
+			this.setSizeInternal(newWidth, newHeight, false);
+			return true;
 		}
 		
 		protected function itemToItemRenderer(item:Object):IListItemRenderer
@@ -385,14 +393,14 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			const actualContentHeight:Number = this._dataProvider.length * this._rowHeight
+			const actualContentHeight:Number = this._dataProvider.length * this._rowHeight;
 			
 			const itemCount:int = this._activeRenderers.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var renderer:IListItemRenderer = this._activeRenderers[i];
 				var displayRenderer:DisplayObject = DisplayObject(renderer);
-				displayRenderer.width = this._width;
+				displayRenderer.width = this._actualWidth;
 				displayRenderer.height = this._rowHeight;
 				displayRenderer.y = this._rowHeight * renderer.index;
 			}

@@ -247,18 +247,23 @@ package org.josht.starling.foxhole.core
 			this._isEnabled = value;
 			this.invalidate(INVALIDATION_FLAG_STATE);
 		}
+
+		/**
+		 * private
+		 */
+		protected var _explicitWidth:Number = NaN;
 		
 		/**
 		 * @private
 		 */
-		protected var _width:Number = NaN;
+		protected var _actualWidth:Number = NaN;
 		
 		/**
 		 * @inheritDoc
 		 */
 		override public function get width():Number
 		{
-			return this._width;
+			return this._actualWidth;
 		}
 		
 		/**
@@ -266,20 +271,26 @@ package org.josht.starling.foxhole.core
 		 */
 		override public function set width(value:Number):void
 		{
-			this.setSizeInternal(value, this._height, true);
+			this._explicitWidth = value;
+			this.setSizeInternal(value, this._actualHeight, true);
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _explicitHeight:Number = NaN;
 		
 		/**
 		 * @private
 		 */
-		protected var _height:Number = NaN;
+		protected var _actualHeight:Number = NaN;
 		
 		/**
 		 * @inheritDoc
 		 */
 		override public function get height():Number
 		{
-			return this._height;
+			return this._actualHeight;
 		}
 		
 		/**
@@ -287,7 +298,8 @@ package org.josht.starling.foxhole.core
 		 */
 		override public function set height(value:Number):void
 		{
-			this.setSizeInternal(this._width, value, true);
+			this._explicitHeight = value;
+			this.setSizeInternal(this._explicitWidth, value, true);
 		}
 		
 		/**
@@ -479,6 +491,8 @@ package org.josht.starling.foxhole.core
 		 */
 		public function setSize(width:Number, height:Number):void
 		{
+			this._explicitWidth = width;
+			this._explicitHeight = height;
 			this.setSizeInternal(width, height, true);
 		}
 		
@@ -489,18 +503,26 @@ package org.josht.starling.foxhole.core
 		protected function setSizeInternal(width:Number, height:Number, canInvalidate:Boolean):void
 		{
 			var resized:Boolean = false;
-			if(this._width != width)
+			if(!isNaN(this._explicitWidth))
 			{
-				this._width = width;
+				width = this._explicitWidth;
+			}
+			if(!isNaN(this._explicitHeight))
+			{
+				height = this._explicitHeight;
+			}
+			if(this._actualWidth != width)
+			{
+				this._actualWidth = width;
+				this._hitArea.width = width;
 				resized = true;
 			}
-			if(this._height != height)
+			if(this._actualHeight != height)
 			{
-				this._height = height;
+				this._actualHeight = height;
+				this._hitArea.height = height;
 				resized = true;
 			}
-			this._hitArea.width = this._width;
-			this._hitArea.height = this._height;
 			if(resized)
 			{
 				if(canInvalidate)

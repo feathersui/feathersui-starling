@@ -553,15 +553,17 @@ package org.josht.starling.foxhole.controls
 		 */
 		override protected function draw():void
 		{
-			const sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
+			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			const scrollInvalid:Boolean = dataInvalid || this.isInvalid(INVALIDATION_FLAG_SCROLL);
 			const clippingInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_CLIPPING);
+
+			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 			
 			if(sizeInvalid)
 			{
-				this._background.width = this._width;
-				this._background.height = this._height;
+				this._background.width = this._actualWidth;
+				this._background.height = this._actualHeight;
 			}
 			
 			if(sizeInvalid || dataInvalid)
@@ -582,8 +584,8 @@ package org.josht.starling.foxhole.controls
 				this._velocityY = this._previousVelocityY = 0;
 				if(this._viewPort)
 				{
-					this._maxHorizontalScrollPosition = Math.max(0, this._viewPort.width - this._width);
-					this._maxVerticalScrollPosition = Math.max(0, this._viewPort.height - this._height);
+					this._maxHorizontalScrollPosition = Math.max(0, this._viewPort.width - this._actualWidth);
+					this._maxVerticalScrollPosition = Math.max(0, this._viewPort.height - this._actualHeight);
 				}
 				else
 				{
@@ -599,6 +601,32 @@ package org.josht.starling.foxhole.controls
 				this.scrollContent();
 			}
 		}
+
+		/**
+		 * @private
+		 */
+		protected function autoSizeIfNeeded():Boolean
+		{
+			const needsWidth:Boolean = isNaN(this._explicitWidth);
+			const needsHeight:Boolean = isNaN(this._explicitHeight);
+			if(!needsWidth && !needsHeight)
+			{
+				return false;
+			}
+
+			var newWidth:Number = this._explicitWidth;
+			var newHeight:Number = this._explicitHeight;
+			if(needsWidth)
+			{
+				newWidth = this._viewPort.width;
+			}
+			if(needsHeight)
+			{
+				newHeight = this._viewPort.height;
+			}
+			this.setSizeInternal(newWidth, newHeight, false);
+			return true;
+		}
 		
 		/**
 		 * @private
@@ -611,22 +639,22 @@ package org.josht.starling.foxhole.controls
 			{
 				if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
 				{
-					offsetX = (this._width - this._viewPort.width) / 2;
+					offsetX = (this._actualWidth - this._viewPort.width) / 2;
 				}
 				else if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
 				{
-					offsetX = this._width - this._viewPort.width;	
+					offsetX = this._actualWidth - this._viewPort.width;
 				}
 			}
 			if(this._maxVerticalScrollPosition == 0)
 			{
 				if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
 				{
-					offsetY = (this._height - this._viewPort.height) / 2;
+					offsetY = (this._actualHeight - this._viewPort.height) / 2;
 				}
 				else if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
 				{
-					offsetY = this._height - this._viewPort.height;	
+					offsetY = this._actualHeight - this._viewPort.height;
 				}
 			}
 			if(this._clipContent)
@@ -639,8 +667,8 @@ package org.josht.starling.foxhole.controls
 				}
 				
 				const scrollRect:Rectangle = this._viewPortWrapper.scrollRect;
-				scrollRect.width = this._width;
-				scrollRect.height = this._height;
+				scrollRect.width = this._actualWidth;
+				scrollRect.height = this._actualHeight;
 				scrollRect.x = this._horizontalScrollPosition - offsetX;
 				scrollRect.y = this._verticalScrollPosition - offsetY;
 				this._viewPortWrapper.scrollRect = scrollRect;
