@@ -443,6 +443,22 @@ package org.josht.starling.foxhole.controls
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const stageSizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STAGE_SIZE);
 			
+			if(stylesInvalid || selectionInvalid)
+			{
+				//this section asks the button to auto-size again, if our
+				//explicit dimensions aren't set.
+				//set this before buttonProperties is used because it might
+				//contain width or height changes.
+				if(isNaN(this._explicitWidth))
+				{
+					this._button.width = NaN;
+				}
+				if(isNaN(this._explicitHeight))
+				{
+					this._button.height = NaN;
+				}
+			}
+
 			if(stylesInvalid)
 			{
 				this.refreshButtonProperties();
@@ -473,16 +489,9 @@ package org.josht.starling.foxhole.controls
 			
 			if(sizeInvalid)
 			{
-				if(!isNaN(this._explicitWidth))
-				{
-					this._button.width = this._explicitWidth;
-				}
-				if(!isNaN(this._explicitHeight))
-				{
-					this._button.height = this._explicitHeight;
-				}
+				this._button.width = this._actualWidth;
+				this._button.height = this._actualHeight;
 			}
-			this._button.validate();
 			
 			if(stageSizeInvalid)
 			{
@@ -512,7 +521,6 @@ package org.josht.starling.foxhole.controls
 				this.refreshButtonLabel();
 			}
 			this._button.validate();
-			trace(this._button.label, this._button.width);
 
 			var newWidth:Number = this._explicitWidth;
 			var newHeight:Number = this._explicitHeight;
