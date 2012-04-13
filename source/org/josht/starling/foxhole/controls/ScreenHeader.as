@@ -391,6 +391,7 @@ package org.josht.starling.foxhole.controls
 				{
 					for each(var item:DisplayObject in this._leftItems)
 					{
+						item.name = "foxhole-header-item";
 						this.addChild(item);
 					}
 				}
@@ -402,6 +403,7 @@ package org.josht.starling.foxhole.controls
 				{
 					for each(item in this._rightItems)
 					{
+						item.name = "foxhole-header-item";
 						this.addChild(item);
 					}
 				}
