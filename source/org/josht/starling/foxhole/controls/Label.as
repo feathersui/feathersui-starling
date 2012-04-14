@@ -24,38 +24,37 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package org.josht.starling.foxhole.controls
 {
-	import flash.geom.Matrix;
-	import flash.geom.Point;
-	import flash.geom.Rectangle;
-	
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.text.BitmapFontTextFormat;
-	
-	import starling.display.DisplayObject;
+
+	import starling.core.QuadBatch;
 	import starling.display.Image;
-	import starling.display.Quad;
 	import starling.text.BitmapChar;
 	import starling.text.BitmapFont;
 	import starling.textures.TextureSmoothing;
-	import starling.utils.transformCoords;
 
 	/**
 	 * Displays a single-line of text. Cannot be clipped.
 	 */
 	public class Label extends FoxholeControl
 	{
-		private static const helperMatrix:Matrix = new Matrix();
-		private static const helperPoint:Point = new Point();
-		
+		/**
+		 * @private
+		 */
+		private static var helperImage:Image;
+
+		/**
+		 * Constructor.
+		 */
 		public function Label()
 		{
 			this.isQuickHitAreaEnabled = true;
 		}
-		
-		private var _characters:Vector.<Image> = new <Image>[];
-		private var _cache:Vector.<Image> = new <Image>[];
-		
-		private var _lastFont:BitmapFont;
+
+		/**
+		 * @private
+		 */
+		private var _characterBatch:QuadBatch;
 		
 		/**
 		 * @private
@@ -80,14 +79,6 @@ package org.josht.starling.foxhole.controls
 				return;
 			}
 			this._textFormat = value;
-			if(this._textFormat)
-			{
-				if(this._textFormat.font != this._lastFont)
-				{
-					this.invalidate(INVALIDATION_FLAG_DATA);
-				}
-				this._lastFont = this._textFormat.font;
-			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
@@ -142,14 +133,15 @@ package org.josht.starling.foxhole.controls
 			this._smoothing = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
-		 * @inheritDoc
+		 * @private
 		 */
-		override public function dispose():void
+		override protected function initialize():void
 		{
-			this._lastFont = null;
-			super.dispose();
+			this._characterBatch = new QuadBatch();
+			this._characterBatch.touchable = false;
+			this.addChild(this._characterBatch);
 		}
 		
 		/**
@@ -160,120 +152,64 @@ package org.josht.starling.foxhole.controls
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			
-			if(dataInvalid)
-			{
-				this.rebuildCharacters();
-			}
-			
 			if(dataInvalid || stylesInvalid)
 			{
-				const color:uint = this._textFormat ? this._textFormat.color : uint.MAX_VALUE;
-				for each(var charDisplay:Image in this._characters)
+				this._characterBatch.reset();
+				if(!this._textFormat)
 				{
-					charDisplay.color = color;
-					charDisplay.smoothing = this.smoothing;
+					this.setSizeInternal(0, 0, false);
+					return;
 				}
-				this.layout();
+				const font:BitmapFont = this._textFormat.font;
+				const customSize:Number = this._textFormat.size;
+				const customLetterSpacing:Number = this._textFormat.letterSpacing;
+				const isKerningEnabled:Boolean = this._textFormat.isKerningEnabled;
+				const scale:Number = isNaN(customSize) ? 1 : (customSize / font.size);
+				const color:uint = this._textFormat.color;
+
+				var currentX:Number = 0;
+				var maxY:Number = 0;
+				var lastCharID:Number = NaN;
+				var characterIndex:int = 0;
+				const charCount:int = this._text.length;
+				for(var i:int = 0; i < charCount; i++)
+				{
+					var charID:Number = this._text.charCodeAt(i);
+					var charData:BitmapChar = font.getChar(charID);
+					if(!charData)
+					{
+						trace("Missing character " + String.fromCharCode(charID) + " in font " + font.name + ".");
+						continue;
+					}
+					if(isKerningEnabled && !isNaN(lastCharID))
+					{
+						currentX += charData.getKerning(lastCharID);
+					}
+
+					if(!helperImage)
+					{
+						helperImage = new Image(charData.texture);
+					}
+					else
+					{
+						helperImage.texture = charData.texture;
+					}
+					helperImage.readjustSize();
+					helperImage.scaleX = helperImage.scaleY = scale;
+					helperImage.x = currentX + charData.xOffset * scale;
+					helperImage.y = charData.yOffset * scale;
+					helperImage.color = color;
+					helperImage.smoothing = this._smoothing;
+
+					currentX += charData.xAdvance * scale + customLetterSpacing;
+					maxY = Math.max(maxY, helperImage.y + helperImage.height);
+					lastCharID = charID;
+					characterIndex++;
+
+					this._characterBatch.addImage(helperImage);
+				}
+				this.setSizeInternal(currentX, Math.max(maxY, font.lineHeight * scale), false);
 			}
-		}
-		
-		/**
-		 * @private
-		 */
-		private function rebuildCharacters():void
-		{
-			if(!this._textFormat)
-			{
-				while(this._characters.length > 0)
-				{
-					var charDisplay:Image = this._characters.shift();
-					this.removeChild(charDisplay);
-				}
-				return;
-			}
-			
-			const temp:Vector.<Image> = this._cache;
-			this._cache = this._characters;
-			this._characters = temp;
-			this._characters.length = 0;
-			
-			const font:BitmapFont = this._textFormat.font;
-			const charCount:int = this._text.length;
-			for(var i:int = 0; i < charCount; i++)
-			{
-				var charID:Number = this._text.charCodeAt(i);
-				var charData:BitmapChar = font.getChar(charID);
-				if(!charData)
-				{
-					trace("Missing character " + String.fromCharCode(charID) + " in font " + font.name + ".");
-					continue;
-				}
-				if(this._cache.length > 0)
-				{
-					charDisplay = this._cache.shift();
-					charDisplay.texture = charData.texture;
-					charDisplay.readjustSize();
-				}
-				else
-				{
-					charDisplay = charData.createImage();
-					charDisplay.touchable = false;
-				}
-				this.addChild(charDisplay);
-				this._characters.push(charDisplay);
-			}
-			while(this._cache.length > 0)
-			{
-				charDisplay = this._cache.shift();
-				this.removeChild(charDisplay);
-			}
-		}
-		
-		/**
-		 * @private
-		 */
-		private function layout():void
-		{
-			if(!this._textFormat)
-			{
-				this.setSizeInternal(0, 0, false);
-				return;
-			}
-			const font:BitmapFont = this._textFormat.font;
-			const customSize:Number = this._textFormat.size;
-			const customLetterSpacing:Number = this._textFormat.letterSpacing;
-			const isKerningEnabled:Boolean = this._textFormat.isKerningEnabled;
-			const scale:Number = isNaN(customSize) ? 1 : (customSize / font.size);
-			
-			var currentX:Number = 0;
-			var maxY:Number = 0;
-			var lastCharID:Number = NaN; 
-			var characterIndex:int = 0;
-			const charCount:int = this._text.length;
-			for(var i:int = 0; i < charCount; i++)
-			{
-				var charID:Number = this._text.charCodeAt(i);
-				var charData:BitmapChar = font.getChar(charID);
-				if(!charData)
-				{
-					continue;
-				}
-				if(isKerningEnabled && !isNaN(lastCharID))
-				{
-					currentX += charData.getKerning(lastCharID);
-				}
-				var charDisplay:Image = this._characters[characterIndex];
-				charDisplay.scaleX = charDisplay.scaleY = scale;
-				charDisplay.x = currentX + charData.xOffset * scale;
-				charDisplay.y = charData.yOffset * scale;
-				
-				currentX += charData.xAdvance * scale + customLetterSpacing;
-				maxY = Math.max(maxY, charDisplay.y + charDisplay.height);
-				lastCharID = charID;
-				characterIndex++;
-			}
-			
-			this.setSizeInternal(currentX, Math.max(maxY, font.lineHeight * scale), false);
 		}
 	}
 }
