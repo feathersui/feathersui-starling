@@ -632,7 +632,7 @@ package org.josht.starling.foxhole.controls
 		 * @private
 		 */
 		protected function scrollContent():void
-		{	
+		{
 			var offsetX:Number = 0;
 			var offsetY:Number = 0;
 			if(this._maxHorizontalScrollPosition == 0)

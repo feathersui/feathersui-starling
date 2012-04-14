@@ -1422,7 +1422,6 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-
 		protected function autoSizeIfNeeded():Boolean
 		{
 			const needsWidth:Boolean = isNaN(this.explicitWidth);

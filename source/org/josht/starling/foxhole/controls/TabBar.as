@@ -504,7 +504,7 @@ package org.josht.starling.foxhole.controls
 		protected function layoutTabs():void
 		{
 			const tabCount:int = this.activeTabs.length;
-			const tabSize:Number = (this._direction == DIRECTION_VERTICAL ? this.actualHeight : this.actualWidth) / tabCount
+			const tabSize:Number = (this._direction == DIRECTION_VERTICAL ? this.actualHeight : this.actualWidth) / tabCount;
 			var position:Number = 0;
 			for(var i:int = 0; i < tabCount; i++)
 			{
