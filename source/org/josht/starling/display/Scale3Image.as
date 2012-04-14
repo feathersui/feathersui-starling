@@ -86,11 +86,11 @@ package org.josht.starling.display
 			{
 				if(this._direction == DIRECTION_VERTICAL)
 				{
-					this._width = this._oppositeEdgeSize * this._textureScale;
+					this.width = this._oppositeEdgeSize * this._textureScale;
 				}
 				else
 				{
-					this._width = (this._firstRegionSize + this._secondRegionSize + this._thirdRegionSize) * this._textureScale;
+					this.width = (this._firstRegionSize + this._secondRegionSize + this._thirdRegionSize) * this._textureScale;
 				}
 			}
 			return this._width;
@@ -105,7 +105,7 @@ package org.josht.starling.display
 			{
 				return;
 			}
-			this._width = value;
+			this._width = this._hitArea.width = value;
 			this._layoutChanged = true;
 		}
 
@@ -123,11 +123,11 @@ package org.josht.starling.display
 			{
 				if(this._direction == DIRECTION_VERTICAL)
 				{
-					this._height = (this._firstRegionSize + this._secondRegionSize + this._thirdRegionSize) * this._textureScale;
+					this.height = (this._firstRegionSize + this._secondRegionSize + this._thirdRegionSize) * this._textureScale;
 				}
 				else
 				{
-					this._height = this._oppositeEdgeSize * this._textureScale;
+					this.height = this._oppositeEdgeSize * this._textureScale;
 				}
 			}
 			return this._height;
@@ -142,7 +142,7 @@ package org.josht.starling.display
 			{
 				return;
 			}
-			this._height = value;
+			this._height = this._hitArea.height = value;
 			this._layoutChanged = true;
 		}
 

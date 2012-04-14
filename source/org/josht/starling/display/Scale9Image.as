@@ -72,7 +72,7 @@ package org.josht.starling.display
 		{
 			if(isNaN(this._width))
 			{
-				this._width = (this._leftWidth + this._centerWidth + this._rightWidth) * this._textureScale;
+				this.width = (this._leftWidth + this._centerWidth + this._rightWidth) * this._textureScale;
 			}
 			return this._width;
 		}
@@ -86,7 +86,7 @@ package org.josht.starling.display
 			{
 				return;
 			}
-			this._width = value;
+			this._width = this._hitArea.width = value;
 			this._layoutChanged = true;
 		}
 		
@@ -102,7 +102,7 @@ package org.josht.starling.display
 		{
 			if(isNaN(this._height))
 			{
-				this._height = (this._topHeight + this._middleHeight + this._bottomHeight) * this._textureScale;
+				this.height = (this._topHeight + this._middleHeight + this._bottomHeight) * this._textureScale;
 			}
 			return this._height;
 		}
@@ -116,7 +116,7 @@ package org.josht.starling.display
 			{
 				return;
 			}
-			this._height = value;
+			this._height = this._hitArea.height = value;
 			this._layoutChanged = true;
 		}
 		
