@@ -58,19 +58,18 @@ package org.josht.starling.display
 		/**
 		 * Constructor.
 		 */
-		public function Scale3Image(texture:Texture, firstRegionSize:Number, secondRegionSize:Number, direction:String = DIRECTION_HORIZONTAL)
+		public function Scale3Image(texture:Texture, firstRegionSize:Number, secondRegionSize:Number, direction:String = DIRECTION_HORIZONTAL, textureScale:Number = 1)
 		{
 			super();
 			this._hitArea = new Rectangle();
 			this._firstRegionSize = firstRegionSize;
 			this._secondRegionSize = secondRegionSize;
 			this._direction = direction;
-			this.initializeWidthAndHeight();
-
+			this._textureScale = textureScale;
 			this.createImages(texture);
+			this.initializeWidthAndHeight();
 		}
 
-		private var _hasRendered:Boolean = false;
 		private var _propertiesChanged:Boolean = true;
 		private var _layoutChanged:Boolean = true;
 
@@ -80,7 +79,7 @@ package org.josht.starling.display
 		private var _width:Number = NaN;
 
 		/**
-		 * @inheritDoc
+		 * @private
 		 */
 		override public function get width():Number
 		{
@@ -106,7 +105,7 @@ package org.josht.starling.display
 		private var _height:Number = NaN;
 
 		/**
-		 * @inheritDoc
+		 * @private
 		 */
 		override public function get height():Number
 		{
@@ -150,10 +149,6 @@ package org.josht.starling.display
 			}
 			this._textureScale = value;
 			this._layoutChanged = true;
-			if(!this._hasRendered)
-			{
-				this.initializeWidthAndHeight();
-			}
 		}
 
 		/**
@@ -245,7 +240,7 @@ package org.josht.starling.display
 		private var _thirdImage:Image;
 
 		/**
-		 * @inheritDoc
+		 * @private
 		 */
 		public override function getBounds(targetSpace:DisplayObject, resultRect:Rectangle=null):Rectangle
 		{
@@ -307,7 +302,7 @@ package org.josht.starling.display
 		}
 
 		/**
-		 * @inheritDoc
+		 * @private
 		 */
 		override public function hitTest(localPoint:Point, forTouch:Boolean=false):DisplayObject
 		{
@@ -396,7 +391,6 @@ package org.josht.starling.display
 		 */
 		override public function render(support:RenderSupport, alpha:Number):void
 		{
-			this._hasRendered = true;
 			if(this._propertiesChanged)
 			{
 				this._firstImage.smoothing = this._smoothing;
@@ -454,6 +448,9 @@ package org.josht.starling.display
 			super.render(support, alpha);
 		}
 
+		/**
+		 * @private
+		 */
 		private function initializeWidthAndHeight():void
 		{
 			if(this._direction == DIRECTION_VERTICAL)
@@ -461,7 +458,7 @@ package org.josht.starling.display
 				this.width = this._oppositeEdgeSize * this._textureScale;
 				this.height = (this._firstRegionSize + this._secondRegionSize + this._thirdRegionSize) * this._textureScale;
 			}
-			else
+			else //horizontal
 			{
 				this.width = (this._firstRegionSize + this._secondRegionSize + this._thirdRegionSize) * this._textureScale;
 				this.height = this._oppositeEdgeSize * this._textureScale;

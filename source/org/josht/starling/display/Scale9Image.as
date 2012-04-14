@@ -48,17 +48,17 @@ package org.josht.starling.display
 		/**
 		 * Constructor.
 		 */
-		public function Scale9Image(texture:Texture, scale9Grid:Rectangle)
+		public function Scale9Image(texture:Texture, scale9Grid:Rectangle, textureScale:Number = 1)
 		{
 			super();
 			this._hitArea = new Rectangle();
 			this._scale9Grid = scale9Grid;
+			this._textureScale = textureScale;
 			this.saveRegions(texture);
 			this.initializeWidthAndHeight();
 			this.createImages(texture);
 		}
 
-		private var _hasRendered:Boolean = false;
 		private var _propertiesChanged:Boolean = true;
 		private var _layoutChanged:Boolean = true;
 		
@@ -68,7 +68,7 @@ package org.josht.starling.display
 		private var _width:Number = NaN;
 		
 		/**
-		 * @inheritDoc
+		 * @private
 		 */
 		override public function get width():Number
 		{
@@ -94,7 +94,7 @@ package org.josht.starling.display
 		private var _height:Number = NaN;
 		
 		/**
-		 * @inheritDoc
+		 * @private
 		 */
 		override public function get height():Number
 		{
@@ -138,10 +138,6 @@ package org.josht.starling.display
 			}
 			this._textureScale = value;
 			this._layoutChanged = true;
-			if(!this._hasRendered)
-			{
-				this.initializeWidthAndHeight();
-			}
 		}
 		
 		/**
@@ -244,7 +240,7 @@ package org.josht.starling.display
 		private var _bottomRightImage:Image;
 		
 		/**
-		 * @inheritDoc
+		 * @private
 		 */
 		public override function getBounds(targetSpace:DisplayObject, resultRect:Rectangle=null):Rectangle
 		{
@@ -306,7 +302,7 @@ package org.josht.starling.display
 		}
 		
 		/**
-		 * @inheritDoc
+		 * @private
 		 */
 		override public function hitTest(localPoint:Point, forTouch:Boolean=false):DisplayObject
 		{
@@ -422,7 +418,6 @@ package org.josht.starling.display
 		 */
 		override public function render(support:RenderSupport, alpha:Number):void
 		{
-			this._hasRendered = true;
 			if(this._propertiesChanged)
 			{
 				this._topLeftImage.smoothing = this._smoothing;
@@ -503,6 +498,9 @@ package org.josht.starling.display
 			super.render(support, alpha);
 		}
 
+		/**
+		 * @private
+		 */
 		private function initializeWidthAndHeight():void
 		{
 			this.width = (this._leftWidth + this._centerWidth + this._rightWidth) * this._textureScale;

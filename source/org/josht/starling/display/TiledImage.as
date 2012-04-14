@@ -46,11 +46,13 @@ package org.josht.starling.display
 		/**
 		 * Constructor.
 		 */
-		public function TiledImage(texture:Texture)
+		public function TiledImage(texture:Texture, textureScale:Number = 1)
 		{
 			super();
 			this._hitArea = new Rectangle();
+			this._textureScale = textureScale;
 			this.texture = texture;
+			this.initializeWidthAndHeight();
 		}
 
 		private var _propertiesChanged:Boolean = true;
@@ -64,10 +66,10 @@ package org.josht.starling.display
 		/**
 		 * @private
 		 */
-		private var _width:Number = 100;
+		private var _width:Number = NaN;
 		
 		/**
-		 * @inheritDoc
+		 * @private
 		 */
 		override public function get width():Number
 		{
@@ -90,10 +92,10 @@ package org.josht.starling.display
 		/**
 		 * @private
 		 */
-		private var _height:Number = 100;
+		private var _height:Number = NaN;
 		
 		/**
-		 * @inheritDoc
+		 * @private
 		 */
 		override public function get height():Number
 		{
@@ -277,8 +279,8 @@ package org.josht.starling.display
 		}
 		
 		/**
-		* @inheritDoc
-		*/
+		 * @private
+		 */
 		public override function getBounds(targetSpace:DisplayObject, resultRect:Rectangle=null):Rectangle
 		{
 			if(this.scrollRect)
@@ -339,7 +341,7 @@ package org.josht.starling.display
 		}
 		
 		/**
-		 * @inheritDoc
+		 * @private
 		 */
 		override public function hitTest(localPoint:Point, forTouch:Boolean=false):DisplayObject
 		{
@@ -448,5 +450,16 @@ package org.josht.starling.display
 			
 			super.render(support,  alpha);
 		}
+
+		/**
+		 * @private
+		 */
+		private function initializeWidthAndHeight():void
+		{
+			const frame:Rectangle = this._texture.frame;
+			this.width = frame.width * this._textureScale;
+			this.height = frame.height * this._textureScale;
+		}
+
 	}
 }
