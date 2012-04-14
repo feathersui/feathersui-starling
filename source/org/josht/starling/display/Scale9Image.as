@@ -53,10 +53,12 @@ package org.josht.starling.display
 			super();
 			this._hitArea = new Rectangle();
 			this._scale9Grid = scale9Grid;
-			this.saveWidthAndHeight(texture);
+			this.saveRegions(texture);
+			this.initializeWidthAndHeight();
 			this.createImages(texture);
 		}
 
+		private var _hasRendered:Boolean = false;
 		private var _propertiesChanged:Boolean = true;
 		private var _layoutChanged:Boolean = true;
 		
@@ -70,10 +72,6 @@ package org.josht.starling.display
 		 */
 		override public function get width():Number
 		{
-			if(isNaN(this._width))
-			{
-				this.initializeWidth();
-			}
 			return this._width;
 		}
 		
@@ -100,10 +98,6 @@ package org.josht.starling.display
 		 */
 		override public function get height():Number
 		{
-			if(isNaN(this._height))
-			{
-				this.initializeHeight();
-			}
 			return this._height;
 		}
 		
@@ -144,6 +138,10 @@ package org.josht.starling.display
 			}
 			this._textureScale = value;
 			this._layoutChanged = true;
+			if(!this._hasRendered)
+			{
+				this.initializeWidthAndHeight();
+			}
 		}
 		
 		/**
@@ -262,15 +260,6 @@ package org.josht.starling.display
 			
 			var minX:Number = Number.MAX_VALUE, maxX:Number = -Number.MAX_VALUE;
 			var minY:Number = Number.MAX_VALUE, maxY:Number = -Number.MAX_VALUE;
-
-			if(isNaN(this._width))
-			{
-				this.initializeWidth();
-			}
-			if(isNaN(this._height))
-			{
-				this.initializeHeight();
-			}
 			
 			if (targetSpace == this) // optimization
 			{
@@ -325,23 +314,13 @@ package org.josht.starling.display
 			{
 				return null;
 			}
-
-			if(isNaN(this._width))
-			{
-				this.initializeWidth();
-			}
-			if(isNaN(this._height))
-			{
-				this.initializeHeight();
-			}
-
 			return this._hitArea.containsPoint(localPoint) ? this : null;
 		}
 
 		/**
 		 * @private
 		 */
-		private function saveWidthAndHeight(texture:Texture):void
+		private function saveRegions(texture:Texture):void
 		{
 			const textureFrame:Rectangle = texture.frame;
 			this._leftWidth = this._scale9Grid.x;
@@ -443,6 +422,7 @@ package org.josht.starling.display
 		 */
 		override public function render(support:RenderSupport, alpha:Number):void
 		{
+			this._hasRendered = true;
 			if(this._propertiesChanged)
 			{
 				this._topLeftImage.smoothing = this._smoothing;
@@ -523,13 +503,9 @@ package org.josht.starling.display
 			super.render(support, alpha);
 		}
 
-		private function initializeWidth():void
+		private function initializeWidthAndHeight():void
 		{
 			this.width = (this._leftWidth + this._centerWidth + this._rightWidth) * this._textureScale;
-		}
-
-		private function initializeHeight():void
-		{
 			this.height = (this._topHeight + this._middleHeight + this._bottomHeight) * this._textureScale;
 		}
 	}

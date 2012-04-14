@@ -65,10 +65,12 @@ package org.josht.starling.display
 			this._firstRegionSize = firstRegionSize;
 			this._secondRegionSize = secondRegionSize;
 			this._direction = direction;
+			this.initializeWidthAndHeight();
 
 			this.createImages(texture);
 		}
 
+		private var _hasRendered:Boolean = false;
 		private var _propertiesChanged:Boolean = true;
 		private var _layoutChanged:Boolean = true;
 
@@ -82,10 +84,6 @@ package org.josht.starling.display
 		 */
 		override public function get width():Number
 		{
-			if(isNaN(this._width))
-			{
-				this.initializeWidth();
-			}
 			return this._width;
 		}
 
@@ -112,10 +110,6 @@ package org.josht.starling.display
 		 */
 		override public function get height():Number
 		{
-			if(isNaN(this._height))
-			{
-				this.initializeHeight();
-			}
 			return this._height;
 		}
 
@@ -156,6 +150,10 @@ package org.josht.starling.display
 			}
 			this._textureScale = value;
 			this._layoutChanged = true;
+			if(!this._hasRendered)
+			{
+				this.initializeWidthAndHeight();
+			}
 		}
 
 		/**
@@ -264,15 +262,6 @@ package org.josht.starling.display
 			var minX:Number = Number.MAX_VALUE, maxX:Number = -Number.MAX_VALUE;
 			var minY:Number = Number.MAX_VALUE, maxY:Number = -Number.MAX_VALUE;
 
-			if(isNaN(this._width))
-			{
-				this.initializeWidth();
-			}
-			if(isNaN(this._height))
-			{
-				this.initializeHeight();
-			}
-
 			if (targetSpace == this) // optimization
 			{
 				minX = this._hitArea.x;
@@ -326,16 +315,6 @@ package org.josht.starling.display
 			{
 				return null;
 			}
-
-			if(isNaN(this._width))
-			{
-				this.initializeWidth();
-			}
-			if(isNaN(this._height))
-			{
-				this.initializeHeight();
-			}
-
 			return this._hitArea.containsPoint(localPoint) ? this : null;
 		}
 
@@ -417,6 +396,7 @@ package org.josht.starling.display
 		 */
 		override public function render(support:RenderSupport, alpha:Number):void
 		{
+			this._hasRendered = true;
 			if(this._propertiesChanged)
 			{
 				this._firstImage.smoothing = this._smoothing;
@@ -474,26 +454,16 @@ package org.josht.starling.display
 			super.render(support, alpha);
 		}
 
-		private function initializeWidth():void
+		private function initializeWidthAndHeight():void
 		{
 			if(this._direction == DIRECTION_VERTICAL)
 			{
 				this.width = this._oppositeEdgeSize * this._textureScale;
-			}
-			else
-			{
-				this.width = (this._firstRegionSize + this._secondRegionSize + this._thirdRegionSize) * this._textureScale;
-			}
-		}
-
-		private function initializeHeight():void
-		{
-			if(this._direction == DIRECTION_VERTICAL)
-			{
 				this.height = (this._firstRegionSize + this._secondRegionSize + this._thirdRegionSize) * this._textureScale;
 			}
 			else
 			{
+				this.width = (this._firstRegionSize + this._secondRegionSize + this._thirdRegionSize) * this._textureScale;
 				this.height = this._oppositeEdgeSize * this._textureScale;
 			}
 		}
