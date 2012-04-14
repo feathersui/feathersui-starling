@@ -84,14 +84,7 @@ package org.josht.starling.display
 		{
 			if(isNaN(this._width))
 			{
-				if(this._direction == DIRECTION_VERTICAL)
-				{
-					this.width = this._oppositeEdgeSize * this._textureScale;
-				}
-				else
-				{
-					this.width = (this._firstRegionSize + this._secondRegionSize + this._thirdRegionSize) * this._textureScale;
-				}
+				this.initializeWidth();
 			}
 			return this._width;
 		}
@@ -121,14 +114,7 @@ package org.josht.starling.display
 		{
 			if(isNaN(this._height))
 			{
-				if(this._direction == DIRECTION_VERTICAL)
-				{
-					this.height = (this._firstRegionSize + this._secondRegionSize + this._thirdRegionSize) * this._textureScale;
-				}
-				else
-				{
-					this.height = this._oppositeEdgeSize * this._textureScale;
-				}
+				this.initializeHeight();
 			}
 			return this._height;
 		}
@@ -278,6 +264,15 @@ package org.josht.starling.display
 			var minX:Number = Number.MAX_VALUE, maxX:Number = -Number.MAX_VALUE;
 			var minY:Number = Number.MAX_VALUE, maxY:Number = -Number.MAX_VALUE;
 
+			if(isNaN(this._width))
+			{
+				this.initializeWidth();
+			}
+			if(isNaN(this._height))
+			{
+				this.initializeHeight();
+			}
+
 			if (targetSpace == this) // optimization
 			{
 				minX = this._hitArea.x;
@@ -331,6 +326,16 @@ package org.josht.starling.display
 			{
 				return null;
 			}
+
+			if(isNaN(this._width))
+			{
+				this.initializeWidth();
+			}
+			if(isNaN(this._height))
+			{
+				this.initializeHeight();
+			}
+
 			return this._hitArea.containsPoint(localPoint) ? this : null;
 		}
 
@@ -467,6 +472,30 @@ package org.josht.starling.display
 			this._propertiesChanged = false;
 			this._layoutChanged = false;
 			super.render(support, alpha);
+		}
+
+		private function initializeWidth():void
+		{
+			if(this._direction == DIRECTION_VERTICAL)
+			{
+				this.width = this._oppositeEdgeSize * this._textureScale;
+			}
+			else
+			{
+				this.width = (this._firstRegionSize + this._secondRegionSize + this._thirdRegionSize) * this._textureScale;
+			}
+		}
+
+		private function initializeHeight():void
+		{
+			if(this._direction == DIRECTION_VERTICAL)
+			{
+				this.height = (this._firstRegionSize + this._secondRegionSize + this._thirdRegionSize) * this._textureScale;
+			}
+			else
+			{
+				this.height = this._oppositeEdgeSize * this._textureScale;
+			}
 		}
 	}
 }

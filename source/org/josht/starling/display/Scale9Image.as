@@ -72,7 +72,7 @@ package org.josht.starling.display
 		{
 			if(isNaN(this._width))
 			{
-				this.width = (this._leftWidth + this._centerWidth + this._rightWidth) * this._textureScale;
+				this.initializeWidth();
 			}
 			return this._width;
 		}
@@ -102,7 +102,7 @@ package org.josht.starling.display
 		{
 			if(isNaN(this._height))
 			{
-				this.height = (this._topHeight + this._middleHeight + this._bottomHeight) * this._textureScale;
+				this.initializeHeight();
 			}
 			return this._height;
 		}
@@ -262,6 +262,15 @@ package org.josht.starling.display
 			
 			var minX:Number = Number.MAX_VALUE, maxX:Number = -Number.MAX_VALUE;
 			var minY:Number = Number.MAX_VALUE, maxY:Number = -Number.MAX_VALUE;
+
+			if(isNaN(this._width))
+			{
+				this.initializeWidth();
+			}
+			if(isNaN(this._height))
+			{
+				this.initializeHeight();
+			}
 			
 			if (targetSpace == this) // optimization
 			{
@@ -316,6 +325,16 @@ package org.josht.starling.display
 			{
 				return null;
 			}
+
+			if(isNaN(this._width))
+			{
+				this.initializeWidth();
+			}
+			if(isNaN(this._height))
+			{
+				this.initializeHeight();
+			}
+
 			return this._hitArea.containsPoint(localPoint) ? this : null;
 		}
 
@@ -418,7 +437,7 @@ package org.josht.starling.display
 			this._bottomRightImage.touchable = false;
 			this.addChild(this._bottomRightImage);
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -502,6 +521,16 @@ package org.josht.starling.display
 			this._propertiesChanged = false;
 			this._layoutChanged = false;
 			super.render(support, alpha);
+		}
+
+		private function initializeWidth():void
+		{
+			this.width = (this._leftWidth + this._centerWidth + this._rightWidth) * this._textureScale;
+		}
+
+		private function initializeHeight():void
+		{
+			this.height = (this._topHeight + this._middleHeight + this._bottomHeight) * this._textureScale;
 		}
 	}
 }
