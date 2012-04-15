@@ -28,6 +28,7 @@ package org.josht.starling.display
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
+	import starling.core.QuadBatch;
 	import starling.core.RenderSupport;
 	import starling.display.DisplayObject;
 	import starling.textures.Texture;
@@ -53,6 +54,10 @@ package org.josht.starling.display
 			this._textureScale = textureScale;
 			this.texture = texture;
 			this.initializeWidthAndHeight();
+
+			this._batch = new QuadBatch();
+			this._batch.touchable = false;
+			this.addChild(this._batch);
 		}
 
 		private var _propertiesChanged:Boolean = true;
@@ -61,7 +66,11 @@ package org.josht.starling.display
 		
 		private var _hitArea:Rectangle;
 
-		private var _images:Vector.<Image> = new <Image>[];
+		private var _batch:QuadBatch;
+		private var _image:Image;
+
+		private var _originalImageWidth:Number;
+		private var _originalImageHeight:Number;
 		
 		/**
 		 * @private
@@ -137,11 +146,25 @@ package org.josht.starling.display
 			{
 				throw new ArgumentError("Texture cannot be null");
 			}
-			else if(value != this._texture)
+			if(this._texture == value)
 			{
-				this._texture = value;
-				this._layoutChanged = true;
+				return;
 			}
+			this._texture = value;
+			if(!this._image)
+			{
+				this._image = new Image(value);
+				this._image.touchable = false;
+			}
+			else
+			{
+				this._image.texture = value;
+				this._image.readjustSize();
+			}
+			const frame:Rectangle = value.frame;
+			this._originalImageWidth = frame.width;
+			this._originalImageHeight = frame.height;
+			this._layoutChanged = true;
 		}
 		
 		/**
@@ -251,32 +274,6 @@ package org.josht.starling.display
 			this._clipContent = value;
 			this._clippingChanged = true;
 		}
-
-		/**
-		 * @private
-		 */
-		private var _autoFlatten:Boolean = true;
-
-		/**
-		 * Automatically flattens after layout or property changes to,
-		 * generally, improve performance. Not compatible with clipContent.
-		 */
-		public function get autoFlatten():Boolean
-		{
-			return this._autoFlatten;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set autoFlatten(value:Boolean):void
-		{
-			if(this._autoFlatten == value)
-			{
-				return;
-			}
-			this._autoFlatten = value;
-		}
 		
 		/**
 		 * @private
@@ -366,59 +363,33 @@ package org.josht.starling.display
 		 */
 		override public function render(support:RenderSupport, alpha:Number):void
 		{
-			if(this._layoutChanged)
+			if(this._propertiesChanged)
 			{
-				const scaledTextureWidth:Number = this._texture.width * this._textureScale;
-				const scaledTextureHeight:Number = this._texture.height * this._textureScale;
+				this._image.smoothing = this._smoothing;
+				this._image.color = this._color;
+			}
+			if(this._propertiesChanged || this._layoutChanged)
+			{
+				this._batch.reset();
+				this._image.scaleX = this._image.scaleY = this._textureScale;
+				const scaledTextureWidth:Number = this._originalImageWidth * this._textureScale;
+				const scaledTextureHeight:Number = this._originalImageHeight * this._textureScale;
 				const xImageCount:int = Math.ceil(this._width / scaledTextureWidth);
 				const yImageCount:int = Math.ceil(this._height / scaledTextureHeight);
 				const imageCount:int = xImageCount * yImageCount;
-				const loopCount:int = Math.max(this._images.length, imageCount);
-
-				for(var i:int = 0; i < loopCount; i++)
-				{
-					if(i < imageCount && this._images.length < imageCount)
-					{
-						var image:Image = new Image(this._texture);
-						image.touchable = false;
-						this.addChild(image);
-						this._images.push(image);
-					}
-					else if(i >= imageCount)
-					{
-						image = this._images.pop();
-						image.removeFromParent(true);
-					}
-					else
-					{
-						image = this._images[i];
-						image.texture = this._texture;
-					}
-				}
-
 				var xPosition:Number = 0;
 				var yPosition:Number = 0;
-				for(i = 0; i < imageCount; i++)
+				for(var i:int = 0; i < imageCount; i++)
 				{
-					image = this._images[i];
-					image.x = xPosition;
-					image.y = yPosition;
-					image.scaleX = image.scaleY = this._textureScale;
+					this._image.x = xPosition;
+					this._image.y = yPosition;
+					this._batch.addImage(this._image);
 					xPosition += scaledTextureWidth;
 					if(xPosition >= this._width)
 					{
 						xPosition = 0;
 						yPosition += scaledTextureHeight;
 					}
-				}
-			}
-
-			if(this._propertiesChanged || this._layoutChanged)
-			{
-				for each(image in this._images)
-				{
-					image.smoothing = this._smoothing;
-					image.color = this._color;
 				}
 			}
 
@@ -440,10 +411,6 @@ package org.josht.starling.display
 					this.scrollRect = null;
 				}
 			}
-			if((this._layoutChanged || this._propertiesChanged || this._clippingChanged) && this._autoFlatten && !this._clipContent)
-			{
-				this.flatten();
-			}
 			this._layoutChanged = false;
 			this._propertiesChanged = false;
 			this._clippingChanged = false;
@@ -456,9 +423,8 @@ package org.josht.starling.display
 		 */
 		private function initializeWidthAndHeight():void
 		{
-			const frame:Rectangle = this._texture.frame;
-			this.width = frame.width * this._textureScale;
-			this.height = frame.height * this._textureScale;
+			this.width = this._originalImageWidth * this._textureScale;
+			this.height = this._originalImageHeight * this._textureScale;
 		}
 
 	}
