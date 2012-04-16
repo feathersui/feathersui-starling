@@ -33,6 +33,10 @@ package org.josht.starling.foxhole.transitions
 	import starling.display.DisplayObject;
 
 	/**
+	 * Slides new screens from the left or right depending on the old and new
+	 * selected index values of a TabBar control.
+	 *
+	 * @see org.josht.starling.foxhole.controls.TabBar
 	 */
 	public class TabBarSlideTransitionManager
 	{
@@ -93,22 +97,9 @@ package org.josht.starling.foxhole.transitions
 			}
 		}
 
-		private function tabBar_onChange(tabBar:TabBar):void
-		{
-			var newIndex:int = tabBar.selectedIndex;
-			this._isFromRight = newIndex > this._oldIndex;
-			this._oldIndex = newIndex;
-
-			if(!this._isWaitingOnTransitionChange)
-			{
-				this.transitionNow();
-			}
-			else
-			{
-				this._isWaitingOnTabBarChange = false;
-			}
-		}
-
+		/**
+		 * @private
+		 */
 		private function transitionNow():void
 		{
 			if(this._activeTransition)
@@ -192,6 +183,25 @@ package org.josht.starling.foxhole.transitions
 			if(this._savedCompleteHandler != null)
 			{
 				this._savedCompleteHandler();
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		private function tabBar_onChange(tabBar:TabBar):void
+		{
+			var newIndex:int = tabBar.selectedIndex;
+			this._isFromRight = newIndex > this._oldIndex;
+			this._oldIndex = newIndex;
+
+			if(!this._isWaitingOnTransitionChange)
+			{
+				this.transitionNow();
+			}
+			else
+			{
+				this._isWaitingOnTabBarChange = false;
 			}
 		}
 	}

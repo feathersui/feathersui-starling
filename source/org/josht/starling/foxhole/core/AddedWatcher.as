@@ -39,7 +39,7 @@ package org.josht.starling.foxhole.core
 	 * Useful for initializing skins and styles on UI controls.
 	 * 
 	 * <p>If a display object matches multiple types that have initializers, and
-	 * <code>exactTypeMatching</code> is diabled, the initializers will be
+	 * <code>exactTypeMatching</code> is disabled, the initializers will be
 	 * executed in order following the inheritance chain.</p>
 	 */
 	public class AddedWatcher
