@@ -132,7 +132,16 @@ package org.josht.starling.display
 			if(this._scrollRect)
 			{
 				support.finishQuadBatch();
+				var scale:Number = Starling.contentScaleFactor;
+				if(texture)
+				{
+					scale = texture.scale;
+				}
 				this.getBounds(this.stage, this._scissorRect);
+				this._scissorRect.x *= scale;
+				this._scissorRect.y *= scale;
+				this._scissorRect.width *= scale;
+				this._scissorRect.height *= scale;
 				
 				this.getTransformationMatrix(this.stage, helperMatrix);
 				this._scaledScrollRectXY.x = this._scrollRect.x * helperMatrix.a;
@@ -141,8 +150,8 @@ package org.josht.starling.display
 				const oldRect:Rectangle = ScrollRectManager.currentScissorRect;
 				if(oldRect)
 				{
-					this._scissorRect.x += ScrollRectManager.scrollRectOffsetX;
-					this._scissorRect.y += ScrollRectManager.scrollRectOffsetY;
+					this._scissorRect.x += ScrollRectManager.scrollRectOffsetX * scale;
+					this._scissorRect.y += ScrollRectManager.scrollRectOffsetY * scale;
 					this._scissorRect = this._scissorRect.intersection(oldRect);
 				}
 				//isEmpty() && <= 0 don't work here for some reason
