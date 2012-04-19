@@ -33,7 +33,6 @@ package org.josht.starling.text
 	 */
 	public class BitmapFont extends starling.text.BitmapFont
 	{
-		private var mBase:Number;
 	
 		/**
 		 * Constructor.
@@ -41,10 +40,33 @@ package org.josht.starling.text
 		public function BitmapFont(texture:Texture, fontXml:XML=null)
 		{
 			super(texture, fontXml);
+			if(texture)
+			{
+				this._scale = texture.scale;
+			}
 			if(fontXml)
 			{
 				parseFontXml(fontXml);
 			}
+		}
+
+		private var _scale:Number;
+		private var _base:Number;
+
+		/**
+		 * The baseline value for the font.
+		 */
+		public function get base():Number
+		{
+			return this._base;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set base(value:Number):void
+		{
+			this._base = value;
 		}
 		
 		/**
@@ -52,17 +74,7 @@ package org.josht.starling.text
 		 */
 		private function parseFontXml(fontXml:XML):void
 		{
-			mBase = parseFloat(fontXml.common.attribute("base"));
+			this._base = parseFloat(fontXml.common.attribute("base")) / this._scale;
 		}
-		
-		/**
-		 * The baseline value for the font.
-		 */
-		public function get base():Number { return mBase; }
-		
-		/**
-		 * @private
-		 */
-		public function set base(value:Number):void { mBase = value; }
 	}
 }
