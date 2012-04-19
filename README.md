@@ -26,6 +26,9 @@ A touch-based, vertical list control. Has elastic edges and you can "throw" it.
 ### PickerList
 A control similar to a combo box. Appears as a button when closed. The list is displayed as a fullscreen overlay on top of the stage.
 
+### TextInput
+A text entry control that allows users to enter and edit a single line of uniformly-formatted text. Uses StageText.
+
 ### TabBar
 A line of tabs, where one may be selected at a time.
 
