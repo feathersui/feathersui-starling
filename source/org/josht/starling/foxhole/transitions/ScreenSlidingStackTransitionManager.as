@@ -117,14 +117,14 @@ package org.josht.starling.foxhole.transitions
 				var OldScreenType:Class = Object(oldScreen).constructor;
 				this._stack.push(OldScreenType);
 				oldScreen.x = 0;
-				newScreen.x = this._navigator.stage.stageWidth;
+				newScreen.x = this._navigator.width;
 				activeTransition_onChange = this.activeTransitionPush_onChange;
 			}
 			else
 			{
 				this._stack.length = stackIndex;
 				oldScreen.x = 0;
-				newScreen.x = -this._navigator.stage.stageWidth;
+				newScreen.x = -this._navigator.width;
 				activeTransition_onChange = this.activeTransitionPop_onChange;
 			}
 			this._activeTransition = new GTween(newScreen, this.duration,
@@ -146,7 +146,7 @@ package org.josht.starling.foxhole.transitions
 		{
 			var newScreen:DisplayObject = DisplayObject(tween.target);
 			var oldScreen:DisplayObject = DisplayObject(tween.data);
-			oldScreen.x = newScreen.x - this._navigator.stage.stageWidth;
+			oldScreen.x = newScreen.x - this._navigator.width;
 		}
 		
 		/**
@@ -156,7 +156,7 @@ package org.josht.starling.foxhole.transitions
 		{
 			var newScreen:DisplayObject = DisplayObject(tween.target);
 			var oldScreen:DisplayObject = DisplayObject(tween.data);
-			oldScreen.x = newScreen.x + this._navigator.stage.stageWidth;
+			oldScreen.x = newScreen.x + this._navigator.width;
 		}
 		
 		/**

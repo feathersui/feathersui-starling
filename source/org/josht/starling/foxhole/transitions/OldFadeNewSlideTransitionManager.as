@@ -125,13 +125,13 @@ package org.josht.starling.foxhole.transitions
 				var OldScreenType:Class = Object(oldScreen).constructor;
 				this._stack.push(OldScreenType);
 				oldScreen.x = 0;
-				newScreen.x = this._navigator.stage.stageWidth;
+				newScreen.x = this._navigator.width;
 			}
 			else
 			{
 				this._stack.length = stackIndex;
 				oldScreen.x = 0;
-				newScreen.x = -this._navigator.stage.stageWidth;
+				newScreen.x = -this._navigator.width;
 			}
 			this._activeTransition = new GTween(newScreen, this.duration,
 			{
