@@ -42,7 +42,7 @@ A header that displays a title along with a horizontal regions on the sides for 
 
 The following external libraries are required. Other versions of the same library may work, but the version displayed below is the one currently used by the author.
 
-* [Starling](http://gamua.com/starling/) v1.0
+* [Starling](http://gamua.com/starling/) post-v1.0 (please use a commit newer than April 18, 2012)
 * [GTween](http://gskinner.com/libraries/gtween/) v2.01
 * [as3-signals](https://github.com/robertpenner/as3-signals) v0.9 BETA
 
