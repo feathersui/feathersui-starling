@@ -29,7 +29,9 @@ package org.josht.starling.display
 	import flash.events.KeyboardEvent;
 	import flash.system.Capabilities;
 	import flash.ui.Keyboard;
-	
+
+	import org.josht.starling.foxhole.core.FoxholeControl;
+
 	import org.josht.utils.display.calculateScaleRatioToFit;
 	
 	import starling.core.Starling;
@@ -43,7 +45,7 @@ package org.josht.starling.display
 	 * 
 	 * @see ScreenNavigator
 	 */
-	public class Screen extends Sprite
+	public class Screen extends FoxholeControl
 	{
 		/**
 		 * Constructor.
@@ -122,8 +124,6 @@ package org.josht.starling.display
 			this._originalDPI = value;
 		}
 		
-		private var _initialized:Boolean = false;
-		
 		/**
 		 * @private
 		 */
@@ -163,57 +163,27 @@ package org.josht.starling.display
 		}
 		
 		/**
-		 * Callback for the back hardware key. Automatically handles keyboard
-		 * events to cancel to default behavior.
+		 * Optional callback for the back hardware key. Automatically handles
+		 * keyboard events to cancel the default behavior.
 		 */
 		protected var backButtonHandler:Function;
 		
 		/**
-		 * Callback for the menu hardware key. Automatically handles keyboard
-		 * events to cancel to default behavior.
+		 * Optional callback for the menu hardware key. Automatically handles
+		 * keyboard events to cancel the default behavior.
 		 */
 		protected var menuButtonHandler:Function;
 		
 		/**
-		 * Callback for the search hardware key. Automatically handles keyboard
-		 * events to cancel to default behavior.
+		 * Optional callback for the search hardware key. Automatically handles
+		 * keyboard events to cancel the default behavior.
 		 */
 		protected var searchButtonHandler:Function;
 		
 		/**
-		 * Override this function to create and initialize the children to be
-		 * displayed in this screen.
-		 */
-		protected function initialize():void
-		{
-			
-		}
-		
-		/**
-		 * Override this function to size and position this screen's content.
-		 * This function will be called again every time that the stage changes
-		 * size. On Android and other platforms, this can happen many times on
-		 * startup. On desktop platforms with resizable windows, this may be
-		 * useful for setting up fluid layouts.
-		 */
-		protected function layout():void
-		{
-			
-		}
-		
-		/**
-		 * Override this function to clean up anything when this screen is
-		 * removed from the display list.
-		 */
-		protected function destroy():void
-		{
-			
-		}
-		
-		/**
 		 * @private
 		 */
-		private function refreshScaleRatio():void
+		private function refreshScalingValues():void
 		{
 			const loaderInfo:LoaderInfo = DisplayObjectContainer(Starling.current.nativeStage.root).getChildAt(0).loaderInfo;
 			if(isNaN(this._originalWidth))
@@ -240,24 +210,36 @@ package org.josht.starling.display
 			}
 			this._pixelScale = calculateScaleRatioToFit(originalWidth, originalHeight, this.stage.stageWidth, this.stage.stageHeight);
 			this._dpiScale = Capabilities.screenDPI / this._originalDPI;
+			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 		
 		/**
 		 * @private
 		 */
-		private function addedToStageHandler(event:Event):void
+		private function addedToStageHandler(event:starling.events.Event):void
 		{
-			this.removeEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
+			if(event.target != this)
+			{
+				return;
+			}
+			this.refreshScalingValues();
 			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 			this.stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
 			Starling.current.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler, false, 0, true);
-			if(!this._initialized)
+		}
+
+		/**
+		 * @private
+		 */
+		private function removedFromStageHandler(event:Event):void
+		{
+			if(event.target != this)
 			{
-				this.refreshScaleRatio();
-				this.initialize();
-				this.layout();
-				this._initialized = true;
+				return;
 			}
+			this.removeEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
+			this.stage.removeEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
+			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 		}
 		
 		/**
@@ -265,8 +247,7 @@ package org.josht.starling.display
 		 */
 		private function stage_resizeHandler(event:ResizeEvent):void
 		{
-			this.refreshScaleRatio();
-			this.layout();
+			this.refreshScalingValues();
 		}
 		
 		/**
@@ -300,18 +281,6 @@ package org.josht.starling.display
 				event.preventDefault();
 				this.searchButtonHandler();
 			}
-		}
-		
-		/**
-		 * @private
-		 */
-		private function removedFromStageHandler(event:Event):void
-		{
-			this.removeEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
-			this.stage.removeEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
-			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
-			this.destroy();
-			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 		}
 	}
 }
