@@ -41,6 +41,7 @@
 		<echo message="Building foxhole-starling.swc"/>
 		<java jar="${compc}" dir="${basedir}" fork="true" failonerror="true">
 			<arg line="+flexlib='${flexframework.root}'"/>
+			<arg line="+configname=air"/>
 			<arg line="--source-path+='source'"/>
 			<arg line="--include-sources+='source'"/>
 			<arg line="--library-path+='${dependency.output}'"/>
@@ -51,6 +52,7 @@
 		<echo message="Generating Documentation"/>
 		<java jar="${asdoc}" dir="${basedir}" fork="true" failonerror="true">
 			<arg line="+flexlib='${flexframework.root}'"/>
+			<arg line="+configname=air"/>
 			<arg line="--source-path+='source'"/>
 			<arg line="--library-path+='${dependency.output}'"/>
 			<arg line="--doc-sources+='source'"/>
