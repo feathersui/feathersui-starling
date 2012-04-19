@@ -22,17 +22,17 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
-package org.josht.starling.display
+package org.josht.starling.foxhole.controls
 {
 	import flash.errors.IllegalOperationError;
-	
+
 	import starling.display.DisplayObject;
-	
+
 	/**
 	 * Data for an individual screen that will be used by a <code>ScreenNavigator</code>
 	 * object.
 	 * 
-	 * @see ScreenNavigator
+	 * @see org.josht.starling.foxhole.controls.ScreenNavigator
 	 * 
 	 * @author Josh Tynjala (joshblog.net)
 	 */

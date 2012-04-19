@@ -26,7 +26,7 @@ package org.josht.starling.foxhole.transitions
 {
 	import com.gskinner.motion.easing.Sine;
 
-	import org.josht.starling.display.ScreenNavigator;
+	import org.josht.starling.foxhole.controls.ScreenNavigator;
 	import org.josht.starling.foxhole.controls.TabBar;
 	import org.josht.starling.motion.GTween;
 

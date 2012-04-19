@@ -22,11 +22,11 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
-package org.josht.starling.display.transitions
+package org.josht.starling.foxhole.transitions
 {
 	import com.gskinner.motion.easing.Sine;
 	
-	import org.josht.starling.display.ScreenNavigator;
+	import org.josht.starling.foxhole.controls.ScreenNavigator;
 	import org.josht.starling.motion.GTween;
 	
 	import starling.display.DisplayObject;

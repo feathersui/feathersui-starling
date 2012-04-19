@@ -22,24 +22,24 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
-package org.josht.starling.display
+package org.josht.starling.foxhole.controls
 {
 	import flash.errors.IllegalOperationError;
-	
+
+	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
-	
+
 	import starling.display.DisplayObject;
-	import starling.display.Sprite;
-	
+
 	/**
 	 * A "view stack"-like container that supports navigation between screens
 	 * (any display object) through events.
 	 * 
-	 * @see ScreenNavigatorItem
-	 * @see Screen
+	 * @see org.josht.starling.foxhole.controls.ScreenNavigatorItem
+	 * @see org.josht.starling.foxhole.controls.Screen
 	 */
-	public class ScreenNavigator extends Sprite
+	public class ScreenNavigator extends FoxholeControl
 	{
 		/**
 		 * Constructor.
@@ -199,7 +199,8 @@ package org.josht.starling.display
 			
 			this._transitionIsActive = true;
 			this.transition(this._previousScreenInTransition, this._activeScreen, transitionComplete);
-			
+
+			this.invalidate(INVALIDATION_FLAG_SELECTED);
 			this._onChange.dispatch(this, this._activeScreen);
 			return this._activeScreen;
 		}
@@ -287,6 +288,7 @@ package org.josht.starling.display
 			this._screenEvents[this._activeScreenID] = null;
 			this._activeScreen = null;
 			this._activeScreenID = null;
+			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
 		
 		/**
@@ -318,6 +320,53 @@ package org.josht.starling.display
 				throw new IllegalOperationError("Screen '" + id + "' cannot be removed because it has not been added.");
 			}
 			delete this._screens[id];
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function draw():void
+		{
+			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
+			const selectionInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SELECTED);
+
+			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
+
+			if(sizeInvalid || selectionInvalid)
+			{
+				if(this.activeScreen)
+				{
+					this.activeScreen.width = this.actualWidth;
+					this.activeScreen.height = this.actualHeight;
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function autoSizeIfNeeded():Boolean
+		{
+			const needsWidth:Boolean = isNaN(this.explicitWidth);
+			const needsHeight:Boolean = isNaN(this.explicitHeight);
+			if(!needsWidth && !needsHeight)
+			{
+				return false;
+			}
+			var newWidth:Number = this.explicitWidth;
+			if(needsWidth)
+			{
+				newWidth = this.stage.stageWidth;
+			}
+
+			var newHeight:Number = this.explicitHeight;
+			if(needsHeight)
+			{
+				newHeight = this.stage.stageHeight;
+			}
+
+			this.setSizeInternal(newWidth, newHeight, false);
+			return true;
 		}
 		
 		/**

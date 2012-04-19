@@ -22,7 +22,7 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
-package org.josht.starling.display
+package org.josht.starling.foxhole.controls
 {
 	import flash.display.DisplayObjectContainer;
 	import flash.display.LoaderInfo;
@@ -31,14 +31,12 @@ package org.josht.starling.display
 	import flash.ui.Keyboard;
 
 	import org.josht.starling.foxhole.core.FoxholeControl;
-
 	import org.josht.utils.display.calculateScaleRatioToFit;
-	
+
 	import starling.core.Starling;
-	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.ResizeEvent;
-	
+
 	/**
 	 * Provides useful capabilities for a menu screen displayed by
 	 * <code>ScreenNavigator</code>.
@@ -76,7 +74,15 @@ package org.josht.starling.display
 		 */
 		public function set originalWidth(value:Number):void
 		{
+			if(this._originalWidth == value)
+			{
+				return;
+			}
 			this._originalWidth = value;
+			if(this.stage)
+			{
+				this.refreshPixelScale();
+			}
 		}
 		
 		/**
@@ -99,7 +105,15 @@ package org.josht.starling.display
 		 */
 		public function set originalHeight(value:Number):void
 		{
+			if(this._originalHeight == value)
+			{
+				return;
+			}
 			this._originalHeight = value;
+			if(this.stage)
+			{
+				this.refreshPixelScale();
+			}
 		}
 		
 		/**
@@ -121,7 +135,13 @@ package org.josht.starling.display
 		 */
 		public function set originalDPI(value:int):void
 		{
+			if(this._originalDPI == value)
+			{
+				return;
+			}
 			this._originalDPI = value;
+			this._dpiScale = Capabilities.screenDPI / this._originalDPI;
+			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 		
 		/**
@@ -183,9 +203,11 @@ package org.josht.starling.display
 		/**
 		 * @private
 		 */
-		private function refreshScalingValues():void
+		private function refreshPixelScale():void
 		{
 			const loaderInfo:LoaderInfo = DisplayObjectContainer(Starling.current.nativeStage.root).getChildAt(0).loaderInfo;
+			//if originalWidth or originalHeight is NaN, it's because the Screen
+			//has been added to the display list, and we really need values now.
 			if(isNaN(this._originalWidth))
 			{
 				try
@@ -209,20 +231,18 @@ package org.josht.starling.display
 				}
 			}
 			this._pixelScale = calculateScaleRatioToFit(originalWidth, originalHeight, this.stage.stageWidth, this.stage.stageHeight);
-			this._dpiScale = Capabilities.screenDPI / this._originalDPI;
-			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 		
 		/**
 		 * @private
 		 */
-		private function addedToStageHandler(event:starling.events.Event):void
+		private function addedToStageHandler(event:Event):void
 		{
 			if(event.target != this)
 			{
 				return;
 			}
-			this.refreshScalingValues();
+			this.refreshPixelScale();
 			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 			this.stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
 			Starling.current.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler, false, 0, true);
@@ -247,7 +267,7 @@ package org.josht.starling.display
 		 */
 		private function stage_resizeHandler(event:ResizeEvent):void
 		{
-			this.refreshScalingValues();
+			this.refreshPixelScale();
 		}
 		
 		/**
