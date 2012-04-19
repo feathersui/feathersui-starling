@@ -226,9 +226,13 @@ package org.josht.starling.foxhole.core
 			}
 			
 			const index:int = this._items.indexOf(item);
-			if(item.isSelected || this._selectedIndex == index)
+			if(item.isSelected || (this._isSelectionRequired && this._selectedIndex == index))
 			{
 				this.selectedIndex = index;
+			}
+			else if(!item.isSelected)
+			{
+				this.selectedIndex = -1;
 			}
 		}
 		
