@@ -25,6 +25,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 package org.josht.starling.foxhole.controls
 {
 	import flash.errors.IllegalOperationError;
+	import flash.geom.Rectangle;
 
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.osflash.signals.ISignal;
@@ -73,6 +74,33 @@ package org.josht.starling.foxhole.controls
 		public function get activeScreen():DisplayObject
 		{
 			return this._activeScreen;
+		}
+
+		/**
+		 * @private
+		 */
+		private var _clipContent:Boolean = false;
+
+		/**
+		 * Determines if the navigator's content should be clipped to the width
+		 * and height.
+		 */
+		public function get clipContent():Boolean
+		{
+			return this._clipContent;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set clipContent(value:Boolean):void
+		{
+			if(this._clipContent == value)
+			{
+				return;
+			}
+			this._clipContent = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
 		/**
@@ -329,6 +357,7 @@ package org.josht.starling.foxhole.controls
 		{
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const selectionInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SELECTED);
+			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
@@ -338,6 +367,25 @@ package org.josht.starling.foxhole.controls
 				{
 					this.activeScreen.width = this.actualWidth;
 					this.activeScreen.height = this.actualHeight;
+				}
+			}
+
+			if(stylesInvalid || sizeInvalid)
+			{
+				if(this._clipContent)
+				{
+					var scrollRect:Rectangle = this.scrollRect;
+					if(!scrollRect)
+					{
+						scrollRect = new Rectangle();
+					}
+					scrollRect.width = this.actualWidth;
+					scrollRect.height = this.actualHeight;
+					this.scrollRect = scrollRect;
+				}
+				else
+				{
+					this.scrollRect = null;
 				}
 			}
 		}
