@@ -1,27 +1,27 @@
 /*
-Copyright (c) 2012 Josh Tynjala
+ Copyright (c) 2012 Josh Tynjala
 
-Permission is hereby granted, free of charge, to any person
-obtaining a copy of this software and associated documentation
-files (the "Software"), to deal in the Software without
-restriction, including without limitation the rights to use,
-copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the
-Software is furnished to do so, subject to the following
-conditions:
+ Permission is hereby granted, free of charge, to any person
+ obtaining a copy of this software and associated documentation
+ files (the "Software"), to deal in the Software without
+ restriction, including without limitation the rights to use,
+ copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the
+ Software is furnished to do so, subject to the following
+ conditions:
 
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-OTHER DEALINGS IN THE SOFTWARE.
-*/
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ OTHER DEALINGS IN THE SOFTWARE.
+ */
 package org.josht.starling.foxhole.controls
 {
 	import flash.errors.IllegalOperationError;
@@ -32,11 +32,12 @@ package org.josht.starling.foxhole.controls
 	import org.osflash.signals.Signal;
 
 	import starling.display.DisplayObject;
+	import starling.events.ResizeEvent;
 
 	/**
 	 * A "view stack"-like container that supports navigation between screens
 	 * (any display object) through events.
-	 * 
+	 *
 	 * @see org.josht.starling.foxhole.controls.ScreenNavigatorItem
 	 * @see org.josht.starling.foxhole.controls.Screen
 	 */
@@ -49,12 +50,12 @@ package org.josht.starling.foxhole.controls
 		{
 			super();
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _activeScreenID:String;
-		
+
 		/**
 		 * The string identifier for the currently active screen.
 		 */
@@ -62,12 +63,12 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._activeScreenID;
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _activeScreen:DisplayObject;
-		
+
 		/**
 		 * A reference to the currently active screen.
 		 */
@@ -102,33 +103,33 @@ package org.josht.starling.foxhole.controls
 			this._clipContent = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * A function that is called when the <code>ScreenNavigator</code> is
 		 * changing screens.
 		 */
 		public var transition:Function = defaultTransition;
-		
+
 		private var _screens:Object = {};
 		private var _screenEvents:Object = {};
-		
+
 		/**
 		 * The identifier of the "default" screen.
-		 * 
+		 *
 		 * @see showDefaultScreen
 		 */
 		public var defaultScreenID:String;
-		
+
 		private var _transitionIsActive:Boolean = false;
 		private var _previousScreenInTransition:DisplayObject;
 		private var _nextScreenID:String = null;
 		private var _clearAfterTransition:Boolean = false;
-		
+
 		/**
 		 * @private
 		 */
 		private var _onChange:Signal = new Signal(ScreenNavigator, DisplayObject);
-		
+
 		/**
 		 * Dispatched when the active screen changes.
 		 */
@@ -136,21 +137,21 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._onChange;
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _onClear:Signal = new Signal(ScreenNavigator);
-		
+
 		/**
 		 * Dispatched when the current screen is removed and there is no active
-		 * screen. 
+		 * screen.
 		 */
 		public function get onClear():ISignal
 		{
 			return this._onClear;
 		}
-		
+
 		/**
 		 * Displays a screen and returns a reference to it. If a previous
 		 * transition is running, the new screen will be queued, and no
@@ -162,29 +163,29 @@ package org.josht.starling.foxhole.controls
 			{
 				throw new IllegalOperationError("Screen with id '" + id + "' cannot be shown because it has not been defined.");
 			}
-			
+
 			if(this._activeScreenID == id)
 			{
 				return this._activeScreen;
 			}
-			
+
 			if(this._transitionIsActive)
 			{
 				this._nextScreenID = id;
 				this._clearAfterTransition = false;
 				return null;
 			}
-			
+
 			this._previousScreenInTransition = this._activeScreen;
 			if(this._activeScreen)
 			{
 				this.clearScreenInternal(false);
 			}
-			
+
 			const item:ScreenNavigatorItem = ScreenNavigatorItem(this._screens[id]);
 			this._activeScreen = item.getScreen();
 			this._activeScreenID = id;
-			
+
 			const events:Object = item.events;
 			const savedScreenEvents:Object = {};
 			for(var eventName:String in events)
@@ -220,11 +221,11 @@ package org.josht.starling.foxhole.controls
 					throw new TypeError("Unknown event action defined for screen:", eventAction.toString());
 				}
 			}
-			
+
 			this._screenEvents[id] = savedScreenEvents;
-			
+
 			this.addChild(this._activeScreen);
-			
+
 			this._transitionIsActive = true;
 			this.transition(this._previousScreenInTransition, this._activeScreen, transitionComplete);
 
@@ -232,10 +233,10 @@ package org.josht.starling.foxhole.controls
 			this._onChange.dispatch(this, this._activeScreen);
 			return this._activeScreen;
 		}
-		
+
 		/**
 		 * Shows the "default" screen.
-		 * 
+		 *
 		 * @see defaultScreenID
 		 */
 		public function showDefaultScreen():DisplayObject
@@ -246,7 +247,7 @@ package org.josht.starling.foxhole.controls
 			}
 			return this.showScreen(this.defaultScreenID);
 		}
-		
+
 		/**
 		 * Removes the current screen, leaving the <code>ScreenNavigator</code>
 		 * empty.
@@ -259,11 +260,11 @@ package org.josht.starling.foxhole.controls
 				this._clearAfterTransition = true;
 				return;
 			}
-			
+
 			this.clearScreenInternal(true);
 			this._onClear.dispatch(this);
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -274,7 +275,7 @@ package org.josht.starling.foxhole.controls
 				//no screen visible.
 				return;
 			}
-			
+
 			const item:ScreenNavigatorItem = ScreenNavigatorItem(this._screens[this._activeScreenID]);
 			const events:Object = item.events;
 			const savedScreenEvents:Object = this._screenEvents[this._activeScreenID];
@@ -306,7 +307,7 @@ package org.josht.starling.foxhole.controls
 					}
 				}
 			}
-			
+
 			if(displayTransition)
 			{
 				this._transitionIsActive = true;
@@ -318,7 +319,7 @@ package org.josht.starling.foxhole.controls
 			this._activeScreenID = null;
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
-		
+
 		/**
 		 * Registers a new screen by its identifier.
 		 */
@@ -328,16 +329,16 @@ package org.josht.starling.foxhole.controls
 			{
 				throw new IllegalOperationError("Screen with id '" + id + "' already defined. Cannot add two screens with the same id.");
 			}
-			
+
 			if(!this.defaultScreenID)
 			{
 				//the first screen will set the default ID if it is not set already
 				this.defaultScreenID = id;
 			}
-			
+
 			this._screens[id] = item;
 		}
-		
+
 		/**
 		 * Removes an existing screen using its identifier.
 		 */
@@ -348,6 +349,14 @@ package org.josht.starling.foxhole.controls
 				throw new IllegalOperationError("Screen '" + id + "' cannot be removed because it has not been added.");
 			}
 			delete this._screens[id];
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function initialize():void
+		{
+			this.stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
 		}
 
 		/**
@@ -416,7 +425,7 @@ package org.josht.starling.foxhole.controls
 			this.setSizeInternal(newWidth, newHeight, false);
 			return true;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -425,7 +434,7 @@ package org.josht.starling.foxhole.controls
 			//in short, do nothing
 			completeHandler();
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -438,7 +447,7 @@ package org.josht.starling.foxhole.controls
 				this._previousScreenInTransition = null;
 			}
 			this._transitionIsActive = false;
-			
+
 			if(this._clearAfterTransition)
 			{
 				this.clearScreen();
@@ -447,11 +456,11 @@ package org.josht.starling.foxhole.controls
 			{
 				this.showScreen(this._nextScreenID);
 			}
-			
+
 			this._nextScreenID = null;
 			this._clearAfterTransition = false;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -462,9 +471,17 @@ package org.josht.starling.foxhole.controls
 			{
 				self.showScreen(screenID);
 			}
-			
+
 			return eventListener;
 		}
+
+		/**
+		 * @private
+		 */
+		protected function stage_resizeHandler(event:ResizeEvent):void
+		{
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
 	}
-	
+
 }
