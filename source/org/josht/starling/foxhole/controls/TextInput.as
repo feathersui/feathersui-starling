@@ -28,10 +28,10 @@ package org.josht.starling.foxhole.controls
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import flash.text.StageText;
-	import flash.text.StageTextInitOptions;
+	import flash.utils.getDefinitionByName;
 
 	import org.josht.starling.foxhole.core.FoxholeControl;
+	import org.josht.text.StageTextField;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 
@@ -43,7 +43,10 @@ package org.josht.starling.foxhole.controls
 
 	/**
 	 * A text entry control that allows users to enter and edit a single line of
-	 * uniformly-formatted text. Uses StageText.
+	 * uniformly-formatted text. Uses the native StageText class in AIR, and the
+	 * custom StageTextField class in Flash Player.
+	 *
+	 * @see org.josht.text.StageTextField
 	 */
 	public class TextInput extends FoxholeControl
 	{
@@ -72,7 +75,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * The StageText instance.
 		 */
-		protected var stageText:StageText;
+		protected var stageText:Object;
 
 		/**
 		 * The currently selected background, based on state.
@@ -313,7 +316,16 @@ package org.josht.starling.foxhole.controls
 		override protected function initialize():void
 		{
 			this.addEventListener(starling.events.Event.REMOVED_FROM_STAGE, removedFromStageHandler);
-			this.stageText = new StageText(new StageTextInitOptions());
+			var StageTextType:Class;
+			try
+			{
+				StageTextType = Class(getDefinitionByName("flash.text.StageText"));
+			}
+			catch(error:Error)
+			{
+				StageTextType = StageTextField;
+			}
+			this.stageText = new StageTextType();
 			this.stageText.stage = Starling.current.nativeStage;
 			this.stageText.addEventListener(flash.events.Event.CHANGE, stageText_changeHandler);
 		}
