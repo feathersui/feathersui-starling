@@ -35,8 +35,8 @@ package org.josht.starling.foxhole.controls
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 
+	import starling.core.RenderSupport;
 	import starling.core.Starling;
-
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.utils.transformCoords;
@@ -58,7 +58,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private static var helperPoint:Point = new Point();
+		private static const helperPoint:Point = new Point();
 
 		/**
 		 * @private
@@ -81,6 +81,9 @@ package org.josht.starling.foxhole.controls
 		 * The currently selected background, based on state.
 		 */
 		protected var currentBackground:DisplayObject;
+
+		private var _oldGlobalX:Number = 0;
+		private var _oldGlobalY:Number = 0;
 
 		/**
 		 * @private
@@ -313,6 +316,31 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
+		override public function render(support:RenderSupport, alpha:Number):void
+		{
+			helperPoint.x = helperPoint.y = 0;
+			this.getTransformationMatrix(this.stage, helperMatrix);
+			transformCoords(helperMatrix, 0, 0, helperPoint);
+			if(helperPoint.x != this._oldGlobalX || helperPoint.y != this._oldGlobalY)
+			{
+				this._oldGlobalX = helperPoint.x;
+				this._oldGlobalY = helperPoint.y;
+				var viewPort:Rectangle = this.stageText.viewPort;
+				if(!viewPort)
+				{
+					viewPort = new Rectangle();
+				}
+				viewPort.x = helperPoint.x + this._contentPadding;
+				viewPort.y = helperPoint.y + this._contentPadding;
+				this.stageText.viewPort = viewPort;
+			}
+
+			super.render(support, alpha);
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function initialize():void
 		{
 			this.addEventListener(starling.events.Event.REMOVED_FROM_STAGE, removedFromStageHandler);
@@ -452,15 +480,23 @@ package org.josht.starling.foxhole.controls
 				this.currentBackground.height = this.actualHeight;
 			}
 
-			this.getTransformationMatrix(this.parent, helperMatrix);
-			transformCoords(helperMatrix, 0, 0, helperPoint);
 			var viewPort:Rectangle = this.stageText.viewPort;
 			if(!viewPort)
 			{
 				viewPort = new Rectangle();
 			}
-			viewPort.x = helperPoint.x + this._contentPadding;
-			viewPort.y = helperPoint.y + this._contentPadding;
+
+			helperPoint.x = helperPoint.y = 0;
+			this.getTransformationMatrix(this.stage, helperMatrix);
+			transformCoords(helperMatrix, 0, 0, helperPoint);
+			if(helperPoint.x != this._oldGlobalX || helperPoint.y != this._oldGlobalY)
+			{
+				this._oldGlobalX = helperPoint.x;
+				this._oldGlobalY = helperPoint.y;
+				viewPort.x = helperPoint.x + this._contentPadding;
+				viewPort.y = helperPoint.y + this._contentPadding;
+			}
+
 			viewPort.width = Math.max(1, this.actualWidth - 2 * this._contentPadding);
 			viewPort.height = Math.max(1, this.actualHeight - 2 * this._contentPadding);
 			if(isNaN(viewPort.width) || isNaN(viewPort.height))
