@@ -24,10 +24,13 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package org.josht.starling.foxhole.controls
 {
+	import flash.geom.Matrix;
+
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.text.BitmapFontTextFormat;
 
 	import starling.core.QuadBatch;
+	import starling.core.RenderSupport;
 	import starling.display.Image;
 	import starling.text.BitmapChar;
 	import starling.text.BitmapFont;
@@ -42,6 +45,11 @@ package org.josht.starling.foxhole.controls
 		 * @private
 		 */
 		private static var helperImage:Image;
+
+		/**
+		 * @private
+		 */
+		private static const helperMatrix:Matrix = new Matrix();
 
 		/**
 		 * Constructor.
@@ -134,6 +142,41 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
+		private var _snapToPixels:Boolean = true;
+
+		public function get snapToPixels():Boolean
+		{
+			return _snapToPixels;
+		}
+
+		public function set snapToPixels(value:Boolean):void
+		{
+			if(this._snapToPixels == value)
+			{
+				return;
+			}
+			this._snapToPixels = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		override public function render(support:RenderSupport, alpha:Number):void
+		{
+			if(this._snapToPixels)
+			{
+				this.getTransformationMatrix(this.stage, helperMatrix);
+				this._characterBatch.x = Math.round(helperMatrix.tx) - helperMatrix.tx;
+				this._characterBatch.y = Math.round(helperMatrix.ty) - helperMatrix.ty;
+			}
+			else
+			{
+				this._characterBatch.x = this._characterBatch.y = 0;
+			}
+			super.render(support, alpha);
+		}
+
 		/**
 		 * @private
 		 */
@@ -197,6 +240,11 @@ package org.josht.starling.foxhole.controls
 					helperImage.readjustSize();
 					helperImage.scaleX = helperImage.scaleY = scale;
 					helperImage.x = currentX + charData.xOffset * scale;
+					if(this._snapToPixels)
+					{
+						helperImage.x = Math.round(helperImage.x);
+						helperImage.y = Math.round(helperImage.y);
+					}
 					helperImage.y = charData.yOffset * scale;
 					helperImage.color = color;
 					helperImage.smoothing = this._smoothing;
