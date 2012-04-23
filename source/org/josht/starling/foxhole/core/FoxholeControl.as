@@ -24,22 +24,20 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package org.josht.starling.foxhole.core
 {
-	import flash.display.Shape;
-	import flash.events.Event;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
-	
+
 	import org.josht.starling.display.Sprite;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
-	
-	import starling.core.Starling;
+
+	import starling.core.RenderSupport;
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.utils.transformCoords;
-	
+
 	/**
 	 * Base class for all Foxhole UI controls. Implements invalidation and sets
 	 * up some basic template functions like <code>initialize()</code> and
@@ -94,80 +92,12 @@ package org.josht.starling.foxhole.core
 		public static const INVALIDATION_FLAG_SELECTED:String = "selected";
 		
 		/**
-		 * @private
-		 * A display object that fires frame events that trigger validation.
-		 */
-		private static const ENTER_FRAME_DISPLAY_OBJECT:Shape = new Shape();
-		
-		/**
-		 * Flag to indicate that the call later queue is being processed.
-		 */
-		protected static var isCallingLater:Boolean = false;
-		
-		/**
-		 * @private
-		 * The queue of functions to be called later.
-		 */
-		private static var callLaterQueue:Vector.<CallLaterQueueItem>;
-		
-		/**
-		 * Calls a function later, within one frame. Used for invalidation of
-		 * UI controls when properties change.
-		 */
-		protected static function callLater(target:FoxholeControl, method:Function, arguments:Array = null):void
-		{
-			if(!callLaterQueue)
-			{
-				callLaterQueue = new <CallLaterQueueItem>[];
-			}
-			const queueLength:int = callLaterQueue.length;
-			for(var i:int = 0; i < queueLength; i++)
-			{
-				var item:CallLaterQueueItem = callLaterQueue[i];
-				if(target.contains(item.target))
-				{
-					break;
-				}
-			}
-			callLaterQueue.splice(i, 0, new CallLaterQueueItem(target, method, arguments));
-			if(!ENTER_FRAME_DISPLAY_OBJECT.hasEventListener(flash.events.Event.ENTER_FRAME))
-			{
-				Starling.current.nativeStage.invalidate();
-				ENTER_FRAME_DISPLAY_OBJECT.addEventListener(flash.events.Event.FRAME_CONSTRUCTED, callLater_frameEventHandler);
-				ENTER_FRAME_DISPLAY_OBJECT.addEventListener(flash.events.Event.RENDER, callLater_frameEventHandler);
-				ENTER_FRAME_DISPLAY_OBJECT.addEventListener(flash.events.Event.ENTER_FRAME, callLater_frameEventHandler);
-				ENTER_FRAME_DISPLAY_OBJECT.addEventListener(flash.events.Event.EXIT_FRAME, callLater_frameEventHandler);
-			}
-		}
-		
-		/**
-		 * @private
-		 * Processes functions in the queue that are to be called later.
-		 */
-		private static function callLater_frameEventHandler(event:flash.events.Event):void
-		{
-			isCallingLater = true;
-			
-			var methodCount:int;
-			while(callLaterQueue.length > 0)
-			{
-				var item:CallLaterQueueItem = callLaterQueue.shift();
-				item.method.apply(null, item.parameters);
-			}
-			ENTER_FRAME_DISPLAY_OBJECT.removeEventListener(flash.events.Event.FRAME_CONSTRUCTED, callLater_frameEventHandler);
-			ENTER_FRAME_DISPLAY_OBJECT.removeEventListener(flash.events.Event.RENDER, callLater_frameEventHandler);
-			ENTER_FRAME_DISPLAY_OBJECT.removeEventListener(flash.events.Event.ENTER_FRAME, callLater_frameEventHandler);
-			ENTER_FRAME_DISPLAY_OBJECT.removeEventListener(flash.events.Event.EXIT_FRAME, callLater_frameEventHandler);
-			isCallingLater = false;
-		}
-		
-		/**
 		 * Constructor.
 		 */
 		public function FoxholeControl()
 		{
 			super();
-			this.addEventListener(starling.events.Event.ADDED_TO_STAGE, addedToStageHandler);
+			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 		}
 		
 		/**
@@ -200,14 +130,6 @@ package org.josht.starling.foxhole.core
 		 * Flag indicating if the <code>initialize()</code> function has been called yet.
 		 */
 		private var _isInitialized:Boolean = false;
-		
-		/**
-		 * @private
-		 * A counter for the number of times <code>invalidate()</code> has been
-		 * called during validation. If it gets called too many times, the UI
-		 * control will automatically stop to avoid hanging.
-		 */
-		private var _invalidateCount:int;
 		
 		/**
 		 * @private
@@ -398,7 +320,7 @@ package org.josht.starling.foxhole.core
 		private var _isValidating:Boolean = false;
 		
 		/**
-		 * @inheritDoc
+		 * @private
 		 */
 		public override function getBounds(targetSpace:DisplayObject, resultRect:Rectangle=null):Rectangle
 		{
@@ -460,7 +382,7 @@ package org.josht.starling.foxhole.core
 		}
 		
 		/**
-		 * @inheritDoc
+		 * @private
 		 */
 		override public function hitTest(localPoint:Point, forTouch:Boolean=false):DisplayObject
 		{
@@ -473,6 +395,26 @@ package org.josht.starling.foxhole.core
 				return this._hitArea.containsPoint(localPoint) ? this : null;
 			}
 			return super.hitTest(localPoint, forTouch);
+		}
+
+		/**
+		 * @private
+		 */
+		override public function render(support:RenderSupport, alpha:Number):void
+		{
+			var validationCount:int = 0;
+			while(this.isInvalid())
+			{
+				this.validate();
+				validationCount++;
+				if(validationCount > 10)
+				{
+					//we give up. do it next time.
+					trace("Warning: Stopping out of control validation.");
+					break;
+				}
+			}
+			super.render(support, alpha);
 		}
 		
 		/**
@@ -487,9 +429,10 @@ package org.josht.starling.foxhole.core
 		{
 			if(!this.stage)
 			{
+				//we'll invalidate everything once we're added to the stage, so
+				//there's no point in micro-managing it before that.
 				return;
 			}
-			const isInvalidAlready:Boolean = this.isInvalid();
 			for each(var flag:String in rest)
 			{
 				if(flag == INVALIDATION_FLAG_ALL)
@@ -501,22 +444,6 @@ package org.josht.starling.foxhole.core
 			if(rest.length == 0 || rest.indexOf(INVALIDATION_FLAG_ALL) >= 0)
 			{
 				this._isAllInvalid = true;
-			}
-			if(this._isValidating)
-			{
-				this._invalidateCount++;
-				if(this._invalidateCount > 10)
-				{
-					trace("Stopping out of control invalidation. Control may not invalidate() more than 10 ten times during validate() step.");
-					return;
-				}
-				callLater(this, this.invalidate, rest);
-				return;
-			}
-			this._invalidateCount = 0;
-			if(!isInvalidAlready)
-			{
-				callLater(this, validate);
 			}
 		}
 		
@@ -639,7 +566,7 @@ package org.josht.starling.foxhole.core
 		 * Initialize the control, if it hasn't been initialized yet. Then,
 		 * invalidate.
 		 */
-		private function addedToStageHandler(event:starling.events.Event):void
+		private function addedToStageHandler(event:Event):void
 		{
 			if(event.target != this)
 			{
@@ -654,7 +581,7 @@ package org.josht.starling.foxhole.core
 		}
 	}
 }
-import org.josht.starling.foxhole.core.FoxholeControl;
+/*import org.josht.starling.foxhole.core.FoxholeControl;
 
 class CallLaterQueueItem
 {
@@ -668,4 +595,4 @@ class CallLaterQueueItem
 	public var target:FoxholeControl;
 	public var method:Function;
 	public var parameters:Array;
-}
+}*/
