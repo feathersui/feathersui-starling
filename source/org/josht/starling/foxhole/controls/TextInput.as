@@ -376,7 +376,10 @@ package org.josht.starling.foxhole.controls
 
 			if(dataInvalid)
 			{
-				this.stageText.text = this._text;
+				if(this.stageText.text != this._text)
+				{
+					this.stageText.text = this._text;
+				}
 			}
 
 			if(stateInvalid || stylesInvalid)
