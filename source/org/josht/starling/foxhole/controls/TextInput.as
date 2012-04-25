@@ -330,8 +330,8 @@ package org.josht.starling.foxhole.controls
 				{
 					viewPort = new Rectangle();
 				}
-				viewPort.x = helperPoint.x + this._contentPadding;
-				viewPort.y = helperPoint.y + this._contentPadding;
+				viewPort.x = (helperPoint.x + this._contentPadding) * Starling.contentScaleFactor;
+				viewPort.y = (helperPoint.y + this._contentPadding) * Starling.contentScaleFactor;
 				this.stageText.viewPort = viewPort;
 			}
 
@@ -494,10 +494,10 @@ package org.josht.starling.foxhole.controls
 			transformCoords(helperMatrix, 0, 0, helperPoint);
 			this._oldGlobalX = helperPoint.x;
 			this._oldGlobalY = helperPoint.y;
-			viewPort.x = helperPoint.x + this._contentPadding;
-			viewPort.y = helperPoint.y + this._contentPadding;
-			viewPort.width = Math.max(1, this.actualWidth - 2 * this._contentPadding);
-			viewPort.height = Math.max(1, this.actualHeight - 2 * this._contentPadding);
+			viewPort.x = (helperPoint.x + this._contentPadding) * Starling.contentScaleFactor;
+			viewPort.y = (helperPoint.y + this._contentPadding) * Starling.contentScaleFactor;
+			viewPort.width = Math.max(1, (this.actualWidth - 2 * this._contentPadding) * Starling.contentScaleFactor);
+			viewPort.height = Math.max(1, (this.actualHeight - 2 * this._contentPadding) * Starling.contentScaleFactor);
 			if(isNaN(viewPort.width) || isNaN(viewPort.height))
 			{
 				viewPort.width = 1;
