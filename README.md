@@ -6,19 +6,13 @@ To get started, you might want to check out the [API Documentation](http://www.f
 
 ## Available Components
 
-Foxhole includes the following UI controls:
-
-### Label
-A single-line, non-interactive text control. Uses bitmap fonts. A simplified replacement for `starling.text.TextField` that is built on `FoxholeControl`.
+Foxhole includes the following UI controls (in alphabetical order):
 
 ### Button
 A typical button control, with optional toggle support. Includes a label and an icon, both optional.
 
-### ToggleSwitch
-A sliding on/off switch. A common alternative to a checkbox in mobile environments.
-
-### Slider
-A typical horizontal or vertical slider control.
+### Label
+A single-line, non-interactive text control. Uses bitmap fonts. A simplified replacement for `starling.text.TextField` that is built on `FoxholeControl`.
 
 ### List
 A touch-based, vertical list control. Has elastic edges and you can "throw" it.
@@ -26,20 +20,30 @@ A touch-based, vertical list control. Has elastic edges and you can "throw" it.
 ### PickerList
 A control similar to a combo box. Appears as a button when closed. The list is displayed as a fullscreen overlay on top of the stage.
 
-### TextInput
-A text entry control that allows users to enter and edit a single line of uniformly-formatted text. Uses StageText.
-
-### TabBar
-A line of tabs, where one may be selected at a time.
-
-### ScreenNavigator
-A state machine for menu systems. Uses events or signals to trigger navigation between screens or to call functions. Includes very simple dependency injection.
+### Progress Bar
+Displays the progress of a task over time. Non-interactive.
 
 ### Screen
 An abstract class for implementing a single screen within a menu developed with `ScreenNavigator`. Includes common helper functionality, including back/menu/search hardware key callbacks, calculating scale from original resolution to current stage size, and template functions for initialize, layout and destroy.
 
 ### ScreenHeader
 A header that displays a title along with a horizontal regions on the sides for additional UI controls. The left side is typically for navigation (to display a back button, for example) and the right for additional actions.
+
+### ScreenNavigator
+A state machine for menu systems. Uses events or signals to trigger navigation between screens or to call functions. Includes very simple dependency injection.
+
+### Slider
+A typical horizontal or vertical slider control.
+
+### TabBar
+A line of tabs, where one may be selected at a time.
+
+### TextInput
+A text entry control that allows users to enter and edit a single line of uniformly-formatted text. Uses StageText.
+
+### ToggleSwitch
+A sliding on/off switch. A common alternative to a checkbox in mobile environments.
+
 
 ## Dependencies
 
