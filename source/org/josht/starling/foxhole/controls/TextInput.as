@@ -492,14 +492,10 @@ package org.josht.starling.foxhole.controls
 			helperPoint.x = helperPoint.y = 0;
 			this.getTransformationMatrix(this.stage, helperMatrix);
 			transformCoords(helperMatrix, 0, 0, helperPoint);
-			if(helperPoint.x != this._oldGlobalX || helperPoint.y != this._oldGlobalY)
-			{
-				this._oldGlobalX = helperPoint.x;
-				this._oldGlobalY = helperPoint.y;
-				viewPort.x = helperPoint.x + this._contentPadding;
-				viewPort.y = helperPoint.y + this._contentPadding;
-			}
-
+			this._oldGlobalX = helperPoint.x;
+			this._oldGlobalY = helperPoint.y;
+			viewPort.x = helperPoint.x + this._contentPadding;
+			viewPort.y = helperPoint.y + this._contentPadding;
 			viewPort.width = Math.max(1, this.actualWidth - 2 * this._contentPadding);
 			viewPort.height = Math.max(1, this.actualHeight - 2 * this._contentPadding);
 			if(isNaN(viewPort.width) || isNaN(viewPort.height))
