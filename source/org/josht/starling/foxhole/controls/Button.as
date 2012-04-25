@@ -469,7 +469,14 @@ package org.josht.starling.foxhole.controls
 			return Vector.<String>([STATE_UP, STATE_DOWN, STATE_DISABLED, STATE_SELECTED_UP, STATE_SELECTED_DOWN]);
 		}
 
+		/**
+		 * @private
+		 */
 		protected var _originalSkinWidth:Number = NaN;
+
+		/**
+		 * @private
+		 */
 		protected var _originalSkinHeight:Number = NaN;
 		
 		/**

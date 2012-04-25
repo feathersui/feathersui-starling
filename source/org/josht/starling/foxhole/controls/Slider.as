@@ -91,7 +91,8 @@ package org.josht.starling.foxhole.controls
 		
 		/**
 		 * Determines if the slider's thumb can be dragged horizontally or
-		 * vertically. Does not change the width and height of the slider.
+		 * vertically. When this value changes, the slider's width and height
+		 * values do not change automatically.
 		 */
 		public function get direction():String
 		{
