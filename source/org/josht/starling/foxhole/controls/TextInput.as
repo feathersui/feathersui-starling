@@ -497,7 +497,8 @@ package org.josht.starling.foxhole.controls
 			viewPort.x = (helperPoint.x + this._contentPadding * this.scaleX) * Starling.contentScaleFactor;
 			viewPort.y = (helperPoint.y + this._contentPadding * this.scaleY) * Starling.contentScaleFactor;
 			viewPort.width = Math.max(1, (this.actualWidth - 2 * this._contentPadding ) * Starling.contentScaleFactor * this.scaleX);
-			viewPort.height = Math.max(1, (this.actualHeight - 2 * this._contentPadding ) * Starling.contentScaleFactor * this.scaleY);			if(isNaN(viewPort.width) || isNaN(viewPort.height))
+			viewPort.height = Math.max(1, (this.actualHeight - 2 * this._contentPadding ) * Starling.contentScaleFactor * this.scaleY);
+			if(isNaN(viewPort.width) || isNaN(viewPort.height))
 			{
 				viewPort.width = 1;
 				viewPort.height = 1;
