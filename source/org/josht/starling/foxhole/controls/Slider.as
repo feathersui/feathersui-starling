@@ -367,7 +367,7 @@ package org.josht.starling.foxhole.controls
 			if(!this.track)
 			{
 				this.track = new Button();
-				this.track.name = "foxhole-slider-track";
+				this.track.nameList.add("foxhole-slider-track");
 				this.track.label = "";
 				this.track.addEventListener(TouchEvent.TOUCH, track_touchHandler);
 				this.addChild(this.track);
@@ -376,7 +376,7 @@ package org.josht.starling.foxhole.controls
 			if(!this.thumb)
 			{
 				this.thumb = new Button();
-				this.thumb.name = "foxhole-slider-thumb";
+				this.thumb.nameList.add("foxhole-slider-thumb");
 				this.thumb.label = "";
 				this.thumb.keepDownStateOnRollOut = true;
 				this.thumb.addEventListener(TouchEvent.TOUCH, thumb_touchHandler);

@@ -739,7 +739,7 @@ package org.josht.starling.foxhole.controls
 			if(!this._scroller)
 			{
 				this._scroller = new Scroller();
-				this._scroller.name = "foxhole-list-scroller";
+				this._scroller.nameList.add("foxhole-list-scroller");
 				this._scroller.verticalScrollPolicy = Scroller.SCROLL_POLICY_AUTO;
 				this._scroller.horizontalScrollPolicy = Scroller.SCROLL_POLICY_OFF;
 				this._scroller.onScroll.add(scroller_onScroll);

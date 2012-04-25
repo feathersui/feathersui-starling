@@ -99,6 +99,38 @@ package org.josht.starling.foxhole.core
 			super();
 			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _nameList:TokenList = new TokenList();
+
+		/**
+		 * Contains a list of all names assigned to this control. Names may be
+		 * added, removed, or toggled.
+		 */
+		public function get nameList():TokenList
+		{
+			return this._nameList;
+		}
+
+		/**
+		 * Non-unique identifiers for a Foxhole control that are expected to be
+		 * used in a similar way to classes in HTML/CSS. Typically, these are
+		 * most often used to identify sub-controls.
+		 */
+		override public function get name():String
+		{
+			return this._nameList.value;
+		}
+
+		/**
+		 * @private
+		 */
+		override public function set name(value:String):void
+		{
+			this._nameList.value = value;
+		}
 		
 		/**
 		 * @private

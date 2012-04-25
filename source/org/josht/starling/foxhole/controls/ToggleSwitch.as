@@ -610,7 +610,7 @@ package org.josht.starling.foxhole.controls
 			if(!this.offLabelField)
 			{
 				this.offLabelField = new Label();
-				this.offLabelField.name = "foxhole-toggle-switch-off-label";
+				this.offLabelField.nameList.add("foxhole-toggle-switch-off-label");
 				this.offLabelField.scrollRect = new Rectangle();
 				this.addChild(this.offLabelField);
 			}
@@ -618,7 +618,7 @@ package org.josht.starling.foxhole.controls
 			if(!this.onLabelField)
 			{
 				this.onLabelField = new Label();
-				this.onLabelField.name = "foxhole-toggle-switch-on-label";
+				this.onLabelField.nameList.add("foxhole-toggle-switch-on-label");
 				this.onLabelField.scrollRect = new Rectangle();
 				this.addChild(this.onLabelField);
 			}
@@ -626,7 +626,7 @@ package org.josht.starling.foxhole.controls
 			if(!this.thumb)
 			{
 				this.thumb = new Button();
-				this.thumb.name = "foxhole-toggle-switch-thumb";
+				this.thumb.nameList.add("foxhole-toggle-switch-thumb");
 				this.thumb.label = "";
 				this.thumb.keepDownStateOnRollOut = true;
 				this.thumb.addEventListener(TouchEvent.TOUCH, thumb_touchHandler);

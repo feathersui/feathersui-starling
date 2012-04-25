@@ -25,6 +25,7 @@
 package org.josht.starling.foxhole.controls
 {
 	import org.josht.starling.foxhole.core.FoxholeControl;
+	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.text.BitmapFontTextFormat;
 
 	import starling.display.DisplayObject;
@@ -65,6 +66,11 @@ package org.josht.starling.foxhole.controls
 		 * appear in the center.
 		 */
 		public static const TITLE_ALIGN_PREFER_RIGHT:String = "preferRight";
+
+		/**
+		 * @private
+		 */
+		private static const ITEM_NAME:String = "foxhole-header-item";
 
 		/**
 		 * Constructor.
@@ -130,6 +136,10 @@ package org.josht.starling.foxhole.controls
 			{
 				for each(var item:DisplayObject in this._leftItems)
 				{
+					if(item is FoxholeControl)
+					{
+						FoxholeControl(item).nameList.remove(ITEM_NAME);
+					}
 					item.removeFromParent();
 				}
 			}
@@ -163,6 +173,10 @@ package org.josht.starling.foxhole.controls
 			{
 				for each(var item:DisplayObject in this._rightItems)
 				{
+					if(item is FoxholeControl)
+					{
+						FoxholeControl(item).nameList.remove(ITEM_NAME);
+					}
 					item.removeFromParent();
 				}
 			}
@@ -358,7 +372,7 @@ package org.josht.starling.foxhole.controls
 			if(!this._titleLabel)
 			{
 				this._titleLabel = new Label();
-				this._titleLabel.name = "foxhole-header-title";
+				this._titleLabel.nameList.add("foxhole-header-title");
 				this._titleLabel.touchable = false;
 				this.addChild(this._titleLabel);
 			}
@@ -391,7 +405,10 @@ package org.josht.starling.foxhole.controls
 				{
 					for each(var item:DisplayObject in this._leftItems)
 					{
-						item.name = "foxhole-header-item";
+						if(item is FoxholeControl)
+						{
+							FoxholeControl(item).nameList.add(ITEM_NAME);
+						}
 						this.addChild(item);
 					}
 				}
@@ -403,7 +420,7 @@ package org.josht.starling.foxhole.controls
 				{
 					for each(item in this._rightItems)
 					{
-						item.name = "foxhole-header-item";
+						FoxholeControl(item).nameList.add(ITEM_NAME);
 						this.addChild(item);
 					}
 				}

@@ -1363,7 +1363,7 @@ package org.josht.starling.foxhole.controls
 			if(!this.labelField)
 			{
 				this.labelField = new Label();
-				this.labelField.name = "foxhole-button-label";
+				this.labelField.nameList.add("foxhole-button-label");
 				this.addChild(this.labelField);
 			}
 		}
