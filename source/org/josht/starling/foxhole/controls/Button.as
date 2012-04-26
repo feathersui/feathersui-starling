@@ -469,7 +469,14 @@ package org.josht.starling.foxhole.controls
 			return Vector.<String>([STATE_UP, STATE_DOWN, STATE_DISABLED, STATE_SELECTED_UP, STATE_SELECTED_DOWN]);
 		}
 
+		/**
+		 * @private
+		 */
 		protected var _originalSkinWidth:Number = NaN;
+
+		/**
+		 * @private
+		 */
 		protected var _originalSkinHeight:Number = NaN;
 
 		/**
@@ -1363,7 +1370,7 @@ package org.josht.starling.foxhole.controls
 			if(!this.labelField)
 			{
 				this.labelField = new Label();
-				this.labelField.name = "foxhole-button-label";
+				this.labelField.nameList.add("foxhole-button-label");
 				this.addChild(this.labelField);
 			}
 		}

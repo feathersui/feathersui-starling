@@ -438,7 +438,7 @@ package org.josht.starling.foxhole.controls
 			if(this.inactiveTabs.length == 0)
 			{
 				var tab:Button = new Button();
-				tab.name = "foxhole-tabbar-tab";
+				tab.nameList.add("foxhole-tabbar-tab");
 				tab.isToggle = true;
 				this.toggleGroup.addItem(tab);
 				this.addChild(tab);

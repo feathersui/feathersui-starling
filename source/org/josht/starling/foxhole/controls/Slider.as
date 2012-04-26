@@ -91,7 +91,8 @@ package org.josht.starling.foxhole.controls
 		
 		/**
 		 * Determines if the slider's thumb can be dragged horizontally or
-		 * vertically. Does not change the width and height of the slider.
+		 * vertically. When this value changes, the slider's width and height
+		 * values do not change automatically.
 		 */
 		public function get direction():String
 		{
@@ -367,7 +368,7 @@ package org.josht.starling.foxhole.controls
 			if(!this.track)
 			{
 				this.track = new Button();
-				this.track.name = "foxhole-slider-track";
+				this.track.nameList.add("foxhole-slider-track");
 				this.track.label = "";
 				this.track.addEventListener(TouchEvent.TOUCH, track_touchHandler);
 				this.addChild(this.track);
@@ -376,7 +377,7 @@ package org.josht.starling.foxhole.controls
 			if(!this.thumb)
 			{
 				this.thumb = new Button();
-				this.thumb.name = "foxhole-slider-thumb";
+				this.thumb.nameList.add("foxhole-slider-thumb");
 				this.thumb.label = "";
 				this.thumb.keepDownStateOnRollOut = true;
 				this.thumb.addEventListener(TouchEvent.TOUCH, thumb_touchHandler);
