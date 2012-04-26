@@ -26,7 +26,7 @@ package org.josht.starling.foxhole.controls
 {
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Point;
-	
+
 	import org.josht.starling.display.ScrollRectManager;
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.IToggle;
@@ -34,14 +34,14 @@ package org.josht.starling.foxhole.controls
 	import org.josht.starling.text.BitmapFont;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
-	
+
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.text.BitmapFont;
-	
+
 	/**
 	 * A push (or optionally, toggle) button control.
 	 */
@@ -51,89 +51,89 @@ package org.josht.starling.foxhole.controls
 		 * @private
 		 */
 		protected static const STATE_UP:String = "up";
-		
+
 		/**
 		 * @private
 		 */
 		protected static const STATE_DOWN:String = "down";
-		
+
 		/**
 		 * @private
 		 */
 		protected static const STATE_DISABLED:String = "disabled";
-		
+
 		/**
 		 * @private
 		 */
 		protected static const STATE_SELECTED_UP:String = "selectedUp";
-		
+
 		/**
 		 * @private
 		 */
 		protected static const STATE_SELECTED_DOWN:String = "selectedDown";
-		
+
 		/**
 		 * The icon will be positioned above the label.
 		 */
 		public static const ICON_POSITION_TOP:String = "top";
-		
+
 		/**
 		 * The icon will be positioned to the right of the label.
 		 */
 		public static const ICON_POSITION_RIGHT:String = "right";
-		
+
 		/**
 		 * The icon will be positioned below the label.
 		 */
 		public static const ICON_POSITION_BOTTOM:String = "bottom";
-		
+
 		/**
 		 * The icon will be positioned to the left of the label.
 		 */
 		public static const ICON_POSITION_LEFT:String = "left";
-		
+
 		/**
 		 * The icon will be positioned to the left the label, and the bottom of
 		 * the icon will be aligned to the baseline of the label text.
 		 */
 		public static const ICON_POSITION_LEFT_BASELINE:String = "leftBaseline";
-		
+
 		/**
 		 * The icon will be positioned to the right the label, and the bottom of
 		 * the icon will be aligned to the baseline of the label text.
 		 */
 		public static const ICON_POSITION_RIGHT_BASELINE:String = "rightBaseline";
-		
+
 		/**
 		 * The icon and label will be aligned horizontally to the left edge of the button.
 		 */
 		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
-		
+
 		/**
 		 * The icon and label will be aligned horizontally to the center of the button.
 		 */
 		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
-		
+
 		/**
 		 * The icon and label will be aligned horizontally to the right edge of the button.
 		 */
 		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
-		
+
 		/**
 		 * The icon and label will be aligned vertically to the top edge of the button.
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
-		
+
 		/**
 		 * The icon and label will be aligned vertically to the middle of the button.
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
-		
+
 		/**
 		 * The icon and label will be aligned vertically to the bottom edge of the button.
 		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
-		
+
 		/**
 		 * Constructor.
 		 */
@@ -142,27 +142,27 @@ package org.josht.starling.foxhole.controls
 			this.isQuickHitAreaEnabled = true;
 			this.addEventListener(TouchEvent.TOUCH, touchHandler);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var labelField:Label;
-		
+
 		/**
 		 * @private
 		 */
 		protected var currentSkin:DisplayObject;
-		
+
 		/**
 		 * @private
 		 */
 		protected var currentIcon:DisplayObject;
-		
+
 		/**
 		 * @private
 		 */
 		protected var _touchPointID:int = -1;
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -189,12 +189,12 @@ package org.josht.starling.foxhole.controls
 				this.touchable = true;
 			}
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _currentState:String = STATE_UP;
-		
+
 		/**
 		 * @private
 		 */
@@ -202,7 +202,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return _currentState;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -227,12 +227,12 @@ package org.josht.starling.foxhole.controls
 			this._currentState = value;
 			this.invalidate(INVALIDATION_FLAG_STATE);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _label:String = "";
-		
+
 		/**
 		 * The text displayed on the button.
 		 */
@@ -240,7 +240,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._label;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -258,12 +258,12 @@ package org.josht.starling.foxhole.controls
 			this._label = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _isToggle:Boolean = false;
-		
+
 		/**
 		 * Determines if the button may be selected or unselected when clicked.
 		 */
@@ -271,7 +271,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._isToggle;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -279,23 +279,23 @@ package org.josht.starling.foxhole.controls
 		{
 			this._isToggle = value;
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _isSelected:Boolean = false;
-		
+
 		/**
 		 * Indicates if the button is selected or not. The button may be
 		 * selected programmatically, even if <code>isToggle</code> is false.
-		 * 
+		 *
 		 * @see isToggle
 		 */
 		public function get isSelected():Boolean
 		{
 			return this._isSelected;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -310,12 +310,12 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STATE, INVALIDATION_FLAG_SELECTED);
 			this._onChange.dispatch(this);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _iconPosition:String = ICON_POSITION_LEFT;
-		
+
 		/**
 		 * The location of the icon, relative to the label.
 		 */
@@ -323,7 +323,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._iconPosition;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -336,29 +336,29 @@ package org.josht.starling.foxhole.controls
 			this._iconPosition = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _gap:Number = 10;
-		
+
 		/**
 		 * The space, in pixels, between the icon and the label. Applies to
 		 * either horizontal or vertical spacing, depending on the value of
 		 * <code>iconPosition</code>.
-		 * 
+		 *
 		 * <p>If <code>gap</code> is set to <code>Number.POSITIVE_INFINITY</code>,
 		 * the label and icon will be positioned as far apart as possible. In
 		 * other words, they will be positioned at the edges of the button,
 		 * adjusted for padding.</p>
-		 * 
+		 *
 		 * @see iconPosition
 		 */
 		public function get gap():Number
 		{
 			return this._gap;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -371,12 +371,12 @@ package org.josht.starling.foxhole.controls
 			this._gap = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _horizontalAlign:String = HORIZONTAL_ALIGN_CENTER;
-		
+
 		/**
 		 * The location where the button's content is aligned horizontally (on
 		 * the x-axis).
@@ -385,7 +385,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._horizontalAlign;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -398,12 +398,12 @@ package org.josht.starling.foxhole.controls
 			this._horizontalAlign = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _verticalAlign:String = VERTICAL_ALIGN_MIDDLE;
-		
+
 		/**
 		 * The location where the button's content is aligned vertically (on
 		 * the y-axis).
@@ -412,7 +412,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return _verticalAlign;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -425,12 +425,12 @@ package org.josht.starling.foxhole.controls
 			this._verticalAlign = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _contentPadding:Number = 0;
-		
+
 		/**
 		 * The minimum space, in pixels, between the button's edges and the
 		 * button's content.
@@ -439,7 +439,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return _contentPadding;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -452,7 +452,7 @@ package org.josht.starling.foxhole.controls
 			this._contentPadding = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * Determines if a pressed button should remain in the down state if a
 		 * touch moves outside of the button's bounds. Useful for controls like
@@ -460,7 +460,7 @@ package org.josht.starling.foxhole.controls
 		 * the down state while it is dragged around.
 		 */
 		public var keepDownStateOnRollOut:Boolean = false;
-		
+
 		/**
 		 * @private
 		 */
@@ -471,16 +471,16 @@ package org.josht.starling.foxhole.controls
 
 		protected var _originalSkinWidth:Number = NaN;
 		protected var _originalSkinHeight:Number = NaN;
-		
+
 		/**
 		 * @private
 		 */
 		protected var _defaultSkin:DisplayObject;
-		
+
 		/**
 		 * The skin used when no other skin is defined for the current state.
 		 * Intended for use when multiple states should use the same skin.
-		 * 
+		 *
 		 * @see upSkin
 		 * @see downSkin
 		 * @see disabledSkin
@@ -492,7 +492,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._defaultSkin;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -502,7 +502,7 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			
+
 			if(this._defaultSkin && this._defaultSkin != this._defaultSelectedSkin &&
 				this._defaultSkin != this._upSkin && this._defaultSkin != this._downSkin &&
 				this._defaultSkin != this._selectedUpSkin && this._defaultSkin != this._selectedDownSkin &&
@@ -518,18 +518,18 @@ package org.josht.starling.foxhole.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _defaultSelectedSkin:DisplayObject;
-		
+
 		/**
 		 * The skin used when no other skin is defined for the current state
 		 * when the button is selected. Has a higher priority than
 		 * <code>defaultSkin</code>, but a lower priority than other selected
 		 * skins.
-		 * 
+		 *
 		 * @see defaultSkin
 		 * @see selectedUpSkin
 		 * @see selectedDownSkin
@@ -538,7 +538,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._defaultSelectedSkin;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -548,7 +548,7 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			
+
 			if(this._defaultSelectedSkin && this._defaultSelectedSkin != this._defaultSkin &&
 				this._defaultSelectedSkin != this._upSkin && this._defaultSelectedSkin != this._downSkin &&
 				this._defaultSelectedSkin != this._selectedUpSkin && this._defaultSelectedSkin != this._selectedDownSkin &&
@@ -564,23 +564,23 @@ package org.josht.starling.foxhole.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _upSkin:DisplayObject;
-		
+
 		/**
 		 * The skin used for the button's up state. If <code>null</code>, then
 		 * <code>defaultSkin</code> is used instead.
-		 * 
+		 *
 		 * @see defaultSkin
 		 */
 		public function get upSkin():DisplayObject
 		{
 			return this._upSkin;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -590,7 +590,7 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			
+
 			if(this._upSkin && this._upSkin != this._defaultSkin && this._upSkin != this._defaultSelectedSkin &&
 				this._upSkin != this._downSkin && this._upSkin != this._disabledSkin &&
 				this._upSkin != this._selectedUpSkin && this._upSkin != this._selectedDownSkin)
@@ -605,23 +605,23 @@ package org.josht.starling.foxhole.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _downSkin:DisplayObject;
-		
+
 		/**
 		 * The skin used for the button's down state. If <code>null</code>, then
 		 * <code>defaultSkin</code> is used instead.
-		 * 
+		 *
 		 * @see defaultSkin
 		 */
 		public function get downSkin():DisplayObject
 		{
 			return this._downSkin;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -631,7 +631,7 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			
+
 			if(this._downSkin && this._downSkin != this._defaultSkin && this._downSkin != this._defaultSelectedSkin &&
 				this._downSkin != this._upSkin && this._downSkin != this._disabledSkin &&
 				this._downSkin != this._selectedUpSkin && this._downSkin != this._selectedDownSkin)
@@ -646,23 +646,23 @@ package org.josht.starling.foxhole.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _disabledSkin:DisplayObject;
-		
+
 		/**
 		 * The skin used for the button's disabled state. If <code>null</code>,
 		 * then <code>defaultSkin</code> is used instead.
-		 * 
+		 *
 		 * @see defaultSkin
 		 */
 		public function get disabledSkin():DisplayObject
 		{
 			return this._disabledSkin;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -672,7 +672,7 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			
+
 			if(this._disabledSkin && this._disabledSkin != this._defaultSkin && this._disabledSkin != this._defaultSelectedSkin &&
 				this._disabledSkin != this._upSkin && this._disabledSkin != this._downSkin &&
 				this._disabledSkin != this._selectedUpSkin && this._disabledSkin != this._selectedDownSkin)
@@ -687,18 +687,18 @@ package org.josht.starling.foxhole.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _selectedUpSkin:DisplayObject;
-		
+
 		/**
 		 * The skin used for the button's up state when the button is selected.
 		 * If <code>null</code>, then <code>defaultSelectedSkin</code> is used
 		 * instead. If <code>defaultSelectedSkin</code> is also
 		 * <code>null</code>, then <code>defaultSkin</code> is used.
-		 * 
+		 *
 		 * @see defaultSkin
 		 * @see defaultSelectedSkin
 		 */
@@ -706,7 +706,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._selectedUpSkin;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -716,7 +716,7 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			
+
 			if(this._selectedUpSkin && this._selectedUpSkin != this._defaultSkin && this._selectedUpSkin != this._defaultSelectedSkin &&
 				this._selectedUpSkin != this._upSkin && this._selectedUpSkin != this._downSkin &&
 				this._upSkin != this._disabledSkin && this._selectedUpSkin != this._selectedDownSkin)
@@ -731,18 +731,18 @@ package org.josht.starling.foxhole.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _selectedDownSkin:DisplayObject;
-		
+
 		/**
 		 * The skin used for the button's down state when the button is
 		 * selected. If <code>null</code>, then <code>defaultSelectedSkin</code>
 		 * is used instead. If <code>defaultSelectedSkin</code> is also
 		 * <code>null</code>, then <code>defaultSkin</code> is used.
-		 * 
+		 *
 		 * @see defaultSkin
 		 * @see defaultSelectedSkin
 		 */
@@ -750,7 +750,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._selectedDownSkin;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -760,7 +760,7 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			
+
 			if(this._selectedDownSkin && this._selectedDownSkin != this._defaultSkin && this._selectedDownSkin != this._defaultSelectedSkin &&
 				this._selectedDownSkin != this._upSkin && this._selectedDownSkin != this._downSkin &&
 				this._selectedDownSkin != this._disabledSkin && this._selectedDownSkin != this._selectedUpSkin)
@@ -775,17 +775,17 @@ package org.josht.starling.foxhole.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _defaultTextFormat:BitmapFontTextFormat;
-		
+
 		/**
 		 * The text format used when no other text format is defined for the
 		 * current state. Intended for use when multiple states should use the
 		 * same text format.
-		 * 
+		 *
 		 * @see upTextFormat
 		 * @see downTextFormat
 		 * @see disabledTextFormat
@@ -797,7 +797,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._defaultTextFormat;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -806,23 +806,23 @@ package org.josht.starling.foxhole.controls
 			this._defaultTextFormat = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _upTextFormat:BitmapFontTextFormat;
-		
+
 		/**
 		 * The text format used for the button's up state. If <code>null</code>,
 		 * then <code>defaultTextFormat</code> is used instead.
-		 * 
+		 *
 		 * @see defaultTextFormat
 		 */
 		public function get upTextFormat():BitmapFontTextFormat
 		{
 			return this._upTextFormat;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -831,23 +831,23 @@ package org.josht.starling.foxhole.controls
 			this._upTextFormat = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _downTextFormat:BitmapFontTextFormat;
-		
+
 		/**
 		 * The text format used for the button's down state. If <code>null</code>,
 		 * then <code>defaultTextFormat</code> is used instead.
-		 * 
+		 *
 		 * @see defaultTextFormat
 		 */
 		public function get downTextFormat():BitmapFontTextFormat
 		{
 			return this._downTextFormat;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -856,23 +856,23 @@ package org.josht.starling.foxhole.controls
 			this._downTextFormat = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _disabledTextFormat:BitmapFontTextFormat;
-		
+
 		/**
 		 * The text format used for the button's disabled state. If <code>null</code>,
 		 * then <code>defaultTextFormat</code> is used instead.
-		 * 
+		 *
 		 * @see defaultTextFormat
 		 */
 		public function get disabledTextFormat():BitmapFontTextFormat
 		{
 			return this._disabledTextFormat;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -881,18 +881,18 @@ package org.josht.starling.foxhole.controls
 			this._disabledTextFormat = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _defaultSelectedTextFormat:BitmapFontTextFormat;
-		
+
 		/**
 		 * The text format used when no other text format is defined for the
 		 * current state when the button is selected. Has a higher priority than
 		 * <code>defaultTextFormat</code>, but a lower priority than other
 		 * selected text formats.
-		 * 
+		 *
 		 * @see defaultTextFormat
 		 * @see selectedUpTextFormat
 		 * @see selectedDownTextFormat
@@ -901,7 +901,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._defaultSelectedTextFormat;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -910,18 +910,18 @@ package org.josht.starling.foxhole.controls
 			this._defaultSelectedTextFormat = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _selectedUpTextFormat:BitmapFontTextFormat;
-		
+
 		/**
 		 * The text format used for the button's up state when the button is
 		 * selected. If <code>null</code>, then <code>defaultSelectedTextFormat</code>
 		 * is used instead. If <code>defaultSelectedTextFormat</code> is also
 		 * <code>null</code>, then <code>defaultTextFormat</code> is used.
-		 * 
+		 *
 		 * @see defaultTextFormat
 		 * @see defaultSelectedTextFormat
 		 */
@@ -929,7 +929,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._selectedUpTextFormat;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -938,18 +938,18 @@ package org.josht.starling.foxhole.controls
 			this._selectedUpTextFormat = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _selectedDownTextFormat:BitmapFontTextFormat;
-		
+
 		/**
 		 * The text format used for the button's down state when the button is
 		 * selected. If <code>null</code>, then <code>defaultSelectedTextFormat</code>
 		 * is used instead. If <code>defaultSelectedTextFormat</code> is also
 		 * <code>null</code>, then <code>defaultTextFormat</code> is used.
-		 * 
+		 *
 		 * @see defaultTextFormat
 		 * @see defaultSelectedTextFormat
 		 */
@@ -957,7 +957,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._selectedDownTextFormat;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -966,16 +966,16 @@ package org.josht.starling.foxhole.controls
 			this._selectedDownTextFormat = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _defaultIcon:DisplayObject;
-		
+
 		/**
 		 * The icon used when no other icon is defined for the current state.
 		 * Intended for use when multiple states should use the same icon.
-		 * 
+		 *
 		 * @see upIcon
 		 * @see downIcon
 		 * @see disabledIcon
@@ -987,7 +987,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._defaultIcon;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -997,7 +997,7 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			
+
 			if(this._defaultIcon && this._defaultIcon != this._defaultSelectedIcon &&
 				this._defaultIcon != this._upIcon && this._defaultIcon != this._downIcon &&
 				this._defaultIcon != this._selectedUpIcon && this._defaultIcon != this._selectedDownIcon && 
@@ -1013,18 +1013,18 @@ package org.josht.starling.foxhole.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _defaultSelectedIcon:DisplayObject;
-		
+
 		/**
 		 * The icon used when no other icon is defined for the current state
 		 * when the button is selected. Has a higher priority than
 		 * <code>defaultIcon</code>, but a lower priority than other selected
 		 * icons.
-		 * 
+		 *
 		 * @see defaultIcon
 		 * @see selectedUpIcon
 		 * @see selectedDownIcon
@@ -1033,7 +1033,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._defaultSelectedIcon;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1043,7 +1043,7 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			
+
 			if(this._defaultSelectedIcon && this._defaultSelectedIcon != this._defaultIcon &&
 				this._defaultSelectedIcon != this._upIcon && this._defaultSelectedIcon != this._downIcon &&
 				this._defaultSelectedIcon != this._selectedUpIcon  && this._defaultSelectedIcon != this._selectedDownIcon &&
@@ -1059,23 +1059,23 @@ package org.josht.starling.foxhole.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _upIcon:DisplayObject;
-		
+
 		/**
 		 * The icon used for the button's up state. If <code>null</code>, then
 		 * <code>defaultIcon</code> is used instead.
-		 * 
+		 *
 		 * @see defaultIcon
 		 */
 		public function get upIcon():DisplayObject
 		{
 			return this._upIcon;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1085,7 +1085,7 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			
+
 			if(this._upIcon && this._upIcon != this._defaultIcon && this._upIcon != this._defaultSelectedIcon &&
 				this._upIcon != this._downIcon && this._upIcon != this._disabledIcon &&
 				this._upIcon != this._selectedUpIcon && this._upIcon != this._selectedDownIcon)
@@ -1100,23 +1100,23 @@ package org.josht.starling.foxhole.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _downIcon:DisplayObject;
-		
+
 		/**
 		 * The icon used for the button's down state. If <code>null</code>, then
 		 * <code>defaultIcon</code> is used instead.
-		 * 
+		 *
 		 * @see defaultIcon
 		 */
 		public function get downIcon():DisplayObject
 		{
 			return this._downIcon;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1126,7 +1126,7 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			
+
 			if(this._downIcon && this._downIcon != this._defaultIcon && this._downIcon != this._defaultSelectedIcon &&
 				this._downIcon != this._upIcon && this._downIcon != this._disabledIcon &&
 				this._downIcon != this._selectedUpIcon && this._downIcon != this._selectedDownIcon)
@@ -1141,23 +1141,23 @@ package org.josht.starling.foxhole.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _disabledIcon:DisplayObject;
-		
+
 		/**
 		 * The icon used for the button's disabled state. If <code>null</code>, then
 		 * <code>defaultIcon</code> is used instead.
-		 * 
+		 *
 		 * @see defaultIcon
 		 */
 		public function get disabledIcon():DisplayObject
 		{
 			return this._disabledIcon;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1167,7 +1167,7 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			
+
 			if(this._disabledIcon && this._disabledIcon != this._defaultIcon && this._disabledIcon != this._defaultSelectedIcon &&
 				this._disabledIcon != this._upIcon && this._disabledIcon != this._downIcon &&
 				this._disabledIcon != this._selectedUpIcon && this._disabledIcon != this._selectedDownIcon)
@@ -1182,18 +1182,18 @@ package org.josht.starling.foxhole.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _selectedUpIcon:DisplayObject;
-		
+
 		/**
 		 * The icon used for the button's up state when the button is
 		 * selected. If <code>null</code>, then <code>defaultSelectedIcon</code>
 		 * is used instead. If <code>defaultSelectedIcon</code> is also
 		 * <code>null</code>, then <code>defaultIcon</code> is used.
-		 * 
+		 *
 		 * @see defaultIcon
 		 * @see defaultSelectedIcon
 		 */
@@ -1201,7 +1201,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._selectedUpIcon;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1211,7 +1211,7 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			
+
 			if(this._selectedUpIcon && this._selectedUpIcon != this._defaultIcon && this._selectedUpIcon != this._defaultSelectedIcon &&
 				this._selectedUpIcon != this._upIcon && this._selectedUpIcon != this._downIcon &&
 				this._selectedUpIcon != this._selectedDownIcon && this._selectedUpIcon != this._disabledIcon)
@@ -1226,18 +1226,18 @@ package org.josht.starling.foxhole.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _selectedDownIcon:DisplayObject;
-		
+
 		/**
 		 * The icon used for the button's down state when the button is
 		 * selected. If <code>null</code>, then <code>defaultSelectedIcon</code>
 		 * is used instead. If <code>defaultSelectedIcon</code> is also
 		 * <code>null</code>, then <code>defaultIcon</code> is used.
-		 * 
+		 *
 		 * @see defaultIcon
 		 * @see defaultSelectedIcon
 		 */
@@ -1245,7 +1245,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._selectedDownIcon;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1255,7 +1255,7 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			
+
 			if(this._selectedDownIcon && this._selectedDownIcon != this._defaultIcon && this._selectedDownIcon != this._defaultSelectedIcon &&
 				this._selectedDownIcon != this._upIcon && this._selectedDownIcon != this._downIcon &&
 				this._selectedDownIcon != this._selectedUpIcon && this._selectedDownIcon != this._disabledIcon)
@@ -1270,12 +1270,12 @@ package org.josht.starling.foxhole.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _autoFlatten:Boolean = false;
-		
+
 		/**
 		 * Determines if the button should automatically call <code>flatten()</code>
 		 * after it finishes drawing. In some cases, this will improve
@@ -1285,7 +1285,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._autoFlatten;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1302,12 +1302,12 @@ package org.josht.starling.foxhole.controls
 				this.flatten();
 			}
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _onPress:Signal = new Signal(Button);
-		
+
 		/**
 		 * Dispatched when the button enters the down state.
 		 */
@@ -1315,12 +1315,12 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._onPress;
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _onRelease:Signal = new Signal(Button);
-		
+
 		/**
 		 * Dispatched when the button is released while the touch is still
 		 * within the button's bounds (a tap or click that should trigger the
@@ -1330,12 +1330,12 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._onRelease;
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _onChange:Signal = new Signal(Button);
-		
+
 		/**
 		 * Dispatched when the button is selected or unselected.
 		 */
@@ -1343,7 +1343,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._onChange;
 		}
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -1354,7 +1354,7 @@ package org.josht.starling.foxhole.controls
 			this._onChange.removeAll();
 			super.dispose();
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1367,7 +1367,7 @@ package org.josht.starling.foxhole.controls
 				this.addChild(this.labelField);
 			}
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1377,7 +1377,7 @@ package org.josht.starling.foxhole.controls
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
-			
+
 			if(dataInvalid)
 			{
 				this.labelField.text = this._label;
@@ -1392,12 +1392,12 @@ package org.josht.starling.foxhole.controls
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
-			
+
 			if(stylesInvalid || stateInvalid || sizeInvalid)
 			{
 				this.scaleSkin();
 			}
-			
+
 			if(stylesInvalid || stateInvalid || dataInvalid || sizeInvalid)
 			{
 				if(this.currentSkin is FoxholeControl)
@@ -1411,7 +1411,7 @@ package org.josht.starling.foxhole.controls
 				this.labelField.validate();
 				this.layoutContent();
 			}
-			
+
 			if(this._autoFlatten)
 			{
 				this.unflatten();
@@ -1487,13 +1487,13 @@ package org.josht.starling.foxhole.controls
 			this.setSizeInternal(newWidth, newHeight, false);
 			return true;
 		}
-		
+
 		/**
+		 * Update visible property for all skin states and set currentSkin
 		 * @private
 		 */
-		protected function refreshSkin():void
-		{	
-			this.currentSkin = null;
+		protected function updateSkinStates():void
+		{
 			if(this._currentState == STATE_UP)
 			{
 				this.currentSkin = this._upSkin;
@@ -1502,7 +1502,7 @@ package org.josht.starling.foxhole.controls
 			{
 				this._upSkin.visible = false;
 			}
-			
+
 			if(this._currentState == STATE_DOWN)
 			{
 				this.currentSkin = this._downSkin;
@@ -1511,7 +1511,7 @@ package org.josht.starling.foxhole.controls
 			{
 				this._downSkin.visible = false;
 			}
-			
+
 			if(this._currentState == STATE_DISABLED)
 			{
 				this.currentSkin = this._disabledSkin;
@@ -1520,7 +1520,7 @@ package org.josht.starling.foxhole.controls
 			{
 				this._disabledSkin.visible = false;
 			}
-			
+
 			if(this._currentState == STATE_SELECTED_UP)
 			{
 				this.currentSkin = this._selectedUpSkin;
@@ -1529,7 +1529,7 @@ package org.josht.starling.foxhole.controls
 			{
 				this._selectedUpSkin.visible = false;
 			}
-			
+
 			if(this._currentState == STATE_SELECTED_DOWN)
 			{
 				this.currentSkin = this._selectedDownSkin;
@@ -1538,7 +1538,7 @@ package org.josht.starling.foxhole.controls
 			{
 				this._selectedDownSkin.visible = false;
 			}
-			
+
 			if(!this.currentSkin)
 			{
 				if(this._isSelected)
@@ -1569,7 +1569,17 @@ package org.josht.starling.foxhole.controls
 					this._defaultSelectedSkin.visible = false;
 				}
 			}
-			
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshSkin():void
+		{	
+			this.currentSkin = null;
+
+			updateSkinStates();
+
 			if(this.currentSkin)
 			{
 				this.currentSkin.visible = true;
@@ -1587,13 +1597,13 @@ package org.josht.starling.foxhole.controls
 				trace("No skin defined for state \"" + this._currentState + "\" and there is no default value.");
 			}
 		}
-		
+
 		/**
+		 * Update visible property for all icons and set currentIcon
 		 * @private
 		 */
-		protected function refreshIcon():void
+		protected function updateIcons():void
 		{
-			this.currentIcon = null;
 			if(this._currentState == STATE_UP)
 			{
 				this.currentIcon = this._upIcon;
@@ -1602,7 +1612,7 @@ package org.josht.starling.foxhole.controls
 			{
 				this._upIcon.visible = false;
 			}
-			
+
 			if(this._currentState == STATE_DOWN)
 			{
 				this.currentIcon = this._downIcon;
@@ -1611,7 +1621,7 @@ package org.josht.starling.foxhole.controls
 			{
 				this._downIcon.visible = false;
 			}
-			
+
 			if(this._currentState == STATE_DISABLED)
 			{
 				this.currentIcon = this._disabledIcon;
@@ -1620,7 +1630,7 @@ package org.josht.starling.foxhole.controls
 			{
 				this._disabledIcon.visible = false;
 			}
-			
+
 			if(this._currentState == STATE_SELECTED_UP)
 			{
 				this.currentIcon = this._selectedUpIcon;
@@ -1629,7 +1639,7 @@ package org.josht.starling.foxhole.controls
 			{
 				this._selectedUpIcon.visible = false;
 			}
-			
+
 			if(this._currentState == STATE_SELECTED_DOWN)
 			{
 				this.currentIcon = this._selectedDownIcon;
@@ -1638,7 +1648,17 @@ package org.josht.starling.foxhole.controls
 			{
 				this._selectedDownIcon.visible = false;
 			}
-			
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshIcon():void
+		{
+			this.currentIcon = null;
+
+			updateIcons();
+
 			if(!this.currentIcon)
 			{
 				if(this._isSelected)
@@ -1669,13 +1689,13 @@ package org.josht.starling.foxhole.controls
 					this._defaultSelectedIcon.visible = false;
 				}
 			}
-			
+
 			if(this.currentIcon)
 			{
 				this.currentIcon.visible = true;
 			}
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1713,13 +1733,13 @@ package org.josht.starling.foxhole.controls
 					format = this._defaultTextFormat;
 				}
 			}
-			
+
 			if(format)
 			{
 				this.labelField.textFormat = format;
 			}
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1738,7 +1758,7 @@ package org.josht.starling.foxhole.controls
 				this.currentSkin.height = this.actualHeight;
 			}
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1758,7 +1778,7 @@ package org.josht.starling.foxhole.controls
 				this.positionLabelOrIcon(this.currentIcon)
 			}
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1789,7 +1809,7 @@ package org.josht.starling.foxhole.controls
 				displayObject.y = (this.actualHeight - displayObject.height) / 2;
 			}
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1875,7 +1895,7 @@ package org.josht.starling.foxhole.controls
 					this.currentIcon.x = this.labelField.x - this._gap - this.currentIcon.width;
 				}
 			}
-			
+
 			if(this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_RIGHT)
 			{
 				this.currentIcon.y = this.labelField.y + (this.labelField.height - this.currentIcon.height) / 2;
@@ -1904,7 +1924,7 @@ package org.josht.starling.foxhole.controls
 				}
 			}
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1955,3 +1975,4 @@ package org.josht.starling.foxhole.controls
 		}
 	}
 }
+
