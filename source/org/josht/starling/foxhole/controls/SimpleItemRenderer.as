@@ -166,18 +166,23 @@ package org.josht.starling.foxhole.controls
 		override protected function draw():void
 		{
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
-			if(dataInvalid)
-			{
-				if(this._owner)
-				{
-					this._label = this._owner.itemToLabel(this._data);
-				}
-				else
-				{
-					this._label = "";
-				}
-			}
+			if(dataInvalid)			
+				commitDataChanges();
+
 			super.draw();
+		}
+
+		/** Commits data changes */		
+		protected function commitDataChanges():void
+		{
+			if(this._owner)
+			{
+				this._label = this._owner.itemToLabel(this._data);
+			}
+			else
+			{
+				this._label = "";
+			}
 		}
 
 		/**

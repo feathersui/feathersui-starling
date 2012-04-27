@@ -28,10 +28,10 @@ package org.josht.starling.foxhole.controls
 	import org.josht.starling.foxhole.data.ListCollection;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
-	
+
 	import starling.display.DisplayObject;
 	import starling.events.TouchEvent;
-	
+
 	/**
 	 * Displays a one-dimensional list of items. Supports scrolling.
 	 */
@@ -42,19 +42,19 @@ package org.josht.starling.foxhole.controls
 		 * space, it will be aligned to the top.
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
-		
+
 		/**
 		 * If the list content does not fill the entire available vertical
 		 * space, it will be aligned to the middle.
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
-		
+
 		/**
 		 * If the list content does not fill the entire available vertical
 		 * space, it will be aligned to the bottom.
 		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
-		
+
 		/**
 		 * Constructor.
 		 */
@@ -62,21 +62,21 @@ package org.josht.starling.foxhole.controls
 		{
 			super();
 		}
-		
+
 		protected var _background:DisplayObject;
 		protected var _scroller:Scroller;
 		protected var _dataContainer:ListDataContainer;
-		
+
 		/**
 		 * @private
 		 */
 		private var _scrollToIndex:int = -1;
-		
+
 		/**
 		 * @private
 		 */
 		private var _verticalScrollPosition:Number = 0;
-		
+
 		/**
 		 * The number of pixels the list has been scrolled vertically (on
 		 * the y-axis).
@@ -85,7 +85,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._verticalScrollPosition;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -99,12 +99,12 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 			this._onScroll.dispatch(this);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _maxVerticalScrollPosition:Number = 0;
-		
+
 		/**
 		 * The maximum number of pixels the list may be scrolled vertically (on
 		 * the y-axis). This value is automatically calculated based on the
@@ -118,12 +118,12 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._maxVerticalScrollPosition;
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _dataProvider:ListCollection;
-		
+
 		/**
 		 * The collection of data displayed by the list.
 		 */
@@ -131,7 +131,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._dataProvider;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -145,12 +145,12 @@ package org.josht.starling.foxhole.controls
 			this.verticalScrollPosition = 0; //reset the scroll position
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _labelField:String = "label";
-		
+
 		/**
 		 * The field in each item that contains the label text. If the item does
 		 * not have this field, then the field name is ignored.
@@ -159,7 +159,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._labelField;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -172,12 +172,12 @@ package org.josht.starling.foxhole.controls
 			this._labelField = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _labelFunction:Function;
-		
+
 		/**
 		 * A function used to generate a label for a specific item.
 		 */
@@ -185,7 +185,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._labelFunction;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -194,12 +194,12 @@ package org.josht.starling.foxhole.controls
 			this._labelFunction = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _isSelectable:Boolean = true;
-		
+
 		/**
 		 * Determines if an item in the list may be selected.
 		 */
@@ -207,7 +207,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._isSelectable;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -224,12 +224,12 @@ package org.josht.starling.foxhole.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _selectedIndex:int = -1;
-		
+
 		/**
 		 * The index of the currently selected item. Returns -1 if no item is
 		 * selected.
@@ -238,7 +238,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._selectedIndex;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -252,7 +252,7 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 			this._onChange.dispatch(this);
 		}
-		
+
 		/**
 		 * The currently selected item. Returns null if no item is selected.
 		 */
@@ -262,10 +262,10 @@ package org.josht.starling.foxhole.controls
 			{
 				return null;
 			}
-			
+
 			return this._dataProvider.getItemAt(this._selectedIndex);
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -273,12 +273,12 @@ package org.josht.starling.foxhole.controls
 		{
 			this.selectedIndex = this._dataProvider.getItemIndex(value);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _clipContent:Boolean = false;
-		
+
 		/**
 		 * If true, the list's content will be clipped to the lists's bounds. In
 		 * other words, anything appearing outside the list's bounds will
@@ -288,7 +288,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._clipContent;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -300,15 +300,13 @@ package org.josht.starling.foxhole.controls
 			}
 			this._clipContent = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-		
-		private var _isMoving:Boolean = false;
-		
+		}		
+
 		/**
 		 * @private
 		 */
 		protected var _onChange:Signal = new Signal(List);
-		
+
 		/**
 		 * Dispatched when the selected item changes.
 		 */
@@ -316,12 +314,12 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._onChange;
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _onScroll:Signal = new Signal(List);
-		
+
 		/**
 		 * Dispatched when the list is scrolled.
 		 */
@@ -329,12 +327,12 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._onScroll;
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _onItemTouch:Signal = new Signal(List, Object, int, TouchEvent);
-		
+
 		/**
 		 * Dispatched when an item in the list is touched (in any touch phase).
 		 */
@@ -342,12 +340,12 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._onItemTouch;
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _scrollerProperties:Object = {};
-		
+
 		/**
 		 * A set of key/value pairs to be passed down to the list's scroller
 		 * instance. The scroller is a Foxhole Scroller control.
@@ -356,7 +354,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._scrollerProperties;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -373,7 +371,7 @@ package org.josht.starling.foxhole.controls
 			this._scrollerProperties = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -385,7 +383,7 @@ package org.josht.starling.foxhole.controls
 		 * that cannot be shared (such as display objects that need to be added
 		 * to the display list) should be passed to item renderers in another
 		 * way (such as with an <code>AddedWatcher</code>).
-		 * 
+		 *
 		 * @see AddedWatcher
 		 */
 		public function get itemRendererProperties():Object
@@ -409,12 +407,12 @@ package org.josht.starling.foxhole.controls
 			this._itemRendererProperties = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _backgroundSkin:DisplayObject;
-		
+
 		/**
 		 * A display object displayed behind the item renderers.
 		 */
@@ -422,7 +420,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._backgroundSkin;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -432,7 +430,7 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			
+
 			if(this._backgroundSkin && this._backgroundSkin != this._backgroundDisabledSkin)
 			{
 				this.removeChild(this._backgroundSkin);
@@ -445,12 +443,12 @@ package org.josht.starling.foxhole.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _backgroundDisabledSkin:DisplayObject;
-		
+
 		/**
 		 * A background to display when the list is disabled.
 		 */
@@ -458,7 +456,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._backgroundDisabledSkin;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -468,7 +466,7 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			
+
 			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin != this._backgroundSkin)
 			{
 				this.removeChild(this._backgroundDisabledSkin);
@@ -481,12 +479,12 @@ package org.josht.starling.foxhole.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _contentPadding:Number = 0;
-		
+
 		/**
 		 * The space, in pixels, around the edges of the list's content.
 		 */
@@ -494,7 +492,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return _contentPadding;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -507,16 +505,16 @@ package org.josht.starling.foxhole.controls
 			this._contentPadding = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _verticalAlign:String = VERTICAL_ALIGN_TOP;
-		
+
 		/**
 		 * If the list's content height is less than the list's height, it will
 		 * be aligned to the top, middle, or bottom of the list.
-		 * 
+		 *
 		 * @see VERTICAL_ALIGN_TOP
 		 * @see VERTICAL_ALIGN_MIDDLE
 		 * @see VERTICAL_ALIGN_BOTTOM
@@ -525,7 +523,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return _verticalAlign;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -538,12 +536,12 @@ package org.josht.starling.foxhole.controls
 			this._verticalAlign = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _itemRendererType:Class = SimpleItemRenderer;
-		
+
 		/**
 		 * The class used to instantiate item renderers.
 		 */
@@ -551,7 +549,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._itemRendererType;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -561,27 +559,27 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			
+
 			this._itemRendererType = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _itemRendererFunction:Function;
-		
+
 		/**
 		 * A function called that is expected to return a new item renderer. Has
 		 * a higher priority than <code>itemRendererType</code>.
-		 * 
+		 *
 		 * @see itemRendererType
 		 */
 		public function get itemRendererFunction():Function
 		{
 			return this._itemRendererFunction;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -591,16 +589,16 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			
+
 			this._itemRendererFunction = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _typicalItem:Object = null;
-		
+
 		/**
 		 * Used to auto-size the list. If the list's width or height is NaN, the
 		 * list will try to automatically pick an ideal size. This item is
@@ -610,7 +608,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._typicalItem;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -623,12 +621,12 @@ package org.josht.starling.foxhole.controls
 			this._typicalItem = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _useVirtualLayout:Boolean = true;
-		
+
 		/**
 		 * Determines if the list creates item renderers for every single item
 		 * (<code>false</code>), or if it only creates enough item renderers to
@@ -639,7 +637,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._useVirtualLayout;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -652,7 +650,7 @@ package org.josht.starling.foxhole.controls
 			this._useVirtualLayout = value;
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
-		
+
 		/**
 		 * Sets a single property on the list's scroller instance. The
 		 * scroller is a Foxhole Scroller control.
@@ -662,7 +660,7 @@ package org.josht.starling.foxhole.controls
 			this._scrollerProperties[propertyName] = propertyValue;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * Sets a property value for all of the list's item renderers. This
 		 * property will be shared by all item renderers, so skins and similar
@@ -674,7 +672,7 @@ package org.josht.starling.foxhole.controls
 			this._itemRendererProperties[propertyName] = propertyValue;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * Using <code>labelField</code> and <code>labelFunction</code>,
 		 * generates a label for a particular item. May be called by item
@@ -697,7 +695,7 @@ package org.josht.starling.foxhole.controls
 			}
 			return "";
 		}
-		
+
 		/**
 		 * Scrolls the list so that the specified item is visible.
 		 */
@@ -706,7 +704,7 @@ package org.josht.starling.foxhole.controls
 			this._scrollToIndex = index;
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -717,7 +715,7 @@ package org.josht.starling.foxhole.controls
 			this._onItemTouch.removeAll();
 			super.dispose();
 		}
-		
+
 		/**
 		 * If the user is dragging the scroll, calling stopScrolling() will
 		 * cause the list to ignore the drag.
@@ -730,7 +728,7 @@ package org.josht.starling.foxhole.controls
 			}
 			this._scroller.stopScrolling();
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -745,7 +743,7 @@ package org.josht.starling.foxhole.controls
 				this._scroller.onScroll.add(scroller_onScroll);
 				this.addChild(this._scroller);
 			}
-			
+
 			if(!this._dataContainer)
 			{
 				this._dataContainer = new ListDataContainer();
@@ -755,7 +753,7 @@ package org.josht.starling.foxhole.controls
 				this._scroller.viewPort = this._dataContainer;
 			}
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -765,17 +763,17 @@ package org.josht.starling.foxhole.controls
 			var scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
-			
+
 			if(stylesInvalid)
 			{
 				this.refreshScrollerStyles();
 			}
-			
+
 			if(sizeInvalid || stylesInvalid || stateInvalid)
 			{
 				this.refreshBackgroundSkin();
 			}
-			
+
 			if(!isNaN(this.explicitWidth))
 			{
 				this._dataContainer.width = this.explicitWidth - 2 * this._contentPadding;
@@ -799,9 +797,9 @@ package org.josht.starling.foxhole.controls
 			this._dataContainer.useVirtualLayout = this._useVirtualLayout;
 			this._dataContainer.verticalScrollPosition = this._verticalScrollPosition;
 			this._dataContainer.validate();
-			
+
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
-			
+
 			if(this._scrollToIndex >= 0 && this._dataProvider)
 			{
 				const rowHeight:Number = this._dataContainer.height / this._dataProvider.length;
@@ -809,7 +807,7 @@ package org.josht.starling.foxhole.controls
 				this.verticalScrollPosition = rowHeight * Math.max(0, Math.min(this._dataProvider.length - visibleRowCount, this._scrollToIndex - visibleRowCount / 2));
 				this._scrollToIndex = -1;
 			}
-			
+
 			this._scroller.isEnabled = this._isEnabled;
 			this._scroller.width = this.actualWidth - 2 * this._contentPadding;
 			this._scroller.height = this.actualHeight - 2 * this._contentPadding;
@@ -848,7 +846,7 @@ package org.josht.starling.foxhole.controls
 			this.setSizeInternal(newWidth, newHeight, false);
 			return true;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -863,7 +861,7 @@ package org.josht.starling.foxhole.controls
 				}
 			}
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -889,7 +887,7 @@ package org.josht.starling.foxhole.controls
 				backgroundSkin.height = this.actualHeight;
 			}
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -897,7 +895,7 @@ package org.josht.starling.foxhole.controls
 		{
 			this.verticalScrollPosition = this._scroller.verticalScrollPosition;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -905,7 +903,7 @@ package org.josht.starling.foxhole.controls
 		{
 			this.selectedIndex = this._dataContainer.selectedIndex;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -915,3 +913,4 @@ package org.josht.starling.foxhole.controls
 		}
 	}
 }
+
