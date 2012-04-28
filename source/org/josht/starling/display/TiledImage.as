@@ -28,9 +28,9 @@ package org.josht.starling.display
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
-	import starling.core.QuadBatch;
 	import starling.core.RenderSupport;
 	import starling.display.DisplayObject;
+	import starling.display.QuadBatch;
 	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;
 	import starling.utils.transformCoords;

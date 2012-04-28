@@ -29,9 +29,9 @@ package org.josht.starling.foxhole.controls
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.text.BitmapFontTextFormat;
 
-	import starling.core.QuadBatch;
 	import starling.core.RenderSupport;
 	import starling.display.Image;
+	import starling.display.QuadBatch;
 	import starling.text.BitmapChar;
 	import starling.text.BitmapFont;
 	import starling.textures.TextureSmoothing;
