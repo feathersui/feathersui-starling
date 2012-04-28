@@ -139,23 +139,29 @@ package org.josht.starling.foxhole.controls
 		 */
 		private var _stateDelayTimer:Timer;
 
+		/** Down will be applied with delay */
+		protected var _useStateDelayTimer:Boolean=true;
+
 		/**
 		 * @private
 		 */
 		override protected function set currentState(value:String):void
 		{
-			if(this._stateDelayTimer)
-			{
-				this._delayedCurrentState = value;
-				return;
-			}
-			else if(!this._stateDelayTimer && value.toLowerCase().indexOf("down") >= 0)
-			{
-				this._delayedCurrentState = value;
-				this._stateDelayTimer = new Timer(DOWN_STATE_DELAY_MS, 1);
-				this._stateDelayTimer.addEventListener(TimerEvent.TIMER_COMPLETE, stateDelayTimer_timerCompleteHandler);
-				this._stateDelayTimer.start();
-				return;
+			if (_useStateDelayTimer)
+			{				
+				if(this._stateDelayTimer)
+				{
+					this._delayedCurrentState = value;
+					return;
+				}
+				else if(!this._stateDelayTimer && value.toLowerCase().indexOf("down") >= 0)
+				{
+					this._delayedCurrentState = value;
+					this._stateDelayTimer = new Timer(DOWN_STATE_DELAY_MS, 1);
+					this._stateDelayTimer.addEventListener(TimerEvent.TIMER_COMPLETE, stateDelayTimer_timerCompleteHandler);
+					this._stateDelayTimer.start();
+					return;
+				}
 			}
 			super.currentState = value;
 		}
