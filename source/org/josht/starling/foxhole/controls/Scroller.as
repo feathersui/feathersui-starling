@@ -49,7 +49,6 @@ package org.josht.starling.foxhole.controls
 	import org.osflash.signals.Signal;
 
 	import starling.display.DisplayObject;
-	import starling.display.Quad;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -157,16 +156,12 @@ package org.josht.starling.foxhole.controls
 		public function Scroller()
 		{
 			super();
-			
-			this._background = new Quad(10, 10, 0xff00ff);
-			this._background.alpha = 0;
-			this.addChild(this._background);
+
 			this._viewPortWrapper = new Sprite();
 			this.addChild(this._viewPortWrapper);
 			this.addEventListener(TouchEvent.TOUCH, touchHandler);
 		}
-		
-		private var _background:Quad;
+
 		private var _touchPointID:int = -1;
 		private var _startTouchX:Number;
 		private var _startTouchY:Number;
@@ -577,6 +572,22 @@ package org.josht.starling.foxhole.controls
 				}
 			}
 		}
+
+		override public function hitTest(localPoint:Point, forTouch:Boolean = false):DisplayObject
+		{
+			//first check the children for touches
+			const result:DisplayObject = super.hitTest(localPoint, forTouch);
+			if(!result)
+			{
+				//we want to register touches in our hitArea as a last resort
+				if(forTouch && (!this.visible || !this.touchable))
+				{
+					return null;
+				}
+				return this._hitArea.containsPoint(localPoint) ? this : null;
+			}
+			return result;
+		}
 		
 		/**
 		 * @private
@@ -597,12 +608,6 @@ package org.josht.starling.foxhole.controls
 			const clippingInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_CLIPPING);
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
-			
-			if(sizeInvalid)
-			{
-				this._background.width = this.actualWidth;
-				this._background.height = this.actualHeight;
-			}
 			
 			if(sizeInvalid || dataInvalid)
 			{
