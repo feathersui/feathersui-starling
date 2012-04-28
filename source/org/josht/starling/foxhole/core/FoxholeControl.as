@@ -154,8 +154,11 @@ package org.josht.starling.foxhole.core
 		{
 			this._isQuickHitAreaEnabled = value;
 		}
-		
-		private var _hitArea:Rectangle = new Rectangle();
+
+		/**
+		 * @private
+		 */
+		protected var _hitArea:Rectangle = new Rectangle();
 		
 		/**
 		 * @private
