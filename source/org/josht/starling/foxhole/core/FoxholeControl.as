@@ -178,6 +178,7 @@ package org.josht.starling.foxhole.core
 		 * The current invalidation flags.
 		 */
 		private var _invalidationFlags:Dictionary = new Dictionary(true);
+		private var _delayedInvalidationFlags:Dictionary = new Dictionary(true);
 		
 		/**
 		 * @private
@@ -470,15 +471,29 @@ package org.josht.starling.foxhole.core
 			}
 			for each(var flag:String in rest)
 			{
-				if(flag == INVALIDATION_FLAG_ALL)
+				if(this._isValidating)
 				{
-					continue;
+					this._delayedInvalidationFlags[flag] = true;
 				}
-				this._invalidationFlags[flag] = true;
+				else
+				{
+					if(flag == INVALIDATION_FLAG_ALL)
+					{
+						continue;
+					}
+					this._invalidationFlags[flag] = true;
+				}
 			}
 			if(rest.length == 0 || rest.indexOf(INVALIDATION_FLAG_ALL) >= 0)
 			{
-				this._isAllInvalid = true;
+				if(this._isValidating)
+				{
+					this._delayedInvalidationFlags[INVALIDATION_FLAG_ALL] = true;
+				}
+				else
+				{
+					this._isAllInvalid = true;
+				}
 			}
 		}
 		
@@ -499,6 +514,18 @@ package org.josht.starling.foxhole.core
 				delete this._invalidationFlags[flag];
 			}
 			this._isAllInvalid = false;
+			for(flag in this._delayedInvalidationFlags)
+			{
+				if(flag == INVALIDATION_FLAG_ALL)
+				{
+					this._isAllInvalid = true;
+				}
+				else
+				{
+					this._invalidationFlags[flag] = true;
+				}
+				delete this._delayedInvalidationFlags[flag];
+			}
 			this._isValidating = false;
 		}
 		
