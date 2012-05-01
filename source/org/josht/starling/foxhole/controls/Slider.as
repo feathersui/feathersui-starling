@@ -25,18 +25,18 @@ OTHER DEALINGS IN THE SOFTWARE.
 package org.josht.starling.foxhole.controls
 {
 	import flash.geom.Point;
-	
+
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.utils.math.clamp;
 	import org.josht.utils.math.roundToNearest;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
-	
+
 	import starling.display.DisplayObject;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
-	
+
 	/**
 	 * Select a value between a minimum and a maximum by dragging a thumb over
 	 * the bounds of a track.
@@ -64,7 +64,12 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected var track:Button;
+		protected var minimumTrack:Button;
+
+		/**
+		 * @private
+		 */
+		protected var maximumTrack:Button;
 		
 		/**
 		 * @private
@@ -262,27 +267,27 @@ package org.josht.starling.foxhole.controls
 			this._showThumb = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
-		private var _trackProperties:Object = {};
-		
+		private var _minimumTrackProperties:Object = {};
+
 		/**
-		 * A set of key/value pairs to be passed down to the slider's track
-		 * instance. The track is a Foxhole Button control.
+		 * A set of key/value pairs to be passed down to the slider's minimum
+		 * track instance. The minimum track is a Foxhole Button control.
 		 */
-		public function get trackProperties():Object
+		public function get minimumTrackProperties():Object
 		{
-			return this._trackProperties;
+			return this._minimumTrackProperties;
 		}
-		
+
 		/**
 		 * @private
 		 */
-		public function set trackProperties(value:Object):void
+		public function set minimumTrackProperties(value:Object):void
 		{
-			if(this._trackProperties == value)
+			if(this._minimumTrackProperties == value)
 			{
 				return;
 			}
@@ -290,7 +295,38 @@ package org.josht.starling.foxhole.controls
 			{
 				value = {};
 			}
-			this._trackProperties = value;
+			this._minimumTrackProperties = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+		
+		/**
+		 * @private
+		 */
+		private var _maximumTrackProperties:Object = {};
+		
+		/**
+		 * A set of key/value pairs to be passed down to the slider's maximum
+		 * track instance. The maximum track is a Foxhole Button control.
+		 */
+		public function get maximumTrackProperties():Object
+		{
+			return this._maximumTrackProperties;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set maximumTrackProperties(value:Object):void
+		{
+			if(this._maximumTrackProperties == value)
+			{
+				return;
+			}
+			if(!value)
+			{
+				value = {};
+			}
+			this._maximumTrackProperties = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
@@ -342,12 +378,22 @@ package org.josht.starling.foxhole.controls
 		}
 		
 		/**
-		 * Sets a single property on the slider's track instance. The track is
-		 * a Foxhole Button control.
+		 * Sets a single property on the slider's minimum track instance. The
+		 * minimum track is a Foxhole Button control.
 		 */
-		public function setTrackProperty(propertyName:String, propertyValue:Object):void
+		public function setMinimumTrackProperty(propertyName:String, propertyValue:Object):void
 		{
-			this._trackProperties[propertyName] = propertyValue;
+			this._minimumTrackProperties[propertyName] = propertyValue;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * Sets a single property on the slider's maximum track instance. The
+		 * maximum track is a Foxhole Button control.
+		 */
+		public function setMaximumTrackProperty(propertyName:String, propertyValue:Object):void
+		{
+			this._maximumTrackProperties[propertyName] = propertyValue;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
@@ -365,13 +411,22 @@ package org.josht.starling.foxhole.controls
 		 */
 		override protected function initialize():void
 		{
-			if(!this.track)
+			if(!this.minimumTrack)
 			{
-				this.track = new Button();
-				this.track.nameList.add("foxhole-slider-track");
-				this.track.label = "";
-				this.track.addEventListener(TouchEvent.TOUCH, track_touchHandler);
-				this.addChild(this.track);
+				this.minimumTrack = new Button();
+				this.minimumTrack.nameList.add("foxhole-slider-minimum-track");
+				this.minimumTrack.label = "";
+				this.minimumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
+				this.addChild(this.minimumTrack);
+			}
+
+			if(!this.maximumTrack)
+			{
+				this.maximumTrack = new Button();
+				this.maximumTrack.nameList.add("foxhole-slider-maximum-track");
+				this.maximumTrack.label = "";
+				this.maximumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
+				this.addChild(this.maximumTrack);
 			}
 			
 			if(!this.thumb)
@@ -403,22 +458,11 @@ package org.josht.starling.foxhole.controls
 			
 			if(stateInvalid)
 			{
-				this.thumb.isEnabled = this.track.isEnabled = this._isEnabled;
+				this.thumb.isEnabled = this.minimumTrack.isEnabled =
+					this.maximumTrack.isEnabled = this._isEnabled;
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
-			
-			if(stylesInvalid || sizeInvalid)
-			{
-				if(!isNaN(this.explicitWidth))
-				{
-					this.track.width = this.explicitWidth;
-				}
-				if(!isNaN(this.explicitHeight))
-				{
-					this.track.height = this.explicitHeight;
-				}
-			}
 
 			if(dataInvalid || stylesInvalid || sizeInvalid)
 			{
@@ -430,12 +474,26 @@ package org.josht.starling.foxhole.controls
 					const trackScrollableWidth:Number = this.actualWidth - this.thumb.width;
 					this.thumb.x = (trackScrollableWidth * (this._value - this._minimum) / (this._maximum - this._minimum));
 					this.thumb.y = (this.actualHeight - this.thumb.height) / 2;
+
+					this.minimumTrack.width = this.thumb.x + this.thumb.width / 2;
+					this.minimumTrack.height = this.actualHeight;
+					this.maximumTrack.x = this.minimumTrack.width;
+					this.maximumTrack.y = 0;
+					this.maximumTrack.width = this.actualWidth - this.maximumTrack.x;
+					this.maximumTrack.height = this.actualHeight;
 				}
 				else //vertical
 				{
 					const trackScrollableHeight:Number = this.actualHeight - this.thumb.height;
 					this.thumb.x = (this.actualWidth - this.thumb.width) / 2;
 					this.thumb.y = (trackScrollableHeight * (this._value - this._minimum) / (this._maximum - this._minimum));
+
+					this.minimumTrack.width = this.actualWidth;
+					this.minimumTrack.height = this.thumb.y + this.thumb.height / 2;
+					this.maximumTrack.x = 0;
+					this.maximumTrack.y = this.minimumTrack.height;
+					this.maximumTrack.width = this.actualWidth;
+					this.maximumTrack.height = this.actualHeight - this.maximumTrack.y;
 				}
 			}
 		}
@@ -453,14 +511,15 @@ package org.josht.starling.foxhole.controls
 			}
 			var newWidth:Number = this.explicitWidth;
 			var newHeight:Number = this.explicitHeight;
-			this.track.validate();
+			this.minimumTrack.validate();
+			this.maximumTrack.validate();
 			if(needsWidth)
 			{
-				newWidth = this.track.width;
+				newWidth = this.minimumTrack.width + this.maximumTrack.width;
 			}
 			if(needsHeight)
 			{
-				newHeight = this.track.height;
+				newHeight = Math.max(this.minimumTrack.height, this.maximumTrack.height);
 			}
 			this.setSizeInternal(newWidth, newHeight, false);
 			return true;
@@ -487,12 +546,20 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function refreshTrackStyles():void
 		{
-			for(var propertyName:String in this._trackProperties)
+			for(var propertyName:String in this._minimumTrackProperties)
 			{
-				if(this.track.hasOwnProperty(propertyName))
+				if(this.minimumTrack.hasOwnProperty(propertyName))
 				{
-					var propertyValue:Object = this._trackProperties[propertyName];
-					this.track[propertyName] = propertyValue;
+					var propertyValue:Object = this._minimumTrackProperties[propertyName];
+					this.minimumTrack[propertyName] = propertyValue;
+				}
+			}
+			for(propertyName in this._maximumTrackProperties)
+			{
+				if(this.maximumTrack.hasOwnProperty(propertyName))
+				{
+					propertyValue = this._maximumTrackProperties[propertyName];
+					this.maximumTrack[propertyName] = propertyValue;
 				}
 			}
 		}
@@ -506,7 +573,7 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			const touch:Touch = event.getTouch(this.track);
+			const touch:Touch = event.getTouch(DisplayObject(event.currentTarget));
 			if(!touch || touch.phase != TouchPhase.ENDED || this._touchPointID >= 0)
 			{
 				return;
