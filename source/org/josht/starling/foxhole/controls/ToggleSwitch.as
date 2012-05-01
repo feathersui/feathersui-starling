@@ -67,6 +67,21 @@ package org.josht.starling.foxhole.controls
 		 * based on only the baseline vlaue of the font. 
 		 */
 		public static const LABEL_ALIGN_BASELINE:String = "baseline";
+
+		/**
+		 * The switch's on and off track skins will by resized by changing
+		 * their width and height values. Consider using a special display
+		 * object such as a Scale9Image, Scale3Image or a TiledImage if the
+		 * skins should be resizable.
+		 */
+		public static const TRACK_LAYOUT_MODE_STRETCH:String = "stretch";
+
+		/**
+		 * The switch's on and off track skins will be resized and cropped
+		 * using a scrollRect to ensure that the skins maintain a static
+		 * appearance without any stretching.
+		 */
+		public static const TRACK_LAYOUT_MODE_SCROLL:String = "scroll";
 		
 		/**
 		 * Constructor.
@@ -95,48 +110,46 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected var _onSkin:DisplayObject;
+		protected var _onTrackSkin:DisplayObject;
 		
 		/**
 		 * The background skin for the left side of the toggle switch, where the
 		 * ON label is displayed.
 		 */
-		public function get onSkin():DisplayObject
+		public function get onTrackSkin():DisplayObject
 		{
-			return this._onSkin;
+			return this._onTrackSkin;
 		}
 		
 		/**
 		 * @private
 		 */
-		public function set onSkin(value:DisplayObject):void
+		public function set onTrackSkin(value:DisplayObject):void
 		{
-			if(this._onSkin == value)
+			if(this._onTrackSkin == value)
 			{
 				return;
 			}
 			
-			if(this._onSkin)
+			if(this._onTrackSkin)
 			{
-				this.removeChild(this._onSkin);
+				this.removeChild(this._onTrackSkin);
 			}
-			this._onSkin = value;
-			if(this._onSkin)
+			this._onTrackSkin = value;
+			if(this._onTrackSkin)
 			{
-				if(this._onSkin is IDisplayObjectWithScrollRect)
+				if(this._onTrackSkin is IDisplayObjectWithScrollRect)
 				{
-					var scrollRectSkin:IDisplayObjectWithScrollRect = IDisplayObjectWithScrollRect(this._onSkin);
+					var scrollRectSkin:IDisplayObjectWithScrollRect = IDisplayObjectWithScrollRect(this._onTrackSkin);
 					scrollRectSkin.scrollRect = null;
 				}
-				this.onSkinOriginalWidth = this._onSkin.width;
-				this.onSkinOriginalHeight = this._onSkin.height;
-				this.onSkinOriginalScaleX = this._onSkin.scaleX;
-				this.onSkinOriginalScaleY = this._onSkin.scaleY;
+				this.onTrackSkinOriginalWidth = this._onTrackSkin.width;
+				this.onTrackSkinOriginalHeight = this._onTrackSkin.height;
 				if(scrollRectSkin)
 				{
 					scrollRectSkin.scrollRect = new Rectangle();
 				}
-				this.addChildAt(this._onSkin, 0);
+				this.addChildAt(this._onTrackSkin, 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -144,48 +157,46 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected var _offSkin:DisplayObject;
+		protected var _offTrackSkin:DisplayObject;
 		
 		/**
 		 * The background skin for the right side of the toggle switch, where
 		 * the OFF label is displayed.
 		 */
-		public function get offSkin():DisplayObject
+		public function get offTrackSkin():DisplayObject
 		{
-			return this._offSkin;
+			return this._offTrackSkin;
 		}
 		
 		/**
 		 * @private
 		 */
-		public function set offSkin(value:DisplayObject):void
+		public function set offTrackSkin(value:DisplayObject):void
 		{
-			if(this._offSkin == value)
+			if(this._offTrackSkin == value)
 			{
 				return;
 			}
 			
-			if(this._offSkin)
+			if(this._offTrackSkin)
 			{
-				this.removeChild(this._offSkin);
+				this.removeChild(this._offTrackSkin);
 			}
-			this._offSkin = value;
-			if(this._offSkin)
+			this._offTrackSkin = value;
+			if(this._offTrackSkin)
 			{
-				if(this._offSkin is IDisplayObjectWithScrollRect)
+				if(this._offTrackSkin is IDisplayObjectWithScrollRect)
 				{
-					var scrollRectSkin:IDisplayObjectWithScrollRect = IDisplayObjectWithScrollRect(this._offSkin);
+					var scrollRectSkin:IDisplayObjectWithScrollRect = IDisplayObjectWithScrollRect(this._offTrackSkin);
 					scrollRectSkin.scrollRect = null;
 				}
-				this.offSkinOriginalWidth = this._offSkin.width
-				this.offSkinOriginalHeight = this._offSkin.height;
-				this.offSkinOriginalScaleX = this._offSkin.scaleX;
-				this.offSkinOriginalScaleY = this._offSkin.scaleY;
+				this.offTrackSkinOriginalWidth = this._offTrackSkin.width
+				this.offTrackSkinOriginalHeight = this._offTrackSkin.height;
 				if(scrollRectSkin)
 				{
 					scrollRectSkin.scrollRect = new Rectangle();
 				}
-				this.addChildAt(this._offSkin, 0);
+				this.addChildAt(this._offTrackSkin, 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -224,8 +235,8 @@ package org.josht.starling.foxhole.controls
 		protected var _showLabels:Boolean = true;
 		
 		/**
-		 * Determines if the labels should be drawn. The onSkin and offSkin
-		 * backgrounds may include the text instead.
+		 * Determines if the labels should be drawn. The onTrackSkin and
+		 * offTrackSkin backgrounds may include the text instead.
 		 */
 		public function get showLabels():Boolean
 		{
@@ -269,6 +280,32 @@ package org.josht.starling.foxhole.controls
 				return;
 			}
 			this._showThumb = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _trackLayoutMode:String = TRACK_LAYOUT_MODE_STRETCH;
+
+		/**
+		 * Determines how the on and off track skins are positioned and sized.
+		 */
+		public function get trackLayoutMode():String
+		{
+			return this._trackLayoutMode;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set trackLayoutMode(value:String):void
+		{
+			if(this._trackLayoutMode == value)
+			{
+				return;
+			}
+			this._trackLayoutMode = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
@@ -399,43 +436,22 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected var onSkinOriginalWidth:Number = NaN;
+		protected var onTrackSkinOriginalWidth:Number = NaN;
 		
 		/**
 		 * @private
 		 */
-		protected var onSkinOriginalHeight:Number = NaN;
+		protected var onTrackSkinOriginalHeight:Number = NaN;
 		
 		/**
 		 * @private
 		 */
-		protected var onSkinOriginalScaleX:Number = NaN;
+		protected var offTrackSkinOriginalWidth:Number = NaN;
 		
 		/**
 		 * @private
 		 */
-		protected var onSkinOriginalScaleY:Number = NaN;
-		
-		/**
-		 * @private
-		 */
-		protected var offSkinOriginalWidth:Number = NaN;
-		
-		/**
-		 * @private
-		 */
-		protected var offSkinOriginalHeight:Number = NaN;
-		
-		/**
-		 * @private
-		 */
-		protected var offSkinOriginalScaleX:Number = NaN;
-		/**
-		 * @private
-		 */
-		protected var offSkinOriginalScaleY:Number = NaN;
-		
-		private var _backgroundBounds:Point;
+		protected var offTrackSkinOriginalHeight:Number = NaN;
 		
 		/**
 		 * @private
@@ -655,7 +671,6 @@ package org.josht.starling.foxhole.controls
 			
 			if(stylesInvalid || sizeInvalid || stateInvalid)
 			{
-				this.scaleSkins();
 				this.thumb.y = (this.actualHeight - this.thumb.height) / 2;
 				this.drawLabels();
 			}
@@ -684,12 +699,12 @@ package org.josht.starling.foxhole.controls
 			var newHeight:Number = this.explicitHeight;
 			if(needsWidth)
 			{
-				newWidth = this.onSkinOriginalWidth + this.offSkinOriginalWidth - this.thumb.width;
+				newWidth = this.onTrackSkinOriginalWidth + this.offTrackSkinOriginalWidth - this.thumb.width;
 			}
 
 			if(needsHeight)
 			{
-				newHeight = Math.max(this.onSkinOriginalHeight, this.offSkinOriginalHeight);
+				newHeight = Math.max(this.onTrackSkinOriginalHeight, this.offTrackSkinOriginalHeight);
 			}
 			this.setSizeInternal(newWidth, newHeight, false);
 			return true;
@@ -734,7 +749,7 @@ package org.josht.starling.foxhole.controls
 			//on init so that if we fade out the toggle switch alpha, on won't
 			//suddenly appear due to the way that flash changes alpha values
 			//of containers.
-			this.updateScrollRects();
+			this.layout();
 		}
 		
 		/**
@@ -827,19 +842,6 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private function scaleSkins():void
-		{
-			const skinScale:Number = this.actualHeight / Math.max(this.onSkinOriginalHeight, this.offSkinOriginalHeight);
-			this.onSkin.scaleX = this.onSkinOriginalScaleX * skinScale;
-			this.onSkin.scaleY = this.onSkinOriginalScaleY * skinScale;
-			this.offSkin.scaleX = this.offSkinOriginalScaleX * skinScale;
-			this.offSkin.scaleY = this.offSkinOriginalScaleY * skinScale;
-			this.offSkin.y = this.onSkin.y = 0;
-		}
-		
-		/**
-		 * @private
-		 */
 		private function drawLabels():void
 		{
 			const maxLabelWidth:Number = Math.max(0, this.actualWidth - this.thumb.width - 2 * this._contentPadding);
@@ -875,12 +877,10 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private function updateScrollRects():void
+		protected function layout():void
 		{
 			const maxLabelWidth:Number = Math.max(0, this.actualWidth - this.thumb.width - 2 * this._contentPadding);
 			const thumbOffset:Number = this.thumb.x - this._contentPadding;
-			const halfWidth:Number = (this.actualWidth - 2 * this._contentPadding) / 2;
-			const middleOfThumb:Number = this.thumb.x + this.thumb.width / 2;
 			
 			var currentScrollRect:Rectangle = this.onLabelField.scrollRect;
 			currentScrollRect.x = this.actualWidth - this.thumb.width - thumbOffset - (maxLabelWidth - this.onLabelField.width) / 2;
@@ -889,32 +889,84 @@ package org.josht.starling.foxhole.controls
 			currentScrollRect = this.offLabelField.scrollRect;
 			currentScrollRect.x = -thumbOffset - (maxLabelWidth - this.offLabelField.width) / 2;
 			this.offLabelField.scrollRect = currentScrollRect;
-			
-			if(this._onSkin is IDisplayObjectWithScrollRect)
+
+			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_SCROLL)
 			{
-				const onSkinScaledWidth:Number = this.onSkinOriginalWidth * this._onSkin.scaleX;
+				this.layoutTrackWithScrollRect();
+			}
+			else //stretch
+			{
+				this.layoutTrackWithStretch();
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function layoutTrackWithStretch():void
+		{
+			if(this._onTrackSkin is IDisplayObjectWithScrollRect)
+			{
+				IDisplayObjectWithScrollRect(this._onTrackSkin).scrollRect = null;
+			}
+			if(this._offTrackSkin is IDisplayObjectWithScrollRect)
+			{
+				IDisplayObjectWithScrollRect(this._offTrackSkin).scrollRect = null;
+			}
+			this._onTrackSkin.width = this.thumb.x + this.thumb.width / 2;
+			this._onTrackSkin.height = this.actualHeight;
+			this._offTrackSkin.x = this._onTrackSkin.width;
+			this._offTrackSkin.width = this.actualWidth - this._offTrackSkin.x;
+			this._offTrackSkin.height = this.actualHeight;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function layoutTrackWithScrollRect():void
+		{
+			//we want to scale the skins to match the height of the switch, but
+			//we also want to keep the original aspect ratio of the skins.
+			const onTrackSkinScaledWidth:Number = this.onTrackSkinOriginalWidth * this.actualHeight / this.onTrackSkinOriginalHeight;
+			const offTrackSkinScaledWidth:Number = this.offTrackSkinOriginalWidth * this.actualHeight / this.offTrackSkinOriginalHeight;
+
+			this._onTrackSkin.width = onTrackSkinScaledWidth;
+			this._onTrackSkin.height = this.actualHeight;
+			this._offTrackSkin.width = offTrackSkinScaledWidth;
+			this._offTrackSkin.height = this.actualHeight;
+
+			const middleOfThumb:Number = this.thumb.x + this.thumb.width / 2;
+			if(this._onTrackSkin is IDisplayObjectWithScrollRect)
+			{
 				//if the on and off skins are transparent, we don't want them to overlap at all
-				var scrollRectSkin:IDisplayObjectWithScrollRect = IDisplayObjectWithScrollRect(this._onSkin);
-				currentScrollRect = scrollRectSkin.scrollRect;
-				currentScrollRect.width = Math.min(onSkinScaledWidth, middleOfThumb) / this._onSkin.scaleX;
-				currentScrollRect.height = this.actualHeight / this._onSkin.scaleX;
+				var scrollRectSkin:IDisplayObjectWithScrollRect = IDisplayObjectWithScrollRect(this._onTrackSkin);
+				var currentScrollRect:Rectangle = scrollRectSkin.scrollRect;
+				if(!currentScrollRect)
+				{
+					currentScrollRect = new Rectangle();
+				}
+				currentScrollRect.width = Math.min(onTrackSkinScaledWidth, middleOfThumb) / this._onTrackSkin.scaleX;
+				currentScrollRect.height = this.actualHeight / this._onTrackSkin.scaleY;
 				scrollRectSkin.scrollRect = currentScrollRect;
 			}
 			
-			if(this._offSkin is IDisplayObjectWithScrollRect)
+			if(this._offTrackSkin is IDisplayObjectWithScrollRect)
 			{
-				const offSkinScaledWidth:Number = this.offSkinOriginalWidth * this._offSkin.scaleX;
-				this._offSkin.x = Math.max(this.actualWidth - offSkinScaledWidth, middleOfThumb);
-				scrollRectSkin = IDisplayObjectWithScrollRect(this._offSkin);
+				this._offTrackSkin.x = Math.max(this.actualWidth - offTrackSkinScaledWidth, middleOfThumb);
+				scrollRectSkin = IDisplayObjectWithScrollRect(this._offTrackSkin);
 				currentScrollRect = scrollRectSkin.scrollRect;
-				currentScrollRect.width = Math.min(offSkinScaledWidth, this.actualWidth - middleOfThumb) / this._offSkin.scaleX;
-				currentScrollRect.height = this.actualHeight / this._onSkin.scaleX;
-				currentScrollRect.x = Math.max(0, this.offSkinOriginalWidth - currentScrollRect.width);
+				if(!currentScrollRect)
+				{
+					currentScrollRect = new Rectangle();
+				}
+				currentScrollRect.width = Math.min(offTrackSkinScaledWidth, this.actualWidth - middleOfThumb) / this._offTrackSkin.scaleX;
+				currentScrollRect.height = this.actualHeight / this._offTrackSkin.scaleY;
+				currentScrollRect.x = Math.max(0, offTrackSkinScaledWidth / this._offTrackSkin.scaleX - currentScrollRect.width);
 				scrollRectSkin.scrollRect = currentScrollRect;
 			}
 			else
 			{
-				this._offSkin.x = this.actualWidth - this._offSkin.width;
+				this._offTrackSkin.x = this.actualWidth - this._offTrackSkin.width;
 			}
 		}
 		
@@ -973,7 +1025,7 @@ package org.josht.starling.foxhole.controls
 				const xOffset:Number = location.x - this._touchStartX;
 				const xPosition:Number = Math.min(Math.max(this._contentPadding, this._thumbStartX + xOffset), trackScrollableWidth);
 				this.thumb.x = xPosition;
-				this.updateScrollRects();
+				this.layout();
 			}
 			else if(touch.phase == TouchPhase.ENDED)
 			{
@@ -993,7 +1045,7 @@ package org.josht.starling.foxhole.controls
 		 */
 		private function selectionTween_onChange(tween:GTween):void
 		{
-			this.updateScrollRects();
+			this.layout();
 		}
 		
 		/**

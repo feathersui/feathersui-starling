@@ -304,13 +304,23 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
+		/**
+		 * @private
+		 */
 		private var _trackLayoutMode:String = TRACK_LAYOUT_MODE_STRETCH;
 
+		/**
+		 * Determines how the minimum and maximum track skins are positioned and
+		 * sized.
+		 */
 		public function get trackLayoutMode():String
 		{
 			return this._trackLayoutMode;
 		}
 
+		/**
+		 * @private
+		 */
 		public function set trackLayoutMode(value:String):void
 		{
 			if(this._trackLayoutMode == value)
@@ -651,14 +661,17 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function layoutTrackWithScrollRect():void
 		{
-			//if we were in stretch mode, we need to reset the tracks to their
-			//original dimensions.
-			this.minimumTrack.width = this.minimumTrackOriginalWidth;
-			this.minimumTrack.height = this.minimumTrackOriginalHeight;
-			this.maximumTrack.width = this.maximumTrackOriginalWidth;
-			this.maximumTrack.height = this.maximumTrackOriginalHeight;
 			if(this._direction == DIRECTION_VERTICAL)
 			{
+				//we want to scale the skins to match the height of the slider,
+				//but we also want to keep the original aspect ratio.
+				const minimumTrackScaledHeight:Number = this.minimumTrackOriginalHeight * this.actualWidth / this.minimumTrackOriginalWidth;
+				const maximumTrackScaledHeight:Number = this.maximumTrackOriginalHeight * this.actualWidth / this.maximumTrackOriginalWidth;
+				this.minimumTrack.width = this.actualWidth;
+				this.minimumTrack.height = minimumTrackScaledHeight;
+				this.maximumTrack.width = this.actualWidth;
+				this.maximumTrack.height = maximumTrackScaledHeight;
+
 				var middleOfThumb:Number = this.thumb.y + this.thumb.height / 2;
 				var currentScrollRect:Rectangle = this.minimumTrack.scrollRect;
 				if(!currentScrollRect)
@@ -666,44 +679,53 @@ package org.josht.starling.foxhole.controls
 					currentScrollRect = new Rectangle();
 				}
 				currentScrollRect.width = this.actualWidth;
-				currentScrollRect.height = Math.min(this.minimumTrackOriginalHeight, middleOfThumb);
+				currentScrollRect.height = Math.min(minimumTrackScaledHeight, middleOfThumb);
 				this.minimumTrack.scrollRect = currentScrollRect;
 
 				this.maximumTrack.x = 0;
-				this.maximumTrack.y = Math.max(this.actualHeight - this.maximumTrackOriginalHeight, middleOfThumb);
+				this.maximumTrack.y = Math.max(this.actualHeight - maximumTrackScaledHeight, middleOfThumb);
 				currentScrollRect = this.maximumTrack.scrollRect;
 				if(!currentScrollRect)
 				{
 					currentScrollRect = new Rectangle();
 				}
 				currentScrollRect.width = this.actualWidth;
-				currentScrollRect.height = Math.min(this.maximumTrackOriginalHeight, this.actualHeight - middleOfThumb);
+				currentScrollRect.height = Math.min(maximumTrackScaledHeight, this.actualHeight - middleOfThumb);
 				currentScrollRect.x = 0;
-				currentScrollRect.y = Math.max(0, this.maximumTrackOriginalHeight - currentScrollRect.height);
+				currentScrollRect.y = Math.max(0, maximumTrackScaledHeight - currentScrollRect.height);
 				this.maximumTrack.scrollRect = currentScrollRect;
 			}
 			else //horizontal
 			{
+				//we want to scale the skins to match the height of the slider,
+				//but we also want to keep the original aspect ratio.
+				const minimumTrackScaledWidth:Number = this.minimumTrackOriginalWidth * this.actualHeight / this.minimumTrackOriginalHeight;
+				const maximumTrackScaledWidth:Number = this.maximumTrackOriginalWidth * this.actualHeight / this.maximumTrackOriginalHeight;
+				this.minimumTrack.width = minimumTrackScaledWidth;
+				this.minimumTrack.height = this.actualHeight;
+				this.maximumTrack.width = maximumTrackScaledWidth;
+				this.maximumTrack.height = this.actualHeight;
+
 				middleOfThumb = this.thumb.x + this.thumb.width / 2;
 				currentScrollRect = this.minimumTrack.scrollRect;
 				if(!currentScrollRect)
 				{
 					currentScrollRect = new Rectangle();
 				}
-				currentScrollRect.width = Math.min(this.minimumTrackOriginalWidth, middleOfThumb);
+				currentScrollRect.width = Math.min(minimumTrackScaledWidth, middleOfThumb);
 				currentScrollRect.height = this.actualHeight;
 				this.minimumTrack.scrollRect = currentScrollRect;
 
-				this.maximumTrack.x = Math.max(this.actualWidth - this.maximumTrackOriginalWidth, middleOfThumb);
+				this.maximumTrack.x = Math.max(this.actualWidth - maximumTrackScaledWidth, middleOfThumb);
 				this.maximumTrack.y = 0;
 				currentScrollRect = this.maximumTrack.scrollRect;
 				if(!currentScrollRect)
 				{
 					currentScrollRect = new Rectangle();
 				}
-				currentScrollRect.width = Math.min(this.maximumTrackOriginalWidth, this.actualWidth - middleOfThumb);
+				currentScrollRect.width = Math.min(maximumTrackScaledWidth, this.actualWidth - middleOfThumb);
 				currentScrollRect.height = this.actualHeight;
-				currentScrollRect.x = Math.max(0, this.maximumTrackOriginalWidth - currentScrollRect.width);
+				currentScrollRect.x = Math.max(0, maximumTrackScaledWidth - currentScrollRect.width);
 				currentScrollRect.y = 0;
 				this.maximumTrack.scrollRect = currentScrollRect;
 			}
