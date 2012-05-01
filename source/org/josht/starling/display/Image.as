@@ -42,6 +42,7 @@ package org.josht.starling.display
 	{
 		private static var helperPoint:Point = new Point();
 		private static var helperMatrix:Matrix = new Matrix();
+		private static var helperRectangle:Rectangle = new Rectangle();
 		
 		/**
 		 * Constructor.
@@ -49,6 +50,42 @@ package org.josht.starling.display
 		public function Image(texture:Texture)
 		{
 			super(texture);
+		}
+
+		/**
+		 * @private
+		 */
+		override public function set width(value:Number):void
+		{
+			var actualWidth:Number = super.getBounds(this, helperRectangle).width;
+			super.width = value;
+			//we need to override the default scaleX modification here because
+			//the "actual" width is modified by the scroll rect.
+			if(actualWidth != 0.0)
+			{
+				this.scaleX = value / actualWidth;
+			}
+			else
+			{
+				this.scaleX = 1.0;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		override public function set height(value:Number):void
+		{
+			var actualHeight:Number = super.getBounds(this, helperRectangle).height;
+			super.height = value;
+			if(actualHeight != 0.0)
+			{
+				this.scaleY = value / actualHeight;
+			}
+			else
+			{
+				this.scaleY = 1.0;
+			}
 		}
 		
 		/**
