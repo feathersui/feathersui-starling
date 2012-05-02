@@ -637,7 +637,7 @@ package org.josht.starling.foxhole.controls
 			{
 				const trackScrollableHeight:Number = this.actualHeight - this.thumb.height;
 				this.thumb.x = (this.actualWidth - this.thumb.width) / 2;
-				this.thumb.y = (trackScrollableHeight * (this._value - this._minimum) / (this._maximum - this._minimum));
+				this.thumb.y = trackScrollableHeight * (1 - (this._value - this._minimum) / (this._maximum - this._minimum));
 			}
 			else
 			{
@@ -673,27 +673,31 @@ package org.josht.starling.foxhole.controls
 				this.maximumTrack.height = maximumTrackScaledHeight;
 
 				var middleOfThumb:Number = this.thumb.y + this.thumb.height / 2;
-				var currentScrollRect:Rectangle = this.minimumTrack.scrollRect;
-				if(!currentScrollRect)
-				{
-					currentScrollRect = new Rectangle();
-				}
-				currentScrollRect.width = this.actualWidth;
-				currentScrollRect.height = Math.min(minimumTrackScaledHeight, middleOfThumb);
-				this.minimumTrack.scrollRect = currentScrollRect;
-
 				this.maximumTrack.x = 0;
-				this.maximumTrack.y = Math.max(this.actualHeight - maximumTrackScaledHeight, middleOfThumb);
-				currentScrollRect = this.maximumTrack.scrollRect;
+				this.maximumTrack.y = 0;
+				var currentScrollRect:Rectangle = this.maximumTrack.scrollRect;
+				if(!currentScrollRect)
+				{
+					currentScrollRect = new Rectangle();
+				}
+				currentScrollRect.x = 0;
+				currentScrollRect.y = 0;
+				currentScrollRect.width = this.actualWidth;
+				currentScrollRect.height = Math.min(maximumTrackScaledHeight, middleOfThumb);
+				this.maximumTrack.scrollRect = currentScrollRect;
+
+				this.minimumTrack.x = 0;
+				this.minimumTrack.y = Math.max(this.actualHeight - minimumTrackScaledHeight, middleOfThumb);
+				currentScrollRect = this.minimumTrack.scrollRect;
 				if(!currentScrollRect)
 				{
 					currentScrollRect = new Rectangle();
 				}
 				currentScrollRect.width = this.actualWidth;
-				currentScrollRect.height = Math.min(maximumTrackScaledHeight, this.actualHeight - middleOfThumb);
+				currentScrollRect.height = Math.min(minimumTrackScaledHeight, this.actualHeight - middleOfThumb);
 				currentScrollRect.x = 0;
-				currentScrollRect.y = Math.max(0, maximumTrackScaledHeight - currentScrollRect.height);
-				this.maximumTrack.scrollRect = currentScrollRect;
+				currentScrollRect.y = Math.max(0, minimumTrackScaledHeight - currentScrollRect.height);
+				this.minimumTrack.scrollRect = currentScrollRect;
 			}
 			else //horizontal
 			{
@@ -707,11 +711,15 @@ package org.josht.starling.foxhole.controls
 				this.maximumTrack.height = this.actualHeight;
 
 				middleOfThumb = this.thumb.x + this.thumb.width / 2;
+				this.minimumTrack.x = 0;
+				this.minimumTrack.y = 0;
 				currentScrollRect = this.minimumTrack.scrollRect;
 				if(!currentScrollRect)
 				{
 					currentScrollRect = new Rectangle();
 				}
+				currentScrollRect.x = 0;
+				currentScrollRect.y = 0;
 				currentScrollRect.width = Math.min(minimumTrackScaledWidth, middleOfThumb);
 				currentScrollRect.height = this.actualHeight;
 				this.minimumTrack.scrollRect = currentScrollRect;
@@ -747,17 +755,23 @@ package org.josht.starling.foxhole.controls
 
 			if(this._direction == DIRECTION_VERTICAL)
 			{
-				this.minimumTrack.width = this.actualWidth;
-				this.minimumTrack.height = this.thumb.y + this.thumb.height / 2;
 				this.maximumTrack.x = 0;
-				this.maximumTrack.y = this.minimumTrack.height;
+				this.maximumTrack.y = 0;
 				this.maximumTrack.width = this.actualWidth;
-				this.maximumTrack.height = this.actualHeight - this.maximumTrack.y;
+				this.maximumTrack.height = this.thumb.y + this.thumb.height / 2;
+
+				this.minimumTrack.x = 0;
+				this.minimumTrack.y = this.maximumTrack.height;
+				this.minimumTrack.width = this.actualWidth;
+				this.minimumTrack.height = this.actualHeight - this.minimumTrack.y;
 			}
 			else //horizontal
 			{
+				this.minimumTrack.x = 0;
+				this.minimumTrack.y = 0;
 				this.minimumTrack.width = this.thumb.x + this.thumb.width / 2;
 				this.minimumTrack.height = this.actualHeight;
+
 				this.maximumTrack.x = this.minimumTrack.width;
 				this.maximumTrack.y = 0;
 				this.maximumTrack.width = this.actualWidth - this.maximumTrack.x;
@@ -781,13 +795,13 @@ package org.josht.starling.foxhole.controls
 			}
 			var location:Point = touch.getLocation(this);
 			var percentage:Number;
-			if(this._direction == DIRECTION_HORIZONTAL)
+			if(this._direction == DIRECTION_VERTICAL)
+			{
+				percentage = 1 - (location.y / this.actualHeight);
+			}
+			else //horizontal
 			{
 				percentage = location.x / this.actualWidth;
-			}
-			else //vertical
-			{
-				percentage = location.y / this.actualHeight;
 			}
 			
 			this.value = this._minimum + percentage * (this._maximum - this._minimum);
@@ -820,19 +834,19 @@ package org.josht.starling.foxhole.controls
 			else if(touch.phase == TouchPhase.MOVED)
 			{
 				var percentage:Number;
-				if(this._direction == DIRECTION_HORIZONTAL)
+				if(this._direction == DIRECTION_VERTICAL)
+				{
+					const trackScrollableHeight:Number = this.actualHeight - this.thumb.height;
+					const yOffset:Number = location.y - this._touchStartY;
+					const yPosition:Number = Math.min(Math.max(0, this._thumbStartY + yOffset), trackScrollableHeight);
+					percentage = 1 - (yPosition / trackScrollableHeight);
+				}
+				else //horizontal
 				{
 					const trackScrollableWidth:Number = this.actualWidth - this.thumb.width;
 					const xOffset:Number = location.x - this._touchStartX;
 					const xPosition:Number = Math.min(Math.max(0, this._thumbStartX + xOffset), trackScrollableWidth);
 					percentage = xPosition / trackScrollableWidth;
-				}
-				else //vertical
-				{
-					const trackScrollableHeight:Number = this.actualHeight - this.thumb.height;
-					const yOffset:Number = location.y - this._touchStartY;
-					const yPosition:Number = Math.min(Math.max(0, this._thumbStartY + yOffset), trackScrollableHeight);
-					percentage = yPosition / trackScrollableHeight;
 				}
 				
 				this.value = this._minimum + percentage * (this._maximum - this._minimum);
