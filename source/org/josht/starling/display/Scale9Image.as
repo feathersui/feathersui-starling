@@ -380,89 +380,113 @@ package org.josht.starling.display
 				const scaledTopHeight:Number = this._topHeight * this._textureScale;
 				const scaledRightWidth:Number = this._rightWidth * this._textureScale;
 				const scaledBottomHeight:Number = this._bottomHeight * this._textureScale;
+				const scaledCenterWidth:Number = this._width - scaledLeftWidth - scaledRightWidth;
+				const scaledMiddleHeight:Number = this._height - scaledTopHeight - scaledBottomHeight;
 
-				helperImage.texture = this._topLeft;
-				helperImage.readjustSize();
-				helperImage.scaleX = helperImage.scaleY = this._textureScale;
-				helperImage.x = scaledLeftWidth - helperImage.width;
-				helperImage.y = scaledTopHeight - helperImage.height;
-				this._batch.addImage(helperImage);
-
-				helperImage.texture = this._topCenter;
-				helperImage.readjustSize();
-				helperImage.scaleX = helperImage.scaleY = this._textureScale;
-				helperImage.x = scaledLeftWidth;
-				helperImage.y = scaledTopHeight - helperImage.height;
-				helperImage.width = Math.max(0, this._width - scaledLeftWidth - scaledRightWidth);
-				if(helperImage.width > 0)
+				if(scaledTopHeight > 0)
 				{
-					this._batch.addImage(helperImage);
+					helperImage.texture = this._topLeft;
+					helperImage.readjustSize();
+					helperImage.scaleX = helperImage.scaleY = this._textureScale;
+					helperImage.x = scaledLeftWidth - helperImage.width;
+					helperImage.y = scaledTopHeight - helperImage.height;
+					if(scaledLeftWidth > 0)
+					{
+						this._batch.addImage(helperImage);
+					}
+
+					helperImage.texture = this._topCenter;
+					helperImage.readjustSize();
+					helperImage.scaleX = helperImage.scaleY = this._textureScale;
+					helperImage.x = scaledLeftWidth;
+					helperImage.y = scaledTopHeight - helperImage.height;
+					helperImage.width = scaledCenterWidth;
+					if(scaledCenterWidth > 0)
+					{
+						this._batch.addImage(helperImage);
+					}
+
+					helperImage.texture = this._topRight;
+					helperImage.readjustSize();
+					helperImage.scaleX = helperImage.scaleY = this._textureScale;
+					helperImage.x = this._width - scaledRightWidth;
+					helperImage.y = scaledTopHeight - helperImage.height;
+					if(scaledRightWidth > 0)
+					{
+						this._batch.addImage(helperImage);
+					}
 				}
 
-				helperImage.texture = this._topRight;
-				helperImage.readjustSize();
-				helperImage.scaleX = helperImage.scaleY = this._textureScale;
-				helperImage.x = this._width - scaledRightWidth;
-				helperImage.y = scaledTopHeight - helperImage.height;
-				this._batch.addImage(helperImage);
-
-				helperImage.texture = this._middleLeft;
-				helperImage.readjustSize();
-				helperImage.scaleX = helperImage.scaleY = this._textureScale;
-				helperImage.x = scaledLeftWidth - helperImage.width;
-				helperImage.y = scaledTopHeight;
-				helperImage.height = this._height - scaledTopHeight - scaledBottomHeight;
-				if(helperImage.height > 0)
+				if(scaledMiddleHeight > 0)
 				{
-					this._batch.addImage(helperImage);
+					helperImage.texture = this._middleLeft;
+					helperImage.readjustSize();
+					helperImage.scaleX = helperImage.scaleY = this._textureScale;
+					helperImage.x = scaledLeftWidth - helperImage.width;
+					helperImage.y = scaledTopHeight;
+					helperImage.height = scaledMiddleHeight;
+					if(scaledLeftWidth > 0)
+					{
+						this._batch.addImage(helperImage);
+					}
+
+					helperImage.texture = this._middleCenter;
+					helperImage.readjustSize();
+					helperImage.scaleX = helperImage.scaleY = this._textureScale;
+					helperImage.x = scaledLeftWidth;
+					helperImage.y = scaledTopHeight;
+					helperImage.width = scaledCenterWidth;
+					helperImage.height = scaledMiddleHeight;
+					if(scaledCenterWidth > 0)
+					{
+						this._batch.addImage(helperImage);
+					}
+
+					helperImage.texture = this._middleRight;
+					helperImage.readjustSize();
+					helperImage.scaleX = helperImage.scaleY = this._textureScale;
+					helperImage.x = this._width - scaledRightWidth;
+					helperImage.y = scaledTopHeight;
+					helperImage.height = scaledMiddleHeight;
+					if(scaledRightWidth > 0)
+					{
+						this._batch.addImage(helperImage);
+					}
 				}
 
-				helperImage.texture = this._middleCenter;
-				helperImage.scaleX = helperImage.scaleY = this._textureScale;
-				helperImage.x = scaledLeftWidth;
-				helperImage.y = scaledTopHeight;
-				helperImage.width = this._width - scaledLeftWidth - scaledRightWidth;
-				helperImage.height = this._height - scaledTopHeight - scaledBottomHeight;
-				if(helperImage.width > 0 && helperImage.height > 0)
+				if(scaledBottomHeight > 0)
 				{
-					this._batch.addImage(helperImage);
+					helperImage.texture = this._bottomLeft;
+					helperImage.readjustSize();
+					helperImage.scaleX = helperImage.scaleY = this._textureScale;
+					helperImage.x = scaledLeftWidth - helperImage.width;
+					helperImage.y = this._height - scaledBottomHeight;
+					if(scaledLeftWidth > 0)
+					{
+						this._batch.addImage(helperImage);
+					}
+
+					helperImage.texture = this._bottomCenter;
+					helperImage.readjustSize();
+					helperImage.scaleX = helperImage.scaleY = this._textureScale;
+					helperImage.x = scaledLeftWidth;
+					helperImage.y = this._height - scaledBottomHeight;
+					helperImage.width = scaledCenterWidth;
+					if(scaledCenterWidth > 0)
+					{
+						this._batch.addImage(helperImage);
+					}
+
+					helperImage.texture = this._bottomRight;
+					helperImage.readjustSize();
+					helperImage.scaleX = helperImage.scaleY = this._textureScale;
+					helperImage.x = this._width - scaledRightWidth;
+					helperImage.y = this._height - scaledBottomHeight;
+					if(scaledRightWidth > 0)
+					{
+						this._batch.addImage(helperImage);
+					}
 				}
-
-				helperImage.texture = this._middleRight;
-				helperImage.readjustSize();
-				helperImage.scaleX = helperImage.scaleY = this._textureScale;
-				helperImage.x = this._width - scaledRightWidth;
-				helperImage.y = scaledTopHeight;
-				helperImage.height = this._height - scaledTopHeight - scaledBottomHeight;
-				if(helperImage.height > 0)
-				{
-					this._batch.addImage(helperImage);
-				}
-
-				helperImage.texture = this._bottomLeft;
-				helperImage.readjustSize();
-				helperImage.scaleX = helperImage.scaleY = this._textureScale;
-				helperImage.x = scaledLeftWidth - helperImage.width;
-				helperImage.y = this._height - scaledBottomHeight;
-				this._batch.addImage(helperImage);
-
-				helperImage.texture = this._bottomCenter;
-				helperImage.readjustSize();
-				helperImage.scaleX = helperImage.scaleY = this._textureScale;
-				helperImage.x = scaledLeftWidth;
-				helperImage.y = this._height - scaledBottomHeight;
-				helperImage.width = this._width - scaledLeftWidth - scaledRightWidth;
-				if(helperImage.width > 0)
-				{
-					this._batch.addImage(helperImage);
-				}
-
-				helperImage.texture = this._bottomRight;
-				helperImage.readjustSize();
-				helperImage.scaleX = helperImage.scaleY = this._textureScale;
-				helperImage.x = this._width - scaledRightWidth;
-				helperImage.y = this._height - scaledBottomHeight;
-				this._batch.addImage(helperImage);
 			}
 
 			this._propertiesChanged = false;
