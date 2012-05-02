@@ -344,7 +344,7 @@ package org.josht.starling.display
 				var firstFrame:Rectangle = (hasLeftFrame || hasRightFrame || hasTopFrame) ? new Rectangle(textureFrame.x, textureFrame.y, this._oppositeEdgeSize, this._firstRegionSize) : null;
 				var first:Texture = Texture.fromTexture(texture, firstRegion, firstFrame);
 
-				var secondRegion:Rectangle = new Rectangle(regionLeftWidth, 0, texture.width, this._secondRegionSize);
+				var secondRegion:Rectangle = new Rectangle(0, regionTopHeight, texture.width, this._secondRegionSize);
 				var secondFrame:Rectangle = (hasLeftFrame || hasRightFrame) ? new Rectangle(textureFrame.x, 0, this._oppositeEdgeSize, this._secondRegionSize) : null;
 				var second:Texture = Texture.fromTexture(texture, secondRegion, secondFrame);
 
