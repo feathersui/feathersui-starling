@@ -376,70 +376,90 @@ package org.josht.starling.display
 
 				if(this._direction == DIRECTION_VERTICAL)
 				{
-					var scaledOppositeEdgeSize:Number = this.width;
+					var scaledOppositeEdgeSize:Number = this._width;
 					var oppositeEdgeScale:Number = scaledOppositeEdgeSize / this._oppositeEdgeSize;
 					var scaledFirstRegionSize:Number = this._firstRegionSize * oppositeEdgeScale;
 					var scaledThirdRegionSize:Number = this._thirdRegionSize * oppositeEdgeScale;
+					var scaledSecondRegionSize:Number = this._height - scaledFirstRegionSize - scaledThirdRegionSize;
 
 					if(scaledOppositeEdgeSize > 0)
 					{
 						helperImage.texture = this._first;
+						helperImage.readjustSize();
 						helperImage.x = 0;
 						helperImage.y = 0;
 						helperImage.width = scaledOppositeEdgeSize;
 						helperImage.height = scaledFirstRegionSize;
-						this._batch.addImage(helperImage);
+						if(scaledFirstRegionSize > 0)
+						{
+							this._batch.addImage(helperImage);
+						}
 
 						helperImage.texture = this._second;
+						helperImage.readjustSize();
 						helperImage.x = 0;
 						helperImage.y = scaledFirstRegionSize;
 						helperImage.width = scaledOppositeEdgeSize;
-						helperImage.height = this._height - scaledFirstRegionSize - scaledThirdRegionSize;
-						if(helperImage.height > 0)
+						helperImage.height = scaledSecondRegionSize;
+						if(scaledSecondRegionSize > 0)
 						{
 							this._batch.addImage(helperImage);
 						}
 
 						helperImage.texture = this._third;
+						helperImage.readjustSize();
 						helperImage.x = 0;
 						helperImage.y = this._height - scaledThirdRegionSize;
 						helperImage.width = scaledOppositeEdgeSize;
 						helperImage.height = scaledThirdRegionSize;
-						this._batch.addImage(helperImage);
+						if(scaledThirdRegionSize > 0)
+						{
+							this._batch.addImage(helperImage);
+						}
 					}
 				}
 				else //horizontal
 				{
-					scaledOppositeEdgeSize = this.height;
+					scaledOppositeEdgeSize = this._height;
 					oppositeEdgeScale = scaledOppositeEdgeSize / this._oppositeEdgeSize;
 					scaledFirstRegionSize = this._firstRegionSize * oppositeEdgeScale;
 					scaledThirdRegionSize = this._thirdRegionSize * oppositeEdgeScale;
+					scaledSecondRegionSize = this._width - scaledFirstRegionSize - scaledThirdRegionSize;
 
 					if(scaledOppositeEdgeSize > 0)
 					{
 						helperImage.texture = this._first;
+						helperImage.readjustSize();
 						helperImage.x = 0;
 						helperImage.y = 0;
 						helperImage.width = scaledFirstRegionSize;
 						helperImage.height = scaledOppositeEdgeSize;
-						this._batch.addImage(helperImage);
+						if(scaledFirstRegionSize > 0)
+						{
+							this._batch.addImage(helperImage);
+						}
 
 						helperImage.texture = this._second;
+						helperImage.readjustSize();
 						helperImage.x = scaledFirstRegionSize;
 						helperImage.y = 0;
-						helperImage.width = this._width - scaledFirstRegionSize - scaledThirdRegionSize;
+						helperImage.width = scaledSecondRegionSize;
 						helperImage.height = scaledOppositeEdgeSize;
-						if(helperImage.width > 0)
+						if(scaledSecondRegionSize > 0)
 						{
 							this._batch.addImage(helperImage);
 						}
 
 						helperImage.texture = this._third;
+						helperImage.readjustSize();
 						helperImage.x = this._width - scaledThirdRegionSize;
 						helperImage.y = 0;
 						helperImage.width = scaledThirdRegionSize;
 						helperImage.height = scaledOppositeEdgeSize;
-						this._batch.addImage(helperImage);
+						if(scaledThirdRegionSize > 0)
+						{
+							this._batch.addImage(helperImage);
+						}
 					}
 				}
 			}
