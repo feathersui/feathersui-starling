@@ -65,7 +65,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * The slider's minimum and maximum tracks will be resized and cropped
 		 * using a scrollRect to ensure that the skins maintain a static
-		 * appearance without any stretching.
+		 * appearance without altering the aspect ratio.
 		 */
 		public static const TRACK_LAYOUT_MODE_SCROLL:String = "scroll";
 		
