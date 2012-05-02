@@ -79,7 +79,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * The switch's on and off track skins will be resized and cropped
 		 * using a scrollRect to ensure that the skins maintain a static
-		 * appearance without any stretching.
+		 * appearance without altering the aspect ratio.
 		 */
 		public static const TRACK_LAYOUT_MODE_SCROLL:String = "scroll";
 
@@ -681,7 +681,7 @@ package org.josht.starling.foxhole.controls
 			var newHeight:Number = this.explicitHeight;
 			if(needsWidth)
 			{
-				newWidth = this.onTrackSkinOriginalWidth + this.offTrackSkinOriginalWidth - this.thumb.width;
+				newWidth = Math.min(this.onTrackSkinOriginalWidth, this.offTrackSkinOriginalWidth) + this.thumb.width / 2;
 			}
 
 			if(needsHeight)
