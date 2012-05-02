@@ -24,18 +24,15 @@
  */
 package org.josht.starling.foxhole.controls
 {
-	import flash.errors.IllegalOperationError;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.system.Capabilities;
 
 	import org.josht.starling.display.IDisplayObjectWithScrollRect;
-	import org.josht.starling.display.Image;
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.IToggle;
 	import org.josht.starling.foxhole.text.BitmapFontTextFormat;
 	import org.josht.starling.motion.GTween;
-	import org.josht.starling.text.BitmapFont;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 
@@ -829,14 +826,14 @@ package org.josht.starling.foxhole.controls
 			const maxLabelWidth:Number = Math.max(0, this.actualWidth - this.thumb.width - 2 * this._contentPadding);
 			var totalLabelHeight:Number = Math.max(this.onLabelField.height, this.offLabelField.height);
 			var labelHeight:Number;
-			if(this._labelAlign == LABEL_ALIGN_MIDDLE || !this._defaultTextFormat || !(this._defaultTextFormat.font is BitmapFont))
+			if(this._labelAlign == LABEL_ALIGN_MIDDLE || !this._defaultTextFormat)
 			{
 				labelHeight = totalLabelHeight;
 			}
 			else //baseline
 			{
 				const fontScale:Number = isNaN(this._defaultTextFormat.size) ? 1 : (this._defaultTextFormat.size / this._defaultTextFormat.font.size);
-				labelHeight = fontScale * BitmapFont(this._defaultTextFormat.font).base;
+				labelHeight = fontScale * this._defaultTextFormat.font.baseline;
 			}
 
 			var onScrollRect:Rectangle = this.onLabelField.scrollRect;
