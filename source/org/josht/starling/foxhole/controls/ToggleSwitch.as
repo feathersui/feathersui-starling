@@ -66,6 +66,13 @@ package org.josht.starling.foxhole.controls
 		public static const LABEL_ALIGN_BASELINE:String = "baseline";
 
 		/**
+		 * The toggle switch has only one track skin, stretching to fill the
+		 * full length of switch. In this layout mode, the on track is
+		 * displayed, but the off track is hidden.
+		 */
+		public static const TRACK_LAYOUT_MODE_SINGLE:String = "single";
+
+		/**
 		 * The switch's on and off track skins will by resized by changing
 		 * their width and height values. Consider using a special display
 		 * object such as a Scale9Image, Scale3Image or a TiledImage if the
@@ -265,7 +272,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _trackLayoutMode:String = TRACK_LAYOUT_MODE_STRETCH;
+		private var _trackLayoutMode:String = TRACK_LAYOUT_MODE_SINGLE;
 
 		/**
 		 * Determines how the on and off track skins are positioned and sized.
@@ -678,12 +685,26 @@ package org.josht.starling.foxhole.controls
 			var newHeight:Number = this.explicitHeight;
 			if(needsWidth)
 			{
-				newWidth = Math.min(this.onTrackSkinOriginalWidth, this.offTrackSkinOriginalWidth) + this.thumb.width / 2;
+				if(this._trackLayoutMode == TRACK_LAYOUT_MODE_SCROLL || this._trackLayoutMode == TRACK_LAYOUT_MODE_STRETCH)
+				{
+					newWidth = Math.min(this.onTrackSkinOriginalWidth, this.offTrackSkinOriginalWidth) + this.thumb.width / 2;
+				}
+				else
+				{
+					newWidth = this.onTrackSkinOriginalWidth;
+				}
 			}
 
 			if(needsHeight)
 			{
-				newHeight = Math.max(this.onTrackSkinOriginalHeight, this.offTrackSkinOriginalHeight);
+				if(this._trackLayoutMode == TRACK_LAYOUT_MODE_SCROLL || this._trackLayoutMode == TRACK_LAYOUT_MODE_STRETCH)
+				{
+					newHeight = Math.max(this.onTrackSkinOriginalHeight, this.offTrackSkinOriginalHeight);
+				}
+				else
+				{
+					newHeight = this.onTrackSkinOriginalHeight;
+				}
 			}
 			this.setSizeInternal(newWidth, newHeight, false);
 			return true;
@@ -873,9 +894,13 @@ package org.josht.starling.foxhole.controls
 			{
 				this.layoutTrackWithScrollRect();
 			}
-			else //stretch
+			else if(this._trackLayoutMode == TRACK_LAYOUT_MODE_STRETCH)
 			{
 				this.layoutTrackWithStretch();
+			}
+			else
+			{
+				this.layoutTrackWithSingle();
 			}
 		}
 
@@ -884,6 +909,7 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function layoutTrackWithStretch():void
 		{
+			this._offTrackSkin.visible = true;
 			if(this._onTrackSkin is IDisplayObjectWithScrollRect)
 			{
 				IDisplayObjectWithScrollRect(this._onTrackSkin).scrollRect = null;
@@ -904,6 +930,8 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function layoutTrackWithScrollRect():void
 		{
+			this._offTrackSkin.visible = true;
+
 			//we want to scale the skins to match the height of the switch, but
 			//we also want to keep the original aspect ratio of the skins.
 			const onTrackSkinScaledWidth:Number = this.onTrackSkinOriginalWidth * this.actualHeight / this.onTrackSkinOriginalHeight;
@@ -946,6 +974,25 @@ package org.josht.starling.foxhole.controls
 			else
 			{
 				this._offTrackSkin.x = this.actualWidth - this._offTrackSkin.width;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function layoutTrackWithSingle():void
+		{
+			if(this._onTrackSkin is IDisplayObjectWithScrollRect)
+			{
+				IDisplayObjectWithScrollRect(this._onTrackSkin).scrollRect = null;
+			}
+			this._onTrackSkin.x = 0;
+			this._onTrackSkin.y = 0;
+			this._onTrackSkin.width = this.actualWidth;
+			this._onTrackSkin.height = this.actualHeight;
+			if(this._offTrackSkin)
+			{
+				this._offTrackSkin.visible = false;
 			}
 		}
 

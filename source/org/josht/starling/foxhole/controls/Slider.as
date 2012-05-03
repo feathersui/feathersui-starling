@@ -56,6 +56,13 @@ package org.josht.starling.foxhole.controls
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
 		/**
+		 * The slider has only one track, stretching to fill the full length of
+		 * the slider. In this layout mode, the minimum track is displayed, but
+		 * the maximum track is hidden.
+		 */
+		public static const TRACK_LAYOUT_MODE_SINGLE:String = "single";
+
+		/**
 		 * The slider's minimum and maximum track will by resized by changing
 		 * their width and height values. Consider using a special display
 		 * object such as a Scale9Image, Scale3Image or a TiledImage if the
@@ -308,7 +315,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _trackLayoutMode:String = TRACK_LAYOUT_MODE_STRETCH;
+		private var _trackLayoutMode:String = TRACK_LAYOUT_MODE_SINGLE;
 
 		/**
 		 * Determines how the minimum and maximum track skins are positioned and
@@ -483,15 +490,6 @@ package org.josht.starling.foxhole.controls
 				this.minimumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
 				this.addChild(this.minimumTrack);
 			}
-
-			if(!this.maximumTrack)
-			{
-				this.maximumTrack = new Button();
-				this.maximumTrack.nameList.add("foxhole-slider-maximum-track");
-				this.maximumTrack.label = "";
-				this.maximumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
-				this.addChild(this.maximumTrack);
-			}
 			
 			if(!this.thumb)
 			{
@@ -513,7 +511,9 @@ package org.josht.starling.foxhole.controls
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
-			
+
+			this.createOrDestroyMaximumTrackIfNeeded();
+
 			if(stylesInvalid)
 			{
 				this.refreshThumbStyles();
@@ -522,8 +522,11 @@ package org.josht.starling.foxhole.controls
 			
 			if(stateInvalid)
 			{
-				this.thumb.isEnabled = this.minimumTrack.isEnabled =
+				this.thumb.isEnabled = this.minimumTrack.isEnabled = isEnabled;
+				if(this.maximumTrack)
+				{
 					this.maximumTrack.isEnabled = this._isEnabled;
+				}
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
@@ -545,11 +548,14 @@ package org.josht.starling.foxhole.controls
 				this.minimumTrackOriginalWidth = this.minimumTrack.width;
 				this.minimumTrackOriginalHeight = this.minimumTrack.height;
 			}
-			if(isNaN(this.maximumTrackOriginalWidth) || isNaN(this.maximumTrackOriginalHeight))
+			if(this.maximumTrack)
 			{
-				this.maximumTrack.validate();
-				this.maximumTrackOriginalWidth = this.maximumTrack.width;
-				this.maximumTrackOriginalHeight = this.maximumTrack.height;
+				if(isNaN(this.maximumTrackOriginalWidth) || isNaN(this.maximumTrackOriginalHeight))
+				{
+					this.maximumTrack.validate();
+					this.maximumTrackOriginalWidth = this.maximumTrack.width;
+					this.maximumTrackOriginalHeight = this.maximumTrack.height;
+				}
 			}
 
 			const needsWidth:Boolean = isNaN(this.explicitWidth);
@@ -565,22 +571,50 @@ package org.josht.starling.foxhole.controls
 			{
 				if(this._direction == DIRECTION_VERTICAL)
 				{
-					newWidth = Math.max(this.minimumTrackOriginalWidth, this.maximumTrackOriginalWidth);
+					if(this.maximumTrack)
+					{
+						newWidth = Math.max(this.minimumTrackOriginalWidth, this.maximumTrackOriginalWidth);
+					}
+					else
+					{
+						newWidth = this.minimumTrackOriginalWidth;
+					}
 				}
 				else //horizontal
 				{
-					newWidth = Math.min(this.minimumTrackOriginalWidth, this.maximumTrackOriginalWidth) + this.thumb.width / 2;
+					if(this.maximumTrack)
+					{
+						newWidth = Math.min(this.minimumTrackOriginalWidth, this.maximumTrackOriginalWidth) + this.thumb.width / 2;;
+					}
+					else
+					{
+						newWidth = this.minimumTrackOriginalWidth;
+					}
 				}
 			}
 			if(needsHeight)
 			{
 				if(this._direction == DIRECTION_VERTICAL)
 				{
-					newHeight = Math.min(this.minimumTrackOriginalHeight, this.maximumTrackOriginalHeight) + this.thumb.height / 2;
+					if(this.maximumTrack)
+					{
+						newHeight = Math.min(this.minimumTrackOriginalHeight, this.maximumTrackOriginalHeight) + this.thumb.height / 2;
+					}
+					else
+					{
+						newHeight = this.minimumTrackOriginalHeight;
+					}
 				}
 				else //horizontal
 				{
-					newHeight = Math.max(this.minimumTrackOriginalHeight, this.maximumTrackOriginalHeight);
+					if(this.maximumTrack)
+					{
+						newHeight = Math.max(this.minimumTrackOriginalHeight, this.maximumTrackOriginalHeight);
+					}
+					else
+					{
+						newHeight = this.minimumTrackOriginalHeight;
+					}
 				}
 			}
 			this.setSizeInternal(newWidth, newHeight, false);
@@ -616,12 +650,15 @@ package org.josht.starling.foxhole.controls
 					this.minimumTrack[propertyName] = propertyValue;
 				}
 			}
-			for(propertyName in this._maximumTrackProperties)
+			if(this.maximumTrack)
 			{
-				if(this.maximumTrack.hasOwnProperty(propertyName))
+				for(propertyName in this._maximumTrackProperties)
 				{
-					propertyValue = this._maximumTrackProperties[propertyName];
-					this.maximumTrack[propertyName] = propertyValue;
+					if(this.maximumTrack.hasOwnProperty(propertyName))
+					{
+						propertyValue = this._maximumTrackProperties[propertyName];
+						this.maximumTrack[propertyName] = propertyValue;
+					}
 				}
 			}
 		}
@@ -651,9 +688,13 @@ package org.josht.starling.foxhole.controls
 			{
 				this.layoutTrackWithScrollRect();
 			}
-			else //stretch
+			else if(this._trackLayoutMode == TRACK_LAYOUT_MODE_STRETCH)
 			{
 				this.layoutTrackWithStretch();
+			}
+			else //single
+			{
+				this.layoutTrackWithSingle();
 			}
 		}
 
@@ -777,6 +818,44 @@ package org.josht.starling.foxhole.controls
 				this.maximumTrack.y = 0;
 				this.maximumTrack.width = this.actualWidth - this.maximumTrack.x;
 				this.maximumTrack.height = this.actualHeight;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function layoutTrackWithSingle():void
+		{
+			if(this.minimumTrack.scrollRect)
+			{
+				this.minimumTrack.scrollRect = null;
+			}
+			this.minimumTrack.x = 0;
+			this.minimumTrack.y = 0;
+			this.minimumTrack.width = this.actualWidth;
+			this.minimumTrack.height = this.actualHeight;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function createOrDestroyMaximumTrackIfNeeded():void
+		{
+			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_SCROLL || this._trackLayoutMode == TRACK_LAYOUT_MODE_STRETCH)
+			{
+				if(!this.maximumTrack)
+				{
+					this.maximumTrack = new Button();
+					this.maximumTrack.nameList.add("foxhole-slider-maximum-track");
+					this.maximumTrack.label = "";
+					this.maximumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
+					this.addChildAt(this.maximumTrack, 1);
+				}
+			}
+			else if(this.maximumTrack) //single
+			{
+				this.maximumTrack.removeFromParent(true);
+				this.maximumTrack = null;
 			}
 		}
 		
