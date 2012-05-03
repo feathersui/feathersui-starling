@@ -254,7 +254,7 @@ package org.josht.starling.foxhole.data
 		public function setItemAt(item:Object, index:int):void
 		{
 			this._dataDescriptor.setItemAt(this._data, item, index);
-			this._onReplace.dispatch(this);
+			this._onReplace.dispatch(this, index);
 			this._onChange.dispatch(this);
 		}
 		
