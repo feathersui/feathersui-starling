@@ -30,6 +30,7 @@ package org.josht.starling.display
 
 	import starling.core.RenderSupport;
 	import starling.display.DisplayObject;
+	import starling.display.QuadBatch;
 	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;
 	import starling.utils.transformCoords;
@@ -44,6 +45,7 @@ package org.josht.starling.display
 	{
 		private static const helperMatrix:Matrix = new Matrix();
 		private static const helperPoint:Point = new Point();
+		private static var helperImage:starling.display.Image;
 
 		/**
 		 * If the direction is horizontal, the layout will start on the left and continue to the right.
@@ -68,6 +70,10 @@ package org.josht.starling.display
 			this._textureScale = textureScale;
 			this.createImages(texture);
 			this.initializeWidthAndHeight();
+
+			this._batch = new QuadBatch();
+			this._batch.touchable = false;
+			this.addChild(this._batch);
 		}
 
 		private var _propertiesChanged:Boolean = true;
@@ -203,31 +209,6 @@ package org.josht.starling.display
 			this._propertiesChanged = true;
 		}
 
-		/**
-		 * @private
-		 */
-		private var _autoFlatten:Boolean = true;
-
-		/**
-		 * Automatically flattens after layout or property changes to, generally, improve performance.
-		 */
-		public function get autoFlatten():Boolean
-		{
-			return this._autoFlatten;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set autoFlatten(value:Boolean):void
-		{
-			if(this._autoFlatten == value)
-			{
-				return;
-			}
-			this._autoFlatten = value;
-		}
-
 		private var _hitArea:Rectangle;
 		private var _firstRegionSize:Number;
 		private var _secondRegionSize:Number;
@@ -235,9 +216,10 @@ package org.josht.starling.display
 		private var _oppositeEdgeSize:Number;
 		private var _direction:String;
 
-		private var _firstImage:Image;
-		private var _secondImage:Image;
-		private var _thirdImage:Image;
+		private var _batch:QuadBatch;
+		private var _first:Texture;
+		private var _second:Texture;
+		private var _third:Texture;
 
 		/**
 		 * @private
@@ -342,15 +324,15 @@ package org.josht.starling.display
 
 				var firstRegion:Rectangle = new Rectangle(0, 0, texture.width, regionTopHeight);
 				var firstFrame:Rectangle = (hasLeftFrame || hasRightFrame || hasTopFrame) ? new Rectangle(textureFrame.x, textureFrame.y, this._oppositeEdgeSize, this._firstRegionSize) : null;
-				var first:Texture = Texture.fromTexture(texture, firstRegion, firstFrame);
+				this._first = Texture.fromTexture(texture, firstRegion, firstFrame);
 
-				var secondRegion:Rectangle = new Rectangle(regionLeftWidth, 0, texture.width, this._secondRegionSize);
+				var secondRegion:Rectangle = new Rectangle(0, regionTopHeight, texture.width, this._secondRegionSize);
 				var secondFrame:Rectangle = (hasLeftFrame || hasRightFrame) ? new Rectangle(textureFrame.x, 0, this._oppositeEdgeSize, this._secondRegionSize) : null;
-				var second:Texture = Texture.fromTexture(texture, secondRegion, secondFrame);
+				this._second = Texture.fromTexture(texture, secondRegion, secondFrame);
 
 				var thirdRegion:Rectangle = new Rectangle(0, regionTopHeight + this._secondRegionSize, texture.width, regionBottomHeight);
 				var thirdFrame:Rectangle = (hasLeftFrame || hasRightFrame || hasBottomFrame) ? new Rectangle(textureFrame.x, 0, this._oppositeEdgeSize, this._thirdRegionSize) : null;
-				var third:Texture = Texture.fromTexture(texture, thirdRegion, thirdFrame);
+				this._third = Texture.fromTexture(texture, thirdRegion, thirdFrame);
 			}
 			else //horizontal
 			{
@@ -364,26 +346,16 @@ package org.josht.starling.display
 
 				firstRegion = new Rectangle(0, 0, regionLeftWidth, texture.height);
 				firstFrame = (hasLeftFrame || hasTopFrame || hasBottomFrame) ? new Rectangle(textureFrame.x, textureFrame.y, this._firstRegionSize, this._oppositeEdgeSize) : null;
-				first = Texture.fromTexture(texture, firstRegion, firstFrame);
+				this._first = Texture.fromTexture(texture, firstRegion, firstFrame);
 
 				secondRegion = new Rectangle(regionLeftWidth, 0, this._secondRegionSize, texture.height);
 				secondFrame = (hasTopFrame || hasBottomFrame) ? new Rectangle(0, textureFrame.y, this._secondRegionSize, this._oppositeEdgeSize) : null;
-				second = Texture.fromTexture(texture, secondRegion, secondFrame);
+				this._second = Texture.fromTexture(texture, secondRegion, secondFrame);
 
 				thirdRegion = new Rectangle(regionLeftWidth + this._secondRegionSize, 0, regionRightWidth, texture.height);
 				thirdFrame = (hasTopFrame || hasBottomFrame || hasRightFrame) ? new Rectangle(0, textureFrame.y, this._thirdRegionSize, this._oppositeEdgeSize) : null;
-				third = Texture.fromTexture(texture, thirdRegion, thirdFrame);
+				this._third = Texture.fromTexture(texture, thirdRegion, thirdFrame);
 			}
-
-			this._firstImage = new Image(first);
-			this._firstImage.touchable = false;
-			this.addChild(this._firstImage);
-			this._secondImage = new Image(second);
-			this._secondImage.touchable = false;
-			this.addChild(this._secondImage);
-			this._thirdImage = new Image(third);
-			this._thirdImage.touchable = false;
-			this.addChild(this._thirdImage);
 		}
 
 		/**
@@ -391,57 +363,105 @@ package org.josht.starling.display
 		 */
 		override public function render(support:RenderSupport, alpha:Number):void
 		{
-			if(this._propertiesChanged)
+			if(this._propertiesChanged || this._layoutChanged)
 			{
-				this._firstImage.smoothing = this._smoothing;
-				this._secondImage.smoothing = this._smoothing;
-				this._thirdImage.smoothing = this._smoothing;
+				this._batch.reset();
 
-				this._firstImage.color = this._color;
-				this._secondImage.color = this._color;
-				this._thirdImage.color = this._color;
-			}
+				if(!helperImage)
+				{
+					helperImage = new starling.display.Image(this._first);
+				}
+				helperImage.smoothing = this._smoothing;
+				helperImage.color = this._color;
 
-			if(this._layoutChanged)
-			{
 				if(this._direction == DIRECTION_VERTICAL)
 				{
-					var scaledOppositeEdgeSize:Number = this.width;
+					var scaledOppositeEdgeSize:Number = this._width;
 					var oppositeEdgeScale:Number = scaledOppositeEdgeSize / this._oppositeEdgeSize;
 					var scaledFirstRegionSize:Number = this._firstRegionSize * oppositeEdgeScale;
-					var scaledSecondRegionSize:Number = this._secondRegionSize * oppositeEdgeScale;
 					var scaledThirdRegionSize:Number = this._thirdRegionSize * oppositeEdgeScale;
+					var scaledSecondRegionSize:Number = this._height - scaledFirstRegionSize - scaledThirdRegionSize;
 
-					this._firstImage.width = this._secondImage.width = this._thirdImage.width = scaledOppositeEdgeSize;
-					this._firstImage.height = scaledFirstRegionSize;
-					this._thirdImage.height = scaledThirdRegionSize;
+					if(scaledOppositeEdgeSize > 0)
+					{
+						helperImage.texture = this._first;
+						helperImage.readjustSize();
+						helperImage.x = 0;
+						helperImage.y = 0;
+						helperImage.width = scaledOppositeEdgeSize;
+						helperImage.height = scaledFirstRegionSize;
+						if(scaledFirstRegionSize > 0)
+						{
+							this._batch.addImage(helperImage);
+						}
 
-					this._firstImage.y = 0;
-					this._secondImage.y = scaledFirstRegionSize;
-					this._secondImage.height = Math.max(0, this._height - scaledFirstRegionSize - scaledThirdRegionSize);
-					this._thirdImage.y = this._height - scaledThirdRegionSize;
+						helperImage.texture = this._second;
+						helperImage.readjustSize();
+						helperImage.x = 0;
+						helperImage.y = scaledFirstRegionSize;
+						helperImage.width = scaledOppositeEdgeSize;
+						helperImage.height = scaledSecondRegionSize;
+						if(scaledSecondRegionSize > 0)
+						{
+							this._batch.addImage(helperImage);
+						}
+
+						helperImage.texture = this._third;
+						helperImage.readjustSize();
+						helperImage.x = 0;
+						helperImage.y = this._height - scaledThirdRegionSize;
+						helperImage.width = scaledOppositeEdgeSize;
+						helperImage.height = scaledThirdRegionSize;
+						if(scaledThirdRegionSize > 0)
+						{
+							this._batch.addImage(helperImage);
+						}
+					}
 				}
 				else //horizontal
 				{
-					scaledOppositeEdgeSize = this.height;
+					scaledOppositeEdgeSize = this._height;
 					oppositeEdgeScale = scaledOppositeEdgeSize / this._oppositeEdgeSize;
 					scaledFirstRegionSize = this._firstRegionSize * oppositeEdgeScale;
-					scaledSecondRegionSize = this._secondRegionSize * oppositeEdgeScale;
 					scaledThirdRegionSize = this._thirdRegionSize * oppositeEdgeScale;
+					scaledSecondRegionSize = this._width - scaledFirstRegionSize - scaledThirdRegionSize;
 
-					this._firstImage.width = scaledFirstRegionSize;
-					this._thirdImage.width = scaledThirdRegionSize;
-					this._firstImage.height = this._secondImage.height = this._thirdImage.height = scaledOppositeEdgeSize;
+					if(scaledOppositeEdgeSize > 0)
+					{
+						helperImage.texture = this._first;
+						helperImage.readjustSize();
+						helperImage.x = 0;
+						helperImage.y = 0;
+						helperImage.width = scaledFirstRegionSize;
+						helperImage.height = scaledOppositeEdgeSize;
+						if(scaledFirstRegionSize > 0)
+						{
+							this._batch.addImage(helperImage);
+						}
 
-					this._firstImage.x = 0;
-					this._secondImage.x = scaledFirstRegionSize;
-					this._secondImage.width = Math.max(0, this._width - scaledFirstRegionSize - scaledThirdRegionSize);
-					this._thirdImage.x = this._width - scaledThirdRegionSize;
+						helperImage.texture = this._second;
+						helperImage.readjustSize();
+						helperImage.x = scaledFirstRegionSize;
+						helperImage.y = 0;
+						helperImage.width = scaledSecondRegionSize;
+						helperImage.height = scaledOppositeEdgeSize;
+						if(scaledSecondRegionSize > 0)
+						{
+							this._batch.addImage(helperImage);
+						}
+
+						helperImage.texture = this._third;
+						helperImage.readjustSize();
+						helperImage.x = this._width - scaledThirdRegionSize;
+						helperImage.y = 0;
+						helperImage.width = scaledThirdRegionSize;
+						helperImage.height = scaledOppositeEdgeSize;
+						if(scaledThirdRegionSize > 0)
+						{
+							this._batch.addImage(helperImage);
+						}
+					}
 				}
-			}
-			if((this._layoutChanged || this._propertiesChanged) && this._autoFlatten)
-			{
-				this.flatten();
 			}
 			this._propertiesChanged = false;
 			this._layoutChanged = false;

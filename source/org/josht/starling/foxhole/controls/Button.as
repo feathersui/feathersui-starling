@@ -24,19 +24,16 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package org.josht.starling.foxhole.controls
 {
-	import flash.errors.IllegalOperationError;
 	import flash.geom.Point;
 
 	import org.josht.starling.display.ScrollRectManager;
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.IToggle;
 	import org.josht.starling.foxhole.text.BitmapFontTextFormat;
-	import org.josht.starling.text.BitmapFont;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 
 	import starling.display.DisplayObject;
-	import starling.display.Image;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -1909,11 +1906,10 @@ package org.josht.starling.foxhole.controls
 			}
 			else if(this._iconPosition == ICON_POSITION_LEFT_BASELINE || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
 			{
-				const font:starling.text.BitmapFont = this.labelField.textFormat.font;
+				const font:BitmapFont = this.labelField.textFormat.font;
 				const formatSize:Number = this.labelField.textFormat.size;
-				const baseline:Number = (font is org.josht.starling.text.BitmapFont) ? org.josht.starling.text.BitmapFont(font).base : font.lineHeight;
 				const fontSizeScale:Number = isNaN(formatSize) ? 1 : (formatSize / font.size);
-				this.currentIcon.y = this.labelField.y + fontSizeScale * baseline - this.currentIcon.height;
+				this.currentIcon.y = this.labelField.y + (fontSizeScale * font.baseline) - this.currentIcon.height;
 			}
 			else
 			{

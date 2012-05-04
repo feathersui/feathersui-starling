@@ -1,49 +1,46 @@
 /*
-Copyright (c) 2012 Josh Tynjala
+ Copyright (c) 2012 Josh Tynjala
 
-Permission is hereby granted, free of charge, to any person
-obtaining a copy of this software and associated documentation
-files (the "Software"), to deal in the Software without
-restriction, including without limitation the rights to use,
-copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the
-Software is furnished to do so, subject to the following
-conditions:
+ Permission is hereby granted, free of charge, to any person
+ obtaining a copy of this software and associated documentation
+ files (the "Software"), to deal in the Software without
+ restriction, including without limitation the rights to use,
+ copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the
+ Software is furnished to do so, subject to the following
+ conditions:
 
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-OTHER DEALINGS IN THE SOFTWARE.
-*/
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ OTHER DEALINGS IN THE SOFTWARE.
+ */
 package org.josht.starling.foxhole.controls
 {
-	import flash.errors.IllegalOperationError;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.system.Capabilities;
-	
+
 	import org.josht.starling.display.IDisplayObjectWithScrollRect;
-	import org.josht.starling.display.Image;
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.IToggle;
 	import org.josht.starling.foxhole.text.BitmapFontTextFormat;
 	import org.josht.starling.motion.GTween;
-	import org.josht.starling.text.BitmapFont;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
-	
+
 	import starling.display.DisplayObject;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
-	
+
 	/**
 	 * Similar to a light switch. May be selected or not, like a check box.
 	 */
@@ -55,19 +52,41 @@ package org.josht.starling.foxhole.controls
 		 * before the scroller starts scrolling.
 		 */
 		private static const MINIMUM_DRAG_DISTANCE:Number = 0.04;
-		
+
 		/**
 		 * The ON and OFF labels will be aligned to the middle vertically,
 		 * based on the full character height of the font.
 		 */
 		public static const LABEL_ALIGN_MIDDLE:String = "middle";
-		
+
 		/**
 		 * The ON and OFF labels will be aligned to the middle vertically,
-		 * based on only the baseline vlaue of the font. 
+		 * based on only the baseline value of the font.
 		 */
 		public static const LABEL_ALIGN_BASELINE:String = "baseline";
-		
+
+		/**
+		 * The toggle switch has only one track skin, stretching to fill the
+		 * full length of switch. In this layout mode, the on track is
+		 * displayed, but the off track is hidden.
+		 */
+		public static const TRACK_LAYOUT_MODE_SINGLE:String = "single";
+
+		/**
+		 * The switch's on and off track skins will by resized by changing
+		 * their width and height values. Consider using a special display
+		 * object such as a Scale9Image, Scale3Image or a TiledImage if the
+		 * skins should be resizable.
+		 */
+		public static const TRACK_LAYOUT_MODE_STRETCH:String = "stretch";
+
+		/**
+		 * The switch's on and off track skins will be resized and cropped
+		 * using a scrollRect to ensure that the skins maintain a static
+		 * appearance without altering the aspect ratio.
+		 */
+		public static const TRACK_LAYOUT_MODE_SCROLL:String = "scroll";
+
 		/**
 		 * Constructor.
 		 */
@@ -76,125 +95,103 @@ package org.josht.starling.foxhole.controls
 			super();
 			this.addEventListener(TouchEvent.TOUCH, touchHandler);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var thumb:Button;
-		
+
 		/**
 		 * @private
 		 */
 		protected var onLabelField:Label;
-		
+
 		/**
 		 * @private
 		 */
 		protected var offLabelField:Label;
-		
+
 		/**
 		 * @private
 		 */
-		protected var _onSkin:DisplayObject;
-		
+		protected var _onTrackSkin:DisplayObject;
+
 		/**
 		 * The background skin for the left side of the toggle switch, where the
 		 * ON label is displayed.
 		 */
-		public function get onSkin():DisplayObject
+		public function get onTrackSkin():DisplayObject
 		{
-			return this._onSkin;
+			return this._onTrackSkin;
 		}
-		
+
 		/**
 		 * @private
 		 */
-		public function set onSkin(value:DisplayObject):void
+		public function set onTrackSkin(value:DisplayObject):void
 		{
-			if(this._onSkin == value)
+			if(this._onTrackSkin == value)
 			{
 				return;
 			}
-			
-			if(this._onSkin)
+
+			if(this._onTrackSkin)
 			{
-				this.removeChild(this._onSkin);
+				this.removeChild(this._onTrackSkin);
 			}
-			this._onSkin = value;
-			if(this._onSkin)
+			this._onTrackSkin = value;
+			if(this._onTrackSkin)
 			{
-				if(this._onSkin is IDisplayObjectWithScrollRect)
-				{
-					var scrollRectSkin:IDisplayObjectWithScrollRect = IDisplayObjectWithScrollRect(this._onSkin);
-					scrollRectSkin.scrollRect = null;
-				}
-				this.onSkinOriginalWidth = this._onSkin.width;
-				this.onSkinOriginalHeight = this._onSkin.height;
-				this.onSkinOriginalScaleX = this._onSkin.scaleX;
-				this.onSkinOriginalScaleY = this._onSkin.scaleY;
-				if(scrollRectSkin)
-				{
-					scrollRectSkin.scrollRect = new Rectangle();
-				}
-				this.addChildAt(this._onSkin, 0);
+				this.onTrackSkinOriginalWidth = this._onTrackSkin.width;
+				this.onTrackSkinOriginalHeight = this._onTrackSkin.height;
+				this.addChildAt(this._onTrackSkin, 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
-		protected var _offSkin:DisplayObject;
-		
+		protected var _offTrackSkin:DisplayObject;
+
 		/**
 		 * The background skin for the right side of the toggle switch, where
 		 * the OFF label is displayed.
 		 */
-		public function get offSkin():DisplayObject
+		public function get offTrackSkin():DisplayObject
 		{
-			return this._offSkin;
+			return this._offTrackSkin;
 		}
-		
+
 		/**
 		 * @private
 		 */
-		public function set offSkin(value:DisplayObject):void
+		public function set offTrackSkin(value:DisplayObject):void
 		{
-			if(this._offSkin == value)
+			if(this._offTrackSkin == value)
 			{
 				return;
 			}
-			
-			if(this._offSkin)
+
+			if(this._offTrackSkin)
 			{
-				this.removeChild(this._offSkin);
+				this.removeChild(this._offTrackSkin);
 			}
-			this._offSkin = value;
-			if(this._offSkin)
+			this._offTrackSkin = value;
+			if(this._offTrackSkin)
 			{
-				if(this._offSkin is IDisplayObjectWithScrollRect)
-				{
-					var scrollRectSkin:IDisplayObjectWithScrollRect = IDisplayObjectWithScrollRect(this._offSkin);
-					scrollRectSkin.scrollRect = null;
-				}
-				this.offSkinOriginalWidth = this._offSkin.width
-				this.offSkinOriginalHeight = this._offSkin.height;
-				this.offSkinOriginalScaleX = this._offSkin.scaleX;
-				this.offSkinOriginalScaleY = this._offSkin.scaleY;
-				if(scrollRectSkin)
-				{
-					scrollRectSkin.scrollRect = new Rectangle();
-				}
-				this.addChildAt(this._offSkin, 0);
+				this.offTrackSkinOriginalWidth = this._offTrackSkin.width
+				this.offTrackSkinOriginalHeight = this._offTrackSkin.height;
+				this.addChildAt(this._offTrackSkin, 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _contentPadding:Number = 0;
-		
+
 		/**
 		 * Space, in pixels, around the edges of the labels. The labels are
 		 * scrolled during animations, and they will be cut off this many pixels
@@ -204,7 +201,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return _contentPadding;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -217,21 +214,21 @@ package org.josht.starling.foxhole.controls
 			this._contentPadding = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _showLabels:Boolean = true;
-		
+
 		/**
-		 * Determines if the labels should be drawn. The onSkin and offSkin
-		 * backgrounds may include the text instead.
+		 * Determines if the labels should be drawn. The onTrackSkin and
+		 * offTrackSkin backgrounds may include the text instead.
 		 */
 		public function get showLabels():Boolean
 		{
 			return _showLabels;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -244,12 +241,12 @@ package org.josht.starling.foxhole.controls
 			this._showLabels = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _showThumb:Boolean = true;
-		
+
 		/**
 		 * Determines if the thumb should be displayed. This stops interaction
 		 * while still displaying the background.
@@ -258,7 +255,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._showThumb;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -271,18 +268,44 @@ package org.josht.starling.foxhole.controls
 			this._showThumb = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
+		/**
+		 * @private
+		 */
+		private var _trackLayoutMode:String = TRACK_LAYOUT_MODE_SINGLE;
+
+		/**
+		 * Determines how the on and off track skins are positioned and sized.
+		 */
+		public function get trackLayoutMode():String
+		{
+			return this._trackLayoutMode;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set trackLayoutMode(value:String):void
+		{
+			if(this._trackLayoutMode == value)
+			{
+				return;
+			}
+			this._trackLayoutMode = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
 		/**
 		 * @private
 		 */
 		protected var _defaultTextFormat:BitmapFontTextFormat;
-		
+
 		/**
 		 * The text format used to display the labels, if no higher priority
 		 * format is available. For the ON label, <code>onTextFormat</code>
 		 * takes priority. For the OFF label, <code>offTextFormat</code> takes
 		 * priority.
-		 * 
+		 *
 		 * @see onTextFormat
 		 * @see offTextFormat
 		 */
@@ -290,7 +313,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._defaultTextFormat;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -299,12 +322,12 @@ package org.josht.starling.foxhole.controls
 			this._defaultTextFormat = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _disabledTextFormat:BitmapFontTextFormat;
-		
+
 		/**
 		 * The text format used to display the labels if the toggle switch is
 		 * disabled. If <code>null</code>, then <code>defaultTextFormat</code>
@@ -314,7 +337,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._disabledTextFormat;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -323,12 +346,12 @@ package org.josht.starling.foxhole.controls
 			this._disabledTextFormat = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _onTextFormat:BitmapFontTextFormat;
-		
+
 		/**
 		 * The text format used to display the ON label. If <code>null</code>,
 		 * then <code>defaultTextFormat</code> will be used instead.
@@ -337,7 +360,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._onTextFormat;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -346,12 +369,12 @@ package org.josht.starling.foxhole.controls
 			this._onTextFormat = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _offTextFormat:BitmapFontTextFormat;
-		
+
 		/**
 		 * The text format used to display the OFF label. If <code>null</code>,
 		 * then <code>defaultTextFormat</code> will be used instead.
@@ -360,7 +383,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._offTextFormat;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -369,12 +392,12 @@ package org.josht.starling.foxhole.controls
 			this._offTextFormat = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _labelAlign:String = LABEL_ALIGN_BASELINE;
-		
+
 		/**
 		 * The vertical alignment of the label.
 		 */
@@ -382,7 +405,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._labelAlign;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -395,53 +418,32 @@ package org.josht.starling.foxhole.controls
 			this._labelAlign = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
-		protected var onSkinOriginalWidth:Number = NaN;
-		
+		protected var onTrackSkinOriginalWidth:Number = NaN;
+
 		/**
 		 * @private
 		 */
-		protected var onSkinOriginalHeight:Number = NaN;
-		
+		protected var onTrackSkinOriginalHeight:Number = NaN;
+
 		/**
 		 * @private
 		 */
-		protected var onSkinOriginalScaleX:Number = NaN;
-		
+		protected var offTrackSkinOriginalWidth:Number = NaN;
+
 		/**
 		 * @private
 		 */
-		protected var onSkinOriginalScaleY:Number = NaN;
-		
-		/**
-		 * @private
-		 */
-		protected var offSkinOriginalWidth:Number = NaN;
-		
-		/**
-		 * @private
-		 */
-		protected var offSkinOriginalHeight:Number = NaN;
-		
-		/**
-		 * @private
-		 */
-		protected var offSkinOriginalScaleX:Number = NaN;
-		/**
-		 * @private
-		 */
-		protected var offSkinOriginalScaleY:Number = NaN;
-		
-		private var _backgroundBounds:Point;
-		
+		protected var offTrackSkinOriginalHeight:Number = NaN;
+
 		/**
 		 * @private
 		 */
 		private var _isSelected:Boolean = false;
-		
+
 		/**
 		 * Indicates if the toggle switch is selected (ON) or not (OFF).
 		 */
@@ -449,7 +451,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._isSelected;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -468,12 +470,12 @@ package org.josht.starling.foxhole.controls
 				this._onChange.dispatch(this);
 			}
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _onText:String = "ON";
-		
+
 		/**
 		 * The text to display in the ON label.
 		 */
@@ -481,7 +483,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._onText;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -499,12 +501,12 @@ package org.josht.starling.foxhole.controls
 			this._onText = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _offText:String = "OFF";
-		
+
 		/**
 		 * The text to display in the OFF label.
 		 */
@@ -512,7 +514,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._offText;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -530,20 +532,20 @@ package org.josht.starling.foxhole.controls
 			this._offText = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		private var _selectionChangeTween:GTween;
-		
+
 		private var _ignoreTapHandler:Boolean = false;
 		private var _touchPointID:int = -1;
 		private var _thumbStartX:Number;
 		private var _touchStartX:Number;
 		private var _isSelectionChangedByUser:Boolean = false;
-		
+
 		/**
 		 * @private
 		 */
 		protected var _onChange:Signal = new Signal(ToggleSwitch);
-		
+
 		/**
 		 * Dispatched when the selection changes.
 		 */
@@ -551,12 +553,12 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._onChange;
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _thumbProperties:Object = {};
-		
+
 		/**
 		 * A set of key/value pairs to be passed down to the toggle switch's
 		 * thumb instance. The thumb is a Foxhole Button control.
@@ -565,7 +567,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._thumbProperties;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -582,7 +584,7 @@ package org.josht.starling.foxhole.controls
 			this._thumbProperties = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * Sets a single property on the toggle switch's thumb instance. The
 		 * thumb is a Foxhole Button control.
@@ -592,7 +594,7 @@ package org.josht.starling.foxhole.controls
 			this._thumbProperties[propertyName] = propertyValue;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -601,7 +603,7 @@ package org.josht.starling.foxhole.controls
 			this._onChange.removeAll();
 			super.dispose();
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -614,7 +616,7 @@ package org.josht.starling.foxhole.controls
 				this.offLabelField.scrollRect = new Rectangle();
 				this.addChild(this.offLabelField);
 			}
-			
+
 			if(!this.onLabelField)
 			{
 				this.onLabelField = new Label();
@@ -622,7 +624,7 @@ package org.josht.starling.foxhole.controls
 				this.onLabelField.scrollRect = new Rectangle();
 				this.addChild(this.onLabelField);
 			}
-			
+
 			if(!this.thumb)
 			{
 				this.thumb = new Button();
@@ -633,7 +635,7 @@ package org.josht.starling.foxhole.controls
 				this.addChild(this.thumb);
 			}
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -643,23 +645,22 @@ package org.josht.starling.foxhole.controls
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
-			
+
 			if(stylesInvalid || stateInvalid)
 			{
 				this.refreshOnLabelStyles();
 				this.refreshOffLabelStyles();
 				this.refreshThumbProperties();
 			}
-			
+
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
-			
+
 			if(stylesInvalid || sizeInvalid || stateInvalid)
 			{
-				this.scaleSkins();
 				this.thumb.y = (this.actualHeight - this.thumb.height) / 2;
 				this.drawLabels();
 			}
-			
+
 			if(sizeInvalid || stylesInvalid || dataInvalid)
 			{
 				this.updateSelection();
@@ -684,17 +685,31 @@ package org.josht.starling.foxhole.controls
 			var newHeight:Number = this.explicitHeight;
 			if(needsWidth)
 			{
-				newWidth = this.onSkinOriginalWidth + this.offSkinOriginalWidth - this.thumb.width;
+				if(this._trackLayoutMode == TRACK_LAYOUT_MODE_SCROLL || this._trackLayoutMode == TRACK_LAYOUT_MODE_STRETCH)
+				{
+					newWidth = Math.min(this.onTrackSkinOriginalWidth, this.offTrackSkinOriginalWidth) + this.thumb.width / 2;
+				}
+				else
+				{
+					newWidth = this.onTrackSkinOriginalWidth;
+				}
 			}
 
 			if(needsHeight)
 			{
-				newHeight = Math.max(this.onSkinOriginalHeight, this.offSkinOriginalHeight);
+				if(this._trackLayoutMode == TRACK_LAYOUT_MODE_SCROLL || this._trackLayoutMode == TRACK_LAYOUT_MODE_STRETCH)
+				{
+					newHeight = Math.max(this.onTrackSkinOriginalHeight, this.offTrackSkinOriginalHeight);
+				}
+				else
+				{
+					newHeight = this.onTrackSkinOriginalHeight;
+				}
 			}
 			this.setSizeInternal(newWidth, newHeight, false);
 			return true;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -705,14 +720,14 @@ package org.josht.starling.foxhole.controls
 			{
 				xPosition = this.actualWidth - this.thumb.width - this._contentPadding;
 			}
-			
+
 			//stop the tween, no matter what
 			if(this._selectionChangeTween)
 			{
 				this._selectionChangeTween.paused = true;
 				this._selectionChangeTween = null;
 			}
-			
+
 			if(this._isSelectionChangedByUser)
 			{
 				this._selectionChangeTween = new GTween(this.thumb, 0.15,
@@ -729,26 +744,26 @@ package org.josht.starling.foxhole.controls
 				this.thumb.x = xPosition;
 			}
 			this._isSelectionChangedByUser = false;
-			
+
 			//we want to be sure that the onLabel isn't visible behind the thumb
 			//on init so that if we fade out the toggle switch alpha, on won't
 			//suddenly appear due to the way that flash changes alpha values
 			//of containers.
-			this.updateScrollRects();
+			this.layout();
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected function refreshOnLabelStyles():void
-		{	
+		{
 			//no need to style the label field if there's no text to display
 			if(!this._showLabels || !this._showThumb)
 			{
 				this.onLabelField.visible = false;
 				return;
 			}
-			
+
 			var format:BitmapFontTextFormat;
 			if(!this._isEnabled)
 			{
@@ -762,7 +777,7 @@ package org.josht.starling.foxhole.controls
 			{
 				format = this._defaultTextFormat;
 			}
-			
+
 			this.onLabelField.text = this._onText;
 			if(format)
 			{
@@ -771,19 +786,19 @@ package org.josht.starling.foxhole.controls
 			this.onLabelField.validate();
 			this.onLabelField.visible = true;
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected function refreshOffLabelStyles():void
-		{	
+		{
 			//no need to style the label field if there's no text to display
 			if(!this._showLabels || !this._showThumb)
 			{
 				this.offLabelField.visible = false;
 				return;
 			}
-			
+
 			var format:BitmapFontTextFormat;
 			if(!this._isEnabled)
 			{
@@ -797,7 +812,7 @@ package org.josht.starling.foxhole.controls
 			{
 				format = this._defaultTextFormat;
 			}
-			
+
 			this.offLabelField.text = this._offText;
 			if(format)
 			{
@@ -806,7 +821,7 @@ package org.josht.starling.foxhole.controls
 			this.offLabelField.validate();
 			this.offLabelField.visible = true;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -823,20 +838,7 @@ package org.josht.starling.foxhole.controls
 			this.thumb.visible = this._showThumb;
 			this.thumb.isEnabled = this._isEnabled;
 		}
-		
-		/**
-		 * @private
-		 */
-		private function scaleSkins():void
-		{
-			const skinScale:Number = this.actualHeight / Math.max(this.onSkinOriginalHeight, this.offSkinOriginalHeight);
-			this.onSkin.scaleX = this.onSkinOriginalScaleX * skinScale;
-			this.onSkin.scaleY = this.onSkinOriginalScaleY * skinScale;
-			this.offSkin.scaleX = this.offSkinOriginalScaleX * skinScale;
-			this.offSkin.scaleY = this.offSkinOriginalScaleY * skinScale;
-			this.offSkin.y = this.onSkin.y = 0;
-		}
-		
+
 		/**
 		 * @private
 		 */
@@ -845,79 +847,155 @@ package org.josht.starling.foxhole.controls
 			const maxLabelWidth:Number = Math.max(0, this.actualWidth - this.thumb.width - 2 * this._contentPadding);
 			var totalLabelHeight:Number = Math.max(this.onLabelField.height, this.offLabelField.height);
 			var labelHeight:Number;
-			if(this._labelAlign == LABEL_ALIGN_MIDDLE || !this._defaultTextFormat || !(this._defaultTextFormat.font is BitmapFont))
+			if(this._labelAlign == LABEL_ALIGN_MIDDLE || !this._defaultTextFormat)
 			{
 				labelHeight = totalLabelHeight;
 			}
 			else //baseline
 			{
 				const fontScale:Number = isNaN(this._defaultTextFormat.size) ? 1 : (this._defaultTextFormat.size / this._defaultTextFormat.font.size);
-				labelHeight = fontScale * BitmapFont(this._defaultTextFormat.font).base;
+				labelHeight = fontScale * this._defaultTextFormat.font.baseline;
 			}
-			
+
 			var onScrollRect:Rectangle = this.onLabelField.scrollRect;
 			onScrollRect.width = maxLabelWidth;
 			onScrollRect.height = totalLabelHeight;
 			this.onLabelField.scrollRect = onScrollRect;
-			
+
 			this.onLabelField.x = this._contentPadding;
 			this.onLabelField.y = (this.actualHeight - labelHeight) / 2;
-			
+
 			var offScrollRect:Rectangle = this.offLabelField.scrollRect;
 			offScrollRect.width = maxLabelWidth;
 			offScrollRect.height = totalLabelHeight;
 			this.offLabelField.scrollRect = offScrollRect;
-			
+
 			this.offLabelField.x = this.actualWidth - this._contentPadding - maxLabelWidth;
 			this.offLabelField.y = (this.actualHeight - labelHeight) / 2;
 		}
-		
+
 		/**
 		 * @private
 		 */
-		private function updateScrollRects():void
+		protected function layout():void
 		{
 			const maxLabelWidth:Number = Math.max(0, this.actualWidth - this.thumb.width - 2 * this._contentPadding);
 			const thumbOffset:Number = this.thumb.x - this._contentPadding;
-			const halfWidth:Number = (this.actualWidth - 2 * this._contentPadding) / 2;
-			const middleOfThumb:Number = this.thumb.x + this.thumb.width / 2;
-			
+
 			var currentScrollRect:Rectangle = this.onLabelField.scrollRect;
 			currentScrollRect.x = this.actualWidth - this.thumb.width - thumbOffset - (maxLabelWidth - this.onLabelField.width) / 2;
 			this.onLabelField.scrollRect = currentScrollRect;
-			
+
 			currentScrollRect = this.offLabelField.scrollRect;
 			currentScrollRect.x = -thumbOffset - (maxLabelWidth - this.offLabelField.width) / 2;
 			this.offLabelField.scrollRect = currentScrollRect;
-			
-			if(this._onSkin is IDisplayObjectWithScrollRect)
+
+			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_SCROLL)
 			{
-				const onSkinScaledWidth:Number = this.onSkinOriginalWidth * this._onSkin.scaleX;
+				this.layoutTrackWithScrollRect();
+			}
+			else if(this._trackLayoutMode == TRACK_LAYOUT_MODE_STRETCH)
+			{
+				this.layoutTrackWithStretch();
+			}
+			else
+			{
+				this.layoutTrackWithSingle();
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function layoutTrackWithStretch():void
+		{
+			this._offTrackSkin.visible = true;
+			if(this._onTrackSkin is IDisplayObjectWithScrollRect)
+			{
+				IDisplayObjectWithScrollRect(this._onTrackSkin).scrollRect = null;
+			}
+			if(this._offTrackSkin is IDisplayObjectWithScrollRect)
+			{
+				IDisplayObjectWithScrollRect(this._offTrackSkin).scrollRect = null;
+			}
+			this._onTrackSkin.width = this.thumb.x + this.thumb.width / 2;
+			this._onTrackSkin.height = this.actualHeight;
+			this._offTrackSkin.x = this._onTrackSkin.width;
+			this._offTrackSkin.width = this.actualWidth - this._offTrackSkin.x;
+			this._offTrackSkin.height = this.actualHeight;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function layoutTrackWithScrollRect():void
+		{
+			this._offTrackSkin.visible = true;
+
+			//we want to scale the skins to match the height of the switch, but
+			//we also want to keep the original aspect ratio of the skins.
+			const onTrackSkinScaledWidth:Number = this.onTrackSkinOriginalWidth * this.actualHeight / this.onTrackSkinOriginalHeight;
+			const offTrackSkinScaledWidth:Number = this.offTrackSkinOriginalWidth * this.actualHeight / this.offTrackSkinOriginalHeight;
+
+			this._onTrackSkin.width = onTrackSkinScaledWidth;
+			this._onTrackSkin.height = this.actualHeight;
+			this._offTrackSkin.width = offTrackSkinScaledWidth;
+			this._offTrackSkin.height = this.actualHeight;
+
+			const middleOfThumb:Number = this.thumb.x + this.thumb.width / 2;
+			if(this._onTrackSkin is IDisplayObjectWithScrollRect)
+			{
 				//if the on and off skins are transparent, we don't want them to overlap at all
-				var scrollRectSkin:IDisplayObjectWithScrollRect = IDisplayObjectWithScrollRect(this._onSkin);
-				currentScrollRect = scrollRectSkin.scrollRect;
-				currentScrollRect.width = Math.min(onSkinScaledWidth, middleOfThumb) / this._onSkin.scaleX;
-				currentScrollRect.height = this.actualHeight / this._onSkin.scaleX;
+				var scrollRectSkin:IDisplayObjectWithScrollRect = IDisplayObjectWithScrollRect(this._onTrackSkin);
+				var currentScrollRect:Rectangle = scrollRectSkin.scrollRect;
+				if(!currentScrollRect)
+				{
+					currentScrollRect = new Rectangle();
+				}
+				currentScrollRect.width = Math.min(onTrackSkinScaledWidth, middleOfThumb) / this._onTrackSkin.scaleX;
+				currentScrollRect.height = this.actualHeight / this._onTrackSkin.scaleY;
 				scrollRectSkin.scrollRect = currentScrollRect;
 			}
-			
-			if(this._offSkin is IDisplayObjectWithScrollRect)
+
+			if(this._offTrackSkin is IDisplayObjectWithScrollRect)
 			{
-				const offSkinScaledWidth:Number = this.offSkinOriginalWidth * this._offSkin.scaleX;
-				this._offSkin.x = Math.max(this.actualWidth - offSkinScaledWidth, middleOfThumb);
-				scrollRectSkin = IDisplayObjectWithScrollRect(this._offSkin);
+				this._offTrackSkin.x = Math.max(this.actualWidth - offTrackSkinScaledWidth, middleOfThumb);
+				scrollRectSkin = IDisplayObjectWithScrollRect(this._offTrackSkin);
 				currentScrollRect = scrollRectSkin.scrollRect;
-				currentScrollRect.width = Math.min(offSkinScaledWidth, this.actualWidth - middleOfThumb) / this._offSkin.scaleX;
-				currentScrollRect.height = this.actualHeight / this._onSkin.scaleX;
-				currentScrollRect.x = Math.max(0, this.offSkinOriginalWidth - currentScrollRect.width);
+				if(!currentScrollRect)
+				{
+					currentScrollRect = new Rectangle();
+				}
+				currentScrollRect.width = Math.min(offTrackSkinScaledWidth, this.actualWidth - middleOfThumb) / this._offTrackSkin.scaleX;
+				currentScrollRect.height = this.actualHeight / this._offTrackSkin.scaleY;
+				currentScrollRect.x = Math.max(0, offTrackSkinScaledWidth / this._offTrackSkin.scaleX - currentScrollRect.width);
 				scrollRectSkin.scrollRect = currentScrollRect;
 			}
 			else
 			{
-				this._offSkin.x = this.actualWidth - this._offSkin.width;
+				this._offTrackSkin.x = this.actualWidth - this._offTrackSkin.width;
 			}
 		}
-		
+
+		/**
+		 * @private
+		 */
+		protected function layoutTrackWithSingle():void
+		{
+			if(this._onTrackSkin is IDisplayObjectWithScrollRect)
+			{
+				IDisplayObjectWithScrollRect(this._onTrackSkin).scrollRect = null;
+			}
+			this._onTrackSkin.x = 0;
+			this._onTrackSkin.y = 0;
+			this._onTrackSkin.width = this.actualWidth;
+			this._onTrackSkin.height = this.actualHeight;
+			if(this._offTrackSkin)
+			{
+				this._offTrackSkin.visible = false;
+			}
+		}
+
 		/**
 		 * @private
 		 */
@@ -944,7 +1022,7 @@ package org.josht.starling.foxhole.controls
 				this._isSelectionChangedByUser = true;
 			}
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -959,7 +1037,7 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			
+
 			const trackScrollableWidth:Number = this.actualWidth - 2 * this._contentPadding - this.thumb.width;
 			const location:Point = touch.getLocation(this);
 			if(touch.phase == TouchPhase.BEGAN)
@@ -973,7 +1051,7 @@ package org.josht.starling.foxhole.controls
 				const xOffset:Number = location.x - this._touchStartX;
 				const xPosition:Number = Math.min(Math.max(this._contentPadding, this._thumbStartX + xOffset), trackScrollableWidth);
 				this.thumb.x = xPosition;
-				this.updateScrollRects();
+				this.layout();
 			}
 			else if(touch.phase == TouchPhase.ENDED)
 			{
@@ -987,15 +1065,15 @@ package org.josht.starling.foxhole.controls
 				}
 			}
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private function selectionTween_onChange(tween:GTween):void
 		{
-			this.updateScrollRects();
+			this.layout();
 		}
-		
+
 		/**
 		 * @private
 		 */

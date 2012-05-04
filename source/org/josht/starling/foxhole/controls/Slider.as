@@ -25,21 +25,23 @@ OTHER DEALINGS IN THE SOFTWARE.
 package org.josht.starling.foxhole.controls
 {
 	import flash.geom.Point;
-	
+	import flash.geom.Rectangle;
+
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.utils.math.clamp;
 	import org.josht.utils.math.roundToNearest;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
-	
+
 	import starling.display.DisplayObject;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
-	
+
 	/**
 	 * Select a value between a minimum and a maximum by dragging a thumb over
-	 * the bounds of a track.
+	 * the bounds of a track. The slider's track is divided into two parts split
+	 * by the thumb.
 	 */
 	public class Slider extends FoxholeControl
 	{
@@ -52,6 +54,28 @@ package org.josht.starling.foxhole.controls
 		 * The slider's thumb may be dragged vertically (on the y-axis).
 		 */
 		public static const DIRECTION_VERTICAL:String = "vertical";
+
+		/**
+		 * The slider has only one track, stretching to fill the full length of
+		 * the slider. In this layout mode, the minimum track is displayed, but
+		 * the maximum track is hidden.
+		 */
+		public static const TRACK_LAYOUT_MODE_SINGLE:String = "single";
+
+		/**
+		 * The slider's minimum and maximum track will by resized by changing
+		 * their width and height values. Consider using a special display
+		 * object such as a Scale9Image, Scale3Image or a TiledImage if the
+		 * skins should be resizable.
+		 */
+		public static const TRACK_LAYOUT_MODE_STRETCH:String = "stretch";
+
+		/**
+		 * The slider's minimum and maximum tracks will be resized and cropped
+		 * using a scrollRect to ensure that the skins maintain a static
+		 * appearance without altering the aspect ratio.
+		 */
+		public static const TRACK_LAYOUT_MODE_SCROLL:String = "scroll";
 		
 		/**
 		 * Constructor.
@@ -64,7 +88,32 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected var track:Button;
+		protected var minimumTrack:Button;
+
+		/**
+		 * @private
+		 */
+		protected var maximumTrack:Button;
+
+		/**
+		 * @private
+		 */
+		protected var minimumTrackOriginalWidth:Number = NaN;
+
+		/**
+		 * @private
+		 */
+		protected var minimumTrackOriginalHeight:Number = NaN;
+
+		/**
+		 * @private
+		 */
+		protected var maximumTrackOriginalWidth:Number = NaN;
+
+		/**
+		 * @private
+		 */
+		protected var maximumTrackOriginalHeight:Number = NaN;
 		
 		/**
 		 * @private
@@ -242,8 +291,7 @@ package org.josht.starling.foxhole.controls
 		private var _showThumb:Boolean = true;
 		
 		/**
-		 * Determines if the thumb should be displayed. This stops interaction
-		 * while still displaying the track.
+		 * Determines if the thumb should be displayed.
 		 */
 		public function get showThumb():Boolean
 		{
@@ -262,27 +310,54 @@ package org.josht.starling.foxhole.controls
 			this._showThumb = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
-		private var _trackProperties:Object = {};
-		
+		private var _trackLayoutMode:String = TRACK_LAYOUT_MODE_SINGLE;
+
 		/**
-		 * A set of key/value pairs to be passed down to the slider's track
-		 * instance. The track is a Foxhole Button control.
+		 * Determines how the minimum and maximum track skins are positioned and
+		 * sized.
 		 */
-		public function get trackProperties():Object
+		public function get trackLayoutMode():String
 		{
-			return this._trackProperties;
+			return this._trackLayoutMode;
 		}
-		
+
 		/**
 		 * @private
 		 */
-		public function set trackProperties(value:Object):void
+		public function set trackLayoutMode(value:String):void
 		{
-			if(this._trackProperties == value)
+			if(this._trackLayoutMode == value)
+			{
+				return;
+			}
+			this._trackLayoutMode = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _minimumTrackProperties:Object = {};
+
+		/**
+		 * A set of key/value pairs to be passed down to the slider's minimum
+		 * track instance. The minimum track is a Foxhole Button control.
+		 */
+		public function get minimumTrackProperties():Object
+		{
+			return this._minimumTrackProperties;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set minimumTrackProperties(value:Object):void
+		{
+			if(this._minimumTrackProperties == value)
 			{
 				return;
 			}
@@ -290,7 +365,38 @@ package org.josht.starling.foxhole.controls
 			{
 				value = {};
 			}
-			this._trackProperties = value;
+			this._minimumTrackProperties = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+		
+		/**
+		 * @private
+		 */
+		private var _maximumTrackProperties:Object = {};
+		
+		/**
+		 * A set of key/value pairs to be passed down to the slider's maximum
+		 * track instance. The maximum track is a Foxhole Button control.
+		 */
+		public function get maximumTrackProperties():Object
+		{
+			return this._maximumTrackProperties;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set maximumTrackProperties(value:Object):void
+		{
+			if(this._maximumTrackProperties == value)
+			{
+				return;
+			}
+			if(!value)
+			{
+				value = {};
+			}
+			this._maximumTrackProperties = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
@@ -342,12 +448,22 @@ package org.josht.starling.foxhole.controls
 		}
 		
 		/**
-		 * Sets a single property on the slider's track instance. The track is
-		 * a Foxhole Button control.
+		 * Sets a single property on the slider's minimum track instance. The
+		 * minimum track is a Foxhole Button control.
 		 */
-		public function setTrackProperty(propertyName:String, propertyValue:Object):void
+		public function setMinimumTrackProperty(propertyName:String, propertyValue:Object):void
 		{
-			this._trackProperties[propertyName] = propertyValue;
+			this._minimumTrackProperties[propertyName] = propertyValue;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * Sets a single property on the slider's maximum track instance. The
+		 * maximum track is a Foxhole Button control.
+		 */
+		public function setMaximumTrackProperty(propertyName:String, propertyValue:Object):void
+		{
+			this._maximumTrackProperties[propertyName] = propertyValue;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
@@ -365,13 +481,14 @@ package org.josht.starling.foxhole.controls
 		 */
 		override protected function initialize():void
 		{
-			if(!this.track)
+			if(!this.minimumTrack)
 			{
-				this.track = new Button();
-				this.track.nameList.add("foxhole-slider-track");
-				this.track.label = "";
-				this.track.addEventListener(TouchEvent.TOUCH, track_touchHandler);
-				this.addChild(this.track);
+				this.minimumTrack = new Button();
+				this.minimumTrack.nameList.add("foxhole-slider-minimum-track");
+				this.minimumTrack.label = "";
+				this.minimumTrack.keepDownStateOnRollOut = true;
+				this.minimumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
+				this.addChild(this.minimumTrack);
 			}
 			
 			if(!this.thumb)
@@ -394,7 +511,9 @@ package org.josht.starling.foxhole.controls
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
-			
+
+			this.createOrDestroyMaximumTrackIfNeeded();
+
 			if(stylesInvalid)
 			{
 				this.refreshThumbStyles();
@@ -403,40 +522,18 @@ package org.josht.starling.foxhole.controls
 			
 			if(stateInvalid)
 			{
-				this.thumb.isEnabled = this.track.isEnabled = this._isEnabled;
+				this.thumb.isEnabled = this.minimumTrack.isEnabled = isEnabled;
+				if(this.maximumTrack)
+				{
+					this.maximumTrack.isEnabled = this._isEnabled;
+				}
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
-			
-			if(stylesInvalid || sizeInvalid)
-			{
-				if(!isNaN(this.explicitWidth))
-				{
-					this.track.width = this.explicitWidth;
-				}
-				if(!isNaN(this.explicitHeight))
-				{
-					this.track.height = this.explicitHeight;
-				}
-			}
 
 			if(dataInvalid || stylesInvalid || sizeInvalid)
 			{
-				//this will auto-size the thumb, if needed
-				this.thumb.validate();
-
-				if(this._direction == DIRECTION_HORIZONTAL)
-				{
-					const trackScrollableWidth:Number = this.actualWidth - this.thumb.width;
-					this.thumb.x = (trackScrollableWidth * (this._value - this._minimum) / (this._maximum - this._minimum));
-					this.thumb.y = (this.actualHeight - this.thumb.height) / 2;
-				}
-				else //vertical
-				{
-					const trackScrollableHeight:Number = this.actualHeight - this.thumb.height;
-					this.thumb.x = (this.actualWidth - this.thumb.width) / 2;
-					this.thumb.y = (trackScrollableHeight * (this._value - this._minimum) / (this._maximum - this._minimum));
-				}
+				this.layout();
 			}
 		}
 
@@ -445,22 +542,80 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
+			if(isNaN(this.minimumTrackOriginalWidth) || isNaN(this.minimumTrackOriginalHeight))
+			{
+				this.minimumTrack.validate();
+				this.minimumTrackOriginalWidth = this.minimumTrack.width;
+				this.minimumTrackOriginalHeight = this.minimumTrack.height;
+			}
+			if(this.maximumTrack)
+			{
+				if(isNaN(this.maximumTrackOriginalWidth) || isNaN(this.maximumTrackOriginalHeight))
+				{
+					this.maximumTrack.validate();
+					this.maximumTrackOriginalWidth = this.maximumTrack.width;
+					this.maximumTrackOriginalHeight = this.maximumTrack.height;
+				}
+			}
+
 			const needsWidth:Boolean = isNaN(this.explicitWidth);
 			const needsHeight:Boolean = isNaN(this.explicitHeight);
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
 			}
+			this.thumb.validate();
 			var newWidth:Number = this.explicitWidth;
 			var newHeight:Number = this.explicitHeight;
-			this.track.validate();
 			if(needsWidth)
 			{
-				newWidth = this.track.width;
+				if(this._direction == DIRECTION_VERTICAL)
+				{
+					if(this.maximumTrack)
+					{
+						newWidth = Math.max(this.minimumTrackOriginalWidth, this.maximumTrackOriginalWidth);
+					}
+					else
+					{
+						newWidth = this.minimumTrackOriginalWidth;
+					}
+				}
+				else //horizontal
+				{
+					if(this.maximumTrack)
+					{
+						newWidth = Math.min(this.minimumTrackOriginalWidth, this.maximumTrackOriginalWidth) + this.thumb.width / 2;
+					}
+					else
+					{
+						newWidth = this.minimumTrackOriginalWidth;
+					}
+				}
 			}
 			if(needsHeight)
 			{
-				newHeight = this.track.height;
+				if(this._direction == DIRECTION_VERTICAL)
+				{
+					if(this.maximumTrack)
+					{
+						newHeight = Math.min(this.minimumTrackOriginalHeight, this.maximumTrackOriginalHeight) + this.thumb.height / 2;
+					}
+					else
+					{
+						newHeight = this.minimumTrackOriginalHeight;
+					}
+				}
+				else //horizontal
+				{
+					if(this.maximumTrack)
+					{
+						newHeight = Math.max(this.minimumTrackOriginalHeight, this.maximumTrackOriginalHeight);
+					}
+					else
+					{
+						newHeight = this.minimumTrackOriginalHeight;
+					}
+				}
 			}
 			this.setSizeInternal(newWidth, newHeight, false);
 			return true;
@@ -487,14 +642,246 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function refreshTrackStyles():void
 		{
-			for(var propertyName:String in this._trackProperties)
+			for(var propertyName:String in this._minimumTrackProperties)
 			{
-				if(this.track.hasOwnProperty(propertyName))
+				if(this.minimumTrack.hasOwnProperty(propertyName))
 				{
-					var propertyValue:Object = this._trackProperties[propertyName];
-					this.track[propertyName] = propertyValue;
+					var propertyValue:Object = this._minimumTrackProperties[propertyName];
+					this.minimumTrack[propertyName] = propertyValue;
 				}
 			}
+			if(this.maximumTrack)
+			{
+				for(propertyName in this._maximumTrackProperties)
+				{
+					if(this.maximumTrack.hasOwnProperty(propertyName))
+					{
+						propertyValue = this._maximumTrackProperties[propertyName];
+						this.maximumTrack[propertyName] = propertyValue;
+					}
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function layout():void
+		{
+			//this will auto-size the thumb, if needed
+			this.thumb.validate();
+
+			if(this._direction == DIRECTION_VERTICAL)
+			{
+				const trackScrollableHeight:Number = this.actualHeight - this.thumb.height;
+				this.thumb.x = (this.actualWidth - this.thumb.width) / 2;
+				this.thumb.y = trackScrollableHeight * (1 - (this._value - this._minimum) / (this._maximum - this._minimum));
+			}
+			else
+			{
+				const trackScrollableWidth:Number = this.actualWidth - this.thumb.width;
+				this.thumb.x = (trackScrollableWidth * (this._value - this._minimum) / (this._maximum - this._minimum));
+				this.thumb.y = (this.actualHeight - this.thumb.height) / 2;
+			}
+
+			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_SCROLL)
+			{
+				this.layoutTrackWithScrollRect();
+			}
+			else if(this._trackLayoutMode == TRACK_LAYOUT_MODE_STRETCH)
+			{
+				this.layoutTrackWithStretch();
+			}
+			else //single
+			{
+				this.layoutTrackWithSingle();
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function layoutTrackWithScrollRect():void
+		{
+			if(this._direction == DIRECTION_VERTICAL)
+			{
+				//we want to scale the skins to match the height of the slider,
+				//but we also want to keep the original aspect ratio.
+				const minimumTrackScaledHeight:Number = this.minimumTrackOriginalHeight * this.actualWidth / this.minimumTrackOriginalWidth;
+				const maximumTrackScaledHeight:Number = this.maximumTrackOriginalHeight * this.actualWidth / this.maximumTrackOriginalWidth;
+				this.minimumTrack.width = this.actualWidth;
+				this.minimumTrack.height = minimumTrackScaledHeight;
+				this.maximumTrack.width = this.actualWidth;
+				this.maximumTrack.height = maximumTrackScaledHeight;
+
+				var middleOfThumb:Number = this.thumb.y + this.thumb.height / 2;
+				this.maximumTrack.x = 0;
+				this.maximumTrack.y = 0;
+				var currentScrollRect:Rectangle = this.maximumTrack.scrollRect;
+				if(!currentScrollRect)
+				{
+					currentScrollRect = new Rectangle();
+				}
+				currentScrollRect.x = 0;
+				currentScrollRect.y = 0;
+				currentScrollRect.width = this.actualWidth;
+				currentScrollRect.height = Math.min(maximumTrackScaledHeight, middleOfThumb);
+				this.maximumTrack.scrollRect = currentScrollRect;
+
+				this.minimumTrack.x = 0;
+				this.minimumTrack.y = Math.max(this.actualHeight - minimumTrackScaledHeight, middleOfThumb);
+				currentScrollRect = this.minimumTrack.scrollRect;
+				if(!currentScrollRect)
+				{
+					currentScrollRect = new Rectangle();
+				}
+				currentScrollRect.width = this.actualWidth;
+				currentScrollRect.height = Math.min(minimumTrackScaledHeight, this.actualHeight - middleOfThumb);
+				currentScrollRect.x = 0;
+				currentScrollRect.y = Math.max(0, minimumTrackScaledHeight - currentScrollRect.height);
+				this.minimumTrack.scrollRect = currentScrollRect;
+			}
+			else //horizontal
+			{
+				//we want to scale the skins to match the height of the slider,
+				//but we also want to keep the original aspect ratio.
+				const minimumTrackScaledWidth:Number = this.minimumTrackOriginalWidth * this.actualHeight / this.minimumTrackOriginalHeight;
+				const maximumTrackScaledWidth:Number = this.maximumTrackOriginalWidth * this.actualHeight / this.maximumTrackOriginalHeight;
+				this.minimumTrack.width = minimumTrackScaledWidth;
+				this.minimumTrack.height = this.actualHeight;
+				this.maximumTrack.width = maximumTrackScaledWidth;
+				this.maximumTrack.height = this.actualHeight;
+
+				middleOfThumb = this.thumb.x + this.thumb.width / 2;
+				this.minimumTrack.x = 0;
+				this.minimumTrack.y = 0;
+				currentScrollRect = this.minimumTrack.scrollRect;
+				if(!currentScrollRect)
+				{
+					currentScrollRect = new Rectangle();
+				}
+				currentScrollRect.x = 0;
+				currentScrollRect.y = 0;
+				currentScrollRect.width = Math.min(minimumTrackScaledWidth, middleOfThumb);
+				currentScrollRect.height = this.actualHeight;
+				this.minimumTrack.scrollRect = currentScrollRect;
+
+				this.maximumTrack.x = Math.max(this.actualWidth - maximumTrackScaledWidth, middleOfThumb);
+				this.maximumTrack.y = 0;
+				currentScrollRect = this.maximumTrack.scrollRect;
+				if(!currentScrollRect)
+				{
+					currentScrollRect = new Rectangle();
+				}
+				currentScrollRect.width = Math.min(maximumTrackScaledWidth, this.actualWidth - middleOfThumb);
+				currentScrollRect.height = this.actualHeight;
+				currentScrollRect.x = Math.max(0, maximumTrackScaledWidth - currentScrollRect.width);
+				currentScrollRect.y = 0;
+				this.maximumTrack.scrollRect = currentScrollRect;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function layoutTrackWithStretch():void
+		{
+			if(this.minimumTrack.scrollRect)
+			{
+				this.minimumTrack.scrollRect = null;
+			}
+			if(this.maximumTrack.scrollRect)
+			{
+				this.maximumTrack.scrollRect = null;
+			}
+
+			if(this._direction == DIRECTION_VERTICAL)
+			{
+				this.maximumTrack.x = 0;
+				this.maximumTrack.y = 0;
+				this.maximumTrack.width = this.actualWidth;
+				this.maximumTrack.height = this.thumb.y + this.thumb.height / 2;
+
+				this.minimumTrack.x = 0;
+				this.minimumTrack.y = this.maximumTrack.height;
+				this.minimumTrack.width = this.actualWidth;
+				this.minimumTrack.height = this.actualHeight - this.minimumTrack.y;
+			}
+			else //horizontal
+			{
+				this.minimumTrack.x = 0;
+				this.minimumTrack.y = 0;
+				this.minimumTrack.width = this.thumb.x + this.thumb.width / 2;
+				this.minimumTrack.height = this.actualHeight;
+
+				this.maximumTrack.x = this.minimumTrack.width;
+				this.maximumTrack.y = 0;
+				this.maximumTrack.width = this.actualWidth - this.maximumTrack.x;
+				this.maximumTrack.height = this.actualHeight;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function layoutTrackWithSingle():void
+		{
+			if(this.minimumTrack.scrollRect)
+			{
+				this.minimumTrack.scrollRect = null;
+			}
+			this.minimumTrack.x = 0;
+			this.minimumTrack.y = 0;
+			this.minimumTrack.width = this.actualWidth;
+			this.minimumTrack.height = this.actualHeight;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function createOrDestroyMaximumTrackIfNeeded():void
+		{
+			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_SCROLL || this._trackLayoutMode == TRACK_LAYOUT_MODE_STRETCH)
+			{
+				if(!this.maximumTrack)
+				{
+					this.maximumTrack = new Button();
+					this.maximumTrack.nameList.add("foxhole-slider-maximum-track");
+					this.maximumTrack.label = "";
+					this.maximumTrack.keepDownStateOnRollOut = true;
+					this.maximumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
+					this.addChildAt(this.maximumTrack, 1);
+				}
+			}
+			else if(this.maximumTrack) //single
+			{
+				this.maximumTrack.removeFromParent(true);
+				this.maximumTrack = null;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dragTo(location:Point):void
+		{
+			var percentage:Number;
+			if(this._direction == DIRECTION_VERTICAL)
+			{
+				const trackScrollableHeight:Number = this.actualHeight - this.thumb.height;
+				const yOffset:Number = location.y - this._touchStartY;
+				const yPosition:Number = Math.min(Math.max(0, this._thumbStartY + yOffset), trackScrollableHeight);
+				percentage = 1 - (yPosition / trackScrollableHeight);
+			}
+			else //horizontal
+			{
+				const trackScrollableWidth:Number = this.actualWidth - this.thumb.width;
+				const xOffset:Number = location.x - this._touchStartX;
+				const xPosition:Number = Math.min(Math.max(0, this._thumbStartX + xOffset), trackScrollableWidth);
+				percentage = xPosition / trackScrollableWidth;
+			}
+
+			this.value = this._minimum + percentage * (this._maximum - this._minimum);
 		}
 		
 		/**
@@ -506,23 +893,43 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			const touch:Touch = event.getTouch(this.track);
-			if(!touch || touch.phase != TouchPhase.ENDED || this._touchPointID >= 0)
+			const touch:Touch = event.getTouch(DisplayObject(event.currentTarget));
+			if(!touch || (this._touchPointID >= 0 && this._touchPointID != touch.id))
 			{
 				return;
 			}
-			var location:Point = touch.getLocation(this);
-			var percentage:Number;
-			if(this._direction == DIRECTION_HORIZONTAL)
+
+			if(touch.phase == TouchPhase.BEGAN || touch.phase == TouchPhase.MOVED)
 			{
-				percentage = location.x / this.actualWidth;
+				const location:Point = touch.getLocation(this);
+				if(touch.phase == TouchPhase.BEGAN)
+				{
+					this._touchPointID = touch.id;
+					if(this._direction == DIRECTION_VERTICAL)
+					{
+						this._thumbStartX = location.x;
+						this._thumbStartY = Math.min(this.actualHeight - this.thumb.height, Math.max(0, location.y - this.thumb.height / 2));
+					}
+					else //horizontal
+					{
+						this._thumbStartX = Math.min(this.actualWidth - this.thumb.width, Math.max(0, location.x - this.thumb.width / 2));
+						this._thumbStartY = location.y;
+					}
+					this._touchStartX = location.x;
+					this._touchStartY = location.y;
+					this.isDragging = true;
+				}
+				this.dragTo(location);
 			}
-			else //vertical
+			else if(touch.phase == TouchPhase.ENDED)
 			{
-				percentage = location.y / this.actualHeight;
+				this._touchPointID = -1;
+				this.isDragging = false;
+				if(!this.liveDragging)
+				{
+					this._onChange.dispatch(this);
+				}
 			}
-			
-			this.value = this._minimum + percentage * (this._maximum - this._minimum);
 		}
 		
 		/**
@@ -539,7 +946,7 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			var location:Point = touch.getLocation(this);
+			const location:Point = touch.getLocation(this);
 			if(touch.phase == TouchPhase.BEGAN)
 			{
 				this._touchPointID = touch.id;
@@ -551,23 +958,7 @@ package org.josht.starling.foxhole.controls
 			}
 			else if(touch.phase == TouchPhase.MOVED)
 			{
-				var percentage:Number;
-				if(this._direction == DIRECTION_HORIZONTAL)
-				{
-					const trackScrollableWidth:Number = this.actualWidth - this.thumb.width;
-					const xOffset:Number = location.x - this._touchStartX;
-					const xPosition:Number = Math.min(Math.max(0, this._thumbStartX + xOffset), trackScrollableWidth);
-					percentage = xPosition / trackScrollableWidth;
-				}
-				else //vertical
-				{
-					const trackScrollableHeight:Number = this.actualHeight - this.thumb.height;
-					const yOffset:Number = location.y - this._touchStartY;
-					const yPosition:Number = Math.min(Math.max(0, this._thumbStartY + yOffset), trackScrollableHeight);
-					percentage = yPosition / trackScrollableHeight;
-				}
-				
-				this.value = this._minimum + percentage * (this._maximum - this._minimum);
+				this.dragTo(location);
 			}
 			else if(touch.phase == TouchPhase.ENDED)
 			{
