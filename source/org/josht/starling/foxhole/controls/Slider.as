@@ -584,7 +584,7 @@ package org.josht.starling.foxhole.controls
 				{
 					if(this.maximumTrack)
 					{
-						newWidth = Math.min(this.minimumTrackOriginalWidth, this.maximumTrackOriginalWidth) + (this._showThumb ? this.thumb.width / 2 : 0);
+						newWidth = Math.min(this.minimumTrackOriginalWidth, this.maximumTrackOriginalWidth) + this.thumb.width / 2;
 					}
 					else
 					{
@@ -598,7 +598,7 @@ package org.josht.starling.foxhole.controls
 				{
 					if(this.maximumTrack)
 					{
-						newHeight = Math.min(this.minimumTrackOriginalHeight, this.maximumTrackOriginalHeight) + (this._showThumb ? this.thumb.height / 2 : 0);
+						newHeight = Math.min(this.minimumTrackOriginalHeight, this.maximumTrackOriginalHeight) + this.thumb.height / 2;
 					}
 					else
 					{
@@ -673,13 +673,13 @@ package org.josht.starling.foxhole.controls
 
 			if(this._direction == DIRECTION_VERTICAL)
 			{
-				const trackScrollableHeight:Number = this.actualHeight - (this._showThumb ? this.thumb.height : 0);
+				const trackScrollableHeight:Number = this.actualHeight - this.thumb.height;
 				this.thumb.x = (this.actualWidth - this.thumb.width) / 2;
 				this.thumb.y = trackScrollableHeight * (1 - (this._value - this._minimum) / (this._maximum - this._minimum));
 			}
 			else
 			{
-				const trackScrollableWidth:Number = this.actualWidth - (this._showThumb ? this.thumb.width : 0);
+				const trackScrollableWidth:Number = this.actualWidth - this.thumb.width;
 				this.thumb.x = (trackScrollableWidth * (this._value - this._minimum) / (this._maximum - this._minimum));
 				this.thumb.y = (this.actualHeight - this.thumb.height) / 2;
 			}
@@ -714,7 +714,7 @@ package org.josht.starling.foxhole.controls
 				this.maximumTrack.width = this.actualWidth;
 				this.maximumTrack.height = maximumTrackScaledHeight;
 
-				var middleOfThumb:Number = this.thumb.y + (this._showThumb ? this.thumb.height / 2 : 0);
+				var middleOfThumb:Number = this.thumb.y + this.thumb.height / 2;
 				this.maximumTrack.x = 0;
 				this.maximumTrack.y = 0;
 				var currentScrollRect:Rectangle = this.maximumTrack.scrollRect;
@@ -752,7 +752,7 @@ package org.josht.starling.foxhole.controls
 				this.maximumTrack.width = maximumTrackScaledWidth;
 				this.maximumTrack.height = this.actualHeight;
 
-				middleOfThumb = this.thumb.x + (this._showThumb ? this.thumb.width / 2 : 0);
+				middleOfThumb = this.thumb.x + this.thumb.width / 2;
 				this.minimumTrack.x = 0;
 				this.minimumTrack.y = 0;
 				currentScrollRect = this.minimumTrack.scrollRect;
@@ -800,7 +800,7 @@ package org.josht.starling.foxhole.controls
 				this.maximumTrack.x = 0;
 				this.maximumTrack.y = 0;
 				this.maximumTrack.width = this.actualWidth;
-				this.maximumTrack.height = this.thumb.y + (this._showThumb ? this.thumb.height / 2 : 0);
+				this.maximumTrack.height = this.thumb.y + this.thumb.height / 2;
 
 				this.minimumTrack.x = 0;
 				this.minimumTrack.y = this.maximumTrack.height;
@@ -811,7 +811,7 @@ package org.josht.starling.foxhole.controls
 			{
 				this.minimumTrack.x = 0;
 				this.minimumTrack.y = 0;
-				this.minimumTrack.width = this.thumb.x + (this._showThumb ? this.thumb.width / 2 : 0);
+				this.minimumTrack.width = this.thumb.x + this.thumb.width / 2;
 				this.minimumTrack.height = this.actualHeight;
 
 				this.maximumTrack.x = this.minimumTrack.width;
@@ -859,6 +859,30 @@ package org.josht.starling.foxhole.controls
 				this.maximumTrack = null;
 			}
 		}
+
+		/**
+		 * @private
+		 */
+		protected function dragTo(location:Point):void
+		{
+			var percentage:Number;
+			if(this._direction == DIRECTION_VERTICAL)
+			{
+				const trackScrollableHeight:Number = this.actualHeight - this.thumb.height;
+				const yOffset:Number = location.y - this._touchStartY;
+				const yPosition:Number = Math.min(Math.max(0, this._thumbStartY + yOffset), trackScrollableHeight);
+				percentage = 1 - (yPosition / trackScrollableHeight);
+			}
+			else //horizontal
+			{
+				const trackScrollableWidth:Number = this.actualWidth - this.thumb.width;
+				const xOffset:Number = location.x - this._touchStartX;
+				const xPosition:Number = Math.min(Math.max(0, this._thumbStartX + xOffset), trackScrollableWidth);
+				percentage = xPosition / trackScrollableWidth;
+			}
+
+			this.value = this._minimum + percentage * (this._maximum - this._minimum);
+		}
 		
 		/**
 		 * @private
@@ -875,10 +899,27 @@ package org.josht.starling.foxhole.controls
 				return;
 			}
 
-			if(touch.phase == TouchPhase.BEGAN)
+			if(touch.phase == TouchPhase.BEGAN || touch.phase == TouchPhase.MOVED)
 			{
-				this._touchPointID = touch.id;
-				this.isDragging = true;
+				const location:Point = touch.getLocation(this);
+				if(touch.phase == TouchPhase.BEGAN)
+				{
+					this._touchPointID = touch.id;
+					if(this._direction == DIRECTION_VERTICAL)
+					{
+						this._thumbStartX = location.x;
+						this._thumbStartY = Math.min(this.actualHeight - this.thumb.height, Math.max(0, location.y - this.thumb.height / 2));
+					}
+					else //horizontal
+					{
+						this._thumbStartX = Math.min(this.actualWidth - this.thumb.width, Math.max(0, location.x - this.thumb.width / 2));
+						this._thumbStartY = location.y;
+					}
+					this._touchStartX = location.x;
+					this._touchStartY = location.y;
+					this.isDragging = true;
+				}
+				this.dragTo(location);
 			}
 			else if(touch.phase == TouchPhase.ENDED)
 			{
@@ -888,22 +929,6 @@ package org.josht.starling.foxhole.controls
 				{
 					this._onChange.dispatch(this);
 				}
-			}
-
-			if(touch.phase == TouchPhase.BEGAN || touch.phase == TouchPhase.MOVED)
-			{
-				var location:Point = touch.getLocation(this);
-				var percentage:Number;
-				if(this._direction == DIRECTION_VERTICAL)
-				{
-					percentage = 1 - (location.y / this.actualHeight);
-				}
-				else //horizontal
-				{
-					percentage = location.x / this.actualWidth;
-				}
-
-				this.value = this._minimum + percentage * (this._maximum - this._minimum);
 			}
 		}
 		
@@ -921,7 +946,7 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			var location:Point = touch.getLocation(this);
+			const location:Point = touch.getLocation(this);
 			if(touch.phase == TouchPhase.BEGAN)
 			{
 				this._touchPointID = touch.id;
@@ -933,23 +958,7 @@ package org.josht.starling.foxhole.controls
 			}
 			else if(touch.phase == TouchPhase.MOVED)
 			{
-				var percentage:Number;
-				if(this._direction == DIRECTION_VERTICAL)
-				{
-					const trackScrollableHeight:Number = this.actualHeight - this.thumb.height;
-					const yOffset:Number = location.y - this._touchStartY;
-					const yPosition:Number = Math.min(Math.max(0, this._thumbStartY + yOffset), trackScrollableHeight);
-					percentage = 1 - (yPosition / trackScrollableHeight);
-				}
-				else //horizontal
-				{
-					const trackScrollableWidth:Number = this.actualWidth - this.thumb.width;
-					const xOffset:Number = location.x - this._touchStartX;
-					const xPosition:Number = Math.min(Math.max(0, this._thumbStartX + xOffset), trackScrollableWidth);
-					percentage = xPosition / trackScrollableWidth;
-				}
-				
-				this.value = this._minimum + percentage * (this._maximum - this._minimum);
+				this.dragTo(location);
 			}
 			else if(touch.phase == TouchPhase.ENDED)
 			{
