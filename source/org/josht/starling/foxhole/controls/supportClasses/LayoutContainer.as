@@ -33,6 +33,10 @@ package org.josht.starling.foxhole.controls.supportClasses
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 
+	/**
+	 * @private
+	 * Used internally by ScrollContainer. Not meant to be used on its own.
+	 */
 	public class LayoutContainer extends FoxholeControl
 	{
 		private static const HELPER_POINT:Point = new Point();
