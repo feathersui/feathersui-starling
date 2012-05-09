@@ -643,18 +643,3 @@ package org.josht.starling.foxhole.core
 		}
 	}
 }
-/*import org.josht.starling.foxhole.core.FoxholeControl;
-
-class CallLaterQueueItem
-{
-	public function CallLaterQueueItem(target:FoxholeControl, method:Function, parameters:Array)
-	{
-		this.target = target;
-		this.method = method;
-		this.parameters = parameters;
-	}
-	
-	public var target:FoxholeControl;
-	public var method:Function;
-	public var parameters:Array;
-}*/
