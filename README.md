@@ -32,6 +32,9 @@ A header that displays a title along with a horizontal regions on the sides for 
 ### ScreenNavigator
 A state machine for menu systems. Uses events or signals to trigger navigation between screens or to call functions. Includes very simple dependency injection.
 
+### ScrollContainer
+A container that supports scrolling and layout.
+
 ### Slider
 A typical horizontal or vertical slider control.
 
@@ -43,7 +46,6 @@ A text entry control that allows users to enter and edit a single line of unifor
 
 ### ToggleSwitch
 A sliding on/off switch. A common alternative to a checkbox in mobile environments.
-
 
 ## Dependencies
 
