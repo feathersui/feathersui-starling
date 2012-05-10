@@ -577,7 +577,7 @@ package org.josht.starling.foxhole.controls
 		override public function hitTest(localPoint:Point, forTouch:Boolean = false):DisplayObject
 		{
 			//first check the children for touches
-			const result:DisplayObject = super.hitTest(localPoint, forTouch);
+			var result:DisplayObject = super.hitTest(localPoint, forTouch);
 			if(!result)
 			{
 				//we want to register touches in our hitArea as a last resort
@@ -585,7 +585,12 @@ package org.josht.starling.foxhole.controls
 				{
 					return null;
 				}
-				return this._hitArea.containsPoint(localPoint) ? this : null;
+				//I don't know why we need to adjust for viewPortWrapper's location
+				localPoint.x += this._viewPortWrapper.x;
+				localPoint.y += this._viewPortWrapper.y;
+				result = this._hitArea.containsPoint(localPoint) ? this : null;
+				localPoint.x -= this._viewPortWrapper.x;
+				localPoint.y -= this._viewPortWrapper.y;
 			}
 			return result;
 		}
