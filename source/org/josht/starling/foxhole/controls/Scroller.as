@@ -62,12 +62,13 @@ package org.josht.starling.foxhole.controls
 	public class Scroller extends FoxholeControl
 	{
 		/**
-		 * The scroller may scroll.
+		 * The scroller may scroll, if the view port is larger than the
+		 * scroller's bounds.
 		 */
 		public static const SCROLL_POLICY_AUTO:String = "auto";
 
 		/**
-		 * The scroll does not scroll at all.
+		 * The scroller does not scroll at all.
 		 */
 		public static const SCROLL_POLICY_OFF:String = "off";
 
@@ -606,7 +607,7 @@ package org.josht.starling.foxhole.controls
 		override public function hitTest(localPoint:Point, forTouch:Boolean = false):DisplayObject
 		{
 			//first check the children for touches
-			const result:DisplayObject = super.hitTest(localPoint, forTouch);
+			var result:DisplayObject = super.hitTest(localPoint, forTouch);
 			if(!result)
 			{
 				//we want to register touches in our hitArea as a last resort
@@ -614,7 +615,12 @@ package org.josht.starling.foxhole.controls
 				{
 					return null;
 				}
-				return this._hitArea.containsPoint(localPoint) ? this : null;
+				//I don't know why we need to adjust for viewPortWrapper's location
+				localPoint.x += this._viewPortWrapper.x;
+				localPoint.y += this._viewPortWrapper.y;
+				result = this._hitArea.containsPoint(localPoint) ? this : null;
+				localPoint.x -= this._viewPortWrapper.x;
+				localPoint.y -= this._viewPortWrapper.y;
 			}
 			return result;
 		}
@@ -692,6 +698,11 @@ package org.josht.starling.foxhole.controls
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
+			}
+
+			if(this._viewPort is FoxholeControl)
+			{
+				FoxholeControl(this._viewPort).validate();
 			}
 
 			var newWidth:Number = this.explicitWidth;

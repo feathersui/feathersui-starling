@@ -32,6 +32,9 @@ A header that displays a title along with a horizontal regions on the sides for 
 ### ScreenNavigator
 A state machine for menu systems. Uses events or signals to trigger navigation between screens or to call functions. Includes very simple dependency injection.
 
+### ScrollContainer
+A container that supports scrolling and layout.
+
 ### Slider
 A typical horizontal or vertical slider control.
 
@@ -44,12 +47,11 @@ A text entry control that allows users to enter and edit a single line of unifor
 ### ToggleSwitch
 A sliding on/off switch. A common alternative to a checkbox in mobile environments.
 
-
 ## Dependencies
 
 The following external libraries are required. Other versions of the same library may work, but the version displayed below is the one currently used by the author.
 
-* [Starling](http://gamua.com/starling/) v1.1 RC (please use a commit newer than April 26, 2012)
+* [Starling](http://gamua.com/starling/) v1.1
 * [GTween](http://gskinner.com/libraries/gtween/) v2.01
 * [as3-signals](https://github.com/robertpenner/as3-signals) v0.9 BETA
 
