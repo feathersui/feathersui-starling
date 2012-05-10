@@ -318,17 +318,18 @@ package org.josht.starling.foxhole.layout
 				positionY += item.height + this._gap;
 				maxWidth = Math.max(maxWidth, item.width);
 			}
-			const boundsHeight:Number = suggestedBounds.height - this._paddingTop - this._paddingBottom;
-			var verticalAlignOffsetY:Number = 0;
-			if(positionY < boundsHeight)
+
+			const totalHeight:Number = positionY - this._gap + this._paddingBottom - suggestedBounds.y;
+			if(totalHeight < suggestedBounds.height)
 			{
+				var verticalAlignOffsetY:Number = 0;
 				if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
 				{
-					verticalAlignOffsetY = boundsHeight - positionY;
+					verticalAlignOffsetY = suggestedBounds.height - totalHeight;
 				}
 				else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
 				{
-					verticalAlignOffsetY = (boundsHeight - positionY) / 2;
+					verticalAlignOffsetY = (suggestedBounds.height - totalHeight) / 2;
 				}
 				if(verticalAlignOffsetY != 0)
 				{
@@ -345,7 +346,7 @@ package org.josht.starling.foxhole.layout
 				resultDimensions = new Point();
 			}
 			resultDimensions.x = Math.max(suggestedBounds.width, maxWidth);
-			resultDimensions.y = Math.max(suggestedBounds.height, positionY + this._paddingBottom);
+			resultDimensions.y = Math.max(suggestedBounds.height, totalHeight);
 			return resultDimensions;
 		}
 	}
