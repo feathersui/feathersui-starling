@@ -422,31 +422,112 @@ package org.josht.starling.foxhole.controls
 			this._verticalAlign = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
-		protected var _contentPadding:Number = 0;
-		
+		protected var _paddingTop:Number = 0;
+
 		/**
-		 * The minimum space, in pixels, between the button's edges and the
+		 * The minimum space, in pixels, between the button's top edge and the
 		 * button's content.
 		 */
-		public function get contentPadding():Number
+		public function get paddingTop():Number
 		{
-			return _contentPadding;
+			return this._paddingTop;
 		}
-		
+
 		/**
 		 * @private
 		 */
-		public function set contentPadding(value:Number):void
+		public function set paddingTop(value:Number):void
 		{
-			if(this._contentPadding == value)
+			if(this._paddingTop == value)
 			{
 				return;
 			}
-			this._contentPadding = value;
+			this._paddingTop = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingRight:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the button's right edge and the
+		 * button's content.
+		 */
+		public function get paddingRight():Number
+		{
+			return this._paddingRight;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingRight(value:Number):void
+		{
+			if(this._paddingRight == value)
+			{
+				return;
+			}
+			this._paddingRight = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingBottom:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the button's bottom edge and
+		 * the button's content.
+		 */
+		public function get paddingBottom():Number
+		{
+			return this._paddingBottom;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingBottom(value:Number):void
+		{
+			if(this._paddingBottom == value)
+			{
+				return;
+			}
+			this._paddingBottom = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingLeft:Number = 0;
+
+		/*
+		 * The minimum space, in pixels, between the button's left edge and the
+		 * button's content.
+		 */
+		public function get paddingLeft():Number
+		{
+			return this._paddingLeft;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingLeft(value:Number):void
+		{
+			if(this._paddingLeft == value)
+			{
+				return;
+			}
+			this._paddingLeft = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
@@ -1440,8 +1521,15 @@ package org.josht.starling.foxhole.controls
 			{
 				if(this.currentIcon && this.label)
 				{
-					const adjustedGap:Number = this._gap == Number.POSITIVE_INFINITY ? this._contentPadding : this._gap;
-					newWidth = this.currentIcon.width + adjustedGap + this.labelControl.width;
+					if(this._iconPosition != ICON_POSITION_TOP && this._iconPosition != ICON_POSITION_BOTTOM)
+					{
+						var adjustedGap:Number = this._gap == Number.POSITIVE_INFINITY ? Math.min(this._paddingLeft, this._paddingRight) : this._gap;
+						newWidth = this.currentIcon.width + adjustedGap + this.labelControl.width;
+					}
+					else
+					{
+						newWidth = Math.max(this.currentIcon.width, this.labelControl.width);
+					}
 				}
 				else if(this.currentIcon)
 				{
@@ -1451,7 +1539,7 @@ package org.josht.starling.foxhole.controls
 				{
 					newWidth = this.labelControl.width;
 				}
-				newWidth += 2 * this._contentPadding;
+				newWidth += this._paddingLeft + this._paddingRight;
 				if(isNaN(newWidth))
 				{
 					newWidth = this._originalSkinWidth;
@@ -1467,7 +1555,15 @@ package org.josht.starling.foxhole.controls
 			{
 				if(this.currentIcon && this.label)
 				{
-					newHeight = Math.max(this.currentIcon.height, this.labelControl.height);
+					if(this._iconPosition == ICON_POSITION_TOP || this._iconPosition == ICON_POSITION_BOTTOM)
+					{
+						adjustedGap = this._gap == Number.POSITIVE_INFINITY ? Math.min(this._paddingTop, this._paddingBottom) : this._gap;
+						newHeight = this.currentIcon.height + adjustedGap + this.labelControl.height;
+					}
+					else
+					{
+						newHeight = Math.max(this.currentIcon.height, this.labelControl.height);
+					}
 				}
 				else if(this.currentIcon)
 				{
@@ -1477,7 +1573,7 @@ package org.josht.starling.foxhole.controls
 				{
 					newHeight = this.labelControl.height;
 				}
-				newHeight += 2 * this._contentPadding;
+				newHeight += this._paddingTop + this._paddingBottom;
 				if(isNaN(newHeight))
 				{
 					newHeight = this._originalSkinHeight;
@@ -1770,11 +1866,11 @@ package org.josht.starling.foxhole.controls
 		{
 			if(this._horizontalAlign == HORIZONTAL_ALIGN_LEFT)
 			{
-				displayObject.x = this._contentPadding;
+				displayObject.x = this._paddingLeft;
 			}
 			else if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
 			{
-				displayObject.x = this.actualWidth - this._contentPadding - displayObject.width;
+				displayObject.x = this.actualWidth - this._paddingRight - displayObject.width;
 			}
 			else //center
 			{
@@ -1782,11 +1878,11 @@ package org.josht.starling.foxhole.controls
 			}
 			if(this._verticalAlign == VERTICAL_ALIGN_TOP)
 			{
-				displayObject.y = this._contentPadding;
+				displayObject.y = this._paddingTop;
 			}
 			else if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
 			{
-				displayObject.y = this.actualHeight - this._contentPadding - displayObject.height;
+				displayObject.y = this.actualHeight - this._paddingBottom - displayObject.height;
 			}
 			else //middle
 			{
@@ -1803,8 +1899,8 @@ package org.josht.starling.foxhole.controls
 			{
 				if(this._gap == Number.POSITIVE_INFINITY)
 				{
-					this.currentIcon.y = this._contentPadding;
-					this.labelControl.y = this.actualHeight - this._contentPadding - this.labelControl.height;
+					this.currentIcon.y = this._paddingTop;
+					this.labelControl.y = this.actualHeight - this._paddingBottom - this.labelControl.height;
 				}
 				else
 				{
@@ -1823,8 +1919,8 @@ package org.josht.starling.foxhole.controls
 			{
 				if(this._gap == Number.POSITIVE_INFINITY)
 				{
-					this.labelControl.x = this._contentPadding;
-					this.currentIcon.x = this.actualWidth - this._contentPadding - this.currentIcon.width;
+					this.labelControl.x = this._paddingLeft;
+					this.currentIcon.x = this.actualWidth - this._paddingRight - this.currentIcon.width;
 				}
 				else
 				{
@@ -1843,8 +1939,8 @@ package org.josht.starling.foxhole.controls
 			{
 				if(this._gap == Number.POSITIVE_INFINITY)
 				{
-					this.labelControl.y = this._contentPadding;
-					this.currentIcon.y = this.actualHeight - this._contentPadding - this.currentIcon.height;
+					this.labelControl.y = this._paddingTop;
+					this.currentIcon.y = this.actualHeight - this._paddingBottom - this.currentIcon.height;
 				}
 				else
 				{
@@ -1863,8 +1959,8 @@ package org.josht.starling.foxhole.controls
 			{
 				if(this._gap == Number.POSITIVE_INFINITY)
 				{
-					this.currentIcon.x = this._contentPadding;
-					this.labelControl.x = this.actualWidth - this._contentPadding - this.labelControl.width;
+					this.currentIcon.x = this._paddingLeft;
+					this.labelControl.x = this.actualWidth - this._paddingRight - this.labelControl.width;
 				}
 				else
 				{

@@ -187,26 +187,108 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected var _contentPadding:Number = 0;
+		protected var _paddingTop:Number = 0;
 
 		/**
-		 * Space, in pixels, around the edges of the content.
+		 * The minimum space, in pixels, between the header's top edge and the
+		 * header's content.
 		 */
-		public function get contentPadding():Number
+		public function get paddingTop():Number
 		{
-			return _contentPadding;
+			return this._paddingTop;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set contentPadding(value:Number):void
+		public function set paddingTop(value:Number):void
 		{
-			if(this._contentPadding == value)
+			if(this._paddingTop == value)
 			{
 				return;
 			}
-			this._contentPadding = value;
+			this._paddingTop = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingRight:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the header's right edge and the
+		 * header's content.
+		 */
+		public function get paddingRight():Number
+		{
+			return this._paddingRight;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingRight(value:Number):void
+		{
+			if(this._paddingRight == value)
+			{
+				return;
+			}
+			this._paddingRight = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingBottom:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the header's bottom edge and
+		 * the header's content.
+		 */
+		public function get paddingBottom():Number
+		{
+			return this._paddingBottom;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingBottom(value:Number):void
+		{
+			if(this._paddingBottom == value)
+			{
+				return;
+			}
+			this._paddingBottom = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingLeft:Number = 0;
+
+		/*
+		 * The minimum space, in pixels, between the header's left edge and the
+		 * header's content.
+		 */
+		public function get paddingLeft():Number
+		{
+			return this._paddingLeft;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingLeft(value:Number):void
+		{
+			if(this._paddingLeft == value)
+			{
+				return;
+			}
+			this._paddingLeft = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -457,7 +539,7 @@ package org.josht.starling.foxhole.controls
 			{
 				return false;
 			}
-			var newWidth:Number = needsWidth ? (2 * this._contentPadding) : this.explicitWidth;
+			var newWidth:Number = needsWidth ? (this._paddingLeft + this._paddingRight) : this.explicitWidth;
 			var newHeight:Number = needsHeight ? 0 : this.explicitHeight;
 
 			for each(var item:DisplayObject in this._leftItems)
@@ -502,7 +584,7 @@ package org.josht.starling.foxhole.controls
 			}
 			if(needsHeight)
 			{
-				newHeight += 2 * this._contentPadding;
+				newHeight += this._paddingTop + this._paddingBottom;
 			}
 
 			this.setSizeInternal(newWidth, newHeight, false);
@@ -547,7 +629,7 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			var positionX:Number = this._contentPadding;
+			var positionX:Number = this._paddingLeft;
 			const itemCount:int = this._leftItems.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
@@ -572,7 +654,7 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			var positionX:Number = this.actualWidth - this._contentPadding;
+			var positionX:Number = this.actualWidth - this._paddingRight;
 			const itemCount:int = this._rightItems.length;
 			for(var i:int = itemCount - 1; i >= 0; i--)
 			{
@@ -600,11 +682,11 @@ package org.josht.starling.foxhole.controls
 			this._titleLabel.validate();
 			if(this._titleAlign == TITLE_ALIGN_PREFER_LEFT && (!this._leftItems || this._leftItems.length == 0))
 			{
-				this._titleLabel.x = this._contentPadding;
+				this._titleLabel.x = this._paddingLeft;
 			}
 			else if(this._titleAlign == TITLE_ALIGN_PREFER_RIGHT && (!this._rightItems || this._rightItems.length == 0))
 			{
-				this._titleLabel.x = this.actualWidth - this._contentPadding - this._titleLabel.width;
+				this._titleLabel.x = this.actualWidth - this._paddingRight - this._titleLabel.width;
 			}
 			else
 			{

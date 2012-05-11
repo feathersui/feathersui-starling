@@ -28,11 +28,8 @@ package org.josht.starling.foxhole.layout
 	import flash.geom.Rectangle;
 
 	import org.josht.starling.foxhole.data.ListCollection;
-
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
-
-	import starling.display.DisplayObject;
 
 	import starling.display.DisplayObject;
 
@@ -115,7 +112,7 @@ package org.josht.starling.foxhole.layout
 		/**
 		 * @private
 		 */
-		private var _paddingTop:Number = 0;
+		protected var _paddingTop:Number = 0;
 
 		/**
 		 * The minimum space, in pixels, above the items.
@@ -141,7 +138,7 @@ package org.josht.starling.foxhole.layout
 		/**
 		 * @private
 		 */
-		private var _paddingRight:Number = 0;
+		protected var _paddingRight:Number = 0;
 
 		/**
 		 * The space, in pixels, after the last item.
@@ -167,7 +164,7 @@ package org.josht.starling.foxhole.layout
 		/**
 		 * @private
 		 */
-		private var _paddingBottom:Number = 0;
+		protected var _paddingBottom:Number = 0;
 
 		/**
 		 * The minimum space, in pixels, above the items.
@@ -193,7 +190,7 @@ package org.josht.starling.foxhole.layout
 		/**
 		 * @private
 		 */
-		private var _paddingLeft:Number = 0;
+		protected var _paddingLeft:Number = 0;
 
 		/*
 		 * The space, in pixels, before the first item.

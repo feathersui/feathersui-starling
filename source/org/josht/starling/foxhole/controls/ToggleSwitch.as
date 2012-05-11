@@ -190,28 +190,54 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected var _contentPadding:Number = 0;
+		protected var _paddingRight:Number = 0;
 
 		/**
-		 * Space, in pixels, around the edges of the labels. The labels are
-		 * scrolled during animations, and they will be cut off this many pixels
-		 * from the edge of the toggle switch.
+		 * The minimum space, in pixels, between the switch's right edge and the
+		 * switch's content.
 		 */
-		public function get contentPadding():Number
+		public function get paddingRight():Number
 		{
-			return _contentPadding;
+			return this._paddingRight;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set contentPadding(value:Number):void
+		public function set paddingRight(value:Number):void
 		{
-			if(this._contentPadding == value)
+			if(this._paddingRight == value)
 			{
 				return;
 			}
-			this._contentPadding = value;
+			this._paddingRight = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingLeft:Number = 0;
+
+		/*
+		 * The minimum space, in pixels, between the switch's left edge and the
+		 * switch's content.
+		 */
+		public function get paddingLeft():Number
+		{
+			return this._paddingLeft;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingLeft(value:Number):void
+		{
+			if(this._paddingLeft == value)
+			{
+				return;
+			}
+			this._paddingLeft = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -715,10 +741,10 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function updateSelection():void
 		{
-			var xPosition:Number = this._contentPadding;
+			var xPosition:Number = this._paddingLeft;
 			if(this._isSelected)
 			{
-				xPosition = this.actualWidth - this.thumb.width - this._contentPadding;
+				xPosition = this.actualWidth - this.thumb.width - this._paddingRight;
 			}
 
 			//stop the tween, no matter what
@@ -844,7 +870,7 @@ package org.josht.starling.foxhole.controls
 		 */
 		private function drawLabels():void
 		{
-			const maxLabelWidth:Number = Math.max(0, this.actualWidth - this.thumb.width - 2 * this._contentPadding);
+			const maxLabelWidth:Number = Math.max(0, this.actualWidth - this.thumb.width - this._paddingLeft - this._paddingRight);
 			var totalLabelHeight:Number = Math.max(this.onLabelControl.height, this.offLabelControl.height);
 			var labelHeight:Number;
 			if(this._labelAlign == LABEL_ALIGN_MIDDLE || !this._defaultTextFormat)
@@ -862,7 +888,7 @@ package org.josht.starling.foxhole.controls
 			onScrollRect.height = totalLabelHeight;
 			this.onLabelControl.scrollRect = onScrollRect;
 
-			this.onLabelControl.x = this._contentPadding;
+			this.onLabelControl.x = this._paddingLeft;
 			this.onLabelControl.y = (this.actualHeight - labelHeight) / 2;
 
 			var offScrollRect:Rectangle = this.offLabelControl.scrollRect;
@@ -870,7 +896,7 @@ package org.josht.starling.foxhole.controls
 			offScrollRect.height = totalLabelHeight;
 			this.offLabelControl.scrollRect = offScrollRect;
 
-			this.offLabelControl.x = this.actualWidth - this._contentPadding - maxLabelWidth;
+			this.offLabelControl.x = this.actualWidth - this._paddingRight - maxLabelWidth;
 			this.offLabelControl.y = (this.actualHeight - labelHeight) / 2;
 		}
 
@@ -879,8 +905,8 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function layout():void
 		{
-			const maxLabelWidth:Number = Math.max(0, this.actualWidth - this.thumb.width - 2 * this._contentPadding);
-			const thumbOffset:Number = this.thumb.x - this._contentPadding;
+			const maxLabelWidth:Number = Math.max(0, this.actualWidth - this.thumb.width - this._paddingLeft - this._paddingRight);
+			const thumbOffset:Number = this.thumb.x - this._paddingLeft;
 
 			var currentScrollRect:Rectangle = this.onLabelControl.scrollRect;
 			currentScrollRect.x = this.actualWidth - this.thumb.width - thumbOffset - (maxLabelWidth - this.onLabelControl.width) / 2;
@@ -1038,7 +1064,7 @@ package org.josht.starling.foxhole.controls
 				return;
 			}
 
-			const trackScrollableWidth:Number = this.actualWidth - 2 * this._contentPadding - this.thumb.width;
+			const trackScrollableWidth:Number = this.actualWidth - this._paddingLeft - this._paddingRight - this.thumb.width;
 			const location:Point = touch.getLocation(this);
 			if(touch.phase == TouchPhase.BEGAN)
 			{
@@ -1049,7 +1075,7 @@ package org.josht.starling.foxhole.controls
 			else if(touch.phase == TouchPhase.MOVED)
 			{
 				const xOffset:Number = location.x - this._touchStartX;
-				const xPosition:Number = Math.min(Math.max(this._contentPadding, this._thumbStartX + xOffset), trackScrollableWidth);
+				const xPosition:Number = Math.min(Math.max(this._paddingLeft, this._thumbStartX + xOffset), trackScrollableWidth);
 				this.thumb.x = xPosition;
 				this.layout();
 			}

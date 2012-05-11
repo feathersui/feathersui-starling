@@ -226,26 +226,108 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected var _contentPadding:Number = 0;
+		protected var _paddingTop:Number = 0;
 
 		/**
-		 * Space, in pixels, around the edges of the content.
+		 * The minimum space, in pixels, between the input's top edge and the
+		 * input's content.
 		 */
-		public function get contentPadding():Number
+		public function get paddingTop():Number
 		{
-			return _contentPadding;
+			return this._paddingTop;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set contentPadding(value:Number):void
+		public function set paddingTop(value:Number):void
 		{
-			if(this._contentPadding == value)
+			if(this._paddingTop == value)
 			{
 				return;
 			}
-			this._contentPadding = value;
+			this._paddingTop = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingRight:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the input's right edge and the
+		 * input's content.
+		 */
+		public function get paddingRight():Number
+		{
+			return this._paddingRight;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingRight(value:Number):void
+		{
+			if(this._paddingRight == value)
+			{
+				return;
+			}
+			this._paddingRight = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingBottom:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the input's bottom edge and
+		 * the input's content.
+		 */
+		public function get paddingBottom():Number
+		{
+			return this._paddingBottom;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingBottom(value:Number):void
+		{
+			if(this._paddingBottom == value)
+			{
+				return;
+			}
+			this._paddingBottom = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingLeft:Number = 0;
+
+		/*
+		 * The minimum space, in pixels, between the input's left edge and the
+		 * input's content.
+		 */
+		public function get paddingLeft():Number
+		{
+			return this._paddingLeft;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingLeft(value:Number):void
+		{
+			if(this._paddingLeft == value)
+			{
+				return;
+			}
+			this._paddingLeft = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -330,8 +412,8 @@ package org.josht.starling.foxhole.controls
 				{
 					viewPort = new Rectangle();
 				}
-				viewPort.x = (helperPoint.x + this._contentPadding * this.scaleX) * Starling.contentScaleFactor;
-				viewPort.y = (helperPoint.y + this._contentPadding * this.scaleY) * Starling.contentScaleFactor;
+				viewPort.x = (helperPoint.x + this._paddingLeft * this.scaleX) * Starling.contentScaleFactor;
+				viewPort.y = (helperPoint.y + this._paddingTop * this.scaleY) * Starling.contentScaleFactor;
 				this.stageText.viewPort = viewPort;			
 			}
 
@@ -494,10 +576,10 @@ package org.josht.starling.foxhole.controls
 			transformCoords(helperMatrix, 0, 0, helperPoint);
 			this._oldGlobalX = helperPoint.x;
 			this._oldGlobalY = helperPoint.y;
-			viewPort.x = (helperPoint.x + this._contentPadding * this.scaleX) * Starling.contentScaleFactor;
-			viewPort.y = (helperPoint.y + this._contentPadding * this.scaleY) * Starling.contentScaleFactor;
-			viewPort.width = Math.max(1, (this.actualWidth - 2 * this._contentPadding ) * Starling.contentScaleFactor * this.scaleX);
-			viewPort.height = Math.max(1, (this.actualHeight - 2 * this._contentPadding ) * Starling.contentScaleFactor * this.scaleY);
+			viewPort.x = (helperPoint.x + this._paddingLeft * this.scaleX) * Starling.contentScaleFactor;
+			viewPort.y = (helperPoint.y + this._paddingTop * this.scaleY) * Starling.contentScaleFactor;
+			viewPort.width = Math.max(1, (this.actualWidth - this._paddingLeft - this._paddingRight) * Starling.contentScaleFactor * this.scaleX);
+			viewPort.height = Math.max(1, (this.actualHeight - this._paddingTop - this._paddingBottom) * Starling.contentScaleFactor * this.scaleY);
 			if(isNaN(viewPort.width) || isNaN(viewPort.height))
 			{
 				viewPort.width = 1;
