@@ -143,7 +143,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected var labelField:Label;
+		protected var labelControl:Label;
 		
 		/**
 		 * @private
@@ -1364,11 +1364,11 @@ package org.josht.starling.foxhole.controls
 		 */
 		override protected function initialize():void
 		{
-			if(!this.labelField)
+			if(!this.labelControl)
 			{
-				this.labelField = new Label();
-				this.labelField.nameList.add("foxhole-button-label");
-				this.addChild(this.labelField);
+				this.labelControl = new Label();
+				this.labelControl.nameList.add("foxhole-button-label");
+				this.addChild(this.labelControl);
 			}
 		}
 		
@@ -1384,8 +1384,8 @@ package org.josht.starling.foxhole.controls
 			
 			if(dataInvalid)
 			{
-				this.labelField.text = this._label;
-				this.labelField.visible = this._label != null;
+				this.labelControl.text = this._label;
+				this.labelControl.visible = this._label != null;
 			}
 
 			if(stylesInvalid || stateInvalid)
@@ -1412,7 +1412,7 @@ package org.josht.starling.foxhole.controls
 				{
 					FoxholeControl(this.currentIcon).validate();
 				}
-				this.labelField.validate();
+				this.labelControl.validate();
 				this.layoutContent();
 			}
 			
@@ -1434,14 +1434,14 @@ package org.josht.starling.foxhole.controls
 			{
 				return false;
 			}
-			this.labelField.validate();
+			this.labelControl.validate();
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
 			{
 				if(this.currentIcon && this.label)
 				{
 					const adjustedGap:Number = this._gap == Number.POSITIVE_INFINITY ? this._contentPadding : this._gap;
-					newWidth = this.currentIcon.width + adjustedGap + this.labelField.width;
+					newWidth = this.currentIcon.width + adjustedGap + this.labelControl.width;
 				}
 				else if(this.currentIcon)
 				{
@@ -1449,7 +1449,7 @@ package org.josht.starling.foxhole.controls
 				}
 				else if(this.label)
 				{
-					newWidth = this.labelField.width;
+					newWidth = this.labelControl.width;
 				}
 				newWidth += 2 * this._contentPadding;
 				if(isNaN(newWidth))
@@ -1467,7 +1467,7 @@ package org.josht.starling.foxhole.controls
 			{
 				if(this.currentIcon && this.label)
 				{
-					newHeight = Math.max(this.currentIcon.height, this.labelField.height);
+					newHeight = Math.max(this.currentIcon.height, this.labelControl.height);
 				}
 				else if(this.currentIcon)
 				{
@@ -1475,7 +1475,7 @@ package org.josht.starling.foxhole.controls
 				}
 				else if(this.label)
 				{
-					newHeight = this.labelField.height;
+					newHeight = this.labelControl.height;
 				}
 				newHeight += 2 * this._contentPadding;
 				if(isNaN(newHeight))
@@ -1720,7 +1720,7 @@ package org.josht.starling.foxhole.controls
 			
 			if(format)
 			{
-				this.labelField.textFormat = format;
+				this.labelControl.textFormat = format;
 			}
 		}
 		
@@ -1750,12 +1750,12 @@ package org.josht.starling.foxhole.controls
 		{
 			if(this.label && this.currentIcon)
 			{
-				this.positionLabelOrIcon(this.labelField);
+				this.positionLabelOrIcon(this.labelControl);
 				this.positionLabelAndIcon();
 			}
 			else if(this.label && !this.currentIcon)
 			{
-				this.positionLabelOrIcon(this.labelField);
+				this.positionLabelOrIcon(this.labelControl);
 			}
 			else if(!this.label && this.currentIcon)
 			{
@@ -1804,59 +1804,59 @@ package org.josht.starling.foxhole.controls
 				if(this._gap == Number.POSITIVE_INFINITY)
 				{
 					this.currentIcon.y = this._contentPadding;
-					this.labelField.y = this.actualHeight - this._contentPadding - this.labelField.height;
+					this.labelControl.y = this.actualHeight - this._contentPadding - this.labelControl.height;
 				}
 				else
 				{
 					if(this._verticalAlign == VERTICAL_ALIGN_TOP)
 					{
-						this.labelField.y += this.currentIcon.height + this._gap;
+						this.labelControl.y += this.currentIcon.height + this._gap;
 					}
 					else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
 					{
-						this.labelField.y += (this.currentIcon.height + this._gap) / 2;
+						this.labelControl.y += (this.currentIcon.height + this._gap) / 2;
 					}
-					this.currentIcon.y = this.labelField.y - this.currentIcon.height - this._gap;
+					this.currentIcon.y = this.labelControl.y - this.currentIcon.height - this._gap;
 				}
 			}
 			else if(this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
 			{
 				if(this._gap == Number.POSITIVE_INFINITY)
 				{
-					this.labelField.x = this._contentPadding;
+					this.labelControl.x = this._contentPadding;
 					this.currentIcon.x = this.actualWidth - this._contentPadding - this.currentIcon.width;
 				}
 				else
 				{
 					if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
 					{
-						this.labelField.x -= this.currentIcon.width + this._gap;
+						this.labelControl.x -= this.currentIcon.width + this._gap;
 					}
 					else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
 					{
-						this.labelField.x -= (this.currentIcon.width + this._gap) / 2;
+						this.labelControl.x -= (this.currentIcon.width + this._gap) / 2;
 					}
-					this.currentIcon.x = this.labelField.x + this.labelField.width + this._gap;
+					this.currentIcon.x = this.labelControl.x + this.labelControl.width + this._gap;
 				}
 			}
 			else if(this._iconPosition == ICON_POSITION_BOTTOM)
 			{
 				if(this._gap == Number.POSITIVE_INFINITY)
 				{
-					this.labelField.y = this._contentPadding;
+					this.labelControl.y = this._contentPadding;
 					this.currentIcon.y = this.actualHeight - this._contentPadding - this.currentIcon.height;
 				}
 				else
 				{
 					if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
 					{
-						this.labelField.y -= this.currentIcon.height + this._gap;
+						this.labelControl.y -= this.currentIcon.height + this._gap;
 					}
 					else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
 					{
-						this.labelField.y -= (this.currentIcon.height + this._gap) / 2;
+						this.labelControl.y -= (this.currentIcon.height + this._gap) / 2;
 					}
-					this.currentIcon.y = this.labelField.y + this.labelField.height + this._gap;
+					this.currentIcon.y = this.labelControl.y + this.labelControl.height + this._gap;
 				}
 			}
 			else if(this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE)
@@ -1864,46 +1864,46 @@ package org.josht.starling.foxhole.controls
 				if(this._gap == Number.POSITIVE_INFINITY)
 				{
 					this.currentIcon.x = this._contentPadding;
-					this.labelField.x = this.actualWidth - this._contentPadding - this.labelField.width;
+					this.labelControl.x = this.actualWidth - this._contentPadding - this.labelControl.width;
 				}
 				else
 				{
 					if(this._horizontalAlign == HORIZONTAL_ALIGN_LEFT)
 					{
-						this.labelField.x += this._gap + this.currentIcon.width;
+						this.labelControl.x += this._gap + this.currentIcon.width;
 					}
 					else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
 					{
-						this.labelField.x += (this._gap + this.currentIcon.width) / 2;
+						this.labelControl.x += (this._gap + this.currentIcon.width) / 2;
 					}
-					this.currentIcon.x = this.labelField.x - this._gap - this.currentIcon.width;
+					this.currentIcon.x = this.labelControl.x - this._gap - this.currentIcon.width;
 				}
 			}
 			
 			if(this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_RIGHT)
 			{
-				this.currentIcon.y = this.labelField.y + (this.labelField.height - this.currentIcon.height) / 2;
+				this.currentIcon.y = this.labelControl.y + (this.labelControl.height - this.currentIcon.height) / 2;
 			}
 			else if(this._iconPosition == ICON_POSITION_LEFT_BASELINE || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
 			{
-				const font:BitmapFont = this.labelField.textFormat.font;
-				const formatSize:Number = this.labelField.textFormat.size;
+				const font:BitmapFont = this.labelControl.textFormat.font;
+				const formatSize:Number = this.labelControl.textFormat.size;
 				const fontSizeScale:Number = isNaN(formatSize) ? 1 : (formatSize / font.size);
-				this.currentIcon.y = this.labelField.y + (fontSizeScale * font.baseline) - this.currentIcon.height;
+				this.currentIcon.y = this.labelControl.y + (fontSizeScale * font.baseline) - this.currentIcon.height;
 			}
 			else
 			{
 				if(this._horizontalAlign == HORIZONTAL_ALIGN_LEFT)
 				{
-					this.currentIcon.x = this.labelField.x;
+					this.currentIcon.x = this.labelControl.x;
 				}
 				else if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
 				{
-					this.currentIcon.x = this.labelField.x + this.labelField.width - this.currentIcon.width;
+					this.currentIcon.x = this.labelControl.x + this.labelControl.width - this.currentIcon.width;
 				}
 				else
 				{
-					this.currentIcon.x = this.labelField.x + (this.labelField.width - this.currentIcon.width) / 2;
+					this.currentIcon.x = this.labelControl.x + (this.labelControl.width - this.currentIcon.width) / 2;
 				}
 			}
 		}
