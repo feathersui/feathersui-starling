@@ -438,6 +438,8 @@ package org.josht.starling.foxhole.controls.supportClasses
 				var renderer:IListItemRenderer = IListItemRenderer(this._rendererMap[item]);
 				if(renderer)
 				{
+					//the index may have changed if data was added or removed
+					renderer.index = i;
 					this._activeRenderers.push(renderer);
 					this._inactiveRenderers.splice(this._inactiveRenderers.indexOf(renderer), 1);
 				}
