@@ -69,10 +69,6 @@ The core architecture and non-private APIs of Foxhole for Starling are still und
 
 ## Tips
 
-* The components do not have default skins. However, you can try out one of the themes included with the [Foxhole for Starling Examples](https://github.com/joshtynjala/foxhole-starling-examples).
-
-* In most cases any Starling display object is acceptable as a skin. However, the `ToggleSwitch` control works best with skins that supports `scrollRect` (it's not required, but recommended). Starling's core display objects do not implement `scrollRect` at this time. Subclasses of `Sprite` and `Image` with basic (but somewhat incomplete) implementations are included with Foxhole.
-
-* Bitmap fonts are required for all text displayed in these UI controls. Use `BitmapFontTextFormat` to customize the text styles.
+* The components do not have default skins. However, feel free to try out one of the themes included with the [Foxhole for Starling Examples](https://github.com/joshtynjala/foxhole-starling-examples).
 
 * An Ant build script is included. Add a file called `sdk.local.properties` to override the location of the Flex SDK and `build.local.properties` to override the locations of the required third-party libraries.
