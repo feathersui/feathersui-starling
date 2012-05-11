@@ -407,7 +407,7 @@ package org.josht.starling.foxhole.controls
 		public function setItemRendererProperty(propertyName:String, propertyValue:Object):void
 		{
 			//pssst... pass it on
-			this._list.setItemRendererProperty(propertyName, propertyValue);
+			this._itemRendererProperties[propertyName] = propertyValue;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
