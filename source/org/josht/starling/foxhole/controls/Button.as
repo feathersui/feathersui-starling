@@ -509,7 +509,7 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected var _paddingLeft:Number = 0;
 
-		/*
+		/**
 		 * The minimum space, in pixels, between the button's left edge and the
 		 * button's content.
 		 */
