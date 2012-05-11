@@ -339,26 +339,108 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected var _contentPadding:Number = 0;
+		protected var _paddingTop:Number = 0;
 
 		/**
-		 * Space, in pixels, around the edges of the fill.
+		 * The minimum space, in pixels, between the progress bar's top edge and
+		 * the progress bar's content.
 		 */
-		public function get contentPadding():Number
+		public function get paddingTop():Number
 		{
-			return _contentPadding;
+			return this._paddingTop;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set contentPadding(value:Number):void
+		public function set paddingTop(value:Number):void
 		{
-			if(this._contentPadding == value)
+			if(this._paddingTop == value)
 			{
 				return;
 			}
-			this._contentPadding = value;
+			this._paddingTop = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingRight:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the progress bar's right edge
+		 * and the progress bar's content.
+		 */
+		public function get paddingRight():Number
+		{
+			return this._paddingRight;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingRight(value:Number):void
+		{
+			if(this._paddingRight == value)
+			{
+				return;
+			}
+			this._paddingRight = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingBottom:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the progress bar's bottom edge
+		 * and the progress bar's content.
+		 */
+		public function get paddingBottom():Number
+		{
+			return this._paddingBottom;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingBottom(value:Number):void
+		{
+			if(this._paddingBottom == value)
+			{
+				return;
+			}
+			this._paddingBottom = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingLeft:Number = 0;
+
+		/*
+		 * The minimum space, in pixels, between the progress bar's left edge
+		 * and the progress bar's content.
+		 */
+		public function get paddingLeft():Number
+		{
+			return this._paddingLeft;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingLeft(value:Number):void
+		{
+			if(this._paddingLeft == value)
+			{
+				return;
+			}
+			this._paddingLeft = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -391,18 +473,18 @@ package org.josht.starling.foxhole.controls
 
 			if(dataInvalid || sizeInvalid || stateInvalid || stylesInvalid)
 			{
-				this.currentFill.x = this._contentPadding;
-				this.currentFill.y = this._contentPadding;
+				this.currentFill.x = this._paddingLeft;
+				this.currentFill.y = this._paddingTop;
 				const percentage:Number = (this._value - this._minimum) / (this._maximum - this._minimum);
 				if(this._direction == DIRECTION_VERTICAL)
 				{
-					this.currentFill.width = this.actualWidth - 2 * this._contentPadding;
-					this.currentFill.height = this._originalFillHeight + percentage * (this.actualHeight - 2 * this._contentPadding - this._originalFillHeight);
+					this.currentFill.width = this.actualWidth - this._paddingLeft - this._paddingRight;
+					this.currentFill.height = this._originalFillHeight + percentage * (this.actualHeight - this._paddingTop - this._paddingBottom - this._originalFillHeight);
 				}
 				else
 				{
-					this.currentFill.width = this._originalFillWidth + percentage * (this.actualWidth - 2 * this._contentPadding - this._originalFillWidth);
-					this.currentFill.height = this.actualHeight - 2 * this._contentPadding;
+					this.currentFill.width = this._originalFillWidth + percentage * (this.actualWidth - this._paddingLeft - this._paddingRight - this._originalFillWidth);
+					this.currentFill.height = this.actualHeight - this._paddingTop - this._paddingBottom;
 				}
 			}
 

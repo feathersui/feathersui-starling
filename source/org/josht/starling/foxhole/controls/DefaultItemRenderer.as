@@ -449,7 +449,7 @@ package org.josht.starling.foxhole.controls
 			{
 				FoxholeControl(this.accessory).validate();
 			}
-			this.accessory.x = this.actualWidth - this._contentPadding - this.accessory.width;
+			this.accessory.x = this.actualWidth - this._paddingRight - this.accessory.width;
 			this.accessory.y = (this.actualHeight - this.accessory.height) / 2;
 		}
 		

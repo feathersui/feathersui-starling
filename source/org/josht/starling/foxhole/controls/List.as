@@ -433,30 +433,112 @@ package org.josht.starling.foxhole.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
-		protected var _contentPadding:Number = 0;
-		
+		protected var _paddingTop:Number = 0;
+
 		/**
-		 * The space, in pixels, around the edges of the list's content.
+		 * The minimum space, in pixels, between the list's top edge and the
+		 * list's content.
 		 */
-		public function get contentPadding():Number
+		public function get paddingTop():Number
 		{
-			return _contentPadding;
+			return this._paddingTop;
 		}
-		
+
 		/**
 		 * @private
 		 */
-		public function set contentPadding(value:Number):void
+		public function set paddingTop(value:Number):void
 		{
-			if(this._contentPadding == value)
+			if(this._paddingTop == value)
 			{
 				return;
 			}
-			this._contentPadding = value;
+			this._paddingTop = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingRight:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the list's right edge and the
+		 * list's content.
+		 */
+		public function get paddingRight():Number
+		{
+			return this._paddingRight;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingRight(value:Number):void
+		{
+			if(this._paddingRight == value)
+			{
+				return;
+			}
+			this._paddingRight = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingBottom:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the list's bottom edge and
+		 * the list's content.
+		 */
+		public function get paddingBottom():Number
+		{
+			return this._paddingBottom;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingBottom(value:Number):void
+		{
+			if(this._paddingBottom == value)
+			{
+				return;
+			}
+			this._paddingBottom = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingLeft:Number = 0;
+
+		/*
+		 * The minimum space, in pixels, between the list's left edge and the
+		 * list's content.
+		 */
+		public function get paddingLeft():Number
+		{
+			return this._paddingLeft;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingLeft(value:Number):void
+		{
+			if(this._paddingLeft == value)
+			{
+				return;
+			}
+			this._paddingLeft = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
@@ -707,11 +789,11 @@ package org.josht.starling.foxhole.controls
 			
 			if(!isNaN(this.explicitWidth))
 			{
-				this._dataContainer.width = this.explicitWidth - 2 * this._contentPadding;
+				this._dataContainer.width = this.explicitWidth - this._paddingLeft - this._paddingRight;
 			}
 			if(!isNaN(this.explicitHeight))
 			{
-				this._dataContainer.visibleHeight = this.explicitHeight - 2 * contentPadding;
+				this._dataContainer.visibleHeight = this.explicitHeight - this._paddingTop - this._paddingBottom;
 			}
 			else
 			{
@@ -740,10 +822,10 @@ package org.josht.starling.foxhole.controls
 			}
 			
 			this._scroller.isEnabled = this._isEnabled;
-			this._scroller.width = this.actualWidth - 2 * this._contentPadding;
-			this._scroller.height = this.actualHeight - 2 * this._contentPadding;
-			this._scroller.x = this._contentPadding;
-			this._scroller.y = this._contentPadding;
+			this._scroller.width = this.actualWidth - this._paddingLeft - this._paddingRight;
+			this._scroller.height = this.actualHeight - this._paddingTop - this._paddingBottom;
+			this._scroller.x = this._paddingLeft;
+			this._scroller.y = this._paddingTop;
 			this._scroller.clipContent = this._clipContent;
 			this._scroller.verticalAlign = this._verticalAlign;
 			this._scroller.verticalScrollPosition = this._verticalScrollPosition;
@@ -768,11 +850,11 @@ package org.josht.starling.foxhole.controls
 			var newHeight:Number = this.explicitHeight;
 			if(needsWidth)
 			{
-				newWidth = this._dataContainer.width + 2 * this._contentPadding;
+				newWidth = this._dataContainer.width + this._paddingLeft + this._paddingRight;
 			}
 			if(needsHeight)
 			{
-				newHeight = this._dataContainer.height + 2 * this._contentPadding;
+				newHeight = this._dataContainer.height + this._paddingTop + this._paddingBottom;
 			}
 			this.setSizeInternal(newWidth, newHeight, false);
 			return true;
