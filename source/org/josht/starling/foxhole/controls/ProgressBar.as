@@ -422,7 +422,7 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected var _paddingLeft:Number = 0;
 
-		/*
+		/**
 		 * The minimum space, in pixels, between the progress bar's left edge
 		 * and the progress bar's content.
 		 */

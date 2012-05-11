@@ -270,7 +270,7 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected var _paddingLeft:Number = 0;
 
-		/*
+		/**
 		 * The minimum space, in pixels, between the header's left edge and the
 		 * header's content.
 		 */

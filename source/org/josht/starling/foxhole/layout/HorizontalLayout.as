@@ -192,7 +192,7 @@ package org.josht.starling.foxhole.layout
 		 */
 		protected var _paddingLeft:Number = 0;
 
-		/*
+		/**
 		 * The space, in pixels, before the first item.
 		 */
 		public function get paddingLeft():Number
