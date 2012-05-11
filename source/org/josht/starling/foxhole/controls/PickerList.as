@@ -160,7 +160,19 @@ package org.josht.starling.foxhole.controls
 		private var _labelField:String = "label";
 		
 		/**
-		 * @copy List#labelField
+		 * The field in the selected item that contains the label text to be
+		 * displayed by the picker list's button control. If the selected item
+		 * does not have this field, and a <code>labelFunction</code> is not
+		 * defined, then the picker list will default to calling
+		 * <code>toString()</code> on the selected item. To omit the
+		 * label completely, define a <code>labelFunction</code> that returns an
+		 * empty string.
+		 *
+		 * <p><strong>Important:</strong> This value only affects the selected
+		 * item displayed by the picker list's button control. It will <em>not</em>
+		 * affect the label text of the pop-up list's item renderers.</p>
+		 *
+		 * @see labelFunction
 		 */
 		public function get labelField():String
 		{
@@ -184,9 +196,18 @@ package org.josht.starling.foxhole.controls
 		 * @private
 		 */
 		private var _labelFunction:Function;
-		
+
 		/**
-		 * @copy List#labelFunction
+		 * A function used to generate label text for the selected item
+		 * displayed by the picker list's button control. If this
+		 * function is not null, then the <code>labelField</code> will be
+		 * ignored.
+		 *
+		 * <p><strong>Important:</strong> This value only affects the selected
+		 * item displayed by the picker list's button control. It will <em>not</em>
+		 * affect the label text of the pop-up list's item renderers.</p>
+		 *
+		 * @see labelField
 		 */
 		public function get labelFunction():Function
 		{
@@ -391,11 +412,29 @@ package org.josht.starling.foxhole.controls
 		}
 		
 		/**
-		 * @copy List#itemToLabel
+		 * Using <code>labelField</code> and <code>labelFunction</code>,
+		 * generates a label from the selected item to be displayed by the
+		 * picker list's button control.
+		 *
+		 * <p><strong>Important:</strong> This value only affects the selected
+		 * item displayed by the picker list's button control. It will <em>not</em>
+		 * affect the label text of the pop-up list's item renderers.</p>
 		 */
 		public function itemToLabel(item:Object):String
 		{
-			return this._list.itemToLabel(item);
+			if(this._labelFunction != null)
+			{
+				return this._labelFunction(item) as String;
+			}
+			else if(this._labelField != null && item && item.hasOwnProperty(this._labelField))
+			{
+				return item[this._labelField] as String;
+			}
+			else if(item)
+			{
+				return item.toString();
+			}
+			return "";
 		}
 		
 		/**
@@ -468,8 +507,6 @@ package org.josht.starling.foxhole.controls
 			if(dataInvalid)
 			{
 				this._list.dataProvider = this._dataProvider;
-				this._list.labelField = this._labelField;
-				this._list.labelFunction = this._labelFunction;
 				this._hasBeenScrolled = false;
 			}
 			
