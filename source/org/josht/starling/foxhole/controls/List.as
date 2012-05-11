@@ -150,55 +150,6 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _labelField:String = "label";
-		
-		/**
-		 * The field in each item that contains the label text. If the item does
-		 * not have this field, then the field name is ignored.
-		 */
-		public function get labelField():String
-		{
-			return this._labelField;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set labelField(value:String):void
-		{
-			if(this._labelField == value)
-			{
-				return;
-			}
-			this._labelField = value;
-			this.invalidate(INVALIDATION_FLAG_DATA);
-		}
-		
-		/**
-		 * @private
-		 */
-		private var _labelFunction:Function;
-		
-		/**
-		 * A function used to generate a label for a specific item.
-		 */
-		public function get labelFunction():Function
-		{
-			return this._labelFunction;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set labelFunction(value:Function):void
-		{
-			this._labelFunction = value;
-			this.invalidate(INVALIDATION_FLAG_DATA);
-		}
-		
-		/**
-		 * @private
-		 */
 		private var _isSelectable:Boolean = true;
 		
 		/**
@@ -278,7 +229,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _clipContent:Boolean = false;
+		private var _clipContent:Boolean = true;
 		
 		/**
 		 * If true, the list's content will be clipped to the lists's bounds. In
@@ -543,7 +494,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _itemRendererType:Class = SimpleItemRenderer;
+		private var _itemRendererType:Class = DefaultItemRenderer;
 		
 		/**
 		 * The class used to instantiate item renderers.
@@ -674,29 +625,6 @@ package org.josht.starling.foxhole.controls
 		{
 			this._itemRendererProperties[propertyName] = propertyValue;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-		
-		/**
-		 * Using <code>labelField</code> and <code>labelFunction</code>,
-		 * generates a label for a particular item. May be called by item
-		 * renderers or externally. Item renderers will not receive a generated
-		 * label value automatically.
-		 */
-		public function itemToLabel(item:Object):String
-		{
-			if(this._labelFunction != null)
-			{
-				return this._labelFunction(item) as String;
-			}
-			else if(this._labelField != null && item && item.hasOwnProperty(this._labelField))
-			{
-				return item[this._labelField] as String;
-			}
-			else if(item)
-			{
-				return item.toString();
-			}
-			return "";
 		}
 		
 		/**
