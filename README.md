@@ -61,6 +61,7 @@ The following external libraries are required. Other versions of the same librar
 * [API Documentation](http://www.flashtoolbox.com/foxhole-starling/documentation/)
 * [Getting Started Article](https://github.com/joshtynjala/foxhole-starling/wiki/Getting-Started)
 * [Official Foxhole Q&A thread on the Starling Forums](http://forum.starling-framework.org/topic/official-foxhole-components-qa)
+* [Foxhole Community Extensions](https://github.com/joshtynjala/foxhole-starling/wiki/Foxhole-Community-Extensions)
 
 ## Important Note
 
