@@ -384,8 +384,8 @@ package org.josht.starling.foxhole.controls
 		}
 
 		/**
-		 * Using <code>accessoryField</code> and <code>accessoryFunction</code>
-		 * to generates an accessory view for the item.
+		 * Using <code>accessoryField</code> and <code>accessoryFunction</code>,
+		 * generates an accessory view for the item.
 		 */
 		public function itemToAccessory(item:Object):DisplayObject
 		{
