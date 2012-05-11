@@ -63,8 +63,9 @@ package org.josht.starling.foxhole.controls
 		
 		private var _button:Button;
 		private var _list:List;
-		
-		private var _touchID:int = -1;
+
+		private var _buttonTouchPointID:int = -1;
+		private var _listTouchPointID:int = -1;
 		private var _hasBeenScrolled:Boolean = false;
 		
 		/**
@@ -456,6 +457,7 @@ package org.josht.starling.foxhole.controls
 				this._button = new Button();
 				this._button.nameList.add("foxhole-pickerlist-button");
 				this._button.onRelease.add(button_onRelease);
+				this._button.addEventListener(TouchEvent.TOUCH, button_touchHandler);
 				this.addChild(this._button);
 			}
 			
@@ -672,7 +674,7 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function list_onScroll(list:List):void
 		{
-			if(this._touchID >= 0)
+			if(this._listTouchPointID >= 0)
 			{
 				this._hasBeenScrolled = true;
 			}
@@ -685,7 +687,7 @@ package org.josht.starling.foxhole.controls
 		{
 			const displayRenderer:DisplayObject = DisplayObject(event.currentTarget);
 			const touch:Touch = event.getTouch(displayRenderer);
-			if(this._hasBeenScrolled || !touch || this._touchID != touch.id || touch.phase != TouchPhase.ENDED)
+			if(this._hasBeenScrolled || !touch || this._listTouchPointID != touch.id || touch.phase != TouchPhase.ENDED)
 			{
 				return;
 			}
@@ -697,6 +699,24 @@ package org.josht.starling.foxhole.controls
 				this.closePopUpList();
 			}
 		}
+
+		protected function button_touchHandler(event:TouchEvent):void
+		{
+			const touch:Touch = event.getTouch(this._button);
+			if(!touch || (this._buttonTouchPointID >= 0 && this._buttonTouchPointID != touch.id))
+			{
+				return;
+			}
+			event.stopPropagation();
+			if(touch.phase == TouchPhase.BEGAN)
+			{
+				this._buttonTouchPointID = touch.id;
+			}
+			else if(touch.phase == TouchPhase.ENDED)
+			{
+				this._buttonTouchPointID = -1;
+			}
+		}
 		
 		/**
 		 * @private
@@ -704,18 +724,18 @@ package org.josht.starling.foxhole.controls
 		protected function list_touchHandler(event:TouchEvent):void
 		{
 			const touch:Touch = event.getTouch(this._list);
-			if(!touch)
+			if(!touch || (this._listTouchPointID >= 0 && this._listTouchPointID != touch.id))
 			{
 				return;
 			}
 			if(touch.phase == TouchPhase.BEGAN)
 			{
-				this._touchID = touch.id;
+				this._listTouchPointID = touch.id;
 				this._hasBeenScrolled = false;
 			}
-			else if(this._touchID == touch.id && touch.phase == TouchPhase.ENDED)
+			else if(touch.phase == TouchPhase.ENDED)
 			{
-				this._touchID = -1;
+				this._listTouchPointID = -1;
 			}
 		}
 		
