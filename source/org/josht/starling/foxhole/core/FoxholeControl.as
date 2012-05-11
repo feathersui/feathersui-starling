@@ -281,6 +281,60 @@ package org.josht.starling.foxhole.core
 		/**
 		 * @private
 		 */
+		private var _minTouchWidth:Number = 0;
+
+		/**
+		 * If using <code>isQuickHitAreaEnabled</code>, and the hit area's
+		 * width is smaller than this value, it will be expanded.
+		 */
+		public function get minTouchWidth():Number
+		{
+			return this._minTouchWidth;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set minTouchWidth(value:Number):void
+		{
+			if(this._minTouchWidth == value)
+			{
+				return;
+			}
+			this._minTouchWidth = value;
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _minTouchHeight:Number = 0;
+
+		/**
+		 * If using <code>isQuickHitAreaEnabled</code>, and the hit area's
+		 * height is smaller than this value, it will be expanded.
+		 */
+		public function get minTouchHeight():Number
+		{
+			return this._minTouchHeight;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set minTouchHeight(value:Number):void
+		{
+			if(this._minTouchHeight == value)
+			{
+				return;
+			}
+			this._minTouchHeight = value;
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		/**
+		 * @private
+		 */
 		private var _minWidth:Number = 0;
 
 		/**
@@ -587,13 +641,15 @@ package org.josht.starling.foxhole.core
 			if(this.actualWidth != width)
 			{
 				this.actualWidth = width;
-				this._hitArea.width = width;
+				this._hitArea.width = Math.max(width, this._minTouchWidth);
+				this._hitArea.x = (this.actualWidth - this._hitArea.width) / 2;
 				resized = true;
 			}
 			if(this.actualHeight != height)
 			{
 				this.actualHeight = height;
-				this._hitArea.height = height;
+				this._hitArea.height = Math.max(height, this._minTouchHeight);
+				this._hitArea.y = (this.actualHeight - this._hitArea.height) / 2;
 				resized = true;
 			}
 			if(resized)
