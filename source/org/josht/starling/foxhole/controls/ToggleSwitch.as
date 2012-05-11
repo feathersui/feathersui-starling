@@ -1037,15 +1037,20 @@ package org.josht.starling.foxhole.controls
 				return;
 			}
 			const touch:Touch = event.getTouch(this);
-			if(!touch || touch.phase != TouchPhase.ENDED)
+			if(!touch)
 			{
 				return;
 			}
-			const location:Point = touch.getLocation(this);
-			if(this.hitTest(location, true))
+
+			event.stopPropagation();
+			if(touch.phase == TouchPhase.ENDED)
 			{
-				this.isSelected = !this._isSelected;
-				this._isSelectionChangedByUser = true;
+				const location:Point = touch.getLocation(this);
+				if(this.hitTest(location, true))
+				{
+					this.isSelected = !this._isSelected;
+					this._isSelectionChangedByUser = true;
+				}
 			}
 		}
 

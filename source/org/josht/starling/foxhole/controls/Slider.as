@@ -899,6 +899,7 @@ package org.josht.starling.foxhole.controls
 				return;
 			}
 
+			event.stopPropagation();
 			if(touch.phase == TouchPhase.BEGAN || touch.phase == TouchPhase.MOVED)
 			{
 				const location:Point = touch.getLocation(this);
@@ -946,6 +947,7 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
+			event.stopPropagation();
 			const location:Point = touch.getLocation(this);
 			if(touch.phase == TouchPhase.BEGAN)
 			{
