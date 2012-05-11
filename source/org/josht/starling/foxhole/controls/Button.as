@@ -1682,10 +1682,6 @@ package org.josht.starling.foxhole.controls
 					this._originalSkinHeight = this.currentSkin.height;
 				}
 			}
-			else
-			{
-				trace("No skin defined for state \"" + this._currentState + "\" and there is no default value.");
-			}
 		}
 		
 		/**
