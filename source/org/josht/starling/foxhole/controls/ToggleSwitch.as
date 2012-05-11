@@ -104,12 +104,12 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected var onLabelField:Label;
+		protected var onLabelControl:Label;
 
 		/**
 		 * @private
 		 */
-		protected var offLabelField:Label;
+		protected var offLabelControl:Label;
 
 		/**
 		 * @private
@@ -609,20 +609,20 @@ package org.josht.starling.foxhole.controls
 		 */
 		override protected function initialize():void
 		{
-			if(!this.offLabelField)
+			if(!this.offLabelControl)
 			{
-				this.offLabelField = new Label();
-				this.offLabelField.nameList.add("foxhole-toggle-switch-off-label");
-				this.offLabelField.scrollRect = new Rectangle();
-				this.addChild(this.offLabelField);
+				this.offLabelControl = new Label();
+				this.offLabelControl.nameList.add("foxhole-toggle-switch-off-label");
+				this.offLabelControl.scrollRect = new Rectangle();
+				this.addChild(this.offLabelControl);
 			}
 
-			if(!this.onLabelField)
+			if(!this.onLabelControl)
 			{
-				this.onLabelField = new Label();
-				this.onLabelField.nameList.add("foxhole-toggle-switch-on-label");
-				this.onLabelField.scrollRect = new Rectangle();
-				this.addChild(this.onLabelField);
+				this.onLabelControl = new Label();
+				this.onLabelControl.nameList.add("foxhole-toggle-switch-on-label");
+				this.onLabelControl.scrollRect = new Rectangle();
+				this.addChild(this.onLabelControl);
 			}
 
 			if(!this.thumb)
@@ -760,7 +760,7 @@ package org.josht.starling.foxhole.controls
 			//no need to style the label field if there's no text to display
 			if(!this._showLabels || !this._showThumb)
 			{
-				this.onLabelField.visible = false;
+				this.onLabelControl.visible = false;
 				return;
 			}
 
@@ -778,13 +778,13 @@ package org.josht.starling.foxhole.controls
 				format = this._defaultTextFormat;
 			}
 
-			this.onLabelField.text = this._onText;
+			this.onLabelControl.text = this._onText;
 			if(format)
 			{
-				this.onLabelField.textFormat = format;
+				this.onLabelControl.textFormat = format;
 			}
-			this.onLabelField.validate();
-			this.onLabelField.visible = true;
+			this.onLabelControl.validate();
+			this.onLabelControl.visible = true;
 		}
 
 		/**
@@ -795,7 +795,7 @@ package org.josht.starling.foxhole.controls
 			//no need to style the label field if there's no text to display
 			if(!this._showLabels || !this._showThumb)
 			{
-				this.offLabelField.visible = false;
+				this.offLabelControl.visible = false;
 				return;
 			}
 
@@ -813,13 +813,13 @@ package org.josht.starling.foxhole.controls
 				format = this._defaultTextFormat;
 			}
 
-			this.offLabelField.text = this._offText;
+			this.offLabelControl.text = this._offText;
 			if(format)
 			{
-				this.offLabelField.textFormat = format;
+				this.offLabelControl.textFormat = format;
 			}
-			this.offLabelField.validate();
-			this.offLabelField.visible = true;
+			this.offLabelControl.validate();
+			this.offLabelControl.visible = true;
 		}
 
 		/**
@@ -845,7 +845,7 @@ package org.josht.starling.foxhole.controls
 		private function drawLabels():void
 		{
 			const maxLabelWidth:Number = Math.max(0, this.actualWidth - this.thumb.width - 2 * this._contentPadding);
-			var totalLabelHeight:Number = Math.max(this.onLabelField.height, this.offLabelField.height);
+			var totalLabelHeight:Number = Math.max(this.onLabelControl.height, this.offLabelControl.height);
 			var labelHeight:Number;
 			if(this._labelAlign == LABEL_ALIGN_MIDDLE || !this._defaultTextFormat)
 			{
@@ -857,21 +857,21 @@ package org.josht.starling.foxhole.controls
 				labelHeight = fontScale * this._defaultTextFormat.font.baseline;
 			}
 
-			var onScrollRect:Rectangle = this.onLabelField.scrollRect;
+			var onScrollRect:Rectangle = this.onLabelControl.scrollRect;
 			onScrollRect.width = maxLabelWidth;
 			onScrollRect.height = totalLabelHeight;
-			this.onLabelField.scrollRect = onScrollRect;
+			this.onLabelControl.scrollRect = onScrollRect;
 
-			this.onLabelField.x = this._contentPadding;
-			this.onLabelField.y = (this.actualHeight - labelHeight) / 2;
+			this.onLabelControl.x = this._contentPadding;
+			this.onLabelControl.y = (this.actualHeight - labelHeight) / 2;
 
-			var offScrollRect:Rectangle = this.offLabelField.scrollRect;
+			var offScrollRect:Rectangle = this.offLabelControl.scrollRect;
 			offScrollRect.width = maxLabelWidth;
 			offScrollRect.height = totalLabelHeight;
-			this.offLabelField.scrollRect = offScrollRect;
+			this.offLabelControl.scrollRect = offScrollRect;
 
-			this.offLabelField.x = this.actualWidth - this._contentPadding - maxLabelWidth;
-			this.offLabelField.y = (this.actualHeight - labelHeight) / 2;
+			this.offLabelControl.x = this.actualWidth - this._contentPadding - maxLabelWidth;
+			this.offLabelControl.y = (this.actualHeight - labelHeight) / 2;
 		}
 
 		/**
@@ -882,13 +882,13 @@ package org.josht.starling.foxhole.controls
 			const maxLabelWidth:Number = Math.max(0, this.actualWidth - this.thumb.width - 2 * this._contentPadding);
 			const thumbOffset:Number = this.thumb.x - this._contentPadding;
 
-			var currentScrollRect:Rectangle = this.onLabelField.scrollRect;
-			currentScrollRect.x = this.actualWidth - this.thumb.width - thumbOffset - (maxLabelWidth - this.onLabelField.width) / 2;
-			this.onLabelField.scrollRect = currentScrollRect;
+			var currentScrollRect:Rectangle = this.onLabelControl.scrollRect;
+			currentScrollRect.x = this.actualWidth - this.thumb.width - thumbOffset - (maxLabelWidth - this.onLabelControl.width) / 2;
+			this.onLabelControl.scrollRect = currentScrollRect;
 
-			currentScrollRect = this.offLabelField.scrollRect;
-			currentScrollRect.x = -thumbOffset - (maxLabelWidth - this.offLabelField.width) / 2;
-			this.offLabelField.scrollRect = currentScrollRect;
+			currentScrollRect = this.offLabelControl.scrollRect;
+			currentScrollRect.x = -thumbOffset - (maxLabelWidth - this.offLabelControl.width) / 2;
+			this.offLabelControl.scrollRect = currentScrollRect;
 
 			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_SCROLL)
 			{
