@@ -29,7 +29,7 @@ package org.josht.starling.foxhole.controls
 
 	/**
 	 * The default item renderer for List.
-	 * 
+	 *
 	 * @see List
 	 */
 	public class SimpleItemRenderer extends Button implements IListItemRenderer
@@ -38,7 +38,7 @@ package org.josht.starling.foxhole.controls
 		 * @private
 		 */
 		private static const DOWN_STATE_DELAY_MS:int = 250;
-		
+
 		/**
 		 * Constructor.
 		 */
@@ -47,12 +47,12 @@ package org.josht.starling.foxhole.controls
 			super();
 			this.isToggle = true;
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _data:Object;
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -60,7 +60,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._data;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -73,12 +73,12 @@ package org.josht.starling.foxhole.controls
 			this._data = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _index:int;
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -86,7 +86,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._index;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -94,12 +94,12 @@ package org.josht.starling.foxhole.controls
 		{
 			this._index = value;
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _owner:List;
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -107,7 +107,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._owner;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -128,58 +128,69 @@ package org.josht.starling.foxhole.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _delayedCurrentState:String;
-		
+
 		/**
 		 * @private
 		 */
 		private var _stateDelayTimer:Timer;
-		
+
+		/** Down will be applied with delay */
+		protected var _useStateDelayTimer:Boolean=true;
+
 		/**
 		 * @private
 		 */
 		override protected function set currentState(value:String):void
 		{
-			if(this._stateDelayTimer)
-			{
-				this._delayedCurrentState = value;
-				return;
-			}
-			else if(!this._stateDelayTimer && value.toLowerCase().indexOf("down") >= 0)
-			{
-				this._delayedCurrentState = value;
-				this._stateDelayTimer = new Timer(DOWN_STATE_DELAY_MS, 1);
-				this._stateDelayTimer.addEventListener(TimerEvent.TIMER_COMPLETE, stateDelayTimer_timerCompleteHandler);
-				this._stateDelayTimer.start();
-				return;
+			if (_useStateDelayTimer)
+			{				
+				if(this._stateDelayTimer)
+				{
+					this._delayedCurrentState = value;
+					return;
+				}
+				else if(!this._stateDelayTimer && value.toLowerCase().indexOf("down") >= 0)
+				{
+					this._delayedCurrentState = value;
+					this._stateDelayTimer = new Timer(DOWN_STATE_DELAY_MS, 1);
+					this._stateDelayTimer.addEventListener(TimerEvent.TIMER_COMPLETE, stateDelayTimer_timerCompleteHandler);
+					this._stateDelayTimer.start();
+					return;
+				}
 			}
 			super.currentState = value;
 		}
-		
+
 		/**
 		 * @private
 		 */
 		override protected function draw():void
 		{
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
-			if(dataInvalid)
-			{
-				if(this._owner)
-				{
-					this._label = this._owner.itemToLabel(this._data);
-				}
-				else
-				{
-					this._label = "";
-				}
-			}
+			if(dataInvalid)			
+				commitDataChanges();
+
 			super.draw();
 		}
-		
+
+		/** Commits data changes */		
+		protected function commitDataChanges():void
+		{
+			if(this._owner)
+			{
+				this._label = this._owner.itemToLabel(this._data);
+			}
+			else
+			{
+				this._label = "";
+			}
+		}
+
 		/**
 		 * @private
 		 */
@@ -188,7 +199,7 @@ package org.josht.starling.foxhole.controls
 			const state:String = this.isSelected ? Button.STATE_SELECTED_UP : Button.STATE_UP;
 			if(this._currentState != state)
 			{
-				super.currentState = state;
+				currentState = state;
 			}
 			this._touchPointID = -1;
 			if(!this._stateDelayTimer)
@@ -200,7 +211,7 @@ package org.josht.starling.foxhole.controls
 			this._stateDelayTimer.stop();
 			this._stateDelayTimer = null;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -213,3 +224,4 @@ package org.josht.starling.foxhole.controls
 		}
 	}
 }
+
