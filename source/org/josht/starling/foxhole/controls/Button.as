@@ -1453,6 +1453,13 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
+		/** Commits data changes */		
+		protected function commitDataChanges():void
+		{
+			this.labelControl.text = this._label;
+			this.labelControl.visible = this._label != null;
+		}
+		
 		/**
 		 * @private
 		 */
@@ -1465,8 +1472,7 @@ package org.josht.starling.foxhole.controls
 			
 			if(dataInvalid)
 			{
-				this.labelControl.text = this._label;
-				this.labelControl.visible = this._label != null;
+				this.commitDataChanges();
 			}
 
 			if(stylesInvalid || stateInvalid)

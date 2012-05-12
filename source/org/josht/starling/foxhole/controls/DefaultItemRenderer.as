@@ -401,41 +401,35 @@ package org.josht.starling.foxhole.controls
 			return null;
 		}
 		
-		/**
-		 * @private
-		 */
-		override protected function draw():void
+		override protected function commitDataChanges():void
 		{
-			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
-			if(dataInvalid)
+			if(this._owner)
 			{
-				if(this._owner)
+				this._label = this.itemToLabel(this._data);
+				this.defaultIcon = this.itemToIcon(this._data);
+				var newAccessory:DisplayObject = this.itemToAccessory(this._data);
+				if(newAccessory != this.accessory)
 				{
-					this._label = this.itemToLabel(this._data);
-					this.defaultIcon = this.itemToIcon(this._data);
-					var newAccessory:DisplayObject = this.itemToAccessory(this._data);
-					if(newAccessory != this.accessory)
-					{
-						if(this.accessory)
-						{
-							this.accessory.removeFromParent();
-						}
-						this.accessory = newAccessory;
-						this.addChild(this.accessory);
-					}
-				}
-				else
-				{
-					this._label = "";
-					this.defaultIcon = null;
 					if(this.accessory)
 					{
 						this.accessory.removeFromParent();
-						this.accessory = null;
 					}
+					this.accessory = newAccessory;
+					this.addChild(this.accessory);
 				}
 			}
-			super.draw();
+			else
+			{
+				this._label = "";
+				this.defaultIcon = null;
+				if(this.accessory)
+				{
+					this.accessory.removeFromParent();
+					this.accessory = null;
+				}
+			}
+			
+			super.commitDataChanges();
 		}
 
 		override protected function layoutContent():void
