@@ -1453,6 +1453,13 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 		
+		/** Commits data changes */		
+		protected function commitDataChanges():void
+		{
+			this.labelControl.text = this._label;
+			this.labelControl.visible = this._label != null;
+		}
+		
 		/**
 		 * @private
 		 */
@@ -1465,8 +1472,7 @@ package org.josht.starling.foxhole.controls
 			
 			if(dataInvalid)
 			{
-				this.labelControl.text = this._label;
-				this.labelControl.visible = this._label != null;
+				this.commitDataChanges();
 			}
 
 			if(stylesInvalid || stateInvalid)
@@ -1587,13 +1593,12 @@ package org.josht.starling.foxhole.controls
 			this.setSizeInternal(newWidth, newHeight, false);
 			return true;
 		}
-		
+
 		/**
-		 * @private
+		 * Update visible property for all skin states and set currentSkin
 		 */
-		protected function refreshSkin():void
-		{	
-			this.currentSkin = null;
+		protected function updateSkinStates():void
+		{
 			if(this._currentState == STATE_UP)
 			{
 				this.currentSkin = this._upSkin;
@@ -1669,6 +1674,16 @@ package org.josht.starling.foxhole.controls
 					this._defaultSelectedSkin.visible = false;
 				}
 			}
+		}
+		
+		/**
+		 * @private
+		 */
+		protected function refreshSkin():void
+		{	
+			this.currentSkin = null;
+			
+			updateSkinStates();
 			
 			if(this.currentSkin)
 			{

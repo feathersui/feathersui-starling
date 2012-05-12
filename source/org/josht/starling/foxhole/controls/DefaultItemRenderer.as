@@ -149,23 +149,29 @@ package org.josht.starling.foxhole.controls
 		 */
 		private var _stateDelayTimer:Timer;
 		
+		/** Use timer to set "down" states */
+		protected var _useStateDelayTimer:Boolean=true;
+		
 		/**
 		 * @private
 		 */
 		override protected function set currentState(value:String):void
 		{
-			if(this._stateDelayTimer)
+			if (_useStateDelayTimer)
 			{
-				this._delayedCurrentState = value;
-				return;
-			}
-			else if(!this._stateDelayTimer && value.toLowerCase().indexOf("down") >= 0)
-			{
-				this._delayedCurrentState = value;
-				this._stateDelayTimer = new Timer(DOWN_STATE_DELAY_MS, 1);
-				this._stateDelayTimer.addEventListener(TimerEvent.TIMER_COMPLETE, stateDelayTimer_timerCompleteHandler);
-				this._stateDelayTimer.start();
-				return;
+				if(this._stateDelayTimer)
+				{
+					this._delayedCurrentState = value;
+					return;
+				}
+				else if(!this._stateDelayTimer && value.toLowerCase().indexOf("down") >= 0)
+				{
+					this._delayedCurrentState = value;
+					this._stateDelayTimer = new Timer(DOWN_STATE_DELAY_MS, 1);
+					this._stateDelayTimer.addEventListener(TimerEvent.TIMER_COMPLETE, stateDelayTimer_timerCompleteHandler);
+					this._stateDelayTimer.start();
+					return;
+				}
 			}
 			super.currentState = value;
 		}
@@ -401,41 +407,35 @@ package org.josht.starling.foxhole.controls
 			return null;
 		}
 		
-		/**
-		 * @private
-		 */
-		override protected function draw():void
+		override protected function commitDataChanges():void
 		{
-			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
-			if(dataInvalid)
+			if(this._owner)
 			{
-				if(this._owner)
+				this._label = this.itemToLabel(this._data);
+				this.defaultIcon = this.itemToIcon(this._data);
+				var newAccessory:DisplayObject = this.itemToAccessory(this._data);
+				if(newAccessory != this.accessory)
 				{
-					this._label = this.itemToLabel(this._data);
-					this.defaultIcon = this.itemToIcon(this._data);
-					var newAccessory:DisplayObject = this.itemToAccessory(this._data);
-					if(newAccessory != this.accessory)
-					{
-						if(this.accessory)
-						{
-							this.accessory.removeFromParent();
-						}
-						this.accessory = newAccessory;
-						this.addChild(this.accessory);
-					}
-				}
-				else
-				{
-					this._label = "";
-					this.defaultIcon = null;
 					if(this.accessory)
 					{
 						this.accessory.removeFromParent();
-						this.accessory = null;
 					}
+					this.accessory = newAccessory;
+					this.addChild(this.accessory);
 				}
 			}
-			super.draw();
+			else
+			{
+				this._label = "";
+				this.defaultIcon = null;
+				if(this.accessory)
+				{
+					this.accessory.removeFromParent();
+					this.accessory = null;
+				}
+			}
+			
+			super.commitDataChanges();
 		}
 
 		override protected function layoutContent():void
