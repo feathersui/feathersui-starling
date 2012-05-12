@@ -646,6 +646,9 @@ package org.josht.starling.foxhole.controls
 				}
 				this._horizontalScrollPosition = clamp(this._horizontalScrollPosition, 0, this._maxHorizontalScrollPosition);
 				this._verticalScrollPosition = clamp(this._verticalScrollPosition, 0, this._maxVerticalScrollPosition);
+				
+				if (dataInvalid)				
+					this._onScroll.dispatch(this);	
 			}
 			
 			if(sizeInvalid || dataInvalid || scrollInvalid || clippingInvalid)
