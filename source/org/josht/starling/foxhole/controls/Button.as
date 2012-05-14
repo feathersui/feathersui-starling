@@ -1465,8 +1465,7 @@ package org.josht.starling.foxhole.controls
 			
 			if(dataInvalid)
 			{
-				this.labelControl.text = this._label;
-				this.labelControl.visible = this._label != null;
+				this.refreshLabelData();
 			}
 
 			if(stylesInvalid || stateInvalid)
@@ -1587,12 +1586,21 @@ package org.josht.starling.foxhole.controls
 			this.setSizeInternal(newWidth, newHeight, false);
 			return true;
 		}
-		
+
+		/**
+		 * @private
+		 */
+		protected function refreshLabelData():void
+		{
+			this.labelControl.text = this._label;
+			this.labelControl.visible = this._label != null;
+		}
+
 		/**
 		 * @private
 		 */
 		protected function refreshSkin():void
-		{	
+		{
 			this.currentSkin = null;
 			if(this._currentState == STATE_UP)
 			{
@@ -1669,7 +1677,7 @@ package org.josht.starling.foxhole.controls
 					this._defaultSelectedSkin.visible = false;
 				}
 			}
-			
+
 			if(this.currentSkin)
 			{
 				this.currentSkin.visible = true;
