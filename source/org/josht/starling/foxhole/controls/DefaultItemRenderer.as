@@ -142,30 +142,61 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _delayedCurrentState:String;
+		protected var _delayedCurrentState:String;
 		
 		/**
 		 * @private
 		 */
-		private var _stateDelayTimer:Timer;
+		protected var _stateDelayTimer:Timer;
+
+		/**
+		 * @private
+		 */
+		protected var _useStateDelayTimer:Boolean = true;
+
+		/**
+		 * If true, the down state (and subsequent state changes) will be
+		 * delayed to make scrolling look nicer.
+		 */
+		public function get useStateDelayTimer():Boolean
+		{
+			return _useStateDelayTimer;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set useStateDelayTimer(value:Boolean):void
+		{
+			this._useStateDelayTimer = value;
+		}
 		
 		/**
 		 * @private
 		 */
 		override protected function set currentState(value:String):void
 		{
-			if(this._stateDelayTimer)
+			if(this._useStateDelayTimer && this._stateDelayTimer)
 			{
 				this._delayedCurrentState = value;
 				return;
 			}
-			else if(!this._stateDelayTimer && value.toLowerCase().indexOf("down") >= 0)
+			else if(this._useStateDelayTimer && !this._stateDelayTimer && value.toLowerCase().indexOf("down") >= 0)
 			{
 				this._delayedCurrentState = value;
 				this._stateDelayTimer = new Timer(DOWN_STATE_DELAY_MS, 1);
 				this._stateDelayTimer.addEventListener(TimerEvent.TIMER_COMPLETE, stateDelayTimer_timerCompleteHandler);
 				this._stateDelayTimer.start();
 				return;
+			}
+
+			//either we're not delaying states, or we're switching to a state
+			//that isn't the down state (and we haven't delayed down)
+			if(this._stateDelayTimer)
+			{
+				this._stateDelayTimer.stop();
+				this._stateDelayTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, stateDelayTimer_timerCompleteHandler);
+				this._stateDelayTimer = null;
 			}
 			super.currentState = value;
 		}
