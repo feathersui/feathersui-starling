@@ -1471,6 +1471,14 @@ package org.josht.starling.foxhole.controls
 			if(stylesInvalid || stateInvalid)
 			{
 				this.refreshSkin();
+				if(isNaN(this._originalSkinWidth))
+				{
+					this._originalSkinWidth = this.currentSkin.width;
+				}
+				if(isNaN(this._originalSkinHeight))
+				{
+					this._originalSkinHeight = this.currentSkin.height;
+				}
 				this.refreshIcon();
 				this.refreshLabelStyles();
 			}
@@ -1681,14 +1689,6 @@ package org.josht.starling.foxhole.controls
 			if(this.currentSkin)
 			{
 				this.currentSkin.visible = true;
-				if(isNaN(this._originalSkinWidth))
-				{
-					this._originalSkinWidth = this.currentSkin.width;
-				}
-				if(isNaN(this._originalSkinHeight))
-				{
-					this._originalSkinHeight = this.currentSkin.height;
-				}
 			}
 		}
 		
