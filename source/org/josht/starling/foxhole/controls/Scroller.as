@@ -644,8 +644,15 @@ package org.josht.starling.foxhole.controls
 					this._maxHorizontalScrollPosition = 0;
 					this._maxVerticalScrollPosition = 0;
 				}
+				const oldHorizontalScrollPosition:Number = this._horizontalScrollPosition;
+				const oldVerticalScrollPosition:Number = this._verticalScrollPosition;
 				this._horizontalScrollPosition = clamp(this._horizontalScrollPosition, 0, this._maxHorizontalScrollPosition);
 				this._verticalScrollPosition = clamp(this._verticalScrollPosition, 0, this._maxVerticalScrollPosition);
+				if(oldHorizontalScrollPosition != this._horizontalScrollPosition ||
+					oldVerticalScrollPosition != this._verticalScrollPosition)
+				{
+					this._onScroll.dispatch(this);
+				}
 			}
 			
 			if(sizeInvalid || dataInvalid || scrollInvalid || clippingInvalid)
@@ -1152,8 +1159,15 @@ package org.josht.starling.foxhole.controls
 			
 			//if we stopped the animation while the list was outside the scroll
 			//bounds, then let's account for that
+			const oldHorizontalScrollPosition:Number = this._horizontalScrollPosition;
+			const oldVerticalScrollPosition:Number = this._verticalScrollPosition;
 			this._horizontalScrollPosition = clamp(this._horizontalScrollPosition, 0, this._maxHorizontalScrollPosition);
 			this._verticalScrollPosition = clamp(this._verticalScrollPosition, 0, this._maxVerticalScrollPosition);
+			if(oldHorizontalScrollPosition != this._horizontalScrollPosition ||
+				oldVerticalScrollPosition != this._verticalScrollPosition)
+			{
+				this._onScroll.dispatch(this);
+			}
 		}
 	}
 }
