@@ -132,6 +132,34 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._onChange;
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _onDragStart:Signal = new Signal(Slider);
+
+		/**
+		 * Dispatched when the user begins dragging slider (using either the
+		 * thumb or the track).
+		 */
+		public function get onDragStart():ISignal
+		{
+			return this._onDragStart;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _onDragEnd:Signal = new Signal(Slider);
+
+		/**
+		 * Dispatched when the user stops dragging slider (using either the
+		 * thumb or the track).
+		 */
+		public function get onDragEnd():ISignal
+		{
+			return this._onDragEnd;
+		}
 		
 		/**
 		 * @private
@@ -919,6 +947,7 @@ package org.josht.starling.foxhole.controls
 					this._touchStartX = location.x;
 					this._touchStartY = location.y;
 					this.isDragging = true;
+					this._onDragStart.dispatch(this);
 				}
 				this.dragTo(location);
 			}
@@ -930,6 +959,7 @@ package org.josht.starling.foxhole.controls
 				{
 					this._onChange.dispatch(this);
 				}
+				this._onDragEnd.dispatch(this);
 			}
 		}
 		
@@ -957,6 +987,7 @@ package org.josht.starling.foxhole.controls
 				this._touchStartX = location.x;
 				this._touchStartY = location.y;
 				this.isDragging = true;
+				this._onDragStart.dispatch(this);
 			}
 			else if(touch.phase == TouchPhase.MOVED)
 			{
@@ -970,6 +1001,7 @@ package org.josht.starling.foxhole.controls
 				{
 					this._onChange.dispatch(this);
 				}
+				this._onDragEnd.dispatch(this);
 			}
 		}
 	}
