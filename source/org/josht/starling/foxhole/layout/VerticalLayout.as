@@ -283,14 +283,14 @@ package org.josht.starling.foxhole.layout
 		/**
 		 * @inheritDoc
 		 */
-		public function layout(items:ListCollection, suggestedBounds:Rectangle, resultDimensions:Point = null):Point
+		public function layout(items:Vector.<DisplayObject>, suggestedBounds:Rectangle, resultDimensions:Point = null):Point
 		{
 			var maxWidth:Number = 0;
 			var positionY:Number = suggestedBounds.y + this._paddingTop;
 			const itemCount:int = items.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
-				var item:DisplayObject = DisplayObject(items.getItemAt(i));
+				var item:DisplayObject = items[i];
 				switch(this._horizontalAlign)
 				{
 					case HORIZONTAL_ALIGN_RIGHT:
@@ -335,7 +335,7 @@ package org.josht.starling.foxhole.layout
 				{
 					for(i = 0; i < itemCount; i++)
 					{
-						item = DisplayObject(items.getItemAt(i));
+						item = items[i];
 						item.y += verticalAlignOffsetY;
 					}
 				}
