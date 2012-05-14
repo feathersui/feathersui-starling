@@ -502,6 +502,34 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._onScroll;
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _onDragStart:Signal = new Signal(Scroller);
+
+		/**
+		 * Dispatched when a drag has begun that will make the scroller begin
+		 * scrolling in either direction.
+		 */
+		public function get onDragStart():ISignal
+		{
+			return this._onDragStart;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _onDragEnd:Signal = new Signal(Scroller);
+
+		/**
+		 * Dispatched when a drag has ended that will make the scroller end
+		 * scrolling in either direction.
+		 */
+		public function get onDragEnd():ISignal
+		{
+			return this._onDragEnd;
+		}
 		
 		private var _isScrollingStopped:Boolean = false;
 		
@@ -1050,10 +1078,18 @@ package org.josht.starling.foxhole.controls
 			const verticalInchesMoved:Number = Math.abs(this._currentTouchY - this._startTouchY) / Capabilities.screenDPI;
 			if(this._horizontalScrollPolicy != SCROLL_POLICY_OFF && !this._isDraggingHorizontally && horizontalInchesMoved >= MINIMUM_DRAG_DISTANCE)
 			{
-				this._isDraggingHorizontally = true;
+				if(!this._isDraggingVertically)
+				{
+					this._onDragStart.dispatch(this);
+				}
+				this._onDragStart.dispatch(this);
 			}
 			if(this._verticalScrollPolicy != SCROLL_POLICY_OFF && !this._isDraggingVertically && verticalInchesMoved >= MINIMUM_DRAG_DISTANCE)
 			{
+				if(!this._isDraggingHorizontally)
+				{
+					this._onDragStart.dispatch(this);
+				}
 				this._isDraggingVertically = true;
 			}
 			if(this._isDraggingHorizontally && !this._horizontalAutoScrollTween)
@@ -1086,6 +1122,7 @@ package org.josht.starling.foxhole.controls
 				this.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
 				this.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
 				this._touchPointID = -1;
+				this._onDragEnd.dispatch(this);
 				var isFinishingHorizontally:Boolean = false;
 				var isFinishingVertically:Boolean = false;
 				if(this._horizontalScrollPosition < 0 || this._horizontalScrollPosition > this._maxHorizontalScrollPosition)
