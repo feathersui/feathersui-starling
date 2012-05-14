@@ -51,6 +51,6 @@ package org.josht.starling.foxhole.layout
 		 * positioning, but the algorithm may very well ignore them completely.
 		 * Returns the actual bounds of the content.
 		 */
-		function layout(items:ListCollection, suggestedBounds:Rectangle, resultDimensions:Point = null):Point;
+		function layout(items:Vector.<DisplayObject>, suggestedBounds:Rectangle, resultDimensions:Point = null):Point;
 	}
 }

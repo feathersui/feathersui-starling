@@ -71,11 +71,6 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected var items:ListCollection = new ListCollection(new <DisplayObject>[]);
-
-		/**
-		 * @private
-		 */
 		private var _layout:ILayout;
 
 		/**
@@ -297,7 +292,7 @@ package org.josht.starling.foxhole.controls
 		 */
 		override public function get numChildren():int
 		{
-			return this.items.length;
+			return this.viewPort.numChildren;
 		}
 
 		/**
@@ -305,16 +300,7 @@ package org.josht.starling.foxhole.controls
 		 */
 		override public function getChildByName(name:String):DisplayObject
 		{
-			const childCount:int = this.items.length;
-			for(var i:int = 0; i < childCount; i++)
-			{
-				var child:DisplayObject = DisplayObject(this.items[i]);
-				if(child.name == name)
-				{
-					return child;
-				}
-			}
-			return null;
+			return this.viewPort.getChildByName(name);
 		}
 
 		/**
@@ -322,7 +308,7 @@ package org.josht.starling.foxhole.controls
 		 */
 		override public function getChildAt(index:int):DisplayObject
 		{
-			return DisplayObject(this.items.getItemAt(index));
+			return this.viewPort.getChildAt(index);
 		}
 
 		/**
@@ -330,7 +316,7 @@ package org.josht.starling.foxhole.controls
 		 */
 		override public function addChildAt(child:DisplayObject, index:int):void
 		{
-			this.items.addItemAt(child, index);
+			this.viewPort.addChildAt(child, index);
 		}
 
 		/**
@@ -338,7 +324,7 @@ package org.josht.starling.foxhole.controls
 		 */
 		override public function removeChildAt(index:int, dispose:Boolean = false):void
 		{
-			this.items.removeItemAt(index);
+			this.viewPort.removeChildAt(index, dispose);
 		}
 
 		/**
@@ -346,7 +332,7 @@ package org.josht.starling.foxhole.controls
 		 */
 		override public function getChildIndex(child:DisplayObject):int
 		{
-			return this.items.getItemIndex(child);
+			return this.viewPort.getChildIndex(child);
 		}
 
 		/**
@@ -354,8 +340,7 @@ package org.josht.starling.foxhole.controls
 		 */
 		override public function setChildIndex(child:DisplayObject, index:int):void
 		{
-			this.items.removeItem(child);
-			this.items.addItemAt(child, index);
+			this.viewPort.setChildIndex(child, index);
 		}
 
 		/**
@@ -363,10 +348,7 @@ package org.josht.starling.foxhole.controls
 		 */
 		override public function swapChildrenAt(index1:int, index2:int):void
 		{
-			const child1:DisplayObject = this.getChildAt(index1);
-			const child2:DisplayObject = this.getChildAt(index2);
-			this.items.setItemAt(child2, index1);
-			this.items.setItemAt(child1, index2);
+			this.viewPort.swapChildrenAt(index1, index2);
 		}
 
 		/**
@@ -374,7 +356,7 @@ package org.josht.starling.foxhole.controls
 		 */
 		override public function sortChildren(compareFunction:Function):void
 		{
-			throw new IllegalOperationError("Not implemented.");
+			this.viewPort.sortChildren(compareFunction);
 		}
 
 		/**
@@ -403,7 +385,6 @@ package org.josht.starling.foxhole.controls
 			if(!this.viewPort)
 			{
 				this.viewPort = new LayoutContainer();
-				this.viewPort.items = this.items;
 				this.scroller.viewPort = this.viewPort;
 			}
 		}

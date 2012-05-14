@@ -43,43 +43,11 @@ package org.josht.starling.foxhole.controls.supportClasses
 
 		public function LayoutContainer()
 		{
+			this.addEventListener(Event.ADDED, addedHandler);
 			this.addEventListener(Event.REMOVED, removedHandler);
 		}
 
-		private var _items:ListCollection;
-
-		public function get items():ListCollection
-		{
-			return this._items;
-		}
-
-		public function set items(value:ListCollection):void
-		{
-			if(this._items == value)
-			{
-				return;
-			}
-			if(this._items)
-			{
-				this.removeChildren();
-				this._items.onRemove.remove(items_onRemove);
-				this._items.onChange.remove(items_onChange);
-			}
-			this._items = value;
-			if(this._items)
-			{
-				const itemCount:int = this._items.length;
-				for(var i:int = 0; i < itemCount; i++)
-				{
-					var item:DisplayObject = DisplayObject(this._items.getItemAt(i));
-					this.addChild(item);
-				}
-				this._items.onRemove.add(items_onRemove);
-				this._items.onChange.add(items_onChange);
-			}
-		}
-
-		private var _removedItem:DisplayObject;
+		protected var items:Vector.<DisplayObject> = new <DisplayObject>[];
 
 		private var _layout:ILayout;
 
@@ -102,7 +70,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 			if(this._layout)
 			{
 				this._layout.onLayoutChange.add(layout_onLayoutChange);
-				//if we don't have a layout, nothing will change
+				//if we don't have a layout, nothing will need to be redrawn
 				this.invalidate(INVALIDATION_FLAG_DATA);
 			}
 		}
@@ -112,11 +80,6 @@ package org.josht.starling.foxhole.controls.supportClasses
 			if(this._layout)
 			{
 				this._layout.onLayoutChange.remove(layout_onLayoutChange);
-			}
-			if(this._items)
-			{
-				this._items.onRemove.remove(items_onRemove);
-				this._items.onChange.remove(items_onChange);
 			}
 			super.dispose();
 		}
@@ -128,10 +91,10 @@ package org.josht.starling.foxhole.controls.supportClasses
 
 			if(sizeInvalid || dataInvalid)
 			{
-				const itemCount:int = this._items.length;
+				const itemCount:int = this.items.length;
 				for(var i:int = 0; i < itemCount; i++)
 				{
-					var item:FoxholeControl = this._items.getItemAt(i) as FoxholeControl;
+					var item:FoxholeControl = this.items[i] as FoxholeControl;
 					if(item)
 					{
 						item.validate();
@@ -139,42 +102,12 @@ package org.josht.starling.foxhole.controls.supportClasses
 				}
 				if(this._layout)
 				{
-					this._layout.layout(this._items, this._hitArea, HELPER_POINT);
+					this._layout.layout(this.items, this._hitArea, HELPER_POINT);
 					this.setSizeInternal(HELPER_POINT.x, HELPER_POINT.y, false);
 				}
 				else
 				{
 					this.setSizeInternal(0, 0, false);
-				}
-			}
-		}
-
-		protected function items_onRemove(collection:ListCollection, index:int):void
-		{
-			if(!this._removedItem)
-			{
-				this.removeChildAt(index);
-			}
-			else
-			{
-				this._removedItem = null;
-			}
-		}
-
-		protected function items_onChange(collection:ListCollection):void
-		{
-			const itemCount:int = this._items.length;
-			for(var i:int = 0; i < itemCount; i++)
-			{
-				var item:DisplayObject = DisplayObject(this._items.getItemAt(i));
-				var index:int = this.getChildIndex(item);
-				if(index < 0)
-				{
-					this.addChildAt(item,  i);
-				}
-				else if(i != index)
-				{
-					this.setChildIndex(item,  i);
 				}
 			}
 		}
@@ -189,13 +122,26 @@ package org.josht.starling.foxhole.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
+		protected function addedHandler(event:Event):void
+		{
+			const item:DisplayObject = DisplayObject(event.target);
+			if(item.parent != this)
+			{
+				return;
+			}
+			const index:int = this.getChildIndex(item);
+			this.items.splice(index, 0, item);
+		}
+
 		protected function removedHandler(event:Event):void
 		{
-			if(this._items && this._items.getItemIndex(event.currentTarget) >= 0)
+			const item:DisplayObject = DisplayObject(event.target);
+			if(item.parent != this)
 			{
-				this._removedItem = DisplayObject(event.currentTarget);
-				this._items.removeItem(this._removedItem);
+				return;
 			}
+			const index:int = this.items.indexOf(item);
+			this.items.splice(index, 1);
 		}
 
 	}
