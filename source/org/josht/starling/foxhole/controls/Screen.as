@@ -50,8 +50,9 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function Screen()
 		{
-			super();
 			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
+			super();
+			this.originalDPI = 168;
 		}
 		
 		/**
@@ -119,7 +120,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _originalDPI:int = 168;
+		private var _originalDPI:int = 0;
 		
 		/**
 		 * The original intended DPI of the application. This value cannot be
