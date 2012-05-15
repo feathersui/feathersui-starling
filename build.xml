@@ -57,6 +57,7 @@
 			<arg line="--external-library-path+='${flexframework.lib}'"/>
 			<arg line="--main-title 'Foxhole for Starling API Documentation'"/>
 			<arg line="--window-title 'Foxhole for Starling API Documentation'"/>
+			<arg line="--package-description-file package-descriptions.xml"/>
 			<arg line="--output '${docs.output}'"/>
 		</java>
 
