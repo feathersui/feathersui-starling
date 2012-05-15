@@ -27,7 +27,6 @@ package org.josht.starling.foxhole.controls.supportClasses
 	import flash.geom.Point;
 
 	import org.josht.starling.foxhole.core.FoxholeControl;
-	import org.josht.starling.foxhole.data.ListCollection;
 	import org.josht.starling.foxhole.layout.ILayout;
 
 	import starling.display.DisplayObject;

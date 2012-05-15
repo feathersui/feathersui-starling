@@ -27,7 +27,6 @@ package org.josht.starling.foxhole.layout
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
-	import org.josht.starling.foxhole.data.ListCollection;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 
@@ -36,7 +35,7 @@ package org.josht.starling.foxhole.layout
 	/**
 	 * Positions items from top to bottom in a single column.
 	 */
-	public class VerticalLayout implements ILayout
+	public class VerticalLayout implements IVirtualLayout
 	{
 		/**
 		 * If the total item height is smaller than the height of the bounds,
@@ -270,6 +269,82 @@ package org.josht.starling.foxhole.layout
 		/**
 		 * @private
 		 */
+		private var _useVirtualLayout:Boolean = true;
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get useVirtualLayout():Boolean
+		{
+			return this._useVirtualLayout;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set useVirtualLayout(value:Boolean):void
+		{
+			if(this._useVirtualLayout == value)
+			{
+				return;
+			}
+			this._useVirtualLayout = value;
+			this._onLayoutChange.dispatch(this);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _typicalItemWidth:Number = 0;
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get typicalItemWidth():Number
+		{
+			return this._typicalItemWidth;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set typicalItemWidth(value:Number):void
+		{
+			if(this._typicalItemWidth == value)
+			{
+				return;
+			}
+			this._typicalItemWidth = value;
+		}
+
+		/**
+		 * @private
+		 */
+		private var _typicalItemHeight:Number = 0;
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get typicalItemHeight():Number
+		{
+			return this._typicalItemHeight;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set typicalItemHeight(value:Number):void
+		{
+			if(this._typicalItemHeight == value)
+			{
+				return;
+			}
+			this._typicalItemHeight = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _onLayoutChange:Signal = new Signal(ILayout);
 
 		/**
@@ -291,22 +366,43 @@ package org.josht.starling.foxhole.layout
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var item:DisplayObject = items[i];
+				if(this._useVirtualLayout && !item)
+				{
+					positionY += this._typicalItemHeight + this._gap;
+					maxWidth = Math.max(maxWidth, this._typicalItemWidth);
+				}
+				else
+				{
+					item.y = positionY;
+					positionY += item.height + this._gap;
+					maxWidth = Math.max(maxWidth, item.width);
+				}
+			}
+
+			const suggestedWidth:Number = isNaN(suggestedBounds.width) ? maxWidth : suggestedBounds.width;
+			for(i = 0; i < itemCount; i++)
+			{
+				item = items[i];
+				if(!item)
+				{
+					continue;
+				}
 				switch(this._horizontalAlign)
 				{
 					case HORIZONTAL_ALIGN_RIGHT:
 					{
-						item.x = suggestedBounds.x + suggestedBounds.width - this._paddingRight - item.width;
+						item.x = suggestedBounds.x + suggestedWidth - this._paddingRight - item.width;
 						break;
 					}
 					case HORIZONTAL_ALIGN_CENTER:
 					{
-						item.x = suggestedBounds.x + this._paddingLeft + (suggestedBounds.width - this._paddingLeft - this._paddingRight - item.width) / 2;
+						item.x = suggestedBounds.x + this._paddingLeft + (suggestedWidth - this._paddingLeft - this._paddingRight - item.width) / 2;
 						break;
 					}
 					case HORIZONTAL_ALIGN_JUSTIFY:
 					{
 						item.x = this._paddingLeft;
-						item.width = suggestedBounds.width - this._paddingLeft - this._paddingRight;
+						item.width = suggestedWidth - this._paddingLeft - this._paddingRight;
 						break;
 					}
 					default: //top
@@ -314,28 +410,30 @@ package org.josht.starling.foxhole.layout
 						item.x = this._paddingLeft;
 					}
 				}
-				item.y = positionY;
-				positionY += item.height + this._gap;
-				maxWidth = Math.max(maxWidth, item.width);
 			}
 
 			const totalHeight:Number = positionY - this._gap + this._paddingBottom - suggestedBounds.y;
-			if(totalHeight < suggestedBounds.height)
+			const suggestedHeight:Number = isNaN(suggestedBounds.height) ? totalHeight : suggestedBounds.height;
+			if(totalHeight < suggestedHeight)
 			{
 				var verticalAlignOffsetY:Number = 0;
 				if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
 				{
-					verticalAlignOffsetY = suggestedBounds.height - totalHeight;
+					verticalAlignOffsetY = suggestedHeight - totalHeight;
 				}
 				else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
 				{
-					verticalAlignOffsetY = (suggestedBounds.height - totalHeight) / 2;
+					verticalAlignOffsetY = (suggestedHeight - totalHeight) / 2;
 				}
 				if(verticalAlignOffsetY != 0)
 				{
 					for(i = 0; i < itemCount; i++)
 					{
 						item = items[i];
+						if(!item)
+						{
+							continue;
+						}
 						item.y += verticalAlignOffsetY;
 					}
 				}
@@ -345,9 +443,34 @@ package org.josht.starling.foxhole.layout
 			{
 				resultDimensions = new Point();
 			}
-			resultDimensions.x = Math.max(suggestedBounds.width, maxWidth);
-			resultDimensions.y = Math.max(suggestedBounds.height, totalHeight);
+			resultDimensions.x = Math.max(suggestedWidth, maxWidth);
+			resultDimensions.y = Math.max(suggestedHeight, totalHeight);
 			return resultDimensions;
+		}
+
+		public function getMinimumItemIndexAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number):int
+		{
+			return Math.max(0, (scrollY - this._paddingTop) / (this._typicalItemHeight + this._gap));
+		}
+
+		public function getMaximumItemIndexAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number):int
+		{
+			const typicalItemHeight:Number = this._typicalItemHeight + this._gap;
+			const minimum:int = Math.max(0, (scrollY - this._paddingTop) / typicalItemHeight);
+			return minimum + Math.ceil(height / typicalItemHeight) + 1;
+		}
+
+		public function getScrollPositionForItemIndexAndBounds(index:int, width:Number, height:Number, result:Point = null):Point
+		{
+			if(!result)
+			{
+				result = new Point();
+			}
+
+			const typicalItemHeight:Number = this._typicalItemHeight;
+			result.x = 0;
+			result.y = this._paddingTop + (typicalItemHeight + this._gap) * index - (height - typicalItemHeight) / 2;
+			return result;
 		}
 	}
 }
