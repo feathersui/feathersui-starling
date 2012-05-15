@@ -36,7 +36,8 @@ package org.josht.starling.display
 	import starling.utils.transformCoords;
 	
 	/**
-	 * Adds <code>scrollRect</code> to <code>Image</code>.
+	 * Adds capabilities to Starling's <code>Image</code> class, including
+	 * <code>scrollRect</code> and pixel snapping.
 	 */
 	public class Image extends starling.display.Image implements IDisplayObjectWithScrollRect
 	{
@@ -127,6 +128,32 @@ package org.josht.starling.display
 		
 		private var _scaledScrollRectXY:Point = new Point();
 		private var _scissorRect:Rectangle = new Rectangle();
+
+		/**
+		 * @private
+		 */
+		private var _snapToPixels:Boolean = false;
+
+		/**
+		 * Determines if the image should be snapped to the nearest global whole
+		 * pixel when rendered.
+		 */
+		public function get snapToPixels():Boolean
+		{
+			return _snapToPixels;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set snapToPixels(value:Boolean):void
+		{
+			if(this._snapToPixels == value)
+			{
+				return;
+			}
+			this._snapToPixels = value;
+		}
 		
 		/**
 		 * @inheritDoc
@@ -202,6 +229,11 @@ package org.josht.starling.display
 				ScrollRectManager.scrollRectOffsetY -= this._scaledScrollRectXY.y;
 				support.translateMatrix(-this._scrollRect.x, -this._scrollRect.y);
 			}
+			if(this._snapToPixels)
+			{
+				this.getTransformationMatrix(this.stage, helperMatrix);
+				support.translateMatrix(Math.round(helperMatrix.tx) - helperMatrix.tx, Math.round(helperMatrix.ty) - helperMatrix.ty);
+			}
 			if(render)
 			{
 				super.render(support, alpha);
@@ -209,6 +241,7 @@ package org.josht.starling.display
 			if(this._scrollRect)
 			{
 				support.finishQuadBatch();
+				support.translateMatrix(-(Math.round(helperMatrix.tx) - helperMatrix.tx), -(Math.round(helperMatrix.ty) - helperMatrix.ty));
 				support.translateMatrix(this._scrollRect.x, this._scrollRect.y);
 				ScrollRectManager.scrollRectOffsetX += this._scaledScrollRectXY.x;
 				ScrollRectManager.scrollRectOffsetY += this._scaledScrollRectXY.y;
