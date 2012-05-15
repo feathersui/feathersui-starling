@@ -66,6 +66,11 @@ package org.josht.starling.foxhole.controls
 		 * scroller's bounds.
 		 */
 		public static const SCROLL_POLICY_AUTO:String = "auto";
+
+		/**
+		 * The scroller will always scroll.
+		 */
+		public static const SCROLL_POLICY_ON:String = "on";
 		
 		/**
 		 * The scroller does not scroll at all.
@@ -440,7 +445,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _clipContent:Boolean = false;
+		private var _clipContent:Boolean = true;
 		
 		/**
 		 * If true, the viewport will be clipped to the scroller's bounds. In
@@ -640,6 +645,10 @@ package org.josht.starling.foxhole.controls
 			const scrollInvalid:Boolean = dataInvalid || this.isInvalid(INVALIDATION_FLAG_SCROLL);
 			const clippingInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_CLIPPING);
 
+			if(this._viewPort is FoxholeControl)
+			{
+				FoxholeControl(this._viewPort).validate();
+			}
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 			
 			if(sizeInvalid || dataInvalid)
@@ -699,11 +708,6 @@ package org.josht.starling.foxhole.controls
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
-			}
-
-			if(this._viewPort is FoxholeControl)
-			{
-				FoxholeControl(this._viewPort).validate();
 			}
 
 			var newWidth:Number = this.explicitWidth;
@@ -1076,15 +1080,20 @@ package org.josht.starling.foxhole.controls
 			}
 			const horizontalInchesMoved:Number = Math.abs(this._currentTouchX - this._startTouchX) / Capabilities.screenDPI;
 			const verticalInchesMoved:Number = Math.abs(this._currentTouchY - this._startTouchY) / Capabilities.screenDPI;
-			if(this._horizontalScrollPolicy != SCROLL_POLICY_OFF && !this._isDraggingHorizontally && horizontalInchesMoved >= MINIMUM_DRAG_DISTANCE)
+			if((this._horizontalScrollPolicy == SCROLL_POLICY_ON || (this._horizontalScrollPolicy == SCROLL_POLICY_AUTO && this._maxHorizontalScrollPosition > 0)) &&
+				!this._isDraggingHorizontally && horizontalInchesMoved >= MINIMUM_DRAG_DISTANCE)
 			{
+				//if we haven't already started dragging in the other direction,
+				//we need to dispatch the signal that says we're starting.
 				if(!this._isDraggingVertically)
 				{
 					this._onDragStart.dispatch(this);
 				}
 				this._onDragStart.dispatch(this);
+				this._isDraggingHorizontally = true;
 			}
-			if(this._verticalScrollPolicy != SCROLL_POLICY_OFF && !this._isDraggingVertically && verticalInchesMoved >= MINIMUM_DRAG_DISTANCE)
+			if((this._verticalScrollPolicy != SCROLL_POLICY_ON || (this._verticalScrollPolicy == SCROLL_POLICY_AUTO && (this._maxVerticalScrollPosition > 0 || this._maxHorizontalScrollPosition == 0))) &&
+				!this._isDraggingVertically && verticalInchesMoved >= MINIMUM_DRAG_DISTANCE)
 			{
 				if(!this._isDraggingHorizontally)
 				{
@@ -1140,7 +1149,7 @@ package org.josht.starling.foxhole.controls
 					return;
 				}
 				
-				if(!isFinishingHorizontally && this._horizontalScrollPolicy != SCROLL_POLICY_OFF)
+				if(!isFinishingHorizontally && this._isDraggingHorizontally)
 				{
 					//take the average for more accuracy
 					var sum:Number = this._velocityX * 2.33;
@@ -1155,7 +1164,7 @@ package org.josht.starling.foxhole.controls
 					this.throwHorizontally(sum / totalWeight);
 				}
 				
-				if(!isFinishingVertically && this._verticalScrollPolicy != SCROLL_POLICY_OFF)
+				if(!isFinishingVertically && this._isDraggingVertically)
 				{
 					sum = this._velocityY * 2.33;
 					velocityCount = this._previousVelocityY.length;

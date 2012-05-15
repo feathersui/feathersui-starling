@@ -24,37 +24,30 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package org.josht.starling.foxhole.controls
 {
+	import flash.geom.Point;
+
 	import org.josht.starling.foxhole.controls.supportClasses.ListDataContainer;
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.data.ListCollection;
+	import org.josht.starling.foxhole.layout.HorizontalLayout;
+	import org.josht.starling.foxhole.layout.ILayout;
+	import org.josht.starling.foxhole.layout.IVirtualLayout;
+	import org.josht.starling.foxhole.layout.VerticalLayout;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
-	
+
 	import starling.display.DisplayObject;
 	import starling.events.TouchEvent;
-	
+
 	/**
 	 * Displays a one-dimensional list of items. Supports scrolling.
 	 */
 	public class List extends FoxholeControl
 	{
 		/**
-		 * If the list content does not fill the entire available vertical
-		 * space, it will be aligned to the top.
+		 * @private
 		 */
-		public static const VERTICAL_ALIGN_TOP:String = "top";
-		
-		/**
-		 * If the list content does not fill the entire available vertical
-		 * space, it will be aligned to the middle.
-		 */
-		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
-		
-		/**
-		 * If the list content does not fill the entire available vertical
-		 * space, it will be aligned to the bottom.
-		 */
-		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
+		private static const helperPoint:Point = new Point();
 		
 		/**
 		 * Constructor.
@@ -63,20 +56,101 @@ package org.josht.starling.foxhole.controls
 		{
 			super();
 		}
-		
-		protected var _background:DisplayObject;
-		protected var _scroller:Scroller;
-		protected var _dataContainer:ListDataContainer;
+
+		/**
+		 * @private
+		 * The Scroller instance.
+		 */
+		protected var scroller:Scroller;
+
+		/**
+		 * @private
+		 * The guts of the List's functionality. Handles layout and selection.
+		 */
+		protected var dataContainer:ListDataContainer;
 		
 		/**
 		 * @private
 		 */
 		private var _scrollToIndex:int = -1;
+
+		/**
+		 * @private
+		 */
+		private var _layout:ILayout;
+
+		/**
+		 * The layout algorithm used to position and, optionally, size the
+		 * list's items.
+		 */
+		public function get layout():ILayout
+		{
+			return this._layout;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set layout(value:ILayout):void
+		{
+			if(this._layout == value)
+			{
+				return;
+			}
+			this._layout = value;
+			this.invalidate(INVALIDATION_FLAG_SCROLL);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _horizontalScrollPosition:Number = 0;
+
+		/**
+		 * The number of pixels the list has been scrolled horizontally (on
+		 * the x-axis).
+		 */
+		public function get horizontalScrollPosition():Number
+		{
+			return this._horizontalScrollPosition;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set horizontalScrollPosition(value:Number):void
+		{
+			if(this._horizontalScrollPosition == value)
+			{
+				return;
+			}
+			this._horizontalScrollPosition = value;
+			this.invalidate(INVALIDATION_FLAG_SCROLL);
+			this._onScroll.dispatch(this);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _maxHorizontalScrollPosition:Number = 0;
+
+		/**
+		 * The maximum number of pixels the list may be scrolled horizontally
+		 * (on the x-axis). This value is automatically calculated using the
+		 * layout algorithm. The <code>horizontalScrollPosition</code> property
+		 * may have a higher value than the maximum due to elastic edges.
+		 * However, once the user stops interacting with the list, it will
+		 * automatically animate back to the maximum (or minimum, if below 0).
+		 */
+		public function get maxHorizontalScrollPosition():Number
+		{
+			return this._maxHorizontalScrollPosition;
+		}
 		
 		/**
 		 * @private
 		 */
-		private var _verticalScrollPosition:Number = 0;
+		protected var _verticalScrollPosition:Number = 0;
 		
 		/**
 		 * The number of pixels the list has been scrolled vertically (on
@@ -104,7 +178,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _maxVerticalScrollPosition:Number = 0;
+		protected var _maxVerticalScrollPosition:Number = 0;
 		
 		/**
 		 * The maximum number of pixels the list may be scrolled vertically (on
@@ -123,7 +197,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _dataProvider:ListCollection;
+		protected var _dataProvider:ListCollection;
 		
 		/**
 		 * The collection of data displayed by the list.
@@ -142,8 +216,21 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
+			if(this._dataProvider)
+			{
+				this._dataProvider.onReset.remove(dataProvider_onReset);
+			}
 			this._dataProvider = value;
-			this.verticalScrollPosition = 0; //reset the scroll position
+			if(this._dataProvider)
+			{
+				this._dataProvider.onReset.add(dataProvider_onReset);
+			}
+
+			//reset the scroll position because this is a drastic change and
+			//the data is probably completely different
+			this.horizontalScrollPosition = 0;
+			this.verticalScrollPosition = 0;
+
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 		
@@ -225,36 +312,6 @@ package org.josht.starling.foxhole.controls
 		{
 			this.selectedIndex = this._dataProvider.getItemIndex(value);
 		}
-		
-		/**
-		 * @private
-		 */
-		private var _clipContent:Boolean = true;
-		
-		/**
-		 * If true, the list's content will be clipped to the lists's bounds. In
-		 * other words, anything appearing outside the list's bounds will
-		 * not be visible.
-		 */
-		public function get clipContent():Boolean
-		{
-			return this._clipContent;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set clipContent(value:Boolean):void
-		{
-			if(this._clipContent == value)
-			{
-				return;
-			}
-			this._clipContent = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-		
-		private var _isMoving:Boolean = false;
 		
 		/**
 		 * @private
@@ -361,7 +418,7 @@ package org.josht.starling.foxhole.controls
 			this._itemRendererProperties = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -545,37 +602,6 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected var _verticalAlign:String = VERTICAL_ALIGN_TOP;
-		
-		/**
-		 * If the list's content height is less than the list's height, it will
-		 * be aligned to the top, middle, or bottom of the list.
-		 * 
-		 * @see VERTICAL_ALIGN_TOP
-		 * @see VERTICAL_ALIGN_MIDDLE
-		 * @see VERTICAL_ALIGN_BOTTOM
-		 */
-		public function get verticalAlign():String
-		{
-			return _verticalAlign;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set verticalAlign(value:String):void
-		{
-			if(this._verticalAlign == value)
-			{
-				return;
-			}
-			this._verticalAlign = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-		
-		/**
-		 * @private
-		 */
 		private var _itemRendererType:Class = DefaultItemRenderer;
 		
 		/**
@@ -659,35 +685,6 @@ package org.josht.starling.foxhole.controls
 		}
 		
 		/**
-		 * @private
-		 */
-		private var _useVirtualLayout:Boolean = true;
-		
-		/**
-		 * Determines if the list creates item renderers for every single item
-		 * (<code>false</code>), or if it only creates enough item renderers to
-		 * fill the list's bounds (<code>true</code>). If virtual layout is
-		 * enabled, item renderers are reused, and their data may change.
-		 */
-		public function get useVirtualLayout():Boolean
-		{
-			return this._useVirtualLayout;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set useVirtualLayout(value:Boolean):void
-		{
-			if(this._useVirtualLayout == value)
-			{
-				return;
-			}
-			this._useVirtualLayout = value;
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
-		}
-		
-		/**
 		 * Sets a single property on the list's scroller instance. The
 		 * scroller is a Foxhole Scroller control.
 		 */
@@ -706,6 +703,10 @@ package org.josht.starling.foxhole.controls
 		public function setItemRendererProperty(propertyName:String, propertyValue:Object):void
 		{
 			this._itemRendererProperties[propertyName] = propertyValue;
+			if(this.dataContainer)
+			{
+				this.dataContainer.setItemRendererProperty(propertyName, propertyValue);
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
@@ -714,6 +715,10 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function scrollToDisplayIndex(index:int):void
 		{
+			if(this._scrollToIndex == index)
+			{
+				return;
+			}
 			this._scrollToIndex = index;
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
@@ -735,11 +740,11 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function stopScrolling():void
 		{
-			if(!this._scroller)
+			if(!this.scroller)
 			{
 				return;
 			}
-			this._scroller.stopScrolling();
+			this.scroller.stopScrolling();
 		}
 		
 		/**
@@ -747,23 +752,35 @@ package org.josht.starling.foxhole.controls
 		 */
 		override protected function initialize():void
 		{
-			if(!this._scroller)
+			if(!this._layout)
 			{
-				this._scroller = new Scroller();
-				this._scroller.nameList.add("foxhole-list-scroller");
-				this._scroller.verticalScrollPolicy = Scroller.SCROLL_POLICY_AUTO;
-				this._scroller.horizontalScrollPolicy = Scroller.SCROLL_POLICY_OFF;
-				this._scroller.onScroll.add(scroller_onScroll);
-				this.addChild(this._scroller);
+				const layout:VerticalLayout = new VerticalLayout();
+				layout.useVirtualLayout = true;
+				layout.paddingTop = layout.paddingRight = layout.paddingBottom =
+					layout.paddingLeft = 0;
+				layout.gap = 0;
+				layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
+				layout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_TOP;
+				this._layout = layout;
+			}
+
+			if(!this.scroller)
+			{
+				this.scroller = new Scroller();
+				this.scroller.nameList.add("foxhole-list-scroller");
+				this.scroller.verticalScrollPolicy = Scroller.SCROLL_POLICY_AUTO;
+				this.scroller.horizontalScrollPolicy = Scroller.SCROLL_POLICY_AUTO;
+				this.scroller.onScroll.add(scroller_onScroll);
+				this.addChild(this.scroller);
 			}
 			
-			if(!this._dataContainer)
+			if(!this.dataContainer)
 			{
-				this._dataContainer = new ListDataContainer();
-				this._dataContainer.owner = this;
-				this._dataContainer.onChange.add(dataContainer_onChange);
-				this._dataContainer.onItemTouch.add(dataContainer_onItemTouch);
-				this._scroller.viewPort = this._dataContainer;
+				this.dataContainer = new ListDataContainer();
+				this.dataContainer.owner = this;
+				this.dataContainer.onChange.add(dataContainer_onChange);
+				this.dataContainer.onItemTouch.add(dataContainer_onItemTouch);
+				this.scroller.viewPort = this.dataContainer;
 			}
 		}
 		
@@ -773,7 +790,7 @@ package org.josht.starling.foxhole.controls
 		override protected function draw():void
 		{
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
-			var scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
+			const scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 			
@@ -789,49 +806,59 @@ package org.josht.starling.foxhole.controls
 			
 			if(!isNaN(this.explicitWidth))
 			{
-				this._dataContainer.width = this.explicitWidth - this._paddingLeft - this._paddingRight;
+				this.dataContainer.visibleWidth = this.explicitWidth - this._paddingLeft - this._paddingRight;
 			}
 			if(!isNaN(this.explicitHeight))
 			{
-				this._dataContainer.visibleHeight = this.explicitHeight - this._paddingTop - this._paddingBottom;
+				this.dataContainer.visibleHeight = this.explicitHeight - this._paddingTop - this._paddingBottom;
 			}
-			else
-			{
-				this._dataContainer.visibleHeight = NaN;
-			}
-			this._dataContainer.isEnabled = this._isEnabled;
-			this._dataContainer.isSelectable = this._isSelectable;
-			this._dataContainer.selectedIndex = this._selectedIndex;
-			this._dataContainer.dataProvider = this._dataProvider;
-			this._dataContainer.itemRendererType = this._itemRendererType;
-			this._dataContainer.itemRendererFunction = this._itemRendererFunction;
-			this._dataContainer.itemRendererProperties = this._itemRendererProperties;
-			this._dataContainer.typicalItem = this._typicalItem;
-			this._dataContainer.useVirtualLayout = this._useVirtualLayout;
-			this._dataContainer.verticalScrollPosition = this._verticalScrollPosition;
-			this._dataContainer.validate();
+			this.dataContainer.isEnabled = this._isEnabled;
+			this.dataContainer.isSelectable = this._isSelectable;
+			this.dataContainer.selectedIndex = this._selectedIndex;
+			this.dataContainer.dataProvider = this._dataProvider;
+			this.dataContainer.itemRendererType = this._itemRendererType;
+			this.dataContainer.itemRendererFunction = this._itemRendererFunction;
+			this.dataContainer.itemRendererProperties = this._itemRendererProperties;
+			this.dataContainer.typicalItem = this._typicalItem;
+			this.dataContainer.layout = this._layout;
+			this.dataContainer.horizontalScrollPosition = this._horizontalScrollPosition;
+			this.dataContainer.verticalScrollPosition = this._verticalScrollPosition;
 			
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 			
-			if(this._scrollToIndex >= 0 && this._dataProvider)
+			this.scroller.isEnabled = this._isEnabled;
+			this.scroller.width = this.actualWidth - this._paddingLeft - this._paddingRight;
+			this.scroller.height = this.actualHeight - this._paddingTop - this._paddingBottom;
+			this.scroller.x = this._paddingLeft;
+			this.scroller.y = this._paddingTop;
+			this.scroller.horizontalScrollPosition = this._horizontalScrollPosition;
+			this.scroller.verticalScrollPosition = this._verticalScrollPosition;
+			this.scroller.validate();
+			this._maxHorizontalScrollPosition = this.scroller.maxHorizontalScrollPosition;
+			this._maxVerticalScrollPosition = this.scroller.maxVerticalScrollPosition;
+			this._horizontalScrollPosition = this.scroller.horizontalScrollPosition;
+			this._verticalScrollPosition = this.scroller.verticalScrollPosition;
+
+			if(this._scrollToIndex >= 0)
 			{
-				const rowHeight:Number = this._dataContainer.height / this._dataProvider.length;
-				const visibleRowCount:int = Math.ceil(this._dataContainer.visibleHeight / rowHeight);
-				this.verticalScrollPosition = rowHeight * Math.max(0, Math.min(this._dataProvider.length - visibleRowCount, this._scrollToIndex - visibleRowCount / 2));
+				const item:Object = this._dataProvider.getItemAt(this._scrollToIndex);
+				if(item)
+				{
+					const renderer:DisplayObject = this.dataContainer.itemToItemRenderer(item) as DisplayObject;
+					if(renderer)
+					{
+						helperPoint.x = this._maxHorizontalScrollPosition > 0 ? renderer.x - (this.dataContainer.visibleWidth - renderer.width) / 2 : 0;
+						helperPoint.y = this._maxVerticalScrollPosition > 0 ? renderer.y - (this.dataContainer.visibleHeight - renderer.height) / 2 : 0;
+					}
+					else
+					{
+						IVirtualLayout(this._layout).getScrollPositionForItemIndexAndBounds(this._scrollToIndex, this.dataContainer.visibleWidth, this.dataContainer.visibleHeight, helperPoint);
+					}
+					this.horizontalScrollPosition = Math.max(0, Math.min(helperPoint.x, this._maxHorizontalScrollPosition));
+					this.verticalScrollPosition = Math.max(0, Math.min(helperPoint.y, this._maxVerticalScrollPosition));
+				}
 				this._scrollToIndex = -1;
 			}
-			
-			this._scroller.isEnabled = this._isEnabled;
-			this._scroller.width = this.actualWidth - this._paddingLeft - this._paddingRight;
-			this._scroller.height = this.actualHeight - this._paddingTop - this._paddingBottom;
-			this._scroller.x = this._paddingLeft;
-			this._scroller.y = this._paddingTop;
-			this._scroller.clipContent = this._clipContent;
-			this._scroller.verticalAlign = this._verticalAlign;
-			this._scroller.verticalScrollPosition = this._verticalScrollPosition;
-			this._scroller.validate();
-			this._maxVerticalScrollPosition = this._scroller.maxVerticalScrollPosition;
-			this._verticalScrollPosition = this._scroller.verticalScrollPosition;
 		}
 
 		/**
@@ -846,15 +873,16 @@ package org.josht.starling.foxhole.controls
 				return false;
 			}
 
+			this.dataContainer.validate();
 			var newWidth:Number = this.explicitWidth;
 			var newHeight:Number = this.explicitHeight;
 			if(needsWidth)
 			{
-				newWidth = this._dataContainer.width + this._paddingLeft + this._paddingRight;
+				newWidth = this.dataContainer.width + this._paddingLeft + this._paddingRight;
 			}
 			if(needsHeight)
 			{
-				newHeight = this._dataContainer.height + this._paddingTop + this._paddingBottom;
+				newHeight = this.dataContainer.height + this._paddingTop + this._paddingBottom;
 			}
 			this.setSizeInternal(newWidth, newHeight, false);
 			return true;
@@ -867,10 +895,10 @@ package org.josht.starling.foxhole.controls
 		{
 			for(var propertyName:String in this._scrollerProperties)
 			{
-				if(this._scroller.hasOwnProperty(propertyName))
+				if(this.scroller.hasOwnProperty(propertyName))
 				{
 					var propertyValue:Object = this._scrollerProperties[propertyName];
-					this._scroller[propertyName] = propertyValue;
+					this.scroller[propertyName] = propertyValue;
 				}
 			}
 		}
@@ -900,13 +928,25 @@ package org.josht.starling.foxhole.controls
 				backgroundSkin.height = this.actualHeight;
 			}
 		}
+
+		/**
+		 * @private
+		 */
+		protected function dataProvider_onReset():void
+		{
+			this.horizontalScrollPosition = 0;
+			this.verticalScrollPosition = 0;
+		}
 		
 		/**
 		 * @private
 		 */
 		protected function scroller_onScroll(scroller:Scroller):void
 		{
-			this.verticalScrollPosition = this._scroller.verticalScrollPosition;
+			this._maxHorizontalScrollPosition = this.scroller.maxHorizontalScrollPosition;
+			this._maxVerticalScrollPosition = this.scroller.maxVerticalScrollPosition;
+			this.horizontalScrollPosition = this.scroller.horizontalScrollPosition;
+			this.verticalScrollPosition = this.scroller.verticalScrollPosition;
 		}
 		
 		/**
@@ -914,7 +954,7 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function dataContainer_onChange(dataContainer:ListDataContainer):void
 		{
-			this.selectedIndex = this._dataContainer.selectedIndex;
+			this.selectedIndex = this.dataContainer.selectedIndex;
 		}
 		
 		/**

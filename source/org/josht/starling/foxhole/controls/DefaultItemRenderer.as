@@ -87,7 +87,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _index:int;
+		private var _index:int = -1;
 		
 		/**
 		 * @inheritDoc

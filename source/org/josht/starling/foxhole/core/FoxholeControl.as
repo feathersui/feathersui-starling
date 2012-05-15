@@ -238,6 +238,10 @@ package org.josht.starling.foxhole.core
 		 */
 		override public function set width(value:Number):void
 		{
+			if(this.explicitWidth == value)
+			{
+				return;
+			}
 			this.explicitWidth = value;
 			this.setSizeInternal(value, this.actualHeight, true);
 		}
@@ -274,6 +278,10 @@ package org.josht.starling.foxhole.core
 		 */
 		override public function set height(value:Number):void
 		{
+			if(this.explicitHeight == value)
+			{
+				return;
+			}
 			this.explicitHeight = value;
 			this.setSizeInternal(this.explicitWidth, value, true);
 		}
@@ -643,6 +651,10 @@ package org.josht.starling.foxhole.core
 				this.actualWidth = width;
 				this._hitArea.width = Math.max(width, this._minTouchWidth);
 				this._hitArea.x = (this.actualWidth - this._hitArea.width) / 2;
+				if(this._hitArea.x != this._hitArea.x)
+				{
+					this._hitArea.x = 0;
+				}
 				resized = true;
 			}
 			if(this.actualHeight != height)
@@ -650,6 +662,10 @@ package org.josht.starling.foxhole.core
 				this.actualHeight = height;
 				this._hitArea.height = Math.max(height, this._minTouchHeight);
 				this._hitArea.y = (this.actualHeight - this._hitArea.height) / 2;
+				if(this._hitArea.y != this._hitArea.y)
+				{
+					this._hitArea.y = 0;
+				}
 				resized = true;
 			}
 			if(resized)

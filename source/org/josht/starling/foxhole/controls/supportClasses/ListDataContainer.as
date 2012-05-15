@@ -24,20 +24,23 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package org.josht.starling.foxhole.controls.supportClasses
 {
-	import org.josht.starling.foxhole.controls.*;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
-	
+
+	import org.josht.starling.foxhole.controls.*;
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.data.ListCollection;
+	import org.josht.starling.foxhole.layout.ILayout;
+	import org.josht.starling.foxhole.layout.IVirtualLayout;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
-	
+
 	import starling.display.DisplayObject;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
-	
+
 	/**
 	 * @private
 	 * Used internally by List. Not meant to be used on its own.
@@ -45,13 +48,20 @@ package org.josht.starling.foxhole.controls.supportClasses
 	public class ListDataContainer extends FoxholeControl
 	{
 		protected static const INVALIDATION_FLAG_ITEM_RENDERER:String = "itemRenderer";
+
+		private static const helperPoint:Point = new Point();
+		private static const helperRect:Rectangle = new Rectangle();
 		
 		public function ListDataContainer()
 		{
 			super();
 		}
+
+		public var visibleWidth:Number = 0;
+		public var visibleHeight:Number = 0;
 		
 		private var _unrenderedData:Array = [];
+		private var _layoutItems:Vector.<DisplayObject> = new <DisplayObject>[];
 		private var _inactiveRenderers:Vector.<IListItemRenderer> = new <IListItemRenderer>[];
 		private var _activeRenderers:Vector.<IListItemRenderer> = new <IListItemRenderer>[];
 		private var _rendererMap:Dictionary = new Dictionary(true);
@@ -144,6 +154,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 		}
 
 		private var _typicalItemWidth:Number = NaN;
+		private var _typicalItemHeight:Number = NaN;
 		
 		private var _typicalItem:Object = null;
 		
@@ -159,11 +170,8 @@ package org.josht.starling.foxhole.controls.supportClasses
 				return;
 			}
 			this._typicalItem = value;
-			this._typicalItemWidth = NaN;
-			this.invalidate(INVALIDATION_FLAG_ITEM_RENDERER);
+			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
-		
-		private var _rowHeight:Number = NaN;
 		
 		private var _itemRendererProperties:Object = {};
 		
@@ -179,23 +187,50 @@ package org.josht.starling.foxhole.controls.supportClasses
 				return;
 			}
 			this._itemRendererProperties = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-		
-		private var _useVirtualLayout:Boolean = true;
-
-		public function get useVirtualLayout():Boolean
-		{
-			return this._useVirtualLayout;
+			this.invalidate(INVALIDATION_FLAG_STYLES, INVALIDATION_FLAG_SCROLL);
 		}
 
-		public function set useVirtualLayout(value:Boolean):void
+		private var _ignoreLayoutChanges:Boolean = false;
+
+		private var _layout:ILayout;
+
+		public function get layout():ILayout
 		{
-			if(this._useVirtualLayout == value)
+			return this._layout;
+		}
+
+		public function set layout(value:ILayout):void
+		{
+			if(this._layout == value)
 			{
 				return;
 			}
-			this._useVirtualLayout = value;
+			if(this._layout)
+			{
+				this._layout.onLayoutChange.remove(layout_onLayoutChange);
+			}
+			this._layout = value;
+			if(this._layout)
+			{
+				this._layout.onLayoutChange.add(layout_onLayoutChange);
+			}
+			this.invalidate(INVALIDATION_FLAG_SCROLL);
+		}
+
+		private var _horizontalScrollPosition:Number = 0;
+
+		public function get horizontalScrollPosition():Number
+		{
+			return this._horizontalScrollPosition;
+		}
+
+		public function set horizontalScrollPosition(value:Number):void
+		{
+			if(this._horizontalScrollPosition == value)
+			{
+				return;
+			}
+			this._horizontalScrollPosition = value;
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
 		
@@ -213,23 +248,6 @@ package org.josht.starling.foxhole.controls.supportClasses
 				return;
 			}
 			this._verticalScrollPosition = value;
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
-		}
-		
-		private var _visibleHeight:Number = NaN;
-
-		public function get visibleHeight():Number
-		{
-			return this._visibleHeight;
-		}
-
-		public function set visibleHeight(value:Number):void
-		{
-			if(this._visibleHeight == value)
-			{
-				return;
-			}
-			this._visibleHeight = value;
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
 		
@@ -286,24 +304,41 @@ package org.josht.starling.foxhole.controls.supportClasses
 		{
 			return this._onItemTouch;
 		}
+
+		public function setItemRendererProperty(propertyName:String, propertyValue:Object):void
+		{
+			this._itemRendererProperties[propertyName] = propertyValue;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		override public function invalidate(...rest:Array):void
+		{
+			super.invalidate.apply(this, rest);
+		}
 		
 		override protected function draw():void
 		{
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			const scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
-			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
+			const sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const selectionInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SELECTED);
 			const itemRendererInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_ITEM_RENDERER);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 
-			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
-			
+			if(dataInvalid || stylesInvalid || itemRendererInvalid || stylesInvalid)
+			{
+				this.calculateTypicalValues();
+			}
+
 			this.refreshRenderers(itemRendererInvalid);
-			this.drawRenderers();
-			this.refreshItemRendererStyles();
-			
-			this.refreshSelection();
-			
+			if(dataInvalid || stylesInvalid || scrollInvalid || itemRendererInvalid)
+			{
+				this.refreshItemRendererStyles();
+			}
+			if(scrollInvalid || dataInvalid || selectionInvalid || itemRendererInvalid)
+			{
+				this.refreshSelection();
+			}
 			var rendererCount:int = this._activeRenderers.length;
 			for(var i:int = 0; i < rendererCount; i++)
 			{
@@ -313,46 +348,34 @@ package org.josht.starling.foxhole.controls.supportClasses
 					FoxholeControl(itemRenderer).validate();
 				}
 			}
+
+			helperRect.x = helperRect.y = 0;
+			helperRect.width = this.visibleWidth;
+			helperRect.height = this.visibleHeight;
+			this._layout.layout(this._layoutItems, helperRect, helperPoint);
+			this.setSizeInternal(helperPoint.x, helperPoint.y, false);
 		}
 
-		protected function autoSizeIfNeeded():Boolean
+		protected function calculateTypicalValues():void
 		{
-			const needsTypicalItemWidth:Boolean = isNaN(this.explicitWidth) && isNaN(this._typicalItemWidth);
-			const needsRowHeight:Boolean = isNaN(this._rowHeight);
-
-			if(needsTypicalItemWidth || needsRowHeight)
+			var typicalItem:Object = this._typicalItem;
+			if(!typicalItem && this._dataProvider && this._dataProvider.length > 0)
 			{
-				var typicalItem:Object = this._typicalItem;
-				if(!typicalItem && this._dataProvider && this._dataProvider.length > 0)
-				{
-					typicalItem = this._dataProvider.getItemAt(0);
-				}
-				if(typicalItem)
-				{
-					const typicalRenderer:IListItemRenderer = this.createRenderer(typicalItem, 0, true);
-					this.refreshOneItemRendererStyles(typicalRenderer);
-					if(typicalRenderer is FoxholeControl)
-					{
-						FoxholeControl(typicalRenderer).validate();
-					}
-					if(needsTypicalItemWidth)
-					{
-						this._typicalItemWidth = DisplayObject(typicalRenderer).width;
-					}
-					if(needsRowHeight)
-					{
-						this._rowHeight = DisplayObject(typicalRenderer).height;
-					}
-					this.destroyRenderer(typicalRenderer);
-				}
+				typicalItem = this._dataProvider.getItemAt(0);
 			}
-			var newWidth:Number = isNaN(this.explicitWidth) ? this._typicalItemWidth : this.explicitWidth;
-			var newHeight:Number = isNaN(this._rowHeight) ? 0 : (this._rowHeight * this._dataProvider.length);
-			this.setSizeInternal(newWidth, newHeight, false);
-			return true;
+
+			const typicalRenderer:IListItemRenderer = this.createRenderer(typicalItem, 0, true);
+			this.refreshOneItemRendererStyles(typicalRenderer);
+			if(typicalRenderer is FoxholeControl)
+			{
+				FoxholeControl(typicalRenderer).validate();
+			}
+			this._typicalItemWidth = DisplayObject(typicalRenderer).width;
+			this._typicalItemHeight = DisplayObject(typicalRenderer).height;
+			this._inactiveRenderers.push(typicalRenderer);
 		}
 		
-		protected function itemToItemRenderer(item:Object):IListItemRenderer
+		public function itemToItemRenderer(item:Object):IListItemRenderer
 		{
 			return IListItemRenderer(this._rendererMap[item]);
 		}
@@ -387,36 +410,27 @@ package org.josht.starling.foxhole.controls.supportClasses
 			}
 			this._ignoreSelectionChanges = false;
 		}
-		
-		protected function drawRenderers():void
-		{	
-			if(!this._dataProvider)
-			{
-				return;
-			}
-			const actualContentHeight:Number = this._dataProvider.length * this._rowHeight;
-			
-			const itemCount:int = this._activeRenderers.length;
-			for(var i:int = 0; i < itemCount; i++)
-			{
-				var renderer:IListItemRenderer = this._activeRenderers[i];
-				var displayRenderer:DisplayObject = DisplayObject(renderer);
-				displayRenderer.width = this.actualWidth;
-				displayRenderer.height = this._rowHeight;
-				displayRenderer.y = this._rowHeight * renderer.index;
-			}
-		}
-		
-		protected function refreshRenderers(cellRendererTypeIsInvalid:Boolean):void
+
+		protected function refreshRenderers(itemRendererTypeIsInvalid:Boolean):void
 		{
-			if(!cellRendererTypeIsInvalid)
+			if(!itemRendererTypeIsInvalid)
 			{
 				var temp:Vector.<IListItemRenderer> = this._inactiveRenderers;
 				this._inactiveRenderers = this._activeRenderers;
 				this._activeRenderers = temp;
 			}
 			this._activeRenderers.length = 0;
-			
+			this._layoutItems.length = this._dataProvider ? this._dataProvider.length : 0;
+
+			if(isNaN(this.visibleWidth))
+			{
+				this.visibleWidth = this._typicalItemWidth;
+			}
+			if(isNaN(this.visibleHeight))
+			{
+				this.visibleHeight = this._typicalItemHeight
+			}
+
 			this.findUnrenderedData();
 			this.recoverInactiveRenderers();
 			this.renderUnrenderedData();
@@ -425,39 +439,68 @@ package org.josht.starling.foxhole.controls.supportClasses
 		
 		private function findUnrenderedData():void
 		{
+			const itemCount:int = this._dataProvider ? this._dataProvider.length : 0;
 			var startIndex:int = 0;
-			var endIndex:int = this._dataProvider ? this._dataProvider.length : 0;
-			if(this._useVirtualLayout && !isNaN(this._visibleHeight) && endIndex * this._rowHeight > this._visibleHeight)
+			var endIndex:int = itemCount;
+			const virtualLayout:IVirtualLayout = this._layout as IVirtualLayout;
+			const useVirtualLayout:Boolean = virtualLayout && virtualLayout.useVirtualLayout;
+			if(useVirtualLayout)
 			{
-				startIndex = Math.max(startIndex, this._verticalScrollPosition / this._rowHeight);
-				endIndex = Math.min(endIndex, startIndex + Math.ceil(this._visibleHeight / this._rowHeight) + 1);
+				this._ignoreLayoutChanges = true;
+				virtualLayout.typicalItemWidth = this._typicalItemWidth;
+				virtualLayout.typicalItemHeight = this._typicalItemHeight;
+				this._ignoreLayoutChanges = false;
+				startIndex = virtualLayout.getMinimumItemIndexAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, this.visibleWidth, this.visibleHeight);
+				endIndex = virtualLayout.getMaximumItemIndexAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, this.visibleWidth, this.visibleHeight);
 			}
-			for(var i:int = startIndex; i < endIndex; i++)
+			for(var i:int = 0; i < itemCount; i++)
 			{
-				var item:Object = this._dataProvider.getItemAt(i);
-				var renderer:IListItemRenderer = IListItemRenderer(this._rendererMap[item]);
-				if(renderer)
+				if(i < startIndex || i >= endIndex)
 				{
-					//the index may have changed if data was added or removed
-					renderer.index = i;
-					this._activeRenderers.push(renderer);
-					this._inactiveRenderers.splice(this._inactiveRenderers.indexOf(renderer), 1);
+					this._layoutItems[i] = null;
 				}
 				else
 				{
-					this._unrenderedData.push(item);
+					var item:Object = this._dataProvider.getItemAt(i);
+					var renderer:IListItemRenderer = IListItemRenderer(this._rendererMap[item]);
+					if(renderer)
+					{
+						//the index may have changed if data was added or removed
+						renderer.index = i;
+						this._activeRenderers.push(renderer);
+						this._inactiveRenderers.splice(this._inactiveRenderers.indexOf(renderer), 1);
+						var displayRenderer:DisplayObject = DisplayObject(renderer);
+						this._layoutItems[i] = displayRenderer;
+						if(useVirtualLayout)
+						{
+							displayRenderer.width = this._typicalItemWidth;
+							displayRenderer.height = this._typicalItemHeight;
+						}
+					}
+					else
+					{
+						this._unrenderedData.push(item);
+					}
 				}
 			}
 		}
 		
 		private function renderUnrenderedData():void
 		{
+			const useVirtualLayout:Boolean = this._layout is IVirtualLayout && IVirtualLayout(this._layout).useVirtualLayout;
 			var itemCount:int = this._unrenderedData.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var item:Object = this._unrenderedData.shift();
 				var index:int = this._dataProvider.getItemIndex(item);
-				this.createRenderer(item, index);
+				var renderer:IListItemRenderer = this.createRenderer(item, index, false);
+				var displayRenderer:DisplayObject = DisplayObject(renderer);
+				this._layoutItems[index] = displayRenderer;
+				if(useVirtualLayout)
+				{
+					displayRenderer.width = this._typicalItemWidth;
+					displayRenderer.height = this._typicalItemHeight;
+				}
 			}
 		}
 		
@@ -483,7 +526,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 		
 		private function createRenderer(item:Object, index:int, isTemporary:Boolean = false):IListItemRenderer
 		{
-			if(this._inactiveRenderers.length == 0)
+			if(isTemporary || this._inactiveRenderers.length == 0)
 			{
 				var renderer:IListItemRenderer;
 				if(this._itemRendererFunction != null)
@@ -510,7 +553,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 			{
 				FoxholeControl(renderer).isEnabled = this._isEnabled;
 			}
-			
+
 			if(!isTemporary)
 			{
 				this._rendererMap[item] = renderer;
@@ -522,6 +565,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 		
 		private function destroyRenderer(renderer:IListItemRenderer):void
 		{
+			renderer.onChange.remove(renderer_onChange);
 			const displayRenderer:DisplayObject = DisplayObject(renderer);
 			displayRenderer.removeEventListener(TouchEvent.TOUCH, renderer_touchHandler);
 			this.removeChild(displayRenderer);
@@ -535,6 +579,15 @@ package org.josht.starling.foxhole.controls.supportClasses
 		private function dataProvider_onChange(data:ListCollection):void
 		{
 			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		private function layout_onLayoutChange(layout:ILayout):void
+		{
+			if(this._ignoreLayoutChanges)
+			{
+				return;
+			}
+			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
 		
 		private function renderer_onChange(renderer:IListItemRenderer):void

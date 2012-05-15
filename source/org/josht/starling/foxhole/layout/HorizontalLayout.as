@@ -27,7 +27,6 @@ package org.josht.starling.foxhole.layout
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
-	import org.josht.starling.foxhole.data.ListCollection;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 
@@ -36,7 +35,7 @@ package org.josht.starling.foxhole.layout
 	/**
 	 * Positions items from left to right in a single row.
 	 */
-	public class HorizontalLayout implements ILayout
+	public class HorizontalLayout implements IVirtualLayout
 	{
 		/**
 		 * The items will be aligned to the top of the bounds.
@@ -269,6 +268,82 @@ package org.josht.starling.foxhole.layout
 		/**
 		 * @private
 		 */
+		private var _useVirtualLayout:Boolean = true;
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get useVirtualLayout():Boolean
+		{
+			return this._useVirtualLayout;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set useVirtualLayout(value:Boolean):void
+		{
+			if(this._useVirtualLayout == value)
+			{
+				return;
+			}
+			this._useVirtualLayout = value;
+			this._onLayoutChange.dispatch(this);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _typicalItemWidth:Number = 0;
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get typicalItemWidth():Number
+		{
+			return this._typicalItemWidth;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set typicalItemWidth(value:Number):void
+		{
+			if(this._typicalItemWidth == value)
+			{
+				return;
+			}
+			this._typicalItemWidth = value;
+		}
+
+		/**
+		 * @private
+		 */
+		private var _typicalItemHeight:Number = 0;
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get typicalItemHeight():Number
+		{
+			return this._typicalItemHeight;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set typicalItemHeight(value:Number):void
+		{
+			if(this._typicalItemHeight == value)
+			{
+				return;
+			}
+			this._typicalItemHeight = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _onLayoutChange:Signal = new Signal(ILayout);
 
 		/**
@@ -290,23 +365,43 @@ package org.josht.starling.foxhole.layout
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var item:DisplayObject = items[i];
-				item.x = positionX;
+				if(this._useVirtualLayout && !item)
+				{
+					positionX += this._typicalItemWidth + this._gap;
+					maxHeight = Math.max(maxHeight, this._typicalItemHeight);
+				}
+				else
+				{
+					item.x = positionX;
+					positionX += item.width + this._gap;
+					maxHeight = Math.max(maxHeight, item.height);
+				}
+			}
+
+			const suggestedHeight:Number = isNaN(suggestedBounds.height) ? maxHeight : suggestedBounds.height;
+			for(i = 0; i < itemCount; i++)
+			{
+				item = items[i];
+				if(!item)
+				{
+					continue;
+				}
 				switch(this._verticalAlign)
 				{
 					case VERTICAL_ALIGN_BOTTOM:
 					{
-						item.y = suggestedBounds.y + suggestedBounds.height - this._paddingBottom - item.height;
+						item.y = suggestedBounds.y + suggestedHeight - this._paddingBottom - item.height;
 						break;
 					}
 					case VERTICAL_ALIGN_MIDDLE:
 					{
-						item.y = suggestedBounds.y + this._paddingTop + (suggestedBounds.height - this._paddingTop - this._paddingBottom - item.height) / 2;
+						item.y = suggestedBounds.y + this._paddingTop + (suggestedHeight - this._paddingTop - this._paddingBottom - item.height) / 2;
 						break;
 					}
 					case VERTICAL_ALIGN_JUSTIFY:
 					{
 						item.y = this._paddingTop;
-						item.height = suggestedBounds.height - this._paddingTop - this._paddingBottom;
+						item.height = suggestedHeight - this._paddingTop - this._paddingBottom;
 						break;
 					}
 					default: //top
@@ -314,26 +409,30 @@ package org.josht.starling.foxhole.layout
 						item.y = this._paddingTop;
 					}
 				}
-				positionX += item.width + this._gap;
-				maxHeight = Math.max(maxHeight, item.height);
 			}
+
 			const totalWidth:Number = positionX - this._gap + this._paddingRight - suggestedBounds.x;
-			if(totalWidth < suggestedBounds.width)
+			const suggestedWidth:Number = isNaN(suggestedBounds.width) ? totalWidth : suggestedBounds.width;
+			if(totalWidth < suggestedWidth)
 			{
 				var horizontalAlignOffsetX:Number = 0;
 				if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
 				{
-					horizontalAlignOffsetX = suggestedBounds.width - totalWidth;
+					horizontalAlignOffsetX = suggestedWidth - totalWidth;
 				}
 				else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
 				{
-					horizontalAlignOffsetX = (suggestedBounds.width - totalWidth) / 2;
+					horizontalAlignOffsetX = (suggestedWidth - totalWidth) / 2;
 				}
 				if(horizontalAlignOffsetX != 0)
 				{
 					for(i = 0; i < itemCount; i++)
 					{
 						item = items[i];
+						if(!item)
+						{
+							continue;
+						}
 						item.x += horizontalAlignOffsetX;
 					}
 				}
@@ -343,9 +442,34 @@ package org.josht.starling.foxhole.layout
 			{
 				resultDimensions = new Point();
 			}
-			resultDimensions.x = Math.max(suggestedBounds.width, totalWidth);
-			resultDimensions.y = Math.max(suggestedBounds.height, maxHeight);
+			resultDimensions.x = Math.max(suggestedWidth, totalWidth);
+			resultDimensions.y = Math.max(suggestedHeight, maxHeight);
 			return resultDimensions;
+		}
+
+		public function getMinimumItemIndexAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number):int
+		{
+			return Math.max(0, (scrollX - this._paddingLeft) / (this._typicalItemWidth + this._gap));
+		}
+
+		public function getMaximumItemIndexAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number):int
+		{
+			const typicalItemWidth:Number = this._typicalItemWidth + this._gap;
+			const minimum:int = Math.max(0, (scrollX - this._paddingLeft) / typicalItemWidth);
+			return minimum + Math.ceil(width / typicalItemWidth) + 1;
+		}
+
+		public function getScrollPositionForItemIndexAndBounds(index:int, width:Number, height:Number, result:Point = null):Point
+		{
+			if(!result)
+			{
+				result = new Point();
+			}
+
+			const typicalItemWidth:Number = this._typicalItemWidth;
+			result.x = this._paddingLeft + (typicalItemWidth + this._gap) * index - (width - typicalItemWidth) / 2;
+			result.y = 0;
+			return result;
 		}
 	}
 }
