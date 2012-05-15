@@ -1,6 +1,6 @@
 # Foxhole
 
-Built on [Starling](http://gamua.com/starling/) for Adobe AIR and Flash Player, Foxhole consists of various UI controls designed for mobile, developed by [Josh Tynjala](http://twitter.com/joshtynjala). The author develops Foxhole to support real-world mobile applications that he develops, mostly games.
+Built on [Starling](http://gamua.com/starling/) for Adobe AIR and Flash Player, Foxhole consists of various UI controls designed for mobile, developed by [Josh Tynjala](http://twitter.com/joshtynjala). The author develops Foxhole to support real-world mobile applications that he develops--mostly games.
 
 To get started, you might want to check out the [API Documentation](http://www.flashtoolbox.com/foxhole-starling/documentation/) and the [Foxhole for Starling Examples](https://github.com/joshtynjala/foxhole-starling-examples).
 
@@ -15,7 +15,7 @@ A typical button control, with optional toggle support. Includes a label and an 
 A single-line, non-interactive text control. Uses bitmap fonts. A simplified replacement for `starling.text.TextField` that is built on `FoxholeControl`.
 
 ### List
-A touch-based, vertical list control. Has elastic edges and you can "throw" it.
+A touch-based, list control. Has elastic edges and you can "throw" it. Supports custom layouts (vertical by default) and custom item renderers (with a robust default renderer that can customize the label, icon, and an "accessory" view based on the item data).
 
 ### PickerList
 A control similar to a combo box. Appears as a button when closed. The list is displayed as a fullscreen overlay on top of the stage.
@@ -30,10 +30,10 @@ An abstract class for implementing a single screen within a menu developed with 
 A header that displays a title along with a horizontal regions on the sides for additional UI controls. The left side is typically for navigation (to display a back button, for example) and the right for additional actions.
 
 ### ScreenNavigator
-A state machine for menu systems. Uses events or signals to trigger navigation between screens or to call functions. Includes very simple dependency injection.
+A state machine for menu systems. Uses events (or as3-signals) to trigger navigation between screens or to call functions. Includes very simple dependency injection.
 
 ### ScrollContainer
-A container that supports scrolling and layout.
+A container that supports scrolling and custom layouts.
 
 ### Slider
 A typical horizontal or vertical slider control.
@@ -42,14 +42,14 @@ A typical horizontal or vertical slider control.
 A line of tabs, where one may be selected at a time.
 
 ### TextInput
-A text entry control that allows users to enter and edit a single line of uniformly-formatted text. Uses StageText.
+A text entry control that allows users to enter and edit a single line of uniformly-formatted text. Uses StageText to get the best text editing integration with the operating system.
 
 ### ToggleSwitch
 A sliding on/off switch. A common alternative to a checkbox in mobile environments.
 
 ## Dependencies
 
-The following external libraries are required. Other versions of the same library may work, but the version displayed below is the one currently used by the author.
+The following external libraries are required. Other versions of the same library may work, but the version displayed below is the one currently recommended by the author.
 
 * [Starling](http://gamua.com/starling/) v1.1
 * [GTween](http://gskinner.com/libraries/gtween/) v2.01
@@ -65,7 +65,7 @@ The following external libraries are required. Other versions of the same librar
 
 ## Important Note
 
-The core architecture and non-private APIs of Foxhole for Starling are still under active design and development. Basically, for the time being, absolutely everything is subject to change, and updating to new revisions may result in broken content. If something breaks after you update to the latest revision, and you can't figure out the new way to do something, please ask in the [Q&A thread](http://forum.starling-framework.org/topic/official-foxhole-components-qa) I have set up at the Starling Forum.
+The core architecture and non-private APIs of Foxhole for Starling are still under active design and development. Basically, for the time being, absolutely everything is subject to change, and updating to a new revision is often likely to result in broken content. If something breaks after you update to the latest revision, and you can't figure out the new way to do what you were doing before, please ask in the [Q&A thread](http://forum.starling-framework.org/topic/official-foxhole-components-qa) that I started in the Starling Forum.
 
 ## Tips
 
