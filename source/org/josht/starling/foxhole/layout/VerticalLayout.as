@@ -448,11 +448,17 @@ package org.josht.starling.foxhole.layout
 			return resultDimensions;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function getMinimumItemIndexAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number):int
 		{
 			return Math.max(0, (scrollY - this._paddingTop) / (this._typicalItemHeight + this._gap));
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function getMaximumItemIndexAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number):int
 		{
 			const typicalItemHeight:Number = this._typicalItemHeight + this._gap;
@@ -460,6 +466,9 @@ package org.josht.starling.foxhole.layout
 			return minimum + Math.ceil(height / typicalItemHeight) + 1;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function getScrollPositionForItemIndexAndBounds(index:int, width:Number, height:Number, result:Point = null):Point
 		{
 			if(!result)
