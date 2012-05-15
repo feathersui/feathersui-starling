@@ -142,13 +142,23 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
+		/**
+		 * @private
+		 */
 		private var _snapToPixels:Boolean = true;
 
+		/**
+		 * Determines if characters should be snapped to the nearest whole pixel
+		 * when rendered.
+		 */
 		public function get snapToPixels():Boolean
 		{
 			return _snapToPixels;
 		}
 
+		/**
+		 * @private
+		 */
 		public function set snapToPixels(value:Boolean):void
 		{
 			if(this._snapToPixels == value)
