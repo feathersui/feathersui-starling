@@ -25,6 +25,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 package org.josht.starling.foxhole.controls
 {
 	import flash.geom.Matrix;
+	import flash.geom.Rectangle;
 
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.text.BitmapFontTextFormat;
@@ -179,6 +180,12 @@ package org.josht.starling.foxhole.controls
 				this.getTransformationMatrix(this.stage, helperMatrix);
 				this._characterBatch.x = Math.round(helperMatrix.tx) - helperMatrix.tx;
 				this._characterBatch.y = Math.round(helperMatrix.ty) - helperMatrix.ty;
+				const scrollRect:Rectangle = this.scrollRect;
+				if(scrollRect)
+				{
+					this._characterBatch.x += Math.round(scrollRect.x) - scrollRect.x;
+					this._characterBatch.y += Math.round(scrollRect.y) - scrollRect.y;
+				}
 			}
 			else
 			{
