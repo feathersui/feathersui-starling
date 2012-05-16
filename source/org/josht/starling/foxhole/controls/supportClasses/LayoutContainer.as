@@ -93,10 +93,10 @@ package org.josht.starling.foxhole.controls.supportClasses
 				const itemCount:int = this.items.length;
 				for(var i:int = 0; i < itemCount; i++)
 				{
-					var item:FoxholeControl = this.items[i] as FoxholeControl;
-					if(item)
+					var control:FoxholeControl = this.items[i] as FoxholeControl;
+					if(control)
 					{
-						item.validate();
+						control.validate();
 					}
 				}
 				if(this._layout)
@@ -106,7 +106,14 @@ package org.josht.starling.foxhole.controls.supportClasses
 				}
 				else
 				{
-					this.setSizeInternal(0, 0, false);
+					var maxX:Number = isNaN(this._hitArea.width) ? 0 : this._hitArea.width;
+					var maxY:Number = isNaN(this._hitArea.height) ? 0 : this._hitArea.height;
+					for each(var item:DisplayObject in this.items)
+					{
+						maxX = Math.max(maxX, item.x + item.width);
+						maxY = Math.max(maxY, item.y + item.height);
+					}
+					this.setSizeInternal(maxX, maxY, false);
 				}
 			}
 		}
@@ -130,6 +137,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 			}
 			const index:int = this.getChildIndex(item);
 			this.items.splice(index, 0, item);
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		protected function removedHandler(event:Event):void
@@ -141,6 +149,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 			}
 			const index:int = this.items.indexOf(item);
 			this.items.splice(index, 1);
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 	}
