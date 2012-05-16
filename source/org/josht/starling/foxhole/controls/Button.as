@@ -1471,11 +1471,11 @@ package org.josht.starling.foxhole.controls
 			if(stylesInvalid || stateInvalid)
 			{
 				this.refreshSkin();
-				if(isNaN(this._originalSkinWidth))
+				if(this.currentSkin && isNaN(this._originalSkinWidth))
 				{
 					this._originalSkinWidth = this.currentSkin.width;
 				}
-				if(isNaN(this._originalSkinHeight))
+				if(this.currentSkin && isNaN(this._originalSkinHeight))
 				{
 					this._originalSkinHeight = this.currentSkin.height;
 				}
