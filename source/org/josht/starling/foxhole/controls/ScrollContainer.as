@@ -52,10 +52,16 @@ package org.josht.starling.foxhole.controls
 		public static const SCROLL_POLICY_OFF:String = "off";
 
 		/**
+		 * The container always scrolls.
+		 */
+		public static const SCROLL_POLICY_ON:String = "on";
+
+		/**
 		 * Constructor.
 		 */
 		public function ScrollContainer()
 		{
+			this.viewPort = new LayoutContainer();
 		}
 
 		/**
@@ -377,15 +383,10 @@ package org.josht.starling.foxhole.controls
 			if(!this.scroller)
 			{
 				this.scroller = new Scroller();
-				this.scroller.nameList.add("foxhole-scrollcontainer.scroller");
-				this.scroller.onScroll.add(scroller_onScroll)
-				super.addChildAt(this.scroller, 0);
-			}
-
-			if(!this.viewPort)
-			{
-				this.viewPort = new LayoutContainer();
 				this.scroller.viewPort = this.viewPort;
+				this.scroller.nameList.add("foxhole-scrollcontainer-scroller");
+				this.scroller.onScroll.add(scroller_onScroll);
+				super.addChildAt(this.scroller, 0);
 			}
 		}
 
