@@ -12,7 +12,7 @@ Foxhole includes the following UI controls (in alphabetical order):
 A typical button control, with optional toggle support. Includes a label and an icon, both optional.
 
 ### Label
-A single-line, non-interactive text control. Uses bitmap fonts. A simplified replacement for `starling.text.TextField` that is built on `FoxholeControl`.
+A non-interactive text control. Uses bitmap fonts. A simplified replacement for `starling.text.TextField` that is built on `FoxholeControl`.
 
 ### List
 A touch-based, list control. Has elastic edges and you can "throw" it. Supports custom layouts (vertical by default) and custom item renderers (with a robust default renderer that can customize the label, icon, and an "accessory" view based on the item data).
