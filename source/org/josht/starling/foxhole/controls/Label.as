@@ -38,7 +38,7 @@ package org.josht.starling.foxhole.controls
 	import starling.textures.TextureSmoothing;
 
 	/**
-	 * Displays a single-line of text. Cannot be clipped.
+	 * Displays bitmap text. Automatically resizes itself and cannot be clipped.
 	 */
 	public class Label extends FoxholeControl
 	{
@@ -226,15 +226,25 @@ package org.josht.starling.foxhole.controls
 				const isKerningEnabled:Boolean = this._textFormat.isKerningEnabled;
 				const scale:Number = isNaN(customSize) ? 1 : (customSize / font.size);
 				const color:uint = this._textFormat.color;
+				const lineHeight:Number = font.lineHeight * scale;
 
+				var maxX:Number = 0;
 				var currentX:Number = 0;
-				var maxY:Number = 0;
+				var currentY:Number = 0;
 				var lastCharID:Number = NaN;
 				var characterIndex:int = 0;
 				const charCount:int = this._text.length;
 				for(var i:int = 0; i < charCount; i++)
 				{
 					var charID:Number = this._text.charCodeAt(i);
+					if(charID == 10 || charID == 13) //new line \n or \r
+					{
+						maxX = Math.max(maxX, currentX);
+						lastCharID = NaN;
+						currentX = 0;
+						currentY += lineHeight;
+						continue;
+					}
 					var charData:BitmapChar = font.getChar(charID);
 					if(!charData)
 					{
@@ -257,23 +267,23 @@ package org.josht.starling.foxhole.controls
 					helperImage.readjustSize();
 					helperImage.scaleX = helperImage.scaleY = scale;
 					helperImage.x = currentX + charData.xOffset * scale;
+					helperImage.y = currentY + charData.yOffset * scale;
 					if(this._snapToPixels)
 					{
 						helperImage.x = Math.round(helperImage.x);
 						helperImage.y = Math.round(helperImage.y);
 					}
-					helperImage.y = charData.yOffset * scale;
 					helperImage.color = color;
 					helperImage.smoothing = this._smoothing;
 
 					currentX += charData.xAdvance * scale + customLetterSpacing;
-					maxY = Math.max(maxY, helperImage.y + helperImage.height);
 					lastCharID = charID;
 					characterIndex++;
 
 					this._characterBatch.addImage(helperImage);
 				}
-				this.setSizeInternal(currentX, Math.max(maxY, font.lineHeight * scale), false);
+				maxX = Math.max(maxX, currentX);
+				this.setSizeInternal(maxX, currentY + font.lineHeight * scale, false);
 			}
 		}
 	}
