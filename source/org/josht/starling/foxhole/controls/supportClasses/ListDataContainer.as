@@ -372,7 +372,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 			}
 			this._typicalItemWidth = DisplayObject(typicalRenderer).width;
 			this._typicalItemHeight = DisplayObject(typicalRenderer).height;
-			this._inactiveRenderers.push(typicalRenderer);
+			this.destroyRenderer(typicalRenderer);
 		}
 		
 		public function itemToItemRenderer(item:Object):IListItemRenderer
