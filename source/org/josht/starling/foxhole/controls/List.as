@@ -932,7 +932,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected function dataProvider_onReset():void
+		protected function dataProvider_onReset(collection:ListCollection):void
 		{
 			this.horizontalScrollPosition = 0;
 			this.verticalScrollPosition = 0;
