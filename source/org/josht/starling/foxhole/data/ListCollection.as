@@ -43,6 +43,11 @@ package org.josht.starling.foxhole.data
 		 */
 		public function ListCollection(data:Object = null)
 		{
+			if(!data)
+			{
+				//default to an array if no data is provided
+				data = [];
+			}
 			this.data = data;
 		}
 		
