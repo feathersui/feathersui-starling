@@ -49,8 +49,39 @@ package org.josht.starling.foxhole.controls.supportClasses
 			this.addEventListener(Event.REMOVED, removedHandler);
 		}
 
-		public var visibleWidth:Number = 0;
-		public var visibleHeight:Number = 0;
+		public var _visibleWidth:Number = 0;
+
+		public function get visibleWidth():Number
+		{
+			return this._visibleWidth;
+		}
+
+		public function set visibleWidth(value:Number):void
+		{
+			if(this._visibleWidth == value)
+			{
+				return;
+			}
+			this._visibleWidth = value;
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		public var _visibleHeight:Number = 0;
+
+		public function get visibleHeight():Number
+		{
+			return this._visibleHeight;
+		}
+
+		public function set visibleHeight(value:Number):void
+		{
+			if(this._visibleHeight == value)
+			{
+				return;
+			}
+			this._visibleHeight = value;
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
 
 		protected var items:Vector.<DisplayObject> = new <DisplayObject>[];
 
@@ -110,8 +141,8 @@ package org.josht.starling.foxhole.controls.supportClasses
 					}
 				}
 				HELPER_RECT.x = HELPER_RECT.y = 0;
-				HELPER_RECT.width = this.visibleWidth;
-				HELPER_RECT.height = this.visibleHeight;
+				HELPER_RECT.width = this._visibleWidth;
+				HELPER_RECT.height = this._visibleHeight;
 				if(this._layout)
 				{
 					this._layout.layout(this.items, HELPER_RECT, HELPER_POINT);
@@ -164,6 +195,5 @@ package org.josht.starling.foxhole.controls.supportClasses
 			this.items.splice(index, 1);
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
-
 	}
 }
