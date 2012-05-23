@@ -710,6 +710,10 @@ package org.josht.starling.foxhole.controls
 				return false;
 			}
 
+			if(this._viewPort is FoxholeControl)
+			{
+				FoxholeControl(this._viewPort).validate();
+			}
 			var newWidth:Number = this.explicitWidth;
 			var newHeight:Number = this.explicitHeight;
 			if(needsWidth)
