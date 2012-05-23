@@ -27,11 +27,11 @@ package org.josht.starling.foxhole.core
 	import flash.utils.Dictionary;
 	import flash.utils.describeType;
 	import flash.utils.getDefinitionByName;
-	import flash.utils.getQualifiedClassName;
-	
+
 	import starling.display.DisplayObject;
+	import starling.display.DisplayObjectContainer;
 	import starling.events.Event;
-	
+
 	/**
 	 * Watches a container on the display list. As new display objects are
 	 * added, if they match a specific type, they will be passed to initializer
@@ -64,7 +64,13 @@ package org.josht.starling.foxhole.core
 		 * chain will be run. This setting has a performance impact on mobile.
 		 */
 		public var exactTypeMatching:Boolean = true;
-		
+
+		/**
+		 * Determines if only the object added should be processed or if its
+		 * children should be processed recursively.
+		 */
+		public var processRecursively:Boolean = true;
+
 		private var _root:DisplayObject;
 		private var _typeMap:Dictionary = new Dictionary(true);
 		
@@ -121,18 +127,36 @@ package org.josht.starling.foxhole.core
 				initializer(target);
 			}
 		}
+
+		protected function addObject(target:DisplayObject):void
+		{
+			const targetAsRequiredBaseClass:DisplayObject = DisplayObject(target as requiredBaseClass);
+			if(targetAsRequiredBaseClass)
+			{
+				this.applyAllStyles(target);
+			}
+
+			if(this.processRecursively)
+			{
+				const targetAsContainer:DisplayObjectContainer = target as DisplayObjectContainer;
+				if(targetAsContainer)
+				{
+					const childCount:int = targetAsContainer.numChildren;
+					for(var i:int = 0; i < childCount; i++)
+					{
+						var child:DisplayObject = targetAsContainer.getChildAt(i);
+						this.addObject(child);
+					}
+				}
+			}
+		}
 		
 		/**
 		 * @private
 		 */
 		protected function addedHandler(event:Event):void
 		{
-			var target:DisplayObject = (event.target as requiredBaseClass) as DisplayObject;
-			if(!target)
-			{
-				return;
-			}
-			this.applyAllStyles(target);
+			this.addObject(event.target as DisplayObject);
 		}
 	}
 }
