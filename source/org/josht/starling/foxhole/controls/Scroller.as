@@ -1092,7 +1092,7 @@ package org.josht.starling.foxhole.controls
 				this._onDragStart.dispatch(this);
 				this._isDraggingHorizontally = true;
 			}
-			if((this._verticalScrollPolicy != SCROLL_POLICY_ON || (this._verticalScrollPolicy == SCROLL_POLICY_AUTO && (this._maxVerticalScrollPosition > 0 || this._maxHorizontalScrollPosition == 0))) &&
+			if((this._verticalScrollPolicy == SCROLL_POLICY_ON || (this._verticalScrollPolicy == SCROLL_POLICY_AUTO && (this._maxVerticalScrollPosition > 0 || this._maxHorizontalScrollPosition == 0))) &&
 				!this._isDraggingVertically && verticalInchesMoved >= MINIMUM_DRAG_DISTANCE)
 			{
 				if(!this._isDraggingHorizontally)
