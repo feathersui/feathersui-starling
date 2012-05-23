@@ -35,7 +35,8 @@ package org.josht.starling.foxhole.layout
 	/**
 	 * Positions items as tiles (equal width and height) from left to right
 	 * in multiple rows. Constrained to the suggested width, the tiled rows
-	 * layout will change in height as the number of items change.
+	 * layout will change in height as the number of items increases or
+	 * decreases
 	 */
 	public class TiledRowsLayout implements IVirtualLayout
 	{
@@ -264,8 +265,8 @@ package org.josht.starling.foxhole.layout
 		private var _verticalAlign:String = VERTICAL_ALIGN_TOP;
 
 		/**
-		 * If the total column height is less than the bounds, the positions of
-		 * the items can be aligned vertically.
+		 * If the total column height is less than the bounds, the items in the
+		 * column can be aligned vertically.
 		 */
 		public function get verticalAlign():String
 		{
@@ -291,8 +292,8 @@ package org.josht.starling.foxhole.layout
 		private var _horizontalAlign:String = HORIZONTAL_ALIGN_CENTER;
 
 		/**
-		 * If the total row width is less than the bounds, the positions of
-		 * the items can be aligned horizontally.
+		 * If the total row width is less than the bounds, the items in the row
+		 * can be aligned horizontally.
 		 */
 		public function get horizontalAlign():String
 		{
@@ -466,14 +467,20 @@ package org.josht.starling.foxhole.layout
 			}
 			const itemCount:int = items.length;
 			var tileSize:Number = Math.max(0, this._typicalItemWidth, this._typicalItemHeight);
-			for(var i:int = 0; i < itemCount; i++)
+			//a virtual layout assumes that all items are the same size as
+			//the typical item, so we don't need to measure every item in
+			//that case
+			if(!this._useVirtualLayout)
 			{
-				var item:DisplayObject = items[i];
-				if(!item)
+				for(var i:int = 0; i < itemCount; i++)
 				{
-					continue;
+					var item:DisplayObject = items[i];
+					if(!item)
+					{
+						continue;
+					}
+					tileSize = Math.max(tileSize, item.width, item.height);
 				}
-				tileSize = Math.max(tileSize, item.width, item.height);
 			}
 
 			var horizontalTileCount:int = itemCount;
@@ -576,19 +583,19 @@ package org.josht.starling.foxhole.layout
 			const totalHeight:Number = positionY + tileSize + this._paddingBottom;
 			const suggestedHeight:Number = isNaN(suggestedBounds.height) ? totalHeight : suggestedBounds.height;
 			resultDimensions.y = totalHeight;
-			if(totalHeight < suggestedWidth)
+			if(totalHeight < suggestedHeight)
 			{
 				//we're going to default to top if we encounter an unknown value
-				var verticalAlignOffsetX:Number = 0;
+				var verticalAlignOffsetY:Number = 0;
 				if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
 				{
-					verticalAlignOffsetX = suggestedHeight - totalHeight;
+					verticalAlignOffsetY = suggestedHeight - totalHeight;
 				}
 				else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
 				{
-					verticalAlignOffsetX = (suggestedHeight - totalHeight) / 2;
+					verticalAlignOffsetY = (suggestedHeight - totalHeight) / 2;
 				}
-				if(verticalAlignOffsetX != 0)
+				if(verticalAlignOffsetY != 0)
 				{
 					for(i = 0; i < itemCount; i++)
 					{
@@ -597,7 +604,7 @@ package org.josht.starling.foxhole.layout
 						{
 							continue;
 						}
-						item.y += verticalAlignOffsetX;
+						item.y += verticalAlignOffsetY;
 					}
 				}
 			}
@@ -622,7 +629,7 @@ package org.josht.starling.foxhole.layout
 		{
 			const tileSize:Number = Math.max(0, this._typicalItemWidth, this._typicalItemHeight);
 			const horizontalTileCount:int = (width - this._paddingLeft - this._paddingRight + this._gap) / (tileSize + this._gap);
-			const verticalTileCount:int = Math.ceil((height - this._paddingTop + this._gap) / (tileSize + this._gap)) + horizontalTileCount;
+			const verticalTileCount:int = Math.ceil((height - this._paddingTop + this._gap) / (tileSize + this._gap)) + 1;
 			const rowIndex:int = Math.floor((scrollY - this._paddingTop + this._gap) / (tileSize + this._gap));
 			return rowIndex * horizontalTileCount + horizontalTileCount * verticalTileCount;
 		}
