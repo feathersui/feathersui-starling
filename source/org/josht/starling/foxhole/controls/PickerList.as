@@ -27,21 +27,21 @@ package org.josht.starling.foxhole.controls
 	import flash.events.KeyboardEvent;
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
-	
+
 	import org.josht.starling.display.ScrollRectManager;
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.PopUpManager;
 	import org.josht.starling.foxhole.data.ListCollection;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
-	
+
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.events.ResizeEvent;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
-	
+
 	/**
 	 * A combo-box like list control. Displayed as a button. The list appears
 	 * on tap as a full-screen overlay.
@@ -651,7 +651,7 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function button_onRelease(button:Button):void
 		{
-			PopUpManager.addPopUp(this._list, this.stage, false);
+			PopUpManager.addPopUp(this._list, true, false);
 			this.resizeAndPositionList();
 			this._list.scrollToDisplayIndex(this._selectedIndex);
 			this._list.validate();

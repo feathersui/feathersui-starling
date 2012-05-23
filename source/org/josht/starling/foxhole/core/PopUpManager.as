@@ -29,8 +29,11 @@ package org.josht.starling.foxhole.core
 	import flash.utils.getDefinitionByName;
 	
 	import org.josht.starling.display.TiledImage;
-	
+
+	import starling.core.Starling;
+
 	import starling.display.DisplayObject;
+	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.display.Stage;
@@ -38,28 +41,37 @@ package org.josht.starling.foxhole.core
 	import starling.textures.Texture;
 	
 	/**
-	 * Adds a display object as a pop-up to the stage.
+	 * Adds a display object as a pop-up above all content.
 	 */
 	public class PopUpManager
 	{
+		/**
+		 * @private
+		 */
 		private static const POPUP_TO_OVERLAY:Dictionary = new Dictionary(true);
 		
 		/**
 		 * A function that returns a display object to use as a modal overlay.
 		 */
-		public static var overlayFactory:Function = function():DisplayObject
+		public static var overlayFactory:Function = defaultOverlayFactory;
+
+		/**
+		 * The default provider for modal overlays.
+		 */
+		public static function defaultOverlayFactory():DisplayObject
 		{
 			const quad:Quad = new Quad(100, 100, 0x000000);
 			quad.alpha = 0;
 			return quad;
-		};
+		}
 		
 		/**
 		 * Adds a pop-up to the stage.
 		 */
-		public static function addPopUp(popUp:DisplayObject, stage:Stage, isCentered:Boolean = true):void
+		public static function addPopUp(popUp:DisplayObject, isModal:Boolean = true, isCentered:Boolean = true, customOverlayFactory:Function = null):void
 		{
-			if(overlayFactory != null)
+			const stage:Stage = Starling.current.stage;
+			if(isModal && overlayFactory != null)
 			{
 				var overlay:DisplayObject = overlayFactory();
 				overlay.width = stage.stageWidth;
@@ -72,7 +84,7 @@ package org.josht.starling.foxhole.core
 			
 			if(isCentered)
 			{
-				centerPopUp(popUp, stage);
+				centerPopUp(popUp);
 			}
 		}
 		
@@ -87,15 +99,15 @@ package org.josht.starling.foxhole.core
 				overlay.removeFromParent(true);
 			}
 			delete POPUP_TO_OVERLAY[popUp];
-			
-			popUp.removeFromParent(false);
+			popUp.removeFromParent(dispose);
 		}
 		
 		/**
-		 * @private
+		 * Centers a pop-up on the stage.
 		 */
-		private static function centerPopUp(popUp:DisplayObject, stage:Stage):void
+		public static function centerPopUp(popUp:DisplayObject):void
 		{
+			const stage:Stage = Starling.current.stage;
 			popUp.x = (stage.stageWidth - popUp.width) / 2;
 			popUp.y = (stage.stageHeight - popUp.height) / 2;
 		}
