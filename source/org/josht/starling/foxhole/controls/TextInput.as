@@ -25,6 +25,7 @@
 package org.josht.starling.foxhole.controls
 {
 	import flash.events.Event;
+	import flash.events.SoftKeyboardEvent;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -438,6 +439,7 @@ package org.josht.starling.foxhole.controls
 			this.stageText = new StageTextType();
 			this.stageText.stage = Starling.current.nativeStage;
 			this.stageText.addEventListener(flash.events.Event.CHANGE, stageText_changeHandler);
+			this.stageText.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_DEACTIVATE, stageText_softKeyboardDeactivate);
 		}
 
 		/**
@@ -594,6 +596,14 @@ package org.josht.starling.foxhole.controls
 		protected function stageText_changeHandler(event:flash.events.Event):void
 		{
 			this.text = this.stageText.text;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function stageText_softKeyboardDeactivate(event:SoftKeyboardEvent):void
+		{
+			Starling.current.nativeStage.focus = Starling.current.nativeStage;
 		}
 
 		/**
