@@ -334,6 +334,12 @@ package org.josht.starling.foxhole.controls
 
 		/**
 		 * @private
+		 * Flag indicating that the StageText should get focus.
+		 */
+		protected var _isWaitingToSetFocus:Boolean = false;
+
+		/**
+		 * @private
 		 */
 		protected var _onChange:Signal = new Signal(TextInput);
 
@@ -384,6 +390,19 @@ package org.josht.starling.foxhole.controls
 			this._stageTextProperties[propertyName] = propertyValue;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
+
+		public function setFocus():void
+		{
+			if(this.stageText)
+			{
+				this.stageText.assignFocus();
+			}
+			else
+			{
+				this._isWaitingToSetFocus = true;
+			}
+		}
+
 
 		/**
 		 * @private
@@ -440,6 +459,11 @@ package org.josht.starling.foxhole.controls
 			this.stageText.stage = Starling.current.nativeStage;
 			this.stageText.addEventListener(flash.events.Event.CHANGE, stageText_changeHandler);
 			this.stageText.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_DEACTIVATE, stageText_softKeyboardDeactivate);
+			if(this._isWaitingToSetFocus)
+			{
+				this.stageText.assignFocus();
+				this._isWaitingToSetFocus = false;
+			}
 		}
 
 		/**
