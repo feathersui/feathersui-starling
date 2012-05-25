@@ -410,6 +410,7 @@ package org.josht.starling.foxhole.controls
 		override public function dispose():void
 		{
 			this.stageText.removeEventListener(flash.events.Event.CHANGE, stageText_changeHandler);
+			this.stageText.removeEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_DEACTIVATE, stageText_softKeyboardDeactivate);
 			this.stageText.dispose();
 			this.stageText = null;
 			super.dispose();
