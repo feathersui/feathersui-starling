@@ -374,6 +374,14 @@ package org.josht.starling.foxhole.controls
 			this._accessoryFunction = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
+		
+		/**
+		 * Refresh data info.
+		 */		
+		public function invalidateData():void
+		{
+			this.invalidate(INVALIDATION_FLAG_DATA);			
+		}
 
 		/**
 		 * Using <code>labelField</code> and <code>labelFunction</code>,
