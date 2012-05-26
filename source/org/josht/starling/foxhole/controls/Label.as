@@ -233,7 +233,7 @@ package org.josht.starling.foxhole.controls
 				var currentY:Number = 0;
 				var lastCharID:Number = NaN;
 				var characterIndex:int = 0;
-				const charCount:int = this._text.length;
+				const charCount:int = _text?_text.length:0;
 				for(var i:int = 0; i < charCount; i++)
 				{
 					var charID:Number = this._text.charCodeAt(i);
