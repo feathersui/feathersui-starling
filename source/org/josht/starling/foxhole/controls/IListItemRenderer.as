@@ -46,6 +46,11 @@ package org.josht.starling.foxhole.controls
 		function set data(value:Object):void;
 		
 		/**
+		 * Refresh data info.
+		 */		
+		function invalidateData():void;
+		
+		/**
 		 * The index (numeric position, starting from zero) of the item within
 		 * the list's data provider. Like the <code>data</code> property, this
 		 * value may change if this item renderer is reused by the list for a
