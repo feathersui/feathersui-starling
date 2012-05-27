@@ -481,8 +481,8 @@ package org.josht.starling.foxhole.controls.supportClasses
 				virtualLayout.typicalItemWidth = this._typicalItemWidth;
 				virtualLayout.typicalItemHeight = this._typicalItemHeight;
 				this._ignoreLayoutChanges = false;
-				startIndex = virtualLayout.getMinimumItemIndexAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, this.visibleWidth, this.visibleHeight);
-				endIndex = virtualLayout.getMaximumItemIndexAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, this.visibleWidth, this.visibleHeight);
+				startIndex = virtualLayout.getMinimumItemIndexAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, this.visibleWidth, this.visibleHeight, itemCount);
+				endIndex = virtualLayout.getMaximumItemIndexAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, this.visibleWidth, this.visibleHeight, itemCount);
 			}
 			for(var i:int = 0; i < itemCount; i++)
 			{
