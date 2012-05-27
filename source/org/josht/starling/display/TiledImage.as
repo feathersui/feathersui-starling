@@ -71,18 +71,6 @@ package org.josht.starling.display
 
 		private var _originalImageWidth:Number;
 		private var _originalImageHeight:Number;
-
-		/**
-		 * @private
-		 * The initial width value. Used for scaleX calculation.
-		 */
-		private var _startWidth:Number;
-
-		/**
-		 * @private
-		 * The initial height value. Used for scaleY calculation.
-		 */
-		private var _startHeight:Number;
 		
 		/**
 		 * @private
@@ -134,38 +122,6 @@ package org.josht.starling.display
 			}
 			this._height = this._hitArea.height = value;
 			this._layoutChanged = true;
-		}
-
-		/**
-		 * @private
-		 */
-		override public function get scaleX():Number
-		{
-			return this._width / this._startWidth;
-		}
-
-		/**
-		 * @private
-		 */
-		override public function set scaleX(value:Number):void
-		{
-			this.width = this._startWidth * value;
-		}
-
-		/**
-		 * @private
-		 */
-		override public function get scaleY():Number
-		{
-			return this._height / this._startHeight;
-		}
-
-		/**
-		 * @private
-		 */
-		override public function set scaleY(value:Number):void
-		{
-			this.height = this._startHeight * value;
 		}
 		
 		/**
@@ -469,8 +425,8 @@ package org.josht.starling.display
 		 */
 		private function initializeWidthAndHeight():void
 		{
-			this.width = this._startWidth = this._originalImageWidth * this._textureScale;
-			this.height = this._startHeight = this._originalImageHeight * this._textureScale;
+			this.width = this._originalImageWidth * this._textureScale;
+			this.height = this._originalImageHeight * this._textureScale;
 		}
 
 	}
