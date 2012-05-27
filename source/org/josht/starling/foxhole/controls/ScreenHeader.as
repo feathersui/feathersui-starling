@@ -24,8 +24,12 @@
  */
 package org.josht.starling.foxhole.controls
 {
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
+
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.FoxholeControl;
+	import org.josht.starling.foxhole.layout.HorizontalLayout;
 	import org.josht.starling.foxhole.text.BitmapFontTextFormat;
 
 	import starling.display.DisplayObject;
@@ -73,11 +77,28 @@ package org.josht.starling.foxhole.controls
 		private static const ITEM_NAME:String = "foxhole-header-item";
 
 		/**
+		 * @private
+		 */
+		private static const helperRect:Rectangle = new Rectangle();
+
+		/**
+		 * @private
+		 */
+		private static const helperPoint:Point = new Point();
+
+		/**
 		 * Constructor.
 		 */
 		public function ScreenHeader()
 		{
+			super();
 		}
+
+		/**
+		 * @private
+		 * The layout algorithm. Shared by both sides.
+		 */
+		private var _layout:HorizontalLayout;
 
 		/**
 		 * @private
@@ -451,6 +472,12 @@ package org.josht.starling.foxhole.controls
 		 */
 		override protected function initialize():void
 		{
+			if(!this._layout)
+			{
+				this._layout = new HorizontalLayout();
+				this._layout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_MIDDLE;
+			}
+
 			if(!this._titleLabel)
 			{
 				this._titleLabel = new Label();
@@ -478,6 +505,11 @@ package org.josht.starling.foxhole.controls
 
 			if(stylesInvalid)
 			{
+				this._layout.gap = this._gap;
+				this._layout.paddingTop = this._paddingTop;
+				this._layout.paddingBottom = this._paddingBottom;
+				this._layout.paddingRight = this._paddingRight;
+				this._layout.paddingLeft = this._paddingLeft;
 				this._titleLabel.textFormat = this._textFormat;
 			}
 
@@ -517,8 +549,14 @@ package org.josht.starling.foxhole.controls
 
 			if(sizeInvalid || leftContentInvalid || rightContentInvalid || stylesInvalid)
 			{
-				this.layoutLeftItems();
-				this.layoutRightItems();
+				if(this._leftItems)
+				{
+					this.layoutLeftItems();
+				}
+				if(this._rightItems)
+				{
+					this.layoutRightItems();
+				}
 			}
 
 			if(sizeInvalid || stylesInvalid || dataInvalid || leftContentInvalid || rightContentInvalid)
@@ -625,23 +663,18 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function layoutLeftItems():void
 		{
-			if(!this._leftItems)
+			for each(var item:DisplayObject in this._leftItems)
 			{
-				return;
-			}
-			var positionX:Number = this._paddingLeft;
-			const itemCount:int = this._leftItems.length;
-			for(var i:int = 0; i < itemCount; i++)
-			{
-				var item:DisplayObject = this._leftItems[i];
 				if(item is FoxholeControl)
 				{
 					FoxholeControl(item).validate();
 				}
-				item.x = positionX;
-				item.y = (this.actualHeight - item.height) / 2;
-				positionX += item.width + this._gap;
 			}
+			helperRect.x = helperRect.y = 0;
+			helperRect.width = this.actualWidth;
+			helperRect.height = this.actualHeight;
+			this._layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_LEFT;
+			this._layout.layout(this._leftItems, helperRect, helperPoint);
 
 		}
 
@@ -650,24 +683,18 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function layoutRightItems():void
 		{
-			if(!this._rightItems)
+			for each(var item:DisplayObject in this._rightItems)
 			{
-				return;
-			}
-			var positionX:Number = this.actualWidth - this._paddingRight;
-			const itemCount:int = this._rightItems.length;
-			for(var i:int = itemCount - 1; i >= 0; i--)
-			{
-				var item:DisplayObject = this._rightItems[i];
 				if(item is FoxholeControl)
 				{
 					FoxholeControl(item).validate();
 				}
-				positionX -= item.width;
-				item.x = positionX;
-				item.y = (this.actualHeight - item.height) / 2;
-				positionX -= this._gap;
 			}
+			helperRect.x = helperRect.y = 0;
+			helperRect.width = this.actualWidth;
+			helperRect.height = this.actualHeight;
+			this._layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_RIGHT;
+			this._layout.layout(this._rightItems, helperRect, helperPoint);
 		}
 
 		/**
