@@ -614,23 +614,50 @@ package org.josht.starling.foxhole.layout
 		/**
 		 * @inheritDoc
 		 */
-		public function getMinimumItemIndexAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number):int
+		public function getMinimumItemIndexAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int):int
 		{
 			const tileSize:Number = Math.max(0, this._typicalItemWidth, this._typicalItemHeight);
 			const horizontalTileCount:int = (width - this._paddingLeft - this._paddingRight + this._gap) / (tileSize + this._gap);
-			const rowIndex:int = Math.floor((scrollY - this._paddingTop + this._gap) / (tileSize + this._gap));
+			const verticalTileCount:int = Math.ceil((height - this._paddingTop + this._gap) / (tileSize + this._gap)) + 1;
+			var rowIndexOffset:int = 0;
+			const totalRowHeight:Number = Math.ceil(itemCount / horizontalTileCount) * (tileSize + this._gap) - this._gap;
+			if(totalRowHeight < height)
+			{
+				if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
+				{
+					rowIndexOffset = Math.ceil((height - totalRowHeight) / (tileSize + this._gap));
+				}
+				else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
+				{
+					rowIndexOffset = Math.ceil((height - totalRowHeight) / (tileSize + this._gap) / 2);
+				}
+			}
+			const rowIndex:int = -rowIndexOffset + Math.floor((scrollY - this._paddingTop + this._gap) / (tileSize + this._gap));
 			return rowIndex * horizontalTileCount;
 		}
 
 		/**
 		 * @inheritDoc
 		 */
-		public function getMaximumItemIndexAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number):int
+		public function getMaximumItemIndexAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int):int
 		{
 			const tileSize:Number = Math.max(0, this._typicalItemWidth, this._typicalItemHeight);
 			const horizontalTileCount:int = (width - this._paddingLeft - this._paddingRight + this._gap) / (tileSize + this._gap);
 			const verticalTileCount:int = Math.ceil((height - this._paddingTop + this._gap) / (tileSize + this._gap)) + 1;
-			const rowIndex:int = Math.floor((scrollY - this._paddingTop + this._gap) / (tileSize + this._gap));
+			var rowIndexOffset:int = 0;
+			const totalRowHeight:Number = Math.ceil(itemCount / horizontalTileCount) * (tileSize + this._gap) - this._gap;
+			if(totalRowHeight < height)
+			{
+				if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
+				{
+					rowIndexOffset = Math.ceil((height - totalRowHeight) / (tileSize + this._gap));
+				}
+				else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
+				{
+					rowIndexOffset = Math.ceil((height - totalRowHeight) / (tileSize + this._gap) / 2);
+				}
+			}
+			const rowIndex:int = -rowIndexOffset + Math.floor((scrollY - this._paddingTop + this._gap) / (tileSize + this._gap));
 			return rowIndex * horizontalTileCount + horizontalTileCount * verticalTileCount;
 		}
 
