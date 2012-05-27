@@ -123,7 +123,9 @@ package org.josht.starling.foxhole.controls
 		private var _smoothing:String = TextureSmoothing.BILINEAR;
 		
 		/**
-		 * A smoothing value passed to each character.
+		 * A smoothing value passed to each character image.
+		 *
+		 * @see starling.textures.TextureSmoothing
 		 */
 		public function get smoothing():String
 		{
