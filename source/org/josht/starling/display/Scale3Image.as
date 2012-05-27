@@ -81,6 +81,18 @@ package org.josht.starling.display
 
 		/**
 		 * @private
+		 * The initial width value. Used for scaleX calculation.
+		 */
+		private var _startWidth:Number;
+
+		/**
+		 * @private
+		 * The initial height value. Used for scaleY calculation.
+		 */
+		private var _startHeight:Number;
+
+		/**
+		 * @private
 		 */
 		private var _width:Number = NaN;
 
@@ -134,6 +146,38 @@ package org.josht.starling.display
 		/**
 		 * @private
 		 */
+		override public function get scaleX():Number
+		{
+			return this._width / this._startWidth;
+		}
+
+		/**
+		 * @private
+		 */
+		override public function set scaleX(value:Number):void
+		{
+			this.width = this._startWidth * value;
+		}
+
+		/**
+		 * @private
+		 */
+		override public function get scaleY():Number
+		{
+			return this._height / this._startHeight;
+		}
+
+		/**
+		 * @private
+		 */
+		override public function set scaleY(value:Number):void
+		{
+			this.height = this._startHeight * value;
+		}
+
+		/**
+		 * @private
+		 */
 		private var _textureScale:Number = 1;
 
 		/**
@@ -164,6 +208,8 @@ package org.josht.starling.display
 
 		/**
 		 * The smoothing value to pass to the images.
+		 *
+		 * @see starling.textures.TextureSmoothing
 		 */
 		public function get smoothing():String
 		{
@@ -475,13 +521,13 @@ package org.josht.starling.display
 		{
 			if(this._direction == DIRECTION_VERTICAL)
 			{
-				this.width = this._oppositeEdgeSize * this._textureScale;
-				this.height = (this._firstRegionSize + this._secondRegionSize + this._thirdRegionSize) * this._textureScale;
+				this.width = this._startWidth = this._oppositeEdgeSize * this._textureScale;
+				this.height = this._startHeight = (this._firstRegionSize + this._secondRegionSize + this._thirdRegionSize) * this._textureScale;
 			}
 			else //horizontal
 			{
-				this.width = (this._firstRegionSize + this._secondRegionSize + this._thirdRegionSize) * this._textureScale;
-				this.height = this._oppositeEdgeSize * this._textureScale;
+				this.width = this._startWidth = (this._firstRegionSize + this._secondRegionSize + this._thirdRegionSize) * this._textureScale;
+				this.height = this._startHeight = this._oppositeEdgeSize * this._textureScale;
 			}
 		}
 	}
