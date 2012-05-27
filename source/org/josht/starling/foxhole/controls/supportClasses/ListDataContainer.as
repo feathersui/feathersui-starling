@@ -562,7 +562,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 				var renderer:IListItemRenderer;
 				if(this._itemRendererFunction != null)
 				{
-					renderer = IListItemRenderer(this._itemRendererFunction(item));
+					renderer = IListItemRenderer(this._itemRendererFunction());
 				}
 				else
 				{
