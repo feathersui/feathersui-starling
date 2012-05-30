@@ -379,7 +379,7 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function defaultTabInitializer(tab:Button, item:Object):void
 		{
-			if(item)
+			if(item is Object)
 			{
 				if(item.hasOwnProperty("label"))
 				{

@@ -389,7 +389,7 @@ package org.josht.starling.foxhole.controls
 			{
 				return item[this._labelField] as String;
 			}
-			else if(item)
+			else if(item is Object)
 			{
 				return item.toString();
 			}
