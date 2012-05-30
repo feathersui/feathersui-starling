@@ -847,7 +847,7 @@ package org.josht.starling.foxhole.controls
 			if(this._scrollToIndex >= 0)
 			{
 				const item:Object = this._dataProvider.getItemAt(this._scrollToIndex);
-				if(item)
+				if(item is Object)
 				{
 					const renderer:DisplayObject = this.dataContainer.itemToItemRenderer(item) as DisplayObject;
 					if(renderer)
