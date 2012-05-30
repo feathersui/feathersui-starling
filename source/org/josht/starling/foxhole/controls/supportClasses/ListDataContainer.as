@@ -139,11 +139,13 @@ package org.josht.starling.foxhole.controls.supportClasses
 			if(this._dataProvider)
 			{
 				this._dataProvider.onChange.remove(dataProvider_onChange);
+				this._dataProvider.onItemUpdate.remove(dataProvider_onItemUpdate);
 			}
 			this._dataProvider = value;
 			if(this._dataProvider)
 			{
 				this._dataProvider.onChange.add(dataProvider_onChange);
+				this._dataProvider.onItemUpdate.add(dataProvider_onItemUpdate);
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -610,6 +612,14 @@ package org.josht.starling.foxhole.controls.supportClasses
 		private function dataProvider_onChange(data:ListCollection):void
 		{
 			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		private function dataProvider_onItemUpdate(data:ListCollection, index:int):void
+		{
+			const item:Object = this._dataProvider.getItemAt(index);
+			const renderer:IListItemRenderer = IListItemRenderer(this._rendererMap[item]);
+			renderer.data = null;
+			renderer.data = item;
 		}
 
 		private function layout_onLayoutChange(layout:ILayout):void
