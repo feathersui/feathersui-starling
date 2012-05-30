@@ -83,7 +83,14 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected var currentBackground:DisplayObject;
 
+		/**
+		 * @private
+		 */
 		private var _oldGlobalX:Number = 0;
+
+		/**
+		 * @private
+		 */
 		private var _oldGlobalY:Number = 0;
 
 		/**
@@ -410,7 +417,7 @@ package org.josht.starling.foxhole.controls
 		override public function dispose():void
 		{
 			this.stageText.removeEventListener(flash.events.Event.CHANGE, stageText_changeHandler);
-			this.stageText.removeEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_DEACTIVATE, stageText_softKeyboardDeactivate);
+			this.stageText.removeEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_DEACTIVATE, stageText_softKeyboardDeactivateHandler);
 			this.stageText.dispose();
 			this.stageText = null;
 			super.dispose();
@@ -459,7 +466,7 @@ package org.josht.starling.foxhole.controls
 			this.stageText = new StageTextType();
 			this.stageText.stage = Starling.current.nativeStage;
 			this.stageText.addEventListener(flash.events.Event.CHANGE, stageText_changeHandler);
-			this.stageText.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_DEACTIVATE, stageText_softKeyboardDeactivate);
+			this.stageText.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_DEACTIVATE, stageText_softKeyboardDeactivateHandler);
 			if(this._isWaitingToSetFocus)
 			{
 				this.stageText.assignFocus();
@@ -626,7 +633,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected function stageText_softKeyboardDeactivate(event:SoftKeyboardEvent):void
+		protected function stageText_softKeyboardDeactivateHandler(event:SoftKeyboardEvent):void
 		{
 			Starling.current.nativeStage.focus = Starling.current.nativeStage;
 		}
