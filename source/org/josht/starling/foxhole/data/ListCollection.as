@@ -117,6 +117,25 @@ package org.josht.starling.foxhole.data
 		{
 			return this._onReset;
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _onItemUpdate:Signal = new Signal(ListCollection, int);
+
+		/**
+		 * Dispatched when a property of an item in the collection has changed
+		 * and the item doesn't have its own change event or signal. This signal
+		 * is only dispatched when the <code>updateItemAt()</code> function is
+		 * called on the <code>ListCollection</code>.
+		 *
+		 * <p>In general, it's better for the items themselves to dispatch events
+		 * or signals when their properties change.</p>
+		 */
+		public function get onItemUpdate():ISignal
+		{
+			return this._onItemUpdate;
+		}
 		
 		/**
 		 * @private
@@ -212,6 +231,17 @@ package org.josht.starling.foxhole.data
 		public function get length():int
 		{
 			return this._dataDescriptor.getLength(this._data);
+		}
+
+		/**
+		 * If an item doesn't dispatch an event or signal to indicate that it
+		 * has changed, you can manually tell the collection about the change,
+		 * and the collection will dispatch the <code>onItemUpdate</code> signal
+		 * to manually notify the component that renders the data.
+		 */
+		public function updateItemAt(index:int):void
+		{
+			this._onItemUpdate.dispatch(this, index);
 		}
 		
 		/**
