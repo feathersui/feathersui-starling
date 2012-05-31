@@ -31,6 +31,8 @@ package org.josht.starling.foxhole.controls
 	import flash.geom.Rectangle;
 	import flash.utils.getDefinitionByName;
 
+	import org.josht.starling.display.ScrollRectManager;
+
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.text.StageTextField;
 	import org.osflash.signals.ISignal;
@@ -431,6 +433,7 @@ package org.josht.starling.foxhole.controls
 			helperPoint.x = helperPoint.y = 0;
 			this.getTransformationMatrix(this.stage, helperMatrix);
 			transformCoords(helperMatrix, 0, 0, helperPoint);
+			ScrollRectManager.toStageCoordinates(helperPoint, this);
 			if(helperPoint.x != this._oldGlobalX || helperPoint.y != this._oldGlobalY)
 			{
 				this._oldGlobalX = helperPoint.x;
@@ -608,6 +611,7 @@ package org.josht.starling.foxhole.controls
 			helperPoint.x = helperPoint.y = 0;
 			this.getTransformationMatrix(this.stage, helperMatrix);
 			transformCoords(helperMatrix, 0, 0, helperPoint);
+			ScrollRectManager.toStageCoordinates(helperPoint, this);
 			this._oldGlobalX = helperPoint.x;
 			this._oldGlobalY = helperPoint.y;
 			viewPort.x = (helperPoint.x + this._paddingLeft * this.scaleX) * Starling.contentScaleFactor;
