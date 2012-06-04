@@ -373,7 +373,7 @@ package org.josht.text
 		{
 			this.textField = new TextField();
 			this.textField.type = TextFieldType.INPUT;
-			this.textField.multiline = initOptions && initOptions.multiline;
+			this.textField.multiline = initOptions && initOptions.hasOwnProperty("multiline") && initOptions.multiline;
 			this.textField.addEventListener(Event.CHANGE, textField_eventHandler);
 			this.textField.addEventListener(FocusEvent.FOCUS_IN, textField_eventHandler);
 			this.textField.addEventListener(FocusEvent.FOCUS_OUT, textField_eventHandler);
