@@ -173,7 +173,7 @@ package org.josht.starling.foxhole.controls
 		 * item displayed by the picker list's button control. It will <em>not</em>
 		 * affect the label text of the pop-up list's item renderers.</p>
 		 *
-		 * @see labelFunction
+		 * @see #labelFunction
 		 */
 		public function get labelField():String
 		{
@@ -208,7 +208,7 @@ package org.josht.starling.foxhole.controls
 		 * item displayed by the picker list's button control. It will <em>not</em>
 		 * affect the label text of the pop-up list's item renderers.</p>
 		 *
-		 * @see labelField
+		 * @see #labelField
 		 */
 		public function get labelFunction():Function
 		{

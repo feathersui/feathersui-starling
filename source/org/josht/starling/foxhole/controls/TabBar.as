@@ -89,7 +89,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * The collection of data to be displayed with tabs.
 		 *
-		 * @see tabInitializer
+		 * @see #tabInitializer
 		 */
 		public function get dataProvider():ListCollection
 		{
