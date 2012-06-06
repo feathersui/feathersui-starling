@@ -332,8 +332,8 @@ package org.josht.starling.foxhole.controls
 		 * takes priority. For the OFF label, <code>offTextFormat</code> takes
 		 * priority.
 		 *
-		 * @see onTextFormat
-		 * @see offTextFormat
+		 * @see #onTextFormat
+		 * @see #offTextFormat
 		 */
 		public function get defaultTextFormat():BitmapFontTextFormat
 		{

@@ -57,7 +57,7 @@ package org.josht.starling.foxhole.core
 		 * Invalidation flag to indicate that the state has changed. Used by
 		 * <code>isEnabled</code>, but may be used for other control states too.
 		 * 
-		 * @see isEnabled
+		 * @see #isEnabled
 		 */
 		public static const INVALIDATION_FLAG_STATE:String = "state";
 		

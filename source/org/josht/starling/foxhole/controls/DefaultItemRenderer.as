@@ -215,7 +215,7 @@ package org.josht.starling.foxhole.controls
 		 * label or define a <code>labelFunction</code> that returns an empty
 		 * string.
 		 *
-		 * @see labelFunction
+		 * @see #labelFunction
 		 */
 		public function get labelField():String
 		{
@@ -245,7 +245,7 @@ package org.josht.starling.foxhole.controls
 		 * function is not null, then the <code>labelField</code> will be
 		 * ignored.
 		 *
-		 * @see labelField
+		 * @see #labelField
 		 */
 		public function get labelFunction():Function
 		{
@@ -272,7 +272,7 @@ package org.josht.starling.foxhole.controls
 		 * an <code>iconFunction</code> is not defined, then the renderer will
 		 * not display an icon.
 		 *
-		 * @see iconFunction
+		 * @see #iconFunction
 		 */
 		public function get iconField():String
 		{
@@ -302,7 +302,7 @@ package org.josht.starling.foxhole.controls
 		 * function is not null, then the <code>iconField</code> will be
 		 * ignored.
 		 *
-		 * @see iconField
+		 * @see #iconField
 		 */
 		public function get iconFunction():Function
 		{
@@ -329,7 +329,7 @@ package org.josht.starling.foxhole.controls
 		 * this field, and an <code>accessoryFunction</code> is not defined,
 		 * then the renderer will not display an accessory.
 		 *
-		 * @see accessoryFunction
+		 * @see #accessoryFunction
 		 */
 		public function get accessoryField():String
 		{
@@ -359,7 +359,7 @@ package org.josht.starling.foxhole.controls
 		 * this function is not null, then the <code>accessoryField</code> will
 		 * be ignored.
 		 *
-		 * @see accessoryField
+		 * @see #accessoryField
 		 */
 		public function get accessoryFunction():Function
 		{
