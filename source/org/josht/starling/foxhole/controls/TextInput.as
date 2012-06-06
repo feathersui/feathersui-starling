@@ -822,6 +822,7 @@ package org.josht.starling.foxhole.controls
 			if(event.keyCode == Keyboard.BACK)
 			{
 				event.preventDefault();
+				Starling.current.nativeStage.focus = Starling.current.nativeStage;
 			}
 		}
 	}
