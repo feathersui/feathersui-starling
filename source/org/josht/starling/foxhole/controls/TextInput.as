@@ -699,8 +699,8 @@ package org.josht.starling.foxhole.controls
 				this._textSnapshot.texture = Texture.fromBitmapData(this._textSnapshotBitmapData);
 				this._textSnapshot.readjustSize();
 			}
-			this._textSnapshot.x = this._paddingLeft;
-			this._textSnapshot.y = this._paddingTop;
+			this._textSnapshot.x = Math.round(this._paddingLeft);
+			this._textSnapshot.y = Math.round(this._paddingTop);
 			this._textSnapshot.visible = !this._stageTextHasFocus;
 
 			if(this._needsToClearStage)
@@ -761,7 +761,6 @@ package org.josht.starling.foxhole.controls
 			const touch:Touch = event.getTouch(this, TouchPhase.ENDED);
 			if(touch)
 			{
-				trace("touch")
 				this.setFocus();
 			}
 		}
@@ -779,8 +778,18 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function stageText_focus_completeHandler(event:Event):void
 		{
-			trace("complete")
 			this.stageText.removeEventListener(Event.COMPLETE, stageText_focus_completeHandler);
+			//wait a frame to assign focus because the StageText may take longer
+			//to reposition and it looks bad.
+			this.addEventListener(EnterFrameEvent.ENTER_FRAME, focusIn_enterFrameHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function focusIn_enterFrameHandler(event:EnterFrameEvent):void
+		{
+			this.removeEventListener(EnterFrameEvent.ENTER_FRAME, focusIn_enterFrameHandler);
 			this.stageText.assignFocus();
 		}
 
@@ -800,7 +809,6 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function stageText_focusInHandler(event:FocusEvent):void
 		{
-			trace("focusIn")
 			this._isWaitingToSetFocus = false;
 			this._stageTextHasFocus = true;
 			this.stageText.visible = true;
@@ -816,7 +824,6 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function stageText_focusOutHandler(event:FocusEvent):void
 		{
-			trace("focusOut")
 			this._stageTextHasFocus = false;
 			this._focusOutFrameCount = 0;
 			//if we don't wait a frame, the app can crash on android
@@ -829,14 +836,15 @@ package org.josht.starling.foxhole.controls
 		protected function enterFrameHandler(event:EnterFrameEvent):void
 		{
 			this._focusOutFrameCount++;
+			//we need to wait two frames because starling queues up touch events
+			//until the next frame and we can't specify priority
 			if(this._focusOutFrameCount < 2)
 			{
 				return;
 			}
-			trace("enter frame");
 			this.removeEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
-			this._needsToClearStage = true;
 			this.refreshSnapshot(false);
+			this.stageText.stage = null;
 		}
 
 		/**
@@ -854,11 +862,11 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function stageText_softKeyboardDeactivateHandler(event:SoftKeyboardEvent):void
 		{
-			/*if(this._isWaitingToSetFocus || this._stageTextHasFocus)
+			if(this._isWaitingToSetFocus || this._stageTextHasFocus)
 			{
 				return;
 			}
-			Starling.current.nativeStage.focus = Starling.current.nativeStage;*/
+			Starling.current.nativeStage.focus = Starling.current.nativeStage;
 		}
 	}
 }
