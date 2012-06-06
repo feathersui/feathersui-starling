@@ -375,16 +375,6 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected var _focusOutFrameCount:int;
-
-		/**
-		 * @private
-		 */
-		protected var _needsToClearStage:Boolean = false;
-
-		/**
-		 * @private
-		 */
 		protected var _onChange:Signal = new Signal(TextInput);
 
 		/**
@@ -437,26 +427,14 @@ package org.josht.starling.foxhole.controls
 
 		public function setFocus():void
 		{
-			this._needsToClearStage = false;
-			this.removeEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
-			if(this._stageTextHasFocus)
-			{
-				return;
-			}
-			this._isWaitingToSetFocus = true;
 			if(this.stageText)
 			{
-				if(this.stageText.stage)
-				{
-					this.stageText.assignFocus();
-					return;
-				}
-				this.stageText.removeEventListener(Event.COMPLETE, stageText_initialText_completeHandler);
-				this.stageText.addEventListener(Event.COMPLETE, stageText_focus_completeHandler);
-				this.stageText.visible = false;
-				this.stageText.stage = Starling.current.nativeStage;
+				this.stageText.assignFocus();
 			}
-			//if we don't have stagetext, we'll do this later
+			else
+			{
+				this._isWaitingToSetFocus = true;
+			}
 		}
 
 		/**
@@ -465,8 +443,7 @@ package org.josht.starling.foxhole.controls
 		override public function dispose():void
 		{
 			this.stageText.removeEventListener(Event.CHANGE, stageText_changeHandler);
-			this.stageText.removeEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATE, stageText_softKeyboardActivateHandler);
-			this.stageText.removeEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_DEACTIVATE, stageText_softKeyboardDeactivateHandler);
+			//this.stageText.removeEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_DEACTIVATE, stageText_softKeyboardDeactivateHandler);
 			this.stageText.removeEventListener(FocusEvent.FOCUS_IN, stageText_focusInHandler);
 			this.stageText.removeEventListener(FocusEvent.FOCUS_OUT, stageText_focusOutHandler);
 			this.stageText.dispose();
@@ -519,22 +496,19 @@ package org.josht.starling.foxhole.controls
 				initOptions = { multiline: false };
 			}
 			this.stageText = new StageTextType(initOptions);
+			this.stageText.visible = false;
+			this.stageText.stage = Starling.current.nativeStage;
 			this.stageText.addEventListener(Event.CHANGE, stageText_changeHandler);
-			this.stageText.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATE, stageText_softKeyboardActivateHandler);
-			this.stageText.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_DEACTIVATE, stageText_softKeyboardDeactivateHandler);
+			//this.stageText.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_DEACTIVATE, stageText_softKeyboardDeactivateHandler);
 			this.stageText.addEventListener(FocusEvent.FOCUS_IN, stageText_focusInHandler);
 			this.stageText.addEventListener(FocusEvent.FOCUS_OUT, stageText_focusOutHandler);
 			if(this._isWaitingToSetFocus)
 			{
-				this.stageText.addEventListener(Event.COMPLETE, stageText_focus_completeHandler);
-				this.stageText.visible = false;
-				this.stageText.stage = Starling.current.nativeStage;
+				this.setFocus();
 			}
 			else if(this._text)
 			{
 				this.stageText.addEventListener(Event.COMPLETE, stageText_initialText_completeHandler);
-				this.stageText.visible = false;
-				this.stageText.stage = Starling.current.nativeStage;
 			}
 		}
 
@@ -703,11 +677,11 @@ package org.josht.starling.foxhole.controls
 			this._textSnapshot.y = Math.round(this._paddingTop);
 			this._textSnapshot.visible = !this._stageTextHasFocus;
 
-			if(this._needsToClearStage)
+			/*if(this._needsToClearStage)
 			{
 				this.stageText.stage = null;
 				this._needsToClearStage = false;
-			}
+			}*/
 		}
 
 		/**
@@ -753,7 +727,7 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function touchHandler(event:TouchEvent):void
 		{
-			if(!this._isEnabled || this._stageTextHasFocus || this._isWaitingToSetFocus)
+			if(!this._isEnabled || this._stageTextHasFocus)
 			{
 				return;
 			}
@@ -776,31 +750,9 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected function stageText_focus_completeHandler(event:Event):void
-		{
-			this.stageText.removeEventListener(Event.COMPLETE, stageText_focus_completeHandler);
-			//wait a frame to assign focus because the StageText may take longer
-			//to reposition and it looks bad.
-			this.addEventListener(EnterFrameEvent.ENTER_FRAME, focusIn_enterFrameHandler);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function focusIn_enterFrameHandler(event:EnterFrameEvent):void
-		{
-			this.removeEventListener(EnterFrameEvent.ENTER_FRAME, focusIn_enterFrameHandler);
-			this.stageText.assignFocus();
-		}
-
-		/**
-		 * @private
-		 */
 		protected function stageText_initialText_completeHandler(event:Event):void
 		{
 			this.stageText.removeEventListener(Event.COMPLETE, stageText_initialText_completeHandler);
-
-			this._needsToClearStage = true;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
@@ -809,7 +761,6 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function stageText_focusInHandler(event:FocusEvent):void
 		{
-			this._isWaitingToSetFocus = false;
 			this._stageTextHasFocus = true;
 			this.stageText.visible = true;
 			if(this._textSnapshot)
@@ -825,36 +776,9 @@ package org.josht.starling.foxhole.controls
 		protected function stageText_focusOutHandler(event:FocusEvent):void
 		{
 			this._stageTextHasFocus = false;
-			this._focusOutFrameCount = 0;
-			//if we don't wait a frame, the app can crash on android
-			this.addEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
-		}
 
-		/**
-		 * @private
-		 */
-		protected function enterFrameHandler(event:EnterFrameEvent):void
-		{
-			this._focusOutFrameCount++;
-			//we need to wait two frames because starling queues up touch events
-			//until the next frame and we can't specify priority
-			if(this._focusOutFrameCount < 2)
-			{
-				return;
-			}
-			this.removeEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
 			this.refreshSnapshot(false);
-			this.stageText.stage = null;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function stageText_softKeyboardActivateHandler(event:SoftKeyboardEvent):void
-		{
-			//for some reason, the stagetext sometimes loses focus immediately
-			//and the soft keyboard remains visible.
-			this.stageText.assignFocus();
+			this.stageText.visible = false;
 		}
 
 		/**
