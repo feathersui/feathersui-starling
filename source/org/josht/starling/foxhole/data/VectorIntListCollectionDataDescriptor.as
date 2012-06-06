@@ -27,7 +27,7 @@ package org.josht.starling.foxhole.data
 	import flash.errors.IllegalOperationError;
 
 	/**
-	 * An <code>IListCollectionDataDescriptor</code> implementation for Vector.<int>.
+	 * An <code>IListCollectionDataDescriptor</code> implementation for Vector.&lt;int&gt;.
 	 * 
 	 * @see ListCollection
 	 * @see IListCollectionDataDescriptor
