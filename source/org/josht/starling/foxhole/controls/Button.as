@@ -1500,7 +1500,7 @@ package org.josht.starling.foxhole.controls
 				{
 					FoxholeControl(this.currentIcon).validate();
 				}
-				this.labelControl.validate();
+
 				this.layoutContent();
 			}
 			
@@ -1522,6 +1522,7 @@ package org.josht.starling.foxhole.controls
 			{
 				return false;
 			}
+			this.labelControl.maxWidth = Number.POSITIVE_INFINITY;
 			this.labelControl.validate();
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
@@ -1850,11 +1851,20 @@ package org.josht.starling.foxhole.controls
 		{
 			if(this.label && this.currentIcon)
 			{
+				if(this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE ||
+					this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
+				{
+					var adjustedGap:Number = this._gap == Number.POSITIVE_INFINITY ? Math.min(this._paddingLeft, this._paddingRight) : this._gap;
+					this.labelControl.maxWidth = this.actualWidth - this._paddingLeft - this._paddingRight - this.currentIcon.width - adjustedGap;
+				}
+				this.labelControl.validate();
 				this.positionLabelOrIcon(this.labelControl);
 				this.positionLabelAndIcon();
 			}
 			else if(this.label && !this.currentIcon)
 			{
+				this.labelControl.maxWidth = this.actualWidth - this._paddingLeft - this._paddingRight;
+				this.labelControl.validate();
 				this.positionLabelOrIcon(this.labelControl);
 			}
 			else if(!this.label && this.currentIcon)
