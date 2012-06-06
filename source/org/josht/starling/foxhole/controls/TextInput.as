@@ -375,6 +375,16 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
+		protected var _focusOutFrameCount:int;
+
+		/**
+		 * @private
+		 */
+		protected var _needsToClearStage:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _onChange:Signal = new Signal(TextInput);
 
 		/**
@@ -427,14 +437,26 @@ package org.josht.starling.foxhole.controls
 
 		public function setFocus():void
 		{
+			this._needsToClearStage = false;
+			this.removeEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
+			if(this._stageTextHasFocus)
+			{
+				return;
+			}
+			this._isWaitingToSetFocus = true;
 			if(this.stageText)
 			{
-				this.stageText.assignFocus();
+				if(this.stageText.stage)
+				{
+					this.stageText.assignFocus();
+					return;
+				}
+				this.stageText.removeEventListener(Event.COMPLETE, stageText_initialText_completeHandler);
+				this.stageText.addEventListener(Event.COMPLETE, stageText_focus_completeHandler);
+				this.stageText.visible = false;
+				this.stageText.stage = Starling.current.nativeStage;
 			}
-			else
-			{
-				this._isWaitingToSetFocus = true;
-			}
+			//if we don't have stagetext, we'll do this later
 		}
 
 		/**
@@ -443,6 +465,7 @@ package org.josht.starling.foxhole.controls
 		override public function dispose():void
 		{
 			this.stageText.removeEventListener(Event.CHANGE, stageText_changeHandler);
+			this.stageText.removeEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATE, stageText_softKeyboardActivateHandler);
 			this.stageText.removeEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_DEACTIVATE, stageText_softKeyboardDeactivateHandler);
 			this.stageText.removeEventListener(FocusEvent.FOCUS_IN, stageText_focusInHandler);
 			this.stageText.removeEventListener(FocusEvent.FOCUS_OUT, stageText_focusOutHandler);
@@ -497,12 +520,19 @@ package org.josht.starling.foxhole.controls
 			}
 			this.stageText = new StageTextType(initOptions);
 			this.stageText.addEventListener(Event.CHANGE, stageText_changeHandler);
+			this.stageText.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATE, stageText_softKeyboardActivateHandler);
 			this.stageText.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_DEACTIVATE, stageText_softKeyboardDeactivateHandler);
 			this.stageText.addEventListener(FocusEvent.FOCUS_IN, stageText_focusInHandler);
 			this.stageText.addEventListener(FocusEvent.FOCUS_OUT, stageText_focusOutHandler);
 			if(this._isWaitingToSetFocus)
 			{
 				this.stageText.addEventListener(Event.COMPLETE, stageText_focus_completeHandler);
+				this.stageText.visible = false;
+				this.stageText.stage = Starling.current.nativeStage;
+			}
+			else if(this._text)
+			{
+				this.stageText.addEventListener(Event.COMPLETE, stageText_initialText_completeHandler);
 				this.stageText.visible = false;
 				this.stageText.stage = Starling.current.nativeStage;
 			}
@@ -549,35 +579,9 @@ package org.josht.starling.foxhole.controls
 				this.layout();
 			}
 
-			if(!this._stageTextHasFocus)
+			if(stylesInvalid || dataInvalid || sizeInvalid)
 			{
-				if((sizeInvalid && this._text) || (this._text && !this._textSnapshotBitmapData))
-				{
-					const viewPort:Rectangle = this.stageText.viewPort;
-					if(!this._textSnapshotBitmapData || this._textSnapshotBitmapData.width != viewPort.width || this._textSnapshotBitmapData.height != viewPort.height)
-					{
-						if(this._textSnapshotBitmapData)
-						{
-							this._textSnapshotBitmapData.dispose();
-						}
-						this._textSnapshotBitmapData = new BitmapData(viewPort.width, viewPort.height, true, 0x00ff00ff);
-					}
-				}
-
-				if(this._textSnapshotBitmapData && (stylesInvalid || dataInvalid || sizeInvalid))
-				{
-					this.refreshSnapshot();
-				}
-			}
-
-			//the complete handler may have been called before draw(). if so, we
-			//still need to assign focus.
-			if(this._isWaitingToSetFocus && !this.stageText.hasEventListener(flash.events.Event.COMPLETE))
-			{
-				this._isWaitingToSetFocus = false;
-				this.stageText.visible = true;
-				this.stageText.assignFocus();
-				this.stageText.selectRange(this._text.length, this._text.length);
+				this.refreshSnapshot(this._text && (sizeInvalid || !this._textSnapshotBitmapData));
 			}
 		}
 
@@ -659,8 +663,29 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected function refreshSnapshot():void
+		protected function refreshSnapshot(needsNewBitmap:Boolean):void
 		{
+			if(needsNewBitmap)
+			{
+				const viewPort:Rectangle = this.stageText.viewPort;
+				if(viewPort.width == 0 || viewPort.height == 0)
+				{
+					return;
+				}
+				if(!this._textSnapshotBitmapData || this._textSnapshotBitmapData.width != viewPort.width || this._textSnapshotBitmapData.height != viewPort.height)
+				{
+					if(this._textSnapshotBitmapData)
+					{
+						this._textSnapshotBitmapData.dispose();
+					}
+					this._textSnapshotBitmapData = new BitmapData(viewPort.width, viewPort.height, true, 0x00ff00ff);
+				}
+			}
+
+			if(!this._textSnapshotBitmapData)
+			{
+				return;
+			}
 			this._textSnapshotBitmapData.fillRect(this._textSnapshotBitmapData.rect, 0x00ff00ff);
 			this.stageText.drawViewPortToBitmapData(this._textSnapshotBitmapData);
 			if(!this._textSnapshot)
@@ -677,6 +702,12 @@ package org.josht.starling.foxhole.controls
 			this._textSnapshot.x = this._paddingLeft;
 			this._textSnapshot.y = this._paddingTop;
 			this._textSnapshot.visible = !this._stageTextHasFocus;
+
+			if(this._needsToClearStage)
+			{
+				this.stageText.stage = null;
+				this._needsToClearStage = false;
+			}
 		}
 
 		/**
@@ -722,18 +753,16 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function touchHandler(event:TouchEvent):void
 		{
-			if(!this._isEnabled || this._stageTextHasFocus)
+			if(!this._isEnabled || this._stageTextHasFocus || this._isWaitingToSetFocus)
 			{
 				return;
 			}
 
-			const touch:Touch = event.getTouch(this, TouchPhase.BEGAN);
+			const touch:Touch = event.getTouch(this, TouchPhase.ENDED);
 			if(touch)
 			{
-				this._isWaitingToSetFocus = true;
-				this.stageText.addEventListener(Event.COMPLETE, stageText_focus_completeHandler);
-				this.stageText.visible = false;
-				this.stageText.stage = Starling.current.nativeStage;
+				trace("touch")
+				this.setFocus();
 			}
 		}
 
@@ -750,15 +779,9 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function stageText_focus_completeHandler(event:Event):void
 		{
+			trace("complete")
 			this.stageText.removeEventListener(Event.COMPLETE, stageText_focus_completeHandler);
-			if(this.stageText.text != this._text)
-			{
-				return;
-			}
-			this._isWaitingToSetFocus = false;
-			this.stageText.visible = true;
 			this.stageText.assignFocus();
-			this.stageText.selectRange(this._text.length, this._text.length);
 		}
 
 		/**
@@ -767,11 +790,9 @@ package org.josht.starling.foxhole.controls
 		protected function stageText_initialText_completeHandler(event:Event):void
 		{
 			this.stageText.removeEventListener(Event.COMPLETE, stageText_initialText_completeHandler);
-			if(this._textSnapshotBitmapData)
-			{
-				this.refreshSnapshot();
-				this.stageText.stage = null;
-			}
+
+			this._needsToClearStage = true;
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		/**
@@ -779,11 +800,15 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function stageText_focusInHandler(event:FocusEvent):void
 		{
+			trace("focusIn")
+			this._isWaitingToSetFocus = false;
 			this._stageTextHasFocus = true;
+			this.stageText.visible = true;
 			if(this._textSnapshot)
 			{
 				this._textSnapshot.visible = false;
 			}
+			this.stageText.selectRange(this.stageText.text.length, this.stageText.text.length);
 		}
 
 		/**
@@ -791,23 +816,37 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function stageText_focusOutHandler(event:FocusEvent):void
 		{
+			trace("focusOut")
 			this._stageTextHasFocus = false;
+			this._focusOutFrameCount = 0;
+			//if we don't wait a frame, the app can crash on android
 			this.addEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
 		}
 
+		/**
+		 * @private
+		 */
 		protected function enterFrameHandler(event:EnterFrameEvent):void
 		{
-			this.removeEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
-			if(this._stageTextHasFocus)
+			this._focusOutFrameCount++;
+			if(this._focusOutFrameCount < 2)
 			{
 				return;
 			}
-			this.stageText.stage = null;
-			if(this._text)
-			{
-				//force the update of the snapshot
-				this.invalidate(INVALIDATION_FLAG_DATA);
-			}
+			trace("enter frame");
+			this.removeEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
+			this._needsToClearStage = true;
+			this.refreshSnapshot(false);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function stageText_softKeyboardActivateHandler(event:SoftKeyboardEvent):void
+		{
+			//for some reason, the stagetext sometimes loses focus immediately
+			//and the soft keyboard remains visible.
+			this.stageText.assignFocus();
 		}
 
 		/**
@@ -815,7 +854,11 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function stageText_softKeyboardDeactivateHandler(event:SoftKeyboardEvent):void
 		{
-			Starling.current.nativeStage.focus = Starling.current.nativeStage;
+			/*if(this._isWaitingToSetFocus || this._stageTextHasFocus)
+			{
+				return;
+			}
+			Starling.current.nativeStage.focus = Starling.current.nativeStage;*/
 		}
 	}
 }
