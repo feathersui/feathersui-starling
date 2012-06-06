@@ -427,6 +427,9 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
+		/**
+		 * Focuses the text input control so that it may be edited.
+		 */
 		public function setFocus():void
 		{
 			if(this.stageText)
