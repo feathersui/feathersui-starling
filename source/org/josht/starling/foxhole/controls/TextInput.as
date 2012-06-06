@@ -84,7 +84,8 @@ package org.josht.starling.foxhole.controls
 		}
 
 		/**
-		 * The StageText instance.
+		 * The StageText instance. It's typed Object so that a replacement class
+		 * can be used in browser-based Flash Player.
 		 */
 		protected var stageText:Object;
 
