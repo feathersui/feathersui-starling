@@ -521,10 +521,7 @@ package org.josht.starling.foxhole.controls
 			this.stageText.addEventListener(KeyboardEvent.KEY_DOWN, stageText_keyDownHandler);
 			this.stageText.addEventListener(FocusEvent.FOCUS_IN, stageText_focusInHandler);
 			this.stageText.addEventListener(FocusEvent.FOCUS_OUT, stageText_focusOutHandler);
-			if(this._isWaitingToSetFocus || this._text)
-			{
-				this.stageText.addEventListener(Event.COMPLETE, stageText_initialText_completeHandler);
-			}
+			this.stageText.addEventListener(Event.COMPLETE, stageText_completeHandler);
 		}
 
 		/**
@@ -768,12 +765,15 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected function stageText_initialText_completeHandler(event:Event):void
+		protected function stageText_completeHandler(event:Event):void
 		{
-			this.stageText.removeEventListener(Event.COMPLETE, stageText_initialText_completeHandler);
-			//we can't take a proper snapshot until after the complete event is
-			//dispatched
-			this.invalidate(INVALIDATION_FLAG_DATA);
+			this.stageText.removeEventListener(Event.COMPLETE, stageText_completeHandler);
+			//we can't take a proper snapshot of the StageText until after the
+			//complete event is dispatched
+			if(this._isWaitingToSetFocus || this._text)
+			{
+				this.invalidate(INVALIDATION_FLAG_DATA);
+			}
 
 			if(this._isWaitingToSetFocus && this._text)
 			{
