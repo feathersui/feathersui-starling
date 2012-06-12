@@ -57,8 +57,39 @@ package org.josht.starling.foxhole.controls.supportClasses
 			super();
 		}
 
-		public var visibleWidth:Number = 0;
-		public var visibleHeight:Number = 0;
+		public var _visibleWidth:Number = 0;
+
+		public function get visibleWidth():Number
+		{
+			return this._visibleWidth;
+		}
+
+		public function set visibleWidth(value:Number):void
+		{
+			if(this._visibleWidth == value)
+			{
+				return;
+			}
+			this._visibleWidth = value;
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		public var _visibleHeight:Number = 0;
+
+		public function get visibleHeight():Number
+		{
+			return this._visibleHeight;
+		}
+
+		public function set visibleHeight(value:Number):void
+		{
+			if(this._visibleHeight == value)
+			{
+				return;
+			}
+			this._visibleHeight = value;
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
 		
 		private var _unrenderedData:Array = [];
 		private var _layoutItems:Vector.<DisplayObject> = new <DisplayObject>[];
@@ -108,11 +139,13 @@ package org.josht.starling.foxhole.controls.supportClasses
 			if(this._dataProvider)
 			{
 				this._dataProvider.onChange.remove(dataProvider_onChange);
+				this._dataProvider.onItemUpdate.remove(dataProvider_onItemUpdate);
 			}
 			this._dataProvider = value;
 			if(this._dataProvider)
 			{
 				this._dataProvider.onChange.add(dataProvider_onChange);
+				this._dataProvider.onItemUpdate.add(dataProvider_onItemUpdate);
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -450,8 +483,8 @@ package org.josht.starling.foxhole.controls.supportClasses
 				virtualLayout.typicalItemWidth = this._typicalItemWidth;
 				virtualLayout.typicalItemHeight = this._typicalItemHeight;
 				this._ignoreLayoutChanges = false;
-				startIndex = virtualLayout.getMinimumItemIndexAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, this.visibleWidth, this.visibleHeight);
-				endIndex = virtualLayout.getMaximumItemIndexAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, this.visibleWidth, this.visibleHeight);
+				startIndex = virtualLayout.getMinimumItemIndexAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, this.visibleWidth, this.visibleHeight, itemCount);
+				endIndex = virtualLayout.getMaximumItemIndexAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, this.visibleWidth, this.visibleHeight, itemCount);
 			}
 			for(var i:int = 0; i < itemCount; i++)
 			{
@@ -531,7 +564,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 				var renderer:IListItemRenderer;
 				if(this._itemRendererFunction != null)
 				{
-					renderer = IListItemRenderer(this._itemRendererFunction(item));
+					renderer = IListItemRenderer(this._itemRendererFunction());
 				}
 				else
 				{
@@ -579,6 +612,14 @@ package org.josht.starling.foxhole.controls.supportClasses
 		private function dataProvider_onChange(data:ListCollection):void
 		{
 			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		private function dataProvider_onItemUpdate(data:ListCollection, index:int):void
+		{
+			const item:Object = this._dataProvider.getItemAt(index);
+			const renderer:IListItemRenderer = IListItemRenderer(this._rendererMap[item]);
+			renderer.data = null;
+			renderer.data = item;
 		}
 
 		private function layout_onLayoutChange(layout:ILayout):void

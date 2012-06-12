@@ -286,7 +286,7 @@ package org.josht.starling.foxhole.controls
 		 * Indicates if the button is selected or not. The button may be
 		 * selected programmatically, even if <code>isToggle</code> is false.
 		 * 
-		 * @see isToggle
+		 * @see #isToggle
 		 */
 		public function get isSelected():Boolean
 		{
@@ -349,7 +349,7 @@ package org.josht.starling.foxhole.controls
 		 * other words, they will be positioned at the edges of the button,
 		 * adjusted for padding.</p>
 		 * 
-		 * @see iconPosition
+		 * @see #iconPosition
 		 */
 		public function get gap():Number
 		{
@@ -566,12 +566,12 @@ package org.josht.starling.foxhole.controls
 		 * The skin used when no other skin is defined for the current state.
 		 * Intended for use when multiple states should use the same skin.
 		 * 
-		 * @see upSkin
-		 * @see downSkin
-		 * @see disabledSkin
-		 * @see defaultSelectedSkin
-		 * @see selectedUpSkin
-		 * @see selectedDownSkin
+		 * @see #upSkin
+		 * @see #downSkin
+		 * @see #disabledSkin
+		 * @see #defaultSelectedSkin
+		 * @see #selectedUpSkin
+		 * @see #selectedDownSkin
 		 */
 		public function get defaultSkin():DisplayObject
 		{
@@ -615,9 +615,9 @@ package org.josht.starling.foxhole.controls
 		 * <code>defaultSkin</code>, but a lower priority than other selected
 		 * skins.
 		 * 
-		 * @see defaultSkin
-		 * @see selectedUpSkin
-		 * @see selectedDownSkin
+		 * @see #defaultSkin
+		 * @see #selectedUpSkin
+		 * @see #selectedDownSkin
 		 */
 		public function get defaultSelectedSkin():DisplayObject
 		{
@@ -659,7 +659,7 @@ package org.josht.starling.foxhole.controls
 		 * The skin used for the button's up state. If <code>null</code>, then
 		 * <code>defaultSkin</code> is used instead.
 		 * 
-		 * @see defaultSkin
+		 * @see #defaultSkin
 		 */
 		public function get upSkin():DisplayObject
 		{
@@ -700,7 +700,7 @@ package org.josht.starling.foxhole.controls
 		 * The skin used for the button's down state. If <code>null</code>, then
 		 * <code>defaultSkin</code> is used instead.
 		 * 
-		 * @see defaultSkin
+		 * @see #defaultSkin
 		 */
 		public function get downSkin():DisplayObject
 		{
@@ -741,7 +741,7 @@ package org.josht.starling.foxhole.controls
 		 * The skin used for the button's disabled state. If <code>null</code>,
 		 * then <code>defaultSkin</code> is used instead.
 		 * 
-		 * @see defaultSkin
+		 * @see #defaultSkin
 		 */
 		public function get disabledSkin():DisplayObject
 		{
@@ -784,8 +784,8 @@ package org.josht.starling.foxhole.controls
 		 * instead. If <code>defaultSelectedSkin</code> is also
 		 * <code>null</code>, then <code>defaultSkin</code> is used.
 		 * 
-		 * @see defaultSkin
-		 * @see defaultSelectedSkin
+		 * @see #defaultSkin
+		 * @see #defaultSelectedSkin
 		 */
 		public function get selectedUpSkin():DisplayObject
 		{
@@ -828,8 +828,8 @@ package org.josht.starling.foxhole.controls
 		 * is used instead. If <code>defaultSelectedSkin</code> is also
 		 * <code>null</code>, then <code>defaultSkin</code> is used.
 		 * 
-		 * @see defaultSkin
-		 * @see defaultSelectedSkin
+		 * @see #defaultSkin
+		 * @see #defaultSelectedSkin
 		 */
 		public function get selectedDownSkin():DisplayObject
 		{
@@ -871,12 +871,12 @@ package org.josht.starling.foxhole.controls
 		 * current state. Intended for use when multiple states should use the
 		 * same text format.
 		 * 
-		 * @see upTextFormat
-		 * @see downTextFormat
-		 * @see disabledTextFormat
-		 * @see defaultSelectedTextFormat
-		 * @see selectedUpTextFormat
-		 * @see selectedDownTextFormat
+		 * @see #upTextFormat
+		 * @see #downTextFormat
+		 * @see #disabledTextFormat
+		 * @see #defaultSelectedTextFormat
+		 * @see #selectedUpTextFormat
+		 * @see #selectedDownTextFormat
 		 */
 		public function get defaultTextFormat():BitmapFontTextFormat
 		{
@@ -901,7 +901,7 @@ package org.josht.starling.foxhole.controls
 		 * The text format used for the button's up state. If <code>null</code>,
 		 * then <code>defaultTextFormat</code> is used instead.
 		 * 
-		 * @see defaultTextFormat
+		 * @see #defaultTextFormat
 		 */
 		public function get upTextFormat():BitmapFontTextFormat
 		{
@@ -926,7 +926,7 @@ package org.josht.starling.foxhole.controls
 		 * The text format used for the button's down state. If <code>null</code>,
 		 * then <code>defaultTextFormat</code> is used instead.
 		 * 
-		 * @see defaultTextFormat
+		 * @see #defaultTextFormat
 		 */
 		public function get downTextFormat():BitmapFontTextFormat
 		{
@@ -951,7 +951,7 @@ package org.josht.starling.foxhole.controls
 		 * The text format used for the button's disabled state. If <code>null</code>,
 		 * then <code>defaultTextFormat</code> is used instead.
 		 * 
-		 * @see defaultTextFormat
+		 * @see #defaultTextFormat
 		 */
 		public function get disabledTextFormat():BitmapFontTextFormat
 		{
@@ -978,9 +978,9 @@ package org.josht.starling.foxhole.controls
 		 * <code>defaultTextFormat</code>, but a lower priority than other
 		 * selected text formats.
 		 * 
-		 * @see defaultTextFormat
-		 * @see selectedUpTextFormat
-		 * @see selectedDownTextFormat
+		 * @see #defaultTextFormat
+		 * @see #selectedUpTextFormat
+		 * @see #selectedDownTextFormat
 		 */
 		public function get defaultSelectedTextFormat():BitmapFontTextFormat
 		{
@@ -1007,8 +1007,8 @@ package org.josht.starling.foxhole.controls
 		 * is used instead. If <code>defaultSelectedTextFormat</code> is also
 		 * <code>null</code>, then <code>defaultTextFormat</code> is used.
 		 * 
-		 * @see defaultTextFormat
-		 * @see defaultSelectedTextFormat
+		 * @see #defaultTextFormat
+		 * @see #defaultSelectedTextFormat
 		 */
 		public function get selectedUpTextFormat():BitmapFontTextFormat
 		{
@@ -1035,8 +1035,8 @@ package org.josht.starling.foxhole.controls
 		 * is used instead. If <code>defaultSelectedTextFormat</code> is also
 		 * <code>null</code>, then <code>defaultTextFormat</code> is used.
 		 * 
-		 * @see defaultTextFormat
-		 * @see defaultSelectedTextFormat
+		 * @see #defaultTextFormat
+		 * @see #defaultSelectedTextFormat
 		 */
 		public function get selectedDownTextFormat():BitmapFontTextFormat
 		{
@@ -1061,12 +1061,12 @@ package org.josht.starling.foxhole.controls
 		 * The icon used when no other icon is defined for the current state.
 		 * Intended for use when multiple states should use the same icon.
 		 * 
-		 * @see upIcon
-		 * @see downIcon
-		 * @see disabledIcon
-		 * @see defaultSelectedIcon
-		 * @see selectedUpIcon
-		 * @see selectedDownIcon
+		 * @see #upIcon
+		 * @see #downIcon
+		 * @see #disabledIcon
+		 * @see #defaultSelectedIcon
+		 * @see #selectedUpIcon
+		 * @see #selectedDownIcon
 		 */
 		public function get defaultIcon():DisplayObject
 		{
@@ -1110,9 +1110,9 @@ package org.josht.starling.foxhole.controls
 		 * <code>defaultIcon</code>, but a lower priority than other selected
 		 * icons.
 		 * 
-		 * @see defaultIcon
-		 * @see selectedUpIcon
-		 * @see selectedDownIcon
+		 * @see #defaultIcon
+		 * @see #selectedUpIcon
+		 * @see #selectedDownIcon
 		 */
 		public function get defaultSelectedIcon():DisplayObject
 		{
@@ -1154,7 +1154,7 @@ package org.josht.starling.foxhole.controls
 		 * The icon used for the button's up state. If <code>null</code>, then
 		 * <code>defaultIcon</code> is used instead.
 		 * 
-		 * @see defaultIcon
+		 * @see #defaultIcon
 		 */
 		public function get upIcon():DisplayObject
 		{
@@ -1195,7 +1195,7 @@ package org.josht.starling.foxhole.controls
 		 * The icon used for the button's down state. If <code>null</code>, then
 		 * <code>defaultIcon</code> is used instead.
 		 * 
-		 * @see defaultIcon
+		 * @see #defaultIcon
 		 */
 		public function get downIcon():DisplayObject
 		{
@@ -1236,7 +1236,7 @@ package org.josht.starling.foxhole.controls
 		 * The icon used for the button's disabled state. If <code>null</code>, then
 		 * <code>defaultIcon</code> is used instead.
 		 * 
-		 * @see defaultIcon
+		 * @see #defaultIcon
 		 */
 		public function get disabledIcon():DisplayObject
 		{
@@ -1279,8 +1279,8 @@ package org.josht.starling.foxhole.controls
 		 * is used instead. If <code>defaultSelectedIcon</code> is also
 		 * <code>null</code>, then <code>defaultIcon</code> is used.
 		 * 
-		 * @see defaultIcon
-		 * @see defaultSelectedIcon
+		 * @see #defaultIcon
+		 * @see #defaultSelectedIcon
 		 */
 		public function get selectedUpIcon():DisplayObject
 		{
@@ -1323,8 +1323,8 @@ package org.josht.starling.foxhole.controls
 		 * is used instead. If <code>defaultSelectedIcon</code> is also
 		 * <code>null</code>, then <code>defaultIcon</code> is used.
 		 * 
-		 * @see defaultIcon
-		 * @see defaultSelectedIcon
+		 * @see #defaultIcon
+		 * @see #defaultSelectedIcon
 		 */
 		public function get selectedDownIcon():DisplayObject
 		{
@@ -1500,7 +1500,7 @@ package org.josht.starling.foxhole.controls
 				{
 					FoxholeControl(this.currentIcon).validate();
 				}
-				this.labelControl.validate();
+
 				this.layoutContent();
 			}
 			
@@ -1522,6 +1522,7 @@ package org.josht.starling.foxhole.controls
 			{
 				return false;
 			}
+			this.labelControl.maxWidth = Number.POSITIVE_INFINITY;
 			this.labelControl.validate();
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
@@ -1850,11 +1851,20 @@ package org.josht.starling.foxhole.controls
 		{
 			if(this.label && this.currentIcon)
 			{
+				if(this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE ||
+					this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
+				{
+					var adjustedGap:Number = this._gap == Number.POSITIVE_INFINITY ? Math.min(this._paddingLeft, this._paddingRight) : this._gap;
+					this.labelControl.maxWidth = this.actualWidth - this._paddingLeft - this._paddingRight - this.currentIcon.width - adjustedGap;
+				}
+				this.labelControl.validate();
 				this.positionLabelOrIcon(this.labelControl);
 				this.positionLabelAndIcon();
 			}
 			else if(this.label && !this.currentIcon)
 			{
+				this.labelControl.maxWidth = this.actualWidth - this._paddingLeft - this._paddingRight;
+				this.labelControl.validate();
 				this.positionLabelOrIcon(this.labelControl);
 			}
 			else if(!this.label && this.currentIcon)

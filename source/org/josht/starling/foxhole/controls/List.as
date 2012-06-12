@@ -635,7 +635,7 @@ package org.josht.starling.foxhole.controls
 		 * A function called that is expected to return a new item renderer. Has
 		 * a higher priority than <code>itemRendererType</code>.
 		 * 
-		 * @see itemRendererType
+		 * @see #itemRendererType
 		 */
 		public function get itemRendererFunction():Function
 		{
@@ -824,15 +824,20 @@ package org.josht.starling.foxhole.controls
 			this.dataContainer.horizontalScrollPosition = this._horizontalScrollPosition;
 			this.dataContainer.verticalScrollPosition = this._verticalScrollPosition;
 			
-			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
-			
 			this.scroller.isEnabled = this._isEnabled;
-			this.scroller.width = this.actualWidth - this._paddingLeft - this._paddingRight;
-			this.scroller.height = this.actualHeight - this._paddingTop - this._paddingBottom;
 			this.scroller.x = this._paddingLeft;
 			this.scroller.y = this._paddingTop;
 			this.scroller.horizontalScrollPosition = this._horizontalScrollPosition;
 			this.scroller.verticalScrollPosition = this._verticalScrollPosition;
+
+			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
+
+			if(sizeInvalid)
+			{
+				this.scroller.width = this.actualWidth - this._paddingLeft - this._paddingRight;
+				this.scroller.height = this.actualHeight - this._paddingTop - this._paddingBottom;
+			}
+
 			this.scroller.validate();
 			this._maxHorizontalScrollPosition = this.scroller.maxHorizontalScrollPosition;
 			this._maxVerticalScrollPosition = this.scroller.maxVerticalScrollPosition;
@@ -842,7 +847,7 @@ package org.josht.starling.foxhole.controls
 			if(this._scrollToIndex >= 0)
 			{
 				const item:Object = this._dataProvider.getItemAt(this._scrollToIndex);
-				if(item)
+				if(item is Object)
 				{
 					const renderer:DisplayObject = this.dataContainer.itemToItemRenderer(item) as DisplayObject;
 					if(renderer)
@@ -873,16 +878,24 @@ package org.josht.starling.foxhole.controls
 				return false;
 			}
 
-			this.dataContainer.validate();
+			if(needsWidth)
+			{
+				this.scroller.width = NaN;
+			}
+			if(needsHeight)
+			{
+				this.scroller.height = NaN;
+			}
+			this.scroller.validate();
 			var newWidth:Number = this.explicitWidth;
 			var newHeight:Number = this.explicitHeight;
 			if(needsWidth)
 			{
-				newWidth = this.dataContainer.width + this._paddingLeft + this._paddingRight;
+				newWidth = this.scroller.width + this._paddingLeft + this._paddingRight;
 			}
 			if(needsHeight)
 			{
-				newHeight = this.dataContainer.height + this._paddingTop + this._paddingBottom;
+				newHeight = this.scroller.height + this._paddingTop + this._paddingBottom;
 			}
 			this.setSizeInternal(newWidth, newHeight, false);
 			return true;

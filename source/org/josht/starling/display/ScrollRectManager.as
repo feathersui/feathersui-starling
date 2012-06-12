@@ -56,5 +56,31 @@ package org.josht.starling.display
 				}
 			}
 		}
+
+		/**
+		 * Corrects a transformed point in the target coordinate system that has
+		 * been affected by <code>scrollRect</code> to stage coordinates.
+		 */
+		public static function toStageCoordinates(location:Point, target:DisplayObject):void
+		{
+			var matrix:Matrix;
+			var newTarget:DisplayObject = target;
+			while(newTarget.parent)
+			{
+				newTarget = newTarget.parent;
+				if(newTarget is IDisplayObjectWithScrollRect)
+				{
+					var targetWithScrollRect:IDisplayObjectWithScrollRect = IDisplayObjectWithScrollRect(newTarget);
+					var scrollRect:Rectangle = targetWithScrollRect.scrollRect;
+					if(!scrollRect || (scrollRect.x == 0 && scrollRect.y == 0))
+					{
+						continue;
+					}
+					matrix = newTarget.getTransformationMatrix(target, matrix);
+					location.x -= scrollRect.x * matrix.a;
+					location.y -= scrollRect.y * matrix.d;
+				}
+			}
+		}
 	}
 }

@@ -51,7 +51,7 @@ package org.josht.starling.foxhole.layout
 		 * typically not displayed and can be replaced virtually by the typical
 		 * item.
 		 */
-		function getMinimumItemIndexAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number):int;
+		function getMinimumItemIndexAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int):int;
 
 		/**
 		 * Determines which index (using the typical item dimensions) is the
@@ -60,7 +60,7 @@ package org.josht.starling.foxhole.layout
 		 * typically not displayed and can be replaced virtually by the typical
 		 * item.
 		 */
-		function getMaximumItemIndexAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number):int;
+		function getMaximumItemIndexAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int):int;
 
 		/**
 		 * Using the typical item dimensions, calculates a scroll position that
