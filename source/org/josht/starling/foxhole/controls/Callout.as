@@ -32,6 +32,7 @@ package org.josht.starling.foxhole.controls
 	import org.josht.starling.foxhole.core.PopUpManager;
 
 	import starling.display.DisplayObject;
+	import starling.display.Quad;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.Touch;
@@ -54,7 +55,7 @@ package org.josht.starling.foxhole.controls
 		{
 			const callout:Callout = new Callout();
 			callout.content = content;
-			PopUpManager.addPopUp(callout, true, false);
+			PopUpManager.addPopUp(callout, true, false, calloutOverlayFactory);
 			callout.validate();
 
 			callout.x = globalOrigin.x + globalOrigin.width;
@@ -63,12 +64,24 @@ package org.josht.starling.foxhole.controls
 			return callout;
 		}
 
+		protected static function calloutOverlayFactory():DisplayObject
+		{
+			const quad:Quad = new Quad(100, 100, 0xff00ff);
+			quad.alpha = 0;
+			return quad;
+		}
+
 		/**
 		 * Constructor.
 		 */
 		public function Callout()
 		{
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _touchPointID:int = -1;
 
 		/**
 		 * @private
@@ -473,10 +486,23 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			const touch:Touch = event.getTouch(this.stage, TouchPhase.BEGAN);
-			if(touch)
+			const touch:Touch = event.getTouch(this.stage);
+			if(!touch || (this._touchPointID >= 0 && this._touchPointID != touch.id))
 			{
-				PopUpManager.removePopUp(this, true);
+				return;
+			}
+
+			if(touch.phase == TouchPhase.BEGAN)
+			{
+				this._touchPointID = touch.id;
+			}
+			else if(this._touchPointID >= 0)
+			{
+				if(touch.phase == TouchPhase.ENDED)
+				{
+					PopUpManager.removePopUp(this, true);
+					this._touchPointID = -1;
+				}
 			}
 		}
 	}
