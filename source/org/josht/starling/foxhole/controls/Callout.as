@@ -31,6 +31,8 @@ package org.josht.starling.foxhole.controls
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.PopUpManager;
 
+	import starling.core.Starling;
+
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.events.Event;
@@ -45,23 +47,122 @@ package org.josht.starling.foxhole.controls
 	 */
 	public class Callout extends FoxholeControl
 	{
+		public static const DIRECTION_ANY:String = "any";
+		public static const DIRECTION_UP:String = "up";
+		public static const DIRECTION_DOWN:String = "down";
+		public static const DIRECTION_LEFT:String = "left";
+		public static const DIRECTION_RIGHT:String = "right";
+
+		protected static const DIRECTION_TO_FUNCTION:Object = {};
+		DIRECTION_TO_FUNCTION[DIRECTION_ANY] = positionCalloutAny;
+		DIRECTION_TO_FUNCTION[DIRECTION_UP] = positionCalloutUp;
+		DIRECTION_TO_FUNCTION[DIRECTION_DOWN] = positionCalloutDown;
+		DIRECTION_TO_FUNCTION[DIRECTION_LEFT] = positionCalloutLeft;
+		DIRECTION_TO_FUNCTION[DIRECTION_RIGHT] = positionCalloutRight;
+
 		/**
 		 * Creates a callout, and then positions and sizes it automatically
 		 * based on an origin rectangle. The provided width and height are
 		 * optional, and these values may be ignored if the callout cannot be
 		 * drawn at the specified dimensions.
 		 */
-		public static function showCallout(content:DisplayObject, globalOrigin:Rectangle, width:Number = NaN, height:Number = NaN):Callout
+		public static function showCallout(content:DisplayObject, globalOrigin:Rectangle, direction:String = DIRECTION_ANY, width:Number = NaN, height:Number = NaN):Callout
 		{
 			const callout:Callout = new Callout();
 			callout.content = content;
+			callout.width = width;
+			callout.height = height;
 			PopUpManager.addPopUp(callout, true, false, calloutOverlayFactory);
 			callout.validate();
 
-			callout.x = globalOrigin.x + globalOrigin.width;
-			callout.y = globalOrigin.y + (globalOrigin.height - callout.height) / 2;
+			if(DIRECTION_TO_FUNCTION.hasOwnProperty(direction))
+			{
+				const directionFunction:Function = DIRECTION_TO_FUNCTION[direction];
+				directionFunction(callout, globalOrigin);
+			}
+			else
+			{
+				positionCalloutAny(callout, globalOrigin);
+			}
 
 			return callout;
+		}
+
+		protected static function positionCalloutAny(callout:Callout, globalOrigin:Rectangle):void
+		{
+			const downSpace:Number = (Starling.current.stage.stageHeight - callout.height) - (globalOrigin.y + globalOrigin.height);
+			const upSpace:Number = globalOrigin.y - callout.height;
+			const rightSpace:Number = (Starling.current.stage.stageWidth - callout.width) - (globalOrigin.x + globalOrigin.width);
+			const leftSpace:Number = globalOrigin.x - callout.width;
+			if(downSpace >= 0)
+			{
+				positionCalloutDown(callout, globalOrigin);
+			}
+			else if(upSpace >= 0)
+			{
+				positionCalloutUp(callout, globalOrigin);
+			}
+			else if(rightSpace >= 0)
+			{
+				positionCalloutRight(callout, globalOrigin);
+			}
+			else if(leftSpace)
+			{
+				positionCalloutLeft(callout, globalOrigin);
+			}
+			else
+			{
+				//pick the side that has the most space
+				if(downSpace >= upSpace && downSpace >= upSpace && downSpace >= rightSpace && downSpace >= leftSpace)
+				{
+					positionCalloutDown(callout, globalOrigin);
+				}
+				else if(upSpace >= rightSpace && upSpace >= leftSpace)
+				{
+					positionCalloutUp(callout, globalOrigin);
+				}
+				else if(rightSpace >= leftSpace)
+				{
+					positionCalloutRight(callout, globalOrigin);
+				}
+				else
+				{
+					positionCalloutLeft(callout, globalOrigin);
+				}
+			}
+
+		}
+
+		protected static function positionCalloutDown(callout:Callout, globalOrigin:Rectangle):void
+		{
+			var xPosition:Number = globalOrigin.x + (globalOrigin.width - callout.width) / 2;
+			xPosition = Math.max(0, Math.min(Starling.current.stage.stageWidth - callout.width, xPosition));
+			callout.x = xPosition;
+			callout.y = globalOrigin.y + globalOrigin.height;
+		}
+
+		protected static function positionCalloutUp(callout:Callout, globalOrigin:Rectangle):void
+		{
+			var xPosition:Number = globalOrigin.x + (globalOrigin.width - callout.width) / 2;
+			xPosition = Math.max(0, Math.min(Starling.current.stage.stageWidth - callout.width, xPosition));
+			callout.x = xPosition;
+			callout.y = globalOrigin.y - callout.height;
+		}
+
+		protected static function positionCalloutRight(callout:Callout, globalOrigin:Rectangle):void
+		{
+			callout.x = globalOrigin.x + globalOrigin.width;
+			var yPosition:Number = globalOrigin.y + (globalOrigin.height - callout.height) / 2;
+			yPosition = Math.max(0, Math.min(Starling.current.stage.stageHeight - callout.height, yPosition));
+			callout.y = yPosition;
+		}
+
+		protected static function positionCalloutLeft(callout:Callout, globalOrigin:Rectangle):void
+		{
+			callout.x = globalOrigin.x - callout.width;
+			var yPosition:Number = globalOrigin.y + (globalOrigin.height - callout.height) / 2;
+			yPosition = Math.max(0, Math.min(Starling.current.stage.stageHeight - callout.height, yPosition));
+			callout.y = yPosition;
 		}
 
 		protected static function calloutOverlayFactory():DisplayObject
