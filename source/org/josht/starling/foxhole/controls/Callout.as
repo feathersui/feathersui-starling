@@ -113,7 +113,7 @@ package org.josht.starling.foxhole.controls
 			else
 			{
 				//pick the side that has the most space
-				if(downSpace >= upSpace && downSpace >= upSpace && downSpace >= rightSpace && downSpace >= leftSpace)
+				if(downSpace >= upSpace && downSpace >= rightSpace && downSpace >= leftSpace)
 				{
 					positionCalloutDown(callout, globalOrigin);
 				}
