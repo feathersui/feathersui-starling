@@ -70,10 +70,14 @@ package org.josht.starling.foxhole.core
 		 */
 		public static function addPopUp(popUp:DisplayObject, isModal:Boolean = true, isCentered:Boolean = true, customOverlayFactory:Function = null):void
 		{
-			const stage:Stage = Starling.current.stage;
-			if(isModal && overlayFactory != null)
+			const stage:Stage = Starling.current.stage
+			if(isModal && customOverlayFactory != null)
 			{
-				var overlay:DisplayObject = overlayFactory();
+				if(customOverlayFactory == null)
+				{
+					customOverlayFactory = overlayFactory;
+				}
+				const overlay:DisplayObject = customOverlayFactory();
 				overlay.width = stage.stageWidth;
 				overlay.height = stage.stageHeight;
 				stage.addChild(overlay);
@@ -97,8 +101,8 @@ package org.josht.starling.foxhole.core
 			if(overlay)
 			{
 				overlay.removeFromParent(true);
+				delete POPUP_TO_OVERLAY[popUp];
 			}
-			delete POPUP_TO_OVERLAY[popUp];
 			popUp.removeFromParent(dispose);
 		}
 		
