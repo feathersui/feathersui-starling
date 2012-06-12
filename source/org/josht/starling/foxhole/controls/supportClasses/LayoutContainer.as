@@ -25,9 +25,11 @@
 package org.josht.starling.foxhole.controls.supportClasses
 {
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.layout.ILayout;
+	import org.josht.starling.foxhole.layout.IVirtualLayout;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -39,11 +41,46 @@ package org.josht.starling.foxhole.controls.supportClasses
 	public class LayoutContainer extends FoxholeControl
 	{
 		private static const HELPER_POINT:Point = new Point();
+		private static const HELPER_RECT:Rectangle = new Rectangle();
 
 		public function LayoutContainer()
 		{
 			this.addEventListener(Event.ADDED, addedHandler);
 			this.addEventListener(Event.REMOVED, removedHandler);
+		}
+
+		public var _visibleWidth:Number = 0;
+
+		public function get visibleWidth():Number
+		{
+			return this._visibleWidth;
+		}
+
+		public function set visibleWidth(value:Number):void
+		{
+			if(this._visibleWidth == value)
+			{
+				return;
+			}
+			this._visibleWidth = value;
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		public var _visibleHeight:Number = 0;
+
+		public function get visibleHeight():Number
+		{
+			return this._visibleHeight;
+		}
+
+		public function set visibleHeight(value:Number):void
+		{
+			if(this._visibleHeight == value)
+			{
+				return;
+			}
+			this._visibleHeight = value;
+			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
 		protected var items:Vector.<DisplayObject> = new <DisplayObject>[];
@@ -68,6 +105,10 @@ package org.josht.starling.foxhole.controls.supportClasses
 			this._layout = value;
 			if(this._layout)
 			{
+				if(this._layout is IVirtualLayout)
+				{
+					IVirtualLayout(this._layout).useVirtualLayout = false;
+				}
 				this._layout.onLayoutChange.add(layout_onLayoutChange);
 				//if we don't have a layout, nothing will need to be redrawn
 				this.invalidate(INVALIDATION_FLAG_DATA);
@@ -99,15 +140,18 @@ package org.josht.starling.foxhole.controls.supportClasses
 						control.validate();
 					}
 				}
+				HELPER_RECT.x = HELPER_RECT.y = 0;
+				HELPER_RECT.width = this._visibleWidth;
+				HELPER_RECT.height = this._visibleHeight;
 				if(this._layout)
 				{
-					this._layout.layout(this.items, this._hitArea, HELPER_POINT);
+					this._layout.layout(this.items, HELPER_RECT, HELPER_POINT);
 					this.setSizeInternal(HELPER_POINT.x, HELPER_POINT.y, false);
 				}
 				else
 				{
-					var maxX:Number = isNaN(this._hitArea.width) ? 0 : this._hitArea.width;
-					var maxY:Number = isNaN(this._hitArea.height) ? 0 : this._hitArea.height;
+					var maxX:Number = isNaN(HELPER_RECT.width) ? 0 : HELPER_RECT.width;
+					var maxY:Number = isNaN(HELPER_RECT.height) ? 0 : HELPER_RECT.height;
 					for each(var item:DisplayObject in this.items)
 					{
 						maxX = Math.max(maxX, item.x + item.width);
@@ -151,6 +195,5 @@ package org.josht.starling.foxhole.controls.supportClasses
 			this.items.splice(index, 1);
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
-
 	}
 }

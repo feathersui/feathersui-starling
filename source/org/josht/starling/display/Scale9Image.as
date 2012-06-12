@@ -67,7 +67,7 @@ package org.josht.starling.display
 
 		private var _propertiesChanged:Boolean = true;
 		private var _layoutChanged:Boolean = true;
-		
+
 		/**
 		 * @private
 		 */
@@ -153,6 +153,8 @@ package org.josht.starling.display
 		
 		/**
 		 * The smoothing value to pass to the images.
+		 *
+		 * @see starling.textures.TextureSmoothing
 		 */
 		public function get smoothing():String
 		{
@@ -197,7 +199,7 @@ package org.josht.starling.display
 			this._color = value;
 			this._propertiesChanged = true;
 		}
-		
+
 		private var _scale9Grid:Rectangle;
 		private var _leftWidth:Number;
 		private var _centerWidth:Number;

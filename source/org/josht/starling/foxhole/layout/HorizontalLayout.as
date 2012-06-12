@@ -450,19 +450,31 @@ package org.josht.starling.foxhole.layout
 		/**
 		 * @inheritDoc
 		 */
-		public function getMinimumItemIndexAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number):int
+		public function getMinimumItemIndexAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int):int
 		{
-			return Math.max(0, (scrollX - this._paddingLeft) / (this._typicalItemWidth + this._gap));
+			const totalItemWidth:Number = itemCount * (this._typicalItemWidth + this._gap) - this._gap;
+			var indexOffset:int = 0;
+			if(totalItemWidth < width)
+			{
+				if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
+				{
+					indexOffset = Math.ceil((width - totalItemWidth) / (this._typicalItemWidth + this._gap));
+				}
+				else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
+				{
+					indexOffset = Math.ceil(((width - totalItemWidth) / (this._typicalItemWidth + this._gap)) / 2);
+				}
+			}
+			return -indexOffset + Math.max(0, (scrollX - this._paddingLeft) / (this._typicalItemWidth + this._gap));
 		}
 
 		/**
 		 * @inheritDoc
 		 */
-		public function getMaximumItemIndexAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number):int
+		public function getMaximumItemIndexAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int):int
 		{
-			const typicalItemWidth:Number = this._typicalItemWidth + this._gap;
-			const minimum:int = Math.max(0, (scrollX - this._paddingLeft) / typicalItemWidth);
-			return minimum + Math.ceil(width / typicalItemWidth) + 1;
+			const minimum:int = this.getMinimumItemIndexAtScrollPosition(scrollX, scrollY, width, height, itemCount);
+			return minimum + Math.ceil(width / (this._typicalItemWidth + this._gap)) + 1;
 		}
 
 		/**

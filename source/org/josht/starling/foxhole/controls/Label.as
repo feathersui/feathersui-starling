@@ -38,7 +38,8 @@ package org.josht.starling.foxhole.controls
 	import starling.textures.TextureSmoothing;
 
 	/**
-	 * Displays bitmap text. Automatically resizes itself and cannot be clipped.
+	 * Displays bitmap text. Automatically resizes itself. Can be truncated to a
+	 * maximum width.
 	 */
 	public class Label extends FoxholeControl
 	{
@@ -123,7 +124,9 @@ package org.josht.starling.foxhole.controls
 		private var _smoothing:String = TextureSmoothing.BILINEAR;
 		
 		/**
-		 * A smoothing value passed to each character.
+		 * A smoothing value passed to each character image.
+		 *
+		 * @see starling.textures.TextureSmoothing
 		 */
 		public function get smoothing():String
 		{
@@ -173,6 +176,62 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
+		private var _maxWidth:Number = Number.POSITIVE_INFINITY;
+
+		/**
+		 * The maximum width of the label. If the complete text is longer than
+		 * this value, it will be truncated. If the text contains line breaks,
+		 * this value is ignored.
+		 *
+		 * @see #truncationText
+		 */
+		public function get maxWidth():Number
+		{
+			return this._maxWidth;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set maxWidth(value:Number):void
+		{
+			if(this._maxWidth == value)
+			{
+				return;
+			}
+			this._maxWidth = value;
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _truncationText:String = "...";
+
+		/**
+		 * The text to display at the end of the label if it is truncated.
+		 */
+		public function get truncationText():String
+		{
+			return _truncationText;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set truncationText(value:String):void
+		{
+			if(this._truncationText == value)
+			{
+				return;
+			}
+			this._truncationText = value;
+			this.invalidate(INVALIDATION_FLAG_DATA,  INVALIDATION_FLAG_SIZE);
+		}
+
+		/**
+		 * @private
+		 */
 		override public function render(support:RenderSupport, alpha:Number):void
 		{
 			if(this._snapToPixels)
@@ -211,8 +270,9 @@ package org.josht.starling.foxhole.controls
 		{
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			const sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			
-			if(dataInvalid || stylesInvalid)
+			if(dataInvalid || stylesInvalid || sizeInvalid)
 			{
 				this._characterBatch.reset();
 				if(!this._textFormat)
@@ -232,13 +292,14 @@ package org.josht.starling.foxhole.controls
 				var currentX:Number = 0;
 				var currentY:Number = 0;
 				var lastCharID:Number = NaN;
-				var characterIndex:int = 0;
-				const charCount:int = this._text.length;
+				var textToDraw:String = this.getTruncatedText();
+				var charCount:int = textToDraw ? textToDraw.length : 0;
 				for(var i:int = 0; i < charCount; i++)
 				{
-					var charID:Number = this._text.charCodeAt(i);
+					var charID:int = textToDraw.charCodeAt(i);
 					if(charID == 10 || charID == 13) //new line \n or \r
 					{
+						currentX = Math.max(0, currentX - customLetterSpacing);
 						maxX = Math.max(maxX, currentX);
 						lastCharID = NaN;
 						currentX = 0;
@@ -251,6 +312,7 @@ package org.josht.starling.foxhole.controls
 						trace("Missing character " + String.fromCharCode(charID) + " in font " + font.name + ".");
 						continue;
 					}
+
 					if(isKerningEnabled && !isNaN(lastCharID))
 					{
 						currentX += charData.getKerning(lastCharID);
@@ -278,13 +340,103 @@ package org.josht.starling.foxhole.controls
 
 					currentX += charData.xAdvance * scale + customLetterSpacing;
 					lastCharID = charID;
-					characterIndex++;
 
 					this._characterBatch.addImage(helperImage);
 				}
+				currentX = Math.max(0, currentX - customLetterSpacing);
 				maxX = Math.max(maxX, currentX);
 				this.setSizeInternal(maxX, currentY + font.lineHeight * scale, false);
 			}
+		}
+
+		private function getTruncatedText():String
+		{
+			//if the maxWidth is infinity or the string is multiline, don't
+			//allow truncation
+			if(this._maxWidth == Number.POSITIVE_INFINITY || this._text.indexOf(String.fromCharCode(10)) >= 0 || this._text.indexOf(String.fromCharCode(13)) >= 0)
+			{
+				return this._text;
+			}
+
+			const font:BitmapFont = this._textFormat.font;
+			const customSize:Number = this._textFormat.size;
+			const customLetterSpacing:Number = this._textFormat.letterSpacing;
+			const isKerningEnabled:Boolean = this._textFormat.isKerningEnabled;
+			const scale:Number = isNaN(customSize) ? 1 : (customSize / font.size);
+			var currentX:Number = 0;
+			var lastCharID:Number = NaN;
+			var charCount:int = this._text ? this._text.length : 0;
+			var isTruncated:Boolean = false;
+			var truncationIndex:int = -1;
+			for(var i:int = 0; i < charCount; i++)
+			{
+				var charID:int = this._text.charCodeAt(i);
+				var charData:BitmapChar = font.getChar(charID);
+				if(!charData)
+				{
+					continue;
+				}
+				var currentKerning:Number = 0;
+				if(isKerningEnabled && !isNaN(lastCharID))
+				{
+					currentKerning = charData.getKerning(lastCharID);
+				}
+				currentX += currentKerning + charData.xAdvance * scale;
+				if(currentX > this._maxWidth)
+				{
+					truncationIndex = i;
+					break;
+				}
+				currentX += customLetterSpacing;
+				lastCharID = charID;
+			}
+
+			if(truncationIndex >= 0)
+			{
+				//first measure the size of the truncation text
+				charCount = this._truncationText.length;
+				for(i = 0; i < charCount; i++)
+				{
+					charID = this._truncationText.charCodeAt(i);
+					charData = font.getChar(charID);
+					if(!charData)
+					{
+						continue;
+					}
+					currentKerning = 0;
+					if(isKerningEnabled && !isNaN(lastCharID))
+					{
+						currentKerning = charData.getKerning(lastCharID);
+					}
+					currentX += currentKerning + charData.xAdvance * scale + customLetterSpacing;
+					lastCharID = charID;
+				}
+				currentX -= customLetterSpacing;
+
+				//then work our way backwards until we fit into the maxWidth
+				for(i = truncationIndex; i >= 0; i--)
+				{
+					charID = this._text.charCodeAt(i);
+					lastCharID = i > 0 ? this._text.charCodeAt(i - 1) : NaN;
+					charData = font.getChar(charID);
+					if(!charData)
+					{
+						continue;
+					}
+					currentKerning = 0;
+					if(isKerningEnabled && !isNaN(lastCharID))
+					{
+						currentKerning = charData.getKerning(lastCharID);
+					}
+					currentX -= (currentKerning + charData.xAdvance * scale + customLetterSpacing);
+					if(currentX <= this._maxWidth)
+					{
+						return this._text.substr(0, i) + this._truncationText;
+					}
+				}
+				return this._truncationText;
+			}
+			return this._text;
 		}
 	}
 }

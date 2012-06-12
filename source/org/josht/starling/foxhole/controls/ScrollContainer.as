@@ -418,10 +418,18 @@ package org.josht.starling.foxhole.controls
 				this.scroller.horizontalScrollPolicy = this.horizontalScrollPolicy;
 			}
 
+			if(sizeInvalid)
+			{
+				this.viewPort.visibleWidth = this.explicitWidth;
+				this.viewPort.visibleHeight = this.explicitHeight;
+			}
+
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
 			if(sizeInvalid)
 			{
+				this.viewPort.visibleWidth = this.actualWidth;
+				this.viewPort.visibleHeight = this.actualHeight;
 				this.scroller.width = this.actualWidth;
 				this.scroller.height = this.actualHeight;
 			}
@@ -443,6 +451,14 @@ package org.josht.starling.foxhole.controls
 				return false;
 			}
 
+			if(needsWidth)
+			{
+				this.scroller.width = NaN;
+			}
+			if(needsHeight)
+			{
+				this.scroller.height = NaN;
+			}
 			this.scroller.validate();
 			var newWidth:Number = this.explicitWidth;
 			var newHeight:Number = this.explicitHeight;

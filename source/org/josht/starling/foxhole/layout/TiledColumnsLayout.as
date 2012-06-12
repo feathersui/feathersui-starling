@@ -614,23 +614,50 @@ package org.josht.starling.foxhole.layout
 		/**
 		 * @inheritDoc
 		 */
-		public function getMinimumItemIndexAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number):int
+		public function getMinimumItemIndexAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int):int
 		{
 			const tileSize:Number = Math.max(0, this._typicalItemWidth, this._typicalItemHeight);
 			const verticalTileCount:int = (height - this._paddingTop - this._paddingBottom + this._gap) / (tileSize + this._gap);
-			const columnIndex:int = Math.floor((scrollX - this._paddingLeft + this._gap) / (tileSize + this._gap));
+			const horizontalTileCount:int = Math.ceil((width - this._paddingLeft + this._gap) / (tileSize + this._gap)) + 1;
+			var columnIndexOffset:int = 0;
+			const totalColumnWidth:Number = Math.ceil(itemCount / verticalTileCount) * (tileSize + this._gap) - this._gap;
+			if(totalColumnWidth < width)
+			{
+				if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
+				{
+					columnIndexOffset = Math.ceil((width - totalColumnWidth) / (tileSize + this._gap));
+				}
+				else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
+				{
+					columnIndexOffset = Math.ceil((width - totalColumnWidth) / (tileSize + this._gap) / 2);
+				}
+			}
+			const columnIndex:int = -columnIndexOffset + Math.floor((scrollX - this._paddingLeft + this._gap) / (tileSize + this._gap));
 			return columnIndex * verticalTileCount;
 		}
 
 		/**
 		 * @inheritDoc
 		 */
-		public function getMaximumItemIndexAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number):int
+		public function getMaximumItemIndexAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int):int
 		{
 			const tileSize:Number = Math.max(0, this._typicalItemWidth, this._typicalItemHeight);
 			const verticalTileCount:int = (height - this._paddingTop - this._paddingBottom + this._gap) / (tileSize + this._gap);
 			const horizontalTileCount:int = Math.ceil((width - this._paddingLeft + this._gap) / (tileSize + this._gap)) + 1;
-			const columnIndex:int = Math.floor((scrollX - this._paddingLeft + this._gap) / (tileSize + this._gap));
+			var columnIndexOffset:int = 0;
+			const totalColumnWidth:Number = Math.ceil(itemCount / verticalTileCount) * (tileSize + this._gap) - this._gap;
+			if(totalColumnWidth < width)
+			{
+				if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
+				{
+					columnIndexOffset = Math.ceil((width - totalColumnWidth) / (tileSize + this._gap));
+				}
+				else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
+				{
+					columnIndexOffset = Math.ceil((width - totalColumnWidth) / (tileSize + this._gap) / 2);
+				}
+			}
+			const columnIndex:int = -columnIndexOffset + Math.floor((scrollX - this._paddingLeft + this._gap) / (tileSize + this._gap));
 			return columnIndex * verticalTileCount + verticalTileCount * horizontalTileCount;
 		}
 

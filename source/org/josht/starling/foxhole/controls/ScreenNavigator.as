@@ -116,7 +116,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * The identifier of the "default" screen.
 		 *
-		 * @see showDefaultScreen
+		 * @see #showDefaultScreen()
 		 */
 		public var defaultScreenID:String;
 
@@ -237,7 +237,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * Shows the "default" screen.
 		 *
-		 * @see defaultScreenID
+		 * @see #defaultScreenID
 		 */
 		public function showDefaultScreen():DisplayObject
 		{

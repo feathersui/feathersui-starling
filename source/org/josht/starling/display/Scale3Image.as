@@ -164,6 +164,8 @@ package org.josht.starling.display
 
 		/**
 		 * The smoothing value to pass to the images.
+		 *
+		 * @see starling.textures.TextureSmoothing
 		 */
 		public function get smoothing():String
 		{
