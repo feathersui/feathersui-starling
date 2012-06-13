@@ -43,7 +43,7 @@ package org.josht.starling.foxhole.controls
 
 	/**
 	 * A pop-up container that points at (or calls out) a specific region of
-	 * the application (most likely a specific control).
+	 * the application (typically a specific control that triggered it).
 	 */
 	public class Callout extends FoxholeControl
 	{
@@ -104,11 +104,12 @@ package org.josht.starling.foxhole.controls
 
 		/**
 		 * Creates a callout, and then positions and sizes it automatically
-		 * based on an origin rectangle and the specified direction. The
-		 * provided width and height are optional, and these values may be
-		 * ignored if the callout cannot be drawn at the specified dimensions.
+		 * based on an origin rectangle and the specified direction relative to
+		 * the original. The provided width and height values are optional, and
+		 * these values may be ignored if the callout cannot be drawn at the
+		 * specified dimensions.
 		 */
-		public static function showCallout(content:DisplayObject, globalOrigin:Rectangle, direction:String = DIRECTION_ANY, width:Number = NaN, height:Number = NaN):Callout
+		public static function show(content:DisplayObject, globalOrigin:Rectangle, direction:String = DIRECTION_ANY, width:Number = NaN, height:Number = NaN):Callout
 		{
 			const callout:Callout = new Callout();
 			callout.content = content;
@@ -271,10 +272,11 @@ package org.josht.starling.foxhole.controls
 		protected var _content:DisplayObject;
 
 		/**
-		 * The display object displayed by the callout. This object will be
-		 * resized to fit the callout's bounds, and if it needs scrolling to
-		 * fit into a smaller region, it should provide scrolling capabilities
-		 * itself because the callout will not.
+		 * The display object that will be presented by the callout. This object
+		 * may be resized to fit the callout's bounds. If the content needs to
+		 * be scrolled if placed into a smaller region than its ideal size, it
+		 * must provide its own scrolling capabilities because the callout does
+		 * not offer scrolling.
 		 */
 		public function get content():DisplayObject
 		{
@@ -418,7 +420,9 @@ package org.josht.starling.foxhole.controls
 		private var _arrowPosition:String = ARROW_POSITION_TOP;
 
 		/**
-		 * The direction of the callout relative to the region it points at.
+		 * The position of the callout's arrow relative to the background. Do
+		 * not confuse this with the direction that the callout opens when using
+		 * <code>Callout.create()</code>.
 		 */
 		public function get arrowPosition():String
 		{
