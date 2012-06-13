@@ -917,11 +917,11 @@ package org.josht.starling.foxhole.controls
 				}
 				if(this._arrowPosition == ARROW_POSITION_TOP && this._topArrowSkin)
 				{
-					newHeight += this._topArrowSkin.width + this._topArrowGap;
+					newHeight += this._topArrowSkin.height + this._topArrowGap;
 				}
 				if(this._arrowPosition == ARROW_POSITION_BOTTOM && this._bottomArrowSkin)
 				{
-					newHeight += this._bottomArrowSkin.width + this._bottomArrowGap;
+					newHeight += this._bottomArrowSkin.height + this._bottomArrowGap;
 				}
 			}
 			this.setSizeInternal(newWidth, newHeight, false);
