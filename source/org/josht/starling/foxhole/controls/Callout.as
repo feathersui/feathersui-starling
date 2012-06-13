@@ -129,6 +129,9 @@ package org.josht.starling.foxhole.controls
 			return callout;
 		}
 
+		/**
+		 * @private
+		 */
 		protected static function positionCalloutAny(callout:Callout, globalOrigin:Rectangle):void
 		{
 			const downSpace:Number = (Starling.current.stage.stageHeight - callout.height) - (globalOrigin.y + globalOrigin.height);
@@ -174,46 +177,65 @@ package org.josht.starling.foxhole.controls
 
 		}
 
+		/**
+		 * @private
+		 */
 		protected static function positionCalloutBelow(callout:Callout, globalOrigin:Rectangle):void
 		{
 			callout.arrowPosition = ARROW_POSITION_TOP;
 			callout.validate();
-			var xPosition:Number = globalOrigin.x + (globalOrigin.width - callout.width) / 2;
-			xPosition = Math.max(0, Math.min(Starling.current.stage.stageWidth - callout.width, xPosition));
+			const idealXPosition:Number = globalOrigin.x + (globalOrigin.width - callout.width) / 2;
+			const xPosition:Number = Math.max(0, Math.min(Starling.current.stage.stageWidth - callout.width, idealXPosition));
 			callout.x = xPosition;
 			callout.y = globalOrigin.y + globalOrigin.height;
+			callout.arrowOffset = idealXPosition - xPosition;
 		}
 
+		/**
+		 * @private
+		 */
 		protected static function positionCalloutAbove(callout:Callout, globalOrigin:Rectangle):void
 		{
 			callout.arrowPosition = ARROW_POSITION_BOTTOM;
 			callout.validate();
-			var xPosition:Number = globalOrigin.x + (globalOrigin.width - callout.width) / 2;
-			xPosition = Math.max(0, Math.min(Starling.current.stage.stageWidth - callout.width, xPosition));
+			const idealXPosition:Number = globalOrigin.x + (globalOrigin.width - callout.width) / 2;
+			const xPosition:Number = Math.max(0, Math.min(Starling.current.stage.stageWidth - callout.width, idealXPosition));
 			callout.x = xPosition;
 			callout.y = globalOrigin.y - callout.height;
+			callout.arrowOffset = idealXPosition - xPosition;
 		}
 
+		/**
+		 * @private
+		 */
 		protected static function positionCalloutRightSide(callout:Callout, globalOrigin:Rectangle):void
 		{
 			callout.arrowPosition = ARROW_POSITION_LEFT;
 			callout.validate();
 			callout.x = globalOrigin.x + globalOrigin.width;
-			var yPosition:Number = globalOrigin.y + (globalOrigin.height - callout.height) / 2;
-			yPosition = Math.max(0, Math.min(Starling.current.stage.stageHeight - callout.height, yPosition));
+			const idealYPosition:Number = globalOrigin.y + (globalOrigin.height - callout.height) / 2;
+			const yPosition:Number = Math.max(0, Math.min(Starling.current.stage.stageHeight - callout.height, idealYPosition));
 			callout.y = yPosition;
+			callout.arrowOffset = idealYPosition - yPosition;
 		}
 
+		/**
+		 * @private
+		 */
 		protected static function positionCalloutLeftSide(callout:Callout, globalOrigin:Rectangle):void
 		{
 			callout.arrowPosition = ARROW_POSITION_RIGHT;
 			callout.validate();
 			callout.x = globalOrigin.x - callout.width;
-			var yPosition:Number = globalOrigin.y + (globalOrigin.height - callout.height) / 2;
-			yPosition = Math.max(0, Math.min(Starling.current.stage.stageHeight - callout.height, yPosition));
+			const idealYPosition:Number = globalOrigin.y + (globalOrigin.height - callout.height) / 2;
+			const yPosition:Number = Math.max(0, Math.min(Starling.current.stage.stageHeight - callout.height, idealYPosition));
 			callout.y = yPosition;
+			callout.arrowOffset = idealYPosition - yPosition;
 		}
 
+		/**
+		 * @private
+		 */
 		protected static function calloutOverlayFactory():DisplayObject
 		{
 			const quad:Quad = new Quad(100, 100, 0xff00ff);
@@ -767,6 +789,36 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
+		protected var _arrowOffset:Number = 0;
+
+		/**
+		 * The offset, in pixels, of the arrow skin from the center or middle of
+		 * the background skin. On the top and bottom edges, the arrow will
+		 * move left for negative values and right for positive values. On the
+		 * left and right edges, the arrow will move up for negative values
+		 * and down for positive values.
+		 */
+		public function get arrowOffset():Number
+		{
+			return this._arrowOffset;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set arrowOffset(value:Number):void
+		{
+			if(this._arrowOffset == value)
+			{
+				return;
+			}
+			this._arrowOffset = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function initialize():void
 		{
 			this.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
@@ -916,6 +968,9 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 
+		/**
+		 * @private
+		 */
 		protected function layout():void
 		{
 			const xPosition:Number = (this._leftArrowSkin && this._arrowPosition == ARROW_POSITION_LEFT) ? this._leftArrowSkin.width + this._leftArrowGap : 0;
@@ -927,28 +982,30 @@ package org.josht.starling.foxhole.controls
 			this._backgroundSkin.width = this.actualWidth - xPosition - widthOffset;
 			this._backgroundSkin.height = this.actualHeight - yPosition - heightOffset;
 
-			trace(yPosition, heightOffset)
-
 			if(this.currentArrowSkin)
 			{
 				if(this._arrowPosition == ARROW_POSITION_LEFT)
 				{
 					this._leftArrowSkin.x = this._backgroundSkin.x - this._rightArrowSkin.width - this._leftArrowGap;
-					this._leftArrowSkin.y = this._backgroundSkin.y + (this._backgroundSkin.height - this._leftArrowSkin.height) / 2;
+					this._leftArrowSkin.y = this._arrowOffset + this._backgroundSkin.y + (this._backgroundSkin.height - this._leftArrowSkin.height) / 2;
+					this._leftArrowSkin.y = Math.min(this._backgroundSkin.y + this._backgroundSkin.height - this._paddingBottom - this._leftArrowSkin.height, Math.max(this._backgroundSkin.y + this._paddingTop, this._leftArrowSkin.y));
 				}
 				else if(this._arrowPosition == ARROW_POSITION_RIGHT)
 				{
 					this._rightArrowSkin.x = this._backgroundSkin.x + this._backgroundSkin.width + this._rightArrowGap;
-					this._rightArrowSkin.y = this._backgroundSkin.y + (this._backgroundSkin.height - this._rightArrowSkin.height) / 2;
+					this._rightArrowSkin.y = this._arrowOffset + this._backgroundSkin.y + (this._backgroundSkin.height - this._rightArrowSkin.height) / 2;
+					this._rightArrowSkin.y = Math.min(this._backgroundSkin.y + this._backgroundSkin.height - this._paddingBottom - this._rightArrowSkin.height, Math.max(this._backgroundSkin.y + this._paddingTop, this._rightArrowSkin.y));
 				}
 				else if(this._arrowPosition == ARROW_POSITION_BOTTOM)
 				{
-					this._bottomArrowSkin.x = this._backgroundSkin.x + (this._backgroundSkin.width - this._bottomArrowSkin.width) / 2;
+					this._bottomArrowSkin.x = this._arrowOffset + this._backgroundSkin.x + (this._backgroundSkin.width - this._bottomArrowSkin.width) / 2;
+					this._bottomArrowSkin.x = Math.min(this._backgroundSkin.x + this._backgroundSkin.width - this._paddingRight - this._bottomArrowSkin.width, Math.max(this._backgroundSkin.x + this._paddingLeft, this._bottomArrowSkin.x));
 					this._bottomArrowSkin.y = this._backgroundSkin.y + this._backgroundSkin.height + this._bottomArrowGap;
 				}
 				else //top
 				{
-					this._topArrowSkin.x = this._backgroundSkin.x + (this._backgroundSkin.width - this._topArrowSkin.width) / 2;
+					this._topArrowSkin.x = this._arrowOffset + this._backgroundSkin.x + (this._backgroundSkin.width - this._topArrowSkin.width) / 2;
+					this._topArrowSkin.x = Math.min(this._backgroundSkin.x + this._backgroundSkin.width - this._paddingRight - this._topArrowSkin.width, Math.max(this._backgroundSkin.x + this._paddingLeft, this._topArrowSkin.x));
 					this._topArrowSkin.y = this._backgroundSkin.y - this._topArrowSkin.height - this._topArrowGap;
 				}
 			}
@@ -962,11 +1019,17 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 
+		/**
+		 * @private
+		 */
 		protected function removedFromStageHandler(event:Event):void
 		{
 			this.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
 		}
 
+		/**
+		 * @private
+		 */
 		protected function stage_touchHandler(event:TouchEvent):void
 		{
 			if(event.interactsWith(this))
