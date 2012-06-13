@@ -437,34 +437,34 @@ package org.josht.starling.foxhole.core
 			
 			if (targetSpace == this) // optimization
 			{
-				minX = this._hitArea.x;
-				minY = this._hitArea.y;
-				maxX = this._hitArea.x + this._hitArea.width;
-				maxY = this._hitArea.y + this._hitArea.height;
+				minX = 0;
+				minY = 0;
+				maxX = this.actualWidth;
+				maxY = this.actualHeight;
 			}
 			else
 			{
 				this.getTransformationMatrix(targetSpace, helperMatrix);
 				
-				transformCoords(helperMatrix, this._hitArea.x, this._hitArea.y, helperPoint);
+				transformCoords(helperMatrix, 0, 0, helperPoint);
 				minX = minX < helperPoint.x ? minX : helperPoint.x;
 				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
 				minY = minY < helperPoint.y ? minY : helperPoint.y;
 				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
 				
-				transformCoords(helperMatrix, this._hitArea.x, this._hitArea.y + this._hitArea.height, helperPoint);
+				transformCoords(helperMatrix, 0, this.actualHeight, helperPoint);
 				minX = minX < helperPoint.x ? minX : helperPoint.x;
 				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
 				minY = minY < helperPoint.y ? minY : helperPoint.y;
 				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
 				
-				transformCoords(helperMatrix, this._hitArea.x + this._hitArea.width, this._hitArea.y, helperPoint);
+				transformCoords(helperMatrix, this.actualWidth, 0, helperPoint);
 				minX = minX < helperPoint.x ? minX : helperPoint.x;
 				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
 				minY = minY < helperPoint.y ? minY : helperPoint.y;
 				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
 				
-				transformCoords(helperMatrix, this._hitArea.x + this._hitArea.width, this._hitArea.y + this._hitArea.height, helperPoint);
+				transformCoords(helperMatrix, this.actualWidth, this.actualHeight, helperPoint);
 				minX = minX < helperPoint.x ? minX : helperPoint.x;
 				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
 				minY = minY < helperPoint.y ? minY : helperPoint.y;
