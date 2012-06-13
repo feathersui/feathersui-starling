@@ -176,36 +176,6 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _maxWidth:Number = Number.POSITIVE_INFINITY;
-
-		/**
-		 * The maximum width of the label. If the complete text is longer than
-		 * this value, it will be truncated. If the text contains line breaks,
-		 * this value is ignored.
-		 *
-		 * @see #truncationText
-		 */
-		public function get maxWidth():Number
-		{
-			return this._maxWidth;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set maxWidth(value:Number):void
-		{
-			if(this._maxWidth == value)
-			{
-				return;
-			}
-			this._maxWidth = value;
-			this.invalidate(INVALIDATION_FLAG_SIZE);
-		}
-
-		/**
-		 * @private
-		 */
 		private var _truncationText:String = "...";
 
 		/**

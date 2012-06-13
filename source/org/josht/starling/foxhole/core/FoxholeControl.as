@@ -343,13 +343,14 @@ package org.josht.starling.foxhole.core
 		/**
 		 * @private
 		 */
-		private var _minWidth:Number = 0;
+		protected var _minWidth:Number = 0;
 
 		/**
-		 * The minimum recommend width to be used for self-measurement and,
-		 * optionally, by the parent who is resizing this component. A width
-		 * value that is smaller than <code>minWidth</code> may be set
-		 * explicitly, and it will not be affected by this value.
+		 * The minimum recommended width to be used for self-measurement and,
+		 * optionally, by any code that is resizing this component. This value
+		 * is not strictly enforced in all cases. An explicit width value that
+		 * is smaller than <code>minWidth</code> may be set and will not be
+		 * affected by the minimum.
 		 */
 		public function get minWidth():Number
 		{
@@ -372,13 +373,14 @@ package org.josht.starling.foxhole.core
 		/**
 		 * @private
 		 */
-		private var _minHeight:Number = 0;
+		protected var _minHeight:Number = 0;
 
 		/**
-		 * The minimum recommend height to be used for self-measurement and,
-		 * optionally, by the parent who is resizing this component. A height
-		 * value that is smaller than <code>minHeight</code> may be set
-		 * explicitly, and it will not be affected by this value.
+		 * The minimum recommended height to be used for self-measurement and,
+		 * optionally, by any code that is resizing this component. This value
+		 * is not strictly enforced in all cases. An explicit height value that
+		 * is smaller than <code>minHeight</code> may be set and will not be
+		 * affected by the minimum.
 		 */
 		public function get minHeight():Number
 		{
@@ -395,6 +397,66 @@ package org.josht.starling.foxhole.core
 				return;
 			}
 			this._minHeight = value;
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _maxWidth:Number = Number.POSITIVE_INFINITY;
+
+		/**
+		 * The maximum recommended width to be used for self-measurement and,
+		 * optionally, by any code that is resizing this component. This value
+		 * is not strictly enforced in all cases. An explicit width value that
+		 * is larger than <code>maxWidth</code> may be set and will not be
+		 * affected by the maximum.
+		 */
+		public function get maxWidth():Number
+		{
+			return this._maxWidth;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set maxWidth(value:Number):void
+		{
+			if(this._maxWidth == value)
+			{
+				return;
+			}
+			this._maxWidth = value;
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _maxHeight:Number = Number.POSITIVE_INFINITY;
+
+		/**
+		 * The maximum recommended height to be used for self-measurement and,
+		 * optionally, by any code that is resizing this component. This value
+		 * is not strictly enforced in all cases. An explicit height value that
+		 * is larger than <code>maxHeight</code> may be set and will not be
+		 * affected by the maximum.
+		 */
+		public function get maxHeight():Number
+		{
+			return this._maxHeight;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set maxHeight(value:Number):void
+		{
+			if(this._maxHeight == value)
+			{
+				return;
+			}
+			this._maxHeight = value;
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 		
@@ -636,7 +698,7 @@ package org.josht.starling.foxhole.core
 			}
 			else
 			{
-				width = Math.max(this._minWidth, width);
+				width = Math.min(this._maxWidth, Math.max(this._minWidth, width));
 			}
 			if(!isNaN(this.explicitHeight))
 			{
@@ -644,7 +706,7 @@ package org.josht.starling.foxhole.core
 			}
 			else
 			{
-				height = Math.max(this._minHeight, height);
+				height = Math.min(this._maxHeight, Math.max(this._minHeight, height));
 			}
 			if(this.actualWidth != width)
 			{
