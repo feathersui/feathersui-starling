@@ -47,24 +47,66 @@ package org.josht.starling.foxhole.controls
 	 */
 	public class Callout extends FoxholeControl
 	{
+		/**
+		 * The callout may be positioned on any side of the origin region.
+		 */
 		public static const DIRECTION_ANY:String = "any";
+
+		/**
+		 * The callout must be positioned above the origin region.
+		 */
 		public static const DIRECTION_UP:String = "up";
+
+		/**
+		 * The callout must be positioned below the origin region.
+		 */
 		public static const DIRECTION_DOWN:String = "down";
+
+		/**
+		 * The callout must be positioned to the left side of the origin region.
+		 */
 		public static const DIRECTION_LEFT:String = "left";
+
+		/**
+		 * The callout must be positioned to the right side of the origin region.
+		 */
 		public static const DIRECTION_RIGHT:String = "right";
 
+		/**
+		 * The arrow will appear on the top side of the callout.
+		 */
+		public static const ARROW_POSITION_TOP:String = "top";
+
+		/**
+		 * The arrow will appear on the right side of the callout.
+		 */
+		public static const ARROW_POSITION_RIGHT:String = "right";
+
+		/**
+		 * The arrow will appear on the bottom side of the callout.
+		 */
+		public static const ARROW_POSITION_BOTTOM:String = "bottom";
+
+		/**
+		 * The arrow will appear on the left side of the callout.
+		 */
+		public static const ARROW_POSITION_LEFT:String = "left";
+
+		/**
+		 * @private
+		 */
 		protected static const DIRECTION_TO_FUNCTION:Object = {};
 		DIRECTION_TO_FUNCTION[DIRECTION_ANY] = positionCalloutAny;
-		DIRECTION_TO_FUNCTION[DIRECTION_UP] = positionCalloutUp;
-		DIRECTION_TO_FUNCTION[DIRECTION_DOWN] = positionCalloutDown;
-		DIRECTION_TO_FUNCTION[DIRECTION_LEFT] = positionCalloutLeft;
-		DIRECTION_TO_FUNCTION[DIRECTION_RIGHT] = positionCalloutRight;
+		DIRECTION_TO_FUNCTION[DIRECTION_UP] = positionCalloutAbove;
+		DIRECTION_TO_FUNCTION[DIRECTION_DOWN] = positionCalloutBelow;
+		DIRECTION_TO_FUNCTION[DIRECTION_LEFT] = positionCalloutLeftSide;
+		DIRECTION_TO_FUNCTION[DIRECTION_RIGHT] = positionCalloutRightSide;
 
 		/**
 		 * Creates a callout, and then positions and sizes it automatically
-		 * based on an origin rectangle. The provided width and height are
-		 * optional, and these values may be ignored if the callout cannot be
-		 * drawn at the specified dimensions.
+		 * based on an origin rectangle and the specified direction. The
+		 * provided width and height are optional, and these values may be
+		 * ignored if the callout cannot be drawn at the specified dimensions.
 		 */
 		public static function showCallout(content:DisplayObject, globalOrigin:Rectangle, direction:String = DIRECTION_ANY, width:Number = NaN, height:Number = NaN):Callout
 		{
@@ -73,12 +115,11 @@ package org.josht.starling.foxhole.controls
 			callout.width = width;
 			callout.height = height;
 			PopUpManager.addPopUp(callout, true, false, calloutOverlayFactory);
-			callout.validate();
 
 			if(DIRECTION_TO_FUNCTION.hasOwnProperty(direction))
 			{
-				const directionFunction:Function = DIRECTION_TO_FUNCTION[direction];
-				directionFunction(callout, globalOrigin);
+				const calloutPositionFunction:Function = DIRECTION_TO_FUNCTION[direction];
+				calloutPositionFunction(callout, globalOrigin);
 			}
 			else
 			{
@@ -96,69 +137,77 @@ package org.josht.starling.foxhole.controls
 			const leftSpace:Number = globalOrigin.x - callout.width;
 			if(downSpace >= 0)
 			{
-				positionCalloutDown(callout, globalOrigin);
+				positionCalloutBelow(callout, globalOrigin);
 			}
 			else if(upSpace >= 0)
 			{
-				positionCalloutUp(callout, globalOrigin);
+				positionCalloutAbove(callout, globalOrigin);
 			}
 			else if(rightSpace >= 0)
 			{
-				positionCalloutRight(callout, globalOrigin);
+				positionCalloutRightSide(callout, globalOrigin);
 			}
 			else if(leftSpace)
 			{
-				positionCalloutLeft(callout, globalOrigin);
+				positionCalloutLeftSide(callout, globalOrigin);
 			}
 			else
 			{
 				//pick the side that has the most space
 				if(downSpace >= upSpace && downSpace >= rightSpace && downSpace >= leftSpace)
 				{
-					positionCalloutDown(callout, globalOrigin);
+					positionCalloutBelow(callout, globalOrigin);
 				}
 				else if(upSpace >= rightSpace && upSpace >= leftSpace)
 				{
-					positionCalloutUp(callout, globalOrigin);
+					positionCalloutAbove(callout, globalOrigin);
 				}
 				else if(rightSpace >= leftSpace)
 				{
-					positionCalloutRight(callout, globalOrigin);
+					positionCalloutRightSide(callout, globalOrigin);
 				}
 				else
 				{
-					positionCalloutLeft(callout, globalOrigin);
+					positionCalloutLeftSide(callout, globalOrigin);
 				}
 			}
 
 		}
 
-		protected static function positionCalloutDown(callout:Callout, globalOrigin:Rectangle):void
+		protected static function positionCalloutBelow(callout:Callout, globalOrigin:Rectangle):void
 		{
+			callout.arrowPosition = ARROW_POSITION_TOP;
+			callout.validate();
 			var xPosition:Number = globalOrigin.x + (globalOrigin.width - callout.width) / 2;
 			xPosition = Math.max(0, Math.min(Starling.current.stage.stageWidth - callout.width, xPosition));
 			callout.x = xPosition;
 			callout.y = globalOrigin.y + globalOrigin.height;
 		}
 
-		protected static function positionCalloutUp(callout:Callout, globalOrigin:Rectangle):void
+		protected static function positionCalloutAbove(callout:Callout, globalOrigin:Rectangle):void
 		{
+			callout.arrowPosition = ARROW_POSITION_BOTTOM;
+			callout.validate();
 			var xPosition:Number = globalOrigin.x + (globalOrigin.width - callout.width) / 2;
 			xPosition = Math.max(0, Math.min(Starling.current.stage.stageWidth - callout.width, xPosition));
 			callout.x = xPosition;
 			callout.y = globalOrigin.y - callout.height;
 		}
 
-		protected static function positionCalloutRight(callout:Callout, globalOrigin:Rectangle):void
+		protected static function positionCalloutRightSide(callout:Callout, globalOrigin:Rectangle):void
 		{
+			callout.arrowPosition = ARROW_POSITION_LEFT;
+			callout.validate();
 			callout.x = globalOrigin.x + globalOrigin.width;
 			var yPosition:Number = globalOrigin.y + (globalOrigin.height - callout.height) / 2;
 			yPosition = Math.max(0, Math.min(Starling.current.stage.stageHeight - callout.height, yPosition));
 			callout.y = yPosition;
 		}
 
-		protected static function positionCalloutLeft(callout:Callout, globalOrigin:Rectangle):void
+		protected static function positionCalloutLeftSide(callout:Callout, globalOrigin:Rectangle):void
 		{
+			callout.arrowPosition = ARROW_POSITION_RIGHT;
+			callout.validate();
 			callout.x = globalOrigin.x - callout.width;
 			var yPosition:Number = globalOrigin.y + (globalOrigin.height - callout.height) / 2;
 			yPosition = Math.max(0, Math.min(Starling.current.stage.stageHeight - callout.height, yPosition));
@@ -344,17 +393,38 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
+		private var _arrowPosition:String = ARROW_POSITION_TOP;
+
+		/**
+		 * The direction of the callout relative to the region it points at.
+		 */
+		public function get arrowPosition():String
+		{
+			return this._arrowPosition;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set arrowPosition(value:String):void
+		{
+			if(this._arrowPosition == value)
+			{
+				return;
+			}
+			this._arrowPosition = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _originalBackgroundWidth:Number = NaN;
 
 		/**
 		 * @private
 		 */
 		protected var _originalBackgroundHeight:Number = NaN;
-
-		/**
-		 * @private
-		 */
-		protected var currentBackground:DisplayObject;
 
 		/**
 		 * @private
@@ -379,15 +449,15 @@ package org.josht.starling.foxhole.controls
 				return;
 			}
 
-			if(this._backgroundSkin && this._backgroundSkin != this._backgroundDisabledSkin)
+			if(this._backgroundSkin)
 			{
 				this.removeChild(this._backgroundSkin);
 			}
 			this._backgroundSkin = value;
-			if(this._backgroundSkin && this._backgroundSkin.parent != this)
+			if(this._backgroundSkin)
 			{
-				this._backgroundSkin.visible = false;
-				this._backgroundSkin.touchable = false;
+				this._originalBackgroundWidth = this._backgroundSkin.width;
+				this._originalBackgroundHeight = this._backgroundSkin.height;
 				this.addChildAt(this._backgroundSkin, 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
@@ -396,37 +466,301 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _backgroundDisabledSkin:DisplayObject;
+		protected var currentArrowSkin:DisplayObject;
 
 		/**
-		 * A background to display when the progress bar is disabled.
+		 * @private
 		 */
-		public function get backgroundDisabledSkin():DisplayObject
+		private var _bottomArrowSkin:DisplayObject;
+
+		/**
+		 * The arrow skin to display on the bottom edge of the callout. This
+		 * arrow is displayed when the callout is displayed above the region it
+		 * points at.
+		 */
+		public function get bottomArrowSkin():DisplayObject
 		{
-			return this._backgroundDisabledSkin;
+			return this._bottomArrowSkin;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set backgroundDisabledSkin(value:DisplayObject):void
+		public function set bottomArrowSkin(value:DisplayObject):void
 		{
-			if(this._backgroundDisabledSkin == value)
+			if(this._bottomArrowSkin == value)
 			{
 				return;
 			}
 
-			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin != this._backgroundSkin)
+			if(this._bottomArrowSkin)
 			{
-				this.removeChild(this._backgroundDisabledSkin);
+				this.removeChild(this._bottomArrowSkin);
 			}
-			this._backgroundDisabledSkin = value;
-			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin.parent != this)
+			this._bottomArrowSkin = value;
+			if(this._bottomArrowSkin)
 			{
-				this._backgroundDisabledSkin.visible = false;
-				this._backgroundDisabledSkin.touchable = false;
-				this.addChildAt(this._backgroundDisabledSkin, 0);
+				this._bottomArrowSkin.visible = false;
+				const index:int = this.getChildIndex(this._content);
+				if(index < 0)
+				{
+					this.addChild(this._bottomArrowSkin);
+				}
+				else
+				{
+					this.addChildAt(this._bottomArrowSkin, index);
+				}
 			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _topArrowSkin:DisplayObject;
+
+		/**
+		 * The arrow skin to display on the top edge of the callout. This arrow
+		 * is displayed when the callout is displayed below the region it points
+		 * at.
+		 */
+		public function get topArrowSkin():DisplayObject
+		{
+			return this._topArrowSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set topArrowSkin(value:DisplayObject):void
+		{
+			if(this._topArrowSkin == value)
+			{
+				return;
+			}
+
+			if(this._topArrowSkin)
+			{
+				this.removeChild(this._topArrowSkin);
+			}
+			this._topArrowSkin = value;
+			if(this._topArrowSkin)
+			{
+				this._topArrowSkin.visible = false;
+				const index:int = this.getChildIndex(this._content);
+				if(index < 0)
+				{
+					this.addChild(this._topArrowSkin);
+				}
+				else
+				{
+					this.addChildAt(this._topArrowSkin, index);
+				}
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _leftArrowSkin:DisplayObject;
+
+		/**
+		 * The arrow skin to display on the left edge of the callout. This arrow
+		 * is displayed when the callout is displayed to the right of the region
+		 * it points at.
+		 */
+		public function get leftArrowSkin():DisplayObject
+		{
+			return this._leftArrowSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set leftArrowSkin(value:DisplayObject):void
+		{
+			if(this._leftArrowSkin == value)
+			{
+				return;
+			}
+
+			if(this._leftArrowSkin)
+			{
+				this.removeChild(this._leftArrowSkin);
+			}
+			this._leftArrowSkin = value;
+			if(this._leftArrowSkin)
+			{
+				this._leftArrowSkin.visible = false;
+				const index:int = this.getChildIndex(this._content);
+				if(index < 0)
+				{
+					this.addChild(this._leftArrowSkin);
+				}
+				else
+				{
+					this.addChildAt(this._leftArrowSkin, index);
+				}
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _rightArrowSkin:DisplayObject;
+
+		/**
+		 * The arrow skin to display on the right edge of the callout. This
+		 * arrow is displayed when the callout is displayed to the left of the
+		 * region it points at.
+		 */
+		public function get rightArrowSkin():DisplayObject
+		{
+			return this._rightArrowSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set rightArrowSkin(value:DisplayObject):void
+		{
+			if(this._rightArrowSkin == value)
+			{
+				return;
+			}
+
+			if(this._rightArrowSkin)
+			{
+				this.removeChild(this._rightArrowSkin);
+			}
+			this._rightArrowSkin = value;
+			if(this._rightArrowSkin)
+			{
+				this._rightArrowSkin.visible = false;
+				const index:int = this.getChildIndex(this._content);
+				if(index < 0)
+				{
+					this.addChild(this._rightArrowSkin);
+				}
+				else
+				{
+					this.addChildAt(this._rightArrowSkin, index);
+				}
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _topArrowGap:Number = 0;
+
+		/**
+		 * The space, in pixels, between the top arrow skin and the background
+		 * skin. To have the arrow overlap the background, you may use a
+		 * negative gap value.
+		 */
+		public function get topArrowGap():Number
+		{
+			return this._topArrowGap;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set topArrowGap(value:Number):void
+		{
+			if(this._topArrowGap == value)
+			{
+				return;
+			}
+			this._topArrowGap = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _bottomArrowGap:Number = 0;
+
+		/**
+		 * The space, in pixels, between the bottom arrow skin and the
+		 * background skin. To have the arrow overlap the background, you may
+		 * use a negative gap value.
+		 */
+		public function get bottomArrowGap():Number
+		{
+			return this._bottomArrowGap;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set bottomArrowGap(value:Number):void
+		{
+			if(this._bottomArrowGap == value)
+			{
+				return;
+			}
+			this._bottomArrowGap = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _rightArrowGap:Number = 0;
+
+		/**
+		 * The space, in pixels, between the right arrow skin and the background
+		 * skin. To have the arrow overlap the background, you may use a
+		 * negative gap value.
+		 */
+		public function get rightArrowGap():Number
+		{
+			return this._rightArrowGap;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set rightArrowGap(value:Number):void
+		{
+			if(this._rightArrowGap == value)
+			{
+				return;
+			}
+			this._rightArrowGap = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _leftArrowGap:Number = 0;
+
+		/**
+		 * The space, in pixels, between the right arrow skin and the background
+		 * skin. To have the arrow overlap the background, you may use a
+		 * negative gap value.
+		 */
+		public function get leftArrowGap():Number
+		{
+			return this._leftArrowGap;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set leftArrowGap(value:Number):void
+		{
+			if(this._leftArrowGap == value)
+			{
+				return;
+			}
+			this._leftArrowGap = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -451,7 +785,7 @@ package org.josht.starling.foxhole.controls
 
 			if(stylesInvalid || stateInvalid)
 			{
-				this.refreshBackground();
+				this.refreshArrowSkin();
 			}
 
 			if(stateInvalid)
@@ -509,6 +843,14 @@ package org.josht.starling.foxhole.controls
 				{
 					newWidth = Math.max(this._originalBackgroundWidth, newWidth);
 				}
+				if(this._arrowPosition == ARROW_POSITION_LEFT && this._leftArrowSkin)
+				{
+					newWidth += this._leftArrowSkin.width + this._leftArrowGap;
+				}
+				if(this._arrowPosition == ARROW_POSITION_RIGHT && this._rightArrowSkin)
+				{
+					newWidth += this._rightArrowSkin.width + this._rightArrowGap;
+				}
 			}
 			if(needsHeight)
 			{
@@ -516,6 +858,14 @@ package org.josht.starling.foxhole.controls
 				if(!isNaN(this._originalBackgroundHeight))
 				{
 					newHeight = Math.max(this._originalBackgroundHeight, newHeight);
+				}
+				if(this._arrowPosition == ARROW_POSITION_TOP && this._topArrowSkin)
+				{
+					newHeight += this._topArrowSkin.width + this._topArrowGap;
+				}
+				if(this._arrowPosition == ARROW_POSITION_BOTTOM && this._bottomArrowSkin)
+				{
+					newHeight += this._bottomArrowSkin.width + this._bottomArrowGap;
 				}
 			}
 			this.setSizeInternal(newWidth, newHeight, false);
@@ -525,54 +875,90 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected function refreshBackground():void
+		protected function refreshArrowSkin():void
 		{
-			this.currentBackground = this._backgroundSkin;
-			if(this._backgroundDisabledSkin)
+			this.currentArrowSkin = null;
+			if(this._arrowPosition == ARROW_POSITION_BOTTOM)
 			{
-				if(this._isEnabled)
-				{
-					this._backgroundDisabledSkin.visible = false;
-				}
-				else
-				{
-					this.currentBackground = this._backgroundDisabledSkin;
-					if(this._backgroundSkin)
-					{
-						this._backgroundSkin.visible = false;
-					}
-				}
+				this.currentArrowSkin = this._bottomArrowSkin;
 			}
-			if(this.currentBackground)
+			else if(this._bottomArrowSkin)
 			{
-				if(isNaN(this._originalBackgroundWidth))
-				{
-					this._originalBackgroundWidth = this.currentBackground.width;
-				}
-				if(isNaN(this._originalBackgroundHeight))
-				{
-					this._originalBackgroundHeight = this.currentBackground.height;
-				}
-				this.currentBackground.visible = true;
+				this._bottomArrowSkin.visible = false;
+			}
+			if(this._arrowPosition == ARROW_POSITION_TOP)
+			{
+				this.currentArrowSkin = this._topArrowSkin;
+			}
+			else if(this._topArrowSkin)
+			{
+				this._topArrowSkin.visible = false;
+			}
+			if(this._arrowPosition == ARROW_POSITION_LEFT)
+			{
+				this.currentArrowSkin = this._leftArrowSkin;
+			}
+			else if(this._leftArrowSkin)
+			{
+				this._leftArrowSkin.visible = false;
+			}
+			if(this._arrowPosition == ARROW_POSITION_RIGHT)
+			{
+				this.currentArrowSkin = this._rightArrowSkin;
+			}
+			else if(this._rightArrowSkin)
+			{
+				this._rightArrowSkin.visible = false;
+			}
+			if(this.currentArrowSkin)
+			{
+				this.currentArrowSkin.visible = true;
 			}
 		}
 
 		protected function layout():void
 		{
-			if(this.currentBackground)
+			const xPosition:Number = (this._leftArrowSkin && this._arrowPosition == ARROW_POSITION_LEFT) ? this._leftArrowSkin.width + this._leftArrowGap : 0;
+			const yPosition:Number = (this._topArrowSkin &&  this._arrowPosition == ARROW_POSITION_TOP) ? this._topArrowSkin.height + this._topArrowGap : 0;
+			const widthOffset:Number = (this._rightArrowSkin && this._arrowPosition == ARROW_POSITION_RIGHT) ? this._rightArrowSkin.width + this._rightArrowGap : 0;
+			const heightOffset:Number = (this._bottomArrowSkin && this._arrowPosition == ARROW_POSITION_BOTTOM) ? this._bottomArrowSkin.height + this._bottomArrowGap : 0;
+			this._backgroundSkin.x = xPosition;
+			this._backgroundSkin.y = yPosition;
+			this._backgroundSkin.width = this.actualWidth - xPosition - widthOffset;
+			this._backgroundSkin.height = this.actualHeight - yPosition - heightOffset;
+
+			trace(yPosition, heightOffset)
+
+			if(this.currentArrowSkin)
 			{
-				this.currentBackground.x = 0;
-				this.currentBackground.y = 0;
-				this.currentBackground.width = this.actualWidth;
-				this.currentBackground.height = this.actualHeight;
+				if(this._arrowPosition == ARROW_POSITION_LEFT)
+				{
+					this._leftArrowSkin.x = this._backgroundSkin.x - this._rightArrowSkin.width - this._leftArrowGap;
+					this._leftArrowSkin.y = this._backgroundSkin.y + (this._backgroundSkin.height - this._leftArrowSkin.height) / 2;
+				}
+				else if(this._arrowPosition == ARROW_POSITION_RIGHT)
+				{
+					this._rightArrowSkin.x = this._backgroundSkin.x + this._backgroundSkin.width + this._rightArrowGap;
+					this._rightArrowSkin.y = this._backgroundSkin.y + (this._backgroundSkin.height - this._rightArrowSkin.height) / 2;
+				}
+				else if(this._arrowPosition == ARROW_POSITION_BOTTOM)
+				{
+					this._bottomArrowSkin.x = this._backgroundSkin.x + (this._backgroundSkin.width - this._bottomArrowSkin.width) / 2;
+					this._bottomArrowSkin.y = this._backgroundSkin.y + this._backgroundSkin.height + this._bottomArrowGap;
+				}
+				else //top
+				{
+					this._topArrowSkin.x = this._backgroundSkin.x + (this._backgroundSkin.width - this._topArrowSkin.width) / 2;
+					this._topArrowSkin.y = this._backgroundSkin.y - this._topArrowSkin.height - this._topArrowGap;
+				}
 			}
 
 			if(this._content)
 			{
-				this._content.x = this._paddingLeft;
-				this._content.y = this._paddingTop;
-				this._content.width = this.actualWidth - this._paddingLeft - this._paddingRight;
-				this._content.height = this.actualHeight - this._paddingTop - this._paddingBottom;
+				this._content.x = this._backgroundSkin.x + this._paddingLeft;
+				this._content.y = this._backgroundSkin.y + this._paddingTop;
+				this._content.width = this._backgroundSkin.width - this._paddingLeft - this._paddingRight;
+				this._content.height = this._backgroundSkin.height - this._paddingTop - this._paddingBottom;
 			}
 		}
 
