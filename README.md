@@ -11,6 +11,9 @@ Foxhole includes the following UI controls (in alphabetical order):
 ### Button
 A typical button control, with optional toggle support. Includes a label and an icon, both optional.
 
+### Callout
+A pop-up container that points at (or calls out) a specific region of the application (typically, a specific control that triggered it).
+
 ### Label
 A non-interactive text control. Uses bitmap fonts. A simplified replacement for `starling.text.TextField` that is built on `FoxholeControl`.
 
