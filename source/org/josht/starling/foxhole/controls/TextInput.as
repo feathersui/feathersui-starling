@@ -593,8 +593,7 @@ package org.josht.starling.foxhole.controls
 			{
 				newHeight = this._originalSkinHeight;
 			}
-			this.setSizeInternal(newWidth, newHeight, false);
-			return true;
+			return this.setSizeInternal(newWidth, newHeight, false);
 		}
 
 		/**

@@ -503,8 +503,7 @@ package org.josht.starling.foxhole.controls
 			}
 			var newWidth:Number = needsWidth ? this._originalBackgroundWidth : this.explicitWidth;
 			var newHeight:Number = needsHeight ? this._originalBackgroundHeight  : this.explicitHeight;
-			this.setSizeInternal(newWidth, newHeight, false);
-			return true;
+			return this.setSizeInternal(newWidth, newHeight, false);
 		}
 
 		/**

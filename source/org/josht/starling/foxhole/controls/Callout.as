@@ -990,8 +990,7 @@ package org.josht.starling.foxhole.controls
 					newHeight += this._bottomArrowSkin.height + this._bottomArrowGap;
 				}
 			}
-			this.setSizeInternal(newWidth, newHeight, false);
-			return true;
+			return this.setSizeInternal(newWidth, newHeight, false);
 		}
 
 		/**

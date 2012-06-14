@@ -494,8 +494,7 @@ package org.josht.starling.foxhole.controls
 					newHeight = Math.max(tab.height, newHeight);
 				}
 			}
-			this.setSizeInternal(newWidth, newHeight, false);
-			return true;
+			return this.setSizeInternal(newWidth, newHeight, false);
 		}
 
 		/**

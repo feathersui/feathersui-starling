@@ -625,8 +625,7 @@ package org.josht.starling.foxhole.controls
 				newHeight += this._paddingTop + this._paddingBottom;
 			}
 
-			this.setSizeInternal(newWidth, newHeight, false);
-			return true;
+			return this.setSizeInternal(newWidth, newHeight, false);
 		}
 
 		/**
