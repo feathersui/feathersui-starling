@@ -422,8 +422,7 @@ package org.josht.starling.foxhole.controls
 				newHeight = this.stage.stageHeight;
 			}
 
-			this.setSizeInternal(newWidth, newHeight, false);
-			return true;
+			return this.setSizeInternal(newWidth, newHeight, false);
 		}
 
 		/**

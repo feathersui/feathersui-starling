@@ -645,8 +645,7 @@ package org.josht.starling.foxhole.controls
 					}
 				}
 			}
-			this.setSizeInternal(newWidth, newHeight, false);
-			return true;
+			return this.setSizeInternal(newWidth, newHeight, false);
 		}
 		
 		/**

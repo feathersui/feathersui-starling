@@ -470,8 +470,7 @@ package org.josht.starling.foxhole.controls
 			{
 				newHeight = this.scroller.height;
 			}
-			this.setSizeInternal(newWidth, newHeight, false);
-			return true;
+			return this.setSizeInternal(newWidth, newHeight, false);
 		}
 
 		/**
