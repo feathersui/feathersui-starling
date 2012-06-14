@@ -255,6 +255,11 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
+			if(isNaN(value))
+			{
+				//there isn't any recovery from this, so stop it early
+				throw new ArgumentError("horizontalScrollPosition cannot be NaN.");
+			}
 			this._horizontalScrollPosition = value;
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 			this._onScroll.dispatch(this);
@@ -359,6 +364,11 @@ package org.josht.starling.foxhole.controls
 			if(this._verticalScrollPosition == value)
 			{
 				return;
+			}
+			if(isNaN(value))
+			{
+				//there isn't any recovery from this, so stop it early
+				throw new ArgumentError("verticalScrollPosition cannot be NaN.");
 			}
 			this._verticalScrollPosition = value;
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
@@ -649,6 +659,7 @@ package org.josht.starling.foxhole.controls
 			{
 				FoxholeControl(this._viewPort).validate();
 			}
+
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 			
 			if(sizeInvalid || dataInvalid)
@@ -724,8 +735,8 @@ package org.josht.starling.foxhole.controls
 			{
 				newHeight = this._viewPort.height;
 			}
-			this.setSizeInternal(newWidth, newHeight, false);
-			return true;
+
+			return this.setSizeInternal(newWidth, newHeight, false);
 		}
 		
 		/**

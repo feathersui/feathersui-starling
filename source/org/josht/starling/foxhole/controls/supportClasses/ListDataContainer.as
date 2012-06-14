@@ -57,37 +57,109 @@ package org.josht.starling.foxhole.controls.supportClasses
 			super();
 		}
 
-		public var _visibleWidth:Number = 0;
+		private var _minVisibleWidth:Number = 0;
+
+		public function get minVisibleWidth():Number
+		{
+			return this._minVisibleWidth;
+		}
+
+		public function set minVisibleWidth(value:Number):void
+		{
+			if(this._minVisibleWidth == value)
+			{
+				return;
+			}
+			this._minVisibleWidth = value;
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		private var _maxVisibleWidth:Number = Number.POSITIVE_INFINITY;
+
+		public function get maxVisibleWidth():Number
+		{
+			return this._maxVisibleWidth;
+		}
+
+		public function set maxVisibleWidth(value:Number):void
+		{
+			if(this._maxVisibleWidth == value)
+			{
+				return;
+			}
+			this._maxVisibleWidth = value;
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		protected var actualVisibleWidth:Number = NaN;
+
+		protected var explicitVisibleWidth:Number = NaN;
 
 		public function get visibleWidth():Number
 		{
-			return this._visibleWidth;
+			return this.actualVisibleWidth;
 		}
 
 		public function set visibleWidth(value:Number):void
 		{
-			if(this._visibleWidth == value)
+			if(this.explicitVisibleWidth == value)
 			{
 				return;
 			}
-			this._visibleWidth = value;
+			this.explicitVisibleWidth = value;
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
-		public var _visibleHeight:Number = 0;
+		private var _minVisibleHeight:Number = 0;
+
+		public function get minVisibleHeight():Number
+		{
+			return this._minVisibleHeight;
+		}
+
+		public function set minVisibleHeight(value:Number):void
+		{
+			if(this._minVisibleHeight == value)
+			{
+				return;
+			}
+			this._minVisibleHeight = value;
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		private var _maxVisibleHeight:Number = Number.POSITIVE_INFINITY;
+
+		public function get maxVisibleHeight():Number
+		{
+			return this._maxVisibleHeight;
+		}
+
+		public function set maxVisibleHeight(value:Number):void
+		{
+			if(this._maxVisibleHeight == value)
+			{
+				return;
+			}
+			this._maxVisibleHeight = value;
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		protected var actualVisibleHeight:Number;
+
+		protected var explicitVisibleHeight:Number = NaN;
 
 		public function get visibleHeight():Number
 		{
-			return this._visibleHeight;
+			return this.actualVisibleHeight;
 		}
 
 		public function set visibleHeight(value:Number):void
 		{
-			if(this._visibleHeight == value)
+			if(this.explicitVisibleHeight == value)
 			{
 				return;
 			}
-			this._visibleHeight = value;
+			this.explicitVisibleHeight = value;
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 		
@@ -411,8 +483,8 @@ package org.josht.starling.foxhole.controls.supportClasses
 			}
 
 			helperRect.x = helperRect.y = 0;
-			helperRect.width = this.visibleWidth;
-			helperRect.height = this.visibleHeight;
+			helperRect.width = this.actualVisibleWidth;
+			helperRect.height = this.actualVisibleHeight;
 			this._layout.layout(this._layoutItems, helperRect, helperPoint);
 			this.setSizeInternal(helperPoint.x, helperPoint.y, false);
 		}
@@ -483,13 +555,22 @@ package org.josht.starling.foxhole.controls.supportClasses
 			this._activeRenderers.length = 0;
 			this._layoutItems.length = this._dataProvider ? this._dataProvider.length : 0;
 
-			if(isNaN(this.visibleWidth))
+			if(isNaN(this.explicitVisibleWidth))
 			{
-				this.visibleWidth = this._typicalItemWidth;
+				this.actualVisibleWidth = Math.min(this._maxVisibleWidth, Math.max(this._minVisibleWidth, this._typicalItemWidth));
 			}
-			if(isNaN(this.visibleHeight))
+			else
 			{
-				this.visibleHeight = this._typicalItemHeight
+				this.actualVisibleWidth = this.explicitVisibleWidth;
+			}
+			if(isNaN(this.explicitVisibleHeight))
+			{
+				const itemCount:int = this._dataProvider ? this._dataProvider.length : 0;
+				this.actualVisibleHeight = Math.min(this._maxVisibleHeight, Math.max(this._minVisibleHeight, itemCount * this._typicalItemHeight));
+			}
+			else
+			{
+				this.actualVisibleHeight = this.explicitVisibleHeight;
 			}
 
 			this.findUnrenderedData();
@@ -511,8 +592,8 @@ package org.josht.starling.foxhole.controls.supportClasses
 				virtualLayout.typicalItemWidth = this._typicalItemWidth;
 				virtualLayout.typicalItemHeight = this._typicalItemHeight;
 				this._ignoreLayoutChanges = false;
-				startIndex = virtualLayout.getMinimumItemIndexAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, this.visibleWidth, this.visibleHeight, itemCount);
-				endIndex = virtualLayout.getMaximumItemIndexAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, this.visibleWidth, this.visibleHeight, itemCount);
+				startIndex = virtualLayout.getMinimumItemIndexAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, this.actualVisibleWidth, this.actualVisibleHeight, itemCount);
+				endIndex = virtualLayout.getMaximumItemIndexAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, this.actualVisibleWidth, this.actualVisibleHeight, itemCount);
 			}
 			for(var i:int = 0; i < itemCount; i++)
 			{

@@ -124,6 +124,10 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
+			if(isNaN(value))
+			{
+				throw new ArgumentError("horizontalScrollPosition cannot be NaN.");
+			}
 			this._horizontalScrollPosition = value;
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 			this._onScroll.dispatch(this);
@@ -169,6 +173,10 @@ package org.josht.starling.foxhole.controls
 			if(this._verticalScrollPosition == value)
 			{
 				return;
+			}
+			if(isNaN(value))
+			{
+				throw new ArgumentError("verticalScrollPosition cannot be NaN.");
 			}
 			this._verticalScrollPosition = value;
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
@@ -834,15 +842,14 @@ package org.josht.starling.foxhole.controls
 			{
 				this.refreshBackgroundSkin();
 			}
-			
-			if(!isNaN(this.explicitWidth))
-			{
-				this.dataContainer.visibleWidth = this.explicitWidth - this._paddingLeft - this._paddingRight;
-			}
-			if(!isNaN(this.explicitHeight))
-			{
-				this.dataContainer.visibleHeight = this.explicitHeight - this._paddingTop - this._paddingBottom;
-			}
+
+			this.dataContainer.visibleWidth = this.explicitWidth - this._paddingLeft - this._paddingRight;
+			this.dataContainer.visibleHeight = this.explicitHeight - this._paddingTop - this._paddingBottom;
+			this.dataContainer.minVisibleWidth = Math.max(0, this._minWidth - this._paddingLeft - this._paddingRight);
+			this.dataContainer.maxVisibleWidth = this._maxWidth - this._paddingLeft - this._paddingRight;
+			this.dataContainer.minVisibleHeight = Math.max(0, this._minHeight - this._paddingTop - this._paddingBottom);
+			this.dataContainer.maxVisibleHeight = this._maxHeight - this._paddingTop - this._paddingBottom;
+
 			this.dataContainer.isEnabled = this._isEnabled;
 			this.dataContainer.isSelectable = this._isSelectable;
 			this.dataContainer.selectedIndex = this._selectedIndex;
@@ -859,16 +866,19 @@ package org.josht.starling.foxhole.controls
 			this.scroller.isEnabled = this._isEnabled;
 			this.scroller.x = this._paddingLeft;
 			this.scroller.y = this._paddingTop;
+
+			//rather than set the scrollers width and height explicitly, we'll
+			//set both the min and max values to the same thing, and the
+			//scroller will always auto-size without intervention.
+			this.scroller.minWidth = Math.max(0, (isNaN(this.explicitWidth) ? this._minWidth : this.explicitWidth) - this._paddingLeft - this._paddingRight);
+			this.scroller.maxWidth = (isNaN(this.explicitWidth) ? this._maxWidth : this.explicitWidth) - this._paddingLeft - this._paddingRight;
+			this.scroller.minHeight = Math.max(0, (isNaN(this.explicitHeight) ? this._minHeight : this.explicitHeight) - this._paddingTop - this._paddingBottom);
+			this.scroller.maxHeight = (isNaN(this.explicitHeight) ? this._maxHeight : this.explicitHeight) - this._paddingTop - this._paddingBottom;
+			
 			this.scroller.horizontalScrollPosition = this._horizontalScrollPosition;
 			this.scroller.verticalScrollPosition = this._verticalScrollPosition;
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
-
-			if(sizeInvalid)
-			{
-				this.scroller.width = this.actualWidth - this._paddingLeft - this._paddingRight;
-				this.scroller.height = this.actualHeight - this._paddingTop - this._paddingBottom;
-			}
 
 			this.scroller.validate();
 			this._maxHorizontalScrollPosition = this.scroller.maxHorizontalScrollPosition;
@@ -910,14 +920,6 @@ package org.josht.starling.foxhole.controls
 				return false;
 			}
 
-			if(needsWidth)
-			{
-				this.scroller.width = NaN;
-			}
-			if(needsHeight)
-			{
-				this.scroller.height = NaN;
-			}
 			this.scroller.validate();
 			var newWidth:Number = this.explicitWidth;
 			var newHeight:Number = this.explicitHeight;
@@ -929,8 +931,8 @@ package org.josht.starling.foxhole.controls
 			{
 				newHeight = this.scroller.height + this._paddingTop + this._paddingBottom;
 			}
-			this.setSizeInternal(newWidth, newHeight, false);
-			return true;
+
+			return this.setSizeInternal(newWidth, newHeight, false);
 		}
 		
 		/**
