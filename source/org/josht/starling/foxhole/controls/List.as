@@ -430,6 +430,11 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
+		protected var currentBackgroundSkin:DisplayObject;
+
+		/**
+		 * @private
+		 */
 		private var _backgroundSkin:DisplayObject;
 		
 		/**
@@ -874,11 +879,17 @@ package org.josht.starling.foxhole.controls
 			this.scroller.maxWidth = (isNaN(this.explicitWidth) ? this._maxWidth : this.explicitWidth) - this._paddingLeft - this._paddingRight;
 			this.scroller.minHeight = Math.max(0, (isNaN(this.explicitHeight) ? this._minHeight : this.explicitHeight) - this._paddingTop - this._paddingBottom);
 			this.scroller.maxHeight = (isNaN(this.explicitHeight) ? this._maxHeight : this.explicitHeight) - this._paddingTop - this._paddingBottom;
-			
+
 			this.scroller.horizontalScrollPosition = this._horizontalScrollPosition;
 			this.scroller.verticalScrollPosition = this._verticalScrollPosition;
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
+
+			if(this.currentBackgroundSkin)
+			{
+				this.currentBackgroundSkin.width = this.actualWidth;
+				this.currentBackgroundSkin.height = this.actualHeight;
+			}
 
 			this.scroller.validate();
 			this._maxHorizontalScrollPosition = this.scroller.maxHorizontalScrollPosition;
@@ -955,24 +966,22 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function refreshBackgroundSkin():void
 		{
-			var backgroundSkin:DisplayObject = this._backgroundSkin;
+			this.currentBackgroundSkin = this._backgroundSkin;
 			if(!this._isEnabled && this._backgroundDisabledSkin)
 			{
 				if(this._backgroundSkin)
 				{
 					this._backgroundSkin.visible = false;
 				}
-				backgroundSkin = this._backgroundDisabledSkin;
+				this.currentBackgroundSkin = this._backgroundDisabledSkin;
 			}
 			else if(this._backgroundDisabledSkin)
 			{
 				this._backgroundDisabledSkin.visible = false;
 			}
-			if(backgroundSkin)
+			if(this.currentBackgroundSkin)
 			{
-				backgroundSkin.visible = true;
-				backgroundSkin.width = this.actualWidth;
-				backgroundSkin.height = this.actualHeight;
+				this.currentBackgroundSkin.visible = true;
 			}
 		}
 
