@@ -683,6 +683,32 @@ package org.josht.starling.foxhole.controls
 			this._typicalItem = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _itemRendererName:String;
+
+		/**
+		 * A name to add to all item renderers in this list.
+		 */
+		public function get itemRendererName():String
+		{
+			return this._itemRendererName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set itemRendererName(value:String):void
+		{
+			if(this._itemRendererName == value)
+			{
+				return;
+			}
+			this._itemRendererName = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
 		
 		/**
 		 * Sets a single property on the list's scroller instance. The
@@ -819,6 +845,7 @@ package org.josht.starling.foxhole.controls
 			this.dataContainer.itemRendererType = this._itemRendererType;
 			this.dataContainer.itemRendererFunction = this._itemRendererFunction;
 			this.dataContainer.itemRendererProperties = this._itemRendererProperties;
+			this.dataContainer.itemRendererName = this._itemRendererName;
 			this.dataContainer.typicalItem = this._typicalItem;
 			this.dataContainer.layout = this._layout;
 			this.dataContainer.horizontalScrollPosition = this._horizontalScrollPosition;

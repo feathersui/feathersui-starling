@@ -186,6 +186,34 @@ package org.josht.starling.foxhole.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_ITEM_RENDERER);
 		}
 
+		protected var _itemRendererName:String;
+
+		public function get itemRendererName():String
+		{
+			return this._itemRendererName;
+		}
+
+		public function set itemRendererName(value:String):void
+		{
+			if(this._itemRendererName == value)
+			{
+				return;
+			}
+			if(this._itemRendererName)
+			{
+				for(var item:Object in this._rendererMap)
+				{
+					var renderer:FoxholeControl = this._rendererMap[item] as FoxholeControl;
+					if(renderer)
+					{
+						renderer.nameList.remove(this._itemRendererName);
+					}
+				}
+			}
+			this._itemRendererName = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
 		private var _typicalItemWidth:Number = NaN;
 		private var _typicalItemHeight:Number = NaN;
 		
@@ -500,6 +528,15 @@ package org.josht.starling.foxhole.controls.supportClasses
 					{
 						//the index may have changed if data was added or removed
 						renderer.index = i;
+						if(renderer is FoxholeControl)
+						{
+							var foxholeRenderer:FoxholeControl = FoxholeControl(renderer);
+							if(this._itemRendererName && !foxholeRenderer.nameList.contains(this._itemRendererName))
+							{
+								foxholeRenderer.nameList.add(this._itemRendererName);
+							}
+							foxholeRenderer.isEnabled = this._isEnabled;
+						}
 						this._activeRenderers.push(renderer);
 						this._inactiveRenderers.splice(this._inactiveRenderers.indexOf(renderer), 1);
 						var displayRenderer:DisplayObject = DisplayObject(renderer);
@@ -584,7 +621,12 @@ package org.josht.starling.foxhole.controls.supportClasses
 			renderer.owner = this.owner;
 			if(renderer is FoxholeControl)
 			{
-				FoxholeControl(renderer).isEnabled = this._isEnabled;
+				const foxholeRenderer:FoxholeControl = FoxholeControl(renderer);
+				if(this._itemRendererName && !foxholeRenderer.nameList.contains(this._itemRendererName))
+				{
+					foxholeRenderer.nameList.add(this._itemRendererName);
+				}
+				foxholeRenderer.isEnabled = this._isEnabled;
 			}
 
 			if(!isTemporary)
