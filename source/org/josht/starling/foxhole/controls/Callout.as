@@ -24,12 +24,16 @@
  */
 package org.josht.starling.foxhole.controls
 {
+	import flash.events.KeyboardEvent;
 	import flash.geom.Rectangle;
+	import flash.ui.Keyboard;
 
 	import org.josht.starling.foxhole.core.FoxholeControl;
 
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.PopUpManager;
+	import org.osflash.signals.ISignal;
+	import org.osflash.signals.Signal;
 
 	import starling.core.Starling;
 
@@ -115,6 +119,7 @@ package org.josht.starling.foxhole.controls
 			callout.content = content;
 			callout.width = width;
 			callout.height = height;
+			callout._isPopUp = true;
 			PopUpManager.addPopUp(callout, true, false, calloutOverlayFactory);
 
 			if(DIRECTION_TO_FUNCTION.hasOwnProperty(direction))
@@ -135,45 +140,58 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected static function positionCalloutAny(callout:Callout, globalOrigin:Rectangle):void
 		{
+			callout.arrowPosition = ARROW_POSITION_TOP;
+			callout.validate();
 			const downSpace:Number = (Starling.current.stage.stageHeight - callout.height) - (globalOrigin.y + globalOrigin.height);
-			const upSpace:Number = globalOrigin.y - callout.height;
-			const rightSpace:Number = (Starling.current.stage.stageWidth - callout.width) - (globalOrigin.x + globalOrigin.width);
-			const leftSpace:Number = globalOrigin.x - callout.width;
 			if(downSpace >= 0)
 			{
 				positionCalloutBelow(callout, globalOrigin);
+				return;
 			}
-			else if(upSpace >= 0)
+
+			callout.arrowPosition = ARROW_POSITION_BOTTOM;
+			callout.validate();
+			const upSpace:Number = globalOrigin.y - callout.height;
+			if(upSpace >= 0)
+			{
+				positionCalloutAbove(callout, globalOrigin);
+				return;
+			}
+
+			callout.arrowPosition = ARROW_POSITION_LEFT;
+			callout.validate();
+			const rightSpace:Number = (Starling.current.stage.stageWidth - callout.width) - (globalOrigin.x + globalOrigin.width);
+			if(rightSpace >= 0)
+			{
+				positionCalloutRightSide(callout, globalOrigin);
+				return;
+			}
+
+			callout.arrowPosition = ARROW_POSITION_RIGHT;
+			callout.validate();
+			const leftSpace:Number = globalOrigin.x - callout.width;
+			if(leftSpace)
+			{
+				positionCalloutLeftSide(callout, globalOrigin);
+				return;
+			}
+
+			//worst case: pick the side that has the most available space
+			if(downSpace >= upSpace && downSpace >= rightSpace && downSpace >= leftSpace)
+			{
+				positionCalloutBelow(callout, globalOrigin);
+			}
+			else if(upSpace >= rightSpace && upSpace >= leftSpace)
 			{
 				positionCalloutAbove(callout, globalOrigin);
 			}
-			else if(rightSpace >= 0)
+			else if(rightSpace >= leftSpace)
 			{
 				positionCalloutRightSide(callout, globalOrigin);
 			}
-			else if(leftSpace)
-			{
-				positionCalloutLeftSide(callout, globalOrigin);
-			}
 			else
 			{
-				//pick the side that has the most space
-				if(downSpace >= upSpace && downSpace >= rightSpace && downSpace >= leftSpace)
-				{
-					positionCalloutBelow(callout, globalOrigin);
-				}
-				else if(upSpace >= rightSpace && upSpace >= leftSpace)
-				{
-					positionCalloutAbove(callout, globalOrigin);
-				}
-				else if(rightSpace >= leftSpace)
-				{
-					positionCalloutRightSide(callout, globalOrigin);
-				}
-				else
-				{
-					positionCalloutLeftSide(callout, globalOrigin);
-				}
+				positionCalloutLeftSide(callout, globalOrigin);
 			}
 
 		}
@@ -254,6 +272,11 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
+		protected var _isPopUp:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _touchPointID:int = -1;
 
 		/**
@@ -294,7 +317,7 @@ package org.josht.starling.foxhole.controls
 			}
 			if(this._content)
 			{
-				this._content.removeFromParent();
+				this._content.removeFromParent(false);
 			}
 			this._content = value;
 			if(this._content)
@@ -823,9 +846,52 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
+		protected var _onClose:Signal = new Signal(Callout);
+
+		/**
+		 * Dispatched when the callout is closed.
+		 */
+		public function get onClose():ISignal
+		{
+			return this._onClose;
+		}
+
+		/**
+		 * Closes the callout.
+		 */
+		public function close():void
+		{
+			if(!this.parent)
+			{
+				return;
+			}
+			if(this._isPopUp)
+			{
+				PopUpManager.removePopUp(this);
+			}
+			else
+			{
+				this.removeFromParent();
+			}
+			this._onClose.dispatch(this);
+		}
+
+		/**
+		 * @private
+		 */
+		override public function dispose():void
+		{
+			this._onClose.removeAll();
+			super.dispose();
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function initialize():void
 		{
 			this.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
+			Starling.current.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler, false, int.MAX_VALUE, true);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 		}
 
@@ -874,7 +940,7 @@ package org.josht.starling.foxhole.controls
 
 			const needsContentWidth:Boolean = isNaN(this._originalContentWidth);
 			const needsContentHeight:Boolean = isNaN(this._originalContentHeight);
-			if(needsContentWidth || needsContentHeight)
+			if(this._content && (needsContentWidth || needsContentHeight))
 			{
 				if(this._content is FoxholeControl)
 				{
@@ -1029,6 +1095,7 @@ package org.josht.starling.foxhole.controls
 		protected function removedFromStageHandler(event:Event):void
 		{
 			this.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
+			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 		}
 
 		/**
@@ -1054,10 +1121,26 @@ package org.josht.starling.foxhole.controls
 			{
 				if(touch.phase == TouchPhase.ENDED)
 				{
-					PopUpManager.removePopUp(this, true);
 					this._touchPointID = -1;
+					this.close();
 				}
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function stage_keyDownHandler(event:KeyboardEvent):void
+		{
+			if(event.keyCode != Keyboard.BACK && event.keyCode != Keyboard.ESCAPE)
+			{
+				return;
+			}
+			//don't let the OS handle the event
+			event.preventDefault();
+			//don't let other event handlers handle the event
+			event.stopImmediatePropagation();
+			this.close();
 		}
 	}
 }
