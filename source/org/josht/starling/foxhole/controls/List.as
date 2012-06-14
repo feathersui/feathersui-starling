@@ -633,7 +633,12 @@ package org.josht.starling.foxhole.controls
 		
 		/**
 		 * A function called that is expected to return a new item renderer. Has
-		 * a higher priority than <code>itemRendererType</code>.
+		 * a higher priority than <code>itemRendererType</code>. Typically, you
+		 * would use an <code>itemRendererFunction</code> instead of an
+		 * <code>itemRendererType</code> if you wanted to initialize some
+		 * properties on each item renderer. If you are not using a Foxhole
+		 * theme, you will probably use an <code>itemRendererFunction</code> to
+		 * skin the list's item renderers.
 		 * 
 		 * @see #itemRendererType
 		 */
