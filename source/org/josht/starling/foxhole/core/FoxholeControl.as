@@ -238,7 +238,7 @@ package org.josht.starling.foxhole.core
 		 */
 		override public function set width(value:Number):void
 		{
-			if(this.explicitWidth == value)
+			if(this.explicitWidth == value || (isNaN(this.explicitWidth) && isNaN(value)))
 			{
 				return;
 			}
@@ -278,7 +278,7 @@ package org.josht.starling.foxhole.core
 		 */
 		override public function set height(value:Number):void
 		{
-			if(this.explicitHeight == value)
+			if(this.explicitHeight == value || (isNaN(this.explicitHeight) && isNaN(value)))
 			{
 				return;
 			}
@@ -366,6 +366,10 @@ package org.josht.starling.foxhole.core
 			{
 				return;
 			}
+			if(isNaN(value))
+			{
+				throw new ArgumentError("minWidth cannot be NaN");
+			}
 			this._minWidth = value;
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
@@ -395,6 +399,10 @@ package org.josht.starling.foxhole.core
 			if(this._minHeight == value)
 			{
 				return;
+			}
+			if(isNaN(value))
+			{
+				throw new ArgumentError("minHeight cannot be NaN");
 			}
 			this._minHeight = value;
 			this.invalidate(INVALIDATION_FLAG_SIZE);
@@ -426,6 +434,10 @@ package org.josht.starling.foxhole.core
 			{
 				return;
 			}
+			if(isNaN(value))
+			{
+				throw new ArgumentError("maxWidth cannot be NaN");
+			}
 			this._maxWidth = value;
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
@@ -455,6 +467,10 @@ package org.josht.starling.foxhole.core
 			if(this._maxHeight == value)
 			{
 				return;
+			}
+			if(isNaN(value))
+			{
+				throw new ArgumentError("maxHeight cannot be NaN");
 			}
 			this._maxHeight = value;
 			this.invalidate(INVALIDATION_FLAG_SIZE);
@@ -689,7 +705,7 @@ package org.josht.starling.foxhole.core
 		 * Sets the width and height of the control, with the option of
 		 * invalidating or not. Intended to be used for automatic resizing.
 		 */
-		protected function setSizeInternal(width:Number, height:Number, canInvalidate:Boolean):void
+		protected function setSizeInternal(width:Number, height:Number, canInvalidate:Boolean):Boolean
 		{
 			var resized:Boolean = false;
 			if(!isNaN(this.explicitWidth))
@@ -738,6 +754,7 @@ package org.josht.starling.foxhole.core
 				}
 				this._onResize.dispatch(this);
 			}
+			return resized;
 		}
 		
 		/**
