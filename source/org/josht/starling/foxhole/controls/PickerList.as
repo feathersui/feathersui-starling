@@ -24,20 +24,17 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package org.josht.starling.foxhole.controls
 {
-	import flash.events.KeyboardEvent;
 	import flash.geom.Point;
-	import flash.ui.Keyboard;
 
 	import org.josht.starling.display.ScrollRectManager;
 	import org.josht.starling.foxhole.core.FoxholeControl;
-	import org.josht.starling.foxhole.core.PopUpManager;
 	import org.josht.starling.foxhole.data.ListCollection;
+	import org.josht.system.PhysicalCapabilities;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
-	import starling.events.ResizeEvent;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -48,11 +45,6 @@ package org.josht.starling.foxhole.controls
 	 */
 	public class PickerList extends FoxholeControl
 	{
-		/**
-		 * @private
-		 */
-		private static const INVALIDATION_FLAG_STAGE_SIZE:String = "stageSize";
-		
 		/**
 		 * Constructor.
 		 */
@@ -227,28 +219,27 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _popUpPadding:Number = 20;
+		private var _popUpContentManager:IPopUpContentManager;
 		
 		/**
-		 * The space, in pixels, around the edges of the pop-up list as it fills
-		 * the stage.
+		 * A manager that handles the details of how to display the pop-up list.
 		 */
-		public function get popUpPadding():Number
+		public function get popUpContentManager():IPopUpContentManager
 		{
-			return this._popUpPadding;
+			return this._popUpContentManager;
 		}
 		
 		/**
 		 * @private
 		 */
-		public function set popUpPadding(value:Number):void
+		public function set popUpContentManager(value:IPopUpContentManager):void
 		{
-			if(this._popUpPadding == value)
+			if(this._popUpContentManager == value)
 			{
 				return;
 			}
-			this._popUpPadding = value;
-			this.invalidate(INVALIDATION_FLAG_STAGE_SIZE);
+			this._popUpContentManager = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
 		/**
@@ -443,7 +434,9 @@ package org.josht.starling.foxhole.controls
 		 */
 		override public function dispose():void
 		{
+			this.closePopUpList();
 			this._onChange.removeAll();
+			this._list.dispose();
 			super.dispose();
 		}
 		
@@ -470,6 +463,19 @@ package org.josht.starling.foxhole.controls
 				this._list.onItemTouch.add(list_onItemTouch);
 				this._list.addEventListener(TouchEvent.TOUCH, list_touchHandler);
 			}
+
+			if(!this._popUpContentManager)
+			{
+				if(PhysicalCapabilities.isTablet(Starling.current.nativeStage))
+				{
+					this.popUpContentManager = new CalloutPopUpContentManager();
+				}
+				else
+				{
+					this.popUpContentManager = new VerticalCenteredPopUpContentManager();
+				}
+			}
+
 		}
 		
 		/**
@@ -482,7 +488,6 @@ package org.josht.starling.foxhole.controls
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 			const selectionInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SELECTED);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
-			const stageSizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STAGE_SIZE);
 			
 			if(stylesInvalid || selectionInvalid)
 			{
@@ -531,12 +536,6 @@ package org.josht.starling.foxhole.controls
 				this._button.width = this.actualWidth;
 				this._button.height = this.actualHeight;
 			}
-			
-			if(stageSizeInvalid)
-			{
-				this.resizeAndPositionList();
-			}
-			this._list.validate();
 		}
 
 		/**
@@ -593,17 +592,6 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected function resizeAndPositionList():void
-		{
-			this._list.width = this.stage.stageWidth - 2 * this._popUpPadding;
-			this._list.height = this.stage.stageHeight - 2 * this._popUpPadding;
-			this._list.x = this._popUpPadding;
-			this._list.y = this._popUpPadding;
-		}
-		
-		/**
-		 * @private
-		 */
 		protected function refreshButtonProperties():void
 		{
 			for(var propertyName:String in this._buttonProperties)
@@ -638,12 +626,7 @@ package org.josht.starling.foxhole.controls
 		protected function closePopUpList():void
 		{
 			this._list.validate();
-			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
-			this.stage.removeEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
-			if(this._list.parent)
-			{
-				PopUpManager.removePopUp(this._list);
-			}
+			this._popUpContentManager.close();
 		}
 		
 		/**
@@ -651,13 +634,10 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function button_onRelease(button:Button):void
 		{
-			PopUpManager.addPopUp(this._list, true, false);
-			this.resizeAndPositionList();
+			this._popUpContentManager.open(this._list, this);
 			this._list.scrollToDisplayIndex(this._selectedIndex);
 			this._list.validate();
-			
-			this.stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
-			Starling.current.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler, false, int.MAX_VALUE, true);
+
 			this._hasBeenScrolled = false;
 		}
 		
@@ -737,30 +717,6 @@ package org.josht.starling.foxhole.controls
 			{
 				this._listTouchPointID = -1;
 			}
-		}
-		
-		/**
-		 * @private
-		 */
-		private function stage_keyDownHandler(event:KeyboardEvent):void
-		{
-			if(event.keyCode != Keyboard.BACK && event.keyCode != Keyboard.ESCAPE)
-			{
-				return;
-			}
-			//don't let the OS handle the event
-			event.preventDefault();
-			//don't let other event handlers handle the event
-			event.stopImmediatePropagation();
-			this.closePopUpList();
-		}
-		
-		/**
-		 * @private
-		 */
-		private function stage_resizeHandler(event:ResizeEvent):void
-		{
-			this.invalidate(INVALIDATION_FLAG_STAGE_SIZE);
 		}
 	}
 }
