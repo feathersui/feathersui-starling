@@ -71,11 +71,15 @@ package org.josht.starling.foxhole.core
 		public static function addPopUp(popUp:DisplayObject, isModal:Boolean = true, isCentered:Boolean = true, customOverlayFactory:Function = null):void
 		{
 			const stage:Stage = Starling.current.stage
-			if(isModal && customOverlayFactory != null)
+			if(isModal)
 			{
 				if(customOverlayFactory == null)
 				{
 					customOverlayFactory = overlayFactory;
+				}
+				if(customOverlayFactory == null)
+				{
+					customOverlayFactory = defaultOverlayFactory;
 				}
 				const overlay:DisplayObject = customOverlayFactory();
 				overlay.width = stage.stageWidth;
