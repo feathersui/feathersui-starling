@@ -117,8 +117,12 @@ package org.josht.starling.foxhole.controls
 
 		/**
 		 * Returns a new <code>Callout</code> instance when <code>Callout.show()</code>
-		 * is called. If one wishes to skin the callout manually, a different
-		 * function may be provided.
+		 * is called. If one wishes to skin the callout manually, a custom
+		 * factory may be provided.
+		 *
+		 * <p>This function is expected to have the following signature:</p>
+		 *
+		 * <pre>function():Callout</pre>
 		 */
 		public static var calloutFactory:Function = defaultCalloutFactory;
 
