@@ -65,6 +65,11 @@ package org.josht.starling.foxhole.controls
 		}
 
 		/**
+		 * The value added to the <code>nameList</code> of the scroller.
+		 */
+		protected var defaultScrollerName:String = "foxhole-scrollcontainer-scroller";
+
+		/**
 		 * @private
 		 */
 		protected var scroller:Scroller;
@@ -384,7 +389,7 @@ package org.josht.starling.foxhole.controls
 			{
 				this.scroller = new Scroller();
 				this.scroller.viewPort = this.viewPort;
-				this.scroller.nameList.add("foxhole-scrollcontainer-scroller");
+				this.scroller.nameList.add(this.defaultScrollerName);
 				this.scroller.onScroll.add(scroller_onScroll);
 				super.addChildAt(this.scroller, 0);
 			}

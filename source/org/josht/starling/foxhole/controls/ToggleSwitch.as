@@ -97,6 +97,21 @@ package org.josht.starling.foxhole.controls
 		}
 
 		/**
+		 * The value added to the <code>nameList</code> of the off label.
+		 */
+		protected var defaultOnLabelName:String = "foxhole-toggle-switch-off-label";
+
+		/**
+		 * The value added to the <code>nameList</code> of the on label.
+		 */
+		protected var defaultOffLabelName:String = "foxhole-toggle-switch-on-label";
+
+		/**
+		 * The value added to the <code>nameList</code> of the thumb.
+		 */
+		protected var defaultThumbName:String = "foxhole-toggle-switch-thumb";
+
+		/**
 		 * @private
 		 */
 		protected var thumb:Button;
@@ -638,7 +653,7 @@ package org.josht.starling.foxhole.controls
 			if(!this.offLabelControl)
 			{
 				this.offLabelControl = new Label();
-				this.offLabelControl.nameList.add("foxhole-toggle-switch-off-label");
+				this.offLabelControl.nameList.add(this.defaultOffLabelName);
 				this.offLabelControl.scrollRect = new Rectangle();
 				this.addChild(this.offLabelControl);
 			}
@@ -646,7 +661,7 @@ package org.josht.starling.foxhole.controls
 			if(!this.onLabelControl)
 			{
 				this.onLabelControl = new Label();
-				this.onLabelControl.nameList.add("foxhole-toggle-switch-on-label");
+				this.onLabelControl.nameList.add(this.defaultOnLabelName);
 				this.onLabelControl.scrollRect = new Rectangle();
 				this.addChild(this.onLabelControl);
 			}
@@ -654,7 +669,7 @@ package org.josht.starling.foxhole.controls
 			if(!this.thumb)
 			{
 				this.thumb = new Button();
-				this.thumb.nameList.add("foxhole-toggle-switch-thumb");
+				this.thumb.nameList.add(this.defaultThumbName);
 				this.thumb.label = "";
 				this.thumb.keepDownStateOnRollOut = true;
 				this.thumb.addEventListener(TouchEvent.TOUCH, thumb_touchHandler);

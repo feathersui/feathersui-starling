@@ -139,6 +139,11 @@ package org.josht.starling.foxhole.controls
 			this.isQuickHitAreaEnabled = true;
 			this.addEventListener(TouchEvent.TOUCH, touchHandler);
 		}
+
+		/**
+		 * The value added to the <code>nameList</code> of the label.
+		 */
+		protected var defaultLabelName:String = "foxhole-button-label";
 		
 		/**
 		 * @private
@@ -1448,7 +1453,7 @@ package org.josht.starling.foxhole.controls
 			if(!this.labelControl)
 			{
 				this.labelControl = new Label();
-				this.labelControl.nameList.add("foxhole-button-label");
+				this.labelControl.nameList.add(this.defaultLabelName);
 				this.addChild(this.labelControl);
 			}
 		}
