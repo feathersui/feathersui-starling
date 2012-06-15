@@ -241,6 +241,16 @@ package org.josht.starling.foxhole.controls
 			this._popUpContentManager = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _typicalItemWidth:Number = NaN;
+
+		/**
+		 * @private
+		 */
+		protected var _typicalItemHeight:Number = NaN;
 		
 		/**
 		 * @private
@@ -507,6 +517,8 @@ package org.josht.starling.foxhole.controls
 
 			if(stylesInvalid)
 			{
+				this._typicalItemWidth = NaN;
+				this._typicalItemHeight = NaN;
 				this.refreshButtonProperties();
 				this.refreshListProperties();
 			}
@@ -522,20 +534,16 @@ package org.josht.starling.foxhole.controls
 				this._button.isEnabled = this.isEnabled;
 			}
 
-			var autoSized:Boolean = this.autoSizeIfNeeded();
-			sizeInvalid = autoSized || sizeInvalid;
-			
-			if(selectionInvalid || autoSized)
+			if(selectionInvalid)
 			{
 				this.refreshButtonLabel();
 				this._list.selectedIndex = this._selectedIndex;
 			}
-			
-			if(sizeInvalid)
-			{
-				this._button.width = this.actualWidth;
-				this._button.height = this.actualHeight;
-			}
+
+			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
+
+			this._button.width = this.actualWidth;
+			this._button.height = this.actualHeight;
 		}
 
 		/**
@@ -550,25 +558,35 @@ package org.josht.starling.foxhole.controls
 				return false;
 			}
 
+			this._button.width = NaN;
+			this._button.height = NaN;
 			if(this._typicalItem)
 			{
-				this._button.label = this.itemToLabel(this._typicalItem);
+				if(isNaN(this._typicalItemWidth) || isNaN(this._typicalItemHeight))
+				{
+					this._button.label = this.itemToLabel(this._typicalItem);
+					this._button.validate();
+					this._typicalItemWidth = this._button.width;
+					this._typicalItemHeight = this._button.height;
+					this.refreshButtonLabel();
+				}
 			}
 			else
 			{
-				this.refreshButtonLabel();
+				this._button.validate();
+				this._typicalItemWidth = this._button.width;
+				this._typicalItemHeight = this._button.height;
 			}
-			this._button.validate();
 
 			var newWidth:Number = this.explicitWidth;
 			var newHeight:Number = this.explicitHeight;
 			if(needsWidth)
 			{
-				newWidth = this._button.width;
+				newWidth = this._typicalItemWidth;
 			}
 			if(needsHeight)
 			{
-				newHeight = this._button.height;
+				newHeight = this._typicalItemHeight;
 			}
 			return this.setSizeInternal(newWidth, newHeight, false);
 		}
