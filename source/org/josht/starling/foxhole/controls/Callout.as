@@ -39,7 +39,9 @@ package org.josht.starling.foxhole.controls
 
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
+	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
+	import starling.events.ResizeEvent;
 	import starling.events.Touch;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -99,12 +101,19 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
+		private static var helperRect:Rectangle = new Rectangle();
+
+		/**
+		 * @private
+		 */
 		protected static const DIRECTION_TO_FUNCTION:Object = {};
 		DIRECTION_TO_FUNCTION[DIRECTION_ANY] = positionCalloutAny;
 		DIRECTION_TO_FUNCTION[DIRECTION_UP] = positionCalloutAbove;
 		DIRECTION_TO_FUNCTION[DIRECTION_DOWN] = positionCalloutBelow;
 		DIRECTION_TO_FUNCTION[DIRECTION_LEFT] = positionCalloutLeftSide;
 		DIRECTION_TO_FUNCTION[DIRECTION_RIGHT] = positionCalloutRightSide;
+
+		protected static const callouts:Vector.<Callout> = new <Callout>[];
 
 		/**
 		 * Creates a callout, and then positions and sizes it automatically
@@ -113,7 +122,7 @@ package org.josht.starling.foxhole.controls
 		 * these values may be ignored if the callout cannot be drawn at the
 		 * specified dimensions.
 		 */
-		public static function show(content:DisplayObject, globalOrigin:Rectangle, direction:String = DIRECTION_ANY, width:Number = NaN, height:Number = NaN):Callout
+		public static function show(content:DisplayObject, origin:DisplayObject, direction:String = DIRECTION_ANY, width:Number = NaN, height:Number = NaN):Callout
 		{
 			const callout:Callout = new Callout();
 			callout.content = content;
@@ -122,6 +131,38 @@ package org.josht.starling.foxhole.controls
 			callout._isPopUp = true;
 			PopUpManager.addPopUp(callout, true, false, calloutOverlayFactory);
 
+			var globalBounds:Rectangle = origin.getBounds(Starling.current.stage);
+			positionCalloutByDirection(callout, globalBounds, direction);
+			callouts.push(callout);
+
+			function enterFrameHandler(event:EnterFrameEvent):void
+			{
+				origin.getBounds(Starling.current.stage, helperRect);
+				if(globalBounds.equals(helperRect))
+				{
+					return;
+				}
+				const temp:Rectangle = globalBounds;
+				globalBounds = helperRect;
+				helperRect = temp;
+				positionCalloutByDirection(callout, globalBounds, direction);
+			}
+			function callout_onClose(callout:Callout):void
+			{
+				Starling.current.stage.removeEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
+				callout.onClose.remove(callout_onClose);
+			}
+			callout.addEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
+			callout.onClose.add(callout_onClose);
+
+			return callout;
+		}
+
+		/**
+		 * @private
+		 */
+		protected static function positionCalloutByDirection(callout:Callout, globalOrigin:Rectangle, direction:String):void
+		{
 			if(DIRECTION_TO_FUNCTION.hasOwnProperty(direction))
 			{
 				const calloutPositionFunction:Function = DIRECTION_TO_FUNCTION[direction];
@@ -131,8 +172,6 @@ package org.josht.starling.foxhole.controls
 			{
 				positionCalloutAny(callout, globalOrigin);
 			}
-
-			return callout;
 		}
 
 		/**
@@ -261,6 +300,7 @@ package org.josht.starling.foxhole.controls
 			quad.alpha = 0;
 			return quad;
 		}
+
 
 		/**
 		 * Constructor.

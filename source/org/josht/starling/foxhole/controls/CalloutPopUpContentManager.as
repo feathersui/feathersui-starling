@@ -56,7 +56,7 @@ package org.josht.starling.foxhole.controls
 			}
 
 			this.content = content;
-			this.callout = Callout.show(content, source.getBounds(Starling.current.stage));
+			this.callout = Callout.show(content, source);
 			this.callout.onClose.add(callout_onClose);
 		}
 
