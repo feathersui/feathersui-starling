@@ -116,6 +116,13 @@ package org.josht.starling.foxhole.controls
 		protected static const callouts:Vector.<Callout> = new <Callout>[];
 
 		/**
+		 * Returns a new <code>Callout</code> instance when <code>Callout.show()</code>
+		 * is called. If one wishes to skin the callout manually, a different
+		 * function may be provided.
+		 */
+		public static var calloutFactory:Function = defaultCalloutFactory;
+
+		/**
 		 * Creates a callout, and then positions and sizes it automatically
 		 * based on an origin rectangle and the specified direction relative to
 		 * the original. The provided width and height values are optional, and
@@ -124,10 +131,17 @@ package org.josht.starling.foxhole.controls
 		 */
 		public static function show(content:DisplayObject, origin:DisplayObject, direction:String = DIRECTION_ANY, width:Number = NaN, height:Number = NaN):Callout
 		{
-			const callout:Callout = new Callout();
+			const factory:Function = calloutFactory != null ? calloutFactory : defaultCalloutFactory;
+			const callout:Callout = factory();
 			callout.content = content;
-			callout.width = width;
-			callout.height = height;
+			if(!isNaN(width))
+			{
+				callout.width = width;
+			}
+			if(!isNaN(height))
+			{
+				callout.height = height;
+			}
 			callout._isPopUp = true;
 			PopUpManager.addPopUp(callout, true, false, calloutOverlayFactory);
 
@@ -156,6 +170,15 @@ package org.josht.starling.foxhole.controls
 			callout.onClose.add(callout_onClose);
 
 			return callout;
+		}
+
+		/**
+		 * @private
+		 * Creates a callout.
+		 */
+		protected static function defaultCalloutFactory():Callout
+		{
+			return new Callout();
 		}
 
 		/**
