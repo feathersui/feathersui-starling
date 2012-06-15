@@ -27,9 +27,28 @@ package org.josht.starling.foxhole.controls
 		{
 		}
 
+		/**
+		 * The minimum space, in pixels, between the top edge of the content and
+		 * the top edge of the stage.
+		 */
 		public var marginTop:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the right edge of the content
+		 * and the right edge of the stage.
+		 */
 		public var marginRight:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the bottom edge of the content
+		 * and the bottom edge of the stage.
+		 */
 		public var marginBottom:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the left edge of the content
+		 * and the left edge of the stage.
+		 */
 		public var marginLeft:Number = 0;
 
 		/**
