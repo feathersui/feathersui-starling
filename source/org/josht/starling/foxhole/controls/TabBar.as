@@ -67,6 +67,11 @@ package org.josht.starling.foxhole.controls
 		}
 
 		/**
+		 * The value added to the <code>nameList</code> of the tabs.
+		 */
+		protected var defaultTabName:String = "foxhole-tabbar-tab";
+
+		/**
 		 * @private
 		 */
 		protected var toggleGroup:ToggleGroup;
@@ -438,7 +443,7 @@ package org.josht.starling.foxhole.controls
 			if(this.inactiveTabs.length == 0)
 			{
 				var tab:Button = new Button();
-				tab.nameList.add("foxhole-tabbar-tab");
+				tab.nameList.add(this.defaultTabName);
 				tab.isToggle = true;
 				this.toggleGroup.addItem(tab);
 				this.addChild(tab);

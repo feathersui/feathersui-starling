@@ -84,6 +84,21 @@ package org.josht.starling.foxhole.controls
 		{
 			super();
 		}
+
+		/**
+		 * The value added to the <code>nameList</code> of the minimum track.
+		 */
+		protected var defaultMinimumTrackName:String = "foxhole-slider-minimum-track";
+
+		/**
+		 * The value added to the <code>nameList</code> of the maximum track.
+		 */
+		protected var defaultMaximumTrackName:String = "foxhole-slider-maximum-track";
+
+		/**
+		 * The value added to the <code>nameList</code> of the thumb.
+		 */
+		protected var defaultThumbName:String = "foxhole-slider-thumb";
 		
 		/**
 		 * @private
@@ -164,7 +179,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _direction:String = DIRECTION_HORIZONTAL;
+		protected var _direction:String = DIRECTION_HORIZONTAL;
 		
 		/**
 		 * Determines if the slider's thumb can be dragged horizontally or
@@ -192,7 +207,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _value:Number = 0;
+		protected var _value:Number = 0;
 		
 		/**
 		 * The value of the slider, between the minimum and maximum.
@@ -227,7 +242,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _minimum:Number = 0;
+		protected var _minimum:Number = 0;
 		
 		/**
 		 * The slider's value will not go lower than the minimum.
@@ -253,7 +268,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _maximum:Number = 0;
+		protected var _maximum:Number = 0;
 		
 		/**
 		 * The slider's value will not go higher than the maximum.
@@ -279,7 +294,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _step:Number = 0;
+		protected var _step:Number = 0;
 		
 		/**
 		 * As the slider's thumb is dragged, the value is snapped to a multiple
@@ -316,7 +331,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _showThumb:Boolean = true;
+		protected var _showThumb:Boolean = true;
 		
 		/**
 		 * Determines if the thumb should be displayed.
@@ -342,7 +357,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _trackLayoutMode:String = TRACK_LAYOUT_MODE_SINGLE;
+		protected var _trackLayoutMode:String = TRACK_LAYOUT_MODE_SINGLE;
 
 		/**
 		 * Determines how the minimum and maximum track skins are positioned and
@@ -512,7 +527,7 @@ package org.josht.starling.foxhole.controls
 			if(!this.minimumTrack)
 			{
 				this.minimumTrack = new Button();
-				this.minimumTrack.nameList.add("foxhole-slider-minimum-track");
+				this.minimumTrack.nameList.add(this.defaultMinimumTrackName);
 				this.minimumTrack.label = "";
 				this.minimumTrack.keepDownStateOnRollOut = true;
 				this.minimumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
@@ -522,7 +537,7 @@ package org.josht.starling.foxhole.controls
 			if(!this.thumb)
 			{
 				this.thumb = new Button();
-				this.thumb.nameList.add("foxhole-slider-thumb");
+				this.thumb.nameList.add(this.defaultThumbName);
 				this.thumb.label = "";
 				this.thumb.keepDownStateOnRollOut = true;
 				this.thumb.addEventListener(TouchEvent.TOUCH, thumb_touchHandler);
@@ -695,6 +710,27 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function layout():void
 		{
+			this.layoutThumb();
+
+			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_SCROLL)
+			{
+				this.layoutTrackWithScrollRect();
+			}
+			else if(this._trackLayoutMode == TRACK_LAYOUT_MODE_STRETCH)
+			{
+				this.layoutTrackWithStretch();
+			}
+			else //single
+			{
+				this.layoutTrackWithSingle();
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function layoutThumb():void
+		{
 			//this will auto-size the thumb, if needed
 			this.thumb.validate();
 
@@ -709,19 +745,6 @@ package org.josht.starling.foxhole.controls
 				const trackScrollableWidth:Number = this.actualWidth - this.thumb.width;
 				this.thumb.x = (trackScrollableWidth * (this._value - this._minimum) / (this._maximum - this._minimum));
 				this.thumb.y = (this.actualHeight - this.thumb.height) / 2;
-			}
-
-			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_SCROLL)
-			{
-				this.layoutTrackWithScrollRect();
-			}
-			else if(this._trackLayoutMode == TRACK_LAYOUT_MODE_STRETCH)
-			{
-				this.layoutTrackWithStretch();
-			}
-			else //single
-			{
-				this.layoutTrackWithSingle();
 			}
 		}
 
@@ -873,7 +896,7 @@ package org.josht.starling.foxhole.controls
 				if(!this.maximumTrack)
 				{
 					this.maximumTrack = new Button();
-					this.maximumTrack.nameList.add("foxhole-slider-maximum-track");
+					this.maximumTrack.nameList.add(this.defaultMaximumTrackName);
 					this.maximumTrack.label = "";
 					this.maximumTrack.keepDownStateOnRollOut = true;
 					this.maximumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
