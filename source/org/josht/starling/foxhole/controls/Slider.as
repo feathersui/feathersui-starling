@@ -516,6 +516,8 @@ package org.josht.starling.foxhole.controls
 		override public function dispose():void
 		{
 			this._onChange.removeAll();
+			this._onDragEnd.removeAll();
+			this._onDragStart.removeAll();
 			super.dispose();
 		}
 		
@@ -937,7 +939,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private function track_touchHandler(event:TouchEvent):void
+		protected function track_touchHandler(event:TouchEvent):void
 		{
 			if(!this._isEnabled)
 			{
@@ -988,7 +990,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private function thumb_touchHandler(event:TouchEvent):void
+		protected function thumb_touchHandler(event:TouchEvent):void
 		{
 			if(!this._isEnabled)
 			{
