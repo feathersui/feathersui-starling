@@ -16,13 +16,34 @@ package org.josht.system
 		public static var IS_TABLET_MINIMUM_INCHES:Number = 5;
 
 		/**
+		 * A custom width, in pixels, to use for calculations. Useful for
+		 * desktop Flash Player demos that need to simulate mobile screens.
+		 */
+		public static var CUSTOM_SCREEN_WIDTH:Number = NaN;
+
+		/**
+		 * A custom height, in pixels, to use for calculations. Useful for
+		 * desktop Flash Player demos that need to simulate mobile screens.
+		 */
+		public static var CUSTOM_SCREEN_HEIGHT:Number = NaN;
+
+		/**
+		 * A custom dpi to use for calculations. Useful for desktop Flash Player
+		 * demos that need to simulate mobile screens.
+		 */
+		public static var CUSTOM_SCREEN_DPI:Number = NaN;
+
+		/**
 		 * Determines if this device is probably a tablet, based on the physical
 		 * width and height, in inches, calculated using the full-screen
 		 * dimensions and the screen DPI.
 		 */
 		public static function isTablet(stage:Stage):Boolean
 		{
-			return (Math.max(stage.fullScreenWidth, stage.fullScreenHeight) / Capabilities.screenDPI) >= IS_TABLET_MINIMUM_INCHES;
+			const screenWidth:Number = isNaN(CUSTOM_SCREEN_WIDTH) ? stage.fullScreenWidth : CUSTOM_SCREEN_WIDTH;
+			const screenHeight:Number = isNaN(CUSTOM_SCREEN_HEIGHT) ? stage.fullScreenHeight : CUSTOM_SCREEN_HEIGHT;
+			const screenDPI:Number = isNaN(CUSTOM_SCREEN_DPI) ? Capabilities.screenDPI : CUSTOM_SCREEN_DPI;
+			return (Math.max(screenWidth, screenHeight) / screenDPI) >= IS_TABLET_MINIMUM_INCHES;
 		}
 
 		/**
@@ -41,7 +62,9 @@ package org.josht.system
 		 */
 		public static function screenInchesX(stage:Stage):Number
 		{
-			return stage.fullScreenWidth / Capabilities.screenDPI;
+			const screenWidth:Number = isNaN(CUSTOM_SCREEN_WIDTH) ? stage.fullScreenWidth : CUSTOM_SCREEN_WIDTH;
+			const screenDPI:Number = isNaN(CUSTOM_SCREEN_DPI) ? Capabilities.screenDPI : CUSTOM_SCREEN_DPI;
+			return screenWidth / screenDPI;
 		}
 
 		/**
@@ -50,7 +73,9 @@ package org.josht.system
 		 */
 		public static function screenInchesY(stage:Stage):Number
 		{
-			return stage.fullScreenHeight / Capabilities.screenDPI;
+			const screenHeight:Number = isNaN(CUSTOM_SCREEN_HEIGHT) ? stage.fullScreenHeight : CUSTOM_SCREEN_HEIGHT;
+			const screenDPI:Number = isNaN(CUSTOM_SCREEN_DPI) ? Capabilities.screenDPI : CUSTOM_SCREEN_DPI;
+			return screenHeight / screenDPI;
 		}
 	}
 }
