@@ -824,7 +824,7 @@ package org.josht.starling.foxhole.controls
 				this.createScrollBars();
 			}
 
-			if(scrollBarInvalid || dataInvalid)
+			if(sizeInvalid || scrollInvalid || scrollBarInvalid || dataInvalid)
 			{
 				this.refreshScrollBarValues();
 			}
@@ -894,6 +894,7 @@ package org.josht.starling.foxhole.controls
 				this.horizontalScrollBar.onChange.add(horizontalScrollBar_onChange);
 				const foxholeHorizontalScrollBar:FoxholeControl = FoxholeControl(this.horizontalScrollBar);
 				foxholeHorizontalScrollBar.alpha = 0;
+				foxholeHorizontalScrollBar.touchable = false;
 				this.addChild(foxholeHorizontalScrollBar);
 			}
 			if(this._verticalScrollPolicy != SCROLL_POLICY_OFF && this._verticalScrollBarFunction != null)
@@ -902,6 +903,7 @@ package org.josht.starling.foxhole.controls
 				this.verticalScrollBar.onChange.add(verticalScrollBar_onChange);
 				const foxholeVerticalScrollBar:FoxholeControl = FoxholeControl(this.verticalScrollBar);
 				foxholeVerticalScrollBar.alpha = 0;
+				foxholeVerticalScrollBar.touchable = false;
 				this.addChild(foxholeVerticalScrollBar);
 			}
 		}
