@@ -34,7 +34,8 @@ Source: https://github.com/fljot/TouchScrolling
 */
 package org.josht.starling.foxhole.controls
 {
-	import com.gskinner.motion.easing.Quintic;
+	import com.gskinner.motion.easing.Cubic;
+	import com.gskinner.motion.easing.Sine;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -533,6 +534,59 @@ package org.josht.starling.foxhole.controls
 		{
 			this._hasElasticEdges = value;
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _horizontalScrollBarHideTween:GTween;
+
+		/**
+		 * @private
+		 */
+		protected var _verticalScrollBarHideTween:GTween;
+
+		/**
+		 * @private
+		 */
+		protected var _hideScrollBarAnimationDuration:Number = 0.2;
+
+		/**
+		 * The duration, in seconds, of the animation when a scroll bar fades
+		 * out.
+		 */
+		public function get hideScrollBarAnimationDuration():Number
+		{
+			return this._hideScrollBarAnimationDuration;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set hideScrollBarAnimationDuration(value:Number):void
+		{
+			this._hideScrollBarAnimationDuration = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _throwEase:Function = Cubic.easeOut;
+
+		/**
+		 * The easing function used for "throw" animations.
+		 */
+		public function get throwEase():Function
+		{
+			return this._throwEase;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set throwEase(value:Function):void
+		{
+			this._throwEase = value;
+		}
 		
 		/**
 		 * @private
@@ -611,13 +665,28 @@ package org.josht.starling.foxhole.controls
 						horizontalScrollPosition: targetHorizontalScrollPosition
 					},
 					{
-						ease: Quintic.easeOut,
+						ease: this._throwEase,
 						onComplete: horizontalAutoScrollTween_onComplete
 					});
 				}
 				else
 				{
 					this.finishScrollingHorizontally();
+				}
+			}
+			else if(this.horizontalScrollBar && !this._horizontalScrollBarHideTween)
+			{
+				const displayHorizontalScrollBar:DisplayObject = DisplayObject(this.horizontalScrollBar);
+				if(displayHorizontalScrollBar.alpha > 0)
+				{
+					this._horizontalScrollBarHideTween = new GTween(this.horizontalScrollBar, this._hideScrollBarAnimationDuration,
+					{
+						alpha: 0
+					},
+					{
+						ease: Sine.easeOut,
+						onComplete: horizontalScrollBarHideTween_onComplete
+					});
 				}
 			}
 			
@@ -635,13 +704,28 @@ package org.josht.starling.foxhole.controls
 						verticalScrollPosition: targetVerticalScrollPosition
 					},
 					{
-						ease: Quintic.easeOut,
+						ease: this._throwEase,
 						onComplete: verticalAutoScrollTween_onComplete
 					});
 				}
 				else
 				{
 					this.finishScrollingVertically();
+				}
+			}
+			else if(this.verticalScrollBar && !this._verticalScrollBarHideTween)
+			{
+				const displayVerticalScrollBar:DisplayObject = DisplayObject(this.verticalScrollBar);
+				if(displayVerticalScrollBar.alpha > 0)
+				{
+					this._verticalScrollBarHideTween = new GTween(this.verticalScrollBar, this._hideScrollBarAnimationDuration,
+					{
+						alpha: 0
+					},
+					{
+						ease: Sine.easeOut,
+						onComplete: verticalScrollBarHideTween_onComplete
+					});
 				}
 			}
 		}
@@ -808,13 +892,17 @@ package org.josht.starling.foxhole.controls
 			{
 				this.horizontalScrollBar = this._horizontalScrollBarFunction();
 				this.horizontalScrollBar.onChange.add(horizontalScrollBar_onChange);
-				this.addChild(FoxholeControl(this.horizontalScrollBar));
+				const foxholeHorizontalScrollBar:FoxholeControl = FoxholeControl(this.horizontalScrollBar);
+				foxholeHorizontalScrollBar.alpha = 0;
+				this.addChild(foxholeHorizontalScrollBar);
 			}
 			if(this._verticalScrollPolicy != SCROLL_POLICY_OFF && this._verticalScrollBarFunction != null)
 			{
 				this.verticalScrollBar = this._verticalScrollBarFunction();
 				this.verticalScrollBar.onChange.add(verticalScrollBar_onChange);
-				this.addChild(FoxholeControl(this.verticalScrollBar));
+				const foxholeVerticalScrollBar:FoxholeControl = FoxholeControl(this.verticalScrollBar);
+				foxholeVerticalScrollBar.alpha = 0;
+				this.addChild(foxholeVerticalScrollBar);
 			}
 		}
 
@@ -1174,6 +1262,22 @@ package org.josht.starling.foxhole.controls
 			this._verticalAutoScrollTween = null;
 			this.finishScrollingVertically();
 		}
+
+		/**
+		 * @private
+		 */
+		protected function horizontalScrollBarHideTween_onComplete(tween:GTween):void
+		{
+			this._horizontalScrollBarHideTween = null;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function verticalScrollBarHideTween_onComplete(tween:GTween):void
+		{
+			this._verticalScrollBarHideTween = null;
+		}
 		
 		/**
 		 * @private
@@ -1255,13 +1359,21 @@ package org.josht.starling.foxhole.controls
 			if((this._horizontalScrollPolicy == SCROLL_POLICY_ON || (this._horizontalScrollPolicy == SCROLL_POLICY_AUTO && this._maxHorizontalScrollPosition > 0)) &&
 				!this._isDraggingHorizontally && horizontalInchesMoved >= MINIMUM_DRAG_DISTANCE)
 			{
+				if(this.horizontalScrollBar)
+				{
+					if(this._horizontalScrollBarHideTween)
+					{
+						this._horizontalScrollBarHideTween.paused = true;
+						this._horizontalScrollBarHideTween = null;
+					}
+					DisplayObject(this.horizontalScrollBar).alpha = 1;
+				}
 				//if we haven't already started dragging in the other direction,
 				//we need to dispatch the signal that says we're starting.
 				if(!this._isDraggingVertically)
 				{
 					this._onDragStart.dispatch(this);
 				}
-				this._onDragStart.dispatch(this);
 				this._isDraggingHorizontally = true;
 			}
 			if((this._verticalScrollPolicy == SCROLL_POLICY_ON ||
@@ -1271,6 +1383,15 @@ package org.josht.starling.foxhole.controls
 			{
 				if(!this._isDraggingHorizontally)
 				{
+					if(this.verticalScrollBar)
+					{
+						if(this._verticalScrollBarHideTween)
+						{
+							this._verticalScrollBarHideTween.paused = true;
+							this._verticalScrollBarHideTween = null;
+						}
+						DisplayObject(this.verticalScrollBar).alpha = 1;
+					}
 					this._onDragStart.dispatch(this);
 				}
 				this._isDraggingVertically = true;
