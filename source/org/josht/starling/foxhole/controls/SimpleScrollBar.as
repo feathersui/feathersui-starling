@@ -237,7 +237,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @inheritDoc
 		 */
-		public function get pageStep():Number
+		public function get page():Number
 		{
 			return this._pageStep;
 		}
@@ -245,7 +245,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		public function set pageStep(value:Number):void
+		public function set page(value:Number):void
 		{
 			if(this._pageStep == value)
 			{
