@@ -70,6 +70,10 @@ package org.josht.starling.foxhole.controls.supportClasses
 			{
 				return;
 			}
+			if(isNaN(value))
+			{
+				throw new ArgumentError("minVisibleWidth cannot be NaN");
+			}
 			this._minVisibleWidth = value;
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
@@ -87,6 +91,10 @@ package org.josht.starling.foxhole.controls.supportClasses
 			{
 				return;
 			}
+			if(isNaN(value))
+			{
+				throw new ArgumentError("maxVisibleWidth cannot be NaN");
+			}
 			this._maxVisibleWidth = value;
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
@@ -102,7 +110,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 
 		public function set visibleWidth(value:Number):void
 		{
-			if(this.explicitVisibleWidth == value)
+			if(this.explicitVisibleWidth == value || (isNaN(this.explicitVisibleWidth) && isNaN(value)))
 			{
 				return;
 			}
@@ -123,6 +131,10 @@ package org.josht.starling.foxhole.controls.supportClasses
 			{
 				return;
 			}
+			if(isNaN(value))
+			{
+				throw new ArgumentError("minVisibleHeight cannot be NaN");
+			}
 			this._minVisibleHeight = value;
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
@@ -140,6 +152,10 @@ package org.josht.starling.foxhole.controls.supportClasses
 			{
 				return;
 			}
+			if(isNaN(value))
+			{
+				throw new ArgumentError("maxVisibleHeight cannot be NaN");
+			}
 			this._maxVisibleHeight = value;
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
@@ -155,7 +171,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 
 		public function set visibleHeight(value:Number):void
 		{
-			if(this.explicitVisibleHeight == value)
+			if(this.explicitVisibleHeight == value || (isNaN(this.explicitVisibleHeight) && isNaN(value)))
 			{
 				return;
 			}
@@ -457,36 +473,52 @@ package org.josht.starling.foxhole.controls.supportClasses
 			const selectionInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SELECTED);
 			const itemRendererInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_ITEM_RENDERER);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 
-			if(dataInvalid || stylesInvalid || itemRendererInvalid || stylesInvalid)
+			if(stylesInvalid || dataInvalid || itemRendererInvalid)
 			{
 				this.calculateTypicalValues();
 			}
 
-			this.refreshRenderers(itemRendererInvalid);
-			if(dataInvalid || stylesInvalid || scrollInvalid || itemRendererInvalid)
+			if(scrollInvalid || sizeInvalid || dataInvalid || itemRendererInvalid)
+			{
+				this.refreshRenderers(itemRendererInvalid);
+			}
+			if(scrollInvalid || sizeInvalid || dataInvalid || stylesInvalid || itemRendererInvalid)
 			{
 				this.refreshItemRendererStyles();
 			}
-			if(scrollInvalid || dataInvalid || selectionInvalid || itemRendererInvalid)
+			if(scrollInvalid || selectionInvalid || sizeInvalid || dataInvalid || itemRendererInvalid)
 			{
 				this.refreshSelection();
 			}
-			var rendererCount:int = this._activeRenderers.length;
+			const rendererCount:int = this._activeRenderers.length;
 			for(var i:int = 0; i < rendererCount; i++)
 			{
 				var itemRenderer:DisplayObject = DisplayObject(this._activeRenderers[i]);
 				if(itemRenderer is FoxholeControl)
 				{
-					FoxholeControl(itemRenderer).validate();
+					const foxholeItemRenderer:FoxholeControl = FoxholeControl(itemRenderer);
+					if(stateInvalid || dataInvalid || scrollInvalid || itemRendererInvalid)
+					{
+						foxholeItemRenderer.isEnabled = this._isEnabled;
+					}
+					if(stylesInvalid && this._itemRendererName && !foxholeItemRenderer.nameList.contains(this._itemRendererName))
+					{
+						foxholeItemRenderer.nameList.add(this._itemRendererName);
+					}
+					foxholeItemRenderer.validate();
 				}
 			}
 
-			helperRect.x = helperRect.y = 0;
-			helperRect.width = this.actualVisibleWidth;
-			helperRect.height = this.actualVisibleHeight;
-			this._layout.layout(this._layoutItems, helperRect, helperPoint);
-			this.setSizeInternal(helperPoint.x, helperPoint.y, false);
+			if(scrollInvalid || dataInvalid || itemRendererInvalid || sizeInvalid)
+			{
+				helperRect.x = helperRect.y = 0;
+				helperRect.width = this.actualVisibleWidth;
+				helperRect.height = this.actualVisibleHeight;
+				this._layout.layout(this._layoutItems, helperRect, helperPoint);
+				this.setSizeInternal(helperPoint.x, helperPoint.y, false);
+			}
 		}
 
 		protected function calculateTypicalValues():void
@@ -609,24 +641,10 @@ package org.josht.starling.foxhole.controls.supportClasses
 					{
 						//the index may have changed if data was added or removed
 						renderer.index = i;
-						if(renderer is FoxholeControl)
-						{
-							var foxholeRenderer:FoxholeControl = FoxholeControl(renderer);
-							if(this._itemRendererName && !foxholeRenderer.nameList.contains(this._itemRendererName))
-							{
-								foxholeRenderer.nameList.add(this._itemRendererName);
-							}
-							foxholeRenderer.isEnabled = this._isEnabled;
-						}
 						this._activeRenderers.push(renderer);
 						this._inactiveRenderers.splice(this._inactiveRenderers.indexOf(renderer), 1);
 						var displayRenderer:DisplayObject = DisplayObject(renderer);
 						this._layoutItems[i] = displayRenderer;
-						if(useVirtualLayout)
-						{
-							displayRenderer.width = this._typicalItemWidth;
-							displayRenderer.height = this._typicalItemHeight;
-						}
 					}
 					else
 					{
@@ -647,11 +665,6 @@ package org.josht.starling.foxhole.controls.supportClasses
 				var renderer:IListItemRenderer = this.createRenderer(item, index, false);
 				var displayRenderer:DisplayObject = DisplayObject(renderer);
 				this._layoutItems[index] = displayRenderer;
-				if(useVirtualLayout)
-				{
-					displayRenderer.width = this._typicalItemWidth;
-					displayRenderer.height = this._typicalItemHeight;
-				}
 			}
 		}
 		
@@ -700,15 +713,6 @@ package org.josht.starling.foxhole.controls.supportClasses
 			renderer.data = item;
 			renderer.index = index;
 			renderer.owner = this.owner;
-			if(renderer is FoxholeControl)
-			{
-				const foxholeRenderer:FoxholeControl = FoxholeControl(renderer);
-				if(this._itemRendererName && !foxholeRenderer.nameList.contains(this._itemRendererName))
-				{
-					foxholeRenderer.nameList.add(this._itemRendererName);
-				}
-				foxholeRenderer.isEnabled = this._isEnabled;
-			}
 
 			if(!isTemporary)
 			{
