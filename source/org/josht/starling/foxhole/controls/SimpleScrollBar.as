@@ -120,7 +120,7 @@ package org.josht.starling.foxhole.controls
 		protected var _value:Number = 0;
 
 		/**
-		 * The value of the scroll bar, between the minimum and maximum.
+		 * @inheritDoc
 		 */
 		public function get value():Number
 		{
@@ -158,7 +158,7 @@ package org.josht.starling.foxhole.controls
 		protected var _minimum:Number = 0;
 
 		/**
-		 * The scroll bar's value will not go lower than the minimum.
+		 * @inheritDoc
 		 */
 		public function get minimum():Number
 		{
@@ -184,7 +184,7 @@ package org.josht.starling.foxhole.controls
 		protected var _maximum:Number = 0;
 
 		/**
-		 * The scroll bar's value will not go higher than the maximum.
+		 * @inheritDoc
 		 */
 		public function get maximum():Number
 		{
@@ -210,8 +210,7 @@ package org.josht.starling.foxhole.controls
 		protected var _step:Number = 0;
 
 		/**
-		 * As the scroll bar's thumb is dragged, the value is snapped to a
-		 * multiple of the step.
+		 * @inheritDoc
 		 */
 		public function get step():Number
 		{
@@ -236,8 +235,7 @@ package org.josht.starling.foxhole.controls
 		private var _pageStep:Number = 0;
 
 		/**
-		 * As the scroll bar's track is pressed, the value is snapped to a
-		 * multiple of the page step.
+		 * @inheritDoc
 		 */
 		public function get pageStep():Number
 		{
@@ -255,6 +253,110 @@ package org.josht.starling.foxhole.controls
 			}
 			this._pageStep = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingTop:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, above the thumb.
+		 */
+		public function get paddingTop():Number
+		{
+			return this._paddingTop;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingTop(value:Number):void
+		{
+			if(this._paddingTop == value)
+			{
+				return;
+			}
+			this._paddingTop = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingRight:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, to the right of the thumb.
+		 */
+		public function get paddingRight():Number
+		{
+			return this._paddingRight;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingRight(value:Number):void
+		{
+			if(this._paddingRight == value)
+			{
+				return;
+			}
+			this._paddingRight = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingBottom:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, below the thumb.
+		 */
+		public function get paddingBottom():Number
+		{
+			return this._paddingBottom;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingBottom(value:Number):void
+		{
+			if(this._paddingBottom == value)
+			{
+				return;
+			}
+			this._paddingBottom = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingLeft:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, to the left of the thumb.
+		 */
+		public function get paddingLeft():Number
+		{
+			return this._paddingLeft;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingLeft(value:Number):void
+		{
+			if(this._paddingLeft == value)
+			{
+				return;
+			}
+			this._paddingLeft = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
@@ -428,6 +530,14 @@ package org.josht.starling.foxhole.controls
 				return false;
 			}
 
+			const range:Number = this._maximum - this._minimum;
+			if(range <= 0)
+			{
+				return false;
+			}
+
+			//we're just going to make something up in this case
+			const adjustedPageStep:Number = this._pageStep == 0 ? range / 10 : this._pageStep;
 			var newWidth:Number = this.explicitWidth;
 			var newHeight:Number = this.explicitHeight;
 			if(needsWidth)
@@ -438,19 +548,21 @@ package org.josht.starling.foxhole.controls
 				}
 				else //horizontal
 				{
-					newWidth = this.thumbOriginalWidth * Math.min(10, (this._maximum - this._minimum) / this._pageStep);
+					newWidth = Math.max(this.thumbOriginalWidth, this.thumbOriginalWidth * range / adjustedPageStep);
 				}
+				newWidth += this._paddingLeft + this._paddingRight;
 			}
 			if(needsHeight)
 			{
 				if(this._direction == DIRECTION_VERTICAL)
 				{
-					newHeight = this.thumbOriginalWidth * (this._maximum - this._minimum) / this._pageStep;
+					newHeight = Math.max(this.thumbOriginalHeight, this.thumbOriginalHeight * range / adjustedPageStep);
 				}
 				else //horizontal
 				{
 					newHeight = this.thumbOriginalHeight;
 				}
+				newHeight += this._paddingTop + this._paddingBottom;
 			}
 			return this.setSizeInternal(newWidth, newHeight, false);
 		}
@@ -475,27 +587,46 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function layout():void
 		{
+			const range:Number = this._maximum - this._minimum;
+			this.thumb.visible = range > 0;
+			if(!this.thumb.visible)
+			{
+				return;
+			}
+
 			//this will auto-size the thumb, if needed
 			this.thumb.validate();
+
+			const contentWidth:Number = this.actualWidth - this._paddingLeft - this._paddingRight;
+			const contentHeight:Number = this.actualHeight - this._paddingTop - this._paddingBottom;
+			const adjustedPageStep:Number = Math.min(range, this._pageStep == 0 ? range : this._pageStep);
+			var adjustedRange:Number = range;
+			if(this._value < this._minimum)
+			{
+				adjustedRange += (this._minimum - this._value);
+			}
+			if(this._value > this._maximum)
+			{
+				adjustedRange += (this._value - this._maximum);
+			}
 
 			if(this._direction == DIRECTION_VERTICAL)
 			{
 				this.thumb.width = this.thumbOriginalWidth;
-				this.thumb.height = Math.max(this.thumbOriginalHeight, this.actualHeight * this._pageStep / (this._maximum - this._minimum + this._pageStep));
-				const trackScrollableHeight:Number = this.actualHeight - this.thumb.height;
+				this.thumb.height = Math.max(this.thumbOriginalHeight, contentHeight * adjustedPageStep / (adjustedRange + adjustedPageStep));
+				const trackScrollableHeight:Number = contentHeight - this.thumb.height;
 				this.thumb.x = (this.actualWidth - this.thumb.width) / 2;
-				this.thumb.y = Math.max(0, Math.min(trackScrollableHeight, trackScrollableHeight * (this._value - this._minimum) / (this._maximum - this._minimum)));
+				this.thumb.y = this._paddingTop + Math.max(0, Math.min(trackScrollableHeight, trackScrollableHeight * (this._value - this._minimum) / range));
 			}
 			else //horizontal
 			{
-				this.thumb.width = Math.max(this.thumbOriginalWidth, this.actualWidth * this._pageStep / (this._maximum - this._minimum + this._pageStep));
+				this.thumb.width = Math.max(this.thumbOriginalWidth, contentWidth * adjustedPageStep / (adjustedRange + adjustedPageStep));
 				this.thumb.height = this.thumbOriginalHeight;
-				const trackScrollableWidth:Number = this.actualWidth - this.thumb.width;
-				this.thumb.x = Math.max(0, Math.min(trackScrollableWidth, trackScrollableWidth * (this._value - this._minimum) / (this._maximum - this._minimum)));
+				const trackScrollableWidth:Number = contentWidth - this.thumb.width;
+				this.thumb.x = this._paddingLeft + Math.max(0, Math.min(trackScrollableWidth, trackScrollableWidth * (this._value - this._minimum) / range));
 				this.thumb.y = (this.actualHeight - this.thumb.height) / 2;
 			}
 		}
-
 
 		/**
 		 * @private
