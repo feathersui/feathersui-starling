@@ -24,21 +24,15 @@
  */
 package org.josht.starling.foxhole.controls
 {
-	import com.gskinner.motion.easing.Sine;
-
-	import flash.events.TimerEvent;
 	import flash.geom.Point;
-	import flash.utils.Timer;
 
 	import org.josht.starling.foxhole.core.FoxholeControl;
-	import org.josht.starling.motion.GTween;
 	import org.josht.utils.math.clamp;
 	import org.josht.utils.math.roundToNearest;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 
 	import starling.events.Touch;
-
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 
@@ -63,7 +57,6 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function SimpleScrollBar()
 		{
-			this.alpha = 0;
 		}
 
 		/**
@@ -85,20 +78,6 @@ package org.josht.starling.foxhole.controls
 		 * @private
 		 */
 		protected var thumb:Button;
-
-		/**
-		 * @private
-		 */
-		protected var _displayTimer:Timer;
-
-		/**
-		 * @private
-		 */
-		protected var _hideTween:GTween;
-
-		protected var _displayDuration:Number = 0.01;
-
-		protected var _hideAnimationDuration:Number = 0.2;
 
 		/**
 		 * @private
@@ -171,7 +150,6 @@ package org.josht.starling.foxhole.controls
 			{
 				this._onChange.dispatch(this);
 			}
-			this.show();
 		}
 
 		/**
@@ -518,56 +496,6 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 
-		/**
-		 * Shows the scroll bar.
-		 */
-		protected function show():void
-		{
-			if(this._hideTween)
-			{
-				this._hideTween.paused = true;
-				this._hideTween = null;
-			}
-			if(this._displayTimer)
-			{
-				this._displayTimer.reset();
-				this._displayTimer.start();
-				return;
-			}
-
-			this.alpha = 1;
-			this._displayTimer = new Timer(this._displayDuration * 1000, 1);
-			this._displayTimer.addEventListener(TimerEvent.TIMER_COMPLETE, displayTimer_timerCompleteHandler);
-			this._displayTimer.start();
-		}
-
-		/**
-		 * Hides the scroll bar.
-		 */
-		protected function hide():void
-		{
-			if(this._hideTween)
-			{
-				//we're already hiding it, silly
-				return;
-			}
-			if(this._displayTimer)
-			{
-				this._displayTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, displayTimer_timerCompleteHandler);
-				this._displayTimer.stop();
-				this._displayTimer = null;
-			}
-
-			this._hideTween = new GTween(this, this._hideAnimationDuration,
-			{
-				alpha: 0
-			},
-			{
-				ease: Sine.easeOut,
-				onComplete: hideTween_onComplete
-			});
-		}
-
 
 		/**
 		 * @private
@@ -591,14 +519,6 @@ package org.josht.starling.foxhole.controls
 			}
 
 			this.value = this._minimum + percentage * (this._maximum - this._minimum);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function hideTween_onComplete(tween:GTween):void
-		{
-			this._hideTween = null;
 		}
 
 		/**
@@ -641,13 +561,6 @@ package org.josht.starling.foxhole.controls
 				}
 				this._onDragEnd.dispatch(this);
 			}
-		}
-
-		protected function displayTimer_timerCompleteHandler(event:TimerEvent):void
-		{
-			this._displayTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, displayTimer_timerCompleteHandler);
-			this._displayTimer = null;
-			this.hide();
 		}
 	}
 }
