@@ -248,18 +248,74 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
-		private var _horizontalScrollBarFunction:Function = function():IScrollBar
+		/**
+		 * @private
+		 */
+		private var _horizontalScrollBarFactory:Function = function():IScrollBar
 		{
 			var scrollBar:SimpleScrollBar = new SimpleScrollBar();
 			scrollBar.direction = SimpleScrollBar.DIRECTION_HORIZONTAL;
 			return scrollBar;
 		}
 
-		private var _verticalScrollBarFunction:Function = function():IScrollBar
+		/**
+		 * Creates the horizontal scroll bar.
+		 *
+		 * <p>This function is expected to have the following signature:</p>
+		 *
+		 * <pre>function():IScrollBar</pre>
+		 */
+		public function get horizontalScrollBarFactory():Function
+		{
+			return this._horizontalScrollBarFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set horizontalScrollBarFactory(value:Function):void
+		{
+			if(this._horizontalScrollBarFactory == value)
+			{
+				return;
+			}
+			this._horizontalScrollBarFactory = value;
+			this.invalidate(INVALIDATION_FLAG_SCROLL_BAR_RENDERER);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _verticalScrollBarFactory:Function = function():IScrollBar
 		{
 			var scrollBar:SimpleScrollBar = new SimpleScrollBar();
 			scrollBar.direction = SimpleScrollBar.DIRECTION_VERTICAL;
 			return scrollBar;
+		}
+
+		/**
+		 * Creates the vertical scroll bar.
+		 *
+		 * <p>This function is expected to have the following signature:</p>
+		 *
+		 * <pre>function():IScrollBar</pre>
+		 */
+		public function get verticalScrollBarFactory():Function
+		{
+			return this._verticalScrollBarFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set verticalScrollBarFactory(value:Function):void
+		{
+			if(this._verticalScrollBarFactory == value)
+			{
+				return;
+			}
+			this._verticalScrollBarFactory = value;
+			this.invalidate(INVALIDATION_FLAG_SCROLL_BAR_RENDERER);
 		}
 		
 		/**
@@ -888,18 +944,18 @@ package org.josht.starling.foxhole.controls
 				this.verticalScrollBar = null;
 			}
 
-			if(this._horizontalScrollPolicy != SCROLL_POLICY_OFF && this._horizontalScrollBarFunction != null)
+			if(this._horizontalScrollPolicy != SCROLL_POLICY_OFF && this._horizontalScrollBarFactory != null)
 			{
-				this.horizontalScrollBar = this._horizontalScrollBarFunction();
+				this.horizontalScrollBar = this._horizontalScrollBarFactory();
 				this.horizontalScrollBar.onChange.add(horizontalScrollBar_onChange);
 				const foxholeHorizontalScrollBar:FoxholeControl = FoxholeControl(this.horizontalScrollBar);
 				foxholeHorizontalScrollBar.alpha = 0;
 				foxholeHorizontalScrollBar.touchable = false;
 				this.addChild(foxholeHorizontalScrollBar);
 			}
-			if(this._verticalScrollPolicy != SCROLL_POLICY_OFF && this._verticalScrollBarFunction != null)
+			if(this._verticalScrollPolicy != SCROLL_POLICY_OFF && this._verticalScrollBarFactory != null)
 			{
-				this.verticalScrollBar = this._verticalScrollBarFunction();
+				this.verticalScrollBar = this._verticalScrollBarFactory();
 				this.verticalScrollBar.onChange.add(verticalScrollBar_onChange);
 				const foxholeVerticalScrollBar:FoxholeControl = FoxholeControl(this.verticalScrollBar);
 				foxholeVerticalScrollBar.alpha = 0;
