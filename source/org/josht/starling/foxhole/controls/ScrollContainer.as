@@ -425,23 +425,36 @@ package org.josht.starling.foxhole.controls
 
 			if(sizeInvalid)
 			{
-				this.viewPort.visibleWidth = this.explicitWidth;
-				this.viewPort.visibleHeight = this.explicitHeight;
+				if(isNaN(this.explicitWidth) && this._maxWidth < Number.POSITIVE_INFINITY)
+				{
+					this.viewPort.visibleWidth = this._maxWidth;
+				}
+				else
+				{
+					this.viewPort.visibleWidth = this.explicitWidth;
+				}
+				if(isNaN(this.explicitHeight) && this._maxHeight < Number.POSITIVE_INFINITY)
+				{
+					this.viewPort.visibleHeight = this._maxHeight;
+				}
+				else
+				{
+					this.viewPort.visibleHeight = this.explicitHeight;
+				}
+
+				this.scroller.minWidth = Math.max(0, (isNaN(this.explicitWidth) ? this._minWidth : this.explicitWidth));
+				this.scroller.maxWidth = isNaN(this.explicitWidth) ? this._maxWidth : this.explicitWidth;
+				this.scroller.minHeight = Math.max(0, (isNaN(this.explicitHeight) ? this._minHeight : this.explicitHeight));
+				this.scroller.maxHeight = isNaN(this.explicitHeight) ? this._maxHeight : this.explicitHeight;
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
-			if(sizeInvalid)
-			{
-				this.viewPort.visibleWidth = this.actualWidth;
-				this.viewPort.visibleHeight = this.actualHeight;
-				this.scroller.width = this.actualWidth;
-				this.scroller.height = this.actualHeight;
-			}
-
 			this.scroller.validate();
 			this._maxHorizontalScrollPosition = this.scroller.maxHorizontalScrollPosition;
 			this._maxVerticalScrollPosition = this.scroller.maxVerticalScrollPosition;
+			this._horizontalScrollPosition = this.scroller.horizontalScrollPosition;
+			this._verticalScrollPosition = this.scroller.verticalScrollPosition;
 		}
 
 		/**
@@ -456,14 +469,6 @@ package org.josht.starling.foxhole.controls
 				return false;
 			}
 
-			if(needsWidth)
-			{
-				this.scroller.width = NaN;
-			}
-			if(needsHeight)
-			{
-				this.scroller.height = NaN;
-			}
 			this.scroller.validate();
 			var newWidth:Number = this.explicitWidth;
 			var newHeight:Number = this.explicitHeight;

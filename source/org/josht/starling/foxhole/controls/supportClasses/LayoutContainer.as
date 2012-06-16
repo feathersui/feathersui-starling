@@ -49,7 +49,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 			this.addEventListener(Event.REMOVED, removedHandler);
 		}
 
-		public var _visibleWidth:Number = 0;
+		protected var _visibleWidth:Number = NaN;
 
 		public function get visibleWidth():Number
 		{
@@ -58,7 +58,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 
 		public function set visibleWidth(value:Number):void
 		{
-			if(this._visibleWidth == value)
+			if(this._visibleWidth == value || (isNaN(this._visibleWidth) && isNaN(value)))
 			{
 				return;
 			}
@@ -66,7 +66,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
-		public var _visibleHeight:Number = 0;
+		protected var _visibleHeight:Number = NaN;
 
 		public function get visibleHeight():Number
 		{
@@ -75,7 +75,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 
 		public function set visibleHeight(value:Number):void
 		{
-			if(this._visibleHeight == value)
+			if(this._visibleHeight == value || (isNaN(this._visibleHeight) && isNaN(value)))
 			{
 				return;
 			}
@@ -140,6 +140,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 						control.validate();
 					}
 				}
+
 				HELPER_RECT.x = HELPER_RECT.y = 0;
 				HELPER_RECT.width = this._visibleWidth;
 				HELPER_RECT.height = this._visibleHeight;
