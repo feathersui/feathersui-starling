@@ -776,6 +776,11 @@ package org.josht.starling.foxhole.controls
 				FoxholeControl(this._viewPort).validate();
 			}
 
+			if(scrollBarInvalid)
+			{
+				this.createScrollBars();
+			}
+
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 			
 			if(sizeInvalid || dataInvalid)
@@ -819,17 +824,12 @@ package org.josht.starling.foxhole.controls
 				}
 			}
 
-			if(scrollBarInvalid)
-			{
-				this.createScrollBars();
-			}
-
 			if(sizeInvalid || scrollInvalid || scrollBarInvalid || dataInvalid)
 			{
 				this.refreshScrollBarValues();
 			}
 
-			if(scrollBarInvalid || sizeInvalid || scrollInvalid)
+			if(scrollBarInvalid || sizeInvalid)
 			{
 				this.layout();
 			}
