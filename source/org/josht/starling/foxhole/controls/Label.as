@@ -224,6 +224,9 @@ package org.josht.starling.foxhole.controls
 			super.render(support, alpha);
 		}
 		
+		/**
+		 * Measures the label's text without a full validation.
+		 */
 		public function measureText(result:Point = null):Point
 		{
 			if(!result)
