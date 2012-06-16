@@ -55,12 +55,12 @@ package org.josht.starling.foxhole.controls
 		 * The amount the scroll bar value must change to get from one "page" to
 		 * the next.
 		 */
-		function get pageStep():Number;
+		function get page():Number;
 
 		/**
 		 * @private
 		 */
-		function set pageStep(value:Number):void;
+		function set page(value:Number):void;
 
 		/**
 		 * Dispatched when the scroll bar's value changes.
