@@ -219,7 +219,7 @@ package org.josht.starling.foxhole.core
 		 * automatic sizing behavior, but it's usually based on the component's
 		 * skin or content, including text or sub-components.
 		 */
-		protected var actualWidth:Number = NaN;
+		protected var actualWidth:Number = 0;
 		
 		/**
 		 * The width of the component, in pixels. This could be a value that was
@@ -259,7 +259,7 @@ package org.josht.starling.foxhole.core
 		 * automatic sizing behavior, but it's usually based on the component's
 		 * skin or content, including text or sub-components.
 		 */
-		protected var actualHeight:Number = NaN;
+		protected var actualHeight:Number = 0;
 
 		/**
 		 * The height of the component, in pixels. This could be a value that
