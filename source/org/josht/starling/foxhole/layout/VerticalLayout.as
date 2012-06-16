@@ -375,7 +375,10 @@ package org.josht.starling.foxhole.layout
 				{
 					item.y = positionY;
 					positionY += item.height + this._gap;
-					maxWidth = Math.max(maxWidth, item.width);
+					if(this._horizontalAlign != HORIZONTAL_ALIGN_JUSTIFY)
+					{
+						maxWidth = Math.max(maxWidth, item.width);
+					}
 				}
 			}
 
