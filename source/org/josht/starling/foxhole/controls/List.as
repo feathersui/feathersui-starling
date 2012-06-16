@@ -654,9 +654,11 @@ package org.josht.starling.foxhole.controls
 		 * a higher priority than <code>itemRendererType</code>. Typically, you
 		 * would use an <code>itemRendererFunction</code> instead of an
 		 * <code>itemRendererType</code> if you wanted to initialize some
-		 * properties on each item renderer. If you are not using a Foxhole
-		 * theme, you will probably use an <code>itemRendererFunction</code> to
-		 * skin the list's item renderers.
+		 * properties on each separate item renderer, such as skins.
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 *
+		 * <pre>function():IListItemRenderer</pre>
 		 * 
 		 * @see #itemRendererType
 		 */
