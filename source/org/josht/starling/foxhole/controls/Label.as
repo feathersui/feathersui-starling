@@ -27,10 +27,10 @@ package org.josht.starling.foxhole.controls
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	
+
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.text.BitmapFontTextFormat;
-	
+
 	import starling.core.RenderSupport;
 	import starling.display.Image;
 	import starling.display.QuadBatch;
@@ -328,7 +328,12 @@ package org.josht.starling.foxhole.controls
 				var currentY:Number = 0;
 				var lastCharID:Number = NaN;
 				var textToDraw:String = this.getTruncatedText();
-				var charCount:int = textToDraw ? textToDraw.length : 0;
+				if(helperImage)
+				{
+					helperImage.color = color;
+					helperImage.smoothing = this._smoothing;
+				}
+				const charCount:int = textToDraw ? textToDraw.length : 0;
 				for(var i:int = 0; i < charCount; i++)
 				{
 					var charID:int = textToDraw.charCodeAt(i);
@@ -356,6 +361,8 @@ package org.josht.starling.foxhole.controls
 					if(!helperImage)
 					{
 						helperImage = new Image(charData.texture);
+						helperImage.color = color;
+						helperImage.smoothing = this._smoothing;
 					}
 					else
 					{
