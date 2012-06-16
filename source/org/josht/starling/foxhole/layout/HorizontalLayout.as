@@ -374,7 +374,10 @@ package org.josht.starling.foxhole.layout
 				{
 					item.x = positionX;
 					positionX += item.width + this._gap;
-					maxHeight = Math.max(maxHeight, item.height);
+					if(this._verticalAlign != VERTICAL_ALIGN_JUSTIFY)
+					{
+						maxHeight = Math.max(maxHeight, item.height);
+					}
 				}
 			}
 
