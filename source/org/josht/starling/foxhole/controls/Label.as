@@ -25,11 +25,12 @@ OTHER DEALINGS IN THE SOFTWARE.
 package org.josht.starling.foxhole.controls
 {
 	import flash.geom.Matrix;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
-
+	
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.text.BitmapFontTextFormat;
-
+	
 	import starling.core.RenderSupport;
 	import starling.display.Image;
 	import starling.display.QuadBatch;
@@ -221,6 +222,67 @@ package org.josht.starling.foxhole.controls
 				this._characterBatch.x = this._characterBatch.y = 0;
 			}
 			super.render(support, alpha);
+		}
+		
+		public function measureText(result:Point = null):Point
+		{
+			if(!result)
+			{
+				result = new Point();
+			}
+			else
+			{
+				result.x = result.y = 0;
+			}
+			if(!this._textFormat)
+			{
+				return result;
+			}
+			const font:BitmapFont = this._textFormat.font;
+			const customSize:Number = this._textFormat.size;
+			const customLetterSpacing:Number = this._textFormat.letterSpacing;
+			const isKerningEnabled:Boolean = this._textFormat.isKerningEnabled;
+			const scale:Number = isNaN(customSize) ? 1 : (customSize / font.size);
+			const color:uint = this._textFormat.color;
+			const lineHeight:Number = font.lineHeight * scale;
+			
+			var maxX:Number = 0;
+			var currentX:Number = 0;
+			var currentY:Number = 0;
+			var lastCharID:Number = NaN;
+			var charCount:int = this._text ? this._text.length : 0;
+			for(var i:int = 0; i < charCount; i++)
+			{
+				var charID:int = this._text.charCodeAt(i);
+				if(charID == 10 || charID == 13) //new line \n or \r
+				{
+					currentX = Math.max(0, currentX - customLetterSpacing);
+					maxX = Math.max(maxX, currentX);
+					lastCharID = NaN;
+					currentX = 0;
+					currentY += lineHeight;
+					continue;
+				}
+				var charData:BitmapChar = font.getChar(charID);
+				if(!charData)
+				{
+					trace("Missing character " + String.fromCharCode(charID) + " in font " + font.name + ".");
+					continue;
+				}
+				
+				if(isKerningEnabled && !isNaN(lastCharID))
+				{
+					currentX += charData.getKerning(lastCharID);
+				}
+				
+				currentX += charData.xAdvance * scale + customLetterSpacing;
+				lastCharID = charID;
+			}
+			currentX = Math.max(0, currentX - customLetterSpacing);
+			maxX = Math.max(maxX, currentX);
+			result.x = maxX;
+			result.y = currentY + font.lineHeight * scale;
+			return result;
 		}
 
 		/**

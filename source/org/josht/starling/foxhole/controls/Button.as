@@ -25,14 +25,14 @@ OTHER DEALINGS IN THE SOFTWARE.
 package org.josht.starling.foxhole.controls
 {
 	import flash.geom.Point;
-
+	
 	import org.josht.starling.display.ScrollRectManager;
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.IToggle;
 	import org.josht.starling.foxhole.text.BitmapFontTextFormat;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
-
+	
 	import starling.display.DisplayObject;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -44,6 +44,11 @@ package org.josht.starling.foxhole.controls
 	 */
 	public class Button extends FoxholeControl implements IToggle
 	{
+		/**
+		 * @private
+		 */
+		private static const helperPoint:Point = new Point();
+		
 		/**
 		 * @private
 		 */
@@ -1527,8 +1532,7 @@ package org.josht.starling.foxhole.controls
 			{
 				return false;
 			}
-			this.labelControl.maxWidth = Number.POSITIVE_INFINITY;
-			this.labelControl.validate();
+			this.labelControl.measureText(helperPoint);
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
 			{
@@ -1537,11 +1541,11 @@ package org.josht.starling.foxhole.controls
 					if(this._iconPosition != ICON_POSITION_TOP && this._iconPosition != ICON_POSITION_BOTTOM)
 					{
 						var adjustedGap:Number = this._gap == Number.POSITIVE_INFINITY ? Math.min(this._paddingLeft, this._paddingRight) : this._gap;
-						newWidth = this.currentIcon.width + adjustedGap + this.labelControl.width;
+						newWidth = this.currentIcon.width + adjustedGap + helperPoint.x;
 					}
 					else
 					{
-						newWidth = Math.max(this.currentIcon.width, this.labelControl.width);
+						newWidth = Math.max(this.currentIcon.width, helperPoint.x);
 					}
 				}
 				else if(this.currentIcon)
@@ -1550,7 +1554,7 @@ package org.josht.starling.foxhole.controls
 				}
 				else if(this.label)
 				{
-					newWidth = this.labelControl.width;
+					newWidth = helperPoint.x;
 				}
 				newWidth += this._paddingLeft + this._paddingRight;
 				if(isNaN(newWidth))
@@ -1571,11 +1575,11 @@ package org.josht.starling.foxhole.controls
 					if(this._iconPosition == ICON_POSITION_TOP || this._iconPosition == ICON_POSITION_BOTTOM)
 					{
 						adjustedGap = this._gap == Number.POSITIVE_INFINITY ? Math.min(this._paddingTop, this._paddingBottom) : this._gap;
-						newHeight = this.currentIcon.height + adjustedGap + this.labelControl.height;
+						newHeight = this.currentIcon.height + adjustedGap + helperPoint.y;
 					}
 					else
 					{
-						newHeight = Math.max(this.currentIcon.height, this.labelControl.height);
+						newHeight = Math.max(this.currentIcon.height, helperPoint.y);
 					}
 				}
 				else if(this.currentIcon)
@@ -1584,7 +1588,7 @@ package org.josht.starling.foxhole.controls
 				}
 				else if(this.label)
 				{
-					newHeight = this.labelControl.height;
+					newHeight = helperPoint.y;
 				}
 				newHeight += this._paddingTop + this._paddingBottom;
 				if(isNaN(newHeight))
