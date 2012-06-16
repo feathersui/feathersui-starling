@@ -459,11 +459,6 @@ package org.josht.starling.foxhole.controls.supportClasses
 			this._itemRendererProperties[propertyName] = propertyValue;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-
-		override public function invalidate(...rest:Array):void
-		{
-			super.invalidate.apply(this, rest);
-		}
 		
 		override protected function draw():void
 		{
