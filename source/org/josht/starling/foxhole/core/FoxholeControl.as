@@ -106,8 +106,13 @@ package org.josht.starling.foxhole.core
 		protected var _nameList:TokenList = new TokenList();
 
 		/**
-		 * Contains a list of all names assigned to this control. Names may be
-		 * added, removed, or toggled.
+		 * Contains a list of all "names" assigned to this control. Names are
+		 * like classes in CSS selectors. They are a non-unique identifier that
+		 * can differentiate multiple styles of the same type of UI control. A
+		 * single control may have many names, and many controls can share a
+		 * single name. Names may be added, removed, or toggled on the <code>nameList</code>.
+		 *
+		 * @see #name
 		 */
 		public function get nameList():TokenList
 		{
@@ -115,9 +120,13 @@ package org.josht.starling.foxhole.core
 		}
 
 		/**
-		 * Non-unique identifiers for a Foxhole control that are expected to be
-		 * used in a similar way to classes in HTML/CSS. Typically, these are
-		 * most often used to identify sub-controls.
+		 * The concatenated <code>nameList</code>, with each name separated by
+		 * spaces. Names are like classes in CSS selectors. They are a
+		 * non-unique identifier that can differentiate multiple styles of the
+		 * same type of UI control. A single control may have many names, and
+		 * many controls can share a single name.
+		 *
+		 * @see #nameList
 		 */
 		override public function get name():String
 		{

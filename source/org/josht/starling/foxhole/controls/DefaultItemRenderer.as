@@ -37,7 +37,7 @@ package org.josht.starling.foxhole.controls
 	 * The default item renderer for List. Supports up to three optional
 	 * sub-views, including a label to display text, an icon to display an
 	 * image, and an "accessory" to display a UI control or another display
-	 * object (possibly including a second image or label).
+	 * object (with shortcuts for including a second image or a second label).
 	 * 
 	 * @see List
 	 */
