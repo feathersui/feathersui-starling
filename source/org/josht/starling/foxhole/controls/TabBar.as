@@ -249,13 +249,25 @@ package org.josht.starling.foxhole.controls
 			this.selectedIndex = this._dataProvider.getItemIndex(value);
 		}
 
+		/**
+		 * @private
+		 */
 		protected var _tabName:String;
 
+		/**
+		 * A name to add to all tabs in this tab bar. Typically used by a theme
+		 * to provide different skins to different tab bars.
+		 *
+		 * @see org.josht.starling.foxhole.core.FoxholeControl#nameList
+		 */
 		public function get tabName():String
 		{
 			return this._tabName;
 		}
 
+		/**
+		 * @private
+		 */
 		public function set tabName(value:String):void
 		{
 			if(this._tabName == value)

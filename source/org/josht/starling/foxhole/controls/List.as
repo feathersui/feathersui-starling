@@ -715,7 +715,10 @@ package org.josht.starling.foxhole.controls
 		protected var _itemRendererName:String;
 
 		/**
-		 * A name to add to all item renderers in this list.
+		 * A name to add to all item renderers in this list. Typically used by a
+		 * theme to provide different skins to different lists.
+		 *
+		 * @see org.josht.starling.foxhole.core.FoxholeControl#nameList
 		 */
 		public function get itemRendererName():String
 		{
