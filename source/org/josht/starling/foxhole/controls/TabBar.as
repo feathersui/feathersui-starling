@@ -249,6 +249,30 @@ package org.josht.starling.foxhole.controls
 			this.selectedIndex = this._dataProvider.getItemIndex(value);
 		}
 
+		protected var _tabName:String;
+
+		public function get tabName():String
+		{
+			return this._tabName;
+		}
+
+		public function set tabName(value:String):void
+		{
+			if(this._tabName == value)
+			{
+				return;
+			}
+			if(this._tabName)
+			{
+				for each(var tab:Button in this.activeTabs)
+				{
+					tab.nameList.remove(this._tabName);
+				}
+			}
+			this._tabName = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
 		/**
 		 * @private
 		 */
@@ -345,11 +369,15 @@ package org.josht.starling.foxhole.controls
 				this.toggleGroup.selectedIndex = this.selectedIndex;
 			}
 
-			if(dataInvalid || stateInvalid)
+			if(dataInvalid || stateInvalid || stylesInvalid)
 			{
 				for each(var tab:Button in this.activeTabs)
 				{
 					tab.isEnabled = this._isEnabled;
+					if(this._tabName && !tab.nameList.contains(this._tabName))
+					{
+						tab.nameList.add(this._tabName);
+					}
 				}
 			}
 
