@@ -34,7 +34,10 @@ package org.josht.starling.foxhole.controls
 	import starling.textures.Texture;
 
 	/**
-	 * The default item renderer for List.
+	 * The default item renderer for List. Supports up to three optional
+	 * sub-views, including a label to display text, an icon to display an
+	 * image, and an "accessory" to display a UI control or another display
+	 * object (possibly including a second image or label).
 	 * 
 	 * @see List
 	 */
