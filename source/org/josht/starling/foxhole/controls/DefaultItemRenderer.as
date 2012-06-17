@@ -30,6 +30,8 @@ package org.josht.starling.foxhole.controls
 	import org.josht.starling.foxhole.core.FoxholeControl;
 
 	import starling.display.DisplayObject;
+	import starling.display.Image;
+	import starling.textures.Texture;
 
 	/**
 	 * The default item renderer for List.
@@ -52,6 +54,21 @@ package org.josht.starling.foxhole.controls
 			this.isToggle = true;
 			this.isQuickHitAreaEnabled = false;
 		}
+
+		/**
+		 * @private
+		 */
+		protected var iconImage:Image;
+
+		/**
+		 * @private
+		 */
+		protected var accessoryImage:Image;
+
+		/**
+		 * @private
+		 */
+		protected var accessoryLabel:Label;
 
 		/**
 		 * @private
@@ -215,6 +232,12 @@ package org.josht.starling.foxhole.controls
 		 * label or define a <code>labelFunction</code> that returns an empty
 		 * string.
 		 *
+		 * <p>All of the label fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>labelFunction</code></li>
+		 *     <li><code>labelField</code></li>
+		 * </ol>
+		 *
 		 * @see #labelFunction
 		 */
 		public function get labelField():String
@@ -245,6 +268,12 @@ package org.josht.starling.foxhole.controls
 		 * function is not null, then the <code>labelField</code> will be
 		 * ignored.
 		 *
+		 * <p>All of the label fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>labelFunction</code></li>
+		 *     <li><code>labelField</code></li>
+		 * </ol>
+		 *
 		 * @see #labelField
 		 */
 		public function get labelFunction():Function
@@ -267,12 +296,20 @@ package org.josht.starling.foxhole.controls
 		private var _iconField:String = "icon";
 
 		/**
-		 * The field in the item that contains the icon to be displayed next to
-		 * the label in the renderer. If the item does not have this field, and
-		 * an <code>iconFunction</code> is not defined, then the renderer will
-		 * not display an icon.
+		 * The field in the item that contains a display object to be displayed
+		 * as an icon or other graphic next to the label in the renderer.
+		 *
+		 * <p>All of the icon fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>iconTextureFunction</code></li>
+		 *     <li><code>iconTextureField</code></li>
+		 *     <li><code>iconFunction</code></li>
+		 *     <li><code>iconField</code></li>
+		 * </ol>
 		 *
 		 * @see #iconFunction
+		 * @see #iconTextureField
+		 * @see #iconTextureFunction
 		 */
 		public function get iconField():String
 		{
@@ -298,11 +335,22 @@ package org.josht.starling.foxhole.controls
 		private var _iconFunction:Function;
 
 		/**
-		 * A function used to generate an icon for a specific item. If this
-		 * function is not null, then the <code>iconField</code> will be
-		 * ignored.
+		 * A function used to generate an icon for a specific item.
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 * <pre>function( item:Object ):DisplayObject</pre>
+		 *
+		 * <p>All of the icon fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>iconTextureFunction</code></li>
+		 *     <li><code>iconTextureField</code></li>
+		 *     <li><code>iconFunction</code></li>
+		 *     <li><code>iconField</code></li>
+		 * </ol>
 		 *
 		 * @see #iconField
+		 * @see #iconTextureField
+		 * @see #iconTextureFunction
 		 */
 		public function get iconFunction():Function
 		{
@@ -321,15 +369,110 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
+		private var _iconTextureField:String = "iconTexture";
+
+		/**
+		 * The field in the item that contains a texture to be used for the
+		 * renderer's icon. The renderer will automatically manage and reuse the
+		 * image.
+		 *
+		 * <p>All of the icon fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>iconTextureFunction</code></li>
+		 *     <li><code>iconTextureField</code></li>
+		 *     <li><code>iconFunction</code></li>
+		 *     <li><code>iconField</code></li>
+		 * </ol>
+		 *
+		 * @see #iconTextureFunction
+		 * @see #iconField
+		 * @see #iconFunction
+		 * @see starling.textures.Texture
+		 */
+		public function get iconTextureField():String
+		{
+			return this._iconTextureField;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set iconTextureField(value:String):void
+		{
+			if(this._iconTextureField == value)
+			{
+				return;
+			}
+			this._iconTextureField = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _iconTextureFunction:Function;
+
+		/**
+		 * A function used to generate a texture to be used for the renderer's
+		 * icon. The renderer will automatically manage and reuse the
+		 * image.
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 * <pre>function( item:Object ):Texture</pre>
+		 *
+		 * <p>All of the icon fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>iconTextureFunction</code></li>
+		 *     <li><code>iconTextureField</code></li>
+		 *     <li><code>iconFunction</code></li>
+		 *     <li><code>iconField</code></li>
+		 * </ol>
+		 *
+		 * @see #iconTextureField
+		 * @see #iconField
+		 * @see #iconFunction
+		 * @see starling.textures.Texture
+		 */
+		public function get iconTextureFunction():Function
+		{
+			return this._iconTextureFunction;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set iconTextureFunction(value:Function):void
+		{
+			this._iconTextureFunction = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
 		private var _accessoryField:String = "accessory";
 
 		/**
-		 * The field in the item that contains the type of accessory to be
-		 * displayed on the right of the renderer. If the item does not have
-		 * this field, and an <code>accessoryFunction</code> is not defined,
-		 * then the renderer will not display an accessory.
+		 * The field in the item that contains a display object to be positioned
+		 * in the accessory position of the renderer. If you wish to display an
+		 * <code>Image</code> in the accessory position, it's better for
+		 * performance to use <code>accessoryTextureField</code> instead.
 		 *
+		 * <p>All of the accessory fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>accessoryTextureFunction</code></li>
+		 *     <li><code>accessoryTextureField</code></li>
+		 *     <li><code>accessoryLabelFunction</code></li>
+		 *     <li><code>accessoryLabelField</code></li>
+		 *     <li><code>accessoryFunction</code></li>
+		 *     <li><code>accessoryField</code></li>
+		 * </ol>
+		 *
+		 * @see #accessoryTextureField
 		 * @see #accessoryFunction
+		 * @see #accessoryTextureFunction
+		 * @see #accessoryLabelField
+		 * @see #accessoryLabelFunction
 		 */
 		public function get accessoryField():String
 		{
@@ -355,11 +498,29 @@ package org.josht.starling.foxhole.controls
 		private var _accessoryFunction:Function;
 
 		/**
-		 * A function used to generate an accessory view for a specific item. If
-		 * this function is not null, then the <code>accessoryField</code> will
-		 * be ignored.
+		 * A function that returns a display object to be positioned in the
+		 * accessory position of the renderer. If you wish to display an
+		 * <code>Image</code> in the accessory position, it's better for
+		 * performance to use <code>accessoryTextureFunction</code> instead.
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 * <pre>function( item:Object ):DisplayObject</pre>
+		 *
+		 * <p>All of the accessory fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>accessoryTextureFunction</code></li>
+		 *     <li><code>accessoryTextureField</code></li>
+		 *     <li><code>accessoryLabelFunction</code></li>
+		 *     <li><code>accessoryLabelField</code></li>
+		 *     <li><code>accessoryFunction</code></li>
+		 *     <li><code>accessoryField</code></li>
+		 * </ol>
 		 *
 		 * @see #accessoryField
+		 * @see #accessoryTextureField
+		 * @see #accessoryTextureFunction
+		 * @see #accessoryLabelField
+		 * @see #accessoryLabelFunction
 		 */
 		public function get accessoryFunction():Function
 		{
@@ -371,13 +532,254 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function set accessoryFunction(value:Function):void
 		{
+			if(this._accessoryFunction == value)
+			{
+				return;
+			}
 			this._accessoryFunction = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		/**
+		 * @private
+		 */
+		private var _accessoryTextureField:String = "accessoryTexture";
+
+		/**
+		 * The field in the item that contains a texture to be displayed in a
+		 * renderer-managed <code>Image</code> in the accessory position of the
+		 * renderer. The renderer will automatically reuse the <code>Image</code>
+		 * and swap the texture when the data changes. Using an accessory
+		 * texture will result in better performance than passing in an
+		 * <code>Image</code> through a <code>accessoryField</code>
+		 * or <code>accessoryFunction</code> because the renderer can avoid
+		 * costly display list manipulation.
+		 *
+		 * <p>All of the accessory fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>accessoryTextureFunction</code></li>
+		 *     <li><code>accessoryTextureField</code></li>
+		 *     <li><code>accessoryLabelFunction</code></li>
+		 *     <li><code>accessoryLabelField</code></li>
+		 *     <li><code>accessoryFunction</code></li>
+		 *     <li><code>accessoryField</code></li>
+		 * </ol>
+		 *
+		 * @see #accessoryTextureFunction
+		 * @see #accessoryField
+		 * @see #accessoryFunction
+		 * @see #accessoryLabelField
+		 * @see #accessoryLabelFunction
+		 */
+		public function get accessoryTextureField():String
+		{
+			return this._accessoryTextureField;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set accessoryTextureField(value:String):void
+		{
+			if(this._accessoryTextureField == value)
+			{
+				return;
+			}
+			this._accessoryTextureField = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _accessoryTextureFunction:Function;
+
+		/**
+		 * A function that returns a texture to be displayed in a
+		 * renderer-managed <code>Image</code> in the accessory position of the
+		 * renderer. The renderer will automatically reuse the <code>Image</code>
+		 * and swap the texture when the data changes. Using an accessory
+		 * texture will result in better performance than passing in an
+		 * <code>Image</code> through a <code>accessoryField</code>
+		 * or <code>accessoryFunction</code> because the renderer can avoid
+		 * costly display list manipulation.
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 * <pre>function( item:Object ):Texture</pre>
+		 *
+		 * <p>All of the accessory fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>accessoryTextureFunction</code></li>
+		 *     <li><code>accessoryTextureField</code></li>
+		 *     <li><code>accessoryLabelFunction</code></li>
+		 *     <li><code>accessoryLabelField</code></li>
+		 *     <li><code>accessoryFunction</code></li>
+		 *     <li><code>accessoryField</code></li>
+		 * </ol>
+		 *
+		 * @see #accessoryTextureField
+		 * @see #accessoryField
+		 * @see #accessoryFunction
+		 * @see #accessoryLabelField
+		 * @see #accessoryLabelFunction
+		 */
+		public function get accessoryTextureFunction():Function
+		{
+			return this._accessoryTextureFunction;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set accessoryTextureFunction(value:Function):void
+		{
+			if(this.accessoryTextureFunction == value)
+			{
+				return;
+			}
+			this._accessoryTextureFunction = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _accessoryLabelField:String = "accessoryLabel";
+
+		/**
+		 * The field in the item that contains a string to be displayed in a
+		 * renderer-managed <code>Label</code> in the accessory position of the
+		 * renderer. The renderer will automatically reuse the <code>Label</code>
+		 * and swap the text when the data changes. Using an accessory label
+		 * will result in better performance than passing in a <code>Label</code>
+		 * through a <code>accessoryField</code> or <code>accessoryFunction</code>
+		 * because the renderer can avoid costly display list manipulation.
+		 *
+		 * <p>All of the accessory fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>accessoryTextureFunction</code></li>
+		 *     <li><code>accessoryTextureField</code></li>
+		 *     <li><code>accessoryLabelFunction</code></li>
+		 *     <li><code>accessoryLabelField</code></li>
+		 *     <li><code>accessoryFunction</code></li>
+		 *     <li><code>accessoryField</code></li>
+		 * </ol>
+		 *
+		 * @see #accessoryLabelFunction
+		 * @see #accessoryField
+		 * @see #accessoryFunction
+		 * @see #accessoryTextureField
+		 * @see #accessoryTextureFunction
+		 */
+		public function get accessoryLabelField():String
+		{
+			return this._accessoryLabelField;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set accessoryLabelField(value:String):void
+		{
+			if(this._accessoryLabelField == value)
+			{
+				return;
+			}
+			this._accessoryLabelField = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _accessoryLabelFunction:Function;
+
+		/**
+		 * A function that returns a string to be displayed in a
+		 * renderer-managed <code>Label</code> in the accessory position of the
+		 * renderer. The renderer will automatically reuse the <code>Label</code>
+		 * and swap the text when the data changes. Using an accessory label
+		 * will result in better performance than passing in a <code>Label</code>
+		 * through a <code>accessoryField</code> or <code>accessoryFunction</code>
+		 * because the renderer can avoid costly display list manipulation.
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 * <pre>function( item:Object ):String</pre>
+		 *
+		 * <p>All of the accessory fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>accessoryTextureFunction</code></li>
+		 *     <li><code>accessoryTextureField</code></li>
+		 *     <li><code>accessoryLabelFunction</code></li>
+		 *     <li><code>accessoryLabelField</code></li>
+		 *     <li><code>accessoryFunction</code></li>
+		 *     <li><code>accessoryField</code></li>
+		 * </ol>
+		 *
+		 * @see #accessoryLabelField
+		 * @see #accessoryField
+		 * @see #accessoryFunction
+		 * @see #accessoryTextureField
+		 * @see #accessoryTextureFunction
+		 */
+		public function get accessoryLabelFunction():Function
+		{
+			return this._accessoryLabelFunction;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set accessoryLabelFunction(value:Function):void
+		{
+			if(this._accessoryLabelFunction == value)
+			{
+				return;
+			}
+			this._accessoryLabelFunction = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		override public function dispose():void
+		{
+			if(this.iconImage)
+			{
+				this.iconImage.removeFromParent(true);
+			}
+
+			//the accessory may have come from outside of this class. it's up
+			//to that code to dispose of the accessory. in fact, if we disposed
+			//of it here, we might screw something up!
+			if(this.accessory)
+			{
+				this.accessory.removeFromParent();
+			}
+
+			//however, we need to dispose these, if they exist, since we made
+			//them here.
+			if(this.accessoryImage)
+			{
+				this.accessoryImage.dispose();
+			}
+			if(this.accessoryLabel)
+			{
+				this.accessoryLabel.dispose();
+			}
+			super.dispose();
+		}
+
+		/**
 		 * Using <code>labelField</code> and <code>labelFunction</code>,
 		 * generates a label from the item.
+		 *
+		 * <p>All of the label fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>labelFunction</code></li>
+		 *     <li><code>labelField</code></li>
+		 * </ol>
 		 */
 		public function itemToLabel(item:Object):String
 		{
@@ -397,12 +799,32 @@ package org.josht.starling.foxhole.controls
 		}
 
 		/**
-		 * Using <code>iconField</code> and <code>iconFunction</code>,
-		 * generates an icon from the item.
+		 * Uses the icon fields and functions to generate an icon for a specific
+		 * item.
+		 *
+		 * <p>All of the icon fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>iconTextureFunction</code></li>
+		 *     <li><code>iconTextureField</code></li>
+		 *     <li><code>iconFunction</code></li>
+		 *     <li><code>iconField</code></li>
+		 * </ol>
 		 */
-		public function itemToIcon(item:Object):DisplayObject
+		protected function itemToIcon(item:Object):DisplayObject
 		{
-			if(this._iconFunction != null)
+			if(this._iconTextureFunction != null)
+			{
+				var texture:Texture = this._iconTextureFunction(item) as Texture;
+				this.refreshIconTexture(texture);
+				return this.iconImage;
+			}
+			else if(this._iconTextureField != null && item && item.hasOwnProperty(this._iconTextureField))
+			{
+				texture = item[this._iconTextureField] as Texture;
+				this.refreshIconTexture(texture);
+				return this.iconImage;
+			}
+			else if(this._iconFunction != null)
 			{
 				return this._iconFunction(item) as DisplayObject;
 			}
@@ -415,12 +837,46 @@ package org.josht.starling.foxhole.controls
 		}
 
 		/**
-		 * Using <code>accessoryField</code> and <code>accessoryFunction</code>,
-		 * generates an accessory view for the item.
+		 * Uses the accessory fields and functions to generate an accessory for
+		 * a specific item.
+		 *
+		 * <p>All of the accessory fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>accessoryTextureFunction</code></li>
+		 *     <li><code>accessoryTextureField</code></li>
+		 *     <li><code>accessoryLabelFunction</code></li>
+		 *     <li><code>accessoryLabelField</code></li>
+		 *     <li><code>accessoryFunction</code></li>
+		 *     <li><code>accessoryField</code></li>
+		 * </ol>
 		 */
-		public function itemToAccessory(item:Object):DisplayObject
+		protected function itemToAccessory(item:Object):DisplayObject
 		{
-			if(this._accessoryFunction != null)
+			if(this._accessoryTextureFunction != null)
+			{
+				var texture:Texture = this._accessoryTextureFunction(item) as Texture;
+				this.refreshAccessoryTexture(texture);
+				return this.accessoryImage;
+			}
+			else if(this._accessoryTextureField != null && item && item.hasOwnProperty(this._accessoryTextureField))
+			{
+				texture = item[this._accessoryTextureField] as Texture;
+				this.refreshAccessoryTexture(texture);
+				return this.accessoryImage;
+			}
+			else if(this._accessoryLabelFunction != null)
+			{
+				var label:String = this._accessoryLabelFunction(item) as String;
+				this.refreshAccessoryLabel(label);
+				return this.accessoryLabel;
+			}
+			else if(this._accessoryLabelField != null && item && item.hasOwnProperty(this._accessoryLabelField))
+			{
+				label = item[this._accessoryLabelField] as String;
+				this.refreshAccessoryLabel(label);
+				return this.accessoryLabel;
+			}
+			else if(this._accessoryFunction != null)
 			{
 				return this._accessoryFunction(item) as DisplayObject;
 			}
@@ -454,7 +910,7 @@ package org.josht.starling.foxhole.controls
 			{
 				this._label = this.itemToLabel(this._data);
 				this.defaultIcon = this.itemToIcon(this._data);
-				var newAccessory:DisplayObject = this.itemToAccessory(this._data);
+				const newAccessory:DisplayObject = this.itemToAccessory(this._data);
 				if(newAccessory != this.accessory)
 				{
 					if(this.accessory)
@@ -462,7 +918,10 @@ package org.josht.starling.foxhole.controls
 						this.accessory.removeFromParent();
 					}
 					this.accessory = newAccessory;
-					this.addChild(this.accessory);
+					if(this.accessory)
+					{
+						this.addChild(this.accessory);
+					}
 				}
 			}
 			else
@@ -477,6 +936,73 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 
+		/**
+		 * @private
+		 */
+		protected function refreshIconTexture(texture:Texture):void
+		{
+			if(texture)
+			{
+				if(!this.iconImage)
+				{
+					this.iconImage = new Image(texture);
+				}
+				else
+				{
+					this.iconImage.texture = texture;
+					this.iconImage.readjustSize();
+				}
+			}
+			else if(this.iconImage)
+			{
+				this.iconImage.removeFromParent(true);
+				this.iconImage = null;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshAccessoryTexture(texture:Texture):void
+		{
+			if(texture)
+			{
+				if(!this.accessoryImage)
+				{
+					this.accessoryImage = new Image(texture);
+				}
+				else
+				{
+					this.accessoryImage.texture = texture;
+					this.accessoryImage.readjustSize();
+				}
+			}
+			else if(this.accessoryImage)
+			{
+				this.accessoryImage.removeFromParent(true);
+				this.accessoryImage = null;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshAccessoryLabel(label:String):void
+		{
+			if(label !== null)
+			{
+				if(!this.accessoryLabel)
+				{
+					this.accessoryLabel = new Label();
+				}
+				this.accessoryLabel.text = label;
+			}
+			else if(this.accessoryLabel)
+			{
+				this.accessoryLabel.removeFromParent(true);
+				this.accessoryLabel = null;
+			}
+		}
 
 		/**
 		 * @private
