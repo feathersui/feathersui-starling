@@ -27,7 +27,9 @@ package org.josht.starling.foxhole.controls
 	import flash.geom.Point;
 
 	import org.josht.starling.display.ScrollRectManager;
+	import org.josht.starling.foxhole.controls.popUpContentManagers.CalloutPopUpContentManager;
 	import org.josht.starling.foxhole.controls.popUpContentManagers.IPopUpContentManager;
+	import org.josht.starling.foxhole.controls.popUpContentManagers.VerticalCenteredPopUpContentManager;
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.PropertyProxy;
 	import org.josht.starling.foxhole.data.ListCollection;
