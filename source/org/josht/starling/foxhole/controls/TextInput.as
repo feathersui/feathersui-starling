@@ -37,6 +37,7 @@ package org.josht.starling.foxhole.controls
 
 	import org.josht.starling.display.ScrollRectManager;
 	import org.josht.starling.foxhole.core.FoxholeControl;
+	import org.josht.starling.foxhole.core.PropertyProxy;
 	import org.josht.text.StageTextField;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
@@ -390,7 +391,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _stageTextProperties:Object = {};
+		private var _stageTextProperties:PropertyProxy = new PropertyProxy(stageTextProperties_onChange);
 
 		/**
 		 * A set of key/value pairs to be passed down to the text input's
@@ -412,18 +413,26 @@ package org.josht.starling.foxhole.controls
 			}
 			if(!value)
 			{
-				value = {};
+				value = new PropertyProxy();
 			}
-			this._stageTextProperties = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * Sets a single property on the text input's StageText instance.
-		 */
-		public function setStageTextProperty(propertyName:String, propertyValue:Object):void
-		{
-			this._stageTextProperties[propertyName] = propertyValue;
+			if(!(value is PropertyProxy))
+			{
+				const newValue:PropertyProxy = new PropertyProxy();
+				for(var propertyName:String in value)
+				{
+					newValue[propertyName] = value[propertyName];
+				}
+				value = newValue;
+			}
+			if(this._stageTextProperties)
+			{
+				this._stageTextProperties.onChange.remove(stageTextProperties_onChange);
+			}
+			this._stageTextProperties = PropertyProxy(value);
+			if(this._stageTextProperties)
+			{
+				this._stageTextProperties.onChange.add(stageTextProperties_onChange);
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -734,6 +743,14 @@ package org.josht.starling.foxhole.controls
 				viewPort.height = 1;
 			}
 			this.stageText.viewPort = viewPort;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function stageTextProperties_onChange(proxy:PropertyProxy, name:Object):void
+		{
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**

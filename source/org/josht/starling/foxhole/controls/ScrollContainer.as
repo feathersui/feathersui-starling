@@ -28,6 +28,7 @@ package org.josht.starling.foxhole.controls
 
 	import org.josht.starling.foxhole.controls.supportClasses.LayoutContainer;
 	import org.josht.starling.foxhole.core.FoxholeControl;
+	import org.josht.starling.foxhole.core.PropertyProxy;
 	import org.josht.starling.foxhole.data.ListCollection;
 	import org.josht.starling.foxhole.layout.ILayout;
 	import org.osflash.signals.ISignal;
@@ -257,7 +258,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _scrollerProperties:Object = {};
+		private var _scrollerProperties:PropertyProxy = new PropertyProxy(scrollerProperties_onChange);
 
 		/**
 		 * A set of key/value pairs to be passed down to the container's scroller
@@ -279,9 +280,26 @@ package org.josht.starling.foxhole.controls
 			}
 			if(!value)
 			{
-				value = {};
+				value = new PropertyProxy();
 			}
-			this._scrollerProperties = value;
+			if(!(value is PropertyProxy))
+			{
+				const newValue:PropertyProxy = new PropertyProxy();
+				for(var propertyName:String in value)
+				{
+					newValue[propertyName] = value[propertyName];
+				}
+				value = newValue;
+			}
+			if(this._scrollerProperties)
+			{
+				this._scrollerProperties.onChange.remove(scrollerProperties_onChange);
+			}
+			this._scrollerProperties = PropertyProxy(value);
+			if(this._scrollerProperties)
+			{
+				this._scrollerProperties.onChange.add(scrollerProperties_onChange);
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -368,16 +386,6 @@ package org.josht.starling.foxhole.controls
 		override public function sortChildren(compareFunction:Function):void
 		{
 			this.viewPort.sortChildren(compareFunction);
-		}
-
-		/**
-		 * Sets a single property on the container's scroller instance. The
-		 * scroller is a Foxhole Scroller control.
-		 */
-		public function setScrollerProperty(propertyName:String, propertyValue:Object):void
-		{
-			this._scrollerProperties[propertyName] = propertyValue;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
@@ -496,6 +504,14 @@ package org.josht.starling.foxhole.controls
 					this.scroller[propertyName] = propertyValue;
 				}
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function scrollerProperties_onChange(proxy:PropertyProxy, name:Object):void
+		{
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**

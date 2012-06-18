@@ -27,6 +27,7 @@ package org.josht.starling.foxhole.controls
 	import flash.geom.Point;
 
 	import org.josht.starling.foxhole.core.FoxholeControl;
+	import org.josht.starling.foxhole.core.PropertyProxy;
 	import org.josht.utils.math.clamp;
 	import org.josht.utils.math.roundToNearest;
 	import org.osflash.signals.ISignal;
@@ -412,7 +413,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _thumbProperties:Object = {};
+		private var _thumbProperties:PropertyProxy = new PropertyProxy(thumbProperties_onChange);
 
 		/**
 		 * A set of key/value pairs to be passed down to the scroll bar's thumb
@@ -434,9 +435,26 @@ package org.josht.starling.foxhole.controls
 			}
 			if(!value)
 			{
-				value = {};
+				value = new PropertyProxy();
 			}
-			this._thumbProperties = value;
+			if(!(value is PropertyProxy))
+			{
+				const newValue:PropertyProxy = new PropertyProxy();
+				for(var propertyName:String in value)
+				{
+					newValue[propertyName] = value[propertyName];
+				}
+				value = newValue;
+			}
+			if(this._thumbProperties)
+			{
+				this._thumbProperties.onChange.remove(thumbProperties_onChange);
+			}
+			this._thumbProperties = PropertyProxy(value);
+			if(this._thumbProperties)
+			{
+				this._thumbProperties.onChange.add(thumbProperties_onChange);
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -445,16 +463,6 @@ package org.josht.starling.foxhole.controls
 		private var _touchStartY:Number = NaN;
 		private var _thumbStartX:Number = NaN;
 		private var _thumbStartY:Number = NaN;
-
-		/**
-		 * Sets a single property on the scroll bar's thumb instance. The thumb
-		 * is a Foxhole Button control.
-		 */
-		public function setThumbProperty(propertyName:String, propertyValue:Object):void
-		{
-			this._thumbProperties[propertyName] = propertyValue;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
 
 		/**
 		 * @inheritDoc
@@ -650,6 +658,14 @@ package org.josht.starling.foxhole.controls
 			}
 
 			this.value = this._minimum + percentage * (this._maximum - this._minimum);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function thumbProperties_onChange(proxy:PropertyProxy, name:Object):void
+		{
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**

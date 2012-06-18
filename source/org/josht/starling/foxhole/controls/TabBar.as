@@ -25,6 +25,7 @@
 package org.josht.starling.foxhole.controls
 {
 	import org.josht.starling.foxhole.core.FoxholeControl;
+	import org.josht.starling.foxhole.core.PropertyProxy;
 	import org.josht.starling.foxhole.core.ToggleGroup;
 	import org.josht.starling.foxhole.data.ListCollection;
 	import org.osflash.signals.ISignal;
@@ -301,7 +302,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _tabProperties:Object = {};
+		private var _tabProperties:PropertyProxy = new PropertyProxy(tabProperties_onChange);
 
 		/**
 		 * A set of key/value pairs to be passed down to all of the tab bar's
@@ -328,20 +329,26 @@ package org.josht.starling.foxhole.controls
 			}
 			if(!value)
 			{
-				value = {};
+				value = new PropertyProxy();
 			}
-			this._tabProperties = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * Sets a property value for all of the tab bars's tabs. This property
-		 * will be shared by all tabs, so skins and similar objects that can
-		 * only be used in one place should be initialized in a different way.
-		 */
-		public function setTabProperty(propertyName:String, propertyValue:Object):void
-		{
-			this._tabProperties[propertyName] = propertyValue;
+			if(!(value is PropertyProxy))
+			{
+				const newValue:PropertyProxy = new PropertyProxy();
+				for(var propertyName:String in value)
+				{
+					newValue[propertyName] = value[propertyName];
+				}
+				value = newValue;
+			}
+			if(this._tabProperties)
+			{
+				this._tabProperties.onChange.remove(tabProperties_onChange);
+			}
+			this._tabProperties = PropertyProxy(value);
+			if(this._tabProperties)
+			{
+				this._tabProperties.onChange.add(tabProperties_onChange);
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -585,6 +592,14 @@ package org.josht.starling.foxhole.controls
 				this.invalidate(INVALIDATION_FLAG_SELECTED);
 			}
 			this._onChange.dispatch(this);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function tabProperties_onChange(proxy:PropertyProxy, name:Object):void
+		{
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
