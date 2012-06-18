@@ -30,6 +30,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 
 	import org.josht.starling.foxhole.controls.*;
 	import org.josht.starling.foxhole.core.FoxholeControl;
+	import org.josht.starling.foxhole.core.PropertyProxy;
 	import org.josht.starling.foxhole.data.ListCollection;
 	import org.josht.starling.foxhole.layout.ILayout;
 	import org.josht.starling.foxhole.layout.IVirtualLayout;
@@ -322,20 +323,28 @@ package org.josht.starling.foxhole.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
 		
-		private var _itemRendererProperties:Object = {};
+		private var _itemRendererProperties:PropertyProxy;
 		
-		public function get itemRendererProperties():Object
+		public function get itemRendererProperties():PropertyProxy
 		{
 			return this._itemRendererProperties;
 		}
 		
-		public function set itemRendererProperties(value:Object):void
+		public function set itemRendererProperties(value:PropertyProxy):void
 		{
 			if(this._itemRendererProperties == value)
 			{
 				return;
 			}
-			this._itemRendererProperties = value;
+			if(this._itemRendererProperties)
+			{
+				this._itemRendererProperties.onChange.remove(itemRendererProperties_onChange);
+			}
+			this._itemRendererProperties = PropertyProxy(value);
+			if(this._itemRendererProperties)
+			{
+				this._itemRendererProperties.onChange.add(itemRendererProperties_onChange);
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES, INVALIDATION_FLAG_SCROLL);
 		}
 
@@ -452,12 +461,6 @@ package org.josht.starling.foxhole.controls.supportClasses
 		public function get onItemTouch():ISignal
 		{
 			return this._onItemTouch;
-		}
-
-		public function setItemRendererProperty(propertyName:String, propertyValue:Object):void
-		{
-			this._itemRendererProperties[propertyName] = propertyValue;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
 		override protected function draw():void
@@ -724,6 +727,11 @@ package org.josht.starling.foxhole.controls.supportClasses
 			const displayRenderer:DisplayObject = DisplayObject(renderer);
 			displayRenderer.removeEventListener(TouchEvent.TOUCH, renderer_touchHandler);
 			this.removeChild(displayRenderer);
+		}
+
+		private function itemRendererProperties_onChange(proxy:PropertyProxy, name:Object):void
+		{
+			this.invalidate(INVALIDATION_FLAG_SCROLL, INVALIDATION_FLAG_STYLES);
 		}
 		
 		private function owner_onScroll(list:List):void

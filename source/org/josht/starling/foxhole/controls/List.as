@@ -28,6 +28,7 @@ package org.josht.starling.foxhole.controls
 
 	import org.josht.starling.foxhole.controls.supportClasses.ListDataContainer;
 	import org.josht.starling.foxhole.core.FoxholeControl;
+	import org.josht.starling.foxhole.core.PropertyProxy;
 	import org.josht.starling.foxhole.data.ListCollection;
 	import org.josht.starling.foxhole.layout.HorizontalLayout;
 	import org.josht.starling.foxhole.layout.ILayout;
@@ -368,7 +369,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _scrollerProperties:Object = {};
+		private var _scrollerProperties:PropertyProxy = new PropertyProxy(scrollerProperties_onChange);
 		
 		/**
 		 * A set of key/value pairs to be passed down to the list's scroller
@@ -390,16 +391,33 @@ package org.josht.starling.foxhole.controls
 			}
 			if(!value)
 			{
-				value = {};
+				value = new PropertyProxy();
 			}
-			this._scrollerProperties = value;
+			if(!(value is PropertyProxy))
+			{
+				const newValue:PropertyProxy = new PropertyProxy();
+				for(var propertyName:String in value)
+				{
+					newValue[propertyName] = value[propertyName];
+				}
+				value = newValue;
+			}
+			if(this._scrollerProperties)
+			{
+				this._scrollerProperties.onChange.remove(scrollerProperties_onChange);
+			}
+			this._scrollerProperties = PropertyProxy(value);
+			if(this._scrollerProperties)
+			{
+				this._scrollerProperties.onChange.add(scrollerProperties_onChange);
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
 		/**
 		 * @private
 		 */
-		private var _itemRendererProperties:Object = {};
+		private var _itemRendererProperties:PropertyProxy = new PropertyProxy(itemRendererProperties_onChange);
 
 		/**
 		 * A set of key/value pairs to be passed down to all of the list's item
@@ -426,9 +444,26 @@ package org.josht.starling.foxhole.controls
 			}
 			if(!value)
 			{
-				value = {};
+				value = new PropertyProxy();
 			}
-			this._itemRendererProperties = value;
+			if(!(value is PropertyProxy))
+			{
+				const newValue:PropertyProxy = new PropertyProxy();
+				for(var propertyName:String in value)
+				{
+					newValue[propertyName] = value[propertyName];
+				}
+				value = newValue;
+			}
+			if(this._itemRendererProperties)
+			{
+				this._itemRendererProperties.onChange.remove(itemRendererProperties_onChange);
+			}
+			this._itemRendererProperties = PropertyProxy(value);
+			if(this._itemRendererProperties)
+			{
+				this._itemRendererProperties.onChange.add(itemRendererProperties_onChange);
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -739,32 +774,6 @@ package org.josht.starling.foxhole.controls
 		}
 		
 		/**
-		 * Sets a single property on the list's scroller instance. The
-		 * scroller is a Foxhole Scroller control.
-		 */
-		public function setScrollerProperty(propertyName:String, propertyValue:Object):void
-		{
-			this._scrollerProperties[propertyName] = propertyValue;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-		
-		/**
-		 * Sets a property value for all of the list's item renderers. This
-		 * property will be shared by all item renderers, so skins and similar
-		 * objects that can only be used in one place should be initialized in
-		 * a different way.
-		 */
-		public function setItemRendererProperty(propertyName:String, propertyValue:Object):void
-		{
-			this._itemRendererProperties[propertyName] = propertyValue;
-			if(this.dataContainer)
-			{
-				this.dataContainer.setItemRendererProperty(propertyName, propertyValue);
-			}
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-		
-		/**
 		 * Scrolls the list so that the specified item is visible.
 		 */
 		public function scrollToDisplayIndex(index:int):void
@@ -993,6 +1002,22 @@ package org.josht.starling.foxhole.controls
 			{
 				this.currentBackgroundSkin.visible = true;
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function scrollerProperties_onChange(proxy:PropertyProxy, name:Object):void
+		{
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function itemRendererProperties_onChange(proxy:PropertyProxy, name:Object):void
+		{
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**

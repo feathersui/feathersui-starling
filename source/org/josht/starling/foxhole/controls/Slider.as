@@ -28,6 +28,7 @@ package org.josht.starling.foxhole.controls
 	import flash.geom.Rectangle;
 
 	import org.josht.starling.foxhole.core.FoxholeControl;
+	import org.josht.starling.foxhole.core.PropertyProxy;
 	import org.josht.utils.math.clamp;
 	import org.josht.utils.math.roundToNearest;
 	import org.osflash.signals.ISignal;
@@ -384,7 +385,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _minimumTrackProperties:Object = {};
+		private var _minimumTrackProperties:PropertyProxy = new PropertyProxy(minimumTrackProperties_onChange);
 
 		/**
 		 * A set of key/value pairs to be passed down to the slider's minimum
@@ -406,16 +407,33 @@ package org.josht.starling.foxhole.controls
 			}
 			if(!value)
 			{
-				value = {};
+				value = new PropertyProxy();
 			}
-			this._minimumTrackProperties = value;
+			if(!(value is PropertyProxy))
+			{
+				const newValue:PropertyProxy = new PropertyProxy();
+				for(var propertyName:String in value)
+				{
+					newValue[propertyName] = value[propertyName];
+				}
+				value = newValue;
+			}
+			if(this._minimumTrackProperties)
+			{
+				this._minimumTrackProperties.onChange.remove(minimumTrackProperties_onChange);
+			}
+			this._minimumTrackProperties = PropertyProxy(value);
+			if(this._minimumTrackProperties)
+			{
+				this._minimumTrackProperties.onChange.add(minimumTrackProperties_onChange);
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
 		/**
 		 * @private
 		 */
-		private var _maximumTrackProperties:Object = {};
+		private var _maximumTrackProperties:PropertyProxy = new PropertyProxy(maximumTrackProperties_onChange);
 		
 		/**
 		 * A set of key/value pairs to be passed down to the slider's maximum
@@ -437,16 +455,33 @@ package org.josht.starling.foxhole.controls
 			}
 			if(!value)
 			{
-				value = {};
+				value = new PropertyProxy();
 			}
-			this._maximumTrackProperties = value;
+			if(!(value is PropertyProxy))
+			{
+				const newValue:PropertyProxy = new PropertyProxy();
+				for(var propertyName:String in value)
+				{
+					newValue[propertyName] = value[propertyName];
+				}
+				value = newValue;
+			}
+			if(this._maximumTrackProperties)
+			{
+				this._maximumTrackProperties.onChange.remove(maximumTrackProperties_onChange);
+			}
+			this._maximumTrackProperties = PropertyProxy(value);
+			if(this._maximumTrackProperties)
+			{
+				this._maximumTrackProperties.onChange.add(maximumTrackProperties_onChange);
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
 		/**
 		 * @private
 		 */
-		private var _thumbProperties:Object = {};
+		private var _thumbProperties:PropertyProxy = new PropertyProxy(thumbProperties_onChange);
 		
 		/**
 		 * A set of key/value pairs to be passed down to the slider's thumb
@@ -468,9 +503,26 @@ package org.josht.starling.foxhole.controls
 			}
 			if(!value)
 			{
-				value = {};
+				value = new PropertyProxy();
 			}
-			this._thumbProperties = value;
+			if(!(value is PropertyProxy))
+			{
+				const newValue:PropertyProxy = new PropertyProxy();
+				for(var propertyName:String in value)
+				{
+					newValue[propertyName] = value[propertyName];
+				}
+				value = newValue;
+			}
+			if(this._thumbProperties)
+			{
+				this._thumbProperties.onChange.remove(thumbProperties_onChange);
+			}
+			this._thumbProperties = PropertyProxy(value);
+			if(this._thumbProperties)
+			{
+				this._thumbProperties.onChange.add(thumbProperties_onChange);
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
@@ -479,36 +531,6 @@ package org.josht.starling.foxhole.controls
 		private var _touchStartY:Number = NaN;
 		private var _thumbStartX:Number = NaN;
 		private var _thumbStartY:Number = NaN;
-		
-		/**
-		 * Sets a single property on the slider's thumb instance. The thumb is
-		 * a Foxhole Button control.
-		 */
-		public function setThumbProperty(propertyName:String, propertyValue:Object):void
-		{
-			this._thumbProperties[propertyName] = propertyValue;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-		
-		/**
-		 * Sets a single property on the slider's minimum track instance. The
-		 * minimum track is a Foxhole Button control.
-		 */
-		public function setMinimumTrackProperty(propertyName:String, propertyValue:Object):void
-		{
-			this._minimumTrackProperties[propertyName] = propertyValue;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * Sets a single property on the slider's maximum track instance. The
-		 * maximum track is a Foxhole Button control.
-		 */
-		public function setMaximumTrackProperty(propertyName:String, propertyValue:Object):void
-		{
-			this._maximumTrackProperties[propertyName] = propertyValue;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
 		
 		/**
 		 * @inheritDoc
@@ -934,6 +956,30 @@ package org.josht.starling.foxhole.controls
 			}
 
 			this.value = this._minimum + percentage * (this._maximum - this._minimum);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function minimumTrackProperties_onChange(proxy:PropertyProxy, name:Object):void
+		{
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function maximumTrackProperties_onChange(proxy:PropertyProxy, name:Object):void
+		{
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function thumbProperties_onChange(proxy:PropertyProxy, name:Object):void
+		{
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
 		/**

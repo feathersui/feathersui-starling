@@ -28,6 +28,7 @@ package org.josht.starling.foxhole.controls
 
 	import org.josht.starling.display.ScrollRectManager;
 	import org.josht.starling.foxhole.core.FoxholeControl;
+	import org.josht.starling.foxhole.core.PropertyProxy;
 	import org.josht.starling.foxhole.data.ListCollection;
 	import org.josht.system.PhysicalCapabilities;
 	import org.osflash.signals.ISignal;
@@ -306,7 +307,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _buttonProperties:Object = {};
+		private var _buttonProperties:PropertyProxy = new PropertyProxy(buttonProperties_onChange);
 		
 		/**
 		 * A set of key/value pairs to be passed down to the picker's button
@@ -328,16 +329,33 @@ package org.josht.starling.foxhole.controls
 			}
 			if(!value)
 			{
-				value = {};
+				value = new PropertyProxy();
 			}
-			this._buttonProperties = value;
+			if(!(value is PropertyProxy))
+			{
+				const newValue:PropertyProxy = new PropertyProxy();
+				for(var propertyName:String in value)
+				{
+					newValue[propertyName] = value[propertyName];
+				}
+				value = newValue;
+			}
+			if(this._buttonProperties)
+			{
+				this._buttonProperties.onChange.remove(buttonProperties_onChange);
+			}
+			this._buttonProperties = PropertyProxy(value);
+			if(this._buttonProperties)
+			{
+				this._buttonProperties.onChange.add(buttonProperties_onChange);
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
 		/**
 		 * @private
 		 */
-		private var _listProperties:Object = {};
+		private var _listProperties:PropertyProxy = new PropertyProxy(listProperties_onChange);
 		
 		/**
 		 * A set of key/value pairs to be passed down to the picker's internal
@@ -359,16 +377,33 @@ package org.josht.starling.foxhole.controls
 			}
 			if(!value)
 			{
-				value = {};
+				value = new PropertyProxy();
 			}
-			this._listProperties = value;
+			if(!(value is PropertyProxy))
+			{
+				const newValue:PropertyProxy = new PropertyProxy();
+				for(var propertyName:String in value)
+				{
+					newValue[propertyName] = value[propertyName];
+				}
+				value = newValue;
+			}
+			if(this._listProperties)
+			{
+				this._listProperties.onChange.remove(listProperties_onChange);
+			}
+			this._listProperties = PropertyProxy(value);
+			if(this._listProperties)
+			{
+				this._listProperties.onChange.add(listProperties_onChange);
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
 		/**
 		 * @private
 		 */
-		private var _itemRendererProperties:Object = {};
+		private var _itemRendererProperties:PropertyProxy = new PropertyProxy(itemRendererProperties_onChange);
 		
 		/**
 		 * @copy List#itemRendererProperties
@@ -389,37 +424,26 @@ package org.josht.starling.foxhole.controls
 			}
 			if(!value)
 			{
-				value = {};
+				value = new PropertyProxy();
 			}
-			this._itemRendererProperties = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-		
-		/**
-		 * Sets a single property on the pickers's button instance.
-		 */
-		public function setButtonProperty(propertyName:String, propertyValue:Object):void
-		{
-			this._buttonProperties[propertyName] = propertyValue;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-		
-		/**
-		 * Sets a single property on the pickers's internal list instance.
-		 */
-		public function setListProperty(propertyName:String, propertyValue:Object):void
-		{
-			this._listProperties[propertyName] = propertyValue;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-		
-		/**
-		 * @copy List#setItemRendererProperty
-		 */
-		public function setItemRendererProperty(propertyName:String, propertyValue:Object):void
-		{
-			//pssst... pass it on
-			this._itemRendererProperties[propertyName] = propertyValue;
+			if(!(value is PropertyProxy))
+			{
+				const newValue:PropertyProxy = new PropertyProxy();
+				for(var propertyName:String in value)
+				{
+					newValue[propertyName] = value[propertyName];
+				}
+				value = newValue;
+			}
+			if(this._itemRendererProperties)
+			{
+				this._itemRendererProperties.onChange.remove(itemRendererProperties_onChange);
+			}
+			this._itemRendererProperties = PropertyProxy(value);
+			if(this._itemRendererProperties)
+			{
+				this._itemRendererProperties.onChange.add(itemRendererProperties_onChange);
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
@@ -654,6 +678,30 @@ package org.josht.starling.foxhole.controls
 		{
 			this._list.validate();
 			this._popUpContentManager.close();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function buttonProperties_onChange(proxy:PropertyProxy, name:Object):void
+		{
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function listProperties_onChange(proxy:PropertyProxy, name:Object):void
+		{
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function itemRendererProperties_onChange(proxy:PropertyProxy, name:Object):void
+		{
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
 		/**
