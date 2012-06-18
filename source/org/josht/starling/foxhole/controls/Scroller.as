@@ -44,6 +44,7 @@ package org.josht.starling.foxhole.controls
 
 	import org.josht.starling.display.Sprite;
 	import org.josht.starling.foxhole.core.FoxholeControl;
+	import org.josht.starling.foxhole.core.PropertyProxy;
 	import org.josht.starling.motion.GTween;
 	import org.josht.utils.math.clamp;
 	import org.osflash.signals.ISignal;
@@ -286,6 +287,55 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
+		private var _horizontalScrollBarProperties:PropertyProxy = new PropertyProxy(horizontalScrollBarProperties_onChange);
+
+		/**
+		 * A set of key/value pairs to be passed down to the scroller's
+		 * horizontal scroll bar instance (if it exists). The scroll bar is an
+		 * <code>IScrollBar</code> implementation.
+		 */
+		public function get horizontalScrollBarProperties():Object
+		{
+			return this._horizontalScrollBarProperties;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set horizontalScrollBarProperties(value:Object):void
+		{
+			if(this._horizontalScrollBarProperties == value)
+			{
+				return;
+			}
+			if(!value)
+			{
+				value = new PropertyProxy();
+			}
+			if(!(value is PropertyProxy))
+			{
+				const newValue:PropertyProxy = new PropertyProxy();
+				for(var propertyName:String in value)
+				{
+					newValue[propertyName] = value[propertyName];
+				}
+				value = newValue;
+			}
+			if(this._horizontalScrollBarProperties)
+			{
+				this._horizontalScrollBarProperties.onChange.remove(horizontalScrollBarProperties_onChange);
+			}
+			this._horizontalScrollBarProperties = PropertyProxy(value);
+			if(this._horizontalScrollBarProperties)
+			{
+				this._horizontalScrollBarProperties.onChange.add(horizontalScrollBarProperties_onChange);
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		private var _verticalScrollBarFactory:Function = function():IScrollBar
 		{
 			var scrollBar:SimpleScrollBar = new SimpleScrollBar();
@@ -316,6 +366,55 @@ package org.josht.starling.foxhole.controls
 			}
 			this._verticalScrollBarFactory = value;
 			this.invalidate(INVALIDATION_FLAG_SCROLL_BAR_RENDERER);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _verticalScrollBarProperties:PropertyProxy = new PropertyProxy(verticalScrollBarProperties_onChange);
+
+		/**
+		 * A set of key/value pairs to be passed down to the scroller's
+		 * vertical scroll bar instance (if it exists). The scroll bar is an
+		 * <code>IScrollBar</code> implementation.
+		 */
+		public function get verticalScrollBarProperties():Object
+		{
+			return this._verticalScrollBarProperties;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set verticalScrollBarProperties(value:Object):void
+		{
+			if(this._horizontalScrollBarProperties == value)
+			{
+				return;
+			}
+			if(!value)
+			{
+				value = new PropertyProxy();
+			}
+			if(!(value is PropertyProxy))
+			{
+				const newValue:PropertyProxy = new PropertyProxy();
+				for(var propertyName:String in value)
+				{
+					newValue[propertyName] = value[propertyName];
+				}
+				value = newValue;
+			}
+			if(this._verticalScrollBarProperties)
+			{
+				this._verticalScrollBarProperties.onChange.remove(verticalScrollBarProperties_onChange);
+			}
+			this._verticalScrollBarProperties = PropertyProxy(value);
+			if(this._verticalScrollBarProperties)
+			{
+				this._verticalScrollBarProperties.onChange.add(verticalScrollBarProperties_onChange);
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
 		/**
@@ -837,6 +936,11 @@ package org.josht.starling.foxhole.controls
 				this.createScrollBars();
 			}
 
+			if(scrollBarInvalid || stylesInvalid)
+			{
+				this.refreshScrollBarStyles();
+			}
+
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 			
 			if(sizeInvalid || dataInvalid)
@@ -961,6 +1065,37 @@ package org.josht.starling.foxhole.controls
 				foxholeVerticalScrollBar.alpha = 0;
 				foxholeVerticalScrollBar.touchable = false;
 				this.addChild(foxholeVerticalScrollBar);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshScrollBarStyles():void
+		{
+			if(this.horizontalScrollBar)
+			{
+				var objectScrollBar:Object = this.horizontalScrollBar;
+				for(var propertyName:String in this._horizontalScrollBarProperties)
+				{
+					if(objectScrollBar.hasOwnProperty(propertyName))
+					{
+						var propertyValue:Object = this._horizontalScrollBarProperties[propertyName];
+						this.horizontalScrollBar[propertyName] = propertyValue;
+					}
+				}
+			}
+			if(this.verticalScrollBar)
+			{
+				objectScrollBar = this.verticalScrollBar;
+				for(var propertyName:String in this._verticalScrollBarProperties)
+				{
+					if(objectScrollBar.hasOwnProperty(propertyName))
+					{
+						var propertyValue:Object = this._verticalScrollBarProperties[propertyName];
+						this.verticalScrollBar[propertyName] = propertyValue;
+					}
+				}
 			}
 		}
 
@@ -1277,6 +1412,22 @@ package org.josht.starling.foxhole.controls
 		protected function internal_onScroll(scroller:Scroller):void
 		{
 			this.refreshScrollBarValues();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function horizontalScrollBarProperties_onChange(proxy:PropertyProxy, name:Object):void
+		{
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function verticalScrollBarProperties_onChange(proxy:PropertyProxy, name:Object):void
+		{
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
