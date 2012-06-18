@@ -6,6 +6,9 @@
 		<package name="org.josht.starling.foxhole.controls"> 
 			<shortDescription><![CDATA[Foxhole user interface controls and containers.]]></shortDescription>
 		</package>
+		<package name="org.josht.starling.foxhole.controls.popups"> 
+			<shortDescription><![CDATA[Managers for the display of pop-up sub-components.]]></shortDescription>
+		</package>
 		<package name="org.josht.starling.foxhole.core"> 
 			<shortDescription><![CDATA[Base classes and interfaces used by Foxhole.]]></shortDescription>
 		</package>
