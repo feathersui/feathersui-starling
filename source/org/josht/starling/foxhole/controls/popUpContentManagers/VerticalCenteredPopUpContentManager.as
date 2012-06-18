@@ -1,8 +1,10 @@
-package org.josht.starling.foxhole.controls
+package org.josht.starling.foxhole.controls.popUpContentManagers
 {
 	import flash.errors.IllegalOperationError;
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
+
+	import org.josht.starling.foxhole.controls.popUpContentManagers.IPopUpContentManager;
 
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.PopUpManager;

@@ -1,4 +1,4 @@
-package org.josht.starling.foxhole.controls
+package org.josht.starling.foxhole.controls.popUpContentManagers
 {
 	import org.osflash.signals.ISignal;
 
