@@ -109,7 +109,12 @@ package org.josht.starling.foxhole.core
 			{
 				this._names.splice(index, 1);
 			}
-			return delete this._storage[name];
+			const result:Boolean = delete this._storage[name];
+			if(result)
+			{
+				this._onChange.dispatch(this, name);
+			}
+			return result;
 		}
 
 		/**
