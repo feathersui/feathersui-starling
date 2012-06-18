@@ -829,20 +829,9 @@ package org.josht.starling.foxhole.controls
 					this.finishScrollingHorizontally();
 				}
 			}
-			else if(this.horizontalScrollBar && !this._horizontalScrollBarHideTween)
+			else
 			{
-				const displayHorizontalScrollBar:DisplayObject = DisplayObject(this.horizontalScrollBar);
-				if(displayHorizontalScrollBar.alpha > 0)
-				{
-					this._horizontalScrollBarHideTween = new GTween(this.horizontalScrollBar, this._hideScrollBarAnimationDuration,
-					{
-						alpha: 0
-					},
-					{
-						ease: Sine.easeOut,
-						onComplete: horizontalScrollBarHideTween_onComplete
-					});
-				}
+				this.hideHorizontalScrollBar();
 			}
 			
 			if(!isNaN(targetVerticalScrollPosition))
@@ -868,20 +857,9 @@ package org.josht.starling.foxhole.controls
 					this.finishScrollingVertically();
 				}
 			}
-			else if(this.verticalScrollBar && !this._verticalScrollBarHideTween)
+			else
 			{
-				const displayVerticalScrollBar:DisplayObject = DisplayObject(this.verticalScrollBar);
-				if(displayVerticalScrollBar.alpha > 0)
-				{
-					this._verticalScrollBarHideTween = new GTween(this.verticalScrollBar, this._hideScrollBarAnimationDuration,
-					{
-						alpha: 0
-					},
-					{
-						ease: Sine.easeOut,
-						onComplete: verticalScrollBarHideTween_onComplete
-					});
-				}
+				this.hideVerticalScrollBar();
 			}
 		}
 
@@ -1409,6 +1387,54 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
+		protected function hideHorizontalScrollBar():void
+		{
+			if(!this.horizontalScrollBar || this._horizontalScrollBarHideTween)
+			{
+				return;
+			}
+			const displayHorizontalScrollBar:DisplayObject = DisplayObject(this.horizontalScrollBar);
+			if(displayHorizontalScrollBar.alpha == 0)
+			{
+				return;
+			}
+			this._horizontalScrollBarHideTween = new GTween(this.horizontalScrollBar, this._hideScrollBarAnimationDuration,
+			{
+				alpha: 0
+			},
+			{
+				ease: Sine.easeOut,
+				onComplete: horizontalScrollBarHideTween_onComplete
+			});
+		}
+
+		/**
+		 * @private
+		 */
+		protected function hideVerticalScrollBar():void
+		{
+			if(!this.verticalScrollBar || this._verticalScrollBarHideTween)
+			{
+				return;
+			}
+			const displayVerticalScrollBar:DisplayObject = DisplayObject(this.verticalScrollBar);
+			if(displayVerticalScrollBar.alpha == 0)
+			{
+				return;
+			}
+			this._verticalScrollBarHideTween = new GTween(this.verticalScrollBar, this._hideScrollBarAnimationDuration,
+			{
+				alpha: 0
+			},
+			{
+				ease: Sine.easeOut,
+				onComplete: verticalScrollBarHideTween_onComplete
+			});
+		}
+
+		/**
+		 * @private
+		 */
 		protected function internal_onScroll(scroller:Scroller):void
 		{
 			this.refreshScrollBarValues();
@@ -1667,6 +1693,10 @@ package org.josht.starling.foxhole.controls
 					}
 					this.throwHorizontally(sum / totalWeight);
 				}
+				else
+				{
+					this.hideHorizontalScrollBar();
+				}
 				
 				if(!isFinishingVertically && this._isDraggingVertically)
 				{
@@ -1680,6 +1710,10 @@ package org.josht.starling.foxhole.controls
 						totalWeight += weight;
 					}
 					this.throwVertically(sum / totalWeight);
+				}
+				else
+				{
+					this.hideVerticalScrollBar();
 				}
 			}
 		}
