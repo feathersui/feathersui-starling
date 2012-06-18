@@ -1,4 +1,4 @@
-package org.josht.starling.foxhole.controls.popUpContentManagers
+package org.josht.starling.foxhole.controls.popups
 {
 	import org.josht.starling.foxhole.controls.*;
 	import flash.errors.IllegalOperationError;
