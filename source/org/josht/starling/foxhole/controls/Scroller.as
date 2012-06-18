@@ -1088,11 +1088,11 @@ package org.josht.starling.foxhole.controls
 			if(this.verticalScrollBar)
 			{
 				objectScrollBar = this.verticalScrollBar;
-				for(var propertyName:String in this._verticalScrollBarProperties)
+				for(propertyName in this._verticalScrollBarProperties)
 				{
 					if(objectScrollBar.hasOwnProperty(propertyName))
 					{
-						var propertyValue:Object = this._verticalScrollBarProperties[propertyName];
+						propertyValue = this._verticalScrollBarProperties[propertyName];
 						this.verticalScrollBar[propertyName] = propertyValue;
 					}
 				}
