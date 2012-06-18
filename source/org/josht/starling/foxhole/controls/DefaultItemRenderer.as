@@ -46,7 +46,23 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private static const DOWN_STATE_DELAY_MS:int = 250;
+		protected static var DOWN_STATE_DELAY_MS:int = 250;
+
+		/**
+		 * @private
+		 */
+		protected static function defaultImageFactory(texture:Texture):Image
+		{
+			return new Image(texture);
+		}
+
+		/**
+		 * @private
+		 */
+		protected static function defaultLabelFactory():Label
+		{
+			return new Label();
+		}
 		
 		/**
 		 * Constructor.
@@ -387,6 +403,7 @@ package org.josht.starling.foxhole.controls
 		 *     <li><code>iconField</code></li>
 		 * </ol>
 		 *
+		 * @see #iconImageFactory
 		 * @see #iconTextureFunction
 		 * @see #iconField
 		 * @see #iconFunction
@@ -431,6 +448,7 @@ package org.josht.starling.foxhole.controls
 		 *     <li><code>iconField</code></li>
 		 * </ol>
 		 *
+		 * @see #iconImageFactory
 		 * @see #iconTextureField
 		 * @see #iconField
 		 * @see #iconFunction
@@ -568,6 +586,7 @@ package org.josht.starling.foxhole.controls
 		 *     <li><code>accessoryField</code></li>
 		 * </ol>
 		 *
+		 * @see #accessoryImageFactory
 		 * @see #accessoryTextureFunction
 		 * @see #accessoryField
 		 * @see #accessoryFunction
@@ -620,6 +639,7 @@ package org.josht.starling.foxhole.controls
 		 *     <li><code>accessoryField</code></li>
 		 * </ol>
 		 *
+		 * @see #accessoryImageFactory
 		 * @see #accessoryTextureField
 		 * @see #accessoryField
 		 * @see #accessoryFunction
@@ -668,6 +688,7 @@ package org.josht.starling.foxhole.controls
 		 *     <li><code>accessoryField</code></li>
 		 * </ol>
 		 *
+		 * @see #accessoryLabelFactory
 		 * @see #accessoryLabelFunction
 		 * @see #accessoryField
 		 * @see #accessoryFunction
@@ -719,6 +740,7 @@ package org.josht.starling.foxhole.controls
 		 *     <li><code>accessoryField</code></li>
 		 * </ol>
 		 *
+		 * @see #accessoryLabelFactory
 		 * @see #accessoryLabelField
 		 * @see #accessoryField
 		 * @see #accessoryFunction
@@ -741,6 +763,101 @@ package org.josht.starling.foxhole.controls
 			}
 			this._accessoryLabelFunction = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _iconImageFactory:Function = defaultImageFactory;
+
+		/**
+		 * A function that generates an <code>Image</code> that uses the result
+		 * of <code>iconTextureField</code> or <code>iconTextureFunction</code>.
+		 * Useful for transforming the <code>Image</code> in some way. For
+		 * example, you might want to scale it for current DPI.
+		 *
+		 * @see #iconTextureField;
+		 * @see #iconTextureFunction;
+		 */
+		public function get iconImageFactory():Function
+		{
+			return this._iconImageFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set iconImageFactory(value:Function):void
+		{
+			if(this._iconImageFactory == value)
+			{
+				return;
+			}
+			this._iconImageFactory = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _accessoryImageFactory:Function = defaultImageFactory;
+
+		/**
+		 * A function that generates an <code>Image</code> that uses the result
+		 * of <code>accessoryTextureField</code> or <code>accessoryTextureFunction</code>.
+		 * Useful for transforming the <code>Image</code> in some way. For
+		 * example, you might want to scale it for current DPI.
+		 *
+		 * @see #iconTextureField;
+		 * @see #iconTextureFunction;
+		 */
+		public function get accessoryImageFactory():Function
+		{
+			return this._accessoryImageFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set accessoryImageFactory(value:Function):void
+		{
+			if(this._accessoryImageFactory == value)
+			{
+				return;
+			}
+			this._accessoryImageFactory = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _accessoryLabelFactory:Function = defaultLabelFactory;
+
+		/**
+		 * A function that generates <code>Label</code> that uses the result
+		 * of <code>accessoryLabelField</code> or <code>accessoryLabelFunction</code>.
+		 * Useful for skinning the <code>Label</code>.
+		 *
+		 * @see #iconTextureField;
+		 * @see #iconTextureFunction;
+		 */
+		public function get accessoryLabelFactory():Function
+		{
+			return this._accessoryLabelFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set accessoryLabelFactory(value:Function):void
+		{
+			if(this._accessoryLabelFactory == value)
+			{
+				return;
+			}
+			this._accessoryLabelFactory = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
@@ -948,7 +1065,7 @@ package org.josht.starling.foxhole.controls
 			{
 				if(!this.iconImage)
 				{
-					this.iconImage = new Image(texture);
+					this.iconImage = this._iconImageFactory(texture);
 				}
 				else
 				{
@@ -972,7 +1089,7 @@ package org.josht.starling.foxhole.controls
 			{
 				if(!this.accessoryImage)
 				{
-					this.accessoryImage = new Image(texture);
+					this.accessoryImage = this._accessoryImageFactory(texture);
 				}
 				else
 				{
@@ -996,7 +1113,7 @@ package org.josht.starling.foxhole.controls
 			{
 				if(!this.accessoryLabel)
 				{
-					this.accessoryLabel = new Label();
+					this.accessoryLabel = this._accessoryLabelFactory();
 				}
 				this.accessoryLabel.text = label;
 			}
