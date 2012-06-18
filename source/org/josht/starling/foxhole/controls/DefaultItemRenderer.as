@@ -392,8 +392,9 @@ package org.josht.starling.foxhole.controls
 
 		/**
 		 * The field in the item that contains a texture to be used for the
-		 * renderer's icon. The renderer will automatically manage and reuse the
-		 * image.
+		 * renderer's icon. The renderer will automatically manage and reuse an
+		 * internal <code>Image</code>. This <code>Image</code> may be
+		 * customized by changing the <code>iconImageFactory</code>.
 		 *
 		 * <p>All of the icon fields and functions, ordered by priority:</p>
 		 * <ol>
@@ -434,8 +435,10 @@ package org.josht.starling.foxhole.controls
 
 		/**
 		 * A function used to generate a texture to be used for the renderer's
-		 * icon. The renderer will automatically manage and reuse the
-		 * image.
+		 * icon. The renderer will automatically manage and reuse an internal
+		 * <code>Image</code> and swap the texture when the renderer's data
+		 * changes. This <code>Image</code> may be customized by changing the
+		 * <code>iconImageFactory</code>.
 		 *
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function( item:Object ):Texture</pre>
@@ -569,12 +572,15 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * The field in the item that contains a texture to be displayed in a
 		 * renderer-managed <code>Image</code> in the accessory position of the
-		 * renderer. The renderer will automatically reuse the <code>Image</code>
-		 * and swap the texture when the data changes. Using an accessory
-		 * texture will result in better performance than passing in an
-		 * <code>Image</code> through a <code>accessoryField</code>
+		 * renderer. The renderer will automatically reuse an internal
+		 * <code>Image</code> and swap the texture when the renderer's data
+		 * changes. This <code>Image</code> may be customized by
+		 * changing the <code>accessoryImageFactory</code>.
+		 *
+		 * <p>Using an accessory texture will result in better performance than
+		 * passing in an <code>Image</code> through a <code>accessoryField</code>
 		 * or <code>accessoryFunction</code> because the renderer can avoid
-		 * costly display list manipulation.
+		 * costly display list manipulation.</p>
 		 *
 		 * <p>All of the accessory fields and functions, ordered by priority:</p>
 		 * <ol>
@@ -619,12 +625,15 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * A function that returns a texture to be displayed in a
 		 * renderer-managed <code>Image</code> in the accessory position of the
-		 * renderer. The renderer will automatically reuse the <code>Image</code>
-		 * and swap the texture when the data changes. Using an accessory
-		 * texture will result in better performance than passing in an
-		 * <code>Image</code> through a <code>accessoryField</code>
+		 * renderer. The renderer will automatically reuse an internal
+		 * <code>Image</code> and swap the texture when the renderer's data
+		 * changes. This <code>Image</code> may be customized by
+		 * changing the <code>accessoryImageFactory</code>.
+		 *
+		 * <p>Using an accessory texture will result in better performance than
+		 * passing in an <code>Image</code> through a <code>accessoryField</code>
 		 * or <code>accessoryFunction</code> because the renderer can avoid
-		 * costly display list manipulation.
+		 * costly display list manipulation.</p>
 		 *
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function( item:Object ):Texture</pre>
@@ -672,11 +681,15 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * The field in the item that contains a string to be displayed in a
 		 * renderer-managed <code>Label</code> in the accessory position of the
-		 * renderer. The renderer will automatically reuse the <code>Label</code>
-		 * and swap the text when the data changes. Using an accessory label
-		 * will result in better performance than passing in a <code>Label</code>
-		 * through a <code>accessoryField</code> or <code>accessoryFunction</code>
-		 * because the renderer can avoid costly display list manipulation.
+		 * renderer. The renderer will automatically reuse an internal
+		 * <code>Label</code> and swap the text when the data changes. This
+		 * <code>Label</code> may be skinned by changing the
+		 * <code>accessoryLabelFactory</code>.
+		 *
+		 * <p>Using an accessory label will result in better performance than
+		 * passing in a <code>Label</code> through a <code>accessoryField</code>
+		 * or <code>accessoryFunction</code> because the renderer can avoid
+		 * costly display list manipulation.</p>
 		 *
 		 * <p>All of the accessory fields and functions, ordered by priority:</p>
 		 * <ol>
@@ -721,11 +734,15 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * A function that returns a string to be displayed in a
 		 * renderer-managed <code>Label</code> in the accessory position of the
-		 * renderer. The renderer will automatically reuse the <code>Label</code>
-		 * and swap the text when the data changes. Using an accessory label
-		 * will result in better performance than passing in a <code>Label</code>
-		 * through a <code>accessoryField</code> or <code>accessoryFunction</code>
-		 * because the renderer can avoid costly display list manipulation.
+		 * renderer. The renderer will automatically reuse an internal
+		 * <code>Label</code> and swap the text when the data changes. This
+		 * <code>Label</code> may be skinned by changing the
+		 * <code>accessoryLabelFactory</code>.
+		 *
+		 * <p>Using an accessory label will result in better performance than
+		 * passing in a <code>Label</code> through a <code>accessoryField</code>
+		 * or <code>accessoryFunction</code> because the renderer can avoid
+		 * costly display list manipulation.</p>
 		 *
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function( item:Object ):String</pre>
