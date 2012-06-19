@@ -315,6 +315,13 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * A set of key/value pairs to be passed down to the picker's button
 		 * instance. It is a Foxhole Button control.
+		 *
+		 * <p>If the sub-component has its own sub-components, their properties
+		 * can be set too, using attribute <code>&#64;</code> notation. For example,
+		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
+		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
+		 * you can use the following syntax:</p>
+		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 */
 		public function get buttonProperties():Object
 		{
@@ -363,6 +370,13 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * A set of key/value pairs to be passed down to the picker's internal
 		 * List instance. The track is a Foxhole Button control.
+		 *
+		 * <p>If the sub-component has its own sub-components, their properties
+		 * can be set too, using attribute <code>&#64;</code> notation. For example,
+		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
+		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
+		 * you can use the following syntax:</p>
+		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 */
 		public function get listProperties():Object
 		{
@@ -399,53 +413,6 @@ package org.josht.starling.foxhole.controls
 			if(this._listProperties)
 			{
 				this._listProperties.onChange.add(listProperties_onChange);
-			}
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-		
-		/**
-		 * @private
-		 */
-		private var _itemRendererProperties:PropertyProxy = new PropertyProxy(itemRendererProperties_onChange);
-		
-		/**
-		 * @copy List#itemRendererProperties
-		 */
-		public function get itemRendererProperties():Object
-		{
-			return this._itemRendererProperties;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set itemRendererProperties(value:Object):void
-		{
-			if(this._itemRendererProperties == value)
-			{
-				return;
-			}
-			if(!value)
-			{
-				value = new PropertyProxy();
-			}
-			if(!(value is PropertyProxy))
-			{
-				const newValue:PropertyProxy = new PropertyProxy();
-				for(var propertyName:String in value)
-				{
-					newValue[propertyName] = value[propertyName];
-				}
-				value = newValue;
-			}
-			if(this._itemRendererProperties)
-			{
-				this._itemRendererProperties.onChange.remove(itemRendererProperties_onChange);
-			}
-			this._itemRendererProperties = PropertyProxy(value);
-			if(this._itemRendererProperties)
-			{
-				this._itemRendererProperties.onChange.add(itemRendererProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -671,7 +638,6 @@ package org.josht.starling.foxhole.controls
 					this._list[propertyName] = propertyValue;
 				}
 			}
-			this._list.itemRendererProperties = this._itemRendererProperties;
 		}
 		
 		/**
@@ -695,14 +661,6 @@ package org.josht.starling.foxhole.controls
 		 * @private
 		 */
 		protected function listProperties_onChange(proxy:PropertyProxy, name:Object):void
-		{
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function itemRendererProperties_onChange(proxy:PropertyProxy, name:Object):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}

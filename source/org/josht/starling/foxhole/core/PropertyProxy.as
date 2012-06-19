@@ -33,6 +33,11 @@ package org.josht.starling.foxhole.core
 	/**
 	 * Detects when its own properties have changed and dispatches a signal
 	 * to notify listeners.
+	 *
+	 * <p>Supports nested <code>PropertyProxy</code> instances using attribute
+	 * <code>&#64;</code> notation. Placing an <code>&#64;</code> before a property name
+	 * is like saying, "If this nested <code>PropertyProxy</code> doesn't exist
+	 * yet, create one. If it does, use the existing one."</p>
 	 */
 	public dynamic class PropertyProxy extends Proxy
 	{
@@ -83,6 +88,17 @@ package org.josht.starling.foxhole.core
 		 */
 		override flash_proxy function getProperty(name:*):*
 		{
+			if(this.flash_proxy::isAttribute(name))
+			{
+				const nameAsString:String = name is QName ? QName(name).localName : name.toString();
+				if(!this._storage.hasOwnProperty(nameAsString))
+				{
+					this._storage[nameAsString] = new PropertyProxy();
+					this._names.push(nameAsString);
+					this._onChange.dispatch(this, nameAsString);
+				}
+				return this._storage[nameAsString];
+			}
 			return this._storage[name];
 		}
 
@@ -142,7 +158,7 @@ package org.josht.starling.foxhole.core
 		 */
 		override flash_proxy function nextValue(index:int):*
 		{
-			const name:String = this._names[index - 1];
+			const name:* = this._names[index - 1];
 			return this._storage[name];
 		}
 	}
