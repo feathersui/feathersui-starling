@@ -423,8 +423,8 @@ package org.josht.starling.foxhole.controls
 		 * A set of key/value pairs to be passed down to all of the list's item
 		 * renderers. These values are shared by each item renderer, so values
 		 * that cannot be shared (such as display objects that need to be added
-		 * to the display list) should be passed to item renderers in another
-		 * way (such as with an <code>AddedWatcher</code>).
+		 * to the display list) should be passed to the item renderers using an
+		 * <code>itemRendererFactory</code> or with a theme.
 		 * 
 		 * @see AddedWatcher
 		 */
@@ -659,6 +659,8 @@ package org.josht.starling.foxhole.controls
 		
 		/**
 		 * The class used to instantiate item renderers.
+		 *
+		 * @see #itemRendererFactory
 		 */
 		public function get itemRendererType():Class
 		{
@@ -682,12 +684,12 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _itemRendererFunction:Function;
+		private var _itemRendererFactory:Function;
 		
 		/**
 		 * A function called that is expected to return a new item renderer. Has
 		 * a higher priority than <code>itemRendererType</code>. Typically, you
-		 * would use an <code>itemRendererFunction</code> instead of an
+		 * would use an <code>itemRendererFactory</code> instead of an
 		 * <code>itemRendererType</code> if you wanted to initialize some
 		 * properties on each separate item renderer, such as skins.
 		 *
@@ -697,22 +699,22 @@ package org.josht.starling.foxhole.controls
 		 * 
 		 * @see #itemRendererType
 		 */
-		public function get itemRendererFunction():Function
+		public function get itemRendererFactory():Function
 		{
-			return this._itemRendererFunction;
+			return this._itemRendererFactory;
 		}
 		
 		/**
 		 * @private
 		 */
-		public function set itemRendererFunction(value:Function):void
+		public function set itemRendererFactory(value:Function):void
 		{
-			if(this._itemRendererFunction === value)
+			if(this._itemRendererFactory === value)
 			{
 				return;
 			}
 			
-			this._itemRendererFunction = value;
+			this._itemRendererFactory = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
@@ -879,7 +881,7 @@ package org.josht.starling.foxhole.controls
 			this.dataContainer.selectedIndex = this._selectedIndex;
 			this.dataContainer.dataProvider = this._dataProvider;
 			this.dataContainer.itemRendererType = this._itemRendererType;
-			this.dataContainer.itemRendererFunction = this._itemRendererFunction;
+			this.dataContainer.itemRendererFactory = this._itemRendererFactory;
 			this.dataContainer.itemRendererProperties = this._itemRendererProperties;
 			this.dataContainer.itemRendererName = this._itemRendererName;
 			this.dataContainer.typicalItem = this._typicalItem;
