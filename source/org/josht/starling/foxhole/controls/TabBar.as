@@ -311,6 +311,13 @@ package org.josht.starling.foxhole.controls
 		 * list) should be passed to tabs in another way (such as with an
 		 * <code>AddedWatcher</code>).
 		 *
+		 * <p>If the sub-component has its own sub-components, their properties
+		 * can be set too, using attribute <code>&#64;</code> notation. For example,
+		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
+		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
+		 * you can use the following syntax:</p>
+		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 *
 		 * @see AddedWatcher
 		 */
 		public function get tabProperties():Object
