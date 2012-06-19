@@ -257,21 +257,21 @@ package org.josht.starling.foxhole.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_ITEM_RENDERER);
 		}
 		
-		private var _itemRendererFunction:Function;
+		private var _itemRendererFactory:Function;
 		
-		public function get itemRendererFunction():Function
+		public function get itemRendererFactory():Function
 		{
-			return this._itemRendererFunction;
+			return this._itemRendererFactory;
 		}
 		
-		public function set itemRendererFunction(value:Function):void
+		public function set itemRendererFactory(value:Function):void
 		{
-			if(this._itemRendererFunction === value)
+			if(this._itemRendererFactory === value)
 			{
 				return;
 			}
 			
-			this._itemRendererFunction = value;
+			this._itemRendererFactory = value;
 			this.invalidate(INVALIDATION_FLAG_ITEM_RENDERER);
 		}
 
@@ -691,9 +691,9 @@ package org.josht.starling.foxhole.controls.supportClasses
 			if(isTemporary || this._inactiveRenderers.length == 0)
 			{
 				var renderer:IListItemRenderer;
-				if(this._itemRendererFunction != null)
+				if(this._itemRendererFactory != null)
 				{
-					renderer = IListItemRenderer(this._itemRendererFunction());
+					renderer = IListItemRenderer(this._itemRendererFactory());
 				}
 				else
 				{
