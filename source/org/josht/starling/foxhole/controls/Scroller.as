@@ -162,6 +162,26 @@ package org.josht.starling.foxhole.controls
 		 * @private
 		 */
 		private static const MAXIMUM_SAVED_VELOCITY_COUNT:int = 4;
+
+		/**
+		 * @private
+		 */
+		protected static function defaultHorizontalScrollBarFactory():IScrollBar
+		{
+			const scrollBar:SimpleScrollBar = new SimpleScrollBar();
+			scrollBar.direction = SimpleScrollBar.DIRECTION_HORIZONTAL;
+			return scrollBar;
+		}
+
+		/**
+		 * @private
+		 */
+		protected static function defaultVerticalScrollBarFactory():IScrollBar
+		{
+			const scrollBar:SimpleScrollBar = new SimpleScrollBar();
+			scrollBar.direction = SimpleScrollBar.DIRECTION_VERTICAL;
+			return scrollBar;
+		}
 		
 		/**
 		 * Constructor.
@@ -252,12 +272,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _horizontalScrollBarFactory:Function = function():IScrollBar
-		{
-			var scrollBar:SimpleScrollBar = new SimpleScrollBar();
-			scrollBar.direction = SimpleScrollBar.DIRECTION_HORIZONTAL;
-			return scrollBar;
-		}
+		private var _horizontalScrollBarFactory:Function = defaultHorizontalScrollBarFactory;
 
 		/**
 		 * Creates the horizontal scroll bar.
@@ -345,12 +360,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _verticalScrollBarFactory:Function = function():IScrollBar
-		{
-			var scrollBar:SimpleScrollBar = new SimpleScrollBar();
-			scrollBar.direction = SimpleScrollBar.DIRECTION_VERTICAL;
-			return scrollBar;
-		}
+		private var _verticalScrollBarFactory:Function = defaultVerticalScrollBarFactory;
 
 		/**
 		 * Creates the vertical scroll bar.

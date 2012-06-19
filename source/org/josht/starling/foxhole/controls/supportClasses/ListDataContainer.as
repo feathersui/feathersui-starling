@@ -48,7 +48,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 	 */
 	public class ListDataContainer extends FoxholeControl
 	{
-		protected static const INVALIDATION_FLAG_ITEM_RENDERER:String = "itemRenderer";
+		protected static const INVALIDATION_FLAG_ITEM_RENDERER_FACTORY:String = "itemRendererFactory";
 
 		private static const helperPoint:Point = new Point();
 		private static const helperRect:Rectangle = new Rectangle();
@@ -254,7 +254,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 			}
 			
 			this._itemRendererType = value;
-			this.invalidate(INVALIDATION_FLAG_ITEM_RENDERER);
+			this.invalidate(INVALIDATION_FLAG_ITEM_RENDERER_FACTORY);
 		}
 		
 		private var _itemRendererFactory:Function;
@@ -272,7 +272,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 			}
 			
 			this._itemRendererFactory = value;
-			this.invalidate(INVALIDATION_FLAG_ITEM_RENDERER);
+			this.invalidate(INVALIDATION_FLAG_ITEM_RENDERER_FACTORY);
 		}
 
 		protected var _itemRendererName:String;
@@ -469,7 +469,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 			const scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
 			const sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const selectionInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SELECTED);
-			const itemRendererInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_ITEM_RENDERER);
+			const itemRendererInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_ITEM_RENDERER_FACTORY);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 
@@ -576,13 +576,16 @@ package org.josht.starling.foxhole.controls.supportClasses
 
 		protected function refreshRenderers(itemRendererTypeIsInvalid:Boolean):void
 		{
-			if(!itemRendererTypeIsInvalid)
-			{
-				var temp:Vector.<IListItemRenderer> = this._inactiveRenderers;
-				this._inactiveRenderers = this._activeRenderers;
-				this._activeRenderers = temp;
-			}
+			const temp:Vector.<IListItemRenderer> = this._inactiveRenderers;
+			this._inactiveRenderers = this._activeRenderers;
+			this._activeRenderers = temp;
 			this._activeRenderers.length = 0;
+			if(itemRendererTypeIsInvalid)
+			{
+				this.recoverInactiveRenderers();
+				this.freeInactiveRenderers();
+			}
+
 			this._layoutItems.length = this._dataProvider ? this._dataProvider.length : 0;
 
 			if(isNaN(this.explicitVisibleWidth))
@@ -654,8 +657,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 		
 		private function renderUnrenderedData():void
 		{
-			const useVirtualLayout:Boolean = this._layout is IVirtualLayout && IVirtualLayout(this._layout).useVirtualLayout;
-			var itemCount:int = this._unrenderedData.length;
+			const itemCount:int = this._unrenderedData.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var item:Object = this._unrenderedData.shift();
@@ -668,7 +670,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 		
 		private function recoverInactiveRenderers():void
 		{
-			var itemCount:int = this._inactiveRenderers.length;
+			const itemCount:int = this._inactiveRenderers.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var renderer:IListItemRenderer = this._inactiveRenderers[i];
@@ -678,7 +680,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 		
 		private function freeInactiveRenderers():void
 		{
-			var itemCount:int = this._inactiveRenderers.length;
+			const itemCount:int = this._inactiveRenderers.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var renderer:IListItemRenderer = this._inactiveRenderers.shift();
