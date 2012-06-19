@@ -425,8 +425,8 @@ package org.josht.starling.foxhole.controls
 		 * that cannot be shared (such as display objects that need to be added
 		 * to the display list) should be passed to the item renderers using an
 		 * <code>itemRendererFactory</code> or with a theme.
-		 * 
-		 * @see AddedWatcher
+		 *
+		 * @see #itemRendererFactory
 		 */
 		public function get itemRendererProperties():Object
 		{
