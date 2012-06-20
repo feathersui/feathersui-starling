@@ -128,26 +128,31 @@ package org.josht.starling.foxhole.core
 		 */
 		public function set selectedIndex(value:int):void
 		{
-			if(this._isSelectionRequired && (value < 0 || value >= this._items.length))
+			const itemCount:int = this._items.length;
+			if(this._isSelectionRequired && ((value < 0 && itemCount > 0) || value >= this._items.length))
 			{
 				throw new RangeError("Index " + value + " is out of range " + this._items.length + " for ToggleGroup.");
 			}
-			this._selectedIndex = this._isEnabled ? value : -1;
-			const selectedItem:IToggle = this._selectedIndex < 0 ? null : this._items[this._selectedIndex];
+			value = this._isEnabled ? value : -1;
+			const hasChanged:Boolean = this._selectedIndex != value;
+			this._selectedIndex = value;
+
+			//refresh all the items
 			this._ignoreChanges = true;
-			for each(var item:IToggle in this._items)
+			for(var i:int = 0; i < itemCount; i++)
 			{
-				if(item == selectedItem)
-				{
-					item.isSelected = true;
-				}
-				else
-				{
-					item.isSelected = false;
-				}
+				var item:IToggle = this._items[i];
+				item.isSelected = i == value;
 			}
 			this._ignoreChanges = false;
-			this._onChange.dispatch(this);
+			if(hasChanged)
+			{
+				//only dispatch if there's been a change. we didn't return
+				//early because this setter could be called if an item is
+				//unselected. if selection is required, we need to reselect the
+				//item (happens below in the item's onChange listener).
+				this._onChange.dispatch(this);
+			}
 		}
 		
 		/**
@@ -189,6 +194,11 @@ package org.josht.starling.foxhole.core
 				item.isSelected = false;
 			}
 			item.onChange.add(item_onChange);
+
+			if(item is IGroupedToggle)
+			{
+				IGroupedToggle(item).toggleGroup = this;
+			}
 		}
 		
 		/**
@@ -201,7 +211,12 @@ package org.josht.starling.foxhole.core
 			{
 				return;
 			}
+			this._items.splice(index, 1);
 			item.onChange.remove(item_onChange);
+			if(item is IGroupedToggle)
+			{
+				IGroupedToggle(item).toggleGroup = null;
+			}
 			if(this._selectedIndex >= this._items.length)
 			{
 				if(this._isSelectionRequired)
@@ -213,6 +228,15 @@ package org.josht.starling.foxhole.core
 					this.selectedIndex = -1;
 				}
 			}
+		}
+
+		/**
+		 * Determines if the group includes the specified item.
+		 */
+		public function hasItem(item:IToggle):Boolean
+		{
+			const index:int = this._items.indexOf(item);
+			return index >= 0;
 		}
 		
 		/**
