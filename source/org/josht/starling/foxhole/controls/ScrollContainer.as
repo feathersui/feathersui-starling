@@ -398,6 +398,15 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
+		override public function dispose():void
+		{
+			this._onScroll.removeAll();
+			super.dispose();
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function initialize():void
 		{
 			if(!this.scroller)

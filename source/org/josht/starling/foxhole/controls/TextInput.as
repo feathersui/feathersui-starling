@@ -478,6 +478,8 @@ package org.josht.starling.foxhole.controls
 				this._textSnapshotBitmapData.dispose();
 				this._textSnapshotBitmapData = null;
 			}
+
+			this._onChange.removeAll();
 			super.dispose();
 		}
 

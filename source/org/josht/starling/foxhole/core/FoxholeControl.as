@@ -709,6 +709,15 @@ package org.josht.starling.foxhole.core
 			this.explicitHeight = height;
 			this.setSizeInternal(width, height, true);
 		}
+
+		/**
+		 * @private
+		 */
+		override public function dispose():void
+		{
+			this._onResize.removeAll();
+			super.dispose();
+		}
 		
 		/**
 		 * Sets the width and height of the control, with the option of
