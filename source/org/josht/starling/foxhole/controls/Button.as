@@ -602,10 +602,13 @@ package org.josht.starling.foxhole.controls
 		 * 
 		 * @see #upSkin
 		 * @see #downSkin
+		 * @see #hoverSkin
 		 * @see #disabledSkin
 		 * @see #defaultSelectedSkin
 		 * @see #selectedUpSkin
 		 * @see #selectedDownSkin
+		 * @see #selectedHoverSkin
+		 * @see #selectedDisabledSkin
 		 */
 		public function get defaultSkin():DisplayObject
 		{
@@ -624,8 +627,9 @@ package org.josht.starling.foxhole.controls
 			
 			if(this._defaultSkin && this._defaultSkin != this._defaultSelectedSkin &&
 				this._defaultSkin != this._upSkin && this._defaultSkin != this._downSkin &&
+				this._defaultSkin != this._hoverSkin && this._defaultSkin != this._disabledSkin &&
 				this._defaultSkin != this._selectedUpSkin && this._defaultSkin != this._selectedDownSkin &&
-				this._defaultSkin != this._disabledSkin && this._defaultSkin != this._selectedDisabledSkin)
+				this._defaultSkin != this._selectedHoverSkin && this._defaultSkin != this._selectedDisabledSkin)
 			{
 				this.removeChild(this._defaultSkin);
 			}
@@ -652,6 +656,8 @@ package org.josht.starling.foxhole.controls
 		 * @see #defaultSkin
 		 * @see #selectedUpSkin
 		 * @see #selectedDownSkin
+		 * @see #selectedHoverSkin
+		 * @see #selectedDisabledSkin
 		 */
 		public function get defaultSelectedSkin():DisplayObject
 		{
@@ -670,8 +676,9 @@ package org.josht.starling.foxhole.controls
 			
 			if(this._defaultSelectedSkin && this._defaultSelectedSkin != this._defaultSkin &&
 				this._defaultSelectedSkin != this._upSkin && this._defaultSelectedSkin != this._downSkin &&
+				this._defaultSelectedSkin != this._hoverSkin && this._defaultSelectedSkin != this._disabledSkin &&
 				this._defaultSelectedSkin != this._selectedUpSkin && this._defaultSelectedSkin != this._selectedDownSkin &&
-				this._defaultSelectedSkin != this._disabledSkin && this._defaultSelectedSkin != this._selectedDisabledSkin)
+				this._defaultSelectedSkin != this._selectedHoverSkin && this._defaultSelectedSkin != this._selectedDisabledSkin)
 			{
 				this.removeChild(this._defaultSelectedSkin);
 			}
@@ -694,6 +701,7 @@ package org.josht.starling.foxhole.controls
 		 * <code>defaultSkin</code> is used instead.
 		 * 
 		 * @see #defaultSkin
+		 * @see #selectedUpSkin
 		 */
 		public function get upSkin():DisplayObject
 		{
@@ -711,9 +719,9 @@ package org.josht.starling.foxhole.controls
 			}
 			
 			if(this._upSkin && this._upSkin != this._defaultSkin && this._upSkin != this._defaultSelectedSkin &&
-				this._upSkin != this._downSkin && this._upSkin != this._disabledSkin &&
+				this._upSkin != this._downSkin && this._upSkin != this._hoverSkin && this._upSkin != this._disabledSkin &&
 				this._upSkin != this._selectedUpSkin && this._upSkin != this._selectedDownSkin &&
-				this._upSkin != this._selectedDisabledSkin)
+				this._upSkin != this._selectedHoverSkin && this._upSkin != this._selectedDisabledSkin)
 			{
 				this.removeChild(this._upSkin);
 			}
@@ -736,6 +744,7 @@ package org.josht.starling.foxhole.controls
 		 * <code>defaultSkin</code> is used instead.
 		 * 
 		 * @see #defaultSkin
+		 * @see #selectedDownSkin
 		 */
 		public function get downSkin():DisplayObject
 		{
@@ -753,9 +762,9 @@ package org.josht.starling.foxhole.controls
 			}
 			
 			if(this._downSkin && this._downSkin != this._defaultSkin && this._downSkin != this._defaultSelectedSkin &&
-				this._downSkin != this._upSkin && this._downSkin != this._disabledSkin &&
+				this._downSkin != this._upSkin && this._downSkin != this._hoverSkin && this._downSkin != this._disabledSkin &&
 				this._downSkin != this._selectedUpSkin && this._downSkin != this._selectedDownSkin &&
-				this._downSkin != this._selectedDisabledSkin)
+				this._downSkin != this._selectedHoverSkin && this._downSkin != this._selectedDisabledSkin)
 			{
 				this.removeChild(this._downSkin);
 			}
@@ -764,6 +773,49 @@ package org.josht.starling.foxhole.controls
 			{
 				this._downSkin.visible = false;
 				this.addChildAt(this._downSkin, 0);
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _hoverSkin:DisplayObject;
+
+		/**
+		 * The skin used for the button's hover state. If <code>null</code>, then
+		 * <code>defaultSkin</code> is used instead.
+		 *
+		 * @see #defaultSkin
+		 * @see #selectedHoverSkin
+		 */
+		public function get hoverSkin():DisplayObject
+		{
+			return this._hoverSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set hoverSkin(value:DisplayObject):void
+		{
+			if(this._hoverSkin == value)
+			{
+				return;
+			}
+
+			if(this._hoverSkin && this._hoverSkin != this._defaultSkin && this._hoverSkin != this._defaultSelectedSkin &&
+				this._hoverSkin != this._upSkin && this._hoverSkin != this._downSkin && this._hoverSkin != this._disabledSkin &&
+				this._hoverSkin != this._selectedUpSkin && this._hoverSkin != this._selectedDownSkin &&
+				this._hoverSkin != this._selectedHoverSkin && this._hoverSkin != this._selectedDisabledSkin)
+			{
+				this.removeChild(this._hoverSkin);
+			}
+			this._hoverSkin = value;
+			if(this._hoverSkin && this._hoverSkin.parent != this)
+			{
+				this._hoverSkin.visible = false;
+				this.addChildAt(this._hoverSkin, 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -778,6 +830,7 @@ package org.josht.starling.foxhole.controls
 		 * then <code>defaultSkin</code> is used instead.
 		 * 
 		 * @see #defaultSkin
+		 * @see #selectedDisabledSkin
 		 */
 		public function get disabledSkin():DisplayObject
 		{
@@ -795,9 +848,9 @@ package org.josht.starling.foxhole.controls
 			}
 			
 			if(this._disabledSkin && this._disabledSkin != this._defaultSkin && this._disabledSkin != this._defaultSelectedSkin &&
-				this._disabledSkin != this._upSkin && this._disabledSkin != this._downSkin &&
+				this._disabledSkin != this._upSkin && this._disabledSkin != this._downSkin && this._disabledSkin != this._hoverSkin &&
 				this._disabledSkin != this._selectedUpSkin && this._disabledSkin != this._selectedDownSkin &&
-				this._disabledSkin != this._selectedDisabledSkin)
+				this._disabledSkin != this._selectedHoverSkin && this._disabledSkin != this._selectedDisabledSkin)
 			{
 				this.removeChild(this._disabledSkin);
 			}
@@ -841,8 +894,9 @@ package org.josht.starling.foxhole.controls
 			
 			if(this._selectedUpSkin && this._selectedUpSkin != this._defaultSkin && this._selectedUpSkin != this._defaultSelectedSkin &&
 				this._selectedUpSkin != this._upSkin && this._selectedUpSkin != this._downSkin &&
-				this._upSkin != this._disabledSkin && this._selectedUpSkin != this._selectedDownSkin &&
-				this._selectedUpSkin != this._selectedDisabledSkin)
+				this._selectedUpSkin != this._hoverSkin && this._selectedUpSkin != this._disabledSkin &&
+				this._selectedUpSkin != this._selectedDownSkin &&
+				this._selectedUpSkin != this._selectedHoverSkin && this._selectedUpSkin != this._selectedDisabledSkin)
 			{
 				this.removeChild(this._selectedUpSkin);
 			}
@@ -886,8 +940,9 @@ package org.josht.starling.foxhole.controls
 			
 			if(this._selectedDownSkin && this._selectedDownSkin != this._defaultSkin && this._selectedDownSkin != this._defaultSelectedSkin &&
 				this._selectedDownSkin != this._upSkin && this._selectedDownSkin != this._downSkin &&
-				this._selectedDownSkin != this._disabledSkin && this._selectedDownSkin != this._selectedUpSkin &&
-				this._selectedDownSkin != this._selectedDisabledSkin)
+				this._selectedDownSkin != this._hoverSkin && this._selectedDownSkin != this._disabledSkin &&
+				this._selectedDownSkin != this._selectedUpSkin &&
+				this._selectedDownSkin != this._selectedHoverSkin && this._selectedDownSkin != this._selectedDisabledSkin)
 			{
 				this.removeChild(this._selectedDownSkin);
 			}
@@ -896,6 +951,52 @@ package org.josht.starling.foxhole.controls
 			{
 				this._selectedDownSkin.visible = false;
 				this.addChildAt(this._selectedDownSkin, 0);
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _selectedHoverSkin:DisplayObject;
+
+		/**
+		 * The skin used for the button's hover state when the button is
+		 * selected. If <code>null</code>, then <code>defaultSelectedSkin</code>
+		 * is used instead. If <code>defaultSelectedSkin</code> is also
+		 * <code>null</code>, then <code>defaultSkin</code> is used.
+		 *
+		 * @see #defaultSkin
+		 * @see #defaultSelectedSkin
+		 */
+		public function get selectedHoverSkin():DisplayObject
+		{
+			return this._selectedHoverSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set selectedHoverSkin(value:DisplayObject):void
+		{
+			if(this._selectedHoverSkin == value)
+			{
+				return;
+			}
+
+			if(this._selectedHoverSkin && this._selectedHoverSkin != this._defaultSkin && this._selectedHoverSkin != this._defaultSelectedSkin &&
+				this._selectedHoverSkin != this._upSkin && this._selectedHoverSkin != this._downSkin &&
+				this._selectedHoverSkin != this._hoverSkin && this._selectedHoverSkin != this._disabledSkin &&
+				this._selectedHoverSkin != this._selectedUpSkin && this._selectedHoverSkin != this._selectedDownSkin &&
+				this._selectedHoverSkin != this._selectedDisabledSkin)
+			{
+				this.removeChild(this._selectedHoverSkin);
+			}
+			this._selectedHoverSkin = value;
+			if(this._selectedHoverSkin && this._selectedHoverSkin.parent != this)
+			{
+				this._selectedHoverSkin.visible = false;
+				this.addChildAt(this._selectedHoverSkin, 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -931,8 +1032,9 @@ package org.josht.starling.foxhole.controls
 
 			if(this._selectedDisabledSkin && this._selectedDisabledSkin != this._defaultSkin && this._selectedDisabledSkin != this._defaultSelectedSkin &&
 				this._selectedDisabledSkin != this._upSkin && this._selectedDisabledSkin != this._downSkin &&
-				this._selectedDisabledSkin != this._disabledSkin && this._selectedDisabledSkin != this._selectedUpSkin &&
-				this._selectedDisabledSkin != this._selectedDownSkin)
+				this._selectedDisabledSkin != this._hoverSkin && this._selectedDisabledSkin != this._disabledSkin &&
+				this._selectedDisabledSkin != this._selectedUpSkin && this._selectedDisabledSkin != this._selectedDownSkin &&
+				this._selectedDisabledSkin != this._selectedHoverSkin)
 			{
 				this.removeChild(this._selectedDisabledSkin);
 			}
@@ -954,13 +1056,16 @@ package org.josht.starling.foxhole.controls
 		 * The text format used when no other text format is defined for the
 		 * current state. Intended for use when multiple states should use the
 		 * same text format.
-		 * 
+		 *
+		 * @see #defaultSelectedTextFormat
 		 * @see #upTextFormat
 		 * @see #downTextFormat
+		 * @see #hoverTextFormat
 		 * @see #disabledTextFormat
-		 * @see #defaultSelectedTextFormat
 		 * @see #selectedUpTextFormat
 		 * @see #selectedDownTextFormat
+		 * @see #selectedHoverTextFormat
+		 * @see #selectedDisabledTextFormat
 		 */
 		public function get defaultTextFormat():BitmapFontTextFormat
 		{
@@ -986,6 +1091,7 @@ package org.josht.starling.foxhole.controls
 		 * then <code>defaultTextFormat</code> is used instead.
 		 * 
 		 * @see #defaultTextFormat
+		 * @see #selectedUpTextFormat
 		 */
 		public function get upTextFormat():BitmapFontTextFormat
 		{
@@ -1011,6 +1117,7 @@ package org.josht.starling.foxhole.controls
 		 * then <code>defaultTextFormat</code> is used instead.
 		 * 
 		 * @see #defaultTextFormat
+		 * @see #selectedDownTextFormat
 		 */
 		public function get downTextFormat():BitmapFontTextFormat
 		{
@@ -1025,6 +1132,32 @@ package org.josht.starling.foxhole.controls
 			this._downTextFormat = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _hoverTextFormat:BitmapFontTextFormat;
+
+		/**
+		 * The text format used for the button's hover state. If <code>null</code>,
+		 * then <code>defaultTextFormat</code> is used instead.
+		 *
+		 * @see #defaultTextFormat
+		 * @see #selectedHoverTextFormat
+		 */
+		public function get hoverTextFormat():BitmapFontTextFormat
+		{
+			return this._hoverTextFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set hoverTextFormat(value:BitmapFontTextFormat):void
+		{
+			this._hoverTextFormat = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
 		
 		/**
 		 * @private
@@ -1036,6 +1169,7 @@ package org.josht.starling.foxhole.controls
 		 * then <code>defaultTextFormat</code> is used instead.
 		 * 
 		 * @see #defaultTextFormat
+		 * @see #selectedDisabledTextFormat
 		 */
 		public function get disabledTextFormat():BitmapFontTextFormat
 		{
@@ -1065,6 +1199,8 @@ package org.josht.starling.foxhole.controls
 		 * @see #defaultTextFormat
 		 * @see #selectedUpTextFormat
 		 * @see #selectedDownTextFormat
+		 * @see #selectedHoverTextFormat
+		 * @see #selectedDisabledTextFormat
 		 */
 		public function get defaultSelectedTextFormat():BitmapFontTextFormat
 		{
@@ -1139,6 +1275,34 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
+		protected var _selectedHoverTextFormat:BitmapFontTextFormat;
+
+		/**
+		 * The text format used for the button's down state when the button is
+		 * selected. If <code>null</code>, then <code>defaultSelectedTextFormat</code>
+		 * is used instead. If <code>defaultSelectedTextFormat</code> is also
+		 * <code>null</code>, then <code>defaultTextFormat</code> is used.
+		 *
+		 * @see #defaultTextFormat
+		 * @see #defaultSelectedTextFormat
+		 */
+		public function get selectedHoverTextFormat():BitmapFontTextFormat
+		{
+			return this._selectedHoverTextFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set selectedHoverTextFormat(value:BitmapFontTextFormat):void
+		{
+			this._selectedHoverTextFormat = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _selectedDisabledTextFormat:BitmapFontTextFormat;
 
 		/**
@@ -1175,10 +1339,13 @@ package org.josht.starling.foxhole.controls
 		 * 
 		 * @see #upIcon
 		 * @see #downIcon
+		 * @see #hoverIcon
 		 * @see #disabledIcon
 		 * @see #defaultSelectedIcon
 		 * @see #selectedUpIcon
 		 * @see #selectedDownIcon
+		 * @see #selectedHoverIcon
+		 * @see #selectedDisabledIcon
 		 */
 		public function get defaultIcon():DisplayObject
 		{
@@ -1197,8 +1364,9 @@ package org.josht.starling.foxhole.controls
 			
 			if(this._defaultIcon && this._defaultIcon != this._defaultSelectedIcon &&
 				this._defaultIcon != this._upIcon && this._defaultIcon != this._downIcon &&
-				this._defaultIcon != this._selectedUpIcon && this._defaultIcon != this._selectedDownIcon && 
-				this._defaultIcon != this._disabledIcon && this._defaultIcon != this._selectedDisabledIcon)
+				this._defaultIcon != this._hoverIcon && this._defaultIcon != this._disabledIcon &&
+				this._defaultIcon != this._selectedUpIcon && this._defaultIcon != this._selectedDownIcon &&
+				this._defaultIcon != this._selectedHoverIcon && this._defaultIcon != this._selectedDisabledIcon)
 			{
 				this.removeChild(this._defaultIcon);
 			}
@@ -1225,6 +1393,8 @@ package org.josht.starling.foxhole.controls
 		 * @see #defaultIcon
 		 * @see #selectedUpIcon
 		 * @see #selectedDownIcon
+		 * @see #selectedHoverIcon
+		 * @see #selectedDisabledIcon
 		 */
 		public function get defaultSelectedIcon():DisplayObject
 		{
@@ -1243,8 +1413,9 @@ package org.josht.starling.foxhole.controls
 			
 			if(this._defaultSelectedIcon && this._defaultSelectedIcon != this._defaultIcon &&
 				this._defaultSelectedIcon != this._upIcon && this._defaultSelectedIcon != this._downIcon &&
+				this._defaultSelectedIcon != this._hoverIcon && this._defaultSelectedIcon != this._disabledIcon &&
 				this._defaultSelectedIcon != this._selectedUpIcon  && this._defaultSelectedIcon != this._selectedDownIcon &&
-				this._defaultSelectedIcon != this._disabledIcon && this._defaultSelectedIcon != this._selectedDisabledIcon)
+				this._defaultSelectedIcon != this._selectedHoverIcon && this._defaultSelectedIcon != this._selectedDisabledIcon)
 			{
 				this.removeChild(this._defaultSelectedIcon);
 			}
@@ -1267,6 +1438,7 @@ package org.josht.starling.foxhole.controls
 		 * <code>defaultIcon</code> is used instead.
 		 * 
 		 * @see #defaultIcon
+		 * @see #selectedUpIcon
 		 */
 		public function get upIcon():DisplayObject
 		{
@@ -1284,9 +1456,9 @@ package org.josht.starling.foxhole.controls
 			}
 			
 			if(this._upIcon && this._upIcon != this._defaultIcon && this._upIcon != this._defaultSelectedIcon &&
-				this._upIcon != this._downIcon && this._upIcon != this._disabledIcon &&
+				this._upIcon != this._downIcon && this._upIcon != this._hoverIcon && this._upIcon != this._disabledIcon &&
 				this._upIcon != this._selectedUpIcon && this._upIcon != this._selectedDownIcon &&
-				this._upIcon != this._selectedDisabledIcon)
+				this._upIcon != this._selectedHoverIcon && this._upIcon != this._selectedDisabledIcon)
 			{
 				this.removeChild(this._upIcon);
 			}
@@ -1309,6 +1481,7 @@ package org.josht.starling.foxhole.controls
 		 * <code>defaultIcon</code> is used instead.
 		 * 
 		 * @see #defaultIcon
+		 * @see #selectedDownIcon
 		 */
 		public function get downIcon():DisplayObject
 		{
@@ -1326,9 +1499,9 @@ package org.josht.starling.foxhole.controls
 			}
 			
 			if(this._downIcon && this._downIcon != this._defaultIcon && this._downIcon != this._defaultSelectedIcon &&
-				this._downIcon != this._upIcon && this._downIcon != this._disabledIcon &&
+				this._downIcon != this._upIcon && this._downIcon != this._hoverIcon && this._downIcon != this._disabledIcon &&
 				this._downIcon != this._selectedUpIcon && this._downIcon != this._selectedDownIcon &&
-				this._downIcon != this._selectedDisabledIcon)
+				this._downIcon != this._selectedHoverIcon && this._downIcon != this._selectedDisabledIcon)
 			{
 				this.removeChild(this._downIcon);
 			}
@@ -1337,6 +1510,49 @@ package org.josht.starling.foxhole.controls
 			{
 				this._downIcon.visible = false;
 				this.addChild(this._downIcon);
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _hoverIcon:DisplayObject;
+
+		/**
+		 * The icon used for the button's hover state. If <code>null</code>, then
+		 * <code>defaultIcon</code> is used instead.
+		 *
+		 * @see #defaultIcon
+		 * @see #selectedDownIcon
+		 */
+		public function get hoverIcon():DisplayObject
+		{
+			return this._hoverIcon;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set hoverIcon(value:DisplayObject):void
+		{
+			if(this._hoverIcon == value)
+			{
+				return;
+			}
+
+			if(this._hoverIcon && this._hoverIcon != this._defaultIcon && this._hoverIcon != this._defaultSelectedIcon &&
+				this._hoverIcon != this._upIcon && this._hoverIcon != this._downIcon && this._hoverIcon != this._disabledIcon &&
+				this._hoverIcon != this._selectedUpIcon && this._hoverIcon != this._selectedDownIcon &&
+				this._hoverIcon != this._selectedHoverIcon && this._hoverIcon != this._selectedDisabledIcon)
+			{
+				this.removeChild(this._hoverIcon);
+			}
+			this._hoverIcon = value;
+			if(this._hoverIcon && this._hoverIcon.parent != this)
+			{
+				this._hoverIcon.visible = false;
+				this.addChild(this._hoverIcon);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1351,6 +1567,7 @@ package org.josht.starling.foxhole.controls
 		 * <code>defaultIcon</code> is used instead.
 		 * 
 		 * @see #defaultIcon
+		 * @see #selectedDisabledIcon
 		 */
 		public function get disabledIcon():DisplayObject
 		{
@@ -1369,8 +1586,9 @@ package org.josht.starling.foxhole.controls
 			
 			if(this._disabledIcon && this._disabledIcon != this._defaultIcon && this._disabledIcon != this._defaultSelectedIcon &&
 				this._disabledIcon != this._upIcon && this._disabledIcon != this._downIcon &&
+				this._disabledIcon != this._hoverIcon &&
 				this._disabledIcon != this._selectedUpIcon && this._disabledIcon != this._selectedDownIcon &&
-				this._disabledIcon != this._selectedDisabledIcon)
+				this._disabledIcon != this._selectedHoverIcon && this._disabledIcon != this._selectedDisabledIcon)
 			{
 				this.removeChild(this._disabledIcon);
 			}
@@ -1414,8 +1632,9 @@ package org.josht.starling.foxhole.controls
 			
 			if(this._selectedUpIcon && this._selectedUpIcon != this._defaultIcon && this._selectedUpIcon != this._defaultSelectedIcon &&
 				this._selectedUpIcon != this._upIcon && this._selectedUpIcon != this._downIcon &&
-				this._selectedUpIcon != this._selectedDownIcon && this._selectedUpIcon != this._disabledIcon &&
-				this._selectedUpIcon != this._selectedDisabledIcon)
+				this._selectedUpIcon != this._hoverIcon && this._selectedUpIcon != this._disabledIcon &&
+				this._selectedUpIcon != this._selectedDownIcon &&
+				this._selectedUpIcon != this._selectedHoverIcon && this._selectedUpIcon != this._selectedDisabledIcon)
 			{
 				this.removeChild(this._selectedUpIcon);
 			}
@@ -1459,8 +1678,9 @@ package org.josht.starling.foxhole.controls
 			
 			if(this._selectedDownIcon && this._selectedDownIcon != this._defaultIcon && this._selectedDownIcon != this._defaultSelectedIcon &&
 				this._selectedDownIcon != this._upIcon && this._selectedDownIcon != this._downIcon &&
-				this._selectedDownIcon != this._selectedUpIcon && this._selectedDownIcon != this._disabledIcon &&
-				this._selectedDownIcon != this._selectedDisabledIcon)
+				this._selectedDownIcon != this._hoverIcon &&  this._selectedDownIcon != this._disabledIcon &&
+				this._selectedDownIcon != this._selectedUpIcon &&
+				this._selectedDownIcon != this._selectedHoverIcon && this._selectedDownIcon != this._selectedDisabledIcon)
 			{
 				this.removeChild(this._selectedDownIcon);
 			}
@@ -1469,6 +1689,52 @@ package org.josht.starling.foxhole.controls
 			{
 				this._selectedDownIcon.visible = false;
 				this.addChild(this._selectedDownIcon);
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _selectedHoverIcon:DisplayObject;
+
+		/**
+		 * The icon used for the button's hover state when the button is
+		 * selected. If <code>null</code>, then <code>defaultSelectedIcon</code>
+		 * is used instead. If <code>defaultSelectedIcon</code> is also
+		 * <code>null</code>, then <code>defaultIcon</code> is used.
+		 *
+		 * @see #defaultIcon
+		 * @see #defaultSelectedIcon
+		 */
+		public function get selectedHoverIcon():DisplayObject
+		{
+			return this._selectedDownIcon;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set selectedHoverIcon(value:DisplayObject):void
+		{
+			if(this._selectedHoverIcon == value)
+			{
+				return;
+			}
+
+			if(this._selectedHoverIcon && this._selectedHoverIcon != this._defaultIcon && this._selectedHoverIcon != this._defaultSelectedIcon &&
+				this._selectedHoverIcon != this._upIcon && this._selectedHoverIcon != this._downIcon &&
+				this._selectedHoverIcon != this._hoverIcon &&  this._selectedHoverIcon != this._disabledIcon &&
+				this._selectedHoverIcon != this._selectedUpIcon && this._selectedHoverIcon != this._selectedDownIcon &&
+				this._selectedHoverIcon != this._selectedDisabledIcon)
+			{
+				this.removeChild(this._selectedHoverIcon);
+			}
+			this._selectedHoverIcon = value;
+			if(this._selectedHoverIcon && this._selectedHoverIcon.parent != this)
+			{
+				this._selectedHoverIcon.visible = false;
+				this.addChild(this._selectedHoverIcon);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1504,8 +1770,9 @@ package org.josht.starling.foxhole.controls
 
 			if(this._selectedDisabledIcon && this._selectedDisabledIcon != this._defaultIcon && this._selectedDisabledIcon != this._defaultSelectedIcon &&
 				this._selectedDisabledIcon != this._upIcon && this._selectedDisabledIcon != this._downIcon &&
+				this._selectedDisabledIcon != this._hoverIcon && this._selectedDisabledIcon != this._disabledIcon &&
 				this._selectedDisabledIcon != this._selectedUpIcon && this._selectedDisabledIcon != this._selectedDownIcon &&
-				this._selectedDisabledIcon != this._disabledIcon)
+				this._selectedDisabledIcon != this._selectedHoverIcon)
 			{
 				this.removeChild(this._selectedDisabledIcon);
 			}
@@ -1771,60 +2038,19 @@ package org.josht.starling.foxhole.controls
 		protected function refreshSkin():void
 		{
 			this.currentSkin = null;
-			if(this._currentState == STATE_UP)
+			for each(var stateName:String in this._stateNames)
 			{
-				this.currentSkin = this._upSkin;
-			}
-			else if(this._upSkin)
-			{
-				this._upSkin.visible = false;
-			}
-			
-			if(this._currentState == STATE_DOWN)
-			{
-				this.currentSkin = this._downSkin;
-			}
-			else if(this._downSkin)
-			{
-				this._downSkin.visible = false;
-			}
-			
-			if(this._currentState == STATE_DISABLED)
-			{
-				this.currentSkin = this._disabledSkin;
-			}
-			else if(this._disabledSkin)
-			{
-				this._disabledSkin.visible = false;
-			}
-			
-			if(this._currentState == STATE_SELECTED_UP)
-			{
-				this.currentSkin = this._selectedUpSkin;
-			}
-			else if(this._selectedUpSkin)
-			{
-				this._selectedUpSkin.visible = false;
+				var skinName:String = "_" + stateName + "Skin";
+				if(this._currentState == stateName)
+				{
+					this.currentSkin = DisplayObject(this[skinName]);
+				}
+				else if(this[skinName])
+				{
+					DisplayObject(this[skinName]).visible = false;
+				}
 			}
 
-			if(this._currentState == STATE_SELECTED_DOWN)
-			{
-				this.currentSkin = this._selectedDownSkin;
-			}
-			else if(this._selectedDownSkin)
-			{
-				this._selectedDownSkin.visible = false;
-			}
-
-			if(this._currentState == STATE_SELECTED_DISABLED)
-			{
-				this.currentSkin = this._selectedDisabledSkin;
-			}
-			else if(this._selectedDisabledSkin)
-			{
-				this._selectedDisabledSkin.visible = false;
-			}
-			
 			if(!this.currentSkin)
 			{
 				if(this._isSelected)
@@ -1868,58 +2094,17 @@ package org.josht.starling.foxhole.controls
 		protected function refreshIcon():void
 		{
 			this.currentIcon = null;
-			if(this._currentState == STATE_UP)
+			for each(var stateName:String in this._stateNames)
 			{
-				this.currentIcon = this._upIcon;
-			}
-			else if(this._upIcon)
-			{
-				this._upIcon.visible = false;
-			}
-			
-			if(this._currentState == STATE_DOWN)
-			{
-				this.currentIcon = this._downIcon;
-			}
-			else if(this._downIcon)
-			{
-				this._downIcon.visible = false;
-			}
-			
-			if(this._currentState == STATE_DISABLED)
-			{
-				this.currentIcon = this._disabledIcon;
-			}
-			else if(this._disabledIcon)
-			{
-				this._disabledIcon.visible = false;
-			}
-			
-			if(this._currentState == STATE_SELECTED_UP)
-			{
-				this.currentIcon = this._selectedUpIcon;
-			}
-			else if(this._selectedUpIcon)
-			{
-				this._selectedUpIcon.visible = false;
-			}
-			
-			if(this._currentState == STATE_SELECTED_DOWN)
-			{
-				this.currentIcon = this._selectedDownIcon;
-			}
-			else if(this._selectedDownIcon)
-			{
-				this._selectedDownIcon.visible = false;
-			}
-
-			if(this._currentState == STATE_SELECTED_DISABLED)
-			{
-				this.currentIcon = this._selectedDisabledIcon;
-			}
-			else if(this._selectedDisabledIcon)
-			{
-				this._selectedDisabledIcon.visible = false;
+				var iconName:String = "_" + stateName + "Icon";
+				if(this._currentState == stateName)
+				{
+					this.currentIcon = DisplayObject(this[iconName]);
+				}
+				else if(this[iconName])
+				{
+					DisplayObject(this[iconName]).visible = false;
+				}
 			}
 			
 			if(!this.currentIcon)
@@ -1963,32 +2148,9 @@ package org.josht.starling.foxhole.controls
 		 * @private
 		 */
 		protected function refreshLabelStyles():void
-		{	
-			var format:BitmapFontTextFormat;
-			if(this._currentState == STATE_UP)
-			{
-				format = this._upTextFormat;
-			}
-			else if(this._currentState == STATE_DOWN)
-			{
-				format = this._downTextFormat;
-			}
-			else if(this._currentState == STATE_DISABLED)
-			{
-				format = this._disabledTextFormat;
-			}
-			else if(this._currentState == STATE_SELECTED_UP)
-			{
-				format = this._selectedUpTextFormat;
-			}
-			else if(this._currentState == STATE_SELECTED_DOWN)
-			{
-				format = this._selectedDownTextFormat;
-			}
-			else if(this._currentState == STATE_SELECTED_DISABLED)
-			{
-				format = this._selectedDisabledTextFormat;
-			}
+		{
+			const formatName:String = "_" + this._currentState + "TextFormat";
+			var format:BitmapFontTextFormat = BitmapFontTextFormat(this[formatName]);
 			if(!format)
 			{
 				if(this._isSelected)
