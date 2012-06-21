@@ -27,14 +27,14 @@ package org.josht.starling.display
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	
+
 	import starling.core.RenderSupport;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.textures.Texture;
 	import starling.utils.transformCoords;
-	
+
 	/**
 	 * Adds capabilities to Starling's <code>Image</code> class, including
 	 * <code>scrollRect</code> and pixel snapping.

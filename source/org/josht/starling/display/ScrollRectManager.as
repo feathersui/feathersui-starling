@@ -3,7 +3,7 @@ package org.josht.starling.display
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	
+
 	import starling.display.DisplayObject;
 
 	/**

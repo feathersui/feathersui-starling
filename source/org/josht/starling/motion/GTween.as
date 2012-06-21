@@ -25,11 +25,11 @@ OTHER DEALINGS IN THE SOFTWARE.
 package org.josht.starling.motion
 {
 	import com.gskinner.motion.GTween;
-	
+
 	import starling.animation.IAnimatable;
 	import starling.animation.Juggler;
 	import starling.core.Starling;
-	
+
 	/**
 	 * A subclass of GTween that uses Starling jugglers instead of updating on
 	 * its own enterFrame event.

@@ -24,12 +24,9 @@
  */
 package org.josht.starling.foxhole.controls
 {
-	import flash.errors.IllegalOperationError;
-
 	import org.josht.starling.foxhole.controls.supportClasses.LayoutContainer;
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.PropertyProxy;
-	import org.josht.starling.foxhole.data.ListCollection;
 	import org.josht.starling.foxhole.layout.ILayout;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;

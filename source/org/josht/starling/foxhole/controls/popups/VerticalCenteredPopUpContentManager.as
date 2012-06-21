@@ -4,8 +4,6 @@ package org.josht.starling.foxhole.controls.popups
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
 
-	import org.josht.starling.foxhole.controls.popups.IPopUpContentManager;
-
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.PopUpManager;
 	import org.osflash.signals.ISignal;

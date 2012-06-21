@@ -25,9 +25,10 @@
 package org.josht.starling.foxhole.controls
 {
 	import flash.errors.IllegalOperationError;
-	import starling.events.Event;
 
 	import org.josht.starling.foxhole.core.ToggleGroup;
+
+	import starling.events.Event;
 
 	[Exclude(name="isToggle",kind="property")]
 

@@ -25,10 +25,9 @@
 package org.josht.starling.foxhole.controls
 {
 	import flash.display.Stage;
-	
+
 	import starling.animation.IAnimatable;
 	import starling.core.Starling;
-	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
 
 	/**
@@ -79,7 +78,7 @@ package org.josht.starling.foxhole.controls
 		{
 			this._nativeStage = Starling.current.nativeStage;
 			Starling.juggler.add(this);
-			this.addEventListener(starling.events.Event.REMOVED_FROM_STAGE, removedFromStageHandler);
+			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 		}
 
 		/**
@@ -88,7 +87,7 @@ package org.josht.starling.foxhole.controls
 		private function removedFromStageHandler(event:Event):void
 		{
 			Starling.juggler.remove(this);
-			this.removeEventListener(starling.events.Event.REMOVED_FROM_STAGE, removedFromStageHandler);
+			this.removeEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 		}
 	}
 }

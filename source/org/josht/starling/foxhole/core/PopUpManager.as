@@ -24,22 +24,13 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package org.josht.starling.foxhole.core
 {
-	import flash.errors.IllegalOperationError;
 	import flash.utils.Dictionary;
-	import flash.utils.getDefinitionByName;
-	
-	import org.josht.starling.display.TiledImage;
 
 	import starling.core.Starling;
-
 	import starling.display.DisplayObject;
-	import starling.display.DisplayObjectContainer;
-	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.display.Stage;
-	import starling.events.Event;
-	import starling.textures.Texture;
-	
+
 	/**
 	 * Adds a display object as a pop-up above all content.
 	 */
