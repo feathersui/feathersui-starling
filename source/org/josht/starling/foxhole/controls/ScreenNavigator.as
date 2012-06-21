@@ -121,6 +121,7 @@ package org.josht.starling.foxhole.controls
 		public var defaultScreenID:String;
 
 		private var _transitionIsActive:Boolean = false;
+		private var _previousScreenInTransitionID:String;
 		private var _previousScreenInTransition:DisplayObject;
 		private var _nextScreenID:String = null;
 		private var _clearAfterTransition:Boolean = false;
@@ -177,6 +178,7 @@ package org.josht.starling.foxhole.controls
 			}
 
 			this._previousScreenInTransition = this._activeScreen;
+			this._previousScreenInTransitionID = this._activeScreenID;
 			if(this._activeScreen)
 			{
 				this.clearScreenInternal(false);
@@ -451,9 +453,10 @@ package org.josht.starling.foxhole.controls
 		{
 			if(this._previousScreenInTransition)
 			{
-				this.removeChild(this._previousScreenInTransition);
-				this._previousScreenInTransition.dispose();
+				const item:ScreenNavigatorItem = this._screens[this._previousScreenInTransitionID];
+				this.removeChild(this._previousScreenInTransition, !(item.screen is DisplayObject));
 				this._previousScreenInTransition = null;
+				this._previousScreenInTransitionID = null;
 			}
 			this._transitionIsActive = false;
 
