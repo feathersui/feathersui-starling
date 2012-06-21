@@ -14,6 +14,9 @@ A typical button control, with optional toggle support. Includes a label and an 
 ### Callout
 A pop-up container that points at (or calls out) a specific region of the application (typically, a specific control that triggered it).
 
+### Check
+A typical checkbox control with a label and selection.
+
 ### Label
 A non-interactive text control. Uses bitmap fonts. A simplified replacement for `starling.text.TextField` that is built on `FoxholeControl`.
 
@@ -25,6 +28,9 @@ A control similar to a combo box. Appears as a button when closed. The list is d
 
 ### Progress Bar
 Displays the progress of a task over time. Non-interactive.
+
+### Radio
+A typical radio button control with a label and selection, where only one radio in a group may be selected at a time.
 
 ### Screen
 An abstract class for implementing a single screen within a menu developed with `ScreenNavigator`. Includes common helper functionality, including back/menu/search hardware key callbacks, calculating scale from original resolution to current stage size, and template functions for initialize, layout and destroy.
