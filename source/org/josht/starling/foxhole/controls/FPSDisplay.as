@@ -67,7 +67,7 @@ package org.josht.starling.foxhole.controls
 			
 			if(this._elapsedTime >= 1)
 			{
-				this.text = int(this._frameCount / this._elapsedTime) + (this.showTargetFPS ? " / " + this._nativeStage.frameRate : "");
+				this.text = int(this._frameCount / this._elapsedTime).toString() + (this.showTargetFPS ? " / " + this._nativeStage.frameRate : "");
 				this._elapsedTime = this._frameCount = 0;
 			}
 		}
