@@ -728,7 +728,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 			renderer.onChange.remove(renderer_onChange);
 			const displayRenderer:DisplayObject = DisplayObject(renderer);
 			displayRenderer.removeEventListener(TouchEvent.TOUCH, renderer_touchHandler);
-			this.removeChild(displayRenderer);
+			this.removeChild(displayRenderer, true);
 		}
 
 		private function itemRendererProperties_onChange(proxy:PropertyProxy, name:Object):void
