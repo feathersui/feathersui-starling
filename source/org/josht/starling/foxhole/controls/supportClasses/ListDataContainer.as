@@ -462,6 +462,13 @@ package org.josht.starling.foxhole.controls.supportClasses
 		{
 			return this._onItemTouch;
 		}
+
+		override public function dispose():void
+		{
+			this._onChange.removeAll();
+			this._onItemTouch.removeAll();
+			super.dispose();
+		}
 		
 		override protected function draw():void
 		{

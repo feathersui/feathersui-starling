@@ -405,6 +405,15 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
+		override public function dispose():void
+		{
+			this._onChange.removeAll();
+			super.dispose();
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function initialize():void
 		{
 			this.toggleGroup = new ToggleGroup();

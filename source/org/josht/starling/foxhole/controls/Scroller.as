@@ -891,6 +891,9 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 
+		/**
+		 * @private
+		 */
 		override public function hitTest(localPoint:Point, forTouch:Boolean = false):DisplayObject
 		{
 			//save localX and localY because localPoint could change after the
@@ -909,6 +912,17 @@ package org.josht.starling.foxhole.controls
 				return this._hitArea.contains(localX, localY) ? this : null;
 			}
 			return result;
+		}
+
+		/**
+		 * @private
+		 */
+		override public function dispose():void
+		{
+			this._onScroll.removeAll();
+			this._onDragStart.removeAll();
+			this._onDragEnd.removeAll();
+			super.dispose();
 		}
 		
 		/**

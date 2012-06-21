@@ -354,6 +354,16 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
+		override public function dispose():void
+		{
+			this._onChange.removeAll();
+			this._onClear.removeAll();
+			super.dispose();
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function initialize():void
 		{
 			this.stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
