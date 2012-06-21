@@ -58,6 +58,11 @@ package org.josht.starling.foxhole.controls
 		 * @private
 		 */
 		protected static const STATE_DOWN:String = "down";
+
+		/**
+		 * @private
+		 */
+		protected static const STATE_HOVER:String = "hover";
 		
 		/**
 		 * @private
@@ -73,6 +78,11 @@ package org.josht.starling.foxhole.controls
 		 * @private
 		 */
 		protected static const STATE_SELECTED_DOWN:String = "selectedDown";
+
+		/**
+		 * @private
+		 */
+		protected static const STATE_SELECTED_HOVER:String = "selectedHover";
 
 		/**
 		 * @private
@@ -553,13 +563,22 @@ package org.josht.starling.foxhole.controls
 		 * the down state while it is dragged around.
 		 */
 		public var keepDownStateOnRollOut:Boolean = false;
-		
+
 		/**
 		 * @private
 		 */
+		protected var _stateNames:Vector.<String> = new <String>
+		[
+			STATE_UP, STATE_DOWN, STATE_HOVER, STATE_DISABLED,
+			STATE_SELECTED_UP, STATE_SELECTED_DOWN, STATE_SELECTED_HOVER, STATE_SELECTED_DISABLED
+		];
+
+		/**
+		 * A list of all valid state names.
+		 */
 		protected function get stateNames():Vector.<String>
 		{
-			return Vector.<String>([STATE_UP, STATE_DOWN, STATE_DISABLED, STATE_SELECTED_UP, STATE_SELECTED_DOWN, STATE_SELECTED_DISABLED]);
+			return this._stateNames;
 		}
 
 		/**
@@ -2191,7 +2210,13 @@ package org.josht.starling.foxhole.controls
 				return;
 			}
 			const touch:Touch = event.getTouch(this);
-			if(!touch || (this._touchPointID >= 0 && this._touchPointID != touch.id))
+			if(!touch)
+			{
+				this._touchPointID = -1;
+				this.currentState = STATE_UP;
+				return;
+			}
+			if(this._touchPointID >= 0 && this._touchPointID != touch.id)
 			{
 				return;
 			}
@@ -2227,6 +2252,11 @@ package org.josht.starling.foxhole.controls
 						this.isSelected = !this._isSelected;
 					}
 				}
+			}
+			else if(touch.phase == TouchPhase.HOVER)
+			{
+				this.currentState = STATE_HOVER;
+				this._touchPointID = touch.id;
 			}
 		}
 	}
