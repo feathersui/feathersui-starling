@@ -29,20 +29,15 @@ package org.josht.starling.foxhole.controls
 	import flash.ui.Keyboard;
 
 	import org.josht.starling.foxhole.core.FoxholeControl;
-
-	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.PopUpManager;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 
 	import starling.core.Starling;
-
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
-	import starling.events.ResizeEvent;
-	import starling.events.Touch;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;

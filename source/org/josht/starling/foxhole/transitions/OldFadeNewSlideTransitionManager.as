@@ -25,12 +25,12 @@ OTHER DEALINGS IN THE SOFTWARE.
 package org.josht.starling.foxhole.transitions
 {
 	import com.gskinner.motion.easing.Sine;
-	
+
 	import org.josht.starling.foxhole.controls.ScreenNavigator;
 	import org.josht.starling.motion.GTween;
-	
+
 	import starling.display.DisplayObject;
-	
+
 	/**
 	 * A transition for <code>ScreenNavigator</code> that fades out the old
 	 * screen and slides in the new screen from the right or left (depending on

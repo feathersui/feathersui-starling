@@ -25,7 +25,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 package org.josht.starling.foxhole.data
 {
 	import flash.errors.IllegalOperationError;
-	
+
 	/**
 	 * An <code>IListCollectionDataDescriptor</code> implementation for
 	 * XMLLists. Has some limitations due to certain things that cannot be done

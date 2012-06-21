@@ -25,7 +25,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 package org.josht.starling.display
 {
 	import flash.geom.Rectangle;
-	
+
 	/**
 	 * Adds a <code>scrollRect</code> to a display object.
 	 */

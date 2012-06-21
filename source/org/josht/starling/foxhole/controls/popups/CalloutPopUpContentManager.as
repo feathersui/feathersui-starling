@@ -1,12 +1,11 @@
 package org.josht.starling.foxhole.controls.popups
 {
-	import org.josht.starling.foxhole.controls.*;
 	import flash.errors.IllegalOperationError;
 
+	import org.josht.starling.foxhole.controls.*;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 
-	import starling.core.Starling;
 	import starling.display.DisplayObject;
 
 	/**

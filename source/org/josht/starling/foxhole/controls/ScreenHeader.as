@@ -28,7 +28,6 @@ package org.josht.starling.foxhole.controls
 	import flash.geom.Rectangle;
 
 	import org.josht.starling.foxhole.core.FoxholeControl;
-	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.layout.HorizontalLayout;
 	import org.josht.starling.foxhole.text.BitmapFontTextFormat;
 

@@ -25,12 +25,12 @@ OTHER DEALINGS IN THE SOFTWARE.
 package org.josht.starling.foxhole.core
 {
 	import flash.errors.IllegalOperationError;
-	
+
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
-	
+
 	import starling.events.EventDispatcher;
-	
+
 	/**
 	 * Controls the selection of two or more IToggle instances where only one
 	 * may be selected at a time.

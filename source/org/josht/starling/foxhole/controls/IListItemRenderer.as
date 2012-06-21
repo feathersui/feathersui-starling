@@ -24,8 +24,6 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package org.josht.starling.foxhole.controls
 {
-	import flash.geom.Rectangle;
-	
 	import org.josht.starling.foxhole.core.IToggle;
 
 	/**
