@@ -381,7 +381,7 @@ package org.josht.starling.foxhole.layout
 				}
 			}
 
-			const suggestedHeight:Number = isNaN(suggestedBounds.height) ? maxHeight : suggestedBounds.height;
+			const suggestedHeight:Number = isNaN(suggestedBounds.height) ? (maxHeight + this._paddingTop + this._paddingBottom) : suggestedBounds.height;
 			for(i = 0; i < itemCount; i++)
 			{
 				item = items[i];

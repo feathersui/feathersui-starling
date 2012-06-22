@@ -382,7 +382,7 @@ package org.josht.starling.foxhole.layout
 				}
 			}
 
-			const suggestedWidth:Number = isNaN(suggestedBounds.width) ? maxWidth : suggestedBounds.width;
+			const suggestedWidth:Number = isNaN(suggestedBounds.width) ? (maxWidth + this._paddingLeft + this._paddingRight) : suggestedBounds.width;
 			for(i = 0; i < itemCount; i++)
 			{
 				item = items[i];
