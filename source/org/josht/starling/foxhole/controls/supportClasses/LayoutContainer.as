@@ -38,7 +38,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 	 * @private
 	 * Used internally by ScrollContainer. Not meant to be used on its own.
 	 */
-	public class LayoutContainer extends FoxholeControl
+	public class LayoutContainer extends FoxholeControl implements IViewPort
 	{
 		private static const HELPER_POINT:Point = new Point();
 		private static const HELPER_RECT:Rectangle = new Rectangle();
@@ -47,6 +47,48 @@ package org.josht.starling.foxhole.controls.supportClasses
 		{
 			this.addEventListener(Event.ADDED, addedHandler);
 			this.addEventListener(Event.REMOVED, removedHandler);
+		}
+
+		private var _minVisibleWidth:Number = 0;
+
+		public function get minVisibleWidth():Number
+		{
+			return this._minVisibleWidth;
+		}
+
+		public function set minVisibleWidth(value:Number):void
+		{
+			if(this._minVisibleWidth == value)
+			{
+				return;
+			}
+			if(isNaN(value))
+			{
+				throw new ArgumentError("minVisibleWidth cannot be NaN");
+			}
+			this._minVisibleWidth = value;
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		private var _maxVisibleWidth:Number = Number.POSITIVE_INFINITY;
+
+		public function get maxVisibleWidth():Number
+		{
+			return this._maxVisibleWidth;
+		}
+
+		public function set maxVisibleWidth(value:Number):void
+		{
+			if(this._maxVisibleWidth == value)
+			{
+				return;
+			}
+			if(isNaN(value))
+			{
+				throw new ArgumentError("maxVisibleWidth cannot be NaN");
+			}
+			this._maxVisibleWidth = value;
+			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
 		protected var _visibleWidth:Number = NaN;
@@ -58,11 +100,53 @@ package org.josht.starling.foxhole.controls.supportClasses
 
 		public function set visibleWidth(value:Number):void
 		{
-			if(this._visibleWidth == value || (isNaN(this._visibleWidth) && isNaN(value)))
+			if(this._visibleWidth == value || (isNaN(value) && isNaN(this._visibleWidth)))
 			{
 				return;
 			}
 			this._visibleWidth = value;
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		private var _minVisibleHeight:Number = 0;
+
+		public function get minVisibleHeight():Number
+		{
+			return this._minVisibleHeight;
+		}
+
+		public function set minVisibleHeight(value:Number):void
+		{
+			if(this._minVisibleHeight == value)
+			{
+				return;
+			}
+			if(isNaN(value))
+			{
+				throw new ArgumentError("minVisibleHeight cannot be NaN");
+			}
+			this._minVisibleHeight = value;
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		private var _maxVisibleHeight:Number = Number.POSITIVE_INFINITY;
+
+		public function get maxVisibleHeight():Number
+		{
+			return this._maxVisibleHeight;
+		}
+
+		public function set maxVisibleHeight(value:Number):void
+		{
+			if(this._maxVisibleHeight == value)
+			{
+				return;
+			}
+			if(isNaN(value))
+			{
+				throw new ArgumentError("maxVisibleHeight cannot be NaN");
+			}
+			this._maxVisibleHeight = value;
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
@@ -75,7 +159,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 
 		public function set visibleHeight(value:Number):void
 		{
-			if(this._visibleHeight == value || (isNaN(this._visibleHeight) && isNaN(value)))
+			if(this._visibleHeight == value || (isNaN(value) && isNaN(this._visibleHeight)))
 			{
 				return;
 			}
@@ -142,12 +226,39 @@ package org.josht.starling.foxhole.controls.supportClasses
 				}
 
 				HELPER_RECT.x = HELPER_RECT.y = 0;
-				HELPER_RECT.width = this._visibleWidth;
-				HELPER_RECT.height = this._visibleHeight;
+				if(isNaN(this._visibleWidth))
+				{
+					if(this._maxVisibleWidth < Number.POSITIVE_INFINITY)
+					{
+						HELPER_RECT.width = this._maxVisibleWidth;
+					}
+					else
+					{
+						HELPER_RECT.width = NaN;
+					}
+				}
+				else
+				{
+					HELPER_RECT.width = this._visibleWidth;
+				}
+				if(isNaN(this._visibleHeight))
+				{
+					if(this._maxVisibleHeight < Number.POSITIVE_INFINITY)
+					{
+						HELPER_RECT.height = this._maxVisibleHeight;
+					}
+					else
+					{
+						HELPER_RECT.height = NaN;
+					}
+				}
+				else
+				{
+					HELPER_RECT.height = this._visibleHeight;
+				}
 				if(this._layout)
 				{
 					this._layout.layout(this.items, HELPER_RECT, HELPER_POINT);
-					this.setSizeInternal(HELPER_POINT.x, HELPER_POINT.y, false);
 				}
 				else
 				{
@@ -158,8 +269,12 @@ package org.josht.starling.foxhole.controls.supportClasses
 						maxX = Math.max(maxX, item.x + item.width);
 						maxY = Math.max(maxY, item.y + item.height);
 					}
-					this.setSizeInternal(maxX, maxY, false);
+					HELPER_POINT.x = Math.min(maxX, this._maxVisibleWidth);
+					HELPER_POINT.y = Math.min(maxY, this._maxVisibleHeight);
 				}
+				HELPER_POINT.x = Math.max(Math.min(HELPER_POINT.x, this._maxVisibleWidth), this._minVisibleWidth);
+				HELPER_POINT.y = Math.max(Math.min(HELPER_POINT.y, this._maxVisibleHeight), this._minVisibleHeight);
+				this.setSizeInternal(HELPER_POINT.x, HELPER_POINT.y, false);
 			}
 		}
 

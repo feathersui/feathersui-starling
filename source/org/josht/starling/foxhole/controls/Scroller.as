@@ -43,12 +43,15 @@ package org.josht.starling.foxhole.controls
 	import flash.utils.getTimer;
 
 	import org.josht.starling.display.Sprite;
+	import org.josht.starling.foxhole.controls.supportClasses.IViewPort;
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.PropertyProxy;
 	import org.josht.starling.motion.GTween;
 	import org.josht.utils.math.clamp;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
+
+	import starling.display.DisplayObject;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -58,8 +61,13 @@ package org.josht.starling.foxhole.controls
 
 	/**
 	 * Allows horizontal and vertical scrolling of a viewport (which may be any
-	 * Starling display object). Will react to the <code>onResize</code> signal
-	 * dispatched by Foxhole controls.
+	 * Starling display object).
+	 *
+	 * <p>Will react to the <code>onResize</code> signal dispatched by Foxhole
+	 * controls to adjust the maximum scroll positions. For regular Starling
+	 * display objects, the <code>invalidate()</code> function needs to be
+	 * called on the <code>Scroller</code> when they resize because the
+	 * <code>Scroller</code> cannot detect the change.</p>
 	 */
 	public class Scroller extends FoxholeControl
 	{
@@ -119,6 +127,18 @@ package org.josht.starling.foxhole.controls
 		 * than the scroller's height.
 		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
+
+		/**
+		 * The scroll bars appear above the scroller's view port, and fade out
+		 * when not in use.
+		 */
+		public static const SCROLL_BAR_DISPLAY_MODE_FLOAT:String = "float";
+
+		/**
+		 * The scroll bars are always visible and appear next to the scroller's
+		 * view port, making the view port smaller than the scroller.
+		 */
+		public static const SCROLL_BAR_DISPLAY_MODE_FIXED:String = "fixed";
 		
 		/**
 		 * Flag to indicate that the clipping has changed.
@@ -721,6 +741,32 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
+		protected var _scrollBarDisplayMode:String = SCROLL_BAR_DISPLAY_MODE_FLOAT;
+
+		/**
+		 * Determines how the scroll bars are displayed.
+		 */
+		public function get scrollBarDisplayMode():String
+		{
+			return this._scrollBarDisplayMode;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set scrollBarDisplayMode(value:String):void
+		{
+			if(this._scrollBarDisplayMode == value)
+			{
+				return;
+			}
+			this._scrollBarDisplayMode = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _horizontalScrollBarHideTween:GTween;
 
 		/**
@@ -959,6 +1005,60 @@ package org.josht.starling.foxhole.controls
 			if(scrollBarInvalid || stylesInvalid)
 			{
 				this.refreshScrollBarStyles();
+				if(this.horizontalScrollBar is FoxholeControl)
+				{
+					FoxholeControl(this.horizontalScrollBar).validate();
+				}
+				if(this.verticalScrollBar is FoxholeControl)
+				{
+					FoxholeControl(this.verticalScrollBar).validate();
+				}
+			}
+
+			if(dataInvalid || sizeInvalid)
+			{
+				var horizontalScrollBarOffset:Number = 0;
+				var verticalScrollBarOffset:Number = 0;
+				if(this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FIXED)
+				{
+					if(this.horizontalScrollBar)
+					{
+						horizontalScrollBarOffset = DisplayObject(this.horizontalScrollBar).height;
+					}
+					if(this.verticalScrollBar)
+					{
+						verticalScrollBarOffset = DisplayObject(this.verticalScrollBar).width;
+					}
+				}
+				if(this._viewPort is IViewPort)
+				{
+					const viewPort:IViewPort = IViewPort(this._viewPort);
+					if(isNaN(this.explicitWidth))
+					{
+						viewPort.visibleWidth = NaN;
+					}
+					else
+					{
+						viewPort.visibleWidth = Math.max(0, this.explicitWidth - verticalScrollBarOffset);
+					}
+					if(isNaN(this.explicitHeight))
+					{
+						viewPort.visibleHeight = NaN;
+					}
+					else
+					{
+						viewPort.visibleHeight = Math.max(0, this.explicitHeight - horizontalScrollBarOffset);
+					}
+					viewPort.minVisibleWidth = Math.max(0,  this._minWidth - verticalScrollBarOffset);
+					viewPort.maxVisibleWidth = Math.max(0, this._maxWidth - verticalScrollBarOffset);
+					viewPort.minVisibleHeight = Math.max(0, this._minHeight - horizontalScrollBarOffset);
+					viewPort.maxVisibleHeight = Math.max(0, this._maxHeight - horizontalScrollBarOffset);
+				}
+				else
+				{
+					this._viewPort.width = (isNaN(this.explicitWidth) ? this._maxWidth : this.explicitWidth) - horizontalScrollBarOffset;
+					this._viewPort.height = (isNaN(this.explicitHeight) ? this._maxHeight : this.explicitHeight) - verticalScrollBarOffset;
+				}
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
@@ -1036,17 +1136,29 @@ package org.josht.starling.foxhole.controls
 			{
 				FoxholeControl(this._viewPort).validate();
 			}
+			var horizontalScrollBarOffset:Number = 0;
+			var verticalScrollBarOffset:Number = 0;
+			if(this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FIXED)
+			{
+				if(this.horizontalScrollBar)
+				{
+					horizontalScrollBarOffset = DisplayObject(this.horizontalScrollBar).height;
+				}
+				if(this.verticalScrollBar)
+				{
+					verticalScrollBarOffset = DisplayObject(this.verticalScrollBar).width;
+				}
+			}
 			var newWidth:Number = this.explicitWidth;
 			var newHeight:Number = this.explicitHeight;
 			if(needsWidth)
 			{
-				newWidth = this._viewPort.width;
+				newWidth = this._viewPort.width + verticalScrollBarOffset;
 			}
 			if(needsHeight)
 			{
-				newHeight = this._viewPort.height;
+				newHeight = this._viewPort.height + horizontalScrollBarOffset;
 			}
-
 			return this.setSizeInternal(newWidth, newHeight, false);
 		}
 
@@ -1073,7 +1185,6 @@ package org.josht.starling.foxhole.controls
 				this.horizontalScrollBar = this._horizontalScrollBarFactory();
 				this.horizontalScrollBar.onChange.add(horizontalScrollBar_onChange);
 				const foxholeHorizontalScrollBar:FoxholeControl = FoxholeControl(this.horizontalScrollBar);
-				foxholeHorizontalScrollBar.alpha = 0;
 				foxholeHorizontalScrollBar.touchable = false;
 				this.addChild(foxholeHorizontalScrollBar);
 			}
@@ -1082,7 +1193,6 @@ package org.josht.starling.foxhole.controls
 				this.verticalScrollBar = this._verticalScrollBarFactory();
 				this.verticalScrollBar.onChange.add(verticalScrollBar_onChange);
 				const foxholeVerticalScrollBar:FoxholeControl = FoxholeControl(this.verticalScrollBar);
-				foxholeVerticalScrollBar.alpha = 0;
 				foxholeVerticalScrollBar.touchable = false;
 				this.addChild(foxholeVerticalScrollBar);
 			}
@@ -1104,6 +1214,12 @@ package org.josht.starling.foxhole.controls
 						this.horizontalScrollBar[propertyName] = propertyValue;
 					}
 				}
+				if(this._horizontalScrollBarHideTween)
+				{
+					this._horizontalScrollBarHideTween.paused = true;
+					this._horizontalScrollBarHideTween = null;
+				}
+				DisplayObject(this.horizontalScrollBar).alpha = this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FLOAT ? 0 : 1;
 			}
 			if(this.verticalScrollBar)
 			{
@@ -1116,6 +1232,12 @@ package org.josht.starling.foxhole.controls
 						this.verticalScrollBar[propertyName] = propertyValue;
 					}
 				}
+				if(this._verticalScrollBarHideTween)
+				{
+					this._verticalScrollBarHideTween.paused = true;
+					this._verticalScrollBarHideTween = null;
+				}
+				DisplayObject(this.verticalScrollBar).alpha = this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FLOAT ? 0 : 1;
 			}
 		}
 
@@ -1431,7 +1553,7 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function hideHorizontalScrollBar():void
 		{
-			if(!this.horizontalScrollBar || this._horizontalScrollBarHideTween)
+			if(!this.horizontalScrollBar || this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_FLOAT || this._horizontalScrollBarHideTween)
 			{
 				return;
 			}
@@ -1455,7 +1577,7 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function hideVerticalScrollBar():void
 		{
-			if(!this.verticalScrollBar || this._verticalScrollBarHideTween)
+			if(!this.verticalScrollBar || this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_FLOAT || this._verticalScrollBarHideTween)
 			{
 				return;
 			}
@@ -1643,7 +1765,10 @@ package org.josht.starling.foxhole.controls
 						this._horizontalScrollBarHideTween.paused = true;
 						this._horizontalScrollBarHideTween = null;
 					}
-					DisplayObject(this.horizontalScrollBar).alpha = 1;
+					if(this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FLOAT)
+					{
+						DisplayObject(this.horizontalScrollBar).alpha = 1;
+					}
 				}
 				//if we haven't already started dragging in the other direction,
 				//we need to dispatch the signal that says we're starting.
@@ -1667,7 +1792,10 @@ package org.josht.starling.foxhole.controls
 							this._verticalScrollBarHideTween.paused = true;
 							this._verticalScrollBarHideTween = null;
 						}
-						DisplayObject(this.verticalScrollBar).alpha = 1;
+						if(this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FLOAT)
+						{
+							DisplayObject(this.verticalScrollBar).alpha = 1;
+						}
 					}
 					this._onDragStart.dispatch(this);
 				}

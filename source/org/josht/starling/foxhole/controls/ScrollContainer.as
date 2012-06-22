@@ -438,35 +438,34 @@ package org.josht.starling.foxhole.controls
 
 			if(scrollInvalid)
 			{
-				this.scroller.verticalScrollPosition = this.verticalScrollPosition;
-				this.scroller.horizontalScrollPosition = this.horizontalScrollPosition;
-				this.scroller.verticalScrollPolicy = this.verticalScrollPolicy;
-				this.scroller.horizontalScrollPolicy = this.horizontalScrollPolicy;
+				this.scroller.verticalScrollPosition = this._verticalScrollPosition;
+				this.scroller.horizontalScrollPosition = this._horizontalScrollPosition;
+				this.scroller.verticalScrollPolicy = this._verticalScrollPolicy;
+				this.scroller.horizontalScrollPolicy = this._horizontalScrollPolicy;
 			}
 
 			if(sizeInvalid)
 			{
-				if(isNaN(this.explicitWidth) && this._maxWidth < Number.POSITIVE_INFINITY)
+				if(isNaN(this.explicitWidth))
 				{
-					this.viewPort.visibleWidth = this._maxWidth;
+					this.scroller.width = NaN;
 				}
 				else
 				{
-					this.viewPort.visibleWidth = this.explicitWidth;
+					this.scroller.width = Math.max(0, this.explicitWidth);
 				}
-				if(isNaN(this.explicitHeight) && this._maxHeight < Number.POSITIVE_INFINITY)
+				if(isNaN(this.explicitHeight))
 				{
-					this.viewPort.visibleHeight = this._maxHeight;
+					this.scroller.height = NaN;
 				}
 				else
 				{
-					this.viewPort.visibleHeight = this.explicitHeight;
+					this.scroller.height = Math.max(0, this.explicitHeight);
 				}
-
-				this.scroller.minWidth = Math.max(0, (isNaN(this.explicitWidth) ? this._minWidth : this.explicitWidth));
-				this.scroller.maxWidth = isNaN(this.explicitWidth) ? this._maxWidth : this.explicitWidth;
-				this.scroller.minHeight = Math.max(0, (isNaN(this.explicitHeight) ? this._minHeight : this.explicitHeight));
-				this.scroller.maxHeight = isNaN(this.explicitHeight) ? this._maxHeight : this.explicitHeight;
+				this.scroller.minWidth = Math.max(0,  this._minWidth);
+				this.scroller.maxWidth = Math.max(0, this._maxWidth);
+				this.scroller.minHeight = Math.max(0, this._minHeight);
+				this.scroller.maxHeight = Math.max(0, this._maxHeight);
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
