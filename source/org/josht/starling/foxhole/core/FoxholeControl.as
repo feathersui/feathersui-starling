@@ -247,7 +247,7 @@ package org.josht.starling.foxhole.core
 		 */
 		override public function set width(value:Number):void
 		{
-			if(this.explicitWidth == value || (isNaN(this.explicitWidth) && isNaN(value)))
+			if(this.explicitWidth == value || (isNaN(value) && isNaN(this.explicitWidth)))
 			{
 				return;
 			}
@@ -287,12 +287,12 @@ package org.josht.starling.foxhole.core
 		 */
 		override public function set height(value:Number):void
 		{
-			if(this.explicitHeight == value || (isNaN(this.explicitHeight) && isNaN(value)))
+			if(this.explicitHeight == value || (isNaN(value) && isNaN(this.explicitHeight)))
 			{
 				return;
 			}
 			this.explicitHeight = value;
-			this.setSizeInternal(this.explicitWidth, value, true);
+			this.setSizeInternal(this.actualWidth, value, true);
 		}
 
 		/**
