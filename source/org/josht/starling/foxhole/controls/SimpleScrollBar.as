@@ -546,11 +546,6 @@ package org.josht.starling.foxhole.controls
 			}
 
 			const range:Number = this._maximum - this._minimum;
-			if(range <= 0)
-			{
-				return false;
-			}
-
 			//we're just going to make something up in this case
 			const adjustedPageStep:Number = this._pageStep == 0 ? range / 10 : this._pageStep;
 			var newWidth:Number = this.explicitWidth;
@@ -563,7 +558,14 @@ package org.josht.starling.foxhole.controls
 				}
 				else //horizontal
 				{
-					newWidth = Math.max(this.thumbOriginalWidth, this.thumbOriginalWidth * range / adjustedPageStep);
+					if(range > 0)
+					{
+						newWidth = 0;
+					}
+					else
+					{
+						newWidth = Math.max(this.thumbOriginalWidth, this.thumbOriginalWidth * range / adjustedPageStep);
+					}
 				}
 				newWidth += this._paddingLeft + this._paddingRight;
 			}
@@ -571,7 +573,14 @@ package org.josht.starling.foxhole.controls
 			{
 				if(this._direction == DIRECTION_VERTICAL)
 				{
-					newHeight = Math.max(this.thumbOriginalHeight, this.thumbOriginalHeight * range / adjustedPageStep);
+					if(range > 0)
+					{
+						newHeight = 0;
+					}
+					else
+					{
+						newHeight = Math.max(this.thumbOriginalHeight, this.thumbOriginalHeight * range / adjustedPageStep);
+					}
 				}
 				else //horizontal
 				{
@@ -624,7 +633,6 @@ package org.josht.starling.foxhole.controls
 			{
 				adjustedRange += (this._value - this._maximum);
 			}
-
 			if(this._direction == DIRECTION_VERTICAL)
 			{
 				this.thumb.width = this.thumbOriginalWidth;
