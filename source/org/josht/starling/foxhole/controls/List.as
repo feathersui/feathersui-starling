@@ -883,13 +883,6 @@ package org.josht.starling.foxhole.controls
 				this.refreshBackgroundSkin();
 			}
 
-			this.dataContainer.visibleWidth = this.explicitWidth - this._paddingLeft - this._paddingRight;
-			this.dataContainer.visibleHeight = this.explicitHeight - this._paddingTop - this._paddingBottom;
-			this.dataContainer.minVisibleWidth = Math.max(0, this._minWidth - this._paddingLeft - this._paddingRight);
-			this.dataContainer.maxVisibleWidth = this._maxWidth - this._paddingLeft - this._paddingRight;
-			this.dataContainer.minVisibleHeight = Math.max(0, this._minHeight - this._paddingTop - this._paddingBottom);
-			this.dataContainer.maxVisibleHeight = this._maxHeight - this._paddingTop - this._paddingBottom;
-
 			this.dataContainer.isEnabled = this._isEnabled;
 			this.dataContainer.isSelectable = this._isSelectable;
 			this.dataContainer.selectedIndex = this._selectedIndex;
@@ -906,21 +899,36 @@ package org.josht.starling.foxhole.controls
 			this.scroller.isEnabled = this._isEnabled;
 			this.scroller.x = this._paddingLeft;
 			this.scroller.y = this._paddingTop;
-
-			//rather than set the scrollers width and height explicitly, we'll
-			//set both the min and max values to the same thing, and the
-			//scroller will always auto-size without intervention.
-			this.scroller.minWidth = Math.max(0, (isNaN(this.explicitWidth) ? this._minWidth : this.explicitWidth) - this._paddingLeft - this._paddingRight);
-			this.scroller.maxWidth = (isNaN(this.explicitWidth) ? this._maxWidth : this.explicitWidth) - this._paddingLeft - this._paddingRight;
-			this.scroller.minHeight = Math.max(0, (isNaN(this.explicitHeight) ? this._minHeight : this.explicitHeight) - this._paddingTop - this._paddingBottom);
-			this.scroller.maxHeight = (isNaN(this.explicitHeight) ? this._maxHeight : this.explicitHeight) - this._paddingTop - this._paddingBottom;
-
 			this.scroller.horizontalScrollPosition = this._horizontalScrollPosition;
 			this.scroller.verticalScrollPosition = this._verticalScrollPosition;
 
+			if(sizeInvalid || stylesInvalid)
+			{
+				if(isNaN(this.explicitWidth))
+				{
+					this.scroller.width = NaN;
+				}
+				else
+				{
+					this.scroller.width = Math.max(0, this.explicitWidth - this._paddingLeft - this._paddingRight);
+				}
+				if(isNaN(this.explicitHeight))
+				{
+					this.scroller.height = NaN;
+				}
+				else
+				{
+					this.scroller.height = Math.max(0, this.explicitHeight - this._paddingTop - this._paddingBottom);
+				}
+				this.scroller.minWidth = Math.max(0,  this._minWidth - this._paddingLeft - this._paddingRight);
+				this.scroller.maxWidth = Math.max(0, this._maxWidth - this._paddingLeft - this._paddingRight);
+				this.scroller.minHeight = Math.max(0, this._minHeight - this._paddingTop - this._paddingBottom);
+				this.scroller.maxHeight = Math.max(0, this._maxHeight - this._paddingTop - this._paddingBottom);
+			}
+
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
-			if(this.currentBackgroundSkin)
+			if((sizeInvalid || stylesInvalid) && this.currentBackgroundSkin)
 			{
 				this.currentBackgroundSkin.width = this.actualWidth;
 				this.currentBackgroundSkin.height = this.actualHeight;

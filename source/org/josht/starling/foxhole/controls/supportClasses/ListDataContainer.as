@@ -46,7 +46,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 	 * @private
 	 * Used internally by List. Not meant to be used on its own.
 	 */
-	public class ListDataContainer extends FoxholeControl
+	public class ListDataContainer extends FoxholeControl implements IViewPort
 	{
 		protected static const INVALIDATION_FLAG_ITEM_RENDERER_FACTORY:String = "itemRendererFactory";
 
@@ -111,7 +111,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 
 		public function set visibleWidth(value:Number):void
 		{
-			if(this.explicitVisibleWidth == value || (isNaN(this.explicitVisibleWidth) && isNaN(value)))
+			if(this.explicitVisibleWidth == value || (isNaN(value) && isNaN(this.explicitVisibleWidth)))
 			{
 				return;
 			}
@@ -172,7 +172,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 
 		public function set visibleHeight(value:Number):void
 		{
-			if(this.explicitVisibleHeight == value || (isNaN(this.explicitVisibleHeight) && isNaN(value)))
+			if(this.explicitVisibleHeight == value || (isNaN(value) && isNaN(this.explicitVisibleHeight)))
 			{
 				return;
 			}
@@ -597,20 +597,20 @@ package org.josht.starling.foxhole.controls.supportClasses
 
 			if(isNaN(this.explicitVisibleWidth))
 			{
-				this.actualVisibleWidth = Math.min(this._maxVisibleWidth, Math.max(this._minVisibleWidth, this._typicalItemWidth));
+				this.actualVisibleWidth = Math.min(this._maxVisibleWidth, Math.max(0, this._minVisibleWidth, this._typicalItemWidth));
 			}
 			else
 			{
-				this.actualVisibleWidth = this.explicitVisibleWidth;
+				this.actualVisibleWidth = Math.max(0, this.explicitVisibleWidth);
 			}
 			if(isNaN(this.explicitVisibleHeight))
 			{
 				const itemCount:int = this._dataProvider ? this._dataProvider.length : 0;
-				this.actualVisibleHeight = Math.min(this._maxVisibleHeight, Math.max(this._minVisibleHeight, itemCount * this._typicalItemHeight));
+				this.actualVisibleHeight = Math.min(this._maxVisibleHeight, Math.max(0, this._minVisibleHeight, itemCount * this._typicalItemHeight));
 			}
 			else
 			{
-				this.actualVisibleHeight = this.explicitVisibleHeight;
+				this.actualVisibleHeight = Math.max(0, this.explicitVisibleHeight);
 			}
 
 			this.findUnrenderedData();
