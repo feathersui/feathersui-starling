@@ -693,7 +693,7 @@ package org.josht.starling.foxhole.controls
 			this.stageText.drawViewPortToBitmapData(this._textSnapshotBitmapData);
 			if(!this._textSnapshot)
 			{
-				this._textSnapshot = new Image(starling.textures.Texture.fromBitmapData(this._textSnapshotBitmapData));
+				this._textSnapshot = new Image(starling.textures.Texture.fromBitmapData(this._textSnapshotBitmapData, false, false, Starling.contentScaleFactor));
 				this.addChild(this._textSnapshot);
 			}
 			else
@@ -701,7 +701,7 @@ package org.josht.starling.foxhole.controls
 				if(needsNewBitmap)
 				{
 					this._textSnapshot.texture.dispose();
-					this._textSnapshot.texture = starling.textures.Texture.fromBitmapData(this._textSnapshotBitmapData);
+					this._textSnapshot.texture = starling.textures.Texture.fromBitmapData(this._textSnapshotBitmapData, false, false, Starling.contentScaleFactor);
 					this._textSnapshot.readjustSize();
 				}
 				else
