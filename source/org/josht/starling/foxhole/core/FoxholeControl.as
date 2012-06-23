@@ -615,6 +615,15 @@ package org.josht.starling.foxhole.core
 				return;
 			}
 			const isAlreadyInvalid:Boolean = this.isInvalid();
+			if(this._isValidating)
+			{
+				var isAlreadyDelayedInvalid:Boolean = false;
+				for(flag in this._delayedInvalidationFlags)
+				{
+					isAlreadyDelayedInvalid = true;
+					break;
+				}
+			}
 			for each(var flag:String in rest)
 			{
 				if(this._isValidating)
@@ -641,10 +650,6 @@ package org.josht.starling.foxhole.core
 					this._isAllInvalid = true;
 				}
 			}
-			if(isAlreadyInvalid)
-			{
-				return;
-			}
 			if(!validationQueue)
 			{
 				//since ValidationQueue references FoxholeControl, we can't
@@ -653,8 +658,16 @@ package org.josht.starling.foxhole.core
 			}
 			if(this._isValidating)
 			{
+				if(isAlreadyDelayedInvalid)
+				{
+					return;
+				}
 				this._invalidateCount++;
 				validationQueue.addControl(this, this._invalidateCount >= 10);
+				return;
+			}
+			if(isAlreadyInvalid)
+			{
 				return;
 			}
 			this._invalidateCount = 0;
