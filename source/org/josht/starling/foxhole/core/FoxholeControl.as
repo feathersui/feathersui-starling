@@ -35,6 +35,7 @@ package org.josht.starling.foxhole.core
 
 	import starling.core.RenderSupport;
 	import starling.display.DisplayObject;
+	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
 	import starling.utils.transformCoords;
 
@@ -581,26 +582,6 @@ package org.josht.starling.foxhole.core
 			}
 			return super.hitTest(localPoint, forTouch);
 		}
-
-		/**
-		 * @private
-		 */
-		override public function render(support:RenderSupport, alpha:Number):void
-		{
-			var validationCount:int = 0;
-			while(this.isInvalid())
-			{
-				this.validate();
-				validationCount++;
-				if(validationCount > 10)
-				{
-					//we give up. do it next time.
-					trace("Warning: Stopping out of control validation.");
-					break;
-				}
-			}
-			super.render(support, alpha);
-		}
 		
 		/**
 		 * When called, the UI control will redraw within one frame.
@@ -644,6 +625,7 @@ package org.josht.starling.foxhole.core
 					this._isAllInvalid = true;
 				}
 			}
+			this.addEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
 		}
 		
 		/**
@@ -657,6 +639,7 @@ package org.josht.starling.foxhole.core
 				return;
 			}
 			this._isValidating = true;
+			this.removeEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
 			this.draw();
 			for(var flag:String in this._invalidationFlags)
 			{
@@ -809,6 +792,25 @@ package org.josht.starling.foxhole.core
 				this._isInitialized = true;
 			}
 			this.invalidate();
+		}
+
+		/**
+		 * @private
+		 */
+		private function enterFrameHandler(event:EnterFrameEvent):void
+		{
+			var validationCount:int = 0;
+			while(this.isInvalid())
+			{
+				this.validate();
+				validationCount++;
+				if(validationCount > 10)
+				{
+					//we give up. do it next time.
+					trace("Warning: Stopping out of control validation.");
+					break;
+				}
+			}
 		}
 	}
 }
