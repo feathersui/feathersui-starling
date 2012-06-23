@@ -33,6 +33,7 @@ package org.josht.starling.foxhole.controls
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 
+	import starling.display.Quad;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -79,6 +80,11 @@ package org.josht.starling.foxhole.controls
 		 * @private
 		 */
 		protected var thumb:Button;
+
+		/**
+		 * @private
+		 */
+		protected var track:Quad;
 
 		/**
 		 * @private
@@ -233,14 +239,14 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _pageStep:Number = 0;
+		private var _page:Number = 0;
 
 		/**
 		 * @inheritDoc
 		 */
 		public function get page():Number
 		{
-			return this._pageStep;
+			return this._page;
 		}
 
 		/**
@@ -248,11 +254,11 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function set page(value:Number):void
 		{
-			if(this._pageStep == value)
+			if(this._page == value)
 			{
 				return;
 			}
-			this._pageStep = value;
+			this._page = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
@@ -487,6 +493,14 @@ package org.josht.starling.foxhole.controls
 		 */
 		override protected function initialize():void
 		{
+			if(!this.track)
+			{
+				this.track = new Quad(10, 10, 0xff00ff);
+				this.track.alpha = 0;
+				this.track.addEventListener(TouchEvent.TOUCH, track_touchHandler);
+				this.addChild(this.track);
+			}
+
 			if(!this.thumb)
 			{
 				this.thumb = new Button();
@@ -547,7 +561,7 @@ package org.josht.starling.foxhole.controls
 
 			const range:Number = this._maximum - this._minimum;
 			//we're just going to make something up in this case
-			const adjustedPageStep:Number = this._pageStep == 0 ? range / 10 : this._pageStep;
+			const adjustedPageStep:Number = this._page == 0 ? range / 10 : this._page;
 			var newWidth:Number = this.explicitWidth;
 			var newHeight:Number = this.explicitHeight;
 			if(needsWidth)
@@ -611,6 +625,9 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function layout():void
 		{
+			this.track.width = this.actualWidth;
+			this.track.height = this.actualHeight;
+
 			const range:Number = this._maximum - this._minimum;
 			this.thumb.visible = range > 0;
 			if(!this.thumb.visible)
@@ -623,7 +640,7 @@ package org.josht.starling.foxhole.controls
 
 			const contentWidth:Number = this.actualWidth - this._paddingLeft - this._paddingRight;
 			const contentHeight:Number = this.actualHeight - this._paddingTop - this._paddingBottom;
-			const adjustedPageStep:Number = Math.min(range, this._pageStep == 0 ? range : this._pageStep);
+			const adjustedPageStep:Number = Math.min(range, this._page == 0 ? range : this._page);
 			var adjustedRange:Number = range;
 			if(this._value < this._minimum)
 			{
@@ -654,7 +671,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected function dragTo(location:Point):void
+		protected function locationToValue(location:Point):Number
 		{
 			var percentage:Number;
 			if(this._direction == DIRECTION_VERTICAL)
@@ -672,7 +689,7 @@ package org.josht.starling.foxhole.controls
 				percentage = xPosition / trackScrollableWidth;
 			}
 
-			this.value = this._minimum + percentage * (this._maximum - this._minimum);
+			return this._minimum + percentage * (this._maximum - this._minimum);
 		}
 
 		/**
@@ -681,6 +698,44 @@ package org.josht.starling.foxhole.controls
 		protected function thumbProperties_onChange(proxy:PropertyProxy, name:Object):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function track_touchHandler(event:TouchEvent):void
+		{
+			if(!this._isEnabled)
+			{
+				return;
+			}
+			const touch:Touch = event.getTouch(this.track);
+			if(!touch || (this._touchPointID >= 0 && this._touchPointID != touch.id))
+			{
+				return;
+			}
+			if(touch.phase == TouchPhase.BEGAN)
+			{
+				this._touchPointID = touch.id;
+				const location:Point = touch.getLocation(this);
+				this._touchStartX = location.x;
+				this._touchStartY = location.y;
+				this._thumbStartX = location.x;
+				this._thumbStartY = location.y;
+				const touchValue:Number = this.locationToValue(location);
+				if(touchValue < this._value)
+				{
+					this.value = Math.max(touchValue, this._value - this._page);
+				}
+				else if(touchValue > this._value)
+				{
+					this.value = Math.min(touchValue, this._value + this._page);
+				}
+			}
+			else if(touch.phase == TouchPhase.ENDED)
+			{
+				this._touchPointID = -1;
+			}
 		}
 
 		/**
@@ -697,7 +752,6 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			event.stopPropagation();
 			const location:Point = touch.getLocation(this);
 			if(touch.phase == TouchPhase.BEGAN)
 			{
@@ -711,7 +765,7 @@ package org.josht.starling.foxhole.controls
 			}
 			else if(touch.phase == TouchPhase.MOVED)
 			{
-				this.dragTo(location);
+				this.value = this.locationToValue(location);
 			}
 			else if(touch.phase == TouchPhase.ENDED)
 			{
