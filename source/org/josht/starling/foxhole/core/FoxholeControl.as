@@ -33,9 +33,7 @@ package org.josht.starling.foxhole.core
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 
-	import starling.core.RenderSupport;
 	import starling.display.DisplayObject;
-	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
 	import starling.utils.transformCoords;
 
@@ -46,8 +44,20 @@ package org.josht.starling.foxhole.core
 	 */
 	public class FoxholeControl extends Sprite
 	{
+		/**
+		 * @private
+		 */
 		private static const helperMatrix:Matrix = new Matrix();
+
+		/**
+		 * @private
+		 */
 		private static const helperPoint:Point = new Point();
+
+		/**
+		 * @private
+		 */
+		protected static var validationQueue:ValidationQueue;
 		
 		/**
 		 * Flag to indicate that everything is invalid and should be redrawn.
@@ -504,6 +514,11 @@ package org.josht.starling.foxhole.core
 		 * Flag to indicate that the control is currently validating.
 		 */
 		private var _isValidating:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		private var _invalidateCount:int = 0;
 		
 		/**
 		 * @private
@@ -599,6 +614,7 @@ package org.josht.starling.foxhole.core
 				//there's no point in micro-managing it before that.
 				return;
 			}
+			const isAlreadyInvalid:Boolean = this.isInvalid();
 			for each(var flag:String in rest)
 			{
 				if(this._isValidating)
@@ -625,7 +641,24 @@ package org.josht.starling.foxhole.core
 					this._isAllInvalid = true;
 				}
 			}
-			this.addEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
+			if(isAlreadyInvalid)
+			{
+				return;
+			}
+			if(!validationQueue)
+			{
+				//since ValidationQueue references FoxholeControl, we can't
+				//instantiate it as a static variable. we do it here instead.
+				validationQueue = new ValidationQueue();
+			}
+			if(this._isValidating)
+			{
+				this._invalidateCount++;
+				validationQueue.addControl(this, this._invalidateCount >= 10);
+				return;
+			}
+			this._invalidateCount = 0;
+			validationQueue.addControl(this, false);
 		}
 		
 		/**
@@ -639,7 +672,6 @@ package org.josht.starling.foxhole.core
 				return;
 			}
 			this._isValidating = true;
-			this.removeEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
 			this.draw();
 			for(var flag:String in this._invalidationFlags)
 			{
@@ -792,25 +824,6 @@ package org.josht.starling.foxhole.core
 				this._isInitialized = true;
 			}
 			this.invalidate();
-		}
-
-		/**
-		 * @private
-		 */
-		private function enterFrameHandler(event:EnterFrameEvent):void
-		{
-			var validationCount:int = 0;
-			while(this.isInvalid())
-			{
-				this.validate();
-				validationCount++;
-				if(validationCount > 10)
-				{
-					//we give up. do it next time.
-					trace("Warning: Stopping out of control validation.");
-					break;
-				}
-			}
 		}
 	}
 }
