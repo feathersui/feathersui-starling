@@ -197,8 +197,8 @@ package org.josht.starling.foxhole.core
 		 * @private
 		 * The current invalidation flags.
 		 */
-		private var _invalidationFlags:Dictionary = new Dictionary(true);
-		private var _delayedInvalidationFlags:Dictionary = new Dictionary(true);
+		private var _invalidationFlags:Object = {};
+		private var _delayedInvalidationFlags:Object = {};
 		
 		/**
 		 * @private
@@ -615,16 +615,16 @@ package org.josht.starling.foxhole.core
 				return;
 			}
 			const isAlreadyInvalid:Boolean = this.isInvalid();
+			var isAlreadyDelayedInvalid:Boolean = false;
 			if(this._isValidating)
 			{
-				var isAlreadyDelayedInvalid:Boolean = false;
-				for(flag in this._delayedInvalidationFlags)
+				for(var flag:String in this._delayedInvalidationFlags)
 				{
 					isAlreadyDelayedInvalid = true;
 					break;
 				}
 			}
-			for each(var flag:String in rest)
+			for each(flag in rest)
 			{
 				if(this._isValidating)
 				{
