@@ -1040,11 +1040,6 @@ package org.josht.starling.foxhole.controls
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			const scrollBarInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL_BAR_RENDERER);
 
-			if(this._viewPort is FoxholeControl)
-			{
-				FoxholeControl(this._viewPort).validate();
-			}
-
 			if(scrollBarInvalid)
 			{
 				this.createScrollBars();
