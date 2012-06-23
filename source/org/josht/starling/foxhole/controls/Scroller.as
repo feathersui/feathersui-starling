@@ -145,8 +145,7 @@ package org.josht.starling.foxhole.controls
 		public static const INTERACTION_MODE_TOUCH:String = "touch";
 
 		/**
-		 * The user may interact with the scroll bars or the mouse wheel to
-		 * scroll.
+		 * The user may interact with the scroll bars to scroll.
 		 */
 		public static const INTERACTION_MODE_MOUSE:String = "mouse";
 		
@@ -534,6 +533,10 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * Determines whether the scroller may scroll horizontally (on the
 		 * x-axis) or not.
+		 *
+		 * @see #SCROLL_POLICY_AUTO
+		 * @see #SCROLL_POLICY_ON
+		 * @see #SCROLL_POLICY_OFF
 		 */
 		public function get horizontalScrollPolicy():String
 		{
@@ -562,9 +565,9 @@ package org.josht.starling.foxhole.controls
 		 * If the viewport's width is less than the scroller's width, it will
 		 * be aligned to the left, center, or right of the scroller.
 		 * 
-		 * @see HORIZONTAL_ALIGN_LEFT
-		 * @see HORIZONTAL_ALIGN_CENTER
-		 * @see HORIZONTAL_ALIGN_RIGHT
+		 * @see #HORIZONTAL_ALIGN_LEFT
+		 * @see #HORIZONTAL_ALIGN_CENTER
+		 * @see #HORIZONTAL_ALIGN_RIGHT
 		 */
 		public function get horizontalAlign():String
 		{
@@ -644,6 +647,10 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * Determines whether the scroller may scroll vertically (on the
 		 * y-axis) or not.
+		 *
+		 * @see #SCROLL_POLICY_AUTO
+		 * @see #SCROLL_POLICY_ON
+		 * @see #SCROLL_POLICY_OFF
 		 */
 		public function get verticalScrollPolicy():String
 		{
@@ -672,9 +679,9 @@ package org.josht.starling.foxhole.controls
 		 * If the viewport's height is less than the scroller's height, it will
 		 * be aligned to the top, middle, or bottom of the scroller.
 		 * 
-		 * @see VERTICAL_ALIGN_TOP
-		 * @see VERTICAL_ALIGN_MIDDLE
-		 * @see VERTICAL_ALIGN_BOTTOM
+		 * @see #VERTICAL_ALIGN_TOP
+		 * @see #VERTICAL_ALIGN_MIDDLE
+		 * @see #VERTICAL_ALIGN_BOTTOM
 		 */
 		public function get verticalAlign():String
 		{
@@ -754,6 +761,9 @@ package org.josht.starling.foxhole.controls
 
 		/**
 		 * Determines how the scroll bars are displayed.
+		 *
+		 * @see #SCROLL_BAR_DISPLAY_MODE_FLOAT
+		 * @see #SCROLL_BAR_DISPLAY_MODE_FIXED
 		 */
 		public function get scrollBarDisplayMode():String
 		{
@@ -780,6 +790,9 @@ package org.josht.starling.foxhole.controls
 
 		/**
 		 * Determines how the user may interact with the scroller.
+		 *
+		 * @see #INTERACTION_MODE_TOUCH
+		 * @see #INTERACTION_MODE_MOUSE
 		 */
 		public function get interactionMode():String
 		{
