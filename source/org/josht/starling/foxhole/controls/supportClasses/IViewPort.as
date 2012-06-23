@@ -2,6 +2,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 {
 	import org.osflash.signals.ISignal;
 
+	[ExcludeClass]
 	public interface IViewPort
 	{
 		function get visibleWidth():Number;
