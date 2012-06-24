@@ -28,6 +28,8 @@ package org.josht.starling.display
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
+	import org.josht.starling.textures.Scale9Textures;
+
 	import starling.core.RenderSupport;
 	import starling.display.DisplayObject;
 	import starling.display.QuadBatch;
@@ -50,21 +52,20 @@ package org.josht.starling.display
 		/**
 		 * Constructor.
 		 */
-		public function Scale9Image(texture:Texture, scale9Grid:Rectangle, textureScale:Number = 1)
+		public function Scale9Image(textures:Scale9Textures, textureScale:Number = 1)
 		{
 			super();
-			this._hitArea = new Rectangle();
-			this._scale9Grid = scale9Grid;
+			this._textures = textures;
 			this._textureScale = textureScale;
-			this.saveRegions(texture);
+			this._hitArea = new Rectangle();
 			this.initializeWidthAndHeight();
-			this.createTextures(texture);
 
 			this._batch = new QuadBatch();
 			this._batch.touchable = false;
 			this.addChild(this._batch);
 		}
 
+		private var _textures:Scale9Textures;
 		private var _propertiesChanged:Boolean = true;
 		private var _layoutChanged:Boolean = true;
 
@@ -199,27 +200,9 @@ package org.josht.starling.display
 			this._color = value;
 			this._propertiesChanged = true;
 		}
-
-		private var _scale9Grid:Rectangle;
-		private var _leftWidth:Number;
-		private var _centerWidth:Number;
-		private var _rightWidth:Number;
-		private var _topHeight:Number;
-		private var _middleHeight:Number;
-		private var _bottomHeight:Number;
 		
 		private var _hitArea:Rectangle;
-
 		private var _batch:QuadBatch;
-		private var _topLeft:Texture;
-		private var _topCenter:Texture;
-		private var _topRight:Texture;
-		private var _middleLeft:Texture;
-		private var _middleCenter:Texture;
-		private var _middleRight:Texture;
-		private var _bottomLeft:Texture;
-		private var _bottomCenter:Texture;
-		private var _bottomRight:Texture;
 		
 		/**
 		 * @private
@@ -298,73 +281,6 @@ package org.josht.starling.display
 		/**
 		 * @private
 		 */
-		private function saveRegions(texture:Texture):void
-		{
-			const textureFrame:Rectangle = texture.frame;
-			this._leftWidth = this._scale9Grid.x;
-			this._centerWidth = this._scale9Grid.width;
-			this._rightWidth = textureFrame.width - this._scale9Grid.width - this._scale9Grid.x;
-			this._topHeight = this._scale9Grid.y;
-			this._middleHeight = this._scale9Grid.height;
-			this._bottomHeight = textureFrame.height - this._scale9Grid.height - this._scale9Grid.y;
-		}
-		
-		/**
-		 * @private
-		 */
-		private function createTextures(texture:Texture):void
-		{
-			const textureFrame:Rectangle = texture.frame;
-			
-			const regionLeftWidth:Number = this._leftWidth + textureFrame.x;
-			const regionTopHeight:Number = this._topHeight + textureFrame.y;
-			const regionRightWidth:Number = this._rightWidth - (textureFrame.width - texture.width) - textureFrame.x;
-			const regionBottomHeight:Number = this._bottomHeight - (textureFrame.height - texture.height) - textureFrame.y;
-			
-			const hasLeftFrame:Boolean = regionLeftWidth != this._leftWidth;
-			const hasTopFrame:Boolean = regionTopHeight != this._topHeight;
-			const hasRightFrame:Boolean = regionRightWidth != this._rightWidth;
-			const hasBottomFrame:Boolean = regionBottomHeight != this._bottomHeight;
-			
-			const topLeftRegion:Rectangle = new Rectangle(0, 0, regionLeftWidth, regionTopHeight);
-			const topLeftFrame:Rectangle = (hasLeftFrame || hasTopFrame) ? new Rectangle(textureFrame.x, textureFrame.y, this._leftWidth, this._topHeight) : null;
-			this._topLeft = Texture.fromTexture(texture, topLeftRegion, topLeftFrame);
-			
-			const topCenterRegion:Rectangle = new Rectangle(regionLeftWidth, 0, this._centerWidth, regionTopHeight);
-			const topCenterFrame:Rectangle = hasTopFrame ? new Rectangle(0, textureFrame.y, this._centerWidth, this._topHeight) : null;
-			this._topCenter = Texture.fromTexture(texture, topCenterRegion, topCenterFrame);
-			
-			const topRightRegion:Rectangle = new Rectangle(regionLeftWidth + this._centerWidth, 0, regionRightWidth, regionTopHeight);
-			const topRightFrame:Rectangle = (hasTopFrame || hasRightFrame) ? new Rectangle(0, textureFrame.y, this._rightWidth, this._topHeight) : null;
-			this._topRight = Texture.fromTexture(texture, topRightRegion, topRightFrame);
-			
-			const middleLeftRegion:Rectangle = new Rectangle(0, regionTopHeight, regionLeftWidth, this._middleHeight);
-			const middleLeftFrame:Rectangle = hasLeftFrame ? new Rectangle(textureFrame.x, 0, this._leftWidth, this._middleHeight) : null;
-			this._middleLeft = Texture.fromTexture(texture, middleLeftRegion, middleLeftFrame);
-			
-			const middleCenterRegion:Rectangle = new Rectangle(regionLeftWidth, regionTopHeight, this._centerWidth, this._middleHeight);
-			this._middleCenter = Texture.fromTexture(texture, middleCenterRegion);
-			
-			const middleRightRegion:Rectangle = new Rectangle(regionLeftWidth + this._centerWidth, regionTopHeight, regionRightWidth, this._middleHeight);
-			const middleRightFrame:Rectangle = hasRightFrame ? new Rectangle(0, 0, this._rightWidth, this._middleHeight) : null;
-			this._middleRight = Texture.fromTexture(texture, middleRightRegion, middleRightFrame);
-			
-			const bottomLeftRegion:Rectangle = new Rectangle(0, regionTopHeight + this._middleHeight, regionLeftWidth, regionBottomHeight);
-			const bottomLeftFrame:Rectangle = (hasLeftFrame || hasBottomFrame) ? new Rectangle(textureFrame.x, 0, this._leftWidth, this._bottomHeight) : null;
-			this._bottomLeft = Texture.fromTexture(texture, bottomLeftRegion, bottomLeftFrame);
-			
-			const bottomCenterRegion:Rectangle = new Rectangle(regionLeftWidth, regionTopHeight + this._middleHeight, this._centerWidth, regionBottomHeight);
-			const bottomCenterFrame:Rectangle = hasBottomFrame ? new Rectangle(0, 0, this._centerWidth, this._bottomHeight) : null;
-			this._bottomCenter = Texture.fromTexture(texture, bottomCenterRegion, bottomCenterFrame);
-			
-			const bottomRightRegion:Rectangle = new Rectangle(regionLeftWidth + this._centerWidth, regionTopHeight + this._middleHeight, regionRightWidth, regionBottomHeight);
-			const bottomRightFrame:Rectangle = (hasBottomFrame || hasRightFrame) ? new Rectangle(0, 0, this._rightWidth, this._bottomHeight) : null;
-			this._bottomRight = Texture.fromTexture(texture, bottomRightRegion, bottomRightFrame);
-		}
-
-		/**
-		 * @private
-		 */
 		override public function render(support:RenderSupport, parentAlpha:Number):void
 		{
 			if(this._propertiesChanged || this._layoutChanged)
@@ -373,21 +289,23 @@ package org.josht.starling.display
 
 				if(!helperImage)
 				{
-					helperImage = new starling.display.Image(this._topLeft);
+					helperImage = new starling.display.Image(this._textures.topLeft);
 				}
 				helperImage.smoothing = this._smoothing;
 				helperImage.color = this._color;
 
-				const scaledLeftWidth:Number = this._leftWidth * this._textureScale;
-				const scaledTopHeight:Number = this._topHeight * this._textureScale;
-				const scaledRightWidth:Number = this._rightWidth * this._textureScale;
-				const scaledBottomHeight:Number = this._bottomHeight * this._textureScale;
+				const frame:Rectangle = this._textures.texture.frame;
+				const grid:Rectangle = this._textures.scale9Grid;
+				const scaledLeftWidth:Number = grid.x * this._textureScale;
+				const scaledTopHeight:Number = grid.y * this._textureScale;
+				const scaledRightWidth:Number = (frame.width - grid.x - grid.width) * this._textureScale;
+				const scaledBottomHeight:Number = (frame.height - grid.y - grid.height) * this._textureScale;
 				const scaledCenterWidth:Number = this._width - scaledLeftWidth - scaledRightWidth;
 				const scaledMiddleHeight:Number = this._height - scaledTopHeight - scaledBottomHeight;
 
 				if(scaledTopHeight > 0)
 				{
-					helperImage.texture = this._topLeft;
+					helperImage.texture = this._textures.topLeft;
 					helperImage.readjustSize();
 					helperImage.scaleX = helperImage.scaleY = this._textureScale;
 					helperImage.x = scaledLeftWidth - helperImage.width;
@@ -397,7 +315,7 @@ package org.josht.starling.display
 						this._batch.addImage(helperImage);
 					}
 
-					helperImage.texture = this._topCenter;
+					helperImage.texture = this._textures.topCenter;
 					helperImage.readjustSize();
 					helperImage.scaleX = helperImage.scaleY = this._textureScale;
 					helperImage.x = scaledLeftWidth;
@@ -408,7 +326,7 @@ package org.josht.starling.display
 						this._batch.addImage(helperImage);
 					}
 
-					helperImage.texture = this._topRight;
+					helperImage.texture = this._textures.topRight;
 					helperImage.readjustSize();
 					helperImage.scaleX = helperImage.scaleY = this._textureScale;
 					helperImage.x = this._width - scaledRightWidth;
@@ -421,7 +339,7 @@ package org.josht.starling.display
 
 				if(scaledMiddleHeight > 0)
 				{
-					helperImage.texture = this._middleLeft;
+					helperImage.texture = this._textures.middleLeft;
 					helperImage.readjustSize();
 					helperImage.scaleX = helperImage.scaleY = this._textureScale;
 					helperImage.x = scaledLeftWidth - helperImage.width;
@@ -432,7 +350,7 @@ package org.josht.starling.display
 						this._batch.addImage(helperImage);
 					}
 
-					helperImage.texture = this._middleCenter;
+					helperImage.texture = this._textures.middleCenter;
 					helperImage.readjustSize();
 					helperImage.scaleX = helperImage.scaleY = this._textureScale;
 					helperImage.x = scaledLeftWidth;
@@ -444,7 +362,7 @@ package org.josht.starling.display
 						this._batch.addImage(helperImage);
 					}
 
-					helperImage.texture = this._middleRight;
+					helperImage.texture = this._textures.middleRight;
 					helperImage.readjustSize();
 					helperImage.scaleX = helperImage.scaleY = this._textureScale;
 					helperImage.x = this._width - scaledRightWidth;
@@ -458,7 +376,7 @@ package org.josht.starling.display
 
 				if(scaledBottomHeight > 0)
 				{
-					helperImage.texture = this._bottomLeft;
+					helperImage.texture = this._textures.bottomLeft;
 					helperImage.readjustSize();
 					helperImage.scaleX = helperImage.scaleY = this._textureScale;
 					helperImage.x = scaledLeftWidth - helperImage.width;
@@ -468,7 +386,7 @@ package org.josht.starling.display
 						this._batch.addImage(helperImage);
 					}
 
-					helperImage.texture = this._bottomCenter;
+					helperImage.texture = this._textures.bottomCenter;
 					helperImage.readjustSize();
 					helperImage.scaleX = helperImage.scaleY = this._textureScale;
 					helperImage.x = scaledLeftWidth;
@@ -479,7 +397,7 @@ package org.josht.starling.display
 						this._batch.addImage(helperImage);
 					}
 
-					helperImage.texture = this._bottomRight;
+					helperImage.texture = this._textures.bottomRight;
 					helperImage.readjustSize();
 					helperImage.scaleX = helperImage.scaleY = this._textureScale;
 					helperImage.x = this._width - scaledRightWidth;
@@ -501,8 +419,9 @@ package org.josht.starling.display
 		 */
 		private function initializeWidthAndHeight():void
 		{
-			this.width = (this._leftWidth + this._centerWidth + this._rightWidth) * this._textureScale;
-			this.height = (this._topHeight + this._middleHeight + this._bottomHeight) * this._textureScale;
+			const frame:Rectangle = this._textures.texture.frame;
+			this.width = frame.width * this._textureScale;
+			this.height = frame.height * this._textureScale;
 		}
 	}
 }

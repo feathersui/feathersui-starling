@@ -3,6 +3,9 @@
 		<package name="org.josht.starling.display"> 
 			<shortDescription><![CDATA[A variety of custom Starling display objects.]]></shortDescription>
 		</package>
+		<package name="org.josht.starling.textures"> 
+			<shortDescription><![CDATA[Textures for custom Starling display objects.]]></shortDescription>
+		</package>
 		<package name="org.josht.starling.foxhole.controls"> 
 			<shortDescription><![CDATA[Foxhole user interface controls and containers.]]></shortDescription>
 		</package>
