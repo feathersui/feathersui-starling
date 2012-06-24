@@ -1105,6 +1105,10 @@ package org.josht.starling.foxhole.controls
 				}
 			}
 
+			if(this._viewPort is FoxholeControl)
+			{
+				FoxholeControl(this._viewPort).validate();
+			}
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 			
 			if(sizeInvalid || dataInvalid)
@@ -1176,10 +1180,6 @@ package org.josht.starling.foxhole.controls
 				return false;
 			}
 
-			if(this._viewPort is FoxholeControl)
-			{
-				FoxholeControl(this._viewPort).validate();
-			}
 			var horizontalScrollBarOffset:Number = 0;
 			var verticalScrollBarOffset:Number = 0;
 			if(this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FIXED)
