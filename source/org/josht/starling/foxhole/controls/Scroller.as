@@ -233,6 +233,16 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected var verticalScrollBar:IScrollBar;
 
+		/**
+		 * @private
+		 */
+		protected var _horizontalScrollBarHeightOffset:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _verticalScrollBarWidthOffset:Number;
+
 		private var _touchPointID:int = -1;
 		private var _startTouchX:Number;
 		private var _startTouchY:Number;
@@ -252,6 +262,11 @@ package org.josht.starling.foxhole.controls
 		private var _verticalAutoScrollTween:GTween;
 		private var _isDraggingHorizontally:Boolean = false;
 		private var _isDraggingVertically:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected var ignoreViewPortResizing:Boolean = false;
 		
 		private var _viewPortWrapper:Sprite;
 		
@@ -1048,70 +1063,34 @@ package org.josht.starling.foxhole.controls
 			if(scrollBarInvalid || stylesInvalid)
 			{
 				this.refreshScrollBarStyles();
-				if(this.horizontalScrollBar is FoxholeControl)
-				{
-					FoxholeControl(this.horizontalScrollBar).validate();
-				}
-				if(this.verticalScrollBar is FoxholeControl)
-				{
-					FoxholeControl(this.verticalScrollBar).validate();
-				}
 				this.refreshInteractionModeEvents();
 			}
 
-			if(dataInvalid || sizeInvalid)
+			if(this.horizontalScrollBar is FoxholeControl)
 			{
-				var horizontalScrollBarOffset:Number = 0;
-				var verticalScrollBarOffset:Number = 0;
-				if(this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FIXED)
-				{
-					if(this.horizontalScrollBar)
-					{
-						horizontalScrollBarOffset = DisplayObject(this.horizontalScrollBar).height;
-					}
-					if(this.verticalScrollBar)
-					{
-						verticalScrollBarOffset = DisplayObject(this.verticalScrollBar).width;
-					}
-				}
-				if(this._viewPort is IViewPort)
-				{
-					const viewPort:IViewPort = IViewPort(this._viewPort);
-					if(isNaN(this.explicitWidth))
-					{
-						viewPort.visibleWidth = NaN;
-					}
-					else
-					{
-						viewPort.visibleWidth = Math.max(0, this.explicitWidth - verticalScrollBarOffset);
-					}
-					if(isNaN(this.explicitHeight))
-					{
-						viewPort.visibleHeight = NaN;
-					}
-					else
-					{
-						viewPort.visibleHeight = Math.max(0, this.explicitHeight - horizontalScrollBarOffset);
-					}
-					viewPort.minVisibleWidth = Math.max(0,  this._minWidth - verticalScrollBarOffset);
-					viewPort.maxVisibleWidth = Math.max(0, this._maxWidth - verticalScrollBarOffset);
-					viewPort.minVisibleHeight = Math.max(0, this._minHeight - horizontalScrollBarOffset);
-					viewPort.maxVisibleHeight = Math.max(0, this._maxHeight - horizontalScrollBarOffset);
-				}
-				else
-				{
-					this._viewPort.width = (isNaN(this.explicitWidth) ? this._maxWidth : this.explicitWidth) - horizontalScrollBarOffset;
-					this._viewPort.height = (isNaN(this.explicitHeight) ? this._maxHeight : this.explicitHeight) - verticalScrollBarOffset;
-				}
+				FoxholeControl(this.horizontalScrollBar).validate();
+			}
+			if(this.verticalScrollBar is FoxholeControl)
+			{
+				FoxholeControl(this.verticalScrollBar).validate();
 			}
 
-			if(this._viewPort is FoxholeControl)
+			this.ignoreViewPortResizing = true;
+			//even if fixed, we need to measure without them first
+			if(sizeInvalid || stylesInvalid || scrollBarInvalid || dataInvalid)
 			{
-				FoxholeControl(this._viewPort).validate();
+				this.refreshViewPortBoundsWithoutFixedScrollBars();
 			}
+
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
+
+			if(sizeInvalid || stylesInvalid || scrollBarInvalid || dataInvalid)
+			{
+				this.refreshViewPortBoundsWithFixedScrollBars();
+			}
+			this.ignoreViewPortResizing = false;
 			
-			if(sizeInvalid || dataInvalid)
+			if(sizeInvalid || dataInvalid || scrollBarInvalid)
 			{
 				//stop animating. this is a serious change.
 				if(this._horizontalAutoScrollTween)
@@ -1131,25 +1110,7 @@ package org.josht.starling.foxhole.controls
 				this._previousVelocityY.length = 0;
 				this.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
 				this.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
-				if(this._viewPort)
-				{
-					this._maxHorizontalScrollPosition = Math.max(0, this._viewPort.width - this.actualWidth);
-					this._maxVerticalScrollPosition = Math.max(0, this._viewPort.height - this.actualHeight);
-				}
-				else
-				{
-					this._maxHorizontalScrollPosition = 0;
-					this._maxVerticalScrollPosition = 0;
-				}
-				const oldHorizontalScrollPosition:Number = this._horizontalScrollPosition;
-				const oldVerticalScrollPosition:Number = this._verticalScrollPosition;
-				this._horizontalScrollPosition = clamp(this._horizontalScrollPosition, 0, this._maxHorizontalScrollPosition);
-				this._verticalScrollPosition = clamp(this._verticalScrollPosition, 0, this._maxVerticalScrollPosition);
-				if(oldHorizontalScrollPosition != this._horizontalScrollPosition ||
-					oldVerticalScrollPosition != this._verticalScrollPosition)
-				{
-					this._onScroll.dispatch(this);
-				}
+				this.refreshMaxScrollPositions();
 			}
 
 			if(sizeInvalid || scrollInvalid || scrollBarInvalid || dataInvalid)
@@ -1157,12 +1118,12 @@ package org.josht.starling.foxhole.controls
 				this.refreshScrollBarValues();
 			}
 
-			if(scrollBarInvalid || sizeInvalid)
+			if(sizeInvalid || stylesInvalid || scrollBarInvalid || dataInvalid)
 			{
 				this.layout();
 			}
 			
-			if(sizeInvalid || dataInvalid || scrollInvalid || clippingInvalid)
+			if(sizeInvalid || scrollInvalid || stylesInvalid || scrollBarInvalid || dataInvalid || clippingInvalid)
 			{
 				this.scrollContent();
 			}
@@ -1180,28 +1141,15 @@ package org.josht.starling.foxhole.controls
 				return false;
 			}
 
-			var horizontalScrollBarOffset:Number = 0;
-			var verticalScrollBarOffset:Number = 0;
-			if(this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FIXED)
-			{
-				if(this.horizontalScrollBar)
-				{
-					horizontalScrollBarOffset = DisplayObject(this.horizontalScrollBar).height;
-				}
-				if(this.verticalScrollBar)
-				{
-					verticalScrollBarOffset = DisplayObject(this.verticalScrollBar).width;
-				}
-			}
 			var newWidth:Number = this.explicitWidth;
 			var newHeight:Number = this.explicitHeight;
 			if(needsWidth)
 			{
-				newWidth = this._viewPort.width + verticalScrollBarOffset;
+				newWidth = this._viewPort.width + this._verticalScrollBarWidthOffset;
 			}
 			if(needsHeight)
 			{
-				newHeight = this._viewPort.height + horizontalScrollBarOffset;
+				newHeight = this._viewPort.height + this._horizontalScrollBarHeightOffset;
 			}
 			return this.setSizeInternal(newWidth, newHeight, false);
 		}
@@ -1290,6 +1238,150 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
+		protected function refreshViewPortBoundsWithoutFixedScrollBars():void
+		{
+			var horizontalScrollBarHeightOffset:Number = 0;
+			var verticalScrollBarWidthOffset:Number = 0;
+			if(this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FIXED)
+			{
+				horizontalScrollBarHeightOffset = this.horizontalScrollBar ? DisplayObject(this.horizontalScrollBar).height : 0;
+				verticalScrollBarWidthOffset = this.verticalScrollBar ? DisplayObject(this.verticalScrollBar).width : 0;
+			}
+
+			//if scroll bars are fixed, we're going to include the offsets even
+			//if they may not be needed in the final pass. if not fixed, the
+			//view port fills the entire bounds.
+			if(this._viewPort is IViewPort)
+			{
+				const viewPort:IViewPort = IViewPort(this._viewPort);
+				if(isNaN(this.explicitWidth))
+				{
+					viewPort.visibleWidth = NaN;
+				}
+				else
+				{
+					viewPort.visibleWidth = this.explicitWidth - verticalScrollBarWidthOffset;
+				}
+				if(isNaN(this.explicitHeight))
+				{
+					viewPort.visibleHeight = NaN;
+				}
+				else
+				{
+					viewPort.visibleHeight = this.explicitHeight - horizontalScrollBarHeightOffset;
+				}
+				viewPort.minVisibleWidth = this._minWidth - verticalScrollBarWidthOffset;
+				viewPort.maxVisibleWidth = this._maxWidth - verticalScrollBarWidthOffset;
+				viewPort.minVisibleHeight = this._minHeight - horizontalScrollBarHeightOffset;
+				viewPort.maxVisibleHeight = this._maxHeight - horizontalScrollBarHeightOffset;
+			}
+
+			if(this._viewPort is FoxholeControl)
+			{
+				FoxholeControl(this._viewPort).validate();
+			}
+
+			//in fixed mode, if we determine that scrolling is required, we
+			//remember the offsets for later. if scrolling is not needed, then
+			//we will ignore the offsets from here forward
+			this._horizontalScrollBarHeightOffset = 0;
+			this._verticalScrollBarWidthOffset = 0;
+			if(this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FIXED)
+			{
+				if(this.horizontalScrollBar)
+				{
+					if(this._horizontalScrollPolicy == SCROLL_POLICY_ON ||
+						((this._viewPort.width > this.explicitWidth || this._viewPort.width > this._maxWidth) &&
+							this._verticalScrollPolicy != SCROLL_POLICY_OFF))
+					{
+						this._horizontalScrollBarHeightOffset = horizontalScrollBarHeightOffset;
+					}
+				}
+				if(this.verticalScrollBar)
+				{
+					if(this._verticalScrollPolicy == SCROLL_POLICY_ON ||
+						((this._viewPort.height > this.explicitHeight || this._viewPort.height > this._maxHeight) &&
+							this._verticalScrollPolicy != SCROLL_POLICY_OFF))
+					{
+						this._verticalScrollBarWidthOffset = verticalScrollBarWidthOffset;
+					}
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshViewPortBoundsWithFixedScrollBars():void
+		{
+			const displayHorizontalScrollBar:DisplayObject = this.horizontalScrollBar as DisplayObject;
+			const displayVerticalScrollBar:DisplayObject = this.verticalScrollBar as DisplayObject;
+			if(this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_FIXED)
+			{
+				//if not fixed, ensure that the scroll bars are visible
+				if(displayHorizontalScrollBar)
+				{
+					displayHorizontalScrollBar.visible = true;
+				}
+				if(displayVerticalScrollBar)
+				{
+					displayVerticalScrollBar.visible = true;
+				}
+				//and then we're safe to leave
+				return;
+			}
+			const viewPort:IViewPort = this._viewPort as IViewPort;
+			if(displayHorizontalScrollBar)
+			{
+				displayHorizontalScrollBar.visible = this._horizontalScrollBarHeightOffset > 0;
+			}
+			if(displayVerticalScrollBar)
+			{
+				displayVerticalScrollBar.visible = this._verticalScrollBarWidthOffset > 0;
+			}
+
+			//we need to make a second pass on the view port to use the offsets
+			//and the final actual bounds
+			if(viewPort)
+			{
+				viewPort.visibleWidth = this.actualWidth - this._verticalScrollBarWidthOffset;
+				viewPort.visibleHeight = this.actualHeight - this._horizontalScrollBarHeightOffset;
+				if(viewPort is FoxholeControl)
+				{
+					FoxholeControl(viewPort).validate();
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshMaxScrollPositions():void
+		{
+			if(this._viewPort)
+			{
+				this._maxHorizontalScrollPosition = Math.max(0, this._viewPort.width + this._verticalScrollBarWidthOffset - this.actualWidth);
+				this._maxVerticalScrollPosition = Math.max(0, this._viewPort.height + this._horizontalScrollBarHeightOffset - this.actualHeight);
+			}
+			else
+			{
+				this._maxHorizontalScrollPosition = 0;
+				this._maxVerticalScrollPosition = 0;
+			}
+			const oldHorizontalScrollPosition:Number = this._horizontalScrollPosition;
+			const oldVerticalScrollPosition:Number = this._verticalScrollPosition;
+			this._horizontalScrollPosition = clamp(this._horizontalScrollPosition, 0, this._maxHorizontalScrollPosition);
+			this._verticalScrollPosition = clamp(this._verticalScrollPosition, 0, this._maxVerticalScrollPosition);
+			if(oldHorizontalScrollPosition != this._horizontalScrollPosition ||
+				oldVerticalScrollPosition != this._verticalScrollPosition)
+			{
+				this._onScroll.dispatch(this);
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function refreshScrollBarValues():void
 		{
 			if(this.horizontalScrollBar)
@@ -1298,6 +1390,7 @@ package org.josht.starling.foxhole.controls
 				this.horizontalScrollBar.maximum = this._maxHorizontalScrollPosition;
 				this.horizontalScrollBar.value = this._horizontalScrollPosition;
 				this.horizontalScrollBar.page = this.actualWidth;
+				this.horizontalScrollBar.step = 1;
 			}
 
 			if(this.verticalScrollBar)
@@ -1306,6 +1399,7 @@ package org.josht.starling.foxhole.controls
 				this.verticalScrollBar.maximum = this._maxVerticalScrollPosition;
 				this.verticalScrollBar.value = this._verticalScrollPosition;
 				this.verticalScrollBar.page = this.actualHeight;
+				this.verticalScrollBar.step = 1;
 			}
 		}
 
@@ -1370,7 +1464,7 @@ package org.josht.starling.foxhole.controls
 				displayHorizontalScrollBar.x = 0;
 				displayHorizontalScrollBar.y = this.actualHeight - displayHorizontalScrollBar.height;
 				displayHorizontalScrollBar.width = this.actualWidth;
-				if(this._maxVerticalScrollPosition > 0 && displayVerticalScrollBar)
+				if(displayVerticalScrollBar && displayVerticalScrollBar.visible)
 				{
 					displayHorizontalScrollBar.width -= displayVerticalScrollBar.width;
 				}
@@ -1381,7 +1475,7 @@ package org.josht.starling.foxhole.controls
 				displayVerticalScrollBar.x = this.actualWidth - displayVerticalScrollBar.width;
 				displayVerticalScrollBar.y = 0;
 				displayVerticalScrollBar.height = this.actualHeight;
-				if(this._maxHorizontalScrollPosition > 0 && displayHorizontalScrollBar)
+				if(displayHorizontalScrollBar && displayHorizontalScrollBar.visible)
 				{
 					displayVerticalScrollBar.height -= displayHorizontalScrollBar.height;
 				}
@@ -1734,6 +1828,10 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function viewPort_onResize(viewPort:FoxholeControl):void
 		{
+			if(this.ignoreViewPortResizing)
+			{
+				return;
+			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 		
