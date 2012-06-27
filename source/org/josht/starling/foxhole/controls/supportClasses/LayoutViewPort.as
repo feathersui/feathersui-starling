@@ -38,12 +38,12 @@ package org.josht.starling.foxhole.controls.supportClasses
 	 * @private
 	 * Used internally by ScrollContainer. Not meant to be used on its own.
 	 */
-	public class LayoutContainer extends FoxholeControl implements IViewPort
+	public class LayoutViewPort extends FoxholeControl implements IViewPort
 	{
 		private static const HELPER_POINT:Point = new Point();
 		private static const HELPER_RECT:Rectangle = new Rectangle();
 
-		public function LayoutContainer()
+		public function LayoutViewPort()
 		{
 			this.addEventListener(Event.ADDED, addedHandler);
 			this.addEventListener(Event.REMOVED, removedHandler);

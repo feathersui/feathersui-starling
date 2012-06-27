@@ -26,7 +26,7 @@ package org.josht.starling.foxhole.controls
 {
 	import flash.geom.Point;
 
-	import org.josht.starling.foxhole.controls.supportClasses.ListDataContainer;
+	import org.josht.starling.foxhole.controls.supportClasses.ListDataViewPort;
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.PropertyProxy;
 	import org.josht.starling.foxhole.data.ListCollection;
@@ -73,7 +73,7 @@ package org.josht.starling.foxhole.controls
 		 * @private
 		 * The guts of the List's functionality. Handles layout and selection.
 		 */
-		protected var dataContainer:ListDataContainer;
+		protected var dataViewPort:ListDataViewPort;
 		
 		/**
 		 * @private
@@ -853,13 +853,13 @@ package org.josht.starling.foxhole.controls
 				this.addChild(this.scroller);
 			}
 			
-			if(!this.dataContainer)
+			if(!this.dataViewPort)
 			{
-				this.dataContainer = new ListDataContainer();
-				this.dataContainer.owner = this;
-				this.dataContainer.onChange.add(dataContainer_onChange);
-				this.dataContainer.onItemTouch.add(dataContainer_onItemTouch);
-				this.scroller.viewPort = this.dataContainer;
+				this.dataViewPort = new ListDataViewPort();
+				this.dataViewPort.owner = this;
+				this.dataViewPort.onChange.add(dataViewPort_onChange);
+				this.dataViewPort.onItemTouch.add(dataViewPort_onItemTouch);
+				this.scroller.viewPort = this.dataViewPort;
 			}
 		}
 		
@@ -883,18 +883,18 @@ package org.josht.starling.foxhole.controls
 				this.refreshBackgroundSkin();
 			}
 
-			this.dataContainer.isEnabled = this._isEnabled;
-			this.dataContainer.isSelectable = this._isSelectable;
-			this.dataContainer.selectedIndex = this._selectedIndex;
-			this.dataContainer.dataProvider = this._dataProvider;
-			this.dataContainer.itemRendererType = this._itemRendererType;
-			this.dataContainer.itemRendererFactory = this._itemRendererFactory;
-			this.dataContainer.itemRendererProperties = this._itemRendererProperties;
-			this.dataContainer.itemRendererName = this._itemRendererName;
-			this.dataContainer.typicalItem = this._typicalItem;
-			this.dataContainer.layout = this._layout;
-			this.dataContainer.horizontalScrollPosition = this._horizontalScrollPosition;
-			this.dataContainer.verticalScrollPosition = this._verticalScrollPosition;
+			this.dataViewPort.isEnabled = this._isEnabled;
+			this.dataViewPort.isSelectable = this._isSelectable;
+			this.dataViewPort.selectedIndex = this._selectedIndex;
+			this.dataViewPort.dataProvider = this._dataProvider;
+			this.dataViewPort.itemRendererType = this._itemRendererType;
+			this.dataViewPort.itemRendererFactory = this._itemRendererFactory;
+			this.dataViewPort.itemRendererProperties = this._itemRendererProperties;
+			this.dataViewPort.itemRendererName = this._itemRendererName;
+			this.dataViewPort.typicalItem = this._typicalItem;
+			this.dataViewPort.layout = this._layout;
+			this.dataViewPort.horizontalScrollPosition = this._horizontalScrollPosition;
+			this.dataViewPort.verticalScrollPosition = this._verticalScrollPosition;
 			
 			this.scroller.isEnabled = this._isEnabled;
 			this.scroller.x = this._paddingLeft;
@@ -945,15 +945,15 @@ package org.josht.starling.foxhole.controls
 				const item:Object = this._dataProvider.getItemAt(this._scrollToIndex);
 				if(item is Object)
 				{
-					const renderer:DisplayObject = this.dataContainer.itemToItemRenderer(item) as DisplayObject;
+					const renderer:DisplayObject = this.dataViewPort.itemToItemRenderer(item) as DisplayObject;
 					if(renderer)
 					{
-						helperPoint.x = this._maxHorizontalScrollPosition > 0 ? renderer.x - (this.dataContainer.visibleWidth - renderer.width) / 2 : 0;
-						helperPoint.y = this._maxVerticalScrollPosition > 0 ? renderer.y - (this.dataContainer.visibleHeight - renderer.height) / 2 : 0;
+						helperPoint.x = this._maxHorizontalScrollPosition > 0 ? renderer.x - (this.dataViewPort.visibleWidth - renderer.width) / 2 : 0;
+						helperPoint.y = this._maxVerticalScrollPosition > 0 ? renderer.y - (this.dataViewPort.visibleHeight - renderer.height) / 2 : 0;
 					}
 					else
 					{
-						IVirtualLayout(this._layout).getScrollPositionForItemIndexAndBounds(this._scrollToIndex, this.dataContainer.visibleWidth, this.dataContainer.visibleHeight, helperPoint);
+						IVirtualLayout(this._layout).getScrollPositionForItemIndexAndBounds(this._scrollToIndex, this.dataViewPort.visibleWidth, this.dataViewPort.visibleHeight, helperPoint);
 					}
 					this.horizontalScrollPosition = Math.max(0, Math.min(helperPoint.x, this._maxHorizontalScrollPosition));
 					this.verticalScrollPosition = Math.max(0, Math.min(helperPoint.y, this._maxVerticalScrollPosition));
@@ -1067,15 +1067,15 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected function dataContainer_onChange(dataContainer:ListDataContainer):void
+		protected function dataViewPort_onChange(dataViewPort:ListDataViewPort):void
 		{
-			this.selectedIndex = this.dataContainer.selectedIndex;
+			this.selectedIndex = this.dataViewPort.selectedIndex;
 		}
 		
 		/**
 		 * @private
 		 */
-		protected function dataContainer_onItemTouch(dataContainer:ListDataContainer, item:Object, index:int, event:TouchEvent):void
+		protected function dataViewPort_onItemTouch(dataViewPort:ListDataViewPort, item:Object, index:int, event:TouchEvent):void
 		{
 			this._onItemTouch.dispatch(this, item, index, event);
 		}
