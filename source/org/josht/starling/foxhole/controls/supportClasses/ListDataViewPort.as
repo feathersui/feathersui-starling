@@ -46,14 +46,14 @@ package org.josht.starling.foxhole.controls.supportClasses
 	 * @private
 	 * Used internally by List. Not meant to be used on its own.
 	 */
-	public class ListDataContainer extends FoxholeControl implements IViewPort
+	public class ListDataViewPort extends FoxholeControl implements IViewPort
 	{
 		protected static const INVALIDATION_FLAG_ITEM_RENDERER_FACTORY:String = "itemRendererFactory";
 
 		private static const helperPoint:Point = new Point();
 		private static const helperRect:Rectangle = new Rectangle();
 		
-		public function ListDataContainer()
+		public function ListDataViewPort()
 		{
 			super();
 		}
@@ -449,14 +449,14 @@ package org.josht.starling.foxhole.controls.supportClasses
 			this._onChange.dispatch(this);
 		}
 		
-		protected var _onChange:Signal = new Signal(ListDataContainer);
+		protected var _onChange:Signal = new Signal(ListDataViewPort);
 		
 		public function get onChange():ISignal
 		{
 			return this._onChange;
 		}
 		
-		protected var _onItemTouch:Signal = new Signal(ListDataContainer, Object, int, TouchEvent);
+		protected var _onItemTouch:Signal = new Signal(ListDataViewPort, Object, int, TouchEvent);
 		
 		public function get onItemTouch():ISignal
 		{

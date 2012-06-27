@@ -24,7 +24,7 @@
  */
 package org.josht.starling.foxhole.controls
 {
-	import org.josht.starling.foxhole.controls.supportClasses.LayoutContainer;
+	import org.josht.starling.foxhole.controls.supportClasses.LayoutViewPort;
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.PropertyProxy;
 	import org.josht.starling.foxhole.layout.ILayout;
@@ -59,7 +59,7 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function ScrollContainer()
 		{
-			this.viewPort = new LayoutContainer();
+			this.viewPort = new LayoutViewPort();
 		}
 
 		/**
@@ -75,7 +75,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected var viewPort:LayoutContainer;
+		protected var viewPort:LayoutViewPort;
 
 		/**
 		 * @private
