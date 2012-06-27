@@ -45,12 +45,12 @@ package org.josht.starling.foxhole.controls
 	public class SimpleScrollBar extends FoxholeControl implements IScrollBar
 	{
 		/**
-		 * The scrollbar's thumb may be dragged horizontally (on the x-axis).
+		 * The scroll bar's thumb may be dragged horizontally (on the x-axis).
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
 
 		/**
-		 * The scrollbar's thumb may be dragged vertically (on the y-axis).
+		 * The scroll bar's thumb may be dragged vertically (on the y-axis).
 		 */
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
@@ -529,7 +529,7 @@ package org.josht.starling.foxhole.controls
 
 			if(stateInvalid)
 			{
-				this.thumb.isEnabled = isEnabled;
+				this.thumb.isEnabled = this._isEnabled;
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
