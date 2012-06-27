@@ -58,8 +58,9 @@ package org.josht.starling.foxhole.controls
 
 		/**
 		 * The slider has only one track, stretching to fill the full length of
-		 * the slider. In this layout mode, the minimum track is displayed, but
-		 * the maximum track is hidden.
+		 * the slider. In this layout mode, the minimum track is displayed and
+		 * fills the entire length of the slider. The maximum track will not
+		 * exist.
 		 */
 		public static const TRACK_LAYOUT_MODE_SINGLE:String = "single";
 
@@ -610,7 +611,7 @@ package org.josht.starling.foxhole.controls
 			
 			if(stateInvalid)
 			{
-				this.thumb.isEnabled = this.minimumTrack.isEnabled = isEnabled;
+				this.thumb.isEnabled = this.minimumTrack.isEnabled = this._isEnabled;
 				if(this.maximumTrack)
 				{
 					this.maximumTrack.isEnabled = this._isEnabled;
