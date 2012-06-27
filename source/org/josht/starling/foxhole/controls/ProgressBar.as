@@ -269,6 +269,19 @@ package org.josht.starling.foxhole.controls
 
 		/**
 		 * The primary fill to display.
+		 *
+		 * <p>Note: The size of the <code>fillSkin</code>, at the time that it
+		 * is passed to the setter, will be used used as the size of the fill
+		 * when the progress bar is set to the minimum value. In other words,
+		 * if the fill of a horizontal progress bar with a value from 0 to 100
+		 * should be virtually invisible when the value is 0, then the
+		 * <code>fillSkin</code> should have a width of 0 when you pass it in.
+		 * On the other hand, if you're using a <code>Scale9Image</code> as the
+		 * skin, it may require a minimum width before the image parts begin to
+		 * overlap. In that case, the <code>Scale9Image</code> instance passed
+		 * to the <code>fillSkin</code> setter should have a <code>width</code>
+		 * value that is the same as that minimum width value where the image
+		 * parts do not overlap.</p>
 		 */
 		public function get fillSkin():DisplayObject
 		{
