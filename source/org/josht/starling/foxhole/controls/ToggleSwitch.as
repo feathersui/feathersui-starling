@@ -69,7 +69,8 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * The toggle switch has only one track skin, stretching to fill the
 		 * full length of switch. In this layout mode, the on track is
-		 * displayed, but the off track is hidden.
+		 * displayed and fills the entire length of the slider. The maximum
+		 * track will not exist.
 		 */
 		public static const TRACK_LAYOUT_MODE_SINGLE:String = "single";
 
