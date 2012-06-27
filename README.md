@@ -44,6 +44,9 @@ A state machine for menu systems. Uses events (or as3-signals) to trigger naviga
 ### ScrollContainer
 A container that supports scrolling and custom layouts.
 
+### ScrollBar and SimpleScrollBar
+Horizontal or vertical scroll bar controls. The full version has a thumb, track, and step buttons like traditional desktop scroll bars. The simple version has a thumb and an invisible track more like mobile touch scroll bars..
+
 ### Slider
 A typical horizontal or vertical slider control.
 
