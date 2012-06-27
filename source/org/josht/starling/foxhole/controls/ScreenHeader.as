@@ -341,6 +341,16 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
+		protected var originalBackgroundWidth:Number = NaN;
+
+		/**
+		 * @private
+		 */
+		protected var originalBackgroundHeight:Number = NaN;
+
+		/**
+		 * @private
+		 */
 		private var _backgroundSkin:DisplayObject;
 
 		/**
@@ -579,6 +589,18 @@ package org.josht.starling.foxhole.controls
 			var newWidth:Number = needsWidth ? (this._paddingLeft + this._paddingRight) : this.explicitWidth;
 			var newHeight:Number = needsHeight ? 0 : this.explicitHeight;
 
+			if(this._backgroundSkin)
+			{
+				if(isNaN(this.originalBackgroundWidth))
+				{
+					this.originalBackgroundWidth = this._backgroundSkin.width;
+				}
+				if(isNaN(this.originalBackgroundHeight))
+				{
+					this.originalBackgroundHeight = this._backgroundSkin.height;
+				}
+			}
+
 			for each(var item:DisplayObject in this._leftItems)
 			{
 				if(item is FoxholeControl)
@@ -622,6 +644,14 @@ package org.josht.starling.foxhole.controls
 			if(needsHeight)
 			{
 				newHeight += this._paddingTop + this._paddingBottom;
+			}
+			if(needsWidth && !isNaN(this.originalBackgroundWidth))
+			{
+				newWidth = Math.max(newWidth, this.originalBackgroundWidth);
+			}
+			if(needsHeight && !isNaN(this.originalBackgroundHeight))
+			{
+				newHeight = Math.max(newHeight, this.originalBackgroundHeight);
 			}
 
 			return this.setSizeInternal(newWidth, newHeight, false);
