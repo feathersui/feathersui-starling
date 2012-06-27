@@ -26,22 +26,15 @@ package org.josht.starling.foxhole.controls.popups
 {
 	import flash.errors.IllegalOperationError;
 	import flash.events.KeyboardEvent;
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
 
 	import org.josht.starling.foxhole.core.FoxholeControl;
-
-	import org.josht.starling.foxhole.core.FoxholeControl;
-
 	import org.josht.starling.foxhole.core.PopUpManager;
-
 	import org.osflash.signals.ISignal;
-
 	import org.osflash.signals.Signal;
 
 	import starling.core.Starling;
-
 	import starling.display.DisplayObject;
 	import starling.events.ResizeEvent;
 	import starling.events.Touch;
@@ -150,9 +143,19 @@ package org.josht.starling.foxhole.controls.popups
 		{
 			const globalOrigin:Rectangle = this.source.getBounds(Starling.current.stage);
 
+			if(this.source is FoxholeControl)
+			{
+				FoxholeControl(this.source).validate();
+			}
 			if(this.content is FoxholeControl)
 			{
-				FoxholeControl(this.content).validate();
+				const foxholeContent:FoxholeControl = FoxholeControl(this.content);
+				foxholeContent.minWidth = Math.max(foxholeContent.minWidth, this.source.width);
+				foxholeContent.validate();
+			}
+			else
+			{
+				this.content.width = Math.max(this.content.width, this.source.width);
 			}
 
 			const downSpace:Number = (Starling.current.stage.stageHeight - this.content.height) - (globalOrigin.y + globalOrigin.height);
