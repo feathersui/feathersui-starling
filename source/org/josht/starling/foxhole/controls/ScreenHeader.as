@@ -341,6 +341,32 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
+		private var _verticalAlign:String = HorizontalLayout.VERTICAL_ALIGN_MIDDLE;
+		
+		/**
+		 * The alignment of the items vertically, on the y-axis.
+		 */
+		public function get verticalAlign():String
+		{
+			return this._verticalAlign;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set verticalAlign(value:String):void
+		{
+			if(this._verticalAlign == value)
+			{
+				return;
+			}
+			this._verticalAlign = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+		
+		/**
+		 * @private
+		 */
 		protected var originalBackgroundWidth:Number = NaN;
 
 		/**
@@ -484,7 +510,7 @@ package org.josht.starling.foxhole.controls
 			if(!this._layout)
 			{
 				this._layout = new HorizontalLayout();
-				this._layout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_MIDDLE;
+				this._layout.verticalAlign = _verticalAlign;
 			}
 
 			if(!this._titleLabel)
@@ -519,6 +545,7 @@ package org.josht.starling.foxhole.controls
 				this._layout.paddingBottom = this._paddingBottom;
 				this._layout.paddingRight = this._paddingRight;
 				this._layout.paddingLeft = this._paddingLeft;
+				this._layout.verticalAlign = this._verticalAlign;
 				this._titleLabel.textFormat = this._textFormat;
 			}
 
