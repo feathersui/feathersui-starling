@@ -401,7 +401,50 @@ package org.josht.starling.foxhole.controls
 			return this._onEnter;
 		}
 
-
+		/**
+		 * @private
+		 */
+		private var _returnKeyLabel:String="default";
+		
+		public function get returnKeyLabel():String
+		{
+			return _returnKeyLabel;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set returnKeyLabel(value:String):void
+		{			
+			if (!value)
+				value = "default";
+			_returnKeyLabel = value;
+			if (stageText)
+				stageText.returnKeyLabel=value;		
+		}		
+		
+		/**
+		 * @private
+		 */
+		private var _softKeyboardType:String="default";
+		
+		public function get softKeyboardType():String
+		{
+			return _softKeyboardType;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set softKeyboardType(value:String):void
+		{			
+			if (!value)
+				value = "default";
+			_softKeyboardType = value;
+			if (stageText)
+				stageText.softKeyboardType=value;
+		}
+		
 		/**
 		 * @private
 		 */
@@ -549,6 +592,8 @@ package org.josht.starling.foxhole.controls
 			this.stageText = new StageTextType(initOptions);
 			this.stageText.visible = false;
 			this.stageText.stage = Starling.current.nativeStage;
+			this.stageText.returnKeyLabel=_returnKeyLabel;
+			this.stageText.softKeyboardType=_softKeyboardType;
 			this.stageText.addEventListener(Event.CHANGE, stageText_changeHandler);
 			this.stageText.addEventListener(KeyboardEvent.KEY_DOWN, stageText_keyDownHandler);
 			this.stageText.addEventListener(FocusEvent.FOCUS_IN, stageText_focusInHandler);
