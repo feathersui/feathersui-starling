@@ -71,6 +71,21 @@ package org.josht.starling.foxhole.controls
 		public static const TITLE_ALIGN_PREFER_RIGHT:String = "preferRight";
 
 		/**
+		 * The items will be aligned to the top of the bounds.
+		 */
+		public static const VERTICAL_ALIGN_TOP:String = "top";
+
+		/**
+		 * The items will be aligned to the middle of the bounds.
+		 */
+		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
+
+		/**
+		 * The items will be aligned to the bottom of the bounds.
+		 */
+		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
+
+		/**
 		 * @private
 		 */
 		private static const ITEM_NAME:String = "foxhole-header-item";
@@ -341,6 +356,32 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
+		protected var _verticalAlign:String = VERTICAL_ALIGN_MIDDLE;
+
+		/**
+		 * The alignment of the items vertically, on the y-axis.
+		 */
+		public function get verticalAlign():String
+		{
+			return this._verticalAlign;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set verticalAlign(value:String):void
+		{
+			if(this._verticalAlign == value)
+			{
+				return;
+			}
+			this._verticalAlign = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var originalBackgroundWidth:Number = NaN;
 
 		/**
@@ -519,6 +560,7 @@ package org.josht.starling.foxhole.controls
 				this._layout.paddingBottom = this._paddingBottom;
 				this._layout.paddingRight = this._paddingRight;
 				this._layout.paddingLeft = this._paddingLeft;
+				this._layout.verticalAlign = this._verticalAlign;
 				this._titleLabel.textFormat = this._textFormat;
 			}
 
@@ -747,7 +789,18 @@ package org.josht.starling.foxhole.controls
 			{
 				this._titleLabel.x = (this.actualWidth - this._titleLabel.width) / 2;
 			}
-			this._titleLabel.y = (this.actualHeight - this._titleLabel.height) / 2;
+			if(this._verticalAlign == VERTICAL_ALIGN_TOP)
+			{
+				this._titleLabel.y = this._paddingTop;
+			}
+			else if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
+			{
+				this._titleLabel.y = this.actualHeight - this._paddingBottom - this._titleLabel.height;
+			}
+			else
+			{
+				this._titleLabel.y = (this.actualHeight - this._titleLabel.height) / 2;
+			}
 		}
 	}
 }
