@@ -387,7 +387,64 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._onChange;
 		}
+		
+		/**
+		 * @private
+		 */
+		protected var _onEnter:Signal = new Signal(TextInput);
+		
+		/**
+		 * Dispatched when the user presses enter key.
+		 */
+		public function get onEnter():ISignal
+		{
+			return this._onEnter;
+		}
 
+		/**
+		 * @private
+		 */
+		private var _returnKeyLabel:String="default";
+		
+		public function get returnKeyLabel():String
+		{
+			return _returnKeyLabel;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set returnKeyLabel(value:String):void
+		{			
+			if (!value)
+				value = "default";
+			_returnKeyLabel = value;
+			if (stageText)
+				stageText.returnKeyLabel=value;		
+		}		
+		
+		/**
+		 * @private
+		 */
+		private var _softKeyboardType:String="default";
+		
+		public function get softKeyboardType():String
+		{
+			return _softKeyboardType;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set softKeyboardType(value:String):void
+		{			
+			if (!value)
+				value = "default";
+			_softKeyboardType = value;
+			if (stageText)
+				stageText.softKeyboardType=value;
+		}
+		
 		/**
 		 * @private
 		 */
@@ -535,6 +592,8 @@ package org.josht.starling.foxhole.controls
 			this.stageText = new StageTextType(initOptions);
 			this.stageText.visible = false;
 			this.stageText.stage = Starling.current.nativeStage;
+			this.stageText.returnKeyLabel=_returnKeyLabel;
+			this.stageText.softKeyboardType=_softKeyboardType;
 			this.stageText.addEventListener(Event.CHANGE, stageText_changeHandler);
 			this.stageText.addEventListener(KeyboardEvent.KEY_DOWN, stageText_keyDownHandler);
 			this.stageText.addEventListener(FocusEvent.FOCUS_IN, stageText_focusInHandler);
@@ -841,6 +900,9 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function stageText_keyDownHandler(event:KeyboardEvent):void
 		{
+			if (event.keyCode == Keyboard.ENTER)			
+				_onEnter.dispatch(this);			
+
 			//even a listener on the stage won't detect the back key press that
 			//will close the application if the StageText has focus, so we
 			//always need to prevent it here
@@ -848,6 +910,8 @@ package org.josht.starling.foxhole.controls
 			{
 				event.preventDefault();
 				Starling.current.nativeStage.focus = Starling.current.nativeStage;
+				//dispatch clone event for correct event processing 
+				Starling.current.nativeStage.dispatchEvent(event.clone());
 			}
 		}
 	}
