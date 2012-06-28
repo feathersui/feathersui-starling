@@ -865,6 +865,8 @@ package org.josht.starling.foxhole.controls
 			{
 				event.preventDefault();
 				Starling.current.nativeStage.focus = Starling.current.nativeStage;
+				//dispatch clone event for correct event processing 
+				Starling.current.nativeStage.dispatchEvent(event.clone());
 			}
 		}
 	}
