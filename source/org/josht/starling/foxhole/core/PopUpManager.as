@@ -25,7 +25,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 package org.josht.starling.foxhole.core
 {
 	import flash.utils.Dictionary;
-
+	
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
@@ -47,12 +47,17 @@ package org.josht.starling.foxhole.core
 		public static var overlayFactory:Function = defaultOverlayFactory;
 
 		/**
+		 * Alpha value for the overlay quad 
+		 */		
+		public static var overlayAlpha:Number=0;
+		
+		/**
 		 * The default provider for modal overlays.
 		 */
 		public static function defaultOverlayFactory():DisplayObject
 		{
 			const quad:Quad = new Quad(100, 100, 0x000000);
-			quad.alpha = 0;
+			quad.alpha = overlayAlpha;
 			return quad;
 		}
 		
