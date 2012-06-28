@@ -18,6 +18,9 @@
 		<package name="org.josht.starling.foxhole.data"> 
 			<shortDescription><![CDATA[Collections used by Foxhole to display data.]]></shortDescription>
 		</package>
+		<package name="org.josht.starling.foxhole.dragDrop"> 
+			<shortDescription><![CDATA[Classes related to drag and drop operations.]]></shortDescription>
+		</package>
 		<package name="org.josht.starling.foxhole.layout"> 
 			<shortDescription><![CDATA[A variety of layout algorithms used to customize Foxhole controls and containers.]]></shortDescription>
 		</package>
