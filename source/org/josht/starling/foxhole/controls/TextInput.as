@@ -387,6 +387,20 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._onChange;
 		}
+		
+		/**
+		 * @private
+		 */
+		protected var _onEnter:Signal = new Signal(TextInput);
+		
+		/**
+		 * Dispatched when the user presses enter key.
+		 */
+		public function get onEnter():ISignal
+		{
+			return this._onEnter;
+		}
+
 
 		/**
 		 * @private
@@ -841,6 +855,9 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function stageText_keyDownHandler(event:KeyboardEvent):void
 		{
+			if (event.keyCode == Keyboard.ENTER)			
+				_onEnter.dispatch(this);			
+
 			//even a listener on the stage won't detect the back key press that
 			//will close the application if the StageText has focus, so we
 			//always need to prevent it here
