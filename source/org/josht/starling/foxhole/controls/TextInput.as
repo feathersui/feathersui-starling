@@ -31,7 +31,6 @@ package org.josht.starling.foxhole.controls
 	import flash.events.KeyboardEvent;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
