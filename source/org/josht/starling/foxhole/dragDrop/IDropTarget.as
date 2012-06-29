@@ -40,9 +40,17 @@ package org.josht.starling.foxhole.dragDrop
 		 * the drag to the be dropped on the target.
 		 *
 		 * <p>A listener is expected to have the following function signature:</p>
-		 * <pre>function(target:IDropTarget, data:DragData):void</pre>
+		 * <pre>function(target:IDropTarget, data:DragData, localX:Number, localY:Number):void</pre>
 		 */
 		function get onDragEnter():ISignal;
+
+		/**
+		 * Dispatched when the touch moves within the drop target's bounds.
+		 *
+		 * <p>A listener is expected to have the following function signature:</p>
+		 * <pre>function(target:IDropTarget, data:DragData, localX:Number, localY:Number):void</pre>
+		 */
+		function get onDragMove():ISignal;
 
 		/**
 		 * Dispatched when the touch exits the drop target's bounds or when
@@ -51,7 +59,7 @@ package org.josht.starling.foxhole.dragDrop
 		 * accepted the drag.
 		 *
 		 * <p>A listener is expected to have the following function signature:</p>
-		 * <pre>function(target:IDropTarget, data:DragData):void</pre>
+		 * <pre>function(target:IDropTarget, data:DragData, localX:Number, localY:Number):void</pre>
 		 */
 		function get onDragExit():ISignal;
 
@@ -61,7 +69,7 @@ package org.josht.starling.foxhole.dragDrop
 		 * drag.
 		 *
 		 * <p>A listener is expected to have the following function signature:</p>
-		 * <pre>function(target:IDropTarget, data:DragData):void</pre>
+		 * <pre>function(target:IDropTarget, data:DragData, localX:Number, localY:Number):void</pre>
 		 */
 		function get onDragDrop():ISignal;
 	}
