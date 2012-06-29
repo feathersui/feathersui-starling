@@ -94,6 +94,16 @@ package org.josht.starling.foxhole.dragDrop
 		protected static var avatarOffsetY:Number;
 
 		/**
+		 * @private
+		 */
+		protected static var dropTargetLocalX:Number;
+
+		/**
+		 * @private
+		 */
+		protected static var dropTargetLocalY:Number;
+
+		/**
 		 * Determines if the drag and drop manager is currently handling a drag.
 		 * Only one drag may be active at a time.
 		 */
@@ -177,7 +187,7 @@ package org.josht.starling.foxhole.dragDrop
 			}
 			if(dropTarget)
 			{
-				dropTarget.onDragExit.dispatch(dropTarget, dragData);
+				dropTarget.onDragExit.dispatch(dropTarget, dragData, dropTargetLocalX, dropTargetLocalY);
 				dropTarget = null;
 			}
 			const source:IDragSource = dragSource;
@@ -228,30 +238,42 @@ package org.josht.starling.foxhole.dragDrop
 
 			if(touch.phase == TouchPhase.MOVED)
 			{
-				const location:Point = touch.getLocation(stage);
+				var location:Point = touch.getLocation(stage);
 				if(avatar)
 				{
 					avatar.x = location.x + avatarOffsetX;
 					avatar.y = location.y + avatarOffsetY;
 				}
-				var potentialTarget:DisplayObject = stage.hitTest(location, true);
-				while(potentialTarget && !(potentialTarget is IDropTarget))
+				var target:DisplayObject = stage.hitTest(location, true);
+				while(target && !(target is IDropTarget))
 				{
-					potentialTarget = potentialTarget.parent;
+					target = target.parent;
 				}
-
-				if(potentialTarget != dropTarget)
+				if(target)
+				{
+					location = target.globalToLocal(location);
+				}
+				if(target != dropTarget)
 				{
 					if(dropTarget && isAccepted)
 					{
-						dropTarget.onDragExit.dispatch(dropTarget, dragData);
+						//notice that we can reuse the previously saved location
+						dropTarget.onDragExit.dispatch(dropTarget, dragData, dropTargetLocalX, dropTargetLocalY);
 					}
-					dropTarget = IDropTarget(potentialTarget);
+					dropTarget = IDropTarget(target);
 					isAccepted = false;
 					if(dropTarget)
 					{
-						dropTarget.onDragEnter.dispatch(dropTarget, dragData);
+						dropTargetLocalX = location.x;
+						dropTargetLocalY = location.y;
+						dropTarget.onDragEnter.dispatch(dropTarget, dragData, dropTargetLocalX, dropTargetLocalY);
 					}
+				}
+				else if(dropTarget)
+				{
+					dropTargetLocalX = location.x;
+					dropTargetLocalY = location.y;
+					dropTarget.onDragMove.dispatch(dropTarget, dragData, dropTargetLocalX, dropTargetLocalY)
 				}
 			}
 			else if(touch.phase == TouchPhase.ENDED)
@@ -259,7 +281,7 @@ package org.josht.starling.foxhole.dragDrop
 				var isDropped:Boolean = false;
 				if(dropTarget && isAccepted)
 				{
-					dropTarget.onDragDrop.dispatch(dropTarget, dragData);
+					dropTarget.onDragDrop.dispatch(dropTarget, dragData, dropTargetLocalX, dropTargetLocalY);
 					isDropped = true;
 				}
 				dropTarget = null;
