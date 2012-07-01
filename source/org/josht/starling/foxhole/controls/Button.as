@@ -2040,7 +2040,7 @@ package org.josht.starling.foxhole.controls
 			this.currentSkin = null;
 			for each(var stateName:String in this._stateNames)
 			{
-				var skinName:String = "_" + stateName + "Skin";
+				var skinName:String = stateName + "Skin";
 				if(this._currentState == stateName)
 				{
 					this.currentSkin = DisplayObject(this[skinName]);
@@ -2096,7 +2096,7 @@ package org.josht.starling.foxhole.controls
 			this.currentIcon = null;
 			for each(var stateName:String in this._stateNames)
 			{
-				var iconName:String = "_" + stateName + "Icon";
+				var iconName:String = stateName + "Icon";
 				if(this._currentState == stateName)
 				{
 					this.currentIcon = DisplayObject(this[iconName]);
@@ -2149,7 +2149,7 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function refreshLabelStyles():void
 		{
-			const formatName:String = "_" + this._currentState + "TextFormat";
+			const formatName:String = this._currentState + "TextFormat";
 			var format:BitmapFontTextFormat = BitmapFontTextFormat(this[formatName]);
 			if(!format)
 			{
