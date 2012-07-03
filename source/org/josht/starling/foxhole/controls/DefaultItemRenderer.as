@@ -31,6 +31,8 @@ package org.josht.starling.foxhole.controls
 
 	import starling.display.DisplayObject;
 	import starling.display.Image;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
 	import starling.textures.Texture;
 
 	/**
@@ -1052,11 +1054,16 @@ package org.josht.starling.foxhole.controls
 				{
 					if(this.accessory)
 					{
+						this.accessory.removeEventListener(TouchEvent.TOUCH, accessory_touchHandler);
 						this.accessory.removeFromParent();
 					}
 					this.accessory = newAccessory;
 					if(this.accessory)
 					{
+						if(this.accessory is FoxholeControl && !(this.accessory is Label))
+						{
+							this.accessory.addEventListener(TouchEvent.TOUCH, accessory_touchHandler);
+						}
 						this.addChild(this.accessory);
 					}
 				}
@@ -1183,12 +1190,20 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private function stateDelayTimer_timerCompleteHandler(event:TimerEvent):void
+		protected function stateDelayTimer_timerCompleteHandler(event:TimerEvent):void
 		{
 			this._stateDelayTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, stateDelayTimer_timerCompleteHandler);
 			this._stateDelayTimer = null;
 			super.currentState = this._delayedCurrentState;
 			this._delayedCurrentState = null;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function accessory_touchHandler(event:TouchEvent):void
+		{
+			event.stopPropagation();
 		}
 	}
 }
