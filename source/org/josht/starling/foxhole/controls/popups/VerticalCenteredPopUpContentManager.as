@@ -36,6 +36,9 @@ package org.josht.starling.foxhole.controls.popups
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.events.ResizeEvent;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 
 	/**
 	 * Displays a pop-up at the center of the stage, filling the vertical space.
@@ -83,6 +86,11 @@ package org.josht.starling.foxhole.controls.popups
 		/**
 		 * @private
 		 */
+		protected var touchPointID:int;
+
+		/**
+		 * @private
+		 */
 		private var _onClose:Signal = new Signal(VerticalCenteredPopUpContentManager);
 
 		/**
@@ -111,6 +119,7 @@ package org.josht.starling.foxhole.controls.popups
 				FoxholeControl(this.content).onResize.add(content_resizeHandler);
 			}
 			this.layout();
+			Starling.current.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			Starling.current.stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
 			Starling.current.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler, false, int.MAX_VALUE, true);
 		}
@@ -124,6 +133,7 @@ package org.josht.starling.foxhole.controls.popups
 			{
 				return;
 			}
+			Starling.current.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			Starling.current.stage.removeEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
 			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 			if(this.content is FoxholeControl)
@@ -208,6 +218,34 @@ package org.josht.starling.foxhole.controls.popups
 		{
 			this.layout();
 		}
+
+		/**
+		 * @private
+		 */
+		protected function stage_touchHandler(event:TouchEvent):void
+		{
+			if(event.interactsWith(this.content))
+			{
+				return;
+			}
+			const touch:Touch = event.getTouch(Starling.current.stage);
+			if(!touch || (touch.phase == TouchPhase.BEGAN && this.touchPointID >= 0) ||
+				(touch.phase != TouchPhase.BEGAN && (this.touchPointID < 0 || this.touchPointID != touch.id)))
+			{
+				return;
+			}
+
+			if(touch.phase == TouchPhase.BEGAN)
+			{
+				this.touchPointID = touch.id;
+			}
+			else if(touch.phase == TouchPhase.ENDED)
+			{
+				this.touchPointID = -1;
+				this.close();
+			}
+		}
+
 
 	}
 }
