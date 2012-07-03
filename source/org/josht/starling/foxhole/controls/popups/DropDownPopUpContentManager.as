@@ -93,7 +93,7 @@ package org.josht.starling.foxhole.controls.popups
 
 			this.content = content;
 			this.source = source;
-			PopUpManager.addPopUp(this.content, true, false);
+			PopUpManager.addPopUp(this.content, false, false);
 			if(this.content is FoxholeControl)
 			{
 				const foxholeContent:FoxholeControl = FoxholeControl(this.content);
@@ -247,24 +247,12 @@ package org.josht.starling.foxhole.controls.popups
 			{
 				return;
 			}
-			const touch:Touch = event.getTouch(Starling.current.stage);
-			if(!touch || (this._touchPointID >= 0 && this._touchPointID != touch.id))
+			const touch:Touch = event.getTouch(Starling.current.stage, TouchPhase.BEGAN);
+			if(!touch)
 			{
 				return;
 			}
-
-			if(touch.phase == TouchPhase.BEGAN)
-			{
-				this._touchPointID = touch.id;
-			}
-			else if(this._touchPointID >= 0)
-			{
-				if(touch.phase == TouchPhase.ENDED)
-				{
-					this._touchPointID = -1;
-					this.close();
-				}
-			}
+			this.close();
 		}
 	}
 }
