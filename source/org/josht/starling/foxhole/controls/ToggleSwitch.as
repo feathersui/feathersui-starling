@@ -1080,7 +1080,6 @@ package org.josht.starling.foxhole.controls
 				return;
 			}
 
-			event.stopPropagation();
 			if(touch.phase == TouchPhase.ENDED)
 			{
 				const location:Point = touch.getLocation(this);

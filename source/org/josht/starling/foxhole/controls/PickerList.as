@@ -723,7 +723,6 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			event.stopPropagation();
 			if(touch.phase == TouchPhase.BEGAN)
 			{
 				this._buttonTouchPointID = touch.id;
