@@ -37,6 +37,8 @@ package org.josht.starling.foxhole.controls
 	import com.gskinner.motion.easing.Cubic;
 	import com.gskinner.motion.easing.Sine;
 
+	import flash.events.MouseEvent;
+
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.system.Capabilities;
@@ -51,6 +53,8 @@ package org.josht.starling.foxhole.controls
 	import org.josht.utils.math.clamp;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
+
+	import starling.core.Starling;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -70,6 +74,11 @@ package org.josht.starling.foxhole.controls
 	 */
 	public class Scroller extends FoxholeControl
 	{
+		/**
+		 * @private
+		 */
+		private static var helperPoint:Point = new Point();
+
 		/**
 		 * @private
 		 */
@@ -221,6 +230,9 @@ package org.josht.starling.foxhole.controls
 
 			this._viewPortWrapper = new Sprite();
 			this.addChild(this._viewPortWrapper);
+
+			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
+			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 		}
 
 		/**
@@ -487,6 +499,39 @@ package org.josht.starling.foxhole.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
+
+		/**
+		 * @private
+		 */
+		private var _horizontalScrollStep:Number = 1;
+
+		/**
+		 * The number of pixels the scroller can be stepped horizontally. Passed
+		 * to the horizontal scroll bar, if one exists. Touch scrolling is not
+		 * affected by the step value.
+		 */
+		public function get horizontalScrollStep():Number
+		{
+			return this._horizontalScrollStep;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set horizontalScrollStep(value:Number):void
+		{
+			if(this._horizontalScrollStep == value)
+			{
+				return;
+			}
+			if(isNaN(value))
+			{
+				//nope
+				throw new ArgumentError("horizontalScrollStep cannot be NaN.");
+			}
+			this._horizontalScrollStep = value;
+			this.invalidate(INVALIDATION_FLAG_SCROLL);
+		}
 		
 		/**
 		 * @private
@@ -600,6 +645,39 @@ package org.josht.starling.foxhole.controls
 			}
 			this._horizontalAlign = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _verticalScrollStep:Number = 1;
+
+		/**
+		 * The number of pixels the scroller can be stepped vertically. Passed
+		 * to the vertical scroll bar, if it exists, and used for scrolling with
+		 * the mouse wheel. Touch scrolling is not affected by the step value.
+		 */
+		public function get verticalScrollStep():Number
+		{
+			return this._verticalScrollStep;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set verticalScrollStep(value:Number):void
+		{
+			if(this._verticalScrollStep == value)
+			{
+				return;
+			}
+			if(isNaN(value))
+			{
+				//nope
+				throw new ArgumentError("verticalScrollStep cannot be NaN.");
+			}
+			this._verticalScrollStep = value;
+			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
 		
 		/**
@@ -1039,7 +1117,6 @@ package org.josht.starling.foxhole.controls
 		 */
 		override protected function initialize():void
 		{
-			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 			this._onScroll.add(internal_onScroll);
 		}
 		
@@ -1390,7 +1467,7 @@ package org.josht.starling.foxhole.controls
 				this.horizontalScrollBar.maximum = this._maxHorizontalScrollPosition;
 				this.horizontalScrollBar.value = this._horizontalScrollPosition;
 				this.horizontalScrollBar.page = this.actualWidth;
-				this.horizontalScrollBar.step = 1;
+				this.horizontalScrollBar.step = this._horizontalScrollStep;
 			}
 
 			if(this.verticalScrollBar)
@@ -1399,7 +1476,7 @@ package org.josht.starling.foxhole.controls
 				this.verticalScrollBar.maximum = this._maxVerticalScrollPosition;
 				this.verticalScrollBar.value = this._verticalScrollPosition;
 				this.verticalScrollBar.page = this.actualHeight;
-				this.verticalScrollBar.step = 1;
+				this.verticalScrollBar.step = this._verticalScrollStep;
 			}
 		}
 
@@ -1917,7 +1994,10 @@ package org.josht.starling.foxhole.controls
 			this.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
 		}
 
-		private function enterFrameHandler(event:Event):void
+		/**
+		 * @private
+		 */
+		protected function enterFrameHandler(event:Event):void
 		{
 			if(this._isScrollingStopped)
 			{
@@ -2001,8 +2081,11 @@ package org.josht.starling.foxhole.controls
 				this.updateVerticalScrollFromTouchPosition(this._currentTouchY);
 			}
 		}
-		
-		private function stage_touchHandler(event:TouchEvent):void
+
+		/**
+		 * @private
+		 */
+		protected function stage_touchHandler(event:TouchEvent):void
 		{
 			const touch:Touch = event.getTouch(this.stage);
 			if(!touch || (touch.phase != TouchPhase.MOVED && touch.phase != TouchPhase.ENDED) || (this._touchPointID >= 0 && touch.id != this._touchPointID))
@@ -2079,7 +2162,24 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 
-		private function horizontalScrollBar_touchHandler(event:TouchEvent):void
+		/**
+		 * @private
+		 */
+		protected function nativeStage_mouseWheelHandler(event:MouseEvent):void
+		{
+			helperPoint.x = event.stageX;
+			helperPoint.y = event.stageY;
+			helperPoint = this.globalToLocal(helperPoint);
+			if(this.hitTest(helperPoint, true))
+			{
+				this.verticalScrollPosition = Math.min(this._maxVerticalScrollPosition, Math.max(0, this._verticalScrollPosition - event.delta * this._verticalScrollStep));
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function horizontalScrollBar_touchHandler(event:TouchEvent):void
 		{
 			const displayHorizontalScrollBar:DisplayObject = DisplayObject(event.currentTarget);
 			const touch:Touch = event.getTouch(displayHorizontalScrollBar);
@@ -2110,7 +2210,10 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 
-		private function verticalScrollBar_touchHandler(event:TouchEvent):void
+		/**
+		 * @private
+		 */
+		protected function verticalScrollBar_touchHandler(event:TouchEvent):void
 		{
 			const displayVerticalScrollBar:DisplayObject = DisplayObject(event.currentTarget);
 			const touch:Touch = event.getTouch(displayVerticalScrollBar);
@@ -2140,12 +2243,21 @@ package org.josht.starling.foxhole.controls
 				}
 			}
 		}
+
+		/**
+		 * @private
+		 */
+		protected function addedToStageHandler(event:Event):void
+		{
+			Starling.current.nativeStage.addEventListener(MouseEvent.MOUSE_WHEEL, nativeStage_mouseWheelHandler);
+		}
 		
 		/**
 		 * @private
 		 */
-		private function removedFromStageHandler(event:Event):void
+		protected function removedFromStageHandler(event:Event):void
 		{
+			Starling.current.nativeStage.removeEventListener(MouseEvent.MOUSE_WHEEL, nativeStage_mouseWheelHandler);
 			this._touchPointID = -1;
 			this._velocityX = 0;
 			this._velocityY = 0;

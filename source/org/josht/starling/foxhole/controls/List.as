@@ -954,15 +954,25 @@ package org.josht.starling.foxhole.controls
 						helperPoint.x = this._maxHorizontalScrollPosition > 0 ? renderer.x - (this.dataViewPort.visibleWidth - renderer.width) / 2 : 0;
 						helperPoint.y = this._maxVerticalScrollPosition > 0 ? renderer.y - (this.dataViewPort.visibleHeight - renderer.height) / 2 : 0;
 					}
-					else
+					else if(this._layout is IVirtualLayout)
 					{
 						IVirtualLayout(this._layout).getScrollPositionForItemIndexAndBounds(this._scrollToIndex, this.dataViewPort.visibleWidth, this.dataViewPort.visibleHeight, helperPoint);
 					}
+					else
+					{
+						//this should never happen because if the layout isn't
+						//virtual, then the renderer should exist. just in case,
+						//it default to the current scroll position.
+						helperPoint.x = this._horizontalScrollPosition;
+						helperPoint.y = this._verticalScrollPosition;
+					}
+
 					this.horizontalScrollPosition = Math.max(0, Math.min(helperPoint.x, this._maxHorizontalScrollPosition));
 					this.verticalScrollPosition = Math.max(0, Math.min(helperPoint.y, this._maxVerticalScrollPosition));
 				}
 				this._scrollToIndex = -1;
 			}
+			this.scroller.horizontalScrollStep = this.scroller.verticalScrollStep = this.dataViewPort.typicalItemHeight;
 		}
 
 		/**
