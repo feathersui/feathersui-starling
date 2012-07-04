@@ -69,6 +69,9 @@ package org.josht.starling.foxhole.core
 
 		/**
 		 * Dispatched when a property changes.
+		 *
+		 * <p>Listeners are expected to have the following function signature:</p>
+		 * <pre>function(proxy:PropertyProxy, propertyName:String):void</pre>
 		 */
 		public function get onChange():ISignal
 		{

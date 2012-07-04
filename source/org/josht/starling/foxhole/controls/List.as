@@ -360,6 +360,9 @@ package org.josht.starling.foxhole.controls
 		
 		/**
 		 * Dispatched when an item in the list is touched (in any touch phase).
+		 *
+		 * <p>Listeners are expected to have the following function signature:</p>
+		 * <pre>function(list:List, item:Object, index:int, event:TouchEvent):void</pre>
 		 */
 		public function get onItemTouch():ISignal
 		{
