@@ -212,10 +212,6 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function set value(newValue:Number):void
 		{
-			if(this._step != 0)
-			{
-				newValue = roundToNearest(newValue, this._step);
-			}
 			newValue = clamp(newValue, this._minimum, this._maximum);
 			if(this._value == newValue)
 			{
@@ -299,10 +295,6 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function set step(value:Number):void
 		{
-			if(this._step == value)
-			{
-				return;
-			}
 			this._step = value;
 		}
 
@@ -1414,11 +1406,21 @@ package org.josht.starling.foxhole.controls
 				const touchValue:Number = this.locationToValue(location);
 				if(touchValue < this._value)
 				{
-					this.value = Math.max(touchValue, this._value - this._page);
+					var newValue:Number = Math.max(touchValue, this._value - this._page);
+					if(this._step != 0)
+					{
+						newValue = roundToNearest(newValue, this._step);
+					}
+					this.value = newValue;
 				}
 				else if(touchValue > this._value)
 				{
-					this.value = Math.min(touchValue, this._value + this._page);
+					newValue = Math.min(touchValue, this._value + this._page);
+					if(this._step != 0)
+					{
+						newValue = roundToNearest(newValue, this._step);
+					}
+					this.value = newValue;
 				}
 			}
 			else if(touch.phase == TouchPhase.ENDED)
@@ -1454,7 +1456,12 @@ package org.josht.starling.foxhole.controls
 			}
 			else if(touch.phase == TouchPhase.MOVED)
 			{
-				this.value = this.locationToValue(location);
+				var newValue:Number = this.locationToValue(location);
+				if(this._step != 0)
+				{
+					newValue = roundToNearest(newValue, this._step);
+				}
+				this.value = newValue;
 			}
 			else if(touch.phase == TouchPhase.ENDED)
 			{
