@@ -304,7 +304,18 @@ package org.josht.starling.foxhole.controls.supportClasses
 		}
 
 		private var _typicalItemWidth:Number = NaN;
+
+		public function get typicalItemWidth():Number
+		{
+			return this._typicalItemWidth;
+		}
+
 		private var _typicalItemHeight:Number = NaN;
+
+		public function get typicalItemHeight():Number
+		{
+			return this._typicalItemHeight;
+		}
 		
 		private var _typicalItem:Object = null;
 		
