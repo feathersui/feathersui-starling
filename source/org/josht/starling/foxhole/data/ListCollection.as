@@ -72,6 +72,9 @@ package org.josht.starling.foxhole.data
 		
 		/**
 		 * Dispatched when an item is added to the collection.
+		 *
+		 * <p>Listeners are expected to have the following function signature:</p>
+		 * <pre>function(collection:ListCollection, itemIndex:int):void</pre>
 		 */
 		public function get onAdd():ISignal
 		{
@@ -85,6 +88,9 @@ package org.josht.starling.foxhole.data
 		
 		/**
 		 * Dispatched when an item is removed from the collection.
+		 *
+		 * <p>Listeners are expected to have the following function signature:</p>
+		 * <pre>function(collection:ListCollection, itemIndex:int):void</pre>
 		 */
 		public function get onRemove():ISignal
 		{
@@ -131,6 +137,9 @@ package org.josht.starling.foxhole.data
 		 *
 		 * <p>In general, it's better for the items themselves to dispatch events
 		 * or signals when their properties change.</p>
+		 *
+		 * <p>Listeners are expected to have the following function signature:</p>
+		 * <pre>function(collection:ListCollection, itemIndex:int):void</pre>
 		 */
 		public function get onItemUpdate():ISignal
 		{
