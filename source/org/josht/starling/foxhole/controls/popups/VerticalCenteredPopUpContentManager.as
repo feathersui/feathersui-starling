@@ -86,7 +86,7 @@ package org.josht.starling.foxhole.controls.popups
 		/**
 		 * @private
 		 */
-		protected var touchPointID:int;
+		protected var touchPointID:int = -1;
 
 		/**
 		 * @private
@@ -230,7 +230,7 @@ package org.josht.starling.foxhole.controls.popups
 			}
 			const touch:Touch = event.getTouch(Starling.current.stage);
 			if(!touch || (touch.phase == TouchPhase.BEGAN && this.touchPointID >= 0) ||
-				(touch.phase != TouchPhase.BEGAN && (this.touchPointID < 0 || this.touchPointID != touch.id)))
+				(touch.phase != TouchPhase.BEGAN && this.touchPointID != touch.id))
 			{
 				return;
 			}
