@@ -30,6 +30,8 @@ package org.josht.starling.foxhole.core
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.display.Stage;
+	import starling.events.EnterFrameEvent;
+	import starling.events.Event;
 
 	/**
 	 * Adds a display object as a pop-up above all content.
@@ -80,6 +82,7 @@ package org.josht.starling.foxhole.core
 			}
 			
 			stage.addChild(popUp);
+			popUp.addEventListener(Event.REMOVED_FROM_STAGE, popUp_removedFromStageHandler);
 			
 			if(isCentered)
 			{
@@ -92,12 +95,6 @@ package org.josht.starling.foxhole.core
 		 */
 		public static function removePopUp(popUp:DisplayObject, dispose:Boolean = false):void
 		{
-			const overlay:DisplayObject = DisplayObject(POPUP_TO_OVERLAY[popUp]);
-			if(overlay)
-			{
-				overlay.removeFromParent(true);
-				delete POPUP_TO_OVERLAY[popUp];
-			}
 			popUp.removeFromParent(dispose);
 		}
 		
@@ -109,6 +106,26 @@ package org.josht.starling.foxhole.core
 			const stage:Stage = Starling.current.stage;
 			popUp.x = (stage.stageWidth - popUp.width) / 2;
 			popUp.y = (stage.stageHeight - popUp.height) / 2;
+		}
+
+		/**
+		 * @private
+		 */
+		protected static function popUp_removedFromStageHandler(event:Event):void
+		{
+			const popUp:DisplayObject = DisplayObject(event.currentTarget);
+			popUp.removeEventListener(Event.REMOVED_FROM_STAGE, popUp_removedFromStageHandler);
+			const overlay:DisplayObject = DisplayObject(POPUP_TO_OVERLAY[popUp]);
+			if(overlay)
+			{
+				//this is a temporary workaround for Starling issue #131
+				Starling.current.stage.addEventListener(EnterFrameEvent.ENTER_FRAME, function(event:EnterFrameEvent):void
+				{
+					event.currentTarget.removeEventListener(event.type, arguments.callee);
+					overlay.removeFromParent(true);
+					delete POPUP_TO_OVERLAY[popUp];
+				});
+			}
 		}
 	}
 }
