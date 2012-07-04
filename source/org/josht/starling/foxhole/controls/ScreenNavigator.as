@@ -129,7 +129,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _onChange:Signal = new Signal(ScreenNavigator, DisplayObject);
+		private var _onChange:Signal = new Signal(ScreenNavigator);
 
 		/**
 		 * Dispatched when the active screen changes.
@@ -232,7 +232,7 @@ package org.josht.starling.foxhole.controls
 			this.transition(this._previousScreenInTransition, this._activeScreen, transitionComplete);
 
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
-			this._onChange.dispatch(this, this._activeScreen);
+			this._onChange.dispatch(this);
 			return this._activeScreen;
 		}
 
