@@ -33,6 +33,7 @@ package org.josht.starling.display
 	import starling.core.RenderSupport;
 	import starling.display.DisplayObject;
 	import starling.display.QuadBatch;
+	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;
 	import starling.utils.transformCoords;
@@ -63,6 +64,8 @@ package org.josht.starling.display
 			this._batch = new QuadBatch();
 			this._batch.touchable = false;
 			this.addChild(this._batch);
+
+			this.addEventListener(Event.FLATTEN, flattenHandler);
 		}
 
 		private var _textures:Scale9Textures;
@@ -281,7 +284,25 @@ package org.josht.starling.display
 		/**
 		 * @private
 		 */
+		override public function flatten():void
+		{
+			this.validate();
+			super.flatten();
+		}
+
+		/**
+		 * @private
+		 */
 		override public function render(support:RenderSupport, parentAlpha:Number):void
+		{
+			this.validate();
+			super.render(support, parentAlpha);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function validate():void
 		{
 			if(this._propertiesChanged || this._layoutChanged)
 			{
@@ -411,7 +432,6 @@ package org.josht.starling.display
 
 			this._propertiesChanged = false;
 			this._layoutChanged = false;
-			super.render(support, parentAlpha);
 		}
 
 		/**
@@ -422,6 +442,14 @@ package org.josht.starling.display
 			const frame:Rectangle = this._textures.texture.frame;
 			this.width = frame.width * this._textureScale;
 			this.height = frame.height * this._textureScale;
+		}
+
+		/**
+		 * @private
+		 */
+		private function flattenHandler(event:Event):void
+		{
+			this.validate();
 		}
 	}
 }

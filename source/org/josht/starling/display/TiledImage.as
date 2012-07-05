@@ -31,6 +31,7 @@ package org.josht.starling.display
 	import starling.core.RenderSupport;
 	import starling.display.DisplayObject;
 	import starling.display.QuadBatch;
+	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;
 	import starling.utils.transformCoords;
@@ -58,6 +59,8 @@ package org.josht.starling.display
 			this._batch = new QuadBatch();
 			this._batch.touchable = false;
 			this.addChild(this._batch);
+
+			this.addEventListener(Event.FLATTEN, flattenHandler);
 		}
 
 		private var _propertiesChanged:Boolean = true;
@@ -359,11 +362,29 @@ package org.josht.starling.display
 			this.width = width;
 			this.height = height;
 		}
-		
+
 		/**
 		 * @private
 		 */
-		override public function render(support:RenderSupport, alpha:Number):void
+		override public function flatten():void
+		{
+			this.validate();
+			super.flatten();
+		}
+
+		/**
+		 * @private
+		 */
+		override public function render(support:RenderSupport, parentAlpha:Number):void
+		{
+			this.validate();
+			super.render(support, parentAlpha);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function validate():void
 		{
 			if(this._propertiesChanged)
 			{
@@ -416,8 +437,6 @@ package org.josht.starling.display
 			this._layoutChanged = false;
 			this._propertiesChanged = false;
 			this._clippingChanged = false;
-			
-			super.render(support,  alpha);
 		}
 
 		/**
@@ -427,6 +446,14 @@ package org.josht.starling.display
 		{
 			this.width = this._originalImageWidth * this._textureScale;
 			this.height = this._originalImageHeight * this._textureScale;
+		}
+
+		/**
+		 * @private
+		 */
+		private function flattenHandler(event:Event):void
+		{
+			this.validate();
 		}
 
 	}
