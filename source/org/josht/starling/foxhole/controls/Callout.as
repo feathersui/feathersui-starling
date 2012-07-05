@@ -28,6 +28,8 @@ package org.josht.starling.foxhole.controls
 	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
 
+	import org.josht.starling.display.ScrollRectManager;
+
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.PopUpManager;
 	import org.osflash.signals.ISignal;
@@ -144,13 +146,13 @@ package org.josht.starling.foxhole.controls
 			callout._isPopUp = true;
 			PopUpManager.addPopUp(callout, true, false, calloutOverlayFactory);
 
-			var globalBounds:Rectangle = origin.getBounds(Starling.current.stage);
+			var globalBounds:Rectangle = ScrollRectManager.getBounds(origin, Starling.current.stage);
 			positionCalloutByDirection(callout, globalBounds, direction);
 			callouts.push(callout);
 
 			function enterFrameHandler(event:EnterFrameEvent):void
 			{
-				origin.getBounds(Starling.current.stage, helperRect);
+				ScrollRectManager.getBounds(origin, Starling.current.stage, helperRect);
 				if(globalBounds.equals(helperRect))
 				{
 					return;
