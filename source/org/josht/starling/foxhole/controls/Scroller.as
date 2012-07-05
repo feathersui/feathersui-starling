@@ -161,7 +161,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * Flag to indicate that the clipping has changed.
 		 */
-		public static const INVALIDATION_FLAG_CLIPPING:String = "clipping";
+		protected static const INVALIDATION_FLAG_CLIPPING:String = "clipping";
 		
 		/**
 		 * @private
