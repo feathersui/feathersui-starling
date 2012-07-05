@@ -29,6 +29,8 @@ package org.josht.starling.foxhole.controls.popups
 	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
 
+	import org.josht.starling.display.ScrollRectManager;
+
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.PopUpManager;
 	import org.osflash.signals.ISignal;
@@ -141,7 +143,7 @@ package org.josht.starling.foxhole.controls.popups
 		 */
 		protected function layout():void
 		{
-			const globalOrigin:Rectangle = this.source.getBounds(Starling.current.stage);
+			const globalOrigin:Rectangle = ScrollRectManager.getBounds(this.source, Starling.current.stage);
 
 			if(this.source is FoxholeControl)
 			{
