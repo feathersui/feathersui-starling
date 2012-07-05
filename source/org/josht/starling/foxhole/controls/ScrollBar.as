@@ -1151,8 +1151,9 @@ package org.josht.starling.foxhole.controls
 			if(this._direction == DIRECTION_VERTICAL)
 			{
 				contentHeight -= (this.decrementButton.height + this.incrementButton.height);
+				const thumbMinHeight:Number = this.thumb.minHeight > 0 ? this.thumb.minHeight : this.thumbOriginalHeight;
 				this.thumb.width = this.thumbOriginalWidth;
-				this.thumb.height = Math.max(this.thumbOriginalHeight, contentHeight * adjustedPageStep / (adjustedRange + adjustedPageStep));
+				this.thumb.height = Math.max(thumbMinHeight, contentHeight * adjustedPageStep / (adjustedRange + adjustedPageStep));
 				const trackScrollableHeight:Number = contentHeight - this.thumb.height;
 				this.thumb.x = (this.actualWidth - this.thumb.width) / 2;
 				this.thumb.y = this.decrementButton.height + this._paddingTop + Math.max(0, Math.min(trackScrollableHeight, trackScrollableHeight * (this._value - this._minimum) / range));
@@ -1160,7 +1161,8 @@ package org.josht.starling.foxhole.controls
 			else //horizontal
 			{
 				contentWidth -= (this.decrementButton.width + this.decrementButton.width);
-				this.thumb.width = Math.max(this.thumbOriginalWidth, contentWidth * adjustedPageStep / (adjustedRange + adjustedPageStep));
+				const thumbMinWidth:Number = this.thumb.minWidth > 0 ? this.thumb.minWidth : this.thumbOriginalWidth;
+				this.thumb.width = Math.max(thumbMinWidth, contentWidth * adjustedPageStep / (adjustedRange + adjustedPageStep));
 				this.thumb.height = this.thumbOriginalHeight;
 				const trackScrollableWidth:Number = contentWidth - this.thumb.width;
 				this.thumb.x = this.decrementButton.width + this._paddingLeft + Math.max(0, Math.min(trackScrollableWidth, trackScrollableWidth * (this._value - this._minimum) / range));
