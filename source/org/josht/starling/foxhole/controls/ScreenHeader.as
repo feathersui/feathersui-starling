@@ -44,12 +44,12 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		public static const INVALIDATION_FLAG_LEFT_CONTENT:String = "leftContent";
+		protected static const INVALIDATION_FLAG_LEFT_CONTENT:String = "leftContent";
 
 		/**
 		 * @private
 		 */
-		public static const INVALIDATION_FLAG_RIGHT_CONTENT:String = "rightContent";
+		protected static const INVALIDATION_FLAG_RIGHT_CONTENT:String = "rightContent";
 
 		/**
 		 * The title will appear in the center of the header.
