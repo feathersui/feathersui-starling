@@ -24,8 +24,10 @@
  */
 package org.josht.starling.foxhole.controls
 {
+	import flash.events.TimerEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.utils.Timer;
 
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.PropertyProxy;
@@ -35,7 +37,6 @@ package org.josht.starling.foxhole.controls
 	import org.osflash.signals.Signal;
 
 	import starling.display.DisplayObject;
-
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -435,6 +436,43 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
+		protected var currentRepeatAction:Function;
+
+		/**
+		 * @private
+		 */
+		protected var _repeatDelay:Number = 0.05;
+
+		/**
+		 * @private
+		 */
+		protected var _repeatTimer:Timer;
+
+		/**
+		 * The time, in seconds, before actions are repeated. The first repeat
+		 * happens five times longer than the others.
+		 */
+		public function get repeatDelay():Number
+		{
+			return this._repeatDelay;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set repeatDelay(value:Number):void
+		{
+			if(this._repeatDelay == value)
+			{
+				return;
+			}
+			this._repeatDelay = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var isDragging:Boolean = false;
 
 		/**
@@ -790,6 +828,7 @@ package org.josht.starling.foxhole.controls
 		private var _touchStartY:Number = NaN;
 		private var _thumbStartX:Number = NaN;
 		private var _thumbStartY:Number = NaN;
+		private var _touchValue:Number;
 
 		/**
 		 * @inheritDoc
@@ -831,6 +870,7 @@ package org.josht.starling.foxhole.controls
 				this.decrementButton = new Button();
 				this.decrementButton.nameList.add(this.defaultDecrementButtonName);
 				this.decrementButton.label = "";
+				this.decrementButton.onPress.add(decrementButton_onPress);
 				this.decrementButton.onRelease.add(decrementButton_onRelease);
 				this.addChild(this.decrementButton);
 			}
@@ -840,6 +880,7 @@ package org.josht.starling.foxhole.controls
 				this.incrementButton = new Button();
 				this.incrementButton.nameList.add(this.defaultIncrementButtonName);
 				this.incrementButton.label = "";
+				this.incrementButton.onPress.add(incrementButton_onPress);
 				this.incrementButton.onRelease.add(incrementButton_onRelease);
 				this.addChild(this.incrementButton);
 			}
@@ -1346,6 +1387,69 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
+		protected function decrement():void
+		{
+			this.value -= this._step;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function increment():void
+		{
+			this.value += this._step;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function adjustPage():void
+		{
+			if(this._touchValue < this._value)
+			{
+				var newValue:Number = Math.max(this._touchValue, this._value - this._page);
+				if(this._step != 0)
+				{
+					newValue = roundToNearest(newValue, this._step);
+				}
+				this.value = newValue;
+			}
+			else if(this._touchValue > this._value)
+			{
+				newValue = Math.min(this._touchValue, this._value + this._page);
+				if(this._step != 0)
+				{
+					newValue = roundToNearest(newValue, this._step);
+				}
+				this.value = newValue;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function startRepeatTimer(action:Function):void
+		{
+			this.currentRepeatAction = action;
+			if(this._repeatDelay > 0)
+			{
+				if(!this._repeatTimer)
+				{
+					this._repeatTimer = new Timer(this._repeatDelay * 1000);
+					this._repeatTimer.addEventListener(TimerEvent.TIMER, repeatTimer_timerHandler);
+				}
+				else
+				{
+					this._repeatTimer.reset();
+					this._repeatTimer.delay = this._repeatDelay * 1000;
+				}
+				this._repeatTimer.start();
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function thumbProperties_onChange(proxy:PropertyProxy, name:Object):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
@@ -1393,7 +1497,8 @@ package org.josht.starling.foxhole.controls
 				return;
 			}
 			const touch:Touch = event.getTouch(DisplayObject(event.currentTarget));
-			if(!touch || (this._touchPointID >= 0 && this._touchPointID != touch.id))
+			if(!touch || (touch.phase == TouchPhase.BEGAN && this._touchPointID >= 0) ||
+				(touch.phase != TouchPhase.BEGAN && this._touchPointID != touch.id))
 			{
 				return;
 			}
@@ -1405,29 +1510,14 @@ package org.josht.starling.foxhole.controls
 				this._touchStartY = location.y;
 				this._thumbStartX = location.x;
 				this._thumbStartY = location.y;
-				const touchValue:Number = this.locationToValue(location);
-				if(touchValue < this._value)
-				{
-					var newValue:Number = Math.max(touchValue, this._value - this._page);
-					if(this._step != 0)
-					{
-						newValue = roundToNearest(newValue, this._step);
-					}
-					this.value = newValue;
-				}
-				else if(touchValue > this._value)
-				{
-					newValue = Math.min(touchValue, this._value + this._page);
-					if(this._step != 0)
-					{
-						newValue = roundToNearest(newValue, this._step);
-					}
-					this.value = newValue;
-				}
+				this._touchValue = this.locationToValue(location);
+				this.adjustPage();
+				this.startRepeatTimer(this.adjustPage);
 			}
 			else if(touch.phase == TouchPhase.ENDED)
 			{
 				this._touchPointID = -1;
+				this._repeatTimer.stop();
 			}
 		}
 
@@ -1480,9 +1570,27 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
+		protected function decrementButton_onPress(button:Button):void
+		{
+			this.decrement();
+			this.startRepeatTimer(this.decrement);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function decrementButton_onRelease(button:Button):void
 		{
-			this.value -= this._step;
+			this._repeatTimer.stop();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function incrementButton_onPress(button:Button):void
+		{
+			this.increment();
+			this.startRepeatTimer(this.increment);
 		}
 
 		/**
@@ -1490,7 +1598,19 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function incrementButton_onRelease(button:Button):void
 		{
-			this.value += this._step;
+			this._repeatTimer.stop();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function repeatTimer_timerHandler(event:TimerEvent):void
+		{
+			if(this._repeatTimer.currentCount < 5)
+			{
+				return;
+			}
+			this.currentRepeatAction();
 		}
 	}
 }
