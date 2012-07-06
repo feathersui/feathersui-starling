@@ -24,7 +24,9 @@
  */
 package org.josht.starling.foxhole.controls
 {
+	import flash.events.TimerEvent;
 	import flash.geom.Point;
+	import flash.utils.Timer;
 
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.PropertyProxy;
@@ -361,6 +363,43 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
+		protected var currentRepeatAction:Function;
+
+		/**
+		 * @private
+		 */
+		protected var _repeatDelay:Number = 0.05;
+
+		/**
+		 * @private
+		 */
+		protected var _repeatTimer:Timer;
+
+		/**
+		 * The time, in seconds, before actions are repeated. The first repeat
+		 * happens five times longer than the others.
+		 */
+		public function get repeatDelay():Number
+		{
+			return this._repeatDelay;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set repeatDelay(value:Number):void
+		{
+			if(this._repeatDelay == value)
+			{
+				return;
+			}
+			this._repeatDelay = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var isDragging:Boolean = false;
 
 		/**
@@ -468,6 +507,7 @@ package org.josht.starling.foxhole.controls
 		private var _touchStartY:Number = NaN;
 		private var _thumbStartX:Number = NaN;
 		private var _thumbStartY:Number = NaN;
+		private var _touchValue:Number;
 
 		/**
 		 * @inheritDoc
@@ -689,6 +729,53 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
+		protected function adjustPage():void
+		{
+			if(this._touchValue < this._value)
+			{
+				var newValue:Number = Math.max(this._touchValue, this._value - this._page);
+				if(this._step != 0)
+				{
+					newValue = roundToNearest(newValue, this._step);
+				}
+				this.value = newValue;
+			}
+			else if(this._touchValue > this._value)
+			{
+				newValue = Math.min(this._touchValue, this._value + this._page);
+				if(this._step != 0)
+				{
+					newValue = roundToNearest(newValue, this._step);
+				}
+				this.value = newValue;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function startRepeatTimer(action:Function):void
+		{
+			this.currentRepeatAction = action;
+			if(this._repeatDelay > 0)
+			{
+				if(!this._repeatTimer)
+				{
+					this._repeatTimer = new Timer(this._repeatDelay * 1000);
+					this._repeatTimer.addEventListener(TimerEvent.TIMER, repeatTimer_timerHandler);
+				}
+				else
+				{
+					this._repeatTimer.reset();
+					this._repeatTimer.delay = this._repeatDelay * 1000;
+				}
+				this._repeatTimer.start();
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function thumbProperties_onChange(proxy:PropertyProxy, name:Object):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
@@ -716,29 +803,14 @@ package org.josht.starling.foxhole.controls
 				this._touchStartY = location.y;
 				this._thumbStartX = location.x;
 				this._thumbStartY = location.y;
-				const touchValue:Number = this.locationToValue(location);
-				if(touchValue < this._value)
-				{
-					var newValue:Number = Math.max(touchValue, this._value - this._page);
-					if(this._step != 0)
-					{
-						newValue = roundToNearest(newValue, this._step);
-					}
-					this.value = newValue;
-				}
-				else if(touchValue > this._value)
-				{
-					newValue = Math.min(touchValue, this._value + this._page);
-					if(this._step != 0)
-					{
-						newValue = roundToNearest(newValue, this._step);
-					}
-					this.value = newValue;
-				}
+				this._touchValue = this.locationToValue(location);
+				this.adjustPage();
+				this.startRepeatTimer(this.adjustPage);
 			}
 			else if(touch.phase == TouchPhase.ENDED)
 			{
 				this._touchPointID = -1;
+				this._repeatTimer.stop();
 			}
 		}
 
@@ -786,6 +858,18 @@ package org.josht.starling.foxhole.controls
 				}
 				this._onDragEnd.dispatch(this);
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function repeatTimer_timerHandler(event:TimerEvent):void
+		{
+			if(this._repeatTimer.currentCount < 5)
+			{
+				return;
+			}
+			this.currentRepeatAction();
 		}
 	}
 }
