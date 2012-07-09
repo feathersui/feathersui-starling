@@ -913,12 +913,7 @@ package org.josht.starling.foxhole.controls
 		protected function stageText_completeHandler(event:flash.events.Event):void
 		{
 			this.stageText.removeEventListener(flash.events.Event.COMPLETE, stageText_completeHandler);
-			//we can't take a proper snapshot of the StageText until after the
-			//complete event is dispatched
-			if(this._isWaitingToSetFocus || this._text)
-			{
-				this.invalidate(INVALIDATION_FLAG_DATA);
-			}
+			this.invalidate();
 
 			if(this._isWaitingToSetFocus && this._text)
 			{
