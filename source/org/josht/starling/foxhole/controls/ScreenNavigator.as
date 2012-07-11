@@ -32,6 +32,7 @@ package org.josht.starling.foxhole.controls
 	import org.osflash.signals.Signal;
 
 	import starling.display.DisplayObject;
+	import starling.events.Event;
 	import starling.events.ResizeEvent;
 
 	/**
@@ -49,6 +50,8 @@ package org.josht.starling.foxhole.controls
 		public function ScreenNavigator()
 		{
 			super();
+			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
+			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 		}
 
 		/**
@@ -366,14 +369,6 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		override protected function initialize():void
-		{
-			this.stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
-		}
-
-		/**
-		 * @private
-		 */
 		override protected function draw():void
 		{
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
@@ -485,6 +480,22 @@ package org.josht.starling.foxhole.controls
 			}
 
 			return eventListener;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function addedToStageHandler(event:Event):void
+		{
+			this.stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function removedFromStageHandler(event:Event):void
+		{
+			this.stage.removeEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
 		}
 
 		/**
