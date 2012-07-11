@@ -317,6 +317,7 @@ package org.josht.starling.foxhole.controls
 			{
 				this._transitionIsActive = true;
 				this._previousScreenInTransition = this._activeScreen;
+				this._previousScreenInTransitionID = this._activeScreenID;
 				this.transition(this._previousScreenInTransition, null, transitionComplete);
 			}
 			this._screenEvents[this._activeScreenID] = null;
