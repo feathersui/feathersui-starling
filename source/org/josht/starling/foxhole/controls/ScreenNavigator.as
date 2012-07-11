@@ -26,12 +26,13 @@ package org.josht.starling.foxhole.controls
 {
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Rectangle;
-
+	
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
-
+	
 	import starling.display.DisplayObject;
+	import starling.events.Event;
 	import starling.events.ResizeEvent;
 
 	/**
@@ -256,6 +257,7 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function clearScreen():void
 		{
+			this._previousScreenInTransitionID = this._activeScreenID;
 			if(this._transitionIsActive)
 			{
 				this._nextScreenID = null;
@@ -358,6 +360,7 @@ package org.josht.starling.foxhole.controls
 		 */
 		override public function dispose():void
 		{
+			
 			this._onChange.removeAll();
 			this._onClear.removeAll();
 			super.dispose();
@@ -369,6 +372,7 @@ package org.josht.starling.foxhole.controls
 		override protected function initialize():void
 		{
 			this.stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
+			addEventListener(Event.REMOVED_FROM_STAGE, removedFromStage);
 		}
 
 		/**
@@ -493,6 +497,10 @@ package org.josht.starling.foxhole.controls
 		protected function stage_resizeHandler(event:ResizeEvent):void
 		{
 			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+		protected function removedFromStage(event:Event):void
+		{
+			this.stage.removeEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
 		}
 	}
 
