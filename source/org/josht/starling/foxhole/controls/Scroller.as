@@ -1495,34 +1495,25 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function refreshViewPortBoundsWithFixedScrollBars():void
 		{
+			const isFixed:Boolean = this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FIXED;
 			const displayHorizontalScrollBar:DisplayObject = this.horizontalScrollBar as DisplayObject;
 			const displayVerticalScrollBar:DisplayObject = this.verticalScrollBar as DisplayObject;
-			if(this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_FIXED)
-			{
-				//if not fixed, ensure that the scroll bars are visible
-				if(displayHorizontalScrollBar)
-				{
-					displayHorizontalScrollBar.visible = true;
-				}
-				if(displayVerticalScrollBar)
-				{
-					displayVerticalScrollBar.visible = true;
-				}
-				//and then we're safe to leave
-				return;
-			}
-			const viewPort:IViewPort = this._viewPort as IViewPort;
 			if(displayHorizontalScrollBar)
 			{
-				displayHorizontalScrollBar.visible = this._horizontalScrollBarHeightOffset > 0;
+				displayHorizontalScrollBar.visible = !isFixed || this._horizontalScrollBarHeightOffset > 0;
 			}
 			if(displayVerticalScrollBar)
 			{
-				displayVerticalScrollBar.visible = this._verticalScrollBarWidthOffset > 0;
+				displayVerticalScrollBar.visible = !isFixed || this._verticalScrollBarWidthOffset > 0;
+			}
+			if(!isFixed)
+			{
+				return;
 			}
 
 			//we need to make a second pass on the view port to use the offsets
 			//and the final actual bounds
+			const viewPort:IViewPort = this._viewPort as IViewPort;
 			if(viewPort)
 			{
 				viewPort.visibleWidth = this.actualWidth - this._verticalScrollBarWidthOffset;
@@ -1639,26 +1630,26 @@ package org.josht.starling.foxhole.controls
 			}
 
 			const displayHorizontalScrollBar:DisplayObject = this.horizontalScrollBar as DisplayObject;
-			const displayVerticalScrollBar:DisplayObject = this.verticalScrollBar as DisplayObject;
 			if(displayHorizontalScrollBar)
 			{
 				displayHorizontalScrollBar.x = 0;
 				displayHorizontalScrollBar.y = this.actualHeight - displayHorizontalScrollBar.height;
 				displayHorizontalScrollBar.width = this.actualWidth;
-				if(displayVerticalScrollBar && displayVerticalScrollBar.visible)
+				if(this._verticalScrollBarWidthOffset > 0)
 				{
-					displayHorizontalScrollBar.width -= displayVerticalScrollBar.width;
+					displayHorizontalScrollBar.width -= this._verticalScrollBarWidthOffset;
 				}
 			}
 
+			const displayVerticalScrollBar:DisplayObject = this.verticalScrollBar as DisplayObject;
 			if(displayVerticalScrollBar)
 			{
 				displayVerticalScrollBar.x = this.actualWidth - displayVerticalScrollBar.width;
 				displayVerticalScrollBar.y = 0;
 				displayVerticalScrollBar.height = this.actualHeight;
-				if(displayHorizontalScrollBar && displayHorizontalScrollBar.visible)
+				if(this._horizontalScrollBarHeightOffset >= 0)
 				{
-					displayVerticalScrollBar.height -= displayHorizontalScrollBar.height;
+					displayVerticalScrollBar.height -= this._horizontalScrollBarHeightOffset;
 				}
 			}
 		}
