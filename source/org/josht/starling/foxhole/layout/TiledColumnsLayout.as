@@ -675,7 +675,20 @@ package org.josht.starling.foxhole.layout
 		{
 			const tileSize:Number = Math.max(0, this._typicalItemWidth, this._typicalItemHeight);
 			const verticalTileCount:int = (height - this._paddingTop - this._paddingBottom + this._gap) / (tileSize + this._gap);
-			const horizontalTileCount:int = Math.ceil((width - this._paddingLeft + this._gap) / (tileSize + this._gap)) + 1;
+			if(this._paging != PAGING_NONE)
+			{
+				const horizontalTileCount:int = (width - this._paddingLeft - this._paddingRight + this._gap) / (tileSize + this._gap);
+				const perPage:Number = horizontalTileCount * verticalTileCount;
+				if(this._paging == PAGING_HORIZONTAL)
+				{
+					var pageIndex:int = scrollX / width;
+				}
+				else
+				{
+					pageIndex = scrollY / height;
+				}
+				return pageIndex * perPage;
+			}
 			var columnIndexOffset:int = 0;
 			const totalColumnWidth:Number = Math.ceil(itemCount / verticalTileCount) * (tileSize + this._gap) - this._gap;
 			if(totalColumnWidth < width)
@@ -700,7 +713,21 @@ package org.josht.starling.foxhole.layout
 		{
 			const tileSize:Number = Math.max(0, this._typicalItemWidth, this._typicalItemHeight);
 			const verticalTileCount:int = (height - this._paddingTop - this._paddingBottom + this._gap) / (tileSize + this._gap);
-			const horizontalTileCount:int = Math.ceil((width - this._paddingLeft + this._gap) / (tileSize + this._gap)) + 1;
+			if(this._paging != PAGING_NONE)
+			{
+				var horizontalTileCount:int = (width - this._paddingLeft - this._paddingRight + this._gap) / (tileSize + this._gap);
+				const perPage:Number = horizontalTileCount * verticalTileCount;
+				if(this._paging == PAGING_HORIZONTAL)
+				{
+					var pageIndex:int = scrollX / width;
+				}
+				else
+				{
+					pageIndex = scrollY / height;
+				}
+				return (pageIndex + 2) * perPage;
+			}
+			horizontalTileCount = Math.ceil((width - this._paddingLeft + this._gap) / (tileSize + this._gap)) + 1;
 			var columnIndexOffset:int = 0;
 			const totalColumnWidth:Number = Math.ceil(itemCount / verticalTileCount) * (tileSize + this._gap) - this._gap;
 			if(totalColumnWidth < width)
@@ -730,8 +757,27 @@ package org.josht.starling.foxhole.layout
 
 			const tileSize:Number = Math.max(0, this._typicalItemWidth, this._typicalItemHeight);
 			const verticalTileCount:int = (height - this._paddingTop - this._paddingBottom + this._gap) / (tileSize + this._gap);
-			result.x = this._paddingLeft + ((tileSize + this._gap) * index / verticalTileCount) + (width - tileSize) / 2;
-			result.y = 0;
+			if(this._paging != PAGING_NONE)
+			{
+				const horizontalTileCount:int = (width - this._paddingLeft - this._paddingRight + this._gap) / (tileSize + this._gap);
+				const perPage:Number = horizontalTileCount * verticalTileCount;
+				const pageIndex:int = index / perPage;
+				if(this._paging == PAGING_HORIZONTAL)
+				{
+					result.x = pageIndex * width;
+					result.y = 0;
+				}
+				else
+				{
+					result.x = 0;
+					result.y = pageIndex * height;
+				}
+			}
+			else
+			{
+				result.x = this._paddingLeft + ((tileSize + this._gap) * index / verticalTileCount) + (width - tileSize) / 2;
+				result.y = 0;
+			}
 			return result;
 		}
 
