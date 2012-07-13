@@ -1741,7 +1741,7 @@ package org.josht.starling.foxhole.controls
 			{
 				if(this._hasElasticEdges)
 				{
-					position -= (position - this._maxHorizontalScrollPosition) * this._elasticity;
+					position -= (position - this._maxHorizontalScrollPosition) * (1 - this._elasticity);
 				}
 				else
 				{
@@ -1774,7 +1774,7 @@ package org.josht.starling.foxhole.controls
 			{
 				if(this._hasElasticEdges)
 				{
-					position -= (position - this._maxVerticalScrollPosition) * this._elasticity;
+					position -= (position - this._maxVerticalScrollPosition) * (1 - this._elasticity);
 				}
 				else
 				{
