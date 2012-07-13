@@ -123,6 +123,22 @@ package org.josht.starling.foxhole.layout
 		public static const TILE_HORIZONTAL_ALIGN_JUSTIFY:String = "justify";
 
 		/**
+		 * The items will be positioned in pages horizontally from left to right.
+		 */
+		public static const PAGING_HORIZONTAL:String = "horizontal";
+
+		/**
+		 * The items will be positioned in pages vertically from top to bottom.
+		 */
+		public static const PAGING_VERTICAL:String = "vertical";
+
+		/**
+		 * The items will not be paged. In other words, they will be positioned
+		 * in a continuous set of rows without gaps.
+		 */
+		public static const PAGING_NONE:String = "none";
+
+		/**
 		 * Constructor.
 		 */
 		public function TiledRowsLayout()
@@ -370,6 +386,33 @@ package org.josht.starling.foxhole.layout
 		/**
 		 * @private
 		 */
+		private var _paging:String = PAGING_NONE;
+
+		/**
+		 * If the total item size is larger than the view port, the items may
+		 * be displayed as pages with gaps between items.
+		 */
+		public function get paging():String
+		{
+			return this._paging;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paging(value:String):void
+		{
+			if(this._paging == value)
+			{
+				return;
+			}
+			this._paging = value;
+			this._onLayoutChange.dispatch(this);
+		}
+
+		/**
+		 * @private
+		 */
 		private var _useVirtualLayout:Boolean = true;
 
 		/**
@@ -488,17 +531,54 @@ package org.josht.starling.foxhole.layout
 			{
 				horizontalTileCount = (suggestedBounds.width - this._paddingLeft - this._paddingRight + this._gap) / (tileSize + this._gap);
 			}
+			var verticalTileCount:int = 1;
+			if(!isNaN(suggestedBounds.height))
+			{
+				verticalTileCount = (suggestedBounds.height - this._paddingTop - this._paddingBottom + this._gap) / (tileSize + this._gap);
+			}
+
+			const totalPageWidth:Number = horizontalTileCount * (tileSize + this._gap) - this._gap + this._paddingLeft + this._paddingRight;
+			const totalPageHeight:Number = verticalTileCount * (tileSize + this._gap) - this._gap + this._paddingTop + this._paddingBottom;
+			const availablePageWidth:Number = isNaN(suggestedBounds.width) ? totalPageWidth : suggestedBounds.width;
+			const availablePageHeight:Number = isNaN(suggestedBounds.height) ? totalPageHeight : suggestedBounds.height;
 
 			const startX:Number = suggestedBounds.x + this._paddingLeft;
+			const startY:Number = suggestedBounds.y + this._paddingTop;
+
+			const perPage:int = horizontalTileCount * verticalTileCount;
+			var pageIndex:int = 0;
+			var nextPageStartIndex:int = perPage;
+			var pageStartX:Number = startX;
 			var positionX:Number = startX;
-			var positionY:Number = suggestedBounds.y + this._paddingTop;
+			var positionY:Number = startY;
 			for(i = 0; i < itemCount; i++)
 			{
 				item = items[i];
 				if(i != 0 && i % horizontalTileCount == 0)
 				{
-					positionX = startX;
+					positionX = pageStartX;
 					positionY += tileSize + this._gap;
+				}
+				if(i == nextPageStartIndex)
+				{
+					//we're starting a new page, so handle alignment of the
+					//items on the current page and update the positions
+					if(this._paging != PAGING_NONE)
+					{
+						this.applyHorizontalAlign(items, i - perPage, i - 1, totalPageWidth, availablePageWidth);
+						this.applyVerticalAlign(items, i - perPage, i - 1, totalPageHeight, availablePageHeight);
+					}
+					pageIndex++;
+					nextPageStartIndex += perPage;
+					if(this._paging == PAGING_HORIZONTAL)
+					{
+						positionX = pageStartX = startX + suggestedBounds.width * pageIndex;
+						positionY = startY;
+					}
+					else if(this._paging == PAGING_VERTICAL)
+					{
+						positionY = startY + suggestedBounds.height * pageIndex;
+					}
 				}
 				if(item)
 				{
@@ -551,62 +631,39 @@ package org.josht.starling.foxhole.layout
 				}
 				positionX += tileSize + this._gap;
 			}
-			const totalWidth:Number = horizontalTileCount * (tileSize + this._gap) - this._gap + this._paddingLeft + this._paddingRight;
-			const suggestedWidth:Number = isNaN(suggestedBounds.width) ? totalWidth : suggestedBounds.width;
-			resultDimensions.x = suggestedWidth;
-			if(totalWidth < suggestedWidth)
+			//align the last page
+			if(this._paging != PAGING_NONE)
 			{
-				var horizontalAlignOffsetX:Number = 0;
-				if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
+				this.applyHorizontalAlign(items, nextPageStartIndex - perPage, i - 1, totalPageWidth, availablePageWidth);
+				this.applyVerticalAlign(items, nextPageStartIndex - perPage, i - 1, totalPageHeight, availablePageHeight);
+			}
+
+			var totalWidth:Number = totalPageWidth;
+			if(!isNaN(suggestedBounds.width) && this._paging == PAGING_HORIZONTAL)
+			{
+				totalWidth = Math.ceil(itemCount / perPage) * suggestedBounds.width;
+			}
+			var totalHeight:Number = positionY + tileSize + this._paddingBottom;
+			if(!isNaN(suggestedBounds.height))
+			{
+				if(this._paging == PAGING_HORIZONTAL)
 				{
-					horizontalAlignOffsetX = suggestedWidth - totalWidth;
+					totalHeight = suggestedBounds.height;
 				}
-				else if(this._horizontalAlign != HORIZONTAL_ALIGN_LEFT)
+				else if(this._paging == PAGING_VERTICAL)
 				{
-					//we're going to default to center if we encounter an
-					//unknown value
-					horizontalAlignOffsetX = (suggestedWidth - totalWidth) / 2;
-				}
-				if(horizontalAlignOffsetX != 0)
-				{
-					for(i = 0; i < itemCount; i++)
-					{
-						item = items[i];
-						if(!item)
-						{
-							continue;
-						}
-						item.x += horizontalAlignOffsetX;
-					}
+					totalHeight = Math.ceil(itemCount / perPage) * suggestedBounds.height
 				}
 			}
-			const totalHeight:Number = positionY + tileSize + this._paddingBottom;
-			const suggestedHeight:Number = isNaN(suggestedBounds.height) ? totalHeight : suggestedBounds.height;
+			resultDimensions.x = totalWidth;
 			resultDimensions.y = totalHeight;
-			if(totalHeight < suggestedHeight)
+
+			if(this._paging == PAGING_NONE)
 			{
-				//we're going to default to top if we encounter an unknown value
-				var verticalAlignOffsetY:Number = 0;
-				if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
-				{
-					verticalAlignOffsetY = suggestedHeight - totalHeight;
-				}
-				else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
-				{
-					verticalAlignOffsetY = (suggestedHeight - totalHeight) / 2;
-				}
-				if(verticalAlignOffsetY != 0)
-				{
-					for(i = 0; i < itemCount; i++)
-					{
-						item = items[i];
-						if(!item)
-						{
-							continue;
-						}
-						item.y += verticalAlignOffsetY;
-					}
-				}
+				const availableWidth:Number = isNaN(suggestedBounds.width) ? totalWidth : suggestedBounds.width;
+				const availableHeight:Number = isNaN(suggestedBounds.height) ? totalHeight : suggestedBounds.height;
+				this.applyHorizontalAlign(items, 0, itemCount - 1, totalWidth, availableWidth);
+				this.applyVerticalAlign(items, 0, itemCount - 1, totalHeight, availableHeight);
 			}
 			return resultDimensions;
 		}
@@ -676,6 +733,64 @@ package org.josht.starling.foxhole.layout
 			result.x = 0;
 			result.y = this._paddingTop + ((tileSize + this._gap) * index / horizontalTileCount) + (height - tileSize) / 2;
 			return result;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function applyHorizontalAlign(items:Vector.<DisplayObject>, startIndex:int, endIndex:int, totalItemWidth:Number, availableWidth:Number):void
+		{
+			var horizontalAlignOffsetX:Number = 0;
+			if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
+			{
+				horizontalAlignOffsetX = availableWidth - totalItemWidth;
+			}
+			else if(this._horizontalAlign != HORIZONTAL_ALIGN_LEFT)
+			{
+				//we're going to default to center if we encounter an
+				//unknown value
+				horizontalAlignOffsetX = (availableWidth - totalItemWidth) / 2;
+			}
+			if(horizontalAlignOffsetX != 0)
+			{
+				for(var i:int = startIndex; i <= endIndex; i++)
+				{
+					var item:DisplayObject = items[i];
+					if(!item)
+					{
+						continue;
+					}
+					item.x += horizontalAlignOffsetX;
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function applyVerticalAlign(items:Vector.<DisplayObject>, startIndex:int, endIndex:int, totalItemHeight:Number, availableHeight:Number):void
+		{
+			var verticalAlignOffsetY:Number = 0;
+			if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
+			{
+				verticalAlignOffsetY = availableHeight - totalItemHeight;
+			}
+			else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
+			{
+				verticalAlignOffsetY = (availableHeight - totalItemHeight) / 2;
+			}
+			if(verticalAlignOffsetY != 0)
+			{
+				for(var i:int = startIndex; i <= endIndex; i++)
+				{
+					var item:DisplayObject = items[i];
+					if(!item)
+					{
+						continue;
+					}
+					item.y += verticalAlignOffsetY;
+				}
+			}
 		}
 	}
 }
