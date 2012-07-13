@@ -51,6 +51,9 @@ package org.josht.starling.foxhole.controls
 	import org.josht.starling.foxhole.core.PropertyProxy;
 	import org.josht.starling.motion.GTween;
 	import org.josht.utils.math.clamp;
+	import org.josht.utils.math.roundDownToNearest;
+	import org.josht.utils.math.roundToNearest;
+	import org.josht.utils.math.roundUpToNearest;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 
@@ -169,6 +172,14 @@ package org.josht.starling.foxhole.controls
 		 * before the scroller starts scrolling.
 		 */
 		private static const MINIMUM_DRAG_DISTANCE:Number = 0.04;
+
+		/**
+		 * @private
+		 * The minimum physical velocity (in inches per second) that a touch
+		 * must move before the scroller will "throw" to the next page.
+		 * Otherwise, it will settle to the nearest page.
+		 */
+		private static const MINIMUM_PAGE_VELOCITY:Number = 5;
 
 		/**
 		 * @private
@@ -322,6 +333,32 @@ package org.josht.starling.foxhole.controls
 				this._viewPortWrapper.addChild(this._viewPort);
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _snapToPages:Boolean = false;
+
+		/**
+		 * Determines if scrolling will snap to the nearest page.
+		 */
+		public function get snapToPages():Boolean
+		{
+			return this._snapToPages;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set snapToPages(value:Boolean):void
+		{
+			if(this._snapToPages == value)
+			{
+				return;
+			}
+			this._snapToPages = value;
+			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
 
 		/**
@@ -850,6 +887,29 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
+		private var _elasticity:Number = 0.33;
+
+		/**
+		 * If the current scroll position is below the minimum or maximum scroll
+		 * position, the difference between the current scroll position and the
+		 * nearest bound is multiplied by this value.
+		 */
+		public function get elasticity():Number
+		{
+			return this._elasticity;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set elasticity(value:Number):void
+		{
+			this._elasticity = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _scrollBarDisplayMode:String = SCROLL_BAR_DISPLAY_MODE_FLOAT;
 
 		/**
@@ -935,6 +995,50 @@ package org.josht.starling.foxhole.controls
 		public function set hideScrollBarAnimationDuration(value:Number):void
 		{
 			this._hideScrollBarAnimationDuration = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _elasticSnapDuration:Number = 0.24;
+
+		/**
+		 * The duration, in seconds, of the animation when a the scroller snaps
+		 * back to the minimum or maximum position after going out of bounds.
+		 */
+		public function get elasticSnapDuration():Number
+		{
+			return this._elasticSnapDuration;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set elasticSnapDuration(value:Number):void
+		{
+			this._elasticSnapDuration = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _pageThrowDuration:Number = 0.5;
+
+		/**
+		 * The duration, in seconds, of the animation when a the scroller is
+		 * thrown to a page.
+		 */
+		public function get pageThrowDuration():Number
+		{
+			return this._pageThrowDuration;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set pageThrowDuration(value:Number):void
+		{
+			this._pageThrowDuration = value;
 		}
 
 		/**
@@ -1626,7 +1730,7 @@ package org.josht.starling.foxhole.controls
 			{
 				if(this._hasElasticEdges)
 				{
-					position /= 2;
+					position *= this._elasticity;
 				}
 				else
 				{
@@ -1637,7 +1741,7 @@ package org.josht.starling.foxhole.controls
 			{
 				if(this._hasElasticEdges)
 				{
-					position -= (position - this._maxHorizontalScrollPosition) / 2;
+					position -= (position - this._maxHorizontalScrollPosition) * this._elasticity;
 				}
 				else
 				{
@@ -1659,7 +1763,7 @@ package org.josht.starling.foxhole.controls
 			{
 				if(this._hasElasticEdges)
 				{
-					position /= 2;
+					position *= this._elasticity;
 				}
 				else
 				{
@@ -1670,7 +1774,7 @@ package org.josht.starling.foxhole.controls
 			{
 				if(this._hasElasticEdges)
 				{
-					position -= (position - this._maxVerticalScrollPosition) / 2;
+					position -= (position - this._maxVerticalScrollPosition) * this._elasticity;
 				}
 				else
 				{
@@ -1697,7 +1801,7 @@ package org.josht.starling.foxhole.controls
 			}
 			
 			this._isDraggingHorizontally = false;
-			this.throwTo(targetHorizontalScrollPosition, NaN, 0.24);
+			this.throwTo(targetHorizontalScrollPosition, NaN, this._elasticSnapDuration);
 		}
 		
 		/**
@@ -1716,7 +1820,7 @@ package org.josht.starling.foxhole.controls
 			}
 			
 			this._isDraggingVertically = false;
-			this.throwTo(NaN, targetVerticalScrollPosition, 0.24);
+			this.throwTo(NaN, targetVerticalScrollPosition, this._elasticSnapDuration);
 		}
 		
 		/**
@@ -1724,6 +1828,26 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function throwHorizontally(pixelsPerMS:Number):void
 		{
+			if(this._snapToPages)
+			{
+				const inchesPerSecond:Number = 1000 * pixelsPerMS / Capabilities.screenDPI;
+				if(inchesPerSecond > MINIMUM_PAGE_VELOCITY)
+				{
+					var snappedPageHorizontalScrollPosition:Number = roundDownToNearest(this._horizontalScrollPosition, this.actualWidth);
+				}
+				else if(inchesPerSecond < -MINIMUM_PAGE_VELOCITY)
+				{
+					snappedPageHorizontalScrollPosition = roundUpToNearest(this._horizontalScrollPosition, this.actualWidth);
+				}
+				else
+				{
+					snappedPageHorizontalScrollPosition = roundToNearest(this._horizontalScrollPosition, this.actualWidth);
+				}
+				snappedPageHorizontalScrollPosition = Math.max(0, Math.min(this._maxHorizontalScrollPosition, snappedPageHorizontalScrollPosition));
+				this.throwTo(snappedPageHorizontalScrollPosition, NaN, this._pageThrowDuration);
+				return;
+			}
+
 			var absPixelsPerMS:Number = Math.abs(pixelsPerMS);
 			if(absPixelsPerMS <= MINIMUM_VELOCITY)
 			{
@@ -1770,6 +1894,26 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function throwVertically(pixelsPerMS:Number):void
 		{
+			if(this._snapToPages)
+			{
+				const inchesPerSecond:Number = 1000 * pixelsPerMS / Capabilities.screenDPI;
+				if(inchesPerSecond > MINIMUM_PAGE_VELOCITY)
+				{
+					var snappedPageVerticalScrollPosition:Number = roundDownToNearest(this._verticalScrollPosition, this.actualHeight);
+				}
+				else if(inchesPerSecond < -MINIMUM_PAGE_VELOCITY)
+				{
+					snappedPageVerticalScrollPosition = roundUpToNearest(this._verticalScrollPosition, this.actualHeight);
+				}
+				else
+				{
+					snappedPageVerticalScrollPosition = roundToNearest(this._verticalScrollPosition, this.actualHeight);
+				}
+				snappedPageVerticalScrollPosition = Math.max(0, Math.min(this._maxVerticalScrollPosition, snappedPageVerticalScrollPosition));
+				this.throwTo(NaN, snappedPageVerticalScrollPosition, this._pageThrowDuration);
+				return;
+			}
+
 			var absPixelsPerMS:Number = Math.abs(pixelsPerMS);
 			if(absPixelsPerMS <= MINIMUM_VELOCITY)
 			{
