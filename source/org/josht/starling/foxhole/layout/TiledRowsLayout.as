@@ -389,8 +389,10 @@ package org.josht.starling.foxhole.layout
 		private var _paging:String = PAGING_NONE;
 
 		/**
-		 * If the total item size is larger than the view port, the items may
-		 * be displayed as pages with gaps between items.
+		 * If the total combined height of the rows is larger than the height
+		 * of the view port, the layout will be split into pages where each
+		 * page is filled with the maximum number of rows that may be displayed
+		 * without cutting off any items.
 		 */
 		public function get paging():String
 		{

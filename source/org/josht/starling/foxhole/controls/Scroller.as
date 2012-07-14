@@ -890,9 +890,8 @@ package org.josht.starling.foxhole.controls
 		private var _elasticity:Number = 0.33;
 
 		/**
-		 * If the current scroll position is below the minimum or maximum scroll
-		 * position, the difference between the current scroll position and the
-		 * nearest bound is multiplied by this value.
+		 * If the scroll position goes outside the minimum or maximum bounds,
+		 * the scrolling will be constrained using this multiplier.
 		 */
 		public function get elasticity():Number
 		{
