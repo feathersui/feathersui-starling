@@ -35,8 +35,10 @@ package org.josht.starling.foxhole.layout
 	/**
 	 * Positions items from left to right in a single row.
 	 */
-	public class HorizontalLayout implements IVirtualLayout
+	public class HorizontalLayout implements IVariableVirtualLayout
 	{
+		private static var helperPoint:Point;
+
 		/**
 		 * The items will be aligned to the top of the bounds.
 		 */
@@ -294,6 +296,31 @@ package org.josht.starling.foxhole.layout
 		/**
 		 * @private
 		 */
+		private var _indexToItemBoundsFunction:Function;
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get indexToItemBoundsFunction():Function
+		{
+			return this._indexToItemBoundsFunction;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set indexToItemBoundsFunction(value:Function):void
+		{
+			if(this._indexToItemBoundsFunction == value)
+			{
+				return;
+			}
+			this._indexToItemBoundsFunction = value;
+		}
+
+		/**
+		 * @private
+		 */
 		private var _typicalItemWidth:Number = 0;
 
 		/**
@@ -367,8 +394,17 @@ package org.josht.starling.foxhole.layout
 				var item:DisplayObject = items[i];
 				if(this._useVirtualLayout && !item)
 				{
-					positionX += this._typicalItemWidth + this._gap;
-					maxHeight = Math.max(maxHeight, this._typicalItemHeight);
+					if(this._indexToItemBoundsFunction != null)
+					{
+						helperPoint = this._indexToItemBoundsFunction(i, helperPoint);
+						positionX += helperPoint.x + this._gap;
+						maxHeight = Math.max(maxHeight, helperPoint.y);
+					}
+					else
+					{
+						positionX += this._typicalItemWidth + this._gap;
+						maxHeight = Math.max(maxHeight, this._typicalItemHeight);
+					}
 				}
 				else
 				{
