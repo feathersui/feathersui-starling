@@ -1,31 +1,34 @@
 /*
-Copyright (c) 2012 Josh Tynjala
+ Copyright (c) 2012 Josh Tynjala
 
-Permission is hereby granted, free of charge, to any person
-obtaining a copy of this software and associated documentation
-files (the "Software"), to deal in the Software without
-restriction, including without limitation the rights to use,
-copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the
-Software is furnished to do so, subject to the following
-conditions:
+ Permission is hereby granted, free of charge, to any person
+ obtaining a copy of this software and associated documentation
+ files (the "Software"), to deal in the Software without
+ restriction, including without limitation the rights to use,
+ copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the
+ Software is furnished to do so, subject to the following
+ conditions:
 
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-OTHER DEALINGS IN THE SOFTWARE.
-*/
-package org.josht.starling.foxhole.controls
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ OTHER DEALINGS IN THE SOFTWARE.
+ */
+package org.josht.starling.foxhole.controls.renderers
 {
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
+
+	import org.josht.starling.foxhole.controls.Button;
+	import org.josht.starling.foxhole.controls.Label;
 
 	import org.josht.starling.foxhole.core.FoxholeControl;
 
@@ -36,14 +39,9 @@ package org.josht.starling.foxhole.controls
 	import starling.textures.Texture;
 
 	/**
-	 * The default item renderer for List. Supports up to three optional
-	 * sub-views, including a label to display text, an icon to display an
-	 * image, and an "accessory" to display a UI control or another display
-	 * object (with shortcuts for including a second image or a second label).
-	 * 
-	 * @see List
+	 * An abstract class for item renderer implementations.
 	 */
-	public class DefaultItemRenderer extends Button implements IListItemRenderer
+	public class BaseDefaultItemRenderer extends Button
 	{
 		/**
 		 * @private
@@ -65,11 +63,11 @@ package org.josht.starling.foxhole.controls
 		{
 			return new Label();
 		}
-		
+
 		/**
 		 * Constructor.
 		 */
-		public function DefaultItemRenderer()
+		public function BaseDefaultItemRenderer()
 		{
 			super();
 			this.isToggle = true;
@@ -95,12 +93,12 @@ package org.josht.starling.foxhole.controls
 		 * @private
 		 */
 		protected var accessory:DisplayObject;
-		
+
 		/**
 		 * @private
 		 */
 		private var _data:Object;
-		
+
 		/**
 		 * @inheritDoc
 		 */
@@ -108,7 +106,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._data;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -121,67 +119,17 @@ package org.josht.starling.foxhole.controls
 			this._data = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
-		
+
 		/**
 		 * @private
 		 */
-		private var _index:int = -1;
-		
-		/**
-		 * @inheritDoc
-		 */
-		public function get index():int
-		{
-			return this._index;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set index(value:int):void
-		{
-			this._index = value;
-		}
-		
-		/**
-		 * @private
-		 */
-		private var _owner:List;
-		
-		/**
-		 * @inheritDoc
-		 */
-		public function get owner():List
-		{
-			return this._owner;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set owner(value:List):void
-		{
-			if(this._owner == value)
-			{
-				return;
-			}
-			if(this._owner)
-			{
-				this._owner.onScroll.remove(owner_onScroll);
-			}
-			this._owner = value;
-			if(this._owner)
-			{
-				this._owner.onScroll.add(owner_onScroll);
-			}
-			this.invalidate(INVALIDATION_FLAG_DATA);
-		}
-		
+		protected var _owner:FoxholeControl;
+
 		/**
 		 * @private
 		 */
 		protected var _delayedCurrentState:String;
-		
+
 		/**
 		 * @private
 		 */
@@ -208,7 +156,7 @@ package org.josht.starling.foxhole.controls
 		{
 			this._useStateDelayTimer = value;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1026,7 +974,7 @@ package org.josht.starling.foxhole.controls
 
 			return null;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1165,11 +1113,11 @@ package org.josht.starling.foxhole.controls
 			this.accessory.x = this.actualWidth - this._paddingRight - this.accessory.width;
 			this.accessory.y = (this.actualHeight - this.accessory.height) / 2;
 		}
-		
+
 		/**
 		 * @private
 		 */
-		protected function owner_onScroll(list:List):void
+		protected function handleOwnerScroll():void
 		{
 			const state:String = this.isSelected ? Button.STATE_SELECTED_UP : Button.STATE_UP;
 			if(this._currentState != state)
@@ -1186,7 +1134,7 @@ package org.josht.starling.foxhole.controls
 			this._stateDelayTimer.stop();
 			this._stateDelayTimer = null;
 		}
-		
+
 		/**
 		 * @private
 		 */

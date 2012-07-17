@@ -199,6 +199,14 @@ package org.josht.starling.foxhole.data
 		}
 
 		/**
+		 * Determines if a node from the data source is a branch.
+		 */
+		public function isBranch(node:Object):Boolean
+		{
+			return this._dataDescriptor.isBranch(node);
+		}
+
+		/**
 		 * The number of items at the specified location in the collection.
 		 */
 		public function getLength(...rest:Array):int

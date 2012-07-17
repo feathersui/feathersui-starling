@@ -33,6 +33,11 @@ package org.josht.starling.foxhole.data
 	public interface IHierarchicalCollectionDataDescriptor
 	{
 		/**
+		 * Determines if a node from the data source is a branch.
+		 */
+		function isBranch(node:Object):Boolean;
+
+		/**
 		 * The number of items at the specified location in the data source.
 		 *
 		 * <p>The rest arguments are the indices that make up the location. If

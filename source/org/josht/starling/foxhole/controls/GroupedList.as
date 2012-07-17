@@ -1,38 +1,39 @@
 /*
-Copyright (c) 2012 Josh Tynjala
+ Copyright (c) 2012 Josh Tynjala
 
-Permission is hereby granted, free of charge, to any person
-obtaining a copy of this software and associated documentation
-files (the "Software"), to deal in the Software without
-restriction, including without limitation the rights to use,
-copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the
-Software is furnished to do so, subject to the following
-conditions:
+ Permission is hereby granted, free of charge, to any person
+ obtaining a copy of this software and associated documentation
+ files (the "Software"), to deal in the Software without
+ restriction, including without limitation the rights to use,
+ copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the
+ Software is furnished to do so, subject to the following
+ conditions:
 
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-OTHER DEALINGS IN THE SOFTWARE.
-*/
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ OTHER DEALINGS IN THE SOFTWARE.
+ */
 package org.josht.starling.foxhole.controls
 {
 	import flash.geom.Point;
 
+	import org.josht.starling.foxhole.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer;
+
 	import org.josht.starling.foxhole.controls.renderers.DefaultListItemRenderer;
 
-	import org.josht.starling.foxhole.controls.supportClasses.ListDataViewPort;
+	import org.josht.starling.foxhole.controls.supportClasses.GroupedListDataViewPort;
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.PropertyProxy;
-	import org.josht.starling.foxhole.data.ListCollection;
-	import org.josht.starling.foxhole.layout.HorizontalLayout;
+	import org.josht.starling.foxhole.data.HierarchicalCollection;
 	import org.josht.starling.foxhole.layout.ILayout;
 	import org.josht.starling.foxhole.layout.IVirtualLayout;
 	import org.josht.starling.foxhole.layout.VerticalLayout;
@@ -40,25 +41,25 @@ package org.josht.starling.foxhole.controls
 	import org.osflash.signals.Signal;
 
 	import starling.display.DisplayObject;
+
 	import starling.events.TouchEvent;
 
 	/**
-	 * Displays a one-dimensional list of items. Supports scrolling and custom
+	 * Displays a two-dimensional list of items. Supports scrolling and custom
 	 * layouts.
 	 */
-	public class List extends FoxholeControl
+	public class GroupedList extends FoxholeControl
 	{
 		/**
 		 * @private
 		 */
 		private static const helperPoint:Point = new Point();
-		
+
 		/**
 		 * Constructor.
 		 */
-		public function List()
+		public function GroupedList()
 		{
-			super();
 		}
 
 		/**
@@ -76,12 +77,17 @@ package org.josht.starling.foxhole.controls
 		 * @private
 		 * The guts of the List's functionality. Handles layout and selection.
 		 */
-		protected var dataViewPort:ListDataViewPort;
-		
+		protected var dataViewPort:GroupedListDataViewPort;
+
 		/**
 		 * @private
 		 */
-		private var _scrollToIndex:int = -1;
+		private var _scrollToGroupIndex:int = -1;
+
+		/**
+		 * @private
+		 */
+		private var _scrollToItemIndex:int = -1;
 
 		/**
 		 * @private
@@ -159,12 +165,12 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._maxHorizontalScrollPosition;
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _verticalScrollPosition:Number = 0;
-		
+
 		/**
 		 * The number of pixels the list has been scrolled vertically (on
 		 * the y-axis).
@@ -173,7 +179,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._verticalScrollPosition;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -191,12 +197,12 @@ package org.josht.starling.foxhole.controls
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 			this._onScroll.dispatch(this);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _maxVerticalScrollPosition:Number = 0;
-		
+
 		/**
 		 * The maximum number of pixels the list may be scrolled vertically (on
 		 * the y-axis). This value is automatically calculated based on the
@@ -210,24 +216,24 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._maxVerticalScrollPosition;
 		}
-		
+
 		/**
 		 * @private
 		 */
-		protected var _dataProvider:ListCollection;
-		
+		protected var _dataProvider:HierarchicalCollection;
+
 		/**
 		 * The collection of data displayed by the list.
 		 */
-		public function get dataProvider():ListCollection
+		public function get dataProvider():HierarchicalCollection
 		{
 			return this._dataProvider;
 		}
-		
+
 		/**
 		 * @private
 		 */
-		public function set dataProvider(value:ListCollection):void
+		public function set dataProvider(value:HierarchicalCollection):void
 		{
 			if(this._dataProvider == value)
 			{
@@ -250,24 +256,24 @@ package org.josht.starling.foxhole.controls
 
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
-		
+
 		/**
 		 * @private
 		 */
-		private var _isSelectable:Boolean = true;
-		
+		//private var _isSelectable:Boolean = true;
+
 		/**
 		 * Determines if an item in the list may be selected.
 		 */
-		public function get isSelectable():Boolean
+		/*public function get isSelectable():Boolean
 		{
 			return this._isSelectable;
-		}
-		
+		}*/
+
 		/**
 		 * @private
 		 */
-		public function set isSelectable(value:Boolean):void
+		/*public function set isSelectable(value:Boolean):void
 		{
 			if(this._isSelectable == value)
 			{
@@ -276,78 +282,121 @@ package org.josht.starling.foxhole.controls
 			this._isSelectable = value;
 			if(!this._isSelectable)
 			{
-				this.selectedIndex = -1;
+				this.selectedGroupIndex = -1;
+				this._selectedItemIndex = -1;
 			}
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
-		}
-		
+		}*/
+
 		/**
 		 * @private
 		 */
-		private var _selectedIndex:int = -1;
-		
+		//private var _selectedGroupIndex:int = -1;
+
 		/**
 		 * The index of the currently selected item. Returns -1 if no item is
 		 * selected.
+		 *
+		 * @see #selectedItemIndex
 		 */
-		public function get selectedIndex():int
+		/*public function get selectedGroupIndex():int
 		{
-			return this._selectedIndex;
-		}
-		
+			return this._selectedGroupIndex;
+		}*/
+
 		/**
 		 * @private
 		 */
-		public function set selectedIndex(value:int):void
+		/*public function set selectedGroupIndex(value:int):void
 		{
-			if(this._selectedIndex == value)
+			if(this._selectedGroupIndex == value)
 			{
 				return;
 			}
-			this._selectedIndex = value;
+			this._selectedGroupIndex = value;
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 			this._onChange.dispatch(this);
-		}
-		
+		}*/
+
+		/**
+		 * @private
+		 */
+		//private var _selectedItemIndex:int = -1;
+
+		/**
+		 * The index of the currently selected item. Returns -1 if no item is
+		 * selected.
+		 *
+		 * @see #selectedGroupIndex
+		 */
+		/*public function get selectedItemIndex():int
+		{
+			return this._selectedItemIndex;
+		}*/
+
+		/**
+		 * @private
+		 */
+		/*public function set selectedItemIndex(value:int):void
+		{
+			if(this._selectedItemIndex == value)
+			{
+				return;
+			}
+			this._selectedItemIndex = value;
+			this.invalidate(INVALIDATION_FLAG_SELECTED);
+			this._onChange.dispatch(this);
+		}*/
+
 		/**
 		 * The currently selected item. Returns null if no item is selected.
 		 */
-		public function get selectedItem():Object
+		/*public function get selectedItem():Object
 		{
-			if(!this._dataProvider || this._selectedIndex < 0 || this._selectedIndex >= this._dataProvider.length)
+			if(!this._dataProvider || this._selectedGroupIndex < 0 || this._selectedItemIndex < 0)
 			{
 				return null;
 			}
-			
-			return this._dataProvider.getItemAt(this._selectedIndex);
-		}
-		
+
+			return this._dataProvider.getItemAt(this._selectedGroupIndex, this._selectedItemIndex);
+		}*/
+
 		/**
 		 * @private
 		 */
-		public function set selectedItem(value:Object):void
+		/*public function set selectedItem(value:Object):void
 		{
-			this.selectedIndex = this._dataProvider.getItemIndex(value);
-		}
-		
+			const result:Vector.<int> = this._dataProvider.getItemIndex(value);
+			if(result.length == 2)
+			{
+				this.selectedGroupIndex = result[0];
+				this.selectedItemIndex = result[1]
+			}
+			else
+			{
+				this.selectedGroupIndex = -1;
+				this.selectedItemIndex = -1;
+			}
+		}*/
+
 		/**
 		 * @private
 		 */
-		protected var _onChange:Signal = new Signal(List);
-		
+		//protected var _onChange:Signal = new Signal(GroupedList);
+
 		/**
 		 * Dispatched when the selected item changes.
 		 */
-		public function get onChange():ISignal
+		/*public function get onChange():ISignal
 		{
 			return this._onChange;
-		}
-		
+		}*/
+
 		/**
 		 * @private
 		 */
-		protected var _onScroll:Signal = new Signal(List);
-		
+		protected var _onScroll:Signal = new Signal(GroupedList);
+
 		/**
 		 * Dispatched when the list is scrolled.
 		 */
@@ -355,28 +404,28 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._onScroll;
 		}
-		
+
 		/**
 		 * @private
 		 */
-		protected var _onItemTouch:Signal = new Signal(List, Object, int, TouchEvent);
-		
+		protected var _onItemTouch:Signal = new Signal(GroupedList, Object, int, int,  TouchEvent);
+
 		/**
-		 * Dispatched when an item in the list is touched (in any touch phase).
+		 * Dispatched when an item in the grouped list is touched (in any touch phase).
 		 *
 		 * <p>Listeners are expected to have the following function signature:</p>
-		 * <pre>function(list:List, item:Object, index:int, event:TouchEvent):void</pre>
+		 * <pre>function(list:GroupedList, item:Object, groupIndex:int, itemIndex:int, event:TouchEvent):void</pre>
 		 */
 		public function get onItemTouch():ISignal
 		{
 			return this._onItemTouch;
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _scrollerProperties:PropertyProxy = new PropertyProxy(scrollerProperties_onChange);
-		
+
 		/**
 		 * A set of key/value pairs to be passed down to the list's scroller
 		 * instance. The scroller is a Foxhole Scroller control.
@@ -392,7 +441,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._scrollerProperties;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -426,66 +475,6 @@ package org.josht.starling.foxhole.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
-		/**
-		 * @private
-		 */
-		private var _itemRendererProperties:PropertyProxy = new PropertyProxy(itemRendererProperties_onChange);
-
-		/**
-		 * A set of key/value pairs to be passed down to all of the list's item
-		 * renderers. These values are shared by each item renderer, so values
-		 * that cannot be shared (such as display objects that need to be added
-		 * to the display list) should be passed to the item renderers using an
-		 * <code>itemRendererFactory</code> or with a theme.
-		 *
-		 * <p>If the sub-component has its own sub-components, their properties
-		 * can be set too, using attribute <code>&#64;</code> notation. For example,
-		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
-		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
-		 * you can use the following syntax:</p>
-		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
-		 *
-		 * @see #itemRendererFactory
-		 */
-		public function get itemRendererProperties():Object
-		{
-			return this._itemRendererProperties;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set itemRendererProperties(value:Object):void
-		{
-			if(this._itemRendererProperties == value)
-			{
-				return;
-			}
-			if(!value)
-			{
-				value = new PropertyProxy();
-			}
-			if(!(value is PropertyProxy))
-			{
-				const newValue:PropertyProxy = new PropertyProxy();
-				for(var propertyName:String in value)
-				{
-					newValue[propertyName] = value[propertyName];
-				}
-				value = newValue;
-			}
-			if(this._itemRendererProperties)
-			{
-				this._itemRendererProperties.onChange.remove(itemRendererProperties_onChange);
-			}
-			this._itemRendererProperties = PropertyProxy(value);
-			if(this._itemRendererProperties)
-			{
-				this._itemRendererProperties.onChange.add(itemRendererProperties_onChange);
-			}
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
 
 		/**
 		 * @private
@@ -496,7 +485,7 @@ package org.josht.starling.foxhole.controls
 		 * @private
 		 */
 		private var _backgroundSkin:DisplayObject;
-		
+
 		/**
 		 * A display object displayed behind the item renderers.
 		 */
@@ -504,7 +493,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._backgroundSkin;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -514,7 +503,7 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			
+
 			if(this._backgroundSkin && this._backgroundSkin != this._backgroundDisabledSkin)
 			{
 				this.removeChild(this._backgroundSkin);
@@ -527,12 +516,12 @@ package org.josht.starling.foxhole.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _backgroundDisabledSkin:DisplayObject;
-		
+
 		/**
 		 * A background to display when the list is disabled.
 		 */
@@ -540,7 +529,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._backgroundDisabledSkin;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -550,7 +539,7 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			
+
 			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin != this._backgroundSkin)
 			{
 				this.removeChild(this._backgroundDisabledSkin);
@@ -671,12 +660,12 @@ package org.josht.starling.foxhole.controls
 			this._paddingLeft = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _itemRendererType:Class = DefaultListItemRenderer;
-		
+
 		/**
 		 * The class used to instantiate item renderers.
 		 *
@@ -686,7 +675,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._itemRendererType;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -696,16 +685,16 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			
+
 			this._itemRendererType = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _itemRendererFactory:Function;
-		
+
 		/**
 		 * A function called that is expected to return a new item renderer. Has
 		 * a higher priority than <code>itemRendererType</code>. Typically, you
@@ -716,14 +705,14 @@ package org.josht.starling.foxhole.controls
 		 * <p>The function is expected to have the following signature:</p>
 		 *
 		 * <pre>function():IListItemRenderer</pre>
-		 * 
+		 *
 		 * @see #itemRendererType
 		 */
 		public function get itemRendererFactory():Function
 		{
 			return this._itemRendererFactory;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -733,16 +722,16 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			
+
 			this._itemRendererFactory = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		private var _typicalItem:Object = null;
-		
+
 		/**
 		 * Used to auto-size the list. If the list's width or height is NaN, the
 		 * list will try to automatically pick an ideal size. This item is
@@ -752,7 +741,7 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._typicalItem;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -794,31 +783,463 @@ package org.josht.starling.foxhole.controls
 			this._itemRendererName = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
+
 		/**
-		 * Scrolls the list so that the specified item is visible.
+		 * @private
 		 */
-		public function scrollToDisplayIndex(index:int):void
+		private var _itemRendererProperties:PropertyProxy = new PropertyProxy(itemRendererProperties_onChange);
+
+		/**
+		 * A set of key/value pairs to be passed down to all of the list's item
+		 * renderers. These values are shared by each item renderer, so values
+		 * that cannot be shared (such as display objects that need to be added
+		 * to the display list) should be passed to the item renderers using an
+		 * <code>itemRendererFactory</code> or with a theme.
+		 *
+		 * <p>If the sub-component has its own sub-components, their properties
+		 * can be set too, using attribute <code>&#64;</code> notation. For example,
+		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
+		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
+		 * you can use the following syntax:</p>
+		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 *
+		 * @see #itemRendererFactory
+		 */
+		public function get itemRendererProperties():Object
 		{
-			if(this._scrollToIndex == index)
+			return this._itemRendererProperties;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set itemRendererProperties(value:Object):void
+		{
+			if(this._itemRendererProperties == value)
 			{
 				return;
 			}
-			this._scrollToIndex = index;
+			if(!value)
+			{
+				value = new PropertyProxy();
+			}
+			if(!(value is PropertyProxy))
+			{
+				const newValue:PropertyProxy = new PropertyProxy();
+				for(var propertyName:String in value)
+				{
+					newValue[propertyName] = value[propertyName];
+				}
+				value = newValue;
+			}
+			if(this._itemRendererProperties)
+			{
+				this._itemRendererProperties.onChange.remove(itemRendererProperties_onChange);
+			}
+			this._itemRendererProperties = PropertyProxy(value);
+			if(this._itemRendererProperties)
+			{
+				this._itemRendererProperties.onChange.add(itemRendererProperties_onChange);
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _headerRendererType:Class = DefaultGroupedListHeaderOrFooterRenderer;
+
+		/**
+		 * The class used to instantiate header renderers.
+		 *
+		 * @see #headerRendererFactory
+		 */
+		public function get headerRendererType():Class
+		{
+			return this._headerRendererType;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set headerRendererType(value:Class):void
+		{
+			if(this._headerRendererType == value)
+			{
+				return;
+			}
+
+			this._headerRendererType = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _headerRendererFactory:Function;
+
+		/**
+		 * A function called that is expected to return a new header renderer.
+		 * Has a higher priority than <code>headerRendererType</code>.
+		 * Typically, you would use an <code>headerRendererFactory</code>
+		 * instead of a <code>headerRendererType</code> if you wanted to
+		 * initialize some properties on each separate header renderer, such as
+		 * skins.
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 *
+		 * <pre>function():IGroupedListHeaderOrFooterRenderer</pre>
+		 *
+		 * @see #headerRendererType
+		 */
+		public function get headerRendererFactory():Function
+		{
+			return this._headerRendererFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set headerRendererFactory(value:Function):void
+		{
+			if(this._headerRendererFactory === value)
+			{
+				return;
+			}
+
+			this._headerRendererFactory = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _typicalHeader:Object = null;
+
+		/**
+		 * Used to auto-size the grouped list. If the list's width or height is
+		 * NaN, the grouped list will try to automatically pick an ideal size.
+		 * This data is used in that process to create a sample header renderer.
+		 */
+		public function get typicalHeader():Object
+		{
+			return this._typicalHeader;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set typicalHeader(value:Object):void
+		{
+			if(this._typicalHeader == value)
+			{
+				return;
+			}
+			this._typicalHeader = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _headerRendererName:String;
+
+		/**
+		 * A name to add to all header renderers in this grouped list. Typically
+		 * used by a theme to provide different skins to different lists.
+		 *
+		 * @see org.josht.starling.foxhole.core.FoxholeControl#nameList
+		 */
+		public function get headerRendererName():String
+		{
+			return this._headerRendererName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set headerRendererName(value:String):void
+		{
+			if(this._headerRendererName == value)
+			{
+				return;
+			}
+			this._headerRendererName = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _headerRendererProperties:PropertyProxy = new PropertyProxy(headerRendererProperties_onChange);
+
+		/**
+		 * A set of key/value pairs to be passed down to all of the grouped
+		 * list's header renderers. These values are shared by each header
+		 * renderer, so values that cannot be shared (such as display objects
+		 * that need to be added to the display list) should be passed to the
+		 * header renderers using a <code>headerRendererFactory</code> or with a
+		 * theme.
+		 *
+		 * <p>If the sub-component has its own sub-components, their properties
+		 * can be set too, using attribute <code>&#64;</code> notation. For example,
+		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
+		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
+		 * you can use the following syntax:</p>
+		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 *
+		 * @see #headerRendererFactory
+		 */
+		public function get headerRendererProperties():Object
+		{
+			return this._headerRendererProperties;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set headerRendererProperties(value:Object):void
+		{
+			if(this._headerRendererProperties == value)
+			{
+				return;
+			}
+			if(!value)
+			{
+				value = new PropertyProxy();
+			}
+			if(!(value is PropertyProxy))
+			{
+				const newValue:PropertyProxy = new PropertyProxy();
+				for(var propertyName:String in value)
+				{
+					newValue[propertyName] = value[propertyName];
+				}
+				value = newValue;
+			}
+			if(this._headerRendererProperties)
+			{
+				this._headerRendererProperties.onChange.remove(headerRendererProperties_onChange);
+			}
+			this._headerRendererProperties = PropertyProxy(value);
+			if(this._headerRendererProperties)
+			{
+				this._headerRendererProperties.onChange.add(headerRendererProperties_onChange);
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _footerRendererType:Class = DefaultGroupedListHeaderOrFooterRenderer;
+
+		/**
+		 * The class used to instantiate footer renderers.
+		 *
+		 * @see #footerRendererFactory
+		 */
+		public function get footerRendererType():Class
+		{
+			return this._footerRendererType;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set footerRendererType(value:Class):void
+		{
+			if(this._footerRendererType == value)
+			{
+				return;
+			}
+
+			this._footerRendererType = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _footerRendererFactory:Function;
+
+		/**
+		 * A function called that is expected to return a new footer renderer.
+		 * Has a higher priority than <code>footerRendererType</code>.
+		 * Typically, you would use an <code>footerRendererFactory</code>
+		 * instead of a <code>footerRendererType</code> if you wanted to
+		 * initialize some properties on each separate footer renderer, such as
+		 * skins.
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 *
+		 * <pre>function():IGroupedListHeaderOrFooterRenderer</pre>
+		 *
+		 * @see #footerRendererType
+		 */
+		public function get footerRendererFactory():Function
+		{
+			return this._footerRendererFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set footerRendererFactory(value:Function):void
+		{
+			if(this._footerRendererFactory === value)
+			{
+				return;
+			}
+
+			this._footerRendererFactory = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _typicalFooter:Object = null;
+
+		/**
+		 * Used to auto-size the grouped list. If the grouped list's width or
+		 * height is NaN, the grouped list will try to automatically pick an
+		 * ideal size. This data is used in that process to create a sample
+		 * footer renderer.
+		 */
+		public function get typicalFooter():Object
+		{
+			return this._typicalFooter;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set typicalFooter(value:Object):void
+		{
+			if(this._typicalFooter == value)
+			{
+				return;
+			}
+			this._typicalFooter = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _footerRendererName:String;
+
+		/**
+		 * A name to add to all footer renderers in this grouped list. Typically
+		 * used by a theme to provide different skins to different lists.
+		 *
+		 * @see org.josht.starling.foxhole.core.FoxholeControl#nameList
+		 */
+		public function get footerRendererName():String
+		{
+			return this._footerRendererName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set footerRendererName(value:String):void
+		{
+			if(this._footerRendererName == value)
+			{
+				return;
+			}
+			this._footerRendererName = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _footerRendererProperties:PropertyProxy = new PropertyProxy(footerRendererProperties_onChange);
+
+		/**
+		 * A set of key/value pairs to be passed down to all of the grouped
+		 * list's footer renderers. These values are shared by each footer
+		 * renderer, so values that cannot be shared (such as display objects
+		 * that need to be added to the display list) should be passed to the
+		 * footer renderers using a <code>footerRendererFactory</code> or with
+		 * a theme.
+		 *
+		 * <p>If the sub-component has its own sub-components, their properties
+		 * can be set too, using attribute <code>&#64;</code> notation. For example,
+		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
+		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
+		 * you can use the following syntax:</p>
+		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 *
+		 * @see #itemRendererFactory
+		 */
+		public function get footerRendererProperties():Object
+		{
+			return this._footerRendererProperties;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set footerRendererProperties(value:Object):void
+		{
+			if(this._footerRendererProperties == value)
+			{
+				return;
+			}
+			if(!value)
+			{
+				value = new PropertyProxy();
+			}
+			if(!(value is PropertyProxy))
+			{
+				const newValue:PropertyProxy = new PropertyProxy();
+				for(var propertyName:String in value)
+				{
+					newValue[propertyName] = value[propertyName];
+				}
+				value = newValue;
+			}
+			if(this._footerRendererProperties)
+			{
+				this._footerRendererProperties.onChange.remove(footerRendererProperties_onChange);
+			}
+			this._footerRendererProperties = PropertyProxy(value);
+			if(this._footerRendererProperties)
+			{
+				this._footerRendererProperties.onChange.add(footerRendererProperties_onChange);
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * Scrolls the list so that the specified item is visible.
+		 */
+		public function scrollToDisplayIndex(groupIndex:int, itemIndex:int):void
+		{
+			if(this._scrollToGroupIndex == groupIndex && this._scrollToItemIndex == itemIndex)
+			{
+				return;
+			}
+			this._scrollToGroupIndex = groupIndex;
+			this._scrollToItemIndex = itemIndex;
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
-		
+
 		/**
 		 * @inheritDoc
 		 */
 		override public function dispose():void
 		{
-			this._onChange.removeAll();
+			//this._onChange.removeAll();
 			this._onScroll.removeAll();
 			this._onItemTouch.removeAll();
 			super.dispose();
 		}
-		
+
 		/**
 		 * If the user is dragging the scroll, calling stopScrolling() will
 		 * cause the list to ignore the drag.
@@ -831,7 +1252,23 @@ package org.josht.starling.foxhole.controls
 			}
 			this.scroller.stopScrolling();
 		}
-		
+
+		/**
+		 * Extracts header data from a group object.
+		 */
+		public function groupToHeaderData(group:Object):Object
+		{
+			return null;
+		}
+
+		/**
+		 * Extracts footer data from a group object.
+		 */
+		public function groupToFooterData(group:Object):Object
+		{
+			return null;
+		}
+
 		/**
 		 * @private
 		 */
@@ -858,17 +1295,17 @@ package org.josht.starling.foxhole.controls
 				this.scroller.onScroll.add(scroller_onScroll);
 				this.addChild(this.scroller);
 			}
-			
+
 			if(!this.dataViewPort)
 			{
-				this.dataViewPort = new ListDataViewPort();
+				this.dataViewPort = new GroupedListDataViewPort();
 				this.dataViewPort.owner = this;
-				this.dataViewPort.onChange.add(dataViewPort_onChange);
+				//this.dataViewPort.onChange.add(dataViewPort_onChange);
 				this.dataViewPort.onItemTouch.add(dataViewPort_onItemTouch);
 				this.scroller.viewPort = this.dataViewPort;
 			}
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -878,30 +1315,45 @@ package org.josht.starling.foxhole.controls
 			const scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
-			
+
 			if(stylesInvalid)
 			{
 				this.refreshScrollerStyles();
 			}
-			
+
 			if(sizeInvalid || stylesInvalid || stateInvalid)
 			{
 				this.refreshBackgroundSkin();
 			}
 
 			this.dataViewPort.isEnabled = this._isEnabled;
-			this.dataViewPort.isSelectable = this._isSelectable;
-			this.dataViewPort.selectedIndex = this._selectedIndex;
+			//this.dataViewPort.isSelectable = this._isSelectable;
+			//this.dataViewPort.selectedGroupIndex = this._selectedGroupIndex;
+			//this.dataViewPort.selectedItemIndex = this._selectedItemIndex;
 			this.dataViewPort.dataProvider = this._dataProvider;
+
 			this.dataViewPort.itemRendererType = this._itemRendererType;
 			this.dataViewPort.itemRendererFactory = this._itemRendererFactory;
 			this.dataViewPort.itemRendererProperties = this._itemRendererProperties;
 			this.dataViewPort.itemRendererName = this._itemRendererName;
 			this.dataViewPort.typicalItem = this._typicalItem;
+
+			this.dataViewPort.headerRendererType = this._headerRendererType;
+			this.dataViewPort.headerRendererFactory = this._headerRendererFactory;
+			this.dataViewPort.headerRendererProperties = this._headerRendererProperties;
+			this.dataViewPort.headerRendererName = this._headerRendererName;
+			this.dataViewPort.typicalHeader = this._typicalHeader;
+
+			this.dataViewPort.footerRendererType = this._footerRendererType;
+			this.dataViewPort.footerRendererFactory = this._footerRendererFactory;
+			this.dataViewPort.footerRendererProperties = this._footerRendererProperties;
+			this.dataViewPort.footerRendererName = this._footerRendererName;
+			this.dataViewPort.typicalFooter = this._typicalFooter;
+
 			this.dataViewPort.layout = this._layout;
 			this.dataViewPort.horizontalScrollPosition = this._horizontalScrollPosition;
 			this.dataViewPort.verticalScrollPosition = this._verticalScrollPosition;
-			
+
 			this.scroller.isEnabled = this._isEnabled;
 			this.scroller.x = this._paddingLeft;
 			this.scroller.y = this._paddingTop;
@@ -946,9 +1398,9 @@ package org.josht.starling.foxhole.controls
 			this._horizontalScrollPosition = this.scroller.horizontalScrollPosition;
 			this._verticalScrollPosition = this.scroller.verticalScrollPosition;
 
-			if(this._scrollToIndex >= 0)
+			/*if(this._scrollToGroupIndex >= 0 && this._scrollToItemIndex >= 0)
 			{
-				const item:Object = this._dataProvider.getItemAt(this._scrollToIndex);
+				const item:Object = this._dataProvider.getItemAt(this._scrollToGroupIndex, this._scrollToItemIndex);
 				if(item is Object)
 				{
 					const renderer:DisplayObject = this.dataViewPort.itemToItemRenderer(item) as DisplayObject;
@@ -973,9 +1425,10 @@ package org.josht.starling.foxhole.controls
 					this.horizontalScrollPosition = Math.max(0, Math.min(helperPoint.x, this._maxHorizontalScrollPosition));
 					this.verticalScrollPosition = Math.max(0, Math.min(helperPoint.y, this._maxVerticalScrollPosition));
 				}
-				this._scrollToIndex = -1;
+				this._scrollToGroupIndex = -1;
+				this._scrollToItemIndex = -1;
 			}
-			this.scroller.horizontalScrollStep = this.scroller.verticalScrollStep = this.dataViewPort.typicalItemHeight;
+			this.scroller.horizontalScrollStep = this.scroller.verticalScrollStep = this.dataViewPort.typicalItemHeight;*/
 		}
 
 		/**
@@ -1004,7 +1457,7 @@ package org.josht.starling.foxhole.controls
 
 			return this.setSizeInternal(newWidth, newHeight, false);
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1019,7 +1472,7 @@ package org.josht.starling.foxhole.controls
 				}
 			}
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1063,12 +1516,28 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected function dataProvider_onReset(collection:ListCollection):void
+		protected function headerRendererProperties_onChange(proxy:PropertyProxy, name:Object):void
+		{
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function footerRendererProperties_onChange(proxy:PropertyProxy, name:Object):void
+		{
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dataProvider_onReset(collection:HierarchicalCollection):void
 		{
 			this.horizontalScrollPosition = 0;
 			this.verticalScrollPosition = 0;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1079,21 +1548,22 @@ package org.josht.starling.foxhole.controls
 			this.horizontalScrollPosition = this.scroller.horizontalScrollPosition;
 			this.verticalScrollPosition = this.scroller.verticalScrollPosition;
 		}
-		
+
 		/**
 		 * @private
 		 */
-		protected function dataViewPort_onChange(dataViewPort:ListDataViewPort):void
+		/*protected function dataViewPort_onChange(dataViewPort:GroupedListDataViewPort):void
 		{
-			this.selectedIndex = this.dataViewPort.selectedIndex;
-		}
-		
+			this.selectedGroupIndex = this.dataViewPort.selectedGroupIndex;
+			this.selectedItemIndex = this.dataViewPort.selectedItemIndex;
+		}*/
+
 		/**
 		 * @private
 		 */
-		protected function dataViewPort_onItemTouch(dataViewPort:ListDataViewPort, item:Object, index:int, event:TouchEvent):void
+		protected function dataViewPort_onItemTouch(dataViewPort:GroupedListDataViewPort, item:Object, groupIndex:int, itemIndex:int, event:TouchEvent):void
 		{
-			this._onItemTouch.dispatch(this, item, index, event);
+			this._onItemTouch.dispatch(this, item, groupIndex, itemIndex, event);
 		}
 	}
 }
