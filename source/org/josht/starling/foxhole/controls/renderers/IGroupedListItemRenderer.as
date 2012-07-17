@@ -22,19 +22,20 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
-package org.josht.starling.foxhole.controls
+package org.josht.starling.foxhole.controls.renderers
 {
+	import org.josht.starling.foxhole.controls.*;
 	import org.josht.starling.foxhole.core.IToggle;
 
 	/**
-	 * Interface to implement a renderer for a list item.
+	 * Interface to implement a renderer for a grouped list item.
 	 */
-	public interface IListItemRenderer extends IToggle
+	public interface IGroupedListItemRenderer extends IToggle
 	{
 		/**
-		 * An item from the list's data provider. The data may change if this
-		 * item renderer is reused for a new item because it's no longer needed
-		 * for the original item.
+		 * An item from the grouped list's data provider. The data may change if
+		 * this item renderer is reused for a new item because it's no longer
+		 * needed for the original item.
 		 */
 		function get data():Object;
 		
@@ -44,26 +45,34 @@ package org.josht.starling.foxhole.controls
 		function set data(value:Object):void;
 		
 		/**
-		 * The index (numeric position, starting from zero) of the item within
-		 * the list's data provider. Like the <code>data</code> property, this
-		 * value may change if this item renderer is reused by the list for a
-		 * different item.
+		 * The index of the item's parent group within the data provider of the
+		 * grouped list.
 		 */
-		function get index():int;
+		function get groupIndex():int;
 		
 		/**
 		 * @private
 		 */
-		function set index(value:int):void;
+		function set groupIndex(value:int):void;
+
+		/**
+		 * The index of the item within its parent group.
+		 */
+		function get itemIndex():int;
+
+		/**
+		 * @private
+		 */
+		function set itemIndex(value:int):void;
 		
 		/**
-		 * The list that contains this item renderer.
+		 * The grouped list that contains this item renderer.
 		 */
-		function get owner():List;
+		function get owner():GroupedList;
 		
 		/**
 		 * @private
 		 */
-		function set owner(value:List):void;
+		function set owner(value:GroupedList):void;
 	}
 }
