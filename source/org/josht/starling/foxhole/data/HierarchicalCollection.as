@@ -174,7 +174,7 @@ package org.josht.starling.foxhole.data
 		/**
 		 * @private
 		 */
-		private var _dataDescriptor:IHierarchicalCollectionDataDescriptor;
+		private var _dataDescriptor:IHierarchicalCollectionDataDescriptor = new ObjectArrayHierarchicalCollectionDataDescriptor();
 
 		/**
 		 * Describes the underlying data source by translating APIs.
