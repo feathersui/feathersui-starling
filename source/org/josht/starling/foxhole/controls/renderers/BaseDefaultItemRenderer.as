@@ -775,8 +775,8 @@ package org.josht.starling.foxhole.controls.renderers
 		 * Useful for transforming the <code>Image</code> in some way. For
 		 * example, you might want to scale it for current DPI.
 		 *
-		 * @see #iconTextureField;
-		 * @see #iconTextureFunction;
+		 * @see #accessoryTextureField;
+		 * @see #accessoryTextureFunction;
 		 */
 		public function get accessoryImageFactory():Function
 		{
@@ -806,8 +806,8 @@ package org.josht.starling.foxhole.controls.renderers
 		 * of <code>accessoryLabelField</code> or <code>accessoryLabelFunction</code>.
 		 * Useful for skinning the <code>Label</code>.
 		 *
-		 * @see #iconTextureField;
-		 * @see #iconTextureFunction;
+		 * @see #accessoryLabelField;
+		 * @see #accessoryLabelFunction;
 		 */
 		public function get accessoryLabelFactory():Function
 		{
@@ -850,10 +850,12 @@ package org.josht.starling.foxhole.controls.renderers
 			if(this.accessoryImage)
 			{
 				this.accessoryImage.dispose();
+				this.accessoryImage = null;
 			}
 			if(this.accessoryLabel)
 			{
 				this.accessoryLabel.dispose();
+				this.accessoryLabel = null;
 			}
 			super.dispose();
 		}
