@@ -982,7 +982,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 						}
 						else
 						{
-							this._unrenderedHeaders.push(item);
+							this._unrenderedHeaders.push(header);
 						}
 					}
 					this._headerIndices.push(currentIndex);
@@ -997,7 +997,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 					}
 					else
 					{
-						var item:Object = this._dataProvider.getItemAt(i);
+						var item:Object = this._dataProvider.getItemAt(i, j);
 						var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this._itemRendererMap[item]);
 						if(itemRenderer)
 						{
@@ -1035,7 +1035,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 						}
 						else
 						{
-							this._unrenderedFooters.push(item);
+							this._unrenderedFooters.push(footer);
 						}
 					}
 					this._footerIndices.push(currentIndex);
@@ -1046,15 +1046,54 @@ package org.josht.starling.foxhole.controls.supportClasses
 
 		private function renderUnrenderedData():void
 		{
-			/*const itemCount:int = this._unrenderedItems.length;
-			for(var i:int = 0; i < itemCount; i++)
+			var rendererCount:int = this._unrenderedItems.length;
+			for(var i:int = 0; i < rendererCount; i++)
 			{
 				var item:Object = this._unrenderedItems.shift();
-				var indices:Vector.<int> = this._dataProvider.getItemIndex(item);
-				var renderer:IGroupedListItemRenderer = this.createItemRenderer(item, indices[0], indices[1], false);
-				var displayRenderer:DisplayObject = DisplayObject(renderer);
-				this._layoutItems[index] = displayRenderer;
-			}*/
+				var indices:Vector.<int> = this._dataProvider.getItemLocation(item);
+				var itemRenderer:IGroupedListItemRenderer = this.createItemRenderer(item, indices[0], indices[1], false);
+				var displayRenderer:DisplayObject = DisplayObject(itemRenderer);
+				//this._layoutItems[index] = displayRenderer;
+			}
+
+			const groupCount:int = this._dataProvider ? this._dataProvider.getLength() : 0;
+			rendererCount = this._unrenderedHeaders.length;
+			for(i = 0; i < rendererCount; i++)
+			{
+				item = this._unrenderedHeaders.shift();
+				var groupIndex:int = -1;
+				for(var j:int = 0; j < groupCount; j++)
+				{
+					var group:Object = this._dataProvider.getItemAt(j);
+					if(this._owner.groupToHeaderData(group) == item)
+					{
+						groupIndex = j;
+						break;
+					}
+				}
+				var headerOrFooterRenderer:IGroupedListHeaderOrFooterRenderer = this.createHeaderRenderer(item, j, false);
+				displayRenderer = DisplayObject(headerOrFooterRenderer);
+				//this._layoutItems[index] = displayRenderer;
+			}
+
+			rendererCount = this._unrenderedFooters.length;
+			for(i = 0; i < rendererCount; i++)
+			{
+				item = this._unrenderedFooters.shift();
+				groupIndex = -1;
+				for(j = 0; j < groupCount; j++)
+				{
+					group = this._dataProvider.getItemAt(j);
+					if(this._owner.groupToHeaderData(group) == item)
+					{
+						groupIndex = j;
+						break;
+					}
+				}
+				headerOrFooterRenderer = this.createFooterRenderer(item, groupIndex, false);
+				displayRenderer = DisplayObject(headerOrFooterRenderer);
+				//this._layoutItems[index] = displayRenderer;
+			}
 		}
 
 		private function recoverInactiveRenderers():void

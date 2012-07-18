@@ -27,21 +27,17 @@ package org.josht.starling.foxhole.controls
 	import flash.geom.Point;
 
 	import org.josht.starling.foxhole.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer;
-
-	import org.josht.starling.foxhole.controls.renderers.DefaultListItemRenderer;
-
+	import org.josht.starling.foxhole.controls.renderers.DefaultGroupedListItemRenderer;
 	import org.josht.starling.foxhole.controls.supportClasses.GroupedListDataViewPort;
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.PropertyProxy;
 	import org.josht.starling.foxhole.data.HierarchicalCollection;
 	import org.josht.starling.foxhole.layout.ILayout;
-	import org.josht.starling.foxhole.layout.IVirtualLayout;
 	import org.josht.starling.foxhole.layout.VerticalLayout;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 
 	import starling.display.DisplayObject;
-
 	import starling.events.TouchEvent;
 
 	/**
@@ -664,7 +660,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _itemRendererType:Class = DefaultListItemRenderer;
+		private var _itemRendererType:Class = DefaultGroupedListItemRenderer;
 
 		/**
 		 * The class used to instantiate item renderers.
@@ -1216,6 +1212,110 @@ package org.josht.starling.foxhole.controls
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _headerField:String = "header";
+
+		/**
+		 * @see #headerFunction
+		 */
+		public function get headerField():String
+		{
+			return this._headerField;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set headerField(value:String):void
+		{
+			if(this._headerField == value)
+			{
+				return;
+			}
+			this._headerField = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _headerFunction:Function;
+
+		/**
+		 * @see #headerField
+		 */
+		public function get headerFunction():Function
+		{
+			return this._headerFunction;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set headerFunction(value:Function):void
+		{
+			if(this._headerFunction == value)
+			{
+				return;
+			}
+			this._headerFunction = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _footerField:String = "footer";
+
+		/**
+		 * @see #footerFunction
+		 */
+		public function get footerField():String
+		{
+			return this._footerField;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set footerField(value:String):void
+		{
+			if(this._footerField == value)
+			{
+				return;
+			}
+			this._footerField = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _footerFunction:Function;
+
+		/**
+		 * @see #footerField
+		 */
+		public function get footerFunction():Function
+		{
+			return this._footerFunction;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set footerFunction(value:Function):void
+		{
+			if(this._footerFunction == value)
+			{
+				return;
+			}
+			this._footerFunction = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
 		 * Scrolls the list so that the specified item is visible.
 		 */
 		public function scrollToDisplayIndex(groupIndex:int, itemIndex:int):void
@@ -1258,6 +1358,15 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function groupToHeaderData(group:Object):Object
 		{
+			if(this._headerFunction != null)
+			{
+				return this._headerFunction(group);
+			}
+			else if(this._headerField != null && group && group.hasOwnProperty(this._headerField))
+			{
+				return group[this._headerField];
+			}
+
 			return null;
 		}
 
@@ -1266,6 +1375,15 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function groupToFooterData(group:Object):Object
 		{
+			if(this._footerFunction != null)
+			{
+				return this._footerFunction(group);
+			}
+			else if(this._footerField != null && group && group.hasOwnProperty(this._footerField))
+			{
+				return group[this._footerField];
+			}
+
 			return null;
 		}
 
