@@ -29,11 +29,13 @@ package org.josht.starling.foxhole.controls.supportClasses
 	import flash.utils.Dictionary;
 
 	import org.josht.starling.foxhole.controls.GroupedList;
+	import org.josht.starling.foxhole.controls.renderers.IGroupedListHeaderOrFooterRenderer;
 	import org.josht.starling.foxhole.controls.renderers.IGroupedListItemRenderer;
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.PropertyProxy;
 	import org.josht.starling.foxhole.data.HierarchicalCollection;
 	import org.josht.starling.foxhole.layout.ILayout;
+	import org.josht.starling.foxhole.layout.IVariableVirtualLayout;
 	import org.josht.starling.foxhole.layout.IVirtualLayout;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
@@ -176,13 +178,63 @@ package org.josht.starling.foxhole.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
+		private var _typicalItemWidth:Number = NaN;
+
+		public function get typicalItemWidth():Number
+		{
+			return this._typicalItemWidth;
+		}
+
+		private var _typicalItemHeight:Number = NaN;
+
+		public function get typicalItemHeight():Number
+		{
+			return this._typicalItemHeight;
+		}
+
+		private var _typicalHeaderWidth:Number = NaN;
+
+		public function get typicalHeaderWidth():Number
+		{
+			return this._typicalHeaderWidth;
+		}
+
+		private var _typicalHeaderHeight:Number = NaN;
+
+		public function get typicalHeaderHeight():Number
+		{
+			return this._typicalHeaderHeight;
+		}
+
+		private var _typicalFooterWidth:Number = NaN;
+
+		public function get typicalFooterWidth():Number
+		{
+			return this._typicalFooterWidth;
+		}
+
+		private var _typicalFooterHeight:Number = NaN;
+
+		public function get typicalFooterHeight():Number
+		{
+			return this._typicalFooterHeight;
+		}
+
 		private var _layoutItems:Vector.<DisplayObject> = new <DisplayObject>[];
 		private var _unrenderedItems:Array = [];
 		private var _inactiveItemRenderers:Vector.<IGroupedListItemRenderer> = new <IGroupedListItemRenderer>[];
 		private var _activeItemRenderers:Vector.<IGroupedListItemRenderer> = new <IGroupedListItemRenderer>[];
 		private var _itemRendererMap:Dictionary = new Dictionary(true);
+		private var _unrenderedHeaders:Array = [];
+		private var _inactiveHeaderRenderers:Vector.<IGroupedListHeaderOrFooterRenderer> = new <IGroupedListHeaderOrFooterRenderer>[];
+		private var _activeHeaderRenderers:Vector.<IGroupedListHeaderOrFooterRenderer> = new <IGroupedListHeaderOrFooterRenderer>[];
 		private var _headerRendererMap:Dictionary = new Dictionary(true);
+		private var _unrenderedFooters:Array = [];
+		private var _inactiveFooterRenderers:Vector.<IGroupedListHeaderOrFooterRenderer> = new <IGroupedListHeaderOrFooterRenderer>[];
+		private var _activeFooterRenderers:Vector.<IGroupedListHeaderOrFooterRenderer> = new <IGroupedListHeaderOrFooterRenderer>[];
 		private var _footerRendererMap:Dictionary = new Dictionary(true);
+		private var _headerIndices:Vector.<int> = new <int>[];
+		private var _footerIndices:Vector.<int> = new <int>[];
 
 		private var _isScrolling:Boolean = false;
 
@@ -299,20 +351,6 @@ package org.josht.starling.foxhole.controls.supportClasses
 			}
 			this._itemRendererName = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		private var _typicalItemWidth:Number = NaN;
-
-		public function get typicalItemWidth():Number
-		{
-			return this._typicalItemWidth;
-		}
-
-		private var _typicalItemHeight:Number = NaN;
-
-		public function get typicalItemHeight():Number
-		{
-			return this._typicalItemHeight;
 		}
 
 		private var _typicalItem:Object = null;
@@ -672,6 +710,8 @@ package org.josht.starling.foxhole.controls.supportClasses
 			}
 			if(scrollInvalid || sizeInvalid || dataInvalid || stylesInvalid || itemRendererInvalid)
 			{
+				this.refreshHeaderRendererStyles();
+				this.refreshFooterRendererStyles();
 				this.refreshItemRendererStyles();
 			}
 			/*if(scrollInvalid || selectionInvalid || sizeInvalid || dataInvalid || itemRendererInvalid)
@@ -709,21 +749,67 @@ package org.josht.starling.foxhole.controls.supportClasses
 
 		protected function calculateTypicalValues():void
 		{
+			var typicalHeader:Object = this._typicalHeader;
+			var typicalFooter:Object = this._typicalFooter;
+			if((!typicalHeader || !this._typicalFooter) && this._dataProvider && this._dataProvider.getLength() > 0)
+			{
+				var group:Object = this._dataProvider.getItemAt(0);
+				if(!typicalHeader)
+				{
+					typicalHeader = this._owner.groupToHeaderData(group);
+				}
+				if(!typicalFooter)
+				{
+					typicalFooter = this._owner.groupToHeaderData(group);
+				}
+			}
+
+			//headers are optional
+			if(typicalHeader)
+			{
+				const typicalHeaderRenderer:IGroupedListHeaderOrFooterRenderer = this.createHeaderRenderer(typicalHeader, 0, true);
+				this.refreshOneHeaderRendererStyles(typicalHeaderRenderer);
+				if(typicalHeaderRenderer is FoxholeControl)
+				{
+					FoxholeControl(typicalHeaderRenderer).validate();
+				}
+				var displayRenderer:DisplayObject = DisplayObject(typicalHeaderRenderer);
+				this._typicalHeaderWidth = displayRenderer.width;
+				this._typicalHeaderHeight = displayRenderer.height;
+				this.destroyHeaderRenderer(typicalHeaderRenderer);
+			}
+
+			//footers are optional
+			if(typicalFooter)
+			{
+				const typicalFooterRenderer:IGroupedListHeaderOrFooterRenderer = this.createFooterRenderer(typicalFooter, 0, true);
+				this.refreshOneFooterRendererStyles(typicalFooterRenderer);
+				if(typicalFooterRenderer is FoxholeControl)
+				{
+					FoxholeControl(typicalFooterRenderer).validate();
+				}
+				displayRenderer = DisplayObject(typicalFooterRenderer);
+				this._typicalFooterWidth = displayRenderer.width;
+				this._typicalFooterHeight = displayRenderer.height;
+				this.destroyFooterRenderer(typicalFooterRenderer);
+			}
+
 			var typicalItem:Object = this._typicalItem;
-			if(!typicalItem && this._dataProvider && this._dataProvider.length > 0)
+			if(!typicalItem && this._dataProvider && this._dataProvider.getLength() > 0)
 			{
 				typicalItem = this._dataProvider.getItemAt(0);
 			}
 
-			const typicalRenderer:IGroupedListItemRenderer = this.createRenderer(typicalItem, 0, 0, true);
-			this.refreshOneItemRendererStyles(typicalRenderer);
-			if(typicalRenderer is FoxholeControl)
+			const typicalItemRenderer:IGroupedListItemRenderer = this.createItemRenderer(typicalItem, 0, 0, true);
+			this.refreshOneItemRendererStyles(typicalItemRenderer);
+			if(typicalItemRenderer is FoxholeControl)
 			{
-				FoxholeControl(typicalRenderer).validate();
+				FoxholeControl(typicalItemRenderer).validate();
 			}
-			this._typicalItemWidth = DisplayObject(typicalRenderer).width;
-			this._typicalItemHeight = DisplayObject(typicalRenderer).height;
-			this.destroyRenderer(typicalRenderer);
+			displayRenderer = DisplayObject(typicalItemRenderer);
+			this._typicalItemWidth = displayRenderer.width;
+			this._typicalItemHeight = displayRenderer.height;
+			this.destroyItemRenderer(typicalItemRenderer);
 		}
 
 		public function itemToItemRenderer(item:Object):IGroupedListItemRenderer
@@ -739,6 +825,22 @@ package org.josht.starling.foxhole.controls.supportClasses
 			}
 		}
 
+		protected function refreshHeaderRendererStyles():void
+		{
+			for each(var renderer:IGroupedListHeaderOrFooterRenderer in this._activeHeaderRenderers)
+			{
+				this.refreshOneHeaderRendererStyles(renderer);
+			}
+		}
+
+		protected function refreshFooterRendererStyles():void
+		{
+			for each(var renderer:IGroupedListHeaderOrFooterRenderer in this._activeFooterRenderers)
+			{
+				this.refreshOneFooterRendererStyles(renderer);
+			}
+		}
+
 		protected function refreshOneItemRendererStyles(renderer:IGroupedListItemRenderer):void
 		{
 			const displayRenderer:DisplayObject = DisplayObject(renderer);
@@ -747,6 +849,32 @@ package org.josht.starling.foxhole.controls.supportClasses
 				if(displayRenderer.hasOwnProperty(propertyName))
 				{
 					var propertyValue:Object = this._itemRendererProperties[propertyName];
+					displayRenderer[propertyName] = propertyValue;
+				}
+			}
+		}
+
+		protected function refreshOneHeaderRendererStyles(renderer:IGroupedListHeaderOrFooterRenderer):void
+		{
+			const displayRenderer:DisplayObject = DisplayObject(renderer);
+			for(var propertyName:String in this._headerRendererProperties)
+			{
+				if(displayRenderer.hasOwnProperty(propertyName))
+				{
+					var propertyValue:Object = this._headerRendererProperties[propertyName];
+					displayRenderer[propertyName] = propertyValue;
+				}
+			}
+		}
+
+		protected function refreshOneFooterRendererStyles(renderer:IGroupedListHeaderOrFooterRenderer):void
+		{
+			const displayRenderer:DisplayObject = DisplayObject(renderer);
+			for(var propertyName:String in this._footerRendererProperties)
+			{
+				if(displayRenderer.hasOwnProperty(propertyName))
+				{
+					var propertyValue:Object = this._footerRendererProperties[propertyName];
 					displayRenderer[propertyName] = propertyValue;
 				}
 			}
@@ -773,8 +901,8 @@ package org.josht.starling.foxhole.controls.supportClasses
 				this.recoverInactiveRenderers();
 				this.freeInactiveRenderers();
 			}
-
-			this._layoutItems.length = this._dataProvider ? this._dataProvider.length : 0;
+			this._headerIndices.length = 0;
+			this._footerIndices.length = 0;
 
 			if(isNaN(this.explicitVisibleWidth))
 			{
@@ -786,8 +914,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 			}
 			if(isNaN(this.explicitVisibleHeight))
 			{
-				const itemCount:int = this._dataProvider ? this._dataProvider.length : 0;
-				this.actualVisibleHeight = Math.min(this._maxVisibleHeight, Math.max(0, this._minVisibleHeight, itemCount * this._typicalItemHeight));
+				this.actualVisibleHeight = Math.min(this._maxVisibleHeight, Math.max(0, this._minVisibleHeight, this._typicalItemHeight));
 			}
 			else
 			{
@@ -802,81 +929,183 @@ package org.josht.starling.foxhole.controls.supportClasses
 
 		private function findUnrenderedData():void
 		{
-			const itemCount:int = this._dataProvider ? this._dataProvider.length : 0;
+			const groupCount:int = this._dataProvider ? this._dataProvider.getLength() : 0;
+			var totalItemCount:int = 0;
+			for(var i:int = 0; i < groupCount; i++)
+			{
+				var group:Object = this._dataProvider.getItemAt(i);
+				var currentItemCount:int = this._dataProvider.getLength(i);
+				totalItemCount += currentItemCount;
+				if(this._owner.groupToHeaderData(group) !== null)
+				{
+					totalItemCount++;
+				}
+				if(this._owner.groupToFooterData(group) !== null)
+				{
+					totalItemCount++;
+				}
+			}
+			this._layoutItems.length = totalItemCount;
 			var startIndex:int = 0;
-			var endIndex:int = itemCount;
-			const virtualLayout:IVirtualLayout = this._layout as IVirtualLayout;
+			var endIndex:int = totalItemCount;
+			const virtualLayout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
 			const useVirtualLayout:Boolean = virtualLayout && virtualLayout.useVirtualLayout;
 			if(useVirtualLayout)
 			{
 				this._ignoreLayoutChanges = true;
-				virtualLayout.typicalItemWidth = this._typicalItemWidth;
-				virtualLayout.typicalItemHeight = this._typicalItemHeight;
+				virtualLayout.indexToItemBoundsFunction = indexToItemBoundsFunction;
 				this._ignoreLayoutChanges = false;
-				startIndex = virtualLayout.getMinimumItemIndexAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, this.actualVisibleWidth, this.actualVisibleHeight, itemCount);
-				endIndex = virtualLayout.getMaximumItemIndexAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, this.actualVisibleWidth, this.actualVisibleHeight, itemCount);
+				startIndex = virtualLayout.getMinimumItemIndexAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, this.actualVisibleWidth, this.actualVisibleHeight, totalItemCount);
+				endIndex = virtualLayout.getMaximumItemIndexAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, this.actualVisibleWidth, this.actualVisibleHeight, totalItemCount);
 			}
-			for(var i:int = 0; i < itemCount; i++)
+			var currentIndex:int = 0;
+			for(i = 0; i < groupCount; i++)
 			{
-				if(i < startIndex || i >= endIndex)
+				group = this._dataProvider.getItemAt(i);
+				var header:Object = this._owner.groupToHeaderData(group);
+				if(header !== null)
 				{
-					this._layoutItems[i] = null;
-				}
-				else
-				{
-					var item:Object = this._dataProvider.getItemAt(i);
-					var renderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this._itemRendererMap[item]);
-					if(renderer)
+					if(currentIndex < startIndex || currentIndex >= endIndex)
 					{
-						//the index may have changed if data was added or removed
-						renderer.index = i;
-						this._activeItemRenderers.push(renderer);
-						this._inactiveItemRenderers.splice(this._inactiveItemRenderers.indexOf(renderer), 1);
-						var displayRenderer:DisplayObject = DisplayObject(renderer);
-						this._layoutItems[i] = displayRenderer;
+						this._layoutItems[currentIndex] = null;
 					}
 					else
 					{
-						this._unrenderedItems.push(item);
+						var headerOrFooterRenderer:IGroupedListHeaderOrFooterRenderer = IGroupedListHeaderOrFooterRenderer(this._headerRendererMap[header]);
+						if(headerOrFooterRenderer)
+						{
+							headerOrFooterRenderer.groupIndex = i;
+							this._activeHeaderRenderers.push(headerOrFooterRenderer);
+							this._inactiveHeaderRenderers.splice(this._inactiveHeaderRenderers.indexOf(headerOrFooterRenderer), 1);
+							var displayRenderer:DisplayObject = DisplayObject(headerOrFooterRenderer);
+							this._layoutItems[currentIndex] = displayRenderer;
+						}
+						else
+						{
+							this._unrenderedHeaders.push(item);
+						}
 					}
+					this._headerIndices.push(currentIndex);
+					currentIndex++;
+				}
+				currentItemCount = this._dataProvider.getLength(i);
+				for(var j:int = 0; j < currentItemCount; j++)
+				{
+					if(currentIndex < startIndex || currentIndex >= endIndex)
+					{
+						this._layoutItems[currentIndex] = null;
+					}
+					else
+					{
+						var item:Object = this._dataProvider.getItemAt(i);
+						var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this._itemRendererMap[item]);
+						if(itemRenderer)
+						{
+							itemRenderer.groupIndex = i;
+							itemRenderer.itemIndex = j;
+							this._activeItemRenderers.push(itemRenderer);
+							this._inactiveItemRenderers.splice(this._inactiveItemRenderers.indexOf(itemRenderer), 1);
+							displayRenderer = DisplayObject(itemRenderer);
+							this._layoutItems[currentIndex] = displayRenderer;
+						}
+						else
+						{
+							this._unrenderedItems.push(item);
+						}
+					}
+					currentIndex++;
+				}
+				var footer:Object = this._owner.groupToFooterData(group);
+				if(footer !== null)
+				{
+					if(currentIndex < startIndex || currentIndex >= endIndex)
+					{
+						this._layoutItems[currentIndex] = null;
+					}
+					else
+					{
+						headerOrFooterRenderer = IGroupedListHeaderOrFooterRenderer(this._footerRendererMap[footer]);
+						if(headerOrFooterRenderer)
+						{
+							headerOrFooterRenderer.groupIndex = i;
+							this._activeFooterRenderers.push(headerOrFooterRenderer);
+							this._inactiveFooterRenderers.splice(this._inactiveFooterRenderers.indexOf(headerOrFooterRenderer), 1);
+							displayRenderer = DisplayObject(headerOrFooterRenderer);
+							this._layoutItems[currentIndex] = displayRenderer;
+						}
+						else
+						{
+							this._unrenderedFooters.push(item);
+						}
+					}
+					this._footerIndices.push(currentIndex);
+					currentIndex++;
 				}
 			}
 		}
 
 		private function renderUnrenderedData():void
 		{
-			const itemCount:int = this._unrenderedItems.length;
+			/*const itemCount:int = this._unrenderedItems.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var item:Object = this._unrenderedItems.shift();
 				var indices:Vector.<int> = this._dataProvider.getItemIndex(item);
-				var renderer:IGroupedListItemRenderer = this.createRenderer(item, indices[0], indices[1], false);
+				var renderer:IGroupedListItemRenderer = this.createItemRenderer(item, indices[0], indices[1], false);
 				var displayRenderer:DisplayObject = DisplayObject(renderer);
 				this._layoutItems[index] = displayRenderer;
-			}
+			}*/
 		}
 
 		private function recoverInactiveRenderers():void
 		{
-			const itemCount:int = this._inactiveItemRenderers.length;
-			for(var i:int = 0; i < itemCount; i++)
+			var rendererCount:int = this._inactiveItemRenderers.length;
+			for(var i:int = 0; i < rendererCount; i++)
 			{
-				var renderer:IGroupedListItemRenderer = this._inactiveItemRenderers[i];
-				delete this._itemRendererMap[renderer.data];
+				var itemRenderer:IGroupedListItemRenderer = this._inactiveItemRenderers[i];
+				delete this._itemRendererMap[itemRenderer.data];
+			}
+
+			rendererCount = this._inactiveHeaderRenderers.length;
+			for(i = 0; i < rendererCount; i++)
+			{
+				var headerOrFooterRenderer:IGroupedListHeaderOrFooterRenderer = this._inactiveHeaderRenderers[i];
+				delete this._headerRendererMap[headerOrFooterRenderer.data];
+			}
+
+			rendererCount = this._inactiveFooterRenderers.length;
+			for(i = 0; i < rendererCount; i++)
+			{
+				headerOrFooterRenderer = this._inactiveFooterRenderers[i];
+				delete this._footerRendererMap[headerOrFooterRenderer.data];
 			}
 		}
 
 		private function freeInactiveRenderers():void
 		{
-			const itemCount:int = this._inactiveItemRenderers.length;
-			for(var i:int = 0; i < itemCount; i++)
+			var rendererCount:int = this._inactiveItemRenderers.length;
+			for(var i:int = 0; i < rendererCount; i++)
 			{
-				var renderer:IGroupedListItemRenderer = this._inactiveItemRenderers.shift();
-				this.destroyRenderer(renderer);
+				var itemRenderer:IGroupedListItemRenderer = this._inactiveItemRenderers.shift();
+				this.destroyItemRenderer(itemRenderer);
+			}
+
+			rendererCount = this._inactiveHeaderRenderers.length;
+			for(i = 0; i < rendererCount; i++)
+			{
+				var headerOrFooterRenderer:IGroupedListHeaderOrFooterRenderer = this._inactiveHeaderRenderers.shift();
+				this.destroyHeaderRenderer(headerOrFooterRenderer);
+			}
+
+			rendererCount = this._inactiveFooterRenderers.length;
+			for(i = 0; i < rendererCount; i++)
+			{
+				headerOrFooterRenderer = this._inactiveFooterRenderers.shift();
+				this.destroyFooterRenderer(headerOrFooterRenderer);
 			}
 		}
 
-		private function createRenderer(item:Object, groupIndex:int, itemIndex:int, isTemporary:Boolean = false):IGroupedListItemRenderer
+		private function createItemRenderer(item:Object, groupIndex:int, itemIndex:int, isTemporary:Boolean = false):IGroupedListItemRenderer
 		{
 			if(isTemporary || this._inactiveItemRenderers.length == 0)
 			{
@@ -912,12 +1141,114 @@ package org.josht.starling.foxhole.controls.supportClasses
 			return renderer;
 		}
 
-		private function destroyRenderer(renderer:IGroupedListItemRenderer):void
+		private function createHeaderRenderer(item:Object, groupIndex:int, isTemporary:Boolean = false):IGroupedListHeaderOrFooterRenderer
+		{
+			if(isTemporary || this._inactiveHeaderRenderers.length == 0)
+			{
+				var renderer:IGroupedListHeaderOrFooterRenderer;
+				if(this._headerRendererFactory != null)
+				{
+					renderer = IGroupedListHeaderOrFooterRenderer(this._headerRendererFactory());
+				}
+				else
+				{
+					renderer = new this._headerRendererType();
+				}
+				const displayRenderer:DisplayObject = DisplayObject(renderer);
+				this.addChild(displayRenderer);
+			}
+			else
+			{
+				renderer = this._inactiveHeaderRenderers.shift();
+			}
+			renderer.data = item;
+			renderer.groupIndex = groupIndex;
+			renderer.owner = this.owner;
+
+			if(!isTemporary)
+			{
+				this._headerRendererMap[item] = renderer;
+				this._activeHeaderRenderers.push(renderer);
+			}
+
+			return renderer;
+		}
+
+		private function createFooterRenderer(item:Object, groupIndex:int, isTemporary:Boolean = false):IGroupedListHeaderOrFooterRenderer
+		{
+			if(isTemporary || this._inactiveFooterRenderers.length == 0)
+			{
+				var renderer:IGroupedListHeaderOrFooterRenderer;
+				if(this._footerRendererFactory != null)
+				{
+					renderer = IGroupedListHeaderOrFooterRenderer(this._footerRendererFactory());
+				}
+				else
+				{
+					renderer = new this._footerRendererType();
+				}
+				const displayRenderer:DisplayObject = DisplayObject(renderer);
+				this.addChild(displayRenderer);
+			}
+			else
+			{
+				renderer = this._inactiveFooterRenderers.shift();
+			}
+			renderer.data = item;
+			renderer.groupIndex = groupIndex;
+			renderer.owner = this.owner;
+
+			if(!isTemporary)
+			{
+				this._footerRendererMap[item] = renderer;
+				this._activeFooterRenderers.push(renderer);
+			}
+
+			return renderer;
+		}
+
+		private function destroyItemRenderer(renderer:IGroupedListItemRenderer):void
 		{
 			//renderer.onChange.remove(renderer_onChange);
 			const displayRenderer:DisplayObject = DisplayObject(renderer);
 			displayRenderer.removeEventListener(TouchEvent.TOUCH, renderer_touchHandler);
 			this.removeChild(displayRenderer, true);
+		}
+
+		private function destroyHeaderRenderer(renderer:IGroupedListHeaderOrFooterRenderer):void
+		{
+			const displayRenderer:DisplayObject = DisplayObject(renderer);
+			this.removeChild(displayRenderer, true);
+		}
+
+		private function destroyFooterRenderer(renderer:IGroupedListHeaderOrFooterRenderer):void
+		{
+			const displayRenderer:DisplayObject = DisplayObject(renderer);
+			this.removeChild(displayRenderer, true);
+		}
+
+		private function indexToItemBoundsFunction(index:int, result:Point = null):Point
+		{
+			if(!result)
+			{
+				result = new Point();
+			}
+			if(this._headerIndices.indexOf(index) >= 0)
+			{
+				result.x = this._typicalHeaderWidth;
+				result.y = this._typicalHeaderHeight;
+			}
+			else if(this._footerIndices.indexOf(index) >= 0)
+			{
+				result.x = this._typicalFooterWidth;
+				result.y = this._typicalFooterHeight;
+			}
+			else
+			{
+				result.x = this._typicalItemWidth;
+				result.y = this._typicalItemHeight;
+			}
+			return result;
 		}
 
 		private function itemRendererProperties_onChange(proxy:PropertyProxy, name:Object):void
