@@ -225,11 +225,11 @@ package org.josht.starling.foxhole.controls.supportClasses
 		private var _inactiveItemRenderers:Vector.<IGroupedListItemRenderer> = new <IGroupedListItemRenderer>[];
 		private var _activeItemRenderers:Vector.<IGroupedListItemRenderer> = new <IGroupedListItemRenderer>[];
 		private var _itemRendererMap:Dictionary = new Dictionary(true);
-		private var _unrenderedHeaders:Array = [];
+		private var _unrenderedHeaders:Vector.<int> = new <int>[];
 		private var _inactiveHeaderRenderers:Vector.<IGroupedListHeaderOrFooterRenderer> = new <IGroupedListHeaderOrFooterRenderer>[];
 		private var _activeHeaderRenderers:Vector.<IGroupedListHeaderOrFooterRenderer> = new <IGroupedListHeaderOrFooterRenderer>[];
 		private var _headerRendererMap:Dictionary = new Dictionary(true);
-		private var _unrenderedFooters:Array = [];
+		private var _unrenderedFooters:Vector.<int> = new <int>[];
 		private var _inactiveFooterRenderers:Vector.<IGroupedListHeaderOrFooterRenderer> = new <IGroupedListHeaderOrFooterRenderer>[];
 		private var _activeFooterRenderers:Vector.<IGroupedListHeaderOrFooterRenderer> = new <IGroupedListHeaderOrFooterRenderer>[];
 		private var _footerRendererMap:Dictionary = new Dictionary(true);
@@ -480,9 +480,9 @@ package org.josht.starling.foxhole.controls.supportClasses
 			}
 			if(this._headerRendererName)
 			{
-				for(var item:Object in this._headerRendererMap)
+				for(var index:Object in this._headerRendererMap)
 				{
-					var renderer:FoxholeControl = this._headerRendererMap[item] as FoxholeControl;
+					var renderer:FoxholeControl = this._headerRendererMap[index] as FoxholeControl;
 					if(renderer)
 					{
 						renderer.nameList.remove(this._headerRendererName);
@@ -569,9 +569,9 @@ package org.josht.starling.foxhole.controls.supportClasses
 			}
 			if(this._footerRendererName)
 			{
-				for(var item:Object in this._footerRendererMap)
+				for(var index:Object in this._footerRendererMap)
 				{
-					var renderer:FoxholeControl = this._footerRendererMap[item] as FoxholeControl;
+					var renderer:FoxholeControl = this._footerRendererMap[index] as FoxholeControl;
 					if(renderer)
 					{
 						renderer.nameList.remove(this._footerRendererName);
@@ -718,22 +718,58 @@ package org.josht.starling.foxhole.controls.supportClasses
 			{
 				this.refreshSelection();
 			}*/
-			const rendererCount:int = this._activeItemRenderers.length;
+			var rendererCount:int = this._activeItemRenderers.length;
 			for(var i:int = 0; i < rendererCount; i++)
 			{
-				var itemRenderer:DisplayObject = DisplayObject(this._activeItemRenderers[i]);
-				if(itemRenderer is FoxholeControl)
+				var renderer:DisplayObject = DisplayObject(this._activeItemRenderers[i]);
+				if(renderer is FoxholeControl)
 				{
-					const foxholeItemRenderer:FoxholeControl = FoxholeControl(itemRenderer);
+					var foxholeRenderer:FoxholeControl = FoxholeControl(renderer);
 					if(stateInvalid || dataInvalid || scrollInvalid || itemRendererInvalid)
 					{
-						foxholeItemRenderer.isEnabled = this._isEnabled;
+						foxholeRenderer.isEnabled = this._isEnabled;
 					}
-					if(stylesInvalid && this._itemRendererName && !foxholeItemRenderer.nameList.contains(this._itemRendererName))
+					if(stylesInvalid && this._itemRendererName && !foxholeRenderer.nameList.contains(this._itemRendererName))
 					{
-						foxholeItemRenderer.nameList.add(this._itemRendererName);
+						foxholeRenderer.nameList.add(this._itemRendererName);
 					}
-					foxholeItemRenderer.validate();
+					foxholeRenderer.validate();
+				}
+			}
+			rendererCount = this._activeHeaderRenderers.length;
+			for(i = 0; i < rendererCount; i++)
+			{
+				renderer = DisplayObject(this._activeHeaderRenderers[i]);
+				if(renderer is FoxholeControl)
+				{
+					foxholeRenderer = FoxholeControl(renderer);
+					if(stateInvalid || dataInvalid || scrollInvalid || itemRendererInvalid)
+					{
+						foxholeRenderer.isEnabled = this._isEnabled;
+					}
+					if(stylesInvalid && this._headerRendererName && !foxholeRenderer.nameList.contains(this._headerRendererName))
+					{
+						foxholeRenderer.nameList.add(this._headerRendererName);
+					}
+					foxholeRenderer.validate();
+				}
+			}
+			rendererCount = this._activeFooterRenderers.length;
+			for(i = 0; i < rendererCount; i++)
+			{
+				renderer = DisplayObject(this._activeFooterRenderers[i]);
+				if(renderer is FoxholeControl)
+				{
+					foxholeRenderer = FoxholeControl(renderer);
+					if(stateInvalid || dataInvalid || scrollInvalid || itemRendererInvalid)
+					{
+						foxholeRenderer.isEnabled = this._isEnabled;
+					}
+					if(stylesInvalid && this._footerRendererName && !foxholeRenderer.nameList.contains(this._footerRendererName))
+					{
+						foxholeRenderer.nameList.add(this._footerRendererName);
+					}
+					foxholeRenderer.validate();
 				}
 			}
 
@@ -760,7 +796,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 				}
 				if(!typicalFooter)
 				{
-					typicalFooter = this._owner.groupToHeaderData(group);
+					typicalFooter = this._owner.groupToFooterData(group);
 				}
 			}
 
@@ -906,7 +942,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 
 			if(isNaN(this.explicitVisibleWidth))
 			{
-				this.actualVisibleWidth = Math.min(this._maxVisibleWidth, Math.max(0, this._minVisibleWidth, this._typicalItemWidth));
+				this.actualVisibleWidth = Math.min(this._maxVisibleWidth, Math.max(0, this._minVisibleWidth));
 			}
 			else
 			{
@@ -914,7 +950,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 			}
 			if(isNaN(this.explicitVisibleHeight))
 			{
-				this.actualVisibleHeight = Math.min(this._maxVisibleHeight, Math.max(0, this._minVisibleHeight, this._typicalItemHeight));
+				this.actualVisibleHeight = Math.min(this._maxVisibleHeight, Math.max(0, this._minVisibleHeight));
 			}
 			else
 			{
@@ -982,7 +1018,8 @@ package org.josht.starling.foxhole.controls.supportClasses
 						}
 						else
 						{
-							this._unrenderedHeaders.push(header);
+							this._unrenderedHeaders.push(i);
+							this._unrenderedHeaders.push(currentIndex);
 						}
 					}
 					this._headerIndices.push(currentIndex);
@@ -1010,7 +1047,9 @@ package org.josht.starling.foxhole.controls.supportClasses
 						}
 						else
 						{
-							this._unrenderedItems.push(item);
+							this._unrenderedItems.push(i);
+							this._unrenderedItems.push(j);
+							this._unrenderedItems.push(currentIndex);
 						}
 					}
 					currentIndex++;
@@ -1035,7 +1074,8 @@ package org.josht.starling.foxhole.controls.supportClasses
 						}
 						else
 						{
-							this._unrenderedFooters.push(footer);
+							this._unrenderedFooters.push(i);
+							this._unrenderedFooters.push(currentIndex);
 						}
 					}
 					this._footerIndices.push(currentIndex);
@@ -1049,50 +1089,34 @@ package org.josht.starling.foxhole.controls.supportClasses
 			var rendererCount:int = this._unrenderedItems.length;
 			for(var i:int = 0; i < rendererCount; i++)
 			{
-				var item:Object = this._unrenderedItems.shift();
-				var indices:Vector.<int> = this._dataProvider.getItemLocation(item);
-				var itemRenderer:IGroupedListItemRenderer = this.createItemRenderer(item, indices[0], indices[1], false);
-				var displayRenderer:DisplayObject = DisplayObject(itemRenderer);
-				//this._layoutItems[index] = displayRenderer;
+				var groupIndex:int = this._unrenderedItems.shift();
+				var itemIndex:int = this._unrenderedItems.shift();
+				var layoutIndex:int = this._unrenderedItems.shift();
+				var item:Object = this._dataProvider.getItemAt(groupIndex, itemIndex);
+				var itemRenderer:IGroupedListItemRenderer = this.createItemRenderer(item, groupIndex, itemIndex, false);
+				this._layoutItems[layoutIndex] = DisplayObject(itemRenderer);
 			}
 
-			const groupCount:int = this._dataProvider ? this._dataProvider.getLength() : 0;
 			rendererCount = this._unrenderedHeaders.length;
 			for(i = 0; i < rendererCount; i++)
 			{
-				item = this._unrenderedHeaders.shift();
-				var groupIndex:int = -1;
-				for(var j:int = 0; j < groupCount; j++)
-				{
-					var group:Object = this._dataProvider.getItemAt(j);
-					if(this._owner.groupToHeaderData(group) == item)
-					{
-						groupIndex = j;
-						break;
-					}
-				}
-				var headerOrFooterRenderer:IGroupedListHeaderOrFooterRenderer = this.createHeaderRenderer(item, j, false);
-				displayRenderer = DisplayObject(headerOrFooterRenderer);
-				//this._layoutItems[index] = displayRenderer;
+				groupIndex = this._unrenderedHeaders.shift();
+				layoutIndex = this._unrenderedHeaders.shift();
+				item = this._dataProvider.getItemAt(groupIndex);
+				item = this._owner.groupToHeaderData(item);
+				var headerOrFooterRenderer:IGroupedListHeaderOrFooterRenderer = this.createHeaderRenderer(item, groupIndex, false);
+				this._layoutItems[layoutIndex] = DisplayObject(headerOrFooterRenderer);
 			}
 
 			rendererCount = this._unrenderedFooters.length;
 			for(i = 0; i < rendererCount; i++)
 			{
-				item = this._unrenderedFooters.shift();
-				groupIndex = -1;
-				for(j = 0; j < groupCount; j++)
-				{
-					group = this._dataProvider.getItemAt(j);
-					if(this._owner.groupToHeaderData(group) == item)
-					{
-						groupIndex = j;
-						break;
-					}
-				}
+				groupIndex = this._unrenderedFooters.shift();
+				layoutIndex = this._unrenderedFooters.shift();
+				item = this._dataProvider.getItemAt(groupIndex);
+				item = this._owner.groupToFooterData(item);
 				headerOrFooterRenderer = this.createFooterRenderer(item, groupIndex, false);
-				displayRenderer = DisplayObject(headerOrFooterRenderer);
-				//this._layoutItems[index] = displayRenderer;
+				this._layoutItems[layoutIndex] = DisplayObject(headerOrFooterRenderer);
 			}
 		}
 
@@ -1169,7 +1193,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 			renderer.data = item;
 			renderer.groupIndex = groupIndex;
 			renderer.itemIndex = itemIndex;
-			renderer.owner = this.owner;
+			renderer.owner = this._owner;
 
 			if(!isTemporary)
 			{
@@ -1180,7 +1204,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 			return renderer;
 		}
 
-		private function createHeaderRenderer(item:Object, groupIndex:int, isTemporary:Boolean = false):IGroupedListHeaderOrFooterRenderer
+		private function createHeaderRenderer(header:Object, groupIndex:int, isTemporary:Boolean = false):IGroupedListHeaderOrFooterRenderer
 		{
 			if(isTemporary || this._inactiveHeaderRenderers.length == 0)
 			{
@@ -1200,20 +1224,20 @@ package org.josht.starling.foxhole.controls.supportClasses
 			{
 				renderer = this._inactiveHeaderRenderers.shift();
 			}
-			renderer.data = item;
+			renderer.data = header;
 			renderer.groupIndex = groupIndex;
-			renderer.owner = this.owner;
+			renderer.owner = this._owner;
 
 			if(!isTemporary)
 			{
-				this._headerRendererMap[item] = renderer;
+				this._headerRendererMap[header] = renderer;
 				this._activeHeaderRenderers.push(renderer);
 			}
 
 			return renderer;
 		}
 
-		private function createFooterRenderer(item:Object, groupIndex:int, isTemporary:Boolean = false):IGroupedListHeaderOrFooterRenderer
+		private function createFooterRenderer(footer:Object, groupIndex:int, isTemporary:Boolean = false):IGroupedListHeaderOrFooterRenderer
 		{
 			if(isTemporary || this._inactiveFooterRenderers.length == 0)
 			{
@@ -1233,13 +1257,13 @@ package org.josht.starling.foxhole.controls.supportClasses
 			{
 				renderer = this._inactiveFooterRenderers.shift();
 			}
-			renderer.data = item;
+			renderer.data = footer;
 			renderer.groupIndex = groupIndex;
-			renderer.owner = this.owner;
+			renderer.owner = this._owner;
 
 			if(!isTemporary)
 			{
-				this._footerRendererMap[item] = renderer;
+				this._footerRendererMap[footer] = renderer;
 				this._activeFooterRenderers.push(renderer);
 			}
 
