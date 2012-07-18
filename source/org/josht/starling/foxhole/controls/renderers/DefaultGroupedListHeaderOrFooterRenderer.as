@@ -27,6 +27,7 @@ package org.josht.starling.foxhole.controls.renderers
 	import org.josht.starling.foxhole.controls.GroupedList;
 	import org.josht.starling.foxhole.controls.Label;
 	import org.josht.starling.foxhole.core.FoxholeControl;
+	import org.josht.starling.foxhole.core.FoxholeControl;
 
 	import starling.display.DisplayObject;
 	import starling.display.Image;
@@ -501,6 +502,11 @@ package org.josht.starling.foxhole.controls.renderers
 			{
 				return item[this._contentField] as DisplayObject;
 			}
+			else if(item)
+			{
+				this.refreshContentLabel(item.toString());
+				return this.contentLabel;
+			}
 
 			return null;
 		}
@@ -571,6 +577,201 @@ package org.josht.starling.foxhole.controls.renderers
 		/**
 		 * @private
 		 */
+		protected var originalBackgroundWidth:Number = NaN;
+
+		/**
+		 * @private
+		 */
+		protected var originalBackgroundHeight:Number = NaN;
+
+		/**
+		 * @private
+		 */
+		protected var currentBackgroundSkin:DisplayObject;
+
+		/**
+		 * @private
+		 */
+		private var _backgroundSkin:DisplayObject;
+
+		/**
+		 * A background to behind the component's content.
+		 */
+		public function get backgroundSkin():DisplayObject
+		{
+			return this._backgroundSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set backgroundSkin(value:DisplayObject):void
+		{
+			if(this._backgroundSkin == value)
+			{
+				return;
+			}
+
+			if(this._backgroundSkin && this._backgroundSkin != this._backgroundDisabledSkin)
+			{
+				this.removeChild(this._backgroundSkin);
+			}
+			this._backgroundSkin = value;
+			if(this._backgroundSkin && this._backgroundSkin.parent != this)
+			{
+				this._backgroundSkin.visible = false;
+				this.addChildAt(this._backgroundSkin, 0);
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _backgroundDisabledSkin:DisplayObject;
+
+		/**
+		 * A background to display when the component is disabled.
+		 */
+		public function get backgroundDisabledSkin():DisplayObject
+		{
+			return this._backgroundDisabledSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set backgroundDisabledSkin(value:DisplayObject):void
+		{
+			if(this._backgroundDisabledSkin == value)
+			{
+				return;
+			}
+
+			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin != this._backgroundSkin)
+			{
+				this.removeChild(this._backgroundDisabledSkin);
+			}
+			this._backgroundDisabledSkin = value;
+			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin.parent != this)
+			{
+				this._backgroundDisabledSkin.visible = false;
+				this.addChildAt(this._backgroundDisabledSkin, 0);
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingTop:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the component's top edge and
+		 * the component's content.
+		 */
+		public function get paddingTop():Number
+		{
+			return this._paddingTop;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingTop(value:Number):void
+		{
+			if(this._paddingTop == value)
+			{
+				return;
+			}
+			this._paddingTop = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingRight:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the component's right edge
+		 * and the component's content.
+		 */
+		public function get paddingRight():Number
+		{
+			return this._paddingRight;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingRight(value:Number):void
+		{
+			if(this._paddingRight == value)
+			{
+				return;
+			}
+			this._paddingRight = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingBottom:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the component's bottom edge
+		 * and the component's content.
+		 */
+		public function get paddingBottom():Number
+		{
+			return this._paddingBottom;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingBottom(value:Number):void
+		{
+			if(this._paddingBottom == value)
+			{
+				return;
+			}
+			this._paddingBottom = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingLeft:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the component's left edge
+		 * and the component's content.
+		 */
+		public function get paddingLeft():Number
+		{
+			return this._paddingLeft;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingLeft(value:Number):void
+		{
+			if(this._paddingLeft == value)
+			{
+				return;
+			}
+			this._paddingLeft = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			//the content may have come from outside of this class. it's up
@@ -602,11 +803,111 @@ package org.josht.starling.foxhole.controls.renderers
 		override protected function draw():void
 		{
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
+			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
+
+			if(stylesInvalid || stateInvalid)
+			{
+				this.refreshBackgroundSkin();
+			}
+
 			if(dataInvalid)
 			{
 				this.commitData();
 			}
-			super.draw();
+
+			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
+
+			if(dataInvalid)
+			{
+				if(this.content)
+				{
+					this.content.x = this._paddingLeft;
+					this.content.y = this._paddingTop;
+				}
+			}
+
+			if(sizeInvalid || stylesInvalid || stateInvalid)
+			{
+				if(this.currentBackgroundSkin)
+				{
+					this.currentBackgroundSkin.width = this.actualWidth;
+					this.currentBackgroundSkin.height = this.actualHeight;
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function autoSizeIfNeeded():Boolean
+		{
+			const needsWidth:Boolean = isNaN(this.explicitWidth);
+			const needsHeight:Boolean = isNaN(this.explicitHeight);
+			if(!needsWidth && !needsHeight)
+			{
+				return false;
+			}
+			if(this.content is FoxholeControl)
+			{
+				FoxholeControl(this.content).validate();
+			}
+			if(!this.content)
+			{
+				return this.setSizeInternal(0, 0, false);
+			}
+			var newWidth:Number = this.explicitWidth;
+			var newHeight:Number = this.explicitHeight;
+			if(needsWidth)
+			{
+				newWidth = this.content.width + this._paddingLeft + this._paddingRight;
+				if(!isNaN(this.originalBackgroundWidth))
+				{
+					newWidth = Math.max(newWidth, this.originalBackgroundWidth);
+				}
+			}
+			if(needsHeight)
+			{
+				newHeight = this.content.height + this._paddingTop + this._paddingBottom;
+				if(!isNaN(this.originalBackgroundHeight))
+				{
+					newHeight = Math.max(newHeight, this.originalBackgroundHeight);
+				}
+			}
+			return this.setSizeInternal(newWidth, newHeight, false);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshBackgroundSkin():void
+		{
+			this.currentBackgroundSkin = this._backgroundSkin;
+			if(!this._isEnabled && this._backgroundDisabledSkin)
+			{
+				if(this._backgroundSkin)
+				{
+					this._backgroundSkin.visible = false;
+				}
+				this.currentBackgroundSkin = this._backgroundDisabledSkin;
+			}
+			else if(this._backgroundDisabledSkin)
+			{
+				this._backgroundDisabledSkin.visible = false;
+			}
+			if(this.currentBackgroundSkin)
+			{
+				if(isNaN(this.originalBackgroundWidth))
+				{
+					this.originalBackgroundWidth = this.currentBackgroundSkin.width;
+				}
+				if(isNaN(this.originalBackgroundHeight))
+				{
+					this.originalBackgroundHeight = this.currentBackgroundSkin.height;
+				}
+				this.currentBackgroundSkin.visible = true;
+			}
 		}
 
 		/**
