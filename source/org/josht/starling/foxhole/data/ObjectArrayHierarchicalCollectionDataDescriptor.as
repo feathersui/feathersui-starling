@@ -15,7 +15,7 @@ package org.josht.starling.foxhole.data
 		 */
 		public function getLength(data:Object, ...rest:Array):int
 		{
-			var branch:Array = data[childrenField] as Array;
+			var branch:Array = data as Array;
 			const indexCount:int = rest.length;
 			for(var i:int = 0; i < indexCount; i++)
 			{
@@ -31,14 +31,15 @@ package org.josht.starling.foxhole.data
 		 */
 		public function getItemAt(data:Object, index:int, ...rest:Array):Object
 		{
-			var branch:Array = data[childrenField] as Array;
+			rest.unshift(index);
+			var branch:Array = data as Array;
 			const indexCount:int = rest.length - 1;
 			for(var i:int = 0; i < indexCount; i++)
 			{
 				var index:int = rest[i] as int;
 				branch = branch[index][childrenField] as Array;
 			}
-			const lastIndex:int = rest[indexCount];
+			const lastIndex:int = rest[indexCount] as int;
 			return branch[lastIndex];
 		}
 
@@ -47,7 +48,8 @@ package org.josht.starling.foxhole.data
 		 */
 		public function setItemAt(data:Object, item:Object, index:int, ...rest:Array):void
 		{
-			var branch:Array = data[childrenField] as Array;
+			rest.unshift(index);
+			var branch:Array = data as Array;
 			const indexCount:int = rest.length - 1;
 			for(var i:int = 0; i < indexCount; i++)
 			{
@@ -63,7 +65,8 @@ package org.josht.starling.foxhole.data
 		 */
 		public function addItemAt(data:Object, item:Object, index:int, ...rest:Array):void
 		{
-			var branch:Array = data[childrenField] as Array;
+			rest.unshift(index);
+			var branch:Array = data as Array;
 			const indexCount:int = rest.length - 1;
 			for(var i:int = 0; i < indexCount; i++)
 			{
@@ -79,7 +82,8 @@ package org.josht.starling.foxhole.data
 		 */
 		public function removeItemAt(data:Object, index:int, ...rest:Array):Object
 		{
-			var branch:Array = data[childrenField] as Array;
+			rest.unshift(index);
+			var branch:Array = data as Array;
 			const indexCount:int = rest.length - 1;
 			for(var i:int = 0; i < indexCount; i++)
 			{
@@ -105,15 +109,12 @@ package org.josht.starling.foxhole.data
 			{
 				result.length = 0;
 			}
+			var branch:Array = data as Array;
 			const restCount:int = rest.length;
 			for(var i:int = 0; i < restCount; i++)
 			{
-				result[i] = rest[i] as int;
-			}
-			var branch:Array = data[childrenField] as Array;
-			for(i = 0; i < restCount; i++)
-			{
 				var index:int = rest[i] as int;
+				result[i] = index;
 				branch = branch[index][childrenField] as Array;
 			}
 
@@ -149,7 +150,7 @@ package org.josht.starling.foxhole.data
 			for(var i:int = 0; i < branchLength; i++)
 			{
 				var branchItem:Object = branch[i];
-				if(this.isBranch(item))
+				if(this.isBranch(branchItem))
 				{
 					result.push(i);
 					var isFound:Boolean = this.findItemInBranch(branchItem[childrenField] as Array, item, result);
@@ -157,6 +158,7 @@ package org.josht.starling.foxhole.data
 					{
 						return true;
 					}
+					result.pop();
 				}
 			}
 			return false;
