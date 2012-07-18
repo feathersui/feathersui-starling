@@ -492,20 +492,36 @@ package org.josht.starling.foxhole.layout
 		 */
 		public function getMinimumItemIndexAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int):int
 		{
-			var indexOffset:int = 0;
-			const totalItemHeight:Number = itemCount * (this._typicalItemHeight + this._gap) - this._gap;
-			if(totalItemHeight < height)
+			if(this._indexToItemBoundsFunction == null)
 			{
-				if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
+				var indexOffset:int = 0;
+				var totalItemHeight:Number = itemCount * (this._typicalItemHeight + this._gap) - this._gap;
+				if(totalItemHeight < height)
 				{
-					indexOffset = Math.ceil((height - totalItemHeight) / (this._typicalItemHeight + this._gap));
+					if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
+					{
+						indexOffset = Math.ceil((height - totalItemHeight) / (this._typicalItemHeight + this._gap));
+					}
+					else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
+					{
+						indexOffset = Math.ceil(((height - totalItemHeight) / (this._typicalItemHeight + this._gap)) / 2);
+					}
 				}
-				else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
+				return -indexOffset + Math.max(0, (scrollY - this._paddingTop) / (this._typicalItemHeight + this._gap));
+			}
+
+			totalItemHeight = 0;
+			for(var i:int = 0; i < itemCount; i++)
+			{
+				helperPoint = this._indexToItemBoundsFunction(i, helperPoint);
+				totalItemHeight += helperPoint.y;
+				if(totalItemHeight >= scrollY)
 				{
-					indexOffset = Math.ceil(((height - totalItemHeight) / (this._typicalItemHeight + this._gap)) / 2);
+					return i;
 				}
 			}
-			return -indexOffset + Math.max(0, (scrollY - this._paddingTop) / (this._typicalItemHeight + this._gap));
+			//this should probably never happen...
+			return itemCount - 1;
 		}
 
 		/**
@@ -514,7 +530,22 @@ package org.josht.starling.foxhole.layout
 		public function getMaximumItemIndexAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int):int
 		{
 			const minimum:int = this.getMinimumItemIndexAtScrollPosition(scrollX,  scrollY, width, height, itemCount);
-			return minimum + Math.ceil(height / (this._typicalItemHeight + this._gap)) + 1;
+			if(this._indexToItemBoundsFunction == null)
+			{
+				return minimum + Math.ceil(height / (this._typicalItemHeight + this._gap)) + 1;
+			}
+			const maxY:Number = scrollY + height;
+			var totalItemHeight:Number = scrollY;
+			for(var i:int = minimum; i < itemCount; i++)
+			{
+				helperPoint = this._indexToItemBoundsFunction(i, helperPoint);
+				totalItemHeight += helperPoint.y;
+				if(totalItemHeight >= maxY)
+				{
+					return i;
+				}
+			}
+			return itemCount - 1;
 		}
 
 		/**
