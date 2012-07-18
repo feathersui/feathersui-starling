@@ -242,7 +242,7 @@ package org.josht.starling.foxhole.data
 		 * Determines which location the item appears at within the collection. If
 		 * the item isn't in the collection, returns <code>null</code>.
 		 */
-		public function getItemIndex(item:Object, result:Vector.<int> = null):Vector.<int>
+		public function getItemLocation(item:Object, result:Vector.<int> = null):Vector.<int>
 		{
 			return this._dataDescriptor.getItemIndex(this._data, item, result);
 		}
@@ -284,7 +284,7 @@ package org.josht.starling.foxhole.data
 		 */
 		public function removeItem(item:Object):void
 		{
-			const location:Vector.<int> = this.getItemIndex(item);
+			const location:Vector.<int> = this.getItemLocation(item);
 			if(location)
 			{
 				this.removeItemAt.apply(this, location);
