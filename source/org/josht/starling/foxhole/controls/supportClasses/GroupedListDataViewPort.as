@@ -671,6 +671,8 @@ package org.josht.starling.foxhole.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
 
+		private var _ignoreSelectionChanges:Boolean = false;
+
 		protected var _onChange:Signal = new Signal(GroupedListDataViewPort);
 
 		public function get onChange():ISignal
@@ -717,10 +719,10 @@ package org.josht.starling.foxhole.controls.supportClasses
 				this.refreshFooterRendererStyles();
 				this.refreshItemRendererStyles();
 			}
-			/*if(scrollInvalid || selectionInvalid || sizeInvalid || dataInvalid || itemRendererInvalid)
+			if(scrollInvalid || selectionInvalid || sizeInvalid || dataInvalid || itemRendererInvalid)
 			{
 				this.refreshSelection();
-			}*/
+			}
 			var rendererCount:int = this._activeItemRenderers.length;
 			for(var i:int = 0; i < rendererCount; i++)
 			{
@@ -918,15 +920,15 @@ package org.josht.starling.foxhole.controls.supportClasses
 			}
 		}
 
-		/*protected function refreshSelection():void
+		protected function refreshSelection():void
 		{
 			this._ignoreSelectionChanges = true;
 			for each(var renderer:IGroupedListItemRenderer in this._activeItemRenderers)
 			{
-				renderer.isSelected = renderer.index == this._selectedIndex;
+				renderer.isSelected = false;//renderer.index == this._selectedIndex;
 			}
 			this._ignoreSelectionChanges = false;
-		}*/
+		}
 
 		protected function refreshRenderers(itemRendererTypeIsInvalid:Boolean):void
 		{
@@ -976,7 +978,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 			}
 			this._layoutItems.length = totalItemCount;
 			var startIndex:int = 0;
-			var endIndex:int = totalItemCount;
+			var endIndex:int = totalItemCount - 1;
 			const virtualLayout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
 			const useVirtualLayout:Boolean = virtualLayout && virtualLayout.useVirtualLayout;
 			if(useVirtualLayout)
@@ -995,7 +997,8 @@ package org.josht.starling.foxhole.controls.supportClasses
 				var header:Object = this._owner.groupToHeaderData(group);
 				if(header !== null)
 				{
-					if(currentIndex < startIndex || currentIndex >= endIndex)
+					//the end index is included in the visible items
+					if(currentIndex < startIndex || currentIndex > endIndex)
 					{
 						this._layoutItems[currentIndex] = null;
 					}
@@ -1022,7 +1025,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 				currentItemCount = this._dataProvider.getLength(i);
 				for(var j:int = 0; j < currentItemCount; j++)
 				{
-					if(currentIndex < startIndex || currentIndex >= endIndex)
+					if(currentIndex < startIndex || currentIndex > endIndex)
 					{
 						this._layoutItems[currentIndex] = null;
 					}
@@ -1051,7 +1054,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 				var footer:Object = this._owner.groupToFooterData(group);
 				if(footer !== null)
 				{
-					if(currentIndex < startIndex || currentIndex >= endIndex)
+					if(currentIndex < startIndex || currentIndex > endIndex)
 					{
 						this._layoutItems[currentIndex] = null;
 					}
@@ -1081,7 +1084,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 		private function renderUnrenderedData():void
 		{
 			var rendererCount:int = this._unrenderedItems.length;
-			for(var i:int = 0; i < rendererCount; i++)
+			for(var i:int = 0; i < rendererCount; i += 3)
 			{
 				var groupIndex:int = this._unrenderedItems.shift();
 				var itemIndex:int = this._unrenderedItems.shift();
@@ -1092,7 +1095,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 			}
 
 			rendererCount = this._unrenderedHeaders.length;
-			for(i = 0; i < rendererCount; i++)
+			for(i = 0; i < rendererCount; i += 2)
 			{
 				groupIndex = this._unrenderedHeaders.shift();
 				layoutIndex = this._unrenderedHeaders.shift();
@@ -1103,7 +1106,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 			}
 
 			rendererCount = this._unrenderedFooters.length;
-			for(i = 0; i < rendererCount; i++)
+			for(i = 0; i < rendererCount; i += 2)
 			{
 				groupIndex = this._unrenderedFooters.shift();
 				layoutIndex = this._unrenderedFooters.shift();
@@ -1175,7 +1178,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 				{
 					renderer = new this._itemRendererType();
 				}
-				//renderer.onChange.add(renderer_onChange);
+				renderer.onChange.add(renderer_onChange);
 				const displayRenderer:DisplayObject = DisplayObject(renderer);
 				displayRenderer.addEventListener(TouchEvent.TOUCH, renderer_touchHandler);
 				this.addChild(displayRenderer);
@@ -1266,7 +1269,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 
 		private function destroyItemRenderer(renderer:IGroupedListItemRenderer):void
 		{
-			//renderer.onChange.remove(renderer_onChange);
+			renderer.onChange.remove(renderer_onChange);
 			const displayRenderer:DisplayObject = DisplayObject(renderer);
 			displayRenderer.removeEventListener(TouchEvent.TOUCH, renderer_touchHandler);
 			this.removeChild(displayRenderer, true);
@@ -1350,20 +1353,21 @@ package org.josht.starling.foxhole.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
 
-		/*private function renderer_onChange(renderer:IGroupedListItemRenderer):void
+		private function renderer_onChange(renderer:IGroupedListItemRenderer):void
 		{
 			if(this._ignoreSelectionChanges)
 			{
 				return;
 			}
-			if(!this._isSelectable || this._isScrolling || this._selectedIndex == renderer.index)
+			renderer.isSelected = false;
+			/*if(!this._isSelectable || this._isScrolling || this._selectedIndex == renderer.index)
 			{
 				//reset to the old value
 				renderer.isSelected = this._selectedIndex == renderer.index;
 				return;
 			}
-			this.selectedIndex = renderer.index;
-		}*/
+			this.selectedIndex = renderer.index;*/
+		}
 
 		private function renderer_touchHandler(event:TouchEvent):void
 		{
