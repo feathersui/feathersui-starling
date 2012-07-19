@@ -1,6 +1,7 @@
 package org.josht.starling.foxhole.layout
 {
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 
 	/**
 	 * A layout algorithm that supports virtualization of items so that only
@@ -43,6 +44,12 @@ package org.josht.starling.foxhole.layout
 		 * @private
 		 */
 		function set typicalItemHeight(value:Number):void;
+
+		/**
+		 * Using the typical item bounds and suggested bounds, returns a set of
+		 * calculated dimensions for the view port.
+		 */
+		function measureViewPort(itemCount:int, viewPortBounds:ViewPortBounds = null, result:Point = null):Point;
 
 		/**
 		 * Determines which index (using the typical item dimensions) is the

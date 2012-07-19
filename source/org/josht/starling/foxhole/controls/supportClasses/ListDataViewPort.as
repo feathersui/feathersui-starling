@@ -35,6 +35,8 @@ package org.josht.starling.foxhole.controls.supportClasses
 	import org.josht.starling.foxhole.data.ListCollection;
 	import org.josht.starling.foxhole.layout.ILayout;
 	import org.josht.starling.foxhole.layout.IVirtualLayout;
+	import org.josht.starling.foxhole.layout.LayoutBoundsResult;
+	import org.josht.starling.foxhole.layout.ViewPortBounds;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 
@@ -52,7 +54,8 @@ package org.josht.starling.foxhole.controls.supportClasses
 		protected static const INVALIDATION_FLAG_ITEM_RENDERER_FACTORY:String = "itemRendererFactory";
 
 		private static const helperPoint:Point = new Point();
-		private static const helperRect:Rectangle = new Rectangle();
+		private static const helperBounds:ViewPortBounds = new ViewPortBounds();
+		private static const helperResult:LayoutBoundsResult = new LayoutBoundsResult();
 		
 		public function ListDataViewPort()
 		{
@@ -101,7 +104,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
-		protected var actualVisibleWidth:Number = NaN;
+		protected var actualVisibleWidth:Number = 0;
 
 		protected var explicitVisibleWidth:Number = NaN;
 
@@ -162,7 +165,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
-		protected var actualVisibleHeight:Number;
+		protected var actualVisibleHeight:Number = 0;
 
 		protected var explicitVisibleHeight:Number = NaN;
 
@@ -530,11 +533,10 @@ package org.josht.starling.foxhole.controls.supportClasses
 
 			if(scrollInvalid || dataInvalid || itemRendererInvalid || sizeInvalid)
 			{
-				helperRect.x = helperRect.y = 0;
-				helperRect.width = this.actualVisibleWidth;
-				helperRect.height = this.actualVisibleHeight;
-				this._layout.layout(this._layoutItems, helperRect, helperPoint);
-				this.setSizeInternal(helperPoint.x, helperPoint.y, false);
+				this._layout.layout(this._layoutItems, helperBounds, helperResult);
+				this.setSizeInternal(helperResult.contentWidth, helperResult.contentHeight, false);
+				this.actualVisibleWidth = helperResult.viewPortWidth;
+				this.actualVisibleHeight = helperResult.viewPortHeight;
 			}
 		}
 
@@ -607,23 +609,13 @@ package org.josht.starling.foxhole.controls.supportClasses
 
 			this._layoutItems.length = this._dataProvider ? this._dataProvider.length : 0;
 
-			if(isNaN(this.explicitVisibleWidth))
-			{
-				this.actualVisibleWidth = Math.min(this._maxVisibleWidth, Math.max(0, this._minVisibleWidth, this._typicalItemWidth));
-			}
-			else
-			{
-				this.actualVisibleWidth = Math.max(0, this.explicitVisibleWidth);
-			}
-			if(isNaN(this.explicitVisibleHeight))
-			{
-				const itemCount:int = this._dataProvider ? this._dataProvider.length : 0;
-				this.actualVisibleHeight = Math.min(this._maxVisibleHeight, Math.max(0, this._minVisibleHeight, itemCount * this._typicalItemHeight));
-			}
-			else
-			{
-				this.actualVisibleHeight = Math.max(0, this.explicitVisibleHeight);
-			}
+			helperBounds.x = helperBounds.y = 0;
+			helperBounds.explicitWidth = this.explicitVisibleWidth;
+			helperBounds.explicitHeight = this.explicitVisibleHeight;
+			helperBounds.minWidth = this._minVisibleWidth;
+			helperBounds.minHeight = this._minVisibleHeight;
+			helperBounds.maxWidth = this._maxVisibleWidth;
+			helperBounds.maxHeight = this._maxVisibleHeight;
 
 			this.findUnrenderedData();
 			this.recoverInactiveRenderers();
@@ -644,8 +636,9 @@ package org.josht.starling.foxhole.controls.supportClasses
 				virtualLayout.typicalItemWidth = this._typicalItemWidth;
 				virtualLayout.typicalItemHeight = this._typicalItemHeight;
 				this._ignoreLayoutChanges = false;
-				startIndex = virtualLayout.getMinimumItemIndexAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, this.actualVisibleWidth, this.actualVisibleHeight, itemCount);
-				endIndex = virtualLayout.getMaximumItemIndexAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, this.actualVisibleWidth, this.actualVisibleHeight, itemCount);
+				virtualLayout.measureViewPort(itemCount, helperBounds, helperPoint);
+				startIndex = virtualLayout.getMinimumItemIndexAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, helperPoint.x, helperPoint.y, itemCount);
+				endIndex = virtualLayout.getMaximumItemIndexAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, helperPoint.x, helperPoint.y, itemCount);
 			}
 			for(var i:int = 0; i < itemCount; i++)
 			{
@@ -731,7 +724,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 			}
 			renderer.data = item;
 			renderer.index = index;
-			renderer.owner = this.owner;
+			renderer.owner = this._owner;
 
 			if(!isTemporary)
 			{

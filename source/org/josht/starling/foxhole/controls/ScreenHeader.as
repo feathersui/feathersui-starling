@@ -29,6 +29,8 @@ package org.josht.starling.foxhole.controls
 
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.layout.HorizontalLayout;
+	import org.josht.starling.foxhole.layout.LayoutBoundsResult;
+	import org.josht.starling.foxhole.layout.ViewPortBounds;
 	import org.josht.starling.foxhole.text.BitmapFontTextFormat;
 
 	import starling.display.DisplayObject;
@@ -93,12 +95,12 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private static const helperRect:Rectangle = new Rectangle();
+		private static const helperBounds:ViewPortBounds = new ViewPortBounds();
 
 		/**
 		 * @private
 		 */
-		private static const helperPoint:Point = new Point();
+		private static const helperResult:LayoutBoundsResult = new LayoutBoundsResult();
 
 		/**
 		 * Constructor.
@@ -525,6 +527,7 @@ package org.josht.starling.foxhole.controls
 			if(!this._layout)
 			{
 				this._layout = new HorizontalLayout();
+				this._layout.useVirtualLayout = false;
 				this._layout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_MIDDLE;
 			}
 
@@ -740,11 +743,11 @@ package org.josht.starling.foxhole.controls
 					FoxholeControl(item).validate();
 				}
 			}
-			helperRect.x = helperRect.y = 0;
-			helperRect.width = this.actualWidth;
-			helperRect.height = this.actualHeight;
+			helperBounds.x = helperBounds.y = 0;
+			helperBounds.explicitWidth = this.actualWidth;
+			helperBounds.explicitHeight = this.actualHeight;
 			this._layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_LEFT;
-			this._layout.layout(this._leftItems, helperRect, helperPoint);
+			this._layout.layout(this._leftItems, helperBounds, helperResult);
 
 		}
 
@@ -760,11 +763,11 @@ package org.josht.starling.foxhole.controls
 					FoxholeControl(item).validate();
 				}
 			}
-			helperRect.x = helperRect.y = 0;
-			helperRect.width = this.actualWidth;
-			helperRect.height = this.actualHeight;
+			helperBounds.x = helperBounds.y = 0;
+			helperBounds.explicitWidth = this.actualWidth;
+			helperBounds.explicitHeight = this.actualHeight;
 			this._layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_RIGHT;
-			this._layout.layout(this._rightItems, helperRect, helperPoint);
+			this._layout.layout(this._rightItems, helperBounds, helperResult);
 		}
 
 		/**

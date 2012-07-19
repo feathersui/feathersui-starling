@@ -44,11 +44,16 @@ package org.josht.starling.foxhole.layout
 
 		/**
 		 * Positions (and possibly resizes) the supplied items within the
-		 * specified bounds. The items are <strong>not</strong> absolutely
+		 * optional bounds argument. If no bounds are specified, the layout
+		 * algorithm will assume that the bounds start a 0,0 and have unbounded
+		 * dimensions. Returns the actual bounds of the content, which may
+		 * be different than the specified bounds.
+		 *
+		 * <p>Note: The items are <strong>not</strong> absolutely
 		 * restricted to appear only within the bounds. The bounds can affect
-		 * positioning, but the algorithm may very well ignore them completely.
-		 * Returns the actual bounds of the content.
+		 * positioning, but the algorithm may very well ignore them completely.</p>
+		 *
 		 */
-		function layout(items:Vector.<DisplayObject>, suggestedBounds:Rectangle, resultDimensions:Point = null):Point;
+		function layout(items:Vector.<DisplayObject>, viewPortBounds:ViewPortBounds = null, result:LayoutBoundsResult = null):LayoutBoundsResult;
 	}
 }
