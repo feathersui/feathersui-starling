@@ -25,7 +25,6 @@
 package org.josht.starling.foxhole.controls.supportClasses
 {
 	import flash.geom.Point;
-	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
 
 	import org.josht.starling.foxhole.controls.GroupedList;
@@ -36,7 +35,6 @@ package org.josht.starling.foxhole.controls.supportClasses
 	import org.josht.starling.foxhole.data.HierarchicalCollection;
 	import org.josht.starling.foxhole.layout.ILayout;
 	import org.josht.starling.foxhole.layout.IVariableVirtualLayout;
-	import org.josht.starling.foxhole.layout.IVirtualLayout;
 	import org.josht.starling.foxhole.layout.LayoutBoundsResult;
 	import org.josht.starling.foxhole.layout.ViewPortBounds;
 	import org.osflash.signals.ISignal;
@@ -671,6 +669,10 @@ package org.josht.starling.foxhole.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
 
+		private var _minimumItemCount:int;
+		private var _minimumHeaderCount:int;
+		private var _minimumFooterCount:int;
+
 		private var _ignoreSelectionChanges:Boolean = false;
 
 		protected var _onChange:Signal = new Signal(GroupedListDataViewPort);
@@ -936,6 +938,14 @@ package org.josht.starling.foxhole.controls.supportClasses
 			this._inactiveItemRenderers = this._activeItemRenderers;
 			this._activeItemRenderers = temp;
 			this._activeItemRenderers.length = 0;
+			var temp2:Vector.<IGroupedListHeaderOrFooterRenderer> = this._inactiveHeaderRenderers;
+			this._inactiveHeaderRenderers = this._activeHeaderRenderers;
+			this._activeHeaderRenderers = temp2;
+			this._activeHeaderRenderers.length = 0;
+			temp2 = this._inactiveFooterRenderers;
+			this._inactiveFooterRenderers = this._activeFooterRenderers;
+			this._activeFooterRenderers = temp2;
+			this._activeFooterRenderers.length = 0;
 			if(itemRendererTypeIsInvalid)
 			{
 				this.recoverInactiveRenderers();
@@ -961,34 +971,50 @@ package org.josht.starling.foxhole.controls.supportClasses
 		private function findUnrenderedData():void
 		{
 			const groupCount:int = this._dataProvider ? this._dataProvider.getLength() : 0;
-			var totalItemCount:int = 0;
+			var totalLayoutCount:int = 0;
+			var totalHeaderCount:int = 0;
+			var totalFooterCount:int = 0;
+			var averageItemsPerGroup:int = 0;
 			for(var i:int = 0; i < groupCount; i++)
 			{
 				var group:Object = this._dataProvider.getItemAt(i);
-				var currentItemCount:int = this._dataProvider.getLength(i);
-				totalItemCount += currentItemCount;
 				if(this._owner.groupToHeaderData(group) !== null)
 				{
-					totalItemCount++;
+					this._headerIndices.push(totalLayoutCount);
+					totalLayoutCount++;
+					totalHeaderCount++;
 				}
+				var currentItemCount:int = this._dataProvider.getLength(i);
+				totalLayoutCount += currentItemCount;
+				averageItemsPerGroup += currentItemCount;
 				if(this._owner.groupToFooterData(group) !== null)
 				{
-					totalItemCount++;
+					this._footerIndices.push(totalLayoutCount);
+					totalLayoutCount++;
+					totalFooterCount++;
 				}
 			}
-			this._layoutItems.length = totalItemCount;
+			this._layoutItems.length = totalLayoutCount;
 			var startIndex:int = 0;
-			var endIndex:int = totalItemCount - 1;
+			var endIndex:int = totalLayoutCount - 1;
 			const virtualLayout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
 			const useVirtualLayout:Boolean = virtualLayout && virtualLayout.useVirtualLayout;
 			if(useVirtualLayout)
 			{
 				this._ignoreLayoutChanges = true;
-				virtualLayout.indexToItemBoundsFunction = indexToItemBoundsFunction;
+				virtualLayout.indexToItemBoundsFunction = this.indexToItemBoundsFunction;
 				this._ignoreLayoutChanges = false;
-				virtualLayout.measureViewPort(totalItemCount, helperBounds, helperPoint);
-				startIndex = virtualLayout.getMinimumItemIndexAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, helperPoint.x, helperPoint.y, totalItemCount);
-				endIndex = virtualLayout.getMaximumItemIndexAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, helperPoint.x, helperPoint.y, totalItemCount);
+				virtualLayout.measureViewPort(totalLayoutCount, helperBounds, helperPoint);
+				startIndex = virtualLayout.getMinimumItemIndexAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, helperPoint.x, helperPoint.y, totalLayoutCount);
+				endIndex = virtualLayout.getMaximumItemIndexAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, helperPoint.x, helperPoint.y, totalLayoutCount);
+
+				averageItemsPerGroup /= groupCount;
+				this._minimumHeaderCount = this._minimumFooterCount = Math.ceil(helperPoint.y / (this._typicalItemHeight * averageItemsPerGroup));
+				this._minimumHeaderCount = Math.min(this._minimumHeaderCount, totalHeaderCount);
+				this._minimumFooterCount = Math.min(this._minimumFooterCount, totalFooterCount);
+
+				//assumes that zero headers/footers might be visible
+				this._minimumItemCount = Math.ceil(helperPoint.y / this._typicalItemHeight) + 1;
 			}
 			var currentIndex:int = 0;
 			for(i = 0; i < groupCount; i++)
@@ -1011,6 +1037,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 							this._activeHeaderRenderers.push(headerOrFooterRenderer);
 							this._inactiveHeaderRenderers.splice(this._inactiveHeaderRenderers.indexOf(headerOrFooterRenderer), 1);
 							var displayRenderer:DisplayObject = DisplayObject(headerOrFooterRenderer);
+							displayRenderer.visible = true;
 							this._layoutItems[currentIndex] = displayRenderer;
 						}
 						else
@@ -1019,7 +1046,6 @@ package org.josht.starling.foxhole.controls.supportClasses
 							this._unrenderedHeaders.push(currentIndex);
 						}
 					}
-					this._headerIndices.push(currentIndex);
 					currentIndex++;
 				}
 				currentItemCount = this._dataProvider.getLength(i);
@@ -1040,6 +1066,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 							this._activeItemRenderers.push(itemRenderer);
 							this._inactiveItemRenderers.splice(this._inactiveItemRenderers.indexOf(itemRenderer), 1);
 							displayRenderer = DisplayObject(itemRenderer);
+							displayRenderer.visible = true;
 							this._layoutItems[currentIndex] = displayRenderer;
 						}
 						else
@@ -1067,6 +1094,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 							this._activeFooterRenderers.push(headerOrFooterRenderer);
 							this._inactiveFooterRenderers.splice(this._inactiveFooterRenderers.indexOf(headerOrFooterRenderer), 1);
 							displayRenderer = DisplayObject(headerOrFooterRenderer);
+							displayRenderer.visible = true;
 							this._layoutItems[currentIndex] = displayRenderer;
 						}
 						else
@@ -1075,7 +1103,6 @@ package org.josht.starling.foxhole.controls.supportClasses
 							this._unrenderedFooters.push(currentIndex);
 						}
 					}
-					this._footerIndices.push(currentIndex);
 					currentIndex++;
 				}
 			}
@@ -1143,20 +1170,43 @@ package org.josht.starling.foxhole.controls.supportClasses
 
 		private function freeInactiveRenderers():void
 		{
-			var rendererCount:int = this._inactiveItemRenderers.length;
-			for(var i:int = 0; i < rendererCount; i++)
+			//we may keep around some extra renderers to avoid too much
+			//allocation and garbage collection. they'll be hidden.
+			var keepCount:int = Math.min(this._minimumItemCount - this._activeItemRenderers.length, this._inactiveItemRenderers.length);
+			for(var i:int = 0; i < keepCount; i++)
 			{
 				var itemRenderer:IGroupedListItemRenderer = this._inactiveItemRenderers.shift();
+				DisplayObject(itemRenderer).visible = false;
+				this._activeItemRenderers.push(itemRenderer);
+			}
+			var rendererCount:int = this._inactiveItemRenderers.length;
+			for(i = 0; i < rendererCount; i++)
+			{
+				itemRenderer = this._inactiveItemRenderers.shift();
 				this.destroyItemRenderer(itemRenderer);
 			}
 
+			keepCount = Math.min(this._minimumHeaderCount - this._activeHeaderRenderers.length, this._inactiveHeaderRenderers.length);
+			for(i = 0; i < keepCount; i++)
+			{
+				var headerOrFooterRenderer:IGroupedListHeaderOrFooterRenderer = this._inactiveHeaderRenderers.shift();
+				DisplayObject(headerOrFooterRenderer).visible = false;
+				this._activeHeaderRenderers.push(headerOrFooterRenderer);
+			}
 			rendererCount = this._inactiveHeaderRenderers.length;
 			for(i = 0; i < rendererCount; i++)
 			{
-				var headerOrFooterRenderer:IGroupedListHeaderOrFooterRenderer = this._inactiveHeaderRenderers.shift();
+				headerOrFooterRenderer = this._inactiveHeaderRenderers.shift();
 				this.destroyHeaderRenderer(headerOrFooterRenderer);
 			}
 
+			keepCount = Math.min(this._minimumFooterCount - this._activeFooterRenderers.length, this._inactiveFooterRenderers.length);
+			for(i = 0; i < keepCount; i++)
+			{
+				headerOrFooterRenderer = this._inactiveFooterRenderers.shift();
+				DisplayObject(headerOrFooterRenderer).visible = false;
+				this._activeFooterRenderers.push(headerOrFooterRenderer);
+			}
 			rendererCount = this._inactiveFooterRenderers.length;
 			for(i = 0; i < rendererCount; i++)
 			{
@@ -1191,6 +1241,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 			renderer.groupIndex = groupIndex;
 			renderer.itemIndex = itemIndex;
 			renderer.owner = this._owner;
+			DisplayObject(renderer).visible = true;
 
 			if(!isTemporary)
 			{
@@ -1224,6 +1275,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 			renderer.data = header;
 			renderer.groupIndex = groupIndex;
 			renderer.owner = this._owner;
+			DisplayObject(renderer).visible = true;
 
 			if(!isTemporary)
 			{
@@ -1257,6 +1309,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 			renderer.data = footer;
 			renderer.groupIndex = groupIndex;
 			renderer.owner = this._owner;
+			DisplayObject(renderer).visible = true;
 
 			if(!isTemporary)
 			{
