@@ -627,7 +627,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 		{
 			const itemCount:int = this._dataProvider ? this._dataProvider.length : 0;
 			var startIndex:int = 0;
-			var endIndex:int = itemCount;
+			var endIndex:int = itemCount - 1;
 			const virtualLayout:IVirtualLayout = this._layout as IVirtualLayout;
 			const useVirtualLayout:Boolean = virtualLayout && virtualLayout.useVirtualLayout;
 			if(useVirtualLayout)
@@ -642,7 +642,8 @@ package org.josht.starling.foxhole.controls.supportClasses
 			}
 			for(var i:int = 0; i < itemCount; i++)
 			{
-				if(i < startIndex || i >= endIndex)
+				//the end index is included in the visible items
+				if(i < startIndex || i > endIndex)
 				{
 					this._layoutItems[i] = null;
 				}
