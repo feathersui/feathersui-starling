@@ -385,10 +385,19 @@ package org.josht.starling.foxhole.layout
 		/**
 		 * @inheritDoc
 		 */
-		public function layout(items:Vector.<DisplayObject>, suggestedBounds:Rectangle, resultDimensions:Point = null):Point
+		public function layout(items:Vector.<DisplayObject>, viewPortBounds:ViewPortBounds = null, result:LayoutBoundsResult = null):LayoutBoundsResult
 		{
-			var maxWidth:Number = 0;
-			var positionY:Number = suggestedBounds.y + this._paddingTop;
+			const boundsX:Number = viewPortBounds ? viewPortBounds.x : 0;
+			const boundsY:Number = viewPortBounds ? viewPortBounds.y : 0;
+			const minWidth:Number = viewPortBounds ? viewPortBounds.minWidth : 0;
+			const minHeight:Number = viewPortBounds ? viewPortBounds.minHeight : 0;
+			const maxWidth:Number = viewPortBounds ? viewPortBounds.maxWidth : Number.POSITIVE_INFINITY;
+			const maxHeight:Number = viewPortBounds ? viewPortBounds.maxHeight : Number.POSITIVE_INFINITY;
+			const explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
+			const explicitHeight:Number = viewPortBounds ? viewPortBounds.explicitHeight : NaN;
+
+			var maxItemWidth:Number = 0;
+			var positionY:Number = boundsY + this._paddingTop;
 			const itemCount:int = items.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
@@ -399,26 +408,40 @@ package org.josht.starling.foxhole.layout
 					{
 						helperPoint = this._indexToItemBoundsFunction(i, helperPoint);
 						positionY += helperPoint.y + this._gap;
-						maxWidth = Math.max(maxWidth, helperPoint.x);
+						maxItemWidth = Math.max(maxItemWidth, helperPoint.x);
 					}
 					else
 					{
 						positionY += this._typicalItemHeight + this._gap;
-						maxWidth = Math.max(maxWidth, this._typicalItemWidth);
+						maxItemWidth = Math.max(maxItemWidth, this._typicalItemWidth);
 					}
 				}
 				else
 				{
 					item.y = positionY;
+					if(this._useVirtualLayout)
+					{
+						if(this._indexToItemBoundsFunction != null)
+						{
+							helperPoint = this._indexToItemBoundsFunction(i, helperPoint);
+							item.width = helperPoint.x;
+							item.height = helperPoint.y;
+						}
+						else
+						{
+							item.width = this._typicalItemWidth;
+							item.height = this._typicalItemHeight;
+						}
+					}
 					positionY += item.height + this._gap;
 					if(this._horizontalAlign != HORIZONTAL_ALIGN_JUSTIFY)
 					{
-						maxWidth = Math.max(maxWidth, item.width);
+						maxItemWidth = Math.max(maxItemWidth, item.width);
 					}
 				}
 			}
 
-			const suggestedWidth:Number = isNaN(suggestedBounds.width) ? (maxWidth + this._paddingLeft + this._paddingRight) : suggestedBounds.width;
+			const availableWidth:Number = isNaN(explicitWidth) ? Math.min(maxWidth, Math.max(minWidth, maxItemWidth + this._paddingLeft + this._paddingRight)) : explicitWidth;
 			for(i = 0; i < itemCount; i++)
 			{
 				item = items[i];
@@ -430,18 +453,18 @@ package org.josht.starling.foxhole.layout
 				{
 					case HORIZONTAL_ALIGN_RIGHT:
 					{
-						item.x = suggestedBounds.x + suggestedWidth - this._paddingRight - item.width;
+						item.x = boundsX + availableWidth - this._paddingRight - item.width;
 						break;
 					}
 					case HORIZONTAL_ALIGN_CENTER:
 					{
-						item.x = suggestedBounds.x + this._paddingLeft + (suggestedWidth - this._paddingLeft - this._paddingRight - item.width) / 2;
+						item.x = boundsX + this._paddingLeft + (availableWidth - this._paddingLeft - this._paddingRight - item.width) / 2;
 						break;
 					}
 					case HORIZONTAL_ALIGN_JUSTIFY:
 					{
 						item.x = this._paddingLeft;
-						item.width = suggestedWidth - this._paddingLeft - this._paddingRight;
+						item.width = availableWidth - this._paddingLeft - this._paddingRight;
 						break;
 					}
 					default: //top
@@ -451,18 +474,18 @@ package org.josht.starling.foxhole.layout
 				}
 			}
 
-			const totalHeight:Number = positionY - this._gap + this._paddingBottom - suggestedBounds.y;
-			const suggestedHeight:Number = isNaN(suggestedBounds.height) ? totalHeight : suggestedBounds.height;
-			if(totalHeight < suggestedHeight)
+			const totalHeight:Number = positionY - this._gap + this._paddingBottom - boundsY;
+			const availableHeight:Number = isNaN(explicitHeight) ? Math.min(maxHeight, Math.max(minHeight, totalHeight)) : explicitHeight;
+			if(totalHeight < availableHeight)
 			{
 				var verticalAlignOffsetY:Number = 0;
 				if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
 				{
-					verticalAlignOffsetY = suggestedHeight - totalHeight;
+					verticalAlignOffsetY = availableHeight - totalHeight;
 				}
 				else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
 				{
-					verticalAlignOffsetY = (suggestedHeight - totalHeight) / 2;
+					verticalAlignOffsetY = (availableHeight - totalHeight) / 2;
 				}
 				if(verticalAlignOffsetY != 0)
 				{
@@ -478,13 +501,78 @@ package org.josht.starling.foxhole.layout
 				}
 			}
 
-			if(!resultDimensions)
+			if(!result)
 			{
-				resultDimensions = new Point();
+				result = new LayoutBoundsResult();
 			}
-			resultDimensions.x = Math.max(suggestedWidth, maxWidth);
-			resultDimensions.y = Math.max(suggestedHeight, totalHeight);
-			return resultDimensions;
+			result.contentWidth = maxItemWidth;
+			result.contentHeight = totalHeight;
+			result.viewPortWidth = availableWidth;
+			result.viewPortHeight = availableHeight;
+			return result;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function measureViewPort(itemCount:int, viewPortBounds:ViewPortBounds = null, result:Point = null):Point
+		{
+			if(!result)
+			{
+				result = new Point();
+			}
+			const explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
+			const explicitHeight:Number = viewPortBounds ? viewPortBounds.explicitHeight : NaN;
+			const needsWidth:Boolean = isNaN(explicitWidth);
+			const needsHeight:Boolean = isNaN(explicitHeight);
+			if(!needsWidth && !needsHeight)
+			{
+				result.x = explicitWidth;
+				result.y = explicitHeight;
+				return result;
+			}
+
+			const minWidth:Number = viewPortBounds ? viewPortBounds.minWidth : 0;
+			const minHeight:Number = viewPortBounds ? viewPortBounds.minHeight : 0;
+			const maxWidth:Number = viewPortBounds ? viewPortBounds.maxWidth : Number.POSITIVE_INFINITY;
+			const maxHeight:Number = viewPortBounds ? viewPortBounds.maxHeight : Number.POSITIVE_INFINITY;
+
+			var positionY:Number = 0;
+			var maxItemWidth:Number = 0;
+			if(this._indexToItemBoundsFunction != null)
+			{
+				for(var i:int = 0; i < itemCount; i++)
+				{
+					helperPoint = this._indexToItemBoundsFunction(i, helperPoint);
+					positionY += helperPoint.y + this._gap;
+					maxItemWidth = Math.max(maxItemWidth, helperPoint.x);
+				}
+			}
+			else
+			{
+				positionY += itemCount * (this._typicalItemHeight + this._gap);
+				maxItemWidth = this._typicalItemWidth;
+			}
+
+			if(needsWidth)
+			{
+				result.x = Math.min(maxWidth, Math.max(minWidth, maxItemWidth + this._paddingLeft + this._paddingRight));
+			}
+			else
+			{
+				result.x = explicitWidth;
+			}
+
+			if(needsHeight)
+			{
+				result.y = Math.min(maxHeight, Math.max(minHeight, positionY - this._gap + this._paddingTop + this._paddingBottom));
+			}
+			else
+			{
+				result.y = explicitHeight;
+			}
+
+			return result;
 		}
 
 		/**

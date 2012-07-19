@@ -28,6 +28,7 @@ package org.josht.starling.foxhole.controls
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.PropertyProxy;
 	import org.josht.starling.foxhole.layout.ILayout;
+	import org.josht.starling.foxhole.layout.IVirtualLayout;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 
@@ -428,6 +429,10 @@ package org.josht.starling.foxhole.controls
 
 			if(dataInvalid)
 			{
+				if(this._layout is IVirtualLayout)
+				{
+					IVirtualLayout(this._layout).useVirtualLayout = false;
+				}
 				this.viewPort.layout = this._layout;
 			}
 

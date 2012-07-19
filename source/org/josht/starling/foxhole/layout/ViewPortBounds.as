@@ -22,26 +22,25 @@
  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  OTHER DEALINGS IN THE SOFTWARE.
  */
-package org.josht.starling.foxhole.controls.supportClasses
+package org.josht.starling.foxhole.layout
 {
-	import org.osflash.signals.ISignal;
-
-	[ExcludeClass]
-	public interface IViewPort
+	/**
+	 * Used by layout algorithms for determining the bounds in which to position
+	 * and size items.
+	 */
+	public class ViewPortBounds
 	{
-		function get visibleWidth():Number;
-		function set visibleWidth(value:Number):void;
-		function get minVisibleWidth():Number;
-		function set minVisibleWidth(value:Number):void;
-		function get maxVisibleWidth():Number;
-		function set maxVisibleWidth(value:Number):void;
-		function get visibleHeight():Number;
-		function set visibleHeight(value:Number):void;
-		function get minVisibleHeight():Number;
-		function set minVisibleHeight(value:Number):void;
-		function get maxVisibleHeight():Number;
-		function set maxVisibleHeight(value:Number):void;
+		public function ViewPortBounds()
+		{
+		}
 
-		function get onResize():ISignal;
+		public var x:Number = 0;
+		public var y:Number = 0;
+		public var explicitWidth:Number = NaN;
+		public var explicitHeight:Number = NaN;
+		public var minWidth:Number = 0;
+		public var minHeight:Number = 0;
+		public var maxWidth:Number = Number.POSITIVE_INFINITY;
+		public var maxHeight:Number = Number.POSITIVE_INFINITY;
 	}
 }

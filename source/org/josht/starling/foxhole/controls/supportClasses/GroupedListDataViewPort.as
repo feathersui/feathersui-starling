@@ -37,6 +37,8 @@ package org.josht.starling.foxhole.controls.supportClasses
 	import org.josht.starling.foxhole.layout.ILayout;
 	import org.josht.starling.foxhole.layout.IVariableVirtualLayout;
 	import org.josht.starling.foxhole.layout.IVirtualLayout;
+	import org.josht.starling.foxhole.layout.LayoutBoundsResult;
+	import org.josht.starling.foxhole.layout.ViewPortBounds;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 
@@ -50,7 +52,8 @@ package org.josht.starling.foxhole.controls.supportClasses
 		protected static const INVALIDATION_FLAG_ITEM_RENDERER_FACTORY:String = "itemRendererFactory";
 
 		private static const helperPoint:Point = new Point();
-		private static const helperRect:Rectangle = new Rectangle();
+		private static const helperBounds:ViewPortBounds = new ViewPortBounds();
+		private static const helperResult:LayoutBoundsResult = new LayoutBoundsResult();
 
 		public function GroupedListDataViewPort()
 		{
@@ -775,11 +778,10 @@ package org.josht.starling.foxhole.controls.supportClasses
 
 			if(scrollInvalid || dataInvalid || itemRendererInvalid || sizeInvalid)
 			{
-				helperRect.x = helperRect.y = 0;
-				helperRect.width = this.actualVisibleWidth;
-				helperRect.height = this.actualVisibleHeight;
-				this._layout.layout(this._layoutItems, helperRect, helperPoint);
-				this.setSizeInternal(helperPoint.x, helperPoint.y, false);
+				this._layout.layout(this._layoutItems, helperBounds, helperResult);
+				this.setSizeInternal(helperResult.contentWidth, helperResult.contentHeight, false);
+				this.actualVisibleWidth = helperResult.viewPortWidth;
+				this.actualVisibleHeight = helperResult.viewPortHeight;
 			}
 		}
 
@@ -940,22 +942,13 @@ package org.josht.starling.foxhole.controls.supportClasses
 			this._headerIndices.length = 0;
 			this._footerIndices.length = 0;
 
-			if(isNaN(this.explicitVisibleWidth))
-			{
-				this.actualVisibleWidth = Math.min(this._maxVisibleWidth, Math.max(0, this._minVisibleWidth));
-			}
-			else
-			{
-				this.actualVisibleWidth = Math.max(0, this.explicitVisibleWidth);
-			}
-			if(isNaN(this.explicitVisibleHeight))
-			{
-				this.actualVisibleHeight = Math.min(this._maxVisibleHeight, Math.max(0, this._minVisibleHeight));
-			}
-			else
-			{
-				this.actualVisibleHeight = Math.max(0, this.explicitVisibleHeight);
-			}
+			helperBounds.x = helperBounds.y = 0;
+			helperBounds.explicitWidth = this.explicitVisibleWidth;
+			helperBounds.explicitHeight = this.explicitVisibleHeight;
+			helperBounds.minWidth = this._minVisibleWidth;
+			helperBounds.minHeight = this._minVisibleHeight;
+			helperBounds.maxWidth = this._maxVisibleWidth;
+			helperBounds.maxHeight = this._maxVisibleHeight;
 
 			this.findUnrenderedData();
 			this.recoverInactiveRenderers();
@@ -991,8 +984,9 @@ package org.josht.starling.foxhole.controls.supportClasses
 				this._ignoreLayoutChanges = true;
 				virtualLayout.indexToItemBoundsFunction = indexToItemBoundsFunction;
 				this._ignoreLayoutChanges = false;
-				startIndex = virtualLayout.getMinimumItemIndexAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, this.actualVisibleWidth, this.actualVisibleHeight, totalItemCount);
-				endIndex = virtualLayout.getMaximumItemIndexAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, this.actualVisibleWidth, this.actualVisibleHeight, totalItemCount);
+				virtualLayout.measureViewPort(totalItemCount, helperBounds, helperPoint);
+				startIndex = virtualLayout.getMinimumItemIndexAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, helperPoint.x, helperPoint.y, totalItemCount);
+				endIndex = virtualLayout.getMaximumItemIndexAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, helperPoint.x, helperPoint.y, totalItemCount);
 			}
 			var currentIndex:int = 0;
 			for(i = 0; i < groupCount; i++)

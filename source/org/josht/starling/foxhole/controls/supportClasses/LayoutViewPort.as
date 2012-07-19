@@ -30,6 +30,8 @@ package org.josht.starling.foxhole.controls.supportClasses
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.layout.ILayout;
 	import org.josht.starling.foxhole.layout.IVirtualLayout;
+	import org.josht.starling.foxhole.layout.LayoutBoundsResult;
+	import org.josht.starling.foxhole.layout.ViewPortBounds;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -40,8 +42,9 @@ package org.josht.starling.foxhole.controls.supportClasses
 	 */
 	public class LayoutViewPort extends FoxholeControl implements IViewPort
 	{
-		private static const HELPER_POINT:Point = new Point();
-		private static const HELPER_RECT:Rectangle = new Rectangle();
+		private static const helperPoint:Point = new Point();
+		private static const helperBounds:ViewPortBounds = new ViewPortBounds();
+		private static const helperResult:LayoutBoundsResult = new LayoutBoundsResult();
 
 		public function LayoutViewPort()
 		{
@@ -225,56 +228,31 @@ package org.josht.starling.foxhole.controls.supportClasses
 					}
 				}
 
-				HELPER_RECT.x = HELPER_RECT.y = 0;
-				if(isNaN(this._visibleWidth))
-				{
-					if(this._maxVisibleWidth < Number.POSITIVE_INFINITY)
-					{
-						HELPER_RECT.width = this._maxVisibleWidth;
-					}
-					else
-					{
-						HELPER_RECT.width = NaN;
-					}
-				}
-				else
-				{
-					HELPER_RECT.width = this._visibleWidth;
-				}
-				if(isNaN(this._visibleHeight))
-				{
-					if(this._maxVisibleHeight < Number.POSITIVE_INFINITY)
-					{
-						HELPER_RECT.height = this._maxVisibleHeight;
-					}
-					else
-					{
-						HELPER_RECT.height = NaN;
-					}
-				}
-				else
-				{
-					HELPER_RECT.height = this._visibleHeight;
-				}
+				helperBounds.x = helperBounds.y = 0;
+				helperBounds.explicitWidth = this._visibleWidth;
+				helperBounds.explicitHeight = this._visibleHeight;
+				helperBounds.minWidth = this._minVisibleWidth;
+				helperBounds.minHeight = this._minVisibleHeight;
+				helperBounds.maxWidth = this._maxVisibleWidth;
+				helperBounds.maxHeight = this._maxVisibleHeight;
 				if(this._layout)
 				{
-					this._layout.layout(this.items, HELPER_RECT, HELPER_POINT);
+					this._layout.layout(this.items, helperBounds, helperResult);
+					this.setSizeInternal(helperResult.contentWidth, helperResult.contentHeight, false);
 				}
 				else
 				{
-					var maxX:Number = isNaN(HELPER_RECT.width) ? 0 : HELPER_RECT.width;
-					var maxY:Number = isNaN(HELPER_RECT.height) ? 0 : HELPER_RECT.height;
+					var maxX:Number = isNaN(helperBounds.explicitWidth) ? 0 : helperBounds.explicitWidth;
+					var maxY:Number = isNaN(helperBounds.explicitHeight) ? 0 : helperBounds.explicitHeight;
 					for each(var item:DisplayObject in this.items)
 					{
 						maxX = Math.max(maxX, item.x + item.width);
 						maxY = Math.max(maxY, item.y + item.height);
 					}
-					HELPER_POINT.x = Math.min(maxX, this._maxVisibleWidth);
-					HELPER_POINT.y = Math.min(maxY, this._maxVisibleHeight);
+					helperPoint.x = Math.max(Math.min(maxX, this._maxVisibleWidth), this._minVisibleWidth);
+					helperPoint.y = Math.max(Math.min(maxY, this._maxVisibleHeight), this._minVisibleHeight);
+					this.setSizeInternal(helperPoint.x, helperPoint.y, false);
 				}
-				HELPER_POINT.x = Math.max(Math.min(HELPER_POINT.x, this._maxVisibleWidth), this._minVisibleWidth);
-				HELPER_POINT.y = Math.max(Math.min(HELPER_POINT.y, this._maxVisibleHeight), this._minVisibleHeight);
-				this.setSizeInternal(HELPER_POINT.x, HELPER_POINT.y, false);
 			}
 		}
 
