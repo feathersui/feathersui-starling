@@ -597,7 +597,7 @@ package org.josht.starling.foxhole.layout
 				return -indexOffset + Math.max(0, (scrollX - this._paddingLeft) / (this._typicalItemWidth + this._gap));
 			}
 
-			totalItemWidth = 0;
+			totalItemWidth = this._paddingLeft;
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				helperPoint = this._indexToItemBoundsFunction(i, helperPoint);
@@ -606,6 +606,7 @@ package org.josht.starling.foxhole.layout
 				{
 					return i;
 				}
+				totalItemWidth += this._gap;
 			}
 			//this should probably never happen...
 			return itemCount - 1;
@@ -626,11 +627,12 @@ package org.josht.starling.foxhole.layout
 			for(var i:int = minimum + 1; i < itemCount; i++)
 			{
 				helperPoint = this._indexToItemBoundsFunction(i, helperPoint);
-				totalItemWidth += helperPoint.x + this._gap;
+				totalItemWidth += helperPoint.x;
 				if(totalItemWidth > maxX)
 				{
 					return i;
 				}
+				totalItemWidth += this._gap;
 			}
 			return itemCount - 1;
 		}
