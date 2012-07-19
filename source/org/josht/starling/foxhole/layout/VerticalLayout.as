@@ -598,7 +598,7 @@ package org.josht.starling.foxhole.layout
 				return -indexOffset + Math.max(0, (scrollY - this._paddingTop) / (this._typicalItemHeight + this._gap));
 			}
 
-			totalItemHeight = 0;
+			totalItemHeight = this._paddingTop;
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				helperPoint = this._indexToItemBoundsFunction(i, helperPoint);
@@ -607,6 +607,7 @@ package org.josht.starling.foxhole.layout
 				{
 					return i;
 				}
+				totalItemHeight += this._gap;
 			}
 			//this should probably never happen...
 			return itemCount - 1;
@@ -617,7 +618,7 @@ package org.josht.starling.foxhole.layout
 		 */
 		public function getMaximumItemIndexAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int):int
 		{
-			const minimum:int = this.getMinimumItemIndexAtScrollPosition(scrollX,  scrollY, width, height, itemCount);
+			const minimum:int = this.getMinimumItemIndexAtScrollPosition(scrollX, scrollY, width, height, itemCount);
 			if(this._indexToItemBoundsFunction == null)
 			{
 				return minimum + Math.ceil(height / (this._typicalItemHeight + this._gap));
@@ -627,11 +628,12 @@ package org.josht.starling.foxhole.layout
 			for(var i:int = minimum + 1; i < itemCount; i++)
 			{
 				helperPoint = this._indexToItemBoundsFunction(i, helperPoint);
-				totalItemHeight += helperPoint.y + this._gap;
+				totalItemHeight += helperPoint.y;
 				if(totalItemHeight > maxY)
 				{
 					return i;
 				}
+				totalItemHeight += this._gap;
 			}
 			return itemCount - 1;
 		}
