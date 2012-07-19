@@ -603,7 +603,7 @@ package org.josht.starling.foxhole.layout
 			{
 				helperPoint = this._indexToItemBoundsFunction(i, helperPoint);
 				totalItemHeight += helperPoint.y;
-				if(totalItemHeight >= scrollY)
+				if(totalItemHeight > scrollY)
 				{
 					return i;
 				}
@@ -620,15 +620,15 @@ package org.josht.starling.foxhole.layout
 			const minimum:int = this.getMinimumItemIndexAtScrollPosition(scrollX,  scrollY, width, height, itemCount);
 			if(this._indexToItemBoundsFunction == null)
 			{
-				return minimum + Math.ceil(height / (this._typicalItemHeight + this._gap)) + 1;
+				return minimum + Math.ceil(height / (this._typicalItemHeight + this._gap));
 			}
 			const maxY:Number = scrollY + height;
 			var totalItemHeight:Number = scrollY;
-			for(var i:int = minimum; i < itemCount; i++)
+			for(var i:int = minimum + 1; i < itemCount; i++)
 			{
 				helperPoint = this._indexToItemBoundsFunction(i, helperPoint);
-				totalItemHeight += helperPoint.y;
-				if(totalItemHeight >= maxY)
+				totalItemHeight += helperPoint.y + this._gap;
+				if(totalItemHeight > maxY)
 				{
 					return i;
 				}
