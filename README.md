@@ -17,6 +17,9 @@ A pop-up container that points at (or calls out) a specific region of the applic
 ### Check
 A typical checkbox control with a label and selection.
 
+### GroupedList
+A hierarchical List-like control where items are divided into groups or sections, each with an optional header and an optional footer.
+
 ### Label
 A non-interactive text control. Uses bitmap fonts. A simplified replacement for `starling.text.TextField` that is built on `FoxholeControl`.
 
