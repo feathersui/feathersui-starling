@@ -99,7 +99,7 @@ package org.josht.starling.foxhole.data
 		/**
 		 * @inheritDoc
 		 */
-		public function getItemIndex(data:Object, item:Object, result:Vector.<int> = null, ...rest:Array):Vector.<int>
+		public function getItemLocation(data:Object, item:Object, result:Vector.<int> = null, ...rest:Array):Vector.<int>
 		{
 			if(!result)
 			{

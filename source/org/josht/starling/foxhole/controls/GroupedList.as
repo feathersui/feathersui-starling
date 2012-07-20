@@ -33,6 +33,7 @@ package org.josht.starling.foxhole.controls
 	import org.josht.starling.foxhole.core.PropertyProxy;
 	import org.josht.starling.foxhole.data.HierarchicalCollection;
 	import org.josht.starling.foxhole.layout.ILayout;
+	import org.josht.starling.foxhole.layout.IVirtualLayout;
 	import org.josht.starling.foxhole.layout.VerticalLayout;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
@@ -256,20 +257,20 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		//private var _isSelectable:Boolean = true;
+		protected var _isSelectable:Boolean = true;
 
 		/**
 		 * Determines if an item in the list may be selected.
 		 */
-		/*public function get isSelectable():Boolean
+		public function get isSelectable():Boolean
 		{
 			return this._isSelectable;
-		}*/
+		}
 
 		/**
 		 * @private
 		 */
-		/*public function set isSelectable(value:Boolean):void
+		public function set isSelectable(value:Boolean):void
 		{
 			if(this._isSelectable == value)
 			{
@@ -278,76 +279,47 @@ package org.josht.starling.foxhole.controls
 			this._isSelectable = value;
 			if(!this._isSelectable)
 			{
-				this.selectedGroupIndex = -1;
-				this._selectedItemIndex = -1;
+				this.setSelectedLocation(-1, -1);
 			}
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
-		}*/
+		}
 
 		/**
 		 * @private
 		 */
-		//private var _selectedGroupIndex:int = -1;
+		protected var _selectedGroupIndex:int = -1;
 
 		/**
-		 * The index of the currently selected item. Returns -1 if no item is
-		 * selected.
+		 * The group index of the currently selected item. Returns -1 if no item
+		 * is selected.
 		 *
 		 * @see #selectedItemIndex
 		 */
-		/*public function get selectedGroupIndex():int
+		public function get selectedGroupIndex():int
 		{
 			return this._selectedGroupIndex;
-		}*/
+		}
 
 		/**
 		 * @private
 		 */
-		/*public function set selectedGroupIndex(value:int):void
-		{
-			if(this._selectedGroupIndex == value)
-			{
-				return;
-			}
-			this._selectedGroupIndex = value;
-			this.invalidate(INVALIDATION_FLAG_SELECTED);
-			this._onChange.dispatch(this);
-		}*/
+		private var _selectedItemIndex:int = -1;
 
 		/**
-		 * @private
-		 */
-		//private var _selectedItemIndex:int = -1;
-
-		/**
-		 * The index of the currently selected item. Returns -1 if no item is
-		 * selected.
+		 * The item index of the currently selected item. Returns -1 if no item
+		 * is selected.
 		 *
 		 * @see #selectedGroupIndex
 		 */
-		/*public function get selectedItemIndex():int
+		public function get selectedItemIndex():int
 		{
 			return this._selectedItemIndex;
-		}*/
-
-		/**
-		 * @private
-		 */
-		/*public function set selectedItemIndex(value:int):void
-		{
-			if(this._selectedItemIndex == value)
-			{
-				return;
-			}
-			this._selectedItemIndex = value;
-			this.invalidate(INVALIDATION_FLAG_SELECTED);
-			this._onChange.dispatch(this);
-		}*/
+		}
 
 		/**
 		 * The currently selected item. Returns null if no item is selected.
 		 */
-		/*public function get selectedItem():Object
+		public function get selectedItem():Object
 		{
 			if(!this._dataProvider || this._selectedGroupIndex < 0 || this._selectedItemIndex < 0)
 			{
@@ -355,38 +327,36 @@ package org.josht.starling.foxhole.controls
 			}
 
 			return this._dataProvider.getItemAt(this._selectedGroupIndex, this._selectedItemIndex);
-		}*/
+		}
 
 		/**
 		 * @private
 		 */
-		/*public function set selectedItem(value:Object):void
+		public function set selectedItem(value:Object):void
 		{
-			const result:Vector.<int> = this._dataProvider.getItemIndex(value);
+			const result:Vector.<int> = this._dataProvider.getItemLocation(value);
 			if(result.length == 2)
 			{
-				this.selectedGroupIndex = result[0];
-				this.selectedItemIndex = result[1]
+				this.setSelectedLocation(result[0], result[1]);
 			}
 			else
 			{
-				this.selectedGroupIndex = -1;
-				this.selectedItemIndex = -1;
+				this.setSelectedLocation(-1, -1);
 			}
-		}*/
+		}
 
 		/**
 		 * @private
 		 */
-		//protected var _onChange:Signal = new Signal(GroupedList);
+		protected var _onChange:Signal = new Signal(GroupedList);
 
 		/**
 		 * Dispatched when the selected item changes.
 		 */
-		/*public function get onChange():ISignal
+		public function get onChange():ISignal
 		{
 			return this._onChange;
-		}*/
+		}
 
 		/**
 		 * @private
@@ -1334,10 +1304,30 @@ package org.josht.starling.foxhole.controls
 		 */
 		override public function dispose():void
 		{
-			//this._onChange.removeAll();
+			this._onChange.removeAll();
 			this._onScroll.removeAll();
 			this._onItemTouch.removeAll();
 			super.dispose();
+		}
+
+		/**
+		 * @private
+		 */
+		public function setSelectedLocation(groupIndex:int, itemIndex:int):void
+		{
+			if(this._selectedGroupIndex == groupIndex && this._selectedItemIndex == itemIndex)
+			{
+				return;
+			}
+			if((groupIndex < 0 && itemIndex >= 0) || (groupIndex >= 0 && itemIndex < 0))
+			{
+				throw new ArgumentError("To deselect items, group index and item index must both be < 0.");
+			}
+			this._selectedGroupIndex = groupIndex;
+			this._selectedItemIndex = itemIndex;
+
+			this.invalidate(INVALIDATION_FLAG_SELECTED);
+			this._onChange.dispatch(this);
 		}
 
 		/**
@@ -1418,7 +1408,7 @@ package org.josht.starling.foxhole.controls
 			{
 				this.dataViewPort = new GroupedListDataViewPort();
 				this.dataViewPort.owner = this;
-				//this.dataViewPort.onChange.add(dataViewPort_onChange);
+				this.dataViewPort.onChange.add(dataViewPort_onChange);
 				this.dataViewPort.onItemTouch.add(dataViewPort_onItemTouch);
 				this.scroller.viewPort = this.dataViewPort;
 			}
@@ -1445,9 +1435,8 @@ package org.josht.starling.foxhole.controls
 			}
 
 			this.dataViewPort.isEnabled = this._isEnabled;
-			//this.dataViewPort.isSelectable = this._isSelectable;
-			//this.dataViewPort.selectedGroupIndex = this._selectedGroupIndex;
-			//this.dataViewPort.selectedItemIndex = this._selectedItemIndex;
+			this.dataViewPort.isSelectable = this._isSelectable;
+			this.dataViewPort.setSelectedLocation(this._selectedGroupIndex, this._selectedItemIndex);
 			this.dataViewPort.dataProvider = this._dataProvider;
 
 			this.dataViewPort.itemRendererType = this._itemRendererType;
@@ -1516,7 +1505,7 @@ package org.josht.starling.foxhole.controls
 			this._horizontalScrollPosition = this.scroller.horizontalScrollPosition;
 			this._verticalScrollPosition = this.scroller.verticalScrollPosition;
 
-			/*if(this._scrollToGroupIndex >= 0 && this._scrollToItemIndex >= 0)
+			if(this._scrollToGroupIndex >= 0 && this._scrollToItemIndex >= 0)
 			{
 				const item:Object = this._dataProvider.getItemAt(this._scrollToGroupIndex, this._scrollToItemIndex);
 				if(item is Object)
@@ -1529,7 +1518,17 @@ package org.josht.starling.foxhole.controls
 					}
 					else if(this._layout is IVirtualLayout)
 					{
-						IVirtualLayout(this._layout).getScrollPositionForItemIndexAndBounds(this._scrollToIndex, this.dataViewPort.visibleWidth, this.dataViewPort.visibleHeight, helperPoint);
+						const displayIndex:int = this.locationToDisplayIndex(this._scrollToGroupIndex, this._scrollToItemIndex);
+						if(displayIndex >= 0)
+						{
+							IVirtualLayout(this._layout).getScrollPositionForItemIndexAndBounds(displayIndex, this.dataViewPort.visibleWidth, this.dataViewPort.visibleHeight, helperPoint);
+						}
+						else
+						{
+							helperPoint.x = this._horizontalScrollPosition;
+							helperPoint.y = this._verticalScrollPosition;
+						}
+						trace(this._scrollToGroupIndex, this._scrollToItemIndex, displayIndex, helperPoint);
 					}
 					else
 					{
@@ -1546,7 +1545,40 @@ package org.josht.starling.foxhole.controls
 				this._scrollToGroupIndex = -1;
 				this._scrollToItemIndex = -1;
 			}
-			this.scroller.horizontalScrollStep = this.scroller.verticalScrollStep = this.dataViewPort.typicalItemHeight;*/
+			this.scroller.horizontalScrollStep = this.scroller.verticalScrollStep = this.dataViewPort.typicalItemHeight;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function locationToDisplayIndex(groupIndex:int, itemIndex:int):int
+		{
+			var displayIndex:int = 0;
+			const groupCount:int = this._dataProvider.getLength();
+			for(var i:int = 0; i < groupCount; i++)
+			{
+				var group:Object = this._dataProvider.getItemAt(i);
+				var header:Object = this.groupToHeaderData(group);
+				if(header)
+				{
+					displayIndex++;
+				}
+				var groupLength:int = this._dataProvider.getLength(i);
+				for(var j:int = 0; j < groupLength; j++)
+				{
+					if(groupIndex == i && itemIndex == j)
+					{
+						return displayIndex;
+					}
+					displayIndex++;
+				}
+				var footer:Object = this.groupToFooterData(group);
+				if(footer)
+				{
+					displayIndex++;
+				}
+			}
+			return -1;
 		}
 
 		/**
@@ -1670,11 +1702,10 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		/*protected function dataViewPort_onChange(dataViewPort:GroupedListDataViewPort):void
+		protected function dataViewPort_onChange(dataViewPort:GroupedListDataViewPort):void
 		{
-			this.selectedGroupIndex = this.dataViewPort.selectedGroupIndex;
-			this.selectedItemIndex = this.dataViewPort.selectedItemIndex;
-		}*/
+			this.setSelectedLocation(this.dataViewPort.selectedGroupIndex, this.dataViewPort.selectedItemIndex);
+		}
 
 		/**
 		 * @private

@@ -27,7 +27,6 @@ package org.josht.starling.foxhole.controls.renderers
 	import org.josht.starling.foxhole.controls.GroupedList;
 	import org.josht.starling.foxhole.controls.Label;
 	import org.josht.starling.foxhole.core.FoxholeControl;
-	import org.josht.starling.foxhole.core.FoxholeControl;
 
 	import starling.display.DisplayObject;
 	import starling.display.Image;
