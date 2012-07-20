@@ -43,8 +43,16 @@ package org.josht.starling.foxhole.controls
 	import starling.events.TouchEvent;
 
 	/**
-	 * Displays a one-dimensional list of items. Supports scrolling and custom
-	 * layouts.
+	 * Displays a one-dimensional list of items. Supports scrolling, custom
+	 * item renderers, and custom layouts.
+	 *
+	 * <p>Layouts may be, and are highly encouraged to be, <em>virtual</em>,
+	 * meaning that the List is capable of creating a limited number of item
+	 * renderers to display a subset of the data provider instead of creating a
+	 * renderer for every single item. This allows for optimal performance with
+	 * very large data providers.</p>
+	 *
+	 * @see GroupedList
 	 */
 	public class List extends FoxholeControl
 	{
@@ -809,7 +817,7 @@ package org.josht.starling.foxhole.controls
 		}
 		
 		/**
-		 * @inheritDoc
+		 * @private
 		 */
 		override public function dispose():void
 		{
@@ -821,7 +829,7 @@ package org.josht.starling.foxhole.controls
 		
 		/**
 		 * If the user is dragging the scroll, calling stopScrolling() will
-		 * cause the list to ignore the drag.
+		 * cause the grouped list to ignore the drag.
 		 */
 		public function stopScrolling():void
 		{

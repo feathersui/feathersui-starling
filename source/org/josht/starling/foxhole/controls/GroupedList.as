@@ -42,8 +42,16 @@ package org.josht.starling.foxhole.controls
 	import starling.events.TouchEvent;
 
 	/**
-	 * Displays a two-dimensional list of items. Supports scrolling and custom
-	 * layouts.
+	 * Displays a list of items divided into groups or sections. Takes a
+	 * hierarchical provider limited to two levels of hierarchy. This component
+	 * supports scrolling, custom item (and header and footer) renderers, and
+	 * custom layouts.
+	 *
+	 * <p>Layouts may be, and are highly encouraged to be, <em>virtual</em>,
+	 * meaning that the List is capable of creating a limited number of item
+	 * renderers to display a subset of the data provider instead of creating a
+	 * renderer for every single item. This allows for optimal performance with
+	 * very large data providers.</p>
 	 */
 	public class GroupedList extends FoxholeControl
 	{
@@ -1187,6 +1195,17 @@ package org.josht.starling.foxhole.controls
 		protected var _headerField:String = "header";
 
 		/**
+		 * The field in a group that contains the data for a header. If the
+		 * group does not have this field, and a <code>headerFunction</code> is
+		 * not defined, then no header will be displayed for the group. In other
+		 * words, a header is optional, and a group may not have one.
+		 *
+		 * <p>All of the header fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>headerFunction</code></li>
+		 *     <li><code>headerField</code></li>
+		 * </ol>
+		 *
 		 * @see #headerFunction
 		 */
 		public function get headerField():String
@@ -1213,6 +1232,16 @@ package org.josht.starling.foxhole.controls
 		private var _headerFunction:Function;
 
 		/**
+		 * A function used to generate header data for a specific group. If this
+		 * function is not null, then the <code>headerField</code> will be
+		 * ignored.
+		 *
+		 * <p>All of the header fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>headerFunction</code></li>
+		 *     <li><code>headerField</code></li>
+		 * </ol>
+		 *
 		 * @see #headerField
 		 */
 		public function get headerFunction():Function
@@ -1239,6 +1268,17 @@ package org.josht.starling.foxhole.controls
 		protected var _footerField:String = "footer";
 
 		/**
+		 * The field in a group that contains the data for a footer. If the
+		 * group does not have this field, and a <code>footerFunction</code> is
+		 * not defined, then no footer will be displayed for the group. In other
+		 * words, a footer is optional, and a group may not have one.
+		 *
+		 * <p>All of the footer fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>footerFunction</code></li>
+		 *     <li><code>footerField</code></li>
+		 * </ol>
+		 *
 		 * @see #footerFunction
 		 */
 		public function get footerField():String
@@ -1265,6 +1305,16 @@ package org.josht.starling.foxhole.controls
 		private var _footerFunction:Function;
 
 		/**
+		 * A function used to generate footer data for a specific group. If this
+		 * function is not null, then the <code>footerField</code> will be
+		 * ignored.
+		 *
+		 * <p>All of the footer fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>footerFunction</code></li>
+		 *     <li><code>footerField</code></li>
+		 * </ol>
+		 *
 		 * @see #footerField
 		 */
 		public function get footerFunction():Function
@@ -1300,7 +1350,7 @@ package org.josht.starling.foxhole.controls
 		}
 
 		/**
-		 * @inheritDoc
+		 * @private
 		 */
 		override public function dispose():void
 		{

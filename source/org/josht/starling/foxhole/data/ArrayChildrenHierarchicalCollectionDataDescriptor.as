@@ -1,13 +1,45 @@
 package org.josht.starling.foxhole.data
 {
-	import org.josht.starling.foxhole.controls.Label;
-
-	public class ObjectArrayHierarchicalCollectionDataDescriptor implements IHierarchicalCollectionDataDescriptor
+	/**
+	 * A hierarchical data descriptor where children are defined as arrays in a
+	 * property defined on each branch. The property name defaults to <code>"children"</code>,
+	 * but it may be customized.
+	 *
+	 * <p>The basic structure of the data source takes the following form. The
+	 * root must always be an Array.</p>
+	 * <pre>
+	 * [
+	 *     {
+	 *         text: "Branch 1",
+	 *         children:
+	 *         [
+	 *             { text: "Child 1-1" },
+	 *             { text: "Child 1-2" }
+	 *         ]
+	 *     },
+	 *     {
+	 *         text: "Branch 2",
+	 *         children:
+	 *         [
+	 *             { text: "Child 2-1" },
+	 *             { text: "Child 2-2" },
+	 *             { text: "Child 2-3" }
+	 *         ]
+	 *     }
+	 * ]</pre>
+	 */
+	public class ArrayChildrenHierarchicalCollectionDataDescriptor implements IHierarchicalCollectionDataDescriptor
 	{
-		public function ObjectArrayHierarchicalCollectionDataDescriptor()
+		/**
+		 * Constructor.
+		 */
+		public function ArrayChildrenHierarchicalCollectionDataDescriptor()
 		{
 		}
 
+		/**
+		 * The field used to access the Array of a branch's children.
+		 */
 		public var childrenField:String = "children";
 
 		/**

@@ -100,7 +100,7 @@ package org.josht.starling.foxhole.controls.renderers
 		private var _data:Object;
 
 		/**
-		 * @inheritDoc
+		 * The item displayed by this renderer.
 		 */
 		public function get data():Object
 		{
