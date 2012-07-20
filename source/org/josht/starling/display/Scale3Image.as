@@ -30,15 +30,10 @@ package org.josht.starling.display
 
 	import org.josht.starling.textures.Scale3Textures;
 
-	import org.josht.starling.textures.Scale3Textures;
-
-	import org.josht.starling.textures.Scale3Textures;
-
 	import starling.core.RenderSupport;
 	import starling.display.DisplayObject;
 	import starling.display.QuadBatch;
 	import starling.events.Event;
-	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;
 	import starling.utils.transformCoords;
 

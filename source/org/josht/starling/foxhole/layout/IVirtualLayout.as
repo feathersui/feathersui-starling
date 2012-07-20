@@ -1,7 +1,6 @@
 package org.josht.starling.foxhole.layout
 {
 	import flash.geom.Point;
-	import flash.geom.Rectangle;
 
 	/**
 	 * A layout algorithm that supports virtualization of items so that only

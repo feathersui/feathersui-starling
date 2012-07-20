@@ -27,7 +27,6 @@ package org.josht.starling.foxhole.core
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import flash.utils.Dictionary;
 
 	import org.josht.starling.display.Sprite;
 	import org.osflash.signals.ISignal;

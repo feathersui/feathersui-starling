@@ -30,7 +30,6 @@ package org.josht.starling.foxhole.controls.popups
 	import flash.ui.Keyboard;
 
 	import org.josht.starling.display.ScrollRectManager;
-
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.PopUpManager;
 	import org.osflash.signals.ISignal;

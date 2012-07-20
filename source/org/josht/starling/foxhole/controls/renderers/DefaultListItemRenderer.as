@@ -24,21 +24,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package org.josht.starling.foxhole.controls.renderers
 {
-	import org.josht.starling.foxhole.controls.*;
-	import flash.events.TimerEvent;
-	import flash.utils.Timer;
-
 	import org.josht.starling.foxhole.controls.List;
-
-	import org.josht.starling.foxhole.controls.renderers.BaseDefaultItemRenderer;
-
-	import org.josht.starling.foxhole.core.FoxholeControl;
-
-	import starling.display.DisplayObject;
-	import starling.display.Image;
-	import starling.events.Touch;
-	import starling.events.TouchEvent;
-	import starling.textures.Texture;
 
 	/**
 	 * The default item renderer for List control. Supports up to three optional

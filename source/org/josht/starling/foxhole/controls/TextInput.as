@@ -859,11 +859,11 @@ package org.josht.starling.foxhole.controls
 			this.stageText = new StageTextType(initOptions);
 			this.stageText.visible = false;
 			this.stageText.stage = Starling.current.nativeStage;
-			this.stageText.addEventListener(flash.events.Event.CHANGE, stageText_changeHandler);
+			this.stageText.addEventListener(Event.CHANGE, stageText_changeHandler);
 			this.stageText.addEventListener(KeyboardEvent.KEY_DOWN, stageText_keyDownHandler);
 			this.stageText.addEventListener(FocusEvent.FOCUS_IN, stageText_focusInHandler);
 			this.stageText.addEventListener(FocusEvent.FOCUS_OUT, stageText_focusOutHandler);
-			this.stageText.addEventListener(flash.events.Event.COMPLETE, stageText_completeHandler);
+			this.stageText.addEventListener(Event.COMPLETE, stageText_completeHandler);
 		}
 
 		/**
@@ -873,7 +873,7 @@ package org.josht.starling.foxhole.controls
 		{
 			Starling.current.nativeStage.removeChild(this._measureTextField);
 
-			this.stageText.removeEventListener(flash.events.Event.CHANGE, stageText_changeHandler);
+			this.stageText.removeEventListener(Event.CHANGE, stageText_changeHandler);
 			this.stageText.removeEventListener(KeyboardEvent.KEY_DOWN, stageText_keyDownHandler);
 			this.stageText.removeEventListener(FocusEvent.FOCUS_IN, stageText_focusInHandler);
 			this.stageText.removeEventListener(FocusEvent.FOCUS_OUT, stageText_focusOutHandler);
@@ -902,7 +902,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected function stageText_changeHandler(event:flash.events.Event):void
+		protected function stageText_changeHandler(event:Event):void
 		{
 			this.text = this.stageText.text;
 		}
@@ -910,9 +910,9 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected function stageText_completeHandler(event:flash.events.Event):void
+		protected function stageText_completeHandler(event:Event):void
 		{
-			this.stageText.removeEventListener(flash.events.Event.COMPLETE, stageText_completeHandler);
+			this.stageText.removeEventListener(Event.COMPLETE, stageText_completeHandler);
 			this.invalidate();
 
 			if(this._isWaitingToSetFocus && this._text)

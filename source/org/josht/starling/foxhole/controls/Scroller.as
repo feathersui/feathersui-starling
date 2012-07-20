@@ -38,7 +38,6 @@ package org.josht.starling.foxhole.controls
 	import com.gskinner.motion.easing.Sine;
 
 	import flash.events.MouseEvent;
-
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.system.Capabilities;
@@ -58,7 +57,6 @@ package org.josht.starling.foxhole.controls
 	import org.osflash.signals.Signal;
 
 	import starling.core.Starling;
-
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.events.Touch;

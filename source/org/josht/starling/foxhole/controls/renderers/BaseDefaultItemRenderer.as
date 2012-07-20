@@ -29,12 +29,10 @@ package org.josht.starling.foxhole.controls.renderers
 
 	import org.josht.starling.foxhole.controls.Button;
 	import org.josht.starling.foxhole.controls.Label;
-
 	import org.josht.starling.foxhole.core.FoxholeControl;
 
 	import starling.display.DisplayObject;
 	import starling.display.Image;
-	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.textures.Texture;
 

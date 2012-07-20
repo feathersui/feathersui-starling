@@ -24,9 +24,6 @@
  */
 package org.josht.starling.foxhole.layout
 {
-	import flash.geom.Point;
-	import flash.geom.Rectangle;
-
 	import org.osflash.signals.ISignal;
 
 	import starling.display.DisplayObject;
