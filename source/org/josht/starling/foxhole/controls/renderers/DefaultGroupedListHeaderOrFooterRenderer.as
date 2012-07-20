@@ -32,6 +32,10 @@ package org.josht.starling.foxhole.controls.renderers
 	import starling.display.Image;
 	import starling.textures.Texture;
 
+	/**
+	 * The default renderer used for headers and footers in a GroupedList
+	 * control.
+	 */
 	public class DefaultGroupedListHeaderOrFooterRenderer extends FoxholeControl implements IGroupedListHeaderOrFooterRenderer
 	{
 		/**
@@ -50,6 +54,9 @@ package org.josht.starling.foxhole.controls.renderers
 			return new Label();
 		}
 
+		/**
+		 * Constructor.
+		 */
 		public function DefaultGroupedListHeaderOrFooterRenderer()
 		{
 		}

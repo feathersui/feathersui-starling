@@ -32,7 +32,7 @@ package org.josht.starling.foxhole.controls.renderers
 	 * an image, and an "accessory" to display a UI control or another display
 	 * object (with shortcuts for including a second image or a second label).
 	 * 
-	 * @see GroupedList
+	 * @see org.josht.starling.foxhole.controls.GroupedList
 	 */
 	public class DefaultGroupedListItemRenderer extends BaseDefaultItemRenderer implements IGroupedListItemRenderer
 	{

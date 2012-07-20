@@ -45,6 +45,10 @@ package org.josht.starling.foxhole.controls.supportClasses
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 
+	/**
+	 * @private
+	 * Used internally by GroupedList. Not meant to be used on its own.
+	 */
 	public class GroupedListDataViewPort extends FoxholeControl implements IViewPort
 	{
 		protected static const INVALIDATION_FLAG_ITEM_RENDERER_FACTORY:String = "itemRendererFactory";

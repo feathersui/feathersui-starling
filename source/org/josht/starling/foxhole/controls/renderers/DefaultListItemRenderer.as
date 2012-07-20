@@ -46,7 +46,7 @@ package org.josht.starling.foxhole.controls.renderers
 	 * image, and an "accessory" to display a UI control or another display
 	 * object (with shortcuts for including a second image or a second label).
 	 * 
-	 * @see List
+	 * @see org.josht.starling.foxhole.controls.List
 	 */
 	public class DefaultListItemRenderer extends BaseDefaultItemRenderer implements IListItemRenderer
 	{
