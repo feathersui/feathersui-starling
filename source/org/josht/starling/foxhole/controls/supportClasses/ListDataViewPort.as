@@ -25,7 +25,6 @@ OTHER DEALINGS IN THE SOFTWARE.
 package org.josht.starling.foxhole.controls.supportClasses
 {
 	import flash.geom.Point;
-	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
 
 	import org.josht.starling.foxhole.controls.*;

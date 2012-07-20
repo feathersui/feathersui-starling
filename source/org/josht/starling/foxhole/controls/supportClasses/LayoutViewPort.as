@@ -25,7 +25,6 @@
 package org.josht.starling.foxhole.controls.supportClasses
 {
 	import flash.geom.Point;
-	import flash.geom.Rectangle;
 
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.layout.ILayout;

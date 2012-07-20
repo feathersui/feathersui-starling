@@ -27,12 +27,10 @@ package org.josht.starling.foxhole.controls
 	import flash.geom.Point;
 
 	import org.josht.starling.foxhole.controls.renderers.DefaultListItemRenderer;
-
 	import org.josht.starling.foxhole.controls.supportClasses.ListDataViewPort;
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.PropertyProxy;
 	import org.josht.starling.foxhole.data.ListCollection;
-	import org.josht.starling.foxhole.layout.HorizontalLayout;
 	import org.josht.starling.foxhole.layout.ILayout;
 	import org.josht.starling.foxhole.layout.IVirtualLayout;
 	import org.josht.starling.foxhole.layout.VerticalLayout;

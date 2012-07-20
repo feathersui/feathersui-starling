@@ -34,7 +34,6 @@ package org.josht.starling.display
 	import starling.display.DisplayObject;
 	import starling.display.QuadBatch;
 	import starling.events.Event;
-	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;
 	import starling.utils.transformCoords;
 
