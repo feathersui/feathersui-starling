@@ -290,6 +290,41 @@ package org.josht.starling.foxhole.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
+		protected var _isSelectable:Boolean = true;
+
+		public function get isSelectable():Boolean
+		{
+			return this._isSelectable;
+		}
+
+		public function set isSelectable(value:Boolean):void
+		{
+			if(this._isSelectable == value)
+			{
+				return;
+			}
+			this._isSelectable = value;
+			if(!this._isSelectable)
+			{
+				this.setSelectedLocation(-1, -1);
+			}
+			this.invalidate(INVALIDATION_FLAG_SELECTED);
+		}
+
+		protected var _selectedGroupIndex:int = -1;
+
+		public function get selectedGroupIndex():int
+		{
+			return this._selectedGroupIndex;
+		}
+
+		private var _selectedItemIndex:int = -1;
+
+		public function get selectedItemIndex():int
+		{
+			return this._selectedItemIndex;
+		}
+
 		private var _itemRendererType:Class;
 
 		public function get itemRendererType():Class
@@ -696,6 +731,23 @@ package org.josht.starling.foxhole.controls.supportClasses
 			super.dispose();
 		}
 
+		public function setSelectedLocation(groupIndex:int, itemIndex:int):void
+		{
+			if(this._selectedGroupIndex == groupIndex && this._selectedItemIndex == itemIndex)
+			{
+				return;
+			}
+			if((groupIndex < 0 && itemIndex >= 0) || (groupIndex >= 0 && itemIndex < 0))
+			{
+				throw new ArgumentError("To deselect items, group index and item index must both be < 0.");
+			}
+			this._selectedGroupIndex = groupIndex;
+			this._selectedItemIndex = itemIndex;
+
+			this.invalidate(INVALIDATION_FLAG_SELECTED);
+			this._onChange.dispatch(this);
+		}
+
 		override protected function draw():void
 		{
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
@@ -927,7 +979,8 @@ package org.josht.starling.foxhole.controls.supportClasses
 			this._ignoreSelectionChanges = true;
 			for each(var renderer:IGroupedListItemRenderer in this._activeItemRenderers)
 			{
-				renderer.isSelected = false;//renderer.index == this._selectedIndex;
+				renderer.isSelected = renderer.groupIndex == this._selectedGroupIndex &&
+					renderer.itemIndex == this._selectedItemIndex;
 			}
 			this._ignoreSelectionChanges = false;
 		}
@@ -1412,14 +1465,15 @@ package org.josht.starling.foxhole.controls.supportClasses
 			{
 				return;
 			}
-			renderer.isSelected = false;
-			/*if(!this._isSelectable || this._isScrolling || this._selectedIndex == renderer.index)
+			const isAlreadySelected:Boolean = this._selectedGroupIndex == renderer.groupIndex &&
+				this._selectedItemIndex == renderer.itemIndex;
+			if(!this._isSelectable || this._isScrolling || isAlreadySelected)
 			{
 				//reset to the old value
-				renderer.isSelected = this._selectedIndex == renderer.index;
+				renderer.isSelected = isAlreadySelected;
 				return;
 			}
-			this.selectedIndex = renderer.index;*/
+			this.setSelectedLocation(renderer.groupIndex, renderer.itemIndex);
 		}
 
 		private function renderer_touchHandler(event:TouchEvent):void

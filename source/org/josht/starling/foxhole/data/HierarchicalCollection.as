@@ -244,7 +244,7 @@ package org.josht.starling.foxhole.data
 		 */
 		public function getItemLocation(item:Object, result:Vector.<int> = null):Vector.<int>
 		{
-			return this._dataDescriptor.getItemIndex(this._data, item, result);
+			return this._dataDescriptor.getItemLocation(this._data, item, result);
 		}
 
 		/**

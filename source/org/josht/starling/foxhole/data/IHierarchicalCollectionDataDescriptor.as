@@ -82,6 +82,6 @@ package org.josht.starling.foxhole.data
 		 * <p>The <code>rest</code> arguments are optional indices to narrow
 		 * the search.</p>
 		 */
-		function getItemIndex(data:Object, item:Object, result:Vector.<int> = null, ...rest:Array):Vector.<int>;
+		function getItemLocation(data:Object, item:Object, result:Vector.<int> = null, ...rest:Array):Vector.<int>;
 	}
 }
