@@ -647,9 +647,23 @@ package org.josht.starling.foxhole.layout
 				result = new Point();
 			}
 
-			const typicalItemWidth:Number = this._typicalItemWidth;
-			result.x = this._paddingLeft + (typicalItemWidth + this._gap) * index - (width - typicalItemWidth) / 2;
 			result.y = 0;
+			if(this._indexToItemBoundsFunction == null)
+			{
+				const typicalItemWidth:Number = this._typicalItemWidth;
+				result.x = this._paddingLeft + (typicalItemWidth + this._gap) * index - (width - typicalItemWidth) / 2;
+			}
+			else
+			{
+				var totalItemWidth:Number = this._paddingLeft;
+				for(var i:int = 0; i < index; i++)
+				{
+					helperPoint = this._indexToItemBoundsFunction(i, helperPoint);
+					totalItemWidth += helperPoint.x + this._gap;
+				}
+				totalItemWidth -= (width - helperPoint.x) / 2;
+				result.x = totalItemWidth;
+			}
 			return result;
 		}
 	}
