@@ -433,10 +433,7 @@ package org.josht.starling.foxhole.layout
 						}
 					}
 					positionY += item.height + this._gap;
-					if(this._horizontalAlign != HORIZONTAL_ALIGN_JUSTIFY)
-					{
-						maxItemWidth = Math.max(maxItemWidth, item.width);
-					}
+					maxItemWidth = Math.max(maxItemWidth, item.width);
 				}
 			}
 
