@@ -827,7 +827,10 @@ package org.josht.starling.foxhole.controls
 		
 		/**
 		 * If the user is dragging the scroll, calling stopScrolling() will
-		 * cause the grouped list to ignore the drag.
+		 * cause the list to ignore the drag. The children of the list
+		 * will still receive touches, so it's useful to call this if the
+		 * children need to support touches or dragging without the list
+		 * also scrolling.
 		 */
 		public function stopScrolling():void
 		{
