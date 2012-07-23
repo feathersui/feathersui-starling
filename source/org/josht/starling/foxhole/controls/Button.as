@@ -29,6 +29,7 @@ package org.josht.starling.foxhole.controls
 	import org.josht.starling.display.ScrollRectManager;
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.IToggle;
+	import org.josht.starling.foxhole.core.PropertyProxy;
 	import org.josht.starling.foxhole.text.BitmapFontTextFormat;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
@@ -1816,6 +1817,61 @@ package org.josht.starling.foxhole.controls
 				this.flatten();
 			}
 		}
+
+		/**
+		 * @private
+		 */
+		private var _labelProperties:PropertyProxy = new PropertyProxy(labelProperties_onChange);
+
+		/**
+		 * A set of key/value pairs to be passed down to the buttons's label
+		 * instance. The label is a Foxhole Label control.
+		 *
+		 * <p>If the sub-component has its own sub-components, their properties
+		 * can be set too, using attribute <code>&#64;</code> notation. For example,
+		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
+		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
+		 * you can use the following syntax:</p>
+		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 */
+		public function get labelProperties():Object
+		{
+			return this._labelProperties;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set labelProperties(value:Object):void
+		{
+			if(this._labelProperties == value)
+			{
+				return;
+			}
+			if(!value)
+			{
+				value = new PropertyProxy();
+			}
+			if(!(value is PropertyProxy))
+			{
+				const newValue:PropertyProxy = new PropertyProxy();
+				for(var propertyName:String in value)
+				{
+					newValue[propertyName] = value[propertyName];
+				}
+				value = newValue;
+			}
+			if(this._labelProperties)
+			{
+				this._labelProperties.onChange.remove(labelProperties_onChange);
+			}
+			this._labelProperties = PropertyProxy(value);
+			if(this._labelProperties)
+			{
+				this._labelProperties.onChange.add(labelProperties_onChange);
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
 		
 		/**
 		 * @private
@@ -2149,6 +2205,15 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function refreshLabelStyles():void
 		{
+			for(var propertyName:String in this._labelProperties)
+			{
+				if(this.labelControl.hasOwnProperty(propertyName))
+				{
+					var propertyValue:Object = this._labelProperties[propertyName];
+					this.labelControl[propertyName] = propertyValue;
+				}
+			}
+
 			const formatName:String = this._currentState + "TextFormat";
 			var format:BitmapFontTextFormat = BitmapFontTextFormat(this[formatName]);
 			if(!format)
@@ -2360,6 +2425,14 @@ package org.josht.starling.foxhole.controls
 					this.currentIcon.x = this.labelControl.x + (this.labelControl.width - this.currentIcon.width) / 2;
 				}
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function labelProperties_onChange(proxy:PropertyProxy, name:Object):void
+		{
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
 		/**
