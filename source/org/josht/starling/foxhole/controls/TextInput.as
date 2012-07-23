@@ -787,6 +787,11 @@ package org.josht.starling.foxhole.controls
 						else
 						{
 							this._savedSelectionIndex = this._measureTextField.getCharIndexAtPoint(location.x, location.y);
+							const bounds:Rectangle = this._measureTextField.getCharBoundaries(this._savedSelectionIndex);
+							if(bounds && (bounds.x + bounds.width - location.x) < (location.x - bounds.x))
+							{
+								this._savedSelectionIndex++;
+							}
 						}
 					}
 				}
