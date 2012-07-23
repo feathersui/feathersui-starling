@@ -39,6 +39,8 @@ package org.josht.starling.foxhole.controls
 	import flash.text.engine.FontPosture;
 	import flash.text.engine.FontWeight;
 	import flash.ui.Keyboard;
+	import flash.ui.Mouse;
+	import flash.ui.MouseCursor;
 	import flash.utils.getDefinitionByName;
 
 	import org.josht.starling.display.ScrollRectManager;
@@ -401,6 +403,11 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
+		protected var _oldMouseCursor:String = null;
+
+		/**
+		 * @private
+		 */
 		protected var _onChange:Signal = new Signal(TextInput);
 
 		/**
@@ -581,6 +588,11 @@ package org.josht.starling.foxhole.controls
 			if(stateInvalid)
 			{
 				this.stageText.editable = this._isEnabled;
+				if(!this._isEnabled && Mouse.supportsNativeCursor && this._oldMouseCursor)
+				{
+					Mouse.cursor = this._oldMouseCursor;
+					this._oldMouseCursor = null;
+				}
 			}
 
 			if(stateInvalid || stylesInvalid)
@@ -898,13 +910,27 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function touchHandler(event:TouchEvent):void
 		{
-			if(!this._isEnabled || this._stageTextHasFocus)
+			if(!this._isEnabled)
 			{
 				return;
 			}
 
-			const touch:Touch = event.getTouch(this, TouchPhase.ENDED);
-			if(touch)
+			const touch:Touch = event.getTouch(this);
+			if(!touch)
+			{
+				if(Mouse.supportsNativeCursor && this._oldMouseCursor)
+				{
+					Mouse.cursor = this._oldMouseCursor;
+					this._oldMouseCursor = null;
+				}
+				return;
+			}
+			if(touch.phase == TouchPhase.HOVER && Mouse.supportsNativeCursor && !this._oldMouseCursor)
+			{
+				this._oldMouseCursor = Mouse.cursor;
+				Mouse.cursor = MouseCursor.IBEAM;
+			}
+			else if(!this._stageTextHasFocus && touch.phase == TouchPhase.ENDED)
 			{
 				this.setFocusInternal(touch);
 			}
