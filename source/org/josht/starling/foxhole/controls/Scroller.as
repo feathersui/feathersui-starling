@@ -1947,7 +1947,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected function hideHorizontalScrollBar():void
+		protected function hideHorizontalScrollBar(delay:Number = 0):void
 		{
 			if(!this.horizontalScrollBar || this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_FLOAT || this._horizontalScrollBarHideTween)
 			{
@@ -1963,6 +1963,7 @@ package org.josht.starling.foxhole.controls
 				alpha: 0
 			},
 			{
+				delay: delay,
 				ease: Sine.easeOut,
 				onComplete: horizontalScrollBarHideTween_onComplete
 			});
@@ -1971,7 +1972,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected function hideVerticalScrollBar():void
+		protected function hideVerticalScrollBar(delay:Number = 0):void
 		{
 			if(!this.verticalScrollBar || this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_FLOAT || this._verticalScrollBarHideTween)
 			{
@@ -1987,6 +1988,7 @@ package org.josht.starling.foxhole.controls
 				alpha: 0
 			},
 			{
+				delay: delay,
 				ease: Sine.easeOut,
 				onComplete: verticalScrollBarHideTween_onComplete
 			});
@@ -2299,6 +2301,17 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function nativeStage_mouseWheelHandler(event:MouseEvent):void
 		{
+			if(this._verticalScrollBarHideTween)
+			{
+				this._verticalScrollBarHideTween.paused = true;
+				this._verticalScrollBarHideTween = null;
+			}
+
+			if(this.verticalScrollBar && this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FLOAT)
+			{
+				DisplayObject(this.verticalScrollBar).alpha = 1;
+			}
+
 			helperPoint.x = event.stageX;
 			helperPoint.y = event.stageY;
 			helperPoint = this.globalToLocal(helperPoint);
@@ -2306,6 +2319,8 @@ package org.josht.starling.foxhole.controls
 			{
 				this.verticalScrollPosition = Math.min(this._maxVerticalScrollPosition, Math.max(0, this._verticalScrollPosition - event.delta * this._verticalScrollStep));
 			}
+
+			this.hideVerticalScrollBar(0.25);
 		}
 
 		/**
