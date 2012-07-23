@@ -799,6 +799,14 @@ package org.josht.starling.foxhole.controls
 				this.currentBackground.height = this.actualHeight;
 			}
 
+			this.refreshViewPort();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshViewPort():void
+		{
 			var viewPort:Rectangle = this.stageText.viewPort;
 			if(!viewPort)
 			{
@@ -864,6 +872,8 @@ package org.josht.starling.foxhole.controls
 			this.stageText.addEventListener(FocusEvent.FOCUS_IN, stageText_focusInHandler);
 			this.stageText.addEventListener(FocusEvent.FOCUS_OUT, stageText_focusOutHandler);
 			this.stageText.addEventListener(Event.COMPLETE, stageText_completeHandler);
+
+			this.refreshViewPort();
 		}
 
 		/**
@@ -877,6 +887,7 @@ package org.josht.starling.foxhole.controls
 			this.stageText.removeEventListener(KeyboardEvent.KEY_DOWN, stageText_keyDownHandler);
 			this.stageText.removeEventListener(FocusEvent.FOCUS_IN, stageText_focusInHandler);
 			this.stageText.removeEventListener(FocusEvent.FOCUS_OUT, stageText_focusOutHandler);
+			this.stageText.removeEventListener(Event.COMPLETE, stageText_completeHandler);
 			this.stageText.stage = null;
 			this.stageText.dispose();
 			this.stageText = null;
