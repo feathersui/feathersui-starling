@@ -1120,7 +1120,7 @@ package org.josht.starling.foxhole.controls
 		 * in one direction, pass in NaN or the current scroll position for the
 		 * value that you do not want to change.
 		 */
-		public function throwTo(targetHorizontalScrollPosition:Number = NaN, targetVerticalScrollPosition:Number = NaN, duration:Number = 0.25):void
+		public function throwTo(targetHorizontalScrollPosition:Number = NaN, targetVerticalScrollPosition:Number = NaN, duration:Number = 0.5):void
 		{
 			if(!isNaN(targetHorizontalScrollPosition))
 			{

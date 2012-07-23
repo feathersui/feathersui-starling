@@ -87,12 +87,17 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _scrollToGroupIndex:int = -1;
+		protected var _scrollToGroupIndex:int = -1;
 
 		/**
 		 * @private
 		 */
-		private var _scrollToItemIndex:int = -1;
+		protected var _scrollToItemIndex:int = -1;
+
+		/**
+		 * @private
+		 */
+		protected var _scrollToIndexDuration:Number;
 
 		/**
 		 * @private
@@ -1336,9 +1341,11 @@ package org.josht.starling.foxhole.controls
 		}
 
 		/**
-		 * Scrolls the list so that the specified item is visible.
+		 * Scrolls the list so that the specified item is visible. If
+		 * <code>animationDuration</code> is greater than zero, the scroll will
+		 * animate. The duration is in seconds.
 		 */
-		public function scrollToDisplayIndex(groupIndex:int, itemIndex:int):void
+		public function scrollToDisplayIndex(groupIndex:int, itemIndex:int, animationDuration:Number = 0):void
 		{
 			if(this._scrollToGroupIndex == groupIndex && this._scrollToItemIndex == itemIndex)
 			{
@@ -1346,6 +1353,7 @@ package org.josht.starling.foxhole.controls
 			}
 			this._scrollToGroupIndex = groupIndex;
 			this._scrollToItemIndex = itemIndex;
+			this._scrollToIndexDuration = animationDuration;
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
 
@@ -1581,7 +1589,6 @@ package org.josht.starling.foxhole.controls
 							helperPoint.x = this._horizontalScrollPosition;
 							helperPoint.y = this._verticalScrollPosition;
 						}
-						trace(this._scrollToGroupIndex, this._scrollToItemIndex, displayIndex, helperPoint);
 					}
 					else
 					{
@@ -1592,8 +1599,16 @@ package org.josht.starling.foxhole.controls
 						helperPoint.y = this._verticalScrollPosition;
 					}
 
-					this.horizontalScrollPosition = Math.max(0, Math.min(helperPoint.x, this._maxHorizontalScrollPosition));
-					this.verticalScrollPosition = Math.max(0, Math.min(helperPoint.y, this._maxVerticalScrollPosition));
+					if(this._scrollToIndexDuration > 0)
+					{
+						this.scroller.throwTo(Math.max(0, Math.min(helperPoint.x, this._maxHorizontalScrollPosition)),
+							Math.max(0, Math.min(helperPoint.y, this._maxVerticalScrollPosition)), this._scrollToIndexDuration);
+					}
+					else
+					{
+						this.horizontalScrollPosition = Math.max(0, Math.min(helperPoint.x, this._maxHorizontalScrollPosition));
+						this.verticalScrollPosition = Math.max(0, Math.min(helperPoint.y, this._maxVerticalScrollPosition));
+					}
 				}
 				this._scrollToGroupIndex = -1;
 				this._scrollToItemIndex = -1;

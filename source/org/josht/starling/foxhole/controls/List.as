@@ -87,7 +87,12 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _scrollToIndex:int = -1;
+		protected var _scrollToIndex:int = -1;
+
+		/**
+		 * @private
+		 */
+		protected var _scrollToIndexDuration:Number;
 
 		/**
 		 * @private
@@ -802,15 +807,18 @@ package org.josht.starling.foxhole.controls
 		}
 		
 		/**
-		 * Scrolls the list so that the specified item is visible.
+		 * Scrolls the list so that the specified item is visible. If
+		 * <code>animationDuration</code> is greater than zero, the scroll will
+		 * animate. The duration is in seconds.
 		 */
-		public function scrollToDisplayIndex(index:int):void
+		public function scrollToDisplayIndex(index:int, animationDuration:Number = 0):void
 		{
 			if(this._scrollToIndex == index)
 			{
 				return;
 			}
 			this._scrollToIndex = index;
+			this._scrollToIndexDuration = animationDuration;
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
 		
@@ -979,8 +987,16 @@ package org.josht.starling.foxhole.controls
 						helperPoint.y = this._verticalScrollPosition;
 					}
 
-					this.horizontalScrollPosition = Math.max(0, Math.min(helperPoint.x, this._maxHorizontalScrollPosition));
-					this.verticalScrollPosition = Math.max(0, Math.min(helperPoint.y, this._maxVerticalScrollPosition));
+					if(this._scrollToIndexDuration > 0)
+					{
+						this.scroller.throwTo(Math.max(0, Math.min(helperPoint.x, this._maxHorizontalScrollPosition)),
+							Math.max(0, Math.min(helperPoint.y, this._maxVerticalScrollPosition)), this._scrollToIndexDuration);
+					}
+					else
+					{
+						this.horizontalScrollPosition = Math.max(0, Math.min(helperPoint.x, this._maxHorizontalScrollPosition));
+						this.verticalScrollPosition = Math.max(0, Math.min(helperPoint.y, this._maxVerticalScrollPosition));
+					}
 				}
 				this._scrollToIndex = -1;
 			}
