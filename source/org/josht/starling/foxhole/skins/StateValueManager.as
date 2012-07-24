@@ -82,6 +82,14 @@ package org.josht.starling.foxhole.skins
 		}
 
 		/**
+		 * Returns the value stored for a specific state.
+		 */
+		public function getValueForState(state:Object):Object
+		{
+			return this.stateToValue[state];
+		}
+
+		/**
 		 * Returns the value stored for a specific state. May generate a value,
 		 * if none is present.
 		 *
@@ -89,7 +97,7 @@ package org.josht.starling.foxhole.skins
 		 * @param state			The current state.
 		 * @param oldValue		The previous value. May be reused for the new value.
 		 */
-		public function getValueForState(target:Object, state:Object, oldValue:Object = null):Object
+		public function updateValue(target:Object, state:Object, oldValue:Object = null):Object
 		{
 			var value:Object = this.stateToValue[state];
 			if(!value)

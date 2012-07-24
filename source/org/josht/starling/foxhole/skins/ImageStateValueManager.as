@@ -61,12 +61,12 @@ package org.josht.starling.foxhole.skins
 		/**
 		 * @private
 		 */
-		override public function getValueForState(target:Object, state:Object, oldValue:Object = null):Object
+		override public function updateValue(target:Object, state:Object, oldValue:Object = null):Object
 		{
-			const texture:Texture = super.getValueForState(target, state) as Texture;
+			const texture:Texture = super.updateValue(target, state) as Texture;
 			if(!texture)
 			{
-				return texture;
+				return null;
 			}
 
 			if(oldValue is Image)
