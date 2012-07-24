@@ -72,31 +72,62 @@ package org.josht.starling.foxhole.core
 		public var processRecursively:Boolean = true;
 
 		private var _root:DisplayObject;
-		private var _typeMap:Dictionary = new Dictionary(true);
+		private var _noNameTypeMap:Dictionary = new Dictionary(true);
+		private var _nameTypeMap:Dictionary = new Dictionary(true);
 		
 		/**
 		 * Sets the initializer for a specific class.
 		 */
-		public function setInitializerForClass(type:Class, initializer:Function):void
+		public function setInitializerForClass(type:Class, initializer:Function, withName:String = null):void
 		{
-			this._typeMap[type] = initializer;
+			if(!withName)
+			{
+				this._noNameTypeMap[type] = initializer;
+			}
+			var nameTable:Object = this._nameTypeMap[type];
+			if(!nameTable)
+			{
+				this._nameTypeMap[type] = nameTable = {};
+			}
+			nameTable[withName] = initializer;
 		}
 		
 		/**
 		 * If an initializer exists for a specific class, it will be returned.
 		 */
-		public function getInitializerForClass(type:Class):Function
+		public function getInitializerForClass(type:Class, withName:String = null):Function
 		{
-			return this._typeMap[type];
+			if(!withName)
+			{
+				return this._noNameTypeMap[type] as Function;
+			}
+			const nameTable:Object = this._nameTypeMap[type];
+			if(!nameTable)
+			{
+				return null;
+			}
+			return nameTable[withName] as Function;
 		}
 		
 		/**
 		 * If an initializer exists for a specific class, it will be removed
 		 * completely.
 		 */
-		public function clearInitializerForClass(type:Class):void
+		public function clearInitializerForClass(type:Class, withName:String = null):void
 		{
-			delete this._typeMap[type];
+			if(!withName)
+			{
+				delete this._noNameTypeMap[type];
+				return;
+			}
+
+			const nameTable:Object = this._nameTypeMap[type];
+			if(!nameTable)
+			{
+				return;
+			}
+			delete nameTable[withName];
+			return;
 		}
 		
 		/**
@@ -113,15 +144,38 @@ package org.josht.starling.foxhole.core
 					var extendedClass:XML = extendedClasses[i];
 					var typeName:String = extendedClass.attribute("type").toString();
 					var type:Class = Class(getDefinitionByName(typeName));
-					var initializer:Function = this._typeMap[type];
-					if(initializer != null)
-					{
-						initializer(target);
-					}
+					this.applyAllStylesForType(target, type);
 				}
 			}
 			type = Object(target).constructor;
-			initializer = this._typeMap[type];
+			this.applyAllStylesForType(target, type);
+		}
+
+		protected function applyAllStylesForType(target:DisplayObject, type:Class):void
+		{
+			var initializer:Function;
+			const nameTable:Object = this._nameTypeMap[type];
+			if(nameTable)
+			{
+				if(target is FoxholeControl)
+				{
+					const foxholeControl:FoxholeControl = FoxholeControl(target);
+					for(var name:String in nameTable)
+					{
+						if(foxholeControl.nameList.contains(name))
+						{
+							initializer = nameTable[name] as Function;
+							if(initializer != null)
+							{
+								initializer(target);
+								return;
+							}
+						}
+					}
+				}
+			}
+
+			initializer = this._noNameTypeMap[type] as Function;
 			if(initializer != null)
 			{
 				initializer(target);
