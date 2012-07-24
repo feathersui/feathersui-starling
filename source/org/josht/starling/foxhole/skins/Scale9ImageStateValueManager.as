@@ -61,9 +61,9 @@ package org.josht.starling.foxhole.skins
 		/**
 		 * @private
 		 */
-		override public function getValueForState(target:Object, state:Object, oldValue:Object = null):Object
+		override public function updateValue(target:Object, state:Object, oldValue:Object = null):Object
 		{
-			const textures:Scale9Textures = super.getValueForState(target, state) as Scale9Textures;
+			const textures:Scale9Textures = super.updateValue(target, state) as Scale9Textures;
 			if(!textures)
 			{
 				return null;
