@@ -185,6 +185,11 @@ package org.josht.starling.foxhole.controls
 		 * @private
 		 */
 		protected var _touchPointID:int = -1;
+
+		/**
+		 * @private
+		 */
+		protected var _isHoverSupported:Boolean = false;
 		
 		/**
 		 * @inheritDoc
@@ -2478,19 +2483,24 @@ package org.josht.starling.foxhole.controls
 			else if(touch.phase == TouchPhase.ENDED)
 			{
 				this._touchPointID = -1;
-				this.currentState = STATE_UP;
 				if(isInBounds)
 				{
+					this.currentState = this._isHoverSupported ? STATE_HOVER : STATE_UP;
 					this._onRelease.dispatch(this);
 					if(this._isToggle)
 					{
 						this.isSelected = !this._isSelected;
 					}
 				}
+				else
+				{
+					this.currentState = STATE_UP;
+				}
 			}
 			else if(touch.phase == TouchPhase.HOVER)
 			{
 				this.currentState = STATE_HOVER;
+				this._isHoverSupported = true;
 				this._touchPointID = touch.id;
 			}
 		}
