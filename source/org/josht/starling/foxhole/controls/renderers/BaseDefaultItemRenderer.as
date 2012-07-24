@@ -160,16 +160,25 @@ package org.josht.starling.foxhole.controls.renderers
 		 */
 		override protected function set currentState(value:String):void
 		{
-			if(this._useStateDelayTimer && this._stateDelayTimer)
+			if(this._useStateDelayTimer && this._stateDelayTimer && this._stateDelayTimer.running)
 			{
 				this._delayedCurrentState = value;
 				return;
 			}
-			else if(this._useStateDelayTimer && !this._stateDelayTimer && value.toLowerCase().indexOf("down") >= 0)
+			else if(this._useStateDelayTimer &&
+				(!this._stateDelayTimer || !this._stateDelayTimer.running) &&
+				(value == Button.STATE_DOWN || value == Button.STATE_SELECTED_DOWN))
 			{
 				this._delayedCurrentState = value;
-				this._stateDelayTimer = new Timer(DOWN_STATE_DELAY_MS, 1);
-				this._stateDelayTimer.addEventListener(TimerEvent.TIMER_COMPLETE, stateDelayTimer_timerCompleteHandler);
+				if(this._stateDelayTimer)
+				{
+					this._stateDelayTimer.reset();
+				}
+				else
+				{
+					this._stateDelayTimer = new Timer(DOWN_STATE_DELAY_MS, 1);
+					this._stateDelayTimer.addEventListener(TimerEvent.TIMER_COMPLETE, stateDelayTimer_timerCompleteHandler);
+				}
 				this._stateDelayTimer.start();
 				return;
 			}
@@ -179,8 +188,6 @@ package org.josht.starling.foxhole.controls.renderers
 			if(this._stateDelayTimer)
 			{
 				this._stateDelayTimer.stop();
-				this._stateDelayTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, stateDelayTimer_timerCompleteHandler);
-				this._stateDelayTimer = null;
 			}
 			super.currentState = value;
 		}
@@ -1125,14 +1132,12 @@ package org.josht.starling.foxhole.controls.renderers
 				super.currentState = state;
 			}
 			this._touchPointID = -1;
-			if(!this._stateDelayTimer)
+			if(!this._stateDelayTimer || !this._stateDelayTimer.running)
 			{
 				return;
 			}
 			this._delayedCurrentState = null;
-			this._stateDelayTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, stateDelayTimer_timerCompleteHandler);
 			this._stateDelayTimer.stop();
-			this._stateDelayTimer = null;
 		}
 
 		/**
@@ -1140,8 +1145,6 @@ package org.josht.starling.foxhole.controls.renderers
 		 */
 		protected function stateDelayTimer_timerCompleteHandler(event:TimerEvent):void
 		{
-			this._stateDelayTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, stateDelayTimer_timerCompleteHandler);
-			this._stateDelayTimer = null;
 			super.currentState = this._delayedCurrentState;
 			this._delayedCurrentState = null;
 		}
