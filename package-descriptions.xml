@@ -27,6 +27,9 @@
 		<package name="org.josht.starling.foxhole.layout"> 
 			<shortDescription><![CDATA[A variety of layout algorithms used to customize Foxhole controls and containers.]]></shortDescription>
 		</package>
+		<package name="org.josht.starling.foxhole.skins"> 
+			<shortDescription><![CDATA[Classes related to skinning in Foxhole.]]></shortDescription>
+		</package>
 		<package name="org.josht.starling.foxhole.text"> 
 			<shortDescription><![CDATA[Contains classes for working with displayed text in Foxhole.]]></shortDescription>
 		</package>
