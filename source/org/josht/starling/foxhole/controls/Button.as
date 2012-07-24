@@ -53,42 +53,42 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected static const STATE_UP:String = "up";
+		public static const STATE_UP:String = "up";
 		
 		/**
 		 * @private
 		 */
-		protected static const STATE_DOWN:String = "down";
+		public static const STATE_DOWN:String = "down";
 
 		/**
 		 * @private
 		 */
-		protected static const STATE_HOVER:String = "hover";
+		public static const STATE_HOVER:String = "hover";
 		
 		/**
 		 * @private
 		 */
-		protected static const STATE_DISABLED:String = "disabled";
+		public static const STATE_DISABLED:String = "disabled";
 		
 		/**
 		 * @private
 		 */
-		protected static const STATE_SELECTED_UP:String = "selectedUp";
+		public static const STATE_SELECTED_UP:String = "selectedUp";
 		
 		/**
 		 * @private
 		 */
-		protected static const STATE_SELECTED_DOWN:String = "selectedDown";
+		public static const STATE_SELECTED_DOWN:String = "selectedDown";
 
 		/**
 		 * @private
 		 */
-		protected static const STATE_SELECTED_HOVER:String = "selectedHover";
+		public static const STATE_SELECTED_HOVER:String = "selectedHover";
 
 		/**
 		 * @private
 		 */
-		protected static const STATE_SELECTED_DISABLED:String = "selectedDisabled";
+		public static const STATE_SELECTED_DISABLED:String = "selectedDisabled";
 		
 		/**
 		 * The icon will be positioned above the label.
@@ -596,6 +596,93 @@ package org.josht.starling.foxhole.controls
 		 * @private
 		 */
 		protected var _originalSkinHeight:Number = NaN;
+
+		/**
+		 * @private
+		 */
+		protected var _stateToSkinFunction:Function;
+
+		/**
+		 * Returns a skin for the current state.
+		 *
+		 * <p>The following function signature is expected:</p>
+		 * <pre>function(target:Button, state:Object, oldSkin:DisplayObject = null):DisplayObject</pre>
+		 */
+		public function get stateToSkinFunction():Function
+		{
+			return this._stateToSkinFunction;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set stateToSkinFunction(value:Function):void
+		{
+			if(this._stateToSkinFunction == value)
+			{
+				return;
+			}
+			this._stateToSkinFunction = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _stateToIconFunction:Function;
+
+		/**
+		 * Returns an icon for the current state.
+		 *
+		 * <p>The following function signature is expected:</p>
+		 * <pre>function(target:Button, state:Object, oldIcon:DisplayObject = null):DisplayObject</pre>
+		 */
+		public function get stateToIconFunction():Function
+		{
+			return this._stateToIconFunction;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set stateToIconFunction(value:Function):void
+		{
+			if(this._stateToIconFunction == value)
+			{
+				return;
+			}
+			this._stateToIconFunction = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _stateToTextFormatFunction:Function;
+
+		/**
+		 * Returns a text format for the current state.
+		 *
+		 * <p>The following function signature is expected:</p>
+		 * <pre>function(target:Button, state:Object, oldTextFormat:BitmapFontTextFormat = null):BitmapFontTextFormat</pre>
+		 */
+		public function get stateToTextFormatFunction():Function
+		{
+			return this._stateToTextFormatFunction;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set stateToTextFormatFunction(value:Function):void
+		{
+			if(this._stateToTextFormatFunction == value)
+			{
+				return;
+			}
+			this._stateToTextFormatFunction = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
 		
 		/**
 		 * @private
@@ -2098,48 +2185,64 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function refreshSkin():void
 		{
-			this.currentSkin = null;
-			for each(var stateName:String in this._stateNames)
+			if(this._stateToSkinFunction != null)
 			{
-				var skinName:String = stateName + "Skin";
-				if(this._currentState == stateName)
+				const oldSkin:DisplayObject = this.currentSkin;
+				this.currentSkin = this._stateToSkinFunction(this, this._currentState, oldSkin);
+				if(this.currentSkin != oldSkin)
 				{
-					this.currentSkin = DisplayObject(this[skinName]);
-				}
-				else if(this[skinName])
-				{
-					DisplayObject(this[skinName]).visible = false;
-				}
-			}
-
-			if(!this.currentSkin)
-			{
-				if(this._isSelected)
-				{
-					this.currentSkin = this._defaultSelectedSkin;
-				}
-				else if(this._defaultSelectedSkin)
-				{
-					this._defaultSelectedSkin.visible = false;
-				}
-				if(!this.currentSkin)
-				{
-					this.currentSkin = this._defaultSkin;
-				}
-				else if(this._defaultSkin)
-				{
-					this._defaultSkin.visible = false;
+					this.removeChild(oldSkin, true);
+					if(this.currentSkin)
+					{
+						this.addChildAt(this.currentSkin, 0);
+					}
 				}
 			}
 			else
 			{
-				if(this._defaultSkin)
+				this.currentSkin = null;
+				for each(var stateName:String in this._stateNames)
 				{
-					this._defaultSkin.visible = false;
+					var skinName:String = stateName + "Skin";
+					if(this._currentState == stateName)
+					{
+						this.currentSkin = DisplayObject(this[skinName]);
+					}
+					else if(this[skinName])
+					{
+						DisplayObject(this[skinName]).visible = false;
+					}
 				}
-				if(this._defaultSelectedSkin)
+
+				if(!this.currentSkin)
 				{
-					this._defaultSelectedSkin.visible = false;
+					if(this._isSelected)
+					{
+						this.currentSkin = this._defaultSelectedSkin;
+					}
+					else if(this._defaultSelectedSkin)
+					{
+						this._defaultSelectedSkin.visible = false;
+					}
+					if(!this.currentSkin)
+					{
+						this.currentSkin = this._defaultSkin;
+					}
+					else if(this._defaultSkin)
+					{
+						this._defaultSkin.visible = false;
+					}
+				}
+				else
+				{
+					if(this._defaultSkin)
+					{
+						this._defaultSkin.visible = false;
+					}
+					if(this._defaultSelectedSkin)
+					{
+						this._defaultSelectedSkin.visible = false;
+					}
 				}
 			}
 
@@ -2154,48 +2257,64 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function refreshIcon():void
 		{
-			this.currentIcon = null;
-			for each(var stateName:String in this._stateNames)
+			if(this._stateToIconFunction != null)
 			{
-				var iconName:String = stateName + "Icon";
-				if(this._currentState == stateName)
+				const oldIcon:DisplayObject = this.currentIcon;
+				this.currentIcon = this._stateToIconFunction(this, this._currentState, oldIcon);
+				if(this.currentIcon != oldIcon)
 				{
-					this.currentIcon = DisplayObject(this[iconName]);
-				}
-				else if(this[iconName])
-				{
-					DisplayObject(this[iconName]).visible = false;
-				}
-			}
-			
-			if(!this.currentIcon)
-			{
-				if(this._isSelected)
-				{
-					this.currentIcon = this._defaultSelectedIcon;
-				}
-				else if(this._defaultSelectedIcon)
-				{
-					this._defaultSelectedIcon.visible = false;
-				}
-				if(!this.currentIcon)
-				{
-					this.currentIcon = this._defaultIcon;
-				}
-				else if(this._defaultIcon)
-				{
-					this._defaultIcon.visible = false;
+					this.removeChild(oldIcon, true);
+					if(this.currentIcon)
+					{
+						this.addChild(this.currentIcon);
+					}
 				}
 			}
 			else
 			{
-				if(this._defaultIcon)
+				this.currentIcon = null;
+				for each(var stateName:String in this._stateNames)
 				{
-					this._defaultIcon.visible = false;
+					var iconName:String = stateName + "Icon";
+					if(this._currentState == stateName)
+					{
+						this.currentIcon = DisplayObject(this[iconName]);
+					}
+					else if(this[iconName])
+					{
+						DisplayObject(this[iconName]).visible = false;
+					}
 				}
-				if(this._defaultSelectedIcon)
+
+				if(!this.currentIcon)
 				{
-					this._defaultSelectedIcon.visible = false;
+					if(this._isSelected)
+					{
+						this.currentIcon = this._defaultSelectedIcon;
+					}
+					else if(this._defaultSelectedIcon)
+					{
+						this._defaultSelectedIcon.visible = false;
+					}
+					if(!this.currentIcon)
+					{
+						this.currentIcon = this._defaultIcon;
+					}
+					else if(this._defaultIcon)
+					{
+						this._defaultIcon.visible = false;
+					}
+				}
+				else
+				{
+					if(this._defaultIcon)
+					{
+						this._defaultIcon.visible = false;
+					}
+					if(this._defaultSelectedIcon)
+					{
+						this._defaultSelectedIcon.visible = false;
+					}
 				}
 			}
 			
@@ -2219,17 +2338,24 @@ package org.josht.starling.foxhole.controls
 				}
 			}
 
-			const formatName:String = this._currentState + "TextFormat";
-			var format:BitmapFontTextFormat = BitmapFontTextFormat(this[formatName]);
-			if(!format)
+			if(this._stateToTextFormatFunction != null)
 			{
-				if(this._isSelected)
-				{
-					format = this._defaultSelectedTextFormat;
-				}
+				var format:BitmapFontTextFormat = this._stateToTextFormatFunction(this, this._currentState);
+			}
+			else
+			{
+				const formatName:String = this._currentState + "TextFormat";
+				format = BitmapFontTextFormat(this[formatName]);
 				if(!format)
 				{
-					format = this._defaultTextFormat;
+					if(this._isSelected)
+					{
+						format = this._defaultSelectedTextFormat;
+					}
+					if(!format)
+					{
+						format = this._defaultTextFormat;
+					}
 				}
 			}
 			
