@@ -82,12 +82,12 @@ package org.josht.starling.foxhole.skins
 
 			if(this.imageProperties)
 			{
-				for(var name:String in this.imageProperties)
+				for(var propertyName:String in this.imageProperties)
 				{
-					if(image.hasOwnProperty(name))
+					if(image.hasOwnProperty(propertyName))
 					{
-						var value:Object = this.imageProperties[name];
-						image[name] = value;
+						var propertyValue:Object = this.imageProperties[propertyName];
+						image[propertyName] = propertyValue;
 					}
 				}
 			}
