@@ -1290,6 +1290,13 @@ package org.josht.starling.foxhole.controls
 				this._previousVelocityY.length = 0;
 				this.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
 				this.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
+				if(this._snapToPages)
+				{
+					//we don't check against the maximums here because the call
+					//to refresh the maximums will handle it.
+					this._horizontalScrollPosition = Math.max(0, roundToNearest(this._horizontalScrollPosition, this.actualWidth));
+					this._verticalScrollPosition = Math.max(0, roundToNearest(this._verticalScrollPosition, this.actualHeight));
+				}
 				this.refreshMaxScrollPositions();
 			}
 
