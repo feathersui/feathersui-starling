@@ -2604,7 +2604,7 @@ package org.josht.starling.foxhole.controls
 
 				var location:Point = touch.getLocation(this);
 				ScrollRectManager.adjustTouchLocation(location, this);
-				var isInBounds:Boolean = this.hitTest(location, true) == this;
+				var isInBounds:Boolean = this.hitTest(location, true) != null;
 				if(touch.phase == TouchPhase.MOVED)
 				{
 					if(isInBounds || this.keepDownStateOnRollOut)
@@ -2652,16 +2652,16 @@ package org.josht.starling.foxhole.controls
 			}
 			else //if we get here, we don't have a saved touch ID yet
 			{
-				for each(currentTouch in touches)
+				for each(touch in touches)
 				{
-					if(currentTouch.phase == TouchPhase.BEGAN)
+					if(touch.phase == TouchPhase.BEGAN)
 					{
 						this.currentState = STATE_DOWN;
-						this._touchPointID = currentTouch.id;
+						this._touchPointID = touch.id;
 						this._onPress.dispatch(this);
 						return;
 					}
-					else if(currentTouch.phase == TouchPhase.HOVER)
+					else if(touch.phase == TouchPhase.HOVER)
 					{
 						this.currentState = STATE_HOVER;
 						this._isHoverSupported = true;

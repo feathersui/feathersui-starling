@@ -1074,20 +1074,33 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			const touch:Touch = event.getTouch(this);
-			if(!touch)
+
+			const touches:Vector.<Touch> = event.getTouches(this);
+			if(touches.length == 0)
+			{
+				return;
+			}
+			var touch:Touch;
+			for each(var currentTouch:Touch in touches)
+			{
+				if((this._touchPointID >= 0 && currentTouch.id == this._touchPointID) ||
+					(this._touchPointID < 0 && currentTouch.phase == TouchPhase.ENDED))
+				{
+					touch = currentTouch;
+					break;
+				}
+			}
+			if(!touch || touch.phase != TouchPhase.ENDED)
 			{
 				return;
 			}
 
-			if(touch.phase == TouchPhase.ENDED)
+			this._touchPointID = -1;
+			const location:Point = touch.getLocation(this);
+			if(this.hitTest(location, true))
 			{
-				const location:Point = touch.getLocation(this);
-				if(this.hitTest(location, true))
-				{
-					this.isSelected = !this._isSelected;
-					this._isSelectionChangedByUser = true;
-				}
+				this.isSelected = !this._isSelected;
+				this._isSelectionChangedByUser = true;
 			}
 		}
 
@@ -1100,36 +1113,61 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			const touch:Touch = event.getTouch(this.thumb);
-			if(!touch || (this._touchPointID >= 0 && this._touchPointID != touch.id))
+			const touches:Vector.<Touch> = event.getTouches(this.thumb);
+			if(touches.length == 0)
 			{
 				return;
 			}
-
-			const trackScrollableWidth:Number = this.actualWidth - this._paddingLeft - this._paddingRight - this.thumb.width;
-			const location:Point = touch.getLocation(this);
-			if(touch.phase == TouchPhase.BEGAN)
+			if(this._touchPointID >= 0)
 			{
-				this._touchPointID = touch.id;
-				this._thumbStartX = this.thumb.x;
-				this._touchStartX = location.x;
-			}
-			else if(touch.phase == TouchPhase.MOVED)
-			{
-				const xOffset:Number = location.x - this._touchStartX;
-				const xPosition:Number = Math.min(Math.max(this._paddingLeft, this._thumbStartX + xOffset), trackScrollableWidth);
-				this.thumb.x = xPosition;
-				this.layout();
-			}
-			else if(touch.phase == TouchPhase.ENDED)
-			{
-				this._touchPointID = -1;
-				const inchesMoved:Number = Math.abs(location.x - this._touchStartX) / Capabilities.screenDPI;
-				if(inchesMoved > MINIMUM_DRAG_DISTANCE)
+				var touch:Touch;
+				for each(var currentTouch:Touch in touches)
 				{
-					this.isSelected = this.thumb.x > (trackScrollableWidth / 2);
-					this._isSelectionChangedByUser = true;
-					this._ignoreTapHandler = true;
+					if(currentTouch.id == this._touchPointID)
+					{
+						touch = currentTouch;
+						break;
+					}
+				}
+				if(!touch)
+				{
+					return;
+				}
+				var location:Point = touch.getLocation(this);
+				const trackScrollableWidth:Number = this.actualWidth - this._paddingLeft - this._paddingRight - this.thumb.width;
+				if(touch.phase == TouchPhase.MOVED)
+				{
+					const xOffset:Number = location.x - this._touchStartX;
+					const xPosition:Number = Math.min(Math.max(this._paddingLeft, this._thumbStartX + xOffset), trackScrollableWidth);
+					this.thumb.x = xPosition;
+					this.layout();
+					return;
+				}
+				else if(touch.phase == TouchPhase.ENDED)
+				{
+					const inchesMoved:Number = Math.abs(location.x - this._touchStartX) / Capabilities.screenDPI;
+					if(inchesMoved > MINIMUM_DRAG_DISTANCE)
+					{
+						this._touchPointID = -1;
+						this.isSelected = this.thumb.x > (trackScrollableWidth / 2);
+						this._isSelectionChangedByUser = true;
+						this._ignoreTapHandler = true;
+					}
+					return;
+				}
+			}
+			else
+			{
+				for each(touch in touches)
+				{
+					if(touch.phase == TouchPhase.BEGAN)
+					{
+						location = touch.getLocation(this);
+						this._touchPointID = touch.id;
+						this._thumbStartX = this.thumb.x;
+						this._touchStartX = location.x;
+						return;
+					}
 				}
 			}
 		}
