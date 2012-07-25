@@ -230,12 +230,24 @@ package org.josht.starling.foxhole.dragDrop
 		protected static function stage_touchHandler(event:TouchEvent):void
 		{
 			const stage:Stage = Starling.current.stage;
-			const touch:Touch = event.getTouch(stage);
-			if(!touch || touch.phase == TouchPhase.BEGAN || (touchPointID >= 0 && touch.id != touchPointID))
+			const touches:Vector.<Touch> = event.getTouches(stage);
+			if(touches.length == 0 || touchPointID < 0)
 			{
 				return;
 			}
-
+			var touch:Touch;
+			for each(var currentTouch:Touch in touches)
+			{
+				if(currentTouch.id == touchPointID)
+				{
+					touch = currentTouch;
+					break;
+				}
+			}
+			if(!touch)
+			{
+				return;
+			}
 			if(touch.phase == TouchPhase.MOVED)
 			{
 				var location:Point = touch.getLocation(stage);
@@ -278,6 +290,7 @@ package org.josht.starling.foxhole.dragDrop
 			}
 			else if(touch.phase == TouchPhase.ENDED)
 			{
+				touchPointID = -1;
 				var isDropped:Boolean = false;
 				if(dropTarget && isAccepted)
 				{
@@ -286,6 +299,7 @@ package org.josht.starling.foxhole.dragDrop
 				}
 				dropTarget = null;
 				completeDrag(isDropped);
+				return;
 			}
 		}
 	}

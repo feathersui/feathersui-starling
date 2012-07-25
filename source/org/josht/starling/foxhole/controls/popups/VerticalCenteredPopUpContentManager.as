@@ -228,21 +228,43 @@ package org.josht.starling.foxhole.controls.popups
 			{
 				return;
 			}
-			const touch:Touch = event.getTouch(Starling.current.stage);
-			if(!touch || (touch.phase == TouchPhase.BEGAN && this.touchPointID >= 0) ||
-				(touch.phase != TouchPhase.BEGAN && this.touchPointID != touch.id))
+			const touches:Vector.<Touch> = event.getTouches(Starling.current.stage);
+			if(touches.length == 0)
 			{
 				return;
 			}
-
-			if(touch.phase == TouchPhase.BEGAN)
+			if(this.touchPointID >= 0)
 			{
-				this.touchPointID = touch.id;
+				var touch:Touch;
+				for each(var currentTouch:Touch in touches)
+				{
+					if(currentTouch.id == this.touchPointID)
+					{
+						touch = currentTouch;
+						break;
+					}
+				}
+				if(!touch)
+				{
+					return;
+				}
+				if(touch.phase == TouchPhase.ENDED)
+				{
+					this.touchPointID = -1;
+					this.close();
+					return;
+				}
 			}
-			else if(touch.phase == TouchPhase.ENDED)
+			else
 			{
-				this.touchPointID = -1;
-				this.close();
+				for each(touch in touches)
+				{
+					if(touch.phase == TouchPhase.BEGAN)
+					{
+						this.touchPointID = touch.id;
+						return;
+					}
+				}
 			}
 		}
 
