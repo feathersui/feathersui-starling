@@ -109,6 +109,11 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
+		protected var _touchPointID:int = -1;
+
+		/**
+		 * @private
+		 */
 		protected var _measureTextField:TextField;
 
 		/**
@@ -920,9 +925,10 @@ package org.josht.starling.foxhole.controls
 				return;
 			}
 
-			const touch:Touch = event.getTouch(this);
-			if(!touch)
+			const touches:Vector.<Touch> = event.getTouches(this.stage);
+			if(touches.length == 0)
 			{
+				//end hover
 				if(Mouse.supportsNativeCursor && this._oldMouseCursor)
 				{
 					Mouse.cursor = this._oldMouseCursor;
@@ -930,14 +936,59 @@ package org.josht.starling.foxhole.controls
 				}
 				return;
 			}
-			if(touch.phase == TouchPhase.HOVER && Mouse.supportsNativeCursor && !this._oldMouseCursor)
+			if(this._touchPointID >= 0)
 			{
-				this._oldMouseCursor = Mouse.cursor;
-				Mouse.cursor = MouseCursor.IBEAM;
+				var touch:Touch;
+				for each(var currentTouch:Touch in touches)
+				{
+					if(currentTouch.id == this._touchPointID)
+					{
+						touch = currentTouch;
+						break;
+					}
+				}
+				if(!touch)
+				{
+					//end hover
+					if(Mouse.supportsNativeCursor && this._oldMouseCursor)
+					{
+						Mouse.cursor = this._oldMouseCursor;
+						this._oldMouseCursor = null;
+					}
+					return;
+				}
+				if(touch.phase == TouchPhase.ENDED)
+				{
+					this._touchPointID = -1;
+					var location:Point = touch.getLocation(this);
+					ScrollRectManager.adjustTouchLocation(location, this);
+					var isInBounds:Boolean = this.hitTest(location, true) != null;
+					if(!this._stageTextHasFocus && isInBounds)
+					{
+						this.setFocusInternal(touch);
+					}
+					return;
+				}
 			}
-			else if(!this._stageTextHasFocus && touch.phase == TouchPhase.ENDED)
+			else
 			{
-				this.setFocusInternal(touch);
+				for each(touch in touches)
+				{
+					if(touch.phase == TouchPhase.HOVER)
+					{
+						if(Mouse.supportsNativeCursor && !this._oldMouseCursor)
+						{
+							this._oldMouseCursor = Mouse.cursor;
+							Mouse.cursor = MouseCursor.IBEAM;
+						}
+						return;
+					}
+					else if(touch.phase == TouchPhase.BEGAN)
+					{
+						this._touchPointID = touch.id;
+						return;
+					}
+				}
 			}
 		}
 
