@@ -26,10 +26,13 @@ A non-interactive text control. Uses bitmap fonts. A simplified replacement for 
 ### List
 A touch-based, list control. Has elastic edges and you can "throw" it. Supports custom layouts (vertical by default) and custom item renderers (with a robust default renderer that can customize the label, icon, and an "accessory" view based on the item data).
 
+### PageIndicator
+Displays a selected index, usually corresponding to a page index in another UI control, using a highlighted symbol.
+
 ### PickerList
 A control similar to a combo box. Appears as a button when closed. The list is displayed as a fullscreen overlay on top of the stage.
 
-### Progress Bar
+### ProgressBar
 Displays the progress of a task over time. Non-interactive.
 
 ### Radio
