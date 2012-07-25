@@ -171,6 +171,9 @@ package org.josht.starling.foxhole.controls
 
 		/**
 		 * A function used to create a normal symbol.
+		 *
+		 * <p>This function should have the following signature:</p>
+		 * <pre>function():DisplayObject</pre>
 		 */
 		public function get normalSymbolFactory():Function
 		{
@@ -197,6 +200,9 @@ package org.josht.starling.foxhole.controls
 
 		/**
 		 * A function used to create a selected symbol.
+		 *
+		 * <p>This function should have the following signature:</p>
+		 * <pre>function():DisplayObject</pre>
 		 */
 		public function get selectedSymbolFactory():Function
 		{
