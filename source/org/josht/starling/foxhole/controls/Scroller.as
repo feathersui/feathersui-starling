@@ -264,6 +264,8 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected var _verticalScrollBarWidthOffset:Number;
 
+		private var _horizontalScrollBarTouchPointID:int = -1;
+		private var _verticalScrollBarTouchPointID:int = -1;
 		private var _touchPointID:int = -1;
 		private var _startTouchX:Number;
 		private var _startTouchY:Number;
@@ -2345,30 +2347,62 @@ package org.josht.starling.foxhole.controls
 		protected function horizontalScrollBar_touchHandler(event:TouchEvent):void
 		{
 			const displayHorizontalScrollBar:DisplayObject = DisplayObject(event.currentTarget);
-			const touch:Touch = event.getTouch(displayHorizontalScrollBar);
-			if(!touch)
+			const touches:Vector.<Touch> = event.getTouches(displayHorizontalScrollBar);
+			if(touches.length == 0)
 			{
+				//end hover
 				this.hideHorizontalScrollBar();
 				return;
 			}
-
-			if(touch.phase == TouchPhase.HOVER)
+			if(this._horizontalScrollBarTouchPointID >= 0)
 			{
-				if(this._horizontalScrollBarHideTween)
+				var touch:Touch;
+				for each(var currentTouch:Touch in touches)
 				{
-					this._horizontalScrollBarHideTween.paused = true;
-					this._horizontalScrollBarHideTween = null;
+					if(currentTouch.id == this._horizontalScrollBarTouchPointID)
+					{
+						touch = currentTouch;
+						break;
+					}
 				}
-				displayHorizontalScrollBar.alpha = 1;
-			}
-			else if(touch.phase == TouchPhase.ENDED)
-			{
-				const location:Point = touch.getLocation(displayHorizontalScrollBar);
-				ScrollRectManager.adjustTouchLocation(location, displayHorizontalScrollBar);
-				const isInBounds:Boolean = displayHorizontalScrollBar.hitTest(location, true) != null;
-				if(!isInBounds)
+				if(!touch)
 				{
+					//end hover
 					this.hideHorizontalScrollBar();
+					return;
+				}
+				if(touch.phase == TouchPhase.ENDED)
+				{
+					this._horizontalScrollBarTouchPointID = -1;
+					const location:Point = touch.getLocation(displayHorizontalScrollBar);
+					ScrollRectManager.adjustTouchLocation(location, displayHorizontalScrollBar);
+					const isInBounds:Boolean = displayHorizontalScrollBar.hitTest(location, true) != null;
+					if(!isInBounds)
+					{
+						this.hideHorizontalScrollBar();
+					}
+					return;
+				}
+			}
+			else
+			{
+				for each(touch in touches)
+				{
+					if(touch.phase == TouchPhase.HOVER)
+					{
+						if(this._horizontalScrollBarHideTween)
+						{
+							this._horizontalScrollBarHideTween.paused = true;
+							this._horizontalScrollBarHideTween = null;
+						}
+						displayHorizontalScrollBar.alpha = 1;
+						return;
+					}
+					else if(touch.phase == TouchPhase.BEGAN)
+					{
+						this._horizontalScrollBarTouchPointID = touch.id;
+						return;
+					}
 				}
 			}
 		}
@@ -2379,30 +2413,62 @@ package org.josht.starling.foxhole.controls
 		protected function verticalScrollBar_touchHandler(event:TouchEvent):void
 		{
 			const displayVerticalScrollBar:DisplayObject = DisplayObject(event.currentTarget);
-			const touch:Touch = event.getTouch(displayVerticalScrollBar);
-			if(!touch)
+			const touches:Vector.<Touch> = event.getTouches(displayVerticalScrollBar);
+			if(touches.length == 0)
 			{
+				//end hover
 				this.hideVerticalScrollBar();
 				return;
 			}
-
-			if(touch.phase == TouchPhase.HOVER)
+			if(this._verticalScrollBarTouchPointID >= 0)
 			{
-				if(this._verticalScrollBarHideTween)
+				var touch:Touch;
+				for each(var currentTouch:Touch in touches)
 				{
-					this._verticalScrollBarHideTween.paused = true;
-					this._verticalScrollBarHideTween = null;
+					if(currentTouch.id == this._verticalScrollBarTouchPointID)
+					{
+						touch = currentTouch;
+						break;
+					}
 				}
-				displayVerticalScrollBar.alpha = 1;
-			}
-			else if(touch.phase == TouchPhase.ENDED)
-			{
-				const location:Point = touch.getLocation(displayVerticalScrollBar);
-				ScrollRectManager.adjustTouchLocation(location, displayVerticalScrollBar);
-				const isInBounds:Boolean = displayVerticalScrollBar.hitTest(location, true) != null;
-				if(!isInBounds)
+				if(!touch)
 				{
+					//end hover
 					this.hideVerticalScrollBar();
+					return;
+				}
+				if(touch.phase == TouchPhase.ENDED)
+				{
+					this._verticalScrollBarTouchPointID = -1;
+					const location:Point = touch.getLocation(displayVerticalScrollBar);
+					ScrollRectManager.adjustTouchLocation(location, displayVerticalScrollBar);
+					const isInBounds:Boolean = displayVerticalScrollBar.hitTest(location, true) != null;
+					if(!isInBounds)
+					{
+						this.hideVerticalScrollBar();
+					}
+					return;
+				}
+			}
+			else
+			{
+				for each(touch in touches)
+				{
+					if(touch.phase == TouchPhase.HOVER)
+					{
+						if(this._verticalScrollBarHideTween)
+						{
+							this._verticalScrollBarHideTween.paused = true;
+							this._verticalScrollBarHideTween = null;
+						}
+						displayVerticalScrollBar.alpha = 1;
+						return;
+					}
+					else if(touch.phase == TouchPhase.BEGAN)
+					{
+						this._verticalScrollBarTouchPointID = touch.id;
+						return;
+					}
 				}
 			}
 		}
