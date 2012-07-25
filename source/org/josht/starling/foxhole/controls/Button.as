@@ -2575,59 +2575,99 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			const touch:Touch = event.getTouch(this);
-			if(!touch)
+
+			const touches:Vector.<Touch> = event.getTouches(this);
+			if(touches.length == 0)
 			{
-				this._touchPointID = -1;
+				//end of hover
 				this.currentState = STATE_UP;
 				return;
 			}
-			if(this._touchPointID >= 0 && this._touchPointID != touch.id)
+			if(this._touchPointID >= 0)
 			{
-				return;
-			}
-			const location:Point = touch.getLocation(this);
-			ScrollRectManager.adjustTouchLocation(location, this);
-			const isInBounds:Boolean = this.hitTest(location, true) != null;
-			if(touch.phase == TouchPhase.BEGAN)
-			{
-				this.currentState = STATE_DOWN;
-				this._touchPointID = touch.id;
-				this._onPress.dispatch(this);
-			}
-			else if(touch.phase == TouchPhase.MOVED)
-			{
-				if(isInBounds || this.keepDownStateOnRollOut)
+				var touch:Touch;
+				for each(var currentTouch:Touch in touches)
 				{
-					this.currentState = STATE_DOWN;
-				}
-				else
-				{
-					this.currentState = STATE_UP;
-				}
-			}
-			else if(touch.phase == TouchPhase.ENDED)
-			{
-				this._touchPointID = -1;
-				if(isInBounds)
-				{
-					this.currentState = this._isHoverSupported ? STATE_HOVER : STATE_UP;
-					this._onRelease.dispatch(this);
-					if(this._isToggle)
+					if(currentTouch.id == this._touchPointID)
 					{
-						this.isSelected = !this._isSelected;
+						touch = currentTouch;
+						break;
 					}
 				}
-				else
+
+				if(!touch)
 				{
+					//end of hover
 					this.currentState = STATE_UP;
+					return;
+				}
+
+				var location:Point = touch.getLocation(this);
+				ScrollRectManager.adjustTouchLocation(location, this);
+				var isInBounds:Boolean = this.hitTest(location, true) == this;
+				if(touch.phase == TouchPhase.MOVED)
+				{
+					if(isInBounds || this.keepDownStateOnRollOut)
+					{
+						this.currentState = STATE_DOWN;
+					}
+					else
+					{
+						this.currentState = STATE_UP;
+					}
+					return;
+				}
+				else if(touch.phase == TouchPhase.ENDED)
+				{
+					this._touchPointID = -1;
+					if(isInBounds)
+					{
+						this._onRelease.dispatch(this);
+						if(this._isToggle)
+						{
+							this.isSelected = !this._isSelected;
+						}
+						if(this._isHoverSupported)
+						{
+							location = touch.getLocation(this);
+							location = this.localToGlobal(location);
+
+							//we need to do a new hitTest() because a display
+							//object may have appeared above this button that
+							//will prevent clearing the hover state
+							isInBounds = this.stage.hitTest(location, true) == this;
+							this.currentState = (isInBounds && this._isHoverSupported) ? STATE_HOVER : STATE_UP;
+						}
+						else
+						{
+							this.currentState = STATE_UP;
+						}
+					}
+					else
+					{
+						this.currentState = STATE_UP;
+					}
+					return;
 				}
 			}
-			else if(touch.phase == TouchPhase.HOVER)
+			else //if we get here, we don't have a saved touch ID yet
 			{
-				this.currentState = STATE_HOVER;
-				this._isHoverSupported = true;
-				this._touchPointID = touch.id;
+				for each(currentTouch in touches)
+				{
+					if(currentTouch.phase == TouchPhase.BEGAN)
+					{
+						this.currentState = STATE_DOWN;
+						this._touchPointID = currentTouch.id;
+						this._onPress.dispatch(this);
+						return;
+					}
+					else if(currentTouch.phase == TouchPhase.HOVER)
+					{
+						this.currentState = STATE_HOVER;
+						this._isHoverSupported = true;
+						return;
+					}
+				}
 			}
 		}
 	}
