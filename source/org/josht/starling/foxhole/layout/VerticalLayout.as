@@ -437,7 +437,8 @@ package org.josht.starling.foxhole.layout
 				}
 			}
 
-			const availableWidth:Number = isNaN(explicitWidth) ? Math.min(maxWidth, Math.max(minWidth, maxItemWidth + this._paddingLeft + this._paddingRight)) : explicitWidth;
+			const totalWidth:Number = maxItemWidth + this._paddingLeft + this._paddingRight;
+			const availableWidth:Number = isNaN(explicitWidth) ? Math.min(maxWidth, Math.max(minWidth, totalWidth)) : explicitWidth;
 			for(i = 0; i < itemCount; i++)
 			{
 				item = items[i];
@@ -501,7 +502,7 @@ package org.josht.starling.foxhole.layout
 			{
 				result = new LayoutBoundsResult();
 			}
-			result.contentWidth = maxItemWidth;
+			result.contentWidth = totalWidth;
 			result.contentHeight = totalHeight;
 			result.viewPortWidth = availableWidth;
 			result.viewPortHeight = availableHeight;
