@@ -248,6 +248,7 @@ package org.josht.starling.foxhole.controls.popups
 			{
 				return;
 			}
+			//any began touch is okay here. we don't need to check all touches
 			const touch:Touch = event.getTouch(Starling.current.stage, TouchPhase.BEGAN);
 			if(!touch)
 			{

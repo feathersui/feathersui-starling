@@ -799,8 +799,9 @@ package org.josht.starling.foxhole.controls.supportClasses
 			
 			const renderer:IListItemRenderer = IListItemRenderer(event.currentTarget);
 			const displayRenderer:DisplayObject = DisplayObject(renderer);
-			const touch:Touch = event.getTouch(displayRenderer);
-			if(touch && touch.phase == TouchPhase.BEGAN)
+			//any began touch is okay here. we don't need to check all touches.
+			const touch:Touch = event.getTouch(displayRenderer, TouchPhase.BEGAN);
+			if(touch)
 			{
 				//if this flag gets set to true before the touch phase ends, we
 				//won't change selection.
