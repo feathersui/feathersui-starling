@@ -701,13 +701,29 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function list_onItemTouch(list:List, item:Object, index:int, event:TouchEvent):void
 		{
-			const displayRenderer:DisplayObject = DisplayObject(event.currentTarget);
-			const touch:Touch = event.getTouch(displayRenderer);
-			if(this._hasBeenScrolled || !touch || this._listTouchPointID != touch.id || touch.phase != TouchPhase.ENDED)
+			if(this._hasBeenScrolled || this._listTouchPointID < 0)
 			{
 				return;
 			}
-			
+			const displayRenderer:DisplayObject = DisplayObject(event.currentTarget);
+			const touches:Vector.<Touch> = event.getTouches(displayRenderer, TouchPhase.ENDED);
+			if(touches.length == 0)
+			{
+				return;
+			}
+			var touch:Touch;
+			for each(var currentTouch:Touch in touches)
+			{
+				if(currentTouch.id == this._listTouchPointID)
+				{
+					touch = currentTouch;
+					break;
+				}
+			}
+			if(!touch)
+			{
+				return;
+			}
 			const location:Point = touch.getLocation(displayRenderer);
 			ScrollRectManager.adjustTouchLocation(location, displayRenderer);
 			if(displayRenderer.hitTest(location, true))

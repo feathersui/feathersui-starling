@@ -2089,8 +2089,10 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			const touch:Touch = event.getTouch(this);
-			if(!touch || touch.phase != TouchPhase.BEGAN)
+
+			//any began touch is okay here. we don't need to check all touches.
+			const touch:Touch = event.getTouch(this, TouchPhase.BEGAN);
+			if(!touch)
 			{
 				return;
 			}
@@ -2221,11 +2223,25 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function stage_touchHandler(event:TouchEvent):void
 		{
-			const touch:Touch = event.getTouch(this.stage);
-			if(!touch || (touch.phase != TouchPhase.MOVED && touch.phase != TouchPhase.ENDED) || (this._touchPointID >= 0 && touch.id != this._touchPointID))
+			const touches:Vector.<Touch> = event.getTouches(this.stage);
+			if(touches.length == 0 || this._touchPointID < 0)
 			{
 				return;
 			}
+			var touch:Touch;
+			for each(var currentTouch:Touch in touches)
+			{
+				if(currentTouch.id == this._touchPointID)
+				{
+					touch = currentTouch;
+					break;
+				}
+			}
+			if(!touch)
+			{
+				return;
+			}
+
 			if(touch.phase == TouchPhase.MOVED)
 			{
 				//we're saving these to use in the enter frame handler because
