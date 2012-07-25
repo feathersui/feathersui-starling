@@ -718,18 +718,42 @@ package org.josht.starling.foxhole.controls
 
 		protected function button_touchHandler(event:TouchEvent):void
 		{
-			const touch:Touch = event.getTouch(this._button);
-			if(!touch || (this._buttonTouchPointID >= 0 && this._buttonTouchPointID != touch.id))
+			const touches:Vector.<Touch> = event.getTouches(this._button);
+			if(touches.length == 0)
 			{
 				return;
 			}
-			if(touch.phase == TouchPhase.BEGAN)
+			if(this._buttonTouchPointID >= 0)
 			{
-				this._buttonTouchPointID = touch.id;
+				var touch:Touch;
+				for each(var currentTouch:Touch in touches)
+				{
+					if(currentTouch.id == this._buttonTouchPointID)
+					{
+						touch = currentTouch;
+						break;
+					}
+				}
+				if(!touch)
+				{
+					return;
+				}
+				if(touch.phase == TouchPhase.ENDED)
+				{
+					this._buttonTouchPointID = -1;
+					return;
+				}
 			}
-			else if(touch.phase == TouchPhase.ENDED)
+			else
 			{
-				this._buttonTouchPointID = -1;
+				for each(touch in touches)
+				{
+					if(touch.phase == TouchPhase.BEGAN)
+					{
+						this._buttonTouchPointID = touch.id;
+						return;
+					}
+				}
 			}
 		}
 		
@@ -738,19 +762,41 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function list_touchHandler(event:TouchEvent):void
 		{
-			const touch:Touch = event.getTouch(this._list);
-			if(!touch || (this._listTouchPointID >= 0 && this._listTouchPointID != touch.id))
+			const touches:Vector.<Touch> = event.getTouches(this._list);
+			if(touches.length == 0)
 			{
 				return;
 			}
-			if(touch.phase == TouchPhase.BEGAN)
+			if(this._listTouchPointID >= 0)
 			{
-				this._listTouchPointID = touch.id;
-				this._hasBeenScrolled = false;
+				var touch:Touch;
+				for each(var currentTouch:Touch in touches)
+				{
+					if(currentTouch.id == this._listTouchPointID)
+					{
+						touch = currentTouch;
+						break;
+					}
+				}
+				if(!touch)
+				{
+					return;
+				}
+				if(touch.phase == TouchPhase.ENDED)
+				{
+					this._listTouchPointID = -1;
+				}
 			}
-			else if(touch.phase == TouchPhase.ENDED)
+			else
 			{
-				this._listTouchPointID = -1;
+				for each(touch in touches)
+				{
+					if(touch.phase == TouchPhase.BEGAN)
+					{
+						this._listTouchPointID = touch.id;
+						this._hasBeenScrolled = false;
+					}
+				}
 			}
 		}
 	}

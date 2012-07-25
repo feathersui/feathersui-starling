@@ -1069,44 +1069,65 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			const touch:Touch = event.getTouch(DisplayObject(event.currentTarget));
-			if(!touch || (this._touchPointID >= 0 && this._touchPointID != touch.id))
+			const touches:Vector.<Touch> = event.getTouches(DisplayObject(event.currentTarget));
+			if(this._touchPointID >= 0)
 			{
-				return;
-			}
-
-			if(touch.phase == TouchPhase.BEGAN || touch.phase == TouchPhase.MOVED)
-			{
-				const location:Point = touch.getLocation(this);
-				if(touch.phase == TouchPhase.BEGAN)
+				var touch:Touch;
+				for each(var currentTouch:Touch in touches)
 				{
-					this._touchPointID = touch.id;
-					if(this._direction == DIRECTION_VERTICAL)
+					if(currentTouch.id == this._touchPointID)
 					{
-						this._thumbStartX = location.x;
-						this._thumbStartY = Math.min(this.actualHeight - this.thumb.height, Math.max(0, location.y - this.thumb.height / 2));
+						touch = currentTouch;
+						break;
 					}
-					else //horizontal
-					{
-						this._thumbStartX = Math.min(this.actualWidth - this.thumb.width, Math.max(0, location.x - this.thumb.width / 2));
-						this._thumbStartY = location.y;
-					}
-					this._touchStartX = location.x;
-					this._touchStartY = location.y;
-					this.isDragging = true;
-					this._onDragStart.dispatch(this);
 				}
-				this.dragTo(location);
-			}
-			else if(touch.phase == TouchPhase.ENDED)
-			{
-				this._touchPointID = -1;
-				this.isDragging = false;
-				if(!this.liveDragging)
+				if(!touch)
 				{
-					this._onChange.dispatch(this);
+					return;
 				}
-				this._onDragEnd.dispatch(this);
+				if(touch.phase == TouchPhase.MOVED)
+				{
+					var location:Point = touch.getLocation(this);
+					this.dragTo(location);
+				}
+				else if(touch.phase == TouchPhase.ENDED)
+				{
+					this._touchPointID = -1;
+					this.isDragging = false;
+					if(!this.liveDragging)
+					{
+						this._onChange.dispatch(this);
+					}
+					this._onDragEnd.dispatch(this);
+					return;
+				}
+			}
+			else
+			{
+				for each(touch in touches)
+				{
+					if(touch.phase == TouchPhase.BEGAN)
+					{
+						location = touch.getLocation(this);
+						this._touchPointID = touch.id;
+						if(this._direction == DIRECTION_VERTICAL)
+						{
+							this._thumbStartX = location.x;
+							this._thumbStartY = Math.min(this.actualHeight - this.thumb.height, Math.max(0, location.y - this.thumb.height / 2));
+						}
+						else //horizontal
+						{
+							this._thumbStartX = Math.min(this.actualWidth - this.thumb.width, Math.max(0, location.x - this.thumb.width / 2));
+							this._thumbStartY = location.y;
+						}
+						this._touchStartX = location.x;
+						this._touchStartY = location.y;
+						this.isDragging = true;
+						this._onDragStart.dispatch(this);
+						this.dragTo(location);
+						return;
+					}
+				}
 			}
 		}
 		
@@ -1119,35 +1140,60 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			const touch:Touch = event.getTouch(this.thumb);
-			if(!touch || (this._touchPointID >= 0 && this._touchPointID != touch.id))
+			const touches:Vector.<Touch> = event.getTouches(this.thumb);
+			if(touches.length == 0)
 			{
 				return;
 			}
-			const location:Point = touch.getLocation(this);
-			if(touch.phase == TouchPhase.BEGAN)
+			if(this._touchPointID >= 0)
 			{
-				this._touchPointID = touch.id;
-				this._thumbStartX = this.thumb.x;
-				this._thumbStartY = this.thumb.y;
-				this._touchStartX = location.x;
-				this._touchStartY = location.y;
-				this.isDragging = true;
-				this._onDragStart.dispatch(this);
-			}
-			else if(touch.phase == TouchPhase.MOVED)
-			{
-				this.dragTo(location);
-			}
-			else if(touch.phase == TouchPhase.ENDED)
-			{
-				this._touchPointID = -1;
-				this.isDragging = false;
-				if(!this.liveDragging)
+				var touch:Touch;
+				for each(var currentTouch:Touch in touches)
 				{
-					this._onChange.dispatch(this);
+					if(currentTouch.id == this._touchPointID)
+					{
+						touch = currentTouch;
+						break;
+					}
 				}
-				this._onDragEnd.dispatch(this);
+				if(!touch)
+				{
+					return;
+				}
+				if(touch.phase == TouchPhase.MOVED)
+				{
+					var location:Point = touch.getLocation(this);
+					this.dragTo(location);
+				}
+				else if(touch.phase == TouchPhase.ENDED)
+				{
+					this._touchPointID = -1;
+					this.isDragging = false;
+					if(!this.liveDragging)
+					{
+						this._onChange.dispatch(this);
+					}
+					this._onDragEnd.dispatch(this);
+					return;
+				}
+			}
+			else
+			{
+				for each(touch in touches)
+				{
+					if(touch.phase == TouchPhase.BEGAN)
+					{
+						location = touch.getLocation(this);
+						this._touchPointID = touch.id;
+						this._thumbStartX = this.thumb.x;
+						this._thumbStartY = this.thumb.y;
+						this._touchStartX = location.x;
+						this._touchStartY = location.y;
+						this.isDragging = true;
+						this._onDragStart.dispatch(this);
+						return;
+					}
+				}
 			}
 		}
 	}

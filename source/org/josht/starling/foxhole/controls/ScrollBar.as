@@ -1496,28 +1496,52 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			const touch:Touch = event.getTouch(DisplayObject(event.currentTarget));
-			if(!touch || (touch.phase == TouchPhase.BEGAN && this._touchPointID >= 0) ||
-				(touch.phase != TouchPhase.BEGAN && this._touchPointID != touch.id))
+
+			const touches:Vector.<Touch> = event.getTouches(DisplayObject(event.currentTarget));
+			if(touches.length == 0)
 			{
 				return;
 			}
-			if(touch.phase == TouchPhase.BEGAN)
+			if(this._touchPointID >= 0)
 			{
-				this._touchPointID = touch.id;
-				const location:Point = touch.getLocation(this);
-				this._touchStartX = location.x;
-				this._touchStartY = location.y;
-				this._thumbStartX = location.x;
-				this._thumbStartY = location.y;
-				this._touchValue = this.locationToValue(location);
-				this.adjustPage();
-				this.startRepeatTimer(this.adjustPage);
+				var touch:Touch;
+				for each(var currentTouch:Touch in touches)
+				{
+					if(currentTouch.id == this._touchPointID)
+					{
+						touch = currentTouch;
+						break;
+					}
+				}
+				if(!touch)
+				{
+					return;
+				}
+				if(touch.phase == TouchPhase.ENDED)
+				{
+					this._touchPointID = -1;
+					this._repeatTimer.stop();
+					return;
+				}
 			}
-			else if(touch.phase == TouchPhase.ENDED)
+			else
 			{
-				this._touchPointID = -1;
-				this._repeatTimer.stop();
+				for each(touch in touches)
+				{
+					if(touch.phase == TouchPhase.BEGAN)
+					{
+						this._touchPointID = touch.id;
+						const location:Point = touch.getLocation(this);
+						this._touchStartX = location.x;
+						this._touchStartY = location.y;
+						this._thumbStartX = location.x;
+						this._thumbStartY = location.y;
+						this._touchValue = this.locationToValue(location);
+						this.adjustPage();
+						this.startRepeatTimer(this.adjustPage);
+						return;
+					}
+				}
 			}
 		}
 
@@ -1530,40 +1554,66 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			const touch:Touch = event.getTouch(this.thumb);
-			if(!touch || (this._touchPointID >= 0 && this._touchPointID != touch.id))
+			const touches:Vector.<Touch> = event.getTouches(this.thumb);
+			if(touches.length == 0)
 			{
 				return;
 			}
-			const location:Point = touch.getLocation(this);
-			if(touch.phase == TouchPhase.BEGAN)
+			if(this._touchPointID >= 0)
 			{
-				this._touchPointID = touch.id;
-				this._thumbStartX = this.thumb.x;
-				this._thumbStartY = this.thumb.y;
-				this._touchStartX = location.x;
-				this._touchStartY = location.y;
-				this.isDragging = true;
-				this._onDragStart.dispatch(this);
-			}
-			else if(touch.phase == TouchPhase.MOVED)
-			{
-				var newValue:Number = this.locationToValue(location);
-				if(this._step != 0)
+				var touch:Touch;
+				for each(var currentTouch:Touch in touches)
 				{
-					newValue = roundToNearest(newValue, this._step);
+					if(currentTouch.id == this._touchPointID)
+					{
+						touch = currentTouch;
+						break;
+					}
 				}
-				this.value = newValue;
-			}
-			else if(touch.phase == TouchPhase.ENDED)
-			{
-				this._touchPointID = -1;
-				this.isDragging = false;
-				if(!this.liveDragging)
+				if(!touch)
 				{
-					this._onChange.dispatch(this);
+					return;
 				}
-				this._onDragEnd.dispatch(this);
+				if(touch.phase == TouchPhase.MOVED)
+				{
+					var location:Point = touch.getLocation(this);
+					var newValue:Number = this.locationToValue(location);
+					if(this._step != 0)
+					{
+						newValue = roundToNearest(newValue, this._step);
+					}
+					this.value = newValue;
+					return;
+				}
+				else if(touch.phase == TouchPhase.ENDED)
+				{
+					this._touchPointID = -1;
+					this.isDragging = false;
+					if(!this.liveDragging)
+					{
+						this._onChange.dispatch(this);
+					}
+					this._onDragEnd.dispatch(this);
+					return;
+				}
+			}
+			else
+			{
+				for each(touch in touches)
+				{
+					if(touch.phase == TouchPhase.BEGAN)
+					{
+						location = touch.getLocation(this);
+						this._touchPointID = touch.id;
+						this._thumbStartX = this.thumb.x;
+						this._thumbStartY = this.thumb.y;
+						this._touchStartX = location.x;
+						this._touchStartY = location.y;
+						this.isDragging = true;
+						this._onDragStart.dispatch(this);
+						return;
+					}
+				}
 			}
 		}
 
