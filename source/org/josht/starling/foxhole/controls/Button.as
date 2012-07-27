@@ -2622,11 +2622,6 @@ package org.josht.starling.foxhole.controls
 					this._touchPointID = -1;
 					if(isInBounds)
 					{
-						this._onRelease.dispatch(this);
-						if(this._isToggle)
-						{
-							this.isSelected = !this._isSelected;
-						}
 						if(this._isHoverSupported)
 						{
 							location = touch.getLocation(this);
@@ -2641,6 +2636,11 @@ package org.josht.starling.foxhole.controls
 						else
 						{
 							this.currentState = STATE_UP;
+						}
+						this._onRelease.dispatch(this);
+						if(this._isToggle)
+						{
+							this.isSelected = !this._isSelected;
 						}
 					}
 					else
