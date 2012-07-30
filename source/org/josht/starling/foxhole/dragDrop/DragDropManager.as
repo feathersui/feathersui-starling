@@ -49,9 +49,19 @@ package org.josht.starling.foxhole.dragDrop
 	{
 		/**
 		 * @private
-		 * The ID of the touch that initiated the current drag.
 		 */
-		protected static var touchPointID:int = -1;
+		protected static var _touchPointID:int = -1;
+
+		/**
+		 * The ID of the touch that initiated the current drag. Returns <code>-1</code>
+		 * if there is not an active drag action. In multi-touch applications,
+		 * knowing the touch ID is useful if additional actions need to happen
+		 * using the same touch.
+		 */
+		public static function get touchPointID():int
+		{
+			return _touchPointID;
+		}
 
 		/**
 		 * @private
@@ -61,9 +71,26 @@ package org.josht.starling.foxhole.dragDrop
 
 		/**
 		 * @private
-		 * The data associated with the current drag.
 		 */
-		protected static var dragData:DragData;
+		protected static var _dragData:DragData;
+
+		/**
+		 * Determines if the drag and drop manager is currently handling a drag.
+		 * Only one drag may be active at a time.
+		 */
+		public static function get isDragging():Boolean
+		{
+			return _dragData != null;
+		}
+
+		/**
+		 * The data associated with the current drag. Returns <code>null</code>
+		 * if there is not a current drag.
+		 */
+		public static function get dragData():DragData
+		{
+			return _dragData;
+		}
 
 		/**
 		 * @private
@@ -104,15 +131,6 @@ package org.josht.starling.foxhole.dragDrop
 		protected static var dropTargetLocalY:Number;
 
 		/**
-		 * Determines if the drag and drop manager is currently handling a drag.
-		 * Only one drag may be active at a time.
-		 */
-		public static function get isDragging():Boolean
-		{
-			return dragData != null;
-		}
-
-		/**
 		 * Starts a new drag. If another drag is currently active, it is
 		 * immediately cancelled. Includes an optional "avatar", a visual
 		 * representation of the data that is being dragged.
@@ -132,8 +150,8 @@ package org.josht.starling.foxhole.dragDrop
 				throw new ArgumentError("Drag data cannot be null.");
 			}
 			dragSource = source;
-			dragData = data;
-			touchPointID = touch.id;
+			_dragData = data;
+			_touchPointID = touch.id;
 			avatar = dragAvatar;
 			avatarOffsetX = dragAvatarOffsetX;
 			avatarOffsetY = dragAvatarOffsetY;
@@ -187,11 +205,11 @@ package org.josht.starling.foxhole.dragDrop
 			}
 			if(dropTarget)
 			{
-				dropTarget.onDragExit.dispatch(dropTarget, dragData, dropTargetLocalX, dropTargetLocalY);
+				dropTarget.onDragExit.dispatch(dropTarget, _dragData, dropTargetLocalX, dropTargetLocalY);
 				dropTarget = null;
 			}
 			const source:IDragSource = dragSource;
-			const data:DragData = dragData;
+			const data:DragData = _dragData;
 			cleanup();
 			source.onDragComplete.dispatch(source, data, isDropped);
 		}
@@ -209,7 +227,7 @@ package org.josht.starling.foxhole.dragDrop
 			Starling.current.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler);
 			dragSource = null;
-			dragData = null;
+			_dragData = null;
 		}
 
 		/**
@@ -231,14 +249,14 @@ package org.josht.starling.foxhole.dragDrop
 		{
 			const stage:Stage = Starling.current.stage;
 			const touches:Vector.<Touch> = event.getTouches(stage);
-			if(touches.length == 0 || touchPointID < 0)
+			if(touches.length == 0 || _touchPointID < 0)
 			{
 				return;
 			}
 			var touch:Touch;
 			for each(var currentTouch:Touch in touches)
 			{
-				if(currentTouch.id == touchPointID)
+				if(currentTouch.id == _touchPointID)
 				{
 					touch = currentTouch;
 					break;
@@ -270,7 +288,7 @@ package org.josht.starling.foxhole.dragDrop
 					if(dropTarget && isAccepted)
 					{
 						//notice that we can reuse the previously saved location
-						dropTarget.onDragExit.dispatch(dropTarget, dragData, dropTargetLocalX, dropTargetLocalY);
+						dropTarget.onDragExit.dispatch(dropTarget, _dragData, dropTargetLocalX, dropTargetLocalY);
 					}
 					dropTarget = IDropTarget(target);
 					isAccepted = false;
@@ -278,23 +296,23 @@ package org.josht.starling.foxhole.dragDrop
 					{
 						dropTargetLocalX = location.x;
 						dropTargetLocalY = location.y;
-						dropTarget.onDragEnter.dispatch(dropTarget, dragData, dropTargetLocalX, dropTargetLocalY);
+						dropTarget.onDragEnter.dispatch(dropTarget, _dragData, dropTargetLocalX, dropTargetLocalY);
 					}
 				}
 				else if(dropTarget)
 				{
 					dropTargetLocalX = location.x;
 					dropTargetLocalY = location.y;
-					dropTarget.onDragMove.dispatch(dropTarget, dragData, dropTargetLocalX, dropTargetLocalY)
+					dropTarget.onDragMove.dispatch(dropTarget, _dragData, dropTargetLocalX, dropTargetLocalY)
 				}
 			}
 			else if(touch.phase == TouchPhase.ENDED)
 			{
-				touchPointID = -1;
+				_touchPointID = -1;
 				var isDropped:Boolean = false;
 				if(dropTarget && isAccepted)
 				{
-					dropTarget.onDragDrop.dispatch(dropTarget, dragData, dropTargetLocalX, dropTargetLocalY);
+					dropTarget.onDragDrop.dispatch(dropTarget, _dragData, dropTargetLocalX, dropTargetLocalY);
 					isDropped = true;
 				}
 				dropTarget = null;
