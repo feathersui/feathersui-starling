@@ -399,7 +399,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _horizontalScrollBarProperties:PropertyProxy = new PropertyProxy(horizontalScrollBarProperties_onChange);
+		private var _horizontalScrollBarProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to the scroller's
@@ -417,6 +417,10 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function get horizontalScrollBarProperties():Object
 		{
+			if(!this._horizontalScrollBarProperties)
+			{
+				this._horizontalScrollBarProperties = new PropertyProxy(horizontalScrollBarProperties_onChange);
+			}
 			return this._horizontalScrollBarProperties;
 		}
 
@@ -487,7 +491,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _verticalScrollBarProperties:PropertyProxy = new PropertyProxy(verticalScrollBarProperties_onChange);
+		private var _verticalScrollBarProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to the scroller's
@@ -505,6 +509,10 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function get verticalScrollBarProperties():Object
 		{
+			if(!this._verticalScrollBarProperties)
+			{
+				this._verticalScrollBarProperties = new PropertyProxy(verticalScrollBarProperties_onChange);
+			}
 			return this._verticalScrollBarProperties;
 		}
 

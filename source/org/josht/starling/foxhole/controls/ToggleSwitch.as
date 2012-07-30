@@ -600,7 +600,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _thumbProperties:PropertyProxy = new PropertyProxy(thumbProperties_onChange);
+		private var _thumbProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to the toggle switch's
@@ -615,6 +615,10 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function get thumbProperties():Object
 		{
+			if(!this._thumbProperties)
+			{
+				this._thumbProperties = new PropertyProxy(thumbProperties_onChange);
+			}
 			return this._thumbProperties;
 		}
 

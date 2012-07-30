@@ -310,7 +310,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _buttonProperties:PropertyProxy = new PropertyProxy(buttonProperties_onChange);
+		private var _buttonProperties:PropertyProxy;
 		
 		/**
 		 * A set of key/value pairs to be passed down to the picker's button
@@ -325,6 +325,10 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function get buttonProperties():Object
 		{
+			if(!this._buttonProperties)
+			{
+				this._buttonProperties = new PropertyProxy(buttonProperties_onChange);
+			}
 			return this._buttonProperties;
 		}
 		
@@ -365,7 +369,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _listProperties:PropertyProxy = new PropertyProxy(listProperties_onChange);
+		private var _listProperties:PropertyProxy;
 		
 		/**
 		 * A set of key/value pairs to be passed down to the picker's internal
@@ -380,6 +384,10 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function get listProperties():Object
 		{
+			if(!this._listProperties)
+			{
+				this._listProperties = new PropertyProxy(listProperties_onChange);
+			}
 			return this._listProperties;
 		}
 		

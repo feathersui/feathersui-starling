@@ -345,7 +345,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _tabProperties:PropertyProxy = new PropertyProxy(tabProperties_onChange);
+		private var _tabProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to all of the tab bar's
@@ -365,6 +365,10 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function get tabProperties():Object
 		{
+			if(!this._tabProperties)
+			{
+				this._tabProperties = new PropertyProxy(tabProperties_onChange);
+			}
 			return this._tabProperties;
 		}
 

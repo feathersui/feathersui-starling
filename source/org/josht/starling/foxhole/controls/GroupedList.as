@@ -403,7 +403,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _scrollerProperties:PropertyProxy = new PropertyProxy(scrollerProperties_onChange);
+		private var _scrollerProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to the list's scroller
@@ -418,6 +418,10 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function get scrollerProperties():Object
 		{
+			if(!this._scrollerProperties)
+			{
+				this._scrollerProperties = new PropertyProxy(scrollerProperties_onChange);
+			}
 			return this._scrollerProperties;
 		}
 
@@ -766,7 +770,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _itemRendererProperties:PropertyProxy = new PropertyProxy(itemRendererProperties_onChange);
+		private var _itemRendererProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to all of the list's item
@@ -786,6 +790,10 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function get itemRendererProperties():Object
 		{
+			if(!this._itemRendererProperties)
+			{
+				this._itemRendererProperties = new PropertyProxy(itemRendererProperties_onChange);
+			}
 			return this._itemRendererProperties;
 		}
 
@@ -950,7 +958,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _headerRendererProperties:PropertyProxy = new PropertyProxy(headerRendererProperties_onChange);
+		private var _headerRendererProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to all of the grouped
@@ -971,6 +979,10 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function get headerRendererProperties():Object
 		{
+			if(!this._headerRendererProperties)
+			{
+				this._headerRendererProperties = new PropertyProxy(headerRendererProperties_onChange);
+			}
 			return this._headerRendererProperties;
 		}
 
@@ -1136,7 +1148,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _footerRendererProperties:PropertyProxy = new PropertyProxy(footerRendererProperties_onChange);
+		private var _footerRendererProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to all of the grouped
@@ -1157,6 +1169,10 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function get footerRendererProperties():Object
 		{
+			if(!this._footerRendererProperties)
+			{
+				this._footerRendererProperties = new PropertyProxy(footerRendererProperties_onChange);
+			}
 			return this._footerRendererProperties;
 		}
 

@@ -442,7 +442,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _minimumTrackProperties:PropertyProxy = new PropertyProxy(minimumTrackProperties_onChange);
+		private var _minimumTrackProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to the slider's minimum
@@ -457,6 +457,10 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function get minimumTrackProperties():Object
 		{
+			if(!this._minimumTrackProperties)
+			{
+				this._minimumTrackProperties = new PropertyProxy(minimumTrackProperties_onChange);
+			}
 			return this._minimumTrackProperties;
 		}
 
@@ -497,7 +501,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _maximumTrackProperties:PropertyProxy = new PropertyProxy(maximumTrackProperties_onChange);
+		private var _maximumTrackProperties:PropertyProxy;
 		
 		/**
 		 * A set of key/value pairs to be passed down to the slider's maximum
@@ -512,6 +516,10 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function get maximumTrackProperties():Object
 		{
+			if(!this._maximumTrackProperties)
+			{
+				this._maximumTrackProperties = new PropertyProxy(maximumTrackProperties_onChange);
+			}
 			return this._maximumTrackProperties;
 		}
 		
@@ -552,7 +560,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _thumbProperties:PropertyProxy = new PropertyProxy(thumbProperties_onChange);
+		private var _thumbProperties:PropertyProxy;
 		
 		/**
 		 * A set of key/value pairs to be passed down to the slider's thumb
@@ -567,6 +575,10 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function get thumbProperties():Object
 		{
+			if(!this._thumbProperties)
+			{
+				this._thumbProperties = new PropertyProxy(thumbProperties_onChange);
+			}
 			return this._thumbProperties;
 		}
 		

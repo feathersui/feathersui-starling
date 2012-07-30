@@ -550,7 +550,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _minimumTrackProperties:PropertyProxy = new PropertyProxy(minimumTrackProperties_onChange);
+		private var _minimumTrackProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to the scroll bar's
@@ -565,6 +565,10 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function get minimumTrackProperties():Object
 		{
+			if(!this._minimumTrackProperties)
+			{
+				this._minimumTrackProperties = new PropertyProxy(minimumTrackProperties_onChange);
+			}
 			return this._minimumTrackProperties;
 		}
 
@@ -605,7 +609,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _maximumTrackProperties:PropertyProxy = new PropertyProxy(maximumTrackProperties_onChange);
+		private var _maximumTrackProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to the scroll bar's
@@ -620,6 +624,10 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function get maximumTrackProperties():Object
 		{
+			if(!this._maximumTrackProperties)
+			{
+				this._maximumTrackProperties = new PropertyProxy(maximumTrackProperties_onChange);
+			}
 			return this._maximumTrackProperties;
 		}
 
@@ -660,7 +668,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _thumbProperties:PropertyProxy = new PropertyProxy(thumbProperties_onChange);
+		private var _thumbProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to the scroll bar's thumb
@@ -675,6 +683,10 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function get thumbProperties():Object
 		{
+			if(!this._thumbProperties)
+			{
+				this._thumbProperties = new PropertyProxy(thumbProperties_onChange);
+			}
 			return this._thumbProperties;
 		}
 
@@ -715,7 +727,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _decrementButtonProperties:PropertyProxy = new PropertyProxy(decrementButtonProperties_onChange);
+		private var _decrementButtonProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to the scroll bar's thumb
@@ -730,6 +742,10 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function get decrementButtonProperties():Object
 		{
+			if(!this._decrementButtonProperties)
+			{
+				this._decrementButtonProperties = new PropertyProxy(decrementButtonProperties_onChange);
+			}
 			return this._decrementButtonProperties;
 		}
 
@@ -770,7 +786,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _incrementButtonProperties:PropertyProxy = new PropertyProxy(incrementButtonProperties_onChange);
+		private var _incrementButtonProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to the scroll bar's
@@ -786,6 +802,10 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function get incrementButtonProperties():Object
 		{
+			if(!this._incrementButtonProperties)
+			{
+				this._incrementButtonProperties = new PropertyProxy(incrementButtonProperties_onChange);
+			}
 			return this._incrementButtonProperties;
 		}
 

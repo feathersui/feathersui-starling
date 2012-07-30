@@ -1478,7 +1478,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _labelProperties:PropertyProxy = new PropertyProxy(labelProperties_onChange);
+		private var _labelProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to the buttons's label
@@ -1493,6 +1493,10 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function get labelProperties():Object
 		{
+			if(!this._labelProperties)
+			{
+				this._labelProperties = new PropertyProxy(labelProperties_onChange);
+			}
 			return this._labelProperties;
 		}
 
