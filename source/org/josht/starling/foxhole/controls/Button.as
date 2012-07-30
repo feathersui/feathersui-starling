@@ -263,7 +263,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _isToggle:Boolean = false;
+		protected var _isToggle:Boolean = false;
 		
 		/**
 		 * Determines if the button may be selected or unselected when clicked.
@@ -284,7 +284,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _isSelected:Boolean = false;
+		protected var _isSelected:Boolean = false;
 		
 		/**
 		 * Indicates if the button is selected or not. The button may be
@@ -315,7 +315,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _iconPosition:String = ICON_POSITION_LEFT;
+		protected var _iconPosition:String = ICON_POSITION_LEFT;
 		
 		/**
 		 * The location of the icon, relative to the label.
@@ -341,7 +341,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _gap:Number = 10;
+		protected var _gap:Number = 10;
 		
 		/**
 		 * The space, in pixels, between the icon and the label. Applies to
