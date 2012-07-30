@@ -24,38 +24,38 @@
  */
 package org.josht.starling.foxhole.skins
 {
-	import starling.display.Image;
-	import starling.textures.Texture;
+	import org.josht.starling.display.Scale9Image;
+	import org.josht.starling.textures.Scale9Textures;
 
 	/**
-	 * Values for each state are Texture instances, and the manager attempts to
-	 * reuse the existing Image instance that is passed in to getValueForState()
-	 * as the old value by swapping the texture.
+	 * Values for each state are Scale9Textures instances, and the manager
+	 * attempts to reuse the existing Scale9Image instance that is passed in to
+	 * getValueForState() as the old value by swapping the textures.
 	 */
-	public class ImageStateValueManager extends StateValueManager
+	public class Scale9ImageStateValueSelector extends StateWithToggleValueSelector
 	{
 		/**
 		 * Constructor.
 		 */
-		public function ImageStateValueManager()
+		public function Scale9ImageStateValueSelector()
 		{
 		}
 
 		/**
-		 * Optional properties to set on the Image instance.
+		 * Optional properties to set on the Scale9Image instance.
 		 */
 		public var imageProperties:Object;
 
 		/**
 		 * @private
 		 */
-		override public function setValueForState(state:Object, value:Object):void
+		override public function setValueForState(value:Object, state:Object, isSelected:Boolean = false):void
 		{
-			if(!(value is Texture))
+			if(!(value is Scale9Textures))
 			{
-				throw new ArgumentError("Value for state must be a Texture instance.");
+				throw new ArgumentError("Value for state must be a Scale9Textures instance.");
 			}
-			super.setValueForState(state, value);
+			super.setValueForState(value, state, isSelected);
 		}
 
 		/**
@@ -63,21 +63,21 @@ package org.josht.starling.foxhole.skins
 		 */
 		override public function updateValue(target:Object, state:Object, oldValue:Object = null):Object
 		{
-			const texture:Texture = super.updateValue(target, state) as Texture;
-			if(!texture)
+			const textures:Scale9Textures = super.updateValue(target, state) as Scale9Textures;
+			if(!textures)
 			{
 				return null;
 			}
 
-			if(oldValue is Image)
+			if(oldValue is Scale9Image)
 			{
-				var image:Image = Image(oldValue);
-				image.texture = texture;
+				var image:Scale9Image = Scale9Image(oldValue);
+				image.textures = textures;
 				image.readjustSize();
 			}
 			else
 			{
-				image = new Image(texture);
+				image = new Scale9Image(textures);
 			}
 
 			if(this.imageProperties)

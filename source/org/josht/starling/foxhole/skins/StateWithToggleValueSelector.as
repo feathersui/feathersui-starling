@@ -21,7 +21,7 @@
  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  OTHER DEALINGS IN THE SOFTWARE.
- */
+*/
 package org.josht.starling.foxhole.skins
 {
 	import flash.utils.Dictionary;
@@ -32,12 +32,12 @@ package org.josht.starling.foxhole.skins
 	 * Maps a component's states to values, perhaps for one of the component's
 	 * properties such as a skin or text format.
 	 */
-	public class StateValueManager
+	public class StateWithToggleValueSelector
 	{
 		/**
 		 * Constructor.
 		 */
-		public function StateValueManager()
+		public function StateWithToggleValueSelector()
 		{
 		}
 
@@ -46,6 +46,12 @@ package org.josht.starling.foxhole.skins
 		 * Stores the values for each state.
 		 */
 		protected var stateToValue:Dictionary = new Dictionary(true);
+
+		/**
+		 * @private
+		 * Stores the values for each state where isSelected is true.
+		 */
+		protected var stateToSelectedValue:Dictionary = new Dictionary(true);
 
 		/**
 		 * If there is no value for the specified state, a default value can
@@ -66,26 +72,45 @@ package org.josht.starling.foxhole.skins
 		 * Stores a value for a specified state to be returned from
 		 * getValueForState().
 		 */
-		public function setValueForState(state:Object, value:Object):void
+		public function setValueForState(value:Object, state:Object, isSelected:Boolean = false):void
 		{
-			this.stateToValue[state] = value;
+			if(isSelected)
+			{
+				this.stateToSelectedValue[state] = value;
+			}
+			else
+			{
+				this.stateToValue[state] = value;
+			}
 		}
 
 		/**
 		 * Clears the value stored for a specific state.
 		 */
-		public function clearValueForState(state:Object):Object
+		public function clearValueForState(state:Object, isSelected:Boolean = false):Object
 		{
-			const value:Object = this.stateToValue[state];
-			delete this.stateToValue[state];
+			if(isSelected)
+			{
+				var value:Object = this.stateToSelectedValue[state];
+				delete this.stateToSelectedValue[state];
+			}
+			else
+			{
+				value = this.stateToValue[state];
+				delete this.stateToValue[state];
+			}
 			return value;
 		}
 
 		/**
 		 * Returns the value stored for a specific state.
 		 */
-		public function getValueForState(state:Object):Object
+		public function getValueForState(state:Object, isSelected:Boolean = false):Object
 		{
+			if(isSelected)
+			{
+				return this.stateToSelectedValue[state];
+			}
 			return this.stateToValue[state];
 		}
 
@@ -99,13 +124,18 @@ package org.josht.starling.foxhole.skins
 		 */
 		public function updateValue(target:Object, state:Object, oldValue:Object = null):Object
 		{
-			var value:Object = this.stateToValue[state];
-			if(!value)
+			var value:Object;
+			if(target is IToggle && IToggle(target).isSelected)
 			{
-				if(target is IToggle && IToggle(target).isSelected)
+				value = this.stateToSelectedValue[state];
+				if(!value)
 				{
 					value = this.defaultSelectedValue;
 				}
+			}
+			else
+			{
+				value = this.stateToValue[state];
 			}
 			if(!value)
 			{

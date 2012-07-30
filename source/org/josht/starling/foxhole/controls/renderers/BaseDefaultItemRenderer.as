@@ -167,7 +167,7 @@ package org.josht.starling.foxhole.controls.renderers
 			}
 			else if(this._useStateDelayTimer &&
 				(!this._stateDelayTimer || !this._stateDelayTimer.running) &&
-				(value == Button.STATE_DOWN || value == Button.STATE_SELECTED_DOWN))
+				(value == Button.STATE_DOWN))
 			{
 				this._delayedCurrentState = value;
 				if(this._stateDelayTimer)
@@ -1126,10 +1126,9 @@ package org.josht.starling.foxhole.controls.renderers
 		 */
 		protected function handleOwnerScroll():void
 		{
-			const state:String = this.isSelected ? Button.STATE_SELECTED_UP : Button.STATE_UP;
-			if(this._currentState != state)
+			if(this._currentState != Button.STATE_UP)
 			{
-				super.currentState = state;
+				super.currentState = Button.STATE_UP;
 			}
 			this._touchPointID = -1;
 			if(!this._stateDelayTimer || !this._stateDelayTimer.running)
