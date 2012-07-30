@@ -440,7 +440,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _stageTextProperties:PropertyProxy = new PropertyProxy(stageTextProperties_onChange);
+		private var _stageTextProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to the text input's
@@ -455,6 +455,10 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function get stageTextProperties():Object
 		{
+			if(!this._stageTextProperties)
+			{
+				this._stageTextProperties = new PropertyProxy(stageTextProperties_onChange);
+			}
 			return this._stageTextProperties;
 		}
 
