@@ -25,6 +25,7 @@
 package org.josht.starling.foxhole.controls.renderers
 {
 	import flash.events.TimerEvent;
+	import flash.geom.Point;
 	import flash.utils.Timer;
 
 	import org.josht.starling.foxhole.controls.Button;
@@ -41,6 +42,8 @@ package org.josht.starling.foxhole.controls.renderers
 	 */
 	public class BaseDefaultItemRenderer extends Button
 	{
+		private static const helperPoint:Point = new Point();
+
 		/**
 		 * @private
 		 */
@@ -993,6 +996,101 @@ package org.josht.starling.foxhole.controls.renderers
 				this.commitData();
 			}
 			super.draw();
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function autoSizeIfNeeded():Boolean
+		{
+			const needsWidth:Boolean = isNaN(this.explicitWidth);
+			const needsHeight:Boolean = isNaN(this.explicitHeight);
+			if(!needsWidth && !needsHeight)
+			{
+				return false;
+			}
+			this.labelControl.measureText(helperPoint);
+			if(this.accessory is FoxholeControl)
+			{
+				FoxholeControl(this.accessory).validate();
+			}
+			var newWidth:Number = this.explicitWidth;
+			if(needsWidth)
+			{
+				if(this.currentIcon && this.label)
+				{
+					if(this._iconPosition != ICON_POSITION_TOP && this._iconPosition != ICON_POSITION_BOTTOM)
+					{
+						var adjustedGap:Number = this._gap == Number.POSITIVE_INFINITY ? Math.min(this._paddingLeft, this._paddingRight) : this._gap;
+						newWidth = this.currentIcon.width + adjustedGap + helperPoint.x;
+					}
+					else
+					{
+						newWidth = Math.max(this.currentIcon.width, helperPoint.x);
+					}
+				}
+				else if(this.currentIcon)
+				{
+					newWidth = this.currentIcon.width;
+				}
+				else if(this.label)
+				{
+					newWidth = helperPoint.x;
+				}
+				if(this.accessory)
+				{
+					newWidth += this.accessory.width
+				}
+				newWidth += this._paddingLeft + this._paddingRight;
+				if(isNaN(newWidth))
+				{
+					newWidth = this._originalSkinWidth;
+				}
+				else if(!isNaN(this._originalSkinWidth))
+				{
+					newWidth = Math.max(newWidth, this._originalSkinWidth);
+				}
+			}
+
+			var newHeight:Number = this.explicitHeight;
+			if(needsHeight)
+			{
+				if(this.currentIcon && this.label)
+				{
+					if(this._iconPosition == ICON_POSITION_TOP || this._iconPosition == ICON_POSITION_BOTTOM)
+					{
+						adjustedGap = this._gap == Number.POSITIVE_INFINITY ? Math.min(this._paddingTop, this._paddingBottom) : this._gap;
+						newHeight = this.currentIcon.height + adjustedGap + helperPoint.y;
+					}
+					else
+					{
+						newHeight = Math.max(this.currentIcon.height, helperPoint.y);
+					}
+				}
+				else if(this.currentIcon)
+				{
+					newHeight = this.currentIcon.height;
+				}
+				else if(this.label)
+				{
+					newHeight = helperPoint.y;
+				}
+				if(this.accessory)
+				{
+					newHeight = Math.max(newHeight, this.accessory.height);
+				}
+				newHeight += this._paddingTop + this._paddingBottom;
+				if(isNaN(newHeight))
+				{
+					newHeight = this._originalSkinHeight;
+				}
+				else if(!isNaN(this._originalSkinHeight))
+				{
+					newHeight = Math.max(newHeight, this._originalSkinHeight);
+				}
+			}
+
+			return this.setSizeInternal(newWidth, newHeight, false);
 		}
 
 		/**
