@@ -150,6 +150,11 @@ package org.josht.starling.foxhole.controls
 		public static const SCROLL_BAR_DISPLAY_MODE_FIXED:String = "fixed";
 
 		/**
+		 * The scroll bars are never visible.
+		 */
+		public static const SCROLL_BAR_DISPLAY_MODE_NONE:String = "none";
+
+		/**
 		 * The user may touch anywhere on the scroller and drag to scroll.
 		 */
 		public static const INTERACTION_MODE_TOUCH:String = "touch";
@@ -916,6 +921,7 @@ package org.josht.starling.foxhole.controls
 		 *
 		 * @see #SCROLL_BAR_DISPLAY_MODE_FLOAT
 		 * @see #SCROLL_BAR_DISPLAY_MODE_FIXED
+		 * @see #SCROLL_BAR_DISPLAY_MODE_NONE
 		 */
 		public function get scrollBarDisplayMode():String
 		{
@@ -1359,14 +1365,16 @@ package org.josht.starling.foxhole.controls
 				this.verticalScrollBar = null;
 			}
 
-			if(this._horizontalScrollPolicy != SCROLL_POLICY_OFF && this._horizontalScrollBarFactory != null)
+			if(this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_NONE &&
+				this._horizontalScrollPolicy != SCROLL_POLICY_OFF && this._horizontalScrollBarFactory != null)
 			{
 				this.horizontalScrollBar = this._horizontalScrollBarFactory();
 				this.horizontalScrollBar.onChange.add(horizontalScrollBar_onChange);
 				const displayHorizontalScrollBar:DisplayObject = DisplayObject(this.horizontalScrollBar);
 				this.addChild(displayHorizontalScrollBar);
 			}
-			if(this._verticalScrollPolicy != SCROLL_POLICY_OFF && this._verticalScrollBarFactory != null)
+			if(this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_NONE &&
+				this._verticalScrollPolicy != SCROLL_POLICY_OFF && this._verticalScrollBarFactory != null)
 			{
 				this.verticalScrollBar = this._verticalScrollBarFactory();
 				this.verticalScrollBar.onChange.add(verticalScrollBar_onChange);
