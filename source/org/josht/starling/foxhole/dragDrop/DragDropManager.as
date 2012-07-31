@@ -131,6 +131,11 @@ package org.josht.starling.foxhole.dragDrop
 		protected static var dropTargetLocalY:Number;
 
 		/**
+		 * @private
+		 */
+		protected static var avatarOldTouchable:Boolean;
+
+		/**
 		 * Starts a new drag. If another drag is currently active, it is
 		 * immediately cancelled. Includes an optional "avatar", a visual
 		 * representation of the data that is being dragged.
@@ -157,10 +162,11 @@ package org.josht.starling.foxhole.dragDrop
 			avatarOffsetY = dragAvatarOffsetY;
 			if(avatar)
 			{
+				avatarOldTouchable = avatar.touchable;
 				avatar.touchable = false;
 				const location:Point = touch.getLocation(Starling.current.stage)
 				avatar.x = location.x + avatarOffsetX;
-				avatar.y = location.y + avatarOffsetX;
+				avatar.y = location.y + avatarOffsetY;
 				PopUpManager.addPopUp(avatar, false, false);
 			}
 			Starling.current.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
@@ -222,6 +228,7 @@ package org.josht.starling.foxhole.dragDrop
 			if(avatar)
 			{
 				PopUpManager.removePopUp(avatar);
+				avatar.touchable = avatarOldTouchable;
 				avatar = null;
 			}
 			Starling.current.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
