@@ -1283,8 +1283,8 @@ package org.josht.starling.foxhole.controls
 				this.refreshViewPortBoundsWithFixedScrollBars();
 			}
 			this.ignoreViewPortResizing = false;
-			
-			if(sizeInvalid || dataInvalid || scrollBarInvalid)
+
+			if(sizeInvalid || stylesInvalid || dataInvalid || scrollBarInvalid)
 			{
 				//stop animating. this is a serious change.
 				if(this._horizontalAutoScrollTween)
