@@ -57,13 +57,18 @@ package org.josht.starling.foxhole.core
 			quad.alpha = 0;
 			return quad;
 		}
+
+		/**
+		 * @private
+		 */
+		protected static var popUps:Vector.<DisplayObject> = new <DisplayObject>[];
 		
 		/**
 		 * Adds a pop-up to the stage.
 		 */
 		public static function addPopUp(popUp:DisplayObject, isModal:Boolean = true, isCentered:Boolean = true, customOverlayFactory:Function = null):void
 		{
-			const stage:Stage = Starling.current.stage
+			const stage:Stage = Starling.current.stage;
 			if(isModal)
 			{
 				if(customOverlayFactory == null)
@@ -80,7 +85,8 @@ package org.josht.starling.foxhole.core
 				stage.addChild(overlay);
 				POPUP_TO_OVERLAY[popUp] = overlay;
 			}
-			
+
+			popUps.push(popUp);
 			stage.addChild(popUp);
 			popUp.addEventListener(Event.REMOVED_FROM_STAGE, popUp_removedFromStageHandler);
 			
@@ -95,8 +101,22 @@ package org.josht.starling.foxhole.core
 		 */
 		public static function removePopUp(popUp:DisplayObject, dispose:Boolean = false):void
 		{
+			const index:int = popUps.indexOf(popUp);
+			if(index < 0)
+			{
+				throw new ArgumentError("Display object is not a pop-up.");
+			}
 			popUp.removeFromParent(dispose);
 		}
+
+		/**
+		 * Determines if a display object is a pop-up.
+		 */
+		public static function isPopUp(popUp:DisplayObject):Boolean
+		{
+			return popUps.indexOf(popUp) >= 0;
+		}
+
 		
 		/**
 		 * Centers a pop-up on the stage.
@@ -115,6 +135,8 @@ package org.josht.starling.foxhole.core
 		{
 			const popUp:DisplayObject = DisplayObject(event.currentTarget);
 			popUp.removeEventListener(Event.REMOVED_FROM_STAGE, popUp_removedFromStageHandler);
+			const index:int = popUps.indexOf(popUp);
+			popUps.splice(index, 1);
 			const overlay:DisplayObject = DisplayObject(POPUP_TO_OVERLAY[popUp]);
 			if(overlay)
 			{
