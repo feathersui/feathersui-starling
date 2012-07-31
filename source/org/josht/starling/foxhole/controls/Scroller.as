@@ -363,6 +363,11 @@ package org.josht.starling.foxhole.controls
 				return;
 			}
 			this._snapToPages = value;
+			if(!this._snapToPages)
+			{
+				this._horizontalPageIndex = 0;
+				this._verticalPageIndex = 0;
+			}
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
 
@@ -634,6 +639,20 @@ package org.josht.starling.foxhole.controls
 		{
 			return this._maxHorizontalScrollPosition;
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _horizontalPageIndex:int = 0;
+
+		/**
+		 * The index of the horizontal page, if snapping is enabled. If snapping
+		 * is disabled, the index will always be <code>0</code>.
+		 */
+		public function get horizontalPageIndex():int
+		{
+			return this._horizontalPageIndex;
+		}
 		
 		/**
 		 * @private
@@ -780,6 +799,20 @@ package org.josht.starling.foxhole.controls
 		public function get maxVerticalScrollPosition():Number
 		{
 			return this._maxVerticalScrollPosition;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _verticalPageIndex:int = 0;
+
+		/**
+		 * The index of the vertical page, if snapping is enabled. If snapping
+		 * is disabled, the index will always be <code>0</code>.
+		 */
+		public function get verticalPageIndex():int
+		{
+			return this._verticalPageIndex;
 		}
 		
 		/**
@@ -1310,6 +1343,8 @@ package org.josht.starling.foxhole.controls
 					//to refresh the maximums will handle it.
 					this._horizontalScrollPosition = Math.max(0, roundToNearest(this._horizontalScrollPosition, this.actualWidth));
 					this._verticalScrollPosition = Math.max(0, roundToNearest(this._verticalScrollPosition, this.actualHeight));
+					this._horizontalPageIndex = Math.round(this._horizontalScrollPosition / this.actualWidth);
+					this._verticalPageIndex = Math.round(this._verticalScrollPosition / this.actualHeight);
 				}
 				this.refreshMaxScrollPositions();
 			}
@@ -1858,6 +1893,7 @@ package org.josht.starling.foxhole.controls
 				}
 				snappedPageHorizontalScrollPosition = Math.max(0, Math.min(this._maxHorizontalScrollPosition, snappedPageHorizontalScrollPosition));
 				this.throwTo(snappedPageHorizontalScrollPosition, NaN, this._pageThrowDuration);
+				this._horizontalPageIndex = Math.round(snappedPageHorizontalScrollPosition / this.actualWidth);
 				return;
 			}
 
@@ -1924,6 +1960,7 @@ package org.josht.starling.foxhole.controls
 				}
 				snappedPageVerticalScrollPosition = Math.max(0, Math.min(this._maxVerticalScrollPosition, snappedPageVerticalScrollPosition));
 				this.throwTo(NaN, snappedPageVerticalScrollPosition, this._pageThrowDuration);
+				this._verticalPageIndex = Math.round(snappedPageVerticalScrollPosition / this.actualHeight);
 				return;
 			}
 
