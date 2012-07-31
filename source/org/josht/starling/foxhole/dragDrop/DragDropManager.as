@@ -160,11 +160,11 @@ package org.josht.starling.foxhole.dragDrop
 			avatar = dragAvatar;
 			avatarOffsetX = dragAvatarOffsetX;
 			avatarOffsetY = dragAvatarOffsetY;
+			const location:Point = touch.getLocation(Starling.current.stage);
 			if(avatar)
 			{
 				avatarOldTouchable = avatar.touchable;
 				avatar.touchable = false;
-				const location:Point = touch.getLocation(Starling.current.stage)
 				avatar.x = location.x + avatarOffsetX;
 				avatar.y = location.y + avatarOffsetY;
 				PopUpManager.addPopUp(avatar, false, false);
@@ -172,6 +172,8 @@ package org.josht.starling.foxhole.dragDrop
 			Starling.current.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			Starling.current.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler, false, 0, true);
 			dragSource.onDragStart.dispatch(dragSource, data);
+
+			updateDropTarget(location);
 		}
 
 		/**
@@ -227,7 +229,11 @@ package org.josht.starling.foxhole.dragDrop
 		{
 			if(avatar)
 			{
-				PopUpManager.removePopUp(avatar);
+				//may have been removed from parent already in the drop listener
+				if(PopUpManager.isPopUp(avatar))
+				{
+					PopUpManager.removePopUp(avatar);
+				}
 				avatar.touchable = avatarOldTouchable;
 				avatar = null;
 			}
@@ -235,6 +241,44 @@ package org.josht.starling.foxhole.dragDrop
 			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler);
 			dragSource = null;
 			_dragData = null;
+		}
+
+		/**
+		 * @private
+		 */
+		protected static function updateDropTarget(location:Point):void
+		{
+			var target:DisplayObject = Starling.current.stage.hitTest(location, true);
+			while(target && !(target is IDropTarget))
+			{
+				target = target.parent;
+			}
+			if(target)
+			{
+				location = target.globalToLocal(location);
+			}
+			if(target != dropTarget)
+			{
+				if(dropTarget && isAccepted)
+				{
+					//notice that we can reuse the previously saved location
+					dropTarget.onDragExit.dispatch(dropTarget, _dragData, dropTargetLocalX, dropTargetLocalY);
+				}
+				dropTarget = IDropTarget(target);
+				isAccepted = false;
+				if(dropTarget)
+				{
+					dropTargetLocalX = location.x;
+					dropTargetLocalY = location.y;
+					dropTarget.onDragEnter.dispatch(dropTarget, _dragData, dropTargetLocalX, dropTargetLocalY);
+				}
+			}
+			else if(dropTarget)
+			{
+				dropTargetLocalX = location.x;
+				dropTargetLocalY = location.y;
+				dropTarget.onDragMove.dispatch(dropTarget, _dragData, dropTargetLocalX, dropTargetLocalY)
+			}
 		}
 
 		/**
@@ -281,37 +325,7 @@ package org.josht.starling.foxhole.dragDrop
 					avatar.x = location.x + avatarOffsetX;
 					avatar.y = location.y + avatarOffsetY;
 				}
-				var target:DisplayObject = stage.hitTest(location, true);
-				while(target && !(target is IDropTarget))
-				{
-					target = target.parent;
-				}
-				if(target)
-				{
-					location = target.globalToLocal(location);
-				}
-				if(target != dropTarget)
-				{
-					if(dropTarget && isAccepted)
-					{
-						//notice that we can reuse the previously saved location
-						dropTarget.onDragExit.dispatch(dropTarget, _dragData, dropTargetLocalX, dropTargetLocalY);
-					}
-					dropTarget = IDropTarget(target);
-					isAccepted = false;
-					if(dropTarget)
-					{
-						dropTargetLocalX = location.x;
-						dropTargetLocalY = location.y;
-						dropTarget.onDragEnter.dispatch(dropTarget, _dragData, dropTargetLocalX, dropTargetLocalY);
-					}
-				}
-				else if(dropTarget)
-				{
-					dropTargetLocalX = location.x;
-					dropTargetLocalY = location.y;
-					dropTarget.onDragMove.dispatch(dropTarget, _dragData, dropTargetLocalX, dropTargetLocalY)
-				}
+				updateDropTarget(location);
 			}
 			else if(touch.phase == TouchPhase.ENDED)
 			{
