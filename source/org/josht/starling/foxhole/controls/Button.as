@@ -28,12 +28,16 @@ package org.josht.starling.foxhole.controls
 
 	import org.josht.starling.display.ScrollRectManager;
 	import org.josht.starling.foxhole.core.FoxholeControl;
+	import org.josht.starling.foxhole.core.ITextControl;
 	import org.josht.starling.foxhole.core.IToggle;
+	import org.josht.starling.foxhole.core.PropertyProxy;
 	import org.josht.starling.foxhole.core.PropertyProxy;
 	import org.josht.starling.foxhole.skins.StateWithToggleValueSelector;
 	import org.josht.starling.foxhole.text.BitmapFontTextFormat;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
+
+	import starling.display.DisplayObject;
 
 	import starling.display.DisplayObject;
 	import starling.events.Touch;
@@ -150,7 +154,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected var labelControl:Label;
+		protected var labelControl:ITextControl;
 		
 		/**
 		 * @private
@@ -630,7 +634,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected var _stateToTextFormatFunction:Function;
+		protected var _stateToLabelPropertiesFunction:Function;
 
 		/**
 		 * Returns a text format for the current state.
@@ -638,21 +642,21 @@ package org.josht.starling.foxhole.controls
 		 * <p>The following function signature is expected:</p>
 		 * <pre>function(target:Button, state:Object, oldTextFormat:BitmapFontTextFormat = null):BitmapFontTextFormat</pre>
 		 */
-		public function get stateToTextFormatFunction():Function
+		public function get stateToLabelPropertiesFunction():Function
 		{
-			return this._stateToTextFormatFunction;
+			return this._stateToLabelPropertiesFunction;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set stateToTextFormatFunction(value:Function):void
+		public function set stateToLabelPropertiesFunction(value:Function):void
 		{
-			if(this._stateToTextFormatFunction == value)
+			if(this._stateToLabelPropertiesFunction == value)
 			{
 				return;
 			}
-			this._stateToTextFormatFunction = value;
+			this._stateToLabelPropertiesFunction = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -935,236 +939,436 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected var _textFormatSelector:StateWithToggleValueSelector = new StateWithToggleValueSelector();
+		protected var _labelPropertiesSelector:StateWithToggleValueSelector = new StateWithToggleValueSelector();
 		
 		/**
-		 * The text format used when no other text format is defined for the
-		 * current state. Intended for use when multiple states should use the
-		 * same text format.
+		 * The default label properties are a set of key/value pairs to be
+		 * passed down ot the button's label instance, and it is used when no
+		 * other properties are defined for the button's current state. Intended
+		 * for use when multiple states should use the same properties.
 		 *
-		 * @see #defaultSelectedTextFormat
-		 * @see #upTextFormat
-		 * @see #downTextFormat
-		 * @see #hoverTextFormat
-		 * @see #disabledTextFormat
-		 * @see #selectedUpTextFormat
-		 * @see #selectedDownTextFormat
-		 * @see #selectedHoverTextFormat
-		 * @see #selectedDisabledTextFormat
+		 * @see #defaultSelectedLabelProperties
+		 * @see #upLabelProperties
+		 * @see #downLabelProperties
+		 * @see #hoverLabelProperties
+		 * @see #disabledLabelProperties
+		 * @see #selectedUpLabelProperties
+		 * @see #selectedDownLabelProperties
+		 * @see #selectedHoverLabelProperties
+		 * @see #selectedDisabledLabelProperties
 		 */
-		public function get defaultTextFormat():BitmapFontTextFormat
+		public function get defaultLabelProperties():Object
 		{
-			return BitmapFontTextFormat(this._textFormatSelector.defaultValue);
+			var value:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.defaultValue);
+			if(!value)
+			{
+				value = new PropertyProxy(labelProperties_onChange);
+				this._labelPropertiesSelector.defaultValue = value;
+			}
+			return value;
 		}
 		
 		/**
 		 * @private
 		 */
-		public function set defaultTextFormat(value:BitmapFontTextFormat):void
+		public function set defaultLabelProperties(value:Object):void
 		{
-			this._textFormatSelector.defaultValue = value;
+			if(!(value is PropertyProxy))
+			{
+				value = PropertyProxy.fromObject(value);
+			}
+			const oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.defaultValue);
+			if(oldValue)
+			{
+				oldValue.onChange.remove(labelProperties_onChange);
+			}
+			this._labelPropertiesSelector.defaultValue = value;
+			if(value)
+			{
+				value.onChange.add(labelProperties_onChange);
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
 		/**
-		 * The text format used for the button's up state. If <code>null</code>,
-		 * then <code>defaultTextFormat</code> is used instead.
+		 * A set of key/value pairs to be passed down ot the button's label
+		 * instance when the button is in the up state. If <code>null</code>,
+		 * then <code>defaultLabelProperties</code> is used instead.
 		 * 
-		 * @see #defaultTextFormat
-		 * @see #selectedUpTextFormat
+		 * @see #defaultLabelProperties
+		 * @see #selectedUpLabelProperties
 		 */
-		public function get upTextFormat():BitmapFontTextFormat
+		public function get upLabelProperties():Object
 		{
-			return BitmapFontTextFormat(this._textFormatSelector.getValueForState(STATE_UP, false));
+			var value:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_UP, false));
+			if(!value)
+			{
+				value = new PropertyProxy(labelProperties_onChange);
+				this._labelPropertiesSelector.setValueForState(value, STATE_UP, false);
+			}
+			return value;
 		}
 		
 		/**
 		 * @private
 		 */
-		public function set upTextFormat(value:BitmapFontTextFormat):void
+		public function set upLabelProperties(value:Object):void
 		{
-			this._textFormatSelector.setValueForState(value, STATE_UP, false);
+			if(!(value is PropertyProxy))
+			{
+				value = PropertyProxy.fromObject(value);
+			}
+			const oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_UP, false));
+			if(oldValue)
+			{
+				oldValue.onChange.remove(labelProperties_onChange);
+			}
+			this._labelPropertiesSelector.setValueForState(value, STATE_UP, false);
+			if(value)
+			{
+				value.onChange.add(labelProperties_onChange);
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
 		/**
-		 * The text format used for the button's down state. If <code>null</code>,
-		 * then <code>defaultTextFormat</code> is used instead.
+		 * A set of key/value pairs to be passed down ot the button's label
+		 * instance when the button is in the down state. If <code>null</code>,
+		 * then <code>defaultLabelProperties</code> is used instead.
 		 * 
-		 * @see #defaultTextFormat
-		 * @see #selectedDownTextFormat
+		 * @see #defaultLabelProperties
+		 * @see #selectedDownLabelProperties
 		 */
-		public function get downTextFormat():BitmapFontTextFormat
+		public function get downLabelProperties():Object
 		{
-			return BitmapFontTextFormat(this._textFormatSelector.getValueForState(STATE_DOWN, false));
+			var value:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_DOWN, false));
+			if(!value)
+			{
+				value = new PropertyProxy(labelProperties_onChange);
+				this._labelPropertiesSelector.setValueForState(value, STATE_DOWN, false);
+			}
+			return value;
 		}
 		
 		/**
 		 * @private
 		 */
-		public function set downTextFormat(value:BitmapFontTextFormat):void
+		public function set downLabelProperties(value:Object):void
 		{
-			this._textFormatSelector.setValueForState(value, STATE_DOWN, false);
+			if(!(value is PropertyProxy))
+			{
+				value = PropertyProxy.fromObject(value);
+			}
+			const oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_DOWN, false));
+			if(oldValue)
+			{
+				oldValue.onChange.remove(labelProperties_onChange);
+			}
+			this._labelPropertiesSelector.setValueForState(value, STATE_DOWN, false);
+			if(value)
+			{
+				value.onChange.add(labelProperties_onChange);
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
-		 * The text format used for the button's hover state. If <code>null</code>,
-		 * then <code>defaultTextFormat</code> is used instead.
+		 * A set of key/value pairs to be passed down ot the button's label
+		 * instance when the button is in the hover state. If <code>null</code>,
+		 * then <code>defaultLabelProperties</code> is used instead.
 		 *
-		 * @see #defaultTextFormat
-		 * @see #selectedHoverTextFormat
+		 * @see #defaultLabelProperties
+		 * @see #selectedHoverLabelProperties
 		 */
-		public function get hoverTextFormat():BitmapFontTextFormat
+		public function get hoverLabelProperties():Object
 		{
-			return BitmapFontTextFormat(this._textFormatSelector.getValueForState(STATE_HOVER, false));
+			var value:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_HOVER, false));
+			if(!value)
+			{
+				value = new PropertyProxy(labelProperties_onChange);
+				this._labelPropertiesSelector.setValueForState(value, STATE_HOVER, false);
+			}
+			return value;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set hoverTextFormat(value:BitmapFontTextFormat):void
+		public function set hoverLabelProperties(value:Object):void
 		{
-			this._textFormatSelector.setValueForState(value, STATE_HOVER, false);
+			if(!(value is PropertyProxy))
+			{
+				value = PropertyProxy.fromObject(value);
+			}
+			const oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_HOVER, false));
+			if(oldValue)
+			{
+				oldValue.onChange.remove(labelProperties_onChange);
+			}
+			this._labelPropertiesSelector.setValueForState(value, STATE_HOVER, false);
+			if(value)
+			{
+				value.onChange.add(labelProperties_onChange);
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
 		/**
-		 * The text format used for the button's disabled state. If <code>null</code>,
-		 * then <code>defaultTextFormat</code> is used instead.
+		 * A set of key/value pairs to be passed down ot the button's label
+		 * instance when the button is in the disabled state. If <code>null</code>,
+		 * then <code>defaultLabelProperties</code> is used instead.
 		 * 
-		 * @see #defaultTextFormat
-		 * @see #selectedDisabledTextFormat
+		 * @see #defaultLabelProperties
+		 * @see #selectedDisabledLabelProperties
 		 */
-		public function get disabledTextFormat():BitmapFontTextFormat
+		public function get disabledLabelProperties():Object
 		{
-			return BitmapFontTextFormat(this._textFormatSelector.getValueForState(STATE_DISABLED, false));
+			var value:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_DISABLED, false));
+			if(!value)
+			{
+				value = new PropertyProxy(labelProperties_onChange);
+				this._labelPropertiesSelector.setValueForState(value, STATE_DISABLED, false);
+			}
+			return value;
 		}
 		
 		/**
 		 * @private
 		 */
-		public function set disabledTextFormat(value:BitmapFontTextFormat):void
+		public function set disabledLabelProperties(value:Object):void
 		{
-			this._textFormatSelector.setValueForState(value, STATE_DISABLED, false);
+			if(!(value is PropertyProxy))
+			{
+				value = PropertyProxy.fromObject(value);
+			}
+			const oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_DISABLED, false));
+			if(oldValue)
+			{
+				oldValue.onChange.remove(labelProperties_onChange);
+			}
+			this._labelPropertiesSelector.setValueForState(value, STATE_DISABLED, false);
+			if(value)
+			{
+				value.onChange.add(labelProperties_onChange);
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
 		/**
-		 * The text format used when no other text format is defined for the
-		 * current state when the button is selected. Has a higher priority than
-		 * <code>defaultTextFormat</code>, but a lower priority than other
-		 * selected text formats.
+		 * The default selected label properties are a set of key/value pairs to
+		 * be passed down ot the button's label instance, and it is used when
+		 * the button is selected and no other properties are defined for the
+		 * button's current state. If <code>null</code>, then
+		 * <code>defaultLabelProperties</code> is used instead.
 		 * 
-		 * @see #defaultTextFormat
-		 * @see #selectedUpTextFormat
-		 * @see #selectedDownTextFormat
-		 * @see #selectedHoverTextFormat
-		 * @see #selectedDisabledTextFormat
+		 * @see #defaultLabelProperties
+		 * @see #selectedUpLabelProperties
+		 * @see #selectedDownLabelProperties
+		 * @see #selectedHoverLabelProperties
+		 * @see #selectedDisabledLabelProperties
 		 */
-		public function get defaultSelectedTextFormat():BitmapFontTextFormat
+		public function get defaultSelectedLabelProperties():Object
 		{
-			return BitmapFontTextFormat(this._textFormatSelector.defaultSelectedValue);
+			var value:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.defaultSelectedValue);
+			if(!value)
+			{
+				value = new PropertyProxy(labelProperties_onChange);
+				this._labelPropertiesSelector.defaultSelectedValue = value;
+			}
+			return value;
 		}
 		
 		/**
 		 * @private
 		 */
-		public function set defaultSelectedTextFormat(value:BitmapFontTextFormat):void
+		public function set defaultSelectedLabelProperties(value:Object):void
 		{
-			this._textFormatSelector.defaultSelectedValue = value;
+			if(!(value is PropertyProxy))
+			{
+				value = PropertyProxy.fromObject(value);
+			}
+			const oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.defaultSelectedValue);
+			if(oldValue)
+			{
+				oldValue.onChange.remove(labelProperties_onChange);
+			}
+			this._labelPropertiesSelector.defaultSelectedValue = value;
+			if(value)
+			{
+				value.onChange.add(labelProperties_onChange);
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
 		/**
-		 * The text format used for the button's up state when the button is
-		 * selected. If <code>null</code>, then <code>defaultSelectedTextFormat</code>
-		 * is used instead. If <code>defaultSelectedTextFormat</code> is also
-		 * <code>null</code>, then <code>defaultTextFormat</code> is used.
+		 * A set of key/value pairs to be passed down ot the button's label
+		 * instance when the button is in the up state and is selected. If
+		 * <code>null</code>, then <code>defaultSelectedLabelProperties</code>
+		 * is used instead. If <code>defaultSelectedLabelProperties</code> is also
+		 * <code>null</code>, then <code>defaultLabelProperties</code> is used.
 		 * 
-		 * @see #defaultTextFormat
-		 * @see #defaultSelectedTextFormat
+		 * @see #defaultLabelProperties
+		 * @see #defaultSelectedLabelProperties
 		 */
-		public function get selectedUpTextFormat():BitmapFontTextFormat
+		public function get selectedUpLabelProperties():Object
 		{
-			return BitmapFontTextFormat(this._textFormatSelector.getValueForState(STATE_UP, true));
+			var value:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_UP, true));
+			if(!value)
+			{
+				value = new PropertyProxy(labelProperties_onChange);
+				this._labelPropertiesSelector.setValueForState(value, STATE_UP, true);
+			}
+			return value;
 		}
 		
 		/**
 		 * @private
 		 */
-		public function set selectedUpTextFormat(value:BitmapFontTextFormat):void
+		public function set selectedUpLabelProperties(value:Object):void
 		{
-			this._textFormatSelector.setValueForState(value, STATE_UP, true);
+			if(!(value is PropertyProxy))
+			{
+				value = PropertyProxy.fromObject(value);
+			}
+			const oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_UP, true));
+			if(oldValue)
+			{
+				oldValue.onChange.remove(labelProperties_onChange);
+			}
+			this._labelPropertiesSelector.setValueForState(value, STATE_UP, true);
+			if(value)
+			{
+				value.onChange.add(labelProperties_onChange);
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
 		/**
-		 * The text format used for the button's down state when the button is
-		 * selected. If <code>null</code>, then <code>defaultSelectedTextFormat</code>
-		 * is used instead. If <code>defaultSelectedTextFormat</code> is also
-		 * <code>null</code>, then <code>defaultTextFormat</code> is used.
+		 * A set of key/value pairs to be passed down ot the button's label
+		 * instance when the button is in the down state and is selected. If
+		 * <code>null</code>, then <code>defaultSelectedLabelProperties</code>
+		 * is used instead. If <code>defaultSelectedLabelProperties</code> is also
+		 * <code>null</code>, then <code>defaultLabelProperties</code> is used.
 		 * 
-		 * @see #defaultTextFormat
-		 * @see #defaultSelectedTextFormat
+		 * @see #defaultLabelProperties
+		 * @see #defaultSelectedLabelProperties
 		 */
-		public function get selectedDownTextFormat():BitmapFontTextFormat
+		public function get selectedDownLabelProperties():Object
 		{
-			return BitmapFontTextFormat(this._textFormatSelector.getValueForState(STATE_DOWN, true));
+			var value:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_DOWN, true));
+			if(!value)
+			{
+				value = new PropertyProxy(labelProperties_onChange);
+				this._labelPropertiesSelector.setValueForState(value, STATE_DOWN, true);
+			}
+			return value;
 		}
 		
 		/**
 		 * @private
 		 */
-		public function set selectedDownTextFormat(value:BitmapFontTextFormat):void
+		public function set selectedDownLabelProperties(value:Object):void
 		{
-			this._textFormatSelector.setValueForState(value, STATE_DOWN, true);
+			if(!(value is PropertyProxy))
+			{
+				value = PropertyProxy.fromObject(value);
+			}
+			const oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_DOWN, true));
+			if(oldValue)
+			{
+				oldValue.onChange.remove(labelProperties_onChange);
+			}
+			this._labelPropertiesSelector.setValueForState(value, STATE_DOWN, true);
+			if(value)
+			{
+				PropertyProxy(value).onChange.add(labelProperties_onChange);
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
-		 * The text format used for the button's down state when the button is
-		 * selected. If <code>null</code>, then <code>defaultSelectedTextFormat</code>
-		 * is used instead. If <code>defaultSelectedTextFormat</code> is also
-		 * <code>null</code>, then <code>defaultTextFormat</code> is used.
+		 * A set of key/value pairs to be passed down ot the button's label
+		 * instance when the button is in the hover state and is selected. If
+		 * <code>null</code>, then <code>defaultSelectedLabelProperties</code>
+		 * is used instead. If <code>defaultSelectedLabelProperties</code> is also
+		 * <code>null</code>, then <code>defaultLabelProperties</code> is used.
 		 *
-		 * @see #defaultTextFormat
-		 * @see #defaultSelectedTextFormat
+		 * @see #defaultLabelProperties
+		 * @see #defaultSelectedLabelProperties
 		 */
-		public function get selectedHoverTextFormat():BitmapFontTextFormat
+		public function get selectedHoverLabelProperties():Object
 		{
-			return BitmapFontTextFormat(this._textFormatSelector.getValueForState(STATE_HOVER, true));
+			var value:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_HOVER, true));
+			if(!value)
+			{
+				value = new PropertyProxy(labelProperties_onChange);
+				this._labelPropertiesSelector.setValueForState(value, STATE_HOVER, true);
+			}
+			return value;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set selectedHoverTextFormat(value:BitmapFontTextFormat):void
+		public function set selectedHoverLabelProperties(value:Object):void
 		{
-			this._textFormatSelector.setValueForState(value, STATE_HOVER, true);
+			if(!(value is PropertyProxy))
+			{
+				value = PropertyProxy.fromObject(value);
+			}
+			const oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_HOVER, true));
+			if(oldValue)
+			{
+				oldValue.onChange.remove(labelProperties_onChange);
+			}
+			this._labelPropertiesSelector.setValueForState(value, STATE_HOVER, true);
+			if(value)
+			{
+				value.onChange.add(labelProperties_onChange);
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
-		 * The text format used for the button's disabled state when the button is
-		 * selected. If <code>null</code>, then <code>defaultSelectedTextFormat</code>
-		 * is used instead. If <code>defaultSelectedTextFormat</code> is also
-		 * <code>null</code>, then <code>defaultTextFormat</code> is used.
+		 * A set of key/value pairs to be passed down ot the button's label
+		 * instance when the button is in the disabled state and is selected. If
+		 * <code>null</code>, then <code>defaultSelectedLabelProperties</code>
+		 * is used instead. If <code>defaultSelectedLabelProperties</code> is also
+		 * <code>null</code>, then <code>defaultLabelProperties</code> is used.
 		 *
-		 * @see #defaultTextFormat
-		 * @see #defaultSelectedTextFormat
+		 * @see #defaultLabelProperties
+		 * @see #defaultSelectedLabelProperties
 		 */
-		public function get selectedDisabledTextFormat():BitmapFontTextFormat
+		public function get selectedDisabledLabelProperties():Object
 		{
-			return BitmapFontTextFormat(this._textFormatSelector.getValueForState(STATE_DISABLED, true));
+			var value:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_DISABLED, true));
+			if(!value)
+			{
+				value = new PropertyProxy(labelProperties_onChange);
+				this._labelPropertiesSelector.setValueForState(value, STATE_DISABLED, true);
+			}
+			return value;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set selectedDisabledTextFormat(value:BitmapFontTextFormat):void
+		public function set selectedDisabledLabelProperties(value:Object):void
 		{
-			this._textFormatSelector.setValueForState(value, STATE_DISABLED, true);
+			if(!(value is PropertyProxy))
+			{
+				value = PropertyProxy.fromObject(value);
+			}
+			const oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_DISABLED, true));
+			if(oldValue)
+			{
+				oldValue.onChange.remove(labelProperties_onChange);
+			}
+			this._labelPropertiesSelector.setValueForState(value, STATE_DISABLED, true);
+			if(value)
+			{
+				value.onChange.add(labelProperties_onChange);
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
@@ -1474,65 +1678,6 @@ package org.josht.starling.foxhole.controls
 				this.flatten();
 			}
 		}
-
-		/**
-		 * @private
-		 */
-		private var _labelProperties:PropertyProxy;
-
-		/**
-		 * A set of key/value pairs to be passed down to the buttons's label
-		 * instance. The label is a Foxhole Label control.
-		 *
-		 * <p>If the sub-component has its own sub-components, their properties
-		 * can be set too, using attribute <code>&#64;</code> notation. For example,
-		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
-		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
-		 * you can use the following syntax:</p>
-		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
-		 */
-		public function get labelProperties():Object
-		{
-			if(!this._labelProperties)
-			{
-				this._labelProperties = new PropertyProxy(labelProperties_onChange);
-			}
-			return this._labelProperties;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set labelProperties(value:Object):void
-		{
-			if(this._labelProperties == value)
-			{
-				return;
-			}
-			if(!value)
-			{
-				value = new PropertyProxy();
-			}
-			if(!(value is PropertyProxy))
-			{
-				const newValue:PropertyProxy = new PropertyProxy();
-				for(var propertyName:String in value)
-				{
-					newValue[propertyName] = value[propertyName];
-				}
-				value = newValue;
-			}
-			if(this._labelProperties)
-			{
-				this._labelProperties.onChange.remove(labelProperties_onChange);
-			}
-			this._labelProperties = PropertyProxy(value);
-			if(this._labelProperties)
-			{
-				this._labelProperties.onChange.add(labelProperties_onChange);
-			}
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
 		
 		/**
 		 * @private
@@ -1594,8 +1739,9 @@ package org.josht.starling.foxhole.controls
 			if(!this.labelControl)
 			{
 				this.labelControl = new Label();
-				this.labelControl.nameList.add(this.defaultLabelName);
-				this.addChild(this.labelControl);
+				const foxholeLabel:FoxholeControl = FoxholeControl(this.labelControl);
+				foxholeLabel.nameList.add(this.defaultLabelName);
+				this.addChild(foxholeLabel);
 			}
 		}
 		
@@ -1747,7 +1893,7 @@ package org.josht.starling.foxhole.controls
 		protected function refreshLabelData():void
 		{
 			this.labelControl.text = this._label;
-			this.labelControl.visible = this._label != null;
+			DisplayObject(this.labelControl).visible = this._label != null;
 		}
 
 		/**
@@ -1809,27 +1955,23 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function refreshLabelStyles():void
 		{
-			for(var propertyName:String in this._labelProperties)
+			if(this._stateToLabelPropertiesFunction != null)
 			{
-				if(this.labelControl.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._labelProperties[propertyName];
-					this.labelControl[propertyName] = propertyValue;
-				}
-			}
-
-			if(this._stateToTextFormatFunction != null)
-			{
-				var format:BitmapFontTextFormat = BitmapFontTextFormat(this._stateToTextFormatFunction(this, this._currentState));
+				var properties:Object = this._stateToLabelPropertiesFunction(this, this._currentState);
 			}
 			else
 			{
-				format = BitmapFontTextFormat(this._textFormatSelector.updateValue(this, this._currentState));
+				properties = this._labelPropertiesSelector.updateValue(this, this._currentState);
 			}
-			
-			if(format)
+
+			const foxholeLabel:FoxholeControl = FoxholeControl(this.labelControl);
+			for(var propertyName:String in properties)
 			{
-				this.labelControl.textFormat = format;
+				if(foxholeLabel.hasOwnProperty(propertyName))
+				{
+					var propertyValue:Object = properties[propertyName];
+					foxholeLabel[propertyName] = propertyValue;
+				}
 			}
 		}
 		
@@ -1857,23 +1999,24 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function layoutContent():void
 		{
+			const foxholeLabel:FoxholeControl = FoxholeControl(this.labelControl);
 			if(this.label && this.currentIcon)
 			{
 				if(this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE ||
 					this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
 				{
 					var adjustedGap:Number = this._gap == Number.POSITIVE_INFINITY ? Math.min(this._paddingLeft, this._paddingRight) : this._gap;
-					this.labelControl.maxWidth = this.actualWidth - this._paddingLeft - this._paddingRight - this.currentIcon.width - adjustedGap;
+					foxholeLabel.maxWidth = this.actualWidth - this._paddingLeft - this._paddingRight - this.currentIcon.width - adjustedGap;
 				}
-				this.labelControl.validate();
-				this.positionLabelOrIcon(this.labelControl);
+				foxholeLabel.validate();
+				this.positionLabelOrIcon(foxholeLabel);
 				this.positionLabelAndIcon();
 			}
 			else if(this.label && !this.currentIcon)
 			{
-				this.labelControl.maxWidth = this.actualWidth - this._paddingLeft - this._paddingRight;
-				this.labelControl.validate();
-				this.positionLabelOrIcon(this.labelControl);
+				foxholeLabel.maxWidth = this.actualWidth - this._paddingLeft - this._paddingRight;
+				foxholeLabel.validate();
+				this.positionLabelOrIcon(foxholeLabel);
 			}
 			else if(!this.label && this.currentIcon)
 			{
@@ -1917,64 +2060,65 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function positionLabelAndIcon():void
 		{
+			const foxholeLabel:FoxholeControl = FoxholeControl(this.labelControl);
 			if(this._iconPosition == ICON_POSITION_TOP)
 			{
 				if(this._gap == Number.POSITIVE_INFINITY)
 				{
 					this.currentIcon.y = this._paddingTop;
-					this.labelControl.y = this.actualHeight - this._paddingBottom - this.labelControl.height;
+					foxholeLabel.y = this.actualHeight - this._paddingBottom - foxholeLabel.height;
 				}
 				else
 				{
 					if(this._verticalAlign == VERTICAL_ALIGN_TOP)
 					{
-						this.labelControl.y += this.currentIcon.height + this._gap;
+						foxholeLabel.y += this.currentIcon.height + this._gap;
 					}
 					else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
 					{
-						this.labelControl.y += (this.currentIcon.height + this._gap) / 2;
+						foxholeLabel.y += (this.currentIcon.height + this._gap) / 2;
 					}
-					this.currentIcon.y = this.labelControl.y - this.currentIcon.height - this._gap;
+					this.currentIcon.y = foxholeLabel.y - this.currentIcon.height - this._gap;
 				}
 			}
 			else if(this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
 			{
 				if(this._gap == Number.POSITIVE_INFINITY)
 				{
-					this.labelControl.x = this._paddingLeft;
+					foxholeLabel.x = this._paddingLeft;
 					this.currentIcon.x = this.actualWidth - this._paddingRight - this.currentIcon.width;
 				}
 				else
 				{
 					if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
 					{
-						this.labelControl.x -= this.currentIcon.width + this._gap;
+						foxholeLabel.x -= this.currentIcon.width + this._gap;
 					}
 					else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
 					{
-						this.labelControl.x -= (this.currentIcon.width + this._gap) / 2;
+						foxholeLabel.x -= (this.currentIcon.width + this._gap) / 2;
 					}
-					this.currentIcon.x = this.labelControl.x + this.labelControl.width + this._gap;
+					this.currentIcon.x = foxholeLabel.x + foxholeLabel.width + this._gap;
 				}
 			}
 			else if(this._iconPosition == ICON_POSITION_BOTTOM)
 			{
 				if(this._gap == Number.POSITIVE_INFINITY)
 				{
-					this.labelControl.y = this._paddingTop;
+					foxholeLabel.y = this._paddingTop;
 					this.currentIcon.y = this.actualHeight - this._paddingBottom - this.currentIcon.height;
 				}
 				else
 				{
 					if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
 					{
-						this.labelControl.y -= this.currentIcon.height + this._gap;
+						foxholeLabel.y -= this.currentIcon.height + this._gap;
 					}
 					else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
 					{
-						this.labelControl.y -= (this.currentIcon.height + this._gap) / 2;
+						foxholeLabel.y -= (this.currentIcon.height + this._gap) / 2;
 					}
-					this.currentIcon.y = this.labelControl.y + this.labelControl.height + this._gap;
+					this.currentIcon.y = foxholeLabel.y + foxholeLabel.height + this._gap;
 				}
 			}
 			else if(this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE)
@@ -1982,46 +2126,43 @@ package org.josht.starling.foxhole.controls
 				if(this._gap == Number.POSITIVE_INFINITY)
 				{
 					this.currentIcon.x = this._paddingLeft;
-					this.labelControl.x = this.actualWidth - this._paddingRight - this.labelControl.width;
+					foxholeLabel.x = this.actualWidth - this._paddingRight - foxholeLabel.width;
 				}
 				else
 				{
 					if(this._horizontalAlign == HORIZONTAL_ALIGN_LEFT)
 					{
-						this.labelControl.x += this._gap + this.currentIcon.width;
+						foxholeLabel.x += this._gap + this.currentIcon.width;
 					}
 					else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
 					{
-						this.labelControl.x += (this._gap + this.currentIcon.width) / 2;
+						foxholeLabel.x += (this._gap + this.currentIcon.width) / 2;
 					}
-					this.currentIcon.x = this.labelControl.x - this._gap - this.currentIcon.width;
+					this.currentIcon.x = foxholeLabel.x - this._gap - this.currentIcon.width;
 				}
 			}
 			
 			if(this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_RIGHT)
 			{
-				this.currentIcon.y = this.labelControl.y + (this.labelControl.height - this.currentIcon.height) / 2;
+				this.currentIcon.y = foxholeLabel.y + (foxholeLabel.height - this.currentIcon.height) / 2;
 			}
 			else if(this._iconPosition == ICON_POSITION_LEFT_BASELINE || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
 			{
-				const font:BitmapFont = this.labelControl.textFormat.font;
-				const formatSize:Number = this.labelControl.textFormat.size;
-				const fontSizeScale:Number = isNaN(formatSize) ? 1 : (formatSize / font.size);
-				this.currentIcon.y = this.labelControl.y + (fontSizeScale * font.baseline) - this.currentIcon.height;
+				this.currentIcon.y = foxholeLabel.y + (this.labelControl.baseline) - this.currentIcon.height;
 			}
 			else
 			{
 				if(this._horizontalAlign == HORIZONTAL_ALIGN_LEFT)
 				{
-					this.currentIcon.x = this.labelControl.x;
+					this.currentIcon.x = foxholeLabel.x;
 				}
 				else if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
 				{
-					this.currentIcon.x = this.labelControl.x + this.labelControl.width - this.currentIcon.width;
+					this.currentIcon.x = foxholeLabel.x + foxholeLabel.width - this.currentIcon.width;
 				}
 				else
 				{
-					this.currentIcon.x = this.labelControl.x + (this.labelControl.width - this.currentIcon.width) / 2;
+					this.currentIcon.x = foxholeLabel.x + (foxholeLabel.width - this.currentIcon.width) / 2;
 				}
 			}
 		}
