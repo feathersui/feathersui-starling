@@ -55,7 +55,6 @@ package org.josht.starling.foxhole.controls
 		{
 			super.isToggle = true;
 			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
-			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 		}
 
 		/**
@@ -117,12 +116,13 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected function removedFromStageHandler(event:Event):void
+		override protected function removedFromStageHandler(event:Event):void
 		{
-			if(this._toggleGroup)
+			if(this._toggleGroup == defaultRadioGroup)
 			{
 				this._toggleGroup.removeItem(this);
 			}
+			super.removedFromStageHandler(event);
 		}
 	}
 }
