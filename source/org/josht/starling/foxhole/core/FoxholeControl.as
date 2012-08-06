@@ -29,6 +29,7 @@ package org.josht.starling.foxhole.core
 	import flash.geom.Rectangle;
 
 	import org.josht.starling.display.Sprite;
+	import org.josht.starling.foxhole.controls.Label;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 
@@ -100,6 +101,19 @@ package org.josht.starling.foxhole.core
 		 * has changed.
 		 */
 		public static const INVALIDATION_FLAG_SELECTED:String = "selected";
+
+		/**
+		 * @private
+		 */
+		protected static const INVALIDATION_FLAG_TEXT_RENDERER:String = "textRenderer";
+
+		/**
+		 * @private
+		 */
+		protected static function defaultTextControlFactory():ITextControl
+		{
+			return new Label();
+		}
 		
 		/**
 		 * Constructor.

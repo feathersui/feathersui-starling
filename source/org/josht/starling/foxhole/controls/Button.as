@@ -28,6 +28,7 @@ package org.josht.starling.foxhole.controls
 
 	import org.josht.starling.display.ScrollRectManager;
 	import org.josht.starling.foxhole.core.FoxholeControl;
+	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.ITextControl;
 	import org.josht.starling.foxhole.core.IToggle;
 	import org.josht.starling.foxhole.core.PropertyProxy;
@@ -935,6 +936,35 @@ package org.josht.starling.foxhole.controls
 			this._skinSelector.setValueForState(value, STATE_DISABLED, true);
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _labelFactory:Function = defaultTextControlFactory;
+
+		/**
+		 * A function used to instantiate the button's label sub-component.
+		 *
+		 * <p>The factory should have the following function signature:</p>
+		 * <pre>function():ITextControl</pre>
+		 */
+		public function get labelFactory():Function
+		{
+			return this._labelFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set labelFactory(value:Function):void
+		{
+			if(this._labelFactory == value)
+			{
+				return;
+			}
+			this._labelFactory = value;
+			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
+		}
 		
 		/**
 		 * @private
@@ -1734,20 +1764,6 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		override protected function initialize():void
-		{
-			if(!this.labelControl)
-			{
-				this.labelControl = new Label();
-				const foxholeLabel:FoxholeControl = FoxholeControl(this.labelControl);
-				foxholeLabel.nameList.add(this.defaultLabelName);
-				this.addChild(foxholeLabel);
-			}
-		}
-		
-		/**
-		 * @private
-		 */
 		override protected function draw():void
 		{
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
@@ -1755,8 +1771,14 @@ package org.josht.starling.foxhole.controls
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 			const selectedInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SELECTED);
+			const textRendererInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_TEXT_RENDERER);
+
+			if(textRendererInvalid)
+			{
+				this.createLabel();
+			}
 			
-			if(dataInvalid)
+			if(textRendererInvalid || dataInvalid)
 			{
 				this.refreshLabelData();
 			}
@@ -1773,6 +1795,10 @@ package org.josht.starling.foxhole.controls
 					this._originalSkinHeight = this.currentSkin.height;
 				}
 				this.refreshIcon();
+			}
+
+			if(textRendererInvalid || stylesInvalid || stateInvalid || selectedInvalid)
+			{
 				this.refreshLabelStyles();
 			}
 
@@ -1783,7 +1809,7 @@ package org.josht.starling.foxhole.controls
 				this.scaleSkin();
 			}
 			
-			if(stylesInvalid || stateInvalid || selectedInvalid || dataInvalid || sizeInvalid)
+			if(textRendererInvalid || stylesInvalid || stateInvalid || selectedInvalid || dataInvalid || sizeInvalid)
 			{
 				if(this.currentSkin is FoxholeControl)
 				{
@@ -1885,6 +1911,23 @@ package org.josht.starling.foxhole.controls
 			}
 
 			return this.setSizeInternal(newWidth, newHeight, false);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function createLabel():void
+		{
+			if(this.labelControl)
+			{
+				this.removeChild(FoxholeControl(this.labelControl), true);
+				this.labelControl = null;
+			}
+
+			this.labelControl = this._labelFactory();
+			const foxholeLabel:FoxholeControl = FoxholeControl(this.labelControl);
+			foxholeLabel.nameList.add(this.defaultLabelName);
+			this.addChild(foxholeLabel);
 		}
 
 		/**
