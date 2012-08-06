@@ -445,18 +445,9 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			if(!value)
+			if(value && !(value is PropertyProxy))
 			{
-				value = new PropertyProxy();
-			}
-			if(!(value is PropertyProxy))
-			{
-				const newValue:PropertyProxy = new PropertyProxy();
-				for(var propertyName:String in value)
-				{
-					newValue[propertyName] = value[propertyName];
-				}
-				value = newValue;
+				value = PropertyProxy.fromObject(value);
 			}
 			if(this._scrollerProperties)
 			{
