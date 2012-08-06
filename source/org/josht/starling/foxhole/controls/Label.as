@@ -29,6 +29,7 @@ package org.josht.starling.foxhole.controls
 	import flash.geom.Rectangle;
 
 	import org.josht.starling.foxhole.core.FoxholeControl;
+	import org.josht.starling.foxhole.core.ITextControl;
 	import org.josht.starling.foxhole.text.BitmapFontTextFormat;
 
 	import starling.core.RenderSupport;
@@ -42,7 +43,7 @@ package org.josht.starling.foxhole.controls
 	 * Displays bitmap text. Automatically resizes itself. Can be truncated to a
 	 * maximum width.
 	 */
-	public class Label extends FoxholeControl
+	public class Label extends FoxholeControl implements ITextControl
 	{
 		/**
 		 * @private
@@ -229,6 +230,21 @@ package org.josht.starling.foxhole.controls
 			}
 			this._truncationText = value;
 			this.invalidate(INVALIDATION_FLAG_DATA,  INVALIDATION_FLAG_SIZE);
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get baseline():Number
+		{
+			if(!this._textFormat)
+			{
+				return 0;
+			}
+			const font:BitmapFont = this._textFormat.font;
+			const formatSize:Number = this._textFormat.size;
+			const fontSizeScale:Number = isNaN(formatSize) ? 1 : (formatSize / font.size);
+			return font.baseline * fontSizeScale;
 		}
 
 		/**
