@@ -29,7 +29,7 @@ package org.josht.starling.foxhole.controls
 	import org.josht.starling.display.ScrollRectManager;
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.FoxholeControl;
-	import org.josht.starling.foxhole.core.ITextControl;
+	import org.josht.starling.foxhole.core.ITextRenderer;
 	import org.josht.starling.foxhole.core.IToggle;
 	import org.josht.starling.foxhole.core.PropertyProxy;
 	import org.josht.starling.foxhole.core.PropertyProxy;
@@ -155,7 +155,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected var labelControl:ITextControl;
+		protected var labelControl:ITextRenderer;
 		
 		/**
 		 * @private

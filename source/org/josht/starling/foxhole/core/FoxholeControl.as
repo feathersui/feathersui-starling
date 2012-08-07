@@ -110,7 +110,7 @@ package org.josht.starling.foxhole.core
 		/**
 		 * @private
 		 */
-		protected static function defaultTextControlFactory():ITextControl
+		protected static function defaultTextControlFactory():ITextRenderer
 		{
 			return new Label();
 		}

@@ -2,7 +2,9 @@ package org.josht.starling.foxhole.controls.text
 {
 	import flash.display.BitmapData;
 	import flash.display3D.textures.Texture;
+	import flash.geom.Matrix;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.text.AntiAliasType;
 	import flash.text.GridFitType;
 	import flash.text.TextField;
@@ -10,17 +12,33 @@ package org.josht.starling.foxhole.controls.text
 	import flash.text.TextFormat;
 
 	import org.josht.starling.foxhole.core.FoxholeControl;
-	import org.josht.starling.foxhole.core.ITextControl;
+	import org.josht.starling.foxhole.core.ITextRenderer;
+
+	import starling.core.RenderSupport;
 
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.textures.Texture;
 
-	public class TextFieldText extends FoxholeControl implements ITextControl
+	/**
+	 * Displays text in Foxhole as rendered by a native TextField.
+	 */
+	public class TextFieldTextRenderer extends FoxholeControl implements ITextRenderer
 	{
+		/**
+		 * @private
+		 */
 		private static const HELPER_POINT:Point = new Point();
 
-		public function TextFieldText()
+		/**
+		 * @private
+		 */
+		private static const helperMatrix:Matrix = new Matrix();
+
+		/**
+		 * Constructor.
+		 */
+		public function TextFieldTextRenderer()
 		{
 		}
 
@@ -154,6 +172,55 @@ package org.josht.starling.foxhole.controls.text
 		/**
 		 * @private
 		 */
+		private var _snapToPixels:Boolean = true;
+
+		/**
+		 * Determines if the text should be snapped to the nearest whole pixel
+		 * when rendered.
+		 */
+		public function get snapToPixels():Boolean
+		{
+			return _snapToPixels;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set snapToPixels(value:Boolean):void
+		{
+			this._snapToPixels = value;
+		}
+
+		/**
+		 * @private
+		 */
+		override public function render(support:RenderSupport, alpha:Number):void
+		{
+			if(this._textSnapshot)
+			{
+				if(this._snapToPixels)
+				{
+					this.getTransformationMatrix(this.stage, helperMatrix);
+					this._textSnapshot.x = Math.round(helperMatrix.tx) - helperMatrix.tx;
+					this._textSnapshot.y = Math.round(helperMatrix.ty) - helperMatrix.ty;
+					const scrollRect:Rectangle = this.scrollRect;
+					if(scrollRect)
+					{
+						this._textSnapshot.x += Math.round(scrollRect.x) - scrollRect.x;
+						this._textSnapshot.y += Math.round(scrollRect.y) - scrollRect.y;
+					}
+				}
+				else
+				{
+					this._textSnapshot.x = this._textSnapshot.y = 0;
+				}
+			}
+			super.render(support, alpha);
+		}
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			if(this._textSnapshotBitmapData)
@@ -210,22 +277,21 @@ package org.josht.starling.foxhole.controls.text
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
 			{
-				newWidth = this._textField.width;
+				newWidth = Math.max(this._minWidth, Math.min(this._maxWidth, this._textField.width + 1));
 			}
 
 			this._textField.width = newWidth;
-			//this._textField.wordWrap = true;
+			this._textField.wordWrap = true;
 			var newHeight:Number = this.explicitHeight;
 			if(needsHeight)
 			{
-				newHeight = this._textField.height;
+				newHeight = Math.max(this._minHeight, Math.min(this._maxHeight, this._textField.height + 1));
 			}
 
 			this._textField.autoSize = TextFieldAutoSize.NONE;
 
 			result.x = newWidth;
 			result.y = newHeight;
-			trace(result);
 			return result;
 		}
 

@@ -26,7 +26,7 @@ package org.josht.starling.foxhole.controls
 {
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.FoxholeControl;
-	import org.josht.starling.foxhole.core.ITextControl;
+	import org.josht.starling.foxhole.core.ITextRenderer;
 	import org.josht.starling.foxhole.core.PropertyProxy;
 	import org.josht.starling.foxhole.layout.HorizontalLayout;
 	import org.josht.starling.foxhole.layout.LayoutBoundsResult;
@@ -179,7 +179,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _titleRenderer:ITextControl;
+		private var _titleRenderer:ITextRenderer;
 
 		/**
 		 * @private
