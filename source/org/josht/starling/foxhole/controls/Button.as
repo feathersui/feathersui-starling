@@ -28,23 +28,18 @@ package org.josht.starling.foxhole.controls
 
 	import org.josht.starling.display.ScrollRectManager;
 	import org.josht.starling.foxhole.core.FoxholeControl;
-	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.ITextRenderer;
 	import org.josht.starling.foxhole.core.IToggle;
 	import org.josht.starling.foxhole.core.PropertyProxy;
-	import org.josht.starling.foxhole.core.PropertyProxy;
 	import org.josht.starling.foxhole.skins.StateWithToggleValueSelector;
-	import org.josht.starling.foxhole.text.BitmapFontTextFormat;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 
 	import starling.display.DisplayObject;
-
-	import starling.display.DisplayObject;
+	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
-	import starling.text.BitmapFont;
 
 	/**
 	 * A push (or optionally, toggle) button control.
@@ -145,6 +140,7 @@ package org.josht.starling.foxhole.controls
 		{
 			this.isQuickHitAreaEnabled = true;
 			this.addEventListener(TouchEvent.TOUCH, touchHandler);
+			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 		}
 
 		/**
@@ -2216,6 +2212,15 @@ package org.josht.starling.foxhole.controls
 		protected function labelProperties_onChange(proxy:PropertyProxy, name:Object):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function removedFromStageHandler(event:Event):void
+		{
+			this._touchPointID = -1;
+			this.currentState = STATE_UP;
 		}
 		
 		/**
