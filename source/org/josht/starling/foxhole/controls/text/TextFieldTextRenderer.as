@@ -146,6 +146,32 @@ package org.josht.starling.foxhole.controls.text
 		/**
 		 * @private
 		 */
+		private var _wordWrap:Boolean = true;
+
+		/**
+		 * Determines if the TextField wraps text to the next line.
+		 */
+		public function get wordWrap():Boolean
+		{
+			return this._wordWrap;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set wordWrap(value:Boolean):void
+		{
+			if(this._wordWrap == value)
+			{
+				return;
+			}
+			this._wordWrap = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		private var _isHTML:Boolean = false;
 
 		/**
@@ -281,7 +307,7 @@ package org.josht.starling.foxhole.controls.text
 			}
 
 			this._textField.width = newWidth;
-			this._textField.wordWrap = true;
+			this._textField.wordWrap = this._wordWrap;
 			var newHeight:Number = this.explicitHeight;
 			if(needsHeight)
 			{

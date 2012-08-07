@@ -29,7 +29,7 @@ package org.josht.starling.foxhole.core
 	import flash.geom.Rectangle;
 
 	import org.josht.starling.display.Sprite;
-	import org.josht.starling.foxhole.controls.Label;
+	import org.josht.starling.foxhole.controls.text.BitmapFontTextRenderer;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 
@@ -110,9 +110,9 @@ package org.josht.starling.foxhole.core
 		/**
 		 * @private
 		 */
-		protected static function defaultTextControlFactory():ITextRenderer
+		public static var defaultTextControlFactory:Function = function():ITextRenderer
 		{
-			return new Label();
+			return new BitmapFontTextRenderer();
 		}
 
 		/**

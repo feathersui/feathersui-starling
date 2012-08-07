@@ -29,7 +29,7 @@ package org.josht.starling.foxhole.controls.renderers
 	import flash.utils.Timer;
 
 	import org.josht.starling.foxhole.controls.Button;
-	import org.josht.starling.foxhole.controls.Label;
+	import org.josht.starling.foxhole.controls.text.BitmapFontTextRenderer;
 	import org.josht.starling.foxhole.core.FoxholeControl;
 
 	import starling.display.DisplayObject;
@@ -60,9 +60,9 @@ package org.josht.starling.foxhole.controls.renderers
 		/**
 		 * @private
 		 */
-		protected static function defaultLabelFactory():Label
+		protected static function defaultLabelFactory():BitmapFontTextRenderer
 		{
-			return new Label();
+			return new BitmapFontTextRenderer();
 		}
 
 		/**
@@ -88,7 +88,7 @@ package org.josht.starling.foxhole.controls.renderers
 		/**
 		 * @private
 		 */
-		protected var accessoryLabel:Label;
+		protected var accessoryLabel:BitmapFontTextRenderer;
 
 		/**
 		 * @private
@@ -1113,7 +1113,7 @@ package org.josht.starling.foxhole.controls.renderers
 					this.accessory = newAccessory;
 					if(this.accessory)
 					{
-						if(this.accessory is FoxholeControl && !(this.accessory is Label))
+						if(this.accessory is FoxholeControl && !(this.accessory is BitmapFontTextRenderer))
 						{
 							this.accessory.addEventListener(TouchEvent.TOUCH, accessory_touchHandler);
 						}

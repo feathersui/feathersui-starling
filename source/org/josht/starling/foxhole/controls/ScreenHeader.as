@@ -150,7 +150,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected var _titleFactory:Function = defaultTextControlFactory;
+		protected var _titleFactory:Function;
 
 		/**
 		 * A function used to instantiate the header's title sub-component.
@@ -765,7 +765,8 @@ package org.josht.starling.foxhole.controls
 				this._titleRenderer = null;
 			}
 
-			this._titleRenderer = this._titleFactory();
+			const factory:Function = this._titleFactory != null ? this._titleFactory : FoxholeControl.defaultTextControlFactory;
+			this._titleRenderer = factory();
 			const foxholeTitle:FoxholeControl = FoxholeControl(this._titleRenderer);
 			foxholeTitle.nameList.add(this.defaultTitleName);
 			foxholeTitle.touchable = false;

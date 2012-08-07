@@ -26,6 +26,8 @@ package org.josht.starling.foxhole.controls
 {
 	import flash.display.Stage;
 
+	import org.josht.starling.foxhole.controls.text.BitmapFontTextRenderer;
+
 	import starling.animation.IAnimatable;
 	import starling.core.Starling;
 	import starling.events.Event;
@@ -33,7 +35,7 @@ package org.josht.starling.foxhole.controls
 	/**
 	 * Displays the frames per second.
 	 */
-	public class FPSDisplay extends Label implements IAnimatable
+	public class FPSDisplay extends BitmapFontTextRenderer implements IAnimatable
 	{
 		/**
 		 * Constructor.
