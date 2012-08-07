@@ -1,27 +1,27 @@
 /*
-Copyright (c) 2012 Josh Tynjala
+ Copyright (c) 2012 Josh Tynjala
 
-Permission is hereby granted, free of charge, to any person
-obtaining a copy of this software and associated documentation
-files (the "Software"), to deal in the Software without
-restriction, including without limitation the rights to use,
-copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the
-Software is furnished to do so, subject to the following
-conditions:
+ Permission is hereby granted, free of charge, to any person
+ obtaining a copy of this software and associated documentation
+ files (the "Software"), to deal in the Software without
+ restriction, including without limitation the rights to use,
+ copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the
+ Software is furnished to do so, subject to the following
+ conditions:
 
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-OTHER DEALINGS IN THE SOFTWARE.
-*/
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ OTHER DEALINGS IN THE SOFTWARE.
+ */
 package org.josht.starling.foxhole.core
 {
 	import flash.geom.Matrix;
@@ -57,50 +57,50 @@ package org.josht.starling.foxhole.core
 		 * @private
 		 */
 		protected static var validationQueue:ValidationQueue;
-		
+
 		/**
 		 * Flag to indicate that everything is invalid and should be redrawn.
 		 */
 		public static const INVALIDATION_FLAG_ALL:String = "all";
-		
+
 		/**
 		 * Invalidation flag to indicate that the state has changed. Used by
 		 * <code>isEnabled</code>, but may be used for other control states too.
-		 * 
+		 *
 		 * @see #isEnabled
 		 */
 		public static const INVALIDATION_FLAG_STATE:String = "state";
-		
+
 		/**
 		 * Invalidation flag to indicate that the dimensions of the UI control
 		 * have changed.
 		 */
 		public static const INVALIDATION_FLAG_SIZE:String = "size";
-		
+
 		/**
 		 * Invalidation flag to indicate that the styles or visual appearance of
 		 * the UI control has changed.
 		 */
 		public static const INVALIDATION_FLAG_STYLES:String = "styles";
-		
+
 		/**
 		 * Invalidation flag to indicate that the primary data displayed by the
 		 * UI control has changed.
 		 */
 		public static const INVALIDATION_FLAG_DATA:String = "data";
-		
+
 		/**
 		 * Invalidation flag to indicate that the scroll position of the UI
 		 * control has changed.
 		 */
 		public static const INVALIDATION_FLAG_SCROLL:String = "scroll";
-		
+
 		/**
 		 * Invalidation flag to indicate that the selection of the UI control
 		 * has changed.
 		 */
 		public static const INVALIDATION_FLAG_SELECTED:String = "selected";
-		
+
 		/**
 		 * Constructor.
 		 */
@@ -150,7 +150,7 @@ package org.josht.starling.foxhole.core
 		{
 			this._nameList.value = value;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -178,32 +178,35 @@ package org.josht.starling.foxhole.core
 		 * @private
 		 */
 		protected var _hitArea:Rectangle = new Rectangle();
-		
+
 		/**
 		 * @private
 		 * Flag indicating if the <code>initialize()</code> function has been called yet.
 		 */
 		private var _isInitialized:Boolean = false;
-		
+
 		/**
 		 * @private
 		 * A flag that indicates that everything is invalid. If true, no other
 		 * flags will need to be tracked.
 		 */
 		private var _isAllInvalid:Boolean = false;
-		
+
 		/**
 		 * @private
-		 * The current invalidation flags.
 		 */
 		private var _invalidationFlags:Object = {};
+
+		/**
+		 * @private
+		 */
 		private var _delayedInvalidationFlags:Object = {};
-		
+
 		/**
 		 * @private
 		 */
 		protected var _isEnabled:Boolean = true;
-		
+
 		/**
 		 * Indicates whether the control is interactive or not.
 		 */
@@ -211,7 +214,7 @@ package org.josht.starling.foxhole.core
 		{
 			return _isEnabled;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -239,7 +242,7 @@ package org.josht.starling.foxhole.core
 		 * skin or content, including text or sub-components.
 		 */
 		protected var actualWidth:Number = 0;
-		
+
 		/**
 		 * The width of the component, in pixels. This could be a value that was
 		 * set explicitly, or the component will automatically resize if no
@@ -251,7 +254,7 @@ package org.josht.starling.foxhole.core
 		{
 			return this.actualWidth;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -291,7 +294,7 @@ package org.josht.starling.foxhole.core
 		{
 			return this.actualHeight;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -494,12 +497,12 @@ package org.josht.starling.foxhole.core
 			this._maxHeight = value;
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		protected var _onResize:Signal = new Signal(FoxholeControl);
-		
+
 		/**
 		 * Dispatched when the width or height of the control changes.
 		 */
@@ -507,7 +510,7 @@ package org.josht.starling.foxhole.core
 		{
 			return this._onResize;
 		}
-		
+
 		/**
 		 * @private
 		 * Flag to indicate that the control is currently validating.
@@ -518,7 +521,7 @@ package org.josht.starling.foxhole.core
 		 * @private
 		 */
 		private var _invalidateCount:int = 0;
-		
+
 		/**
 		 * @private
 		 */
@@ -528,15 +531,15 @@ package org.josht.starling.foxhole.core
 			{
 				return super.getBounds(targetSpace, resultRect);
 			}
-			
+
 			if(!resultRect)
 			{
 				resultRect = new Rectangle();
 			}
-			
+
 			var minX:Number = Number.MAX_VALUE, maxX:Number = -Number.MAX_VALUE;
 			var minY:Number = Number.MAX_VALUE, maxY:Number = -Number.MAX_VALUE;
-			
+
 			if (targetSpace == this) // optimization
 			{
 				minX = 0;
@@ -547,40 +550,40 @@ package org.josht.starling.foxhole.core
 			else
 			{
 				this.getTransformationMatrix(targetSpace, helperMatrix);
-				
+
 				transformCoords(helperMatrix, 0, 0, helperPoint);
 				minX = minX < helperPoint.x ? minX : helperPoint.x;
 				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
 				minY = minY < helperPoint.y ? minY : helperPoint.y;
 				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
-				
+
 				transformCoords(helperMatrix, 0, this.actualHeight, helperPoint);
 				minX = minX < helperPoint.x ? minX : helperPoint.x;
 				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
 				minY = minY < helperPoint.y ? minY : helperPoint.y;
 				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
-				
+
 				transformCoords(helperMatrix, this.actualWidth, 0, helperPoint);
 				minX = minX < helperPoint.x ? minX : helperPoint.x;
 				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
 				minY = minY < helperPoint.y ? minY : helperPoint.y;
 				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
-				
+
 				transformCoords(helperMatrix, this.actualWidth, this.actualHeight, helperPoint);
 				minX = minX < helperPoint.x ? minX : helperPoint.x;
 				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
 				minY = minY < helperPoint.y ? minY : helperPoint.y;
 				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
 			}
-			
+
 			resultRect.x = minX;
 			resultRect.y = minY;
 			resultRect.width  = maxX - minX;
 			resultRect.height = maxY - minY;
-			
+
 			return resultRect;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -596,12 +599,12 @@ package org.josht.starling.foxhole.core
 			}
 			return super.hitTest(localPoint, forTouch);
 		}
-		
+
 		/**
 		 * When called, the UI control will redraw within one frame.
 		 * Invalidation limits processing so that multiple property changes only
 		 * trigger a single redraw.
-		 * 
+		 *
 		 * <p>If the UI control isn't on the display list, it will never redraw.
 		 * The control will automatically invalidate once it has been added.</p>
 		 */
@@ -672,7 +675,7 @@ package org.josht.starling.foxhole.core
 			this._invalidateCount = 0;
 			validationQueue.addControl(this, false);
 		}
-		
+
 		/**
 		 * Immediately validates the control, which triggers a redraw, if one
 		 * is pending.
@@ -704,13 +707,13 @@ package org.josht.starling.foxhole.core
 			}
 			this._isValidating = false;
 		}
-		
+
 		/**
 		 * Indicates whether the control is invalid or not. You may optionally
 		 * pass in a specific flag to check if that particular flag is set. If
 		 * the "all" flag is set, the result will always be true.
 		 */
-		public function isInvalid(flag:String = null):Boolean	
+		public function isInvalid(flag:String = null):Boolean
 		{
 			if(this._isAllInvalid)
 			{
@@ -726,7 +729,7 @@ package org.josht.starling.foxhole.core
 			}
 			return this._invalidationFlags[flag];
 		}
-		
+
 		/**
 		 * Sets both the width and the height of the control.
 		 */
@@ -745,7 +748,7 @@ package org.josht.starling.foxhole.core
 			this._onResize.removeAll();
 			super.dispose();
 		}
-		
+
 		/**
 		 * Sets the width and height of the control, with the option of
 		 * invalidating or not. Intended to be used for automatic resizing.
@@ -801,24 +804,24 @@ package org.josht.starling.foxhole.core
 			}
 			return resized;
 		}
-		
+
 		/**
 		 * Override to initialize the UI control. Should be used to create
 		 * children and set up event listeners.
 		 */
 		protected function initialize():void
 		{
-			
+
 		}
-		
+
 		/**
 		 * Override to customize layout and to adjust properties of children.
 		 */
 		protected function draw():void
 		{
-			
+
 		}
-		
+
 		/**
 		 * @private
 		 * Initialize the control, if it hasn't been initialized yet. Then,
@@ -835,7 +838,18 @@ package org.josht.starling.foxhole.core
 				this.initialize();
 				this._isInitialized = true;
 			}
-			this.invalidate();
+			//clear any flags that may have been set while we didn't have a
+			//stage (or when we had a stage previously).
+			for(var key:String in this._invalidationFlags)
+			{
+				delete this._invalidationFlags[key];
+			}
+			for(key in this._delayedInvalidationFlags)
+			{
+				delete this._delayedInvalidationFlags[key];
+			}
+			this._isAllInvalid = false;
+			this.invalidate(); //invalidate everything
 		}
 	}
 }
