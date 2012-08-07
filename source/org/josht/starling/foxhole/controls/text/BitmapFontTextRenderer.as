@@ -22,7 +22,7 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
-package org.josht.starling.foxhole.controls
+package org.josht.starling.foxhole.controls.text
 {
 	import flash.geom.Matrix;
 	import flash.geom.Point;
@@ -43,7 +43,7 @@ package org.josht.starling.foxhole.controls
 	 * Displays bitmap text. Automatically resizes itself. Can be truncated to a
 	 * maximum width.
 	 */
-	public class Label extends FoxholeControl implements ITextRenderer
+	public class BitmapFontTextRenderer extends FoxholeControl implements ITextRenderer
 	{
 		/**
 		 * @private
@@ -58,7 +58,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * Constructor.
 		 */
-		public function Label()
+		public function BitmapFontTextRenderer()
 		{
 			this.isQuickHitAreaEnabled = true;
 		}

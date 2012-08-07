@@ -936,7 +936,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected var _labelFactory:Function = defaultTextControlFactory;
+		protected var _labelFactory:Function;
 
 		/**
 		 * A function used to instantiate the button's label sub-component.
@@ -1920,7 +1920,8 @@ package org.josht.starling.foxhole.controls
 				this.labelControl = null;
 			}
 
-			this.labelControl = this._labelFactory();
+			const factory:Function = this._labelFactory != null ? this._labelFactory : FoxholeControl.defaultTextControlFactory;
+			this.labelControl = factory();
 			const foxholeLabel:FoxholeControl = FoxholeControl(this.labelControl);
 			foxholeLabel.nameList.add(this.defaultLabelName);
 			this.addChild(foxholeLabel);

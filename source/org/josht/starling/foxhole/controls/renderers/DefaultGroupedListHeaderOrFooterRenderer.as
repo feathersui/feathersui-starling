@@ -25,7 +25,7 @@
 package org.josht.starling.foxhole.controls.renderers
 {
 	import org.josht.starling.foxhole.controls.GroupedList;
-	import org.josht.starling.foxhole.controls.Label;
+	import org.josht.starling.foxhole.controls.text.BitmapFontTextRenderer;
 	import org.josht.starling.foxhole.core.FoxholeControl;
 
 	import starling.display.DisplayObject;
@@ -49,9 +49,9 @@ package org.josht.starling.foxhole.controls.renderers
 		/**
 		 * @private
 		 */
-		protected static function defaultLabelFactory():Label
+		protected static function defaultLabelFactory():BitmapFontTextRenderer
 		{
-			return new Label();
+			return new BitmapFontTextRenderer();
 		}
 
 		/**
@@ -69,7 +69,7 @@ package org.josht.starling.foxhole.controls.renderers
 		/**
 		 * @private
 		 */
-		protected var contentLabel:Label;
+		protected var contentLabel:BitmapFontTextRenderer;
 
 		/**
 		 * @private

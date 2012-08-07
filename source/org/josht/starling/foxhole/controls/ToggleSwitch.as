@@ -29,6 +29,7 @@ package org.josht.starling.foxhole.controls
 	import flash.system.Capabilities;
 
 	import org.josht.starling.display.IDisplayObjectWithScrollRect;
+	import org.josht.starling.foxhole.controls.text.BitmapFontTextRenderer;
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.IToggle;
 	import org.josht.starling.foxhole.core.PropertyProxy;
@@ -121,12 +122,12 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected var onLabelControl:Label;
+		protected var onLabelControl:BitmapFontTextRenderer;
 
 		/**
 		 * @private
 		 */
-		protected var offLabelControl:Label;
+		protected var offLabelControl:BitmapFontTextRenderer;
 
 		/**
 		 * @private
@@ -672,7 +673,7 @@ package org.josht.starling.foxhole.controls
 		{
 			if(!this.offLabelControl)
 			{
-				this.offLabelControl = new Label();
+				this.offLabelControl = new BitmapFontTextRenderer();
 				this.offLabelControl.nameList.add(this.defaultOffLabelName);
 				this.offLabelControl.scrollRect = new Rectangle();
 				this.addChild(this.offLabelControl);
@@ -680,7 +681,7 @@ package org.josht.starling.foxhole.controls
 
 			if(!this.onLabelControl)
 			{
-				this.onLabelControl = new Label();
+				this.onLabelControl = new BitmapFontTextRenderer();
 				this.onLabelControl.nameList.add(this.defaultOnLabelName);
 				this.onLabelControl.scrollRect = new Rectangle();
 				this.addChild(this.onLabelControl);
