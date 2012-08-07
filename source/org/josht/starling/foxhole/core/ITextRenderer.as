@@ -2,7 +2,7 @@ package org.josht.starling.foxhole.core
 {
 	import flash.geom.Point;
 
-	public interface ITextControl
+	public interface ITextRenderer
 	{
 		/**
 		 * The text to display.
