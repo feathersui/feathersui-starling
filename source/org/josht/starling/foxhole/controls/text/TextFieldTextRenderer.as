@@ -18,6 +18,7 @@ package org.josht.starling.foxhole.controls.text
 
 	import starling.core.Starling;
 	import starling.display.Image;
+	import starling.events.Event;
 	import starling.textures.Texture;
 
 	/**
@@ -41,6 +42,7 @@ package org.josht.starling.foxhole.controls.text
 		public function TextFieldTextRenderer()
 		{
 			this.isQuickHitAreaEnabled = true;
+			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 		}
 
 		/**
@@ -246,20 +248,6 @@ package org.josht.starling.foxhole.controls.text
 		}
 
 		/**
-		 * @private
-		 */
-		override public function dispose():void
-		{
-			if(this._textSnapshotBitmapData)
-			{
-				this._textSnapshotBitmapData.dispose();
-				this._textSnapshotBitmapData = null;
-			}
-
-			super.dispose();
-		}
-
-		/**
 		 * Measures the label's text, without a full validation, if possible.
 		 */
 		public function measureText(result:Point = null):Point
@@ -284,41 +272,10 @@ package org.josht.starling.foxhole.controls.text
 				return result;
 			}
 
-			if(this._isHTML)
-			{
-				this._textField.htmlText = this._text;
-			}
-			else
-			{
-				this._textField.text = this._text;
-			}
-			this._textField.embedFonts = this._embedFonts;
-			if(this._textFormat)
-			{
-				this._textField.setTextFormat(this._textFormat);
-			}
+			this.commit();
 
-			this._textField.autoSize = TextFieldAutoSize.LEFT;
-			this._textField.wordWrap = false;
+			result = this.measure(result);
 
-			var newWidth:Number = this.explicitWidth;
-			if(needsWidth)
-			{
-				newWidth = Math.max(this._minWidth, Math.min(this._maxWidth, this._textField.width + 1));
-			}
-
-			this._textField.width = newWidth;
-			this._textField.wordWrap = this._wordWrap;
-			var newHeight:Number = this.explicitHeight;
-			if(needsHeight)
-			{
-				newHeight = Math.max(this._minHeight, Math.min(this._maxHeight, this._textField.height + 1));
-			}
-
-			this._textField.autoSize = TextFieldAutoSize.NONE;
-
-			result.x = newWidth;
-			result.y = newHeight;
 			return result;
 		}
 
@@ -342,9 +299,22 @@ package org.josht.starling.foxhole.controls.text
 		 */
 		override protected function draw():void
 		{
+			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
+
+			this.commit();
+
+			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
+
+			this.layout(sizeInvalid);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function commit():void
+		{
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
-			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 
 			if(dataInvalid)
 			{
@@ -366,8 +336,53 @@ package org.josht.starling.foxhole.controls.text
 					this._textField.setTextFormat(this._textFormat);
 				}
 			}
+		}
 
-			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
+		/**
+		 * @private
+		 */
+		protected function measure(result:Point = null):Point
+		{
+			if(!result)
+			{
+				result = new Point();
+			}
+
+			const needsWidth:Boolean = isNaN(this.explicitWidth);
+			const needsHeight:Boolean = isNaN(this.explicitHeight);
+
+			this._textField.autoSize = TextFieldAutoSize.LEFT;
+			this._textField.wordWrap = false;
+
+			var newWidth:Number = this.explicitWidth;
+			if(needsWidth)
+			{
+				newWidth = Math.max(this._minWidth, Math.min(this._maxWidth, this._textField.width + 1));
+			}
+
+			this._textField.width = newWidth;
+			this._textField.wordWrap = this._wordWrap;
+			var newHeight:Number = this.explicitHeight;
+			if(needsHeight)
+			{
+				newHeight = Math.max(this._minHeight, Math.min(this._maxHeight, this._textField.height + 1));
+			}
+
+			this._textField.autoSize = TextFieldAutoSize.NONE;
+
+			result.x = newWidth;
+			result.y = newHeight;
+
+			return result;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function layout(sizeInvalid:Boolean):void
+		{
+			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 
 			if(sizeInvalid)
 			{
@@ -393,7 +408,7 @@ package org.josht.starling.foxhole.controls.text
 				return false;
 			}
 
-			this.measureText(HELPER_POINT);
+			this.measure(HELPER_POINT);
 			return this.setSizeInternal(HELPER_POINT.x, HELPER_POINT.y, false);
 		}
 
@@ -445,6 +460,26 @@ package org.josht.starling.foxhole.controls.text
 					//bitmapdata
 					flash.display3D.textures.Texture(this._textSnapshot.texture.base).uploadFromBitmapData(this._textSnapshotBitmapData);
 				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function removedFromStageHandler(event:Event):void
+		{
+			if(this._textSnapshotBitmapData)
+			{
+				this._textSnapshotBitmapData.dispose();
+				this._textSnapshotBitmapData = null;
+			}
+
+			if(this._textSnapshot)
+			{
+				//avoid the need to call dispose(). we'll create a new snapshot
+				//when the renderer is added to stage again.
+				this._textSnapshot.texture.dispose();
+				this.removeChild(this._textSnapshot, true);
 			}
 		}
 	}
