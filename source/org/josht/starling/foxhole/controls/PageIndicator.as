@@ -21,16 +21,6 @@
  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  OTHER DEALINGS IN THE SOFTWARE.
-
- Below is a list of certain publicly available software that is the source of
- intellectual property in this class, along with the licensing terms that pertain
- to those sources of IP.
-
- The velocity and throwing physics calculations are loosely based on code from
- the TouchScrolling library by Pavel fljot.
- Copyright (c) 2011 Pavel fljot
- License: Same as above.
- Source: https://github.com/fljot/TouchScrolling
  */
 package org.josht.starling.foxhole.controls
 {
