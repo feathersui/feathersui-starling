@@ -1158,6 +1158,7 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function removedFromStageHandler(event:Event):void
 		{
+			this._touchPointID = -1;
 			this.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 		}

@@ -39,6 +39,7 @@ package org.josht.starling.foxhole.controls
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
+	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -55,6 +56,7 @@ package org.josht.starling.foxhole.controls
 		public function PickerList()
 		{
 			super();
+			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 		}
 
 		/**
@@ -740,6 +742,18 @@ package org.josht.starling.foxhole.controls
 			}
 		}
 
+		/**
+		 * @private
+		 */
+		protected function removedFromStageHandler(event:Event):void
+		{
+			this._buttonTouchPointID = -1;
+			this._listTouchPointID = -1;
+		}
+
+		/**
+		 * @private
+		 */
 		protected function button_touchHandler(event:TouchEvent):void
 		{
 			const touches:Vector.<Touch> = event.getTouches(this._button);
