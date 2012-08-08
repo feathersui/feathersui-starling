@@ -31,7 +31,9 @@ package org.josht.starling.foxhole.controls
 	import org.josht.starling.display.IDisplayObjectWithScrollRect;
 	import org.josht.starling.foxhole.controls.text.BitmapFontTextRenderer;
 	import org.josht.starling.foxhole.core.FoxholeControl;
+	import org.josht.starling.foxhole.core.ITextRenderer;
 	import org.josht.starling.foxhole.core.IToggle;
+	import org.josht.starling.foxhole.core.PropertyProxy;
 	import org.josht.starling.foxhole.core.PropertyProxy;
 	import org.josht.starling.foxhole.text.BitmapFontTextFormat;
 	import org.josht.starling.motion.GTween;
@@ -70,7 +72,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * The toggle switch has only one track skin, stretching to fill the
 		 * full length of switch. In this layout mode, the on track is
-		 * displayed and fills the entire length of the slider. The maximum
+		 * displayed and fills the entire length of the slider. The off
 		 * track will not exist.
 		 */
 		public static const TRACK_LAYOUT_MODE_SINGLE:String = "single";
@@ -110,6 +112,16 @@ package org.josht.starling.foxhole.controls
 		protected var defaultOffLabelName:String = "foxhole-toggle-switch-on-label";
 
 		/**
+		 * The value added to the <code>nameList</code> of the on track.
+		 */
+		protected var defaultOnTrackName:String = "foxhole-toggle-switch-on-track";
+
+		/**
+		 * The value added to the <code>nameList</code> of the off track.
+		 */
+		protected var defaultOffTrackName:String = "foxhole-toggle-switch-off-track";
+
+		/**
 		 * The value added to the <code>nameList</code> of the thumb.
 		 */
 		protected var defaultThumbName:String = "foxhole-toggle-switch-thumb";
@@ -122,88 +134,22 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected var onLabelControl:BitmapFontTextRenderer;
+		protected var onLabelControl:ITextRenderer;
 
 		/**
 		 * @private
 		 */
-		protected var offLabelControl:BitmapFontTextRenderer;
+		protected var offLabelControl:ITextRenderer;
 
 		/**
 		 * @private
 		 */
-		protected var _onTrackSkin:DisplayObject;
-
-		/**
-		 * The background skin for the left side of the toggle switch, where the
-		 * ON label is displayed.
-		 */
-		public function get onTrackSkin():DisplayObject
-		{
-			return this._onTrackSkin;
-		}
+		protected var onTrack:Button;
 
 		/**
 		 * @private
 		 */
-		public function set onTrackSkin(value:DisplayObject):void
-		{
-			if(this._onTrackSkin == value)
-			{
-				return;
-			}
-
-			if(this._onTrackSkin)
-			{
-				this.removeChild(this._onTrackSkin);
-			}
-			this._onTrackSkin = value;
-			if(this._onTrackSkin)
-			{
-				this.onTrackSkinOriginalWidth = this._onTrackSkin.width;
-				this.onTrackSkinOriginalHeight = this._onTrackSkin.height;
-				this.addChildAt(this._onTrackSkin, 0);
-			}
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _offTrackSkin:DisplayObject;
-
-		/**
-		 * The background skin for the right side of the toggle switch, where
-		 * the OFF label is displayed.
-		 */
-		public function get offTrackSkin():DisplayObject
-		{
-			return this._offTrackSkin;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set offTrackSkin(value:DisplayObject):void
-		{
-			if(this._offTrackSkin == value)
-			{
-				return;
-			}
-
-			if(this._offTrackSkin)
-			{
-				this.removeChild(this._offTrackSkin);
-			}
-			this._offTrackSkin = value;
-			if(this._offTrackSkin)
-			{
-				this.offTrackSkinOriginalWidth = this._offTrackSkin.width
-				this.offTrackSkinOriginalHeight = this._offTrackSkin.height;
-				this.addChildAt(this._offTrackSkin, 0);
-			}
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
+		protected var offTrack:Button;
 
 		/**
 		 * @private
@@ -342,98 +288,162 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected var _defaultTextFormat:BitmapFontTextFormat;
+		protected var _defaultLabelProperties:PropertyProxy;
 
 		/**
-		 * The text format used to display the labels, if no higher priority
-		 * format is available. For the ON label, <code>onTextFormat</code>
-		 * takes priority. For the OFF label, <code>offTextFormat</code> takes
-		 * priority.
+		 * The key/value pairs to pass to the labels, if no higher priority
+		 * format is available. For the ON label, <code>onLabelProperties</code>
+		 * takes priority. For the OFF label, <code>offLabelProperties</code>
+		 * takes priority.
 		 *
-		 * @see #onTextFormat
-		 * @see #offTextFormat
+		 * @see #onLabelProperties
+		 * @see #offLabelProperties
+		 * @see #disabledLabelProperties
 		 */
-		public function get defaultTextFormat():BitmapFontTextFormat
+		public function get defaultLabelProperties():Object
 		{
-			return this._defaultTextFormat;
+			if(!this._defaultLabelProperties)
+			{
+				this._defaultLabelProperties = new PropertyProxy(labelProperties_onChange);
+			}
+			return this._defaultLabelProperties;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set defaultTextFormat(value:BitmapFontTextFormat):void
+		public function set defaultLabelProperties(value:Object):void
 		{
-			this._defaultTextFormat = value;
+			if(!(value is PropertyProxy))
+			{
+				value = PropertyProxy.fromObject(value);
+			}
+			if(this._defaultLabelProperties)
+			{
+				this._defaultLabelProperties.onChange.remove(labelProperties_onChange);
+			}
+			this._defaultLabelProperties = PropertyProxy(value);
+			if(this._defaultLabelProperties)
+			{
+				this._defaultLabelProperties.onChange.add(labelProperties_onChange);
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _disabledTextFormat:BitmapFontTextFormat;
+		protected var _disabledLabelProperties:PropertyProxy;
 
 		/**
-		 * The text format used to display the labels if the toggle switch is
-		 * disabled. If <code>null</code>, then <code>defaultTextFormat</code>
-		 * will be used instead.
+		 * The key/value pairs to pass to the labels, if the toggle switch is
+		 * disabled.
 		 */
-		public function get disabledTextFormat():BitmapFontTextFormat
+		public function get disabledLabelProperties():Object
 		{
-			return this._disabledTextFormat;
+			if(!this._disabledLabelProperties)
+			{
+				this._disabledLabelProperties = new PropertyProxy(labelProperties_onChange);
+			}
+			return this._disabledLabelProperties;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set disabledTextFormat(value:BitmapFontTextFormat):void
+		public function set disabledLabelProperties(value:Object):void
 		{
-			this._disabledTextFormat = value;
+			if(!(value is PropertyProxy))
+			{
+				value = PropertyProxy.fromObject(value);
+			}
+			if(this._disabledLabelProperties)
+			{
+				this._disabledLabelProperties.onChange.remove(labelProperties_onChange);
+			}
+			this._disabledLabelProperties = PropertyProxy(value);
+			if(this._disabledLabelProperties)
+			{
+				this._disabledLabelProperties.onChange.add(labelProperties_onChange);
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _onTextFormat:BitmapFontTextFormat;
+		protected var _onLabelProperties:PropertyProxy;
 
 		/**
-		 * The text format used to display the ON label. If <code>null</code>,
-		 * then <code>defaultTextFormat</code> will be used instead.
+		 * The key/value pairs passed to the ON label. If <code>null</code>,
+		 * then <code>defaultLabelProperties</code> will be used instead.
 		 */
-		public function get onTextFormat():BitmapFontTextFormat
+		public function get onLabelProperties():Object
 		{
-			return this._onTextFormat;
+			if(!this._onLabelProperties)
+			{
+				this._onLabelProperties = new PropertyProxy(labelProperties_onChange);
+			}
+			return this._onLabelProperties;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set onTextFormat(value:BitmapFontTextFormat):void
+		public function set onLabelProperties(value:Object):void
 		{
-			this._onTextFormat = value;
+			if(!(value is PropertyProxy))
+			{
+				value = PropertyProxy.fromObject(value);
+			}
+			if(this._onLabelProperties)
+			{
+				this._onLabelProperties.onChange.remove(labelProperties_onChange);
+			}
+			this._onLabelProperties = PropertyProxy(value);
+			if(this._onLabelProperties)
+			{
+				this._onLabelProperties.onChange.add(labelProperties_onChange);
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _offTextFormat:BitmapFontTextFormat;
+		protected var _offLabelProperties:PropertyProxy;
 
 		/**
-		 * The text format used to display the OFF label. If <code>null</code>,
-		 * then <code>defaultTextFormat</code> will be used instead.
+		 * The key/value pairs passed to the OFF label. If <code>null</code>,
+		 * then <code>defaultLabelProperties</code> will be used instead.
 		 */
-		public function get offTextFormat():BitmapFontTextFormat
+		public function get offLabelProperties():Object
 		{
-			return this._offTextFormat;
+			if(!this._offLabelProperties)
+			{
+				this._offLabelProperties = new PropertyProxy(labelProperties_onChange);
+			}
+			return this._offLabelProperties;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set offTextFormat(value:BitmapFontTextFormat):void
+		public function set offLabelProperties(value:Object):void
 		{
-			this._offTextFormat = value;
+			if(!(value is PropertyProxy))
+			{
+				value = PropertyProxy.fromObject(value);
+			}
+			if(this._offLabelProperties)
+			{
+				this._offLabelProperties.onChange.remove(labelProperties_onChange);
+			}
+			this._offLabelProperties = PropertyProxy(value);
+			if(this._offLabelProperties)
+			{
+				this._offLabelProperties.onChange.add(labelProperties_onChange);
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -461,6 +471,35 @@ package org.josht.starling.foxhole.controls
 			}
 			this._labelAlign = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _labelFactory:Function;
+
+		/**
+		 * A function used to instantiate the toggle switch's label sub-components.
+		 *
+		 * <p>The factory should have the following function signature:</p>
+		 * <pre>function():ITextControl</pre>
+		 */
+		public function get labelFactory():Function
+		{
+			return this._labelFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set labelFactory(value:Function):void
+		{
+			if(this._labelFactory == value)
+			{
+				return;
+			}
+			this._labelFactory = value;
+			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
 		}
 
 		/**
@@ -601,6 +640,124 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
+		private var _onTrackProperties:PropertyProxy;
+
+		/**
+		 * A set of key/value pairs to be passed down to the toggle switch's on
+		 * track instance. The on track is a Foxhole Button control.
+		 *
+		 * <p>If the sub-component has its own sub-components, their properties
+		 * can be set too, using attribute <code>&#64;</code> notation. For example,
+		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
+		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
+		 * you can use the following syntax:</p>
+		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 */
+		public function get onTrackProperties():Object
+		{
+			if(!this._onTrackProperties)
+			{
+				this._onTrackProperties = new PropertyProxy(onTrackProperties_onChange);
+			}
+			return this._onTrackProperties;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set onTrackProperties(value:Object):void
+		{
+			if(this._onTrackProperties == value)
+			{
+				return;
+			}
+			if(!value)
+			{
+				value = new PropertyProxy();
+			}
+			if(!(value is PropertyProxy))
+			{
+				const newValue:PropertyProxy = new PropertyProxy();
+				for(var propertyName:String in value)
+				{
+					newValue[propertyName] = value[propertyName];
+				}
+				value = newValue;
+			}
+			if(this._onTrackProperties)
+			{
+				this._onTrackProperties.onChange.remove(onTrackProperties_onChange);
+			}
+			this._onTrackProperties = PropertyProxy(value);
+			if(this._onTrackProperties)
+			{
+				this._onTrackProperties.onChange.add(onTrackProperties_onChange);
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _offTrackProperties:PropertyProxy;
+
+		/**
+		 * A set of key/value pairs to be passed down to the toggle switch's off
+		 * track instance. The off track is a Foxhole Button control.
+		 *
+		 * <p>If the sub-component has its own sub-components, their properties
+		 * can be set too, using attribute <code>&#64;</code> notation. For example,
+		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
+		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
+		 * you can use the following syntax:</p>
+		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 */
+		public function get offTrackProperties():Object
+		{
+			if(!this._offTrackProperties)
+			{
+				this._offTrackProperties = new PropertyProxy(offTrackProperties_onChange);
+			}
+			return this._offTrackProperties;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set offTrackProperties(value:Object):void
+		{
+			if(this._offTrackProperties == value)
+			{
+				return;
+			}
+			if(!value)
+			{
+				value = new PropertyProxy();
+			}
+			if(!(value is PropertyProxy))
+			{
+				const newValue:PropertyProxy = new PropertyProxy();
+				for(var propertyName:String in value)
+				{
+					newValue[propertyName] = value[propertyName];
+				}
+				value = newValue;
+			}
+			if(this._offTrackProperties)
+			{
+				this._offTrackProperties.onChange.remove(offTrackProperties_onChange);
+			}
+			this._offTrackProperties = PropertyProxy(value);
+			if(this._offTrackProperties)
+			{
+				this._offTrackProperties.onChange.add(offTrackProperties_onChange);
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		private var _thumbProperties:PropertyProxy;
 
 		/**
@@ -671,20 +828,14 @@ package org.josht.starling.foxhole.controls
 		 */
 		override protected function initialize():void
 		{
-			if(!this.offLabelControl)
+			if(!this.onTrack)
 			{
-				this.offLabelControl = new BitmapFontTextRenderer();
-				this.offLabelControl.nameList.add(this.defaultOffLabelName);
-				this.offLabelControl.scrollRect = new Rectangle();
-				this.addChild(this.offLabelControl);
-			}
-
-			if(!this.onLabelControl)
-			{
-				this.onLabelControl = new BitmapFontTextRenderer();
-				this.onLabelControl.nameList.add(this.defaultOnLabelName);
-				this.onLabelControl.scrollRect = new Rectangle();
-				this.addChild(this.onLabelControl);
+				this.onTrack = new Button();
+				this.onTrack.nameList.add(this.defaultOnTrackName);
+				this.onTrack.scrollRect = new Rectangle();
+				this.onTrack.label = "";
+				this.onTrack.keepDownStateOnRollOut = true;
+				this.addChild(this.onTrack);
 			}
 
 			if(!this.thumb)
@@ -707,12 +858,30 @@ package org.josht.starling.foxhole.controls
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
+			const textRendererInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_TEXT_RENDERER);
 
-			if(stylesInvalid || stateInvalid)
+			if(textRendererInvalid)
+			{
+				this.createLabels();
+			}
+
+			this.createOrDestroyOffTrackIfNeeded();
+
+			if(stylesInvalid)
 			{
 				this.refreshOnLabelStyles();
 				this.refreshOffLabelStyles();
-				this.refreshThumbProperties();
+				this.refreshThumbStyles();
+				this.refreshTrackStyles();
+			}
+
+			if(stateInvalid)
+			{
+				this.thumb.isEnabled = this.onTrack.isEnabled = this._isEnabled;
+				if(this.offTrack)
+				{
+					this.offTrack.isEnabled = this._isEnabled;
+				}
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
@@ -734,20 +903,34 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
+			if(isNaN(this.onTrackSkinOriginalWidth) || isNaN(this.onTrackSkinOriginalHeight))
+			{
+				this.onTrack.validate();
+				this.onTrackSkinOriginalWidth = this.onTrack.width;
+				this.onTrackSkinOriginalHeight = this.onTrack.height;
+			}
+			if(this.offTrack)
+			{
+				if(isNaN(this.offTrackSkinOriginalWidth) || isNaN(this.offTrackSkinOriginalHeight))
+				{
+					this.offTrack.validate();
+					this.offTrackSkinOriginalWidth = this.offTrack.width;
+					this.offTrackSkinOriginalHeight = this.offTrack.height;
+				}
+			}
+
 			const needsWidth:Boolean = isNaN(this.explicitWidth);
 			const needsHeight:Boolean = isNaN(this.explicitHeight);
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
 			}
-
 			this.thumb.validate();
-
 			var newWidth:Number = this.explicitWidth;
 			var newHeight:Number = this.explicitHeight;
 			if(needsWidth)
 			{
-				if(this._trackLayoutMode == TRACK_LAYOUT_MODE_SCROLL || this._trackLayoutMode == TRACK_LAYOUT_MODE_STRETCH)
+				if(this.offTrack)
 				{
 					newWidth = Math.min(this.onTrackSkinOriginalWidth, this.offTrackSkinOriginalWidth) + this.thumb.width / 2;
 				}
@@ -756,10 +939,9 @@ package org.josht.starling.foxhole.controls
 					newWidth = this.onTrackSkinOriginalWidth;
 				}
 			}
-
 			if(needsHeight)
 			{
-				if(this._trackLayoutMode == TRACK_LAYOUT_MODE_SCROLL || this._trackLayoutMode == TRACK_LAYOUT_MODE_STRETCH)
+				if(this.offTrack)
 				{
 					newHeight = Math.max(this.onTrackSkinOriginalHeight, this.offTrackSkinOriginalHeight);
 				}
@@ -769,6 +951,37 @@ package org.josht.starling.foxhole.controls
 				}
 			}
 			return this.setSizeInternal(newWidth, newHeight, false);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function createLabels():void
+		{
+			if(this.offLabelControl)
+			{
+				this.removeChild(FoxholeControl(this.offLabelControl), true);
+				this.offLabelControl = null;
+			}
+			if(this.onLabelControl)
+			{
+				this.removeChild(FoxholeControl(this.onLabelControl), true);
+				this.onLabelControl = null;
+			}
+
+			const index:int = this.getChildIndex(this.thumb);
+			const factory:Function = this._labelFactory != null ? this._labelFactory : FoxholeControl.defaultTextControlFactory;
+			this.offLabelControl = factory();
+			var foxholeTextRenderer:FoxholeControl = FoxholeControl(this.offLabelControl);
+			foxholeTextRenderer.nameList.add(this.defaultOffLabelName);
+			foxholeTextRenderer.scrollRect = new Rectangle();
+			this.addChildAt(foxholeTextRenderer, index);
+
+			this.onLabelControl = factory();
+			foxholeTextRenderer = FoxholeControl(this.onLabelControl);
+			foxholeTextRenderer.nameList.add(this.defaultOnLabelName);
+			foxholeTextRenderer.scrollRect = new Rectangle();
+			this.addChildAt(foxholeTextRenderer, index);
 		}
 
 		/**
@@ -818,34 +1031,42 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function refreshOnLabelStyles():void
 		{
+			const foxholeOnLabel:FoxholeControl = FoxholeControl(this.onLabelControl);
 			//no need to style the label field if there's no text to display
 			if(!this._showLabels || !this._showThumb)
 			{
-				this.onLabelControl.visible = false;
+				foxholeOnLabel.visible = false;
 				return;
 			}
 
-			var format:BitmapFontTextFormat;
+			var properties:PropertyProxy;
 			if(!this._isEnabled)
 			{
-				format = this._disabledTextFormat;
+				properties = this._disabledLabelProperties;
 			}
-			if(!format && this._onTextFormat)
+			if(!properties && this._onLabelProperties)
 			{
-				format = this._onTextFormat;
+				properties = this._onLabelProperties;
 			}
-			if(!format)
+			if(!properties)
 			{
-				format = this._defaultTextFormat;
+				properties = this._defaultLabelProperties;
 			}
 
 			this.onLabelControl.text = this._onText;
-			if(format)
+			if(properties)
 			{
-				this.onLabelControl.textFormat = format;
+				for(var propertyName:String in properties)
+				{
+					if(foxholeOnLabel.hasOwnProperty(propertyName))
+					{
+						var propertyValue:Object = properties[propertyName];
+						foxholeOnLabel[propertyName] = propertyValue;
+					}
+				}
 			}
-			this.onLabelControl.validate();
-			this.onLabelControl.visible = true;
+			foxholeOnLabel.validate();
+			foxholeOnLabel.visible = true;
 		}
 
 		/**
@@ -853,40 +1074,48 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function refreshOffLabelStyles():void
 		{
+			const foxholeOffLabel:FoxholeControl = FoxholeControl(this.offLabelControl);
 			//no need to style the label field if there's no text to display
 			if(!this._showLabels || !this._showThumb)
 			{
-				this.offLabelControl.visible = false;
+				foxholeOffLabel.visible = false;
 				return;
 			}
 
-			var format:BitmapFontTextFormat;
+			var properties:PropertyProxy;
 			if(!this._isEnabled)
 			{
-				format = this._disabledTextFormat;
+				properties = this._disabledLabelProperties;
 			}
-			if(!format && this._offTextFormat)
+			if(!properties && this._offLabelProperties)
 			{
-				format = this._offTextFormat;
+				properties = this._offLabelProperties;
 			}
-			if(!format)
+			if(!properties)
 			{
-				format = this._defaultTextFormat;
+				properties = this._defaultLabelProperties;
 			}
 
 			this.offLabelControl.text = this._offText;
-			if(format)
+			if(properties)
 			{
-				this.offLabelControl.textFormat = format;
+				for(var propertyName:String in properties)
+				{
+					if(foxholeOffLabel.hasOwnProperty(propertyName))
+					{
+						var propertyValue:Object = properties[propertyName];
+						foxholeOffLabel[propertyName] = propertyValue;
+					}
+				}
 			}
-			this.offLabelControl.validate();
-			this.offLabelControl.visible = true;
+			foxholeOffLabel.validate();
+			foxholeOffLabel.visible = true;
 		}
 
 		/**
 		 * @private
 		 */
-		protected function refreshThumbProperties():void
+		protected function refreshThumbStyles():void
 		{
 			for(var propertyName:String in this._thumbProperties)
 			{
@@ -897,7 +1126,32 @@ package org.josht.starling.foxhole.controls
 				}
 			}
 			this.thumb.visible = this._showThumb;
-			this.thumb.isEnabled = this._isEnabled;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshTrackStyles():void
+		{
+			for(var propertyName:String in this._onTrackProperties)
+			{
+				if(this.onTrack.hasOwnProperty(propertyName))
+				{
+					var propertyValue:Object = this._onTrackProperties[propertyName];
+					this.onTrack[propertyName] = propertyValue;
+				}
+			}
+			if(this.offTrack)
+			{
+				for(propertyName in this._offTrackProperties)
+				{
+					if(this.offTrack.hasOwnProperty(propertyName))
+					{
+						propertyValue = this._offTrackProperties[propertyName];
+						this.offTrack[propertyName] = propertyValue;
+					}
+				}
+			}
 		}
 
 		/**
@@ -905,34 +1159,36 @@ package org.josht.starling.foxhole.controls
 		 */
 		private function drawLabels():void
 		{
+			const foxholeOnLabel:FoxholeControl = FoxholeControl(this.onLabelControl);
+			const foxholeOffLabel:FoxholeControl = FoxholeControl(this.offLabelControl);
 			const maxLabelWidth:Number = Math.max(0, this.actualWidth - this.thumb.width - this._paddingLeft - this._paddingRight);
-			var totalLabelHeight:Number = Math.max(this.onLabelControl.height, this.offLabelControl.height);
+			var totalLabelHeight:Number = Math.max(foxholeOnLabel.height, foxholeOffLabel.height);
 			var labelHeight:Number;
-			if(this._labelAlign == LABEL_ALIGN_MIDDLE || !this._defaultTextFormat)
+			if(this._labelAlign == LABEL_ALIGN_MIDDLE)
 			{
 				labelHeight = totalLabelHeight;
 			}
 			else //baseline
 			{
-				const fontScale:Number = isNaN(this._defaultTextFormat.size) ? 1 : (this._defaultTextFormat.size / this._defaultTextFormat.font.size);
-				labelHeight = fontScale * this._defaultTextFormat.font.baseline;
+				labelHeight = Math.max(this.onLabelControl.baseline, this.offLabelControl.baseline);
 			}
 
-			var onScrollRect:Rectangle = this.onLabelControl.scrollRect;
+			var onScrollRect:Rectangle = foxholeOnLabel.scrollRect;
 			onScrollRect.width = maxLabelWidth;
 			onScrollRect.height = totalLabelHeight;
-			this.onLabelControl.scrollRect = onScrollRect;
+			foxholeOnLabel.scrollRect = onScrollRect;
 
-			this.onLabelControl.x = this._paddingLeft;
-			this.onLabelControl.y = (this.actualHeight - labelHeight) / 2;
+			foxholeOnLabel.x = this._paddingLeft;
+			foxholeOnLabel.y = (this.actualHeight - labelHeight) / 2;
 
-			var offScrollRect:Rectangle = this.offLabelControl.scrollRect;
+			var offScrollRect:Rectangle = foxholeOffLabel.scrollRect;
 			offScrollRect.width = maxLabelWidth;
 			offScrollRect.height = totalLabelHeight;
-			this.offLabelControl.scrollRect = offScrollRect;
+			foxholeOffLabel.scrollRect = offScrollRect;
+			trace(onScrollRect, offScrollRect);
 
-			this.offLabelControl.x = this.actualWidth - this._paddingRight - maxLabelWidth;
-			this.offLabelControl.y = (this.actualHeight - labelHeight) / 2;
+			foxholeOffLabel.x = this.actualWidth - this._paddingRight - maxLabelWidth;
+			foxholeOffLabel.y = (this.actualHeight - labelHeight) / 2;
 		}
 
 		/**
@@ -943,13 +1199,15 @@ package org.josht.starling.foxhole.controls
 			const maxLabelWidth:Number = Math.max(0, this.actualWidth - this.thumb.width - this._paddingLeft - this._paddingRight);
 			const thumbOffset:Number = this.thumb.x - this._paddingLeft;
 
-			var currentScrollRect:Rectangle = this.onLabelControl.scrollRect;
-			currentScrollRect.x = this.actualWidth - this.thumb.width - thumbOffset - (maxLabelWidth - this.onLabelControl.width) / 2;
-			this.onLabelControl.scrollRect = currentScrollRect;
+			const foxholeOnLabel:FoxholeControl = FoxholeControl(this.onLabelControl);
+			const foxholeOffLabel:FoxholeControl = FoxholeControl(this.offLabelControl);
+			var currentScrollRect:Rectangle = foxholeOnLabel.scrollRect;
+			currentScrollRect.x = this.actualWidth - this.thumb.width - thumbOffset - (maxLabelWidth - foxholeOnLabel.width) / 2;
+			foxholeOnLabel.scrollRect = currentScrollRect;
 
-			currentScrollRect = this.offLabelControl.scrollRect;
-			currentScrollRect.x = -thumbOffset - (maxLabelWidth - this.offLabelControl.width) / 2;
-			this.offLabelControl.scrollRect = currentScrollRect;
+			currentScrollRect = foxholeOffLabel.scrollRect;
+			currentScrollRect.x = -thumbOffset - (maxLabelWidth - foxholeOffLabel.width) / 2;
+			foxholeOffLabel.scrollRect = currentScrollRect;
 
 			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_SCROLL)
 			{
@@ -970,20 +1228,24 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function layoutTrackWithStretch():void
 		{
-			this._offTrackSkin.visible = true;
-			if(this._onTrackSkin is IDisplayObjectWithScrollRect)
+			if(this.onTrack.scrollRect)
 			{
-				IDisplayObjectWithScrollRect(this._onTrackSkin).scrollRect = null;
+				this.onTrack.scrollRect = null;
 			}
-			if(this._offTrackSkin is IDisplayObjectWithScrollRect)
+			if(this.offTrack.scrollRect)
 			{
-				IDisplayObjectWithScrollRect(this._offTrackSkin).scrollRect = null;
+				this.offTrack.scrollRect = null;
 			}
-			this._onTrackSkin.width = this.thumb.x + this.thumb.width / 2;
-			this._onTrackSkin.height = this.actualHeight;
-			this._offTrackSkin.x = this._onTrackSkin.width;
-			this._offTrackSkin.width = this.actualWidth - this._offTrackSkin.x;
-			this._offTrackSkin.height = this.actualHeight;
+
+			this.onTrack.x = 0;
+			this.onTrack.y = 0;
+			this.onTrack.width = this.thumb.x + this.thumb.width / 2;
+			this.onTrack.height = this.actualHeight;
+
+			this.offTrack.x = this.onTrack.width;
+			this.offTrack.y = 0;
+			this.offTrack.width = this.actualWidth - this.offTrack.x;
+			this.offTrack.height = this.actualHeight;
 		}
 
 		/**
@@ -991,51 +1253,41 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function layoutTrackWithScrollRect():void
 		{
-			this._offTrackSkin.visible = true;
+			//we want to scale the skins to match the height of the slider,
+			//but we also want to keep the original aspect ratio.
+			const onTrackScaledWidth:Number = this.onTrackSkinOriginalWidth * this.actualHeight / this.onTrackSkinOriginalHeight;
+			const offTrackScaledWidth:Number = this.offTrackSkinOriginalWidth * this.actualHeight / this.offTrackSkinOriginalHeight;
+			this.onTrack.width = onTrackScaledWidth;
+			this.onTrack.height = this.actualHeight;
+			this.offTrack.width = offTrackScaledWidth;
+			this.offTrack.height = this.actualHeight;
 
-			//we want to scale the skins to match the height of the switch, but
-			//we also want to keep the original aspect ratio of the skins.
-			const onTrackSkinScaledWidth:Number = this.onTrackSkinOriginalWidth * this.actualHeight / this.onTrackSkinOriginalHeight;
-			const offTrackSkinScaledWidth:Number = this.offTrackSkinOriginalWidth * this.actualHeight / this.offTrackSkinOriginalHeight;
-
-			this._onTrackSkin.width = onTrackSkinScaledWidth;
-			this._onTrackSkin.height = this.actualHeight;
-			this._offTrackSkin.width = offTrackSkinScaledWidth;
-			this._offTrackSkin.height = this.actualHeight;
-
-			const middleOfThumb:Number = this.thumb.x + this.thumb.width / 2;
-			if(this._onTrackSkin is IDisplayObjectWithScrollRect)
+			var middleOfThumb:Number = this.thumb.x + this.thumb.width / 2;
+			this.onTrack.x = 0;
+			this.onTrack.y = 0;
+			var currentScrollRect:Rectangle = this.onTrack.scrollRect;
+			if(!currentScrollRect)
 			{
-				//if the on and off skins are transparent, we don't want them to overlap at all
-				var scrollRectSkin:IDisplayObjectWithScrollRect = IDisplayObjectWithScrollRect(this._onTrackSkin);
-				var currentScrollRect:Rectangle = scrollRectSkin.scrollRect;
-				if(!currentScrollRect)
-				{
-					currentScrollRect = new Rectangle();
-				}
-				currentScrollRect.width = Math.min(onTrackSkinScaledWidth, middleOfThumb) / this._onTrackSkin.scaleX;
-				currentScrollRect.height = this.actualHeight / this._onTrackSkin.scaleY;
-				scrollRectSkin.scrollRect = currentScrollRect;
+				currentScrollRect = new Rectangle();
 			}
+			currentScrollRect.x = 0;
+			currentScrollRect.y = 0;
+			currentScrollRect.width = Math.min(onTrackScaledWidth, middleOfThumb);
+			currentScrollRect.height = this.actualHeight;
+			this.onTrack.scrollRect = currentScrollRect;
 
-			if(this._offTrackSkin is IDisplayObjectWithScrollRect)
+			this.offTrack.x = Math.max(this.actualWidth - offTrackScaledWidth, middleOfThumb);
+			this.offTrack.y = 0;
+			currentScrollRect = this.offTrack.scrollRect;
+			if(!currentScrollRect)
 			{
-				this._offTrackSkin.x = Math.max(this.actualWidth - offTrackSkinScaledWidth, middleOfThumb);
-				scrollRectSkin = IDisplayObjectWithScrollRect(this._offTrackSkin);
-				currentScrollRect = scrollRectSkin.scrollRect;
-				if(!currentScrollRect)
-				{
-					currentScrollRect = new Rectangle();
-				}
-				currentScrollRect.width = Math.min(offTrackSkinScaledWidth, this.actualWidth - middleOfThumb) / this._offTrackSkin.scaleX;
-				currentScrollRect.height = this.actualHeight / this._offTrackSkin.scaleY;
-				currentScrollRect.x = Math.max(0, offTrackSkinScaledWidth / this._offTrackSkin.scaleX - currentScrollRect.width);
-				scrollRectSkin.scrollRect = currentScrollRect;
+				currentScrollRect = new Rectangle();
 			}
-			else
-			{
-				this._offTrackSkin.x = this.actualWidth - this._offTrackSkin.width;
-			}
+			currentScrollRect.width = Math.min(offTrackScaledWidth, this.actualWidth - middleOfThumb);
+			currentScrollRect.height = this.actualHeight;
+			currentScrollRect.x = Math.max(0, offTrackScaledWidth - currentScrollRect.width);
+			currentScrollRect.y = 0;
+			this.offTrack.scrollRect = currentScrollRect;
 		}
 
 		/**
@@ -1043,24 +1295,67 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function layoutTrackWithSingle():void
 		{
-			if(this._onTrackSkin is IDisplayObjectWithScrollRect)
+			if(this.onTrack.scrollRect)
 			{
-				IDisplayObjectWithScrollRect(this._onTrackSkin).scrollRect = null;
+				this.onTrack.scrollRect = null;
 			}
-			this._onTrackSkin.x = 0;
-			this._onTrackSkin.y = 0;
-			this._onTrackSkin.width = this.actualWidth;
-			this._onTrackSkin.height = this.actualHeight;
-			if(this._offTrackSkin)
+			this.onTrack.x = 0;
+			this.onTrack.y = 0;
+			this.onTrack.width = this.actualWidth;
+			this.onTrack.height = this.actualHeight;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function createOrDestroyOffTrackIfNeeded():void
+		{
+			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_SCROLL || this._trackLayoutMode == TRACK_LAYOUT_MODE_STRETCH)
 			{
-				this._offTrackSkin.visible = false;
+				if(!this.offTrack)
+				{
+					this.offTrack = new Button();
+					this.offTrack.nameList.add(this.defaultOffTrackName);
+					this.offTrack.label = "";
+					this.offTrack.keepDownStateOnRollOut = true;
+					this.addChildAt(this.offTrack, 1);
+				}
+			}
+			else if(this.offTrack) //single
+			{
+				this.offTrack.removeFromParent(true);
+				this.offTrack = null;
 			}
 		}
 
 		/**
 		 * @private
 		 */
+		protected function onTrackProperties_onChange(proxy:PropertyProxy, name:Object):void
+		{
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function offTrackProperties_onChange(proxy:PropertyProxy, name:Object):void
+		{
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function thumbProperties_onChange(proxy:PropertyProxy, name:Object):void
+		{
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function labelProperties_onChange(proxy:PropertyProxy, name:Object):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
