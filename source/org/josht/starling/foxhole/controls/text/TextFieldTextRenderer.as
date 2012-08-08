@@ -40,6 +40,7 @@ package org.josht.starling.foxhole.controls.text
 		 */
 		public function TextFieldTextRenderer()
 		{
+			this.isQuickHitAreaEnabled = true;
 		}
 
 		/**
@@ -146,7 +147,7 @@ package org.josht.starling.foxhole.controls.text
 		/**
 		 * @private
 		 */
-		private var _wordWrap:Boolean = true;
+		private var _wordWrap:Boolean = false;
 
 		/**
 		 * Determines if the TextField wraps text to the next line.
@@ -331,6 +332,8 @@ package org.josht.starling.foxhole.controls.text
 				this._textField = new TextField();
 				this._textField.antiAliasType = AntiAliasType.ADVANCED;
 				this._textField.gridFitType = GridFitType.PIXEL;
+				this._textField.mouseEnabled = this._textField.mouseWheelEnabled = false;
+				this._textField.selectable = false;
 			}
 		}
 
