@@ -420,7 +420,7 @@ package org.josht.starling.foxhole.controls
 		 * A set of key/value pairs to be passed down to the list's scroller
 		 * instance. The scroller is a Foxhole Scroller control.
 		 *
-		 * <p>If the sub-component has its own sub-components, their properties
+		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
 		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
 		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
@@ -473,7 +473,7 @@ package org.josht.starling.foxhole.controls
 		 * to the display list) should be passed to the item renderers using an
 		 * <code>itemRendererFactory</code> or with a theme.
 		 *
-		 * <p>If the sub-component has its own sub-components, their properties
+		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
 		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
 		 * which is in a <code>Scroller</code> which is in a <code>List</code>,

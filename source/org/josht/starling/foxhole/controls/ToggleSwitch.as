@@ -474,7 +474,7 @@ package org.josht.starling.foxhole.controls
 		protected var _labelFactory:Function;
 
 		/**
-		 * A function used to instantiate the toggle switch's label sub-components.
+		 * A function used to instantiate the toggle switch's label subcomponents.
 		 *
 		 * <p>The factory should have the following function signature:</p>
 		 * <pre>function():ITextControl</pre>
@@ -641,7 +641,7 @@ package org.josht.starling.foxhole.controls
 		 * A set of key/value pairs to be passed down to the toggle switch's on
 		 * track instance. The on track is a Foxhole Button control.
 		 *
-		 * <p>If the sub-component has its own sub-components, their properties
+		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
 		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
 		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
@@ -700,7 +700,7 @@ package org.josht.starling.foxhole.controls
 		 * A set of key/value pairs to be passed down to the toggle switch's off
 		 * track instance. The off track is a Foxhole Button control.
 		 *
-		 * <p>If the sub-component has its own sub-components, their properties
+		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
 		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
 		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
@@ -759,7 +759,7 @@ package org.josht.starling.foxhole.controls
 		 * A set of key/value pairs to be passed down to the toggle switch's
 		 * thumb instance. The thumb is a Foxhole Button control.
 		 *
-		 * <p>If the sub-component has its own sub-components, their properties
+		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
 		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
 		 * which is in a <code>Scroller</code> which is in a <code>List</code>,

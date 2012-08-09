@@ -411,7 +411,7 @@ package org.josht.starling.foxhole.controls
 		 * horizontal scroll bar instance (if it exists). The scroll bar is an
 		 * <code>IScrollBar</code> implementation.
 		 *
-		 * <p>If the sub-component has its own sub-components, their properties
+		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
 		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
 		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
@@ -503,7 +503,7 @@ package org.josht.starling.foxhole.controls
 		 * vertical scroll bar instance (if it exists). The scroll bar is an
 		 * <code>IScrollBar</code> implementation.
 		 *
-		 * <p>If the sub-component has its own sub-components, their properties
+		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
 		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
 		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
