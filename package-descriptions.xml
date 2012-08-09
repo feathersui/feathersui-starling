@@ -12,6 +12,9 @@
 		<package name="org.josht.starling.foxhole.controls.popups"> 
 			<shortDescription><![CDATA[Managers for the display of pop-up sub-components.]]></shortDescription>
 		</package>
+		<package name="org.josht.starling.foxhole.controls.text"> 
+			<shortDescription><![CDATA[Foxhole components that render text.]]></shortDescription>
+		</package>
 		<package name="org.josht.starling.foxhole.controls.renderers"> 
 			<shortDescription><![CDATA[Data renderers for list controls.]]></shortDescription>
 		</package>
