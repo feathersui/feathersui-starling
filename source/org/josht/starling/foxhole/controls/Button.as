@@ -637,7 +637,7 @@ package org.josht.starling.foxhole.controls
 		 * Returns a text format for the current state.
 		 *
 		 * <p>The following function signature is expected:</p>
-		 * <pre>function(target:Button, state:Object, oldTextFormat:BitmapFontTextFormat = null):BitmapFontTextFormat</pre>
+		 * <pre>function(target:Button, state:Object):Object</pre>
 		 */
 		public function get stateToLabelPropertiesFunction():Function
 		{
@@ -942,7 +942,9 @@ package org.josht.starling.foxhole.controls
 		 * A function used to instantiate the button's label subcomponent.
 		 *
 		 * <p>The factory should have the following function signature:</p>
-		 * <pre>function():ITextControl</pre>
+		 * <pre>function():ITextRenderer</pre>
+		 *
+		 * @see org.josht.starling.foxhole.core.ITextRenderer
 		 */
 		public function get labelFactory():Function
 		{

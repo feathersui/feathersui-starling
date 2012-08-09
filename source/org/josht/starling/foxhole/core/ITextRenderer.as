@@ -47,8 +47,8 @@ package org.josht.starling.foxhole.core
 		function get baseline():Number;
 
 		/**
-		 * Measures the text's bounds&mdash;without a full validation, if
-		 * possible.
+		 * Measures the text's bounds (without a full validation, if
+		 * possible).
 		 */
 		function measureText(result:Point = null):Point;
 	}
