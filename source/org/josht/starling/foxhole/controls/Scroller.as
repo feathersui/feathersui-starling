@@ -2548,6 +2548,8 @@ package org.josht.starling.foxhole.controls
 		{
 			Starling.current.nativeStage.removeEventListener(MouseEvent.MOUSE_WHEEL, nativeStage_mouseWheelHandler);
 			this._touchPointID = -1;
+			this._horizontalScrollBarTouchPointID = -1;
+			this._verticalScrollBarTouchPointID = -1;
 			this._velocityX = 0;
 			this._velocityY = 0;
 			this._previousVelocityX.length = 0;

@@ -36,6 +36,8 @@ package org.josht.starling.foxhole.controls
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 
+	import starling.events.Event;
+
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -94,6 +96,7 @@ package org.josht.starling.foxhole.controls
 		{
 			super();
 			this.addEventListener(TouchEvent.TOUCH, touchHandler);
+			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 		}
 
 		/**
@@ -1354,6 +1357,14 @@ package org.josht.starling.foxhole.controls
 		protected function labelProperties_onChange(proxy:PropertyProxy, name:Object):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function removedFromStageHandler(event:Event):void
+		{
+			this._touchPointID = -1;
 		}
 
 		/**
