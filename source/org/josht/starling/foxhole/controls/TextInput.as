@@ -909,6 +909,8 @@ package org.josht.starling.foxhole.controls
 		{
 			Starling.current.nativeStage.removeChild(this._measureTextField);
 
+			this._touchPointID = -1;
+
 			this.stageText.removeEventListener(Event.CHANGE, stageText_changeHandler);
 			this.stageText.removeEventListener(KeyboardEvent.KEY_DOWN, stageText_keyDownHandler);
 			this.stageText.removeEventListener(FocusEvent.FOCUS_IN, stageText_focusInHandler);

@@ -178,15 +178,16 @@ package org.josht.starling.foxhole.controls
 		 */
 		override public function set isEnabled(value:Boolean):void
 		{
-			if(super.isEnabled == value)
+			if(this._isEnabled == value)
 			{
 				return;
 			}
 			super.isEnabled = value;
-			if(!this.isEnabled)
+			if(!this._isEnabled)
 			{
 				this.touchable = false;
 				this.currentState = STATE_DISABLED;
+				this._touchPointID = -1;
 			}
 			else
 			{
@@ -2223,7 +2224,7 @@ package org.josht.starling.foxhole.controls
 		protected function removedFromStageHandler(event:Event):void
 		{
 			this._touchPointID = -1;
-			this.currentState = STATE_UP;
+			this.currentState = this._isEnabled ? STATE_UP : STATE_DISABLED;
 		}
 		
 		/**
