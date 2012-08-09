@@ -970,7 +970,7 @@ package org.josht.starling.foxhole.controls
 			}
 
 			const index:int = this.getChildIndex(this.thumb);
-			const factory:Function = this._labelFactory != null ? this._labelFactory : FoxholeControl.defaultTextControlFactory;
+			const factory:Function = this._labelFactory != null ? this._labelFactory : FoxholeControl.defaultTextRendererFactory;
 			this.offLabelControl = factory();
 			var foxholeTextRenderer:FoxholeControl = FoxholeControl(this.offLabelControl);
 			foxholeTextRenderer.nameList.add(this.defaultOffLabelName);

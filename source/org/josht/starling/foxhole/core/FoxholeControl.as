@@ -110,7 +110,7 @@ package org.josht.starling.foxhole.core
 		/**
 		 * @private
 		 */
-		public static var defaultTextControlFactory:Function = function():ITextRenderer
+		public static var defaultTextRendererFactory:Function = function():ITextRenderer
 		{
 			return new BitmapFontTextRenderer();
 		}

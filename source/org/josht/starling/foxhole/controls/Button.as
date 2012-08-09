@@ -1923,7 +1923,7 @@ package org.josht.starling.foxhole.controls
 				this.labelControl = null;
 			}
 
-			const factory:Function = this._labelFactory != null ? this._labelFactory : FoxholeControl.defaultTextControlFactory;
+			const factory:Function = this._labelFactory != null ? this._labelFactory : FoxholeControl.defaultTextRendererFactory;
 			this.labelControl = factory();
 			const foxholeLabel:FoxholeControl = FoxholeControl(this.labelControl);
 			foxholeLabel.nameList.add(this.defaultLabelName);
