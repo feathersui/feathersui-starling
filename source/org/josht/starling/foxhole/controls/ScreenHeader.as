@@ -767,7 +767,7 @@ package org.josht.starling.foxhole.controls
 				this._titleRenderer = null;
 			}
 
-			const factory:Function = this._titleFactory != null ? this._titleFactory : FoxholeControl.defaultTextControlFactory;
+			const factory:Function = this._titleFactory != null ? this._titleFactory : FoxholeControl.defaultTextRendererFactory;
 			this._titleRenderer = factory();
 			const foxholeTitle:FoxholeControl = FoxholeControl(this._titleRenderer);
 			foxholeTitle.nameList.add(this.defaultTitleName);
