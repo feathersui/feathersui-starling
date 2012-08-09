@@ -60,12 +60,12 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * The value added to the <code>nameList</code> of the button.
 		 */
-		protected var defaultButtonName:String = "foxhole-pickerlist-button";
+		protected var defaultButtonName:String = "foxhole-picker-list-button";
 
 		/**
 		 * The value added to the <code>nameList</code> of the pop-up list.
 		 */
-		protected var defaultListName:String = "foxhole-pickerlist-list";
+		protected var defaultListName:String = "foxhole-picker-list-list";
 		
 		private var _button:Button;
 		private var _list:List;
