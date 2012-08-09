@@ -35,7 +35,7 @@ package org.josht.starling.foxhole.core
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
-	import starling.utils.transformCoords;
+	import starling.utils.MatrixUtil;
 
 	/**
 	 * Base class for all Foxhole UI controls. Implements invalidation and sets
@@ -565,25 +565,25 @@ package org.josht.starling.foxhole.core
 			{
 				this.getTransformationMatrix(targetSpace, helperMatrix);
 
-				transformCoords(helperMatrix, 0, 0, helperPoint);
+				MatrixUtil.transformCoords(helperMatrix, 0, 0, helperPoint);
 				minX = minX < helperPoint.x ? minX : helperPoint.x;
 				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
 				minY = minY < helperPoint.y ? minY : helperPoint.y;
 				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
 
-				transformCoords(helperMatrix, 0, this.actualHeight, helperPoint);
+				MatrixUtil.transformCoords(helperMatrix, 0, this.actualHeight, helperPoint);
 				minX = minX < helperPoint.x ? minX : helperPoint.x;
 				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
 				minY = minY < helperPoint.y ? minY : helperPoint.y;
 				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
 
-				transformCoords(helperMatrix, this.actualWidth, 0, helperPoint);
+				MatrixUtil.transformCoords(helperMatrix, this.actualWidth, 0, helperPoint);
 				minX = minX < helperPoint.x ? minX : helperPoint.x;
 				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
 				minY = minY < helperPoint.y ? minY : helperPoint.y;
 				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
 
-				transformCoords(helperMatrix, this.actualWidth, this.actualHeight, helperPoint);
+				MatrixUtil.transformCoords(helperMatrix, this.actualWidth, this.actualHeight, helperPoint);
 				minX = minX < helperPoint.x ? minX : helperPoint.x;
 				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
 				minY = minY < helperPoint.y ? minY : helperPoint.y;

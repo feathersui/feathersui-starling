@@ -58,7 +58,7 @@ package org.josht.starling.foxhole.controls
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.textures.Texture;
-	import starling.utils.transformCoords;
+	import starling.utils.MatrixUtil;
 
 	/**
 	 * A text entry control that allows users to enter and edit a single line of
@@ -527,7 +527,7 @@ package org.josht.starling.foxhole.controls
 			super.render(support, alpha);
 			helperPoint.x = helperPoint.y = 0;
 			this.getTransformationMatrix(this.stage, helperMatrix);
-			transformCoords(helperMatrix, 0, 0, helperPoint);
+			MatrixUtil.transformCoords(helperMatrix, 0, 0, helperPoint);
 			ScrollRectManager.toStageCoordinates(helperPoint, this);
 			if(helperPoint.x != this._oldGlobalX || helperPoint.y != this._oldGlobalY)
 			{
@@ -841,7 +841,7 @@ package org.josht.starling.foxhole.controls
 
 			helperPoint.x = helperPoint.y = 0;
 			this.getTransformationMatrix(this.stage, helperMatrix);
-			transformCoords(helperMatrix, 0, 0, helperPoint);
+			MatrixUtil.transformCoords(helperMatrix, 0, 0, helperPoint);
 			ScrollRectManager.toStageCoordinates(helperPoint, this);
 			this._oldGlobalX = helperPoint.x;
 			this._oldGlobalY = helperPoint.y;
