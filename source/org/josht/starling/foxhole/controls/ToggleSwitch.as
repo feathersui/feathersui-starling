@@ -477,7 +477,9 @@ package org.josht.starling.foxhole.controls
 		 * A function used to instantiate the toggle switch's label subcomponents.
 		 *
 		 * <p>The factory should have the following function signature:</p>
-		 * <pre>function():ITextControl</pre>
+		 * <pre>function():ITextRenderer</pre>
+		 *
+		 * @see org.josht.starling.foxhole.core.ITextRenderer
 		 */
 		public function get labelFactory():Function
 		{
