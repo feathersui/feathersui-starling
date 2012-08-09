@@ -28,19 +28,14 @@ package org.josht.starling.foxhole.controls
 	import flash.geom.Rectangle;
 	import flash.system.Capabilities;
 
-	import org.josht.starling.display.IDisplayObjectWithScrollRect;
-	import org.josht.starling.foxhole.controls.text.BitmapFontTextRenderer;
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.ITextRenderer;
 	import org.josht.starling.foxhole.core.IToggle;
 	import org.josht.starling.foxhole.core.PropertyProxy;
-	import org.josht.starling.foxhole.core.PropertyProxy;
-	import org.josht.starling.foxhole.text.BitmapFontTextFormat;
 	import org.josht.starling.motion.GTween;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 
-	import starling.display.DisplayObject;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -1185,7 +1180,6 @@ package org.josht.starling.foxhole.controls
 			offScrollRect.width = maxLabelWidth;
 			offScrollRect.height = totalLabelHeight;
 			foxholeOffLabel.scrollRect = offScrollRect;
-			trace(onScrollRect, offScrollRect);
 
 			foxholeOffLabel.x = this.actualWidth - this._paddingRight - maxLabelWidth;
 			foxholeOffLabel.y = (this.actualHeight - labelHeight) / 2;
@@ -1202,7 +1196,7 @@ package org.josht.starling.foxhole.controls
 			const foxholeOnLabel:FoxholeControl = FoxholeControl(this.onLabelControl);
 			const foxholeOffLabel:FoxholeControl = FoxholeControl(this.offLabelControl);
 			var currentScrollRect:Rectangle = foxholeOnLabel.scrollRect;
-			currentScrollRect.x = this.actualWidth - this.thumb.width - thumbOffset - (maxLabelWidth - foxholeOnLabel.width) / 2;
+			currentScrollRect.x = maxLabelWidth - thumbOffset - (maxLabelWidth - foxholeOnLabel.width) / 2;
 			foxholeOnLabel.scrollRect = currentScrollRect;
 
 			currentScrollRect = foxholeOffLabel.scrollRect;
@@ -1438,7 +1432,7 @@ package org.josht.starling.foxhole.controls
 				if(touch.phase == TouchPhase.MOVED)
 				{
 					const xOffset:Number = location.x - this._touchStartX;
-					const xPosition:Number = Math.min(Math.max(this._paddingLeft, this._thumbStartX + xOffset), trackScrollableWidth);
+					const xPosition:Number = Math.min(Math.max(this._paddingLeft, this._thumbStartX + xOffset), this._paddingLeft + trackScrollableWidth);
 					this.thumb.x = xPosition;
 					this.layout();
 					return;
@@ -1449,7 +1443,7 @@ package org.josht.starling.foxhole.controls
 					if(inchesMoved > MINIMUM_DRAG_DISTANCE)
 					{
 						this._touchPointID = -1;
-						this.isSelected = this.thumb.x > (trackScrollableWidth / 2);
+						this.isSelected = this.thumb.x > (this._paddingLeft + trackScrollableWidth / 2);
 						this._isSelectionChangedByUser = true;
 						this._ignoreTapHandler = true;
 					}
