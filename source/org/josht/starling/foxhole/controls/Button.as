@@ -939,7 +939,7 @@ package org.josht.starling.foxhole.controls
 		protected var _labelFactory:Function;
 
 		/**
-		 * A function used to instantiate the button's label sub-component.
+		 * A function used to instantiate the button's label subcomponent.
 		 *
 		 * <p>The factory should have the following function signature:</p>
 		 * <pre>function():ITextControl</pre>

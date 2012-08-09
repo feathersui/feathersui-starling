@@ -40,8 +40,7 @@ package org.josht.starling.foxhole.controls.text
 	import starling.textures.TextureSmoothing;
 
 	/**
-	 * Displays bitmap text. Automatically resizes itself. Can be truncated to a
-	 * maximum width.
+	 * Renders text using bitmap fonts.
 	 */
 	public class BitmapFontTextRenderer extends FoxholeControl implements ITextRenderer
 	{

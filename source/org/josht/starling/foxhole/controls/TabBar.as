@@ -354,7 +354,7 @@ package org.josht.starling.foxhole.controls
 		 * list) should be passed to tabs in another way (such as with an
 		 * <code>AddedWatcher</code>).
 		 *
-		 * <p>If the sub-component has its own sub-components, their properties
+		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
 		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
 		 * which is in a <code>Scroller</code> which is in a <code>List</code>,

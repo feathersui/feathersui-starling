@@ -253,7 +253,7 @@ package org.josht.starling.foxhole.core
 		 * has been explicitly set, then that value is used. If not, the actual
 		 * width will be calculated automatically. Each component has different
 		 * automatic sizing behavior, but it's usually based on the component's
-		 * skin or content, including text or sub-components.
+		 * skin or content, including text or subcomponents.
 		 */
 		protected var actualWidth:Number = 0;
 
@@ -262,7 +262,7 @@ package org.josht.starling.foxhole.core
 		 * set explicitly, or the component will automatically resize if no
 		 * explicit width value is provided. Each component has a different
 		 * automatic sizing behavior, but it's usually based on the component's
-		 * skin or content, including text or sub-components.
+		 * skin or content, including text or subcomponents.
 		 */
 		override public function get width():Number
 		{
@@ -293,7 +293,7 @@ package org.josht.starling.foxhole.core
 		 * has been explicitly set, then that value is used. If not, the actual
 		 * height will be calculated automatically. Each component has different
 		 * automatic sizing behavior, but it's usually based on the component's
-		 * skin or content, including text or sub-components.
+		 * skin or content, including text or subcomponents.
 		 */
 		protected var actualHeight:Number = 0;
 
@@ -302,7 +302,7 @@ package org.josht.starling.foxhole.core
 		 * was set explicitly, or the component will automatically resize if no
 		 * explicit height value is provided. Each component has a different
 		 * automatic sizing behavior, but it's usually based on the component's
-		 * skin or content, including text or sub-components.
+		 * skin or content, including text or subcomponents.
 		 */
 		override public function get height():Number
 		{
