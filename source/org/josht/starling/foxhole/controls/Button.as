@@ -2263,9 +2263,9 @@ package org.josht.starling.foxhole.controls
 					return;
 				}
 
-				var location:Point = touch.getLocation(this);
-				ScrollRectManager.adjustTouchLocation(location, this);
-				var isInBounds:Boolean = this.hitTest(location, true) != null;
+				touch.getLocation(this, helperPoint);
+				ScrollRectManager.adjustTouchLocation(helperPoint, this);
+				var isInBounds:Boolean = this.hitTest(helperPoint, true) != null;
 				if(touch.phase == TouchPhase.MOVED)
 				{
 					if(isInBounds || this.keepDownStateOnRollOut)
@@ -2285,13 +2285,13 @@ package org.josht.starling.foxhole.controls
 					{
 						if(this._isHoverSupported)
 						{
-							location = touch.getLocation(this);
-							location = this.localToGlobal(location);
+							touch.getLocation(this, helperPoint);
+							this.localToGlobal(helperPoint, helperPoint);
 
 							//we need to do a new hitTest() because a display
 							//object may have appeared above this button that
 							//will prevent clearing the hover state
-							isInBounds = this.stage.hitTest(location, true) == this;
+							isInBounds = this.stage.hitTest(helperPoint, true) == this;
 							this.currentState = (isInBounds && this._isHoverSupported) ? STATE_HOVER : STATE_UP;
 						}
 						else

@@ -51,6 +51,11 @@ package org.josht.starling.foxhole.controls
 	public class PickerList extends FoxholeControl
 	{
 		/**
+		 * @private
+		 */
+		private static const HELPER_POINT:Point = new Point();
+
+		/**
 		 * Constructor.
 		 */
 		public function PickerList()
@@ -734,9 +739,9 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			const location:Point = touch.getLocation(displayRenderer);
-			ScrollRectManager.adjustTouchLocation(location, displayRenderer);
-			if(displayRenderer.hitTest(location, true))
+			touch.getLocation(displayRenderer, HELPER_POINT);
+			ScrollRectManager.adjustTouchLocation(HELPER_POINT, displayRenderer);
+			if(displayRenderer.hitTest(HELPER_POINT, true))
 			{
 				this.closePopUpList();
 			}

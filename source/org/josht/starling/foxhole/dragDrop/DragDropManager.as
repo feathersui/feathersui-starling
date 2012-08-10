@@ -50,6 +50,11 @@ package org.josht.starling.foxhole.dragDrop
 		/**
 		 * @private
 		 */
+		private static const HELPER_POINT:Point = new Point();
+
+		/**
+		 * @private
+		 */
 		protected static var _touchPointID:int = -1;
 
 		/**
@@ -160,20 +165,20 @@ package org.josht.starling.foxhole.dragDrop
 			avatar = dragAvatar;
 			avatarOffsetX = dragAvatarOffsetX;
 			avatarOffsetY = dragAvatarOffsetY;
-			const location:Point = touch.getLocation(Starling.current.stage);
+			touch.getLocation(Starling.current.stage, HELPER_POINT);
 			if(avatar)
 			{
 				avatarOldTouchable = avatar.touchable;
 				avatar.touchable = false;
-				avatar.x = location.x + avatarOffsetX;
-				avatar.y = location.y + avatarOffsetY;
+				avatar.x = HELPER_POINT.x + avatarOffsetX;
+				avatar.y = HELPER_POINT.y + avatarOffsetY;
 				PopUpManager.addPopUp(avatar, false, false);
 			}
 			Starling.current.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			Starling.current.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler, false, 0, true);
 			dragSource.onDragStart.dispatch(dragSource, data);
 
-			updateDropTarget(location);
+			updateDropTarget(HELPER_POINT);
 		}
 
 		/**
@@ -319,13 +324,13 @@ package org.josht.starling.foxhole.dragDrop
 			}
 			if(touch.phase == TouchPhase.MOVED)
 			{
-				var location:Point = touch.getLocation(stage);
+				touch.getLocation(stage, HELPER_POINT);
 				if(avatar)
 				{
-					avatar.x = location.x + avatarOffsetX;
-					avatar.y = location.y + avatarOffsetY;
+					avatar.x = HELPER_POINT.x + avatarOffsetX;
+					avatar.y = HELPER_POINT.y + avatarOffsetY;
 				}
-				updateDropTarget(location);
+				updateDropTarget(HELPER_POINT);
 			}
 			else if(touch.phase == TouchPhase.ENDED)
 			{

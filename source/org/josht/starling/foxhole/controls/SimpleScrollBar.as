@@ -48,6 +48,11 @@ package org.josht.starling.foxhole.controls
 	public class SimpleScrollBar extends FoxholeControl implements IScrollBar
 	{
 		/**
+		 * @private
+		 */
+		private static const HELPER_POINT:Point = new Point();
+
+		/**
 		 * The scroll bar's thumb may be dragged horizontally (on the x-axis).
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
@@ -842,12 +847,12 @@ package org.josht.starling.foxhole.controls
 					if(touch.phase == TouchPhase.BEGAN)
 					{
 						this._touchPointID = touch.id;
-						const location:Point = touch.getLocation(this);
-						this._touchStartX = location.x;
-						this._touchStartY = location.y;
-						this._thumbStartX = location.x;
-						this._thumbStartY = location.y;
-						this._touchValue = this.locationToValue(location);
+						touch.getLocation(this, HELPER_POINT);
+						this._touchStartX = HELPER_POINT.x;
+						this._touchStartY = HELPER_POINT.y;
+						this._thumbStartX = HELPER_POINT.x;
+						this._thumbStartY = HELPER_POINT.y;
+						this._touchValue = this.locationToValue(HELPER_POINT);
 						this.adjustPage();
 						this.startRepeatTimer(this.adjustPage);
 						return;
@@ -888,8 +893,8 @@ package org.josht.starling.foxhole.controls
 
 				if(touch.phase == TouchPhase.MOVED)
 				{
-					var location:Point = touch.getLocation(this);
-					var newValue:Number = this.locationToValue(location);
+					touch.getLocation(this, HELPER_POINT);
+					var newValue:Number = this.locationToValue(HELPER_POINT);
 					if(this._step != 0)
 					{
 						newValue = roundToNearest(newValue, this._step);
@@ -914,12 +919,12 @@ package org.josht.starling.foxhole.controls
 				{
 					if(touch.phase == TouchPhase.BEGAN)
 					{
-						location = touch.getLocation(this);
+						touch.getLocation(this, HELPER_POINT);
 						this._touchPointID = touch.id;
 						this._thumbStartX = this.thumb.x;
 						this._thumbStartY = this.thumb.y;
-						this._touchStartX = location.x;
-						this._touchStartY = location.y;
+						this._touchStartX = HELPER_POINT.x;
+						this._touchStartY = HELPER_POINT.y;
 						this.isDragging = true;
 						this._onDragStart.dispatch(this);
 						return;
