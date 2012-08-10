@@ -260,7 +260,7 @@ package org.josht.starling.foxhole.dragDrop
 			}
 			if(target)
 			{
-				location = target.globalToLocal(location);
+				target.globalToLocal(location, location);
 			}
 			if(target != dropTarget)
 			{
