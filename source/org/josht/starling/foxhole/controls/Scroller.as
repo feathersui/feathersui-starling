@@ -2158,7 +2158,7 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			const location:Point = touch.getLocation(this);
+			touch.getLocation(this, helperPoint);
 			if(this._horizontalAutoScrollTween)
 			{
 				this._horizontalAutoScrollTween.paused = true;
@@ -2176,8 +2176,8 @@ package org.josht.starling.foxhole.controls
 			this._previousVelocityX.length = 0;
 			this._previousVelocityY.length = 0;
 			this._previousTouchTime = getTimer();
-			this._previousTouchX = this._startTouchX = this._currentTouchX = location.x;
-			this._previousTouchY = this._startTouchY = this._currentTouchY = location.y;
+			this._previousTouchX = this._startTouchX = this._currentTouchX = helperPoint.x;
+			this._previousTouchY = this._startTouchY = this._currentTouchY = helperPoint.y;
 			this._startHorizontalScrollPosition = this._horizontalScrollPosition;
 			this._startVerticalScrollPosition = this._verticalScrollPosition;
 			this._isDraggingHorizontally = false;
@@ -2308,9 +2308,9 @@ package org.josht.starling.foxhole.controls
 			{
 				//we're saving these to use in the enter frame handler because
 				//that provides a longer time offset
-				const location:Point = touch.getLocation(this);
-				this._currentTouchX = location.x;
-				this._currentTouchY = location.y;
+				touch.getLocation(this, helperPoint);
+				this._currentTouchX = helperPoint.x;
+				this._currentTouchY = helperPoint.y;
 			}
 			else if(touch.phase == TouchPhase.ENDED)
 			{
@@ -2392,7 +2392,7 @@ package org.josht.starling.foxhole.controls
 
 			helperPoint.x = event.stageX;
 			helperPoint.y = event.stageY;
-			helperPoint = this.globalToLocal(helperPoint);
+			this.globalToLocal(helperPoint, helperPoint);
 			if(this.hitTest(helperPoint, true))
 			{
 				this.verticalScrollPosition = Math.min(this._maxVerticalScrollPosition, Math.max(0, this._verticalScrollPosition - event.delta * this._verticalScrollStep));
@@ -2434,9 +2434,9 @@ package org.josht.starling.foxhole.controls
 				if(touch.phase == TouchPhase.ENDED)
 				{
 					this._horizontalScrollBarTouchPointID = -1;
-					const location:Point = touch.getLocation(displayHorizontalScrollBar);
-					ScrollRectManager.adjustTouchLocation(location, displayHorizontalScrollBar);
-					const isInBounds:Boolean = displayHorizontalScrollBar.hitTest(location, true) != null;
+					touch.getLocation(displayHorizontalScrollBar, helperPoint);
+					ScrollRectManager.adjustTouchLocation(helperPoint, displayHorizontalScrollBar);
+					const isInBounds:Boolean = displayHorizontalScrollBar.hitTest(helperPoint, true) != null;
 					if(!isInBounds)
 					{
 						this.hideHorizontalScrollBar();
@@ -2500,9 +2500,9 @@ package org.josht.starling.foxhole.controls
 				if(touch.phase == TouchPhase.ENDED)
 				{
 					this._verticalScrollBarTouchPointID = -1;
-					const location:Point = touch.getLocation(displayVerticalScrollBar);
-					ScrollRectManager.adjustTouchLocation(location, displayVerticalScrollBar);
-					const isInBounds:Boolean = displayVerticalScrollBar.hitTest(location, true) != null;
+					touch.getLocation(displayVerticalScrollBar, helperPoint);
+					ScrollRectManager.adjustTouchLocation(helperPoint, displayVerticalScrollBar);
+					const isInBounds:Boolean = displayVerticalScrollBar.hitTest(helperPoint, true) != null;
 					if(!isInBounds)
 					{
 						this.hideVerticalScrollBar();

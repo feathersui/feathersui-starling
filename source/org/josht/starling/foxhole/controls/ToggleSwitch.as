@@ -49,6 +49,11 @@ package org.josht.starling.foxhole.controls
 	{
 		/**
 		 * @private
+		 */
+		private static const HELPER_POINT:Point = new Point();
+
+		/**
+		 * @private
 		 * The minimum physical distance (in inches) that a touch must move
 		 * before the scroller starts scrolling.
 		 */
@@ -1403,8 +1408,8 @@ package org.josht.starling.foxhole.controls
 			}
 
 			this._touchPointID = -1;
-			const location:Point = touch.getLocation(this);
-			if(this.hitTest(location, true))
+			touch.getLocation(this, HELPER_POINT);
+			if(this.hitTest(HELPER_POINT, true))
 			{
 				this.isSelected = !this._isSelected;
 				this._isSelectionChangedByUser = true;
@@ -1440,11 +1445,11 @@ package org.josht.starling.foxhole.controls
 				{
 					return;
 				}
-				var location:Point = touch.getLocation(this);
+				touch.getLocation(this, HELPER_POINT);
 				const trackScrollableWidth:Number = this.actualWidth - this._paddingLeft - this._paddingRight - this.thumb.width;
 				if(touch.phase == TouchPhase.MOVED)
 				{
-					const xOffset:Number = location.x - this._touchStartX;
+					const xOffset:Number = HELPER_POINT.x - this._touchStartX;
 					const xPosition:Number = Math.min(Math.max(this._paddingLeft, this._thumbStartX + xOffset), this._paddingLeft + trackScrollableWidth);
 					this.thumb.x = xPosition;
 					this.layout();
@@ -1452,7 +1457,7 @@ package org.josht.starling.foxhole.controls
 				}
 				else if(touch.phase == TouchPhase.ENDED)
 				{
-					const inchesMoved:Number = Math.abs(location.x - this._touchStartX) / Capabilities.screenDPI;
+					const inchesMoved:Number = Math.abs(HELPER_POINT.x - this._touchStartX) / Capabilities.screenDPI;
 					if(inchesMoved > MINIMUM_DRAG_DISTANCE)
 					{
 						this._touchPointID = -1;
@@ -1469,10 +1474,10 @@ package org.josht.starling.foxhole.controls
 				{
 					if(touch.phase == TouchPhase.BEGAN)
 					{
-						location = touch.getLocation(this);
+						touch.getLocation(this, HELPER_POINT);
 						this._touchPointID = touch.id;
 						this._thumbStartX = this.thumb.x;
-						this._touchStartX = location.x;
+						this._touchStartX = HELPER_POINT.x;
 						return;
 					}
 				}

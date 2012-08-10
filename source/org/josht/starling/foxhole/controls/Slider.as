@@ -48,6 +48,11 @@ package org.josht.starling.foxhole.controls
 	public class Slider extends FoxholeControl
 	{
 		/**
+		 * @private
+		 */
+		private static const HELPER_POINT:Point = new Point();
+
+		/**
 		 * The slider's thumb may be dragged horizontally (on the x-axis).
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
@@ -1114,8 +1119,8 @@ package org.josht.starling.foxhole.controls
 				}
 				if(touch.phase == TouchPhase.MOVED)
 				{
-					var location:Point = touch.getLocation(this);
-					this.dragTo(location);
+					touch.getLocation(this, HELPER_POINT);
+					this.dragTo(HELPER_POINT);
 				}
 				else if(touch.phase == TouchPhase.ENDED)
 				{
@@ -1135,23 +1140,23 @@ package org.josht.starling.foxhole.controls
 				{
 					if(touch.phase == TouchPhase.BEGAN)
 					{
-						location = touch.getLocation(this);
+						touch.getLocation(this, HELPER_POINT);
 						this._touchPointID = touch.id;
 						if(this._direction == DIRECTION_VERTICAL)
 						{
-							this._thumbStartX = location.x;
-							this._thumbStartY = Math.min(this.actualHeight - this.thumb.height, Math.max(0, location.y - this.thumb.height / 2));
+							this._thumbStartX = HELPER_POINT.x;
+							this._thumbStartY = Math.min(this.actualHeight - this.thumb.height, Math.max(0, HELPER_POINT.y - this.thumb.height / 2));
 						}
 						else //horizontal
 						{
-							this._thumbStartX = Math.min(this.actualWidth - this.thumb.width, Math.max(0, location.x - this.thumb.width / 2));
-							this._thumbStartY = location.y;
+							this._thumbStartX = Math.min(this.actualWidth - this.thumb.width, Math.max(0, HELPER_POINT.x - this.thumb.width / 2));
+							this._thumbStartY = HELPER_POINT.y;
 						}
-						this._touchStartX = location.x;
-						this._touchStartY = location.y;
+						this._touchStartX = HELPER_POINT.x;
+						this._touchStartY = HELPER_POINT.y;
 						this.isDragging = true;
 						this._onDragStart.dispatch(this);
-						this.dragTo(location);
+						this.dragTo(HELPER_POINT);
 						return;
 					}
 				}
@@ -1189,8 +1194,8 @@ package org.josht.starling.foxhole.controls
 				}
 				if(touch.phase == TouchPhase.MOVED)
 				{
-					var location:Point = touch.getLocation(this);
-					this.dragTo(location);
+					touch.getLocation(this, HELPER_POINT);
+					this.dragTo(HELPER_POINT);
 				}
 				else if(touch.phase == TouchPhase.ENDED)
 				{
@@ -1210,12 +1215,12 @@ package org.josht.starling.foxhole.controls
 				{
 					if(touch.phase == TouchPhase.BEGAN)
 					{
-						location = touch.getLocation(this);
+						touch.getLocation(this, HELPER_POINT);
 						this._touchPointID = touch.id;
 						this._thumbStartX = this.thumb.x;
 						this._thumbStartY = this.thumb.y;
-						this._touchStartX = location.x;
-						this._touchStartY = location.y;
+						this._touchStartX = HELPER_POINT.x;
+						this._touchStartY = HELPER_POINT.y;
 						this.isDragging = true;
 						this._onDragStart.dispatch(this);
 						return;

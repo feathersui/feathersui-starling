@@ -786,18 +786,18 @@ package org.josht.starling.foxhole.controls
 					}
 					else //desktop
 					{
-						const location:Point = touch.getLocation(this);
-						location.x -= this._paddingLeft;
-						location.y -= this._paddingTop;
-						if(location.x < 0)
+						touch.getLocation(this, helperPoint);
+						helperPoint.x -= this._paddingLeft;
+						helperPoint.y -= this._paddingTop;
+						if(helperPoint.x < 0)
 						{
 							this._savedSelectionIndex = 0;
 						}
 						else
 						{
-							this._savedSelectionIndex = this._measureTextField.getCharIndexAtPoint(location.x, location.y);
+							this._savedSelectionIndex = this._measureTextField.getCharIndexAtPoint(helperPoint.x, helperPoint.y);
 							const bounds:Rectangle = this._measureTextField.getCharBoundaries(this._savedSelectionIndex);
-							if(bounds && (bounds.x + bounds.width - location.x) < (location.x - bounds.x))
+							if(bounds && (bounds.x + bounds.width - helperPoint.x) < (helperPoint.x - bounds.x))
 							{
 								this._savedSelectionIndex++;
 							}
@@ -966,9 +966,9 @@ package org.josht.starling.foxhole.controls
 				if(touch.phase == TouchPhase.ENDED)
 				{
 					this._touchPointID = -1;
-					var location:Point = touch.getLocation(this);
-					ScrollRectManager.adjustTouchLocation(location, this);
-					var isInBounds:Boolean = this.hitTest(location, true) != null;
+					touch.getLocation(this, helperPoint);
+					ScrollRectManager.adjustTouchLocation(helperPoint, this);
+					var isInBounds:Boolean = this.hitTest(helperPoint, true) != null;
 					if(!this._stageTextHasFocus && isInBounds)
 					{
 						this.setFocusInternal(touch);
