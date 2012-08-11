@@ -1629,7 +1629,10 @@ package org.josht.starling.foxhole.controls
 				this._scrollToGroupIndex = -1;
 				this._scrollToItemIndex = -1;
 			}
-			this.scroller.horizontalScrollStep = this.scroller.verticalScrollStep = this.dataViewPort.typicalItemHeight;
+			if(this._dataProvider && this._dataProvider.getLength() > 0)
+			{
+				this.scroller.horizontalScrollStep = this.scroller.verticalScrollStep = this.dataViewPort.typicalItemHeight;
+			}
 		}
 
 		/**
