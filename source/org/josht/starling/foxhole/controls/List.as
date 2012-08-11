@@ -881,18 +881,6 @@ package org.josht.starling.foxhole.controls
 		 */
 		override protected function initialize():void
 		{
-			if(!this._layout)
-			{
-				const layout:VerticalLayout = new VerticalLayout();
-				layout.useVirtualLayout = true;
-				layout.paddingTop = layout.paddingRight = layout.paddingBottom =
-					layout.paddingLeft = 0;
-				layout.gap = 0;
-				layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
-				layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
-				this._layout = layout;
-			}
-
 			if(!this.scroller)
 			{
 				this.scroller = new Scroller();
@@ -910,6 +898,19 @@ package org.josht.starling.foxhole.controls
 				this.dataViewPort.onChange.add(dataViewPort_onChange);
 				this.dataViewPort.onItemTouch.add(dataViewPort_onItemTouch);
 				this.scroller.viewPort = this.dataViewPort;
+			}
+
+			if(!this._layout)
+			{
+				const layout:VerticalLayout = new VerticalLayout();
+				layout.useVirtualLayout = true;
+				layout.paddingTop = layout.paddingRight = layout.paddingBottom =
+					layout.paddingLeft = 0;
+				layout.gap = 0;
+				layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
+				layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
+				this._layout = layout;
+				this.scroller.horizontalScrollPolicy = Scroller.SCROLL_POLICY_OFF;
 			}
 		}
 		
