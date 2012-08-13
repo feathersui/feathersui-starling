@@ -41,6 +41,10 @@ package org.josht.starling.motion
 		 */
 		public function GTween(target:Object=null, duration:Number=1, values:Object=null, props:Object=null, pluginData:Object=null)
 		{
+			if(!props)
+			{
+				props = {};
+			}
 			if(!props.hasOwnProperty("juggler"))
 			{
 				props.juggler = Starling.juggler;
