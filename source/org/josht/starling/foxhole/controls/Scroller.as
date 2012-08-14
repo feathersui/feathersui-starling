@@ -1319,33 +1319,6 @@ package org.josht.starling.foxhole.controls
 
 			if(sizeInvalid || stylesInvalid || dataInvalid || scrollBarInvalid)
 			{
-				//stop animating. this is a serious change.
-				if(this._horizontalAutoScrollTween)
-				{
-					this._horizontalAutoScrollTween.paused = true;
-					this._horizontalAutoScrollTween = null;
-				}
-				if(this._verticalAutoScrollTween)
-				{
-					this._verticalAutoScrollTween.paused = true;
-					this._verticalAutoScrollTween = null;
-				}
-				this._touchPointID = -1;
-				this._velocityX = 0;
-				this._velocityY = 0;
-				this._previousVelocityX.length = 0;
-				this._previousVelocityY.length = 0;
-				this.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
-				this.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
-				if(this._snapToPages)
-				{
-					//we don't check against the maximums here because the call
-					//to refresh the maximums will handle it.
-					this._horizontalScrollPosition = Math.max(0, roundToNearest(this._horizontalScrollPosition, this.actualWidth));
-					this._verticalScrollPosition = Math.max(0, roundToNearest(this._verticalScrollPosition, this.actualHeight));
-					this._horizontalPageIndex = Math.round(this._horizontalScrollPosition / this.actualWidth);
-					this._verticalPageIndex = Math.round(this._verticalScrollPosition / this.actualHeight);
-				}
 				this.refreshMaxScrollPositions();
 			}
 
@@ -1587,6 +1560,8 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function refreshMaxScrollPositions():void
 		{
+			const oldMaxHSP:Number = this._maxHorizontalScrollPosition;
+			const oldMaxVSP:Number = this._maxVerticalScrollPosition;
 			if(this._viewPort)
 			{
 				this._maxHorizontalScrollPosition = Math.max(0, this._viewPort.width + this._verticalScrollBarWidthOffset - this.actualWidth);
@@ -1597,13 +1572,27 @@ package org.josht.starling.foxhole.controls
 				this._maxHorizontalScrollPosition = 0;
 				this._maxVerticalScrollPosition = 0;
 			}
-			const oldHorizontalScrollPosition:Number = this._horizontalScrollPosition;
-			const oldVerticalScrollPosition:Number = this._verticalScrollPosition;
-			this._horizontalScrollPosition = clamp(this._horizontalScrollPosition, 0, this._maxHorizontalScrollPosition);
-			this._verticalScrollPosition = clamp(this._verticalScrollPosition, 0, this._maxVerticalScrollPosition);
-			if(oldHorizontalScrollPosition != this._horizontalScrollPosition ||
-				oldVerticalScrollPosition != this._verticalScrollPosition)
+
+			if(this._maxHorizontalScrollPosition != oldMaxHSP || this._maxVerticalScrollPosition != oldMaxVSP)
 			{
+				if(this._touchPointID < 0 && !this._horizontalAutoScrollTween)
+				{
+					if(this._snapToPages)
+					{
+						this._horizontalScrollPosition = Math.max(0, roundToNearest(this._horizontalScrollPosition, this.actualWidth));
+						this._horizontalPageIndex = Math.round(this._horizontalScrollPosition / this.actualWidth);
+					}
+					this._horizontalScrollPosition = clamp(this._horizontalScrollPosition, 0, this._maxHorizontalScrollPosition);
+				}
+				if(this._touchPointID < 0 && !this._verticalAutoScrollTween)
+				{
+					if(this._snapToPages)
+					{
+						this._verticalScrollPosition = Math.max(0, roundToNearest(this._verticalScrollPosition, this.actualHeight));
+						this._verticalPageIndex = Math.round(this._verticalScrollPosition / this.actualHeight);
+					}
+					this._verticalScrollPosition = clamp(this._verticalScrollPosition, 0, this._maxVerticalScrollPosition);
+				}
 				this._onScroll.dispatch(this);
 			}
 		}
