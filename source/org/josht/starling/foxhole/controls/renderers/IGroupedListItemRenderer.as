@@ -64,6 +64,16 @@ package org.josht.starling.foxhole.controls.renderers
 		 * @private
 		 */
 		function set itemIndex(value:int):void;
+
+		/**
+		 * The index of the item within the layout.
+		 */
+		function get layoutIndex():int;
+
+		/**
+		 * @private
+		 */
+		function set layoutIndex(value:int):void;
 		
 		/**
 		 * The grouped list that contains this item renderer.

@@ -54,6 +54,16 @@ package org.josht.starling.foxhole.controls.renderers
 		function set groupIndex(value:int):void;
 
 		/**
+		 * The index of the item within the layout.
+		 */
+		function get layoutIndex():int;
+
+		/**
+		 * @private
+		 */
+		function set layoutIndex(value:int):void;
+
+		/**
 		 * The grouped list that contains this header or footer renderer.
 		 */
 		function get owner():GroupedList;

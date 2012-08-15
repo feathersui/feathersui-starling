@@ -85,6 +85,27 @@ package org.josht.starling.foxhole.controls.renderers
 		{
 			this._itemIndex = value;
 		}
+
+		/**
+		 * @private
+		 */
+		private var _layoutIndex:int = -1;
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get layoutIndex():int
+		{
+			return this._layoutIndex;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set layoutIndex(value:int):void
+		{
+			this._layoutIndex = value;
+		}
 		
 		/**
 		 * @inheritDoc

@@ -855,14 +855,19 @@ package org.josht.starling.foxhole.layout
 		/**
 		 * @inheritDoc
 		 */
-		public function getMinimumItemIndexAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int):int
+		public function getVisibleIndicesAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int, result:Vector.<int> = null):Vector.<int>
 		{
+			if(!result)
+			{
+				result = new <int>[];
+			}
+			result.length = 0;
 			const tileWidth:Number = this._useSquareTiles ? Math.max(0, this._typicalItemWidth, this._typicalItemHeight) : this._typicalItemWidth;
 			const tileHeight:Number = this._useSquareTiles ? tileWidth : this._typicalItemHeight;
+			var horizontalTileCount:int = (width - this._paddingLeft - this._paddingRight + this._gap) / (tileWidth + this._gap);
 			const verticalTileCount:int = (height - this._paddingTop - this._paddingBottom + this._gap) / (tileHeight + this._gap);
 			if(this._paging != PAGING_NONE)
 			{
-				const horizontalTileCount:int = (width - this._paddingLeft - this._paddingRight + this._gap) / (tileWidth + this._gap);
 				const perPage:Number = horizontalTileCount * verticalTileCount;
 				if(this._paging == PAGING_HORIZONTAL)
 				{
@@ -872,63 +877,34 @@ package org.josht.starling.foxhole.layout
 				{
 					pageIndex = scrollY / height;
 				}
-				return pageIndex * perPage;
+				var minimum:int = pageIndex * perPage;
+				var maximum:int = (pageIndex + 2) * perPage;
 			}
-			var columnIndexOffset:int = 0;
-			const totalColumnWidth:Number = Math.ceil(itemCount / verticalTileCount) * (tileWidth + this._gap) - this._gap;
-			if(totalColumnWidth < width)
+			else
 			{
-				if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
+				var columnIndexOffset:int = 0;
+				const totalColumnWidth:Number = Math.ceil(itemCount / verticalTileCount) * (tileWidth + this._gap) - this._gap;
+				if(totalColumnWidth < width)
 				{
-					columnIndexOffset = Math.ceil((width - totalColumnWidth) / (tileWidth + this._gap));
+					if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
+					{
+						columnIndexOffset = Math.ceil((width - totalColumnWidth) / (tileWidth + this._gap));
+					}
+					else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
+					{
+						columnIndexOffset = Math.ceil((width - totalColumnWidth) / (tileWidth + this._gap) / 2);
+					}
 				}
-				else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
-				{
-					columnIndexOffset = Math.ceil((width - totalColumnWidth) / (tileWidth + this._gap) / 2);
-				}
+				const columnIndex:int = -columnIndexOffset + Math.floor((scrollX - this._paddingLeft + this._gap) / (tileWidth + this._gap));
+				minimum = columnIndex * verticalTileCount;
+				horizontalTileCount = Math.ceil((width - this._paddingLeft + this._gap) / (tileWidth + this._gap)) + 1;
+				maximum = minimum + verticalTileCount * horizontalTileCount;
 			}
-			const columnIndex:int = -columnIndexOffset + Math.floor((scrollX - this._paddingLeft + this._gap) / (tileWidth + this._gap));
-			return columnIndex * verticalTileCount;
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public function getMaximumItemIndexAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int):int
-		{
-			const tileWidth:Number = this._useSquareTiles ? Math.max(0, this._typicalItemWidth, this._typicalItemHeight) : this._typicalItemWidth;
-			const tileHeight:Number = this._useSquareTiles ? tileWidth : this._typicalItemHeight;
-			const verticalTileCount:int = (height - this._paddingTop - this._paddingBottom + this._gap) / (tileHeight + this._gap);
-			if(this._paging != PAGING_NONE)
+			for(var i:int = minimum; i <= maximum; i++)
 			{
-				var horizontalTileCount:int = (width - this._paddingLeft - this._paddingRight + this._gap) / (tileWidth + this._gap);
-				const perPage:Number = horizontalTileCount * verticalTileCount;
-				if(this._paging == PAGING_HORIZONTAL)
-				{
-					var pageIndex:int = scrollX / width;
-				}
-				else
-				{
-					pageIndex = scrollY / height;
-				}
-				return (pageIndex + 2) * perPage;
+				result.push(i);
 			}
-			horizontalTileCount = Math.ceil((width - this._paddingLeft + this._gap) / (tileWidth + this._gap)) + 1;
-			var columnIndexOffset:int = 0;
-			const totalColumnWidth:Number = Math.ceil(itemCount / verticalTileCount) * (tileWidth + this._gap) - this._gap;
-			if(totalColumnWidth < width)
-			{
-				if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
-				{
-					columnIndexOffset = Math.ceil((width - totalColumnWidth) / (tileWidth + this._gap));
-				}
-				else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
-				{
-					columnIndexOffset = Math.ceil((width - totalColumnWidth) / (tileWidth + this._gap) / 2);
-				}
-			}
-			const columnIndex:int = -columnIndexOffset + Math.floor((scrollX - this._paddingLeft + this._gap) / (tileWidth + this._gap));
-			return columnIndex * verticalTileCount + verticalTileCount * horizontalTileCount;
+			return result;
 		}
 
 		/**

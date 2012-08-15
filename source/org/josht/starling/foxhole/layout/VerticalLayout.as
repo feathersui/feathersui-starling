@@ -86,6 +86,11 @@ package org.josht.starling.foxhole.layout
 		/**
 		 * @private
 		 */
+		protected var _heightCache:Array = [];
+
+		/**
+		 * @private
+		 */
 		private var _gap:Number = 0;
 
 		/**
@@ -296,32 +301,35 @@ package org.josht.starling.foxhole.layout
 		/**
 		 * @private
 		 */
-		private var _indexToItemBoundsFunction:Function;
+		private var _hasVariableItemDimensions:Boolean = false;
 
 		/**
-		 * @inheritDoc
+		 * When the layout is virtualized, and this value is true, the items may
+		 * have variable width values. If false, the items will all share the
+		 * same width value with the typical item.
 		 */
-		public function get indexToItemBoundsFunction():Function
+		public function get hasVariableItemDimensions():Boolean
 		{
-			return this._indexToItemBoundsFunction;
+			return this._hasVariableItemDimensions;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set indexToItemBoundsFunction(value:Function):void
+		public function set hasVariableItemDimensions(value:Boolean):void
 		{
-			if(this._indexToItemBoundsFunction == value)
+			if(this._hasVariableItemDimensions == value)
 			{
 				return;
 			}
-			this._indexToItemBoundsFunction = value;
+			this._hasVariableItemDimensions = value;
+			this._onLayoutChange.dispatch(this);
 		}
 
 		/**
 		 * @private
 		 */
-		private var _typicalItemWidth:Number = 0;
+		private var _typicalItemWidth:Number = -1;
 
 		/**
 		 * @inheritDoc
@@ -346,7 +354,7 @@ package org.josht.starling.foxhole.layout
 		/**
 		 * @private
 		 */
-		private var _typicalItemHeight:Number = 0;
+		private var _typicalItemHeight:Number = -1;
 
 		/**
 		 * @inheritDoc
@@ -395,7 +403,7 @@ package org.josht.starling.foxhole.layout
 			const explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
 			const explicitHeight:Number = viewPortBounds ? viewPortBounds.explicitHeight : NaN;
 
-			var maxItemWidth:Number = 0;
+			var maxItemWidth:Number = this._useVirtualLayout ? this._typicalItemWidth : 0;
 			var positionY:Number = boundsY + this._paddingTop;
 			const itemCount:int = items.length;
 			for(var i:int = 0; i < itemCount; i++)
@@ -403,16 +411,13 @@ package org.josht.starling.foxhole.layout
 				var item:DisplayObject = items[i];
 				if(this._useVirtualLayout && !item)
 				{
-					if(this._indexToItemBoundsFunction != null)
+					if(!this._hasVariableItemDimensions || isNaN(this._heightCache[i]))
 					{
-						helperPoint = this._indexToItemBoundsFunction(i, helperPoint);
-						positionY += helperPoint.y + this._gap;
-						maxItemWidth = Math.max(maxItemWidth, helperPoint.x);
+						positionY += this._typicalItemHeight + this._gap;
 					}
 					else
 					{
-						positionY += this._typicalItemHeight + this._gap;
-						maxItemWidth = Math.max(maxItemWidth, this._typicalItemWidth);
+						positionY += this._heightCache[i] + this._gap;
 					}
 				}
 				else
@@ -420,15 +425,16 @@ package org.josht.starling.foxhole.layout
 					item.y = positionY;
 					if(this._useVirtualLayout)
 					{
-						if(this._indexToItemBoundsFunction != null)
+						if(this._hasVariableItemDimensions)
 						{
-							helperPoint = this._indexToItemBoundsFunction(i, helperPoint);
-							item.width = helperPoint.x;
-							item.height = helperPoint.y;
+							if(isNaN(this._heightCache[i]))
+							{
+								this._heightCache[i] = item.height;
+								this._onLayoutChange.dispatch(this);
+							}
 						}
-						else
+						else if(this._typicalItemHeight >= 0)
 						{
-							item.width = this._typicalItemWidth;
 							item.height = this._typicalItemHeight;
 						}
 					}
@@ -535,20 +541,24 @@ package org.josht.starling.foxhole.layout
 			const maxHeight:Number = viewPortBounds ? viewPortBounds.maxHeight : Number.POSITIVE_INFINITY;
 
 			var positionY:Number = 0;
-			var maxItemWidth:Number = 0;
-			if(this._indexToItemBoundsFunction != null)
+			var maxItemWidth:Number = this._typicalItemWidth;
+			if(!this._hasVariableItemDimensions)
 			{
-				for(var i:int = 0; i < itemCount; i++)
-				{
-					helperPoint = this._indexToItemBoundsFunction(i, helperPoint);
-					positionY += helperPoint.y + this._gap;
-					maxItemWidth = Math.max(maxItemWidth, helperPoint.x);
-				}
+				positionY += ((this._typicalItemHeight + this._gap) * itemCount);
 			}
 			else
 			{
-				positionY += itemCount * (this._typicalItemHeight + this._gap);
-				maxItemWidth = this._typicalItemWidth;
+				for(var i:int = 0; i < itemCount; i++)
+				{
+					if(isNaN(this._heightCache[i]))
+					{
+						positionY += this._typicalItemHeight + this._gap;
+					}
+					else
+					{
+						positionY += this._heightCache[i] + this._gap;
+					}
+				}
 			}
 
 			if(needsWidth)
@@ -575,10 +585,33 @@ package org.josht.starling.foxhole.layout
 		/**
 		 * @inheritDoc
 		 */
-		public function getMinimumItemIndexAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int):int
+		public function resetVariableVirtualCache():void
 		{
-			if(this._indexToItemBoundsFunction == null)
+			this._heightCache.length = 0;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function resetVariableVirtualCacheAtIndex(index:int):void
+		{
+			delete this._heightCache[index];
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function getVisibleIndicesAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int, result:Vector.<int> = null):Vector.<int>
+		{
+			if(!result)
 			{
+				result = new <int>[];
+			}
+			result.length = 0;
+			if(!this._hasVariableItemDimensions)
+			{
+				//this case can be optimized because we know that every item has
+				//the same height
 				var indexOffset:int = 0;
 				var totalItemHeight:Number = itemCount * (this._typicalItemHeight + this._gap) - this._gap;
 				if(totalItemHeight < height)
@@ -592,47 +625,39 @@ package org.josht.starling.foxhole.layout
 						indexOffset = Math.ceil(((height - totalItemHeight) / (this._typicalItemHeight + this._gap)) / 2);
 					}
 				}
-				return -indexOffset + Math.max(0, (scrollY - this._paddingTop) / (this._typicalItemHeight + this._gap));
-			}
-
-			totalItemHeight = this._paddingTop;
-			for(var i:int = 0; i < itemCount; i++)
-			{
-				helperPoint = this._indexToItemBoundsFunction(i, helperPoint);
-				totalItemHeight += helperPoint.y;
-				if(totalItemHeight > scrollY)
+				var minimum:int = -indexOffset + Math.max(0, (scrollY - this._paddingTop) / (this._typicalItemHeight + this._gap));
+				var maximum:int = minimum + Math.ceil(height / (this._typicalItemHeight + this._gap));
+				for(var i:int = minimum; i <= maximum; i++)
 				{
-					return i;
+					result.push(i);
 				}
-				totalItemHeight += this._gap;
+				return result;
 			}
-			//this should probably never happen...
-			return itemCount - 1;
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public function getMaximumItemIndexAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int):int
-		{
-			const minimum:int = this.getMinimumItemIndexAtScrollPosition(scrollX, scrollY, width, height, itemCount);
-			if(this._indexToItemBoundsFunction == null)
+			const maxPositionY:Number = scrollY + height;
+			var positionY:Number = this._paddingTop;
+			for(i = 0; i < itemCount; i++)
 			{
-				return minimum + Math.ceil(height / (this._typicalItemHeight + this._gap));
-			}
-			const maxY:Number = scrollY + height;
-			var totalItemHeight:Number = scrollY;
-			for(var i:int = minimum + 1; i < itemCount; i++)
-			{
-				helperPoint = this._indexToItemBoundsFunction(i, helperPoint);
-				totalItemHeight += helperPoint.y;
-				if(totalItemHeight > maxY)
+				if(isNaN(this._heightCache[i]))
 				{
-					return i;
+					var itemHeight:Number = this._typicalItemHeight;
 				}
-				totalItemHeight += this._gap;
+				else
+				{
+					itemHeight = this._heightCache[i];
+				}
+				var oldPositionY:Number = positionY;
+				positionY += itemHeight + this._gap;
+				if(positionY > scrollY && oldPositionY < maxPositionY)
+				{
+					result.push(i);
+				}
+
+				if(positionY >= maxPositionY)
+				{
+					return result;
+				}
 			}
-			return itemCount - 1;
+			return result;
 		}
 
 		/**
@@ -646,22 +671,28 @@ package org.josht.starling.foxhole.layout
 			}
 
 			result.x = 0;
-			if(this._indexToItemBoundsFunction == null)
+			if(!this._hasVariableItemDimensions)
 			{
-				const typicalItemHeight:Number = this._typicalItemHeight;
-				result.y = this._paddingTop + (typicalItemHeight + this._gap) * index - (height - typicalItemHeight) / 2;
+				result.y = this._paddingTop + (this._typicalItemHeight + this._gap) * index - (height - this._typicalItemHeight) / 2;
 			}
 			else
 			{
-				var totalItemHeight:Number = this._paddingTop;
+				var positionY:Number = this._paddingTop;
 				for(var i:int = 0; i < index; i++)
 				{
-					helperPoint = this._indexToItemBoundsFunction(i, helperPoint);
-					totalItemHeight += helperPoint.y + this._gap;
+					if(isNaN(this._heightCache[i]))
+					{
+						var itemHeight:Number = this._typicalItemHeight;
+					}
+					else
+					{
+						itemHeight = this._heightCache[i];
+					}
+					positionY += itemHeight + this._gap;
 				}
-				totalItemHeight -= (height - helperPoint.y) / 2;
-				result.y = totalItemHeight;
+				result.y = positionY - (height - itemHeight) / 2;
 			}
+
 			return result;
 		}
 	}
