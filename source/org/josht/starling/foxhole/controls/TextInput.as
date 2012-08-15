@@ -104,11 +104,6 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected var isRealStageText:Boolean = true;
-
-		/**
-		 * @private
-		 */
 		protected var _touchPointID:int = -1;
 
 		/**
@@ -780,27 +775,20 @@ package org.josht.starling.foxhole.controls
 			{
 				if(touch)
 				{
-					if(isRealStageText)
+					touch.getLocation(this, helperPoint);
+					helperPoint.x -= this._paddingLeft;
+					helperPoint.y -= this._paddingTop;
+					if(helperPoint.x < 0)
 					{
-						this._savedSelectionIndex = -1;
+						this._savedSelectionIndex = 0;
 					}
-					else //desktop
+					else
 					{
-						touch.getLocation(this, helperPoint);
-						helperPoint.x -= this._paddingLeft;
-						helperPoint.y -= this._paddingTop;
-						if(helperPoint.x < 0)
+						this._savedSelectionIndex = this._measureTextField.getCharIndexAtPoint(helperPoint.x, helperPoint.y);
+						const bounds:Rectangle = this._measureTextField.getCharBoundaries(this._savedSelectionIndex);
+						if(bounds && (bounds.x + bounds.width - helperPoint.x) < (helperPoint.x - bounds.x))
 						{
-							this._savedSelectionIndex = 0;
-						}
-						else
-						{
-							this._savedSelectionIndex = this._measureTextField.getCharIndexAtPoint(helperPoint.x, helperPoint.y);
-							const bounds:Rectangle = this._measureTextField.getCharBoundaries(this._savedSelectionIndex);
-							if(bounds && (bounds.x + bounds.width - helperPoint.x) < (helperPoint.x - bounds.x))
-							{
-								this._savedSelectionIndex++;
-							}
+							this._savedSelectionIndex++;
 						}
 					}
 				}
@@ -837,6 +825,10 @@ package org.josht.starling.foxhole.controls
 			if(!viewPort)
 			{
 				viewPort = new Rectangle();
+			}
+			if(!this.stageText.stage)
+			{
+				this.stageText.stage = Starling.current.nativeStage;
 			}
 
 			helperPoint.x = helperPoint.y = 0;
@@ -886,20 +878,16 @@ package org.josht.starling.foxhole.controls
 			}
 			catch(error:Error)
 			{
-				isRealStageText = false;
 				StageTextType = StageTextField;
 				initOptions = { multiline: false };
 			}
 			this.stageText = new StageTextType(initOptions);
 			this.stageText.visible = false;
-			this.stageText.stage = Starling.current.nativeStage;
 			this.stageText.addEventListener(Event.CHANGE, stageText_changeHandler);
 			this.stageText.addEventListener(KeyboardEvent.KEY_DOWN, stageText_keyDownHandler);
 			this.stageText.addEventListener(FocusEvent.FOCUS_IN, stageText_focusInHandler);
 			this.stageText.addEventListener(FocusEvent.FOCUS_OUT, stageText_focusOutHandler);
 			this.stageText.addEventListener(Event.COMPLETE, stageText_completeHandler);
-
-			this.refreshViewPort();
 		}
 
 		/**
@@ -931,7 +919,7 @@ package org.josht.starling.foxhole.controls
 				return;
 			}
 
-			const touches:Vector.<Touch> = event.getTouches(this.stage);
+			const touches:Vector.<Touch> = event.getTouches(this);
 			if(touches.length == 0)
 			{
 				//end hover
