@@ -354,6 +354,7 @@ package org.josht.starling.foxhole.controls.text
 
 			if(dataInvalid || stylesInvalid)
 			{
+				this._textField.wordWrap = this._wordWrap;
 				this._textField.embedFonts = this._embedFonts;
 				if(this._textFormat)
 				{
