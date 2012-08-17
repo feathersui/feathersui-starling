@@ -1,6 +1,6 @@
 # Foxhole
 
-Built on [Starling](http://gamua.com/starling/), the hardware accelerated 2D framework for Adobe AIR and Flash Player, Foxhole offers a variety of robust user interface controls for apps and games. Developed by [Josh Tynjala](http://twitter.com/joshtynjala), Foxhole was original created for building UI in mobile games from [Bowler Hat Games](http://bowlerhatgames.com/).
+Built on [Starling](http://gamua.com/starling/), the hardware accelerated 2D framework for Adobe AIR and Flash Player, Foxhole offers a variety of robust user interface controls for apps and games. Developed by [Josh Tynjala](http://twitter.com/joshtynjala), Foxhole was originally created to build UI for web and mobile games from [Bowler Hat Games](http://bowlerhatgames.com/).
 
 To get started, you might want to check out the [API Documentation](http://www.flashtoolbox.com/foxhole-starling/documentation/) and the [Foxhole for Starling Examples](https://github.com/joshtynjala/foxhole-starling-examples).
 
