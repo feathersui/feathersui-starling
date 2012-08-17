@@ -2117,23 +2117,29 @@ package org.josht.starling.foxhole.controls
 			{
 				if(this._horizontalAutoScrollTween)
 				{
-					difference = viewPort.width - this._lastViewPortWidth;
-					var tweenPosition:Number = this._horizontalAutoScrollTween.position;
 					var initialScrollPosition:Number = this._horizontalAutoScrollTween.getInitValue("horizontalScrollPosition");
 					var targetScrollPosition:Number = this._horizontalAutoScrollTween.getValue("horizontalScrollPosition");
-					this._horizontalScrollPosition = initialScrollPosition + difference;
-					this.throwTo(targetScrollPosition + difference, NaN,  this._horizontalAutoScrollTween.duration);
-					this._horizontalAutoScrollTween.position = tweenPosition;
+					if(initialScrollPosition > targetScrollPosition)
+					{
+						difference = viewPort.width - this._lastViewPortWidth;
+						var tweenPosition:Number = this._horizontalAutoScrollTween.position;
+						this._horizontalScrollPosition = initialScrollPosition + difference;
+						this.throwTo(targetScrollPosition + difference, NaN,  this._horizontalAutoScrollTween.duration);
+						this._horizontalAutoScrollTween.position = tweenPosition;
+					}
 				}
 				if(this._verticalAutoScrollTween)
 				{
-					difference = viewPort.height - this._lastViewPortHeight;
-					tweenPosition = this._verticalAutoScrollTween.position;
 					initialScrollPosition = this._verticalAutoScrollTween.getInitValue("verticalScrollPosition");
 					targetScrollPosition = this._verticalAutoScrollTween.getValue("verticalScrollPosition");
-					this._verticalScrollPosition = initialScrollPosition + difference;
-					this.throwTo(NaN, targetScrollPosition + difference, this._verticalAutoScrollTween.duration);
-					this._verticalAutoScrollTween.position = tweenPosition;
+					if(initialScrollPosition > targetScrollPosition)
+					{
+						difference = viewPort.height - this._lastViewPortHeight;
+						tweenPosition = this._verticalAutoScrollTween.position;
+						this._verticalScrollPosition = initialScrollPosition + difference;
+						this.throwTo(NaN, targetScrollPosition + difference, this._verticalAutoScrollTween.duration);
+						this._verticalAutoScrollTween.position = tweenPosition;
+					}
 				}
 			}
 			this._lastViewPortWidth = viewPort.width;
