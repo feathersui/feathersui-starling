@@ -50,7 +50,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * The value added to the <code>nameList</code> of the scroller.
 		 */
-		protected var defaultScrollerName:String = "foxhole-scrollcontainer-scroller";
+		protected var defaultScrollerName:String = "foxhole-scroll-container-scroller";
 
 		/**
 		 * @private
