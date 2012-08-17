@@ -864,21 +864,105 @@ package org.josht.starling.foxhole.layout
 			result.length = 0;
 			const tileWidth:Number = this._useSquareTiles ? Math.max(0, this._typicalItemWidth, this._typicalItemHeight) : this._typicalItemWidth;
 			const tileHeight:Number = this._useSquareTiles ? tileWidth : this._typicalItemHeight;
-			var horizontalTileCount:int = (width - this._paddingLeft - this._paddingRight + this._gap) / (tileWidth + this._gap);
 			const verticalTileCount:int = (height - this._paddingTop - this._paddingBottom + this._gap) / (tileHeight + this._gap);
 			if(this._paging != PAGING_NONE)
 			{
+				var horizontalTileCount:int = (width - this._paddingLeft - this._paddingRight + this._gap) / (tileWidth + this._gap);
 				const perPage:Number = horizontalTileCount * verticalTileCount;
 				if(this._paging == PAGING_HORIZONTAL)
 				{
-					var pageIndex:int = scrollX / width;
+					var startPageIndex:int = Math.round(scrollX / width);
+					var minimum:int = startPageIndex * perPage;
+					if(minimum > 0)
+					{
+						var pageStartPosition:Number = startPageIndex * width;
+						var partialPageSize:Number = scrollX - pageStartPosition;
+						if(partialPageSize < 0)
+						{
+							minimum -= verticalTileCount * Math.ceil((-partialPageSize - this._paddingRight) / (tileWidth + this._gap));
+						}
+						else if(partialPageSize > 0)
+						{
+							minimum += verticalTileCount * Math.floor((partialPageSize - this._paddingLeft) / (tileWidth + this._gap));
+						}
+					}
+					var maximum:int = minimum + perPage + 2 * verticalTileCount - 1;
+					for(var i:int = minimum; i <= maximum; i++)
+					{
+						result.push(i);
+					}
+					return result;
 				}
 				else
 				{
-					pageIndex = scrollY / height;
+					startPageIndex = Math.round(scrollY / height);
+					minimum = startPageIndex * perPage;
+					var totalColumnHeight:Number = verticalTileCount * (tileHeight + this._gap) - this._gap;
+					var topSideOffset:Number = 0;
+					var bottomSideOffset:Number = 0;
+					if(totalColumnHeight < height)
+					{
+						if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
+						{
+							topSideOffset = height - this._paddingTop - this._paddingBottom - totalColumnHeight;
+							bottomSideOffset = 0;
+						}
+						else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
+						{
+							topSideOffset = bottomSideOffset = (height - this._paddingTop - this._paddingBottom - totalColumnHeight) / 2;
+						}
+						else if(this._verticalAlign == VERTICAL_ALIGN_TOP)
+						{
+							topSideOffset = 0;
+							bottomSideOffset = height - this._paddingTop - this._paddingBottom - totalColumnHeight;
+						}
+					}
+					var rowOffset:int = 0;
+					pageStartPosition = startPageIndex * height;
+					partialPageSize = scrollY - pageStartPosition;
+					if(partialPageSize < 0)
+					{
+						partialPageSize = Math.max(0, -partialPageSize - this._paddingBottom - bottomSideOffset);
+						rowOffset = -Math.floor(partialPageSize / (tileHeight + this._gap)) - 1;
+						minimum += -perPage + verticalTileCount + rowOffset;
+					}
+					else if(partialPageSize > 0)
+					{
+						partialPageSize = Math.max(0, partialPageSize - this._paddingTop - topSideOffset);
+						rowOffset = Math.floor(partialPageSize / (tileHeight + this._gap));
+						minimum += rowOffset;
+					}
+					if(minimum < 0)
+					{
+						minimum = 0;
+						rowOffset = 0;
+					}
+					var rowIndex:int = (verticalTileCount + rowOffset) % verticalTileCount;
+					var columnIndex:int = 0;
+					var maxRowIndex:int = rowIndex + verticalTileCount + 2;
+					var pageStart:int = int(minimum / perPage) * perPage;
+					i = minimum;
+					do
+					{
+						result.push(i);
+						columnIndex++;
+						if(columnIndex == horizontalTileCount)
+						{
+							columnIndex = 0;
+							rowIndex++;
+							if(rowIndex == verticalTileCount)
+							{
+								rowIndex = 0;
+								pageStart += perPage;
+								maxRowIndex -= verticalTileCount;
+							}
+							i = pageStart + rowIndex - verticalTileCount;
+						}
+						i += verticalTileCount;
+					}
+					while(rowIndex != maxRowIndex)
+					return result;
 				}
-				var minimum:int = pageIndex * perPage;
-				var maximum:int = (pageIndex + 2) * perPage;
 			}
 			else
 			{
@@ -895,14 +979,14 @@ package org.josht.starling.foxhole.layout
 						columnIndexOffset = Math.ceil((width - totalColumnWidth) / (tileWidth + this._gap) / 2);
 					}
 				}
-				const columnIndex:int = -columnIndexOffset + Math.floor((scrollX - this._paddingLeft + this._gap) / (tileWidth + this._gap));
-				minimum = columnIndex * verticalTileCount;
+				columnIndex = -columnIndexOffset + Math.floor((scrollX - this._paddingLeft + this._gap) / (tileWidth + this._gap));
 				horizontalTileCount = Math.ceil((width - this._paddingLeft + this._gap) / (tileWidth + this._gap)) + 1;
+				minimum = columnIndex * verticalTileCount;
 				maximum = minimum + verticalTileCount * horizontalTileCount;
-			}
-			for(var i:int = minimum; i <= maximum; i++)
-			{
-				result.push(i);
+				for(i = minimum; i <= maximum; i++)
+				{
+					result.push(i);
+				}
 			}
 			return result;
 		}
