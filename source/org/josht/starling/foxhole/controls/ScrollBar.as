@@ -87,6 +87,35 @@ package org.josht.starling.foxhole.controls
 		public static const TRACK_LAYOUT_MODE_SCROLL:String = "scroll";
 
 		/**
+		 * The default value added to the <code>nameList</code> of the minimum
+		 * track.
+		 */
+		public static const DEFAULT_CHILD_NAME_MINIMUM_TRACK:String = "foxhole-scroll-bar-minimum-track";
+
+		/**
+		 * The default value added to the <code>nameList</code> of the maximum
+		 * track.
+		 */
+		public static const DEFAULT_CHILD_NAME_MAXIMUM_TRACK:String = "foxhole-scroll-bar-maximum-track";
+
+		/**
+		 * The default value added to the <code>nameList</code> of the thumb.
+		 */
+		public static const DEFAULT_CHILD_NAME_THUMB:String = "foxhole-scroll-bar-thumb";
+
+		/**
+		 * The default value added to the <code>nameList</code> of the decrement
+		 * button.
+		 */
+		public static const DEFAULT_CHILD_NAME_DECREMENT_BUTTON:String = "foxhole-scroll-bar-decrement-button";
+
+		/**
+		 * The default value added to the <code>nameList</code> of the increment
+		 * button.
+		 */
+		public static const DEFAULT_CHILD_NAME_INCREMENT_BUTTON:String = "foxhole-scroll-bar-increment-button";
+
+		/**
 		 * Constructor.
 		 */
 		public function ScrollBar()
@@ -97,27 +126,27 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * The value added to the <code>nameList</code> of the minimum track.
 		 */
-		protected var defaultMinimumTrackName:String = "foxhole-scroll-bar-minimum-track";
+		protected var minimumTrackName:String = DEFAULT_CHILD_NAME_MINIMUM_TRACK;
 
 		/**
 		 * The value added to the <code>nameList</code> of the maximum track.
 		 */
-		protected var defaultMaximumTrackName:String = "foxhole-scroll-bar-maximum-track";
+		protected var maximumTrackName:String = DEFAULT_CHILD_NAME_MAXIMUM_TRACK;
 
 		/**
 		 * The value added to the <code>nameList</code> of the thumb.
 		 */
-		protected var defaultThumbName:String = "foxhole-scroll-bar-thumb";
+		protected var thumbName:String = DEFAULT_CHILD_NAME_THUMB;
 
 		/**
 		 * The value added to the <code>nameList</code> of the decrement button.
 		 */
-		protected var defaultDecrementButtonName:String = "foxhole-scroll-bar-decrement-button";
+		protected var decrementButtonName:String = DEFAULT_CHILD_NAME_DECREMENT_BUTTON;
 
 		/**
 		 * The value added to the <code>nameList</code> of the increment button.
 		 */
-		protected var defaultIncrementButtonName:String = "foxhole-scroll-bar-increment-button";
+		protected var incrementButtonName:String = DEFAULT_CHILD_NAME_INCREMENT_BUTTON;
 
 		/**
 		 * @private
@@ -876,7 +905,7 @@ package org.josht.starling.foxhole.controls
 			if(!this.minimumTrack)
 			{
 				this.minimumTrack = new Button();
-				this.minimumTrack.nameList.add(this.defaultMinimumTrackName);
+				this.minimumTrack.nameList.add(this.minimumTrackName);
 				this.minimumTrack.label = "";
 				this.minimumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
 				this.addChild(this.minimumTrack);
@@ -885,7 +914,7 @@ package org.josht.starling.foxhole.controls
 			if(!this.thumb)
 			{
 				this.thumb = new Button();
-				this.thumb.nameList.add(this.defaultThumbName);
+				this.thumb.nameList.add(this.thumbName);
 				this.thumb.label = "";
 				this.thumb.keepDownStateOnRollOut = true;
 				this.thumb.addEventListener(TouchEvent.TOUCH, thumb_touchHandler);
@@ -895,7 +924,7 @@ package org.josht.starling.foxhole.controls
 			if(!this.decrementButton)
 			{
 				this.decrementButton = new Button();
-				this.decrementButton.nameList.add(this.defaultDecrementButtonName);
+				this.decrementButton.nameList.add(this.decrementButtonName);
 				this.decrementButton.label = "";
 				this.decrementButton.onPress.add(decrementButton_onPress);
 				this.decrementButton.onRelease.add(decrementButton_onRelease);
@@ -905,7 +934,7 @@ package org.josht.starling.foxhole.controls
 			if(!this.incrementButton)
 			{
 				this.incrementButton = new Button();
-				this.incrementButton.nameList.add(this.defaultIncrementButtonName);
+				this.incrementButton.nameList.add(this.incrementButtonName);
 				this.incrementButton.label = "";
 				this.incrementButton.onPress.add(incrementButton_onPress);
 				this.incrementButton.onRelease.add(incrementButton_onRelease);
@@ -1133,7 +1162,7 @@ package org.josht.starling.foxhole.controls
 				if(!this.maximumTrack)
 				{
 					this.maximumTrack = new Button();
-					this.maximumTrack.nameList.add(this.defaultMaximumTrackName);
+					this.maximumTrack.nameList.add(this.maximumTrackName);
 					this.maximumTrack.label = "";
 					this.maximumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
 					this.addChildAt(this.maximumTrack, 1);

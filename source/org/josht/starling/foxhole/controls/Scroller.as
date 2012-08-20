@@ -47,6 +47,7 @@ package org.josht.starling.foxhole.controls
 	import org.josht.starling.display.Sprite;
 	import org.josht.starling.foxhole.controls.supportClasses.IViewPort;
 	import org.josht.starling.foxhole.core.FoxholeControl;
+	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.PropertyProxy;
 	import org.josht.starling.motion.GTween;
 	import org.josht.utils.math.clamp;
@@ -216,6 +217,18 @@ package org.josht.starling.foxhole.controls
 		private static const MAXIMUM_SAVED_VELOCITY_COUNT:int = 4;
 
 		/**
+		 * The default value added to the <code>nameList</code> of the
+		 * horizontal scroll bar.
+		 */
+		public static const DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR:String = "foxhole-scroller-horizontal-scroll-bar";
+
+		/**
+		 * The default value added to the <code>nameList</code> of the vertical
+		 * scroll bar.
+		 */
+		public static const DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR:String = "foxhole-scroller-vertical-scroll-bar";
+
+		/**
 		 * @private
 		 */
 		protected static function defaultHorizontalScrollBarFactory():IScrollBar
@@ -248,6 +261,18 @@ package org.josht.starling.foxhole.controls
 			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 		}
+
+		/**
+		 * The value added to the <code>nameList</code> of the horizontal scroll
+		 * bar.
+		 */
+		protected var horizontalScrollBarName:String = DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR;
+
+		/**
+		 * The value added to the <code>nameList</code> of the vertical scroll
+		 * bar.
+		 */
+		protected var verticalScrollBarName:String = DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR;
 
 		/**
 		 * The horizontal scrollbar instance. May be null.
@@ -1389,6 +1414,10 @@ package org.josht.starling.foxhole.controls
 				this._horizontalScrollPolicy != SCROLL_POLICY_OFF && this._horizontalScrollBarFactory != null)
 			{
 				this.horizontalScrollBar = this._horizontalScrollBarFactory();
+				if(this.horizontalScrollBar is FoxholeControl)
+				{
+					FoxholeControl(this.horizontalScrollBar).nameList.add(this.horizontalScrollBarName);
+				}
 				this.horizontalScrollBar.onChange.add(horizontalScrollBar_onChange);
 				const displayHorizontalScrollBar:DisplayObject = DisplayObject(this.horizontalScrollBar);
 				this.addChild(displayHorizontalScrollBar);
@@ -1397,6 +1426,10 @@ package org.josht.starling.foxhole.controls
 				this._verticalScrollPolicy != SCROLL_POLICY_OFF && this._verticalScrollBarFactory != null)
 			{
 				this.verticalScrollBar = this._verticalScrollBarFactory();
+				if(this.verticalScrollBar is FoxholeControl)
+				{
+					FoxholeControl(this.verticalScrollBar).nameList.add(this.verticalScrollBarName);
+				}
 				this.verticalScrollBar.onChange.add(verticalScrollBar_onChange);
 				const displayVerticalScrollBar:DisplayObject = DisplayObject(this.verticalScrollBar);
 				this.addChild(displayVerticalScrollBar);

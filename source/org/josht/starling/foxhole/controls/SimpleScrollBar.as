@@ -63,6 +63,11 @@ package org.josht.starling.foxhole.controls
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
 		/**
+		 * The default value added to the <code>nameList</code> of the thumb.
+		 */
+		public static const DEFAULT_CHILD_NAME_THUMB:String = "foxhole-simple-scroll-bar-thumb";
+
+		/**
 		 * Constructor.
 		 */
 		public function SimpleScrollBar()
@@ -73,7 +78,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * The value added to the <code>nameList</code> of the thumb.
 		 */
-		protected var defaultThumbName:String = "foxhole-simple-scroll-bar-thumb";
+		protected var thumbName:String = DEFAULT_CHILD_NAME_THUMB;
 
 		/**
 		 * @private
@@ -547,7 +552,7 @@ package org.josht.starling.foxhole.controls
 			if(!this.thumb)
 			{
 				this.thumb = new Button();
-				this.thumb.nameList.add(this.defaultThumbName);
+				this.thumb.nameList.add(this.thumbName);
 				this.thumb.label = "";
 				this.thumb.keepDownStateOnRollOut = true;
 				this.thumb.addEventListener(TouchEvent.TOUCH, thumb_touchHandler);

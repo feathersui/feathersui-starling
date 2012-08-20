@@ -61,6 +61,11 @@ package org.josht.starling.foxhole.controls
 		private static const helperPoint:Point = new Point();
 
 		/**
+		 * The default value added to the <code>nameList</code> of the scroller.
+		 */
+		public static const DEFAULT_CHILD_NAME_SCROLLER:String = "foxhole-list-scroller";
+
+		/**
 		 * Constructor.
 		 */
 		public function GroupedList()
@@ -70,7 +75,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * The value added to the <code>nameList</code> of the scroller.
 		 */
-		protected var defaultScrollerName:String = "foxhole-list-scroller";
+		protected var scrollerName:String = DEFAULT_CHILD_NAME_SCROLLER;
 
 		/**
 		 * @private
@@ -1462,7 +1467,7 @@ package org.josht.starling.foxhole.controls
 			if(!this.scroller)
 			{
 				this.scroller = new Scroller();
-				this.scroller.nameList.add(this.defaultScrollerName);
+				this.scroller.nameList.add(this.scrollerName);
 				this.scroller.verticalScrollPolicy = Scroller.SCROLL_POLICY_AUTO;
 				this.scroller.horizontalScrollPolicy = Scroller.SCROLL_POLICY_AUTO;
 				this.scroller.onScroll.add(scroller_onScroll);
