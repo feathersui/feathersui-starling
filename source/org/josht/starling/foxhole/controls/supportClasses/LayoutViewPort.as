@@ -201,6 +201,25 @@ package org.josht.starling.foxhole.controls.supportClasses
 			}
 		}
 
+		override public function addChildAt(child:DisplayObject, index:int):DisplayObject
+		{
+			if(child is FoxholeControl)
+			{
+				FoxholeControl(child).onResize.add(child_onResize);
+			}
+			return super.addChildAt(child, index);
+		}
+
+		override public function removeChildAt(index:int, dispose:Boolean = false):DisplayObject
+		{
+			const child:DisplayObject = super.removeChildAt(index, dispose);
+			if(child is FoxholeControl)
+			{
+				FoxholeControl(child).onResize.remove(child_onResize);
+			}
+			return child;
+		}
+
 		override public function dispose():void
 		{
 			if(this._layout)
@@ -260,7 +279,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
-		protected function child_resizeHandler(child:FoxholeControl):void
+		protected function child_onResize(child:FoxholeControl):void
 		{
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
