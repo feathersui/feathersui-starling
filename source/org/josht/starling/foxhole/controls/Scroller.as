@@ -1518,9 +1518,9 @@ package org.josht.starling.foxhole.controls
 				{
 					viewPort.visibleHeight = this.explicitHeight - horizontalScrollBarHeightOffset;
 				}
-				viewPort.minVisibleWidth = this._minWidth - verticalScrollBarWidthOffset;
+				viewPort.minVisibleWidth = Math.max(0, this._minWidth - verticalScrollBarWidthOffset);
 				viewPort.maxVisibleWidth = this._maxWidth - verticalScrollBarWidthOffset;
-				viewPort.minVisibleHeight = this._minHeight - horizontalScrollBarHeightOffset;
+				viewPort.minVisibleHeight = Math.max(0, this._minHeight - horizontalScrollBarHeightOffset);
 				viewPort.maxVisibleHeight = this._maxHeight - horizontalScrollBarHeightOffset;
 			}
 
