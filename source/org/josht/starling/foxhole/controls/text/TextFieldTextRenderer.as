@@ -444,8 +444,8 @@ package org.josht.starling.foxhole.controls.text
 		{
 			if(needsNewBitmap)
 			{
-				const tfWidth:Number = this._textField.width;
-				const tfHeight:Number = this._textField.height;
+				const tfWidth:Number = this._textField.width * Starling.contentScaleFactor;
+				const tfHeight:Number = this._textField.height * Starling.contentScaleFactor;
 				if(tfWidth == 0 || tfHeight == 0)
 				{
 					return;
@@ -464,8 +464,10 @@ package org.josht.starling.foxhole.controls.text
 			{
 				return;
 			}
+			helperMatrix.identity();
+			helperMatrix.scale(Starling.contentScaleFactor, Starling.contentScaleFactor);
 			this._textSnapshotBitmapData.fillRect(this._textSnapshotBitmapData.rect, 0x00ff00ff);
-			this._textSnapshotBitmapData.draw(this._textField);
+			this._textSnapshotBitmapData.draw(this._textField, helperMatrix);
 			if(!this._textSnapshot)
 			{
 				this._textSnapshot = new Image(starling.textures.Texture.fromBitmapData(this._textSnapshotBitmapData, false, false, Starling.contentScaleFactor));
