@@ -192,10 +192,8 @@ package org.josht.starling.display
 		 */
 		override public function render(support:RenderSupport, alpha:Number):void
 		{
-			var render:Boolean = true;
 			if(this._scrollRect)
 			{
-				support.finishQuadBatch();
 				var scale:Number = Starling.contentScaleFactor;
 				if(texture)
 				{
@@ -218,11 +216,15 @@ package org.josht.starling.display
 					this._scissorRect.y += ScrollRectManager.scrollRectOffsetY * scale;
 					this._scissorRect = this._scissorRect.intersection(oldRect);
 				}
-				//isEmpty() && <= 0 don't work here for some reason
-				if(this._scissorRect.width < 1 || this._scissorRect.height < 1)
+				if(this._scissorRect.width < 1 || this._scissorRect.height < 1 ||
+					this._scissorRect.x >= this.stage.stageWidth ||
+					this._scissorRect.y >= this.stage.stageHeight ||
+					(this._scissorRect.x + this._scissorRect.width) <= 0 ||
+					(this._scissorRect.y + this._scissorRect.height) <= 0)
 				{
-					render = false;
+					return;
 				}
+				support.finishQuadBatch();
 				Starling.context.setScissorRectangle(this._scissorRect);
 				ScrollRectManager.currentScissorRect = this._scissorRect;
 				ScrollRectManager.scrollRectOffsetX -= this._scaledScrollRectXY.x;
@@ -234,10 +236,7 @@ package org.josht.starling.display
 				this.getTransformationMatrix(this.stage, helperMatrix);
 				support.translateMatrix(Math.round(helperMatrix.tx) - helperMatrix.tx, Math.round(helperMatrix.ty) - helperMatrix.ty);
 			}
-			if(render)
-			{
-				super.render(support, alpha);
-			}
+			super.render(support, alpha);
 			if(this._scrollRect)
 			{
 				support.finishQuadBatch();

@@ -129,10 +129,8 @@ package org.josht.starling.display
 		 */
 		override public function render(support:RenderSupport, alpha:Number):void
 		{
-			var render:Boolean = true;
 			if(this._scrollRect)
 			{
-				support.finishQuadBatch();
 				const scale:Number = Starling.contentScaleFactor;
 				this.getBounds(this.stage, this._scissorRect);
 				this._scissorRect.x *= scale;
@@ -152,20 +150,22 @@ package org.josht.starling.display
 					this._scissorRect = this._scissorRect.intersection(oldRect);
 				}
 				//isEmpty() && <= 0 don't work here for some reason
-				if(this._scissorRect.width < 1 || this._scissorRect.height < 1)
+				if(this._scissorRect.width < 1 || this._scissorRect.height < 1 ||
+					this._scissorRect.x >= this.stage.stageWidth ||
+					this._scissorRect.y >= this.stage.stageHeight ||
+					(this._scissorRect.x + this._scissorRect.width) <= 0 ||
+					(this._scissorRect.y + this._scissorRect.height) <= 0)
 				{
-					render = false;
+					return;
 				}
+				support.finishQuadBatch();
 				Starling.context.setScissorRectangle(this._scissorRect);
 				ScrollRectManager.currentScissorRect = this._scissorRect;
 				ScrollRectManager.scrollRectOffsetX -= this._scaledScrollRectXY.x;
 				ScrollRectManager.scrollRectOffsetY -= this._scaledScrollRectXY.y;
 				support.translateMatrix(-this._scrollRect.x, -this._scrollRect.y);
 			}
-			if(render)
-			{
-				super.render(support, alpha);
-			}
+			super.render(support, alpha);
 			if(this._scrollRect)
 			{
 				support.finishQuadBatch();
