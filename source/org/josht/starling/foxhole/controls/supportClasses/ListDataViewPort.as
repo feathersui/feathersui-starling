@@ -365,6 +365,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 		}
 
 		private var _ignoreLayoutChanges:Boolean = false;
+		private var _ignoreRendererResizing:Boolean = false;
 
 		private var _layout:ILayout;
 
@@ -538,7 +539,9 @@ package org.josht.starling.foxhole.controls.supportClasses
 
 			if(scrollInvalid || dataInvalid || itemRendererInvalid || sizeInvalid)
 			{
+				this._ignoreRendererResizing = true;
 				this._layout.layout(this._layoutItems, helperBounds, helperResult);
+				this._ignoreRendererResizing = false;
 				this.setSizeInternal(helperResult.contentWidth, helperResult.contentHeight, false);
 				this.actualVisibleWidth = helperResult.viewPortWidth;
 				this.actualVisibleHeight = helperResult.viewPortHeight;
@@ -790,6 +793,10 @@ package org.josht.starling.foxhole.controls.supportClasses
 
 		private function renderer_onResize(renderer:IListItemRenderer):void
 		{
+			if(this._ignoreRendererResizing)
+			{
+				return;
+			}
 			const layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
 			if(!layout || !layout.hasVariableItemDimensions)
 			{
