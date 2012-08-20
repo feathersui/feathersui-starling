@@ -91,7 +91,7 @@ package org.josht.starling.foxhole.controls
 		 * The default value added to the <code>nameList</code> of the header's
 		 * items.
 		 */
-		private static const DEFAULT_CHILD_NAME_ITEM:String = "foxhole-header-item";
+		public static const DEFAULT_CHILD_NAME_ITEM:String = "foxhole-header-item";
 
 		/**
 		 * The default value added to the <code>nameList</code> of the header's
