@@ -50,6 +50,11 @@ package org.josht.starling.foxhole.controls
 		 * @private
 		 */
 		private static const helperPoint:Point = new Point();
+
+		/**
+		 * The default value added to the <code>nameList</code> of the label.
+		 */
+		public static const DEFAULT_CHILD_NAME_LABEL:String = "foxhole-button-label";
 		
 		/**
 		 * @private
@@ -146,7 +151,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * The value added to the <code>nameList</code> of the label.
 		 */
-		protected var defaultLabelName:String = "foxhole-button-label";
+		protected var labelName:String = DEFAULT_CHILD_NAME_LABEL;
 		
 		/**
 		 * @private
@@ -1926,7 +1931,7 @@ package org.josht.starling.foxhole.controls
 			const factory:Function = this._labelFactory != null ? this._labelFactory : FoxholeControl.defaultTextRendererFactory;
 			this.labelControl = factory();
 			const foxholeLabel:FoxholeControl = FoxholeControl(this.labelControl);
-			foxholeLabel.nameList.add(this.defaultLabelName);
+			foxholeLabel.nameList.add(this.labelName);
 			this.addChild(foxholeLabel);
 		}
 

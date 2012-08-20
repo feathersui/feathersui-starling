@@ -56,6 +56,17 @@ package org.josht.starling.foxhole.controls
 		private static const HELPER_POINT:Point = new Point();
 
 		/**
+		 * The default value added to the <code>nameList</code> of the button.
+		 */
+		public static const DEFAULT_CHILD_NAME_BUTTON:String = "foxhole-picker-list-button";
+
+		/**
+		 * The default value added to the <code>nameList</code> of the pop-up
+		 * list.
+		 */
+		public static const DEFAULT_CHILD_NAME_LIST:String = "foxhole-picker-list-list";
+
+		/**
 		 * Constructor.
 		 */
 		public function PickerList()
@@ -67,12 +78,12 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * The value added to the <code>nameList</code> of the button.
 		 */
-		protected var defaultButtonName:String = "foxhole-picker-list-button";
+		protected var buttonName:String = DEFAULT_CHILD_NAME_BUTTON;
 
 		/**
 		 * The value added to the <code>nameList</code> of the pop-up list.
 		 */
-		protected var defaultListName:String = "foxhole-picker-list-list";
+		protected var listName:String = DEFAULT_CHILD_NAME_LIST;
 		
 		private var _button:Button;
 		private var _list:List;
@@ -477,7 +488,7 @@ package org.josht.starling.foxhole.controls
 			if(!this._button)
 			{
 				this._button = new Button();
-				this._button.nameList.add(this.defaultButtonName);
+				this._button.nameList.add(this.buttonName);
 				this._button.onRelease.add(button_onRelease);
 				this._button.addEventListener(TouchEvent.TOUCH, button_touchHandler);
 				this.addChild(this._button);
@@ -486,7 +497,7 @@ package org.josht.starling.foxhole.controls
 			if(!this._list)
 			{
 				this._list = new List();
-				this._list.nameList.add(this.defaultListName);
+				this._list.nameList.add(this.listName);
 				this._list.onScroll.add(list_onScroll);
 				this._list.onChange.add(list_onChange);
 				this._list.onItemTouch.add(list_onItemTouch);

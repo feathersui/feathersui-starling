@@ -42,6 +42,15 @@ package org.josht.starling.foxhole.controls.renderers
 	 */
 	public class BaseDefaultItemRenderer extends Button
 	{
+		/**
+		 * The default value added to the <code>nameList</code> of the accessory
+		 * label.
+		 */
+		public static const DEFAULT_CHILD_NAME_ACCESSORY_LABEL:String = "foxhole-item-renderer-accessory-label";
+
+		/**
+		 * @private
+		 */
 		private static const helperPoint:Point = new Point();
 
 		/**
@@ -68,9 +77,9 @@ package org.josht.starling.foxhole.controls.renderers
 		}
 
 		/**
-		 * The value added to the <code>nameList</code> of the label.
+		 * The value added to the <code>nameList</code> of the accessory label.
 		 */
-		protected var defaultAccessoryLabelName:String = "foxhole-item-renderer-accessory-label";
+		protected var accessoryLabelName:String = DEFAULT_CHILD_NAME_ACCESSORY_LABEL;
 
 		/**
 		 * @private
@@ -1189,7 +1198,7 @@ package org.josht.starling.foxhole.controls.renderers
 				{
 					const factory:Function = this._accessoryLabelFactory != null ? this._accessoryLabelFactory : FoxholeControl.defaultTextRendererFactory;
 					this.accessoryLabel = factory();
-					this.accessoryLabel.nameList.add(this.defaultAccessoryLabelName);
+					this.accessoryLabel.nameList.add(this.accessoryLabelName);
 				}
 				this.accessoryLabel.text = label;
 			}

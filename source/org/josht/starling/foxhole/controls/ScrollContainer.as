@@ -40,6 +40,11 @@ package org.josht.starling.foxhole.controls
 	public class ScrollContainer extends FoxholeControl
 	{
 		/**
+		 * The default value added to the <code>nameList</code> of the scroller.
+		 */
+		public static const DEFAULT_CHILD_NAME_SCROLLER:String = "foxhole-scroll-container-scroller";
+
+		/**
 		 * Constructor.
 		 */
 		public function ScrollContainer()
@@ -50,7 +55,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * The value added to the <code>nameList</code> of the scroller.
 		 */
-		protected var defaultScrollerName:String = "foxhole-scroll-container-scroller";
+		protected var scrollerName:String = DEFAULT_CHILD_NAME_SCROLLER;
 
 		/**
 		 * @private
@@ -361,7 +366,7 @@ package org.josht.starling.foxhole.controls
 			{
 				this.scroller = new Scroller();
 				this.scroller.viewPort = this.viewPort;
-				this.scroller.nameList.add(this.defaultScrollerName);
+				this.scroller.nameList.add(this.scrollerName);
 				this.scroller.onScroll.add(scroller_onScroll);
 				super.addChildAt(this.scroller, 0);
 			}

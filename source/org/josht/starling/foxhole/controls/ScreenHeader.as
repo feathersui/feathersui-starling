@@ -88,9 +88,16 @@ package org.josht.starling.foxhole.controls
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 
 		/**
-		 * @private
+		 * The default value added to the <code>nameList</code> of the header's
+		 * items.
 		 */
-		private static const ITEM_NAME:String = "foxhole-header-item";
+		private static const DEFAULT_CHILD_NAME_ITEM:String = "foxhole-header-item";
+
+		/**
+		 * The default value added to the <code>nameList</code> of the header's
+		 * title.
+		 */
+		public static const DEFAULT_CHILD_NAME_TITLE:String = "foxhole-header-title";
 
 		/**
 		 * @private
@@ -113,7 +120,12 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * The value added to the <code>nameList</code> of the header's title.
 		 */
-		protected var defaultTitleName:String = "foxhole-header-title";
+		protected var titleName:String = DEFAULT_CHILD_NAME_TITLE;
+
+		/**
+		 * The value added to the <code>nameList</code> of the header's items.
+		 */
+		protected var itemName:String = DEFAULT_CHILD_NAME_ITEM;
 
 		/**
 		 * @private
@@ -211,7 +223,7 @@ package org.josht.starling.foxhole.controls
 				{
 					if(item is FoxholeControl)
 					{
-						FoxholeControl(item).nameList.remove(ITEM_NAME);
+						FoxholeControl(item).nameList.remove(this.itemName);
 					}
 					item.removeFromParent();
 				}
@@ -248,7 +260,7 @@ package org.josht.starling.foxhole.controls
 				{
 					if(item is FoxholeControl)
 					{
-						FoxholeControl(item).nameList.remove(ITEM_NAME);
+						FoxholeControl(item).nameList.remove(this.itemName);
 					}
 					item.removeFromParent();
 				}
@@ -628,7 +640,7 @@ package org.josht.starling.foxhole.controls
 					{
 						if(item is FoxholeControl)
 						{
-							FoxholeControl(item).nameList.add(ITEM_NAME);
+							FoxholeControl(item).nameList.add(this.itemName);
 						}
 						this.addChild(item);
 					}
@@ -641,7 +653,7 @@ package org.josht.starling.foxhole.controls
 				{
 					for each(item in this._rightItems)
 					{
-						FoxholeControl(item).nameList.add(ITEM_NAME);
+						FoxholeControl(item).nameList.add(this.itemName);
 						this.addChild(item);
 					}
 				}
@@ -770,7 +782,7 @@ package org.josht.starling.foxhole.controls
 			const factory:Function = this._titleFactory != null ? this._titleFactory : FoxholeControl.defaultTextRendererFactory;
 			this._titleRenderer = factory();
 			const foxholeTitle:FoxholeControl = FoxholeControl(this._titleRenderer);
-			foxholeTitle.nameList.add(this.defaultTitleName);
+			foxholeTitle.nameList.add(this.titleName);
 			foxholeTitle.touchable = false;
 			this.addChild(foxholeTitle);
 		}

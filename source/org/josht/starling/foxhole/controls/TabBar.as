@@ -37,16 +37,6 @@ package org.josht.starling.foxhole.controls
 	public class TabBar extends FoxholeControl
 	{
 		/**
-		 * The tabs are displayed in order from left to right.
-		 */
-		public static const DIRECTION_HORIZONTAL:String = "horizontal";
-
-		/**
-		 * The tabs are displayed in order from top to bottom.
-		 */
-		public static const DIRECTION_VERTICAL:String = "vertical";
-
-		/**
 		 * @private
 		 */
 		protected static const INVALIDATION_FLAG_TAB_FACTORY:String = "tabFactory";
@@ -66,6 +56,21 @@ package org.josht.starling.foxhole.controls
 		];
 
 		/**
+		 * The tabs are displayed in order from left to right.
+		 */
+		public static const DIRECTION_HORIZONTAL:String = "horizontal";
+
+		/**
+		 * The tabs are displayed in order from top to bottom.
+		 */
+		public static const DIRECTION_VERTICAL:String = "vertical";
+
+		/**
+		 * The default value added to the <code>nameList</code> of the tabs.
+		 */
+		public static const DEFAULT_CHILD_NAME_TAB:String = "foxhole-tab-bar-tab";
+
+		/**
 		 * @private
 		 */
 		protected static function defaultTabFactory():Button
@@ -83,7 +88,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * The value added to the <code>nameList</code> of the tabs.
 		 */
-		protected var defaultTabName:String = "foxhole-tabbar-tab";
+		protected var tabName:String = DEFAULT_CHILD_NAME_TAB;
 
 		/**
 		 * @private
@@ -296,7 +301,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected var _tabName:String;
+		protected var _customTabName:String;
 
 		/**
 		 * A name to add to all tabs in this tab bar. Typically used by a theme
@@ -304,28 +309,28 @@ package org.josht.starling.foxhole.controls
 		 *
 		 * @see org.josht.starling.foxhole.core.FoxholeControl#nameList
 		 */
-		public function get tabName():String
+		public function get customTabName():String
 		{
-			return this._tabName;
+			return this._customTabName;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set tabName(value:String):void
+		public function set customTabName(value:String):void
 		{
-			if(this._tabName == value)
+			if(this._customTabName == value)
 			{
 				return;
 			}
-			if(this._tabName)
+			if(this._customTabName)
 			{
 				for each(var tab:Button in this.activeTabs)
 				{
-					tab.nameList.remove(this._tabName);
+					tab.nameList.remove(this._customTabName);
 				}
 			}
-			this._tabName = value;
+			this._customTabName = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -457,9 +462,9 @@ package org.josht.starling.foxhole.controls
 				for each(var tab:Button in this.activeTabs)
 				{
 					tab.isEnabled = this._isEnabled;
-					if(this._tabName && !tab.nameList.contains(this._tabName))
+					if(this._customTabName && !tab.nameList.contains(this._customTabName))
 					{
-						tab.nameList.add(this._tabName);
+						tab.nameList.add(this._customTabName);
 					}
 				}
 			}
@@ -566,7 +571,7 @@ package org.josht.starling.foxhole.controls
 			if(this.inactiveTabs.length == 0)
 			{
 				var tab:Button = this._tabFactory();
-				tab.nameList.add(this.defaultTabName);
+				tab.nameList.add(this.tabName);
 				tab.isToggle = true;
 				this.toggleGroup.addItem(tab);
 				this.addChild(tab);
