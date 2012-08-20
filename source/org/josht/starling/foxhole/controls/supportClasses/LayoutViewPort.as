@@ -169,6 +169,8 @@ package org.josht.starling.foxhole.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
+		private var _ignoreChildResizing:Boolean = false;
+
 		protected var items:Vector.<DisplayObject> = new <DisplayObject>[];
 
 		private var _layout:ILayout;
@@ -255,7 +257,9 @@ package org.josht.starling.foxhole.controls.supportClasses
 				helperBounds.maxHeight = this._maxVisibleHeight;
 				if(this._layout)
 				{
+					this._ignoreChildResizing = true;
 					this._layout.layout(this.items, helperBounds, helperResult);
+					this._ignoreChildResizing = false;
 					this.setSizeInternal(helperResult.contentWidth, helperResult.contentHeight, false);
 				}
 				else
@@ -281,6 +285,10 @@ package org.josht.starling.foxhole.controls.supportClasses
 
 		protected function child_onResize(child:FoxholeControl):void
 		{
+			if(this._ignoreChildResizing)
+			{
+				return;
+			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
