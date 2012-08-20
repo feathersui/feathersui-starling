@@ -58,14 +58,6 @@ package org.josht.starling.foxhole.controls.renderers
 		}
 
 		/**
-		 * @private
-		 */
-		protected static function defaultLabelFactory():BitmapFontTextRenderer
-		{
-			return new BitmapFontTextRenderer();
-		}
-
-		/**
 		 * Constructor.
 		 */
 		public function BaseDefaultItemRenderer()
@@ -74,6 +66,11 @@ package org.josht.starling.foxhole.controls.renderers
 			this.isToggle = true;
 			this.isQuickHitAreaEnabled = false;
 		}
+
+		/**
+		 * The value added to the <code>nameList</code> of the label.
+		 */
+		protected var defaultAccessoryLabelName:String = "foxhole-item-renderer-accessory-label";
 
 		/**
 		 * @private
@@ -807,7 +804,7 @@ package org.josht.starling.foxhole.controls.renderers
 		/**
 		 * @private
 		 */
-		protected var _accessoryLabelFactory:Function = defaultLabelFactory;
+		protected var _accessoryLabelFactory:Function;
 
 		/**
 		 * A function that generates <code>Label</code> that uses the result
@@ -1190,7 +1187,9 @@ package org.josht.starling.foxhole.controls.renderers
 			{
 				if(!this.accessoryLabel)
 				{
-					this.accessoryLabel = this._accessoryLabelFactory();
+					const factory:Function = this._accessoryLabelFactory != null ? this._accessoryLabelFactory : FoxholeControl.defaultTextRendererFactory;
+					this.accessoryLabel = factory();
+					this.accessoryLabel.nameList.add(this.defaultAccessoryLabelName);
 				}
 				this.accessoryLabel.text = label;
 			}
