@@ -217,8 +217,8 @@ package org.josht.starling.display
 					this._scissorRect = this._scissorRect.intersection(oldRect);
 				}
 				if(this._scissorRect.width < 1 || this._scissorRect.height < 1 ||
-					this._scissorRect.x >= this.stage.stageWidth ||
-					this._scissorRect.y >= this.stage.stageHeight ||
+					this._scissorRect.x >= Starling.current.nativeStage.stageWidth ||
+					this._scissorRect.y >= Starling.current.nativeStage.stageHeight ||
 					(this._scissorRect.x + this._scissorRect.width) <= 0 ||
 					(this._scissorRect.y + this._scissorRect.height) <= 0)
 				{
