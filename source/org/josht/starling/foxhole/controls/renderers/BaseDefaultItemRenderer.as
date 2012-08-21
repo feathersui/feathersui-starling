@@ -848,8 +848,7 @@ package org.josht.starling.foxhole.controls.renderers
 		private var _accessoryLabelProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the accessory when its
-		 * a label. The accessory is a ITextRenderer control.
+		 * A set of key/value pairs to be passed down to a label accessory.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -857,6 +856,9 @@ package org.josht.starling.foxhole.controls.renderers
 		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 *
+		 * @see #accessoryLabelField
+		 * @see #accessoryLabelFunction
 		 */
 		public function get accessoryLabelProperties():Object
 		{
