@@ -1102,8 +1102,9 @@ package org.josht.starling.foxhole.controls
 		protected function removedFromStageHandler(event:Event):void
 		{
 			this._touchPointID = -1;
+			const wasDragging:Boolean = this.isDragging;
 			this.isDragging = false;
-			if(!this.liveDragging)
+			if(wasDragging && !this.liveDragging)
 			{
 				this._onChange.dispatch(this);
 			}
