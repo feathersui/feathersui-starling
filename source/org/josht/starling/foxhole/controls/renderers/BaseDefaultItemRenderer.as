@@ -848,8 +848,8 @@ package org.josht.starling.foxhole.controls.renderers
 		private var _accessoryLabelProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the slider's thumb
-		 * instance. The thumb is a Foxhole Button control.
+		 * A set of key/value pairs to be passed down to the accessory when its
+		 * a label. The accessory is a ITextRenderer control.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
