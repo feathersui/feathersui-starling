@@ -240,7 +240,13 @@ package org.josht.starling.display
 			if(this._scrollRect)
 			{
 				support.finishQuadBatch();
+			}
+			if(this._snapToPixels)
+			{
 				support.translateMatrix(-(Math.round(helperMatrix.tx) - helperMatrix.tx), -(Math.round(helperMatrix.ty) - helperMatrix.ty));
+			}
+			if(this._scrollRect)
+			{
 				support.translateMatrix(this._scrollRect.x, this._scrollRect.y);
 				ScrollRectManager.scrollRectOffsetX += this._scaledScrollRectXY.x;
 				ScrollRectManager.scrollRectOffsetY += this._scaledScrollRectXY.y;
