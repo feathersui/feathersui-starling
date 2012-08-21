@@ -31,6 +31,7 @@ package org.josht.starling.foxhole.controls.renderers
 	import org.josht.starling.foxhole.controls.Button;
 	import org.josht.starling.foxhole.controls.text.BitmapFontTextRenderer;
 	import org.josht.starling.foxhole.core.FoxholeControl;
+	import org.josht.starling.foxhole.core.PropertyProxy;
 
 	import starling.display.DisplayObject;
 	import starling.display.Image;
@@ -844,6 +845,65 @@ package org.josht.starling.foxhole.controls.renderers
 		/**
 		 * @private
 		 */
+		private var _accessoryLabelProperties:PropertyProxy;
+
+		/**
+		 * A set of key/value pairs to be passed down to the slider's thumb
+		 * instance. The thumb is a Foxhole Button control.
+		 *
+		 * <p>If the subcomponent has its own subcomponents, their properties
+		 * can be set too, using attribute <code>&#64;</code> notation. For example,
+		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
+		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
+		 * you can use the following syntax:</p>
+		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 */
+		public function get accessoryLabelProperties():Object
+		{
+			if(!this._accessoryLabelProperties)
+			{
+				this._accessoryLabelProperties = new PropertyProxy(accessoryLabelProperties_onChange);
+			}
+			return this._accessoryLabelProperties;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set accessoryLabelProperties(value:Object):void
+		{
+			if(this._accessoryLabelProperties == value)
+			{
+				return;
+			}
+			if(!value)
+			{
+				value = new PropertyProxy();
+			}
+			if(!(value is PropertyProxy))
+			{
+				const newValue:PropertyProxy = new PropertyProxy();
+				for(var propertyName:String in value)
+				{
+					newValue[propertyName] = value[propertyName];
+				}
+				value = newValue;
+			}
+			if(this._accessoryLabelProperties)
+			{
+				this._accessoryLabelProperties.onChange.remove(accessoryLabelProperties_onChange);
+			}
+			this._accessoryLabelProperties = PropertyProxy(value);
+			if(this._accessoryLabelProperties)
+			{
+				this._accessoryLabelProperties.onChange.add(accessoryLabelProperties_onChange);
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			if(this.iconImage)
@@ -997,9 +1057,14 @@ package org.josht.starling.foxhole.controls.renderers
 		override protected function draw():void
 		{
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			if(dataInvalid)
 			{
 				this.commitData();
+			}
+			if(dataInvalid || stylesInvalid)
+			{
+				this.refreshAccessoryLabelStyles();
 			}
 			super.draw();
 		}
@@ -1142,6 +1207,25 @@ package org.josht.starling.foxhole.controls.renderers
 		/**
 		 * @private
 		 */
+		protected function refreshAccessoryLabelStyles():void
+		{
+			if(!this.accessoryLabel)
+			{
+				return;
+			}
+			for(var propertyName:String in this._accessoryLabelProperties)
+			{
+				if(this.accessoryLabel.hasOwnProperty(propertyName))
+				{
+					var propertyValue:Object = this._accessoryLabelProperties[propertyName];
+					this.accessoryLabel[propertyName] = propertyValue;
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function refreshIconTexture(texture:Texture):void
 		{
 			if(texture)
@@ -1243,6 +1327,14 @@ package org.josht.starling.foxhole.controls.renderers
 			}
 			this._delayedCurrentState = null;
 			this._stateDelayTimer.stop();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function accessoryLabelProperties_onChange(proxy:PropertyProxy, name:String):void
+		{
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
