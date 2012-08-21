@@ -1540,7 +1540,7 @@ package org.josht.starling.foxhole.controls
 				{
 					if(this._horizontalScrollPolicy == SCROLL_POLICY_ON ||
 						((this._viewPort.width > this.explicitWidth || this._viewPort.width > this._maxWidth) &&
-							this._verticalScrollPolicy != SCROLL_POLICY_OFF))
+							this._horizontalScrollPolicy != SCROLL_POLICY_OFF))
 					{
 						this._horizontalScrollBarHeightOffset = horizontalScrollBarHeightOffset;
 					}
