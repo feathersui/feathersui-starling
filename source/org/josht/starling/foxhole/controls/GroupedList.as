@@ -1593,13 +1593,7 @@ package org.josht.starling.foxhole.controls
 				const item:Object = this._dataProvider.getItemAt(this._scrollToGroupIndex, this._scrollToItemIndex);
 				if(item is Object)
 				{
-					const renderer:DisplayObject = this.dataViewPort.itemToItemRenderer(item) as DisplayObject;
-					if(renderer)
-					{
-						helperPoint.x = this._maxHorizontalScrollPosition > 0 ? renderer.x - (this.dataViewPort.visibleWidth - renderer.width) / 2 : 0;
-						helperPoint.y = this._maxVerticalScrollPosition > 0 ? renderer.y - (this.dataViewPort.visibleHeight - renderer.height) / 2 : 0;
-					}
-					else if(this._layout is IVirtualLayout)
+					if(this._layout is IVirtualLayout)
 					{
 						const displayIndex:int = this.locationToDisplayIndex(this._scrollToGroupIndex, this._scrollToItemIndex);
 						if(displayIndex >= 0)
@@ -1614,11 +1608,20 @@ package org.josht.starling.foxhole.controls
 					}
 					else
 					{
-						//this should never happen because if the layout isn't
-						//virtual, then the renderer should exist. just in case,
-						//it default to the current scroll position.
-						helperPoint.x = this._horizontalScrollPosition;
-						helperPoint.y = this._verticalScrollPosition;
+						const renderer:DisplayObject = this.dataViewPort.itemToItemRenderer(item) as DisplayObject;
+						if(renderer)
+						{
+							helperPoint.x = this._maxHorizontalScrollPosition > 0 ? renderer.x - (this.dataViewPort.visibleWidth - renderer.width) / 2 : 0;
+							helperPoint.y = this._maxVerticalScrollPosition > 0 ? renderer.y - (this.dataViewPort.visibleHeight - renderer.height) / 2 : 0;
+						}
+						else
+						{
+							//this should never happen because if the layout isn't
+							//virtual, then the renderer should exist. just in case,
+							//it default to the current scroll position.
+							helperPoint.x = this._horizontalScrollPosition;
+							helperPoint.y = this._verticalScrollPosition;
+						}
 					}
 
 					if(this._scrollToIndexDuration > 0)
