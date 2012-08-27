@@ -507,6 +507,7 @@ package org.josht.starling.foxhole.controls.text
 				//when the renderer is added to stage again.
 				this._textSnapshot.texture.dispose();
 				this.removeChild(this._textSnapshot, true);
+				this._textSnapshot = null;
 			}
 		}
 	}
