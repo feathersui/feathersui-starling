@@ -634,6 +634,10 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function set horizontalScrollPosition(value:Number):void
 		{
+			if(this._snapScrollPositionsToPixels)
+			{
+				value = Math.round(value);
+			}
 			if(this._horizontalScrollPosition == value)
 			{
 				return;
@@ -795,6 +799,10 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function set verticalScrollPosition(value:Number):void
 		{
+			if(this._snapScrollPositionsToPixels)
+			{
+				value = Math.round(value);
+			}
 			if(this._verticalScrollPosition == value)
 			{
 				return;
@@ -1133,6 +1141,37 @@ package org.josht.starling.foxhole.controls
 		public function set throwEase(value:Function):void
 		{
 			this._throwEase = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _snapScrollPositionsToPixels:Boolean = false;
+
+		/**
+		 * If enabled, the scroll position will always be adjusted to whole
+		 * pixels.
+		 */
+		public function get snapScrollPositionsToPixels():Boolean
+		{
+			return this._snapScrollPositionsToPixels;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set snapScrollPositionsToPixels(value:Boolean):void
+		{
+			if(this._snapScrollPositionsToPixels == value)
+			{
+				return;
+			}
+			this._snapScrollPositionsToPixels = value;
+			if(this._snapScrollPositionsToPixels)
+			{
+				this.horizontalScrollPosition = Math.round(this._horizontalScrollPosition);
+				this.verticalScrollPosition = Math.round(this._verticalScrollPosition);
+			}
 		}
 		
 		/**
