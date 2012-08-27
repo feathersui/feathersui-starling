@@ -154,7 +154,7 @@ package org.josht.starling.foxhole.controls.renderers
 		 */
 		public function get useStateDelayTimer():Boolean
 		{
-			return _useStateDelayTimer;
+			return this._useStateDelayTimer;
 		}
 
 		/**
@@ -163,6 +163,52 @@ package org.josht.starling.foxhole.controls.renderers
 		public function set useStateDelayTimer(value:Boolean):void
 		{
 			this._useStateDelayTimer = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _itemHasLabel:Boolean = true;
+
+		/**
+		 * If true, the label will come from the renderer's item using the
+		 * appropriate field or function for the label. If false, the label may
+		 * be set externally.
+		 */
+		public function get itemHasLabel():Boolean
+		{
+			return this._itemHasLabel;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set itemHasLabel(value:Boolean):void
+		{
+			this._itemHasLabel = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _itemHasIcon:Boolean = true;
+
+		/**
+		 * If true, the icon will come from the renderer's item using the
+		 * appropriate field or function for the icon. If false, the icon may
+		 * be skinned for each state externally.
+		 */
+		public function get itemHasIcon():Boolean
+		{
+			return this._itemHasIcon;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set itemHasIcon(value:Boolean):void
+		{
+			this._itemHasIcon = value;
 		}
 
 		/**
@@ -1173,8 +1219,14 @@ package org.josht.starling.foxhole.controls.renderers
 		{
 			if(this._owner)
 			{
-				this._label = this.itemToLabel(this._data);
-				this.defaultIcon = this.itemToIcon(this._data);
+				if(this._itemHasLabel)
+				{
+					this._label = this.itemToLabel(this._data);
+				}
+				if(this._itemHasIcon)
+				{
+					this.defaultIcon = this.itemToIcon(this._data);
+				}
 				const newAccessory:DisplayObject = this.itemToAccessory(this._data);
 				if(newAccessory != this.accessory)
 				{
