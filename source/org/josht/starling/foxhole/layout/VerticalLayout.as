@@ -36,7 +36,7 @@ package org.josht.starling.foxhole.layout
 	 */
 	public class VerticalLayout implements IVariableVirtualLayout
 	{
-		private static var helperPoint:Point;
+		private static const helperVector:Vector.<DisplayObject> = new <DisplayObject>[];
 
 		/**
 		 * If the total item height is smaller than the height of the bounds,
@@ -403,6 +403,7 @@ package org.josht.starling.foxhole.layout
 			const explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
 			const explicitHeight:Number = viewPortBounds ? viewPortBounds.explicitHeight : NaN;
 
+			helperVector.length = 0;
 			var maxItemWidth:Number = this._useVirtualLayout ? this._typicalItemWidth : 0;
 			var positionY:Number = boundsY + this._paddingTop;
 			const itemCount:int = items.length;
@@ -440,18 +441,16 @@ package org.josht.starling.foxhole.layout
 					}
 					positionY += item.height + this._gap;
 					maxItemWidth = Math.max(maxItemWidth, item.width);
+					helperVector.push(item);
 				}
 			}
 
 			const totalWidth:Number = maxItemWidth + this._paddingLeft + this._paddingRight;
 			const availableWidth:Number = isNaN(explicitWidth) ? Math.min(maxWidth, Math.max(minWidth, totalWidth)) : explicitWidth;
-			for(i = 0; i < itemCount; i++)
+			const discoveredItemCount:int = helperVector.length;
+			for(i = 0; i < discoveredItemCount; i++)
 			{
-				item = items[i];
-				if(!item)
-				{
-					continue;
-				}
+				item = helperVector[i];
 				switch(this._horizontalAlign)
 				{
 					case HORIZONTAL_ALIGN_RIGHT:
@@ -492,17 +491,14 @@ package org.josht.starling.foxhole.layout
 				}
 				if(verticalAlignOffsetY != 0)
 				{
-					for(i = 0; i < itemCount; i++)
+					for(i = 0; i < discoveredItemCount; i++)
 					{
-						item = items[i];
-						if(!item)
-						{
-							continue;
-						}
+						item = helperVector[i];
 						item.y += verticalAlignOffsetY;
 					}
 				}
 			}
+			helperVector.length = 0;
 
 			if(!result)
 			{
