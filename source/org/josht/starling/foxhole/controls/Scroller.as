@@ -38,7 +38,6 @@ package org.josht.starling.foxhole.controls
 	import com.gskinner.motion.easing.Sine;
 
 	import flash.events.MouseEvent;
-	import flash.events.StageOrientationEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.system.Capabilities;
@@ -47,7 +46,6 @@ package org.josht.starling.foxhole.controls
 	import org.josht.starling.display.ScrollRectManager;
 	import org.josht.starling.display.Sprite;
 	import org.josht.starling.foxhole.controls.supportClasses.IViewPort;
-	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.PropertyProxy;
 	import org.josht.starling.motion.GTween;
@@ -2526,7 +2524,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected function nativeStage_orientationChangeHandler(event:StageOrientationEvent):void
+		protected function nativeStage_orientationChangeHandler(event:flash.events.Event):void
 		{
 			if(this._touchPointID < 0)
 			{
@@ -2676,7 +2674,7 @@ package org.josht.starling.foxhole.controls
 		protected function addedToStageHandler(event:Event):void
 		{
 			Starling.current.nativeStage.addEventListener(MouseEvent.MOUSE_WHEEL, nativeStage_mouseWheelHandler, false, 0, true);
-			Starling.current.nativeStage.addEventListener(StageOrientationEvent.ORIENTATION_CHANGE, nativeStage_orientationChangeHandler, false, 0, true);
+			Starling.current.nativeStage.addEventListener("orientationChange", nativeStage_orientationChangeHandler, false, 0, true);
 		}
 		
 		/**
@@ -2685,7 +2683,7 @@ package org.josht.starling.foxhole.controls
 		protected function removedFromStageHandler(event:Event):void
 		{
 			Starling.current.nativeStage.removeEventListener(MouseEvent.MOUSE_WHEEL, nativeStage_mouseWheelHandler);
-			Starling.current.nativeStage.removeEventListener(StageOrientationEvent.ORIENTATION_CHANGE, nativeStage_orientationChangeHandler);
+			Starling.current.nativeStage.removeEventListener("orientationChange", nativeStage_orientationChangeHandler);
 			this._touchPointID = -1;
 			this._horizontalScrollBarTouchPointID = -1;
 			this._verticalScrollBarTouchPointID = -1;
