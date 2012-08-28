@@ -624,6 +624,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 				this.freeInactiveRenderers();
 			}
 
+			this._layoutItems.length = 0;
 			this._layoutItems.length = this._dataProvider ? this._dataProvider.length : 0;
 
 			helperBounds.x = helperBounds.y = 0;
@@ -654,29 +655,28 @@ package org.josht.starling.foxhole.controls.supportClasses
 				virtualLayout.measureViewPort(itemCount, helperBounds, helperPoint);
 				virtualLayout.getVisibleIndicesAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, helperPoint.x, helperPoint.y, itemCount, helperVector);
 			}
-			for(var i:int = 0; i < itemCount; i++)
+			const unrenderedItemCount:int = helperVector.length;
+			for(var i:int = 0; i < unrenderedItemCount; i++)
 			{
-				if(useVirtualLayout && helperVector.indexOf(i) < 0)
+				var index:int = helperVector[i];
+				if(index < 0 || index >= itemCount)
 				{
-					this._layoutItems[i] = null;
+					continue;
+				}
+				var item:Object = this._dataProvider.getItemAt(index);
+				var renderer:IListItemRenderer = IListItemRenderer(this._rendererMap[item]);
+				if(renderer)
+				{
+					//the index may have changed if data was added or removed
+					renderer.index = index;
+					this._activeRenderers.push(renderer);
+					this._inactiveRenderers.splice(this._inactiveRenderers.indexOf(renderer), 1);
+					var displayRenderer:DisplayObject = DisplayObject(renderer);
+					this._layoutItems[index] = displayRenderer;
 				}
 				else
 				{
-					var item:Object = this._dataProvider.getItemAt(i);
-					var renderer:IListItemRenderer = IListItemRenderer(this._rendererMap[item]);
-					if(renderer)
-					{
-						//the index may have changed if data was added or removed
-						renderer.index = i;
-						this._activeRenderers.push(renderer);
-						this._inactiveRenderers.splice(this._inactiveRenderers.indexOf(renderer), 1);
-						var displayRenderer:DisplayObject = DisplayObject(renderer);
-						this._layoutItems[i] = displayRenderer;
-					}
-					else
-					{
-						this._unrenderedData.push(item);
-					}
+					this._unrenderedData.push(item);
 				}
 			}
 		}
