@@ -438,16 +438,20 @@ package org.josht.starling.foxhole.layout
 					}
 					positionX += item.width + this._gap;
 					maxItemHeight = Math.max(maxItemHeight, item.height);
-					helperVector.push(item);
+					if(this._useVirtualLayout)
+					{
+						helperVector.push(item);
+					}
 				}
 			}
 
+			const discoveredItems:Vector.<DisplayObject> = this._useVirtualLayout ? helperVector : items;
 			const totalHeight:Number = maxItemHeight + this._paddingTop + this._paddingBottom;
 			const availableHeight:Number = isNaN(explicitHeight) ? Math.min(maxHeight, Math.max(minHeight, totalHeight)) : explicitHeight;
-			const discoveredItemCount:int = helperVector.length;
+			const discoveredItemCount:int = discoveredItems.length;
 			for(i = 0; i < discoveredItemCount; i++)
 			{
-				item = helperVector[i];
+				item = discoveredItems[i];
 				switch(this._verticalAlign)
 				{
 					case VERTICAL_ALIGN_BOTTOM:
@@ -490,7 +494,7 @@ package org.josht.starling.foxhole.layout
 				{
 					for(i = 0; i < discoveredItemCount; i++)
 					{
-						item = helperVector[i];
+						item = discoveredItems[i];
 						item.x += horizontalAlignOffsetX;
 					}
 				}
