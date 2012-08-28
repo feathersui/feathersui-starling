@@ -663,35 +663,49 @@ package org.josht.starling.foxhole.layout
 		/**
 		 * @inheritDoc
 		 */
-		public function getScrollPositionForItemIndexAndBounds(index:int, width:Number, height:Number, result:Point = null):Point
+		public function getScrollPositionForIndex(index:int, items:Vector.<DisplayObject>, x:Number, y:Number, width:Number, height:Number, result:Point = null):Point
 		{
 			if(!result)
 			{
 				result = new Point();
 			}
 
-			result.x = 0;
-			if(!this._hasVariableItemDimensions)
+			var positionY:Number = y + this._paddingTop;
+			var lastHeight:Number = 0;
+			for(var i:int = 0; i < index; i++)
 			{
-				result.y = this._paddingTop + (this._typicalItemHeight + this._gap) * index - (height - this._typicalItemHeight) / 2;
-			}
-			else
-			{
-				var positionY:Number = this._paddingTop;
-				for(var i:int = 0; i < index; i++)
+				var item:DisplayObject = items[i];
+				if(this._useVirtualLayout && !item)
 				{
-					if(isNaN(this._heightCache[i]))
+					if(!this._hasVariableItemDimensions || isNaN(this._heightCache[i]))
 					{
-						var itemHeight:Number = this._typicalItemHeight;
+						lastHeight = this._typicalItemHeight;
 					}
 					else
 					{
-						itemHeight = this._heightCache[i];
+						lastHeight = this._heightCache[i];
 					}
-					positionY += itemHeight + this._gap;
 				}
-				result.y = positionY - (height - itemHeight) / 2;
+				else
+				{
+					if(this._hasVariableItemDimensions)
+					{
+						if(isNaN(this._heightCache[i]))
+						{
+							this._heightCache[i] = item.height;
+							this._onLayoutChange.dispatch(this);
+						}
+					}
+					else if(this._typicalItemHeight >= 0)
+					{
+						item.height = this._typicalItemHeight;
+					}
+					lastHeight = item.height;
+				}
+				positionY += lastHeight + this._gap;
 			}
+			result.x = 0;
+			result.y = positionY - lastHeight - this._gap - (height - lastHeight) / 2;
 
 			return result;
 		}

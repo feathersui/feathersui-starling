@@ -486,6 +486,15 @@ package org.josht.starling.foxhole.controls.supportClasses
 			this._onItemTouch.removeAll();
 			super.dispose();
 		}
+
+		public function getScrollPositionForIndex(index:int, result:Point = null):Point
+		{
+			if(!result)
+			{
+				result = new Point();
+			}
+			return this._layout.getScrollPositionForIndex(index, this._layoutItems, 0, 0, this.actualVisibleWidth, this.actualVisibleHeight, result);
+		}
 		
 		override protected function draw():void
 		{
