@@ -1593,36 +1593,7 @@ package org.josht.starling.foxhole.controls
 				const item:Object = this._dataProvider.getItemAt(this._scrollToGroupIndex, this._scrollToItemIndex);
 				if(item is Object)
 				{
-					if(this._layout is IVirtualLayout)
-					{
-						const displayIndex:int = this.locationToDisplayIndex(this._scrollToGroupIndex, this._scrollToItemIndex);
-						if(displayIndex >= 0)
-						{
-							IVirtualLayout(this._layout).getScrollPositionForItemIndexAndBounds(displayIndex, this.dataViewPort.visibleWidth, this.dataViewPort.visibleHeight, helperPoint);
-						}
-						else
-						{
-							helperPoint.x = this._horizontalScrollPosition;
-							helperPoint.y = this._verticalScrollPosition;
-						}
-					}
-					else
-					{
-						const renderer:DisplayObject = this.dataViewPort.itemToItemRenderer(item) as DisplayObject;
-						if(renderer)
-						{
-							helperPoint.x = this._maxHorizontalScrollPosition > 0 ? renderer.x - (this.dataViewPort.visibleWidth - renderer.width) / 2 : 0;
-							helperPoint.y = this._maxVerticalScrollPosition > 0 ? renderer.y - (this.dataViewPort.visibleHeight - renderer.height) / 2 : 0;
-						}
-						else
-						{
-							//this should never happen because if the layout isn't
-							//virtual, then the renderer should exist. just in case,
-							//it default to the current scroll position.
-							helperPoint.x = this._horizontalScrollPosition;
-							helperPoint.y = this._verticalScrollPosition;
-						}
-					}
+					this.dataViewPort.getScrollPositionForIndex(this._scrollToGroupIndex, this._scrollToItemIndex, helperPoint);
 
 					if(this._scrollToIndexDuration > 0)
 					{
@@ -1642,39 +1613,6 @@ package org.josht.starling.foxhole.controls
 			{
 				this.scroller.horizontalScrollStep = this.scroller.verticalScrollStep = this.dataViewPort.typicalItemHeight;
 			}
-		}
-
-		/**
-		 * @private
-		 */
-		protected function locationToDisplayIndex(groupIndex:int, itemIndex:int):int
-		{
-			var displayIndex:int = 0;
-			const groupCount:int = this._dataProvider.getLength();
-			for(var i:int = 0; i < groupCount; i++)
-			{
-				var group:Object = this._dataProvider.getItemAt(i);
-				var header:Object = this.groupToHeaderData(group);
-				if(header)
-				{
-					displayIndex++;
-				}
-				var groupLength:int = this._dataProvider.getLength(i);
-				for(var j:int = 0; j < groupLength; j++)
-				{
-					if(groupIndex == i && itemIndex == j)
-					{
-						return displayIndex;
-					}
-					displayIndex++;
-				}
-				var footer:Object = this.groupToFooterData(group);
-				if(footer)
-				{
-					displayIndex++;
-				}
-			}
-			return -1;
 		}
 
 		/**

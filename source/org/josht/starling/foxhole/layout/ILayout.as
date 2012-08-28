@@ -24,6 +24,8 @@
  */
 package org.josht.starling.foxhole.layout
 {
+	import flash.geom.Point;
+
 	import org.osflash.signals.ISignal;
 
 	import starling.display.DisplayObject;
@@ -52,5 +54,13 @@ package org.josht.starling.foxhole.layout
 		 *
 		 */
 		function layout(items:Vector.<DisplayObject>, viewPortBounds:ViewPortBounds = null, result:LayoutBoundsResult = null):LayoutBoundsResult;
+
+
+		/**
+		 * Using the item dimensions, calculates a scroll position that will
+		 * ensure that the item at a given index will be visible within the
+		 * specified bounds.
+		 */
+		function getScrollPositionForIndex(index:int, items:Vector.<DisplayObject>, x:Number, y:Number, width:Number, height:Number, result:Point = null):Point;
 	}
 }

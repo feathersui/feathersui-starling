@@ -1003,27 +1003,7 @@ package org.josht.starling.foxhole.controls
 				const item:Object = this._dataProvider.getItemAt(this._scrollToIndex);
 				if(item is Object)
 				{
-					if(this._layout is IVirtualLayout)
-					{
-						IVirtualLayout(this._layout).getScrollPositionForItemIndexAndBounds(this._scrollToIndex, this.dataViewPort.visibleWidth, this.dataViewPort.visibleHeight, helperPoint);
-					}
-					else
-					{
-						const renderer:DisplayObject = this.dataViewPort.itemToItemRenderer(item) as DisplayObject;
-						if(renderer)
-						{
-							helperPoint.x = this._maxHorizontalScrollPosition > 0 ? renderer.x - (this.dataViewPort.visibleWidth - renderer.width) / 2 : 0;
-							helperPoint.y = this._maxVerticalScrollPosition > 0 ? renderer.y - (this.dataViewPort.visibleHeight - renderer.height) / 2 : 0;
-						}
-						else
-						{
-							//this should never happen because if the layout isn't
-							//virtual, then the renderer should exist. just in case,
-							//it default to the current scroll position.
-							helperPoint.x = this._horizontalScrollPosition;
-							helperPoint.y = this._verticalScrollPosition;
-						}
-					}
+					this.dataViewPort.getScrollPositionForIndex(this._scrollToIndex, helperPoint);
 
 					if(this._scrollToIndexDuration > 0)
 					{

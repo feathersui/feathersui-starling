@@ -79,13 +79,6 @@ package org.josht.starling.foxhole.layout
 		 * bounds and scroll position. Indices that aren't returned are
 		 * typically not displayed and can be replaced virtually.
 		 */
-		function getVisibleIndicesAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int, result:Vector.<int> = null):Vector.<int>
-
-		/**
-		 * Using the typical item dimensions, calculates a scroll position that
-		 * will ensure that the item at a given index will be visible within the
-		 * specified bounds.
-		 */
-		function getScrollPositionForItemIndexAndBounds(index:int, width:Number, height:Number, result:Point = null):Point;
+		function getVisibleIndicesAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int, result:Vector.<int> = null):Vector.<int>;
 	}
 }

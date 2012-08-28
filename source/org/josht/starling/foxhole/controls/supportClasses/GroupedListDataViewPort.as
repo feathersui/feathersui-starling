@@ -759,6 +759,17 @@ package org.josht.starling.foxhole.controls.supportClasses
 			this._onChange.dispatch(this);
 		}
 
+		public function getScrollPositionForIndex(groupIndex:int, itemIndex:int, result:Point = null):Point
+		{
+			if(!result)
+			{
+				result = new Point();
+			}
+
+			const displayIndex:int = this.locationToDisplayIndex(groupIndex, itemIndex);
+			return this._layout.getScrollPositionForIndex(displayIndex, this._layoutItems, 0, 0, this.actualVisibleWidth, this.actualVisibleHeight, result);
+		}
+
 		override protected function draw():void
 		{
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
@@ -1437,6 +1448,36 @@ package org.josht.starling.foxhole.controls.supportClasses
 			const displayRenderer:FoxholeControl = FoxholeControl(renderer);
 			displayRenderer.onResize.remove(headerOrFooterRenderer_onResize);
 			this.removeChild(displayRenderer, true);
+		}
+
+		private function locationToDisplayIndex(groupIndex:int, itemIndex:int):int
+		{
+			var displayIndex:int = 0;
+			const groupCount:int = this._dataProvider.getLength();
+			for(var i:int = 0; i < groupCount; i++)
+			{
+				var group:Object = this._dataProvider.getItemAt(i);
+				var header:Object = this._owner.groupToHeaderData(group);
+				if(header)
+				{
+					displayIndex++;
+				}
+				var groupLength:int = this._dataProvider.getLength(i);
+				for(var j:int = 0; j < groupLength; j++)
+				{
+					if(groupIndex == i && itemIndex == j)
+					{
+						return displayIndex;
+					}
+					displayIndex++;
+				}
+				var footer:Object = this._owner.groupToFooterData(group);
+				if(footer)
+				{
+					displayIndex++;
+				}
+			}
+			return -1;
 		}
 
 		private function itemRendererProperties_onChange(proxy:PropertyProxy, name:Object):void
