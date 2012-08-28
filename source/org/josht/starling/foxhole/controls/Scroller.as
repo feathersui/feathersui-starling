@@ -38,6 +38,7 @@ package org.josht.starling.foxhole.controls
 	import com.gskinner.motion.easing.Sine;
 
 	import flash.events.MouseEvent;
+	import flash.events.StageOrientationEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.system.Capabilities;
@@ -322,7 +323,7 @@ package org.josht.starling.foxhole.controls
 		 * @private
 		 */
 		protected var ignoreViewPortResizing:Boolean = false;
-		
+
 		private var _viewPortWrapper:Sprite;
 		
 		/**
@@ -2172,13 +2173,13 @@ package org.josht.starling.foxhole.controls
 			}
 			if(this._touchPointID >= 0)
 			{
-				if(this._velocityX > 0)
+				if(this._isDraggingHorizontally > 0)
 				{
 					var difference:Number = viewPort.width - this._lastViewPortWidth;
 					this._startHorizontalScrollPosition += difference;
 					this._horizontalScrollPosition += difference;
 				}
-				if(this._velocityY > 0)
+				if(this._isDraggingVertically > 0)
 				{
 					difference = viewPort.height - this._lastViewPortHeight;
 					this._startVerticalScrollPosition += difference;
@@ -2316,7 +2317,7 @@ package org.josht.starling.foxhole.controls
 			const timeOffset:int = now - this._previousTouchTime;
 			if(timeOffset > 0)
 			{
-				//we're keeping two velocity updates to improve accuracy
+				//we're keeping previous velocity updates to improve accuracy
 				this._previousVelocityX.unshift(this._velocityX);
 				if(this._previousVelocityX.length > MAXIMUM_SAVED_VELOCITY_COUNT)
 				{
@@ -2515,6 +2516,21 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
+		protected function nativeStage_orientationChangeHandler(event:StageOrientationEvent):void
+		{
+			if(this._touchPointID < 0)
+			{
+				return;
+			}
+			this._startTouchX = this._previousTouchX = this._currentTouchX;
+			this._startTouchY = this._previousTouchY = this._currentTouchY;
+			this._startHorizontalScrollPosition = this._horizontalScrollPosition;
+			this._startVerticalScrollPosition = this._verticalScrollPosition;
+		}
+
+		/**
+		 * @private
+		 */
 		protected function horizontalScrollBar_touchHandler(event:TouchEvent):void
 		{
 			const displayHorizontalScrollBar:DisplayObject = DisplayObject(event.currentTarget);
@@ -2649,7 +2665,8 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function addedToStageHandler(event:Event):void
 		{
-			Starling.current.nativeStage.addEventListener(MouseEvent.MOUSE_WHEEL, nativeStage_mouseWheelHandler);
+			Starling.current.nativeStage.addEventListener(MouseEvent.MOUSE_WHEEL, nativeStage_mouseWheelHandler, false, 0, true);
+			Starling.current.nativeStage.addEventListener(StageOrientationEvent.ORIENTATION_CHANGE, nativeStage_orientationChangeHandler, false, 0, true);
 		}
 		
 		/**
@@ -2658,6 +2675,7 @@ package org.josht.starling.foxhole.controls
 		protected function removedFromStageHandler(event:Event):void
 		{
 			Starling.current.nativeStage.removeEventListener(MouseEvent.MOUSE_WHEEL, nativeStage_mouseWheelHandler);
+			Starling.current.nativeStage.removeEventListener(StageOrientationEvent.ORIENTATION_CHANGE, nativeStage_orientationChangeHandler);
 			this._touchPointID = -1;
 			this._horizontalScrollBarTouchPointID = -1;
 			this._verticalScrollBarTouchPointID = -1;
