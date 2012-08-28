@@ -650,7 +650,6 @@ package org.josht.starling.foxhole.controls
 			}
 			this._horizontalScrollPosition = value;
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
-			this._onScroll.dispatch(this);
 		}
 		
 		/**
@@ -815,7 +814,6 @@ package org.josht.starling.foxhole.controls
 			}
 			this._verticalScrollPosition = value;
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
-			this._onScroll.dispatch(this);
 		}
 		
 		/**
@@ -1386,9 +1384,9 @@ package org.josht.starling.foxhole.controls
 			this._lastViewPortWidth = viewPort.width;
 			this._lastViewPortHeight = viewPort.height;
 
-			if(sizeInvalid || stylesInvalid || dataInvalid || scrollBarInvalid)
+			if(scrollInvalid || sizeInvalid || stylesInvalid || dataInvalid || scrollBarInvalid)
 			{
-				this.refreshMaxScrollPositions();
+				this.refreshScrollValues(scrollInvalid);
 			}
 
 			if(sizeInvalid || scrollInvalid || scrollBarInvalid || dataInvalid)
@@ -1635,7 +1633,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected function refreshMaxScrollPositions():void
+		protected function refreshScrollValues(isScrollInvalid:Boolean):void
 		{
 			const oldMaxHSP:Number = this._maxHorizontalScrollPosition;
 			const oldMaxVSP:Number = this._maxVerticalScrollPosition;
@@ -1650,14 +1648,14 @@ package org.josht.starling.foxhole.controls
 				this._maxVerticalScrollPosition = 0;
 			}
 
-			if(this._maxHorizontalScrollPosition != oldMaxHSP || this._maxVerticalScrollPosition != oldMaxVSP)
+			const maximumPositionsChanged:Boolean = this._maxHorizontalScrollPosition != oldMaxHSP || this._maxVerticalScrollPosition != oldMaxVSP;
+			if(maximumPositionsChanged)
 			{
 				if(this._touchPointID < 0 && !this._horizontalAutoScrollTween)
 				{
 					if(this._snapToPages)
 					{
 						this._horizontalScrollPosition = Math.max(0, roundToNearest(this._horizontalScrollPosition, this.actualWidth));
-						this._horizontalPageIndex = Math.round(this._horizontalScrollPosition / this.actualWidth);
 					}
 					this._horizontalScrollPosition = clamp(this._horizontalScrollPosition, 0, this._maxHorizontalScrollPosition);
 				}
@@ -1666,10 +1664,22 @@ package org.josht.starling.foxhole.controls
 					if(this._snapToPages)
 					{
 						this._verticalScrollPosition = Math.max(0, roundToNearest(this._verticalScrollPosition, this.actualHeight));
-						this._verticalPageIndex = Math.round(this._verticalScrollPosition / this.actualHeight);
 					}
 					this._verticalScrollPosition = clamp(this._verticalScrollPosition, 0, this._maxVerticalScrollPosition);
 				}
+			}
+
+			if(isScrollInvalid && !this._isDraggingHorizontally && !this._horizontalAutoScrollTween)
+			{
+				this._horizontalPageIndex = Math.max(0, Math.floor(this._horizontalScrollPosition / this.actualWidth));
+			}
+			if(isScrollInvalid && !this._isDraggingVertically && !this._verticalAutoScrollTween)
+			{
+				this._verticalPageIndex = Math.max(0, Math.floor(this._verticalScrollPosition / this.actualHeight));
+			}
+
+			if(maximumPositionsChanged || isScrollInvalid)
+			{
 				this._onScroll.dispatch(this);
 			}
 		}
