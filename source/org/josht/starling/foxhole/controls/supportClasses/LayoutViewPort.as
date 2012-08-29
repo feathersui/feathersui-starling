@@ -169,6 +169,30 @@ package org.josht.starling.foxhole.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
+		private var _horizontalScrollPosition:Number = 0;
+
+		public function get horizontalScrollPosition():Number
+		{
+			return this._horizontalScrollPosition;
+		}
+
+		public function set horizontalScrollPosition(value:Number):void
+		{
+			this._horizontalScrollPosition = value;
+		}
+
+		private var _verticalScrollPosition:Number = 0;
+
+		public function get verticalScrollPosition():Number
+		{
+			return this._verticalScrollPosition;
+		}
+
+		public function set verticalScrollPosition(value:Number):void
+		{
+			this._verticalScrollPosition = value;
+		}
+
 		private var _ignoreChildResizing:Boolean = false;
 
 		protected var items:Vector.<DisplayObject> = new <DisplayObject>[];

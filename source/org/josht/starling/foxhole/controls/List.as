@@ -949,8 +949,6 @@ package org.josht.starling.foxhole.controls
 			this.dataViewPort.itemRendererName = this._itemRendererName;
 			this.dataViewPort.typicalItem = this._typicalItem;
 			this.dataViewPort.layout = this._layout;
-			this.dataViewPort.horizontalScrollPosition = this._horizontalScrollPosition;
-			this.dataViewPort.verticalScrollPosition = this._verticalScrollPosition;
 			
 			this.scroller.isEnabled = this._isEnabled;
 			this.scroller.x = this._paddingLeft;
