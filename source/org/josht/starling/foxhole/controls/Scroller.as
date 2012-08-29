@@ -1348,8 +1348,6 @@ package org.josht.starling.foxhole.controls
 				FoxholeControl(this.verticalScrollBar).validate();
 			}
 
-			this.ignoreViewPortResizing = true;
-
 			//even if fixed, we need to measure without them first
 			if(scrollInvalid || sizeInvalid || stylesInvalid || scrollBarInvalid || dataInvalid)
 			{
@@ -1362,7 +1360,6 @@ package org.josht.starling.foxhole.controls
 			{
 				this.refreshViewPortBoundsWithFixedScrollBars();
 			}
-			this.ignoreViewPortResizing = false;
 			this._lastViewPortWidth = viewPort.width;
 			this._lastViewPortHeight = viewPort.height;
 
@@ -1539,7 +1536,12 @@ package org.josht.starling.foxhole.controls
 			this._viewPort.horizontalScrollPosition = this._horizontalScrollPosition;
 			this._viewPort.verticalScrollPosition = this._verticalScrollPosition;
 
+			if(this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FIXED)
+			{
+				this.ignoreViewPortResizing = true;
+			}
 			FoxholeControl(this._viewPort).validate();
+			this.ignoreViewPortResizing = false;
 
 			//in fixed mode, if we determine that scrolling is required, we
 			//remember the offsets for later. if scrolling is not needed, then
@@ -2143,7 +2145,8 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function viewPort_onResize(viewPort:FoxholeControl):void
 		{
-			if(this.ignoreViewPortResizing)
+			if(this.ignoreViewPortResizing ||
+				(this._viewPort.width == this._lastViewPortWidth && this._viewPort.height == this._lastViewPortHeight))
 			{
 				return;
 			}
@@ -2154,6 +2157,7 @@ package org.josht.starling.foxhole.controls
 					var difference:Number = viewPort.width - this._lastViewPortWidth;
 					this._startHorizontalScrollPosition += difference;
 					this.horizontalScrollPosition += difference;
+					trace(difference);
 				}
 				if(this._isDraggingVertically && this._velocityY > 0)
 				{
