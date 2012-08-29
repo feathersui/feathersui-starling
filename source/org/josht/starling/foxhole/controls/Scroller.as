@@ -317,11 +317,6 @@ package org.josht.starling.foxhole.controls
 		private var _isDraggingHorizontally:Boolean = false;
 		private var _isDraggingVertically:Boolean = false;
 
-		/**
-		 * @private
-		 */
-		protected var ignoreViewPortResizing:Boolean = false;
-
 		private var _viewPortWrapper:Sprite;
 		
 		/**
@@ -348,13 +343,11 @@ package org.josht.starling.foxhole.controls
 			}
 			if(this._viewPort)
 			{
-				this._viewPort.onResize.remove(viewPort_onResize);
 				this._viewPortWrapper.removeChild(FoxholeControl(this._viewPort));
 			}
 			this._viewPort = value;
 			if(this._viewPort)
 			{
-				this._viewPort.onResize.add(viewPort_onResize);
 				this._viewPortWrapper.addChild(FoxholeControl(this._viewPort));
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
@@ -1363,18 +1356,18 @@ package org.josht.starling.foxhole.controls
 			this._lastViewPortWidth = viewPort.width;
 			this._lastViewPortHeight = viewPort.height;
 
-			if(scrollInvalid || sizeInvalid || stylesInvalid || dataInvalid || scrollBarInvalid)
+			if(scrollInvalid || sizeInvalid || stylesInvalid || scrollBarInvalid || dataInvalid)
 			{
 				this.refreshScrollValues(scrollInvalid);
 				this.refreshScrollBarValues();
 			}
 
-			if(sizeInvalid || stylesInvalid || scrollBarInvalid || dataInvalid)
+			if(scrollInvalid || sizeInvalid || stylesInvalid || scrollBarInvalid || dataInvalid)
 			{
 				this.layout();
 			}
 			
-			if(sizeInvalid || scrollInvalid || stylesInvalid || scrollBarInvalid || dataInvalid || clippingInvalid)
+			if(scrollInvalid || sizeInvalid || stylesInvalid || scrollBarInvalid || dataInvalid || clippingInvalid)
 			{
 				this.scrollContent();
 			}
@@ -1536,12 +1529,7 @@ package org.josht.starling.foxhole.controls
 			this._viewPort.horizontalScrollPosition = this._horizontalScrollPosition;
 			this._viewPort.verticalScrollPosition = this._verticalScrollPosition;
 
-			if(this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FIXED)
-			{
-				this.ignoreViewPortResizing = true;
-			}
 			FoxholeControl(this._viewPort).validate();
-			this.ignoreViewPortResizing = false;
 
 			//in fixed mode, if we determine that scrolling is required, we
 			//remember the offsets for later. if scrolling is not needed, then
@@ -2138,66 +2126,6 @@ package org.josht.starling.foxhole.controls
 		protected function horizontalScrollBar_onChange(scrollBar:IScrollBar):void
 		{
 			this.horizontalScrollPosition = scrollBar.value;
-		}
-		
-		/**
-		 * @private
-		 */
-		protected function viewPort_onResize(viewPort:FoxholeControl):void
-		{
-			if(this.ignoreViewPortResizing ||
-				(this._viewPort.width == this._lastViewPortWidth && this._viewPort.height == this._lastViewPortHeight))
-			{
-				return;
-			}
-			if(this._touchPointID >= 0)
-			{
-				if(this._isDraggingHorizontally && this._velocityX > 0)
-				{
-					var difference:Number = viewPort.width - this._lastViewPortWidth;
-					this._startHorizontalScrollPosition += difference;
-					this.horizontalScrollPosition += difference;
-					trace(difference);
-				}
-				if(this._isDraggingVertically && this._velocityY > 0)
-				{
-					difference = viewPort.height - this._lastViewPortHeight;
-					this._startVerticalScrollPosition += difference;
-					this.verticalScrollPosition += difference;
-				}
-			}
-			else
-			{
-				if(this._horizontalAutoScrollTween)
-				{
-					var initialScrollPosition:Number = this._horizontalAutoScrollTween.getInitValue("horizontalScrollPosition");
-					var targetScrollPosition:Number = this._horizontalAutoScrollTween.getValue("horizontalScrollPosition");
-					if(initialScrollPosition > targetScrollPosition)
-					{
-						difference = viewPort.width - this._lastViewPortWidth;
-						var tweenPosition:Number = this._horizontalAutoScrollTween.position;
-						this._horizontalScrollPosition = initialScrollPosition + difference;
-						this.throwTo(targetScrollPosition + difference, NaN, this._horizontalAutoScrollTween.duration);
-						this._horizontalAutoScrollTween.position = tweenPosition;
-					}
-				}
-				if(this._verticalAutoScrollTween)
-				{
-					initialScrollPosition = this._verticalAutoScrollTween.getInitValue("verticalScrollPosition");
-					targetScrollPosition = this._verticalAutoScrollTween.getValue("verticalScrollPosition");
-					if(initialScrollPosition > targetScrollPosition)
-					{
-						difference = viewPort.height - this._lastViewPortHeight;
-						tweenPosition = this._verticalAutoScrollTween.position;
-						this._verticalScrollPosition = initialScrollPosition + difference;
-						this.throwTo(NaN, targetScrollPosition + difference, this._verticalAutoScrollTween.duration);
-						this._verticalAutoScrollTween.position = tweenPosition;
-					}
-				}
-			}
-			this._lastViewPortWidth = viewPort.width;
-			this._lastViewPortHeight = viewPort.height;
-			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 		
 		/**
