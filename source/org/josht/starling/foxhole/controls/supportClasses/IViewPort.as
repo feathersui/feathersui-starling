@@ -42,6 +42,14 @@ package org.josht.starling.foxhole.controls.supportClasses
 		function get maxVisibleHeight():Number;
 		function set maxVisibleHeight(value:Number):void;
 
+		function get horizontalScrollPosition():Number;
+		function set horizontalScrollPosition(value:Number):void;
+		function get verticalScrollPosition():Number;
+		function set verticalScrollPosition(value:Number):void;
+
+		function get width():Number;
+		function get height():Number;
+
 		function get onResize():ISignal;
 	}
 }

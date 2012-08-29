@@ -327,12 +327,12 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _viewPort:DisplayObject;
+		private var _viewPort:IViewPort;
 		
 		/**
 		 * The display object displayed and scrolled within the Scroller.
 		 */
-		public function get viewPort():DisplayObject
+		public function get viewPort():IViewPort
 		{
 			return this._viewPort;
 		}
@@ -340,7 +340,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		public function set viewPort(value:DisplayObject):void
+		public function set viewPort(value:IViewPort):void
 		{
 			if(this._viewPort == value)
 			{
@@ -348,20 +348,14 @@ package org.josht.starling.foxhole.controls
 			}
 			if(this._viewPort)
 			{
-				if(this._viewPort is FoxholeControl)
-				{
-					FoxholeControl(this._viewPort).onResize.remove(viewPort_onResize);
-				}
-				this._viewPortWrapper.removeChild(this._viewPort);
+				this._viewPort.onResize.remove(viewPort_onResize);
+				this._viewPortWrapper.removeChild(FoxholeControl(this._viewPort));
 			}
 			this._viewPort = value;
 			if(this._viewPort)
 			{
-				if(this._viewPort is FoxholeControl)
-				{
-					FoxholeControl(this._viewPort).onResize.add(viewPort_onResize);
-				}
-				this._viewPortWrapper.addChild(this._viewPort);
+				this._viewPort.onResize.add(viewPort_onResize);
+				this._viewPortWrapper.addChild(FoxholeControl(this._viewPort));
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -389,11 +383,6 @@ package org.josht.starling.foxhole.controls
 				return;
 			}
 			this._snapToPages = value;
-			if(!this._snapToPages)
-			{
-				this._horizontalPageIndex = 0;
-				this._verticalPageIndex = 0;
-			}
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
 
@@ -1251,6 +1240,7 @@ package org.josht.starling.foxhole.controls
 						ease: this._throwEase,
 						onComplete: horizontalAutoScrollTween_onComplete
 					});
+					this._horizontalAutoScrollTween.init();
 				}
 				else
 				{
@@ -1279,6 +1269,7 @@ package org.josht.starling.foxhole.controls
 						ease: this._throwEase,
 						onComplete: verticalAutoScrollTween_onComplete
 					});
+					this._verticalAutoScrollTween.init();
 				}
 				else
 				{
@@ -1328,19 +1319,11 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		override protected function initialize():void
-		{
-			this._onScroll.add(internal_onScroll);
-		}
-		
-		/**
-		 * @private
-		 */
 		override protected function draw():void
 		{
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
-			const scrollInvalid:Boolean = dataInvalid || this.isInvalid(INVALIDATION_FLAG_SCROLL);
+			const scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
 			const clippingInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_CLIPPING);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			const scrollBarInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL_BAR_RENDERER);
@@ -1366,15 +1349,16 @@ package org.josht.starling.foxhole.controls
 			}
 
 			this.ignoreViewPortResizing = true;
+
 			//even if fixed, we need to measure without them first
-			if(sizeInvalid || stylesInvalid || scrollBarInvalid || dataInvalid)
+			if(scrollInvalid || sizeInvalid || stylesInvalid || scrollBarInvalid || dataInvalid)
 			{
 				this.refreshViewPortBoundsWithoutFixedScrollBars();
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
-			if(sizeInvalid || stylesInvalid || scrollBarInvalid || dataInvalid)
+			if(scrollInvalid || sizeInvalid || stylesInvalid || scrollBarInvalid || dataInvalid)
 			{
 				this.refreshViewPortBoundsWithFixedScrollBars();
 			}
@@ -1385,10 +1369,6 @@ package org.josht.starling.foxhole.controls
 			if(scrollInvalid || sizeInvalid || stylesInvalid || dataInvalid || scrollBarInvalid)
 			{
 				this.refreshScrollValues(scrollInvalid);
-			}
-
-			if(sizeInvalid || scrollInvalid || scrollBarInvalid || dataInvalid)
-			{
 				this.refreshScrollBarValues();
 			}
 
@@ -1535,35 +1515,31 @@ package org.josht.starling.foxhole.controls
 			//if scroll bars are fixed, we're going to include the offsets even
 			//if they may not be needed in the final pass. if not fixed, the
 			//view port fills the entire bounds.
-			if(this._viewPort is IViewPort)
+			if(isNaN(this.explicitWidth))
 			{
-				const viewPort:IViewPort = IViewPort(this._viewPort);
-				if(isNaN(this.explicitWidth))
-				{
-					viewPort.visibleWidth = NaN;
-				}
-				else
-				{
-					viewPort.visibleWidth = this.explicitWidth - verticalScrollBarWidthOffset;
-				}
-				if(isNaN(this.explicitHeight))
-				{
-					viewPort.visibleHeight = NaN;
-				}
-				else
-				{
-					viewPort.visibleHeight = this.explicitHeight - horizontalScrollBarHeightOffset;
-				}
-				viewPort.minVisibleWidth = Math.max(0, this._minWidth - verticalScrollBarWidthOffset);
-				viewPort.maxVisibleWidth = this._maxWidth - verticalScrollBarWidthOffset;
-				viewPort.minVisibleHeight = Math.max(0, this._minHeight - horizontalScrollBarHeightOffset);
-				viewPort.maxVisibleHeight = this._maxHeight - horizontalScrollBarHeightOffset;
+				this._viewPort.visibleWidth = NaN;
 			}
+			else
+			{
+				this._viewPort.visibleWidth = this.explicitWidth - verticalScrollBarWidthOffset;
+			}
+			if(isNaN(this.explicitHeight))
+			{
+				this._viewPort.visibleHeight = NaN;
+			}
+			else
+			{
+				this._viewPort.visibleHeight = this.explicitHeight - horizontalScrollBarHeightOffset;
+			}
+			this._viewPort.minVisibleWidth = Math.max(0, this._minWidth - verticalScrollBarWidthOffset);
+			this._viewPort.maxVisibleWidth = this._maxWidth - verticalScrollBarWidthOffset;
+			this._viewPort.minVisibleHeight = Math.max(0, this._minHeight - horizontalScrollBarHeightOffset);
+			this._viewPort.maxVisibleHeight = this._maxHeight - horizontalScrollBarHeightOffset;
 
-			if(this._viewPort is FoxholeControl)
-			{
-				FoxholeControl(this._viewPort).validate();
-			}
+			this._viewPort.horizontalScrollPosition = this._horizontalScrollPosition;
+			this._viewPort.verticalScrollPosition = this._verticalScrollPosition;
+
+			FoxholeControl(this._viewPort).validate();
 
 			//in fixed mode, if we determine that scrolling is required, we
 			//remember the offsets for later. if scrolling is not needed, then
@@ -1616,16 +1592,9 @@ package org.josht.starling.foxhole.controls
 
 			//we need to make a second pass on the view port to use the offsets
 			//and the final actual bounds
-			const viewPort:IViewPort = this._viewPort as IViewPort;
-			if(viewPort)
-			{
-				viewPort.visibleWidth = this.actualWidth - this._verticalScrollBarWidthOffset;
-				viewPort.visibleHeight = this.actualHeight - this._horizontalScrollBarHeightOffset;
-				if(viewPort is FoxholeControl)
-				{
-					FoxholeControl(viewPort).validate();
-				}
-			}
+			this._viewPort.visibleWidth = this.actualWidth - this._verticalScrollBarWidthOffset;
+			this._viewPort.visibleHeight = this.actualHeight - this._horizontalScrollBarHeightOffset;
+			FoxholeControl(viewPort).validate();
 		}
 
 		/**
@@ -1667,13 +1636,20 @@ package org.josht.starling.foxhole.controls
 				}
 			}
 
-			if(isScrollInvalid && !this._isDraggingHorizontally && !this._horizontalAutoScrollTween)
+			if(this._snapToPages)
 			{
-				this._horizontalPageIndex = Math.max(0, Math.floor(this._horizontalScrollPosition / this.actualWidth));
+				if(isScrollInvalid && !this._isDraggingHorizontally && !this._horizontalAutoScrollTween)
+				{
+					this._horizontalPageIndex = Math.max(0, Math.floor(this._horizontalScrollPosition / this.actualWidth));
+				}
+				if(isScrollInvalid && !this._isDraggingVertically && !this._verticalAutoScrollTween)
+				{
+					this._verticalPageIndex = Math.max(0, Math.floor(this._verticalScrollPosition / this.actualHeight));
+				}
 			}
-			if(isScrollInvalid && !this._isDraggingVertically && !this._verticalAutoScrollTween)
+			else
 			{
-				this._verticalPageIndex = Math.max(0, Math.floor(this._verticalScrollPosition / this.actualHeight));
+				this._horizontalPageIndex = this._verticalPageIndex = 0;
 			}
 
 			if(maximumPositionsChanged || isScrollInvalid)
@@ -2133,14 +2109,6 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected function internal_onScroll(scroller:Scroller):void
-		{
-			this.refreshScrollBarValues();
-		}
-
-		/**
-		 * @private
-		 */
 		protected function horizontalScrollBarProperties_onChange(proxy:PropertyProxy, name:Object):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
@@ -2181,17 +2149,17 @@ package org.josht.starling.foxhole.controls
 			}
 			if(this._touchPointID >= 0)
 			{
-				if(this._isDraggingHorizontally > 0)
+				if(this._isDraggingHorizontally && this._velocityX > 0)
 				{
 					var difference:Number = viewPort.width - this._lastViewPortWidth;
 					this._startHorizontalScrollPosition += difference;
-					this._horizontalScrollPosition += difference;
+					this.horizontalScrollPosition += difference;
 				}
-				if(this._isDraggingVertically > 0)
+				if(this._isDraggingVertically && this._velocityY > 0)
 				{
 					difference = viewPort.height - this._lastViewPortHeight;
 					this._startVerticalScrollPosition += difference;
-					this._verticalScrollPosition += difference;
+					this.verticalScrollPosition += difference;
 				}
 			}
 			else
@@ -2205,7 +2173,7 @@ package org.josht.starling.foxhole.controls
 						difference = viewPort.width - this._lastViewPortWidth;
 						var tweenPosition:Number = this._horizontalAutoScrollTween.position;
 						this._horizontalScrollPosition = initialScrollPosition + difference;
-						this.throwTo(targetScrollPosition + difference, NaN,  this._horizontalAutoScrollTween.duration);
+						this.throwTo(targetScrollPosition + difference, NaN, this._horizontalAutoScrollTween.duration);
 						this._horizontalAutoScrollTween.position = tweenPosition;
 					}
 				}
