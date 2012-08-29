@@ -318,6 +318,11 @@ package org.josht.starling.foxhole.controls
 		private var _isDraggingVertically:Boolean = false;
 
 		private var _viewPortWrapper:Sprite;
+
+		/**
+		 * @private
+		 */
+		protected var ignoreViewPortResizing:Boolean = false;
 		
 		/**
 		 * @private
@@ -343,11 +348,13 @@ package org.josht.starling.foxhole.controls
 			}
 			if(this._viewPort)
 			{
+				this._viewPort.onResize.remove(viewPort_onResize);
 				this._viewPortWrapper.removeChild(FoxholeControl(this._viewPort));
 			}
 			this._viewPort = value;
 			if(this._viewPort)
 			{
+				this._viewPort.onResize.add(viewPort_onResize);
 				this._viewPortWrapper.addChild(FoxholeControl(this._viewPort));
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
@@ -1529,7 +1536,12 @@ package org.josht.starling.foxhole.controls
 			this._viewPort.horizontalScrollPosition = this._horizontalScrollPosition;
 			this._viewPort.verticalScrollPosition = this._verticalScrollPosition;
 
+			if(this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FIXED)
+			{
+				this.ignoreViewPortResizing = true;
+			}
 			FoxholeControl(this._viewPort).validate();
+			this.ignoreViewPortResizing = false;
 
 			//in fixed mode, if we determine that scrolling is required, we
 			//remember the offsets for later. if scrolling is not needed, then
@@ -2094,6 +2106,21 @@ package org.josht.starling.foxhole.controls
 				ease: Sine.easeOut,
 				onComplete: verticalScrollBarHideTween_onComplete
 			});
+		}
+
+		/**
+		 * @private
+		 */
+		protected function viewPort_onResize(viewPort:FoxholeControl):void
+		{
+			if(this.ignoreViewPortResizing ||
+				(this._viewPort.width == this._lastViewPortWidth && this._viewPort.height == this._lastViewPortHeight))
+			{
+				return;
+			}
+			this._lastViewPortWidth = this._viewPort.width;
+			this._lastViewPortHeight = this._viewPort.height;
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		/**
