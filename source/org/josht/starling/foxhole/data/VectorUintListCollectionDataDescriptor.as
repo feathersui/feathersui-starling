@@ -92,7 +92,7 @@ package org.josht.starling.foxhole.data
 		public function getItemIndex(data:Object, item:Object):int
 		{
 			this.checkForCorrectDataType(data);
-			return (data as Vector.<uint>).indexOf(item);
+			return (data as Vector.<uint>).indexOf(item as uint);
 		}
 		
 		/**
