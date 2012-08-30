@@ -194,11 +194,7 @@ package org.josht.starling.display
 		{
 			if(this._scrollRect)
 			{
-				var scale:Number = Starling.contentScaleFactor;
-				if(texture)
-				{
-					scale = texture.scale;
-				}
+				const scale:Number = Starling.contentScaleFactor;
 				this.getBounds(this.stage, this._scissorRect);
 				this._scissorRect.x *= scale;
 				this._scissorRect.y *= scale;
