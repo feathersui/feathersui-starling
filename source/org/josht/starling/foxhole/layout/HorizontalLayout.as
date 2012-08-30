@@ -670,7 +670,7 @@ package org.josht.starling.foxhole.layout
 
 			var positionX:Number = x + this._paddingLeft;
 			var lastWidth:Number = 0;
-			for(var i:int = 0; i < index; i++)
+			for(var i:int = 0; i <= index; i++)
 			{
 				var item:DisplayObject = items[i];
 				if(this._useVirtualLayout && !item)
