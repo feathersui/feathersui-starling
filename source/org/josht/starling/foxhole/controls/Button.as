@@ -2056,6 +2056,10 @@ package org.josht.starling.foxhole.controls
 					var adjustedGap:Number = this._gap == Number.POSITIVE_INFINITY ? Math.min(this._paddingLeft, this._paddingRight) : this._gap;
 					foxholeLabel.maxWidth = this.actualWidth - this._paddingLeft - this._paddingRight - this.currentIcon.width - adjustedGap;
 				}
+				else
+				{
+					foxholeLabel.maxWidth = this.actualWidth - this._paddingLeft - this._paddingRight;
+				}
 				foxholeLabel.validate();
 				this.positionLabelOrIcon(foxholeLabel);
 				this.positionLabelAndIcon();
