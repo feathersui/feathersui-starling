@@ -735,7 +735,7 @@ package org.josht.starling.foxhole.core
 			}
 			if(!flag) //return true if any flag is set
 			{
-				for(var flag:String in this._invalidationFlags)
+				for(flag in this._invalidationFlags)
 				{
 					return true;
 				}

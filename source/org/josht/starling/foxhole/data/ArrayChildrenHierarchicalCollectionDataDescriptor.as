@@ -68,7 +68,7 @@ package org.josht.starling.foxhole.data
 			const indexCount:int = rest.length - 1;
 			for(var i:int = 0; i < indexCount; i++)
 			{
-				var index:int = rest[i] as int;
+				index = rest[i] as int;
 				branch = branch[index][childrenField] as Array;
 			}
 			const lastIndex:int = rest[indexCount] as int;
@@ -85,7 +85,7 @@ package org.josht.starling.foxhole.data
 			const indexCount:int = rest.length - 1;
 			for(var i:int = 0; i < indexCount; i++)
 			{
-				var index:int = rest[i] as int;
+				index = rest[i] as int;
 				branch = branch[index][childrenField] as Array;
 			}
 			const lastIndex:int = rest[indexCount];
@@ -102,7 +102,7 @@ package org.josht.starling.foxhole.data
 			const indexCount:int = rest.length - 1;
 			for(var i:int = 0; i < indexCount; i++)
 			{
-				var index:int = rest[i] as int;
+				index = rest[i] as int;
 				branch = branch[index][childrenField] as Array;
 			}
 			const lastIndex:int = rest[indexCount];
@@ -119,7 +119,7 @@ package org.josht.starling.foxhole.data
 			const indexCount:int = rest.length - 1;
 			for(var i:int = 0; i < indexCount; i++)
 			{
-				var index:int = rest[i] as int;
+				index = rest[i] as int;
 				branch = branch[index][childrenField] as Array;
 			}
 			const lastIndex:int = rest[indexCount];
