@@ -648,6 +648,7 @@ package org.josht.starling.foxhole.controls
 				{
 					tab.width = this.actualWidth;
 					tab.height = tabSize;
+					tab.x = 0;
 					tab.y = position;
 					position += tab.height + this._gap;
 				}
@@ -656,6 +657,7 @@ package org.josht.starling.foxhole.controls
 					tab.width = tabSize;
 					tab.height = this.actualHeight;
 					tab.x = position;
+					tab.y = 0;
 					position += tab.width + this._gap;
 				}
 			}
