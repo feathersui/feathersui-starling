@@ -376,6 +376,28 @@ package org.josht.starling.foxhole.layout
 		/**
 		 * @private
 		 */
+		protected var _scrollPositionHorizontalAlign:String = HORIZONTAL_ALIGN_CENTER;
+
+		/**
+		 * When the scroll position is calculated for an item, an attempt will
+		 * be made to align the item to this position.
+		 */
+		public function get scrollPositionHorizontalAlign():String
+		{
+			return this._scrollPositionHorizontalAlign;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set scrollPositionHorizontalAlign(value:String):void
+		{
+			this._scrollPositionHorizontalAlign = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _onLayoutChange:Signal = new Signal(ILayout);
 
 		/**
@@ -702,7 +724,16 @@ package org.josht.starling.foxhole.layout
 				}
 				positionX += lastWidth + this._gap;
 			}
-			result.x = positionX - lastWidth - this._gap - (width - lastWidth) / 2;
+			positionX -= (lastWidth + this._gap);
+			if(this._scrollPositionHorizontalAlign == HORIZONTAL_ALIGN_CENTER)
+			{
+				positionX -= (width - lastWidth) / 2;
+			}
+			else if(this._scrollPositionHorizontalAlign == HORIZONTAL_ALIGN_RIGHT)
+			{
+				positionX -= (width - lastWidth);
+			}
+			result.x = positionX;
 			result.y = 0;
 
 			return result;

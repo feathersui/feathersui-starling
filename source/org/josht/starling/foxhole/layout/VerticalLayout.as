@@ -379,6 +379,28 @@ package org.josht.starling.foxhole.layout
 		/**
 		 * @private
 		 */
+		protected var _scrollPositionVerticalAlign:String = VERTICAL_ALIGN_MIDDLE;
+
+		/**
+		 * When the scroll position is calculated for an item, an attempt will
+		 * be made to align the item to this position.
+		 */
+		public function get scrollPositionVerticalAlign():String
+		{
+			return this._scrollPositionVerticalAlign;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set scrollPositionVerticalAlign(value:String):void
+		{
+			this._scrollPositionVerticalAlign = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _onLayoutChange:Signal = new Signal(ILayout);
 
 		/**
@@ -704,8 +726,17 @@ package org.josht.starling.foxhole.layout
 				}
 				positionY += lastHeight + this._gap;
 			}
+			positionY -= (lastHeight + this._gap);
+			if(this._scrollPositionVerticalAlign == VERTICAL_ALIGN_MIDDLE)
+			{
+				positionY -= (height - lastHeight) / 2;
+			}
+			else if(this._scrollPositionVerticalAlign == VERTICAL_ALIGN_BOTTOM)
+			{
+				positionY -= (height - lastHeight);
+			}
 			result.x = 0;
-			result.y = positionY - lastHeight - this._gap - (height - lastHeight) / 2;
+			result.y = positionY;
 
 			return result;
 		}
