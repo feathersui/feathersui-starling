@@ -28,6 +28,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 	import flash.utils.Dictionary;
 
 	import org.josht.starling.foxhole.controls.GroupedList;
+	import org.josht.starling.foxhole.controls.Scroller;
 	import org.josht.starling.foxhole.controls.renderers.IGroupedListHeaderOrFooterRenderer;
 	import org.josht.starling.foxhole.controls.renderers.IGroupedListItemRenderer;
 	import org.josht.starling.foxhole.core.FoxholeControl;
@@ -735,6 +736,13 @@ package org.josht.starling.foxhole.controls.supportClasses
 			return this._onItemTouch;
 		}
 
+		override public function invalidate(...rest:Array):void
+		{
+			//this is hacky, I know
+			Scroller(this.parent.parent).invalidate(INVALIDATION_FLAG_DATA);
+			super.invalidate.apply(null, rest);
+		}
+
 		override public function dispose():void
 		{
 			this._onChange.removeAll();
@@ -951,11 +959,6 @@ package org.josht.starling.foxhole.controls.supportClasses
 			this._typicalItemWidth = displayRenderer.width;
 			this._typicalItemHeight = displayRenderer.height;
 			this.destroyItemRenderer(typicalItemRenderer);
-		}
-
-		public function itemToItemRenderer(item:Object):IGroupedListItemRenderer
-		{
-			return IGroupedListItemRenderer(this._itemRendererMap[item]);
 		}
 
 		protected function refreshItemRendererStyles():void
