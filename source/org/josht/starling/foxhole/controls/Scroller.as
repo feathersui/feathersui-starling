@@ -2111,7 +2111,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected function viewPort_onResize(viewPort:FoxholeControl):void
+		protected function viewPort_onResize(viewPort:FoxholeControl, oldWidth:Number, oldHeight:Number):void
 		{
 			if(this.ignoreViewPortResizing ||
 				(this._viewPort.width == this._lastViewPortWidth && this._viewPort.height == this._lastViewPortHeight))

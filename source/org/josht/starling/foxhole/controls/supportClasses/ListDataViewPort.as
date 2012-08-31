@@ -795,7 +795,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
 
-		private function renderer_onResize(renderer:IListItemRenderer):void
+		private function renderer_onResize(renderer:IListItemRenderer, oldWidth:Number, oldHeight:Number):void
 		{
 			if(this._ignoreRendererResizing)
 			{

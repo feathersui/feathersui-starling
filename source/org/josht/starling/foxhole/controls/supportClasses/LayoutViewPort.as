@@ -307,7 +307,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
-		protected function child_onResize(child:FoxholeControl):void
+		protected function child_onResize(child:FoxholeControl, oldWidth:Number, oldHeight:Number):void
 		{
 			if(this._ignoreChildResizing)
 			{
