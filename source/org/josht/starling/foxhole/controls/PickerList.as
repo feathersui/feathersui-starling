@@ -24,9 +24,6 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package org.josht.starling.foxhole.controls
 {
-	import flash.geom.Point;
-
-	import org.josht.starling.display.ScrollRectManager;
 	import org.josht.starling.foxhole.controls.popups.CalloutPopUpContentManager;
 	import org.josht.starling.foxhole.controls.popups.IPopUpContentManager;
 	import org.josht.starling.foxhole.controls.popups.VerticalCenteredPopUpContentManager;
@@ -38,7 +35,6 @@ package org.josht.starling.foxhole.controls
 	import org.osflash.signals.Signal;
 
 	import starling.core.Starling;
-	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -50,11 +46,6 @@ package org.josht.starling.foxhole.controls
 	 */
 	public class PickerList extends FoxholeControl
 	{
-		/**
-		 * @private
-		 */
-		private static const HELPER_POINT:Point = new Point();
-
 		/**
 		 * The default value added to the <code>nameList</code> of the button.
 		 */
@@ -500,7 +491,6 @@ package org.josht.starling.foxhole.controls
 				this._list.nameList.add(this.listName);
 				this._list.onScroll.add(list_onScroll);
 				this._list.onChange.add(list_onChange);
-				this._list.onItemTouch.add(list_onItemTouch);
 				this._list.addEventListener(TouchEvent.TOUCH, list_touchHandler);
 			}
 
@@ -721,42 +711,6 @@ package org.josht.starling.foxhole.controls
 				this._hasBeenScrolled = true;
 			}
 		}
-		
-		/**
-		 * @private
-		 */
-		protected function list_onItemTouch(list:List, item:Object, index:int, event:TouchEvent):void
-		{
-			if(this._hasBeenScrolled || this._listTouchPointID < 0)
-			{
-				return;
-			}
-			const displayRenderer:DisplayObject = DisplayObject(event.currentTarget);
-			const touches:Vector.<Touch> = event.getTouches(displayRenderer, TouchPhase.ENDED);
-			if(touches.length == 0)
-			{
-				return;
-			}
-			var touch:Touch;
-			for each(var currentTouch:Touch in touches)
-			{
-				if(currentTouch.id == this._listTouchPointID)
-				{
-					touch = currentTouch;
-					break;
-				}
-			}
-			if(!touch)
-			{
-				return;
-			}
-			touch.getLocation(displayRenderer, HELPER_POINT);
-			ScrollRectManager.adjustTouchLocation(HELPER_POINT, displayRenderer);
-			if(displayRenderer.hitTest(HELPER_POINT, true))
-			{
-				this.closePopUpList();
-			}
-		}
 
 		/**
 		 * @private
@@ -838,6 +792,10 @@ package org.josht.starling.foxhole.controls
 				}
 				if(touch.phase == TouchPhase.ENDED)
 				{
+					if(!this._hasBeenScrolled)
+					{
+						this.closePopUpList();
+					}
 					this._listTouchPointID = -1;
 				}
 			}

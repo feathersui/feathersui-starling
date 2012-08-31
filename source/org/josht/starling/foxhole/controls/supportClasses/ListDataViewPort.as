@@ -29,7 +29,6 @@ package org.josht.starling.foxhole.controls.supportClasses
 
 	import org.josht.starling.foxhole.controls.List;
 	import org.josht.starling.foxhole.controls.Scroller;
-
 	import org.josht.starling.foxhole.controls.renderers.IListItemRenderer;
 	import org.josht.starling.foxhole.core.FoxholeControl;
 	import org.josht.starling.foxhole.core.PropertyProxy;
@@ -475,13 +474,6 @@ package org.josht.starling.foxhole.controls.supportClasses
 			return this._onChange;
 		}
 
-		protected var _onItemTouch:Signal = new Signal(ListDataViewPort, Object, int, TouchEvent);
-
-		public function get onItemTouch():ISignal
-		{
-			return this._onItemTouch;
-		}
-
 		override public function invalidate(...rest:Array):void
 		{
 			//this is hacky, I know
@@ -492,7 +484,6 @@ package org.josht.starling.foxhole.controls.supportClasses
 		override public function dispose():void
 		{
 			this._onChange.removeAll();
-			this._onItemTouch.removeAll();
 			super.dispose();
 		}
 
@@ -851,8 +842,6 @@ package org.josht.starling.foxhole.controls.supportClasses
 				//won't change selection.
 				this._isScrolling = false;
 			}
-
-			this._onItemTouch.dispatch(this, renderer.data, renderer.index, event);
 		}
 	}
 }

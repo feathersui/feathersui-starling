@@ -32,13 +32,11 @@ package org.josht.starling.foxhole.controls
 	import org.josht.starling.foxhole.core.PropertyProxy;
 	import org.josht.starling.foxhole.data.ListCollection;
 	import org.josht.starling.foxhole.layout.ILayout;
-	import org.josht.starling.foxhole.layout.IVirtualLayout;
 	import org.josht.starling.foxhole.layout.VerticalLayout;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 
 	import starling.display.DisplayObject;
-	import starling.events.TouchEvent;
 
 	/**
 	 * Displays a one-dimensional list of items. Supports scrolling, custom
@@ -398,22 +396,6 @@ package org.josht.starling.foxhole.controls
 		public function get onScroll():ISignal
 		{
 			return this._onScroll;
-		}
-		
-		/**
-		 * @private
-		 */
-		protected var _onItemTouch:Signal = new Signal(List, Object, int, TouchEvent);
-		
-		/**
-		 * Dispatched when an item in the list is touched (in any touch phase).
-		 *
-		 * <p>Listeners are expected to have the following function signature:</p>
-		 * <pre>function(list:List, item:Object, index:int, event:TouchEvent):void</pre>
-		 */
-		public function get onItemTouch():ISignal
-		{
-			return this._onItemTouch;
 		}
 		
 		/**
@@ -861,7 +843,6 @@ package org.josht.starling.foxhole.controls
 		{
 			this._onChange.removeAll();
 			this._onScroll.removeAll();
-			this._onItemTouch.removeAll();
 			super.dispose();
 		}
 		
@@ -901,7 +882,6 @@ package org.josht.starling.foxhole.controls
 				this.dataViewPort = new ListDataViewPort();
 				this.dataViewPort.owner = this;
 				this.dataViewPort.onChange.add(dataViewPort_onChange);
-				this.dataViewPort.onItemTouch.add(dataViewPort_onItemTouch);
 				this.scroller.viewPort = this.dataViewPort;
 			}
 
@@ -1134,14 +1114,6 @@ package org.josht.starling.foxhole.controls
 		protected function dataViewPort_onChange(dataViewPort:ListDataViewPort):void
 		{
 			this.selectedIndex = this.dataViewPort.selectedIndex;
-		}
-		
-		/**
-		 * @private
-		 */
-		protected function dataViewPort_onItemTouch(dataViewPort:ListDataViewPort, item:Object, index:int, event:TouchEvent):void
-		{
-			this._onItemTouch.dispatch(this, item, index, event);
 		}
 	}
 }
