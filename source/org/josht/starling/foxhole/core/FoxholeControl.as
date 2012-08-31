@@ -519,6 +519,9 @@ package org.josht.starling.foxhole.core
 
 		/**
 		 * Dispatched when the width or height of the control changes.
+		 *
+		 * <p>A listener is expected to have the following function signature:</p>
+		 * <pre>function(target:FoxholeControl, oldWidth:Number, oldHeight:Number):void</pre>
 		 */
 		public function get onResize():ISignal
 		{
@@ -769,6 +772,8 @@ package org.josht.starling.foxhole.core
 		 */
 		protected function setSizeInternal(width:Number, height:Number, canInvalidate:Boolean):Boolean
 		{
+			const oldWidth:Number = this.actualWidth;
+			const oldHeight:Number = this.actualHeight;
 			var resized:Boolean = false;
 			if(!isNaN(this.explicitWidth))
 			{
@@ -814,7 +819,7 @@ package org.josht.starling.foxhole.core
 				{
 					this.invalidate(INVALIDATION_FLAG_SIZE);
 				}
-				this._onResize.dispatch(this);
+				this._onResize.dispatch(this, oldWidth, oldHeight);
 			}
 			return resized;
 		}

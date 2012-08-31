@@ -1517,7 +1517,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
 
-		private function itemRenderer_onResize(renderer:IGroupedListItemRenderer):void
+		private function itemRenderer_onResize(renderer:IGroupedListItemRenderer, oldWidth:Number, oldHeight:Number):void
 		{
 			if(this._ignoreRendererResizing)
 			{
@@ -1532,7 +1532,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
 
-		private function headerOrFooterRenderer_onResize(renderer:IGroupedListHeaderOrFooterRenderer):void
+		private function headerOrFooterRenderer_onResize(renderer:IGroupedListHeaderOrFooterRenderer, oldWidth:Number, oldHeight:Number):void
 		{
 			if(this._ignoreRendererResizing)
 			{
