@@ -47,11 +47,14 @@ package org.josht.starling.foxhole.controls
 		private static const DEFAULT_TAB_FIELDS:Vector.<String> = new <String>
 		[
 			"defaultIcon",
-			"defaultSelectedIcon",
 			"upIcon",
 			"downIcon",
+			"hoverIcon",
+			"disabledIcon",
+			"defaultSelectedIcon",
 			"selectedUpIcon",
 			"selectedDownIcon",
+			"selectedHoverIcon",
 			"selectedDisabledIcon"
 		];
 
