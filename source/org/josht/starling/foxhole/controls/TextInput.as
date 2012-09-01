@@ -57,6 +57,7 @@ package org.josht.starling.foxhole.controls
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
 	import starling.utils.MatrixUtil;
 
@@ -613,7 +614,18 @@ package org.josht.starling.foxhole.controls
 
 			if(stylesInvalid || dataInvalid || sizeInvalid)
 			{
-				this.refreshSnapshot(this._text && (sizeInvalid || !this._textSnapshotBitmapData));
+				if(!this._stageTextHasFocus)
+				{
+					const hasText:Boolean = this._text.length > 0;
+					if(hasText)
+					{
+						this.refreshSnapshot(sizeInvalid || !this._textSnapshotBitmapData);
+					}
+					if(this._textSnapshot)
+					{
+						this._textSnapshot.visible = hasText;
+					}
+				}
 			}
 		}
 
@@ -758,12 +770,16 @@ package org.josht.starling.foxhole.controls
 				{
 					//this is faster, so use it if we haven't resized the
 					//bitmapdata
-					flash.display3D.textures.Texture(this._textSnapshot.texture.base).uploadFromBitmapData(this._textSnapshotBitmapData);
+					const texture:starling.textures.Texture = this._textSnapshot.texture;
+					if(Starling.handleLostContext && texture is ConcreteTexture)
+					{
+						ConcreteTexture(texture).restoreOnLostContext(this._textSnapshotBitmapData);
+					}
+					flash.display3D.textures.Texture(texture.base).uploadFromBitmapData(this._textSnapshotBitmapData);
 				}
 			}
 			this._textSnapshot.x = Math.round(this._paddingLeft);
 			this._textSnapshot.y = Math.round(this._paddingTop);
-			this._textSnapshot.visible = !this._stageTextHasFocus;
 		}
 
 		/**
@@ -1041,11 +1057,7 @@ package org.josht.starling.foxhole.controls
 			//in other news, why won't 0,0 work here?
 			this.stageText.selectRange(1, 1);
 
-			this.refreshSnapshot(false);
-			if(this._textSnapshot)
-			{
-				this._textSnapshot.visible = true;
-			}
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		/**
