@@ -89,11 +89,6 @@ package org.josht.starling.foxhole.controls
 		}
 
 		/**
-		 * @private
-		 */
-		protected var _ignoreSelectionChanges:Boolean = false;
-
-		/**
 		 * The value added to the <code>nameList</code> of the tabs.
 		 */
 		protected var tabName:String = DEFAULT_CHILD_NAME_TAB;
@@ -144,15 +139,7 @@ package org.josht.starling.foxhole.controls
 			this._dataProvider = value;
 			if(this._dataProvider)
 			{
-				if(this._dataProvider.length == 0)
-				{
-					this.selectedIndex = -1;
-				}
 				this._dataProvider.onChange.add(dataProvider_onChange);
-			}
-			else
-			{
-				this.selectedIndex = -1;
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -273,7 +260,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		private var _selectedIndex:int = -1;
+		private var _pendingSelectedIndex:int = -1;
 
 		/**
 		 * The index of the currently selected tab. Returns -1 if no tab is
@@ -281,7 +268,11 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function get selectedIndex():int
 		{
-			return this._selectedIndex;
+			if(this._pendingSelectedIndex >= 0 || !this.toggleGroup)
+			{
+				return this._pendingSelectedIndex;
+			}
+			return this.toggleGroup.selectedIndex;
 		}
 
 		/**
@@ -289,7 +280,8 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function set selectedIndex(value:int):void
 		{
-			this.setSelectedIndexInternal(value, true);
+			this._pendingSelectedIndex = value;
+			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
 
 		/**
@@ -298,12 +290,13 @@ package org.josht.starling.foxhole.controls
 		 */
 		public function get selectedItem():Object
 		{
-			if(!this._dataProvider || this._selectedIndex < 0 || this._selectedIndex >= this._dataProvider.length)
+			const index:int = this.selectedIndex;
+			if(!this._dataProvider || index < 0 || index >= this._dataProvider.length)
 			{
 				return null;
 			}
 
-			return this._dataProvider.getItemAt(this._selectedIndex);
+			return this._dataProvider.getItemAt(index);
 		}
 
 		/**
@@ -470,7 +463,7 @@ package org.josht.starling.foxhole.controls
 
 			if(dataInvalid || selectionInvalid)
 			{
-				this.toggleGroup.selectedIndex = this.selectedIndex;
+				this.commitSelection();
 			}
 
 			if(dataInvalid || stateInvalid || stylesInvalid)
@@ -491,6 +484,22 @@ package org.josht.starling.foxhole.controls
 			{
 				this.layoutTabs();
 			}
+		}
+
+		protected function commitSelection():void
+		{
+			if(this._pendingSelectedIndex < 0 || !this.toggleGroup)
+			{
+				return;
+			}
+			if(this.toggleGroup.selectedIndex == this._pendingSelectedIndex)
+			{
+				this._pendingSelectedIndex = -1;
+				return;
+			}
+			this.toggleGroup.selectedIndex = this._pendingSelectedIndex;
+			this._pendingSelectedIndex = -1;
+			this._onChange.dispatch(this);
 		}
 
 		/**
@@ -589,9 +598,7 @@ package org.josht.starling.foxhole.controls
 				var tab:Button = this._tabFactory();
 				tab.nameList.add(this.tabName);
 				tab.isToggle = true;
-				this._ignoreSelectionChanges = true;
 				this.toggleGroup.addItem(tab);
-				this._ignoreSelectionChanges = false;
 				this.addChild(tab);
 			}
 			else
@@ -607,9 +614,7 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function destroyTab(tab:Button):void
 		{
-			this._ignoreSelectionChanges = true;
 			this.toggleGroup.removeItem(tab);
-			this._ignoreSelectionChanges = false;
 			this.removeChild(tab);
 		}
 
@@ -683,23 +688,6 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected function setSelectedIndexInternal(index:int, canInvalidate:Boolean):void
-		{
-			if(this._selectedIndex == index)
-			{
-				return;
-			}
-			this._selectedIndex = index;
-			if(canInvalidate)
-			{
-				this.invalidate(INVALIDATION_FLAG_SELECTED);
-			}
-			this._onChange.dispatch(this);
-		}
-
-		/**
-		 * @private
-		 */
 		protected function tabProperties_onChange(proxy:PropertyProxy, name:Object):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
@@ -710,11 +698,11 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function toggleGroup_onChange(toggleGroup:ToggleGroup):void
 		{
-			if(this._ignoreSelectionChanges)
+			if(this._pendingSelectedIndex >= 0)
 			{
 				return;
 			}
-			this.setSelectedIndexInternal(this.toggleGroup.selectedIndex, false);
+			this._onChange.dispatch(this);
 		}
 
 		/**
@@ -722,10 +710,6 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function dataProvider_onChange(data:ListCollection):void
 		{
-			if(this._dataProvider.length == 0)
-			{
-				this.selectedIndex = -1;
-			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 	}
