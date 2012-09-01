@@ -42,6 +42,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 	import org.osflash.signals.Signal;
 
 	import starling.display.DisplayObject;
+	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -62,7 +63,10 @@ package org.josht.starling.foxhole.controls.supportClasses
 		public function ListDataViewPort()
 		{
 			super();
+			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 		}
+
+		protected var touchPointID:int = -1;
 
 		private var _minVisibleWidth:Number = 0;
 
@@ -732,8 +736,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 					renderer = new this._itemRendererType();
 				}
 				renderer.onChange.add(renderer_onChange);
-				const displayRenderer:FoxholeControl = FoxholeControl(renderer);
-				displayRenderer.addEventListener(TouchEvent.TOUCH, renderer_touchHandler);
+				var displayRenderer:FoxholeControl = FoxholeControl(renderer);
 				this.addChild(displayRenderer);
 			}
 			else
@@ -748,7 +751,9 @@ package org.josht.starling.foxhole.controls.supportClasses
 			{
 				this._rendererMap[item] = renderer;
 				this._activeRenderers.push(renderer);
-				FoxholeControl(renderer).onResize.add(renderer_onResize);
+				displayRenderer = FoxholeControl(renderer);
+				displayRenderer.addEventListener(TouchEvent.TOUCH, renderer_touchHandler);
+				displayRenderer.onResize.add(renderer_onResize);
 			}
 
 			return renderer;
@@ -825,6 +830,11 @@ package org.josht.starling.foxhole.controls.supportClasses
 			this.selectedIndex = renderer.index;
 		}
 
+		private function removedFromStageHandler(event:Event):void
+		{
+			this.touchPointID = -1;
+		}
+
 		private function renderer_touchHandler(event:TouchEvent):void
 		{
 			if(!this._isEnabled)
@@ -832,15 +842,44 @@ package org.josht.starling.foxhole.controls.supportClasses
 				return;
 			}
 
-			const renderer:IListItemRenderer = IListItemRenderer(event.currentTarget);
-			const displayRenderer:DisplayObject = DisplayObject(renderer);
-			//any began touch is okay here. we don't need to check all touches.
-			const touch:Touch = event.getTouch(displayRenderer, TouchPhase.BEGAN);
-			if(touch)
+			const displayRenderer:FoxholeControl = FoxholeControl(event.currentTarget);
+			const touches:Vector.<Touch> = event.getTouches(displayRenderer);
+			if(touches.length == 0)
 			{
-				//if this flag gets set to true before the touch phase ends, we
-				//won't change selection.
-				this._isScrolling = false;
+				return;
+			}
+			if(this.touchPointID >= 0)
+			{
+				var touch:Touch;
+				for each(var currentTouch:Touch in touches)
+				{
+					if(currentTouch.id == this.touchPointID)
+					{
+						touch = currentTouch;
+						break;
+					}
+				}
+				if(!touch)
+				{
+					return;
+				}
+				if(touch.phase == TouchPhase.ENDED)
+				{
+					this.touchPointID = -1;
+					return;
+				}
+			}
+			else
+			{
+				for each(touch in touches)
+				{
+					if(touch.phase == TouchPhase.BEGAN)
+					{
+						this.touchPointID = touch.id;
+						this._isScrolling = false;
+						return;
+					}
+				}
 			}
 		}
 	}
