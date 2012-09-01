@@ -2293,6 +2293,8 @@ package org.josht.starling.foxhole.controls
 				{
 					this._onDragStart.dispatch(this);
 				}
+				this._startTouchX = this._currentTouchX;
+				this._startHorizontalScrollPosition = this._horizontalScrollPosition;
 				this._isDraggingHorizontally = true;
 			}
 			if((this._verticalScrollPolicy == SCROLL_POLICY_ON ||
@@ -2315,6 +2317,8 @@ package org.josht.starling.foxhole.controls
 					}
 					this._onDragStart.dispatch(this);
 				}
+				this._startTouchY = this._currentTouchY;
+				this._startVerticalScrollPosition = this._verticalScrollPosition;
 				this._isDraggingVertically = true;
 			}
 			if(this._isDraggingHorizontally && !this._horizontalAutoScrollTween)
