@@ -210,7 +210,7 @@ package org.josht.starling.foxhole.controls.popups
 		/**
 		 * @private
 		 */
-		protected function content_resizeHandler(content:FoxholeControl):void
+		protected function content_resizeHandler(content:FoxholeControl, oldWidth:Number, oldHeight:Number):void
 		{
 			this.layout();
 		}
