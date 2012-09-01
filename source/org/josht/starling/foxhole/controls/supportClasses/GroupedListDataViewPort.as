@@ -1528,7 +1528,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 			{
 				return;
 			}
-			layout.resetVariableVirtualCacheAtIndex(renderer.layoutIndex);
+			layout.resetVariableVirtualCacheAtIndex(renderer.layoutIndex, DisplayObject(renderer));
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
 
@@ -1543,7 +1543,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 			{
 				return;
 			}
-			layout.resetVariableVirtualCacheAtIndex(renderer.layoutIndex);
+			layout.resetVariableVirtualCacheAtIndex(renderer.layoutIndex, DisplayObject(renderer));
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
 

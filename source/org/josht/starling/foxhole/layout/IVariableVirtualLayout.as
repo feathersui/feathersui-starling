@@ -24,6 +24,8 @@
  */
 package org.josht.starling.foxhole.layout
 {
+	import starling.display.DisplayObject;
+
 	/**
 	 * A virtual layout that supports variable item dimensions.
 	 */
@@ -50,6 +52,6 @@ package org.josht.starling.foxhole.layout
 		/**
 		 * Clears the cached dimensions for one specific virtualized index.
 		 */
-		function resetVariableVirtualCacheAtIndex(index:int):void;
+		function resetVariableVirtualCacheAtIndex(index:int, item:DisplayObject = null):void;
 	}
 }
