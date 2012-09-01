@@ -806,7 +806,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 			{
 				return;
 			}
-			layout.resetVariableVirtualCacheAtIndex(renderer.index);
+			layout.resetVariableVirtualCacheAtIndex(renderer.index, DisplayObject(renderer));
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
 

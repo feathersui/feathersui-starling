@@ -615,9 +615,14 @@ package org.josht.starling.foxhole.layout
 		/**
 		 * @inheritDoc
 		 */
-		public function resetVariableVirtualCacheAtIndex(index:int):void
+		public function resetVariableVirtualCacheAtIndex(index:int, item:DisplayObject = null):void
 		{
 			delete this._heightCache[index];
+			if(item)
+			{
+				this._heightCache[index] = item.height;
+				this._onLayoutChange.dispatch(this);
+			}
 		}
 
 		/**
