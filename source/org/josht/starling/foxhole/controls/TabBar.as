@@ -89,6 +89,11 @@ package org.josht.starling.foxhole.controls
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _ignoreSelectionChanges:Boolean = false;
+
+		/**
 		 * The value added to the <code>nameList</code> of the tabs.
 		 */
 		protected var tabName:String = DEFAULT_CHILD_NAME_TAB;
@@ -139,7 +144,15 @@ package org.josht.starling.foxhole.controls
 			this._dataProvider = value;
 			if(this._dataProvider)
 			{
+				if(this._dataProvider.length == 0)
+				{
+					this.selectedIndex = -1;
+				}
 				this._dataProvider.onChange.add(dataProvider_onChange);
+			}
+			else
+			{
+				this.selectedIndex = -1;
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -455,7 +468,7 @@ package org.josht.starling.foxhole.controls
 				this.refreshTabStyles();
 			}
 
-			if(selectionInvalid)
+			if(dataInvalid || selectionInvalid)
 			{
 				this.toggleGroup.selectedIndex = this.selectedIndex;
 			}
@@ -576,7 +589,9 @@ package org.josht.starling.foxhole.controls
 				var tab:Button = this._tabFactory();
 				tab.nameList.add(this.tabName);
 				tab.isToggle = true;
+				this._ignoreSelectionChanges = true;
 				this.toggleGroup.addItem(tab);
+				this._ignoreSelectionChanges = false;
 				this.addChild(tab);
 			}
 			else
@@ -592,7 +607,9 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function destroyTab(tab:Button):void
 		{
+			this._ignoreSelectionChanges = true;
 			this.toggleGroup.removeItem(tab);
+			this._ignoreSelectionChanges = false;
 			this.removeChild(tab);
 		}
 
@@ -693,6 +710,10 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function toggleGroup_onChange(toggleGroup:ToggleGroup):void
 		{
+			if(this._ignoreSelectionChanges)
+			{
+				return;
+			}
 			this.setSelectedIndexInternal(this.toggleGroup.selectedIndex, false);
 		}
 
@@ -701,6 +722,10 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function dataProvider_onChange(data:ListCollection):void
 		{
+			if(this._dataProvider.length == 0)
+			{
+				this.selectedIndex = -1;
+			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 	}
