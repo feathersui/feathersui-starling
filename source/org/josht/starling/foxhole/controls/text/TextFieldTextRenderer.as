@@ -43,6 +43,7 @@ package org.josht.starling.foxhole.controls.text
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.events.Event;
+	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
 
 	/**
@@ -417,7 +418,15 @@ package org.josht.starling.foxhole.controls.text
 
 			if(stylesInvalid || dataInvalid || sizeInvalid)
 			{
-				this.refreshSnapshot(this._text && (sizeInvalid || !this._textSnapshotBitmapData));
+				const hasText:Boolean = this._text.length > 0;
+				if(hasText)
+				{
+					this.refreshSnapshot(sizeInvalid || !this._textSnapshotBitmapData);
+				}
+				if(this._textSnapshot)
+				{
+					this._textSnapshot.visible = hasText;
+				}
 			}
 		}
 
@@ -485,7 +494,12 @@ package org.josht.starling.foxhole.controls.text
 				{
 					//this is faster, so use it if we haven't resized the
 					//bitmapdata
-					flash.display3D.textures.Texture(this._textSnapshot.texture.base).uploadFromBitmapData(this._textSnapshotBitmapData);
+					const texture:starling.textures.Texture = this._textSnapshot.texture;
+					if(Starling.handleLostContext && texture is ConcreteTexture)
+					{
+						ConcreteTexture(texture).restoreOnLostContext(this._textSnapshotBitmapData);
+					}
+					flash.display3D.textures.Texture(texture.base).uploadFromBitmapData(this._textSnapshotBitmapData);
 				}
 			}
 		}
