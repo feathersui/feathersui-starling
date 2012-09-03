@@ -1941,7 +1941,7 @@ package org.josht.starling.foxhole.controls
 		protected function refreshLabelData():void
 		{
 			this.labelControl.text = this._label;
-			DisplayObject(this.labelControl).visible = this._label != null;
+			DisplayObject(this.labelControl).visible = this._label.length > 0;
 		}
 
 		/**
