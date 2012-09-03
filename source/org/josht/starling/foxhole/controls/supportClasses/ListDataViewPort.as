@@ -64,6 +64,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 		{
 			super();
 			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
+			this.addEventListener(TouchEvent.TOUCH, touchHandler);
 		}
 
 		protected var touchPointID:int = -1;
@@ -752,7 +753,6 @@ package org.josht.starling.foxhole.controls.supportClasses
 				this._rendererMap[item] = renderer;
 				this._activeRenderers.push(renderer);
 				displayRenderer = FoxholeControl(renderer);
-				displayRenderer.addEventListener(TouchEvent.TOUCH, renderer_touchHandler);
 				displayRenderer.onResize.add(renderer_onResize);
 			}
 
@@ -763,7 +763,6 @@ package org.josht.starling.foxhole.controls.supportClasses
 		{
 			renderer.onChange.remove(renderer_onChange);
 			const displayRenderer:FoxholeControl = FoxholeControl(renderer);
-			displayRenderer.removeEventListener(TouchEvent.TOUCH, renderer_touchHandler);
 			displayRenderer.onResize.remove(renderer_onResize);
 			this.removeChild(displayRenderer, true);
 		}
@@ -835,15 +834,14 @@ package org.josht.starling.foxhole.controls.supportClasses
 			this.touchPointID = -1;
 		}
 
-		private function renderer_touchHandler(event:TouchEvent):void
+		private function touchHandler(event:TouchEvent):void
 		{
 			if(!this._isEnabled)
 			{
 				return;
 			}
 
-			const displayRenderer:FoxholeControl = FoxholeControl(event.currentTarget);
-			const touches:Vector.<Touch> = event.getTouches(displayRenderer);
+			const touches:Vector.<Touch> = event.getTouches(FoxholeControl(this));
 			if(touches.length == 0)
 			{
 				return;
