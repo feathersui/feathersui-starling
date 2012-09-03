@@ -738,7 +738,10 @@ package org.josht.starling.foxhole.controls.supportClasses
 				}
 				renderer.onChange.add(renderer_onChange);
 				var displayRenderer:FoxholeControl = FoxholeControl(renderer);
-				displayRenderer.nameList.add(this._itemRendererName);
+				if(this._itemRendererName && this._itemRendererName.length > 0)
+				{
+					displayRenderer.nameList.add(this._itemRendererName);
+				}
 				this.addChild(displayRenderer);
 			}
 			else
