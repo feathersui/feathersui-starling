@@ -1794,29 +1794,19 @@ package org.josht.starling.foxhole.controls
 			}
 			if(this._clipContent)
 			{
-				this._viewPortWrapper.x = 0;
-				this._viewPortWrapper.y = 0;
-				if(!this._viewPortWrapper.scrollRect)
+				if(!this.scrollRect)
 				{
-					this._viewPortWrapper.scrollRect = new Rectangle();
+					this.scrollRect = new Rectangle();
 				}
 				
-				const scrollRect:Rectangle = this._viewPortWrapper.scrollRect;
+				const scrollRect:Rectangle = this.scrollRect;
 				scrollRect.width = this.actualWidth;
 				scrollRect.height = this.actualHeight;
-				scrollRect.x = this._horizontalScrollPosition - offsetX;
-				scrollRect.y = this._verticalScrollPosition - offsetY;
-				this._viewPortWrapper.scrollRect = scrollRect;
+				this.scrollRect = scrollRect;
 			}
-			else
-			{
-				if(this._viewPortWrapper.scrollRect)
-				{
-					this._viewPortWrapper.scrollRect = null;
-				}
-				this._viewPortWrapper.x = -this._horizontalScrollPosition + offsetX;
-				this._viewPortWrapper.y = -this._verticalScrollPosition + offsetY;
-			}
+
+			this._viewPortWrapper.x = -this._horizontalScrollPosition + offsetX;
+			this._viewPortWrapper.y = -this._verticalScrollPosition + offsetY;
 		}
 		
 		/**
