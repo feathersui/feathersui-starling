@@ -1120,7 +1120,7 @@ package org.josht.starling.foxhole.controls
 			{
 				if(this._arrowPosition == ARROW_POSITION_LEFT)
 				{
-					this._leftArrowSkin.x = this._backgroundSkin.x - this._rightArrowSkin.width - this._leftArrowGap;
+					this._leftArrowSkin.x = this._backgroundSkin.x - this._leftArrowSkin.width - this._leftArrowGap;
 					this._leftArrowSkin.y = this._arrowOffset + this._backgroundSkin.y + (this._backgroundSkin.height - this._leftArrowSkin.height) / 2;
 					this._leftArrowSkin.y = Math.min(this._backgroundSkin.y + this._backgroundSkin.height - this._paddingBottom - this._leftArrowSkin.height, Math.max(this._backgroundSkin.y + this._paddingTop, this._leftArrowSkin.y));
 				}
