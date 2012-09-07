@@ -129,21 +129,22 @@ package org.josht.starling.foxhole.controls
 		 * these values may be ignored if the callout cannot be drawn at the
 		 * specified dimensions.
 		 */
-		public static function show(content:DisplayObject, origin:DisplayObject, direction:String = DIRECTION_ANY, width:Number = NaN, height:Number = NaN):Callout
+		public static function show(content:DisplayObject, origin:DisplayObject, direction:String = DIRECTION_ANY,
+			isModal:Boolean = true, customCalloutFactory:Function = null):Callout
 		{
-			const factory:Function = calloutFactory != null ? calloutFactory : defaultCalloutFactory;
+			if(!origin.stage)
+			{
+				throw new ArgumentError("Callout origin must be added to the stage.");
+			}
+			var factory:Function = customCalloutFactory;
+			if(factory == null)
+			{
+				factory = calloutFactory != null ? calloutFactory : defaultCalloutFactory;
+			}
 			const callout:Callout = factory();
 			callout.content = content;
-			if(!isNaN(width))
-			{
-				callout.width = width;
-			}
-			if(!isNaN(height))
-			{
-				callout.height = height;
-			}
 			callout._isPopUp = true;
-			PopUpManager.addPopUp(callout, true, false, calloutOverlayFactory);
+			PopUpManager.addPopUp(callout, isModal, false, calloutOverlayFactory);
 
 			var globalBounds:Rectangle = ScrollRectManager.getBounds(origin, Starling.current.stage);
 			positionCalloutByDirection(callout, globalBounds, direction);
@@ -161,13 +162,19 @@ package org.josht.starling.foxhole.controls
 				helperRect = temp;
 				positionCalloutByDirection(callout, globalBounds, direction);
 			}
+			function origin_removedFromStageHandler(event:Event):void
+			{
+				callout.close();
+			}
 			function callout_onClose(callout:Callout):void
 			{
+				origin.removeEventListener(Event.REMOVED_FROM_STAGE, origin_removedFromStageHandler);
 				Starling.current.stage.removeEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
 				callout.onClose.remove(callout_onClose);
 			}
 			callout.addEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
 			callout.onClose.add(callout_onClose);
+			origin.addEventListener(Event.REMOVED_FROM_STAGE, origin_removedFromStageHandler);
 
 			return callout;
 		}
