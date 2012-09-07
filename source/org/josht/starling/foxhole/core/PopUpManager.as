@@ -44,12 +44,16 @@ package org.josht.starling.foxhole.core
 		private static const POPUP_TO_OVERLAY:Dictionary = new Dictionary(true);
 		
 		/**
-		 * A function that returns a display object to use as a modal overlay.
+		 * A function that returns a display object to use as an overlay for
+		 * modal pop-ups.
+		 *
+		 * <p>This function is expected to have the following signature:</p>
+		 * <pre>function():DisplayObject</pre>
 		 */
 		public static var overlayFactory:Function = defaultOverlayFactory;
 
 		/**
-		 * The default provider for modal overlays.
+		 * The default factory that creates overlays for modal pop-ups.
 		 */
 		public static function defaultOverlayFactory():DisplayObject
 		{
