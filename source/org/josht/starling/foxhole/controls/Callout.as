@@ -112,6 +112,34 @@ package org.josht.starling.foxhole.controls
 		protected static const callouts:Vector.<Callout> = new <Callout>[];
 
 		/**
+		 * The padding between a callout and the top edge of the stage when the
+		 * callout is positioned automatically. May be ignored if the callout
+		 * is too big for the stage.
+		 */
+		public static var stagePaddingTop:Number = 0;
+
+		/**
+		 * The padding between a callout and the right edge of the stage when the
+		 * callout is positioned automatically. May be ignored if the callout
+		 * is too big for the stage.
+		 */
+		public static var stagePaddingRight:Number = 0;
+
+		/**
+		 * The padding between a callout and the bottom edge of the stage when the
+		 * callout is positioned automatically. May be ignored if the callout
+		 * is too big for the stage.
+		 */
+		public static var stagePaddingBottom:Number = 0;
+
+		/**
+		 * The margin between a callout and the top edge of the stage when the
+		 * callout is positioned automatically. May be ignored if the callout
+		 * is too big for the stage.
+		 */
+		public static var stagePaddingLeft:Number = 0;
+
+		/**
 		 * Returns a new <code>Callout</code> instance when <code>Callout.show()</code>
 		 * is called. If one wishes to skin the callout manually, a custom
 		 * factory may be provided.
@@ -212,7 +240,7 @@ package org.josht.starling.foxhole.controls
 			callout.arrowPosition = ARROW_POSITION_TOP;
 			callout.validate();
 			const downSpace:Number = (Starling.current.stage.stageHeight - callout.height) - (globalOrigin.y + globalOrigin.height);
-			if(downSpace >= 0)
+			if(downSpace >= stagePaddingBottom)
 			{
 				positionCalloutBelow(callout, globalOrigin);
 				return;
@@ -221,7 +249,7 @@ package org.josht.starling.foxhole.controls
 			callout.arrowPosition = ARROW_POSITION_BOTTOM;
 			callout.validate();
 			const upSpace:Number = globalOrigin.y - callout.height;
-			if(upSpace >= 0)
+			if(upSpace >= stagePaddingTop)
 			{
 				positionCalloutAbove(callout, globalOrigin);
 				return;
@@ -230,7 +258,7 @@ package org.josht.starling.foxhole.controls
 			callout.arrowPosition = ARROW_POSITION_LEFT;
 			callout.validate();
 			const rightSpace:Number = (Starling.current.stage.stageWidth - callout.width) - (globalOrigin.x + globalOrigin.width);
-			if(rightSpace >= 0)
+			if(rightSpace >= stagePaddingRight)
 			{
 				positionCalloutRightSide(callout, globalOrigin);
 				return;
@@ -239,7 +267,7 @@ package org.josht.starling.foxhole.controls
 			callout.arrowPosition = ARROW_POSITION_RIGHT;
 			callout.validate();
 			const leftSpace:Number = globalOrigin.x - callout.width;
-			if(leftSpace)
+			if(leftSpace >= stagePaddingLeft)
 			{
 				positionCalloutLeftSide(callout, globalOrigin);
 				return;
@@ -273,7 +301,7 @@ package org.josht.starling.foxhole.controls
 			callout.arrowPosition = ARROW_POSITION_TOP;
 			callout.validate();
 			const idealXPosition:Number = globalOrigin.x + (globalOrigin.width - callout.width) / 2;
-			const xPosition:Number = Math.max(0, Math.min(Starling.current.stage.stageWidth - callout.width, idealXPosition));
+			const xPosition:Number = Math.max(stagePaddingLeft, Math.min(Starling.current.stage.stageWidth - callout.width - stagePaddingRight, idealXPosition));
 			callout.x = xPosition;
 			callout.y = globalOrigin.y + globalOrigin.height;
 			callout.arrowOffset = idealXPosition - xPosition;
@@ -287,7 +315,7 @@ package org.josht.starling.foxhole.controls
 			callout.arrowPosition = ARROW_POSITION_BOTTOM;
 			callout.validate();
 			const idealXPosition:Number = globalOrigin.x + (globalOrigin.width - callout.width) / 2;
-			const xPosition:Number = Math.max(0, Math.min(Starling.current.stage.stageWidth - callout.width, idealXPosition));
+			const xPosition:Number = Math.max(stagePaddingLeft, Math.min(Starling.current.stage.stageWidth - callout.width - stagePaddingRight, idealXPosition));
 			callout.x = xPosition;
 			callout.y = globalOrigin.y - callout.height;
 			callout.arrowOffset = idealXPosition - xPosition;
@@ -302,7 +330,7 @@ package org.josht.starling.foxhole.controls
 			callout.validate();
 			callout.x = globalOrigin.x + globalOrigin.width;
 			const idealYPosition:Number = globalOrigin.y + (globalOrigin.height - callout.height) / 2;
-			const yPosition:Number = Math.max(0, Math.min(Starling.current.stage.stageHeight - callout.height, idealYPosition));
+			const yPosition:Number = Math.max(stagePaddingTop, Math.min(Starling.current.stage.stageHeight - callout.height - stagePaddingBottom, idealYPosition));
 			callout.y = yPosition;
 			callout.arrowOffset = idealYPosition - yPosition;
 		}
@@ -316,7 +344,7 @@ package org.josht.starling.foxhole.controls
 			callout.validate();
 			callout.x = globalOrigin.x - callout.width;
 			const idealYPosition:Number = globalOrigin.y + (globalOrigin.height - callout.height) / 2;
-			const yPosition:Number = Math.max(0, Math.min(Starling.current.stage.stageHeight - callout.height, idealYPosition));
+			const yPosition:Number = Math.max(stagePaddingLeft, Math.min(Starling.current.stage.stageHeight - callout.height - stagePaddingBottom, idealYPosition));
 			callout.y = yPosition;
 			callout.arrowOffset = idealYPosition - yPosition;
 		}
