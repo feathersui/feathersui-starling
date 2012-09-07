@@ -31,6 +31,7 @@ package org.josht.starling.foxhole.controls.renderers
 	import org.josht.starling.foxhole.controls.Button;
 	import org.josht.starling.foxhole.controls.text.BitmapFontTextRenderer;
 	import org.josht.starling.foxhole.core.FoxholeControl;
+	import org.josht.starling.foxhole.core.ITextRenderer;
 	import org.josht.starling.foxhole.core.PropertyProxy;
 
 	import starling.display.DisplayObject;
@@ -95,7 +96,7 @@ package org.josht.starling.foxhole.controls.renderers
 		/**
 		 * @private
 		 */
-		protected var accessoryLabel:BitmapFontTextRenderer;
+		protected var accessoryLabel:ITextRenderer;
 
 		/**
 		 * @private
@@ -976,7 +977,7 @@ package org.josht.starling.foxhole.controls.renderers
 			}
 			if(this.accessoryLabel)
 			{
-				this.accessoryLabel.dispose();
+				DisplayObject(this.accessoryLabel).dispose();
 				this.accessoryLabel = null;
 			}
 			super.dispose();
@@ -1079,13 +1080,13 @@ package org.josht.starling.foxhole.controls.renderers
 			{
 				var label:String = this._accessoryLabelFunction(item) as String;
 				this.refreshAccessoryLabel(label);
-				return this.accessoryLabel;
+				return DisplayObject(this.accessoryLabel);
 			}
 			else if(this._accessoryLabelField != null && item && item.hasOwnProperty(this._accessoryLabelField))
 			{
 				label = item[this._accessoryLabelField] as String;
 				this.refreshAccessoryLabel(label);
-				return this.accessoryLabel;
+				return DisplayObject(this.accessoryLabel);
 			}
 			else if(this._accessoryFunction != null)
 			{
@@ -1267,12 +1268,13 @@ package org.josht.starling.foxhole.controls.renderers
 			{
 				return;
 			}
+			const displayAccessoryLabel:DisplayObject = DisplayObject(this.accessoryLabel);
 			for(var propertyName:String in this._accessoryLabelProperties)
 			{
-				if(this.accessoryLabel.hasOwnProperty(propertyName))
+				if(displayAccessoryLabel.hasOwnProperty(propertyName))
 				{
 					var propertyValue:Object = this._accessoryLabelProperties[propertyName];
-					this.accessoryLabel[propertyName] = propertyValue;
+					displayAccessoryLabel[propertyName] = propertyValue;
 				}
 			}
 		}
@@ -1336,13 +1338,13 @@ package org.josht.starling.foxhole.controls.renderers
 				{
 					const factory:Function = this._accessoryLabelFactory != null ? this._accessoryLabelFactory : FoxholeControl.defaultTextRendererFactory;
 					this.accessoryLabel = factory();
-					this.accessoryLabel.nameList.add(this.accessoryLabelName);
+					FoxholeControl(this.accessoryLabel).nameList.add(this.accessoryLabelName);
 				}
 				this.accessoryLabel.text = label;
 			}
 			else if(this.accessoryLabel)
 			{
-				this.accessoryLabel.removeFromParent(true);
+				DisplayObject(this.accessoryLabel).removeFromParent(true);
 				this.accessoryLabel = null;
 			}
 		}
