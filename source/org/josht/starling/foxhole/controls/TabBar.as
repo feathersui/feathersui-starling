@@ -768,11 +768,11 @@ package org.josht.starling.foxhole.controls
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var item:Object = this._dataProvider.getItemAt(i);
-				if(i == 0 && this._firstTabFactory != null)
+				if(i == 0)
 				{
 					var tab:Button = this.activeFirstTab = this.createFirstTab(item);
 				}
-				else if(i == lastItemIndex && this._lastTabFactory != null)
+				else if(i == lastItemIndex)
 				{
 					tab = this.activeLastTab = this.createLastTab(item);
 				}
@@ -822,7 +822,8 @@ package org.josht.starling.foxhole.controls
 			}
 			else
 			{
-				tab = this._firstTabFactory();
+				const factory:Function = this._firstTabFactory != null ? this._firstTabFactory : this._tabFactory;
+				tab = factory();
 				if(this._customFirstTabName)
 				{
 					tab.nameList.add(this._customFirstTabName);
@@ -851,7 +852,8 @@ package org.josht.starling.foxhole.controls
 			}
 			else
 			{
-				tab = this._lastTabFactory();
+				const factory:Function = this._lastTabFactory != null ? this._lastTabFactory : this._tabFactory;
+				tab = factory();
 				if(this._customLastTabName)
 				{
 					tab.nameList.add(this._customLastTabName);
