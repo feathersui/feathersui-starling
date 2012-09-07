@@ -790,6 +790,10 @@ package org.josht.starling.foxhole.controls.supportClasses
 		{
 			const item:Object = this._dataProvider.getItemAt(index);
 			const renderer:IListItemRenderer = IListItemRenderer(this._rendererMap[item]);
+			if(!renderer)
+			{
+				return;
+			}
 			renderer.data = null;
 			renderer.data = item;
 		}
