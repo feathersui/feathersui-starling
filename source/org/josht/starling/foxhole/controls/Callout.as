@@ -36,7 +36,6 @@ package org.josht.starling.foxhole.controls
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
-	import starling.display.Quad;
 	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
 	import starling.events.Touch;
@@ -141,14 +140,24 @@ package org.josht.starling.foxhole.controls
 
 		/**
 		 * Returns a new <code>Callout</code> instance when <code>Callout.show()</code>
-		 * is called. If one wishes to skin the callout manually, a custom
-		 * factory may be provided.
+		 * is called with isModal set to true. If one wishes to skin the callout
+		 * manually, a custom factory may be provided.
 		 *
 		 * <p>This function is expected to have the following signature:</p>
 		 *
 		 * <pre>function():Callout</pre>
 		 */
 		public static var calloutFactory:Function = defaultCalloutFactory;
+
+		/**
+		 * Returns an overlay to display with a callout that is modal.
+		 *
+		 * <p>This function is expected to have the following signature:</p>
+		 * <pre>function():DisplayObject</pre>
+		 *
+		 * @see org.josht.starling.foxhole.core.PopUpManager#overlayFactory
+		 */
+		public static var calloutOverlayFactory:Function = PopUpManager.defaultOverlayFactory;
 
 		/**
 		 * Creates a callout, and then positions and sizes it automatically
@@ -172,7 +181,8 @@ package org.josht.starling.foxhole.controls
 			const callout:Callout = factory();
 			callout.content = content;
 			callout._isPopUp = true;
-			PopUpManager.addPopUp(callout, isModal, false, calloutOverlayFactory);
+			const overlayFactory:Function = calloutOverlayFactory != null ? calloutOverlayFactory : PopUpManager.defaultOverlayFactory;
+			PopUpManager.addPopUp(callout, isModal, false, overlayFactory);
 
 			var globalBounds:Rectangle = ScrollRectManager.getBounds(origin, Starling.current.stage);
 			positionCalloutByDirection(callout, globalBounds, direction);
@@ -208,10 +218,10 @@ package org.josht.starling.foxhole.controls
 		}
 
 		/**
-		 * @private
-		 * Creates a callout.
+		 * The default factory that creates callouts when <code>Callout.show()</code>
+		 * is called.
 		 */
-		protected static function defaultCalloutFactory():Callout
+		public static function defaultCalloutFactory():Callout
 		{
 			return new Callout();
 		}
@@ -348,17 +358,6 @@ package org.josht.starling.foxhole.controls
 			callout.y = yPosition;
 			callout.arrowOffset = idealYPosition - yPosition;
 		}
-
-		/**
-		 * @private
-		 */
-		protected static function calloutOverlayFactory():DisplayObject
-		{
-			const quad:Quad = new Quad(100, 100, 0xff00ff);
-			quad.alpha = 0;
-			return quad;
-		}
-
 
 		/**
 		 * Constructor.
