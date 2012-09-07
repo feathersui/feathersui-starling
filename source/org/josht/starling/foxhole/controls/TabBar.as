@@ -624,50 +624,32 @@ package org.josht.starling.foxhole.controls
 				this.refreshTabs(tabFactoryInvalid);
 			}
 
-			if(dataInvalid || stylesInvalid)
+			if(dataInvalid || tabFactoryInvalid || stylesInvalid)
 			{
 				this.refreshTabStyles();
 			}
 
-			if(dataInvalid || selectionInvalid)
+			if(dataInvalid || tabFactoryInvalid || selectionInvalid)
 			{
 				this.commitSelection();
 			}
 
-			if(dataInvalid || stateInvalid || stylesInvalid)
+			if(dataInvalid || tabFactoryInvalid || stateInvalid)
 			{
-				for each(var tab:Button in this.activeTabs)
-				{
-					tab.isEnabled = this._isEnabled;
-					if(tab == this.activeFirstTab && this._customFirstTabName)
-					{
-						if(this._customFirstTabName && !tab.nameList.contains(this._customFirstTabName))
-						{
-							tab.nameList.add(this._customFirstTabName);
-						}
-					}
-					else if(tab == this.activeLastTab && this._customLastTabName)
-					{
-						if(this._customLastTabName && !tab.nameList.contains(this._customLastTabName))
-						{
-							tab.nameList.add(this._customLastTabName);
-						}
-					}
-					else if(this._customTabName && !tab.nameList.contains(this._customTabName))
-					{
-						tab.nameList.add(this._customTabName);
-					}
-				}
+				this.commitEnabled();
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
-			if(sizeInvalid || dataInvalid || stylesInvalid)
+			if(sizeInvalid || dataInvalid || tabFactoryInvalid || stylesInvalid)
 			{
 				this.layoutTabs();
 			}
 		}
 
+		/**
+		 * @private
+		 */
 		protected function commitSelection():void
 		{
 			if(this._pendingSelectedIndex < 0 || !this.toggleGroup)
@@ -687,17 +669,47 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
+		protected function commitEnabled():void
+		{
+			for each(var tab:Button in this.activeTabs)
+			{
+				tab.isEnabled = this._isEnabled;
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function refreshTabStyles():void
 		{
-			for(var propertyName:String in this._tabProperties)
+			for each(var tab:Button in this.activeTabs)
 			{
-				var propertyValue:Object = this._tabProperties[propertyName];
-				for each(var tab:Button in this.activeTabs)
+				for(var propertyName:String in this._tabProperties)
 				{
+					var propertyValue:Object = this._tabProperties[propertyName];
 					if(tab.hasOwnProperty(propertyName))
 					{
 						tab[propertyName] = propertyValue;
 					}
+				}
+
+				if(tab == this.activeFirstTab && this._customFirstTabName)
+				{
+					if(!tab.nameList.contains(this._customFirstTabName))
+					{
+						tab.nameList.add(this._customFirstTabName);
+					}
+				}
+				else if(tab == this.activeLastTab && this._customLastTabName)
+				{
+					if(!tab.nameList.contains(this._customLastTabName))
+					{
+						tab.nameList.add(this._customLastTabName);
+					}
+				}
+				else if(this._customTabName && !tab.nameList.contains(this._customTabName))
+				{
+					tab.nameList.add(this._customTabName);
 				}
 			}
 		}
