@@ -94,9 +94,39 @@ package org.josht.starling.foxhole.controls
 		protected var tabName:String = DEFAULT_CHILD_NAME_TAB;
 
 		/**
+		 * The value added to the <code>nameList</code> of the first tab.
+		 */
+		protected var firstTabName:String = DEFAULT_CHILD_NAME_TAB;
+
+		/**
+		 * The value added to the <code>nameList</code> of the last tab.
+		 */
+		protected var lastTabName:String = DEFAULT_CHILD_NAME_TAB;
+
+		/**
 		 * @private
 		 */
 		protected var toggleGroup:ToggleGroup;
+
+		/**
+		 * @private
+		 */
+		protected var activeFirstTab:Button;
+
+		/**
+		 * @private
+		 */
+		protected var inactiveFirstTab:Button;
+
+		/**
+		 * @private
+		 */
+		protected var activeLastTab:Button;
+
+		/**
+		 * @private
+		 */
+		protected var inactiveLastTab:Button;
 
 		/**
 		 * @private
@@ -207,6 +237,9 @@ package org.josht.starling.foxhole.controls
 		 * <p>This function is expected to have the following signature:</p>
 		 *
 		 * <pre>function():Button</pre>
+		 *
+		 * @see #firstTabFactory
+		 * @see #lastTabFactory
 		 */
 		public function get tabFactory():Function
 		{
@@ -223,6 +256,73 @@ package org.josht.starling.foxhole.controls
 				return;
 			}
 			this._tabFactory = value;
+			this.invalidate(INVALIDATION_FLAG_TAB_FACTORY);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _firstTabFactory:Function;
+
+		/**
+		 * Creates a new first tab.
+		 *
+		 * <p>This function is expected to have the following signature:</p>
+		 *
+		 * <pre>function():Button</pre>
+		 *
+		 * @see #tabFactory
+		 * @see #lastTabFactory
+		 */
+		public function get firstTabFactory():Function
+		{
+			return this._firstTabFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set firstTabFactory(value:Function):void
+		{
+			if(this._firstTabFactory == value)
+			{
+				return;
+			}
+			this._firstTabFactory = value;
+			this.invalidate(INVALIDATION_FLAG_TAB_FACTORY);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _lastTabFactory:Function;
+
+		/**
+		 * Creates a new last tab. If the lastTabFactory is null, then the
+		 * TabBar will use the tabFactory.
+		 *
+		 * <p>This function is expected to have the following signature:</p>
+		 *
+		 * <pre>function():Button</pre>
+		 *
+		 * @see #tabFactory
+		 * @see #firstTabFactory
+		 */
+		public function get lastTabFactory():Function
+		{
+			return this._lastTabFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set lastTabFactory(value:Function):void
+		{
+			if(this._lastTabFactory == value)
+			{
+				return;
+			}
+			this._lastTabFactory = value;
 			this.invalidate(INVALIDATION_FLAG_TAB_FACTORY);
 		}
 
@@ -340,6 +440,74 @@ package org.josht.starling.foxhole.controls
 				}
 			}
 			this._customTabName = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _customFirstTabName:String;
+
+		/**
+		 * A name to add to the first tab in this tab bar. Typically used by a
+		 * theme to provide different skins to the first tab.
+		 *
+		 * @see org.josht.starling.foxhole.core.FoxholeControl#nameList
+		 */
+		public function get customFirstTabName():String
+		{
+			return this._customFirstTabName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customFirstTabName(value:String):void
+		{
+			if(this._customFirstTabName == value)
+			{
+				return;
+			}
+			if(this._customFirstTabName && this.activeFirstTab)
+			{
+				this.activeFirstTab.nameList.remove(this._customTabName);
+				this.activeFirstTab.nameList.remove(this._customFirstTabName);
+			}
+			this._customFirstTabName = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _customLastTabName:String;
+
+		/**
+		 * A name to add to the last tab in this tab bar. Typically used by a
+		 * theme to provide different skins to the last tab.
+		 *
+		 * @see org.josht.starling.foxhole.core.FoxholeControl#nameList
+		 */
+		public function get customLastTabName():String
+		{
+			return this._customLastTabName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customLastTabName(value:String):void
+		{
+			if(this._customLastTabName == value)
+			{
+				return;
+			}
+			if(this._customLastTabName && this.activeLastTab)
+			{
+				this.activeLastTab.nameList.remove(this._customTabName);
+				this.activeLastTab.nameList.remove(this._customLastTabName);
+			}
+			this._customLastTabName = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -471,7 +639,21 @@ package org.josht.starling.foxhole.controls
 				for each(var tab:Button in this.activeTabs)
 				{
 					tab.isEnabled = this._isEnabled;
-					if(this._customTabName && !tab.nameList.contains(this._customTabName))
+					if(tab == this.activeFirstTab && this._customFirstTabName)
+					{
+						if(this._customFirstTabName && !tab.nameList.contains(this._customFirstTabName))
+						{
+							tab.nameList.add(this._customFirstTabName);
+						}
+					}
+					else if(tab == this.activeLastTab && this._customLastTabName)
+					{
+						if(this._customLastTabName && !tab.nameList.contains(this._customLastTabName))
+						{
+							tab.nameList.add(this._customLastTabName);
+						}
+					}
+					else if(this._customTabName && !tab.nameList.contains(this._customTabName))
 					{
 						tab.nameList.add(this._customTabName);
 					}
@@ -564,12 +746,40 @@ package org.josht.starling.foxhole.controls
 			{
 				this.clearInactiveTabs();
 			}
+			else
+			{
+				if(this.activeFirstTab)
+				{
+					this.inactiveTabs.shift();
+				}
+				this.inactiveFirstTab = this.activeFirstTab;
 
-			var itemCount:int = this._dataProvider ? this._dataProvider.length : 0;
+				if(this.activeLastTab)
+				{
+					this.inactiveTabs.pop();
+				}
+				this.inactiveLastTab = this.activeLastTab;
+			}
+			this.activeFirstTab = null;
+			this.activeLastTab = null;
+
+			const itemCount:int = this._dataProvider ? this._dataProvider.length : 0;
+			const lastItemIndex:int = itemCount - 1;
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var item:Object = this._dataProvider.getItemAt(i);
-				var tab:Button = this.createTab(item);
+				if(i == 0 && this._firstTabFactory != null)
+				{
+					var tab:Button = this.activeFirstTab = this.createFirstTab(item);
+				}
+				else if(i == lastItemIndex && this._lastTabFactory != null)
+				{
+					tab = this.activeLastTab = this.createLastTab(item);
+				}
+				else
+				{
+					tab = this.createTab(item);
+				}
 				this.activeTabs.push(tab);
 			}
 			this.clearInactiveTabs();
@@ -586,6 +796,76 @@ package org.josht.starling.foxhole.controls
 				var tab:Button = this.inactiveTabs.shift();
 				this.destroyTab(tab);
 			}
+
+			if(this.inactiveFirstTab)
+			{
+				this.destroyTab(this.inactiveFirstTab);
+				this.inactiveFirstTab = null;
+			}
+
+			if(this.inactiveLastTab)
+			{
+				this.destroyTab(this.inactiveLastTab);
+				this.inactiveLastTab = null;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function createFirstTab(item:Object):Button
+		{
+			if(this.inactiveFirstTab)
+			{
+				var tab:Button = this.inactiveFirstTab;
+				this.inactiveFirstTab = null;
+			}
+			else
+			{
+				tab = this._firstTabFactory();
+				if(this._customFirstTabName)
+				{
+					tab.nameList.add(this._customFirstTabName);
+				}
+				else
+				{
+					tab.nameList.add(this.firstTabName);
+				}
+				tab.isToggle = true;
+				this.toggleGroup.addItem(tab);
+				this.addChild(tab);
+			}
+			this._tabInitializer(tab, item);
+			return tab;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function createLastTab(item:Object):Button
+		{
+			if(this.inactiveLastTab)
+			{
+				var tab:Button = this.inactiveLastTab;
+				this.inactiveLastTab = null;
+			}
+			else
+			{
+				tab = this._lastTabFactory();
+				if(this._customLastTabName)
+				{
+					tab.nameList.add(this._customLastTabName);
+				}
+				else
+				{
+					tab.nameList.add(this.lastTabName);
+				}
+				tab.isToggle = true;
+				this.toggleGroup.addItem(tab);
+				this.addChild(tab);
+			}
+			this._tabInitializer(tab, item);
+			return tab;
 		}
 
 		/**
@@ -596,7 +876,14 @@ package org.josht.starling.foxhole.controls
 			if(this.inactiveTabs.length == 0)
 			{
 				var tab:Button = this._tabFactory();
-				tab.nameList.add(this.tabName);
+				if(this._customTabName)
+				{
+					tab.nameList.add(this._customTabName);
+				}
+				else
+				{
+					tab.nameList.add(this.tabName);
+				}
 				tab.isToggle = true;
 				this.toggleGroup.addItem(tab);
 				this.addChild(tab);
