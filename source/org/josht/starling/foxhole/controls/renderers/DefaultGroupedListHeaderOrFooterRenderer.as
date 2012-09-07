@@ -25,8 +25,9 @@
 package org.josht.starling.foxhole.controls.renderers
 {
 	import org.josht.starling.foxhole.controls.GroupedList;
-	import org.josht.starling.foxhole.controls.text.BitmapFontTextRenderer;
 	import org.josht.starling.foxhole.core.FoxholeControl;
+	import org.josht.starling.foxhole.core.ITextRenderer;
+	import org.josht.starling.foxhole.core.PropertyProxy;
 
 	import starling.display.DisplayObject;
 	import starling.display.Image;
@@ -39,12 +40,23 @@ package org.josht.starling.foxhole.controls.renderers
 	public class DefaultGroupedListHeaderOrFooterRenderer extends FoxholeControl implements IGroupedListHeaderOrFooterRenderer
 	{
 		/**
+		 * The default value added to the <code>nameList</code> of the content
+		 * label.
+		 */
+		public static const DEFAULT_CHILD_NAME_CONTENT_LABEL:String = "foxhole-header-footer-renderer-content-label";
+
+		/**
 		 * @private
 		 */
 		protected static function defaultImageFactory(texture:Texture):Image
 		{
 			return new Image(texture);
 		}
+
+		/**
+		 * The value added to the <code>nameList</code> of the content label.
+		 */
+		protected var contentLabelName:String = DEFAULT_CHILD_NAME_CONTENT_LABEL;
 
 		/**
 		 * Constructor.
@@ -61,7 +73,7 @@ package org.josht.starling.foxhole.controls.renderers
 		/**
 		 * @private
 		 */
-		protected var contentLabel:BitmapFontTextRenderer;
+		protected var contentLabel:ITextRenderer;
 
 		/**
 		 * @private
@@ -505,13 +517,13 @@ package org.josht.starling.foxhole.controls.renderers
 			{
 				var label:String = this._contentLabelFunction(item) as String;
 				this.refreshContentLabel(label);
-				return this.contentLabel;
+				return DisplayObject(this.contentLabel);
 			}
 			else if(this._contentLabelField != null && item && item.hasOwnProperty(this._contentLabelField))
 			{
 				label = item[this._contentLabelField] as String;
 				this.refreshContentLabel(label);
-				return this.contentLabel;
+				return DisplayObject(this.contentLabel);
 			}
 			else if(this._contentFunction != null)
 			{
@@ -524,7 +536,7 @@ package org.josht.starling.foxhole.controls.renderers
 			else if(item)
 			{
 				this.refreshContentLabel(item.toString());
-				return this.contentLabel;
+				return DisplayObject(this.contentLabel);
 			}
 
 			return null;
@@ -537,7 +549,7 @@ package org.josht.starling.foxhole.controls.renderers
 
 		/**
 		 * A function that generates an <code>Image</code> that uses the result
-		 * of <code>accessoryTextureField</code> or <code>accessoryTextureFunction</code>.
+		 * of <code>contentTextureField</code> or <code>contentTextureFunction</code>.
 		 * Useful for transforming the <code>Image</code> in some way. For
 		 * example, you might want to scale it for current DPI.
 		 *
@@ -569,7 +581,7 @@ package org.josht.starling.foxhole.controls.renderers
 
 		/**
 		 * A function that generates <code>Label</code> that uses the result
-		 * of <code>accessoryLabelField</code> or <code>accessoryLabelFunction</code>.
+		 * of <code>contentLabelField</code> or <code>contentLabelFunction</code>.
 		 * Useful for skinning the <code>Label</code>.
 		 *
 		 * @see #contentLabelField;
@@ -590,6 +602,67 @@ package org.josht.starling.foxhole.controls.renderers
 				return;
 			}
 			this._contentLabelFactory = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _contentLabelProperties:PropertyProxy;
+
+		/**
+		 * A set of key/value pairs to be passed down to a content label.
+		 *
+		 * <p>If the subcomponent has its own subcomponents, their properties
+		 * can be set too, using attribute <code>&#64;</code> notation. For example,
+		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
+		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
+		 * you can use the following syntax:</p>
+		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 *
+		 * @see #contentLabelField
+		 * @see #contentLabelFunction
+		 */
+		public function get contentLabelProperties():Object
+		{
+			if(!this._contentLabelProperties)
+			{
+				this._contentLabelProperties = new PropertyProxy(contentLabelProperties_onChange);
+			}
+			return this._contentLabelProperties;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set contentLabelProperties(value:Object):void
+		{
+			if(this._contentLabelProperties == value)
+			{
+				return;
+			}
+			if(!value)
+			{
+				value = new PropertyProxy();
+			}
+			if(!(value is PropertyProxy))
+			{
+				const newValue:PropertyProxy = new PropertyProxy();
+				for(var propertyName:String in value)
+				{
+					newValue[propertyName] = value[propertyName];
+				}
+				value = newValue;
+			}
+			if(this._contentLabelProperties)
+			{
+				this._contentLabelProperties.onChange.remove(contentLabelProperties_onChange);
+			}
+			this._contentLabelProperties = PropertyProxy(value);
+			if(this._contentLabelProperties)
+			{
+				this._contentLabelProperties.onChange.add(contentLabelProperties_onChange);
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -810,7 +883,7 @@ package org.josht.starling.foxhole.controls.renderers
 			}
 			if(this.contentLabel)
 			{
-				this.contentLabel.dispose();
+				DisplayObject(this.contentLabel).dispose();
 				this.contentLabel = null;
 			}
 			super.dispose();
@@ -834,6 +907,11 @@ package org.josht.starling.foxhole.controls.renderers
 			if(dataInvalid)
 			{
 				this.commitData();
+			}
+
+			if(dataInvalid || stylesInvalid)
+			{
+				this.refreshContentLabelStyles();
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
@@ -995,14 +1073,43 @@ package org.josht.starling.foxhole.controls.renderers
 				{
 					const factory:Function = this._contentLabelFactory != null ? this._contentLabelFactory : FoxholeControl.defaultTextRendererFactory;
 					this.contentLabel = factory();
+					FoxholeControl(this.contentLabel).nameList.add(this.contentLabelName);
 				}
 				this.contentLabel.text = label;
 			}
 			else if(this.contentLabel)
 			{
-				this.contentLabel.removeFromParent(true);
+				DisplayObject(this.contentLabel).removeFromParent(true);
 				this.contentLabel = null;
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshContentLabelStyles():void
+		{
+			if(!this.contentLabel)
+			{
+				return;
+			}
+			const displayContentLabel:DisplayObject = DisplayObject(this.contentLabel);
+			for(var propertyName:String in this._contentLabelProperties)
+			{
+				if(displayContentLabel.hasOwnProperty(propertyName))
+				{
+					var propertyValue:Object = this._contentLabelProperties[propertyName];
+					displayContentLabel[propertyName] = propertyValue;
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function contentLabelProperties_onChange(proxy:PropertyProxy, name:String):void
+		{
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 	}
 }
