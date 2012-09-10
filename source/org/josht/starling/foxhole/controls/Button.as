@@ -2091,7 +2091,7 @@ package org.josht.starling.foxhole.controls
 			}
 			else //center
 			{
-				displayObject.x = (this.actualWidth - displayObject.width) / 2;
+				displayObject.x = this._paddingLeft + (this.actualWidth - this._paddingLeft - this._paddingRight - displayObject.width) / 2;
 			}
 			if(this._verticalAlign == VERTICAL_ALIGN_TOP)
 			{
@@ -2103,7 +2103,7 @@ package org.josht.starling.foxhole.controls
 			}
 			else //middle
 			{
-				displayObject.y = (this.actualHeight - displayObject.height) / 2;
+				displayObject.y = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - displayObject.height) / 2;
 			}
 		}
 		
