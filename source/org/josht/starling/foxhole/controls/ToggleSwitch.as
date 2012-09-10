@@ -162,12 +162,12 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected var onLabelControl:ITextRenderer;
+		protected var onTextRenderer:ITextRenderer;
 
 		/**
 		 * @private
 		 */
-		protected var offLabelControl:ITextRenderer;
+		protected var offTextRenderer:ITextRenderer;
 
 		/**
 		 * @private
@@ -988,30 +988,30 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function createLabels():void
 		{
-			if(this.offLabelControl)
+			if(this.offTextRenderer)
 			{
-				this.removeChild(FoxholeControl(this.offLabelControl), true);
-				this.offLabelControl = null;
+				this.removeChild(FoxholeControl(this.offTextRenderer), true);
+				this.offTextRenderer = null;
 			}
-			if(this.onLabelControl)
+			if(this.onTextRenderer)
 			{
-				this.removeChild(FoxholeControl(this.onLabelControl), true);
-				this.onLabelControl = null;
+				this.removeChild(FoxholeControl(this.onTextRenderer), true);
+				this.onTextRenderer = null;
 			}
 
 			const index:int = this.getChildIndex(this.thumb);
 			const factory:Function = this._labelFactory != null ? this._labelFactory : FoxholeControl.defaultTextRendererFactory;
-			this.offLabelControl = factory();
-			var foxholeTextRenderer:FoxholeControl = FoxholeControl(this.offLabelControl);
-			foxholeTextRenderer.nameList.add(this.offLabelName);
-			foxholeTextRenderer.scrollRect = new Rectangle();
-			this.addChildAt(foxholeTextRenderer, index);
+			this.offTextRenderer = factory();
+			var uiTextRenderer:FoxholeControl = FoxholeControl(this.offTextRenderer);
+			uiTextRenderer.nameList.add(this.offLabelName);
+			uiTextRenderer.scrollRect = new Rectangle();
+			this.addChildAt(uiTextRenderer, index);
 
-			this.onLabelControl = factory();
-			foxholeTextRenderer = FoxholeControl(this.onLabelControl);
-			foxholeTextRenderer.nameList.add(this.onLabelName);
-			foxholeTextRenderer.scrollRect = new Rectangle();
-			this.addChildAt(foxholeTextRenderer, index);
+			this.onTextRenderer = factory();
+			uiTextRenderer = FoxholeControl(this.onTextRenderer);
+			uiTextRenderer.nameList.add(this.onLabelName);
+			uiTextRenderer.scrollRect = new Rectangle();
+			this.addChildAt(uiTextRenderer, index);
 		}
 
 		/**
@@ -1061,11 +1061,11 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function refreshOnLabelStyles():void
 		{
-			const foxholeOnLabel:FoxholeControl = FoxholeControl(this.onLabelControl);
+			const uiOnLabelRenderer:FoxholeControl = FoxholeControl(this.onTextRenderer);
 			//no need to style the label field if there's no text to display
 			if(!this._showLabels || !this._showThumb)
 			{
-				foxholeOnLabel.visible = false;
+				uiOnLabelRenderer.visible = false;
 				return;
 			}
 
@@ -1083,20 +1083,20 @@ package org.josht.starling.foxhole.controls
 				properties = this._defaultLabelProperties;
 			}
 
-			this.onLabelControl.text = this._onText;
+			this.onTextRenderer.text = this._onText;
 			if(properties)
 			{
 				for(var propertyName:String in properties)
 				{
-					if(foxholeOnLabel.hasOwnProperty(propertyName))
+					if(uiOnLabelRenderer.hasOwnProperty(propertyName))
 					{
 						var propertyValue:Object = properties[propertyName];
-						foxholeOnLabel[propertyName] = propertyValue;
+						uiOnLabelRenderer[propertyName] = propertyValue;
 					}
 				}
 			}
-			foxholeOnLabel.validate();
-			foxholeOnLabel.visible = true;
+			uiOnLabelRenderer.validate();
+			uiOnLabelRenderer.visible = true;
 		}
 
 		/**
@@ -1104,11 +1104,11 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function refreshOffLabelStyles():void
 		{
-			const foxholeOffLabel:FoxholeControl = FoxholeControl(this.offLabelControl);
+			const uiOffLabelRenderer:FoxholeControl = FoxholeControl(this.offTextRenderer);
 			//no need to style the label field if there's no text to display
 			if(!this._showLabels || !this._showThumb)
 			{
-				foxholeOffLabel.visible = false;
+				uiOffLabelRenderer.visible = false;
 				return;
 			}
 
@@ -1126,20 +1126,20 @@ package org.josht.starling.foxhole.controls
 				properties = this._defaultLabelProperties;
 			}
 
-			this.offLabelControl.text = this._offText;
+			this.offTextRenderer.text = this._offText;
 			if(properties)
 			{
 				for(var propertyName:String in properties)
 				{
-					if(foxholeOffLabel.hasOwnProperty(propertyName))
+					if(uiOffLabelRenderer.hasOwnProperty(propertyName))
 					{
 						var propertyValue:Object = properties[propertyName];
-						foxholeOffLabel[propertyName] = propertyValue;
+						uiOffLabelRenderer[propertyName] = propertyValue;
 					}
 				}
 			}
-			foxholeOffLabel.validate();
-			foxholeOffLabel.visible = true;
+			uiOffLabelRenderer.validate();
+			uiOffLabelRenderer.visible = true;
 		}
 
 		/**
@@ -1189,10 +1189,10 @@ package org.josht.starling.foxhole.controls
 		 */
 		private function drawLabels():void
 		{
-			const foxholeOnLabel:FoxholeControl = FoxholeControl(this.onLabelControl);
-			const foxholeOffLabel:FoxholeControl = FoxholeControl(this.offLabelControl);
+			const uiOnLabelRenderer:FoxholeControl = FoxholeControl(this.onTextRenderer);
+			const uiOffLabelRenderer:FoxholeControl = FoxholeControl(this.offTextRenderer);
 			const maxLabelWidth:Number = Math.max(0, this.actualWidth - this.thumb.width - this._paddingLeft - this._paddingRight);
-			var totalLabelHeight:Number = Math.max(foxholeOnLabel.height, foxholeOffLabel.height);
+			var totalLabelHeight:Number = Math.max(uiOnLabelRenderer.height, uiOffLabelRenderer.height);
 			var labelHeight:Number;
 			if(this._labelAlign == LABEL_ALIGN_MIDDLE)
 			{
@@ -1200,24 +1200,24 @@ package org.josht.starling.foxhole.controls
 			}
 			else //baseline
 			{
-				labelHeight = Math.max(this.onLabelControl.baseline, this.offLabelControl.baseline);
+				labelHeight = Math.max(this.onTextRenderer.baseline, this.offTextRenderer.baseline);
 			}
 
-			var onScrollRect:Rectangle = foxholeOnLabel.scrollRect;
+			var onScrollRect:Rectangle = uiOnLabelRenderer.scrollRect;
 			onScrollRect.width = maxLabelWidth;
 			onScrollRect.height = totalLabelHeight;
-			foxholeOnLabel.scrollRect = onScrollRect;
+			uiOnLabelRenderer.scrollRect = onScrollRect;
 
-			foxholeOnLabel.x = this._paddingLeft;
-			foxholeOnLabel.y = (this.actualHeight - labelHeight) / 2;
+			uiOnLabelRenderer.x = this._paddingLeft;
+			uiOnLabelRenderer.y = (this.actualHeight - labelHeight) / 2;
 
-			var offScrollRect:Rectangle = foxholeOffLabel.scrollRect;
+			var offScrollRect:Rectangle = uiOffLabelRenderer.scrollRect;
 			offScrollRect.width = maxLabelWidth;
 			offScrollRect.height = totalLabelHeight;
-			foxholeOffLabel.scrollRect = offScrollRect;
+			uiOffLabelRenderer.scrollRect = offScrollRect;
 
-			foxholeOffLabel.x = this.actualWidth - this._paddingRight - maxLabelWidth;
-			foxholeOffLabel.y = (this.actualHeight - labelHeight) / 2;
+			uiOffLabelRenderer.x = this.actualWidth - this._paddingRight - maxLabelWidth;
+			uiOffLabelRenderer.y = (this.actualHeight - labelHeight) / 2;
 		}
 
 		/**
@@ -1228,15 +1228,15 @@ package org.josht.starling.foxhole.controls
 			const maxLabelWidth:Number = Math.max(0, this.actualWidth - this.thumb.width - this._paddingLeft - this._paddingRight);
 			const thumbOffset:Number = this.thumb.x - this._paddingLeft;
 
-			const foxholeOnLabel:FoxholeControl = FoxholeControl(this.onLabelControl);
-			const foxholeOffLabel:FoxholeControl = FoxholeControl(this.offLabelControl);
-			var currentScrollRect:Rectangle = foxholeOnLabel.scrollRect;
-			currentScrollRect.x = maxLabelWidth - thumbOffset - (maxLabelWidth - foxholeOnLabel.width) / 2;
-			foxholeOnLabel.scrollRect = currentScrollRect;
+			const uiOnLabelRenderer:FoxholeControl = FoxholeControl(this.onTextRenderer);
+			const uiOffLabelRenderer:FoxholeControl = FoxholeControl(this.offTextRenderer);
+			var currentScrollRect:Rectangle = uiOnLabelRenderer.scrollRect;
+			currentScrollRect.x = maxLabelWidth - thumbOffset - (maxLabelWidth - uiOnLabelRenderer.width) / 2;
+			uiOnLabelRenderer.scrollRect = currentScrollRect;
 
-			currentScrollRect = foxholeOffLabel.scrollRect;
-			currentScrollRect.x = -thumbOffset - (maxLabelWidth - foxholeOffLabel.width) / 2;
-			foxholeOffLabel.scrollRect = currentScrollRect;
+			currentScrollRect = uiOffLabelRenderer.scrollRect;
+			currentScrollRect.x = -thumbOffset - (maxLabelWidth - uiOffLabelRenderer.width) / 2;
+			uiOffLabelRenderer.scrollRect = currentScrollRect;
 
 			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_SCROLL)
 			{

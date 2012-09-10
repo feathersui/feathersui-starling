@@ -159,10 +159,10 @@ package org.josht.starling.foxhole.core
 			{
 				if(target is FoxholeControl)
 				{
-					const foxholeControl:FoxholeControl = FoxholeControl(target);
+					const uiControl:FoxholeControl = FoxholeControl(target);
 					for(var name:String in nameTable)
 					{
-						if(foxholeControl.nameList.contains(name))
+						if(uiControl.nameList.contains(name))
 						{
 							initializer = nameTable[name] as Function;
 							if(initializer != null)

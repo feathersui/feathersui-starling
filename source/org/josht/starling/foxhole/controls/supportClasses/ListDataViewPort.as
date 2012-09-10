@@ -538,16 +538,16 @@ package org.josht.starling.foxhole.controls.supportClasses
 				var itemRenderer:DisplayObject = DisplayObject(this._activeRenderers[i]);
 				if(itemRenderer is FoxholeControl)
 				{
-					const foxholeItemRenderer:FoxholeControl = FoxholeControl(itemRenderer);
+					const uiItemRenderer:FoxholeControl = FoxholeControl(itemRenderer);
 					if(stateInvalid || dataInvalid || scrollInvalid || itemRendererInvalid)
 					{
-						foxholeItemRenderer.isEnabled = this._isEnabled;
+						uiItemRenderer.isEnabled = this._isEnabled;
 					}
-					if(stylesInvalid && this._itemRendererName && !foxholeItemRenderer.nameList.contains(this._itemRendererName))
+					if(stylesInvalid && this._itemRendererName && !uiItemRenderer.nameList.contains(this._itemRendererName))
 					{
-						foxholeItemRenderer.nameList.add(this._itemRendererName);
+						uiItemRenderer.nameList.add(this._itemRendererName);
 					}
-					foxholeItemRenderer.validate();
+					uiItemRenderer.validate();
 				}
 			}
 
