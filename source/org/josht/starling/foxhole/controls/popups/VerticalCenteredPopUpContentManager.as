@@ -115,8 +115,8 @@ package org.josht.starling.foxhole.controls.popups
 			PopUpManager.addPopUp(this.content, true, false);
 			if(this.content is FoxholeControl)
 			{
-				const foxholeContent:FoxholeControl = FoxholeControl(this.content);
-				FoxholeControl(this.content).onResize.add(content_resizeHandler);
+				const uiContent:FoxholeControl = FoxholeControl(this.content);
+				uiContent.onResize.add(content_resizeHandler);
 			}
 			this.layout();
 			Starling.current.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
@@ -163,10 +163,10 @@ package org.josht.starling.foxhole.controls.popups
 			const maxHeight:Number = Starling.current.stage.stageHeight - this.marginTop - this.marginBottom;
 			if(this.content is FoxholeControl)
 			{
-				const foxholeContent:FoxholeControl = FoxholeControl(this.content);
-				foxholeContent.minWidth = foxholeContent.maxWidth = maxWidth;
-				foxholeContent.maxHeight = maxHeight;
-				foxholeContent.validate();
+				const uiContent:FoxholeControl = FoxholeControl(this.content);
+				uiContent.minWidth = uiContent.maxWidth = maxWidth;
+				uiContent.maxHeight = maxHeight;
+				uiContent.validate();
 			}
 
 			//if it's a foxhole control that is able to auto-size, the above

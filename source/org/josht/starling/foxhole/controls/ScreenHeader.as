@@ -742,15 +742,15 @@ package org.josht.starling.foxhole.controls
 				}
 			}
 
-			const foxholeTitle:FoxholeControl = FoxholeControl(this._titleRenderer);
-			foxholeTitle.validate();
-			if(needsWidth && !isNaN(foxholeTitle.width))
+			const uiTitleRenderer:FoxholeControl = FoxholeControl(this._titleRenderer);
+			uiTitleRenderer.validate();
+			if(needsWidth && !isNaN(uiTitleRenderer.width))
 			{
-				newWidth += foxholeTitle.width;
+				newWidth += uiTitleRenderer.width;
 			}
-			if(needsHeight && !isNaN(foxholeTitle.height))
+			if(needsHeight && !isNaN(uiTitleRenderer.height))
 			{
-				newHeight = Math.max(newHeight, foxholeTitle.height);
+				newHeight = Math.max(newHeight, uiTitleRenderer.height);
 			}
 			if(needsHeight)
 			{
@@ -781,10 +781,10 @@ package org.josht.starling.foxhole.controls
 
 			const factory:Function = this._titleFactory != null ? this._titleFactory : FoxholeControl.defaultTextRendererFactory;
 			this._titleRenderer = factory();
-			const foxholeTitle:FoxholeControl = FoxholeControl(this._titleRenderer);
-			foxholeTitle.nameList.add(this.titleName);
-			foxholeTitle.touchable = false;
-			this.addChild(foxholeTitle);
+			const uiTitleRenderer:FoxholeControl = FoxholeControl(this._titleRenderer);
+			uiTitleRenderer.nameList.add(this.titleName);
+			uiTitleRenderer.touchable = false;
+			this.addChild(uiTitleRenderer);
 		}
 
 		/**
@@ -805,13 +805,13 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function refreshTitleStyles():void
 		{
-			const foxholeTitle:FoxholeControl = FoxholeControl(this._titleRenderer);
+			const uiTitleRenderer:FoxholeControl = FoxholeControl(this._titleRenderer);
 			for(var propertyName:String in this._titleProperties)
 			{
-				if(foxholeTitle.hasOwnProperty(propertyName))
+				if(uiTitleRenderer.hasOwnProperty(propertyName))
 				{
 					var propertyValue:Object = this._titleProperties[propertyName];
-					foxholeTitle[propertyName] = propertyValue;
+					uiTitleRenderer[propertyName] = propertyValue;
 				}
 			}
 		}
@@ -893,31 +893,31 @@ package org.josht.starling.foxhole.controls
 			{
 				return;
 			}
-			const foxholeTitle:FoxholeControl = FoxholeControl(this._titleRenderer);
-			foxholeTitle.validate();
+			const uiTitleRenderer:FoxholeControl = FoxholeControl(this._titleRenderer);
+			uiTitleRenderer.validate();
 			if(this._titleAlign == TITLE_ALIGN_PREFER_LEFT && (!this._leftItems || this._leftItems.length == 0))
 			{
-				foxholeTitle.x = this._paddingLeft;
+				uiTitleRenderer.x = this._paddingLeft;
 			}
 			else if(this._titleAlign == TITLE_ALIGN_PREFER_RIGHT && (!this._rightItems || this._rightItems.length == 0))
 			{
-				foxholeTitle.x = this.actualWidth - this._paddingRight - foxholeTitle.width;
+				uiTitleRenderer.x = this.actualWidth - this._paddingRight - uiTitleRenderer.width;
 			}
 			else
 			{
-				foxholeTitle.x = (this.actualWidth - foxholeTitle.width) / 2;
+				uiTitleRenderer.x = (this.actualWidth - uiTitleRenderer.width) / 2;
 			}
 			if(this._verticalAlign == VERTICAL_ALIGN_TOP)
 			{
-				foxholeTitle.y = this._paddingTop;
+				uiTitleRenderer.y = this._paddingTop;
 			}
 			else if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
 			{
-				foxholeTitle.y = this.actualHeight - this._paddingBottom - foxholeTitle.height;
+				uiTitleRenderer.y = this.actualHeight - this._paddingBottom - uiTitleRenderer.height;
 			}
 			else
 			{
-				foxholeTitle.y = (this.actualHeight - foxholeTitle.height) / 2;
+				uiTitleRenderer.y = (this.actualHeight - uiTitleRenderer.height) / 2;
 			}
 		}
 

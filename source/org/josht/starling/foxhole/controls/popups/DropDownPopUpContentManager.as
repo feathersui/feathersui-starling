@@ -97,7 +97,7 @@ package org.josht.starling.foxhole.controls.popups
 			PopUpManager.addPopUp(this.content, false, false);
 			if(this.content is FoxholeControl)
 			{
-				const foxholeContent:FoxholeControl = FoxholeControl(this.content);
+				const uiContent:FoxholeControl = FoxholeControl(this.content);
 				FoxholeControl(this.content).onResize.add(content_resizeHandler);
 			}
 			this.layout();
@@ -150,9 +150,9 @@ package org.josht.starling.foxhole.controls.popups
 			}
 			if(this.content is FoxholeControl)
 			{
-				const foxholeContent:FoxholeControl = FoxholeControl(this.content);
-				foxholeContent.minWidth = Math.max(foxholeContent.minWidth, this.source.width);
-				foxholeContent.validate();
+				const uiContent:FoxholeControl = FoxholeControl(this.content);
+				uiContent.minWidth = Math.max(uiContent.minWidth, this.source.width);
+				uiContent.validate();
 			}
 			else
 			{

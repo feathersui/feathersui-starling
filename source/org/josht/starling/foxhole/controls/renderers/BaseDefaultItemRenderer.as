@@ -1129,7 +1129,7 @@ package org.josht.starling.foxhole.controls.renderers
 			{
 				return false;
 			}
-			this.labelControl.measureText(helperPoint);
+			this.labelTextRenderer.measureText(helperPoint);
 			if(this.accessory is FoxholeControl)
 			{
 				FoxholeControl(this.accessory).validate();

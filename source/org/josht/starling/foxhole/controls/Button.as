@@ -156,7 +156,7 @@ package org.josht.starling.foxhole.controls
 		/**
 		 * @private
 		 */
-		protected var labelControl:ITextRenderer;
+		protected var labelTextRenderer:ITextRenderer;
 		
 		/**
 		 * @private
@@ -1845,7 +1845,7 @@ package org.josht.starling.foxhole.controls
 			{
 				return false;
 			}
-			this.labelControl.measureText(helperPoint);
+			this.labelTextRenderer.measureText(helperPoint);
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
 			{
@@ -1922,17 +1922,17 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function createLabel():void
 		{
-			if(this.labelControl)
+			if(this.labelTextRenderer)
 			{
-				this.removeChild(FoxholeControl(this.labelControl), true);
-				this.labelControl = null;
+				this.removeChild(FoxholeControl(this.labelTextRenderer), true);
+				this.labelTextRenderer = null;
 			}
 
 			const factory:Function = this._labelFactory != null ? this._labelFactory : FoxholeControl.defaultTextRendererFactory;
-			this.labelControl = factory();
-			const foxholeLabel:FoxholeControl = FoxholeControl(this.labelControl);
-			foxholeLabel.nameList.add(this.labelName);
-			this.addChild(foxholeLabel);
+			this.labelTextRenderer = factory();
+			const uiLabelRenderer:FoxholeControl = FoxholeControl(this.labelTextRenderer);
+			uiLabelRenderer.nameList.add(this.labelName);
+			this.addChild(uiLabelRenderer);
 		}
 
 		/**
@@ -1940,8 +1940,8 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function refreshLabelData():void
 		{
-			this.labelControl.text = this._label;
-			DisplayObject(this.labelControl).visible = this._label.length > 0;
+			this.labelTextRenderer.text = this._label;
+			DisplayObject(this.labelTextRenderer).visible = this._label.length > 0;
 		}
 
 		/**
@@ -2012,13 +2012,13 @@ package org.josht.starling.foxhole.controls
 				properties = this._labelPropertiesSelector.updateValue(this, this._currentState);
 			}
 
-			const foxholeLabel:FoxholeControl = FoxholeControl(this.labelControl);
+			const uiLabelRenderer:FoxholeControl = FoxholeControl(this.labelTextRenderer);
 			for(var propertyName:String in properties)
 			{
-				if(foxholeLabel.hasOwnProperty(propertyName))
+				if(uiLabelRenderer.hasOwnProperty(propertyName))
 				{
 					var propertyValue:Object = properties[propertyName];
-					foxholeLabel[propertyName] = propertyValue;
+					uiLabelRenderer[propertyName] = propertyValue;
 				}
 			}
 		}
@@ -2047,28 +2047,28 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function layoutContent():void
 		{
-			const foxholeLabel:FoxholeControl = FoxholeControl(this.labelControl);
+			const uiLabelRenderer:FoxholeControl = FoxholeControl(this.labelTextRenderer);
 			if(this.label && this.currentIcon)
 			{
 				if(this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE ||
 					this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
 				{
 					var adjustedGap:Number = this._gap == Number.POSITIVE_INFINITY ? Math.min(this._paddingLeft, this._paddingRight) : this._gap;
-					foxholeLabel.maxWidth = this.actualWidth - this._paddingLeft - this._paddingRight - this.currentIcon.width - adjustedGap;
+					uiLabelRenderer.maxWidth = this.actualWidth - this._paddingLeft - this._paddingRight - this.currentIcon.width - adjustedGap;
 				}
 				else
 				{
-					foxholeLabel.maxWidth = this.actualWidth - this._paddingLeft - this._paddingRight;
+					uiLabelRenderer.maxWidth = this.actualWidth - this._paddingLeft - this._paddingRight;
 				}
-				foxholeLabel.validate();
-				this.positionLabelOrIcon(foxholeLabel);
+				uiLabelRenderer.validate();
+				this.positionLabelOrIcon(uiLabelRenderer);
 				this.positionLabelAndIcon();
 			}
 			else if(this.label && !this.currentIcon)
 			{
-				foxholeLabel.maxWidth = this.actualWidth - this._paddingLeft - this._paddingRight;
-				foxholeLabel.validate();
-				this.positionLabelOrIcon(foxholeLabel);
+				uiLabelRenderer.maxWidth = this.actualWidth - this._paddingLeft - this._paddingRight;
+				uiLabelRenderer.validate();
+				this.positionLabelOrIcon(uiLabelRenderer);
 			}
 			else if(!this.label && this.currentIcon)
 			{
@@ -2112,65 +2112,65 @@ package org.josht.starling.foxhole.controls
 		 */
 		protected function positionLabelAndIcon():void
 		{
-			const foxholeLabel:FoxholeControl = FoxholeControl(this.labelControl);
+			const uiLabelRenderer:FoxholeControl = FoxholeControl(this.labelTextRenderer);
 			if(this._iconPosition == ICON_POSITION_TOP)
 			{
 				if(this._gap == Number.POSITIVE_INFINITY)
 				{
 					this.currentIcon.y = this._paddingTop;
-					foxholeLabel.y = this.actualHeight - this._paddingBottom - foxholeLabel.height;
+					uiLabelRenderer.y = this.actualHeight - this._paddingBottom - uiLabelRenderer.height;
 				}
 				else
 				{
 					if(this._verticalAlign == VERTICAL_ALIGN_TOP)
 					{
-						foxholeLabel.y += this.currentIcon.height + this._gap;
+						uiLabelRenderer.y += this.currentIcon.height + this._gap;
 					}
 					else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
 					{
-						foxholeLabel.y += (this.currentIcon.height + this._gap) / 2;
+						uiLabelRenderer.y += (this.currentIcon.height + this._gap) / 2;
 					}
-					this.currentIcon.y = foxholeLabel.y - this.currentIcon.height - this._gap;
+					this.currentIcon.y = uiLabelRenderer.y - this.currentIcon.height - this._gap;
 				}
 			}
 			else if(this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
 			{
 				if(this._gap == Number.POSITIVE_INFINITY)
 				{
-					foxholeLabel.x = this._paddingLeft;
+					uiLabelRenderer.x = this._paddingLeft;
 					this.currentIcon.x = this.actualWidth - this._paddingRight - this.currentIcon.width;
 				}
 				else
 				{
 					if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
 					{
-						foxholeLabel.x -= this.currentIcon.width + this._gap;
+						uiLabelRenderer.x -= this.currentIcon.width + this._gap;
 					}
 					else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
 					{
-						foxholeLabel.x -= (this.currentIcon.width + this._gap) / 2;
+						uiLabelRenderer.x -= (this.currentIcon.width + this._gap) / 2;
 					}
-					this.currentIcon.x = foxholeLabel.x + foxholeLabel.width + this._gap;
+					this.currentIcon.x = uiLabelRenderer.x + uiLabelRenderer.width + this._gap;
 				}
 			}
 			else if(this._iconPosition == ICON_POSITION_BOTTOM)
 			{
 				if(this._gap == Number.POSITIVE_INFINITY)
 				{
-					foxholeLabel.y = this._paddingTop;
+					uiLabelRenderer.y = this._paddingTop;
 					this.currentIcon.y = this.actualHeight - this._paddingBottom - this.currentIcon.height;
 				}
 				else
 				{
 					if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
 					{
-						foxholeLabel.y -= this.currentIcon.height + this._gap;
+						uiLabelRenderer.y -= this.currentIcon.height + this._gap;
 					}
 					else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
 					{
-						foxholeLabel.y -= (this.currentIcon.height + this._gap) / 2;
+						uiLabelRenderer.y -= (this.currentIcon.height + this._gap) / 2;
 					}
-					this.currentIcon.y = foxholeLabel.y + foxholeLabel.height + this._gap;
+					this.currentIcon.y = uiLabelRenderer.y + uiLabelRenderer.height + this._gap;
 				}
 			}
 			else if(this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE)
@@ -2178,43 +2178,43 @@ package org.josht.starling.foxhole.controls
 				if(this._gap == Number.POSITIVE_INFINITY)
 				{
 					this.currentIcon.x = this._paddingLeft;
-					foxholeLabel.x = this.actualWidth - this._paddingRight - foxholeLabel.width;
+					uiLabelRenderer.x = this.actualWidth - this._paddingRight - uiLabelRenderer.width;
 				}
 				else
 				{
 					if(this._horizontalAlign == HORIZONTAL_ALIGN_LEFT)
 					{
-						foxholeLabel.x += this._gap + this.currentIcon.width;
+						uiLabelRenderer.x += this._gap + this.currentIcon.width;
 					}
 					else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
 					{
-						foxholeLabel.x += (this._gap + this.currentIcon.width) / 2;
+						uiLabelRenderer.x += (this._gap + this.currentIcon.width) / 2;
 					}
-					this.currentIcon.x = foxholeLabel.x - this._gap - this.currentIcon.width;
+					this.currentIcon.x = uiLabelRenderer.x - this._gap - this.currentIcon.width;
 				}
 			}
 			
 			if(this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_RIGHT)
 			{
-				this.currentIcon.y = foxholeLabel.y + (foxholeLabel.height - this.currentIcon.height) / 2;
+				this.currentIcon.y = uiLabelRenderer.y + (uiLabelRenderer.height - this.currentIcon.height) / 2;
 			}
 			else if(this._iconPosition == ICON_POSITION_LEFT_BASELINE || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
 			{
-				this.currentIcon.y = foxholeLabel.y + (this.labelControl.baseline) - this.currentIcon.height;
+				this.currentIcon.y = uiLabelRenderer.y + (this.labelTextRenderer.baseline) - this.currentIcon.height;
 			}
 			else
 			{
 				if(this._horizontalAlign == HORIZONTAL_ALIGN_LEFT)
 				{
-					this.currentIcon.x = foxholeLabel.x;
+					this.currentIcon.x = uiLabelRenderer.x;
 				}
 				else if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
 				{
-					this.currentIcon.x = foxholeLabel.x + foxholeLabel.width - this.currentIcon.width;
+					this.currentIcon.x = uiLabelRenderer.x + uiLabelRenderer.width - this.currentIcon.width;
 				}
 				else
 				{
-					this.currentIcon.x = foxholeLabel.x + (foxholeLabel.width - this.currentIcon.width) / 2;
+					this.currentIcon.x = uiLabelRenderer.x + (uiLabelRenderer.width - this.currentIcon.width) / 2;
 				}
 			}
 		}

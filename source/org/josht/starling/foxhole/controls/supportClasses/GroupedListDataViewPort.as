@@ -815,16 +815,16 @@ package org.josht.starling.foxhole.controls.supportClasses
 				var renderer:DisplayObject = DisplayObject(this._activeItemRenderers[i]);
 				if(renderer is FoxholeControl)
 				{
-					var foxholeRenderer:FoxholeControl = FoxholeControl(renderer);
+					var uiRenderer:FoxholeControl = FoxholeControl(renderer);
 					if(stateInvalid || dataInvalid || scrollInvalid || itemRendererInvalid)
 					{
-						foxholeRenderer.isEnabled = this._isEnabled;
+						uiRenderer.isEnabled = this._isEnabled;
 					}
-					if(stylesInvalid && this._itemRendererName && !foxholeRenderer.nameList.contains(this._itemRendererName))
+					if(stylesInvalid && this._itemRendererName && !uiRenderer.nameList.contains(this._itemRendererName))
 					{
-						foxholeRenderer.nameList.add(this._itemRendererName);
+						uiRenderer.nameList.add(this._itemRendererName);
 					}
-					foxholeRenderer.validate();
+					uiRenderer.validate();
 				}
 			}
 			rendererCount = this._activeHeaderRenderers.length;
@@ -833,16 +833,16 @@ package org.josht.starling.foxhole.controls.supportClasses
 				renderer = DisplayObject(this._activeHeaderRenderers[i]);
 				if(renderer is FoxholeControl)
 				{
-					foxholeRenderer = FoxholeControl(renderer);
+					uiRenderer = FoxholeControl(renderer);
 					if(stateInvalid || dataInvalid || scrollInvalid || itemRendererInvalid)
 					{
-						foxholeRenderer.isEnabled = this._isEnabled;
+						uiRenderer.isEnabled = this._isEnabled;
 					}
-					if(stylesInvalid && this._headerRendererName && !foxholeRenderer.nameList.contains(this._headerRendererName))
+					if(stylesInvalid && this._headerRendererName && !uiRenderer.nameList.contains(this._headerRendererName))
 					{
-						foxholeRenderer.nameList.add(this._headerRendererName);
+						uiRenderer.nameList.add(this._headerRendererName);
 					}
-					foxholeRenderer.validate();
+					uiRenderer.validate();
 				}
 			}
 			rendererCount = this._activeFooterRenderers.length;
@@ -851,16 +851,16 @@ package org.josht.starling.foxhole.controls.supportClasses
 				renderer = DisplayObject(this._activeFooterRenderers[i]);
 				if(renderer is FoxholeControl)
 				{
-					foxholeRenderer = FoxholeControl(renderer);
+					uiRenderer = FoxholeControl(renderer);
 					if(stateInvalid || dataInvalid || scrollInvalid || itemRendererInvalid)
 					{
-						foxholeRenderer.isEnabled = this._isEnabled;
+						uiRenderer.isEnabled = this._isEnabled;
 					}
-					if(stylesInvalid && this._footerRendererName && !foxholeRenderer.nameList.contains(this._footerRendererName))
+					if(stylesInvalid && this._footerRendererName && !uiRenderer.nameList.contains(this._footerRendererName))
 					{
-						foxholeRenderer.nameList.add(this._footerRendererName);
+						uiRenderer.nameList.add(this._footerRendererName);
 					}
-					foxholeRenderer.validate();
+					uiRenderer.validate();
 				}
 			}
 
