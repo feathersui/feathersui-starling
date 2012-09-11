@@ -30,15 +30,22 @@ package org.josht.starling.foxhole.core
 	[ExcludeClass]
 	public class ValidationQueue implements IAnimatable
 	{
+		/**
+		 * Constructor.
+		 */
 		public function ValidationQueue()
 		{
-
+			Starling.current.juggler.add(this);
 		}
 
 		private var _isValidating:Boolean = false;
 		private var _delayedQueue:Vector.<FoxholeControl> = new <FoxholeControl>[];
 		private var _queue:Vector.<FoxholeControl> = new <FoxholeControl>[];
 
+		/**
+		 * @private
+		 * Adds a control to the queue.
+		 */
 		public function addControl(control:FoxholeControl, delayIfValidating:Boolean):void
 		{
 			const currentQueue:Vector.<FoxholeControl> = (this._isValidating && delayIfValidating) ? this._delayedQueue : this._queue;
@@ -52,12 +59,11 @@ package org.josht.starling.foxhole.core
 				}
 			}
 			currentQueue.splice(i, 0, control);
-			if(!this._isValidating && currentQueue == this._queue && this._queue.length == 1)
-			{
-				Starling.juggler.add(this);
-			}
 		}
 
+		/**
+		 * @private
+		 */
 		public function advanceTime(time:Number):void
 		{
 			this._isValidating = true;
@@ -66,15 +72,9 @@ package org.josht.starling.foxhole.core
 				var item:FoxholeControl = this._queue.shift();
 				item.validate();
 			}
-
 			const temp:Vector.<FoxholeControl> = this._queue;
 			this._queue = this._delayedQueue;
 			this._delayedQueue = temp;
-
-			if(this._queue.length == 0)
-			{
-				Starling.juggler.remove(this);
-			}
 			this._isValidating = false;
 		}
 	}
