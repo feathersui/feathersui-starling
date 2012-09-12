@@ -1,60 +1,57 @@
 <overviews>
 	<packages>
-		<package name="org.josht.starling.display"> 
+		<package name="feathers.display"> 
 			<shortDescription><![CDATA[A variety of custom Starling display objects.]]></shortDescription>
 		</package>
-		<package name="org.josht.starling.textures"> 
+		<package name="feathers.textures"> 
 			<shortDescription><![CDATA[Textures for custom Starling display objects.]]></shortDescription>
 		</package>
-		<package name="org.josht.starling.foxhole.controls"> 
-			<shortDescription><![CDATA[Foxhole user interface controls and containers.]]></shortDescription>
+		<package name="feathers.controls"> 
+			<shortDescription><![CDATA[User interface controls and containers.]]></shortDescription>
 		</package>
-		<package name="org.josht.starling.foxhole.controls.popups"> 
+		<package name="feathers.controls.popups"> 
 			<shortDescription><![CDATA[Managers for the display of pop-up sub-components.]]></shortDescription>
 		</package>
-		<package name="org.josht.starling.foxhole.controls.text"> 
-			<shortDescription><![CDATA[Foxhole components that render text.]]></shortDescription>
+		<package name="feathers.controls.text"> 
+			<shortDescription><![CDATA[Text rendering sub-components.]]></shortDescription>
 		</package>
-		<package name="org.josht.starling.foxhole.controls.renderers"> 
+		<package name="feathers.controls.renderers"> 
 			<shortDescription><![CDATA[Data renderers for list controls.]]></shortDescription>
 		</package>
-		<package name="org.josht.starling.foxhole.core"> 
-			<shortDescription><![CDATA[Base classes and interfaces used by Foxhole.]]></shortDescription>
+		<package name="feathers.core"> 
+			<shortDescription><![CDATA[Base classes and interfaces used by Feathers.]]></shortDescription>
 		</package>
-		<package name="org.josht.starling.foxhole.data"> 
-			<shortDescription><![CDATA[Collections used by Foxhole to display data.]]></shortDescription>
+		<package name="feathers.data"> 
+			<shortDescription><![CDATA[Collections used by Feathers to display data.]]></shortDescription>
 		</package>
-		<package name="org.josht.starling.foxhole.dragDrop"> 
+		<package name="feathers.dragDrop"> 
 			<shortDescription><![CDATA[Classes related to drag and drop operations.]]></shortDescription>
 		</package>
-		<package name="org.josht.starling.foxhole.layout"> 
-			<shortDescription><![CDATA[A variety of layout algorithms used to customize Foxhole controls and containers.]]></shortDescription>
+		<package name="feathers.layout"> 
+			<shortDescription><![CDATA[A variety of layout algorithms used to customize Feathers controls and containers.]]></shortDescription>
 		</package>
-		<package name="org.josht.starling.foxhole.skins"> 
-			<shortDescription><![CDATA[Classes related to skinning in Foxhole.]]></shortDescription>
+		<package name="feathers.skins"> 
+			<shortDescription><![CDATA[Classes related to skinning and themes in Feathers.]]></shortDescription>
 		</package>
-		<package name="org.josht.starling.foxhole.text"> 
-			<shortDescription><![CDATA[Contains classes for working with displayed text in Foxhole.]]></shortDescription>
+		<package name="feathers.text"> 
+			<shortDescription><![CDATA[Contains classes for working with text.]]></shortDescription>
 		</package>
-		<package name="org.josht.starling.foxhole.themes"> 
-			<shortDescription><![CDATA[Classes for theming and skinning.]]></shortDescription>
-		</package>
-		<package name="org.josht.starling.foxhole.transitions"> 
-			<shortDescription><![CDATA[A variety of animated transitions used by ScreenNavigator.]]></shortDescription>
-		</package>
-		<package name="org.josht.starling.motion"> 
+		<package name="feathers.motion"> 
 			<shortDescription><![CDATA[Classes related to motion, tweens, and animation.]]></shortDescription>
 		</package>
-		<package name="org.josht.system"> 
+		<package name="feathers.motion.transitions"> 
+			<shortDescription><![CDATA[A variety of animated transitions used by the ScreenNavigator component.]]></shortDescription>
+		</package>
+		<package name="feathers.system"> 
 			<shortDescription><![CDATA[Higher level queries for system-level capabilities.]]></shortDescription>
 		</package>
-		<package name="org.josht.text"> 
-			<shortDescription><![CDATA[ontains classes for working with displayed text.]]></shortDescription>
+		<package name="feathers.utils"> 
+			<shortDescription><![CDATA[Utility classes and function.]]></shortDescription>
 		</package>
-		<package name="org.josht.utils.display"> 
+		<package name="feathers.utils.display"> 
 			<shortDescription><![CDATA[Utilities for working with display objects.]]></shortDescription>
 		</package>
-		<package name="org.josht.utils.math"> 
+		<package name="feathers.utils.math"> 
 			<shortDescription><![CDATA[Utilities for common mathematical calculations.]]></shortDescription>
 		</package>
 	</packages>

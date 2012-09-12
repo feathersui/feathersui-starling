@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project name="foxhole-starling" default="build" basedir=".">
+<project name="feathers" default="build" basedir=".">
 	
 	<!-- build.local.properties and sdk.local.proprties are optional files that
 		can be used to override the default properties. -->
@@ -38,7 +38,7 @@
 			<arg line="--output '${dependency.output}/gtween.swc'"/>
 		</java>
 
-		<echo message="Building foxhole-starling.swc"/>
+		<echo message="Building feathers.swc"/>
 		<java jar="${compc}" dir="${basedir}" fork="true" failonerror="true">
 			<arg line="+flexlib='${flexframework.root}'"/>
 			<arg line="--source-path+='source'"/>
@@ -55,8 +55,10 @@
 			<arg line="--library-path+='${dependency.output}'"/>
 			<arg line="--doc-sources+='source'"/>
 			<arg line="--external-library-path+='${flexframework.lib}'"/>
-			<arg line="--main-title 'Foxhole for Starling API Documentation'"/>
-			<arg line="--window-title 'Foxhole for Starling API Documentation'"/>
+			<arg line="--main-title 'Feathers API Documentation'"/>
+			<arg line="--window-title 'Feathers UI for Starling API Documentation'"/>
+			<arg value="--footer"/>
+			<arg value="${footer.text}"/>
 			<arg line="--package-description-file package-descriptions.xml"/>
 			<arg line="--output '${docs.output}'"/>
 		</java>
