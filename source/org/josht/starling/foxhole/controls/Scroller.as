@@ -1670,7 +1670,7 @@ package org.josht.starling.foxhole.controls
 				this.horizontalScrollBar.minimum = 0;
 				this.horizontalScrollBar.maximum = this._maxHorizontalScrollPosition;
 				this.horizontalScrollBar.value = this._horizontalScrollPosition;
-				this.horizontalScrollBar.page = this.actualWidth;
+				this.horizontalScrollBar.page = this._maxHorizontalScrollPosition * this.actualWidth / this._viewPort.width;
 				this.horizontalScrollBar.step = this._horizontalScrollStep;
 			}
 
@@ -1679,7 +1679,7 @@ package org.josht.starling.foxhole.controls
 				this.verticalScrollBar.minimum = 0;
 				this.verticalScrollBar.maximum = this._maxVerticalScrollPosition;
 				this.verticalScrollBar.value = this._verticalScrollPosition;
-				this.verticalScrollBar.page = this.actualHeight;
+				this.verticalScrollBar.page = this._maxVerticalScrollPosition * this.actualHeight / this._viewPort.height;
 				this.verticalScrollBar.step = this._verticalScrollStep;
 			}
 		}
