@@ -25,10 +25,10 @@
 package org.josht.starling.foxhole.layout
 {
 	import flash.geom.Point;
-
+	
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
-
+	
 	import starling.display.DisplayObject;
 
 	/**
@@ -39,6 +39,8 @@ package org.josht.starling.foxhole.layout
 	 */
 	public class TiledRowsLayout implements IVirtualLayout
 	{
+		private static const helperVector:Vector.<DisplayObject> = new <DisplayObject>[];
+		
 		/**
 		 * If the total item height is smaller than the height of the bounds,
 		 * the items will be aligned to the top.
@@ -540,7 +542,8 @@ package org.josht.starling.foxhole.layout
 			const maxHeight:Number = viewPortBounds ? viewPortBounds.maxHeight : Number.POSITIVE_INFINITY;
 			const explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
 			const explicitHeight:Number = viewPortBounds ? viewPortBounds.explicitHeight : NaN;
-
+			
+			helperVector.length = 0;
 			const itemCount:int = items.length;
 			var tileWidth:Number = this._useSquareTiles ? Math.max(0, this._typicalItemWidth, this._typicalItemHeight) : this._typicalItemWidth;
 			var tileHeight:Number = this._useSquareTiles ? tileWidth : this._typicalItemHeight;
@@ -614,8 +617,12 @@ package org.josht.starling.foxhole.layout
 					//items on the current page and update the positions
 					if(this._paging != PAGING_NONE)
 					{
-						this.applyHorizontalAlign(items, i - perPage, i - 1, totalPageWidth, availablePageWidth);
-						this.applyVerticalAlign(items, i - perPage, i - 1, totalPageHeight, availablePageHeight);
+						var discoveredItems:Vector.<DisplayObject> = this._useVirtualLayout ? helperVector : items;
+						var discoveredItemsFirstIndex:int = this._useVirtualLayout ? 0 : (i - perPage);
+						var discoveredItemsLastIndex:int = this._useVirtualLayout ? (helperVector.length - 1) : (i - 1);
+						this.applyHorizontalAlign(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex, totalPageWidth, availablePageWidth);
+						this.applyVerticalAlign(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex, totalPageHeight, availablePageHeight);
+						helperVector.length = 0;
 					}
 					pageIndex++;
 					nextPageStartIndex += perPage;
@@ -681,14 +688,21 @@ package org.josht.starling.foxhole.layout
 							item.y = positionY + (tileHeight - item.height) / 2;
 						}
 					}
+					if(this._useVirtualLayout)
+					{
+						helperVector.push(item);
+					}
 				}
 				positionX += tileWidth + this._gap;
 			}
 			//align the last page
 			if(this._paging != PAGING_NONE)
 			{
-				this.applyHorizontalAlign(items, nextPageStartIndex - perPage, i - 1, totalPageWidth, availablePageWidth);
-				this.applyVerticalAlign(items, nextPageStartIndex - perPage, i - 1, totalPageHeight, availablePageHeight);
+				discoveredItems = this._useVirtualLayout ? helperVector : items;
+				discoveredItemsFirstIndex = this._useVirtualLayout ? 0 : (nextPageStartIndex - perPage);
+				discoveredItemsLastIndex = this._useVirtualLayout ? (discoveredItems.length - 1) : (i - 1);
+				this.applyHorizontalAlign(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex, totalPageWidth, availablePageWidth);
+				this.applyVerticalAlign(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex, totalPageHeight, availablePageHeight);
 			}
 
 			var totalWidth:Number = totalPageWidth;
@@ -721,9 +735,12 @@ package org.josht.starling.foxhole.layout
 
 			if(this._paging == PAGING_NONE)
 			{
-				this.applyHorizontalAlign(items, 0, itemCount - 1, totalWidth, availableWidth);
-				this.applyVerticalAlign(items, 0, itemCount - 1, totalHeight, availableHeight);
+				discoveredItems = this._useVirtualLayout ? helperVector : items;
+				discoveredItemsLastIndex = discoveredItems.length - 1;
+				this.applyHorizontalAlign(discoveredItems, 0, discoveredItemsLastIndex, totalWidth, availableWidth);
+				this.applyVerticalAlign(discoveredItems, 0, discoveredItemsLastIndex, totalHeight, availableHeight);
 			}
+			helperVector.length = 0;
 
 			if(!result)
 			{
@@ -1074,10 +1091,6 @@ package org.josht.starling.foxhole.layout
 				for(var i:int = startIndex; i <= endIndex; i++)
 				{
 					var item:DisplayObject = items[i];
-					if(!item)
-					{
-						continue;
-					}
 					item.x += horizontalAlignOffsetX;
 				}
 			}
@@ -1106,10 +1119,6 @@ package org.josht.starling.foxhole.layout
 				for(var i:int = startIndex; i <= endIndex; i++)
 				{
 					var item:DisplayObject = items[i];
-					if(!item)
-					{
-						continue;
-					}
 					item.y += verticalAlignOffsetY;
 				}
 			}
