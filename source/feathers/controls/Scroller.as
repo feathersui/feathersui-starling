@@ -36,26 +36,28 @@ package feathers.controls
 {
 	import com.gskinner.motion.easing.Cubic;
 	import com.gskinner.motion.easing.Sine;
-
+	
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.system.Capabilities;
 	import flash.utils.getTimer;
-
-	import feathers.display.ScrollRectManager;
-	import feathers.display.Sprite;
+	
 	import feathers.controls.supportClasses.IViewPort;
 	import feathers.core.FeathersControl;
 	import feathers.core.PropertyProxy;
+	import feathers.display.ScrollRectManager;
+	import feathers.display.Sprite;
 	import feathers.motion.GTween;
+	import feathers.system.DeviceCapabilities;
 	import feathers.utils.math.clamp;
 	import feathers.utils.math.roundDownToNearest;
 	import feathers.utils.math.roundToNearest;
 	import feathers.utils.math.roundUpToNearest;
+	
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
-
+	
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -1920,7 +1922,7 @@ package feathers.controls
 		{
 			if(this._snapToPages)
 			{
-				const inchesPerSecond:Number = 1000 * pixelsPerMS / Capabilities.screenDPI;
+				const inchesPerSecond:Number = 1000 * pixelsPerMS / DeviceCapabilities.dpi;
 				if(inchesPerSecond > MINIMUM_PAGE_VELOCITY)
 				{
 					var snappedPageHorizontalScrollPosition:Number = roundDownToNearest(this._horizontalScrollPosition, this.actualWidth);
@@ -1987,7 +1989,7 @@ package feathers.controls
 		{
 			if(this._snapToPages)
 			{
-				const inchesPerSecond:Number = 1000 * pixelsPerMS / Capabilities.screenDPI;
+				const inchesPerSecond:Number = 1000 * pixelsPerMS / DeviceCapabilities.dpi;
 				if(inchesPerSecond > MINIMUM_PAGE_VELOCITY)
 				{
 					var snappedPageVerticalScrollPosition:Number = roundDownToNearest(this._verticalScrollPosition, this.actualHeight);
@@ -2259,8 +2261,8 @@ package feathers.controls
 				this._previousTouchX = this._currentTouchX;
 				this._previousTouchY = this._currentTouchY;
 			}
-			const horizontalInchesMoved:Number = Math.abs(this._currentTouchX - this._startTouchX) / Capabilities.screenDPI;
-			const verticalInchesMoved:Number = Math.abs(this._currentTouchY - this._startTouchY) / Capabilities.screenDPI;
+			const horizontalInchesMoved:Number = Math.abs(this._currentTouchX - this._startTouchX) / DeviceCapabilities.dpi;
+			const verticalInchesMoved:Number = Math.abs(this._currentTouchY - this._startTouchY) / DeviceCapabilities.dpi;
 			if((this._horizontalScrollPolicy == SCROLL_POLICY_ON ||
 				(this._horizontalScrollPolicy == SCROLL_POLICY_AUTO && (this._maxHorizontalScrollPosition > 0 || this._hasElasticEdges))) &&
 				!this._isDraggingHorizontally && horizontalInchesMoved >= MINIMUM_DRAG_DISTANCE)

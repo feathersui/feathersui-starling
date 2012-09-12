@@ -27,17 +27,18 @@ package feathers.controls
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.system.Capabilities;
-
+	
 	import feathers.core.FeathersControl;
 	import feathers.core.ITextRenderer;
 	import feathers.core.IToggle;
 	import feathers.core.PropertyProxy;
 	import feathers.motion.GTween;
+	import feathers.system.DeviceCapabilities;
+	
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
-
+	
 	import starling.events.Event;
-
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -1491,7 +1492,7 @@ package feathers.controls
 				}
 				else if(touch.phase == TouchPhase.ENDED)
 				{
-					const inchesMoved:Number = Math.abs(HELPER_POINT.x - this._touchStartX) / Capabilities.screenDPI;
+					const inchesMoved:Number = Math.abs(HELPER_POINT.x - this._touchStartX) / DeviceCapabilities.dpi;
 					if(inchesMoved > MINIMUM_DRAG_DISTANCE)
 					{
 						this._touchPointID = -1;
