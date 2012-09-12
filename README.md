@@ -1,12 +1,12 @@
-# Foxhole
+# Feathers
 
-Built on [Starling](http://gamua.com/starling/), the hardware accelerated 2D framework for Adobe AIR and Flash Player, Foxhole offers a variety of robust user interface controls for apps and games. Developed by [Josh Tynjala](http://twitter.com/joshtynjala), Foxhole was originally created to build UI for web and mobile games from [Bowler Hat Games](http://bowlerhatgames.com/).
+Built on [Starling](http://gamua.com/starling/), the hardware accelerated 2D framework for Adobe AIR and Flash Player, Feathers offers a variety of robust user interface controls for apps and games. Developed by [Josh Tynjala](http://twitter.com/joshtynjala), Feathers was originally created to build UI for web and mobile games from [Bowler Hat Games](http://bowlerhatgames.com/).
 
-To get started, you might want to check out the [API Documentation](http://www.flashtoolbox.com/foxhole-starling/documentation/) and the [Foxhole for Starling Examples](https://github.com/joshtynjala/foxhole-starling-examples).
+To get started, you might want to check out the [API Documentation](http://feathersui.com/documentation/), the [Wiki](http://wiki.starling-framework.org/feathers/start) and the [Examples](http://feathersui.com/examples/).
 
 ## Available Components
 
-Foxhole includes the following UI controls (in alphabetical order):
+Feathers includes the following UI controls (in alphabetical order):
 
 ### Button
 A typical button control, with optional toggle support. Includes a label and an icon, both optional.
@@ -75,17 +75,17 @@ The following external libraries are required. Other versions of the same librar
 
 ## Quick Links
 
-* [Foxhole for Starling Examples](https://github.com/joshtynjala/foxhole-starling-examples)
-* [API Documentation](http://www.flashtoolbox.com/foxhole-starling/documentation/)
-* [Wiki](https://github.com/joshtynjala/foxhole-starling/wiki)
-* [Foxhole section on the Starling Forums](http://forum.starling-framework.org/forum/foxhole)
+* [API Documentation](http://feathersui.com/documentation/)
+* [Wiki](http://wiki.starling-framework.org/feathers/start)
+* [Examples](http://feathersui.com/examples/)
+* [Forum](http://forum.starling-framework.org/forum/feathers)
 
 ## Important Note
 
-The core architecture and non-private APIs of Foxhole for Starling are still under active design and development. Basically, for the time being, absolutely everything is subject to change, and updating to a new revision can often result in compiler errors caused by modified APIs. If something breaks in your app after you update to the latest revision, and you can't figure out the new way to do what you were doing before, please ask in the [Foxhole Sub-Forum](http://forum.starling-framework.org/forum/foxhole) over at the Starling Forums.
+The core architecture and non-private APIs of Feathers are still under active design and development. Basically, for the time being, absolutely everything is subject to change, and updating to a new revision can often result in compiler errors caused by modified APIs. If something breaks in your app after you update to the latest revision, and you can't figure out the new way to do what you were doing before, please ask in the [Feathers Forum](http://forum.starling-framework.org/forum/feathers) over at the Starling Forums.
 
 ## Tips
 
-* The components do not have default skins. However, feel free to try out one of the themes included with the [Foxhole for Starling Examples](https://github.com/joshtynjala/foxhole-starling-examples).
+* The components do not have default skins. However, feel free to try out one of the themes included with the [Feathers Examples](http://feathersui.com/examples/).
 
 * An Ant build script is included. Add a file called `sdk.local.properties` to override the location of the Flex SDK and `build.local.properties` to override the locations of the required third-party libraries.
