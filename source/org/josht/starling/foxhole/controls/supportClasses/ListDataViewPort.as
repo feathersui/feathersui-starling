@@ -479,13 +479,6 @@ package org.josht.starling.foxhole.controls.supportClasses
 			return this._onChange;
 		}
 
-		override public function invalidate(...rest:Array):void
-		{
-			//this is hacky, I know
-			Scroller(this.parent.parent).invalidate(INVALIDATION_FLAG_DATA);
-			super.invalidate.apply(null, rest);
-		}
-
 		override public function dispose():void
 		{
 			this._onChange.removeAll();
@@ -560,6 +553,11 @@ package org.josht.starling.foxhole.controls.supportClasses
 				this.actualVisibleWidth = helperResult.viewPortWidth;
 				this.actualVisibleHeight = helperResult.viewPortHeight;
 			}
+		}
+		
+		protected function invalidateParent():void
+		{
+			Scroller(this.parent.parent).invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		protected function calculateTypicalValues():void
@@ -784,6 +782,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 		private function dataProvider_onChange(data:ListCollection):void
 		{
 			this.invalidate(INVALIDATION_FLAG_DATA);
+			this.invalidateParent();
 		}
 
 		private function dataProvider_onItemUpdate(data:ListCollection, index:int):void
@@ -805,6 +804,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 				return;
 			}
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
+			this.invalidateParent();
 		}
 
 		private function renderer_onResize(renderer:IListItemRenderer, oldWidth:Number, oldHeight:Number):void
@@ -820,6 +820,7 @@ package org.josht.starling.foxhole.controls.supportClasses
 			}
 			layout.resetVariableVirtualCacheAtIndex(renderer.index, DisplayObject(renderer));
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
+			this.invalidateParent();
 		}
 
 		private function renderer_onChange(renderer:IListItemRenderer):void
