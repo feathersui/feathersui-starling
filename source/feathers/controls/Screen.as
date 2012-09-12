@@ -29,10 +29,11 @@ package feathers.controls
 	import flash.events.KeyboardEvent;
 	import flash.system.Capabilities;
 	import flash.ui.Keyboard;
-
+	
 	import feathers.core.FeathersControl;
+	import feathers.system.DeviceCapabilities;
 	import feathers.utils.display.calculateScaleRatioToFit;
-
+	
 	import starling.core.Starling;
 	import starling.events.Event;
 	import starling.events.ResizeEvent;
@@ -141,7 +142,7 @@ package feathers.controls
 				return;
 			}
 			this._originalDPI = value;
-			this._dpiScale = Capabilities.screenDPI / this._originalDPI;
+			this._dpiScale = DeviceCapabilities.dpi / this._originalDPI;
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 		
@@ -169,7 +170,7 @@ package feathers.controls
 		private var _dpiScale:Number = 1;
 		
 		/**
-		 * Uses <code>originalDPI</code> and <code>Capabilities.screenDPI</code>
+		 * Uses <code>originalDPI</code> and <code>DeviceCapabilities.dpi</code>
 		 * to calculate a scale value to allow all content to be the same
 		 * physical size (in inches). Using this value will have a much larger
 		 * effect on the layout of the content, but it can ensure that
