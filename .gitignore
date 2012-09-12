@@ -18,3 +18,4 @@ bin-release/
 *.iml
 .idea/
 archive/
+*.lnk
