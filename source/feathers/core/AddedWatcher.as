@@ -47,10 +47,10 @@ package feathers.core
 		/**
 		 * Constructor.
 		 */
-		public function AddedWatcher(root:DisplayObject)
+		public function AddedWatcher(root:DisplayObjectContainer)
 		{
-			this._root = root;
-			this._root.addEventListener(Event.ADDED, addedHandler);
+			this.root = root;
+			this.root.addEventListener(Event.ADDED, addedHandler);
 		}
 		
 		/**
@@ -58,12 +58,6 @@ package feathers.core
 		 * to see if a particular display object has any initializers.
 		 */
 		public var requiredBaseClass:Class = FeathersControl;
-		
-		/**
-		 * If disabled, initializers for all classes in a target's inheritance
-		 * chain will be run. This setting has a performance impact on mobile.
-		 */
-		public var exactTypeMatching:Boolean = true;
 
 		/**
 		 * Determines if only the object added should be processed or if its
@@ -74,10 +68,12 @@ package feathers.core
 		/**
 		 * The root of the display list that is watched for added children.
 		 */
-		protected var root:DisplayObject;
+		protected var root:DisplayObjectContainer;
 
 		private var _noNameTypeMap:Dictionary = new Dictionary(true);
 		private var _nameTypeMap:Dictionary = new Dictionary(true);
+		private var _superTypeMap:Dictionary = new Dictionary(true);
+		private var _superTypes:Vector.<Class> = new <Class>[];
 		
 		/**
 		 * Sets the initializer for a specific class.
@@ -87,6 +83,7 @@ package feathers.core
 			if(!withName)
 			{
 				this._noNameTypeMap[type] = initializer;
+				return;
 			}
 			var nameTable:Object = this._nameTypeMap[type];
 			if(!nameTable)
@@ -94,6 +91,20 @@ package feathers.core
 				this._nameTypeMap[type] = nameTable = {};
 			}
 			nameTable[withName] = initializer;
+		}
+
+		/**
+		 * Sets an initializer for a specific class and any subclasses. This
+		 * option can potentially hurt performance, so use sparingly.
+		 */
+		public function setInitializerForClassAndSubclasses(type:Class, initializer:Function):void
+		{
+			const index:int = this._superTypes.indexOf(type);
+			if(index < 0)
+			{
+				this._superTypes.push(type);
+			}
+			this._superTypeMap[type] = initializer;
 		}
 		
 		/**
@@ -111,6 +122,14 @@ package feathers.core
 				return null;
 			}
 			return nameTable[withName] as Function;
+		}
+
+		/**
+		 * If an initializer exists for a specific class and its subclasses, the initializer will be returned.
+		 */
+		public function getInitializerForClassAndSubclasses(type:Class):Function
+		{
+			return this._superTypeMap[type];
 		}
 		
 		/**
@@ -133,59 +152,79 @@ package feathers.core
 			delete nameTable[withName];
 			return;
 		}
+
+		/**
+		 * If an initializer exists for a specific class and its subclasses, the
+		 * initializer will be removed completely.
+		 */
+		public function clearInitializerForClassAndSubclasses(type:Class):void
+		{
+			delete this._superTypeMap[type];
+			const index:int = this._superTypes.indexOf(type);
+			if(index >= 0)
+			{
+				this._superTypes.splice(index, 1);
+			}
+		}
 		
 		/**
 		 * @private
 		 */
 		protected function applyAllStyles(target:DisplayObject):void
 		{
-			if(!this.exactTypeMatching)
+			const superTypeCount:int = this._superTypes.length;
+			for(var i:int = 0; i < superTypeCount; i++)
 			{
-				const description:XML = describeType(target);
-				const extendedClasses:XMLList = description.extendsClass;
-				for(var i:int = extendedClasses.length() - 1; i >= 0; i--)
+				var type:Class = this._superTypes[i];
+				if(target is type)
 				{
-					var extendedClass:XML = extendedClasses[i];
-					var typeName:String = extendedClass.attribute("type").toString();
-					var type:Class = Class(getDefinitionByName(typeName));
-					this.applyAllStylesForType(target, type);
+					this.applyAllStylesForTypeFromMaps(target, type, this._superTypeMap);
 				}
 			}
 			type = Object(target).constructor;
-			this.applyAllStylesForType(target, type);
+			this.applyAllStylesForTypeFromMaps(target, type, this._noNameTypeMap, this._nameTypeMap);
 		}
 
-		protected function applyAllStylesForType(target:DisplayObject, type:Class):void
+		/**
+		 * @private
+		 */
+		protected function applyAllStylesForTypeFromMaps(target:DisplayObject, type:Class, map:Dictionary, nameMap:Dictionary = null):void
 		{
 			var initializer:Function;
-			const nameTable:Object = this._nameTypeMap[type];
-			if(nameTable)
+			if(nameMap)
 			{
-				if(target is FeathersControl)
+				const nameTable:Object = nameMap[type];
+				if(nameTable)
 				{
-					const uiControl:FeathersControl = FeathersControl(target);
-					for(var name:String in nameTable)
+					if(target is FeathersControl)
 					{
-						if(uiControl.nameList.contains(name))
+						const uiControl:FeathersControl = FeathersControl(target);
+						for(var name:String in nameTable)
 						{
-							initializer = nameTable[name] as Function;
-							if(initializer != null)
+							if(uiControl.nameList.contains(name))
 							{
-								initializer(target);
-								return;
+								initializer = nameTable[name] as Function;
+								if(initializer != null)
+								{
+									initializer(target);
+									return;
+								}
 							}
 						}
 					}
 				}
 			}
 
-			initializer = this._noNameTypeMap[type] as Function;
+			initializer = map[type] as Function;
 			if(initializer != null)
 			{
 				initializer(target);
 			}
 		}
 
+		/**
+		 * @private
+		 */
 		protected function addObject(target:DisplayObject):void
 		{
 			const targetAsRequiredBaseClass:DisplayObject = DisplayObject(target as requiredBaseClass);
