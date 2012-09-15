@@ -71,7 +71,11 @@ package feathers.core
 		 */
 		public var processRecursively:Boolean = true;
 
-		private var _root:DisplayObject;
+		/**
+		 * The root of the display list that is watched for added children.
+		 */
+		protected var root:DisplayObject;
+
 		private var _noNameTypeMap:Dictionary = new Dictionary(true);
 		private var _nameTypeMap:Dictionary = new Dictionary(true);
 		
