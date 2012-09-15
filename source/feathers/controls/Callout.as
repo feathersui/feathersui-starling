@@ -1070,6 +1070,15 @@ package feathers.controls
 				{
 					newWidth += this._rightArrowSkin.width + this._rightArrowGap;
 				}
+				if(this._arrowPosition == ARROW_POSITION_TOP && this._topArrowSkin)
+				{
+					newWidth = Math.max(newWidth, this._topArrowSkin.width + this._paddingLeft + this._paddingRight);
+				}
+				if(this._arrowPosition == ARROW_POSITION_BOTTOM && this._bottomArrowSkin)
+				{
+					newWidth = Math.max(newWidth, this._bottomArrowSkin.width + this._paddingLeft + this._paddingRight)
+				}
+				newWidth = Math.min(newWidth, this.stage.stageWidth - stagePaddingLeft - stagePaddingRight);
 			}
 			if(needsHeight)
 			{
@@ -1086,9 +1095,16 @@ package feathers.controls
 				{
 					newHeight += this._bottomArrowSkin.height + this._bottomArrowGap;
 				}
+				if(this._arrowPosition == ARROW_POSITION_LEFT && this._leftArrowSkin)
+				{
+					newHeight = Math.max(newHeight, this._leftArrowSkin.height + this._paddingTop + this._paddingBottom);
+				}
+				if(this._arrowPosition == ARROW_POSITION_RIGHT && this._rightArrowSkin)
+				{
+					newHeight = Math.max(newHeight, this._rightArrowSkin.height + this._paddingTop + this._paddingBottom)
+				}
+				newHeight = Math.min(newHeight, this.stage.stageHeight - stagePaddingTop - stagePaddingBottom);
 			}
-			newWidth = Math.min(newWidth, this.stage.stageWidth);
-			newHeight = Math.min(newHeight, this.stage.stageHeight);
 			return this.setSizeInternal(newWidth, newHeight, false);
 		}
 
