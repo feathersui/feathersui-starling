@@ -314,8 +314,6 @@ package feathers.controls.text
 			if(!this._textField)
 			{
 				this._textField = new TextField();
-				this._textField.antiAliasType = AntiAliasType.ADVANCED;
-				this._textField.gridFitType = GridFitType.PIXEL;
 				this._textField.mouseEnabled = this._textField.mouseWheelEnabled = false;
 				this._textField.selectable = false;
 			}
@@ -385,7 +383,7 @@ package feathers.controls.text
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
 			{
-				newWidth = Math.max(this._minWidth, Math.min(this._maxWidth, this._textField.width + 1));
+				newWidth = Math.max(this._minWidth, Math.min(this._maxWidth, this._textField.width));
 			}
 
 			this._textField.width = newWidth;
@@ -393,7 +391,7 @@ package feathers.controls.text
 			var newHeight:Number = this.explicitHeight;
 			if(needsHeight)
 			{
-				newHeight = Math.max(this._minHeight, Math.min(this._maxHeight, this._textField.height + 1));
+				newHeight = Math.max(this._minHeight, Math.min(this._maxHeight, this._textField.height));
 			}
 
 			this._textField.autoSize = TextFieldAutoSize.NONE;
