@@ -30,6 +30,7 @@ package feathers.display
 
 	import starling.core.RenderSupport;
 	import starling.display.DisplayObject;
+	import starling.display.Sprite;
 	import starling.display.QuadBatch;
 	import starling.events.Event;
 	import starling.textures.Texture;
@@ -37,8 +38,7 @@ package feathers.display
 	import starling.utils.MatrixUtil;
 
 	/**
-	 * Tiles a texture to fill, and possibly overflow, the specified bounds. May
-	 * be clipped.
+	 * Tiles a texture to fill the specified bounds.
 	 */
 	public class TiledImage extends Sprite
 	{
@@ -65,7 +65,6 @@ package feathers.display
 
 		private var _propertiesChanged:Boolean = true;
 		private var _layoutChanged:Boolean = true;
-		private var _clippingChanged:Boolean = true;
 		
 		private var _hitArea:Rectangle;
 
@@ -256,40 +255,8 @@ package feathers.display
 		/**
 		 * @private
 		 */
-		private var _clipContent:Boolean = false;
-		
-		/**
-		 * Determines if the tiled content should be clipped to the width and
-		 * height.
-		 */
-		public function get clipContent():Boolean
-		{
-			return this._clipContent;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set clipContent(value:Boolean):void
-		{
-			if(this._clipContent == value)
-			{
-				return;
-			}
-			this._clipContent = value;
-			this._clippingChanged = true;
-		}
-		
-		/**
-		 * @private
-		 */
 		public override function getBounds(targetSpace:DisplayObject, resultRect:Rectangle=null):Rectangle
 		{
-			if(this.scrollRect)
-			{
-				return super.getBounds(targetSpace, resultRect);
-			}
-			
 			if(!resultRect)
 			{
 				resultRect = new Rectangle();
@@ -402,41 +369,49 @@ package feathers.display
 				const imageCount:int = xImageCount * yImageCount;
 				var xPosition:Number = 0;
 				var yPosition:Number = 0;
+				var nextXPosition:Number = xPosition + scaledTextureWidth;
+				var nextYPosition:Number = yPosition + scaledTextureHeight;
 				for(var i:int = 0; i < imageCount; i++)
 				{
 					this._image.x = xPosition;
 					this._image.y = yPosition;
+
+					var imageWidth:Number = (nextXPosition >= this._width) ? (this._width - xPosition) : scaledTextureWidth;
+					var imageHeight:Number = (nextYPosition >= this._height) ? (this._height - yPosition) : scaledTextureHeight;
+					this._image.width = imageWidth;
+					this._image.height = imageHeight;
+
+					var xCoord:Number = imageWidth / scaledTextureWidth;
+					var yCoord:Number = imageHeight / scaledTextureHeight;
+					helperPoint.x = xCoord;
+					helperPoint.y = 0;
+					this._image.setTexCoords(1, helperPoint);
+
+					helperPoint.y = yCoord;
+					this._image.setTexCoords(3, helperPoint);
+
+					helperPoint.x = 0;
+					this._image.setTexCoords(2, helperPoint);
+
 					this._batch.addImage(this._image);
-					xPosition += scaledTextureWidth;
-					if(xPosition >= this._width)
+
+					if(nextXPosition >= this._width)
 					{
 						xPosition = 0;
-						yPosition += scaledTextureHeight;
+						nextXPosition = scaledTextureWidth;
+						yPosition = nextYPosition;
+						nextYPosition += scaledTextureHeight;
+					}
+					else
+					{
+						xPosition = nextXPosition;
+						nextXPosition += scaledTextureWidth;
 					}
 				}
 			}
 
-			if(this._clippingChanged || this._layoutChanged)
-			{
-				if(this._clipContent)
-				{
-					var scrollRect:Rectangle = this.scrollRect;
-					if(!scrollRect)
-					{
-						scrollRect = new Rectangle();
-					}
-					scrollRect.width = this._width;
-					scrollRect.height = this._height;
-					this.scrollRect = scrollRect;
-				}
-				else
-				{
-					this.scrollRect = null;
-				}
-			}
 			this._layoutChanged = false;
 			this._propertiesChanged = false;
-			this._clippingChanged = false;
 		}
 
 		/**
