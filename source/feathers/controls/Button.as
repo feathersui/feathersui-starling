@@ -314,7 +314,6 @@ package feathers.controls
 				return;
 			}
 			this._isSelected = value;
-			this.currentState = this.currentState;
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 			this._onChange.dispatch(this);
 		}
