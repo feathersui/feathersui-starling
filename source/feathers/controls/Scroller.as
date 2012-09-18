@@ -1206,11 +1206,22 @@ package feathers.controls
 		private var _isScrollingStopped:Boolean = false;
 		
 		/**
-		 * If the user is dragging the scroll, calling stopScrolling() will
-		 * cause the scroller to ignore the drag.
+		 * If the user is scrolling with touch or if the scrolling is animated,
+		 * calling stopScrolling() will cause the scroller to ignore the drag
+		 * and stop animations.
 		 */
 		public function stopScrolling():void
 		{
+			if(this._horizontalAutoScrollTween)
+			{
+				this._horizontalAutoScrollTween.paused = true;
+				this._horizontalAutoScrollTween = null;
+			}
+			if(this._verticalAutoScrollTween)
+			{
+				this._verticalAutoScrollTween.paused = true;
+				this._verticalAutoScrollTween = null;
+			}
 			this._isScrollingStopped = true;
 			this._velocityX = 0;
 			this._velocityY = 0;
