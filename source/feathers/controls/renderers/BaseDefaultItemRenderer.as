@@ -74,7 +74,6 @@ package feathers.controls.renderers
 		public function BaseDefaultItemRenderer()
 		{
 			super();
-			this.isToggle = true;
 			this.isQuickHitAreaEnabled = false;
 		}
 
@@ -217,34 +216,37 @@ package feathers.controls.renderers
 		 */
 		override protected function set currentState(value:String):void
 		{
-			if(this._useStateDelayTimer && this._stateDelayTimer && this._stateDelayTimer.running)
+			if(!this._isToggle)
 			{
-				this._delayedCurrentState = value;
-				return;
+				value = STATE_UP;
 			}
-			else if(this._useStateDelayTimer &&
-				(!this._stateDelayTimer || !this._stateDelayTimer.running) &&
-				(value == Button.STATE_DOWN))
+			if(this._useStateDelayTimer)
 			{
-				this._delayedCurrentState = value;
-				if(this._stateDelayTimer)
+				if(this._stateDelayTimer && this._stateDelayTimer.running)
 				{
-					this._stateDelayTimer.reset();
+					this._delayedCurrentState = value;
+					return;
 				}
-				else
-				{
-					this._stateDelayTimer = new Timer(DOWN_STATE_DELAY_MS, 1);
-					this._stateDelayTimer.addEventListener(TimerEvent.TIMER_COMPLETE, stateDelayTimer_timerCompleteHandler);
-				}
-				this._stateDelayTimer.start();
-				return;
-			}
 
-			//either we're not delaying states, or we're switching to a state
-			//that isn't the down state (and we haven't delayed down)
-			if(this._stateDelayTimer)
-			{
-				this._stateDelayTimer.stop();
+				if(value == Button.STATE_DOWN)
+				{
+					if(this._currentState == value)
+					{
+						return;
+					}
+					this._delayedCurrentState = value;
+					if(this._stateDelayTimer)
+					{
+						this._stateDelayTimer.reset();
+					}
+					else
+					{
+						this._stateDelayTimer = new Timer(DOWN_STATE_DELAY_MS, 1);
+						this._stateDelayTimer.addEventListener(TimerEvent.TIMER_COMPLETE, stateDelayTimer_timerCompleteHandler);
+					}
+					this._stateDelayTimer.start();
+					return;
+				}
 			}
 			super.currentState = value;
 		}
@@ -1372,17 +1374,16 @@ package feathers.controls.renderers
 		 */
 		protected function handleOwnerScroll():void
 		{
+			this._touchPointID = -1;
+			if(this._stateDelayTimer && this._stateDelayTimer.running)
+			{
+				this._stateDelayTimer.stop();
+			}
+			this._delayedCurrentState = null;
 			if(this._currentState != Button.STATE_UP)
 			{
 				super.currentState = Button.STATE_UP;
 			}
-			this._touchPointID = -1;
-			if(!this._stateDelayTimer || !this._stateDelayTimer.running)
-			{
-				return;
-			}
-			this._delayedCurrentState = null;
-			this._stateDelayTimer.stop();
 		}
 
 		/**
