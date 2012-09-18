@@ -40,6 +40,36 @@ package feathers.controls.renderers
 	public class DefaultGroupedListHeaderOrFooterRenderer extends FeathersControl implements IGroupedListHeaderOrFooterRenderer
 	{
 		/**
+		 * The content will be aligned horizontally to the left edge of the renderer.
+		 */
+		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
+
+		/**
+		 * The content will be aligned horizontally to the center of the renderer.
+		 */
+		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
+
+		/**
+		 * The content will be aligned horizontally to the right edge of the renderer.
+		 */
+		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
+
+		/**
+		 * The content will be aligned vertically to the top edge of the renderer.
+		 */
+		public static const VERTICAL_ALIGN_TOP:String = "top";
+
+		/**
+		 * The content will be aligned vertically to the middle of the renderer.
+		 */
+		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
+
+		/**
+		 * The content will be aligned vertically to the bottom edge of the renderer.
+		 */
+		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
+
+		/**
 		 * The default value added to the <code>nameList</code> of the content
 		 * label.
 		 */
@@ -172,6 +202,60 @@ package feathers.controls.renderers
 			}
 			this._owner = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _horizontalAlign:String = HORIZONTAL_ALIGN_LEFT;
+
+		/**
+		 * The location where the renderer's content is aligned horizontally
+		 * (on the x-axis).
+		 */
+		public function get horizontalAlign():String
+		{
+			return this._horizontalAlign;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set horizontalAlign(value:String):void
+		{
+			if(this._horizontalAlign == value)
+			{
+				return;
+			}
+			this._horizontalAlign = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _verticalAlign:String = VERTICAL_ALIGN_MIDDLE;
+
+		/**
+		 * The location where the renderer's content is aligned vertically (on
+		 * the y-axis).
+		 */
+		public function get verticalAlign():String
+		{
+			return _verticalAlign;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set verticalAlign(value:String):void
+		{
+			if(this._verticalAlign == value)
+			{
+				return;
+			}
+			this._verticalAlign = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
@@ -916,13 +1000,9 @@ package feathers.controls.renderers
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
-			if(dataInvalid)
+			if(dataInvalid || stylesInvalid || sizeInvalid)
 			{
-				if(this.content)
-				{
-					this.content.x = this._paddingLeft;
-					this.content.y = this._paddingTop;
-				}
+				this.layout();
 			}
 
 			if(sizeInvalid || stylesInvalid || stateInvalid)
@@ -1102,6 +1182,54 @@ package feathers.controls.renderers
 					displayContentLabel[propertyName] = propertyValue;
 				}
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function layout():void
+		{
+			if(!this.content)
+			{
+				return;
+			}
+
+			switch(this._horizontalAlign)
+			{
+				case HORIZONTAL_ALIGN_CENTER:
+				{
+					this.content.x = this._paddingLeft + (this.actualWidth - this._paddingLeft - this._paddingRight - this.content.width) / 2;
+					break;
+				}
+				case HORIZONTAL_ALIGN_RIGHT:
+				{
+					this.content.x = this.actualWidth - this._paddingRight - this.content.width;
+					break;
+				}
+				default: //left
+				{
+					this.content.x = this._paddingLeft;
+				}
+			}
+
+			switch(this._verticalAlign)
+			{
+				case VERTICAL_ALIGN_TOP:
+				{
+					this.content.y = this._paddingTop;
+					break;
+				}
+				case VERTICAL_ALIGN_BOTTOM:
+				{
+					this.content.y = this.actualHeight - this._paddingBottom - this.content.height;
+					break;
+				}
+				default: //middle
+				{
+					this.content.y = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - this.content.height) / 2;
+				}
+			}
+
 		}
 
 		/**
