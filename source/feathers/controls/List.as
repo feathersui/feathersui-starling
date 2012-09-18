@@ -850,11 +850,11 @@ package feathers.controls
 		}
 		
 		/**
-		 * If the user is dragging the scroll, calling stopScrolling() will
-		 * cause the list to ignore the drag. The children of the list
-		 * will still receive touches, so it's useful to call this if the
-		 * children need to support touches or dragging without the list
-		 * also scrolling.
+		 * If the user is scrolling with touch or if the scrolling is animated,
+		 * calling stopScrolling() will cause the scroller to ignore the drag
+		 * and stop animations. The children of the list will still receive
+		 * touches, so it's useful to call this if the children need to support
+		 * touches or dragging without the list also scrolling.
 		 */
 		public function stopScrolling():void
 		{
