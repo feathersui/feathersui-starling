@@ -131,7 +131,9 @@ package feathers.controls.renderers
 			this._owner = value;
 			if(this._owner)
 			{
-				GroupedList(this._owner).onScroll.add(owner_onScroll);
+				const list:GroupedList = GroupedList(this._owner);
+				this.isToggle = list.isSelectable;
+				list.onScroll.add(owner_onScroll);
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
