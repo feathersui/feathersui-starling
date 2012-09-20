@@ -88,18 +88,26 @@ package feathers.controls
 		protected static const INVALIDATION_FLAG_SCROLL_BAR_RENDERER:String = "scrollBarRenderer";
 
 		/**
-		 * The scroller may scroll, if the view port is larger than the
-		 * scroller's bounds.
+		 * The scroller may scroll if the view port is larger than the
+		 * scroller's bounds. If the interaction mode is touch, the elastic
+		 * edges will only be active if the maximum scroll position is greater
+		 * than zero. If the scroll bar display mode is fixed, the scroll bar
+		 * will only be visible when the maximum scroll position is greater than
+		 * zero.
 		 */
 		public static const SCROLL_POLICY_AUTO:String = "auto";
 
 		/**
-		 * The scroller will always scroll.
+		 * The scroller will always scroll. If the interaction mode is touch,
+		 * elastic edges will always be active, even when the maximum scroll
+		 * position is zero. If the scroll bar display mode is fixed, the scroll
+		 * bar will always be visible.
 		 */
 		public static const SCROLL_POLICY_ON:String = "on";
 		
 		/**
-		 * The scroller does not scroll at all.
+		 * The scroller does not scroll at all. If the scroll bar display mode
+		 * is fixed or float, the scroll bar will never be visible.
 		 */
 		public static const SCROLL_POLICY_OFF:String = "off";
 		
