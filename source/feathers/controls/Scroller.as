@@ -2275,7 +2275,7 @@ package feathers.controls
 			const horizontalInchesMoved:Number = Math.abs(this._currentTouchX - this._startTouchX) / DeviceCapabilities.dpi;
 			const verticalInchesMoved:Number = Math.abs(this._currentTouchY - this._startTouchY) / DeviceCapabilities.dpi;
 			if((this._horizontalScrollPolicy == SCROLL_POLICY_ON ||
-				(this._horizontalScrollPolicy == SCROLL_POLICY_AUTO && (this._maxHorizontalScrollPosition > 0 || this._hasElasticEdges))) &&
+				(this._horizontalScrollPolicy == SCROLL_POLICY_AUTO && this._maxHorizontalScrollPosition > 0)) &&
 				!this._isDraggingHorizontally && horizontalInchesMoved >= MINIMUM_DRAG_DISTANCE)
 			{
 				if(this.horizontalScrollBar)
@@ -2301,7 +2301,7 @@ package feathers.controls
 				this._isDraggingHorizontally = true;
 			}
 			if((this._verticalScrollPolicy == SCROLL_POLICY_ON ||
-				(this._verticalScrollPolicy == SCROLL_POLICY_AUTO && (this._maxVerticalScrollPosition > 0 || this._hasElasticEdges))) &&
+				(this._verticalScrollPolicy == SCROLL_POLICY_AUTO && this._maxVerticalScrollPosition > 0)) &&
 				!this._isDraggingVertically && verticalInchesMoved >= MINIMUM_DRAG_DISTANCE)
 			{
 				if(!this._isDraggingHorizontally)

@@ -1475,7 +1475,7 @@ package feathers.controls
 				layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
 				layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
 				this._layout = layout;
-				this.scroller.horizontalScrollPolicy = Scroller.SCROLL_POLICY_OFF;
+				this.scroller.verticalScrollPolicy = Scroller.SCROLL_POLICY_ON;
 			}
 		}
 
