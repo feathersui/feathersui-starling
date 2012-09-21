@@ -25,6 +25,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 package feathers.text
 {
 	import starling.text.BitmapFont;
+	import starling.text.TextField;
 
 	/**
 	 * Customizes a bitmap font for use by a <code>BitmapFontTextRenderer</code>.
@@ -36,11 +37,24 @@ package feathers.text
 		/**
 		 * Constructor.
 		 */
-		public function BitmapFontTextFormat(font:BitmapFont, size:Number = NaN, color:uint = 0xffffff)
+		public function BitmapFontTextFormat(font:Object, size:Number = NaN, color:uint = 0xffffff)
 		{
-			this.font = font;
+			if(font is String)
+			{
+				font = TextField.getBitmapFont(font as String);
+			}
+			if(!(font is BitmapFont))
+			{
+				throw new ArgumentError("BitmapFontTextFormat font must be a String or a BitmapFont instance.")
+			}
+			this.font = BitmapFont(font);
 			this.size = size;
 			this.color = color;
+		}
+
+		public function get fontName():String
+		{
+			return this.font ? this.font.name : null;
 		}
 		
 		/**
