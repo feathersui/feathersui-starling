@@ -477,16 +477,17 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _repeatDelay:Number = 0.05;
+		protected var _repeatTimer:Timer;
 
 		/**
 		 * @private
 		 */
-		protected var _repeatTimer:Timer;
+		protected var _repeatDelay:Number = 0.05;
 
 		/**
 		 * The time, in seconds, before actions are repeated. The first repeat
-		 * happens five times longer than the others.
+		 * happens after a delay that is five times longer than the following
+		 * repeats.
 		 */
 		public function get repeatDelay():Number
 		{
