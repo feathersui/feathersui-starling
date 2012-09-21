@@ -24,6 +24,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package feathers.controls
 {
+	import flash.events.TimerEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
@@ -31,6 +32,9 @@ package feathers.controls
 	import feathers.core.PropertyProxy;
 	import feathers.utils.math.clamp;
 	import feathers.utils.math.roundToNearest;
+
+	import flash.utils.Timer;
+
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 
@@ -342,6 +346,37 @@ package feathers.controls
 			}
 			this._step = value;
 		}
+
+		/**
+		 * @private
+		 */
+		private var _page:Number = NaN;
+
+		/**
+		 * If the slider's track is touched, and the thumb is shown, the slider
+		 * value will be incremented or decremented by the page value. If the
+		 * thumb is hidden, this value is ignored, and the track may be dragged
+		 * instead.
+		 *
+		 * <p>If this value is <code>NaN</code>, the step value will be used
+		 * instead.</p>
+		 */
+		public function get page():Number
+		{
+			return this._page;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set page(value:Number):void
+		{
+			if(this._page == value)
+			{
+				return;
+			}
+			this._page = value;
+		}
 		
 		/**
 		 * @private
@@ -460,6 +495,44 @@ package feathers.controls
 				return;
 			}
 			this._trackLayoutMode = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var currentRepeatAction:Function;
+
+		/**
+		 * @private
+		 */
+		protected var _repeatTimer:Timer;
+
+		/**
+		 * @private
+		 */
+		protected var _repeatDelay:Number = 0.05;
+
+		/**
+		 * The time, in seconds, before actions are repeated. The first repeat
+		 * happens after a delay that is five times longer than the following
+		 * repeats.
+		 */
+		public function get repeatDelay():Number
+		{
+			return this._repeatDelay;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set repeatDelay(value:Number):void
+		{
+			if(this._repeatDelay == value)
+			{
+				return;
+			}
+			this._repeatDelay = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -654,6 +727,7 @@ package feathers.controls
 		private var _touchStartY:Number = NaN;
 		private var _thumbStartX:Number = NaN;
 		private var _thumbStartY:Number = NaN;
+		private var _touchValue:Number;
 		
 		/**
 		 * @inheritDoc
@@ -1060,7 +1134,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function dragTo(location:Point):void
+		protected function locationToValue(location:Point):Number
 		{
 			var percentage:Number;
 			if(this._direction == DIRECTION_VERTICAL)
@@ -1078,7 +1152,55 @@ package feathers.controls
 				percentage = xPosition / trackScrollableWidth;
 			}
 
-			this.value = this._minimum + percentage * (this._maximum - this._minimum);
+			return this._minimum + percentage * (this._maximum - this._minimum);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function startRepeatTimer(action:Function):void
+		{
+			this.currentRepeatAction = action;
+			if(this._repeatDelay > 0)
+			{
+				if(!this._repeatTimer)
+				{
+					this._repeatTimer = new Timer(this._repeatDelay * 1000);
+					this._repeatTimer.addEventListener(TimerEvent.TIMER, repeatTimer_timerHandler);
+				}
+				else
+				{
+					this._repeatTimer.reset();
+					this._repeatTimer.delay = this._repeatDelay * 1000;
+				}
+				this._repeatTimer.start();
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function adjustPage():void
+		{
+			const page:Number = isNaN(this._page) ? this._step : this._page;
+			if(this._touchValue < this._value)
+			{
+				var newValue:Number = Math.max(this._touchValue, this._value - page);
+				if(page != 0)
+				{
+					newValue = roundToNearest(newValue, this._step);
+				}
+				this.value = newValue;
+			}
+			else if(this._touchValue > this._value)
+			{
+				newValue = Math.min(this._touchValue, this._value + page);
+				if(page != 0)
+				{
+					newValue = roundToNearest(newValue, page);
+				}
+				this.value = newValue;
+			}
 		}
 
 		/**
@@ -1144,13 +1266,17 @@ package feathers.controls
 				{
 					return;
 				}
-				if(touch.phase == TouchPhase.MOVED)
+				if(!this._showThumb && touch.phase == TouchPhase.MOVED)
 				{
 					touch.getLocation(this, HELPER_POINT);
-					this.dragTo(HELPER_POINT);
+					this.value = this.locationToValue(HELPER_POINT);
 				}
 				else if(touch.phase == TouchPhase.ENDED)
 				{
+					if(this._repeatTimer)
+					{
+						this._repeatTimer.stop();
+					}
 					this._touchPointID = -1;
 					this.isDragging = false;
 					if(!this.liveDragging)
@@ -1181,10 +1307,18 @@ package feathers.controls
 						}
 						this._touchStartX = HELPER_POINT.x;
 						this._touchStartY = HELPER_POINT.y;
+						this._touchValue = this.locationToValue(HELPER_POINT);
 						this.isDragging = true;
 						this._onDragStart.dispatch(this);
-						this.dragTo(HELPER_POINT);
-						return;
+						if(this._showThumb)
+						{
+							this.adjustPage();
+							this.startRepeatTimer(this.adjustPage);
+						}
+						else
+						{
+							this.value = this._touchValue;
+						}
 					}
 				}
 			}
@@ -1222,7 +1356,7 @@ package feathers.controls
 				if(touch.phase == TouchPhase.MOVED)
 				{
 					touch.getLocation(this, HELPER_POINT);
-					this.dragTo(HELPER_POINT);
+					this.value = this.locationToValue(HELPER_POINT);
 				}
 				else if(touch.phase == TouchPhase.ENDED)
 				{
@@ -1254,6 +1388,18 @@ package feathers.controls
 					}
 				}
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function repeatTimer_timerHandler(event:TimerEvent):void
+		{
+			if(this._repeatTimer.currentCount < 5)
+			{
+				return;
+			}
+			this.currentRepeatAction();
 		}
 	}
 }
