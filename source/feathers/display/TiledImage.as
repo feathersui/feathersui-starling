@@ -40,7 +40,7 @@ package feathers.display
 	/**
 	 * Tiles a texture to fill the specified bounds.
 	 */
-	public class TiledImage extends Sprite
+	public class TiledImage extends starling.display.Sprite
 	{
 		private static var helperPoint:Point = new Point();
 		private static var helperMatrix:Matrix = new Matrix();
