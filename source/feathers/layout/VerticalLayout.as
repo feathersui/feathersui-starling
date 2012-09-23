@@ -491,13 +491,13 @@ package feathers.layout
 					}
 					case HORIZONTAL_ALIGN_JUSTIFY:
 					{
-						item.x = this._paddingLeft;
+						item.x = boundsX + this._paddingLeft;
 						item.width = availableWidth - this._paddingLeft - this._paddingRight;
 						break;
 					}
-					default: //top
+					default: //left
 					{
-						item.x = this._paddingLeft;
+						item.x = boundsX + this._paddingLeft;
 					}
 				}
 			}

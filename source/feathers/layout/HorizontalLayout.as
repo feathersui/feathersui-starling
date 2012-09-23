@@ -488,13 +488,13 @@ package feathers.layout
 					}
 					case VERTICAL_ALIGN_JUSTIFY:
 					{
-						item.y = this._paddingTop;
+						item.y = boundsY + this._paddingTop;
 						item.height = availableHeight - this._paddingTop - this._paddingBottom;
 						break;
 					}
 					default: //top
 					{
-						item.y = this._paddingTop;
+						item.y = boundsY + this._paddingTop;
 					}
 				}
 			}
