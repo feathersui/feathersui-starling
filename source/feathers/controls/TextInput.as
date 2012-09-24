@@ -539,6 +539,12 @@ package feathers.controls
 				this.stageText.viewPort = viewPort;			
 			}
 
+			if(this._textSnapshot)
+			{
+				this._textSnapshot.x = Math.round(this._paddingLeft + helperMatrix.tx) - helperMatrix.tx;
+				this._textSnapshot.y = Math.round(this._paddingTop + helperMatrix.ty) - helperMatrix.ty;
+			}
+
 			//theoretically, this will ensure that the StageText is set visible
 			//or invisible immediately after the snapshot changes visibility in
 			//the rendered graphics. the OS might take longer to do the change,
@@ -778,8 +784,10 @@ package feathers.controls
 					flash.display3D.textures.Texture(texture.base).uploadFromBitmapData(this._textSnapshotBitmapData);
 				}
 			}
-			this._textSnapshot.x = Math.round(this._paddingLeft);
-			this._textSnapshot.y = Math.round(this._paddingTop);
+
+			this.getTransformationMatrix(this.stage, helperMatrix);
+			this._textSnapshot.x = Math.round(this._paddingLeft + helperMatrix.tx) - helperMatrix.tx;
+			this._textSnapshot.y = Math.round(this._paddingTop + helperMatrix.ty) - helperMatrix.ty;
 		}
 
 		/**
