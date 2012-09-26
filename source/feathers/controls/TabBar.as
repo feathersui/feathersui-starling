@@ -265,7 +265,8 @@ package feathers.controls
 		private var _firstTabFactory:Function;
 
 		/**
-		 * Creates a new first tab.
+		 * Creates a new first tab. If the firstTabFactory is null, then the
+		 * TabBar will use the tabFactory.
 		 *
 		 * <p>This function is expected to have the following signature:</p>
 		 *
@@ -941,7 +942,10 @@ package feathers.controls
 					tab.validate();
 					newWidth = Math.max(tab.width, newWidth);
 				}
-				newWidth = this.activeTabs.length * (newWidth + this._gap) - this._gap;
+				if(this._direction == DIRECTION_HORIZONTAL)
+				{
+					newWidth = this.activeTabs.length * (newWidth + this._gap) - this._gap;
+				}
 			}
 
 			if(needsHeight)
@@ -951,6 +955,10 @@ package feathers.controls
 				{
 					tab.validate();
 					newHeight = Math.max(tab.height, newHeight);
+				}
+				if(this._direction != DIRECTION_HORIZONTAL)
+				{
+					newHeight = this.activeTabs.length * (newHeight + this._gap) - this._gap;
 				}
 			}
 			return this.setSizeInternal(newWidth, newHeight, false);
