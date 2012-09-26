@@ -1510,9 +1510,9 @@ package feathers.controls.supportClasses
 			this.invalidateParent();
 		}
 
-		private function dataProvider_onItemUpdate(data:HierarchicalCollection, index:int):void
+		private function dataProvider_onItemUpdate(data:HierarchicalCollection, groupIndex:int, itemIndex:int):void
 		{
-			const item:Object = this._dataProvider.getItemAt(index);
+			const item:Object = this._dataProvider.getItemAt(groupIndex, itemIndex);
 			const renderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this._itemRendererMap[item]);
 			if(!renderer)
 			{
