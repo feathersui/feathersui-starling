@@ -31,6 +31,7 @@ package feathers.controls
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 
+	[DefaultProperty("dataProvider")]
 	/**
 	 * A line of tabs, where one may be selected at a time.
 	 */

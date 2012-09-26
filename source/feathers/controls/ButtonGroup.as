@@ -30,6 +30,7 @@ package feathers.controls
 
 	import org.osflash.signals.ISignal;
 
+	[DefaultProperty("dataProvider")]
 	/**
 	 * A set of related buttons with layout, customized using a data provider.
 	 */

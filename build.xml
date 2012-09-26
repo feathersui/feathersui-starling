@@ -41,7 +41,9 @@
 		<echo message="Building feathers.swc"/>
 		<java jar="${compc}" dir="${basedir}" fork="true" failonerror="true">
 			<arg line="+flexlib='${flexframework.root}'"/>
+			<arg line="--namespace+=${mxml.namespace},mxml-manifest.xml"/>
 			<arg line="--source-path+='source'"/>
+			<arg line="--include-namespaces+=${mxml.namespace}"/>
 			<arg line="--include-sources+='source'"/>
 			<arg line="--library-path+='${dependency.output}'"/>
 			<arg line="--external-library-path+='${flexframework.lib}'"/>

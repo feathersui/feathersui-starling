@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<componentPackage>
+	<component id="Button" class="feathers.controls.Button"/>
+	<component id="ButtonGroup" class="feathers.controls.ButtonGroup"/>
+	<component id="Check" class="feathers.controls.Check"/>
+	<component id="GroupedList" class="feathers.controls.GroupedList"/>
+	<component id="Header" class="feathers.controls.Header"/>
+	<component id="Label" class="feathers.controls.Label"/>
+	<component id="List" class="feathers.controls.List"/>
+	<component id="PageIndicator" class="feathers.controls.PageIndicator"/>
+	<component id="PickerList" class="feathers.controls.PickerList"/>
+	<component id="ProgressBar" class="feathers.controls.ProgressBar"/>
+	<component id="Radio" class="feathers.controls.Radio"/>
+	<component id="Screen" class="feathers.controls.Screen"/>
+	<component id="ScreenNavigator" class="feathers.controls.ScreenNavigator"/>
+	<component id="ScreenNavigatorItem" class="feathers.controls.ScreenNavigatorItem"/>
+	<component id="ScrollContainer" class="feathers.controls.ScrollContainer"/>
+	<component id="Slider" class="feathers.controls.Slider"/>
+	<component id="TabBar" class="feathers.controls.TabBar"/>
+	<component id="ToggleSwitch" class="feathers.controls.ToggleSwitch"/>
+
+	<component id="FeathersControl" class="feathers.core.FeathersControl"/>
+	<component id="ToggleGroup" class="feathers.core.ToggleGroup"/>
+
+	<component id="ListCollection" class="feathers.data.ListCollection"/>
+	<component id="HierarchicalCollection" class="feathers.data.HierarchicalCollection"/>
+
+	<component id="HorizontalLayout" class="feathers.layout.HorizontalLayout"/>
+	<component id="VerticalLayout" class="feathers.layout.VerticalLayout"/>
+	<component id="TiledRowsLayout" class="feathers.layout.TiledRowsLayout"/>
+	<component id="TiledColumnsLayout" class="feathers.layout.TiledColumnsLayout"/>
+</componentPackage>
