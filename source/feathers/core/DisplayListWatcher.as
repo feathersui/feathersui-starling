@@ -70,10 +70,10 @@ package feathers.core
 		 */
 		protected var root:DisplayObjectContainer;
 
-		private var _noNameTypeMap:Dictionary = new Dictionary(true);
-		private var _nameTypeMap:Dictionary = new Dictionary(true);
-		private var _superTypeMap:Dictionary = new Dictionary(true);
-		private var _superTypes:Vector.<Class> = new <Class>[];
+		private var _initializerNoNameTypeMap:Dictionary = new Dictionary(true);
+		private var _initializerNameTypeMap:Dictionary = new Dictionary(true);
+		private var _initializerSuperTypeMap:Dictionary = new Dictionary(true);
+		private var _initializerSuperTypes:Vector.<Class> = new <Class>[];
 		
 		/**
 		 * Sets the initializer for a specific class.
@@ -82,13 +82,13 @@ package feathers.core
 		{
 			if(!withName)
 			{
-				this._noNameTypeMap[type] = initializer;
+				this._initializerNoNameTypeMap[type] = initializer;
 				return;
 			}
-			var nameTable:Object = this._nameTypeMap[type];
+			var nameTable:Object = this._initializerNameTypeMap[type];
 			if(!nameTable)
 			{
-				this._nameTypeMap[type] = nameTable = {};
+				this._initializerNameTypeMap[type] = nameTable = {};
 			}
 			nameTable[withName] = initializer;
 		}
@@ -99,12 +99,12 @@ package feathers.core
 		 */
 		public function setInitializerForClassAndSubclasses(type:Class, initializer:Function):void
 		{
-			const index:int = this._superTypes.indexOf(type);
+			const index:int = this._initializerSuperTypes.indexOf(type);
 			if(index < 0)
 			{
-				this._superTypes.push(type);
+				this._initializerSuperTypes.push(type);
 			}
-			this._superTypeMap[type] = initializer;
+			this._initializerSuperTypeMap[type] = initializer;
 		}
 		
 		/**
@@ -114,9 +114,9 @@ package feathers.core
 		{
 			if(!withName)
 			{
-				return this._noNameTypeMap[type] as Function;
+				return this._initializerNoNameTypeMap[type] as Function;
 			}
-			const nameTable:Object = this._nameTypeMap[type];
+			const nameTable:Object = this._initializerNameTypeMap[type];
 			if(!nameTable)
 			{
 				return null;
@@ -129,7 +129,7 @@ package feathers.core
 		 */
 		public function getInitializerForClassAndSubclasses(type:Class):Function
 		{
-			return this._superTypeMap[type];
+			return this._initializerSuperTypeMap[type];
 		}
 		
 		/**
@@ -140,11 +140,11 @@ package feathers.core
 		{
 			if(!withName)
 			{
-				delete this._noNameTypeMap[type];
+				delete this._initializerNoNameTypeMap[type];
 				return;
 			}
 
-			const nameTable:Object = this._nameTypeMap[type];
+			const nameTable:Object = this._initializerNameTypeMap[type];
 			if(!nameTable)
 			{
 				return;
@@ -159,30 +159,30 @@ package feathers.core
 		 */
 		public function clearInitializerForClassAndSubclasses(type:Class):void
 		{
-			delete this._superTypeMap[type];
-			const index:int = this._superTypes.indexOf(type);
+			delete this._initializerSuperTypeMap[type];
+			const index:int = this._initializerSuperTypes.indexOf(type);
 			if(index >= 0)
 			{
-				this._superTypes.splice(index, 1);
+				this._initializerSuperTypes.splice(index, 1);
 			}
 		}
 		
 		/**
 		 * @private
 		 */
-		protected function applyAllStyles(target:DisplayObject):void
+		protected function processAllInitializers(target:DisplayObject):void
 		{
-			const superTypeCount:int = this._superTypes.length;
+			const superTypeCount:int = this._initializerSuperTypes.length;
 			for(var i:int = 0; i < superTypeCount; i++)
 			{
-				var type:Class = this._superTypes[i];
+				var type:Class = this._initializerSuperTypes[i];
 				if(target is type)
 				{
-					this.applyAllStylesForTypeFromMaps(target, type, this._superTypeMap);
+					this.applyAllStylesForTypeFromMaps(target, type, this._initializerSuperTypeMap);
 				}
 			}
 			type = Object(target).constructor;
-			this.applyAllStylesForTypeFromMaps(target, type, this._noNameTypeMap, this._nameTypeMap);
+			this.applyAllStylesForTypeFromMaps(target, type, this._initializerNoNameTypeMap, this._initializerNameTypeMap);
 		}
 
 		/**
@@ -230,7 +230,7 @@ package feathers.core
 			const targetAsRequiredBaseClass:DisplayObject = DisplayObject(target as requiredBaseClass);
 			if(targetAsRequiredBaseClass)
 			{
-				this.applyAllStyles(target);
+				this.processAllInitializers(target);
 			}
 
 			if(this.processRecursively)
