@@ -27,6 +27,7 @@ package feathers.data
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 
+	[DefaultProperty("data")]
 	/**
 	 * Wraps a two-dimensional data source with a common API for use with UI
 	 * controls that support this type of data.

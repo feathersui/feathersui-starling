@@ -34,6 +34,7 @@ package feathers.controls
 
 	import starling.display.DisplayObject;
 
+	[DefaultProperty("mxmlContent")]
 	/**
 	 * A layout container that supports scrolling.
 	 */
@@ -43,6 +44,11 @@ package feathers.controls
 		 * The default value added to the <code>nameList</code> of the scroller.
 		 */
 		public static const DEFAULT_CHILD_NAME_SCROLLER:String = "feathers-scroll-container-scroller";
+
+		/**
+		 * @private
+		 */
+		protected static const INVALIDATION_FLAG_MXML_CONTENT:String = "mxmlContent";
 
 		/**
 		 * Constructor.
@@ -186,6 +192,40 @@ package feathers.controls
 		public function get maxVerticalScrollPosition():Number
 		{
 			return this._maxVerticalScrollPosition;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _mxmlContent:Array;
+
+		[ArrayElementType("feathers.core.FeathersControl")]
+		/**
+		 * @private
+		 */
+		public function get mxmlContent():Array
+		{
+			return this._mxmlContent;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set mxmlContent(value:Array):void
+		{
+			if(this._mxmlContent == value)
+			{
+				return;
+			}
+			if(this._mxmlContent)
+			{
+				for each(var child:FeathersControl in this._mxmlContent)
+				{
+					this.removeChild(child);
+				}
+			}
+			this._mxmlContent = value;
+			this.invalidate(INVALIDATION_FLAG_MXML_CONTENT);
 		}
 
 		/**
@@ -384,6 +424,12 @@ package feathers.controls
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			const scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			const mxmlContentInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_MXML_CONTENT);
+
+			if(mxmlContentInvalid)
+			{
+				this.refreshMXMLContent();
+			}
 
 			if(dataInvalid)
 			{
@@ -476,6 +522,23 @@ package feathers.controls
 					var propertyValue:Object = this._scrollerProperties[propertyName];
 					this.scroller[propertyName] = propertyValue;
 				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshMXMLContent():void
+		{
+			if(!this._mxmlContent)
+			{
+				return;
+			}
+			const childCount:int = this._mxmlContent.length;
+			for(var i:int = 0; i < childCount; i++)
+			{
+				var child:FeathersControl = FeathersControl(this._mxmlContent[i]);
+				this.addChild(child);
 			}
 		}
 

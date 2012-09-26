@@ -218,6 +218,8 @@ package feathers.layout
 			this._onLayoutChange.dispatch(this);
 		}
 
+
+		[Inspectable(type="String",enumeration="top,middle,bottom,justify")]
 		/**
 		 * @private
 		 */
@@ -249,6 +251,7 @@ package feathers.layout
 		 */
 		private var _horizontalAlign:String = HORIZONTAL_ALIGN_LEFT;
 
+		[Inspectable(type="String",enumeration="left,center,right")]
 		/**
 		 * If the total item width is less than the bounds, the positions of
 		 * the items can be aligned horizontally.

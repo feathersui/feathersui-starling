@@ -39,6 +39,7 @@ package feathers.controls
 
 	import starling.display.DisplayObject;
 
+	[DefaultProperty("dataProvider")]
 	/**
 	 * Displays a list of items divided into groups or sections. Takes a
 	 * hierarchical provider limited to two levels of hierarchy. This component

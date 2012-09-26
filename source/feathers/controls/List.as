@@ -38,6 +38,7 @@ package feathers.controls
 
 	import starling.display.DisplayObject;
 
+	[DefaultProperty("dataProvider")]
 	/**
 	 * Displays a one-dimensional list of items. Supports scrolling, custom
 	 * item renderers, and custom layouts.
