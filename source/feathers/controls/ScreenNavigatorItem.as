@@ -40,22 +40,17 @@ package feathers.controls
 	{
 		/**
 		 * Creates a new ScreenNavigatorItem instance.
-		 * 
-		 * @param screen		Sets the screen property.
-		 * @param events		Sets the events property.
-		 * 
-		 * @see #screen
-		 * @see #events
 		 */
-		public function ScreenNavigatorItem(screen:Object, events:Object = null, initializer:Object = null)
+		public function ScreenNavigatorItem(screen:Object, events:Object = null, properties:Object = null)
 		{
 			this.screen = screen;
 			this.events = events ? events : {};
-			this.initializer = initializer ? initializer : {};
+			this.properties = properties ? properties : {};
 		}
 		
 		/**
-		 * A DisplayObject instance or a Class that creates a display object.
+		 * A Starling DisplayObject, a Class that may be instantiated to create
+		 * a DisplayObject, or a Function that returns a DisplayObject.
 		 */
 		public var screen:Object;
 		
@@ -71,7 +66,7 @@ package feathers.controls
 		/**
 		 * A hash of properties to set on the screen.
 		 */
-		public var initializer:Object;
+		public var properties:Object;
 		
 		/**
 		 * Creates and instance of the screen type (or uses the screen directly
@@ -85,20 +80,24 @@ package feathers.controls
 				var ScreenType:Class = Class(this.screen);
 				screenInstance = new ScreenType();
 			}
+			else if(this.screen is Function)
+			{
+				screenInstance = DisplayObject((this.screen as Function)());
+			}
 			else if(this.screen is DisplayObject)
 			{
 				screenInstance = DisplayObject(this.screen);
 			}
 			else
 			{
-				throw new IllegalOperationError("ScreenNavigatorItem \"screen\" must be a Class or a display object.");
+				throw new IllegalOperationError("ScreenNavigatorItem \"screen\" must be a Class, a Function, or a Starling display object.");
 			}
 			
-			if(this.initializer)
+			if(this.properties)
 			{
-				for(var property:String in this.initializer)
+				for(var property:String in this.properties)
 				{
-					screenInstance[property] = this.initializer[property];
+					screenInstance[property] = this.properties[property];
 				}
 			}
 			
