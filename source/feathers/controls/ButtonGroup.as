@@ -955,7 +955,17 @@ package feathers.controls
 			const hasLastGap:Boolean = !isNaN(this._lastGap);
 			const buttonCount:int = this.activeButtons.length;
 			const secondToLastIndex:int = buttonCount - 2;
-			const buttonSize:Number = (this._direction == DIRECTION_VERTICAL ? this.actualHeight : this.actualWidth) / buttonCount;
+			const totalSize:Number = this._direction == DIRECTION_VERTICAL ? this.actualHeight : this.actualWidth;
+			var totalButtonSize:Number = totalSize - (this._gap * (buttonCount - 1));
+			if(hasFirstGap)
+			{
+				totalButtonSize += this._gap - this._firstGap;
+			}
+			if(hasLastGap)
+			{
+				totalButtonSize += this._gap - this._lastGap;
+			}
+			const buttonSize:Number = totalButtonSize / buttonCount;
 			var position:Number = 0;
 			for(var i:int = 0; i < buttonCount; i++)
 			{

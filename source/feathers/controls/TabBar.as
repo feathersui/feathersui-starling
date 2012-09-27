@@ -971,7 +971,9 @@ package feathers.controls
 		protected function layoutTabs():void
 		{
 			const tabCount:int = this.activeTabs.length;
-			const tabSize:Number = (this._direction == DIRECTION_VERTICAL ? this.actualHeight : this.actualWidth) / tabCount;
+			const totalSize:Number = this._direction == DIRECTION_VERTICAL ? this.actualHeight : this.actualWidth;
+			const totalTabSize:Number = totalSize - (this._gap * (tabCount - 1));
+			const tabSize:Number = totalTabSize / tabCount;
 			var position:Number = 0;
 			for(var i:int = 0; i < tabCount; i++)
 			{
