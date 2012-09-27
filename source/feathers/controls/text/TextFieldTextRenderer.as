@@ -105,6 +105,10 @@ package feathers.controls.text
 		 */
 		public function set text(value:String):void
 		{
+			if(!value)
+			{
+				value = "";
+			}
 			if(this._text == value)
 			{
 				return;
