@@ -33,6 +33,8 @@ package feathers.controls
 	import feathers.layout.ViewPortBounds;
 	import feathers.text.BitmapFontTextFormat;
 
+	import flash.geom.Point;
+
 	import starling.display.DisplayObject;
 
 	/**
@@ -112,6 +114,11 @@ package feathers.controls
 		private static const helperResult:LayoutBoundsResult = new LayoutBoundsResult();
 
 		/**
+		 * @private
+		 */
+		private static const helperPoint:Point = new Point();
+
+		/**
 		 * Constructor.
 		 */
 		public function Header()
@@ -131,14 +138,24 @@ package feathers.controls
 
 		/**
 		 * @private
-		 * The layout algorithm. Shared by both sides.
 		 */
-		private var _layout:HorizontalLayout;
+		protected var leftItemsWidth:Number = 0;
 
 		/**
 		 * @private
 		 */
-		private var _title:String;
+		protected var rightItemsWidth:Number = 0;
+
+		/**
+		 * @private
+		 * The layout algorithm. Shared by both sides.
+		 */
+		protected var _layout:HorizontalLayout;
+
+		/**
+		 * @private
+		 */
+		protected var _title:String;
 
 		/**
 		 * The text displayed for the header's title.
@@ -195,12 +212,12 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _titleRenderer:ITextRenderer;
+		protected var _titleRenderer:ITextRenderer;
 
 		/**
 		 * @private
 		 */
-		private var _leftItems:Vector.<DisplayObject>;
+		protected var _leftItems:Vector.<DisplayObject>;
 
 		/**
 		 * The UI controls that appear in the left region of the header.
@@ -237,7 +254,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _rightItems:Vector.<DisplayObject>;
+		protected var _rightItems:Vector.<DisplayObject>;
 
 		/**
 		 * The UI controls that appear in the right region of the header.
@@ -444,7 +461,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _backgroundSkin:DisplayObject;
+		protected var _backgroundSkin:DisplayObject;
 
 		/**
 		 * A display object displayed behind the header's content.
@@ -481,7 +498,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _backgroundDisabledSkin:DisplayObject;
+		protected var _backgroundDisabledSkin:DisplayObject;
 
 		/**
 		 * A background to display when the header is disabled.
@@ -518,7 +535,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _titleProperties:PropertyProxy;
+		protected var _titleProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to the headers's title
@@ -568,7 +585,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _titleAlign:String = TITLE_ALIGN_CENTER;
+		protected var _titleAlign:String = TITLE_ALIGN_CENTER;
 
 		/**
 		 * The preferred position of the title. If leftItems and/or rightItems
@@ -670,6 +687,8 @@ package feathers.controls
 
 			if(sizeInvalid || leftContentInvalid || rightContentInvalid || stylesInvalid)
 			{
+				this.leftItemsWidth = 0;
+				this.rightItemsWidth = 0;
 				if(this._leftItems)
 				{
 					this.layoutLeftItems();
@@ -744,15 +763,14 @@ package feathers.controls
 				}
 			}
 
-			const uiTitleRenderer:FeathersControl = FeathersControl(this._titleRenderer);
-			uiTitleRenderer.validate();
-			if(needsWidth && !isNaN(uiTitleRenderer.width))
+			this._titleRenderer.measureText(helperPoint);
+			if(needsWidth)
 			{
-				newWidth += uiTitleRenderer.width;
+				newWidth += helperPoint.x;
 			}
-			if(needsHeight && !isNaN(uiTitleRenderer.height))
+			if(needsHeight)
 			{
-				newHeight = Math.max(newHeight, uiTitleRenderer.height);
+				newHeight = Math.max(newHeight, helperPoint.y);
 			}
 			if(needsHeight)
 			{
@@ -864,6 +882,7 @@ package feathers.controls
 			helperBounds.explicitHeight = this.actualHeight;
 			this._layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_LEFT;
 			this._layout.layout(this._leftItems, helperBounds, helperResult);
+			this.leftItemsWidth = helperResult.contentWidth;
 
 		}
 
@@ -884,6 +903,7 @@ package feathers.controls
 			helperBounds.explicitHeight = this.actualHeight;
 			this._layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_RIGHT;
 			this._layout.layout(this._rightItems, helperBounds, helperResult);
+			this.rightItemsWidth = helperResult.contentWidth;
 		}
 
 		/**
@@ -896,18 +916,27 @@ package feathers.controls
 				return;
 			}
 			const uiTitleRenderer:FeathersControl = FeathersControl(this._titleRenderer);
-			uiTitleRenderer.validate();
+			const leftOffset:Number = (this._leftItems && this._leftItems.length > 0) ? (this.leftItemsWidth + this._gap) : 0;
+			const rightOffset:Number = (this._rightItems && this._rightItems.length > 0) ? (this.rightItemsWidth + this._gap) : 0;
 			if(this._titleAlign == TITLE_ALIGN_PREFER_LEFT && (!this._leftItems || this._leftItems.length == 0))
 			{
+				uiTitleRenderer.maxWidth = this.actualWidth - this._paddingLeft - this._paddingRight - rightOffset;
+				uiTitleRenderer.validate();
 				uiTitleRenderer.x = this._paddingLeft;
 			}
 			else if(this._titleAlign == TITLE_ALIGN_PREFER_RIGHT && (!this._rightItems || this._rightItems.length == 0))
 			{
+				uiTitleRenderer.maxWidth = this.actualWidth - this._paddingLeft - this._paddingRight - leftOffset;
+				uiTitleRenderer.validate();
 				uiTitleRenderer.x = this.actualWidth - this._paddingRight - uiTitleRenderer.width;
 			}
 			else
 			{
-				uiTitleRenderer.x = (this.actualWidth - uiTitleRenderer.width) / 2;
+				const sharedOffset:Number = Math.max(leftOffset, rightOffset);
+				const availableWidth:Number = this.actualWidth - this._paddingLeft - this._paddingRight - 2 * sharedOffset;
+				uiTitleRenderer.maxWidth = availableWidth;
+				uiTitleRenderer.validate();
+				uiTitleRenderer.x = this._paddingLeft + sharedOffset + (availableWidth - uiTitleRenderer.width) / 2;
 			}
 			if(this._verticalAlign == VERTICAL_ALIGN_TOP)
 			{
