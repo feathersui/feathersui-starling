@@ -24,6 +24,8 @@
  */
 package feathers.controls.renderers
 {
+	import feathers.core.FeathersControl;
+
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
 	import flash.utils.Timer;
@@ -1356,14 +1358,64 @@ package feathers.controls.renderers
 		 */
 		override protected function layoutContent():void
 		{
-			super.layoutContent();
-			if(!this.accessory)
-			{
-				return;
-			}
 			if(this.accessory is FeathersControl)
 			{
 				FeathersControl(this.accessory).validate();
+			}
+			var labelMaxWidth:Number = this.actualWidth - this._paddingLeft - this._paddingRight;
+			var adjustedGap:Number = this._gap == Number.POSITIVE_INFINITY ? Math.min(this._paddingLeft, this._paddingRight) : this._gap;
+			if(this.currentIcon && (this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE ||
+				this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE))
+			{
+				labelMaxWidth -= (this.currentIcon.width + adjustedGap);
+			}
+			if(this.accessory)
+			{
+				labelMaxWidth -= (this.accessory.width + adjustedGap);
+			}
+
+			const uiLabelRenderer:FeathersControl = FeathersControl(this.labelTextRenderer);
+			uiLabelRenderer.maxWidth = labelMaxWidth;
+			uiLabelRenderer.validate();
+
+			if(this.label)
+			{
+				this.positionLabelOrIcon(uiLabelRenderer);
+				if(this.accessory)
+				{
+					if(this._horizontalAlign == Button.HORIZONTAL_ALIGN_RIGHT)
+					{
+						uiLabelRenderer.x -= (this.accessory.width + adjustedGap);
+					}
+					else if(this._horizontalAlign == Button.HORIZONTAL_ALIGN_CENTER)
+					{
+						uiLabelRenderer.x -= (this.accessory.width + adjustedGap) / 2;
+					}
+				}
+				if(this.currentIcon)
+				{
+					this.positionLabelAndIcon();
+				}
+			}
+			else if(this.currentIcon)
+			{
+				this.positionLabelOrIcon(this.currentIcon);
+				if(this.accessory)
+				{
+					if(this._horizontalAlign == Button.HORIZONTAL_ALIGN_RIGHT)
+					{
+						this.currentIcon.x -= (this.accessory.width + adjustedGap);
+					}
+					else if(this._horizontalAlign == Button.HORIZONTAL_ALIGN_CENTER)
+					{
+						this.currentIcon.x -= (this.accessory.width + adjustedGap) / 2;
+					}
+				}
+			}
+
+			if(!this.accessory)
+			{
+				return;
 			}
 			this.accessory.x = this.actualWidth - this._paddingRight - this.accessory.width;
 			this.accessory.y = (this.actualHeight - this.accessory.height) / 2;
