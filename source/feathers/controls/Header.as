@@ -815,8 +815,6 @@ package feathers.controls
 			this._layout.gap = this._gap;
 			this._layout.paddingTop = this._paddingTop;
 			this._layout.paddingBottom = this._paddingBottom;
-			this._layout.paddingRight = this._paddingRight;
-			this._layout.paddingLeft = this._paddingLeft;
 			this._layout.verticalAlign = this._verticalAlign;
 		}
 
@@ -881,6 +879,8 @@ package feathers.controls
 			helperBounds.explicitWidth = this.actualWidth;
 			helperBounds.explicitHeight = this.actualHeight;
 			this._layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_LEFT;
+			this._layout.paddingRight = 0;
+			this._layout.paddingLeft = this._paddingLeft;
 			this._layout.layout(this._leftItems, helperBounds, helperResult);
 			this.leftItemsWidth = helperResult.contentWidth;
 
@@ -902,6 +902,8 @@ package feathers.controls
 			helperBounds.explicitWidth = this.actualWidth;
 			helperBounds.explicitHeight = this.actualHeight;
 			this._layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_RIGHT;
+			this._layout.paddingRight = this._paddingRight;
+			this._layout.paddingLeft = 0;
 			this._layout.layout(this._rightItems, helperBounds, helperResult);
 			this.rightItemsWidth = helperResult.contentWidth;
 		}
