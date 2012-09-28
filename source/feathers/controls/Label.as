@@ -214,6 +214,7 @@ package feathers.controls
 			{
 				return false;
 			}
+			FeathersControl(this.textRenderer).maxWidth = Number.POSITIVE_INFINITY;
 			this.textRenderer.measureText(HELPER_POINT);
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
