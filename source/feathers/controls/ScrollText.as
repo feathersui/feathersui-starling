@@ -548,7 +548,6 @@ package feathers.controls
 				this.scroller.maxWidth = Math.max(0, this._maxWidth);
 				this.scroller.minHeight = Math.max(0, this._minHeight);
 				this.scroller.maxHeight = Math.max(0, this._maxHeight);
-				trace(this.scroller.width, this.scroller.minWidth, this.scroller.maxWidth);
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
