@@ -41,7 +41,7 @@ package feathers.controls
 		/**
 		 * Creates a new ScreenNavigatorItem instance.
 		 */
-		public function ScreenNavigatorItem(screen:Object, events:Object = null, properties:Object = null)
+		public function ScreenNavigatorItem(screen:Object = null, events:Object = null, properties:Object = null)
 		{
 			this.screen = screen;
 			this.events = events ? events : {};
