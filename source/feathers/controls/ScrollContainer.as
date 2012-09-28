@@ -106,7 +106,7 @@ package feathers.controls
 		private var _horizontalScrollPosition:Number = 0;
 
 		/**
-		 * The number of pixels the list has been scrolled horizontally (on
+		 * The number of pixels the container has been scrolled horizontally (on
 		 * the x-axis).
 		 */
 		public function get horizontalScrollPosition():Number
@@ -153,7 +153,7 @@ package feathers.controls
 		private var _verticalScrollPosition:Number = 0;
 
 		/**
-		 * The number of pixels the list has been scrolled vertically (on
+		 * The number of pixels the container has been scrolled vertically (on
 		 * the y-axis).
 		 */
 		public function get verticalScrollPosition():Number
