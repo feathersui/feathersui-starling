@@ -36,7 +36,9 @@ package feathers.controls
 {
 	import com.gskinner.motion.easing.Cubic;
 	import com.gskinner.motion.easing.Sine;
-	
+
+	import feathers.core.FeathersControl;
+
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -1347,6 +1349,7 @@ package feathers.controls
 			const scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
 			const clippingInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_CLIPPING);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 			const scrollBarInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL_BAR_RENDERER);
 
 			if(scrollBarInvalid)
@@ -1358,6 +1361,11 @@ package feathers.controls
 			{
 				this.refreshScrollBarStyles();
 				this.refreshInteractionModeEvents();
+			}
+
+			if(stateInvalid)
+			{
+				this.refreshEnabled();
 			}
 
 			if(this.horizontalScrollBar is FeathersControl)
@@ -1514,6 +1522,25 @@ package feathers.controls
 				const displayVerticalScrollBar:DisplayObject = DisplayObject(this.verticalScrollBar);
 				displayVerticalScrollBar.alpha = this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FLOAT ? 0 : 1;
 				displayVerticalScrollBar.touchable = this._interactionMode == INTERACTION_MODE_MOUSE;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshEnabled():void
+		{
+			if(this._viewPort)
+			{
+				FeathersControl(this._viewPort).isEnabled = this._isEnabled;
+			}
+			if(this.horizontalScrollBar)
+			{
+				FeathersControl(this.horizontalScrollBar).isEnabled = this._isEnabled;
+			}
+			if(this.verticalScrollBar)
+			{
+				FeathersControl(this.verticalScrollBar).isEnabled = this._isEnabled;
 			}
 		}
 

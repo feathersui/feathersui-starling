@@ -1500,7 +1500,6 @@ package feathers.controls
 				this.refreshBackgroundSkin();
 			}
 
-			this.dataViewPort.isEnabled = this._isEnabled;
 			this.dataViewPort.isSelectable = this._isSelectable;
 			this.dataViewPort.setSelectedLocation(this._selectedGroupIndex, this._selectedItemIndex);
 			this.dataViewPort.dataProvider = this._dataProvider;
@@ -1557,10 +1556,13 @@ package feathers.controls
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
-			if((sizeInvalid || stylesInvalid) && this.currentBackgroundSkin)
+			if(sizeInvalid || stylesInvalid || stateInvalid)
 			{
-				this.currentBackgroundSkin.width = this.actualWidth;
-				this.currentBackgroundSkin.height = this.actualHeight;
+				if(this.currentBackgroundSkin)
+				{
+					this.currentBackgroundSkin.width = this.actualWidth;
+					this.currentBackgroundSkin.height = this.actualHeight;
+				}
 			}
 
 			this.scroller.validate();
