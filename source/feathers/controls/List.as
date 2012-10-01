@@ -923,7 +923,6 @@ package feathers.controls
 				this.refreshBackgroundSkin();
 			}
 
-			this.dataViewPort.isEnabled = this._isEnabled;
 			this.dataViewPort.isSelectable = this._isSelectable;
 			this.dataViewPort.selectedIndex = this._selectedIndex;
 			this.dataViewPort.dataProvider = this._dataProvider;
