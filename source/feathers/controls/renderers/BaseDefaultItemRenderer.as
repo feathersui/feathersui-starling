@@ -107,6 +107,11 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		protected var currentNameFromItem:String;
+
+		/**
+		 * @private
+		 */
 		private var _data:Object;
 
 		/**
@@ -256,6 +261,81 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		private var _nameField:String = null;
+
+		/**
+		 * The field in the item that contains the name to be added to the
+		 * nameList of the renderer. If the item does not have this field, and a
+		 * <code>nameFunction</code> is not defined, then the renderer will
+		 * not add a name to the nameList.
+		 *
+		 * <p>All of the name fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>nameFunction</code></li>
+		 *     <li><code>nameField</code></li>
+		 * </ol>
+		 *
+		 * @see #nameFunction
+		 * @see feathers.core.FeathersControl#nameList
+		 */
+		public function get nameField():String
+		{
+			return this._nameField;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set nameField(value:String):void
+		{
+			if(this._nameField == value)
+			{
+				return;
+			}
+			this._nameField = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _nameFunction:Function;
+
+		/**
+		 * A function used to generate a name to add to the renderer's nameList
+		 * for a specific item. If this function is not null, then the
+		 * <code>nameField</code> will be ignored.
+		 *
+		 * <p>All of the name fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>nameFunction</code></li>
+		 *     <li><code>nameField</code></li>
+		 * </ol>
+		 *
+		 * @see #nameField
+		 * @see feathers.core.FeathersControl#nameList
+		 */
+		public function get nameFunction():Function
+		{
+			return this._nameFunction;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set nameFunction(value:Function):void
+		{
+			if(this._nameFunction == value)
+			{
+				return;
+			}
+			this._nameFunction = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
 		private var _labelField:String = "label";
 
 		/**
@@ -321,6 +401,10 @@ package feathers.controls.renderers
 		 */
 		public function set labelFunction(value:Function):void
 		{
+			if(this._labelFunction == value)
+			{
+				return;
+			}
 			this._labelFunction = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -397,6 +481,10 @@ package feathers.controls.renderers
 		 */
 		public function set iconFunction(value:Function):void
 		{
+			if(this._iconFunction == value)
+			{
+				return;
+			}
 			this._iconFunction = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -483,6 +571,10 @@ package feathers.controls.renderers
 		 */
 		public function set iconTextureFunction(value:Function):void
 		{
+			if(this._iconTextureFunction == value)
+			{
+				return;
+			}
 			this._iconTextureFunction = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -1105,6 +1197,29 @@ package feathers.controls.renderers
 		}
 
 		/**
+		 * Uses the name field and function to generate a name to add to the
+		 * nameList of the item renderer for a specific item.
+		 *
+		 * <p>All of the name fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>nameFunction</code></li>
+		 *     <li><code>nameField</code></li>
+		 * </ol>
+		 */
+		protected function itemToName(item:Object):String
+		{
+			if(this._nameFunction != null)
+			{
+				return this._nameFunction(item) as String;
+			}
+			else if(this._nameField != null && item && item.hasOwnProperty(this._nameField))
+			{
+				return item[this._nameField] as String;
+			}
+			return null;
+		}
+
+		/**
 		 * @private
 		 */
 		override protected function draw():void
@@ -1250,11 +1365,35 @@ package feathers.controls.renderers
 						this.addChild(this.accessory);
 					}
 				}
+				const nameFromItem:String = this.itemToName(this._data);
+				if(nameFromItem != this.currentNameFromItem)
+				{
+					if(this._nameList.contains(this.currentNameFromItem))
+					{
+						this._nameList.remove(this.currentNameFromItem);
+					}
+					this.currentNameFromItem = nameFromItem;
+					if(this.currentNameFromItem)
+					{
+						this._nameList.add(this.currentNameFromItem);
+					}
+				}
 			}
 			else
 			{
-				this._label = "";
-				this.defaultIcon = null;
+				if(this.currentNameFromItem && this._nameList.contains(this.currentNameFromItem))
+				{
+					this._nameList.remove(this.currentNameFromItem);
+				}
+				this.currentNameFromItem = null;
+				if(this._itemHasLabel)
+				{
+					this._label = "";
+				}
+				if(this._itemHasIcon)
+				{
+					this.defaultIcon = null;
+				}
 				if(this.accessory)
 				{
 					this.accessory.removeFromParent();
