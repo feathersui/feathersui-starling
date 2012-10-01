@@ -231,6 +231,83 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var currentBackgroundSkin:DisplayObject;
+
+		/**
+		 * @private
+		 */
+		private var _backgroundSkin:DisplayObject;
+
+		/**
+		 * A display object displayed behind the item renderers.
+		 */
+		public function get backgroundSkin():DisplayObject
+		{
+			return this._backgroundSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set backgroundSkin(value:DisplayObject):void
+		{
+			if(this._backgroundSkin == value)
+			{
+				return;
+			}
+
+			if(this._backgroundSkin && this._backgroundSkin != this._backgroundDisabledSkin)
+			{
+				this.removeChild(this._backgroundSkin);
+			}
+			this._backgroundSkin = value;
+			if(this._backgroundSkin && this._backgroundSkin.parent != this)
+			{
+				this._backgroundSkin.visible = false;
+				super.addChildAt(this._backgroundSkin, 0);
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _backgroundDisabledSkin:DisplayObject;
+
+		/**
+		 * A background to display when the list is disabled.
+		 */
+		public function get backgroundDisabledSkin():DisplayObject
+		{
+			return this._backgroundDisabledSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set backgroundDisabledSkin(value:DisplayObject):void
+		{
+			if(this._backgroundDisabledSkin == value)
+			{
+				return;
+			}
+
+			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin != this._backgroundSkin)
+			{
+				this.removeChild(this._backgroundDisabledSkin);
+			}
+			this._backgroundDisabledSkin = value;
+			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin.parent != this)
+			{
+				this._backgroundDisabledSkin.visible = false;
+				super.addChildAt(this._backgroundDisabledSkin, 0);
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		private var _scrollerProperties:PropertyProxy;
 
 		/**
@@ -411,7 +488,9 @@ package feathers.controls
 				this.scroller.viewPort = this.viewPort;
 				this.scroller.nameList.add(this.scrollerName);
 				this.scroller.onScroll.add(scroller_onScroll);
-				super.addChildAt(this.scroller, 0);
+				//addChild() calls addChildAt(), so this is a workaround to
+				//bypass our overridden addChildAt()
+				super.addChildAt(this.scroller, super.numChildren);
 			}
 		}
 
@@ -424,6 +503,7 @@ package feathers.controls
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			const scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 			const mxmlContentInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_MXML_CONTENT);
 
 			if(mxmlContentInvalid)
@@ -440,9 +520,19 @@ package feathers.controls
 				this.viewPort.layout = this._layout;
 			}
 
+			if(sizeInvalid || stylesInvalid || stateInvalid)
+			{
+				this.refreshBackgroundSkin();
+			}
+
 			if(stylesInvalid)
 			{
 				this.refreshScrollerStyles();
+			}
+
+			if(stateInvalid)
+			{
+				this.scroller.isEnabled = this._isEnabled;
 			}
 
 			if(scrollInvalid)
@@ -477,6 +567,15 @@ package feathers.controls
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
+			if(sizeInvalid || stylesInvalid || stateInvalid)
+			{
+				if(this.currentBackgroundSkin)
+				{
+					this.currentBackgroundSkin.width = this.actualWidth;
+					this.currentBackgroundSkin.height = this.actualHeight;
+				}
+			}
+
 			this.scroller.validate();
 			this._maxHorizontalScrollPosition = this.scroller.maxHorizontalScrollPosition;
 			this._maxVerticalScrollPosition = this.scroller.maxVerticalScrollPosition;
@@ -508,6 +607,30 @@ package feathers.controls
 				newHeight = this.scroller.height;
 			}
 			return this.setSizeInternal(newWidth, newHeight, false);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshBackgroundSkin():void
+		{
+			this.currentBackgroundSkin = this._backgroundSkin;
+			if(!this._isEnabled && this._backgroundDisabledSkin)
+			{
+				if(this._backgroundSkin)
+				{
+					this._backgroundSkin.visible = false;
+				}
+				this.currentBackgroundSkin = this._backgroundDisabledSkin;
+			}
+			else if(this._backgroundDisabledSkin)
+			{
+				this._backgroundDisabledSkin.visible = false;
+			}
+			if(this.currentBackgroundSkin)
+			{
+				this.currentBackgroundSkin.visible = true;
+			}
 		}
 
 		/**
