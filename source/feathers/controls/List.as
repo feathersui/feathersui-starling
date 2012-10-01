@@ -966,10 +966,13 @@ package feathers.controls
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
-			if((sizeInvalid || stylesInvalid) && this.currentBackgroundSkin)
+			if(sizeInvalid || stylesInvalid || stateInvalid)
 			{
-				this.currentBackgroundSkin.width = this.actualWidth;
-				this.currentBackgroundSkin.height = this.actualHeight;
+				if(this.currentBackgroundSkin)
+				{
+					this.currentBackgroundSkin.width = this.actualWidth;
+					this.currentBackgroundSkin.height = this.actualHeight;
+				}
 			}
 
 			this.scroller.validate();
