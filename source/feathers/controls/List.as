@@ -478,6 +478,8 @@ package feathers.controls
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
 		 * @see #itemRendererFactory
+		 * 
+		 * @default <code>new PropertyProxy(itemRendererProperties_onChange)</code>
 		 */
 		public function get itemRendererProperties():Object
 		{
@@ -534,6 +536,8 @@ package feathers.controls
 		
 		/**
 		 * A display object displayed behind the item renderers.
+		 * 
+		 * @default null
 		 */
 		public function get backgroundSkin():DisplayObject
 		{
@@ -570,6 +574,8 @@ package feathers.controls
 		
 		/**
 		 * A background to display when the list is disabled.
+		 * 
+		 * @default null
 		 */
 		public function get backgroundDisabledSkin():DisplayObject
 		{
@@ -834,6 +840,9 @@ package feathers.controls
 		 * Scrolls the list so that the specified item is visible. If
 		 * <code>animationDuration</code> is greater than zero, the scroll will
 		 * animate. The duration is in seconds.
+		 * 
+		 * @param index The Display object at the index value.
+		 * @param animationDuration The length in time for the scroll to animate to the new index.
 		 */
 		public function scrollToDisplayIndex(index:int, animationDuration:Number = 0):void
 		{
