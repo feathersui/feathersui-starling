@@ -841,8 +841,8 @@ package feathers.controls
 		 * <code>animationDuration</code> is greater than zero, the scroll will
 		 * animate. The duration is in seconds.
 		 * 
-		 * @param index The Display object at the index value.
-		 * @param animationDuration The length in time for the scroll to animate to the new index.
+		 * @param index The integer index of an item from the data provider.
+		 * @param animationDuration The length of time, in seconds, of the animation. May be zero to scroll instantly.
 		 */
 		public function scrollToDisplayIndex(index:int, animationDuration:Number = 0):void
 		{
