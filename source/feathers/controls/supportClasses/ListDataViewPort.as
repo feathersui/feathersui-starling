@@ -356,7 +356,7 @@ package feathers.controls.supportClasses
 			{
 				this._itemRendererProperties.onChange.add(itemRendererProperties_onChange);
 			}
-			this.invalidate(INVALIDATION_FLAG_STYLES, INVALIDATION_FLAG_SCROLL);
+			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
 
 		private var _ignoreLayoutChanges:Boolean = false;
@@ -756,7 +756,7 @@ package feathers.controls.supportClasses
 
 		private function itemRendererProperties_onChange(proxy:PropertyProxy, name:Object):void
 		{
-			this.invalidate(INVALIDATION_FLAG_SCROLL, INVALIDATION_FLAG_STYLES);
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		private function owner_onScroll(list:List):void

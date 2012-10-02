@@ -450,7 +450,7 @@ package feathers.controls.supportClasses
 			{
 				this._itemRendererProperties.onChange.add(childProperties_onChange);
 			}
-			this.invalidate(INVALIDATION_FLAG_STYLES, INVALIDATION_FLAG_SCROLL);
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		private var _firstItemRendererType:Class;
@@ -704,7 +704,7 @@ package feathers.controls.supportClasses
 			{
 				this._headerRendererProperties.onChange.add(childProperties_onChange);
 			}
-			this.invalidate(INVALIDATION_FLAG_STYLES, INVALIDATION_FLAG_SCROLL);
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		private var _footerRendererType:Class;
@@ -799,7 +799,7 @@ package feathers.controls.supportClasses
 			{
 				this._footerRendererProperties.onChange.add(childProperties_onChange);
 			}
-			this.invalidate(INVALIDATION_FLAG_STYLES, INVALIDATION_FLAG_SCROLL);
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		private var _ignoreLayoutChanges:Boolean = false;
@@ -950,18 +950,33 @@ package feathers.controls.supportClasses
 			{
 				this.refreshSelection();
 			}
+
+			if(scrollInvalid || stateInvalid || sizeInvalid || dataInvalid || itemRendererInvalid)
+			{
+				this.refreshEnabled();
+			}
+
+			this.validateRenderers();
+			if(scrollInvalid || dataInvalid || itemRendererInvalid || sizeInvalid)
+			{
+				this._ignoreRendererResizing = true;
+				this._layout.layout(this._layoutItems, helperBounds, helperResult);
+				this._ignoreRendererResizing = false;
+				this.setSizeInternal(helperResult.contentWidth, helperResult.contentHeight, false);
+				this.actualVisibleWidth = helperResult.viewPortWidth;
+				this.actualVisibleHeight = helperResult.viewPortHeight;
+			}
+		}
+
+		protected function refreshEnabled():void
+		{
 			var rendererCount:int = this._activeItemRenderers.length;
 			for(var i:int = 0; i < rendererCount; i++)
 			{
 				var renderer:DisplayObject = DisplayObject(this._activeItemRenderers[i]);
 				if(renderer is FeathersControl)
 				{
-					var uiRenderer:FeathersControl = FeathersControl(renderer);
-					if(stateInvalid || dataInvalid || scrollInvalid || itemRendererInvalid)
-					{
-						uiRenderer.isEnabled = this._isEnabled;
-					}
-					uiRenderer.validate();
+					FeathersControl(renderer).isEnabled = this._isEnabled;
 				}
 			}
 			if(this._activeFirstItemRenderers)
@@ -972,12 +987,7 @@ package feathers.controls.supportClasses
 					renderer = DisplayObject(this._activeFirstItemRenderers[i]);
 					if(renderer is FeathersControl)
 					{
-						uiRenderer = FeathersControl(renderer);
-						if(stateInvalid || dataInvalid || scrollInvalid || itemRendererInvalid)
-						{
-							uiRenderer.isEnabled = this._isEnabled;
-						}
-						uiRenderer.validate();
+						FeathersControl(renderer).isEnabled = this._isEnabled;
 					}
 				}
 			}
@@ -989,12 +999,7 @@ package feathers.controls.supportClasses
 					renderer = DisplayObject(this._activeLastItemRenderers[i]);
 					if(renderer is FeathersControl)
 					{
-						uiRenderer = FeathersControl(renderer);
-						if(stateInvalid || dataInvalid || scrollInvalid || itemRendererInvalid)
-						{
-							uiRenderer.isEnabled = this._isEnabled;
-						}
-						uiRenderer.validate();
+						FeathersControl(renderer).isEnabled = this._isEnabled;
 					}
 				}
 			}
@@ -1006,12 +1011,7 @@ package feathers.controls.supportClasses
 					renderer = DisplayObject(this._activeSingleItemRenderers[i]);
 					if(renderer is FeathersControl)
 					{
-						uiRenderer = FeathersControl(renderer);
-						if(stateInvalid || dataInvalid || scrollInvalid || itemRendererInvalid)
-						{
-							uiRenderer.isEnabled = this._isEnabled;
-						}
-						uiRenderer.validate();
+						FeathersControl(renderer).isEnabled = this._isEnabled;
 					}
 				}
 			}
@@ -1021,12 +1021,7 @@ package feathers.controls.supportClasses
 				renderer = DisplayObject(this._activeHeaderRenderers[i]);
 				if(renderer is FeathersControl)
 				{
-					uiRenderer = FeathersControl(renderer);
-					if(stateInvalid || dataInvalid || scrollInvalid || itemRendererInvalid)
-					{
-						uiRenderer.isEnabled = this._isEnabled;
-					}
-					uiRenderer.validate();
+					FeathersControl(renderer).isEnabled = this._isEnabled;
 				}
 			}
 			rendererCount = this._activeFooterRenderers.length;
@@ -1035,23 +1030,75 @@ package feathers.controls.supportClasses
 				renderer = DisplayObject(this._activeFooterRenderers[i]);
 				if(renderer is FeathersControl)
 				{
-					uiRenderer = FeathersControl(renderer);
-					if(stateInvalid || dataInvalid || scrollInvalid || itemRendererInvalid)
-					{
-						uiRenderer.isEnabled = this._isEnabled;
-					}
-					uiRenderer.validate();
+					FeathersControl(renderer).isEnabled = this._isEnabled;
 				}
 			}
+		}
 
-			if(scrollInvalid || dataInvalid || itemRendererInvalid || sizeInvalid)
+		protected function validateRenderers():void
+		{
+			var rendererCount:int = this._activeItemRenderers.length;
+			for(var i:int = 0; i < rendererCount; i++)
 			{
-				this._ignoreRendererResizing = true;
-				this._layout.layout(this._layoutItems, helperBounds, helperResult);
-				this._ignoreRendererResizing = false;
-				this.setSizeInternal(helperResult.contentWidth, helperResult.contentHeight, false);
-				this.actualVisibleWidth = helperResult.viewPortWidth;
-				this.actualVisibleHeight = helperResult.viewPortHeight;
+				var renderer:DisplayObject = DisplayObject(this._activeItemRenderers[i]);
+				if(renderer is FeathersControl)
+				{
+					FeathersControl(renderer).validate();
+				}
+			}
+			if(this._activeFirstItemRenderers)
+			{
+				rendererCount = this._activeFirstItemRenderers.length;
+				for(i = 0; i < rendererCount; i++)
+				{
+					renderer = DisplayObject(this._activeFirstItemRenderers[i]);
+					if(renderer is FeathersControl)
+					{
+						FeathersControl(renderer).validate();
+					}
+				}
+			}
+			if(this._activeLastItemRenderers)
+			{
+				rendererCount = this._activeLastItemRenderers.length;
+				for(i = 0; i < rendererCount; i++)
+				{
+					renderer = DisplayObject(this._activeLastItemRenderers[i]);
+					if(renderer is FeathersControl)
+					{
+						FeathersControl(renderer).validate();
+					}
+				}
+			}
+			if(this._activeSingleItemRenderers)
+			{
+				rendererCount = this._activeSingleItemRenderers.length;
+				for(i = 0; i < rendererCount; i++)
+				{
+					renderer = DisplayObject(this._activeSingleItemRenderers[i]);
+					if(renderer is FeathersControl)
+					{
+						FeathersControl(renderer).validate();
+					}
+				}
+			}
+			rendererCount = this._activeHeaderRenderers.length;
+			for(i = 0; i < rendererCount; i++)
+			{
+				renderer = DisplayObject(this._activeHeaderRenderers[i]);
+				if(renderer is FeathersControl)
+				{
+					FeathersControl(renderer).validate();
+				}
+			}
+			rendererCount = this._activeFooterRenderers.length;
+			for(i = 0; i < rendererCount; i++)
+			{
+				renderer = DisplayObject(this._activeFooterRenderers[i]);
+				if(renderer is FeathersControl)
+				{
+					FeathersControl(renderer).validate();
+				}
 			}
 		}
 		
@@ -1987,7 +2034,7 @@ package feathers.controls.supportClasses
 
 		private function childProperties_onChange(proxy:PropertyProxy, name:Object):void
 		{
-			this.invalidate(INVALIDATION_FLAG_SCROLL, INVALIDATION_FLAG_STYLES);
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		private function owner_onScroll(list:GroupedList):void

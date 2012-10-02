@@ -578,7 +578,7 @@ package feathers.controls
 			const oldSelected:Boolean = this._isSelected;
 			this._isSelected = value;
 			this._isSelectionChangedByUser = false;
-			this.invalidate(INVALIDATION_FLAG_DATA, INVALIDATION_FLAG_SELECTED);
+			this.invalidate(INVALIDATION_FLAG_SELECTED);
 			if(this._isSelected != oldSelected)
 			{
 				this._onChange.dispatch(this);
@@ -894,7 +894,7 @@ package feathers.controls
 		 */
 		override protected function draw():void
 		{
-			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			const selectionInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SELECTED);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
@@ -932,7 +932,7 @@ package feathers.controls
 				this.drawLabels();
 			}
 
-			if(sizeInvalid || stylesInvalid || dataInvalid)
+			if(sizeInvalid || stylesInvalid || selectionInvalid)
 			{
 				this.updateSelection();
 			}

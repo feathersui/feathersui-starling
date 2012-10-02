@@ -712,7 +712,8 @@ package feathers.controls
 				return;
 			}
 			this._horizontalScrollPolicy = value;
-			this.invalidate(INVALIDATION_FLAG_SCROLL, INVALIDATION_FLAG_SCROLL_BAR_RENDERER);
+			this.invalidate(INVALIDATION_FLAG_SCROLL);
+			this.invalidate(INVALIDATION_FLAG_SCROLL_BAR_RENDERER);
 		}
 		
 		/**
@@ -876,7 +877,8 @@ package feathers.controls
 				return;
 			}
 			this._verticalScrollPolicy = value;
-			this.invalidate(INVALIDATION_FLAG_SCROLL, INVALIDATION_FLAG_SCROLL_BAR_RENDERER);
+			this.invalidate(INVALIDATION_FLAG_SCROLL);
+			this.invalidate(INVALIDATION_FLAG_SCROLL_BAR_RENDERER);
 		}
 		
 		/**
