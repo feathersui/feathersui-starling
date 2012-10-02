@@ -230,7 +230,7 @@ package feathers.controls.text
 				return;
 			}
 			this._truncationText = value;
-			this.invalidate(INVALIDATION_FLAG_DATA,  INVALIDATION_FLAG_SIZE);
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		/**

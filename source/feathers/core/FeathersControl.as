@@ -625,7 +625,7 @@ package feathers.core
 		 * <p>If the UI control isn't on the display list, it will never redraw.
 		 * The control will automatically invalidate once it has been added.</p>
 		 */
-		public function invalidate(...rest:Array):void
+		public function invalidate(flag:String = INVALIDATION_FLAG_ALL):void
 		{
 			if(!this.stage)
 			{
@@ -637,28 +637,13 @@ package feathers.core
 			var isAlreadyDelayedInvalid:Boolean = false;
 			if(this._isValidating)
 			{
-				for(var flag:String in this._delayedInvalidationFlags)
+				for(var otherFlag:String in this._delayedInvalidationFlags)
 				{
 					isAlreadyDelayedInvalid = true;
 					break;
 				}
 			}
-			for each(flag in rest)
-			{
-				if(this._isValidating)
-				{
-					this._delayedInvalidationFlags[flag] = true;
-				}
-				else
-				{
-					if(flag == INVALIDATION_FLAG_ALL)
-					{
-						continue;
-					}
-					this._invalidationFlags[flag] = true;
-				}
-			}
-			if(rest.length == 0 || rest.indexOf(INVALIDATION_FLAG_ALL) >= 0)
+			if(!flag || flag == INVALIDATION_FLAG_ALL)
 			{
 				if(this._isValidating)
 				{
@@ -667,6 +652,17 @@ package feathers.core
 				else
 				{
 					this._isAllInvalid = true;
+				}
+			}
+			else
+			{
+				if(this._isValidating)
+				{
+					this._delayedInvalidationFlags[flag] = true;
+				}
+				else if(flag != INVALIDATION_FLAG_ALL)
+				{
+					this._invalidationFlags[flag] = true;
 				}
 			}
 			if(!validationQueue)

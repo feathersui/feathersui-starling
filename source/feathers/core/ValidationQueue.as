@@ -53,6 +53,11 @@ package feathers.core
 			for(var i:int = 0; i < queueLength; i++)
 			{
 				var item:FeathersControl = currentQueue[i];
+				if(control == item && currentQueue == this._queue)
+				{
+					//already queued
+					return;
+				}
 				if(control.contains(item))
 				{
 					break;
