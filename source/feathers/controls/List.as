@@ -229,6 +229,8 @@ package feathers.controls
 		/**
 		 * The index of the vertical page, if snapping is enabled. If snapping
 		 * is disabled, the index will always be <code>0</code>.
+		 * 
+		 * @default 0
 		 */
 		public function get verticalPageIndex():int
 		{
@@ -248,6 +250,8 @@ package feathers.controls
 		 * than the maximum due to elastic edges. However, once the user stops
 		 * interacting with the list, it will automatically animate back to the
 		 * maximum (or minimum, if below 0).
+		 * 
+		 * @default 0
 		 */
 		public function get maxVerticalScrollPosition():Number
 		{
@@ -301,6 +305,8 @@ package feathers.controls
 		
 		/**
 		 * Determines if an item in the list may be selected.
+		 * 
+		 * @default true
 		 */
 		public function get isSelectable():Boolean
 		{
@@ -472,6 +478,8 @@ package feathers.controls
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
 		 * @see #itemRendererFactory
+		 * 
+		 * @default <code>new PropertyProxy(itemRendererProperties_onChange)</code>
 		 */
 		public function get itemRendererProperties():Object
 		{
@@ -528,6 +536,8 @@ package feathers.controls
 		
 		/**
 		 * A display object displayed behind the item renderers.
+		 * 
+		 * @default null
 		 */
 		public function get backgroundSkin():DisplayObject
 		{
@@ -564,6 +574,8 @@ package feathers.controls
 		
 		/**
 		 * A background to display when the list is disabled.
+		 * 
+		 * @default null
 		 */
 		public function get backgroundDisabledSkin():DisplayObject
 		{
@@ -828,6 +840,9 @@ package feathers.controls
 		 * Scrolls the list so that the specified item is visible. If
 		 * <code>animationDuration</code> is greater than zero, the scroll will
 		 * animate. The duration is in seconds.
+		 * 
+		 * @param index The integer index of an item from the data provider.
+		 * @param animationDuration The length of time, in seconds, of the animation. May be zero to scroll instantly.
 		 */
 		public function scrollToDisplayIndex(index:int, animationDuration:Number = 0):void
 		{
