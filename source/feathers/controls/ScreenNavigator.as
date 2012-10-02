@@ -26,11 +26,13 @@ package feathers.controls
 {
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Rectangle;
-
+	import flash.system.System;
+	
 	import feathers.core.FeathersControl;
+	
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
-
+	
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.events.ResizeEvent;
@@ -210,13 +212,14 @@ package feathers.controls
 				}
 				else if(eventAction is String)
 				{
-					var eventListener:Function = this.createScreenListener(eventAction as String);
 					if(signal)
 					{
+						var eventListener:Function = this.createScreenSignalListener(eventAction as String, signal);
 						signal.add(eventListener);
 					}
 					else
 					{
+						eventListener = this.createScreenEventListener(eventAction as String);
 						this._activeScreen.addEventListener(eventName, eventListener);
 					}
 					savedScreenEvents[eventName] = eventListener;
@@ -380,10 +383,10 @@ package feathers.controls
 
 			if(sizeInvalid || selectionInvalid)
 			{
-				if(this.activeScreen)
+				if(this._activeScreen)
 				{
-					this.activeScreen.width = this.actualWidth;
-					this.activeScreen.height = this.actualHeight;
+					this._activeScreen.width = this.actualWidth;
+					this._activeScreen.height = this.actualHeight;
 				}
 			}
 
@@ -472,15 +475,40 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private function createScreenListener(screenID:String):Function
+		private function createScreenEventListener(screenID:String):Function
 		{
 			const self:ScreenNavigator = this;
-			const eventListener:Function = function(...rest:Array):void
+			const eventListener:Function = function(event:Event):void
 			{
 				self.showScreen(screenID);
 			}
 
 			return eventListener;
+		}
+
+		/**
+		 * @private
+		 */
+		private function createScreenSignalListener(screenID:String, signal:ISignal):Function
+		{
+			const self:ScreenNavigator = this;
+			if(signal.valueClasses.length == 1)
+			{
+				//shortcut to avoid the allocation of the rest array
+				var signalListener:Function = function(arg0:Object):void
+				{
+					self.showScreen(screenID);
+				}
+			}
+			else
+			{
+				signalListener = function(...rest:Array):void
+				{
+					self.showScreen(screenID);
+				}
+			}
+
+			return signalListener;
 		}
 
 		/**
