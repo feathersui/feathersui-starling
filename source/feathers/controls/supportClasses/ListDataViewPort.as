@@ -299,19 +299,8 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
-			if(this._itemRendererName)
-			{
-				for(var item:Object in this._rendererMap)
-				{
-					var renderer:FeathersControl = this._rendererMap[item] as FeathersControl;
-					if(renderer)
-					{
-						renderer.nameList.remove(this._itemRendererName);
-					}
-				}
-			}
 			this._itemRendererName = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.invalidate(INVALIDATION_FLAG_ITEM_RENDERER_FACTORY);
 		}
 
 		private var _typicalItemWidth:Number = NaN;
@@ -535,10 +524,6 @@ package feathers.controls.supportClasses
 					if(stateInvalid || dataInvalid || scrollInvalid || itemRendererInvalid)
 					{
 						uiItemRenderer.isEnabled = this._isEnabled;
-					}
-					if(stylesInvalid && this._itemRendererName && !uiItemRenderer.nameList.contains(this._itemRendererName))
-					{
-						uiItemRenderer.nameList.add(this._itemRendererName);
 					}
 					uiItemRenderer.validate();
 				}
