@@ -229,6 +229,8 @@ package feathers.controls
 		/**
 		 * The index of the vertical page, if snapping is enabled. If snapping
 		 * is disabled, the index will always be <code>0</code>.
+		 * 
+		 * @default 0
 		 */
 		public function get verticalPageIndex():int
 		{
@@ -248,6 +250,8 @@ package feathers.controls
 		 * than the maximum due to elastic edges. However, once the user stops
 		 * interacting with the list, it will automatically animate back to the
 		 * maximum (or minimum, if below 0).
+		 * 
+		 * @default 0
 		 */
 		public function get maxVerticalScrollPosition():Number
 		{
@@ -301,6 +305,8 @@ package feathers.controls
 		
 		/**
 		 * Determines if an item in the list may be selected.
+		 * 
+		 * @default true
 		 */
 		public function get isSelectable():Boolean
 		{
