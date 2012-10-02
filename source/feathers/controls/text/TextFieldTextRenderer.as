@@ -29,17 +29,14 @@ package feathers.controls.text
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import flash.text.AntiAliasType;
-	import flash.text.GridFitType;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
-
+	
 	import feathers.core.FeathersControl;
 	import feathers.core.ITextRenderer;
-
+	
 	import starling.core.RenderSupport;
-
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.events.Event;
@@ -86,6 +83,11 @@ package feathers.controls.text
 		 * @private
 		 */
 		protected var _textSnapshotBitmapData:BitmapData;
+		
+		/**
+		 * @private
+		 */
+		protected var _needsFreshSnapshot:Boolean = false;
 
 		/**
 		 * @private
@@ -256,6 +258,11 @@ package feathers.controls.text
 		 */
 		override public function render(support:RenderSupport, alpha:Number):void
 		{
+			if(this._needsFreshSnapshot && (!this._textSnapshot || this._textSnapshot.visible))
+			{
+				this.refreshSnapshot();
+				this._needsFreshSnapshot = false;
+			}
 			if(this._textSnapshot)
 			{
 				if(this._snapToPixels)
@@ -425,7 +432,7 @@ package feathers.controls.text
 				const hasText:Boolean = this._text.length > 0;
 				if(hasText)
 				{
-					this.refreshSnapshot(sizeInvalid || !this._textSnapshotBitmapData);
+					this._needsFreshSnapshot = true;
 				}
 				if(this._textSnapshot)
 				{
@@ -453,24 +460,23 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function refreshSnapshot(needsNewBitmap:Boolean):void
+		protected function refreshSnapshot():void
 		{
-			if(needsNewBitmap)
+			const tfWidth:Number = this._textField.width * Starling.contentScaleFactor;
+			const tfHeight:Number = this._textField.height * Starling.contentScaleFactor;
+			if(tfWidth == 0 || tfHeight == 0)
 			{
-				const tfWidth:Number = this._textField.width * Starling.contentScaleFactor;
-				const tfHeight:Number = this._textField.height * Starling.contentScaleFactor;
-				if(tfWidth == 0 || tfHeight == 0)
+				return;
+			}
+			var hasNewBitmap:Boolean = false;
+			if(!this._textSnapshotBitmapData || this._textSnapshotBitmapData.width != tfWidth || this._textSnapshotBitmapData.height != tfHeight)
+			{
+				if(this._textSnapshotBitmapData)
 				{
-					return;
+					this._textSnapshotBitmapData.dispose();
 				}
-				if(!this._textSnapshotBitmapData || this._textSnapshotBitmapData.width != tfWidth || this._textSnapshotBitmapData.height != tfHeight)
-				{
-					if(this._textSnapshotBitmapData)
-					{
-						this._textSnapshotBitmapData.dispose();
-					}
-					this._textSnapshotBitmapData = new BitmapData(tfWidth, tfHeight, true, 0x00ff00ff);
-				}
+				hasNewBitmap = true;
+				this._textSnapshotBitmapData = new BitmapData(tfWidth, tfHeight, true, 0x00ff00ff);
 			}
 
 			if(!this._textSnapshotBitmapData)
@@ -488,7 +494,7 @@ package feathers.controls.text
 			}
 			else
 			{
-				if(needsNewBitmap)
+				if(hasNewBitmap)
 				{
 					this._textSnapshot.texture.dispose();
 					this._textSnapshot.texture = starling.textures.Texture.fromBitmapData(this._textSnapshotBitmapData, false, false, Starling.contentScaleFactor);
