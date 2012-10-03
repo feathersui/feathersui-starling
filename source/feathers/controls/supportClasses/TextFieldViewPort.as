@@ -388,12 +388,14 @@ package feathers.controls.supportClasses
 
 		override public function render(support:RenderSupport, alpha:Number):void
 		{
+			const starlingViewPort:Rectangle = Starling.current.viewPort;
 			helperPoint.x = helperPoint.y = 0;
 			this.parent.parent.getTransformationMatrix(this.stage, helperMatrix);
 			MatrixUtil.transformCoords(helperMatrix, 0, 0, helperPoint);
 			ScrollRectManager.toStageCoordinates(helperPoint, this.parent.parent);
-			this._textFieldContainer.x = helperPoint.x;
-			this._textFieldContainer.y = helperPoint.y;
+			this._textFieldContainer.x = starlingViewPort.x + helperPoint.x * Starling.contentScaleFactor;
+			this._textFieldContainer.y = starlingViewPort.y + helperPoint.y * Starling.contentScaleFactor;
+			this._textFieldContainer.scaleX = this._textFieldContainer.scaleY =  Starling.contentScaleFactor;
 			super.render(support, alpha);
 		}
 
