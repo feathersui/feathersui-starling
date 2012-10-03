@@ -24,6 +24,9 @@
  */
 package feathers.controls.text
 {
+	import feathers.core.FeathersControl;
+	import feathers.core.ITextRenderer;
+
 	import flash.display.BitmapData;
 	import flash.display3D.textures.Texture;
 	import flash.geom.Matrix;
@@ -32,16 +35,14 @@ package feathers.controls.text
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
-	
-	import feathers.core.FeathersControl;
-	import feathers.core.ITextRenderer;
-	
+
 	import starling.core.RenderSupport;
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
+	import starling.utils.getNextPowerOfTwo;
 
 	/**
 	 * Renders text with a native <code>flash.text.TextField</code>.
@@ -87,12 +88,17 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _measuredTextFieldWidth:Number = 0;
+		protected var _snapshotWidth:int = 0;
 
 		/**
 		 * @private
 		 */
-		protected var _measuredTextFieldHeight:Number = 0;
+		protected var _snapshotHeight:int = 0;
+
+		/**
+		 * @private
+		 */
+		protected var _needsNewBitmap:Boolean = false;
 
 		/**
 		 * @private
@@ -407,8 +413,8 @@ package feathers.controls.text
 
 			this._textField.autoSize = TextFieldAutoSize.NONE;
 
-			result.x = this._measuredTextFieldWidth = newWidth;
-			result.y = this._measuredTextFieldHeight = newHeight;
+			result.x = newWidth;
+			result.y = newHeight;
 
 			return result;
 		}
@@ -423,17 +429,21 @@ package feathers.controls.text
 
 			if(sizeInvalid)
 			{
-				this._textField.width = Math.min(this._measuredTextFieldWidth, this.actualWidth);
-				this._textField.height = Math.min(this._measuredTextFieldHeight, this.actualHeight);
-				sizeInvalid = !this._textSnapshotBitmapData || this._textSnapshotBitmapData.width != this._textField.width || this._textSnapshotBitmapData.height != this._textField.height;
+				this._textField.width = this.actualWidth;
+				this._textField.height = this.actualHeight;
+				this._snapshotWidth = getNextPowerOfTwo(this.actualWidth * Starling.contentScaleFactor);
+				this._snapshotHeight = getNextPowerOfTwo(this.actualHeight * Starling.contentScaleFactor);
+				this._needsNewBitmap = this._needsNewBitmap || !this._textSnapshotBitmapData || this._snapshotWidth != this._textSnapshotBitmapData.width || this._snapshotHeight != this._textSnapshotBitmapData.height;
 			}
 
-			if(stylesInvalid || dataInvalid || sizeInvalid)
+			if(stylesInvalid || dataInvalid || this._needsNewBitmap)
 			{
 				const hasText:Boolean = this._text.length > 0;
 				if(hasText)
 				{
-					this.refreshSnapshot(sizeInvalid);
+					//we need to wait a frame for the TextField to render
+					//properly. yes, really.
+					this.addEventListener(Event.ENTER_FRAME, enterFrameHandler);
 				}
 				if(this._textSnapshot)
 				{
@@ -461,21 +471,19 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function refreshSnapshot(needsNewBitmap:Boolean):void
+		protected function refreshSnapshot():void
 		{
-			const tfWidth:Number = this._measuredTextFieldWidth * Starling.contentScaleFactor;
-			const tfHeight:Number = this._textField.height * Starling.contentScaleFactor;
-			if(tfWidth == 0 || tfHeight == 0)
+			if(this._textField.width == 0 || this._textField.height == 0)
 			{
 				return;
 			}
-			if(needsNewBitmap)
+			if(this._needsNewBitmap)
 			{
 				if(this._textSnapshotBitmapData)
 				{
 					this._textSnapshotBitmapData.dispose();
 				}
-				this._textSnapshotBitmapData = new BitmapData(tfWidth, tfHeight, true, 0x00ff00ff);
+				this._textSnapshotBitmapData = new BitmapData(this._snapshotWidth, this._snapshotHeight, true, 0x00ff00ff);
 			}
 
 			if(!this._textSnapshotBitmapData)
@@ -493,7 +501,7 @@ package feathers.controls.text
 			}
 			else
 			{
-				if(needsNewBitmap)
+				if(this._needsNewBitmap)
 				{
 					this._textSnapshot.texture.dispose();
 					this._textSnapshot.texture = starling.textures.Texture.fromBitmapData(this._textSnapshotBitmapData, false, false, Starling.contentScaleFactor);
@@ -501,8 +509,7 @@ package feathers.controls.text
 				}
 				else
 				{
-					//this is faster, so use it if we haven't resized the
-					//bitmapdata
+					//this is faster if we haven't resized the bitmapdata
 					const texture:starling.textures.Texture = this._textSnapshot.texture;
 					if(Starling.handleLostContext && texture is ConcreteTexture)
 					{
@@ -511,6 +518,7 @@ package feathers.controls.text
 					flash.display3D.textures.Texture(texture.base).uploadFromBitmapData(this._textSnapshotBitmapData);
 				}
 			}
+			this._needsNewBitmap = false;
 		}
 
 		/**
@@ -532,6 +540,12 @@ package feathers.controls.text
 				this.removeChild(this._textSnapshot, true);
 				this._textSnapshot = null;
 			}
+		}
+
+		protected function enterFrameHandler(event:Event):void
+		{
+			this.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
+			this.refreshSnapshot();
 		}
 	}
 }
