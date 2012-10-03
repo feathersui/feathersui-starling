@@ -39,6 +39,15 @@ package feathers.core
 		}
 
 		private var _isValidating:Boolean = false;
+
+		/**
+		 * If true, the queue is currently validating.
+		 */
+		public function get isValidating():Boolean
+		{
+			return this._isValidating;
+		}
+
 		private var _delayedQueue:Vector.<FeathersControl> = new <FeathersControl>[];
 		private var _queue:Vector.<FeathersControl> = new <FeathersControl>[];
 

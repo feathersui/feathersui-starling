@@ -235,7 +235,12 @@ package feathers.controls
 			this.addChild(this._activeScreen);
 
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
-			validationQueue.advanceTime(0); //force a COMPLETE validation of everything
+			if(!validationQueue.isValidating)
+			{
+				//force a COMPLETE validation of everything
+				//but only if we're not already doing that...
+				validationQueue.advanceTime(0);
+			}
 
 			this._transitionIsActive = true;
 			this.transition(this._previousScreenInTransition, this._activeScreen, transitionComplete);
