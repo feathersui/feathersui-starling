@@ -692,6 +692,11 @@ package feathers.controls
 		 */
 		protected function button_onRelease(button:Button):void
 		{
+			if(this._list.stage)
+			{
+				this.closePopUpList();
+				return;
+			}
 			this._popUpContentManager.open(this._list, this);
 			this._list.scrollToDisplayIndex(this._selectedIndex);
 			this._list.validate();
