@@ -83,6 +83,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		private static const FONT_SIZE:String = "fontSize";
+
+		/**
+		 * @private
+		 */
 		protected static const INVALIDATION_FLAG_POSITION:String = "position";
 
 		/**
@@ -528,14 +533,15 @@ package feathers.controls
 			{
 				this._oldGlobalX = helperPoint.x;
 				this._oldGlobalY = helperPoint.y;
-				var viewPort:Rectangle = this.stageText.viewPort;
-				if(!viewPort)
+				const starlingViewPort:Rectangle = Starling.current.viewPort;
+				var stageTextViewPort:Rectangle = this.stageText.viewPort;
+				if(!stageTextViewPort)
 				{
-					viewPort = new Rectangle();
+					stageTextViewPort = new Rectangle();
 				}
-				viewPort.x = Math.round((helperPoint.x + this._paddingLeft * this.scaleX) * Starling.contentScaleFactor);
-				viewPort.y = Math.round((helperPoint.y + this._paddingTop * this.scaleY) * Starling.contentScaleFactor);
-				this.stageText.viewPort = viewPort;			
+				stageTextViewPort.x = Math.round(starlingViewPort.x + (helperPoint.x + this._paddingLeft * this.scaleX) * Starling.contentScaleFactor);
+				stageTextViewPort.y = Math.round(starlingViewPort.y + (helperPoint.y + this._paddingTop * this.scaleY) * Starling.contentScaleFactor);
+				this.stageText.viewPort = stageTextViewPort;
 			}
 
 			if(this._textSnapshot)
@@ -670,6 +676,10 @@ package feathers.controls
 				if(this.stageText.hasOwnProperty(propertyName))
 				{
 					var propertyValue:Object = this._stageTextProperties[propertyName];
+					if(propertyName == FONT_SIZE)
+					{
+						propertyValue = (propertyValue as int) * Starling.contentScaleFactor;
+					}
 					this.stageText[propertyName] = propertyValue;
 				}
 			}
@@ -681,7 +691,7 @@ package feathers.controls
 			format.color = this.stageText.color;
 			format.font = this.stageText.fontFamily;
 			format.italic = this.stageText.fontPosture == FontPosture.ITALIC;
-			format.size = this.stageText.fontSize;
+			format.size = this.stageText.fontSize / Starling.contentScaleFactor;
 			format.bold = this.stageText.fontWeight == FontWeight.BOLD;
 			var alignValue:String = this.stageText.textAlign;
 			if(alignValue == TextFormatAlign.START)
@@ -845,10 +855,11 @@ package feathers.controls
 		 */
 		protected function refreshViewPort():void
 		{
-			var viewPort:Rectangle = this.stageText.viewPort;
-			if(!viewPort)
+			const starlingViewPort:Rectangle = Starling.current.viewPort;
+			var stageTextViewPort:Rectangle = this.stageText.viewPort;
+			if(!stageTextViewPort)
 			{
-				viewPort = new Rectangle();
+				stageTextViewPort = new Rectangle();
 			}
 			if(!this.stageText.stage)
 			{
@@ -861,17 +872,17 @@ package feathers.controls
 			ScrollRectManager.toStageCoordinates(helperPoint, this);
 			this._oldGlobalX = helperPoint.x;
 			this._oldGlobalY = helperPoint.y;
-			viewPort.x = Math.round((helperPoint.x + this._paddingLeft * this.scaleX) * Starling.contentScaleFactor);
-			viewPort.y = Math.round((helperPoint.y + this._paddingTop * this.scaleY) * Starling.contentScaleFactor);
-			viewPort.width = Math.round(Math.max(1, (this.actualWidth - this._paddingLeft - this._paddingRight) * Starling.contentScaleFactor * this.scaleX));
+			stageTextViewPort.x = Math.round(starlingViewPort.x + (helperPoint.x + this._paddingLeft * this.scaleX) * Starling.contentScaleFactor);
+			stageTextViewPort.y = Math.round(starlingViewPort.y + (helperPoint.y + this._paddingTop * this.scaleY) * Starling.contentScaleFactor);
+			stageTextViewPort.width = Math.round(Math.max(1, (this.actualWidth - this._paddingLeft - this._paddingRight) * Starling.contentScaleFactor * this.scaleX));
 			//we're ignoring padding bottom here to keep the descent from being cut off
-			viewPort.height = Math.round(Math.max(1, (this.actualHeight - this._paddingTop) * Starling.contentScaleFactor * this.scaleY));
-			if(isNaN(viewPort.width) || isNaN(viewPort.height))
+			stageTextViewPort.height = Math.round(Math.max(1, (this.actualHeight - this._paddingTop) * Starling.contentScaleFactor * this.scaleY));
+			if(isNaN(stageTextViewPort.width) || isNaN(stageTextViewPort.height))
 			{
-				viewPort.width = 1;
-				viewPort.height = 1;
+				stageTextViewPort.width = 1;
+				stageTextViewPort.height = 1;
 			}
-			this.stageText.viewPort = viewPort;
+			this.stageText.viewPort = stageTextViewPort;
 		}
 
 		/**
