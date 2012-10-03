@@ -918,7 +918,7 @@ package feathers.controls
 		protected function destroyTab(tab:Button):void
 		{
 			this.toggleGroup.removeItem(tab);
-			this.removeChild(tab);
+			this.removeChild(tab, true);
 		}
 
 		/**
