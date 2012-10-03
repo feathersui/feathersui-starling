@@ -520,7 +520,6 @@ package feathers.controls
 		 */
 		override public function render(support:RenderSupport, alpha:Number):void
 		{
-			super.render(support, alpha);
 			helperPoint.x = helperPoint.y = 0;
 			this.getTransformationMatrix(this.stage, helperMatrix);
 			MatrixUtil.transformCoords(helperMatrix, 0, 0, helperPoint);
@@ -550,6 +549,7 @@ package feathers.controls
 			//the rendered graphics. the OS might take longer to do the change,
 			//though.
 			this.stageText.visible = this._textSnapshot ? !this._textSnapshot.visible : this._stageTextHasFocus;
+			super.render(support, alpha);
 		}
 
 		/**

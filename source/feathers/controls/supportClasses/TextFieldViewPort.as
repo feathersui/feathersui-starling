@@ -388,13 +388,13 @@ package feathers.controls.supportClasses
 
 		override public function render(support:RenderSupport, alpha:Number):void
 		{
-			super.render(support, alpha);
 			helperPoint.x = helperPoint.y = 0;
 			this.parent.parent.getTransformationMatrix(this.stage, helperMatrix);
 			MatrixUtil.transformCoords(helperMatrix, 0, 0, helperPoint);
 			ScrollRectManager.toStageCoordinates(helperPoint, this.parent.parent);
 			this._textFieldContainer.x = helperPoint.x;
 			this._textFieldContainer.y = helperPoint.y;
+			super.render(support, alpha);
 		}
 
 		override protected function initialize():void
