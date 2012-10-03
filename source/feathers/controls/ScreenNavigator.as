@@ -32,7 +32,7 @@ package feathers.controls
 	
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
-	
+
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.events.ResizeEvent;
@@ -234,10 +234,12 @@ package feathers.controls
 
 			this.addChild(this._activeScreen);
 
+			this.invalidate(INVALIDATION_FLAG_SELECTED);
+			validationQueue.advanceTime(0); //force a COMPLETE validation of everything
+
 			this._transitionIsActive = true;
 			this.transition(this._previousScreenInTransition, this._activeScreen, transitionComplete);
 
-			this.invalidate(INVALIDATION_FLAG_SELECTED);
 			this._onChange.dispatch(this);
 			return this._activeScreen;
 		}
