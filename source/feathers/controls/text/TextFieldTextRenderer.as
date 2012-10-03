@@ -83,11 +83,16 @@ package feathers.controls.text
 		 * @private
 		 */
 		protected var _textSnapshotBitmapData:BitmapData;
-		
+
 		/**
 		 * @private
 		 */
-		protected var _needsFreshSnapshot:Boolean = false;
+		protected var _measuredTextFieldWidth:Number = 0;
+
+		/**
+		 * @private
+		 */
+		protected var _measuredTextFieldHeight:Number = 0;
 
 		/**
 		 * @private
@@ -258,11 +263,6 @@ package feathers.controls.text
 		 */
 		override public function render(support:RenderSupport, alpha:Number):void
 		{
-			if(this._needsFreshSnapshot && (!this._textSnapshot || this._textSnapshot.visible))
-			{
-				this.refreshSnapshot();
-				this._needsFreshSnapshot = false;
-			}
 			if(this._textSnapshot)
 			{
 				if(this._snapToPixels)
@@ -407,8 +407,8 @@ package feathers.controls.text
 
 			this._textField.autoSize = TextFieldAutoSize.NONE;
 
-			result.x = newWidth;
-			result.y = newHeight;
+			result.x = this._measuredTextFieldWidth = newWidth;
+			result.y = this._measuredTextFieldHeight = newHeight;
 
 			return result;
 		}
@@ -423,8 +423,9 @@ package feathers.controls.text
 
 			if(sizeInvalid)
 			{
-				this._textField.width = this.actualWidth;
-				this._textField.height = this.actualHeight;
+				this._textField.width = Math.min(this._measuredTextFieldWidth, this.actualWidth);
+				this._textField.height = Math.min(this._measuredTextFieldHeight, this.actualHeight);
+				sizeInvalid = !this._textSnapshotBitmapData || this._textSnapshotBitmapData.width != this._textField.width || this._textSnapshotBitmapData.height != this._textField.height;
 			}
 
 			if(stylesInvalid || dataInvalid || sizeInvalid)
@@ -432,7 +433,7 @@ package feathers.controls.text
 				const hasText:Boolean = this._text.length > 0;
 				if(hasText)
 				{
-					this._needsFreshSnapshot = true;
+					this.refreshSnapshot(sizeInvalid);
 				}
 				if(this._textSnapshot)
 				{
@@ -460,22 +461,20 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function refreshSnapshot():void
+		protected function refreshSnapshot(needsNewBitmap:Boolean):void
 		{
-			const tfWidth:Number = this._textField.width * Starling.contentScaleFactor;
+			const tfWidth:Number = this._measuredTextFieldWidth * Starling.contentScaleFactor;
 			const tfHeight:Number = this._textField.height * Starling.contentScaleFactor;
 			if(tfWidth == 0 || tfHeight == 0)
 			{
 				return;
 			}
-			var hasNewBitmap:Boolean = false;
-			if(!this._textSnapshotBitmapData || this._textSnapshotBitmapData.width != tfWidth || this._textSnapshotBitmapData.height != tfHeight)
+			if(needsNewBitmap)
 			{
 				if(this._textSnapshotBitmapData)
 				{
 					this._textSnapshotBitmapData.dispose();
 				}
-				hasNewBitmap = true;
 				this._textSnapshotBitmapData = new BitmapData(tfWidth, tfHeight, true, 0x00ff00ff);
 			}
 
@@ -494,7 +493,7 @@ package feathers.controls.text
 			}
 			else
 			{
-				if(hasNewBitmap)
+				if(needsNewBitmap)
 				{
 					this._textSnapshot.texture.dispose();
 					this._textSnapshot.texture = starling.textures.Texture.fromBitmapData(this._textSnapshotBitmapData, false, false, Starling.contentScaleFactor);
