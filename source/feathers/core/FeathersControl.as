@@ -699,6 +699,13 @@ package feathers.core
 			{
 				return;
 			}
+			if(this._isValidating)
+			{
+				//we were already validating, and something else told us to
+				//validate. that's bad.
+				validationQueue.addControl(this, true);
+				return;
+			}
 			this._isValidating = true;
 			this.draw();
 			for(var flag:String in this._invalidationFlags)
