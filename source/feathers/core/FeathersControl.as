@@ -85,6 +85,11 @@ package feathers.core
 		public static const INVALIDATION_FLAG_STYLES:String = "styles";
 
 		/**
+		 * Invalidation flag to indicate that the skin of the UI control has changed.
+		 */
+		public static const INVALIDATION_FLAG_SKIN:String = "skin";
+
+		/**
 		 * Invalidation flag to indicate that the layout of the UI control has
 		 * changed.
 		 */
