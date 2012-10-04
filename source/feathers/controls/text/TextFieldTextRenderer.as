@@ -358,8 +358,14 @@ package feathers.controls.text
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 
-			if(dataInvalid)
+			if(dataInvalid || stylesInvalid)
 			{
+				this._textField.wordWrap = this._wordWrap;
+				this._textField.embedFonts = this._embedFonts;
+				if(this._textFormat)
+				{
+					this._textField.defaultTextFormat = this._textFormat;
+				}
 				if(this._isHTML)
 				{
 					this._textField.htmlText = this._text;
@@ -367,16 +373,6 @@ package feathers.controls.text
 				else
 				{
 					this._textField.text = this._text;
-				}
-			}
-
-			if(dataInvalid || stylesInvalid)
-			{
-				this._textField.wordWrap = this._wordWrap;
-				this._textField.embedFonts = this._embedFonts;
-				if(this._textFormat)
-				{
-					this._textField.setTextFormat(this._textFormat);
 				}
 			}
 		}
