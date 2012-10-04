@@ -24,6 +24,8 @@
  */
 package feathers.controls
 {
+	import feathers.core.IGroupedToggle;
+
 	import flash.errors.IllegalOperationError;
 
 	import feathers.core.ToggleGroup;
@@ -38,7 +40,7 @@ package feathers.controls
 	 *
 	 * @see feathers.core.ToggleGroup
 	 */
-	public class Radio extends Button
+	public class Radio extends Button implements IGroupedToggle
 	{
 		/**
 		 * If a <code>Radio</code> has not been added to a <code>ToggleGroup</code>,
