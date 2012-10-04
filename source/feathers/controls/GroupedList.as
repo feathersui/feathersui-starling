@@ -159,6 +159,16 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _scrollToHorizontalPageIndex:int = -1;
+
+		/**
+		 * @private
+		 */
+		protected var _scrollToVerticalPageIndex:int = -1;
+
+		/**
+		 * @private
+		 */
 		protected var _scrollToIndexDuration:Number;
 
 		/**
@@ -1775,8 +1785,30 @@ package feathers.controls
 			{
 				return;
 			}
+			this._scrollToHorizontalPageIndex = -1;
+			this._scrollToVerticalPageIndex = -1;
 			this._scrollToGroupIndex = groupIndex;
 			this._scrollToItemIndex = itemIndex;
+			this._scrollToIndexDuration = animationDuration;
+			this.invalidate(INVALIDATION_FLAG_SCROLL);
+		}
+
+		/**
+		 * Scrolls the list to a specific page, horizontally and vertically. If
+		 * <code>horizontalPageIndex</code> or <code>verticalPageIndex</code> is
+		 * -1, it will be ignored
+		 */
+		public function scrollToPageIndex(horizontalPageIndex:int, verticalPageIndex:int, animationDuration:Number = 0):void
+		{
+			if(this._scrollToHorizontalPageIndex == horizontalPageIndex &&
+				this._scrollToVerticalPageIndex == verticalPageIndex)
+			{
+				return;
+			}
+			this._scrollToHorizontalPageIndex = horizontalPageIndex;
+			this._scrollToVerticalPageIndex = verticalPageIndex;
+			this._scrollToGroupIndex = -1;
+			this._scrollToItemIndex = -1;
 			this._scrollToIndexDuration = animationDuration;
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
@@ -2001,27 +2033,7 @@ package feathers.controls
 			this._horizontalScrollPosition = this.scroller.horizontalScrollPosition;
 			this._verticalScrollPosition = this.scroller.verticalScrollPosition;
 
-			if(this._scrollToGroupIndex >= 0 && this._scrollToItemIndex >= 0)
-			{
-				const item:Object = this._dataProvider.getItemAt(this._scrollToGroupIndex, this._scrollToItemIndex);
-				if(item is Object)
-				{
-					this.dataViewPort.getScrollPositionForIndex(this._scrollToGroupIndex, this._scrollToItemIndex, helperPoint);
-
-					if(this._scrollToIndexDuration > 0)
-					{
-						this.scroller.throwTo(Math.max(0, Math.min(helperPoint.x, this._maxHorizontalScrollPosition)),
-							Math.max(0, Math.min(helperPoint.y, this._maxVerticalScrollPosition)), this._scrollToIndexDuration);
-					}
-					else
-					{
-						this.horizontalScrollPosition = Math.max(0, Math.min(helperPoint.x, this._maxHorizontalScrollPosition));
-						this.verticalScrollPosition = Math.max(0, Math.min(helperPoint.y, this._maxVerticalScrollPosition));
-					}
-				}
-				this._scrollToGroupIndex = -1;
-				this._scrollToItemIndex = -1;
-			}
+			this.scroll();
 			if(this._dataProvider && this._dataProvider.getLength() > 0)
 			{
 				this.scroller.horizontalScrollStep = this.scroller.verticalScrollStep = this.dataViewPort.typicalItemHeight;
@@ -2093,6 +2105,41 @@ package feathers.controls
 				this.currentBackgroundSkin.visible = true;
 			}
 		}
+
+		/**
+		 * @private
+		 */
+		protected function scroll():void
+		{
+			if(this._scrollToHorizontalPageIndex >= 0 || this._scrollToVerticalPageIndex >= 0)
+			{
+				this.scroller.throwToPage(this._scrollToHorizontalPageIndex, this._scrollToVerticalPageIndex, this._scrollToIndexDuration);
+				this._scrollToHorizontalPageIndex = -1;
+				this._scrollToVerticalPageIndex = -1;
+			}
+			else if(this._scrollToGroupIndex >= 0 && this._scrollToItemIndex >= 0)
+			{
+				const item:Object = this._dataProvider.getItemAt(this._scrollToGroupIndex, this._scrollToItemIndex);
+				if(item is Object)
+				{
+					this.dataViewPort.getScrollPositionForIndex(this._scrollToGroupIndex, this._scrollToItemIndex, helperPoint);
+
+					if(this._scrollToIndexDuration > 0)
+					{
+						this.scroller.throwTo(Math.max(0, Math.min(helperPoint.x, this._maxHorizontalScrollPosition)),
+							Math.max(0, Math.min(helperPoint.y, this._maxVerticalScrollPosition)), this._scrollToIndexDuration);
+					}
+					else
+					{
+						this.horizontalScrollPosition = Math.max(0, Math.min(helperPoint.x, this._maxHorizontalScrollPosition));
+						this.verticalScrollPosition = Math.max(0, Math.min(helperPoint.y, this._maxVerticalScrollPosition));
+					}
+				}
+				this._scrollToGroupIndex = -1;
+				this._scrollToItemIndex = -1;
+			}
+		}
+
 
 		/**
 		 * @private

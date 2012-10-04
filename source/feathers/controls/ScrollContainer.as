@@ -76,7 +76,22 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _layout:ILayout;
+		protected var _scrollToHorizontalPageIndex:int = -1;
+
+		/**
+		 * @private
+		 */
+		protected var _scrollToVerticalPageIndex:int = -1;
+
+		/**
+		 * @private
+		 */
+		protected var _scrollToIndexDuration:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _layout:ILayout;
 
 		/**
 		 * Controls the way that the container's children are positioned and
@@ -103,7 +118,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _horizontalScrollPosition:Number = 0;
+		protected var _horizontalScrollPosition:Number = 0;
 
 		/**
 		 * The number of pixels the container has been scrolled horizontally (on
@@ -131,7 +146,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _maxHorizontalScrollPosition:Number = 0;
+		protected var _maxHorizontalScrollPosition:Number = 0;
 
 		/**
 		 * The maximum number of pixels the container may be scrolled horizontally
@@ -150,7 +165,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _verticalScrollPosition:Number = 0;
+		protected var _verticalScrollPosition:Number = 0;
 
 		/**
 		 * The number of pixels the container has been scrolled vertically (on
@@ -178,7 +193,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _maxVerticalScrollPosition:Number = 0;
+		protected var _maxVerticalScrollPosition:Number = 0;
 
 		/**
 		 * The maximum number of pixels the container may be scrolled vertically
@@ -236,7 +251,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _backgroundSkin:DisplayObject;
+		protected var _backgroundSkin:DisplayObject;
 
 		/**
 		 * A display object displayed behind the item renderers.
@@ -272,7 +287,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _backgroundDisabledSkin:DisplayObject;
+		protected var _backgroundDisabledSkin:DisplayObject;
 
 		/**
 		 * A background to display when the list is disabled.
@@ -308,7 +323,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _scrollerProperties:PropertyProxy;
+		protected var _scrollerProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to the container's
@@ -478,6 +493,24 @@ package feathers.controls
 		}
 
 		/**
+		 * Scrolls the container to a specific page, horizontally and vertically.
+		 * If <code>horizontalPageIndex</code> or <code>verticalPageIndex</code>
+		 * is <code>-1</code>, it will be ignored
+		 */
+		public function scrollToPageIndex(horizontalPageIndex:int, verticalPageIndex:int, animationDuration:Number = 0):void
+		{
+			if(this._scrollToHorizontalPageIndex == horizontalPageIndex &&
+				this._scrollToVerticalPageIndex == verticalPageIndex)
+			{
+				return;
+			}
+			this._scrollToHorizontalPageIndex = horizontalPageIndex;
+			this._scrollToVerticalPageIndex = verticalPageIndex;
+			this._scrollToIndexDuration = animationDuration;
+			this.invalidate(INVALIDATION_FLAG_SCROLL);
+		}
+
+		/**
 		 * @private
 		 */
 		override protected function initialize():void
@@ -581,6 +614,8 @@ package feathers.controls
 			this._maxVerticalScrollPosition = this.scroller.maxVerticalScrollPosition;
 			this._horizontalScrollPosition = this.scroller.horizontalScrollPosition;
 			this._verticalScrollPosition = this.scroller.verticalScrollPosition;
+
+			this.scroll();
 		}
 
 		/**
@@ -662,6 +697,19 @@ package feathers.controls
 			{
 				var child:FeathersControl = FeathersControl(this._mxmlContent[i]);
 				this.addChild(child);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function scroll():void
+		{
+			if(this._scrollToHorizontalPageIndex >= 0 || this._scrollToVerticalPageIndex >= 0)
+			{
+				this.scroller.throwToPage(this._scrollToHorizontalPageIndex, this._scrollToVerticalPageIndex, this._scrollToIndexDuration);
+				this._scrollToHorizontalPageIndex = -1;
+				this._scrollToVerticalPageIndex = -1;
 			}
 		}
 

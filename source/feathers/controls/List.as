@@ -1108,17 +1108,7 @@ package feathers.controls
 		{
 			if(this._scrollToHorizontalPageIndex >= 0 || this._scrollToVerticalPageIndex >= 0)
 			{
-				const targetHorizontalScrollPosition:Number = Math.max(0, Math.min(this._maxHorizontalScrollPosition, (this._scrollToHorizontalPageIndex >= 0 ? this.scroller.width * this._scrollToHorizontalPageIndex : this._horizontalScrollPosition)));
-				const targetVerticalScrollPosition:Number = Math.max(0, Math.min(this._maxVerticalScrollPosition, (this._scrollToVerticalPageIndex >= 0 ? this.scroller.height * this._scrollToVerticalPageIndex : this._verticalScrollPosition)));
-				if(this._scrollToIndexDuration > 0)
-				{
-					this.scroller.throwTo(targetHorizontalScrollPosition, targetVerticalScrollPosition, this._scrollToIndexDuration);
-				}
-				else
-				{
-					this.horizontalScrollPosition = targetHorizontalScrollPosition;
-					this.verticalScrollPosition = targetVerticalScrollPosition;
-				}
+				this.scroller.throwToPage(this._scrollToHorizontalPageIndex, this._scrollToVerticalPageIndex, this._scrollToIndexDuration);
 				this._scrollToHorizontalPageIndex = -1;
 				this._scrollToVerticalPageIndex = -1;
 			}
