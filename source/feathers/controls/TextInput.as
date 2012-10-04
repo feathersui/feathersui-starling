@@ -678,7 +678,7 @@ package feathers.controls
 					var propertyValue:Object = this._stageTextProperties[propertyName];
 					if(propertyName == FONT_SIZE)
 					{
-						propertyValue = (propertyValue as int) * Starling.contentScaleFactor;
+						propertyValue = (propertyValue as Number) * Starling.contentScaleFactor;
 					}
 					this.stageText[propertyName] = propertyValue;
 				}
