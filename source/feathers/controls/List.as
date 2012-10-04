@@ -96,6 +96,16 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _scrollToHorizontalPageIndex:int = -1;
+
+		/**
+		 * @private
+		 */
+		protected var _scrollToVerticalPageIndex:int = -1;
+
+		/**
+		 * @private
+		 */
 		protected var _scrollToIndexDuration:Number;
 
 		/**
@@ -850,7 +860,28 @@ package feathers.controls
 			{
 				return;
 			}
+			this._scrollToHorizontalPageIndex = -1;
+			this._scrollToVerticalPageIndex = -1;
 			this._scrollToIndex = index;
+			this._scrollToIndexDuration = animationDuration;
+			this.invalidate(INVALIDATION_FLAG_SCROLL);
+		}
+
+		/**
+		 * Scrolls the list to a specific page, horizontally and vertically. If
+		 * <code>horizontalPageIndex</code> or <code>verticalPageIndex</code> is
+		 * -1, it will be ignored
+		 */
+		public function scrollToPageIndex(horizontalPageIndex:int, verticalPageIndex:int, animationDuration:Number = 0):void
+		{
+			if(this._scrollToHorizontalPageIndex == horizontalPageIndex &&
+				this._scrollToVerticalPageIndex == verticalPageIndex)
+			{
+				return;
+			}
+			this._scrollToHorizontalPageIndex = horizontalPageIndex;
+			this._scrollToVerticalPageIndex = verticalPageIndex;
+			this._scrollToIndex = -1;
 			this._scrollToIndexDuration = animationDuration;
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
@@ -997,26 +1028,7 @@ package feathers.controls
 			this._horizontalPageIndex = this.scroller.horizontalPageIndex;
 			this._verticalPageIndex = this.scroller.verticalPageIndex;
 
-			if(this._scrollToIndex >= 0)
-			{
-				const item:Object = this._dataProvider.getItemAt(this._scrollToIndex);
-				if(item is Object)
-				{
-					this.dataViewPort.getScrollPositionForIndex(this._scrollToIndex, helperPoint);
-
-					if(this._scrollToIndexDuration > 0)
-					{
-						this.scroller.throwTo(Math.max(0, Math.min(helperPoint.x, this._maxHorizontalScrollPosition)),
-							Math.max(0, Math.min(helperPoint.y, this._maxVerticalScrollPosition)), this._scrollToIndexDuration);
-					}
-					else
-					{
-						this.horizontalScrollPosition = Math.max(0, Math.min(helperPoint.x, this._maxHorizontalScrollPosition));
-						this.verticalScrollPosition = Math.max(0, Math.min(helperPoint.y, this._maxVerticalScrollPosition));
-					}
-				}
-				this._scrollToIndex = -1;
-			}
+			this.scroll();
 			if(this._dataProvider && this._dataProvider.length > 0)
 			{
 				this.scroller.horizontalScrollStep = this.scroller.verticalScrollStep = this.dataViewPort.typicalItemHeight;
@@ -1088,6 +1100,50 @@ package feathers.controls
 				this.currentBackgroundSkin.visible = true;
 			}
 		}
+
+		/**
+		 * @private
+		 */
+		protected function scroll():void
+		{
+			if(this._scrollToHorizontalPageIndex >= 0 || this._scrollToVerticalPageIndex >= 0)
+			{
+				const targetHorizontalScrollPosition:Number = Math.max(0, Math.min(this._maxHorizontalScrollPosition, (this._scrollToHorizontalPageIndex >= 0 ? this.scroller.width * this._scrollToHorizontalPageIndex : this._horizontalScrollPosition)));
+				const targetVerticalScrollPosition:Number = Math.max(0, Math.min(this._maxVerticalScrollPosition, (this._scrollToVerticalPageIndex >= 0 ? this.scroller.height * this._scrollToVerticalPageIndex : this._verticalScrollPosition)));
+				if(this._scrollToIndexDuration > 0)
+				{
+					this.scroller.throwTo(targetHorizontalScrollPosition, targetVerticalScrollPosition, this._scrollToIndexDuration);
+				}
+				else
+				{
+					this.horizontalScrollPosition = targetHorizontalScrollPosition;
+					this.verticalScrollPosition = targetVerticalScrollPosition;
+				}
+				this._scrollToHorizontalPageIndex = -1;
+				this._scrollToVerticalPageIndex = -1;
+			}
+			else if(this._scrollToIndex >= 0)
+			{
+				const item:Object = this._dataProvider.getItemAt(this._scrollToIndex);
+				if(item is Object)
+				{
+					this.dataViewPort.getScrollPositionForIndex(this._scrollToIndex, helperPoint);
+
+					if(this._scrollToIndexDuration > 0)
+					{
+						this.scroller.throwTo(Math.max(0, Math.min(helperPoint.x, this._maxHorizontalScrollPosition)),
+							Math.max(0, Math.min(helperPoint.y, this._maxVerticalScrollPosition)), this._scrollToIndexDuration);
+					}
+					else
+					{
+						this.horizontalScrollPosition = Math.max(0, Math.min(helperPoint.x, this._maxHorizontalScrollPosition));
+						this.verticalScrollPosition = Math.max(0, Math.min(helperPoint.y, this._maxVerticalScrollPosition));
+					}
+				}
+				this._scrollToIndex = -1;
+			}
+		}
+
 
 		/**
 		 * @private
