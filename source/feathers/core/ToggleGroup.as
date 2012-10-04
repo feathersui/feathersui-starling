@@ -129,9 +129,9 @@ package feathers.core
 		public function set selectedIndex(value:int):void
 		{
 			const itemCount:int = this._items.length;
-			if(this._isSelectionRequired && ((value < 0 && itemCount > 0) || value >= this._items.length))
+			if(this._isSelectionRequired && ((value < 0 && itemCount > 0) || value >= itemCount))
 			{
-				throw new RangeError("Index " + value + " is out of range " + this._items.length + " for ToggleGroup.");
+				throw new RangeError("Index " + value + " is out of range " + itemCount + " for ToggleGroup.");
 			}
 			value = this._isEnabled ? value : -1;
 			const hasChanged:Boolean = this._selectedIndex != value;
