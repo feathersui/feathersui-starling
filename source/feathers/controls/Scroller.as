@@ -90,6 +90,11 @@ package feathers.controls
 		protected static const INVALIDATION_FLAG_SCROLL_BAR_RENDERER:String = "scrollBarRenderer";
 
 		/**
+		 * @private
+		 */
+		protected static const INVALIDATION_FLAG_PAGE:String = "page";
+
+		/**
 		 * The scroller may scroll if the view port is larger than the
 		 * scroller's bounds. If the interaction mode is touch, the elastic
 		 * edges will only be active if the maximum scroll position is greater
@@ -1308,6 +1313,34 @@ package feathers.controls
 		}
 
 		/**
+		 * Throws the scroller to the specified page index. If you want to throw
+		 * in one direction, pass in -1 or the current page index for the
+		 * value that you do not want to change.
+		 */
+		public function throwToPage(targetHorizontalPageIndex:Number = -1, targetVerticalPageIndex:Number = -1, duration:Number = 0.5):void
+		{
+			const targetHorizontalScrollPosition:Number = Math.max(0, Math.min(this._maxHorizontalScrollPosition, (targetHorizontalPageIndex >= 0 ? (this.actualWidth * targetHorizontalPageIndex) : this._horizontalScrollPosition)));
+			const targetVerticalScrollPosition:Number = Math.max(0, Math.min(this._maxVerticalScrollPosition, (targetVerticalPageIndex >= 0 ? (this.actualHeight * targetVerticalPageIndex) : this._verticalScrollPosition)));
+			if(duration > 0)
+			{
+				this.throwTo(targetHorizontalScrollPosition, targetVerticalScrollPosition, duration);
+			}
+			else
+			{
+				this.horizontalScrollPosition = targetHorizontalScrollPosition;
+				this.verticalScrollPosition = targetVerticalScrollPosition;
+			}
+			if(targetHorizontalPageIndex >= 0)
+			{
+				this._horizontalPageIndex = targetHorizontalPageIndex;
+			}
+			if(targetVerticalPageIndex >= 0)
+			{
+				this._verticalPageIndex = targetVerticalPageIndex;
+			}
+		}
+
+		/**
 		 * @private
 		 */
 		override public function hitTest(localPoint:Point, forTouch:Boolean = false):DisplayObject
@@ -1984,8 +2017,7 @@ package feathers.controls
 					snappedPageHorizontalScrollPosition = roundToNearest(this._horizontalScrollPosition, this.actualWidth);
 				}
 				snappedPageHorizontalScrollPosition = Math.max(0, Math.min(this._maxHorizontalScrollPosition, snappedPageHorizontalScrollPosition));
-				this.throwTo(snappedPageHorizontalScrollPosition, NaN, this._pageThrowDuration);
-				this._horizontalPageIndex = Math.round(snappedPageHorizontalScrollPosition / this.actualWidth);
+				this.throwToPage(snappedPageHorizontalScrollPosition / this.actualWidth, -1, this._pageThrowDuration);
 				return;
 			}
 
@@ -2051,8 +2083,7 @@ package feathers.controls
 					snappedPageVerticalScrollPosition = roundToNearest(this._verticalScrollPosition, this.actualHeight);
 				}
 				snappedPageVerticalScrollPosition = Math.max(0, Math.min(this._maxVerticalScrollPosition, snappedPageVerticalScrollPosition));
-				this.throwTo(NaN, snappedPageVerticalScrollPosition, this._pageThrowDuration);
-				this._verticalPageIndex = Math.round(snappedPageVerticalScrollPosition / this.actualHeight);
+				this.throwToPage(-1, snappedPageVerticalScrollPosition / this.actualHeight, this._pageThrowDuration);
 				return;
 			}
 
