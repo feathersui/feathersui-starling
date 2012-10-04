@@ -241,7 +241,8 @@ package feathers.controls
 				return;
 			}
 
-			if(this._backgroundSkin && this._backgroundSkin != this._backgroundDisabledSkin)
+			if(this._backgroundSkin && this._backgroundSkin != this._backgroundDisabledSkin &&
+				this._backgroundSkin != this._backgroundFocusedSkin)
 			{
 				this.removeChild(this._backgroundSkin);
 			}
@@ -252,7 +253,46 @@ package feathers.controls
 				this._backgroundSkin.touchable = false;
 				this.addChildAt(this._backgroundSkin, 0);
 			}
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.invalidate(INVALIDATION_FLAG_SKIN);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _backgroundFocusedSkin:DisplayObject;
+
+		/**
+		 * A display object displayed behind the header's content when the
+		 * TextInput has focus.
+		 */
+		public function get backgroundFocusedSkin():DisplayObject
+		{
+			return this._backgroundFocusedSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set backgroundFocusedSkin(value:DisplayObject):void
+		{
+			if(this._backgroundFocusedSkin == value)
+			{
+				return;
+			}
+
+			if(this._backgroundFocusedSkin && this._backgroundFocusedSkin != this._backgroundSkin &&
+				this._backgroundFocusedSkin != this._backgroundDisabledSkin)
+			{
+				this.removeChild(this._backgroundFocusedSkin);
+			}
+			this._backgroundFocusedSkin = value;
+			if(this._backgroundFocusedSkin && this._backgroundFocusedSkin.parent != this)
+			{
+				this._backgroundFocusedSkin.visible = false;
+				this._backgroundFocusedSkin.touchable = false;
+				this.addChildAt(this._backgroundFocusedSkin, 0);
+			}
+			this.invalidate(INVALIDATION_FLAG_SKIN);
 		}
 
 		/**
@@ -278,7 +318,8 @@ package feathers.controls
 				return;
 			}
 
-			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin != this._backgroundSkin)
+			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin != this._backgroundSkin &&
+				this._backgroundDisabledSkin != this._backgroundFocusedSkin)
 			{
 				this.removeChild(this._backgroundDisabledSkin);
 			}
@@ -289,7 +330,7 @@ package feathers.controls
 				this._backgroundDisabledSkin.touchable = false;
 				this.addChildAt(this._backgroundDisabledSkin, 0);
 			}
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.invalidate(INVALIDATION_FLAG_SKIN);
 		}
 
 		/**
@@ -586,6 +627,7 @@ package feathers.controls
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			const positionInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_POSITION);
+			const skinInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SKIN);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 
 			if(stylesInvalid)
@@ -612,14 +654,14 @@ package feathers.controls
 				}
 			}
 
-			if(stateInvalid || stylesInvalid)
+			if(stateInvalid || skinInvalid)
 			{
 				this.refreshBackground();
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
-			if(positionInvalid || sizeInvalid || stylesInvalid || stateInvalid)
+			if(positionInvalid || sizeInvalid || stylesInvalid || skinInvalid || stateInvalid)
 			{
 				this.layout();
 			}
@@ -712,20 +754,38 @@ package feathers.controls
 		 */
 		protected function refreshBackground():void
 		{
+			const useDisabledBackground:Boolean = !this._isEnabled && this._backgroundDisabledSkin;
+			const useFocusBackground:Boolean = this._stageTextHasFocus && this._backgroundFocusedSkin;
 			this.currentBackground = this._backgroundSkin;
-			if(!this._isEnabled && this._backgroundDisabledSkin)
+			if(useDisabledBackground)
+			{
+				this.currentBackground = this._backgroundDisabledSkin;
+			}
+			else if(useFocusBackground)
+			{
+				this.currentBackground = this._backgroundFocusedSkin;
+			}
+			else
+			{
+				if(this._backgroundFocusedSkin)
+				{
+					this._backgroundFocusedSkin.visible = false;
+					this._backgroundFocusedSkin.touchable = false;
+				}
+				if(this._backgroundDisabledSkin)
+				{
+					this._backgroundDisabledSkin.visible = false;
+					this._backgroundDisabledSkin.touchable = false;
+				}
+			}
+
+			if(useDisabledBackground || useFocusBackground)
 			{
 				if(this._backgroundSkin)
 				{
 					this._backgroundSkin.visible = false;
 					this._backgroundSkin.touchable = false;
 				}
-				this.currentBackground = this._backgroundDisabledSkin;
-			}
-			else if(this._backgroundDisabledSkin)
-			{
-				this._backgroundDisabledSkin.visible = false;
-				this._backgroundDisabledSkin.touchable = false;
 			}
 
 			if(this.currentBackground)
@@ -1062,6 +1122,7 @@ package feathers.controls
 			}
 			this.stageText.selectRange(this._savedSelectionIndex, this._savedSelectionIndex);
 			this._savedSelectionIndex = -1;
+			this.invalidate(INVALIDATION_FLAG_SKIN);
 		}
 
 		/**
@@ -1077,6 +1138,7 @@ package feathers.controls
 			this.stageText.selectRange(1, 1);
 
 			this.invalidate(INVALIDATION_FLAG_DATA);
+			this.invalidate(INVALIDATION_FLAG_SKIN);
 		}
 
 		/**
