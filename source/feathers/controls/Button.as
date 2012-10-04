@@ -95,6 +95,12 @@ package feathers.controls
 		 * The icon will be positioned to the left of the label.
 		 */
 		public static const ICON_POSITION_LEFT:String = "left";
+
+		/**
+		 * The icon will be positioned manually with no relation to the position
+		 * of the label.
+		 */
+		public static const ICON_POSITION_MANUAL:String = "manual";
 		
 		/**
 		 * The icon will be positioned to the left the label, and the bottom of
@@ -538,6 +544,58 @@ package feathers.controls
 				return;
 			}
 			this._paddingLeft = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _iconOffsetX:Number = 0;
+
+		/**
+		 * Offsets the x position of the icon by a certain number of pixels.
+		 */
+		public function get iconOffsetX():Number
+		{
+			return this._iconOffsetX;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set iconOffsetX(value:Number):void
+		{
+			if(this._iconOffsetX == value)
+			{
+				return;
+			}
+			this._iconOffsetX = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _iconOffsetY:Number = 0;
+
+		/**
+		 * Offsets the y position of the icon by a certain number of pixels.
+		 */
+		public function get iconOffsetY():Number
+		{
+			return this._iconOffsetY;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set iconOffsetY(value:Number):void
+		{
+			if(this._iconOffsetY == value)
+			{
+				return;
+			}
+			this._iconOffsetY = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
@@ -1850,7 +1908,8 @@ package feathers.controls
 			{
 				if(this.currentIcon && this.label)
 				{
-					if(this._iconPosition != ICON_POSITION_TOP && this._iconPosition != ICON_POSITION_BOTTOM)
+					if(this._iconPosition != ICON_POSITION_TOP && this._iconPosition != ICON_POSITION_BOTTOM &&
+						this._iconPosition != ICON_POSITION_MANUAL)
 					{
 						var adjustedGap:Number = this._gap == Number.POSITIVE_INFINITY ? Math.min(this._paddingLeft, this._paddingRight) : this._gap;
 						newWidth = this.currentIcon.width + adjustedGap + helperPoint.x;
@@ -2060,8 +2119,13 @@ package feathers.controls
 					uiLabelRenderer.maxWidth = this.actualWidth - this._paddingLeft - this._paddingRight;
 				}
 				uiLabelRenderer.validate();
+
 				this.positionLabelOrIcon(uiLabelRenderer);
-				this.positionLabelAndIcon();
+				if(this._iconPosition != ICON_POSITION_MANUAL)
+				{
+					this.positionLabelAndIcon();
+				}
+
 			}
 			else if(this.label && !this.currentIcon)
 			{
@@ -2069,9 +2133,20 @@ package feathers.controls
 				uiLabelRenderer.validate();
 				this.positionLabelOrIcon(uiLabelRenderer);
 			}
-			else if(!this.label && this.currentIcon)
+			else if(!this.label && this.currentIcon && this._iconPosition != ICON_POSITION_MANUAL)
 			{
 				this.positionLabelOrIcon(this.currentIcon)
+			}
+
+			if(this.currentIcon)
+			{
+				if(this._iconPosition == ICON_POSITION_MANUAL)
+				{
+					this.currentIcon.x = this._paddingLeft;
+					this.currentIcon.y = this._paddingTop;
+				}
+				this.currentIcon.x += this._iconOffsetX;
+				this.currentIcon.y += this._iconOffsetY;
 			}
 		}
 		
