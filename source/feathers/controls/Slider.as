@@ -252,7 +252,7 @@ package feathers.controls
 		 */
 		public function set value(newValue:Number):void
 		{
-			if(this._step != 0)
+			if(this._step != 0 && newValue != this._maximum && newValue != this._minimum)
 			{
 				newValue = roundToNearest(newValue, this._step);
 			}
