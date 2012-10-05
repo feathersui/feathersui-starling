@@ -39,6 +39,7 @@ package feathers.controls
 	import org.osflash.signals.Signal;
 
 	import starling.display.DisplayObject;
+	import starling.display.Quad;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -107,6 +108,22 @@ package feathers.controls
 		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
 
 		/**
+		 * @private
+		 */
+		protected static function defaultSelectedSymbolFactory():Quad
+		{
+			return new Quad(25, 25, 0xffffff);
+		}
+
+		/**
+		 * @private
+		 */
+		protected static function defaultNormalSymbolFactory():Quad
+		{
+			return new Quad(25, 25, 0xcccccc);
+		}
+
+		/**
 		 * Constructor.
 		 */
 		public function PageIndicator()
@@ -143,26 +160,26 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _maximum:int = 2;
+		protected var _pageCount:int = 1;
 
 		/**
-		 * The maximum selectable page index.
+		 * The number of available pages.
 		 */
-		public function get maximum():int
+		public function get pageCount():int
 		{
-			return this._maximum;
+			return this._pageCount;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set maximum(value:int):void
+		public function set pageCount(value:int):void
 		{
-			if(this._maximum == value)
+			if(this._pageCount == value)
 			{
 				return;
 			}
-			this._maximum = value;
+			this._pageCount = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
@@ -184,7 +201,7 @@ package feathers.controls
 		 */
 		public function set selectedIndex(value:int):void
 		{
-			value = Math.max(0, Math.min(value, this._maximum));
+			value = Math.max(0, Math.min(value, this._pageCount - 1));
 			if(this._selectedIndex == value)
 			{
 				return;
@@ -414,7 +431,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _normalSymbolFactory:Function;
+		protected var _normalSymbolFactory:Function = defaultNormalSymbolFactory;
 
 		/**
 		 * A function used to create a normal symbol.
@@ -443,7 +460,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _selectedSymbolFactory:Function;
+		protected var _selectedSymbolFactory:Function = defaultSelectedSymbolFactory;
 
 		/**
 		 * A function used to create a selected symbol.
@@ -532,7 +549,7 @@ package feathers.controls
 			}
 			this.cache = this.unselectedSymbols;
 			this.unselectedSymbols = temp;
-			for(i = 0; i <= this._maximum; i++)
+			for(i = 0; i < this._pageCount; i++)
 			{
 				if(i == this._selectedIndex)
 				{
@@ -668,7 +685,7 @@ package feathers.controls
 							}
 							if(HELPER_POINT.y > (this.selectedSymbol.y + this.selectedSymbol.height))
 							{
-								this.selectedIndex = Math.min(this._maximum, this._selectedIndex + 1);
+								this.selectedIndex = Math.min(this._pageCount - 1, this._selectedIndex + 1);
 							}
 						}
 						else
@@ -679,7 +696,7 @@ package feathers.controls
 							}
 							if(HELPER_POINT.x > (this.selectedSymbol.x + this.selectedSymbol.width))
 							{
-								this.selectedIndex = Math.min(this._maximum, this._selectedIndex + 1);
+								this.selectedIndex = Math.min(this._pageCount - 1, this._selectedIndex + 1);
 							}
 						}
 					}
