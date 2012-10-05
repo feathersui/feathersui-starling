@@ -55,7 +55,9 @@ package feathers.controls
 			"selectedUpIcon",
 			"selectedDownIcon",
 			"selectedHoverIcon",
-			"selectedDisabledIcon"
+			"selectedDisabledIcon",
+			"isSelected",
+			"isToggle",
 		];
 
 		/**
@@ -64,7 +66,8 @@ package feathers.controls
 		private static const DEFAULT_BUTTON_EVENTS:Vector.<String> = new <String>
 		[
 			"onPress",
-			"onRelease"
+			"onRelease",
+			"onChange",
 		];
 
 		/**
@@ -838,7 +841,6 @@ package feathers.controls
 				{
 					button.nameList.add(this.lastButtonName);
 				}
-				button.isToggle = true;
 				this.addChild(button);
 			}
 			this._buttonInitializer(button, item);
@@ -861,7 +863,6 @@ package feathers.controls
 				{
 					button.nameList.add(this.buttonName);
 				}
-				button.isToggle = true;
 				this.addChild(button);
 			}
 			else
