@@ -62,9 +62,16 @@ package feathers.motion.transitions
 		private var _savedCompleteHandler:Function;
 		
 		/**
-		 * The duration of the transition.
+		 * The duration of the transition, in seconds.
 		 */
 		public var duration:Number = 0.25;
+
+		/**
+		 * A delay before the transition starts, measured in seconds. This may
+		 * be required on low-end systems that will slow down for a short time
+		 * after heavy texture uploads.
+		 */
+		public var delay:Number = 0.1;
 		
 		/**
 		 * The GTween easing function to use.
@@ -110,7 +117,6 @@ package feathers.motion.transitions
 			
 			var NewScreenType:Class = Object(newScreen).constructor;
 			var stackIndex:int = this._stack.indexOf(NewScreenType);
-			var targetX:Number;
 			var activeTransition_onChange:Function;
 			if(stackIndex < 0)
 			{
@@ -133,6 +139,7 @@ package feathers.motion.transitions
 			},
 			{
 				data: oldScreen,
+				delay: this.delay,
 				ease: this.ease,
 				onChange: activeTransition_onChange,
 				onComplete: activeTransition_onComplete

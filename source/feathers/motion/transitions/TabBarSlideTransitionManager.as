@@ -69,9 +69,16 @@ package feathers.motion.transitions
 		private var _isWaitingOnTransitionChange:Boolean = true;
 
 		/**
-		 * The duration of the transition.
+		 * The duration of the transition, measured in seconds.
 		 */
 		public var duration:Number = 0.25;
+
+		/**
+		 * A delay before the transition starts, measured in seconds. This may
+		 * be required on low-end systems that will slow down for a short time
+		 * after heavy texture uploads.
+		 */
+		public var delay:Number = 0.1;
 
 		/**
 		 * The GTween easing function to use.
@@ -143,6 +150,7 @@ package feathers.motion.transitions
 			},
 			{
 				data: this._oldScreen,
+				delay: this.delay,
 				ease: this.ease,
 				onChange: activeTransition_onChange,
 				onComplete: activeTransition_onComplete
