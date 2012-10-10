@@ -119,7 +119,10 @@ package feathers.core
 		protected static const INVALIDATION_FLAG_TEXT_RENDERER:String = "textRenderer";
 
 		/**
-		 * @private
+		 * A function used by all UI controls that support text renderers to
+		 * create an ITextRenderer instance. You may replace the default
+		 * function with your own, if you prefer not to use the
+		 * BitmapFontTextRenderer.
 		 */
 		public static var defaultTextRendererFactory:Function = function():ITextRenderer
 		{
