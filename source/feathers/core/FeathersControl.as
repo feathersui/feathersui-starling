@@ -123,6 +123,9 @@ package feathers.core
 		 * create an ITextRenderer instance. You may replace the default
 		 * function with your own, if you prefer not to use the
 		 * BitmapFontTextRenderer.
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 * <pre>function():ITextRenderer</pre>
 		 */
 		public static var defaultTextRendererFactory:Function = function():ITextRenderer
 		{
