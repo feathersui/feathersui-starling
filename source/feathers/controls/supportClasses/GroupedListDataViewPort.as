@@ -195,7 +195,7 @@ package feathers.controls.supportClasses
 
 		public function get horizontalScrollStep():Number
 		{
-			return this._typicalItemHeight;
+			return this._typicalItemWidth;
 		}
 
 		public function get verticalScrollStep():Number
