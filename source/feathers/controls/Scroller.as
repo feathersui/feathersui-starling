@@ -1382,7 +1382,7 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * This function is not supported on Scroller, and you should use the viewPort property.
 		 */
 		override public function addChild(child:DisplayObject):DisplayObject
 		{
@@ -1390,7 +1390,7 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * This function is not supported on Scroller, and you should use the viewPort property.
 		 */
 		override public function addChildAt(child:DisplayObject, index:int):DisplayObject
 		{
@@ -1398,7 +1398,7 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * This function is not supported on Scroller, and you should use the viewPort property.
 		 */
 		override public function removeChild(child:DisplayObject, dispose:Boolean = false):DisplayObject
 		{
@@ -1406,7 +1406,7 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * This function is not supported on Scroller, and you should use the viewPort property.
 		 */
 		override public function removeChildAt(index:int, dispose:Boolean = false):DisplayObject
 		{
