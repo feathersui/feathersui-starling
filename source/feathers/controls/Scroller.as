@@ -39,6 +39,8 @@ package feathers.controls
 
 	import feathers.core.FeathersControl;
 
+	import flash.errors.IllegalOperationError;
+
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -233,6 +235,11 @@ package feathers.controls
 		private static const MAXIMUM_SAVED_VELOCITY_COUNT:int = 4;
 
 		/**
+		 * @private
+		 */
+		private static const CHILDREN_ERROR:String = "Scroller may not have children. Use viewPort property.";
+
+		/**
 		 * The default value added to the <code>nameList</code> of the
 		 * horizontal scroll bar.
 		 */
@@ -272,7 +279,7 @@ package feathers.controls
 			super();
 
 			this._viewPortWrapper = new Sprite();
-			this.addChild(this._viewPortWrapper);
+			super.addChildAt(this._viewPortWrapper, this.numChildren);
 
 			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
@@ -1373,6 +1380,38 @@ package feathers.controls
 			this._onDragEnd.removeAll();
 			super.dispose();
 		}
+
+		/**
+		 * @private
+		 */
+		override public function addChild(child:DisplayObject):DisplayObject
+		{
+			throw new IllegalOperationError(CHILDREN_ERROR);
+		}
+
+		/**
+		 * @private
+		 */
+		override public function addChildAt(child:DisplayObject, index:int):DisplayObject
+		{
+			throw new IllegalOperationError(CHILDREN_ERROR);
+		}
+
+		/**
+		 * @private
+		 */
+		override public function removeChild(child:DisplayObject, dispose:Boolean = false):DisplayObject
+		{
+			throw new IllegalOperationError(CHILDREN_ERROR);
+		}
+
+		/**
+		 * @private
+		 */
+		override public function removeChildAt(index:int, dispose:Boolean = false):DisplayObject
+		{
+			throw new IllegalOperationError(CHILDREN_ERROR);
+		}
 		
 		/**
 		 * @private
@@ -1497,7 +1536,7 @@ package feathers.controls
 				}
 				this.horizontalScrollBar.onChange.add(horizontalScrollBar_onChange);
 				const displayHorizontalScrollBar:DisplayObject = DisplayObject(this.horizontalScrollBar);
-				this.addChild(displayHorizontalScrollBar);
+				super.addChildAt(displayHorizontalScrollBar, this.numChildren);
 			}
 			if(this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_NONE &&
 				this._verticalScrollPolicy != SCROLL_POLICY_OFF && this._verticalScrollBarFactory != null)
@@ -1509,7 +1548,7 @@ package feathers.controls
 				}
 				this.verticalScrollBar.onChange.add(verticalScrollBar_onChange);
 				const displayVerticalScrollBar:DisplayObject = DisplayObject(this.verticalScrollBar);
-				this.addChild(displayVerticalScrollBar);
+				super.addChildAt(displayVerticalScrollBar, this.numChildren);
 			}
 		}
 
