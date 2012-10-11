@@ -2034,10 +2034,6 @@ package feathers.controls
 			this._verticalScrollPosition = this.scroller.verticalScrollPosition;
 
 			this.scroll();
-			if(this._dataProvider && this._dataProvider.getLength() > 0)
-			{
-				this.scroller.horizontalScrollStep = this.scroller.verticalScrollStep = this.dataViewPort.typicalItemHeight;
-			}
 		}
 
 		/**

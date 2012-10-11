@@ -597,7 +597,12 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _horizontalScrollStep:Number = 1;
+		protected var actualHorizontalScrollStep:Number = 1;
+
+		/**
+		 * @private
+		 */
+		protected var explicitHorizontalScrollStep:Number = NaN;
 
 		/**
 		 * The number of pixels the scroller can be stepped horizontally. Passed
@@ -606,7 +611,7 @@ package feathers.controls
 		 */
 		public function get horizontalScrollStep():Number
 		{
-			return this._horizontalScrollStep;
+			return this.actualHorizontalScrollStep;
 		}
 
 		/**
@@ -614,7 +619,7 @@ package feathers.controls
 		 */
 		public function set horizontalScrollStep(value:Number):void
 		{
-			if(this._horizontalScrollStep == value)
+			if(this.explicitHorizontalScrollStep == value)
 			{
 				return;
 			}
@@ -623,7 +628,7 @@ package feathers.controls
 				//nope
 				throw new ArgumentError("horizontalScrollStep cannot be NaN.");
 			}
-			this._horizontalScrollStep = value;
+			this.explicitHorizontalScrollStep = value;
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
 		
@@ -762,7 +767,12 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _verticalScrollStep:Number = 1;
+		protected var actualVerticalScrollStep:Number = 1;
+
+		/**
+		 * @private
+		 */
+		protected var explicitVerticalScrollStep:Number = NaN;
 
 		/**
 		 * The number of pixels the scroller can be stepped vertically. Passed
@@ -771,7 +781,7 @@ package feathers.controls
 		 */
 		public function get verticalScrollStep():Number
 		{
-			return this._verticalScrollStep;
+			return this.actualVerticalScrollStep;
 		}
 
 		/**
@@ -779,7 +789,7 @@ package feathers.controls
 		 */
 		public function set verticalScrollStep(value:Number):void
 		{
-			if(this._verticalScrollStep == value)
+			if(this.explicitVerticalScrollStep == value)
 			{
 				return;
 			}
@@ -788,7 +798,7 @@ package feathers.controls
 				//nope
 				throw new ArgumentError("verticalScrollStep cannot be NaN.");
 			}
-			this._verticalScrollStep = value;
+			this.explicitVerticalScrollStep = value;
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
 		
@@ -1726,6 +1736,16 @@ package feathers.controls
 		 */
 		protected function refreshScrollValues(isScrollInvalid:Boolean):void
 		{
+			var calculatedHorizontalScrollStep:Number = 1;
+			var calculatedVerticalScrollStep:Number = 1;
+			if(this._viewPort)
+			{
+				calculatedHorizontalScrollStep = this._viewPort.horizontalScrollStep;
+				calculatedVerticalScrollStep = this._viewPort.verticalScrollStep;
+			}
+			this.actualHorizontalScrollStep = isNaN(this.explicitHorizontalScrollStep) ? calculatedHorizontalScrollStep : this.explicitVerticalScrollStep;
+			this.actualVerticalScrollStep = isNaN(this.explicitVerticalScrollStep) ? calculatedVerticalScrollStep : this.explicitVerticalScrollStep;
+
 			const oldMaxHSP:Number = this._maxHorizontalScrollPosition;
 			const oldMaxVSP:Number = this._maxVerticalScrollPosition;
 			if(this._viewPort)
@@ -1793,7 +1813,7 @@ package feathers.controls
 				this.horizontalScrollBar.maximum = this._maxHorizontalScrollPosition;
 				this.horizontalScrollBar.value = this._horizontalScrollPosition;
 				this.horizontalScrollBar.page = this._maxHorizontalScrollPosition * this.actualWidth / this._viewPort.width;
-				this.horizontalScrollBar.step = this._horizontalScrollStep;
+				this.horizontalScrollBar.step = this.actualHorizontalScrollStep;
 			}
 
 			if(this.verticalScrollBar)
@@ -1802,7 +1822,7 @@ package feathers.controls
 				this.verticalScrollBar.maximum = this._maxVerticalScrollPosition;
 				this.verticalScrollBar.value = this._verticalScrollPosition;
 				this.verticalScrollBar.page = this._maxVerticalScrollPosition * this.actualHeight / this._viewPort.height;
-				this.verticalScrollBar.step = this._verticalScrollStep;
+				this.verticalScrollBar.step = this.actualVerticalScrollStep;
 			}
 		}
 
@@ -2556,7 +2576,7 @@ package feathers.controls
 			this.globalToLocal(helperPoint, helperPoint);
 			if(this.hitTest(helperPoint, true))
 			{
-				this.verticalScrollPosition = Math.min(this._maxVerticalScrollPosition, Math.max(0, this._verticalScrollPosition - event.delta * this._verticalScrollStep));
+				this.verticalScrollPosition = Math.min(this._maxVerticalScrollPosition, Math.max(0, this._verticalScrollPosition - event.delta * this.actualVerticalScrollStep));
 			}
 
 			this.hideVerticalScrollBar(0.25);

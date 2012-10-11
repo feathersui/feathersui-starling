@@ -284,6 +284,16 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
+		public function get horizontalScrollStep():Number
+		{
+			return this._visibleWidth / 10;
+		}
+
+		public function get verticalScrollStep():Number
+		{
+			return this._visibleHeight / 10;
+		}
+
 		private var _horizontalScrollPosition:Number = 0;
 
 		public function get horizontalScrollPosition():Number
