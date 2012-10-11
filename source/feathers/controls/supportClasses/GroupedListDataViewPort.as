@@ -193,6 +193,16 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
+		public function get horizontalScrollStep():Number
+		{
+			return this._typicalItemHeight;
+		}
+
+		public function get verticalScrollStep():Number
+		{
+			return this._typicalItemHeight;
+		}
+
 		private var _typicalItemWidth:Number = NaN;
 
 		public function get typicalItemWidth():Number

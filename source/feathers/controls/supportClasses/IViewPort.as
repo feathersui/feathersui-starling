@@ -46,6 +46,8 @@ package feathers.controls.supportClasses
 		function set horizontalScrollPosition(value:Number):void;
 		function get verticalScrollPosition():Number;
 		function set verticalScrollPosition(value:Number):void;
+		function get horizontalScrollStep():Number;
+		function get verticalScrollStep():Number;
 
 		function get width():Number;
 		function get height():Number;
