@@ -533,7 +533,7 @@ package feathers.layout
 			{
 				result = new LayoutBoundsResult();
 			}
-			result.contentWidth = totalWidth;
+			result.contentWidth = this._horizontalAlign == HORIZONTAL_ALIGN_JUSTIFY ? availableWidth : totalWidth;
 			result.contentHeight = totalHeight;
 			result.viewPortWidth = availableWidth;
 			result.viewPortHeight = availableHeight;

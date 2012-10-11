@@ -531,7 +531,7 @@ package feathers.layout
 				result = new LayoutBoundsResult();
 			}
 			result.contentWidth = totalWidth;
-			result.contentHeight = totalHeight;
+			result.contentHeight = this._verticalAlign == VERTICAL_ALIGN_JUSTIFY ? availableHeight : totalHeight;
 			result.viewPortWidth = availableWidth;
 			result.viewPortHeight = availableHeight;
 			return result;
