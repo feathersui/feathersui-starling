@@ -406,9 +406,25 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function get $numChildren():int
+		{
+			return super.numChildren;
+		}
+
+		/**
+		 * @private
+		 */
 		override public function getChildByName(name:String):DisplayObject
 		{
 			return this.viewPort.getChildByName(name);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function $getChildByName(name:String):DisplayObject
+		{
+			return super.getChildByName(name);
 		}
 
 		/**
@@ -422,9 +438,46 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function $getChildAt(index:int):DisplayObject
+		{
+			return super.getChildAt(index);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function $addChild(child:DisplayObject):DisplayObject
+		{
+			return super.addChildAt(child, super.numChildren);
+		}
+
+		/**
+		 * @private
+		 */
 		override public function addChildAt(child:DisplayObject, index:int):DisplayObject
 		{
 			return this.viewPort.addChildAt(child, index);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function $addChildAt(child:DisplayObject, index:int):DisplayObject
+		{
+			return super.addChildAt(child, index);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function $removeChild(child:DisplayObject, dispose:Boolean = false):DisplayObject
+		{
+			const childIndex:int = this.$getChildIndex(child);
+			if(childIndex >= 0)
+			{
+				super.removeChildAt(childIndex, dispose);
+			}
+			return child;
 		}
 
 		/**
@@ -438,9 +491,25 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function $removeChildAt(index:int):DisplayObject
+		{
+			return super.removeChildAt(index);
+		}
+
+		/**
+		 * @private
+		 */
 		override public function getChildIndex(child:DisplayObject):int
 		{
 			return this.viewPort.getChildIndex(child);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function $getChildIndex(child:DisplayObject):int
+		{
+			return super.getChildIndex(child);
 		}
 
 		/**
@@ -454,9 +523,45 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function $setChildIndex(child:DisplayObject, index:int):void
+		{
+			this.$removeChild(child);
+			this.$addChildAt(child, index);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function $swapChildren(child1:DisplayObject, child2:DisplayObject):void
+		{
+			const index1:int = this.$getChildIndex(child1);
+			const index2:int = this.$getChildIndex(child2);
+			if (index1 < 0 || index2 < 0)
+			{
+				throw new ArgumentError("Not a child of this container");
+			}
+			this.$swapChildrenAt(index1, index2);
+		}
+
+		/**
+		 * @private
+		 */
 		override public function swapChildrenAt(index1:int, index2:int):void
 		{
 			this.viewPort.swapChildrenAt(index1, index2);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function $swapChildrenAt(index1:int, index2:int):void
+		{
+			const child1:DisplayObject = this.$getChildAt(index1);
+			const child2:DisplayObject = this.$getChildAt(index2);
+			this.$removeChild(child1);
+			this.$removeChild(child2);
+			this.$addChildAt(child2, index1);
+			this.$addChildAt(child1, index2);
 		}
 
 		/**
