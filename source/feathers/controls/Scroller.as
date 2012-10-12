@@ -1743,7 +1743,7 @@ package feathers.controls
 				calculatedHorizontalScrollStep = this._viewPort.horizontalScrollStep;
 				calculatedVerticalScrollStep = this._viewPort.verticalScrollStep;
 			}
-			this.actualHorizontalScrollStep = isNaN(this.explicitHorizontalScrollStep) ? calculatedHorizontalScrollStep : this.explicitVerticalScrollStep;
+			this.actualHorizontalScrollStep = isNaN(this.explicitHorizontalScrollStep) ? calculatedHorizontalScrollStep : this.explicitHorizontalScrollStep;
 			this.actualVerticalScrollStep = isNaN(this.explicitVerticalScrollStep) ? calculatedVerticalScrollStep : this.explicitVerticalScrollStep;
 
 			const oldMaxHSP:Number = this._maxHorizontalScrollPosition;
