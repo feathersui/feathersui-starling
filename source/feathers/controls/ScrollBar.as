@@ -44,7 +44,12 @@ package feathers.controls
 
 	/**
 	 * Select a value between a minimum and a maximum by dragging a thumb over
-	 * a physical range or by using step buttons.
+	 * a physical range or by using step buttons. This is a desktop-centric
+	 * scroll bar with many skinnable parts. For mobile, the
+	 * <code>SimpleScrollBar</code> is probably a better choice as it provides
+	 * only the thumb to indicate position without all the extra chrome.
+	 *
+	 * @see SimpleScrollBar
 	 */
 	public class ScrollBar extends FeathersControl implements IScrollBar
 	{

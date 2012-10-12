@@ -43,7 +43,13 @@ package feathers.controls
 
 	/**
 	 * Select a value between a minimum and a maximum by dragging a thumb over
-	 * a physical range.
+	 * a physical range. This type of scroll bar does not have a visible track,
+	 * and it does not have increment and decrement buttons. It is ideal for
+	 * mobile applications where the scroll bar is often simply a visual element
+	 * to indicate the scroll position. For a more feature-rich scroll bar,
+	 * see the <code>ScrollBar</code> component.
+	 *
+	 * @see ScrollBar
 	 */
 	public class SimpleScrollBar extends FeathersControl implements IScrollBar
 	{
