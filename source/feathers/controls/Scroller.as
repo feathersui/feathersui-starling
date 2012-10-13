@@ -1526,13 +1526,13 @@ package feathers.controls
 			if(this.horizontalScrollBar)
 			{
 				this.horizontalScrollBar.onChange.remove(horizontalScrollBar_onChange);
-				DisplayObject(this.horizontalScrollBar).removeFromParent(true);
+				super.removeChildAt(super.getChildIndex(DisplayObject(this.horizontalScrollBar)), true);
 				this.horizontalScrollBar = null;
 			}
 			if(this.verticalScrollBar)
 			{
 				this.verticalScrollBar.onChange.remove(verticalScrollBar_onChange);
-				DisplayObject(this.verticalScrollBar).removeFromParent(true);
+				super.removeChildAt(super.getChildIndex(DisplayObject(this.verticalScrollBar)), true);
 				this.verticalScrollBar = null;
 			}
 
