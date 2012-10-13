@@ -1934,7 +1934,7 @@ package feathers.controls
 					offsetY = this.actualHeight - this._viewPort.height;
 				}
 			}
-			if(this._clipContent)
+			if(this._clipContent && (this._maxHorizontalScrollPosition > 0 || this._maxVerticalScrollPosition > 0))
 			{
 				if(!this.scrollRect)
 				{
@@ -1945,6 +1945,10 @@ package feathers.controls
 				scrollRect.width = this.actualWidth;
 				scrollRect.height = this.actualHeight;
 				this.scrollRect = scrollRect;
+			}
+			else
+			{
+				this.scrollRect = null;
 			}
 
 			this._viewPortWrapper.x = -this._horizontalScrollPosition + offsetX;
