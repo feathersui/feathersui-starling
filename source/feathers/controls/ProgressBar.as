@@ -31,6 +31,8 @@ package feathers.controls
 
 	/**
 	 * Displays the progress of a task over time. Non-interactive.
+	 *
+	 * @see http://wiki.starling-framework.org/feathers/progress-bar
 	 */
 	public class ProgressBar extends FeathersControl
 	{

@@ -33,6 +33,8 @@ package feathers.controls
 	[DefaultProperty("dataProvider")]
 	/**
 	 * A set of related buttons with layout, customized using a data provider.
+	 *
+	 * @see http://wiki.starling-framework.org/feathers/button-group
 	 */
 	public class ButtonGroup extends FeathersControl
 	{

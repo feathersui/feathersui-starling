@@ -63,10 +63,15 @@ package feathers.controls
 
 	/**
 	 * A text entry control that allows users to enter and edit a single line of
-	 * uniformly-formatted text. Uses the native StageText class in AIR, and the
-	 * custom StageTextField class in Flash Player.
+	 * uniformly-formatted text. Uses the native <code>StageText</code> class in
+	 * AIR, and the custom <code>StageTextField</code> class in Flash Player.
 	 *
-	 * @see org.josht.text.StageTextField
+	 * <p>To set font properties, the ability to display as password, and
+	 * character restrictions, use the <code>stageTextProperties</code> to pass
+	 * values to the <code>StageText</code> instance.</p>
+	 *
+	 * @see http://wiki.starling-framework.org/feathers/text-input
+	 * @see flash.text.StageText
 	 */
 	public class TextInput extends FeathersControl
 	{
@@ -494,6 +499,9 @@ package feathers.controls
 		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 *
+		 * @see flash.text.StageText
+		 * @see org.josht.text.StageTextField
 		 */
 		public function get stageTextProperties():Object
 		{

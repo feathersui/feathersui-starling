@@ -31,7 +31,8 @@ package feathers.controls
 	/**
 	 * Data for an individual screen that will be used by a <code>ScreenNavigator</code>
 	 * object.
-	 * 
+	 *
+	 * @see http://wiki.starling-framework.org/feathers/screen-navigator
 	 * @see feathers.controls.ScreenNavigator
 	 * 
 	 * @author Josh Tynjala (joshblog.net)

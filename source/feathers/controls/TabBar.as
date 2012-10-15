@@ -33,7 +33,10 @@ package feathers.controls
 
 	[DefaultProperty("dataProvider")]
 	/**
-	 * A line of tabs, where one may be selected at a time.
+	 * A line of tabs (vertical or horizontal), where one may be selected at a
+	 * time.
+	 *
+	 * @see http://wiki.starling-framework.org/feathers/tab-bar
 	 */
 	public class TabBar extends FeathersControl
 	{

@@ -43,6 +43,8 @@ package feathers.controls
 	/**
 	 * A combo-box like list control. Displayed as a button. The list appears
 	 * on tap as a full-screen overlay.
+	 *
+	 * @see http://wiki.starling-framework.org/feathers/picker-list
 	 */
 	public class PickerList extends FeathersControl
 	{

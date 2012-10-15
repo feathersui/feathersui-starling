@@ -45,6 +45,9 @@ package feathers.controls
 
 	/**
 	 * Similar to a light switch. May be selected or not, like a check box.
+	 *
+	 * @see http://wiki.starling-framework.org/feathers/toggle-switch
+	 * @see Check
 	 */
 	public class ToggleSwitch extends FeathersControl implements IToggle
 	{

@@ -41,6 +41,8 @@ package feathers.controls
 	 * A "view stack"-like container that supports navigation between screens
 	 * (any display object) through events.
 	 *
+	 * @see http://wiki.starling-framework.org/feathers/screen-navigator
+	 * @see http://wiki.starling-framework.org/feathers/transitions
 	 * @see feathers.controls.ScreenNavigatorItem
 	 * @see feathers.controls.Screen
 	 */

@@ -36,7 +36,9 @@ package feathers.controls
 
 	[DefaultProperty("mxmlContent")]
 	/**
-	 * A layout container that supports scrolling.
+	 * A generic container that supports layout and scrolling.
+	 *
+	 * @see http://wiki.starling-framework.org/feathers/scroll-container
 	 */
 	public class ScrollContainer extends FeathersControl
 	{

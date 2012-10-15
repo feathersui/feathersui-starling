@@ -43,6 +43,8 @@ package feathers.controls
 
 	/**
 	 * A push (or optionally, toggle) button control.
+	 *
+	 * @see http://wiki.starling-framework.org/feathers/button
 	 */
 	public class Button extends FeathersControl implements IToggle
 	{

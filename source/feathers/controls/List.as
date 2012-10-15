@@ -49,6 +49,7 @@ package feathers.controls
 	 * renderer for every single item. This allows for optimal performance with
 	 * very large data providers.</p>
 	 *
+	 * @see http://wiki.starling-framework.org/feathers/list
 	 * @see GroupedList
 	 */
 	public class List extends FeathersControl

@@ -41,7 +41,8 @@ package feathers.controls
 	/**
 	 * Provides useful capabilities for a menu screen displayed by
 	 * <code>ScreenNavigator</code>.
-	 * 
+	 *
+	 * @see http://wiki.starling-framework.org/feathers/screen
 	 * @see ScreenNavigator
 	 */
 	public class Screen extends FeathersControl

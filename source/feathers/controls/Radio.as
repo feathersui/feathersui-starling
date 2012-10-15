@@ -38,6 +38,7 @@ package feathers.controls
 	 * A toggleable control that exists in a set that requires a single,
 	 * exclusive toggled item.
 	 *
+	 * @see http://wiki.starling-framework.org/feathers/radio
 	 * @see feathers.core.ToggleGroup
 	 */
 	public class Radio extends Button implements IGroupedToggle

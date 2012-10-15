@@ -52,6 +52,8 @@ package feathers.controls
 	 * renderers to display a subset of the data provider instead of creating a
 	 * renderer for every single item. This allows for optimal performance with
 	 * very large data providers.</p>
+	 *
+	 * @see http://wiki.starling-framework.org/feathers/grouped-list
 	 */
 	public class GroupedList extends FeathersControl
 	{
