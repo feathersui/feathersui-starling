@@ -32,6 +32,8 @@ package feathers.controls
 
 	/**
 	 * Displays text.
+	 *
+	 * @see http://wiki.starling-framework.org/feathers/label
 	 */
 	public class Label extends FeathersControl
 	{

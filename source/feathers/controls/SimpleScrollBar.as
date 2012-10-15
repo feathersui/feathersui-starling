@@ -49,6 +49,7 @@ package feathers.controls
 	 * to indicate the scroll position. For a more feature-rich scroll bar,
 	 * see the <code>ScrollBar</code> component.
 	 *
+	 * @see http://wiki.starling-framework.org/feathers/simple-scroll-bar
 	 * @see ScrollBar
 	 */
 	public class SimpleScrollBar extends FeathersControl implements IScrollBar

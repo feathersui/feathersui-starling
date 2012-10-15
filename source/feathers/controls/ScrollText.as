@@ -37,6 +37,8 @@ package feathers.controls
 	 * Displays long passages of text in a scrollable container using the
 	 * runtime's software-based <code>flash.text.TextField</code> as an overlay
 	 * above Starling content.
+	 *
+	 * @see http://wiki.starling-framework.org/feathers/scroll-text
 	 */
 	public class ScrollText extends FeathersControl
 	{

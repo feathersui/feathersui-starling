@@ -49,6 +49,7 @@ package feathers.controls
 	 * <code>SimpleScrollBar</code> is probably a better choice as it provides
 	 * only the thumb to indicate position without all the extra chrome.
 	 *
+	 * @see http://wiki.starling-framework.org/feathers/scroll-bar
 	 * @see SimpleScrollBar
 	 */
 	public class ScrollBar extends FeathersControl implements IScrollBar

@@ -29,9 +29,10 @@ package feathers.controls
 	[Exclude(name="isToggle",kind="property")]
 
 	/**
-	 * A toggleable control that contains a label and a box that may be checked
+	 * A toggle control that contains a label and a box that may be checked
 	 * or not to indicate selection.
 	 *
+	 * @see http://wiki.starling-framework.org/feathers/check
 	 * @see ToggleSwitch
 	 */
 	public class Check extends Button

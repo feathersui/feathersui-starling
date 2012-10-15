@@ -48,6 +48,8 @@ package feathers.controls
 	 * Select a value between a minimum and a maximum by dragging a thumb over
 	 * the bounds of a track. The slider's track is divided into two parts split
 	 * by the thumb.
+	 *
+	 * @see http://wiki.starling-framework.org/feathers/slider
 	 */
 	public class Slider extends FeathersControl
 	{

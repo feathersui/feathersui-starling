@@ -44,6 +44,8 @@ package feathers.controls
 	 * additional actions. The title is displayed in the center by default,
 	 * but it may be aligned to the left or right if there are no items on the
 	 * desired side.
+	 *
+	 * @see http://wiki.starling-framework.org/feathers/header
 	 */
 	public class Header extends FeathersControl
 	{
