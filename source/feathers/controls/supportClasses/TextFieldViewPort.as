@@ -406,6 +406,7 @@ package feathers.controls.supportClasses
 			this._textFieldContainer.x = starlingViewPort.x + helperPoint.x * Starling.contentScaleFactor;
 			this._textFieldContainer.y = starlingViewPort.y + helperPoint.y * Starling.contentScaleFactor;
 			this._textFieldContainer.scaleX = this._textFieldContainer.scaleY =  Starling.contentScaleFactor;
+			this._textFieldContainer.visible = true;
 			super.render(support, alpha);
 		}
 
@@ -413,6 +414,7 @@ package feathers.controls.supportClasses
 		{
 			this._textFieldContainer = new Sprite();
 			this._textFieldContainer.mouseChildren = this._textFieldContainer.mouseEnabled = false;
+			this._textFieldContainer.visible = false;
 			this._textField = new TextField();
 			this._textField.selectable = this._textFieldContainer.mouseEnabled =
 				this._textField.mouseWheelEnabled = false;
