@@ -732,6 +732,7 @@ package feathers.controls
 				}
 			}
 
+			var totalItemWidth:Number = 0;
 			for each(var item:DisplayObject in this._leftItems)
 			{
 				if(item is FeathersControl)
@@ -740,7 +741,7 @@ package feathers.controls
 				}
 				if(needsWidth && !isNaN(item.width))
 				{
-					newWidth += item.width + this._gap;
+					totalItemWidth += item.width + this._gap;
 				}
 				if(needsHeight && !isNaN(item.height))
 				{
@@ -755,14 +756,17 @@ package feathers.controls
 				}
 				if(needsWidth && !isNaN(item.width))
 				{
-					newWidth += item.width + this._gap;
+					totalItemWidth += item.width + this._gap;
 				}
 				if(needsHeight && !isNaN(item.height))
 				{
 					newHeight = Math.max(newHeight, item.height);
 				}
 			}
+			newWidth += totalItemWidth;
 
+			const maxTitleWidth:Number = (needsWidth ? this._maxWidth : this.explicitWidth) - totalItemWidth - this._paddingLeft - this._paddingRight;
+			FeathersControl(this._titleRenderer).maxWidth = maxTitleWidth;
 			this._titleRenderer.measureText(helperPoint);
 			if(needsWidth)
 			{
