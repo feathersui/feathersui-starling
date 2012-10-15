@@ -24,13 +24,13 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package feathers.controls.text
 {
-	import flash.geom.Matrix;
-	import flash.geom.Point;
-	import flash.geom.Rectangle;
-
 	import feathers.core.FeathersControl;
 	import feathers.core.ITextRenderer;
 	import feathers.text.BitmapFontTextFormat;
+
+	import flash.geom.Matrix;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
 
 	import starling.core.RenderSupport;
 	import starling.display.Image;

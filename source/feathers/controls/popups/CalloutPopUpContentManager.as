@@ -24,9 +24,10 @@
  */
 package feathers.controls.popups
 {
+	import feathers.controls.*;
+
 	import flash.errors.IllegalOperationError;
 
-	import feathers.controls.*;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 

@@ -24,17 +24,15 @@
  */
 package feathers.controls.renderers
 {
-	import feathers.core.FeathersControl;
-
-	import flash.events.TimerEvent;
-	import flash.geom.Point;
-	import flash.utils.Timer;
-
 	import feathers.controls.Button;
 	import feathers.controls.text.BitmapFontTextRenderer;
 	import feathers.core.FeathersControl;
 	import feathers.core.ITextRenderer;
 	import feathers.core.PropertyProxy;
+
+	import flash.events.TimerEvent;
+	import flash.geom.Point;
+	import flash.utils.Timer;
 
 	import starling.display.DisplayObject;
 	import starling.display.Image;

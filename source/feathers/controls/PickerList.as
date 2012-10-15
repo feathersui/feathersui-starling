@@ -31,6 +31,7 @@ package feathers.controls
 	import feathers.core.PropertyProxy;
 	import feathers.data.ListCollection;
 	import feathers.system.DeviceCapabilities;
+
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 

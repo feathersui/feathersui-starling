@@ -24,13 +24,13 @@
  */
 package feathers.controls.supportClasses
 {
-	import flash.geom.Point;
-
 	import feathers.core.FeathersControl;
 	import feathers.layout.ILayout;
 	import feathers.layout.IVirtualLayout;
 	import feathers.layout.LayoutBoundsResult;
 	import feathers.layout.ViewPortBounds;
+
+	import flash.geom.Point;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;

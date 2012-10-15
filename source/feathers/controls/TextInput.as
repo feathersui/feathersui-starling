@@ -24,6 +24,11 @@
  */
 package feathers.controls
 {
+	import feathers.core.FeathersControl;
+	import feathers.core.PropertyProxy;
+	import feathers.display.ScrollRectManager;
+	import feathers.text.StageTextField;
+
 	import flash.display.BitmapData;
 	import flash.display3D.textures.Texture;
 	import flash.events.Event;
@@ -43,10 +48,6 @@ package feathers.controls
 	import flash.ui.MouseCursor;
 	import flash.utils.getDefinitionByName;
 
-	import feathers.display.ScrollRectManager;
-	import feathers.core.FeathersControl;
-	import feathers.core.PropertyProxy;
-	import feathers.text.StageTextField;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 

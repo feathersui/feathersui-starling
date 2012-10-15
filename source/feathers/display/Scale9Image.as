@@ -24,12 +24,12 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package feathers.display
 {
+	import feathers.textures.Scale9Textures;
+
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-
-	import feathers.textures.Scale9Textures;
 
 	import starling.core.RenderSupport;
 	import starling.display.DisplayObject;

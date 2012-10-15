@@ -24,12 +24,11 @@
  */
 package feathers.controls
 {
+	import feathers.core.FeathersControl;
+
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Rectangle;
-	import flash.system.System;
-	
-	import feathers.core.FeathersControl;
-	
+
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 

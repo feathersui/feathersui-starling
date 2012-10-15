@@ -30,8 +30,8 @@ package feathers.display
 
 	import starling.core.RenderSupport;
 	import starling.display.DisplayObject;
-	import starling.display.Sprite;
 	import starling.display.QuadBatch;
+	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;

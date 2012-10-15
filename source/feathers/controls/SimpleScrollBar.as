@@ -24,17 +24,18 @@
  */
 package feathers.controls
 {
-	import flash.events.TimerEvent;
-	import flash.geom.Point;
-	import flash.utils.Timer;
-	
 	import feathers.core.FeathersControl;
 	import feathers.core.PropertyProxy;
 	import feathers.utils.math.clamp;
 	import feathers.utils.math.roundToNearest;
+
+	import flash.events.TimerEvent;
+	import flash.geom.Point;
+	import flash.utils.Timer;
+
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
-	
+
 	import starling.display.Quad;
 	import starling.events.Event;
 	import starling.events.Touch;

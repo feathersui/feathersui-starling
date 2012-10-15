@@ -24,12 +24,13 @@
  */
 package feathers.controls.popups
 {
+	import feathers.core.FeathersControl;
+	import feathers.core.PopUpManager;
+
 	import flash.errors.IllegalOperationError;
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
 
-	import feathers.core.FeathersControl;
-	import feathers.core.PopUpManager;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 

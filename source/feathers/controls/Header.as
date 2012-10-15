@@ -25,13 +25,11 @@
 package feathers.controls
 {
 	import feathers.core.FeathersControl;
-	import feathers.core.FeathersControl;
 	import feathers.core.ITextRenderer;
 	import feathers.core.PropertyProxy;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.LayoutBoundsResult;
 	import feathers.layout.ViewPortBounds;
-	import feathers.text.BitmapFontTextFormat;
 
 	import flash.geom.Point;
 

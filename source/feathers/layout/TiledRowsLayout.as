@@ -25,10 +25,10 @@
 package feathers.layout
 {
 	import flash.geom.Point;
-	
+
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
-	
+
 	import starling.display.DisplayObject;
 
 	/**
