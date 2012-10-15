@@ -647,12 +647,6 @@ package feathers.core
 		 */
 		public function invalidate(flag:String = INVALIDATION_FLAG_ALL):void
 		{
-			if(!this.stage)
-			{
-				//we'll invalidate everything once we're added to the stage, so
-				//there's no point in micro-managing it before that.
-				return;
-			}
 			const isAlreadyInvalid:Boolean = this.isInvalid();
 			var isAlreadyDelayedInvalid:Boolean = false;
 			if(this._isValidating)
@@ -684,6 +678,12 @@ package feathers.core
 				{
 					this._invalidationFlags[flag] = true;
 				}
+			}
+			if(!this.stage)
+			{
+				//we'll add this component to the queue later, after it has been
+				//added to the stage.
+				return;
 			}
 			if(!validationQueue)
 			{
@@ -878,20 +878,19 @@ package feathers.core
 			if(!this._isInitialized)
 			{
 				this.initialize();
+				this.invalidate(); //invalidate everything
 				this._isInitialized = true;
 			}
-			//clear any flags that may have been set while we didn't have a
-			//stage (or when we had a stage previously).
-			for(var key:String in this._invalidationFlags)
+
+			if(this.isInvalid())
 			{
-				delete this._invalidationFlags[key];
+				if(!validationQueue)
+				{
+					validationQueue = new ValidationQueue();
+				}
+				this._invalidateCount = 0;
+				validationQueue.addControl(this, false);
 			}
-			for(key in this._delayedInvalidationFlags)
-			{
-				delete this._delayedInvalidationFlags[key];
-			}
-			this._isAllInvalid = false;
-			this.invalidate(); //invalidate everything
 		}
 	}
 }
