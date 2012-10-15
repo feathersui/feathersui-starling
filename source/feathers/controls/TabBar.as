@@ -28,6 +28,7 @@ package feathers.controls
 	import feathers.core.PropertyProxy;
 	import feathers.core.ToggleGroup;
 	import feathers.data.ListCollection;
+
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 

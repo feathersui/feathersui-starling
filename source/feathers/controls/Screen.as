@@ -24,16 +24,15 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package feathers.controls
 {
-	import flash.display.DisplayObjectContainer;
-	import flash.display.LoaderInfo;
-	import flash.events.KeyboardEvent;
-	import flash.system.Capabilities;
-	import flash.ui.Keyboard;
-	
 	import feathers.core.FeathersControl;
 	import feathers.system.DeviceCapabilities;
 	import feathers.utils.display.calculateScaleRatioToFit;
-	
+
+	import flash.display.DisplayObjectContainer;
+	import flash.display.LoaderInfo;
+	import flash.events.KeyboardEvent;
+	import flash.ui.Keyboard;
+
 	import starling.core.Starling;
 	import starling.events.Event;
 	import starling.events.ResizeEvent;

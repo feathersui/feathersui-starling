@@ -24,12 +24,13 @@
  */
 package feathers.core
 {
+	import feathers.controls.text.BitmapFontTextRenderer;
+	import feathers.display.Sprite;
+
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
-	import feathers.display.Sprite;
-	import feathers.controls.text.BitmapFontTextRenderer;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 

@@ -25,10 +25,9 @@
 package feathers.controls
 {
 	import feathers.core.IGroupedToggle;
+	import feathers.core.ToggleGroup;
 
 	import flash.errors.IllegalOperationError;
-
-	import feathers.core.ToggleGroup;
 
 	import starling.events.Event;
 

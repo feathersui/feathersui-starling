@@ -24,12 +24,12 @@
  */
 package feathers.dragDrop
 {
+	import feathers.core.PopUpManager;
+
 	import flash.errors.IllegalOperationError;
 	import flash.events.KeyboardEvent;
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
-
-	import feathers.core.PopUpManager;
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;

@@ -26,8 +26,6 @@ package feathers.skins
 {
 	import flash.utils.Dictionary;
 
-	import feathers.core.IToggle;
-
 	/**
 	 * Maps a component's states to values, perhaps for one of the component's
 	 * properties such as a skin or text format.

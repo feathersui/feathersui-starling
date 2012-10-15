@@ -24,8 +24,6 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package feathers.controls
 {
-	import flash.geom.Point;
-
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.supportClasses.ListDataViewPort;
 	import feathers.core.FeathersControl;
@@ -33,6 +31,9 @@ package feathers.controls
 	import feathers.data.ListCollection;
 	import feathers.layout.ILayout;
 	import feathers.layout.VerticalLayout;
+
+	import flash.geom.Point;
+
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 

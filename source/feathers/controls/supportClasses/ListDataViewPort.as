@@ -24,9 +24,6 @@
  */
 package feathers.controls.supportClasses
 {
-	import flash.geom.Point;
-	import flash.utils.Dictionary;
-
 	import feathers.controls.List;
 	import feathers.controls.Scroller;
 	import feathers.controls.renderers.IListItemRenderer;
@@ -38,6 +35,10 @@ package feathers.controls.supportClasses
 	import feathers.layout.IVirtualLayout;
 	import feathers.layout.LayoutBoundsResult;
 	import feathers.layout.ViewPortBounds;
+
+	import flash.geom.Point;
+	import flash.utils.Dictionary;
+
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 

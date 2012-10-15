@@ -25,8 +25,6 @@ OTHER DEALINGS IN THE SOFTWARE.
 package feathers.core
 {
 	import flash.utils.Dictionary;
-	import flash.utils.describeType;
-	import flash.utils.getDefinitionByName;
 
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;

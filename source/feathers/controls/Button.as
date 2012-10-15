@@ -24,14 +24,15 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package feathers.controls
 {
-	import flash.geom.Point;
-
-	import feathers.display.ScrollRectManager;
 	import feathers.core.FeathersControl;
 	import feathers.core.ITextRenderer;
 	import feathers.core.IToggle;
 	import feathers.core.PropertyProxy;
+	import feathers.display.ScrollRectManager;
 	import feathers.skins.StateWithToggleValueSelector;
+
+	import flash.geom.Point;
+
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 

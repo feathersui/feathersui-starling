@@ -24,13 +24,14 @@
  */
 package feathers.controls
 {
+	import feathers.core.FeathersControl;
+	import feathers.core.PopUpManager;
+	import feathers.display.ScrollRectManager;
+
 	import flash.events.KeyboardEvent;
 	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
 
-	import feathers.display.ScrollRectManager;
-	import feathers.core.FeathersControl;
-	import feathers.core.PopUpManager;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 

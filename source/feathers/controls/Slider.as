@@ -24,15 +24,14 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package feathers.controls
 {
-	import flash.events.TimerEvent;
-	import flash.geom.Point;
-	import flash.geom.Rectangle;
-
 	import feathers.core.FeathersControl;
 	import feathers.core.PropertyProxy;
 	import feathers.utils.math.clamp;
 	import feathers.utils.math.roundToNearest;
 
+	import flash.events.TimerEvent;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.utils.Timer;
 
 	import org.osflash.signals.ISignal;

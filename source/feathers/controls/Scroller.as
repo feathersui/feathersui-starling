@@ -37,16 +37,6 @@ package feathers.controls
 	import com.gskinner.motion.easing.Cubic;
 	import com.gskinner.motion.easing.Sine;
 
-	import feathers.core.FeathersControl;
-
-	import flash.errors.IllegalOperationError;
-
-	import flash.events.MouseEvent;
-	import flash.geom.Point;
-	import flash.geom.Rectangle;
-	import flash.system.Capabilities;
-	import flash.utils.getTimer;
-	
 	import feathers.controls.supportClasses.IViewPort;
 	import feathers.core.FeathersControl;
 	import feathers.core.PropertyProxy;
@@ -58,10 +48,16 @@ package feathers.controls
 	import feathers.utils.math.roundDownToNearest;
 	import feathers.utils.math.roundToNearest;
 	import feathers.utils.math.roundUpToNearest;
-	
+
+	import flash.errors.IllegalOperationError;
+	import flash.events.MouseEvent;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
+	import flash.utils.getTimer;
+
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
-	
+
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.events.Event;
