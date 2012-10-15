@@ -1905,6 +1905,7 @@ package feathers.controls
 			{
 				return false;
 			}
+			this.refreshMaxLabelWidth(true);
 			this.labelTextRenderer.measureText(helperPoint);
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
@@ -2108,21 +2109,11 @@ package feathers.controls
 		 */
 		protected function layoutContent():void
 		{
+			this.refreshMaxLabelWidth(false);
 			const uiLabelRenderer:FeathersControl = FeathersControl(this.labelTextRenderer);
 			if(this.label && this.currentIcon)
 			{
-				if(this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE ||
-					this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
-				{
-					var adjustedGap:Number = this._gap == Number.POSITIVE_INFINITY ? Math.min(this._paddingLeft, this._paddingRight) : this._gap;
-					uiLabelRenderer.maxWidth = this.actualWidth - this._paddingLeft - this._paddingRight - this.currentIcon.width - adjustedGap;
-				}
-				else
-				{
-					uiLabelRenderer.maxWidth = this.actualWidth - this._paddingLeft - this._paddingRight;
-				}
 				uiLabelRenderer.validate();
-
 				this.positionLabelOrIcon(uiLabelRenderer);
 				if(this._iconPosition != ICON_POSITION_MANUAL)
 				{
@@ -2132,7 +2123,6 @@ package feathers.controls
 			}
 			else if(this.label && !this.currentIcon)
 			{
-				uiLabelRenderer.maxWidth = this.actualWidth - this._paddingLeft - this._paddingRight;
 				uiLabelRenderer.validate();
 				this.positionLabelOrIcon(uiLabelRenderer);
 			}
@@ -2150,6 +2140,37 @@ package feathers.controls
 				}
 				this.currentIcon.x += this._iconOffsetX;
 				this.currentIcon.y += this._iconOffsetY;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshMaxLabelWidth(forMeasurement:Boolean):void
+		{
+			var calculatedWidth:Number = this.actualWidth;
+			if(forMeasurement)
+			{
+				calculatedWidth = isNaN(this.explicitWidth) ? this._maxWidth : this.explicitWidth;
+			}
+			const uiLabelRenderer:FeathersControl = FeathersControl(this.labelTextRenderer);
+			if(this.label && this.currentIcon)
+			{
+				if(this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE ||
+					this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
+				{
+					var adjustedGap:Number = this._gap == Number.POSITIVE_INFINITY ? Math.min(this._paddingLeft, this._paddingRight) : this._gap;
+					uiLabelRenderer.maxWidth = calculatedWidth - this._paddingLeft - this._paddingRight - this.currentIcon.width - adjustedGap;
+				}
+				else
+				{
+					uiLabelRenderer.maxWidth = calculatedWidth - this._paddingLeft - this._paddingRight;
+				}
+
+			}
+			else if(this.label && !this.currentIcon)
+			{
+				uiLabelRenderer.maxWidth = calculatedWidth - this._paddingLeft - this._paddingRight;
 			}
 		}
 		
