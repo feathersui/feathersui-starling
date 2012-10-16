@@ -24,11 +24,11 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package feathers.motion.transitions
 {
-	import com.gskinner.motion.easing.Sine;
-
 	import feathers.controls.ScreenNavigator;
-	import feathers.motion.GTween;
 
+	import starling.animation.Transitions;
+	import starling.animation.Tween;
+	import starling.core.Starling;
 	import starling.display.DisplayObject;
 
 	/**
@@ -57,8 +57,9 @@ package feathers.motion.transitions
 		
 		private var _navigator:ScreenNavigator;
 		private var _stack:Vector.<Class> = new <Class>[];
-		private var _activeTransition:GTween;
+		private var _activeTransition:Tween;
 		private var _savedCompleteHandler:Function;
+		private var _savedOtherTarget:DisplayObject;
 		
 		/**
 		 * The duration of the transition.
@@ -73,9 +74,9 @@ package feathers.motion.transitions
 		public var delay:Number = 0.1;
 		
 		/**
-		 * The GTween easing function to use.
+		 * The easing function to use.
 		 */
-		public var ease:Function = Sine.easeOut;
+		public var ease:Object = Transitions.EASE_OUT;
 		
 		/**
 		 * Removes all saved classes from the stack that are used to determine
@@ -104,8 +105,9 @@ package feathers.motion.transitions
 			
 			if(this._activeTransition)
 			{
-				this._activeTransition.paused = true;
+				Starling.juggler.remove(this._activeTransition);
 				this._activeTransition = null;
+				this._savedOtherTarget = null;
 			}
 			
 			this._savedCompleteHandler = onComplete;
@@ -113,21 +115,16 @@ package feathers.motion.transitions
 			if(!newScreen)
 			{
 				oldScreen.x = 0;
-				this._activeTransition = new GTween(oldScreen, this.duration,
-				{
-					alpha: 0
-				},
-				{
-					delay: this.delay,
-					ease: this.ease,
-					onComplete: activeTransition_onComplete
-				});
+				this._activeTransition = new Tween(oldScreen, this.duration, this.ease);
+				this._activeTransition.fadeTo(0);
+				this._activeTransition.delay = this.delay;
+				this._activeTransition.onComplete = activeTransition_onComplete;
+				Starling.juggler.add(this._activeTransition);
 				return;
 			}
 			
 			var NewScreenType:Class = Object(newScreen).constructor;
 			var stackIndex:int = this._stack.indexOf(NewScreenType);
-			var targetX:Number;
 			if(stackIndex < 0)
 			{
 				var OldScreenType:Class = Object(oldScreen).constructor;
@@ -141,37 +138,33 @@ package feathers.motion.transitions
 				oldScreen.x = 0;
 				newScreen.x = -this._navigator.width;
 			}
-			this._activeTransition = new GTween(newScreen, this.duration,
-			{
-				x: 0
-			},
-			{
-				data: oldScreen,
-				delay: this.delay,
-				ease: this.ease,
-				onChange: activeTransition_onChange,
-				onComplete: activeTransition_onComplete
-			});
+			this._savedOtherTarget = oldScreen;
+			this._activeTransition = new Tween(newScreen, this.duration, this.ease);
+			this._activeTransition.animate("x", 0);
+			this._activeTransition.delay = this.delay;
+			this._activeTransition.onUpdate = activeTransition_onUpdate;
+			this._activeTransition.onComplete = activeTransition_onComplete;
+			Starling.juggler.add(this._activeTransition);
 		}
 		
 		/**
 		 * @private
 		 */
-		private function activeTransition_onChange(tween:GTween):void
+		private function activeTransition_onUpdate():void
 		{
-			var oldScreen:DisplayObject = DisplayObject(tween.data);
-			if(oldScreen)
+			if(this._savedOtherTarget)
 			{
-				oldScreen.alpha = 1 - tween.ratio;
+				this._savedOtherTarget.alpha = 1 - this._activeTransition.currentTime / this._activeTransition.totalTime;
 			}
 		}
 		
 		/**
 		 * @private
 		 */
-		private function activeTransition_onComplete(tween:GTween):void
+		private function activeTransition_onComplete():void
 		{
 			this._activeTransition = null;
+			this._savedOtherTarget = null;
 			if(this._savedCompleteHandler != null)
 			{
 				this._savedCompleteHandler();

@@ -28,15 +28,6 @@
 			<arg line="--external-library-path+='${flexframework.lib}'"/>
 			<arg line="--output '${dependency.output}/signals.swc'"/>
 		</java>
-		
-		<echo message="Building gtween.swc"/>
-		<java jar="${compc}" dir="${gtween.root}" fork="true" failonerror="true">
-			<arg line="+flexlib='${flexframework.root}'"/>
-			<arg line="--source-path+=."/>
-			<arg line="--include-sources+=."/>
-			<arg line="--external-library-path+='${flexframework.lib}'"/>
-			<arg line="--output '${dependency.output}/gtween.swc'"/>
-		</java>
 
 		<echo message="Building feathers.swc"/>
 		<java jar="${compc}" dir="${basedir}" fork="true" failonerror="true">

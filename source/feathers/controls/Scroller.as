@@ -34,16 +34,12 @@ Source: https://github.com/fljot/TouchScrolling
 */
 package feathers.controls
 {
-	import com.gskinner.motion.easing.Cubic;
-	import com.gskinner.motion.easing.Sine;
-
 	import feathers.controls.supportClasses.IViewPort;
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
 	import feathers.core.PropertyProxy;
 	import feathers.display.ScrollRectManager;
 	import feathers.display.Sprite;
-	import feathers.motion.GTween;
 	import feathers.system.DeviceCapabilities;
 	import feathers.utils.math.clamp;
 	import feathers.utils.math.roundDownToNearest;
@@ -59,6 +55,8 @@ package feathers.controls
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 
+	import starling.animation.Transitions;
+	import starling.animation.Tween;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -341,8 +339,8 @@ package feathers.controls
 		private var _lastViewPortWidth:Number = 0;
 		private var _lastViewPortHeight:Number = 0;
 		
-		private var _horizontalAutoScrollTween:GTween;
-		private var _verticalAutoScrollTween:GTween;
+		private var _horizontalAutoScrollTween:Tween;
+		private var _verticalAutoScrollTween:Tween;
 		private var _isDraggingHorizontally:Boolean = false;
 		private var _isDraggingVertically:Boolean = false;
 
@@ -1076,12 +1074,12 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _horizontalScrollBarHideTween:GTween;
+		protected var _horizontalScrollBarHideTween:Tween;
 
 		/**
 		 * @private
 		 */
-		protected var _verticalScrollBarHideTween:GTween;
+		protected var _verticalScrollBarHideTween:Tween;
 
 		/**
 		 * @private
@@ -1103,6 +1101,27 @@ package feathers.controls
 		public function set hideScrollBarAnimationDuration(value:Number):void
 		{
 			this._hideScrollBarAnimationDuration = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _hideScrollBarAnimationEase:Object = Transitions.EASE_OUT;
+
+		/**
+		 * The easing function used for hiding the scroll bars, if applicable.
+		 */
+		public function get hideScrollBarAnimationEase():Object
+		{
+			return this._hideScrollBarAnimationEase;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set hideScrollBarAnimationEase(value:Object):void
+		{
+			this._hideScrollBarAnimationEase = value;
 		}
 
 		/**
@@ -1152,12 +1171,12 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _throwEase:Function = Cubic.easeOut;
+		protected var _throwEase:Object = Transitions.EASE_OUT;
 
 		/**
 		 * The easing function used for "throw" animations.
 		 */
-		public function get throwEase():Function
+		public function get throwEase():Object
 		{
 			return this._throwEase;
 		}
@@ -1165,7 +1184,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		public function set throwEase(value:Function):void
+		public function set throwEase(value:Object):void
 		{
 			this._throwEase = value;
 		}
@@ -1253,12 +1272,12 @@ package feathers.controls
 		{
 			if(this._horizontalAutoScrollTween)
 			{
-				this._horizontalAutoScrollTween.paused = true;
+				Starling.juggler.remove(this._horizontalAutoScrollTween);
 				this._horizontalAutoScrollTween = null;
 			}
 			if(this._verticalAutoScrollTween)
 			{
-				this._verticalAutoScrollTween.paused = true;
+				Starling.juggler.remove(this._verticalAutoScrollTween);
 				this._verticalAutoScrollTween = null;
 			}
 			this._isScrollingStopped = true;
@@ -1279,20 +1298,15 @@ package feathers.controls
 			{
 				if(this._horizontalAutoScrollTween)
 				{
-					this._horizontalAutoScrollTween.paused = true;
+					Starling.juggler.remove(this._horizontalAutoScrollTween);
 					this._horizontalAutoScrollTween = null;
 				}
 				if(this._horizontalScrollPosition != targetHorizontalScrollPosition)
 				{
-					this._horizontalAutoScrollTween = new GTween(this, duration,
-					{
-						horizontalScrollPosition: targetHorizontalScrollPosition
-					},
-					{
-						ease: this._throwEase,
-						onComplete: horizontalAutoScrollTween_onComplete
-					});
-					this._horizontalAutoScrollTween.init();
+					this._horizontalAutoScrollTween = new Tween(this, duration, this._throwEase);
+					this._horizontalAutoScrollTween.animate("horizontalScrollPosition", targetHorizontalScrollPosition);
+					this._horizontalAutoScrollTween.onComplete = horizontalAutoScrollTween_onComplete;
+					Starling.juggler.add(this._horizontalAutoScrollTween);
 				}
 				else
 				{
@@ -1308,20 +1322,15 @@ package feathers.controls
 			{
 				if(this._verticalAutoScrollTween)
 				{
-					this._verticalAutoScrollTween.paused = true;
+					Starling.juggler.remove(this._verticalAutoScrollTween);
 					this._verticalAutoScrollTween = null;
 				}
 				if(this._verticalScrollPosition != targetVerticalScrollPosition)
 				{
-					this._verticalAutoScrollTween = new GTween(this, duration,
-					{
-						verticalScrollPosition: targetVerticalScrollPosition
-					},
-					{
-						ease: this._throwEase,
-						onComplete: verticalAutoScrollTween_onComplete
-					});
-					this._verticalAutoScrollTween.init();
+					this._verticalAutoScrollTween = new Tween(this, duration, this._throwEase);
+					this._verticalAutoScrollTween.animate("verticalScrollPosition", targetVerticalScrollPosition);
+					this._verticalAutoScrollTween.onComplete = verticalAutoScrollTween_onComplete;
+					Starling.juggler.add(this._verticalAutoScrollTween);
 				}
 				else
 				{
@@ -1579,7 +1588,7 @@ package feathers.controls
 				}
 				if(this._horizontalScrollBarHideTween)
 				{
-					this._horizontalScrollBarHideTween.paused = true;
+					Starling.juggler.remove(this._horizontalScrollBarHideTween);
 					this._horizontalScrollBarHideTween = null;
 				}
 				const displayHorizontalScrollBar:DisplayObject = DisplayObject(this.horizontalScrollBar);
@@ -1599,7 +1608,7 @@ package feathers.controls
 				}
 				if(this._verticalScrollBarHideTween)
 				{
-					this._verticalScrollBarHideTween.paused = true;
+					Starling.juggler.remove(this._verticalScrollBarHideTween);
 					this._verticalScrollBarHideTween = null;
 				}
 				const displayVerticalScrollBar:DisplayObject = DisplayObject(this.verticalScrollBar);
@@ -2205,15 +2214,11 @@ package feathers.controls
 			{
 				return;
 			}
-			this._horizontalScrollBarHideTween = new GTween(this.horizontalScrollBar, this._hideScrollBarAnimationDuration,
-			{
-				alpha: 0
-			},
-			{
-				delay: delay,
-				ease: Sine.easeOut,
-				onComplete: horizontalScrollBarHideTween_onComplete
-			});
+			this._horizontalScrollBarHideTween = new Tween(this.horizontalScrollBar, this._hideScrollBarAnimationDuration, this._hideScrollBarAnimationEase);
+			this._horizontalScrollBarHideTween.fadeTo(0);
+			this._horizontalScrollBarHideTween.delay = delay;
+			this._horizontalScrollBarHideTween.onComplete = horizontalScrollBarHideTween_onComplete;
+			Starling.juggler.add(this._horizontalScrollBarHideTween);
 		}
 
 		/**
@@ -2230,15 +2235,11 @@ package feathers.controls
 			{
 				return;
 			}
-			this._verticalScrollBarHideTween = new GTween(this.verticalScrollBar, this._hideScrollBarAnimationDuration,
-			{
-				alpha: 0
-			},
-			{
-				delay: delay,
-				ease: Sine.easeOut,
-				onComplete: verticalScrollBarHideTween_onComplete
-			});
+			this._verticalScrollBarHideTween = new Tween(this.verticalScrollBar, this._hideScrollBarAnimationDuration, this._hideScrollBarAnimationEase);
+			this._verticalScrollBarHideTween.fadeTo(0);
+			this._verticalScrollBarHideTween.delay = delay;
+			this._verticalScrollBarHideTween.onComplete = verticalScrollBarHideTween_onComplete;
+			Starling.juggler.add(this._verticalScrollBarHideTween);
 		}
 
 		/**
@@ -2291,7 +2292,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function horizontalAutoScrollTween_onComplete(tween:GTween):void
+		protected function horizontalAutoScrollTween_onComplete():void
 		{
 			this._horizontalAutoScrollTween = null;
 			this.finishScrollingHorizontally();
@@ -2300,7 +2301,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function verticalAutoScrollTween_onComplete(tween:GTween):void
+		protected function verticalAutoScrollTween_onComplete():void
 		{
 			this._verticalAutoScrollTween = null;
 			this.finishScrollingVertically();
@@ -2309,7 +2310,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function horizontalScrollBarHideTween_onComplete(tween:GTween):void
+		protected function horizontalScrollBarHideTween_onComplete():void
 		{
 			this._horizontalScrollBarHideTween = null;
 		}
@@ -2317,7 +2318,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function verticalScrollBarHideTween_onComplete(tween:GTween):void
+		protected function verticalScrollBarHideTween_onComplete():void
 		{
 			this._verticalScrollBarHideTween = null;
 		}
@@ -2341,12 +2342,12 @@ package feathers.controls
 			touch.getLocation(this, helperPoint);
 			if(this._horizontalAutoScrollTween)
 			{
-				this._horizontalAutoScrollTween.paused = true;
+				Starling.juggler.remove(this._horizontalAutoScrollTween);
 				this._horizontalAutoScrollTween = null
 			}
 			if(this._verticalAutoScrollTween)
 			{
-				this._verticalAutoScrollTween.paused = true;
+				Starling.juggler.remove(this._verticalAutoScrollTween);
 				this._verticalAutoScrollTween = null
 			}
 			
@@ -2412,7 +2413,7 @@ package feathers.controls
 				{
 					if(this._horizontalScrollBarHideTween)
 					{
-						this._horizontalScrollBarHideTween.paused = true;
+						Starling.juggler.remove(this._horizontalScrollBarHideTween);
 						this._horizontalScrollBarHideTween = null;
 					}
 					if(this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FLOAT)
@@ -2440,7 +2441,7 @@ package feathers.controls
 					{
 						if(this._verticalScrollBarHideTween)
 						{
-							this._verticalScrollBarHideTween.paused = true;
+							Starling.juggler.remove(this._verticalScrollBarHideTween);
 							this._verticalScrollBarHideTween = null;
 						}
 						if(this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FLOAT)
@@ -2565,7 +2566,7 @@ package feathers.controls
 		{
 			if(this._verticalScrollBarHideTween)
 			{
-				this._verticalScrollBarHideTween.paused = true;
+				Starling.juggler.remove(this._verticalScrollBarHideTween);
 				this._verticalScrollBarHideTween = null;
 			}
 
@@ -2651,7 +2652,7 @@ package feathers.controls
 					{
 						if(this._horizontalScrollBarHideTween)
 						{
-							this._horizontalScrollBarHideTween.paused = true;
+							Starling.juggler.remove(this._horizontalScrollBarHideTween);
 							this._horizontalScrollBarHideTween = null;
 						}
 						displayHorizontalScrollBar.alpha = 1;
@@ -2717,7 +2718,7 @@ package feathers.controls
 					{
 						if(this._verticalScrollBarHideTween)
 						{
-							this._verticalScrollBarHideTween.paused = true;
+							Starling.juggler.remove(this._verticalScrollBarHideTween);
 							this._verticalScrollBarHideTween = null;
 						}
 						displayVerticalScrollBar.alpha = 1;
@@ -2759,12 +2760,12 @@ package feathers.controls
 			this.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			if(this._verticalAutoScrollTween)
 			{
-				this._verticalAutoScrollTween.paused = true;
+				Starling.juggler.remove(this._verticalAutoScrollTween);
 				this._verticalAutoScrollTween = null;
 			}
 			if(this._horizontalAutoScrollTween)
 			{
-				this._horizontalAutoScrollTween.paused = true;
+				Starling.juggler.remove(this._horizontalAutoScrollTween);
 				this._horizontalAutoScrollTween = null;
 			}
 			
