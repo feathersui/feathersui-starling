@@ -48,17 +48,17 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		private static const helperMatrix:Matrix = new Matrix();
+		private static const HELPER_MATRIX:Matrix = new Matrix();
 
 		/**
 		 * @private
 		 */
-		private static const helperPoint:Point = new Point();
+		private static const HELPER_POINT:Point = new Point();
 
 		/**
 		 * @private
 		 */
-		protected static var validationQueue:ValidationQueue = new ValidationQueue();
+		protected static const VALIDATION_QUEUE:ValidationQueue = new ValidationQueue();
 
 		/**
 		 * Flag to indicate that everything is invalid and should be redrawn.
@@ -586,31 +586,31 @@ package feathers.core
 			}
 			else
 			{
-				this.getTransformationMatrix(targetSpace, helperMatrix);
+				this.getTransformationMatrix(targetSpace, HELPER_MATRIX);
 
-				MatrixUtil.transformCoords(helperMatrix, 0, 0, helperPoint);
-				minX = minX < helperPoint.x ? minX : helperPoint.x;
-				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
-				minY = minY < helperPoint.y ? minY : helperPoint.y;
-				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
+				MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
+				minX = minX < HELPER_POINT.x ? minX : HELPER_POINT.x;
+				maxX = maxX > HELPER_POINT.x ? maxX : HELPER_POINT.x;
+				minY = minY < HELPER_POINT.y ? minY : HELPER_POINT.y;
+				maxY = maxY > HELPER_POINT.y ? maxY : HELPER_POINT.y;
 
-				MatrixUtil.transformCoords(helperMatrix, 0, this.actualHeight, helperPoint);
-				minX = minX < helperPoint.x ? minX : helperPoint.x;
-				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
-				minY = minY < helperPoint.y ? minY : helperPoint.y;
-				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
+				MatrixUtil.transformCoords(HELPER_MATRIX, 0, this.actualHeight, HELPER_POINT);
+				minX = minX < HELPER_POINT.x ? minX : HELPER_POINT.x;
+				maxX = maxX > HELPER_POINT.x ? maxX : HELPER_POINT.x;
+				minY = minY < HELPER_POINT.y ? minY : HELPER_POINT.y;
+				maxY = maxY > HELPER_POINT.y ? maxY : HELPER_POINT.y;
 
-				MatrixUtil.transformCoords(helperMatrix, this.actualWidth, 0, helperPoint);
-				minX = minX < helperPoint.x ? minX : helperPoint.x;
-				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
-				minY = minY < helperPoint.y ? minY : helperPoint.y;
-				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
+				MatrixUtil.transformCoords(HELPER_MATRIX, this.actualWidth, 0, HELPER_POINT);
+				minX = minX < HELPER_POINT.x ? minX : HELPER_POINT.x;
+				maxX = maxX > HELPER_POINT.x ? maxX : HELPER_POINT.x;
+				minY = minY < HELPER_POINT.y ? minY : HELPER_POINT.y;
+				maxY = maxY > HELPER_POINT.y ? maxY : HELPER_POINT.y;
 
-				MatrixUtil.transformCoords(helperMatrix, this.actualWidth, this.actualHeight, helperPoint);
-				minX = minX < helperPoint.x ? minX : helperPoint.x;
-				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
-				minY = minY < helperPoint.y ? minY : helperPoint.y;
-				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
+				MatrixUtil.transformCoords(HELPER_MATRIX, this.actualWidth, this.actualHeight, HELPER_POINT);
+				minX = minX < HELPER_POINT.x ? minX : HELPER_POINT.x;
+				maxX = maxX > HELPER_POINT.x ? maxX : HELPER_POINT.x;
+				minY = minY < HELPER_POINT.y ? minY : HELPER_POINT.y;
+				maxY = maxY > HELPER_POINT.y ? maxY : HELPER_POINT.y;
 			}
 
 			resultRect.x = minX;
@@ -692,7 +692,7 @@ package feathers.core
 					return;
 				}
 				this._invalidateCount++;
-				validationQueue.addControl(this, this._invalidateCount >= 10);
+				VALIDATION_QUEUE.addControl(this, this._invalidateCount >= 10);
 				return;
 			}
 			if(isAlreadyInvalid)
@@ -700,7 +700,7 @@ package feathers.core
 				return;
 			}
 			this._invalidateCount = 0;
-			validationQueue.addControl(this, false);
+			VALIDATION_QUEUE.addControl(this, false);
 		}
 
 		/**
@@ -717,7 +717,7 @@ package feathers.core
 			{
 				//we were already validating, and something else told us to
 				//validate. that's bad.
-				validationQueue.addControl(this, true);
+				VALIDATION_QUEUE.addControl(this, true);
 				return;
 			}
 			this._isValidating = true;
@@ -879,7 +879,7 @@ package feathers.core
 			if(this.isInvalid())
 			{
 				this._invalidateCount = 0;
-				validationQueue.addControl(this, false);
+				VALIDATION_QUEUE.addControl(this, false);
 			}
 		}
 	}
