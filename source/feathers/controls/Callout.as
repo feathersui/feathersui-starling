@@ -181,7 +181,7 @@ package feathers.controls
 			{
 				factory = calloutFactory != null ? calloutFactory : defaultCalloutFactory;
 			}
-			const callout:Callout = factory();
+			const callout:Callout = Callout(factory());
 			callout.content = content;
 			callout._isPopUp = true;
 			const overlayFactory:Function = calloutOverlayFactory != null ? calloutOverlayFactory : PopUpManager.defaultOverlayFactory;

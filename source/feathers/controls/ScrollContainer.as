@@ -26,6 +26,7 @@ package feathers.controls
 {
 	import feathers.controls.supportClasses.LayoutViewPort;
 	import feathers.core.FeathersControl;
+	import feathers.core.IFeathersControl;
 	import feathers.core.PropertyProxy;
 	import feathers.layout.ILayout;
 	import feathers.layout.IVirtualLayout;
@@ -217,7 +218,7 @@ package feathers.controls
 		 */
 		protected var _mxmlContent:Array;
 
-		[ArrayElementType("feathers.core.FeathersControl")]
+		[ArrayElementType("feathers.core.IFeathersControl")]
 		/**
 		 * @private
 		 */
@@ -237,9 +238,9 @@ package feathers.controls
 			}
 			if(this._mxmlContent)
 			{
-				for each(var child:FeathersControl in this._mxmlContent)
+				for each(var child:IFeathersControl in this._mxmlContent)
 				{
-					this.removeChild(child);
+					this.removeChild(DisplayObject(child));
 				}
 			}
 			this._mxmlContent = value;
@@ -803,7 +804,7 @@ package feathers.controls
 			const childCount:int = this._mxmlContent.length;
 			for(var i:int = 0; i < childCount; i++)
 			{
-				var child:FeathersControl = FeathersControl(this._mxmlContent[i]);
+				var child:DisplayObject = DisplayObject(this._mxmlContent[i]);
 				this.addChild(child);
 			}
 		}

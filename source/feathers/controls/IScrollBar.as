@@ -1,5 +1,7 @@
 package feathers.controls
 {
+	import feathers.core.IFeathersControl;
+
 	import org.osflash.signals.ISignal;
 
 	/**
@@ -8,7 +10,7 @@ package feathers.controls
 	 *
 	 * @see Scroller
 	 */
-	public interface IScrollBar
+	public interface IScrollBar extends IFeathersControl
 	{
 		/**
 		 * The minimum value of the scroll bar.

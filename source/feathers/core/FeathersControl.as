@@ -43,7 +43,7 @@ package feathers.core
 	 * basic template functions like <code>initialize()</code> and
 	 * <code>draw()</code>.
 	 */
-	public class FeathersControl extends Sprite
+	public class FeathersControl extends Sprite implements IFeathersControl
 	{
 		/**
 		 * @private
@@ -58,7 +58,7 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		protected static var validationQueue:ValidationQueue;
+		protected static var validationQueue:ValidationQueue = new ValidationQueue();
 
 		/**
 		 * Flag to indicate that everything is invalid and should be redrawn.
@@ -535,13 +535,13 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		protected var _onResize:Signal = new Signal(FeathersControl);
+		protected var _onResize:Signal = new Signal(IFeathersControl);
 
 		/**
 		 * Dispatched when the width or height of the control changes.
 		 *
 		 * <p>A listener is expected to have the following function signature:</p>
-		 * <pre>function(target:FeathersControl, oldWidth:Number, oldHeight:Number):void</pre>
+		 * <pre>function(target:IFeathersControl, oldWidth:Number, oldHeight:Number):void</pre>
 		 */
 		public function get onResize():ISignal
 		{
@@ -684,12 +684,6 @@ package feathers.core
 				//we'll add this component to the queue later, after it has been
 				//added to the stage.
 				return;
-			}
-			if(!validationQueue)
-			{
-				//since ValidationQueue references FeathersControl, we can't
-				//instantiate it as a static variable. we do it here instead.
-				validationQueue = new ValidationQueue();
 			}
 			if(this._isValidating)
 			{
@@ -884,10 +878,6 @@ package feathers.core
 
 			if(this.isInvalid())
 			{
-				if(!validationQueue)
-				{
-					validationQueue = new ValidationQueue();
-				}
 				this._invalidateCount = 0;
 				validationQueue.addControl(this, false);
 			}

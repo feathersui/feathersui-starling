@@ -24,7 +24,7 @@
  */
 package feathers.controls.popups
 {
-	import feathers.core.FeathersControl;
+	import feathers.core.IFeathersControl;
 	import feathers.core.PopUpManager;
 	import feathers.display.ScrollRectManager;
 
@@ -96,10 +96,9 @@ package feathers.controls.popups
 			this.content = content;
 			this.source = source;
 			PopUpManager.addPopUp(this.content, false, false);
-			if(this.content is FeathersControl)
+			if(this.content is IFeathersControl)
 			{
-				const uiContent:FeathersControl = FeathersControl(this.content);
-				FeathersControl(this.content).onResize.add(content_resizeHandler);
+				IFeathersControl(this.content).onResize.add(content_resizeHandler);
 			}
 			this.layout();
 			Starling.current.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
@@ -119,9 +118,9 @@ package feathers.controls.popups
 			Starling.current.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			Starling.current.stage.removeEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
 			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
-			if(this.content is FeathersControl)
+			if(this.content is IFeathersControl)
 			{
-				FeathersControl(this.content).onResize.remove(content_resizeHandler);
+				IFeathersControl(this.content).onResize.remove(content_resizeHandler);
 			}
 			PopUpManager.removePopUp(this.content);
 			this.content = null;
@@ -145,13 +144,13 @@ package feathers.controls.popups
 		{
 			const globalOrigin:Rectangle = ScrollRectManager.getBounds(this.source, Starling.current.stage);
 
-			if(this.source is FeathersControl)
+			if(this.source is IFeathersControl)
 			{
-				FeathersControl(this.source).validate();
+				IFeathersControl(this.source).validate();
 			}
-			if(this.content is FeathersControl)
+			if(this.content is IFeathersControl)
 			{
-				const uiContent:FeathersControl = FeathersControl(this.content);
+				const uiContent:IFeathersControl = IFeathersControl(this.content);
 				uiContent.minWidth = Math.max(uiContent.minWidth, this.source.width);
 				uiContent.validate();
 			}
@@ -211,7 +210,7 @@ package feathers.controls.popups
 		/**
 		 * @private
 		 */
-		protected function content_resizeHandler(content:FeathersControl, oldWidth:Number, oldHeight:Number):void
+		protected function content_resizeHandler(content:IFeathersControl, oldWidth:Number, oldHeight:Number):void
 		{
 			this.layout();
 		}

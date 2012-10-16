@@ -25,6 +25,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 package feathers.controls
 {
 	import feathers.core.FeathersControl;
+	import feathers.core.IFeathersControl;
 	import feathers.core.ITextRenderer;
 	import feathers.core.IToggle;
 	import feathers.core.PropertyProxy;
@@ -1875,13 +1876,13 @@ package feathers.controls
 			
 			if(textRendererInvalid || stylesInvalid || stateInvalid || selectedInvalid || dataInvalid || sizeInvalid)
 			{
-				if(this.currentSkin is FeathersControl)
+				if(this.currentSkin is IFeathersControl)
 				{
-					FeathersControl(this.currentSkin).validate();
+					IFeathersControl(this.currentSkin).validate();
 				}
-				if(this.currentIcon is FeathersControl)
+				if(this.currentIcon is IFeathersControl)
 				{
-					FeathersControl(this.currentIcon).validate();
+					IFeathersControl(this.currentIcon).validate();
 				}
 
 				this.layoutContent();
@@ -1986,15 +1987,14 @@ package feathers.controls
 		{
 			if(this.labelTextRenderer)
 			{
-				this.removeChild(FeathersControl(this.labelTextRenderer), true);
+				this.removeChild(DisplayObject(this.labelTextRenderer), true);
 				this.labelTextRenderer = null;
 			}
 
 			const factory:Function = this._labelFactory != null ? this._labelFactory : FeathersControl.defaultTextRendererFactory;
-			this.labelTextRenderer = factory();
-			const uiLabelRenderer:FeathersControl = FeathersControl(this.labelTextRenderer);
-			uiLabelRenderer.nameList.add(this.labelName);
-			this.addChild(uiLabelRenderer);
+			this.labelTextRenderer = ITextRenderer(factory());
+			this.labelTextRenderer.nameList.add(this.labelName);
+			this.addChild(DisplayObject(this.labelTextRenderer));
 		}
 
 		/**
@@ -2074,13 +2074,13 @@ package feathers.controls
 				properties = this._labelPropertiesSelector.updateValue(this, this._currentState);
 			}
 
-			const uiLabelRenderer:FeathersControl = FeathersControl(this.labelTextRenderer);
+			const displayLabelRenderer:DisplayObject = DisplayObject(this.labelTextRenderer);
 			for(var propertyName:String in properties)
 			{
-				if(uiLabelRenderer.hasOwnProperty(propertyName))
+				if(displayLabelRenderer.hasOwnProperty(propertyName))
 				{
 					var propertyValue:Object = properties[propertyName];
-					uiLabelRenderer[propertyName] = propertyValue;
+					displayLabelRenderer[propertyName] = propertyValue;
 				}
 			}
 		}
@@ -2110,11 +2110,10 @@ package feathers.controls
 		protected function layoutContent():void
 		{
 			this.refreshMaxLabelWidth(false);
-			const uiLabelRenderer:FeathersControl = FeathersControl(this.labelTextRenderer);
 			if(this.label && this.currentIcon)
 			{
-				uiLabelRenderer.validate();
-				this.positionLabelOrIcon(uiLabelRenderer);
+				this.labelTextRenderer.validate();
+				this.positionLabelOrIcon(DisplayObject(this.labelTextRenderer));
 				if(this._iconPosition != ICON_POSITION_MANUAL)
 				{
 					this.positionLabelAndIcon();
@@ -2123,8 +2122,8 @@ package feathers.controls
 			}
 			else if(this.label && !this.currentIcon)
 			{
-				uiLabelRenderer.validate();
-				this.positionLabelOrIcon(uiLabelRenderer);
+				this.labelTextRenderer.validate();
+				this.positionLabelOrIcon(DisplayObject(this.labelTextRenderer));
 			}
 			else if(!this.label && this.currentIcon && this._iconPosition != ICON_POSITION_MANUAL)
 			{
@@ -2153,24 +2152,23 @@ package feathers.controls
 			{
 				calculatedWidth = isNaN(this.explicitWidth) ? this._maxWidth : this.explicitWidth;
 			}
-			const uiLabelRenderer:FeathersControl = FeathersControl(this.labelTextRenderer);
 			if(this.label && this.currentIcon)
 			{
 				if(this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE ||
 					this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
 				{
 					var adjustedGap:Number = this._gap == Number.POSITIVE_INFINITY ? Math.min(this._paddingLeft, this._paddingRight) : this._gap;
-					uiLabelRenderer.maxWidth = calculatedWidth - this._paddingLeft - this._paddingRight - this.currentIcon.width - adjustedGap;
+					this.labelTextRenderer.maxWidth = calculatedWidth - this._paddingLeft - this._paddingRight - this.currentIcon.width - adjustedGap;
 				}
 				else
 				{
-					uiLabelRenderer.maxWidth = calculatedWidth - this._paddingLeft - this._paddingRight;
+					this.labelTextRenderer.maxWidth = calculatedWidth - this._paddingLeft - this._paddingRight;
 				}
 
 			}
 			else if(this.label && !this.currentIcon)
 			{
-				uiLabelRenderer.maxWidth = calculatedWidth - this._paddingLeft - this._paddingRight;
+				this.labelTextRenderer.maxWidth = calculatedWidth - this._paddingLeft - this._paddingRight;
 			}
 		}
 		
@@ -2210,65 +2208,64 @@ package feathers.controls
 		 */
 		protected function positionLabelAndIcon():void
 		{
-			const uiLabelRenderer:FeathersControl = FeathersControl(this.labelTextRenderer);
 			if(this._iconPosition == ICON_POSITION_TOP)
 			{
 				if(this._gap == Number.POSITIVE_INFINITY)
 				{
 					this.currentIcon.y = this._paddingTop;
-					uiLabelRenderer.y = this.actualHeight - this._paddingBottom - uiLabelRenderer.height;
+					this.labelTextRenderer.y = this.actualHeight - this._paddingBottom - this.labelTextRenderer.height;
 				}
 				else
 				{
 					if(this._verticalAlign == VERTICAL_ALIGN_TOP)
 					{
-						uiLabelRenderer.y += this.currentIcon.height + this._gap;
+						this.labelTextRenderer.y += this.currentIcon.height + this._gap;
 					}
 					else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
 					{
-						uiLabelRenderer.y += (this.currentIcon.height + this._gap) / 2;
+						this.labelTextRenderer.y += (this.currentIcon.height + this._gap) / 2;
 					}
-					this.currentIcon.y = uiLabelRenderer.y - this.currentIcon.height - this._gap;
+					this.currentIcon.y = this.labelTextRenderer.y - this.currentIcon.height - this._gap;
 				}
 			}
 			else if(this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
 			{
 				if(this._gap == Number.POSITIVE_INFINITY)
 				{
-					uiLabelRenderer.x = this._paddingLeft;
+					this.labelTextRenderer.x = this._paddingLeft;
 					this.currentIcon.x = this.actualWidth - this._paddingRight - this.currentIcon.width;
 				}
 				else
 				{
 					if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
 					{
-						uiLabelRenderer.x -= this.currentIcon.width + this._gap;
+						this.labelTextRenderer.x -= this.currentIcon.width + this._gap;
 					}
 					else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
 					{
-						uiLabelRenderer.x -= (this.currentIcon.width + this._gap) / 2;
+						this.labelTextRenderer.x -= (this.currentIcon.width + this._gap) / 2;
 					}
-					this.currentIcon.x = uiLabelRenderer.x + uiLabelRenderer.width + this._gap;
+					this.currentIcon.x = this.labelTextRenderer.x + this.labelTextRenderer.width + this._gap;
 				}
 			}
 			else if(this._iconPosition == ICON_POSITION_BOTTOM)
 			{
 				if(this._gap == Number.POSITIVE_INFINITY)
 				{
-					uiLabelRenderer.y = this._paddingTop;
+					this.labelTextRenderer.y = this._paddingTop;
 					this.currentIcon.y = this.actualHeight - this._paddingBottom - this.currentIcon.height;
 				}
 				else
 				{
 					if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
 					{
-						uiLabelRenderer.y -= this.currentIcon.height + this._gap;
+						this.labelTextRenderer.y -= this.currentIcon.height + this._gap;
 					}
 					else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
 					{
-						uiLabelRenderer.y -= (this.currentIcon.height + this._gap) / 2;
+						this.labelTextRenderer.y -= (this.currentIcon.height + this._gap) / 2;
 					}
-					this.currentIcon.y = uiLabelRenderer.y + uiLabelRenderer.height + this._gap;
+					this.currentIcon.y = this.labelTextRenderer.y + this.labelTextRenderer.height + this._gap;
 				}
 			}
 			else if(this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE)
@@ -2276,43 +2273,43 @@ package feathers.controls
 				if(this._gap == Number.POSITIVE_INFINITY)
 				{
 					this.currentIcon.x = this._paddingLeft;
-					uiLabelRenderer.x = this.actualWidth - this._paddingRight - uiLabelRenderer.width;
+					this.labelTextRenderer.x = this.actualWidth - this._paddingRight - this.labelTextRenderer.width;
 				}
 				else
 				{
 					if(this._horizontalAlign == HORIZONTAL_ALIGN_LEFT)
 					{
-						uiLabelRenderer.x += this._gap + this.currentIcon.width;
+						this.labelTextRenderer.x += this._gap + this.currentIcon.width;
 					}
 					else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
 					{
-						uiLabelRenderer.x += (this._gap + this.currentIcon.width) / 2;
+						this.labelTextRenderer.x += (this._gap + this.currentIcon.width) / 2;
 					}
-					this.currentIcon.x = uiLabelRenderer.x - this._gap - this.currentIcon.width;
+					this.currentIcon.x = this.labelTextRenderer.x - this._gap - this.currentIcon.width;
 				}
 			}
 			
 			if(this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_RIGHT)
 			{
-				this.currentIcon.y = uiLabelRenderer.y + (uiLabelRenderer.height - this.currentIcon.height) / 2;
+				this.currentIcon.y = this.labelTextRenderer.y + (this.labelTextRenderer.height - this.currentIcon.height) / 2;
 			}
 			else if(this._iconPosition == ICON_POSITION_LEFT_BASELINE || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
 			{
-				this.currentIcon.y = uiLabelRenderer.y + (this.labelTextRenderer.baseline) - this.currentIcon.height;
+				this.currentIcon.y = this.labelTextRenderer.y + (this.labelTextRenderer.baseline) - this.currentIcon.height;
 			}
 			else
 			{
 				if(this._horizontalAlign == HORIZONTAL_ALIGN_LEFT)
 				{
-					this.currentIcon.x = uiLabelRenderer.x;
+					this.currentIcon.x = this.labelTextRenderer.x;
 				}
 				else if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
 				{
-					this.currentIcon.x = uiLabelRenderer.x + uiLabelRenderer.width - this.currentIcon.width;
+					this.currentIcon.x = this.labelTextRenderer.x + this.labelTextRenderer.width - this.currentIcon.width;
 				}
 				else
 				{
-					this.currentIcon.x = uiLabelRenderer.x + (uiLabelRenderer.width - this.currentIcon.width) / 2;
+					this.currentIcon.x = this.labelTextRenderer.x + (this.labelTextRenderer.width - this.currentIcon.width) / 2;
 				}
 			}
 		}

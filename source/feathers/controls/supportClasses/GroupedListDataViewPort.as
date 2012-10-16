@@ -29,6 +29,7 @@ package feathers.controls.supportClasses
 	import feathers.controls.renderers.IGroupedListHeaderOrFooterRenderer;
 	import feathers.controls.renderers.IGroupedListItemRenderer;
 	import feathers.core.FeathersControl;
+	import feathers.core.IFeathersControl;
 	import feathers.core.PropertyProxy;
 	import feathers.data.HierarchicalCollection;
 	import feathers.layout.ILayout;
@@ -1879,12 +1880,12 @@ package feathers.controls.supportClasses
 					renderer = new type();
 				}
 				renderer.onChange.add(renderer_onChange);
-				var displayRenderer:FeathersControl = FeathersControl(renderer);
+				var displayRenderer:IFeathersControl = IFeathersControl(renderer);
 				if(name && name.length > 0)
 				{
 					displayRenderer.nameList.add(name);
 				}
-				this.addChild(displayRenderer);
+				this.addChild(DisplayObject(displayRenderer));
 			}
 			else
 			{
@@ -1901,7 +1902,7 @@ package feathers.controls.supportClasses
 			{
 				rendererMap[item] = renderer;
 				activeRenderers.push(renderer);
-				displayRenderer = FeathersControl(renderer);
+				displayRenderer = IFeathersControl(renderer);
 				displayRenderer.onResize.add(itemRenderer_onResize);
 			}
 
@@ -1921,12 +1922,12 @@ package feathers.controls.supportClasses
 				{
 					renderer = new this._headerRendererType();
 				}
-				var displayRenderer:FeathersControl = FeathersControl(renderer);
+				var displayRenderer:IFeathersControl = IFeathersControl(renderer);
 				if(this._headerRendererName && this._headerRendererName.length > 0)
 				{
 					displayRenderer.nameList.add(this._headerRendererName);
 				}
-				this.addChild(displayRenderer);
+				this.addChild(DisplayObject(displayRenderer));
 			}
 			else
 			{
@@ -1942,7 +1943,7 @@ package feathers.controls.supportClasses
 			{
 				this._headerRendererMap[header] = renderer;
 				this._activeHeaderRenderers.push(renderer);
-				displayRenderer = FeathersControl(renderer);
+				displayRenderer = IFeathersControl(renderer);
 				displayRenderer.onResize.add(headerOrFooterRenderer_onResize);
 			}
 
@@ -1962,12 +1963,12 @@ package feathers.controls.supportClasses
 				{
 					renderer = new this._footerRendererType();
 				}
-				var displayRenderer:FeathersControl = FeathersControl(renderer);
+				var displayRenderer:IFeathersControl = IFeathersControl(renderer);
 				if(this._footerRendererName && this._footerRendererName.length > 0)
 				{
 					displayRenderer.nameList.add(this._footerRendererName);
 				}
-				this.addChild(displayRenderer);
+				this.addChild(DisplayObject(displayRenderer));
 			}
 			else
 			{
@@ -1983,7 +1984,7 @@ package feathers.controls.supportClasses
 			{
 				this._footerRendererMap[footer] = renderer;
 				this._activeFooterRenderers.push(renderer);
-				displayRenderer = FeathersControl(renderer);
+				displayRenderer = IFeathersControl(renderer);
 				displayRenderer.onResize.add(headerOrFooterRenderer_onResize);
 			}
 
@@ -1993,23 +1994,23 @@ package feathers.controls.supportClasses
 		private function destroyItemRenderer(renderer:IGroupedListItemRenderer):void
 		{
 			renderer.onChange.remove(renderer_onChange);
-			const displayRenderer:FeathersControl = FeathersControl(renderer);
+			const displayRenderer:IFeathersControl = IFeathersControl(renderer);
 			displayRenderer.onResize.remove(itemRenderer_onResize);
-			this.removeChild(displayRenderer, true);
+			this.removeChild(DisplayObject(displayRenderer), true);
 		}
 
 		private function destroyHeaderRenderer(renderer:IGroupedListHeaderOrFooterRenderer):void
 		{
-			const displayRenderer:FeathersControl = FeathersControl(renderer);
+			const displayRenderer:IFeathersControl = IFeathersControl(renderer);
 			displayRenderer.onResize.remove(headerOrFooterRenderer_onResize);
-			this.removeChild(displayRenderer, true);
+			this.removeChild(DisplayObject(displayRenderer), true);
 		}
 
 		private function destroyFooterRenderer(renderer:IGroupedListHeaderOrFooterRenderer):void
 		{
-			const displayRenderer:FeathersControl = FeathersControl(renderer);
+			const displayRenderer:IFeathersControl = IFeathersControl(renderer);
 			displayRenderer.onResize.remove(headerOrFooterRenderer_onResize);
-			this.removeChild(displayRenderer, true);
+			this.removeChild(DisplayObject(displayRenderer), true);
 		}
 
 		private function locationToDisplayIndex(groupIndex:int, itemIndex:int):int
@@ -2148,7 +2149,7 @@ package feathers.controls.supportClasses
 				return;
 			}
 
-			const touches:Vector.<Touch> = event.getTouches(FeathersControl(this));
+			const touches:Vector.<Touch> = event.getTouches(this);
 			if(touches.length == 0)
 			{
 				return;

@@ -806,7 +806,7 @@ package feathers.controls
 			else
 			{
 				const factory:Function = this._firstButtonFactory != null ? this._firstButtonFactory : this._buttonFactory;
-				button = factory();
+				button = Button(factory());
 				if(this._customFirstButtonName)
 				{
 					button.nameList.add(this._customFirstButtonName);
@@ -834,7 +834,7 @@ package feathers.controls
 			else
 			{
 				const factory:Function = this._lastButtonFactory != null ? this._lastButtonFactory : this._buttonFactory;
-				button = factory();
+				button = Button(factory());
 				if(this._customLastButtonName)
 				{
 					button.nameList.add(this._customLastButtonName);

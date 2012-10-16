@@ -55,7 +55,7 @@ package feathers.core
 		 * The minimum base class required before the AddedWatcher will check
 		 * to see if a particular display object has any initializers.
 		 */
-		public var requiredBaseClass:Class = FeathersControl;
+		public var requiredBaseClass:Class = IFeathersControl;
 
 		/**
 		 * Determines if only the object added should be processed or if its
@@ -194,9 +194,9 @@ package feathers.core
 				const nameTable:Object = nameMap[type];
 				if(nameTable)
 				{
-					if(target is FeathersControl)
+					if(target is IFeathersControl)
 					{
-						const uiControl:FeathersControl = FeathersControl(target);
+						const uiControl:IFeathersControl = IFeathersControl(target);
 						for(var name:String in nameTable)
 						{
 							if(uiControl.nameList.contains(name))

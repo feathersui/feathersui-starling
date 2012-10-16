@@ -29,7 +29,7 @@ package feathers.core
 	/**
 	 * An interface for something that may be selected.
 	 */
-	public interface IToggle
+	public interface IToggle extends IFeathersControl
 	{
 		/**
 		 * Indicates if the IToggle is selected or not.

@@ -28,6 +28,7 @@ package feathers.controls
 	import feathers.core.ITextRenderer;
 	import feathers.core.IToggle;
 	import feathers.core.PropertyProxy;
+	import feathers.display.IDisplayObjectWithScrollRect;
 	import feathers.motion.GTween;
 	import feathers.system.DeviceCapabilities;
 
@@ -37,6 +38,7 @@ package feathers.controls
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 
+	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -1002,28 +1004,26 @@ package feathers.controls
 		{
 			if(this.offTextRenderer)
 			{
-				this.removeChild(FeathersControl(this.offTextRenderer), true);
+				this.removeChild(DisplayObject(this.offTextRenderer), true);
 				this.offTextRenderer = null;
 			}
 			if(this.onTextRenderer)
 			{
-				this.removeChild(FeathersControl(this.onTextRenderer), true);
+				this.removeChild(DisplayObject(this.onTextRenderer), true);
 				this.onTextRenderer = null;
 			}
 
 			const index:int = this.getChildIndex(this.thumb);
 			const factory:Function = this._labelFactory != null ? this._labelFactory : FeathersControl.defaultTextRendererFactory;
-			this.offTextRenderer = factory();
-			var uiTextRenderer:FeathersControl = FeathersControl(this.offTextRenderer);
-			uiTextRenderer.nameList.add(this.offLabelName);
-			uiTextRenderer.scrollRect = new Rectangle();
-			this.addChildAt(uiTextRenderer, index);
+			this.offTextRenderer = ITextRenderer(factory());
+			this.offTextRenderer.nameList.add(this.offLabelName);
+			IDisplayObjectWithScrollRect(this.offTextRenderer).scrollRect = new Rectangle();
+			this.addChildAt(DisplayObject(this.offTextRenderer), index);
 
-			this.onTextRenderer = factory();
-			uiTextRenderer = FeathersControl(this.onTextRenderer);
-			uiTextRenderer.nameList.add(this.onLabelName);
-			uiTextRenderer.scrollRect = new Rectangle();
-			this.addChildAt(uiTextRenderer, index);
+			this.onTextRenderer = ITextRenderer(factory());
+			this.onTextRenderer.nameList.add(this.onLabelName);
+			IDisplayObjectWithScrollRect(this.onTextRenderer).scrollRect = new Rectangle();
+			this.addChildAt(DisplayObject(this.onTextRenderer), index);
 		}
 
 		/**
@@ -1073,11 +1073,10 @@ package feathers.controls
 		 */
 		protected function refreshOnLabelStyles():void
 		{
-			const uiOnLabelRenderer:FeathersControl = FeathersControl(this.onTextRenderer);
 			//no need to style the label field if there's no text to display
 			if(!this._showLabels || !this._showThumb)
 			{
-				uiOnLabelRenderer.visible = false;
+				this.onTextRenderer.visible = false;
 				return;
 			}
 
@@ -1098,17 +1097,18 @@ package feathers.controls
 			this.onTextRenderer.text = this._onText;
 			if(properties)
 			{
+				const displayRenderer:DisplayObject = DisplayObject(this.onTextRenderer);
 				for(var propertyName:String in properties)
 				{
-					if(uiOnLabelRenderer.hasOwnProperty(propertyName))
+					if(displayRenderer.hasOwnProperty(propertyName))
 					{
 						var propertyValue:Object = properties[propertyName];
-						uiOnLabelRenderer[propertyName] = propertyValue;
+						displayRenderer[propertyName] = propertyValue;
 					}
 				}
 			}
-			uiOnLabelRenderer.validate();
-			uiOnLabelRenderer.visible = true;
+			this.onTextRenderer.validate();
+			this.onTextRenderer.visible = true;
 		}
 
 		/**
@@ -1116,11 +1116,10 @@ package feathers.controls
 		 */
 		protected function refreshOffLabelStyles():void
 		{
-			const uiOffLabelRenderer:FeathersControl = FeathersControl(this.offTextRenderer);
 			//no need to style the label field if there's no text to display
 			if(!this._showLabels || !this._showThumb)
 			{
-				uiOffLabelRenderer.visible = false;
+				this.offTextRenderer.visible = false;
 				return;
 			}
 
@@ -1141,17 +1140,18 @@ package feathers.controls
 			this.offTextRenderer.text = this._offText;
 			if(properties)
 			{
+				const displayRenderer:DisplayObject = DisplayObject(this.offTextRenderer);
 				for(var propertyName:String in properties)
 				{
-					if(uiOffLabelRenderer.hasOwnProperty(propertyName))
+					if(displayRenderer.hasOwnProperty(propertyName))
 					{
 						var propertyValue:Object = properties[propertyName];
-						uiOffLabelRenderer[propertyName] = propertyValue;
+						displayRenderer[propertyName] = propertyValue;
 					}
 				}
 			}
-			uiOffLabelRenderer.validate();
-			uiOffLabelRenderer.visible = true;
+			this.offTextRenderer.validate();
+			this.offTextRenderer.visible = true;
 		}
 
 		/**
@@ -1201,10 +1201,8 @@ package feathers.controls
 		 */
 		private function drawLabels():void
 		{
-			const uiOnLabelRenderer:FeathersControl = FeathersControl(this.onTextRenderer);
-			const uiOffLabelRenderer:FeathersControl = FeathersControl(this.offTextRenderer);
 			const maxLabelWidth:Number = Math.max(0, this.actualWidth - this.thumb.width - this._paddingLeft - this._paddingRight);
-			var totalLabelHeight:Number = Math.max(uiOnLabelRenderer.height, uiOffLabelRenderer.height);
+			var totalLabelHeight:Number = Math.max(this.onTextRenderer.height, this.offTextRenderer.height);
 			var labelHeight:Number;
 			if(this._labelAlign == LABEL_ALIGN_MIDDLE)
 			{
@@ -1215,21 +1213,21 @@ package feathers.controls
 				labelHeight = Math.max(this.onTextRenderer.baseline, this.offTextRenderer.baseline);
 			}
 
-			var onScrollRect:Rectangle = uiOnLabelRenderer.scrollRect;
+			var onScrollRect:Rectangle = IDisplayObjectWithScrollRect(this.onTextRenderer).scrollRect;
 			onScrollRect.width = maxLabelWidth;
 			onScrollRect.height = totalLabelHeight;
-			uiOnLabelRenderer.scrollRect = onScrollRect;
+			IDisplayObjectWithScrollRect(this.onTextRenderer).scrollRect = onScrollRect;
 
-			uiOnLabelRenderer.x = this._paddingLeft;
-			uiOnLabelRenderer.y = (this.actualHeight - labelHeight) / 2;
+			this.onTextRenderer.x = this._paddingLeft;
+			this.onTextRenderer.y = (this.actualHeight - labelHeight) / 2;
 
-			var offScrollRect:Rectangle = uiOffLabelRenderer.scrollRect;
+			var offScrollRect:Rectangle = IDisplayObjectWithScrollRect(this.offTextRenderer).scrollRect;
 			offScrollRect.width = maxLabelWidth;
 			offScrollRect.height = totalLabelHeight;
-			uiOffLabelRenderer.scrollRect = offScrollRect;
+			IDisplayObjectWithScrollRect(this.offTextRenderer).scrollRect = offScrollRect;
 
-			uiOffLabelRenderer.x = this.actualWidth - this._paddingRight - maxLabelWidth;
-			uiOffLabelRenderer.y = (this.actualHeight - labelHeight) / 2;
+			this.offTextRenderer.x = this.actualWidth - this._paddingRight - maxLabelWidth;
+			this.offTextRenderer.y = (this.actualHeight - labelHeight) / 2;
 		}
 
 		/**
@@ -1240,15 +1238,15 @@ package feathers.controls
 			const maxLabelWidth:Number = Math.max(0, this.actualWidth - this.thumb.width - this._paddingLeft - this._paddingRight);
 			const thumbOffset:Number = this.thumb.x - this._paddingLeft;
 
-			const uiOnLabelRenderer:FeathersControl = FeathersControl(this.onTextRenderer);
-			const uiOffLabelRenderer:FeathersControl = FeathersControl(this.offTextRenderer);
-			var currentScrollRect:Rectangle = uiOnLabelRenderer.scrollRect;
-			currentScrollRect.x = maxLabelWidth - thumbOffset - (maxLabelWidth - uiOnLabelRenderer.width) / 2;
-			uiOnLabelRenderer.scrollRect = currentScrollRect;
+			const displayOnLabelRenderer:IDisplayObjectWithScrollRect = IDisplayObjectWithScrollRect(this.onTextRenderer);
+			const displayOffLabelRenderer:IDisplayObjectWithScrollRect = IDisplayObjectWithScrollRect(this.offTextRenderer);
+			var currentScrollRect:Rectangle = displayOnLabelRenderer.scrollRect;
+			currentScrollRect.x = maxLabelWidth - thumbOffset - (maxLabelWidth - DisplayObject(displayOnLabelRenderer).width) / 2;
+			displayOnLabelRenderer.scrollRect = currentScrollRect;
 
-			currentScrollRect = uiOffLabelRenderer.scrollRect;
-			currentScrollRect.x = -thumbOffset - (maxLabelWidth - uiOffLabelRenderer.width) / 2;
-			uiOffLabelRenderer.scrollRect = currentScrollRect;
+			currentScrollRect = displayOffLabelRenderer.scrollRect;
+			currentScrollRect.x = -thumbOffset - (maxLabelWidth - DisplayObject(displayOffLabelRenderer).width) / 2;
+			displayOffLabelRenderer.scrollRect = currentScrollRect;
 
 			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_SCROLL)
 			{
