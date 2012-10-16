@@ -16,8 +16,7 @@ Created by [Josh Tynjala](http://twitter.com/joshtynjala), Feathers is free and 
 
 The following external libraries are required by Feathers. Other versions of the same library may work, but the version displayed below is the one currently recommended for use with Feathers.
 
-* [Starling](http://gamua.com/starling/) v1.2
-* [GTween](http://gskinner.com/libraries/gtween/) v2.01
+* [Starling](http://gamua.com/starling/) commit 30a6b133d5181a5f268fc5a4307c76b71928fa43 (Oct 16, 2012) or newer from Github
 * [as3-signals](https://github.com/robertpenner/as3-signals) v0.9 BETA
 
 ## Important Note
