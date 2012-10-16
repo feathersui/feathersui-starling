@@ -699,12 +699,12 @@ package feathers.controls
 			return this._horizontalPageIndex;
 		}
 
-		[Inspectable(type="String",enumeration="auto,on,off")]
 		/**
 		 * @private
 		 */
 		private var _horizontalScrollPolicy:String = SCROLL_POLICY_AUTO;
-		
+
+		[Inspectable(type="String",enumeration="auto,on,off")]
 		/**
 		 * Determines whether the scroller may scroll horizontally (on the
 		 * x-axis) or not.
@@ -904,12 +904,12 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_SCROLL_BAR_RENDERER);
 		}
 
-		[Inspectable(type="String",enumeration="top,middle,bottom")]
 		/**
 		 * @private
 		 */
 		protected var _verticalAlign:String = VERTICAL_ALIGN_TOP;
-		
+
+		[Inspectable(type="String",enumeration="top,middle,bottom")]
 		/**
 		 * If the viewport's height is less than the scroller's height, it will
 		 * be aligned to the top, middle, or bottom of the scroller.

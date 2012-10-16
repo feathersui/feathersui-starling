@@ -222,12 +222,12 @@ package feathers.layout
 		}
 
 
-		[Inspectable(type="String",enumeration="top,middle,bottom,justify")]
 		/**
 		 * @private
 		 */
 		private var _verticalAlign:String = VERTICAL_ALIGN_TOP;
 
+		[Inspectable(type="String",enumeration="top,middle,bottom,justify")]
 		/**
 		 * The alignment of the items vertically, on the y-axis.
 		 */
