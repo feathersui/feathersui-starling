@@ -107,17 +107,17 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private static const helperBounds:ViewPortBounds = new ViewPortBounds();
+		private static const HELPER_BOUNDS:ViewPortBounds = new ViewPortBounds();
 
 		/**
 		 * @private
 		 */
-		private static const helperResult:LayoutBoundsResult = new LayoutBoundsResult();
+		private static const HELPER_LAYOUT_RESULT:LayoutBoundsResult = new LayoutBoundsResult();
 
 		/**
 		 * @private
 		 */
-		private static const helperPoint:Point = new Point();
+		private static const HELPER_POINT:Point = new Point();
 
 		/**
 		 * Constructor.
@@ -428,6 +428,7 @@ package feathers.controls
 		 */
 		protected var _verticalAlign:String = VERTICAL_ALIGN_MIDDLE;
 
+		[Inspectable(type="String",enumeration="top,middle,bottom")]
 		/**
 		 * The alignment of the items vertically, on the y-axis.
 		 */
@@ -588,6 +589,7 @@ package feathers.controls
 		 */
 		protected var _titleAlign:String = TITLE_ALIGN_CENTER;
 
+		[Inspectable(type="String",enumeration="center,preferLeft,preferRight")]
 		/**
 		 * The preferred position of the title. If leftItems and/or rightItems
 		 * is defined, the title may be forced to the center even if the
@@ -768,14 +770,14 @@ package feathers.controls
 
 			const maxTitleWidth:Number = (needsWidth ? this._maxWidth : this.explicitWidth) - totalItemWidth - this._paddingLeft - this._paddingRight;
 			this._titleRenderer.maxWidth = maxTitleWidth;
-			this._titleRenderer.measureText(helperPoint);
+			this._titleRenderer.measureText(HELPER_POINT);
 			if(needsWidth)
 			{
-				newWidth += helperPoint.x;
+				newWidth += HELPER_POINT.x;
 			}
 			if(needsHeight)
 			{
-				newHeight = Math.max(newHeight, helperPoint.y);
+				newHeight = Math.max(newHeight, HELPER_POINT.y);
 			}
 			if(needsHeight)
 			{
@@ -880,14 +882,14 @@ package feathers.controls
 					IFeathersControl(item).validate();
 				}
 			}
-			helperBounds.x = helperBounds.y = 0;
-			helperBounds.explicitWidth = this.actualWidth;
-			helperBounds.explicitHeight = this.actualHeight;
+			HELPER_BOUNDS.x = HELPER_BOUNDS.y = 0;
+			HELPER_BOUNDS.explicitWidth = this.actualWidth;
+			HELPER_BOUNDS.explicitHeight = this.actualHeight;
 			this._layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_LEFT;
 			this._layout.paddingRight = 0;
 			this._layout.paddingLeft = this._paddingLeft;
-			this._layout.layout(this._leftItems, helperBounds, helperResult);
-			this.leftItemsWidth = helperResult.contentWidth;
+			this._layout.layout(this._leftItems, HELPER_BOUNDS, HELPER_LAYOUT_RESULT);
+			this.leftItemsWidth = HELPER_LAYOUT_RESULT.contentWidth;
 
 		}
 
@@ -903,14 +905,14 @@ package feathers.controls
 					IFeathersControl(item).validate();
 				}
 			}
-			helperBounds.x = helperBounds.y = 0;
-			helperBounds.explicitWidth = this.actualWidth;
-			helperBounds.explicitHeight = this.actualHeight;
+			HELPER_BOUNDS.x = HELPER_BOUNDS.y = 0;
+			HELPER_BOUNDS.explicitWidth = this.actualWidth;
+			HELPER_BOUNDS.explicitHeight = this.actualHeight;
 			this._layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_RIGHT;
 			this._layout.paddingRight = this._paddingRight;
 			this._layout.paddingLeft = 0;
-			this._layout.layout(this._rightItems, helperBounds, helperResult);
-			this.rightItemsWidth = helperResult.contentWidth;
+			this._layout.layout(this._rightItems, HELPER_BOUNDS, HELPER_LAYOUT_RESULT);
+			this.rightItemsWidth = HELPER_LAYOUT_RESULT.contentWidth;
 		}
 
 		/**

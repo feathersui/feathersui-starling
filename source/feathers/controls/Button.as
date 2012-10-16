@@ -53,7 +53,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private static const helperPoint:Point = new Point();
+		private static const HELPER_POINT:Point = new Point();
 
 		/**
 		 * The default value added to the <code>nameList</code> of the label.
@@ -332,7 +332,8 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _iconPosition:String = ICON_POSITION_LEFT;
-		
+
+		[Inspectable(type="String",enumeration="top,right,bottom,left,rightBaseline,leftBaseline,manual")]
 		/**
 		 * The location of the icon, relative to the label.
 		 */
@@ -393,7 +394,8 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _horizontalAlign:String = HORIZONTAL_ALIGN_CENTER;
-		
+
+		[Inspectable(type="String",enumeration="left,center,right")]
 		/**
 		 * The location where the button's content is aligned horizontally (on
 		 * the x-axis).
@@ -420,7 +422,8 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _verticalAlign:String = VERTICAL_ALIGN_MIDDLE;
-		
+
+		[Inspectable(type="String",enumeration="top,middle,bottom")]
 		/**
 		 * The location where the button's content is aligned vertically (on
 		 * the y-axis).
@@ -1907,7 +1910,7 @@ package feathers.controls
 				return false;
 			}
 			this.refreshMaxLabelWidth(true);
-			this.labelTextRenderer.measureText(helperPoint);
+			this.labelTextRenderer.measureText(HELPER_POINT);
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
 			{
@@ -1917,11 +1920,11 @@ package feathers.controls
 						this._iconPosition != ICON_POSITION_MANUAL)
 					{
 						var adjustedGap:Number = this._gap == Number.POSITIVE_INFINITY ? Math.min(this._paddingLeft, this._paddingRight) : this._gap;
-						newWidth = this.currentIcon.width + adjustedGap + helperPoint.x;
+						newWidth = this.currentIcon.width + adjustedGap + HELPER_POINT.x;
 					}
 					else
 					{
-						newWidth = Math.max(this.currentIcon.width, helperPoint.x);
+						newWidth = Math.max(this.currentIcon.width, HELPER_POINT.x);
 					}
 				}
 				else if(this.currentIcon)
@@ -1930,7 +1933,7 @@ package feathers.controls
 				}
 				else if(this.label)
 				{
-					newWidth = helperPoint.x;
+					newWidth = HELPER_POINT.x;
 				}
 				newWidth += this._paddingLeft + this._paddingRight;
 				if(isNaN(newWidth))
@@ -1951,11 +1954,11 @@ package feathers.controls
 					if(this._iconPosition == ICON_POSITION_TOP || this._iconPosition == ICON_POSITION_BOTTOM)
 					{
 						adjustedGap = this._gap == Number.POSITIVE_INFINITY ? Math.min(this._paddingTop, this._paddingBottom) : this._gap;
-						newHeight = this.currentIcon.height + adjustedGap + helperPoint.y;
+						newHeight = this.currentIcon.height + adjustedGap + HELPER_POINT.y;
 					}
 					else
 					{
-						newHeight = Math.max(this.currentIcon.height, helperPoint.y);
+						newHeight = Math.max(this.currentIcon.height, HELPER_POINT.y);
 					}
 				}
 				else if(this.currentIcon)
@@ -1964,7 +1967,7 @@ package feathers.controls
 				}
 				else if(this.label)
 				{
-					newHeight = helperPoint.y;
+					newHeight = HELPER_POINT.y;
 				}
 				newHeight += this._paddingTop + this._paddingBottom;
 				if(isNaN(newHeight))
@@ -2367,9 +2370,9 @@ package feathers.controls
 					return;
 				}
 
-				touch.getLocation(this, helperPoint);
-				ScrollRectManager.adjustTouchLocation(helperPoint, this);
-				var isInBounds:Boolean = this.hitTest(helperPoint, true) != null;
+				touch.getLocation(this, HELPER_POINT);
+				ScrollRectManager.adjustTouchLocation(HELPER_POINT, this);
+				var isInBounds:Boolean = this.hitTest(HELPER_POINT, true) != null;
 				if(touch.phase == TouchPhase.MOVED)
 				{
 					if(isInBounds || this.keepDownStateOnRollOut)
@@ -2389,13 +2392,13 @@ package feathers.controls
 					{
 						if(this._isHoverSupported)
 						{
-							touch.getLocation(this, helperPoint);
-							this.localToGlobal(helperPoint, helperPoint);
+							touch.getLocation(this, HELPER_POINT);
+							this.localToGlobal(HELPER_POINT, HELPER_POINT);
 
 							//we need to do a new hitTest() because a display
 							//object may have appeared above this button that
 							//will prevent clearing the hover state
-							isInBounds = this.stage.hitTest(helperPoint, true) == this;
+							isInBounds = this.stage.hitTest(HELPER_POINT, true) == this;
 							this.currentState = (isInBounds && this._isHoverSupported) ? STATE_HOVER : STATE_UP;
 						}
 						else

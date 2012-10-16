@@ -223,6 +223,7 @@ package feathers.controls
 		 */
 		protected var _direction:String = DIRECTION_HORIZONTAL;
 
+		[Inspectable(type="String",enumeration="horizontal,vertical")]
 		/**
 		 * The symbols may be positioned vertically or horizontally.
 		 */
@@ -249,6 +250,7 @@ package feathers.controls
 		 */
 		protected var _horizontalAlign:String = HORIZONTAL_ALIGN_CENTER;
 
+		[Inspectable(type="String",enumeration="horizontal,vertical")]
 		/**
 		 * The alignment of the symbols on the horizontal axis.
 		 */
@@ -275,6 +277,7 @@ package feathers.controls
 		 */
 		protected var _verticalAlign:String = VERTICAL_ALIGN_MIDDLE;
 
+		[Inspectable(type="String",enumeration="top,middle,bottom")]
 		/**
 		 * The alignment of the symbols on the vertical axis.
 		 */

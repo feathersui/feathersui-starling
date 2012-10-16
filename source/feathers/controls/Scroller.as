@@ -87,17 +87,12 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private static var helperPoint:Point = new Point();
+		private static const HELPER_POINT:Point = new Point();
 
 		/**
 		 * @private
 		 */
 		protected static const INVALIDATION_FLAG_SCROLL_BAR_RENDERER:String = "scrollBarRenderer";
-
-		/**
-		 * @private
-		 */
-		protected static const INVALIDATION_FLAG_PAGE:String = "page";
 
 		/**
 		 * The scroller may scroll if the view port is larger than the
@@ -703,7 +698,8 @@ package feathers.controls
 		{
 			return this._horizontalPageIndex;
 		}
-		
+
+		[Inspectable(type="String",enumeration="auto,on,off")]
 		/**
 		 * @private
 		 */
@@ -740,7 +736,8 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _horizontalAlign:String = HORIZONTAL_ALIGN_LEFT;
-		
+
+		[Inspectable(type="String",enumeration="left,center,right")]
 		/**
 		 * If the viewport's width is less than the scroller's width, it will
 		 * be aligned to the left, center, or right of the scroller.
@@ -878,7 +875,8 @@ package feathers.controls
 		 * @private
 		 */
 		private var _verticalScrollPolicy:String = SCROLL_POLICY_AUTO;
-		
+
+		[Inspectable(type="String",enumeration="auto,on,off")]
 		/**
 		 * Determines whether the scroller may scroll vertically (on the
 		 * y-axis) or not.
@@ -905,7 +903,8 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 			this.invalidate(INVALIDATION_FLAG_SCROLL_BAR_RENDERER);
 		}
-		
+
+		[Inspectable(type="String",enumeration="top,middle,bottom")]
 		/**
 		 * @private
 		 */
@@ -1017,6 +1016,7 @@ package feathers.controls
 		 */
 		protected var _scrollBarDisplayMode:String = SCROLL_BAR_DISPLAY_MODE_FLOAT;
 
+		[Inspectable(type="String",enumeration="float,fixed,none")]
 		/**
 		 * Determines how the scroll bars are displayed.
 		 *
@@ -1047,6 +1047,7 @@ package feathers.controls
 		 */
 		protected var _interactionMode:String = INTERACTION_MODE_TOUCH;
 
+		[Inspectable(type="String",enumeration="touch,mouse")]
 		/**
 		 * Determines how the user may interact with the scroller.
 		 *
@@ -2339,7 +2340,7 @@ package feathers.controls
 			{
 				return;
 			}
-			touch.getLocation(this, helperPoint);
+			touch.getLocation(this, HELPER_POINT);
 			if(this._horizontalAutoScrollTween)
 			{
 				Starling.juggler.remove(this._horizontalAutoScrollTween);
@@ -2357,8 +2358,8 @@ package feathers.controls
 			this._previousVelocityX.length = 0;
 			this._previousVelocityY.length = 0;
 			this._previousTouchTime = getTimer();
-			this._previousTouchX = this._startTouchX = this._currentTouchX = helperPoint.x;
-			this._previousTouchY = this._startTouchY = this._currentTouchY = helperPoint.y;
+			this._previousTouchX = this._startTouchX = this._currentTouchX = HELPER_POINT.x;
+			this._previousTouchY = this._startTouchY = this._currentTouchY = HELPER_POINT.y;
 			this._startHorizontalScrollPosition = this._horizontalScrollPosition;
 			this._startVerticalScrollPosition = this._verticalScrollPosition;
 			this._isDraggingHorizontally = false;
@@ -2493,9 +2494,9 @@ package feathers.controls
 			{
 				//we're saving these to use in the enter frame handler because
 				//that provides a longer time offset
-				touch.getLocation(this, helperPoint);
-				this._currentTouchX = helperPoint.x;
-				this._currentTouchY = helperPoint.y;
+				touch.getLocation(this, HELPER_POINT);
+				this._currentTouchX = HELPER_POINT.x;
+				this._currentTouchY = HELPER_POINT.y;
 			}
 			else if(touch.phase == TouchPhase.ENDED)
 			{
@@ -2575,10 +2576,10 @@ package feathers.controls
 				DisplayObject(this.verticalScrollBar).alpha = 1;
 			}
 
-			helperPoint.x = event.stageX;
-			helperPoint.y = event.stageY;
-			this.globalToLocal(helperPoint, helperPoint);
-			if(this.hitTest(helperPoint, true))
+			HELPER_POINT.x = event.stageX;
+			HELPER_POINT.y = event.stageY;
+			this.globalToLocal(HELPER_POINT, HELPER_POINT);
+			if(this.hitTest(HELPER_POINT, true))
 			{
 				this.verticalScrollPosition = Math.min(this._maxVerticalScrollPosition, Math.max(0, this._verticalScrollPosition - event.delta * this.actualVerticalScrollStep));
 			}
@@ -2634,9 +2635,9 @@ package feathers.controls
 				if(touch.phase == TouchPhase.ENDED)
 				{
 					this._horizontalScrollBarTouchPointID = -1;
-					touch.getLocation(displayHorizontalScrollBar, helperPoint);
-					ScrollRectManager.adjustTouchLocation(helperPoint, displayHorizontalScrollBar);
-					const isInBounds:Boolean = displayHorizontalScrollBar.hitTest(helperPoint, true) != null;
+					touch.getLocation(displayHorizontalScrollBar, HELPER_POINT);
+					ScrollRectManager.adjustTouchLocation(HELPER_POINT, displayHorizontalScrollBar);
+					const isInBounds:Boolean = displayHorizontalScrollBar.hitTest(HELPER_POINT, true) != null;
 					if(!isInBounds)
 					{
 						this.hideHorizontalScrollBar();
@@ -2700,9 +2701,9 @@ package feathers.controls
 				if(touch.phase == TouchPhase.ENDED)
 				{
 					this._verticalScrollBarTouchPointID = -1;
-					touch.getLocation(displayVerticalScrollBar, helperPoint);
-					ScrollRectManager.adjustTouchLocation(helperPoint, displayVerticalScrollBar);
-					const isInBounds:Boolean = displayVerticalScrollBar.hitTest(helperPoint, true) != null;
+					touch.getLocation(displayVerticalScrollBar, HELPER_POINT);
+					ScrollRectManager.adjustTouchLocation(HELPER_POINT, displayVerticalScrollBar);
+					const isInBounds:Boolean = displayVerticalScrollBar.hitTest(HELPER_POINT, true) != null;
 					if(!isInBounds)
 					{
 						this.hideVerticalScrollBar();

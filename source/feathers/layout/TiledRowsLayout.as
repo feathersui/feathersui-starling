@@ -39,7 +39,10 @@ package feathers.layout
 	 */
 	public class TiledRowsLayout implements IVirtualLayout
 	{
-		private static const helperVector:Vector.<DisplayObject> = new <DisplayObject>[];
+		/**
+		 * @private
+		 */
+		private static const HELPER_VECTOR:Vector.<DisplayObject> = new <DisplayObject>[];
 		
 		/**
 		 * If the total item height is smaller than the height of the bounds,
@@ -281,6 +284,7 @@ package feathers.layout
 		 */
 		private var _verticalAlign:String = VERTICAL_ALIGN_TOP;
 
+		[Inspectable(type="String",enumeration="top,middle,bottom")]
 		/**
 		 * If the total column height is less than the bounds, the items in the
 		 * column can be aligned vertically.
@@ -308,6 +312,7 @@ package feathers.layout
 		 */
 		private var _horizontalAlign:String = HORIZONTAL_ALIGN_CENTER;
 
+		[Inspectable(type="String",enumeration="left,center,right")]
 		/**
 		 * If the total row width is less than the bounds, the items in the row
 		 * can be aligned horizontally.
@@ -335,6 +340,7 @@ package feathers.layout
 		 */
 		private var _tileVerticalAlign:String = TILE_VERTICAL_ALIGN_MIDDLE;
 
+		[Inspectable(type="String",enumeration="top,middle,bottom,justify")]
 		/**
 		 * If an item's height is less than the tile bounds, the position of the
 		 * item can be aligned vertically.
@@ -362,6 +368,7 @@ package feathers.layout
 		 */
 		private var _tileHorizontalAlign:String = TILE_HORIZONTAL_ALIGN_CENTER;
 
+		[Inspectable(type="String",enumeration="left,center,right,justify")]
 		/**
 		 * If the item's width is less than the tile bounds, the position of the
 		 * item can be aligned horizontally.
@@ -543,7 +550,7 @@ package feathers.layout
 			const explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
 			const explicitHeight:Number = viewPortBounds ? viewPortBounds.explicitHeight : NaN;
 			
-			helperVector.length = 0;
+			HELPER_VECTOR.length = 0;
 			const itemCount:int = items.length;
 			var tileWidth:Number = this._useSquareTiles ? Math.max(0, this._typicalItemWidth, this._typicalItemHeight) : this._typicalItemWidth;
 			var tileHeight:Number = this._useSquareTiles ? tileWidth : this._typicalItemHeight;
@@ -617,12 +624,12 @@ package feathers.layout
 					//items on the current page and update the positions
 					if(this._paging != PAGING_NONE)
 					{
-						var discoveredItems:Vector.<DisplayObject> = this._useVirtualLayout ? helperVector : items;
+						var discoveredItems:Vector.<DisplayObject> = this._useVirtualLayout ? HELPER_VECTOR : items;
 						var discoveredItemsFirstIndex:int = this._useVirtualLayout ? 0 : (i - perPage);
-						var discoveredItemsLastIndex:int = this._useVirtualLayout ? (helperVector.length - 1) : (i - 1);
+						var discoveredItemsLastIndex:int = this._useVirtualLayout ? (HELPER_VECTOR.length - 1) : (i - 1);
 						this.applyHorizontalAlign(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex, totalPageWidth, availablePageWidth);
 						this.applyVerticalAlign(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex, totalPageHeight, availablePageHeight);
-						helperVector.length = 0;
+						HELPER_VECTOR.length = 0;
 					}
 					pageIndex++;
 					nextPageStartIndex += perPage;
@@ -690,7 +697,7 @@ package feathers.layout
 					}
 					if(this._useVirtualLayout)
 					{
-						helperVector.push(item);
+						HELPER_VECTOR.push(item);
 					}
 				}
 				positionX += tileWidth + this._gap;
@@ -698,7 +705,7 @@ package feathers.layout
 			//align the last page
 			if(this._paging != PAGING_NONE)
 			{
-				discoveredItems = this._useVirtualLayout ? helperVector : items;
+				discoveredItems = this._useVirtualLayout ? HELPER_VECTOR : items;
 				discoveredItemsFirstIndex = this._useVirtualLayout ? 0 : (nextPageStartIndex - perPage);
 				discoveredItemsLastIndex = this._useVirtualLayout ? (discoveredItems.length - 1) : (i - 1);
 				this.applyHorizontalAlign(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex, totalPageWidth, availablePageWidth);
@@ -735,12 +742,12 @@ package feathers.layout
 
 			if(this._paging == PAGING_NONE)
 			{
-				discoveredItems = this._useVirtualLayout ? helperVector : items;
+				discoveredItems = this._useVirtualLayout ? HELPER_VECTOR : items;
 				discoveredItemsLastIndex = discoveredItems.length - 1;
 				this.applyHorizontalAlign(discoveredItems, 0, discoveredItemsLastIndex, totalWidth, availableWidth);
 				this.applyVerticalAlign(discoveredItems, 0, discoveredItemsLastIndex, totalHeight, availableHeight);
 			}
-			helperVector.length = 0;
+			HELPER_VECTOR.length = 0;
 
 			if(!result)
 			{

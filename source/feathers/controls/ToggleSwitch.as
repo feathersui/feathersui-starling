@@ -299,6 +299,7 @@ package feathers.controls
 		 */
 		private var _trackLayoutMode:String = TRACK_LAYOUT_MODE_SINGLE;
 
+		[Inspectable(type="String",enumeration="single,stretch,scroll")]
 		/**
 		 * Determines how the on and off track skins are positioned and sized.
 		 */
@@ -487,6 +488,7 @@ package feathers.controls
 		 */
 		private var _labelAlign:String = LABEL_ALIGN_BASELINE;
 
+		[Inspectable(type="String",enumeration="baseline,middle")]
 		/**
 		 * The vertical alignment of the label.
 		 */

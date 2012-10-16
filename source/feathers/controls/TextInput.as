@@ -79,12 +79,12 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private static const helperMatrix:Matrix = new Matrix();
+		private static const HELPER_MATRIX:Matrix = new Matrix();
 
 		/**
 		 * @private
 		 */
-		private static const helperPoint:Point = new Point();
+		private static const HELPER_POINT:Point = new Point();
 
 		/**
 		 * @private
@@ -575,29 +575,29 @@ package feathers.controls
 		 */
 		override public function render(support:RenderSupport, alpha:Number):void
 		{
-			helperPoint.x = helperPoint.y = 0;
-			this.getTransformationMatrix(this.stage, helperMatrix);
-			MatrixUtil.transformCoords(helperMatrix, 0, 0, helperPoint);
-			ScrollRectManager.toStageCoordinates(helperPoint, this);
-			if(helperPoint.x != this._oldGlobalX || helperPoint.y != this._oldGlobalY)
+			HELPER_POINT.x = HELPER_POINT.y = 0;
+			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
+			ScrollRectManager.toStageCoordinates(HELPER_POINT, this);
+			if(HELPER_POINT.x != this._oldGlobalX || HELPER_POINT.y != this._oldGlobalY)
 			{
-				this._oldGlobalX = helperPoint.x;
-				this._oldGlobalY = helperPoint.y;
+				this._oldGlobalX = HELPER_POINT.x;
+				this._oldGlobalY = HELPER_POINT.y;
 				const starlingViewPort:Rectangle = Starling.current.viewPort;
 				var stageTextViewPort:Rectangle = this.stageText.viewPort;
 				if(!stageTextViewPort)
 				{
 					stageTextViewPort = new Rectangle();
 				}
-				stageTextViewPort.x = Math.round(starlingViewPort.x + (helperPoint.x + this._paddingLeft * this.scaleX) * Starling.contentScaleFactor);
-				stageTextViewPort.y = Math.round(starlingViewPort.y + (helperPoint.y + this._paddingTop * this.scaleY) * Starling.contentScaleFactor);
+				stageTextViewPort.x = Math.round(starlingViewPort.x + (HELPER_POINT.x + this._paddingLeft * this.scaleX) * Starling.contentScaleFactor);
+				stageTextViewPort.y = Math.round(starlingViewPort.y + (HELPER_POINT.y + this._paddingTop * this.scaleY) * Starling.contentScaleFactor);
 				this.stageText.viewPort = stageTextViewPort;
 			}
 
 			if(this._textSnapshot)
 			{
-				this._textSnapshot.x = Math.round(this._paddingLeft + helperMatrix.tx) - helperMatrix.tx;
-				this._textSnapshot.y = Math.round(this._paddingTop + helperMatrix.ty) - helperMatrix.ty;
+				this._textSnapshot.x = Math.round(this._paddingLeft + HELPER_MATRIX.tx) - HELPER_MATRIX.tx;
+				this._textSnapshot.y = Math.round(this._paddingTop + HELPER_MATRIX.ty) - HELPER_MATRIX.ty;
 			}
 
 			//theoretically, this will ensure that the StageText is set visible
@@ -864,9 +864,9 @@ package feathers.controls
 				}
 			}
 
-			this.getTransformationMatrix(this.stage, helperMatrix);
-			this._textSnapshot.x = Math.round(this._paddingLeft + helperMatrix.tx) - helperMatrix.tx;
-			this._textSnapshot.y = Math.round(this._paddingTop + helperMatrix.ty) - helperMatrix.ty;
+			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+			this._textSnapshot.x = Math.round(this._paddingLeft + HELPER_MATRIX.tx) - HELPER_MATRIX.tx;
+			this._textSnapshot.y = Math.round(this._paddingTop + HELPER_MATRIX.ty) - HELPER_MATRIX.ty;
 		}
 
 		/**
@@ -878,18 +878,18 @@ package feathers.controls
 			{
 				if(touch)
 				{
-					touch.getLocation(this, helperPoint);
-					helperPoint.x -= this._paddingLeft;
-					helperPoint.y -= this._paddingTop;
-					if(helperPoint.x < 0)
+					touch.getLocation(this, HELPER_POINT);
+					HELPER_POINT.x -= this._paddingLeft;
+					HELPER_POINT.y -= this._paddingTop;
+					if(HELPER_POINT.x < 0)
 					{
 						this._savedSelectionIndex = 0;
 					}
 					else
 					{
-						this._savedSelectionIndex = this._measureTextField.getCharIndexAtPoint(helperPoint.x, helperPoint.y);
+						this._savedSelectionIndex = this._measureTextField.getCharIndexAtPoint(HELPER_POINT.x, HELPER_POINT.y);
 						const bounds:Rectangle = this._measureTextField.getCharBoundaries(this._savedSelectionIndex);
-						if(bounds && (bounds.x + bounds.width - helperPoint.x) < (helperPoint.x - bounds.x))
+						if(bounds && (bounds.x + bounds.width - HELPER_POINT.x) < (HELPER_POINT.x - bounds.x))
 						{
 							this._savedSelectionIndex++;
 						}
@@ -935,14 +935,14 @@ package feathers.controls
 				this.stageText.stage = Starling.current.nativeStage;
 			}
 
-			helperPoint.x = helperPoint.y = 0;
-			this.getTransformationMatrix(this.stage, helperMatrix);
-			MatrixUtil.transformCoords(helperMatrix, 0, 0, helperPoint);
-			ScrollRectManager.toStageCoordinates(helperPoint, this);
-			this._oldGlobalX = helperPoint.x;
-			this._oldGlobalY = helperPoint.y;
-			stageTextViewPort.x = Math.round(starlingViewPort.x + (helperPoint.x + this._paddingLeft * this.scaleX) * Starling.contentScaleFactor);
-			stageTextViewPort.y = Math.round(starlingViewPort.y + (helperPoint.y + this._paddingTop * this.scaleY) * Starling.contentScaleFactor);
+			HELPER_POINT.x = HELPER_POINT.y = 0;
+			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
+			ScrollRectManager.toStageCoordinates(HELPER_POINT, this);
+			this._oldGlobalX = HELPER_POINT.x;
+			this._oldGlobalY = HELPER_POINT.y;
+			stageTextViewPort.x = Math.round(starlingViewPort.x + (HELPER_POINT.x + this._paddingLeft * this.scaleX) * Starling.contentScaleFactor);
+			stageTextViewPort.y = Math.round(starlingViewPort.y + (HELPER_POINT.y + this._paddingTop * this.scaleY) * Starling.contentScaleFactor);
 			stageTextViewPort.width = Math.round(Math.max(1, (this.actualWidth - this._paddingLeft - this._paddingRight) * Starling.contentScaleFactor * this.scaleX));
 			//we're ignoring padding bottom here to keep the descent from being cut off
 			stageTextViewPort.height = Math.round(Math.max(1, (this.actualHeight - this._paddingTop) * Starling.contentScaleFactor * this.scaleY));
@@ -1058,9 +1058,9 @@ package feathers.controls
 				if(touch.phase == TouchPhase.ENDED)
 				{
 					this._touchPointID = -1;
-					touch.getLocation(this, helperPoint);
-					ScrollRectManager.adjustTouchLocation(helperPoint, this);
-					var isInBounds:Boolean = this.hitTest(helperPoint, true) != null;
+					touch.getLocation(this, HELPER_POINT);
+					ScrollRectManager.adjustTouchLocation(HELPER_POINT, this);
+					var isInBounds:Boolean = this.hitTest(HELPER_POINT, true) != null;
 					if(!this._stageTextHasFocus && isInBounds)
 					{
 						this.setFocusInternal(touch);

@@ -60,7 +60,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private static const helperPoint:Point = new Point();
+		private static const HELPER_POINT:Point = new Point();
 
 		/**
 		 * The default value added to the <code>nameList</code> of the scroller.
@@ -2120,17 +2120,17 @@ package feathers.controls
 				const item:Object = this._dataProvider.getItemAt(this._scrollToGroupIndex, this._scrollToItemIndex);
 				if(item is Object)
 				{
-					this.dataViewPort.getScrollPositionForIndex(this._scrollToGroupIndex, this._scrollToItemIndex, helperPoint);
+					this.dataViewPort.getScrollPositionForIndex(this._scrollToGroupIndex, this._scrollToItemIndex, HELPER_POINT);
 
 					if(this._scrollToIndexDuration > 0)
 					{
-						this.scroller.throwTo(Math.max(0, Math.min(helperPoint.x, this._maxHorizontalScrollPosition)),
-							Math.max(0, Math.min(helperPoint.y, this._maxVerticalScrollPosition)), this._scrollToIndexDuration);
+						this.scroller.throwTo(Math.max(0, Math.min(HELPER_POINT.x, this._maxHorizontalScrollPosition)),
+							Math.max(0, Math.min(HELPER_POINT.y, this._maxVerticalScrollPosition)), this._scrollToIndexDuration);
 					}
 					else
 					{
-						this.horizontalScrollPosition = Math.max(0, Math.min(helperPoint.x, this._maxHorizontalScrollPosition));
-						this.verticalScrollPosition = Math.max(0, Math.min(helperPoint.y, this._maxVerticalScrollPosition));
+						this.horizontalScrollPosition = Math.max(0, Math.min(HELPER_POINT.x, this._maxHorizontalScrollPosition));
+						this.verticalScrollPosition = Math.max(0, Math.min(HELPER_POINT.y, this._maxVerticalScrollPosition));
 					}
 				}
 				this._scrollToGroupIndex = -1;
