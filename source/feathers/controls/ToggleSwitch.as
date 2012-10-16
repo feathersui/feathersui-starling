@@ -29,7 +29,6 @@ package feathers.controls
 	import feathers.core.IToggle;
 	import feathers.core.PropertyProxy;
 	import feathers.display.IDisplayObjectWithScrollRect;
-	import feathers.motion.GTween;
 	import feathers.system.DeviceCapabilities;
 
 	import flash.geom.Point;
@@ -38,6 +37,9 @@ package feathers.controls
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 
+	import starling.animation.Transitions;
+	import starling.animation.Tween;
+	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.events.Touch;
@@ -651,7 +653,7 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
-		private var _selectionChangeTween:GTween;
+		private var _selectionChangeTween:Tween;
 
 		private var _ignoreTapHandler:Boolean = false;
 		private var _touchPointID:int = -1;
@@ -1040,20 +1042,17 @@ package feathers.controls
 			//stop the tween, no matter what
 			if(this._selectionChangeTween)
 			{
-				this._selectionChangeTween.paused = true;
+				Starling.juggler.remove(this._selectionChangeTween);
 				this._selectionChangeTween = null;
 			}
 
 			if(this._isSelectionChangedByUser)
 			{
-				this._selectionChangeTween = new GTween(this.thumb, 0.15,
-				{
-					x: xPosition
-				},
-				{
-					onChange: selectionTween_onChange,
-					onComplete: selectionTween_onComplete
-				});
+				this._selectionChangeTween = new Tween(this.thumb, 0.15, Transitions.EASE_OUT);
+				this._selectionChangeTween.animate("x", xPosition);
+				this._selectionChangeTween.onUpdate = selectionTween_onUpdate;
+				this._selectionChangeTween.onComplete = selectionTween_onComplete;
+				Starling.juggler.add(this._selectionChangeTween);
 			}
 			else
 			{
@@ -1522,7 +1521,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private function selectionTween_onChange(tween:GTween):void
+		private function selectionTween_onUpdate():void
 		{
 			this.layout();
 		}
@@ -1530,7 +1529,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private function selectionTween_onComplete(tween:GTween):void
+		private function selectionTween_onComplete():void
 		{
 			this._selectionChangeTween = null;
 		}

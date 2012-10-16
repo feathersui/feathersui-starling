@@ -24,11 +24,11 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package feathers.motion.transitions
 {
-	import com.gskinner.motion.easing.Sine;
-
 	import feathers.controls.ScreenNavigator;
-	import feathers.motion.GTween;
 
+	import starling.animation.Transitions;
+	import starling.animation.Tween;
+	import starling.core.Starling;
 	import starling.display.DisplayObject;
 
 	/**
@@ -51,7 +51,8 @@ package feathers.motion.transitions
 		}
 		
 		private var _navigator:ScreenNavigator;
-		private var _activeTransition:GTween;
+		private var _activeTransition:Tween;
+		private var _savedOtherTarget:DisplayObject;
 		private var _savedCompleteHandler:Function;
 		
 		/**
@@ -67,9 +68,9 @@ package feathers.motion.transitions
 		public var delay:Number = 0.1;
 		
 		/**
-		 * The GTween easing function to use.
+		 * The easing function to use.
 		 */
-		public var ease:Function = Sine.easeOut;
+		public var ease:Object = Transitions.EASE_OUT;
 		
 		/**
 		 * @private
@@ -83,7 +84,8 @@ package feathers.motion.transitions
 			
 			if(this._activeTransition)
 			{
-				this._activeTransition.end();
+				this._savedOtherTarget = null;
+				this._activeTransition.advanceTime(this._activeTransition.totalTime);
 				this._activeTransition = null;
 			}
 			
@@ -96,50 +98,43 @@ package feathers.motion.transitions
 				{
 					oldScreen.alpha = 1;
 				}
-				this._activeTransition = new GTween(newScreen, this.duration,
-				{
-					alpha: 1
-				},
-				{
-					delay: this.delay,
-					ease: this.ease,
-					onChange: activeTransition_onChange,
-					onComplete: activeTransition_onComplete
-				});
+				this._savedOtherTarget = oldScreen;
+				this._activeTransition = new Tween(newScreen, this.duration, this.ease);
+				this._activeTransition.fadeTo(1);
+				this._activeTransition.delay = this.delay;
+				this._activeTransition.onUpdate = activeTransition_onUpdate;
+				this._activeTransition.onComplete = activeTransition_onComplete;
+				Starling.juggler.add(this._activeTransition);
 			}
 			else //we only have the old screen
 			{
 				oldScreen.alpha = 1;
-				this._activeTransition = new GTween(oldScreen, this.duration,
-				{
-					alpha: 0
-				},
-				{
-					delay: this.delay,
-					ease: this.ease,
-					onComplete: activeTransition_onComplete
-				});
+				this._activeTransition = new Tween(oldScreen, this.duration, this.ease);
+				this._activeTransition.fadeTo(0);
+				this._activeTransition.delay = this.delay;
+				this._activeTransition.onComplete = activeTransition_onComplete;
+				Starling.juggler.add(this._activeTransition);
 			}
 		}
 		
 		/**
 		 * @private
 		 */
-		private function activeTransition_onChange(tween:GTween):void
+		private function activeTransition_onUpdate():void
 		{
-			var oldScreen:DisplayObject = tween.data as DisplayObject;
-			if(oldScreen)
+			if(this._savedOtherTarget)
 			{
-				var newScreen:DisplayObject = DisplayObject(tween.target);
-				oldScreen.alpha = 1 - newScreen.alpha;
+				const newScreen:DisplayObject = DisplayObject(this._activeTransition.target);
+				this._savedOtherTarget.alpha = 1 - newScreen.alpha;
 			}
 		}
 		
 		/**
 		 * @private
 		 */
-		private function activeTransition_onComplete(tween:GTween):void
+		private function activeTransition_onComplete():void
 		{
+			this._savedOtherTarget = null;
 			this._activeTransition = null;
 			if(this._savedCompleteHandler != null)
 			{

@@ -24,12 +24,12 @@
  */
 package feathers.motion.transitions
 {
-	import com.gskinner.motion.easing.Sine;
-
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.TabBar;
-	import feathers.motion.GTween;
 
+	import starling.animation.Transitions;
+	import starling.animation.Tween;
+	import starling.core.Starling;
 	import starling.display.DisplayObject;
 
 	/**
@@ -58,7 +58,8 @@ package feathers.motion.transitions
 
 		private var _navigator:ScreenNavigator;
 		private var _tabBar:TabBar;
-		private var _activeTransition:GTween;
+		private var _activeTransition:Tween;
+		private var _savedOtherTarget:DisplayObject;
 		private var _savedCompleteHandler:Function;
 
 		private var _oldScreen:DisplayObject;
@@ -81,9 +82,9 @@ package feathers.motion.transitions
 		public var delay:Number = 0.1;
 
 		/**
-		 * The GTween easing function to use.
+		 * The easing function to use.
 		 */
-		public var ease:Function = Sine.easeOut;
+		public var ease:Object = Transitions.EASE_OUT;
 
 		/**
 		 * @private
@@ -111,7 +112,8 @@ package feathers.motion.transitions
 		{
 			if(this._activeTransition)
 			{
-				this._activeTransition.paused = true;
+				this._savedOtherTarget  = null;
+				Starling.juggler.remove(this._activeTransition);
 				this._activeTransition = null;
 			}
 
@@ -133,28 +135,24 @@ package feathers.motion.transitions
 			}
 
 			this._oldScreen.x = 0;
-			var activeTransition_onChange:Function;
+			var activeTransition_onUpdate:Function;
 			if(this._isFromRight)
 			{
 				this._newScreen.x = this._navigator.width;
-				activeTransition_onChange = this.activeTransitionFromRight_onChange;
+				activeTransition_onUpdate = this.activeTransitionFromRight_onUpdate;
 			}
 			else
 			{
 				this._newScreen.x = -this._navigator.width;
-				activeTransition_onChange = this.activeTransitionFromLeft_onChange;
+				activeTransition_onUpdate = this.activeTransitionFromLeft_onUpdate;
 			}
-			this._activeTransition = new GTween(this._newScreen, this.duration,
-			{
-				x: 0
-			},
-			{
-				data: this._oldScreen,
-				delay: this.delay,
-				ease: this.ease,
-				onChange: activeTransition_onChange,
-				onComplete: activeTransition_onComplete
-			});
+			this._savedOtherTarget = this._oldScreen;
+			this._activeTransition = new Tween(this._newScreen, this.duration, this.ease);
+			this._activeTransition.animate("x", 0);
+			this._activeTransition.delay = this.delay;
+			this._activeTransition.onUpdate = activeTransition_onUpdate;
+			this._activeTransition.onComplete = activeTransition_onComplete;
+			Starling.juggler.add(this._activeTransition);
 
 			this._oldScreen = null;
 			this._newScreen = null;
@@ -165,28 +163,33 @@ package feathers.motion.transitions
 		/**
 		 * @private
 		 */
-		private function activeTransitionFromRight_onChange(tween:GTween):void
+		private function activeTransitionFromRight_onUpdate():void
 		{
-			var newScreen:DisplayObject = DisplayObject(tween.target);
-			var oldScreen:DisplayObject = DisplayObject(tween.data);
-			oldScreen.x = newScreen.x - this._navigator.width;
+			if(this._savedOtherTarget)
+			{
+				const newScreen:DisplayObject = DisplayObject(this._activeTransition.target);
+				this._savedOtherTarget.x = newScreen.x - this._navigator.width;
+			}
 		}
 
 		/**
 		 * @private
 		 */
-		private function activeTransitionFromLeft_onChange(tween:GTween):void
+		private function activeTransitionFromLeft_onUpdate():void
 		{
-			var newScreen:DisplayObject = DisplayObject(tween.target);
-			var oldScreen:DisplayObject = DisplayObject(tween.data);
-			oldScreen.x = newScreen.x + this._navigator.width;
+			if(this._savedOtherTarget)
+			{
+				const newScreen:DisplayObject = DisplayObject(this._activeTransition.target);
+				this._savedOtherTarget.x = newScreen.x + this._navigator.width;
+			}
 		}
 
 		/**
 		 * @private
 		 */
-		private function activeTransition_onComplete(tween:GTween):void
+		private function activeTransition_onComplete():void
 		{
+			this._savedOtherTarget = null;
 			this._activeTransition = null;
 			if(this._savedCompleteHandler != null)
 			{

@@ -24,11 +24,11 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package feathers.motion.transitions
 {
-	import com.gskinner.motion.easing.Sine;
-
 	import feathers.controls.ScreenNavigator;
-	import feathers.motion.GTween;
 
+	import starling.animation.Transitions;
+	import starling.animation.Tween;
+	import starling.core.Starling;
 	import starling.display.DisplayObject;
 
 	/**
@@ -58,7 +58,8 @@ package feathers.motion.transitions
 		
 		private var _navigator:ScreenNavigator;
 		private var _stack:Vector.<Class> = new <Class>[];
-		private var _activeTransition:GTween;
+		private var _activeTransition:Tween;
+		private var _savedOtherTarget:DisplayObject;
 		private var _savedCompleteHandler:Function;
 		
 		/**
@@ -74,9 +75,9 @@ package feathers.motion.transitions
 		public var delay:Number = 0.1;
 		
 		/**
-		 * The GTween easing function to use.
+		 * The easing function to use.
 		 */
-		public var ease:Function = Sine.easeOut;
+		public var ease:Object = Transitions.EASE_OUT;
 		
 		/**
 		 * Removes all saved classes from the stack that are used to determine
@@ -109,7 +110,8 @@ package feathers.motion.transitions
 			
 			if(this._activeTransition)
 			{
-				this._activeTransition.paused = true;
+				this._savedOtherTarget = null;
+				Starling.juggler.remove(this._activeTransition);
 				this._activeTransition = null;
 			}
 			
@@ -117,61 +119,62 @@ package feathers.motion.transitions
 			
 			var NewScreenType:Class = Object(newScreen).constructor;
 			var stackIndex:int = this._stack.indexOf(NewScreenType);
-			var activeTransition_onChange:Function;
+			var activeTransition_onUpdate:Function;
 			if(stackIndex < 0)
 			{
 				var OldScreenType:Class = Object(oldScreen).constructor;
 				this._stack.push(OldScreenType);
 				oldScreen.x = 0;
 				newScreen.x = this._navigator.width;
-				activeTransition_onChange = this.activeTransitionPush_onChange;
+				activeTransition_onUpdate = this.activeTransitionPush_onUpdate;
 			}
 			else
 			{
 				this._stack.length = stackIndex;
 				oldScreen.x = 0;
 				newScreen.x = -this._navigator.width;
-				activeTransition_onChange = this.activeTransitionPop_onChange;
+				activeTransition_onUpdate = this.activeTransitionPop_onUpdate;
 			}
-			this._activeTransition = new GTween(newScreen, this.duration,
-			{
-				x: 0
-			},
-			{
-				data: oldScreen,
-				delay: this.delay,
-				ease: this.ease,
-				onChange: activeTransition_onChange,
-				onComplete: activeTransition_onComplete
-			});
+			this._savedOtherTarget = oldScreen;
+			this._activeTransition = new Tween(newScreen, this.duration, this.ease);
+			this._activeTransition.animate("x", 0);
+			this._activeTransition.delay = this.delay;
+			this._activeTransition.onUpdate = activeTransition_onUpdate;
+			this._activeTransition.onComplete = activeTransition_onComplete;
+			Starling.juggler.add(this._activeTransition);
 		}
 		
 		/**
 		 * @private
 		 */
-		private function activeTransitionPush_onChange(tween:GTween):void
+		private function activeTransitionPush_onUpdate():void
 		{
-			var newScreen:DisplayObject = DisplayObject(tween.target);
-			var oldScreen:DisplayObject = DisplayObject(tween.data);
-			oldScreen.x = newScreen.x - this._navigator.width;
+			if(this._savedOtherTarget)
+			{
+				const newScreen:DisplayObject = DisplayObject(this._activeTransition.target);
+				this._savedOtherTarget.x = newScreen.x - this._navigator.width;
+			}
 		}
 		
 		/**
 		 * @private
 		 */
-		private function activeTransitionPop_onChange(tween:GTween):void
+		private function activeTransitionPop_onUpdate():void
 		{
-			var newScreen:DisplayObject = DisplayObject(tween.target);
-			var oldScreen:DisplayObject = DisplayObject(tween.data);
-			oldScreen.x = newScreen.x + this._navigator.width;
+			if(this._savedOtherTarget)
+			{
+				const newScreen:DisplayObject = DisplayObject(this._activeTransition.target);
+				this._savedOtherTarget.x = newScreen.x + this._navigator.width;
+			}
 		}
 		
 		/**
 		 * @private
 		 */
-		private function activeTransition_onComplete(tween:GTween):void
+		private function activeTransition_onComplete():void
 		{
 			this._activeTransition = null;
+			this._savedOtherTarget = null;
 			if(this._savedCompleteHandler != null)
 			{
 				this._savedCompleteHandler();
