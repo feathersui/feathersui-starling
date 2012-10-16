@@ -31,6 +31,7 @@ package feathers.controls.text
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.text.TextFormatAlign;
 
 	import starling.core.RenderSupport;
 	import starling.display.Image;
@@ -59,7 +60,27 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		private static var HELPER_VECTOR:Vector.<CharLocation>;
+		private static const CHARACTER_ID_SPACE:int = 32;
+
+		/**
+		 * @private
+		 */
+		private static const CHARACTER_ID_TAB:int = 9;
+
+		/**
+		 * @private
+		 */
+		private static const CHARACTER_ID_LINE_FEED:int = 10;
+
+		/**
+		 * @private
+		 */
+		private static const CHARACTER_ID_CARRIAGE_RETURN:int = 13;
+
+		/**
+		 * @private
+		 */
+		private static var CHARACTER_BUFFER:Vector.<CharLocation>;
 
 		/**
 		 * @private
@@ -338,28 +359,31 @@ package feathers.controls.text
 			const scale:Number = isNaN(customSize) ? 1 : (customSize / font.size);
 			const lineHeight:Number = font.lineHeight * scale;
 			const maxLineWidth:Number = !isNaN(this.explicitWidth) ? this.explicitWidth : this._maxWidth;
-			
+			const isAligned:Boolean = this.currentTextFormat.align != TextFormatAlign.LEFT;
+
 			var maxX:Number = 0;
 			var currentX:Number = 0;
 			var currentY:Number = 0;
-			var lastCharID:Number = NaN;
+			var previousCharID:Number = NaN;
 			var charCount:int = this._text ? this._text.length : 0;
-			var startXOfLastWord:Number = 0;
+			var startXOfPreviousWord:Number = 0;
+			var widthOfWhitespaceAfterWord:Number = 0;
 			var wordCountForLine:int = 0;
 			var line:String = "";
 			var word:String = "";
 			for(var i:int = 0; i < charCount; i++)
 			{
 				var charID:int = this._text.charCodeAt(i);
-				if(charID == 10 || charID == 13) //new line \n or \r
+				if(charID == CHARACTER_ID_LINE_FEED || charID == CHARACTER_ID_CARRIAGE_RETURN) //new line \n or \r
 				{
 					currentX = Math.max(0, currentX - customLetterSpacing);
 					maxX = Math.max(maxX, currentX);
-					lastCharID = NaN;
+					previousCharID = NaN;
 					currentX = 0;
 					currentY += lineHeight;
-					startXOfLastWord = 0;
+					startXOfPreviousWord = 0;
 					wordCountForLine = 0;
+					widthOfWhitespaceAfterWord = 0;
 					continue;
 				}
 
@@ -370,17 +394,26 @@ package feathers.controls.text
 					continue;
 				}
 
-				if(isKerningEnabled && !isNaN(lastCharID))
+				if(isKerningEnabled && !isNaN(previousCharID))
 				{
-					currentX += charData.getKerning(lastCharID);
+					currentX += charData.getKerning(previousCharID);
 				}
 
 				var offsetX:Number = charData.xAdvance * scale;
 				if(this._wordWrap)
 				{
-					if(lastCharID == 32 || lastCharID == 9) //space or tab
+					var previousCharIsWhitespace:Boolean = previousCharID == CHARACTER_ID_SPACE || previousCharID == CHARACTER_ID_TAB;
+					if(charID == CHARACTER_ID_SPACE || charID == CHARACTER_ID_TAB)
 					{
-						startXOfLastWord = currentX;
+						if(!previousCharIsWhitespace)
+						{
+							widthOfWhitespaceAfterWord = 0;
+						}
+						widthOfWhitespaceAfterWord += offsetX;
+					}
+					else if(previousCharIsWhitespace)
+					{
+						startXOfPreviousWord = currentX;
 						wordCountForLine++;
 						line += word;
 						word = "";
@@ -388,18 +421,18 @@ package feathers.controls.text
 
 					if(wordCountForLine > 0 && (currentX + offsetX) > maxLineWidth)
 					{
-						trace("new line", line, i, isNaN(lastCharID) ? "N/A" : String.fromCharCode(lastCharID), String.fromCharCode(charID), currentY + lineHeight);
-						maxX = Math.max(maxX, startXOfLastWord);
-						lastCharID = NaN;
-						currentX -= startXOfLastWord;
+						maxX = Math.max(maxX, startXOfPreviousWord - widthOfWhitespaceAfterWord);
+						previousCharID = NaN;
+						currentX -= startXOfPreviousWord;
 						currentY += lineHeight;
-						startXOfLastWord = 0;
+						startXOfPreviousWord = 0;
+						widthOfWhitespaceAfterWord = 0;
 						wordCountForLine = 0;
 						line = "";
 					}
 				}
 				currentX += offsetX + customLetterSpacing;
-				lastCharID = charID;
+				previousCharID = charID;
 				word += String.fromCharCode(charID);
 			}
 			currentX = Math.max(0, currentX - customLetterSpacing);
@@ -407,7 +440,6 @@ package feathers.controls.text
 
 			result.x = maxX;
 			result.y = currentY + font.lineHeight * scale;
-			trace(result, i, currentY, this._text);
 			return result;
 		}
 
@@ -452,36 +484,42 @@ package feathers.controls.text
 				const lineHeight:Number = font.lineHeight * scale;
 				const maxLineWidth:Number = !isNaN(this.explicitWidth) ? this.explicitWidth : this._maxWidth;
 				const textToDraw:String = this.getTruncatedText();
+				const isAligned:Boolean = this.currentTextFormat.align != TextFormatAlign.LEFT;
+				if(!CHARACTER_BUFFER)
+				{
+					CHARACTER_BUFFER = new <CharLocation>[];
+				}
+				CHARACTER_BUFFER.length = 0;
 
 				var maxX:Number = 0;
 				var currentX:Number = 0;
 				var currentY:Number = 0;
-				var lastCharID:Number = NaN;
+				var previousCharID:Number = NaN;
 				var isWordComplete:Boolean = false;
-				var startXOfLastWord:Number = 0;
+				var startXOfPreviousWord:Number = 0;
+				var widthOfWhitespaceAfterWord:Number = 0;
+				var wordLength:int = 0;
 				var wordCountForLine:int = 0;
-				if(!HELPER_VECTOR)
-				{
-					HELPER_VECTOR = new <CharLocation>[];
-				}
-				HELPER_VECTOR.length = 0;
 				const charCount:int = textToDraw ? textToDraw.length : 0;
 				for(var i:int = 0; i < charCount; i++)
 				{
 					isWordComplete = false;
 					var charID:int = textToDraw.charCodeAt(i);
-					if(charID == 10 || charID == 13) //new line \n or \r
+					if(charID == CHARACTER_ID_LINE_FEED || charID == CHARACTER_ID_CARRIAGE_RETURN) //new line \n or \r
 					{
-						if(this._wordWrap)
-						{
-							this.addWordToBatch();
-						}
 						currentX = Math.max(0, currentX - customLetterSpacing);
+						if(this._wordWrap || isAligned)
+						{
+							this.alignBuffer(maxLineWidth, currentX, 0);
+							this.addBufferToBatch(0);
+						}
 						maxX = Math.max(maxX, currentX);
-						lastCharID = NaN;
+						previousCharID = NaN;
 						currentX = 0;
 						currentY += lineHeight;
-						startXOfLastWord = 0;
+						startXOfPreviousWord = 0;
+						widthOfWhitespaceAfterWord = 0;
+						wordLength = 0;
 						wordCountForLine = 0;
 						continue;
 					}
@@ -493,37 +531,58 @@ package feathers.controls.text
 						continue;
 					}
 
-					if(isKerningEnabled && !isNaN(lastCharID))
+					if(isKerningEnabled && !isNaN(previousCharID))
 					{
-						currentX += charData.getKerning(lastCharID);
+						currentX += charData.getKerning(previousCharID);
 					}
 
 					var offsetX:Number = charData.xAdvance * scale;
 					if(this._wordWrap)
 					{
-						if(lastCharID == 32 || lastCharID == 9) //space or tab
+						var previousCharIsWhitespace:Boolean = previousCharID == CHARACTER_ID_SPACE || previousCharID == CHARACTER_ID_TAB;
+						if(charID == CHARACTER_ID_SPACE || charID == CHARACTER_ID_TAB)
 						{
-							startXOfLastWord = currentX;
+							if(!previousCharIsWhitespace)
+							{
+								widthOfWhitespaceAfterWord = 0;
+							}
+							widthOfWhitespaceAfterWord += offsetX;
+						}
+						else if(previousCharIsWhitespace)
+						{
+							startXOfPreviousWord = currentX;
+							wordLength = 0;
 							wordCountForLine++;
 							isWordComplete = true;
 						}
 
 						if(wordCountForLine > 0 && (currentX + offsetX) > maxLineWidth)
 						{
-							maxX = Math.max(maxX, startXOfLastWord);
-							lastCharID = NaN;
-							this.moveCurrentWordToNewLine(-startXOfLastWord, lineHeight);
-							currentX -= startXOfLastWord;
+							if(isAligned)
+							{
+								this.trimBuffer(wordLength);
+								this.alignBuffer(maxLineWidth, startXOfPreviousWord - widthOfWhitespaceAfterWord, wordLength);
+								this.addBufferToBatch(wordLength);
+							}
+							this.moveBufferedCharacters(-startXOfPreviousWord, lineHeight, 0);
+							maxX = Math.max(maxX, startXOfPreviousWord - widthOfWhitespaceAfterWord);
+							previousCharID = NaN;
+							currentX -= startXOfPreviousWord;
 							currentY += lineHeight;
-							startXOfLastWord = 0;
+							startXOfPreviousWord = 0;
+							widthOfWhitespaceAfterWord = 0;
+							wordLength = 0;
 							isWordComplete = false;
 							wordCountForLine = 0;
 						}
 
-						if(isWordComplete)
+						if(isWordComplete && !isAligned)
 						{
-							this.addWordToBatch();
+							this.addBufferToBatch(0);
 						}
+					}
+					if(this._wordWrap || isAligned)
+					{
 						if(!CHAR_LOCATION_POOL)
 						{
 							CHAR_LOCATION_POOL = new <CharLocation>[];
@@ -533,7 +592,8 @@ package feathers.controls.text
 						charLocation.x = currentX + charData.xOffset * scale;
 						charLocation.y = currentY + charData.yOffset * scale;
 						charLocation.scale = scale;
-						HELPER_VECTOR.push(charLocation);
+						CHARACTER_BUFFER.push(charLocation);
+						wordLength++;
 					}
 					else
 					{
@@ -541,13 +601,14 @@ package feathers.controls.text
 					}
 
 					currentX += offsetX + customLetterSpacing;
-					lastCharID = charID;
-				}
-				if(this._wordWrap)
-				{
-					this.addWordToBatch();
+					previousCharID = charID;
 				}
 				currentX = Math.max(0, currentX - customLetterSpacing);
+				if(this._wordWrap || isAligned)
+				{
+					this.alignBuffer(maxLineWidth, currentX, 0);
+					this.addBufferToBatch(0);
+				}
 				maxX = Math.max(maxX, currentX);
 				this.setSizeInternal(maxX, currentY + font.lineHeight * scale, false);
 			}
@@ -556,12 +617,55 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function addWordToBatch():void
+		protected function trimBuffer(skipCount:int):void
 		{
-			const charCount:int = HELPER_VECTOR.length;
+			var countToRemove:int = 0;
+			const charCount:int = CHARACTER_BUFFER.length - skipCount;
+			for(var i:int = charCount - 1; i >= 0; i--)
+			{
+				var charLocation:CharLocation = CHARACTER_BUFFER[i];
+				var charData:BitmapChar = charLocation.char;
+				var charID:int = charData.charID;
+				if(charID == CHARACTER_ID_SPACE || charID == CHARACTER_ID_TAB)
+				{
+					countToRemove++;
+				}
+				else
+				{
+					break;
+				}
+			}
+			if(countToRemove > 0)
+			{
+				CHARACTER_BUFFER.splice(i + 1, countToRemove);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function alignBuffer(maxLineWidth:Number, currentLineWidth:Number, skipCount:int):void
+		{
+			const align:String = this.currentTextFormat.align;
+			if(align == TextFormatAlign.CENTER)
+			{
+				this.moveBufferedCharacters((maxLineWidth - currentLineWidth) / 2, 0, skipCount);
+			}
+			else if(align == TextFormatAlign.RIGHT)
+			{
+				this.moveBufferedCharacters(maxLineWidth - currentLineWidth, 0, skipCount);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function addBufferToBatch(skipCount:int):void
+		{
+			const charCount:int = CHARACTER_BUFFER.length - skipCount;
 			for(var i:int = 0; i < charCount; i++)
 			{
-				var charLocation:CharLocation = HELPER_VECTOR.shift();
+				var charLocation:CharLocation = CHARACTER_BUFFER.shift();
 				this.addCharacterToBatch(charLocation.char, charLocation.x, charLocation.y, charLocation.scale);
 				CHAR_LOCATION_POOL.push(charLocation);
 			}
@@ -570,12 +674,12 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function moveCurrentWordToNewLine(xOffset:Number, yOffset:Number):void
+		protected function moveBufferedCharacters(xOffset:Number, yOffset:Number, skipCount:int):void
 		{
-			const charCount:int = HELPER_VECTOR.length;
+			const charCount:int = CHARACTER_BUFFER.length - skipCount;
 			for(var i:int = 0; i < charCount; i++)
 			{
-				var charLocation:CharLocation = HELPER_VECTOR[i];
+				var charLocation:CharLocation = CHARACTER_BUFFER[i];
 				charLocation.x += xOffset;
 				charLocation.y += yOffset;
 			}
@@ -631,7 +735,7 @@ package feathers.controls.text
 		{
 			//if the maxWidth is infinity or the string is multiline, don't
 			//allow truncation
-			if(this._maxWidth == Number.POSITIVE_INFINITY || this._wordWrap || this._text.indexOf(String.fromCharCode(10)) >= 0 || this._text.indexOf(String.fromCharCode(13)) >= 0)
+			if(this._maxWidth == Number.POSITIVE_INFINITY || this._wordWrap || this._text.indexOf(String.fromCharCode(CHARACTER_ID_LINE_FEED)) >= 0 || this._text.indexOf(String.fromCharCode(CHARACTER_ID_CARRIAGE_RETURN)) >= 0)
 			{
 				return this._text;
 			}
@@ -642,9 +746,8 @@ package feathers.controls.text
 			const isKerningEnabled:Boolean = this.currentTextFormat.isKerningEnabled;
 			const scale:Number = isNaN(customSize) ? 1 : (customSize / font.size);
 			var currentX:Number = 0;
-			var lastCharID:Number = NaN;
+			var previousCharID:Number = NaN;
 			var charCount:int = this._text ? this._text.length : 0;
-			var isTruncated:Boolean = false;
 			var truncationIndex:int = -1;
 			for(var i:int = 0; i < charCount; i++)
 			{
@@ -655,9 +758,9 @@ package feathers.controls.text
 					continue;
 				}
 				var currentKerning:Number = 0;
-				if(isKerningEnabled && !isNaN(lastCharID))
+				if(isKerningEnabled && !isNaN(previousCharID))
 				{
-					currentKerning = charData.getKerning(lastCharID);
+					currentKerning = charData.getKerning(previousCharID);
 				}
 				currentX += currentKerning + charData.xAdvance * scale;
 				if(currentX > this._maxWidth)
@@ -666,7 +769,7 @@ package feathers.controls.text
 					break;
 				}
 				currentX += customLetterSpacing;
-				lastCharID = charID;
+				previousCharID = charID;
 			}
 
 			if(truncationIndex >= 0)
@@ -682,12 +785,12 @@ package feathers.controls.text
 						continue;
 					}
 					currentKerning = 0;
-					if(isKerningEnabled && !isNaN(lastCharID))
+					if(isKerningEnabled && !isNaN(previousCharID))
 					{
-						currentKerning = charData.getKerning(lastCharID);
+						currentKerning = charData.getKerning(previousCharID);
 					}
 					currentX += currentKerning + charData.xAdvance * scale + customLetterSpacing;
-					lastCharID = charID;
+					previousCharID = charID;
 				}
 				currentX -= customLetterSpacing;
 
@@ -695,16 +798,16 @@ package feathers.controls.text
 				for(i = truncationIndex; i >= 0; i--)
 				{
 					charID = this._text.charCodeAt(i);
-					lastCharID = i > 0 ? this._text.charCodeAt(i - 1) : NaN;
+					previousCharID = i > 0 ? this._text.charCodeAt(i - 1) : NaN;
 					charData = font.getChar(charID);
 					if(!charData)
 					{
 						continue;
 					}
 					currentKerning = 0;
-					if(isKerningEnabled && !isNaN(lastCharID))
+					if(isKerningEnabled && !isNaN(previousCharID))
 					{
-						currentKerning = charData.getKerning(lastCharID);
+						currentKerning = charData.getKerning(previousCharID);
 					}
 					currentX -= (currentKerning + charData.xAdvance * scale + customLetterSpacing);
 					if(currentX <= this._maxWidth)

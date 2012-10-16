@@ -24,6 +24,8 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package feathers.text
 {
+	import flash.text.TextFormatAlign;
+
 	import starling.text.BitmapFont;
 	import starling.text.TextField;
 
@@ -37,7 +39,7 @@ package feathers.text
 		/**
 		 * Constructor.
 		 */
-		public function BitmapFontTextFormat(font:Object, size:Number = NaN, color:uint = 0xffffff)
+		public function BitmapFontTextFormat(font:Object, size:Number = NaN, color:uint = 0xffffff, align:String = TextFormatAlign.LEFT)
 		{
 			if(font is String)
 			{
@@ -50,6 +52,7 @@ package feathers.text
 			this.font = BitmapFont(font);
 			this.size = size;
 			this.color = color;
+			this.align = align;
 		}
 
 		public function get fontName():String
@@ -78,6 +81,12 @@ package feathers.text
 		 * negative.
 		 */
 		public var letterSpacing:Number = 0;
+
+		[Inspectable(type="String",enumeration="left,center,right")]
+		/**
+		 * Determines the alignment of the text, either left, center, or right.
+		 */
+		public var align:String = TextFormatAlign.LEFT;
 		
 		/**
 		 * Determines if the kerning values defined in the BitmapFont instance
