@@ -24,7 +24,7 @@
  */
 package feathers.controls.popups
 {
-	import feathers.core.FeathersControl;
+	import feathers.core.IFeathersControl;
 	import feathers.core.PopUpManager;
 
 	import flash.errors.IllegalOperationError;
@@ -114,9 +114,9 @@ package feathers.controls.popups
 
 			this.content = content;
 			PopUpManager.addPopUp(this.content, true, false);
-			if(this.content is FeathersControl)
+			if(this.content is IFeathersControl)
 			{
-				const uiContent:FeathersControl = FeathersControl(this.content);
+				const uiContent:IFeathersControl = IFeathersControl(this.content);
 				uiContent.onResize.add(content_resizeHandler);
 			}
 			this.layout();
@@ -137,9 +137,9 @@ package feathers.controls.popups
 			Starling.current.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			Starling.current.stage.removeEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
 			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
-			if(this.content is FeathersControl)
+			if(this.content is IFeathersControl)
 			{
-				FeathersControl(this.content).onResize.remove(content_resizeHandler);
+				IFeathersControl(this.content).onResize.remove(content_resizeHandler);
 			}
 			PopUpManager.removePopUp(this.content);
 			this.content = null;
@@ -162,9 +162,9 @@ package feathers.controls.popups
 		{
 			const maxWidth:Number = Math.min(Starling.current.stage.stageWidth, Starling.current.stage.stageHeight) - this.marginLeft - this.marginRight;
 			const maxHeight:Number = Starling.current.stage.stageHeight - this.marginTop - this.marginBottom;
-			if(this.content is FeathersControl)
+			if(this.content is IFeathersControl)
 			{
-				const uiContent:FeathersControl = FeathersControl(this.content);
+				const uiContent:IFeathersControl = IFeathersControl(this.content);
 				uiContent.minWidth = uiContent.maxWidth = maxWidth;
 				uiContent.maxHeight = maxHeight;
 				uiContent.validate();
@@ -191,7 +191,7 @@ package feathers.controls.popups
 		/**
 		 * @private
 		 */
-		protected function content_resizeHandler(content:FeathersControl, oldWidth:Number, oldHeight:Number):void
+		protected function content_resizeHandler(content:IFeathersControl, oldWidth:Number, oldHeight:Number):void
 		{
 			this.layout();
 		}

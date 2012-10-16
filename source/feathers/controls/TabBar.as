@@ -841,7 +841,7 @@ package feathers.controls
 			else
 			{
 				const factory:Function = this._firstTabFactory != null ? this._firstTabFactory : this._tabFactory;
-				tab = factory();
+				tab = Button(factory());
 				if(this._customFirstTabName)
 				{
 					tab.nameList.add(this._customFirstTabName);
@@ -871,7 +871,7 @@ package feathers.controls
 			else
 			{
 				const factory:Function = this._lastTabFactory != null ? this._lastTabFactory : this._tabFactory;
-				tab = factory();
+				tab = Button(factory());
 				if(this._customLastTabName)
 				{
 					tab.nameList.add(this._customLastTabName);

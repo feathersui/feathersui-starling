@@ -24,10 +24,10 @@
  */
 package feathers.controls.supportClasses
 {
-	import org.osflash.signals.ISignal;
+	import feathers.core.IFeathersControl;
 
 	[ExcludeClass]
-	public interface IViewPort
+	public interface IViewPort extends IFeathersControl
 	{
 		function get visibleWidth():Number;
 		function set visibleWidth(value:Number):void;
@@ -48,10 +48,5 @@ package feathers.controls.supportClasses
 		function set verticalScrollPosition(value:Number):void;
 		function get horizontalScrollStep():Number;
 		function get verticalScrollStep():Number;
-
-		function get width():Number;
-		function get height():Number;
-
-		function get onResize():ISignal;
 	}
 }

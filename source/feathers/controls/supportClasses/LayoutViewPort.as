@@ -25,6 +25,7 @@
 package feathers.controls.supportClasses
 {
 	import feathers.core.FeathersControl;
+	import feathers.core.IFeathersControl;
 	import feathers.layout.ILayout;
 	import feathers.layout.IVirtualLayout;
 	import feathers.layout.LayoutBoundsResult;
@@ -239,9 +240,9 @@ package feathers.controls.supportClasses
 
 		override public function addChildAt(child:DisplayObject, index:int):DisplayObject
 		{
-			if(child is FeathersControl)
+			if(child is IFeathersControl)
 			{
-				FeathersControl(child).onResize.add(child_onResize);
+				IFeathersControl(child).onResize.add(child_onResize);
 			}
 			return super.addChildAt(child, index);
 		}
@@ -249,9 +250,9 @@ package feathers.controls.supportClasses
 		override public function removeChildAt(index:int, dispose:Boolean = false):DisplayObject
 		{
 			const child:DisplayObject = super.removeChildAt(index, dispose);
-			if(child is FeathersControl)
+			if(child is IFeathersControl)
 			{
-				FeathersControl(child).onResize.remove(child_onResize);
+				IFeathersControl(child).onResize.remove(child_onResize);
 			}
 			return child;
 		}
@@ -275,7 +276,7 @@ package feathers.controls.supportClasses
 				const itemCount:int = this.items.length;
 				for(var i:int = 0; i < itemCount; i++)
 				{
-					var control:FeathersControl = this.items[i] as FeathersControl;
+					var control:IFeathersControl = this.items[i] as IFeathersControl;
 					if(control)
 					{
 						control.validate();
@@ -317,7 +318,7 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
-		protected function child_onResize(child:FeathersControl, oldWidth:Number, oldHeight:Number):void
+		protected function child_onResize(child:IFeathersControl, oldWidth:Number, oldHeight:Number):void
 		{
 			if(this._ignoreChildResizing)
 			{

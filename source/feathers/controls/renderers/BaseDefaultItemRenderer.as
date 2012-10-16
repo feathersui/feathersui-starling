@@ -27,6 +27,7 @@ package feathers.controls.renderers
 	import feathers.controls.Button;
 	import feathers.controls.text.BitmapFontTextRenderer;
 	import feathers.core.FeathersControl;
+	import feathers.core.IFeathersControl;
 	import feathers.core.ITextRenderer;
 	import feathers.core.PropertyProxy;
 
@@ -131,7 +132,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected var _owner:FeathersControl;
+		protected var _owner:IFeathersControl;
 
 		/**
 		 * @private
@@ -1156,9 +1157,9 @@ package feathers.controls.renderers
 				return false;
 			}
 			this.labelTextRenderer.measureText(helperPoint);
-			if(this.accessory is FeathersControl)
+			if(this.accessory is IFeathersControl)
 			{
-				FeathersControl(this.accessory).validate();
+				IFeathersControl(this.accessory).validate();
 			}
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
@@ -1265,7 +1266,7 @@ package feathers.controls.renderers
 					this.accessory = newAccessory;
 					if(this.accessory)
 					{
-						if(this.accessory is FeathersControl && !(this.accessory is BitmapFontTextRenderer))
+						if(this.accessory is IFeathersControl && !(this.accessory is BitmapFontTextRenderer))
 						{
 							this.accessory.addEventListener(TouchEvent.TOUCH, accessory_touchHandler);
 						}
@@ -1369,8 +1370,8 @@ package feathers.controls.renderers
 				if(!this.accessoryLabel)
 				{
 					const factory:Function = this._accessoryLabelFactory != null ? this._accessoryLabelFactory : FeathersControl.defaultTextRendererFactory;
-					this.accessoryLabel = factory();
-					FeathersControl(this.accessoryLabel).nameList.add(this.accessoryLabelName);
+					this.accessoryLabel = ITextRenderer(factory());
+					this.accessoryLabel.nameList.add(this.accessoryLabelName);
 				}
 				this.accessoryLabel.text = label;
 			}
@@ -1386,9 +1387,9 @@ package feathers.controls.renderers
 		 */
 		override protected function layoutContent():void
 		{
-			if(this.accessory is FeathersControl)
+			if(this.accessory is IFeathersControl)
 			{
-				FeathersControl(this.accessory).validate();
+				IFeathersControl(this.accessory).validate();
 			}
 			var labelMaxWidth:Number = this.actualWidth - this._paddingLeft - this._paddingRight;
 			var adjustedGap:Number = this._gap == Number.POSITIVE_INFINITY ? Math.min(this._paddingLeft, this._paddingRight) : this._gap;
@@ -1402,22 +1403,21 @@ package feathers.controls.renderers
 				labelMaxWidth -= (this.accessory.width + adjustedGap);
 			}
 
-			const uiLabelRenderer:FeathersControl = FeathersControl(this.labelTextRenderer);
-			uiLabelRenderer.maxWidth = labelMaxWidth;
-			uiLabelRenderer.validate();
+			this.labelTextRenderer.maxWidth = labelMaxWidth;
+			this.labelTextRenderer.validate();
 
 			if(this.label)
 			{
-				this.positionLabelOrIcon(uiLabelRenderer);
+				this.positionLabelOrIcon(DisplayObject(this.labelTextRenderer));
 				if(this.accessory)
 				{
 					if(this._horizontalAlign == Button.HORIZONTAL_ALIGN_RIGHT)
 					{
-						uiLabelRenderer.x -= (this.accessory.width + adjustedGap);
+						this.labelTextRenderer.x -= (this.accessory.width + adjustedGap);
 					}
 					else if(this._horizontalAlign == Button.HORIZONTAL_ALIGN_CENTER)
 					{
-						uiLabelRenderer.x -= (this.accessory.width + adjustedGap) / 2;
+						this.labelTextRenderer.x -= (this.accessory.width + adjustedGap) / 2;
 					}
 				}
 				if(this.currentIcon)

@@ -28,6 +28,7 @@ package feathers.controls.supportClasses
 	import feathers.controls.Scroller;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.core.FeathersControl;
+	import feathers.core.IFeathersControl;
 	import feathers.core.PropertyProxy;
 	import feathers.data.ListCollection;
 	import feathers.layout.ILayout;
@@ -528,16 +529,12 @@ package feathers.controls.supportClasses
 			const rendererCount:int = this._activeRenderers.length;
 			for(var i:int = 0; i < rendererCount; i++)
 			{
-				var itemRenderer:DisplayObject = DisplayObject(this._activeRenderers[i]);
-				if(itemRenderer is FeathersControl)
+				const itemRenderer:IFeathersControl = IFeathersControl(this._activeRenderers[i]);
+				if(stateInvalid || dataInvalid || scrollInvalid || itemRendererInvalid)
 				{
-					const uiItemRenderer:FeathersControl = FeathersControl(itemRenderer);
-					if(stateInvalid || dataInvalid || scrollInvalid || itemRendererInvalid)
-					{
-						uiItemRenderer.isEnabled = this._isEnabled;
-					}
-					uiItemRenderer.validate();
+					itemRenderer.isEnabled = this._isEnabled;
 				}
+				itemRenderer.validate();
 			}
 
 			if(scrollInvalid || dataInvalid || itemRendererInvalid || sizeInvalid)
@@ -731,12 +728,12 @@ package feathers.controls.supportClasses
 					renderer = new this._itemRendererType();
 				}
 				renderer.onChange.add(renderer_onChange);
-				var displayRenderer:FeathersControl = FeathersControl(renderer);
+				var displayRenderer:IFeathersControl = IFeathersControl(renderer);
 				if(this._itemRendererName && this._itemRendererName.length > 0)
 				{
 					displayRenderer.nameList.add(this._itemRendererName);
 				}
-				this.addChild(displayRenderer);
+				this.addChild(DisplayObject(displayRenderer));
 			}
 			else
 			{
@@ -750,7 +747,7 @@ package feathers.controls.supportClasses
 			{
 				this._rendererMap[item] = renderer;
 				this._activeRenderers.push(renderer);
-				displayRenderer = FeathersControl(renderer);
+				displayRenderer = IFeathersControl(renderer);
 				displayRenderer.onResize.add(renderer_onResize);
 			}
 
@@ -760,9 +757,9 @@ package feathers.controls.supportClasses
 		private function destroyRenderer(renderer:IListItemRenderer):void
 		{
 			renderer.onChange.remove(renderer_onChange);
-			const displayRenderer:FeathersControl = FeathersControl(renderer);
+			const displayRenderer:IFeathersControl = IFeathersControl(renderer);
 			displayRenderer.onResize.remove(renderer_onResize);
-			this.removeChild(displayRenderer, true);
+			this.removeChild(DisplayObject(displayRenderer), true);
 		}
 
 		private function itemRendererProperties_onChange(proxy:PropertyProxy, name:Object):void
@@ -846,7 +843,7 @@ package feathers.controls.supportClasses
 				return;
 			}
 
-			const touches:Vector.<Touch> = event.getTouches(FeathersControl(this));
+			const touches:Vector.<Touch> = event.getTouches(this);
 			if(touches.length == 0)
 			{
 				return;

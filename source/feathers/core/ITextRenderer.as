@@ -29,7 +29,7 @@ package feathers.core
 	/**
 	 * Interface that handles common capabilities of rendering text.
 	 */
-	public interface ITextRenderer
+	public interface ITextRenderer extends IFeathersControl
 	{
 		/**
 		 * The text to render.

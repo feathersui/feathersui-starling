@@ -67,6 +67,7 @@ package feathers.controls.text
 		public function TextFieldTextRenderer()
 		{
 			this.isQuickHitAreaEnabled = true;
+			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 		}
 
@@ -473,7 +474,7 @@ package feathers.controls.text
 			{
 				return;
 			}
-			if(this._needsNewBitmap)
+			if(this._needsNewBitmap || !this._textSnapshotBitmapData)
 			{
 				if(this._textSnapshotBitmapData)
 				{
@@ -481,7 +482,6 @@ package feathers.controls.text
 				}
 				this._textSnapshotBitmapData = new BitmapData(this._snapshotWidth, this._snapshotHeight, true, 0x00ff00ff);
 			}
-
 			if(!this._textSnapshotBitmapData)
 			{
 				return;
@@ -515,6 +515,15 @@ package feathers.controls.text
 				}
 			}
 			this._needsNewBitmap = false;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function addedToStageHandler(event:Event):void
+		{
+			//we need to invalidate in order to get a fresh snapshot
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		/**

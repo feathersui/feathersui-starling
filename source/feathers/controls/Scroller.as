@@ -39,6 +39,7 @@ package feathers.controls
 
 	import feathers.controls.supportClasses.IViewPort;
 	import feathers.core.FeathersControl;
+	import feathers.core.IFeathersControl;
 	import feathers.core.PropertyProxy;
 	import feathers.display.ScrollRectManager;
 	import feathers.display.Sprite;
@@ -377,13 +378,13 @@ package feathers.controls
 			if(this._viewPort)
 			{
 				this._viewPort.onResize.remove(viewPort_onResize);
-				this._viewPortWrapper.removeChild(FeathersControl(this._viewPort));
+				this._viewPortWrapper.removeChild(DisplayObject(this._viewPort));
 			}
 			this._viewPort = value;
 			if(this._viewPort)
 			{
 				this._viewPort.onResize.add(viewPort_onResize);
-				this._viewPortWrapper.addChild(FeathersControl(this._viewPort));
+				this._viewPortWrapper.addChild(DisplayObject(this._viewPort));
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -1456,13 +1457,13 @@ package feathers.controls
 				this.refreshEnabled();
 			}
 
-			if(this.horizontalScrollBar is FeathersControl)
+			if(this.horizontalScrollBar)
 			{
-				FeathersControl(this.horizontalScrollBar).validate();
+				this.horizontalScrollBar.validate();
 			}
-			if(this.verticalScrollBar is FeathersControl)
+			if(this.verticalScrollBar)
 			{
-				FeathersControl(this.verticalScrollBar).validate();
+				this.verticalScrollBar.validate();
 			}
 
 			//even if fixed, we need to measure without them first
@@ -1543,11 +1544,8 @@ package feathers.controls
 			if(this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_NONE &&
 				this._horizontalScrollPolicy != SCROLL_POLICY_OFF && this._horizontalScrollBarFactory != null)
 			{
-				this.horizontalScrollBar = this._horizontalScrollBarFactory();
-				if(this.horizontalScrollBar is FeathersControl)
-				{
-					FeathersControl(this.horizontalScrollBar).nameList.add(this.horizontalScrollBarName);
-				}
+				this.horizontalScrollBar = IScrollBar(this._horizontalScrollBarFactory());
+				this.horizontalScrollBar.nameList.add(this.horizontalScrollBarName);
 				this.horizontalScrollBar.onChange.add(horizontalScrollBar_onChange);
 				const displayHorizontalScrollBar:DisplayObject = DisplayObject(this.horizontalScrollBar);
 				super.addChildAt(displayHorizontalScrollBar, this.numChildren);
@@ -1555,11 +1553,8 @@ package feathers.controls
 			if(this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_NONE &&
 				this._verticalScrollPolicy != SCROLL_POLICY_OFF && this._verticalScrollBarFactory != null)
 			{
-				this.verticalScrollBar = this._verticalScrollBarFactory();
-				if(this.verticalScrollBar is FeathersControl)
-				{
-					FeathersControl(this.verticalScrollBar).nameList.add(this.verticalScrollBarName);
-				}
+				this.verticalScrollBar = IScrollBar(this._verticalScrollBarFactory());
+				this.verticalScrollBar.nameList.add(this.verticalScrollBarName);
 				this.verticalScrollBar.onChange.add(verticalScrollBar_onChange);
 				const displayVerticalScrollBar:DisplayObject = DisplayObject(this.verticalScrollBar);
 				super.addChildAt(displayVerticalScrollBar, this.numChildren);
@@ -1620,15 +1615,15 @@ package feathers.controls
 		{
 			if(this._viewPort)
 			{
-				FeathersControl(this._viewPort).isEnabled = this._isEnabled;
+				this._viewPort.isEnabled = this._isEnabled;
 			}
 			if(this.horizontalScrollBar)
 			{
-				FeathersControl(this.horizontalScrollBar).isEnabled = this._isEnabled;
+				this.horizontalScrollBar.isEnabled = this._isEnabled;
 			}
 			if(this.verticalScrollBar)
 			{
-				FeathersControl(this.verticalScrollBar).isEnabled = this._isEnabled;
+				this.verticalScrollBar.isEnabled = this._isEnabled;
 			}
 		}
 
@@ -1676,7 +1671,7 @@ package feathers.controls
 			{
 				this.ignoreViewPortResizing = true;
 			}
-			FeathersControl(this._viewPort).validate();
+			this._viewPort.validate();
 			this.ignoreViewPortResizing = false;
 
 			//in fixed mode, if we determine that scrolling is required, we
@@ -1732,7 +1727,7 @@ package feathers.controls
 			//and the final actual bounds
 			this._viewPort.visibleWidth = this.actualWidth - this._verticalScrollBarWidthOffset;
 			this._viewPort.visibleHeight = this.actualHeight - this._horizontalScrollBarHeightOffset;
-			FeathersControl(viewPort).validate();
+			this._viewPort.validate();
 		}
 
 		/**
@@ -1875,13 +1870,13 @@ package feathers.controls
 		 */
 		protected function layout():void
 		{
-			if(this.horizontalScrollBar is FeathersControl)
+			if(this.horizontalScrollBar)
 			{
-				FeathersControl(this.horizontalScrollBar).validate();
+				this.horizontalScrollBar.validate();
 			}
-			if(this.verticalScrollBar is FeathersControl)
+			if(this.verticalScrollBar)
 			{
-				FeathersControl(this.verticalScrollBar).validate();
+				this.verticalScrollBar.validate();
 			}
 
 			const displayHorizontalScrollBar:DisplayObject = this.horizontalScrollBar as DisplayObject;
@@ -2249,7 +2244,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function viewPort_onResize(viewPort:FeathersControl, oldWidth:Number, oldHeight:Number):void
+		protected function viewPort_onResize(viewPort:IFeathersControl, oldWidth:Number, oldHeight:Number):void
 		{
 			if(this.ignoreViewPortResizing ||
 				(this._viewPort.width == this._lastViewPortWidth && this._viewPort.height == this._lastViewPortHeight))

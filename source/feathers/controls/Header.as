@@ -25,6 +25,7 @@
 package feathers.controls
 {
 	import feathers.core.FeathersControl;
+	import feathers.core.IFeathersControl;
 	import feathers.core.ITextRenderer;
 	import feathers.core.PropertyProxy;
 	import feathers.layout.HorizontalLayout;
@@ -240,9 +241,9 @@ package feathers.controls
 			{
 				for each(var item:DisplayObject in this._leftItems)
 				{
-					if(item is FeathersControl)
+					if(item is IFeathersControl)
 					{
-						FeathersControl(item).nameList.remove(this.itemName);
+						IFeathersControl(item).nameList.remove(this.itemName);
 					}
 					item.removeFromParent();
 				}
@@ -277,9 +278,9 @@ package feathers.controls
 			{
 				for each(var item:DisplayObject in this._rightItems)
 				{
-					if(item is FeathersControl)
+					if(item is IFeathersControl)
 					{
-						FeathersControl(item).nameList.remove(this.itemName);
+						IFeathersControl(item).nameList.remove(this.itemName);
 					}
 					item.removeFromParent();
 				}
@@ -657,7 +658,7 @@ package feathers.controls
 				{
 					for each(var item:DisplayObject in this._leftItems)
 					{
-						if(item is FeathersControl)
+						if(item is IFeathersControl)
 						{
 							FeathersControl(item).nameList.add(this.itemName);
 						}
@@ -672,7 +673,7 @@ package feathers.controls
 				{
 					for each(item in this._rightItems)
 					{
-						FeathersControl(item).nameList.add(this.itemName);
+						IFeathersControl(item).nameList.add(this.itemName);
 						this.addChild(item);
 					}
 				}
@@ -735,9 +736,9 @@ package feathers.controls
 			var totalItemWidth:Number = 0;
 			for each(var item:DisplayObject in this._leftItems)
 			{
-				if(item is FeathersControl)
+				if(item is IFeathersControl)
 				{
-					FeathersControl(item).validate();
+					IFeathersControl(item).validate();
 				}
 				if(needsWidth && !isNaN(item.width))
 				{
@@ -750,9 +751,9 @@ package feathers.controls
 			}
 			for each(item in this._rightItems)
 			{
-				if(item is FeathersControl)
+				if(item is IFeathersControl)
 				{
-					FeathersControl(item).validate();
+					IFeathersControl(item).validate();
 				}
 				if(needsWidth && !isNaN(item.width))
 				{
@@ -766,7 +767,7 @@ package feathers.controls
 			newWidth += totalItemWidth;
 
 			const maxTitleWidth:Number = (needsWidth ? this._maxWidth : this.explicitWidth) - totalItemWidth - this._paddingLeft - this._paddingRight;
-			FeathersControl(this._titleRenderer).maxWidth = maxTitleWidth;
+			this._titleRenderer.maxWidth = maxTitleWidth;
 			this._titleRenderer.measureText(helperPoint);
 			if(needsWidth)
 			{
@@ -799,16 +800,16 @@ package feathers.controls
 		{
 			if(this._titleRenderer)
 			{
-				this.removeChild(FeathersControl(this._titleRenderer), true);
+				this.removeChild(DisplayObject(this._titleRenderer), true);
 				this._titleRenderer = null;
 			}
 
 			const factory:Function = this._titleFactory != null ? this._titleFactory : FeathersControl.defaultTextRendererFactory;
-			this._titleRenderer = factory();
-			const uiTitleRenderer:FeathersControl = FeathersControl(this._titleRenderer);
+			this._titleRenderer = ITextRenderer(factory());
+			const uiTitleRenderer:IFeathersControl = IFeathersControl(this._titleRenderer);
 			uiTitleRenderer.nameList.add(this.titleName);
 			uiTitleRenderer.touchable = false;
-			this.addChild(uiTitleRenderer);
+			this.addChild(DisplayObject(uiTitleRenderer));
 		}
 
 		/**
@@ -827,13 +828,13 @@ package feathers.controls
 		 */
 		protected function refreshTitleStyles():void
 		{
-			const uiTitleRenderer:FeathersControl = FeathersControl(this._titleRenderer);
+			const displayTitleRenderer:DisplayObject = DisplayObject(this._titleRenderer);
 			for(var propertyName:String in this._titleProperties)
 			{
-				if(uiTitleRenderer.hasOwnProperty(propertyName))
+				if(displayTitleRenderer.hasOwnProperty(propertyName))
 				{
 					var propertyValue:Object = this._titleProperties[propertyName];
-					uiTitleRenderer[propertyName] = propertyValue;
+					displayTitleRenderer[propertyName] = propertyValue;
 				}
 			}
 		}
@@ -874,9 +875,9 @@ package feathers.controls
 		{
 			for each(var item:DisplayObject in this._leftItems)
 			{
-				if(item is FeathersControl)
+				if(item is IFeathersControl)
 				{
-					FeathersControl(item).validate();
+					IFeathersControl(item).validate();
 				}
 			}
 			helperBounds.x = helperBounds.y = 0;
@@ -897,9 +898,9 @@ package feathers.controls
 		{
 			for each(var item:DisplayObject in this._rightItems)
 			{
-				if(item is FeathersControl)
+				if(item is IFeathersControl)
 				{
-					FeathersControl(item).validate();
+					IFeathersControl(item).validate();
 				}
 			}
 			helperBounds.x = helperBounds.y = 0;
@@ -921,40 +922,39 @@ package feathers.controls
 			{
 				return;
 			}
-			const uiTitleRenderer:FeathersControl = FeathersControl(this._titleRenderer);
 			const leftOffset:Number = (this._leftItems && this._leftItems.length > 0) ? (this.leftItemsWidth + this._gap) : 0;
 			const rightOffset:Number = (this._rightItems && this._rightItems.length > 0) ? (this.rightItemsWidth + this._gap) : 0;
 			if(this._titleAlign == TITLE_ALIGN_PREFER_LEFT && (!this._leftItems || this._leftItems.length == 0))
 			{
-				uiTitleRenderer.maxWidth = this.actualWidth - this._paddingLeft - this._paddingRight - rightOffset;
-				uiTitleRenderer.validate();
-				uiTitleRenderer.x = this._paddingLeft;
+				this._titleRenderer.maxWidth = this.actualWidth - this._paddingLeft - this._paddingRight - rightOffset;
+				this._titleRenderer.validate();
+				this._titleRenderer.x = this._paddingLeft;
 			}
 			else if(this._titleAlign == TITLE_ALIGN_PREFER_RIGHT && (!this._rightItems || this._rightItems.length == 0))
 			{
-				uiTitleRenderer.maxWidth = this.actualWidth - this._paddingLeft - this._paddingRight - leftOffset;
-				uiTitleRenderer.validate();
-				uiTitleRenderer.x = this.actualWidth - this._paddingRight - uiTitleRenderer.width;
+				this._titleRenderer.maxWidth = this.actualWidth - this._paddingLeft - this._paddingRight - leftOffset;
+				this._titleRenderer.validate();
+				this._titleRenderer.x = this.actualWidth - this._paddingRight - this._titleRenderer.width;
 			}
 			else
 			{
 				const sharedOffset:Number = Math.max(leftOffset, rightOffset);
 				const availableWidth:Number = this.actualWidth - this._paddingLeft - this._paddingRight - 2 * sharedOffset;
-				uiTitleRenderer.maxWidth = availableWidth;
-				uiTitleRenderer.validate();
-				uiTitleRenderer.x = this._paddingLeft + sharedOffset + (availableWidth - uiTitleRenderer.width) / 2;
+				this._titleRenderer.maxWidth = availableWidth;
+				this._titleRenderer.validate();
+				this._titleRenderer.x = this._paddingLeft + sharedOffset + (availableWidth - this._titleRenderer.width) / 2;
 			}
 			if(this._verticalAlign == VERTICAL_ALIGN_TOP)
 			{
-				uiTitleRenderer.y = this._paddingTop;
+				this._titleRenderer.y = this._paddingTop;
 			}
 			else if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
 			{
-				uiTitleRenderer.y = this.actualHeight - this._paddingBottom - uiTitleRenderer.height;
+				this._titleRenderer.y = this.actualHeight - this._paddingBottom - this._titleRenderer.height;
 			}
 			else
 			{
-				uiTitleRenderer.y = (this.actualHeight - uiTitleRenderer.height) / 2;
+				this._titleRenderer.y = (this.actualHeight - this._titleRenderer.height) / 2;
 			}
 		}
 

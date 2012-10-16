@@ -30,6 +30,8 @@ package feathers.controls
 
 	import flash.geom.Point;
 
+	import starling.display.DisplayObject;
+
 	/**
 	 * Displays text.
 	 *
@@ -216,7 +218,7 @@ package feathers.controls
 			{
 				return false;
 			}
-			FeathersControl(this.textRenderer).maxWidth = needsWidth ? this._maxWidth : this.explicitWidth;
+			this.textRenderer.maxWidth = needsWidth ? this._maxWidth : this.explicitWidth;
 			this.textRenderer.measureText(HELPER_POINT);
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
@@ -254,14 +256,13 @@ package feathers.controls
 		{
 			if(this.textRenderer)
 			{
-				this.removeChild(FeathersControl(this.textRenderer), true);
+				this.removeChild(DisplayObject(this.textRenderer), true);
 				this.textRenderer = null;
 			}
 
 			const factory:Function = this._textRendererFactory != null ? this._textRendererFactory : FeathersControl.defaultTextRendererFactory;
-			this.textRenderer = factory();
-			const uiLabelRenderer:FeathersControl = FeathersControl(this.textRenderer);
-			this.addChild(uiLabelRenderer);
+			this.textRenderer = ITextRenderer(factory());
+			this.addChild(DisplayObject(this.textRenderer));
 		}
 
 		/**
@@ -269,7 +270,7 @@ package feathers.controls
 		 */
 		protected function refreshEnabled():void
 		{
-			FeathersControl(this.textRenderer).isEnabled = this._isEnabled;
+			this.textRenderer.isEnabled = this._isEnabled;
 		}
 
 		/**
@@ -278,7 +279,7 @@ package feathers.controls
 		protected function refreshTextRendererData():void
 		{
 			this.textRenderer.text = this._text;
-			FeathersControl(this.textRenderer).visible = this._text.length > 0;
+			this.textRenderer.visible = this._text.length > 0;
 		}
 
 		/**
@@ -286,13 +287,13 @@ package feathers.controls
 		 */
 		protected function refreshTextRendererStyles():void
 		{
-			const uiTextRenderer:FeathersControl = FeathersControl(this.textRenderer);
+			const displayTextRenderer:DisplayObject = DisplayObject(this.textRenderer);
 			for(var propertyName:String in this._textRendererProperties)
 			{
-				if(uiTextRenderer.hasOwnProperty(propertyName))
+				if(displayTextRenderer.hasOwnProperty(propertyName))
 				{
 					var propertyValue:Object = this._textRendererProperties[propertyName];
-					uiTextRenderer[propertyName] = propertyValue;
+					displayTextRenderer[propertyName] = propertyValue;
 				}
 			}
 		}
@@ -302,7 +303,7 @@ package feathers.controls
 		 */
 		protected function layout():void
 		{
-			FeathersControl(this.textRenderer).maxWidth = this.actualWidth;
+			this.textRenderer.maxWidth = this.actualWidth;
 		}
 
 		/**
