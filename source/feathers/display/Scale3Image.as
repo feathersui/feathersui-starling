@@ -46,8 +46,8 @@ package feathers.display
 	 */
 	public class Scale3Image extends Sprite
 	{
-		private static const helperMatrix:Matrix = new Matrix();
-		private static const helperPoint:Point = new Point();
+		private static const HELPER_MATRIX:Matrix = new Matrix();
+		private static const HELPER_POINT:Point = new Point();
 		private static var helperImage:starling.display.Image;
 
 		/**
@@ -271,31 +271,31 @@ package feathers.display
 			}
 			else
 			{
-				this.getTransformationMatrix(targetSpace, helperMatrix);
+				this.getTransformationMatrix(targetSpace, HELPER_MATRIX);
 
-				MatrixUtil.transformCoords(helperMatrix, this._hitArea.x, this._hitArea.y, helperPoint);
-				minX = minX < helperPoint.x ? minX : helperPoint.x;
-				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
-				minY = minY < helperPoint.y ? minY : helperPoint.y;
-				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
+				MatrixUtil.transformCoords(HELPER_MATRIX, this._hitArea.x, this._hitArea.y, HELPER_POINT);
+				minX = minX < HELPER_POINT.x ? minX : HELPER_POINT.x;
+				maxX = maxX > HELPER_POINT.x ? maxX : HELPER_POINT.x;
+				minY = minY < HELPER_POINT.y ? minY : HELPER_POINT.y;
+				maxY = maxY > HELPER_POINT.y ? maxY : HELPER_POINT.y;
 
-				MatrixUtil.transformCoords(helperMatrix, this._hitArea.x, this._hitArea.y + this._hitArea.height, helperPoint);
-				minX = minX < helperPoint.x ? minX : helperPoint.x;
-				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
-				minY = minY < helperPoint.y ? minY : helperPoint.y;
-				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
+				MatrixUtil.transformCoords(HELPER_MATRIX, this._hitArea.x, this._hitArea.y + this._hitArea.height, HELPER_POINT);
+				minX = minX < HELPER_POINT.x ? minX : HELPER_POINT.x;
+				maxX = maxX > HELPER_POINT.x ? maxX : HELPER_POINT.x;
+				minY = minY < HELPER_POINT.y ? minY : HELPER_POINT.y;
+				maxY = maxY > HELPER_POINT.y ? maxY : HELPER_POINT.y;
 
-				MatrixUtil.transformCoords(helperMatrix, this._hitArea.x + this._hitArea.width, this._hitArea.y, helperPoint);
-				minX = minX < helperPoint.x ? minX : helperPoint.x;
-				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
-				minY = minY < helperPoint.y ? minY : helperPoint.y;
-				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
+				MatrixUtil.transformCoords(HELPER_MATRIX, this._hitArea.x + this._hitArea.width, this._hitArea.y, HELPER_POINT);
+				minX = minX < HELPER_POINT.x ? minX : HELPER_POINT.x;
+				maxX = maxX > HELPER_POINT.x ? maxX : HELPER_POINT.x;
+				minY = minY < HELPER_POINT.y ? minY : HELPER_POINT.y;
+				maxY = maxY > HELPER_POINT.y ? maxY : HELPER_POINT.y;
 
-				MatrixUtil.transformCoords(helperMatrix, this._hitArea.x + this._hitArea.width, this._hitArea.y + this._hitArea.height, helperPoint);
-				minX = minX < helperPoint.x ? minX : helperPoint.x;
-				maxX = maxX > helperPoint.x ? maxX : helperPoint.x;
-				minY = minY < helperPoint.y ? minY : helperPoint.y;
-				maxY = maxY > helperPoint.y ? maxY : helperPoint.y;
+				MatrixUtil.transformCoords(HELPER_MATRIX, this._hitArea.x + this._hitArea.width, this._hitArea.y + this._hitArea.height, HELPER_POINT);
+				minX = minX < HELPER_POINT.x ? minX : HELPER_POINT.x;
+				maxX = maxX > HELPER_POINT.x ? maxX : HELPER_POINT.x;
+				minY = minY < HELPER_POINT.y ? minY : HELPER_POINT.y;
+				maxY = maxY > HELPER_POINT.y ? maxY : HELPER_POINT.y;
 			}
 
 			resultRect.x = minX;

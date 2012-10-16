@@ -58,10 +58,10 @@ package feathers.controls.supportClasses
 	{
 		protected static const INVALIDATION_FLAG_ITEM_RENDERER_FACTORY:String = "itemRendererFactory";
 
-		private static const helperPoint:Point = new Point();
-		private static const helperBounds:ViewPortBounds = new ViewPortBounds();
-		private static const helperResult:LayoutBoundsResult = new LayoutBoundsResult();
-		private static const helperVector:Vector.<int> = new <int>[];
+		private static const HELPER_POINT:Point = new Point();
+		private static const HELPER_BOUNDS:ViewPortBounds = new ViewPortBounds();
+		private static const HELPER_LAYOUT_RESULT:LayoutBoundsResult = new LayoutBoundsResult();
+		private static const HELPER_VECTOR:Vector.<int> = new <int>[];
 
 		public function GroupedListDataViewPort()
 		{
@@ -971,11 +971,11 @@ package feathers.controls.supportClasses
 			if(scrollInvalid || dataInvalid || itemRendererInvalid || sizeInvalid)
 			{
 				this._ignoreRendererResizing = true;
-				this._layout.layout(this._layoutItems, helperBounds, helperResult);
+				this._layout.layout(this._layoutItems, HELPER_BOUNDS, HELPER_LAYOUT_RESULT);
 				this._ignoreRendererResizing = false;
-				this.setSizeInternal(helperResult.contentWidth, helperResult.contentHeight, false);
-				this.actualVisibleWidth = helperResult.viewPortWidth;
-				this.actualVisibleHeight = helperResult.viewPortHeight;
+				this.setSizeInternal(HELPER_LAYOUT_RESULT.contentWidth, HELPER_LAYOUT_RESULT.contentHeight, false);
+				this.actualVisibleWidth = HELPER_LAYOUT_RESULT.viewPortWidth;
+				this.actualVisibleHeight = HELPER_LAYOUT_RESULT.viewPortHeight;
 			}
 		}
 
@@ -1348,13 +1348,13 @@ package feathers.controls.supportClasses
 			this._headerIndices.length = 0;
 			this._footerIndices.length = 0;
 
-			helperBounds.x = helperBounds.y = 0;
-			helperBounds.explicitWidth = this.explicitVisibleWidth;
-			helperBounds.explicitHeight = this.explicitVisibleHeight;
-			helperBounds.minWidth = this._minVisibleWidth;
-			helperBounds.minHeight = this._minVisibleHeight;
-			helperBounds.maxWidth = this._maxVisibleWidth;
-			helperBounds.maxHeight = this._maxVisibleHeight;
+			HELPER_BOUNDS.x = HELPER_BOUNDS.y = 0;
+			HELPER_BOUNDS.explicitWidth = this.explicitVisibleWidth;
+			HELPER_BOUNDS.explicitHeight = this.explicitVisibleHeight;
+			HELPER_BOUNDS.minWidth = this._minVisibleWidth;
+			HELPER_BOUNDS.minHeight = this._minVisibleHeight;
+			HELPER_BOUNDS.maxWidth = this._maxVisibleWidth;
+			HELPER_BOUNDS.maxHeight = this._maxVisibleHeight;
 
 			this.findUnrenderedData();
 			this.recoverInactiveRenderers();
@@ -1485,17 +1485,17 @@ package feathers.controls.supportClasses
 				virtualLayout.typicalItemWidth = this._typicalItemWidth;
 				virtualLayout.typicalItemHeight = this._typicalItemHeight;
 				this._ignoreLayoutChanges = false;
-				virtualLayout.measureViewPort(totalLayoutCount, helperBounds, helperPoint);
-				virtualLayout.getVisibleIndicesAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, helperPoint.x, helperPoint.y, totalLayoutCount, helperVector);
+				virtualLayout.measureViewPort(totalLayoutCount, HELPER_BOUNDS, HELPER_POINT);
+				virtualLayout.getVisibleIndicesAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, HELPER_POINT.x, HELPER_POINT.y, totalLayoutCount, HELPER_VECTOR);
 
 				averageItemsPerGroup /= groupCount;
-				this._minimumFirstAndLastItemCount = this._minimumSingleItemCount = this._minimumHeaderCount = this._minimumFooterCount = Math.ceil(helperPoint.y / (this._typicalItemHeight * averageItemsPerGroup));
+				this._minimumFirstAndLastItemCount = this._minimumSingleItemCount = this._minimumHeaderCount = this._minimumFooterCount = Math.ceil(HELPER_POINT.y / (this._typicalItemHeight * averageItemsPerGroup));
 				this._minimumHeaderCount = Math.min(this._minimumHeaderCount, totalHeaderCount);
 				this._minimumFooterCount = Math.min(this._minimumFooterCount, totalFooterCount);
 				this._minimumSingleItemCount = Math.min(this._minimumSingleItemCount, totalSingleItemCount);
 
 				//assumes that zero headers/footers might be visible
-				this._minimumItemCount = Math.ceil(helperPoint.y / this._typicalItemHeight) + 1;
+				this._minimumItemCount = Math.ceil(HELPER_POINT.y / this._typicalItemHeight) + 1;
 			}
 			var currentIndex:int = 0;
 			for(i = 0; i < groupCount; i++)
@@ -1505,7 +1505,7 @@ package feathers.controls.supportClasses
 				if(header !== null)
 				{
 					//the end index is included in the visible items
-					if(useVirtualLayout && helperVector.indexOf(currentIndex) < 0)
+					if(useVirtualLayout && HELPER_VECTOR.indexOf(currentIndex) < 0)
 					{
 						this._layoutItems[currentIndex] = null;
 					}
@@ -1534,7 +1534,7 @@ package feathers.controls.supportClasses
 				var currentGroupLastIndex:int = currentItemCount - 1;
 				for(var j:int = 0; j < currentItemCount; j++)
 				{
-					if(useVirtualLayout && helperVector.indexOf(currentIndex) < 0)
+					if(useVirtualLayout && HELPER_VECTOR.indexOf(currentIndex) < 0)
 					{
 						this._layoutItems[currentIndex] = null;
 					}
@@ -1567,7 +1567,7 @@ package feathers.controls.supportClasses
 				var footer:Object = this._owner.groupToFooterData(group);
 				if(footer !== null)
 				{
-					if(useVirtualLayout && helperVector.indexOf(currentIndex) < 0)
+					if(useVirtualLayout && HELPER_VECTOR.indexOf(currentIndex) < 0)
 					{
 						this._layoutItems[currentIndex] = null;
 					}

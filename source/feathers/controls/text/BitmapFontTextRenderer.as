@@ -187,7 +187,8 @@ package feathers.controls.text
 		 * @private
 		 */
 		private var _smoothing:String = TextureSmoothing.BILINEAR;
-		
+
+		[Inspectable(type="String",enumeration="bilinear,trilinear,none")]
 		/**
 		 * A smoothing value passed to each character image.
 		 *

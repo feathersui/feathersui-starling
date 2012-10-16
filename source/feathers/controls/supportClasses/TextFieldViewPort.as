@@ -45,8 +45,8 @@ package feathers.controls.supportClasses
 	 */
 	public class TextFieldViewPort extends FeathersControl implements IViewPort
 	{
-		private static const helperMatrix:Matrix = new Matrix();
-		private static const helperPoint:Point = new Point();
+		private static const HELPER_MATRIX:Matrix = new Matrix();
+		private static const HELPER_POINT:Point = new Point();
 
 		public function TextFieldViewPort()
 		{
@@ -399,12 +399,12 @@ package feathers.controls.supportClasses
 		override public function render(support:RenderSupport, alpha:Number):void
 		{
 			const starlingViewPort:Rectangle = Starling.current.viewPort;
-			helperPoint.x = helperPoint.y = 0;
-			this.parent.parent.getTransformationMatrix(this.stage, helperMatrix);
-			MatrixUtil.transformCoords(helperMatrix, 0, 0, helperPoint);
-			ScrollRectManager.toStageCoordinates(helperPoint, this.parent.parent);
-			this._textFieldContainer.x = starlingViewPort.x + helperPoint.x * Starling.contentScaleFactor;
-			this._textFieldContainer.y = starlingViewPort.y + helperPoint.y * Starling.contentScaleFactor;
+			HELPER_POINT.x = HELPER_POINT.y = 0;
+			this.parent.parent.getTransformationMatrix(this.stage, HELPER_MATRIX);
+			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
+			ScrollRectManager.toStageCoordinates(HELPER_POINT, this.parent.parent);
+			this._textFieldContainer.x = starlingViewPort.x + HELPER_POINT.x * Starling.contentScaleFactor;
+			this._textFieldContainer.y = starlingViewPort.y + HELPER_POINT.y * Starling.contentScaleFactor;
 			this._textFieldContainer.scaleX = this._textFieldContainer.scaleY =  Starling.contentScaleFactor;
 			this._textFieldContainer.visible = true;
 			super.render(support, alpha);

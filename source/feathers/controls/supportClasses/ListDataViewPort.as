@@ -57,10 +57,10 @@ package feathers.controls.supportClasses
 	{
 		protected static const INVALIDATION_FLAG_ITEM_RENDERER_FACTORY:String = "itemRendererFactory";
 
-		private static const helperPoint:Point = new Point();
-		private static const helperBounds:ViewPortBounds = new ViewPortBounds();
-		private static const helperResult:LayoutBoundsResult = new LayoutBoundsResult();
-		private static const helperVector:Vector.<int> = new <int>[];
+		private static const HELPER_POINT:Point = new Point();
+		private static const HELPER_BOUNDS:ViewPortBounds = new ViewPortBounds();
+		private static const HELPER_LAYOUT_RESULT:LayoutBoundsResult = new LayoutBoundsResult();
+		private static const HELPER_VECTOR:Vector.<int> = new <int>[];
 
 		public function ListDataViewPort()
 		{
@@ -540,11 +540,11 @@ package feathers.controls.supportClasses
 			if(scrollInvalid || dataInvalid || itemRendererInvalid || sizeInvalid)
 			{
 				this._ignoreRendererResizing = true;
-				this._layout.layout(this._layoutItems, helperBounds, helperResult);
+				this._layout.layout(this._layoutItems, HELPER_BOUNDS, HELPER_LAYOUT_RESULT);
 				this._ignoreRendererResizing = false;
-				this.setSizeInternal(helperResult.contentWidth, helperResult.contentHeight, false);
-				this.actualVisibleWidth = helperResult.viewPortWidth;
-				this.actualVisibleHeight = helperResult.viewPortHeight;
+				this.setSizeInternal(HELPER_LAYOUT_RESULT.contentWidth, HELPER_LAYOUT_RESULT.contentHeight, false);
+				this.actualVisibleWidth = HELPER_LAYOUT_RESULT.viewPortWidth;
+				this.actualVisibleHeight = HELPER_LAYOUT_RESULT.viewPortHeight;
 			}
 		}
 		
@@ -627,13 +627,13 @@ package feathers.controls.supportClasses
 			this._layoutItems.length = 0;
 			this._layoutItems.length = this._dataProvider ? this._dataProvider.length : 0;
 
-			helperBounds.x = helperBounds.y = 0;
-			helperBounds.explicitWidth = this.explicitVisibleWidth;
-			helperBounds.explicitHeight = this.explicitVisibleHeight;
-			helperBounds.minWidth = this._minVisibleWidth;
-			helperBounds.minHeight = this._minVisibleHeight;
-			helperBounds.maxWidth = this._maxVisibleWidth;
-			helperBounds.maxHeight = this._maxVisibleHeight;
+			HELPER_BOUNDS.x = HELPER_BOUNDS.y = 0;
+			HELPER_BOUNDS.explicitWidth = this.explicitVisibleWidth;
+			HELPER_BOUNDS.explicitHeight = this.explicitVisibleHeight;
+			HELPER_BOUNDS.minWidth = this._minVisibleWidth;
+			HELPER_BOUNDS.minHeight = this._minVisibleHeight;
+			HELPER_BOUNDS.maxWidth = this._maxVisibleWidth;
+			HELPER_BOUNDS.maxHeight = this._maxVisibleHeight;
 
 			this.findUnrenderedData();
 			this.recoverInactiveRenderers();
@@ -652,13 +652,13 @@ package feathers.controls.supportClasses
 				virtualLayout.typicalItemWidth = this._typicalItemWidth;
 				virtualLayout.typicalItemHeight = this._typicalItemHeight;
 				this._ignoreLayoutChanges = false;
-				virtualLayout.measureViewPort(itemCount, helperBounds, helperPoint);
-				virtualLayout.getVisibleIndicesAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, helperPoint.x, helperPoint.y, itemCount, helperVector);
+				virtualLayout.measureViewPort(itemCount, HELPER_BOUNDS, HELPER_POINT);
+				virtualLayout.getVisibleIndicesAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, HELPER_POINT.x, HELPER_POINT.y, itemCount, HELPER_VECTOR);
 			}
-			const unrenderedItemCount:int = helperVector.length;
+			const unrenderedItemCount:int = HELPER_VECTOR.length;
 			for(var i:int = 0; i < unrenderedItemCount; i++)
 			{
-				var index:int = helperVector[i];
+				var index:int = HELPER_VECTOR[i];
 				if(index < 0 || index >= itemCount)
 				{
 					continue;

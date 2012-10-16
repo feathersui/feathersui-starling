@@ -36,7 +36,10 @@ package feathers.layout
 	 */
 	public class VerticalLayout implements IVariableVirtualLayout
 	{
-		private static const helperVector:Vector.<DisplayObject> = new <DisplayObject>[];
+		/**
+		 * @private
+		 */
+		private static const HELPER_VECTOR:Vector.<DisplayObject> = new <DisplayObject>[];
 
 		/**
 		 * If the total item height is smaller than the height of the bounds,
@@ -384,6 +387,7 @@ package feathers.layout
 		 */
 		protected var _scrollPositionVerticalAlign:String = VERTICAL_ALIGN_MIDDLE;
 
+		[Inspectable(type="String",enumeration="top,middle,bottom")]
 		/**
 		 * When the scroll position is calculated for an item, an attempt will
 		 * be made to align the item to this position.
@@ -428,7 +432,7 @@ package feathers.layout
 			const explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
 			const explicitHeight:Number = viewPortBounds ? viewPortBounds.explicitHeight : NaN;
 
-			helperVector.length = 0;
+			HELPER_VECTOR.length = 0;
 			var maxItemWidth:Number = this._useVirtualLayout ? this._typicalItemWidth : 0;
 			var positionY:Number = boundsY + this._paddingTop;
 			const itemCount:int = items.length;
@@ -468,12 +472,12 @@ package feathers.layout
 					maxItemWidth = Math.max(maxItemWidth, item.width);
 					if(this._useVirtualLayout)
 					{
-						helperVector.push(item);
+						HELPER_VECTOR.push(item);
 					}
 				}
 			}
 
-			const discoveredItems:Vector.<DisplayObject> = this._useVirtualLayout ? helperVector : items;
+			const discoveredItems:Vector.<DisplayObject> = this._useVirtualLayout ? HELPER_VECTOR : items;
 			const totalWidth:Number = maxItemWidth + this._paddingLeft + this._paddingRight;
 			const availableWidth:Number = isNaN(explicitWidth) ? Math.min(maxWidth, Math.max(minWidth, totalWidth)) : explicitWidth;
 			const discoveredItemCount:int = discoveredItems.length;
@@ -527,7 +531,7 @@ package feathers.layout
 					}
 				}
 			}
-			helperVector.length = 0;
+			HELPER_VECTOR.length = 0;
 
 			if(!result)
 			{

@@ -39,6 +39,9 @@ package feathers.controls
 	 */
 	public class Label extends FeathersControl
 	{
+		/**
+		 * @private
+		 */
 		private static const HELPER_POINT:Point = new Point();
 
 		/**

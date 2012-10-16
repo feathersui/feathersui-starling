@@ -54,7 +54,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		private static const helperPoint:Point = new Point();
+		private static const HELPER_POINT:Point = new Point();
 
 		/**
 		 * @private
@@ -1156,7 +1156,7 @@ package feathers.controls.renderers
 			{
 				return false;
 			}
-			this.labelTextRenderer.measureText(helperPoint);
+			this.labelTextRenderer.measureText(HELPER_POINT);
 			if(this.accessory is IFeathersControl)
 			{
 				IFeathersControl(this.accessory).validate();
@@ -1169,11 +1169,11 @@ package feathers.controls.renderers
 					if(this._iconPosition != ICON_POSITION_TOP && this._iconPosition != ICON_POSITION_BOTTOM)
 					{
 						var adjustedGap:Number = this._gap == Number.POSITIVE_INFINITY ? Math.min(this._paddingLeft, this._paddingRight) : this._gap;
-						newWidth = this.currentIcon.width + adjustedGap + helperPoint.x;
+						newWidth = this.currentIcon.width + adjustedGap + HELPER_POINT.x;
 					}
 					else
 					{
-						newWidth = Math.max(this.currentIcon.width, helperPoint.x);
+						newWidth = Math.max(this.currentIcon.width, HELPER_POINT.x);
 					}
 				}
 				else if(this.currentIcon)
@@ -1182,7 +1182,7 @@ package feathers.controls.renderers
 				}
 				else if(this.label)
 				{
-					newWidth = helperPoint.x;
+					newWidth = HELPER_POINT.x;
 				}
 				if(this.accessory)
 				{
@@ -1207,11 +1207,11 @@ package feathers.controls.renderers
 					if(this._iconPosition == ICON_POSITION_TOP || this._iconPosition == ICON_POSITION_BOTTOM)
 					{
 						adjustedGap = this._gap == Number.POSITIVE_INFINITY ? Math.min(this._paddingTop, this._paddingBottom) : this._gap;
-						newHeight = this.currentIcon.height + adjustedGap + helperPoint.y;
+						newHeight = this.currentIcon.height + adjustedGap + HELPER_POINT.y;
 					}
 					else
 					{
-						newHeight = Math.max(this.currentIcon.height, helperPoint.y);
+						newHeight = Math.max(this.currentIcon.height, HELPER_POINT.y);
 					}
 				}
 				else if(this.currentIcon)
@@ -1220,7 +1220,7 @@ package feathers.controls.renderers
 				}
 				else if(this.label)
 				{
-					newHeight = helperPoint.y;
+					newHeight = HELPER_POINT.y;
 				}
 				if(this.accessory)
 				{

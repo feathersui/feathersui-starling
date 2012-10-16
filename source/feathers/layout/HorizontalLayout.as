@@ -36,7 +36,10 @@ package feathers.layout
 	 */
 	public class HorizontalLayout implements IVariableVirtualLayout
 	{
-		private static const helperVector:Vector.<DisplayObject> = new <DisplayObject>[];
+		/**
+		 * @private
+		 */
+		private static const HELPER_VECTOR:Vector.<DisplayObject> = new <DisplayObject>[];
 
 		/**
 		 * The items will be aligned to the top of the bounds.
@@ -381,6 +384,7 @@ package feathers.layout
 		 */
 		protected var _scrollPositionHorizontalAlign:String = HORIZONTAL_ALIGN_CENTER;
 
+		[Inspectable(type="String",enumeration="left,center,right")]
 		/**
 		 * When the scroll position is calculated for an item, an attempt will
 		 * be made to align the item to this position.
@@ -425,7 +429,7 @@ package feathers.layout
 			const explicitWidth:Number = suggestedBounds ? suggestedBounds.explicitWidth : NaN;
 			const explicitHeight:Number = suggestedBounds ? suggestedBounds.explicitHeight : NaN;
 
-			helperVector.length = 0;
+			HELPER_VECTOR.length = 0;
 			var maxItemHeight:Number = this._useVirtualLayout ? this._typicalItemHeight : 0;
 			var positionX:Number = boundsX + this._paddingLeft;
 			const itemCount:int = items.length;
@@ -465,12 +469,12 @@ package feathers.layout
 					maxItemHeight = Math.max(maxItemHeight, item.height);
 					if(this._useVirtualLayout)
 					{
-						helperVector.push(item);
+						HELPER_VECTOR.push(item);
 					}
 				}
 			}
 
-			const discoveredItems:Vector.<DisplayObject> = this._useVirtualLayout ? helperVector : items;
+			const discoveredItems:Vector.<DisplayObject> = this._useVirtualLayout ? HELPER_VECTOR : items;
 			const totalHeight:Number = maxItemHeight + this._paddingTop + this._paddingBottom;
 			const availableHeight:Number = isNaN(explicitHeight) ? Math.min(maxHeight, Math.max(minHeight, totalHeight)) : explicitHeight;
 			const discoveredItemCount:int = discoveredItems.length;
@@ -524,7 +528,7 @@ package feathers.layout
 					}
 				}
 			}
-			helperVector.length = 0;
+			HELPER_VECTOR.length = 0;
 
 			if(!result)
 			{

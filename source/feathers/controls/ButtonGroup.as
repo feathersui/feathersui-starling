@@ -188,6 +188,7 @@ package feathers.controls
 		 */
 		protected var _direction:String = DIRECTION_VERTICAL;
 
+		[Inspectable(type="String",enumeration="horizontal,vertical")]
 		/**
 		 * The button group layout is either vertical or horizontal.
 		 */

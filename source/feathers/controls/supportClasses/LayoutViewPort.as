@@ -42,9 +42,9 @@ package feathers.controls.supportClasses
 	 */
 	public class LayoutViewPort extends FeathersControl implements IViewPort
 	{
-		private static const helperPoint:Point = new Point();
-		private static const helperBounds:ViewPortBounds = new ViewPortBounds();
-		private static const helperResult:LayoutBoundsResult = new LayoutBoundsResult();
+		private static const HELPER_POINT:Point = new Point();
+		private static const HELPER_BOUNDS:ViewPortBounds = new ViewPortBounds();
+		private static const HELPER_LAYOUT_RESULT:LayoutBoundsResult = new LayoutBoundsResult();
 
 		public function LayoutViewPort()
 		{
@@ -283,32 +283,32 @@ package feathers.controls.supportClasses
 					}
 				}
 
-				helperBounds.x = helperBounds.y = 0;
-				helperBounds.explicitWidth = this._visibleWidth;
-				helperBounds.explicitHeight = this._visibleHeight;
-				helperBounds.minWidth = this._minVisibleWidth;
-				helperBounds.minHeight = this._minVisibleHeight;
-				helperBounds.maxWidth = this._maxVisibleWidth;
-				helperBounds.maxHeight = this._maxVisibleHeight;
+				HELPER_BOUNDS.x = HELPER_BOUNDS.y = 0;
+				HELPER_BOUNDS.explicitWidth = this._visibleWidth;
+				HELPER_BOUNDS.explicitHeight = this._visibleHeight;
+				HELPER_BOUNDS.minWidth = this._minVisibleWidth;
+				HELPER_BOUNDS.minHeight = this._minVisibleHeight;
+				HELPER_BOUNDS.maxWidth = this._maxVisibleWidth;
+				HELPER_BOUNDS.maxHeight = this._maxVisibleHeight;
 				if(this._layout)
 				{
 					this._ignoreChildResizing = true;
-					this._layout.layout(this.items, helperBounds, helperResult);
+					this._layout.layout(this.items, HELPER_BOUNDS, HELPER_LAYOUT_RESULT);
 					this._ignoreChildResizing = false;
-					this.setSizeInternal(helperResult.contentWidth, helperResult.contentHeight, false);
+					this.setSizeInternal(HELPER_LAYOUT_RESULT.contentWidth, HELPER_LAYOUT_RESULT.contentHeight, false);
 				}
 				else
 				{
-					var maxX:Number = isNaN(helperBounds.explicitWidth) ? 0 : helperBounds.explicitWidth;
-					var maxY:Number = isNaN(helperBounds.explicitHeight) ? 0 : helperBounds.explicitHeight;
+					var maxX:Number = isNaN(HELPER_BOUNDS.explicitWidth) ? 0 : HELPER_BOUNDS.explicitWidth;
+					var maxY:Number = isNaN(HELPER_BOUNDS.explicitHeight) ? 0 : HELPER_BOUNDS.explicitHeight;
 					for each(var item:DisplayObject in this.items)
 					{
 						maxX = Math.max(maxX, item.x + item.width);
 						maxY = Math.max(maxY, item.y + item.height);
 					}
-					helperPoint.x = Math.max(Math.min(maxX, this._maxVisibleWidth), this._minVisibleWidth);
-					helperPoint.y = Math.max(Math.min(maxY, this._maxVisibleHeight), this._minVisibleHeight);
-					this.setSizeInternal(helperPoint.x, helperPoint.y, false);
+					HELPER_POINT.x = Math.max(Math.min(maxX, this._maxVisibleWidth), this._minVisibleWidth);
+					HELPER_POINT.y = Math.max(Math.min(maxY, this._maxVisibleHeight), this._minVisibleHeight);
+					this.setSizeInternal(HELPER_POINT.x, HELPER_POINT.y, false);
 				}
 			}
 		}

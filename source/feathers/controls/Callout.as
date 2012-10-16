@@ -542,6 +542,7 @@ package feathers.controls
 		 */
 		private var _arrowPosition:String = ARROW_POSITION_TOP;
 
+		[Inspectable(type="String",enumeration="top,right,bottom,left")]
 		/**
 		 * The position of the callout's arrow relative to the background. Do
 		 * not confuse this with the direction that the callout opens when using

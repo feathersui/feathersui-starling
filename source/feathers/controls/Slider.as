@@ -211,7 +211,8 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _direction:String = DIRECTION_HORIZONTAL;
-		
+
+		[Inspectable(type="String",enumeration="horizontal,vertical")]
 		/**
 		 * Determines if the slider's thumb can be dragged horizontally or
 		 * vertically. When this value changes, the slider's width and height
@@ -477,6 +478,7 @@ package feathers.controls
 		 */
 		protected var _trackLayoutMode:String = TRACK_LAYOUT_MODE_SINGLE;
 
+		[Inspectable(type="String",enumeration="single,stretch,scroll")]
 		/**
 		 * Determines how the minimum and maximum track skins are positioned and
 		 * sized.
