@@ -26,17 +26,30 @@ package feathers.core
 {
 	import feathers.controls.text.BitmapFontTextRenderer;
 	import feathers.display.Sprite;
+	import feathers.events.FeathersEventType;
+	import feathers.events.FeathersEventType;
 
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
-	import org.osflash.signals.ISignal;
-	import org.osflash.signals.Signal;
-
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.utils.MatrixUtil;
+
+	/**
+	 * Dispatched after initialize() has been called.
+	 *
+	 * @eventType feathers.events.FeathersEventType.INITIALIZE
+	 */
+	[Event(name="initialize",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the width or height of the control changes.
+	 *
+	 * @eventType feathers.events.FeathersEventType.RESIZE
+	 */
+	[Event(name="resize",type="feathers.events.Event")]
 
 	/**
 	 * Base class for all UI controls. Implements invalidation and sets up some
@@ -534,22 +547,6 @@ package feathers.core
 
 		/**
 		 * @private
-		 */
-		protected var _onResize:Signal = new Signal(IFeathersControl);
-
-		/**
-		 * Dispatched when the width or height of the control changes.
-		 *
-		 * <p>A listener is expected to have the following function signature:</p>
-		 * <pre>function(target:IFeathersControl, oldWidth:Number, oldHeight:Number):void</pre>
-		 */
-		public function get onResize():ISignal
-		{
-			return this._onResize;
-		}
-
-		/**
-		 * @private
 		 * Flag to indicate that the control is currently validating.
 		 */
 		private var _isValidating:Boolean = false;
@@ -775,15 +772,6 @@ package feathers.core
 		}
 
 		/**
-		 * @private
-		 */
-		override public function dispose():void
-		{
-			this._onResize.removeAll();
-			super.dispose();
-		}
-
-		/**
 		 * Sets the width and height of the control, with the option of
 		 * invalidating or not. Intended to be used for automatic resizing.
 		 */
@@ -836,7 +824,7 @@ package feathers.core
 				{
 					this.invalidate(INVALIDATION_FLAG_SIZE);
 				}
-				this._onResize.dispatch(this, oldWidth, oldHeight);
+				this.dispatchEventWith(FeathersEventType.RESIZE);
 			}
 			return resized;
 		}
@@ -874,6 +862,7 @@ package feathers.core
 				this.initialize();
 				this.invalidate(); //invalidate everything
 				this._isInitialized = true;
+				this.dispatchEventWith(FeathersEventType.INITIALIZE, false);
 			}
 
 			if(this.isInvalid())

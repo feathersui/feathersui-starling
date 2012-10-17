@@ -27,26 +27,31 @@ package feathers.controls.popups
 	import feathers.core.IFeathersControl;
 	import feathers.core.PopUpManager;
 	import feathers.display.ScrollRectManager;
+	import feathers.events.FeathersEventType;
 
 	import flash.errors.IllegalOperationError;
 	import flash.events.KeyboardEvent;
 	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
 
-	import org.osflash.signals.ISignal;
-	import org.osflash.signals.Signal;
-
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
+	import starling.events.Event;
+	import starling.events.EventDispatcher;
 	import starling.events.ResizeEvent;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 
 	/**
+	 * @inheritDoc
+	 */
+	[Event(name="close",type="starling.events.Event")]
+
+	/**
 	 * Displays pop-up content as a desktop-style drop-down.
 	 */
-	public class DropDownPopUpContentManager implements IPopUpContentManager
+	public class DropDownPopUpContentManager extends EventDispatcher implements IPopUpContentManager
 	{
 		/**
 		 * Constructor.
@@ -71,19 +76,6 @@ package feathers.controls.popups
 		protected var _touchPointID:int = -1;
 
 		/**
-		 * @private
-		 */
-		private var _onClose:Signal = new Signal(DropDownPopUpContentManager);
-
-		/**
-		 * @inheritDoc
-		 */
-		public function get onClose():ISignal
-		{
-			return this._onClose;
-		}
-
-		/**
 		 * @inheritDoc
 		 */
 		public function open(content:DisplayObject, source:DisplayObject):void
@@ -98,7 +90,7 @@ package feathers.controls.popups
 			PopUpManager.addPopUp(this.content, false, false);
 			if(this.content is IFeathersControl)
 			{
-				IFeathersControl(this.content).onResize.add(content_resizeHandler);
+				this.content.addEventListener(FeathersEventType.RESIZE, content_resizeHandler);
 			}
 			this.layout();
 			Starling.current.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
@@ -120,12 +112,12 @@ package feathers.controls.popups
 			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 			if(this.content is IFeathersControl)
 			{
-				IFeathersControl(this.content).onResize.remove(content_resizeHandler);
+				this.content.removeEventListener(FeathersEventType.RESIZE, content_resizeHandler);
 			}
 			PopUpManager.removePopUp(this.content);
 			this.content = null;
 			this.source = null;
-			this._onClose.dispatch(this);
+			this.dispatchEventWith(Event.CLOSE);
 		}
 
 		/**
@@ -134,7 +126,6 @@ package feathers.controls.popups
 		public function dispose():void
 		{
 			this.close();
-			this._onClose.removeAll();
 		}
 
 		/**
@@ -210,7 +201,7 @@ package feathers.controls.popups
 		/**
 		 * @private
 		 */
-		protected function content_resizeHandler(content:IFeathersControl, oldWidth:Number, oldHeight:Number):void
+		protected function content_resizeHandler(event:Event):void
 		{
 			this.layout();
 		}

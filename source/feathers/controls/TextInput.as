@@ -27,6 +27,7 @@ package feathers.controls
 	import feathers.core.FeathersControl;
 	import feathers.core.PropertyProxy;
 	import feathers.display.ScrollRectManager;
+	import feathers.events.FeathersEventType;
 	import feathers.text.StageTextField;
 
 	import flash.display.BitmapData;
@@ -48,9 +49,6 @@ package feathers.controls
 	import flash.ui.MouseCursor;
 	import flash.utils.getDefinitionByName;
 
-	import org.osflash.signals.ISignal;
-	import org.osflash.signals.Signal;
-
 	import starling.core.RenderSupport;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
@@ -61,6 +59,21 @@ package feathers.controls
 	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
 	import starling.utils.MatrixUtil;
+
+	/**
+	 * Dispatched when the text input's text value changes.
+	 *
+	 * @eventType starling.events.Event.CHANGE
+	 */
+	[Event(name="change",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the user presses the Enter key while the text input
+	 * has focus.
+	 *
+	 * @eventType feathers.events.FeathersEventType.ENTER
+	 */
+	[Event(name="enter",type="starling.events.Event")]
 
 	/**
 	 * A text entry control that allows users to enter and edit a single line of
@@ -197,7 +210,7 @@ package feathers.controls
 			}
 			this._text = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
-			this._onChange.dispatch(this);
+			this.dispatchEventWith(starling.events.Event.CHANGE);
 		}
 
 		/**
@@ -461,33 +474,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _onChange:Signal = new Signal(TextInput);
-
-		/**
-		 * Dispatched when the text changes.
-		 */
-		public function get onChange():ISignal
-		{
-			return this._onChange;
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _onEnter:Signal = new Signal(TextInput);
-
-		/**
-		 * Dispatched when the user presses the Enter key while the text input
-		 * has focus.
-		 */
-		public function get onEnter():ISignal
-		{
-			return this._onEnter;
-		}
-
-		/**
-		 * @private
-		 */
 		private var _stageTextProperties:PropertyProxy;
 
 		/**
@@ -566,7 +552,6 @@ package feathers.controls
 				this._textSnapshotBitmapData = null;
 			}
 
-			this._onChange.removeAll();
 			super.dispose();
 		}
 
@@ -1157,7 +1142,7 @@ package feathers.controls
 		{
 			if(event.keyCode == Keyboard.ENTER)
 			{
-				this._onEnter.dispatch(this);
+				this.dispatchEventWith(FeathersEventType.ENTER);
 			}
 			else if(event.keyCode == Keyboard.BACK)
 			{

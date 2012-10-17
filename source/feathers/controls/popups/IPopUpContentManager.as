@@ -1,19 +1,19 @@
 package feathers.controls.popups
 {
-	import org.osflash.signals.ISignal;
-
 	import starling.display.DisplayObject;
+
+	/**
+	 * Dispatched when the pop-up content closes.
+	 *
+	 * @eventType starling.events.Event.CLOSE
+	 */
+	[Event(name="close",type="starling.events.Event")]
 
 	/**
 	 * Automatically manages pop-up content layout and positioning.
 	 */
 	public interface IPopUpContentManager
 	{
-		/**
-		 * Dispatched when the pop-up content closes.
-		 */
-		function get onClose():ISignal;
-
 		/**
 		 * Displays the pop-up content.
 		 */

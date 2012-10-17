@@ -34,9 +34,6 @@ package feathers.controls
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
-	import org.osflash.signals.ISignal;
-	import org.osflash.signals.Signal;
-
 	import starling.animation.Transitions;
 	import starling.animation.Tween;
 	import starling.core.Starling;
@@ -45,6 +42,11 @@ package feathers.controls
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+
+	/**
+	 * @inheritDoc
+	 */
+	[Event(name="change",type="starling.events.Event")]
 
 	/**
 	 * Similar to a light switch. May be selected or not, like a check box.
@@ -589,7 +591,7 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 			if(this._isSelected != oldSelected)
 			{
-				this._onChange.dispatch(this);
+				this.dispatchEventWith(Event.CHANGE);
 			}
 		}
 
@@ -662,19 +664,6 @@ package feathers.controls
 		private var _thumbStartX:Number;
 		private var _touchStartX:Number;
 		private var _isSelectionChangedByUser:Boolean = false;
-
-		/**
-		 * @private
-		 */
-		protected var _onChange:Signal = new Signal(ToggleSwitch);
-
-		/**
-		 * Dispatched when the selection changes.
-		 */
-		public function get onChange():ISignal
-		{
-			return this._onChange;
-		}
 
 		/**
 		 * @private
@@ -860,15 +849,6 @@ package feathers.controls
 				this._thumbProperties.onChange.add(thumbProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		override public function dispose():void
-		{
-			this._onChange.removeAll();
-			super.dispose();
 		}
 
 		/**

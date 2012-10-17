@@ -24,8 +24,7 @@
  */
 package feathers.core
 {
-	import org.osflash.signals.ISignal;
-
+	[Event(name="resize",type="starling.events.ResizeEvent")]
 	/**
 	 * Basic interface for Feathers UI controls.
 	 */
@@ -63,8 +62,6 @@ package feathers.core
 		function set alpha(value:Number):void;
 		function get rotation():Number;
 		function set rotation(value:Number):void;
-
-		function get onResize():ISignal;
 
 		function setSize(width:Number, height:Number):void;
 		function validate():void;

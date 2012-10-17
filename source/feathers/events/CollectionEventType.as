@@ -22,29 +22,14 @@
  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  OTHER DEALINGS IN THE SOFTWARE.
  */
-package feathers.dragDrop
+package feathers.events
 {
-	/**
-	 * Dispatched when the drag and drop manager begins the drag.
-	 *
-	 * @eventType = feathers.events.DragDropEvent.DRAG_START
-	 */
-	[Event(name="dragStart",type="feathers.events.DragDropEvent")]
-
-	/**
-	 * Dispatched when the drop has been completed or when the drag has been
-	 * cancelled.
-	 *
-	 * @eventType = feathers.events.DragDropEvent.DRAG_COMPLETE
-	 */
-	[Event(name="dragComplete",type="feathers.events.DragDropEvent")]
-
-	/**
-	 * An object that can initiate drag actions with the drag and drop manager.
-	 *
-	 * @see DragDropManager
-	 */
-	public interface IDragSource
+	public class CollectionEventType
 	{
+		public static const RESET:String = "reset";
+		public static const ADD_ITEM:String = "addItem";
+		public static const REMOVE_ITEM:String = "removeItem";
+		public static const REPLACE_ITEM:String = "replaceItem";
+		public static const UPDATE_ITEM:String = "updateItem";
 	}
 }

@@ -24,8 +24,73 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package feathers.data
 {
-	import org.osflash.signals.ISignal;
-	import org.osflash.signals.Signal;
+	import feathers.events.CollectionEventType;
+
+	import starling.events.Event;
+
+	import starling.events.EventDispatcher;
+
+	/**
+	 * Dispatched when the underlying data source changes and the ui will
+	 * need to redraw the data.
+	 *
+	 * @eventType starling.events.Event.CHANGE
+	 */
+	[Event(name="change",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the collection has changed drastically, such as when
+	 * the underlying data source is replaced completely.
+	 *
+	 * @eventType feathers.events.CollectionEventType.RESET
+	 */
+	[Event(name="reset",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when an item is added to the collection.
+	 *
+	 * <p>The <code>data</code> property of the event is the index of the
+	 * item that has been updated. It is of type <code>int</code>.</p>
+	 *
+	 * @eventType feathers.events.CollectionEventType.ADD_ITEM
+	 */
+	[Event(name="addItem",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when an item is removed from the collection.
+	 *
+	 * <p>The <code>data</code> property of the event is the index of the
+	 * item that has been updated. It is of type <code>int</code>.</p>
+	 *
+	 * @eventType feathers.events.CollectionEventType.REMOVE_ITEM
+	 */
+	[Event(name="removeItem",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when an item is replaced in the collection.
+	 *
+	 * <p>The <code>data</code> property of the event is the index of the
+	 * item that has been updated. It is of type <code>int</code>.</p>
+	 *
+	 * @eventType feathers.events.CollectionEventType.REPLACE_ITEM
+	 */
+	[Event(name="replaceItem",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when a property of an item in the collection has changed
+	 * and the item doesn't have its own change event or signal. This signal
+	 * is only dispatched when the <code>updateItemAt()</code> function is
+	 * called on the <code>HierarchicalCollection</code>.
+	 *
+	 * <p>In general, it's better for the items themselves to dispatch events
+	 * or signals when their properties change.</p>
+	 *
+	 * <p>The <code>data</code> property of the event is the index of the
+	 * item that has been updated. It is of type <code>int</code>.</p>
+	 *
+	 * @eventType feathers.events.CollectionEventType.UPDATE_ITEM
+	 */
+	[Event(name="updateItem",type="starling.events.Event")]
 
 	[DefaultProperty("data")]
 	/**
@@ -38,7 +103,7 @@ package feathers.data
 	 * @see VectorListCollectionDataDescriptor
 	 * @see XMLListListCollectionDataDescriptor
 	 */
-	public class ListCollection
+	public class ListCollection extends EventDispatcher
 	{
 		/**
 		 * Constructor
@@ -51,101 +116,6 @@ package feathers.data
 				data = [];
 			}
 			this.data = data;
-		}
-		
-		/**
-		 * @private
-		 */
-		protected var _onChange:Signal = new Signal(ListCollection);
-		
-		/**
-		 * Dispatched when the underlying data source changes and the list will
-		 * need to redraw the data.
-		 */
-		public function get onChange():ISignal
-		{
-			return this._onChange;
-		}
-		
-		/**
-		 * @private
-		 */
-		protected var _onAdd:Signal = new Signal(ListCollection, int);
-		
-		/**
-		 * Dispatched when an item is added to the collection.
-		 *
-		 * <p>Listeners are expected to have the following function signature:</p>
-		 * <pre>function(collection:ListCollection, itemIndex:int):void</pre>
-		 */
-		public function get onAdd():ISignal
-		{
-			return this._onAdd;
-		}
-		
-		/**
-		 * @private
-		 */
-		protected var _onRemove:Signal = new Signal(ListCollection, int);
-		
-		/**
-		 * Dispatched when an item is removed from the collection.
-		 *
-		 * <p>Listeners are expected to have the following function signature:</p>
-		 * <pre>function(collection:ListCollection, itemIndex:int):void</pre>
-		 */
-		public function get onRemove():ISignal
-		{
-			return this._onRemove;
-		}
-		
-		/**
-		 * @private
-		 */
-		protected var _onReplace:Signal = new Signal(ListCollection, int);
-		
-		/**
-		 * Dispatched when an item is replaced in the collection.
-		 */
-		public function get onReplace():ISignal
-		{
-			return this._onReplace;
-		}
-		
-		/**
-		 * @private
-		 */
-		protected var _onReset:Signal = new Signal(ListCollection);
-		
-		/**
-		 * Dispatched when the collection has changed drastically, such as when
-		 * the underlying data source is replaced completely.
-		 */
-		public function get onReset():ISignal
-		{
-			return this._onReset;
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _onItemUpdate:Signal = new Signal(ListCollection, int);
-
-		/**
-		 * Dispatched when a property of an item in the collection has changed
-		 * and the item doesn't have its own change event or signal. This signal
-		 * is only dispatched when the <code>updateItemAt()</code> function is
-		 * called on the <code>ListCollection</code>.
-		 *
-		 * <p>In general, it's better for the items themselves to dispatch events
-		 * or signals when their properties change.</p>
-		 *
-		 * <p>Listeners are expected to have the following function signature:</p>
-		 * <pre>function(collection:ListCollection, itemIndex:int):void</pre>
-		 */
-		public function get onItemUpdate():ISignal
-		{
-			return this._onItemUpdate;
 		}
 		
 		/**
@@ -203,8 +173,8 @@ package feathers.data
 			{
 				this.dataDescriptor = new XMLListListCollectionDataDescriptor();
 			}
-			this._onReset.dispatch(this);
-			this._onChange.dispatch(this);
+			this.dispatchEventWith(CollectionEventType.RESET);
+			this.dispatchEventWith(Event.CHANGE);
 		}
 		
 		/**
@@ -232,8 +202,8 @@ package feathers.data
 				return;
 			}
 			this._dataDescriptor = value;
-			this._onReset.dispatch(this);
-			this._onChange.dispatch(this);
+			this.dispatchEventWith(CollectionEventType.RESET);
+			this.dispatchEventWith(Event.CHANGE);
 		}
 
 		/**
@@ -252,7 +222,7 @@ package feathers.data
 		 */
 		public function updateItemAt(index:int):void
 		{
-			this._onItemUpdate.dispatch(this, index);
+			this.dispatchEventWith(CollectionEventType.UPDATE_ITEM, false, index);
 		}
 		
 		/**
@@ -278,8 +248,8 @@ package feathers.data
 		public function addItemAt(item:Object, index:int):void
 		{
 			this._dataDescriptor.addItemAt(this._data, item, index);
-			this._onChange.dispatch(this);
-			this._onAdd.dispatch(this, index);
+			this.dispatchEventWith(Event.CHANGE);
+			this.dispatchEventWith(CollectionEventType.ADD_ITEM, false, index);
 		}
 		
 		/**
@@ -289,8 +259,8 @@ package feathers.data
 		public function removeItemAt(index:int):Object
 		{
 			const item:Object = this._dataDescriptor.removeItemAt(this._data, index);
-			this._onChange.dispatch(this);
-			this._onRemove.dispatch(this, index);
+			this.dispatchEventWith(Event.CHANGE);
+			this.dispatchEventWith(CollectionEventType.REMOVE_ITEM, false, index);
 			return item;
 		}
 		
@@ -312,8 +282,8 @@ package feathers.data
 		public function setItemAt(item:Object, index:int):void
 		{
 			this._dataDescriptor.setItemAt(this._data, item, index);
-			this._onReplace.dispatch(this, index);
-			this._onChange.dispatch(this);
+			this.dispatchEventWith(Event.CHANGE);
+			this.dispatchEventWith(CollectionEventType.REPLACE_ITEM, false, index);
 		}
 		
 		/**
