@@ -70,8 +70,11 @@ package feathers.core
 
 		/**
 		 * @private
+		 * Meant to be constant, but the ValidationQueue needs access to
+		 * Starling in its constructor, so it needs to be instantiated after
+		 * Starling is initialized.
 		 */
-		protected static const VALIDATION_QUEUE:ValidationQueue = new ValidationQueue();
+		protected static var VALIDATION_QUEUE:ValidationQueue;
 
 		/**
 		 * Flag to indicate that everything is invalid and should be redrawn.
@@ -154,6 +157,10 @@ package feathers.core
 		public function FeathersControl()
 		{
 			super();
+			if(!VALIDATION_QUEUE)
+			{
+				VALIDATION_QUEUE = new ValidationQueue();
+			}
 			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 		}
 
