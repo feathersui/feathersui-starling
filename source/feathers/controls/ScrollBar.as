@@ -34,14 +34,26 @@ package feathers.controls
 	import flash.geom.Rectangle;
 	import flash.utils.Timer;
 
-	import org.osflash.signals.ISignal;
-	import org.osflash.signals.Signal;
-
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+
+	/**
+	 * @inheritDoc
+	 */
+	[Event(name="change",type="starling.events.Event")]
+
+	/**
+	 *
+	 */
+	[Event(name="dragStart",type="starling.events.Event")]
+
+	/**
+	 *
+	 */
+	[Event(name="dragEnd",type="starling.events.Event")]
 
 	/**
 	 * Select a value between a minimum and a maximum by dragging a thumb over
@@ -266,7 +278,7 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_DATA);
 			if(this.liveDragging || !this.isDragging)
 			{
-				this._onChange.dispatch(this);
+				this.dispatchEventWith(Event.CHANGE);
 			}
 		}
 
@@ -525,19 +537,6 @@ package feathers.controls
 		 * signal every time the thumb moves, or only once it stops moving.
 		 */
 		public var liveDragging:Boolean = true;
-
-		/**
-		 * @private
-		 */
-		protected var _onChange:Signal = new Signal(ScrollBar);
-
-		/**
-		 * Dispatched when the <code>value</code> property changes.
-		 */
-		public function get onChange():ISignal
-		{
-			return this._onChange;
-		}
 
 		/**
 		 * @private
@@ -911,17 +910,6 @@ package feathers.controls
 		private var _touchValue:Number;
 
 		/**
-		 * @inheritDoc
-		 */
-		override public function dispose():void
-		{
-			this._onChange.removeAll();
-			this._onDragEnd.removeAll();
-			this._onDragStart.removeAll();
-			super.dispose();
-		}
-
-		/**
 		 * @private
 		 */
 		override protected function initialize():void
@@ -950,8 +938,8 @@ package feathers.controls
 				this.decrementButton = new Button();
 				this.decrementButton.nameList.add(this.decrementButtonName);
 				this.decrementButton.label = "";
-				this.decrementButton.onPress.add(decrementButton_onPress);
-				this.decrementButton.onRelease.add(decrementButton_onRelease);
+				this.decrementButton.addEventListener(TouchEvent.TOUCH, decrementButton_onPress);
+				this.decrementButton.addEventListener(Event.TRIGGERED, decrementButton_onRelease);
 				this.addChild(this.decrementButton);
 			}
 
@@ -960,8 +948,8 @@ package feathers.controls
 				this.incrementButton = new Button();
 				this.incrementButton.nameList.add(this.incrementButtonName);
 				this.incrementButton.label = "";
-				this.incrementButton.onPress.add(incrementButton_onPress);
-				this.incrementButton.onRelease.add(incrementButton_onRelease);
+				this.incrementButton.addEventListener(TouchEvent.TOUCH, incrementButton_onPress);
+				this.incrementButton.addEventListener(Event.TRIGGERED, incrementButton_onRelease);
 				this.addChild(this.incrementButton);
 			}
 		}
@@ -1683,7 +1671,7 @@ package feathers.controls
 					this.isDragging = false;
 					if(!this.liveDragging)
 					{
-						this._onChange.dispatch(this);
+						this.dispatchEventWith(Event.CHANGE);
 					}
 					this._onDragEnd.dispatch(this);
 					return;
@@ -1712,8 +1700,13 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function decrementButton_onPress(button:Button):void
+		protected function decrementButton_onPress(event:TouchEvent):void
 		{
+			const touches:Vector.<Touch> = event.getTouches(this.decrementButton, TouchPhase.BEGAN);
+			if(touches.length == 0)
+			{
+				return;
+			}
 			this.decrement();
 			this.startRepeatTimer(this.decrement);
 		}
@@ -1721,7 +1714,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function decrementButton_onRelease(button:Button):void
+		protected function decrementButton_onRelease(event:Event):void
 		{
 			this._repeatTimer.stop();
 		}
@@ -1729,8 +1722,13 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function incrementButton_onPress(button:Button):void
+		protected function incrementButton_onPress(event:TouchEvent):void
 		{
+			const touches:Vector.<Touch> = event.getTouches(this.incrementButton, TouchPhase.BEGAN);
+			if(touches.length == 0)
+			{
+				return;
+			}
 			this.increment();
 			this.startRepeatTimer(this.increment);
 		}
@@ -1738,7 +1736,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function incrementButton_onRelease(button:Button):void
+		protected function incrementButton_onRelease(event:Event):void
 		{
 			this._repeatTimer.stop();
 		}

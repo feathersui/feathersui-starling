@@ -43,6 +43,11 @@ package feathers.controls
 	import starling.events.TouchPhase;
 
 	/**
+	 * @inheritDoc
+	 */
+	[Event(name="change",type="starling.events.Event")]
+
+	/**
 	 * Select a value between a minimum and a maximum by dragging a thumb over
 	 * a physical range. This type of scroll bar does not have a visible track,
 	 * and it does not have increment and decrement buttons. It is ideal for
@@ -174,7 +179,7 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_DATA);
 			if(this.liveDragging || !this.isDragging)
 			{
-				this._onChange.dispatch(this);
+				this.dispatchEventWith(Event.CHANGE);
 			}
 		}
 
@@ -433,19 +438,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _onChange:Signal = new Signal(SimpleScrollBar);
-
-		/**
-		 * Dispatched when the <code>value</code> property changes.
-		 */
-		public function get onChange():ISignal
-		{
-			return this._onChange;
-		}
-
-		/**
-		 * @private
-		 */
 		protected var _onDragStart:Signal = new Signal(SimpleScrollBar);
 
 		/**
@@ -537,17 +529,6 @@ package feathers.controls
 		private var _thumbStartX:Number = NaN;
 		private var _thumbStartY:Number = NaN;
 		private var _touchValue:Number;
-
-		/**
-		 * @inheritDoc
-		 */
-		override public function dispose():void
-		{
-			this._onChange.removeAll();
-			this._onDragEnd.removeAll();
-			this._onDragStart.removeAll();
-			super.dispose();
-		}
 
 		/**
 		 * @private
@@ -929,7 +910,7 @@ package feathers.controls
 					this.isDragging = false;
 					if(!this.liveDragging)
 					{
-						this._onChange.dispatch(this);
+						this.dispatchEventWith(Event.CHANGE);
 					}
 					this._onDragEnd.dispatch(this);
 					return;

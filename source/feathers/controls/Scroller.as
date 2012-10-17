@@ -64,6 +64,13 @@ package feathers.controls
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 
+	/*
+	 * Dispatched when the scroller scrolls in either direction.
+	 *
+	 * @eventType starling.events.Event.SCROLL
+	 */
+	[Event(name="scroll",type="starling.events.Event")]
+
 	/**
 	 * Allows horizontal and vertical scrolling of a <em>viewport</em>. Not
 	 * meant to be used as a standalone container or component. Generally meant
@@ -1220,19 +1227,6 @@ package feathers.controls
 				this.verticalScrollPosition = Math.round(this._verticalScrollPosition);
 			}
 		}
-		
-		/**
-		 * @private
-		 */
-		protected var _onScroll:Signal = new Signal(Scroller);
-		
-		/**
-		 * Dispatched when the scroller scrolls in either direction.
-		 */
-		public function get onScroll():ISignal
-		{
-			return this._onScroll;
-		}
 
 		/**
 		 * @private
@@ -1396,17 +1390,6 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
-		 */
-		override public function dispose():void
-		{
-			this._onScroll.removeAll();
-			this._onDragStart.removeAll();
-			this._onDragEnd.removeAll();
-			super.dispose();
-		}
-
-		/**
 		 * This function is not supported on Scroller, and you should use the viewPort property.
 		 */
 		override public function addChild(child:DisplayObject):DisplayObject
@@ -1540,14 +1523,16 @@ package feathers.controls
 		{
 			if(this.horizontalScrollBar)
 			{
-				this.horizontalScrollBar.onChange.remove(horizontalScrollBar_onChange);
-				super.removeChildAt(super.getChildIndex(DisplayObject(this.horizontalScrollBar)), true);
+				var displayHorizontalScrollBar:DisplayObject = DisplayObject(this.horizontalScrollBar);
+				displayHorizontalScrollBar.removeEventListener(Event.CHANGE, horizontalScrollBar_onChange);
+				super.removeChildAt(super.getChildIndex(displayHorizontalScrollBar), true);
 				this.horizontalScrollBar = null;
 			}
 			if(this.verticalScrollBar)
 			{
-				this.verticalScrollBar.onChange.remove(verticalScrollBar_onChange);
-				super.removeChildAt(super.getChildIndex(DisplayObject(this.verticalScrollBar)), true);
+				var displayVerticalScrollBar:DisplayObject = DisplayObject(this.verticalScrollBar);
+				displayVerticalScrollBar.removeEventListener(Event.CHANGE, verticalScrollBar_onChange);
+				super.removeChildAt(super.getChildIndex(displayVerticalScrollBar), true);
 				this.verticalScrollBar = null;
 			}
 
@@ -1556,8 +1541,8 @@ package feathers.controls
 			{
 				this.horizontalScrollBar = IScrollBar(this._horizontalScrollBarFactory());
 				this.horizontalScrollBar.nameList.add(this.horizontalScrollBarName);
-				this.horizontalScrollBar.onChange.add(horizontalScrollBar_onChange);
-				const displayHorizontalScrollBar:DisplayObject = DisplayObject(this.horizontalScrollBar);
+				displayHorizontalScrollBar = DisplayObject(this.horizontalScrollBar);
+				displayHorizontalScrollBar.addEventListener(Event.CHANGE, horizontalScrollBar_onChange);
 				super.addChildAt(displayHorizontalScrollBar, this.numChildren);
 			}
 			if(this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_NONE &&
@@ -1565,8 +1550,8 @@ package feathers.controls
 			{
 				this.verticalScrollBar = IScrollBar(this._verticalScrollBarFactory());
 				this.verticalScrollBar.nameList.add(this.verticalScrollBarName);
-				this.verticalScrollBar.onChange.add(verticalScrollBar_onChange);
-				const displayVerticalScrollBar:DisplayObject = DisplayObject(this.verticalScrollBar);
+				displayVerticalScrollBar = DisplayObject(this.verticalScrollBar);
+				displayVerticalScrollBar.addEventListener(Event.CHANGE, verticalScrollBar_onChange);
 				super.addChildAt(displayVerticalScrollBar, this.numChildren);
 			}
 		}
@@ -1807,7 +1792,7 @@ package feathers.controls
 
 			if(maximumPositionsChanged || isScrollInvalid)
 			{
-				this._onScroll.dispatch(this);
+				this.dispatchEventWith(Event.SCROLL);
 			}
 		}
 
@@ -2779,7 +2764,7 @@ package feathers.controls
 			if(oldHorizontalScrollPosition != this._horizontalScrollPosition ||
 				oldVerticalScrollPosition != this._verticalScrollPosition)
 			{
-				this._onScroll.dispatch(this);
+				this.dispatchEventWith(Event.SCROLL);
 			}
 		}
 	}

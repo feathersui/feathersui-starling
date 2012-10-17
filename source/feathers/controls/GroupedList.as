@@ -30,15 +30,28 @@ package feathers.controls
 	import feathers.core.FeathersControl;
 	import feathers.core.PropertyProxy;
 	import feathers.data.HierarchicalCollection;
+	import feathers.events.CollectionEventType;
 	import feathers.layout.ILayout;
 	import feathers.layout.VerticalLayout;
 
 	import flash.geom.Point;
 
-	import org.osflash.signals.ISignal;
-	import org.osflash.signals.Signal;
-
 	import starling.display.DisplayObject;
+	import starling.events.Event;
+
+	/**
+	 * Dispatched when the selected item changes.
+	 *
+	 * @eventType staring.events.Event.CHANGE
+	 */
+	[Event(name="change",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the list is scrolled.
+	 *
+	 * @eventType staring.events.Event.SCROLL
+	 */
+	[Event(name="change",type="starling.events.Event")]
 
 	[DefaultProperty("dataProvider")]
 	/**
@@ -229,7 +242,7 @@ package feathers.controls
 			}
 			this._horizontalScrollPosition = value;
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
-			this._onScroll.dispatch(this);
+			this.dispatchEventWith(Event.SCROLL);
 		}
 
 		/**
@@ -279,7 +292,7 @@ package feathers.controls
 			}
 			this._verticalScrollPosition = value;
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
-			this._onScroll.dispatch(this);
+			this.dispatchEventWith(Event.SCROLL);
 		}
 
 		/**
@@ -325,12 +338,12 @@ package feathers.controls
 			}
 			if(this._dataProvider)
 			{
-				this._dataProvider.onReset.remove(dataProvider_onReset);
+				this._dataProvider.removeEventListener(CollectionEventType.RESET, dataProvider_onReset);
 			}
 			this._dataProvider = value;
 			if(this._dataProvider)
 			{
-				this._dataProvider.onReset.add(dataProvider_onReset);
+				this._dataProvider.addEventListener(CollectionEventType.RESET, dataProvider_onReset);
 			}
 
 			//reset the scroll position because this is a drastic change and
@@ -430,32 +443,6 @@ package feathers.controls
 			{
 				this.setSelectedLocation(-1, -1);
 			}
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _onChange:Signal = new Signal(GroupedList);
-
-		/**
-		 * Dispatched when the selected item changes.
-		 */
-		public function get onChange():ISignal
-		{
-			return this._onChange;
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _onScroll:Signal = new Signal(GroupedList);
-
-		/**
-		 * Dispatched when the list is scrolled.
-		 */
-		public function get onScroll():ISignal
-		{
-			return this._onScroll;
 		}
 
 		/**
@@ -1818,16 +1805,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override public function dispose():void
-		{
-			this._onChange.removeAll();
-			this._onScroll.removeAll();
-			super.dispose();
-		}
-
-		/**
-		 * @private
-		 */
 		public function setSelectedLocation(groupIndex:int, itemIndex:int):void
 		{
 			if(this._selectedGroupIndex == groupIndex && this._selectedItemIndex == itemIndex)
@@ -1842,7 +1819,7 @@ package feathers.controls
 			this._selectedItemIndex = itemIndex;
 
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
-			this._onChange.dispatch(this);
+			this.dispatchEventWith(Event.CHANGE);
 		}
 
 		/**
@@ -1906,7 +1883,7 @@ package feathers.controls
 				this.scroller.nameList.add(this.scrollerName);
 				this.scroller.verticalScrollPolicy = Scroller.SCROLL_POLICY_AUTO;
 				this.scroller.horizontalScrollPolicy = Scroller.SCROLL_POLICY_AUTO;
-				this.scroller.onScroll.add(scroller_onScroll);
+				this.scroller.addEventListener(Event.SCROLL, scroller_onScroll);
 				this.addChild(this.scroller);
 			}
 
@@ -1914,7 +1891,7 @@ package feathers.controls
 			{
 				this.dataViewPort = new GroupedListDataViewPort();
 				this.dataViewPort.owner = this;
-				this.dataViewPort.onChange.add(dataViewPort_onChange);
+				this.dataViewPort.addEventListener(Event.CHANGE, dataViewPort_onChange);
 				this.scroller.viewPort = this.dataViewPort;
 			}
 
@@ -2142,7 +2119,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function childProperties_onChange(proxy:PropertyProxy, name:Object):void
+		protected function childProperties_onChange(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -2150,7 +2127,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function dataProvider_onReset(collection:HierarchicalCollection):void
+		protected function dataProvider_onReset(event:Event):void
 		{
 			this.horizontalScrollPosition = 0;
 			this.verticalScrollPosition = 0;
@@ -2159,7 +2136,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function scroller_onScroll(scroller:Scroller):void
+		protected function scroller_onScroll(event:Event):void
 		{
 			this._maxHorizontalScrollPosition = this.scroller.maxHorizontalScrollPosition;
 			this._maxVerticalScrollPosition = this.scroller.maxVerticalScrollPosition;
@@ -2170,7 +2147,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function dataViewPort_onChange(dataViewPort:GroupedListDataViewPort):void
+		protected function dataViewPort_onChange(event:Event):void
 		{
 			this.setSelectedLocation(this.dataViewPort.selectedGroupIndex, this.dataViewPort.selectedItemIndex);
 		}

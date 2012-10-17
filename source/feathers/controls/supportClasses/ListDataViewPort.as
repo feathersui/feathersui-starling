@@ -31,6 +31,8 @@ package feathers.controls.supportClasses
 	import feathers.core.IFeathersControl;
 	import feathers.core.PropertyProxy;
 	import feathers.data.ListCollection;
+	import feathers.events.CollectionEventType;
+	import feathers.events.FeathersEventType;
 	import feathers.layout.ILayout;
 	import feathers.layout.IVariableVirtualLayout;
 	import feathers.layout.IVirtualLayout;
@@ -40,11 +42,9 @@ package feathers.controls.supportClasses
 	import flash.geom.Point;
 	import flash.utils.Dictionary;
 
-	import org.osflash.signals.ISignal;
-	import org.osflash.signals.Signal;
-
 	import starling.display.DisplayObject;
 	import starling.events.Event;
+	import starling.events.EventDispatcher;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -216,12 +216,12 @@ package feathers.controls.supportClasses
 			}
 			if(this._owner)
 			{
-				this._owner.onScroll.remove(owner_onScroll);
+				this._owner.removeEventListener(Event.SCROLL, owner_onScroll);
 			}
 			this._owner = value;
 			if(this._owner)
 			{
-				this._owner.onScroll.add(owner_onScroll);
+				this._owner.addEventListener(Event.SCROLL, owner_onScroll);
 			}
 		}
 
@@ -240,14 +240,14 @@ package feathers.controls.supportClasses
 			}
 			if(this._dataProvider)
 			{
-				this._dataProvider.onChange.remove(dataProvider_onChange);
-				this._dataProvider.onItemUpdate.remove(dataProvider_onItemUpdate);
+				this._dataProvider.removeEventListener(Event.CHANGE, dataProvider_onChange);
+				this._dataProvider.removeEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_onItemUpdate);
 			}
 			this._dataProvider = value;
 			if(this._dataProvider)
 			{
-				this._dataProvider.onChange.add(dataProvider_onChange);
-				this._dataProvider.onItemUpdate.add(dataProvider_onItemUpdate);
+				this._dataProvider.addEventListener(Event.CHANGE, dataProvider_onChange);
+				this._dataProvider.addEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_onItemUpdate);
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -351,12 +351,12 @@ package feathers.controls.supportClasses
 			}
 			if(this._itemRendererProperties)
 			{
-				this._itemRendererProperties.onChange.remove(itemRendererProperties_onChange);
+				this._itemRendererProperties.onChange.remove(childProperties_onChange);
 			}
 			this._itemRendererProperties = PropertyProxy(value);
 			if(this._itemRendererProperties)
 			{
-				this._itemRendererProperties.onChange.add(itemRendererProperties_onChange);
+				this._itemRendererProperties.onChange.add(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
@@ -379,12 +379,12 @@ package feathers.controls.supportClasses
 			}
 			if(this._layout)
 			{
-				this._layout.onLayoutChange.remove(layout_onLayoutChange);
+				EventDispatcher(this._layout).removeEventListener(Event.CHANGE, layout_onLayoutChange);
 			}
 			this._layout = value;
 			if(this._layout)
 			{
-				this._layout.onLayoutChange.add(layout_onLayoutChange);
+				EventDispatcher(this._layout).addEventListener(Event.CHANGE, layout_onLayoutChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
@@ -470,20 +470,7 @@ package feathers.controls.supportClasses
 			}
 			this._selectedIndex = value;
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
-			this._onChange.dispatch(this);
-		}
-
-		protected var _onChange:Signal = new Signal(ListDataViewPort);
-
-		public function get onChange():ISignal
-		{
-			return this._onChange;
-		}
-
-		override public function dispose():void
-		{
-			this._onChange.removeAll();
-			super.dispose();
+			this.dispatchEventWith(Event.CHANGE);
 		}
 
 		public function getScrollPositionForIndex(index:int, result:Point = null):Point
@@ -727,13 +714,12 @@ package feathers.controls.supportClasses
 				{
 					renderer = new this._itemRendererType();
 				}
-				renderer.onChange.add(renderer_onChange);
-				var displayRenderer:IFeathersControl = IFeathersControl(renderer);
+				var uiRenderer:IFeathersControl = IFeathersControl(renderer);
 				if(this._itemRendererName && this._itemRendererName.length > 0)
 				{
-					displayRenderer.nameList.add(this._itemRendererName);
+					uiRenderer.nameList.add(this._itemRendererName);
 				}
-				this.addChild(DisplayObject(displayRenderer));
+				this.addChild(DisplayObject(renderer));
 			}
 			else
 			{
@@ -747,8 +733,9 @@ package feathers.controls.supportClasses
 			{
 				this._rendererMap[item] = renderer;
 				this._activeRenderers.push(renderer);
-				displayRenderer = IFeathersControl(renderer);
-				displayRenderer.onResize.add(renderer_onResize);
+				const displayRenderer:DisplayObject = DisplayObject(renderer);
+				displayRenderer.addEventListener(Event.CHANGE, renderer_onChange);
+				displayRenderer.addEventListener(FeathersEventType.RESIZE, renderer_onResize);
 			}
 
 			return renderer;
@@ -756,30 +743,31 @@ package feathers.controls.supportClasses
 
 		private function destroyRenderer(renderer:IListItemRenderer):void
 		{
-			renderer.onChange.remove(renderer_onChange);
-			const displayRenderer:IFeathersControl = IFeathersControl(renderer);
-			displayRenderer.onResize.remove(renderer_onResize);
-			this.removeChild(DisplayObject(displayRenderer), true);
+			const displayRenderer:DisplayObject = DisplayObject(renderer);
+			displayRenderer.removeEventListener(Event.CHANGE, renderer_onChange);
+			displayRenderer.removeEventListener(FeathersEventType.RESIZE, renderer_onResize);
+			this.removeChild(displayRenderer, true);
 		}
 
-		private function itemRendererProperties_onChange(proxy:PropertyProxy, name:Object):void
+		private function childProperties_onChange(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
-		private function owner_onScroll(list:List):void
+		private function owner_onScroll(event:Event):void
 		{
 			this._isScrolling = true;
 		}
 
-		private function dataProvider_onChange(data:ListCollection):void
+		private function dataProvider_onChange(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_DATA);
 			this.invalidateParent();
 		}
 
-		private function dataProvider_onItemUpdate(data:ListCollection, index:int):void
+		private function dataProvider_onItemUpdate(event:Event):void
 		{
+			const index:int = event.data as int;
 			const item:Object = this._dataProvider.getItemAt(index);
 			const renderer:IListItemRenderer = IListItemRenderer(this._rendererMap[item]);
 			if(!renderer)
@@ -790,7 +778,7 @@ package feathers.controls.supportClasses
 			renderer.data = item;
 		}
 
-		private function layout_onLayoutChange(layout:ILayout):void
+		private function layout_onLayoutChange(event:Event):void
 		{
 			if(this._ignoreLayoutChanges)
 			{
@@ -800,7 +788,7 @@ package feathers.controls.supportClasses
 			this.invalidateParent();
 		}
 
-		private function renderer_onResize(renderer:IListItemRenderer, oldWidth:Number, oldHeight:Number):void
+		private function renderer_onResize(event:Event):void
 		{
 			if(this._ignoreRendererResizing)
 			{
@@ -811,17 +799,19 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
+			const renderer:IListItemRenderer = IListItemRenderer(event.currentTarget);
 			layout.resetVariableVirtualCacheAtIndex(renderer.index, DisplayObject(renderer));
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 			this.invalidateParent();
 		}
 
-		private function renderer_onChange(renderer:IListItemRenderer):void
+		private function renderer_onChange(event:Event):void
 		{
 			if(this._ignoreSelectionChanges)
 			{
 				return;
 			}
+			const renderer:IListItemRenderer = IListItemRenderer(event.currentTarget);
 			if(!this._isSelectable || this._isScrolling || this._selectedIndex == renderer.index)
 			{
 				//reset to the old value
