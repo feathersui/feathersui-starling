@@ -27,8 +27,17 @@ package feathers.core
 	import flash.utils.Proxy;
 	import flash.utils.flash_proxy;
 
-	import org.osflash.signals.ISignal;
-	import org.osflash.signals.Signal;
+	import starling.events.Event;
+
+	/**
+	 * Dispatched when a property changes.
+	 *
+	 * <p>The <code>data</code> property of the event is the name of the
+	 * property has has changed. It is of type <code>String</code>.</p>
+	 *
+	 * @eventType starling.events.Event.CHANGE
+	 */
+	[Event(name="change",type="starling.events.Event")]
 
 	/**
 	 * Detects when its own properties have changed and dispatches a signal
@@ -58,7 +67,7 @@ package feathers.core
 		{
 			if(onChange != null)
 			{
-				this._onChange.add(onChange);
+				this.addEventListener(Event.CHANGE, onChange);
 			}
 		}
 
@@ -71,22 +80,6 @@ package feathers.core
 		 * @private
 		 */
 		private var _storage:Object = {};
-
-		/**
-		 * @private
-		 */
-		private var _onChange:Signal = new Signal(PropertyProxy, Object);
-
-		/**
-		 * Dispatched when a property changes.
-		 *
-		 * <p>Listeners are expected to have the following function signature:</p>
-		 * <pre>function(proxy:PropertyProxy, propertyName:String):void</pre>
-		 */
-		public function get onChange():ISignal
-		{
-			return this._onChange;
-		}
 
 		/**
 		 * @private
@@ -108,7 +101,7 @@ package feathers.core
 				{
 					this._storage[nameAsString] = new PropertyProxy();
 					this._names.push(nameAsString);
-					this._onChange.dispatch(this, nameAsString);
+					this.dispatchEventWith(Event.CHANGE, false, nameAsString);
 				}
 				return this._storage[nameAsString];
 			}

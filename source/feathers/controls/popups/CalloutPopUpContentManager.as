@@ -24,21 +24,25 @@
  */
 package feathers.controls.popups
 {
-	import feathers.controls.*;
+	import feathers.controls.Callout;
 
 	import flash.errors.IllegalOperationError;
 
-	import org.osflash.signals.ISignal;
-	import org.osflash.signals.Signal;
-
 	import starling.display.DisplayObject;
+	import starling.events.Event;
+	import starling.events.EventDispatcher;
+
+	/**
+	 * @inheritDoc
+	 */
+	[Event(name="close",type="starling.events.Event")]
 
 	/**
 	 * Displays pop-up content (such as the List in a PickerList) in a Callout.
 	 *
 	 * @see PickerList
 	 */
-	public class CalloutPopUpContentManager implements IPopUpContentManager
+	public class CalloutPopUpContentManager extends EventDispatcher implements IPopUpContentManager
 	{
 		/**
 		 * Constructor.
@@ -58,19 +62,6 @@ package feathers.controls.popups
 		protected var callout:Callout;
 
 		/**
-		 * @private
-		 */
-		private var _onClose:Signal = new Signal(CalloutPopUpContentManager);
-
-		/**
-		 * @inheritDoc
-		 */
-		public function get onClose():ISignal
-		{
-			return this._onClose;
-		}
-
-		/**
 		 * @inheritDoc
 		 */
 		public function open(content:DisplayObject, source:DisplayObject):void
@@ -82,7 +73,7 @@ package feathers.controls.popups
 
 			this.content = content;
 			this.callout = Callout.show(content, source);
-			this.callout.onClose.add(callout_onClose);
+			this.callout.addEventListener(Event.CLOSE, callout_onClose);
 		}
 
 		/**
@@ -103,7 +94,6 @@ package feathers.controls.popups
 		public function dispose():void
 		{
 			this.close();
-			this._onClose.removeAll();
 		}
 
 		/**
@@ -113,17 +103,17 @@ package feathers.controls.popups
 		{
 			this.content = null;
 			this.callout.content = null;
-			this.callout.onClose.remove(callout_onClose);
+			this.callout.removeEventListener(Event.CLOSE, callout_onClose);
 			this.callout = null;
 		}
 
 		/**
 		 * @private
 		 */
-		protected function callout_onClose(callout:Callout):void
+		protected function callout_onClose(event:Event):void
 		{
 			this.cleanup();
-			this._onClose.dispatch(this);
+			this.dispatchEventWith(Event.CLOSE);
 		}
 	}
 }

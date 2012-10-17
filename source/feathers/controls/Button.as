@@ -34,14 +34,30 @@ package feathers.controls
 
 	import flash.geom.Point;
 
-	import org.osflash.signals.ISignal;
-	import org.osflash.signals.Signal;
-
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+
+	/**
+	 * Dispatched when the button is released while the touch is still
+	 * within the button's bounds (a tap or click that should trigger the
+	 * button).
+	 *
+	 * @eventType starling.events.Event.TRIGGERED
+	 */
+	[Event(name="triggered",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the button is selected or unselected. A button's
+	 * selection may be changed by the user when <code>isToggle</code> is set to
+	 * <code>true</code>. The selection may be changed programmatically at any
+	 * time, regardless of the value of <code>isToggle</code>.
+	 *
+	 * @eventType starling.events.Event.CHANGE
+	 */
+	[Event(name="change",type="starling.events.Event")]
 
 	/**
 	 * A push (or optionally, toggle) button control.
@@ -325,7 +341,7 @@ package feathers.controls
 			}
 			this._isSelected = value;
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
-			this._onChange.dispatch(this);
+			this.dispatchEventWith(Event.CHANGE);
 		}
 		
 		/**
@@ -1780,58 +1796,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _onPress:Signal = new Signal(Button);
-		
-		/**
-		 * Dispatched when the button enters the down state.
-		 */
-		public function get onPress():ISignal
-		{
-			return this._onPress;
-		}
-		
-		/**
-		 * @private
-		 */
-		protected var _onRelease:Signal = new Signal(Button);
-		
-		/**
-		 * Dispatched when the button is released while the touch is still
-		 * within the button's bounds (a tap or click that should trigger the
-		 * button).
-		 */
-		public function get onRelease():ISignal
-		{
-			return this._onRelease;
-		}
-		
-		/**
-		 * @private
-		 */
-		protected var _onChange:Signal = new Signal(Button);
-		
-		/**
-		 * Dispatched when the button is selected or unselected.
-		 */
-		public function get onChange():ISignal
-		{
-			return this._onChange;
-		}
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function dispose():void
-		{
-			this._onPress.removeAll();
-			this._onRelease.removeAll();
-			this._onChange.removeAll();
-			super.dispose();
-		}
-		
-		/**
-		 * @private
-		 */
 		override protected function draw():void
 		{
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
@@ -2405,7 +2369,7 @@ package feathers.controls
 						{
 							this.currentState = STATE_UP;
 						}
-						this._onRelease.dispatch(this);
+						this.dispatchEventWith(Event.TRIGGERED);
 						if(this._isToggle)
 						{
 							this.isSelected = !this._isSelected;
@@ -2426,7 +2390,6 @@ package feathers.controls
 					{
 						this.currentState = STATE_DOWN;
 						this._touchPointID = touch.id;
-						this._onPress.dispatch(this);
 						return;
 					}
 					else if(touch.phase == TouchPhase.HOVER)

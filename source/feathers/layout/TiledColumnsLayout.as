@@ -26,10 +26,14 @@ package feathers.layout
 {
 	import flash.geom.Point;
 
-	import org.osflash.signals.ISignal;
-	import org.osflash.signals.Signal;
-
 	import starling.display.DisplayObject;
+	import starling.events.Event;
+	import starling.events.EventDispatcher;
+
+	/**
+	 * @inheritDoc
+	 */
+	[Event(name="change",type="starling.events.Event")]
 
 	/**
 	 * Positions items as tiles (equal width and height) from top to bottom
@@ -37,7 +41,7 @@ package feathers.layout
 	 * columns layout will change in width as the number of items increases or
 	 * decreases.
 	 */
-	public class TiledColumnsLayout implements IVirtualLayout
+	public class TiledColumnsLayout extends EventDispatcher implements IVirtualLayout
 	{
 		/**
 		 * @private
@@ -172,7 +176,7 @@ package feathers.layout
 				return;
 			}
 			this._gap = value;
-			this._onLayoutChange.dispatch(this);
+			this.dispatchEventWith(Event.CHANGE);
 		}
 
 		/**
@@ -198,7 +202,7 @@ package feathers.layout
 				return;
 			}
 			this._paddingTop = value;
-			this._onLayoutChange.dispatch(this);
+			this.dispatchEventWith(Event.CHANGE);
 		}
 
 		/**
@@ -224,7 +228,7 @@ package feathers.layout
 				return;
 			}
 			this._paddingRight = value;
-			this._onLayoutChange.dispatch(this);
+			this.dispatchEventWith(Event.CHANGE);
 		}
 
 		/**
@@ -250,7 +254,7 @@ package feathers.layout
 				return;
 			}
 			this._paddingBottom = value;
-			this._onLayoutChange.dispatch(this);
+			this.dispatchEventWith(Event.CHANGE);
 		}
 
 		/**
@@ -276,7 +280,7 @@ package feathers.layout
 				return;
 			}
 			this._paddingLeft = value;
-			this._onLayoutChange.dispatch(this);
+			this.dispatchEventWith(Event.CHANGE);
 		}
 
 		/**
@@ -304,7 +308,7 @@ package feathers.layout
 				return;
 			}
 			this._verticalAlign = value;
-			this._onLayoutChange.dispatch(this);
+			this.dispatchEventWith(Event.CHANGE);
 		}
 
 		/**
@@ -332,7 +336,7 @@ package feathers.layout
 				return;
 			}
 			this._horizontalAlign = value;
-			this._onLayoutChange.dispatch(this);
+			this.dispatchEventWith(Event.CHANGE);
 		}
 
 		/**
@@ -360,7 +364,7 @@ package feathers.layout
 				return;
 			}
 			this._tileVerticalAlign = value;
-			this._onLayoutChange.dispatch(this);
+			this.dispatchEventWith(Event.CHANGE);
 		}
 
 		/**
@@ -388,7 +392,7 @@ package feathers.layout
 				return;
 			}
 			this._tileHorizontalAlign = value;
-			this._onLayoutChange.dispatch(this);
+			this.dispatchEventWith(Event.CHANGE);
 		}
 
 		/**
@@ -417,7 +421,7 @@ package feathers.layout
 				return;
 			}
 			this._paging = value;
-			this._onLayoutChange.dispatch(this);
+			this.dispatchEventWith(Event.CHANGE);
 		}
 
 		/**
@@ -444,7 +448,7 @@ package feathers.layout
 				return;
 			}
 			this._useSquareTiles = value;
-			this._onLayoutChange.dispatch(this);
+			this.dispatchEventWith(Event.CHANGE);
 		}
 
 		/**
@@ -470,7 +474,7 @@ package feathers.layout
 				return;
 			}
 			this._useVirtualLayout = value;
-			this._onLayoutChange.dispatch(this);
+			this.dispatchEventWith(Event.CHANGE);
 		}
 
 		/**
@@ -521,19 +525,6 @@ package feathers.layout
 				return;
 			}
 			this._typicalItemHeight = value;
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _onLayoutChange:Signal = new Signal(ILayout);
-
-		/**
-		 * @inheritDoc
-		 */
-		public function get onLayoutChange():ISignal
-		{
-			return this._onLayoutChange;
 		}
 
 		/**

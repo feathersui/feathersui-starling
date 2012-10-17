@@ -26,10 +26,15 @@ package feathers.core
 {
 	import flash.errors.IllegalOperationError;
 
-	import org.osflash.signals.ISignal;
-	import org.osflash.signals.Signal;
-
+	import starling.events.Event;
 	import starling.events.EventDispatcher;
+
+	/**
+	 * Dispatched when the selection changes.
+	 *
+	 * @eventType starling.events.Event.CHANGE
+	 */
+	[Event(name="change",type="starling.events.Event")]
 
 	/**
 	 * Controls the selection of two or more IToggle instances where only one
@@ -151,21 +156,8 @@ package feathers.core
 				//early because this setter could be called if an item is
 				//unselected. if selection is required, we need to reselect the
 				//item (happens below in the item's onChange listener).
-				this._onChange.dispatch(this);
+				this.dispatchEventWith(Event.CHANGE);
 			}
-		}
-		
-		/**
-		 * @private
-		 */
-		protected var _onChange:Signal = new Signal(ToggleGroup);
-		
-		/**
-		 * Dispatched when the selection changes.
-		 */
-		public function get onChange():ISignal
-		{
-			return this._onChange;
 		}
 		
 		/**
@@ -193,7 +185,7 @@ package feathers.core
 			{
 				item.isSelected = false;
 			}
-			item.onChange.add(item_onChange);
+			EventDispatcher(item).addEventListener(Event.CHANGE, item_onChange);
 
 			if(item is IGroupedToggle)
 			{
@@ -212,7 +204,7 @@ package feathers.core
 				return;
 			}
 			this._items.splice(index, 1);
-			item.onChange.remove(item_onChange);
+			EventDispatcher(item).removeEventListener(Event.CHANGE, item_onChange);
 			if(item is IGroupedToggle)
 			{
 				IGroupedToggle(item).toggleGroup = null;
@@ -242,13 +234,14 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		private function item_onChange(item:IToggle):void
+		private function item_onChange(event:Event):void
 		{
 			if(this._ignoreChanges)
 			{
 				return;
 			}
-			
+
+			const item:IToggle = IToggle(event.currentTarget);
 			const index:int = this._items.indexOf(item);
 			if(item.isSelected || (this._isSelectionRequired && this._selectedIndex == index))
 			{

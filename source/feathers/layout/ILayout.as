@@ -26,21 +26,21 @@ package feathers.layout
 {
 	import flash.geom.Point;
 
-	import org.osflash.signals.ISignal;
-
 	import starling.display.DisplayObject;
+
+	/**
+	 * Dispatched when a property of the layout changes, indicating that a
+	 * redraw is probably needed.
+	 *
+	 * @eventType starling.events.Event.CHANGE
+	 */
+	[Event(name="change",type="starling.events.Event")]
 
 	/**
 	 * Interface providing layout capabilities for containers.
 	 */
 	public interface ILayout
 	{
-		/**
-		 * Dispatched when a property of the layout changes, indicating that a
-		 * redraw is probably needed.
-		 */
-		function get onLayoutChange():ISignal;
-
 		/**
 		 * Positions (and possibly resizes) the supplied items within the
 		 * optional bounds argument. If no bounds are specified, the layout

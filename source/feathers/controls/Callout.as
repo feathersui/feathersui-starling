@@ -32,9 +32,6 @@ package feathers.controls
 	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
 
-	import org.osflash.signals.ISignal;
-	import org.osflash.signals.Signal;
-
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.events.EnterFrameEvent;
@@ -42,6 +39,13 @@ package feathers.controls
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+
+	/**
+	 * Dispatched when the callout is closed.
+	 *
+	 * @eventType starling.events.Event.CLOSE
+	 */
+	[Event(name="close",type="starling.events.Event")]
 
 	/**
 	 * A pop-up container that points at (or calls out) a specific region of
@@ -207,14 +211,14 @@ package feathers.controls
 			{
 				callout.close();
 			}
-			function callout_onClose(callout:Callout):void
+			function callout_onClose(event:Event):void
 			{
 				origin.removeEventListener(Event.REMOVED_FROM_STAGE, origin_removedFromStageHandler);
 				Starling.current.stage.removeEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
-				callout.onClose.remove(callout_onClose);
+				callout.removeEventListener(Event.CLOSE, callout_onClose);
 			}
 			callout.addEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
-			callout.onClose.add(callout_onClose);
+			callout.addEventListener(Event.CLOSE, callout_onClose);
 			origin.addEventListener(Event.REMOVED_FROM_STAGE, origin_removedFromStageHandler);
 
 			return callout;
@@ -945,19 +949,6 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
-		 */
-		protected var _onClose:Signal = new Signal(Callout);
-
-		/**
-		 * Dispatched when the callout is closed.
-		 */
-		public function get onClose():ISignal
-		{
-			return this._onClose;
-		}
-
-		/**
 		 * Closes the callout.
 		 */
 		public function close():void
@@ -974,16 +965,7 @@ package feathers.controls
 			{
 				this.removeFromParent();
 			}
-			this._onClose.dispatch(this);
-		}
-
-		/**
-		 * @private
-		 */
-		override public function dispose():void
-		{
-			this._onClose.removeAll();
-			super.dispose();
+			this.dispatchEventWith(Event.CLOSE);
 		}
 
 		/**
