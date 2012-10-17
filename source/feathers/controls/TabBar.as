@@ -29,8 +29,14 @@ package feathers.controls
 	import feathers.core.ToggleGroup;
 	import feathers.data.ListCollection;
 
-	import org.osflash.signals.ISignal;
-	import org.osflash.signals.Signal;
+	import starling.events.Event;
+
+	/**
+	 * Dispatched when the selected tab changes.
+	 *
+	 * @eventType staring.events.Event.CHANGE
+	 */
+	[Event(name="change",type="starling.events.Event")]
 
 	[DefaultProperty("dataProvider")]
 	/**
@@ -169,12 +175,12 @@ package feathers.controls
 			}
 			if(this._dataProvider)
 			{
-				this._dataProvider.onChange.remove(dataProvider_onChange);
+				this._dataProvider.removeEventListener(Event.CHANGE, dataProvider_onChange);
 			}
 			this._dataProvider = value;
 			if(this._dataProvider)
 			{
-				this._dataProvider.onChange.add(dataProvider_onChange);
+				this._dataProvider.addEventListener(Event.CHANGE, dataProvider_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -521,19 +527,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _onChange:Signal = new Signal(TabBar);
-
-		/**
-		 * Dispatched when the selected tab changes.
-		 */
-		public function get onChange():ISignal
-		{
-			return this._onChange;
-		}
-
-		/**
-		 * @private
-		 */
 		private var _tabProperties:PropertyProxy;
 
 		/**
@@ -556,7 +549,7 @@ package feathers.controls
 		{
 			if(!this._tabProperties)
 			{
-				this._tabProperties = new PropertyProxy(tabProperties_onChange);
+				this._tabProperties = new PropertyProxy(childProperties_onChange);
 			}
 			return this._tabProperties;
 		}
@@ -585,23 +578,14 @@ package feathers.controls
 			}
 			if(this._tabProperties)
 			{
-				this._tabProperties.onChange.remove(tabProperties_onChange);
+				this._tabProperties.onChange.remove(childProperties_onChange);
 			}
 			this._tabProperties = PropertyProxy(value);
 			if(this._tabProperties)
 			{
-				this._tabProperties.onChange.add(tabProperties_onChange);
+				this._tabProperties.onChange.add(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
-		override public function dispose():void
-		{
-			this._onChange.removeAll();
-			super.dispose();
 		}
 
 		/**
@@ -611,7 +595,7 @@ package feathers.controls
 		{
 			this.toggleGroup = new ToggleGroup();
 			this.toggleGroup.isSelectionRequired = true;
-			this.toggleGroup.onChange.add(toggleGroup_onChange);
+			this.toggleGroup.addEventListener(Event.CHANGE, toggleGroup_onChange);
 		}
 
 		/**
@@ -670,7 +654,7 @@ package feathers.controls
 			}
 			this.toggleGroup.selectedIndex = this._pendingSelectedIndex;
 			this._pendingSelectedIndex = -1;
-			this._onChange.dispatch(this);
+			this.dispatchEventWith(Event.CHANGE);
 		}
 
 		/**
@@ -1005,7 +989,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function tabProperties_onChange(proxy:PropertyProxy, name:Object):void
+		protected function childProperties_onChange(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1013,19 +997,19 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function toggleGroup_onChange(toggleGroup:ToggleGroup):void
+		protected function toggleGroup_onChange(event:Event):void
 		{
 			if(this._pendingSelectedIndex >= 0)
 			{
 				return;
 			}
-			this._onChange.dispatch(this);
+			this.dispatchEventWith(Event.CHANGE);
 		}
 
 		/**
 		 * @private
 		 */
-		protected function dataProvider_onChange(data:ListCollection):void
+		protected function dataProvider_onChange(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}

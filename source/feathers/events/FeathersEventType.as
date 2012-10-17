@@ -29,5 +29,6 @@ package feathers.events
 		public static const INITIALIZE:String = "initialize";
 		public static const RESIZE:String = "resize";
 		public static const ENTER:String = "enter";
+		public static const CLEAR:String = "clear";
 	}
 }

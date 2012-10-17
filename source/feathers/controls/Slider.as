@@ -44,13 +44,20 @@ package feathers.controls
 	import starling.events.TouchPhase;
 
 	/**
+	 * Dispatched when the slider's value changes.
+	 *
+	 * @eventType starling.events.Event.CHANGE
+	 */
+	[Event(name="change",type="starling.events.Event")]
+
+	/**
 	 * Select a value between a minimum and a maximum by dragging a thumb over
 	 * the bounds of a track. The slider's track is divided into two parts split
 	 * by the thumb.
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/slider
 	 */
-	public class Slider extends FeathersControl
+	public class Slider extends FeathersControl implements IScrollBar
 	{
 		/**
 		 * @private
@@ -165,19 +172,6 @@ package feathers.controls
 		 * @private
 		 */
 		protected var thumb:Button;
-		
-		/**
-		 * @private
-		 */
-		protected var _onChange:Signal = new Signal(Slider);
-		
-		/**
-		 * Dispatched when the <code>value</code> property changes.
-		 */
-		public function get onChange():ISignal
-		{
-			return this._onChange;
-		}
 
 		/**
 		 * @private
@@ -267,7 +261,7 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_DATA);
 			if(this.liveDragging || !this.isDragging)
 			{
-				this._onChange.dispatch(this);
+				this.dispatchEventWith(Event.CHANGE);
 			}
 		}
 		
@@ -731,17 +725,6 @@ package feathers.controls
 		private var _thumbStartX:Number = NaN;
 		private var _thumbStartY:Number = NaN;
 		private var _touchValue:Number;
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function dispose():void
-		{
-			this._onChange.removeAll();
-			this._onDragEnd.removeAll();
-			this._onDragStart.removeAll();
-			super.dispose();
-		}
 		
 		/**
 		 * @private
@@ -1240,7 +1223,7 @@ package feathers.controls
 			this.isDragging = false;
 			if(wasDragging && !this.liveDragging)
 			{
-				this._onChange.dispatch(this);
+				this.dispatchEventWith(Event.CHANGE);
 			}
 		}
 		
@@ -1284,7 +1267,7 @@ package feathers.controls
 					this.isDragging = false;
 					if(!this.liveDragging)
 					{
-						this._onChange.dispatch(this);
+						this.dispatchEventWith(Event.CHANGE);
 					}
 					this._onDragEnd.dispatch(this);
 					return;
@@ -1367,7 +1350,7 @@ package feathers.controls
 					this.isDragging = false;
 					if(!this.liveDragging)
 					{
-						this._onChange.dispatch(this);
+						this.dispatchEventWith(Event.CHANGE);
 					}
 					this._onDragEnd.dispatch(this);
 					return;

@@ -32,14 +32,18 @@ package feathers.controls
 	import feathers.data.ListCollection;
 	import feathers.system.DeviceCapabilities;
 
-	import org.osflash.signals.ISignal;
-	import org.osflash.signals.Signal;
-
 	import starling.core.Starling;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+
+	/**
+	 * Dispatched when the selected item changes.
+	 *
+	 * @eventType staring.events.Event.CHANGE
+	 */
+	[Event(name="change",type="starling.events.Event")]
 
 	/**
 	 * A combo-box like list control. Displayed as a button. The list appears
@@ -144,7 +148,7 @@ package feathers.controls
 			}
 			this._selectedIndex = value;
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
-			this._onChange.dispatch(this);
+			this.dispatchEventWith(Event.CHANGE);
 		}
 		
 		/**
@@ -309,19 +313,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _onChange:Signal = new Signal(PickerList);
-		
-		/**
-		 * @copy List#onChange
-		 */
-		public function get onChange():ISignal
-		{
-			return this._onChange;
-		}
-		
-		/**
-		 * @private
-		 */
 		private var _buttonProperties:PropertyProxy;
 		
 		/**
@@ -342,7 +333,7 @@ package feathers.controls
 		{
 			if(!this._buttonProperties)
 			{
-				this._buttonProperties = new PropertyProxy(buttonProperties_onChange);
+				this._buttonProperties = new PropertyProxy(childProperties_onChange);
 			}
 			return this._buttonProperties;
 		}
@@ -371,12 +362,12 @@ package feathers.controls
 			}
 			if(this._buttonProperties)
 			{
-				this._buttonProperties.onChange.remove(buttonProperties_onChange);
+				this._buttonProperties.onChange.remove(childProperties_onChange);
 			}
 			this._buttonProperties = PropertyProxy(value);
 			if(this._buttonProperties)
 			{
-				this._buttonProperties.onChange.add(buttonProperties_onChange);
+				this._buttonProperties.onChange.add(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -404,7 +395,7 @@ package feathers.controls
 		{
 			if(!this._listProperties)
 			{
-				this._listProperties = new PropertyProxy(listProperties_onChange);
+				this._listProperties = new PropertyProxy(childProperties_onChange);
 			}
 			return this._listProperties;
 		}
@@ -433,12 +424,12 @@ package feathers.controls
 			}
 			if(this._listProperties)
 			{
-				this._listProperties.onChange.remove(listProperties_onChange);
+				this._listProperties.onChange.remove(childProperties_onChange);
 			}
 			this._listProperties = PropertyProxy(value);
 			if(this._listProperties)
 			{
-				this._listProperties.onChange.add(listProperties_onChange);
+				this._listProperties.onChange.add(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -475,7 +466,6 @@ package feathers.controls
 		override public function dispose():void
 		{
 			this.closePopUpList();
-			this._onChange.removeAll();
 			this._list.dispose();
 			super.dispose();
 		}
@@ -489,7 +479,7 @@ package feathers.controls
 			{
 				this._button = new Button();
 				this._button.nameList.add(this.buttonName);
-				this._button.onRelease.add(button_onRelease);
+				this._button.addEventListener(Event.TRIGGERED, button_onRelease);
 				this._button.addEventListener(TouchEvent.TOUCH, button_touchHandler);
 				this.addChild(this._button);
 			}
@@ -498,8 +488,8 @@ package feathers.controls
 			{
 				this._list = new List();
 				this._list.nameList.add(this.listName);
-				this._list.onScroll.add(list_onScroll);
-				this._list.onChange.add(list_onChange);
+				this._list.addEventListener(Event.SCROLL, list_onScroll);
+				this._list.addEventListener(Event.CHANGE, list_onChange);
 				this._list.addEventListener(TouchEvent.TOUCH, list_touchHandler);
 			}
 
@@ -677,15 +667,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function buttonProperties_onChange(proxy:PropertyProxy, name:Object):void
-		{
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function listProperties_onChange(proxy:PropertyProxy, name:Object):void
+		protected function childProperties_onChange(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -693,7 +675,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function button_onRelease(button:Button):void
+		protected function button_onRelease(event:Event):void
 		{
 			if(this._list.stage)
 			{
@@ -710,7 +692,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function list_onChange(list:List):void
+		protected function list_onChange(event:Event):void
 		{
 			this.selectedIndex = this._list.selectedIndex;
 		}
@@ -718,7 +700,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function list_onScroll(list:List):void
+		protected function list_onScroll(event:Event):void
 		{
 			if(this._listTouchPointID >= 0)
 			{

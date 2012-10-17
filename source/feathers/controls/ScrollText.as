@@ -33,6 +33,15 @@ package feathers.controls
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 
+	import starling.events.Event;
+
+	/**
+	 * Dispatched when the text is scrolled.
+	 *
+	 * @eventType staring.events.Event.SCROLL
+	 */
+	[Event(name="change",type="starling.events.Event")]
+
 	/**
 	 * Displays long passages of text in a scrollable container using the
 	 * runtime's software-based <code>flash.text.TextField</code> as an overlay
@@ -311,7 +320,7 @@ package feathers.controls
 			}
 			this._horizontalScrollPosition = value;
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
-			this._onScroll.dispatch(this);
+			this.dispatchEventWith(Event.SCROLL);
 		}
 
 		/**
@@ -358,7 +367,7 @@ package feathers.controls
 			}
 			this._verticalScrollPosition = value;
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
-			this._onScroll.dispatch(this);
+			this.dispatchEventWith(Event.SCROLL);
 		}
 
 		/**
@@ -403,7 +412,7 @@ package feathers.controls
 		{
 			if(!this._scrollerProperties)
 			{
-				this._scrollerProperties = new PropertyProxy(scrollerProperties_onChange);
+				this._scrollerProperties = new PropertyProxy(childProperties_onChange);
 			}
 			return this._scrollerProperties;
 		}
@@ -432,36 +441,14 @@ package feathers.controls
 			}
 			if(this._scrollerProperties)
 			{
-				this._scrollerProperties.onChange.remove(scrollerProperties_onChange);
+				this._scrollerProperties.onChange.remove(childProperties_onChange);
 			}
 			this._scrollerProperties = PropertyProxy(value);
 			if(this._scrollerProperties)
 			{
-				this._scrollerProperties.onChange.add(scrollerProperties_onChange);
+				this._scrollerProperties.onChange.add(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _onScroll:Signal = new Signal(ScrollText);
-
-		/**
-		 * Dispatched when the container scrolls.
-		 */
-		public function get onScroll():ISignal
-		{
-			return this._onScroll;
-		}
-
-		/**
-		 * @private
-		 */
-		override public function dispose():void
-		{
-			this._onScroll.removeAll();
-			super.dispose();
 		}
 
 		/**
@@ -490,7 +477,7 @@ package feathers.controls
 				this.scroller = new Scroller();
 				this.scroller.viewPort = this.viewPort;
 				this.scroller.nameList.add(this.scrollerName);
-				this.scroller.onScroll.add(scroller_onScroll);
+				this.scroller.addEventListener(Event.SCROLL, scroller_onScroll);
 				super.addChildAt(this.scroller, 0);
 			}
 		}
@@ -605,7 +592,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function scrollerProperties_onChange(proxy:PropertyProxy, name:Object):void
+		protected function childProperties_onChange(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -613,13 +600,13 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function scroller_onScroll(scroller:Scroller):void
+		protected function scroller_onScroll(event:Event):void
 		{
 			this._horizontalScrollPosition = this.scroller.horizontalScrollPosition;
 			this._verticalScrollPosition = this.scroller.verticalScrollPosition;
 			this._maxHorizontalScrollPosition = this.scroller.maxHorizontalScrollPosition;
 			this._maxVerticalScrollPosition = this.scroller.maxVerticalScrollPosition;
-			this._onScroll.dispatch(this);
+			this.dispatchEventWith(Event.SCROLL);
 		}
 	}
 }
