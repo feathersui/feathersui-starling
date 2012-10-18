@@ -454,12 +454,12 @@ package feathers.controls.supportClasses
 			}
 			if(this._itemRendererProperties)
 			{
-				this._itemRendererProperties.onChange.remove(childProperties_onChange);
+				this._itemRendererProperties.removeOnChangeCallback(childProperties_onChange);
 			}
 			this._itemRendererProperties = PropertyProxy(value);
 			if(this._itemRendererProperties)
 			{
-				this._itemRendererProperties.onChange.add(childProperties_onChange);
+				this._itemRendererProperties.addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -708,12 +708,12 @@ package feathers.controls.supportClasses
 			}
 			if(this._headerRendererProperties)
 			{
-				this._headerRendererProperties.onChange.remove(childProperties_onChange);
+				this._headerRendererProperties.removeOnChangeCallback(childProperties_onChange);
 			}
 			this._headerRendererProperties = PropertyProxy(value);
 			if(this._headerRendererProperties)
 			{
-				this._headerRendererProperties.onChange.add(childProperties_onChange);
+				this._headerRendererProperties.addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -803,12 +803,12 @@ package feathers.controls.supportClasses
 			}
 			if(this._footerRendererProperties)
 			{
-				this._footerRendererProperties.onChange.remove(childProperties_onChange);
+				this._footerRendererProperties.removeOnChangeCallback(childProperties_onChange);
 			}
 			this._footerRendererProperties = PropertyProxy(value);
 			if(this._footerRendererProperties)
 			{
-				this._footerRendererProperties.onChange.add(childProperties_onChange);
+				this._footerRendererProperties.addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -2030,7 +2030,7 @@ package feathers.controls.supportClasses
 			return -1;
 		}
 
-		private function childProperties_onChange(event:Event):void
+		private function childProperties_onChange(proxy:PropertyProxy, name:String):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -2046,9 +2046,8 @@ package feathers.controls.supportClasses
 			this.invalidateParent();
 		}
 
-		private function dataProvider_onItemUpdate(event:Event):void
+		private function dataProvider_onItemUpdate(event:Event, indices:Array):void
 		{
-			const indices:Array = event.data as Array;
 			const groupIndex:int = indices[0];
 			const itemIndex:int = indices[1];
 			const item:Object = this._dataProvider.getItemAt(groupIndex, itemIndex);

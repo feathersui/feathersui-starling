@@ -510,12 +510,12 @@ package feathers.controls
 			}
 			if(this._horizontalScrollBarProperties)
 			{
-				this._horizontalScrollBarProperties.onChange.remove(childProperties_onChange);
+				this._horizontalScrollBarProperties.removeOnChangeCallback(childProperties_onChange);
 			}
 			this._horizontalScrollBarProperties = PropertyProxy(value);
 			if(this._horizontalScrollBarProperties)
 			{
-				this._horizontalScrollBarProperties.onChange.add(childProperties_onChange);
+				this._horizontalScrollBarProperties.addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -602,12 +602,12 @@ package feathers.controls
 			}
 			if(this._verticalScrollBarProperties)
 			{
-				this._verticalScrollBarProperties.onChange.remove(childProperties_onChange);
+				this._verticalScrollBarProperties.removeOnChangeCallback(childProperties_onChange);
 			}
 			this._verticalScrollBarProperties = PropertyProxy(value);
 			if(this._verticalScrollBarProperties)
 			{
-				this._verticalScrollBarProperties.onChange.add(childProperties_onChange);
+				this._verticalScrollBarProperties.addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -2231,7 +2231,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function childProperties_onChange(event:Event):void
+		protected function childProperties_onChange(proxy:PropertyProxy, name:String):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}

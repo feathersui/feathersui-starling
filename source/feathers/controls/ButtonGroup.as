@@ -586,12 +586,12 @@ package feathers.controls
 			}
 			if(this._buttonProperties)
 			{
-				this._buttonProperties.onChange.remove(childProperties_onChange);
+				this._buttonProperties.removeOnChangeCallback(childProperties_onChange);
 			}
 			this._buttonProperties = PropertyProxy(value);
 			if(this._buttonProperties)
 			{
-				this._buttonProperties.onChange.add(childProperties_onChange);
+				this._buttonProperties.addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1008,7 +1008,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function childProperties_onChange(event:Event):void
+		protected function childProperties_onChange(proxy:PropertyProxy, name:String):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}

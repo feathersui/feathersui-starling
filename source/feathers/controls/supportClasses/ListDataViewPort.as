@@ -351,12 +351,12 @@ package feathers.controls.supportClasses
 			}
 			if(this._itemRendererProperties)
 			{
-				this._itemRendererProperties.onChange.remove(childProperties_onChange);
+				this._itemRendererProperties.removeOnChangeCallback(childProperties_onChange);
 			}
 			this._itemRendererProperties = PropertyProxy(value);
 			if(this._itemRendererProperties)
 			{
-				this._itemRendererProperties.onChange.add(childProperties_onChange);
+				this._itemRendererProperties.addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
@@ -749,7 +749,7 @@ package feathers.controls.supportClasses
 			this.removeChild(displayRenderer, true);
 		}
 
-		private function childProperties_onChange(event:Event):void
+		private function childProperties_onChange(proxy:PropertyProxy, name:String):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -765,9 +765,8 @@ package feathers.controls.supportClasses
 			this.invalidateParent();
 		}
 
-		private function dataProvider_onItemUpdate(event:Event):void
+		private function dataProvider_onItemUpdate(event:Event, index:int):void
 		{
-			const index:int = event.data as int;
 			const item:Object = this._dataProvider.getItemAt(index);
 			const renderer:IListItemRenderer = IListItemRenderer(this._rendererMap[item]);
 			if(!renderer)

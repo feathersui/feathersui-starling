@@ -740,12 +740,12 @@ package feathers.controls.renderers
 			}
 			if(this._contentLabelProperties)
 			{
-				this._contentLabelProperties.onChange.remove(contentLabelProperties_onChange);
+				this._contentLabelProperties.removeOnChangeCallback(contentLabelProperties_onChange);
 			}
 			this._contentLabelProperties = PropertyProxy(value);
 			if(this._contentLabelProperties)
 			{
-				this._contentLabelProperties.onChange.add(contentLabelProperties_onChange);
+				this._contentLabelProperties.addOnChangeCallback(contentLabelProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}

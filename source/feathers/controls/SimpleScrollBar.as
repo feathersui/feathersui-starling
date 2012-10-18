@@ -499,12 +499,12 @@ package feathers.controls
 			}
 			if(this._thumbProperties)
 			{
-				this._thumbProperties.onChange.remove(thumbProperties_onChange);
+				this._thumbProperties.removeOnChangeCallback(thumbProperties_onChange);
 			}
 			this._thumbProperties = PropertyProxy(value);
 			if(this._thumbProperties)
 			{
-				this._thumbProperties.onChange.add(thumbProperties_onChange);
+				this._thumbProperties.addOnChangeCallback(thumbProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
