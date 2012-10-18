@@ -967,12 +967,12 @@ package feathers.controls.renderers
 			}
 			if(this._accessoryLabelProperties)
 			{
-				this._accessoryLabelProperties.onChange.remove(accessoryLabelProperties_onChange);
+				this._accessoryLabelProperties.removeOnChangeCallback(accessoryLabelProperties_onChange);
 			}
 			this._accessoryLabelProperties = PropertyProxy(value);
 			if(this._accessoryLabelProperties)
 			{
-				this._accessoryLabelProperties.onChange.add(accessoryLabelProperties_onChange);
+				this._accessoryLabelProperties.addOnChangeCallback(accessoryLabelProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}

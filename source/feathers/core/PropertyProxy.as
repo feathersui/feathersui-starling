@@ -27,18 +27,6 @@ package feathers.core
 	import flash.utils.Proxy;
 	import flash.utils.flash_proxy;
 
-	import starling.events.Event;
-
-	/**
-	 * Dispatched when a property changes.
-	 *
-	 * <p>The <code>data</code> property of the event is the name of the
-	 * property has has changed. It is of type <code>String</code>.</p>
-	 *
-	 * @eventType starling.events.Event.CHANGE
-	 */
-	[Event(name="change",type="starling.events.Event")]
-
 	/**
 	 * Detects when its own properties have changed and dispatches a signal
 	 * to notify listeners.
@@ -50,9 +38,9 @@ package feathers.core
 	 */
 	public dynamic class PropertyProxy extends Proxy
 	{
-		public static function fromObject(source:Object, onChangeListener:Function = null):PropertyProxy
+		public static function fromObject(source:Object, onChangeCallback:Function = null):PropertyProxy
 		{
-			const newValue:PropertyProxy = new PropertyProxy(onChangeListener);
+			const newValue:PropertyProxy = new PropertyProxy(onChangeCallback);
 			for(var propertyName:String in source)
 			{
 				newValue[propertyName] = source[propertyName];
@@ -63,13 +51,23 @@ package feathers.core
 		/**
 		 * Constructor.
 		 */
-		public function PropertyProxy(onChange:Function = null)
+		public function PropertyProxy(onChangeCallback:Function = null)
 		{
-			if(onChange != null)
+			if(onChangeCallback != null)
 			{
-				this.addEventListener(Event.CHANGE, onChange);
+				this.onChangeCallbacks.push(onChangeCallback);
 			}
 		}
+
+		/**
+		 * @private
+		 */
+		protected var subProxyName:String;
+
+		/**
+		 * @private
+		 */
+		protected var onChangeCallbacks:Vector.<Function> = new <Function>[];
 
 		/**
 		 * @private
@@ -99,9 +97,11 @@ package feathers.core
 				const nameAsString:String = name is QName ? QName(name).localName : name.toString();
 				if(!this._storage.hasOwnProperty(nameAsString))
 				{
-					this._storage[nameAsString] = new PropertyProxy();
+					const subProxy:PropertyProxy = new PropertyProxy(subProxy_onChange);
+					subProxy.subProxyName = nameAsString;
+					this._storage[nameAsString] = subProxy;
 					this._names.push(nameAsString);
-					this.dispatchEventWith(Event.CHANGE, false, nameAsString);
+					this.fireOnChangeCallback(nameAsString);
 				}
 				return this._storage[nameAsString];
 			}
@@ -118,7 +118,7 @@ package feathers.core
 			{
 				this._names.push(name);
 			}
-			this._onChange.dispatch(this, name);
+			this.fireOnChangeCallback(name);
 		}
 
 		/**
@@ -134,7 +134,7 @@ package feathers.core
 			const result:Boolean = delete this._storage[name];
 			if(result)
 			{
-				this._onChange.dispatch(this, name);
+				this.fireOnChangeCallback(name);
 			}
 			return result;
 		}
@@ -166,6 +166,47 @@ package feathers.core
 		{
 			const name:* = this._names[index - 1];
 			return this._storage[name];
+		}
+
+		/**
+		 * Adds a callback to react to property changes.
+		 */
+		public function addOnChangeCallback(callback:Function):void
+		{
+			this.onChangeCallbacks.push(callback);
+		}
+
+		/**
+		 * Removes a callback.
+		 */
+		public function removeOnChangeCallback(callback:Function):void
+		{
+			const index:int = this.onChangeCallbacks.indexOf(callback);
+			if(index >= 0)
+			{
+				this.onChangeCallbacks.splice(index, 1);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function fireOnChangeCallback(forName:String):void
+		{
+			const callbackCount:int = this.onChangeCallbacks.length;
+			for(var i:int = 0; i < callbackCount; i++)
+			{
+				var callback:Function = this.onChangeCallbacks[i] as Function;
+				callback(this, forName);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function subProxy_onChange(proxy:PropertyProxy, name:String):void
+		{
+			this.fireOnChangeCallback(proxy.subProxyName);
 		}
 	}
 }

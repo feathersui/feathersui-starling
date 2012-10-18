@@ -161,12 +161,12 @@ package feathers.controls
 			}
 			if(this._textRendererProperties)
 			{
-				this._textRendererProperties.onChange.remove(textRendererProperties_onChange);
+				this._textRendererProperties.removeOnChangeCallback(textRendererProperties_onChange);
 			}
 			this._textRendererProperties = PropertyProxy(value);
 			if(this._textRendererProperties)
 			{
-				this._textRendererProperties.onChange.add(textRendererProperties_onChange);
+				this._textRendererProperties.addOnChangeCallback(textRendererProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}

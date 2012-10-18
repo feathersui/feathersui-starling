@@ -438,12 +438,12 @@ package feathers.controls
 			}
 			if(this._scrollerProperties)
 			{
-				this._scrollerProperties.onChange.remove(childProperties_onChange);
+				this._scrollerProperties.removeOnChangeCallback(childProperties_onChange);
 			}
 			this._scrollerProperties = PropertyProxy(value);
 			if(this._scrollerProperties)
 			{
-				this._scrollerProperties.onChange.add(childProperties_onChange);
+				this._scrollerProperties.addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -589,7 +589,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function childProperties_onChange(event:Event):void
+		protected function childProperties_onChange(proxy:PropertyProxy, name:String):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}

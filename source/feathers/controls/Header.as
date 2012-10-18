@@ -574,12 +574,12 @@ package feathers.controls
 			}
 			if(this._titleProperties)
 			{
-				this._titleProperties.onChange.remove(titleProperties_onChange);
+				this._titleProperties.removeOnChangeCallback(titleProperties_onChange);
 			}
 			this._titleProperties = PropertyProxy(value);
 			if(this._titleProperties)
 			{
-				this._titleProperties.onChange.add(titleProperties_onChange);
+				this._titleProperties.addOnChangeCallback(titleProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}

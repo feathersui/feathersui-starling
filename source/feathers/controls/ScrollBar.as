@@ -625,12 +625,12 @@ package feathers.controls
 			}
 			if(this._minimumTrackProperties)
 			{
-				this._minimumTrackProperties.onChange.remove(minimumTrackProperties_onChange);
+				this._minimumTrackProperties.removeOnChangeCallback(minimumTrackProperties_onChange);
 			}
 			this._minimumTrackProperties = PropertyProxy(value);
 			if(this._minimumTrackProperties)
 			{
-				this._minimumTrackProperties.onChange.add(minimumTrackProperties_onChange);
+				this._minimumTrackProperties.addOnChangeCallback(minimumTrackProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -687,12 +687,12 @@ package feathers.controls
 			}
 			if(this._maximumTrackProperties)
 			{
-				this._maximumTrackProperties.onChange.remove(maximumTrackProperties_onChange);
+				this._maximumTrackProperties.removeOnChangeCallback(maximumTrackProperties_onChange);
 			}
 			this._maximumTrackProperties = PropertyProxy(value);
 			if(this._maximumTrackProperties)
 			{
-				this._maximumTrackProperties.onChange.add(maximumTrackProperties_onChange);
+				this._maximumTrackProperties.addOnChangeCallback(maximumTrackProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -749,12 +749,12 @@ package feathers.controls
 			}
 			if(this._thumbProperties)
 			{
-				this._thumbProperties.onChange.remove(thumbProperties_onChange);
+				this._thumbProperties.removeOnChangeCallback(thumbProperties_onChange);
 			}
 			this._thumbProperties = PropertyProxy(value);
 			if(this._thumbProperties)
 			{
-				this._thumbProperties.onChange.add(thumbProperties_onChange);
+				this._thumbProperties.addOnChangeCallback(thumbProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -811,12 +811,12 @@ package feathers.controls
 			}
 			if(this._decrementButtonProperties)
 			{
-				this._decrementButtonProperties.onChange.remove(decrementButtonProperties_onChange);
+				this._decrementButtonProperties.removeOnChangeCallback(decrementButtonProperties_onChange);
 			}
 			this._decrementButtonProperties = PropertyProxy(value);
 			if(this._decrementButtonProperties)
 			{
-				this._decrementButtonProperties.onChange.add(decrementButtonProperties_onChange);
+				this._decrementButtonProperties.addOnChangeCallback(decrementButtonProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -873,12 +873,12 @@ package feathers.controls
 			}
 			if(this._incrementButtonProperties)
 			{
-				this._incrementButtonProperties.onChange.remove(incrementButtonProperties_onChange);
+				this._incrementButtonProperties.removeOnChangeCallback(incrementButtonProperties_onChange);
 			}
 			this._incrementButtonProperties = PropertyProxy(value);
 			if(this._incrementButtonProperties)
 			{
-				this._incrementButtonProperties.onChange.add(incrementButtonProperties_onChange);
+				this._incrementButtonProperties.addOnChangeCallback(incrementButtonProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}

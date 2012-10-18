@@ -523,12 +523,12 @@ package feathers.controls
 			}
 			if(this._stageTextProperties)
 			{
-				this._stageTextProperties.onChange.remove(stageTextProperties_onChange);
+				this._stageTextProperties.removeOnChangeCallback(stageTextProperties_onChange);
 			}
 			this._stageTextProperties = PropertyProxy(value);
 			if(this._stageTextProperties)
 			{
-				this._stageTextProperties.onChange.add(stageTextProperties_onChange);
+				this._stageTextProperties.addOnChangeCallback(stageTextProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}

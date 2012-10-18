@@ -342,7 +342,7 @@ package feathers.controls
 		{
 			if(!this._defaultLabelProperties)
 			{
-				this._defaultLabelProperties = new PropertyProxy(labelProperties_onChange);
+				this._defaultLabelProperties = new PropertyProxy(childProperties_onChange);
 			}
 			return this._defaultLabelProperties;
 		}
@@ -358,12 +358,12 @@ package feathers.controls
 			}
 			if(this._defaultLabelProperties)
 			{
-				this._defaultLabelProperties.onChange.remove(labelProperties_onChange);
+				this._defaultLabelProperties.removeOnChangeCallback(childProperties_onChange);
 			}
 			this._defaultLabelProperties = PropertyProxy(value);
 			if(this._defaultLabelProperties)
 			{
-				this._defaultLabelProperties.onChange.add(labelProperties_onChange);
+				this._defaultLabelProperties.addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -381,7 +381,7 @@ package feathers.controls
 		{
 			if(!this._disabledLabelProperties)
 			{
-				this._disabledLabelProperties = new PropertyProxy(labelProperties_onChange);
+				this._disabledLabelProperties = new PropertyProxy(childProperties_onChange);
 			}
 			return this._disabledLabelProperties;
 		}
@@ -397,12 +397,12 @@ package feathers.controls
 			}
 			if(this._disabledLabelProperties)
 			{
-				this._disabledLabelProperties.onChange.remove(labelProperties_onChange);
+				this._disabledLabelProperties.removeOnChangeCallback(childProperties_onChange);
 			}
 			this._disabledLabelProperties = PropertyProxy(value);
 			if(this._disabledLabelProperties)
 			{
-				this._disabledLabelProperties.onChange.add(labelProperties_onChange);
+				this._disabledLabelProperties.addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -420,7 +420,7 @@ package feathers.controls
 		{
 			if(!this._onLabelProperties)
 			{
-				this._onLabelProperties = new PropertyProxy(labelProperties_onChange);
+				this._onLabelProperties = new PropertyProxy(childProperties_onChange);
 			}
 			return this._onLabelProperties;
 		}
@@ -436,12 +436,12 @@ package feathers.controls
 			}
 			if(this._onLabelProperties)
 			{
-				this._onLabelProperties.onChange.remove(labelProperties_onChange);
+				this._onLabelProperties.removeOnChangeCallback(childProperties_onChange);
 			}
 			this._onLabelProperties = PropertyProxy(value);
 			if(this._onLabelProperties)
 			{
-				this._onLabelProperties.onChange.add(labelProperties_onChange);
+				this._onLabelProperties.addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -459,7 +459,7 @@ package feathers.controls
 		{
 			if(!this._offLabelProperties)
 			{
-				this._offLabelProperties = new PropertyProxy(labelProperties_onChange);
+				this._offLabelProperties = new PropertyProxy(childProperties_onChange);
 			}
 			return this._offLabelProperties;
 		}
@@ -475,12 +475,12 @@ package feathers.controls
 			}
 			if(this._offLabelProperties)
 			{
-				this._offLabelProperties.onChange.remove(labelProperties_onChange);
+				this._offLabelProperties.removeOnChangeCallback(childProperties_onChange);
 			}
 			this._offLabelProperties = PropertyProxy(value);
 			if(this._offLabelProperties)
 			{
-				this._offLabelProperties.onChange.add(labelProperties_onChange);
+				this._offLabelProperties.addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -688,7 +688,7 @@ package feathers.controls
 		{
 			if(!this._onTrackProperties)
 			{
-				this._onTrackProperties = new PropertyProxy(onTrackProperties_onChange);
+				this._onTrackProperties = new PropertyProxy(childProperties_onChange);
 			}
 			return this._onTrackProperties;
 		}
@@ -717,12 +717,12 @@ package feathers.controls
 			}
 			if(this._onTrackProperties)
 			{
-				this._onTrackProperties.onChange.remove(onTrackProperties_onChange);
+				this._onTrackProperties.removeOnChangeCallback(childProperties_onChange);
 			}
 			this._onTrackProperties = PropertyProxy(value);
 			if(this._onTrackProperties)
 			{
-				this._onTrackProperties.onChange.add(onTrackProperties_onChange);
+				this._onTrackProperties.addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -750,7 +750,7 @@ package feathers.controls
 		{
 			if(!this._offTrackProperties)
 			{
-				this._offTrackProperties = new PropertyProxy(offTrackProperties_onChange);
+				this._offTrackProperties = new PropertyProxy(childProperties_onChange);
 			}
 			return this._offTrackProperties;
 		}
@@ -779,12 +779,12 @@ package feathers.controls
 			}
 			if(this._offTrackProperties)
 			{
-				this._offTrackProperties.onChange.remove(offTrackProperties_onChange);
+				this._offTrackProperties.removeOnChangeCallback(childProperties_onChange);
 			}
 			this._offTrackProperties = PropertyProxy(value);
 			if(this._offTrackProperties)
 			{
-				this._offTrackProperties.onChange.add(offTrackProperties_onChange);
+				this._offTrackProperties.addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -812,7 +812,7 @@ package feathers.controls
 		{
 			if(!this._thumbProperties)
 			{
-				this._thumbProperties = new PropertyProxy(thumbProperties_onChange);
+				this._thumbProperties = new PropertyProxy(childProperties_onChange);
 			}
 			return this._thumbProperties;
 		}
@@ -841,12 +841,12 @@ package feathers.controls
 			}
 			if(this._thumbProperties)
 			{
-				this._thumbProperties.onChange.remove(thumbProperties_onChange);
+				this._thumbProperties.removeOnChangeCallback(childProperties_onChange);
 			}
 			this._thumbProperties = PropertyProxy(value);
 			if(this._thumbProperties)
 			{
-				this._thumbProperties.onChange.add(thumbProperties_onChange);
+				this._thumbProperties.addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1351,31 +1351,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function onTrackProperties_onChange(proxy:PropertyProxy, name:Object):void
-		{
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function offTrackProperties_onChange(proxy:PropertyProxy, name:Object):void
-		{
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function thumbProperties_onChange(proxy:PropertyProxy, name:Object):void
-		{
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function labelProperties_onChange(proxy:PropertyProxy, name:Object):void
+		protected function childProperties_onChange(proxy:PropertyProxy, name:Object):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}

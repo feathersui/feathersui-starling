@@ -29,6 +29,7 @@ package feathers.controls
 	import feathers.core.ITextRenderer;
 	import feathers.core.IToggle;
 	import feathers.core.PropertyProxy;
+	import feathers.core.PropertyProxy;
 	import feathers.display.ScrollRectManager;
 	import feathers.skins.StateWithToggleValueSelector;
 
@@ -1076,7 +1077,7 @@ package feathers.controls
 			var value:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.defaultValue);
 			if(!value)
 			{
-				value = new PropertyProxy(labelProperties_onChange);
+				value = new PropertyProxy(childProperties_onChange);
 				this._labelPropertiesSelector.defaultValue = value;
 			}
 			return value;
@@ -1094,12 +1095,12 @@ package feathers.controls
 			const oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.defaultValue);
 			if(oldValue)
 			{
-				oldValue.onChange.remove(labelProperties_onChange);
+				oldValue.removeOnChangeCallback(childProperties_onChange);
 			}
 			this._labelPropertiesSelector.defaultValue = value;
 			if(value)
 			{
-				value.onChange.add(labelProperties_onChange);
+				PropertyProxy(value).addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1117,7 +1118,7 @@ package feathers.controls
 			var value:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_UP, false));
 			if(!value)
 			{
-				value = new PropertyProxy(labelProperties_onChange);
+				value = new PropertyProxy(childProperties_onChange);
 				this._labelPropertiesSelector.setValueForState(value, STATE_UP, false);
 			}
 			return value;
@@ -1135,12 +1136,12 @@ package feathers.controls
 			const oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_UP, false));
 			if(oldValue)
 			{
-				oldValue.onChange.remove(labelProperties_onChange);
+				oldValue.removeOnChangeCallback(childProperties_onChange);
 			}
 			this._labelPropertiesSelector.setValueForState(value, STATE_UP, false);
 			if(value)
 			{
-				value.onChange.add(labelProperties_onChange);
+				PropertyProxy(value).addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1158,7 +1159,7 @@ package feathers.controls
 			var value:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_DOWN, false));
 			if(!value)
 			{
-				value = new PropertyProxy(labelProperties_onChange);
+				value = new PropertyProxy(childProperties_onChange);
 				this._labelPropertiesSelector.setValueForState(value, STATE_DOWN, false);
 			}
 			return value;
@@ -1176,12 +1177,12 @@ package feathers.controls
 			const oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_DOWN, false));
 			if(oldValue)
 			{
-				oldValue.onChange.remove(labelProperties_onChange);
+				oldValue.removeOnChangeCallback(childProperties_onChange);
 			}
 			this._labelPropertiesSelector.setValueForState(value, STATE_DOWN, false);
 			if(value)
 			{
-				value.onChange.add(labelProperties_onChange);
+				PropertyProxy(value).addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1199,7 +1200,7 @@ package feathers.controls
 			var value:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_HOVER, false));
 			if(!value)
 			{
-				value = new PropertyProxy(labelProperties_onChange);
+				value = new PropertyProxy(childProperties_onChange);
 				this._labelPropertiesSelector.setValueForState(value, STATE_HOVER, false);
 			}
 			return value;
@@ -1217,12 +1218,12 @@ package feathers.controls
 			const oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_HOVER, false));
 			if(oldValue)
 			{
-				oldValue.onChange.remove(labelProperties_onChange);
+				oldValue.removeOnChangeCallback(childProperties_onChange);
 			}
 			this._labelPropertiesSelector.setValueForState(value, STATE_HOVER, false);
 			if(value)
 			{
-				value.onChange.add(labelProperties_onChange);
+				PropertyProxy(value).addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1240,7 +1241,7 @@ package feathers.controls
 			var value:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_DISABLED, false));
 			if(!value)
 			{
-				value = new PropertyProxy(labelProperties_onChange);
+				value = new PropertyProxy(childProperties_onChange);
 				this._labelPropertiesSelector.setValueForState(value, STATE_DISABLED, false);
 			}
 			return value;
@@ -1258,12 +1259,12 @@ package feathers.controls
 			const oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_DISABLED, false));
 			if(oldValue)
 			{
-				oldValue.onChange.remove(labelProperties_onChange);
+				oldValue.removeOnChangeCallback(childProperties_onChange);
 			}
 			this._labelPropertiesSelector.setValueForState(value, STATE_DISABLED, false);
 			if(value)
 			{
-				value.onChange.add(labelProperties_onChange);
+				PropertyProxy(value).addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1286,7 +1287,7 @@ package feathers.controls
 			var value:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.defaultSelectedValue);
 			if(!value)
 			{
-				value = new PropertyProxy(labelProperties_onChange);
+				value = new PropertyProxy(childProperties_onChange);
 				this._labelPropertiesSelector.defaultSelectedValue = value;
 			}
 			return value;
@@ -1304,12 +1305,12 @@ package feathers.controls
 			const oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.defaultSelectedValue);
 			if(oldValue)
 			{
-				oldValue.onChange.remove(labelProperties_onChange);
+				oldValue.removeOnChangeCallback(childProperties_onChange);
 			}
 			this._labelPropertiesSelector.defaultSelectedValue = value;
 			if(value)
 			{
-				value.onChange.add(labelProperties_onChange);
+				PropertyProxy(value).addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1329,7 +1330,7 @@ package feathers.controls
 			var value:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_UP, true));
 			if(!value)
 			{
-				value = new PropertyProxy(labelProperties_onChange);
+				value = new PropertyProxy(childProperties_onChange);
 				this._labelPropertiesSelector.setValueForState(value, STATE_UP, true);
 			}
 			return value;
@@ -1347,12 +1348,12 @@ package feathers.controls
 			const oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_UP, true));
 			if(oldValue)
 			{
-				oldValue.onChange.remove(labelProperties_onChange);
+				oldValue.removeOnChangeCallback(childProperties_onChange);
 			}
 			this._labelPropertiesSelector.setValueForState(value, STATE_UP, true);
 			if(value)
 			{
-				value.onChange.add(labelProperties_onChange);
+				PropertyProxy(value).addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1372,7 +1373,7 @@ package feathers.controls
 			var value:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_DOWN, true));
 			if(!value)
 			{
-				value = new PropertyProxy(labelProperties_onChange);
+				value = new PropertyProxy(childProperties_onChange);
 				this._labelPropertiesSelector.setValueForState(value, STATE_DOWN, true);
 			}
 			return value;
@@ -1390,12 +1391,12 @@ package feathers.controls
 			const oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_DOWN, true));
 			if(oldValue)
 			{
-				oldValue.onChange.remove(labelProperties_onChange);
+				oldValue.removeOnChangeCallback(childProperties_onChange);
 			}
 			this._labelPropertiesSelector.setValueForState(value, STATE_DOWN, true);
 			if(value)
 			{
-				PropertyProxy(value).onChange.add(labelProperties_onChange);
+				PropertyProxy(value).addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1415,7 +1416,7 @@ package feathers.controls
 			var value:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_HOVER, true));
 			if(!value)
 			{
-				value = new PropertyProxy(labelProperties_onChange);
+				value = new PropertyProxy(childProperties_onChange);
 				this._labelPropertiesSelector.setValueForState(value, STATE_HOVER, true);
 			}
 			return value;
@@ -1433,12 +1434,12 @@ package feathers.controls
 			const oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_HOVER, true));
 			if(oldValue)
 			{
-				oldValue.onChange.remove(labelProperties_onChange);
+				oldValue.removeOnChangeCallback(childProperties_onChange);
 			}
 			this._labelPropertiesSelector.setValueForState(value, STATE_HOVER, true);
 			if(value)
 			{
-				value.onChange.add(labelProperties_onChange);
+				PropertyProxy(value).addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1458,7 +1459,7 @@ package feathers.controls
 			var value:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_DISABLED, true));
 			if(!value)
 			{
-				value = new PropertyProxy(labelProperties_onChange);
+				value = new PropertyProxy(childProperties_onChange);
 				this._labelPropertiesSelector.setValueForState(value, STATE_DISABLED, true);
 			}
 			return value;
@@ -1476,12 +1477,12 @@ package feathers.controls
 			const oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_DISABLED, true));
 			if(oldValue)
 			{
-				oldValue.onChange.remove(labelProperties_onChange);
+				oldValue.removeOnChangeCallback(childProperties_onChange);
 			}
 			this._labelPropertiesSelector.setValueForState(value, STATE_DISABLED, true);
 			if(value)
 			{
-				value.onChange.add(labelProperties_onChange);
+				PropertyProxy(value).addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -2284,7 +2285,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function labelProperties_onChange(proxy:PropertyProxy, name:Object):void
+		protected function childProperties_onChange(proxy:PropertyProxy, name:Object):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
