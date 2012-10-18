@@ -333,6 +333,8 @@ package feathers.controls
 		private var _previousVelocityY:Vector.<Number> = new <Number>[];
 		private var _lastViewPortWidth:Number = 0;
 		private var _lastViewPortHeight:Number = 0;
+		private var _previousHorizontalPageIndex:Number = 0;
+		private var _previousVerticalPageIndex:Number = 0;
 		
 		private var _horizontalAutoScrollTween:Tween;
 		private var _verticalAutoScrollTween:Tween;
@@ -1232,6 +1234,19 @@ package feathers.controls
 		public function get onScroll():ISignal
 		{
 			return this._onScroll;
+		}
+		
+		/**
+		 * @private
+		 */
+		protected var _onPageChangeComplete:Signal = new Signal(Scroller);
+		
+		/**
+		 * Dispatched when the scroller has finished scrolling to the next or previous page if snapToPages is enabled.
+		 */
+		public function get onPageChangeComplete():ISignal
+		{
+			return this._onPageChangeComplete;
 		}
 
 		/**
@@ -2297,6 +2312,12 @@ package feathers.controls
 		{
 			this._horizontalAutoScrollTween = null;
 			this.finishScrollingHorizontally();
+			
+			if( this._snapToPages && this._previousHorizontalPageIndex != this._horizontalPageIndex ) 
+			{
+				this._previousHorizontalPageIndex = this._horizontalPageIndex;
+				onPageChangeComplete.dispatch( this);
+			}
 		}
 		
 		/**
@@ -2306,6 +2327,12 @@ package feathers.controls
 		{
 			this._verticalAutoScrollTween = null;
 			this.finishScrollingVertically();
+			
+			if( this._snapToPages && this._previousVerticalPageIndex != this._verticalPageIndex ) 
+			{
+				this._previousVerticalPageIndex = this._verticalPageIndex;
+				onPageChangeComplete.dispatch( this);
+			}
 		}
 
 		/**
