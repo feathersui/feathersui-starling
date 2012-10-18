@@ -27,6 +27,9 @@
 		<package name="feathers.dragDrop"> 
 			<shortDescription><![CDATA[Classes related to drag and drop operations.]]></shortDescription>
 		</package>
+		<package name="feathers.events"> 
+			<shortDescription><![CDATA[Contains classes to related to Feathers events.]]></shortDescription>
+		</package>
 		<package name="feathers.layout"> 
 			<shortDescription><![CDATA[A variety of layout algorithms used to customize Feathers controls and containers.]]></shortDescription>
 		</package>
