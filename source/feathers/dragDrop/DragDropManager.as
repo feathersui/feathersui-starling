@@ -25,6 +25,7 @@
 package feathers.dragDrop
 {
 	import feathers.core.PopUpManager;
+	import feathers.events.DragDropEvent;
 
 	import flash.errors.IllegalOperationError;
 	import flash.events.KeyboardEvent;
@@ -176,7 +177,7 @@ package feathers.dragDrop
 			}
 			Starling.current.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			Starling.current.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler, false, 0, true);
-			dragSource.onDragStart.dispatch(dragSource, data);
+			dragSource.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_START, data, false));
 
 			updateDropTarget(HELPER_POINT);
 		}
@@ -218,13 +219,13 @@ package feathers.dragDrop
 			}
 			if(dropTarget)
 			{
-				dropTarget.onDragExit.dispatch(dropTarget, _dragData, dropTargetLocalX, dropTargetLocalY);
+				dropTarget.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_EXIT, _dragData, false, dropTargetLocalX, dropTargetLocalY));
 				dropTarget = null;
 			}
 			const source:IDragSource = dragSource;
 			const data:DragData = _dragData;
 			cleanup();
-			source.onDragComplete.dispatch(source, data, isDropped);
+			source.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_COMPLETE, _dragData, isDropped));
 		}
 
 		/**
@@ -267,7 +268,7 @@ package feathers.dragDrop
 				if(dropTarget && isAccepted)
 				{
 					//notice that we can reuse the previously saved location
-					dropTarget.onDragExit.dispatch(dropTarget, _dragData, dropTargetLocalX, dropTargetLocalY);
+					dropTarget.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_EXIT, _dragData, false, dropTargetLocalX, dropTargetLocalY));
 				}
 				dropTarget = IDropTarget(target);
 				isAccepted = false;
@@ -275,14 +276,14 @@ package feathers.dragDrop
 				{
 					dropTargetLocalX = location.x;
 					dropTargetLocalY = location.y;
-					dropTarget.onDragEnter.dispatch(dropTarget, _dragData, dropTargetLocalX, dropTargetLocalY);
+					dropTarget.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_ENTER, _dragData, false, dropTargetLocalX, dropTargetLocalY));
 				}
 			}
 			else if(dropTarget)
 			{
 				dropTargetLocalX = location.x;
 				dropTargetLocalY = location.y;
-				dropTarget.onDragMove.dispatch(dropTarget, _dragData, dropTargetLocalX, dropTargetLocalY)
+				dropTarget.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_MOVE, _dragData, false, dropTargetLocalX, dropTargetLocalY));
 			}
 		}
 
@@ -338,7 +339,7 @@ package feathers.dragDrop
 				var isDropped:Boolean = false;
 				if(dropTarget && isAccepted)
 				{
-					dropTarget.onDragDrop.dispatch(dropTarget, _dragData, dropTargetLocalX, dropTargetLocalY);
+					dropTarget.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_MOVE, _dragData, true, dropTargetLocalX, dropTargetLocalY));
 					isDropped = true;
 				}
 				dropTarget = null;

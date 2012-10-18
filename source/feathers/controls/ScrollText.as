@@ -30,9 +30,6 @@ package feathers.controls
 
 	import flash.text.TextFormat;
 
-	import org.osflash.signals.ISignal;
-	import org.osflash.signals.Signal;
-
 	import starling.events.Event;
 
 	/**

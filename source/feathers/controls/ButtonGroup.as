@@ -28,7 +28,7 @@ package feathers.controls
 	import feathers.core.PropertyProxy;
 	import feathers.data.ListCollection;
 
-	import org.osflash.signals.ISignal;
+	import starling.events.Event;
 
 	[DefaultProperty("dataProvider")]
 	/**
@@ -67,9 +67,8 @@ package feathers.controls
 		 */
 		private static const DEFAULT_BUTTON_EVENTS:Vector.<String> = new <String>
 		[
-			"onPress",
-			"onRelease",
-			"onChange",
+			Event.TRIGGERED,
+			Event.CHANGE,
 		];
 
 		/**
@@ -173,12 +172,12 @@ package feathers.controls
 			}
 			if(this._dataProvider)
 			{
-				this._dataProvider.onChange.remove(dataProvider_onChange);
+				this._dataProvider.removeEventListener(Event.CHANGE, dataProvider_onChange);
 			}
 			this._dataProvider = value;
 			if(this._dataProvider)
 			{
-				this._dataProvider.onChange.add(dataProvider_onChange);
+				this._dataProvider.addEventListener(Event.CHANGE, dataProvider_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -558,7 +557,7 @@ package feathers.controls
 		{
 			if(!this._buttonProperties)
 			{
-				this._buttonProperties = new PropertyProxy(buttonProperties_onChange);
+				this._buttonProperties = new PropertyProxy(childProperties_onChange);
 			}
 			return this._buttonProperties;
 		}
@@ -587,12 +586,12 @@ package feathers.controls
 			}
 			if(this._buttonProperties)
 			{
-				this._buttonProperties.onChange.remove(buttonProperties_onChange);
+				this._buttonProperties.onChange.remove(childProperties_onChange);
 			}
 			this._buttonProperties = PropertyProxy(value);
 			if(this._buttonProperties)
 			{
-				this._buttonProperties.onChange.add(buttonProperties_onChange);
+				this._buttonProperties.onChange.add(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -705,7 +704,7 @@ package feathers.controls
 				{
 					if(item.hasOwnProperty(field))
 					{
-						ISignal(button[field]).add(item[field]);
+						button.addEventListener(field, item[field] as Function);
 					}
 				}
 			}
@@ -881,7 +880,7 @@ package feathers.controls
 		 */
 		protected function destroyButton(button:Button):void
 		{
-			this.removeChild(button);
+			this.removeChild(button, true);
 		}
 
 		/**
@@ -1009,7 +1008,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function buttonProperties_onChange(proxy:PropertyProxy, name:Object):void
+		protected function childProperties_onChange(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1017,7 +1016,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function dataProvider_onChange(data:ListCollection):void
+		protected function dataProvider_onChange(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}

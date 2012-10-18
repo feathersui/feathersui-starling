@@ -26,6 +26,7 @@ package feathers.controls
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.PropertyProxy;
+	import feathers.events.FeathersEventType;
 	import feathers.utils.math.clamp;
 	import feathers.utils.math.roundToNearest;
 
@@ -33,9 +34,6 @@ package feathers.controls
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Timer;
-
-	import org.osflash.signals.ISignal;
-	import org.osflash.signals.Signal;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -49,6 +47,20 @@ package feathers.controls
 	 * @eventType starling.events.Event.CHANGE
 	 */
 	[Event(name="change",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the user starts dragging the slider's thumb or track.
+	 *
+	 * @eventType feathers.events.FeathersEventType.BEGIN_INTERACTION
+	 */
+	[Event(name="beginInteraction",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the user stops dragging the slider's thumb or track.
+	 *
+	 * @eventType feathers.events.FeathersEventType.END_INTERACTION
+	 */
+	[Event(name="endInteraction",type="starling.events.Event")]
 
 	/**
 	 * Select a value between a minimum and a maximum by dragging a thumb over
@@ -172,34 +184,6 @@ package feathers.controls
 		 * @private
 		 */
 		protected var thumb:Button;
-
-		/**
-		 * @private
-		 */
-		protected var _onDragStart:Signal = new Signal(Slider);
-
-		/**
-		 * Dispatched when the user begins dragging slider (using either the
-		 * thumb or the track).
-		 */
-		public function get onDragStart():ISignal
-		{
-			return this._onDragStart;
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _onDragEnd:Signal = new Signal(Slider);
-
-		/**
-		 * Dispatched when the user stops dragging slider (using either the
-		 * thumb or the track).
-		 */
-		public function get onDragEnd():ISignal
-		{
-			return this._onDragEnd;
-		}
 		
 		/**
 		 * @private
@@ -1269,7 +1253,7 @@ package feathers.controls
 					{
 						this.dispatchEventWith(Event.CHANGE);
 					}
-					this._onDragEnd.dispatch(this);
+					this.dispatchEventWith(FeathersEventType.END_INTERACTION);
 					return;
 				}
 			}
@@ -1295,7 +1279,7 @@ package feathers.controls
 						this._touchStartY = HELPER_POINT.y;
 						this._touchValue = this.locationToValue(HELPER_POINT);
 						this.isDragging = true;
-						this._onDragStart.dispatch(this);
+						this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 						if(this._showThumb)
 						{
 							this.adjustPage();
@@ -1352,7 +1336,7 @@ package feathers.controls
 					{
 						this.dispatchEventWith(Event.CHANGE);
 					}
-					this._onDragEnd.dispatch(this);
+					this.dispatchEventWith(FeathersEventType.END_INTERACTION);
 					return;
 				}
 			}
@@ -1369,7 +1353,7 @@ package feathers.controls
 						this._touchStartX = HELPER_POINT.x;
 						this._touchStartY = HELPER_POINT.y;
 						this.isDragging = true;
-						this._onDragStart.dispatch(this);
+						this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 						return;
 					}
 				}

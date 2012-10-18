@@ -26,6 +26,8 @@ package feathers.controls.renderers
 {
 	import feathers.controls.List;
 
+	import starling.events.Event;
+
 	/**
 	 * The default item renderer for List control. Supports up to three optional
 	 * sub-views, including a label to display text, an icon to display an
@@ -84,14 +86,14 @@ package feathers.controls.renderers
 			}
 			if(this._owner)
 			{
-				List(this._owner).onScroll.remove(owner_onScroll);
+				List(this._owner).removeEventListener(Event.SCROLL, owner_onScroll);
 			}
 			this._owner = value;
 			if(this._owner)
 			{
 				const list:List = List(this._owner);
 				this.isToggle = list.isSelectable;
-				list.onScroll.add(owner_onScroll);
+				list.addEventListener(Event.SCROLL, owner_onScroll);
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -99,7 +101,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected function owner_onScroll(list:List):void
+		protected function owner_onScroll(event:Event):void
 		{
 			this.handleOwnerScroll();
 		}

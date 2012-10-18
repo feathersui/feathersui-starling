@@ -24,6 +24,8 @@
  */
 package feathers.dragDrop
 {
+	import feathers.core.IFeathersControl;
+
 	/**
 	 * Dispatched when the drag and drop manager begins the drag.
 	 *
@@ -44,7 +46,7 @@ package feathers.dragDrop
 	 *
 	 * @see DragDropManager
 	 */
-	public interface IDragSource
+	public interface IDragSource extends IFeathersControl
 	{
 	}
 }

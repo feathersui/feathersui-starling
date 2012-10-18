@@ -26,6 +26,7 @@ package feathers.controls
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.PropertyProxy;
+	import feathers.events.FeathersEventType;
 	import feathers.utils.math.clamp;
 	import feathers.utils.math.roundToNearest;
 
@@ -46,14 +47,20 @@ package feathers.controls
 	[Event(name="change",type="starling.events.Event")]
 
 	/**
+	 * Dispatched when the user starts interacting with the scroll bar's thumb,
+	 * track, or buttons.
 	 *
+	 * @eventType feathers.events.FeathersEventType.BEGIN_INTERACTION
 	 */
-	[Event(name="dragStart",type="starling.events.Event")]
+	[Event(name="beginInteraction",type="starling.events.Event")]
 
 	/**
+	 * Dispatched when the user stops interacting with the scroll bar's thumb,
+	 * track, or buttons.
 	 *
+	 * @eventType feathers.events.FeathersEventType.END_INTERACTION
 	 */
-	[Event(name="dragEnd",type="starling.events.Event")]
+	[Event(name="endInteraction",type="starling.events.Event")]
 
 	/**
 	 * Select a value between a minimum and a maximum by dragging a thumb over
@@ -537,32 +544,6 @@ package feathers.controls
 		 * signal every time the thumb moves, or only once it stops moving.
 		 */
 		public var liveDragging:Boolean = true;
-
-		/**
-		 * @private
-		 */
-		protected var _onDragStart:Signal = new Signal(ScrollBar);
-
-		/**
-		 * Dispatched when the user begins dragging the thumb.
-		 */
-		public function get onDragStart():ISignal
-		{
-			return this._onDragStart;
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _onDragEnd:Signal = new Signal(ScrollBar);
-
-		/**
-		 * Dispatched when the user stops dragging the thumb.
-		 */
-		public function get onDragEnd():ISignal
-		{
-			return this._onDragEnd;
-		}
 
 		/**
 		 * @private
@@ -1601,6 +1582,7 @@ package feathers.controls
 				{
 					this._touchPointID = -1;
 					this._repeatTimer.stop();
+					this.dispatchEventWith(FeathersEventType.END_INTERACTION);
 					return;
 				}
 			}
@@ -1611,6 +1593,7 @@ package feathers.controls
 					if(touch.phase == TouchPhase.BEGAN)
 					{
 						this._touchPointID = touch.id;
+						this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 						touch.getLocation(this, HELPER_POINT);
 						this._touchStartX = HELPER_POINT.x;
 						this._touchStartY = HELPER_POINT.y;
@@ -1673,7 +1656,7 @@ package feathers.controls
 					{
 						this.dispatchEventWith(Event.CHANGE);
 					}
-					this._onDragEnd.dispatch(this);
+					this.dispatchEventWith(FeathersEventType.END_INTERACTION);
 					return;
 				}
 			}
@@ -1690,7 +1673,7 @@ package feathers.controls
 						this._touchStartX = HELPER_POINT.x;
 						this._touchStartY = HELPER_POINT.y;
 						this.isDragging = true;
-						this._onDragStart.dispatch(this);
+						this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 						return;
 					}
 				}
@@ -1707,6 +1690,7 @@ package feathers.controls
 			{
 				return;
 			}
+			this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 			this.decrement();
 			this.startRepeatTimer(this.decrement);
 		}
@@ -1717,6 +1701,7 @@ package feathers.controls
 		protected function decrementButton_onRelease(event:Event):void
 		{
 			this._repeatTimer.stop();
+			this.dispatchEventWith(FeathersEventType.END_INTERACTION);
 		}
 
 		/**
@@ -1729,6 +1714,7 @@ package feathers.controls
 			{
 				return;
 			}
+			this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 			this.increment();
 			this.startRepeatTimer(this.increment);
 		}
@@ -1739,6 +1725,7 @@ package feathers.controls
 		protected function incrementButton_onRelease(event:Event):void
 		{
 			this._repeatTimer.stop();
+			this.dispatchEventWith(FeathersEventType.END_INTERACTION);
 		}
 
 		/**
