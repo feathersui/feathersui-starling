@@ -36,10 +36,10 @@ package feathers.controls
 {
 	import feathers.controls.supportClasses.IViewPort;
 	import feathers.core.FeathersControl;
-	import feathers.core.IFeathersControl;
 	import feathers.core.PropertyProxy;
 	import feathers.display.ScrollRectManager;
 	import feathers.display.Sprite;
+	import feathers.events.FeathersEventType;
 	import feathers.system.DeviceCapabilities;
 	import feathers.utils.math.clamp;
 	import feathers.utils.math.roundDownToNearest;
@@ -52,9 +52,6 @@ package feathers.controls
 	import flash.geom.Rectangle;
 	import flash.utils.getTimer;
 
-	import org.osflash.signals.ISignal;
-	import org.osflash.signals.Signal;
-
 	import starling.animation.Transitions;
 	import starling.animation.Tween;
 	import starling.core.Starling;
@@ -65,11 +62,25 @@ package feathers.controls
 	import starling.events.TouchPhase;
 
 	/*
-	 * Dispatched when the scroller scrolls in either direction.
-	 *
-	 * @eventType starling.events.Event.SCROLL
-	 */
+	  * Dispatched when the scroller scrolls in either direction.
+	  *
+	  * @eventType starling.events.Event.SCROLL
+	  */
 	[Event(name="scroll",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the user starts dragging the scroller.
+	 *
+	 * @eventType feathers.events.FeathersEventType.BEGIN_INTERACTION
+	 */
+	[Event(name="beginInteraction",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the user stops dragging the scroller.
+	 *
+	 * @eventType feathers.events.FeathersEventType.END_INTERACTION
+	 */
+	[Event(name="endInteraction",type="starling.events.Event")]
 
 	/**
 	 * Allows horizontal and vertical scrolling of a <em>viewport</em>. Not
@@ -377,14 +388,16 @@ package feathers.controls
 			}
 			if(this._viewPort)
 			{
-				this._viewPort.onResize.remove(viewPort_onResize);
-				this._viewPortWrapper.removeChild(DisplayObject(this._viewPort));
+				var displayViewPort:DisplayObject = DisplayObject(this._viewPort);
+				displayViewPort.removeEventListener(FeathersEventType.RESIZE, viewPort_onResize);
+				this._viewPortWrapper.removeChild(displayViewPort);
 			}
 			this._viewPort = value;
 			if(this._viewPort)
 			{
-				this._viewPort.onResize.add(viewPort_onResize);
-				this._viewPortWrapper.addChild(DisplayObject(this._viewPort));
+				displayViewPort = DisplayObject(this._viewPort);
+				displayViewPort.addEventListener(FeathersEventType.RESIZE, viewPort_onResize);
+				this._viewPortWrapper.addChild(displayViewPort);
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -468,7 +481,7 @@ package feathers.controls
 		{
 			if(!this._horizontalScrollBarProperties)
 			{
-				this._horizontalScrollBarProperties = new PropertyProxy(horizontalScrollBarProperties_onChange);
+				this._horizontalScrollBarProperties = new PropertyProxy(childProperties_onChange);
 			}
 			return this._horizontalScrollBarProperties;
 		}
@@ -497,12 +510,12 @@ package feathers.controls
 			}
 			if(this._horizontalScrollBarProperties)
 			{
-				this._horizontalScrollBarProperties.onChange.remove(horizontalScrollBarProperties_onChange);
+				this._horizontalScrollBarProperties.onChange.remove(childProperties_onChange);
 			}
 			this._horizontalScrollBarProperties = PropertyProxy(value);
 			if(this._horizontalScrollBarProperties)
 			{
-				this._horizontalScrollBarProperties.onChange.add(horizontalScrollBarProperties_onChange);
+				this._horizontalScrollBarProperties.onChange.add(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -560,7 +573,7 @@ package feathers.controls
 		{
 			if(!this._verticalScrollBarProperties)
 			{
-				this._verticalScrollBarProperties = new PropertyProxy(verticalScrollBarProperties_onChange);
+				this._verticalScrollBarProperties = new PropertyProxy(childProperties_onChange);
 			}
 			return this._verticalScrollBarProperties;
 		}
@@ -589,12 +602,12 @@ package feathers.controls
 			}
 			if(this._verticalScrollBarProperties)
 			{
-				this._verticalScrollBarProperties.onChange.remove(verticalScrollBarProperties_onChange);
+				this._verticalScrollBarProperties.onChange.remove(childProperties_onChange);
 			}
 			this._verticalScrollBarProperties = PropertyProxy(value);
 			if(this._verticalScrollBarProperties)
 			{
-				this._verticalScrollBarProperties.onChange.add(verticalScrollBarProperties_onChange);
+				this._verticalScrollBarProperties.onChange.add(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1226,34 +1239,6 @@ package feathers.controls
 				this.horizontalScrollPosition = Math.round(this._horizontalScrollPosition);
 				this.verticalScrollPosition = Math.round(this._verticalScrollPosition);
 			}
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _onDragStart:Signal = new Signal(Scroller);
-
-		/**
-		 * Dispatched when a drag has begun that will make the scroller begin
-		 * scrolling in either direction.
-		 */
-		public function get onDragStart():ISignal
-		{
-			return this._onDragStart;
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _onDragEnd:Signal = new Signal(Scroller);
-
-		/**
-		 * Dispatched when a drag has ended that will make the scroller end
-		 * scrolling in either direction.
-		 */
-		public function get onDragEnd():ISignal
-		{
-			return this._onDragEnd;
 		}
 		
 		private var _isScrollingStopped:Boolean = false;
@@ -2231,7 +2216,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function viewPort_onResize(viewPort:IFeathersControl, oldWidth:Number, oldHeight:Number):void
+		protected function viewPort_onResize(event:Event):void
 		{
 			if(this.ignoreViewPortResizing ||
 				(this._viewPort.width == this._lastViewPortWidth && this._viewPort.height == this._lastViewPortHeight))
@@ -2246,7 +2231,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function horizontalScrollBarProperties_onChange(proxy:PropertyProxy, name:Object):void
+		protected function childProperties_onChange(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -2254,25 +2239,17 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function verticalScrollBarProperties_onChange(proxy:PropertyProxy, name:Object):void
+		protected function verticalScrollBar_onChange(event:Event):void
 		{
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.verticalScrollPosition = this.verticalScrollBar.value;
 		}
 
 		/**
 		 * @private
 		 */
-		protected function verticalScrollBar_onChange(scrollBar:IScrollBar):void
+		protected function horizontalScrollBar_onChange(event:Event):void
 		{
-			this.verticalScrollPosition = scrollBar.value;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function horizontalScrollBar_onChange(scrollBar:IScrollBar):void
-		{
-			this.horizontalScrollPosition = scrollBar.value;
+			this.horizontalScrollPosition = this.horizontalScrollBar.value;
 		}
 		
 		/**
@@ -2411,7 +2388,7 @@ package feathers.controls
 				//we need to dispatch the signal that says we're starting.
 				if(!this._isDraggingVertically)
 				{
-					this._onDragStart.dispatch(this);
+					this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 				}
 				this._startTouchX = this._currentTouchX;
 				this._startHorizontalScrollPosition = this._horizontalScrollPosition;
@@ -2421,21 +2398,21 @@ package feathers.controls
 				(this._verticalScrollPolicy == SCROLL_POLICY_AUTO && this._maxVerticalScrollPosition > 0)) &&
 				!this._isDraggingVertically && verticalInchesMoved >= MINIMUM_DRAG_DISTANCE)
 			{
+				if(this.verticalScrollBar)
+				{
+					if(this._verticalScrollBarHideTween)
+					{
+						Starling.juggler.remove(this._verticalScrollBarHideTween);
+						this._verticalScrollBarHideTween = null;
+					}
+					if(this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FLOAT)
+					{
+						DisplayObject(this.verticalScrollBar).alpha = 1;
+					}
+				}
 				if(!this._isDraggingHorizontally)
 				{
-					if(this.verticalScrollBar)
-					{
-						if(this._verticalScrollBarHideTween)
-						{
-							Starling.juggler.remove(this._verticalScrollBarHideTween);
-							this._verticalScrollBarHideTween = null;
-						}
-						if(this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FLOAT)
-						{
-							DisplayObject(this.verticalScrollBar).alpha = 1;
-						}
-					}
-					this._onDragStart.dispatch(this);
+					this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 				}
 				this._startTouchY = this._currentTouchY;
 				this._startVerticalScrollPosition = this._verticalScrollPosition;
@@ -2488,7 +2465,7 @@ package feathers.controls
 				this.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
 				this.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
 				this._touchPointID = -1;
-				this._onDragEnd.dispatch(this);
+				this.dispatchEventWith(FeathersEventType.END_INTERACTION);
 				var isFinishingHorizontally:Boolean = false;
 				var isFinishingVertically:Boolean = false;
 				if(this._horizontalScrollPosition < 0 || this._horizontalScrollPosition > this._maxHorizontalScrollPosition)

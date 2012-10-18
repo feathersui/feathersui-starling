@@ -31,6 +31,7 @@ package feathers.motion.transitions
 	import starling.animation.Tween;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
+	import starling.events.Event;
 
 	/**
 	 * Slides new screens from the left or right depending on the old and new
@@ -52,7 +53,7 @@ package feathers.motion.transitions
 			this._navigator = navigator;
 			this._tabBar = tabBar;
 			this._oldIndex = tabBar.selectedIndex;
-			this._tabBar.onChange.add(tabBar_onChange);
+			this._tabBar.addEventListener(Event.CHANGE, tabBar_onChange);
 			this._navigator.transition = this.onTransition;
 		}
 
@@ -200,9 +201,9 @@ package feathers.motion.transitions
 		/**
 		 * @private
 		 */
-		private function tabBar_onChange(tabBar:TabBar):void
+		private function tabBar_onChange(event:Event):void
 		{
-			var newIndex:int = tabBar.selectedIndex;
+			var newIndex:int = this._tabBar.selectedIndex;
 			this._isFromRight = newIndex > this._oldIndex;
 			this._oldIndex = newIndex;
 

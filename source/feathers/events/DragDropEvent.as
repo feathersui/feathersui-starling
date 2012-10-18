@@ -24,6 +24,8 @@
  */
 package feathers.events
 {
+	import feathers.dragDrop.DragData;
+
 	import starling.events.Event;
 
 	public class DragDropEvent extends Event
@@ -35,9 +37,14 @@ package feathers.events
 		public static const DRAG_EXIT:String = "dragExit";
 		public static const DRAG_DROP:String = "dragDrop";
 
-		public function DragDropEvent(type:String)
+		public function DragDropEvent(type:String, dragData:DragData, isDropped:Boolean, localX:Number = NaN, localY:Number = NaN)
 		{
 			super(type)
 		}
+
+		public var dragData:DragData;
+		public var isDropped:Boolean;
+		public var localX:Number;
+		public var localY:Number;
 	}
 }

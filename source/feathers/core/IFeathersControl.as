@@ -24,6 +24,8 @@
  */
 package feathers.core
 {
+	import starling.events.Event;
+
 	[Event(name="resize",type="starling.events.ResizeEvent")]
 	/**
 	 * Basic interface for Feathers UI controls.
@@ -63,6 +65,12 @@ package feathers.core
 		function get rotation():Number;
 		function set rotation(value:Number):void;
 
+		function addEventListener(type:String, listener:Function):void;
+		function removeEventListener(type:String, listener:Function):void;
+		function removeEventListeners(type:String = null):void;
+		function dispatchEvent(event:Event):void;
+		function dispatchEventWith(type:String, bubbles:Boolean = false, data:Object = null):void;
+		function hasEventListener(type:String):Boolean;
 		function setSize(width:Number, height:Number):void;
 		function validate():void;
 	}

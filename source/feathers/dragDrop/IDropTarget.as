@@ -24,6 +24,8 @@
  */
 package feathers.dragDrop
 {
+	import feathers.core.IFeathersControl;
+
 	/**
 	 * Dispatched when the touch enters the drop target's bounds. Call
 	 * <code>acceptDrag()</code> on the drag and drop manager to allow
@@ -65,7 +67,7 @@ package feathers.dragDrop
 	 *
 	 * @see DragDropManager
 	 */
-	public interface IDropTarget
+	public interface IDropTarget extends IFeathersControl
 	{
 	}
 }

@@ -26,6 +26,7 @@ package feathers.controls.supportClasses
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
+	import feathers.events.FeathersEventType;
 	import feathers.layout.ILayout;
 	import feathers.layout.IVirtualLayout;
 	import feathers.layout.LayoutBoundsResult;
@@ -35,6 +36,7 @@ package feathers.controls.supportClasses
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
+	import starling.events.EventDispatcher;
 
 	/**
 	 * @private
@@ -223,7 +225,7 @@ package feathers.controls.supportClasses
 			}
 			if(this._layout)
 			{
-				this._layout.onLayoutChange.remove(layout_onLayoutChange);
+				EventDispatcher(this._layout).removeEventListener(Event.CHANGE, layout_onLayoutChange);
 			}
 			this._layout = value;
 			if(this._layout)
@@ -232,7 +234,7 @@ package feathers.controls.supportClasses
 				{
 					IVirtualLayout(this._layout).useVirtualLayout = false;
 				}
-				this._layout.onLayoutChange.add(layout_onLayoutChange);
+				EventDispatcher(this._layout).addEventListener(Event.CHANGE, layout_onLayoutChange);
 				//if we don't have a layout, nothing will need to be redrawn
 				this.invalidate(INVALIDATION_FLAG_DATA);
 			}
@@ -242,7 +244,7 @@ package feathers.controls.supportClasses
 		{
 			if(child is IFeathersControl)
 			{
-				IFeathersControl(child).onResize.add(child_onResize);
+				child.addEventListener(FeathersEventType.RESIZE, child_onResize);
 			}
 			return super.addChildAt(child, index);
 		}
@@ -252,7 +254,7 @@ package feathers.controls.supportClasses
 			const child:DisplayObject = super.removeChildAt(index, dispose);
 			if(child is IFeathersControl)
 			{
-				IFeathersControl(child).onResize.remove(child_onResize);
+				child.removeEventListener(FeathersEventType.RESIZE, child_onResize);
 			}
 			return child;
 		}
@@ -261,7 +263,7 @@ package feathers.controls.supportClasses
 		{
 			if(this._layout)
 			{
-				this._layout.onLayoutChange.remove(layout_onLayoutChange);
+				EventDispatcher(this._layout).removeEventListener(Event.CHANGE, layout_onLayoutChange);
 			}
 			super.dispose();
 		}
@@ -313,12 +315,12 @@ package feathers.controls.supportClasses
 			}
 		}
 
-		protected function layout_onLayoutChange(layout:ILayout):void
+		protected function layout_onLayoutChange(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
-		protected function child_onResize(child:IFeathersControl, oldWidth:Number, oldHeight:Number):void
+		protected function child_onResize(event:Event):void
 		{
 			if(this._ignoreChildResizing)
 			{
