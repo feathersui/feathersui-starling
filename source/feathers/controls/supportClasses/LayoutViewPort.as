@@ -225,7 +225,7 @@ package feathers.controls.supportClasses
 			}
 			if(this._layout)
 			{
-				EventDispatcher(this._layout).removeEventListener(Event.CHANGE, layout_onLayoutChange);
+				EventDispatcher(this._layout).removeEventListener(Event.CHANGE, layout_changeHandler);
 			}
 			this._layout = value;
 			if(this._layout)
@@ -234,7 +234,7 @@ package feathers.controls.supportClasses
 				{
 					IVirtualLayout(this._layout).useVirtualLayout = false;
 				}
-				EventDispatcher(this._layout).addEventListener(Event.CHANGE, layout_onLayoutChange);
+				EventDispatcher(this._layout).addEventListener(Event.CHANGE, layout_changeHandler);
 				//if we don't have a layout, nothing will need to be redrawn
 				this.invalidate(INVALIDATION_FLAG_DATA);
 			}
@@ -244,7 +244,7 @@ package feathers.controls.supportClasses
 		{
 			if(child is IFeathersControl)
 			{
-				child.addEventListener(FeathersEventType.RESIZE, child_onResize);
+				child.addEventListener(FeathersEventType.RESIZE, child_resizeHandler);
 			}
 			return super.addChildAt(child, index);
 		}
@@ -254,7 +254,7 @@ package feathers.controls.supportClasses
 			const child:DisplayObject = super.removeChildAt(index, dispose);
 			if(child is IFeathersControl)
 			{
-				child.removeEventListener(FeathersEventType.RESIZE, child_onResize);
+				child.removeEventListener(FeathersEventType.RESIZE, child_resizeHandler);
 			}
 			return child;
 		}
@@ -263,7 +263,7 @@ package feathers.controls.supportClasses
 		{
 			if(this._layout)
 			{
-				EventDispatcher(this._layout).removeEventListener(Event.CHANGE, layout_onLayoutChange);
+				EventDispatcher(this._layout).removeEventListener(Event.CHANGE, layout_changeHandler);
 			}
 			super.dispose();
 		}
@@ -315,12 +315,12 @@ package feathers.controls.supportClasses
 			}
 		}
 
-		protected function layout_onLayoutChange(event:Event):void
+		protected function layout_changeHandler(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
-		protected function child_onResize(event:Event):void
+		protected function child_resizeHandler(event:Event):void
 		{
 			if(this._ignoreChildResizing)
 			{

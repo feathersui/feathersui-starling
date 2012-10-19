@@ -172,12 +172,12 @@ package feathers.controls
 			}
 			if(this._dataProvider)
 			{
-				this._dataProvider.removeEventListener(Event.CHANGE, dataProvider_onChange);
+				this._dataProvider.removeEventListener(Event.CHANGE, dataProvider_changeHandler);
 			}
 			this._dataProvider = value;
 			if(this._dataProvider)
 			{
-				this._dataProvider.addEventListener(Event.CHANGE, dataProvider_onChange);
+				this._dataProvider.addEventListener(Event.CHANGE, dataProvider_changeHandler);
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -1016,7 +1016,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function dataProvider_onChange(event:Event):void
+		protected function dataProvider_changeHandler(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}

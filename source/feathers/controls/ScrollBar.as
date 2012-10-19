@@ -919,8 +919,8 @@ package feathers.controls
 				this.decrementButton = new Button();
 				this.decrementButton.nameList.add(this.decrementButtonName);
 				this.decrementButton.label = "";
-				this.decrementButton.addEventListener(TouchEvent.TOUCH, decrementButton_onPress);
-				this.decrementButton.addEventListener(Event.TRIGGERED, decrementButton_onRelease);
+				this.decrementButton.addEventListener(TouchEvent.TOUCH, decrementButton_touchHandler);
+				this.decrementButton.addEventListener(Event.TRIGGERED, decrementButton_triggeredHandler);
 				this.addChild(this.decrementButton);
 			}
 
@@ -929,8 +929,8 @@ package feathers.controls
 				this.incrementButton = new Button();
 				this.incrementButton.nameList.add(this.incrementButtonName);
 				this.incrementButton.label = "";
-				this.incrementButton.addEventListener(TouchEvent.TOUCH, incrementButton_onPress);
-				this.incrementButton.addEventListener(Event.TRIGGERED, incrementButton_onRelease);
+				this.incrementButton.addEventListener(TouchEvent.TOUCH, incrementButton_touchHandler);
+				this.incrementButton.addEventListener(Event.TRIGGERED, incrementButton_triggeredHandler);
 				this.addChild(this.incrementButton);
 			}
 		}
@@ -1683,7 +1683,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function decrementButton_onPress(event:TouchEvent):void
+		protected function decrementButton_touchHandler(event:TouchEvent):void
 		{
 			const touches:Vector.<Touch> = event.getTouches(this.decrementButton, TouchPhase.BEGAN);
 			if(touches.length == 0)
@@ -1698,7 +1698,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function decrementButton_onRelease(event:Event):void
+		protected function decrementButton_triggeredHandler(event:Event):void
 		{
 			this._repeatTimer.stop();
 			this.dispatchEventWith(FeathersEventType.END_INTERACTION);
@@ -1707,7 +1707,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function incrementButton_onPress(event:TouchEvent):void
+		protected function incrementButton_touchHandler(event:TouchEvent):void
 		{
 			const touches:Vector.<Touch> = event.getTouches(this.incrementButton, TouchPhase.BEGAN);
 			if(touches.length == 0)
@@ -1722,7 +1722,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function incrementButton_onRelease(event:Event):void
+		protected function incrementButton_triggeredHandler(event:Event):void
 		{
 			this._repeatTimer.stop();
 			this.dispatchEventWith(FeathersEventType.END_INTERACTION);

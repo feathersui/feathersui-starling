@@ -216,12 +216,12 @@ package feathers.controls.supportClasses
 			}
 			if(this._owner)
 			{
-				this._owner.removeEventListener(Event.SCROLL, owner_onScroll);
+				this._owner.removeEventListener(Event.SCROLL, owner_scrollHandler);
 			}
 			this._owner = value;
 			if(this._owner)
 			{
-				this._owner.addEventListener(Event.SCROLL, owner_onScroll);
+				this._owner.addEventListener(Event.SCROLL, owner_scrollHandler);
 			}
 		}
 
@@ -240,14 +240,14 @@ package feathers.controls.supportClasses
 			}
 			if(this._dataProvider)
 			{
-				this._dataProvider.removeEventListener(Event.CHANGE, dataProvider_onChange);
-				this._dataProvider.removeEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_onItemUpdate);
+				this._dataProvider.removeEventListener(Event.CHANGE, dataProvider_changeHandler);
+				this._dataProvider.removeEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_updateItemHandler);
 			}
 			this._dataProvider = value;
 			if(this._dataProvider)
 			{
-				this._dataProvider.addEventListener(Event.CHANGE, dataProvider_onChange);
-				this._dataProvider.addEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_onItemUpdate);
+				this._dataProvider.addEventListener(Event.CHANGE, dataProvider_changeHandler);
+				this._dataProvider.addEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_updateItemHandler);
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -379,12 +379,12 @@ package feathers.controls.supportClasses
 			}
 			if(this._layout)
 			{
-				EventDispatcher(this._layout).removeEventListener(Event.CHANGE, layout_onLayoutChange);
+				EventDispatcher(this._layout).removeEventListener(Event.CHANGE, layout_changeHandler);
 			}
 			this._layout = value;
 			if(this._layout)
 			{
-				EventDispatcher(this._layout).addEventListener(Event.CHANGE, layout_onLayoutChange);
+				EventDispatcher(this._layout).addEventListener(Event.CHANGE, layout_changeHandler);
 			}
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
@@ -734,8 +734,8 @@ package feathers.controls.supportClasses
 				this._rendererMap[item] = renderer;
 				this._activeRenderers.push(renderer);
 				const displayRenderer:DisplayObject = DisplayObject(renderer);
-				displayRenderer.addEventListener(Event.CHANGE, renderer_onChange);
-				displayRenderer.addEventListener(FeathersEventType.RESIZE, renderer_onResize);
+				displayRenderer.addEventListener(Event.CHANGE, renderer_changeHandler);
+				displayRenderer.addEventListener(FeathersEventType.RESIZE, renderer_resizeHandler);
 			}
 
 			return renderer;
@@ -744,8 +744,8 @@ package feathers.controls.supportClasses
 		private function destroyRenderer(renderer:IListItemRenderer):void
 		{
 			const displayRenderer:DisplayObject = DisplayObject(renderer);
-			displayRenderer.removeEventListener(Event.CHANGE, renderer_onChange);
-			displayRenderer.removeEventListener(FeathersEventType.RESIZE, renderer_onResize);
+			displayRenderer.removeEventListener(Event.CHANGE, renderer_changeHandler);
+			displayRenderer.removeEventListener(FeathersEventType.RESIZE, renderer_resizeHandler);
 			this.removeChild(displayRenderer, true);
 		}
 
@@ -754,18 +754,18 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
-		private function owner_onScroll(event:Event):void
+		private function owner_scrollHandler(event:Event):void
 		{
 			this._isScrolling = true;
 		}
 
-		private function dataProvider_onChange(event:Event):void
+		private function dataProvider_changeHandler(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_DATA);
 			this.invalidateParent();
 		}
 
-		private function dataProvider_onItemUpdate(event:Event, index:int):void
+		private function dataProvider_updateItemHandler(event:Event, index:int):void
 		{
 			const item:Object = this._dataProvider.getItemAt(index);
 			const renderer:IListItemRenderer = IListItemRenderer(this._rendererMap[item]);
@@ -777,7 +777,7 @@ package feathers.controls.supportClasses
 			renderer.data = item;
 		}
 
-		private function layout_onLayoutChange(event:Event):void
+		private function layout_changeHandler(event:Event):void
 		{
 			if(this._ignoreLayoutChanges)
 			{
@@ -787,7 +787,7 @@ package feathers.controls.supportClasses
 			this.invalidateParent();
 		}
 
-		private function renderer_onResize(event:Event):void
+		private function renderer_resizeHandler(event:Event):void
 		{
 			if(this._ignoreRendererResizing)
 			{
@@ -804,7 +804,7 @@ package feathers.controls.supportClasses
 			this.invalidateParent();
 		}
 
-		private function renderer_onChange(event:Event):void
+		private function renderer_changeHandler(event:Event):void
 		{
 			if(this._ignoreSelectionChanges)
 			{

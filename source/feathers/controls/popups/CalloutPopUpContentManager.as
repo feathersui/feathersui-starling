@@ -73,7 +73,7 @@ package feathers.controls.popups
 
 			this.content = content;
 			this.callout = Callout.show(content, source);
-			this.callout.addEventListener(Event.CLOSE, callout_onClose);
+			this.callout.addEventListener(Event.CLOSE, callout_closeHandler);
 		}
 
 		/**
@@ -103,14 +103,14 @@ package feathers.controls.popups
 		{
 			this.content = null;
 			this.callout.content = null;
-			this.callout.removeEventListener(Event.CLOSE, callout_onClose);
+			this.callout.removeEventListener(Event.CLOSE, callout_closeHandler);
 			this.callout = null;
 		}
 
 		/**
 		 * @private
 		 */
-		protected function callout_onClose(event:Event):void
+		protected function callout_closeHandler(event:Event):void
 		{
 			this.cleanup();
 			this.dispatchEventWith(Event.CLOSE);

@@ -389,14 +389,14 @@ package feathers.controls
 			if(this._viewPort)
 			{
 				var displayViewPort:DisplayObject = DisplayObject(this._viewPort);
-				displayViewPort.removeEventListener(FeathersEventType.RESIZE, viewPort_onResize);
+				displayViewPort.removeEventListener(FeathersEventType.RESIZE, viewPort_resizeHandler);
 				this._viewPortWrapper.removeChild(displayViewPort);
 			}
 			this._viewPort = value;
 			if(this._viewPort)
 			{
 				displayViewPort = DisplayObject(this._viewPort);
-				displayViewPort.addEventListener(FeathersEventType.RESIZE, viewPort_onResize);
+				displayViewPort.addEventListener(FeathersEventType.RESIZE, viewPort_resizeHandler);
 				this._viewPortWrapper.addChild(displayViewPort);
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
@@ -1509,14 +1509,14 @@ package feathers.controls
 			if(this.horizontalScrollBar)
 			{
 				var displayHorizontalScrollBar:DisplayObject = DisplayObject(this.horizontalScrollBar);
-				displayHorizontalScrollBar.removeEventListener(Event.CHANGE, horizontalScrollBar_onChange);
+				displayHorizontalScrollBar.removeEventListener(Event.CHANGE, horizontalScrollBar_changeHandler);
 				super.removeChildAt(super.getChildIndex(displayHorizontalScrollBar), true);
 				this.horizontalScrollBar = null;
 			}
 			if(this.verticalScrollBar)
 			{
 				var displayVerticalScrollBar:DisplayObject = DisplayObject(this.verticalScrollBar);
-				displayVerticalScrollBar.removeEventListener(Event.CHANGE, verticalScrollBar_onChange);
+				displayVerticalScrollBar.removeEventListener(Event.CHANGE, verticalScrollBar_changeHandler);
 				super.removeChildAt(super.getChildIndex(displayVerticalScrollBar), true);
 				this.verticalScrollBar = null;
 			}
@@ -1527,7 +1527,7 @@ package feathers.controls
 				this.horizontalScrollBar = IScrollBar(this._horizontalScrollBarFactory());
 				this.horizontalScrollBar.nameList.add(this.horizontalScrollBarName);
 				displayHorizontalScrollBar = DisplayObject(this.horizontalScrollBar);
-				displayHorizontalScrollBar.addEventListener(Event.CHANGE, horizontalScrollBar_onChange);
+				displayHorizontalScrollBar.addEventListener(Event.CHANGE, horizontalScrollBar_changeHandler);
 				super.addChildAt(displayHorizontalScrollBar, this.numChildren);
 			}
 			if(this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_NONE &&
@@ -1536,7 +1536,7 @@ package feathers.controls
 				this.verticalScrollBar = IScrollBar(this._verticalScrollBarFactory());
 				this.verticalScrollBar.nameList.add(this.verticalScrollBarName);
 				displayVerticalScrollBar = DisplayObject(this.verticalScrollBar);
-				displayVerticalScrollBar.addEventListener(Event.CHANGE, verticalScrollBar_onChange);
+				displayVerticalScrollBar.addEventListener(Event.CHANGE, verticalScrollBar_changeHandler);
 				super.addChildAt(displayVerticalScrollBar, this.numChildren);
 			}
 		}
@@ -2216,7 +2216,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function viewPort_onResize(event:Event):void
+		protected function viewPort_resizeHandler(event:Event):void
 		{
 			if(this.ignoreViewPortResizing ||
 				(this._viewPort.width == this._lastViewPortWidth && this._viewPort.height == this._lastViewPortHeight))
@@ -2239,7 +2239,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function verticalScrollBar_onChange(event:Event):void
+		protected function verticalScrollBar_changeHandler(event:Event):void
 		{
 			this.verticalScrollPosition = this.verticalScrollBar.value;
 		}
@@ -2247,7 +2247,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function horizontalScrollBar_onChange(event:Event):void
+		protected function horizontalScrollBar_changeHandler(event:Event):void
 		{
 			this.horizontalScrollPosition = this.horizontalScrollBar.value;
 		}
