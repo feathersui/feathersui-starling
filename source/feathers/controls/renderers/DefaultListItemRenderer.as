@@ -86,14 +86,14 @@ package feathers.controls.renderers
 			}
 			if(this._owner)
 			{
-				List(this._owner).removeEventListener(Event.SCROLL, owner_onScroll);
+				List(this._owner).removeEventListener(Event.SCROLL, owner_scrollHandler);
 			}
 			this._owner = value;
 			if(this._owner)
 			{
 				const list:List = List(this._owner);
 				this.isToggle = list.isSelectable;
-				list.addEventListener(Event.SCROLL, owner_onScroll);
+				list.addEventListener(Event.SCROLL, owner_scrollHandler);
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -101,7 +101,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected function owner_onScroll(event:Event):void
+		protected function owner_scrollHandler(event:Event):void
 		{
 			this.handleOwnerScroll();
 		}

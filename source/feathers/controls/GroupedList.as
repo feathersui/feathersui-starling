@@ -338,12 +338,12 @@ package feathers.controls
 			}
 			if(this._dataProvider)
 			{
-				this._dataProvider.removeEventListener(CollectionEventType.RESET, dataProvider_onReset);
+				this._dataProvider.removeEventListener(CollectionEventType.RESET, dataProvider_resetHandler);
 			}
 			this._dataProvider = value;
 			if(this._dataProvider)
 			{
-				this._dataProvider.addEventListener(CollectionEventType.RESET, dataProvider_onReset);
+				this._dataProvider.addEventListener(CollectionEventType.RESET, dataProvider_resetHandler);
 			}
 
 			//reset the scroll position because this is a drastic change and
@@ -1883,7 +1883,7 @@ package feathers.controls
 				this.scroller.nameList.add(this.scrollerName);
 				this.scroller.verticalScrollPolicy = Scroller.SCROLL_POLICY_AUTO;
 				this.scroller.horizontalScrollPolicy = Scroller.SCROLL_POLICY_AUTO;
-				this.scroller.addEventListener(Event.SCROLL, scroller_onScroll);
+				this.scroller.addEventListener(Event.SCROLL, scroller_scrollHandler);
 				this.addChild(this.scroller);
 			}
 
@@ -1891,7 +1891,7 @@ package feathers.controls
 			{
 				this.dataViewPort = new GroupedListDataViewPort();
 				this.dataViewPort.owner = this;
-				this.dataViewPort.addEventListener(Event.CHANGE, dataViewPort_onChange);
+				this.dataViewPort.addEventListener(Event.CHANGE, dataViewPort_changeHandler);
 				this.scroller.viewPort = this.dataViewPort;
 			}
 
@@ -2127,7 +2127,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function dataProvider_onReset(event:Event):void
+		protected function dataProvider_resetHandler(event:Event):void
 		{
 			this.horizontalScrollPosition = 0;
 			this.verticalScrollPosition = 0;
@@ -2136,7 +2136,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function scroller_onScroll(event:Event):void
+		protected function scroller_scrollHandler(event:Event):void
 		{
 			this._maxHorizontalScrollPosition = this.scroller.maxHorizontalScrollPosition;
 			this._maxVerticalScrollPosition = this.scroller.maxVerticalScrollPosition;
@@ -2147,7 +2147,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function dataViewPort_onChange(event:Event):void
+		protected function dataViewPort_changeHandler(event:Event):void
 		{
 			this.setSelectedLocation(this.dataViewPort.selectedGroupIndex, this.dataViewPort.selectedItemIndex);
 		}

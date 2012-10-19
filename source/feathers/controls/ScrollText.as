@@ -474,7 +474,7 @@ package feathers.controls
 				this.scroller = new Scroller();
 				this.scroller.viewPort = this.viewPort;
 				this.scroller.nameList.add(this.scrollerName);
-				this.scroller.addEventListener(Event.SCROLL, scroller_onScroll);
+				this.scroller.addEventListener(Event.SCROLL, scroller_scrollHandler);
 				super.addChildAt(this.scroller, 0);
 			}
 		}
@@ -597,7 +597,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function scroller_onScroll(event:Event):void
+		protected function scroller_scrollHandler(event:Event):void
 		{
 			this._horizontalScrollPosition = this.scroller.horizontalScrollPosition;
 			this._verticalScrollPosition = this.scroller.verticalScrollPosition;

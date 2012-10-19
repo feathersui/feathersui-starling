@@ -612,7 +612,7 @@ package feathers.controls
 				this.scroller = new Scroller();
 				this.scroller.viewPort = this.viewPort;
 				this.scroller.nameList.add(this.scrollerName);
-				this.scroller.addEventListener(Event.SCROLL, scroller_onScroll);
+				this.scroller.addEventListener(Event.SCROLL, scroller_scrollHandler);
 				//addChild() calls addChildAt(), so this is a workaround to
 				//bypass our overridden addChildAt()
 				super.addChildAt(this.scroller, super.numChildren);
@@ -816,7 +816,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function scroller_onScroll(event:Event):void
+		protected function scroller_scrollHandler(event:Event):void
 		{
 			this._horizontalScrollPosition = this.scroller.horizontalScrollPosition;
 			this._verticalScrollPosition = this.scroller.verticalScrollPosition;

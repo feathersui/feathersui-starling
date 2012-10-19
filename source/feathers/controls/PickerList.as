@@ -479,7 +479,7 @@ package feathers.controls
 			{
 				this._button = new Button();
 				this._button.nameList.add(this.buttonName);
-				this._button.addEventListener(Event.TRIGGERED, button_onRelease);
+				this._button.addEventListener(Event.TRIGGERED, button_triggeredHandler);
 				this._button.addEventListener(TouchEvent.TOUCH, button_touchHandler);
 				this.addChild(this._button);
 			}
@@ -488,8 +488,8 @@ package feathers.controls
 			{
 				this._list = new List();
 				this._list.nameList.add(this.listName);
-				this._list.addEventListener(Event.SCROLL, list_onScroll);
-				this._list.addEventListener(Event.CHANGE, list_onChange);
+				this._list.addEventListener(Event.SCROLL, list_scrollHandler);
+				this._list.addEventListener(Event.CHANGE, list_changeHandler);
 				this._list.addEventListener(TouchEvent.TOUCH, list_touchHandler);
 			}
 
@@ -675,7 +675,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function button_onRelease(event:Event):void
+		protected function button_triggeredHandler(event:Event):void
 		{
 			if(this._list.stage)
 			{
@@ -692,7 +692,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function list_onChange(event:Event):void
+		protected function list_changeHandler(event:Event):void
 		{
 			this.selectedIndex = this._list.selectedIndex;
 		}
@@ -700,7 +700,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function list_onScroll(event:Event):void
+		protected function list_scrollHandler(event:Event):void
 		{
 			if(this._listTouchPointID >= 0)
 			{

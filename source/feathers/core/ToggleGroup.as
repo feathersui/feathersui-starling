@@ -185,7 +185,7 @@ package feathers.core
 			{
 				item.isSelected = false;
 			}
-			EventDispatcher(item).addEventListener(Event.CHANGE, item_onChange);
+			EventDispatcher(item).addEventListener(Event.CHANGE, item_changeHandler);
 
 			if(item is IGroupedToggle)
 			{
@@ -204,7 +204,7 @@ package feathers.core
 				return;
 			}
 			this._items.splice(index, 1);
-			EventDispatcher(item).removeEventListener(Event.CHANGE, item_onChange);
+			EventDispatcher(item).removeEventListener(Event.CHANGE, item_changeHandler);
 			if(item is IGroupedToggle)
 			{
 				IGroupedToggle(item).toggleGroup = null;
@@ -234,7 +234,7 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		private function item_onChange(event:Event):void
+		private function item_changeHandler(event:Event):void
 		{
 			if(this._ignoreChanges)
 			{

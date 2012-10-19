@@ -211,14 +211,14 @@ package feathers.controls
 			{
 				callout.close();
 			}
-			function callout_onClose(event:Event):void
+			function callout_closeHandler(event:Event):void
 			{
 				origin.removeEventListener(Event.REMOVED_FROM_STAGE, origin_removedFromStageHandler);
 				Starling.current.stage.removeEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
-				callout.removeEventListener(Event.CLOSE, callout_onClose);
+				callout.removeEventListener(Event.CLOSE, callout_closeHandler);
 			}
 			callout.addEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
-			callout.addEventListener(Event.CLOSE, callout_onClose);
+			callout.addEventListener(Event.CLOSE, callout_closeHandler);
 			origin.addEventListener(Event.REMOVED_FROM_STAGE, origin_removedFromStageHandler);
 
 			return callout;
