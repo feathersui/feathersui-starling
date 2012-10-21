@@ -655,10 +655,10 @@ package feathers.controls.supportClasses
 				virtualLayout.measureViewPort(itemCount, HELPER_BOUNDS, HELPER_POINT);
 				virtualLayout.getVisibleIndicesAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, HELPER_POINT.x, HELPER_POINT.y, itemCount, HELPER_VECTOR);
 			}
-			const unrenderedItemCount:int = HELPER_VECTOR.length;
+			const unrenderedItemCount:int = useVirtualLayout ? HELPER_VECTOR.length : itemCount;
 			for(var i:int = 0; i < unrenderedItemCount; i++)
 			{
-				var index:int = HELPER_VECTOR[i];
+				var index:int = useVirtualLayout ? HELPER_VECTOR[i] : i;
 				if(index < 0 || index >= itemCount)
 				{
 					continue;
