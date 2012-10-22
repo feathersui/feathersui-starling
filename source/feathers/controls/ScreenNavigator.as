@@ -185,6 +185,10 @@ package feathers.controls
 
 			const item:ScreenNavigatorItem = ScreenNavigatorItem(this._screens[id]);
 			this._activeScreen = item.getScreen();
+			if(this._activeScreen is IScreen)
+			{
+				IScreen(this._activeScreen).screenID = id;
+			}
 			this._activeScreenID = id;
 
 			const events:Object = item.events;

@@ -44,7 +44,7 @@ package feathers.controls
 	 * @see http://wiki.starling-framework.org/feathers/screen
 	 * @see ScreenNavigator
 	 */
-	public class Screen extends FeathersControl
+	public class Screen extends FeathersControl implements IScreen
 	{
 		/**
 		 * Constructor.
@@ -145,7 +145,28 @@ package feathers.controls
 			this._dpiScale = DeviceCapabilities.dpi / this._originalDPI;
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
-		
+
+		/**
+		 * @private
+		 */
+		protected var _screenID:String;
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get screenID():String
+		{
+			return this._screenID;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set screenID(value:String):void
+		{
+			this._screenID = value;
+		}
+
 		/**
 		 * @private
 		 */
