@@ -45,7 +45,7 @@ package feathers.controls
 	/**
 	 * Dispatched when the selected item changes.
 	 *
-	 * @eventType staring.events.Event.CHANGE
+	 * @eventType starling.events.Event.CHANGE
 	 */
 	[Event(name="change",type="starling.events.Event")]
 

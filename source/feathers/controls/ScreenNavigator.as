@@ -38,7 +38,7 @@ package feathers.controls
 	/**
 	 * Dispatched when the active screen changes.
 	 *
-	 * @eventType staring.events.Event.CHANGE
+	 * @eventType starling.events.Event.CHANGE
 	 */
 	[Event(name="change",type="starling.events.Event")]
 
@@ -46,7 +46,7 @@ package feathers.controls
 	 * Dispatched when the current screen is removed and there is no active
 	 * screen.
 	 *
-	 * @eventType staring.events.Event.CLEAR
+	 * @eventType starling.events.Event.CLEAR
 	 */
 	[Event(name="clear",type="starling.events.Event")]
 
