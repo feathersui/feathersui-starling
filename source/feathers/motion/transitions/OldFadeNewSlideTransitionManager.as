@@ -24,7 +24,10 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 package feathers.motion.transitions
 {
+	import feathers.controls.IScreen;
 	import feathers.controls.ScreenNavigator;
+
+	import flash.utils.getQualifiedClassName;
 
 	import starling.animation.Transitions;
 	import starling.animation.Tween;
@@ -56,7 +59,7 @@ package feathers.motion.transitions
 		}
 		
 		private var _navigator:ScreenNavigator;
-		private var _stack:Vector.<Class> = new <Class>[];
+		private var _stack:Vector.<String> = new <String>[];
 		private var _activeTransition:Tween;
 		private var _savedCompleteHandler:Function;
 		private var _savedOtherTarget:DisplayObject;
@@ -122,13 +125,20 @@ package feathers.motion.transitions
 				Starling.juggler.add(this._activeTransition);
 				return;
 			}
-			
-			var NewScreenType:Class = Object(newScreen).constructor;
-			var stackIndex:int = this._stack.indexOf(NewScreenType);
+			var newScreenClassAndID:String = getQualifiedClassName(newScreen);
+			if(newScreen is IScreen)
+			{
+				newScreenClassAndID += "~" + IScreen(newScreen).screenID;
+			}
+			var stackIndex:int = this._stack.indexOf(newScreenClassAndID);
 			if(stackIndex < 0)
 			{
-				var OldScreenType:Class = Object(oldScreen).constructor;
-				this._stack.push(OldScreenType);
+				var oldScreenClassAndID:String = getQualifiedClassName(oldScreen);
+				if(oldScreen is IScreen)
+				{
+					oldScreenClassAndID += "~" + IScreen(oldScreen).screenID;
+				}
+				this._stack.push(oldScreenClassAndID);
 				oldScreen.x = 0;
 				newScreen.x = this._navigator.width;
 			}
