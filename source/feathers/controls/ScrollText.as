@@ -27,6 +27,7 @@ package feathers.controls
 	import feathers.controls.supportClasses.TextFieldViewPort;
 	import feathers.core.FeathersControl;
 	import feathers.core.PropertyProxy;
+	import feathers.events.FeathersEventType;
 
 	import flash.text.TextFormat;
 
@@ -37,7 +38,15 @@ package feathers.controls
 	 *
 	 * @eventType starling.events.Event.SCROLL
 	 */
-	[Event(name="change",type="starling.events.Event")]
+	[Event(name="scroll",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the container finishes scrolling in either direction after
+	 * being thrown.
+	 *
+	 * @eventType feathers.events.FeathersEventType.SCROLL_COMPLETE
+	 */
+	[Event(name="scrollComplete",type="starling.events.Event")]
 
 	/**
 	 * Displays long passages of text in a scrollable container using the
@@ -475,6 +484,7 @@ package feathers.controls
 				this.scroller.viewPort = this.viewPort;
 				this.scroller.nameList.add(this.scrollerName);
 				this.scroller.addEventListener(Event.SCROLL, scroller_scrollHandler);
+				this.scroller.addEventListener(FeathersEventType.SCROLL_COMPLETE, scroller_scrollCompleteHandler);
 				super.addChildAt(this.scroller, 0);
 			}
 		}
@@ -604,6 +614,14 @@ package feathers.controls
 			this._maxHorizontalScrollPosition = this.scroller.maxHorizontalScrollPosition;
 			this._maxVerticalScrollPosition = this.scroller.maxVerticalScrollPosition;
 			this.dispatchEventWith(Event.SCROLL);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function scroller_scrollCompleteHandler(event:Event):void
+		{
+			this.dispatchEventWith(FeathersEventType.SCROLL_COMPLETE);
 		}
 	}
 }

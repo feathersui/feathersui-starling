@@ -49,7 +49,8 @@ package feathers.controls
 	[Event(name="change",type="starling.events.Event")]
 
 	/**
-	 * Similar to a light switch. May be selected or not, like a check box.
+	 * Similar to a light switch with on and off states. Generally considered an
+	 * alternative to a check box.
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/toggle-switch
 	 * @see Check

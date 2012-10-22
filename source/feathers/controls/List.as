@@ -53,7 +53,7 @@ package feathers.controls
 	 */
 	[Event(name="scroll",type="starling.events.Event")]
 
-	/*
+	/**
 	 * Dispatched when the list finishes scrolling in either direction after
 	 * being thrown.
 	 *
