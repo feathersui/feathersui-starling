@@ -34,13 +34,11 @@ package feathers.controls
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/screen-navigator
 	 * @see feathers.controls.ScreenNavigator
-	 * 
-	 * @author Josh Tynjala (joshblog.net)
 	 */
 	public class ScreenNavigatorItem
 	{
 		/**
-		 * Creates a new ScreenNavigatorItem instance.
+		 * Constructor.
 		 */
 		public function ScreenNavigatorItem(screen:Object = null, events:Object = null, properties:Object = null)
 		{
@@ -57,10 +55,12 @@ package feathers.controls
 		
 		/**
 		 * A hash of events to which the ScreenNavigator will listen. Keys in
-		 * the hash are event types, and values are one of two possible types.
-		 * If the value is a String, it must refer to a screen ID for the
-		 * ScreenNavigator to display. If the value is a Function, it must
-		 * be a listener for the screen's event. 
+		 * the hash are event types (or the property name of an <code>ISignal</code>),
+		 * and values are one of two possible types. If the value is a
+		 * <code>String</code>, it must refer to a screen ID for the
+		 * <code>ScreenNavigator</code> to display. If the value is a
+		 * <code>Function</code>, it must be a listener for the screen's event
+		 * or <code>ISignal</code>.
 		 */
 		public var events:Object;
 		

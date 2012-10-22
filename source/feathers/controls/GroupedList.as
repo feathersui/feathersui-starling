@@ -52,9 +52,9 @@ package feathers.controls
 	 *
 	 * @eventType starling.events.Event.SCROLL
 	 */
-	[Event(name="change",type="starling.events.Event")]
+	[Event(name="scroll",type="starling.events.Event")]
 
-	/*
+	/**
 	 * Dispatched when the list finishes scrolling in either direction after
 	 * being thrown.
 	 *

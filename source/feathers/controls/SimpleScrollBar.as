@@ -41,7 +41,9 @@ package feathers.controls
 	import starling.events.TouchPhase;
 
 	/**
-	 * @inheritDoc
+	 * Dispatched when the scroll bar's value changes.
+	 *
+	 * @eventType starling.events.Event.CHANGE
 	 */
 	[Event(name="change",type="starling.events.Event")]
 

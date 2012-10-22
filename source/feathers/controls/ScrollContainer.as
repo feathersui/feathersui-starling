@@ -42,7 +42,14 @@ package feathers.controls
 	 */
 	[Event(name="change",type="starling.events.Event")]
 
-	/*
+	/**
+	 * Dispatched when the container is scrolled.
+	 *
+	 * @eventType starling.events.Event.SCROLL
+	 */
+	[Event(name="scroll",type="starling.events.Event")]
+
+	/**
 	 * Dispatched when the container finishes scrolling in either direction after
 	 * being thrown.
 	 *
