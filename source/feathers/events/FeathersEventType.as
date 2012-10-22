@@ -30,7 +30,7 @@ package feathers.events
 		public static const RESIZE:String = "resize";
 		public static const ENTER:String = "enter";
 		public static const CLEAR:String = "clear";
-		public static const SCROLL_END:String = "scrollEnd";
+		public static const SCROLL_COMPLETE:String = "scrollComplete";
 		public static const BEGIN_INTERACTION:String = "beginInteraction";
 		public static const END_INTERACTION:String = "endInteraction";
 	}

@@ -31,6 +31,7 @@ package feathers.controls
 	import feathers.core.PropertyProxy;
 	import feathers.data.HierarchicalCollection;
 	import feathers.events.CollectionEventType;
+	import feathers.events.FeathersEventType;
 	import feathers.layout.ILayout;
 	import feathers.layout.VerticalLayout;
 
@@ -42,16 +43,24 @@ package feathers.controls
 	/**
 	 * Dispatched when the selected item changes.
 	 *
-	 * @eventType staring.events.Event.CHANGE
+	 * @eventType starling.events.Event.CHANGE
 	 */
 	[Event(name="change",type="starling.events.Event")]
 
 	/**
 	 * Dispatched when the list is scrolled.
 	 *
-	 * @eventType staring.events.Event.SCROLL
+	 * @eventType starling.events.Event.SCROLL
 	 */
 	[Event(name="change",type="starling.events.Event")]
+
+	/*
+	 * Dispatched when the list finishes scrolling in either direction after
+	 * being thrown.
+	 *
+	 * @eventType feathers.events.FeathersEventType.SCROLL_COMPLETE
+	 */
+	[Event(name="scrollComplete",type="starling.events.Event")]
 
 	[DefaultProperty("dataProvider")]
 	/**
@@ -1884,6 +1893,7 @@ package feathers.controls
 				this.scroller.verticalScrollPolicy = Scroller.SCROLL_POLICY_AUTO;
 				this.scroller.horizontalScrollPolicy = Scroller.SCROLL_POLICY_AUTO;
 				this.scroller.addEventListener(Event.SCROLL, scroller_scrollHandler);
+				this.scroller.addEventListener(FeathersEventType.SCROLL_COMPLETE, scroller_scrollCompleteHandler);
 				this.addChild(this.scroller);
 			}
 
@@ -2142,6 +2152,14 @@ package feathers.controls
 			this._maxVerticalScrollPosition = this.scroller.maxVerticalScrollPosition;
 			this.horizontalScrollPosition = this.scroller.horizontalScrollPosition;
 			this.verticalScrollPosition = this.scroller.verticalScrollPosition;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function scroller_scrollCompleteHandler(event:Event):void
+		{
+			this.dispatchEventWith(FeathersEventType.SCROLL_COMPLETE);
 		}
 
 		/**
