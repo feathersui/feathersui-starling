@@ -62,11 +62,19 @@ package feathers.controls
 	import starling.events.TouchPhase;
 
 	/*
-	  * Dispatched when the scroller scrolls in either direction.
-	  *
-	  * @eventType starling.events.Event.SCROLL
-	  */
+	   * Dispatched when the scroller scrolls in either direction.
+	   *
+	   * @eventType starling.events.Event.SCROLL
+	   */
 	[Event(name="scroll",type="starling.events.Event")]
+
+	/*
+	 * Dispatched when the scroller finishes scrolling in either direction after
+	 * being thrown.
+	 *
+	 * @eventType feathers.events.FeathersEventType.SCROLL_COMPLETE
+	 */
+	[Event(name="scrollComplete",type="starling.events.Event")]
 
 	/**
 	 * Dispatched when the user starts dragging the scroller.
@@ -2016,7 +2024,14 @@ package feathers.controls
 			}
 			
 			this._isDraggingHorizontally = false;
-			this.throwTo(targetHorizontalScrollPosition, NaN, this._elasticSnapDuration);
+			if(isNaN(targetHorizontalScrollPosition) && !this._isDraggingVertically && !this._verticalAutoScrollTween)
+			{
+				this.dispatchEventWith(FeathersEventType.SCROLL_COMPLETE);
+			}
+			else
+			{
+				this.throwTo(targetHorizontalScrollPosition, NaN, this._elasticSnapDuration);
+			}
 		}
 		
 		/**
@@ -2035,7 +2050,14 @@ package feathers.controls
 			}
 			
 			this._isDraggingVertically = false;
-			this.throwTo(NaN, targetVerticalScrollPosition, this._elasticSnapDuration);
+			if(isNaN(targetVerticalScrollPosition) && !this._isDraggingHorizontally && !this._horizontalAutoScrollTween)
+			{
+				this.dispatchEventWith(FeathersEventType.SCROLL_COMPLETE);
+			}
+			else
+			{
+				this.throwTo(NaN, targetVerticalScrollPosition, this._elasticSnapDuration);
+			}
 		}
 		
 		/**

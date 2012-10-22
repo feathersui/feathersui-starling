@@ -28,6 +28,7 @@ package feathers.controls
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
 	import feathers.core.PropertyProxy;
+	import feathers.events.FeathersEventType;
 	import feathers.layout.ILayout;
 	import feathers.layout.IVirtualLayout;
 
@@ -40,6 +41,14 @@ package feathers.controls
 	 * @eventType staring.events.Event.SCROLL
 	 */
 	[Event(name="change",type="starling.events.Event")]
+
+	/*
+	 * Dispatched when the container finishes scrolling in either direction after
+	 * being thrown.
+	 *
+	 * @eventType feathers.events.FeathersEventType.SCROLL_COMPLETE
+	 */
+	[Event(name="scrollComplete",type="starling.events.Event")]
 
 	[DefaultProperty("mxmlContent")]
 	/**
@@ -613,6 +622,7 @@ package feathers.controls
 				this.scroller.viewPort = this.viewPort;
 				this.scroller.nameList.add(this.scrollerName);
 				this.scroller.addEventListener(Event.SCROLL, scroller_scrollHandler);
+				this.scroller.addEventListener(FeathersEventType.SCROLL_COMPLETE, scroller_scrollCompleteHandler);
 				//addChild() calls addChildAt(), so this is a workaround to
 				//bypass our overridden addChildAt()
 				super.addChildAt(this.scroller, super.numChildren);
@@ -811,6 +821,14 @@ package feathers.controls
 		protected function childProperties_onChange(proxy:PropertyProxy, name:String):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function scroller_scrollCompleteHandler(event:Event):void
+		{
+			this.dispatchEventWith(FeathersEventType.SCROLL_COMPLETE);
 		}
 
 		/**
