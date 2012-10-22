@@ -61,14 +61,14 @@ package feathers.controls
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 
-	/*
-	   * Dispatched when the scroller scrolls in either direction.
-	   *
-	   * @eventType starling.events.Event.SCROLL
-	   */
+	/**
+	 * Dispatched when the scroller scrolls in either direction.
+	 *
+	 * @eventType starling.events.Event.SCROLL
+	 */
 	[Event(name="scroll",type="starling.events.Event")]
 
-	/*
+	/**
 	 * Dispatched when the scroller finishes scrolling in either direction after
 	 * being thrown.
 	 *
