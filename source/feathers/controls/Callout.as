@@ -115,6 +115,9 @@ package feathers.controls
 		DIRECTION_TO_FUNCTION[DIRECTION_LEFT] = positionCalloutLeftSide;
 		DIRECTION_TO_FUNCTION[DIRECTION_RIGHT] = positionCalloutRightSide;
 
+		/**
+		 * @private
+		 */
 		protected static const callouts:Vector.<Callout> = new <Callout>[];
 
 		/**
@@ -216,6 +219,11 @@ package feathers.controls
 				origin.removeEventListener(Event.REMOVED_FROM_STAGE, origin_removedFromStageHandler);
 				Starling.current.stage.removeEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
 				callout.removeEventListener(Event.CLOSE, callout_closeHandler);
+				const index:int = callouts.indexOf(callout)
+				if(index >= 0)
+				{
+					callouts.splice(index, 1);
+				}
 			}
 			callout.addEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
 			callout.addEventListener(Event.CLOSE, callout_closeHandler);
