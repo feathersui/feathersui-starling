@@ -35,7 +35,7 @@ package feathers.controls
 	/**
 	 * Dispatched when the text is scrolled.
 	 *
-	 * @eventType staring.events.Event.SCROLL
+	 * @eventType starling.events.Event.SCROLL
 	 */
 	[Event(name="change",type="starling.events.Event")]
 
