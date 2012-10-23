@@ -2330,10 +2330,18 @@ package feathers.controls
 				Starling.juggler.remove(this._horizontalAutoScrollTween);
 				this._horizontalAutoScrollTween = null
 			}
+			else
+			{
+				this._isDraggingHorizontally = false;
+			}
 			if(this._verticalAutoScrollTween)
 			{
 				Starling.juggler.remove(this._verticalAutoScrollTween);
 				this._verticalAutoScrollTween = null
+			}
+			else
+			{
+				this._isDraggingVertically = false;
 			}
 			
 			this._touchPointID = touch.id;
@@ -2346,8 +2354,6 @@ package feathers.controls
 			this._previousTouchY = this._startTouchY = this._currentTouchY = HELPER_POINT.y;
 			this._startHorizontalScrollPosition = this._horizontalScrollPosition;
 			this._startVerticalScrollPosition = this._verticalScrollPosition;
-			this._isDraggingHorizontally = false;
-			this._isDraggingVertically = false;
 			this._isScrollingStopped = false;
 
 			this.addEventListener(Event.ENTER_FRAME, enterFrameHandler);
