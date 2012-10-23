@@ -50,16 +50,36 @@ package feathers.core
 		public function ToggleGroup()
 		{
 		}
-		
+
+		/**
+		 * @private
+		 */
+		private var _items:Vector.<IToggle> = new Vector.<IToggle>;
+
+		/**
+		 * @private
+		 */
 		private var _ignoreChanges:Boolean = false;
-		
+
+		/**
+		 * @private
+		 */
 		private var _isSelectionRequired:Boolean = true;
-		
+
+		/**
+		 * Determines if there must always be a selected index or not. If
+		 * <code>true</code>, the toggle group will throw an error if the
+		 * selected index is set to <code>-1</code> or the selected item is set
+		 * to <code>null</code>.
+		 */
 		public function get isSelectionRequired():Boolean
 		{
 			return this._isSelectionRequired;
 		}
-		
+
+		/**
+		 * @private
+		 */
 		public function set isSelectionRequired(value:Boolean):void
 		{
 			if(this._isSelectionRequired == value)
@@ -72,28 +92,6 @@ package feathers.core
 				this.selectedIndex = 0;
 			}
 		}
-		
-		private var _isEnabled:Boolean = true;
-		
-		public function get isEnabled():Boolean
-		{
-			return this._isEnabled;
-		}
-		
-		public function set isEnabled(value:Boolean):void
-		{
-			if(this._isEnabled == value)
-			{
-				return;
-			}
-			this._isEnabled = value;
-			if(!this._isEnabled)
-			{
-				this.selectedItem = null;
-			}
-		}
-		
-		private var _items:Vector.<IToggle> = new Vector.<IToggle>;
 		
 		/**
 		 * The currently selected toggle.
@@ -138,7 +136,6 @@ package feathers.core
 			{
 				throw new RangeError("Index " + value + " is out of range " + itemCount + " for ToggleGroup.");
 			}
-			value = this._isEnabled ? value : -1;
 			const hasChanged:Boolean = this._selectedIndex != value;
 			this._selectedIndex = value;
 
