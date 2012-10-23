@@ -185,7 +185,7 @@ package feathers.core
 			{
 				item.isSelected = false;
 			}
-			EventDispatcher(item).addEventListener(Event.CHANGE, item_changeHandler);
+			item.addEventListener(Event.CHANGE, item_changeHandler);
 
 			if(item is IGroupedToggle)
 			{
@@ -204,7 +204,7 @@ package feathers.core
 				return;
 			}
 			this._items.splice(index, 1);
-			EventDispatcher(item).removeEventListener(Event.CHANGE, item_changeHandler);
+			item.removeEventListener(Event.CHANGE, item_changeHandler);
 			if(item is IGroupedToggle)
 			{
 				IGroupedToggle(item).toggleGroup = null;
@@ -220,6 +220,24 @@ package feathers.core
 					this.selectedIndex = -1;
 				}
 			}
+		}
+
+		/**
+		 * Removes all toggles from the group.
+		 */
+		public function removeAllItems():void
+		{
+			const itemCount:int = this._items.length;
+			for(var i:int = 0; i < itemCount; i++)
+			{
+				var item:IToggle = this._items.shift();
+				item.removeEventListener(Event.CHANGE, item_changeHandler);
+				if(item is IGroupedToggle)
+				{
+					IGroupedToggle(item).toggleGroup = null;
+				}
+			}
+			this.selectedIndex = -1;
 		}
 
 		/**
