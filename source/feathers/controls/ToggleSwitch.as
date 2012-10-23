@@ -599,6 +599,49 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _toggleDuration:Number = 0.15;
+
+		/**
+		 * The duration, in seconds, of the animation when the toggle switch
+		 * is toggled and animates the position of the thumb.
+		 */
+		public function get toggleDuration():Number
+		{
+			return this._toggleDuration;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set toggleDuration(value:Number):void
+		{
+			this._toggleDuration = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _toggleEase:Object = Transitions.EASE_OUT;
+
+		/**
+		 * The easing function used for toggle animations.
+		 */
+		public function get toggleEase():Object
+		{
+			return this._toggleEase;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set toggleEase(value:Object):void
+		{
+			this._toggleEase = value;
+		}
+
+		/**
+		 * @private
+		 */
 		private var _onText:String = "ON";
 
 		/**
@@ -658,7 +701,7 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
-		private var _selectionChangeTween:Tween;
+		private var _toggleTween:Tween;
 
 		private var _ignoreTapHandler:Boolean = false;
 		private var _touchPointID:int = -1;
@@ -1023,19 +1066,19 @@ package feathers.controls
 			}
 
 			//stop the tween, no matter what
-			if(this._selectionChangeTween)
+			if(this._toggleTween)
 			{
-				Starling.juggler.remove(this._selectionChangeTween);
-				this._selectionChangeTween = null;
+				Starling.juggler.remove(this._toggleTween);
+				this._toggleTween = null;
 			}
 
 			if(this._isSelectionChangedByUser)
 			{
-				this._selectionChangeTween = new Tween(this.thumb, 0.15, Transitions.EASE_OUT);
-				this._selectionChangeTween.animate("x", xPosition);
-				this._selectionChangeTween.onUpdate = selectionTween_onUpdate;
-				this._selectionChangeTween.onComplete = selectionTween_onComplete;
-				Starling.juggler.add(this._selectionChangeTween);
+				this._toggleTween = new Tween(this.thumb, this._toggleDuration, this._toggleEase);
+				this._toggleTween.animate("x", xPosition);
+				this._toggleTween.onUpdate = selectionTween_onUpdate;
+				this._toggleTween.onComplete = selectionTween_onComplete;
+				Starling.juggler.add(this._toggleTween);
 			}
 			else
 			{
@@ -1490,7 +1533,7 @@ package feathers.controls
 		 */
 		private function selectionTween_onComplete():void
 		{
-			this._selectionChangeTween = null;
+			this._toggleTween = null;
 		}
 	}
 }
