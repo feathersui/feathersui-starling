@@ -647,12 +647,13 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this.toggleGroup.selectedIndex == this._pendingSelectedIndex)
+			const actualSelectedIndex:int = Math.min(this._pendingSelectedIndex, this.activeTabs.length - 1);
+			this._pendingSelectedIndex = -1;
+			if(this.toggleGroup.selectedIndex == actualSelectedIndex)
 			{
-				this._pendingSelectedIndex = -1;
 				return;
 			}
-			this.toggleGroup.selectedIndex = this._pendingSelectedIndex;
+			this.toggleGroup.selectedIndex = actualSelectedIndex;
 			this._pendingSelectedIndex = -1;
 			this.dispatchEventWith(Event.CHANGE);
 		}
@@ -740,6 +741,8 @@ package feathers.controls
 		 */
 		protected function refreshTabs(isFactoryInvalid:Boolean):void
 		{
+			this._pendingSelectedIndex = this.toggleGroup.selectedIndex;
+			this.toggleGroup.removeAllItems();
 			var temp:Vector.<Button> = this.inactiveTabs;
 			this.inactiveTabs = this.activeTabs;
 			this.activeTabs = temp;
@@ -783,6 +786,7 @@ package feathers.controls
 				{
 					tab = this.createTab(item);
 				}
+				this.toggleGroup.addItem(tab);
 				this.activeTabs.push(tab);
 			}
 			this.clearInactiveTabs();
@@ -836,7 +840,6 @@ package feathers.controls
 					tab.nameList.add(this.firstTabName);
 				}
 				tab.isToggle = true;
-				this.toggleGroup.addItem(tab);
 				this.addChild(tab);
 			}
 			this._tabInitializer(tab, item);
@@ -866,7 +869,6 @@ package feathers.controls
 					tab.nameList.add(this.lastTabName);
 				}
 				tab.isToggle = true;
-				this.toggleGroup.addItem(tab);
 				this.addChild(tab);
 			}
 			this._tabInitializer(tab, item);
@@ -890,7 +892,6 @@ package feathers.controls
 					tab.nameList.add(this.tabName);
 				}
 				tab.isToggle = true;
-				this.toggleGroup.addItem(tab);
 				this.addChild(tab);
 			}
 			else
