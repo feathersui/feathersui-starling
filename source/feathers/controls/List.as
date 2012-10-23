@@ -254,22 +254,6 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 			this.dispatchEventWith(Event.SCROLL);
 		}
-
-		/**
-		 * @private
-		 */
-		protected var _verticalPageIndex:int = 0;
-
-		/**
-		 * The index of the vertical page, if snapping is enabled. If snapping
-		 * is disabled, the index will always be <code>0</code>.
-		 * 
-		 * @default 0
-		 */
-		public function get verticalPageIndex():int
-		{
-			return this._verticalPageIndex;
-		}
 		
 		/**
 		 * @private
@@ -290,6 +274,22 @@ package feathers.controls
 		public function get maxVerticalScrollPosition():Number
 		{
 			return this._maxVerticalScrollPosition;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _verticalPageIndex:int = 0;
+
+		/**
+		 * The index of the vertical page, if snapping is enabled. If snapping
+		 * is disabled, the index will always be <code>0</code>.
+		 *
+		 * @default 0
+		 */
+		public function get verticalPageIndex():int
+		{
+			return this._verticalPageIndex;
 		}
 		
 		/**
@@ -1118,7 +1118,6 @@ package feathers.controls
 				this._scrollToIndex = -1;
 			}
 		}
-
 
 		/**
 		 * @private
