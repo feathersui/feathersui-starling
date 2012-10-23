@@ -88,6 +88,21 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _scrollToHorizontalPageIndex:int = -1;
+
+		/**
+		 * @private
+		 */
+		protected var _scrollToVerticalPageIndex:int = -1;
+
+		/**
+		 * @private
+		 */
+		protected var _scrollToIndexDuration:Number;
+
+		/**
+		 * @private
+		 */
 		private var _text:String = "";
 
 		/**
@@ -351,6 +366,20 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _horizontalPageIndex:int = 0;
+
+		/**
+		 * The index of the horizontal page, if snapping is enabled. If snapping
+		 * is disabled, the index will always be <code>0</code>.
+		 */
+		public function get horizontalPageIndex():int
+		{
+			return this._horizontalPageIndex;
+		}
+
+		/**
+		 * @private
+		 */
 		private var _verticalScrollPosition:Number = 0;
 
 		/**
@@ -393,6 +422,22 @@ package feathers.controls
 		public function get maxVerticalScrollPosition():Number
 		{
 			return this._maxVerticalScrollPosition;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _verticalPageIndex:int = 0;
+
+		/**
+		 * The index of the vertical page, if snapping is enabled. If snapping
+		 * is disabled, the index will always be <code>0</code>.
+		 *
+		 * @default 0
+		 */
+		public function get verticalPageIndex():int
+		{
+			return this._verticalPageIndex;
 		}
 
 		/**
@@ -471,6 +516,24 @@ package feathers.controls
 				return;
 			}
 			this.scroller.stopScrolling();
+		}
+
+		/**
+		 * Scrolls the list to a specific page, horizontally and vertically. If
+		 * <code>horizontalPageIndex</code> or <code>verticalPageIndex</code> is
+		 * -1, it will be ignored
+		 */
+		public function scrollToPageIndex(horizontalPageIndex:int, verticalPageIndex:int, animationDuration:Number = 0):void
+		{
+			if(this._scrollToHorizontalPageIndex == horizontalPageIndex &&
+				this._scrollToVerticalPageIndex == verticalPageIndex)
+			{
+				return;
+			}
+			this._scrollToHorizontalPageIndex = horizontalPageIndex;
+			this._scrollToVerticalPageIndex = verticalPageIndex;
+			this._scrollToIndexDuration = animationDuration;
+			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
 
 		/**
@@ -553,6 +616,10 @@ package feathers.controls
 			this._maxVerticalScrollPosition = this.scroller.maxVerticalScrollPosition;
 			this._horizontalScrollPosition = this.scroller.horizontalScrollPosition;
 			this._verticalScrollPosition = this.scroller.verticalScrollPosition;
+			this._horizontalPageIndex = this.scroller.horizontalPageIndex;
+			this._verticalPageIndex = this.scroller.verticalPageIndex;
+
+			this.scroll();
 		}
 
 		/**
@@ -599,6 +666,19 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function scroll():void
+		{
+			if(this._scrollToHorizontalPageIndex >= 0 || this._scrollToVerticalPageIndex >= 0)
+			{
+				this.scroller.throwToPage(this._scrollToHorizontalPageIndex, this._scrollToVerticalPageIndex, this._scrollToIndexDuration);
+				this._scrollToHorizontalPageIndex = -1;
+				this._scrollToVerticalPageIndex = -1;
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function childProperties_onChange(proxy:PropertyProxy, name:String):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
@@ -613,6 +693,9 @@ package feathers.controls
 			this._verticalScrollPosition = this.scroller.verticalScrollPosition;
 			this._maxHorizontalScrollPosition = this.scroller.maxHorizontalScrollPosition;
 			this._maxVerticalScrollPosition = this.scroller.maxVerticalScrollPosition;
+			this._horizontalPageIndex = this.scroller.horizontalPageIndex;
+			this._verticalPageIndex = this.scroller.verticalPageIndex;
+			this.invalidate(INVALIDATION_FLAG_SCROLL);
 			this.dispatchEventWith(Event.SCROLL);
 		}
 
