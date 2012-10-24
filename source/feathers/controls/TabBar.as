@@ -28,6 +28,7 @@ package feathers.controls
 	import feathers.core.PropertyProxy;
 	import feathers.core.ToggleGroup;
 	import feathers.data.ListCollection;
+	import feathers.events.CollectionEventType;
 
 	import starling.events.Event;
 
@@ -51,6 +52,11 @@ package feathers.controls
 		 * @private
 		 */
 		protected static const INVALIDATION_FLAG_TAB_FACTORY:String = "tabFactory";
+
+		/**
+		 * @private
+		 */
+		protected static const NOT_PENDING_INDEX:int = -2;
 
 		/**
 		 * @private
@@ -175,12 +181,20 @@ package feathers.controls
 			}
 			if(this._dataProvider)
 			{
-				this._dataProvider.removeEventListener(Event.CHANGE, dataProvider_changeHandler);
+				this._dataProvider.removeEventListener(CollectionEventType.ADD_ITEM, dataProvider_addItemHandler);
+				this._dataProvider.removeEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
+				this._dataProvider.removeEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
+				this._dataProvider.removeEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_updateItemHandler);
+				this._dataProvider.removeEventListener(CollectionEventType.RESET, dataProvider_resetHandler);
 			}
 			this._dataProvider = value;
 			if(this._dataProvider)
 			{
-				this._dataProvider.addEventListener(Event.CHANGE, dataProvider_changeHandler);
+				this._dataProvider.addEventListener(CollectionEventType.ADD_ITEM, dataProvider_addItemHandler);
+				this._dataProvider.addEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
+				this._dataProvider.addEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
+				this._dataProvider.addEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_updateItemHandler);
+				this._dataProvider.addEventListener(CollectionEventType.RESET, dataProvider_resetHandler);
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -196,7 +210,7 @@ package feathers.controls
 		 */
 		public function get direction():String
 		{
-			return _direction;
+			return this._direction;
 		}
 
 		/**
@@ -222,7 +236,7 @@ package feathers.controls
 		 */
 		public function get gap():Number
 		{
-			return _gap;
+			return this._gap;
 		}
 
 		/**
@@ -236,6 +250,32 @@ package feathers.controls
 			}
 			this._gap = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _isSelectionRequired:Boolean = true;
+
+		/**
+		 * Determines if at least one tab must always be selected.
+		 */
+		public function get isSelectionRequired():Boolean
+		{
+			return this._isSelectionRequired;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set isSelectionRequired(value:Boolean):void
+		{
+			if(this._isSelectionRequired == value)
+			{
+				return;
+			}
+			this._isSelectionRequired = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		/**
@@ -373,7 +413,12 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _pendingSelectedIndex:int = -1;
+		protected var _ignoreSelectionChanges:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		private var _pendingSelectedIndex:int = NOT_PENDING_INDEX;
 
 		/**
 		 * The index of the currently selected tab. Returns -1 if no tab is
@@ -381,9 +426,13 @@ package feathers.controls
 		 */
 		public function get selectedIndex():int
 		{
-			if(this._pendingSelectedIndex >= 0 || !this.toggleGroup)
+			if(this._pendingSelectedIndex != NOT_PENDING_INDEX)
 			{
 				return this._pendingSelectedIndex;
+			}
+			if(!this.toggleGroup)
+			{
+				return -1;
 			}
 			return this.toggleGroup.selectedIndex;
 		}
@@ -393,6 +442,10 @@ package feathers.controls
 		 */
 		public function set selectedIndex(value:int):void
 		{
+			if(this._pendingSelectedIndex == value)
+			{
+				return;
+			}
 			this._pendingSelectedIndex = value;
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
@@ -643,18 +696,15 @@ package feathers.controls
 		 */
 		protected function commitSelection():void
 		{
-			if(this._pendingSelectedIndex < 0 || !this.toggleGroup)
+			this.toggleGroup.isSelectionRequired = this._isSelectionRequired;
+
+			if(this._pendingSelectedIndex == NOT_PENDING_INDEX || !this.toggleGroup)
 			{
 				return;
 			}
-			const actualSelectedIndex:int = Math.min(this._pendingSelectedIndex, this.activeTabs.length - 1);
-			this._pendingSelectedIndex = -1;
-			if(this.toggleGroup.selectedIndex == actualSelectedIndex)
-			{
-				return;
-			}
-			this.toggleGroup.selectedIndex = actualSelectedIndex;
-			this._pendingSelectedIndex = -1;
+
+			this.toggleGroup.selectedIndex = this._pendingSelectedIndex;
+			this._pendingSelectedIndex = NOT_PENDING_INDEX;
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
@@ -741,7 +791,8 @@ package feathers.controls
 		 */
 		protected function refreshTabs(isFactoryInvalid:Boolean):void
 		{
-			this._pendingSelectedIndex = this.toggleGroup.selectedIndex;
+			this._ignoreSelectionChanges = true;
+			var oldSelectedIndex:int = this.toggleGroup.selectedIndex;
 			this.toggleGroup.removeAllItems();
 			var temp:Vector.<Button> = this.inactiveTabs;
 			this.inactiveTabs = this.activeTabs;
@@ -789,7 +840,19 @@ package feathers.controls
 				this.toggleGroup.addItem(tab);
 				this.activeTabs.push(tab);
 			}
+
 			this.clearInactiveTabs();
+			if(oldSelectedIndex >= 0)
+			{
+				const newSelectedIndex:int = Math.min(this.activeTabs.length - 1, oldSelectedIndex);
+				this._ignoreSelectionChanges = newSelectedIndex == oldSelectedIndex;
+				this.toggleGroup.selectedIndex = newSelectedIndex;
+			}
+			else
+			{
+				this.dispatchEventWith(Event.CHANGE);
+			}
+			this._ignoreSelectionChanges = false;
 		}
 
 		/**
@@ -1000,7 +1063,7 @@ package feathers.controls
 		 */
 		protected function toggleGroup_changeHandler(event:Event):void
 		{
-			if(this._pendingSelectedIndex >= 0)
+			if(this._ignoreSelectionChanges || this._pendingSelectedIndex != NOT_PENDING_INDEX)
 			{
 				return;
 			}
@@ -1010,7 +1073,58 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function dataProvider_changeHandler(event:Event):void
+		protected function dataProvider_addItemHandler(event:Event, index:int):void
+		{
+			if(this.toggleGroup && this.toggleGroup.selectedIndex >= index)
+			{
+				//let's keep the same item selected
+				this._pendingSelectedIndex = this.toggleGroup.selectedIndex + 1;
+				this.invalidate(INVALIDATION_FLAG_SELECTED);
+			}
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dataProvider_removeItemHandler(event:Event, index:int):void
+		{
+			if(this.toggleGroup && this.toggleGroup.selectedIndex > index)
+			{
+				//let's keep the same item selected
+				this._pendingSelectedIndex = this.toggleGroup.selectedIndex - 1;
+				this.invalidate(INVALIDATION_FLAG_SELECTED);
+			}
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dataProvider_resetHandler(event:Event):void
+		{
+			if(this.toggleGroup && this._dataProvider.length > 0 && this._isSelectionRequired)
+			{
+				//the data provider has changed drastically. we should reset the
+				//selection to the first item.
+				this._pendingSelectedIndex = 0;
+				this.invalidate(INVALIDATION_FLAG_SELECTED);
+			}
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dataProvider_replaceItemHandler(event:Event, index:int):void
+		{
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dataProvider_updateItemHandler(event:Event, index:int):void
 		{
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
