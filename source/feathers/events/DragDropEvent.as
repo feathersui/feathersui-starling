@@ -32,17 +32,24 @@ package feathers.events
 	{
 		public static const DRAG_START:String = "dragStart";
 		public static const DRAG_COMPLETE:String = "dragComplete";
-		public static const DRAG_ENTER:String = "dragStart";
+		public static const DRAG_ENTER:String = "dragEnter";
 		public static const DRAG_MOVE:String = "dragMove";
 		public static const DRAG_EXIT:String = "dragExit";
 		public static const DRAG_DROP:String = "dragDrop";
 
 		public function DragDropEvent(type:String, dragData:DragData, isDropped:Boolean, localX:Number = NaN, localY:Number = NaN)
 		{
-			super(type)
+			super(type, false, dragData);
+			this.isDropped = isDropped;
+			this.localX = localX;
+			this.localY = localY;
 		}
 
-		public var dragData:DragData;
+		public function get dragData():DragData
+		{
+			return DragData(this.data);
+		}
+
 		public var isDropped:Boolean;
 		public var localX:Number;
 		public var localY:Number;
