@@ -339,7 +339,7 @@ package feathers.dragDrop
 				var isDropped:Boolean = false;
 				if(dropTarget && isAccepted)
 				{
-					dropTarget.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_MOVE, _dragData, true, dropTargetLocalX, dropTargetLocalY));
+					dropTarget.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_DROP, _dragData, true, dropTargetLocalX, dropTargetLocalY));
 					isDropped = true;
 				}
 				dropTarget = null;
