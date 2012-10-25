@@ -281,9 +281,8 @@ package feathers.controls
 		 */
 		public function set label(value:String):void
 		{
-			if(!value)
+			if(value === null)
 			{
-				//don't allow null or undefined
 				value = "";
 			}
 			if(this._label == value)

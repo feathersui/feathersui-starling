@@ -156,7 +156,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _title:String;
+		protected var _title:String = "";
 
 		/**
 		 * The text displayed for the header's title.
@@ -171,6 +171,10 @@ package feathers.controls
 		 */
 		public function set title(value:String):void
 		{
+			if(value === null)
+			{
+				value = "";
+			}
 			if(this._title == value)
 			{
 				return;
@@ -920,7 +924,7 @@ package feathers.controls
 		 */
 		protected function layoutTitle():void
 		{
-			if(!this._title)
+			if(this._title.length == 0)
 			{
 				return;
 			}
