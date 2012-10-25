@@ -2026,6 +2026,7 @@ package feathers.controls
 			this._isDraggingHorizontally = false;
 			if(isNaN(targetHorizontalScrollPosition) && !this._isDraggingVertically && !this._verticalAutoScrollTween)
 			{
+				this.hideHorizontalScrollBar();
 				this.dispatchEventWith(FeathersEventType.SCROLL_COMPLETE);
 			}
 			else
@@ -2052,6 +2053,7 @@ package feathers.controls
 			this._isDraggingVertically = false;
 			if(isNaN(targetVerticalScrollPosition) && !this._isDraggingHorizontally && !this._horizontalAutoScrollTween)
 			{
+				this.hideVerticalScrollBar();
 				this.dispatchEventWith(FeathersEventType.SCROLL_COMPLETE);
 			}
 			else
