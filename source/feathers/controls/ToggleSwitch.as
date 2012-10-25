@@ -657,9 +657,8 @@ package feathers.controls
 		 */
 		public function set onText(value:String):void
 		{
-			if(!value)
+			if(value === null)
 			{
-				//don't allow null or undefined
 				value = "";
 			}
 			if(this._onText == value)
@@ -688,9 +687,8 @@ package feathers.controls
 		 */
 		public function set offText(value:String):void
 		{
-			if(!value)
+			if(value === null)
 			{
-				//don't allow null or undefined
 				value = "";
 			}
 			if(this._offText == value)
