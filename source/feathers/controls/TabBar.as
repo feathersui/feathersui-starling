@@ -255,32 +255,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _isSelectionRequired:Boolean = true;
-
-		/**
-		 * Determines if at least one tab must always be selected.
-		 */
-		public function get isSelectionRequired():Boolean
-		{
-			return this._isSelectionRequired;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set isSelectionRequired(value:Boolean):void
-		{
-			if(this._isSelectionRequired == value)
-			{
-				return;
-			}
-			this._isSelectionRequired = value;
-			this.invalidate(INVALIDATION_FLAG_DATA);
-		}
-
-		/**
-		 * @private
-		 */
 		private var _tabFactory:Function = defaultTabFactory;
 
 		/**
@@ -696,8 +670,6 @@ package feathers.controls
 		 */
 		protected function commitSelection():void
 		{
-			this.toggleGroup.isSelectionRequired = this._isSelectionRequired;
-
 			if(this._pendingSelectedIndex == NOT_PENDING_INDEX || !this.toggleGroup)
 			{
 				return;
@@ -1103,7 +1075,7 @@ package feathers.controls
 		 */
 		protected function dataProvider_resetHandler(event:Event):void
 		{
-			if(this.toggleGroup && this._dataProvider.length > 0 && this._isSelectionRequired)
+			if(this.toggleGroup && this._dataProvider.length > 0)
 			{
 				//the data provider has changed drastically. we should reset the
 				//selection to the first item.
