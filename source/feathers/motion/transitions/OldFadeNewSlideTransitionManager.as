@@ -148,6 +148,7 @@ package feathers.motion.transitions
 				oldScreen.x = 0;
 				newScreen.x = -this._navigator.width;
 			}
+			newScreen.alpha = 1;
 			this._savedOtherTarget = oldScreen;
 			this._activeTransition = new Tween(newScreen, this.duration, this.ease);
 			this._activeTransition.animate("x", 0);
