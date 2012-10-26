@@ -24,7 +24,7 @@
  */
 package feathers.dragDrop
 {
-	import feathers.core.IFeathersControl;
+	import starling.events.Event;
 
 	/**
 	 * Dispatched when the drag and drop manager begins the drag.
@@ -46,7 +46,9 @@ package feathers.dragDrop
 	 *
 	 * @see DragDropManager
 	 */
-	public interface IDragSource extends IFeathersControl
+	public interface IDragSource
 	{
+		function dispatchEvent(event:Event):void;
+		function dispatchEventWith(type:String, bubbles:Boolean = false, data:Object = null):void;
 	}
 }
