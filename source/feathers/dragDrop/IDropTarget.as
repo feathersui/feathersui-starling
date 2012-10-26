@@ -24,7 +24,7 @@
  */
 package feathers.dragDrop
 {
-	import feathers.core.IFeathersControl;
+	import starling.events.Event;
 
 	/**
 	 * Dispatched when the touch enters the drop target's bounds. Call
@@ -67,7 +67,9 @@ package feathers.dragDrop
 	 *
 	 * @see DragDropManager
 	 */
-	public interface IDropTarget extends IFeathersControl
+	public interface IDropTarget
 	{
+		function dispatchEvent(event:Event):void;
+		function dispatchEventWith(type:String, bubbles:Boolean = false, data:Object = null):void;
 	}
 }
