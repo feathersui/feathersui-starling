@@ -221,7 +221,9 @@ package feathers.controls
 			{
 				return false;
 			}
-			this.textRenderer.maxWidth = needsWidth ? this._maxWidth : this.explicitWidth;
+			this.textRenderer.minWidth = this._minWidth;
+			this.textRenderer.maxWidth = this._maxWidth;
+			this.textRenderer.width = this.explicitWidth;
 			this.textRenderer.measureText(HELPER_POINT);
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
@@ -306,7 +308,7 @@ package feathers.controls
 		 */
 		protected function layout():void
 		{
-			this.textRenderer.maxWidth = this.actualWidth;
+			this.textRenderer.width = this.actualWidth;
 		}
 
 		/**
