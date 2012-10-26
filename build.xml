@@ -14,6 +14,8 @@
 		<echo message="Building starling.swc"/>
 		<java jar="${compc}" dir="${starling.root}" fork="true" failonerror="true">
 			<arg line="+flexlib='${flexframework.root}'"/>
+			<arg line="--swf-version=${swf.version}"/>
+			<arg line="--target-player=${player.version}"/>
 			<arg line="--source-path+=."/>
 			<arg line="--include-sources+=."/>
 			<arg line="--external-library-path+='${flexframework.lib}'"/>
@@ -23,11 +25,13 @@
 		<echo message="Building feathers.swc"/>
 		<java jar="${compc}" dir="${basedir}" fork="true" failonerror="true">
 			<arg line="+flexlib='${flexframework.root}'"/>
+			<arg line="--swf-version=${swf.version}"/>
+			<arg line="--target-player=${player.version}"/>
 			<arg line="--namespace+=${mxml.namespace},mxml-manifest.xml"/>
 			<arg line="--source-path+='source'"/>
 			<arg line="--include-namespaces+=${mxml.namespace}"/>
 			<arg line="--include-sources+='source'"/>
-			<arg line="--library-path+='${dependency.output}'"/>
+			<arg line="--external-library-path+='${dependency.output}'"/>
 			<arg line="--external-library-path+='${flexframework.lib}'"/>
 			<arg line="--output '${swc.output}'"/>
 		</java>
@@ -35,6 +39,8 @@
 		<echo message="Generating Documentation"/>
 		<java jar="${asdoc}" dir="${basedir}" fork="true" failonerror="true">
 			<arg line="+flexlib='${flexframework.root}'"/>
+			<arg line="--swf-version=${swf.version}"/>
+			<arg line="--target-player=${player.version}"/>
 			<arg line="--source-path+='source'"/>
 			<arg line="--library-path+='${dependency.output}'"/>
 			<arg line="--doc-sources+='source'"/>
