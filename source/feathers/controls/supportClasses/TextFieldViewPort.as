@@ -432,18 +432,17 @@ package feathers.controls.supportClasses
 
 			if(stylesInvalid)
 			{
-				if(this._textFormat)
-				{
-					this._textField.defaultTextFormat = this._textFormat;
-					this._textField.setTextFormat(this._textFormat);
-				}
 				this._textField.embedFonts = this._embedFonts;
 				this._textField.x = this._paddingLeft;
 				this._textField.y = this._paddingTop;
 			}
 
-			if(dataInvalid)
+			if(dataInvalid || stylesInvalid)
 			{
+				if(this._textFormat)
+				{
+					this._textField.defaultTextFormat = this._textFormat;
+				}
 				if(this._isHTML)
 				{
 					this._textField.htmlText = this._text;
