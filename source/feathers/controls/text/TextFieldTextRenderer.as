@@ -410,6 +410,11 @@ package feathers.controls.text
 
 			this._textField.autoSize = TextFieldAutoSize.NONE;
 
+			//put the width and height back just in case we measured without
+			//a full validation
+			this._textField.width = this.actualWidth;
+			this._textField.height = this.actualHeight;
+
 			result.x = newWidth;
 			result.y = newHeight;
 
