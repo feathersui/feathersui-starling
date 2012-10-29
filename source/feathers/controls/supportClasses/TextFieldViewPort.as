@@ -31,6 +31,7 @@ package feathers.controls.supportClasses
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.text.AntiAliasType;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
@@ -420,6 +421,7 @@ package feathers.controls.supportClasses
 				this._textField.mouseWheelEnabled = false;
 			this._textField.wordWrap = true;
 			this._textField.multiline = true;
+			this._textField.antiAliasType = AntiAliasType.ADVANCED;
 			this._textFieldContainer.addChild(this._textField);
 		}
 
