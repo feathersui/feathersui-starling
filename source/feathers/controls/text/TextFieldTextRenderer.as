@@ -32,6 +32,7 @@ package feathers.controls.text
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.text.AntiAliasType;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
@@ -334,6 +335,7 @@ package feathers.controls.text
 				this._textField = new TextField();
 				this._textField.mouseEnabled = this._textField.mouseWheelEnabled = false;
 				this._textField.selectable = false;
+				this._textField.antiAliasType = AntiAliasType.ADVANCED;
 			}
 		}
 
