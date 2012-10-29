@@ -1921,7 +1921,9 @@ package feathers.controls
 					offsetY = this.actualHeight - this._viewPort.height;
 				}
 			}
-			if(this._clipContent && (this._maxHorizontalScrollPosition > 0 || this._maxVerticalScrollPosition > 0))
+			if(this._clipContent &&
+				((this._interactionMode == INTERACTION_MODE_TOUCH && this._hasElasticEdges) ||
+					this._maxHorizontalScrollPosition > 0 || this._maxVerticalScrollPosition > 0))
 			{
 				if(!this.scrollRect)
 				{
