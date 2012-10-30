@@ -24,6 +24,7 @@
  */
 package feathers.core
 {
+	import starling.display.DisplayObjectContainer;
 	import starling.events.Event;
 
 	[Event(name="resize",type="starling.events.ResizeEvent")]
@@ -66,6 +67,7 @@ package feathers.core
 		function set alpha(value:Number):void;
 		function get rotation():Number;
 		function set rotation(value:Number):void;
+		function get parent():DisplayObjectContainer;
 
 		function addEventListener(type:String, listener:Function):void;
 		function removeEventListener(type:String, listener:Function):void;
