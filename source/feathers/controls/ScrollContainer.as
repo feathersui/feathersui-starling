@@ -267,6 +267,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _mxmlContentIsReady:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _mxmlContent:Array;
 
 		[ArrayElementType("feathers.core.IFeathersControl")]
@@ -287,14 +292,15 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._mxmlContent)
+			if(this._mxmlContent && this._mxmlContentIsReady)
 			{
 				for each(var child:IFeathersControl in this._mxmlContent)
 				{
-					this.removeChild(DisplayObject(child));
+					this.removeChild(DisplayObject(child), true);
 				}
 			}
 			this._mxmlContent = value;
+			this._mxmlContentIsReady = false;
 			this.invalidate(INVALIDATION_FLAG_MXML_CONTENT);
 		}
 
@@ -664,6 +670,8 @@ package feathers.controls
 				//bypass our overridden addChildAt()
 				super.addChildAt(this.scroller, super.numChildren);
 			}
+
+			this.refreshMXMLContent();
 		}
 
 		/**
@@ -829,7 +837,7 @@ package feathers.controls
 		 */
 		protected function refreshMXMLContent():void
 		{
-			if(!this._mxmlContent)
+			if(!this._mxmlContent || this._mxmlContentIsReady)
 			{
 				return;
 			}
@@ -839,6 +847,7 @@ package feathers.controls
 				var child:DisplayObject = DisplayObject(this._mxmlContent[i]);
 				this.addChild(child);
 			}
+			this._mxmlContentIsReady = true;
 		}
 
 		/**
