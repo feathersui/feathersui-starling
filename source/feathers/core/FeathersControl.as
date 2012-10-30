@@ -235,9 +235,18 @@ package feathers.core
 
 		/**
 		 * @private
-		 * Flag indicating if the <code>initialize()</code> function has been called yet.
 		 */
 		private var _isInitialized:Boolean = false;
+
+		/**
+		 * Determines if the component has been initialized yet. The
+		 * <code>initialize()</code> function is called one time only, when the
+		 * Feathers UI control is added to the display list for the first time.
+		 */
+		public function get isInitialized():Boolean
+		{
+			return this._isInitialized;
+		}
 
 		/**
 		 * @private

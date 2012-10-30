@@ -52,6 +52,8 @@ package feathers.core
 		function get isEnabled():Boolean;
 		function set isEnabled(value:Boolean):void;
 
+		function get isInitialized():Boolean;
+
 		function get name():String;
 		function set name(value:String):void;
 		function get nameList():TokenList;
