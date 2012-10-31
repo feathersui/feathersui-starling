@@ -1488,6 +1488,12 @@ package feathers.controls.renderers
 		 */
 		protected function accessory_touchHandler(event:TouchEvent):void
 		{
+			if(this.accessory == this.accessoryLabel ||
+				this.accessory == this.accessoryImage)
+			{
+				//do nothing
+				return;
+			}
 			event.stopPropagation();
 		}
 	}
