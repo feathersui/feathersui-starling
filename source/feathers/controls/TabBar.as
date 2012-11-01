@@ -416,7 +416,7 @@ package feathers.controls
 		 */
 		public function set selectedIndex(value:int):void
 		{
-			if(this._pendingSelectedIndex == value)
+			if(this._pendingSelectedIndex == value || (this.toggleGroup && this.toggleGroup.selectedIndex == value))
 			{
 				return;
 			}
