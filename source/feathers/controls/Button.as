@@ -1970,7 +1970,7 @@ package feathers.controls
 		protected function refreshLabelData():void
 		{
 			this.labelTextRenderer.text = this._label;
-			DisplayObject(this.labelTextRenderer).visible = this._label.length > 0;
+			this.labelTextRenderer.visible = this._label.length > 0;
 		}
 
 		/**
