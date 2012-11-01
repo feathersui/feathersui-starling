@@ -37,8 +37,9 @@ package feathers.core
 		 */
 		public function ValidationQueue()
 		{
-			Starling.current.juggler.add(this);
 		}
+
+		private var _starling:Starling;
 
 		private var _isValidating:Boolean = false;
 
@@ -59,6 +60,12 @@ package feathers.core
 		 */
 		public function addControl(control:IFeathersControl, delayIfValidating:Boolean):void
 		{
+			const currentStarling:Starling = Starling.current;
+			if(currentStarling && this._starling != currentStarling)
+			{
+				this._starling = currentStarling;
+				currentStarling.juggler.add(this);
+			}
 			const currentQueue:Vector.<IFeathersControl> = (this._isValidating && delayIfValidating) ? this._delayedQueue : this._queue;
 			const queueLength:int = currentQueue.length;
 			const containerControl:DisplayObjectContainer = control as DisplayObjectContainer;
