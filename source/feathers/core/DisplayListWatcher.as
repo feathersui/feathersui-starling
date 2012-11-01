@@ -44,6 +44,8 @@ package feathers.core
 	{
 		/**
 		 * Constructor.
+		 *
+		 * @param root		The root display object to watch (not necessarily Starling's root object)
 		 */
 		public function DisplayListWatcher(root:DisplayObjectContainer)
 		{
@@ -72,6 +74,20 @@ package feathers.core
 		private var _initializerNameTypeMap:Dictionary = new Dictionary(true);
 		private var _initializerSuperTypeMap:Dictionary = new Dictionary(true);
 		private var _initializerSuperTypes:Vector.<Class> = new <Class>[];
+
+		/**
+		 * Stops listening to the root and cleans up anything else that needs to
+		 * be disposed. If a <code>DisplayListWatcher</code> is extended for a
+		 * theme, it should also dispose textures and other assets.
+		 */
+		public function dispose():void
+		{
+			if(this.root)
+			{
+				this.root.removeEventListener(Event.ADDED, addedHandler);
+				this.root = null;
+			}
+		}
 		
 		/**
 		 * Sets the initializer for a specific class.
