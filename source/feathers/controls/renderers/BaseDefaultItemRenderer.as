@@ -1186,7 +1186,7 @@ package feathers.controls.renderers
 				}
 				if(this.accessory)
 				{
-					newWidth += this.accessory.width
+					newWidth += this.accessory.width;
 				}
 				newWidth += this._paddingLeft + this._paddingRight;
 				if(isNaN(newWidth))

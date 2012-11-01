@@ -235,7 +235,7 @@ package feathers.controls
 			{
 				try
 				{
-					this._originalWidth = loaderInfo.width
+					this._originalWidth = loaderInfo.width;
 				} 
 				catch(error:Error) 
 				{

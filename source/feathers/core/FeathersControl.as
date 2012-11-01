@@ -42,14 +42,14 @@ package feathers.core
 	 *
 	 * @eventType feathers.events.FeathersEventType.INITIALIZE
 	 */
-	[Event(name="initialize",type="starling.events.Event")]
+	[Event(name="initialize",type="feathers.events.FeathersEventType")]
 
 	/**
 	 * Dispatched when the width or height of the control changes.
 	 *
 	 * @eventType feathers.events.FeathersEventType.RESIZE
 	 */
-	[Event(name="resize",type="feathers.events.Event")]
+	[Event(name="resize",type="feathers.events.FeathersEventType")]
 
 	/**
 	 * Base class for all UI controls. Implements invalidation and sets up some
@@ -149,7 +149,7 @@ package feathers.core
 		public static var defaultTextRendererFactory:Function = function():ITextRenderer
 		{
 			return new BitmapFontTextRenderer();
-		}
+		};
 
 		/**
 		 * Constructor.

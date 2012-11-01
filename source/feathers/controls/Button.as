@@ -29,17 +29,16 @@ package feathers.controls
 	import feathers.core.ITextRenderer;
 	import feathers.core.IToggle;
 	import feathers.core.PropertyProxy;
-	import feathers.core.PropertyProxy;
 	import feathers.display.ScrollRectManager;
 	import feathers.skins.StateWithToggleValueSelector;
-
-	import flash.geom.Point;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+
+	import flash.geom.Point;
 
 	/**
 	 * Dispatched when the button is released while the touch is still
@@ -2094,7 +2093,7 @@ package feathers.controls
 			}
 			else if(!this.label && this.currentIcon && this._iconPosition != ICON_POSITION_MANUAL)
 			{
-				this.positionLabelOrIcon(this.currentIcon)
+				this.positionLabelOrIcon(this.currentIcon);
 			}
 
 			if(this.currentIcon)

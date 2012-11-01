@@ -975,7 +975,7 @@ package feathers.layout
 						}
 						i += verticalTileCount;
 					}
-					while(rowIndex != maxRowIndex)
+					while(rowIndex != maxRowIndex);
 					return result;
 				}
 			}
