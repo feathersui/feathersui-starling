@@ -957,7 +957,7 @@ package feathers.layout
 						}
 						i += horizontalTileCount;
 					}
-					while(columnIndex != maxColumnIndex)
+					while(columnIndex != maxColumnIndex);
 				}
 				else
 				{

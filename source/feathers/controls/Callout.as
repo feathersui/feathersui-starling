@@ -219,7 +219,7 @@ package feathers.controls
 				origin.removeEventListener(Event.REMOVED_FROM_STAGE, origin_removedFromStageHandler);
 				Starling.current.stage.removeEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
 				callout.removeEventListener(Event.CLOSE, callout_closeHandler);
-				const index:int = callouts.indexOf(callout)
+				const index:int = callouts.indexOf(callout);
 				if(index >= 0)
 				{
 					callouts.splice(index, 1);
@@ -1070,7 +1070,7 @@ package feathers.controls
 				}
 				if(this._arrowPosition == ARROW_POSITION_BOTTOM && this._bottomArrowSkin)
 				{
-					newWidth = Math.max(newWidth, this._bottomArrowSkin.width + this._paddingLeft + this._paddingRight)
+					newWidth = Math.max(newWidth, this._bottomArrowSkin.width + this._paddingLeft + this._paddingRight);
 				}
 				newWidth = Math.min(newWidth, this.stage.stageWidth - stagePaddingLeft - stagePaddingRight);
 			}
@@ -1095,7 +1095,7 @@ package feathers.controls
 				}
 				if(this._arrowPosition == ARROW_POSITION_RIGHT && this._rightArrowSkin)
 				{
-					newHeight = Math.max(newHeight, this._rightArrowSkin.height + this._paddingTop + this._paddingBottom)
+					newHeight = Math.max(newHeight, this._rightArrowSkin.height + this._paddingTop + this._paddingBottom);
 				}
 				newHeight = Math.min(newHeight, this.stage.stageHeight - stagePaddingTop - stagePaddingBottom);
 			}

@@ -182,7 +182,7 @@ package feathers.data
 		 */
 		public function getLength(...rest:Array):int
 		{
-			rest.unshift(this._data)
+			rest.unshift(this._data);
 			return this._dataDescriptor.getLength.apply(null, rest);
 		}
 

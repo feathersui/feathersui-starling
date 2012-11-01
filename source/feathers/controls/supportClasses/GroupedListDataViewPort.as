@@ -1351,9 +1351,9 @@ package feathers.controls.supportClasses
 
 		private function findUnrenderedData():void
 		{
-			const hasCustomFirstItemRenderer:Boolean = this._firstItemRendererType || this._firstItemRendererFactory != null || this._firstItemRendererName;
-			const hasCustomLastItemRenderer:Boolean = this._lastItemRendererType || this._lastItemRendererFactory != null || this._lastItemRendererName;
-			const hasCustomSingleItemRenderer:Boolean = this._singleItemRendererType || this._singleItemRendererFactory != null || this._singleItemRendererName;
+			const hasCustomFirstItemRenderer:Boolean = this._firstItemRendererType != null || this._firstItemRendererFactory != null || this._firstItemRendererName;
+			const hasCustomLastItemRenderer:Boolean = this._lastItemRendererType  != null || this._lastItemRendererFactory != null || this._lastItemRendererName;
+			const hasCustomSingleItemRenderer:Boolean = this._singleItemRendererType  != null || this._singleItemRendererFactory != null || this._singleItemRendererName;
 
 			if(hasCustomFirstItemRenderer)
 			{
@@ -1367,7 +1367,7 @@ package feathers.controls.supportClasses
 				}
 				if(!this._activeFirstItemRenderers)
 				{
-					this._activeFirstItemRenderers = new <IGroupedListItemRenderer>[]
+					this._activeFirstItemRenderers = new <IGroupedListItemRenderer>[];
 				}
 				if(!this._unrenderedFirstItems)
 				{
@@ -1393,7 +1393,7 @@ package feathers.controls.supportClasses
 				}
 				if(!this._activeLastItemRenderers)
 				{
-					this._activeLastItemRenderers = new <IGroupedListItemRenderer>[]
+					this._activeLastItemRenderers = new <IGroupedListItemRenderer>[];
 				}
 				if(!this._unrenderedLastItems)
 				{
@@ -1419,7 +1419,7 @@ package feathers.controls.supportClasses
 				}
 				if(!this._activeSingleItemRenderers)
 				{
-					this._activeSingleItemRenderers = new <IGroupedListItemRenderer>[]
+					this._activeSingleItemRenderers = new <IGroupedListItemRenderer>[];
 				}
 				if(!this._unrenderedSingleItems)
 				{
