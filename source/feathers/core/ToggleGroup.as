@@ -67,10 +67,15 @@ package feathers.core
 		private var _isSelectionRequired:Boolean = true;
 
 		/**
-		 * Determines if there must always be a selected index or not. If
-		 * <code>true</code>, the toggle group will throw an error if the
-		 * selected index is set to <code>-1</code> or the selected item is set
-		 * to <code>null</code>.
+		 * Determines if the user can deselect the currently selected item or
+		 * not. The selection may always be cleared programmatically by setting
+		 * the selected index to <code>-1</code> or the selected item to
+		 * <code>null</code>.
+		 *
+		 * <p>If <code>isSelectionRequired</code> is set to <code>true</code>
+		 * and the toggle group has items that were added previously, and there
+		 * is no currently selected item, the item at index <code>0</code> will
+		 * be selected automatically.</p>
 		 */
 		public function get isSelectionRequired():Boolean
 		{
@@ -132,7 +137,7 @@ package feathers.core
 		public function set selectedIndex(value:int):void
 		{
 			const itemCount:int = this._items.length;
-			if(this._isSelectionRequired && ((value < 0 && itemCount > 0) || value >= itemCount))
+			if(value < -1 || value >= itemCount)
 			{
 				throw new RangeError("Index " + value + " is out of range " + itemCount + " for ToggleGroup.");
 			}
@@ -158,8 +163,9 @@ package feathers.core
 		}
 		
 		/**
-		 * Adds a toggle to the group. If it is the first one, it is
-		 * automatically selected.
+		 * Adds a toggle to the group. If it is the first item added to the
+		 * group, and <code>isSelectionRequired</code> is <code>true</code>, it
+		 * will be selected automatically.
 		 */
 		public function addItem(item:IToggle):void
 		{
@@ -191,7 +197,10 @@ package feathers.core
 		}
 		
 		/**
-		 * Removes a toggle from the group.
+		 * Removes a toggle from the group. If the item being removed is
+		 * selected and <code>isSelectionRequired</code> is <code>true</code>,
+		 * the final item will be selected. If <code>isSelectionRequired</code>
+		 * is <code>false</code> instead, no item will be selected.
 		 */
 		public function removeItem(item:IToggle):void
 		{
@@ -220,7 +229,7 @@ package feathers.core
 		}
 
 		/**
-		 * Removes all toggles from the group.
+		 * Removes all toggles from the group. No item will be selected.
 		 */
 		public function removeAllItems():void
 		{
@@ -260,6 +269,7 @@ package feathers.core
 			const index:int = this._items.indexOf(item);
 			if(item.isSelected || (this._isSelectionRequired && this._selectedIndex == index))
 			{
+				//don't let it deselect the item
 				this.selectedIndex = index;
 			}
 			else if(!item.isSelected)
