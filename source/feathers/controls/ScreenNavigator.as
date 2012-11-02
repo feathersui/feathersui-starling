@@ -442,15 +442,22 @@ package feathers.controls
 		 */
 		private function transitionComplete():void
 		{
+			this._transitionIsActive = false;
+			this.dispatchEventWith(FeathersEventType.TRANSITION_COMPLETE);
 			if(this._previousScreenInTransition)
 			{
 				const item:ScreenNavigatorItem = this._screens[this._previousScreenInTransitionID];
-				this.removeChild(this._previousScreenInTransition, !(item.screen is DisplayObject));
+				const canBeDisposed:Boolean = !(item.screen is DisplayObject);
+				if(this._previousScreenInTransition is IScreen)
+				{
+					const screen:IScreen = IScreen(this._previousScreenInTransition);
+					screen.screenID = null;
+					screen.owner = null;
+				}
+				this.removeChild(this._previousScreenInTransition, canBeDisposed);
 				this._previousScreenInTransition = null;
 				this._previousScreenInTransitionID = null;
 			}
-			this._transitionIsActive = false;
-			this.dispatchEventWith(FeathersEventType.TRANSITION_COMPLETE);
 
 			if(this._clearAfterTransition)
 			{
