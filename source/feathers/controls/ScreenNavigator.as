@@ -187,7 +187,9 @@ package feathers.controls
 			this._activeScreen = item.getScreen();
 			if(this._activeScreen is IScreen)
 			{
-				IScreen(this._activeScreen).screenID = id;
+				const screen:IScreen = IScreen(this._activeScreen);
+				screen.screenID = id;
+				screen.owner = this;
 			}
 			this._activeScreenID = id;
 

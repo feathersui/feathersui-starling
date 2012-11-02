@@ -170,6 +170,27 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _owner:ScreenNavigator;
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get owner():ScreenNavigator
+		{
+			return this._owner;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set owner(value:ScreenNavigator):void
+		{
+			this._owner = value;
+		}
+
+		/**
+		 * @private
+		 */
 		private var _pixelScale:Number = 1;
 		
 		/**

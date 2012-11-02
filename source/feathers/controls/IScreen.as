@@ -44,5 +44,15 @@ package feathers.controls
 		 * @private
 		 */
 		function set screenID(value:String):void;
+
+		/**
+		 * The ScreenNavigator that is displaying this screen.
+		 */
+		function get owner():ScreenNavigator;
+
+		/**
+		 * @private
+		 */
+		function set owner(value:ScreenNavigator):void;
 	}
 }
