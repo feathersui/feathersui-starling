@@ -46,9 +46,23 @@ package feathers.controls
 	 * Dispatched when the current screen is removed and there is no active
 	 * screen.
 	 *
-	 * @eventType starling.events.Event.CLEAR
+	 * @eventType feathers.events.FeathersEventType.CLEAR
 	 */
 	[Event(name="clear",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the transition between screens begins.
+	 *
+	 * @eventType feathers.events.FeathersEventType.TRANSITION_START
+	 */
+	[Event(name="transitionStart",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the transition between screens has completed.
+	 *
+	 * @eventType feathers.events.FeathersEventType.TRANSITION_COMPLETE
+	 */
+	[Event(name="transitionComplete",type="starling.events.Event")]
 
 	/**
 	 * A "view stack"-like container that supports navigation between screens
@@ -243,6 +257,7 @@ package feathers.controls
 			}
 
 			this._transitionIsActive = true;
+			this.dispatchEventWith(FeathersEventType.TRANSITION_START);
 			this.transition(this._previousScreenInTransition, this._activeScreen, transitionComplete);
 
 			this.dispatchEventWith(Event.CHANGE);
@@ -435,6 +450,7 @@ package feathers.controls
 				this._previousScreenInTransitionID = null;
 			}
 			this._transitionIsActive = false;
+			this.dispatchEventWith(FeathersEventType.TRANSITION_COMPLETE);
 
 			if(this._clearAfterTransition)
 			{
