@@ -212,7 +212,7 @@ package feathers.controls
 			}
 			function origin_removedFromStageHandler(event:Event):void
 			{
-				callout.close();
+				callout.close(true);
 			}
 			function callout_closeHandler(event:Event):void
 			{
@@ -234,11 +234,17 @@ package feathers.controls
 
 		/**
 		 * The default factory that creates callouts when <code>Callout.show()</code>
-		 * is called.
+		 * is called. To use a different factory, you need to set
+		 * <code>Callout.calloutFactory</code> to a <code>Function</code>
+		 * instance.
 		 */
 		public static function defaultCalloutFactory():Callout
 		{
-			return new Callout();
+			const callout:Callout = new Callout();
+			callout.closeOnTouchBeganOutside = true;
+			callout.closeOnTouchEndedOutside = true;
+			callout.closeOnKeys = new <uint>[Keyboard.BACK, Keyboard.ESCAPE];
+			return callout;
 		}
 
 		/**
@@ -379,7 +385,27 @@ package feathers.controls
 		 */
 		public function Callout()
 		{
+			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 		}
+
+		/**
+		 * Determines if the callout is automatically closed if a touch in the
+		 * <code>TouchPhase.BEGAN</code> phase happens outside of the callout's
+		 * bounds.
+		 */
+		public var closeOnTouchBeganOutside:Boolean = false;
+
+		/**
+		 * Determines if the callout is automatically closed if a touch in the
+		 * <code>TouchPhase.ENDED</code> phase happens outside of the callout's
+		 * bounds.
+		 */
+		public var closeOnTouchEndedOutside:Boolean = false;
+
+		/**
+		 * The callout will be closed if any of these keys are pressed.
+		 */
+		public var closeOnKeys:Vector.<uint>;
 
 		/**
 		 * @private
@@ -389,7 +415,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _touchPointID:int = -1;
+		protected var _isReadyToClose:Boolean = false;
 
 		/**
 		 * @private
@@ -959,21 +985,18 @@ package feathers.controls
 		/**
 		 * Closes the callout.
 		 */
-		public function close():void
+		public function close(dispose:Boolean = false):void
 		{
 			if(!this.parent)
 			{
 				return;
 			}
-			if(this._isPopUp)
-			{
-				PopUpManager.removePopUp(this);
-			}
-			else
-			{
-				this.removeFromParent();
-			}
+			this.removeFromParent();
 			this.dispatchEventWith(Event.CLOSE);
+			if(dispose)
+			{
+				this.dispose();
+			}
 		}
 
 		/**
@@ -1200,9 +1223,20 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function addedToStageHandler(event:Event):void
+		{
+			//to avoid touch events bubbling up to the callout and causing it to
+			//close immediately, we wait one frame before allowing it to close
+			//based on touches.
+			this._isReadyToClose = false;
+			this.addEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function removedFromStageHandler(event:Event):void
 		{
-			this._touchPointID = -1;
 			this.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 		}
@@ -1210,49 +1244,33 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function enterFrameHandler(event:Event):void
+		{
+			this.removeEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
+			this._isReadyToClose = true;
+		}
+
+		/**
+		 * @private
+		 */
 		protected function stage_touchHandler(event:TouchEvent):void
 		{
-			if(event.interactsWith(this))
+			if(!this._isReadyToClose || (!this.closeOnTouchEndedOutside && !this.closeOnTouchBeganOutside) || event.interactsWith(this))
 			{
 				return;
 			}
 
 			const touches:Vector.<Touch> = event.getTouches(this.stage);
-			if(touches.length == 0)
+			const touchCount:int = touches.length;
+			for(var i:int = 0; i < touchCount; i++)
 			{
-				return;
-			}
-			if(this._touchPointID >= 0)
-			{
-				var touch:Touch;
-				for each(var currentTouch:Touch in touches)
+				var touch:Touch = touches[i];
+				var phase:String = touch.phase;
+				if((this.closeOnTouchBeganOutside && phase == TouchPhase.BEGAN) ||
+					(this.closeOnTouchEndedOutside && phase == TouchPhase.ENDED))
 				{
-					if(currentTouch.id == this._touchPointID)
-					{
-						touch = currentTouch;
-						break;
-					}
-				}
-				if(!touch)
-				{
-					return;
-				}
-				if(touch.phase == TouchPhase.ENDED)
-				{
-					this._touchPointID = -1;
-					this.close();
-					return;
-				}
-			}
-			else
-			{
-				for each(touch in touches)
-				{
-					if(touch.phase == TouchPhase.BEGAN)
-					{
-						this._touchPointID = touch.id;
-						return;
-					}
+					this.close(this._isPopUp);
+					break;
 				}
 			}
 		}
@@ -1262,7 +1280,7 @@ package feathers.controls
 		 */
 		protected function stage_keyDownHandler(event:KeyboardEvent):void
 		{
-			if(event.keyCode != Keyboard.BACK && event.keyCode != Keyboard.ESCAPE)
+			if(!this.closeOnKeys || this.closeOnKeys.indexOf(event.keyCode) < 0)
 			{
 				return;
 			}
@@ -1270,7 +1288,7 @@ package feathers.controls
 			event.preventDefault();
 			//don't let other event handlers handle the event
 			event.stopImmediatePropagation();
-			this.close();
+			this.close(this._isPopUp);
 		}
 	}
 }
