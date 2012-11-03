@@ -149,13 +149,15 @@ package feathers.display
 					this._scissorRect.y += ScrollRectManager.scrollRectOffsetY * scale;
 					this._scissorRect = this._scissorRect.intersection(oldRect);
 				}
+				this._scissorRect.x = Math.round(this._scissorRect.x);
+				this._scissorRect.y = Math.round(this._scissorRect.y);
 				const viewPort:Rectangle = Starling.current.viewPort;
 				//isEmpty() && <= 0 don't work here for some reason
 				if(this._scissorRect.width < 1 || this._scissorRect.height < 1 ||
-					this._scissorRect.x >= viewPort.x + viewPort.width ||
-					this._scissorRect.y >= viewPort.y + viewPort.height ||
-					(this._scissorRect.x + this._scissorRect.width) <= viewPort.x ||
-					(this._scissorRect.y + this._scissorRect.height) <= viewPort.y)
+					this._scissorRect.x >= viewPort.width ||
+					this._scissorRect.y >= viewPort.height ||
+					(this._scissorRect.x + this._scissorRect.width) <= 0 ||
+					(this._scissorRect.y + this._scissorRect.height) <= 0)
 				{
 					return;
 				}
