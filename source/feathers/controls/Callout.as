@@ -1255,7 +1255,8 @@ package feathers.controls
 		 */
 		protected function stage_touchHandler(event:TouchEvent):void
 		{
-			if(!this._isReadyToClose || (!this.closeOnTouchEndedOutside && !this.closeOnTouchBeganOutside) || event.interactsWith(this))
+			if(!this._isReadyToClose || (!this.closeOnTouchEndedOutside && !this.closeOnTouchBeganOutside) ||
+				this.contains(DisplayObject(event.target)))
 			{
 				return;
 			}
