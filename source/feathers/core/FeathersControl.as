@@ -157,7 +157,7 @@ package feathers.core
 		public function FeathersControl()
 		{
 			super();
-			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
+			this.addEventListener(Event.ADDED_TO_STAGE, initialize_addedToStageHandler);
 		}
 
 		/**
@@ -863,7 +863,7 @@ package feathers.core
 		 * Initialize the control, if it hasn't been initialized yet. Then,
 		 * invalidate.
 		 */
-		protected function addedToStageHandler(event:Event):void
+		protected function initialize_addedToStageHandler(event:Event):void
 		{
 			if(event.target != this)
 			{
