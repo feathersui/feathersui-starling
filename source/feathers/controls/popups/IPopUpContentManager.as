@@ -16,6 +16,9 @@ package feathers.controls.popups
 	{
 		/**
 		 * Displays the pop-up content.
+		 *
+		 * @param content		The content for the pop-up content manager to display.
+		 * @param source		The source of the pop-up. May be used to position and/or size the pop-up. May be completely ignored instead.
 		 */
 		function open(content:DisplayObject, source:DisplayObject):void;
 
