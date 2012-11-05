@@ -247,7 +247,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private function refreshPixelScale():void
+		protected function refreshPixelScale():void
 		{
 			const loaderInfo:LoaderInfo = DisplayObjectContainer(Starling.current.nativeStage.root).getChildAt(0).loaderInfo;
 			//if originalWidth or originalHeight is NaN, it's because the Screen
@@ -280,7 +280,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private function addedToStageHandler(event:Event):void
+		protected function addedToStageHandler(event:Event):void
 		{
 			if(event.target != this)
 			{
@@ -295,7 +295,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private function removedFromStageHandler(event:Event):void
+		protected function removedFromStageHandler(event:Event):void
 		{
 			if(event.target != this)
 			{
@@ -309,7 +309,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private function stage_resizeHandler(event:ResizeEvent):void
+		protected function stage_resizeHandler(event:ResizeEvent):void
 		{
 			this.refreshPixelScale();
 		}
@@ -317,7 +317,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private function stage_keyDownHandler(event:KeyboardEvent):void
+		protected function stage_keyDownHandler(event:KeyboardEvent):void
 		{
 			//we're accessing Keyboard.BACK (and others) using a string because
 			//this code may be compiled for both Flash Player and AIR.
