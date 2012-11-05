@@ -2301,7 +2301,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private function touchHandler(event:TouchEvent):void
+		protected function touchHandler(event:TouchEvent):void
 		{
 			if(!this._isEnabled)
 			{

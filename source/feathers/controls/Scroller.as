@@ -2102,7 +2102,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private function finishScrollingHorizontally():void
+		protected function finishScrollingHorizontally():void
 		{
 			var targetHorizontalScrollPosition:Number = NaN;
 			if(this._horizontalScrollPosition < 0)
@@ -2129,7 +2129,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private function finishScrollingVertically():void
+		protected function finishScrollingVertically():void
 		{
 			var targetVerticalScrollPosition:Number = NaN;
 			if(this._verticalScrollPosition < 0)

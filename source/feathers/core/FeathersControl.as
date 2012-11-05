@@ -863,7 +863,7 @@ package feathers.core
 		 * Initialize the control, if it hasn't been initialized yet. Then,
 		 * invalidate.
 		 */
-		private function addedToStageHandler(event:Event):void
+		protected function addedToStageHandler(event:Event):void
 		{
 			if(event.target != this)
 			{

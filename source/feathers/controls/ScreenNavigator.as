@@ -75,7 +75,19 @@ package feathers.controls
 	 */
 	public class ScreenNavigator extends FeathersControl
 	{
-		private static var SIGNAL_TYPE:Class;
+		/**
+		 * @private
+		 */
+		protected static var SIGNAL_TYPE:Class;
+
+		/**
+		 * The default transition function.
+		 */
+		protected static function defaultTransition(oldScreen:DisplayObject, newScreen:DisplayObject, completeHandler:Function):void
+		{
+			//in short, do nothing
+			completeHandler();
+		}
 
 		/**
 		 * Constructor.
@@ -157,13 +169,39 @@ package feathers.controls
 		 */
 		public var transition:Function = defaultTransition;
 
+		/**
+		 * @private
+		 */
 		protected var _screens:Object = {};
+
+		/**
+		 * @private
+		 */
 		protected var _screenEvents:Object = {};
 
+		/**
+		 * @private
+		 */
 		protected var _transitionIsActive:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _previousScreenInTransitionID:String;
+
+		/**
+		 * @private
+		 */
 		protected var _previousScreenInTransition:DisplayObject;
+
+		/**
+		 * @private
+		 */
 		protected var _nextScreenID:String = null;
+
+		/**
+		 * @private
+		 */
 		protected var _clearAfterTransition:Boolean = false;
 
 		/**
@@ -284,7 +322,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private function clearScreenInternal(displayTransition:Boolean):void
+		protected function clearScreenInternal(displayTransition:Boolean):void
 		{
 			if(!this._activeScreen)
 			{
@@ -431,16 +469,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private function defaultTransition(oldScreen:DisplayObject, newScreen:DisplayObject, completeHandler:Function):void
-		{
-			//in short, do nothing
-			completeHandler();
-		}
-
-		/**
-		 * @private
-		 */
-		private function transitionComplete():void
+		protected function transitionComplete():void
 		{
 			this._transitionIsActive = false;
 			this.dispatchEventWith(FeathersEventType.TRANSITION_COMPLETE);
@@ -475,7 +504,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private function createScreenEventListener(screenID:String):Function
+		protected function createScreenEventListener(screenID:String):Function
 		{
 			const self:ScreenNavigator = this;
 			const eventListener:Function = function(event:Event):void
@@ -489,7 +518,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private function createScreenSignalListener(screenID:String, signal:Object):Function
+		protected function createScreenSignalListener(screenID:String, signal:Object):Function
 		{
 			const self:ScreenNavigator = this;
 			if(signal.valueClasses.length == 1)

@@ -258,7 +258,7 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		private function item_changeHandler(event:Event):void
+		protected function item_changeHandler(event:Event):void
 		{
 			if(this._ignoreChanges)
 			{

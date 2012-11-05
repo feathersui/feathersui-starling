@@ -1222,7 +1222,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private function drawLabels():void
+		protected function drawLabels():void
 		{
 			const maxLabelWidth:Number = Math.max(0, this.actualWidth - this.thumb.width - this._paddingLeft - this._paddingRight);
 			var totalLabelHeight:Number = Math.max(this.onTextRenderer.height, this.offTextRenderer.height);
@@ -1409,7 +1409,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private function touchHandler(event:TouchEvent):void
+		protected function touchHandler(event:TouchEvent):void
 		{
 			if(this._ignoreTapHandler)
 			{
@@ -1453,7 +1453,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private function thumb_touchHandler(event:TouchEvent):void
+		protected function thumb_touchHandler(event:TouchEvent):void
 		{
 			if(!this._isEnabled)
 			{
@@ -1521,7 +1521,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private function selectionTween_onUpdate():void
+		protected function selectionTween_onUpdate():void
 		{
 			this.layout();
 		}
@@ -1529,7 +1529,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private function selectionTween_onComplete():void
+		protected function selectionTween_onComplete():void
 		{
 			this._toggleTween = null;
 		}
