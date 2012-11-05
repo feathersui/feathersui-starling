@@ -341,31 +341,120 @@ package feathers.controls
 		 */
 		protected var _verticalScrollBarWidthOffset:Number;
 
-		private var _horizontalScrollBarTouchPointID:int = -1;
-		private var _verticalScrollBarTouchPointID:int = -1;
-		private var _touchPointID:int = -1;
-		private var _startTouchX:Number;
-		private var _startTouchY:Number;
-		private var _startHorizontalScrollPosition:Number;
-		private var _startVerticalScrollPosition:Number;
-		private var _currentTouchX:Number;
-		private var _currentTouchY:Number;
-		private var _previousTouchTime:int;
-		private var _previousTouchX:Number;
-		private var _previousTouchY:Number;
-		private var _velocityX:Number = 0;
-		private var _velocityY:Number = 0;
-		private var _previousVelocityX:Vector.<Number> = new <Number>[];
-		private var _previousVelocityY:Vector.<Number> = new <Number>[];
-		private var _lastViewPortWidth:Number = 0;
-		private var _lastViewPortHeight:Number = 0;
-		
-		private var _horizontalAutoScrollTween:Tween;
-		private var _verticalAutoScrollTween:Tween;
-		private var _isDraggingHorizontally:Boolean = false;
-		private var _isDraggingVertically:Boolean = false;
+		/**
+		 * @private
+		 */
+		protected var _horizontalScrollBarTouchPointID:int = -1;
 
-		private var _viewPortWrapper:Sprite;
+		/**
+		 * @private
+		 */
+		protected var _verticalScrollBarTouchPointID:int = -1;
+
+		/**
+		 * @private
+		 */
+		protected var _touchPointID:int = -1;
+
+		/**
+		 * @private
+		 */
+		protected var _startTouchX:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _startTouchY:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _startHorizontalScrollPosition:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _startVerticalScrollPosition:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _currentTouchX:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _currentTouchY:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _previousTouchTime:int;
+
+		/**
+		 * @private
+		 */
+		protected var _previousTouchX:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _previousTouchY:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _velocityX:Number = 0;
+
+		/**
+		 * @private
+		 */
+		protected var _velocityY:Number = 0;
+
+		/**
+		 * @private
+		 */
+		protected var _previousVelocityX:Vector.<Number> = new <Number>[];
+
+		/**
+		 * @private
+		 */
+		protected var _previousVelocityY:Vector.<Number> = new <Number>[];
+
+		/**
+		 * @private
+		 */
+		protected var _lastViewPortWidth:Number = 0;
+
+		/**
+		 * @private
+		 */
+		protected var _lastViewPortHeight:Number = 0;
+
+		/**
+		 * @private
+		 */
+		protected var _horizontalAutoScrollTween:Tween;
+
+		/**
+		 * @private
+		 */
+		protected var _verticalAutoScrollTween:Tween;
+
+		/**
+		 * @private
+		 */
+		protected var _isDraggingHorizontally:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected var _isDraggingVertically:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected var _viewPortWrapper:Sprite;
 
 		/**
 		 * @private
@@ -375,7 +464,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _viewPort:IViewPort;
+		protected var _viewPort:IViewPort;
 		
 		/**
 		 * The display object displayed and scrolled within the Scroller.
@@ -439,7 +528,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _horizontalScrollBarFactory:Function = defaultHorizontalScrollBarFactory;
+		protected var _horizontalScrollBarFactory:Function = defaultHorizontalScrollBarFactory;
 
 		/**
 		 * Creates the horizontal scroll bar.
@@ -469,7 +558,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _horizontalScrollBarProperties:PropertyProxy;
+		protected var _horizontalScrollBarProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to the scroller's
@@ -531,7 +620,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _verticalScrollBarFactory:Function = defaultVerticalScrollBarFactory;
+		protected var _verticalScrollBarFactory:Function = defaultVerticalScrollBarFactory;
 
 		/**
 		 * Creates the vertical scroll bar.
@@ -561,7 +650,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _verticalScrollBarProperties:PropertyProxy;
+		protected var _verticalScrollBarProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to the scroller's
@@ -661,7 +750,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _horizontalScrollPosition:Number = 0;
+		protected var _horizontalScrollPosition:Number = 0;
 		
 		/**
 		 * The number of pixels the scroller has been scrolled horizontally (on
@@ -697,7 +786,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _maxHorizontalScrollPosition:Number = 0;
+		protected var _maxHorizontalScrollPosition:Number = 0;
 		
 		/**
 		 * The maximum number of pixels the scroller may be scrolled
@@ -730,7 +819,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _horizontalScrollPolicy:String = SCROLL_POLICY_AUTO;
+		protected var _horizontalScrollPolicy:String = SCROLL_POLICY_AUTO;
 
 		[Inspectable(type="String",enumeration="auto,on,off")]
 		/**
@@ -833,7 +922,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _verticalScrollPosition:Number = 0;
+		protected var _verticalScrollPosition:Number = 0;
 		
 		/**
 		 * The number of pixels the scroller has been scrolled vertically (on
@@ -869,7 +958,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _maxVerticalScrollPosition:Number = 0;
+		protected var _maxVerticalScrollPosition:Number = 0;
 		
 		/**
 		 * The maximum number of pixels the scroller may be scrolled vertically
@@ -902,7 +991,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _verticalScrollPolicy:String = SCROLL_POLICY_AUTO;
+		protected var _verticalScrollPolicy:String = SCROLL_POLICY_AUTO;
 
 		[Inspectable(type="String",enumeration="auto,on,off")]
 		/**
@@ -967,7 +1056,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _clipContent:Boolean = true;
+		protected var _clipContent:Boolean = true;
 		
 		/**
 		 * If true, the viewport will be clipped to the scroller's bounds. In
@@ -999,7 +1088,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _hasElasticEdges:Boolean = true;
+		protected var _hasElasticEdges:Boolean = true;
 		
 		/**
 		 * Determines if the scrolling can go beyond the edges of the viewport.
@@ -1020,7 +1109,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _elasticity:Number = 0.33;
+		protected var _elasticity:Number = 0.33;
 
 		/**
 		 * If the scroll position goes outside the minimum or maximum bounds,
@@ -1249,7 +1338,7 @@ package feathers.controls
 			}
 		}
 		
-		private var _isScrollingStopped:Boolean = false;
+		protected var _isScrollingStopped:Boolean = false;
 		
 		/**
 		 * If the user is scrolling with touch or if the scrolling is animated,

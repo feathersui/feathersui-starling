@@ -181,7 +181,7 @@ package feathers.controls
 		protected var labelName:String = DEFAULT_CHILD_NAME_LABEL;
 		
 		/**
-		 * @private
+		 * The text renderer for the button's label.
 		 */
 		protected var labelTextRenderer:ITextRenderer;
 		
@@ -1764,7 +1764,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _autoFlatten:Boolean = false;
+		protected var _autoFlatten:Boolean = false;
 		
 		/**
 		 * Determines if the button should automatically call <code>flatten()</code>

@@ -30,7 +30,7 @@ package feathers.core
 	import starling.display.DisplayObjectContainer;
 
 	[ExcludeClass]
-	public class ValidationQueue implements IAnimatable
+	public final class ValidationQueue implements IAnimatable
 	{
 		/**
 		 * Constructor.

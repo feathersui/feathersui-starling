@@ -207,27 +207,27 @@ package feathers.controls
 		protected var maximumTrackOriginalHeight:Number = NaN;
 
 		/**
-		 * @private
+		 * The scroll bar's decrement button sub-component.
 		 */
 		protected var decrementButton:Button;
 
 		/**
-		 * @private
+		 * The scroll bar's increment button sub-component.
 		 */
 		protected var incrementButton:Button;
 
 		/**
-		 * @private
+		 * The scroll bar's thumb sub-component.
 		 */
 		protected var thumb:Button;
 
 		/**
-		 * @private
+		 * The scroll bar's minimum track sub-component.
 		 */
 		protected var minimumTrack:Button;
 
 		/**
-		 * @private
+		 * The scroll bar's maximum track sub-component.
 		 */
 		protected var maximumTrack:Button;
 
@@ -367,7 +367,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _page:Number = 0;
+		protected var _page:Number = 0;
 
 		/**
 		 * @inheritDoc
@@ -578,7 +578,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _minimumTrackProperties:PropertyProxy;
+		protected var _minimumTrackProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to the scroll bar's
@@ -640,7 +640,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _maximumTrackProperties:PropertyProxy;
+		protected var _maximumTrackProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to the scroll bar's
@@ -702,7 +702,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _thumbProperties:PropertyProxy;
+		protected var _thumbProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to the scroll bar's thumb
@@ -764,7 +764,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _decrementButtonProperties:PropertyProxy;
+		protected var _decrementButtonProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to the scroll bar's
@@ -826,7 +826,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _incrementButtonProperties:PropertyProxy;
+		protected var _incrementButtonProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to the scroll bar's
@@ -885,12 +885,12 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
-		private var _touchPointID:int = -1;
-		private var _touchStartX:Number = NaN;
-		private var _touchStartY:Number = NaN;
-		private var _thumbStartX:Number = NaN;
-		private var _thumbStartY:Number = NaN;
-		private var _touchValue:Number;
+		protected var _touchPointID:int = -1;
+		protected var _touchStartX:Number = NaN;
+		protected var _touchStartY:Number = NaN;
+		protected var _thumbStartX:Number = NaN;
+		protected var _thumbStartY:Number = NaN;
+		protected var _touchValue:Number;
 
 		/**
 		 * @private

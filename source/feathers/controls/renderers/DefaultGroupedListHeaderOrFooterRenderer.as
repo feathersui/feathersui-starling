@@ -113,7 +113,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		private var _data:Object;
+		protected var _data:Object;
 
 		/**
 		 * @inheritDoc
@@ -139,7 +139,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		private var _groupIndex:int = -1;
+		protected var _groupIndex:int = -1;
 
 		/**
 		 * @inheritDoc
@@ -160,7 +160,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		private var _layoutIndex:int = -1;
+		protected var _layoutIndex:int = -1;
 
 		/**
 		 * @inheritDoc
@@ -261,7 +261,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		private var _contentField:String = "content";
+		protected var _contentField:String = "content";
 
 		/**
 		 * The field in the item that contains a display object to be positioned
@@ -306,7 +306,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		private var _contentFunction:Function;
+		protected var _contentFunction:Function;
 
 		/**
 		 * A function that returns a display object to be positioned in the
@@ -354,7 +354,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		private var _contentTextureField:String = "texture";
+		protected var _contentTextureField:String = "texture";
 
 		/**
 		 * The field in the item that contains a texture to be displayed in a
@@ -407,7 +407,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		private var _contentTextureFunction:Function;
+		protected var _contentTextureFunction:Function;
 
 		/**
 		 * A function that returns a texture to be displayed in a
@@ -463,7 +463,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		private var _contentLabelField:String = "label";
+		protected var _contentLabelField:String = "label";
 
 		/**
 		 * The field in the item that contains a string to be displayed in a
@@ -516,7 +516,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		private var _contentLabelFunction:Function;
+		protected var _contentLabelFunction:Function;
 
 		/**
 		 * A function that returns a string to be displayed in a
@@ -692,7 +692,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		private var _contentLabelProperties:PropertyProxy;
+		protected var _contentLabelProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to a content label.
@@ -768,7 +768,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		private var _backgroundSkin:DisplayObject;
+		protected var _backgroundSkin:DisplayObject;
 
 		/**
 		 * A background to behind the component's content.
@@ -804,7 +804,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		private var _backgroundDisabledSkin:DisplayObject;
+		protected var _backgroundDisabledSkin:DisplayObject;
 
 		/**
 		 * A background to display when the component is disabled.

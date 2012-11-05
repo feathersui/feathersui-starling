@@ -82,18 +82,36 @@ package feathers.controls
 		 * The value added to the <code>nameList</code> of the pop-up list.
 		 */
 		protected var listName:String = DEFAULT_CHILD_NAME_LIST;
-		
-		private var _button:Button;
-		private var _list:List;
 
-		private var _buttonTouchPointID:int = -1;
-		private var _listTouchPointID:int = -1;
-		private var _hasBeenScrolled:Boolean = false;
+		/**
+		 * The button sub-component.
+		 */
+		protected var button:Button;
+
+		/**
+		 * The list sub-component.
+		 */
+		protected var list:List;
+
+		/**
+		 * @private
+		 */
+		protected var _buttonTouchPointID:int = -1;
+
+		/**
+		 * @private
+		 */
+		protected var _listTouchPointID:int = -1;
+
+		/**
+		 * @private
+		 */
+		protected var _hasBeenScrolled:Boolean = false;
 		
 		/**
 		 * @private
 		 */
-		private var _dataProvider:ListCollection;
+		protected var _dataProvider:ListCollection;
 		
 		/**
 		 * @copy List#dataProvider
@@ -127,7 +145,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _selectedIndex:int = -1;
+		protected var _selectedIndex:int = -1;
 		
 		/**
 		 * @copy List#selectedIndex
@@ -180,7 +198,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _labelField:String = "label";
+		protected var _labelField:String = "label";
 		
 		/**
 		 * The field in the selected item that contains the label text to be
@@ -218,7 +236,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _labelFunction:Function;
+		protected var _labelFunction:Function;
 
 		/**
 		 * A function used to generate label text for the selected item
@@ -249,7 +267,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _popUpContentManager:IPopUpContentManager;
+		protected var _popUpContentManager:IPopUpContentManager;
 		
 		/**
 		 * A manager that handles the details of how to display the pop-up list.
@@ -285,7 +303,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _typicalItem:Object = null;
+		protected var _typicalItem:Object = null;
 		
 		/**
 		 * Used to auto-size the list. If the list's width or height is NaN, the
@@ -313,7 +331,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _buttonProperties:PropertyProxy;
+		protected var _buttonProperties:PropertyProxy;
 		
 		/**
 		 * A set of key/value pairs to be passed down to the picker's button
@@ -375,7 +393,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _listProperties:PropertyProxy;
+		protected var _listProperties:PropertyProxy;
 		
 		/**
 		 * A set of key/value pairs to be passed down to the picker's pop-up
@@ -466,7 +484,7 @@ package feathers.controls
 		override public function dispose():void
 		{
 			this.closePopUpList();
-			this._list.dispose();
+			this.list.dispose();
 			super.dispose();
 		}
 		
@@ -475,22 +493,22 @@ package feathers.controls
 		 */
 		override protected function initialize():void
 		{
-			if(!this._button)
+			if(!this.button)
 			{
-				this._button = new Button();
-				this._button.nameList.add(this.buttonName);
-				this._button.addEventListener(Event.TRIGGERED, button_triggeredHandler);
-				this._button.addEventListener(TouchEvent.TOUCH, button_touchHandler);
-				this.addChild(this._button);
+				this.button = new Button();
+				this.button.nameList.add(this.buttonName);
+				this.button.addEventListener(Event.TRIGGERED, button_triggeredHandler);
+				this.button.addEventListener(TouchEvent.TOUCH, button_touchHandler);
+				this.addChild(this.button);
 			}
 			
-			if(!this._list)
+			if(!this.list)
 			{
-				this._list = new List();
-				this._list.nameList.add(this.listName);
-				this._list.addEventListener(Event.SCROLL, list_scrollHandler);
-				this._list.addEventListener(Event.CHANGE, list_changeHandler);
-				this._list.addEventListener(TouchEvent.TOUCH, list_touchHandler);
+				this.list = new List();
+				this.list.nameList.add(this.listName);
+				this.list.addEventListener(Event.SCROLL, list_scrollHandler);
+				this.list.addEventListener(Event.CHANGE, list_changeHandler);
+				this.list.addEventListener(TouchEvent.TOUCH, list_touchHandler);
 			}
 
 			if(!this._popUpContentManager)
@@ -526,11 +544,11 @@ package feathers.controls
 				//contain width or height changes.
 				if(isNaN(this.explicitWidth))
 				{
-					this._button.width = NaN;
+					this.button.width = NaN;
 				}
 				if(isNaN(this.explicitHeight))
 				{
-					this._button.height = NaN;
+					this.button.height = NaN;
 				}
 			}
 
@@ -544,25 +562,25 @@ package feathers.controls
 			
 			if(dataInvalid)
 			{
-				this._list.dataProvider = this._dataProvider;
+				this.list.dataProvider = this._dataProvider;
 				this._hasBeenScrolled = false;
 			}
 			
 			if(stateInvalid)
 			{
-				this._button.isEnabled = this.isEnabled;
+				this.button.isEnabled = this.isEnabled;
 			}
 
 			if(selectionInvalid)
 			{
 				this.refreshButtonLabel();
-				this._list.selectedIndex = this._selectedIndex;
+				this.list.selectedIndex = this._selectedIndex;
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
-			this._button.width = this.actualWidth;
-			this._button.height = this.actualHeight;
+			this.button.width = this.actualWidth;
+			this.button.height = this.actualHeight;
 		}
 
 		/**
@@ -577,24 +595,24 @@ package feathers.controls
 				return false;
 			}
 
-			this._button.width = NaN;
-			this._button.height = NaN;
+			this.button.width = NaN;
+			this.button.height = NaN;
 			if(this._typicalItem)
 			{
 				if(isNaN(this._typicalItemWidth) || isNaN(this._typicalItemHeight))
 				{
-					this._button.label = this.itemToLabel(this._typicalItem);
-					this._button.validate();
-					this._typicalItemWidth = this._button.width;
-					this._typicalItemHeight = this._button.height;
+					this.button.label = this.itemToLabel(this._typicalItem);
+					this.button.validate();
+					this._typicalItemWidth = this.button.width;
+					this._typicalItemHeight = this.button.height;
 					this.refreshButtonLabel();
 				}
 			}
 			else
 			{
-				this._button.validate();
-				this._typicalItemWidth = this._button.width;
-				this._typicalItemHeight = this._button.height;
+				this.button.validate();
+				this._typicalItemWidth = this.button.width;
+				this._typicalItemHeight = this.button.height;
 			}
 
 			var newWidth:Number = this.explicitWidth;
@@ -617,11 +635,11 @@ package feathers.controls
 		{
 			if(this._selectedIndex >= 0)
 			{
-				this._button.label = this.itemToLabel(this.selectedItem);
+				this.button.label = this.itemToLabel(this.selectedItem);
 			}
 			else
 			{
-				this._button.label = "";
+				this.button.label = "";
 			}
 		}
 		
@@ -632,10 +650,10 @@ package feathers.controls
 		{
 			for(var propertyName:String in this._buttonProperties)
 			{
-				if(this._button.hasOwnProperty(propertyName))
+				if(this.button.hasOwnProperty(propertyName))
 				{
 					var propertyValue:Object = this._buttonProperties[propertyName];
-					this._button[propertyName] = propertyValue;
+					this.button[propertyName] = propertyValue;
 				}
 			}
 		}
@@ -647,10 +665,10 @@ package feathers.controls
 		{
 			for(var propertyName:String in this._listProperties)
 			{
-				if(this._list.hasOwnProperty(propertyName))
+				if(this.list.hasOwnProperty(propertyName))
 				{
 					var propertyValue:Object = this._listProperties[propertyName];
-					this._list[propertyName] = propertyValue;
+					this.list[propertyName] = propertyValue;
 				}
 			}
 		}
@@ -660,7 +678,7 @@ package feathers.controls
 		 */
 		protected function closePopUpList():void
 		{
-			this._list.validate();
+			this.list.validate();
 			this._popUpContentManager.close();
 		}
 
@@ -677,14 +695,14 @@ package feathers.controls
 		 */
 		protected function button_triggeredHandler(event:Event):void
 		{
-			if(this._list.stage)
+			if(this.list.stage)
 			{
 				this.closePopUpList();
 				return;
 			}
-			this._popUpContentManager.open(this._list, this);
-			this._list.scrollToDisplayIndex(this._selectedIndex);
-			this._list.validate();
+			this._popUpContentManager.open(this.list, this);
+			this.list.scrollToDisplayIndex(this._selectedIndex);
+			this.list.validate();
 
 			this._hasBeenScrolled = false;
 		}
@@ -694,7 +712,7 @@ package feathers.controls
 		 */
 		protected function list_changeHandler(event:Event):void
 		{
-			this.selectedIndex = this._list.selectedIndex;
+			this.selectedIndex = this.list.selectedIndex;
 		}
 		
 		/**
@@ -722,7 +740,7 @@ package feathers.controls
 		 */
 		protected function button_touchHandler(event:TouchEvent):void
 		{
-			const touches:Vector.<Touch> = event.getTouches(this._button);
+			const touches:Vector.<Touch> = event.getTouches(this.button);
 			if(touches.length == 0)
 			{
 				return;
@@ -766,7 +784,7 @@ package feathers.controls
 		 */
 		protected function list_touchHandler(event:TouchEvent):void
 		{
-			const touches:Vector.<Touch> = event.getTouches(this._list);
+			const touches:Vector.<Touch> = event.getTouches(this.list);
 			if(touches.length == 0)
 			{
 				return;

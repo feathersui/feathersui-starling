@@ -42,7 +42,7 @@ package feathers.controls.supportClasses
 	 * @private
 	 * Used internally by ScrollContainer. Not meant to be used on its own.
 	 */
-	public class LayoutViewPort extends FeathersControl implements IViewPort
+	public final class LayoutViewPort extends FeathersControl implements IViewPort
 	{
 		private static const HELPER_POINT:Point = new Point();
 		private static const HELPER_BOUNDS:ViewPortBounds = new ViewPortBounds();
@@ -96,7 +96,7 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
-		protected var _visibleWidth:Number = NaN;
+		private var _visibleWidth:Number = NaN;
 
 		public function get visibleWidth():Number
 		{
@@ -155,7 +155,7 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
-		protected var _visibleHeight:Number = NaN;
+		private var _visibleHeight:Number = NaN;
 
 		public function get visibleHeight():Number
 		{
@@ -208,7 +208,7 @@ package feathers.controls.supportClasses
 
 		private var _ignoreChildResizing:Boolean = false;
 
-		protected var items:Vector.<DisplayObject> = new <DisplayObject>[];
+		private var items:Vector.<DisplayObject> = new <DisplayObject>[];
 
 		private var _layout:ILayout;
 
@@ -315,12 +315,12 @@ package feathers.controls.supportClasses
 			}
 		}
 
-		protected function layout_changeHandler(event:Event):void
+		private function layout_changeHandler(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
-		protected function child_resizeHandler(event:Event):void
+		private function child_resizeHandler(event:Event):void
 		{
 			if(this._ignoreChildResizing)
 			{
@@ -329,7 +329,7 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
-		protected function addedHandler(event:Event):void
+		private function addedHandler(event:Event):void
 		{
 			const item:DisplayObject = DisplayObject(event.target);
 			if(item.parent != this)
@@ -341,7 +341,7 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
-		protected function removedHandler(event:Event):void
+		private function removedHandler(event:Event):void
 		{
 			const item:DisplayObject = DisplayObject(event.target);
 			if(item.parent != this)

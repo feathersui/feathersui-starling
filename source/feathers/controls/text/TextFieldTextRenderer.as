@@ -105,7 +105,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		private var _text:String = "";
+		protected var _text:String = "";
 
 		/**
 		 * @inheritDoc
@@ -169,7 +169,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		private var _embedFonts:Boolean = false;
+		protected var _embedFonts:Boolean = false;
 
 		/**
 		 * Determines if the TextField should use an embedded font or not.
@@ -195,7 +195,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		private var _wordWrap:Boolean = false;
+		protected var _wordWrap:Boolean = false;
 
 		/**
 		 * Determines if the TextField wraps text to the next line.
@@ -221,7 +221,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		private var _isHTML:Boolean = false;
+		protected var _isHTML:Boolean = false;
 
 		/**
 		 * Determines if the TextField should display the text as HTML or not.
@@ -247,7 +247,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		private var _snapToPixels:Boolean = true;
+		protected var _snapToPixels:Boolean = true;
 
 		/**
 		 * Determines if the text should be snapped to the nearest whole pixel

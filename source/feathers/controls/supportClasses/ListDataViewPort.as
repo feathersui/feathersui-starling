@@ -53,9 +53,9 @@ package feathers.controls.supportClasses
 	 * @private
 	 * Used internally by List. Not meant to be used on its own.
 	 */
-	public class ListDataViewPort extends FeathersControl implements IViewPort
+	public final class ListDataViewPort extends FeathersControl implements IViewPort
 	{
-		protected static const INVALIDATION_FLAG_ITEM_RENDERER_FACTORY:String = "itemRendererFactory";
+		private static const INVALIDATION_FLAG_ITEM_RENDERER_FACTORY:String = "itemRendererFactory";
 
 		private static const HELPER_POINT:Point = new Point();
 		private static const HELPER_BOUNDS:ViewPortBounds = new ViewPortBounds();
@@ -69,7 +69,7 @@ package feathers.controls.supportClasses
 			this.addEventListener(TouchEvent.TOUCH, touchHandler);
 		}
 
-		protected var touchPointID:int = -1;
+		private var touchPointID:int = -1;
 
 		private var _minVisibleWidth:Number = 0;
 
@@ -113,9 +113,9 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
-		protected var actualVisibleWidth:Number = 0;
+		private var actualVisibleWidth:Number = 0;
 
-		protected var explicitVisibleWidth:Number = NaN;
+		private var explicitVisibleWidth:Number = NaN;
 
 		public function get visibleWidth():Number
 		{
@@ -174,9 +174,9 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
-		protected var actualVisibleHeight:Number = 0;
+		private var actualVisibleHeight:Number = 0;
 
-		protected var explicitVisibleHeight:Number = NaN;
+		private var explicitVisibleHeight:Number = NaN;
 
 		public function get visibleHeight():Number
 		{
@@ -288,7 +288,7 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_ITEM_RENDERER_FACTORY);
 		}
 
-		protected var _itemRendererName:String;
+		private var _itemRendererName:String;
 
 		public function get itemRendererName():String
 		{
@@ -535,12 +535,12 @@ package feathers.controls.supportClasses
 			}
 		}
 		
-		protected function invalidateParent():void
+		private function invalidateParent():void
 		{
 			Scroller(this.parent.parent).invalidate(INVALIDATION_FLAG_DATA);
 		}
 
-		protected function calculateTypicalValues():void
+		private function calculateTypicalValues():void
 		{
 			var typicalItem:Object = this._typicalItem;
 			if(!typicalItem)
@@ -568,7 +568,7 @@ package feathers.controls.supportClasses
 			this.destroyRenderer(typicalRenderer);
 		}
 
-		protected function refreshItemRendererStyles():void
+		private function refreshItemRendererStyles():void
 		{
 			for each(var renderer:IListItemRenderer in this._activeRenderers)
 			{
@@ -576,7 +576,7 @@ package feathers.controls.supportClasses
 			}
 		}
 
-		protected function refreshOneItemRendererStyles(renderer:IListItemRenderer):void
+		private function refreshOneItemRendererStyles(renderer:IListItemRenderer):void
 		{
 			const displayRenderer:DisplayObject = DisplayObject(renderer);
 			for(var propertyName:String in this._itemRendererProperties)
@@ -589,7 +589,7 @@ package feathers.controls.supportClasses
 			}
 		}
 
-		protected function refreshSelection():void
+		private function refreshSelection():void
 		{
 			this._ignoreSelectionChanges = true;
 			for each(var renderer:IListItemRenderer in this._activeRenderers)
@@ -599,7 +599,7 @@ package feathers.controls.supportClasses
 			this._ignoreSelectionChanges = false;
 		}
 
-		protected function refreshRenderers(itemRendererTypeIsInvalid:Boolean):void
+		private function refreshRenderers(itemRendererTypeIsInvalid:Boolean):void
 		{
 			const temp:Vector.<IListItemRenderer> = this._inactiveRenderers;
 			this._inactiveRenderers = this._activeRenderers;

@@ -149,14 +149,19 @@ package feathers.controls
 		 * The value added to the <code>nameList</code> of the thumb.
 		 */
 		protected var thumbName:String = DEFAULT_CHILD_NAME_THUMB;
+
+		/**
+		 * The thumb sub-component.
+		 */
+		protected var thumb:Button;
 		
 		/**
-		 * @private
+		 * The minimum track sub-component.
 		 */
 		protected var minimumTrack:Button;
 
 		/**
-		 * @private
+		 * The maximum track sub-component.
 		 */
 		protected var maximumTrack:Button;
 
@@ -179,11 +184,6 @@ package feathers.controls
 		 * @private
 		 */
 		protected var maximumTrackOriginalHeight:Number = NaN;
-		
-		/**
-		 * @private
-		 */
-		protected var thumb:Button;
 		
 		/**
 		 * @private
@@ -330,7 +330,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _page:Number = NaN;
+		protected var _page:Number = NaN;
 
 		/**
 		 * If the slider's track is touched, and the thumb is shown, the slider
@@ -520,7 +520,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _minimumTrackProperties:PropertyProxy;
+		protected var _minimumTrackProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to the slider's minimum
@@ -582,7 +582,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _maximumTrackProperties:PropertyProxy;
+		protected var _maximumTrackProperties:PropertyProxy;
 		
 		/**
 		 * A set of key/value pairs to be passed down to the slider's maximum
@@ -644,7 +644,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _thumbProperties:PropertyProxy;
+		protected var _thumbProperties:PropertyProxy;
 		
 		/**
 		 * A set of key/value pairs to be passed down to the slider's thumb
@@ -703,12 +703,12 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
-		private var _touchPointID:int = -1;
-		private var _touchStartX:Number = NaN;
-		private var _touchStartY:Number = NaN;
-		private var _thumbStartX:Number = NaN;
-		private var _thumbStartY:Number = NaN;
-		private var _touchValue:Number;
+		protected var _touchPointID:int = -1;
+		protected var _touchStartX:Number = NaN;
+		protected var _touchStartY:Number = NaN;
+		protected var _thumbStartX:Number = NaN;
+		protected var _thumbStartY:Number = NaN;
+		protected var _touchValue:Number;
 		
 		/**
 		 * @private

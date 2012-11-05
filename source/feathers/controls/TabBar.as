@@ -121,7 +121,7 @@ package feathers.controls
 		protected var lastTabName:String = DEFAULT_CHILD_NAME_TAB;
 
 		/**
-		 * @private
+		 * The toggle group.
 		 */
 		protected var toggleGroup:ToggleGroup;
 
@@ -158,7 +158,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _dataProvider:ListCollection;
+		protected var _dataProvider:ListCollection;
 
 		/**
 		 * The collection of data to be displayed with tabs.
@@ -255,7 +255,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _tabFactory:Function = defaultTabFactory;
+		protected var _tabFactory:Function = defaultTabFactory;
 
 		/**
 		 * Creates a new tab.
@@ -288,7 +288,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _firstTabFactory:Function;
+		protected var _firstTabFactory:Function;
 
 		/**
 		 * Creates a new first tab. If the firstTabFactory is null, then the
@@ -322,7 +322,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _lastTabFactory:Function;
+		protected var _lastTabFactory:Function;
 
 		/**
 		 * Creates a new last tab. If the lastTabFactory is null, then the
@@ -356,7 +356,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _tabInitializer:Function = defaultTabInitializer;
+		protected var _tabInitializer:Function = defaultTabInitializer;
 
 		/**
 		 * Modifies a tab, perhaps by changing its label and icons, based on the
@@ -392,7 +392,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _pendingSelectedIndex:int = NOT_PENDING_INDEX;
+		protected var _pendingSelectedIndex:int = NOT_PENDING_INDEX;
 
 		/**
 		 * The index of the currently selected tab. Returns -1 if no tab is
@@ -555,7 +555,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _tabProperties:PropertyProxy;
+		protected var _tabProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to all of the tab bar's

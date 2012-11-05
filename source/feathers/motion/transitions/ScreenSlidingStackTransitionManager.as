@@ -39,6 +39,8 @@ package feathers.motion.transitions
 	 * screen and slides in the new screen at the same time. The slide starts
 	 * from the right or left, depending on if the manager determines if the
 	 * transition is a push or a pop.
+	 *
+	 * @see feathers.controls.ScreenNavigator
 	 */
 	public class ScreenSlidingStackTransitionManager
 	{
@@ -51,19 +53,38 @@ package feathers.motion.transitions
 			{
 				throw new ArgumentError("ScreenNavigator cannot be null.");
 			}
-			this._navigator = navigator;
+			this.navigator = navigator;
 			if(quickStack)
 			{
 				this._stack.push(quickStack);
 			}
-			this._navigator.transition = this.onTransition;
+			this.navigator.transition = this.onTransition;
 		}
-		
-		private var _navigator:ScreenNavigator;
-		private var _stack:Vector.<String> = new <String>[];
-		private var _activeTransition:Tween;
-		private var _savedOtherTarget:DisplayObject;
-		private var _savedCompleteHandler:Function;
+
+		/**
+		 * The <code>ScreenNavigator</code> being managed.
+		 */
+		protected var navigator:ScreenNavigator;
+
+		/**
+		 * @private
+		 */
+		protected var _stack:Vector.<String> = new <String>[];
+
+		/**
+		 * @private
+		 */
+		protected var _activeTransition:Tween;
+
+		/**
+		 * @private
+		 */
+		protected var _savedOtherTarget:DisplayObject;
+
+		/**
+		 * @private
+		 */
+		protected var _savedCompleteHandler:Function;
 		
 		/**
 		 * The duration of the transition, in seconds.
@@ -93,9 +114,10 @@ package feathers.motion.transitions
 		}
 		
 		/**
-		 * @private
+		 * The function passed to the <code>transition</code> property of the
+		 * <code>ScreenNavigator</code>.
 		 */
-		private function onTransition(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
+		protected function onTransition(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
 		{
 			if(!oldScreen || !newScreen)
 			{
@@ -136,14 +158,14 @@ package feathers.motion.transitions
 				}
 				this._stack.push(oldScreenClassAndID);
 				oldScreen.x = 0;
-				newScreen.x = this._navigator.width;
+				newScreen.x = this.navigator.width;
 				activeTransition_onUpdate = this.activeTransitionPush_onUpdate;
 			}
 			else
 			{
 				this._stack.length = stackIndex;
 				oldScreen.x = 0;
-				newScreen.x = -this._navigator.width;
+				newScreen.x = -this.navigator.width;
 				activeTransition_onUpdate = this.activeTransitionPop_onUpdate;
 			}
 			this._savedOtherTarget = oldScreen;
@@ -158,31 +180,31 @@ package feathers.motion.transitions
 		/**
 		 * @private
 		 */
-		private function activeTransitionPush_onUpdate():void
+		protected function activeTransitionPush_onUpdate():void
 		{
 			if(this._savedOtherTarget)
 			{
 				const newScreen:DisplayObject = DisplayObject(this._activeTransition.target);
-				this._savedOtherTarget.x = newScreen.x - this._navigator.width;
+				this._savedOtherTarget.x = newScreen.x - this.navigator.width;
 			}
 		}
 		
 		/**
 		 * @private
 		 */
-		private function activeTransitionPop_onUpdate():void
+		protected function activeTransitionPop_onUpdate():void
 		{
 			if(this._savedOtherTarget)
 			{
 				const newScreen:DisplayObject = DisplayObject(this._activeTransition.target);
-				this._savedOtherTarget.x = newScreen.x + this._navigator.width;
+				this._savedOtherTarget.x = newScreen.x + this.navigator.width;
 			}
 		}
 		
 		/**
 		 * @private
 		 */
-		private function activeTransition_onComplete():void
+		protected function activeTransition_onComplete():void
 		{
 			this._activeTransition = null;
 			this._savedOtherTarget = null;

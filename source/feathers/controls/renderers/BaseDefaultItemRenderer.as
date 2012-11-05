@@ -106,7 +106,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		private var _data:Object;
+		protected var _data:Object;
 
 		/**
 		 * The item displayed by this renderer.
@@ -255,7 +255,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		private var _labelField:String = "label";
+		protected var _labelField:String = "label";
 
 		/**
 		 * The field in the item that contains the label text to be displayed by
@@ -295,7 +295,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		private var _labelFunction:Function;
+		protected var _labelFunction:Function;
 
 		/**
 		 * A function used to generate label text for a specific item. If this
@@ -334,7 +334,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		private var _iconField:String = "icon";
+		protected var _iconField:String = "icon";
 
 		/**
 		 * The field in the item that contains a display object to be displayed
@@ -373,7 +373,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		private var _iconFunction:Function;
+		protected var _iconFunction:Function;
 
 		/**
 		 * A function used to generate an icon for a specific item.
@@ -414,7 +414,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		private var _iconTextureField:String = "iconTexture";
+		protected var _iconTextureField:String = "iconTexture";
 
 		/**
 		 * The field in the item that contains a texture to be used for the
@@ -457,7 +457,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		private var _iconTextureFunction:Function;
+		protected var _iconTextureFunction:Function;
 
 		/**
 		 * A function used to generate a texture to be used for the renderer's
@@ -504,7 +504,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		private var _accessoryField:String = "accessory";
+		protected var _accessoryField:String = "accessory";
 
 		/**
 		 * The field in the item that contains a display object to be positioned
@@ -549,7 +549,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		private var _accessoryFunction:Function;
+		protected var _accessoryFunction:Function;
 
 		/**
 		 * A function that returns a display object to be positioned in the
@@ -597,7 +597,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		private var _accessoryTextureField:String = "accessoryTexture";
+		protected var _accessoryTextureField:String = "accessoryTexture";
 
 		/**
 		 * The field in the item that contains a texture to be displayed in a
@@ -650,7 +650,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		private var _accessoryTextureFunction:Function;
+		protected var _accessoryTextureFunction:Function;
 
 		/**
 		 * A function that returns a texture to be displayed in a
@@ -706,7 +706,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		private var _accessoryLabelField:String = "accessoryLabel";
+		protected var _accessoryLabelField:String = "accessoryLabel";
 
 		/**
 		 * The field in the item that contains a string to be displayed in a
@@ -759,7 +759,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		private var _accessoryLabelFunction:Function;
+		protected var _accessoryLabelFunction:Function;
 
 		/**
 		 * A function that returns a string to be displayed in a
@@ -919,7 +919,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		private var _accessoryLabelProperties:PropertyProxy;
+		protected var _accessoryLabelProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to a label accessory.

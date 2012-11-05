@@ -37,6 +37,7 @@ package feathers.motion.transitions
 	 * Slides new screens from the left or right depending on the old and new
 	 * selected index values of a TabBar control.
 	 *
+	 * @see feathers.controls.ScreenNavigator
 	 * @see feathers.controls.TabBar
 	 */
 	public class TabBarSlideTransitionManager
@@ -50,25 +51,67 @@ package feathers.motion.transitions
 			{
 				throw new ArgumentError("ScreenNavigator cannot be null.");
 			}
-			this._navigator = navigator;
-			this._tabBar = tabBar;
+			this.navigator = navigator;
+			this.tabBar = tabBar;
 			this._oldIndex = tabBar.selectedIndex;
-			this._tabBar.addEventListener(Event.CHANGE, tabBar_changeHandler);
-			this._navigator.transition = this.onTransition;
+			this.tabBar.addEventListener(Event.CHANGE, tabBar_changeHandler);
+			this.navigator.transition = this.onTransition;
 		}
 
-		private var _navigator:ScreenNavigator;
-		private var _tabBar:TabBar;
-		private var _activeTransition:Tween;
-		private var _savedOtherTarget:DisplayObject;
-		private var _savedCompleteHandler:Function;
+		/**
+		 * The <code>ScreenNavigator</code> being managed.
+		 */
+		protected var navigator:ScreenNavigator;
 
-		private var _oldScreen:DisplayObject;
-		private var _newScreen:DisplayObject;
-		private var _oldIndex:int;
-		private var _isFromRight:Boolean = true;
-		private var _isWaitingOnTabBarChange:Boolean = true;
-		private var _isWaitingOnTransitionChange:Boolean = true;
+		/**
+		 * The <code>TabBar</code> that controls the navigation.
+		 */
+		protected var tabBar:TabBar;
+
+		/**
+		 * @private
+		 */
+		protected var _activeTransition:Tween;
+
+		/**
+		 * @private
+		 */
+		protected var _savedOtherTarget:DisplayObject;
+
+		/**
+		 * @private
+		 */
+		protected var _savedCompleteHandler:Function;
+
+		/**
+		 * @private
+		 */
+		protected var _oldScreen:DisplayObject;
+
+		/**
+		 * @private
+		 */
+		protected var _newScreen:DisplayObject;
+
+		/**
+		 * @private
+		 */
+		protected var _oldIndex:int;
+
+		/**
+		 * @private
+		 */
+		protected var _isFromRight:Boolean = true;
+
+		/**
+		 * @private
+		 */
+		protected var _isWaitingOnTabBarChange:Boolean = true;
+
+		/**
+		 * @private
+		 */
+		protected var _isWaitingOnTransitionChange:Boolean = true;
 
 		/**
 		 * The duration of the transition, measured in seconds.
@@ -88,9 +131,10 @@ package feathers.motion.transitions
 		public var ease:Object = Transitions.EASE_OUT;
 
 		/**
-		 * @private
+		 * The function passed to the <code>transition</code> property of the
+		 * <code>ScreenNavigator</code>.
 		 */
-		private function onTransition(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
+		protected function onTransition(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
 		{
 			this._oldScreen = oldScreen;
 			this._newScreen = newScreen;
@@ -109,7 +153,7 @@ package feathers.motion.transitions
 		/**
 		 * @private
 		 */
-		private function transitionNow():void
+		protected function transitionNow():void
 		{
 			if(this._activeTransition)
 			{
@@ -139,12 +183,12 @@ package feathers.motion.transitions
 			var activeTransition_onUpdate:Function;
 			if(this._isFromRight)
 			{
-				this._newScreen.x = this._navigator.width;
+				this._newScreen.x = this.navigator.width;
 				activeTransition_onUpdate = this.activeTransitionFromRight_onUpdate;
 			}
 			else
 			{
-				this._newScreen.x = -this._navigator.width;
+				this._newScreen.x = -this.navigator.width;
 				activeTransition_onUpdate = this.activeTransitionFromLeft_onUpdate;
 			}
 			this._savedOtherTarget = this._oldScreen;
@@ -164,31 +208,31 @@ package feathers.motion.transitions
 		/**
 		 * @private
 		 */
-		private function activeTransitionFromRight_onUpdate():void
+		protected function activeTransitionFromRight_onUpdate():void
 		{
 			if(this._savedOtherTarget)
 			{
 				const newScreen:DisplayObject = DisplayObject(this._activeTransition.target);
-				this._savedOtherTarget.x = newScreen.x - this._navigator.width;
+				this._savedOtherTarget.x = newScreen.x - this.navigator.width;
 			}
 		}
 
 		/**
 		 * @private
 		 */
-		private function activeTransitionFromLeft_onUpdate():void
+		protected function activeTransitionFromLeft_onUpdate():void
 		{
 			if(this._savedOtherTarget)
 			{
 				const newScreen:DisplayObject = DisplayObject(this._activeTransition.target);
-				this._savedOtherTarget.x = newScreen.x + this._navigator.width;
+				this._savedOtherTarget.x = newScreen.x + this.navigator.width;
 			}
 		}
 
 		/**
 		 * @private
 		 */
-		private function activeTransition_onComplete():void
+		protected function activeTransition_onComplete():void
 		{
 			this._savedOtherTarget = null;
 			this._activeTransition = null;
@@ -201,9 +245,9 @@ package feathers.motion.transitions
 		/**
 		 * @private
 		 */
-		private function tabBar_changeHandler(event:Event):void
+		protected function tabBar_changeHandler(event:Event):void
 		{
-			var newIndex:int = this._tabBar.selectedIndex;
+			var newIndex:int = this.tabBar.selectedIndex;
 			this._isFromRight = newIndex > this._oldIndex;
 			this._oldIndex = newIndex;
 

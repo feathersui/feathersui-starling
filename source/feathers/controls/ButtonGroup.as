@@ -149,7 +149,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _dataProvider:ListCollection;
+		protected var _dataProvider:ListCollection;
 
 		/**
 		 * The collection of data to be displayed with buttons.
@@ -298,7 +298,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _buttonFactory:Function = defaultButtonFactory;
+		protected var _buttonFactory:Function = defaultButtonFactory;
 
 		/**
 		 * Creates a new button.
@@ -331,7 +331,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _firstButtonFactory:Function;
+		protected var _firstButtonFactory:Function;
 
 		/**
 		 * Creates a new first button. If the firstButtonFactory is null, then the
@@ -365,7 +365,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _lastButtonFactory:Function;
+		protected var _lastButtonFactory:Function;
 
 		/**
 		 * Creates a new last button. If the lastButtonFactory is null, then the
@@ -399,7 +399,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _buttonInitializer:Function = defaultButtonInitializer;
+		protected var _buttonInitializer:Function = defaultButtonInitializer;
 
 		/**
 		 * Modifies a button, perhaps by changing its label and icons, based on the
@@ -535,7 +535,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _buttonProperties:PropertyProxy;
+		protected var _buttonProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to all of the button

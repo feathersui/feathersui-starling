@@ -18,7 +18,7 @@ package feathers.text
 	 * A StageText replacement for Flash Player with matching properties, since
 	 * StageText is only available in AIR.
 	 */
-	public class StageTextField extends EventDispatcher
+	public final class StageTextField extends EventDispatcher
 	{
 		/**
 		 * Constructor.
@@ -28,9 +28,9 @@ package feathers.text
 			this.initialize(initOptions);
 		}
 
-		protected var textField:TextField;
-		protected var textFormat:TextFormat;
-		protected var isComplete:Boolean = false;
+		private var _textField:TextField;
+		private var _textFormat:TextFormat;
+		private var _isComplete:Boolean = false;
 
 		private var _autoCapitalize:String = "none";
 
@@ -60,61 +60,61 @@ package feathers.text
 
 		public function get color():uint
 		{
-			return this.textFormat.color as uint;
+			return this._textFormat.color as uint;
 		}
 
 		public function set color(value:uint):void
 		{
-			if(this.textFormat.color == value)
+			if(this._textFormat.color == value)
 			{
 				return;
 			}
-			this.textFormat.color = value;
-			this.textField.defaultTextFormat = this.textFormat;
-			this.textField.setTextFormat(this.textFormat);
+			this._textFormat.color = value;
+			this._textField.defaultTextFormat = this._textFormat;
+			this._textField.setTextFormat(this._textFormat);
 		}
 
 		public function get displayAsPassword():Boolean
 		{
-			return this.textField.displayAsPassword;
+			return this._textField.displayAsPassword;
 		}
 
 		public function set displayAsPassword(value:Boolean):void
 		{
-			this.textField.displayAsPassword = value;
+			this._textField.displayAsPassword = value;
 		}
 
 		public function get editable():Boolean
 		{
-			return this.textField.type == TextFieldType.INPUT;
+			return this._textField.type == TextFieldType.INPUT;
 		}
 
 		public function set editable(value:Boolean):void
 		{
-			this.textField.type = value ? TextFieldType.INPUT : TextFieldType.DYNAMIC;
+			this._textField.type = value ? TextFieldType.INPUT : TextFieldType.DYNAMIC;
 		}
 
 		private var _fontFamily:String = null;
 
 		public function get fontFamily():String
 		{
-			return this.textFormat.font;
+			return this._textFormat.font;
 		}
 
 		public function set fontFamily(value:String):void
 		{
-			if(this.textFormat.font == value)
+			if(this._textFormat.font == value)
 			{
 				return;
 			}
-			this.textFormat.font = value;
-			this.textField.defaultTextFormat = this.textFormat;
-			this.textField.setTextFormat(this.textFormat);
+			this._textFormat.font = value;
+			this._textField.defaultTextFormat = this._textFormat;
+			this._textField.setTextFormat(this._textFormat);
 		}
 
 		public function get fontPosture():String
 		{
-			return this.textFormat.italic ? FontPosture.ITALIC : FontPosture.NORMAL;
+			return this._textFormat.italic ? FontPosture.ITALIC : FontPosture.NORMAL;
 		}
 
 		public function set fontPosture(value:String):void
@@ -123,30 +123,30 @@ package feathers.text
 			{
 				return;
 			}
-			this.textFormat.italic = value == FontPosture.ITALIC;
-			this.textField.defaultTextFormat = this.textFormat;
-			this.textField.setTextFormat(this.textFormat);
+			this._textFormat.italic = value == FontPosture.ITALIC;
+			this._textField.defaultTextFormat = this._textFormat;
+			this._textField.setTextFormat(this._textFormat);
 		}
 
 		public function get fontSize():int
 		{
-			return this.textFormat.size as int;
+			return this._textFormat.size as int;
 		}
 
 		public function set fontSize(value:int):void
 		{
-			if(this.textFormat.size == value)
+			if(this._textFormat.size == value)
 			{
 				return;
 			}
-			this.textFormat.size = value;
-			this.textField.defaultTextFormat = this.textFormat;
-			this.textField.setTextFormat(this.textFormat);
+			this._textFormat.size = value;
+			this._textField.defaultTextFormat = this._textFormat;
+			this._textField.setTextFormat(this._textFormat);
 		}
 
 		public function get fontWeight():String
 		{
-			return this.textFormat.bold ? FontWeight.BOLD : FontWeight.NORMAL;
+			return this._textFormat.bold ? FontWeight.BOLD : FontWeight.NORMAL;
 		}
 
 		public function set fontWeight(value:String):void
@@ -155,9 +155,9 @@ package feathers.text
 			{
 				return;
 			}
-			this.textFormat.bold = value == FontWeight.BOLD;
-			this.textField.defaultTextFormat = this.textFormat;
-			this.textField.setTextFormat(this.textFormat);
+			this._textFormat.bold = value == FontWeight.BOLD;
+			this._textField.defaultTextFormat = this._textFormat;
+			this._textField.setTextFormat(this._textFormat);
 		}
 
 		private var _locale:String = "en";
@@ -174,27 +174,27 @@ package feathers.text
 
 		public function get maxChars():int
 		{
-			return this.textField.maxChars;
+			return this._textField.maxChars;
 		}
 
 		public function set maxChars(value:int):void
 		{
-			this.textField.maxChars = value;
+			this._textField.maxChars = value;
 		}
 
 		private function get multiline():Boolean
 		{
-			return this.textField.multiline;
+			return this._textField.multiline;
 		}
 
 		public function get restrict():String
 		{
-			return this.textField.restrict;
+			return this._textField.restrict;
 		}
 
 		public function set restrict(value:String):void
 		{
-			this.textField.restrict = value;
+			this._textField.restrict = value;
 		}
 
 		private var _returnKeyLabel:String = "default";
@@ -211,12 +211,12 @@ package feathers.text
 
 		public function get selectionActiveIndex():int
 		{
-			return this.textField.selectionBeginIndex;
+			return this._textField.selectionBeginIndex;
 		}
 
 		public function get selectionAnchorIndex():int
 		{
-			return this.textField.selectionEndIndex;
+			return this._textField.selectionEndIndex;
 		}
 
 		private var _softKeyboardType:String = "default";
@@ -233,34 +233,34 @@ package feathers.text
 
 		public function get stage():Stage
 		{
-			return this.textField.stage;
+			return this._textField.stage;
 		}
 
 		public function set stage(value:Stage):void
 		{
-			if(this.textField.stage == value)
+			if(this._textField.stage == value)
 			{
 				return;
 			}
-			if(this.textField.stage)
+			if(this._textField.stage)
 			{
-				this.textField.parent.removeChild(this.textField);
+				this._textField.parent.removeChild(this._textField);
 			}
 			if(value)
 			{
-				value.addChild(this.textField);
+				value.addChild(this._textField);
 				this.dispatchCompleteIfPossible();
 			}
 		}
 
 		public function get text():String
 		{
-			return this.textField.text;
+			return this._textField.text;
 		}
 
 		public function set text(value:String):void
 		{
-			this.textField.text = value;
+			this._textField.text = value;
 		}
 
 		private var _textAlign:String = TextFormatAlign.START;
@@ -285,9 +285,9 @@ package feathers.text
 			{
 				value = TextFormatAlign.RIGHT;
 			}
-			this.textFormat.align = value;
-			this.textField.defaultTextFormat = this.textFormat;
-			this.textField.setTextFormat(this.textFormat);
+			this._textFormat.align = value;
+			this._textField.defaultTextFormat = this._textFormat;
+			this._textField.setTextFormat(this._textFormat);
 		}
 
 		private var _viewPort:Rectangle = new Rectangle();
@@ -304,38 +304,38 @@ package feathers.text
 				throw new RangeError("The Rectangle value is not valid.");
 			}
 			this._viewPort = value;
-			this.textField.x = this._viewPort.x;
-			this.textField.y = this._viewPort.y;
-			this.textField.width = this._viewPort.width;
-			this.textField.height = this._viewPort.height;
+			this._textField.x = this._viewPort.x;
+			this._textField.y = this._viewPort.y;
+			this._textField.width = this._viewPort.width;
+			this._textField.height = this._viewPort.height;
 
 			this.dispatchCompleteIfPossible();
 		}
 
 		public function get visible():Boolean
 		{
-			return this.textField.visible;
+			return this._textField.visible;
 		}
 
 		public function set visible(value:Boolean):void
 		{
-			this.textField.visible = value;
+			this._textField.visible = value;
 		}
 
 		public function assignFocus():void
 		{
-			if(!this.textField.parent)
+			if(!this._textField.parent)
 			{
 				return;
 			}
-			this.textField.stage.focus = this.textField;
+			this._textField.stage.focus = this._textField;
 		}
 
 		public function dispose():void
 		{
 			this.stage = null;
-			this.textField = null;
-			this.textFormat = null;
+			this._textField = null;
+			this._textFormat = null;
 		}
 
 		public function drawViewPortToBitmapData(bitmap:BitmapData):void
@@ -348,42 +348,42 @@ package feathers.text
 			{
 				throw new ArgumentError("The bitmap's width or height is different from view port's width or height.");
 			}
-			bitmap.draw(this.textField);
+			bitmap.draw(this._textField);
 		}
 
 		public function selectRange(anchorIndex:int, activeIndex:int):void
 		{
-			this.textField.setSelection(anchorIndex, activeIndex);
+			this._textField.setSelection(anchorIndex, activeIndex);
 		}
 
-		protected function dispatchCompleteIfPossible():void
+		private function dispatchCompleteIfPossible():void
 		{
-			if(!this.textField.stage || this._viewPort.isEmpty())
+			if(!this._textField.stage || this._viewPort.isEmpty())
 			{
-				this.isComplete = false;
+				this._isComplete = false;
 			}
-			if(this.textField.stage && !this.viewPort.isEmpty())
+			if(this._textField.stage && !this.viewPort.isEmpty())
 			{
-				this.isComplete = true;
+				this._isComplete = true;
 				this.dispatchEvent(new Event(Event.COMPLETE));
 			}
 		}
 
-		protected function initialize(initOptions:Object):void
+		private function initialize(initOptions:Object):void
 		{
-			this.textField = new TextField();
-			this.textField.type = TextFieldType.INPUT;
-			this.textField.multiline = initOptions && initOptions.hasOwnProperty("multiline") && initOptions.multiline;
-			this.textField.addEventListener(Event.CHANGE, textField_eventHandler);
-			this.textField.addEventListener(FocusEvent.FOCUS_IN, textField_eventHandler);
-			this.textField.addEventListener(FocusEvent.FOCUS_OUT, textField_eventHandler);
-			this.textField.addEventListener(KeyboardEvent.KEY_DOWN, textField_eventHandler);
-			this.textField.addEventListener(KeyboardEvent.KEY_UP, textField_eventHandler);
-			this.textFormat = new TextFormat(null, 11, 0x000000, false, false, false);
-			this.textField.defaultTextFormat = this.textFormat;
+			this._textField = new TextField();
+			this._textField.type = TextFieldType.INPUT;
+			this._textField.multiline = initOptions && initOptions.hasOwnProperty("multiline") && initOptions.multiline;
+			this._textField.addEventListener(Event.CHANGE, textField_eventHandler);
+			this._textField.addEventListener(FocusEvent.FOCUS_IN, textField_eventHandler);
+			this._textField.addEventListener(FocusEvent.FOCUS_OUT, textField_eventHandler);
+			this._textField.addEventListener(KeyboardEvent.KEY_DOWN, textField_eventHandler);
+			this._textField.addEventListener(KeyboardEvent.KEY_UP, textField_eventHandler);
+			this._textFormat = new TextFormat(null, 11, 0x000000, false, false, false);
+			this._textField.defaultTextFormat = this._textFormat;
 		}
 
-		protected function textField_eventHandler(event:Event):void
+		private function textField_eventHandler(event:Event):void
 		{
 			this.dispatchEvent(event);
 		}

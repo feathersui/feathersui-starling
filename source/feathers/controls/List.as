@@ -101,8 +101,7 @@ package feathers.controls
 		protected var scrollerName:String = DEFAULT_CHILD_NAME_SCROLLER;
 
 		/**
-		 * @private
-		 * The Scroller instance.
+		 * The list's scroller sub-component.
 		 */
 		protected var scroller:Scroller;
 
@@ -135,7 +134,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _layout:ILayout;
+		protected var _layout:ILayout;
 
 		/**
 		 * The layout algorithm used to position and, optionally, size the
@@ -335,7 +334,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _isSelectable:Boolean = true;
+		protected var _isSelectable:Boolean = true;
 		
 		/**
 		 * Determines if an item in the list may be selected.
@@ -367,7 +366,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _selectedIndex:int = -1;
+		protected var _selectedIndex:int = -1;
 		
 		/**
 		 * The index of the currently selected item. Returns -1 if no item is
@@ -416,7 +415,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _scrollerProperties:PropertyProxy;
+		protected var _scrollerProperties:PropertyProxy;
 		
 		/**
 		 * A set of key/value pairs to be passed down to the list's scroller
@@ -469,7 +468,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _itemRendererProperties:PropertyProxy;
+		protected var _itemRendererProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to all of the list's item
@@ -540,7 +539,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _backgroundSkin:DisplayObject;
+		protected var _backgroundSkin:DisplayObject;
 		
 		/**
 		 * A display object displayed behind the item renderers.
@@ -578,7 +577,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _backgroundDisabledSkin:DisplayObject;
+		protected var _backgroundDisabledSkin:DisplayObject;
 		
 		/**
 		 * A background to display when the list is disabled.
@@ -724,7 +723,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _itemRendererType:Class = DefaultListItemRenderer;
+		protected var _itemRendererType:Class = DefaultListItemRenderer;
 		
 		/**
 		 * The class used to instantiate item renderers.
@@ -753,7 +752,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _itemRendererFactory:Function;
+		protected var _itemRendererFactory:Function;
 		
 		/**
 		 * A function called that is expected to return a new item renderer. Has
@@ -790,7 +789,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _typicalItem:Object = null;
+		protected var _typicalItem:Object = null;
 		
 		/**
 		 * Used to auto-size the list. If the list's width or height is NaN, the

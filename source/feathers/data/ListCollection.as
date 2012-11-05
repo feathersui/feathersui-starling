@@ -103,7 +103,7 @@ package feathers.data
 	 * @see VectorListCollectionDataDescriptor
 	 * @see XMLListListCollectionDataDescriptor
 	 */
-	public class ListCollection extends EventDispatcher
+	public final class ListCollection extends EventDispatcher
 	{
 		/**
 		 * Constructor
@@ -121,7 +121,7 @@ package feathers.data
 		/**
 		 * @private
 		 */
-		protected var _data:Object;
+		private var _data:Object;
 		
 		/**
 		 * The data source for this collection. May be any type of data, but a

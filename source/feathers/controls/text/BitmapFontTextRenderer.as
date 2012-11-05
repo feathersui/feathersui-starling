@@ -98,7 +98,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		private var _characterBatch:QuadBatch;
+		protected var _characterBatch:QuadBatch;
 
 		/**
 		 * @private
@@ -160,7 +160,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		private var _text:String = "";
+		protected var _text:String = "";
 		
 		/**
 		 * The text to display.
@@ -186,7 +186,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		private var _smoothing:String = TextureSmoothing.BILINEAR;
+		protected var _smoothing:String = TextureSmoothing.BILINEAR;
 
 		[Inspectable(type="String",enumeration="bilinear,trilinear,none")]
 		/**
@@ -215,7 +215,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		private var _wordWrap:Boolean = false;
+		protected var _wordWrap:Boolean = false;
 
 		/**
 		 * If the width or maxWidth values are set, then the text will continue
@@ -242,7 +242,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		private var _snapToPixels:Boolean = true;
+		protected var _snapToPixels:Boolean = true;
 
 		/**
 		 * Determines if characters should be snapped to the nearest whole pixel
@@ -269,7 +269,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		private var _truncationText:String = "...";
+		protected var _truncationText:String = "...";
 
 		/**
 		 * The text to display at the end of the label if it is truncated.

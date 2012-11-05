@@ -165,27 +165,27 @@ package feathers.controls
 		protected var thumbName:String = DEFAULT_CHILD_NAME_THUMB;
 
 		/**
-		 * @private
+		 * The thumb sub-component.
 		 */
 		protected var thumb:Button;
 
 		/**
-		 * @private
+		 * The "on" text renderer sub-component.
 		 */
 		protected var onTextRenderer:ITextRenderer;
 
 		/**
-		 * @private
+		 * The "off" text renderer sub-component.
 		 */
 		protected var offTextRenderer:ITextRenderer;
 
 		/**
-		 * @private
+		 * The "on" track sub-component.
 		 */
 		protected var onTrack:Button;
 
 		/**
-		 * @private
+		 * The "off" track sub-component.
 		 */
 		protected var offTrack:Button;
 
@@ -273,7 +273,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _showThumb:Boolean = true;
+		protected var _showThumb:Boolean = true;
 
 		/**
 		 * Determines if the thumb should be displayed. This stops interaction
@@ -300,7 +300,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _trackLayoutMode:String = TRACK_LAYOUT_MODE_SINGLE;
+		protected var _trackLayoutMode:String = TRACK_LAYOUT_MODE_SINGLE;
 
 		[Inspectable(type="String",enumeration="single,stretch,scroll")]
 		/**
@@ -489,7 +489,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _labelAlign:String = LABEL_ALIGN_BASELINE;
+		protected var _labelAlign:String = LABEL_ALIGN_BASELINE;
 
 		[Inspectable(type="String",enumeration="baseline,middle")]
 		/**
@@ -567,7 +567,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _isSelected:Boolean = false;
+		protected var _isSelected:Boolean = false;
 
 		/**
 		 * Indicates if the toggle switch is selected (ON) or not (OFF).
@@ -642,7 +642,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _onText:String = "ON";
+		protected var _onText:String = "ON";
 
 		/**
 		 * The text to display in the ON label.
@@ -672,7 +672,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _offText:String = "OFF";
+		protected var _offText:String = "OFF";
 
 		/**
 		 * The text to display in the OFF label.
@@ -699,18 +699,18 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
-		private var _toggleTween:Tween;
+		protected var _toggleTween:Tween;
 
-		private var _ignoreTapHandler:Boolean = false;
-		private var _touchPointID:int = -1;
-		private var _thumbStartX:Number;
-		private var _touchStartX:Number;
-		private var _isSelectionChangedByUser:Boolean = false;
+		protected var _ignoreTapHandler:Boolean = false;
+		protected var _touchPointID:int = -1;
+		protected var _thumbStartX:Number;
+		protected var _touchStartX:Number;
+		protected var _isSelectionChangedByUser:Boolean = false;
 
 		/**
 		 * @private
 		 */
-		private var _onTrackProperties:PropertyProxy;
+		protected var _onTrackProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to the toggle switch's on
@@ -772,7 +772,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _offTrackProperties:PropertyProxy;
+		protected var _offTrackProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to the toggle switch's off
@@ -834,7 +834,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _thumbProperties:PropertyProxy;
+		protected var _thumbProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to the toggle switch's

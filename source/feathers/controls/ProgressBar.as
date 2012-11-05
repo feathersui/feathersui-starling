@@ -56,7 +56,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _direction:String = DIRECTION_HORIZONTAL;
+		protected var _direction:String = DIRECTION_HORIZONTAL;
 
 		[Inspectable(type="String",enumeration="horizontal,vertical")]
 		/**
@@ -85,7 +85,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _value:Number = 0;
+		protected var _value:Number = 0;
 
 		/**
 		 * The value of the progress bar, between the minimum and maximum.
@@ -112,7 +112,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _minimum:Number = 0;
+		protected var _minimum:Number = 0;
 
 		/**
 		 * The progress bar's value will not go lower than the minimum.
@@ -138,7 +138,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _maximum:Number = 1;
+		protected var _maximum:Number = 1;
 
 		/**
 		 * The progress bar's value will not go higher than the maximum.
@@ -179,7 +179,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _backgroundSkin:DisplayObject;
+		protected var _backgroundSkin:DisplayObject;
 
 		/**
 		 * The primary background to display.
@@ -216,7 +216,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _backgroundDisabledSkin:DisplayObject;
+		protected var _backgroundDisabledSkin:DisplayObject;
 
 		/**
 		 * A background to display when the progress bar is disabled.
@@ -268,7 +268,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _fillSkin:DisplayObject;
+		protected var _fillSkin:DisplayObject;
 
 		/**
 		 * The primary fill to display.
@@ -318,7 +318,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _fillDisabledSkin:DisplayObject;
+		protected var _fillDisabledSkin:DisplayObject;
 
 		/**
 		 * A fill to display when the progress bar is disabled.

@@ -159,8 +159,7 @@ package feathers.controls
 		protected var scrollerName:String = DEFAULT_CHILD_NAME_SCROLLER;
 
 		/**
-		 * @private
-		 * The Scroller instance.
+		 * The grouped list's scroller sub-component.
 		 */
 		protected var scroller:Scroller;
 
@@ -198,7 +197,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _layout:ILayout;
+		protected var _layout:ILayout;
 
 		/**
 		 * The layout algorithm used to position and, optionally, size the
@@ -442,7 +441,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _selectedItemIndex:int = -1;
+		protected var _selectedItemIndex:int = -1;
 
 		/**
 		 * The item index of the currently selected item. Returns -1 if no item
@@ -487,7 +486,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _scrollerProperties:PropertyProxy;
+		protected var _scrollerProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to the list's scroller
@@ -553,7 +552,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _backgroundSkin:DisplayObject;
+		protected var _backgroundSkin:DisplayObject;
 
 		/**
 		 * A display object displayed behind the item renderers.
@@ -589,7 +588,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _backgroundDisabledSkin:DisplayObject;
+		protected var _backgroundDisabledSkin:DisplayObject;
 
 		/**
 		 * A background to display when the list is disabled.
@@ -733,7 +732,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _itemRendererType:Class = DefaultGroupedListItemRenderer;
+		protected var _itemRendererType:Class = DefaultGroupedListItemRenderer;
 
 		/**
 		 * The class used to instantiate item renderers.
@@ -768,7 +767,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _itemRendererFactory:Function;
+		protected var _itemRendererFactory:Function;
 
 		/**
 		 * A function called that is expected to return a new item renderer. Has
@@ -811,7 +810,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _typicalItem:Object = null;
+		protected var _typicalItem:Object = null;
 
 		/**
 		 * An item used to create a sample item renderer used for virtual layout
@@ -870,7 +869,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _itemRendererProperties:PropertyProxy;
+		protected var _itemRendererProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to all of the list's item
@@ -934,7 +933,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _firstItemRendererType:Class;
+		protected var _firstItemRendererType:Class;
 
 		/**
 		 * The class used to instantiate the item renderer for the first item in
@@ -970,7 +969,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _firstItemRendererFactory:Function;
+		protected var _firstItemRendererFactory:Function;
 
 		/**
 		 * A function called that is expected to return a new item renderer for
@@ -1049,7 +1048,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _lastItemRendererType:Class;
+		protected var _lastItemRendererType:Class;
 
 		/**
 		 * The class used to instantiate the item renderer for the last item in
@@ -1085,7 +1084,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _lastItemRendererFactory:Function;
+		protected var _lastItemRendererFactory:Function;
 
 		/**
 		 * A function called that is expected to return a new item renderer for
@@ -1164,7 +1163,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _singleItemRendererType:Class;
+		protected var _singleItemRendererType:Class;
 
 		/**
 		 * The class used to instantiate the item renderer for an item in a
@@ -1200,7 +1199,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _singleItemRendererFactory:Function;
+		protected var _singleItemRendererFactory:Function;
 
 		/**
 		 * A function called that is expected to return a new item renderer for
@@ -1280,7 +1279,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _headerRendererType:Class = DefaultGroupedListHeaderOrFooterRenderer;
+		protected var _headerRendererType:Class = DefaultGroupedListHeaderOrFooterRenderer;
 
 		/**
 		 * The class used to instantiate header renderers.
@@ -1309,7 +1308,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _headerRendererFactory:Function;
+		protected var _headerRendererFactory:Function;
 
 		/**
 		 * A function called that is expected to return a new header renderer.
@@ -1347,7 +1346,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _typicalHeader:Object = null;
+		protected var _typicalHeader:Object = null;
 
 		/**
 		 * Used to auto-size the grouped list. If the list's width or height is
@@ -1404,7 +1403,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _headerRendererProperties:PropertyProxy;
+		protected var _headerRendererProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to all of the grouped
@@ -1469,7 +1468,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _footerRendererType:Class = DefaultGroupedListHeaderOrFooterRenderer;
+		protected var _footerRendererType:Class = DefaultGroupedListHeaderOrFooterRenderer;
 
 		/**
 		 * The class used to instantiate footer renderers.
@@ -1498,7 +1497,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _footerRendererFactory:Function;
+		protected var _footerRendererFactory:Function;
 
 		/**
 		 * A function called that is expected to return a new footer renderer.
@@ -1536,7 +1535,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _typicalFooter:Object = null;
+		protected var _typicalFooter:Object = null;
 
 		/**
 		 * Used to auto-size the grouped list. If the grouped list's width or
@@ -1594,7 +1593,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _footerRendererProperties:PropertyProxy;
+		protected var _footerRendererProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to all of the grouped
@@ -1696,7 +1695,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _headerFunction:Function;
+		protected var _headerFunction:Function;
 
 		/**
 		 * A function used to generate header data for a specific group. If this
@@ -1769,7 +1768,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _footerFunction:Function;
+		protected var _footerFunction:Function;
 
 		/**
 		 * A function used to generate footer data for a specific group. If this

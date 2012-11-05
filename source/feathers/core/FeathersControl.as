@@ -204,7 +204,7 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		private var _isQuickHitAreaEnabled:Boolean = false;
+		protected var _isQuickHitAreaEnabled:Boolean = false;
 
 		/**
 		 * Similar to mouseChildren on the classic display list. If true,
@@ -232,7 +232,7 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		private var _isInitialized:Boolean = false;
+		protected var _isInitialized:Boolean = false;
 
 		/**
 		 * Determines if the component has been initialized yet. The
@@ -249,17 +249,17 @@ package feathers.core
 		 * A flag that indicates that everything is invalid. If true, no other
 		 * flags will need to be tracked.
 		 */
-		private var _isAllInvalid:Boolean = false;
+		protected var _isAllInvalid:Boolean = false;
 
 		/**
 		 * @private
 		 */
-		private var _invalidationFlags:Object = {};
+		protected var _invalidationFlags:Object = {};
 
 		/**
 		 * @private
 		 */
-		private var _delayedInvalidationFlags:Object = {};
+		protected var _delayedInvalidationFlags:Object = {};
 
 		/**
 		 * @private
@@ -370,7 +370,7 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		private var _minTouchWidth:Number = 0;
+		protected var _minTouchWidth:Number = 0;
 
 		/**
 		 * If using <code>isQuickHitAreaEnabled</code>, and the hit area's
@@ -397,7 +397,7 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		private var _minTouchHeight:Number = 0;
+		protected var _minTouchHeight:Number = 0;
 
 		/**
 		 * If using <code>isQuickHitAreaEnabled</code>, and the hit area's
@@ -561,12 +561,12 @@ package feathers.core
 		 * @private
 		 * Flag to indicate that the control is currently validating.
 		 */
-		private var _isValidating:Boolean = false;
+		protected var _isValidating:Boolean = false;
 
 		/**
 		 * @private
 		 */
-		private var _invalidateCount:int = 0;
+		protected var _invalidateCount:int = 0;
 
 		/**
 		 * @private
