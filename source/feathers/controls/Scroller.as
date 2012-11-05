@@ -1337,7 +1337,10 @@ package feathers.controls
 				this.verticalScrollPosition = Math.round(this._verticalScrollPosition);
 			}
 		}
-		
+
+		/**
+		 * @private
+		 */
 		protected var _isScrollingStopped:Boolean = false;
 		
 		/**
