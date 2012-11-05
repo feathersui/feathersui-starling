@@ -25,6 +25,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 package feathers.controls
 {
 	import feathers.core.FeathersControl;
+	import feathers.events.FeathersEventType;
 	import feathers.system.DeviceCapabilities;
 	import feathers.utils.display.calculateScaleRatioToFit;
 
@@ -52,6 +53,7 @@ package feathers.controls
 		public function Screen()
 		{
 			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
+			this.addEventListener(FeathersEventType.RESIZE, resizeHandler);
 			super();
 			this.originalDPI = 168;
 		}
@@ -195,7 +197,7 @@ package feathers.controls
 		
 		/**
 		 * Uses <code>originalWidth</code>, <code>originalHeight</code>,
-		 * <code>stage.stageWidth</code>, and <code>stage.stageHeight</code>,
+		 * <code>actualWidth</code>, and <code>actualHeight</code>,
 		 * to calculate a scale value that will allow all content will fit
 		 * within the current stage bounds using the same relative layout. This
 		 * scale value does not account for differences between the original DPI
@@ -249,6 +251,10 @@ package feathers.controls
 		 */
 		protected function refreshPixelScale():void
 		{
+			if(!this.stage)
+			{
+				return;
+			}
 			const loaderInfo:LoaderInfo = DisplayObjectContainer(Starling.current.nativeStage.root).getChildAt(0).loaderInfo;
 			//if originalWidth or originalHeight is NaN, it's because the Screen
 			//has been added to the display list, and we really need values now.
@@ -274,7 +280,7 @@ package feathers.controls
 					this._originalHeight = this.stage.stageHeight;
 				}
 			}
-			this._pixelScale = calculateScaleRatioToFit(originalWidth, originalHeight, this.stage.stageWidth, this.stage.stageHeight);
+			this._pixelScale = calculateScaleRatioToFit(originalWidth, originalHeight, this.actualWidth, this.actualHeight);
 		}
 		
 		/**
@@ -288,7 +294,6 @@ package feathers.controls
 			}
 			this.refreshPixelScale();
 			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
-			this.stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
 			Starling.current.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler, false, 0, true);
 		}
 
@@ -302,14 +307,13 @@ package feathers.controls
 				return;
 			}
 			this.removeEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
-			this.stage.removeEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
 			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 		}
 		
 		/**
 		 * @private
 		 */
-		protected function stage_resizeHandler(event:ResizeEvent):void
+		protected function resizeHandler(event:Event):void
 		{
 			this.refreshPixelScale();
 		}
