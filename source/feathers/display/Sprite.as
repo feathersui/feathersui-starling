@@ -39,9 +39,9 @@ package feathers.display
 	 */
 	public class Sprite extends starling.display.Sprite implements IDisplayObjectWithScrollRect
 	{
-		private static var helperPoint:Point = new Point();
-		private static var helperMatrix:Matrix = new Matrix();
-		private static var helperRect:Rectangle = new Rectangle();
+		private static const HELPER_POINT:Point = new Point();
+		private static const HELPER_MATRIX:Matrix = new Matrix();
+		private static const HELPER_RECTANGLE:Rectangle = new Rectangle();
 		
 		/**
 		 * Constructor.
@@ -111,12 +111,12 @@ package feathers.display
 				}
 				else
 				{
-					this.getTransformationMatrix(targetSpace, helperMatrix);
-					MatrixUtil.transformCoords(helperMatrix, 0, 0, helperPoint);
-					resultRect.x = helperPoint.x;
-					resultRect.y = helperPoint.y;
-					resultRect.width = helperMatrix.a * this._scrollRect.width + helperMatrix.c * this._scrollRect.height;
-					resultRect.height = helperMatrix.d * this._scrollRect.height + helperMatrix.b * this._scrollRect.width;
+					this.getTransformationMatrix(targetSpace, HELPER_MATRIX);
+					MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
+					resultRect.x = HELPER_POINT.x;
+					resultRect.y = HELPER_POINT.y;
+					resultRect.width = HELPER_MATRIX.a * this._scrollRect.width + HELPER_MATRIX.c * this._scrollRect.height;
+					resultRect.height = HELPER_MATRIX.d * this._scrollRect.height + HELPER_MATRIX.b * this._scrollRect.width;
 				}
 				return resultRect;
 			}
@@ -138,9 +138,9 @@ package feathers.display
 				this._scissorRect.width *= scale;
 				this._scissorRect.height *= scale;
 				
-				this.getTransformationMatrix(this.stage, helperMatrix);
-				this._scaledScrollRectXY.x = this._scrollRect.x * helperMatrix.a;
-				this._scaledScrollRectXY.y = this._scrollRect.y * helperMatrix.d;
+				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+				this._scaledScrollRectXY.x = this._scrollRect.x * HELPER_MATRIX.a;
+				this._scaledScrollRectXY.y = this._scrollRect.y * HELPER_MATRIX.d;
 				
 				const oldRect:Rectangle = ScrollRectManager.currentScissorRect;
 				if(oldRect)
@@ -188,7 +188,7 @@ package feathers.display
 			if(this._scrollRect)
 			{
 				//make sure we're in the bounds of this sprite first
-				if(this.getBounds(this, helperRect).containsPoint(localPoint))
+				if(this.getBounds(this, HELPER_RECTANGLE).containsPoint(localPoint))
 				{
 					localPoint.x += this._scrollRect.x;
 					localPoint.y += this._scrollRect.y;

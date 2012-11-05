@@ -49,7 +49,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		private var _index:int = -1;
+		protected var _index:int = -1;
 		
 		/**
 		 * @inheritDoc

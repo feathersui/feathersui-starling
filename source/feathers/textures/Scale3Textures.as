@@ -33,7 +33,7 @@ package feathers.textures
 	 *
 	 * @see org.josht.starling.display.Scale3Image
 	 */
-	public class Scale3Textures
+	public final class Scale3Textures
 	{
 		/**
 		 * If the direction is horizontal, the layout will start on the left and continue to the right.

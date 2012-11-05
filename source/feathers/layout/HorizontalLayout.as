@@ -98,7 +98,7 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		private var _gap:Number = 0;
+		protected var _gap:Number = 0;
 
 		/**
 		 * The space, in pixels, between items.
@@ -229,7 +229,7 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		private var _verticalAlign:String = VERTICAL_ALIGN_TOP;
+		protected var _verticalAlign:String = VERTICAL_ALIGN_TOP;
 
 		[Inspectable(type="String",enumeration="top,middle,bottom,justify")]
 		/**
@@ -256,7 +256,7 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		private var _horizontalAlign:String = HORIZONTAL_ALIGN_LEFT;
+		protected var _horizontalAlign:String = HORIZONTAL_ALIGN_LEFT;
 
 		[Inspectable(type="String",enumeration="left,center,right")]
 		/**
@@ -284,7 +284,7 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		private var _useVirtualLayout:Boolean = true;
+		protected var _useVirtualLayout:Boolean = true;
 
 		/**
 		 * @inheritDoc
@@ -310,7 +310,7 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		private var _hasVariableItemDimensions:Boolean = false;
+		protected var _hasVariableItemDimensions:Boolean = false;
 
 		/**
 		 * @inheritDoc
@@ -336,7 +336,7 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		private var _typicalItemWidth:Number = -1;
+		protected var _typicalItemWidth:Number = -1;
 
 		/**
 		 * @inheritDoc
@@ -361,7 +361,7 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		private var _typicalItemHeight:Number = -1;
+		protected var _typicalItemHeight:Number = -1;
 
 		/**
 		 * @inheritDoc

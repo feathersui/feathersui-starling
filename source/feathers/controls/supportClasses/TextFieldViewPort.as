@@ -44,7 +44,7 @@ package feathers.controls.supportClasses
 	/**
 	 * @private
 	 */
-	public class TextFieldViewPort extends FeathersControl implements IViewPort
+	public final class TextFieldViewPort extends FeathersControl implements IViewPort
 	{
 		private static const HELPER_MATRIX:Matrix = new Matrix();
 		private static const HELPER_POINT:Point = new Point();
@@ -92,7 +92,7 @@ package feathers.controls.supportClasses
 		/**
 		 * @private
 		 */
-		protected var _textFormat:TextFormat;
+		private var _textFormat:TextFormat;
 
 		/**
 		 * The font and styles used to draw the text.
@@ -209,7 +209,7 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
-		protected var _visibleWidth:Number = NaN;
+		private var _visibleWidth:Number = NaN;
 
 		public function get visibleWidth():Number
 		{
@@ -268,7 +268,7 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
-		protected var _visibleHeight:Number = NaN;
+		private var _visibleHeight:Number = NaN;
 
 		public function get visibleHeight():Number
 		{
@@ -329,7 +329,7 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
 
-		protected var _paddingTop:Number = 0;
+		private var _paddingTop:Number = 0;
 
 		public function get paddingTop():Number
 		{
@@ -346,7 +346,7 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
-		protected var _paddingRight:Number = 0;
+		private var _paddingRight:Number = 0;
 
 		public function get paddingRight():Number
 		{
@@ -363,7 +363,7 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
-		protected var _paddingBottom:Number = 0;
+		private var _paddingBottom:Number = 0;
 
 		public function get paddingBottom():Number
 		{
@@ -380,7 +380,7 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
-		protected var _paddingLeft:Number = 0;
+		private var _paddingLeft:Number = 0;
 
 		public function get paddingLeft():Number
 		{

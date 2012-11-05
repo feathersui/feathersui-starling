@@ -101,7 +101,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _activeScreenID:String;
+		protected var _activeScreenID:String;
 
 		/**
 		 * The string identifier for the currently active screen.
@@ -114,7 +114,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _activeScreen:DisplayObject;
+		protected var _activeScreen:DisplayObject;
 
 		/**
 		 * A reference to the currently active screen.
@@ -127,7 +127,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _clipContent:Boolean = false;
+		protected var _clipContent:Boolean = false;
 
 		/**
 		 * Determines if the navigator's content should be clipped to the width
@@ -157,14 +157,14 @@ package feathers.controls
 		 */
 		public var transition:Function = defaultTransition;
 
-		private var _screens:Object = {};
-		private var _screenEvents:Object = {};
+		protected var _screens:Object = {};
+		protected var _screenEvents:Object = {};
 
-		private var _transitionIsActive:Boolean = false;
-		private var _previousScreenInTransitionID:String;
-		private var _previousScreenInTransition:DisplayObject;
-		private var _nextScreenID:String = null;
-		private var _clearAfterTransition:Boolean = false;
+		protected var _transitionIsActive:Boolean = false;
+		protected var _previousScreenInTransitionID:String;
+		protected var _previousScreenInTransition:DisplayObject;
+		protected var _nextScreenID:String = null;
+		protected var _clearAfterTransition:Boolean = false;
 
 		/**
 		 * Displays a screen and returns a reference to it. If a previous

@@ -149,17 +149,17 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _oldGlobalX:Number = 0;
+		protected var _oldGlobalX:Number = 0;
 
 		/**
 		 * @private
 		 */
-		private var _oldGlobalY:Number = 0;
+		protected var _oldGlobalY:Number = 0;
 
 		/**
 		 * @private
 		 */
-		private var _savedSelectionIndex:int = -1;
+		protected var _savedSelectionIndex:int = -1;
 
 		/**
 		 * @private
@@ -240,7 +240,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _backgroundSkin:DisplayObject;
+		protected var _backgroundSkin:DisplayObject;
 
 		/**
 		 * A display object displayed behind the header's content.
@@ -278,7 +278,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _backgroundFocusedSkin:DisplayObject;
+		protected var _backgroundFocusedSkin:DisplayObject;
 
 		/**
 		 * A display object displayed behind the header's content when the
@@ -317,7 +317,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _backgroundDisabledSkin:DisplayObject;
+		protected var _backgroundDisabledSkin:DisplayObject;
 
 		/**
 		 * A background to display when the header is disabled.
@@ -474,7 +474,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _stageTextProperties:PropertyProxy;
+		protected var _stageTextProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to the text input's

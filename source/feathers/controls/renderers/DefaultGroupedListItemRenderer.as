@@ -49,7 +49,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		private var _groupIndex:int = -1;
+		protected var _groupIndex:int = -1;
 		
 		/**
 		 * @inheritDoc
@@ -70,7 +70,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		private var _itemIndex:int = -1;
+		protected var _itemIndex:int = -1;
 
 		/**
 		 * @inheritDoc
@@ -91,7 +91,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		private var _layoutIndex:int = -1;
+		protected var _layoutIndex:int = -1;
 
 		/**
 		 * @inheritDoc

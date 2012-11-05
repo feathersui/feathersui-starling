@@ -54,17 +54,17 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		private var _items:Vector.<IToggle> = new Vector.<IToggle>;
+		protected var _items:Vector.<IToggle> = new Vector.<IToggle>;
 
 		/**
 		 * @private
 		 */
-		private var _ignoreChanges:Boolean = false;
+		protected var _ignoreChanges:Boolean = false;
 
 		/**
 		 * @private
 		 */
-		private var _isSelectionRequired:Boolean = true;
+		protected var _isSelectionRequired:Boolean = true;
 
 		/**
 		 * Determines if the user can deselect the currently selected item or
@@ -121,7 +121,7 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		private var _selectedIndex:int = -1;
+		protected var _selectedIndex:int = -1;
 		
 		/**
 		 * The index of the currently selected toggle.

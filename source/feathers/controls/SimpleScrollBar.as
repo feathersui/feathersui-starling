@@ -118,7 +118,7 @@ package feathers.controls
 		protected var thumbOriginalHeight:Number = NaN;
 
 		/**
-		 * @private
+		 * The thumb sub-component.
 		 */
 		protected var thumb:Button;
 
@@ -273,7 +273,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _page:Number = 0;
+		protected var _page:Number = 0;
 
 		/**
 		 * @inheritDoc
@@ -452,7 +452,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _thumbProperties:PropertyProxy;
+		protected var _thumbProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to the scroll bar's thumb
@@ -511,12 +511,12 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
-		private var _touchPointID:int = -1;
-		private var _touchStartX:Number = NaN;
-		private var _touchStartY:Number = NaN;
-		private var _thumbStartX:Number = NaN;
-		private var _thumbStartY:Number = NaN;
-		private var _touchValue:Number;
+		protected var _touchPointID:int = -1;
+		protected var _touchStartX:Number = NaN;
+		protected var _touchStartY:Number = NaN;
+		protected var _thumbStartX:Number = NaN;
+		protected var _thumbStartY:Number = NaN;
+		protected var _touchValue:Number;
 
 		/**
 		 * @private

@@ -53,7 +53,7 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * The text renderer.
 		 */
 		protected var textRenderer:ITextRenderer;
 
@@ -125,7 +125,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _textRendererProperties:PropertyProxy;
+		protected var _textRendererProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to the text renderer.

@@ -70,10 +70,25 @@ package feathers.core
 		 */
 		protected var root:DisplayObjectContainer;
 
-		private var _initializerNoNameTypeMap:Dictionary = new Dictionary(true);
-		private var _initializerNameTypeMap:Dictionary = new Dictionary(true);
-		private var _initializerSuperTypeMap:Dictionary = new Dictionary(true);
-		private var _initializerSuperTypes:Vector.<Class> = new <Class>[];
+		/**
+		 * @private
+		 */
+		protected var _initializerNoNameTypeMap:Dictionary = new Dictionary(true);
+
+		/**
+		 * @private
+		 */
+		protected var _initializerNameTypeMap:Dictionary = new Dictionary(true);
+
+		/**
+		 * @private
+		 */
+		protected var _initializerSuperTypeMap:Dictionary = new Dictionary(true);
+
+		/**
+		 * @private
+		 */
+		protected var _initializerSuperTypes:Vector.<Class> = new <Class>[];
 
 		/**
 		 * Stops listening to the root and cleans up anything else that needs to

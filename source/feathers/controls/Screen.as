@@ -59,7 +59,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _originalWidth:Number = NaN;
+		protected var _originalWidth:Number = NaN;
 		
 		/**
 		 * The original intended width of the application. If not set manually,
@@ -90,7 +90,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _originalHeight:Number = NaN;
+		protected var _originalHeight:Number = NaN;
 		
 		/**
 		 * The original intended height of the application. If not set manually,
@@ -121,7 +121,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _originalDPI:int = 0;
+		protected var _originalDPI:int = 0;
 		
 		/**
 		 * The original intended DPI of the application. This value cannot be
@@ -191,7 +191,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _pixelScale:Number = 1;
+		protected var _pixelScale:Number = 1;
 		
 		/**
 		 * Uses <code>originalWidth</code>, <code>originalHeight</code>,
@@ -209,7 +209,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _dpiScale:Number = 1;
+		protected var _dpiScale:Number = 1;
 		
 		/**
 		 * Uses <code>originalDPI</code> and <code>DeviceCapabilities.dpi</code>

@@ -156,7 +156,7 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		private var _gap:Number = 0;
+		protected var _gap:Number = 0;
 
 		/**
 		 * The space, in pixels, between tiles.
@@ -286,7 +286,7 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		private var _verticalAlign:String = VERTICAL_ALIGN_TOP;
+		protected var _verticalAlign:String = VERTICAL_ALIGN_TOP;
 
 		[Inspectable(type="String",enumeration="top,middle,bottom")]
 		/**
@@ -314,7 +314,7 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		private var _horizontalAlign:String = HORIZONTAL_ALIGN_CENTER;
+		protected var _horizontalAlign:String = HORIZONTAL_ALIGN_CENTER;
 
 		[Inspectable(type="String",enumeration="left,center,right")]
 		/**
@@ -342,7 +342,7 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		private var _tileVerticalAlign:String = TILE_VERTICAL_ALIGN_MIDDLE;
+		protected var _tileVerticalAlign:String = TILE_VERTICAL_ALIGN_MIDDLE;
 
 		[Inspectable(type="String",enumeration="top,middle,bottom,justify")]
 		/**
@@ -370,7 +370,7 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		private var _tileHorizontalAlign:String = TILE_HORIZONTAL_ALIGN_CENTER;
+		protected var _tileHorizontalAlign:String = TILE_HORIZONTAL_ALIGN_CENTER;
 
 		[Inspectable(type="String",enumeration="left,center,right,justify")]
 		/**
@@ -398,7 +398,7 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		private var _paging:String = PAGING_NONE;
+		protected var _paging:String = PAGING_NONE;
 
 		/**
 		 * If the total combined width of the columns is larger than the width
@@ -427,7 +427,7 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		private var _useSquareTiles:Boolean = true;
+		protected var _useSquareTiles:Boolean = true;
 
 		/**
 		 * Determines if the tiles must be square or if their width and height
@@ -454,7 +454,7 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		private var _useVirtualLayout:Boolean = true;
+		protected var _useVirtualLayout:Boolean = true;
 
 		/**
 		 * @inheritDoc
@@ -480,7 +480,7 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		private var _typicalItemWidth:Number = 0;
+		protected var _typicalItemWidth:Number = 0;
 
 		/**
 		 * @inheritDoc
@@ -505,7 +505,7 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		private var _typicalItemHeight:Number = 0;
+		protected var _typicalItemHeight:Number = 0;
 
 		/**
 		 * @inheritDoc

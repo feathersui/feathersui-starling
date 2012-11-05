@@ -36,8 +36,11 @@ package feathers.core
 	 * is like saying, "If this nested <code>PropertyProxy</code> doesn't exist
 	 * yet, create one. If it does, use the existing one."</p>
 	 */
-	public dynamic class PropertyProxy extends Proxy
+	public final dynamic class PropertyProxy extends Proxy
 	{
+		/**
+		 * Creates a <code>PropertyProxy</code> from a regular old <code>Object</code>.
+		 */
 		public static function fromObject(source:Object, onChangeCallback:Function = null):PropertyProxy
 		{
 			const newValue:PropertyProxy = new PropertyProxy(onChangeCallback);
@@ -55,19 +58,19 @@ package feathers.core
 		{
 			if(onChangeCallback != null)
 			{
-				this.onChangeCallbacks.push(onChangeCallback);
+				this._onChangeCallbacks.push(onChangeCallback);
 			}
 		}
 
 		/**
 		 * @private
 		 */
-		protected var subProxyName:String;
+		private var _subProxyName:String;
 
 		/**
 		 * @private
 		 */
-		protected var onChangeCallbacks:Vector.<Function> = new <Function>[];
+		private var _onChangeCallbacks:Vector.<Function> = new <Function>[];
 
 		/**
 		 * @private
@@ -98,7 +101,7 @@ package feathers.core
 				if(!this._storage.hasOwnProperty(nameAsString))
 				{
 					const subProxy:PropertyProxy = new PropertyProxy(subProxy_onChange);
-					subProxy.subProxyName = nameAsString;
+					subProxy._subProxyName = nameAsString;
 					this._storage[nameAsString] = subProxy;
 					this._names.push(nameAsString);
 					this.fireOnChangeCallback(nameAsString);
@@ -173,7 +176,7 @@ package feathers.core
 		 */
 		public function addOnChangeCallback(callback:Function):void
 		{
-			this.onChangeCallbacks.push(callback);
+			this._onChangeCallbacks.push(callback);
 		}
 
 		/**
@@ -181,22 +184,22 @@ package feathers.core
 		 */
 		public function removeOnChangeCallback(callback:Function):void
 		{
-			const index:int = this.onChangeCallbacks.indexOf(callback);
+			const index:int = this._onChangeCallbacks.indexOf(callback);
 			if(index >= 0)
 			{
-				this.onChangeCallbacks.splice(index, 1);
+				this._onChangeCallbacks.splice(index, 1);
 			}
 		}
 
 		/**
 		 * @private
 		 */
-		protected function fireOnChangeCallback(forName:String):void
+		private function fireOnChangeCallback(forName:String):void
 		{
-			const callbackCount:int = this.onChangeCallbacks.length;
+			const callbackCount:int = this._onChangeCallbacks.length;
 			for(var i:int = 0; i < callbackCount; i++)
 			{
-				var callback:Function = this.onChangeCallbacks[i] as Function;
+				var callback:Function = this._onChangeCallbacks[i] as Function;
 				callback(this, forName);
 			}
 		}
@@ -204,9 +207,9 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		protected function subProxy_onChange(proxy:PropertyProxy, name:String):void
+		private function subProxy_onChange(proxy:PropertyProxy, name:String):void
 		{
-			this.fireOnChangeCallback(proxy.subProxyName);
+			this.fireOnChangeCallback(proxy._subProxyName);
 		}
 	}
 }

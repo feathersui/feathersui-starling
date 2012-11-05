@@ -34,6 +34,8 @@ package feathers.motion.transitions
 	/**
 	 * A transition for <code>ScreenNavigator</code> that fades out the old
 	 * screen and fades in the new screen.
+	 *
+	 * @see feathers.controls.ScreenNavigator
 	 */
 	public class ScreenFadeTransitionManager
 	{
@@ -46,14 +48,29 @@ package feathers.motion.transitions
 			{
 				throw new ArgumentError("ScreenNavigator cannot be null.");
 			}
-			this._navigator = navigator;
-			this._navigator.transition = this.onTransition;
+			this.navigator = navigator;
+			this.navigator.transition = this.onTransition;
 		}
-		
-		private var _navigator:ScreenNavigator;
-		private var _activeTransition:Tween;
-		private var _savedOtherTarget:DisplayObject;
-		private var _savedCompleteHandler:Function;
+
+		/**
+		 * The <code>ScreenNavigator</code> being managed.
+		 */
+		protected var navigator:ScreenNavigator;
+
+		/**
+		 * @private
+		 */
+		protected var _activeTransition:Tween;
+
+		/**
+		 * @private
+		 */
+		protected var _savedOtherTarget:DisplayObject;
+
+		/**
+		 * @private
+		 */
+		protected var _savedCompleteHandler:Function;
 		
 		/**
 		 * The duration of the transition, measured in seconds.
@@ -73,9 +90,10 @@ package feathers.motion.transitions
 		public var ease:Object = Transitions.EASE_OUT;
 		
 		/**
-		 * @private
+		 * The function passed to the <code>transition</code> property of the
+		 * <code>ScreenNavigator</code>.
 		 */
-		private function onTransition(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
+		protected function onTransition(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
 		{
 			if(!oldScreen && !newScreen)
 			{
@@ -120,7 +138,7 @@ package feathers.motion.transitions
 		/**
 		 * @private
 		 */
-		private function activeTransition_onUpdate():void
+		protected function activeTransition_onUpdate():void
 		{
 			if(this._savedOtherTarget)
 			{
@@ -132,7 +150,7 @@ package feathers.motion.transitions
 		/**
 		 * @private
 		 */
-		private function activeTransition_onComplete():void
+		protected function activeTransition_onComplete():void
 		{
 			this._savedOtherTarget = null;
 			this._activeTransition = null;

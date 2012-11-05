@@ -76,7 +76,7 @@ package feathers.controls
 		protected var scrollerName:String = DEFAULT_CHILD_NAME_SCROLLER;
 
 		/**
-		 * @private
+		 * The scroller sub-component.
 		 */
 		protected var scroller:Scroller;
 
@@ -103,7 +103,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _text:String = "";
+		protected var _text:String = "";
 
 		/**
 		 * @inheritDoc
@@ -159,7 +159,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _embedFonts:Boolean = false;
+		protected var _embedFonts:Boolean = false;
 
 		/**
 		 * Determines if the TextField should use an embedded font or not.
@@ -185,7 +185,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _isHTML:Boolean = false;
+		protected var _isHTML:Boolean = false;
 
 		/**
 		 * Determines if the TextField should display the text as HTML or not.
@@ -319,7 +319,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _horizontalScrollPosition:Number = 0;
+		protected var _horizontalScrollPosition:Number = 0;
 
 		/**
 		 * The number of pixels the text has been scrolled horizontally (on
@@ -347,7 +347,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _maxHorizontalScrollPosition:Number = 0;
+		protected var _maxHorizontalScrollPosition:Number = 0;
 
 		/**
 		 * The maximum number of pixels the text may be scrolled horizontally
@@ -380,7 +380,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _verticalScrollPosition:Number = 0;
+		protected var _verticalScrollPosition:Number = 0;
 
 		/**
 		 * The number of pixels the text has been scrolled vertically (on
@@ -408,7 +408,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _maxVerticalScrollPosition:Number = 0;
+		protected var _maxVerticalScrollPosition:Number = 0;
 
 		/**
 		 * The maximum number of pixels the text may be scrolled vertically
@@ -443,7 +443,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _scrollerProperties:PropertyProxy;
+		protected var _scrollerProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to the container's

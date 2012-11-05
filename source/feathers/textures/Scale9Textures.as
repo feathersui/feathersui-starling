@@ -33,7 +33,7 @@ package feathers.textures
 	 *
 	 * @see org.josht.starling.display.Scale9Image
 	 */
-	public class Scale9Textures
+	public final class Scale9Textures
 	{
 		/**
 		 * Constructor.

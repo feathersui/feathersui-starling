@@ -578,7 +578,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _arrowPosition:String = ARROW_POSITION_TOP;
+		protected var _arrowPosition:String = ARROW_POSITION_TOP;
 
 		[Inspectable(type="String",enumeration="top,right,bottom,left")]
 		/**
@@ -617,7 +617,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _backgroundSkin:DisplayObject;
+		protected var _backgroundSkin:DisplayObject;
 
 		/**
 		 * The primary background to display.
@@ -659,7 +659,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _bottomArrowSkin:DisplayObject;
+		protected var _bottomArrowSkin:DisplayObject;
 
 		/**
 		 * The arrow skin to display on the bottom edge of the callout. This
@@ -705,7 +705,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _topArrowSkin:DisplayObject;
+		protected var _topArrowSkin:DisplayObject;
 
 		/**
 		 * The arrow skin to display on the top edge of the callout. This arrow
@@ -751,7 +751,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _leftArrowSkin:DisplayObject;
+		protected var _leftArrowSkin:DisplayObject;
 
 		/**
 		 * The arrow skin to display on the left edge of the callout. This arrow
@@ -797,7 +797,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _rightArrowSkin:DisplayObject;
+		protected var _rightArrowSkin:DisplayObject;
 
 		/**
 		 * The arrow skin to display on the right edge of the callout. This
@@ -843,7 +843,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _topArrowGap:Number = 0;
+		protected var _topArrowGap:Number = 0;
 
 		/**
 		 * The space, in pixels, between the top arrow skin and the background
@@ -871,7 +871,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _bottomArrowGap:Number = 0;
+		protected var _bottomArrowGap:Number = 0;
 
 		/**
 		 * The space, in pixels, between the bottom arrow skin and the
@@ -899,7 +899,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _rightArrowGap:Number = 0;
+		protected var _rightArrowGap:Number = 0;
 
 		/**
 		 * The space, in pixels, between the right arrow skin and the background
@@ -927,7 +927,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private var _leftArrowGap:Number = 0;
+		protected var _leftArrowGap:Number = 0;
 
 		/**
 		 * The space, in pixels, between the right arrow skin and the background
