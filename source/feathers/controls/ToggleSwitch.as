@@ -699,12 +699,34 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
+		/**
+		 * @private
+		 */
 		protected var _toggleTween:Tween;
 
+		/**
+		 * @private
+		 */
 		protected var _ignoreTapHandler:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _touchPointID:int = -1;
+
+		/**
+		 * @private
+		 */
 		protected var _thumbStartX:Number;
+
+		/**
+		 * @private
+		 */
 		protected var _touchStartX:Number;
+
+		/**
+		 * @private
+		 */
 		protected var _isSelectionChangedByUser:Boolean = false;
 
 		/**

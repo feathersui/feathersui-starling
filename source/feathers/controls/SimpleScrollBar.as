@@ -511,11 +511,34 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
+		/**
+		 * @private
+		 */
 		protected var _touchPointID:int = -1;
+
+		/**
+		 * @private
+		 */
 		protected var _touchStartX:Number = NaN;
+
+		/**
+		 * @private
+		 */
 		protected var _touchStartY:Number = NaN;
+
+		/**
+		 * @private
+		 */
 		protected var _thumbStartX:Number = NaN;
+
+		/**
+		 * @private
+		 */
 		protected var _thumbStartY:Number = NaN;
+
+		/**
+		 * @private
+		 */
 		protected var _touchValue:Number;
 
 		/**

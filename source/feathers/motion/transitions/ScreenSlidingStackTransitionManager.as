@@ -37,8 +37,19 @@ package feathers.motion.transitions
 	/**
 	 * A transition for <code>ScreenNavigator</code> that slides out the old
 	 * screen and slides in the new screen at the same time. The slide starts
-	 * from the right or left, depending on if the manager determines if the
+	 * from the right or left, depending on if the manager determines that the
 	 * transition is a push or a pop.
+	 *
+	 * <p>Whether a screen change is supposed to be a push or a pop is
+	 * determined automatically. The manager generates an identifier from the
+	 * fully-qualified class name of the screen, and if present, the
+	 * <code>screenID</code> defined by <code>IScreen</code> instances. If the
+	 * generated identifier is present on the stack, a screen change is
+	 * considered a pop. If the token is not present, it's a push. Screen IDs
+	 * should be tailored to this behavior to avoid false positives.</p>
+	 *
+	 * <p>If your navigation structure requires explicit pushing and popping, a
+	 * custom transition manager is probably better.</p>
 	 *
 	 * @see feathers.controls.ScreenNavigator
 	 */
