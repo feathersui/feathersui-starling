@@ -2163,7 +2163,7 @@ package feathers.controls
 		{
 			if(this._snapToPages)
 			{
-				const inchesPerSecond:Number = 1000 * pixelsPerMS / DeviceCapabilities.dpi;
+				const inchesPerSecond:Number = 1000 * pixelsPerMS / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
 				if(inchesPerSecond > MINIMUM_PAGE_VELOCITY)
 				{
 					var snappedPageHorizontalScrollPosition:Number = roundDownToNearest(this._horizontalScrollPosition, this.actualWidth);
@@ -2229,7 +2229,7 @@ package feathers.controls
 		{
 			if(this._snapToPages)
 			{
-				const inchesPerSecond:Number = 1000 * pixelsPerMS / DeviceCapabilities.dpi;
+				const inchesPerSecond:Number = 1000 * pixelsPerMS / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
 				if(inchesPerSecond > MINIMUM_PAGE_VELOCITY)
 				{
 					var snappedPageVerticalScrollPosition:Number = roundDownToNearest(this._verticalScrollPosition, this.actualHeight);
@@ -2490,8 +2490,8 @@ package feathers.controls
 				this._previousTouchX = this._currentTouchX;
 				this._previousTouchY = this._currentTouchY;
 			}
-			const horizontalInchesMoved:Number = Math.abs(this._currentTouchX - this._startTouchX) / DeviceCapabilities.dpi;
-			const verticalInchesMoved:Number = Math.abs(this._currentTouchY - this._startTouchY) / DeviceCapabilities.dpi;
+			const horizontalInchesMoved:Number = Math.abs(this._currentTouchX - this._startTouchX) / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
+			const verticalInchesMoved:Number = Math.abs(this._currentTouchY - this._startTouchY) / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
 			if((this._horizontalScrollPolicy == SCROLL_POLICY_ON ||
 				(this._horizontalScrollPolicy == SCROLL_POLICY_AUTO && this._maxHorizontalScrollPosition > 0)) &&
 				!this._isDraggingHorizontally && horizontalInchesMoved >= MINIMUM_DRAG_DISTANCE)
