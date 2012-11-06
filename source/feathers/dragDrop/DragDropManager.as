@@ -71,9 +71,16 @@ package feathers.dragDrop
 
 		/**
 		 * @private
-		 * The source of the current drag.
 		 */
-		protected static var dragSource:IDragSource;
+		protected static var _dragSource:IDragSource;
+
+		/**
+		 * The <code>IDragSource</code> that started the current drag.
+		 */
+		public static function get dragSource():IDragSource
+		{
+			return _dragSource;
+		}
 
 		/**
 		 * @private
@@ -160,7 +167,7 @@ package feathers.dragDrop
 			{
 				throw new ArgumentError("Drag data cannot be null.");
 			}
-			dragSource = source;
+			_dragSource = source;
 			_dragData = data;
 			_touchPointID = touch.id;
 			avatar = dragAvatar;
@@ -177,7 +184,7 @@ package feathers.dragDrop
 			}
 			Starling.current.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			Starling.current.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler, false, 0, true);
-			dragSource.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_START, data, false));
+			_dragSource.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_START, data, false));
 
 			updateDropTarget(HELPER_POINT);
 		}
@@ -222,7 +229,7 @@ package feathers.dragDrop
 				dropTarget.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_EXIT, _dragData, false, dropTargetLocalX, dropTargetLocalY));
 				dropTarget = null;
 			}
-			const source:IDragSource = dragSource;
+			const source:IDragSource = _dragSource;
 			const data:DragData = _dragData;
 			cleanup();
 			source.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_COMPLETE, _dragData, isDropped));
@@ -245,7 +252,7 @@ package feathers.dragDrop
 			}
 			Starling.current.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler);
-			dragSource = null;
+			_dragSource = null;
 			_dragData = null;
 		}
 
