@@ -52,8 +52,8 @@ package feathers.controls
 		 */
 		public function Screen()
 		{
-			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
-			this.addEventListener(FeathersEventType.RESIZE, resizeHandler);
+			this.addEventListener(Event.ADDED_TO_STAGE, screen_addedToStageHandler);
+			this.addEventListener(FeathersEventType.RESIZE, screen_resizeHandler);
 			super();
 			this.originalDPI = 168;
 		}
@@ -286,34 +286,34 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function addedToStageHandler(event:Event):void
+		protected function screen_addedToStageHandler(event:Event):void
 		{
 			if(event.target != this)
 			{
 				return;
 			}
 			this.refreshPixelScale();
-			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
-			Starling.current.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler, false, 0, true);
+			this.addEventListener(Event.REMOVED_FROM_STAGE, screen_removedFromStageHandler);
+			Starling.current.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, screen_stage_keyDownHandler, false, 0, true);
 		}
 
 		/**
 		 * @private
 		 */
-		protected function removedFromStageHandler(event:Event):void
+		protected function screen_removedFromStageHandler(event:Event):void
 		{
 			if(event.target != this)
 			{
 				return;
 			}
-			this.removeEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
-			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+			this.removeEventListener(Event.REMOVED_FROM_STAGE, screen_removedFromStageHandler);
+			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, screen_stage_keyDownHandler);
 		}
 		
 		/**
 		 * @private
 		 */
-		protected function resizeHandler(event:Event):void
+		protected function screen_resizeHandler(event:Event):void
 		{
 			this.refreshPixelScale();
 		}
@@ -321,7 +321,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function stage_keyDownHandler(event:KeyboardEvent):void
+		protected function screen_stage_keyDownHandler(event:KeyboardEvent):void
 		{
 			//we're accessing Keyboard.BACK (and others) using a string because
 			//this code may be compiled for both Flash Player and AIR.
