@@ -265,7 +265,7 @@ package feathers.dragDrop
 			}
 			if(target != dropTarget)
 			{
-				if(dropTarget && isAccepted)
+				if(dropTarget)
 				{
 					//notice that we can reuse the previously saved location
 					dropTarget.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_EXIT, _dragData, false, dropTargetLocalX, dropTargetLocalY));
