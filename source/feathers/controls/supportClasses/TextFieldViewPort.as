@@ -408,6 +408,7 @@ package feathers.controls.supportClasses
 			this._textFieldContainer.y = starlingViewPort.y + HELPER_POINT.y * Starling.contentScaleFactor;
 			this._textFieldContainer.scaleX = this._textFieldContainer.scaleY =  Starling.contentScaleFactor;
 			this._textFieldContainer.visible = true;
+			this._textFieldContainer.alpha = alpha;
 			super.render(support, alpha);
 		}
 
