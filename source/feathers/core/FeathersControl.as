@@ -25,6 +25,7 @@
 package feathers.core
 {
 	import feathers.controls.text.BitmapFontTextRenderer;
+	import feathers.controls.text.StageTextTextEditor;
 	import feathers.display.Sprite;
 	import feathers.events.FeathersEventType;
 	import feathers.events.FeathersEventType;
@@ -145,10 +146,27 @@ package feathers.core
 		 * <pre>function():ITextRenderer</pre>
 		 *
 		 * @see http://wiki.starling-framework.org/feathers/text-renderers
+		 * @see feathers.controls.text.BitmapFontTextRenderer
 		 */
 		public static var defaultTextRendererFactory:Function = function():ITextRenderer
 		{
 			return new BitmapFontTextRenderer();
+		}
+
+		/**
+		 * A function used by all UI controls that support text editor to
+		 * create an <code>ITextEditor</code> instance. You may replace the
+		 * default function with your own, if you prefer not to use the
+		 * <code>StageTextTextEditor</code>.
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 * <pre>function():ITextEditor</pre>
+		 *
+		 * @see feathers.controls.text.StageTextTextEditor
+		 */
+		public static var defaultTextEditorFactory:Function = function():ITextEditor
+		{
+			return new StageTextTextEditor();
 		}
 
 		/**

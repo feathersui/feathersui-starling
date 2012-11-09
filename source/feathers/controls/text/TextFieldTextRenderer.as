@@ -60,7 +60,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		private static const helperMatrix:Matrix = new Matrix();
+		private static const HELPER_MATRIX:Matrix = new Matrix();
 
 		/**
 		 * Constructor.
@@ -280,9 +280,9 @@ package feathers.controls.text
 			{
 				if(this._snapToPixels)
 				{
-					this.getTransformationMatrix(this.stage, helperMatrix);
-					this._textSnapshot.x = Math.round(helperMatrix.tx) - helperMatrix.tx;
-					this._textSnapshot.y = Math.round(helperMatrix.ty) - helperMatrix.ty;
+					this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+					this._textSnapshot.x = Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx;
+					this._textSnapshot.y = Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty;
 					const scrollRect:Rectangle = this.scrollRect;
 					if(scrollRect)
 					{
@@ -499,10 +499,10 @@ package feathers.controls.text
 			{
 				return;
 			}
-			helperMatrix.identity();
-			helperMatrix.scale(Starling.contentScaleFactor, Starling.contentScaleFactor);
+			HELPER_MATRIX.identity();
+			HELPER_MATRIX.scale(Starling.contentScaleFactor, Starling.contentScaleFactor);
 			this._textSnapshotBitmapData.fillRect(this._textSnapshotBitmapData.rect, 0x00ff00ff);
-			this._textSnapshotBitmapData.draw(this._textField, helperMatrix);
+			this._textSnapshotBitmapData.draw(this._textField, HELPER_MATRIX);
 			if(!this._textSnapshot)
 			{
 				this._textSnapshot = new Image(starling.textures.Texture.fromBitmapData(this._textSnapshotBitmapData, false, false, Starling.contentScaleFactor));
