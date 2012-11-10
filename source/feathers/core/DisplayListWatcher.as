@@ -66,6 +66,47 @@ package feathers.core
 		public var processRecursively:Boolean = true;
 
 		/**
+		 * @private
+		 * Tracks the objects that have been initialized. Uses weak keys so that
+		 * the tracked objects can be garbage collected.
+		 */
+		protected var initializedObjects:Dictionary = new Dictionary(true);
+
+		/**
+		 * @private
+		 */
+		protected var _initializeOnce:Boolean = true;
+
+		/**
+		 * Determines if objects added to the display list are initialized only
+		 * once or every time that they are re-added.
+		 */
+		public function get initializeOnce():Boolean
+		{
+			return this._initializeOnce;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set initializeOnce(value:Boolean):void
+		{
+			if(this._initializeOnce == value)
+			{
+				return;
+			}
+			this._initializeOnce = value;
+			if(value)
+			{
+				this.initializedObjects = new Dictionary(true);
+			}
+			else
+			{
+				this.initializedObjects = null
+			}
+		}
+
+		/**
 		 * The root of the display list that is watched for added children.
 		 */
 		protected var root:DisplayObjectContainer;
@@ -259,7 +300,12 @@ package feathers.core
 			const targetAsRequiredBaseClass:DisplayObject = DisplayObject(target as requiredBaseClass);
 			if(targetAsRequiredBaseClass)
 			{
-				this.processAllInitializers(target);
+				const isInitialized:Boolean = this._initializeOnce && this.initializedObjects[targetAsRequiredBaseClass];
+				if(!isInitialized)
+				{
+					this.initializedObjects[targetAsRequiredBaseClass] = true;
+					this.processAllInitializers(target);
+				}
 			}
 
 			if(this.processRecursively)
