@@ -271,6 +271,110 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _alwaysShowSelection:Boolean = false;
+
+		/**
+		 * Same as the <code>flash.text.TextField</code> property with the same name.
+		 */
+		public function get alwaysShowSelection():Boolean
+		{
+			return this._alwaysShowSelection;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set alwaysShowSelection(value:Boolean):void
+		{
+			if(this._alwaysShowSelection == value)
+			{
+				return;
+			}
+			this._alwaysShowSelection = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _displayAsPassword:Boolean = false;
+
+		/**
+		 * Same as the <code>flash.text.TextField</code> property with the same name.
+		 */
+		public function get displayAsPassword():Boolean
+		{
+			return this._displayAsPassword;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set displayAsPassword(value:Boolean):void
+		{
+			if(this._displayAsPassword == value)
+			{
+				return;
+			}
+			this._displayAsPassword = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _maxChars:int = int.MAX_VALUE;
+
+		/**
+		 * Same as the <code>flash.text.TextField</code> property with the same name.
+		 */
+		public function get maxChars():int
+		{
+			return this._maxChars;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set maxChars(value:int):void
+		{
+			if(this._maxChars == value)
+			{
+				return;
+			}
+			this._maxChars = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _restrict:String;
+
+		/**
+		 * Same as the <code>flash.text.TextField</code> property with the same name.
+		 */
+		public function get restrict():String
+		{
+			return this._restrict;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set restrict(value:String):void
+		{
+			if(this._restrict == value)
+			{
+				return;
+			}
+			this._restrict = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _touchPointID:int = -1;
 
 		/**
@@ -354,6 +458,10 @@ package feathers.controls.text
 						}
 					}
 				}
+				else
+				{
+					this._savedSelectionIndex = -1;
+				}
 				Starling.current.nativeStage.focus = this.textField;
 			}
 			else
@@ -395,20 +503,7 @@ package feathers.controls.text
 
 			if(dataInvalid || stylesInvalid)
 			{
-				this.textField.wordWrap = this._wordWrap;
-				this.textField.embedFonts = this._embedFonts;
-				if(this._textFormat)
-				{
-					this.textField.defaultTextFormat = this._textFormat;
-				}
-				if(this._isHTML)
-				{
-					this.textField.htmlText = this._text;
-				}
-				else
-				{
-					this.textField.text = this._text;
-				}
+				this.commitStylesAndData();
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
@@ -453,6 +548,31 @@ package feathers.controls.text
 			this.textField.height = this.actualHeight;
 
 			return this.setSizeInternal(newWidth, newHeight, false);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function commitStylesAndData():void
+		{
+			this.textField.maxChars = this._maxChars;
+			this.textField.restrict = this._restrict;
+			this.textField.alwaysShowSelection = this._alwaysShowSelection;
+			this.textField.displayAsPassword = this._displayAsPassword;
+			this.textField.wordWrap = this._wordWrap;
+			this.textField.embedFonts = this._embedFonts;
+			if(this._textFormat)
+			{
+				this.textField.defaultTextFormat = this._textFormat;
+			}
+			if(this._isHTML)
+			{
+				this.textField.htmlText = this._text;
+			}
+			else
+			{
+				this.textField.text = this._text;
+			}
 		}
 
 		/**

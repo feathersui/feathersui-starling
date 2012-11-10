@@ -54,7 +54,9 @@ package feathers.core
 		function set text(value:String):void;
 
 		/**
-		 * Gives focus to the text editor. Includes an optional position.
+		 * Gives focus to the text editor. Includes an optional position which
+		 * may be used by the text editor to determine the cursor position. The
+		 * position may be outside of the editors bounds.
 		 */
 		function setFocus(position:Point = null):void;
 	}

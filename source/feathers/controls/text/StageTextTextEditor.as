@@ -673,6 +673,10 @@ package feathers.controls.text
 						}
 					}
 				}
+				else
+				{
+					this._savedSelectionIndex = -1;
+				}
 				this.stageText.assignFocus();
 			}
 			else
@@ -739,19 +743,32 @@ package feathers.controls.text
 		 */
 		protected function refreshStageTextProperties():void
 		{
-			this._measureTextField.displayAsPassword = this.stageText.displayAsPassword = this._displayAsPassword;
-			this._measureTextField.maxChars = this.stageText.maxChars = this._maxChars;
-			this._measureTextField.restrict = this.stageText.restrict = this._restrict;
-			const format:TextFormat = this._measureTextField.defaultTextFormat;
-			format.color = this.stageText.color = this._color;
-			format.font = this.stageText.fontFamily = this._fontFamily;
+			this.stageText.autoCapitalize = this._autoCapitalize;
+			this.stageText.autoCorrect = this._autoCorrect;
+			this.stageText.color = this._color;
+			this.stageText.displayAsPassword = this._displayAsPassword
+			this.stageText.editable = this._editable;
+			this.stageText.fontFamily = this._fontFamily;
 			this.stageText.fontPosture = this._fontPosture;
-			format.italic = this._fontPosture == FontPosture.ITALIC;
 			this.stageText.fontSize = this._fontSize;
-			format.size = this._fontSize / Starling.contentScaleFactor;
 			this.stageText.fontWeight = this._fontWeight;
-			format.bold = this._fontWeight == FontWeight.BOLD;
+			this.stageText.locale = this._locale;
+			this.stageText.maxChars = this._maxChars;
+			this.stageText.restrict = this._restrict;
+			this.stageText.returnKeyLabel = this._returnKeyLabel;
+			this.stageText.softKeyboardType = this._softKeyboardType;
 			this.stageText.textAlign = this._textAlign;
+
+			this._measureTextField.displayAsPassword = this._displayAsPassword;
+			this._measureTextField.maxChars = this._maxChars;
+			this._measureTextField.restrict = this._restrict;
+
+			const format:TextFormat = this._measureTextField.defaultTextFormat;
+			format.color = this._color;
+			format.font = this._fontFamily;
+			format.italic = this._fontPosture == FontPosture.ITALIC;
+			format.size = this._fontSize / Starling.contentScaleFactor;
+			format.bold = this._fontWeight == FontWeight.BOLD;
 			var alignValue:String = this._textAlign;
 			if(alignValue == TextFormatAlign.START)
 			{
