@@ -28,15 +28,15 @@ package feathers.controls
 	import feathers.core.ITextEditor;
 	import feathers.core.PropertyProxy;
 	import feathers.display.ScrollRectManager;
+	import feathers.events.FeathersEventType;
 
-	import flash.events.Event;
 	import flash.geom.Point;
 	import flash.ui.Mouse;
 	import flash.ui.MouseCursor;
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
-	import starling.display.DisplayObject;
+	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -85,6 +85,7 @@ package feathers.controls
 		 */
 		public function TextInput()
 		{
+			this.isQuickHitAreaEnabled = true;
 			this.addEventListener(TouchEvent.TOUCH, touchHandler);
 		}
 
@@ -137,7 +138,7 @@ package feathers.controls
 			}
 			this._text = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
-			this.dispatchEventWith(starling.events.Event.CHANGE);
+			this.dispatchEventWith(Event.CHANGE);
 		}
 
 		/**
@@ -468,6 +469,8 @@ package feathers.controls
 		override protected function initialize():void
 		{
 			this.textEditor = FeathersControl.defaultTextEditorFactory();
+			this.textEditor.addEventListener(Event.CHANGE, textEditor_changeHandler);
+			this.textEditor.addEventListener(FeathersEventType.ENTER, textEditor_enterHandler);
 			this.addChild(DisplayObject(this.textEditor));
 		}
 
@@ -719,6 +722,14 @@ package feathers.controls
 		protected function textEditor_changeHandler(event:Event):void
 		{
 			this.text = this.textEditor.text;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function textEditor_enterHandler(event:Event):void
+		{
+			this.dispatchEventWith(FeathersEventType.ENTER);
 		}
 	}
 }
