@@ -52,8 +52,8 @@ package feathers.controls.text
 	 * A Feathers text editor that uses the native <code>TextField</code> class
 	 * set to <code>TextInputType.INPUT</code>.
 	 *
+	 * @see http://wiki.starling-framework.org/feathers/text-editors
 	 * @see flash.text.TextField
-	 * @see feathers.controls.text.StageTextTextEditor
 	 */
 	public class TextFieldTextEditor extends FeathersControl implements ITextEditor
 	{

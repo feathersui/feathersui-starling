@@ -40,6 +40,8 @@ package feathers.core
 
 	/**
 	 * Handles the editing of text.
+	 *
+	 * @see http://wiki.starling-framework.org/feathers/text-editors
 	 */
 	public interface ITextEditor extends IFeathersControl
 	{

@@ -146,7 +146,7 @@ package feathers.core
 		 * <pre>function():ITextRenderer</pre>
 		 *
 		 * @see http://wiki.starling-framework.org/feathers/text-renderers
-		 * @see feathers.controls.text.BitmapFontTextRenderer
+		 * @see feathers.core.ITextRenderer
 		 */
 		public static var defaultTextRendererFactory:Function = function():ITextRenderer
 		{
@@ -162,7 +162,8 @@ package feathers.core
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function():ITextEditor</pre>
 		 *
-		 * @see feathers.controls.text.StageTextTextEditor
+		 * @see http://wiki.starling-framework.org/feathers/text-editors
+		 * @see feathers.core.ITextEditor
 		 */
 		public static var defaultTextEditorFactory:Function = function():ITextEditor
 		{
