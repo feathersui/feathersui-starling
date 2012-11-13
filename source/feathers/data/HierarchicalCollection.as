@@ -195,7 +195,6 @@ package feathers.data
 		public function updateItemAt(index:int, ...rest:Array):void
 		{
 			rest.unshift(index);
-			rest.unshift(this);
 			this.dispatchEventWith(CollectionEventType.UPDATE_ITEM, false, rest);
 		}
 
@@ -230,7 +229,6 @@ package feathers.data
 			this.dispatchEventWith(Event.CHANGE);
 			rest.shift();
 			rest.shift();
-			rest.unshift(this);
 			this.dispatchEventWith(CollectionEventType.ADD_ITEM, false, rest);
 		}
 
@@ -245,7 +243,6 @@ package feathers.data
 			const item:Object = this._dataDescriptor.removeItemAt.apply(null, rest);
 			this.dispatchEventWith(Event.CHANGE);
 			rest.shift();
-			rest.unshift(this);
 			this.dispatchEventWith(CollectionEventType.REMOVE_ITEM, false, rest);
 			return item;
 		}
@@ -273,7 +270,6 @@ package feathers.data
 			this._dataDescriptor.setItemAt.apply(null, rest);
 			rest.shift();
 			rest.shift();
-			rest.unshift(this);
 			this.dispatchEventWith(CollectionEventType.REPLACE_ITEM, false, rest);
 			this.dispatchEventWith(Event.CHANGE);
 		}
