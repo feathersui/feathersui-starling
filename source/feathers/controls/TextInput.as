@@ -143,6 +143,40 @@ package feathers.controls
 
 		/**
 		 * @private
+		 */
+		protected var _textEditorFactory:Function;
+
+		/**
+		 * A function used to instantiate the text editor. If null,
+		 * <code>FeathersControl.defaultTextEditorFactory</code> is used
+		 * instead.
+		 *
+		 * <p>The factory should have the following function signature:</p>
+		 * <pre>function():ITextEditor</pre>
+		 *
+		 * @see feathers.core.ITextEditor
+		 * @see feathers.core.FeathersControl#defaultTextEditorFactory
+		 */
+		public function get textEditorFactory():Function
+		{
+			return this._textEditorFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set textEditorFactory(value:Function):void
+		{
+			if(this._textEditorFactory == value)
+			{
+				return;
+			}
+			this._textEditorFactory = value;
+			this.invalidate(INVALIDATION_FLAG_TEXT_EDITOR);
+		}
+
+		/**
+		 * @private
 		 * The width of the first skin that was displayed.
 		 */
 		protected var _originalSkinWidth:Number = NaN;
@@ -466,17 +500,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override protected function initialize():void
-		{
-			this.textEditor = FeathersControl.defaultTextEditorFactory();
-			this.textEditor.addEventListener(Event.CHANGE, textEditor_changeHandler);
-			this.textEditor.addEventListener(FeathersEventType.ENTER, textEditor_enterHandler);
-			this.addChild(DisplayObject(this.textEditor));
-		}
-
-		/**
-		 * @private
-		 */
 		override protected function draw():void
 		{
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
@@ -484,18 +507,24 @@ package feathers.controls
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			const skinInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SKIN);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
+			const textEditorInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_TEXT_EDITOR);
 
-			if(stylesInvalid)
+			if(textEditorInvalid)
+			{
+				this.createTextEditor();
+			}
+
+			if(textEditorInvalid || stylesInvalid)
 			{
 				this.refreshTextEditorProperties();
 			}
 
-			if(dataInvalid)
+			if(textEditorInvalid || dataInvalid)
 			{
 				this.textEditor.text = this._text;
 			}
 
-			if(stateInvalid)
+			if(textEditorInvalid || stateInvalid)
 			{
 				this.textEditor.isEnabled = this._isEnabled;
 				if(!this._isEnabled && Mouse.supportsNativeCursor && this._oldMouseCursor)
@@ -505,14 +534,14 @@ package feathers.controls
 				}
 			}
 
-			if(stateInvalid || skinInvalid)
+			if(textEditorInvalid || stateInvalid || skinInvalid)
 			{
 				this.refreshBackground();
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
-			if(sizeInvalid || stylesInvalid || skinInvalid || stateInvalid)
+			if(textEditorInvalid || sizeInvalid || stylesInvalid || skinInvalid || stateInvalid)
 			{
 				this.layout();
 			}
@@ -541,6 +570,26 @@ package feathers.controls
 				newHeight = this._originalSkinHeight;
 			}
 			return this.setSizeInternal(newWidth, newHeight, false);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function createTextEditor():void
+		{
+			if(this.textEditor)
+			{
+				this.removeChild(DisplayObject(this.textEditor), true);
+				this.textEditor.removeEventListener(Event.CHANGE, textEditor_changeHandler);
+				this.textEditor.removeEventListener(FeathersEventType.ENTER, textEditor_enterHandler);
+				this.textEditor = null;
+			}
+
+			const factory:Function = this._textEditorFactory != null ? this._textEditorFactory : FeathersControl.defaultTextEditorFactory;
+			this.textEditor = ITextEditor(factory());
+			this.textEditor.addEventListener(Event.CHANGE, textEditor_changeHandler);
+			this.textEditor.addEventListener(FeathersEventType.ENTER, textEditor_enterHandler);
+			this.addChild(DisplayObject(this.textEditor));
 		}
 
 		/**
