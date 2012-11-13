@@ -168,7 +168,8 @@ package feathers.controls.text
 		 */
 		public function get baseline():Number
 		{
-			return this._textField.getLineMetrics(0).ascent;
+			//2 is the gutter Flash Player adds
+			return 2 + this._textField.getLineMetrics(0).ascent;
 		}
 
 		/**
