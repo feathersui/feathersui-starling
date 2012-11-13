@@ -42,7 +42,8 @@ package feathers.controls.text
 
 	/**
 	 * Renders text using <code>starling.text.BitmapFont</code>.
-	 * 
+	 *
+	 * @see http://wiki.starling-framework.org/feathers/text-renderers
 	 * @see starling.text.BitmapFont
 	 */
 	public class BitmapFontTextRenderer extends FeathersControl implements ITextRenderer

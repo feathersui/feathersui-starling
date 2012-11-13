@@ -60,9 +60,9 @@ package feathers.controls.text
 	 * in AIR, and the custom <code>StageTextField</code> class (that simulates
 	 * <code>StageText</code>) in Flash Player.
 	 *
+	 * @see http://wiki.starling-framework.org/feathers/text-editors
 	 * @see flash.text.StageText
 	 * @see feathers.text.StageTextField
-	 * @see feathers.controls.text.TextFieldTextEditor
 	 */
 	public class StageTextTextEditor extends FeathersControl implements ITextEditor
 	{

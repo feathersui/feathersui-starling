@@ -47,7 +47,8 @@ package feathers.controls.text
 
 	/**
 	 * Renders text with a native <code>flash.text.TextField</code>.
-	 * 
+	 *
+	 * @see http://wiki.starling-framework.org/feathers/text-renderers
 	 * @see flash.text.TextField
 	 */
 	public class TextFieldTextRenderer extends FeathersControl implements ITextRenderer
