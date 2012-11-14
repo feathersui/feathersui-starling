@@ -426,7 +426,8 @@ package feathers.controls
 
 		/**
 		 * @private
-		 * Flag indicating that the StageText should get focus.
+		 * Flag indicating that the text editor should get focus after it is
+		 * created.
 		 */
 		protected var _isWaitingToSetFocus:Boolean = false;
 
@@ -608,6 +609,12 @@ package feathers.controls
 			this.textEditor.addEventListener(FeathersEventType.FOCUS_IN, textEditor_focusInHandler);
 			this.textEditor.addEventListener(FeathersEventType.FOCUS_OUT, textEditor_focusOutHandler);
 			this.addChild(DisplayObject(this.textEditor));
+
+			if(this._isWaitingToSetFocus)
+			{
+				this._isWaitingToSetFocus = false;
+				this.textEditor.setFocus();
+			}
 		}
 
 		/**
