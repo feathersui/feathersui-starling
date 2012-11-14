@@ -92,5 +92,17 @@ package feathers.events
 		 * transition between screens ends.
 		 */
 		public static const TRANSITION_COMPLETE:String = "transitionComplete";
+
+		/**
+		 * The <code>FeathersEventType.FOCUS_IN</code> event type is used by
+		 * Feathers components to indicate when they have received focus.
+		 */
+		public static const FOCUS_IN:String = "focusIn";
+
+		/**
+		 * The <code>FeathersEventType.FOCUS_OUT</code> event type is used by
+		 * Feathers components to indicate when they have lost focus.
+		 */
+		public static const FOCUS_OUT:String = "focusOut";
 	}
 }
