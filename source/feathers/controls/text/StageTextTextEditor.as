@@ -56,6 +56,32 @@ package feathers.controls.text
 	import starling.utils.MatrixUtil;
 
 	/**
+	 * Dispatched when the text property changes.
+	 */
+	[Event(name="change",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the user presses the Enter key while the editor has focus.
+	 *
+	 * @eventType feathers.events.FeathersEventType.ENTER
+	 */
+	[Event(name="enter",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the text editor receives focus.
+	 *
+	 * @eventType feathers.events.FeathersEventType.FOCUS_IN
+	 */
+	[Event(name="focusIn",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the text editor loses focus.
+	 *
+	 * @eventType feathers.events.FeathersEventType.FOCUS_OUT
+	 */
+	[Event(name="focusOut",type="starling.events.Event")]
+
+	/**
 	 * A Feathers text editor that uses the native <code>StageText</code> class
 	 * in AIR, and the custom <code>StageTextField</code> class (that simulates
 	 * <code>StageText</code>) in Flash Player.
@@ -992,6 +1018,7 @@ package feathers.controls.text
 			this.stageText.selectRange(this._savedSelectionIndex, this._savedSelectionIndex);
 			this._savedSelectionIndex = -1;
 			this.invalidate(INVALIDATION_FLAG_SKIN);
+			this.dispatchEventWith(FeathersEventType.FOCUS_IN);
 		}
 
 		/**
@@ -1008,6 +1035,7 @@ package feathers.controls.text
 
 			this.invalidate(INVALIDATION_FLAG_DATA);
 			this.invalidate(INVALIDATION_FLAG_SKIN);
+			this.dispatchEventWith(FeathersEventType.FOCUS_OUT);
 		}
 
 		/**

@@ -582,6 +582,8 @@ package feathers.controls
 				this.removeChild(DisplayObject(this.textEditor), true);
 				this.textEditor.removeEventListener(Event.CHANGE, textEditor_changeHandler);
 				this.textEditor.removeEventListener(FeathersEventType.ENTER, textEditor_enterHandler);
+				this.textEditor.removeEventListener(FeathersEventType.FOCUS_IN, textEditor_focusInHandler);
+				this.textEditor.removeEventListener(FeathersEventType.FOCUS_OUT, textEditor_focusOutHandler);
 				this.textEditor = null;
 			}
 
@@ -589,6 +591,8 @@ package feathers.controls
 			this.textEditor = ITextEditor(factory());
 			this.textEditor.addEventListener(Event.CHANGE, textEditor_changeHandler);
 			this.textEditor.addEventListener(FeathersEventType.ENTER, textEditor_enterHandler);
+			this.textEditor.addEventListener(FeathersEventType.FOCUS_IN, textEditor_focusInHandler);
+			this.textEditor.addEventListener(FeathersEventType.FOCUS_OUT, textEditor_focusOutHandler);
 			this.addChild(DisplayObject(this.textEditor));
 		}
 
@@ -779,6 +783,24 @@ package feathers.controls
 		protected function textEditor_enterHandler(event:Event):void
 		{
 			this.dispatchEventWith(FeathersEventType.ENTER);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function textEditor_focusInHandler(event:Event):void
+		{
+			this._textEditorHasFocus = true;
+			this.invalidate(INVALIDATION_FLAG_STATE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function textEditor_focusOutHandler(event:Event):void
+		{
+			this._textEditorHasFocus = false;
+			this.invalidate(INVALIDATION_FLAG_STATE);
 		}
 	}
 }

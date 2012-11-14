@@ -39,6 +39,20 @@ package feathers.core
 	[Event(name="enter",type="starling.events.Event")]
 
 	/**
+	 * Dispatched when the text editor receives focus.
+	 *
+	 * @eventType feathers.events.FeathersEventType.FOCUS_IN
+	 */
+	[Event(name="focusIn",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the text editor loses focus.
+	 *
+	 * @eventType feathers.events.FeathersEventType.FOCUS_OUT
+	 */
+	[Event(name="focusOut",type="starling.events.Event")]
+
+	/**
 	 * Handles the editing of text.
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/text-editors
