@@ -1393,10 +1393,6 @@ package feathers.controls
 					this.finishScrollingHorizontally();
 				}
 			}
-			else
-			{
-				this.hideHorizontalScrollBar();
-			}
 			
 			if(!isNaN(targetVerticalScrollPosition))
 			{
@@ -1416,10 +1412,6 @@ package feathers.controls
 				{
 					this.finishScrollingVertically();
 				}
-			}
-			else
-			{
-				this.hideVerticalScrollBar();
 			}
 		}
 
@@ -1831,6 +1823,11 @@ package feathers.controls
 			{
 				this._maxHorizontalScrollPosition = Math.max(0, this._viewPort.width + this._verticalScrollBarWidthOffset - this.actualWidth);
 				this._maxVerticalScrollPosition = Math.max(0, this._viewPort.height + this._horizontalScrollBarHeightOffset - this.actualHeight);
+				if(this._snapScrollPositionsToPixels)
+				{
+					this._maxHorizontalScrollPosition = Math.round(this._maxHorizontalScrollPosition);
+					this._maxVerticalScrollPosition = Math.round(this._maxVerticalScrollPosition);
+				}
 			}
 			else
 			{
@@ -2121,6 +2118,7 @@ package feathers.controls
 			if(isNaN(targetHorizontalScrollPosition) && !this._isDraggingVertically && !this._verticalAutoScrollTween)
 			{
 				this.hideHorizontalScrollBar();
+				this.hideVerticalScrollBar();
 				this.dispatchEventWith(FeathersEventType.SCROLL_COMPLETE);
 			}
 			else
@@ -2147,6 +2145,7 @@ package feathers.controls
 			this._isDraggingVertically = false;
 			if(isNaN(targetVerticalScrollPosition) && !this._isDraggingHorizontally && !this._horizontalAutoScrollTween)
 			{
+				this.hideHorizontalScrollBar();
 				this.hideVerticalScrollBar();
 				this.dispatchEventWith(FeathersEventType.SCROLL_COMPLETE);
 			}
