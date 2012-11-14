@@ -285,14 +285,16 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
+		private var _scrollStep:Number;
+
 		public function get horizontalScrollStep():Number
 		{
-			return this._visibleWidth / 10;
+			return this._scrollStep;
 		}
 
 		public function get verticalScrollStep():Number
 		{
-			return this._visibleHeight / 10;
+			return this._scrollStep;
 		}
 
 		private var _horizontalScrollPosition:Number = 0;
@@ -455,6 +457,7 @@ package feathers.controls.supportClasses
 				{
 					this._textField.text = this._text;
 				}
+				this._scrollStep = this._textField.getLineMetrics(0).height * Starling.contentScaleFactor;
 			}
 
 			const calculatedVisibleWidth:Number = !isNaN(this._visibleWidth) ? this._visibleWidth : Math.max(this._minVisibleWidth, Math.min(this._maxVisibleWidth, this.stage.stageWidth));
