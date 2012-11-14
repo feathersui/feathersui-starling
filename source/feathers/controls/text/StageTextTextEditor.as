@@ -203,6 +203,11 @@ package feathers.controls.text
 
 		/**
 		 * @private
+		 */
+		protected var _stageTextIsComplete:Boolean = false;
+
+		/**
+		 * @private
 		 * Stores the snapshot of the StageText to display when the StageText
 		 * isn't visible.
 		 */
@@ -681,7 +686,7 @@ package feathers.controls.text
 		 */
 		public function setFocus(position:Point = null):void
 		{
-			if(this.stageText)
+			if(this.stageText && this._stageTextIsComplete)
 			{
 				if(position)
 				{
@@ -940,6 +945,7 @@ package feathers.controls.text
 				Starling.current.nativeStage.addChild(this._measureTextField);
 			}
 
+			this._stageTextIsComplete = false;
 			var StageTextType:Class;
 			var initOptions:Object;
 			try
@@ -991,12 +997,13 @@ package feathers.controls.text
 			this.stageText.removeEventListener(flash.events.Event.COMPLETE, stageText_completeHandler);
 			this.invalidate();
 
-			if(this._isWaitingToSetFocus && this._text)
+			this._stageTextIsComplete = true;
+			if(this._isWaitingToSetFocus)
 			{
+				this._isWaitingToSetFocus = false;
 				this.validate();
 				this.setFocus();
 			}
-			this._isWaitingToSetFocus = false;
 		}
 
 		/**
