@@ -308,7 +308,9 @@ package feathers.controls
 		
 		/**
 		 * As the slider's thumb is dragged, the value is snapped to a multiple
-		 * of the step.
+		 * of the step. Paging using the slider's track will use the <code>step</code>
+		 * value if the <code>page</code> value is <code>NaN</code>. If the
+		 * <code>step</code> is zero, paging with the track will not be possible.
 		 */
 		public function get step():Number
 		{
@@ -338,8 +340,9 @@ package feathers.controls
 		 * thumb is hidden, this value is ignored, and the track may be dragged
 		 * instead.
 		 *
-		 * <p>If this value is <code>NaN</code>, the step value will be used
-		 * instead.</p>
+		 * <p>If this value is <code>NaN</code>, the <code>step</code> value
+		 * will be used instead. If the <code>step</code> value is zero, paging
+		 * with the track is not possible.</p>
 		 */
 		public function get page():Number
 		{
