@@ -46,7 +46,7 @@
 			<arg line="--doc-sources+='source'"/>
 			<arg line="--external-library-path+='${flexframework.lib}'"/>
 			<arg line="--main-title 'Feathers API Documentation'"/>
-			<arg line="--window-title 'Feathers UI for Starling API Documentation'"/>
+			<arg line="--window-title 'Feathers User Interface Controls for Starling Framework API Documentation'"/>
 			<arg value="--footer"/>
 			<arg value="${footer.text}"/>
 			<arg line="--package-description-file package-descriptions.xml"/>
