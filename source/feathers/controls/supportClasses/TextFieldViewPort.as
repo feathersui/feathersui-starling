@@ -406,7 +406,7 @@ package feathers.controls.supportClasses
 			ScrollRectManager.toStageCoordinates(HELPER_POINT, this.parent.parent);
 			this._textFieldContainer.x = starlingViewPort.x + HELPER_POINT.x * Starling.contentScaleFactor;
 			this._textFieldContainer.y = starlingViewPort.y + HELPER_POINT.y * Starling.contentScaleFactor;
-			this._textFieldContainer.scaleX = this._textFieldContainer.scaleY =  Starling.contentScaleFactor;
+			this._textFieldContainer.scaleX = this._textFieldContainer.scaleY = Starling.contentScaleFactor;
 			this._textFieldContainer.visible = true;
 			this._textFieldContainer.alpha = alpha;
 			super.render(support, alpha);
@@ -418,6 +418,7 @@ package feathers.controls.supportClasses
 			this._textFieldContainer.mouseChildren = this._textFieldContainer.mouseEnabled = false;
 			this._textFieldContainer.visible = false;
 			this._textField = new TextField();
+			this._textField.autoSize = TextFieldAutoSize.LEFT;
 			this._textField.selectable = this._textFieldContainer.mouseEnabled =
 				this._textField.mouseWheelEnabled = false;
 			this._textField.wordWrap = true;
@@ -457,14 +458,10 @@ package feathers.controls.supportClasses
 			}
 
 			const calculatedVisibleWidth:Number = !isNaN(this._visibleWidth) ? this._visibleWidth : Math.max(this._minVisibleWidth, Math.min(this._maxVisibleWidth, this.stage.stageWidth));
-			const calculatedTextFieldWidth:Number = calculatedVisibleWidth - this._paddingLeft - this._paddingRight;
-			this._textField.width = calculatedTextFieldWidth;
-			this._textField.autoSize = TextFieldAutoSize.LEFT;
+			this._textField.width = calculatedVisibleWidth - this._paddingLeft - this._paddingRight;
 			const totalContentHeight:Number = this._textField.height + this._paddingTop + this._paddingBottom;
-			this._textField.autoSize = TextFieldAutoSize.NONE;
 			const calculatedVisibleHeight:Number = !isNaN(this._visibleHeight) ? this._visibleHeight : Math.max(this._minVisibleHeight, Math.min(this._maxVisibleHeight, totalContentHeight));
-			this._textField.height = totalContentHeight - this._paddingTop - this._paddingBottom;
-			sizeInvalid = this.setSizeInternal(calculatedVisibleWidth, totalContentHeight, false);
+			sizeInvalid = this.setSizeInternal(calculatedVisibleWidth, totalContentHeight, false) || sizeInvalid;
 
 			if(sizeInvalid || scrollInvalid)
 			{
