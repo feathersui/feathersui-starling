@@ -57,6 +57,20 @@ package feathers.controls
 	[Event(name="enter",type="starling.events.Event")]
 
 	/**
+	 * Dispatched when the text input receives focus.
+	 *
+	 * @eventType feathers.events.FeathersEventType.FOCUS_IN
+	 */
+	[Event(name="focusIn",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the text input loses focus.
+	 *
+	 * @eventType feathers.events.FeathersEventType.FOCUS_OUT
+	 */
+	[Event(name="focusOut",type="starling.events.Event")]
+
+	/**
 	 * A text entry control that allows users to enter and edit a single line of
 	 * uniformly-formatted text.
 	 *
@@ -792,6 +806,7 @@ package feathers.controls
 		{
 			this._textEditorHasFocus = true;
 			this.invalidate(INVALIDATION_FLAG_STATE);
+			this.dispatchEventWith(FeathersEventType.FOCUS_IN);
 		}
 
 		/**
@@ -801,6 +816,7 @@ package feathers.controls
 		{
 			this._textEditorHasFocus = false;
 			this.invalidate(INVALIDATION_FLAG_STATE);
+			this.dispatchEventWith(FeathersEventType.FOCUS_OUT);
 		}
 	}
 }
