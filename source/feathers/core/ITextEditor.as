@@ -75,5 +75,11 @@ package feathers.core
 		 * position may be outside of the editors bounds.
 		 */
 		function setFocus(position:Point = null):void;
+
+		/**
+		 * Sets the range of selected characters. If both values are the same,
+		 * the text insertion position is changed and nothing is selected.
+		 */
+		function selectRange(startIndex:int, endIndex:int):void;
 	}
 }

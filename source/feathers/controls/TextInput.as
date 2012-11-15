@@ -434,6 +434,16 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _pendingSelectionStartIndex:int = -1;
+
+		/**
+		 * @private
+		 */
+		protected var _pendingSelectionEndIndex:int = -1;
+
+		/**
+		 * @private
+		 */
 		protected var _oldMouseCursor:String = null;
 
 		/**
@@ -513,6 +523,37 @@ package feathers.controls
 		}
 
 		/**
+		 * Sets the range of selected characters. If both values are the same,
+		 * or the end index is <code>-1</code>, the text insertion position is
+		 * changed and nothing is selected.
+		 */
+		public function selectRange(startIndex:int, endIndex:int = -1):void
+		{
+			if(endIndex < 0)
+			{
+				endIndex = startIndex;
+			}
+			if(startIndex < 0)
+			{
+				throw new RangeError("Expected start index >= 0. Received " + startIndex + ".");
+			}
+			if(endIndex > this._text.length)
+			{
+				throw new RangeError("Expected start index > " + this._text.length + ". Received " + endIndex + ".");
+			}
+
+			if(this.textEditor)
+			{
+				this.textEditor.selectRange(startIndex, endIndex);
+			}
+			else
+			{
+				this._pendingSelectionStartIndex = startIndex;
+				this._pendingSelectionEndIndex = endIndex;
+			}
+		}
+
+		/**
 		 * @private
 		 */
 		override protected function draw():void
@@ -560,6 +601,8 @@ package feathers.controls
 			{
 				this.layout();
 			}
+
+			this.doPendingActions();
 		}
 
 		/**
@@ -609,11 +652,25 @@ package feathers.controls
 			this.textEditor.addEventListener(FeathersEventType.FOCUS_IN, textEditor_focusInHandler);
 			this.textEditor.addEventListener(FeathersEventType.FOCUS_OUT, textEditor_focusOutHandler);
 			this.addChild(DisplayObject(this.textEditor));
+		}
 
+		/**
+		 * @private
+		 */
+		protected function doPendingActions():void
+		{
 			if(this._isWaitingToSetFocus)
 			{
 				this._isWaitingToSetFocus = false;
 				this.textEditor.setFocus();
+			}
+			if(this._pendingSelectionStartIndex >= 0)
+			{
+				const startIndex:int = this._pendingSelectionStartIndex;
+				const endIndex:int = this._pendingSelectionEndIndex;
+				this._pendingSelectionStartIndex = -1;
+				this._pendingSelectionEndIndex = -1;
+				this.selectRange(startIndex, endIndex);
 			}
 		}
 
@@ -813,6 +870,7 @@ package feathers.controls
 		protected function textEditor_focusInHandler(event:Event):void
 		{
 			this._textEditorHasFocus = true;
+			this._touchPointID = -1;
 			this.invalidate(INVALIDATION_FLAG_STATE);
 			this.dispatchEventWith(FeathersEventType.FOCUS_IN);
 		}
