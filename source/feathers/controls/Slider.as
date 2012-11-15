@@ -1244,6 +1244,7 @@ package feathers.controls
 		{
 			if(!this._isEnabled)
 			{
+				this._touchPointID = -1;
 				return;
 			}
 			const touches:Vector.<Touch> = event.getTouches(DisplayObject(event.currentTarget));
@@ -1327,6 +1328,7 @@ package feathers.controls
 		{
 			if(!this._isEnabled)
 			{
+				this._touchPointID = -1;
 				return;
 			}
 			const touches:Vector.<Touch> = event.getTouches(this.thumb);

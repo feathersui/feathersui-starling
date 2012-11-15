@@ -2692,6 +2692,11 @@ package feathers.controls
 		 */
 		protected function horizontalScrollBar_touchHandler(event:TouchEvent):void
 		{
+			if(!this._isEnabled)
+			{
+				this._horizontalScrollBarTouchPointID = -1;
+				return;
+			}
 			const displayHorizontalScrollBar:DisplayObject = DisplayObject(event.currentTarget);
 			const touches:Vector.<Touch> = event.getTouches(displayHorizontalScrollBar);
 			if(touches.length == 0)
@@ -2758,6 +2763,11 @@ package feathers.controls
 		 */
 		protected function verticalScrollBar_touchHandler(event:TouchEvent):void
 		{
+			if(!this._isEnabled)
+			{
+				this._verticalScrollBarTouchPointID = -1;
+				return;
+			}
 			const displayVerticalScrollBar:DisplayObject = DisplayObject(event.currentTarget);
 			const touches:Vector.<Touch> = event.getTouches(displayVerticalScrollBar);
 			if(touches.length == 0)

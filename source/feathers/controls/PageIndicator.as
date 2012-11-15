@@ -630,6 +630,7 @@ package feathers.controls
 		{
 			if(!this._isEnabled)
 			{
+				this.touchPointID = -1;
 				return;
 			}
 

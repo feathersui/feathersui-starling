@@ -402,11 +402,6 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _touchPointID:int = -1;
-
-		/**
-		 * @private
-		 */
 		protected var _textFieldHasFocus:Boolean = false;
 
 		/**
@@ -693,8 +688,6 @@ package feathers.controls.text
 			{
 				Starling.current.nativeStage.removeChild(this.textField);
 			}
-
-			this._touchPointID = -1;
 		}
 
 		/**

@@ -184,11 +184,6 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _touchPointID:int = -1;
-
-		/**
-		 * @private
-		 */
 		protected var _measureTextField:TextField;
 
 		/**
@@ -975,8 +970,6 @@ package feathers.controls.text
 		{
 			Starling.current.nativeStage.removeChild(this._measureTextField);
 			this._measureTextField = null;
-
-			this._touchPointID = -1;
 
 			this.disposeStageText();
 		}

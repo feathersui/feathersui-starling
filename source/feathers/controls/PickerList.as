@@ -740,6 +740,11 @@ package feathers.controls
 		 */
 		protected function button_touchHandler(event:TouchEvent):void
 		{
+			if(!this._isEnabled)
+			{
+				this._buttonTouchPointID = -1;
+				return;
+			}
 			const touches:Vector.<Touch> = event.getTouches(this.button);
 			if(touches.length == 0)
 			{
@@ -784,6 +789,11 @@ package feathers.controls
 		 */
 		protected function list_touchHandler(event:TouchEvent):void
 		{
+			if(!this._isEnabled)
+			{
+				this._listTouchPointID = -1;
+				return;
+			}
 			const touches:Vector.<Touch> = event.getTouches(this.list);
 			if(touches.length == 0)
 			{
