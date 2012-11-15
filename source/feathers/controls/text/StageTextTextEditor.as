@@ -199,6 +199,16 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _pendingSelectionStartIndex:int = -1;
+
+		/**
+		 * @private
+		 */
+		protected var _pendingSelectionEndIndex:int = -1;
+
+		/**
+		 * @private
+		 */
 		protected var _stageTextIsComplete:Boolean = false;
 
 		/**
@@ -677,7 +687,7 @@ package feathers.controls.text
 		}
 
 		/**
-		 * @private
+		 * @inheritDoc
 		 */
 		public function setFocus(position:Point = null):void
 		{
@@ -708,6 +718,22 @@ package feathers.controls.text
 			else
 			{
 				this._isWaitingToSetFocus = true;
+			}
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function selectRange(startIndex:int, endIndex:int):void
+		{
+			if(this._stageTextIsComplete && this.stageText)
+			{
+				this.stageText.selectRange(startIndex, endIndex);
+			}
+			else
+			{
+				this._pendingSelectionStartIndex = startIndex;
+				this._pendingSelectionEndIndex = endIndex;
 			}
 		}
 
@@ -762,6 +788,8 @@ package feathers.controls.text
 					}
 				}
 			}
+
+			this.doPendingActions();
 		}
 
 		/**
@@ -807,6 +835,26 @@ package feathers.controls.text
 			format.align = alignValue;
 			this._measureTextField.defaultTextFormat = format;
 			this._measureTextField.setTextFormat(format);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function doPendingActions():void
+		{
+			if(this._isWaitingToSetFocus)
+			{
+				this._isWaitingToSetFocus = false;
+				this.setFocus();
+			}
+			if(this._pendingSelectionStartIndex >= 0)
+			{
+				const startIndex:int = this._pendingSelectionStartIndex;
+				const endIndex:int = this._pendingSelectionEndIndex;
+				this._pendingSelectionStartIndex = -1;
+				this._pendingSelectionEndIndex = -1;
+				this.selectRange(startIndex, endIndex);
+			}
 		}
 
 		/**
@@ -991,12 +1039,6 @@ package feathers.controls.text
 			this.invalidate();
 
 			this._stageTextIsComplete = true;
-			if(this._isWaitingToSetFocus)
-			{
-				this._isWaitingToSetFocus = false;
-				this.validate();
-				this.setFocus();
-			}
 		}
 
 		/**
@@ -1009,14 +1051,12 @@ package feathers.controls.text
 			{
 				this.textSnapshot.visible = false;
 			}
-			if(this._savedSelectionIndex < 0)
+			if(this._savedSelectionIndex >= 0)
 			{
-				//we can't detect what character was tapped, so put the cursor at
-				//the end of the text
-				this._savedSelectionIndex = this.stageText.text.length;
+				const selectionIndex:int = this._savedSelectionIndex;
+				this._savedSelectionIndex = -1;
+				this.selectRange(selectionIndex, selectionIndex)
 			}
-			this.stageText.selectRange(this._savedSelectionIndex, this._savedSelectionIndex);
-			this._savedSelectionIndex = -1;
 			this.invalidate(INVALIDATION_FLAG_SKIN);
 			this.dispatchEventWith(FeathersEventType.FOCUS_IN);
 		}

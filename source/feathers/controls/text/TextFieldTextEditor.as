@@ -412,6 +412,16 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _pendingSelectionStartIndex:int = -1;
+
+		/**
+		 * @private
+		 */
+		protected var _pendingSelectionEndIndex:int = -1;
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			if(this.textField.parent)
@@ -454,7 +464,7 @@ package feathers.controls.text
 		}
 
 		/**
-		 * @private
+		 * @inheritDoc
 		 */
 		public function setFocus(position:Point = null):void
 		{
@@ -466,15 +476,17 @@ package feathers.controls.text
 				}
 				if(position)
 				{
-					if(position.x < 0)
+					const positionX:Number = position.x;
+					const positionY:Number = position.y;
+					if(positionX < 0)
 					{
 						this._savedSelectionIndex = 0;
 					}
 					else
 					{
-						this._savedSelectionIndex = this.textField.getCharIndexAtPoint(position.x, position.y);
+						this._savedSelectionIndex = this.textField.getCharIndexAtPoint(positionX, positionY);
 						const bounds:Rectangle = this.textField.getCharBoundaries(this._savedSelectionIndex);
-						if(bounds && (bounds.x + bounds.width - position.x) < (position.x - bounds.x))
+						if(bounds && (bounds.x + bounds.width - positionX) < (positionX - bounds.x))
 						{
 							this._savedSelectionIndex++;
 						}
@@ -493,21 +505,33 @@ package feathers.controls.text
 		}
 
 		/**
+		 * @inheritDoc
+		 */
+		public function selectRange(startIndex:int, endIndex:int):void
+		{
+			if(this.textField)
+			{
+				this.validate();
+				this.textField.setSelection(startIndex, endIndex);
+			}
+			else
+			{
+				this._pendingSelectionStartIndex = startIndex;
+				this._pendingSelectionEndIndex = endIndex;
+			}
+		}
+
+		/**
 		 * @private
 		 */
 		override protected function initialize():void
 		{
 			this.textField = new TextField();
 			this.textField.type = TextFieldType.INPUT;
+			this.textField.selectable = true;
 			this.textField.addEventListener(flash.events.Event.CHANGE, textField_changeHandler);
 			this.textField.addEventListener(FocusEvent.FOCUS_IN, textField_focusInHandler);
 			this.textField.addEventListener(FocusEvent.FOCUS_OUT, textField_focusOutHandler);
-
-			if(this._isWaitingToSetFocus)
-			{
-				this._isWaitingToSetFocus = false;
-				this.setFocus();
-			}
 		}
 
 		/**
@@ -522,7 +546,6 @@ package feathers.controls.text
 			const skinInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SKIN);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 
-
 			if(dataInvalid || stylesInvalid)
 			{
 				this.commitStylesAndData();
@@ -531,6 +554,8 @@ package feathers.controls.text
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
 			this.layout(sizeInvalid);
+
+			this.doPendingActions();
 		}
 
 		/**
@@ -624,6 +649,27 @@ package feathers.controls.text
 					this._frameCount = 0;
 					this.addEventListener(Event.ENTER_FRAME, enterFrameHandler);
 				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function doPendingActions():void
+		{
+			if(this._isWaitingToSetFocus)
+			{
+				this._isWaitingToSetFocus = false;
+				this.setFocus();
+			}
+
+			if(this._pendingSelectionStartIndex >= 0)
+			{
+				const startIndex:int = this._pendingSelectionStartIndex;
+				const endIndex:int = this._pendingSelectionEndIndex;
+				this._pendingSelectionStartIndex = -1;
+				this._pendingSelectionEndIndex = -1;
+				this.selectRange(startIndex, endIndex);
 			}
 		}
 
@@ -726,14 +772,12 @@ package feathers.controls.text
 			{
 				this.textSnapshot.visible = false;
 			}
-			if(this._savedSelectionIndex < 0)
+			if(this._savedSelectionIndex >= 0)
 			{
-				//we can't detect what character was tapped, so put the cursor at
-				//the end of the text
-				this._savedSelectionIndex = this.textField.text.length;
+				const selectionIndex:int = this._savedSelectionIndex;
+				this._savedSelectionIndex = -1;
+				this.selectRange(selectionIndex, selectionIndex)
 			}
-			this.textField.setSelection(this._savedSelectionIndex, this._savedSelectionIndex);
-			this._savedSelectionIndex = -1;
 			this.invalidate(INVALIDATION_FLAG_SKIN);
 			this.dispatchEventWith(FeathersEventType.FOCUS_IN);
 		}
@@ -744,11 +788,8 @@ package feathers.controls.text
 		protected function textField_focusOutHandler(event:FocusEvent):void
 		{
 			this._textFieldHasFocus = false;
-			//since StageText doesn't expose its scroll position, we need to
-			//set the selection back to the beginning to scroll there. it's a
-			//hack, but so is everything about StageText.
-			//in other news, why won't 0,0 work here?
-			this.textField.setSelection(0,0);
+
+			this.textField.scrollH = this.textField.scrollV = 0;
 
 			this.invalidate(INVALIDATION_FLAG_DATA);
 			this.invalidate(INVALIDATION_FLAG_SKIN);
