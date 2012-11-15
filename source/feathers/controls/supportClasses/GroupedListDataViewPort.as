@@ -2138,6 +2138,7 @@ package feathers.controls.supportClasses
 		{
 			if(!this._isEnabled)
 			{
+				this.touchPointID = -1;
 				return;
 			}
 

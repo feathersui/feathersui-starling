@@ -71,11 +71,6 @@ package feathers.controls.popups
 		protected var source:DisplayObject;
 
 		/**
-		 * @private
-		 */
-		protected var _touchPointID:int = -1;
-
-		/**
 		 * @inheritDoc
 		 */
 		public function open(content:DisplayObject, source:DisplayObject):void
