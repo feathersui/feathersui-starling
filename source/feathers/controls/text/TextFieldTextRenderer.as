@@ -342,6 +342,7 @@ package feathers.controls.text
 				this._textField = new TextField();
 				this._textField.mouseEnabled = this._textField.mouseWheelEnabled = false;
 				this._textField.selectable = false;
+				this._textField.multiline = true;
 				this._textField.antiAliasType = AntiAliasType.ADVANCED;
 			}
 		}
