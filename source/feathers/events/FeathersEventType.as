@@ -104,5 +104,23 @@ package feathers.events
 		 * Feathers components to indicate when they have lost focus.
 		 */
 		public static const FOCUS_OUT:String = "focusOut";
+
+		/**
+		 * The <code>FeathersEventType.RENDERER_ADD</code> event type is used by
+		 * Feathers components with item renderers to indicate when a new
+		 * renderer has been added. This event type is meant to be used with
+		 * virtualized layouts where only a limited set of renderers will be
+		 * created for a data provider that may include a larger number of items.
+		 */
+		public static const RENDERER_ADD:String = "rendererAdd";
+
+		/**
+		 * The <code>FeathersEventType.RENDERER_REMOVE</code> event type is used
+		 * by Feathers controls with item renderers to indicate when a renderer
+		 * is removed. This event type is meant to be used with virtualized
+		 * layouts where only a limited set of renderers will be created for
+		 * a data provider that may include a larger number items.
+		 */
+		public static const RENDERER_REMOVE:String = "rendererRemove";
 	}
 }
