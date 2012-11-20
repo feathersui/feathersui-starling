@@ -62,6 +62,26 @@ package feathers.controls
 	 */
 	[Event(name="scrollComplete",type="starling.events.Event")]
 
+	/**
+	 * Dispatched when an item renderer is added to the list. When the layout is
+	 * virtualized, item renderers may not exist for every item in the data
+	 * provider. This event can be used to track which items currently have
+	 * renderers.
+	 *
+	 * @eventType feathers.events.FeathersEventType.RENDERER_ADD
+	 */
+	[Event(name="rendererAdd",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when an item renderer is removed from the list. When the layout is
+	 * virtualized, item renderers may not exist for every item in the data
+	 * provider. This event can be used to track which items currently have
+	 * renderers.
+	 *
+	 * @eventType feathers.events.FeathersEventType.RENDERER_REMOVE
+	 */
+	[Event(name="rendererRemove",type="starling.events.Event")]
+
 	[DefaultProperty("dataProvider")]
 	/**
 	 * Displays a list of items divided into groups or sections. Takes a

@@ -687,6 +687,7 @@ package feathers.controls.supportClasses
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var renderer:IListItemRenderer = this._inactiveRenderers[i];
+				this._owner.dispatchEventWith(FeathersEventType.RENDERER_REMOVE, false, renderer);
 				delete this._rendererMap[renderer.data];
 			}
 		}
@@ -736,6 +737,7 @@ package feathers.controls.supportClasses
 				const displayRenderer:DisplayObject = DisplayObject(renderer);
 				displayRenderer.addEventListener(Event.CHANGE, renderer_changeHandler);
 				displayRenderer.addEventListener(FeathersEventType.RESIZE, renderer_resizeHandler);
+				this._owner.dispatchEventWith(FeathersEventType.RENDERER_ADD, false, renderer);
 			}
 
 			return renderer;

@@ -1704,6 +1704,7 @@ package feathers.controls.supportClasses
 			for(var i:int = 0; i < rendererCount; i++)
 			{
 				var itemRenderer:IGroupedListItemRenderer = this._inactiveItemRenderers[i];
+				this._owner.dispatchEventWith(FeathersEventType.RENDERER_REMOVE, false, itemRenderer);
 				delete this._itemRendererMap[itemRenderer.data];
 			}
 
@@ -1713,6 +1714,7 @@ package feathers.controls.supportClasses
 				for(i = 0; i < rendererCount; i++)
 				{
 					itemRenderer = this._inactiveFirstItemRenderers[i];
+					this._owner.dispatchEventWith(FeathersEventType.RENDERER_REMOVE, false, itemRenderer);
 					delete this._firstItemRendererMap[itemRenderer.data];
 				}
 			}
@@ -1723,6 +1725,7 @@ package feathers.controls.supportClasses
 				for(i = 0; i < rendererCount; i++)
 				{
 					itemRenderer = this._inactiveLastItemRenderers[i];
+					this._owner.dispatchEventWith(FeathersEventType.RENDERER_REMOVE, false, itemRenderer);
 					delete this._lastItemRendererMap[itemRenderer.data];
 				}
 			}
@@ -1733,6 +1736,7 @@ package feathers.controls.supportClasses
 				for(i = 0; i < rendererCount; i++)
 				{
 					itemRenderer = this._inactiveSingleItemRenderers[i];
+					this._owner.dispatchEventWith(FeathersEventType.RENDERER_REMOVE, false, itemRenderer);
 					delete this._singleItemRendererMap[itemRenderer.data];
 				}
 			}
@@ -1741,6 +1745,7 @@ package feathers.controls.supportClasses
 			for(i = 0; i < rendererCount; i++)
 			{
 				var headerOrFooterRenderer:IGroupedListHeaderOrFooterRenderer = this._inactiveHeaderRenderers[i];
+				this._owner.dispatchEventWith(FeathersEventType.RENDERER_REMOVE, false, headerOrFooterRenderer);
 				delete this._headerRendererMap[headerOrFooterRenderer.data];
 			}
 
@@ -1748,6 +1753,7 @@ package feathers.controls.supportClasses
 			for(i = 0; i < rendererCount; i++)
 			{
 				headerOrFooterRenderer = this._inactiveFooterRenderers[i];
+				this._owner.dispatchEventWith(FeathersEventType.RENDERER_REMOVE, false, headerOrFooterRenderer);
 				delete this._footerRendererMap[headerOrFooterRenderer.data];
 			}
 		}
@@ -1891,6 +1897,7 @@ package feathers.controls.supportClasses
 				activeRenderers.push(renderer);
 				displayRenderer.addEventListener(Event.CHANGE, renderer_changeHandler);
 				displayRenderer.addEventListener(FeathersEventType.RESIZE, itemRenderer_resizeHandler);
+				this._owner.dispatchEventWith(FeathersEventType.RENDERER_ADD, false, renderer);
 			}
 
 			return renderer;
@@ -1932,6 +1939,7 @@ package feathers.controls.supportClasses
 				this._headerRendererMap[header] = renderer;
 				this._activeHeaderRenderers.push(renderer);
 				displayRenderer.addEventListener(FeathersEventType.RESIZE, headerOrFooterRenderer_resizeHandler);
+				this._owner.dispatchEventWith(FeathersEventType.RENDERER_ADD, false, renderer);
 			}
 
 			return renderer;
@@ -1973,6 +1981,7 @@ package feathers.controls.supportClasses
 				this._footerRendererMap[footer] = renderer;
 				this._activeFooterRenderers.push(renderer);
 				displayRenderer.addEventListener(FeathersEventType.RESIZE, headerOrFooterRenderer_resizeHandler);
+				this._owner.dispatchEventWith(FeathersEventType.RENDERER_ADD, false, renderer);
 			}
 
 			return renderer;
