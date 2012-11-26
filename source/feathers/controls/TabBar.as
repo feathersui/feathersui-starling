@@ -871,6 +871,10 @@ package feathers.controls
 				{
 					tab.nameList.add(this._customFirstTabName);
 				}
+				else if(this._customTabName)
+				{
+					tab.nameList.add(this._customTabName);
+				}
 				else
 				{
 					tab.nameList.add(this.firstTabName);
@@ -899,6 +903,10 @@ package feathers.controls
 				if(this._customLastTabName)
 				{
 					tab.nameList.add(this._customLastTabName);
+				}
+				else if(this._customTabName)
+				{
+					tab.nameList.add(this._customTabName);
 				}
 				else
 				{
