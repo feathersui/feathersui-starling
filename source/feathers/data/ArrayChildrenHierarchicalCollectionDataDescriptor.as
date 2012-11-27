@@ -123,7 +123,7 @@ package feathers.data
 				branch = branch[index][childrenField] as Array;
 			}
 			const lastIndex:int = rest[indexCount];
-			const item:Object = branch[lastIndex]
+			const item:Object = branch[lastIndex];
 			branch.splice(lastIndex, 1);
 			return item;
 		}
