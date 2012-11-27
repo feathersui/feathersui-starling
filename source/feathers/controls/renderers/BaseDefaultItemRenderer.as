@@ -52,6 +52,53 @@ package feathers.controls.renderers
 		public static const DEFAULT_CHILD_NAME_ACCESSORY_LABEL:String = "feathers-item-renderer-accessory-label";
 
 		/**
+		 * The accessory will be positioned above its origin.
+		 */
+		public static const ACCESSORY_POSITION_TOP:String = "top";
+
+		/**
+		 * The accessory will be positioned to the right of its origin.
+		 */
+		public static const ACCESSORY_POSITION_RIGHT:String = "right";
+
+		/**
+		 * The accessory will be positioned below its origin.
+		 */
+		public static const ACCESSORY_POSITION_BOTTOM:String = "bottom";
+
+		/**
+		 * The accessory will be positioned to the left of its origin.
+		 */
+		public static const ACCESSORY_POSITION_LEFT:String = "left";
+
+		/**
+		 * The accessory will be positioned manually with no relation to another
+		 * child. Use <code>accessoryOffsetX</code> and <code>accessoryOffsetY</code>
+		 * to set the accessory position.
+		 *
+		 * <p>The <code>accessoryPositionOrigin</code> property will be ignored
+		 * if <code>accessoryPosition</code> is set to <code>ACCESSORY_POSITION_MANUAL</code>.
+		 *
+		 * @see #accessoryOffsetX
+		 * @see #accessoryOffsetY
+		 */
+		public static const ACCESSORY_POSITION_MANUAL:String = "manual";
+
+		/**
+		 * The layout order will be the label first, then the accessory relative
+		 * to the label, then the icon relative to both. Best used when the
+		 * accessory should be between the label and the icon or when the icon
+		 * position shouldn't be affected by the accessory.
+		 */
+		public static const LAYOUT_ORDER_LABEL_ACCESSORY_ICON:String = "labelAccessoryIcon";
+
+		/**
+		 * The layout order will be the label first, then the icon relative to
+		 * label, then the accessory relative to both.
+		 */
+		public static const LAYOUT_ORDER_LABEL_ICON_ACCESSORY:String = "labelIconAccessory";
+
+		/**
 		 * @private
 		 */
 		private static const HELPER_POINT:Point = new Point();
@@ -210,6 +257,162 @@ package feathers.controls.renderers
 		public function set itemHasIcon(value:Boolean):void
 		{
 			this._itemHasIcon = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _accessoryPosition:String = ACCESSORY_POSITION_RIGHT;
+
+		[Inspectable(type="String",enumeration="top,right,bottom,left,manual")]
+		/**
+		 * The location of the accessory, relative to one of the other children.
+		 * Use <code>ACCESSORY_POSITION_MANUAL</code> to position the accessory
+		 * from the top-left corner.
+		 *
+		 * @see #layoutOrder
+		 */
+		public function get accessoryPosition():String
+		{
+			return this._accessoryPosition;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set accessoryPosition(value:String):void
+		{
+			if(this._accessoryPosition == value)
+			{
+				return;
+			}
+			this._accessoryPosition = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _layoutOrder:String = LAYOUT_ORDER_LABEL_ICON_ACCESSORY;
+
+		[Inspectable(type="String",enumeration="labelIconAccessory,labelAccessoryIcon")]
+		/**
+		 * The accessory's position will be based on which other child (the
+		 * label or the icon) the accessory should be relative to.
+		 *
+		 * <p>The <code>accessoryPositionOrigin</code> property will be ignored
+		 * if <code>accessoryPosition</code> is set to <code>ACCESSORY_POSITION_MANUAL</code>.
+		 *
+		 * @see #accessoryPosition
+		 * @see #iconPosition
+		 * @see LAYOUT_ORDER_LABEL_ICON_ACCESSORY
+		 * @see LAYOUT_ORDER_LABEL_ACCESSORY_ICON
+		 */
+		public function get layoutOrder():String
+		{
+			return this._layoutOrder;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set layoutOrder(value:String):void
+		{
+			if(this._layoutOrder == value)
+			{
+				return;
+			}
+			this._layoutOrder = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _accessoryOffsetX:Number = 0;
+
+		/**
+		 * Offsets the x position of the accessory by a certain number of pixels.
+		 */
+		public function get accessoryOffsetX():Number
+		{
+			return this._accessoryOffsetX;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set accessoryOffsetX(value:Number):void
+		{
+			if(this._accessoryOffsetX == value)
+			{
+				return;
+			}
+			this._accessoryOffsetX = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _accessoryOffsetY:Number = 0;
+
+		/**
+		 * Offsets the y position of the accessory by a certain number of pixels.
+		 */
+		public function get accessoryOffsetY():Number
+		{
+			return this._accessoryOffsetY;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set accessoryOffsetY(value:Number):void
+		{
+			if(this._accessoryOffsetY == value)
+			{
+				return;
+			}
+			this._accessoryOffsetY = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _accessoryGap:Number = Number.POSITIVE_INFINITY;
+
+		/**
+		 * The space, in pixels, between the accessory and the other child it is
+		 * positioned relative to. Applies to either horizontal or vertical
+		 * spacing, depending on the value of <code>accessoryPosition</code>. If
+		 * the value is <code>NaN</code>, the value of the <code>gap</code>
+		 * property will be used instead.
+		 *
+		 * <p>If <code>accessoryGap</code> is set to <code>Number.POSITIVE_INFINITY</code>,
+		 * the accessory and the component it is relative to will be positioned
+		 * as far apart as possible.</p>
+		 *
+		 * @see #gap
+		 * @see #accessoryPosition
+		 */
+		public function get accessoryGap():Number
+		{
+			return this._accessoryGap;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set accessoryGap(value:Number):void
+		{
+			if(this._accessoryGap == value)
+			{
+				return;
+			}
+			this._accessoryGap = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
@@ -1156,37 +1359,25 @@ package feathers.controls.renderers
 			{
 				return false;
 			}
+			this.refreshMaxLabelWidth(true);
 			this.labelTextRenderer.measureText(HELPER_POINT);
-			if(this.accessory is IFeathersControl)
-			{
-				IFeathersControl(this.accessory).validate();
-			}
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
 			{
-				if(this.currentIcon && this.label)
-				{
-					if(this._iconPosition != ICON_POSITION_TOP && this._iconPosition != ICON_POSITION_BOTTOM)
-					{
-						var adjustedGap:Number = this._gap == Number.POSITIVE_INFINITY ? Math.min(this._paddingLeft, this._paddingRight) : this._gap;
-						newWidth = this.currentIcon.width + adjustedGap + HELPER_POINT.x;
-					}
-					else
-					{
-						newWidth = Math.max(this.currentIcon.width, HELPER_POINT.x);
-					}
-				}
-				else if(this.currentIcon)
-				{
-					newWidth = this.currentIcon.width;
-				}
-				else if(this.label)
+				if(this._label)
 				{
 					newWidth = HELPER_POINT.x;
 				}
-				if(this.accessory)
+				var adjustedGap:Number = this._gap == Number.POSITIVE_INFINITY ? Math.min(this._paddingLeft, this._paddingRight) : this._gap;
+				if(this._layoutOrder == LAYOUT_ORDER_LABEL_ACCESSORY_ICON)
 				{
-					newWidth += this.accessory.width
+					newWidth = this.addAccessoryWidth(newWidth, adjustedGap);
+					newWidth = this.addIconWidth(newWidth, adjustedGap);
+				}
+				else
+				{
+					newWidth = this.addIconWidth(newWidth, adjustedGap);
+					newWidth = this.addAccessoryWidth(newWidth, adjustedGap);
 				}
 				newWidth += this._paddingLeft + this._paddingRight;
 				if(isNaN(newWidth))
@@ -1202,29 +1393,20 @@ package feathers.controls.renderers
 			var newHeight:Number = this.explicitHeight;
 			if(needsHeight)
 			{
-				if(this.currentIcon && this.label)
-				{
-					if(this._iconPosition == ICON_POSITION_TOP || this._iconPosition == ICON_POSITION_BOTTOM)
-					{
-						adjustedGap = this._gap == Number.POSITIVE_INFINITY ? Math.min(this._paddingTop, this._paddingBottom) : this._gap;
-						newHeight = this.currentIcon.height + adjustedGap + HELPER_POINT.y;
-					}
-					else
-					{
-						newHeight = Math.max(this.currentIcon.height, HELPER_POINT.y);
-					}
-				}
-				else if(this.currentIcon)
-				{
-					newHeight = this.currentIcon.height;
-				}
-				else if(this.label)
+				if(this._label)
 				{
 					newHeight = HELPER_POINT.y;
 				}
-				if(this.accessory)
+				adjustedGap = this._gap == Number.POSITIVE_INFINITY ? Math.min(this._paddingTop, this._paddingBottom) : this._gap;
+				if(this._layoutOrder == LAYOUT_ORDER_LABEL_ACCESSORY_ICON)
 				{
-					newHeight = Math.max(newHeight, this.accessory.height);
+					newHeight = this.addAccessoryHeight(newHeight, adjustedGap);
+					newHeight = this.addIconHeight(newHeight, adjustedGap);
+				}
+				else
+				{
+					newHeight = this.addIconHeight(newHeight, adjustedGap);
+					newHeight = this.addAccessoryHeight(newHeight, adjustedGap);
 				}
 				newHeight += this._paddingTop + this._paddingBottom;
 				if(isNaN(newHeight))
@@ -1238,6 +1420,98 @@ package feathers.controls.renderers
 			}
 
 			return this.setSizeInternal(newWidth, newHeight, false);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function addIconWidth(width:Number, gap:Number):Number
+		{
+			if(!this.currentIcon)
+			{
+				return width;
+			}
+			if(this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE || this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
+			{
+				width += this.currentIcon.width + gap;
+			}
+			else
+			{
+				width = Math.max(width, this.currentIcon.width);
+			}
+			return width;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function addAccessoryWidth(width:Number, gap:Number):Number
+		{
+			if(!this.accessory)
+			{
+				return width;
+			}
+
+			if(this._accessoryPosition == ACCESSORY_POSITION_LEFT || this._accessoryPosition == ACCESSORY_POSITION_RIGHT)
+			{
+				var adjustedAccessoryGap:Number = isNaN(this._accessoryGap) ? gap : this._accessoryGap;
+				if(adjustedAccessoryGap == Number.POSITIVE_INFINITY)
+				{
+					adjustedAccessoryGap = Math.min(this._paddingLeft, this._paddingRight, this._gap);
+				}
+				width += this.accessory.width + adjustedAccessoryGap;
+			}
+			else
+			{
+				width = Math.max(width, this.accessory.width);
+			}
+			return width;
+		}
+
+
+		/**
+		 * @private
+		 */
+		protected function addIconHeight(height:Number, gap:Number):Number
+		{
+			if(!this.currentIcon)
+			{
+				return height;
+			}
+			if(this._iconPosition == ICON_POSITION_TOP || this._iconPosition == ICON_POSITION_BOTTOM)
+			{
+				height += this.currentIcon.height + gap;
+			}
+			else
+			{
+				height = Math.max(height, this.currentIcon.height);
+			}
+			return height;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function addAccessoryHeight(height:Number, gap:Number):Number
+		{
+			if(!this.accessory)
+			{
+				return height;
+			}
+			if(this._accessoryPosition == ACCESSORY_POSITION_TOP || this._accessoryPosition == ACCESSORY_POSITION_BOTTOM)
+			{
+				var adjustedAccessoryGap:Number = isNaN(this._accessoryGap) ? gap : this._accessoryGap;
+				if(adjustedAccessoryGap == Number.POSITIVE_INFINITY)
+				{
+					adjustedAccessoryGap = Math.min(this._paddingTop, this._paddingBottom, this._gap);
+				}
+				height += this.accessory.height + adjustedAccessoryGap;
+			}
+			else
+			{
+				height = Math.max(height, this.accessory.height);
+			}
+			return height;
 		}
 
 		/**
@@ -1392,66 +1666,262 @@ package feathers.controls.renderers
 		 */
 		override protected function layoutContent():void
 		{
+			this.refreshMaxLabelWidth(false);
+			if(this._label)
+			{
+				this.labelTextRenderer.validate();
+				const labelRenderer:DisplayObject = DisplayObject(this.labelTextRenderer);
+			}
 			if(this.accessory is IFeathersControl)
 			{
 				IFeathersControl(this.accessory).validate();
 			}
-			var labelMaxWidth:Number = this.actualWidth - this._paddingLeft - this._paddingRight;
-			var adjustedGap:Number = this._gap == Number.POSITIVE_INFINITY ? Math.min(this._paddingLeft, this._paddingRight) : this._gap;
-			if(this.currentIcon && (this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE ||
-				this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE))
-			{
-				labelMaxWidth -= (this.currentIcon.width + adjustedGap);
-			}
-			if(this.accessory)
-			{
-				labelMaxWidth -= (this.accessory.width + adjustedGap);
-			}
 
-			this.labelTextRenderer.maxWidth = labelMaxWidth;
-			this.labelTextRenderer.validate();
-
-			if(this.label)
+			const iconIsInLayout:Boolean = this.currentIcon && this._iconPosition != ICON_POSITION_MANUAL;
+			const accessoryIsInLayout:Boolean = this.accessory && this._accessoryPosition != ACCESSORY_POSITION_MANUAL;
+			const accessoryGap:Number = isNaN(this._accessoryGap) ? this._gap : this._accessoryGap;
+			if(this._label && iconIsInLayout && accessoryIsInLayout)
 			{
-				this.positionLabelOrIcon(DisplayObject(this.labelTextRenderer));
-				if(this.accessory)
+				this.positionSingleChild(labelRenderer);
+				if(this._layoutOrder == LAYOUT_ORDER_LABEL_ACCESSORY_ICON)
 				{
-					if(this._horizontalAlign == Button.HORIZONTAL_ALIGN_RIGHT)
+					this.positionRelativeToOthers(this.accessory, labelRenderer, null, this._accessoryPosition, accessoryGap);
+					var iconPosition:String = this._iconPosition;
+					if(iconPosition == ICON_POSITION_LEFT_BASELINE)
 					{
-						this.labelTextRenderer.x -= (this.accessory.width + adjustedGap);
+						iconPosition = ICON_POSITION_LEFT;
 					}
-					else if(this._horizontalAlign == Button.HORIZONTAL_ALIGN_CENTER)
+					else if(iconPosition == ICON_POSITION_RIGHT_BASELINE)
 					{
-						this.labelTextRenderer.x -= (this.accessory.width + adjustedGap) / 2;
+						iconPosition = ICON_POSITION_RIGHT;
 					}
+					this.positionRelativeToOthers(this.currentIcon, labelRenderer, this.accessory, iconPosition, this._gap);
 				}
-				if(this.currentIcon)
+				else
+				{
+					this.positionLabelAndIcon();
+					this.positionRelativeToOthers(this.accessory, labelRenderer, this.currentIcon, this._accessoryPosition, accessoryGap);
+				}
+			}
+			else if(this._label)
+			{
+				this.positionSingleChild(labelRenderer);
+				//we won't position both the icon and accessory here, otherwise
+				//we would have gone into the previous conditional
+				if(iconIsInLayout)
 				{
 					this.positionLabelAndIcon();
 				}
-			}
-			else if(this.currentIcon)
-			{
-				this.positionLabelOrIcon(this.currentIcon);
-				if(this.accessory)
+				else if(accessoryIsInLayout)
 				{
-					if(this._horizontalAlign == Button.HORIZONTAL_ALIGN_RIGHT)
-					{
-						this.currentIcon.x -= (this.accessory.width + adjustedGap);
-					}
-					else if(this._horizontalAlign == Button.HORIZONTAL_ALIGN_CENTER)
-					{
-						this.currentIcon.x -= (this.accessory.width + adjustedGap) / 2;
-					}
+					this.positionRelativeToOthers(this.accessory, labelRenderer, null, this._accessoryPosition, accessoryGap);
 				}
 			}
+			else if(iconIsInLayout)
+			{
+				this.positionSingleChild(this.currentIcon);
+				if(accessoryIsInLayout)
+				{
+					this.positionRelativeToOthers(this.accessory, this.currentIcon, null, this._accessoryPosition, accessoryGap);
+				}
+			}
+			else if(accessoryIsInLayout)
+			{
+				this.positionSingleChild(this.accessory);
+			}
 
-			if(!this.accessory)
+			if(this.accessory)
+			{
+				if(!accessoryIsInLayout)
+				{
+					this.accessory.x = this._paddingLeft;
+					this.accessory.y = this._paddingTop;
+				}
+				this.accessory.x += this._accessoryOffsetX;
+				this.accessory.y += this._accessoryOffsetY;
+			}
+			if(this.currentIcon)
+			{
+				if(!iconIsInLayout)
+				{
+					this.currentIcon.x = this._paddingLeft;
+					this.currentIcon.y = this._paddingTop;
+				}
+				this.currentIcon.x += this._iconOffsetX;
+				this.currentIcon.y += this._iconOffsetY;
+			}
+			if(this._label)
+			{
+				this.labelTextRenderer.x += this._labelOffsetX;
+				this.labelTextRenderer.y += this._labelOffsetY;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function refreshMaxLabelWidth(forMeasurement:Boolean):void
+		{
+			if(!this._label)
 			{
 				return;
 			}
-			this.accessory.x = this.actualWidth - this._paddingRight - this.accessory.width;
-			this.accessory.y = (this.actualHeight - this.accessory.height) / 2;
+			var calculatedWidth:Number = this.actualWidth;
+			if(forMeasurement)
+			{
+				calculatedWidth = isNaN(this.explicitWidth) ? this._maxWidth : this.explicitWidth;
+			}
+			if(this.accessory is IFeathersControl)
+			{
+				IFeathersControl(this.accessory).validate();
+			}
+			if(this.currentIcon && (this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE ||
+				this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE))
+			{
+				calculatedWidth -= (this._gap + this.currentIcon.width);
+			}
+
+			if(this.accessory && (this._accessoryPosition == ACCESSORY_POSITION_LEFT || this._accessoryPosition == ACCESSORY_POSITION_RIGHT))
+			{
+				var accessoryGap:Number = (isNaN(this._accessoryGap) || this._accessoryGap == Number.POSITIVE_INFINITY) ? this._gap : this._accessoryGap;
+				calculatedWidth -= (accessoryGap + this.accessory.width);
+			}
+
+			this.labelTextRenderer.maxWidth = calculatedWidth - this._paddingLeft - this._paddingRight;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function positionRelativeToOthers(object:DisplayObject, relativeTo:DisplayObject, relativeTo2:DisplayObject, position:String, gap:Number):void
+		{
+			const relativeToX:Number = relativeTo2 ? Math.min(relativeTo.x, relativeTo2.x) : relativeTo.x;
+			const relativeToY:Number = relativeTo2 ? Math.min(relativeTo.y, relativeTo2.y) : relativeTo.y;
+			const relativeToWidth:Number = relativeTo2 ? (Math.max(relativeTo.x + relativeTo.width, relativeTo2.x + relativeTo2.width) - relativeToX) : relativeTo.width;
+			const relativeToHeight:Number = relativeTo2 ? (Math.max(relativeTo.y + relativeTo.height, relativeTo2.y + relativeTo2.height) - relativeToY) : relativeTo.height;
+			var newRelativeToX:Number = relativeToX;
+			var newRelativeToY:Number = relativeToY;
+			if(position == ACCESSORY_POSITION_TOP)
+			{
+				if(gap == Number.POSITIVE_INFINITY)
+				{
+					object.y = this._paddingTop;
+					newRelativeToY = this.actualHeight - this._paddingBottom - relativeToHeight;
+				}
+				else
+				{
+					if(this._verticalAlign == VERTICAL_ALIGN_TOP)
+					{
+						newRelativeToY += object.height + gap;
+					}
+					else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
+					{
+						newRelativeToY += (object.height + gap) / 2;
+					}
+					object.y = newRelativeToY - object.height - gap;
+				}
+			}
+			else if(position == ACCESSORY_POSITION_RIGHT)
+			{
+				if(gap == Number.POSITIVE_INFINITY)
+				{
+					newRelativeToX = this._paddingLeft;
+					object.x = this.actualWidth - this._paddingRight - object.width;
+				}
+				else
+				{
+					if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
+					{
+						newRelativeToX -= (object.width + gap);
+					}
+					else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
+					{
+						newRelativeToX -= (object.width + gap) / 2;
+					}
+					object.x = newRelativeToX + relativeToWidth + gap;
+				}
+			}
+			else if(position == ACCESSORY_POSITION_BOTTOM)
+			{
+				if(gap == Number.POSITIVE_INFINITY)
+				{
+					newRelativeToY = this._paddingTop;
+					object.y = this.actualHeight - this._paddingBottom - object.height;
+				}
+				else
+				{
+					if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
+					{
+						newRelativeToY -= (object.height + gap);
+					}
+					else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
+					{
+						newRelativeToY -= (object.height + gap) / 2;
+					}
+					object.y = newRelativeToY + relativeToHeight + gap;
+				}
+			}
+			else if(position == ACCESSORY_POSITION_LEFT)
+			{
+				if(gap == Number.POSITIVE_INFINITY)
+				{
+					object.x = this._paddingLeft;
+					newRelativeToX = this.actualWidth - this._paddingRight - relativeToWidth;
+				}
+				else
+				{
+					if(this._horizontalAlign == HORIZONTAL_ALIGN_LEFT)
+					{
+						newRelativeToX += gap + object.width;
+					}
+					else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
+					{
+						newRelativeToX += (gap + object.width) / 2;
+					}
+					object.x = newRelativeToX - gap - object.width;
+				}
+			}
+
+			var offsetX:Number = newRelativeToX - relativeToX;
+			var offsetY:Number = newRelativeToY - relativeToY;
+			relativeTo.x += offsetX;
+			relativeTo.y += offsetY;
+			if(relativeTo2)
+			{
+				relativeTo2.x += offsetX;
+				relativeTo2.y += offsetY;
+			}
+
+			if(position == ACCESSORY_POSITION_LEFT || position == ACCESSORY_POSITION_RIGHT)
+			{
+				if(this._verticalAlign == VERTICAL_ALIGN_TOP)
+				{
+					object.y = this._paddingTop;
+				}
+				else if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
+				{
+					object.y = this.actualHeight - this._paddingBottom - object.height;
+				}
+				else
+				{
+					object.y = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - object.height) / 2;
+				}
+			}
+			else if(position == ACCESSORY_POSITION_TOP || position == ACCESSORY_POSITION_BOTTOM)
+			{
+				if(this._horizontalAlign == HORIZONTAL_ALIGN_LEFT)
+				{
+					object.x = this._paddingLeft;
+				}
+				else if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
+				{
+					object.x = this.actualWidth - this._paddingRight - object.width;
+				}
+				else
+				{
+					object.x = this._paddingLeft + (this.actualWidth - this._paddingLeft - this._paddingRight - object.width) / 2;
+				}
+			}
 		}
 
 		/**
