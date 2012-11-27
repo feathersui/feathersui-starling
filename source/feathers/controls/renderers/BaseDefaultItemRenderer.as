@@ -77,7 +77,7 @@ package feathers.controls.renderers
 		 * to set the accessory position.
 		 *
 		 * <p>The <code>accessoryPositionOrigin</code> property will be ignored
-		 * if <code>accessoryPosition</code> is set to <code>ACCESSORY_POSITION_MANUAL</code>.
+		 * if <code>accessoryPosition</code> is set to <code>ACCESSORY_POSITION_MANUAL</code>.</p>
 		 *
 		 * @see #accessoryOffsetX
 		 * @see #accessoryOffsetY
@@ -301,7 +301,7 @@ package feathers.controls.renderers
 		 * label or the icon) the accessory should be relative to.
 		 *
 		 * <p>The <code>accessoryPositionOrigin</code> property will be ignored
-		 * if <code>accessoryPosition</code> is set to <code>ACCESSORY_POSITION_MANUAL</code>.
+		 * if <code>accessoryPosition</code> is set to <code>ACCESSORY_POSITION_MANUAL</code>.</p>
 		 *
 		 * @see #accessoryPosition
 		 * @see #iconPosition
@@ -381,7 +381,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected var _accessoryGap:Number = Number.POSITIVE_INFINITY;
+		protected var _accessoryGap:Number = NaN;
 
 		/**
 		 * The space, in pixels, between the accessory and the other child it is
