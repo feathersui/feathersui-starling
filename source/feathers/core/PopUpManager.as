@@ -32,6 +32,7 @@ package feathers.core
 	import starling.display.Stage;
 	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
+	import starling.events.ResizeEvent;
 
 	/**
 	 * Adds a display object as a pop-up above all content.
@@ -93,7 +94,12 @@ package feathers.core
 			popUps.push(popUp);
 			stage.addChild(popUp);
 			popUp.addEventListener(Event.REMOVED_FROM_STAGE, popUp_removedFromStageHandler);
-			
+
+			if(popUps.length == 1)
+			{
+				stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
+			}
+
 			if(isCentered)
 			{
 				centerPopUp(popUp);
@@ -151,6 +157,30 @@ package feathers.core
 					overlay.removeFromParent(true);
 					delete POPUP_TO_OVERLAY[popUp];
 				});
+			}
+
+			if(popUps.length == 0)
+			{
+				Starling.current.stage.removeEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected static function stage_resizeHandler(event:ResizeEvent):void
+		{
+			const stage:Stage = Starling.current.stage;
+			const popUpCount:int = popUps.length;
+			for(var i:int = 0; i < popUpCount; i++)
+			{
+				var popUp:DisplayObject = popUps[i];
+				var overlay:DisplayObject = DisplayObject(POPUP_TO_OVERLAY[popUp]);
+				if(overlay)
+				{
+					overlay.width = stage.stageWidth;
+					overlay.height = stage.stageHeight;
+				}
 			}
 		}
 	}
