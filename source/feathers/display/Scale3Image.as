@@ -24,13 +24,13 @@
  */
 package feathers.display
 {
-	import feathers.textures.Scale3Textures;
-
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-
+	
+	import feathers.textures.Scale3Textures;
+	
 	import starling.core.RenderSupport;
 	import starling.display.DisplayObject;
 	import starling.display.QuadBatch;
@@ -56,7 +56,7 @@ package feathers.display
 		public function Scale3Image(textures:Scale3Textures, textureScale:Number = 1)
 		{
 			super();
-			this._textures = textures;
+			this.textures = textures;
 			this._textureScale = textureScale;
 			this._hitArea = new Rectangle();
 			this.readjustSize();
@@ -77,6 +77,11 @@ package feathers.display
 		 * @private
 		 */
 		private var _layoutChanged:Boolean = true;
+		
+		/**
+		 * @private
+		 */
+		private var _frame:Rectangle;
 
 		/**
 		 * @private
@@ -105,6 +110,7 @@ package feathers.display
 				return;
 			}
 			this._textures = value;
+			this._frame = this._textures.texture.frame;
 			this._layoutChanged = true;
 			this._propertiesChanged = true;
 		}
@@ -343,9 +349,8 @@ package feathers.display
 		 */
 		public function readjustSize():void
 		{
-			const frame:Rectangle = this._textures.texture.frame;
-			this.width = frame.width * this._textureScale;
-			this.height = frame.height * this._textureScale;
+			this.width = this._frame.width * this._textureScale;
+			this.height = this._frame.height * this._textureScale;
 		}
 
 		/**
@@ -364,13 +369,12 @@ package feathers.display
 				helperImage.smoothing = this._smoothing;
 				helperImage.color = this._color;
 
-				const frame:Rectangle = this._textures.texture.frame;
 				if(this._textures.direction == Scale3Textures.DIRECTION_VERTICAL)
 				{
 					var scaledOppositeEdgeSize:Number = this._width;
-					var oppositeEdgeScale:Number = scaledOppositeEdgeSize / frame.width;
+					var oppositeEdgeScale:Number = scaledOppositeEdgeSize / this._frame.width;
 					var scaledFirstRegionSize:Number = this._textures.firstRegionSize * oppositeEdgeScale;
-					var scaledThirdRegionSize:Number = (frame.height - this._textures.firstRegionSize - this._textures.secondRegionSize) * oppositeEdgeScale;
+					var scaledThirdRegionSize:Number = (this._frame.height - this._textures.firstRegionSize - this._textures.secondRegionSize) * oppositeEdgeScale;
 					var scaledSecondRegionSize:Number = this._height - scaledFirstRegionSize - scaledThirdRegionSize;
 
 					if(scaledOppositeEdgeSize > 0)
@@ -412,9 +416,9 @@ package feathers.display
 				else //horizontal
 				{
 					scaledOppositeEdgeSize = this._height;
-					oppositeEdgeScale = scaledOppositeEdgeSize / frame.height;
+					oppositeEdgeScale = scaledOppositeEdgeSize / this._frame.height;
 					scaledFirstRegionSize = this._textures.firstRegionSize * oppositeEdgeScale;
-					scaledThirdRegionSize = (frame.width - this._textures.firstRegionSize - this._textures.secondRegionSize) * oppositeEdgeScale;
+					scaledThirdRegionSize = (this._frame.width - this._textures.firstRegionSize - this._textures.secondRegionSize) * oppositeEdgeScale;
 					scaledSecondRegionSize = this._width - scaledFirstRegionSize - scaledThirdRegionSize;
 
 					if(scaledOppositeEdgeSize > 0)
