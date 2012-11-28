@@ -106,11 +106,6 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _frameCount:int = 0;
-
-		/**
-		 * @private
-		 */
 		protected var _text:String = "";
 
 		/**
@@ -453,9 +448,8 @@ package feathers.controls.text
 				const hasText:Boolean = this._text.length > 0;
 				if(hasText)
 				{
-					//we need to wait a frame (sometimes two!) for the TextField
-					//to render properly. yes, really.
-					this._frameCount = 0;
+					//we need to wait a frame for the TextField to render
+					//properly. sometimes two, and this is a known issue.
 					this.addEventListener(Event.ENTER_FRAME, enterFrameHandler);
 				}
 				if(this._textSnapshot)
@@ -565,11 +559,6 @@ package feathers.controls.text
 
 		protected function enterFrameHandler(event:Event):void
 		{
-			this._frameCount++;
-			if(this._frameCount < 2)
-			{
-				return;
-			}
 			this.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
 			this.refreshSnapshot();
 		}
