@@ -83,11 +83,15 @@ package feathers.controls
 	 */
 	public class TextInput extends FeathersControl
 	{
-
 		/**
 		 * @private
 		 */
 		private static const HELPER_POINT:Point = new Point();
+
+		/**
+		 * @private
+		 */
+		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
 
 		/**
 		 * @private
@@ -784,7 +788,7 @@ package feathers.controls
 				return;
 			}
 
-			const touches:Vector.<Touch> = event.getTouches(this);
+			const touches:Vector.<Touch> = event.getTouches(this, null, HELPER_TOUCHES_VECTOR);
 			if(touches.length == 0)
 			{
 				//end hover
@@ -809,6 +813,7 @@ package feathers.controls
 				}
 				if(!touch)
 				{
+					HELPER_TOUCHES_VECTOR.length = 0;
 					return;
 				}
 				if(touch.phase == TouchPhase.ENDED)
@@ -823,7 +828,6 @@ package feathers.controls
 						HELPER_POINT.y -= this._paddingTop;
 						this.textEditor.setFocus(HELPER_POINT);
 					}
-					return;
 				}
 			}
 			else
@@ -833,7 +837,7 @@ package feathers.controls
 					if(touch.phase == TouchPhase.BEGAN)
 					{
 						this._touchPointID = touch.id;
-						return;
+						break;
 					}
 					else if(touch.phase == TouchPhase.HOVER)
 					{
@@ -842,10 +846,11 @@ package feathers.controls
 							this._oldMouseCursor = Mouse.cursor;
 							Mouse.cursor = MouseCursor.IBEAM;
 						}
-						return;
+						break;
 					}
 				}
 			}
+			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 
 		/**

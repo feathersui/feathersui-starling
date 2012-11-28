@@ -118,6 +118,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
+
+		/**
+		 * @private
+		 */
 		protected static const INVALIDATION_FLAG_SCROLL_BAR_RENDERER:String = "scrollBarRenderer";
 
 		/**
@@ -2556,9 +2561,10 @@ package feathers.controls
 		 */
 		protected function stage_touchHandler(event:TouchEvent):void
 		{
-			const touches:Vector.<Touch> = event.getTouches(this.stage);
+			const touches:Vector.<Touch> = event.getTouches(this.stage, null, HELPER_TOUCHES_VECTOR);
 			if(touches.length == 0 || this._touchPointID < 0)
 			{
+				HELPER_TOUCHES_VECTOR.length = 0;
 				return;
 			}
 			var touch:Touch;
@@ -2572,6 +2578,7 @@ package feathers.controls
 			}
 			if(!touch)
 			{
+				HELPER_TOUCHES_VECTOR.length = 0;
 				return;
 			}
 
@@ -2603,6 +2610,7 @@ package feathers.controls
 				}
 				if(isFinishingHorizontally && isFinishingVertically)
 				{
+					HELPER_TOUCHES_VECTOR.length = 0;
 					return;
 				}
 				
@@ -2643,6 +2651,7 @@ package feathers.controls
 					this.hideVerticalScrollBar();
 				}
 			}
+			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 
 		/**
@@ -2698,7 +2707,7 @@ package feathers.controls
 				return;
 			}
 			const displayHorizontalScrollBar:DisplayObject = DisplayObject(event.currentTarget);
-			const touches:Vector.<Touch> = event.getTouches(displayHorizontalScrollBar);
+			const touches:Vector.<Touch> = event.getTouches(displayHorizontalScrollBar, null, HELPER_TOUCHES_VECTOR);
 			if(touches.length == 0)
 			{
 				//end hover
@@ -2720,6 +2729,7 @@ package feathers.controls
 				{
 					//end hover
 					this.hideHorizontalScrollBar();
+					HELPER_TOUCHES_VECTOR.length = 0;
 					return;
 				}
 				if(touch.phase == TouchPhase.ENDED)
@@ -2732,7 +2742,6 @@ package feathers.controls
 					{
 						this.hideHorizontalScrollBar();
 					}
-					return;
 				}
 			}
 			else
@@ -2747,15 +2756,16 @@ package feathers.controls
 							this._horizontalScrollBarHideTween = null;
 						}
 						displayHorizontalScrollBar.alpha = 1;
-						return;
+						break;
 					}
 					else if(touch.phase == TouchPhase.BEGAN)
 					{
 						this._horizontalScrollBarTouchPointID = touch.id;
-						return;
+						break;
 					}
 				}
 			}
+			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 
 		/**
@@ -2769,7 +2779,7 @@ package feathers.controls
 				return;
 			}
 			const displayVerticalScrollBar:DisplayObject = DisplayObject(event.currentTarget);
-			const touches:Vector.<Touch> = event.getTouches(displayVerticalScrollBar);
+			const touches:Vector.<Touch> = event.getTouches(displayVerticalScrollBar, null, HELPER_TOUCHES_VECTOR);
 			if(touches.length == 0)
 			{
 				//end hover
@@ -2791,6 +2801,7 @@ package feathers.controls
 				{
 					//end hover
 					this.hideVerticalScrollBar();
+					HELPER_TOUCHES_VECTOR.length = 0;
 					return;
 				}
 				if(touch.phase == TouchPhase.ENDED)
@@ -2803,7 +2814,6 @@ package feathers.controls
 					{
 						this.hideVerticalScrollBar();
 					}
-					return;
 				}
 			}
 			else
@@ -2818,15 +2828,16 @@ package feathers.controls
 							this._verticalScrollBarHideTween = null;
 						}
 						displayVerticalScrollBar.alpha = 1;
-						return;
+						break;
 					}
 					else if(touch.phase == TouchPhase.BEGAN)
 					{
 						this._verticalScrollBarTouchPointID = touch.id;
-						return;
+						break;
 					}
 				}
 			}
+			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 
 		/**

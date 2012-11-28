@@ -108,6 +108,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
+
+		/**
+		 * @private
+		 */
 		protected static const DIRECTION_TO_FUNCTION:Object = {};
 		DIRECTION_TO_FUNCTION[DIRECTION_ANY] = positionCalloutAny;
 		DIRECTION_TO_FUNCTION[DIRECTION_UP] = positionCalloutAbove;
@@ -1261,7 +1266,7 @@ package feathers.controls
 				return;
 			}
 
-			const touches:Vector.<Touch> = event.getTouches(this.stage);
+			const touches:Vector.<Touch> = event.getTouches(this.stage, null, HELPER_TOUCHES_VECTOR);
 			const touchCount:int = touches.length;
 			for(var i:int = 0; i < touchCount; i++)
 			{
@@ -1274,6 +1279,7 @@ package feathers.controls
 					break;
 				}
 			}
+			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 
 		/**

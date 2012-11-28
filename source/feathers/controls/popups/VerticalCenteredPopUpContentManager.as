@@ -54,6 +54,11 @@ package feathers.controls.popups
 	public class VerticalCenteredPopUpContentManager extends EventDispatcher implements IPopUpContentManager
 	{
 		/**
+		 * @private
+		 */
+		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
+
+		/**
 		 * Constructor.
 		 */
 		public function VerticalCenteredPopUpContentManager()
@@ -220,7 +225,7 @@ package feathers.controls.popups
 			{
 				return;
 			}
-			const touches:Vector.<Touch> = event.getTouches(Starling.current.stage);
+			const touches:Vector.<Touch> = event.getTouches(Starling.current.stage, null, HELPER_TOUCHES_VECTOR);
 			if(touches.length == 0)
 			{
 				return;
@@ -238,13 +243,13 @@ package feathers.controls.popups
 				}
 				if(!touch)
 				{
+					HELPER_TOUCHES_VECTOR.length = 0;
 					return;
 				}
 				if(touch.phase == TouchPhase.ENDED)
 				{
 					this.touchPointID = -1;
 					this.close();
-					return;
 				}
 			}
 			else
@@ -254,10 +259,11 @@ package feathers.controls.popups
 					if(touch.phase == TouchPhase.BEGAN)
 					{
 						this.touchPointID = touch.id;
-						return;
+						break;
 					}
 				}
 			}
+			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 
 

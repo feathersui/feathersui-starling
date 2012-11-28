@@ -72,6 +72,11 @@ package feathers.controls
 		private static const HELPER_POINT:Point = new Point();
 
 		/**
+		 * @private
+		 */
+		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
+
+		/**
 		 * The default value added to the <code>nameList</code> of the label.
 		 */
 		public static const DEFAULT_CHILD_NAME_LABEL:String = "feathers-button-label";
@@ -2379,7 +2384,7 @@ package feathers.controls
 				return;
 			}
 
-			const touches:Vector.<Touch> = event.getTouches(this);
+			const touches:Vector.<Touch> = event.getTouches(this, null, HELPER_TOUCHES_VECTOR);
 			if(touches.length == 0)
 			{
 				//end of hover
@@ -2402,6 +2407,7 @@ package feathers.controls
 				{
 					//end of hover
 					this.currentState = STATE_UP;
+					HELPER_TOUCHES_VECTOR.length = 0;
 					return;
 				}
 
@@ -2418,7 +2424,6 @@ package feathers.controls
 					{
 						this.currentState = STATE_UP;
 					}
-					return;
 				}
 				else if(touch.phase == TouchPhase.ENDED)
 				{
@@ -2450,7 +2455,6 @@ package feathers.controls
 					{
 						this.currentState = STATE_UP;
 					}
-					return;
 				}
 			}
 			else //if we get here, we don't have a saved touch ID yet
@@ -2461,16 +2465,17 @@ package feathers.controls
 					{
 						this.currentState = STATE_DOWN;
 						this._touchPointID = touch.id;
-						return;
+						break;
 					}
 					else if(touch.phase == TouchPhase.HOVER)
 					{
 						this.currentState = STATE_HOVER;
 						this._isHoverSupported = true;
-						return;
+						break;
 					}
 				}
 			}
+			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 	}
 }

@@ -65,6 +65,11 @@ package feathers.controls
 		public static const DEFAULT_CHILD_NAME_LIST:String = "feathers-picker-list-list";
 
 		/**
+		 * @private
+		 */
+		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
+
+		/**
 		 * Constructor.
 		 */
 		public function PickerList()
@@ -745,7 +750,7 @@ package feathers.controls
 				this._buttonTouchPointID = -1;
 				return;
 			}
-			const touches:Vector.<Touch> = event.getTouches(this.button);
+			const touches:Vector.<Touch> = event.getTouches(this.button, null, HELPER_TOUCHES_VECTOR);
 			if(touches.length == 0)
 			{
 				return;
@@ -763,12 +768,12 @@ package feathers.controls
 				}
 				if(!touch)
 				{
+					HELPER_TOUCHES_VECTOR.length = 0;
 					return;
 				}
 				if(touch.phase == TouchPhase.ENDED)
 				{
 					this._buttonTouchPointID = -1;
-					return;
 				}
 			}
 			else
@@ -778,10 +783,11 @@ package feathers.controls
 					if(touch.phase == TouchPhase.BEGAN)
 					{
 						this._buttonTouchPointID = touch.id;
-						return;
+						break;
 					}
 				}
 			}
+			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 		
 		/**
@@ -794,9 +800,10 @@ package feathers.controls
 				this._listTouchPointID = -1;
 				return;
 			}
-			const touches:Vector.<Touch> = event.getTouches(this.list);
+			const touches:Vector.<Touch> = event.getTouches(this.list, null, HELPER_TOUCHES_VECTOR);
 			if(touches.length == 0)
 			{
+				HELPER_TOUCHES_VECTOR.length = 0;
 				return;
 			}
 			if(this._listTouchPointID >= 0)
@@ -812,6 +819,7 @@ package feathers.controls
 				}
 				if(!touch)
 				{
+					HELPER_TOUCHES_VECTOR.length = 0;
 					return;
 				}
 				if(touch.phase == TouchPhase.ENDED)
@@ -831,9 +839,11 @@ package feathers.controls
 					{
 						this._listTouchPointID = touch.id;
 						this._hasBeenScrolled = false;
+						break;
 					}
 				}
 			}
+			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 	}
 }
