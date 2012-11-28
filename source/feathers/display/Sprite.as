@@ -162,7 +162,7 @@ package feathers.display
 					return;
 				}
 				support.finishQuadBatch();
-				Starling.context.setScissorRectangle(this._scissorRect);
+				support.scissorRectangle = this._scissorRect;
 				ScrollRectManager.currentScissorRect = this._scissorRect;
 				ScrollRectManager.scrollRectOffsetX -= this._scaledScrollRectXY.x;
 				ScrollRectManager.scrollRectOffsetY -= this._scaledScrollRectXY.y;
@@ -176,7 +176,7 @@ package feathers.display
 				ScrollRectManager.scrollRectOffsetX += this._scaledScrollRectXY.x;
 				ScrollRectManager.scrollRectOffsetY += this._scaledScrollRectXY.y;
 				ScrollRectManager.currentScissorRect = oldRect;
-				Starling.context.setScissorRectangle(oldRect);
+				support.scissorRectangle = oldRect;
 			}
 		}
 		

@@ -14,7 +14,7 @@ Created by [Josh Tynjala](http://twitter.com/joshtynjala), Feathers is free and 
 
 ## Starling Framework Version
 
-Starling Framework commit 30a6b133d5181a5f268fc5a4307c76b71928fa43 (Oct 16, 2012) or newer from Github is required. Starling 1.2 is no longer supported.
+Starling Framework commit cb6b9a653e7892b84196e7da94b60f8ac68f08f3 (Nov 20, 2012) or newer from Github is required. Starling 1.2 is no longer supported. Feathers 1.0 is very nearly ready, and I'd like to release it soon after Starling 1.3 is released.
 
 In general, the most recent [stable version of Starling Framework](http://gamua.com/starling/download/) is required to use Feathers. Sometimes, a Github commit may be required. For complete details, see [Which version of Starling Framework is supported?](http://wiki.starling-framework.org/feathers/faq#which_version_of_starling_framework_is_supported) in the [Feathers FAQ](http://wiki.starling-framework.org/feathers/faq).
 
