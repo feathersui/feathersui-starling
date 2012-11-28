@@ -73,6 +73,11 @@ package feathers.controls
 		private static const HELPER_POINT:Point = new Point();
 
 		/**
+		 * @private
+		 */
+		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
+
+		/**
 		 * The page indicator's symbols will be positioned vertically, from top
 		 * to bottom.
 		 */
@@ -634,7 +639,7 @@ package feathers.controls
 				return;
 			}
 
-			const touches:Vector.<Touch> = event.getTouches(this);
+			const touches:Vector.<Touch> = event.getTouches(this, null, HELPER_TOUCHES_VECTOR);
 			if(touches.length == 0)
 			{
 				//end of hover
@@ -655,6 +660,7 @@ package feathers.controls
 				if(!touch)
 				{
 					//end of hover
+					HELPER_TOUCHES_VECTOR.length = 0;
 					return;
 				}
 
@@ -698,10 +704,11 @@ package feathers.controls
 					if(touch.phase == TouchPhase.BEGAN)
 					{
 						this.touchPointID = touch.id;
-						return;
+						break;
 					}
 				}
 			}
+			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 
 	}

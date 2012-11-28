@@ -56,6 +56,11 @@ package feathers.dragDrop
 		/**
 		 * @private
 		 */
+		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
+
+		/**
+		 * @private
+		 */
 		protected static var _touchPointID:int = -1;
 
 		/**
@@ -312,9 +317,10 @@ package feathers.dragDrop
 		protected static function stage_touchHandler(event:TouchEvent):void
 		{
 			const stage:Stage = Starling.current.stage;
-			const touches:Vector.<Touch> = event.getTouches(stage);
+			const touches:Vector.<Touch> = event.getTouches(stage, null, HELPER_TOUCHES_VECTOR);
 			if(touches.length == 0 || _touchPointID < 0)
 			{
+				HELPER_TOUCHES_VECTOR.length = 0;
 				return;
 			}
 			var touch:Touch;
@@ -328,6 +334,7 @@ package feathers.dragDrop
 			}
 			if(!touch)
 			{
+				HELPER_TOUCHES_VECTOR.length = 0;
 				return;
 			}
 			if(touch.phase == TouchPhase.MOVED)
@@ -351,8 +358,8 @@ package feathers.dragDrop
 				}
 				dropTarget = null;
 				completeDrag(isDropped);
-				return;
 			}
+			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 	}
 }

@@ -64,6 +64,11 @@ package feathers.controls
 
 		/**
 		 * @private
+		 */
+		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
+
+		/**
+		 * @private
 		 * The minimum physical distance (in inches) that a touch must move
 		 * before the scroller starts scrolling.
 		 */
@@ -1444,7 +1449,7 @@ package feathers.controls
 				return;
 			}
 
-			const touches:Vector.<Touch> = event.getTouches(this);
+			const touches:Vector.<Touch> = event.getTouches(this, null, HELPER_TOUCHES_VECTOR);
 			if(touches.length == 0)
 			{
 				return;
@@ -1461,6 +1466,7 @@ package feathers.controls
 			}
 			if(!touch || touch.phase != TouchPhase.ENDED)
 			{
+				HELPER_TOUCHES_VECTOR.length = 0;
 				return;
 			}
 
@@ -1471,6 +1477,7 @@ package feathers.controls
 				this.isSelected = !this._isSelected;
 				this._isSelectionChangedByUser = true;
 			}
+			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 
 		/**
@@ -1482,7 +1489,7 @@ package feathers.controls
 			{
 				return;
 			}
-			const touches:Vector.<Touch> = event.getTouches(this.thumb);
+			const touches:Vector.<Touch> = event.getTouches(this.thumb, null, HELPER_TOUCHES_VECTOR);
 			if(touches.length == 0)
 			{
 				return;
@@ -1500,6 +1507,7 @@ package feathers.controls
 				}
 				if(!touch)
 				{
+					HELPER_TOUCHES_VECTOR.length = 0;
 					return;
 				}
 				touch.getLocation(this, HELPER_POINT);
@@ -1510,7 +1518,6 @@ package feathers.controls
 					const xPosition:Number = Math.min(Math.max(this._paddingLeft, this._thumbStartX + xOffset), this._paddingLeft + trackScrollableWidth);
 					this.thumb.x = xPosition;
 					this.layout();
-					return;
 				}
 				else if(touch.phase == TouchPhase.ENDED)
 				{
@@ -1522,7 +1529,6 @@ package feathers.controls
 						this._isSelectionChangedByUser = true;
 						this._ignoreTapHandler = true;
 					}
-					return;
 				}
 			}
 			else
@@ -1535,10 +1541,11 @@ package feathers.controls
 						this._touchPointID = touch.id;
 						this._thumbStartX = this.thumb.x;
 						this._touchStartX = HELPER_POINT.x;
-						return;
+						break;
 					}
 				}
 			}
+			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 
 		/**

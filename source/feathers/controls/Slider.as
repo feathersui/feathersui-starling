@@ -77,6 +77,11 @@ package feathers.controls
 		private static const HELPER_POINT:Point = new Point();
 
 		/**
+		 * @private
+		 */
+		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
+
+		/**
 		 * The slider's thumb may be dragged horizontally (on the x-axis).
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
@@ -1247,7 +1252,7 @@ package feathers.controls
 				this._touchPointID = -1;
 				return;
 			}
-			const touches:Vector.<Touch> = event.getTouches(DisplayObject(event.currentTarget));
+			const touches:Vector.<Touch> = event.getTouches(DisplayObject(event.currentTarget), null, HELPER_TOUCHES_VECTOR);
 			if(this._touchPointID >= 0)
 			{
 				var touch:Touch;
@@ -1261,6 +1266,7 @@ package feathers.controls
 				}
 				if(!touch)
 				{
+					HELPER_TOUCHES_VECTOR.length = 0;
 					return;
 				}
 				if(!this._showThumb && touch.phase == TouchPhase.MOVED)
@@ -1281,7 +1287,6 @@ package feathers.controls
 						this.dispatchEventWith(Event.CHANGE);
 					}
 					this.dispatchEventWith(FeathersEventType.END_INTERACTION);
-					return;
 				}
 			}
 			else
@@ -1316,9 +1321,11 @@ package feathers.controls
 						{
 							this.value = this._touchValue;
 						}
+						break;
 					}
 				}
 			}
+			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 		
 		/**
@@ -1331,7 +1338,7 @@ package feathers.controls
 				this._touchPointID = -1;
 				return;
 			}
-			const touches:Vector.<Touch> = event.getTouches(this.thumb);
+			const touches:Vector.<Touch> = event.getTouches(this.thumb, null, HELPER_TOUCHES_VECTOR);
 			if(touches.length == 0)
 			{
 				return;
@@ -1349,6 +1356,7 @@ package feathers.controls
 				}
 				if(!touch)
 				{
+					HELPER_TOUCHES_VECTOR.length = 0;
 					return;
 				}
 				if(touch.phase == TouchPhase.MOVED)
@@ -1365,7 +1373,6 @@ package feathers.controls
 						this.dispatchEventWith(Event.CHANGE);
 					}
 					this.dispatchEventWith(FeathersEventType.END_INTERACTION);
-					return;
 				}
 			}
 			else
@@ -1382,10 +1389,11 @@ package feathers.controls
 						this._touchStartY = HELPER_POINT.y;
 						this.isDragging = true;
 						this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
-						return;
+						break;
 					}
 				}
 			}
+			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 
 		/**

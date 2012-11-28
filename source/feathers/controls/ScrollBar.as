@@ -82,6 +82,11 @@ package feathers.controls
 		private static const HELPER_POINT:Point = new Point();
 
 		/**
+		 * @private
+		 */
+		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
+
+		/**
 		 * The scroll bar's thumb may be dragged horizontally (on the x-axis).
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
@@ -1584,7 +1589,7 @@ package feathers.controls
 				return;
 			}
 
-			const touches:Vector.<Touch> = event.getTouches(DisplayObject(event.currentTarget));
+			const touches:Vector.<Touch> = event.getTouches(DisplayObject(event.currentTarget), null, HELPER_TOUCHES_VECTOR);
 			if(touches.length == 0)
 			{
 				return;
@@ -1602,6 +1607,7 @@ package feathers.controls
 				}
 				if(!touch)
 				{
+					HELPER_TOUCHES_VECTOR.length = 0;
 					return;
 				}
 				if(touch.phase == TouchPhase.ENDED)
@@ -1609,7 +1615,6 @@ package feathers.controls
 					this._touchPointID = -1;
 					this._repeatTimer.stop();
 					this.dispatchEventWith(FeathersEventType.END_INTERACTION);
-					return;
 				}
 			}
 			else
@@ -1628,10 +1633,11 @@ package feathers.controls
 						this._touchValue = this.locationToValue(HELPER_POINT);
 						this.adjustPage();
 						this.startRepeatTimer(this.adjustPage);
-						return;
+						break;
 					}
 				}
 			}
+			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 
 		/**
@@ -1643,7 +1649,7 @@ package feathers.controls
 			{
 				return;
 			}
-			const touches:Vector.<Touch> = event.getTouches(this.thumb);
+			const touches:Vector.<Touch> = event.getTouches(this.thumb, null, HELPER_TOUCHES_VECTOR);
 			if(touches.length == 0)
 			{
 				return;
@@ -1661,6 +1667,7 @@ package feathers.controls
 				}
 				if(!touch)
 				{
+					HELPER_TOUCHES_VECTOR.length = 0;
 					return;
 				}
 				if(touch.phase == TouchPhase.MOVED)
@@ -1672,7 +1679,6 @@ package feathers.controls
 						newValue = roundToNearest(newValue, this._step);
 					}
 					this.value = newValue;
-					return;
 				}
 				else if(touch.phase == TouchPhase.ENDED)
 				{
@@ -1683,7 +1689,6 @@ package feathers.controls
 						this.dispatchEventWith(Event.CHANGE);
 					}
 					this.dispatchEventWith(FeathersEventType.END_INTERACTION);
-					return;
 				}
 			}
 			else
@@ -1700,10 +1705,11 @@ package feathers.controls
 						this._touchStartY = HELPER_POINT.y;
 						this.isDragging = true;
 						this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
-						return;
+						break;
 					}
 				}
 			}
+			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 
 		/**
@@ -1711,7 +1717,7 @@ package feathers.controls
 		 */
 		protected function decrementButton_touchHandler(event:TouchEvent):void
 		{
-			const touches:Vector.<Touch> = event.getTouches(this.decrementButton, TouchPhase.BEGAN);
+			const touches:Vector.<Touch> = event.getTouches(this.decrementButton, TouchPhase.BEGAN, HELPER_TOUCHES_VECTOR);
 			if(touches.length == 0)
 			{
 				return;
@@ -1719,6 +1725,7 @@ package feathers.controls
 			this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 			this.decrement();
 			this.startRepeatTimer(this.decrement);
+			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 
 		/**
@@ -1735,7 +1742,7 @@ package feathers.controls
 		 */
 		protected function incrementButton_touchHandler(event:TouchEvent):void
 		{
-			const touches:Vector.<Touch> = event.getTouches(this.incrementButton, TouchPhase.BEGAN);
+			const touches:Vector.<Touch> = event.getTouches(this.incrementButton, TouchPhase.BEGAN, HELPER_TOUCHES_VECTOR);
 			if(touches.length == 0)
 			{
 				return;
@@ -1743,6 +1750,7 @@ package feathers.controls
 			this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 			this.increment();
 			this.startRepeatTimer(this.increment);
+			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 
 		/**
