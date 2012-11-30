@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project name="feathers" default="build" basedir=".">
+<project name="feathers" default="quick" basedir=".">
 	
 	<!-- build.local.properties and sdk.local.proprties are optional files that
 		can be used to override the default properties. -->
@@ -8,8 +8,42 @@
 	<property file="./build.local.properties"/>
 	<property file="./build.properties"/>
 
-	<target name="build">
+	<target name="quick" depends="-feathers,-cleanup" description="builds feathers.swc only"/>
+
+	<target name="docs" depends="-docs,-cleanup" description="builds API documentation only"/>
+
+	<target name="full" depends="-feathers,-docs,-includes,-cleanup" description="build everything">
+
+		<!-- move feathers.swc to its final location for distribution.
+			basically, we didn't want the extra swc directory for a quick build. -->
+
+		<copy overwrite="true" todir="${swc.output}">
+			<fileset dir="${output.path}">
+				<include name="feathers.swc"/>
+			</fileset>
+		</copy>
+		<delete file="${output.path}/feathers.swc"/>
+	</target>
+
+	<target name="package" depends="full" description="build everything and package a zip">
+		<zip destfile="${output.path}/feathers.zip">
+			<zipfileset dir="${output.path}"/>
+		</zip>
+
+		<delete includeemptydirs="true">
+			<fileset dir="${output.path}" excludes="feathers.zip"/>
+		</delete>
+	</target>
+
+	<target name="-prepare">
 		<delete dir="${output.path}"/>
+	</target>
+
+	<target name="-cleanup">
+		<delete dir="${dependency.output}"/>
+	</target>
+
+	<target name="-starling" depends="-prepare">
 
 		<echo message="Building starling.swc"/>
 		<java jar="${compc}" dir="${starling.root}" fork="true" failonerror="true">
@@ -21,29 +55,33 @@
 			<arg line="--external-library-path+='${flexframework.lib}'"/>
 			<arg line="--output '${dependency.output}/starling.swc'"/>
 		</java>
+	</target>
 
+	<target name="-feathers" depends="-starling">
 		<echo message="Building feathers.swc"/>
 		<java jar="${compc}" dir="${basedir}" fork="true" failonerror="true">
 			<arg line="+flexlib='${flexframework.root}'"/>
 			<arg line="--swf-version=${swf.version}"/>
 			<arg line="--target-player=${player.version}"/>
 			<arg line="--namespace+=${mxml.namespace},mxml-manifest.xml"/>
-			<arg line="--source-path+='source'"/>
+			<arg line="--source-path+='${source.root}'"/>
 			<arg line="--include-namespaces+=${mxml.namespace}"/>
-			<arg line="--include-sources+='source'"/>
+			<arg line="--include-sources+='${source.root}'"/>
 			<arg line="--external-library-path+='${dependency.output}'"/>
 			<arg line="--external-library-path+='${flexframework.lib}'"/>
-			<arg line="--output '${swc.output}'"/>
+			<arg line="--output '${output.path}/feathers.swc'"/>
 		</java>
+	</target>
 
+	<target name="-docs" depends="-starling">
 		<echo message="Generating Documentation"/>
 		<java jar="${asdoc}" dir="${basedir}" fork="true" failonerror="true">
 			<arg line="+flexlib='${flexframework.root}'"/>
 			<arg line="--swf-version=${swf.version}"/>
 			<arg line="--target-player=${player.version}"/>
-			<arg line="--source-path+='source'"/>
+			<arg line="--source-path+='${source.root}'"/>
 			<arg line="--library-path+='${dependency.output}'"/>
-			<arg line="--doc-sources+='source'"/>
+			<arg line="--doc-sources+='${source.root}'"/>
 			<arg line="--external-library-path+='${flexframework.lib}'"/>
 			<arg line="--main-title 'Feathers API Documentation'"/>
 			<arg line="--window-title 'Feathers User Interface Controls for Starling Framework API Documentation'"/>
@@ -52,7 +90,108 @@
 			<arg line="--package-description-file package-descriptions.xml"/>
 			<arg line="--output '${docs.output}'"/>
 		</java>
+	</target>
 
-		<delete dir="${dependency.output}"/>
+	<target name="-includes">
+		<echo message="Copying Feathers source code"/>
+		<copy overwrite="true" todir="${source.output}">
+			<fileset dir="${source.root}"/>
+		</copy>
+				
+		<echo message="Copying README and LICENSE"/>
+		<copy overwrite="true" todir="${output.path}">
+			<fileset dir="${basedir}">
+				<include name="README.md"/>
+				<include name="LICENSE"/>
+			</fileset>
+		</copy>
+
+		<echo message="Copying themes"/>
+
+		<copy overwrite="true" todir="${themes.output}/AeonDesktopTheme">
+			<fileset dir="${examples.root}/AeonDesktopTheme">
+				<include name="README.md"/>
+				<include name="source/**"/>
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="${themes.output}/AzureMobileTheme">
+			<fileset dir="${examples.root}/AzureMobileTheme">
+				<include name="README.md"/>
+				<include name="source/**"/>
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="${themes.output}/MetalWorksMobileTheme">
+			<fileset dir="${examples.root}/MetalWorksMobileTheme">
+				<include name="README.md"/>
+				<include name="source/**"/>
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="${themes.output}/MinimalMobileTheme">
+			<fileset dir="${examples.root}/MinimalMobileTheme">
+				<include name="README.md"/>
+				<include name="source/**"/>
+			</fileset>
+		</copy>
+
+		<echo message="Copying examples"/>
+
+		<copy overwrite="true" todir="${examples.output}/ComponentsExplorer">
+			<fileset dir="${examples.root}/ComponentsExplorer">
+				<include name="README.md"/>
+				<include name="source/**"/>
+				<exclude name="source/ComponentsExplorerWeb.as"/>
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="${examples.output}/HelloWorld">
+			<fileset dir="${examples.root}/HelloWorld">
+				<include name="README.md"/>
+				<include name="source/**"/>
+				<exclude name="source/HelloWorldWeb.as"/>
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="${examples.output}/DisplayObjectExplorer">
+			<fileset dir="${examples.root}/DisplayObjectExplorer">
+				<include name="README.md"/>
+				<include name="source/**"/>
+				<exclude name="source/DisplayObjectExplorerWeb.as"/>
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="${examples.output}/Gallery">
+			<fileset dir="${examples.root}/Gallery">
+				<include name="README.md"/>
+				<include name="source/**"/>
+				<exclude name="source/GalleryWeb.as"/>
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="${examples.output}/LayoutExplorer">
+			<fileset dir="${examples.root}/LayoutExplorer">
+				<include name="README.md"/>
+				<include name="source/**"/>
+				<exclude name="source/LayoutExplorerWeb.as"/>
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="${examples.output}/TileList">
+			<fileset dir="${examples.root}/TileList">
+				<include name="README.md"/>
+				<include name="source/**"/>
+				<exclude name="source/TileListWeb.as"/>
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="${examples.output}/YouTubeFeeds">
+			<fileset dir="${examples.root}/YouTubeFeeds">
+				<include name="README.md"/>
+				<include name="source/**"/>
+				<exclude name="source/YouTubeFeedsWeb.as"/>
+			</fileset>
+		</copy>
 	</target>
 </project>
