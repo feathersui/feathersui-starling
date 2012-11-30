@@ -100,7 +100,7 @@ package feathers.data
 	 * Wraps a two-dimensional data source with a common API for use with UI
 	 * controls that support this type of data.
 	 */
-	public final class HierarchicalCollection extends EventDispatcher
+	public class HierarchicalCollection extends EventDispatcher
 	{
 		public function HierarchicalCollection(data:Object = null)
 		{
@@ -115,7 +115,7 @@ package feathers.data
 		/**
 		 * @private
 		 */
-		private var _data:Object;
+		protected var _data:Object;
 
 		/**
 		 * The data source for this collection. May be any type of data, but a
@@ -145,7 +145,7 @@ package feathers.data
 		/**
 		 * @private
 		 */
-		private var _dataDescriptor:IHierarchicalCollectionDataDescriptor = new ArrayChildrenHierarchicalCollectionDataDescriptor();
+		protected var _dataDescriptor:IHierarchicalCollectionDataDescriptor = new ArrayChildrenHierarchicalCollectionDataDescriptor();
 
 		/**
 		 * Describes the underlying data source by translating APIs.
