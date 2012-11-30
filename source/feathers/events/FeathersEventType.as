@@ -122,5 +122,12 @@ package feathers.events
 		 * a data provider that may include a larger number items.
 		 */
 		public static const RENDERER_REMOVE:String = "rendererRemove";
+
+		/**
+		 * The <code>FeathersEventType.ERROR</code> event type is used by
+		 * by Feathers controls when an error occurs that can be caught and
+		 * safely ignored.
+		 */
+		public static const ERROR:String = "error";
 	}
 }

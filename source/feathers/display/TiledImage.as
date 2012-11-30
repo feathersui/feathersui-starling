@@ -30,6 +30,7 @@ package feathers.display
 
 	import starling.core.RenderSupport;
 	import starling.display.DisplayObject;
+	import starling.display.Image;
 	import starling.display.QuadBatch;
 	import starling.display.Sprite;
 	import starling.events.Event;
