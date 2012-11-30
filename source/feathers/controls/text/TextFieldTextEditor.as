@@ -26,7 +26,6 @@ package feathers.controls.text
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.ITextEditor;
-	import feathers.display.Image;
 	import feathers.display.ScrollRectManager;
 	import feathers.events.FeathersEventType;
 
@@ -43,6 +42,7 @@ package feathers.controls.text
 
 	import starling.core.RenderSupport;
 	import starling.core.Starling;
+	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
