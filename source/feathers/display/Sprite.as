@@ -131,12 +131,7 @@ package feathers.display
 		{
 			if(this._scrollRect)
 			{
-				const scale:Number = Starling.contentScaleFactor;
 				this.getBounds(this.stage, this._scissorRect);
-				this._scissorRect.x *= scale;
-				this._scissorRect.y *= scale;
-				this._scissorRect.width *= scale;
-				this._scissorRect.height *= scale;
 				
 				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
 				this._scaledScrollRectXY.x = this._scrollRect.x * HELPER_MATRIX.a;
@@ -145,20 +140,23 @@ package feathers.display
 				const oldRect:Rectangle = ScrollRectManager.currentScissorRect;
 				if(oldRect)
 				{
-					this._scissorRect.x += ScrollRectManager.scrollRectOffsetX * scale;
-					this._scissorRect.y += ScrollRectManager.scrollRectOffsetY * scale;
+					this._scissorRect.x += ScrollRectManager.scrollRectOffsetX;
+					this._scissorRect.y += ScrollRectManager.scrollRectOffsetY;
 					this._scissorRect = this._scissorRect.intersection(oldRect);
 				}
+				//round to nearest pixels because the GPU will force it to
+				//happen, and the check that follows needs it
 				this._scissorRect.x = Math.round(this._scissorRect.x);
 				this._scissorRect.y = Math.round(this._scissorRect.y);
-				const viewPort:Rectangle = Starling.current.viewPort;
-				//isEmpty() && <= 0 don't work here for some reason
-				if(this._scissorRect.width < 1 || this._scissorRect.height < 1 ||
-					this._scissorRect.x >= viewPort.width ||
-					this._scissorRect.y >= viewPort.height ||
+				this._scissorRect.width = Math.round(this._scissorRect.width);
+				this._scissorRect.height = Math.round(this._scissorRect.height);
+				if(this._scissorRect.isEmpty() ||
+					this._scissorRect.x >= this.stage.stageWidth ||
+					this._scissorRect.y >= this.stage.stageHeight ||
 					(this._scissorRect.x + this._scissorRect.width) <= 0 ||
 					(this._scissorRect.y + this._scissorRect.height) <= 0)
 				{
+					//not in bounds of stage. don't render.
 					return;
 				}
 				support.finishQuadBatch();
