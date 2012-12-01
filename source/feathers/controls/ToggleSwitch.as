@@ -28,7 +28,6 @@ package feathers.controls
 	import feathers.core.ITextRenderer;
 	import feathers.core.IToggle;
 	import feathers.core.PropertyProxy;
-	import feathers.display.IDisplayObjectWithScrollRect;
 	import feathers.system.DeviceCapabilities;
 
 	import flash.geom.Point;
@@ -1062,12 +1061,18 @@ package feathers.controls
 			const factory:Function = this._labelFactory != null ? this._labelFactory : FeathersControl.defaultTextRendererFactory;
 			this.offTextRenderer = ITextRenderer(factory());
 			this.offTextRenderer.nameList.add(this.offLabelName);
-			IDisplayObjectWithScrollRect(this.offTextRenderer).scrollRect = new Rectangle();
+			if(this.offTextRenderer is FeathersControl)
+			{
+				FeathersControl(this.offTextRenderer).clipRect = new Rectangle();
+			}
 			this.addChildAt(DisplayObject(this.offTextRenderer), index);
 
 			this.onTextRenderer = ITextRenderer(factory());
 			this.onTextRenderer.nameList.add(this.onLabelName);
-			IDisplayObjectWithScrollRect(this.onTextRenderer).scrollRect = new Rectangle();
+			if(this.onTextRenderer is FeathersControl)
+			{
+				FeathersControl(this.onTextRenderer).clipRect = new Rectangle();
+			}
 			this.addChildAt(DisplayObject(this.onTextRenderer), index);
 		}
 
@@ -1255,20 +1260,24 @@ package feathers.controls
 				labelHeight = Math.max(this.onTextRenderer.baseline, this.offTextRenderer.baseline);
 			}
 
-			var onScrollRect:Rectangle = IDisplayObjectWithScrollRect(this.onTextRenderer).scrollRect;
-			onScrollRect.width = maxLabelWidth;
-			onScrollRect.height = totalLabelHeight;
-			IDisplayObjectWithScrollRect(this.onTextRenderer).scrollRect = onScrollRect;
+			if(this.onTextRenderer is FeathersControl)
+			{
+				var clipRect:Rectangle = FeathersControl(this.onTextRenderer).clipRect;
+				clipRect.width = maxLabelWidth;
+				clipRect.height = totalLabelHeight;
+				FeathersControl(this.onTextRenderer).clipRect = clipRect;
+			}
 
-			this.onTextRenderer.x = this._paddingLeft;
 			this.onTextRenderer.y = (this.actualHeight - labelHeight) / 2;
 
-			var offScrollRect:Rectangle = IDisplayObjectWithScrollRect(this.offTextRenderer).scrollRect;
-			offScrollRect.width = maxLabelWidth;
-			offScrollRect.height = totalLabelHeight;
-			IDisplayObjectWithScrollRect(this.offTextRenderer).scrollRect = offScrollRect;
+			if(this.offTextRenderer is FeathersControl)
+			{
+				clipRect = FeathersControl(this.offTextRenderer).clipRect;
+				clipRect.width = maxLabelWidth;
+				clipRect.height = totalLabelHeight;
+				FeathersControl(this.offTextRenderer).clipRect = clipRect;
+			}
 
-			this.offTextRenderer.x = this.actualWidth - this._paddingRight - maxLabelWidth;
 			this.offTextRenderer.y = (this.actualHeight - labelHeight) / 2;
 		}
 
@@ -1280,15 +1289,25 @@ package feathers.controls
 			const maxLabelWidth:Number = Math.max(0, this.actualWidth - this.thumb.width - this._paddingLeft - this._paddingRight);
 			const thumbOffset:Number = this.thumb.x - this._paddingLeft;
 
-			const displayOnLabelRenderer:IDisplayObjectWithScrollRect = IDisplayObjectWithScrollRect(this.onTextRenderer);
-			const displayOffLabelRenderer:IDisplayObjectWithScrollRect = IDisplayObjectWithScrollRect(this.offTextRenderer);
-			var currentScrollRect:Rectangle = displayOnLabelRenderer.scrollRect;
-			currentScrollRect.x = maxLabelWidth - thumbOffset - (maxLabelWidth - DisplayObject(displayOnLabelRenderer).width) / 2;
-			displayOnLabelRenderer.scrollRect = currentScrollRect;
+			var onScrollOffset:Number = maxLabelWidth - thumbOffset - (maxLabelWidth - this.onTextRenderer.width) / 2;
+			if(this.onTextRenderer is FeathersControl)
+			{
+				const displayOnLabelRenderer:FeathersControl = FeathersControl(this.onTextRenderer);
+				var currentClipRect:Rectangle = displayOnLabelRenderer.clipRect;
+				currentClipRect.x = onScrollOffset
+				displayOnLabelRenderer.clipRect = currentClipRect;
+			}
+			this.onTextRenderer.x = this._paddingLeft - onScrollOffset;
 
-			currentScrollRect = displayOffLabelRenderer.scrollRect;
-			currentScrollRect.x = -thumbOffset - (maxLabelWidth - DisplayObject(displayOffLabelRenderer).width) / 2;
-			displayOffLabelRenderer.scrollRect = currentScrollRect;
+			var offScrollOffset:Number = -thumbOffset - (maxLabelWidth - this.offTextRenderer.width) / 2;
+			if(this.offTextRenderer is FeathersControl)
+			{
+				const displayOffLabelRenderer:FeathersControl = FeathersControl(this.offTextRenderer);
+				currentClipRect = displayOffLabelRenderer.clipRect;
+				currentClipRect.x = offScrollOffset
+				displayOffLabelRenderer.clipRect = currentClipRect;
+			}
+			this.offTextRenderer.x = this.actualWidth - this._paddingRight - maxLabelWidth - offScrollOffset;
 
 			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_STRETCH)
 			{

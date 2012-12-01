@@ -37,8 +37,6 @@ package feathers.controls
 	import feathers.controls.supportClasses.IViewPort;
 	import feathers.core.FeathersControl;
 	import feathers.core.PropertyProxy;
-	import feathers.display.ScrollRectManager;
-	import feathers.display.Sprite;
 	import feathers.events.FeathersEventType;
 	import feathers.system.DeviceCapabilities;
 	import feathers.utils.math.clamp;
@@ -56,6 +54,7 @@ package feathers.controls
 	import starling.animation.Tween;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
+	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -2019,19 +2018,19 @@ package feathers.controls
 				((this._interactionMode == INTERACTION_MODE_TOUCH && this._hasElasticEdges) ||
 					this._maxHorizontalScrollPosition > 0 || this._maxVerticalScrollPosition > 0))
 			{
-				if(!this.scrollRect)
+				if(!this.clipRect)
 				{
-					this.scrollRect = new Rectangle();
+					this.clipRect = new Rectangle();
 				}
 				
-				const scrollRect:Rectangle = this.scrollRect;
-				scrollRect.width = this.actualWidth;
-				scrollRect.height = this.actualHeight;
-				this.scrollRect = scrollRect;
+				const clipRect:Rectangle = this.clipRect;
+				clipRect.width = this.actualWidth;
+				clipRect.height = this.actualHeight;
+				this.clipRect = clipRect;
 			}
 			else
 			{
-				this.scrollRect = null;
+				this.clipRect = null;
 			}
 
 			this._viewPortWrapper.x = -this._horizontalScrollPosition + offsetX;
@@ -2736,7 +2735,6 @@ package feathers.controls
 				{
 					this._horizontalScrollBarTouchPointID = -1;
 					touch.getLocation(displayHorizontalScrollBar, HELPER_POINT);
-					ScrollRectManager.adjustTouchLocation(HELPER_POINT, displayHorizontalScrollBar);
 					const isInBounds:Boolean = displayHorizontalScrollBar.hitTest(HELPER_POINT, true) != null;
 					if(!isInBounds)
 					{
@@ -2808,7 +2806,6 @@ package feathers.controls
 				{
 					this._verticalScrollBarTouchPointID = -1;
 					touch.getLocation(displayVerticalScrollBar, HELPER_POINT);
-					ScrollRectManager.adjustTouchLocation(HELPER_POINT, displayVerticalScrollBar);
 					const isInBounds:Boolean = displayVerticalScrollBar.hitTest(HELPER_POINT, true) != null;
 					if(!isInBounds)
 					{

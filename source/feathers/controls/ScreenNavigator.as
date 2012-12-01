@@ -424,18 +424,18 @@ package feathers.controls
 			{
 				if(this._clipContent)
 				{
-					var scrollRect:Rectangle = this.scrollRect;
-					if(!scrollRect)
+					var clipRect:Rectangle = this.clipRect;
+					if(!clipRect)
 					{
-						scrollRect = new Rectangle();
+						clipRect = new Rectangle();
 					}
-					scrollRect.width = this.actualWidth;
-					scrollRect.height = this.actualHeight;
-					this.scrollRect = scrollRect;
+					clipRect.width = this.actualWidth;
+					clipRect.height = this.actualHeight;
+					this.clipRect = clipRect;
 				}
 				else
 				{
-					this.scrollRect = null;
+					this.clipRect = null;
 				}
 			}
 		}

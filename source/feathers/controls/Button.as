@@ -29,7 +29,6 @@ package feathers.controls
 	import feathers.core.ITextRenderer;
 	import feathers.core.IToggle;
 	import feathers.core.PropertyProxy;
-	import feathers.display.ScrollRectManager;
 	import feathers.skins.StateWithToggleValueSelector;
 
 	import flash.geom.Point;
@@ -2412,7 +2411,6 @@ package feathers.controls
 				}
 
 				touch.getLocation(this, HELPER_POINT);
-				ScrollRectManager.adjustTouchLocation(HELPER_POINT, this);
 				var isInBounds:Boolean = this.hitTest(HELPER_POINT, true) != null;
 				if(touch.phase == TouchPhase.MOVED)
 				{

@@ -30,7 +30,6 @@ package feathers.controls.text
 
 	import flash.geom.Matrix;
 	import flash.geom.Point;
-	import flash.geom.Rectangle;
 	import flash.text.TextFormatAlign;
 
 	import starling.core.RenderSupport;
@@ -318,12 +317,6 @@ package feathers.controls.text
 				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
 				this._characterBatch.x = Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx;
 				this._characterBatch.y = Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty;
-				const scrollRect:Rectangle = this.scrollRect;
-				if(scrollRect)
-				{
-					this._characterBatch.x += Math.round(scrollRect.x) - scrollRect.x;
-					this._characterBatch.y += Math.round(scrollRect.y) - scrollRect.y;
-				}
 			}
 			else
 			{
