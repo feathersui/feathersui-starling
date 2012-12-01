@@ -27,7 +27,6 @@ package feathers.controls
 	import feathers.core.FeathersControl;
 	import feathers.core.ITextEditor;
 	import feathers.core.PropertyProxy;
-	import feathers.display.ScrollRectManager;
 	import feathers.events.FeathersEventType;
 
 	import flash.geom.Point;
@@ -820,7 +819,6 @@ package feathers.controls
 				{
 					this._touchPointID = -1;
 					touch.getLocation(this, HELPER_POINT);
-					ScrollRectManager.adjustTouchLocation(HELPER_POINT, this);
 					var isInBounds:Boolean = this.hitTest(HELPER_POINT, true) != null;
 					if(!this._textEditorHasFocus && isInBounds)
 					{

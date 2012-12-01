@@ -26,7 +26,6 @@ package feathers.controls
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.PopUpManager;
-	import feathers.display.ScrollRectManager;
 
 	import flash.events.KeyboardEvent;
 	import flash.geom.Rectangle;
@@ -199,13 +198,13 @@ package feathers.controls
 			const overlayFactory:Function = calloutOverlayFactory != null ? calloutOverlayFactory : PopUpManager.defaultOverlayFactory;
 			PopUpManager.addPopUp(callout, isModal, false, overlayFactory);
 
-			var globalBounds:Rectangle = ScrollRectManager.getBounds(origin, Starling.current.stage);
+			var globalBounds:Rectangle = origin.getBounds(Starling.current.stage);
 			positionCalloutByDirection(callout, globalBounds, direction);
 			callouts.push(callout);
 
 			function enterFrameHandler(event:EnterFrameEvent):void
 			{
-				ScrollRectManager.getBounds(origin, Starling.current.stage, helperRect);
+				origin.getBounds(Starling.current.stage, helperRect);
 				if(globalBounds.equals(helperRect))
 				{
 					return;

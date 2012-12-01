@@ -24,16 +24,18 @@
  */
 package feathers.display
 {
+	import feathers.textures.Scale3Textures;
+
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	
-	import feathers.textures.Scale3Textures;
-	
+
 	import starling.core.RenderSupport;
 	import starling.display.DisplayObject;
+	import starling.display.Image;
 	import starling.display.QuadBatch;
+	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.textures.TextureSmoothing;
 	import starling.utils.MatrixUtil;
@@ -48,7 +50,7 @@ package feathers.display
 	{
 		private static const HELPER_MATRIX:Matrix = new Matrix();
 		private static const HELPER_POINT:Point = new Point();
-		private static var helperImage:starling.display.Image;
+		private static var helperImage:Image;
 
 		/**
 		 * Constructor.
@@ -255,11 +257,6 @@ package feathers.display
 		 */
 		public override function getBounds(targetSpace:DisplayObject, resultRect:Rectangle=null):Rectangle
 		{
-			if(this.scrollRect)
-			{
-				return super.getBounds(targetSpace, resultRect);
-			}
-
 			if(!resultRect)
 			{
 				resultRect = new Rectangle();
@@ -364,7 +361,7 @@ package feathers.display
 
 				if(!helperImage)
 				{
-					helperImage = new starling.display.Image(this._textures.first);
+					helperImage = new Image(this._textures.first);
 				}
 				helperImage.smoothing = this._smoothing;
 				helperImage.color = this._color;

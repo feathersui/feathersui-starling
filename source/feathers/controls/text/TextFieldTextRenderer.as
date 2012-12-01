@@ -31,7 +31,6 @@ package feathers.controls.text
 	import flash.display3D.textures.Texture;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
-	import flash.geom.Rectangle;
 	import flash.text.AntiAliasType;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
@@ -280,12 +279,6 @@ package feathers.controls.text
 					this.getTransformationMatrix(this.stage, HELPER_MATRIX);
 					this._textSnapshot.x = Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx;
 					this._textSnapshot.y = Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty;
-					const scrollRect:Rectangle = this.scrollRect;
-					if(scrollRect)
-					{
-						this._textSnapshot.x += Math.round(scrollRect.x) - scrollRect.x;
-						this._textSnapshot.y += Math.round(scrollRect.y) - scrollRect.y;
-					}
 				}
 				else
 				{

@@ -26,7 +26,6 @@ package feathers.controls.popups
 {
 	import feathers.core.IFeathersControl;
 	import feathers.core.PopUpManager;
-	import feathers.display.ScrollRectManager;
 	import feathers.events.FeathersEventType;
 
 	import flash.errors.IllegalOperationError;
@@ -128,7 +127,7 @@ package feathers.controls.popups
 		 */
 		protected function layout():void
 		{
-			const globalOrigin:Rectangle = ScrollRectManager.getBounds(this.source, Starling.current.stage);
+			const globalOrigin:Rectangle = this.source.getBounds(Starling.current.stage);
 
 			if(this.source is IFeathersControl)
 			{

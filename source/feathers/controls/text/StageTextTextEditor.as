@@ -26,7 +26,6 @@ package feathers.controls.text
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.ITextEditor;
-	import feathers.display.ScrollRectManager;
 	import feathers.events.FeathersEventType;
 	import feathers.text.StageTextField;
 
@@ -656,7 +655,6 @@ package feathers.controls.text
 			HELPER_POINT.x = HELPER_POINT.y = 0;
 			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
 			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
-			ScrollRectManager.toStageCoordinates(HELPER_POINT, this);
 			if(HELPER_POINT.x != this._oldGlobalX || HELPER_POINT.y != this._oldGlobalY)
 			{
 				this._oldGlobalX = HELPER_POINT.x;
@@ -935,7 +933,6 @@ package feathers.controls.text
 			HELPER_POINT.x = HELPER_POINT.y = 0;
 			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
 			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
-			ScrollRectManager.toStageCoordinates(HELPER_POINT, this);
 			this._oldGlobalX = HELPER_POINT.x;
 			this._oldGlobalY = HELPER_POINT.y;
 			stageTextViewPort.x = Math.round(starlingViewPort.x + HELPER_POINT.x * Starling.contentScaleFactor);

@@ -25,7 +25,6 @@
 package feathers.controls
 {
 	import feathers.core.FeathersControl;
-	import feathers.display.ScrollRectManager;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.ILayout;
 	import feathers.layout.IVirtualLayout;
@@ -668,7 +667,6 @@ package feathers.controls
 				{
 					this.touchPointID = -1;
 					touch.getLocation(this, HELPER_POINT);
-					ScrollRectManager.adjustTouchLocation(HELPER_POINT, this);
 					const isInBounds:Boolean = this.hitTest(HELPER_POINT, true) != null;
 					if(isInBounds)
 					{
