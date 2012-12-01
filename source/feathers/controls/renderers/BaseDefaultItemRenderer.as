@@ -629,7 +629,7 @@ package feathers.controls.renderers
 		 *
 		 * <p>Using an icon source will result in better performance than
 		 * passing in an <code>ImageLoader</code> or <code>Image</code> through
-		 * a <code>iconField</code> or <code>iconFunction</code
+		 * a <code>iconField</code> or <code>iconFunction</code>
 		 * because the renderer can avoid costly display list manipulation.</p>
 		 *
 		 * <p>All of the icon fields and functions, ordered by priority:</p>
@@ -679,14 +679,14 @@ package feathers.controls.renderers
 		 *
 		 * <p>Using an icon source will result in better performance than
 		 * passing in an <code>ImageLoader</code> or <code>Image</code> through
-		 * a <code>iconField</code> or <code>iconFunction</code
+		 * a <code>iconField</code> or <code>iconFunction</code>
 		 * because the renderer can avoid costly display list manipulation.</p>
 		 *
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function( item:Object ):Object</pre>
 		 *
 		 * <p>The return value is a valid value for the <code>source</code>
-		 * property of an <code>ImageLoader</code> component.
+		 * property of an <code>ImageLoader</code> component.</p>
 		 *
 		 * <p>All of the icon fields and functions, ordered by priority:</p>
 		 * <ol>
@@ -882,14 +882,14 @@ package feathers.controls.renderers
 		 *
 		 * <p>Using an accessory source will result in better performance than
 		 * passing in an <code>ImageLoader</code> or <code>Image</code> through
-		 * a <code>accessoryField</code> or <code>accessoryFunction</code
+		 * a <code>accessoryField</code> or <code>accessoryFunction</code>
 		 * because the renderer can avoid costly display list manipulation.</p>
 		 *
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function( item:Object ):Object</pre>
 		 *
 		 * <p>The return value is a valid value for the <code>source</code>
-		 * property of an <code>ImageLoader</code> component.
+		 * property of an <code>ImageLoader</code> component.</p>
 		 *
 		 * <p>All of the accessory fields and functions, ordered by priority:</p>
 		 * <ol>

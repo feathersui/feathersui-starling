@@ -428,7 +428,7 @@ package feathers.controls.renderers
 		 * <pre>function( item:Object ):Object</pre>
 		 *
 		 * <p>The return value is a valid value for the <code>source</code>
-		 * property of an <code>ImageLoader</code> component.
+		 * property of an <code>ImageLoader</code> component.</p>
 		 *
 		 * <p>All of the content fields and functions, ordered by priority:</p>
 		 * <ol>
