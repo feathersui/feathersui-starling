@@ -103,13 +103,6 @@ package feathers.controls
 		public static const TRACK_LAYOUT_MODE_STRETCH:String = "stretch";
 
 		/**
-		 * The switch's on and off track skins will be resized and cropped
-		 * using a scrollRect to ensure that the skins maintain a static
-		 * appearance without altering the aspect ratio.
-		 */
-		public static const TRACK_LAYOUT_MODE_SCROLL:String = "scroll";
-
-		/**
 		 * The default value added to the <code>nameList</code> of the off label.
 		 */
 		public static const DEFAULT_CHILD_NAME_OFF_LABEL:String = "feathers-toggle-switch-off-label";
@@ -307,7 +300,7 @@ package feathers.controls
 		 */
 		protected var _trackLayoutMode:String = TRACK_LAYOUT_MODE_SINGLE;
 
-		[Inspectable(type="String",enumeration="single,stretch,scroll")]
+		[Inspectable(type="String",enumeration="single,stretch")]
 		/**
 		 * Determines how the on and off track skins are positioned and sized.
 		 */
@@ -929,7 +922,6 @@ package feathers.controls
 			{
 				this.onTrack = new Button();
 				this.onTrack.nameList.add(this.onTrackName);
-				this.onTrack.scrollRect = new Rectangle();
 				this.onTrack.label = "";
 				this.onTrack.keepDownStateOnRollOut = true;
 				this.addChild(this.onTrack);
@@ -1298,11 +1290,7 @@ package feathers.controls
 			currentScrollRect.x = -thumbOffset - (maxLabelWidth - DisplayObject(displayOffLabelRenderer).width) / 2;
 			displayOffLabelRenderer.scrollRect = currentScrollRect;
 
-			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_SCROLL)
-			{
-				this.layoutTrackWithScrollRect();
-			}
-			else if(this._trackLayoutMode == TRACK_LAYOUT_MODE_STRETCH)
+			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_STRETCH)
 			{
 				this.layoutTrackWithStretch();
 			}
@@ -1317,15 +1305,6 @@ package feathers.controls
 		 */
 		protected function layoutTrackWithStretch():void
 		{
-			if(this.onTrack.scrollRect)
-			{
-				this.onTrack.scrollRect = null;
-			}
-			if(this.offTrack.scrollRect)
-			{
-				this.offTrack.scrollRect = null;
-			}
-
 			this.onTrack.x = 0;
 			this.onTrack.y = 0;
 			this.onTrack.width = this.thumb.x + this.thumb.width / 2;
@@ -1340,54 +1319,8 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function layoutTrackWithScrollRect():void
-		{
-			//we want to scale the skins to match the height of the slider,
-			//but we also want to keep the original aspect ratio.
-			const onTrackScaledWidth:Number = this.onTrackSkinOriginalWidth * this.actualHeight / this.onTrackSkinOriginalHeight;
-			const offTrackScaledWidth:Number = this.offTrackSkinOriginalWidth * this.actualHeight / this.offTrackSkinOriginalHeight;
-			this.onTrack.width = onTrackScaledWidth;
-			this.onTrack.height = this.actualHeight;
-			this.offTrack.width = offTrackScaledWidth;
-			this.offTrack.height = this.actualHeight;
-
-			var middleOfThumb:Number = this.thumb.x + this.thumb.width / 2;
-			this.onTrack.x = 0;
-			this.onTrack.y = 0;
-			var currentScrollRect:Rectangle = this.onTrack.scrollRect;
-			if(!currentScrollRect)
-			{
-				currentScrollRect = new Rectangle();
-			}
-			currentScrollRect.x = 0;
-			currentScrollRect.y = 0;
-			currentScrollRect.width = Math.min(onTrackScaledWidth, middleOfThumb);
-			currentScrollRect.height = this.actualHeight;
-			this.onTrack.scrollRect = currentScrollRect;
-
-			this.offTrack.x = Math.max(this.actualWidth - offTrackScaledWidth, middleOfThumb);
-			this.offTrack.y = 0;
-			currentScrollRect = this.offTrack.scrollRect;
-			if(!currentScrollRect)
-			{
-				currentScrollRect = new Rectangle();
-			}
-			currentScrollRect.width = Math.min(offTrackScaledWidth, this.actualWidth - middleOfThumb);
-			currentScrollRect.height = this.actualHeight;
-			currentScrollRect.x = Math.max(0, offTrackScaledWidth - currentScrollRect.width);
-			currentScrollRect.y = 0;
-			this.offTrack.scrollRect = currentScrollRect;
-		}
-
-		/**
-		 * @private
-		 */
 		protected function layoutTrackWithSingle():void
 		{
-			if(this.onTrack.scrollRect)
-			{
-				this.onTrack.scrollRect = null;
-			}
 			this.onTrack.x = 0;
 			this.onTrack.y = 0;
 			this.onTrack.width = this.actualWidth;
@@ -1399,7 +1332,7 @@ package feathers.controls
 		 */
 		protected function createOrDestroyOffTrackIfNeeded():void
 		{
-			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_SCROLL || this._trackLayoutMode == TRACK_LAYOUT_MODE_STRETCH)
+			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_STRETCH)
 			{
 				if(!this.offTrack)
 				{
