@@ -28,13 +28,11 @@ package feathers.controls
 	import feathers.events.FeathersEventType;
 
 	import flash.display.Bitmap;
-
 	import flash.display.Loader;
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.SecurityErrorEvent;
-
 	import flash.geom.Matrix;
 	import flash.geom.Rectangle;
 	import flash.net.URLRequest;
@@ -45,7 +43,22 @@ package feathers.controls
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
+	import starling.textures.TextureSmoothing;
 	import starling.utils.RectangleUtil;
+
+	/**
+	 * Dispatched when the source content finishes loading.
+	 *
+	 * @eventType starling.events.Event.COMPLETE
+	 */
+	[Event(name="complete",type="starling.events.Event")]
+
+	/**
+	 * Dispatched if an error occurs while loading the source content.
+	 *
+	 * @eventType feathers.events.FeathersEventType.ERROR
+	 */
+	[Event(name="error",type="starling.events.Event")]
 
 	/**
 	 * Displays an image, either from a <code>Texture</code> or loaded from a
@@ -62,6 +75,11 @@ package feathers.controls
 		 * @private
 		 */
 		private static const HELPER_RECTANGLE:Rectangle = new Rectangle();
+
+		/**
+		 * @private
+		 */
+		private static const HELPER_RECTANGLE2:Rectangle = new Rectangle();
 
 		/**
 		 * @private
@@ -142,6 +160,89 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		private var _textureScale:Number = 1;
+
+		/**
+		 * The scale of the texture.
+		 */
+		public function get textureScale():Number
+		{
+			return this._textureScale;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set textureScale(value:Number):void
+		{
+			if(this._textureScale == value)
+			{
+				return;
+			}
+			this._textureScale = value;
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _smoothing:String = TextureSmoothing.BILINEAR;
+
+		/**
+		 * The smoothing value to use on the internal <code>Image</code>.
+		 *
+		 * @see starling.textures.TextureSmoothing
+		 * @see starling.display.Image#smoothing
+		 */
+		public function get smoothing():String
+		{
+			return this._smoothing;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set smoothing(value:String):void
+		{
+			if(this._smoothing == value)
+			{
+				return;
+			}
+			this._smoothing = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _color:uint = 0xffffff;
+
+		/**
+		 * The tint value to use on the internal <code>Image</code>.
+		 *
+		 * @see starling.display.Image#color
+		 */
+		public function get color():uint
+		{
+			return this._color;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set color(value:uint):void
+		{
+			if(this._color == value)
+			{
+				return;
+			}
+			this._color = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		private var _snapToPixels:Boolean = false;
 
 		/**
@@ -150,7 +251,7 @@ package feathers.controls
 		 */
 		public function get snapToPixels():Boolean
 		{
-			return _snapToPixels;
+			return this._snapToPixels;
 		}
 
 		/**
@@ -176,7 +277,7 @@ package feathers.controls
 		 */
 		public function get maintainAspectRatio():Boolean
 		{
-			return _maintainAspectRatio;
+			return this._maintainAspectRatio;
 		}
 
 		/**
@@ -216,11 +317,17 @@ package feathers.controls
 		{
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			const layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
+			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 
 			if(dataInvalid)
 			{
 				this.commitData();
+			}
+
+			if(dataInvalid || stylesInvalid)
+			{
+				this.commitStyles();
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
@@ -248,7 +355,7 @@ package feathers.controls
 			{
 				if(this._texture)
 				{
-					newWidth = this._texture.width;
+					newWidth = this._texture.width * this._textureScale;
 				}
 				else
 				{
@@ -261,7 +368,7 @@ package feathers.controls
 			{
 				if(this._texture)
 				{
-					newHeight = this._texture.height;
+					newHeight = this._texture.height * this._textureScale;
 				}
 				else
 				{
@@ -289,7 +396,7 @@ package feathers.controls
 				const sourceURL:String = this._source as String;
 				if(!sourceURL)
 				{
-					this._lastURL = null;
+					this._lastURL = sourceURL;
 					this._texture = null;
 					this.commitTexture();
 					return;
@@ -298,7 +405,7 @@ package feathers.controls
 				if(sourceURL == this._lastURL)
 				{
 					//if it's not loaded yet, we'll come back later
-					if(!this.loader)
+					if(this._isLoaded)
 					{
 						this.commitTexture();
 					}
@@ -342,6 +449,19 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function commitStyles():void
+		{
+			if(!this.image)
+			{
+				return;
+			}
+			this.image.smoothing = this._smoothing;
+			this.image.color = this._color;
+		}
+
+		/**
+		 * @private
+		 */
 		protected function layout():void
 		{
 			if(!this.image || !this._texture)
@@ -350,7 +470,15 @@ package feathers.controls
 			}
 			if(this._maintainAspectRatio)
 			{
-				RectangleUtil.fit(this._texture.frame, this.bounds, true, HELPER_RECTANGLE);
+				HELPER_RECTANGLE.x = 0;
+				HELPER_RECTANGLE.y = 0;
+				HELPER_RECTANGLE.width = this._texture.width * this._textureScale;
+				HELPER_RECTANGLE.height = this._texture.height * this._textureScale;
+				HELPER_RECTANGLE2.x = 0;
+				HELPER_RECTANGLE2.y = 0;
+				HELPER_RECTANGLE2.width = this.actualWidth;
+				HELPER_RECTANGLE2.height = this.actualHeight;
+				RectangleUtil.fit(HELPER_RECTANGLE, HELPER_RECTANGLE2, true, HELPER_RECTANGLE);
 				this.image.x = HELPER_RECTANGLE.x;
 				this.image.y = HELPER_RECTANGLE.y;
 				this.image.width = HELPER_RECTANGLE.width;
@@ -394,6 +522,7 @@ package feathers.controls
 				this.image.texture = this._texture;
 				this.image.readjustSize();
 			}
+			this.image.visible = true;
 		}
 
 		/**
