@@ -25,6 +25,7 @@
 package feathers.controls.renderers
 {
 	import feathers.controls.Button;
+	import feathers.controls.ImageLoader;
 	import feathers.controls.text.BitmapFontTextRenderer;
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
@@ -36,7 +37,6 @@ package feathers.controls.renderers
 	import flash.utils.Timer;
 
 	import starling.display.DisplayObject;
-	import starling.display.Image;
 	import starling.events.TouchEvent;
 	import starling.textures.Texture;
 
@@ -111,9 +111,9 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected static function defaultImageFactory(texture:Texture):Image
+		protected static function defaultLoaderFactory():ImageLoader
 		{
-			return new Image(texture);
+			return new ImageLoader();
 		}
 
 		/**
@@ -133,12 +133,12 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected var iconImage:Image;
+		protected var iconImage:ImageLoader;
 
 		/**
 		 * @private
 		 */
-		protected var accessoryImage:Image;
+		protected var accessoryImage:ImageLoader;
 
 		/**
 		 * @private
@@ -545,15 +545,15 @@ package feathers.controls.renderers
 		 *
 		 * <p>All of the icon fields and functions, ordered by priority:</p>
 		 * <ol>
-		 *     <li><code>iconTextureFunction</code></li>
-		 *     <li><code>iconTextureField</code></li>
+		 *     <li><code>iconSourceFunction</code></li>
+		 *     <li><code>iconSourceField</code></li>
 		 *     <li><code>iconFunction</code></li>
 		 *     <li><code>iconField</code></li>
 		 * </ol>
 		 *
 		 * @see #iconFunction
-		 * @see #iconTextureField
-		 * @see #iconTextureFunction
+		 * @see #iconSourceField
+		 * @see #iconSourceFunction
 		 */
 		public function get iconField():String
 		{
@@ -586,15 +586,15 @@ package feathers.controls.renderers
 		 *
 		 * <p>All of the icon fields and functions, ordered by priority:</p>
 		 * <ol>
-		 *     <li><code>iconTextureFunction</code></li>
-		 *     <li><code>iconTextureField</code></li>
+		 *     <li><code>iconSourceFunction</code></li>
+		 *     <li><code>iconSourceField</code></li>
 		 *     <li><code>iconFunction</code></li>
 		 *     <li><code>iconField</code></li>
 		 * </ol>
 		 *
 		 * @see #iconField
-		 * @see #iconTextureField
-		 * @see #iconTextureFunction
+		 * @see #iconSourceField
+		 * @see #iconSourceFunction
 		 */
 		public function get iconFunction():Function
 		{
@@ -617,90 +617,106 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected var _iconTextureField:String = "iconTexture";
+		protected var _iconSourceField:String = "iconSource";
 
 		/**
-		 * The field in the item that contains a texture to be used for the
-		 * renderer's icon. The renderer will automatically manage and reuse an
-		 * internal <code>Image</code>. This <code>Image</code> may be
-		 * customized by changing the <code>iconImageFactory</code>.
+		 * The field in the item that contains a <code>starling.textures.Texture</code>
+		 * or a URL that points to a bitmap to be used as the item renderer's
+		 * icon. The renderer will automatically manage and reuse an internal
+		 * <code>ImageLoader</code> sub-component and this value will be passed
+		 * to the <code>source</code> property. The <code>ImageLoader</code> may
+		 * be customized by changing the <code>iconLoaderFactory</code>.
+		 *
+		 * <p>Using an icon source will result in better performance than
+		 * passing in an <code>ImageLoader</code> or <code>Image</code> through
+		 * a <code>iconField</code> or <code>iconFunction</code
+		 * because the renderer can avoid costly display list manipulation.</p>
 		 *
 		 * <p>All of the icon fields and functions, ordered by priority:</p>
 		 * <ol>
-		 *     <li><code>iconTextureFunction</code></li>
-		 *     <li><code>iconTextureField</code></li>
+		 *     <li><code>iconSourceFunction</code></li>
+		 *     <li><code>iconSourceField</code></li>
 		 *     <li><code>iconFunction</code></li>
 		 *     <li><code>iconField</code></li>
 		 * </ol>
 		 *
-		 * @see #iconImageFactory
-		 * @see #iconTextureFunction
+		 * @see feathers.controls.ImageLoader#source
+		 * @see #iconLoaderFactory
+		 * @see #iconSourceFunction
 		 * @see #iconField
 		 * @see #iconFunction
-		 * @see starling.textures.Texture
 		 */
-		public function get iconTextureField():String
+		public function get iconSourceField():String
 		{
-			return this._iconTextureField;
+			return this._iconSourceField;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set iconTextureField(value:String):void
+		public function set iconSourceField(value:String):void
 		{
-			if(this._iconTextureField == value)
+			if(this._iconSourceField == value)
 			{
 				return;
 			}
-			this._iconTextureField = value;
+			this._iconSourceField = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _iconTextureFunction:Function;
+		protected var _iconSourceFunction:Function;
 
 		/**
-		 * A function used to generate a texture to be used for the renderer's
+		 * A function used to generate a <code>starling.textures.Texture</code>
+		 * or a URL that points to a bitmap to be used as the item renderer's
 		 * icon. The renderer will automatically manage and reuse an internal
-		 * <code>Image</code> and swap the texture when the renderer's data
-		 * changes. This <code>Image</code> may be customized by changing the
-		 * <code>iconImageFactory</code>.
+		 * <code>ImageLoader</code> sub-component and this value will be passed
+		 * to the <code>source</code> property. The <code>ImageLoader</code> may
+		 * be customized by changing the <code>iconLoaderFactory</code>.
+		 *
+		 * <p>Using an icon source will result in better performance than
+		 * passing in an <code>ImageLoader</code> or <code>Image</code> through
+		 * a <code>iconField</code> or <code>iconFunction</code
+		 * because the renderer can avoid costly display list manipulation.</p>
 		 *
 		 * <p>The function is expected to have the following signature:</p>
-		 * <pre>function( item:Object ):Texture</pre>
+		 * <pre>function( item:Object ):Object</pre>
+		 *
+		 * <p>The return value is a valid value for the <code>source</code>
+		 * property of an <code>ImageLoader</code> component.
 		 *
 		 * <p>All of the icon fields and functions, ordered by priority:</p>
 		 * <ol>
-		 *     <li><code>iconTextureFunction</code></li>
-		 *     <li><code>iconTextureField</code></li>
+		 *     <li><code>iconSourceFunction</code></li>
+		 *     <li><code>iconSourceField</code></li>
 		 *     <li><code>iconFunction</code></li>
 		 *     <li><code>iconField</code></li>
 		 * </ol>
 		 *
-		 * @see #iconImageFactory
-		 * @see #iconTextureField
+		 * @see feathers.controls.ImageLoader#source
+		 * @see #iconLoaderFactory
+		 * @see #iconSourceField
 		 * @see #iconField
 		 * @see #iconFunction
-		 * @see starling.textures.Texture
 		 */
-		public function get iconTextureFunction():Function
+		public function get iconSourceFunction():Function
 		{
-			return this._iconTextureFunction;
+			return this._iconSourceFunction;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set iconTextureFunction(value:Function):void
+		public function set iconSourceFunction(value:Function):void
 		{
-			if(this._iconTextureFunction == value)
+			if(this._iconSourceFunction == value)
 			{
 				return;
 			}
-			this._iconTextureFunction = value;
+			this._iconSourceFunction = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
@@ -713,21 +729,21 @@ package feathers.controls.renderers
 		 * The field in the item that contains a display object to be positioned
 		 * in the accessory position of the renderer. If you wish to display an
 		 * <code>Image</code> in the accessory position, it's better for
-		 * performance to use <code>accessoryTextureField</code> instead.
+		 * performance to use <code>accessorySourceField</code> instead.
 		 *
 		 * <p>All of the accessory fields and functions, ordered by priority:</p>
 		 * <ol>
-		 *     <li><code>accessoryTextureFunction</code></li>
-		 *     <li><code>accessoryTextureField</code></li>
+		 *     <li><code>accessorySourceFunction</code></li>
+		 *     <li><code>accessorySourceField</code></li>
 		 *     <li><code>accessoryLabelFunction</code></li>
 		 *     <li><code>accessoryLabelField</code></li>
 		 *     <li><code>accessoryFunction</code></li>
 		 *     <li><code>accessoryField</code></li>
 		 * </ol>
 		 *
-		 * @see #accessoryTextureField
+		 * @see #accessorySourceField
 		 * @see #accessoryFunction
-		 * @see #accessoryTextureFunction
+		 * @see #accessorySourceFunction
 		 * @see #accessoryLabelField
 		 * @see #accessoryLabelFunction
 		 */
@@ -758,15 +774,15 @@ package feathers.controls.renderers
 		 * A function that returns a display object to be positioned in the
 		 * accessory position of the renderer. If you wish to display an
 		 * <code>Image</code> in the accessory position, it's better for
-		 * performance to use <code>accessoryTextureFunction</code> instead.
+		 * performance to use <code>accessorySourceFunction</code> instead.
 		 *
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function( item:Object ):DisplayObject</pre>
 		 *
 		 * <p>All of the accessory fields and functions, ordered by priority:</p>
 		 * <ol>
-		 *     <li><code>accessoryTextureFunction</code></li>
-		 *     <li><code>accessoryTextureField</code></li>
+		 *     <li><code>accessorySourceFunction</code></li>
+		 *     <li><code>accessorySourceField</code></li>
 		 *     <li><code>accessoryLabelFunction</code></li>
 		 *     <li><code>accessoryLabelField</code></li>
 		 *     <li><code>accessoryFunction</code></li>
@@ -774,8 +790,8 @@ package feathers.controls.renderers
 		 * </ol>
 		 *
 		 * @see #accessoryField
-		 * @see #accessoryTextureField
-		 * @see #accessoryTextureFunction
+		 * @see #accessorySourceField
+		 * @see #accessorySourceFunction
 		 * @see #accessoryLabelField
 		 * @see #accessoryLabelFunction
 		 */
@@ -800,109 +816,114 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected var _accessoryTextureField:String = "accessoryTexture";
+		protected var _accessorySourceField:String = "accessorySource";
 
 		/**
-		 * The field in the item that contains a texture to be displayed in a
-		 * renderer-managed <code>Image</code> in the accessory position of the
-		 * renderer. The renderer will automatically reuse an internal
-		 * <code>Image</code> and swap the texture when the renderer's data
-		 * changes. This <code>Image</code> may be customized by
-		 * changing the <code>accessoryImageFactory</code>.
+		 * A field in the item that contains a <code>starling.textures.Texture</code>
+		 * or a URL that points to a bitmap to be used as the item renderer's
+		 * accessory. The renderer will automatically manage and reuse an internal
+		 * <code>ImageLoader</code> sub-component and this value will be passed
+		 * to the <code>source</code> property. The <code>ImageLoader</code> may
+		 * be customized by changing the <code>accessoryLoaderFactory</code>.
 		 *
-		 * <p>Using an accessory texture will result in better performance than
-		 * passing in an <code>Image</code> through a <code>accessoryField</code>
-		 * or <code>accessoryFunction</code> because the renderer can avoid
-		 * costly display list manipulation.</p>
+		 * <p>Using an accessory source will result in better performance than
+		 * passing in an <code>ImageLoader</code> or <code>Image</code> through
+		 * a <code>accessoryField</code> or <code>accessoryFunction</code> because
+		 * the renderer can avoid costly display list manipulation.</p>
 		 *
 		 * <p>All of the accessory fields and functions, ordered by priority:</p>
 		 * <ol>
-		 *     <li><code>accessoryTextureFunction</code></li>
-		 *     <li><code>accessoryTextureField</code></li>
+		 *     <li><code>accessorySourceFunction</code></li>
+		 *     <li><code>accessorySourceField</code></li>
 		 *     <li><code>accessoryLabelFunction</code></li>
 		 *     <li><code>accessoryLabelField</code></li>
 		 *     <li><code>accessoryFunction</code></li>
 		 *     <li><code>accessoryField</code></li>
 		 * </ol>
 		 *
-		 * @see #accessoryImageFactory
-		 * @see #accessoryTextureFunction
+		 * @see feathers.controls.ImageLoader#source
+		 * @see #accessoryLoaderFactory
+		 * @see #accessorySourceFunction
 		 * @see #accessoryField
 		 * @see #accessoryFunction
 		 * @see #accessoryLabelField
 		 * @see #accessoryLabelFunction
 		 */
-		public function get accessoryTextureField():String
+		public function get accessorySourceField():String
 		{
-			return this._accessoryTextureField;
+			return this._accessorySourceField;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set accessoryTextureField(value:String):void
+		public function set accessorySourceField(value:String):void
 		{
-			if(this._accessoryTextureField == value)
+			if(this._accessorySourceField == value)
 			{
 				return;
 			}
-			this._accessoryTextureField = value;
+			this._accessorySourceField = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _accessoryTextureFunction:Function;
+		protected var _accessorySourceFunction:Function;
 
 		/**
-		 * A function that returns a texture to be displayed in a
-		 * renderer-managed <code>Image</code> in the accessory position of the
-		 * renderer. The renderer will automatically reuse an internal
-		 * <code>Image</code> and swap the texture when the renderer's data
-		 * changes. This <code>Image</code> may be customized by
-		 * changing the <code>accessoryImageFactory</code>.
+		 * A function that generates a <code>starling.textures.Texture</code>
+		 * or a URL that points to a bitmap to be used as the item renderer's
+		 * accessory. The renderer will automatically manage and reuse an internal
+		 * <code>ImageLoader</code> sub-component and this value will be passed
+		 * to the <code>source</code> property. The <code>ImageLoader</code> may
+		 * be customized by changing the <code>accessoryLoaderFactory</code>.
 		 *
-		 * <p>Using an accessory texture will result in better performance than
-		 * passing in an <code>Image</code> through a <code>accessoryField</code>
-		 * or <code>accessoryFunction</code> because the renderer can avoid
-		 * costly display list manipulation.</p>
+		 * <p>Using an accessory source will result in better performance than
+		 * passing in an <code>ImageLoader</code> or <code>Image</code> through
+		 * a <code>accessoryField</code> or <code>accessoryFunction</code
+		 * because the renderer can avoid costly display list manipulation.</p>
 		 *
 		 * <p>The function is expected to have the following signature:</p>
-		 * <pre>function( item:Object ):Texture</pre>
+		 * <pre>function( item:Object ):Object</pre>
+		 *
+		 * <p>The return value is a valid value for the <code>source</code>
+		 * property of an <code>ImageLoader</code> component.
 		 *
 		 * <p>All of the accessory fields and functions, ordered by priority:</p>
 		 * <ol>
-		 *     <li><code>accessoryTextureFunction</code></li>
-		 *     <li><code>accessoryTextureField</code></li>
+		 *     <li><code>accessorySourceFunction</code></li>
+		 *     <li><code>accessorySourceField</code></li>
 		 *     <li><code>accessoryLabelFunction</code></li>
 		 *     <li><code>accessoryLabelField</code></li>
 		 *     <li><code>accessoryFunction</code></li>
 		 *     <li><code>accessoryField</code></li>
 		 * </ol>
 		 *
-		 * @see #accessoryImageFactory
-		 * @see #accessoryTextureField
+		 * @see feathers.controls.ImageLoader#source
+		 * @see #accessoryLoaderFactory
+		 * @see #accessorySourceField
 		 * @see #accessoryField
 		 * @see #accessoryFunction
 		 * @see #accessoryLabelField
 		 * @see #accessoryLabelFunction
 		 */
-		public function get accessoryTextureFunction():Function
+		public function get accessorySourceFunction():Function
 		{
-			return this._accessoryTextureFunction;
+			return this._accessorySourceFunction;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set accessoryTextureFunction(value:Function):void
+		public function set accessorySourceFunction(value:Function):void
 		{
-			if(this.accessoryTextureFunction == value)
+			if(this._accessorySourceFunction == value)
 			{
 				return;
 			}
-			this._accessoryTextureFunction = value;
+			this._accessorySourceFunction = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
@@ -926,8 +947,8 @@ package feathers.controls.renderers
 		 *
 		 * <p>All of the accessory fields and functions, ordered by priority:</p>
 		 * <ol>
-		 *     <li><code>accessoryTextureFunction</code></li>
-		 *     <li><code>accessoryTextureField</code></li>
+		 *     <li><code>accessorySourceFunction</code></li>
+		 *     <li><code>accessorySourceField</code></li>
 		 *     <li><code>accessoryLabelFunction</code></li>
 		 *     <li><code>accessoryLabelField</code></li>
 		 *     <li><code>accessoryFunction</code></li>
@@ -938,8 +959,8 @@ package feathers.controls.renderers
 		 * @see #accessoryLabelFunction
 		 * @see #accessoryField
 		 * @see #accessoryFunction
-		 * @see #accessoryTextureField
-		 * @see #accessoryTextureFunction
+		 * @see #accessorySourceField
+		 * @see #accessorySourceFunction
 		 */
 		public function get accessoryLabelField():String
 		{
@@ -982,8 +1003,8 @@ package feathers.controls.renderers
 		 *
 		 * <p>All of the accessory fields and functions, ordered by priority:</p>
 		 * <ol>
-		 *     <li><code>accessoryTextureFunction</code></li>
-		 *     <li><code>accessoryTextureField</code></li>
+		 *     <li><code>accessorySourceFunction</code></li>
+		 *     <li><code>accessorySourceField</code></li>
 		 *     <li><code>accessoryLabelFunction</code></li>
 		 *     <li><code>accessoryLabelField</code></li>
 		 *     <li><code>accessoryFunction</code></li>
@@ -994,8 +1015,8 @@ package feathers.controls.renderers
 		 * @see #accessoryLabelField
 		 * @see #accessoryField
 		 * @see #accessoryFunction
-		 * @see #accessoryTextureField
-		 * @see #accessoryTextureFunction
+		 * @see #accessorySourceField
+		 * @see #accessorySourceFunction
 		 */
 		public function get accessoryLabelFunction():Function
 		{
@@ -1018,70 +1039,74 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected var _iconImageFactory:Function = defaultImageFactory;
+		protected var _iconLoaderFactory:Function = defaultLoaderFactory;
 
 		/**
-		 * A function that generates an <code>Image</code> that uses the result
-		 * of <code>iconTextureField</code> or <code>iconTextureFunction</code>.
-		 * Useful for transforming the <code>Image</code> in some way. For
-		 * example, you might want to scale it for current DPI.
+		 * A function that generates an <code>ImageLoader</code> that uses the result
+		 * of <code>iconSourceField</code> or <code>iconSourceFunction</code>.
+		 * Useful for transforming the <code>ImageLoader</code> in some way. For
+		 * example, you might want to scale the texture for current DPI or apply
+		 * pixel snapping.
 		 *
 		 * <p>The function is expected to have the following signature:</p>
-		 * <pre>function():Image</pre>
+		 * <pre>function():ImageLoader</pre>
 		 *
-		 * @see #iconTextureField;
-		 * @see #iconTextureFunction;
+		 * @see feathers.controls.ImageLoader
+		 * @see #iconSourceField
+		 * @see #iconSourceFunction
 		 */
-		public function get iconImageFactory():Function
+		public function get iconLoaderFactory():Function
 		{
-			return this._iconImageFactory;
+			return this._iconLoaderFactory;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set iconImageFactory(value:Function):void
+		public function set iconLoaderFactory(value:Function):void
 		{
-			if(this._iconImageFactory == value)
+			if(this._iconLoaderFactory == value)
 			{
 				return;
 			}
-			this._iconImageFactory = value;
+			this._iconLoaderFactory = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _accessoryImageFactory:Function = defaultImageFactory;
+		protected var _accessoryLoaderFactory:Function = defaultLoaderFactory;
 
 		/**
-		 * A function that generates an <code>Image</code> that uses the result
-		 * of <code>accessoryTextureField</code> or <code>accessoryTextureFunction</code>.
-		 * Useful for transforming the <code>Image</code> in some way. For
-		 * example, you might want to scale it for current DPI.
+		 * A function that generates an <code>ImageLoader</code> that uses the result
+		 * of <code>accessorySourceField</code> or <code>accessorySourceFunction</code>.
+		 * Useful for transforming the <code>ImageLoader</code> in some way. For
+		 * example, you might want to scale the texture for current DPI or apply
+		 * pixel snapping.
 		 *
 		 * <p>The function is expected to have the following signature:</p>
-		 * <pre>function():Image</pre>
+		 * <pre>function():ImageLoader</pre>
 		 *
-		 * @see #accessoryTextureField;
-		 * @see #accessoryTextureFunction;
+		 * @see feathers.controls.ImageLoader
+		 * @see #accessorySourceField;
+		 * @see #accessorySourceFunction;
 		 */
-		public function get accessoryImageFactory():Function
+		public function get accessoryLoaderFactory():Function
 		{
-			return this._accessoryImageFactory;
+			return this._accessoryLoaderFactory;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set accessoryImageFactory(value:Function):void
+		public function set accessoryLoaderFactory(value:Function):void
 		{
-			if(this._accessoryImageFactory == value)
+			if(this._accessoryLoaderFactory == value)
 			{
 				return;
 			}
-			this._accessoryImageFactory = value;
+			this._accessoryLoaderFactory = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -1246,24 +1271,24 @@ package feathers.controls.renderers
 		 *
 		 * <p>All of the icon fields and functions, ordered by priority:</p>
 		 * <ol>
-		 *     <li><code>iconTextureFunction</code></li>
-		 *     <li><code>iconTextureField</code></li>
+		 *     <li><code>iconSourceFunction</code></li>
+		 *     <li><code>iconSourceField</code></li>
 		 *     <li><code>iconFunction</code></li>
 		 *     <li><code>iconField</code></li>
 		 * </ol>
 		 */
 		protected function itemToIcon(item:Object):DisplayObject
 		{
-			if(this._iconTextureFunction != null)
+			if(this._iconSourceFunction != null)
 			{
-				var texture:Texture = this._iconTextureFunction(item) as Texture;
-				this.refreshIconTexture(texture);
+				var source:Object = this._iconSourceFunction(item);
+				this.refreshIconSource(source);
 				return this.iconImage;
 			}
-			else if(this._iconTextureField != null && item && item.hasOwnProperty(this._iconTextureField))
+			else if(this._iconSourceField != null && item && item.hasOwnProperty(this._iconSourceField))
 			{
-				texture = item[this._iconTextureField] as Texture;
-				this.refreshIconTexture(texture);
+				source = item[this._iconSourceField];
+				this.refreshIconSource(source);
 				return this.iconImage;
 			}
 			else if(this._iconFunction != null)
@@ -1284,8 +1309,8 @@ package feathers.controls.renderers
 		 *
 		 * <p>All of the accessory fields and functions, ordered by priority:</p>
 		 * <ol>
-		 *     <li><code>accessoryTextureFunction</code></li>
-		 *     <li><code>accessoryTextureField</code></li>
+		 *     <li><code>accessorySourceFunction</code></li>
+		 *     <li><code>accessorySourceField</code></li>
 		 *     <li><code>accessoryLabelFunction</code></li>
 		 *     <li><code>accessoryLabelField</code></li>
 		 *     <li><code>accessoryFunction</code></li>
@@ -1294,16 +1319,16 @@ package feathers.controls.renderers
 		 */
 		protected function itemToAccessory(item:Object):DisplayObject
 		{
-			if(this._accessoryTextureFunction != null)
+			if(this._accessorySourceFunction != null)
 			{
-				var texture:Texture = this._accessoryTextureFunction(item) as Texture;
-				this.refreshAccessoryTexture(texture);
+				var source:Texture = this._accessorySourceFunction(item);
+				this.refreshAccessorySource(source);
 				return this.accessoryImage;
 			}
-			else if(this._accessoryTextureField != null && item && item.hasOwnProperty(this._accessoryTextureField))
+			else if(this._accessorySourceField != null && item && item.hasOwnProperty(this._accessorySourceField))
 			{
-				texture = item[this._accessoryTextureField] as Texture;
-				this.refreshAccessoryTexture(texture);
+				source = item[this._accessorySourceField];
+				this.refreshAccessorySource(source);
 				return this.accessoryImage;
 			}
 			else if(this._accessoryLabelFunction != null)
@@ -1361,6 +1386,14 @@ package feathers.controls.renderers
 			}
 			this.refreshMaxLabelWidth(true);
 			this.labelTextRenderer.measureText(HELPER_POINT);
+			if(this.accessory is IFeathersControl)
+			{
+				IFeathersControl(this.accessory).validate();
+			}
+			if(this.currentIcon is IFeathersControl)
+			{
+				IFeathersControl(this.currentIcon).validate();
+			}
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
 			{
@@ -1594,49 +1627,25 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected function refreshIconTexture(texture:Texture):void
+		protected function refreshIconSource(source:Object):void
 		{
-			if(texture)
+			if(!this.iconImage)
 			{
-				if(!this.iconImage)
-				{
-					this.iconImage = this._iconImageFactory(texture);
-				}
-				else
-				{
-					this.iconImage.texture = texture;
-					this.iconImage.readjustSize();
-				}
+				this.iconImage = this._iconLoaderFactory();
 			}
-			else if(this.iconImage)
-			{
-				this.iconImage.removeFromParent(true);
-				this.iconImage = null;
-			}
+			this.iconImage.source = source;
 		}
 
 		/**
 		 * @private
 		 */
-		protected function refreshAccessoryTexture(texture:Texture):void
+		protected function refreshAccessorySource(source:Object):void
 		{
-			if(texture)
+			if(!this.accessoryImage)
 			{
-				if(!this.accessoryImage)
-				{
-					this.accessoryImage = this._accessoryImageFactory(texture);
-				}
-				else
-				{
-					this.accessoryImage.texture = texture;
-					this.accessoryImage.readjustSize();
-				}
+				this.accessoryImage = this._accessoryLoaderFactory();
 			}
-			else if(this.accessoryImage)
-			{
-				this.accessoryImage.removeFromParent(true);
-				this.accessoryImage = null;
-			}
+			this.accessoryImage.source = source;
 		}
 
 		/**
@@ -1675,6 +1684,10 @@ package feathers.controls.renderers
 			if(this.accessory is IFeathersControl)
 			{
 				IFeathersControl(this.accessory).validate();
+			}
+			if(this.currentIcon is IFeathersControl)
+			{
+				IFeathersControl(this.currentIcon).validate();
 			}
 
 			const iconIsInLayout:Boolean = this.currentIcon && this._iconPosition != ICON_POSITION_MANUAL;
