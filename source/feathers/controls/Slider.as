@@ -108,13 +108,6 @@ package feathers.controls
 		public static const TRACK_LAYOUT_MODE_STRETCH:String = "stretch";
 
 		/**
-		 * The slider's minimum and maximum tracks will be resized and cropped
-		 * using a scrollRect to ensure that the skins maintain a static
-		 * appearance without altering the aspect ratio.
-		 */
-		public static const TRACK_LAYOUT_MODE_SCROLL:String = "scroll";
-
-		/**
 		 * The default value added to the <code>nameList</code> of the minimum
 		 * track.
 		 */
@@ -934,11 +927,7 @@ package feathers.controls
 		{
 			this.layoutThumb();
 
-			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_SCROLL)
-			{
-				this.layoutTrackWithScrollRect();
-			}
-			else if(this._trackLayoutMode == TRACK_LAYOUT_MODE_STRETCH)
+			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_STRETCH)
 			{
 				this.layoutTrackWithStretch();
 			}
@@ -973,100 +962,8 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function layoutTrackWithScrollRect():void
-		{
-			if(this._direction == DIRECTION_VERTICAL)
-			{
-				//we want to scale the skins to match the height of the slider,
-				//but we also want to keep the original aspect ratio.
-				const minimumTrackScaledHeight:Number = this.minimumTrackOriginalHeight * this.actualWidth / this.minimumTrackOriginalWidth;
-				const maximumTrackScaledHeight:Number = this.maximumTrackOriginalHeight * this.actualWidth / this.maximumTrackOriginalWidth;
-				this.minimumTrack.width = this.actualWidth;
-				this.minimumTrack.height = minimumTrackScaledHeight;
-				this.maximumTrack.width = this.actualWidth;
-				this.maximumTrack.height = maximumTrackScaledHeight;
-
-				var middleOfThumb:Number = this.thumb.y + this.thumb.height / 2;
-				this.maximumTrack.x = 0;
-				this.maximumTrack.y = 0;
-				var currentScrollRect:Rectangle = this.maximumTrack.scrollRect;
-				if(!currentScrollRect)
-				{
-					currentScrollRect = new Rectangle();
-				}
-				currentScrollRect.x = 0;
-				currentScrollRect.y = 0;
-				currentScrollRect.width = this.actualWidth;
-				currentScrollRect.height = Math.min(maximumTrackScaledHeight, middleOfThumb);
-				this.maximumTrack.scrollRect = currentScrollRect;
-
-				this.minimumTrack.x = 0;
-				this.minimumTrack.y = Math.max(this.actualHeight - minimumTrackScaledHeight, middleOfThumb);
-				currentScrollRect = this.minimumTrack.scrollRect;
-				if(!currentScrollRect)
-				{
-					currentScrollRect = new Rectangle();
-				}
-				currentScrollRect.width = this.actualWidth;
-				currentScrollRect.height = Math.min(minimumTrackScaledHeight, this.actualHeight - middleOfThumb);
-				currentScrollRect.x = 0;
-				currentScrollRect.y = Math.max(0, minimumTrackScaledHeight - currentScrollRect.height);
-				this.minimumTrack.scrollRect = currentScrollRect;
-			}
-			else //horizontal
-			{
-				//we want to scale the skins to match the height of the slider,
-				//but we also want to keep the original aspect ratio.
-				const minimumTrackScaledWidth:Number = this.minimumTrackOriginalWidth * this.actualHeight / this.minimumTrackOriginalHeight;
-				const maximumTrackScaledWidth:Number = this.maximumTrackOriginalWidth * this.actualHeight / this.maximumTrackOriginalHeight;
-				this.minimumTrack.width = minimumTrackScaledWidth;
-				this.minimumTrack.height = this.actualHeight;
-				this.maximumTrack.width = maximumTrackScaledWidth;
-				this.maximumTrack.height = this.actualHeight;
-
-				middleOfThumb = this.thumb.x + this.thumb.width / 2;
-				this.minimumTrack.x = 0;
-				this.minimumTrack.y = 0;
-				currentScrollRect = this.minimumTrack.scrollRect;
-				if(!currentScrollRect)
-				{
-					currentScrollRect = new Rectangle();
-				}
-				currentScrollRect.x = 0;
-				currentScrollRect.y = 0;
-				currentScrollRect.width = Math.min(minimumTrackScaledWidth, middleOfThumb);
-				currentScrollRect.height = this.actualHeight;
-				this.minimumTrack.scrollRect = currentScrollRect;
-
-				this.maximumTrack.x = Math.max(this.actualWidth - maximumTrackScaledWidth, middleOfThumb);
-				this.maximumTrack.y = 0;
-				currentScrollRect = this.maximumTrack.scrollRect;
-				if(!currentScrollRect)
-				{
-					currentScrollRect = new Rectangle();
-				}
-				currentScrollRect.width = Math.min(maximumTrackScaledWidth, this.actualWidth - middleOfThumb);
-				currentScrollRect.height = this.actualHeight;
-				currentScrollRect.x = Math.max(0, maximumTrackScaledWidth - currentScrollRect.width);
-				currentScrollRect.y = 0;
-				this.maximumTrack.scrollRect = currentScrollRect;
-			}
-		}
-
-		/**
-		 * @private
-		 */
 		protected function layoutTrackWithStretch():void
 		{
-			if(this.minimumTrack.scrollRect)
-			{
-				this.minimumTrack.scrollRect = null;
-			}
-			if(this.maximumTrack.scrollRect)
-			{
-				this.maximumTrack.scrollRect = null;
-			}
-
 			if(this._direction == DIRECTION_VERTICAL)
 			{
 				this.maximumTrack.x = 0;
@@ -1098,10 +995,6 @@ package feathers.controls
 		 */
 		protected function layoutTrackWithSingle():void
 		{
-			if(this.minimumTrack.scrollRect)
-			{
-				this.minimumTrack.scrollRect = null;
-			}
 			this.minimumTrack.x = 0;
 			this.minimumTrack.y = 0;
 			this.minimumTrack.width = this.actualWidth;
@@ -1113,7 +1006,7 @@ package feathers.controls
 		 */
 		protected function createOrDestroyMaximumTrackIfNeeded():void
 		{
-			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_SCROLL || this._trackLayoutMode == TRACK_LAYOUT_MODE_STRETCH)
+			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_STRETCH)
 			{
 				if(!this.maximumTrack)
 				{
