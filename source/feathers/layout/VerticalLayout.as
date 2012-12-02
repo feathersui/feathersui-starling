@@ -633,6 +633,7 @@ package feathers.layout
 				result = new <int>[];
 			}
 			result.length = 0;
+			const visibleTypicalItemCount:int = Math.ceil(height / (this._typicalItemHeight + this._gap));
 			if(!this._hasVariableItemDimensions)
 			{
 				//this case can be optimized because we know that every item has
@@ -651,7 +652,11 @@ package feathers.layout
 					}
 				}
 				var minimum:int = -indexOffset + Math.max(0, (scrollY - this._paddingTop) / (this._typicalItemHeight + this._gap));
-				var maximum:int = minimum + Math.ceil(height / (this._typicalItemHeight + this._gap));
+				//if we're scrolling beyond the final item, we should keep the
+				//indices consistent so that items aren't destroyed and
+				//recreated unnecessarily
+				var maximum:int = Math.min(itemCount - 1, minimum + visibleTypicalItemCount);
+				minimum = Math.max(0, maximum - visibleTypicalItemCount);
 				for(var i:int = minimum; i <= maximum; i++)
 				{
 					result.push(i);
@@ -680,6 +685,20 @@ package feathers.layout
 				if(positionY >= maxPositionY)
 				{
 					return result;
+				}
+			}
+
+			//similar to above, in order to avoid costly destruction and
+			//creation of item renderers, we're going to fill in some extra
+			//indices
+			const visibleItemCountDifference:int = visibleTypicalItemCount - result.length;
+			if(visibleItemCountDifference > 0)
+			{
+				const firstIndex:int = result[0];
+				const lastIndex:int = Math.max(0, firstIndex - visibleItemCountDifference);
+				for(i = firstIndex - 1; i >= lastIndex; i--)
+				{
+					result.unshift(i);
 				}
 			}
 			return result;
