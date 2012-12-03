@@ -98,11 +98,12 @@
 			<fileset dir="${source.root}"/>
 		</copy>
 				
-		<echo message="Copying README and LICENSE"/>
+		<echo message="Copying informational documents"/>
 		<copy overwrite="true" todir="${output.path}">
 			<fileset dir="${basedir}">
 				<include name="README.md"/>
 				<include name="LICENSE"/>
+				<include name="RELEASENOTES.md"/>
 			</fileset>
 		</copy>
 
