@@ -715,15 +715,9 @@ package feathers.core
 				this._scissorRect.width = this._clipRect.width;
 				this._scissorRect.height = this._clipRect.height;
 
-				//this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-				//this._scaledScrollRectXY.x = this._scrollRect.x * HELPER_MATRIX.a;
-				//this._scaledScrollRectXY.y = this._scrollRect.y * HELPER_MATRIX.d;
-
 				const oldRect:Rectangle = currentScissorRect;
 				if(oldRect)
 				{
-					//this._scissorRect.x += ScrollRectManager.scrollRectOffsetX;
-					//this._scissorRect.y += ScrollRectManager.scrollRectOffsetY;
 					this._scissorRect = this._scissorRect.intersection(oldRect);
 				}
 				//round to nearest pixels because the GPU will force it to
@@ -744,17 +738,11 @@ package feathers.core
 				support.finishQuadBatch();
 				support.scissorRectangle = this._scissorRect;
 				currentScissorRect = this._scissorRect;
-				//ScrollRectManager.scrollRectOffsetX -= this._scaledScrollRectXY.x;
-				//ScrollRectManager.scrollRectOffsetY -= this._scaledScrollRectXY.y;
-				//support.translateMatrix(-this._scrollRect.x, -this._scrollRect.y);
 			}
 			super.render(support, alpha);
 			if(this._clipRect)
 			{
 				support.finishQuadBatch();
-				//support.translateMatrix(this._scrollRect.x, this._scrollRect.y);
-				//ScrollRectManager.scrollRectOffsetX += this._scaledScrollRectXY.x;
-				//ScrollRectManager.scrollRectOffsetY += this._scaledScrollRectXY.y;
 				currentScissorRect = oldRect;
 				support.scissorRectangle = oldRect;
 			}
