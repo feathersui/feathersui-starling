@@ -31,12 +31,14 @@ package feathers.controls.renderers
 	import feathers.core.IFeathersControl;
 	import feathers.core.ITextRenderer;
 	import feathers.core.PropertyProxy;
+	import feathers.events.FeathersEventType;
 
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
 	import flash.utils.Timer;
 
 	import starling.display.DisplayObject;
+	import starling.events.Event;
 	import starling.events.TouchEvent;
 	import starling.textures.Texture;
 
@@ -1421,6 +1423,10 @@ package feathers.controls.renderers
 				{
 					newWidth = Math.max(newWidth, this._originalSkinWidth);
 				}
+				if(isNaN(newWidth))
+				{
+					newWidth = 0;
+				}
 			}
 
 			var newHeight:Number = this.explicitHeight;
@@ -1450,6 +1456,10 @@ package feathers.controls.renderers
 				{
 					newHeight = Math.max(newHeight, this._originalSkinHeight);
 				}
+				if(isNaN(newHeight))
+				{
+					newHeight = 0;
+				}
 			}
 
 			return this.setSizeInternal(newWidth, newHeight, false);
@@ -1460,7 +1470,7 @@ package feathers.controls.renderers
 		 */
 		protected function addIconWidth(width:Number, gap:Number):Number
 		{
-			if(!this.currentIcon)
+			if(!this.currentIcon || isNaN(this.currentIcon.width))
 			{
 				return width;
 			}
@@ -1480,7 +1490,7 @@ package feathers.controls.renderers
 		 */
 		protected function addAccessoryWidth(width:Number, gap:Number):Number
 		{
-			if(!this.accessory)
+			if(!this.accessory || isNaN(this.accessory.width))
 			{
 				return width;
 			}
@@ -1507,7 +1517,7 @@ package feathers.controls.renderers
 		 */
 		protected function addIconHeight(height:Number, gap:Number):Number
 		{
-			if(!this.currentIcon)
+			if(!this.currentIcon || isNaN(this.currentIcon.height))
 			{
 				return height;
 			}
@@ -1527,7 +1537,7 @@ package feathers.controls.renderers
 		 */
 		protected function addAccessoryHeight(height:Number, gap:Number):Number
 		{
-			if(!this.accessory)
+			if(!this.accessory || isNaN(this.accessory.height))
 			{
 				return height;
 			}
@@ -1632,6 +1642,8 @@ package feathers.controls.renderers
 			if(!this.iconImage)
 			{
 				this.iconImage = this._iconLoaderFactory();
+				this.iconImage.addEventListener(Event.COMPLETE, loader_completeOrErrorHandler);
+				this.iconImage.addEventListener(FeathersEventType.ERROR, loader_completeOrErrorHandler);
 			}
 			this.iconImage.source = source;
 		}
@@ -1644,6 +1656,8 @@ package feathers.controls.renderers
 			if(!this.accessoryImage)
 			{
 				this.accessoryImage = this._accessoryLoaderFactory();
+				this.accessoryImage.addEventListener(Event.COMPLETE, loader_completeOrErrorHandler);
+				this.accessoryImage.addEventListener(FeathersEventType.ERROR, loader_completeOrErrorHandler);
 			}
 			this.accessoryImage.source = source;
 		}
@@ -1983,6 +1997,14 @@ package feathers.controls.renderers
 				return;
 			}
 			event.stopPropagation();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function loader_completeOrErrorHandler(event:Event):void
+		{
+			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 	}
 }
