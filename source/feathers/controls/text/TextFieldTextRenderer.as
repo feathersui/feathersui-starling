@@ -90,6 +90,16 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _previousTextFieldWidth:Number = 0;
+
+		/**
+		 * @private
+		 */
+		protected var _previousTextFieldHeight:Number = 0;
+
+		/**
+		 * @private
+		 */
 		protected var _snapshotWidth:int = 0;
 
 		/**
@@ -437,8 +447,15 @@ package feathers.controls.text
 				this._needsNewBitmap = this._needsNewBitmap || !this._textSnapshotBitmapData || this._snapshotWidth != this._textSnapshotBitmapData.width || this._snapshotHeight != this._textSnapshotBitmapData.height;
 			}
 
-			if(stylesInvalid || dataInvalid || this._needsNewBitmap)
+			//instead of checking sizeInvalid, which will often be triggered by
+			//changing maxWidth or something for measurement, we check against
+			//the previous actualWidth/Height used for the snapshot.
+			if(stylesInvalid || dataInvalid || this._needsNewBitmap ||
+				this.actualWidth != this._previousTextFieldWidth ||
+				this.actualHeight != this._previousTextFieldHeight)
 			{
+				this._previousTextFieldWidth = this.actualWidth;
+				this._previousTextFieldHeight = this.actualHeight;
 				const hasText:Boolean = this._text.length > 0;
 				if(hasText)
 				{
