@@ -252,11 +252,12 @@ package feathers.controls.text
 
 		/**
 		 * Determines if the text should be snapped to the nearest whole pixel
-		 * when rendered.
+		 * when rendered. When this is <code>false</code>, text may be displayed
+		 * on sub-pixels, which often results in blurred rendering.
 		 */
 		public function get snapToPixels():Boolean
 		{
-			return _snapToPixels;
+			return this._snapToPixels;
 		}
 
 		/**
@@ -550,6 +551,9 @@ package feathers.controls.text
 			}
 		}
 
+		/**
+		 * @private
+		 */
 		protected function enterFrameHandler(event:Event):void
 		{
 			this.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
