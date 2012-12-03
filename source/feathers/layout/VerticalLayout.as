@@ -684,7 +684,7 @@ package feathers.layout
 
 				if(positionY >= maxPositionY)
 				{
-					return result;
+					break;
 				}
 			}
 
