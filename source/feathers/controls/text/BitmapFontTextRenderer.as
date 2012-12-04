@@ -697,11 +697,6 @@ package feathers.controls.text
 			HELPER_IMAGE.scaleX = HELPER_IMAGE.scaleY = scale;
 			HELPER_IMAGE.x = x;
 			HELPER_IMAGE.y = y;
-			if(this._snapToPixels)
-			{
-				HELPER_IMAGE.x = Math.round(HELPER_IMAGE.x);
-				HELPER_IMAGE.y = Math.round(HELPER_IMAGE.y);
-			}
 			HELPER_IMAGE.color = this.currentTextFormat.color;
 			HELPER_IMAGE.smoothing = this._smoothing;
 
