@@ -281,7 +281,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		override public function render(support:RenderSupport, alpha:Number):void
+		override public function render(support:RenderSupport, parentAlpha:Number):void
 		{
 			if(this._textSnapshot)
 			{
@@ -296,7 +296,7 @@ package feathers.controls.text
 					this._textSnapshot.x = this._textSnapshot.y = 0;
 				}
 			}
-			super.render(support, alpha);
+			super.render(support, parentAlpha);
 		}
 
 		/**

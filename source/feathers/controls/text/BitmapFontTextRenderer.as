@@ -310,7 +310,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		override public function render(support:RenderSupport, alpha:Number):void
+		override public function render(support:RenderSupport, parentAlpha:Number):void
 		{
 			if(this._snapToPixels)
 			{
@@ -322,7 +322,7 @@ package feathers.controls.text
 			{
 				this._characterBatch.x = this._characterBatch.y = 0;
 			}
-			super.render(support, alpha);
+			super.render(support, parentAlpha);
 		}
 		
 		/**
