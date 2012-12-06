@@ -15,3 +15,6 @@ Initial release. The following major changes happened in the last month or two l
 * Added `dispose()` method to `AddedWatcher` so that theme resources like textures be disposed.
 * Added `ScrollText` component to display text in an overlay on the native display list. Useful for long passages of text that may be too large to convert to a texture.
 * `ScreenNavigator`: added events for transition start and complete.
+* `ToggleSwitch`: `TRACK_LAYOUT_MODE_STRETCH` is now `TRACK_LAYOUT_MODE_ON_OFF`.
+* `Slider`: `TRACK_LAYOUT_MODE_STRETCH` is now `TRACK_LAYOUT_MODE_MIN_MAX`.
+* `ScrollBar`: `TRACK_LAYOUT_MODE_STRETCH` is now `TRACK_LAYOUT_MODE_MIN_MAX`.
