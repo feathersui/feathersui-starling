@@ -130,13 +130,14 @@ package feathers.controls.text
 		 */
 		public function set text(value:String):void
 		{
-			if(!value)
-			{
-				value = "";
-			}
 			if(this._text == value)
 			{
 				return;
+			}
+			if(value === null)
+			{
+				//flash.text.TextField won't accept a null value
+				value = "";
 			}
 			this._text = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);

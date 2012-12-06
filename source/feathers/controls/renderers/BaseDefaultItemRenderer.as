@@ -1566,12 +1566,7 @@ package feathers.controls.renderers
 			{
 				if(this._itemHasLabel)
 				{
-					var label:String = this.itemToLabel(this._data);
-					if(label === null)
-					{
-						label = "";
-					}
-					this._label = label;
+					this._label = this.itemToLabel(this._data);
 				}
 				if(this._itemHasIcon)
 				{
