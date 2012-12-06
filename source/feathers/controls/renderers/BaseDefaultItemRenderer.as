@@ -1212,31 +1212,8 @@ package feathers.controls.renderers
 		 */
 		override public function dispose():void
 		{
-			if(this.iconImage)
-			{
-				this.iconImage.removeFromParent(true);
-			}
-
-			//the accessory may have come from outside of this class. it's up
-			//to that code to dispose of the accessory. in fact, if we disposed
-			//of it here, we might screw something up!
-			if(this.accessory)
-			{
-				this.accessory.removeFromParent();
-			}
-
-			//however, we need to dispose these, if they exist, since we made
-			//them here.
-			if(this.accessoryImage)
-			{
-				this.accessoryImage.dispose();
-				this.accessoryImage = null;
-			}
-			if(this.accessoryLabel)
-			{
-				DisplayObject(this.accessoryLabel).dispose();
-				this.accessoryLabel = null;
-			}
+			this.replaceIcon(null);
+			this.replaceAccessory(null);
 			super.dispose();
 		}
 
@@ -1570,26 +1547,11 @@ package feathers.controls.renderers
 				}
 				if(this._itemHasIcon)
 				{
-					this.defaultIcon = this.itemToIcon(this._data);
+					const newIcon:DisplayObject = this.itemToIcon(this._data);
+					this.replaceIcon(newIcon);
 				}
 				const newAccessory:DisplayObject = this.itemToAccessory(this._data);
-				if(newAccessory != this.accessory)
-				{
-					if(this.accessory)
-					{
-						this.accessory.removeEventListener(TouchEvent.TOUCH, accessory_touchHandler);
-						this.accessory.removeFromParent();
-					}
-					this.accessory = newAccessory;
-					if(this.accessory)
-					{
-						if(this.accessory is IFeathersControl && !(this.accessory is BitmapFontTextRenderer))
-						{
-							this.accessory.addEventListener(TouchEvent.TOUCH, accessory_touchHandler);
-						}
-						this.addChild(this.accessory);
-					}
-				}
+				this.replaceAccessory(newAccessory);
 			}
 			else
 			{
@@ -1599,13 +1561,78 @@ package feathers.controls.renderers
 				}
 				if(this._itemHasIcon)
 				{
-					this.defaultIcon = null;
+					this.replaceIcon(null);
 				}
 				if(this.accessory)
 				{
-					this.accessory.removeFromParent();
-					this.accessory = null;
+					this.replaceAccessory(null);
 				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function replaceIcon(newIcon:DisplayObject):void
+		{
+			if(this.iconImage && this.iconImage != newIcon)
+			{
+				this.iconImage.removeEventListener(Event.COMPLETE, loader_completeOrErrorHandler);
+				this.iconImage.removeEventListener(FeathersEventType.ERROR, loader_completeOrErrorHandler);
+				this.iconImage.dispose();
+				this.iconImage = null;
+			}
+
+			this.defaultIcon = newIcon;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function replaceAccessory(newAccessory:DisplayObject):void
+		{
+			if(this.accessory == newAccessory)
+			{
+				return;
+			}
+
+			if(this.accessory)
+			{
+				this.accessory.removeEventListener(TouchEvent.TOUCH, accessory_touchHandler);
+
+				//the accessory may have come from outside of this class. it's
+				//up to that code to dispose of the accessory. in fact, if we
+				//disposed of it here, we will probably screw something up, so
+				//let's just remove it.
+				this.accessory.removeFromParent();
+			}
+
+			if(this.accessoryLabel && this.accessoryLabel != newAccessory)
+			{
+				//we can dispose this one, though, since we created it
+				this.accessoryLabel.dispose();
+				this.accessoryLabel = null;
+			}
+
+			if(this.accessoryImage && this.accessoryImage != newAccessory)
+			{
+				this.accessoryImage.removeEventListener(Event.COMPLETE, loader_completeOrErrorHandler);
+				this.accessoryImage.removeEventListener(FeathersEventType.ERROR, loader_completeOrErrorHandler);
+
+				//same ability to dispose here
+				this.accessoryImage.dispose();
+				this.accessoryImage = null;
+			}
+
+			this.accessory = newAccessory;
+
+			if(this.accessory)
+			{
+				if(this.accessory is IFeathersControl && !(this.accessory is BitmapFontTextRenderer))
+				{
+					this.accessory.addEventListener(TouchEvent.TOUCH, accessory_touchHandler);
+				}
+				this.addChild(this.accessory);
 			}
 		}
 
@@ -1662,21 +1689,13 @@ package feathers.controls.renderers
 		 */
 		protected function refreshAccessoryLabel(label:String):void
 		{
-			if(label !== null)
+			if(!this.accessoryLabel)
 			{
-				if(!this.accessoryLabel)
-				{
-					const factory:Function = this._accessoryLabelFactory != null ? this._accessoryLabelFactory : FeathersControl.defaultTextRendererFactory;
-					this.accessoryLabel = ITextRenderer(factory());
-					this.accessoryLabel.nameList.add(this.accessoryLabelName);
-				}
-				this.accessoryLabel.text = label;
+				const factory:Function = this._accessoryLabelFactory != null ? this._accessoryLabelFactory : FeathersControl.defaultTextRendererFactory;
+				this.accessoryLabel = ITextRenderer(factory());
+				this.accessoryLabel.nameList.add(this.accessoryLabelName);
 			}
-			else if(this.accessoryLabel)
-			{
-				DisplayObject(this.accessoryLabel).removeFromParent(true);
-				this.accessoryLabel = null;
-			}
+			this.accessoryLabel.text = label;
 		}
 
 		/**
