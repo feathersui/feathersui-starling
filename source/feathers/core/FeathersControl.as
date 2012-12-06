@@ -739,7 +739,7 @@ package feathers.core
 				support.scissorRectangle = this._scissorRect;
 				currentScissorRect = this._scissorRect;
 			}
-			super.render(support, alpha);
+			super.render(support, parentAlpha);
 			if(this._clipRect)
 			{
 				support.finishQuadBatch();

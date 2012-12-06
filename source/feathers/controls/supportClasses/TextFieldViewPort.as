@@ -398,7 +398,7 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
-		override public function render(support:RenderSupport, alpha:Number):void
+		override public function render(support:RenderSupport, parentAlpha:Number):void
 		{
 			const starlingViewPort:Rectangle = Starling.current.viewPort;
 			HELPER_POINT.x = HELPER_POINT.y = 0;
@@ -408,8 +408,8 @@ package feathers.controls.supportClasses
 			this._textFieldContainer.y = starlingViewPort.y + HELPER_POINT.y * Starling.contentScaleFactor;
 			this._textFieldContainer.scaleX = this._textFieldContainer.scaleY = Starling.contentScaleFactor;
 			this._textFieldContainer.visible = true;
-			this._textFieldContainer.alpha = alpha;
-			super.render(support, alpha);
+			this._textFieldContainer.alpha = parentAlpha * this.alpha;
+			super.render(support, parentAlpha);
 		}
 
 		override protected function initialize():void
