@@ -94,12 +94,22 @@ package feathers.controls
 		public static const TRACK_LAYOUT_MODE_SINGLE:String = "single";
 
 		/**
-		 * The switch's on and off track skins will by resized by changing
-		 * their width and height values. Consider using a special display
-		 * object such as a Scale9Image, Scale3Image or a TiledImage if the
-		 * skins should be resizable.
+		 * The toggle switch has two tracks, stretching to fill each side of the
+		 * scroll bar with the thumb in the middle. The tracks will be resized
+		 * as the thumb moves. This layout mode is designed for toggle switches
+		 * where the two sides of the track may be colored differently to better
+		 * differentiate between the on state and the off state.
+		 *
+		 * <p>Since the width and height of the tracks will change, consider
+		 * sing a special display object such as a <code>Scale9Image</code>,
+		 * <code>Scale3Image</code> or a <code>TiledImage</code> that is
+		 * designed to be resized dynamically.</p>
+		 *
+		 * @see feathers.display.Scale9Image
+		 * @see feathers.display.Scale3Image
+		 * @see feathers.display.TiledImage
 		 */
-		public static const TRACK_LAYOUT_MODE_STRETCH:String = "stretch";
+		public static const TRACK_LAYOUT_MODE_ON_OFF:String = "onOff";
 
 		/**
 		 * The default value added to the <code>nameList</code> of the off label.
@@ -299,9 +309,13 @@ package feathers.controls
 		 */
 		protected var _trackLayoutMode:String = TRACK_LAYOUT_MODE_SINGLE;
 
-		[Inspectable(type="String",enumeration="single,stretch")]
+		[Inspectable(type="String",enumeration="single,onOff")]
 		/**
 		 * Determines how the on and off track skins are positioned and sized.
+		 *
+		 * @default TRACK_LAYOUT_MODE_SINGLE
+		 * @see #TRACK_LAYOUT_MODE_SINGLE
+		 * @see #TRACK_LAYOUT_MODE_ON_OFF
 		 */
 		public function get trackLayoutMode():String
 		{
@@ -1309,9 +1323,9 @@ package feathers.controls
 			}
 			this.offTextRenderer.x = this.actualWidth - this._paddingRight - maxLabelWidth - offScrollOffset;
 
-			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_STRETCH)
+			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_ON_OFF)
 			{
-				this.layoutTrackWithStretch();
+				this.layoutTrackWithOnOff();
 			}
 			else
 			{
@@ -1322,7 +1336,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function layoutTrackWithStretch():void
+		protected function layoutTrackWithOnOff():void
 		{
 			this.onTrack.x = 0;
 			this.onTrack.y = 0;
@@ -1351,7 +1365,7 @@ package feathers.controls
 		 */
 		protected function createOrDestroyOffTrackIfNeeded():void
 		{
-			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_STRETCH)
+			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_ON_OFF)
 			{
 				if(!this.offTrack)
 				{

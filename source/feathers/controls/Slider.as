@@ -92,20 +92,30 @@ package feathers.controls
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
 		/**
-		 * The slider has only one track, stretching to fill the full length of
-		 * the slider. In this layout mode, the minimum track is displayed and
+		 * The slider has only one track, that fills the full length of the
+		 * slider. In this layout mode, the "minimum" track is displayed and
 		 * fills the entire length of the slider. The maximum track will not
 		 * exist.
 		 */
 		public static const TRACK_LAYOUT_MODE_SINGLE:String = "single";
 
 		/**
-		 * The slider's minimum and maximum track will by resized by changing
-		 * their width and height values. Consider using a special display
-		 * object such as a Scale9Image, Scale3Image or a TiledImage if the
-		 * skins should be resizable.
+		 * The slider has two tracks, stretching to fill each side of the slider
+		 * with the thumb in the middle. The tracks will be resized as the thumb
+		 * moves. This layout mode is designed for sliders where the two sides
+		 * of the track may be colored differently to show the value
+		 * "filling up" as the slider is dragged.
+		 *
+		 * <p>Since the width and height of the tracks will change, consider
+		 * sing a special display object such as a <code>Scale9Image</code>,
+		 * <code>Scale3Image</code> or a <code>TiledImage</code> that is
+		 * designed to be resized dynamically.</p>
+		 *
+		 * @see feathers.display.Scale9Image
+		 * @see feathers.display.Scale3Image
+		 * @see feathers.display.TiledImage
 		 */
-		public static const TRACK_LAYOUT_MODE_STRETCH:String = "stretch";
+		public static const TRACK_LAYOUT_MODE_MIN_MAX:String = "minMax";
 
 		/**
 		 * The default value added to the <code>nameList</code> of the minimum
@@ -193,6 +203,10 @@ package feathers.controls
 		 * Determines if the slider's thumb can be dragged horizontally or
 		 * vertically. When this value changes, the slider's width and height
 		 * values do not change automatically.
+		 *
+		 * @default DIRECTION_HORIZONTAL
+		 * @see #DIRECTION_HORIZONTAL
+		 * @see #DIRECTION_VERTICAL
 		 */
 		public function get direction():String
 		{
@@ -457,10 +471,15 @@ package feathers.controls
 		 */
 		protected var _trackLayoutMode:String = TRACK_LAYOUT_MODE_SINGLE;
 
-		[Inspectable(type="String",enumeration="single,stretch,scroll")]
+		[Inspectable(type="String",enumeration="single,minMax")]
 		/**
 		 * Determines how the minimum and maximum track skins are positioned and
 		 * sized.
+		 *
+		 * @default TRACK_LAYOUT_MODE_SINGLE
+		 *
+		 * @see #TRACK_LAYOUT_MODE_SINGLE
+		 * @see #TRACK_LAYOUT_MODE_MIN_MAX
 		 */
 		public function get trackLayoutMode():String
 		{
@@ -927,9 +946,9 @@ package feathers.controls
 		{
 			this.layoutThumb();
 
-			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_STRETCH)
+			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_MIN_MAX)
 			{
-				this.layoutTrackWithStretch();
+				this.layoutTrackWithMinMax();
 			}
 			else //single
 			{
@@ -962,7 +981,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function layoutTrackWithStretch():void
+		protected function layoutTrackWithMinMax():void
 		{
 			if(this._direction == DIRECTION_VERTICAL)
 			{
@@ -1006,7 +1025,7 @@ package feathers.controls
 		 */
 		protected function createOrDestroyMaximumTrackIfNeeded():void
 		{
-			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_STRETCH)
+			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_MIN_MAX)
 			{
 				if(!this.maximumTrack)
 				{
