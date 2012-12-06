@@ -598,6 +598,11 @@ package feathers.controls
 		 * The preferred position of the title. If leftItems and/or rightItems
 		 * is defined, the title may be forced to the center even if the
 		 * preferred position is on the left or right.
+		 *
+		 * @default TITLE_ALIGN_CENTER
+		 * @see #TITLE_ALIGN_CENTER
+		 * @see #TITLE_ALIGN_PREFER_LEFT
+		 * @see #TITLE_ALIGN_PREFER_RIGHT
 		 */
 		public function get titleAlign():String
 		{
