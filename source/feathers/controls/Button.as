@@ -273,7 +273,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _label:String = "";
+		protected var _label:String = null;
 		
 		/**
 		 * The text displayed on the button.
@@ -288,10 +288,6 @@ package feathers.controls
 		 */
 		public function set label(value:String):void
 		{
-			if(value === null)
-			{
-				value = "";
-			}
 			if(this._label == value)
 			{
 				return;
@@ -2029,7 +2025,7 @@ package feathers.controls
 		protected function refreshLabelData():void
 		{
 			this.labelTextRenderer.text = this._label;
-			this.labelTextRenderer.visible = this._label.length > 0;
+			this.labelTextRenderer.visible = this._label && this._label.length > 0;
 		}
 
 		/**
