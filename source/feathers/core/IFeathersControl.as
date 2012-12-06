@@ -77,5 +77,6 @@ package feathers.core
 		function hasEventListener(type:String):Boolean;
 		function setSize(width:Number, height:Number):void;
 		function validate():void;
+		function dispose():void;
 	}
 }
