@@ -47,9 +47,9 @@ package feathers.core
 	/**
 	 * Dispatched when the width or height of the control changes.
 	 *
-	 * @eventType feathers.events.FeathersEventType.RESIZE
+	 * @eventType feathers.events.Event.RESIZE
 	 */
-	[Event(name="resize",type="feathers.events.FeathersEventType")]
+	[Event(name="resize",type="feathers.events.Event")]
 
 	/**
 	 * Base class for all UI controls. Implements invalidation and sets up some
