@@ -504,9 +504,8 @@ package feathers.controls
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
+		 * @see feathers.controls.renderers.IListItemRenderer
 		 * @see #itemRendererFactory
-		 * 
-		 * @default <code>new PropertyProxy(childProperties_onChange)</code>
 		 */
 		public function get itemRendererProperties():Object
 		{
@@ -748,6 +747,7 @@ package feathers.controls
 		/**
 		 * The class used to instantiate item renderers.
 		 *
+		 * @see feathers.controls.renderer.IListItemRenderer
 		 * @see #itemRendererFactory
 		 */
 		public function get itemRendererType():Class
@@ -784,7 +784,8 @@ package feathers.controls
 		 * <p>The function is expected to have the following signature:</p>
 		 *
 		 * <pre>function():IListItemRenderer</pre>
-		 * 
+		 *
+		 * @see feathers.controls.renderers.IListItemRenderer
 		 * @see #itemRendererType
 		 */
 		public function get itemRendererFactory():Function

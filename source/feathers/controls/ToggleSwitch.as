@@ -346,6 +346,7 @@ package feathers.controls
 		 * takes priority. For the OFF label, <code>offLabelProperties</code>
 		 * takes priority.
 		 *
+		 * @see feathers.core.ITextRenderer
 		 * @see #onLabelProperties
 		 * @see #offLabelProperties
 		 * @see #disabledLabelProperties
@@ -388,6 +389,8 @@ package feathers.controls
 		/**
 		 * The key/value pairs to pass to the labels, if the toggle switch is
 		 * disabled.
+		 *
+		 * @see feathers.core.ITextRenderer
 		 */
 		public function get disabledLabelProperties():Object
 		{
@@ -427,6 +430,8 @@ package feathers.controls
 		/**
 		 * The key/value pairs passed to the ON label. If <code>null</code>,
 		 * then <code>defaultLabelProperties</code> will be used instead.
+		 *
+		 * @see feathers.core.ITextRenderer
 		 */
 		public function get onLabelProperties():Object
 		{
@@ -466,6 +471,8 @@ package feathers.controls
 		/**
 		 * The key/value pairs passed to the OFF label. If <code>null</code>,
 		 * then <code>defaultLabelProperties</code> will be used instead.
+		 *
+		 * @see feathers.core.ITextRenderer
 		 */
 		public function get offLabelProperties():Object
 		{
@@ -536,6 +543,7 @@ package feathers.controls
 		 * <pre>function():ITextRenderer</pre>
 		 *
 		 * @see feathers.core.ITextRenderer
+		 * @see feathers.core.FeathersControl#defaultTextRendererFactory
 		 */
 		public function get labelFactory():Function
 		{

@@ -1120,13 +1120,15 @@ package feathers.controls.renderers
 		/**
 		 * A function that generates <code>ITextRenderer</code> that uses the result
 		 * of <code>accessoryLabelField</code> or <code>accessoryLabelFunction</code>.
-		 * Useful for skinning the <code>ITextRenderer</code>.
+		 * CAn be used to set properties on the <code>ITextRenderer</code>.
 		 *
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function():ITextRenderer</pre>
 		 *
-		 * @see #accessoryLabelField;
-		 * @see #accessoryLabelFunction;
+		 * @see feathers.core.ITextRenderer
+		 * @see feathers.core.FeathersControl#defaultTextRendererFactory
+		 * @see #accessoryLabelField
+		 * @see #accessoryLabelFunction
 		 */
 		public function get accessoryLabelFactory():Function
 		{
@@ -1161,6 +1163,7 @@ package feathers.controls.renderers
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
+		 * @see feathers.core.ITextRenderer
 		 * @see #accessoryLabelField
 		 * @see #accessoryLabelFunction
 		 */

@@ -48,6 +48,8 @@ package feathers.skins
 
 		/**
 		 * Optional properties to set on the Image instance.
+		 *
+		 * @see starling.display.Image
 		 */
 		public function get imageProperties():Object
 		{

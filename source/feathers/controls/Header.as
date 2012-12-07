@@ -195,6 +195,7 @@ package feathers.controls
 		 * <pre>function():ITextRenderer</pre>
 		 *
 		 * @see feathers.core.ITextRenderer
+		 * @see feathers.core.FeathersControl#defaultTextRendererFactory
 		 */
 		public function get titleFactory():Function
 		{
@@ -553,6 +554,8 @@ package feathers.controls
 		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 *
+		 * @see feathers.core.ITextRenderer
 		 */
 		public function get titleProperties():Object
 		{
