@@ -1006,6 +1006,7 @@ package feathers.controls.text
 			this.stageText.addEventListener(FocusEvent.FOCUS_IN, stageText_focusInHandler);
 			this.stageText.addEventListener(FocusEvent.FOCUS_OUT, stageText_focusOutHandler);
 			this.stageText.addEventListener(flash.events.Event.COMPLETE, stageText_completeHandler);
+			this.invalidate();
 		}
 
 		/**
