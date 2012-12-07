@@ -644,6 +644,7 @@ package feathers.controls.renderers
 		 * example, you might want to scale it for current DPI or apply pixel
 		 * snapping.
 		 *
+		 * @see feathers.controls.ImageLoader
 		 * @see #contentSourceField
 		 * @see #contentSourceFunction
 		 */
@@ -671,12 +672,14 @@ package feathers.controls.renderers
 		protected var _contentLabelFactory:Function;
 
 		/**
-		 * A function that generates <code>Label</code> that uses the result
+		 * A function that generates an <code>ITextRenderer</code> that uses the result
 		 * of <code>contentLabelField</code> or <code>contentLabelFunction</code>.
-		 * Useful for skinning the <code>Label</code>.
+		 * Can be used to set properties on the <code>ITextRenderer</code>.
 		 *
-		 * @see #contentLabelField;
-		 * @see #contentLabelFunction;
+		 * @see feathers.core.ITextRenderer
+		 * @see feathers.core.FeathersControl#defaultTextRendererFactory
+		 * @see #contentLabelField
+		 * @see #contentLabelFunction
 		 */
 		public function get contentLabelFactory():Function
 		{
@@ -711,6 +714,7 @@ package feathers.controls.renderers
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
+		 * @see feathers.core.ITextRenderer
 		 * @see #contentLabelField
 		 * @see #contentLabelFunction
 		 */

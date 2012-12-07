@@ -307,6 +307,7 @@ package feathers.controls
 		 *
 		 * <pre>function():Button</pre>
 		 *
+		 * @see feathers.controls.Button
 		 * @see #firstButtonFactory
 		 * @see #lastButtonFactory
 		 */
@@ -341,6 +342,7 @@ package feathers.controls
 		 *
 		 * <pre>function():Button</pre>
 		 *
+		 * @see feathers.controls.Button
 		 * @see #buttonFactory
 		 * @see #lastButtonFactory
 		 */
@@ -375,6 +377,7 @@ package feathers.controls
 		 *
 		 * <pre>function():Button</pre>
 		 *
+		 * @see feathers.controls.Button
 		 * @see #buttonFactory
 		 * @see #firstButtonFactory
 		 */
@@ -551,7 +554,8 @@ package feathers.controls
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
-		 * @see AddedWatcher
+		 * @see feathers.controls.Button
+		 * @see feathers.core.DisplayListWatcher
 		 */
 		public function get buttonProperties():Object
 		{

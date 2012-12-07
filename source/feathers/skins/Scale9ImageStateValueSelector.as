@@ -48,6 +48,8 @@ package feathers.skins
 
 		/**
 		 * Optional properties to set on the Scale9Image instance.
+		 *
+		 * @see feathers.display.Scale9Image
 		 */
 		public function get imageProperties():Object
 		{

@@ -264,6 +264,7 @@ package feathers.controls
 		 *
 		 * <pre>function():Button</pre>
 		 *
+		 * @see feathers.controls.Button
 		 * @see #firstTabFactory
 		 * @see #lastTabFactory
 		 */
@@ -298,6 +299,7 @@ package feathers.controls
 		 *
 		 * <pre>function():Button</pre>
 		 *
+		 * @see feathers.controls.Button
 		 * @see #tabFactory
 		 * @see #lastTabFactory
 		 */
@@ -332,6 +334,7 @@ package feathers.controls
 		 *
 		 * <pre>function():Button</pre>
 		 *
+		 * @see feathers.controls.Button
 		 * @see #tabFactory
 		 * @see #firstTabFactory
 		 */
@@ -562,7 +565,7 @@ package feathers.controls
 		 * tabs. These values are shared by each tabs, so values that cannot be
 		 * shared (such as display objects that need to be added to the display
 		 * list) should be passed to tabs in another way (such as with an
-		 * <code>AddedWatcher</code>).
+		 * <code>DisplayListWatcher</code>).
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -571,7 +574,8 @@ package feathers.controls
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
-		 * @see AddedWatcher
+		 * @see feathers.controls.Button
+		 * @see feathers.core.DisplayListWatcher
 		 */
 		public function get tabProperties():Object
 		{

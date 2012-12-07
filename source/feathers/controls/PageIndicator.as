@@ -452,6 +452,8 @@ package feathers.controls
 		 *
 		 * <p>This function should have the following signature:</p>
 		 * <pre>function():DisplayObject</pre>
+		 *
+		 * @see starling.display.DisplayObject
 		 */
 		public function get normalSymbolFactory():Function
 		{
@@ -481,6 +483,8 @@ package feathers.controls
 		 *
 		 * <p>This function should have the following signature:</p>
 		 * <pre>function():DisplayObject</pre>
+		 *
+		 * @see starling.display.DisplayObject
 		 */
 		public function get selectedSymbolFactory():Function
 		{

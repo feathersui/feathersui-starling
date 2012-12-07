@@ -540,6 +540,8 @@ package feathers.controls
 		 * <p>This function is expected to have the following signature:</p>
 		 *
 		 * <pre>function():IScrollBar</pre>
+		 *
+		 * @see feathers.controls.IScrollBar
 		 */
 		public function get horizontalScrollBarFactory():Function
 		{
@@ -576,6 +578,7 @@ package feathers.controls
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
+		 * @see feathers.controls.IScrollBar
 		 * @see #horizontalScrollBarFactory
 		 */
 		public function get horizontalScrollBarProperties():Object
@@ -632,6 +635,8 @@ package feathers.controls
 		 * <p>This function is expected to have the following signature:</p>
 		 *
 		 * <pre>function():IScrollBar</pre>
+		 *
+		 * @see feathers.controls.IScrollBar
 		 */
 		public function get verticalScrollBarFactory():Function
 		{
@@ -668,6 +673,7 @@ package feathers.controls
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
+		 * @see feathers.controls.IScrollBar
 		 * @see #verticalScrollBarFactory
 		 */
 		public function get verticalScrollBarProperties():Object
