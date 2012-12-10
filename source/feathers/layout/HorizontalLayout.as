@@ -689,14 +689,28 @@ package feathers.layout
 			//similar to above, in order to avoid costly destruction and
 			//creation of item renderers, we're going to fill in some extra
 			//indices
-			const visibleItemCountDifference:int = visibleTypicalItemCount - result.length;
-			if(visibleItemCountDifference > 0)
+			var resultLength:int = result.length;
+			var visibleItemCountDifference:int = visibleTypicalItemCount - resultLength;
+			if(visibleItemCountDifference > 0 && resultLength > 0)
 			{
-				const firstIndex:int = result[0];
-				const lastIndex:int = Math.max(0, firstIndex - visibleItemCountDifference);
-				for(i = firstIndex - 1; i >= lastIndex; i--)
+				//add extra items before the first index
+				const firstExistingIndex:int = result[0];
+				const lastIndexToAdd:int = Math.max(0, firstExistingIndex - visibleItemCountDifference);
+				for(i = firstExistingIndex - 1; i >= lastIndexToAdd; i--)
 				{
 					result.unshift(i);
+				}
+			}
+			resultLength = result.length;
+			visibleItemCountDifference = visibleTypicalItemCount - resultLength;
+			if(visibleItemCountDifference > 0)
+			{
+				//add extra items after the last index
+				const startIndex:int = resultLength > 0 ? (result[resultLength - 1] + 1) : 0;
+				const endIndex:int = Math.min(itemCount, startIndex + visibleItemCountDifference);
+				for(i = startIndex; i < endIndex; i++)
+				{
+					result.push(i);
 				}
 			}
 			return result;
