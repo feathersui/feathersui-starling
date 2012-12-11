@@ -60,7 +60,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _text:String = "";
+		protected var _text:String = null;
 
 		/**
 		 * The text displayed by the label.
@@ -75,11 +75,6 @@ package feathers.controls
 		 */
 		public function set text(value:String):void
 		{
-			if(!value)
-			{
-				//don't allow null or undefined
-				value = "";
-			}
 			if(this._text == value)
 			{
 				return;
@@ -286,7 +281,7 @@ package feathers.controls
 		protected function refreshTextRendererData():void
 		{
 			this.textRenderer.text = this._text;
-			this.textRenderer.visible = this._text.length > 0;
+			this.textRenderer.visible = this._text && this._text.length > 0;
 		}
 
 		/**
