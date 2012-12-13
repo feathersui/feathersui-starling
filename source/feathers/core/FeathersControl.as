@@ -22,7 +22,8 @@ package feathers.core
 	import starling.utils.MatrixUtil;
 
 	/**
-	 * Dispatched after initialize() has been called.
+	 * Dispatched after initialize() has been called, but before the first time
+	 * that draw() has been called.
 	 *
 	 * @eventType feathers.events.FeathersEventType.INITIALIZE
 	 */
@@ -33,7 +34,7 @@ package feathers.core
 	 *
 	 * @eventType feathers.events.FeathersEventType.RESIZE
 	 */
-	[Event(name="resize",type="feathers.events.Event")]
+	[Event(name="resize",type="starling.events.Event")]
 
 	/**
 	 * Base class for all UI controls. Implements invalidation and sets up some
