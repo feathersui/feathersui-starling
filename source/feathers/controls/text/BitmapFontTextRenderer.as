@@ -551,6 +551,15 @@ package feathers.controls.text
 							isWordComplete = true;
 						}
 
+						//we may need to move to a new line at the same time
+						//that our previous word in the buffer can be batched
+						//so we need to add the buffer here rather than after
+						//the next section
+						if(isWordComplete && !isAligned)
+						{
+							this.addBufferToBatch(0);
+						}
+
 						if(wordCountForLine > 0 && (currentX + offsetX) > maxLineWidth)
 						{
 							if(isAligned)
@@ -569,11 +578,6 @@ package feathers.controls.text
 							wordLength = 0;
 							isWordComplete = false;
 							wordCountForLine = 0;
-						}
-
-						if(isWordComplete && !isAligned)
-						{
-							this.addBufferToBatch(0);
 						}
 					}
 					if(this._wordWrap || isAligned)
