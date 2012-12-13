@@ -10,7 +10,22 @@ package feathers.core
 	import starling.display.DisplayObjectContainer;
 	import starling.events.Event;
 
-	[Event(name="resize",type="starling.events.ResizeEvent")]
+	/**
+	 * Dispatched after the control has been initialized, but before it has
+	 * drawn for the first time. Typically, the component's children will have
+	 * been created by this point.
+	 *
+	 * @eventType feathers.events.FeathersEventType.INITIALIZE
+	 */
+	[Event(name="initialize",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the width or height of the control changes.
+	 *
+	 * @eventType feathers.events.FeathersEventType.RESIZE
+	 */
+	[Event(name="resize",type="starling.events.Event")]
+
 	/**
 	 * Basic interface for Feathers UI controls.
 	 */
