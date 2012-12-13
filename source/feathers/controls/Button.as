@@ -1884,14 +1884,6 @@ package feathers.controls
 			if(stylesInvalid || stateInvalid || selectedInvalid)
 			{
 				this.refreshSkin();
-				if(this.currentSkin && isNaN(this._originalSkinWidth))
-				{
-					this._originalSkinWidth = this.currentSkin.width;
-				}
-				if(this.currentSkin && isNaN(this._originalSkinHeight))
-				{
-					this._originalSkinHeight = this.currentSkin.height;
-				}
 				this.refreshIcon();
 			}
 
@@ -1909,15 +1901,6 @@ package feathers.controls
 			
 			if(textRendererInvalid || stylesInvalid || stateInvalid || selectedInvalid || dataInvalid || sizeInvalid)
 			{
-				if(this.currentSkin is IFeathersControl)
-				{
-					IFeathersControl(this.currentSkin).validate();
-				}
-				if(this.currentIcon is IFeathersControl)
-				{
-					IFeathersControl(this.currentIcon).validate();
-				}
-
 				this.layoutContent();
 			}
 			
@@ -1938,6 +1921,22 @@ package feathers.controls
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
+			}
+			if(this.currentSkin is IFeathersControl)
+			{
+				IFeathersControl(this.currentSkin).validate();
+			}
+			if(this.currentSkin && isNaN(this._originalSkinWidth))
+			{
+				this._originalSkinWidth = this.currentSkin.width;
+			}
+			if(this.currentSkin && isNaN(this._originalSkinHeight))
+			{
+				this._originalSkinHeight = this.currentSkin.height;
+			}
+			if(this.currentIcon is IFeathersControl)
+			{
+				IFeathersControl(this.currentIcon).validate();
 			}
 			this.refreshMaxLabelWidth(true);
 			this.labelTextRenderer.measureText(HELPER_POINT);
@@ -2142,6 +2141,10 @@ package feathers.controls
 		 */
 		protected function layoutContent():void
 		{
+			if(this.currentIcon is IFeathersControl)
+			{
+				IFeathersControl(this.currentIcon).validate();
+			}
 			this.refreshMaxLabelWidth(false);
 			if(this._label && this.currentIcon)
 			{
