@@ -142,7 +142,7 @@ package feathers.controls
 			}
 			else if(this._selectedIndex < 0)
 			{
-				this.selectedIndex = 0
+				this.selectedIndex = 0;
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}

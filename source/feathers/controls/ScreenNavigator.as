@@ -493,7 +493,7 @@ package feathers.controls
 			const eventListener:Function = function(event:Event):void
 			{
 				self.showScreen(screenID);
-			}
+			};
 
 			return eventListener;
 		}
@@ -510,14 +510,14 @@ package feathers.controls
 				var signalListener:Function = function(arg0:Object):void
 				{
 					self.showScreen(screenID);
-				}
+				};
 			}
 			else
 			{
 				signalListener = function(...rest:Array):void
 				{
 					self.showScreen(screenID);
-				}
+				};
 			}
 
 			return signalListener;

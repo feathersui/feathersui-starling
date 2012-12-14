@@ -30,7 +30,7 @@ package feathers.controls
 		 */
 		override public function set isToggle(value:Boolean):void
 		{
-			throw IllegalOperationError("CheckBox isToggle must always be true.")
+			throw IllegalOperationError("CheckBox isToggle must always be true.");
 		}
 	}
 }

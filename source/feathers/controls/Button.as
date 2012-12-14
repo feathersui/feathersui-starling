@@ -2163,7 +2163,7 @@ package feathers.controls
 			}
 			else if(!this._label && this.currentIcon && this._iconPosition != ICON_POSITION_MANUAL)
 			{
-				this.positionSingleChild(this.currentIcon)
+				this.positionSingleChild(this.currentIcon);
 			}
 
 			if(this.currentIcon)

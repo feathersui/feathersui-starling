@@ -251,7 +251,7 @@ package feathers.core
 					this.applyAllStylesForTypeFromMaps(target, type, this._initializerSuperTypeMap);
 				}
 			}
-			type = Object(target).constructor;
+			type = Class(Object(target).constructor);
 			this.applyAllStylesForTypeFromMaps(target, type, this._initializerNoNameTypeMap, this._initializerNameTypeMap);
 		}
 

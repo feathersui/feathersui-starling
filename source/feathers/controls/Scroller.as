@@ -2433,7 +2433,7 @@ package feathers.controls
 			if(this._horizontalAutoScrollTween)
 			{
 				Starling.juggler.remove(this._horizontalAutoScrollTween);
-				this._horizontalAutoScrollTween = null
+				this._horizontalAutoScrollTween = null;
 			}
 			else
 			{
@@ -2442,7 +2442,7 @@ package feathers.controls
 			if(this._verticalAutoScrollTween)
 			{
 				Starling.juggler.remove(this._verticalAutoScrollTween);
-				this._verticalAutoScrollTween = null
+				this._verticalAutoScrollTween = null;
 			}
 			else
 			{

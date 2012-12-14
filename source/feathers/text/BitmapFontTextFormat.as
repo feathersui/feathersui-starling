@@ -47,7 +47,7 @@ package feathers.text
 			}
 			if(!(font is BitmapFont))
 			{
-				throw new ArgumentError("BitmapFontTextFormat font must be a String or a BitmapFont instance.")
+				throw new ArgumentError("BitmapFontTextFormat font must be a String or a BitmapFont instance.");
 			}
 			this.font = BitmapFont(font);
 			this.size = size;
