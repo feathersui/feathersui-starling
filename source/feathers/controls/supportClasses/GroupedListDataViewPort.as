@@ -1351,7 +1351,7 @@ package feathers.controls.supportClasses
 				}
 				if(!this._activeFirstItemRenderers)
 				{
-					this._activeFirstItemRenderers = new <IGroupedListItemRenderer>[]
+					this._activeFirstItemRenderers = new <IGroupedListItemRenderer>[];
 				}
 				if(!this._unrenderedFirstItems)
 				{
@@ -1377,7 +1377,7 @@ package feathers.controls.supportClasses
 				}
 				if(!this._activeLastItemRenderers)
 				{
-					this._activeLastItemRenderers = new <IGroupedListItemRenderer>[]
+					this._activeLastItemRenderers = new <IGroupedListItemRenderer>[];
 				}
 				if(!this._unrenderedLastItems)
 				{
@@ -1403,7 +1403,7 @@ package feathers.controls.supportClasses
 				}
 				if(!this._activeSingleItemRenderers)
 				{
-					this._activeSingleItemRenderers = new <IGroupedListItemRenderer>[]
+					this._activeSingleItemRenderers = new <IGroupedListItemRenderer>[];
 				}
 				if(!this._unrenderedSingleItems)
 				{

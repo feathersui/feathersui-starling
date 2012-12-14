@@ -47,7 +47,7 @@ package feathers.controls
 		 */
 		override public function set isToggle(value:Boolean):void
 		{
-			throw IllegalOperationError("Radio isToggle must always be true.")
+			throw IllegalOperationError("Radio isToggle must always be true.");
 		}
 
 		/**
