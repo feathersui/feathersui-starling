@@ -908,12 +908,14 @@ package feathers.controls
 		 */
 		override protected function initialize():void
 		{
+			const hasLayout:Boolean = this._layout != null;
+
 			if(!this.scroller)
 			{
 				this.scroller = new Scroller();
 				this.scroller.nameList.add(this.scrollerName);
-				this.scroller.verticalScrollPolicy = Scroller.SCROLL_POLICY_AUTO;
 				this.scroller.horizontalScrollPolicy = Scroller.SCROLL_POLICY_AUTO;
+				this.scroller.verticalScrollPolicy = hasLayout ? Scroller.SCROLL_POLICY_AUTO : Scroller.SCROLL_POLICY_ON;
 				this.scroller.addEventListener(Event.SCROLL, scroller_scrollHandler);
 				this.scroller.addEventListener(FeathersEventType.SCROLL_COMPLETE, scroller_scrollCompleteHandler);
 				this.addChild(this.scroller);
@@ -927,7 +929,7 @@ package feathers.controls
 				this.scroller.viewPort = this.dataViewPort;
 			}
 
-			if(!this._layout)
+			if(!hasLayout)
 			{
 				const layout:VerticalLayout = new VerticalLayout();
 				layout.useVirtualLayout = true;
@@ -937,7 +939,6 @@ package feathers.controls
 				layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
 				layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
 				this._layout = layout;
-				this.scroller.verticalScrollPolicy = Scroller.SCROLL_POLICY_ON;
 			}
 		}
 		
