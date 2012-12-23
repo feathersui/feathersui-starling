@@ -69,6 +69,19 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _baseline:Number = 0;
+
+		/**
+		 * The baseline value of the text.
+		 */
+		public function get baseline():Number
+		{
+			return this._baseline;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _textRendererFactory:Function;
 
 		/**
@@ -289,6 +302,8 @@ package feathers.controls
 		protected function layout():void
 		{
 			this.textRenderer.width = this.actualWidth;
+			this.textRenderer.validate();
+			this._baseline = this.textRenderer.baseline;
 		}
 
 		/**
