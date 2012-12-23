@@ -978,7 +978,7 @@ package feathers.controls
 			}
 			else
 			{
-				this._titleRenderer.y = (this.actualHeight - this._titleRenderer.height) / 2;
+				this._titleRenderer.y = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - this._titleRenderer.height) / 2;
 			}
 		}
 
