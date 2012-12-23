@@ -97,6 +97,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _textureFrame:Rectangle;
+
+		/**
+		 * @private
+		 */
 		protected var _texture:Texture;
 
 		/**
@@ -338,7 +343,7 @@ package feathers.controls
 			{
 				if(this._texture)
 				{
-					newWidth = this._texture.width * this._textureScale;
+					newWidth = this._textureFrame.width * this._textureScale;
 				}
 				else
 				{
@@ -351,7 +356,7 @@ package feathers.controls
 			{
 				if(this._texture)
 				{
-					newHeight = this._texture.height * this._textureScale;
+					newHeight = this._textureFrame.height * this._textureScale;
 				}
 				else
 				{
@@ -455,8 +460,8 @@ package feathers.controls
 			{
 				HELPER_RECTANGLE.x = 0;
 				HELPER_RECTANGLE.y = 0;
-				HELPER_RECTANGLE.width = this._texture.width * this._textureScale;
-				HELPER_RECTANGLE.height = this._texture.height * this._textureScale;
+				HELPER_RECTANGLE.width = this._textureFrame.width * this._textureScale;
+				HELPER_RECTANGLE.height = this._textureFrame.height * this._textureScale;
 				HELPER_RECTANGLE2.x = 0;
 				HELPER_RECTANGLE2.y = 0;
 				HELPER_RECTANGLE2.width = this.actualWidth;
@@ -491,6 +496,7 @@ package feathers.controls
 				return;
 			}
 
+			this._textureFrame = this._texture.frame;
 			if(!this.image)
 			{
 				this.image = new Image(this._texture);
