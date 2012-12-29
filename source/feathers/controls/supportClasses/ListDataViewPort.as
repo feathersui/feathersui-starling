@@ -797,6 +797,19 @@ package feathers.controls.supportClasses
 				return;
 			}
 			const renderer:IListItemRenderer = IListItemRenderer(event.currentTarget);
+			
+			// if this is not scrolling
+			// and this is selectable
+			// and the renderer is an instance of the Button class
+			// and has toggle enabled
+			// and the selected index is equal to the renderer index
+			// then, but only then reset the index to -1
+			if (!this._isScrolling && this._isSelectable && renderer is Button && (renderer as Button).isToggle && this._selectedIndex == renderer.index)
+			{
+				this._selectedIndex = -1;
+				return;
+			}
+
 			if(!this._isSelectable || this._isScrolling || this._selectedIndex == renderer.index)
 			{
 				//reset to the old value
