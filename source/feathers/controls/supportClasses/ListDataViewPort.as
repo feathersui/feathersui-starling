@@ -806,7 +806,7 @@ package feathers.controls.supportClasses
 			// then, but only then reset the index to -1
 			if (!this._isScrolling && this._isSelectable && renderer is Button && (renderer as Button).isToggle && this._selectedIndex == renderer.index)
 			{
-				this._selectedIndex = -1;
+				this.selectedIndex = -1;
 				return;
 			}
 
