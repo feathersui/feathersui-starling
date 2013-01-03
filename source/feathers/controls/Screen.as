@@ -25,6 +25,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 package feathers.controls
 {
 	import feathers.core.FeathersControl;
+	import feathers.core.IFeathersControl;
 	import feathers.events.FeathersEventType;
 	import feathers.system.DeviceCapabilities;
 	import feathers.utils.display.calculateScaleRatioToFit;
@@ -35,6 +36,7 @@ package feathers.controls
 	import flash.ui.Keyboard;
 
 	import starling.core.Starling;
+	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.events.ResizeEvent;
 
@@ -245,6 +247,49 @@ package feathers.controls
 		 * keyboard events to cancel the default behavior.
 		 */
 		protected var searchButtonHandler:Function;
+
+		/**
+		 * @private
+		 */
+		override protected function draw():void
+		{
+			const needsWidth:Boolean = isNaN(this.explicitWidth);
+			const needsHeight:Boolean = isNaN(this.explicitHeight);
+			if(!needsWidth && !needsHeight)
+			{
+				return;
+			}
+
+			var newWidth:Number = this.explicitWidth;
+			var newHeight:Number = this.explicitHeight;
+			if(needsWidth || needsHeight)
+			{
+				var maxX:Number = isNaN(newWidth) ? 0 : newWidth;
+				var maxY:Number = isNaN(newHeight) ? 0 : newHeight;
+				const childCount:int = this.numChildren;
+				for(var i:int = 0; i < childCount; i++)
+				{
+					var child:DisplayObject = this.getChildAt(i);
+					if(child is IFeathersControl)
+					{
+						IFeathersControl(child).validate();
+					}
+					maxX = Math.max(maxX, child.x + child.width);
+					maxY = Math.max(maxY, child.y + child.height);
+				}
+				if(needsWidth)
+				{
+					newWidth = maxX;
+				}
+				if(needsHeight)
+				{
+					newHeight = maxY;
+				}
+			}
+
+			trace(newWidth, newHeight)
+			this.setSizeInternal(newWidth, newHeight, false);
+		}
 		
 		/**
 		 * @private
