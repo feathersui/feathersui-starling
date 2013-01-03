@@ -114,6 +114,12 @@ package feathers.motion.transitions
 		public var ease:Object = Transitions.EASE_OUT;
 
 		/**
+		 * Determines if the next transition should be skipped. After the
+		 * transition, this value returns to <code>false</code>.
+		 */
+		public var skipNextTransition:Boolean = false;
+
+		/**
 		 * The function passed to the <code>transition</code> property of the
 		 * <code>ScreenNavigator</code>.
 		 */
@@ -145,42 +151,46 @@ package feathers.motion.transitions
 				this._activeTransition = null;
 			}
 
-			if(!this._oldScreen || !this._newScreen)
+			if(!this._oldScreen || !this._newScreen || this.skipNextTransition)
 			{
-				if(this._newScreen)
-				{
-					this._newScreen.x = 0;
-				}
+				this.skipNextTransition = false;
+				const savedCompleteHandler:Function = this._savedCompleteHandler;
+				this._savedCompleteHandler = null;
 				if(this._oldScreen)
 				{
 					this._oldScreen.x = 0;
 				}
-				if(this._savedCompleteHandler != null)
+				if(this._newScreen)
 				{
-					this._savedCompleteHandler();
+					this._newScreen.x = 0;
 				}
-				return;
-			}
-
-			this._oldScreen.x = 0;
-			var activeTransition_onUpdate:Function;
-			if(this._isFromRight)
-			{
-				this._newScreen.x = this.navigator.width;
-				activeTransition_onUpdate = this.activeTransitionFromRight_onUpdate;
+				if(savedCompleteHandler != null)
+				{
+					savedCompleteHandler();
+				}
 			}
 			else
 			{
-				this._newScreen.x = -this.navigator.width;
-				activeTransition_onUpdate = this.activeTransitionFromLeft_onUpdate;
+				this._oldScreen.x = 0;
+				var activeTransition_onUpdate:Function;
+				if(this._isFromRight)
+				{
+					this._newScreen.x = this.navigator.width;
+					activeTransition_onUpdate = this.activeTransitionFromRight_onUpdate;
+				}
+				else
+				{
+					this._newScreen.x = -this.navigator.width;
+					activeTransition_onUpdate = this.activeTransitionFromLeft_onUpdate;
+				}
+				this._savedOtherTarget = this._oldScreen;
+				this._activeTransition = new Tween(this._newScreen, this.duration, this.ease);
+				this._activeTransition.animate("x", 0);
+				this._activeTransition.delay = this.delay;
+				this._activeTransition.onUpdate = activeTransition_onUpdate;
+				this._activeTransition.onComplete = activeTransition_onComplete;
+				Starling.juggler.add(this._activeTransition);
 			}
-			this._savedOtherTarget = this._oldScreen;
-			this._activeTransition = new Tween(this._newScreen, this.duration, this.ease);
-			this._activeTransition.animate("x", 0);
-			this._activeTransition.delay = this.delay;
-			this._activeTransition.onUpdate = activeTransition_onUpdate;
-			this._activeTransition.onComplete = activeTransition_onComplete;
-			Starling.juggler.add(this._activeTransition);
 
 			this._oldScreen = null;
 			this._newScreen = null;
