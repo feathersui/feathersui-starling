@@ -373,7 +373,9 @@ package feathers.text
 		{
 			this._textField = new TextField();
 			this._textField.type = TextFieldType.INPUT;
-			this._textField.multiline = initOptions && initOptions.hasOwnProperty("multiline") && initOptions.multiline;
+			const isMultiline:Boolean = initOptions && initOptions.hasOwnProperty("multiline") && initOptions.multiline;
+			this._textField.multiline = isMultiline;
+			this._textField.wordWrap = isMultiline;
 			this._textField.addEventListener(Event.CHANGE, textField_eventHandler);
 			this._textField.addEventListener(FocusEvent.FOCUS_IN, textField_eventHandler);
 			this._textField.addEventListener(FocusEvent.FOCUS_OUT, textField_eventHandler);
