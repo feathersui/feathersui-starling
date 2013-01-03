@@ -384,6 +384,31 @@ package feathers.controls
 		}
 
 		/**
+		 * Determines if the specified screen identifier has been added.
+		 */
+		public function hasScreen(id:String):Boolean
+		{
+			return this._screens.hasOwnProperty(id);
+		}
+
+		/**
+		 * Returns a list of the screen identifiers that have been added.
+		 */
+		public function getScreenIDs(result:Vector.<String> = null):Vector.<String>
+		{
+			if(!result)
+			{
+				result = new <String>[];
+			}
+
+			for(var id:String in this._screens)
+			{
+				result.push(id);
+			}
+			return result;
+		}
+
+		/**
 		 * @private
 		 */
 		override protected function draw():void
