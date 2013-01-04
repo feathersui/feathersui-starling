@@ -60,6 +60,11 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		private static const HELPER_POINT:Point = new Point();
+
+		/**
+		 * @private
+		 */
 		private static const CHARACTER_ID_SPACE:int = 32;
 
 		/**
@@ -92,6 +97,16 @@ package feathers.controls.text
 		 */
 		public function BitmapFontTextRenderer()
 		{
+			if(!CHAR_LOCATION_POOL)
+			{
+				//compiler doesn't like referencing CharLocation class in a
+				//static constant
+				CHAR_LOCATION_POOL = new <CharLocation>[];
+			}
+			if(!CHARACTER_BUFFER)
+			{
+				CHARACTER_BUFFER = new <CharLocation>[];
+			}
 			this.isQuickHitAreaEnabled = true;
 		}
 
@@ -99,6 +114,11 @@ package feathers.controls.text
 		 * @private
 		 */
 		protected var _characterBatch:QuadBatch;
+
+		/**
+		 * @private
+		 */
+		protected var _locations:Vector.<CharLocation>;
 
 		/**
 		 * @private
@@ -293,6 +313,30 @@ package feathers.controls.text
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _useSeparateBatch:Boolean = true;
+
+		/**
+		 * Determines if the characters are batched normally by Starling or if
+		 * they're batched separately. Batching separately may improve
+		 * performance for text that changes often, while batching normally
+		 * may be better when a lot of text is displayed on screen at once.
+		 */
+		public function get useSeparateBatch():Boolean
+		{
+			return _useSeparateBatch;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set useSeparateBatch(value:Boolean):void
+		{
+			this._useSeparateBatch = value;
+		}
+
+		/**
 		 * @inheritDoc
 		 */
 		public function get baseline():Number
@@ -310,17 +354,38 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		override public function dispose():void
+		{
+			this.moveLocationsToPool();
+			super.dispose();
+		}
+
+		/**
+		 * @private
+		 */
 		override public function render(support:RenderSupport, parentAlpha:Number):void
 		{
+			var offsetX:Number = 0;
+			var offsetY:Number = 0;
 			if(this._snapToPixels)
 			{
 				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-				this._characterBatch.x = Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx;
-				this._characterBatch.y = Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty;
+				offsetX = Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx;
+				offsetY = Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty;
+			}
+			if(this._locations)
+			{
+				const locationCount:int = this._locations.length;
+				for(var i:int = 0; i < locationCount; i++)
+				{
+					var location:CharLocation = this._locations[i];
+					this.addCharacterToBatch(location.char, offsetX + location.x, offsetY + location.y, location.scale, support, parentAlpha);
+				}
 			}
 			else
 			{
-				this._characterBatch.x = this._characterBatch.y = 0;
+				this._characterBatch.x = offsetX;
+				this._characterBatch.y = offsetY;
 			}
 			super.render(support, parentAlpha);
 		}
@@ -437,16 +502,6 @@ package feathers.controls.text
 			result.y = currentY + font.lineHeight * scale;
 			return result;
 		}
-
-		/**
-		 * @private
-		 */
-		override protected function initialize():void
-		{
-			this._characterBatch = new QuadBatch();
-			this._characterBatch.touchable = false;
-			this.addChild(this._characterBatch);
-		}
 		
 		/**
 		 * @private
@@ -465,152 +520,198 @@ package feathers.controls.text
 
 			if(dataInvalid || stylesInvalid || sizeInvalid)
 			{
-				this._characterBatch.reset();
+				this.refreshBatching();
 				if(!this.currentTextFormat || !this._text)
 				{
 					this.setSizeInternal(0, 0, false);
 					return;
 				}
-				const font:BitmapFont = this.currentTextFormat.font;
-				const customSize:Number = this.currentTextFormat.size;
-				const customLetterSpacing:Number = this.currentTextFormat.letterSpacing;
-				const isKerningEnabled:Boolean = this.currentTextFormat.isKerningEnabled;
-				const scale:Number = isNaN(customSize) ? 1 : (customSize / font.size);
-				const lineHeight:Number = font.lineHeight * scale;
-				const maxLineWidth:Number = !isNaN(this.explicitWidth) ? this.explicitWidth : this._maxWidth;
-				const textToDraw:String = this.getTruncatedText();
-				const isAligned:Boolean = this.currentTextFormat.align != TextFormatAlign.LEFT;
-				if(!CHARACTER_BUFFER)
-				{
-					CHARACTER_BUFFER = new <CharLocation>[];
-				}
-				CHARACTER_BUFFER.length = 0;
+				this.layoutCharacters(HELPER_POINT);
+				this.setSizeInternal(HELPER_POINT.x, HELPER_POINT.y, false);
+			}
+		}
 
-				var maxX:Number = 0;
-				var currentX:Number = 0;
-				var currentY:Number = 0;
-				var previousCharID:Number = NaN;
-				var isWordComplete:Boolean = false;
-				var startXOfPreviousWord:Number = 0;
-				var widthOfWhitespaceAfterWord:Number = 0;
-				var wordLength:int = 0;
-				var wordCountForLine:int = 0;
-				const charCount:int = textToDraw ? textToDraw.length : 0;
-				for(var i:int = 0; i < charCount; i++)
+		/**
+		 * @private
+		 */
+		protected function refreshBatching():void
+		{
+			this.moveLocationsToPool();
+			if(this._useSeparateBatch)
+			{
+				if(!this._characterBatch)
 				{
-					isWordComplete = false;
-					var charID:int = textToDraw.charCodeAt(i);
-					if(charID == CHARACTER_ID_LINE_FEED || charID == CHARACTER_ID_CARRIAGE_RETURN) //new line \n or \r
+					this._characterBatch = new QuadBatch();
+					this._characterBatch.touchable = false;
+					this.addChild(this._characterBatch);
+				}
+				this._characterBatch.reset();
+				this._locations = null;
+			}
+			else
+			{
+				if(this._characterBatch)
+				{
+					this._characterBatch.removeFromParent(true);
+					this._characterBatch = null;
+				}
+				if(!this._locations)
+				{
+					this._locations = new <CharLocation>[];
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function layoutCharacters(result:Point = null):Point
+		{
+			if(!result)
+			{
+				result = new Point();
+			}
+
+			const font:BitmapFont = this.currentTextFormat.font;
+			const customSize:Number = this.currentTextFormat.size;
+			const customLetterSpacing:Number = this.currentTextFormat.letterSpacing;
+			const isKerningEnabled:Boolean = this.currentTextFormat.isKerningEnabled;
+			const scale:Number = isNaN(customSize) ? 1 : (customSize / font.size);
+			const lineHeight:Number = font.lineHeight * scale;
+			const maxLineWidth:Number = !isNaN(this.explicitWidth) ? this.explicitWidth : this._maxWidth;
+			const textToDraw:String = this.getTruncatedText();
+			const isAligned:Boolean = this.currentTextFormat.align != TextFormatAlign.LEFT;
+			CHARACTER_BUFFER.length = 0;
+
+			var maxX:Number = 0;
+			var currentX:Number = 0;
+			var currentY:Number = 0;
+			var previousCharID:Number = NaN;
+			var isWordComplete:Boolean = false;
+			var startXOfPreviousWord:Number = 0;
+			var widthOfWhitespaceAfterWord:Number = 0;
+			var wordLength:int = 0;
+			var wordCountForLine:int = 0;
+			const charCount:int = textToDraw ? textToDraw.length : 0;
+			for(var i:int = 0; i < charCount; i++)
+			{
+				isWordComplete = false;
+				var charID:int = textToDraw.charCodeAt(i);
+				if(charID == CHARACTER_ID_LINE_FEED || charID == CHARACTER_ID_CARRIAGE_RETURN) //new line \n or \r
+				{
+					currentX = Math.max(0, currentX - customLetterSpacing);
+					if(this._wordWrap || isAligned)
 					{
-						currentX = Math.max(0, currentX - customLetterSpacing);
-						if(this._wordWrap || isAligned)
+						this.alignBuffer(maxLineWidth, currentX, 0);
+						this.addBufferToBatch(0);
+					}
+					maxX = Math.max(maxX, currentX);
+					previousCharID = NaN;
+					currentX = 0;
+					currentY += lineHeight;
+					startXOfPreviousWord = 0;
+					widthOfWhitespaceAfterWord = 0;
+					wordLength = 0;
+					wordCountForLine = 0;
+					continue;
+				}
+
+				var charData:BitmapChar = font.getChar(charID);
+				if(!charData)
+				{
+					trace("Missing character " + String.fromCharCode(charID) + " in font " + font.name + ".");
+					continue;
+				}
+
+				if(isKerningEnabled && !isNaN(previousCharID))
+				{
+					currentX += charData.getKerning(previousCharID);
+				}
+
+				var offsetX:Number = charData.xAdvance * scale;
+				if(this._wordWrap)
+				{
+					var previousCharIsWhitespace:Boolean = previousCharID == CHARACTER_ID_SPACE || previousCharID == CHARACTER_ID_TAB;
+					if(charID == CHARACTER_ID_SPACE || charID == CHARACTER_ID_TAB)
+					{
+						if(!previousCharIsWhitespace)
 						{
-							this.alignBuffer(maxLineWidth, currentX, 0);
-							this.addBufferToBatch(0);
+							widthOfWhitespaceAfterWord = 0;
 						}
-						maxX = Math.max(maxX, currentX);
+						widthOfWhitespaceAfterWord += offsetX;
+					}
+					else if(previousCharIsWhitespace)
+					{
+						startXOfPreviousWord = currentX;
+						wordLength = 0;
+						wordCountForLine++;
+						isWordComplete = true;
+					}
+
+					//we may need to move to a new line at the same time
+					//that our previous word in the buffer can be batched
+					//so we need to add the buffer here rather than after
+					//the next section
+					if(isWordComplete && !isAligned)
+					{
+						this.addBufferToBatch(0);
+					}
+
+					if(wordCountForLine > 0 && (currentX + offsetX) > maxLineWidth)
+					{
+						if(isAligned)
+						{
+							this.trimBuffer(wordLength);
+							this.alignBuffer(maxLineWidth, startXOfPreviousWord - widthOfWhitespaceAfterWord, wordLength);
+							this.addBufferToBatch(wordLength);
+						}
+						this.moveBufferedCharacters(-startXOfPreviousWord, lineHeight, 0);
+						maxX = Math.max(maxX, startXOfPreviousWord - widthOfWhitespaceAfterWord);
 						previousCharID = NaN;
-						currentX = 0;
+						currentX -= startXOfPreviousWord;
 						currentY += lineHeight;
 						startXOfPreviousWord = 0;
 						widthOfWhitespaceAfterWord = 0;
 						wordLength = 0;
+						isWordComplete = false;
 						wordCountForLine = 0;
-						continue;
 					}
-
-					var charData:BitmapChar = font.getChar(charID);
-					if(!charData)
-					{
-						trace("Missing character " + String.fromCharCode(charID) + " in font " + font.name + ".");
-						continue;
-					}
-
-					if(isKerningEnabled && !isNaN(previousCharID))
-					{
-						currentX += charData.getKerning(previousCharID);
-					}
-
-					var offsetX:Number = charData.xAdvance * scale;
-					if(this._wordWrap)
-					{
-						var previousCharIsWhitespace:Boolean = previousCharID == CHARACTER_ID_SPACE || previousCharID == CHARACTER_ID_TAB;
-						if(charID == CHARACTER_ID_SPACE || charID == CHARACTER_ID_TAB)
-						{
-							if(!previousCharIsWhitespace)
-							{
-								widthOfWhitespaceAfterWord = 0;
-							}
-							widthOfWhitespaceAfterWord += offsetX;
-						}
-						else if(previousCharIsWhitespace)
-						{
-							startXOfPreviousWord = currentX;
-							wordLength = 0;
-							wordCountForLine++;
-							isWordComplete = true;
-						}
-
-						//we may need to move to a new line at the same time
-						//that our previous word in the buffer can be batched
-						//so we need to add the buffer here rather than after
-						//the next section
-						if(isWordComplete && !isAligned)
-						{
-							this.addBufferToBatch(0);
-						}
-
-						if(wordCountForLine > 0 && (currentX + offsetX) > maxLineWidth)
-						{
-							if(isAligned)
-							{
-								this.trimBuffer(wordLength);
-								this.alignBuffer(maxLineWidth, startXOfPreviousWord - widthOfWhitespaceAfterWord, wordLength);
-								this.addBufferToBatch(wordLength);
-							}
-							this.moveBufferedCharacters(-startXOfPreviousWord, lineHeight, 0);
-							maxX = Math.max(maxX, startXOfPreviousWord - widthOfWhitespaceAfterWord);
-							previousCharID = NaN;
-							currentX -= startXOfPreviousWord;
-							currentY += lineHeight;
-							startXOfPreviousWord = 0;
-							widthOfWhitespaceAfterWord = 0;
-							wordLength = 0;
-							isWordComplete = false;
-							wordCountForLine = 0;
-						}
-					}
+				}
+				if(this._wordWrap || isAligned || !this._useSeparateBatch)
+				{
+					var charLocation:CharLocation = CHAR_LOCATION_POOL.length > 0 ? CHAR_LOCATION_POOL.shift() : new CharLocation();
+					charLocation.char = charData;
+					charLocation.x = currentX + charData.xOffset * scale;
+					charLocation.y = currentY + charData.yOffset * scale;
+					charLocation.scale = scale;
 					if(this._wordWrap || isAligned)
 					{
-						if(!CHAR_LOCATION_POOL)
-						{
-							CHAR_LOCATION_POOL = new <CharLocation>[];
-						}
-						var charLocation:CharLocation = CHAR_LOCATION_POOL.length > 0 ? CHAR_LOCATION_POOL.shift() : new CharLocation();
-						charLocation.char = charData;
-						charLocation.x = currentX + charData.xOffset * scale;
-						charLocation.y = currentY + charData.yOffset * scale;
-						charLocation.scale = scale;
 						CHARACTER_BUFFER.push(charLocation);
 						wordLength++;
 					}
 					else
 					{
-						this.addCharacterToBatch(charData, currentX + charData.xOffset * scale, currentY + charData.yOffset * scale, scale);
+						this._locations.push(charLocation);
 					}
-
-					currentX += offsetX + customLetterSpacing;
-					previousCharID = charID;
 				}
-				currentX = Math.max(0, currentX - customLetterSpacing);
-				if(this._wordWrap || isAligned)
+				else
 				{
-					this.alignBuffer(maxLineWidth, currentX, 0);
-					this.addBufferToBatch(0);
+					this.addCharacterToBatch(charData, currentX + charData.xOffset * scale, currentY + charData.yOffset * scale, scale);
 				}
-				maxX = Math.max(maxX, currentX);
-				this.setSizeInternal(maxX, currentY + font.lineHeight * scale, false);
+
+				currentX += offsetX + customLetterSpacing;
+				previousCharID = charID;
 			}
+			currentX = Math.max(0, currentX - customLetterSpacing);
+			if(this._wordWrap || isAligned)
+			{
+				this.alignBuffer(maxLineWidth, currentX, 0);
+				this.addBufferToBatch(0);
+			}
+			maxX = Math.max(maxX, currentX);
+			result.x = maxX;
+			result.y = currentY + font.lineHeight * scale;
+			return result;
 		}
 
 		/**
@@ -665,8 +766,16 @@ package feathers.controls.text
 			for(var i:int = 0; i < charCount; i++)
 			{
 				var charLocation:CharLocation = CHARACTER_BUFFER.shift();
-				this.addCharacterToBatch(charLocation.char, charLocation.x, charLocation.y, charLocation.scale);
-				CHAR_LOCATION_POOL.push(charLocation);
+				if(this._useSeparateBatch)
+				{
+					this.addCharacterToBatch(charLocation.char, charLocation.x, charLocation.y, charLocation.scale);
+					charLocation.char = null;
+					CHAR_LOCATION_POOL.push(charLocation);
+				}
+				else
+				{
+					this._locations.push(charLocation);
+				}
 			}
 		}
 
@@ -687,7 +796,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function addCharacterToBatch(charData:BitmapChar, x:Number, y:Number, scale:Number):void
+		protected function addCharacterToBatch(charData:BitmapChar, x:Number, y:Number, scale:Number, support:RenderSupport = null, parentAlpha:Number = 1):void
 		{
 			if(!HELPER_IMAGE)
 			{
@@ -704,7 +813,17 @@ package feathers.controls.text
 			HELPER_IMAGE.color = this.currentTextFormat.color;
 			HELPER_IMAGE.smoothing = this._smoothing;
 
-			this._characterBatch.addImage(HELPER_IMAGE);
+			if(support)
+			{
+				support.pushMatrix();
+				support.transformMatrix(HELPER_IMAGE);
+				support.batchQuad(HELPER_IMAGE, parentAlpha, HELPER_IMAGE.texture, this._smoothing);
+				support.popMatrix();
+			}
+			else
+			{
+				this._characterBatch.addImage(HELPER_IMAGE);
+			}
 		}
 
 		/**
@@ -817,6 +936,24 @@ package feathers.controls.text
 				return this._truncationText;
 			}
 			return this._text;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function moveLocationsToPool():void
+		{
+			if(!this._locations)
+			{
+				return;
+			}
+			const locationCount:int = this._locations.length;
+			for(var i:int = 0; i < locationCount; i++)
+			{
+				var location:CharLocation = this._locations.shift();
+				location.char = null;
+				CHAR_LOCATION_POOL.push(location);
+			}
 		}
 	}
 }
