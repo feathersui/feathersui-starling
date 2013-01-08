@@ -8,11 +8,12 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.renderers
 {
 	import feathers.controls.GroupedList;
+	import feathers.core.IFeathersControl;
 
 	/**
 	 * Interface to implement a renderer for a grouped list header or footer.
 	 */
-	public interface IGroupedListHeaderOrFooterRenderer
+	public interface IGroupedListHeaderOrFooterRenderer extends IFeathersControl
 	{
 		/**
 		 * Data for a header or footer from the grouped list's data provider.
