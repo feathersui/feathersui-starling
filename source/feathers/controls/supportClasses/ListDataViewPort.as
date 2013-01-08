@@ -718,9 +718,8 @@ package feathers.controls.supportClasses
 			{
 				this._rendererMap[item] = renderer;
 				this._activeRenderers.push(renderer);
-				const displayRenderer:DisplayObject = DisplayObject(renderer);
-				displayRenderer.addEventListener(Event.CHANGE, renderer_changeHandler);
-				displayRenderer.addEventListener(FeathersEventType.RESIZE, renderer_resizeHandler);
+				renderer.addEventListener(Event.CHANGE, renderer_changeHandler);
+				renderer.addEventListener(FeathersEventType.RESIZE, renderer_resizeHandler);
 				this._owner.dispatchEventWith(FeathersEventType.RENDERER_ADD, false, renderer);
 			}
 
@@ -729,10 +728,11 @@ package feathers.controls.supportClasses
 
 		private function destroyRenderer(renderer:IListItemRenderer):void
 		{
-			const displayRenderer:DisplayObject = DisplayObject(renderer);
-			displayRenderer.removeEventListener(Event.CHANGE, renderer_changeHandler);
-			displayRenderer.removeEventListener(FeathersEventType.RESIZE, renderer_resizeHandler);
-			this.removeChild(displayRenderer, true);
+			renderer.removeEventListener(Event.CHANGE, renderer_changeHandler);
+			renderer.removeEventListener(FeathersEventType.RESIZE, renderer_resizeHandler);
+			renderer.owner = null;
+			renderer.data = null;
+			this.removeChild(DisplayObject(renderer), true);
 		}
 
 		private function childProperties_onChange(proxy:PropertyProxy, name:String):void
