@@ -11,6 +11,7 @@ package feathers.controls
 	import feathers.events.FeathersEventType;
 
 	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.display.Loader;
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
@@ -23,6 +24,7 @@ package feathers.controls
 	import flash.system.LoaderContext;
 
 	import starling.core.RenderSupport;
+	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
@@ -103,6 +105,16 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _texture:Texture;
+		
+		/**
+		 * @private
+		 */
+		protected var _textureBitmapData:BitmapData;
+
+		/**
+		 * @private
+		 */
+		protected var _isTextureOwner:Boolean = false;
 
 		/**
 		 * @private
@@ -128,6 +140,12 @@ package feathers.controls
 				return;
 			}
 			this._source = value;
+			this.cleanupTexture();
+			if(this.image)
+			{
+				this.image.visible = false;
+			}
+			this._lastURL = null;
 			this._isLoaded = false;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -297,6 +315,27 @@ package feathers.controls
 				support.translateMatrix(-(Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx), -(Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty));
 			}
 		}
+		
+		/**
+		 * @private
+		 */
+		override public function dispose():void
+		{
+			if(this.loader)
+			{
+				try
+				{
+					this.loader.close();
+				}
+				catch(error:Error)
+				{
+					//no need to do anything in response
+				}
+				this.loader = null;
+			}
+			this.cleanupTexture();
+			super.dispose();
+		}
 
 		/**
 		 * @private
@@ -385,7 +424,6 @@ package feathers.controls
 				if(!sourceURL)
 				{
 					this._lastURL = sourceURL;
-					this._texture = null;
 					this.commitTexture();
 					return;
 				}
@@ -400,12 +438,6 @@ package feathers.controls
 				}
 				else
 				{
-					if(this.image)
-					{
-						//hide the image for now. we'll dispose the old texture
-						//and make it visible again once the content is loaded.
-						this.image.visible = false;
-					}
 					this._lastURL = sourceURL;
 
 					if(this.loader)
@@ -496,6 +528,8 @@ package feathers.controls
 				return;
 			}
 
+			//save the texture's frame so that we don't need to create a new
+			//rectangle every time that we want to access it.
 			this._textureFrame = this._texture.frame;
 			if(!this.image)
 			{
@@ -504,14 +538,31 @@ package feathers.controls
 			}
 			else
 			{
-				if(this.image.texture)
-				{
-					this.image.texture.dispose();
-				}
 				this.image.texture = this._texture;
 				this.image.readjustSize();
 			}
 			this.image.visible = true;
+		}
+		
+		/**
+		 * @private
+		 */
+		protected function cleanupTexture():void
+		{
+			if(this._isTextureOwner)
+			{
+				if(this._textureBitmapData)
+				{
+					this._textureBitmapData.dispose();
+				}
+				if(this._texture)
+				{
+					this._texture.dispose();
+				}
+			}
+			this._textureBitmapData = null;
+			this._texture = null;
+			this._isTextureOwner = false;
 		}
 
 		/**
@@ -524,8 +575,21 @@ package feathers.controls
 			this.loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, loader_errorHandler);
 			this.loader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_errorHandler);
 			this.loader = null;
-
-			this._texture = Texture.fromBitmap(bitmap);
+			
+			this.cleanupTexture();
+			const bitmapData:BitmapData = bitmap.bitmapData;
+			this._texture = Texture.fromBitmapData(bitmapData, false);
+			if(Starling.handleLostContext)
+			{
+				this._textureBitmapData = bitmapData;
+			}
+			else
+			{
+				//since Starling isn't handling the lost context, we don't need
+				//to save the texture bitmap data.
+				bitmapData.dispose();
+			}
+			this._isTextureOwner = true;
 			this.commitTexture();
 			this._isLoaded = true;
 			this.invalidate(INVALIDATION_FLAG_SIZE);
@@ -541,8 +605,8 @@ package feathers.controls
 			this.loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, loader_errorHandler);
 			this.loader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_errorHandler);
 			this.loader = null;
-
-			this._texture = null;
+			
+			this.cleanupTexture();
 			this.commitTexture();
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 			this.dispatchEventWith(FeathersEventType.ERROR, false, event);
