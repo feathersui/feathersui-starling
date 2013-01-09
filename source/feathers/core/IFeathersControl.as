@@ -7,13 +7,6 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.core
 {
-	import flash.geom.Point;
-
-	import starling.display.DisplayObject;
-
-	import starling.display.DisplayObjectContainer;
-	import starling.events.Event;
-
 	/**
 	 * Dispatched after the control has been initialized, but before it has
 	 * drawn for the first time. Typically, the component's children will have
@@ -34,48 +27,8 @@ package feathers.core
 	 * Basic interface for Feathers UI controls. A Feathers control must also
 	 * be a Starling display object.
 	 */
-	public interface IFeathersControl
+	public interface IFeathersControl extends IFeathersDisplayObject
 	{
-		/**
-		 * @private
-		 */
-		function get x():Number;
-
-		/**
-		 * @private
-		 */
-		function set x(value:Number):void;
-
-		/**
-		 * @private
-		 */
-		function get y():Number;
-
-		/**
-		 * @private
-		 */
-		function set y(value:Number):void;
-
-		/**
-		 * @private
-		 */
-		function get width():Number;
-
-		/**
-		 * @private
-		 */
-		function set width(value:Number):void;
-
-		/**
-		 * @private
-		 */
-		function get height():Number;
-
-		/**
-		 * @private
-		 */
-		function set height(value:Number):void;
-
 		/**
 		 * @copy feathers.core.FeathersControl#minWidth
 		 */
@@ -133,114 +86,9 @@ package feathers.core
 		function get isInitialized():Boolean;
 
 		/**
-		 * @private
-		 */
-		function get name():String;
-
-		/**
-		 * @private
-		 */
-		function set name(value:String):void;
-
-		/**
 		 * @copy feathers.core.FeathersControl#nameList
 		 */
 		function get nameList():TokenList;
-
-		/**
-		 * @private
-		 */
-		function get touchable():Boolean;
-
-		/**
-		 * @private
-		 */
-		function set touchable(value:Boolean):void;
-
-		/**
-		 * @private
-		 */
-		function get visible():Boolean;
-
-		/**
-		 * @private
-		 */
-		function set visible(value:Boolean):void;
-
-		/**
-		 * @private
-		 */
-		function get alpha():Number;
-
-		/**
-		 * @private
-		 */
-		function set alpha(value:Number):void;
-
-		/**
-		 * @private
-		 */
-		function get rotation():Number;
-
-		/**
-		 * @private
-		 */
-		function set rotation(value:Number):void;
-
-		/**
-		 * @private
-		 */
-		function get parent():DisplayObjectContainer;
-
-		/**
-		 * @private
-		 */
-		function removeFromParent(dispose:Boolean = false):void;
-
-		/**
-		 * @private
-		 */
-		function hitTest(localPoint:Point, forTouch:Boolean=false):DisplayObject;
-
-		/**
-		 * @private
-		 */
-		function localToGlobal(localPoint:Point, resultPoint:Point=null):Point;
-
-		/**
-		 * @private
-		 */
-		function globalToLocal(globalPoint:Point, resultPoint:Point=null):Point;
-
-		/**
-		 * @private
-		 */
-		function addEventListener(type:String, listener:Function):void;
-
-		/**
-		 * @private
-		 */
-		function removeEventListener(type:String, listener:Function):void;
-
-		/**
-		 * @private
-		 */
-		function removeEventListeners(type:String = null):void;
-
-		/**
-		 * @private
-		 */
-		function dispatchEvent(event:Event):void;
-
-		/**
-		 * @private
-		 */
-		function dispatchEventWith(type:String, bubbles:Boolean = false, data:Object = null):void;
-
-		/**
-		 * @private
-		 */
-		function hasEventListener(type:String):Boolean;
 
 		/**
 		 * @copy feathers.core.FeathersControl#setSize()
@@ -251,10 +99,5 @@ package feathers.core
 		 * @copy feathers.core.FeathersControl#validate()
 		 */
 		function validate():void;
-
-		/**
-		 * @private
-		 */
-		function dispose():void;
 	}
 }
