@@ -15,7 +15,6 @@ package feathers.core
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Stage;
-	import starling.events.Event;
 	import starling.filters.FragmentFilter;
 
 	/**
@@ -24,7 +23,7 @@ package feathers.core
 	 *
 	 * @see starling.display.DisplayObject
 	 */
-	public interface IFeathersDisplayObject
+	public interface IFeathersDisplayObject extends IFeathersEventDispatcher
 	{
 		/**
 		 * @private
@@ -275,36 +274,6 @@ package feathers.core
 		 * @private
 		 */
 		function render(support:RenderSupport, parentAlpha:Number):void;
-
-		/**
-		 * @private
-		 */
-		function addEventListener(type:String, listener:Function):void;
-
-		/**
-		 * @private
-		 */
-		function removeEventListener(type:String, listener:Function):void;
-
-		/**
-		 * @private
-		 */
-		function removeEventListeners(type:String = null):void;
-
-		/**
-		 * @private
-		 */
-		function dispatchEvent(event:Event):void;
-
-		/**
-		 * @private
-		 */
-		function dispatchEventWith(type:String, bubbles:Boolean = false, data:Object = null):void;
-
-		/**
-		 * @private
-		 */
-		function hasEventListener(type:String):Boolean;
 
 		/**
 		 * @private
