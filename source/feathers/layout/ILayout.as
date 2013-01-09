@@ -7,6 +7,8 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.layout
 {
+	import feathers.core.IFeathersEventDispatcher;
+
 	import flash.geom.Point;
 
 	import starling.display.DisplayObject;
@@ -22,7 +24,7 @@ package feathers.layout
 	/**
 	 * Interface providing layout capabilities for containers.
 	 */
-	public interface ILayout
+	public interface ILayout extends IFeathersEventDispatcher
 	{
 		/**
 		 * Positions (and possibly resizes) the supplied items within the
