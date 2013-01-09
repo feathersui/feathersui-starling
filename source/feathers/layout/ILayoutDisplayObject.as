@@ -10,20 +10,27 @@ package feathers.layout
 	import feathers.core.IFeathersDisplayObject;
 
 	/**
+	 * Dispatched when a property of the display object's layout data changes.
+	 *
+	 * @eventType feathers.events.FeathersEventType.LAYOUT_DATA_CHANGE
+	 */
+	[Event(name="layoutDataChange",type="starling.events.Event")]
+
+	/**
 	 * A display object that may be associated with extra data for use with
 	 * advanced layouts.
 	 */
-	public interface ILayoutObject extends IFeathersDisplayObject
+	public interface ILayoutDisplayObject extends IFeathersDisplayObject
 	{
 		/**
 		 * Extra parameters associated with this display object that will be
 		 * used by the layout algorithm.
 		 */
-		function get layoutData():Object;
+		function get layoutData():ILayoutData;
 
 		/**
 		 * @private
 		 */
-		function set layoutData(value:Object):void;
+		function set layoutData(value:ILayoutData):void;
 	}
 }

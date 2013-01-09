@@ -10,7 +10,8 @@ package feathers.core
 	import feathers.controls.text.BitmapFontTextRenderer;
 	import feathers.controls.text.StageTextTextEditor;
 	import feathers.events.FeathersEventType;
-	import feathers.layout.ILayoutObject;
+	import feathers.layout.ILayoutData;
+	import feathers.layout.ILayoutDisplayObject;
 
 	import flash.geom.Matrix;
 	import flash.geom.Point;
@@ -42,7 +43,7 @@ package feathers.core
 	 * basic template functions like <code>initialize()</code> and
 	 * <code>draw()</code>.
 	 */
-	public class FeathersControl extends Sprite implements IFeathersControl, ILayoutObject
+	public class FeathersControl extends Sprite implements IFeathersControl, ILayoutDisplayObject
 	{
 		/**
 		 * @private
@@ -621,12 +622,12 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		protected var _layoutData:Object;
+		protected var _layoutData:ILayoutData;
 
 		/**
 		 * @inheritDoc
 		 */
-		public function get layoutData():Object
+		public function get layoutData():ILayoutData
 		{
 			return this._layoutData;
 		}
@@ -634,13 +635,22 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		public function set layoutData(value:Object):void
+		public function set layoutData(value:ILayoutData):void
 		{
 			if(this._layoutData == value)
 			{
 				return;
 			}
+			if(this._layoutData)
+			{
+				this._layoutData.removeEventListener(Event.CHANGE, layoutData_changeHandler);
+			}
 			this._layoutData = value;
+			if(this._layoutData)
+			{
+				this._layoutData.addEventListener(Event.CHANGE, layoutData_changeHandler);
+			}
+			this.dispatchEventWith(FeathersEventType.LAYOUT_DATA_CHANGE);
 		}
 
 		/**
@@ -1014,6 +1024,14 @@ package feathers.core
 				this._invalidateCount = 0;
 				VALIDATION_QUEUE.addControl(this, false);
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function layoutData_changeHandler(event:Event):void
+		{
+			this.dispatchEventWith(FeathersEventType.LAYOUT_DATA_CHANGE);
 		}
 	}
 }

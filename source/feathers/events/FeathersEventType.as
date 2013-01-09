@@ -108,9 +108,15 @@ package feathers.events
 
 		/**
 		 * The <code>FeathersEventType.ERROR</code> event type is used by
-		 * by Feathers controls when an error occurs that can be caught and
+		 * Feathers controls when an error occurs that can be caught and
 		 * safely ignored.
 		 */
 		public static const ERROR:String = "error";
+
+		/**
+		 * The <code>FeathersEventType.LAYOUT_DATA_CHANGE</code> event type is
+		 * used by Feathers controls when their layout data has changed.
+		 */
+		public static const LAYOUT_DATA_CHANGE:String = "layoutDataChange";
 	}
 }
