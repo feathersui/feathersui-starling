@@ -7,6 +7,10 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.core
 {
+	import flash.geom.Point;
+
+	import starling.display.DisplayObject;
+
 	import starling.display.DisplayObjectContainer;
 	import starling.events.Event;
 
@@ -187,6 +191,26 @@ package feathers.core
 		 * @private
 		 */
 		function get parent():DisplayObjectContainer;
+
+		/**
+		 * @private
+		 */
+		function removeFromParent(dispose:Boolean = false):void;
+
+		/**
+		 * @private
+		 */
+		function hitTest(localPoint:Point, forTouch:Boolean=false):DisplayObject;
+
+		/**
+		 * @private
+		 */
+		function localToGlobal(localPoint:Point, resultPoint:Point=null):Point;
+
+		/**
+		 * @private
+		 */
+		function globalToLocal(globalPoint:Point, resultPoint:Point=null):Point;
 
 		/**
 		 * @private
