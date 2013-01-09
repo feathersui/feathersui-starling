@@ -10,6 +10,7 @@ package feathers.core
 	import feathers.controls.text.BitmapFontTextRenderer;
 	import feathers.controls.text.StageTextTextEditor;
 	import feathers.events.FeathersEventType;
+	import feathers.layout.ILayoutObject;
 
 	import flash.geom.Matrix;
 	import flash.geom.Point;
@@ -41,7 +42,7 @@ package feathers.core
 	 * basic template functions like <code>initialize()</code> and
 	 * <code>draw()</code>.
 	 */
-	public class FeathersControl extends Sprite implements IFeathersControl
+	public class FeathersControl extends Sprite implements IFeathersControl, ILayoutObject
 	{
 		/**
 		 * @private
@@ -615,6 +616,31 @@ package feathers.core
 				this._scaledClipRectXY = null;
 				this._scissorRect = null;
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _layoutData:Object;
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get layoutData():Object
+		{
+			return this._layoutData;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set layoutData(value:Object):void
+		{
+			if(this._layoutData == value)
+			{
+				return;
+			}
+			this._layoutData = value;
 		}
 
 		/**
