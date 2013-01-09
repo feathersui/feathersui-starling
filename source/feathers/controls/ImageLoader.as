@@ -380,7 +380,7 @@ package feathers.controls
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
 			{
-				if(this._texture)
+				if(this._textureFrame)
 				{
 					newWidth = this._textureFrame.width * this._textureScale;
 				}
@@ -393,7 +393,7 @@ package feathers.controls
 			var newHeight:Number = this.explicitHeight;
 			if(needsHeight)
 			{
-				if(this._texture)
+				if(this._textureFrame)
 				{
 					newHeight = this._textureFrame.height * this._textureScale;
 				}
@@ -560,6 +560,7 @@ package feathers.controls
 					this._texture.dispose();
 				}
 			}
+			this._textureFrame = null;
 			this._textureBitmapData = null;
 			this._texture = null;
 			this._isTextureOwner = false;
