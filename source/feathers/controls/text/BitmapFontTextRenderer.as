@@ -336,7 +336,7 @@ package feathers.controls.text
 		 */
 		public function get useSeparateBatch():Boolean
 		{
-			return _useSeparateBatch;
+			return this._useSeparateBatch;
 		}
 
 		/**
@@ -344,7 +344,12 @@ package feathers.controls.text
 		 */
 		public function set useSeparateBatch(value:Boolean):void
 		{
+			if(this._useSeparateBatch == value)
+			{
+				return;
+			}
 			this._useSeparateBatch = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
@@ -850,6 +855,9 @@ package feathers.controls.text
 				image = new Image(texture);
 				this.addChild(image);
 			}
+			image.scaleX = image.scaleY = location.scale;
+			image.smoothing = this._smoothing;
+			image.color = this.currentTextFormat.color;
 			this._images.push(image);
 			this._locations.push(location);
 		}
