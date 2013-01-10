@@ -37,6 +37,7 @@ package feathers.controls.text
 	import starling.display.QuadBatch;
 	import starling.text.BitmapChar;
 	import starling.text.BitmapFont;
+	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;
 
 	/**
@@ -119,6 +120,16 @@ package feathers.controls.text
 		 * @private
 		 */
 		protected var _locations:Vector.<CharLocation>;
+
+		/**
+		 * @private
+		 */
+		protected var _images:Vector.<Image>;
+
+		/**
+		 * @private
+		 */
+		protected var _imagesCache:Vector.<Image>;
 
 		/**
 		 * @private
@@ -379,7 +390,9 @@ package feathers.controls.text
 				for(var i:int = 0; i < locationCount; i++)
 				{
 					var location:CharLocation = this._locations[i];
-					this.addCharacterToBatch(location.char, offsetX + location.x, offsetY + location.y, location.scale, support, parentAlpha);
+					var image:Image = this._images[i];
+					image.x = offsetX + location.x;
+					image.y = offsetY + location.y;
 				}
 			}
 			else
@@ -547,6 +560,17 @@ package feathers.controls.text
 				}
 				this._characterBatch.reset();
 				this._locations = null;
+				if(this._images)
+				{
+					const imageCount:int = this._images.length;
+					for(var i:int = 0; i < imageCount; i++)
+					{
+						var image:Image = this._images[i];
+						image.removeFromParent(true);
+					}
+				}
+				this._images = null;
+				this._imagesCache = null;
 			}
 			else
 			{
@@ -558,6 +582,14 @@ package feathers.controls.text
 				if(!this._locations)
 				{
 					this._locations = new <CharLocation>[];
+				}
+				if(!this._images)
+				{
+					this._images = new <Image>[];
+				}
+				if(!this._imagesCache)
+				{
+					this._imagesCache = new <Image>[];
 				}
 			}
 		}
@@ -582,6 +614,14 @@ package feathers.controls.text
 			const textToDraw:String = this.getTruncatedText();
 			const isAligned:Boolean = this.currentTextFormat.align != TextFormatAlign.LEFT;
 			CHARACTER_BUFFER.length = 0;
+
+			if(!this._useSeparateBatch)
+			{
+				//cache the old images for reuse
+				const temp:Vector.<Image> = this._imagesCache;
+				this._imagesCache = this._images;
+				this._images = temp;
+			}
 
 			var maxX:Number = 0;
 			var currentX:Number = 0;
@@ -691,7 +731,7 @@ package feathers.controls.text
 					}
 					else
 					{
-						this._locations.push(charLocation);
+						this.addLocation(charLocation);
 					}
 				}
 				else
@@ -709,6 +749,18 @@ package feathers.controls.text
 				this.addBufferToBatch(0);
 			}
 			maxX = Math.max(maxX, currentX);
+
+			if(!this._useSeparateBatch)
+			{
+				//clear the cache of old images that are no longer needed
+				const cacheLength:int = this._imagesCache.length;
+				for(i = 0; i < cacheLength; i++)
+				{
+					var image:Image = this._imagesCache.shift();
+					image.removeFromParent(true);
+				}
+			}
+
 			result.x = maxX;
 			result.y = currentY + font.lineHeight * scale;
 			return result;
@@ -774,9 +826,32 @@ package feathers.controls.text
 				}
 				else
 				{
-					this._locations.push(charLocation);
+					this.addLocation(charLocation);
 				}
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function addLocation(location:CharLocation):void
+		{
+			var image:Image;
+			const charData:BitmapChar = location.char;
+			const texture:Texture = charData.texture;
+			if(this._imagesCache.length > 0)
+			{
+				image = this._imagesCache.shift();
+				image.texture = texture;
+				image.readjustSize();
+			}
+			else
+			{
+				image = new Image(texture);
+				this.addChild(image);
+			}
+			this._images.push(image);
+			this._locations.push(location);
 		}
 
 		/**
