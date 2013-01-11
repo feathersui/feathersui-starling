@@ -2420,8 +2420,8 @@ package feathers.controls
 					return;
 				}
 
-				touch.getLocation(this, HELPER_POINT);
-				var isInBounds:Boolean = this.hitTest(HELPER_POINT, true) != null;
+				touch.getLocation(this.stage, HELPER_POINT);
+				var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
 				if(touch.phase == TouchPhase.MOVED)
 				{
 					if(isInBounds || this.keepDownStateOnRollOut)
@@ -2440,13 +2440,6 @@ package feathers.controls
 					{
 						if(this._isHoverSupported)
 						{
-							touch.getLocation(this, HELPER_POINT);
-							this.localToGlobal(HELPER_POINT, HELPER_POINT);
-
-							//we need to do a new hitTest() because a display
-							//object may have appeared above this button that
-							//will prevent clearing the hover state
-							isInBounds = this.contains(this.stage.hitTest(HELPER_POINT, true));
 							this.currentState = (isInBounds && this._isHoverSupported) ? STATE_HOVER : STATE_UP;
 						}
 						else
