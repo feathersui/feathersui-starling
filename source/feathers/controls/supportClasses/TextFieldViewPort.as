@@ -703,7 +703,8 @@ package feathers.controls.supportClasses
 			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
 			this._textFieldContainer.x = starlingViewPort.x + HELPER_POINT.x * Starling.contentScaleFactor;
 			this._textFieldContainer.y = starlingViewPort.y + HELPER_POINT.y * Starling.contentScaleFactor;
-			this._textFieldContainer.scaleX = this._textFieldContainer.scaleY = Starling.contentScaleFactor;
+			this._textFieldContainer.scaleX = HELPER_MATRIX.a * Starling.contentScaleFactor;
+			this._textFieldContainer.scaleY = HELPER_MATRIX.d * Starling.contentScaleFactor;
 			this._textFieldContainer.visible = true;
 			this._textFieldContainer.alpha = parentAlpha * this.alpha;
 			super.render(support, parentAlpha);
