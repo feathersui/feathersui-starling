@@ -54,6 +54,7 @@ package feathers.controls
 	import starling.animation.Tween;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
+	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.Touch;
@@ -469,6 +470,11 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _viewPort:IViewPort;
+
+		/**
+		 * @private
+		 */
+		protected var _touchBlocker:Quad;
 		
 		/**
 		 * The display object displayed and scrolled within the Scroller.
@@ -1922,10 +1928,22 @@ package feathers.controls
 			if(this._interactionMode == INTERACTION_MODE_TOUCH)
 			{
 				this.addEventListener(TouchEvent.TOUCH, touchHandler);
+				if(!this._touchBlocker)
+				{
+					this._touchBlocker = new Quad(100, 100, 0xff00ff);
+					this._touchBlocker.alpha = 0;
+					this._touchBlocker.visible = false;
+					super.addChildAt(this._touchBlocker, this.numChildren);
+				}
 			}
 			else
 			{
 				this.removeEventListener(TouchEvent.TOUCH, touchHandler);
+				if(this._touchBlocker)
+				{
+					super.removeChild(this._touchBlocker, true);
+					this._touchBlocker = null;
+				}
 			}
 
 			if(this._interactionMode == INTERACTION_MODE_MOUSE && this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FLOAT)
@@ -1964,6 +1982,11 @@ package feathers.controls
 			if(this.verticalScrollBar)
 			{
 				this.verticalScrollBar.validate();
+			}
+			if(this._touchBlocker)
+			{
+				this._touchBlocker.width = this.actualWidth;
+				this._touchBlocker.height = this.actualHeight;
 			}
 
 			const displayHorizontalScrollBar:DisplayObject = this.horizontalScrollBar as DisplayObject;
@@ -2521,6 +2544,10 @@ package feathers.controls
 				//we need to dispatch the signal that says we're starting.
 				if(!this._isDraggingVertically)
 				{
+					if(this._touchBlocker)
+					{
+						this._touchBlocker.visible = true;
+					}
 					this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 				}
 				this._startTouchX = this._currentTouchX;
@@ -2545,6 +2572,10 @@ package feathers.controls
 				}
 				if(!this._isDraggingHorizontally)
 				{
+					if(this._touchBlocker)
+					{
+						this._touchBlocker.visible = true;
+					}
 					this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 				}
 				this._startTouchY = this._currentTouchY;
@@ -2597,6 +2628,10 @@ package feathers.controls
 			}
 			else if(touch.phase == TouchPhase.ENDED)
 			{
+				if(this._touchBlocker)
+				{
+					this._touchBlocker.visible = false;
+				}
 				this.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
 				this.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
 				this._touchPointID = -1;
