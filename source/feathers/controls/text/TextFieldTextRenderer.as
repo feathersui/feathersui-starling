@@ -15,6 +15,7 @@ package feathers.controls.text
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.text.AntiAliasType;
+	import flash.text.StyleSheet;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
@@ -133,6 +134,8 @@ package feathers.controls.text
 
 		/**
 		 * The font and styles used to draw the text.
+		 *
+		 * @see flash.text.TextFormat
 		 */
 		public function get textFormat():TextFormat
 		{
@@ -149,6 +152,34 @@ package feathers.controls.text
 				return;
 			}
 			this._textFormat = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _styleSheet:StyleSheet;
+
+		/**
+		 * The <code>StyleSheet</code> object to pass to the TextField.
+		 *
+		 * @see flash.text.StyleSheet
+		 */
+		public function get styleSheet():StyleSheet
+		{
+			return this._styleSheet;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set styleSheet(value:StyleSheet):void
+		{
+			if(this._styleSheet == value)
+			{
+				return;
+			}
+			this._styleSheet = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -220,6 +251,8 @@ package feathers.controls.text
 
 		/**
 		 * Determines if the TextField should display the text as HTML or not.
+		 *
+		 * @see flash.text.TextField#htmlText
 		 */
 		public function get isHTML():Boolean
 		{
@@ -360,6 +393,7 @@ package feathers.controls.text
 				{
 					this._textField.defaultTextFormat = this._textFormat;
 				}
+				this._textField.styleSheet = this._styleSheet;
 				if(this._isHTML)
 				{
 					this._textField.htmlText = this._text;

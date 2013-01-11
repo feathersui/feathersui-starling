@@ -12,6 +12,7 @@ package feathers.controls
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
 
+	import flash.text.StyleSheet;
 	import flash.text.TextFormat;
 
 	import starling.events.Event;
@@ -120,6 +121,8 @@ package feathers.controls
 
 		/**
 		 * The font and styles used to draw the text.
+		 *
+		 * @see flash.text.TextFormat
 		 */
 		public function get textFormat():TextFormat
 		{
@@ -136,6 +139,34 @@ package feathers.controls
 				return;
 			}
 			this._textFormat = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _styleSheet:StyleSheet;
+
+		/**
+		 * The <code>StyleSheet</code> object to pass to the TextField.
+		 *
+		 * @see flash.text.StyleSheet
+		 */
+		public function get styleSheet():StyleSheet
+		{
+			return this._styleSheet;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set styleSheet(value:StyleSheet):void
+		{
+			if(this._styleSheet == value)
+			{
+				return;
+			}
+			this._styleSheet = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -172,6 +203,8 @@ package feathers.controls
 
 		/**
 		 * Determines if the TextField should display the text as HTML or not.
+		 *
+		 * @see flash.text.TextField#htmlText
 		 */
 		public function get isHTML():Boolean
 		{
@@ -554,6 +587,7 @@ package feathers.controls
 			if(stylesInvalid)
 			{
 				this.viewPort.textFormat = this._textFormat;
+				this.viewPort.styleSheet = this._styleSheet;
 				this.viewPort.embedFonts = this._embedFonts;
 				this.viewPort.paddingTop = this._paddingTop;
 				this.viewPort.paddingRight = this._paddingRight;
