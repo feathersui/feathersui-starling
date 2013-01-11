@@ -14,6 +14,7 @@ package feathers.controls.supportClasses
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.text.AntiAliasType;
+	import flash.text.GridFitType;
 	import flash.text.StyleSheet;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
@@ -69,6 +70,32 @@ package feathers.controls.supportClasses
 				return;
 			}
 			this._text = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _isHTML:Boolean = false;
+
+		/**
+		 * Determines if the TextField should display the text as HTML or not.
+		 */
+		public function get isHTML():Boolean
+		{
+			return this._isHTML;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set isHTML(value:Boolean):void
+		{
+			if(this._isHTML == value)
+			{
+				return;
+			}
+			this._isHTML = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
@@ -135,6 +162,8 @@ package feathers.controls.supportClasses
 
 		/**
 		 * Determines if the TextField should use an embedded font or not.
+		 *
+		 * @see flash.text.TextField#embedFonts
 		 */
 		public function get embedFonts():Boolean
 		{
@@ -157,26 +186,280 @@ package feathers.controls.supportClasses
 		/**
 		 * @private
 		 */
-		private var _isHTML:Boolean = false;
+		private var _antiAliasType:String = AntiAliasType.ADVANCED;
 
 		/**
-		 * Determines if the TextField should display the text as HTML or not.
+		 * Same as the TextField property with the same name.
+		 *
+		 * @see flash.text.TextField#antiAliasType
 		 */
-		public function get isHTML():Boolean
+		public function get antiAliasType():String
 		{
-			return this._isHTML;
+			return this._antiAliasType;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set isHTML(value:Boolean):void
+		public function set antiAliasType(value:String):void
 		{
-			if(this._isHTML == value)
+			if(this._antiAliasType == value)
 			{
 				return;
 			}
-			this._isHTML = value;
+			this._antiAliasType = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _background:Boolean = false;
+
+		/**
+		 * Same as the TextField property with the same name.
+		 *
+		 * @see flash.text.TextField#background
+		 */
+		public function get background():Boolean
+		{
+			return this._background;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set background(value:Boolean):void
+		{
+			if(this._background == value)
+			{
+				return;
+			}
+			this._background = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _backgroundColor:uint = 0xffffff;
+
+		/**
+		 * Same as the TextField property with the same name.
+		 *
+		 * @see flash.text.TextField#backgroundColor
+		 */
+		public function get backgroundColor():uint
+		{
+			return this._backgroundColor;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set backgroundColor(value:uint):void
+		{
+			if(this._backgroundColor == value)
+			{
+				return;
+			}
+			this._backgroundColor = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _border:Boolean = false;
+
+		/**
+		 * Same as the TextField property with the same name.
+		 *
+		 * @see flash.text.TextField#border
+		 */
+		public function get border():Boolean
+		{
+			return this._border;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set border(value:Boolean):void
+		{
+			if(this._border == value)
+			{
+				return;
+			}
+			this._border = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _borderColor:uint = 0x000000;
+
+		/**
+		 * Same as the TextField property with the same name.
+		 *
+		 * @see flash.text.TextField#borderColor
+		 */
+		public function get borderColor():uint
+		{
+			return this._borderColor;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set borderColor(value:uint):void
+		{
+			if(this._borderColor == value)
+			{
+				return;
+			}
+			this._borderColor = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _condenseWhite:Boolean = false;
+
+		/**
+		 * Same as the TextField property with the same name.
+		 *
+		 * @see flash.text.TextField#condenseWhite
+		 */
+		public function get condenseWhite():Boolean
+		{
+			return this._condenseWhite;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set condenseWhite(value:Boolean):void
+		{
+			if(this._condenseWhite == value)
+			{
+				return;
+			}
+			this._condenseWhite = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _displayAsPassword:Boolean = false;
+
+		/**
+		 * Same as the TextField property with the same name.
+		 *
+		 * @see flash.text.TextField#displayAsPassword
+		 */
+		public function get displayAsPassword():Boolean
+		{
+			return this._displayAsPassword;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set displayAsPassword(value:Boolean):void
+		{
+			if(this._displayAsPassword == value)
+			{
+				return;
+			}
+			this._displayAsPassword = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _gridFitType:String = GridFitType.PIXEL;
+
+		/**
+		 * Same as the TextField property with the same name.
+		 *
+		 * @see flash.text.TextField#gridFitType
+		 */
+		public function get gridFitType():String
+		{
+			return this._gridFitType;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set gridFitType(value:String):void
+		{
+			if(this._gridFitType == value)
+			{
+				return;
+			}
+			this._gridFitType = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _sharpness:Number = 0;
+
+		/**
+		 * Same as the TextField property with the same name.
+		 *
+		 * @see flash.text.TextField#sharpness
+		 */
+		public function get sharpness():Number
+		{
+			return this._sharpness;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set sharpness(value:Number):void
+		{
+			if(this._sharpness == value)
+			{
+				return;
+			}
+			this._sharpness = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _thickness:Number = 0;
+
+		/**
+		 * Same as the TextField property with the same name.
+		 *
+		 * @see flash.text.TextField#thickness
+		 */
+		public function get thickness():Number
+		{
+			return this._thickness;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set thickness(value:Number):void
+		{
+			if(this._thickness == value)
+			{
+				return;
+			}
+			this._thickness = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
@@ -437,7 +720,6 @@ package feathers.controls.supportClasses
 				this._textField.mouseWheelEnabled = false;
 			this._textField.wordWrap = true;
 			this._textField.multiline = true;
-			this._textField.antiAliasType = AntiAliasType.ADVANCED;
 			this._textFieldContainer.addChild(this._textField);
 		}
 
@@ -450,7 +732,17 @@ package feathers.controls.supportClasses
 
 			if(stylesInvalid)
 			{
+				this._textField.antiAliasType = this._antiAliasType;
+				this._textField.background = this._background;
+				this._textField.backgroundColor = this._backgroundColor;
+				this._textField.border = this._border;
+				this._textField.borderColor = this._borderColor;
+				this._textField.condenseWhite = this._condenseWhite;
+				this._textField.displayAsPassword = this._displayAsPassword;
 				this._textField.embedFonts = this._embedFonts;
+				this._textField.gridFitType = this._gridFitType;
+				this._textField.sharpness = this._sharpness;
+				this._textField.thickness = this._thickness;
 				this._textField.x = this._paddingLeft;
 				this._textField.y = this._paddingTop;
 			}
