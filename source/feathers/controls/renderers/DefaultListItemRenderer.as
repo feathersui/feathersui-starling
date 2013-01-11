@@ -84,26 +84,13 @@ package feathers.controls.renderers
 			{
 				return;
 			}
-			if(this._owner)
-			{
-				List(this._owner).removeEventListener(Event.SCROLL, owner_scrollHandler);
-			}
 			this._owner = value;
 			if(this._owner)
 			{
 				const list:List = List(this._owner);
 				this.isToggle = list.isSelectable;
-				list.addEventListener(Event.SCROLL, owner_scrollHandler);
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
-		}
-		
-		/**
-		 * @private
-		 */
-		protected function owner_scrollHandler(event:Event):void
-		{
-			this.handleOwnerScroll();
 		}
 	}
 }
