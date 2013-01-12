@@ -28,6 +28,7 @@ package feathers.core
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
+	import starling.display.DisplayObjectContainer;
 	import starling.display.Quad;
 	import starling.display.Stage;
 	import starling.events.EnterFrameEvent;
@@ -66,6 +67,62 @@ package feathers.core
 		/**
 		 * @private
 		 */
+		protected static var ignoreRemoval:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected static var _root:DisplayObjectContainer;
+
+		/**
+		 * The container where pop-ups are added. If not set manually, defaults
+		 * to the Starling stage.
+		 */
+		public static function get root():DisplayObjectContainer
+		{
+			return _root;
+		}
+
+		/**
+		 * @private
+		 */
+		public static function set root(value:DisplayObjectContainer):void
+		{
+			if(_root == value)
+			{
+				return;
+			}
+			const popUpCount:int = popUps.length;
+			const oldIgnoreRemoval:Boolean = ignoreRemoval; //just in case
+			ignoreRemoval = true;
+			for(var i:int = 0; i < popUpCount; i++)
+			{
+				var popUp:DisplayObject = popUps[i];
+				var overlay:DisplayObject = DisplayObject(POPUP_TO_OVERLAY[i]);
+				popUp.removeFromParent(false);
+				if(overlay)
+				{
+					overlay.removeFromParent(false);
+				}
+			}
+			ignoreRemoval = oldIgnoreRemoval;
+			_root = value;
+			const calculatedRoot:DisplayObjectContainer = _root ? _root : Starling.current.stage;
+			for(i = 0; i < popUpCount; i++)
+			{
+				popUp = popUps[i];
+				overlay = DisplayObject(POPUP_TO_OVERLAY[i]);
+				if(overlay)
+				{
+					calculatedRoot.addChild(overlay);
+				}
+				calculatedRoot.addChild(popUp);
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected static var popUps:Vector.<DisplayObject> = new <DisplayObject>[];
 		
 		/**
@@ -73,7 +130,7 @@ package feathers.core
 		 */
 		public static function addPopUp(popUp:DisplayObject, isModal:Boolean = true, isCentered:Boolean = true, customOverlayFactory:Function = null):void
 		{
-			const stage:Stage = Starling.current.stage;
+			const calculatedRoot:DisplayObjectContainer = _root ? _root : Starling.current.stage;
 			if(isModal)
 			{
 				if(customOverlayFactory == null)
@@ -85,19 +142,19 @@ package feathers.core
 					customOverlayFactory = defaultOverlayFactory;
 				}
 				const overlay:DisplayObject = customOverlayFactory();
-				overlay.width = stage.stageWidth;
-				overlay.height = stage.stageHeight;
-				stage.addChild(overlay);
+				overlay.width = calculatedRoot.stage.stageWidth;
+				overlay.height = calculatedRoot.stage.stageHeight;
+				calculatedRoot.addChild(overlay);
 				POPUP_TO_OVERLAY[popUp] = overlay;
 			}
 
 			popUps.push(popUp);
-			stage.addChild(popUp);
+			calculatedRoot.addChild(popUp);
 			popUp.addEventListener(Event.REMOVED_FROM_STAGE, popUp_removedFromStageHandler);
 
 			if(popUps.length == 1)
 			{
-				stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
+				calculatedRoot.stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
 			}
 
 			if(isCentered)
@@ -126,7 +183,6 @@ package feathers.core
 		{
 			return popUps.indexOf(popUp) >= 0;
 		}
-
 		
 		/**
 		 * Centers a pop-up on the stage.
@@ -143,6 +199,10 @@ package feathers.core
 		 */
 		protected static function popUp_removedFromStageHandler(event:Event):void
 		{
+			if(ignoreRemoval)
+			{
+				return;
+			}
 			const popUp:DisplayObject = DisplayObject(event.currentTarget);
 			popUp.removeEventListener(Event.REMOVED_FROM_STAGE, popUp_removedFromStageHandler);
 			const index:int = popUps.indexOf(popUp);
