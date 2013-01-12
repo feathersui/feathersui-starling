@@ -392,6 +392,19 @@ package feathers.controls
 		}
 
 		/**
+		 * Returns the <code>ScreenNavigatorItem</code> instance with the
+		 * specified identifier.
+		 */
+		public function getScreen(id:String):ScreenNavigatorItem
+		{
+			if(this._screens.hasOwnProperty(id))
+			{
+				return ScreenNavigatorItem(this._screens[id]);
+			}
+			return null;
+		}
+
+		/**
 		 * Returns a list of the screen identifiers that have been added.
 		 */
 		public function getScreenIDs(result:Vector.<String> = null):Vector.<String>
