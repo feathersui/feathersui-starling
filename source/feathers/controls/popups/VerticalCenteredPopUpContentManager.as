@@ -204,7 +204,7 @@ package feathers.controls.popups
 		 */
 		protected function stage_touchHandler(event:TouchEvent):void
 		{
-			if(event.interactsWith(this.content))
+			if(event.interactsWith(this.content) || !PopUpManager.isTopLevelPopUp(this.content))
 			{
 				return;
 			}
