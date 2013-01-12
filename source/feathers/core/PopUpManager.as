@@ -183,6 +183,14 @@ package feathers.core
 		{
 			return popUps.indexOf(popUp) >= 0;
 		}
+
+		/**
+		 * Determines if a display object is the top-most pop-up.
+		 */
+		public static function isTopLevelPopUp(popUp:DisplayObject):Boolean
+		{
+			return popUps.indexOf(popUp) == (popUps.length - 1);
+		}
 		
 		/**
 		 * Centers a pop-up on the stage.
