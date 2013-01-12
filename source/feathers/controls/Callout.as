@@ -1243,7 +1243,8 @@ package feathers.controls
 		protected function stage_touchHandler(event:TouchEvent):void
 		{
 			if(!this._isReadyToClose || (!this.closeOnTouchEndedOutside && !this.closeOnTouchBeganOutside) ||
-				this.contains(DisplayObject(event.target)))
+				this.contains(DisplayObject(event.target)) ||
+				(PopUpManager.isPopUp(this) && !PopUpManager.isTopLevelPopUp(this)))
 			{
 				return;
 			}
