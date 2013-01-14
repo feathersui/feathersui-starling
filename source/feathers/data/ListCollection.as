@@ -27,7 +27,6 @@ package feathers.data
 	import feathers.events.CollectionEventType;
 
 	import starling.events.Event;
-
 	import starling.events.EventDispatcher;
 
 	/**

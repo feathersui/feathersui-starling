@@ -14,8 +14,6 @@ package feathers.controls.renderers
 	import feathers.core.PropertyProxy;
 
 	import starling.display.DisplayObject;
-	import starling.display.Image;
-	import starling.textures.Texture;
 
 	/**
 	 * The default renderer used for headers and footers in a GroupedList

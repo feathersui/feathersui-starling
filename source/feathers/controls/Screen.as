@@ -36,7 +36,6 @@ package feathers.controls
 
 	import starling.core.Starling;
 	import starling.events.Event;
-	import starling.events.ResizeEvent;
 
 	/**
 	 * Provides useful capabilities for a menu screen displayed by
