@@ -2,6 +2,10 @@
 
 Noteworthy changes in official releases of [Feathers](http://feathersui.com/).
 
+## 1.0.0
+
+No major API changes since 1.0.0 BETA. Mostly bug fixes and minor improvements.
+
 ## 1.0.0 BETA
 
 Initial release. The following major changes happened in the last month or two leading to the beta.
