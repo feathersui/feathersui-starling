@@ -83,7 +83,7 @@
 			<arg line="--library-path+='${dependency.output}'"/>
 			<arg line="--doc-sources+='${source.root}'"/>
 			<arg line="--external-library-path+='${flexframework.lib}'"/>
-			<arg line="--main-title 'Feathers API Documentation'"/>
+			<arg line="--main-title 'Feathers ${feathers.version} API Documentation'"/>
 			<arg line="--window-title 'Feathers User Interface Controls for Starling Framework API Documentation'"/>
 			<arg value="--footer"/>
 			<arg value="${footer.text}"/>
