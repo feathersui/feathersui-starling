@@ -15,7 +15,6 @@ package feathers.controls
 
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
-	import flash.geom.Rectangle;
 	import flash.utils.Timer;
 
 	import starling.display.DisplayObject;
