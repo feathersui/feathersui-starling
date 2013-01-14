@@ -6,6 +6,12 @@ Noteworthy changes in official releases of [Feathers](http://feathersui.com/).
 
 No major API changes since 1.0.0 BETA. Mostly bug fixes and minor improvements.
 
+* Fix for memory leaks in List, GroupedList, and ImageLoader
+* PageIndicator properly handles ImageLoader or other IFeathersControl as symbol
+* IGroupedListHeaderOrFooterRenderer extends IFeathersControl
+* Header: fix for "middle" vertical alignment
+* Updated for Starling Framework 1.3
+
 ## 1.0.0 BETA
 
 Initial release. The following major changes happened in the last month or two leading to the beta.
