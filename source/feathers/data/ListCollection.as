@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2012 Josh Tynjala
+Copyright 2012-2013 Joshua Tynjala
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -27,7 +27,6 @@ package feathers.data
 	import feathers.events.CollectionEventType;
 
 	import starling.events.Event;
-
 	import starling.events.EventDispatcher;
 
 	/**
