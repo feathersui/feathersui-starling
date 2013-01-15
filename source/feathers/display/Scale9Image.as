@@ -466,6 +466,8 @@ package feathers.display
 					{
 						image = helperImage;
 						helperImage.texture = this._textures.topLeft;
+						helperImage.smoothing = this._smoothing;
+						helperImage.color = this._color;
 						helperImage.readjustSize();
 					}
 					else
@@ -486,6 +488,8 @@ package feathers.display
 					{
 						image = helperImage;
 						helperImage.texture = this._textures.topCenter;
+						helperImage.smoothing = this._smoothing;
+						helperImage.color = this._color;
 						helperImage.readjustSize();
 					}
 					else
@@ -507,6 +511,8 @@ package feathers.display
 					{
 						image = helperImage;
 						helperImage.texture = this._textures.topRight;
+						helperImage.smoothing = this._smoothing;
+						helperImage.color = this._color;
 						helperImage.readjustSize();
 					}
 					else
@@ -530,6 +536,8 @@ package feathers.display
 					{
 						image = helperImage;
 						helperImage.texture = this._textures.middleLeft;
+						helperImage.smoothing = this._smoothing;
+						helperImage.color = this._color;
 						helperImage.readjustSize();
 					}
 					else
@@ -551,6 +559,8 @@ package feathers.display
 					{
 						image = helperImage;
 						helperImage.texture = this._textures.middleCenter;
+						helperImage.smoothing = this._smoothing;
+						helperImage.color = this._color;
 						helperImage.readjustSize();
 					}
 					else
@@ -573,6 +583,8 @@ package feathers.display
 					{
 						image = helperImage;
 						helperImage.texture = this._textures.middleRight;
+						helperImage.smoothing = this._smoothing;
+						helperImage.color = this._color;
 						helperImage.readjustSize();
 					}
 					else
@@ -597,6 +609,8 @@ package feathers.display
 					{
 						image = helperImage;
 						helperImage.texture = this._textures.bottomLeft;
+						helperImage.smoothing = this._smoothing;
+						helperImage.color = this._color;
 						helperImage.readjustSize();
 					}
 					else
@@ -617,6 +631,8 @@ package feathers.display
 					{
 						image = helperImage;
 						helperImage.texture = this._textures.bottomCenter;
+						helperImage.smoothing = this._smoothing;
+						helperImage.color = this._color;
 						helperImage.readjustSize();
 					}
 					else
@@ -638,6 +654,8 @@ package feathers.display
 					{
 						image = helperImage;
 						helperImage.texture = this._textures.bottomRight;
+						helperImage.smoothing = this._smoothing;
+						helperImage.color = this._color;
 						helperImage.readjustSize();
 					}
 					else

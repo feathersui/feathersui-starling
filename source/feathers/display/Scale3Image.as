@@ -419,6 +419,8 @@ package feathers.display
 						{
 							image = helperImage;
 							helperImage.texture = this._textures.first;
+							helperImage.smoothing = this._smoothing;
+							helperImage.color = this._color;
 							helperImage.readjustSize();
 						}
 						else
@@ -440,6 +442,8 @@ package feathers.display
 						{
 							image = helperImage;
 							helperImage.texture = this._textures.second;
+							helperImage.smoothing = this._smoothing;
+							helperImage.color = this._color;
 							helperImage.readjustSize();
 						}
 						else
@@ -461,6 +465,8 @@ package feathers.display
 						{
 							image = helperImage;
 							helperImage.texture = this._textures.third;
+							helperImage.smoothing = this._smoothing;
+							helperImage.color = this._color;
 							helperImage.readjustSize();
 						}
 						else
@@ -493,6 +499,8 @@ package feathers.display
 						{
 							image = helperImage;
 							helperImage.texture = this._textures.first;
+							helperImage.smoothing = this._smoothing;
+							helperImage.color = this._color;
 							helperImage.readjustSize();
 						}
 						else
@@ -514,6 +522,8 @@ package feathers.display
 						{
 							image = helperImage;
 							helperImage.texture = this._textures.second;
+							helperImage.smoothing = this._smoothing;
+							helperImage.color = this._color;
 							helperImage.readjustSize();
 						}
 						else
@@ -535,6 +545,8 @@ package feathers.display
 						{
 							image = helperImage;
 							helperImage.texture = this._textures.third;
+							helperImage.smoothing = this._smoothing;
+							helperImage.color = this._color;
 							helperImage.readjustSize();
 						}
 						else
