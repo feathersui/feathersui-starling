@@ -825,9 +825,9 @@ package feathers.display
 				if(!helperImage)
 				{
 					helperImage = new Image(this._textures.topLeft);
-					helperImage.smoothing = this._smoothing;
-					helperImage.color = this._color;
 				}
+				helperImage.smoothing = this._smoothing;
+				helperImage.color = this._color;
 			}
 			else if(this._batch)
 			{
