@@ -94,7 +94,12 @@ package feathers.controls
 		protected var _text:String = "";
 
 		/**
-		 * @inheritDoc
+		 * The text to display. If <code>isHTML</code> is <code>true</code>, the
+		 * text will be rendered as HTML with the same capabilities as the
+		 * <code>htmlText</code> property of <code>flash.text.TextField</code>.
+		 *
+		 * @see #isHTML
+		 * @see flash.text.TextField#htmlText
 		 */
 		public function get text():String
 		{
@@ -126,6 +131,7 @@ package feathers.controls
 		/**
 		 * Determines if the TextField should display the text as HTML or not.
 		 *
+		 * @see #text
 		 * @see flash.text.TextField#htmlText
 		 */
 		public function get isHTML():Boolean
