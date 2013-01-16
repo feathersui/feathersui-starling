@@ -225,12 +225,20 @@ package feathers.controls.supportClasses
 			if(this._dataProvider)
 			{
 				this._dataProvider.removeEventListener(Event.CHANGE, dataProvider_changeHandler);
+				this._dataProvider.removeEventListener(CollectionEventType.RESET, dataProvider_resetHandler);
+				this._dataProvider.removeEventListener(CollectionEventType.ADD_ITEM, dataProvider_addItemHandler);
+				this._dataProvider.removeEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
+				this._dataProvider.removeEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_updateItemHandler);
 			}
 			this._dataProvider = value;
 			if(this._dataProvider)
 			{
 				this._dataProvider.addEventListener(Event.CHANGE, dataProvider_changeHandler);
+				this._dataProvider.addEventListener(CollectionEventType.RESET, dataProvider_resetHandler);
+				this._dataProvider.addEventListener(CollectionEventType.ADD_ITEM, dataProvider_addItemHandler);
+				this._dataProvider.addEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
+				this._dataProvider.addEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_updateItemHandler);
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
@@ -478,10 +486,6 @@ package feathers.controls.supportClasses
 
 			if(stylesInvalid || dataInvalid || itemRendererInvalid)
 			{
-				if(this._layout is IVariableVirtualLayout)
-				{
-					IVariableVirtualLayout(this._layout).resetVariableVirtualCache();
-				}
 				this.calculateTypicalValues();
 			}
 
@@ -749,6 +753,46 @@ package feathers.controls.supportClasses
 		{
 			this.invalidate(INVALIDATION_FLAG_DATA);
 			this.invalidateParent();
+		}
+
+		private function dataProvider_addItemHandler(event:Event, index:int):void
+		{
+			const layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
+			if(!layout || !layout.hasVariableItemDimensions)
+			{
+				return;
+			}
+			layout.addToVariableVirtualCacheAtIndex(index);
+		}
+
+		private function dataProvider_removeItemHandler(event:Event, index:int):void
+		{
+			const layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
+			if(!layout || !layout.hasVariableItemDimensions)
+			{
+				return;
+			}
+			layout.removeFromVariableVirtualCacheAtIndex(index);
+		}
+
+		private function dataProvider_replaceItemHandler(event:Event, index:int):void
+		{
+			const layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
+			if(!layout || !layout.hasVariableItemDimensions)
+			{
+				return;
+			}
+			layout.resetVariableVirtualCacheAtIndex(index);
+		}
+
+		private function dataProvider_resetHandler(event:Event):void
+		{
+			const layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
+			if(!layout || !layout.hasVariableItemDimensions)
+			{
+				return;
+			}
+			layout.resetVariableVirtualCache();
 		}
 
 		private function dataProvider_updateItemHandler(event:Event, index:int):void
