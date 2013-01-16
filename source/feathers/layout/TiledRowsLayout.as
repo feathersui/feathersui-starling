@@ -22,7 +22,9 @@ package feathers.layout
 	 * Positions items as tiles (equal width and height) from left to right
 	 * in multiple rows. Constrained to the suggested width, the tiled rows
 	 * layout will change in height as the number of items increases or
-	 * decreases
+	 * decreases.
+	 *
+	 * @see http://wiki.starling-framework.org/feathers/tiled-rows-layout
 	 */
 	public class TiledRowsLayout extends EventDispatcher implements IVirtualLayout
 	{

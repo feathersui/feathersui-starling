@@ -23,6 +23,8 @@ package feathers.layout
 	 * in multiple columns. Constrained to the suggested height, the tiled
 	 * columns layout will change in width as the number of items increases or
 	 * decreases.
+	 *
+	 * @see http://wiki.starling-framework.org/feathers/tiled-columns-layout
 	 */
 	public class TiledColumnsLayout extends EventDispatcher implements IVirtualLayout
 	{

@@ -20,6 +20,8 @@ package feathers.layout
 
 	/**
 	 * Positions items from top to bottom in a single column.
+	 *
+	 * @see http://wiki.starling-framework.org/feathers/vertical-layout
 	 */
 	public class VerticalLayout extends EventDispatcher implements IVariableVirtualLayout
 	{
