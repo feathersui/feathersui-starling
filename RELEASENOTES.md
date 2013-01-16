@@ -2,6 +2,33 @@
 
 Noteworthy changes in official releases of [Feathers](http://feathersui.com/).
 
+## 1.1.0 PRERELEASE
+
+* Added ILayoutObject to support extra data for layouts to use.
+* Added AnchorLayout for fluid layouts and relative positioning.
+* All sub-components are created from factories and can receive custom names for theming.
+* PopUpManager: Supports custom root to place pop-ups somewhere other than the stage.
+* PickerList: supports prompt when no item is selected.
+* ScreenNavigator: added hasScreen(), getScreen(), and getScreenIDs().
+* ScrollContainer, List, GroupedList: better auto-sizing with a background skin.
+* BitmapFontTextRenderer, Scale3Image, Scale9Image: option to turn off the use of a separate QuadBatch.
+* Scroller/Button: better blocking of touches on children when scrolling with touch.
+* TiledRowsLayout, TiledColumnsLayout: supports separate horizontal and vertical gaps.
+* IVariableVirtualLayout: added function addToVariableVirtualCacheAtIndex() for more specific control over the cache of item dimensions. The following implementation can be added to existing classes to simulate the old behavior:
+
+		public addToVariableVirtualCacheAtIndex(index:int, item:DisplayObject = null):void
+		{
+			this.resetVariableVirtualCache();
+		}
+
+* IVariableVirtualLayout: added function removeFromVariableVirtualCacheAtIndex() for more specific control over the cache of item dimensions. The following implementation can be added to existing classes to simulate the old behavior:
+
+		public removeFromVariableVirtualCacheAtIndex(index:int, item:DisplayObject = null):void
+		{
+			this.resetVariableVirtualCache();
+		}
+
+
 ## 1.0.0
 
 No major API changes since 1.0.0 BETA. Mostly bug fixes and minor improvements.
