@@ -140,7 +140,7 @@ package feathers.layout
 		 * Quickly sets both <code>horizontalGap</code> and <code>verticalGap</code>
 		 * to the same value. The <code>gap</code> getter always returns the
 		 * value of <code>verticalGap</code>, but the value of
-		 * <code>horizontalGap</code> value may be different.
+		 * <code>horizontalGap</code> may be different.
 		 */
 		public function get gap():Number
 		{
@@ -206,6 +206,28 @@ package feathers.layout
 			}
 			this._verticalGap = value;
 			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * Quickly sets all padding properties to the same value. The
+		 * <code>padding</code> getter always returns the value of
+		 * <code>paddingTop</code>, but the other padding values may be
+		 * different.
+		 */
+		public function get padding():Number
+		{
+			return this._paddingTop;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set padding(value:Number):void
+		{
+			this.paddingTop = value;
+			this.paddingRight = value;
+			this.paddingBottom = value;
+			this.paddingLeft = value;
 		}
 
 		/**
