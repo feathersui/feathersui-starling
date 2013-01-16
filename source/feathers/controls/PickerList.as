@@ -225,6 +225,33 @@ package feathers.controls
 			
 			this.selectedIndex = this._dataProvider.getItemIndex(value);
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _prompt:String;
+
+		/**
+		 * Text displayed by the button sub-component when no items are
+		 * currently selected.
+		 */
+		public function get prompt():String
+		{
+			return this._prompt;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set prompt(value:String):void
+		{
+			if(this._prompt == value)
+			{
+				return;
+			}
+			this._prompt = value;
+			this.invalidate(INVALIDATION_FLAG_SELECTED);
+		}
 		
 		/**
 		 * @private
@@ -744,7 +771,7 @@ package feathers.controls
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
-			if(buttonFactoryInvalid || sizeInvalid)
+			if(buttonFactoryInvalid || sizeInvalid || selectionInvalid)
 			{
 				this.layout();
 			}
@@ -848,7 +875,7 @@ package feathers.controls
 			}
 			else
 			{
-				this.button.label = "";
+				this.button.label = this._prompt;
 			}
 		}
 		
