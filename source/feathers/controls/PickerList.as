@@ -70,6 +70,32 @@ package feathers.controls
 		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
 
 		/**
+		 * @private
+		 */
+		protected static const INVALIDATION_FLAG_BUTTON_FACTORY:String = "buttonFactory";
+
+		/**
+		 * @private
+		 */
+		protected static const INVALIDATION_FLAG_LIST_FACTORY:String = "listFactory";
+
+		/**
+		 * @private
+		 */
+		protected static function defaultButtonFactory():Button
+		{
+			return new Button();
+		}
+
+		/**
+		 * @private
+		 */
+		protected static function defaultListFactory():List
+		{
+			return new List();
+		}
+
+		/**
 		 * Constructor.
 		 */
 		public function PickerList()
@@ -332,6 +358,72 @@ package feathers.controls
 			this._typicalItem = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _buttonFactory:Function;
+
+		/**
+		 * A function used to generate the picker list's button sub-component.
+		 * This can be used to change properties on the button when it is first
+		 * created. For instance, if you are skinning Feathers components
+		 * without a theme, you might use <code>buttonFactory</code> to set
+		 * skins and text styles on the button.
+		 *
+		 * <p>The function should have the following signature:</p>
+		 * <pre>function():Button</pre>
+		 *
+		 * @see #buttonProperties
+		 */
+		public function get buttonFactory():Function
+		{
+			return this._buttonFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set buttonFactory(value:Function):void
+		{
+			if(this._buttonFactory == value)
+			{
+				return;
+			}
+			this._buttonFactory = value;
+			this.invalidate(INVALIDATION_FLAG_BUTTON_FACTORY);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _customButtonName:String;
+
+		/**
+		 * A name to add to the picker list's button sub-component. Typically
+		 * used by a theme to provide different skins to different picker lists.
+		 *
+		 * @see feathers.core.FeathersControl#nameList
+		 * @see #buttonFactory
+		 * @see #buttonProperties
+		 */
+		public function get customButtonName():String
+		{
+			return this._customButtonName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customButtonName(value:String):void
+		{
+			if(this._customButtonName == value)
+			{
+				return;
+			}
+			this._customButtonName = value;
+			this.invalidate(INVALIDATION_FLAG_BUTTON_FACTORY);
+		}
 		
 		/**
 		 * @private
@@ -393,6 +485,72 @@ package feathers.controls
 				this._buttonProperties.addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _listFactory:Function;
+
+		/**
+		 * A function used to generate the picker list's pop-up list
+		 * sub-component. This can be used to change properties on the list when
+		 * it is first created. For instance, if you are skinning Feathers
+		 * components without a theme, you might use <code>listFactory</code> to
+		 * set skins and other styles on the list.
+		 *
+		 * <p>The function should have the following signature:</p>
+		 * <pre>function():List</pre>
+		 *
+		 * @see #listProperties
+		 */
+		public function get listFactory():Function
+		{
+			return this._listFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set listFactory(value:Function):void
+		{
+			if(this._listFactory == value)
+			{
+				return;
+			}
+			this._listFactory = value;
+			this.invalidate(INVALIDATION_FLAG_LIST_FACTORY);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _customListName:String;
+
+		/**
+		 * A name to add to the picker list's list sub-component. Typically used
+		 * by a theme to provide different skins to different picker lists.
+		 *
+		 * @see feathers.core.FeathersControl#nameList
+		 * @see #listFactory
+		 * @see #listProperties
+		 */
+		public function get customListName():String
+		{
+			return this._customListName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customListName(value:String):void
+		{
+			if(this._customListName == value)
+			{
+				return;
+			}
+			this._customListName = value;
+			this.invalidate(INVALIDATION_FLAG_LIST_FACTORY);
 		}
 		
 		/**
@@ -498,24 +656,6 @@ package feathers.controls
 		 */
 		override protected function initialize():void
 		{
-			if(!this.button)
-			{
-				this.button = new Button();
-				this.button.nameList.add(this.buttonName);
-				this.button.addEventListener(Event.TRIGGERED, button_triggeredHandler);
-				this.button.addEventListener(TouchEvent.TOUCH, button_touchHandler);
-				this.addChild(this.button);
-			}
-			
-			if(!this.list)
-			{
-				this.list = new List();
-				this.list.nameList.add(this.listName);
-				this.list.addEventListener(Event.SCROLL, list_scrollHandler);
-				this.list.addEventListener(Event.CHANGE, list_changeHandler);
-				this.list.addEventListener(TouchEvent.TOUCH, list_touchHandler);
-			}
-
 			if(!this._popUpContentManager)
 			{
 				if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
@@ -540,8 +680,20 @@ package feathers.controls
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 			const selectionInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SELECTED);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
+			const buttonFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_BUTTON_FACTORY);
+			const listFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LIST_FACTORY);
+
+			if(buttonFactoryInvalid)
+			{
+				this.createButton();
+			}
+
+			if(listFactoryInvalid)
+			{
+				this.createList();
+			}
 			
-			if(stylesInvalid || selectionInvalid)
+			if(buttonFactoryInvalid || stylesInvalid || selectionInvalid)
 			{
 				//this section asks the button to auto-size again, if our
 				//explicit dimensions aren't set.
@@ -557,35 +709,45 @@ package feathers.controls
 				}
 			}
 
-			if(stylesInvalid)
+			if(buttonFactoryInvalid || stylesInvalid)
 			{
 				this._typicalItemWidth = NaN;
 				this._typicalItemHeight = NaN;
 				this.refreshButtonProperties();
+			}
+
+			if(listFactoryInvalid || stylesInvalid)
+			{
 				this.refreshListProperties();
 			}
 			
-			if(dataInvalid)
+			if(listFactoryInvalid || dataInvalid)
 			{
 				this.list.dataProvider = this._dataProvider;
 				this._hasBeenScrolled = false;
 			}
 			
-			if(stateInvalid)
+			if(buttonFactoryInvalid || listFactoryInvalid || stateInvalid)
 			{
-				this.button.isEnabled = this.isEnabled;
+				this.button.isEnabled = this._isEnabled;
+				this.list.isEnabled = this._isEnabled;
 			}
 
-			if(selectionInvalid)
+			if(buttonFactoryInvalid || selectionInvalid)
 			{
 				this.refreshButtonLabel();
+			}
+			if(listFactoryInvalid || selectionInvalid)
+			{
 				this.list.selectedIndex = this._selectedIndex;
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
-			this.button.width = this.actualWidth;
-			this.button.height = this.actualHeight;
+			if(buttonFactoryInvalid || sizeInvalid)
+			{
+				this.layout();
+			}
 		}
 
 		/**
@@ -632,6 +794,48 @@ package feathers.controls
 			}
 			return this.setSizeInternal(newWidth, newHeight, false);
 		}
+
+		/**
+		 * @private
+		 */
+		protected function createButton():void
+		{
+			if(this.button)
+			{
+				this.button.removeFromParent(true);
+				this.button = null;
+			}
+
+			const factory:Function = this._buttonFactory != null ? this._buttonFactory : defaultButtonFactory;
+			const buttonName:String = this._customButtonName != null ? this._customButtonName : this.buttonName;
+			this.button = Button(factory());
+			this.button.nameList.add(buttonName);
+			this.button.addEventListener(Event.TRIGGERED, button_triggeredHandler);
+			this.button.addEventListener(TouchEvent.TOUCH, button_touchHandler);
+			this.addChild(this.button);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function createList():void
+		{
+			if(this.list)
+			{
+				this.list.removeFromParent(false);
+				//disposing separately because the list may not have a parent
+				this.list.dispose();
+				this.list = null;
+			}
+
+			const factory:Function = this._listFactory != null ? this._listFactory : defaultListFactory;
+			const listName:String = this._customListName != null ? this._customListName : this.listName;
+			this.list = List(factory());
+			this.list.nameList.add(listName);
+			this.list.addEventListener(Event.SCROLL, list_scrollHandler);
+			this.list.addEventListener(Event.CHANGE, list_changeHandler);
+			this.list.addEventListener(TouchEvent.TOUCH, list_touchHandler);
+		}
 		
 		/**
 		 * @private
@@ -676,6 +880,15 @@ package feathers.controls
 					this.list[propertyName] = propertyValue;
 				}
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function layout():void
+		{
+			this.button.width = this.actualWidth;
+			this.button.height = this.actualHeight;
 		}
 		
 		/**
