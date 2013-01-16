@@ -631,6 +631,23 @@ package feathers.layout
 		/**
 		 * @inheritDoc
 		 */
+		public function addToVariableVirtualCacheAtIndex(index:int, item:DisplayObject = null):void
+		{
+			const heightValue:* = item ? item.height : undefined;
+			this._heightCache.splice(index, 0, heightValue);
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function removeFromVariableVirtualCacheAtIndex(index:int):void
+		{
+			this._heightCache.splice(index, 1);
+		}
+
+		/**
+		 * @inheritDoc
+		 */
 		public function getVisibleIndicesAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int, result:Vector.<int> = null):Vector.<int>
 		{
 			if(!result)
