@@ -20,6 +20,8 @@ package feathers.layout
 
 	/**
 	 * Positions items from left to right in a single row.
+	 *
+	 * @see http://wiki.starling-framework.org/feathers/horizontal-layout
 	 */
 	public class HorizontalLayout extends EventDispatcher implements IVariableVirtualLayout
 	{

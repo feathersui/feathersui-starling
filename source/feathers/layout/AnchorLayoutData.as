@@ -16,8 +16,19 @@ package feathers.layout
 	 */
 	[Event(name="change",type="starling.events.Event")]
 
+	/**
+	 * Extra, optional data used by an <code>AnchorLayout</code> instance to
+	 * position and size a display object.
+	 *
+	 * @see http://wiki.starling-framework.org/feathers/anchor-layout
+	 * @see AnchorLayout
+	 * @see ILayoutDisplayObject
+	 */
 	public class AnchorLayoutData extends EventDispatcher implements ILayoutData
 	{
+		/**
+		 * Constructor.
+		 */
 		public function AnchorLayoutData()
 		{
 		}
