@@ -29,11 +29,6 @@ package feathers.layout
 	public class TiledColumnsLayout extends EventDispatcher implements IVirtualLayout
 	{
 		/**
-		 * @private
-		 */
-		private static const HELPER_VECTOR:Vector.<DisplayObject> = new <DisplayObject>[];
-		
-		/**
 		 * If the total item height is smaller than the height of the bounds,
 		 * the items will be aligned to the top.
 		 */
@@ -137,6 +132,11 @@ package feathers.layout
 		public function TiledColumnsLayout()
 		{
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _discoveredItemsCache:Vector.<DisplayObject> = new <DisplayObject>[];
 
 		/**
 		 * Quickly sets both <code>horizontalGap</code> and <code>verticalGap</code>
@@ -593,8 +593,8 @@ package feathers.layout
 			const maxHeight:Number = viewPortBounds ? viewPortBounds.maxHeight : Number.POSITIVE_INFINITY;
 			const explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
 			const explicitHeight:Number = viewPortBounds ? viewPortBounds.explicitHeight : NaN;
-			
-			HELPER_VECTOR.length = 0;
+
+			this._discoveredItemsCache.length = 0;
 			const itemCount:int = items.length;
 			var tileWidth:Number = this._useSquareTiles ? Math.max(0, this._typicalItemWidth, this._typicalItemHeight) : this._typicalItemWidth;
 			var tileHeight:Number = this._useSquareTiles ? tileWidth : this._typicalItemHeight;
@@ -669,12 +669,12 @@ package feathers.layout
 					//items on the current page and update the positions
 					if(this._paging != PAGING_NONE)
 					{
-						var discoveredItems:Vector.<DisplayObject> = this._useVirtualLayout ? HELPER_VECTOR : items;
+						var discoveredItems:Vector.<DisplayObject> = this._useVirtualLayout ? this._discoveredItemsCache : items;
 						var discoveredItemsFirstIndex:int = this._useVirtualLayout ? 0 : (i - perPage);
-						var discoveredItemsLastIndex:int = this._useVirtualLayout ? (HELPER_VECTOR.length - 1) : (i - 1);
+						var discoveredItemsLastIndex:int = this._useVirtualLayout ? (this._discoveredItemsCache.length - 1) : (i - 1);
 						this.applyHorizontalAlign(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex, totalPageWidth, availablePageWidth);
 						this.applyVerticalAlign(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex, totalPageHeight, availablePageHeight);
-						HELPER_VECTOR.length = 0;
+						this._discoveredItemsCache.length = 0;
 					}
 					pageIndex++;
 					nextPageStartIndex += perPage;
@@ -742,7 +742,7 @@ package feathers.layout
 					}
 					if(this._useVirtualLayout)
 					{
-						HELPER_VECTOR.push(item);
+						this._discoveredItemsCache.push(item);
 					}
 				}
 				positionY += tileHeight + this._verticalGap;
@@ -750,9 +750,9 @@ package feathers.layout
 			//align the last page
 			if(this._paging != PAGING_NONE)
 			{
-				discoveredItems = this._useVirtualLayout ? HELPER_VECTOR : items;
+				discoveredItems = this._useVirtualLayout ? this._discoveredItemsCache : items;
 				discoveredItemsFirstIndex = this._useVirtualLayout ? 0 : (nextPageStartIndex - perPage);
-				discoveredItemsLastIndex = this._useVirtualLayout ? (HELPER_VECTOR.length - 1) : (i - 1);
+				discoveredItemsLastIndex = this._useVirtualLayout ? (this._discoveredItemsCache.length - 1) : (i - 1);
 				this.applyHorizontalAlign(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex, totalPageWidth, availablePageWidth);
 				this.applyVerticalAlign(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex, totalPageHeight, availablePageHeight);
 			}
@@ -788,12 +788,12 @@ package feathers.layout
 
 			if(this._paging == PAGING_NONE)
 			{
-				discoveredItems = this._useVirtualLayout ? HELPER_VECTOR : items;
+				discoveredItems = this._useVirtualLayout ? this._discoveredItemsCache : items;
 				discoveredItemsLastIndex = discoveredItems.length - 1;
 				this.applyHorizontalAlign(discoveredItems, 0, discoveredItemsLastIndex, totalWidth, availableWidth);
 				this.applyVerticalAlign(discoveredItems, 0, discoveredItemsLastIndex, totalHeight, availableHeight);
 			}
-			HELPER_VECTOR.length = 0;
+			this._discoveredItemsCache.length = 0;
 
 			if(!result)
 			{

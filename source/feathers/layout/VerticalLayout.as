@@ -26,11 +26,6 @@ package feathers.layout
 	public class VerticalLayout extends EventDispatcher implements IVariableVirtualLayout
 	{
 		/**
-		 * @private
-		 */
-		private static const HELPER_VECTOR:Vector.<DisplayObject> = new <DisplayObject>[];
-
-		/**
 		 * If the total item height is smaller than the height of the bounds,
 		 * the items will be aligned to the top.
 		 */
@@ -79,6 +74,11 @@ package feathers.layout
 		 * @private
 		 */
 		protected var _heightCache:Array = [];
+
+		/**
+		 * @private
+		 */
+		protected var _discoveredItemsCache:Vector.<DisplayObject> = new <DisplayObject>[];
 
 		/**
 		 * @private
@@ -430,7 +430,7 @@ package feathers.layout
 			const explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
 			const explicitHeight:Number = viewPortBounds ? viewPortBounds.explicitHeight : NaN;
 
-			HELPER_VECTOR.length = 0;
+			this._discoveredItemsCache.length = 0;
 			var maxItemWidth:Number = this._useVirtualLayout ? this._typicalItemWidth : 0;
 			var positionY:Number = boundsY + this._paddingTop;
 			const itemCount:int = items.length;
@@ -470,12 +470,12 @@ package feathers.layout
 					maxItemWidth = Math.max(maxItemWidth, item.width);
 					if(this._useVirtualLayout)
 					{
-						HELPER_VECTOR.push(item);
+						this._discoveredItemsCache.push(item);
 					}
 				}
 			}
 
-			const discoveredItems:Vector.<DisplayObject> = this._useVirtualLayout ? HELPER_VECTOR : items;
+			const discoveredItems:Vector.<DisplayObject> = this._useVirtualLayout ? this._discoveredItemsCache : items;
 			const totalWidth:Number = maxItemWidth + this._paddingLeft + this._paddingRight;
 			const availableWidth:Number = isNaN(explicitWidth) ? Math.min(maxWidth, Math.max(minWidth, totalWidth)) : explicitWidth;
 			const discoveredItemCount:int = discoveredItems.length;
@@ -529,7 +529,7 @@ package feathers.layout
 					}
 				}
 			}
-			HELPER_VECTOR.length = 0;
+			this._discoveredItemsCache.length = 0;
 
 			if(!result)
 			{
