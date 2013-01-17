@@ -105,12 +105,12 @@ package feathers.controls
 		}
 
 		/**
-		 * The value added to the <code>nameList</code> of the button.
+		 * The default value added to the <code>nameList</code> of the button.
 		 */
 		protected var buttonName:String = DEFAULT_CHILD_NAME_BUTTON;
 
 		/**
-		 * The value added to the <code>nameList</code> of the pop-up list.
+		 * The default value added to the <code>nameList</code> of the pop-up list.
 		 */
 		protected var listName:String = DEFAULT_CHILD_NAME_LIST;
 
