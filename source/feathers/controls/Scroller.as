@@ -1823,15 +1823,36 @@ package feathers.controls
 		 */
 		protected function refreshScrollValues(isScrollInvalid:Boolean):void
 		{
-			var calculatedHorizontalScrollStep:Number = 1;
-			var calculatedVerticalScrollStep:Number = 1;
-			if(this._viewPort)
+			if(isNaN(this.explicitHorizontalScrollStep))
 			{
-				calculatedHorizontalScrollStep = this._viewPort.horizontalScrollStep;
-				calculatedVerticalScrollStep = this._viewPort.verticalScrollStep;
+				if(this._viewPort)
+				{
+					this.actualHorizontalScrollStep = this._viewPort.horizontalScrollStep;
+				}
+				else
+				{
+					this.actualHorizontalScrollStep = 1;
+				}
 			}
-			this.actualHorizontalScrollStep = isNaN(this.explicitHorizontalScrollStep) ? calculatedHorizontalScrollStep : this.explicitHorizontalScrollStep;
-			this.actualVerticalScrollStep = isNaN(this.explicitVerticalScrollStep) ? calculatedVerticalScrollStep : this.explicitVerticalScrollStep;
+			else
+			{
+				this.actualHorizontalScrollStep = this.explicitHorizontalScrollStep;
+			}
+			if(isNaN(this.explicitVerticalScrollStep))
+			{
+				if(this._viewPort)
+				{
+					this.actualVerticalScrollStep = this._viewPort.verticalScrollStep;
+				}
+				else
+				{
+					this.actualVerticalScrollStep = 1;
+				}
+			}
+			else
+			{
+				this.actualVerticalScrollStep = this.explicitVerticalScrollStep;
+			}
 
 			const oldMaxHSP:Number = this._maxHorizontalScrollPosition;
 			const oldMaxVSP:Number = this._maxVerticalScrollPosition;
@@ -1890,6 +1911,13 @@ package feathers.controls
 
 			if(maximumPositionsChanged || isScrollInvalid)
 			{
+				if(maximumPositionsChanged)
+				{
+					//if we clamped the scroll position above, we need to inform
+					//the view port about the new scroll position
+					this._viewPort.horizontalScrollPosition = this._horizontalScrollPosition;
+					this._viewPort.verticalScrollPosition = this._verticalScrollPosition;
+				}
 				this.dispatchEventWith(Event.SCROLL);
 			}
 		}
