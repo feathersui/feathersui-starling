@@ -26,11 +26,6 @@ package feathers.layout
 	public class HorizontalLayout extends EventDispatcher implements IVariableVirtualLayout
 	{
 		/**
-		 * @private
-		 */
-		private static const HELPER_VECTOR:Vector.<DisplayObject> = new <DisplayObject>[];
-
-		/**
 		 * The items will be aligned to the top of the bounds.
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
@@ -79,6 +74,11 @@ package feathers.layout
 		 * @private
 		 */
 		protected var _widthCache:Array = [];
+
+		/**
+		 * @private
+		 */
+		protected var _discoveredItemsCache:Vector.<DisplayObject> = new <DisplayObject>[];
 
 		/**
 		 * @private
@@ -427,7 +427,7 @@ package feathers.layout
 			const explicitWidth:Number = suggestedBounds ? suggestedBounds.explicitWidth : NaN;
 			const explicitHeight:Number = suggestedBounds ? suggestedBounds.explicitHeight : NaN;
 
-			HELPER_VECTOR.length = 0;
+			this._discoveredItemsCache.length = 0;
 			var maxItemHeight:Number = this._useVirtualLayout ? this._typicalItemHeight : 0;
 			var positionX:Number = boundsX + this._paddingLeft;
 			const itemCount:int = items.length;
@@ -467,12 +467,12 @@ package feathers.layout
 					maxItemHeight = Math.max(maxItemHeight, item.height);
 					if(this._useVirtualLayout)
 					{
-						HELPER_VECTOR.push(item);
+						this._discoveredItemsCache.push(item);
 					}
 				}
 			}
 
-			const discoveredItems:Vector.<DisplayObject> = this._useVirtualLayout ? HELPER_VECTOR : items;
+			const discoveredItems:Vector.<DisplayObject> = this._useVirtualLayout ? this._discoveredItemsCache : items;
 			const totalHeight:Number = maxItemHeight + this._paddingTop + this._paddingBottom;
 			const availableHeight:Number = isNaN(explicitHeight) ? Math.min(maxHeight, Math.max(minHeight, totalHeight)) : explicitHeight;
 			const discoveredItemCount:int = discoveredItems.length;
@@ -526,7 +526,7 @@ package feathers.layout
 					}
 				}
 			}
-			HELPER_VECTOR.length = 0;
+			this._discoveredItemsCache.length = 0;
 
 			if(!result)
 			{
