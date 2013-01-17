@@ -14,6 +14,9 @@ package feathers.layout
 	 */
 	[Event(name="change",type="starling.events.Event")]
 
+	/**
+	 * Extra data used by layout algorithms.
+	 */
 	public interface ILayoutData extends IFeathersEventDispatcher
 	{
 	}
