@@ -99,6 +99,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _ignoreScrollerResizing:Boolean;
+
+		/**
+		 * @private
+		 */
 		protected var _layout:ILayout;
 
 		/**
@@ -120,7 +125,137 @@ package feathers.controls
 				return;
 			}
 			this._layout = value;
-			this.invalidate(INVALIDATION_FLAG_DATA);
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+		}
+
+		/**
+		 * Quickly sets all padding properties to the same value. The
+		 * <code>padding</code> getter always returns the value of
+		 * <code>paddingTop</code>, but the other padding values may be
+		 * different.
+		 */
+		public function get padding():Number
+		{
+			return this._paddingTop;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set padding(value:Number):void
+		{
+			this.paddingTop = value;
+			this.paddingRight = value;
+			this.paddingBottom = value;
+			this.paddingLeft = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingTop:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the panel's top edge and the
+		 * panel's content.
+		 */
+		public function get paddingTop():Number
+		{
+			return this._paddingTop;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingTop(value:Number):void
+		{
+			if(this._paddingTop == value)
+			{
+				return;
+			}
+			this._paddingTop = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingRight:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the panel's right edge and
+		 * the panel's content.
+		 */
+		public function get paddingRight():Number
+		{
+			return this._paddingRight;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingRight(value:Number):void
+		{
+			if(this._paddingRight == value)
+			{
+				return;
+			}
+			this._paddingRight = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingBottom:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the panel's bottom edge and
+		 * the panel's content.
+		 */
+		public function get paddingBottom():Number
+		{
+			return this._paddingBottom;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingBottom(value:Number):void
+		{
+			if(this._paddingBottom == value)
+			{
+				return;
+			}
+			this._paddingBottom = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingLeft:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the panel's left edge and the
+		 * panel's content.
+		 */
+		public function get paddingLeft():Number
+		{
+			return this._paddingLeft;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingLeft(value:Number):void
+		{
+			if(this._paddingLeft == value)
+			{
+				return;
+			}
+			this._paddingLeft = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
@@ -327,13 +462,13 @@ package feathers.controls
 
 			if(this._backgroundSkin && this._backgroundSkin != this._backgroundDisabledSkin)
 			{
-				this.removeChild(this._backgroundSkin);
+				this.$removeChild(this._backgroundSkin);
 			}
 			this._backgroundSkin = value;
 			if(this._backgroundSkin && this._backgroundSkin.parent != this)
 			{
 				this._backgroundSkin.visible = false;
-				super.addChildAt(this._backgroundSkin, 0);
+				this.$addChildAt(this._backgroundSkin, 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -363,13 +498,13 @@ package feathers.controls
 
 			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin != this._backgroundSkin)
 			{
-				this.removeChild(this._backgroundDisabledSkin);
+				this.$removeChild(this._backgroundDisabledSkin);
 			}
 			this._backgroundDisabledSkin = value;
 			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin.parent != this)
 			{
 				this._backgroundDisabledSkin.visible = false;
-				super.addChildAt(this._backgroundDisabledSkin, 0);
+				this.$addChildAt(this._backgroundDisabledSkin, 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -659,9 +794,8 @@ package feathers.controls
 				this.scroller.nameList.add(this.scrollerName);
 				this.scroller.addEventListener(Event.SCROLL, scroller_scrollHandler);
 				this.scroller.addEventListener(FeathersEventType.SCROLL_COMPLETE, scroller_scrollCompleteHandler);
-				//addChild() calls addChildAt(), so this is a workaround to
-				//bypass our overridden addChildAt()
-				super.addChildAt(this.scroller, super.numChildren);
+				this.scroller.addEventListener(FeathersEventType.RESIZE, scroller_resizeHandler);
+				this.$addChildAt(this.scroller, this.$numChildren);
 			}
 
 			this.refreshMXMLContent();
@@ -673,10 +807,10 @@ package feathers.controls
 		override protected function draw():void
 		{
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
-			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			const scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
+			const layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
 			const mxmlContentInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_MXML_CONTENT);
 
 			if(mxmlContentInvalid)
@@ -684,7 +818,7 @@ package feathers.controls
 				this.refreshMXMLContent();
 			}
 
-			if(dataInvalid)
+			if(layoutInvalid)
 			{
 				if(this._layout is IVirtualLayout)
 				{
@@ -710,43 +844,19 @@ package feathers.controls
 
 			if(scrollInvalid)
 			{
-				this.scroller.verticalScrollPosition = this._verticalScrollPosition;
-				this.scroller.horizontalScrollPosition = this._horizontalScrollPosition;
+				this.refreshScrollPosition();
 			}
 
 			if(sizeInvalid)
 			{
-				if(isNaN(this.explicitWidth))
-				{
-					this.scroller.width = NaN;
-				}
-				else
-				{
-					this.scroller.width = Math.max(0, this.explicitWidth);
-				}
-				if(isNaN(this.explicitHeight))
-				{
-					this.scroller.height = NaN;
-				}
-				else
-				{
-					this.scroller.height = Math.max(0, this.explicitHeight);
-				}
-				this.scroller.minWidth = Math.max(0,  this._minWidth);
-				this.scroller.maxWidth = Math.max(0, this._maxWidth);
-				this.scroller.minHeight = Math.max(0, this._minHeight);
-				this.scroller.maxHeight = Math.max(0, this._maxHeight);
+				this.refreshScrollerBounds();
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
 			if(sizeInvalid || stylesInvalid || stateInvalid)
 			{
-				if(this.currentBackgroundSkin)
-				{
-					this.currentBackgroundSkin.width = this.actualWidth;
-					this.currentBackgroundSkin.height = this.actualHeight;
-				}
+				this.layoutChildren();
 			}
 
 			this.scroller.validate();
@@ -772,12 +882,15 @@ package feathers.controls
 				return false;
 			}
 
+			const oldIgnore:Boolean = this._ignoreScrollerResizing;
+			this._ignoreScrollerResizing = true;
 			this.scroller.validate();
+			this._ignoreScrollerResizing = oldIgnore;
 			var newWidth:Number = this.explicitWidth;
 			var newHeight:Number = this.explicitHeight;
 			if(needsWidth)
 			{
-				newWidth = this.scroller.width;
+				newWidth = this.scroller.width + this._paddingLeft + this._paddingRight;
 				if(!isNaN(this._originalBackgroundWidth))
 				{
 					newWidth = Math.max(newWidth, this._originalBackgroundWidth);
@@ -785,7 +898,7 @@ package feathers.controls
 			}
 			if(needsHeight)
 			{
-				newHeight = this.scroller.height;
+				newHeight = this.scroller.height + this._paddingTop + this._paddingBottom;
 				if(!isNaN(this._originalBackgroundHeight))
 				{
 					newHeight = Math.max(newHeight, this._originalBackgroundHeight);
@@ -845,6 +958,44 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function refreshScrollPosition():void
+		{
+			this.scroller.verticalScrollPosition = this._verticalScrollPosition;
+			this.scroller.horizontalScrollPosition = this._horizontalScrollPosition;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshScrollerBounds():void
+		{
+			const scrollerWidthOffset:Number = this._paddingLeft + this._paddingRight;
+			const scrollerHeightOffset:Number = this._paddingTop + this._paddingBottom;
+			if(isNaN(this.explicitWidth))
+			{
+				this.scroller.width = NaN;
+			}
+			else
+			{
+				this.scroller.width = Math.max(0, this.explicitWidth - scrollerWidthOffset);
+			}
+			if(isNaN(this.explicitHeight))
+			{
+				this.scroller.height = NaN;
+			}
+			else
+			{
+				this.scroller.height = Math.max(0, this.explicitHeight - scrollerHeightOffset);
+			}
+			this.scroller.minWidth = Math.max(0,  this._minWidth - scrollerWidthOffset);
+			this.scroller.maxWidth = Math.max(0, this._maxWidth - scrollerWidthOffset);
+			this.scroller.minHeight = Math.max(0, this._minHeight - scrollerHeightOffset);
+			this.scroller.maxHeight = Math.max(0, this._maxHeight - scrollerHeightOffset);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function refreshMXMLContent():void
 		{
 			if(!this._mxmlContent || this._mxmlContentIsReady)
@@ -858,6 +1009,21 @@ package feathers.controls
 				this.addChild(child);
 			}
 			this._mxmlContentIsReady = true;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function layoutChildren():void
+		{
+			if(this.currentBackgroundSkin)
+			{
+				this.currentBackgroundSkin.width = this.actualWidth;
+				this.currentBackgroundSkin.height = this.actualHeight;
+			}
+
+			this.scroller.x = this._paddingLeft;
+			this.scroller.y = this._paddingTop;
 		}
 
 		/**
@@ -902,6 +1068,18 @@ package feathers.controls
 			this._verticalPageIndex = this.scroller.verticalPageIndex;
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 			this.dispatchEventWith(Event.SCROLL);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function scroller_resizeHandler(event:Event):void
+		{
+			if(this._ignoreScrollerResizing)
+			{
+				return;
+			}
+			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 	}
 }
