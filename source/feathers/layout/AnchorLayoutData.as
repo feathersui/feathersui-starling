@@ -29,8 +29,16 @@ package feathers.layout
 		/**
 		 * Constructor.
 		 */
-		public function AnchorLayoutData()
+		public function AnchorLayoutData(top:Number = NaN, right:Number = NaN,
+			bottom:Number = NaN, left:Number = NaN, horizontalCenter:Number = NaN,
+			verticalCenter:Number = NaN)
 		{
+			this.top = top;
+			this.right = right;
+			this.bottom = bottom;
+			this.left = left;
+			this.horizontalCenter = horizontalCenter;
+			this.verticalCenter = verticalCenter;
 		}
 
 		/**
@@ -69,9 +77,9 @@ package feathers.layout
 		protected var _top:Number = NaN;
 
 		/**
-		 * The position, in pixels, of the top edge relative to <code>topAnchor</code>.
-		 * If there is no top anchor, then the position is relative to the top
-		 * edge of the parent container.
+		 * The position, in pixels, of the top edge relative to the top
+		 * anchor, or, if there is no top anchor, then the position is relative
+		 * to the top edge of the parent container.
 		 *
 		 * @see #topAnchorDisplayObject
 		 */
@@ -129,9 +137,9 @@ package feathers.layout
 		protected var _right:Number = NaN;
 
 		/**
-		 * The position, in pixels, of the right edge relative to <code>rightAnchor</code>.
-		 * If there is no right anchor, then the position is relative to the right
-		 * edge of the parent container.
+		 * The position, in pixels, of the right edge relative to the right
+		 * anchor, or, if there is no right anchor, then the position is relative
+		 * to the right edge of the parent container.
 		 *
 		 * @see #rightAnchorDisplayObject
 		 */
@@ -189,9 +197,9 @@ package feathers.layout
 		protected var _bottom:Number = NaN;
 
 		/**
-		 * The position, in pixels, of the bottom edge relative to <code>bottomAnchor</code>.
-		 * If there is no bottom anchor, then the position is relative to the bottom
-		 * edge of the parent container.
+		 * The position, in pixels, of the bottom edge relative to the bottom
+		 * anchor, or, if there is no bottom anchor, then the position is relative
+		 * to the bottom edge of the parent container.
 		 *
 		 * @see #bottomAnchorDisplayObject
 		 */
@@ -249,9 +257,9 @@ package feathers.layout
 		protected var _left:Number = NaN;
 
 		/**
-		 * The position, in pixels, of the left edge relative to <code>leftAnchor</code>.
-		 * If there is no left anchor, then the position is relative to the left
-		 * edge of the parent container.
+		 * The position, in pixels, of the left edge relative to the left
+		 * anchor, or, if there is no left anchor, then the position is relative
+		 * to the left edge of the parent container.
 		 *
 		 * @see #leftAnchorDisplayObject
 		 */
@@ -270,6 +278,128 @@ package feathers.layout
 				return;
 			}
 			this._left = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _horizontalCenterAnchorDisplayObject:DisplayObject;
+
+		/**
+		 * The horizontal center of the layout object will be relative to this
+		 * anchor. If there is no anchor, the horizontal center of the parent
+		 * container will be the anchor.
+		 *
+		 * @see #horizontalCenter
+		 */
+		public function get horizontalCenterAnchorDisplayObject():DisplayObject
+		{
+			return this._horizontalCenterAnchorDisplayObject;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set horizontalCenterAnchorDisplayObject(value:DisplayObject):void
+		{
+			if(this._horizontalCenterAnchorDisplayObject == value)
+			{
+				return;
+			}
+			this._horizontalCenterAnchorDisplayObject = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _horizontalCenter:Number = NaN;
+
+		/**
+		 * The position, in pixels, of the horizontal center relative to the
+		 * horizontal center anchor, or, if there is no vertical center anchor,
+		 * then the position is relative to the horizontal center of the parent
+		 * container.
+		 *
+		 * @see #horizontalCenterAnchorDisplayObject
+		 */
+		public function get horizontalCenter():Number
+		{
+			return this._horizontalCenter;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set horizontalCenter(value:Number):void
+		{
+			if(this._horizontalCenter == value)
+			{
+				return;
+			}
+			this._horizontalCenter = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _verticalCenterAnchorDisplayObject:DisplayObject;
+
+		/**
+		 * The vertical center of the layout object will be relative to this
+		 * anchor. If there is no anchor, the vertical center of the parent
+		 * container will be the anchor.
+		 *
+		 * @see #verticalCenter
+		 */
+		public function get verticalCenterAnchorDisplayObject():DisplayObject
+		{
+			return this._verticalCenterAnchorDisplayObject;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set verticalCenterAnchorDisplayObject(value:DisplayObject):void
+		{
+			if(this._verticalCenterAnchorDisplayObject == value)
+			{
+				return;
+			}
+			this._verticalCenterAnchorDisplayObject = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _verticalCenter:Number = NaN;
+
+		/**
+		 * The position, in pixels, of the vertical center relative to the
+		 * vertical center anchor, or, if there is no vertical center anchor,
+		 * then the position is relative to the vertical center of the parent
+		 * container.
+		 *
+		 * @see #verticalCenterAnchorDisplayObject
+		 */
+		public function get verticalCenter():Number
+		{
+			return this._verticalCenter;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set verticalCenter(value:Number):void
+		{
+			if(this._verticalCenter == value)
+			{
+				return;
+			}
+			this._verticalCenter = value;
 			this.dispatchEventWith(Event.CHANGE);
 		}
 	}
