@@ -830,7 +830,7 @@ package feathers.core
 					this._invalidationFlags[flag] = true;
 				}
 			}
-			if(!this.stage)
+			if(!this.stage || !this._isInitialized)
 			{
 				//we'll add this component to the queue later, after it has been
 				//added to the stage.
@@ -860,7 +860,7 @@ package feathers.core
 		 */
 		public function validate():void
 		{
-			if(!this.stage || !this.isInvalid())
+			if(!this.stage || !this._isInitialized || !this.isInvalid())
 			{
 				return;
 			}
