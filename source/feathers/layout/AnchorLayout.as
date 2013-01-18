@@ -459,6 +459,8 @@ package feathers.layout
 					item.x = boundsX + left;
 				}
 			}
+			var horizontalCenter:Number = layoutData.horizontalCenter;
+			var hasHorizontalCenterPosition:Boolean = !isNaN(horizontalCenter);
 			var right:Number = layoutData.right;
 			var hasRightPosition:Boolean = !isNaN(right);
 			if(hasRightPosition)
@@ -477,6 +479,30 @@ package feathers.layout
 					}
 					item.width = leftRightWidth - right - left;
 				}
+				else if(hasHorizontalCenterPosition)
+				{
+					var horizontalCenterAnchorDisplayObject:DisplayObject = layoutData.horizontalCenterAnchorDisplayObject;
+					var xPositionOfCenter:Number;
+					if(horizontalCenterAnchorDisplayObject)
+					{
+						xPositionOfCenter = horizontalCenterAnchorDisplayObject.x + (horizontalCenterAnchorDisplayObject.width / 2) + horizontalCenter;
+					}
+					else
+					{
+						xPositionOfCenter = (viewPortWidth / 2) + horizontalCenter;
+					}
+					var xPositionOfRight:Number;
+					if(rightAnchorDisplayObject)
+					{
+						xPositionOfRight = rightAnchorDisplayObject.x - right;
+					}
+					else
+					{
+						xPositionOfRight = viewPortWidth - right;
+					}
+					item.width = 2 * (xPositionOfRight - xPositionOfCenter);
+					item.x = viewPortWidth - right - item.width;
+				}
 				else
 				{
 					if(rightAnchorDisplayObject)
@@ -487,6 +513,27 @@ package feathers.layout
 					{
 						item.x = boundsX + viewPortWidth - right - item.width;
 					}
+				}
+			}
+			else if(hasHorizontalCenterPosition)
+			{
+				horizontalCenterAnchorDisplayObject = layoutData.horizontalCenterAnchorDisplayObject;
+				if(horizontalCenterAnchorDisplayObject)
+				{
+					xPositionOfCenter = horizontalCenterAnchorDisplayObject.x + (horizontalCenterAnchorDisplayObject.width / 2) + horizontalCenter;
+				}
+				else
+				{
+					xPositionOfCenter = (viewPortWidth / 2) + horizontalCenter;
+				}
+
+				if(hasLeftPosition)
+				{
+					item.width = 2 * (xPositionOfCenter - item.x);
+				}
+				else
+				{
+					item.x = xPositionOfCenter - (item.width / 2);
 				}
 			}
 		}
@@ -503,13 +550,15 @@ package feathers.layout
 				var topAnchorDisplayObject:DisplayObject = layoutData.topAnchorDisplayObject;
 				if(topAnchorDisplayObject)
 				{
-					item.y = topAnchorDisplayObject.x + topAnchorDisplayObject.height + top;
+					item.y = topAnchorDisplayObject.y + topAnchorDisplayObject.height + top;
 				}
 				else
 				{
 					item.y = boundsY + top;
 				}
 			}
+			var verticalCenter:Number = layoutData.verticalCenter;
+			var hasVerticalCenterPosition:Boolean = !isNaN(verticalCenter);
 			var bottom:Number = layoutData.bottom;
 			var hasBottomPosition:Boolean = !isNaN(bottom);
 			if(hasBottomPosition)
@@ -528,16 +577,61 @@ package feathers.layout
 					}
 					item.height = topBottomHeight - bottom - top;
 				}
+				else if(hasVerticalCenterPosition)
+				{
+					var verticalCenterAnchorDisplayObject:DisplayObject = layoutData.verticalCenterAnchorDisplayObject;
+					var yPositionOfCenter:Number;
+					if(verticalCenterAnchorDisplayObject)
+					{
+						yPositionOfCenter = verticalCenterAnchorDisplayObject.y + (verticalCenterAnchorDisplayObject.height / 2) + verticalCenter;
+					}
+					else
+					{
+						yPositionOfCenter = (viewPortHeight / 2) + verticalCenter;
+					}
+					var yPositionOfBottom:Number;
+					if(bottomAnchorDisplayObject)
+					{
+						yPositionOfBottom = bottomAnchorDisplayObject.y - bottom;
+					}
+					else
+					{
+						yPositionOfBottom = viewPortHeight - bottom;
+					}
+					item.height = 2 * (yPositionOfBottom - yPositionOfCenter);
+					item.y = viewPortHeight - bottom - item.height;
+				}
 				else
 				{
 					if(bottomAnchorDisplayObject)
 					{
-						item.y = bottomAnchorDisplayObject.x - item.height - bottom;
+						item.y = bottomAnchorDisplayObject.y - item.height - bottom;
 					}
 					else
 					{
 						item.y = boundsY + viewPortHeight - bottom - item.height;
 					}
+				}
+			}
+			else if(hasVerticalCenterPosition)
+			{
+				verticalCenterAnchorDisplayObject = layoutData.verticalCenterAnchorDisplayObject;
+				if(verticalCenterAnchorDisplayObject)
+				{
+					yPositionOfCenter = verticalCenterAnchorDisplayObject.y + (verticalCenterAnchorDisplayObject.height / 2) + verticalCenter;
+				}
+				else
+				{
+					yPositionOfCenter = (viewPortHeight / 2) + verticalCenter;
+				}
+
+				if(hasTopPosition)
+				{
+					item.height = 2 * (yPositionOfCenter - item.y);
+				}
+				else
+				{
+					item.y = yPositionOfCenter - (item.height / 2);
 				}
 			}
 		}
