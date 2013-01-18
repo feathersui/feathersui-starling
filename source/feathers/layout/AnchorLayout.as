@@ -7,8 +7,12 @@
  */
 package feathers.layout
 {
+	import feathers.layout.ILayoutData;
+
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Point;
+
+	import starling.display.DisplayObject;
 
 	import starling.display.DisplayObject;
 	import starling.events.EventDispatcher;
@@ -69,7 +73,7 @@ package feathers.layout
 			const needsHeight:Boolean = isNaN(explicitHeight);
 			if(needsWidth || needsHeight)
 			{
-				this.measureViewPort(viewPortWidth, viewPortHeight, HELPER_POINT);
+				this.measureViewPort(items, viewPortWidth, viewPortHeight, HELPER_POINT);
 				if(needsWidth)
 				{
 					viewPortWidth = Math.min(maxWidth, Math.max(minWidth, HELPER_POINT.x));
@@ -110,15 +114,161 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected function measureViewPort(viewPortWidth:Number, viewPortHeight:Number, result:Point = null):Point
+		protected function measureViewPort(items:Vector.<DisplayObject>, viewPortWidth:Number, viewPortHeight:Number, result:Point = null):Point
+		{
+			this._helperVector1.length = 0;
+			this._helperVector2.length = 0;
+			HELPER_POINT.x = 0;
+			HELPER_POINT.y = 0;
+			var mainVector:Vector.<DisplayObject> = items;
+			var otherVector:Vector.<DisplayObject> = this._helperVector1;
+			this.measureVector(items, otherVector, HELPER_POINT);
+			var currentLength:Number = otherVector.length;
+			while(currentLength > 0)
+			{
+				if(otherVector == this._helperVector1)
+				{
+					mainVector = this._helperVector1;
+					otherVector = this._helperVector2;
+				}
+				else
+				{
+					mainVector = this._helperVector2;
+					otherVector = this._helperVector1;
+				}
+				this.measureVector(mainVector, otherVector, HELPER_POINT);
+				var oldLength:Number = currentLength;
+				currentLength = otherVector.length;
+				if(oldLength == currentLength)
+				{
+					this._helperVector1.length = 0;
+					this._helperVector2.length = 0;
+					throw new IllegalOperationError(CIRCULAR_REFERENCE_ERROR);
+				}
+			}
+			this._helperVector1.length = 0;
+			this._helperVector2.length = 0;
+
+			if(!result)
+			{
+				result = HELPER_POINT.clone();
+			}
+			return result;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function measureVector(items:Vector.<DisplayObject>, unpositionedItems:Vector.<DisplayObject>, result:Point = null):Point
 		{
 			if(!result)
 			{
 				result = new Point();
 			}
-			result.x = 0;
-			result.y = 0;
+
+			const itemCount:int = items.length;
+			for(var i:int = 0; i < itemCount; i++)
+			{
+				var item:DisplayObject = items[i];
+				var layoutData:AnchorLayoutData;
+				if(item is ILayoutDisplayObject)
+				{
+					layoutData = ILayoutDisplayObject(item).layoutData as AnchorLayoutData;
+				}
+
+				var isReadyForLayout:Boolean = !layoutData || this.isReadyForLayout(layoutData, i, items, unpositionedItems);
+				if(!isReadyForLayout)
+				{
+					unpositionedItems.push(item);
+					continue;
+				}
+
+				this.measureItem(item, result);
+			}
+
 			return result;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function measureItem(item:DisplayObject, result:Point):void
+		{
+			var maxX:Number = result.x;
+			var maxY:Number = result.y;
+			var isAnchored:Boolean = false;
+			if(item is ILayoutDisplayObject)
+			{
+				var layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(item);
+				var layoutData:AnchorLayoutData = layoutItem.layoutData as AnchorLayoutData;
+				if(layoutData)
+				{
+					maxX = Math.max(maxX,this.measureItemHorizontally(layoutItem, layoutData));
+					maxY = Math.max(maxX, this.measureItemVertically(layoutItem, layoutData));
+					isAnchored = true;
+				}
+			}
+			if(!isAnchored)
+			{
+				maxX = Math.max(maxX, item.x + item.width);
+				maxY = Math.max(maxY, item.y + item.height);
+			}
+
+			result.x = maxX;
+			result.y = maxY;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function measureItemHorizontally(item:ILayoutDisplayObject, layoutData:AnchorLayoutData):Number
+		{
+			var right:Number = layoutData.right;
+			var left:Number = layoutData.left;
+			var rightAnchorDisplayObject:DisplayObject = layoutData.rightAnchorDisplayObject;
+			var leftAnchorDisplayObject:DisplayObject = layoutData.leftAnchorDisplayObject;
+			var hasRightPosition:Boolean = !isNaN(right);
+			var hasLeftPosition:Boolean = !isNaN(left);
+
+			if(hasLeftPosition)
+			{
+				if(hasRightPosition)
+				{
+					return left + right + item.width;
+				}
+				return left + item.width;
+			}
+			else if(hasRightPosition)
+			{
+				return right + item.width;
+			}
+			return item.width;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function measureItemVertically(item:ILayoutDisplayObject, layoutData:AnchorLayoutData):Number
+		{
+			var top:Number = layoutData.top;
+			var bottom:Number = layoutData.bottom;
+			var topAnchorDisplayObject:DisplayObject = layoutData.topAnchorDisplayObject;
+			var bottomAnchorDisplayObject:DisplayObject = layoutData.bottomAnchorDisplayObject;
+			var hasTopPosition:Boolean = !isNaN(top);
+			var hasBottomPosition:Boolean = !isNaN(bottom);
+			if(hasTopPosition)
+			{
+				if(hasBottomPosition)
+				{
+					return top + bottom + item.height;
+				}
+				return top + item.height;
+			}
+			else if(hasBottomPosition)
+			{
+				return bottom + item.height;
+			}
+			return item.height;
 		}
 
 		/**
