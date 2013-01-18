@@ -203,8 +203,8 @@ package feathers.layout
 				var layoutData:AnchorLayoutData = layoutItem.layoutData as AnchorLayoutData;
 				if(layoutData)
 				{
-					maxX = Math.max(maxX,this.measureItemHorizontally(layoutItem, layoutData));
-					maxY = Math.max(maxX, this.measureItemVertically(layoutItem, layoutData));
+					maxX = Math.max(maxX, this.measureItemHorizontally(layoutItem, layoutData));
+					maxY = Math.max(maxY, this.measureItemVertically(layoutItem, layoutData));
 					isAnchored = true;
 				}
 			}
@@ -230,6 +230,8 @@ package feathers.layout
 			var hasRightPosition:Boolean = !isNaN(right);
 			var hasLeftPosition:Boolean = !isNaN(left);
 
+			left += (hasLeftPosition && leftAnchorDisplayObject) ? this.getLeftOffset(leftAnchorDisplayObject) : 0;
+			right += (hasRightPosition && rightAnchorDisplayObject) ? this.getRightOffset(rightAnchorDisplayObject) : 0;
 			if(hasLeftPosition)
 			{
 				if(hasRightPosition)
@@ -256,6 +258,9 @@ package feathers.layout
 			var bottomAnchorDisplayObject:DisplayObject = layoutData.bottomAnchorDisplayObject;
 			var hasTopPosition:Boolean = !isNaN(top);
 			var hasBottomPosition:Boolean = !isNaN(bottom);
+
+			top += (hasTopPosition && topAnchorDisplayObject) ? this.getTopOffset(topAnchorDisplayObject) : 0;
+			bottom += (hasBottomPosition && bottomAnchorDisplayObject) ? this.getBottomOffset(bottomAnchorDisplayObject) : 0;
 			if(hasTopPosition)
 			{
 				if(hasBottomPosition)
@@ -269,6 +274,102 @@ package feathers.layout
 				return bottom + item.height;
 			}
 			return item.height;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getTopOffset(item:DisplayObject):Number
+		{
+			if(item is ILayoutDisplayObject)
+			{
+				var layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(item);
+				var layoutData:AnchorLayoutData = layoutItem.layoutData as AnchorLayoutData;
+				if(layoutData)
+				{
+					var top:Number = layoutData.top;
+					var hasTopPosition:Boolean = !isNaN(top);
+					var topAnchorDisplayObject:DisplayObject = layoutData.topAnchorDisplayObject;
+					if(hasTopPosition)
+					{
+						top += (hasTopPosition && topAnchorDisplayObject) ? this.getTopOffset(topAnchorDisplayObject) : 0;
+						return top + item.height;
+					}
+				}
+			}
+			return item.y + item.height;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getRightOffset(item:DisplayObject):Number
+		{
+			if(item is ILayoutDisplayObject)
+			{
+				var layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(item);
+				var layoutData:AnchorLayoutData = layoutItem.layoutData as AnchorLayoutData;
+				if(layoutData)
+				{
+					var right:Number = layoutData.right;
+					var hasRightPosition:Boolean = !isNaN(right);
+					var rightAnchorDisplayObject:DisplayObject = layoutData.rightAnchorDisplayObject;
+					if(hasRightPosition)
+					{
+						right += (hasRightPosition && rightAnchorDisplayObject) ? this.getRightOffset(rightAnchorDisplayObject) : 0;
+						return right + item.width;
+					}
+				}
+			}
+			return item.width;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getBottomOffset(item:DisplayObject):Number
+		{
+			if(item is ILayoutDisplayObject)
+			{
+				var layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(item);
+				var layoutData:AnchorLayoutData = layoutItem.layoutData as AnchorLayoutData;
+				if(layoutData)
+				{
+					var bottom:Number = layoutData.bottom;
+					var hasBottomPosition:Boolean = !isNaN(bottom);
+					var bottomAnchorDisplayObject:DisplayObject = layoutData.bottomAnchorDisplayObject;
+					if(hasBottomPosition)
+					{
+						bottom += (hasBottomPosition && bottomAnchorDisplayObject) ? this.getBottomOffset(bottomAnchorDisplayObject) : 0;
+						return bottom + item.height;
+					}
+				}
+			}
+			return item.height;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getLeftOffset(item:DisplayObject):Number
+		{
+			if(item is ILayoutDisplayObject)
+			{
+				var layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(item);
+				var layoutData:AnchorLayoutData = layoutItem.layoutData as AnchorLayoutData;
+				if(layoutData)
+				{
+					var left:Number = layoutData.left;
+					var hasLeftPosition:Boolean = !isNaN(left);
+					var leftAnchorDisplayObject:DisplayObject = layoutData.leftAnchorDisplayObject;
+					if(hasLeftPosition)
+					{
+						left += (hasLeftPosition && leftAnchorDisplayObject) ? this.getLeftOffset(leftAnchorDisplayObject) : 0;
+						return left + item.width;
+					}
+				}
+			}
+			return item.x + item.width;
 		}
 
 		/**
