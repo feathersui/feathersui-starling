@@ -24,12 +24,12 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected static const CIRCULAR_REFERENCE_ERROR:String = "Circular reference in AnchorLayoutData.";
+		protected static const CIRCULAR_REFERENCE_ERROR:String = "It is impossible to create this layout due to a circular reference in the AnchorLayoutData.";
 
 		/**
 		 * @private
 		 */
-		private static const HELPER_VECTOR:Vector.<DisplayObject> = new <DisplayObject>[];
+		private static const HELPER_POINT:Point = new Point();
 
 		/**
 		 * Constructor.
@@ -37,6 +37,16 @@ package feathers.layout
 		public function AnchorLayout()
 		{
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _helperVector1:Vector.<DisplayObject> = new <DisplayObject>[];
+
+		/**
+		 * @private
+		 */
+		protected var _helperVector2:Vector.<DisplayObject> = new <DisplayObject>[];
 
 		/**
 		 * @inheritDoc
@@ -52,23 +62,25 @@ package feathers.layout
 			const explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
 			const explicitHeight:Number = viewPortBounds ? viewPortBounds.explicitHeight : NaN;
 
-			const viewPortWidth:Number = isNaN(explicitWidth) ? Math.min(maxWidth, Math.max(minWidth, 640)) : explicitWidth;
-			const viewPortHeight:Number = isNaN(explicitHeight) ? Math.min(maxHeight, Math.max(minHeight, 640)) : explicitHeight;
+			var viewPortWidth:Number = explicitWidth;
+			var viewPortHeight:Number = explicitHeight;
 
-			HELPER_VECTOR.length = 0;
-			this.layoutVector(items, boundsX, boundsY, viewPortWidth, viewPortHeight);
-			var currentLength:Number = HELPER_VECTOR.length;
-			while(currentLength > 0)
+			const needsWidth:Boolean = isNaN(explicitWidth);
+			const needsHeight:Boolean = isNaN(explicitHeight);
+			if(needsWidth || needsHeight)
 			{
-				this.layoutVector(HELPER_VECTOR, boundsX, boundsY, viewPortWidth, viewPortHeight);
-				var oldLength:Number = currentLength;
-				currentLength = HELPER_VECTOR.length;
-				if(oldLength == currentLength)
+				this.measureViewPort(viewPortWidth, viewPortHeight, HELPER_POINT);
+				if(needsWidth)
 				{
-					HELPER_VECTOR.length = 0;
-					throw new IllegalOperationError(CIRCULAR_REFERENCE_ERROR);
+					viewPortWidth = Math.min(maxWidth, Math.max(minWidth, HELPER_POINT.x));
+				}
+				if(needsHeight)
+				{
+					viewPortHeight = Math.min(maxHeight, Math.max(minHeight, HELPER_POINT.y));
 				}
 			}
+
+			this.layoutWithBounds(items, boundsX, boundsY, viewPortWidth, viewPortHeight);
 
 			if(!result)
 			{
@@ -98,137 +110,214 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected function layoutVector(items:Vector.<DisplayObject>, boundsX:Number, boundsY:Number, viewPortWidth:Number, viewPortHeight:Number):void
+		protected function measureViewPort(viewPortWidth:Number, viewPortHeight:Number, result:Point = null):Point
+		{
+			if(!result)
+			{
+				result = new Point();
+			}
+			result.x = 0;
+			result.y = 0;
+			return result;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function layoutWithBounds(items:Vector.<DisplayObject>, x:Number, y:Number, width:Number, height:Number):void
+		{
+			this._helperVector1.length = 0;
+			this._helperVector2.length = 0;
+			var mainVector:Vector.<DisplayObject> = items;
+			var otherVector:Vector.<DisplayObject> = this._helperVector1;
+			this.layoutVector(items, otherVector, x, y, width, height);
+			var currentLength:Number = otherVector.length;
+			while(currentLength > 0)
+			{
+				if(otherVector == this._helperVector1)
+				{
+					mainVector = this._helperVector1;
+					otherVector = this._helperVector2;
+				}
+				else
+				{
+					mainVector = this._helperVector2;
+					otherVector = this._helperVector1;
+				}
+				this.layoutVector(mainVector, otherVector, x, y, width, height);
+				var oldLength:Number = currentLength;
+				currentLength = otherVector.length;
+				if(oldLength == currentLength)
+				{
+					this._helperVector1.length = 0;
+					this._helperVector2.length = 0;
+					throw new IllegalOperationError(CIRCULAR_REFERENCE_ERROR);
+				}
+			}
+			this._helperVector1.length = 0;
+			this._helperVector2.length = 0;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function layoutVector(items:Vector.<DisplayObject>, unpositionedItems:Vector.<DisplayObject>, boundsX:Number, boundsY:Number, viewPortWidth:Number, viewPortHeight:Number):void
 		{
 			const itemCount:int = items.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
-				var item:DisplayObject = items[i];
-				if(item is ILayoutDisplayObject)
+				var item:ILayoutDisplayObject = items[i] as ILayoutDisplayObject;
+				if(!item)
 				{
-					var layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(item);
-					var layoutData:ILayoutData = layoutItem.layoutData;
-					if(layoutData is AnchorLayoutData)
-					{
-						var anchorLayoutData:AnchorLayoutData = AnchorLayoutData(layoutData);
-						var left:Number = anchorLayoutData.left;
-						var hasLeftPosition:Boolean = !isNaN(left);
-						var leftAnchorDisplayObject:DisplayObject = anchorLayoutData.leftAnchorDisplayObject;
-						if(hasLeftPosition)
-						{
-							if(leftAnchorDisplayObject)
-							{
-								if(items.lastIndexOf(leftAnchorDisplayObject, i - 1) >= 0 && HELPER_VECTOR.indexOf(leftAnchorDisplayObject) >= 0)
-								{
-									HELPER_VECTOR.push(layoutItem);
-									continue;
-								}
-								item.x = leftAnchorDisplayObject.x + leftAnchorDisplayObject.width + left;
-							}
-							else
-							{
-								item.x = boundsX + left;
-							}
-						}
-						var right:Number = anchorLayoutData.right;
-						var hasRightPosition:Boolean = !isNaN(right);
-						var rightAnchorDisplayObject:DisplayObject = anchorLayoutData.rightAnchorDisplayObject;
-						if(hasRightPosition)
-						{
-							if(rightAnchorDisplayObject)
-							{
-								if(items.lastIndexOf(rightAnchorDisplayObject, i - 1) >= 0 && HELPER_VECTOR.indexOf(rightAnchorDisplayObject) >= 0)
-								{
-									HELPER_VECTOR.push(layoutItem);
-									continue;
-								}
-							}
+					continue;
+				}
+				var layoutData:AnchorLayoutData = item.layoutData as AnchorLayoutData;
+				if(!layoutData)
+				{
+					continue;
+				}
 
-							if(hasLeftPosition)
-							{
-								var leftRightWidth:Number = viewPortWidth;
-								if(rightAnchorDisplayObject)
-								{
-									leftRightWidth = rightAnchorDisplayObject.x;
-								}
-								if(leftAnchorDisplayObject)
-								{
-									leftRightWidth -= (leftAnchorDisplayObject.x + leftAnchorDisplayObject.width);
-								}
-								item.width = leftRightWidth - right - left;
-							}
-							else
-							{
-								if(rightAnchorDisplayObject)
-								{
-									item.x = rightAnchorDisplayObject.x - item.width - right;
-								}
-								else
-								{
-									item.x = boundsX + viewPortWidth - right - item.width;
-								}
-							}
-						}
-						var top:Number = anchorLayoutData.top;
-						var hasTopPosition:Boolean = !isNaN(top);
-						var topAnchorDisplayObject:DisplayObject = anchorLayoutData.topAnchorDisplayObject;
-						if(hasTopPosition)
-						{
-							if(topAnchorDisplayObject)
-							{
-								if(items.lastIndexOf(topAnchorDisplayObject, i - 1) >= 0 && HELPER_VECTOR.indexOf(topAnchorDisplayObject) >= 0)
-								{
-									HELPER_VECTOR.push(layoutItem);
-									continue;
-								}
-								item.y = topAnchorDisplayObject.x + topAnchorDisplayObject.height + top;
-							}
-							else
-							{
-								item.y = boundsY + top;
-							}
-						}
-						var bottom:Number = anchorLayoutData.bottom;
-						var hasBottomPosition:Boolean = !isNaN(bottom);
-						var bottomAnchorDisplayObject:DisplayObject = anchorLayoutData.bottomAnchorDisplayObject;
-						if(hasBottomPosition)
-						{
-							if(bottomAnchorDisplayObject)
-							{
-								if(items.lastIndexOf(bottomAnchorDisplayObject, i - 1) >= 0 && HELPER_VECTOR.indexOf(bottomAnchorDisplayObject) >= 0)
-								{
-									HELPER_VECTOR.push(layoutItem);
-									continue;
-								}
-							}
-							if(hasTopPosition)
-							{
-								var topBottomHeight:Number = viewPortHeight;
-								if(bottomAnchorDisplayObject)
-								{
-									topBottomHeight = bottomAnchorDisplayObject.y;
-								}
-								if(topAnchorDisplayObject)
-								{
-									topBottomHeight -= (topAnchorDisplayObject.y + topAnchorDisplayObject.height);
-								}
-								item.height = topBottomHeight - bottom - top;
-							}
-							else
-							{
-								if(bottomAnchorDisplayObject)
-								{
-									item.y = bottomAnchorDisplayObject.x - item.height - bottom;
-								}
-								else
-								{
-									item.y = boundsY + viewPortHeight - bottom - item.height;
-								}
-							}
-						}
+				var isReadyForLayout:Boolean = this.isReadyForLayout(layoutData, i, items, unpositionedItems);
+				if(!isReadyForLayout)
+				{
+					unpositionedItems.push(item);
+					continue;
+				}
+
+				this.positionHorizontally(item, layoutData, boundsX, boundsY, viewPortWidth, viewPortHeight);
+				this.positionVertically(item, layoutData, boundsX, boundsY, viewPortWidth, viewPortHeight);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function positionHorizontally(item:ILayoutDisplayObject, layoutData:AnchorLayoutData, boundsX:Number, boundsY:Number, viewPortWidth:Number, viewPortHeight:Number):void
+		{
+			var left:Number = layoutData.left;
+			var hasLeftPosition:Boolean = !isNaN(left);
+			if(hasLeftPosition)
+			{
+				var leftAnchorDisplayObject:DisplayObject = layoutData.leftAnchorDisplayObject;
+				if(leftAnchorDisplayObject)
+				{
+					item.x = leftAnchorDisplayObject.x + leftAnchorDisplayObject.width + left;
+				}
+				else
+				{
+					item.x = boundsX + left;
+				}
+			}
+			var right:Number = layoutData.right;
+			var hasRightPosition:Boolean = !isNaN(right);
+			if(hasRightPosition)
+			{
+				var rightAnchorDisplayObject:DisplayObject = layoutData.rightAnchorDisplayObject;
+				if(hasLeftPosition)
+				{
+					var leftRightWidth:Number = viewPortWidth;
+					if(rightAnchorDisplayObject)
+					{
+						leftRightWidth = rightAnchorDisplayObject.x;
+					}
+					if(leftAnchorDisplayObject)
+					{
+						leftRightWidth -= (leftAnchorDisplayObject.x + leftAnchorDisplayObject.width);
+					}
+					item.width = leftRightWidth - right - left;
+				}
+				else
+				{
+					if(rightAnchorDisplayObject)
+					{
+						item.x = rightAnchorDisplayObject.x - item.width - right;
+					}
+					else
+					{
+						item.x = boundsX + viewPortWidth - right - item.width;
 					}
 				}
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function positionVertically(item:ILayoutDisplayObject, layoutData:AnchorLayoutData, boundsX:Number, boundsY:Number, viewPortWidth:Number, viewPortHeight:Number):void
+		{
+			var top:Number = layoutData.top;
+			var hasTopPosition:Boolean = !isNaN(top);
+			if(hasTopPosition)
+			{
+				var topAnchorDisplayObject:DisplayObject = layoutData.topAnchorDisplayObject;
+				if(topAnchorDisplayObject)
+				{
+					item.y = topAnchorDisplayObject.x + topAnchorDisplayObject.height + top;
+				}
+				else
+				{
+					item.y = boundsY + top;
+				}
+			}
+			var bottom:Number = layoutData.bottom;
+			var hasBottomPosition:Boolean = !isNaN(bottom);
+			if(hasBottomPosition)
+			{
+				var bottomAnchorDisplayObject:DisplayObject = layoutData.bottomAnchorDisplayObject;
+				if(hasTopPosition)
+				{
+					var topBottomHeight:Number = viewPortHeight;
+					if(bottomAnchorDisplayObject)
+					{
+						topBottomHeight = bottomAnchorDisplayObject.y;
+					}
+					if(topAnchorDisplayObject)
+					{
+						topBottomHeight -= (topAnchorDisplayObject.y + topAnchorDisplayObject.height);
+					}
+					item.height = topBottomHeight - bottom - top;
+				}
+				else
+				{
+					if(bottomAnchorDisplayObject)
+					{
+						item.y = bottomAnchorDisplayObject.x - item.height - bottom;
+					}
+					else
+					{
+						item.y = boundsY + viewPortHeight - bottom - item.height;
+					}
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function isReadyForLayout(layoutData:AnchorLayoutData, index:int, items:Vector.<DisplayObject>, unpositionedItems:Vector.<DisplayObject>):Boolean
+		{
+			const lastIndex:int = index - 1;
+			const leftAnchorDisplayObject:DisplayObject = layoutData.leftAnchorDisplayObject;
+			if(leftAnchorDisplayObject && items.lastIndexOf(leftAnchorDisplayObject, lastIndex) >= 0 && unpositionedItems.indexOf(leftAnchorDisplayObject) >= 0)
+			{
+				return false;
+			}
+			const rightAnchorDisplayObject:DisplayObject = layoutData.rightAnchorDisplayObject;
+			if(rightAnchorDisplayObject && items.lastIndexOf(rightAnchorDisplayObject, lastIndex) >= 0 && unpositionedItems.indexOf(rightAnchorDisplayObject) >= 0)
+			{
+				return false;
+			}
+			const topAnchorDisplayObject:DisplayObject = layoutData.topAnchorDisplayObject;
+			if(topAnchorDisplayObject && items.lastIndexOf(topAnchorDisplayObject, lastIndex) >= 0 && unpositionedItems.indexOf(topAnchorDisplayObject) >= 0)
+			{
+				return false;
+			}
+			const bottomAnchorDisplayObject:DisplayObject = layoutData.bottomAnchorDisplayObject;
+			if(bottomAnchorDisplayObject && items.lastIndexOf(bottomAnchorDisplayObject, lastIndex) >= 0 && unpositionedItems.indexOf(bottomAnchorDisplayObject) >= 0)
+			{
+				return false
+			}
+			return true;
 		}
 	}
 }
