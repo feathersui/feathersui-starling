@@ -116,7 +116,7 @@ package feathers.controls
 		 * scroll bar with the thumb in the middle. The tracks will be resized
 		 * as the thumb moves. This layout mode is designed for scroll bars
 		 * where the two sides of the track may be colored differently to show
-		 * the value "filling up" as the slider is dragged or to highlight the
+		 * the value "filling up" as the thumb is dragged or to highlight the
 		 * track when it is triggered to scroll by a page instead of a step.
 		 *
 		 * <p>Since the width and height of the tracks will change, consider
