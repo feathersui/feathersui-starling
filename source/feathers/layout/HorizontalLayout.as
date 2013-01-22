@@ -20,14 +20,11 @@ package feathers.layout
 
 	/**
 	 * Positions items from left to right in a single row.
+	 *
+	 * @see http://wiki.starling-framework.org/feathers/horizontal-layout
 	 */
 	public class HorizontalLayout extends EventDispatcher implements IVariableVirtualLayout
 	{
-		/**
-		 * @private
-		 */
-		private static const HELPER_VECTOR:Vector.<DisplayObject> = new <DisplayObject>[];
-
 		/**
 		 * The items will be aligned to the top of the bounds.
 		 */
@@ -81,6 +78,11 @@ package feathers.layout
 		/**
 		 * @private
 		 */
+		protected var _discoveredItemsCache:Vector.<DisplayObject> = new <DisplayObject>[];
+
+		/**
+		 * @private
+		 */
 		protected var _gap:Number = 0;
 
 		/**
@@ -102,6 +104,28 @@ package feathers.layout
 			}
 			this._gap = value;
 			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * Quickly sets all padding properties to the same value. The
+		 * <code>padding</code> getter always returns the value of
+		 * <code>paddingTop</code>, but the other padding values may be
+		 * different.
+		 */
+		public function get padding():Number
+		{
+			return this._paddingTop;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set padding(value:Number):void
+		{
+			this.paddingTop = value;
+			this.paddingRight = value;
+			this.paddingBottom = value;
+			this.paddingLeft = value;
 		}
 
 		/**
@@ -403,7 +427,7 @@ package feathers.layout
 			const explicitWidth:Number = suggestedBounds ? suggestedBounds.explicitWidth : NaN;
 			const explicitHeight:Number = suggestedBounds ? suggestedBounds.explicitHeight : NaN;
 
-			HELPER_VECTOR.length = 0;
+			this._discoveredItemsCache.length = 0;
 			var maxItemHeight:Number = this._useVirtualLayout ? this._typicalItemHeight : 0;
 			var positionX:Number = boundsX + this._paddingLeft;
 			const itemCount:int = items.length;
@@ -443,12 +467,12 @@ package feathers.layout
 					maxItemHeight = Math.max(maxItemHeight, item.height);
 					if(this._useVirtualLayout)
 					{
-						HELPER_VECTOR.push(item);
+						this._discoveredItemsCache.push(item);
 					}
 				}
 			}
 
-			const discoveredItems:Vector.<DisplayObject> = this._useVirtualLayout ? HELPER_VECTOR : items;
+			const discoveredItems:Vector.<DisplayObject> = this._useVirtualLayout ? this._discoveredItemsCache : items;
 			const totalHeight:Number = maxItemHeight + this._paddingTop + this._paddingBottom;
 			const availableHeight:Number = isNaN(explicitHeight) ? Math.min(maxHeight, Math.max(minHeight, totalHeight)) : explicitHeight;
 			const discoveredItemCount:int = discoveredItems.length;
@@ -502,7 +526,7 @@ package feathers.layout
 					}
 				}
 			}
-			HELPER_VECTOR.length = 0;
+			this._discoveredItemsCache.length = 0;
 
 			if(!result)
 			{
@@ -602,6 +626,23 @@ package feathers.layout
 				this._widthCache[index] = item.width;
 				this.dispatchEventWith(Event.CHANGE);
 			}
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function addToVariableVirtualCacheAtIndex(index:int, item:DisplayObject = null):void
+		{
+			const widthValue:* = item ? item.width : undefined;
+			this._widthCache.splice(index, 0, widthValue);
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function removeFromVariableVirtualCacheAtIndex(index:int):void
+		{
+			this._widthCache.splice(index, 1);
 		}
 
 		/**

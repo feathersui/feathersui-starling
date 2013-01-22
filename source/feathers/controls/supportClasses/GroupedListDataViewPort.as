@@ -307,12 +307,20 @@ package feathers.controls.supportClasses
 			if(this._dataProvider)
 			{
 				this._dataProvider.removeEventListener(Event.CHANGE, dataProvider_changeHandler);
+				this._dataProvider.removeEventListener(CollectionEventType.RESET, dataProvider_resetHandler);
+				this._dataProvider.removeEventListener(CollectionEventType.ADD_ITEM, dataProvider_addItemHandler);
+				this._dataProvider.removeEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
+				this._dataProvider.removeEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
 				this._dataProvider.removeEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_updateItemHandler);
 			}
 			this._dataProvider = value;
 			if(this._dataProvider)
 			{
 				this._dataProvider.addEventListener(Event.CHANGE, dataProvider_changeHandler);
+				this._dataProvider.addEventListener(CollectionEventType.RESET, dataProvider_resetHandler);
+				this._dataProvider.addEventListener(CollectionEventType.ADD_ITEM, dataProvider_addItemHandler);
+				this._dataProvider.addEventListener(CollectionEventType.REMOVE_ITEM, dataProvider_removeItemHandler);
+				this._dataProvider.addEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_updateItemHandler);
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
@@ -911,10 +919,6 @@ package feathers.controls.supportClasses
 
 			if(stylesInvalid || dataInvalid || itemRendererInvalid)
 			{
-				if(this._layout is IVariableVirtualLayout)
-				{
-					IVariableVirtualLayout(this._layout).resetVariableVirtualCache();
-				}
 				this.calculateTypicalValues();
 			}
 
@@ -2040,10 +2044,59 @@ package feathers.controls.supportClasses
 			this.invalidateParent();
 		}
 
+		private function dataProvider_addItemHandler(event:Event, indices:Array):void
+		{
+			const layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
+			if(!layout || !layout.hasVariableItemDimensions)
+			{
+				return;
+			}
+			const groupIndex:int = indices[0] as int;
+			const itemIndex:int = indices[1] as int;
+			const displayIndex:int = this.locationToDisplayIndex(groupIndex, itemIndex);
+			layout.addToVariableVirtualCacheAtIndex(displayIndex);
+		}
+
+		private function dataProvider_removeItemHandler(event:Event, indices:Array):void
+		{
+			const layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
+			if(!layout || !layout.hasVariableItemDimensions)
+			{
+				return;
+			}
+			const groupIndex:int = indices[0] as int;
+			const itemIndex:int = indices[1] as int;
+			const displayIndex:int = this.locationToDisplayIndex(groupIndex, itemIndex);
+			layout.removeFromVariableVirtualCacheAtIndex(displayIndex);
+		}
+
+		private function dataProvider_replaceItemHandler(event:Event, indices:Array):void
+		{
+			const layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
+			if(!layout || !layout.hasVariableItemDimensions)
+			{
+				return;
+			}
+			const groupIndex:int = indices[0] as int;
+			const itemIndex:int = indices[1] as int;
+			const displayIndex:int = this.locationToDisplayIndex(groupIndex, itemIndex);
+			layout.resetVariableVirtualCacheAtIndex(displayIndex);
+		}
+
+		private function dataProvider_resetHandler(event:Event):void
+		{
+			const layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
+			if(!layout || !layout.hasVariableItemDimensions)
+			{
+				return;
+			}
+			layout.resetVariableVirtualCache();
+		}
+
 		private function dataProvider_updateItemHandler(event:Event, indices:Array):void
 		{
-			const groupIndex:int = indices[0];
-			const itemIndex:int = indices[1];
+			const groupIndex:int = indices[0] as int;
+			const itemIndex:int = indices[1] as int;
 			const item:Object = this._dataProvider.getItemAt(groupIndex, itemIndex);
 			var renderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this._itemRendererMap[item]);
 			if(!renderer)

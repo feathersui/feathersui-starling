@@ -762,6 +762,11 @@ package feathers.controls
 			this.explicitHorizontalScrollStep = value;
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _targetHorizontalScrollPosition:Number;
 		
 		/**
 		 * @private
@@ -934,6 +939,11 @@ package feathers.controls
 			this.explicitVerticalScrollStep = value;
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _targetVerticalScrollPosition:Number;
 		
 		/**
 		 * @private
@@ -1399,6 +1409,7 @@ package feathers.controls
 				}
 				if(this._horizontalScrollPosition != targetHorizontalScrollPosition)
 				{
+					this._targetHorizontalScrollPosition = targetHorizontalScrollPosition;
 					this._horizontalAutoScrollTween = new Tween(this, duration, this._throwEase);
 					this._horizontalAutoScrollTween.animate("horizontalScrollPosition", targetHorizontalScrollPosition);
 					this._horizontalAutoScrollTween.onComplete = horizontalAutoScrollTween_onComplete;
@@ -1419,6 +1430,7 @@ package feathers.controls
 				}
 				if(this._verticalScrollPosition != targetVerticalScrollPosition)
 				{
+					this._targetVerticalScrollPosition = targetVerticalScrollPosition;
 					this._verticalAutoScrollTween = new Tween(this, duration, this._throwEase);
 					this._verticalAutoScrollTween.animate("verticalScrollPosition", targetVerticalScrollPosition);
 					this._verticalAutoScrollTween.onComplete = verticalAutoScrollTween_onComplete;
@@ -1823,15 +1835,36 @@ package feathers.controls
 		 */
 		protected function refreshScrollValues(isScrollInvalid:Boolean):void
 		{
-			var calculatedHorizontalScrollStep:Number = 1;
-			var calculatedVerticalScrollStep:Number = 1;
-			if(this._viewPort)
+			if(isNaN(this.explicitHorizontalScrollStep))
 			{
-				calculatedHorizontalScrollStep = this._viewPort.horizontalScrollStep;
-				calculatedVerticalScrollStep = this._viewPort.verticalScrollStep;
+				if(this._viewPort)
+				{
+					this.actualHorizontalScrollStep = this._viewPort.horizontalScrollStep;
+				}
+				else
+				{
+					this.actualHorizontalScrollStep = 1;
+				}
 			}
-			this.actualHorizontalScrollStep = isNaN(this.explicitHorizontalScrollStep) ? calculatedHorizontalScrollStep : this.explicitHorizontalScrollStep;
-			this.actualVerticalScrollStep = isNaN(this.explicitVerticalScrollStep) ? calculatedVerticalScrollStep : this.explicitVerticalScrollStep;
+			else
+			{
+				this.actualHorizontalScrollStep = this.explicitHorizontalScrollStep;
+			}
+			if(isNaN(this.explicitVerticalScrollStep))
+			{
+				if(this._viewPort)
+				{
+					this.actualVerticalScrollStep = this._viewPort.verticalScrollStep;
+				}
+				else
+				{
+					this.actualVerticalScrollStep = 1;
+				}
+			}
+			else
+			{
+				this.actualVerticalScrollStep = this.explicitVerticalScrollStep;
+			}
 
 			const oldMaxHSP:Number = this._maxHorizontalScrollPosition;
 			const oldMaxVSP:Number = this._maxVerticalScrollPosition;
@@ -1888,6 +1921,26 @@ package feathers.controls
 				this._horizontalPageIndex = this._verticalPageIndex = 0;
 			}
 
+			if(maximumPositionsChanged)
+			{
+				if(this._horizontalAutoScrollTween && this._targetHorizontalScrollPosition > this._maxHorizontalScrollPosition &&
+					oldMaxHSP > this._maxHorizontalScrollPosition)
+				{
+					this._targetHorizontalScrollPosition -= (oldMaxHSP - this._maxHorizontalScrollPosition);
+					this.throwTo(this._targetHorizontalScrollPosition, NaN, this._horizontalAutoScrollTween.totalTime - this._horizontalAutoScrollTween.currentTime);
+				}
+				if(this._verticalAutoScrollTween && this._targetVerticalScrollPosition > this._maxVerticalScrollPosition &&
+					oldMaxVSP > this._maxVerticalScrollPosition)
+				{
+					this._targetVerticalScrollPosition -= (oldMaxVSP - this._maxVerticalScrollPosition);
+					this.throwTo(NaN, this._targetVerticalScrollPosition, this._verticalAutoScrollTween.totalTime - this._verticalAutoScrollTween.currentTime);
+				}
+
+				//if we clamped the scroll position above, we need to inform
+				//the view port about the new scroll position
+				this._viewPort.horizontalScrollPosition = this._horizontalScrollPosition;
+				this._viewPort.verticalScrollPosition = this._verticalScrollPosition;
+			}
 			if(maximumPositionsChanged || isScrollInvalid)
 			{
 				this.dispatchEventWith(Event.SCROLL);

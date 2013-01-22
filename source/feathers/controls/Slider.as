@@ -81,6 +81,21 @@ package feathers.controls
 		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
 
 		/**
+		 * @private
+		 */
+		protected static const INVALIDATION_FLAG_THUMB_FACTORY:String = "thumbFactory";
+
+		/**
+		 * @private
+		 */
+		protected static const INVALIDATION_FLAG_MINIMUM_TRACK_FACTORY:String = "minimumTrackFactory";
+
+		/**
+		 * @private
+		 */
+		protected static const INVALIDATION_FLAG_MAXIMUM_TRACK_FACTORY:String = "maximumTrackFactory";
+
+		/**
 		 * The slider's thumb may be dragged horizontally (on the x-axis).
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
@@ -132,6 +147,30 @@ package feathers.controls
 		 * The default value added to the <code>nameList</code> of the thumb.
 		 */
 		public static const DEFAULT_CHILD_NAME_THUMB:String = "feathers-slider-thumb";
+
+		/**
+		 * @private
+		 */
+		protected static function defaultThumbFactory():Button
+		{
+			return new Button();
+		}
+
+		/**
+		 * @private
+		 */
+		protected static function defaultMinimumTrackFactory():Button
+		{
+			return new Button();
+		}
+
+		/**
+		 * @private
+		 */
+		protected static function defaultMaximumTrackFactory():Button
+		{
+			return new Button();
+		}
 		
 		/**
 		 * Constructor.
@@ -539,6 +578,72 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _minimumTrackFactory:Function;
+
+		/**
+		 * A function used to generate the slider's minimum track sub-component.
+		 * This can be used to change properties on the minimum track when it is first
+		 * created. For instance, if you are skinning Feathers components
+		 * without a theme, you might use <code>minimumTrackFactory</code> to set
+		 * skins and other styles on the minimum track.
+		 *
+		 * <p>The function should have the following signature:</p>
+		 * <pre>function():Button</pre>
+		 *
+		 * @see #minimumTrackProperties
+		 */
+		public function get minimumTrackFactory():Function
+		{
+			return this._minimumTrackFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set minimumTrackFactory(value:Function):void
+		{
+			if(this._minimumTrackFactory == value)
+			{
+				return;
+			}
+			this._minimumTrackFactory = value;
+			this.invalidate(INVALIDATION_FLAG_MINIMUM_TRACK_FACTORY);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _customMinimumTrackName:String;
+
+		/**
+		 * A name to add to the slider's minimum track sub-component. Typically
+		 * used by a theme to provide different skins to different sliders.
+		 *
+		 * @see feathers.core.FeathersControl#nameList
+		 * @see #minimumTrackFactory
+		 * @see #minimumTrackProperties
+		 */
+		public function get customMinimumTrackName():String
+		{
+			return this._customMinimumTrackName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customMinimumTrackName(value:String):void
+		{
+			if(this._customMinimumTrackName == value)
+			{
+				return;
+			}
+			this._customMinimumTrackName = value;
+			this.invalidate(INVALIDATION_FLAG_MINIMUM_TRACK_FACTORY);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _minimumTrackProperties:PropertyProxy;
 
 		/**
@@ -596,6 +701,72 @@ package feathers.controls
 				this._minimumTrackProperties.addOnChangeCallback(minimumTrackProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _maximumTrackFactory:Function;
+
+		/**
+		 * A function used to generate the slider's maximum track sub-component.
+		 * This can be used to change properties on the maximum track when it is first
+		 * created. For instance, if you are skinning Feathers components
+		 * without a theme, you might use <code>maximumTrackFactory</code> to set
+		 * skins and other styles on the maximum track.
+		 *
+		 * <p>The function should have the following signature:</p>
+		 * <pre>function():Button</pre>
+		 *
+		 * @see #maximumTrackProperties
+		 */
+		public function get maximumTrackFactory():Function
+		{
+			return this._maximumTrackFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set maximumTrackFactory(value:Function):void
+		{
+			if(this._maximumTrackFactory == value)
+			{
+				return;
+			}
+			this._maximumTrackFactory = value;
+			this.invalidate(INVALIDATION_FLAG_MAXIMUM_TRACK_FACTORY);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _customMaximumTrackName:String;
+
+		/**
+		 * A name to add to the slider's maximum track sub-component. Typically
+		 * used by a theme to provide different skins to different sliders.
+		 *
+		 * @see feathers.core.FeathersControl#nameList
+		 * @see #maximumTrackFactory
+		 * @see #maximumTrackProperties
+		 */
+		public function get customMaximumTrackName():String
+		{
+			return this._customMaximumTrackName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customMaximumTrackName(value:String):void
+		{
+			if(this._customMaximumTrackName == value)
+			{
+				return;
+			}
+			this._customMaximumTrackName = value;
+			this.invalidate(INVALIDATION_FLAG_MAXIMUM_TRACK_FACTORY);
 		}
 		
 		/**
@@ -658,6 +829,72 @@ package feathers.controls
 				this._maximumTrackProperties.addOnChangeCallback(maximumTrackProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _thumbFactory:Function;
+
+		/**
+		 * A function used to generate the slider's thumb sub-component.
+		 * This can be used to change properties on the thumb when it is first
+		 * created. For instance, if you are skinning Feathers components
+		 * without a theme, you might use <code>thumbFactory</code> to set
+		 * skins and text styles on the thumb.
+		 *
+		 * <p>The function should have the following signature:</p>
+		 * <pre>function():Button</pre>
+		 *
+		 * @see #thumbProperties
+		 */
+		public function get thumbFactory():Function
+		{
+			return this._thumbFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set thumbFactory(value:Function):void
+		{
+			if(this._thumbFactory == value)
+			{
+				return;
+			}
+			this._thumbFactory = value;
+			this.invalidate(INVALIDATION_FLAG_THUMB_FACTORY);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _customThumbName:String;
+
+		/**
+		 * A name to add to the slider's thumb sub-component. Typically
+		 * used by a theme to provide different skins to different sliders.
+		 *
+		 * @see feathers.core.FeathersControl#nameList
+		 * @see #thumbFactory
+		 * @see #thumbProperties
+		 */
+		public function get customThumbName():String
+		{
+			return this._customThumbName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customThumbName(value:String):void
+		{
+			if(this._customThumbName == value)
+			{
+				return;
+			}
+			this._customThumbName = value;
+			this.invalidate(INVALIDATION_FLAG_THUMB_FACTORY);
 		}
 		
 		/**
@@ -755,59 +992,57 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override protected function initialize():void
-		{
-			if(!this.minimumTrack)
-			{
-				this.minimumTrack = new Button();
-				this.minimumTrack.nameList.add(this.minimumTrackName);
-				this.minimumTrack.label = "";
-				this.minimumTrack.keepDownStateOnRollOut = true;
-				this.minimumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
-				this.addChild(this.minimumTrack);
-			}
-			
-			if(!this.thumb)
-			{
-				this.thumb = new Button();
-				this.thumb.nameList.add(this.thumbName);
-				this.thumb.label = "";
-				this.thumb.keepDownStateOnRollOut = true;
-				this.thumb.addEventListener(TouchEvent.TOUCH, thumb_touchHandler);
-				this.addChild(this.thumb);
-			}
-		}
-		
-		/**
-		 * @private
-		 */
 		override protected function draw():void
 		{
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
+			const thumbFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_THUMB_FACTORY);
+			const minimumTrackFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_MINIMUM_TRACK_FACTORY);
+			const maximumTrackFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_MAXIMUM_TRACK_FACTORY);
 
-			this.createOrDestroyMaximumTrackIfNeeded();
+			if(thumbFactoryInvalid)
+			{
+				this.createThumb();
+			}
 
-			if(stylesInvalid)
+			if(minimumTrackFactoryInvalid)
+			{
+				this.createMinimumTrack();
+			}
+
+			this.createOrDestroyMaximumTrackIfNeeded(maximumTrackFactoryInvalid);
+
+			if(thumbFactoryInvalid || stylesInvalid)
 			{
 				this.refreshThumbStyles();
+			}
+
+			if(minimumTrackFactoryInvalid || maximumTrackFactoryInvalid || stylesInvalid)
+			{
 				this.refreshTrackStyles();
 			}
 			
-			if(stateInvalid)
+			if(thumbFactoryInvalid || stateInvalid)
 			{
-				this.thumb.isEnabled = this.minimumTrack.isEnabled = this._isEnabled;
-				if(this.maximumTrack)
-				{
-					this.maximumTrack.isEnabled = this._isEnabled;
-				}
+				this.thumb.isEnabled = this._isEnabled;
+			}
+
+			if(minimumTrackFactoryInvalid || stateInvalid)
+			{
+				this.minimumTrack.isEnabled = this._isEnabled;
+			}
+
+			if((maximumTrackFactoryInvalid || stateInvalid) && this.maximumTrack)
+			{
+				this.maximumTrack.isEnabled = this._isEnabled;
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
-			if(dataInvalid || stylesInvalid || sizeInvalid)
+			if(thumbFactoryInvalid || minimumTrackFactoryInvalid || maximumTrackFactoryInvalid ||
+				dataInvalid || stylesInvalid || sizeInvalid)
 			{
 				this.layout();
 			}
@@ -894,6 +1129,77 @@ package feathers.controls
 				}
 			}
 			return this.setSizeInternal(newWidth, newHeight, false);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function createThumb():void
+		{
+			if(this.thumb)
+			{
+				this.thumb.removeFromParent(true);
+				this.thumb = null;
+			}
+
+			const factory:Function = this._thumbFactory != null ? this._thumbFactory : defaultThumbFactory;
+			const thumbName:String = this._customThumbName != null ? this._customThumbName : this.thumbName;
+			this.thumb = Button(factory());
+			this.thumb.nameList.add(thumbName);
+			this.thumb.keepDownStateOnRollOut = true;
+			this.thumb.addEventListener(TouchEvent.TOUCH, thumb_touchHandler);
+			this.addChild(this.thumb);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function createMinimumTrack():void
+		{
+			if(this.minimumTrack)
+			{
+				this.minimumTrack.removeFromParent(true);
+				this.minimumTrack = null;
+			}
+
+			const factory:Function = this._minimumTrackFactory != null ? this._minimumTrackFactory : defaultMinimumTrackFactory;
+			const minimumTrackName:String = this._customMinimumTrackName != null ? this._customMinimumTrackName : this.minimumTrackName;
+			this.minimumTrack = Button(factory());
+			this.minimumTrack.nameList.add(minimumTrackName);
+			this.minimumTrack.keepDownStateOnRollOut = true;
+			this.minimumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
+			this.addChildAt(this.minimumTrack, 0);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function createOrDestroyMaximumTrackIfNeeded(maximumTrackFactoryInvalid:Boolean):void
+		{
+			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_MIN_MAX)
+			{
+				if(!maximumTrackFactoryInvalid)
+				{
+					return;
+				}
+				if(this.maximumTrack)
+				{
+					this.maximumTrack.removeFromParent(true);
+					this.maximumTrack = null;
+				}
+				const factory:Function = this._maximumTrackFactory != null ? this._maximumTrackFactory : defaultMaximumTrackFactory;
+				const maximumTrackName:String = this._customMaximumTrackName != null ? this._customMaximumTrackName : this.maximumTrackName;
+				this.maximumTrack = Button(factory());
+				this.maximumTrack.nameList.add(maximumTrackName);
+				this.maximumTrack.keepDownStateOnRollOut = true;
+				this.maximumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
+				this.addChildAt(this.maximumTrack, 1);
+			}
+			else if(this.maximumTrack) //single
+			{
+				this.maximumTrack.removeFromParent(true);
+				this.maximumTrack = null;
+			}
 		}
 		
 		/**
@@ -1017,30 +1323,6 @@ package feathers.controls
 			this.minimumTrack.y = 0;
 			this.minimumTrack.width = this.actualWidth;
 			this.minimumTrack.height = this.actualHeight;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function createOrDestroyMaximumTrackIfNeeded():void
-		{
-			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_MIN_MAX)
-			{
-				if(!this.maximumTrack)
-				{
-					this.maximumTrack = new Button();
-					this.maximumTrack.nameList.add(this.maximumTrackName);
-					this.maximumTrack.label = "";
-					this.maximumTrack.keepDownStateOnRollOut = true;
-					this.maximumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
-					this.addChildAt(this.maximumTrack, 1);
-				}
-			}
-			else if(this.maximumTrack) //single
-			{
-				this.maximumTrack.removeFromParent(true);
-				this.maximumTrack = null;
-			}
 		}
 
 		/**

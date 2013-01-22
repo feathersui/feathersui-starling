@@ -69,6 +69,31 @@ package feathers.controls
 		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
 
 		/**
+		 * @private
+		 */
+		protected static const INVALIDATION_FLAG_THUMB_FACTORY:String = "thumbFactory";
+
+		/**
+		 * @private
+		 */
+		protected static const INVALIDATION_FLAG_MINIMUM_TRACK_FACTORY:String = "minimumTrackFactory";
+
+		/**
+		 * @private
+		 */
+		protected static const INVALIDATION_FLAG_MAXIMUM_TRACK_FACTORY:String = "maximumTrackFactory";
+
+		/**
+		 * @private
+		 */
+		protected static const INVALIDATION_FLAG_DECREMENT_BUTTON_FACTORY:String = "decrementButtonFactory";
+
+		/**
+		 * @private
+		 */
+		protected static const INVALIDATION_FLAG_INCREMENT_BUTTON_FACTORY:String = "incrementButtonFactory";
+
+		/**
 		 * The scroll bar's thumb may be dragged horizontally (on the x-axis).
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
@@ -91,7 +116,7 @@ package feathers.controls
 		 * scroll bar with the thumb in the middle. The tracks will be resized
 		 * as the thumb moves. This layout mode is designed for scroll bars
 		 * where the two sides of the track may be colored differently to show
-		 * the value "filling up" as the slider is dragged or to highlight the
+		 * the value "filling up" as the thumb is dragged or to highlight the
 		 * track when it is triggered to scroll by a page instead of a step.
 		 *
 		 * <p>Since the width and height of the tracks will change, consider
@@ -133,6 +158,46 @@ package feathers.controls
 		 * button.
 		 */
 		public static const DEFAULT_CHILD_NAME_INCREMENT_BUTTON:String = "feathers-scroll-bar-increment-button";
+
+		/**
+		 * @private
+		 */
+		protected static function defaultThumbFactory():Button
+		{
+			return new Button();
+		}
+
+		/**
+		 * @private
+		 */
+		protected static function defaultMinimumTrackFactory():Button
+		{
+			return new Button();
+		}
+
+		/**
+		 * @private
+		 */
+		protected static function defaultMaximumTrackFactory():Button
+		{
+			return new Button();
+		}
+
+		/**
+		 * @private
+		 */
+		protected static function defaultDecrementButtonFactory():Button
+		{
+			return new Button();
+		}
+
+		/**
+		 * @private
+		 */
+		protected static function defaultIncrementButtonFactory():Button
+		{
+			return new Button();
+		}
 
 		/**
 		 * Constructor.
@@ -386,6 +451,28 @@ package feathers.controls
 		}
 
 		/**
+		 * Quickly sets all padding properties to the same value. The
+		 * <code>padding</code> getter always returns the value of
+		 * <code>paddingTop</code>, but the other padding values may be
+		 * different.
+		 */
+		public function get padding():Number
+		{
+			return this._paddingTop;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set padding(value:Number):void
+		{
+			this.paddingTop = value;
+			this.paddingRight = value;
+			this.paddingBottom = value;
+			this.paddingLeft = value;
+		}
+
+		/**
 		 * @private
 		 */
 		protected var _paddingTop:Number = 0;
@@ -577,6 +664,72 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _minimumTrackFactory:Function;
+
+		/**
+		 * A function used to generate the scroll bar's minimum track sub-component.
+		 * This can be used to change properties on the minimum track when it is first
+		 * created. For instance, if you are skinning Feathers components
+		 * without a theme, you might use <code>minimumTrackFactory</code> to set
+		 * skins and other styles on the minimum track.
+		 *
+		 * <p>The function should have the following signature:</p>
+		 * <pre>function():Button</pre>
+		 *
+		 * @see #minimumTrackProperties
+		 */
+		public function get minimumTrackFactory():Function
+		{
+			return this._minimumTrackFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set minimumTrackFactory(value:Function):void
+		{
+			if(this._minimumTrackFactory == value)
+			{
+				return;
+			}
+			this._minimumTrackFactory = value;
+			this.invalidate(INVALIDATION_FLAG_MINIMUM_TRACK_FACTORY);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _customMinimumTrackName:String;
+
+		/**
+		 * A name to add to the scroll bar's minimum track sub-component. Typically
+		 * used by a theme to provide different skins to different scroll bars.
+		 *
+		 * @see feathers.core.FeathersControl#nameList
+		 * @see #minimumTrackFactory
+		 * @see #minimumTrackProperties
+		 */
+		public function get customMinimumTrackName():String
+		{
+			return this._customMinimumTrackName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customMinimumTrackName(value:String):void
+		{
+			if(this._customMinimumTrackName == value)
+			{
+				return;
+			}
+			this._customMinimumTrackName = value;
+			this.invalidate(INVALIDATION_FLAG_MINIMUM_TRACK_FACTORY);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _minimumTrackProperties:PropertyProxy;
 
 		/**
@@ -634,6 +787,72 @@ package feathers.controls
 				this._minimumTrackProperties.addOnChangeCallback(minimumTrackProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _maximumTrackFactory:Function;
+
+		/**
+		 * A function used to generate the scroll bar's maximum track sub-component.
+		 * This can be used to change properties on the maximum track when it is first
+		 * created. For instance, if you are skinning Feathers components
+		 * without a theme, you might use <code>maximumTrackFactory</code> to set
+		 * skins and other styles on the maximum track.
+		 *
+		 * <p>The function should have the following signature:</p>
+		 * <pre>function():Button</pre>
+		 *
+		 * @see #maximumTrackProperties
+		 */
+		public function get maximumTrackFactory():Function
+		{
+			return this._maximumTrackFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set maximumTrackFactory(value:Function):void
+		{
+			if(this._maximumTrackFactory == value)
+			{
+				return;
+			}
+			this._maximumTrackFactory = value;
+			this.invalidate(INVALIDATION_FLAG_MAXIMUM_TRACK_FACTORY);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _customMaximumTrackName:String;
+
+		/**
+		 * A name to add to the scroll bar's maximum track sub-component. Typically
+		 * used by a theme to provide different skins to different scroll bars.
+		 *
+		 * @see feathers.core.FeathersControl#nameList
+		 * @see #maximumTrackFactory
+		 * @see #maximumTrackProperties
+		 */
+		public function get customMaximumTrackName():String
+		{
+			return this._customMaximumTrackName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customMaximumTrackName(value:String):void
+		{
+			if(this._customMaximumTrackName == value)
+			{
+				return;
+			}
+			this._customMaximumTrackName = value;
+			this.invalidate(INVALIDATION_FLAG_MAXIMUM_TRACK_FACTORY);
 		}
 
 		/**
@@ -701,6 +920,72 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _thumbFactory:Function;
+
+		/**
+		 * A function used to generate the scroll bar's thumb sub-component.
+		 * This can be used to change properties on the thumb when it is first
+		 * created. For instance, if you are skinning Feathers components
+		 * without a theme, you might use <code>thumbFactory</code> to set
+		 * skins and text styles on the thumb.
+		 *
+		 * <p>The function should have the following signature:</p>
+		 * <pre>function():Button</pre>
+		 *
+		 * @see #thumbProperties
+		 */
+		public function get thumbFactory():Function
+		{
+			return this._thumbFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set thumbFactory(value:Function):void
+		{
+			if(this._thumbFactory == value)
+			{
+				return;
+			}
+			this._thumbFactory = value;
+			this.invalidate(INVALIDATION_FLAG_THUMB_FACTORY);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _customThumbName:String;
+
+		/**
+		 * A name to add to the scroll bar's thumb sub-component. Typically
+		 * used by a theme to provide different skins to different scroll bars.
+		 *
+		 * @see feathers.core.FeathersControl#nameList
+		 * @see #thumbFactory
+		 * @see #thumbProperties
+		 */
+		public function get customThumbName():String
+		{
+			return this._customThumbName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customThumbName(value:String):void
+		{
+			if(this._customThumbName == value)
+			{
+				return;
+			}
+			this._customThumbName = value;
+			this.invalidate(INVALIDATION_FLAG_THUMB_FACTORY);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _thumbProperties:PropertyProxy;
 
 		/**
@@ -763,6 +1048,72 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _decrementButtonFactory:Function;
+
+		/**
+		 * A function used to generate the scroll bar's decrement button sub-component.
+		 * This can be used to change properties on the decrement button when it is first
+		 * created. For instance, if you are skinning Feathers components
+		 * without a theme, you might use <code>decrementButtonFactory</code> to set
+		 * skins and other styles on the maximum track.
+		 *
+		 * <p>The function should have the following signature:</p>
+		 * <pre>function():Button</pre>
+		 *
+		 * @see #decrementButtonProperties
+		 */
+		public function get decrementButtonFactory():Function
+		{
+			return this._decrementButtonFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set decrementButtonFactory(value:Function):void
+		{
+			if(this._decrementButtonFactory == value)
+			{
+				return;
+			}
+			this._decrementButtonFactory = value;
+			this.invalidate(INVALIDATION_FLAG_DECREMENT_BUTTON_FACTORY);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _customDecrementButtonName:String;
+
+		/**
+		 * A name to add to the scroll bar's decrement button sub-component. Typically
+		 * used by a theme to provide different skins to different scroll bars.
+		 *
+		 * @see feathers.core.FeathersControl#nameList
+		 * @see #decrementButtonFactory
+		 * @see #decrementButtonProperties
+		 */
+		public function get customDecrementButtonName():String
+		{
+			return this._customDecrementButtonName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customDecrementButtonName(value:String):void
+		{
+			if(this._customDecrementButtonName == value)
+			{
+				return;
+			}
+			this._customDecrementButtonName = value;
+			this.invalidate(INVALIDATION_FLAG_DECREMENT_BUTTON_FACTORY);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _decrementButtonProperties:PropertyProxy;
 
 		/**
@@ -820,6 +1171,72 @@ package feathers.controls
 				this._decrementButtonProperties.addOnChangeCallback(decrementButtonProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _incrementButtonFactory:Function;
+
+		/**
+		 * A function used to generate the scroll bar's increment button sub-component.
+		 * This can be used to change properties on the increment button when it is first
+		 * created. For instance, if you are skinning Feathers components
+		 * without a theme, you might use <code>incrementButtonFactory</code> to set
+		 * skins and other styles on the maximum track.
+		 *
+		 * <p>The function should have the following signature:</p>
+		 * <pre>function():Button</pre>
+		 *
+		 * @see #incrementButtonProperties
+		 */
+		public function get incrementButtonFactory():Function
+		{
+			return this._incrementButtonFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set incrementButtonFactory(value:Function):void
+		{
+			if(this._incrementButtonFactory == value)
+			{
+				return;
+			}
+			this._incrementButtonFactory = value;
+			this.invalidate(INVALIDATION_FLAG_INCREMENT_BUTTON_FACTORY);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _customIncrementButtonName:String;
+
+		/**
+		 * A name to add to the scroll bar's increment button sub-component. Typically
+		 * used by a theme to provide different skins to different scroll bars.
+		 *
+		 * @see feathers.core.FeathersControl#nameList
+		 * @see #incrementButtonFactory
+		 * @see #incrementButtonProperties
+		 */
+		public function get customIncrementButtonName():String
+		{
+			return this._customIncrementButtonName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customIncrementButtonName(value:String):void
+		{
+			if(this._customIncrementButtonName == value)
+			{
+				return;
+			}
+			this._customIncrementButtonName = value;
+			this.invalidate(INVALIDATION_FLAG_INCREMENT_BUTTON_FACTORY);
 		}
 
 		/**
@@ -917,83 +1334,84 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override protected function initialize():void
-		{
-			if(!this.minimumTrack)
-			{
-				this.minimumTrack = new Button();
-				this.minimumTrack.nameList.add(this.minimumTrackName);
-				this.minimumTrack.label = "";
-				this.minimumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
-				this.addChild(this.minimumTrack);
-			}
-
-			if(!this.thumb)
-			{
-				this.thumb = new Button();
-				this.thumb.nameList.add(this.thumbName);
-				this.thumb.label = "";
-				this.thumb.keepDownStateOnRollOut = true;
-				this.thumb.addEventListener(TouchEvent.TOUCH, thumb_touchHandler);
-				this.addChild(this.thumb);
-			}
-
-			if(!this.decrementButton)
-			{
-				this.decrementButton = new Button();
-				this.decrementButton.nameList.add(this.decrementButtonName);
-				this.decrementButton.label = "";
-				this.decrementButton.addEventListener(TouchEvent.TOUCH, decrementButton_touchHandler);
-				this.decrementButton.addEventListener(Event.TRIGGERED, decrementButton_triggeredHandler);
-				this.addChild(this.decrementButton);
-			}
-
-			if(!this.incrementButton)
-			{
-				this.incrementButton = new Button();
-				this.incrementButton.nameList.add(this.incrementButtonName);
-				this.incrementButton.label = "";
-				this.incrementButton.addEventListener(TouchEvent.TOUCH, incrementButton_touchHandler);
-				this.incrementButton.addEventListener(Event.TRIGGERED, incrementButton_triggeredHandler);
-				this.addChild(this.incrementButton);
-			}
-		}
-
-		/**
-		 * @private
-		 */
 		override protected function draw():void
 		{
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
+			const thumbFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_THUMB_FACTORY);
+			const minimumTrackFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_MINIMUM_TRACK_FACTORY);
+			const maximumTrackFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_MAXIMUM_TRACK_FACTORY);
+			const incrementButtonFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_INCREMENT_BUTTON_FACTORY);
+			const decrementButtonFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DECREMENT_BUTTON_FACTORY);
 
-			this.createOrDestroyMaximumTrackIfNeeded();
+			if(thumbFactoryInvalid)
+			{
+				this.createThumb();
+			}
+			if(minimumTrackFactoryInvalid)
+			{
+				this.createMinimumTrack();
+			}
+			this.createOrDestroyMaximumTrackIfNeeded(maximumTrackFactoryInvalid);
+			if(decrementButtonFactoryInvalid)
+			{
+				this.createDecrementButton();
+			}
+			if(incrementButtonFactoryInvalid)
+			{
+				this.createIncrementButton();
+			}
 
-			if(stylesInvalid)
+			if(thumbFactoryInvalid || stylesInvalid)
 			{
 				this.refreshThumbStyles();
+			}
+			if(minimumTrackFactoryInvalid || stylesInvalid)
+			{
 				this.refreshMinimumTrackStyles();
+			}
+			if(maximumTrackFactoryInvalid || stylesInvalid)
+			{
 				this.refreshMaximumTrackStyles();
+			}
+			if(decrementButtonFactoryInvalid || stylesInvalid)
+			{
 				this.refreshDecrementButtonStyles();
+			}
+			if(incrementButtonFactoryInvalid || stylesInvalid)
+			{
 				this.refreshIncrementButtonStyles();
 			}
 
-			if(stateInvalid || dataInvalid)
+			const isEnabled:Boolean = this._isEnabled && this._maximum > this._minimum;
+			if(stateInvalid || dataInvalid || thumbFactoryInvalid)
 			{
-				const isEnabled:Boolean = this._isEnabled && this._maximum > this._minimum;
-				this.thumb.isEnabled = this.minimumTrack.isEnabled =
-					this.decrementButton.isEnabled = this.incrementButton.isEnabled = isEnabled;
-				if(this.maximumTrack)
-				{
-					this.maximumTrack.isEnabled = isEnabled;
-				}
+				this.thumb.isEnabled = isEnabled;
+			}
+			if(stateInvalid || dataInvalid || minimumTrackFactoryInvalid)
+			{
+				this.minimumTrack.isEnabled = isEnabled;
+			}
+			if((stateInvalid || dataInvalid || maximumTrackFactoryInvalid) && this.maximumTrack)
+			{
+				this.maximumTrack.isEnabled = isEnabled;
+			}
+			if(stateInvalid || dataInvalid || decrementButtonFactoryInvalid)
+			{
+				this.decrementButton.isEnabled = isEnabled;
+			}
+			if(stateInvalid || dataInvalid || incrementButtonFactoryInvalid)
+			{
+				this.incrementButton.isEnabled = isEnabled;
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
-			if(dataInvalid || stylesInvalid || sizeInvalid)
+			if(thumbFactoryInvalid || minimumTrackFactoryInvalid || maximumTrackFactoryInvalid ||
+				decrementButtonFactoryInvalid || incrementButtonFactoryInvalid ||
+				dataInvalid || stylesInvalid || sizeInvalid)
 			{
 				this.layout();
 			}
@@ -1093,6 +1511,117 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function createThumb():void
+		{
+			if(this.thumb)
+			{
+				this.thumb.removeFromParent(true);
+				this.thumb = null;
+			}
+
+			const factory:Function = this._thumbFactory != null ? this._thumbFactory : defaultThumbFactory;
+			const thumbName:String = this._customThumbName != null ? this._customThumbName : this.thumbName;
+			this.thumb = Button(factory());
+			this.thumb.nameList.add(thumbName);
+			this.thumb.keepDownStateOnRollOut = true;
+			this.thumb.addEventListener(TouchEvent.TOUCH, thumb_touchHandler);
+			this.addChild(this.thumb);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function createMinimumTrack():void
+		{
+			if(this.minimumTrack)
+			{
+				this.minimumTrack.removeFromParent(true);
+				this.minimumTrack = null;
+			}
+
+			const factory:Function = this._minimumTrackFactory != null ? this._minimumTrackFactory : defaultMinimumTrackFactory;
+			const minimumTrackName:String = this._customMinimumTrackName != null ? this._customMinimumTrackName : this.minimumTrackName;
+			this.minimumTrack = Button(factory());
+			this.minimumTrack.nameList.add(minimumTrackName);
+			this.minimumTrack.keepDownStateOnRollOut = true;
+			this.minimumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
+			this.addChildAt(this.minimumTrack, 0);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function createOrDestroyMaximumTrackIfNeeded(maximumTrackFactoryInvalid:Boolean):void
+		{
+			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_MIN_MAX)
+			{
+				if(!maximumTrackFactoryInvalid)
+				{
+					return;
+				}
+				if(this.maximumTrack)
+				{
+					this.maximumTrack.removeFromParent(true);
+					this.maximumTrack = null;
+				}
+				const factory:Function = this._maximumTrackFactory != null ? this._maximumTrackFactory : defaultMaximumTrackFactory;
+				const maximumTrackName:String = this._customMaximumTrackName != null ? this._customMaximumTrackName : this.maximumTrackName;
+				this.maximumTrack = Button(factory());
+				this.maximumTrack.nameList.add(maximumTrackName);
+				this.maximumTrack.keepDownStateOnRollOut = true;
+				this.maximumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
+				this.addChildAt(this.maximumTrack, 1);
+			}
+			else if(this.maximumTrack) //single
+			{
+				this.maximumTrack.removeFromParent(true);
+				this.maximumTrack = null;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function createDecrementButton():void
+		{
+			if(this.decrementButton)
+			{
+				this.decrementButton.removeFromParent(true);
+				this.decrementButton = null;
+			}
+
+			const factory:Function = this._decrementButtonFactory != null ? this._decrementButtonFactory : defaultDecrementButtonFactory;
+			const decrementButtonName:String = this._customDecrementButtonName != null ? this._customDecrementButtonName : this.decrementButtonName;
+			this.decrementButton = Button(factory());
+			this.decrementButton.nameList.add(decrementButtonName);
+			this.decrementButton.keepDownStateOnRollOut = true;
+			this.decrementButton.addEventListener(TouchEvent.TOUCH, decrementButton_touchHandler);
+			this.addChild(this.decrementButton);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function createIncrementButton():void
+		{
+			if(this.incrementButton)
+			{
+				this.incrementButton.removeFromParent(true);
+				this.incrementButton = null;
+			}
+
+			const factory:Function = this._incrementButtonFactory != null ? this._incrementButtonFactory : defaultIncrementButtonFactory;
+			const incrementButtonName:String = this._customIncrementButtonName != null ? this._customIncrementButtonName : this.incrementButtonName;
+			this.incrementButton = Button(factory());
+			this.incrementButton.nameList.add(incrementButtonName);
+			this.incrementButton.keepDownStateOnRollOut = true;
+			this.incrementButton.addEventListener(TouchEvent.TOUCH, incrementButton_touchHandler);
+			this.addChild(this.incrementButton);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function refreshThumbStyles():void
 		{
 			for(var propertyName:String in this._thumbProperties)
@@ -1166,29 +1695,6 @@ package feathers.controls
 					var propertyValue:Object = this._incrementButtonProperties[propertyName];
 					this.incrementButton[propertyName] = propertyValue;
 				}
-			}
-		}
-
-		/**
-		 * @private
-		 */
-		protected function createOrDestroyMaximumTrackIfNeeded():void
-		{
-			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_MIN_MAX)
-			{
-				if(!this.maximumTrack)
-				{
-					this.maximumTrack = new Button();
-					this.maximumTrack.nameList.add(this.maximumTrackName);
-					this.maximumTrack.label = "";
-					this.maximumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
-					this.addChildAt(this.maximumTrack, 1);
-				}
-			}
-			else if(this.maximumTrack) //single
-			{
-				this.maximumTrack.removeFromParent(true);
-				this.maximumTrack = null;
 			}
 		}
 
@@ -1610,24 +2116,56 @@ package feathers.controls
 		 */
 		protected function decrementButton_touchHandler(event:TouchEvent):void
 		{
-			const touches:Vector.<Touch> = event.getTouches(this.decrementButton, TouchPhase.BEGAN, HELPER_TOUCHES_VECTOR);
+			if(!this._isEnabled)
+			{
+				return;
+			}
+			const touches:Vector.<Touch> = event.getTouches(this.decrementButton, null, HELPER_TOUCHES_VECTOR);
 			if(touches.length == 0)
 			{
 				return;
 			}
-			this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
-			this.decrement();
-			this.startRepeatTimer(this.decrement);
-			HELPER_TOUCHES_VECTOR.length = 0;
-		}
 
-		/**
-		 * @private
-		 */
-		protected function decrementButton_triggeredHandler(event:Event):void
-		{
-			this._repeatTimer.stop();
-			this.dispatchEventWith(FeathersEventType.END_INTERACTION);
+			if(this._touchPointID >= 0)
+			{
+				var touch:Touch;
+				for each(var currentTouch:Touch in touches)
+				{
+					if(currentTouch.id == this._touchPointID)
+					{
+						touch = currentTouch;
+						break;
+					}
+				}
+
+				if(!touch)
+				{
+					//end of hover
+					HELPER_TOUCHES_VECTOR.length = 0;
+					return;
+				}
+				if(touch.phase == TouchPhase.ENDED)
+				{
+					this._touchPointID = -1;
+					this._repeatTimer.stop();
+					this.dispatchEventWith(FeathersEventType.END_INTERACTION);
+				}
+			}
+			else //if we get here, we don't have a saved touch ID yet
+			{
+				for each(touch in touches)
+				{
+					if(touch.phase == TouchPhase.BEGAN)
+					{
+						this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
+						this.decrement();
+						this.startRepeatTimer(this.decrement);
+						this._touchPointID = touch.id;
+						break;
+					}
+				}
+			}
+			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 
 		/**
@@ -1635,14 +2173,55 @@ package feathers.controls
 		 */
 		protected function incrementButton_touchHandler(event:TouchEvent):void
 		{
-			const touches:Vector.<Touch> = event.getTouches(this.incrementButton, TouchPhase.BEGAN, HELPER_TOUCHES_VECTOR);
+			if(!this._isEnabled)
+			{
+				return;
+			}
+			const touches:Vector.<Touch> = event.getTouches(this.incrementButton, null, HELPER_TOUCHES_VECTOR);
 			if(touches.length == 0)
 			{
 				return;
 			}
-			this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
-			this.increment();
-			this.startRepeatTimer(this.increment);
+
+			if(this._touchPointID >= 0)
+			{
+				var touch:Touch;
+				for each(var currentTouch:Touch in touches)
+				{
+					if(currentTouch.id == this._touchPointID)
+					{
+						touch = currentTouch;
+						break;
+					}
+				}
+
+				if(!touch)
+				{
+					//end of hover
+					HELPER_TOUCHES_VECTOR.length = 0;
+					return;
+				}
+				if(touch.phase == TouchPhase.ENDED)
+				{
+					this._touchPointID = -1;
+					this._repeatTimer.stop();
+					this.dispatchEventWith(FeathersEventType.END_INTERACTION);
+				}
+			}
+			else //if we get here, we don't have a saved touch ID yet
+			{
+				for each(touch in touches)
+				{
+					if(touch.phase == TouchPhase.BEGAN)
+					{
+						this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
+						this.increment();
+						this.startRepeatTimer(this.increment);
+						this._touchPointID = touch.id;
+						break;
+					}
+				}
+			}
 			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 

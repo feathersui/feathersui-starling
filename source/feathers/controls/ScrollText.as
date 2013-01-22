@@ -94,7 +94,12 @@ package feathers.controls
 		protected var _text:String = "";
 
 		/**
-		 * @inheritDoc
+		 * The text to display. If <code>isHTML</code> is <code>true</code>, the
+		 * text will be rendered as HTML with the same capabilities as the
+		 * <code>htmlText</code> property of <code>flash.text.TextField</code>.
+		 *
+		 * @see #isHTML
+		 * @see flash.text.TextField#htmlText
 		 */
 		public function get text():String
 		{
@@ -126,6 +131,7 @@ package feathers.controls
 		/**
 		 * Determines if the TextField should display the text as HTML or not.
 		 *
+		 * @see #text
 		 * @see flash.text.TextField#htmlText
 		 */
 		public function get isHTML():Boolean
@@ -506,6 +512,28 @@ package feathers.controls
 			}
 			this._thickness = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * Quickly sets all padding properties to the same value. The
+		 * <code>padding</code> getter always returns the value of
+		 * <code>paddingTop</code>, but the other padding values may be
+		 * different.
+		 */
+		public function get padding():Number
+		{
+			return this._paddingTop;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set padding(value:Number):void
+		{
+			this.paddingTop = value;
+			this.paddingRight = value;
+			this.paddingBottom = value;
+			this.paddingLeft = value;
 		}
 
 		/**
