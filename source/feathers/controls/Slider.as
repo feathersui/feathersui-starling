@@ -582,7 +582,7 @@ package feathers.controls
 
 		/**
 		 * A function used to generate the slider's minimum track sub-component.
-		 * This can be used to change properties on the maximum track when it is first
+		 * This can be used to change properties on the minimum track when it is first
 		 * created. For instance, if you are skinning Feathers components
 		 * without a theme, you might use <code>minimumTrackFactory</code> to set
 		 * skins and other styles on the minimum track.
