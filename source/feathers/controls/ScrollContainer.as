@@ -844,7 +844,7 @@ package feathers.controls
 
 			if(scrollInvalid)
 			{
-				this.refreshScrollPosition();
+				this.setScrollerScrollPosition();
 			}
 
 			if(sizeInvalid)
@@ -859,13 +859,7 @@ package feathers.controls
 				this.layoutChildren();
 			}
 
-			this.scroller.validate();
-			this._maxHorizontalScrollPosition = this.scroller.maxHorizontalScrollPosition;
-			this._maxVerticalScrollPosition = this.scroller.maxVerticalScrollPosition;
-			this._horizontalScrollPosition = this.scroller.horizontalScrollPosition;
-			this._verticalScrollPosition = this.scroller.verticalScrollPosition;
-			this._horizontalPageIndex = this.scroller.horizontalPageIndex;
-			this._verticalPageIndex = this.scroller.verticalPageIndex;
+			this.getScrollerScrollPosition();
 
 			this.scroll();
 		}
@@ -882,10 +876,11 @@ package feathers.controls
 				return false;
 			}
 
-			const oldIgnore:Boolean = this._ignoreScrollerResizing;
+			const oldIgnoreScrollerResizing:Boolean = this._ignoreScrollerResizing;
 			this._ignoreScrollerResizing = true;
 			this.scroller.validate();
-			this._ignoreScrollerResizing = oldIgnore;
+			this._ignoreScrollerResizing = oldIgnoreScrollerResizing;
+
 			var newWidth:Number = this.explicitWidth;
 			var newHeight:Number = this.explicitHeight;
 			if(needsWidth)
@@ -958,10 +953,28 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function refreshScrollPosition():void
+		protected function setScrollerScrollPosition():void
 		{
 			this.scroller.verticalScrollPosition = this._verticalScrollPosition;
 			this.scroller.horizontalScrollPosition = this._horizontalScrollPosition;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getScrollerScrollPosition():void
+		{
+			const oldIgnoreScrollerResizing:Boolean = this._ignoreScrollerResizing;
+			this._ignoreScrollerResizing = true;
+			this.scroller.validate();
+			this._ignoreScrollerResizing = oldIgnoreScrollerResizing;
+
+			this._maxHorizontalScrollPosition = this.scroller.maxHorizontalScrollPosition;
+			this._maxVerticalScrollPosition = this.scroller.maxVerticalScrollPosition;
+			this._horizontalScrollPosition = this.scroller.horizontalScrollPosition;
+			this._verticalScrollPosition = this.scroller.verticalScrollPosition;
+			this._horizontalPageIndex = this.scroller.horizontalPageIndex;
+			this._verticalPageIndex = this.scroller.verticalPageIndex;
 		}
 
 		/**
