@@ -439,6 +439,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _hasViewPortBoundsChanged:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _horizontalAutoScrollTween:Tween;
 
 		/**
@@ -1564,18 +1569,31 @@ package feathers.controls
 				this.verticalScrollBar.validate();
 			}
 
-			//even if fixed, we need to measure without them first
-			if(scrollInvalid || sizeInvalid || stylesInvalid || scrollBarInvalid || dataInvalid)
+			var loopCount:int = 0;
+			do
 			{
-				this.refreshViewPortBoundsWithoutFixedScrollBars();
-			}
+				this._hasViewPortBoundsChanged = false;
+				//even if fixed, we need to measure without them first
+				if(scrollInvalid || sizeInvalid || stylesInvalid || scrollBarInvalid || dataInvalid)
+				{
+					this.refreshViewPortBoundsWithoutFixedScrollBars();
+				}
 
-			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
+				sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
-			if(scrollInvalid || sizeInvalid || stylesInvalid || scrollBarInvalid || dataInvalid)
-			{
-				this.refreshViewPortBoundsWithFixedScrollBars();
+				if(scrollInvalid || sizeInvalid || stylesInvalid || scrollBarInvalid || dataInvalid)
+				{
+					this.refreshViewPortBoundsWithFixedScrollBars();
+				}
+				loopCount++;
+				if(loopCount >= 10)
+				{
+					//if it still fails after ten tries, we've probably entered
+					//an infinite loop due to rounding errors or something
+					break;
+				}
 			}
+			while(this._hasViewPortBoundsChanged)
 			this._lastViewPortWidth = viewPort.width;
 			this._lastViewPortHeight = viewPort.height;
 
@@ -1820,6 +1838,7 @@ package feathers.controls
 			}
 			if(!isFixed)
 			{
+				this._viewPort.validate();
 				return;
 			}
 
@@ -2428,7 +2447,14 @@ package feathers.controls
 			}
 			this._lastViewPortWidth = this._viewPort.width;
 			this._lastViewPortHeight = this._viewPort.height;
-			this.invalidate(INVALIDATION_FLAG_DATA);
+			if(this._isValidating)
+			{
+				this._hasViewPortBoundsChanged = true;
+			}
+			else
+			{
+				this.invalidate(INVALIDATION_FLAG_DATA);
+			}
 		}
 
 		/**
