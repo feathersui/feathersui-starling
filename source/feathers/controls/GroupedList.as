@@ -1857,7 +1857,7 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * Sets the selected group and item index.
 		 */
 		public function setSelectedLocation(groupIndex:int, itemIndex:int):void
 		{
