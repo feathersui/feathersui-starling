@@ -610,6 +610,14 @@ package feathers.layout
 					{
 						continue;
 					}
+					if(item is ILayoutDisplayObject)
+					{
+						var layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(item);
+						if(!layoutItem.includeInLayout)
+						{
+							continue;
+						}
+					}
 					tileWidth = this._useSquareTiles ? Math.max(tileWidth, item.width, item.height) : Math.max(tileWidth, item.width);
 					tileHeight = this._useSquareTiles ? Math.max(tileWidth, tileHeight) : Math.max(tileHeight, item.height);
 				}
@@ -654,23 +662,32 @@ package feathers.layout
 			var pageStartX:Number = startX;
 			var positionX:Number = startX;
 			var positionY:Number = startY;
+			var itemIndex:int = 0;
 			for(i = 0; i < itemCount; i++)
 			{
 				item = items[i];
-				if(i != 0 && i % horizontalTileCount == 0)
+				if(item is ILayoutDisplayObject)
+				{
+					layoutItem = ILayoutDisplayObject(item);
+					if(!layoutItem.includeInLayout)
+					{
+						continue;
+					}
+				}
+				if(itemIndex != 0 && itemIndex % horizontalTileCount == 0)
 				{
 					positionX = pageStartX;
 					positionY += tileHeight + this._verticalGap;
 				}
-				if(i == nextPageStartIndex)
+				if(itemIndex == nextPageStartIndex)
 				{
 					//we're starting a new page, so handle alignment of the
 					//items on the current page and update the positions
 					if(this._paging != PAGING_NONE)
 					{
 						var discoveredItems:Vector.<DisplayObject> = this._useVirtualLayout ? this._discoveredItemsCache : items;
-						var discoveredItemsFirstIndex:int = this._useVirtualLayout ? 0 : (i - perPage);
-						var discoveredItemsLastIndex:int = this._useVirtualLayout ? (this._discoveredItemsCache.length - 1) : (i - 1);
+						var discoveredItemsFirstIndex:int = this._useVirtualLayout ? 0 : (itemIndex - perPage);
+						var discoveredItemsLastIndex:int = this._useVirtualLayout ? (this._discoveredItemsCache.length - 1) : (itemIndex - 1);
 						this.applyHorizontalAlign(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex, totalPageWidth, availablePageWidth);
 						this.applyVerticalAlign(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex, totalPageHeight, availablePageHeight);
 						this._discoveredItemsCache.length = 0;
@@ -745,6 +762,7 @@ package feathers.layout
 					}
 				}
 				positionX += tileWidth + this._horizontalGap;
+				itemIndex++;
 			}
 			//align the last page
 			if(this._paging != PAGING_NONE)

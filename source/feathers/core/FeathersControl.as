@@ -622,6 +622,32 @@ package feathers.core
 		/**
 		 * @private
 		 */
+		protected var _includeInLayout:Boolean = true;
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get includeInLayout():Boolean
+		{
+			return this._includeInLayout;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set includeInLayout(value:Boolean):void
+		{
+			if(this._includeInLayout == value)
+			{
+				return;
+			}
+			this._includeInLayout = value;
+			this.dispatchEventWith(FeathersEventType.LAYOUT_DATA_CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _layoutData:ILayoutData;
 
 		/**
