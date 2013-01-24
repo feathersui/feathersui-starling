@@ -199,7 +199,7 @@ package feathers.controls
 			}
 			function origin_removedFromStageHandler(event:Event):void
 			{
-				callout.close(true);
+				callout.close();
 			}
 			function callout_closeHandler(event:Event):void
 			{
