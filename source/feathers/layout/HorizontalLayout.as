@@ -447,6 +447,14 @@ package feathers.layout
 				}
 				else
 				{
+					if(item is ILayoutDisplayObject)
+					{
+						var layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(item);
+						if(!layoutItem.includeInLayout)
+						{
+							continue;
+						}
+					}
 					item.x = positionX;
 					if(this._useVirtualLayout)
 					{

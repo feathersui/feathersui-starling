@@ -32,5 +32,15 @@ package feathers.layout
 		 * @private
 		 */
 		function set layoutData(value:ILayoutData):void;
+
+		/**
+		 * Determines if the ILayout should use this object or ignore it.
+		 */
+		function get includeInLayout():Boolean;
+
+		/**
+		 * @private
+		 */
+		function set includeInLayout(value:Boolean):void;
 	}
 }

@@ -173,7 +173,12 @@ package feathers.layout
 				var layoutData:AnchorLayoutData;
 				if(item is ILayoutDisplayObject)
 				{
-					layoutData = ILayoutDisplayObject(item).layoutData as AnchorLayoutData;
+					var layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(item);
+					if(!layoutItem.includeInLayout)
+					{
+						continue;
+					}
+					layoutData = layoutItem.layoutData as AnchorLayoutData;
 				}
 
 				var isReadyForLayout:Boolean = !layoutData || this.isReadyForLayout(layoutData, i, items, unpositionedItems);
@@ -510,7 +515,7 @@ package feathers.layout
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var item:ILayoutDisplayObject = items[i] as ILayoutDisplayObject;
-				if(!item)
+				if(!item || !item.includeInLayout)
 				{
 					continue;
 				}
