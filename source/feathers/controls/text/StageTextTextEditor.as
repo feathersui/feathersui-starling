@@ -798,11 +798,11 @@ package feathers.controls.text
 			this.stageText.autoCapitalize = this._autoCapitalize;
 			this.stageText.autoCorrect = this._autoCorrect;
 			this.stageText.color = this._color;
-			this.stageText.displayAsPassword = this._displayAsPassword
+			this.stageText.displayAsPassword = this._displayAsPassword;
 			this.stageText.editable = this._editable;
 			this.stageText.fontFamily = this._fontFamily;
 			this.stageText.fontPosture = this._fontPosture;
-			this.stageText.fontSize = this._fontSize;
+			this.stageText.fontSize = this._fontSize * Starling.contentScaleFactor;
 			this.stageText.fontWeight = this._fontWeight;
 			this.stageText.locale = this._locale;
 			this.stageText.maxChars = this._maxChars;
@@ -819,7 +819,7 @@ package feathers.controls.text
 			format.color = this._color;
 			format.font = this._fontFamily;
 			format.italic = this._fontPosture == FontPosture.ITALIC;
-			format.size = this._fontSize / Starling.contentScaleFactor;
+			format.size = this._fontSize;
 			format.bold = this._fontWeight == FontWeight.BOLD;
 			var alignValue:String = this._textAlign;
 			if(alignValue == TextFormatAlign.START)
