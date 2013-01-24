@@ -76,11 +76,6 @@ package feathers.controls
 		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
 
 		/**
-		 * @private
-		 */
-		private static const FONT_SIZE:String = "fontSize";
-
-		/**
 		 * Constructor.
 		 */
 		public function TextInput()
@@ -693,10 +688,6 @@ package feathers.controls
 				if(displayTextEditor.hasOwnProperty(propertyName))
 				{
 					var propertyValue:Object = this._textEditorProperties[propertyName];
-					if(propertyName == FONT_SIZE)
-					{
-						propertyValue = (propertyValue as Number) * Starling.contentScaleFactor;
-					}
 					this.textEditor[propertyName] = propertyValue;
 				}
 			}
