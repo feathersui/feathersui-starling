@@ -200,6 +200,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _ignoreScrollerResizing:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _layout:ILayout;
 
 		/**
@@ -1971,6 +1976,7 @@ package feathers.controls
 				this.scroller.horizontalScrollPolicy = Scroller.SCROLL_POLICY_AUTO;
 				this.scroller.addEventListener(Event.SCROLL, scroller_scrollHandler);
 				this.scroller.addEventListener(FeathersEventType.SCROLL_COMPLETE, scroller_scrollCompleteHandler);
+				this.scroller.addEventListener(FeathersEventType.RESIZE, scroller_resizeHandler);
 				this.addChild(this.scroller);
 			}
 
@@ -2016,90 +2022,26 @@ package feathers.controls
 				this.refreshBackgroundSkin();
 			}
 
-			this.dataViewPort.isSelectable = this._isSelectable;
-			this.dataViewPort.setSelectedLocation(this._selectedGroupIndex, this._selectedItemIndex);
-			this.dataViewPort.dataProvider = this._dataProvider;
+			this.refreshDataViewPortProperties();
 
-			this.dataViewPort.itemRendererType = this._itemRendererType;
-			this.dataViewPort.itemRendererFactory = this._itemRendererFactory;
-			this.dataViewPort.itemRendererProperties = this._itemRendererProperties;
-			this.dataViewPort.itemRendererName = this._itemRendererName;
-			this.dataViewPort.typicalItem = this._typicalItem;
-
-			this.dataViewPort.firstItemRendererType = this._firstItemRendererType;
-			this.dataViewPort.firstItemRendererFactory = this._firstItemRendererFactory;
-			this.dataViewPort.firstItemRendererName = this._firstItemRendererName;
-
-			this.dataViewPort.lastItemRendererType = this._lastItemRendererType;
-			this.dataViewPort.lastItemRendererFactory = this._lastItemRendererFactory;
-			this.dataViewPort.lastItemRendererName = this._lastItemRendererName;
-
-			this.dataViewPort.singleItemRendererType = this._singleItemRendererType;
-			this.dataViewPort.singleItemRendererFactory = this._singleItemRendererFactory;
-			this.dataViewPort.singleItemRendererName = this._singleItemRendererName;
-
-			this.dataViewPort.headerRendererType = this._headerRendererType;
-			this.dataViewPort.headerRendererFactory = this._headerRendererFactory;
-			this.dataViewPort.headerRendererProperties = this._headerRendererProperties;
-			this.dataViewPort.headerRendererName = this._headerRendererName;
-			this.dataViewPort.typicalHeader = this._typicalHeader;
-
-			this.dataViewPort.footerRendererType = this._footerRendererType;
-			this.dataViewPort.footerRendererFactory = this._footerRendererFactory;
-			this.dataViewPort.footerRendererProperties = this._footerRendererProperties;
-			this.dataViewPort.footerRendererName = this._footerRendererName;
-			this.dataViewPort.typicalFooter = this._typicalFooter;
-
-			this.dataViewPort.layout = this._layout;
-
-			this.scroller.isEnabled = this._isEnabled;
-			this.scroller.x = this._paddingLeft;
-			this.scroller.y = this._paddingTop;
-			this.scroller.horizontalScrollPosition = this._horizontalScrollPosition;
-			this.scroller.verticalScrollPosition = this._verticalScrollPosition;
-
-			if(sizeInvalid || stylesInvalid)
+			if(stateInvalid)
 			{
-				if(isNaN(this.explicitWidth))
-				{
-					this.scroller.width = NaN;
-				}
-				else
-				{
-					this.scroller.width = Math.max(0, this.explicitWidth - this._paddingLeft - this._paddingRight);
-				}
-				if(isNaN(this.explicitHeight))
-				{
-					this.scroller.height = NaN;
-				}
-				else
-				{
-					this.scroller.height = Math.max(0, this.explicitHeight - this._paddingTop - this._paddingBottom);
-				}
-				this.scroller.minWidth = Math.max(0,  this._minWidth - this._paddingLeft - this._paddingRight);
-				this.scroller.maxWidth = Math.max(0, this._maxWidth - this._paddingLeft - this._paddingRight);
-				this.scroller.minHeight = Math.max(0, this._minHeight - this._paddingTop - this._paddingBottom);
-				this.scroller.maxHeight = Math.max(0, this._maxHeight - this._paddingTop - this._paddingBottom);
+				this.refreshChildrenEnabled();
+			}
+
+			if(scrollInvalid)
+			{
+				this.setScrollerScrollPosition();
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
 			if(sizeInvalid || stylesInvalid || stateInvalid)
 			{
-				if(this.currentBackgroundSkin)
-				{
-					this.currentBackgroundSkin.width = this.actualWidth;
-					this.currentBackgroundSkin.height = this.actualHeight;
-				}
+				this.layoutChildren();
 			}
 
-			this.scroller.validate();
-			this._maxHorizontalScrollPosition = this.scroller.maxHorizontalScrollPosition;
-			this._maxVerticalScrollPosition = this.scroller.maxVerticalScrollPosition;
-			this._horizontalScrollPosition = this.scroller.horizontalScrollPosition;
-			this._verticalScrollPosition = this.scroller.verticalScrollPosition;
-			this._horizontalPageIndex = this.scroller.horizontalPageIndex;
-			this._verticalPageIndex = this.scroller.verticalPageIndex;
+			this.getScrollerScrollPosition();
 
 			this.scroll();
 		}
@@ -2116,7 +2058,13 @@ package feathers.controls
 				return false;
 			}
 
+			const oldScrollerWidth:Number = this.scroller.width;
+			const oldScrollerHeight:Number = this.scroller.height;
+			const oldIgnoreScrollerResizing:Boolean = this._ignoreScrollerResizing;
+			this._ignoreScrollerResizing = true;
+			this.refreshScrollerBounds();
 			this.scroller.validate();
+
 			var newWidth:Number = this.explicitWidth;
 			var newHeight:Number = this.explicitHeight;
 			if(needsWidth)
@@ -2136,6 +2084,9 @@ package feathers.controls
 				}
 			}
 
+			this.scroller.width = oldScrollerWidth;
+			this.scroller.height = oldScrollerHeight;
+			this._ignoreScrollerResizing = oldIgnoreScrollerResizing;
 			return this.setSizeInternal(newWidth, newHeight, false);
 		}
 
@@ -2185,6 +2136,129 @@ package feathers.controls
 					this._originalBackgroundHeight = this.currentBackgroundSkin.height;
 				}
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshScrollerBounds():void
+		{
+			const scrollerWidthOffset:Number = this._paddingLeft + this._paddingRight;
+			const scrollerHeightOffset:Number = this._paddingTop + this._paddingBottom;
+			if(isNaN(this.explicitWidth))
+			{
+				this.scroller.width = NaN;
+			}
+			else
+			{
+				this.scroller.width = Math.max(0, this.explicitWidth - scrollerWidthOffset);
+			}
+			if(isNaN(this.explicitHeight))
+			{
+				this.scroller.height = NaN;
+			}
+			else
+			{
+				this.scroller.height = Math.max(0, this.explicitHeight - scrollerHeightOffset);
+			}
+			this.scroller.minWidth = Math.max(0,  this._minWidth - scrollerWidthOffset);
+			this.scroller.maxWidth = Math.max(0, this._maxWidth - scrollerWidthOffset);
+			this.scroller.minHeight = Math.max(0, this._minHeight - scrollerHeightOffset);
+			this.scroller.maxHeight = Math.max(0, this._maxHeight - scrollerHeightOffset);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function layoutChildren():void
+		{
+			if(this.currentBackgroundSkin)
+			{
+				this.currentBackgroundSkin.width = this.actualWidth;
+				this.currentBackgroundSkin.height = this.actualHeight;
+			}
+
+			this.scroller.x = this._paddingLeft;
+			this.scroller.y = this._paddingTop;
+			const oldIgnoreScrollerResizing:Boolean = this._ignoreScrollerResizing;
+			this._ignoreScrollerResizing = true;
+			this.scroller.width = this.actualWidth - this._paddingLeft - this._paddingRight;
+			this.scroller.height = this.actualHeight - this._paddingTop - this._paddingBottom
+			this._ignoreScrollerResizing = oldIgnoreScrollerResizing;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshChildrenEnabled():void
+		{
+			this.dataViewPort.isEnabled = this._isEnabled;
+			this.scroller.isEnabled = this._isEnabled;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function setScrollerScrollPosition():void
+		{
+			this.scroller.verticalScrollPosition = this._verticalScrollPosition;
+			this.scroller.horizontalScrollPosition = this._horizontalScrollPosition;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getScrollerScrollPosition():void
+		{
+			this.scroller.validate();
+			this._maxHorizontalScrollPosition = this.scroller.maxHorizontalScrollPosition;
+			this._maxVerticalScrollPosition = this.scroller.maxVerticalScrollPosition;
+			this._horizontalScrollPosition = this.scroller.horizontalScrollPosition;
+			this._verticalScrollPosition = this.scroller.verticalScrollPosition;
+			this._horizontalPageIndex = this.scroller.horizontalPageIndex;
+			this._verticalPageIndex = this.scroller.verticalPageIndex;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshDataViewPortProperties():void
+		{
+			this.dataViewPort.isSelectable = this._isSelectable;
+			this.dataViewPort.setSelectedLocation(this._selectedGroupIndex, this._selectedItemIndex);
+			this.dataViewPort.dataProvider = this._dataProvider;
+
+			this.dataViewPort.itemRendererType = this._itemRendererType;
+			this.dataViewPort.itemRendererFactory = this._itemRendererFactory;
+			this.dataViewPort.itemRendererProperties = this._itemRendererProperties;
+			this.dataViewPort.itemRendererName = this._itemRendererName;
+			this.dataViewPort.typicalItem = this._typicalItem;
+
+			this.dataViewPort.firstItemRendererType = this._firstItemRendererType;
+			this.dataViewPort.firstItemRendererFactory = this._firstItemRendererFactory;
+			this.dataViewPort.firstItemRendererName = this._firstItemRendererName;
+
+			this.dataViewPort.lastItemRendererType = this._lastItemRendererType;
+			this.dataViewPort.lastItemRendererFactory = this._lastItemRendererFactory;
+			this.dataViewPort.lastItemRendererName = this._lastItemRendererName;
+
+			this.dataViewPort.singleItemRendererType = this._singleItemRendererType;
+			this.dataViewPort.singleItemRendererFactory = this._singleItemRendererFactory;
+			this.dataViewPort.singleItemRendererName = this._singleItemRendererName;
+
+			this.dataViewPort.headerRendererType = this._headerRendererType;
+			this.dataViewPort.headerRendererFactory = this._headerRendererFactory;
+			this.dataViewPort.headerRendererProperties = this._headerRendererProperties;
+			this.dataViewPort.headerRendererName = this._headerRendererName;
+			this.dataViewPort.typicalHeader = this._typicalHeader;
+
+			this.dataViewPort.footerRendererType = this._footerRendererType;
+			this.dataViewPort.footerRendererFactory = this._footerRendererFactory;
+			this.dataViewPort.footerRendererProperties = this._footerRendererProperties;
+			this.dataViewPort.footerRendererName = this._footerRendererName;
+			this.dataViewPort.typicalFooter = this._typicalFooter;
+
+			this.dataViewPort.layout = this._layout;
 		}
 
 		/**
@@ -2260,6 +2334,18 @@ package feathers.controls
 		protected function scroller_scrollCompleteHandler(event:Event):void
 		{
 			this.dispatchEventWith(FeathersEventType.SCROLL_COMPLETE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function scroller_resizeHandler(event:Event):void
+		{
+			if(this._ignoreScrollerResizing)
+			{
+				return;
+			}
+			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
 		/**

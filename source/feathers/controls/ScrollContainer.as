@@ -99,7 +99,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _ignoreScrollerResizing:Boolean;
+		protected var ignoreScrollerResizing:Boolean;
 
 		/**
 		 * @private
@@ -839,17 +839,12 @@ package feathers.controls
 
 			if(stateInvalid)
 			{
-				this.scroller.isEnabled = this._isEnabled;
+				this.refreshChildrenEnabled();
 			}
 
 			if(scrollInvalid)
 			{
 				this.setScrollerScrollPosition();
-			}
-
-			if(sizeInvalid)
-			{
-				this.refreshScrollerBounds();
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
@@ -876,10 +871,12 @@ package feathers.controls
 				return false;
 			}
 
-			const oldIgnoreScrollerResizing:Boolean = this._ignoreScrollerResizing;
-			this._ignoreScrollerResizing = true;
+			const oldScrollerWidth:Number = this.scroller.width;
+			const oldScrollerHeight:Number = this.scroller.height;
+			const oldIgnoreScrollerResizing:Boolean = this.ignoreScrollerResizing;
+			this.ignoreScrollerResizing = true;
+			this.refreshScrollerBounds();
 			this.scroller.validate();
-			this._ignoreScrollerResizing = oldIgnoreScrollerResizing;
 
 			var newWidth:Number = this.explicitWidth;
 			var newHeight:Number = this.explicitHeight;
@@ -899,6 +896,10 @@ package feathers.controls
 					newHeight = Math.max(newHeight, this._originalBackgroundHeight);
 				}
 			}
+
+			this.scroller.width = oldScrollerWidth;
+			this.scroller.height = oldScrollerHeight;
+			this.ignoreScrollerResizing = oldIgnoreScrollerResizing;
 			return this.setSizeInternal(newWidth, newHeight, false);
 		}
 
@@ -964,10 +965,10 @@ package feathers.controls
 		 */
 		protected function getScrollerScrollPosition():void
 		{
-			const oldIgnoreScrollerResizing:Boolean = this._ignoreScrollerResizing;
-			this._ignoreScrollerResizing = true;
+			const oldIgnoreScrollerResizing:Boolean = this.ignoreScrollerResizing;
+			this.ignoreScrollerResizing = true;
 			this.scroller.validate();
-			this._ignoreScrollerResizing = oldIgnoreScrollerResizing;
+			this.ignoreScrollerResizing = oldIgnoreScrollerResizing;
 
 			this._maxHorizontalScrollPosition = this.scroller.maxHorizontalScrollPosition;
 			this._maxVerticalScrollPosition = this.scroller.maxVerticalScrollPosition;
@@ -1009,6 +1010,15 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function refreshChildrenEnabled():void
+		{
+			this.viewPort.isEnabled = this._isEnabled;
+			this.scroller.isEnabled = this._isEnabled;
+		}
+
+		/**
+		 * @private
+		 */
 		protected function refreshMXMLContent():void
 		{
 			if(!this._mxmlContent || this._mxmlContentIsReady)
@@ -1037,6 +1047,12 @@ package feathers.controls
 
 			this.scroller.x = this._paddingLeft;
 			this.scroller.y = this._paddingTop;
+
+			const oldIgnoreScrollerResizing:Boolean = this.ignoreScrollerResizing;
+			this.ignoreScrollerResizing = true;
+			this.scroller.width = this.actualWidth - this._paddingLeft - this._paddingRight;
+			this.scroller.height = this.actualHeight - this._paddingTop - this._paddingBottom;
+			this.ignoreScrollerResizing = oldIgnoreScrollerResizing;
 		}
 
 		/**
@@ -1088,7 +1104,7 @@ package feathers.controls
 		 */
 		protected function scroller_resizeHandler(event:Event):void
 		{
-			if(this._ignoreScrollerResizing)
+			if(this.ignoreScrollerResizing)
 			{
 				return;
 			}

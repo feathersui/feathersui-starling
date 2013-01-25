@@ -239,6 +239,13 @@ package feathers.controls
 				return false;
 			}
 
+			const oldHeaderWidth:Number = this.header.width;
+			const oldHeaderHeight:Number = this.header.height;
+			const oldScrollerWidth:Number = this.scroller.width;
+			const oldScrollerHeight:Number = this.scroller.height;
+			const oldIgnoreScrollerResizing:Boolean = this.ignoreScrollerResizing;
+			this.ignoreScrollerResizing = true;
+			this.refreshScrollerBounds();
 			this.header.validate();
 			this.scroller.validate();
 
@@ -260,6 +267,11 @@ package feathers.controls
 					newHeight = Math.max(newHeight, this._originalBackgroundHeight);
 				}
 			}
+			this.header.width = oldHeaderWidth;
+			this.header.width = oldHeaderHeight;
+			this.scroller.width = oldScrollerWidth;
+			this.scroller.height = oldScrollerHeight;
+			this.ignoreScrollerResizing = oldIgnoreScrollerResizing;
 			return this.setSizeInternal(newWidth, newHeight, false);
 		}
 
@@ -303,11 +315,9 @@ package feathers.controls
 		{
 			this.header.width = this.explicitWidth;
 			this.header.height = NaN;
-			this.header.validate();
 
 			const scrollerWidthOffset:Number = this._paddingLeft + this._paddingRight;
 			const scrollerHeightOffset:Number = this.header.height + this._paddingTop + this._paddingBottom;
-
 			if(isNaN(this.explicitWidth))
 			{
 				this.scroller.width = NaN;
@@ -346,6 +356,8 @@ package feathers.controls
 
 			this.scroller.x = this._paddingLeft;
 			this.scroller.y = this.header.y + this.header.height + this._paddingTop;
+			this.scroller.width = this.actualWidth - this._paddingLeft - this._paddingRight;
+			this.scroller.height = this.actualHeight - this._paddingBottom - this.scroller.y;
 		}
 	}
 }
