@@ -254,17 +254,17 @@ package feathers.controls
 			if(needsWidth)
 			{
 				newWidth = Math.max(this.scroller.width + this._paddingLeft + this._paddingRight, this.header.width);
-				if(!isNaN(this._originalBackgroundWidth))
+				if(!isNaN(this.originalBackgroundWidth))
 				{
-					newWidth = Math.max(newWidth, this._originalBackgroundWidth);
+					newWidth = Math.max(newWidth, this.originalBackgroundWidth);
 				}
 			}
 			if(needsHeight)
 			{
 				newHeight = this.scroller.height + this._paddingTop + this._paddingBottom + this.header.height;
-				if(!isNaN(this._originalBackgroundHeight))
+				if(!isNaN(this.originalBackgroundHeight))
 				{
-					newHeight = Math.max(newHeight, this._originalBackgroundHeight);
+					newHeight = Math.max(newHeight, this.originalBackgroundHeight);
 				}
 			}
 			this.header.width = oldHeaderWidth;
