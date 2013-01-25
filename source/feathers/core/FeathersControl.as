@@ -755,11 +755,13 @@ package feathers.core
 			if(this._clipRect)
 			{
 				this.getBounds(this.stage, this._scissorRect);
-
-				this._scissorRect.x += this._clipRect.x;
-				this._scissorRect.y += this._clipRect.y;
-				this._scissorRect.width = this._clipRect.width;
-				this._scissorRect.height = this._clipRect.height;
+				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+				const scaleX:Number = HELPER_MATRIX.a;
+				const scaleY:Number = HELPER_MATRIX.d;
+				this._scissorRect.x += this._clipRect.x * scaleX;
+				this._scissorRect.y += this._clipRect.y * scaleY;
+				this._scissorRect.width = this._clipRect.width * scaleX;
+				this._scissorRect.height = this._clipRect.height * scaleY;
 
 				const oldRect:Rectangle = currentScissorRect;
 				if(oldRect)
