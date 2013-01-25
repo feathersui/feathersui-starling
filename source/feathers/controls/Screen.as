@@ -285,8 +285,6 @@ package feathers.controls
 					newHeight = maxY;
 				}
 			}
-
-			trace(newWidth, newHeight)
 			this.setSizeInternal(newWidth, newHeight, false);
 		}
 		
