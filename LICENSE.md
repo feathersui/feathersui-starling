@@ -32,8 +32,8 @@ Third Party Software
 ====================
 
 Below is a list of certain publicly available software that is the source of
-intellectual property in this class, along with the licensing terms that pertain
-to those sources of IP.
+intellectual property in this project, along with the licensing terms that
+pertain to those sources of IP.
 
 The touch scrolling velocity and throwing physics calculations are loosely
 based on code from the TouchScrolling library by Pavel fljot.
