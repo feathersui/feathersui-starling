@@ -15,7 +15,6 @@ package feathers.controls
 	import feathers.layout.ILayout;
 	import feathers.layout.VerticalLayout;
 
-	import flash.errors.IllegalOperationError;
 	import flash.geom.Point;
 
 	import starling.events.Event;
@@ -459,6 +458,31 @@ package feathers.controls
 			this._itemRendererName = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
+
+		/**
+		 * The pending item index to scroll to after validating. A value of
+		 * <code>-1</code> means that the scroller won't scroll to an item after
+		 * validating.
+		 */
+		protected var pendingItemIndex:int = -1;
+
+		/**
+		 * @private
+		 */
+		override public function scrollToPosition(horizontalScrollPosition:Number, verticalScrollPosition:Number, animationDuration:Number = 0):void
+		{
+			this.pendingItemIndex = -1;
+			super.scrollToPosition(horizontalScrollPosition, verticalScrollPosition, animationDuration);
+		}
+
+		/**
+		 * @private
+		 */
+		override public function scrollToPageIndex(horizontalPageIndex:int, verticalPageIndex:int, animationDuration:Number = 0):void
+		{
+			this.pendingItemIndex = -1;
+			super.scrollToPosition(horizontalPageIndex, verticalPageIndex, animationDuration);
+		}
 		
 		/**
 		 * Scrolls the list so that the specified item is visible. If
@@ -470,26 +494,18 @@ package feathers.controls
 		 */
 		public function scrollToDisplayIndex(index:int, animationDuration:Number = 0):void
 		{
-			if(this._isValidating)
+			this.pendingHorizontalPageIndex = -1;
+			this.pendingVerticalPageIndex = -1;
+			this.pendingHorizontalScrollPosition = NaN;
+			this.pendingVerticalScrollPosition = NaN;
+			if(this.pendingItemIndex == index &&
+				this.pendingScrollDuration == animationDuration)
 			{
-				throw new IllegalOperationError("Cannot scroll to index while validating.");
+				return;
 			}
-			const item:Object = this._dataProvider.getItemAt(index);
-			if(item is Object)
-			{
-				this.dataViewPort.getScrollPositionForIndex(index, HELPER_POINT);
-
-				if(animationDuration > 0)
-				{
-					this.throwTo(Math.max(0, Math.min(HELPER_POINT.x, this._maxHorizontalScrollPosition)),
-						Math.max(0, Math.min(HELPER_POINT.y, this._maxVerticalScrollPosition)), animationDuration);
-				}
-				else
-				{
-					this.horizontalScrollPosition = Math.max(0, Math.min(HELPER_POINT.x, this._maxHorizontalScrollPosition));
-					this.verticalScrollPosition = Math.max(0, Math.min(HELPER_POINT.y, this._maxVerticalScrollPosition));
-				}
-			}
+			this.pendingItemIndex = index;
+			this.pendingScrollDuration = animationDuration;
+			this.invalidate(INVALIDATION_FLAG_PENDING_SCROLL);
 		}
 		
 		/**
@@ -548,6 +564,34 @@ package feathers.controls
 			this.dataViewPort.itemRendererName = this._itemRendererName;
 			this.dataViewPort.typicalItem = this._typicalItem;
 			this.dataViewPort.layout = this._layout;
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function handlePendingScroll():void
+		{
+			if(this.pendingItemIndex >= 0)
+			{
+				const item:Object = this._dataProvider.getItemAt(this.pendingItemIndex);
+				if(item is Object)
+				{
+					this.dataViewPort.getScrollPositionForIndex(this.pendingItemIndex, HELPER_POINT);
+					this.pendingItemIndex = -1;
+
+					if(this.pendingScrollDuration > 0)
+					{
+						this.throwTo(Math.max(0, Math.min(HELPER_POINT.x, this._maxHorizontalScrollPosition)),
+							Math.max(0, Math.min(HELPER_POINT.y, this._maxVerticalScrollPosition)), this.pendingScrollDuration);
+					}
+					else
+					{
+						this.horizontalScrollPosition = Math.max(0, Math.min(HELPER_POINT.x, this._maxHorizontalScrollPosition));
+						this.verticalScrollPosition = Math.max(0, Math.min(HELPER_POINT.y, this._maxVerticalScrollPosition));
+					}
+				}
+			}
+			super.handlePendingScroll();
 		}
 
 		/**

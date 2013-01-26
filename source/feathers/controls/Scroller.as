@@ -16,7 +16,6 @@ package feathers.controls
 	import feathers.utils.math.roundToNearest;
 	import feathers.utils.math.roundUpToNearest;
 
-	import flash.errors.IllegalOperationError;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -96,6 +95,11 @@ package feathers.controls
 		 * @private
 		 */
 		protected static const INVALIDATION_FLAG_SCROLL_BAR_RENDERER:String = "scrollBarRenderer";
+
+		/**
+		 * @private
+		 */
+		protected static const INVALIDATION_FLAG_PENDING_SCROLL:String = "pendingScroll";
 
 		/**
 		 * The scroller may scroll if the view port is larger than the
@@ -1503,6 +1507,39 @@ package feathers.controls
 				}
 			}
 		}
+
+		/**
+		 * The pending horizontal scroll position to scroll to after validating.
+		 * A value of <code>NaN</code> means that the scroller won't scroll to a
+		 * horizontal position after validating.
+		 */
+		protected var pendingHorizontalScrollPosition:Number = NaN;
+
+		/**
+		 * The pending vertical scroll position to scroll to after validating.
+		 * A value of <code>NaN</code> means that the scroller won't scroll to a
+		 * vertical position after validating.
+		 */
+		protected var pendingVerticalScrollPosition:Number = NaN;
+
+		/**
+		 * The pending horizontal page index to scroll to after validating. A
+		 * value of <code>-1</code> means that the scroller won't scroll to a
+		 * horizontal page after validating.
+		 */
+		protected var pendingHorizontalPageIndex:int = -1;
+
+		/**
+		 * The pending vertical page index to scroll to after validating. A
+		 * value of <code>-1</code> means that the scroller won't scroll to a
+		 * vertical page after validating.
+		 */
+		protected var pendingVerticalPageIndex:int = -1;
+
+		/**
+		 * The duration of the pending scroll action.
+		 */
+		protected var pendingScrollDuration:Number;
 		
 		/**
 		 * If the user is scrolling with touch or if the scrolling is animated,
@@ -1529,17 +1566,49 @@ package feathers.controls
 		}
 
 		/**
-		 * Scrolls the container to a specific page, horizontally and vertically.
-		 * If <code>horizontalPageIndex</code> or <code>verticalPageIndex</code>
-		 * is <code>-1</code>, it will be ignored
+		 * After the next validation, scrolls to a specific position. May scroll
+		 * in only one direction by passing in a value of <code>NaN</code> for
+		 * either scroll position. If the <code>animationDuration</code> argument
+		 * is greater than zero, the scroll will animate. The duration is in
+		 * seconds.
+		 */
+		public function scrollToPosition(horizontalScrollPosition:Number, verticalScrollPosition:Number, animationDuration:Number = 0):void
+		{
+			this.pendingHorizontalPageIndex = -1;
+			this.pendingVerticalPageIndex = -1;
+			if(this.pendingHorizontalScrollPosition == horizontalScrollPosition &&
+				this.pendingVerticalScrollPosition == verticalScrollPosition &&
+				this.pendingScrollDuration == animationDuration)
+			{
+				return;
+			}
+			this.pendingHorizontalScrollPosition = horizontalScrollPosition;
+			this.pendingVerticalScrollPosition = verticalScrollPosition;
+			this.pendingScrollDuration = animationDuration;
+			this.invalidate(INVALIDATION_FLAG_PENDING_SCROLL);
+		}
+
+		/**
+		 * After the next validation, scrolls to a specific page index. May scroll
+		 * in only one direction by passing in a value of <code>-1</code> for
+		 * either page index. If the <code>animationDuration</code> argument
+		 * is greater than zero, the scroll will animate. The duration is in
+		 * seconds.
 		 */
 		public function scrollToPageIndex(horizontalPageIndex:int, verticalPageIndex:int, animationDuration:Number = 0):void
 		{
-			if(this._isValidating)
+			this.pendingHorizontalScrollPosition = NaN;
+			this.pendingVerticalScrollPosition = NaN;
+			if(this.pendingHorizontalPageIndex == horizontalPageIndex &&
+				this.pendingVerticalPageIndex == verticalPageIndex &&
+				this.pendingScrollDuration == animationDuration)
 			{
-				throw new IllegalOperationError("Cannot scroll to page while validating.");
+				return;
 			}
-			this.throwToPage(horizontalPageIndex, verticalPageIndex, animationDuration);
+			this.pendingHorizontalPageIndex = horizontalPageIndex;
+			this.pendingVerticalPageIndex = verticalPageIndex;
+			this.pendingScrollDuration = animationDuration;
+			this.invalidate(INVALIDATION_FLAG_PENDING_SCROLL);
 		}
 
 		/**
@@ -1576,6 +1645,7 @@ package feathers.controls
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 			const scrollBarInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL_BAR_RENDERER);
+			const pendingScrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_PENDING_SCROLL);
 
 			if(scrollBarInvalid)
 			{
@@ -1654,10 +1724,17 @@ package feathers.controls
 			{
 				this.refreshClipRect();
 			}
+
+			if(pendingScrollInvalid)
+			{
+				this.handlePendingScroll();
+			}
 		}
 
 		/**
-		 * @private
+		 * Automatically determines the ideal width and height of the control,
+		 * if required. If an explicit width or height is provided, that value
+		 * is used instead.
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
@@ -1690,7 +1767,7 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * Creates the scroll bars from the provided factories.
 		 */
 		protected function createScrollBars():void
 		{
@@ -1730,7 +1807,8 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * Choose the appropriate background skin based on the control's current
+		 * state.
 		 */
 		protected function refreshBackgroundSkin():void
 		{
@@ -2130,7 +2208,8 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * Positions and sizes children based on the actual width and height
+		 * values.
 		 */
 		protected function layoutChildren():void
 		{
@@ -2276,9 +2355,12 @@ package feathers.controls
 		}
 
 		/**
-		 * Throws the scroller to the specified position. If you want to throw
-		 * in one direction, pass in NaN or the current scroll position for the
-		 * value that you do not want to change.
+		 * Immediately throws the scroller to the specified position, with
+		 * optional animation. If you want to throw in only one direction, pass
+		 * in <code>NaN</code> for the value that you do not want to change. The
+		 * scroller should be validated before throwing.
+		 *
+		 * @see #scrollToPosition()
 		 */
 		protected function throwTo(targetHorizontalScrollPosition:Number = NaN, targetVerticalScrollPosition:Number = NaN, duration:Number = 0.5):void
 		{
@@ -2326,9 +2408,12 @@ package feathers.controls
 		}
 
 		/**
-		 * Throws the scroller to the specified page index. If you want to throw
-		 * in one direction, pass in -1 or the current page index for the
-		 * value that you do not want to change.
+		 * Immediately throws the scroller to the specified page index, with
+		 * optional animation. If you want to throw in only one direction, pass
+		 * in a parameter value of <code>-1</code> for the direction that should
+		 * not change. The scroller should be validated before throwing.
+		 *
+		 * @see #scrollToPageIndex()
 		 */
 		protected function throwToPage(targetHorizontalPageIndex:Number = -1, targetVerticalPageIndex:Number = -1, duration:Number = 0.5):void
 		{
@@ -2582,6 +2667,25 @@ package feathers.controls
 			this._verticalScrollBarHideTween.delay = delay;
 			this._verticalScrollBarHideTween.onComplete = verticalScrollBarHideTween_onComplete;
 			Starling.juggler.add(this._verticalScrollBarHideTween);
+		}
+
+		/**
+		 * Scrolls to a pending scroll position, if required.
+		 */
+		protected function handlePendingScroll():void
+		{
+			if(!isNaN(this.pendingHorizontalScrollPosition) || !isNaN(this.pendingVerticalScrollPosition))
+			{
+				this.throwTo(this.pendingHorizontalScrollPosition, this.pendingVerticalScrollPosition, this.pendingScrollDuration);
+				this.pendingHorizontalScrollPosition = NaN;
+				this.pendingVerticalScrollPosition = NaN;
+			}
+			if(this.pendingHorizontalPageIndex >= 0 || this.pendingVerticalPageIndex >= 0)
+			{
+				this.throwToPage(this.pendingHorizontalPageIndex, this.pendingVerticalPageIndex, this.pendingScrollDuration);
+				this.pendingHorizontalPageIndex = -1;
+				this.pendingVerticalPageIndex = -1;
+			}
 		}
 
 		/**
