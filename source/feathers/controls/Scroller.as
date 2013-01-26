@@ -1412,7 +1412,7 @@ package feathers.controls
 		protected var _pageThrowDuration:Number = 0.5;
 
 		/**
-		 * The duration, in seconds, of the animation when a the scroller is
+		 * The duration, in seconds, of the animation when the scroller is
 		 * thrown to a page.
 		 */
 		public function get pageThrowDuration():Number
@@ -1426,6 +1426,28 @@ package feathers.controls
 		public function set pageThrowDuration(value:Number):void
 		{
 			this._pageThrowDuration = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _mouseWheelScrollDuration:Number = 0.35;
+
+		/**
+		 * The duration, in seconds, of the animation when the mouse wheel
+		 * initiates a scroll action.
+		 */
+		public function get mouseWheelScrollDuration():Number
+		{
+			return this._mouseWheelScrollDuration;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set mouseWheelScrollDuration(value:Number):void
+		{
+			this._mouseWheelScrollDuration = value;
 		}
 
 		/**
@@ -3051,26 +3073,23 @@ package feathers.controls
 		 */
 		protected function nativeStage_mouseWheelHandler(event:MouseEvent):void
 		{
-			if(this._verticalScrollBarHideTween)
-			{
-				Starling.juggler.remove(this._verticalScrollBarHideTween);
-				this._verticalScrollBarHideTween = null;
-			}
-
-			if(this.verticalScrollBar && this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FLOAT)
-			{
-				this.verticalScrollBar.alpha = 1;
-			}
-
 			HELPER_POINT.x = event.stageX;
 			HELPER_POINT.y = event.stageY;
 			this.globalToLocal(HELPER_POINT, HELPER_POINT);
 			if(this.hitTest(HELPER_POINT, true))
 			{
-				this.verticalScrollPosition = Math.min(this._maxVerticalScrollPosition, Math.max(0, this._verticalScrollPosition - event.delta * this.actualVerticalScrollStep));
+				if(this._verticalScrollBarHideTween)
+				{
+					Starling.juggler.remove(this._verticalScrollBarHideTween);
+					this._verticalScrollBarHideTween = null;
+				}
+				if(this.verticalScrollBar && this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FLOAT)
+				{
+					this.verticalScrollBar.alpha = 1;
+				}
+				const targetVerticalScrollPosition:Number = Math.min(this._maxVerticalScrollPosition, Math.max(0, this._verticalScrollPosition - event.delta * this.actualVerticalScrollStep));
+				this.throwTo(NaN, targetVerticalScrollPosition, this._mouseWheelScrollDuration);
 			}
-
-			this.hideVerticalScrollBar(0.25);
 		}
 
 		/**
