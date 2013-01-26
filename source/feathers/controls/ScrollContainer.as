@@ -80,9 +80,17 @@ package feathers.controls
 		 */
 		public function ScrollContainer()
 		{
+			const oldDisplayListBypassEnabled:Boolean = this.displayListBypassEnabled;
+			this.displayListBypassEnabled = false;
+
+			super();
 			this.layoutViewPort = new LayoutViewPort();
 			this.viewPort = this.layoutViewPort;
+
+			this.displayListBypassEnabled = oldDisplayListBypassEnabled;
 		}
+
+		protected var displayListBypassEnabled:Boolean = true;
 
 		/**
 		 * @private
@@ -161,22 +169,10 @@ package feathers.controls
 		 */
 		override public function set backgroundSkin(value:DisplayObject):void
 		{
-			if(this._backgroundSkin == value)
-			{
-				return;
-			}
-
-			if(this._backgroundSkin && this._backgroundSkin != this._backgroundDisabledSkin)
-			{
-				this.$removeChild(this._backgroundSkin);
-			}
-			this._backgroundSkin = value;
-			if(this._backgroundSkin && this._backgroundSkin.parent != this)
-			{
-				this._backgroundSkin.visible = false;
-				this.$addChildAt(this._backgroundSkin, 0);
-			}
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			const oldDisplayListBypassEnabled:Boolean = this.displayListBypassEnabled;
+			this.displayListBypassEnabled = false;
+			super.backgroundSkin = value;
+			this.displayListBypassEnabled = oldDisplayListBypassEnabled;
 		}
 
 		/**
@@ -184,22 +180,10 @@ package feathers.controls
 		 */
 		override public function set backgroundDisabledSkin(value:DisplayObject):void
 		{
-			if(this._backgroundDisabledSkin == value)
-			{
-				return;
-			}
-
-			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin != this._backgroundSkin)
-			{
-				this.$removeChild(this._backgroundDisabledSkin);
-			}
-			this._backgroundDisabledSkin = value;
-			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin.parent != this)
-			{
-				this._backgroundDisabledSkin.visible = false;
-				this.$addChildAt(this._backgroundDisabledSkin, 0);
-			}
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			const oldDisplayListBypassEnabled:Boolean = this.displayListBypassEnabled;
+			this.displayListBypassEnabled = false;
+			super.backgroundDisabledSkin = value;
+			this.displayListBypassEnabled = oldDisplayListBypassEnabled;
 		}
 
 		/**
@@ -207,15 +191,11 @@ package feathers.controls
 		 */
 		override public function get numChildren():int
 		{
+			if(!this.displayListBypassEnabled)
+			{
+				return super.numChildren;
+			}
 			return DisplayObjectContainer(this.viewPort).numChildren;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function get $numChildren():int
-		{
-			return super.numChildren;
 		}
 
 		/**
@@ -223,15 +203,11 @@ package feathers.controls
 		 */
 		override public function getChildByName(name:String):DisplayObject
 		{
+			if(!this.displayListBypassEnabled)
+			{
+				return super.getChildByName(name);
+			}
 			return DisplayObjectContainer(this.viewPort).getChildByName(name);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function $getChildByName(name:String):DisplayObject
-		{
-			return super.getChildByName(name);
 		}
 
 		/**
@@ -239,23 +215,11 @@ package feathers.controls
 		 */
 		override public function getChildAt(index:int):DisplayObject
 		{
+			if(!this.displayListBypassEnabled)
+			{
+				return super.getChildAt(index);
+			}
 			return DisplayObjectContainer(this.viewPort).getChildAt(index);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function $getChildAt(index:int):DisplayObject
-		{
-			return super.getChildAt(index);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function $addChild(child:DisplayObject):DisplayObject
-		{
-			return super.addChildAt(child, super.numChildren);
 		}
 
 		/**
@@ -263,28 +227,11 @@ package feathers.controls
 		 */
 		override public function addChildAt(child:DisplayObject, index:int):DisplayObject
 		{
-			return DisplayObjectContainer(this.viewPort).addChildAt(child, index);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function $addChildAt(child:DisplayObject, index:int):DisplayObject
-		{
-			return super.addChildAt(child, index);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function $removeChild(child:DisplayObject, dispose:Boolean = false):DisplayObject
-		{
-			const childIndex:int = this.$getChildIndex(child);
-			if(childIndex >= 0)
+			if(!this.displayListBypassEnabled)
 			{
-				super.removeChildAt(childIndex, dispose);
+				return super.addChildAt(child, index);
 			}
-			return child;
+			return DisplayObjectContainer(this.viewPort).addChildAt(child, index);
 		}
 
 		/**
@@ -292,15 +239,11 @@ package feathers.controls
 		 */
 		override public function removeChildAt(index:int, dispose:Boolean = false):DisplayObject
 		{
+			if(!this.displayListBypassEnabled)
+			{
+				return super.removeChildAt(index, dispose);
+			}
 			return DisplayObjectContainer(this.viewPort).removeChildAt(index, dispose);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function $removeChildAt(index:int):DisplayObject
-		{
-			return super.removeChildAt(index);
 		}
 
 		/**
@@ -308,15 +251,11 @@ package feathers.controls
 		 */
 		override public function getChildIndex(child:DisplayObject):int
 		{
+			if(!this.displayListBypassEnabled)
+			{
+				return super.getChildIndex(child);
+			}
 			return DisplayObjectContainer(this.viewPort).getChildIndex(child);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function $getChildIndex(child:DisplayObject):int
-		{
-			return super.getChildIndex(child);
 		}
 
 		/**
@@ -324,30 +263,12 @@ package feathers.controls
 		 */
 		override public function setChildIndex(child:DisplayObject, index:int):void
 		{
-			DisplayObjectContainer(this.viewPort).setChildIndex(child, index);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function $setChildIndex(child:DisplayObject, index:int):void
-		{
-			this.$removeChild(child);
-			this.$addChildAt(child, index);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function $swapChildren(child1:DisplayObject, child2:DisplayObject):void
-		{
-			const index1:int = this.$getChildIndex(child1);
-			const index2:int = this.$getChildIndex(child2);
-			if (index1 < 0 || index2 < 0)
+			if(!this.displayListBypassEnabled)
 			{
-				throw new ArgumentError("Not a child of this container");
+				super.setChildIndex(child, index);
+				return;
 			}
-			this.$swapChildrenAt(index1, index2);
+			DisplayObjectContainer(this.viewPort).setChildIndex(child, index);
 		}
 
 		/**
@@ -355,20 +276,12 @@ package feathers.controls
 		 */
 		override public function swapChildrenAt(index1:int, index2:int):void
 		{
+			if(!this.displayListBypassEnabled)
+			{
+				super.swapChildrenAt(index1, index2);
+				return;
+			}
 			DisplayObjectContainer(this.viewPort).swapChildrenAt(index1, index2);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function $swapChildrenAt(index1:int, index2:int):void
-		{
-			const child1:DisplayObject = this.$getChildAt(index1);
-			const child2:DisplayObject = this.$getChildAt(index2);
-			this.$removeChild(child1);
-			this.$removeChild(child2);
-			this.$addChildAt(child2, index1);
-			this.$addChildAt(child1, index2);
 		}
 
 		/**
@@ -376,6 +289,11 @@ package feathers.controls
 		 */
 		override public function sortChildren(compareFunction:Function):void
 		{
+			if(!this.displayListBypassEnabled)
+			{
+				super.sortChildren(compareFunction);
+				return;
+			}
 			DisplayObjectContainer(this.viewPort).sortChildren(compareFunction);
 		}
 
@@ -386,6 +304,14 @@ package feathers.controls
 		{
 			super.initialize();
 			this.refreshMXMLContent();
+		}
+
+		override public function validate():void
+		{
+			const oldDisplayListBypassEnabled:Boolean = this.displayListBypassEnabled;
+			this.displayListBypassEnabled = false;
+			super.validate();
+			this.displayListBypassEnabled = oldDisplayListBypassEnabled;
 		}
 
 		/**
