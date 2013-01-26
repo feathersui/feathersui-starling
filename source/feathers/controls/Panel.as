@@ -24,11 +24,7 @@
  */
 package feathers.controls
 {
-	import feathers.controls.supportClasses.LayoutViewPort;
-	import feathers.core.FeathersControl;
 	import feathers.core.PropertyProxy;
-
-	import starling.display.DisplayObject;
 
 	/**
 	 * A container with a header and layout.
@@ -39,6 +35,46 @@ package feathers.controls
 		 * The default value added to the <code>nameList</code> of the header.
 		 */
 		public static const DEFAULT_CHILD_NAME_HEADER:String = "feathers-panel-header";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_POLICY_AUTO
+		 */
+		public static const SCROLL_POLICY_AUTO:String = "auto";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_POLICY_ON
+		 */
+		public static const SCROLL_POLICY_ON:String = "on";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_POLICY_OFF
+		 */
+		public static const SCROLL_POLICY_OFF:String = "off";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_FLOAT
+		 */
+		public static const SCROLL_BAR_DISPLAY_MODE_FLOAT:String = "float";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_FIXED
+		 */
+		public static const SCROLL_BAR_DISPLAY_MODE_FIXED:String = "fixed";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_NONE
+		 */
+		public static const SCROLL_BAR_DISPLAY_MODE_NONE:String = "none";
+
+		/**
+		 * @copy feathers.controls.Scroller#INTERACTION_MODE_TOUCH
+		 */
+		public static const INTERACTION_MODE_TOUCH:String = "touch";
+
+		/**
+		 * @copy feathers.controls.Scroller#INTERACTION_MODE_MOUSE
+		 */
+		public static const INTERACTION_MODE_MOUSE:String = "mouse";
 
 		/**
 		 * @private
@@ -151,8 +187,8 @@ package feathers.controls
 
 		/**
 		 * A set of key/value pairs to be passed down to the container's
-		 * scroller sub-component. The scroller is a
-		 * <code>feathers.controls.Scroller</code> instance.
+		 * header sub-component. The header is a
+		 * <code>feathers.controls.Header</code> instance.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -241,19 +277,16 @@ package feathers.controls
 
 			const oldHeaderWidth:Number = this.header.width;
 			const oldHeaderHeight:Number = this.header.height;
-			const oldScrollerWidth:Number = this.scroller.width;
-			const oldScrollerHeight:Number = this.scroller.height;
-			const oldIgnoreScrollerResizing:Boolean = this.ignoreScrollerResizing;
-			this.ignoreScrollerResizing = true;
-			this.refreshScrollerBounds();
+			this.header.width = this.explicitWidth;
+			this.header.maxWidth = this._maxWidth;
+			this.header.height = NaN;
 			this.header.validate();
-			this.scroller.validate();
 
 			var newWidth:Number = this.explicitWidth;
 			var newHeight:Number = this.explicitHeight;
 			if(needsWidth)
 			{
-				newWidth = Math.max(this.scroller.width + this._paddingLeft + this._paddingRight, this.header.width);
+				newWidth = Math.max(this.header.width, this._viewPort.width + this._rightViewPortOffset + this._leftViewPortOffset);
 				if(!isNaN(this.originalBackgroundWidth))
 				{
 					newWidth = Math.max(newWidth, this.originalBackgroundWidth);
@@ -261,17 +294,16 @@ package feathers.controls
 			}
 			if(needsHeight)
 			{
-				newHeight = this.scroller.height + this._paddingTop + this._paddingBottom + this.header.height;
+				newHeight = this.header.height + this._viewPort.height + this._bottomViewPortOffset + this._topViewPortOffset;
 				if(!isNaN(this.originalBackgroundHeight))
 				{
 					newHeight = Math.max(newHeight, this.originalBackgroundHeight);
 				}
 			}
+
 			this.header.width = oldHeaderWidth;
-			this.header.width = oldHeaderHeight;
-			this.scroller.width = oldScrollerWidth;
-			this.scroller.height = oldScrollerHeight;
-			this.ignoreScrollerResizing = oldIgnoreScrollerResizing;
+			this.header.height = oldHeaderHeight;
+
 			return this.setSizeInternal(newWidth, newHeight, false);
 		}
 
@@ -311,33 +343,20 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override protected function refreshScrollerBounds():void
+		override protected function calculateViewPortOffsets(forceScrollBars:Boolean = false):void
 		{
-			this.header.width = this.explicitWidth;
-			this.header.height = NaN;
+			super.calculateViewPortOffsets(forceScrollBars);
 
-			const scrollerWidthOffset:Number = this._paddingLeft + this._paddingRight;
-			const scrollerHeightOffset:Number = this.header.height + this._paddingTop + this._paddingBottom;
-			if(isNaN(this.explicitWidth))
-			{
-				this.scroller.width = NaN;
-			}
-			else
-			{
-				this.scroller.width = Math.max(0, this.explicitWidth - scrollerWidthOffset);
-			}
-			if(isNaN(this.explicitHeight))
-			{
-				this.scroller.height = NaN;
-			}
-			else
-			{
-				this.scroller.height = Math.max(0, this.explicitHeight - scrollerHeightOffset);
-			}
-			this.scroller.minWidth = Math.max(0,  this._minWidth - scrollerWidthOffset);
-			this.scroller.maxWidth = Math.max(0, this._maxWidth - scrollerWidthOffset);
-			this.scroller.minHeight = Math.max(0, this._minHeight - scrollerHeightOffset);
-			this.scroller.maxHeight = Math.max(0, this._maxHeight - scrollerHeightOffset);
+			const oldHeaderWidth:Number = this.header.width;
+			const oldHeaderHeight:Number = this.header.height;
+			this.header.width = this.explicitWidth;
+			this.header.maxWidth = this._maxWidth;
+			this.header.height = NaN;
+			this.header.validate();
+			this._topViewPortOffset += this.header.height;
+
+			this.header.width = oldHeaderWidth;
+			this.header.height = oldHeaderHeight;
 		}
 
 		/**
@@ -345,19 +364,11 @@ package feathers.controls
 		 */
 		override protected function layoutChildren():void
 		{
-			if(this.currentBackgroundSkin)
-			{
-				this.currentBackgroundSkin.width = this.actualWidth;
-				this.currentBackgroundSkin.height = this.actualHeight;
-			}
+			super.layoutChildren();
 
 			this.header.width = this.actualWidth;
+			this.header.height = NaN;
 			this.header.validate();
-
-			this.scroller.x = this._paddingLeft;
-			this.scroller.y = this.header.y + this.header.height + this._paddingTop;
-			this.scroller.width = this.actualWidth - this._paddingLeft - this._paddingRight;
-			this.scroller.height = this.actualHeight - this._paddingBottom - this.scroller.y;
 		}
 	}
 }
