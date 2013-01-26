@@ -16,7 +16,6 @@ package feathers.controls
 	import feathers.layout.ILayout;
 	import feathers.layout.VerticalLayout;
 
-	import flash.errors.IllegalOperationError;
 	import flash.geom.Point;
 
 	import starling.events.Event;
@@ -1425,32 +1424,59 @@ package feathers.controls
 		}
 
 		/**
-		 * Scrolls the list so that the specified item is visible. If
-		 * <code>animationDuration</code> is greater than zero, the scroll will
-		 * animate. The duration is in seconds.
+		 * The pending group index to scroll to after validating. A value of
+		 * <code>-1</code> means that the scroller won't scroll to a group after
+		 * validating.
+		 */
+		protected var pendingGroupIndex:int = -1;
+
+		/**
+		 * The pending item index to scroll to after validating. A value of
+		 * <code>-1</code> means that the scroller won't scroll to an item after
+		 * validating.
+		 */
+		protected var pendingItemIndex:int = -1;
+
+		/**
+		 * @private
+		 */
+		override public function scrollToPosition(horizontalScrollPosition:Number, verticalScrollPosition:Number, animationDuration:Number = 0):void
+		{
+			this.pendingItemIndex = -1;
+			super.scrollToPosition(horizontalScrollPosition, verticalScrollPosition, animationDuration);
+		}
+
+		/**
+		 * @private
+		 */
+		override public function scrollToPageIndex(horizontalPageIndex:int, verticalPageIndex:int, animationDuration:Number = 0):void
+		{
+			this.pendingGroupIndex = -1;
+			this.pendingItemIndex = -1;
+			super.scrollToPosition(horizontalPageIndex, verticalPageIndex, animationDuration);
+		}
+
+		/**
+		 * After the next validation, scrolls the list so that the specified
+		 * item is visible. If <code>animationDuration</code> is greater than
+		 * zero, the scroll will animate. The duration is in seconds.
 		 */
 		public function scrollToDisplayIndex(groupIndex:int, itemIndex:int, animationDuration:Number = 0):void
 		{
-			if(this._isValidating)
+			this.pendingHorizontalPageIndex = -1;
+			this.pendingVerticalPageIndex = -1;
+			this.pendingHorizontalScrollPosition = NaN;
+			this.pendingVerticalScrollPosition = NaN;
+			if(this.pendingGroupIndex == groupIndex &&
+				this.pendingItemIndex == itemIndex &&
+				this.pendingScrollDuration == animationDuration)
 			{
-				throw new IllegalOperationError("Cannot scroll to index while validating.");
+				return;
 			}
-			const item:Object = this._dataProvider.getItemAt(groupIndex, itemIndex);
-			if(item is Object)
-			{
-				this.dataViewPort.getScrollPositionForIndex(groupIndex, itemIndex, HELPER_POINT);
-
-				if(animationDuration > 0)
-				{
-					this.throwTo(Math.max(0, Math.min(HELPER_POINT.x, this._maxHorizontalScrollPosition)),
-						Math.max(0, Math.min(HELPER_POINT.y, this._maxVerticalScrollPosition)), animationDuration);
-				}
-				else
-				{
-					this.horizontalScrollPosition = Math.max(0, Math.min(HELPER_POINT.x, this._maxHorizontalScrollPosition));
-					this.verticalScrollPosition = Math.max(0, Math.min(HELPER_POINT.y, this._maxVerticalScrollPosition));
-				}
-			}
+			this.pendingGroupIndex = groupIndex;
+			this.pendingItemIndex = itemIndex;
+			this.pendingScrollDuration = animationDuration;
+			this.invalidate(INVALIDATION_FLAG_PENDING_SCROLL);
 		}
 
 		/**
@@ -1589,6 +1615,35 @@ package feathers.controls
 			this.dataViewPort.typicalFooter = this._typicalFooter;
 
 			this.dataViewPort.layout = this._layout;
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function handlePendingScroll():void
+		{
+			if(this.pendingGroupIndex >= 0 && this.pendingItemIndex >= 0)
+			{
+				const item:Object = this._dataProvider.getItemAt(this.pendingGroupIndex, this.pendingItemIndex);
+				if(item is Object)
+				{
+					this.dataViewPort.getScrollPositionForIndex(this.pendingGroupIndex, this.pendingItemIndex, HELPER_POINT);
+					this.pendingGroupIndex = -1;
+					this.pendingItemIndex = -1;
+
+					if(this.pendingScrollDuration > 0)
+					{
+						this.throwTo(Math.max(0, Math.min(HELPER_POINT.x, this._maxHorizontalScrollPosition)),
+							Math.max(0, Math.min(HELPER_POINT.y, this._maxVerticalScrollPosition)), this.pendingScrollDuration);
+					}
+					else
+					{
+						this.horizontalScrollPosition = Math.max(0, Math.min(HELPER_POINT.x, this._maxHorizontalScrollPosition));
+						this.verticalScrollPosition = Math.max(0, Math.min(HELPER_POINT.y, this._maxVerticalScrollPosition));
+					}
+				}
+			}
+			super.handlePendingScroll();
 		}
 
 		/**
