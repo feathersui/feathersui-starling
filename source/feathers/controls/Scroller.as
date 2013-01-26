@@ -248,8 +248,7 @@ package feathers.controls
 			super();
 
 			this._viewPortWrapper = new Sprite();
-			//just in case this gets overridden
-			super.addChildAt(this._viewPortWrapper, super.numChildren);
+			this.addChild(this._viewPortWrapper);
 
 			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
@@ -1147,13 +1146,13 @@ package feathers.controls
 
 			if(this._backgroundSkin && this._backgroundSkin != this._backgroundDisabledSkin)
 			{
-				super.removeChild(this._backgroundSkin);
+				this.removeChild(this._backgroundSkin);
 			}
 			this._backgroundSkin = value;
 			if(this._backgroundSkin && this._backgroundSkin.parent != this)
 			{
 				this._backgroundSkin.visible = false;
-				super.addChildAt(this._backgroundSkin, 0);
+				this.addChildAt(this._backgroundSkin, 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1183,13 +1182,13 @@ package feathers.controls
 
 			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin != this._backgroundSkin)
 			{
-				super.removeChild(this._backgroundDisabledSkin);
+				this.removeChild(this._backgroundDisabledSkin);
 			}
 			this._backgroundDisabledSkin = value;
 			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin.parent != this)
 			{
 				this._backgroundDisabledSkin.visible = false;
-				super.addChildAt(this._backgroundDisabledSkin, 0);
+				this.addChildAt(this._backgroundDisabledSkin, 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1775,14 +1774,14 @@ package feathers.controls
 			{
 				var displayHorizontalScrollBar:DisplayObject = DisplayObject(this.horizontalScrollBar);
 				displayHorizontalScrollBar.removeEventListener(Event.CHANGE, horizontalScrollBar_changeHandler);
-				super.removeChildAt(super.getChildIndex(displayHorizontalScrollBar), true);
+				this.removeChild(displayHorizontalScrollBar, true);
 				this.horizontalScrollBar = null;
 			}
 			if(this.verticalScrollBar)
 			{
 				var displayVerticalScrollBar:DisplayObject = DisplayObject(this.verticalScrollBar);
 				displayVerticalScrollBar.removeEventListener(Event.CHANGE, verticalScrollBar_changeHandler);
-				super.removeChildAt(super.getChildIndex(displayVerticalScrollBar), true);
+				this.removeChild(displayVerticalScrollBar, true);
 				this.verticalScrollBar = null;
 			}
 
@@ -1793,7 +1792,7 @@ package feathers.controls
 				this.horizontalScrollBar.nameList.add(this.horizontalScrollBarName);
 				displayHorizontalScrollBar = DisplayObject(this.horizontalScrollBar);
 				displayHorizontalScrollBar.addEventListener(Event.CHANGE, horizontalScrollBar_changeHandler);
-				super.addChildAt(displayHorizontalScrollBar, super.numChildren);
+				this.addChild(displayHorizontalScrollBar);
 			}
 			if(this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_NONE &&
 				this._verticalScrollPolicy != SCROLL_POLICY_OFF && this._verticalScrollBarFactory != null)
@@ -1802,7 +1801,7 @@ package feathers.controls
 				this.verticalScrollBar.nameList.add(this.verticalScrollBarName);
 				displayVerticalScrollBar = DisplayObject(this.verticalScrollBar);
 				displayVerticalScrollBar.addEventListener(Event.CHANGE, verticalScrollBar_changeHandler);
-				super.addChildAt(displayVerticalScrollBar, super.numChildren);
+				this.addChild(displayVerticalScrollBar);
 			}
 		}
 
@@ -2112,10 +2111,12 @@ package feathers.controls
 			if(displayHorizontalScrollBar)
 			{
 				displayHorizontalScrollBar.visible = !isFixed || this._bottomViewPortOffset > 0;
+				this.setChildIndex(displayHorizontalScrollBar, this.numChildren - 1);
 			}
 			if(displayVerticalScrollBar)
 			{
 				displayVerticalScrollBar.visible = !isFixed || this._rightViewPortOffset > 0;
+				this.setChildIndex(displayVerticalScrollBar, this.numChildren - 1);
 			}
 		}
 
@@ -2154,7 +2155,6 @@ package feathers.controls
 			}
 		}
 
-
 		/**
 		 * @private
 		 */
@@ -2170,7 +2170,7 @@ package feathers.controls
 					this._touchBlocker = new Quad(100, 100, 0xff00ff);
 					this._touchBlocker.alpha = 0;
 					this._touchBlocker.visible = false;
-					super.addChildAt(this._touchBlocker, super.numChildren);
+					this.addChild(this._touchBlocker);
 				}
 			}
 			else
@@ -2178,7 +2178,7 @@ package feathers.controls
 				this.removeEventListener(TouchEvent.TOUCH, touchHandler);
 				if(this._touchBlocker)
 				{
-					super.removeChild(this._touchBlocker, true);
+					this.removeChild(this._touchBlocker, true);
 					this._touchBlocker = null;
 				}
 			}
@@ -2241,7 +2241,11 @@ package feathers.controls
 			if(displayHorizontalScrollBar)
 			{
 				displayHorizontalScrollBar.x = this._leftViewPortOffset;
-				displayHorizontalScrollBar.y = this._viewPortWrapper.y + this._viewPort.visibleHeight - displayHorizontalScrollBar.height;
+				displayHorizontalScrollBar.y = this._viewPortWrapper.y + this._viewPort.visibleHeight;
+				if(this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_FIXED)
+				{
+					displayHorizontalScrollBar.y -= displayHorizontalScrollBar.height;
+				}
 				displayHorizontalScrollBar.width = this._viewPort.visibleWidth;
 				if(displayVerticalScrollBar)
 				{
@@ -2251,7 +2255,11 @@ package feathers.controls
 
 			if(displayVerticalScrollBar)
 			{
-				displayVerticalScrollBar.x = this._viewPortWrapper.x + this._viewPort.visibleWidth - displayVerticalScrollBar.width;
+				displayVerticalScrollBar.x = this._viewPortWrapper.x + this._viewPort.visibleWidth;
+				if(this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_FIXED)
+				{
+					displayVerticalScrollBar.y -= displayVerticalScrollBar.width;
+				}
 				displayVerticalScrollBar.y = this._topViewPortOffset;
 				displayVerticalScrollBar.height = this._viewPort.visibleHeight;
 				if(displayHorizontalScrollBar)

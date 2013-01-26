@@ -312,9 +312,11 @@ package feathers.controls
 		 */
 		protected function createHeader():void
 		{
+			const oldDisplayListBypassEnabled:Boolean = this.displayListBypassEnabled;
+			this.displayListBypassEnabled = false;
 			if(this.header)
 			{
-				this.$removeChild(this.header, true);
+				this.removeChild(this.header, true);
 				this.header = null;
 			}
 
@@ -322,7 +324,8 @@ package feathers.controls
 			const headerName:String = this._customHeaderName != null ? this._customHeaderName : this.headerName;
 			this.header = Header(factory());
 			this.header.nameList.add(headerName);
-			this.$addChild(this.header);
+			this.addChild(this.header);
+			this.displayListBypassEnabled = oldDisplayListBypassEnabled;
 		}
 
 		/**
