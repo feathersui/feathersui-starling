@@ -8,7 +8,6 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.controls.renderers.DefaultListItemRenderer;
-	import feathers.controls.supportClasses.BaseScrollContainer;
 	import feathers.controls.supportClasses.ListDataViewPort;
 	import feathers.core.PropertyProxy;
 	import feathers.data.ListCollection;
@@ -16,6 +15,7 @@ package feathers.controls
 	import feathers.layout.ILayout;
 	import feathers.layout.VerticalLayout;
 
+	import flash.errors.IllegalOperationError;
 	import flash.geom.Point;
 
 	import starling.events.Event;
@@ -61,7 +61,7 @@ package feathers.controls
 	 * @see http://wiki.starling-framework.org/feathers/list
 	 * @see GroupedList
 	 */
-	public class List extends BaseScrollContainer
+	public class List extends Scroller
 	{
 		/**
 		 * @private
@@ -69,9 +69,44 @@ package feathers.controls
 		private static const HELPER_POINT:Point = new Point();
 
 		/**
-		 * The default value added to the <code>nameList</code> of the scroller.
+		 * @copy feathers.controls.Scroller#SCROLL_POLICY_AUTO
 		 */
-		public static const DEFAULT_CHILD_NAME_SCROLLER:String = "feathers-list-scroller";
+		public static const SCROLL_POLICY_AUTO:String = "auto";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_POLICY_ON
+		 */
+		public static const SCROLL_POLICY_ON:String = "on";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_POLICY_OFF
+		 */
+		public static const SCROLL_POLICY_OFF:String = "off";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_FLOAT
+		 */
+		public static const SCROLL_BAR_DISPLAY_MODE_FLOAT:String = "float";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_FIXED
+		 */
+		public static const SCROLL_BAR_DISPLAY_MODE_FIXED:String = "fixed";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_NONE
+		 */
+		public static const SCROLL_BAR_DISPLAY_MODE_NONE:String = "none";
+
+		/**
+		 * @copy feathers.controls.Scroller#INTERACTION_MODE_TOUCH
+		 */
+		public static const INTERACTION_MODE_TOUCH:String = "touch";
+
+		/**
+		 * @copy feathers.controls.Scroller#INTERACTION_MODE_MOUSE
+		 */
+		public static const INTERACTION_MODE_MOUSE:String = "mouse";
 		
 		/**
 		 * Constructor.
@@ -79,7 +114,6 @@ package feathers.controls
 		public function List()
 		{
 			super();
-			this.scrollerName = DEFAULT_CHILD_NAME_SCROLLER;
 		}
 
 		/**
@@ -87,11 +121,6 @@ package feathers.controls
 		 * The guts of the List's functionality. Handles layout and selection.
 		 */
 		protected var dataViewPort:ListDataViewPort;
-		
-		/**
-		 * @private
-		 */
-		protected var _scrollToIndex:int = -1;
 
 		/**
 		 * @private
@@ -441,15 +470,26 @@ package feathers.controls
 		 */
 		public function scrollToDisplayIndex(index:int, animationDuration:Number = 0):void
 		{
-			if(this._scrollToIndex == index)
+			if(this._isValidating)
 			{
-				return;
+				throw new IllegalOperationError("Cannot scroll to index while validating.");
 			}
-			this.pendingScrollToHorizontalPageIndex = -1;
-			this.pendingScrollToVerticalPageIndex = -1;
-			this._scrollToIndex = index;
-			this.pendingScrollDuration = animationDuration;
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
+			const item:Object = this._dataProvider.getItemAt(index);
+			if(item is Object)
+			{
+				this.dataViewPort.getScrollPositionForIndex(index, HELPER_POINT);
+
+				if(animationDuration > 0)
+				{
+					this.throwTo(Math.max(0, Math.min(HELPER_POINT.x, this._maxHorizontalScrollPosition)),
+						Math.max(0, Math.min(HELPER_POINT.y, this._maxVerticalScrollPosition)), animationDuration);
+				}
+				else
+				{
+					this.horizontalScrollPosition = Math.max(0, Math.min(HELPER_POINT.x, this._maxHorizontalScrollPosition));
+					this.verticalScrollPosition = Math.max(0, Math.min(HELPER_POINT.y, this._maxVerticalScrollPosition));
+				}
+			}
 		}
 		
 		/**
@@ -466,13 +506,13 @@ package feathers.controls
 				this.viewPort = this.dataViewPort = new ListDataViewPort();
 				this.dataViewPort.owner = this;
 				this.dataViewPort.addEventListener(Event.CHANGE, dataViewPort_changeHandler);
-				this.scroller.viewPort = this.dataViewPort;
+				this.viewPort = this.dataViewPort;
 			}
 
 			if(!hasLayout)
 			{
-				this.scroller.horizontalScrollPolicy = Scroller.SCROLL_POLICY_AUTO;
-				this.scroller.verticalScrollPolicy = hasLayout ? Scroller.SCROLL_POLICY_AUTO : Scroller.SCROLL_POLICY_ON;
+				this.horizontalScrollPolicy = SCROLL_POLICY_AUTO;
+				this.verticalScrollPolicy = hasLayout ? SCROLL_POLICY_AUTO : SCROLL_POLICY_ON;
 
 				const layout:VerticalLayout = new VerticalLayout();
 				layout.useVirtualLayout = true;
@@ -508,34 +548,6 @@ package feathers.controls
 			this.dataViewPort.itemRendererName = this._itemRendererName;
 			this.dataViewPort.typicalItem = this._typicalItem;
 			this.dataViewPort.layout = this._layout;
-		}
-
-		/**
-		 * @private
-		 */
-		override protected function scroll():void
-		{
-			super.scroll();
-			if(this._scrollToIndex >= 0)
-			{
-				const item:Object = this._dataProvider.getItemAt(this._scrollToIndex);
-				if(item is Object)
-				{
-					this.dataViewPort.getScrollPositionForIndex(this._scrollToIndex, HELPER_POINT);
-
-					if(this.pendingScrollDuration > 0)
-					{
-						this.scroller.throwTo(Math.max(0, Math.min(HELPER_POINT.x, this._maxHorizontalScrollPosition)),
-							Math.max(0, Math.min(HELPER_POINT.y, this._maxVerticalScrollPosition)), this.pendingScrollDuration);
-					}
-					else
-					{
-						this.horizontalScrollPosition = Math.max(0, Math.min(HELPER_POINT.x, this._maxHorizontalScrollPosition));
-						this.verticalScrollPosition = Math.max(0, Math.min(HELPER_POINT.y, this._maxVerticalScrollPosition));
-					}
-				}
-				this._scrollToIndex = -1;
-			}
 		}
 
 		/**

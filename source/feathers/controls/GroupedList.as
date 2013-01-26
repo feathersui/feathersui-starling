@@ -9,7 +9,6 @@ package feathers.controls
 {
 	import feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer;
 	import feathers.controls.renderers.DefaultGroupedListItemRenderer;
-	import feathers.controls.supportClasses.BaseScrollContainer;
 	import feathers.controls.supportClasses.GroupedListDataViewPort;
 	import feathers.core.PropertyProxy;
 	import feathers.data.HierarchicalCollection;
@@ -17,6 +16,7 @@ package feathers.controls
 	import feathers.layout.ILayout;
 	import feathers.layout.VerticalLayout;
 
+	import flash.errors.IllegalOperationError;
 	import flash.geom.Point;
 
 	import starling.events.Event;
@@ -63,17 +63,12 @@ package feathers.controls
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/grouped-list
 	 */
-	public class GroupedList extends BaseScrollContainer
+	public class GroupedList extends Scroller
 	{
 		/**
 		 * @private
 		 */
 		private static const HELPER_POINT:Point = new Point();
-
-		/**
-		 * The default value added to the <code>nameList</code> of the scroller.
-		 */
-		public static const DEFAULT_CHILD_NAME_SCROLLER:String = "feathers-list-scroller";
 
 		/**
 		 * An alternate name to use with GroupedList to allow a theme to give it
@@ -133,12 +128,51 @@ package feathers.controls
 		public static const ALTERNATE_CHILD_NAME_INSET_SINGLE_ITEM_RENDERER:String = "feathers-grouped-list-inset-single-item-renderer";
 
 		/**
+		 * @copy feathers.controls.Scroller#SCROLL_POLICY_AUTO
+		 */
+		public static const SCROLL_POLICY_AUTO:String = "auto";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_POLICY_ON
+		 */
+		public static const SCROLL_POLICY_ON:String = "on";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_POLICY_OFF
+		 */
+		public static const SCROLL_POLICY_OFF:String = "off";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_FLOAT
+		 */
+		public static const SCROLL_BAR_DISPLAY_MODE_FLOAT:String = "float";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_FIXED
+		 */
+		public static const SCROLL_BAR_DISPLAY_MODE_FIXED:String = "fixed";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_NONE
+		 */
+		public static const SCROLL_BAR_DISPLAY_MODE_NONE:String = "none";
+
+		/**
+		 * @copy feathers.controls.Scroller#INTERACTION_MODE_TOUCH
+		 */
+		public static const INTERACTION_MODE_TOUCH:String = "touch";
+
+		/**
+		 * @copy feathers.controls.Scroller#INTERACTION_MODE_MOUSE
+		 */
+		public static const INTERACTION_MODE_MOUSE:String = "mouse";
+
+		/**
 		 * Constructor.
 		 */
 		public function GroupedList()
 		{
 			super();
-			this.scrollerName = DEFAULT_CHILD_NAME_SCROLLER;
 		}
 
 		/**
@@ -146,16 +180,6 @@ package feathers.controls
 		 * The guts of the List's functionality. Handles layout and selection.
 		 */
 		protected var dataViewPort:GroupedListDataViewPort;
-
-		/**
-		 * @private
-		 */
-		protected var pendingScrollToGroupIndex:int = -1;
-
-		/**
-		 * @private
-		 */
-		protected var pendingScrollToItemIndex:int = -1;
 
 		/**
 		 * @private
@@ -1407,16 +1431,26 @@ package feathers.controls
 		 */
 		public function scrollToDisplayIndex(groupIndex:int, itemIndex:int, animationDuration:Number = 0):void
 		{
-			if(this.pendingScrollToGroupIndex == groupIndex && this.pendingScrollToItemIndex == itemIndex)
+			if(this._isValidating)
 			{
-				return;
+				throw new IllegalOperationError("Cannot scroll to index while validating.");
 			}
-			this.pendingScrollToHorizontalPageIndex = -1;
-			this.pendingScrollToVerticalPageIndex = -1;
-			this.pendingScrollToGroupIndex = groupIndex;
-			this.pendingScrollToItemIndex = itemIndex;
-			this.pendingScrollDuration = animationDuration;
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
+			const item:Object = this._dataProvider.getItemAt(groupIndex, itemIndex);
+			if(item is Object)
+			{
+				this.dataViewPort.getScrollPositionForIndex(groupIndex, itemIndex, HELPER_POINT);
+
+				if(animationDuration > 0)
+				{
+					this.throwTo(Math.max(0, Math.min(HELPER_POINT.x, this._maxHorizontalScrollPosition)),
+						Math.max(0, Math.min(HELPER_POINT.y, this._maxVerticalScrollPosition)), animationDuration);
+				}
+				else
+				{
+					this.horizontalScrollPosition = Math.max(0, Math.min(HELPER_POINT.x, this._maxHorizontalScrollPosition));
+					this.verticalScrollPosition = Math.max(0, Math.min(HELPER_POINT.y, this._maxVerticalScrollPosition));
+				}
+			}
 		}
 
 		/**
@@ -1487,13 +1521,13 @@ package feathers.controls
 				this.viewPort = this.dataViewPort = new GroupedListDataViewPort();
 				this.dataViewPort.owner = this;
 				this.dataViewPort.addEventListener(Event.CHANGE, dataViewPort_changeHandler);
-				this.scroller.viewPort = this.dataViewPort;
+				this.viewPort = this.dataViewPort;
 			}
 
 			if(!hasLayout)
 			{
-				this.scroller.horizontalScrollPolicy = Scroller.SCROLL_POLICY_AUTO;
-				this.scroller.verticalScrollPolicy = hasLayout ? Scroller.SCROLL_POLICY_AUTO : Scroller.SCROLL_POLICY_ON;
+				this.horizontalScrollPolicy = SCROLL_POLICY_AUTO;
+				this.verticalScrollPolicy = hasLayout ? SCROLL_POLICY_AUTO : SCROLL_POLICY_ON;
 
 				const layout:VerticalLayout = new VerticalLayout();
 				layout.useVirtualLayout = true;
@@ -1555,35 +1589,6 @@ package feathers.controls
 			this.dataViewPort.typicalFooter = this._typicalFooter;
 
 			this.dataViewPort.layout = this._layout;
-		}
-
-		/**
-		 * @private
-		 */
-		override protected function scroll():void
-		{
-			super.scroll();
-			if(this.pendingScrollToGroupIndex >= 0 && this.pendingScrollToItemIndex >= 0)
-			{
-				const item:Object = this._dataProvider.getItemAt(this.pendingScrollToGroupIndex, this.pendingScrollToItemIndex);
-				if(item is Object)
-				{
-					this.dataViewPort.getScrollPositionForIndex(this.pendingScrollToGroupIndex, this.pendingScrollToItemIndex, HELPER_POINT);
-
-					if(this.pendingScrollDuration > 0)
-					{
-						this.scroller.throwTo(Math.max(0, Math.min(HELPER_POINT.x, this._maxHorizontalScrollPosition)),
-							Math.max(0, Math.min(HELPER_POINT.y, this._maxVerticalScrollPosition)), this.pendingScrollDuration);
-					}
-					else
-					{
-						this.horizontalScrollPosition = Math.max(0, Math.min(HELPER_POINT.x, this._maxHorizontalScrollPosition));
-						this.verticalScrollPosition = Math.max(0, Math.min(HELPER_POINT.y, this._maxVerticalScrollPosition));
-					}
-				}
-				this.pendingScrollToGroupIndex = -1;
-				this.pendingScrollToItemIndex = -1;
-			}
 		}
 
 		/**

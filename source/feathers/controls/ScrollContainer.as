@@ -7,16 +7,13 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
-	import feathers.controls.supportClasses.BaseScrollContainer;
 	import feathers.controls.supportClasses.LayoutViewPort;
 	import feathers.core.IFeathersControl;
-	import feathers.events.FeathersEventType;
 	import feathers.layout.ILayout;
 	import feathers.layout.IVirtualLayout;
 
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
-	import starling.events.Event;
 
 	/**
 	 * Dispatched when the container is scrolled.
@@ -31,27 +28,61 @@ package feathers.controls
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/scroll-container
 	 */
-	public class ScrollContainer extends BaseScrollContainer
+	public class ScrollContainer extends Scroller
 	{
-		/**
-		 * The default value added to the <code>nameList</code> of the scroller.
-		 */
-		public static const DEFAULT_CHILD_NAME_SCROLLER:String = "feathers-scroll-container-scroller";
-
 		/**
 		 * @private
 		 */
 		protected static const INVALIDATION_FLAG_MXML_CONTENT:String = "mxmlContent";
 
 		/**
+		 * @copy feathers.controls.Scroller#SCROLL_POLICY_AUTO
+		 */
+		public static const SCROLL_POLICY_AUTO:String = "auto";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_POLICY_ON
+		 */
+		public static const SCROLL_POLICY_ON:String = "on";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_POLICY_OFF
+		 */
+		public static const SCROLL_POLICY_OFF:String = "off";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_FLOAT
+		 */
+		public static const SCROLL_BAR_DISPLAY_MODE_FLOAT:String = "float";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_FIXED
+		 */
+		public static const SCROLL_BAR_DISPLAY_MODE_FIXED:String = "fixed";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_NONE
+		 */
+		public static const SCROLL_BAR_DISPLAY_MODE_NONE:String = "none";
+
+		/**
+		 * @copy feathers.controls.Scroller#INTERACTION_MODE_TOUCH
+		 */
+		public static const INTERACTION_MODE_TOUCH:String = "touch";
+
+		/**
+		 * @copy feathers.controls.Scroller#INTERACTION_MODE_MOUSE
+		 */
+		public static const INTERACTION_MODE_MOUSE:String = "mouse";
+
+		/**
 		 * Constructor.
 		 */
 		public function ScrollContainer()
 		{
-			this.scrollerName = DEFAULT_CHILD_NAME_SCROLLER;
-			this.viewPort = this.layoutViewPort = new LayoutViewPort();
+			this.layoutViewPort = new LayoutViewPort();
+			this.viewPort = this.layoutViewPort;
 		}
-
 
 		/**
 		 * @private
@@ -353,17 +384,7 @@ package feathers.controls
 		 */
 		override protected function initialize():void
 		{
-			if(!this.scroller)
-			{
-				this.scroller = new Scroller();
-				this.scroller.viewPort = this.viewPort;
-				this.scroller.nameList.add(this.scrollerName);
-				this.scroller.addEventListener(Event.SCROLL, scroller_scrollHandler);
-				this.scroller.addEventListener(FeathersEventType.SCROLL_COMPLETE, scroller_scrollCompleteHandler);
-				this.scroller.addEventListener(FeathersEventType.RESIZE, scroller_resizeHandler);
-				this.$addChildAt(this.scroller, this.$numChildren);
-			}
-
+			super.initialize();
 			this.refreshMXMLContent();
 		}
 
