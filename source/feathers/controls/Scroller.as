@@ -299,6 +299,16 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _hasHorizontalScrollBar:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected var _hasVerticalScrollBar:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _horizontalScrollBarTouchPointID:int = -1;
 
 		/**
@@ -450,16 +460,14 @@ package feathers.controls
 			}
 			if(this._viewPort)
 			{
-				var displayViewPort:DisplayObject = DisplayObject(this._viewPort);
-				displayViewPort.removeEventListener(FeathersEventType.RESIZE, viewPort_resizeHandler);
-				this._viewPortWrapper.removeChild(displayViewPort);
+				this._viewPort.removeEventListener(FeathersEventType.RESIZE, viewPort_resizeHandler);
+				this._viewPortWrapper.removeChild(DisplayObject(this._viewPort));
 			}
 			this._viewPort = value;
 			if(this._viewPort)
 			{
-				displayViewPort = DisplayObject(this._viewPort);
-				displayViewPort.addEventListener(FeathersEventType.RESIZE, viewPort_resizeHandler);
-				this._viewPortWrapper.addChild(displayViewPort);
+				this._viewPort.addEventListener(FeathersEventType.RESIZE, viewPort_resizeHandler);
+				this._viewPortWrapper.addChild(DisplayObject(this._viewPort));
 			}
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
@@ -1772,16 +1780,14 @@ package feathers.controls
 		{
 			if(this.horizontalScrollBar)
 			{
-				var displayHorizontalScrollBar:DisplayObject = DisplayObject(this.horizontalScrollBar);
-				displayHorizontalScrollBar.removeEventListener(Event.CHANGE, horizontalScrollBar_changeHandler);
-				this.removeChild(displayHorizontalScrollBar, true);
+				this.horizontalScrollBar.removeEventListener(Event.CHANGE, horizontalScrollBar_changeHandler);
+				this.removeChild(DisplayObject(this.horizontalScrollBar), true);
 				this.horizontalScrollBar = null;
 			}
 			if(this.verticalScrollBar)
 			{
-				var displayVerticalScrollBar:DisplayObject = DisplayObject(this.verticalScrollBar);
-				displayVerticalScrollBar.removeEventListener(Event.CHANGE, verticalScrollBar_changeHandler);
-				this.removeChild(displayVerticalScrollBar, true);
+				this.verticalScrollBar.removeEventListener(Event.CHANGE, verticalScrollBar_changeHandler);
+				this.removeChild(DisplayObject(this.verticalScrollBar), true);
 				this.verticalScrollBar = null;
 			}
 
@@ -1790,18 +1796,16 @@ package feathers.controls
 			{
 				this.horizontalScrollBar = IScrollBar(this._horizontalScrollBarFactory());
 				this.horizontalScrollBar.nameList.add(this.horizontalScrollBarName);
-				displayHorizontalScrollBar = DisplayObject(this.horizontalScrollBar);
-				displayHorizontalScrollBar.addEventListener(Event.CHANGE, horizontalScrollBar_changeHandler);
-				this.addChild(displayHorizontalScrollBar);
+				this.horizontalScrollBar.addEventListener(Event.CHANGE, horizontalScrollBar_changeHandler);
+				this.addChild(DisplayObject(this.horizontalScrollBar));
 			}
 			if(this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_NONE &&
 				this._verticalScrollPolicy != SCROLL_POLICY_OFF && this._verticalScrollBarFactory != null)
 			{
 				this.verticalScrollBar = IScrollBar(this._verticalScrollBarFactory());
 				this.verticalScrollBar.nameList.add(this.verticalScrollBarName);
-				displayVerticalScrollBar = DisplayObject(this.verticalScrollBar);
-				displayVerticalScrollBar.addEventListener(Event.CHANGE, verticalScrollBar_changeHandler);
-				this.addChild(displayVerticalScrollBar);
+				this.verticalScrollBar.addEventListener(Event.CHANGE, verticalScrollBar_changeHandler);
+				this.addChild(DisplayObject(this.verticalScrollBar));
 			}
 		}
 
@@ -1860,9 +1864,8 @@ package feathers.controls
 					Starling.juggler.remove(this._horizontalScrollBarHideTween);
 					this._horizontalScrollBarHideTween = null;
 				}
-				const displayHorizontalScrollBar:DisplayObject = DisplayObject(this.horizontalScrollBar);
-				displayHorizontalScrollBar.alpha = this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FLOAT ? 0 : 1;
-				displayHorizontalScrollBar.touchable = this._interactionMode == INTERACTION_MODE_MOUSE;
+				this.horizontalScrollBar.alpha = this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FLOAT ? 0 : 1;
+				this.horizontalScrollBar.touchable = this._interactionMode == INTERACTION_MODE_MOUSE;
 			}
 			if(this.verticalScrollBar)
 			{
@@ -1880,9 +1883,8 @@ package feathers.controls
 					Starling.juggler.remove(this._verticalScrollBarHideTween);
 					this._verticalScrollBarHideTween = null;
 				}
-				const displayVerticalScrollBar:DisplayObject = DisplayObject(this.verticalScrollBar);
-				displayVerticalScrollBar.alpha = this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FLOAT ? 0 : 1;
-				displayVerticalScrollBar.touchable = this._interactionMode == INTERACTION_MODE_MOUSE;
+				this.verticalScrollBar.alpha = this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FLOAT ? 0 : 1;
+				this.verticalScrollBar.touchable = this._interactionMode == INTERACTION_MODE_MOUSE;
 			}
 		}
 
@@ -2106,17 +2108,15 @@ package feathers.controls
 		protected function showOrHideScrollBars():void
 		{
 			const isFixed:Boolean = this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FIXED;
-			const displayHorizontalScrollBar:DisplayObject = this.horizontalScrollBar as DisplayObject;
-			const displayVerticalScrollBar:DisplayObject = this.verticalScrollBar as DisplayObject;
-			if(displayHorizontalScrollBar)
+			if(this.horizontalScrollBar)
 			{
-				displayHorizontalScrollBar.visible = !isFixed || this._bottomViewPortOffset > 0;
-				this.setChildIndex(displayHorizontalScrollBar, this.numChildren - 1);
+				this.horizontalScrollBar.visible = !isFixed || this._hasHorizontalScrollBar;
+				this.setChildIndex(DisplayObject(this.horizontalScrollBar), this.numChildren - 1);
 			}
-			if(displayVerticalScrollBar)
+			if(this.verticalScrollBar)
 			{
-				displayVerticalScrollBar.visible = !isFixed || this._rightViewPortOffset > 0;
-				this.setChildIndex(displayVerticalScrollBar, this.numChildren - 1);
+				this.verticalScrollBar.visible = !isFixed || this._hasVerticalScrollBar;
+				this.setChildIndex(DisplayObject(this.verticalScrollBar), this.numChildren - 1);
 			}
 		}
 
@@ -2140,8 +2140,17 @@ package feathers.controls
 						((this._viewPort.width > this.explicitWidth || this._viewPort.width > this._maxWidth) &&
 							this._horizontalScrollPolicy != SCROLL_POLICY_OFF))
 					{
-						this._bottomViewPortOffset = this.horizontalScrollBar ? DisplayObject(this.horizontalScrollBar).height : 0;
+						this._hasHorizontalScrollBar = true;
+						this._bottomViewPortOffset = this.horizontalScrollBar.height;
 					}
+					else
+					{
+						this._hasHorizontalScrollBar = false;
+					}
+				}
+				else
+				{
+					this._hasHorizontalScrollBar = false;
 				}
 				if(this.verticalScrollBar)
 				{
@@ -2149,8 +2158,17 @@ package feathers.controls
 						((this._viewPort.height > this.explicitHeight || this._viewPort.height > this._maxHeight) &&
 							this._verticalScrollPolicy != SCROLL_POLICY_OFF))
 					{
-						this._rightViewPortOffset = this.verticalScrollBar ? DisplayObject(this.verticalScrollBar).width : 0;
+						this._hasVerticalScrollBar = true;
+						this._rightViewPortOffset = this.verticalScrollBar.width;
 					}
+					else
+					{
+						this._hasVerticalScrollBar = false;
+					}
+				}
+				else
+				{
+					this._hasVerticalScrollBar = false;
 				}
 			}
 		}
@@ -2160,8 +2178,6 @@ package feathers.controls
 		 */
 		protected function refreshInteractionModeEvents():void
 		{
-			const displayHorizontalScrollBar:DisplayObject = this.horizontalScrollBar as DisplayObject;
-			const displayVerticalScrollBar:DisplayObject = this.verticalScrollBar as DisplayObject;
 			if(this._interactionMode == INTERACTION_MODE_TOUCH)
 			{
 				this.addEventListener(TouchEvent.TOUCH, touchHandler);
@@ -2185,24 +2201,24 @@ package feathers.controls
 
 			if(this._interactionMode == INTERACTION_MODE_MOUSE && this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FLOAT)
 			{
-				if(displayHorizontalScrollBar)
+				if(this.horizontalScrollBar)
 				{
-					displayHorizontalScrollBar.addEventListener(TouchEvent.TOUCH, horizontalScrollBar_touchHandler);
+					this.horizontalScrollBar.addEventListener(TouchEvent.TOUCH, horizontalScrollBar_touchHandler);
 				}
-				if(displayVerticalScrollBar)
+				if(this.verticalScrollBar)
 				{
-					displayVerticalScrollBar.addEventListener(TouchEvent.TOUCH, verticalScrollBar_touchHandler);
+					this.verticalScrollBar.addEventListener(TouchEvent.TOUCH, verticalScrollBar_touchHandler);
 				}
 			}
 			else
 			{
-				if(displayHorizontalScrollBar)
+				if(this.horizontalScrollBar)
 				{
-					displayHorizontalScrollBar.removeEventListener(TouchEvent.TOUCH, horizontalScrollBar_touchHandler);
+					this.horizontalScrollBar.removeEventListener(TouchEvent.TOUCH, horizontalScrollBar_touchHandler);
 				}
-				if(displayVerticalScrollBar)
+				if(this.verticalScrollBar)
 				{
-					displayVerticalScrollBar.removeEventListener(TouchEvent.TOUCH, verticalScrollBar_touchHandler);
+					this.verticalScrollBar.removeEventListener(TouchEvent.TOUCH, verticalScrollBar_touchHandler);
 				}
 			}
 		}
@@ -2236,35 +2252,33 @@ package feathers.controls
 			this._viewPortWrapper.x = this._leftViewPortOffset - this._horizontalScrollPosition;
 			this._viewPortWrapper.y = this._topViewPortOffset - this._verticalScrollPosition;
 
-			const displayHorizontalScrollBar:DisplayObject = this.horizontalScrollBar as DisplayObject;
-			const displayVerticalScrollBar:DisplayObject = this.verticalScrollBar as DisplayObject;
-			if(displayHorizontalScrollBar)
+			if(this.horizontalScrollBar)
 			{
-				displayHorizontalScrollBar.x = this._leftViewPortOffset;
-				displayHorizontalScrollBar.y = this._viewPortWrapper.y + this._viewPort.visibleHeight;
+				this.horizontalScrollBar.x = this._leftViewPortOffset;
+				this.horizontalScrollBar.y = this._viewPortWrapper.y + this._viewPort.visibleHeight;
 				if(this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_FIXED)
 				{
-					displayHorizontalScrollBar.y -= displayHorizontalScrollBar.height;
+					this.horizontalScrollBar.y -= this.horizontalScrollBar.height;
 				}
-				displayHorizontalScrollBar.width = this._viewPort.visibleWidth;
-				if(displayVerticalScrollBar)
+				this.horizontalScrollBar.width = this._viewPort.visibleWidth;
+				if(this._hasVerticalScrollBar && this.verticalScrollBar)
 				{
-					displayHorizontalScrollBar.width -= displayVerticalScrollBar.width;
+					this.horizontalScrollBar.width -= this.verticalScrollBar.width;
 				}
 			}
 
-			if(displayVerticalScrollBar)
+			if(this.verticalScrollBar)
 			{
-				displayVerticalScrollBar.x = this._viewPortWrapper.x + this._viewPort.visibleWidth;
+				this.verticalScrollBar.x = this._viewPortWrapper.x + this._viewPort.visibleWidth;
 				if(this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_FIXED)
 				{
-					displayVerticalScrollBar.y -= displayVerticalScrollBar.width;
+					this.verticalScrollBar.x -= this.verticalScrollBar.width;
 				}
-				displayVerticalScrollBar.y = this._topViewPortOffset;
-				displayVerticalScrollBar.height = this._viewPort.visibleHeight;
-				if(displayHorizontalScrollBar)
+				this.verticalScrollBar.y = this._topViewPortOffset;
+				this.verticalScrollBar.height = this._viewPort.visibleHeight;
+				if(this._hasHorizontalScrollBar && this.horizontalScrollBar)
 				{
-					displayVerticalScrollBar.height -= displayHorizontalScrollBar.height;
+					this.verticalScrollBar.height -= this.horizontalScrollBar.height;
 				}
 			}
 		}
@@ -2644,8 +2658,7 @@ package feathers.controls
 			{
 				return;
 			}
-			const displayHorizontalScrollBar:DisplayObject = DisplayObject(this.horizontalScrollBar);
-			if(displayHorizontalScrollBar.alpha == 0)
+			if(this.horizontalScrollBar.alpha == 0)
 			{
 				return;
 			}
@@ -2665,8 +2678,7 @@ package feathers.controls
 			{
 				return;
 			}
-			const displayVerticalScrollBar:DisplayObject = DisplayObject(this.verticalScrollBar);
-			if(displayVerticalScrollBar.alpha == 0)
+			if(this.verticalScrollBar.alpha == 0)
 			{
 				return;
 			}
@@ -2877,7 +2889,7 @@ package feathers.controls
 					}
 					if(this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FLOAT)
 					{
-						DisplayObject(this.horizontalScrollBar).alpha = 1;
+						this.horizontalScrollBar.alpha = 1;
 					}
 				}
 				//if we haven't already started dragging in the other direction,
@@ -2907,7 +2919,7 @@ package feathers.controls
 					}
 					if(this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FLOAT)
 					{
-						DisplayObject(this.verticalScrollBar).alpha = 1;
+						this.verticalScrollBar.alpha = 1;
 					}
 				}
 				if(!this._isDraggingHorizontally)
@@ -3047,7 +3059,7 @@ package feathers.controls
 
 			if(this.verticalScrollBar && this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FLOAT)
 			{
-				DisplayObject(this.verticalScrollBar).alpha = 1;
+				this.verticalScrollBar.alpha = 1;
 			}
 
 			HELPER_POINT.x = event.stageX;
@@ -3116,7 +3128,7 @@ package feathers.controls
 				{
 					this._horizontalScrollBarTouchPointID = -1;
 					touch.getLocation(displayHorizontalScrollBar, HELPER_POINT);
-					const isInBounds:Boolean = displayHorizontalScrollBar.hitTest(HELPER_POINT, true) != null;
+					const isInBounds:Boolean = this.horizontalScrollBar.hitTest(HELPER_POINT, true) != null;
 					if(!isInBounds)
 					{
 						this.hideHorizontalScrollBar();
@@ -3134,7 +3146,7 @@ package feathers.controls
 							Starling.juggler.remove(this._horizontalScrollBarHideTween);
 							this._horizontalScrollBarHideTween = null;
 						}
-						displayHorizontalScrollBar.alpha = 1;
+						this.horizontalScrollBar.alpha = 1;
 						break;
 					}
 					else if(touch.phase == TouchPhase.BEGAN)
@@ -3187,7 +3199,7 @@ package feathers.controls
 				{
 					this._verticalScrollBarTouchPointID = -1;
 					touch.getLocation(displayVerticalScrollBar, HELPER_POINT);
-					const isInBounds:Boolean = displayVerticalScrollBar.hitTest(HELPER_POINT, true) != null;
+					const isInBounds:Boolean = this.verticalScrollBar.hitTest(HELPER_POINT, true) != null;
 					if(!isInBounds)
 					{
 						this.hideVerticalScrollBar();
@@ -3205,7 +3217,7 @@ package feathers.controls
 							Starling.juggler.remove(this._verticalScrollBarHideTween);
 							this._verticalScrollBarHideTween = null;
 						}
-						displayVerticalScrollBar.alpha = 1;
+						this.verticalScrollBar.alpha = 1;
 						break;
 					}
 					else if(touch.phase == TouchPhase.BEGAN)
