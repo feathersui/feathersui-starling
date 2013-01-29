@@ -1324,6 +1324,8 @@ package feathers.controls.supportClasses
 			this._footerIndices.length = 0;
 
 			HELPER_BOUNDS.x = HELPER_BOUNDS.y = 0;
+			HELPER_BOUNDS.scrollX = this._horizontalScrollPosition;
+			HELPER_BOUNDS.scrollY = this._verticalScrollPosition;
 			HELPER_BOUNDS.explicitWidth = this.explicitVisibleWidth;
 			HELPER_BOUNDS.explicitHeight = this.explicitVisibleHeight;
 			HELPER_BOUNDS.minWidth = this._minVisibleWidth;
