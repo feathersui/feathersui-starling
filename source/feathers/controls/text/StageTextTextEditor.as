@@ -756,6 +756,11 @@ package feathers.controls.text
 			{
 				if(this.stageText.text != this._text)
 				{
+					if(this._pendingSelectionStartIndex < 0)
+					{
+						this._pendingSelectionStartIndex = this.stageText.selectionActiveIndex;
+						this._pendingSelectionEndIndex = this.stageText.selectionAnchorIndex;
+					}
 					this.stageText.text = this._text;
 				}
 				this._measureTextField.text = this.stageText.text;
