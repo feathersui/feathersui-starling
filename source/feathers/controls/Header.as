@@ -996,6 +996,7 @@ package feathers.controls
 				}
 			}
 			HELPER_BOUNDS.x = HELPER_BOUNDS.y = 0;
+			HELPER_BOUNDS.scrollX = HELPER_BOUNDS.scrollY = 0;
 			HELPER_BOUNDS.explicitWidth = this.actualWidth;
 			HELPER_BOUNDS.explicitHeight = this.actualHeight;
 			this._layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_LEFT;
@@ -1023,6 +1024,7 @@ package feathers.controls
 				}
 			}
 			HELPER_BOUNDS.x = HELPER_BOUNDS.y = 0;
+			HELPER_BOUNDS.scrollX = HELPER_BOUNDS.scrollY = 0;
 			HELPER_BOUNDS.explicitWidth = this.actualWidth;
 			HELPER_BOUNDS.explicitHeight = this.actualHeight;
 			this._layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_RIGHT;

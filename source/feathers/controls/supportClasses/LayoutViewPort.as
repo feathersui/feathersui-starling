@@ -278,6 +278,8 @@ package feathers.controls.supportClasses
 				}
 
 				HELPER_BOUNDS.x = HELPER_BOUNDS.y = 0;
+				HELPER_BOUNDS.scrollX = this._horizontalScrollPosition;
+				HELPER_BOUNDS.scrollY = this._verticalScrollPosition;
 				HELPER_BOUNDS.explicitWidth = this._visibleWidth;
 				HELPER_BOUNDS.explicitHeight = this._visibleHeight;
 				HELPER_BOUNDS.minWidth = this._minVisibleWidth;

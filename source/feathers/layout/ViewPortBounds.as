@@ -24,6 +24,16 @@ package feathers.layout
 		public var y:Number = 0;
 
 		/**
+		 * The horizontal scroll position of the view port, in pixels.
+		 */
+		public var scrollX:Number = 0;
+
+		/**
+		 * The vertical scroll position of the view port, in pixels.
+		 */
+		public var scrollY:Number = 0;
+
+		/**
 		 * The explicit width of the view port, in pixels. If <code>NaN</code>,
 		 * there is no explicit width value.
 		 */
