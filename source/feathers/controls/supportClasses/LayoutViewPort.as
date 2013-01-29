@@ -11,6 +11,7 @@ package feathers.controls.supportClasses
 	import feathers.core.IFeathersControl;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.ILayout;
+	import feathers.layout.ILayoutDisplayObject;
 	import feathers.layout.IVirtualLayout;
 	import feathers.layout.LayoutBoundsResult;
 	import feathers.layout.ViewPortBounds;
@@ -189,7 +190,7 @@ package feathers.controls.supportClasses
 			this._verticalScrollPosition = value;
 		}
 
-		private var _ignoreChildResizing:Boolean = false;
+		private var _ignoreChildChanges:Boolean = false;
 
 		private var items:Vector.<DisplayObject> = new <DisplayObject>[];
 
@@ -229,6 +230,10 @@ package feathers.controls.supportClasses
 			{
 				child.addEventListener(FeathersEventType.RESIZE, child_resizeHandler);
 			}
+			if(child is ILayoutDisplayObject)
+			{
+				child.addEventListener(FeathersEventType.LAYOUT_DATA_CHANGE, child_layoutDataChangeHandler);
+			}
 			return super.addChildAt(child, index);
 		}
 
@@ -238,6 +243,10 @@ package feathers.controls.supportClasses
 			if(child is IFeathersControl)
 			{
 				child.removeEventListener(FeathersEventType.RESIZE, child_resizeHandler);
+			}
+			if(child is ILayoutDisplayObject)
+			{
+				child.removeEventListener(FeathersEventType.LAYOUT_DATA_CHANGE, child_layoutDataChangeHandler);
 			}
 			return child;
 		}
@@ -277,9 +286,9 @@ package feathers.controls.supportClasses
 				HELPER_BOUNDS.maxHeight = this._maxVisibleHeight;
 				if(this._layout)
 				{
-					this._ignoreChildResizing = true;
+					this._ignoreChildChanges = true;
 					this._layout.layout(this.items, HELPER_BOUNDS, HELPER_LAYOUT_RESULT);
-					this._ignoreChildResizing = false;
+					this._ignoreChildChanges = false;
 					this.setSizeInternal(HELPER_LAYOUT_RESULT.contentWidth, HELPER_LAYOUT_RESULT.contentHeight, false);
 				}
 				else
@@ -305,7 +314,16 @@ package feathers.controls.supportClasses
 
 		private function child_resizeHandler(event:Event):void
 		{
-			if(this._ignoreChildResizing)
+			if(this._ignoreChildChanges)
+			{
+				return;
+			}
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		private function child_layoutDataChangeHandler(event:Event):void
+		{
+			if(this._ignoreChildChanges)
 			{
 				return;
 			}
