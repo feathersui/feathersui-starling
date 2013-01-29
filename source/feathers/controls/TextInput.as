@@ -547,6 +547,8 @@ package feathers.controls
 
 			if(this.textEditor)
 			{
+				this._pendingSelectionStartIndex = -1;
+				this._pendingSelectionEndIndex = -1;
 				this.textEditor.selectRange(startIndex, endIndex);
 			}
 			else
