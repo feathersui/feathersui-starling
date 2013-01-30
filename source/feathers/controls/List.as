@@ -481,7 +481,7 @@ package feathers.controls
 		override public function scrollToPageIndex(horizontalPageIndex:int, verticalPageIndex:int, animationDuration:Number = 0):void
 		{
 			this.pendingItemIndex = -1;
-			super.scrollToPosition(horizontalPageIndex, verticalPageIndex, animationDuration);
+			super.scrollToPageIndex(horizontalPageIndex, verticalPageIndex, animationDuration);
 		}
 		
 		/**
