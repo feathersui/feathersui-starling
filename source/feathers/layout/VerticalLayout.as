@@ -23,7 +23,7 @@ package feathers.layout
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/vertical-layout
 	 */
-	public class VerticalLayout extends EventDispatcher implements IVariableVirtualLayout
+	public class VerticalLayout extends EventDispatcher implements IVariableVirtualLayout, ITrimmedVirtualLayout
 	{
 		/**
 		 * If the total item height is smaller than the height of the bounds,
@@ -346,6 +346,58 @@ package feathers.layout
 		/**
 		 * @private
 		 */
+		protected var _beforeVirtualizedItemCount:int = 0;
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get beforeVirtualizedItemCount():int
+		{
+			return this._beforeVirtualizedItemCount;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set beforeVirtualizedItemCount(value:int):void
+		{
+			if(this._beforeVirtualizedItemCount == value)
+			{
+				return;
+			}
+			this._beforeVirtualizedItemCount = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _afterVirtualizedItemCount:int = 0;
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get afterVirtualizedItemCount():int
+		{
+			return this._afterVirtualizedItemCount;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set afterVirtualizedItemCount(value:int):void
+		{
+			if(this._afterVirtualizedItemCount == value)
+			{
+				return;
+			}
+			this._afterVirtualizedItemCount = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _typicalItemWidth:Number = -1;
 
 		/**
@@ -433,19 +485,26 @@ package feathers.layout
 			this._discoveredItemsCache.length = 0;
 			var maxItemWidth:Number = this._useVirtualLayout ? this._typicalItemWidth : 0;
 			var positionY:Number = boundsY + this._paddingTop;
+			var indexOffset:int = 0;
+			if(this._useVirtualLayout && !this._hasVariableItemDimensions)
+			{
+				indexOffset = this._beforeVirtualizedItemCount;
+				positionY += (this._beforeVirtualizedItemCount * (this._typicalItemHeight + this._gap));
+			}
 			const itemCount:int = items.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var item:DisplayObject = items[i];
+				var iNormalized:int = i + indexOffset;
 				if(this._useVirtualLayout && !item)
 				{
-					if(!this._hasVariableItemDimensions || isNaN(this._heightCache[i]))
+					if(!this._hasVariableItemDimensions || isNaN(this._heightCache[iNormalized]))
 					{
 						positionY += this._typicalItemHeight + this._gap;
 					}
 					else
 					{
-						positionY += this._heightCache[i] + this._gap;
+						positionY += this._heightCache[iNormalized] + this._gap;
 					}
 				}
 				else
@@ -463,9 +522,9 @@ package feathers.layout
 					{
 						if(this._hasVariableItemDimensions)
 						{
-							if(isNaN(this._heightCache[i]))
+							if(isNaN(this._heightCache[iNormalized]))
 							{
-								this._heightCache[i] = item.height;
+								this._heightCache[iNormalized] = item.height;
 								this.dispatchEventWith(Event.CHANGE);
 							}
 						}
@@ -481,6 +540,10 @@ package feathers.layout
 						this._discoveredItemsCache.push(item);
 					}
 				}
+			}
+			if(this._useVirtualLayout && !this._hasVariableItemDimensions)
+			{
+				positionY += (this._afterVirtualizedItemCount * (this._typicalItemHeight + this._gap));
 			}
 
 			const discoveredItems:Vector.<DisplayObject> = this._useVirtualLayout ? this._discoveredItemsCache : items;

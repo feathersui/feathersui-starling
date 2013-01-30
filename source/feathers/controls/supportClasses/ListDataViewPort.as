@@ -17,6 +17,7 @@ package feathers.controls.supportClasses
 	import feathers.events.CollectionEventType;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.ILayout;
+	import feathers.layout.ITrimmedVirtualLayout;
 	import feathers.layout.IVariableVirtualLayout;
 	import feathers.layout.IVirtualLayout;
 	import feathers.layout.LayoutBoundsResult;
@@ -182,6 +183,8 @@ package feathers.controls.supportClasses
 		private var _inactiveRenderers:Vector.<IListItemRenderer> = new <IListItemRenderer>[];
 		private var _activeRenderers:Vector.<IListItemRenderer> = new <IListItemRenderer>[];
 		private var _rendererMap:Dictionary = new Dictionary(true);
+
+		private var _layoutIndexOffset:int = 0;
 
 		private var _isScrolling:Boolean = false;
 
@@ -600,7 +603,6 @@ package feathers.controls.supportClasses
 			}
 
 			this._layoutItems.length = 0;
-			this._layoutItems.length = this._dataProvider ? this._dataProvider.length : 0;
 
 			HELPER_BOUNDS.x = HELPER_BOUNDS.y = 0;
 			HELPER_BOUNDS.scrollX = this._horizontalScrollPosition;
@@ -632,10 +634,39 @@ package feathers.controls.supportClasses
 				virtualLayout.measureViewPort(itemCount, HELPER_BOUNDS, HELPER_POINT);
 				virtualLayout.getVisibleIndicesAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, HELPER_POINT.x, HELPER_POINT.y, itemCount, HELPER_VECTOR);
 			}
+
 			const unrenderedItemCount:int = useVirtualLayout ? HELPER_VECTOR.length : itemCount;
-			for(var i:int = 0; i < unrenderedItemCount; i++)
+			const canUseBeforeAndAfter:Boolean = this._layout is ITrimmedVirtualLayout && useVirtualLayout &&
+				(!(this._layout is IVariableVirtualLayout) || !IVariableVirtualLayout(this._layout).hasVariableItemDimensions) &&
+				unrenderedItemCount > 0;
+			if(canUseBeforeAndAfter)
 			{
-				var index:int = useVirtualLayout ? HELPER_VECTOR[i] : i;
+				var minIndex:int = HELPER_VECTOR[0];
+				var maxIndex:int = minIndex;
+				for(var i:int = 1; i < unrenderedItemCount; i++)
+				{
+					var index:int = HELPER_VECTOR[i];
+					minIndex = Math.min(minIndex, index);
+					maxIndex = Math.max(maxIndex, index);
+				}
+				const beforeItemCount:int = Math.max(0, minIndex - 1);
+				const afterItemCount:int = itemCount - 1 - maxIndex;
+				const sequentialVirtualLayout:ITrimmedVirtualLayout = ITrimmedVirtualLayout(this._layout);
+				sequentialVirtualLayout.beforeVirtualizedItemCount = beforeItemCount;
+				sequentialVirtualLayout.afterVirtualizedItemCount = afterItemCount;
+				this._layoutItems.length = itemCount - beforeItemCount - afterItemCount;
+				this._layoutIndexOffset = -beforeItemCount;
+			}
+			else
+			{
+				this._layoutIndexOffset = 0;
+				this._layoutItems.length = itemCount;
+			}
+
+			const layoutItemCount:int = this._layoutItems.length;
+			for(i = 0; i < unrenderedItemCount; i++)
+			{
+				index = useVirtualLayout ? HELPER_VECTOR[i] : i;
 				if(index < 0 || index >= itemCount)
 				{
 					continue;
@@ -648,8 +679,7 @@ package feathers.controls.supportClasses
 					renderer.index = index;
 					this._activeRenderers.push(renderer);
 					this._inactiveRenderers.splice(this._inactiveRenderers.indexOf(renderer), 1);
-					var displayRenderer:DisplayObject = DisplayObject(renderer);
-					this._layoutItems[index] = displayRenderer;
+					this._layoutItems[index + this._layoutIndexOffset] = DisplayObject(renderer);
 				}
 				else
 				{
@@ -667,7 +697,7 @@ package feathers.controls.supportClasses
 				var index:int = this._dataProvider.getItemIndex(item);
 				var renderer:IListItemRenderer = this.createRenderer(item, index, false);
 				var displayRenderer:DisplayObject = DisplayObject(renderer);
-				this._layoutItems[index] = displayRenderer;
+				this._layoutItems[index + this._layoutIndexOffset] = displayRenderer;
 			}
 		}
 
