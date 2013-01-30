@@ -1453,7 +1453,7 @@ package feathers.controls
 		{
 			this.pendingGroupIndex = -1;
 			this.pendingItemIndex = -1;
-			super.scrollToPosition(horizontalPageIndex, verticalPageIndex, animationDuration);
+			super.scrollToPageIndex(horizontalPageIndex, verticalPageIndex, animationDuration);
 		}
 
 		/**
