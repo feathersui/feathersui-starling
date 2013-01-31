@@ -23,12 +23,110 @@ package feathers.core
 	public class FocusManager implements IFocusManager
 	{
 		/**
+		 * @private
+		 */
+		protected static const stack:Vector.<IFocusManager> = new <IFocusManager>[];
+
+		/**
+		 * @private
+		 */
+		protected static var _defaultFocusManager:IFocusManager;
+
+		/**
+		 * Determines if the default focus manager is enabled.
+		 */
+		public static function get isEnabled():Boolean
+		{
+			return _defaultFocusManager != null;
+		}
+
+		/**
+		 * @private
+		 */
+		public static function set isEnabled(value:Boolean):void
+		{
+			if((value && _defaultFocusManager != null) ||
+				(!value && !_defaultFocusManager))
+			{
+				return;
+			}
+			if(value)
+			{
+				_defaultFocusManager = pushFocusManager();
+			}
+			else if(_defaultFocusManager)
+			{
+				removeFocusManager(_defaultFocusManager);
+				_defaultFocusManager = null;
+			}
+		}
+
+		/**
+		 * Adds a focus manager to the stack, and gives it exclusive focus.
+		 */
+		public static function pushFocusManager(manager:IFocusManager = null):IFocusManager
+		{
+			if(!manager)
+			{
+				manager = new FocusManager(null, false);
+			}
+			if(stack.length > 0)
+			{
+				const oldManager:IFocusManager = stack[stack.length - 1];
+				oldManager.isEnabled = false;
+			}
+			stack.push(manager);
+			manager.isEnabled = true;
+			return manager;
+		}
+
+		/**
+		 * Removes the specified focus manager from the stack. If it was
+		 * the top-most focus manager, the new top-most focus manager is
+		 * enabled,
+		 */
+		public static function removeFocusManager(manager:IFocusManager):void
+		{
+			const index:int = stack.indexOf(manager);
+			if(index < 0)
+			{
+				return;
+			}
+			manager.isEnabled = false;
+			stack.splice(index, 1);
+			if(index > 0 && index == stack.length)
+			{
+				manager = stack[stack.length - 1];
+				manager.isEnabled = true;
+			}
+		}
+
+		/**
+		 * Removes the top-most focus manager from the stack and returns
+		 * exclusive focus to the manager below it.
+		 */
+		public static function popFocusManager():void
+		{
+			if(stack.length == 0)
+			{
+				return;
+			}
+			const manager:IFocusManager = stack[stack.length - 1];
+			removeFocusManager(manager);
+		}
+
+		/**
 		 * Constructor.
 		 */
-		public function FocusManager(topLevelContainer:DisplayObjectContainer)
+		public function FocusManager(topLevelContainer:DisplayObjectContainer = null, enableImmediately:Boolean = true)
 		{
+			if(!topLevelContainer)
+			{
+				topLevelContainer = Starling.current.stage;
+			}
 			this._topLevelContainer = topLevelContainer;
-			this.isEnabled = true;
+			this.setFocusManager(this._topLevelContainer);
+			this.isEnabled = enableImmediately;
 		}
 
 		/**
@@ -61,17 +159,19 @@ package feathers.core
 			this._isEnabled = value;
 			if(this._isEnabled)
 			{
+				if(stack.indexOf(this) < 0)
+				{
+					pushFocusManager(this);
+				}
 				this._topLevelContainer.addEventListener(Event.ADDED, topLevelContainer_addedHandler);
 				this._topLevelContainer.addEventListener(Event.REMOVED, topLevelContainer_removedHandler);
 				Starling.current.stage.addEventListener(KeyboardEvent.KEY_DOWN, topLevelContainer_keyDownHandler);
-				this.setFocusManager(this._topLevelContainer);
 			}
 			else
 			{
 				this._topLevelContainer.removeEventListener(Event.ADDED, topLevelContainer_addedHandler);
 				this._topLevelContainer.removeEventListener(Event.REMOVED, topLevelContainer_removedHandler);
 				Starling.current.stage.removeEventListener(KeyboardEvent.KEY_DOWN, topLevelContainer_keyDownHandler);
-				this.clearFocusManager(this._topLevelContainer);
 			}
 		}
 
@@ -118,7 +218,7 @@ package feathers.core
 				const targetWithFocus:IFocusDisplayObject = IFocusDisplayObject(target);
 				targetWithFocus.focusManager = this;
 			}
-			if(target is DisplayObjectContainer)
+			else if(target is DisplayObjectContainer)
 			{
 				const container:DisplayObjectContainer = DisplayObjectContainer(target);
 				const childCount:int = container.numChildren;
