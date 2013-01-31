@@ -681,6 +681,81 @@ package feathers.core
 
 		/**
 		 * @private
+		 */
+		protected var _focusManager:IFocusManager;
+
+		/**
+		 * @copy feathers.core.IFocusDisplayObject#focusManager
+		 */
+		public function get focusManager():IFocusManager
+		{
+			return this._focusManager;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set focusManager(value:IFocusManager):void
+		{
+			if(this._focusManager == value)
+			{
+				return;
+			}
+			this._focusManager = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _isFocusEnabled:Boolean = true;
+
+		/**
+		 * @copy feathers.core.IFocusDisplayObject#isFocusEnabled
+		 */
+		public function get isFocusEnabled():Boolean
+		{
+			return this._isFocusEnabled;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set isFocusEnabled(value:Boolean):void
+		{
+			if(this._isFocusEnabled == value)
+			{
+				return;
+			}
+			this._isFocusEnabled = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _nextTabFocus:IFocusDisplayObject;
+
+		/**
+		 * @copy feathers.core.IFocusDisplayObject#nextTabFocus
+		 */
+		public function get nextTabFocus():IFocusDisplayObject
+		{
+			return this._nextTabFocus;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set nextTabFocus(value:IFocusDisplayObject):void
+		{
+			if(this._nextTabFocus == value)
+			{
+				return;
+			}
+			this._nextTabFocus = value;
+		}
+
+		/**
+		 * @private
 		 * Flag to indicate that the control is currently validating.
 		 */
 		protected var _isValidating:Boolean = false;
