@@ -2504,7 +2504,7 @@ package feathers.controls
 		 */
 		protected function stage_keyDownHandler(event:KeyboardEvent):void
 		{
-			if(!this._focusManager || this._focusManager.focus != this)
+			if(!this._focusManager || !this._focusManager.isEnabled || this._focusManager.focus != this)
 			{
 				return;
 			}
