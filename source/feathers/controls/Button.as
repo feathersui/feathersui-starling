@@ -1,40 +1,26 @@
 /*
-Copyright 2012-2013 Joshua Tynjala
+Feathers
+Copyright 2012-2013 Joshua Tynjala. All Rights Reserved.
 
-Permission is hereby granted, free of charge, to any person
-obtaining a copy of this software and associated documentation
-files (the "Software"), to deal in the Software without
-restriction, including without limitation the rights to use,
-copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the
-Software is furnished to do so, subject to the following
-conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-OTHER DEALINGS IN THE SOFTWARE.
+This program is free software. You can redistribute and/or modify it in
+accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
+	import feathers.core.IFocusDisplayObject;
 	import feathers.core.ITextRenderer;
 	import feathers.core.IToggle;
 	import feathers.core.PropertyProxy;
 	import feathers.skins.StateWithToggleValueSelector;
 
 	import flash.geom.Point;
+	import flash.ui.Keyboard;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
+	import starling.events.KeyboardEvent;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -63,7 +49,7 @@ package feathers.controls
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/button
 	 */
-	public class Button extends FeathersControl implements IToggle
+	public class Button extends FeathersControl implements IToggle, IFocusDisplayObject
 	{
 		/**
 		 * @private
@@ -178,8 +164,9 @@ package feathers.controls
 		public function Button()
 		{
 			this.isQuickHitAreaEnabled = true;
-			this.addEventListener(TouchEvent.TOUCH, touchHandler);
-			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
+			this.addEventListener(TouchEvent.TOUCH, button_touchHandler);
+			this.addEventListener(Event.ADDED_TO_STAGE, button_addedToStageHandler);
+			this.addEventListener(Event.REMOVED_FROM_STAGE, button_removedFromStageHandler);
 		}
 
 		/**
@@ -2399,16 +2386,27 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function removedFromStageHandler(event:Event):void
+		protected function button_addedToStageHandler(event:Event):void
+		{
+			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+			this.stage.addEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function button_removedFromStageHandler(event:Event):void
 		{
 			this._touchPointID = -1;
 			this.currentState = this._isEnabled ? STATE_UP : STATE_DISABLED;
+			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+			this.stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
 		}
 		
 		/**
 		 * @private
 		 */
-		protected function touchHandler(event:TouchEvent):void
+		protected function button_touchHandler(event:TouchEvent):void
 		{
 			if(!this._isEnabled)
 			{
@@ -2499,6 +2497,46 @@ package feathers.controls
 				}
 			}
 			HELPER_TOUCHES_VECTOR.length = 0;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function stage_keyDownHandler(event:KeyboardEvent):void
+		{
+			if(!this._focusManager || this._focusManager.focus != this)
+			{
+				return;
+			}
+			if(event.keyCode == Keyboard.ESCAPE)
+			{
+				this._touchPointID = -1;
+				this.currentState = STATE_UP;
+			}
+			if(this._touchPointID >= 0 || event.keyCode != Keyboard.SPACE)
+			{
+				return;
+			}
+			this._touchPointID = int.MAX_VALUE;
+			this.currentState = STATE_DOWN;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function stage_keyUpHandler(event:KeyboardEvent):void
+		{
+			if(this._touchPointID != int.MAX_VALUE || event.keyCode != Keyboard.SPACE)
+			{
+				return;
+			}
+			this._touchPointID = -1;
+			this.currentState = STATE_UP;
+			this.dispatchEventWith(Event.TRIGGERED);
+			if(this._isToggle)
+			{
+				this.isSelected = !this._isSelected;
+			}
 		}
 	}
 }

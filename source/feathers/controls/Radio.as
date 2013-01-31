@@ -39,7 +39,8 @@ package feathers.controls
 		public function Radio()
 		{
 			super.isToggle = true;
-			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
+			this.addEventListener(Event.ADDED_TO_STAGE, radio_addedToStageHandler);
+			this.addEventListener(Event.REMOVED_FROM_STAGE, radio_removedFromStageHandler);
 		}
 
 		/**
@@ -90,7 +91,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function addedToStageHandler(event:Event):void
+		protected function radio_addedToStageHandler(event:Event):void
 		{
 			if(!this._toggleGroup)
 			{
@@ -101,13 +102,12 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override protected function removedFromStageHandler(event:Event):void
+		protected function radio_removedFromStageHandler(event:Event):void
 		{
 			if(this._toggleGroup == defaultRadioGroup)
 			{
 				this._toggleGroup.removeItem(this);
 			}
-			super.removedFromStageHandler(event);
 		}
 	}
 }
