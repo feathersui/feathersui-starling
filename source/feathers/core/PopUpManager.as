@@ -7,6 +7,8 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.core
 {
+	import feathers.core.IFocusManager;
+
 	import flash.utils.Dictionary;
 
 	import starling.core.Starling;
@@ -27,6 +29,11 @@ package feathers.core
 		 * @private
 		 */
 		private static const POPUP_TO_OVERLAY:Dictionary = new Dictionary(true);
+
+		/**
+		 * @private
+		 */
+		private static const POPUP_TO_FOCUS_MANAGER:Dictionary = new Dictionary(true);
 		
 		/**
 		 * A function that returns a display object to use as an overlay for
@@ -140,6 +147,11 @@ package feathers.core
 				calculatedRoot.stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
 			}
 
+			if(FocusManager.isEnabled && popUp is DisplayObjectContainer)
+			{
+				POPUP_TO_FOCUS_MANAGER[popUp] = new FocusManager(DisplayObjectContainer(popUp));
+			}
+
 			if(isCentered)
 			{
 				centerPopUp(popUp);
@@ -208,6 +220,12 @@ package feathers.core
 					overlay.removeFromParent(true);
 					delete POPUP_TO_OVERLAY[popUp];
 				});
+			}
+			const focusManager:IFocusManager = POPUP_TO_FOCUS_MANAGER[popUp];
+			if(focusManager)
+			{
+				delete POPUP_TO_FOCUS_MANAGER[popUp];
+				FocusManager.removeFocusManager(focusManager);
 			}
 
 			if(popUps.length == 0)
