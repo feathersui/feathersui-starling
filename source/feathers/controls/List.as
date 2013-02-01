@@ -9,15 +9,19 @@ package feathers.controls
 {
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.supportClasses.ListDataViewPort;
+	import feathers.core.IFocusDisplayObject;
 	import feathers.core.PropertyProxy;
 	import feathers.data.ListCollection;
 	import feathers.events.CollectionEventType;
+	import feathers.events.FeathersEventType;
 	import feathers.layout.ILayout;
 	import feathers.layout.VerticalLayout;
 
 	import flash.geom.Point;
+	import flash.ui.Keyboard;
 
 	import starling.events.Event;
+	import starling.events.KeyboardEvent;
 
 	/**
 	 * Dispatched when the selected item changes.
@@ -60,7 +64,7 @@ package feathers.controls
 	 * @see http://wiki.starling-framework.org/feathers/list
 	 * @see GroupedList
 	 */
-	public class List extends Scroller
+	public class List extends Scroller implements IFocusDisplayObject
 	{
 		/**
 		 * @private
@@ -113,6 +117,8 @@ package feathers.controls
 		public function List()
 		{
 			super();
+			this.addEventListener(FeathersEventType.FOCUS_IN, list_focusInHandler);
+			this.addEventListener(FeathersEventType.FOCUS_OUT, list_focusOutHandler);
 		}
 
 		/**
@@ -592,6 +598,52 @@ package feathers.controls
 				}
 			}
 			super.handlePendingScroll();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function list_focusInHandler(event:Event):void
+		{
+			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function list_focusOutHandler(event:Event):void
+		{
+			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function stage_keyDownHandler(event:KeyboardEvent):void
+		{
+			if(!this._dataProvider)
+			{
+				return;
+			}
+			if(event.keyCode == Keyboard.HOME)
+			{
+				if(this._dataProvider.length > 0)
+				{
+					this.selectedIndex = 0;
+				}
+			}
+			else if(event.keyCode == Keyboard.END)
+			{
+				this.selectedIndex = this._dataProvider.length - 1;
+			}
+			else if(event.keyCode == Keyboard.UP)
+			{
+				this.selectedIndex = Math.max(0, this._selectedIndex - 1);
+			}
+			else if(event.keyCode == Keyboard.DOWN)
+			{
+				this.selectedIndex = Math.min(this._dataProvider.length - 1, this._selectedIndex + 1);
+			}
 		}
 
 		/**

@@ -10,15 +10,19 @@ package feathers.controls
 	import feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer;
 	import feathers.controls.renderers.DefaultGroupedListItemRenderer;
 	import feathers.controls.supportClasses.GroupedListDataViewPort;
+	import feathers.core.IFocusDisplayObject;
 	import feathers.core.PropertyProxy;
 	import feathers.data.HierarchicalCollection;
 	import feathers.events.CollectionEventType;
+	import feathers.events.FeathersEventType;
 	import feathers.layout.ILayout;
 	import feathers.layout.VerticalLayout;
 
 	import flash.geom.Point;
+	import flash.ui.Keyboard;
 
 	import starling.events.Event;
+	import starling.events.KeyboardEvent;
 
 	/**
 	 * Dispatched when the selected item changes.
@@ -62,7 +66,7 @@ package feathers.controls
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/grouped-list
 	 */
-	public class GroupedList extends Scroller
+	public class GroupedList extends Scroller implements IFocusDisplayObject
 	{
 		/**
 		 * @private
@@ -172,6 +176,8 @@ package feathers.controls
 		public function GroupedList()
 		{
 			super();
+			this.addEventListener(FeathersEventType.FOCUS_IN, list_focusInHandler);
+			this.addEventListener(FeathersEventType.FOCUS_OUT, list_focusOutHandler);
 		}
 
 		/**
@@ -1644,6 +1650,112 @@ package feathers.controls
 				}
 			}
 			super.handlePendingScroll();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function list_focusInHandler(event:Event):void
+		{
+			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function list_focusOutHandler(event:Event):void
+		{
+			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function stage_keyDownHandler(event:KeyboardEvent):void
+		{
+			if(!this._dataProvider)
+			{
+				return;
+			}
+			if(event.keyCode == Keyboard.HOME)
+			{
+				if(this._dataProvider.getLength() > 0 && this._dataProvider.getLength(0) > 0)
+				{
+					this.setSelectedLocation(0, 0);
+				}
+			}
+			if(event.keyCode == Keyboard.END)
+			{
+				var groupIndex:int = this._dataProvider.getLength();
+				var itemIndex:int = -1;
+				do
+				{
+					groupIndex--;
+					if(groupIndex >= 0)
+					{
+						itemIndex = this._dataProvider.getLength(groupIndex) - 1;
+					}
+				}
+				while(groupIndex > 0 && itemIndex < 0)
+				if(groupIndex >= 0 && itemIndex >= 0)
+				{
+					this.setSelectedLocation(groupIndex, itemIndex);
+				}
+			}
+			else if(event.keyCode == Keyboard.UP)
+			{
+				groupIndex = this._selectedGroupIndex;
+				itemIndex = this._selectedItemIndex - 1;
+				if(itemIndex < 0)
+				{
+					do
+					{
+						groupIndex--;
+						if(groupIndex >= 0)
+						{
+							itemIndex = this._dataProvider.getLength(groupIndex) - 1;
+						}
+					}
+					while(groupIndex > 0 && itemIndex < 0)
+				}
+				if(groupIndex >= 0 && itemIndex >= 0)
+				{
+					this.setSelectedLocation(groupIndex, itemIndex);
+				}
+			}
+			else if(event.keyCode == Keyboard.DOWN)
+			{
+				groupIndex = this._selectedGroupIndex;
+				if(groupIndex < 0)
+				{
+					itemIndex = -1;
+				}
+				else
+				{
+					itemIndex = this._selectedItemIndex + 1;
+				}
+				if(groupIndex < 0 || itemIndex >= this._dataProvider.getLength(groupIndex))
+				{
+					itemIndex = -1;
+					groupIndex++;
+					const groupCount:int = this._dataProvider.getLength();
+					while(groupIndex < groupCount && itemIndex < 0)
+					{
+						if(this._dataProvider.getLength(groupIndex) > 0)
+						{
+							itemIndex = 0;
+						}
+						else
+						{
+							groupIndex++;
+						}
+					}
+				}
+				if(groupIndex >= 0 && itemIndex >= 0)
+				{
+					this.setSelectedLocation(groupIndex, itemIndex);
+				}
+			}
 		}
 
 		/**
