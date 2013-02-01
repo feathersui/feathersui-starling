@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.core.FeathersControl;
+	import feathers.core.IFocusDisplayObject;
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
 	import feathers.utils.math.clamp;
@@ -15,10 +16,12 @@ package feathers.controls
 
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
+	import flash.ui.Keyboard;
 	import flash.utils.Timer;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
+	import starling.events.KeyboardEvent;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -51,7 +54,7 @@ package feathers.controls
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/slider
 	 */
-	public class Slider extends FeathersControl implements IScrollBar
+	public class Slider extends FeathersControl implements IScrollBar, IFocusDisplayObject
 	{
 		/**
 		 * @private
@@ -161,6 +164,8 @@ package feathers.controls
 		public function Slider()
 		{
 			super();
+			this.addEventListener(FeathersEventType.FOCUS_IN, slider_focusInHandler);
+			this.addEventListener(FeathersEventType.FOCUS_OUT, slider_focusOutHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 		}
 
@@ -1417,6 +1422,22 @@ package feathers.controls
 				this.dispatchEventWith(Event.CHANGE);
 			}
 		}
+
+		/**
+		 * @private
+		 */
+		protected function slider_focusInHandler(event:Event):void
+		{
+			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function slider_focusOutHandler(event:Event):void
+		{
+			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+		}
 		
 		/**
 		 * @private
@@ -1570,6 +1591,78 @@ package feathers.controls
 				}
 			}
 			HELPER_TOUCHES_VECTOR.length = 0;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function stage_keyDownHandler(event:KeyboardEvent):void
+		{
+			if(!this._focusManager || !this._focusManager.isEnabled || this._focusManager.focus != this)
+			{
+				return;
+			}
+			if(event.keyCode == Keyboard.HOME)
+			{
+				this.value = this._minimum;
+				return;
+			}
+			if(event.keyCode == Keyboard.END)
+			{
+				this.value = this._maximum;
+				return;
+			}
+			const page:Number = isNaN(this._page) ? this._step : this._page;
+			if(this._direction == Slider.DIRECTION_VERTICAL)
+			{
+				if(event.keyCode == Keyboard.UP)
+				{
+					if(event.shiftKey)
+					{
+						this.value += page;
+					}
+					else
+					{
+						this.value += this._step;
+					}
+				}
+				else if(event.keyCode == Keyboard.DOWN)
+				{
+					if(event.shiftKey)
+					{
+						this.value -= page;
+					}
+					else
+					{
+						this.value -= this._step;
+					}
+				}
+			}
+			else
+			{
+				if(event.keyCode == Keyboard.LEFT)
+				{
+					if(event.shiftKey)
+					{
+						this.value -= page;
+					}
+					else
+					{
+						this.value -= this._step;
+					}
+				}
+				else if(event.keyCode == Keyboard.RIGHT)
+				{
+					if(event.shiftKey)
+					{
+						this.value += page;
+					}
+					else
+					{
+						this.value += this._step;
+					}
+				}
+			}
 		}
 
 		/**
