@@ -504,15 +504,9 @@ package feathers.controls.supportClasses
 			{
 				this.refreshSelection();
 			}
-			const rendererCount:int = this._activeRenderers.length;
-			for(var i:int = 0; i < rendererCount; i++)
+			if(stateInvalid || dataInvalid || scrollInvalid || itemRendererInvalid)
 			{
-				const itemRenderer:IFeathersControl = IFeathersControl(this._activeRenderers[i]);
-				if(stateInvalid || dataInvalid || scrollInvalid || itemRendererInvalid)
-				{
-					itemRenderer.isEnabled = this._isEnabled;
-				}
-				itemRenderer.validate();
+				this.refreshEnabled();
 			}
 
 			if(scrollInvalid || dataInvalid || itemRendererInvalid || sizeInvalid)
@@ -588,6 +582,16 @@ package feathers.controls.supportClasses
 				renderer.isSelected = renderer.index == this._selectedIndex;
 			}
 			this._ignoreSelectionChanges = false;
+		}
+
+		private function refreshEnabled():void
+		{
+			const rendererCount:int = this._activeRenderers.length;
+			for(var i:int = 0; i < rendererCount; i++)
+			{
+				const itemRenderer:IFeathersControl = IFeathersControl(this._activeRenderers[i]);
+				itemRenderer.isEnabled = this._isEnabled;
+			}
 		}
 
 		private function refreshRenderers(itemRendererTypeIsInvalid:Boolean):void
