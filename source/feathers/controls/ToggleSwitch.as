@@ -8,19 +8,23 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.core.FeathersControl;
+	import feathers.core.IFocusDisplayObject;
 	import feathers.core.ITextRenderer;
 	import feathers.core.IToggle;
 	import feathers.core.PropertyProxy;
+	import feathers.events.FeathersEventType;
 	import feathers.system.DeviceCapabilities;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.ui.Keyboard;
 
 	import starling.animation.Transitions;
 	import starling.animation.Tween;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.events.Event;
+	import starling.events.KeyboardEvent;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -37,7 +41,7 @@ package feathers.controls
 	 * @see http://wiki.starling-framework.org/feathers/toggle-switch
 	 * @see Check
 	 */
-	public class ToggleSwitch extends FeathersControl implements IToggle
+	public class ToggleSwitch extends FeathersControl implements IToggle, IFocusDisplayObject
 	{
 		/**
 		 * @private
@@ -164,8 +168,10 @@ package feathers.controls
 		public function ToggleSwitch()
 		{
 			super();
-			this.addEventListener(TouchEvent.TOUCH, touchHandler);
-			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
+			this.addEventListener(TouchEvent.TOUCH, toggleSwitch_touchHandler);
+			this.addEventListener(FeathersEventType.FOCUS_IN, toggleSwitch_focusInHandler);
+			this.addEventListener(FeathersEventType.FOCUS_OUT, toggleSwitch_focusOutHandler);
+			this.addEventListener(Event.REMOVED_FROM_STAGE, toggleSwitch_removedFromStageHandler);
 		}
 
 		/**
@@ -1656,7 +1662,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function removedFromStageHandler(event:Event):void
+		protected function toggleSwitch_removedFromStageHandler(event:Event):void
 		{
 			this._touchPointID = -1;
 		}
@@ -1664,7 +1670,25 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function touchHandler(event:TouchEvent):void
+		protected function toggleSwitch_focusInHandler(event:Event):void
+		{
+			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+			this.stage.addEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function toggleSwitch_focusOutHandler(event:Event):void
+		{
+			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+			this.stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function toggleSwitch_touchHandler(event:TouchEvent):void
 		{
 			if(this._ignoreTapHandler)
 			{
@@ -1774,6 +1798,39 @@ package feathers.controls
 				}
 			}
 			HELPER_TOUCHES_VECTOR.length = 0;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function stage_keyDownHandler(event:KeyboardEvent):void
+		{
+			if(!this._focusManager || !this._focusManager.isEnabled || this._focusManager.focus != this)
+			{
+				return;
+			}
+			if(event.keyCode == Keyboard.ESCAPE)
+			{
+				this._touchPointID = -1;
+			}
+			if(this._touchPointID >= 0 || event.keyCode != Keyboard.SPACE)
+			{
+				return;
+			}
+			this._touchPointID = int.MAX_VALUE;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function stage_keyUpHandler(event:KeyboardEvent):void
+		{
+			if(this._touchPointID != int.MAX_VALUE || event.keyCode != Keyboard.SPACE)
+			{
+				return;
+			}
+			this._touchPointID = -1;
+			this.isSelected = !this._isSelected;
 		}
 
 		/**
