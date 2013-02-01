@@ -13,6 +13,7 @@ package feathers.controls
 	import feathers.core.ITextRenderer;
 	import feathers.core.IToggle;
 	import feathers.core.PropertyProxy;
+	import feathers.events.FeathersEventType;
 	import feathers.skins.StateWithToggleValueSelector;
 
 	import flash.geom.Point;
@@ -165,7 +166,8 @@ package feathers.controls
 		{
 			this.isQuickHitAreaEnabled = true;
 			this.addEventListener(TouchEvent.TOUCH, button_touchHandler);
-			this.addEventListener(Event.ADDED_TO_STAGE, button_addedToStageHandler);
+			this.addEventListener(FeathersEventType.FOCUS_IN, button_focusInHandler);
+			this.addEventListener(FeathersEventType.FOCUS_OUT, button_focusOutHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, button_removedFromStageHandler);
 		}
 
@@ -2386,10 +2388,19 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function button_addedToStageHandler(event:Event):void
+		protected function button_focusInHandler(event:Event):void
 		{
 			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 			this.stage.addEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function button_focusOutHandler(event:Event):void
+		{
+			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+			this.stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
 		}
 
 		/**
@@ -2399,8 +2410,6 @@ package feathers.controls
 		{
 			this._touchPointID = -1;
 			this.currentState = this._isEnabled ? STATE_UP : STATE_DISABLED;
-			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
-			this.stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
 		}
 		
 		/**
