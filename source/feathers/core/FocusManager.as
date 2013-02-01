@@ -166,14 +166,24 @@ package feathers.core
 				this._topLevelContainer.addEventListener(Event.ADDED, topLevelContainer_addedHandler);
 				this._topLevelContainer.addEventListener(Event.REMOVED, topLevelContainer_removedHandler);
 				Starling.current.stage.addEventListener(KeyboardEvent.KEY_DOWN, topLevelContainer_keyDownHandler);
+				this.focus = this._savedFocus;
+				this._savedFocus = null;
 			}
 			else
 			{
 				this._topLevelContainer.removeEventListener(Event.ADDED, topLevelContainer_addedHandler);
 				this._topLevelContainer.removeEventListener(Event.REMOVED, topLevelContainer_removedHandler);
 				Starling.current.stage.removeEventListener(KeyboardEvent.KEY_DOWN, topLevelContainer_keyDownHandler);
+				const focusToSave:IFocusDisplayObject = this.focus;
+				this.focus = null;
+				this._savedFocus = focusToSave;
 			}
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _savedFocus:IFocusDisplayObject;
 
 		/**
 		 * @private
@@ -200,11 +210,19 @@ package feathers.core
 			if(this._focus)
 			{
 				this._focus.dispatchEventWith(FeathersEventType.FOCUS_OUT);
+				this._focus = null;
 			}
-			this._focus = value;
-			if(this._focus)
+			if(this._isEnabled)
 			{
-				this._focus.dispatchEventWith(FeathersEventType.FOCUS_IN);
+				this._focus = value;
+				if(this._focus)
+				{
+					this._focus.dispatchEventWith(FeathersEventType.FOCUS_IN);
+				}
+			}
+			else
+			{
+				this._savedFocus = value;
 			}
 		}
 
