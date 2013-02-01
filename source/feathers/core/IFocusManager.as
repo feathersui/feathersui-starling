@@ -11,6 +11,7 @@ package feathers.core
 	 * Interface for focus management.
 	 *
 	 * @see feathers.core.IFocusDisplayObject
+	 * @see feathers.core.FocusManager
 	 */
 	public interface IFocusManager
 	{
