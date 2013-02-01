@@ -31,7 +31,11 @@ package feathers.layout
 
 		/**
 		 * The width, in pixels, of a "typical" item that is used to virtually
-		 * fill in blanks for the layout.
+		 * fill in blanks for the layout. This value is usually set by a
+		 * component that is using the layout, such as a <code>List</code> or
+		 * a <code>ScrollContainer</code>. In most cases, unless you are
+		 * creating a new custom component that supports layouts, you should
+		 * never need to set this value.
 		 */
 		function get typicalItemWidth():Number;
 
@@ -42,7 +46,11 @@ package feathers.layout
 
 		/**
 		 * The height, in pixels, of a "typical" item that is used to virtually
-		 * fill in blanks for the layout.
+		 * fill in blanks for the layout. This value is usually set by a
+		 * component that is using the layout, such as a <code>List</code> or
+		 * a <code>ScrollContainer</code>. In most cases, unless you are
+		 * creating a new custom component that supports layouts, you should
+		 * never need to set this value.
 		 */
 		function get typicalItemHeight():Number;
 
