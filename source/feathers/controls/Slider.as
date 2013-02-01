@@ -166,7 +166,7 @@ package feathers.controls
 			super();
 			this.addEventListener(FeathersEventType.FOCUS_IN, slider_focusInHandler);
 			this.addEventListener(FeathersEventType.FOCUS_OUT, slider_focusOutHandler);
-			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
+			this.addEventListener(Event.REMOVED_FROM_STAGE, slider_removedFromStageHandler);
 		}
 
 		/**
@@ -1412,7 +1412,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function removedFromStageHandler(event:Event):void
+		protected function slider_removedFromStageHandler(event:Event):void
 		{
 			this._touchPointID = -1;
 			const wasDragging:Boolean = this.isDragging;
