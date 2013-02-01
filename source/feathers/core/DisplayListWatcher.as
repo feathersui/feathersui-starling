@@ -15,24 +15,55 @@ package feathers.core
 
 	/**
 	 * Watches a container on the display list. As new display objects are
-	 * added, if they match a specific type, they will be passed to initializer
+	 * added, and if they match a specific type, they will be passed to initializer
 	 * functions to set properties, call methods, or otherwise modify them.
 	 * Useful for initializing skins and styles on UI controls.
-	 * 
-	 * <p>If a display object matches multiple types that have initializers, and
-	 * <code>exactTypeMatching</code> is disabled, the initializers will be
-	 * executed in order following the inheritance chain.</p>
+	 *
+	 * <p>In the example below, the <code>buttonInitializer()</code> function
+	 * will be called when a <code>Button</code> is added to the display list:</p>
+	 *
+	 * <listing version="3.0">
+	 * setInitializerForClass(Button, buttonInitializer);</listing>
+	 *
+	 * <p>However, initializers are not called for subclasses. If a
+	 * <code>Check</code> is added to the display list (<code>Check</code>
+	 * extends <code>Button</code>), the <code>buttonInitializer()</code>
+	 * function will not be called. This important restriction allows subclasses
+	 * to have different skins, for instance.</p>
+	 *
+	 * <p>You can target a specific subclass with the same initializer function
+	 * without adding it for all subclasses:</p>
+	 *
+	 * <listing version="3.0">
+	 * setInitializerForClass(Button, buttonInitializer);
+	 * setInitializerForClass(Check, buttonInitializer);</listing>
+	 *
+	 * <p>In this case, <code>Button</code> and <code>Check</code> will trigger
+	 * the <code>buttonInitializer()</code> function, but <code>Radio</code>
+	 * (another subclass of <code>Button</code>) will not.</p>
+	 *
+	 * <p>You can target a class and all of its subclasses, using a different
+	 * function. This is recommended only when you are absolutely sure that
+	 * no subclasses will need a separate initializer.</p>
+	 *
+	 * <listing version="3.0">
+	 * setInitializerForClassAndSubclasses(Button, buttonInitializer);</listing>
+	 *
+	 * <p>In this case, <code>Button</code>, <code>Check</code>, <code>Radio</code>
+	 * and every other subclass of <code>Button</code> (including any subclasses
+	 * that you create yourself) will trigger the <code>buttonInitializer()</code>
+	 * function.</p>
 	 */
 	public class DisplayListWatcher
 	{
 		/**
 		 * Constructor.
 		 *
-		 * @param root		The root display object to watch (not necessarily Starling's root object)
+		 * @param topLevelContainer		The root display object to watch (not necessarily Starling's root object)
 		 */
-		public function DisplayListWatcher(root:DisplayObjectContainer)
+		public function DisplayListWatcher(topLevelContainer:DisplayObjectContainer)
 		{
-			this.root = root;
+			this.root = topLevelContainer;
 			this.root.addEventListener(Event.ADDED, addedHandler);
 		}
 		
