@@ -213,11 +213,6 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _savedSelectionIndex:int = -1;
-
-		/**
-		 * @private
-		 */
 		protected var _autoCapitalize:String = "none";
 
 		/**
@@ -678,21 +673,22 @@ package feathers.controls.text
 				{
 					if(position.x < 0)
 					{
-						this._savedSelectionIndex = 0;
+						this._pendingSelectionStartIndex = this._pendingSelectionEndIndex = 0;
 					}
 					else
 					{
-						this._savedSelectionIndex = this._measureTextField.getCharIndexAtPoint(position.x, position.y);
-						const bounds:Rectangle = this._measureTextField.getCharBoundaries(this._savedSelectionIndex);
+						this._pendingSelectionStartIndex = this._measureTextField.getCharIndexAtPoint(position.x, position.y);
+						const bounds:Rectangle = this._measureTextField.getCharBoundaries(this._pendingSelectionStartIndex);
 						if(bounds && (bounds.x + bounds.width - position.x) < (position.x - bounds.x))
 						{
-							this._savedSelectionIndex++;
+							this._pendingSelectionStartIndex++;
 						}
+						this._pendingSelectionEndIndex = this._pendingSelectionStartIndex;
 					}
 				}
 				else
 				{
-					this._savedSelectionIndex = -1;
+					this._pendingSelectionStartIndex = this._pendingSelectionEndIndex = -1;
 				}
 				this.stageText.assignFocus();
 			}
@@ -709,6 +705,8 @@ package feathers.controls.text
 		{
 			if(this._stageTextIsComplete && this.stageText)
 			{
+				this._pendingSelectionStartIndex = -1;
+				this._pendingSelectionEndIndex = -1;
 				this.stageText.selectRange(startIndex, endIndex);
 			}
 			else
@@ -739,6 +737,11 @@ package feathers.controls.text
 			{
 				if(this.stageText.text != this._text)
 				{
+					if(this._pendingSelectionStartIndex < 0)
+					{
+						this._pendingSelectionStartIndex = this.stageText.selectionActiveIndex;
+						this._pendingSelectionEndIndex = this.stageText.selectionAnchorIndex;
+					}
 					this.stageText.text = this._text;
 				}
 				this._measureTextField.text = this.stageText.text;
@@ -831,7 +834,7 @@ package feathers.controls.text
 			if(this._pendingSelectionStartIndex >= 0)
 			{
 				const startIndex:int = this._pendingSelectionStartIndex;
-				const endIndex:int = this._pendingSelectionEndIndex;
+				const endIndex:int = (this._pendingSelectionEndIndex < 0) ? this._pendingSelectionStartIndex : this._pendingSelectionEndIndex;
 				this._pendingSelectionStartIndex = -1;
 				this._pendingSelectionEndIndex = -1;
 				this.selectRange(startIndex, endIndex);
@@ -1031,12 +1034,6 @@ package feathers.controls.text
 			if(this.textSnapshot)
 			{
 				this.textSnapshot.visible = false;
-			}
-			if(this._savedSelectionIndex >= 0)
-			{
-				const selectionIndex:int = this._savedSelectionIndex;
-				this._savedSelectionIndex = -1;
-				this.selectRange(selectionIndex, selectionIndex)
 			}
 			this.invalidate(INVALIDATION_FLAG_SKIN);
 			this.dispatchEventWith(FeathersEventType.FOCUS_IN);
