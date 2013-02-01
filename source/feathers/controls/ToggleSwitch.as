@@ -1805,10 +1805,6 @@ package feathers.controls
 		 */
 		protected function stage_keyDownHandler(event:KeyboardEvent):void
 		{
-			if(!this._focusManager || !this._focusManager.isEnabled || this._focusManager.focus != this)
-			{
-				return;
-			}
 			if(event.keyCode == Keyboard.ESCAPE)
 			{
 				this._touchPointID = -1;
