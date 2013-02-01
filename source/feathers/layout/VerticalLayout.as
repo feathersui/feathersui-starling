@@ -824,28 +824,40 @@ package feathers.layout
 			}
 
 			var positionY:Number = y + this._paddingTop;
+			var startIndexOffset:int = 0;
+			var endIndexOffset:Number = 0;
+			if(this._useVirtualLayout && !this._hasVariableItemDimensions)
+			{
+				startIndexOffset = this._beforeVirtualizedItemCount;
+				positionY += (this._beforeVirtualizedItemCount * (this._typicalItemHeight + this._gap));
+
+				endIndexOffset = Math.max(0, index - items.length - this._beforeVirtualizedItemCount + 1);
+				positionY += (endIndexOffset * (this._typicalItemHeight + this._gap));
+			}
+			index -= (startIndexOffset + endIndexOffset);
 			var lastHeight:Number = 0;
 			for(var i:int = 0; i <= index; i++)
 			{
 				var item:DisplayObject = items[i];
+				var iNormalized:int = i + startIndexOffset;
 				if(this._useVirtualLayout && !item)
 				{
-					if(!this._hasVariableItemDimensions || isNaN(this._heightCache[i]))
+					if(!this._hasVariableItemDimensions || isNaN(this._heightCache[iNormalized]))
 					{
 						lastHeight = this._typicalItemHeight;
 					}
 					else
 					{
-						lastHeight = this._heightCache[i];
+						lastHeight = this._heightCache[iNormalized];
 					}
 				}
 				else
 				{
 					if(this._hasVariableItemDimensions)
 					{
-						if(isNaN(this._heightCache[i]))
+						if(isNaN(this._heightCache[iNormalized]))
 						{
-							this._heightCache[i] = item.height;
+							this._heightCache[iNormalized] = item.height;
 							this.dispatchEventWith(Event.CHANGE);
 						}
 					}

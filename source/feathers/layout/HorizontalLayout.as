@@ -820,28 +820,40 @@ package feathers.layout
 			}
 
 			var positionX:Number = x + this._paddingLeft;
+			var startIndexOffset:int = 0;
+			var endIndexOffset:Number = 0;
+			if(this._useVirtualLayout && !this._hasVariableItemDimensions)
+			{
+				startIndexOffset = this._beforeVirtualizedItemCount;
+				positionX += (this._beforeVirtualizedItemCount * (this._typicalItemWidth + this._gap));
+
+				endIndexOffset = Math.max(0, index - items.length - this._beforeVirtualizedItemCount + 1);
+				positionX += (endIndexOffset * (this._typicalItemWidth + this._gap));
+			}
+			index -= (startIndexOffset + endIndexOffset);
 			var lastWidth:Number = 0;
 			for(var i:int = 0; i <= index; i++)
 			{
 				var item:DisplayObject = items[i];
+				var iNormalized:int = i + startIndexOffset;
 				if(this._useVirtualLayout && !item)
 				{
-					if(!this._hasVariableItemDimensions || isNaN(this._widthCache[i]))
+					if(!this._hasVariableItemDimensions || isNaN(this._widthCache[iNormalized]))
 					{
 						lastWidth = this._typicalItemWidth;
 					}
 					else
 					{
-						lastWidth = this._widthCache[i];
+						lastWidth = this._widthCache[iNormalized];
 					}
 				}
 				else
 				{
 					if(this._hasVariableItemDimensions)
 					{
-						if(isNaN(this._widthCache[i]))
+						if(isNaN(this._widthCache[iNormalized]))
 						{
-							this._widthCache[i] = item.width;
+							this._widthCache[iNormalized] = item.width;
 							this.dispatchEventWith(Event.CHANGE);
 						}
 					}
