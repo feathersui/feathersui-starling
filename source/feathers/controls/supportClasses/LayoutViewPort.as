@@ -267,16 +267,6 @@ package feathers.controls.supportClasses
 
 			if(sizeInvalid || dataInvalid)
 			{
-				const itemCount:int = this.items.length;
-				for(var i:int = 0; i < itemCount; i++)
-				{
-					var control:IFeathersControl = this.items[i] as IFeathersControl;
-					if(control)
-					{
-						control.validate();
-					}
-				}
-
 				HELPER_BOUNDS.x = HELPER_BOUNDS.y = 0;
 				HELPER_BOUNDS.scrollX = this._horizontalScrollPosition;
 				HELPER_BOUNDS.scrollY = this._verticalScrollPosition;
@@ -295,6 +285,17 @@ package feathers.controls.supportClasses
 				}
 				else
 				{
+					this._ignoreChildChanges = true;
+					const itemCount:int = this.items.length;
+					for(var i:int = 0; i < itemCount; i++)
+					{
+						var control:IFeathersControl = this.items[i] as IFeathersControl;
+						if(control)
+						{
+							control.validate();
+						}
+					}
+					this._ignoreChildChanges = false;
 					var maxX:Number = isNaN(HELPER_BOUNDS.explicitWidth) ? 0 : HELPER_BOUNDS.explicitWidth;
 					var maxY:Number = isNaN(HELPER_BOUNDS.explicitHeight) ? 0 : HELPER_BOUNDS.explicitHeight;
 					for each(var item:DisplayObject in this.items)

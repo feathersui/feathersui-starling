@@ -7,7 +7,10 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.layout
 {
+	import feathers.core.IFeathersControl;
 	import feathers.layout.ILayoutData;
+
+	import flash.display.DisplayObjectContainer;
 
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Point;
@@ -73,6 +76,7 @@ package feathers.layout
 			const needsHeight:Boolean = isNaN(explicitHeight);
 			if(needsWidth || needsHeight)
 			{
+				this.validateItems(items, true);
 				this.measureViewPort(items, viewPortWidth, viewPortHeight, HELPER_POINT);
 				if(needsWidth)
 				{
@@ -82,6 +86,10 @@ package feathers.layout
 				{
 					viewPortHeight = Math.min(maxHeight, Math.max(minHeight, HELPER_POINT.y));
 				}
+			}
+			else
+			{
+				this.validateItems(items, false);
 			}
 
 			this.layoutWithBounds(items, boundsX, boundsY, viewPortWidth, viewPortHeight);
@@ -760,6 +768,88 @@ package feathers.layout
 				return false
 			}
 			return true;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function isReferenced(item:DisplayObject, items:Vector.<DisplayObject>):Boolean
+		{
+			const itemCount:int = items.length;
+			for(var i:int = 0; i < itemCount; i++)
+			{
+				var otherItem:ILayoutDisplayObject = items[i] as ILayoutDisplayObject;
+				if(!item || otherItem == item)
+				{
+					continue;
+				}
+				var layoutData:AnchorLayoutData = otherItem.layoutData as AnchorLayoutData;
+				if(!layoutData)
+				{
+					continue;
+				}
+				if(layoutData.leftAnchorDisplayObject == item || layoutData.horizontalCenterAnchorDisplayObject == item ||
+					layoutData.rightAnchorDisplayObject == item || layoutData.topAnchorDisplayObject == item ||
+					layoutData.verticalCenterAnchorDisplayObject == item || layoutData.bottomAnchorDisplayObject == item)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function validateItems(items:Vector.<DisplayObject>, force:Boolean):void
+		{
+			const itemCount:int = items.length;
+			for(var i:int = 0; i < itemCount; i++)
+			{
+				var control:IFeathersControl = items[i] as IFeathersControl;
+				if(control)
+				{
+					if(force)
+					{
+						control.validate();
+						continue;
+					}
+					if(control is ILayoutDisplayObject)
+					{
+						var layoutControl:ILayoutDisplayObject = ILayoutDisplayObject(control);
+						if(!layoutControl.includeInLayout)
+						{
+							continue;
+						}
+						var layoutData:AnchorLayoutData = layoutControl.layoutData as AnchorLayoutData;
+						if(layoutData)
+						{
+							var hasLeftPosition:Boolean = !isNaN(layoutData.left);
+							var hasRightPosition:Boolean = !isNaN(layoutData.right);
+							var hasHorizontalCenterPosition:Boolean = !isNaN(layoutData.horizontalCenter);
+							if((hasRightPosition && !hasLeftPosition && !hasHorizontalCenterPosition) ||
+								hasHorizontalCenterPosition)
+							{
+								control.validate();
+								continue;
+							}
+							var hasTopPosition:Boolean = !isNaN(layoutData.top);
+							var hasBottomPosition:Boolean = !isNaN(layoutData.bottom);
+							var hasVerticalCenterPosition:Boolean = !isNaN(layoutData.verticalCenter);
+							if((hasBottomPosition && !hasTopPosition && !hasVerticalCenterPosition) ||
+								hasVerticalCenterPosition)
+							{
+								control.validate();
+								continue;
+							}
+						}
+					}
+					if(this.isReferenced(DisplayObject(control), items))
+					{
+						control.validate();
+					}
+				}
+			}
 		}
 	}
 }

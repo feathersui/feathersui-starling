@@ -7,6 +7,8 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.layout
 {
+	import feathers.core.IFeathersControl;
+
 	import flash.geom.Point;
 
 	import starling.display.DisplayObject;
@@ -593,6 +595,11 @@ package feathers.layout
 			const maxHeight:Number = viewPortBounds ? viewPortBounds.maxHeight : Number.POSITIVE_INFINITY;
 			const explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
 			const explicitHeight:Number = viewPortBounds ? viewPortBounds.explicitHeight : NaN;
+
+			if(!this._useSquareTiles || !this._useVirtualLayout)
+			{
+				this.validateItems(items);
+			}
 
 			this._discoveredItemsCache.length = 0;
 			const itemCount:int = items.length;
@@ -1185,6 +1192,22 @@ package feathers.layout
 				{
 					var item:DisplayObject = items[i];
 					item.y += verticalAlignOffsetY;
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function validateItems(items:Vector.<DisplayObject>):void
+		{
+			const itemCount:int = items.length;
+			for(var i:int = 0; i < itemCount; i++)
+			{
+				var control:IFeathersControl = items[i] as IFeathersControl;
+				if(control)
+				{
+					control.validate();
 				}
 			}
 		}
