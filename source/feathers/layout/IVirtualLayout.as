@@ -41,7 +41,7 @@ package feathers.layout
 		function set typicalItemWidth(value:Number):void;
 
 		/**
-		 * The width, in pixels, of a "typical" item that is used to virtually
+		 * The height, in pixels, of a "typical" item that is used to virtually
 		 * fill in blanks for the layout.
 		 */
 		function get typicalItemHeight():Number;
