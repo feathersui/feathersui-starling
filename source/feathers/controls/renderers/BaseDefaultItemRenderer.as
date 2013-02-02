@@ -1960,6 +1960,23 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		protected function handleOwnerScroll():void
+		{
+			this._touchPointID = -1;
+			if(this._stateDelayTimer && this._stateDelayTimer.running)
+			{
+				this._stateDelayTimer.stop();
+			}
+			this._delayedCurrentState = null;
+			if(this._currentState != Button.STATE_UP)
+			{
+				super.currentState = Button.STATE_UP;
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function accessoryLabelProperties_onChange(proxy:PropertyProxy, name:String):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
