@@ -326,6 +326,17 @@ package feathers.core
 		 * explicit width value is provided. Each component has a different
 		 * automatic sizing behavior, but it's usually based on the component's
 		 * skin or content, including text or subcomponents.
+		 * 
+		 * <p><strong>Note:</strong> Values of the <code>width</code> and
+		 * <code>height</code> properties may not be accurate until after
+		 * validation. If you are seeing <code>width</code> or <code>height</code>
+		 * values of <code>0</code>, but you can see something on the screen and
+		 * know that the value should be larger, it may be because you asked for
+		 * the dimensions before the component had validated. Call
+		 * <code>validate()</code> to tell the component to immediately redraw
+		 * and calculate an accurate values for the dimensions.</p>
+		 * 
+		 * @see feathers.core.IFeathersControl#validate()
 		 */
 		override public function get width():Number
 		{
@@ -366,6 +377,17 @@ package feathers.core
 		 * explicit height value is provided. Each component has a different
 		 * automatic sizing behavior, but it's usually based on the component's
 		 * skin or content, including text or subcomponents.
+		 * 
+		 * <p><strong>Note:</strong> Values of the <code>width</code> and
+		 * <code>height</code> properties may not be accurate until after
+		 * validation. If you are seeing <code>width</code> or <code>height</code>
+		 * values of <code>0</code>, but you can see something on the screen and
+		 * know that the value should be larger, it may be because you asked for
+		 * the dimensions before the component had validated. Call
+		 * <code>validate()</code> to tell the component to immediately redraw
+		 * and calculate an accurate values for the dimensions.</p>
+		 * 
+		 * @see feathers.core.IFeathersControl#validate()
 		 */
 		override public function get height():Number
 		{
@@ -892,12 +914,19 @@ package feathers.core
 		}
 
 		/**
-		 * When called, the UI control will redraw within one frame.
-		 * Invalidation limits processing so that multiple property changes only
-		 * trigger a single redraw.
-		 *
-		 * <p>If the UI control isn't on the display list, it will never redraw.
-		 * The control will automatically invalidate once it has been added.</p>
+		 * Call this function to tell the UI control that a redraw is pending.
+		 * The redraw will happen immediately before Starling renders the UI
+		 * control to the screen. The validation system exists to ensure that
+		 * multiple properties can be set together without redrawing multiple
+		 * times in between each property change.
+		 * 
+		 * <p>If you cannot wait until later for the validation to happen, you
+		 * can call <code>validate()</code> to redraw immediately. As an example,
+		 * you might want to validate immediately if you need to access the
+		 * correct <code>width</code> or <code>height</code> values of the UI
+		 * control, since these values are calculated during validation.</p>
+		 * 
+		 * @see feathers.core.FeathersControl#validate()
 		 */
 		public function invalidate(flag:String = INVALIDATION_FLAG_ALL):void
 		{
@@ -959,7 +988,18 @@ package feathers.core
 
 		/**
 		 * Immediately validates the control, which triggers a redraw, if one
-		 * is pending.
+		 * is pending. Validation exists to postpone redrawing a component until
+		 * the last possible moment before rendering so that multiple properties
+		 * can be changed at once without requiring a full redraw after each
+		 * change.
+		 * 
+		 * <p>A component cannot validate if it does not have access to the
+		 * stage and if it hasn't initialized yet. A component initializes the
+		 * first time that it has been added to the stage.</p>
+		 * 
+		 * @see #invalidate()
+		 * @see #initialize()
+		 * @see feathers.events.FeathersEventType#INITIALIZE
 		 */
 		public function validate():void
 		{
@@ -997,9 +1037,12 @@ package feathers.core
 		}
 
 		/**
-		 * Indicates whether the control is invalid or not. You may optionally
-		 * pass in a specific flag to check if that particular flag is set. If
-		 * the "all" flag is set, the result will always be true.
+		 * Indicates whether the control is pending validation or not. By
+		 * default, returns <code>true</code> if any invalidation flag has been
+		 * set. If you pass in a specific flag, returns <code>true</code> only
+		 * if that flag has been set (others may be set too, but it checks the
+		 * specific flag only. If all flags have been marked as invalid, always
+		 * returns <code>true</code>.
 		 */
 		public function isInvalid(flag:String = null):Boolean
 		{
@@ -1030,7 +1073,9 @@ package feathers.core
 
 		/**
 		 * Sets the width and height of the control, with the option of
-		 * invalidating or not. Intended to be used for automatic resizing.
+		 * invalidating or not. Intended to be used when the <code>width</code>
+		 * and <code>height</code> values have not been set explicitly, and the
+		 * UI control needs to measure itself and choose an "ideal" size.
 		 */
 		protected function setSizeInternal(width:Number, height:Number, canInvalidate:Boolean):Boolean
 		{
@@ -1087,8 +1132,13 @@ package feathers.core
 		}
 
 		/**
-		 * Override to initialize the UI control. Should be used to create
-		 * children and set up event listeners.
+		 * Called the first time that the UI control is added to the stage, and
+		 * you should override this function to customize the initialization
+		 * process. Do things like create children and set up event listeners.
+		 * After this function is called, <code>FeathersEventType.INITIALIZE</code>
+		 * is dispatched.
+		 *
+		 * @see feathers.events.FeathersEventType#INITIALIZE
 		 */
 		protected function initialize():void
 		{
@@ -1097,6 +1147,8 @@ package feathers.core
 
 		/**
 		 * Override to customize layout and to adjust properties of children.
+		 * Called when the component validates, if any flags have been marked
+		 * to indicate that validation is pending.
 		 */
 		protected function draw():void
 		{
