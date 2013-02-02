@@ -37,6 +37,28 @@ package feathers.layout
 		 * restricted to appear only within the bounds. The bounds can affect
 		 * positioning, but the algorithm may very well ignore them completely.</p>
 		 *
+		 * <p>If a layout implementation needs to access accurate <code>width</code>
+		 * and <code>height</code> values from items that are of type
+		 * <code>IFeathersControl</code>, it must call <code>validate()</code>
+		 * manually. For performance reasons, the container that is the parent
+		 * of the items will not call <code>validate()</code> before passing the
+		 * items to a layout implementation. Meeting this requirement may be as
+		 * simple as looping through the items at the beginning of
+		 * <code>layout()</code> and validating all items that are Feathers UI
+		 * controls:</p>
+		 *
+		 * <listing version="3.0">
+		 * const itemCount:int = items.length;
+		 * for(var i:int = 0; i &lt; itemCount; i++)
+		 * {
+		 *     var item:IFeathersControl = items[i] as IFeathersControl;
+		 *     if(item)
+		 *     {
+		 *         item.validate();
+		 *     }
+		 * }</listing>
+		 * 
+		 * @see feathers.core.IFeathersControl#validate()  
 		 */
 		function layout(items:Vector.<DisplayObject>, viewPortBounds:ViewPortBounds = null, result:LayoutBoundsResult = null):LayoutBoundsResult;
 

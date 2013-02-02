@@ -13,38 +13,40 @@ package feathers.core
 	 * Public properties and functions from <code>starling.events.EventDispatcher</code>
 	 * in helpful interface form.
 	 *
+	 * <p>Never cast an object to this type. Cast to <code>EventDispatcher</code>
+	 * instead. This interface exists only to support easier code hinting.</p>
+	 *
 	 * @see starling.events.EventDispatcher
 	 */
 	public interface IFeathersEventDispatcher
 	{
-
 		/**
-		 * @private
+		 * @see starling.events.EventDispatcher#addEventListener()
 		 */
 		function addEventListener(type:String, listener:Function):void;
 
 		/**
-		 * @private
+		 * @see starling.events.EventDispatcher#removeEventListener()
 		 */
 		function removeEventListener(type:String, listener:Function):void;
 
 		/**
-		 * @private
+		 * @see starling.events.EventDispatcher#removeEventListeners()
 		 */
 		function removeEventListeners(type:String = null):void;
 
 		/**
-		 * @private
+		 * @see starling.events.EventDispatcher#dispatchEvent()
 		 */
 		function dispatchEvent(event:Event):void;
 
 		/**
-		 * @private
+		 * @see starling.events.EventDispatcher#dispatchEventWith()
 		 */
 		function dispatchEventWith(type:String, bubbles:Boolean = false, data:Object = null):void;
 
 		/**
-		 * @private
+		 * @see starling.events.EventDispatcher#hasEventListener()
 		 */
 		function hasEventListener(type:String):Boolean;
 	}
