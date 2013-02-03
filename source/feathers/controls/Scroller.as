@@ -2021,8 +2021,8 @@ package feathers.controls
 			const oldMaxVSP:Number = this._maxVerticalScrollPosition;
 			if(this._viewPort)
 			{
-				this._maxHorizontalScrollPosition = Math.max(0, this._viewPort.width + this._rightViewPortOffset - pageWidth);
-				this._maxVerticalScrollPosition = Math.max(0, this._viewPort.height + this._bottomViewPortOffset - pageHeight);
+				this._maxHorizontalScrollPosition = Math.max(0, this._viewPort.width - pageWidth);
+				this._maxVerticalScrollPosition = Math.max(0, this._viewPort.height - pageHeight);
 				if(this._snapScrollPositionsToPixels)
 				{
 					this._maxHorizontalScrollPosition = Math.round(this._maxHorizontalScrollPosition);
@@ -2109,7 +2109,7 @@ package feathers.controls
 				this.horizontalScrollBar.minimum = 0;
 				this.horizontalScrollBar.maximum = this._maxHorizontalScrollPosition;
 				this.horizontalScrollBar.value = this._horizontalScrollPosition;
-				this.horizontalScrollBar.page = pageWidth;
+				this.horizontalScrollBar.page = this._maxHorizontalScrollPosition * pageWidth / this._viewPort.width;
 				this.horizontalScrollBar.step = this.actualHorizontalScrollStep;
 			}
 
@@ -2119,7 +2119,7 @@ package feathers.controls
 				this.verticalScrollBar.minimum = 0;
 				this.verticalScrollBar.maximum = this._maxVerticalScrollPosition;
 				this.verticalScrollBar.value = this._verticalScrollPosition;
-				this.verticalScrollBar.page = pageHeight;
+				this.verticalScrollBar.page = this._maxVerticalScrollPosition * pageHeight / this._viewPort.height;
 				this.verticalScrollBar.step = this.actualVerticalScrollStep;
 			}
 		}
