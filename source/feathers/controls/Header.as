@@ -718,7 +718,7 @@ package feathers.controls
 					{
 						if(item is IFeathersControl)
 						{
-							FeathersControl(item).nameList.add(this.itemName);
+							IFeathersControl(item).nameList.add(this.itemName);
 						}
 						this.addChild(item);
 					}
@@ -731,7 +731,10 @@ package feathers.controls
 				{
 					for each(item in this._rightItems)
 					{
-						IFeathersControl(item).nameList.add(this.itemName);
+						if(item is IFeathersControl)
+						{
+							IFeathersControl(item).nameList.add(this.itemName);
+						}
 						this.addChild(item);
 					}
 				}
