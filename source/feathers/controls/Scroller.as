@@ -1498,9 +1498,13 @@ package feathers.controls
 		protected var _isScrollingStopped:Boolean = false;
 
 		/**
-		 * A set of key/value pairs to be passed down to the container's
-		 * scroller sub-component. The scroller is a
-		 * <code>feathers.controls.Scroller</code> instance.
+		 * @private
+		 */
+		protected var _scrollerProperties:PropertyProxy;
+
+		/**
+		 * DEPRECATED: A set of key/value pairs to be passed down to the
+		 * container's scroller sub-component.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 1.1. It will be removed in a future version of
@@ -1510,7 +1514,11 @@ package feathers.controls
 		 */
 		public function get scrollerProperties():Object
 		{
-			return this;
+			if(!this._scrollerProperties)
+			{
+				this._scrollerProperties = new PropertyProxy(scrollerProperties_onChange);
+			}
+			return this._scrollerProperties;
 		}
 
 		/**
@@ -1518,13 +1526,33 @@ package feathers.controls
 		 */
 		public function set scrollerProperties(value:Object):void
 		{
-			for(var propertyName:String in value)
+			if(this._scrollerProperties == value)
 			{
-				if(this.hasOwnProperty(propertyName))
-				{
-					this[propertyName] = value[propertyName];
-				}
+				return;
 			}
+			if(!value)
+			{
+				value = new PropertyProxy();
+			}
+			if(!(value is PropertyProxy))
+			{
+				const newValue:PropertyProxy = new PropertyProxy();
+				for(var propertyName:String in value)
+				{
+					newValue[propertyName] = value[propertyName];
+				}
+				value = newValue;
+			}
+			if(this._scrollerProperties)
+			{
+				this._scrollerProperties.removeOnChangeCallback(scrollerProperties_onChange);
+			}
+			this._scrollerProperties = PropertyProxy(value);
+			if(this._scrollerProperties)
+			{
+				this._scrollerProperties.addOnChangeCallback(scrollerProperties_onChange);
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
@@ -2747,6 +2775,18 @@ package feathers.controls
 			else
 			{
 				this.invalidate(INVALIDATION_FLAG_SIZE);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function scrollerProperties_onChange(proxy:PropertyProxy, name:String):void
+		{
+			if(this.hasOwnProperty(name))
+			{
+				const propertyValue:Object = this._scrollerProperties[name];
+				this[name] = propertyValue;
 			}
 		}
 
