@@ -747,7 +747,7 @@ package feathers.controls
 			if(this._touchValue < this._value)
 			{
 				var newValue:Number = Math.max(this._touchValue, this._value - this._page);
-				if(this._step != 0)
+				if(this._step != 0 && newValue != this._maximum && newValue != this._minimum)
 				{
 					newValue = roundToNearest(newValue, this._step);
 				}
@@ -756,7 +756,7 @@ package feathers.controls
 			else if(this._touchValue > this._value)
 			{
 				newValue = Math.min(this._touchValue, this._value + this._page);
-				if(this._step != 0)
+				if(this._step != 0 && newValue != this._maximum && newValue != this._minimum)
 				{
 					newValue = roundToNearest(newValue, this._step);
 				}
@@ -900,7 +900,7 @@ package feathers.controls
 				{
 					touch.getLocation(this, HELPER_POINT);
 					var newValue:Number = this.locationToValue(HELPER_POINT);
-					if(this._step != 0)
+					if(this._step != 0 && newValue != this._maximum && newValue != this._minimum)
 					{
 						newValue = roundToNearest(newValue, this._step);
 					}
