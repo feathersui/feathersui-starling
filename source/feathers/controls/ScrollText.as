@@ -621,6 +621,66 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _visible:Boolean = true;
+
+		/**
+		 * @private
+		 */
+		override public function get visible():Boolean
+		{
+			return this._visible;
+		}
+
+		/**
+		 * @private
+		 */
+		override public function set visible(value:Boolean):void
+		{
+			if(this._visible == value)
+			{
+				return;
+			}
+			this._visible = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _alpha:Number = 1;
+
+		/**
+		 * @private
+		 */
+		override public function get alpha():Number
+		{
+			return this._alpha;
+		}
+
+		/**
+		 * @private
+		 */
+		override public function set alpha(value:Number):void
+		{
+			if(this._alpha == value)
+			{
+				return;
+			}
+			this._alpha = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		override public function get hasVisibleArea():Boolean
+		{
+			return true;
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function draw():void
 		{
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
@@ -653,6 +713,8 @@ package feathers.controls
 				this.textViewPort.paddingRight = this._textPaddingRight;
 				this.textViewPort.paddingBottom = this._textPaddingBottom;
 				this.textViewPort.paddingLeft = this._textPaddingLeft;
+				this.textViewPort.visible = this._visible;
+				this.textViewPort.alpha = this._alpha;
 			}
 
 			super.draw();
