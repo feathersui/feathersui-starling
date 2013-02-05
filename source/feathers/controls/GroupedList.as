@@ -1558,8 +1558,14 @@ package feathers.controls
 
 			if(!hasLayout)
 			{
-				this.horizontalScrollPolicy = SCROLL_POLICY_AUTO;
-				this.verticalScrollPolicy = hasLayout ? SCROLL_POLICY_AUTO : SCROLL_POLICY_ON;
+				if(this._hasElasticEdges &&
+					this._verticalScrollPolicy == SCROLL_POLICY_AUTO &&
+					this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_FIXED)
+				{
+					//so that the elastic edges work even when the max scroll
+					//position is 0, similar to iOS.
+					this.verticalScrollPolicy = SCROLL_POLICY_ON;
+				}
 
 				const layout:VerticalLayout = new VerticalLayout();
 				layout.useVirtualLayout = true;
