@@ -1771,7 +1771,7 @@ package feathers.controls
 				this.thumb.width = this.thumbOriginalWidth;
 				this.thumb.height = Math.max(thumbMinHeight, contentHeight * adjustedPageStep / range);
 				const trackScrollableHeight:Number = contentHeight - this.thumb.height;
-				this.thumb.x = (this.actualWidth - this.thumb.width) / 2;
+				this.thumb.x = this._paddingLeft + (this.actualWidth - this._paddingLeft - this._paddingRight - this.thumb.width) / 2;
 				this.thumb.y = this.decrementButton.height + this._paddingTop + Math.max(0, Math.min(trackScrollableHeight, trackScrollableHeight * (this._value - this._minimum) / range));
 			}
 			else //horizontal
@@ -1782,7 +1782,7 @@ package feathers.controls
 				this.thumb.height = this.thumbOriginalHeight;
 				const trackScrollableWidth:Number = contentWidth - this.thumb.width;
 				this.thumb.x = this.decrementButton.width + this._paddingLeft + Math.max(0, Math.min(trackScrollableWidth, trackScrollableWidth * (this._value - this._minimum) / range));
-				this.thumb.y = (this.actualHeight - this.thumb.height) / 2;
+				this.thumb.y = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - this.thumb.height) / 2;
 			}
 		}
 
