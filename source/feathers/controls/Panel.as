@@ -7,7 +7,10 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
+	import feathers.core.IFeathersControl;
 	import feathers.core.PropertyProxy;
+
+	import starling.display.DisplayObject;
 
 	/**
 	 * A container with a header and layout.
@@ -67,7 +70,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected static function defaultHeaderFactory():Header
+		protected static function defaultHeaderFactory():IFeathersControl
 		{
 			return new Header();
 		}
@@ -81,9 +84,9 @@ package feathers.controls
 		}
 
 		/**
-		 * The Header sub-component.
+		 * The header sub-component.
 		 */
-		protected var header:Header;
+		protected var header:IFeathersControl;
 
 		/**
 		 * The default value added to the <code>nameList</code> of the header.
@@ -103,7 +106,7 @@ package feathers.controls
 		 * skins and text styles on the header.
 		 *
 		 * <p>The function should have the following signature:</p>
-		 * <pre>function():Header</pre>
+		 * <pre>function():IFeathersControl</pre>
 		 *
 		 * @see #headerProperties
 		 */
@@ -170,8 +173,9 @@ package feathers.controls
 
 		/**
 		 * A set of key/value pairs to be passed down to the container's
-		 * header sub-component. The header is a
-		 * <code>feathers.controls.Header</code> instance.
+		 * header sub-component. The header may be any
+		 * <code>feathers.core.IFeathersControl</code> instance, but the default
+		 * is a <code>feathers.controls.Header</code> instance.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -299,15 +303,15 @@ package feathers.controls
 			this.displayListBypassEnabled = false;
 			if(this.header)
 			{
-				this.removeChild(this.header, true);
+				this.removeChild(DisplayObject(this.header), true);
 				this.header = null;
 			}
 
 			const factory:Function = this._headerFactory != null ? this._headerFactory : defaultHeaderFactory;
 			const headerName:String = this._customHeaderName != null ? this._customHeaderName : this.headerName;
-			this.header = Header(factory());
+			this.header = IFeathersControl(factory());
 			this.header.nameList.add(headerName);
-			this.addChild(this.header);
+			this.addChild(DisplayObject(this.header));
 			this.displayListBypassEnabled = oldDisplayListBypassEnabled;
 		}
 
@@ -316,9 +320,10 @@ package feathers.controls
 		 */
 		protected function refreshHeaderStyles():void
 		{
+			const headerAsObject:Object = this.header;
 			for(var propertyName:String in this._headerProperties)
 			{
-				if(this.header.hasOwnProperty(propertyName))
+				if(headerAsObject.hasOwnProperty(propertyName))
 				{
 					var propertyValue:Object = this._headerProperties[propertyName];
 					this.header[propertyName] = propertyValue;
