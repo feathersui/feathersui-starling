@@ -11,7 +11,7 @@ package feathers.core
 	import flash.utils.flash_proxy;
 
 	/**
-	 * Detects when its own properties have changed and dispatches a signal
+	 * Detects when its own properties have changed and dispatches an event
 	 * to notify listeners.
 	 *
 	 * <p>Supports nested <code>PropertyProxy</code> instances using attribute

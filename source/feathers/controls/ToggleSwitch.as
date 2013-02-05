@@ -586,7 +586,7 @@ package feathers.controls
 		{
 			//normally, we'd check to see if selected actually changed or not
 			//but the animation is triggered by the draw cycle, so we always
-			//need to invalidate. notice that the signal isn't dispatched
+			//need to invalidate. notice that the event isn't dispatched
 			//unless the value changes.
 			const oldSelected:Boolean = this._isSelected;
 			this._isSelected = value;

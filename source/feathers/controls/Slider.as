@@ -361,8 +361,8 @@ package feathers.controls
 		protected var isDragging:Boolean = false;
 		
 		/**
-		 * Determines if the slider dispatches the onChange signal every time
-		 * the thumb moves, or only once it stops moving.
+		 * Determines if the slider dispatches the <code>Event.CHANGE</code>
+		 * event every time the thumb moves, or only once it stops moving.
 		 */
 		public var liveDragging:Boolean = true;
 		
