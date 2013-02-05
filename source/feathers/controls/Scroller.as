@@ -63,18 +63,12 @@ package feathers.controls
 	[Event(name="endInteraction",type="starling.events.Event")]
 
 	/**
-	 * Allows horizontal and vertical scrolling of a <em>viewport</em>. Not
+	 * Allows horizontal and vertical scrolling of a <em>view port</em>. Not
 	 * meant to be used as a standalone container or component. Generally meant
-	 * to be a sub-component of another component that needs to support
+	 * to be the super class of another component that needs to support
 	 * scrolling. To put components in a generic scrollable container (with
 	 * optional layout), see <code>ScrollContainer</code>. To scroll long
 	 * passages of text, see <code>ScrollText</code>.
-	 *
-	 * <p>Will react to the <code>onResize</code> signal dispatched by UI
-	 * controls to adjust the maximum scroll positions. For regular Starling
-	 * display objects, the <code>invalidate()</code> function needs to be
-	 * called on the <code>Scroller</code> when they resize because the
-	 * <code>Scroller</code> cannot detect the change.</p>
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/scroller
 	 * @see ScrollContainer
@@ -2919,7 +2913,7 @@ package feathers.controls
 					}
 				}
 				//if we haven't already started dragging in the other direction,
-				//we need to dispatch the signal that says we're starting.
+				//we need to dispatch the event that says we're starting.
 				if(!this._isDraggingVertically)
 				{
 					if(this._touchBlocker)

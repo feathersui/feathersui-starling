@@ -186,7 +186,7 @@ package feathers.dragDrop
 		{
 			if(dropTarget != target)
 			{
-				throw new ArgumentError("Drop target cannot accept a drag at this time. Acceptance may only happen after the onDragEnter signal is dispatched and before the onDragExit signal is dispatched.");
+				throw new ArgumentError("Drop target cannot accept a drag at this time. Acceptance may only happen after the DragDropEvent.DRAG_ENTER event is dispatched and before the DragDropEvent.DRAG_EXIT event is dispatched.");
 			}
 			isAccepted = true;
 		}

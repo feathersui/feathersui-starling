@@ -624,8 +624,8 @@ package feathers.controls
 		protected var isDragging:Boolean = false;
 
 		/**
-		 * Determines if the scroll bar dispatches the <code>onChange</code>
-		 * signal every time the thumb moves, or only once it stops moving.
+		 * Determines if the scroll bar dispatches the <code>Event.CHANGE</code>
+		 * event every time the thumb moves, or only once it stops moving.
 		 */
 		public var liveDragging:Boolean = true;
 
