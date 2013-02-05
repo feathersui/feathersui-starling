@@ -180,7 +180,7 @@ package feathers.dragDrop
 		/**
 		 * Tells the drag and drop manager if the target will accept the current
 		 * drop. Meant to be called in a listener for the target's
-		 * <code>onDragEnter</code> signal.
+		 * <code>DragDropEvent.DRAG_ENTER</code> event.
 		 */
 		public static function acceptDrag(target:IDropTarget):void
 		{
