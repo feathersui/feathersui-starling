@@ -2163,7 +2163,7 @@ package feathers.controls
 							this._horizontalScrollPolicy != SCROLL_POLICY_OFF))
 					{
 						this._hasHorizontalScrollBar = true;
-						this._bottomViewPortOffset = this.horizontalScrollBar.height;
+						this._bottomViewPortOffset += this.horizontalScrollBar.height;
 					}
 					else
 					{
@@ -2181,7 +2181,7 @@ package feathers.controls
 							this._verticalScrollPolicy != SCROLL_POLICY_OFF))
 					{
 						this._hasVerticalScrollBar = true;
-						this._rightViewPortOffset = this.verticalScrollBar.width;
+						this._rightViewPortOffset += this.verticalScrollBar.width;
 					}
 					else
 					{
