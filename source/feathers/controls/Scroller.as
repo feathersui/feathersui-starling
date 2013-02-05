@@ -2631,26 +2631,25 @@ package feathers.controls
 		 */
 		protected function nativeStage_mouseWheelHandler(event:MouseEvent):void
 		{
-			if(this._verticalScrollBarHideTween)
-			{
-				Starling.juggler.remove(this._verticalScrollBarHideTween);
-				this._verticalScrollBarHideTween = null;
-			}
-
-			if(this.verticalScrollBar && this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FLOAT)
-			{
-				DisplayObject(this.verticalScrollBar).alpha = 1;
-			}
-
-			HELPER_POINT.x = event.stageX;
-			HELPER_POINT.y = event.stageY;
+			const starlingViewPort:Rectangle = Starling.current.viewPort;
+			HELPER_POINT.x = (event.stageX - starlingViewPort.x) / Starling.contentScaleFactor;
+			HELPER_POINT.y = (event.stageY - starlingViewPort.y) / Starling.contentScaleFactor;
 			this.globalToLocal(HELPER_POINT, HELPER_POINT);
 			if(this.hitTest(HELPER_POINT, true))
 			{
+				if(this._verticalScrollBarHideTween)
+				{
+					Starling.juggler.remove(this._verticalScrollBarHideTween);
+					this._verticalScrollBarHideTween = null;
+				}
+				if(this.verticalScrollBar && this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FLOAT)
+				{
+					DisplayObject(this.verticalScrollBar).alpha = 1;
+				}
 				this.verticalScrollPosition = Math.min(this._maxVerticalScrollPosition, Math.max(0, this._verticalScrollPosition - event.delta * this.actualVerticalScrollStep));
+				this.hideVerticalScrollBar(0.25);
 			}
 
-			this.hideVerticalScrollBar(0.25);
 		}
 
 		/**
