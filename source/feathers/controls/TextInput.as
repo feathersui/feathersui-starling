@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.core.FeathersControl;
+	import feathers.core.IFocusDisplayObject;
 	import feathers.core.ITextEditor;
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
@@ -63,7 +64,7 @@ package feathers.controls
 	 * @see http://wiki.starling-framework.org/feathers/text-input
 	 * @see feathers.core.ITextEditor
 	 */
-	public class TextInput extends FeathersControl
+	public class TextInput extends FeathersControl implements IFocusDisplayObject
 	{
 		/**
 		 * @private
@@ -82,6 +83,8 @@ package feathers.controls
 		{
 			this.isQuickHitAreaEnabled = true;
 			this.addEventListener(TouchEvent.TOUCH, touchHandler);
+			this.addEventListener(FeathersEventType.FOCUS_IN, textInput_focusInHandler);
+			this.addEventListener(FeathersEventType.FOCUS_OUT, textInput_focusOutHandler);
 		}
 
 		/**
@@ -852,6 +855,22 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function textInput_focusInHandler(event:Event):void
+		{
+			this.textEditor.setFocus();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function textInput_focusOutHandler(event:Event):void
+		{
+			this.textEditor.clearFocus();
+		}
+
+		/**
+		 * @private
+		 */
 		protected function textEditor_changeHandler(event:Event):void
 		{
 			this.text = this.textEditor.text;
@@ -873,7 +892,14 @@ package feathers.controls
 			this._textEditorHasFocus = true;
 			this._touchPointID = -1;
 			this.invalidate(INVALIDATION_FLAG_STATE);
-			this.dispatchEventWith(FeathersEventType.FOCUS_IN);
+			if(this._focusManager)
+			{
+				this._focusManager.focus = this;
+			}
+			else
+			{
+				this.dispatchEventWith(FeathersEventType.FOCUS_IN);
+			}
 		}
 
 		/**
@@ -883,7 +909,17 @@ package feathers.controls
 		{
 			this._textEditorHasFocus = false;
 			this.invalidate(INVALIDATION_FLAG_STATE);
-			this.dispatchEventWith(FeathersEventType.FOCUS_OUT);
+			if(this._focusManager)
+			{
+				if(this._focusManager.focus == this)
+				{
+					this._focusManager.focus = null;
+				}
+			}
+			else
+			{
+				this.dispatchEventWith(FeathersEventType.FOCUS_OUT);
+			}
 		}
 	}
 }

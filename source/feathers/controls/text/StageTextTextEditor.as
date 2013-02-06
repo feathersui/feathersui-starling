@@ -701,6 +701,19 @@ package feathers.controls.text
 		/**
 		 * @inheritDoc
 		 */
+		public function clearFocus():void
+		{
+			if(!this._stageTextHasFocus)
+			{
+				return;
+			}
+			Starling.current.nativeStage.focus = Starling.current.nativeStage;
+			this.dispatchEventWith(FeathersEventType.FOCUS_OUT);
+		}
+
+		/**
+		 * @inheritDoc
+		 */
 		public function selectRange(startIndex:int, endIndex:int):void
 		{
 			if(this._stageTextIsComplete && this.stageText)
@@ -1061,6 +1074,7 @@ package feathers.controls.text
 		 */
 		protected function stageText_keyDownHandler(event:KeyboardEvent):void
 		{
+			trace("key down");
 			if(event.keyCode == Keyboard.ENTER)
 			{
 				this.dispatchEventWith(FeathersEventType.ENTER);
