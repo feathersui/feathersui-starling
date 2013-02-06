@@ -14,6 +14,7 @@ package feathers.controls.text
 	import flash.display.BitmapData;
 	import flash.display3D.textures.Texture;
 	import flash.events.FocusEvent;
+	import flash.events.KeyboardEvent;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -21,6 +22,7 @@ package feathers.controls.text
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFieldType;
 	import flash.text.TextFormat;
+	import flash.ui.Keyboard;
 
 	import starling.core.RenderSupport;
 	import starling.core.Starling;
@@ -488,6 +490,19 @@ package feathers.controls.text
 		/**
 		 * @inheritDoc
 		 */
+		public function clearFocus():void
+		{
+			if(!this._textFieldHasFocus)
+			{
+				return;
+			}
+			Starling.current.nativeStage.focus = Starling.current.nativeStage;
+			this.dispatchEventWith(FeathersEventType.FOCUS_OUT);
+		}
+
+		/**
+		 * @inheritDoc
+		 */
 		public function selectRange(startIndex:int, endIndex:int):void
 		{
 			if(this.textField)
@@ -513,6 +528,7 @@ package feathers.controls.text
 			this.textField.addEventListener(flash.events.Event.CHANGE, textField_changeHandler);
 			this.textField.addEventListener(FocusEvent.FOCUS_IN, textField_focusInHandler);
 			this.textField.addEventListener(FocusEvent.FOCUS_OUT, textField_focusOutHandler);
+			this.textField.addEventListener(flash.events.KeyboardEvent.KEY_DOWN, textField_keyDownHandler);
 		}
 
 		/**
@@ -775,6 +791,17 @@ package feathers.controls.text
 			this.invalidate(INVALIDATION_FLAG_DATA);
 			this.invalidate(INVALIDATION_FLAG_SKIN);
 			this.dispatchEventWith(FeathersEventType.FOCUS_OUT);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function textField_keyDownHandler(event:flash.events.KeyboardEvent):void
+		{
+			if(event.keyCode == Keyboard.TAB)
+			{
+				event.preventDefault();
+			}
 		}
 	}
 }
