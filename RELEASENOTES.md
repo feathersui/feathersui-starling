@@ -2,6 +2,24 @@
 
 Noteworthy changes in official releases of [Feathers](http://feathersui.com/).
 
+## 1.0.1
+
+This release includes a number of bug fixes.
+
+* Scroller: FeathersEventType.SCROLL_COMPLETE always dispatched after last Event.SCROLL.
+* ScrollBar, SimpleScrollBar: thumb position properly accounts for padding.
+* Scroller: mouse wheel detection properly accounts for contentScaleFactor.
+* ScreenNavigator: calling clearScreen() during a transition no longer causes a stack overflow.
+* ScrollBar, SimpleScrollBar: can drag to minimum and maximum if they aren't a multiple of the step.
+* Header: Fix for runtime error when rightItems aren't IFeathersDisplayObjects
+* TextInput: better selection/cursor recovery when changing text programmatically.
+* TextInput: Moved fontSize contentScaleFactor multiplication into StageTextTextEditor.
+* FeathersControl: requires isInitialized to be true before it can validate.
+* GroupedList: added missing documentation for setSelectedLocation().
+* ImageLoader: does a better job keeping aspect ratio when only one dimension is explicit.
+* ImageLoader: properly scales content when dimensions are explicit.
+* ImageLoader: no runtime errors if content loads after dispose.
+
 ## 1.0.0
 
 No major API changes since 1.0.0 BETA. Mostly bug fixes and minor improvements.
