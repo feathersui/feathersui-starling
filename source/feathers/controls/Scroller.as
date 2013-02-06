@@ -2096,6 +2096,7 @@ package feathers.controls
 			{
 				this.hideHorizontalScrollBar();
 				this.hideVerticalScrollBar();
+				this.validate();
 				this.dispatchEventWith(FeathersEventType.SCROLL_COMPLETE);
 			}
 			else
@@ -2124,6 +2125,7 @@ package feathers.controls
 			{
 				this.hideHorizontalScrollBar();
 				this.hideVerticalScrollBar();
+				this.validate();
 				this.dispatchEventWith(FeathersEventType.SCROLL_COMPLETE);
 			}
 			else
