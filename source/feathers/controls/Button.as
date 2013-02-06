@@ -1933,24 +1933,12 @@ package feathers.controls
 			{
 				return false;
 			}
-			if(this.currentSkin is IFeathersControl)
-			{
-				IFeathersControl(this.currentSkin).validate();
-			}
-			if(this.currentSkin && isNaN(this._originalSkinWidth))
-			{
-				this._originalSkinWidth = this.currentSkin.width;
-			}
-			if(this.currentSkin && isNaN(this._originalSkinHeight))
-			{
-				this._originalSkinHeight = this.currentSkin.height;
-			}
+			this.refreshMaxLabelWidth(true);
+			this.labelTextRenderer.measureText(HELPER_POINT);
 			if(this.currentIcon is IFeathersControl)
 			{
 				IFeathersControl(this.currentIcon).validate();
 			}
-			this.refreshMaxLabelWidth(true);
-			this.labelTextRenderer.measureText(HELPER_POINT);
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
 			{
@@ -2073,6 +2061,15 @@ package feathers.controls
 				{
 					this.addChildAt(this.currentSkin, 0);
 				}
+			}
+			if(this.currentSkin && (isNaN(this._originalSkinWidth) || isNaN(this._originalSkinHeight)))
+			{
+				if(this.currentSkin is IFeathersControl)
+				{
+					IFeathersControl(this.currentSkin).validate();
+				}
+				this._originalSkinWidth = this.currentSkin.width;
+				this._originalSkinHeight = this.currentSkin.height;
 			}
 		}
 		
