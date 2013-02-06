@@ -118,6 +118,20 @@ package feathers.controls
 		public static const TRACK_LAYOUT_MODE_MIN_MAX:String = "minMax";
 
 		/**
+		 * The slider's track dimensions fill the full width and height of the
+		 * slider.
+		 */
+		public static const TRACK_SCALE_MODE_EXACT_FIT:String = "exactFit";
+
+		/**
+		 * If the slider's direction is horizontal, the width of the track will
+		 * fill the full width of the slider, and if the slider's direction is
+		 * vertical, the height of the track will fill the full height of the
+		 * slider. The other edge will not be scaled.
+		 */
+		public static const TRACK_SCALE_MODE_DIRECTIONAL:String = "directional";
+
+		/**
 		 * The default value added to the <code>nameList</code> of the minimum
 		 * track.
 		 */
@@ -522,6 +536,40 @@ package feathers.controls
 				return;
 			}
 			this._trackLayoutMode = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _trackScaleMode:String = TRACK_SCALE_MODE_DIRECTIONAL;
+
+		[Inspectable(type="String",enumeration="exactFit,directional")]
+		/**
+		 * Determines how the minimum and maximum track skins are positioned and
+		 * sized.
+		 *
+		 * @default TRACK_SCALE_MODE_DIRECTIONAL
+		 *
+		 * @see #TRACK_SCALE_MODE_DIRECTIONAL
+		 * @see #TRACK_SCALE_MODE_EXACT_FIT
+		 * @see #trackLayoutMode
+		 */
+		public function get trackScaleMode():String
+		{
+			return this._trackScaleMode;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set trackScaleMode(value:String):void
+		{
+			if(this._trackScaleMode == value)
+			{
+				return;
+			}
+			this._trackScaleMode = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -1032,7 +1080,7 @@ package feathers.controls
 			if(thumbFactoryInvalid || minimumTrackFactoryInvalid || maximumTrackFactoryInvalid ||
 				dataInvalid || stylesInvalid || sizeInvalid)
 			{
-				this.layout();
+				this.layoutChildren();
 			}
 		}
 
@@ -1090,6 +1138,7 @@ package feathers.controls
 						newWidth = this.minimumTrackOriginalWidth;
 					}
 				}
+				newWidth = Math.max(newWidth, this.thumb.width);
 			}
 			if(needsHeight)
 			{
@@ -1115,6 +1164,7 @@ package feathers.controls
 						newHeight = this.minimumTrackOriginalHeight;
 					}
 				}
+				newHeight = Math.max(newHeight, this.thumb.height);
 			}
 			return this.setSizeInternal(newWidth, newHeight, false);
 		}
@@ -1235,7 +1285,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function layout():void
+		protected function layoutChildren():void
 		{
 			this.layoutThumb();
 
@@ -1278,27 +1328,51 @@ package feathers.controls
 		{
 			if(this._direction == DIRECTION_VERTICAL)
 			{
-				this.maximumTrack.x = 0;
 				this.maximumTrack.y = 0;
-				this.maximumTrack.width = this.actualWidth;
 				this.maximumTrack.height = this.thumb.y + this.thumb.height / 2;
-
-				this.minimumTrack.x = 0;
 				this.minimumTrack.y = this.maximumTrack.height;
-				this.minimumTrack.width = this.actualWidth;
 				this.minimumTrack.height = this.actualHeight - this.minimumTrack.y;
+
+				if(this._trackScaleMode == TRACK_SCALE_MODE_DIRECTIONAL)
+				{
+					this.maximumTrack.width = NaN;
+					this.maximumTrack.validate();
+					this.maximumTrack.x = (this.actualWidth - this.maximumTrack.width) / 2;
+					this.minimumTrack.width = NaN;
+					this.minimumTrack.validate();
+					this.minimumTrack.x = (this.actualWidth - this.minimumTrack.width) / 2;
+				}
+				else //exact fit
+				{
+					this.maximumTrack.x = 0;
+					this.maximumTrack.width = this.actualWidth;
+					this.minimumTrack.x = 0;
+					this.minimumTrack.width = this.actualWidth;
+				}
 			}
 			else //horizontal
 			{
 				this.minimumTrack.x = 0;
-				this.minimumTrack.y = 0;
 				this.minimumTrack.width = this.thumb.x + this.thumb.width / 2;
-				this.minimumTrack.height = this.actualHeight;
-
 				this.maximumTrack.x = this.minimumTrack.width;
-				this.maximumTrack.y = 0;
 				this.maximumTrack.width = this.actualWidth - this.maximumTrack.x;
-				this.maximumTrack.height = this.actualHeight;
+
+				if(this._trackScaleMode == TRACK_SCALE_MODE_DIRECTIONAL)
+				{
+					this.minimumTrack.height = NaN;
+					this.minimumTrack.validate();
+					this.minimumTrack.y = (this.actualHeight - this.minimumTrack.height) / 2;
+					this.maximumTrack.height = NaN;
+					this.maximumTrack.validate();
+					this.maximumTrack.y = (this.actualHeight - this.maximumTrack.height) / 2;
+				}
+				else //exact fit
+				{
+					this.minimumTrack.y = 0;
+					this.minimumTrack.height = this.actualHeight;
+					this.maximumTrack.y = 0;
+					this.maximumTrack.height = this.actualHeight;
+				}
 			}
 		}
 
@@ -1307,10 +1381,32 @@ package feathers.controls
 		 */
 		protected function layoutTrackWithSingle():void
 		{
-			this.minimumTrack.x = 0;
-			this.minimumTrack.y = 0;
-			this.minimumTrack.width = this.actualWidth;
-			this.minimumTrack.height = this.actualHeight;
+			if(this._trackScaleMode == TRACK_SCALE_MODE_DIRECTIONAL)
+			{
+				if(this._direction == DIRECTION_VERTICAL)
+				{
+					this.minimumTrack.y = 0;
+					this.minimumTrack.width = NaN;
+					this.minimumTrack.height = this.actualHeight;
+					this.minimumTrack.validate();
+					this.minimumTrack.x = (this.actualWidth - this.minimumTrack.width) / 2;
+				}
+				else //horizontal
+				{
+					this.minimumTrack.x = 0;
+					this.minimumTrack.width = this.actualWidth;
+					this.minimumTrack.height = NaN;
+					this.minimumTrack.validate();
+					this.minimumTrack.y = (this.actualHeight - this.minimumTrack.height) / 2;
+				}
+			}
+			else //exact fit
+			{
+				this.minimumTrack.x = 0;
+				this.minimumTrack.y = 0;
+				this.minimumTrack.width = this.actualWidth;
+				this.minimumTrack.height = this.actualHeight;
+			}
 		}
 
 		/**
