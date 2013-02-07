@@ -857,6 +857,10 @@ package feathers.controls
 		 */
 		protected function textInput_focusInHandler(event:Event):void
 		{
+			if(!this._focusManager)
+			{
+				return;
+			}
 			this.textEditor.setFocus();
 		}
 
@@ -865,6 +869,10 @@ package feathers.controls
 		 */
 		protected function textInput_focusOutHandler(event:Event):void
 		{
+			if(!this._focusManager)
+			{
+				return;
+			}
 			this.textEditor.clearFocus();
 		}
 
