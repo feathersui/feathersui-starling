@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:0e67e12879f5401c535142ba1bc1b679$ -->
+<TextureAtlas imagePath="atlas.png">
+    <SubTexture name="arial20_0" x="3" y="3" width="254" height="50" frameX="0" frameY="0" frameWidth="256" frameHeight="96"/>
+    <SubTexture name="bebo" x="251" y="253" width="120" height="121"/>
+    <SubTexture name="blogger" x="127" y="182" width="120" height="121"/>
+    <SubTexture name="delicious" x="127" y="803" width="120" height="120"/>
+    <SubTexture name="deviantart" x="3" y="182" width="120" height="121"/>
+    <SubTexture name="digg" x="251" y="750" width="120" height="120"/>
+    <SubTexture name="facebook" x="3" y="679" width="120" height="120"/>
+    <SubTexture name="flickr" x="375" y="128" width="120" height="121"/>
+    <SubTexture name="friendfeed" x="127" y="679" width="120" height="120"/>
+    <SubTexture name="google" x="3" y="873" width="120" height="120"/>
+    <SubTexture name="linkedin" x="251" y="128" width="120" height="121"/>
+    <SubTexture name="livejournal" x="375" y="749" width="120" height="120"/>
+    <SubTexture name="myspace" x="251" y="626" width="120" height="120"/>
+    <SubTexture name="newsvine" x="127" y="555" width="120" height="120"/>
+    <SubTexture name="normal-page-symbol" x="19" y="997" width="12" height="12"/>
+    <SubTexture name="orkut" x="3" y="555" width="120" height="120"/>
+    <SubTexture name="picasa" x="127" y="57" width="120" height="121"/>
+    <SubTexture name="posterous" x="375" y="625" width="120" height="120"/>
+    <SubTexture name="reddit" x="251" y="502" width="120" height="120"/>
+    <SubTexture name="selected-page-symbol" x="3" y="997" width="12" height="12"/>
+    <SubTexture name="slashdot" x="127" y="431" width="120" height="120"/>
+    <SubTexture name="stumbleupon" x="3" y="431" width="120" height="120"/>
+    <SubTexture name="technorati" x="375" y="501" width="120" height="120"/>
+    <SubTexture name="tumblr" x="3" y="57" width="120" height="121"/>
+    <SubTexture name="twitter" x="251" y="378" width="120" height="120"/>
+    <SubTexture name="viddler" x="385" y="3" width="120" height="121"/>
+    <SubTexture name="vimeo" x="261" y="3" width="120" height="121"/>
+    <SubTexture name="wordpress" x="127" y="307" width="120" height="120"/>
+    <SubTexture name="yahoo" x="3" y="307" width="120" height="120"/>
+    <SubTexture name="yelp" x="375" y="377" width="120" height="120"/>
+    <SubTexture name="youtube" x="375" y="253" width="120" height="120"/>
+</TextureAtlas>

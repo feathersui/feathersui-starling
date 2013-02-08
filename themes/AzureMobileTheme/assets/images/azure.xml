@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:7f7dcf581cfe77cf098736e473747295$ -->
+<TextureAtlas imagePath="azure.png">
+    <SubTexture name="button-disabled-skin" x="217" y="325" width="32" height="66"/>
+    <SubTexture name="button-down-skin" x="203" y="395" width="32" height="66"/>
+    <SubTexture name="button-up-skin" x="181" y="325" width="32" height="66"/>
+    <SubTexture name="callout-arrow-bottom-skin" x="27" y="487" width="30" height="17"/>
+    <SubTexture name="callout-arrow-left-skin" x="296" y="415" width="16" height="30"/>
+    <SubTexture name="callout-arrow-right-skin" x="275" y="415" width="17" height="30"/>
+    <SubTexture name="callout-arrow-top-skin" x="61" y="487" width="29" height="16"/>
+    <SubTexture name="callout-background-skin" x="167" y="395" width="32" height="66"/>
+    <SubTexture name="check-disabled-icon" x="275" y="370" width="41" height="41" frameX="-4" frameY="-4" frameWidth="49" frameHeight="49"/>
+    <SubTexture name="check-down-icon" x="253" y="325" width="41" height="41" frameX="-4" frameY="-4" frameWidth="49" frameHeight="49"/>
+    <SubTexture name="check-selected-disabled-icon" x="208" y="465" width="45" height="41" frameX="-4" frameY="-4" frameWidth="49" frameHeight="49"/>
+    <SubTexture name="check-selected-down-icon" x="159" y="465" width="45" height="41" frameX="-4" frameY="-4" frameWidth="49" frameHeight="49"/>
+    <SubTexture name="check-selected-up-icon" x="110" y="465" width="45" height="41" frameX="-4" frameY="-4" frameWidth="49" frameHeight="49"/>
+    <SubTexture name="check-up-icon" x="257" y="449" width="41" height="41" frameX="-4" frameY="-4" frameWidth="49" frameHeight="49"/>
+    <SubTexture name="grouped-list-header-background-skin" x="27" y="325" width="8" height="88"/>
+    <SubTexture name="hslider-maximum-track-disabled-skin" x="298" y="104" width="24" height="32" frameX="0" frameY="-17" frameWidth="24" frameHeight="66"/>
+    <SubTexture name="hslider-maximum-track-down-skin" x="346" y="104" width="24" height="32" frameX="0" frameY="-17" frameWidth="24" frameHeight="66"/>
+    <SubTexture name="hslider-maximum-track-up-skin" x="382" y="76" width="24" height="32" frameX="0" frameY="-17" frameWidth="24" frameHeight="66"/>
+    <SubTexture name="hslider-minimum-track-disabled-skin" x="261" y="87" width="24" height="32" frameX="0" frameY="-17" frameWidth="24" frameHeight="66"/>
+    <SubTexture name="hslider-minimum-track-down-skin" x="478" y="39" width="24" height="32" frameX="0" frameY="-17" frameWidth="24" frameHeight="66"/>
+    <SubTexture name="hslider-minimum-track-up-skin" x="478" y="3" width="24" height="32" frameX="0" frameY="-17" frameWidth="24" frameHeight="66"/>
+    <SubTexture name="inset-disabled-skin" x="145" y="325" width="32" height="66"/>
+    <SubTexture name="inset-skin" x="109" y="325" width="32" height="66"/>
+    <SubTexture name="lato30_0" x="3" y="3" width="254" height="318" frameX="0" frameY="0" frameWidth="256" frameHeight="320"/>
+    <SubTexture name="list-accessory-drill-down-icon" x="316" y="415" width="19" height="27"/>
+    <SubTexture name="list-item-down-skin" x="15" y="417" width="8" height="88"/>
+    <SubTexture name="list-item-up-skin" x="15" y="325" width="8" height="88"/>
+    <SubTexture name="page-indicator-normal-skin" x="54" y="395" width="11" height="11"/>
+    <SubTexture name="page-indicator-selected-skin" x="39" y="395" width="11" height="11"/>
+    <SubTexture name="picker-icon" x="239" y="395" width="32" height="50"/>
+    <SubTexture name="progress-bar-background-disabled-skin" x="426" y="48" width="36" height="24"/>
+    <SubTexture name="progress-bar-background-skin" x="386" y="48" width="36" height="24"/>
+    <SubTexture name="progress-bar-fill-disabled-skin" x="298" y="48" width="36" height="24"/>
+    <SubTexture name="progress-bar-fill-skin" x="346" y="48" width="36" height="24"/>
+    <SubTexture name="radio-disabled-icon" x="434" y="3" width="40" height="41"/>
+    <SubTexture name="radio-down-icon" x="390" y="3" width="40" height="41"/>
+    <SubTexture name="radio-selected-disabled-icon" x="298" y="3" width="40" height="41"/>
+    <SubTexture name="radio-selected-up-icon" x="346" y="3" width="40" height="41"/>
+    <SubTexture name="radio-up-icon" x="302" y="449" width="40" height="41"/>
+    <SubTexture name="simple-scroll-bar-thumb-skin" x="94" y="487" width="12" height="12"/>
+    <SubTexture name="slider-thumb-disabled-skin" x="97" y="395" width="66" height="66"/>
+    <SubTexture name="slider-thumb-down-skin" x="39" y="325" width="66" height="66"/>
+    <SubTexture name="slider-thumb-up-skin" x="27" y="417" width="66" height="66"/>
+    <SubTexture name="tab-selected-skin" x="3" y="417" width="8" height="88"/>
+    <SubTexture name="toolbar-background-skin" x="3" y="325" width="8" height="88"/>
+    <SubTexture name="vslider-maximum-track-disabled-skin" x="298" y="76" width="32" height="24" frameX="-17" frameY="0" frameWidth="66" frameHeight="24"/>
+    <SubTexture name="vslider-maximum-track-down-skin" x="346" y="76" width="32" height="24" frameX="-17" frameY="0" frameWidth="66" frameHeight="24"/>
+    <SubTexture name="vslider-maximum-track-up-skin" x="466" y="75" width="32" height="24" frameX="-17" frameY="0" frameWidth="66" frameHeight="24"/>
+    <SubTexture name="vslider-minimum-track-disabled-skin" x="261" y="59" width="32" height="24" frameX="-17" frameY="0" frameWidth="66" frameHeight="24"/>
+    <SubTexture name="vslider-minimum-track-down-skin" x="261" y="31" width="32" height="24" frameX="-17" frameY="0" frameWidth="66" frameHeight="24"/>
+    <SubTexture name="vslider-minimum-track-up-skin" x="261" y="3" width="32" height="24" frameX="-17" frameY="0" frameWidth="66" frameHeight="24"/>
+</TextureAtlas>
