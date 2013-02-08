@@ -14,6 +14,7 @@ signing/
 .settings/
 bin-debug/
 bin-release/
+html-template/
 .metadata/
 *.iml
 .idea/

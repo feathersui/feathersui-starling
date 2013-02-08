@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="feathers-examples" default="web" basedir=".">
+
+	<target name="web" description="Builds web SWFs from all examples.">
+		<ant dir="${basedir}/ComponentsExplorer" target="build-web" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/DisplayObjectExplorer" target="build-web" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/Gallery" target="build-web" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/HelloWorld" target="build-web" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/LayoutExplorer" target="build-web" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/TileList" target="build-web" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/YouTubeFeeds" target="build-web" inheritAll="false" useNativeBasedir="true"/>
+	</target>
+	<target name="android" description="Builds Android APKs from all examples.">
+		<ant dir="${basedir}/ComponentsExplorer" target="build-android" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/DisplayObjectExplorer" target="build-android" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/Gallery" target="build-android" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/HelloWorld" target="build-android" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/LayoutExplorer" target="build-android" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/TileList" target="build-android" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/YouTubeFeeds" target="build-android" inheritAll="false" useNativeBasedir="true"/>
+	</target>
+	<target name="ios" description="Builds iOS IPAs from all examples.">
+		<ant dir="${basedir}/ComponentsExplorer" target="build-ios" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/DisplayObjectExplorer" target="build-ios" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/Gallery" target="build-ios" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/HelloWorld" target="build-ios" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/LayoutExplorer" target="build-ios" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/TileList" target="build-ios" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/YouTubeFeeds" target="build-ios" inheritAll="false" useNativeBasedir="true"/>
+	</target>
+</project>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:4a56bdc6f58ccb61b81cd8f6e2f2cc67$ -->
+<TextureAtlas imagePath="minimal.png">
+    <SubTexture name="button-disabled-skin" x="332" y="45" width="16" height="16"/>
+    <SubTexture name="button-down-skin" x="332" y="25" width="16" height="16"/>
+    <SubTexture name="button-selected-skin" x="312" y="45" width="16" height="16"/>
+    <SubTexture name="button-up-skin" x="312" y="25" width="16" height="16"/>
+    <SubTexture name="callout-arrow-bottom" x="240" y="45" width="28" height="16"/>
+    <SubTexture name="callout-arrow-left" x="215" y="3" width="16" height="28"/>
+    <SubTexture name="callout-arrow-right" x="195" y="3" width="16" height="28"/>
+    <SubTexture name="callout-arrow-top" x="240" y="25" width="28" height="16"/>
+    <SubTexture name="callout-background-skin" x="332" y="45" width="16" height="16"/>
+    <SubTexture name="check-selected-icon" x="195" y="35" width="24" height="24"/>
+    <SubTexture name="drop-down-arrow" x="3" y="53" width="12" height="7"/>
+    <SubTexture name="header-skin" x="495" y="3" width="4" height="16"/>
+    <SubTexture name="inset-background-disabled-skin" x="292" y="45" width="16" height="16"/>
+    <SubTexture name="inset-background-skin" x="292" y="25" width="16" height="16"/>
+    <SubTexture name="list-accessory-drill-down-icon" x="223" y="35" width="13" height="22"/>
+    <SubTexture name="list-item-down" x="171" y="47" width="4" height="11"/>
+    <SubTexture name="list-item-selected" x="163" y="47" width="4" height="11"/>
+    <SubTexture name="list-item-up" x="155" y="47" width="4" height="11"/>
+    <SubTexture name="page-indicator-normal-skin" x="139" y="47" width="12" height="12"/>
+    <SubTexture name="page-indicator-selected-skin" x="123" y="47" width="12" height="12"/>
+    <SubTexture name="pf_ronda_seven_0" x="235" y="3" width="256" height="18" frameX="0" frameY="0" frameWidth="256" frameHeight="32"/>
+    <SubTexture name="radio-icon" x="151" y="3" width="40" height="40"/>
+    <SubTexture name="radio-selected-icon" x="107" y="3" width="40" height="40"/>
+    <SubTexture name="scrollbar-thumb-skin" x="19" y="53" width="4" height="4"/>
+    <SubTexture name="tab-down-skin" x="55" y="3" width="48" height="46"/>
+    <SubTexture name="tab-selected-skin" x="3" y="3" width="48" height="46"/>
+    <SubTexture name="tab-up-skin" x="272" y="45" width="16" height="16"/>
+    <SubTexture name="thumb-skin" x="107" y="47" width="12" height="12" frameX="-4" frameY="-4" frameWidth="16" frameHeight="16"/>
+    <SubTexture name="toolbar-button-disabled-skin" x="332" y="45" width="16" height="16"/>
+    <SubTexture name="toolbar-button-down-skin" x="332" y="25" width="16" height="16"/>
+    <SubTexture name="toolbar-button-selected-skin" x="312" y="45" width="16" height="16"/>
+    <SubTexture name="toolbar-button-up-skin" x="272" y="25" width="16" height="16"/>
+</TextureAtlas>
