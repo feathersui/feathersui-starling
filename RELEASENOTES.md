@@ -54,6 +54,7 @@ This release includes a number of bug fixes.
 * TextInput: better selection/cursor recovery when changing text programmatically.
 * TextInput: Moved fontSize contentScaleFactor multiplication into StageTextTextEditor.
 * FeathersControl: requires isInitialized to be true before it can validate.
+* FeathersControl: clipRect properly accounts for scale.
 * GroupedList: added missing documentation for setSelectedLocation().
 * ImageLoader: does a better job keeping aspect ratio when only one dimension is explicit.
 * ImageLoader: properly scales content when dimensions are explicit.
