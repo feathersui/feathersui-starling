@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="layout-explorer" default="build" basedir=".">
+	
+	<!-- build.local.properties and sdk.local.proprties are optional files that
+		can be used to override the default properties. -->
+	<property file="./sdk.local.properties"/>
+	<property file="./sdk.properties"/>
+	<property file="./build.local.properties"/>
+	<property file="./build.properties"/>
+	
+	<fail unless="ios.provision.path"/>
+	<fail unless="ios.certificate.path"/>
+	<fail unless="ios.certificate.password"/>
+	
+	<fail unless="android.certificate.path"/>
+	<fail unless="android.certificate.password"/>
+
+	<target name="build" depends="build-web,build-android,build-ios"/>
+
+	<target name="prepare">
+		<delete dir="${output.path}"/>
+	</target>
+
+	<target name="build-web" depends="prepare">
+		<echo message="Building LayoutExplorerWeb.swf"/>
+		<java jar="${mxmlc}" dir="${basedir}" fork="true" failonerror="true">
+			<arg line="+flexlib='${flexframework.root}'"/>
+			<arg line="--swf-version=${swf.version}"/>
+			<arg line="--target-player=${target.player}"/>
+			<arg line="--static-link-runtime-shared-libraries=true"/>
+			<arg line="--frame two feathers.examples.layoutExplorer.Main"/>
+			<arg line="--source-path+='source'"/>
+			<arg line="--source-path+='${starling.root}'"/>
+			<arg line="--source-path+='${feathers.root}'"/>
+			<arg line="--source-path+='${theme.root}'"/>
+			<arg line="source/LayoutExplorerWeb.as"/>
+			<arg line="--output ${output.path}/LayoutExplorerWeb.swf"/>
+		</java>
+	</target>
+	<target name="build-air-swf" depends="prepare">
+		<echo message="Building LayoutExplorer.swf"/>
+		<java jar="${mxmlc}" dir="${basedir}" fork="true" failonerror="true">
+			<arg line="+flexlib='${flexframework.root}'"/>
+			<arg line="+configname=air"/>
+			<arg line="--swf-version=${swf.version}"/>
+			<arg line="--target-player=${target.player}"/>
+			<arg line="--source-path+='source'"/>
+			<arg line="--source-path+='${starling.root}'"/>
+			<arg line="--source-path+='${feathers.root}'"/>
+			<arg line="--source-path+='${theme.root}'"/>
+			<arg line="source/LayoutExplorer.as"/>
+			<arg line="--output ${output.path}/LayoutExplorer.swf"/>
+		</java>
+	</target>
+	<target name="build-ios" depends="build-air-swf">
+		<echo message="Packaging LayoutExplorer.ipa"/>
+		<java jar="${adt}" dir="${basedir}" fork="true" 
+			failonerror="true" maxmemory="512m">
+			<arg line="-package"/>
+			<arg line="-target ipa-app-store"/>
+			<arg line="-provisioning-profile ${ios.provision.path}"/>
+			<arg line="-keystore ${ios.certificate.path}"/>
+			<arg line="-storetype pkcs12"/>
+			<arg line="-storepass ${ios.certificate.password}"/>
+			<arg line="${output.path}/LayoutExplorer.ipa"/>
+			<arg line="source/LayoutExplorer-app.xml"/>
+			<arg line="-C ${icon.path}"/>
+			<arg line="icon29.png icon48.png icon50.png icon57.png icon58.png icon72.png icon100.png icon114.png icon128.png icon144.png"/>
+			<arg line="-C ${output.path}"/>
+			<arg line="LayoutExplorer.swf"/>
+		</java>
+	</target>
+	<target name="build-android" depends="build-air-swf">
+		<echo message="Packaging LayoutExplorer.apk"/>
+		<java jar="${adt}" dir="${basedir}" fork="true" 
+			failonerror="true" maxmemory="512m">
+			<arg line="-package"/>
+			<arg line="-target apk-captive-runtime"/>
+			<arg line="-storetype pkcs12"/>
+			<arg line="-keystore ${android.certificate.path}"/>
+			<arg line="-storepass ${android.certificate.password}"/>
+			<arg line="${output.path}/LayoutExplorer.apk"/>
+			<arg line="source/LayoutExplorer-app.xml"/>
+			<arg line="-C ${icon.path}"/>
+			<arg line="icon29.png icon48.png icon50.png icon57.png icon58.png icon72.png icon100.png icon114.png icon128.png icon144.png"/>
+			<arg line="-C ${output.path}"/>
+			<arg line="LayoutExplorer.swf"/>
+		</java>
+	</target>
+</project>
