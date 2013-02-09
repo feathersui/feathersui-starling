@@ -78,12 +78,16 @@ package feathers.controls
 		/**
 		 * The ON and OFF labels will be aligned to the middle vertically,
 		 * based on the full character height of the font.
+		 *
+		 * @see #labelAlign
 		 */
 		public static const LABEL_ALIGN_MIDDLE:String = "middle";
 
 		/**
 		 * The ON and OFF labels will be aligned to the middle vertically,
 		 * based on only the baseline value of the font.
+		 *
+		 * @see #labelAlign
 		 */
 		public static const LABEL_ALIGN_BASELINE:String = "baseline";
 
@@ -92,6 +96,8 @@ package feathers.controls
 		 * full length of switch. In this layout mode, the on track is
 		 * displayed and fills the entire length of the toggle switch. The off
 		 * track will not exist.
+		 *
+		 * @see #trackLayoutMode
 		 */
 		public static const TRACK_LAYOUT_MODE_SINGLE:String = "single";
 
@@ -107,6 +113,7 @@ package feathers.controls
 		 * <code>Scale3Image</code> or a <code>TiledImage</code> that is
 		 * designed to be resized dynamically.</p>
 		 *
+		 * @see #trackLayoutMode
 		 * @see feathers.display.Scale9Image
 		 * @see feathers.display.Scale3Image
 		 * @see feathers.display.TiledImage
@@ -115,26 +122,36 @@ package feathers.controls
 
 		/**
 		 * The default value added to the <code>nameList</code> of the off label.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const DEFAULT_CHILD_NAME_OFF_LABEL:String = "feathers-toggle-switch-off-label";
 
 		/**
 		 * The default value added to the <code>nameList</code> of the on label.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const DEFAULT_CHILD_NAME_ON_LABEL:String = "feathers-toggle-switch-on-label";
 
 		/**
 		 * The default value added to the <code>nameList</code> of the off track.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const DEFAULT_CHILD_NAME_OFF_TRACK:String = "feathers-toggle-switch-off-track";
 
 		/**
 		 * The default value added to the <code>nameList</code> of the on track.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const DEFAULT_CHILD_NAME_ON_TRACK:String = "feathers-toggle-switch-on-track";
 
 		/**
 		 * The default value added to the <code>nameList</code> of the thumb.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const DEFAULT_CHILD_NAME_THUMB:String = "feathers-toggle-switch-thumb";
 
@@ -176,26 +193,36 @@ package feathers.controls
 
 		/**
 		 * The value added to the <code>nameList</code> of the off label.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var onLabelName:String = DEFAULT_CHILD_NAME_ON_LABEL;
 
 		/**
 		 * The value added to the <code>nameList</code> of the on label.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var offLabelName:String = DEFAULT_CHILD_NAME_OFF_LABEL;
 
 		/**
 		 * The value added to the <code>nameList</code> of the on track.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var onTrackName:String = DEFAULT_CHILD_NAME_ON_TRACK;
 
 		/**
 		 * The value added to the <code>nameList</code> of the off track.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var offTrackName:String = DEFAULT_CHILD_NAME_OFF_TRACK;
 
 		/**
 		 * The value added to the <code>nameList</code> of the thumb.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var thumbName:String = DEFAULT_CHILD_NAME_THUMB;
 

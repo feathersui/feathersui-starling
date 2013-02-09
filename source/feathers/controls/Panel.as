@@ -19,6 +19,8 @@ package feathers.controls
 	{
 		/**
 		 * The default value added to the <code>nameList</code> of the header.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const DEFAULT_CHILD_NAME_HEADER:String = "feathers-panel-header";
 
@@ -90,6 +92,8 @@ package feathers.controls
 
 		/**
 		 * The default value added to the <code>nameList</code> of the header.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var headerName:String = DEFAULT_CHILD_NAME_HEADER;
 

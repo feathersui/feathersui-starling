@@ -74,16 +74,22 @@ package feathers.controls
 
 		/**
 		 * The scroll bar's thumb may be dragged horizontally (on the x-axis).
+		 *
+		 * @see #direction
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
 
 		/**
 		 * The scroll bar's thumb may be dragged vertically (on the y-axis).
+		 *
+		 * @see #direction
 		 */
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
 		/**
 		 * The default value added to the <code>nameList</code> of the thumb.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const DEFAULT_CHILD_NAME_THUMB:String = "feathers-simple-scroll-bar-thumb";
 
@@ -105,6 +111,8 @@ package feathers.controls
 
 		/**
 		 * The value added to the <code>nameList</code> of the thumb.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var thumbName:String = DEFAULT_CHILD_NAME_THUMB;
 

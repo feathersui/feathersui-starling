@@ -43,6 +43,8 @@ package feathers.controls
 
 		/**
 		 * The title will appear in the center of the header.
+		 *
+		 * @see #titleAlign
 		 */
 		public static const TITLE_ALIGN_CENTER:String = "center";
 
@@ -50,6 +52,8 @@ package feathers.controls
 		 * The title will appear on the left of the header, if there is no other
 		 * content on that side. If there is content, the title will appear in
 		 * the center.
+		 *
+		 * @see #titleAlign
 		 */
 		public static const TITLE_ALIGN_PREFER_LEFT:String = "preferLeft";
 
@@ -57,33 +61,45 @@ package feathers.controls
 		 * The title will appear on the right of the header, if there is no
 		 * other content on that side. If there is content, the title will
 		 * appear in the center.
+		 *
+		 * @see #titleAlign
 		 */
 		public static const TITLE_ALIGN_PREFER_RIGHT:String = "preferRight";
 
 		/**
 		 * The items will be aligned to the top of the bounds.
+		 *
+		 * @see #verticalAlign
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
 
 		/**
 		 * The items will be aligned to the middle of the bounds.
+		 *
+		 * @see #verticalAlign
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
 
 		/**
 		 * The items will be aligned to the bottom of the bounds.
+		 *
+		 * @see #verticalAlign
 		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 
 		/**
 		 * The default value added to the <code>nameList</code> of the header's
 		 * items.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const DEFAULT_CHILD_NAME_ITEM:String = "feathers-header-item";
 
 		/**
 		 * The default value added to the <code>nameList</code> of the header's
 		 * title.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const DEFAULT_CHILD_NAME_TITLE:String = "feathers-header-title";
 
@@ -112,11 +128,15 @@ package feathers.controls
 
 		/**
 		 * The value added to the <code>nameList</code> of the header's title.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var titleName:String = DEFAULT_CHILD_NAME_TITLE;
 
 		/**
 		 * The value added to the <code>nameList</code> of the header's items.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var itemName:String = DEFAULT_CHILD_NAME_ITEM;
 

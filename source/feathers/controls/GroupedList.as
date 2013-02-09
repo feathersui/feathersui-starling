@@ -75,25 +75,33 @@ package feathers.controls
 
 		/**
 		 * An alternate name to use with GroupedList to allow a theme to give it
-		 * an inset style. If a theme does not provide a skin for this name, it
-		 * will fall back to its default style instead of leaving the list
-		 * unskinned.
+		 * an inset style. If a theme does not provide a skin for the inset
+		 * grouped list, the theme will automatically fall back to using the
+		 * default grouped list skin.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const ALTERNATE_NAME_INSET_GROUPED_LIST:String = "feathers-inset-grouped-list";
 
 		/**
 		 * The default name to use with header renderers.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const DEFAULT_CHILD_NAME_HEADER_RENDERER:String = "feathers-grouped-list-header-renderer";
 
 		/**
 		 * An alternate name to use with header renderers to give them an inset
 		 * style.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const ALTERNATE_CHILD_NAME_INSET_HEADER_RENDERER:String = "feathers-grouped-list-inset-header-renderer";
 
 		/**
 		 * The default name to use with footer renderers.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const DEFAULT_CHILD_NAME_FOOTER_RENDERER:String = "feathers-grouped-list-footer-renderer";
 
@@ -106,6 +114,8 @@ package feathers.controls
 		/**
 		 * An alternate name to use with item renderers to give them an inset
 		 * style.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const ALTERNATE_CHILD_NAME_INSET_ITEM_RENDERER:String = "feathers-grouped-list-inset-item-renderer";
 
@@ -113,6 +123,8 @@ package feathers.controls
 		 * An alternate name to use for item renderers to give them an inset
 		 * style. Typically meant to be used for the renderer of the first item
 		 * in a group.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const ALTERNATE_CHILD_NAME_INSET_FIRST_ITEM_RENDERER:String = "feathers-grouped-list-inset-first-item-renderer";
 
@@ -120,6 +132,8 @@ package feathers.controls
 		 * An alternate name to use for item renderers to give them an inset
 		 * style. Typically meant to be used for the renderer of the last item
 		 * in a group.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const ALTERNATE_CHILD_NAME_INSET_LAST_ITEM_RENDERER:String = "feathers-grouped-list-inset-last-item-renderer";
 
@@ -127,6 +141,8 @@ package feathers.controls
 		 * An alternate name to use for item renderers to give them an inset
 		 * style. Typically meant to be used for the renderer of an item in a
 		 * group that has no other items.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const ALTERNATE_CHILD_NAME_INSET_SINGLE_ITEM_RENDERER:String = "feathers-grouped-list-inset-single-item-renderer";
 

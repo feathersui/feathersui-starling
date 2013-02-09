@@ -83,11 +83,15 @@ package feathers.controls
 
 		/**
 		 * The slider's thumb may be dragged horizontally (on the x-axis).
+		 *
+		 * #direction
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
 		
 		/**
 		 * The slider's thumb may be dragged vertically (on the y-axis).
+		 *
+		 * #direction
 		 */
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
@@ -96,6 +100,8 @@ package feathers.controls
 		 * slider. In this layout mode, the "minimum" track is displayed and
 		 * fills the entire length of the slider. The maximum track will not
 		 * exist.
+		 *
+		 * #trackLayoutMode
 		 */
 		public static const TRACK_LAYOUT_MODE_SINGLE:String = "single";
 
@@ -111,6 +117,7 @@ package feathers.controls
 		 * <code>Scale3Image</code> or a <code>TiledImage</code> that is
 		 * designed to be resized dynamically.</p>
 		 *
+		 * #trackLayoutMode
 		 * @see feathers.display.Scale9Image
 		 * @see feathers.display.Scale3Image
 		 * @see feathers.display.TiledImage
@@ -120,6 +127,8 @@ package feathers.controls
 		/**
 		 * The slider's track dimensions fill the full width and height of the
 		 * slider.
+		 *
+		 * #trackScaleMode
 		 */
 		public static const TRACK_SCALE_MODE_EXACT_FIT:String = "exactFit";
 
@@ -128,23 +137,31 @@ package feathers.controls
 		 * fill the full width of the slider, and if the slider's direction is
 		 * vertical, the height of the track will fill the full height of the
 		 * slider. The other edge will not be scaled.
+		 *
+		 * #trackScaleMode
 		 */
 		public static const TRACK_SCALE_MODE_DIRECTIONAL:String = "directional";
 
 		/**
 		 * The default value added to the <code>nameList</code> of the minimum
 		 * track.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const DEFAULT_CHILD_NAME_MINIMUM_TRACK:String = "feathers-slider-minimum-track";
 
 		/**
 		 * The default value added to the <code>nameList</code> of the maximum
 		 * track.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const DEFAULT_CHILD_NAME_MAXIMUM_TRACK:String = "feathers-slider-maximum-track";
 
 		/**
 		 * The default value added to the <code>nameList</code> of the thumb.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const DEFAULT_CHILD_NAME_THUMB:String = "feathers-slider-thumb";
 
@@ -185,16 +202,22 @@ package feathers.controls
 
 		/**
 		 * The value added to the <code>nameList</code> of the minimum track.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var minimumTrackName:String = DEFAULT_CHILD_NAME_MINIMUM_TRACK;
 
 		/**
 		 * The value added to the <code>nameList</code> of the maximum track.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var maximumTrackName:String = DEFAULT_CHILD_NAME_MAXIMUM_TRACK;
 
 		/**
 		 * The value added to the <code>nameList</code> of the thumb.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var thumbName:String = DEFAULT_CHILD_NAME_THUMB;
 
