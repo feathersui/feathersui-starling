@@ -64,8 +64,50 @@ package feathers.controls
 
 		/**
 		 * The default value added to the <code>nameList</code> of the label.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const DEFAULT_CHILD_NAME_LABEL:String = "feathers-button-label";
+
+		/**
+		 * An alternate name to use with Button to allow a theme to give it
+		 * a more prominent, "call-to-action" style. If a theme does not provide
+		 * a skin for the call-to-action button, the theme will automatically
+		 * fall back to using the default button skin.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
+		 */
+		public static const ALTERNATE_NAME_CALL_TO_ACTION_BUTTON:String = "feathers-call-to-action-button";
+
+		/**
+		 * An alternate name to use with Button to allow a theme to give it
+		 * a less prominent, "quiet" style. If a theme does not provide
+		 * a skin for the quiet button, the theme will automatically fall back
+		 * to using the default button skin.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
+		 */
+		public static const ALTERNATE_NAME_QUIET_BUTTON:String = "feathers-quiet-button";
+
+		/**
+		 * An alternate name to use with Button to allow a theme to give it
+		 * a "back button" style, perhaps with an arrow pointing backward. If a
+		 * theme does not provide a skin for the back button, the theme will
+		 * automatically fall back to using the default button skin.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
+		 */
+		public static const ALTERNATE_NAME_BACK_BUTTON:String = "feathers-back-button";
+
+		/**
+		 * An alternate name to use with Button to allow a theme to give it
+		 * a "forward" button style, perhaps with an arrow pointing forward. If
+		 * a theme does not provide a skin for the forward button, the theme
+		 * will automatically fall back to using the default button skin.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
+		 */
+		public static const ALTERNATE_NAME_FORWARD_BUTTON:String = "feathers-forward-button";
 		
 		/**
 		 * @private
