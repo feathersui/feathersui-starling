@@ -60,16 +60,22 @@ package feathers.controls
 
 		/**
 		 * The tabs are displayed in order from left to right.
+		 *
+		 * @see #direction
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
 
 		/**
 		 * The tabs are displayed in order from top to bottom.
+		 *
+		 * @see #direction
 		 */
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
 		/**
 		 * The default value added to the <code>nameList</code> of the tabs.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const DEFAULT_CHILD_NAME_TAB:String = "feathers-tab-bar-tab";
 
@@ -90,16 +96,22 @@ package feathers.controls
 
 		/**
 		 * The value added to the <code>nameList</code> of the tabs.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var tabName:String = DEFAULT_CHILD_NAME_TAB;
 
 		/**
 		 * The value added to the <code>nameList</code> of the first tab.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var firstTabName:String = DEFAULT_CHILD_NAME_TAB;
 
 		/**
 		 * The value added to the <code>nameList</code> of the last tab.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var lastTabName:String = DEFAULT_CHILD_NAME_TAB;
 

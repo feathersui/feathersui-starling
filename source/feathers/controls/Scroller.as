@@ -103,6 +103,9 @@ package feathers.controls
 		 * than zero. If the scroll bar display mode is fixed, the scroll bar
 		 * will only be visible when the maximum scroll position is greater than
 		 * zero.
+		 *
+		 * @see feathers.controls.Scroller#horizontalScrollPolicy
+		 * @see feathers.controls.Scroller#verticalScrollPolicy
 		 */
 		public static const SCROLL_POLICY_AUTO:String = "auto";
 
@@ -111,39 +114,55 @@ package feathers.controls
 		 * elastic edges will always be active, even when the maximum scroll
 		 * position is zero. If the scroll bar display mode is fixed, the scroll
 		 * bar will always be visible.
+		 *
+		 * @see feathers.controls.Scroller#horizontalScrollPolicy
+		 * @see feathers.controls.Scroller#verticalScrollPolicy
 		 */
 		public static const SCROLL_POLICY_ON:String = "on";
 		
 		/**
 		 * The scroller does not scroll at all. If the scroll bar display mode
 		 * is fixed or float, the scroll bar will never be visible.
+		 *
+		 * @see feathers.controls.Scroller#horizontalScrollPolicy
+		 * @see feathers.controls.Scroller#verticalScrollPolicy
 		 */
 		public static const SCROLL_POLICY_OFF:String = "off";
 
 		/**
 		 * The scroll bars appear above the scroller's view port, and fade out
 		 * when not in use.
+		 *
+		 * @see feathers.controls.Scroller#scrollBarDisplayMode
 		 */
 		public static const SCROLL_BAR_DISPLAY_MODE_FLOAT:String = "float";
 
 		/**
 		 * The scroll bars are always visible and appear next to the scroller's
 		 * view port, making the view port smaller than the scroller.
+		 *
+		 * @see feathers.controls.Scroller#scrollBarDisplayMode
 		 */
 		public static const SCROLL_BAR_DISPLAY_MODE_FIXED:String = "fixed";
 
 		/**
 		 * The scroll bars are never visible.
+		 *
+		 * @see feathers.controls.Scroller#scrollBarDisplayMode
 		 */
 		public static const SCROLL_BAR_DISPLAY_MODE_NONE:String = "none";
 
 		/**
 		 * The user may touch anywhere on the scroller and drag to scroll.
+		 *
+		 * @see feathers.controls.Scroller#interactionMode
 		 */
 		public static const INTERACTION_MODE_TOUCH:String = "touch";
 
 		/**
 		 * The user may interact with the scroll bars to scroll.
+		 *
+		 * @see feathers.controls.Scroller#interactionMode
 		 */
 		public static const INTERACTION_MODE_MOUSE:String = "mouse";
 		
@@ -201,12 +220,16 @@ package feathers.controls
 		/**
 		 * The default value added to the <code>nameList</code> of the
 		 * horizontal scroll bar.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR:String = "feathers-scroller-horizontal-scroll-bar";
 
 		/**
 		 * The default value added to the <code>nameList</code> of the vertical
 		 * scroll bar.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR:String = "feathers-scroller-vertical-scroll-bar";
 
@@ -247,12 +270,16 @@ package feathers.controls
 		/**
 		 * The value added to the <code>nameList</code> of the horizontal scroll
 		 * bar.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var horizontalScrollBarName:String = DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR;
 
 		/**
 		 * The value added to the <code>nameList</code> of the vertical scroll
 		 * bar.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var verticalScrollBarName:String = DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR;
 

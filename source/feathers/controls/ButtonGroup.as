@@ -56,16 +56,22 @@ package feathers.controls
 
 		/**
 		 * The buttons are displayed in order from left to right.
+		 *
+		 * @see #direction
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
 
 		/**
 		 * The buttons are displayed in order from top to bottom.
+		 *
+		 * @see #direction
 		 */
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
 		/**
 		 * The default value added to the <code>nameList</code> of the buttons.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const DEFAULT_CHILD_NAME_BUTTON:String = "feathers-button-group-button";
 
@@ -86,16 +92,22 @@ package feathers.controls
 
 		/**
 		 * The value added to the <code>nameList</code> of the buttons.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var buttonName:String = DEFAULT_CHILD_NAME_BUTTON;
 
 		/**
 		 * The value added to the <code>nameList</code> of the first button.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var firstButtonName:String = DEFAULT_CHILD_NAME_BUTTON;
 
 		/**
 		 * The value added to the <code>nameList</code> of the last button.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var lastButtonName:String = DEFAULT_CHILD_NAME_BUTTON;
 

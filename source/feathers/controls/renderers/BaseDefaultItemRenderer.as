@@ -33,26 +33,36 @@ package feathers.controls.renderers
 		/**
 		 * The default value added to the <code>nameList</code> of the accessory
 		 * label.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const DEFAULT_CHILD_NAME_ACCESSORY_LABEL:String = "feathers-item-renderer-accessory-label";
 
 		/**
 		 * The accessory will be positioned above its origin.
+		 *
+		 * @see #accessoryPosition
 		 */
 		public static const ACCESSORY_POSITION_TOP:String = "top";
 
 		/**
 		 * The accessory will be positioned to the right of its origin.
+		 *
+		 * @see #accessoryPosition
 		 */
 		public static const ACCESSORY_POSITION_RIGHT:String = "right";
 
 		/**
 		 * The accessory will be positioned below its origin.
+		 *
+		 * @see #accessoryPosition
 		 */
 		public static const ACCESSORY_POSITION_BOTTOM:String = "bottom";
 
 		/**
 		 * The accessory will be positioned to the left of its origin.
+		 *
+		 * @see #accessoryPosition
 		 */
 		public static const ACCESSORY_POSITION_LEFT:String = "left";
 
@@ -64,6 +74,7 @@ package feathers.controls.renderers
 		 * <p>The <code>accessoryPositionOrigin</code> property will be ignored
 		 * if <code>accessoryPosition</code> is set to <code>ACCESSORY_POSITION_MANUAL</code>.</p>
 		 *
+		 * @see #accessoryPosition
 		 * @see #accessoryOffsetX
 		 * @see #accessoryOffsetY
 		 */
@@ -74,12 +85,16 @@ package feathers.controls.renderers
 		 * to the label, then the icon relative to both. Best used when the
 		 * accessory should be between the label and the icon or when the icon
 		 * position shouldn't be affected by the accessory.
+		 *
+		 * @see #layoutOrder
 		 */
 		public static const LAYOUT_ORDER_LABEL_ACCESSORY_ICON:String = "labelAccessoryIcon";
 
 		/**
 		 * The layout order will be the label first, then the icon relative to
 		 * label, then the accessory relative to both.
+		 *
+		 * @see #layoutOrder
 		 */
 		public static const LAYOUT_ORDER_LABEL_ICON_ACCESSORY:String = "labelIconAccessory";
 
@@ -112,6 +127,8 @@ package feathers.controls.renderers
 
 		/**
 		 * The value added to the <code>nameList</code> of the accessory label.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var accessoryLabelName:String = DEFAULT_CHILD_NAME_ACCESSORY_LABEL;
 

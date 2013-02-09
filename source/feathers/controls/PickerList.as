@@ -38,12 +38,16 @@ package feathers.controls
 	{
 		/**
 		 * The default value added to the <code>nameList</code> of the button.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const DEFAULT_CHILD_NAME_BUTTON:String = "feathers-picker-list-button";
 
 		/**
 		 * The default value added to the <code>nameList</code> of the pop-up
 		 * list.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const DEFAULT_CHILD_NAME_LIST:String = "feathers-picker-list-list";
 
@@ -89,11 +93,15 @@ package feathers.controls
 
 		/**
 		 * The default value added to the <code>nameList</code> of the button.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var buttonName:String = DEFAULT_CHILD_NAME_BUTTON;
 
 		/**
 		 * The default value added to the <code>nameList</code> of the pop-up list.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var listName:String = DEFAULT_CHILD_NAME_LIST;
 

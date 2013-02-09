@@ -131,21 +131,29 @@ package feathers.controls
 		
 		/**
 		 * The icon will be positioned above the label.
+		 *
+		 * @see #iconPosition
 		 */
 		public static const ICON_POSITION_TOP:String = "top";
 		
 		/**
 		 * The icon will be positioned to the right of the label.
+		 *
+		 * @see #iconPosition
 		 */
 		public static const ICON_POSITION_RIGHT:String = "right";
 		
 		/**
 		 * The icon will be positioned below the label.
+		 *
+		 * @see #iconPosition
 		 */
 		public static const ICON_POSITION_BOTTOM:String = "bottom";
 		
 		/**
 		 * The icon will be positioned to the left of the label.
+		 *
+		 * @see #iconPosition
 		 */
 		public static const ICON_POSITION_LEFT:String = "left";
 
@@ -154,6 +162,7 @@ package feathers.controls
 		 * of the label. Use <code>iconOffsetX</code> and <code>iconOffsetY</code>
 		 * to set the icon's position.
 		 *
+		 * @see #iconPosition
 		 * @see #iconOffsetX
 		 * @see #iconOffsetY
 		 */
@@ -162,27 +171,37 @@ package feathers.controls
 		/**
 		 * The icon will be positioned to the left the label, and the bottom of
 		 * the icon will be aligned to the baseline of the label text.
+		 *
+		 * @see #iconPosition
 		 */
 		public static const ICON_POSITION_LEFT_BASELINE:String = "leftBaseline";
 		
 		/**
 		 * The icon will be positioned to the right the label, and the bottom of
 		 * the icon will be aligned to the baseline of the label text.
+		 *
+		 * @see #iconPosition
 		 */
 		public static const ICON_POSITION_RIGHT_BASELINE:String = "rightBaseline";
 		
 		/**
 		 * The icon and label will be aligned horizontally to the left edge of the button.
+		 *
+		 * @see #horizontalAlign
 		 */
 		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
 		
 		/**
 		 * The icon and label will be aligned horizontally to the center of the button.
+		 *
+		 * @see #horizontalAlign
 		 */
 		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
 		
 		/**
 		 * The icon and label will be aligned horizontally to the right edge of the button.
+		 *
+		 * @see #horizontalAlign
 		 */
 		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
 		
@@ -193,11 +212,15 @@ package feathers.controls
 		
 		/**
 		 * The icon and label will be aligned vertically to the middle of the button.
+		 *
+		 * @see #verticalAlign
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
 		
 		/**
 		 * The icon and label will be aligned vertically to the bottom edge of the button.
+		 *
+		 * @see #verticalAlign
 		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 		
@@ -215,6 +238,8 @@ package feathers.controls
 
 		/**
 		 * The value added to the <code>nameList</code> of the label.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var labelName:String = DEFAULT_CHILD_NAME_LABEL;
 		
