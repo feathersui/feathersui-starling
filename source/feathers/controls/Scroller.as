@@ -1978,7 +1978,6 @@ package feathers.controls
 			this._viewPort.maxVisibleWidth = this._maxWidth - horizontalWidthOffset;
 			this._viewPort.minVisibleHeight = Math.max(0, this._minHeight - verticalHeightOffset);
 			this._viewPort.maxVisibleHeight = this._maxHeight - verticalHeightOffset;
-
 			this._viewPort.horizontalScrollPosition = this._horizontalScrollPosition;
 			this._viewPort.verticalScrollPosition = this._verticalScrollPosition;
 
@@ -2066,7 +2065,7 @@ package feathers.controls
 					{
 						this._horizontalScrollPosition = Math.max(0, roundToNearest(this._horizontalScrollPosition, pageWidth));
 					}
-					this._horizontalScrollPosition = clamp(this._horizontalScrollPosition, 0, this._maxHorizontalScrollPosition);
+					this.horizontalScrollPosition = clamp(this._horizontalScrollPosition, 0, this._maxHorizontalScrollPosition);
 				}
 				if(this._touchPointID < 0 && !this._verticalAutoScrollTween)
 				{
@@ -2074,7 +2073,7 @@ package feathers.controls
 					{
 						this._verticalScrollPosition = Math.max(0, roundToNearest(this._verticalScrollPosition, pageHeight));
 					}
-					this._verticalScrollPosition = clamp(this._verticalScrollPosition, 0, this._maxVerticalScrollPosition);
+					this.verticalScrollPosition = clamp(this._verticalScrollPosition, 0, this._maxVerticalScrollPosition);
 				}
 			}
 
@@ -2108,11 +2107,6 @@ package feathers.controls
 					this._targetVerticalScrollPosition -= (oldMaxVSP - this._maxVerticalScrollPosition);
 					this.throwTo(NaN, this._targetVerticalScrollPosition, this._verticalAutoScrollTween.totalTime - this._verticalAutoScrollTween.currentTime);
 				}
-
-				//if we clamped the scroll position above, we need to inform
-				//the view port about the new scroll position
-				this._viewPort.horizontalScrollPosition = this._horizontalScrollPosition;
-				this._viewPort.verticalScrollPosition = this._verticalScrollPosition;
 			}
 			if(maximumPositionsChanged || isScrollInvalid)
 			{
