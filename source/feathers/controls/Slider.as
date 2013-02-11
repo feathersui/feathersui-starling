@@ -723,7 +723,7 @@ package feathers.controls
 		{
 			if(!this._minimumTrackProperties)
 			{
-				this._minimumTrackProperties = new PropertyProxy(minimumTrackProperties_onChange);
+				this._minimumTrackProperties = new PropertyProxy(childProperties_onChange);
 			}
 			return this._minimumTrackProperties;
 		}
@@ -752,12 +752,12 @@ package feathers.controls
 			}
 			if(this._minimumTrackProperties)
 			{
-				this._minimumTrackProperties.removeOnChangeCallback(minimumTrackProperties_onChange);
+				this._minimumTrackProperties.removeOnChangeCallback(childProperties_onChange);
 			}
 			this._minimumTrackProperties = PropertyProxy(value);
 			if(this._minimumTrackProperties)
 			{
-				this._minimumTrackProperties.addOnChangeCallback(minimumTrackProperties_onChange);
+				this._minimumTrackProperties.addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -851,7 +851,7 @@ package feathers.controls
 		{
 			if(!this._maximumTrackProperties)
 			{
-				this._maximumTrackProperties = new PropertyProxy(maximumTrackProperties_onChange);
+				this._maximumTrackProperties = new PropertyProxy(childProperties_onChange);
 			}
 			return this._maximumTrackProperties;
 		}
@@ -880,12 +880,12 @@ package feathers.controls
 			}
 			if(this._maximumTrackProperties)
 			{
-				this._maximumTrackProperties.removeOnChangeCallback(maximumTrackProperties_onChange);
+				this._maximumTrackProperties.removeOnChangeCallback(childProperties_onChange);
 			}
 			this._maximumTrackProperties = PropertyProxy(value);
 			if(this._maximumTrackProperties)
 			{
-				this._maximumTrackProperties.addOnChangeCallback(maximumTrackProperties_onChange);
+				this._maximumTrackProperties.addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -979,7 +979,7 @@ package feathers.controls
 		{
 			if(!this._thumbProperties)
 			{
-				this._thumbProperties = new PropertyProxy(thumbProperties_onChange);
+				this._thumbProperties = new PropertyProxy(childProperties_onChange);
 			}
 			return this._thumbProperties;
 		}
@@ -1008,12 +1008,12 @@ package feathers.controls
 			}
 			if(this._thumbProperties)
 			{
-				this._thumbProperties.removeOnChangeCallback(thumbProperties_onChange);
+				this._thumbProperties.removeOnChangeCallback(childProperties_onChange);
 			}
 			this._thumbProperties = PropertyProxy(value);
 			if(this._thumbProperties)
 			{
-				this._thumbProperties.addOnChangeCallback(thumbProperties_onChange);
+				this._thumbProperties.addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1507,23 +1507,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function minimumTrackProperties_onChange(proxy:PropertyProxy, name:Object):void
-		{
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function maximumTrackProperties_onChange(proxy:PropertyProxy, name:Object):void
-		{
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function thumbProperties_onChange(proxy:PropertyProxy, name:Object):void
+		protected function childProperties_onChange(proxy:PropertyProxy, name:Object):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
