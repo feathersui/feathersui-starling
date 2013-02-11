@@ -730,16 +730,59 @@ package feathers.controls.text
 		}
 
 		/**
+		 * @inheritDoc
+		 */
+		public function measureText(result:Point = null):Point
+		{
+			if(!result)
+			{
+				result = new Point();
+			}
+
+			if(!this._measureTextField)
+			{
+				result.x = result.y = 0;
+				return result;
+			}
+
+			const needsWidth:Boolean = isNaN(this.explicitWidth);
+			const needsHeight:Boolean = isNaN(this.explicitHeight);
+			if(!needsWidth && !needsHeight)
+			{
+				result.x = this.explicitWidth;
+				result.y = this.explicitHeight;
+				return result;
+			}
+
+			this.commit();
+
+			result = this.measure(result);
+
+			return result;
+		}
+
+		/**
 		 * @private
 		 */
 		override protected function draw():void
 		{
+			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
+
+			this.commit();
+
+			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
+
+			this.layout(sizeInvalid);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function commit():void
+		{
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
-			const positionInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_POSITION);
-			const skinInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SKIN);
-			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 
 			if(stylesInvalid)
 			{
@@ -764,6 +807,59 @@ package feathers.controls.text
 			{
 				this.stageText.editable = this._isEnabled;
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function measure(result:Point = null):Point
+		{
+			if(!result)
+			{
+				result = new Point();
+			}
+
+			const needsWidth:Boolean = isNaN(this.explicitWidth);
+			const needsHeight:Boolean = isNaN(this.explicitHeight);
+
+			this._measureTextField.autoSize = TextFieldAutoSize.LEFT;
+
+			var newWidth:Number = this.explicitWidth;
+			if(needsWidth)
+			{
+				newWidth = Math.max(this._minWidth, Math.min(this._maxWidth, this._measureTextField.width));
+			}
+
+			this._measureTextField.width = newWidth;
+			var newHeight:Number = this.explicitHeight;
+			if(needsHeight)
+			{
+				newHeight = Math.max(this._minHeight, Math.min(this._maxHeight, this._measureTextField.height));
+			}
+
+			this._measureTextField.autoSize = TextFieldAutoSize.NONE;
+
+			//put the width and height back just in case we measured without
+			//a full validation
+			this._measureTextField.width = this.actualWidth;
+			this._measureTextField.height = this.actualHeight;
+
+			result.x = newWidth;
+			result.y = newHeight;
+
+			return result;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function layout(sizeInvalid:Boolean):void
+		{
+			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
+			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			const positionInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_POSITION);
+			const skinInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SKIN);
 
 			if(positionInvalid || sizeInvalid || stylesInvalid || skinInvalid || stateInvalid)
 			{
@@ -787,6 +883,22 @@ package feathers.controls.text
 			}
 
 			this.doPendingActions();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function autoSizeIfNeeded():Boolean
+		{
+			const needsWidth:Boolean = isNaN(this.explicitWidth);
+			const needsHeight:Boolean = isNaN(this.explicitHeight);
+			if(!needsWidth && !needsHeight)
+			{
+				return false;
+			}
+
+			this.measure(HELPER_POINT);
+			return this.setSizeInternal(HELPER_POINT.x, HELPER_POINT.y, false);
 		}
 
 		/**
@@ -937,7 +1049,6 @@ package feathers.controls.text
 			stageTextViewPort.x = Math.round(starlingViewPort.x + HELPER_POINT.x * Starling.contentScaleFactor);
 			stageTextViewPort.y = Math.round(starlingViewPort.y + HELPER_POINT.y * Starling.contentScaleFactor);
 			stageTextViewPort.width = Math.round(Math.max(1, this.actualWidth * Starling.contentScaleFactor * this.scaleX));
-			//we're ignoring padding bottom here to keep the descent from being cut off
 			stageTextViewPort.height = Math.round(Math.max(1, this.actualHeight * Starling.contentScaleFactor * this.scaleY));
 			if(isNaN(stageTextViewPort.width) || isNaN(stageTextViewPort.height))
 			{
@@ -1074,7 +1185,6 @@ package feathers.controls.text
 		 */
 		protected function stageText_keyDownHandler(event:KeyboardEvent):void
 		{
-			trace("key down");
 			if(event.keyCode == Keyboard.ENTER)
 			{
 				this.dispatchEventWith(FeathersEventType.ENTER);

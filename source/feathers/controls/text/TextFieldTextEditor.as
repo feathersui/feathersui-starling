@@ -518,6 +518,38 @@ package feathers.controls.text
 		}
 
 		/**
+		 * @inheritDoc
+		 */
+		public function measureText(result:Point = null):Point
+		{
+			if(!result)
+			{
+				result = new Point();
+			}
+
+			if(!this.textField)
+			{
+				result.x = result.y = 0;
+				return result;
+			}
+
+			const needsWidth:Boolean = isNaN(this.explicitWidth);
+			const needsHeight:Boolean = isNaN(this.explicitHeight);
+			if(!needsWidth && !needsHeight)
+			{
+				result.x = this.explicitWidth;
+				result.y = this.explicitHeight;
+				return result;
+			}
+
+			this.commit();
+
+			result = this.measure(result);
+
+			return result;
+		}
+
+		/**
 		 * @private
 		 */
 		override protected function initialize():void
@@ -536,23 +568,24 @@ package feathers.controls.text
 		 */
 		override protected function draw():void
 		{
-			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
+			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
+
+			this.commit();
+
+			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
+
+			this.layout(sizeInvalid);
+		}
+
+		protected function commit():void
+		{
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
-			const positionInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_POSITION);
-			const skinInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SKIN);
-			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 
 			if(dataInvalid || stylesInvalid)
 			{
 				this.commitStylesAndData();
 			}
-
-			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
-
-			this.layout(sizeInvalid);
-
-			this.doPendingActions();
 		}
 
 		/**
@@ -567,8 +600,24 @@ package feathers.controls.text
 				return false;
 			}
 
+			this.measure(HELPER_POINT);
+			return this.setSizeInternal(HELPER_POINT.x, HELPER_POINT.y, false);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function measure(result:Point = null):Point
+		{
+			if(!result)
+			{
+				result = new Point();
+			}
+
+			const needsWidth:Boolean = isNaN(this.explicitWidth);
+			const needsHeight:Boolean = isNaN(this.explicitHeight);
+
 			this.textField.autoSize = TextFieldAutoSize.LEFT;
-			this.textField.wordWrap = false;
 
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
@@ -577,7 +626,6 @@ package feathers.controls.text
 			}
 
 			this.textField.width = newWidth;
-			this.textField.wordWrap = this._wordWrap;
 			var newHeight:Number = this.explicitHeight;
 			if(needsHeight)
 			{
@@ -591,7 +639,10 @@ package feathers.controls.text
 			this.textField.width = this.actualWidth;
 			this.textField.height = this.actualHeight;
 
-			return this.setSizeInternal(newWidth, newHeight, false);
+			result.x = newWidth;
+			result.y = newHeight;
+
+			return result;
 		}
 
 		/**
@@ -647,6 +698,7 @@ package feathers.controls.text
 					this.addEventListener(Event.ENTER_FRAME, enterFrameHandler);
 				}
 			}
+			this.doPendingActions();
 		}
 
 		/**
