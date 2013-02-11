@@ -2255,15 +2255,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function incrementButton_triggeredHandler(event:Event):void
-		{
-			this._repeatTimer.stop();
-			this.dispatchEventWith(FeathersEventType.END_INTERACTION);
-		}
-
-		/**
-		 * @private
-		 */
 		protected function repeatTimer_timerHandler(event:TimerEvent):void
 		{
 			if(this._repeatTimer.currentCount < 5)
