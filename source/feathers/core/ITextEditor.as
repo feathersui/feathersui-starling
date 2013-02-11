@@ -69,5 +69,11 @@ package feathers.core
 		 * the text insertion position is changed and nothing is selected.
 		 */
 		function selectRange(startIndex:int, endIndex:int):void;
+
+		/**
+		 * Measures the text's bounds (without a full validation, if
+		 * possible).
+		 */
+		function measureText(result:Point = null):Point;
 	}
 }
