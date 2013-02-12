@@ -6,6 +6,7 @@ package feathers.examples.componentsExplorer
 	import feathers.examples.componentsExplorer.data.ButtonSettings;
 	import feathers.examples.componentsExplorer.data.GroupedListSettings;
 	import feathers.examples.componentsExplorer.data.ListSettings;
+	import feathers.examples.componentsExplorer.data.NumericStepperSettings;
 	import feathers.examples.componentsExplorer.data.SliderSettings;
 	import feathers.examples.componentsExplorer.data.TextInputSettings;
 	import feathers.examples.componentsExplorer.screens.ButtonGroupScreen;
@@ -17,6 +18,8 @@ package feathers.examples.componentsExplorer
 	import feathers.examples.componentsExplorer.screens.ListScreen;
 	import feathers.examples.componentsExplorer.screens.ListSettingsScreen;
 	import feathers.examples.componentsExplorer.screens.MainMenuScreen;
+	import feathers.examples.componentsExplorer.screens.NumericStepperScreen;
+	import feathers.examples.componentsExplorer.screens.NumericStepperSettingsScreen;
 	import feathers.examples.componentsExplorer.screens.PageIndicatorScreen;
 	import feathers.examples.componentsExplorer.screens.PickerListScreen;
 	import feathers.examples.componentsExplorer.screens.ProgressBarScreen;
@@ -49,6 +52,8 @@ package feathers.examples.componentsExplorer
 		private static const GROUPED_LIST_SETTINGS:String = "groupedListSettings";
 		private static const LIST:String = "list";
 		private static const LIST_SETTINGS:String = "listSettings";
+		private static const NUMERIC_STEPPER:String = "numericStepper";
+		private static const NUMERIC_STEPPER_SETTINGS:String = "numericStepperSettings";
 		private static const PAGE_INDICATOR:String = "pageIndicator";
 		private static const PICKER_LIST:String = "pickerList";
 		private static const PROGRESS_BAR:String = "progressBar";
@@ -67,6 +72,7 @@ package feathers.examples.componentsExplorer
 			showCallout: CALLOUT,
 			showGroupedList: GROUPED_LIST,
 			showList: LIST,
+			showNumericStepper: NUMERIC_STEPPER,
 			showPageIndicator: PAGE_INDICATOR,
 			showPickerList: PICKER_LIST,
 			showProgressBar: PROGRESS_BAR,
@@ -192,6 +198,24 @@ package feathers.examples.componentsExplorer
 			},
 			{
 				settings: listSettings
+			}));
+
+			const numericStepperSettings:NumericStepperSettings = new NumericStepperSettings();
+			this._navigator.addScreen(NUMERIC_STEPPER, new ScreenNavigatorItem(NumericStepperScreen,
+			{
+				complete: MAIN_MENU,
+				showSettings: NUMERIC_STEPPER_SETTINGS
+			},
+			{
+				settings: numericStepperSettings
+			}));
+
+			this._navigator.addScreen(NUMERIC_STEPPER_SETTINGS, new ScreenNavigatorItem(NumericStepperSettingsScreen,
+			{
+				complete: NUMERIC_STEPPER
+			},
+			{
+				settings: numericStepperSettings
 			}));
 
 			this._navigator.addScreen(PAGE_INDICATOR, new ScreenNavigatorItem(PageIndicatorScreen,
