@@ -577,6 +577,9 @@ package feathers.controls.text
 			this.layout(sizeInvalid);
 		}
 
+		/**
+		 * @private
+		 */
 		protected function commit():void
 		{
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
