@@ -33,6 +33,7 @@ package feathers.themes
 	import feathers.controls.ImageLoader;
 	import feathers.controls.Label;
 	import feathers.controls.List;
+	import feathers.controls.NumericStepper;
 	import feathers.controls.PageIndicator;
 	import feathers.controls.Panel;
 	import feathers.controls.PanelScreen;
@@ -421,6 +422,7 @@ package feathers.themes
 			this.setInitializerForClass(Slider, sliderInitializer);
 			this.setInitializerForClass(ToggleSwitch, toggleSwitchInitializer);
 			this.setInitializerForClass(TextInput, textInputInitializer);
+			this.setInitializerForClass(TextInput, numericStepperTextInputInitializer, NumericStepper.DEFAULT_CHILD_NAME_TEXT_INPUT);
 			this.setInitializerForClass(PageIndicator, pageIndicatorInitializer);
 			this.setInitializerForClass(ProgressBar, progressBarInitializer);
 			this.setInitializerForClass(PickerList, pickerListInitializer);
@@ -920,6 +922,32 @@ package feathers.themes
 
 			const backgroundFocusedSkin:Scale9Image = new Scale9Image(this.backgroundFocusedSkinTextures, this.scale);
 			backgroundFocusedSkin.width = 264 * this.scale;
+			backgroundFocusedSkin.height = 60 * this.scale;
+			input.backgroundFocusedSkin = backgroundFocusedSkin;
+
+			input.minWidth = input.minHeight = 60 * this.scale;
+			input.minTouchWidth = input.minTouchHeight = 88 * this.scale;
+			input.paddingTop = input.paddingBottom = 12 * this.scale;
+			input.paddingLeft = input.paddingRight = 16 * this.scale;
+			input.textEditorProperties.fontFamily = "Helvetica";
+			input.textEditorProperties.fontSize = 30 * this.scale;
+			input.textEditorProperties.color = LIGHT_TEXT_COLOR;
+		}
+
+		protected function numericStepperTextInputInitializer(input:TextInput):void
+		{
+			const backgroundSkin:Scale9Image = new Scale9Image(this.backgroundSkinTextures, this.scale);
+			backgroundSkin.width = 60 * this.scale;
+			backgroundSkin.height = 60 * this.scale;
+			input.backgroundSkin = backgroundSkin;
+
+			const backgroundDisabledSkin:Scale9Image = new Scale9Image(this.backgroundDisabledSkinTextures, this.scale);
+			backgroundDisabledSkin.width = 60 * this.scale;
+			backgroundDisabledSkin.height = 60 * this.scale;
+			input.backgroundDisabledSkin = backgroundDisabledSkin;
+
+			const backgroundFocusedSkin:Scale9Image = new Scale9Image(this.backgroundFocusedSkinTextures, this.scale);
+			backgroundFocusedSkin.width = 60 * this.scale;
 			backgroundFocusedSkin.height = 60 * this.scale;
 			input.backgroundFocusedSkin = backgroundFocusedSkin;
 
