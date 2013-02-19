@@ -1825,15 +1825,16 @@ package feathers.controls.renderers
 			{
 				IFeathersControl(this.accessory).validate();
 			}
+			const adjustedGap:Number = this._gap == Number.POSITIVE_INFINITY ? Math.min(this._paddingLeft, this._paddingRight) : this._gap;
 			if(this.currentIcon && (this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE ||
 				this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE))
 			{
-				calculatedWidth -= (this._gap + this.currentIcon.width);
+				calculatedWidth -= (adjustedGap + this.currentIcon.width);
 			}
 
 			if(this.accessory && (this._accessoryPosition == ACCESSORY_POSITION_LEFT || this._accessoryPosition == ACCESSORY_POSITION_RIGHT))
 			{
-				var accessoryGap:Number = (isNaN(this._accessoryGap) || this._accessoryGap == Number.POSITIVE_INFINITY) ? this._gap : this._accessoryGap;
+				const accessoryGap:Number = (isNaN(this._accessoryGap) || this._accessoryGap == Number.POSITIVE_INFINITY) ? adjustedGap : this._accessoryGap;
 				calculatedWidth -= (accessoryGap + this.accessory.width);
 			}
 
