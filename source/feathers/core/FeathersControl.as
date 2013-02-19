@@ -13,6 +13,8 @@ package feathers.core
 	import feathers.layout.ILayoutData;
 	import feathers.layout.ILayoutDisplayObject;
 
+	import flash.errors.IllegalOperationError;
+
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -168,6 +170,7 @@ package feathers.core
 		{
 			super();
 			this.addEventListener(Event.ADDED_TO_STAGE, initialize_addedToStageHandler);
+			this.addEventListener(Event.FLATTEN, feathersControl_flattenHandler);
 		}
 
 		/**
@@ -1053,6 +1056,18 @@ package feathers.core
 		protected function draw():void
 		{
 
+		}
+
+		/**
+		 * @private
+		 */
+		protected function feathersControl_flattenHandler(event:Event):void
+		{
+			if(!this.stage || !this._isInitialized)
+			{
+				throw new IllegalOperationError("Cannot flatten this component until it is initialized and has access to the stage.");
+			}
+			this.validate();
 		}
 
 		/**
