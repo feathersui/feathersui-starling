@@ -82,7 +82,6 @@ package feathers.examples.componentsExplorer.screens
 		private function tabBar_changeHandler(event:Event):void
 		{
 			this._label.text = "selectedIndex: " + this._tabBar.selectedIndex.toString();
-			this.invalidate();
 		}
 	}
 }
