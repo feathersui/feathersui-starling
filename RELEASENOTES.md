@@ -4,6 +4,7 @@ Noteworthy changes in official releases of [Feathers](http://feathersui.com/).
 
 ## 1.1.0 PRERELEASE
 
+* MetalWorksMobileTheme: tweaked colors and appearances. embeds open source Source Sans Pro font.
 * List, GroupedList, ScrollContainer, and ScrollText all extend Scroller, instead of using it as a sub-component. The scrollerProperties property on each of these is now deprecated because all public properties of Scroller are now direct public properties of these components.
 * Focus management and keyboard control can be enabled with FocusManager.isEnabled = true.
 * Slider: measurement now includes thumb dimensions and a new property called trackScaleMode has been added.

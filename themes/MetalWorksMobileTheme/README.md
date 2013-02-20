@@ -4,7 +4,7 @@ This [Feathers](http://feathersui.com/) theme combines has an industrial aesthet
 
 ## Credits
 
-Created exclusively for Feathers by [Josh Tynjala](http://twitter.com/joshtynjala).
+Created exclusively for Feathers by [Josh Tynjala](http://twitter.com/joshtynjala). Uses the open source font [Source Sans Pro](https://github.com/adobe/Source-Sans-Pro) created by Adobe Systems Incorporated.
 
 ## Preview
 
