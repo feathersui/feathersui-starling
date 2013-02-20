@@ -2320,7 +2320,7 @@ package feathers.controls
 			if(this.horizontalScrollBar)
 			{
 				this.horizontalScrollBar.x = this._leftViewPortOffset;
-				this.horizontalScrollBar.y = this._viewPortWrapper.y + this._viewPort.visibleHeight;
+				this.horizontalScrollBar.y = this._topViewPortOffset + this._viewPort.visibleHeight;
 				if(this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_FIXED)
 				{
 					this.horizontalScrollBar.y -= this.horizontalScrollBar.height;
@@ -2334,7 +2334,7 @@ package feathers.controls
 
 			if(this.verticalScrollBar)
 			{
-				this.verticalScrollBar.x = this._viewPortWrapper.x + this._viewPort.visibleWidth;
+				this.verticalScrollBar.x = this._leftViewPortOffset + this._viewPort.visibleWidth;
 				if(this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_FIXED)
 				{
 					this.verticalScrollBar.x -= this.verticalScrollBar.width;
