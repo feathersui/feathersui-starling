@@ -625,19 +625,15 @@ package feathers.controls
 				return false;
 			}
 
-			this.textEditor.minWidth = this._minWidth - this._paddingLeft - this._paddingRight;
-			this.textEditor.maxWidth = this._maxWidth - this._paddingLeft - this._paddingRight;
-			this.textEditor.width = this.explicitWidth - this._paddingLeft - this._paddingRight;
-			this.textEditor.measureText(HELPER_POINT);
 			var newWidth:Number = this.explicitWidth;
 			var newHeight:Number = this.explicitHeight;
 			if(needsWidth)
 			{
-				newWidth = Math.max(this._originalSkinWidth, HELPER_POINT.x + this._paddingLeft + this._paddingRight);
+				newWidth = this._originalSkinWidth;
 			}
 			if(needsHeight)
 			{
-				newHeight = Math.max(this._originalSkinHeight, HELPER_POINT.y + this._paddingTop + this._paddingBottom);
+				newHeight = this._originalSkinHeight;
 			}
 			return this.setSizeInternal(newWidth, newHeight, false);
 		}
