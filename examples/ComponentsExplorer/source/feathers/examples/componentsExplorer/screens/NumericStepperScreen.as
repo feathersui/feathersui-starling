@@ -51,7 +51,7 @@ package feathers.examples.componentsExplorer.screens
 			this._stepper.layoutData = stepperLayoutData;
 			this.addChild(this._stepper);
 
-			this.headerProperties.title = "Slider";
+			this.headerProperties.title = "Numeric Stepper";
 
 			if(!DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
