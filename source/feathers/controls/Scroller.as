@@ -2626,7 +2626,7 @@ package feathers.controls
 			{
 				var duration:Number = 0;
 				targetHorizontalScrollPosition = this._horizontalScrollPosition;
-				while(absPixelsPerMS > MINIMUM_VELOCITY)
+				while(Math.abs(pixelsPerMS) > MINIMUM_VELOCITY)
 				{
 					targetHorizontalScrollPosition -= pixelsPerMS;
 					if(targetHorizontalScrollPosition < 0 || targetHorizontalScrollPosition > this._maxHorizontalScrollPosition)
@@ -2693,7 +2693,7 @@ package feathers.controls
 			{
 				var duration:Number = 0;
 				targetVerticalScrollPosition = this._verticalScrollPosition;
-				while(absPixelsPerMS > MINIMUM_VELOCITY)
+				while(Math.abs(pixelsPerMS) > MINIMUM_VELOCITY)
 				{
 					targetVerticalScrollPosition -= pixelsPerMS;
 					if(targetVerticalScrollPosition < 0 || targetVerticalScrollPosition > this._maxVerticalScrollPosition)
