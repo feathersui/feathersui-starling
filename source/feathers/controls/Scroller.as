@@ -1673,9 +1673,13 @@ package feathers.controls
 		{
 			this.pendingHorizontalScrollPosition = NaN;
 			this.pendingVerticalScrollPosition = NaN;
-			if(this.pendingHorizontalPageIndex == horizontalPageIndex &&
-				this.pendingVerticalPageIndex == verticalPageIndex &&
-				this.pendingScrollDuration == animationDuration)
+			const horizontalPageHasChanged:Boolean = (this.pendingHorizontalPageIndex >= 0 && this.pendingHorizontalPageIndex != horizontalPageIndex) ||
+				(this.pendingHorizontalPageIndex < 0 && this._horizontalPageIndex != horizontalPageIndex);
+			const verticalPageHasChanged:Boolean = (this.pendingVerticalPageIndex >= 0 && this.pendingVerticalPageIndex != verticalPageIndex) ||
+				(this.pendingVerticalPageIndex < 0 && this._verticalPageIndex != verticalPageIndex);
+			const durationHasChanged:Boolean = (this.pendingHorizontalPageIndex >= 0 || this.pendingVerticalPageIndex >= 0) && this.pendingScrollDuration == animationDuration
+			if(!horizontalPageHasChanged && !verticalPageHasChanged &&
+				!durationHasChanged)
 			{
 				return;
 			}
