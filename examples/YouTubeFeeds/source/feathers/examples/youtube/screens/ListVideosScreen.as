@@ -63,6 +63,7 @@ package feathers.examples.youtube.screens
 		override protected function initialize():void
 		{
 			this._backButton = new Button();
+			this._backButton.nameList.add(Button.ALTERNATE_NAME_BACK_BUTTON);
 			this._backButton.label = "Back";
 			this._backButton.addEventListener(starling.events.Event.TRIGGERED, onBackButton);
 
