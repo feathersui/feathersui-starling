@@ -1,26 +1,9 @@
 /*
-Copyright 2012-2013 Joshua Tynjala
+Feathers
+Copyright 2012-2013 Joshua Tynjala. All Rights Reserved.
 
-Permission is hereby granted, free of charge, to any person
-obtaining a copy of this software and associated documentation
-files (the "Software"), to deal in the Software without
-restriction, including without limitation the rights to use,
-copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the
-Software is furnished to do so, subject to the following
-conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-OTHER DEALINGS IN THE SOFTWARE.
+This program is free software. You can redistribute and/or modify it in
+accordance with the terms of the accompanying license agreement.
 */
 package feathers.data
 {
@@ -77,9 +60,9 @@ package feathers.data
 
 	/**
 	 * Dispatched when a property of an item in the collection has changed
-	 * and the item doesn't have its own change event or signal. This signal
+	 * and the item doesn't have its own change event or signal. This event
 	 * is only dispatched when the <code>updateItemAt()</code> function is
-	 * called on the <code>HierarchicalCollection</code>.
+	 * called on the <code>ListCollection</code>.
 	 *
 	 * <p>In general, it's better for the items themselves to dispatch events
 	 * or signals when their properties change.</p>
@@ -216,8 +199,8 @@ package feathers.data
 		/**
 		 * If an item doesn't dispatch an event or signal to indicate that it
 		 * has changed, you can manually tell the collection about the change,
-		 * and the collection will dispatch the <code>onItemUpdate</code> signal
-		 * to manually notify the component that renders the data.
+		 * and the collection will dispatch the <code>CollectionEventType.UPDATE_ITEM</code>
+		 * event to manually notify the component that renders the data.
 		 */
 		public function updateItemAt(index:int):void
 		{
@@ -274,6 +257,18 @@ package feathers.data
 				this.removeItemAt(index);
 			}
 		}
+
+		/**
+		 * Removes all items from the collection.
+		 */
+		public function removeAll():void
+		{
+			const length:int = this.length;
+			for(var i:int = 0; i < length; i++)
+			{
+				this.removeItemAt(0);
+			}
+		}
 		
 		/**
 		 * Replaces the item at the specified index with a new item.
@@ -284,13 +279,50 @@ package feathers.data
 			this.dispatchEventWith(Event.CHANGE);
 			this.dispatchEventWith(CollectionEventType.REPLACE_ITEM, false, index);
 		}
-		
+
+		/**
+		 * Adds an item to the end of the collection.
+		 */
+		public function addItem(item:Object):void
+		{
+			this.addItemAt(item, this.length);
+		}
+
 		/**
 		 * Adds an item to the end of the collection.
 		 */
 		public function push(item:Object):void
 		{
 			this.addItemAt(item, this.length);
+		}
+
+		/**
+		 * Adds all items from another collection.
+		 */
+		public function addAll(collection:ListCollection):void
+		{
+			const otherCollectionLength:int = collection.length;
+			for(var i:int = 0; i < otherCollectionLength; i++)
+			{
+				var item:Object = collection.getItemAt(i);
+				this.addItem(item);
+			}
+		}
+
+		/**
+		 * Adds all items from another collection, placing the items at a
+		 * specific index in this collection.
+		 */
+		public function addAllAt(collection:ListCollection, index:int):void
+		{
+			const otherCollectionLength:int = collection.length;
+			var currentIndex:int = index;
+			for(var i:int = 0; i < otherCollectionLength; i++)
+			{
+				var item:Object = collection.getItemAt(i);
+				this.addItemAt(item, currentIndex);
+				currentIndex++;
+			}
 		}
 		
 		/**
@@ -315,6 +347,14 @@ package feathers.data
 		public function shift():Object
 		{
 			return this.removeItemAt(0);
+		}
+
+		/**
+		 * Determines if the specified item is in the collection.
+		 */
+		public function contains(item:Object):Boolean
+		{
+			return this.getItemIndex(item) >= 0;
 		}
 	}
 }

@@ -1,31 +1,13 @@
 /*
- Copyright 2012-2013 Joshua Tynjala
+Feathers
+Copyright 2012-2013 Joshua Tynjala. All Rights Reserved.
 
- Permission is hereby granted, free of charge, to any person
- obtaining a copy of this software and associated documentation
- files (the "Software"), to deal in the Software without
- restriction, including without limitation the rights to use,
- copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the
- Software is furnished to do so, subject to the following
- conditions:
-
- The above copyright notice and this permission notice shall be
- included in all copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
- OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
- HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- OTHER DEALINGS IN THE SOFTWARE.
- */
+This program is free software. You can redistribute and/or modify it in
+accordance with the terms of the accompanying license agreement.
+*/
 package feathers.controls
 {
-	import feathers.controls.supportClasses.LayoutViewPort;
-	import feathers.core.FeathersControl;
+	import feathers.core.IFeathersControl;
 	import feathers.core.PropertyProxy;
 
 	import starling.display.DisplayObject;
@@ -37,8 +19,50 @@ package feathers.controls
 	{
 		/**
 		 * The default value added to the <code>nameList</code> of the header.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const DEFAULT_CHILD_NAME_HEADER:String = "feathers-panel-header";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_POLICY_AUTO
+		 */
+		public static const SCROLL_POLICY_AUTO:String = "auto";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_POLICY_ON
+		 */
+		public static const SCROLL_POLICY_ON:String = "on";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_POLICY_OFF
+		 */
+		public static const SCROLL_POLICY_OFF:String = "off";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_FLOAT
+		 */
+		public static const SCROLL_BAR_DISPLAY_MODE_FLOAT:String = "float";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_FIXED
+		 */
+		public static const SCROLL_BAR_DISPLAY_MODE_FIXED:String = "fixed";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_NONE
+		 */
+		public static const SCROLL_BAR_DISPLAY_MODE_NONE:String = "none";
+
+		/**
+		 * @copy feathers.controls.Scroller#INTERACTION_MODE_TOUCH
+		 */
+		public static const INTERACTION_MODE_TOUCH:String = "touch";
+
+		/**
+		 * @copy feathers.controls.Scroller#INTERACTION_MODE_MOUSE
+		 */
+		public static const INTERACTION_MODE_MOUSE:String = "mouse";
 
 		/**
 		 * @private
@@ -48,7 +72,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected static function defaultHeaderFactory():Header
+		protected static function defaultHeaderFactory():IFeathersControl
 		{
 			return new Header();
 		}
@@ -62,12 +86,14 @@ package feathers.controls
 		}
 
 		/**
-		 * The Header sub-component.
+		 * The header sub-component.
 		 */
-		protected var header:Header;
+		protected var header:IFeathersControl;
 
 		/**
 		 * The default value added to the <code>nameList</code> of the header.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var headerName:String = DEFAULT_CHILD_NAME_HEADER;
 
@@ -84,7 +110,7 @@ package feathers.controls
 		 * skins and text styles on the header.
 		 *
 		 * <p>The function should have the following signature:</p>
-		 * <pre>function():Header</pre>
+		 * <pre>function():IFeathersControl</pre>
 		 *
 		 * @see #headerProperties
 		 */
@@ -151,8 +177,9 @@ package feathers.controls
 
 		/**
 		 * A set of key/value pairs to be passed down to the container's
-		 * scroller sub-component. The scroller is a
-		 * <code>feathers.controls.Scroller</code> instance.
+		 * header sub-component. The header may be any
+		 * <code>feathers.core.IFeathersControl</code> instance, but the default
+		 * is a <code>feathers.controls.Header</code> instance.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -239,27 +266,35 @@ package feathers.controls
 				return false;
 			}
 
+			const oldHeaderWidth:Number = this.header.width;
+			const oldHeaderHeight:Number = this.header.height;
+			this.header.width = this.explicitWidth;
+			this.header.maxWidth = this._maxWidth;
+			this.header.height = NaN;
 			this.header.validate();
-			this.scroller.validate();
 
 			var newWidth:Number = this.explicitWidth;
 			var newHeight:Number = this.explicitHeight;
 			if(needsWidth)
 			{
-				newWidth = Math.max(this.scroller.width + this._paddingLeft + this._paddingRight, this.header.width);
-				if(!isNaN(this._originalBackgroundWidth))
+				newWidth = Math.max(this.header.width, this._viewPort.width + this._rightViewPortOffset + this._leftViewPortOffset);
+				if(!isNaN(this.originalBackgroundWidth))
 				{
-					newWidth = Math.max(newWidth, this._originalBackgroundWidth);
+					newWidth = Math.max(newWidth, this.originalBackgroundWidth);
 				}
 			}
 			if(needsHeight)
 			{
-				newHeight = this.scroller.height + this._paddingTop + this._paddingBottom + this.header.height;
-				if(!isNaN(this._originalBackgroundHeight))
+				newHeight = this.header.height + this._viewPort.height + this._bottomViewPortOffset + this._topViewPortOffset;
+				if(!isNaN(this.originalBackgroundHeight))
 				{
-					newHeight = Math.max(newHeight, this._originalBackgroundHeight);
+					newHeight = Math.max(newHeight, this.originalBackgroundHeight);
 				}
 			}
+
+			this.header.width = oldHeaderWidth;
+			this.header.height = oldHeaderHeight;
+
 			return this.setSizeInternal(newWidth, newHeight, false);
 		}
 
@@ -268,17 +303,20 @@ package feathers.controls
 		 */
 		protected function createHeader():void
 		{
+			const oldDisplayListBypassEnabled:Boolean = this.displayListBypassEnabled;
+			this.displayListBypassEnabled = false;
 			if(this.header)
 			{
-				this.$removeChild(this.header, true);
+				this.removeChild(DisplayObject(this.header), true);
 				this.header = null;
 			}
 
 			const factory:Function = this._headerFactory != null ? this._headerFactory : defaultHeaderFactory;
 			const headerName:String = this._customHeaderName != null ? this._customHeaderName : this.headerName;
-			this.header = Header(factory());
+			this.header = IFeathersControl(factory());
 			this.header.nameList.add(headerName);
-			this.$addChild(this.header);
+			this.addChild(DisplayObject(this.header));
+			this.displayListBypassEnabled = oldDisplayListBypassEnabled;
 		}
 
 		/**
@@ -286,9 +324,10 @@ package feathers.controls
 		 */
 		protected function refreshHeaderStyles():void
 		{
+			const headerAsObject:Object = this.header;
 			for(var propertyName:String in this._headerProperties)
 			{
-				if(this.header.hasOwnProperty(propertyName))
+				if(headerAsObject.hasOwnProperty(propertyName))
 				{
 					var propertyValue:Object = this._headerProperties[propertyName];
 					this.header[propertyName] = propertyValue;
@@ -299,35 +338,20 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override protected function refreshScrollerBounds():void
+		override protected function calculateViewPortOffsets(forceScrollBars:Boolean = false):void
 		{
+			super.calculateViewPortOffsets(forceScrollBars);
+
+			const oldHeaderWidth:Number = this.header.width;
+			const oldHeaderHeight:Number = this.header.height;
 			this.header.width = this.explicitWidth;
+			this.header.maxWidth = this._maxWidth;
 			this.header.height = NaN;
 			this.header.validate();
+			this._topViewPortOffset += this.header.height;
 
-			const scrollerWidthOffset:Number = this._paddingLeft + this._paddingRight;
-			const scrollerHeightOffset:Number = this.header.height + this._paddingTop + this._paddingBottom;
-
-			if(isNaN(this.explicitWidth))
-			{
-				this.scroller.width = NaN;
-			}
-			else
-			{
-				this.scroller.width = Math.max(0, this.explicitWidth - scrollerWidthOffset);
-			}
-			if(isNaN(this.explicitHeight))
-			{
-				this.scroller.height = NaN;
-			}
-			else
-			{
-				this.scroller.height = Math.max(0, this.explicitHeight - scrollerHeightOffset);
-			}
-			this.scroller.minWidth = Math.max(0,  this._minWidth - scrollerWidthOffset);
-			this.scroller.maxWidth = Math.max(0, this._maxWidth - scrollerWidthOffset);
-			this.scroller.minHeight = Math.max(0, this._minHeight - scrollerHeightOffset);
-			this.scroller.maxHeight = Math.max(0, this._maxHeight - scrollerHeightOffset);
+			this.header.width = oldHeaderWidth;
+			this.header.height = oldHeaderHeight;
 		}
 
 		/**
@@ -335,17 +359,11 @@ package feathers.controls
 		 */
 		override protected function layoutChildren():void
 		{
-			if(this.currentBackgroundSkin)
-			{
-				this.currentBackgroundSkin.width = this.actualWidth;
-				this.currentBackgroundSkin.height = this.actualHeight;
-			}
+			super.layoutChildren();
 
 			this.header.width = this.actualWidth;
+			this.header.height = NaN;
 			this.header.validate();
-
-			this.scroller.x = this._paddingLeft;
-			this.scroller.y = this.header.y + this.header.height + this._paddingTop;
 		}
 	}
 }

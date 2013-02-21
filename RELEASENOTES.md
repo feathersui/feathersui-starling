@@ -4,11 +4,19 @@ Noteworthy changes in official releases of [Feathers](http://feathersui.com/).
 
 ## 1.1.0 PRERELEASE
 
+* MetalWorksMobileTheme: tweaked colors and appearances. embeds open source Source Sans Pro font.
+* List, GroupedList, ScrollContainer, and ScrollText all extend Scroller, instead of using it as a sub-component. The scrollerProperties property on each of these is now deprecated because all public properties of Scroller are now direct public properties of these components.
+* Focus management and keyboard control can be enabled with FocusManager.isEnabled = true.
+* Slider: measurement now includes thumb dimensions and a new property called trackScaleMode has been added.
 * Added ILayoutObject to support extra data for layouts to use.
-* Added AnchorLayout for fluid layouts and relative positioning.
+* AnchorLayout: added to support fluid layouts and relative positioning.
+* MultiColumnGridLayout: added to support fluid layouts on standard columns with device responsiveness.
 * All sub-components are created from factories and can receive custom names for theming.
 * PopUpManager: Supports custom root to place pop-ups somewhere other than the stage.
+* PopUpManager: modal pop-ups receive a different focus manager.
 * PickerList: supports prompt when no item is selected.
+* Panel: A new container similar to ScrollContainer, but with a header component too (defaults to feathers.controls.Header).
+* PanelScreen: An IScreen implementation based on Panel.
 * ScreenNavigator: added hasScreen(), getScreen(), and getScreenIDs().
 * ScrollContainer, List, GroupedList: better auto-sizing with a background skin.
 * BitmapFontTextRenderer, Scale3Image, Scale9Image: option to turn off the use of a separate QuadBatch.
@@ -27,7 +35,31 @@ Noteworthy changes in official releases of [Feathers](http://feathersui.com/).
 		{
 			this.resetVariableVirtualCache();
 		}
+* ScrollText: now properly handles visible and alpha properties.
+* ListCollection: added removeAll(), addAll(), addAllAt() and contains().
+* Scroller: adds an invisible overlay during scrolling to block touch events on children.
+* Scroller: scrolling animates forf mouse wheel.
+* List, VerticalLayout, HorizontalLayout: optimized case where useVirtualLayout is true and hasVariableItemDimensions is false.
+* Screen: default value of originalDPI is DeviceCapabilities.dpi. It used to be 168. Can still be changed.
 
+## 1.0.1
+
+This release includes a number of bug fixes.
+
+* Scroller: FeathersEventType.SCROLL_COMPLETE always dispatched after last Event.SCROLL.
+* ScrollBar, SimpleScrollBar: thumb position properly accounts for padding.
+* Scroller: mouse wheel detection properly accounts for contentScaleFactor.
+* ScreenNavigator: calling clearScreen() during a transition no longer causes a stack overflow.
+* ScrollBar, SimpleScrollBar: can drag to minimum and maximum if they aren't a multiple of the step.
+* Header: Fix for runtime error when rightItems aren't IFeathersDisplayObjects
+* TextInput: better selection/cursor recovery when changing text programmatically.
+* TextInput: Moved fontSize contentScaleFactor multiplication into StageTextTextEditor.
+* FeathersControl: requires isInitialized to be true before it can validate.
+* FeathersControl: clipRect properly accounts for scale.
+* GroupedList: added missing documentation for setSelectedLocation().
+* ImageLoader: does a better job keeping aspect ratio when only one dimension is explicit.
+* ImageLoader: properly scales content when dimensions are explicit.
+* ImageLoader: no runtime errors if content loads after dispose.
 
 ## 1.0.0
 

@@ -1,29 +1,14 @@
 /*
-Copyright 2012-2013 Joshua Tynjala
+Feathers
+Copyright 2012-2013 Joshua Tynjala. All Rights Reserved.
 
-Permission is hereby granted, free of charge, to any person
-obtaining a copy of this software and associated documentation
-files (the "Software"), to deal in the Software without
-restriction, including without limitation the rights to use,
-copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the
-Software is furnished to do so, subject to the following
-conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-OTHER DEALINGS IN THE SOFTWARE.
+This program is free software. You can redistribute and/or modify it in
+accordance with the terms of the accompanying license agreement.
 */
 package feathers.core
 {
+	import feathers.core.IFocusManager;
+
 	import flash.utils.Dictionary;
 
 	import starling.core.Starling;
@@ -44,6 +29,11 @@ package feathers.core
 		 * @private
 		 */
 		private static const POPUP_TO_OVERLAY:Dictionary = new Dictionary(true);
+
+		/**
+		 * @private
+		 */
+		private static const POPUP_TO_FOCUS_MANAGER:Dictionary = new Dictionary(true);
 		
 		/**
 		 * A function that returns a display object to use as an overlay for
@@ -157,6 +147,11 @@ package feathers.core
 				calculatedRoot.stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
 			}
 
+			if(FocusManager.isEnabled && popUp is DisplayObjectContainer)
+			{
+				POPUP_TO_FOCUS_MANAGER[popUp] = new FocusManager(DisplayObjectContainer(popUp));
+			}
+
 			if(isCentered)
 			{
 				centerPopUp(popUp);
@@ -225,6 +220,12 @@ package feathers.core
 					overlay.removeFromParent(true);
 					delete POPUP_TO_OVERLAY[popUp];
 				});
+			}
+			const focusManager:IFocusManager = POPUP_TO_FOCUS_MANAGER[popUp];
+			if(focusManager)
+			{
+				delete POPUP_TO_FOCUS_MANAGER[popUp];
+				FocusManager.removeFocusManager(focusManager);
 			}
 
 			if(popUps.length == 0)

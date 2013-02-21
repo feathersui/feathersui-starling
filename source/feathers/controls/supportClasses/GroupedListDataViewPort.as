@@ -942,7 +942,6 @@ package feathers.controls.supportClasses
 				this.refreshEnabled();
 			}
 
-			this.validateRenderers();
 			if(scrollInvalid || dataInvalid || itemRendererInvalid || sizeInvalid)
 			{
 				this._ignoreRendererResizing = true;
@@ -1017,73 +1016,6 @@ package feathers.controls.supportClasses
 				if(renderer is FeathersControl)
 				{
 					FeathersControl(renderer).isEnabled = this._isEnabled;
-				}
-			}
-		}
-
-		private function validateRenderers():void
-		{
-			var rendererCount:int = this._activeItemRenderers.length;
-			for(var i:int = 0; i < rendererCount; i++)
-			{
-				var renderer:DisplayObject = DisplayObject(this._activeItemRenderers[i]);
-				if(renderer is FeathersControl)
-				{
-					FeathersControl(renderer).validate();
-				}
-			}
-			if(this._activeFirstItemRenderers)
-			{
-				rendererCount = this._activeFirstItemRenderers.length;
-				for(i = 0; i < rendererCount; i++)
-				{
-					renderer = DisplayObject(this._activeFirstItemRenderers[i]);
-					if(renderer is FeathersControl)
-					{
-						FeathersControl(renderer).validate();
-					}
-				}
-			}
-			if(this._activeLastItemRenderers)
-			{
-				rendererCount = this._activeLastItemRenderers.length;
-				for(i = 0; i < rendererCount; i++)
-				{
-					renderer = DisplayObject(this._activeLastItemRenderers[i]);
-					if(renderer is FeathersControl)
-					{
-						FeathersControl(renderer).validate();
-					}
-				}
-			}
-			if(this._activeSingleItemRenderers)
-			{
-				rendererCount = this._activeSingleItemRenderers.length;
-				for(i = 0; i < rendererCount; i++)
-				{
-					renderer = DisplayObject(this._activeSingleItemRenderers[i]);
-					if(renderer is FeathersControl)
-					{
-						FeathersControl(renderer).validate();
-					}
-				}
-			}
-			rendererCount = this._activeHeaderRenderers.length;
-			for(i = 0; i < rendererCount; i++)
-			{
-				renderer = DisplayObject(this._activeHeaderRenderers[i]);
-				if(renderer is FeathersControl)
-				{
-					FeathersControl(renderer).validate();
-				}
-			}
-			rendererCount = this._activeFooterRenderers.length;
-			for(i = 0; i < rendererCount; i++)
-			{
-				renderer = DisplayObject(this._activeFooterRenderers[i]);
-				if(renderer is FeathersControl)
-				{
-					FeathersControl(renderer).validate();
 				}
 			}
 		}
@@ -1324,6 +1256,8 @@ package feathers.controls.supportClasses
 			this._footerIndices.length = 0;
 
 			HELPER_BOUNDS.x = HELPER_BOUNDS.y = 0;
+			HELPER_BOUNDS.scrollX = this._horizontalScrollPosition;
+			HELPER_BOUNDS.scrollY = this._verticalScrollPosition;
 			HELPER_BOUNDS.explicitWidth = this.explicitVisibleWidth;
 			HELPER_BOUNDS.explicitHeight = this.explicitVisibleHeight;
 			HELPER_BOUNDS.minWidth = this._minVisibleWidth;

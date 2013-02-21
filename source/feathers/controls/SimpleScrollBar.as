@@ -74,16 +74,22 @@ package feathers.controls
 
 		/**
 		 * The scroll bar's thumb may be dragged horizontally (on the x-axis).
+		 *
+		 * @see #direction
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
 
 		/**
 		 * The scroll bar's thumb may be dragged vertically (on the y-axis).
+		 *
+		 * @see #direction
 		 */
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
 		/**
 		 * The default value added to the <code>nameList</code> of the thumb.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const DEFAULT_CHILD_NAME_THUMB:String = "feathers-simple-scroll-bar-thumb";
 
@@ -105,6 +111,8 @@ package feathers.controls
 
 		/**
 		 * The value added to the <code>nameList</code> of the thumb.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var thumbName:String = DEFAULT_CHILD_NAME_THUMB;
 
@@ -467,8 +475,8 @@ package feathers.controls
 		protected var isDragging:Boolean = false;
 
 		/**
-		 * Determines if the scroll bar dispatches the <code>onChange</code>
-		 * signal every time the thumb moves, or only once it stops moving.
+		 * Determines if the scroll bar dispatches the <code>Event.CHANGE</code>
+		 * event every time the thumb moves, or only once it stops moving.
 		 */
 		public var liveDragging:Boolean = true;
 
@@ -815,7 +823,7 @@ package feathers.controls
 				const heightOffset:Number = Math.min(thumbHeight, contentHeight - thumbHeight) * valueOffset / (range * thumbHeight / contentHeight);
 				this.thumb.width = this.thumbOriginalWidth;
 				this.thumb.height = Math.max(thumbMinHeight, -heightOffset + thumbHeight);
-				this.thumb.x = (this.actualWidth - this.thumb.width) / 2;
+				this.thumb.x = this._paddingLeft + (this.actualWidth - this._paddingLeft - this._paddingRight - this.thumb.width) / 2;
 				const trackScrollableHeight:Number = contentHeight - this.thumb.height;
 				this.thumb.y = this._paddingTop + Math.max(0, Math.min(trackScrollableHeight, trackScrollableHeight * (this._value - this._minimum) / range));
 			}
@@ -828,7 +836,7 @@ package feathers.controls
 				this.thumb.height = this.thumbOriginalHeight;
 				const trackScrollableWidth:Number = contentWidth - this.thumb.width;
 				this.thumb.x = this._paddingLeft + Math.max(0, Math.min(trackScrollableWidth, trackScrollableWidth * (this._value - this._minimum) / range));
-				this.thumb.y = (this.actualHeight - this.thumb.height) / 2;
+				this.thumb.y = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - this.thumb.height) / 2;
 			}
 		}
 
@@ -864,7 +872,7 @@ package feathers.controls
 			if(this._touchValue < this._value)
 			{
 				var newValue:Number = Math.max(this._touchValue, this._value - this._page);
-				if(this._step != 0)
+				if(this._step != 0 && newValue != this._maximum && newValue != this._minimum)
 				{
 					newValue = roundToNearest(newValue, this._step);
 				}
@@ -873,7 +881,7 @@ package feathers.controls
 			else if(this._touchValue > this._value)
 			{
 				newValue = Math.min(this._touchValue, this._value + this._page);
-				if(this._step != 0)
+				if(this._step != 0 && newValue != this._maximum && newValue != this._minimum)
 				{
 					newValue = roundToNearest(newValue, this._step);
 				}
@@ -1017,7 +1025,7 @@ package feathers.controls
 				{
 					touch.getLocation(this, HELPER_POINT);
 					var newValue:Number = this.locationToValue(HELPER_POINT);
-					if(this._step != 0)
+					if(this._step != 0 && newValue != this._maximum && newValue != this._minimum)
 					{
 						newValue = roundToNearest(newValue, this._step);
 					}

@@ -695,6 +695,37 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
+		override public function set visible(value:Boolean):void
+		{
+			if(super.visible == value)
+			{
+				return;
+			}
+			super.visible = value;
+			this._hasPendingRenderChange = true;
+		}
+
+		override public function set alpha(value:Number):void
+		{
+			if(super.alpha == value)
+			{
+				return;
+			}
+			super.alpha = value;
+			this._hasPendingRenderChange = true;
+		}
+
+		private var _hasPendingRenderChange:Boolean = false;
+
+		override public function get hasVisibleArea():Boolean
+		{
+			if(this._hasPendingRenderChange)
+			{
+				return true;
+			}
+			return super.hasVisibleArea;
+		}
+
 		override public function render(support:RenderSupport, parentAlpha:Number):void
 		{
 			const starlingViewPort:Rectangle = Starling.current.viewPort;
@@ -707,6 +738,8 @@ package feathers.controls.supportClasses
 			this._textFieldContainer.scaleY = HELPER_MATRIX.d * Starling.contentScaleFactor;
 			this._textFieldContainer.visible = true;
 			this._textFieldContainer.alpha = parentAlpha * this.alpha;
+			this._textFieldContainer.visible = this.visible;
+			this._hasPendingRenderChange = false;
 			super.render(support, parentAlpha);
 		}
 

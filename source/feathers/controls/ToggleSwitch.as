@@ -8,19 +8,23 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.core.FeathersControl;
+	import feathers.core.IFocusDisplayObject;
 	import feathers.core.ITextRenderer;
 	import feathers.core.IToggle;
 	import feathers.core.PropertyProxy;
+	import feathers.events.FeathersEventType;
 	import feathers.system.DeviceCapabilities;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.ui.Keyboard;
 
 	import starling.animation.Transitions;
 	import starling.animation.Tween;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.events.Event;
+	import starling.events.KeyboardEvent;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -37,7 +41,7 @@ package feathers.controls
 	 * @see http://wiki.starling-framework.org/feathers/toggle-switch
 	 * @see Check
 	 */
-	public class ToggleSwitch extends FeathersControl implements IToggle
+	public class ToggleSwitch extends FeathersControl implements IToggle, IFocusDisplayObject
 	{
 		/**
 		 * @private
@@ -74,12 +78,16 @@ package feathers.controls
 		/**
 		 * The ON and OFF labels will be aligned to the middle vertically,
 		 * based on the full character height of the font.
+		 *
+		 * @see #labelAlign
 		 */
 		public static const LABEL_ALIGN_MIDDLE:String = "middle";
 
 		/**
 		 * The ON and OFF labels will be aligned to the middle vertically,
 		 * based on only the baseline value of the font.
+		 *
+		 * @see #labelAlign
 		 */
 		public static const LABEL_ALIGN_BASELINE:String = "baseline";
 
@@ -88,6 +96,8 @@ package feathers.controls
 		 * full length of switch. In this layout mode, the on track is
 		 * displayed and fills the entire length of the toggle switch. The off
 		 * track will not exist.
+		 *
+		 * @see #trackLayoutMode
 		 */
 		public static const TRACK_LAYOUT_MODE_SINGLE:String = "single";
 
@@ -103,6 +113,7 @@ package feathers.controls
 		 * <code>Scale3Image</code> or a <code>TiledImage</code> that is
 		 * designed to be resized dynamically.</p>
 		 *
+		 * @see #trackLayoutMode
 		 * @see feathers.display.Scale9Image
 		 * @see feathers.display.Scale3Image
 		 * @see feathers.display.TiledImage
@@ -111,26 +122,36 @@ package feathers.controls
 
 		/**
 		 * The default value added to the <code>nameList</code> of the off label.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const DEFAULT_CHILD_NAME_OFF_LABEL:String = "feathers-toggle-switch-off-label";
 
 		/**
 		 * The default value added to the <code>nameList</code> of the on label.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const DEFAULT_CHILD_NAME_ON_LABEL:String = "feathers-toggle-switch-on-label";
 
 		/**
 		 * The default value added to the <code>nameList</code> of the off track.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const DEFAULT_CHILD_NAME_OFF_TRACK:String = "feathers-toggle-switch-off-track";
 
 		/**
 		 * The default value added to the <code>nameList</code> of the on track.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const DEFAULT_CHILD_NAME_ON_TRACK:String = "feathers-toggle-switch-on-track";
 
 		/**
 		 * The default value added to the <code>nameList</code> of the thumb.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const DEFAULT_CHILD_NAME_THUMB:String = "feathers-toggle-switch-thumb";
 
@@ -164,32 +185,44 @@ package feathers.controls
 		public function ToggleSwitch()
 		{
 			super();
-			this.addEventListener(TouchEvent.TOUCH, touchHandler);
-			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
+			this.addEventListener(TouchEvent.TOUCH, toggleSwitch_touchHandler);
+			this.addEventListener(FeathersEventType.FOCUS_IN, toggleSwitch_focusInHandler);
+			this.addEventListener(FeathersEventType.FOCUS_OUT, toggleSwitch_focusOutHandler);
+			this.addEventListener(Event.REMOVED_FROM_STAGE, toggleSwitch_removedFromStageHandler);
 		}
 
 		/**
 		 * The value added to the <code>nameList</code> of the off label.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var onLabelName:String = DEFAULT_CHILD_NAME_ON_LABEL;
 
 		/**
 		 * The value added to the <code>nameList</code> of the on label.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var offLabelName:String = DEFAULT_CHILD_NAME_OFF_LABEL;
 
 		/**
 		 * The value added to the <code>nameList</code> of the on track.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var onTrackName:String = DEFAULT_CHILD_NAME_ON_TRACK;
 
 		/**
 		 * The value added to the <code>nameList</code> of the off track.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var offTrackName:String = DEFAULT_CHILD_NAME_OFF_TRACK;
 
 		/**
 		 * The value added to the <code>nameList</code> of the thumb.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var thumbName:String = DEFAULT_CHILD_NAME_THUMB;
 
@@ -625,7 +658,7 @@ package feathers.controls
 		{
 			//normally, we'd check to see if selected actually changed or not
 			//but the animation is triggered by the draw cycle, so we always
-			//need to invalidate. notice that the signal isn't dispatched
+			//need to invalidate. notice that the event isn't dispatched
 			//unless the value changes.
 			const oldSelected:Boolean = this._isSelected;
 			this._isSelected = value;
@@ -1656,7 +1689,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function removedFromStageHandler(event:Event):void
+		protected function toggleSwitch_removedFromStageHandler(event:Event):void
 		{
 			this._touchPointID = -1;
 		}
@@ -1664,7 +1697,25 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function touchHandler(event:TouchEvent):void
+		protected function toggleSwitch_focusInHandler(event:Event):void
+		{
+			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+			this.stage.addEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function toggleSwitch_focusOutHandler(event:Event):void
+		{
+			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+			this.stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function toggleSwitch_touchHandler(event:TouchEvent):void
 		{
 			if(this._ignoreTapHandler)
 			{
@@ -1774,6 +1825,35 @@ package feathers.controls
 				}
 			}
 			HELPER_TOUCHES_VECTOR.length = 0;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function stage_keyDownHandler(event:KeyboardEvent):void
+		{
+			if(event.keyCode == Keyboard.ESCAPE)
+			{
+				this._touchPointID = -1;
+			}
+			if(this._touchPointID >= 0 || event.keyCode != Keyboard.SPACE)
+			{
+				return;
+			}
+			this._touchPointID = int.MAX_VALUE;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function stage_keyUpHandler(event:KeyboardEvent):void
+		{
+			if(this._touchPointID != int.MAX_VALUE || event.keyCode != Keyboard.SPACE)
+			{
+				return;
+			}
+			this._touchPointID = -1;
+			this.isSelected = !this._isSelected;
 		}
 
 		/**

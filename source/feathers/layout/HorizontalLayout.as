@@ -7,6 +7,8 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.layout
 {
+	import feathers.core.IFeathersControl;
+
 	import flash.geom.Point;
 
 	import starling.display.DisplayObject;
@@ -23,7 +25,7 @@ package feathers.layout
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/horizontal-layout
 	 */
-	public class HorizontalLayout extends EventDispatcher implements IVariableVirtualLayout
+	public class HorizontalLayout extends EventDispatcher implements IVariableVirtualLayout, ITrimmedVirtualLayout
 	{
 		/**
 		 * The items will be aligned to the top of the bounds.
@@ -343,6 +345,58 @@ package feathers.layout
 		/**
 		 * @private
 		 */
+		protected var _beforeVirtualizedItemCount:int = 0;
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get beforeVirtualizedItemCount():int
+		{
+			return this._beforeVirtualizedItemCount;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set beforeVirtualizedItemCount(value:int):void
+		{
+			if(this._beforeVirtualizedItemCount == value)
+			{
+				return;
+			}
+			this._beforeVirtualizedItemCount = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _afterVirtualizedItemCount:int = 0;
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get afterVirtualizedItemCount():int
+		{
+			return this._afterVirtualizedItemCount;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set afterVirtualizedItemCount(value:int):void
+		{
+			if(this._afterVirtualizedItemCount == value)
+			{
+				return;
+			}
+			this._afterVirtualizedItemCount = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _typicalItemWidth:Number = -1;
 
 		/**
@@ -427,34 +481,53 @@ package feathers.layout
 			const explicitWidth:Number = suggestedBounds ? suggestedBounds.explicitWidth : NaN;
 			const explicitHeight:Number = suggestedBounds ? suggestedBounds.explicitHeight : NaN;
 
+			if(!this._useVirtualLayout || this._hasVariableItemDimensions ||
+				this._verticalAlign != VERTICAL_ALIGN_JUSTIFY || isNaN(explicitHeight))
+			{
+				this.validateItems(items);
+			}
+
 			this._discoveredItemsCache.length = 0;
 			var maxItemHeight:Number = this._useVirtualLayout ? this._typicalItemHeight : 0;
 			var positionX:Number = boundsX + this._paddingLeft;
+			if(this._useVirtualLayout && !this._hasVariableItemDimensions)
+			{
+				positionX += (this._beforeVirtualizedItemCount * (this._typicalItemWidth + this._gap));
+			}
 			const itemCount:int = items.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var item:DisplayObject = items[i];
+				var iNormalized:int = i + this._beforeVirtualizedItemCount;
 				if(this._useVirtualLayout && !item)
 				{
-					if(!this._hasVariableItemDimensions || isNaN(this._widthCache[i]))
+					if(!this._hasVariableItemDimensions || isNaN(this._widthCache[iNormalized]))
 					{
 						positionX += this._typicalItemWidth + this._gap;
 					}
 					else
 					{
-						positionX += this._widthCache[i] + this._gap;
+						positionX += this._widthCache[iNormalized] + this._gap;
 					}
 				}
 				else
 				{
+					if(item is ILayoutDisplayObject)
+					{
+						var layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(item);
+						if(!layoutItem.includeInLayout)
+						{
+							continue;
+						}
+					}
 					item.x = positionX;
 					if(this._useVirtualLayout)
 					{
 						if(this._hasVariableItemDimensions)
 						{
-							if(isNaN(this._widthCache[i]))
+							if(isNaN(this._widthCache[iNormalized]))
 							{
-								this._widthCache[i] = item.width;
+								this._widthCache[iNormalized] = item.width;
 								this.dispatchEventWith(Event.CHANGE);
 							}
 						}
@@ -470,6 +543,10 @@ package feathers.layout
 						this._discoveredItemsCache.push(item);
 					}
 				}
+			}
+			if(this._useVirtualLayout && !this._hasVariableItemDimensions)
+			{
+				positionX += (this._afterVirtualizedItemCount * (this._typicalItemWidth + this._gap));
 			}
 
 			const discoveredItems:Vector.<DisplayObject> = this._useVirtualLayout ? this._discoveredItemsCache : items;
@@ -751,28 +828,40 @@ package feathers.layout
 			}
 
 			var positionX:Number = x + this._paddingLeft;
+			var startIndexOffset:int = 0;
+			var endIndexOffset:Number = 0;
+			if(this._useVirtualLayout && !this._hasVariableItemDimensions)
+			{
+				startIndexOffset = this._beforeVirtualizedItemCount;
+				positionX += (this._beforeVirtualizedItemCount * (this._typicalItemWidth + this._gap));
+
+				endIndexOffset = Math.max(0, index - items.length - this._beforeVirtualizedItemCount + 1);
+				positionX += (endIndexOffset * (this._typicalItemWidth + this._gap));
+			}
+			index -= (startIndexOffset + endIndexOffset);
 			var lastWidth:Number = 0;
 			for(var i:int = 0; i <= index; i++)
 			{
 				var item:DisplayObject = items[i];
+				var iNormalized:int = i + startIndexOffset;
 				if(this._useVirtualLayout && !item)
 				{
-					if(!this._hasVariableItemDimensions || isNaN(this._widthCache[i]))
+					if(!this._hasVariableItemDimensions || isNaN(this._widthCache[iNormalized]))
 					{
 						lastWidth = this._typicalItemWidth;
 					}
 					else
 					{
-						lastWidth = this._widthCache[i];
+						lastWidth = this._widthCache[iNormalized];
 					}
 				}
 				else
 				{
 					if(this._hasVariableItemDimensions)
 					{
-						if(isNaN(this._widthCache[i]))
+						if(isNaN(this._widthCache[iNormalized]))
 						{
-							this._widthCache[i] = item.width;
+							this._widthCache[iNormalized] = item.width;
 							this.dispatchEventWith(Event.CHANGE);
 						}
 					}
@@ -797,6 +886,22 @@ package feathers.layout
 			result.y = 0;
 
 			return result;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function validateItems(items:Vector.<DisplayObject>):void
+		{
+			const itemCount:int = items.length;
+			for(var i:int = 0; i < itemCount; i++)
+			{
+				var control:IFeathersControl = items[i] as IFeathersControl;
+				if(control)
+				{
+					control.validate();
+				}
+			}
 		}
 	}
 }

@@ -7,6 +7,8 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.layout
 {
+	import feathers.core.IFeathersControl;
+
 	import flash.geom.Point;
 
 	import starling.display.DisplayObject;
@@ -594,6 +596,11 @@ package feathers.layout
 			const explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
 			const explicitHeight:Number = viewPortBounds ? viewPortBounds.explicitHeight : NaN;
 
+			if(!this._useSquareTiles || !this._useVirtualLayout)
+			{
+				this.validateItems(items);
+			}
+
 			this._discoveredItemsCache.length = 0;
 			const itemCount:int = items.length;
 			var tileWidth:Number = this._useSquareTiles ? Math.max(0, this._typicalItemWidth, this._typicalItemHeight) : this._typicalItemWidth;
@@ -609,6 +616,14 @@ package feathers.layout
 					if(!item)
 					{
 						continue;
+					}
+					if(item is ILayoutDisplayObject)
+					{
+						var layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(item);
+						if(!layoutItem.includeInLayout)
+						{
+							continue;
+						}
 					}
 					tileWidth = this._useSquareTiles ? Math.max(tileWidth, item.width, item.height) : Math.max(tileWidth, item.width);
 					tileHeight = this._useSquareTiles ? Math.max(tileWidth, tileHeight) : Math.max(tileHeight, item.height);
@@ -655,23 +670,32 @@ package feathers.layout
 			var pageStartY:Number = startY;
 			var positionX:Number = startX;
 			var positionY:Number = startY;
+			var itemIndex:int = 0;
 			for(i = 0; i < itemCount; i++)
 			{
 				item = items[i];
-				if(i != 0 && i % verticalTileCount == 0)
+				if(item is ILayoutDisplayObject)
+				{
+					layoutItem = ILayoutDisplayObject(item);
+					if(!layoutItem.includeInLayout)
+					{
+						continue;
+					}
+				}
+				if(itemIndex != 0 && i % verticalTileCount == 0)
 				{
 					positionX += tileWidth + this._horizontalGap;
 					positionY = pageStartY;
 				}
-				if(i == nextPageStartIndex)
+				if(itemIndex == nextPageStartIndex)
 				{
 					//we're starting a new page, so handle alignment of the
 					//items on the current page and update the positions
 					if(this._paging != PAGING_NONE)
 					{
 						var discoveredItems:Vector.<DisplayObject> = this._useVirtualLayout ? this._discoveredItemsCache : items;
-						var discoveredItemsFirstIndex:int = this._useVirtualLayout ? 0 : (i - perPage);
-						var discoveredItemsLastIndex:int = this._useVirtualLayout ? (this._discoveredItemsCache.length - 1) : (i - 1);
+						var discoveredItemsFirstIndex:int = this._useVirtualLayout ? 0 : (itemIndex - perPage);
+						var discoveredItemsLastIndex:int = this._useVirtualLayout ? (this._discoveredItemsCache.length - 1) : (itemIndex - 1);
 						this.applyHorizontalAlign(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex, totalPageWidth, availablePageWidth);
 						this.applyVerticalAlign(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex, totalPageHeight, availablePageHeight);
 						this._discoveredItemsCache.length = 0;
@@ -746,6 +770,7 @@ package feathers.layout
 					}
 				}
 				positionY += tileHeight + this._verticalGap;
+				itemIndex++;
 			}
 			//align the last page
 			if(this._paging != PAGING_NONE)
@@ -1167,6 +1192,22 @@ package feathers.layout
 				{
 					var item:DisplayObject = items[i];
 					item.y += verticalAlignOffsetY;
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function validateItems(items:Vector.<DisplayObject>):void
+		{
+			const itemCount:int = items.length;
+			for(var i:int = 0; i < itemCount; i++)
+			{
+				var control:IFeathersControl = items[i] as IFeathersControl;
+				if(control)
+				{
+					control.validate();
 				}
 			}
 		}

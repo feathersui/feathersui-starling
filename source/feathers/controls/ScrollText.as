@@ -8,85 +8,81 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.controls.supportClasses.TextFieldViewPort;
-	import feathers.core.FeathersControl;
-	import feathers.core.PropertyProxy;
-	import feathers.events.FeathersEventType;
 
 	import flash.text.AntiAliasType;
-
 	import flash.text.GridFitType;
-
 	import flash.text.StyleSheet;
 	import flash.text.TextFormat;
-
-	import starling.events.Event;
-
-	/**
-	 * Dispatched when the text is scrolled.
-	 *
-	 * @eventType starling.events.Event.SCROLL
-	 */
-	[Event(name="scroll",type="starling.events.Event")]
-
-	/**
-	 * Dispatched when the container finishes scrolling in either direction after
-	 * being thrown.
-	 *
-	 * @eventType feathers.events.FeathersEventType.SCROLL_COMPLETE
-	 */
-	[Event(name="scrollComplete",type="starling.events.Event")]
 
 	/**
 	 * Displays long passages of text in a scrollable container using the
 	 * runtime's software-based <code>flash.text.TextField</code> as an overlay
-	 * above Starling content.
+	 * above Starling content on the classic display list. This component will
+	 * <strong>always</strong> appear above Starling content. The only way to
+	 * put something above ScrollText is to put something above it on the
+	 * classic display list.
+	 *
+	 * <p>Meant as a workaround component for when TextFieldTextRenderer runs
+	 * into the runtime texture limits.</p>
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/scroll-text
+	 * @see feathers.controls.text.TextFieldTextRenderer
 	 */
-	public class ScrollText extends FeathersControl
+	public class ScrollText extends Scroller
 	{
 		/**
-		 * The default value added to the <code>nameList</code> of the scroller.
+		 * @copy feathers.controls.Scroller#SCROLL_POLICY_AUTO
 		 */
-		public static const DEFAULT_CHILD_NAME_SCROLLER:String = "feathers-scroll-text-scroller";
+		public static const SCROLL_POLICY_AUTO:String = "auto";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_POLICY_ON
+		 */
+		public static const SCROLL_POLICY_ON:String = "on";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_POLICY_OFF
+		 */
+		public static const SCROLL_POLICY_OFF:String = "off";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_FLOAT
+		 */
+		public static const SCROLL_BAR_DISPLAY_MODE_FLOAT:String = "float";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_FIXED
+		 */
+		public static const SCROLL_BAR_DISPLAY_MODE_FIXED:String = "fixed";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_NONE
+		 */
+		public static const SCROLL_BAR_DISPLAY_MODE_NONE:String = "none";
+
+		/**
+		 * @copy feathers.controls.Scroller#INTERACTION_MODE_TOUCH
+		 */
+		public static const INTERACTION_MODE_TOUCH:String = "touch";
+
+		/**
+		 * @copy feathers.controls.Scroller#INTERACTION_MODE_MOUSE
+		 */
+		public static const INTERACTION_MODE_MOUSE:String = "mouse";
 
 		/**
 		 * Constructor.
 		 */
 		public function ScrollText()
 		{
-			this.viewPort = new TextFieldViewPort();
+			this.textViewPort = new TextFieldViewPort();
+			this.viewPort = this.textViewPort;
 		}
 
 		/**
-		 * The value added to the <code>nameList</code> of the scroller.
-		 */
-		protected var scrollerName:String = DEFAULT_CHILD_NAME_SCROLLER;
-
-		/**
-		 * The scroller sub-component.
-		 */
-		protected var scroller:Scroller;
-
-		/**
 		 * @private
 		 */
-		protected var viewPort:TextFieldViewPort;
-
-		/**
-		 * @private
-		 */
-		protected var _scrollToHorizontalPageIndex:int = -1;
-
-		/**
-		 * @private
-		 */
-		protected var _scrollToVerticalPageIndex:int = -1;
-
-		/**
-		 * @private
-		 */
-		protected var _scrollToIndexDuration:Number;
+		protected var textViewPort:TextFieldViewPort;
 
 		/**
 		 * @private
@@ -515,369 +511,171 @@ package feathers.controls
 		}
 
 		/**
-		 * Quickly sets all padding properties to the same value. The
-		 * <code>padding</code> getter always returns the value of
-		 * <code>paddingTop</code>, but the other padding values may be
-		 * different.
+		 * @private
 		 */
-		public function get padding():Number
+		protected var _textPaddingTop:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the component's top edge and
+		 * the top edge of the text.
+		 */
+		override public function get paddingTop():Number
 		{
-			return this._paddingTop;
+			return this._textPaddingTop;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set padding(value:Number):void
+		override public function set paddingTop(value:Number):void
 		{
-			this.paddingTop = value;
-			this.paddingRight = value;
-			this.paddingBottom = value;
-			this.paddingLeft = value;
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _paddingTop:Number = 0;
-
-		/**
-		 * The minimum space, in pixels, between the text's top edge and the
-		 * edge of the container.
-		 */
-		public function get paddingTop():Number
-		{
-			return this._paddingTop;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set paddingTop(value:Number):void
-		{
-			if(this._paddingTop == value)
+			if(this._textPaddingTop == value)
 			{
 				return;
 			}
-			this._paddingTop = value;
+			this._textPaddingTop = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _paddingRight:Number = 0;
+		protected var _textPaddingRight:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the text's right edge and the
-		 * edge of the container.
+		 * The minimum space, in pixels, between the component's right edge and
+		 * the right edge of the text.
 		 */
-		public function get paddingRight():Number
+		override public function get paddingRight():Number
 		{
-			return this._paddingRight;
+			return this._textPaddingRight;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set paddingRight(value:Number):void
+		override public function set paddingRight(value:Number):void
 		{
-			if(this._paddingRight == value)
+			if(this._textPaddingRight == value)
 			{
 				return;
 			}
-			this._paddingRight = value;
+			this._textPaddingRight = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _paddingBottom:Number = 0;
+		protected var _textPaddingBottom:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the text's bottom edge and the
-		 * edge of the container.
+		 * The minimum space, in pixels, between the component's bottom edge and
+		 * the bottom edge of the text.
 		 */
-		public function get paddingBottom():Number
+		override public function get paddingBottom():Number
 		{
-			return this._paddingBottom;
+			return this._textPaddingBottom;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set paddingBottom(value:Number):void
+		override public function set paddingBottom(value:Number):void
 		{
-			if(this._paddingBottom == value)
+			if(this._textPaddingBottom == value)
 			{
 				return;
 			}
-			this._paddingBottom = value;
+			this._textPaddingBottom = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _paddingLeft:Number = 0;
+		protected var _textPaddingLeft:Number = 0;
 
 		/**
-		 * The minimum space, in pixels, between the text's left edge and the
-		 * edge of the container.
+		 * The minimum space, in pixels, between the component's left edge and
+		 * the left edge of the text.
 		 */
-		public function get paddingLeft():Number
+		override public function get paddingLeft():Number
 		{
-			return this._paddingLeft;
+			return this._textPaddingLeft;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set paddingLeft(value:Number):void
+		override public function set paddingLeft(value:Number):void
 		{
-			if(this._paddingLeft == value)
+			if(this._textPaddingLeft == value)
 			{
 				return;
 			}
-			this._paddingLeft = value;
+			this._textPaddingLeft = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _horizontalScrollPosition:Number = 0;
+		protected var _visible:Boolean = true;
 
 		/**
-		 * The number of pixels the text has been scrolled horizontally (on
-		 * the x-axis).
+		 * @private
 		 */
-		public function get horizontalScrollPosition():Number
+		override public function get visible():Boolean
 		{
-			return this._horizontalScrollPosition;
+			return this._visible;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set horizontalScrollPosition(value:Number):void
+		override public function set visible(value:Boolean):void
 		{
-			if(this._horizontalScrollPosition == value)
+			if(this._visible == value)
 			{
 				return;
 			}
-			this._horizontalScrollPosition = value;
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
-			this.dispatchEventWith(Event.SCROLL);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _maxHorizontalScrollPosition:Number = 0;
-
-		/**
-		 * The maximum number of pixels the text may be scrolled horizontally
-		 * (on the x-axis). This value is automatically calculated by the
-		 * supplied layout algorithm. The <code>horizontalScrollPosition</code>
-		 * property may have a higher value than the maximum due to elastic
-		 * edges. However, once the user stops interacting with the text,
-		 * it will automatically animate back to the maximum (or minimum, if
-		 * the scroll position is below 0).
-		 */
-		public function get maxHorizontalScrollPosition():Number
-		{
-			return this._maxHorizontalScrollPosition;
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _horizontalPageIndex:int = 0;
-
-		/**
-		 * The index of the horizontal page, if snapping is enabled. If snapping
-		 * is disabled, the index will always be <code>0</code>.
-		 */
-		public function get horizontalPageIndex():int
-		{
-			return this._horizontalPageIndex;
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _verticalScrollPosition:Number = 0;
-
-		/**
-		 * The number of pixels the text has been scrolled vertically (on
-		 * the y-axis).
-		 */
-		public function get verticalScrollPosition():Number
-		{
-			return this._verticalScrollPosition;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set verticalScrollPosition(value:Number):void
-		{
-			if(this._verticalScrollPosition == value)
-			{
-				return;
-			}
-			this._verticalScrollPosition = value;
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
-			this.dispatchEventWith(Event.SCROLL);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _maxVerticalScrollPosition:Number = 0;
-
-		/**
-		 * The maximum number of pixels the text may be scrolled vertically
-		 * (on the y-axis). This value is automatically calculated by the
-		 * supplied layout algorithm. The <code>verticalScrollPosition</code>
-		 * property may have a higher value than the maximum due to elastic
-		 * edges. However, once the user stops interacting with the text,
-		 * it will automatically animate back to the maximum (or minimum, if
-		 * the scroll position is below 0).
-		 */
-		public function get maxVerticalScrollPosition():Number
-		{
-			return this._maxVerticalScrollPosition;
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _verticalPageIndex:int = 0;
-
-		/**
-		 * The index of the vertical page, if snapping is enabled. If snapping
-		 * is disabled, the index will always be <code>0</code>.
-		 *
-		 * @default 0
-		 */
-		public function get verticalPageIndex():int
-		{
-			return this._verticalPageIndex;
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _scrollerProperties:PropertyProxy;
-
-		/**
-		 * A set of key/value pairs to be passed down to the container's
-		 * scroller sub-component. The scroller is a
-		 * <code>feathers.controls.Scroller</code> instance.
-		 *
-		 * <p>If the subcomponent has its own subcomponents, their properties
-		 * can be set too, using attribute <code>&#64;</code> notation. For example,
-		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
-		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
-		 * you can use the following syntax:</p>
-		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
-		 *
-		 * @see feathers.controls.Scroller
-		 */
-		public function get scrollerProperties():Object
-		{
-			if(!this._scrollerProperties)
-			{
-				this._scrollerProperties = new PropertyProxy(childProperties_onChange);
-			}
-			return this._scrollerProperties;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set scrollerProperties(value:Object):void
-		{
-			if(this._scrollerProperties == value)
-			{
-				return;
-			}
-			if(!value)
-			{
-				value = new PropertyProxy();
-			}
-			if(!(value is PropertyProxy))
-			{
-				const newValue:PropertyProxy = new PropertyProxy();
-				for(var propertyName:String in value)
-				{
-					newValue[propertyName] = value[propertyName];
-				}
-				value = newValue;
-			}
-			if(this._scrollerProperties)
-			{
-				this._scrollerProperties.removeOnChangeCallback(childProperties_onChange);
-			}
-			this._scrollerProperties = PropertyProxy(value);
-			if(this._scrollerProperties)
-			{
-				this._scrollerProperties.addOnChangeCallback(childProperties_onChange);
-			}
+			this._visible = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
-		 * If the user is dragging the scroll, calling stopScrolling() will
-		 * cause the container to ignore the drag. The children of the container
-		 * will still receive touches, so it's useful to call this if the
-		 * children need to support touches or dragging without the container
-		 * also scrolling.
+		 * @private
 		 */
-		public function stopScrolling():void
-		{
-			if(!this.scroller)
-			{
-				return;
-			}
-			this.scroller.stopScrolling();
-		}
+		protected var _alpha:Number = 1;
 
 		/**
-		 * Scrolls the list to a specific page, horizontally and vertically. If
-		 * <code>horizontalPageIndex</code> or <code>verticalPageIndex</code> is
-		 * -1, it will be ignored
+		 * @private
 		 */
-		public function scrollToPageIndex(horizontalPageIndex:int, verticalPageIndex:int, animationDuration:Number = 0):void
+		override public function get alpha():Number
 		{
-			if(this._scrollToHorizontalPageIndex == horizontalPageIndex &&
-				this._scrollToVerticalPageIndex == verticalPageIndex)
-			{
-				return;
-			}
-			this._scrollToHorizontalPageIndex = horizontalPageIndex;
-			this._scrollToVerticalPageIndex = verticalPageIndex;
-			this._scrollToIndexDuration = animationDuration;
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
+			return this._alpha;
 		}
 
 		/**
 		 * @private
 		 */
-		override protected function initialize():void
+		override public function set alpha(value:Number):void
 		{
-			if(!this.scroller)
+			if(this._alpha == value)
 			{
-				this.scroller = new Scroller();
-				this.scroller.viewPort = this.viewPort;
-				this.scroller.nameList.add(this.scrollerName);
-				this.scroller.addEventListener(Event.SCROLL, scroller_scrollHandler);
-				this.scroller.addEventListener(FeathersEventType.SCROLL_COMPLETE, scroller_scrollCompleteHandler);
-				super.addChildAt(this.scroller, 0);
+				return;
 			}
+			this._alpha = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		override public function get hasVisibleArea():Boolean
+		{
+			return true;
 		}
 
 		/**
@@ -892,158 +690,34 @@ package feathers.controls
 
 			if(dataInvalid)
 			{
-				this.viewPort.text = this._text;
-				this.viewPort.isHTML = this._isHTML;
+				this.textViewPort.text = this._text;
+				this.textViewPort.isHTML = this._isHTML;
 			}
 
 			if(stylesInvalid)
 			{
-				this.viewPort.antiAliasType = this._antiAliasType;
-				this.viewPort.background = this._background;
-				this.viewPort.backgroundColor = this._backgroundColor;
-				this.viewPort.border = this._border;
-				this.viewPort.borderColor = this._borderColor;
-				this.viewPort.condenseWhite = this._condenseWhite;
-				this.viewPort.displayAsPassword = this._displayAsPassword;
-				this.viewPort.gridFitType = this._gridFitType;
-				this.viewPort.sharpness = this._sharpness;
-				this.viewPort.thickness = this._thickness;
-				this.viewPort.textFormat = this._textFormat;
-				this.viewPort.styleSheet = this._styleSheet;
-				this.viewPort.embedFonts = this._embedFonts;
-				this.viewPort.paddingTop = this._paddingTop;
-				this.viewPort.paddingRight = this._paddingRight;
-				this.viewPort.paddingBottom = this._paddingBottom;
-				this.viewPort.paddingLeft = this._paddingLeft;
-				this.refreshScrollerStyles();
+				this.textViewPort.antiAliasType = this._antiAliasType;
+				this.textViewPort.background = this._background;
+				this.textViewPort.backgroundColor = this._backgroundColor;
+				this.textViewPort.border = this._border;
+				this.textViewPort.borderColor = this._borderColor;
+				this.textViewPort.condenseWhite = this._condenseWhite;
+				this.textViewPort.displayAsPassword = this._displayAsPassword;
+				this.textViewPort.gridFitType = this._gridFitType;
+				this.textViewPort.sharpness = this._sharpness;
+				this.textViewPort.thickness = this._thickness;
+				this.textViewPort.textFormat = this._textFormat;
+				this.textViewPort.styleSheet = this._styleSheet;
+				this.textViewPort.embedFonts = this._embedFonts;
+				this.textViewPort.paddingTop = this._textPaddingTop;
+				this.textViewPort.paddingRight = this._textPaddingRight;
+				this.textViewPort.paddingBottom = this._textPaddingBottom;
+				this.textViewPort.paddingLeft = this._textPaddingLeft;
+				this.textViewPort.visible = this._visible;
+				this.textViewPort.alpha = this._alpha;
 			}
 
-			if(scrollInvalid)
-			{
-				this.scroller.verticalScrollPosition = this._verticalScrollPosition;
-				this.scroller.horizontalScrollPosition = this._horizontalScrollPosition;
-			}
-
-			if(sizeInvalid)
-			{
-				if(isNaN(this.explicitWidth))
-				{
-					this.scroller.width = NaN;
-				}
-				else
-				{
-					this.scroller.width = Math.max(0, this.explicitWidth);
-				}
-				if(isNaN(this.explicitHeight))
-				{
-					this.scroller.height = NaN;
-				}
-				else
-				{
-					this.scroller.height = Math.max(0, this.explicitHeight);
-				}
-				this.scroller.minWidth = Math.max(0,  this._minWidth);
-				this.scroller.maxWidth = Math.max(0, this._maxWidth);
-				this.scroller.minHeight = Math.max(0, this._minHeight);
-				this.scroller.maxHeight = Math.max(0, this._maxHeight);
-			}
-
-			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
-
-			this.scroller.validate();
-			this._maxHorizontalScrollPosition = this.scroller.maxHorizontalScrollPosition;
-			this._maxVerticalScrollPosition = this.scroller.maxVerticalScrollPosition;
-			this._horizontalScrollPosition = this.scroller.horizontalScrollPosition;
-			this._verticalScrollPosition = this.scroller.verticalScrollPosition;
-			this._horizontalPageIndex = this.scroller.horizontalPageIndex;
-			this._verticalPageIndex = this.scroller.verticalPageIndex;
-
-			this.scroll();
-		}
-
-		/**
-		 * @private
-		 */
-		protected function autoSizeIfNeeded():Boolean
-		{
-			const needsWidth:Boolean = isNaN(this.explicitWidth);
-			const needsHeight:Boolean = isNaN(this.explicitHeight);
-			if(!needsWidth && !needsHeight)
-			{
-				return false;
-			}
-
-			this.scroller.validate();
-			var newWidth:Number = this.explicitWidth;
-			var newHeight:Number = this.explicitHeight;
-			if(needsWidth)
-			{
-				newWidth = this.scroller.width;
-			}
-			if(needsHeight)
-			{
-				newHeight = this.scroller.height;
-			}
-			return this.setSizeInternal(newWidth, newHeight, false);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function refreshScrollerStyles():void
-		{
-			for(var propertyName:String in this._scrollerProperties)
-			{
-				if(this.scroller.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._scrollerProperties[propertyName];
-					this.scroller[propertyName] = propertyValue;
-				}
-			}
-		}
-
-		/**
-		 * @private
-		 */
-		protected function scroll():void
-		{
-			if(this._scrollToHorizontalPageIndex >= 0 || this._scrollToVerticalPageIndex >= 0)
-			{
-				this.scroller.throwToPage(this._scrollToHorizontalPageIndex, this._scrollToVerticalPageIndex, this._scrollToIndexDuration);
-				this._scrollToHorizontalPageIndex = -1;
-				this._scrollToVerticalPageIndex = -1;
-			}
-		}
-
-		/**
-		 * @private
-		 */
-		protected function childProperties_onChange(proxy:PropertyProxy, name:String):void
-		{
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function scroller_scrollHandler(event:Event):void
-		{
-			this._horizontalScrollPosition = this.scroller.horizontalScrollPosition;
-			this._verticalScrollPosition = this.scroller.verticalScrollPosition;
-			this._maxHorizontalScrollPosition = this.scroller.maxHorizontalScrollPosition;
-			this._maxVerticalScrollPosition = this.scroller.maxVerticalScrollPosition;
-			this._horizontalPageIndex = this.scroller.horizontalPageIndex;
-			this._verticalPageIndex = this.scroller.verticalPageIndex;
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
-			this.dispatchEventWith(Event.SCROLL);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function scroller_scrollCompleteHandler(event:Event):void
-		{
-			this.dispatchEventWith(FeathersEventType.SCROLL_COMPLETE);
+			super.draw();
 		}
 	}
 }

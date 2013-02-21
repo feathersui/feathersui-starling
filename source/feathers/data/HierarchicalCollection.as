@@ -63,7 +63,7 @@ package feathers.data
 
 	/**
 	 * Dispatched when a property of an item in the collection has changed
-	 * and the item doesn't have its own change event or signal. This signal
+	 * and the item doesn't have its own change event or signal. This event
 	 * is only dispatched when the <code>updateItemAt()</code> function is
 	 * called on the <code>HierarchicalCollection</code>.
 	 *
@@ -172,8 +172,8 @@ package feathers.data
 		/**
 		 * If an item doesn't dispatch an event or signal to indicate that it
 		 * has changed, you can manually tell the collection about the change,
-		 * and the collection will dispatch the <code>onItemUpdate</code> signal
-		 * to manually notify the component that renders the data.
+		 * and the collection will dispatch the <code>CollectionEventType.UPDATE_ITEM</code>
+		 * event to manually notify the component that renders the data.
 		 */
 		public function updateItemAt(index:int, ...rest:Array):void
 		{

@@ -1,10 +1,10 @@
 /*
- Feathers
- Copyright (c) 2012 Josh Tynjala. All Rights Reserved.
+Feathers
+Copyright 2012-2013 Joshua Tynjala. All Rights Reserved.
 
- This program is free software. You can redistribute and/or modify it in
- accordance with the terms of the accompanying license agreement.
- */
+This program is free software. You can redistribute and/or modify it in
+accordance with the terms of the accompanying license agreement.
+*/
 package feathers.core
 {
 	import flash.geom.Matrix;
@@ -21,12 +21,15 @@ package feathers.core
 	 * Public properties and functions from <code>starling.display.DisplayObject</code>
 	 * in helpful interface form.
 	 *
+	 * <p>Never cast an object to this type. Cast to <code>DisplayObject</code>
+	 * instead. This interface exists only to support easier code hinting.</p>
+	 *
 	 * @see starling.display.DisplayObject
 	 */
 	public interface IFeathersDisplayObject extends IFeathersEventDispatcher
 	{
 		/**
-		 * @private
+		 * @see starling.display.DisplayObject#x
 		 */
 		function get x():Number;
 
@@ -36,7 +39,7 @@ package feathers.core
 		function set x(value:Number):void;
 
 		/**
-		 * @private
+		 * @see starling.display.DisplayObject#y
 		 */
 		function get y():Number;
 
@@ -46,7 +49,7 @@ package feathers.core
 		function set y(value:Number):void;
 
 		/**
-		 * @private
+		 * @see starling.display.DisplayObject#width
 		 */
 		function get width():Number;
 
@@ -56,7 +59,7 @@ package feathers.core
 		function set width(value:Number):void;
 
 		/**
-		 * @private
+		 * @see starling.display.DisplayObject#height
 		 */
 		function get height():Number;
 
@@ -66,7 +69,7 @@ package feathers.core
 		function set height(value:Number):void;
 
 		/**
-		 * @private
+		 * @see starling.display.DisplayObject#pivotX
 		 */
 		function get pivotX():Number;
 
@@ -76,7 +79,7 @@ package feathers.core
 		function set pivotX(value:Number):void;
 
 		/**
-		 * @private
+		 * @see starling.display.DisplayObject#pivotY
 		 */
 		function get pivotY():Number;
 
@@ -86,7 +89,7 @@ package feathers.core
 		function set pivotY(value:Number):void;
 
 		/**
-		 * @private
+		 * @see starling.display.DisplayObject#scaleX
 		 */
 		function get scaleX():Number;
 
@@ -96,7 +99,7 @@ package feathers.core
 		function set scaleX(value:Number):void;
 
 		/**
-		 * @private
+		 * @see starling.display.DisplayObject#scaleY
 		 */
 		function get scaleY():Number;
 
@@ -106,7 +109,7 @@ package feathers.core
 		function set scaleY(value:Number):void;
 
 		/**
-		 * @private
+		 * @see starling.display.DisplayObject#skewX
 		 */
 		function get skewX():Number;
 
@@ -116,7 +119,7 @@ package feathers.core
 		function set skewX(value:Number):void;
 
 		/**
-		 * @private
+		 * @see starling.display.DisplayObject#skewY
 		 */
 		function get skewY():Number;
 
@@ -126,7 +129,7 @@ package feathers.core
 		function set skewY(value:Number):void;
 
 		/**
-		 * @private
+		 * @see starling.display.DisplayObject#blendMode
 		 */
 		function get blendMode():String;
 
@@ -136,7 +139,7 @@ package feathers.core
 		function set blendMode(value:String):void;
 
 		/**
-		 * @private
+		 * @see starling.display.DisplayObject#name
 		 */
 		function get name():String;
 
@@ -146,7 +149,7 @@ package feathers.core
 		function set name(value:String):void;
 
 		/**
-		 * @private
+		 * @see starling.display.DisplayObject#touchable
 		 */
 		function get touchable():Boolean;
 
@@ -156,7 +159,7 @@ package feathers.core
 		function set touchable(value:Boolean):void;
 
 		/**
-		 * @private
+		 * @see starling.display.DisplayObject#visible
 		 */
 		function get visible():Boolean;
 
@@ -166,7 +169,7 @@ package feathers.core
 		function set visible(value:Boolean):void;
 
 		/**
-		 * @private
+		 * @see starling.display.DisplayObject#alpha
 		 */
 		function get alpha():Number;
 
@@ -176,7 +179,7 @@ package feathers.core
 		function set alpha(value:Number):void;
 
 		/**
-		 * @private
+		 * @see starling.display.DisplayObject#rotation
 		 */
 		function get rotation():Number;
 
@@ -186,37 +189,37 @@ package feathers.core
 		function set rotation(value:Number):void;
 
 		/**
-		 * @private
+		 * @see starling.display.DisplayObject#parent
 		 */
 		function get parent():DisplayObjectContainer;
 
 		/**
-		 * @private
+		 * @see starling.display.DisplayObject#base
 		 */
 		function get base():DisplayObject;
 
 		/**
-		 * @private
+		 * @see starling.display.DisplayObject#root
 		 */
 		function get root():DisplayObject;
 
 		/**
-		 * @private
+		 * @see starling.display.DisplayObject#stage
 		 */
 		function get stage():Stage;
 
 		/**
-		 * @private
+		 * @see starling.display.DisplayObject#hasVisibleArea
 		 */
 		function get hasVisibleArea():Boolean;
 
 		/**
-		 * @private
+		 * @see starling.display.DisplayObject#transformationMatrix
 		 */
 		function get transformationMatrix():Matrix;
 
 		/**
-		 * @private
+		 * @see starling.display.DisplayObject#useHandCursor
 		 */
 		function get useHandCursor():Boolean;
 
@@ -226,12 +229,12 @@ package feathers.core
 		function set useHandCursor(value:Boolean):void;
 
 		/**
-		 * @private
+		 * @see starling.display.DisplayObject#bounds
 		 */
 		function get bounds():Rectangle;
 
 		/**
-		 * @private
+		 * @see starling.display.DisplayObject#filter
 		 */
 		function get filter():FragmentFilter;
 
@@ -241,42 +244,42 @@ package feathers.core
 		function set filter(value:FragmentFilter):void;
 
 		/**
-		 * @private
+		 * @see starling.display.DisplayObject#removeFromParent()
 		 */
 		function removeFromParent(dispose:Boolean = false):void;
 
 		/**
-		 * @private
+		 * @see starling.display.DisplayObject#hitTest()
 		 */
 		function hitTest(localPoint:Point, forTouch:Boolean=false):DisplayObject;
 
 		/**
-		 * @private
+		 * @see starling.display.DisplayObject#localToGlobal()
 		 */
 		function localToGlobal(localPoint:Point, resultPoint:Point=null):Point;
 
 		/**
-		 * @private
+		 * @see starling.display.DisplayObject#globalToLocal()
 		 */
 		function globalToLocal(globalPoint:Point, resultPoint:Point=null):Point;
 
 		/**
-		 * @private
+		 * @see starling.display.DisplayObject#getTransformationMatrix()
 		 */
 		function getTransformationMatrix(targetSpace:DisplayObject, resultMatrix:Matrix = null):Matrix;
 
 		/**
-		 * @private
+		 * @see starling.display.DisplayObject#getBounds()
 		 */
 		function getBounds(targetSpace:DisplayObject, resultRect:Rectangle = null):Rectangle;
 
 		/**
-		 * @private
+		 * @see starling.display.DisplayObject#render()
 		 */
 		function render(support:RenderSupport, parentAlpha:Number):void;
 
 		/**
-		 * @private
+		 * @see starling.display.DisplayObject#dispose()
 		 */
 		function dispose():void;
 	}

@@ -110,7 +110,7 @@
 		<echo message="Copying themes"/>
 
 		<copy overwrite="true" todir="${themes.output}/AeonDesktopTheme">
-			<fileset dir="${examples.root}/AeonDesktopTheme">
+			<fileset dir="${themes.root}/AeonDesktopTheme">
 				<include name="README.md"/>
 				<include name="source/**"/>
 				<include name="assets/**"/>
@@ -118,7 +118,7 @@
 		</copy>
 
 		<copy overwrite="true" todir="${themes.output}/AzureMobileTheme">
-			<fileset dir="${examples.root}/AzureMobileTheme">
+			<fileset dir="${themes.root}/AzureMobileTheme">
 				<include name="README.md"/>
 				<include name="source/**"/>
 				<include name="assets/**"/>
@@ -126,7 +126,7 @@
 		</copy>
 
 		<copy overwrite="true" todir="${themes.output}/MetalWorksMobileTheme">
-			<fileset dir="${examples.root}/MetalWorksMobileTheme">
+			<fileset dir="${themes.root}/MetalWorksMobileTheme">
 				<include name="README.md"/>
 				<include name="source/**"/>
 				<include name="assets/**"/>
@@ -134,7 +134,7 @@
 		</copy>
 
 		<copy overwrite="true" todir="${themes.output}/MinimalMobileTheme">
-			<fileset dir="${examples.root}/MinimalMobileTheme">
+			<fileset dir="${themes.root}/MinimalMobileTheme">
 				<include name="README.md"/>
 				<include name="source/**"/>
 				<include name="assets/**"/>

@@ -1,26 +1,9 @@
 /*
-Copyright 2012-2013 Joshua Tynjala
+Feathers
+Copyright 2012-2013 Joshua Tynjala. All Rights Reserved.
 
-Permission is hereby granted, free of charge, to any person
-obtaining a copy of this software and associated documentation
-files (the "Software"), to deal in the Software without
-restriction, including without limitation the rights to use,
-copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the
-Software is furnished to do so, subject to the following
-conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-OTHER DEALINGS IN THE SOFTWARE.
+This program is free software. You can redistribute and/or modify it in
+accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
@@ -60,6 +43,8 @@ package feathers.controls
 
 		/**
 		 * The title will appear in the center of the header.
+		 *
+		 * @see #titleAlign
 		 */
 		public static const TITLE_ALIGN_CENTER:String = "center";
 
@@ -67,6 +52,8 @@ package feathers.controls
 		 * The title will appear on the left of the header, if there is no other
 		 * content on that side. If there is content, the title will appear in
 		 * the center.
+		 *
+		 * @see #titleAlign
 		 */
 		public static const TITLE_ALIGN_PREFER_LEFT:String = "preferLeft";
 
@@ -74,33 +61,45 @@ package feathers.controls
 		 * The title will appear on the right of the header, if there is no
 		 * other content on that side. If there is content, the title will
 		 * appear in the center.
+		 *
+		 * @see #titleAlign
 		 */
 		public static const TITLE_ALIGN_PREFER_RIGHT:String = "preferRight";
 
 		/**
 		 * The items will be aligned to the top of the bounds.
+		 *
+		 * @see #verticalAlign
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
 
 		/**
 		 * The items will be aligned to the middle of the bounds.
+		 *
+		 * @see #verticalAlign
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
 
 		/**
 		 * The items will be aligned to the bottom of the bounds.
+		 *
+		 * @see #verticalAlign
 		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 
 		/**
 		 * The default value added to the <code>nameList</code> of the header's
 		 * items.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const DEFAULT_CHILD_NAME_ITEM:String = "feathers-header-item";
 
 		/**
 		 * The default value added to the <code>nameList</code> of the header's
 		 * title.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const DEFAULT_CHILD_NAME_TITLE:String = "feathers-header-title";
 
@@ -129,11 +128,15 @@ package feathers.controls
 
 		/**
 		 * The value added to the <code>nameList</code> of the header's title.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var titleName:String = DEFAULT_CHILD_NAME_TITLE;
 
 		/**
 		 * The value added to the <code>nameList</code> of the header's items.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var itemName:String = DEFAULT_CHILD_NAME_ITEM;
 
@@ -453,6 +456,34 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _titleGap:Number = NaN;
+
+		/**
+		 * Space, in pixels, between the title and the left or right groups of
+		 * items. If <code>NaN</code> (the default), the regular <code>gap</code>
+		 * property is used instead.
+		 */
+		public function get titleGap():Number
+		{
+			return _titleGap;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set titleGap(value:Number):void
+		{
+			if(this._titleGap == value)
+			{
+				return;
+			}
+			this._titleGap = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _verticalAlign:String = VERTICAL_ALIGN_MIDDLE;
 
 		[Inspectable(type="String",enumeration="top,middle,bottom")]
@@ -486,6 +517,11 @@ package feathers.controls
 		 * @private
 		 */
 		protected var originalBackgroundHeight:Number = NaN;
+
+		/**
+		 * @private
+		 */
+		protected var currentBackgroundSkin:DisplayObject;
 
 		/**
 		 * @private
@@ -668,6 +704,7 @@ package feathers.controls
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 			const leftContentInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LEFT_CONTENT);
 			const rightContentInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_RIGHT_CONTENT);
 			const textRendererInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_TEXT_RENDERER);
@@ -680,6 +717,11 @@ package feathers.controls
 			if(textRendererInvalid || dataInvalid)
 			{
 				this._titleRenderer.text = this._title;
+			}
+
+			if(stateInvalid || stylesInvalid)
+			{
+				this.refreshBackground();
 			}
 
 			if(textRendererInvalid || stylesInvalid)
@@ -696,7 +738,7 @@ package feathers.controls
 					{
 						if(item is IFeathersControl)
 						{
-							FeathersControl(item).nameList.add(this.itemName);
+							IFeathersControl(item).nameList.add(this.itemName);
 						}
 						this.addChild(item);
 					}
@@ -709,7 +751,10 @@ package feathers.controls
 				{
 					for each(item in this._rightItems)
 					{
-						IFeathersControl(item).nameList.add(this.itemName);
+						if(item is IFeathersControl)
+						{
+							IFeathersControl(item).nameList.add(this.itemName);
+						}
 						this.addChild(item);
 					}
 				}
@@ -757,43 +802,43 @@ package feathers.controls
 			var newWidth:Number = needsWidth ? (this._paddingLeft + this._paddingRight) : this.explicitWidth;
 			var newHeight:Number = needsHeight ? 0 : this.explicitHeight;
 
-			if(this._backgroundSkin)
-			{
-				if(isNaN(this.originalBackgroundWidth))
-				{
-					this.originalBackgroundWidth = this._backgroundSkin.width;
-				}
-				if(isNaN(this.originalBackgroundHeight))
-				{
-					this.originalBackgroundHeight = this._backgroundSkin.height;
-				}
-			}
-
 			var totalItemWidth:Number = 0;
-			for each(var item:DisplayObject in this._leftItems)
+			const leftItemCount:int = this._leftItems ? this._leftItems.length : 0;
+			for(var i:int = 0; i < leftItemCount; i++)
 			{
+				var item:DisplayObject = this._leftItems[i];
 				if(item is IFeathersControl)
 				{
 					IFeathersControl(item).validate();
 				}
 				if(needsWidth && !isNaN(item.width))
 				{
-					totalItemWidth += item.width + this._gap;
+					totalItemWidth += item.width;
+					if(i > 0)
+					{
+						totalItemWidth += this._gap;
+					}
 				}
 				if(needsHeight && !isNaN(item.height))
 				{
 					newHeight = Math.max(newHeight, item.height);
 				}
 			}
-			for each(item in this._rightItems)
+			const rightItemCount:int = this._rightItems ? this._rightItems.length : 0;
+			for(i = 0; i < rightItemCount; i++)
 			{
+				item = this._rightItems[i];
 				if(item is IFeathersControl)
 				{
 					IFeathersControl(item).validate();
 				}
 				if(needsWidth && !isNaN(item.width))
 				{
-					totalItemWidth += item.width + this._gap;
+					totalItemWidth += item.width;
+					if(i > 0)
+					{
+						totalItemWidth += this._gap;
+					}
 				}
 				if(needsHeight && !isNaN(item.height))
 				{
@@ -802,18 +847,39 @@ package feathers.controls
 			}
 			newWidth += totalItemWidth;
 
-			const maxTitleWidth:Number = (needsWidth ? this._maxWidth : this.explicitWidth) - totalItemWidth - this._paddingLeft - this._paddingRight;
-			this._titleRenderer.maxWidth = maxTitleWidth;
-			this._titleRenderer.measureText(HELPER_POINT);
-			const measuredTitleWidth:Number = HELPER_POINT.x;
-			const measuredTitleHeight:Number = HELPER_POINT.x;
-			if(needsWidth && !isNaN(measuredTitleWidth))
+			if(this._title)
 			{
-				newWidth += HELPER_POINT.x;
-			}
-			if(needsHeight && !isNaN(measuredTitleHeight))
-			{
-				newHeight = Math.max(newHeight, HELPER_POINT.y);
+				const calculatedTitleGap:Number = isNaN(this._titleGap) ? this._gap : this._titleGap;
+				newWidth += 2 * calculatedTitleGap;
+				var maxTitleWidth:Number = (needsWidth ? this._maxWidth : this.explicitWidth) - totalItemWidth;
+				if(leftItemCount > 0)
+				{
+					maxTitleWidth -= calculatedTitleGap;
+				}
+				if(rightItemCount > 0)
+				{
+					maxTitleWidth -= calculatedTitleGap;
+				}
+				this._titleRenderer.maxWidth = maxTitleWidth;
+				this._titleRenderer.measureText(HELPER_POINT);
+				const measuredTitleWidth:Number = HELPER_POINT.x;
+				const measuredTitleHeight:Number = HELPER_POINT.y;
+				if(needsWidth && !isNaN(measuredTitleWidth))
+				{
+					newWidth += measuredTitleWidth;
+					if(leftItemCount > 0)
+					{
+						newWidth += calculatedTitleGap;
+					}
+					if(rightItemCount > 0)
+					{
+						newWidth += calculatedTitleGap;
+					}
+				}
+				if(needsHeight && !isNaN(measuredTitleHeight))
+				{
+					newHeight = Math.max(newHeight, measuredTitleHeight);
+				}
 			}
 			if(needsHeight)
 			{
@@ -853,6 +919,39 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function refreshBackground():void
+		{
+			this.currentBackgroundSkin = this._backgroundSkin;
+			if(!this._isEnabled && this._backgroundDisabledSkin)
+			{
+				if(this._backgroundSkin)
+				{
+					this._backgroundSkin.visible = false;
+				}
+				this.currentBackgroundSkin = this._backgroundDisabledSkin;
+			}
+			else if(this._backgroundDisabledSkin)
+			{
+				this._backgroundDisabledSkin.visible = false;
+			}
+			if(this.currentBackgroundSkin)
+			{
+				this.currentBackgroundSkin.visible = true;
+
+				if(isNaN(this.originalBackgroundWidth))
+				{
+					this.originalBackgroundWidth = this.currentBackgroundSkin.width;
+				}
+				if(isNaN(this.originalBackgroundHeight))
+				{
+					this.originalBackgroundHeight = this.currentBackgroundSkin.height;
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function refreshLayout():void
 		{
 			this._layout.gap = this._gap;
@@ -882,28 +981,12 @@ package feathers.controls
 		 */
 		protected function layoutBackground():void
 		{
-			var backgroundSkin:DisplayObject = this._backgroundSkin;
-			if(!this._isEnabled && this._backgroundDisabledSkin)
+			if(!this.currentBackgroundSkin)
 			{
-				if(this._backgroundSkin)
-				{
-					this._backgroundSkin.visible = false;
-					this._backgroundSkin.touchable = false;
-				}
-				backgroundSkin = this._backgroundDisabledSkin;
+				return;
 			}
-			else if(this._backgroundDisabledSkin)
-			{
-				this._backgroundDisabledSkin.visible = false;
-				this._backgroundDisabledSkin.touchable = false;
-			}
-			if(backgroundSkin)
-			{
-				backgroundSkin.visible = true;
-				backgroundSkin.touchable = true;
-				backgroundSkin.width = this.actualWidth;
-				backgroundSkin.height = this.actualHeight;
-			}
+			this.currentBackgroundSkin.width = this.actualWidth;
+			this.currentBackgroundSkin.height = this.actualHeight;
 		}
 
 		/**
@@ -919,6 +1002,7 @@ package feathers.controls
 				}
 			}
 			HELPER_BOUNDS.x = HELPER_BOUNDS.y = 0;
+			HELPER_BOUNDS.scrollX = HELPER_BOUNDS.scrollY = 0;
 			HELPER_BOUNDS.explicitWidth = this.actualWidth;
 			HELPER_BOUNDS.explicitHeight = this.actualHeight;
 			this._layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_LEFT;
@@ -946,6 +1030,7 @@ package feathers.controls
 				}
 			}
 			HELPER_BOUNDS.x = HELPER_BOUNDS.y = 0;
+			HELPER_BOUNDS.scrollX = HELPER_BOUNDS.scrollY = 0;
 			HELPER_BOUNDS.explicitWidth = this.actualWidth;
 			HELPER_BOUNDS.explicitHeight = this.actualHeight;
 			this._layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_RIGHT;
@@ -968,27 +1053,38 @@ package feathers.controls
 			{
 				return;
 			}
-			const leftOffset:Number = (this._leftItems && this._leftItems.length > 0) ? (this.leftItemsWidth + this._gap) : 0;
-			const rightOffset:Number = (this._rightItems && this._rightItems.length > 0) ? (this.rightItemsWidth + this._gap) : 0;
+			const calculatedTitleGap:Number = isNaN(this._titleGap) ? this._gap : this._titleGap;
+			//left and right offsets already include padding
+			const leftOffset:Number = (this._leftItems && this._leftItems.length > 0) ? (this.leftItemsWidth + calculatedTitleGap) : 0;
+			const rightOffset:Number = (this._rightItems && this._rightItems.length > 0) ? (this.rightItemsWidth + calculatedTitleGap) : 0;
 			if(this._titleAlign == TITLE_ALIGN_PREFER_LEFT && (!this._leftItems || this._leftItems.length == 0))
 			{
-				this._titleRenderer.maxWidth = this.actualWidth - this._paddingLeft - this._paddingRight - rightOffset;
+				this._titleRenderer.maxWidth = this.actualWidth - this._paddingLeft - rightOffset;
 				this._titleRenderer.validate();
 				this._titleRenderer.x = this._paddingLeft;
 			}
 			else if(this._titleAlign == TITLE_ALIGN_PREFER_RIGHT && (!this._rightItems || this._rightItems.length == 0))
 			{
-				this._titleRenderer.maxWidth = this.actualWidth - this._paddingLeft - this._paddingRight - leftOffset;
+				this._titleRenderer.maxWidth = this.actualWidth - this._paddingRight - leftOffset;
 				this._titleRenderer.validate();
 				this._titleRenderer.x = this.actualWidth - this._paddingRight - this._titleRenderer.width;
 			}
 			else
 			{
-				const sharedOffset:Number = Math.max(leftOffset, rightOffset);
-				const availableWidth:Number = this.actualWidth - this._paddingLeft - this._paddingRight - 2 * sharedOffset;
-				this._titleRenderer.maxWidth = availableWidth;
+				const actualWidthMinusPadding:Number = this.actualWidth - this._paddingLeft - this._paddingRight;
+				const actualWidthMinusOffsets:Number = this.actualWidth - leftOffset - rightOffset;
+				this._titleRenderer.maxWidth = actualWidthMinusOffsets;
 				this._titleRenderer.validate();
-				this._titleRenderer.x = this._paddingLeft + sharedOffset + (availableWidth - this._titleRenderer.width) / 2;
+				const idealTitlePosition:Number = this._paddingLeft + (actualWidthMinusPadding - this._titleRenderer.width) / 2;
+				if(leftOffset > idealTitlePosition ||
+					(idealTitlePosition + this._titleRenderer.width) > (this.actualWidth - rightOffset))
+				{
+					this._titleRenderer.x = leftOffset + (actualWidthMinusOffsets - this._titleRenderer.width) / 2;
+				}
+				else
+				{
+					this._titleRenderer.x = idealTitlePosition;
+				}
 			}
 			if(this._verticalAlign == VERTICAL_ALIGN_TOP)
 			{

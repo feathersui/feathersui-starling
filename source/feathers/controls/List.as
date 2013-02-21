@@ -9,7 +9,7 @@ package feathers.controls
 {
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.supportClasses.ListDataViewPort;
-	import feathers.core.FeathersControl;
+	import feathers.core.IFocusDisplayObject;
 	import feathers.core.PropertyProxy;
 	import feathers.data.ListCollection;
 	import feathers.events.CollectionEventType;
@@ -18,9 +18,10 @@ package feathers.controls
 	import feathers.layout.VerticalLayout;
 
 	import flash.geom.Point;
+	import flash.ui.Keyboard;
 
-	import starling.display.DisplayObject;
 	import starling.events.Event;
+	import starling.events.KeyboardEvent;
 
 	/**
 	 * Dispatched when the selected item changes.
@@ -28,21 +29,6 @@ package feathers.controls
 	 * @eventType starling.events.Event.CHANGE
 	 */
 	[Event(name="change",type="starling.events.Event")]
-
-	/**
-	 * Dispatched when the list is scrolled.
-	 *
-	 * @eventType starling.events.Event.SCROLL
-	 */
-	[Event(name="scroll",type="starling.events.Event")]
-
-	/**
-	 * Dispatched when the list finishes scrolling in either direction after
-	 * being thrown.
-	 *
-	 * @eventType feathers.events.FeathersEventType.SCROLL_COMPLETE
-	 */
-	[Event(name="scrollComplete",type="starling.events.Event")]
 
 	/**
 	 * Dispatched when an item renderer is added to the list. When the layout is
@@ -78,7 +64,7 @@ package feathers.controls
 	 * @see http://wiki.starling-framework.org/feathers/list
 	 * @see GroupedList
 	 */
-	public class List extends FeathersControl
+	public class List extends Scroller implements IFocusDisplayObject
 	{
 		/**
 		 * @private
@@ -86,9 +72,44 @@ package feathers.controls
 		private static const HELPER_POINT:Point = new Point();
 
 		/**
-		 * The default value added to the <code>nameList</code> of the scroller.
+		 * @copy feathers.controls.Scroller#SCROLL_POLICY_AUTO
 		 */
-		public static const DEFAULT_CHILD_NAME_SCROLLER:String = "feathers-list-scroller";
+		public static const SCROLL_POLICY_AUTO:String = "auto";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_POLICY_ON
+		 */
+		public static const SCROLL_POLICY_ON:String = "on";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_POLICY_OFF
+		 */
+		public static const SCROLL_POLICY_OFF:String = "off";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_FLOAT
+		 */
+		public static const SCROLL_BAR_DISPLAY_MODE_FLOAT:String = "float";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_FIXED
+		 */
+		public static const SCROLL_BAR_DISPLAY_MODE_FIXED:String = "fixed";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_NONE
+		 */
+		public static const SCROLL_BAR_DISPLAY_MODE_NONE:String = "none";
+
+		/**
+		 * @copy feathers.controls.Scroller#INTERACTION_MODE_TOUCH
+		 */
+		public static const INTERACTION_MODE_TOUCH:String = "touch";
+
+		/**
+		 * @copy feathers.controls.Scroller#INTERACTION_MODE_MOUSE
+		 */
+		public static const INTERACTION_MODE_MOUSE:String = "mouse";
 		
 		/**
 		 * Constructor.
@@ -96,43 +117,15 @@ package feathers.controls
 		public function List()
 		{
 			super();
+			this.addEventListener(FeathersEventType.FOCUS_IN, list_focusInHandler);
+			this.addEventListener(FeathersEventType.FOCUS_OUT, list_focusOutHandler);
 		}
-
-		/**
-		 * The value added to the <code>nameList</code> of the scroller.
-		 */
-		protected var scrollerName:String = DEFAULT_CHILD_NAME_SCROLLER;
-
-		/**
-		 * The list's scroller sub-component.
-		 */
-		protected var scroller:Scroller;
 
 		/**
 		 * @private
 		 * The guts of the List's functionality. Handles layout and selection.
 		 */
 		protected var dataViewPort:ListDataViewPort;
-		
-		/**
-		 * @private
-		 */
-		protected var _scrollToIndex:int = -1;
-
-		/**
-		 * @private
-		 */
-		protected var _scrollToHorizontalPageIndex:int = -1;
-
-		/**
-		 * @private
-		 */
-		protected var _scrollToVerticalPageIndex:int = -1;
-
-		/**
-		 * @private
-		 */
-		protected var _scrollToIndexDuration:Number;
 
 		/**
 		 * @private
@@ -159,139 +152,6 @@ package feathers.controls
 			}
 			this._layout = value;
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _horizontalScrollPosition:Number = 0;
-
-		/**
-		 * The number of pixels the list has been scrolled horizontally (on
-		 * the x-axis).
-		 */
-		public function get horizontalScrollPosition():Number
-		{
-			return this._horizontalScrollPosition;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set horizontalScrollPosition(value:Number):void
-		{
-			if(this._horizontalScrollPosition == value)
-			{
-				return;
-			}
-			if(isNaN(value))
-			{
-				throw new ArgumentError("horizontalScrollPosition cannot be NaN.");
-			}
-			this._horizontalScrollPosition = value;
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
-			this.dispatchEventWith(Event.SCROLL);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _maxHorizontalScrollPosition:Number = 0;
-
-		/**
-		 * The maximum number of pixels the list may be scrolled horizontally
-		 * (on the x-axis). This value is automatically calculated using the
-		 * layout algorithm. The <code>horizontalScrollPosition</code> property
-		 * may have a higher value than the maximum due to elastic edges.
-		 * However, once the user stops interacting with the list, it will
-		 * automatically animate back to the maximum (or minimum, if below 0).
-		 */
-		public function get maxHorizontalScrollPosition():Number
-		{
-			return this._maxHorizontalScrollPosition;
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _horizontalPageIndex:int = 0;
-
-		/**
-		 * The index of the horizontal page, if snapping is enabled. If snapping
-		 * is disabled, the index will always be <code>0</code>.
-		 */
-		public function get horizontalPageIndex():int
-		{
-			return this._horizontalPageIndex;
-		}
-		
-		/**
-		 * @private
-		 */
-		protected var _verticalScrollPosition:Number = 0;
-		
-		/**
-		 * The number of pixels the list has been scrolled vertically (on
-		 * the y-axis).
-		 */
-		public function get verticalScrollPosition():Number
-		{
-			return this._verticalScrollPosition;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set verticalScrollPosition(value:Number):void
-		{
-			if(this._verticalScrollPosition == value)
-			{
-				return;
-			}
-			if(isNaN(value))
-			{
-				throw new ArgumentError("verticalScrollPosition cannot be NaN.");
-			}
-			this._verticalScrollPosition = value;
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
-			this.dispatchEventWith(Event.SCROLL);
-		}
-		
-		/**
-		 * @private
-		 */
-		protected var _maxVerticalScrollPosition:Number = 0;
-		
-		/**
-		 * The maximum number of pixels the list may be scrolled vertically (on
-		 * the y-axis). This value is automatically calculated based on the
-		 * total combined height of the list's item renderers. The
-		 * <code>verticalScrollPosition</code> property may have a higher value
-		 * than the maximum due to elastic edges. However, once the user stops
-		 * interacting with the list, it will automatically animate back to the
-		 * maximum (or minimum, if below 0).
-		 * 
-		 * @default 0
-		 */
-		public function get maxVerticalScrollPosition():Number
-		{
-			return this._maxVerticalScrollPosition;
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _verticalPageIndex:int = 0;
-
-		/**
-		 * The index of the vertical page, if snapping is enabled. If snapping
-		 * is disabled, the index will always be <code>0</code>.
-		 *
-		 * @default 0
-		 */
-		public function get verticalPageIndex():int
-		{
-			return this._verticalPageIndex;
 		}
 		
 		/**
@@ -418,59 +278,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _scrollerProperties:PropertyProxy;
-		
-		/**
-		 * A set of key/value pairs to be passed down to the list's scroller
-		 * instance. The scroller is a <code>feathers.controls.Scroller</code>
-		 * instance.
-		 *
-		 * <p>If the subcomponent has its own subcomponents, their properties
-		 * can be set too, using attribute <code>&#64;</code> notation. For example,
-		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
-		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
-		 * you can use the following syntax:</p>
-		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
-		 * 
-		 * @see feathers.controls.Scroller
-		 */
-		public function get scrollerProperties():Object
-		{
-			if(!this._scrollerProperties)
-			{
-				this._scrollerProperties = new PropertyProxy(childProperties_onChange);
-			}
-			return this._scrollerProperties;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set scrollerProperties(value:Object):void
-		{
-			if(this._scrollerProperties == value)
-			{
-				return;
-			}
-			if(value && !(value is PropertyProxy))
-			{
-				value = PropertyProxy.fromObject(value);
-			}
-			if(this._scrollerProperties)
-			{
-				this._scrollerProperties.removeOnChangeCallback(childProperties_onChange);
-			}
-			this._scrollerProperties = PropertyProxy(value);
-			if(this._scrollerProperties)
-			{
-				this._scrollerProperties.addOnChangeCallback(childProperties_onChange);
-			}
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-		
-		/**
-		 * @private
-		 */
 		protected var _itemRendererProperties:PropertyProxy;
 
 		/**
@@ -530,227 +337,6 @@ package feathers.controls
 			{
 				this._itemRendererProperties.addOnChangeCallback(childProperties_onChange);
 			}
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _originalBackgroundWidth:Number = NaN;
-
-		/**
-		 * @private
-		 */
-		protected var _originalBackgroundHeight:Number = NaN;
-
-		/**
-		 * @private
-		 */
-		protected var currentBackgroundSkin:DisplayObject;
-
-		/**
-		 * @private
-		 */
-		protected var _backgroundSkin:DisplayObject;
-		
-		/**
-		 * A display object displayed behind the item renderers.
-		 * 
-		 * @default null
-		 */
-		public function get backgroundSkin():DisplayObject
-		{
-			return this._backgroundSkin;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set backgroundSkin(value:DisplayObject):void
-		{
-			if(this._backgroundSkin == value)
-			{
-				return;
-			}
-			
-			if(this._backgroundSkin && this._backgroundSkin != this._backgroundDisabledSkin)
-			{
-				this.removeChild(this._backgroundSkin);
-			}
-			this._backgroundSkin = value;
-			if(this._backgroundSkin && this._backgroundSkin.parent != this)
-			{
-				this._backgroundSkin.visible = false;
-				this.addChildAt(this._backgroundSkin, 0);
-			}
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-		
-		/**
-		 * @private
-		 */
-		protected var _backgroundDisabledSkin:DisplayObject;
-		
-		/**
-		 * A background to display when the list is disabled.
-		 * 
-		 * @default null
-		 */
-		public function get backgroundDisabledSkin():DisplayObject
-		{
-			return this._backgroundDisabledSkin;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set backgroundDisabledSkin(value:DisplayObject):void
-		{
-			if(this._backgroundDisabledSkin == value)
-			{
-				return;
-			}
-			
-			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin != this._backgroundSkin)
-			{
-				this.removeChild(this._backgroundDisabledSkin);
-			}
-			this._backgroundDisabledSkin = value;
-			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin.parent != this)
-			{
-				this._backgroundDisabledSkin.visible = false;
-				this.addChildAt(this._backgroundDisabledSkin, 0);
-			}
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * Quickly sets all padding properties to the same value. The
-		 * <code>padding</code> getter always returns the value of
-		 * <code>paddingTop</code>, but the other padding values may be
-		 * different.
-		 */
-		public function get padding():Number
-		{
-			return this._paddingTop;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set padding(value:Number):void
-		{
-			this.paddingTop = value;
-			this.paddingRight = value;
-			this.paddingBottom = value;
-			this.paddingLeft = value;
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _paddingTop:Number = 0;
-
-		/**
-		 * The minimum space, in pixels, between the list's top edge and the
-		 * list's content.
-		 */
-		public function get paddingTop():Number
-		{
-			return this._paddingTop;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set paddingTop(value:Number):void
-		{
-			if(this._paddingTop == value)
-			{
-				return;
-			}
-			this._paddingTop = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _paddingRight:Number = 0;
-
-		/**
-		 * The minimum space, in pixels, between the list's right edge and the
-		 * list's content.
-		 */
-		public function get paddingRight():Number
-		{
-			return this._paddingRight;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set paddingRight(value:Number):void
-		{
-			if(this._paddingRight == value)
-			{
-				return;
-			}
-			this._paddingRight = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _paddingBottom:Number = 0;
-
-		/**
-		 * The minimum space, in pixels, between the list's bottom edge and
-		 * the list's content.
-		 */
-		public function get paddingBottom():Number
-		{
-			return this._paddingBottom;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set paddingBottom(value:Number):void
-		{
-			if(this._paddingBottom == value)
-			{
-				return;
-			}
-			this._paddingBottom = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _paddingLeft:Number = 0;
-
-		/**
-		 * The minimum space, in pixels, between the list's left edge and the
-		 * list's content.
-		 */
-		public function get paddingLeft():Number
-		{
-			return this._paddingLeft;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set paddingLeft(value:Number):void
-		{
-			if(this._paddingLeft == value)
-			{
-				return;
-			}
-			this._paddingLeft = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
@@ -878,6 +464,31 @@ package feathers.controls
 			this._itemRendererName = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
+
+		/**
+		 * The pending item index to scroll to after validating. A value of
+		 * <code>-1</code> means that the scroller won't scroll to an item after
+		 * validating.
+		 */
+		protected var pendingItemIndex:int = -1;
+
+		/**
+		 * @private
+		 */
+		override public function scrollToPosition(horizontalScrollPosition:Number, verticalScrollPosition:Number, animationDuration:Number = 0):void
+		{
+			this.pendingItemIndex = -1;
+			super.scrollToPosition(horizontalScrollPosition, verticalScrollPosition, animationDuration);
+		}
+
+		/**
+		 * @private
+		 */
+		override public function scrollToPageIndex(horizontalPageIndex:int, verticalPageIndex:int, animationDuration:Number = 0):void
+		{
+			this.pendingItemIndex = -1;
+			super.scrollToPageIndex(horizontalPageIndex, verticalPageIndex, animationDuration);
+		}
 		
 		/**
 		 * Scrolls the list so that the specified item is visible. If
@@ -889,50 +500,18 @@ package feathers.controls
 		 */
 		public function scrollToDisplayIndex(index:int, animationDuration:Number = 0):void
 		{
-			if(this._scrollToIndex == index)
+			this.pendingHorizontalPageIndex = -1;
+			this.pendingVerticalPageIndex = -1;
+			this.pendingHorizontalScrollPosition = NaN;
+			this.pendingVerticalScrollPosition = NaN;
+			if(this.pendingItemIndex == index &&
+				this.pendingScrollDuration == animationDuration)
 			{
 				return;
 			}
-			this._scrollToHorizontalPageIndex = -1;
-			this._scrollToVerticalPageIndex = -1;
-			this._scrollToIndex = index;
-			this._scrollToIndexDuration = animationDuration;
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
-		}
-
-		/**
-		 * Scrolls the list to a specific page, horizontally and vertically. If
-		 * <code>horizontalPageIndex</code> or <code>verticalPageIndex</code> is
-		 * -1, it will be ignored
-		 */
-		public function scrollToPageIndex(horizontalPageIndex:int, verticalPageIndex:int, animationDuration:Number = 0):void
-		{
-			if(this._scrollToHorizontalPageIndex == horizontalPageIndex &&
-				this._scrollToVerticalPageIndex == verticalPageIndex)
-			{
-				return;
-			}
-			this._scrollToHorizontalPageIndex = horizontalPageIndex;
-			this._scrollToVerticalPageIndex = verticalPageIndex;
-			this._scrollToIndex = -1;
-			this._scrollToIndexDuration = animationDuration;
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
-		}
-		
-		/**
-		 * If the user is scrolling with touch or if the scrolling is animated,
-		 * calling stopScrolling() will cause the scroller to ignore the drag
-		 * and stop animations. The children of the list will still receive
-		 * touches, so it's useful to call this if the children need to support
-		 * touches or dragging without the list also scrolling.
-		 */
-		public function stopScrolling():void
-		{
-			if(!this.scroller)
-			{
-				return;
-			}
-			this.scroller.stopScrolling();
+			this.pendingItemIndex = index;
+			this.pendingScrollDuration = animationDuration;
+			this.invalidate(INVALIDATION_FLAG_PENDING_SCROLL);
 		}
 		
 		/**
@@ -942,27 +521,27 @@ package feathers.controls
 		{
 			const hasLayout:Boolean = this._layout != null;
 
-			if(!this.scroller)
-			{
-				this.scroller = new Scroller();
-				this.scroller.nameList.add(this.scrollerName);
-				this.scroller.horizontalScrollPolicy = Scroller.SCROLL_POLICY_AUTO;
-				this.scroller.verticalScrollPolicy = hasLayout ? Scroller.SCROLL_POLICY_AUTO : Scroller.SCROLL_POLICY_ON;
-				this.scroller.addEventListener(Event.SCROLL, scroller_scrollHandler);
-				this.scroller.addEventListener(FeathersEventType.SCROLL_COMPLETE, scroller_scrollCompleteHandler);
-				this.addChild(this.scroller);
-			}
+			super.initialize();
 			
 			if(!this.dataViewPort)
 			{
-				this.dataViewPort = new ListDataViewPort();
+				this.viewPort = this.dataViewPort = new ListDataViewPort();
 				this.dataViewPort.owner = this;
 				this.dataViewPort.addEventListener(Event.CHANGE, dataViewPort_changeHandler);
-				this.scroller.viewPort = this.dataViewPort;
+				this.viewPort = this.dataViewPort;
 			}
 
 			if(!hasLayout)
 			{
+				if(this._hasElasticEdges &&
+					this._verticalScrollPolicy == SCROLL_POLICY_AUTO &&
+					this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_FIXED)
+				{
+					//so that the elastic edges work even when the max scroll
+					//position is 0, similar to iOS.
+					this.verticalScrollPolicy = SCROLL_POLICY_ON;
+				}
+
 				const layout:VerticalLayout = new VerticalLayout();
 				layout.useVirtualLayout = true;
 				layout.paddingTop = layout.paddingRight = layout.paddingBottom =
@@ -979,21 +558,15 @@ package feathers.controls
 		 */
 		override protected function draw():void
 		{
-			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
-			const scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
-			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
-			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
-			
-			if(stylesInvalid)
-			{
-				this.refreshScrollerStyles();
-			}
-			
-			if(sizeInvalid || stylesInvalid || stateInvalid)
-			{
-				this.refreshBackgroundSkin();
-			}
+			this.refreshDataViewPortProperties();
+			super.draw();
+		}
 
+		/**
+		 * @private
+		 */
+		protected function refreshDataViewPortProperties():void
+		{
 			this.dataViewPort.isSelectable = this._isSelectable;
 			this.dataViewPort.selectedIndex = this._selectedIndex;
 			this.dataViewPort.dataProvider = this._dataProvider;
@@ -1003,164 +576,25 @@ package feathers.controls
 			this.dataViewPort.itemRendererName = this._itemRendererName;
 			this.dataViewPort.typicalItem = this._typicalItem;
 			this.dataViewPort.layout = this._layout;
-			
-			this.scroller.isEnabled = this._isEnabled;
-			this.scroller.x = this._paddingLeft;
-			this.scroller.y = this._paddingTop;
-			this.scroller.horizontalScrollPosition = this._horizontalScrollPosition;
-			this.scroller.verticalScrollPosition = this._verticalScrollPosition;
-
-			if(sizeInvalid || stylesInvalid)
-			{
-				if(isNaN(this.explicitWidth))
-				{
-					this.scroller.width = NaN;
-				}
-				else
-				{
-					this.scroller.width = Math.max(0, this.explicitWidth - this._paddingLeft - this._paddingRight);
-				}
-				if(isNaN(this.explicitHeight))
-				{
-					this.scroller.height = NaN;
-				}
-				else
-				{
-					this.scroller.height = Math.max(0, this.explicitHeight - this._paddingTop - this._paddingBottom);
-				}
-				this.scroller.minWidth = Math.max(0,  this._minWidth - this._paddingLeft - this._paddingRight);
-				this.scroller.maxWidth = Math.max(0, this._maxWidth - this._paddingLeft - this._paddingRight);
-				this.scroller.minHeight = Math.max(0, this._minHeight - this._paddingTop - this._paddingBottom);
-				this.scroller.maxHeight = Math.max(0, this._maxHeight - this._paddingTop - this._paddingBottom);
-			}
-
-			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
-
-			if(sizeInvalid || stylesInvalid || stateInvalid)
-			{
-				if(this.currentBackgroundSkin)
-				{
-					this.currentBackgroundSkin.width = this.actualWidth;
-					this.currentBackgroundSkin.height = this.actualHeight;
-				}
-			}
-
-			this.scroller.validate();
-			this._maxHorizontalScrollPosition = this.scroller.maxHorizontalScrollPosition;
-			this._maxVerticalScrollPosition = this.scroller.maxVerticalScrollPosition;
-			this._horizontalScrollPosition = this.scroller.horizontalScrollPosition;
-			this._verticalScrollPosition = this.scroller.verticalScrollPosition;
-			this._horizontalPageIndex = this.scroller.horizontalPageIndex;
-			this._verticalPageIndex = this.scroller.verticalPageIndex;
-
-			this.scroll();
 		}
 
 		/**
 		 * @private
 		 */
-		protected function autoSizeIfNeeded():Boolean
+		override protected function handlePendingScroll():void
 		{
-			const needsWidth:Boolean = isNaN(this.explicitWidth);
-			const needsHeight:Boolean = isNaN(this.explicitHeight);
-			if(!needsWidth && !needsHeight)
+			if(this.pendingItemIndex >= 0)
 			{
-				return false;
-			}
-
-			this.scroller.validate();
-			var newWidth:Number = this.explicitWidth;
-			var newHeight:Number = this.explicitHeight;
-			if(needsWidth)
-			{
-				newWidth = this.scroller.width + this._paddingLeft + this._paddingRight;
-				if(!isNaN(this._originalBackgroundWidth))
-				{
-					newWidth = Math.max(newWidth, this._originalBackgroundWidth);
-				}
-			}
-			if(needsHeight)
-			{
-				newHeight = this.scroller.height + this._paddingTop + this._paddingBottom;
-				if(!isNaN(this._originalBackgroundHeight))
-				{
-					newHeight = Math.max(newHeight, this._originalBackgroundHeight);
-				}
-			}
-
-			return this.setSizeInternal(newWidth, newHeight, false);
-		}
-		
-		/**
-		 * @private
-		 */
-		protected function refreshScrollerStyles():void
-		{
-			for(var propertyName:String in this._scrollerProperties)
-			{
-				if(this.scroller.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._scrollerProperties[propertyName];
-					this.scroller[propertyName] = propertyValue;
-				}
-			}
-		}
-		
-		/**
-		 * @private
-		 */
-		protected function refreshBackgroundSkin():void
-		{
-			this.currentBackgroundSkin = this._backgroundSkin;
-			if(!this._isEnabled && this._backgroundDisabledSkin)
-			{
-				if(this._backgroundSkin)
-				{
-					this._backgroundSkin.visible = false;
-				}
-				this.currentBackgroundSkin = this._backgroundDisabledSkin;
-			}
-			else if(this._backgroundDisabledSkin)
-			{
-				this._backgroundDisabledSkin.visible = false;
-			}
-			if(this.currentBackgroundSkin)
-			{
-				this.currentBackgroundSkin.visible = true;
-
-				if(isNaN(this._originalBackgroundWidth))
-				{
-					this._originalBackgroundWidth = this.currentBackgroundSkin.width;
-				}
-				if(isNaN(this._originalBackgroundHeight))
-				{
-					this._originalBackgroundHeight = this.currentBackgroundSkin.height;
-				}
-			}
-		}
-
-		/**
-		 * @private
-		 */
-		protected function scroll():void
-		{
-			if(this._scrollToHorizontalPageIndex >= 0 || this._scrollToVerticalPageIndex >= 0)
-			{
-				this.scroller.throwToPage(this._scrollToHorizontalPageIndex, this._scrollToVerticalPageIndex, this._scrollToIndexDuration);
-				this._scrollToHorizontalPageIndex = -1;
-				this._scrollToVerticalPageIndex = -1;
-			}
-			else if(this._scrollToIndex >= 0)
-			{
-				const item:Object = this._dataProvider.getItemAt(this._scrollToIndex);
+				const item:Object = this._dataProvider.getItemAt(this.pendingItemIndex);
 				if(item is Object)
 				{
-					this.dataViewPort.getScrollPositionForIndex(this._scrollToIndex, HELPER_POINT);
+					this.dataViewPort.getScrollPositionForIndex(this.pendingItemIndex, HELPER_POINT);
+					this.pendingItemIndex = -1;
 
-					if(this._scrollToIndexDuration > 0)
+					if(this.pendingScrollDuration > 0)
 					{
-						this.scroller.throwTo(Math.max(0, Math.min(HELPER_POINT.x, this._maxHorizontalScrollPosition)),
-							Math.max(0, Math.min(HELPER_POINT.y, this._maxVerticalScrollPosition)), this._scrollToIndexDuration);
+						this.throwTo(Math.max(0, Math.min(HELPER_POINT.x, this._maxHorizontalScrollPosition)),
+							Math.max(0, Math.min(HELPER_POINT.y, this._maxVerticalScrollPosition)), this.pendingScrollDuration);
 					}
 					else
 					{
@@ -1168,16 +602,54 @@ package feathers.controls
 						this.verticalScrollPosition = Math.max(0, Math.min(HELPER_POINT.y, this._maxVerticalScrollPosition));
 					}
 				}
-				this._scrollToIndex = -1;
 			}
+			super.handlePendingScroll();
 		}
 
 		/**
 		 * @private
 		 */
-		protected function childProperties_onChange(proxy:PropertyProxy, name:String):void
+		protected function list_focusInHandler(event:Event):void
 		{
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function list_focusOutHandler(event:Event):void
+		{
+			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function stage_keyDownHandler(event:KeyboardEvent):void
+		{
+			if(!this._dataProvider)
+			{
+				return;
+			}
+			if(event.keyCode == Keyboard.HOME)
+			{
+				if(this._dataProvider.length > 0)
+				{
+					this.selectedIndex = 0;
+				}
+			}
+			else if(event.keyCode == Keyboard.END)
+			{
+				this.selectedIndex = this._dataProvider.length - 1;
+			}
+			else if(event.keyCode == Keyboard.UP)
+			{
+				this.selectedIndex = Math.max(0, this._selectedIndex - 1);
+			}
+			else if(event.keyCode == Keyboard.DOWN)
+			{
+				this.selectedIndex = Math.min(this._dataProvider.length - 1, this._selectedIndex + 1);
+			}
 		}
 
 		/**
@@ -1187,29 +659,6 @@ package feathers.controls
 		{
 			this.horizontalScrollPosition = 0;
 			this.verticalScrollPosition = 0;
-		}
-		
-		/**
-		 * @private
-		 */
-		protected function scroller_scrollHandler(event:Event):void
-		{
-			this._maxHorizontalScrollPosition = this.scroller.maxHorizontalScrollPosition;
-			this._maxVerticalScrollPosition = this.scroller.maxVerticalScrollPosition;
-			this._horizontalPageIndex = this.scroller.horizontalPageIndex;
-			this._verticalPageIndex = this.scroller.verticalPageIndex;
-			this._horizontalScrollPosition = this.scroller.horizontalScrollPosition;
-			this._verticalScrollPosition = this.scroller.verticalScrollPosition;
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
-			this.dispatchEventWith(Event.SCROLL);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function scroller_scrollCompleteHandler(event:Event):void
-		{
-			this.dispatchEventWith(FeathersEventType.SCROLL_COMPLETE);
 		}
 		
 		/**

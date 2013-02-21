@@ -11,6 +11,7 @@ package feathers.controls.supportClasses
 	import feathers.core.IFeathersControl;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.ILayout;
+	import feathers.layout.ILayoutDisplayObject;
 	import feathers.layout.IVirtualLayout;
 	import feathers.layout.LayoutBoundsResult;
 	import feathers.layout.ViewPortBounds;
@@ -189,7 +190,7 @@ package feathers.controls.supportClasses
 			this._verticalScrollPosition = value;
 		}
 
-		private var _ignoreChildResizing:Boolean = false;
+		private var _ignoreChildChanges:Boolean = false;
 
 		private var items:Vector.<DisplayObject> = new <DisplayObject>[];
 
@@ -229,6 +230,10 @@ package feathers.controls.supportClasses
 			{
 				child.addEventListener(FeathersEventType.RESIZE, child_resizeHandler);
 			}
+			if(child is ILayoutDisplayObject)
+			{
+				child.addEventListener(FeathersEventType.LAYOUT_DATA_CHANGE, child_layoutDataChangeHandler);
+			}
 			return super.addChildAt(child, index);
 		}
 
@@ -238,6 +243,10 @@ package feathers.controls.supportClasses
 			if(child is IFeathersControl)
 			{
 				child.removeEventListener(FeathersEventType.RESIZE, child_resizeHandler);
+			}
+			if(child is ILayoutDisplayObject)
+			{
+				child.removeEventListener(FeathersEventType.LAYOUT_DATA_CHANGE, child_layoutDataChangeHandler);
 			}
 			return child;
 		}
@@ -258,17 +267,9 @@ package feathers.controls.supportClasses
 
 			if(sizeInvalid || dataInvalid)
 			{
-				const itemCount:int = this.items.length;
-				for(var i:int = 0; i < itemCount; i++)
-				{
-					var control:IFeathersControl = this.items[i] as IFeathersControl;
-					if(control)
-					{
-						control.validate();
-					}
-				}
-
 				HELPER_BOUNDS.x = HELPER_BOUNDS.y = 0;
+				HELPER_BOUNDS.scrollX = this._horizontalScrollPosition;
+				HELPER_BOUNDS.scrollY = this._verticalScrollPosition;
 				HELPER_BOUNDS.explicitWidth = this._visibleWidth;
 				HELPER_BOUNDS.explicitHeight = this._visibleHeight;
 				HELPER_BOUNDS.minWidth = this._minVisibleWidth;
@@ -277,13 +278,24 @@ package feathers.controls.supportClasses
 				HELPER_BOUNDS.maxHeight = this._maxVisibleHeight;
 				if(this._layout)
 				{
-					this._ignoreChildResizing = true;
+					this._ignoreChildChanges = true;
 					this._layout.layout(this.items, HELPER_BOUNDS, HELPER_LAYOUT_RESULT);
-					this._ignoreChildResizing = false;
+					this._ignoreChildChanges = false;
 					this.setSizeInternal(HELPER_LAYOUT_RESULT.contentWidth, HELPER_LAYOUT_RESULT.contentHeight, false);
 				}
 				else
 				{
+					this._ignoreChildChanges = true;
+					const itemCount:int = this.items.length;
+					for(var i:int = 0; i < itemCount; i++)
+					{
+						var control:IFeathersControl = this.items[i] as IFeathersControl;
+						if(control)
+						{
+							control.validate();
+						}
+					}
+					this._ignoreChildChanges = false;
 					var maxX:Number = isNaN(HELPER_BOUNDS.explicitWidth) ? 0 : HELPER_BOUNDS.explicitWidth;
 					var maxY:Number = isNaN(HELPER_BOUNDS.explicitHeight) ? 0 : HELPER_BOUNDS.explicitHeight;
 					for each(var item:DisplayObject in this.items)
@@ -305,7 +317,16 @@ package feathers.controls.supportClasses
 
 		private function child_resizeHandler(event:Event):void
 		{
-			if(this._ignoreChildResizing)
+			if(this._ignoreChildChanges)
+			{
+				return;
+			}
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		private function child_layoutDataChangeHandler(event:Event):void
+		{
+			if(this._ignoreChildChanges)
 			{
 				return;
 			}
