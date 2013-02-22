@@ -598,6 +598,7 @@ package feathers.themes
 			check.defaultLabelProperties.textFormat = new BitmapFontTextFormat(bitmapFont, this.fontSize, PRIMARY_TEXT_COLOR);
 			check.defaultSelectedLabelProperties.textFormat = new BitmapFontTextFormat(bitmapFont, this.fontSize, SELECTED_TEXT_COLOR);
 
+			check.gap = 12 * this.scale;
 			check.minTouchWidth = check.minTouchHeight = 88 * this.scale;
 			check.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			check.verticalAlign = Button.VERTICAL_ALIGN_MIDDLE;
@@ -618,6 +619,7 @@ package feathers.themes
 			radio.defaultLabelProperties.textFormat = new BitmapFontTextFormat(bitmapFont, this.fontSize, PRIMARY_TEXT_COLOR);
 			radio.defaultSelectedLabelProperties.textFormat = new BitmapFontTextFormat(bitmapFont, this.fontSize, SELECTED_TEXT_COLOR);
 
+			radio.gap = 12 * this.scale;
 			radio.minTouchWidth = radio.minTouchHeight = 88 * this.scale;
 			radio.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			radio.verticalAlign = Button.VERTICAL_ALIGN_MIDDLE;
