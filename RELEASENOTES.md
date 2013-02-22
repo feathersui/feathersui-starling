@@ -60,6 +60,7 @@ This release includes a number of bug fixes.
 * ImageLoader: does a better job keeping aspect ratio when only one dimension is explicit.
 * ImageLoader: properly scales content when dimensions are explicit.
 * ImageLoader: no runtime errors if content loads after dispose.
+* ScrollContainer, List, GroupedList, ScrollText: fix for detecting changes in scrollToPageIndex().
 
 ## 1.0.0
 
