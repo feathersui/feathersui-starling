@@ -3,9 +3,9 @@
 	<id>com.feathersui.examples.TrainTimes</id>
 	<filename>Train Times</filename>
 	<name>Train Times</name>
-	<versionNumber>1.0.0</versionNumber>
+	<versionNumber>1.1.0</versionNumber>
 	<description>Train Times example application built with Feathers UI controls for Starling</description>
-	<copyright>2012 Josh Tynjala</copyright>
+	<copyright>2013 Josh Tynjala</copyright>
 
 	<initialWindow>
 		<content>TrainTimes.swf</content>
