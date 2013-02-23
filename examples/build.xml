@@ -8,6 +8,7 @@
 		<ant dir="${basedir}/HelloWorld" target="build-web" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/LayoutExplorer" target="build-web" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/TileList" target="build-web" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/TrainTimes" target="build-web" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/YouTubeFeeds" target="build-web" inheritAll="false" useNativeBasedir="true"/>
 	</target>
 	<target name="android" description="Builds Android APKs from all examples.">
@@ -17,6 +18,7 @@
 		<ant dir="${basedir}/HelloWorld" target="build-android" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/LayoutExplorer" target="build-android" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/TileList" target="build-android" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/TrainTimes" target="build-android" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/YouTubeFeeds" target="build-android" inheritAll="false" useNativeBasedir="true"/>
 	</target>
 	<target name="ios" description="Builds iOS IPAs from all examples.">
@@ -26,6 +28,7 @@
 		<ant dir="${basedir}/HelloWorld" target="build-ios" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/LayoutExplorer" target="build-ios" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/TileList" target="build-ios" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/TrainTimes" target="build-ios" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/YouTubeFeeds" target="build-ios" inheritAll="false" useNativeBasedir="true"/>
 	</target>
 </project>
