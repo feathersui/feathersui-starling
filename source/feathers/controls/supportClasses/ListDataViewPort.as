@@ -542,7 +542,18 @@ package feathers.controls.supportClasses
 				}
 			}
 
-			const typicalRenderer:IListItemRenderer = this.createRenderer(typicalItem, 0, true);
+			var needsDestruction:Boolean = true;
+			var typicalRenderer:IListItemRenderer = IListItemRenderer(this._rendererMap[typicalItem]);
+			if(typicalRenderer)
+			{
+				typicalRenderer.width = NaN;
+				typicalRenderer.height = NaN;
+				needsDestruction = false;
+			}
+			else
+			{
+				typicalRenderer = this.createRenderer(typicalItem, 0, true);
+			}
 			this.refreshOneItemRendererStyles(typicalRenderer);
 			if(typicalRenderer is FeathersControl)
 			{
@@ -550,7 +561,10 @@ package feathers.controls.supportClasses
 			}
 			this._typicalItemWidth = DisplayObject(typicalRenderer).width;
 			this._typicalItemHeight = DisplayObject(typicalRenderer).height;
-			this.destroyRenderer(typicalRenderer);
+			if(needsDestruction)
+			{
+				this.destroyRenderer(typicalRenderer);
+			}
 		}
 
 		private function refreshItemRendererStyles():void

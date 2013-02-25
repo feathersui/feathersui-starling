@@ -1055,7 +1055,18 @@ package feathers.controls.supportClasses
 			//headers are optional
 			if(typicalHeader)
 			{
-				const typicalHeaderRenderer:IGroupedListHeaderOrFooterRenderer = this.createHeaderRenderer(typicalHeader, 0, 0, true);
+				var needsDestruction:Boolean = true;
+				var typicalHeaderRenderer:IGroupedListHeaderOrFooterRenderer = IGroupedListHeaderOrFooterRenderer(this._headerRendererMap[typicalHeader]);
+				if(typicalHeaderRenderer)
+				{
+					typicalHeaderRenderer.width = NaN;
+					typicalHeaderRenderer.height = NaN;
+					needsDestruction = false;
+				}
+				else
+				{
+					typicalHeaderRenderer = this.createHeaderRenderer(typicalHeader, 0, 0, true);
+				}
 				this.refreshOneHeaderRendererStyles(typicalHeaderRenderer);
 				if(typicalHeaderRenderer is FeathersControl)
 				{
@@ -1064,13 +1075,27 @@ package feathers.controls.supportClasses
 				var displayRenderer:DisplayObject = DisplayObject(typicalHeaderRenderer);
 				this._typicalHeaderWidth = displayRenderer.width;
 				this._typicalHeaderHeight = displayRenderer.height;
-				this.destroyHeaderRenderer(typicalHeaderRenderer);
+				if(needsDestruction)
+				{
+					this.destroyHeaderRenderer(typicalHeaderRenderer);
+				}
 			}
 
 			//footers are optional
 			if(typicalFooter)
 			{
-				const typicalFooterRenderer:IGroupedListHeaderOrFooterRenderer = this.createFooterRenderer(typicalFooter, 0, 0, true);
+				needsDestruction = true;
+				var typicalFooterRenderer:IGroupedListHeaderOrFooterRenderer = IGroupedListHeaderOrFooterRenderer(this._footerRendererMap[typicalFooter]);
+				if(typicalFooterRenderer)
+				{
+					needsDestruction = false;
+					typicalFooterRenderer.width = NaN;
+					typicalFooterRenderer.height = NaN;
+				}
+				else
+				{
+					typicalFooterRenderer = this.createFooterRenderer(typicalFooter, 0, 0, true);
+				}
 				this.refreshOneFooterRendererStyles(typicalFooterRenderer);
 				if(typicalFooterRenderer is FeathersControl)
 				{
@@ -1079,7 +1104,10 @@ package feathers.controls.supportClasses
 				displayRenderer = DisplayObject(typicalFooterRenderer);
 				this._typicalFooterWidth = displayRenderer.width;
 				this._typicalFooterHeight = displayRenderer.height;
-				this.destroyFooterRenderer(typicalFooterRenderer);
+				if(needsDestruction)
+				{
+					this.destroyFooterRenderer(typicalFooterRenderer);
+				}
 			}
 
 			var typicalItem:Object = this._typicalItem;
@@ -1097,9 +1125,20 @@ package feathers.controls.supportClasses
 				}
 			}
 
-			const typicalItemRenderer:IGroupedListItemRenderer = this.createItemRenderer(this._inactiveItemRenderers,
+			needsDestruction = true;
+			var typicalItemRenderer:IGroupedListItemRenderer = this._itemRendererMap[typicalItem];
+			if(typicalItemRenderer)
+			{
+				needsDestruction = false;
+				typicalItemRenderer.width = NaN;
+				typicalItemRenderer.height = NaN;
+			}
+			else
+			{
+				typicalItemRenderer = this.createItemRenderer(this._inactiveItemRenderers,
 				this._activeItemRenderers, this._itemRendererMap, this._itemRendererType, this._itemRendererFactory,
 				this._itemRendererName, typicalItem, 0, 0, 0, true);
+			}
 			this.refreshOneItemRendererStyles(typicalItemRenderer);
 			if(typicalItemRenderer is FeathersControl)
 			{
@@ -1108,7 +1147,10 @@ package feathers.controls.supportClasses
 			displayRenderer = DisplayObject(typicalItemRenderer);
 			this._typicalItemWidth = displayRenderer.width;
 			this._typicalItemHeight = displayRenderer.height;
-			this.destroyItemRenderer(typicalItemRenderer);
+			if(needsDestruction)
+			{
+				this.destroyItemRenderer(typicalItemRenderer);
+			}
 		}
 
 		private function refreshItemRendererStyles():void
