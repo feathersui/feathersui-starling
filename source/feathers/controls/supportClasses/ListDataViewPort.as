@@ -567,8 +567,8 @@ package feathers.controls.supportClasses
 			{
 				FeathersControl(typicalRenderer).validate();
 			}
-			this._typicalItemWidth = DisplayObject(typicalRenderer).width;
-			this._typicalItemHeight = DisplayObject(typicalRenderer).height;
+			this._typicalItemWidth = typicalRenderer.width;
+			this._typicalItemHeight = typicalRenderer.height;
 			if(needsDestruction)
 			{
 				this.destroyRenderer(typicalRenderer);
@@ -722,8 +722,7 @@ package feathers.controls.supportClasses
 				var item:Object = this._unrenderedData.shift();
 				var index:int = this._dataProvider.getItemIndex(item);
 				var renderer:IListItemRenderer = this.createRenderer(item, index, false);
-				var displayRenderer:DisplayObject = DisplayObject(renderer);
-				this._layoutItems[index + this._layoutIndexOffset] = displayRenderer;
+				this._layoutItems[index + this._layoutIndexOffset] = DisplayObject(renderer);
 			}
 		}
 
