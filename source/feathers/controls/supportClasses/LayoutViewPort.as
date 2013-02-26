@@ -209,7 +209,7 @@ package feathers.controls.supportClasses
 			}
 			if(this._layout)
 			{
-				EventDispatcher(this._layout).removeEventListener(Event.CHANGE, layout_changeHandler);
+				this._layout.removeEventListener(Event.CHANGE, layout_changeHandler);
 			}
 			this._layout = value;
 			if(this._layout)
@@ -218,7 +218,7 @@ package feathers.controls.supportClasses
 				{
 					IVirtualLayout(this._layout).useVirtualLayout = false;
 				}
-				EventDispatcher(this._layout).addEventListener(Event.CHANGE, layout_changeHandler);
+				this._layout.addEventListener(Event.CHANGE, layout_changeHandler);
 				//if we don't have a layout, nothing will need to be redrawn
 				this.invalidate(INVALIDATION_FLAG_DATA);
 			}

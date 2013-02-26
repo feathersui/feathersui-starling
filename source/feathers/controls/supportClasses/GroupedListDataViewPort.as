@@ -323,6 +323,10 @@ package feathers.controls.supportClasses
 				this._dataProvider.addEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_updateItemHandler);
 			}
+			if(this._layout is IVariableVirtualLayout)
+			{
+				IVariableVirtualLayout(this._layout).resetVariableVirtualCache();
+			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
@@ -823,16 +827,18 @@ package feathers.controls.supportClasses
 			}
 			if(this._layout)
 			{
-				EventDispatcher(this._layout).removeEventListener(Event.CHANGE, layout_changeHandler);
+				this._layout.removeEventListener(Event.CHANGE, layout_changeHandler);
 			}
 			this._layout = value;
 			if(this._layout)
 			{
 				if(this._layout is IVariableVirtualLayout)
 				{
-					IVariableVirtualLayout(this._layout).hasVariableItemDimensions = true;
+					const variableVirtualLayout:IVariableVirtualLayout = IVariableVirtualLayout(this._layout)
+					variableVirtualLayout.hasVariableItemDimensions = true;
+					variableVirtualLayout.resetVariableVirtualCache();
 				}
-				EventDispatcher(this._layout).addEventListener(Event.CHANGE, layout_changeHandler);
+				this._layout.addEventListener(Event.CHANGE, layout_changeHandler);
 			}
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
