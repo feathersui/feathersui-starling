@@ -244,6 +244,10 @@ package feathers.controls.supportClasses
 				this._dataProvider.addEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_updateItemHandler);
 			}
+			if(this._layout is IVariableVirtualLayout)
+			{
+				IVariableVirtualLayout(this._layout).resetVariableVirtualCache();
+			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
@@ -379,6 +383,10 @@ package feathers.controls.supportClasses
 			this._layout = value;
 			if(this._layout)
 			{
+				if(this._layout is IVariableVirtualLayout)
+				{
+					IVariableVirtualLayout(this._layout).resetVariableVirtualCache();
+				}
 				EventDispatcher(this._layout).addEventListener(Event.CHANGE, layout_changeHandler);
 			}
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
