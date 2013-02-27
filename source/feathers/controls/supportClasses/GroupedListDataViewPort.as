@@ -2197,13 +2197,26 @@ package feathers.controls.supportClasses
 				var renderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this._itemRendererMap[item]);
 				if(!renderer)
 				{
-					renderer = IGroupedListItemRenderer(this._firstItemRendererMap[item]);
+					if(this._firstItemRendererMap)
+					{
+						renderer = IGroupedListItemRenderer(this._firstItemRendererMap[item]);
+					}
 					if(!renderer)
 					{
-						renderer = IGroupedListItemRenderer(this._lastItemRendererMap[item]);
+						if(this._lastItemRendererMap)
+						{
+							renderer = IGroupedListItemRenderer(this._lastItemRendererMap[item]);
+						}
 						if(!renderer)
 						{
-							return;
+							if(this._singleItemRendererMap)
+							{
+								renderer = IGroupedListItemRenderer(this._singleItemRendererMap[item]);
+							}
+							if(!renderer)
+							{
+								return;
+							}
 						}
 					}
 				}
