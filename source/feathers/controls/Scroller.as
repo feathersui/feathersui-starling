@@ -814,6 +814,10 @@ package feathers.controls
 		 */
 		public function get horizontalPageIndex():int
 		{
+			if(this.pendingHorizontalPageIndex >= 0)
+			{
+				return this.pendingHorizontalPageIndex;
+			}
 			return this._horizontalPageIndex;
 		}
 
@@ -959,6 +963,10 @@ package feathers.controls
 		 */
 		public function get verticalPageIndex():int
 		{
+			if(this.pendingVerticalPageIndex >= 0)
+			{
+				return this.pendingVerticalPageIndex;
+			}
 			return this._verticalPageIndex;
 		}
 		
@@ -2110,11 +2118,11 @@ package feathers.controls
 
 			if(this._snapToPages)
 			{
-				if(isScrollInvalid && !this._isDraggingHorizontally && !this._horizontalAutoScrollTween)
+				if(isScrollInvalid && !this._isDraggingHorizontally && !this._horizontalAutoScrollTween && this.pendingHorizontalPageIndex < 0)
 				{
 					this._horizontalPageIndex = Math.max(0, Math.floor(this._horizontalScrollPosition / pageWidth));
 				}
-				if(isScrollInvalid && !this._isDraggingVertically && !this._verticalAutoScrollTween)
+				if(isScrollInvalid && !this._isDraggingVertically && !this._verticalAutoScrollTween && this.pendingVerticalPageIndex < 0)
 				{
 					this._verticalPageIndex = Math.max(0, Math.floor(this._verticalScrollPosition / pageHeight));
 				}
