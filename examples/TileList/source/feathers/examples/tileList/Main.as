@@ -152,7 +152,7 @@ package feathers.examples.tileList
 
 		protected function pageIndicator_changeHandler(event:Event):void
 		{
-			this._list.scrollToPageIndex(this._pageIndicator.selectedIndex, 0, 0.25);
+			this._list.scrollToPageIndex(this._pageIndicator.selectedIndex, 0, this._list.pageThrowDuration);
 		}
 
 		protected function stage_resizeHandler(event:ResizeEvent):void
