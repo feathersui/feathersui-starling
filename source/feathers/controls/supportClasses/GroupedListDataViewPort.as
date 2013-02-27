@@ -1972,6 +1972,78 @@ package feathers.controls.supportClasses
 			this.removeChild(DisplayObject(renderer), true);
 		}
 
+		private function groupToHeaderDisplayIndex(groupIndex:int):int
+		{
+			var group:Object = this._dataProvider.getItemAt(groupIndex);
+			var header:Object = this._owner.groupToHeaderData(group);
+			if(!header)
+			{
+				return -1;
+			}
+			var displayIndex:int = 0;
+			const groupCount:int = this._dataProvider.getLength();
+			for(var i:int = 0; i < groupCount; i++)
+			{
+				group = this._dataProvider.getItemAt(i);
+				header = this._owner.groupToHeaderData(group);
+				if(header)
+				{
+					if(groupIndex == i)
+					{
+						return displayIndex;
+					}
+					displayIndex++;
+				}
+				var groupLength:int = this._dataProvider.getLength(i);
+				for(var j:int = 0; j < groupLength; j++)
+				{
+					displayIndex++;
+				}
+				var footer:Object = this._owner.groupToFooterData(group);
+				if(footer)
+				{
+					displayIndex++;
+				}
+			}
+			return -1;
+		}
+
+		private function groupToFooterDisplayIndex(groupIndex:int):int
+		{
+			var group:Object = this._dataProvider.getItemAt(groupIndex);
+			var footer:Object = this._owner.groupToFooterData(group);
+			if(!footer)
+			{
+				return -1;
+			}
+			var displayIndex:int = 0;
+			const groupCount:int = this._dataProvider.getLength();
+			for(var i:int = 0; i < groupCount; i++)
+			{
+				group = this._dataProvider.getItemAt(i);
+				var header:Object = this._owner.groupToHeaderData(group);
+				if(header)
+				{
+					displayIndex++;
+				}
+				var groupLength:int = this._dataProvider.getLength(i);
+				for(var j:int = 0; j < groupLength; j++)
+				{
+					displayIndex++;
+				}
+				footer = this._owner.groupToFooterData(group);
+				if(footer)
+				{
+					if(groupIndex == i)
+					{
+						return displayIndex;
+					}
+					displayIndex++;
+				}
+			}
+			return -1;
+		}
+
 		private function locationToDisplayIndex(groupIndex:int, itemIndex:int):int
 		{
 			var displayIndex:int = 0;
@@ -2026,9 +2098,39 @@ package feathers.controls.supportClasses
 				return;
 			}
 			const groupIndex:int = indices[0] as int;
-			const itemIndex:int = indices[1] as int;
-			const displayIndex:int = this.locationToDisplayIndex(groupIndex, itemIndex);
-			layout.addToVariableVirtualCacheAtIndex(displayIndex);
+			if(indices.length > 1) //adding an item
+			{
+				const itemIndex:int = indices[1] as int;
+				const itemDisplayIndex:int = this.locationToDisplayIndex(groupIndex, itemIndex);
+				layout.addToVariableVirtualCacheAtIndex(itemDisplayIndex);
+			}
+			else //adding a whole group
+			{
+				const headerDisplayIndex:int = this.groupToHeaderDisplayIndex(groupIndex);
+				if(headerDisplayIndex >= 0)
+				{
+					layout.addToVariableVirtualCacheAtIndex(headerDisplayIndex);
+				}
+				var groupLength:int = this._dataProvider.getLength(groupIndex);
+				if(groupLength > 0)
+				{
+					var displayIndex:int = headerDisplayIndex;
+					if(displayIndex < 0)
+					{
+						displayIndex = this.locationToDisplayIndex(groupIndex, 0);
+					}
+					groupLength += displayIndex;
+					for(var i:int = displayIndex; i < groupLength; i++)
+					{
+						layout.addToVariableVirtualCacheAtIndex(displayIndex);
+					}
+				}
+				const footerDisplayIndex:int = this.groupToFooterDisplayIndex(groupIndex);
+				if(footerDisplayIndex >= 0)
+				{
+					layout.addToVariableVirtualCacheAtIndex(footerDisplayIndex);
+				}
+			}
 		}
 
 		private function dataProvider_removeItemHandler(event:Event, indices:Array):void
@@ -2039,9 +2141,18 @@ package feathers.controls.supportClasses
 				return;
 			}
 			const groupIndex:int = indices[0] as int;
-			const itemIndex:int = indices[1] as int;
-			const displayIndex:int = this.locationToDisplayIndex(groupIndex, itemIndex);
-			layout.removeFromVariableVirtualCacheAtIndex(displayIndex);
+			if(indices.length > 1) //removing an item
+			{
+				const itemIndex:int = indices[1] as int;
+				const displayIndex:int = this.locationToDisplayIndex(groupIndex, itemIndex);
+				layout.removeFromVariableVirtualCacheAtIndex(displayIndex);
+			}
+			else //removing a whole group
+			{
+				//TODO: figure out the length of the previous group so that we
+				//don't need to reset the whole cache
+				layout.resetVariableVirtualCache();
+			}
 		}
 
 		private function dataProvider_replaceItemHandler(event:Event, indices:Array):void
@@ -2052,9 +2163,18 @@ package feathers.controls.supportClasses
 				return;
 			}
 			const groupIndex:int = indices[0] as int;
-			const itemIndex:int = indices[1] as int;
-			const displayIndex:int = this.locationToDisplayIndex(groupIndex, itemIndex);
-			layout.resetVariableVirtualCacheAtIndex(displayIndex);
+			if(indices.length > 1) //replacing an item
+			{
+				const itemIndex:int = indices[1] as int;
+				const displayIndex:int = this.locationToDisplayIndex(groupIndex, itemIndex);
+				layout.resetVariableVirtualCacheAtIndex(displayIndex);
+			}
+			else //replacing a whole group
+			{
+				//TODO: figure out the length of the previous group so that we
+				//don't need to reset the whole cache
+				layout.resetVariableVirtualCache();
+			}
 		}
 
 		private function dataProvider_resetHandler(event:Event):void
@@ -2070,23 +2190,37 @@ package feathers.controls.supportClasses
 		private function dataProvider_updateItemHandler(event:Event, indices:Array):void
 		{
 			const groupIndex:int = indices[0] as int;
-			const itemIndex:int = indices[1] as int;
-			const item:Object = this._dataProvider.getItemAt(groupIndex, itemIndex);
-			var renderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this._itemRendererMap[item]);
-			if(!renderer)
+			if(indices.length > 1) //updating a whole group
 			{
-				renderer = IGroupedListItemRenderer(this._firstItemRendererMap[item]);
+				const itemIndex:int = indices[1] as int;
+				const item:Object = this._dataProvider.getItemAt(groupIndex, itemIndex);
+				var renderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this._itemRendererMap[item]);
 				if(!renderer)
 				{
-					renderer = IGroupedListItemRenderer(this._lastItemRendererMap[item]);
+					renderer = IGroupedListItemRenderer(this._firstItemRendererMap[item]);
 					if(!renderer)
 					{
-						return;
+						renderer = IGroupedListItemRenderer(this._lastItemRendererMap[item]);
+						if(!renderer)
+						{
+							return;
+						}
 					}
 				}
+				renderer.data = null;
+				renderer.data = item;
 			}
-			renderer.data = null;
-			renderer.data = item;
+			else //updating a whole group
+			{
+				const layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
+				if(!layout || !layout.hasVariableItemDimensions)
+				{
+					return;
+				}
+				//TODO: figure out the length of the previous group so that we
+				//don't need to reset the whole cache
+				layout.resetVariableVirtualCache();
+			}
 		}
 
 		private function layout_changeHandler(event:Event):void
