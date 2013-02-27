@@ -3145,6 +3145,10 @@ package feathers.controls
 		 */
 		protected function nativeStage_mouseWheelHandler(event:MouseEvent):void
 		{
+			if(!this._isEnabled)
+			{
+				return;
+			}
 			const starlingViewPort:Rectangle = Starling.current.viewPort;
 			HELPER_POINT.x = (event.stageX - starlingViewPort.x) / Starling.contentScaleFactor;
 			HELPER_POINT.y = (event.stageY - starlingViewPort.y) / Starling.contentScaleFactor;
