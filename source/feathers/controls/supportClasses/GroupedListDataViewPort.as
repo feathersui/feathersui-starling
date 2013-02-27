@@ -28,7 +28,6 @@ package feathers.controls.supportClasses
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
-	import starling.events.EventDispatcher;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -1106,9 +1105,8 @@ package feathers.controls.supportClasses
 				{
 					FeathersControl(typicalFooterRenderer).validate();
 				}
-				displayRenderer = DisplayObject(typicalFooterRenderer);
-				this._typicalFooterWidth = displayRenderer.width;
-				this._typicalFooterHeight = displayRenderer.height;
+				this._typicalFooterWidth = typicalFooterRenderer.width;
+				this._typicalFooterHeight = typicalFooterRenderer.height;
 				if(needsDestruction)
 				{
 					this.destroyFooterRenderer(typicalFooterRenderer);
@@ -1149,9 +1147,8 @@ package feathers.controls.supportClasses
 			{
 				FeathersControl(typicalItemRenderer).validate();
 			}
-			displayRenderer = DisplayObject(typicalItemRenderer);
-			this._typicalItemWidth = displayRenderer.width;
-			this._typicalItemHeight = displayRenderer.height;
+			this._typicalItemWidth = typicalItemRenderer.width;
+			this._typicalItemHeight = typicalItemRenderer.height;
 			if(needsDestruction)
 			{
 				this.destroyItemRenderer(typicalItemRenderer);
@@ -1535,9 +1532,8 @@ package feathers.controls.supportClasses
 							headerOrFooterRenderer.layoutIndex = currentIndex;
 							this._activeFooterRenderers.push(headerOrFooterRenderer);
 							this._inactiveFooterRenderers.splice(this._inactiveFooterRenderers.indexOf(headerOrFooterRenderer), 1);
-							displayRenderer = DisplayObject(headerOrFooterRenderer);
-							displayRenderer.visible = true;
-							this._layoutItems[currentIndex] = displayRenderer;
+							headerOrFooterRenderer.visible = true;
+							this._layoutItems[currentIndex] = DisplayObject(headerOrFooterRenderer);
 						}
 						else
 						{
@@ -1850,20 +1846,19 @@ package feathers.controls.supportClasses
 			{
 				renderer = inactiveRenderers.shift();
 			}
-			const displayRenderer:DisplayObject = DisplayObject(renderer);
 			renderer.data = item;
 			renderer.groupIndex = groupIndex;
 			renderer.itemIndex = itemIndex;
 			renderer.layoutIndex = layoutIndex;
 			renderer.owner = this._owner;
-			displayRenderer.visible = true;
+			renderer.visible = true;
 
 			if(!isTemporary)
 			{
 				rendererMap[item] = renderer;
 				activeRenderers.push(renderer);
-				displayRenderer.addEventListener(Event.CHANGE, renderer_changeHandler);
-				displayRenderer.addEventListener(FeathersEventType.RESIZE, itemRenderer_resizeHandler);
+				renderer.addEventListener(Event.CHANGE, renderer_changeHandler);
+				renderer.addEventListener(FeathersEventType.RESIZE, itemRenderer_resizeHandler);
 				this._owner.dispatchEventWith(FeathersEventType.RENDERER_ADD, false, renderer);
 			}
 
