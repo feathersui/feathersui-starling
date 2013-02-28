@@ -123,6 +123,7 @@ package feathers.controls.renderers
 		{
 			super();
 			this.isQuickHitAreaEnabled = false;
+			this.addEventListener(Event.TRIGGERED, itemRenderer_triggeredHandler);
 		}
 
 		/**
@@ -214,6 +215,13 @@ package feathers.controls.renderers
 		{
 			this._useStateDelayTimer = value;
 		}
+
+		/**
+		 * Determines if the item renderer can be selected even if
+		 * <code>isToggle</code> is set to <code>false</code>. Subclasses are
+		 * expected to change this value, if required.
+		 */
+		protected var isSelectableWithoutToggle:Boolean = true;
 
 		/**
 		 * @private
@@ -422,7 +430,7 @@ package feathers.controls.renderers
 		 */
 		override protected function set currentState(value:String):void
 		{
-			if(!this._isToggle)
+			if(!this._isToggle && !this.isSelectableWithoutToggle)
 			{
 				value = STATE_UP;
 			}
@@ -1990,6 +1998,18 @@ package feathers.controls.renderers
 			{
 				super.currentState = Button.STATE_UP;
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function itemRenderer_triggeredHandler(event:Event):void
+		{
+			if(this._isToggle || !this.isSelectableWithoutToggle)
+			{
+				return;
+			}
+			this.isSelected = true;
 		}
 
 		/**
