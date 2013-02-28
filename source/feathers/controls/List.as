@@ -200,9 +200,15 @@ package feathers.controls
 		protected var _isSelectable:Boolean = true;
 		
 		/**
-		 * Determines if an item in the list may be selected.
+		 * Determines if items in the list may be selected. By default only a
+		 * single item may be selected at any given time. In other words, if
+		 * item A is selected, and the user selects item B, item A will be
+		 * deselected automatically. Set <code>allowMultipleSelection</code>
+		 * to <code>true</code> to select more than one item without
+		 * automatically deselecting other items.
 		 * 
 		 * @default true
+		 * @see #allowMultipleSelection
 		 */
 		public function get isSelectable():Boolean
 		{
@@ -286,7 +292,12 @@ package feathers.controls
 		protected var _allowMultipleSelection:Boolean = false;
 
 		/**
-		 * If <code>true</code> multiple items may be selected. If <code>false</code>
+		 * If <code>true</code> multiple items may be selected at a time. If
+		 * <code>false</code>, then only a single item may be selected at a
+		 * time, and if the selection changes, other items are deselected. Has
+		 * no effect if <code>isSelectable</code> is <code>false</code>.
+		 *
+		 * @see #isSelectable
 		 */
 		public function get allowMultipleSelection():Boolean
 		{
