@@ -494,7 +494,7 @@ package feathers.controls
 					//file is ATF texture file
 					if( sourceURL.substring(sourceURL.length-3, sourceURL.length).toLowerCase() == "atf") {
 						if(this.atfLoader) {
-							this.atfLoader.removeEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
+							this.atfLoader.removeEventListener(flash.events.Event.COMPLETE, atfLoader_completeHandler);
 							this.atfLoader.removeEventListener(IOErrorEvent.IO_ERROR, loader_errorHandler);
 							this.atfLoader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_errorHandler);
 							try
