@@ -454,24 +454,43 @@ package feathers.controls.supportClasses
 			this._isSelectable = value;
 			if(!value)
 			{
-				this.selectedIndex = -1;
+				this.selectedIndices = null;
 			}
 		}
 
-		private var _selectedIndex:int = -1;
+		private var _allowMultipleSelection:Boolean = false;
 
-		public function get selectedIndex():int
+		public function get allowMultipleSelection():Boolean
 		{
-			return this._selectedIndex;
+			return this._allowMultipleSelection;
 		}
 
-		public function set selectedIndex(value:int):void
+		public function set allowMultipleSelection(value:Boolean):void
 		{
-			if(this._selectedIndex == value)
+			this._allowMultipleSelection = value;
+		}
+
+		private var _selectedIndices:Vector.<int>;
+
+		public function get selectedIndices():Vector.<int>
+		{
+			return this._selectedIndices;
+		}
+
+		public function set selectedIndices(value:Vector.<int>):void
+		{
+			if(this._selectedIndices == value)
 			{
 				return;
 			}
-			this._selectedIndex = value;
+			if(!value)
+			{
+				this._selectedIndices.length = 0;
+			}
+			else
+			{
+				this._selectedIndices = value;
+			}
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 			this.dispatchEventWith(Event.CHANGE);
 		}
@@ -601,7 +620,7 @@ package feathers.controls.supportClasses
 			this._ignoreSelectionChanges = true;
 			for each(var renderer:IListItemRenderer in this._activeRenderers)
 			{
-				renderer.isSelected = renderer.index == this._selectedIndex;
+				renderer.isSelected = this._selectedIndices.indexOf(renderer.index) >= 0;
 			}
 			this._ignoreSelectionChanges = false;
 		}
@@ -898,13 +917,33 @@ package feathers.controls.supportClasses
 				return;
 			}
 			const renderer:IListItemRenderer = IListItemRenderer(event.currentTarget);
-			if(!this._isSelectable || this._isScrolling || this._selectedIndex == renderer.index)
+			if(!this._isSelectable || this._isScrolling)
 			{
-				//reset to the old value
-				renderer.isSelected = this._selectedIndex == renderer.index;
+				renderer.isSelected = false;
 				return;
 			}
-			this.selectedIndex = renderer.index;
+			const isSelected:Boolean = renderer.isSelected;
+			const index:int = renderer.index;
+			const indices:Vector.<int> = this._selectedIndices;
+			this._selectedIndices = null;
+			if(this._allowMultipleSelection)
+			{
+				const indexOfIndex:int = indices.indexOf(index)
+				if(isSelected && indexOfIndex < 0)
+				{
+					indices.push(index);
+				}
+				else if(!isSelected && indexOfIndex >= 0)
+				{
+					indices.splice(indexOfIndex, 1);
+				}
+			}
+			else
+			{
+				indices.length = 0;
+				indices.push(index);
+			}
+			this.selectedIndices = indices;
 		}
 
 		private function removedFromStageHandler(event:Event):void

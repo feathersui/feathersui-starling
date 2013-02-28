@@ -250,10 +250,15 @@ package feathers.controls
 				return;
 			}
 			this._selectedIndex = value;
+			this._selectedIndices.length = 0;
+			if(value >= 0)
+			{
+				this._selectedIndices.push(value);
+			}
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 			this.dispatchEventWith(Event.CHANGE);
 		}
-		
+
 		/**
 		 * The currently selected item. Returns null if no item is selected.
 		 */
@@ -263,16 +268,139 @@ package feathers.controls
 			{
 				return null;
 			}
-			
+
 			return this._dataProvider.getItemAt(this._selectedIndex);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		public function set selectedItem(value:Object):void
 		{
 			this.selectedIndex = this._dataProvider.getItemIndex(value);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _allowMultipleSelection:Boolean = false;
+
+		/**
+		 * If <code>true</code> multiple items may be selected. If <code>false</code>
+		 */
+		public function get allowMultipleSelection():Boolean
+		{
+			return this._allowMultipleSelection;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set allowMultipleSelection(value:Boolean):void
+		{
+			if(this._allowMultipleSelection == value)
+			{
+				return;
+			}
+			this._allowMultipleSelection = value;
+			this.invalidate(INVALIDATION_FLAG_SELECTED);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _selectedIndices:Vector.<int> = new <int>[];
+
+		/**
+		 * The indices of the currently selected items. Returns an empty <code>Vector.&lt;int&gt;</code>
+		 * if no items are selected. If <code>allowMultipleSelection</code> is
+		 * <code>false</code>, only one item may be selected at a time.
+		 */
+		public function get selectedIndices():Vector.<int>
+		{
+			return this._selectedIndices;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set selectedIndices(value:Vector.<int>):void
+		{
+			if(this._selectedIndices == value)
+			{
+				return;
+			}
+			if(!value)
+			{
+				if(this._selectedIndices.length == 0)
+				{
+					return;
+				}
+				this._selectedIndex = -1;
+				this._selectedIndices.length = 0;
+			}
+			else
+			{
+				if(!this._allowMultipleSelection && value.length > 0)
+				{
+					value.length = 1;
+				}
+				this._selectedIndices = value;
+			}
+			if(this._selectedIndices.length > 0)
+			{
+				this._selectedIndex = this._selectedIndices[0];
+			}
+			else
+			{
+				this._selectedIndex = -1;
+			}
+			this.invalidate(INVALIDATION_FLAG_SELECTED);
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * The currently selected item. The getter returns an empty
+		 * <code>Vector.&lt;Object&gt;</code> if no item is selected. If any
+		 * items are selected, the getter creates a new
+		 * <code>Vector.&lt;Object&gt;</code> to return a list of selected
+		 * items.
+		 */
+		public function get selectedItems():Vector.<Object>
+		{
+			const items:Vector.<Object> = new <Object>[];
+			const indexCount:int = this._selectedIndices.length;
+			for(var i:int = 0; i < indexCount; i++)
+			{
+				var index:int = this._selectedIndices[i];
+				var item:Object = this._dataProvider[index];
+				items.push(item);
+			}
+			return items;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set selectedItems(value:Vector.<Object>):void
+		{
+			if(!value)
+			{
+				this.selectedIndex = -1;
+				return;
+			}
+			const indices:Vector.<int> = new <int>[];
+			const itemCount:int = value.length;
+			for(var i:int = 0; i < itemCount; i++)
+			{
+				var item:Object = value[i];
+				var index:int = this._dataProvider.getItemIndex(item);
+				if(index >= 0)
+				{
+					indices.push(index);
+				}
+			}
+			this.selectedIndices = indices;
 		}
 		
 		/**
@@ -568,7 +696,8 @@ package feathers.controls
 		protected function refreshDataViewPortProperties():void
 		{
 			this.dataViewPort.isSelectable = this._isSelectable;
-			this.dataViewPort.selectedIndex = this._selectedIndex;
+			this.dataViewPort.allowMultipleSelection = this._allowMultipleSelection;
+			this.dataViewPort.selectedIndices = this._selectedIndices;
 			this.dataViewPort.dataProvider = this._dataProvider;
 			this.dataViewPort.itemRendererType = this._itemRendererType;
 			this.dataViewPort.itemRendererFactory = this._itemRendererFactory;
@@ -666,7 +795,22 @@ package feathers.controls
 		 */
 		protected function dataViewPort_changeHandler(event:Event):void
 		{
-			this.selectedIndex = this.dataViewPort.selectedIndex;
+			if(this._selectedIndices.length > 0)
+			{
+				this._selectedIndex = this._selectedIndices[0];
+			}
+			else
+			{
+				if(this._selectedIndex < 0)
+				{
+					//no change
+					return;
+				}
+				this._selectedIndex = -1;
+			}
+			//no need to copy selectedIndices, since we're sharing the same
+			//vector with the view port
+			this.dispatchEventWith(Event.CHANGE);
 		}
 	}
 }
