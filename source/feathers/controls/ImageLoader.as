@@ -7,9 +7,6 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
-	import feathers.core.FeathersControl;
-	import feathers.events.FeathersEventType;
-
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Loader;
@@ -19,10 +16,15 @@ package feathers.controls
 	import flash.events.SecurityErrorEvent;
 	import flash.geom.Matrix;
 	import flash.geom.Rectangle;
+	import flash.net.URLLoader;
+	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
 	import flash.system.ImageDecodingPolicy;
 	import flash.system.LoaderContext;
-
+	
+	import feathers.core.FeathersControl;
+	import feathers.events.FeathersEventType;
+	
 	import starling.core.RenderSupport;
 	import starling.core.Starling;
 	import starling.display.Image;
@@ -91,6 +93,11 @@ package feathers.controls
 		 * from URLs.
 		 */
 		protected var loader:Loader;
+		/**
+		 * The internal <code>flash.net.URLLoader</code> used to load ATF 
+		 * textures from URLs.
+		 */
+		protected var atfLoader:URLLoader;
 
 		/**
 		 * @private
@@ -484,6 +491,32 @@ package feathers.controls
 				{
 					this._lastURL = sourceURL;
 
+					//file is ATF texture file
+					if( sourceURL.substring(sourceURL.length-3, sourceURL.length).toLowerCase() == "atf") {
+						if(this.atfLoader) {
+							this.atfLoader.removeEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
+							this.atfLoader.removeEventListener(IOErrorEvent.IO_ERROR, loader_errorHandler);
+							this.atfLoader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_errorHandler);
+							try
+							{
+								this.atfLoader.close();
+							}
+							catch(error:Error)
+							{
+								//no need to do anything in response
+							}
+						} else {
+							this.atfLoader=new URLLoader();
+						}
+						this.atfLoader.dataFormat=URLLoaderDataFormat.BINARY;
+						this.atfLoader.addEventListener(flash.events.Event.COMPLETE, atfLoader_completeHandler);
+						this.atfLoader.addEventListener(IOErrorEvent.IO_ERROR, loader_errorHandler);
+						this.atfLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_errorHandler);
+						this.atfLoader.load(new URLRequest(sourceURL));
+						return;
+					}
+					
+					
 					if(this.loader)
 					{
 						this.loader.contentLoaderInfo.removeEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
@@ -502,6 +535,9 @@ package feathers.controls
 					{
 						this.loader = new Loader();
 					}
+					//trace("sourceURL: "+sourceURL);
+					//var testFile:File=new File(File.applicationDirectory.nativePath+"/"+sourceURL);
+					//trace( "testFile :"+testFile.exists);
 					this.loader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
 					this.loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, loader_errorHandler);
 					this.loader.contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_errorHandler);
@@ -609,7 +645,23 @@ package feathers.controls
 			this._texture = null;
 			this._isTextureOwner = false;
 		}
-
+		/**
+		 * @private
+		 */
+		protected function atfLoader_completeHandler(event:flash.events.Event):void
+		{
+			this.atfLoader.removeEventListener(flash.events.Event.COMPLETE, atfLoader_completeHandler);
+			this.atfLoader.removeEventListener(IOErrorEvent.IO_ERROR, loader_errorHandler);
+			this.atfLoader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_errorHandler);
+			
+			this.cleanupTexture();
+			this._texture = Texture.fromAtfData(this.atfLoader.data);
+			this._isTextureOwner = true;
+			this.commitTexture();
+			this._isLoaded = true;
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+			this.dispatchEventWith(starling.events.Event.COMPLETE);
+		}
 		/**
 		 * @private
 		 */
