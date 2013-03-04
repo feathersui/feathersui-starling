@@ -819,10 +819,11 @@ package feathers.controls
 				if(touch.phase == TouchPhase.ENDED)
 				{
 					this._touchPointID = -1;
-					touch.getLocation(this, HELPER_POINT);
-					var isInBounds:Boolean = this.hitTest(HELPER_POINT, true) != null;
+					touch.getLocation(this.stage, HELPER_POINT);
+					const isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
 					if(!this._textEditorHasFocus && isInBounds)
 					{
+						this.globalToLocal(HELPER_POINT, HELPER_POINT);
 						HELPER_POINT.x -= this._paddingLeft;
 						HELPER_POINT.y -= this._paddingTop;
 						this.textEditor.setFocus(HELPER_POINT);

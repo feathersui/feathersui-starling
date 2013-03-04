@@ -686,10 +686,11 @@ package feathers.controls
 				if(touch.phase == TouchPhase.ENDED)
 				{
 					this.touchPointID = -1;
-					touch.getLocation(this, HELPER_POINT);
-					const isInBounds:Boolean = this.hitTest(HELPER_POINT, true) != null;
+					touch.getLocation(this.stage, HELPER_POINT);
+					const isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
 					if(isInBounds)
 					{
+						this.globalToLocal(HELPER_POINT, HELPER_POINT);
 						if(this._direction == DIRECTION_VERTICAL)
 						{
 							if(HELPER_POINT.y < this.selectedSymbol.y)

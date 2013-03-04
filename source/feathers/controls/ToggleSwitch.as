@@ -1750,8 +1750,8 @@ package feathers.controls
 			}
 
 			this._touchPointID = -1;
-			touch.getLocation(this, HELPER_POINT);
-			if(this.hitTest(HELPER_POINT, true))
+			touch.getLocation(this.stage, HELPER_POINT);
+			if(this.contains(this.stage.hitTest(HELPER_POINT, true)))
 			{
 				this.isSelected = !this._isSelected;
 				this._isSelectionChangedByUser = true;
