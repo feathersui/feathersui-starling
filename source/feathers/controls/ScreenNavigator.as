@@ -387,6 +387,18 @@ package feathers.controls
 		}
 
 		/**
+		 * Removes all screens.
+		 */
+		public function removeAllScreens():void
+		{
+			this.clearScreen();
+			for(var id:String in this._screens)
+			{
+				delete this._screens[id];
+			}
+		}
+
+		/**
 		 * Determines if the specified screen identifier has been added.
 		 */
 		public function hasScreen(id:String):Boolean
