@@ -331,6 +331,140 @@ package feathers.controls
 		}
 
 		/**
+		 * Quickly sets all padding properties to the same value. The
+		 * <code>padding</code> getter always returns the value of
+		 * <code>paddingTop</code>, but the other padding values may be
+		 * different.
+		 */
+		public function get padding():Number
+		{
+			return this._paddingTop;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set padding(value:Number):void
+		{
+			this.paddingTop = value;
+			this.paddingRight = value;
+			this.paddingBottom = value;
+			this.paddingLeft = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingTop:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the control's top edge and the
+		 * control's content. Value may be negative to extend the content
+		 * outside the edges of the control. Useful for skinning.
+		 */
+		public function get paddingTop():Number
+		{
+			return this._paddingTop;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingTop(value:Number):void
+		{
+			if(this._paddingTop == value)
+			{
+				return;
+			}
+			this._paddingTop = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingRight:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the control's right edge and the
+		 * control's content. Value may be negative to extend the content
+		 * outside the edges of the control. Useful for skinning.
+		 */
+		public function get paddingRight():Number
+		{
+			return this._paddingRight;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingRight(value:Number):void
+		{
+			if(this._paddingRight == value)
+			{
+				return;
+			}
+			this._paddingRight = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingBottom:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the control's bottom edge and the
+		 * control's content. Value may be negative to extend the content
+		 * outside the edges of the control. Useful for skinning.
+		 */
+		public function get paddingBottom():Number
+		{
+			return this._paddingBottom;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingBottom(value:Number):void
+		{
+			if(this._paddingBottom == value)
+			{
+				return;
+			}
+			this._paddingBottom = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingLeft:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the control's left edge and the
+		 * control's content. Value may be negative to extend the content
+		 * outside the edges of the control. Useful for skinning.
+		 */
+		public function get paddingLeft():Number
+		{
+			return this._paddingLeft;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingLeft(value:Number):void
+		{
+			if(this._paddingLeft == value)
+			{
+				return;
+			}
+			this._paddingLeft = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
 		 * @private
 		 */
 		override public function render(support:RenderSupport, parentAlpha:Number):void
@@ -427,6 +561,7 @@ package feathers.controls
 				{
 					newWidth = 0;
 				}
+				newWidth += this._paddingLeft + this._paddingRight;
 			}
 
 			var newHeight:Number = this.explicitHeight;
@@ -445,6 +580,7 @@ package feathers.controls
 				{
 					newHeight = 0;
 				}
+				newHeight += this._paddingTop + this._paddingBottom;
 			}
 
 			return this.setSizeInternal(newWidth, newHeight, false);
@@ -540,20 +676,20 @@ package feathers.controls
 				HELPER_RECTANGLE.height = this._textureFrame.height * this._textureScale;
 				HELPER_RECTANGLE2.x = 0;
 				HELPER_RECTANGLE2.y = 0;
-				HELPER_RECTANGLE2.width = this.actualWidth;
-				HELPER_RECTANGLE2.height = this.actualHeight;
+				HELPER_RECTANGLE2.width = this.actualWidth - this._paddingLeft - this._paddingRight;
+				HELPER_RECTANGLE2.height = this.actualHeight - this._paddingTop - this._paddingBottom;
 				RectangleUtil.fit(HELPER_RECTANGLE, HELPER_RECTANGLE2, ScaleMode.SHOW_ALL, false, HELPER_RECTANGLE);
-				this.image.x = HELPER_RECTANGLE.x;
-				this.image.y = HELPER_RECTANGLE.y;
+				this.image.x = HELPER_RECTANGLE.x + this._paddingLeft;
+				this.image.y = HELPER_RECTANGLE.y + this._paddingTop;
 				this.image.width = HELPER_RECTANGLE.width;
 				this.image.height = HELPER_RECTANGLE.height;
 			}
 			else
 			{
-				this.image.x = 0;
-				this.image.y = 0;
-				this.image.width = this.actualWidth;
-				this.image.height = this.actualHeight;
+				this.image.x = this._paddingLeft;
+				this.image.y = this._paddingTop;
+				this.image.width = this.actualWidth - this._paddingLeft - this._paddingRight;
+				this.image.height = this.actualHeight - this._paddingTop - this._paddingBottom;
 			}
 		}
 
