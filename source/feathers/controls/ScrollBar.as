@@ -1873,15 +1873,15 @@ package feathers.controls
 			var percentage:Number;
 			if(this._direction == DIRECTION_VERTICAL)
 			{
-				const trackScrollableHeight:Number = this.actualHeight - this.thumb.height - this.decrementButton.height - this.incrementButton.height;
-				const yOffset:Number = location.y - this._touchStartY;
+				const trackScrollableHeight:Number = this.actualHeight - this.thumb.height - this.decrementButton.height - this.incrementButton.height - this._paddingTop - this._paddingBottom;
+				const yOffset:Number = location.y - this._touchStartY - this._paddingTop;
 				const yPosition:Number = Math.min(Math.max(0, this._thumbStartY + yOffset - this.decrementButton.height), trackScrollableHeight);
 				percentage = yPosition / trackScrollableHeight;
 			}
 			else //horizontal
 			{
-				const trackScrollableWidth:Number = this.actualWidth - this.thumb.width - this.decrementButton.width - this.incrementButton.width;
-				const xOffset:Number = location.x - this._touchStartX;
+				const trackScrollableWidth:Number = this.actualWidth - this.thumb.width - this.decrementButton.width - this.incrementButton.width - this._paddingLeft - this._paddingRight;
+				const xOffset:Number = location.x - this._touchStartX - this._paddingLeft;
 				const xPosition:Number = Math.min(Math.max(0, this._thumbStartX + xOffset - this.decrementButton.width), trackScrollableWidth);
 				percentage = xPosition / trackScrollableWidth;
 			}
