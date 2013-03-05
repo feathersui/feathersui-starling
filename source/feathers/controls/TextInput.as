@@ -105,6 +105,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _ignoreTextChanges:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _touchPointID:int = -1;
 
 		/**
@@ -137,6 +142,33 @@ package feathers.controls
 			this._text = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _typicalText:String;
+
+		/**
+		 * The text used to measure the input when the dimensions are not set
+		 * explicitly (in addition to using the background skin for measurement).
+		 */
+		public function get typicalText():String
+		{
+			return this._typicalText;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set typicalText(value:String):void
+		{
+			if(this._typicalText == value)
+			{
+				return;
+			}
+			this._typicalText = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		/**
@@ -585,7 +617,10 @@ package feathers.controls
 
 			if(textEditorInvalid || dataInvalid)
 			{
+				const oldIgnoreTextChanges:Boolean = this._ignoreTextChanges;
+				this._ignoreTextChanges = true;
 				this.textEditor.text = this._text;
+				this._ignoreTextChanges = oldIgnoreTextChanges;
 			}
 
 			if(textEditorInvalid || stateInvalid)
@@ -625,16 +660,39 @@ package feathers.controls
 				return false;
 			}
 
+			var typicalTextWidth:Number = 0;
+			var typicalTextHeight:Number = 0;
+			if(this._typicalText)
+			{
+				const oldIgnoreTextChanges:Boolean = this._ignoreTextChanges;
+				this._ignoreTextChanges = true;
+				this.textEditor.width = NaN;
+				this.textEditor.height = NaN;
+				this.textEditor.text = this._typicalText;
+				this.textEditor.measureText(HELPER_POINT);
+				this.textEditor.text = this._text;
+				this._ignoreTextChanges = oldIgnoreTextChanges;
+				typicalTextWidth = HELPER_POINT.x;
+				typicalTextHeight = HELPER_POINT.y;
+			}
+
 			var newWidth:Number = this.explicitWidth;
 			var newHeight:Number = this.explicitHeight;
 			if(needsWidth)
 			{
-				newWidth = this._originalSkinWidth;
+				newWidth = Math.max(this._originalSkinWidth, typicalTextWidth + this._paddingLeft + this._paddingRight);
 			}
 			if(needsHeight)
 			{
-				newHeight = this._originalSkinHeight;
+				newHeight = Math.max(this._originalSkinHeight, typicalTextHeight + this._paddingLeft + this._paddingRight);
 			}
+
+			if(this._typicalText)
+			{
+				this.textEditor.width = this.actualWidth - this._paddingLeft - this._paddingRight;
+				this.textEditor.height = this.actualHeight - this._paddingTop - this._paddingBottom;
+			}
+
 			return this.setSizeInternal(newWidth, newHeight, false);
 		}
 
@@ -882,6 +940,10 @@ package feathers.controls
 		 */
 		protected function textEditor_changeHandler(event:Event):void
 		{
+			if(this._ignoreTextChanges)
+			{
+				return;
+			}
 			this.text = this.textEditor.text;
 		}
 
