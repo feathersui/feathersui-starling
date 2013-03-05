@@ -72,6 +72,7 @@ package feathers.themes
 	import flash.display.BitmapData;
 	import flash.geom.Rectangle;
 	import flash.text.TextFormat;
+	import flash.text.TextFormatAlign;
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
@@ -1058,6 +1059,7 @@ package feathers.themes
 			input.textEditorProperties.fontFamily = "Helvetica";
 			input.textEditorProperties.fontSize = 30 * this.scale;
 			input.textEditorProperties.color = LIGHT_TEXT_COLOR;
+			input.textEditorProperties.textAlign = TextFormatAlign.CENTER;
 		}
 
 		protected function pageIndicatorInitializer(pageIndicator:PageIndicator):void
