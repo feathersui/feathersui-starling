@@ -794,6 +794,7 @@ package feathers.controls
 
 			if(textInputFactoryInvalid || dataInvalid)
 			{
+				this.refreshTypicalText();
 				this.textInput.text = this._value.toString();
 			}
 
@@ -979,6 +980,20 @@ package feathers.controls
 					this.textInput[propertyName] = propertyValue;
 				}
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshTypicalText():void
+		{
+			var typicalText:String = "";
+			var characterCount:int = Math.max(this._minimum.toString().length, this._maximum.toString().length);
+			for(var i:int = 0; i < characterCount; i++)
+			{
+				typicalText += "0";
+			}
+			this.textInput.typicalText = typicalText;
 		}
 
 		/**
