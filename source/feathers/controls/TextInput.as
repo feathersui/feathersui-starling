@@ -684,7 +684,7 @@ package feathers.controls
 			}
 			if(needsHeight)
 			{
-				newHeight = Math.max(this._originalSkinHeight, typicalTextHeight + this._paddingLeft + this._paddingRight);
+				newHeight = Math.max(this._originalSkinHeight, typicalTextHeight + this._paddingTop + this._paddingBottom);
 			}
 
 			if(this._typicalText)
