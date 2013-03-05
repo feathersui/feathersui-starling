@@ -503,7 +503,7 @@ package feathers.controls.text
 			currentX = Math.max(0, currentX - customLetterSpacing);
 			maxX = Math.max(maxX, currentX);
 
-			result.x = maxX;
+			result.x = maxX + _textFormat.margin;
 			result.y = currentY + font.lineHeight * scale;
 			return result;
 		}
