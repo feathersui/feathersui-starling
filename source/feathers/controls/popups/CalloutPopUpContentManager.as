@@ -23,7 +23,8 @@ package feathers.controls.popups
 	/**
 	 * Displays pop-up content (such as the List in a PickerList) in a Callout.
 	 *
-	 * @see PickerList
+	 * @see feathers.controls.PickerList
+	 * @see feathers.controls.Callout
 	 */
 	public class CalloutPopUpContentManager extends EventDispatcher implements IPopUpContentManager
 	{
@@ -33,6 +34,42 @@ package feathers.controls.popups
 		public function CalloutPopUpContentManager()
 		{
 		}
+
+		/**
+		 * The factory used to create the <code>Callout</code> instance. If
+		 * <code>null</code>, <code>Callout.calloutFactory()</code> will be used.
+		 *
+		 * <p>Note: If you change this value while a callout is open, the new
+		 * value will not go into effect until the callout is closed and a new
+		 * callout is opened.</p>
+		 *
+		 * @see feathers.controls.Callout#calloutFactory
+		 */
+		public var calloutFactory:Function;
+
+		/**
+		 * The direction of the callout.
+		 *
+		 * <p>Note: If you change this value while a callout is open, the new
+		 * value will not go into effect until the callout is closed and a new
+		 * callout is opened.</p>
+		 *
+		 * @see feathers.controls.Callout#DIRECTION_ANY
+		 * @see feathers.controls.Callout#DIRECTION_UP
+		 * @see feathers.controls.Callout#DIRECTION_DOWN
+		 * @see feathers.controls.Callout#DIRECTION_LEFT
+		 * @see feathers.controls.Callout#DIRECTION_RIGHT
+		 */
+		public var direction:String = Callout.DIRECTION_ANY;
+
+		/**
+		 * Determines if the callout will be modal or not.
+		 *
+		 * <p>Note: If you change this value while a callout is open, the new
+		 * value will not go into effect until the callout is closed and a new
+		 * callout is opened.</p>
+		 */
+		public var isModal:Boolean = true;
 
 		/**
 		 * @private
@@ -55,7 +92,7 @@ package feathers.controls.popups
 			}
 
 			this.content = content;
-			this.callout = Callout.show(content, source);
+			this.callout = Callout.show(content, source, this.direction, this.isModal, this.calloutFactory);
 			this.callout.addEventListener(Event.CLOSE, callout_closeHandler);
 		}
 
