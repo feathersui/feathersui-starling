@@ -29,6 +29,19 @@ package feathers.examples.componentsExplorer.screens
 		private var _upButton:Button;
 		private var _leftButton:Button;
 		private var _backButton:Button;
+		private var _message:Label;
+
+		override public function dispose():void
+		{
+			//the message won't be on the display list when the screen is
+			//disposed, so dispose it manually
+			if(this._message)
+			{
+				this._message.dispose();
+				this._message = null;
+			}
+			super.dispose();
+		}
 
 		protected function initializeHandler(event:Event):void
 		{
@@ -91,6 +104,20 @@ package feathers.examples.componentsExplorer.screens
 			this.backButtonHandler = this.onBackButton;
 		}
 
+		private function showCallout(origin:DisplayObject, direction:String):void
+		{
+			if(!this._message)
+			{
+				this._message = new Label();
+				this._message.text = CONTENT_TEXT;
+			}
+			const callout:Callout = Callout.show(DisplayObject(this._message), origin, direction);
+			//we're reusing the message every time that this screen shows a
+			//callout, so we don't want the message to be disposed. we'll
+			//dispose of it manually later when the screen is disposed.
+			callout.disposeContent = false;
+		}
+
 		private function onBackButton():void
 		{
 			this.dispatchEventWith(Event.COMPLETE);
@@ -103,30 +130,22 @@ package feathers.examples.componentsExplorer.screens
 
 		private function rightButton_triggeredHandler(event:Event):void
 		{
-			const content:Label = new Label();
-			content.text = CONTENT_TEXT;
-			Callout.show(DisplayObject(content), this._rightButton, Callout.DIRECTION_RIGHT);
+			this.showCallout(this._rightButton, Callout.DIRECTION_RIGHT);
 		}
 
 		private function downButton_triggeredHandler(event:Event):void
 		{
-			const content:Label = new Label();
-			content.text = CONTENT_TEXT;
-			Callout.show(DisplayObject(content), this._downButton, Callout.DIRECTION_DOWN);
+			this.showCallout(this._downButton, Callout.DIRECTION_DOWN);
 		}
 
 		private function upButton_triggeredHandler(event:Event):void
 		{
-			const content:Label = new Label();
-			content.text = CONTENT_TEXT;
-			Callout.show(DisplayObject(content), this._upButton, Callout.DIRECTION_UP);
+			this.showCallout(this._upButton, Callout.DIRECTION_UP);
 		}
 
 		private function leftButton_triggeredHandler(event:Event):void
 		{
-			const content:Label = new Label();
-			content.text = CONTENT_TEXT;
-			Callout.show(DisplayObject(content), this._leftButton, Callout.DIRECTION_LEFT);
+			this.showCallout(this._leftButton, Callout.DIRECTION_LEFT)
 		}
 	}
 }

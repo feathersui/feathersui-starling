@@ -177,7 +177,6 @@ package feathers.controls
 			}
 			const callout:Callout = Callout(factory());
 			callout.content = content;
-			callout._isPopUp = true;
 			const overlayFactory:Function = calloutOverlayFactory != null ? calloutOverlayFactory : PopUpManager.defaultOverlayFactory;
 			PopUpManager.addPopUp(callout, isModal, false, overlayFactory);
 
@@ -199,7 +198,7 @@ package feathers.controls
 			}
 			function origin_removedFromStageHandler(event:Event):void
 			{
-				callout.close();
+				callout.close(callout.disposeOnSelfClose);
 			}
 			function callout_closeHandler(event:Event):void
 			{
@@ -395,9 +394,23 @@ package feathers.controls
 		public var closeOnKeys:Vector.<uint>;
 
 		/**
-		 * @private
+		 * Determines if the callout will be disposed when <code>close()</code>
+		 * is called internally. Close may be called internally in a variety of
+		 * cases, depending on values such as <code>closeOnTouchBeganOutside</code>,
+		 * <code>closeOnTouchEndedOutside</code>, and <code>closeOnKeys</code>.
+		 *
+		 * @see #closeOnTouchBeganOutside
+		 * @see #closeOnTouchEndedOutside
+		 * @see #closeOnKeys
+		 * @see #close()
 		 */
-		protected var _isPopUp:Boolean = false;
+		public var disposeOnSelfClose:Boolean = true;
+
+		/**
+		 * Determines if the callout's content will be disposed when the callout
+		 * is disposed.
+		 */
+		public var disposeContent:Boolean = true;
 
 		/**
 		 * @private
@@ -992,6 +1005,19 @@ package feathers.controls
 		}
 
 		/**
+		 * @private
+		 */
+		override public function dispose():void
+		{
+			//remove the content safely if it should not be disposed
+			if(!this.disposeContent && this._content && this._content.parent == this)
+			{
+				this.removeChild(this._content, false);
+			}
+			super.dispose();
+		}
+
+		/**
 		 * Closes the callout.
 		 */
 		public function close(dispose:Boolean = false):void
@@ -1280,7 +1306,7 @@ package feathers.controls
 				if((this.closeOnTouchBeganOutside && phase == TouchPhase.BEGAN) ||
 					(this.closeOnTouchEndedOutside && phase == TouchPhase.ENDED))
 				{
-					this.close(this._isPopUp);
+					this.close(this.disposeOnSelfClose);
 					break;
 				}
 			}
@@ -1300,7 +1326,7 @@ package feathers.controls
 			event.preventDefault();
 			//don't let other event handlers handle the event
 			event.stopImmediatePropagation();
-			this.close(this._isPopUp);
+			this.close(this.disposeOnSelfClose);
 		}
 	}
 }
