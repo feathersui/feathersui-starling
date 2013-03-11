@@ -16,6 +16,7 @@ package feathers.controls
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
+	import starling.display.DisplayObjectContainer;
 	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
 	import starling.events.Touch;
@@ -1426,9 +1427,15 @@ package feathers.controls
 		 */
 		protected function stage_touchHandler(event:TouchEvent):void
 		{
-			if(!this._isReadyToClose || (!this.closeOnTouchEndedOutside && !this.closeOnTouchBeganOutside) ||
-				this.contains(DisplayObject(event.target)) ||
+			const target:DisplayObject = DisplayObject(event.target);
+			if(!this._isReadyToClose ||
+				(!this.closeOnTouchEndedOutside && !this.closeOnTouchBeganOutside) || this.contains(target) ||
 				(PopUpManager.isPopUp(this) && !PopUpManager.isTopLevelPopUp(this)))
+			{
+				return;
+			}
+
+			if(this._origin == target || (this._origin is DisplayObjectContainer && DisplayObjectContainer(this._origin).contains(target)))
 			{
 				return;
 			}
