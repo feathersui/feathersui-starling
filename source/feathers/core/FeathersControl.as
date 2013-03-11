@@ -130,6 +130,16 @@ package feathers.core
 		protected static const INVALIDATION_FLAG_TEXT_EDITOR:String = "textEditor";
 
 		/**
+		 * @private
+		 */
+		protected static const ILLEGAL_WIDTH_ERROR:String = "A component's width cannot be NaN.";
+
+		/**
+		 * @private
+		 */
+		protected static const ILLEGAL_HEIGHT_ERROR:String = "A component's height cannot be NaN.";
+
+		/**
 		 * A function used by all UI controls that support text renderers to
 		 * create an ITextRenderer instance. You may replace the default
 		 * function with your own, if you prefer not to use the
@@ -348,7 +358,7 @@ package feathers.core
 				return;
 			}
 			this.explicitWidth = value;
-			this.setSizeInternal(value, this.actualHeight, true);
+			this.setSizeInternal(this.actualWidth, this.actualHeight, true);
 		}
 
 		/**
@@ -399,7 +409,7 @@ package feathers.core
 				return;
 			}
 			this.explicitHeight = value;
-			this.setSizeInternal(this.actualWidth, value, true);
+			this.setSizeInternal(this.actualWidth, this.actualHeight, true);
 		}
 
 		/**
@@ -982,9 +992,6 @@ package feathers.core
 		 */
 		protected function setSizeInternal(width:Number, height:Number, canInvalidate:Boolean):Boolean
 		{
-			const oldWidth:Number = this.actualWidth;
-			const oldHeight:Number = this.actualHeight;
-			var resized:Boolean = false;
 			if(!isNaN(this.explicitWidth))
 			{
 				width = this.explicitWidth;
@@ -1001,6 +1008,15 @@ package feathers.core
 			{
 				height = Math.min(this._maxHeight, Math.max(this._minHeight, height));
 			}
+			if(isNaN(width))
+			{
+				throw new ArgumentError(ILLEGAL_WIDTH_ERROR);
+			}
+			if(isNaN(height))
+			{
+				throw new ArgumentError(ILLEGAL_HEIGHT_ERROR);
+			}
+			var resized:Boolean = false;
 			if(this.actualWidth != width)
 			{
 				this.actualWidth = width;
