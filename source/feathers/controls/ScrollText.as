@@ -25,6 +25,10 @@ package feathers.controls
 	 * <p>Meant as a workaround component for when TextFieldTextRenderer runs
 	 * into the runtime texture limits.</p>
 	 *
+	 * <p>Since this component is rendered with the runtime's software renderer,
+	 * rather than on the GPU, it may not perform very well on mobile devices
+	 * with high resolution screens.</p>
+	 *
 	 * @see http://wiki.starling-framework.org/feathers/scroll-text
 	 * @see feathers.controls.text.TextFieldTextRenderer
 	 */
