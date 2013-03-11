@@ -18,6 +18,7 @@ package feathers.controls.popups
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
+	import starling.display.DisplayObjectContainer;
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
 	import starling.events.ResizeEvent;
@@ -212,7 +213,16 @@ package feathers.controls.popups
 		 */
 		protected function stage_touchHandler(event:TouchEvent):void
 		{
-			if(event.interactsWith(this.content) || !PopUpManager.isTopLevelPopUp(this.content))
+			const target:DisplayObject = DisplayObject(event.target);
+			if(this.content == target || (this.content is DisplayObjectContainer && DisplayObjectContainer(this.content).contains(target)))
+			{
+				return;
+			}
+			if(this.source == target || (this.source is DisplayObjectContainer && DisplayObjectContainer(this.source).contains(target)))
+			{
+				return;
+			}
+			if(!PopUpManager.isTopLevelPopUp(this.content))
 			{
 				return;
 			}
