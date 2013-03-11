@@ -43,6 +43,16 @@ package feathers.controls
 		public static const DIRECTION_ANY:String = "any";
 
 		/**
+		 * The callout may be positioned on top or bottom of the origin region.
+		 */
+		public static const DIRECTION_VERTICAL:String = "vertical";
+
+		/**
+		 * The callout may be positioned on top or bottom of the origin region.
+		 */
+		public static const DIRECTION_HORIZONTAL:String = "horizontal";
+
+		/**
 		 * The callout must be positioned above the origin region.
 		 */
 		public static const DIRECTION_UP:String = "up";
@@ -85,7 +95,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private static var helperRect:Rectangle = new Rectangle();
+		private static const HELPER_RECT:Rectangle = new Rectangle();
 
 		/**
 		 * @private
@@ -101,11 +111,8 @@ package feathers.controls
 		DIRECTION_TO_FUNCTION[DIRECTION_DOWN] = positionCalloutBelow;
 		DIRECTION_TO_FUNCTION[DIRECTION_LEFT] = positionCalloutLeftSide;
 		DIRECTION_TO_FUNCTION[DIRECTION_RIGHT] = positionCalloutRightSide;
-
-		/**
-		 * @private
-		 */
-		protected static const callouts:Vector.<Callout> = new <Callout>[];
+		DIRECTION_TO_FUNCTION[DIRECTION_VERTICAL] = positionCalloutVertical;
+		DIRECTION_TO_FUNCTION[DIRECTION_HORIZONTAL] = positionCalloutHorizontal;
 
 		/**
 		 * The padding between a callout and the top edge of the stage when the
@@ -163,7 +170,7 @@ package feathers.controls
 		 * these values may be ignored if the callout cannot be drawn at the
 		 * specified dimensions.
 		 */
-		public static function show(content:DisplayObject, origin:DisplayObject, direction:String = DIRECTION_ANY,
+		public static function show(content:DisplayObject, origin:DisplayObject, supportedDirections:String = DIRECTION_ANY,
 			isModal:Boolean = true, customCalloutFactory:Function = null):Callout
 		{
 			if(!origin.stage)
@@ -177,44 +184,10 @@ package feathers.controls
 			}
 			const callout:Callout = Callout(factory());
 			callout.content = content;
+			callout.supportedDirections = supportedDirections;
+			callout.origin = origin;
 			const overlayFactory:Function = calloutOverlayFactory != null ? calloutOverlayFactory : PopUpManager.defaultOverlayFactory;
 			PopUpManager.addPopUp(callout, isModal, false, overlayFactory);
-
-			var globalBounds:Rectangle = origin.getBounds(Starling.current.stage);
-			positionCalloutByDirection(callout, globalBounds, direction);
-			callouts.push(callout);
-
-			function enterFrameHandler(event:EnterFrameEvent):void
-			{
-				origin.getBounds(Starling.current.stage, helperRect);
-				if(globalBounds.equals(helperRect))
-				{
-					return;
-				}
-				const temp:Rectangle = globalBounds;
-				globalBounds = helperRect;
-				helperRect = temp;
-				positionCalloutByDirection(callout, globalBounds, direction);
-			}
-			function origin_removedFromStageHandler(event:Event):void
-			{
-				callout.close(callout.disposeOnSelfClose);
-			}
-			function callout_closeHandler(event:Event):void
-			{
-				origin.removeEventListener(Event.REMOVED_FROM_STAGE, origin_removedFromStageHandler);
-				Starling.current.stage.removeEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
-				callout.removeEventListener(Event.CLOSE, callout_closeHandler);
-				const index:int = callouts.indexOf(callout);
-				if(index >= 0)
-				{
-					callouts.splice(index, 1);
-				}
-			}
-			callout.addEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
-			callout.addEventListener(Event.CLOSE, callout_closeHandler);
-			origin.addEventListener(Event.REMOVED_FROM_STAGE, origin_removedFromStageHandler);
-
 			return callout;
 		}
 
@@ -307,7 +280,74 @@ package feathers.controls
 			{
 				positionCalloutLeftSide(callout, globalOrigin);
 			}
+		}
 
+		/**
+		 * @private
+		 */
+		protected static function positionCalloutVertical(callout:Callout, globalOrigin:Rectangle):void
+		{
+			callout.arrowPosition = ARROW_POSITION_TOP;
+			callout.validate();
+			const downSpace:Number = (Starling.current.stage.stageHeight - callout.height) - (globalOrigin.y + globalOrigin.height);
+			if(downSpace >= stagePaddingBottom)
+			{
+				positionCalloutBelow(callout, globalOrigin);
+				return;
+			}
+
+			callout.arrowPosition = ARROW_POSITION_BOTTOM;
+			callout.validate();
+			const upSpace:Number = globalOrigin.y - callout.height;
+			if(upSpace >= stagePaddingTop)
+			{
+				positionCalloutAbove(callout, globalOrigin);
+				return;
+			}
+
+			//worst case: pick the side that has the most available space
+			if(downSpace >= upSpace)
+			{
+				positionCalloutBelow(callout, globalOrigin);
+			}
+			else
+			{
+				positionCalloutAbove(callout, globalOrigin);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected static function positionCalloutHorizontal(callout:Callout, globalOrigin:Rectangle):void
+		{
+			callout.arrowPosition = ARROW_POSITION_LEFT;
+			callout.validate();
+			const rightSpace:Number = (Starling.current.stage.stageWidth - callout.width) - (globalOrigin.x + globalOrigin.width);
+			if(rightSpace >= stagePaddingRight)
+			{
+				positionCalloutRightSide(callout, globalOrigin);
+				return;
+			}
+
+			callout.arrowPosition = ARROW_POSITION_RIGHT;
+			callout.validate();
+			const leftSpace:Number = globalOrigin.x - callout.width;
+			if(leftSpace >= stagePaddingLeft)
+			{
+				positionCalloutLeftSide(callout, globalOrigin);
+				return;
+			}
+
+			//worst case: pick the side that has the most available space
+			if(rightSpace >= leftSpace)
+			{
+				positionCalloutRightSide(callout, globalOrigin);
+			}
+			else
+			{
+				positionCalloutLeftSide(callout, globalOrigin);
+			}
 		}
 
 		/**
@@ -371,7 +411,7 @@ package feathers.controls
 		 */
 		public function Callout()
 		{
-			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
+			this.addEventListener(Event.ADDED_TO_STAGE, callout_addedToStageHandler);
 		}
 
 		/**
@@ -465,6 +505,71 @@ package feathers.controls
 			this._originalContentWidth = NaN;
 			this._originalContentHeight = NaN;
 			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _origin:DisplayObject;
+
+		/**
+		 * A callout may be positioned relative to another display object, known
+		 * as the callout's origin. Even if the position of the origin changes,
+		 * the callout will reposition itself to always point at the origin.
+		 *
+		 * <p>When an origin is set, the <code>arrowPosition</code> property
+		 * will be managed by the callout. The <code>arrowPosition</code> should
+		 * only be managed manually when the callout does not have an origin
+		 * (which should be very uncommon).</p>
+		 *
+		 * @see #supportedDirections
+		 * @see #arrowPosition
+		 */
+		public function get origin():DisplayObject
+		{
+			return this._origin;
+		}
+
+		public function set origin(value:DisplayObject):void
+		{
+			if(this._origin == value)
+			{
+				return;
+			}
+			if(this._origin)
+			{
+				this.removeEventListener(EnterFrameEvent.ENTER_FRAME, callout_enterFrameHandler);
+				this._origin.removeEventListener(Event.REMOVED_FROM_STAGE, origin_removedFromStageHandler);
+			}
+			this._origin = value;
+			this._lastGlobalBounds = null;
+			if(this._origin)
+			{
+				this._origin.addEventListener(Event.REMOVED_FROM_STAGE, origin_removedFromStageHandler);
+				this.addEventListener(EnterFrameEvent.ENTER_FRAME, callout_enterFrameHandler);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _supportedDirections:String = DIRECTION_ANY;
+
+		/**
+		 * The directions that the callout may be positioned, relative to its
+		 * origin. If the callout's origin is not set, this value will be
+		 * ignored.
+		 *
+		 * @see #origin
+		 */
+		public function get supportedDirections():String
+		{
+			return this._supportedDirections;
+		}
+
+		public function set supportedDirections(value:String):void
+		{
+			this._supportedDirections = value;
 		}
 
 		/**
@@ -604,9 +709,13 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="top,right,bottom,left")]
 		/**
-		 * The position of the callout's arrow relative to the background. Do
-		 * not confuse this with the direction that the callout opens when using
-		 * <code>Callout.create()</code>.
+		 * The position of the callout's arrow relative to the callout's
+		 * background. If the callout's <code>origin</code> is set, this value
+		 * will be managed by the callout and may change as the origin moves or
+		 * the stage resizes.
+		 *
+		 * @see #origin
+		 * @see #supportedDirections
 		 */
 		public function get arrowPosition():String
 		{
@@ -1007,8 +1116,14 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _lastGlobalBounds:Rectangle;
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
+			this.origin = null;
 			//remove the content safely if it should not be disposed
 			if(!this.disposeContent && this._content && this._content.parent == this)
 			{
@@ -1041,7 +1156,7 @@ package feathers.controls
 		{
 			this.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			Starling.current.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler, false, int.MAX_VALUE, true);
-			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
+			this.addEventListener(Event.REMOVED_FROM_STAGE, callout_removedFromStageHandler);
 		}
 
 		/**
@@ -1258,19 +1373,19 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function addedToStageHandler(event:Event):void
+		protected function callout_addedToStageHandler(event:Event):void
 		{
 			//to avoid touch events bubbling up to the callout and causing it to
 			//close immediately, we wait one frame before allowing it to close
 			//based on touches.
 			this._isReadyToClose = false;
-			this.addEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
+			this.addEventListener(EnterFrameEvent.ENTER_FRAME, callout_oneEnterFrameHandler);
 		}
 
 		/**
 		 * @private
 		 */
-		protected function removedFromStageHandler(event:Event):void
+		protected function callout_removedFromStageHandler(event:Event):void
 		{
 			this.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
@@ -1279,10 +1394,31 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function enterFrameHandler(event:Event):void
+		protected function callout_oneEnterFrameHandler(event:Event):void
 		{
-			this.removeEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
+			this.removeEventListener(EnterFrameEvent.ENTER_FRAME, callout_oneEnterFrameHandler);
 			this._isReadyToClose = true;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function callout_enterFrameHandler(event:EnterFrameEvent):void
+		{
+			this._origin.getBounds(Starling.current.stage, HELPER_RECT);
+			const hasGlobalBounds:Boolean = this._lastGlobalBounds != null;
+			if(!hasGlobalBounds || !this._lastGlobalBounds.equals(HELPER_RECT))
+			{
+				if(!hasGlobalBounds)
+				{
+					this._lastGlobalBounds = new Rectangle();
+				}
+				this._lastGlobalBounds.x = HELPER_RECT.x;
+				this._lastGlobalBounds.y = HELPER_RECT.y;
+				this._lastGlobalBounds.width = HELPER_RECT.width;
+				this._lastGlobalBounds.height = HELPER_RECT.height;
+				positionCalloutByDirection(this, this._lastGlobalBounds, this._supportedDirections);
+			}
 		}
 
 		/**
@@ -1326,6 +1462,14 @@ package feathers.controls
 			event.preventDefault();
 			//don't let other event handlers handle the event
 			event.stopImmediatePropagation();
+			this.close(this.disposeOnSelfClose);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function origin_removedFromStageHandler(event:Event):void
+		{
 			this.close(this.disposeOnSelfClose);
 		}
 	}
