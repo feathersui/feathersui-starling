@@ -16,6 +16,7 @@ Noteworthy changes in official releases of [Feathers](http://feathersui.com/).
 * All sub-components are created from factories and can receive custom names for theming.
 * PopUpManager: Supports custom root to place pop-ups somewhere other than the stage.
 * PopUpManager: modal pop-ups receive a different focus manager.
+* FeathersControl: setSizeInternal() is now stricter. It can never receive a NaN value for width or height. This is a common source of bugs, and throwing an error here will help make it easier to find those bugs.
 * PickerList: supports prompt when no item is selected.
 * Panel: A new container similar to ScrollContainer, but with a header component too (defaults to feathers.controls.Header).
 * PanelScreen: An IScreen implementation based on Panel.
