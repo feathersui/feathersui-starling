@@ -9,6 +9,7 @@ Noteworthy changes in official releases of [Feathers](http://feathersui.com/).
 * List, GroupedList, ScrollContainer, and ScrollText all extend Scroller, instead of using it as a sub-component. The scrollerProperties property on each of these is now deprecated because all public properties of Scroller are now direct public properties of these components.
 * Focus management and keyboard control can be enabled with FocusManager.isEnabled = true.
 * Slider: measurement now includes thumb dimensions and a new property called trackScaleMode has been added.
+* Callout: content disposal is more consistent. Set disposeContent to false to reuse content in another callout later.
 * Added ILayoutObject to support extra data for layouts to use.
 * AnchorLayout: added to support fluid layouts and relative positioning.
 * MultiColumnGridLayout: added to support fluid layouts on standard columns with device responsiveness.
