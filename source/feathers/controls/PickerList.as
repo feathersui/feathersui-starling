@@ -10,12 +10,14 @@ package feathers.controls
 	import feathers.controls.popups.CalloutPopUpContentManager;
 	import feathers.controls.popups.IPopUpContentManager;
 	import feathers.controls.popups.VerticalCenteredPopUpContentManager;
+	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.core.FeathersControl;
 	import feathers.core.PropertyProxy;
 	import feathers.data.ListCollection;
 	import feathers.system.DeviceCapabilities;
 
 	import starling.core.Starling;
+	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -1057,7 +1059,17 @@ package feathers.controls
 				{
 					if(!this._hasBeenScrolled)
 					{
-						this.closePopUpList();
+						var target:DisplayObject = DisplayObject(event.target);
+						do
+						{
+							if(target is IListItemRenderer)
+							{
+								this.closePopUpList();
+								break;
+							}
+							target = target.parent;
+						}
+						while(target)
 					}
 					this._listTouchPointID = -1;
 				}
