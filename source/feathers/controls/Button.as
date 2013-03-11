@@ -2033,7 +2033,14 @@ package feathers.controls
 				newWidth += this._paddingLeft + this._paddingRight;
 				if(isNaN(newWidth))
 				{
-					newWidth = this._originalSkinWidth;
+					if(isNaN(this._originalSkinWidth))
+					{
+						newWidth = 0;
+					}
+					else
+					{
+						newWidth = this._originalSkinWidth;
+					}
 				}
 				else if(!isNaN(this._originalSkinWidth))
 				{
@@ -2067,7 +2074,14 @@ package feathers.controls
 				newHeight += this._paddingTop + this._paddingBottom;
 				if(isNaN(newHeight))
 				{
-					newHeight = this._originalSkinHeight;
+					if(isNaN(this._originalSkinHeight))
+					{
+						newHeight = 0;
+					}
+					else
+					{
+						newHeight = this._originalSkinHeight;
+					}
 				}
 				else if(!isNaN(this._originalSkinHeight))
 				{
