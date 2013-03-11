@@ -562,6 +562,13 @@ package feathers.controls
 		 * ignored.
 		 *
 		 * @see #origin
+		 * @see #DIRECTION_ANY
+		 * @see #DIRECTION_VERTICAL
+		 * @see #DIRECTION_HORIZONTAL
+		 * @see #DIRECTION_UP
+		 * @see #DIRECTION_DOWN
+		 * @see #DIRECTION_LEFT
+		 * @see #DIRECTION_RIGHT
 		 */
 		public function get supportedDirections():String
 		{
