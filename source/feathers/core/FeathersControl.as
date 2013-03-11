@@ -14,12 +14,10 @@ package feathers.core
 	import feathers.layout.ILayoutDisplayObject;
 
 	import flash.errors.IllegalOperationError;
-
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
-	import starling.core.RenderSupport;
 	import starling.display.DisplayObject;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -353,12 +351,25 @@ package feathers.core
 		 */
 		override public function set width(value:Number):void
 		{
-			if(this.explicitWidth == value || (isNaN(value) && isNaN(this.explicitWidth)))
+			if(this.explicitWidth == value)
+			{
+				return;
+			}
+			const valueIsNaN:Boolean = isNaN(value);
+			if(valueIsNaN && isNaN(this.explicitWidth))
 			{
 				return;
 			}
 			this.explicitWidth = value;
-			this.setSizeInternal(this.actualWidth, this.actualHeight, true);
+			if(valueIsNaN)
+			{
+				this.actualWidth = 0;
+				this.invalidate(INVALIDATION_FLAG_SIZE);
+			}
+			else
+			{
+				this.setSizeInternal(value, this.actualHeight, true);
+			}
 		}
 
 		/**
@@ -404,12 +415,25 @@ package feathers.core
 		 */
 		override public function set height(value:Number):void
 		{
-			if(this.explicitHeight == value || (isNaN(value) && isNaN(this.explicitHeight)))
+			if(this.explicitHeight == value)
+			{
+				return;
+			}
+			const valueIsNaN:Boolean = isNaN(value);
+			if(valueIsNaN && isNaN(this.explicitHeight))
 			{
 				return;
 			}
 			this.explicitHeight = value;
-			this.setSizeInternal(this.actualWidth, this.actualHeight, true);
+			if(valueIsNaN)
+			{
+				this.actualHeight = 0;
+				this.invalidate(INVALIDATION_FLAG_SIZE);
+			}
+			else
+			{
+				this.setSizeInternal(this.actualWidth, value, true);
+			}
 		}
 
 		/**
