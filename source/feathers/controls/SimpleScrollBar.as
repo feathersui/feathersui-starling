@@ -724,7 +724,14 @@ package feathers.controls
 					}
 					else
 					{
-						newWidth = Math.max(this.thumbOriginalWidth, this.thumbOriginalWidth * range / adjustedPageStep);
+						if(adjustedPageStep == 0)
+						{
+							newWidth = this.thumbOriginalWidth;
+						}
+						else
+						{
+							newWidth = Math.max(this.thumbOriginalWidth, this.thumbOriginalWidth * range / adjustedPageStep);
+						}
 					}
 				}
 				newWidth += this._paddingLeft + this._paddingRight;
@@ -739,7 +746,14 @@ package feathers.controls
 					}
 					else
 					{
-						newHeight = Math.max(this.thumbOriginalHeight, this.thumbOriginalHeight * range / adjustedPageStep);
+						if(adjustedPageStep == 0)
+						{
+							newHeight = this.thumbOriginalHeight;
+						}
+						else
+						{
+							newHeight = Math.max(this.thumbOriginalHeight, this.thumbOriginalHeight * range / adjustedPageStep);
+						}
 					}
 				}
 				else //horizontal
