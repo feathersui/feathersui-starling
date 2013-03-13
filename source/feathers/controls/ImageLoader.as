@@ -331,6 +331,60 @@ package feathers.controls
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _pendingTexture:BitmapData;
+
+		/**
+		 * @private
+		 */
+		protected var _delayTextureCreation:Boolean = false;
+
+		/**
+		 * Determines if a loaded bitmap may be converted to a texture
+		 * immediately after loading. If <code>true</code>, the loaded bitmap
+		 * will be saved until this property is set to <code>false</code>, and
+		 * only then it will be used to create the texture.
+		 *
+		 * <p>This property is intended to be used while a parent container,
+		 * such as a <code>List</code>, is scrolling in order to keep scrolling
+		 * as smooth as possible. Creating textures is expensive and performance
+		 * can be affected by it. Set this property to <code>true</code> when
+		 * the <code>List</code> dispatches <code>FeathersEventType.SCROLL_START</code>
+		 * and set back to false when the <code>List</code> dispatches
+		 * <code>FeathersEventType.SCROLL_COMPLETE</code>. You may also need
+		 * to set to false if the <code>isScrolling</code> property of the
+		 * <code>List</code> is <code>true</code> before you listen to those
+		 * events.</p>
+		 *
+		 * @see feathers.controls.Scroller#event:scrollStart
+		 * @see feathers.controls.Scroller#event:scrollComplete
+		 * @see feathers.controls.Scroller#isScrolling
+		 */
+		public function get delayTextureCreation():Boolean
+		{
+			return this._delayTextureCreation;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set delayTextureCreation(value:Boolean):void
+		{
+			if(this._delayTextureCreation == value)
+			{
+				return;
+			}
+			this._delayTextureCreation = value;
+			if(!this._delayTextureCreation && this._pendingTexture)
+			{
+				const bitmapData:BitmapData = this._pendingTexture;
+				this._pendingTexture = null;
+				this.replaceTexture(bitmapData);
+			}
+		}
+
+		/**
 		 * Quickly sets all padding properties to the same value. The
 		 * <code>padding</code> getter always returns the value of
 		 * <code>paddingTop</code>, but the other padding values may be
@@ -740,25 +794,19 @@ package feathers.controls
 					this._texture.dispose();
 				}
 			}
+			if(this._pendingTexture)
+			{
+				this._pendingTexture.dispose();
+				this._pendingTexture = null;
+			}
 			this._textureFrame = null;
 			this._textureBitmapData = null;
 			this._texture = null;
 			this._isTextureOwner = false;
 		}
 
-		/**
-		 * @private
-		 */
-		protected function loader_completeHandler(event:flash.events.Event):void
+		protected function replaceTexture(bitmapData:BitmapData):void
 		{
-			const bitmap:Bitmap = Bitmap(this.loader.content);
-			this.loader.contentLoaderInfo.removeEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
-			this.loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, loader_errorHandler);
-			this.loader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_errorHandler);
-			this.loader = null;
-			
-			this.cleanupTexture();
-			const bitmapData:BitmapData = bitmap.bitmapData;
 			this._texture = Texture.fromBitmapData(bitmapData, false);
 			if(Starling.handleLostContext)
 			{
@@ -775,6 +823,29 @@ package feathers.controls
 			this._isLoaded = true;
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 			this.dispatchEventWith(starling.events.Event.COMPLETE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function loader_completeHandler(event:flash.events.Event):void
+		{
+			const bitmap:Bitmap = Bitmap(this.loader.content);
+			this.loader.contentLoaderInfo.removeEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
+			this.loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, loader_errorHandler);
+			this.loader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_errorHandler);
+			this.loader = null;
+			
+			this.cleanupTexture();
+			const bitmapData:BitmapData = bitmap.bitmapData;
+			if(this._delayTextureCreation)
+			{
+				this._pendingTexture = bitmapData;
+			}
+			else
+			{
+				this.replaceTexture(bitmapData);
+			}
 		}
 
 		/**
