@@ -470,29 +470,29 @@ package feathers.controls.supportClasses
 			this._allowMultipleSelection = value;
 		}
 
-		private var _selectedIndices:Vector.<int>;
+		private var _selectedIndices:ListCollection;
 
-		public function get selectedIndices():Vector.<int>
+		public function get selectedIndices():ListCollection
 		{
 			return this._selectedIndices;
 		}
 
-		public function set selectedIndices(value:Vector.<int>):void
+		public function set selectedIndices(value:ListCollection):void
 		{
 			if(this._selectedIndices == value)
 			{
 				return;
 			}
-			if(!value)
+			if(this._selectedIndices)
 			{
-				this._selectedIndices.length = 0;
+				this._selectedIndices.removeEventListener(Event.CHANGE, selectedIndices_changeHandler);
 			}
-			else
+			this._selectedIndices = value;
+			if(this._selectedIndices)
 			{
-				this._selectedIndices = value;
+				this._selectedIndices.addEventListener(Event.CHANGE, selectedIndices_changeHandler);
 			}
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
-			this.dispatchEventWith(Event.CHANGE);
 		}
 
 		public function getScrollPositionForIndex(index:int, result:Point = null):Point
@@ -620,7 +620,7 @@ package feathers.controls.supportClasses
 			this._ignoreSelectionChanges = true;
 			for each(var renderer:IListItemRenderer in this._activeRenderers)
 			{
-				renderer.isSelected = this._selectedIndices.indexOf(renderer.index) >= 0;
+				renderer.isSelected = this._selectedIndices.getItemIndex(renderer.index) >= 0;
 			}
 			this._ignoreSelectionChanges = false;
 		}
@@ -924,26 +924,27 @@ package feathers.controls.supportClasses
 			}
 			const isSelected:Boolean = renderer.isSelected;
 			const index:int = renderer.index;
-			const indices:Vector.<int> = this._selectedIndices;
-			this._selectedIndices = null;
 			if(this._allowMultipleSelection)
 			{
-				const indexOfIndex:int = indices.indexOf(index)
+				const indexOfIndex:int = this._selectedIndices.getItemIndex(index);
 				if(isSelected && indexOfIndex < 0)
 				{
-					indices.push(index);
+					this._selectedIndices.addItem(index);
 				}
 				else if(!isSelected && indexOfIndex >= 0)
 				{
-					indices.splice(indexOfIndex, 1);
+					this._selectedIndices.removeItemAt(indexOfIndex);
 				}
 			}
 			else
 			{
-				indices.length = 0;
-				indices.push(index);
+				this._selectedIndices.data = new <int>[index];
 			}
-			this.selectedIndices = indices;
+		}
+
+		private function selectedIndices_changeHandler(event:Event):void
+		{
+			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
 
 		private function removedFromStageHandler(event:Event):void

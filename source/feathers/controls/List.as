@@ -119,6 +119,7 @@ package feathers.controls
 			super();
 			this.addEventListener(FeathersEventType.FOCUS_IN, list_focusInHandler);
 			this.addEventListener(FeathersEventType.FOCUS_OUT, list_focusOutHandler);
+			this._selectedIndices.addEventListener(Event.CHANGE, selectedIndices_changeHandler);
 		}
 
 		/**
@@ -255,14 +256,15 @@ package feathers.controls
 			{
 				return;
 			}
-			this._selectedIndex = value;
-			this._selectedIndices.length = 0;
 			if(value >= 0)
 			{
-				this._selectedIndices.push(value);
+				this._selectedIndices.data = new <int>[value];
+			}
+			else
+			{
+				this._selectedIndices.removeAll();
 			}
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
-			this.dispatchEventWith(Event.CHANGE);
 		}
 
 		/**
@@ -320,7 +322,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _selectedIndices:Vector.<int> = new <int>[];
+		protected var _selectedIndices:ListCollection = new ListCollection(new <int>[]);
 
 		/**
 		 * The indices of the currently selected items. Returns an empty <code>Vector.&lt;int&gt;</code>
@@ -329,7 +331,7 @@ package feathers.controls
 		 */
 		public function get selectedIndices():Vector.<int>
 		{
-			return this._selectedIndices;
+			return this._selectedIndices.data as Vector.<int>;
 		}
 
 		/**
@@ -337,7 +339,8 @@ package feathers.controls
 		 */
 		public function set selectedIndices(value:Vector.<int>):void
 		{
-			if(this._selectedIndices == value)
+			const oldValue:Vector.<int> = this._selectedIndices.data as Vector.<int>;
+			if(oldValue == value)
 			{
 				return;
 			}
@@ -347,8 +350,7 @@ package feathers.controls
 				{
 					return;
 				}
-				this._selectedIndex = -1;
-				this._selectedIndices.length = 0;
+				this._selectedIndices.removeAll();
 			}
 			else
 			{
@@ -356,18 +358,9 @@ package feathers.controls
 				{
 					value.length = 1;
 				}
-				this._selectedIndices = value;
-			}
-			if(this._selectedIndices.length > 0)
-			{
-				this._selectedIndex = this._selectedIndices[0];
-			}
-			else
-			{
-				this._selectedIndex = -1;
+				this._selectedIndices.data = value;
 			}
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
-			this.dispatchEventWith(Event.CHANGE);
 		}
 
 		/**
@@ -383,7 +376,7 @@ package feathers.controls
 			const indexCount:int = this._selectedIndices.length;
 			for(var i:int = 0; i < indexCount; i++)
 			{
-				var index:int = this._selectedIndices[i];
+				var index:int = this._selectedIndices.getItemAt(i) as int;
 				var item:Object = this._dataProvider[index];
 				items.push(item);
 			}
@@ -666,7 +659,6 @@ package feathers.controls
 			{
 				this.viewPort = this.dataViewPort = new ListDataViewPort();
 				this.dataViewPort.owner = this;
-				this.dataViewPort.addEventListener(Event.CHANGE, dataViewPort_changeHandler);
 				this.viewPort = this.dataViewPort;
 			}
 
@@ -804,11 +796,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function dataViewPort_changeHandler(event:Event):void
+		protected function selectedIndices_changeHandler(event:Event):void
 		{
 			if(this._selectedIndices.length > 0)
 			{
-				this._selectedIndex = this._selectedIndices[0];
+				this._selectedIndex = this._selectedIndices.getItemAt(0) as int;
 			}
 			else
 			{
@@ -819,8 +811,6 @@ package feathers.controls
 				}
 				this._selectedIndex = -1;
 			}
-			//no need to copy selectedIndices, since we're sharing the same
-			//vector with the view port
 			this.dispatchEventWith(Event.CHANGE);
 		}
 	}
