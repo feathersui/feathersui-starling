@@ -91,6 +91,18 @@ package feathers.controls
 
 		/**
 		 * An alternate name to use with Button to allow a theme to give it
+		 * a highly prominent, "danger" style. An example would be a delete
+		 * button or some other button that has a destructive action that cannot
+		 * be undone if the button is triggered. If a theme does not provide
+		 * a skin for the danger button, the theme will automatically fall back
+		 * to using the default button skin.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
+		 */
+		public static const ALTERNATE_NAME_DANGER_BUTTON:String = "feathers-danger-button";
+
+		/**
+		 * An alternate name to use with Button to allow a theme to give it
 		 * a "back button" style, perhaps with an arrow pointing backward. If a
 		 * theme does not provide a skin for the back button, the theme will
 		 * automatically fall back to using the default button skin.
