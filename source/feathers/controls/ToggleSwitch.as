@@ -1426,7 +1426,6 @@ package feathers.controls
 			{
 				labelHeight = Math.max(this.onTextRenderer.baseline, this.offTextRenderer.baseline);
 			}
-			trace(totalLabelHeight, labelHeight, this.actualHeight);
 
 			if(this.onTextRenderer is FeathersControl)
 			{
