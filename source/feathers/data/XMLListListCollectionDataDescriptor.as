@@ -81,6 +81,20 @@ package feathers.data
 			delete data[index];
 			return item;
 		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function removeAll(data:Object):void
+		{
+			this.checkForCorrectDataType(data);
+			const list:XMLList = data as XMLList;
+			const listLength:int = list.length();
+			for(var i:int = 0; i < listLength; i++)
+			{
+				delete data[0];
+			}
+		}
 		
 		/**
 		 * @inheritDoc
