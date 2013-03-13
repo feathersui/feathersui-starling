@@ -3,7 +3,6 @@ package feathers.examples.componentsExplorer
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.ScrollContainer;
-	import feathers.examples.componentsExplorer.data.ButtonSettings;
 	import feathers.examples.componentsExplorer.data.GroupedListSettings;
 	import feathers.examples.componentsExplorer.data.ListSettings;
 	import feathers.examples.componentsExplorer.data.NumericStepperSettings;
@@ -11,7 +10,6 @@ package feathers.examples.componentsExplorer
 	import feathers.examples.componentsExplorer.data.TextInputSettings;
 	import feathers.examples.componentsExplorer.screens.ButtonGroupScreen;
 	import feathers.examples.componentsExplorer.screens.ButtonScreen;
-	import feathers.examples.componentsExplorer.screens.ButtonSettingsScreen;
 	import feathers.examples.componentsExplorer.screens.CalloutScreen;
 	import feathers.examples.componentsExplorer.screens.GroupedListScreen;
 	import feathers.examples.componentsExplorer.screens.GroupedListSettingsScreen;
@@ -108,22 +106,10 @@ package feathers.examples.componentsExplorer
 			
 			this._navigator = new ScreenNavigator();
 
-			const buttonSettings:ButtonSettings = new ButtonSettings();
 			this._navigator.addScreen(BUTTON, new ScreenNavigatorItem(ButtonScreen,
 			{
 				complete: MAIN_MENU,
 				showSettings: BUTTON_SETTINGS
-			},
-			{
-				settings: buttonSettings
-			}));
-
-			this._navigator.addScreen(BUTTON_SETTINGS, new ScreenNavigatorItem(ButtonSettingsScreen,
-			{
-				complete: BUTTON
-			},
-			{
-				settings: buttonSettings
 			}));
 
 			this._navigator.addScreen(BUTTON_GROUP, new ScreenNavigatorItem(ButtonGroupScreen,
