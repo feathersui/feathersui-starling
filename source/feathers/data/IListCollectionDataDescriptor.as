@@ -46,5 +46,10 @@ package feathers.data
 		 * the item isn't in the data source, returns <code>-1</code>.
 		 */
 		function getItemIndex(data:Object, item:Object):int;
+
+		/**
+		 * Removes all items from the data source.
+		 */
+		function removeAll(data:Object):void;
 	}
 }
