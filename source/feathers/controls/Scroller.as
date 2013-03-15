@@ -318,8 +318,8 @@ package feathers.controls
 			this._viewPortWrapper = new Sprite();
 			this.addChild(this._viewPortWrapper);
 
-			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
-			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
+			this.addEventListener(Event.ADDED_TO_STAGE, scroller_addedToStageHandler);
+			this.addEventListener(Event.REMOVED_FROM_STAGE, scroller_removedFromStageHandler);
 		}
 
 		/**
@@ -3493,7 +3493,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function addedToStageHandler(event:Event):void
+		protected function scroller_addedToStageHandler(event:Event):void
 		{
 			Starling.current.nativeStage.addEventListener(MouseEvent.MOUSE_WHEEL, nativeStage_mouseWheelHandler, false, 0, true);
 			Starling.current.nativeStage.addEventListener("orientationChange", nativeStage_orientationChangeHandler, false, 0, true);
@@ -3502,7 +3502,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function removedFromStageHandler(event:Event):void
+		protected function scroller_removedFromStageHandler(event:Event):void
 		{
 			Starling.current.nativeStage.removeEventListener(MouseEvent.MOUSE_WHEEL, nativeStage_mouseWheelHandler);
 			Starling.current.nativeStage.removeEventListener("orientationChange", nativeStage_orientationChangeHandler);
