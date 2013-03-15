@@ -146,6 +146,11 @@ package feathers.core
 		protected var _initializerSuperTypes:Vector.<Class> = new <Class>[];
 
 		/**
+		 * @private
+		 */
+		protected var _excludedObjects:Vector.<DisplayObject>;
+
+		/**
 		 * Stops listening to the root and cleans up anything else that needs to
 		 * be disposed. If a <code>DisplayListWatcher</code> is extended for a
 		 * theme, it should also dispose textures and other assets.
@@ -157,6 +162,48 @@ package feathers.core
 				this.root.removeEventListener(Event.ADDED, addedHandler);
 				this.root = null;
 			}
+		}
+
+		/**
+		 * Excludes a display object, and all if its children (if any) from
+		 * being watched.
+		 */
+		public function exclude(target:DisplayObject):void
+		{
+			if(!this._excludedObjects)
+			{
+				this._excludedObjects = new <DisplayObject>[];
+			}
+			this._excludedObjects.push(target);
+		}
+
+		/**
+		 * Determines if an object is excluded from being watched.
+		 */
+		public function isExcluded(target:DisplayObject):Boolean
+		{
+			if(!this._excludedObjects)
+			{
+				return false;
+			}
+
+			const objectCount:int = this._excludedObjects.length;
+			for(var i:int = 0; i < objectCount; i++)
+			{
+				var object:DisplayObject = this._excludedObjects[i];
+				if(object is DisplayObjectContainer)
+				{
+					if(DisplayObjectContainer(object).contains(target))
+					{
+						return true;
+					}
+				}
+				else if(object == target)
+				{
+					return true;
+				}
+			}
+			return false;
 		}
 		
 		/**
@@ -317,6 +364,11 @@ package feathers.core
 				const isInitialized:Boolean = this._initializeOnce && this.initializedObjects[targetAsRequiredBaseClass];
 				if(!isInitialized)
 				{
+					if(this.isExcluded(target))
+					{
+						return;
+					}
+
 					this.initializedObjects[targetAsRequiredBaseClass] = true;
 					this.processAllInitializers(target);
 				}
