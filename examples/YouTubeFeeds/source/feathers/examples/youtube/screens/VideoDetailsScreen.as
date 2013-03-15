@@ -1,10 +1,12 @@
 package feathers.examples.youtube.screens
 {
 	import feathers.controls.Button;
-	import feathers.controls.Header;
-	import feathers.controls.Screen;
+	import feathers.controls.PanelScreen;
 	import feathers.controls.ScrollText;
+	import feathers.events.FeathersEventType;
 	import feathers.examples.youtube.models.YouTubeModel;
+	import feathers.layout.AnchorLayout;
+	import feathers.layout.AnchorLayoutData;
 
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
@@ -14,13 +16,13 @@ package feathers.examples.youtube.screens
 
 	[Event(name="complete",type="starling.events.Event")]
 
-	public class VideoDetailsScreen extends Screen
+	public class VideoDetailsScreen extends PanelScreen
 	{
 		public function VideoDetailsScreen()
 		{
+			this.addEventListener(FeathersEventType.INITIALIZE, initializeHandler);
 		}
 
-		private var _header:Header;
 		private var _backButton:Button;
 		private var _watchButton:Button;
 		private var _scrollText:ScrollText;
@@ -42,32 +44,32 @@ package feathers.examples.youtube.screens
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
-		override protected function initialize():void
+		protected function initializeHandler(event:Event):void
 		{
-			this._backButton = new Button();
-			this._backButton.nameList.add(Button.ALTERNATE_NAME_BACK_BUTTON);
-			this._backButton.label = "Back";
-			this._backButton.addEventListener(Event.TRIGGERED, onBackButton);
-
-			this._watchButton = new Button();
-			this._watchButton.label = "Watch";
-			this._watchButton.addEventListener(Event.TRIGGERED, watchButton_triggeredHandler);
-
-			this._header = new Header();
-			this.addChild(this._header);
-			this._header.leftItems = new <DisplayObject>
-			[
-				this._backButton
-			];
-			this._header.rightItems = new <DisplayObject>
-			[
-				this._watchButton
-			];
+			this.layout = new AnchorLayout();
 
 			this._scrollText = new ScrollText();
 			this._scrollText.isHTML = true;
 			this._scrollText.verticalScrollPolicy = ScrollText.SCROLL_POLICY_ON;
+			this._scrollText.layoutData = new AnchorLayoutData(0, 0, 0, 0);
 			this.addChild(this._scrollText);
+
+			this._backButton = new Button();
+			this._backButton.nameList.add(Button.ALTERNATE_NAME_BACK_BUTTON);
+			this._backButton.label = "Back";
+			this._backButton.addEventListener(Event.TRIGGERED, onBackButton);
+			this.headerProperties.leftItems = new <DisplayObject>
+			[
+				this._backButton
+			];
+
+			this._watchButton = new Button();
+			this._watchButton.label = "Watch";
+			this._watchButton.addEventListener(Event.TRIGGERED, watchButton_triggeredHandler);
+			this.headerProperties.rightItems = new <DisplayObject>
+			[
+				this._watchButton
+			];
 
 			this.backButtonHandler = onBackButton;
 		}
@@ -75,12 +77,11 @@ package feathers.examples.youtube.screens
 		override protected function draw():void
 		{
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
-
 			if(dataInvalid)
 			{
 				if(this._model && this._model.selectedVideo)
 				{
-					this._header.title = this._model.selectedVideo.title;
+					this.headerProperties.title = this._model.selectedVideo.title;
 					var content:String = '<p><b><font size="+2">' + this._model.selectedVideo.title + '</font></b></p>';
 					content += '<p><font size="-2" color="#999999">' + this._model.selectedVideo.author + '</font></p><br>';
 					content += this._model.selectedVideo.description.replace(/\r\n/g, "<br>");
@@ -88,17 +89,13 @@ package feathers.examples.youtube.screens
 				}
 				else
 				{
-					this._header.title = null;
+					this.headerProperties.title = null;
 					this._scrollText.text = "";
 				}
 			}
 
-			this._header.width = this.actualWidth;
-			this._header.validate();
-
-			this._scrollText.width = this.actualWidth;
-			this._scrollText.y = this._header.height;
-			this._scrollText.height = this.actualHeight - this._scrollText.y;
+			//never forget to call super.draw()!
+			super.draw();
 		}
 
 		private function onBackButton(event:Event = null):void
