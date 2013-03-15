@@ -1,22 +1,22 @@
 package feathers.examples.youtube.screens
 {
 	import feathers.controls.Button;
-	import feathers.controls.Header;
 	import feathers.controls.Label;
 	import feathers.controls.List;
-	import feathers.controls.Screen;
+	import feathers.controls.PanelScreen;
 	import feathers.data.ListCollection;
+	import feathers.events.FeathersEventType;
 	import feathers.examples.youtube.models.VideoDetails;
 	import feathers.examples.youtube.models.YouTubeModel;
+	import feathers.layout.AnchorLayout;
+	import feathers.layout.AnchorLayoutData;
 
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.SecurityErrorEvent;
-	import flash.events.TimerEvent;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
-	import flash.utils.Timer;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -25,19 +25,21 @@ package feathers.examples.youtube.screens
 
 	[Event(name="showVideoDetails",type="starling.events.Event")]
 
-	public class ListVideosScreen extends Screen
+	public class ListVideosScreen extends PanelScreen
 	{
 		public static const SHOW_VIDEO_DETAILS:String = "showVideoDetails";
 
 		public function ListVideosScreen()
 		{
+			this.addEventListener(FeathersEventType.INITIALIZE, initializeHandler);
 			this.addEventListener(starling.events.Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 		}
 
-		private var _header:Header;
 		private var _backButton:Button;
 		private var _list:List;
 		private var _message:Label;
+
+		private var _isTransitioning:Boolean = false;
 
 		private var _model:YouTubeModel;
 
@@ -57,24 +59,14 @@ package feathers.examples.youtube.screens
 		}
 
 		private var _loader:URLLoader;
-		private var _transitionTimer:Timer;
 		private var _savedLoaderData:*;
 
-		override protected function initialize():void
+		protected function initializeHandler(event:starling.events.Event):void
 		{
-			this._backButton = new Button();
-			this._backButton.nameList.add(Button.ALTERNATE_NAME_BACK_BUTTON);
-			this._backButton.label = "Back";
-			this._backButton.addEventListener(starling.events.Event.TRIGGERED, onBackButton);
-
-			this._header = new Header();
-			this.addChild(this._header);
-			this._header.leftItems = new <DisplayObject>
-			[
-				this._backButton
-			];
+			this.layout = new AnchorLayout();
 
 			this._list = new List();
+			this._list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
 			this._list.itemRendererProperties.labelField = "title";
 			this._list.itemRendererProperties.accessoryLabelField = "author";
 			this._list.addEventListener(starling.events.Event.CHANGE, list_changeHandler);
@@ -82,37 +74,33 @@ package feathers.examples.youtube.screens
 
 			this._message = new Label();
 			this._message.text = "Loading...";
+			this._message.layoutData = new AnchorLayoutData(NaN, NaN, NaN, NaN, 0, 0);
 			this.addChild(this._message);
+
+			this._backButton = new Button();
+			this._backButton.nameList.add(Button.ALTERNATE_NAME_BACK_BUTTON);
+			this._backButton.label = "Back";
+			this._backButton.addEventListener(starling.events.Event.TRIGGERED, onBackButton);
+			this.headerProperties.leftItems = new <DisplayObject>
+			[
+				this._backButton
+			];
 
 			this.backButtonHandler = onBackButton;
 
-			this._transitionTimer = new Timer(400, 1);
-			this._transitionTimer.addEventListener(TimerEvent.TIMER_COMPLETE, transitionTimer_timerCompleteHandler);
-			this._transitionTimer.start();
+			this._isTransitioning = true;
+			this._owner.addEventListener(FeathersEventType.TRANSITION_COMPLETE, owner_transitionCompleteHandler);
 		}
 
 		override protected function draw():void
 		{
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
-
-			this._header.width = this.actualWidth;
-			this._header.validate();
-
-			this._list.y = this._header.height;
-			this._list.width = this.actualWidth;
-			this._list.height = this.actualHeight - this._list.y;
-
-			this._message.maxWidth = this.actualWidth - this._header.paddingLeft - this._header.paddingRight;
-			this._message.validate();
-			this._message.x = (this.actualWidth - this._message.width) / 2;
-			this._message.y = this._list.y + this._message.x;
-
 			if(dataInvalid)
 			{
 				this._list.dataProvider = null;
 				if(this._model && this._model.selectedList)
 				{
-					this._header.title = this._model.selectedList.name;
+					this.headerProperties.title = this._model.selectedList.name;
 					if(this._loader)
 					{
 						this.cleanUpLoader();
@@ -132,6 +120,9 @@ package feathers.examples.youtube.screens
 					}
 				}
 			}
+
+			//never forget to call super.draw()!
+			super.draw();
 		}
 
 		private function cleanUpLoader():void
@@ -194,7 +185,7 @@ package feathers.examples.youtube.screens
 		{
 			const loaderData:* = this._loader.data;
 			this.cleanUpLoader();
-			if(this._transitionTimer)
+			if(this._isTransitioning)
 			{
 				//if this screen is still transitioning in, the we'll save the
 				//feed until later to ensure that the animation isn't affected.
@@ -213,10 +204,9 @@ package feathers.examples.youtube.screens
 			trace(event.toString());
 		}
 
-		private function transitionTimer_timerCompleteHandler(event:TimerEvent):void
+		private function owner_transitionCompleteHandler(event:starling.events.Event):void
 		{
-			this._transitionTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, transitionTimer_timerCompleteHandler);
-			this._transitionTimer = null;
+			this._isTransitioning = false;
 
 			if(this._savedLoaderData)
 			{
