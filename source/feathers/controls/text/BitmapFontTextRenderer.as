@@ -387,7 +387,7 @@ package feathers.controls.text
 					image.y = offsetY + location.y;
 				}
 			}
-			else
+			else if(this._characterBatch)
 			{
 				this._characterBatch.x = offsetX;
 				this._characterBatch.y = offsetY;
