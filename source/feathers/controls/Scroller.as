@@ -1748,6 +1748,8 @@ package feathers.controls
 			this._velocityY = 0;
 			this._previousVelocityX.length = 0;
 			this._previousVelocityY.length = 0;
+			this.hideHorizontalScrollBar();
+			this.hideVerticalScrollBar();
 		}
 
 		/**
