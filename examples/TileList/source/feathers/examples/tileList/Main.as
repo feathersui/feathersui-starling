@@ -56,7 +56,7 @@ package feathers.examples.tileList
 			this._list.height = this._pageIndicator.y;
 			this._list.validate();
 
-			this._pageIndicator.pageCount = Math.ceil(this._list.maxHorizontalScrollPosition / this._list.width) + 1;
+			this._pageIndicator.pageCount = this._list.horizontalPageCount;
 		}
 
 		protected function addedToStageHandler(event:Event):void
