@@ -96,6 +96,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected static const INVALIDATION_FLAG_ORIGIN:String = "origin";
+
+		/**
+		 * @private
+		 */
 		private static const HELPER_RECT:Rectangle = new Rectangle();
 
 		/**
@@ -537,6 +542,10 @@ package feathers.controls
 			{
 				return;
 			}
+			if(value && !value.stage)
+			{
+				throw new ArgumentError("Callout origin must have access to the stage.");
+			}
 			if(this._origin)
 			{
 				this.removeEventListener(EnterFrameEvent.ENTER_FRAME, callout_enterFrameHandler);
@@ -549,6 +558,7 @@ package feathers.controls
 				this._origin.addEventListener(Event.REMOVED_FROM_STAGE, origin_removedFromStageHandler);
 				this.addEventListener(EnterFrameEvent.ENTER_FRAME, callout_enterFrameHandler);
 			}
+			this.invalidate(INVALIDATION_FLAG_ORIGIN);
 		}
 
 		/**
@@ -1176,6 +1186,7 @@ package feathers.controls
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			const originInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_ORIGIN);
 
 			if(stylesInvalid || stateInvalid)
 			{
@@ -1194,7 +1205,12 @@ package feathers.controls
 
 			if(sizeInvalid || stylesInvalid || dataInvalid || stateInvalid)
 			{
-				this.layout();
+				this.layoutChildren();
+			}
+
+			if(originInvalid)
+			{
+				this.positionToOrigin();
 			}
 		}
 
@@ -1330,7 +1346,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function layout():void
+		protected function layoutChildren():void
 		{
 			const xPosition:Number = (this._leftArrowSkin && this._arrowPosition == ARROW_POSITION_LEFT) ? this._leftArrowSkin.width + this._leftArrowGap : 0;
 			const yPosition:Number = (this._topArrowSkin &&  this._arrowPosition == ARROW_POSITION_TOP) ? this._topArrowSkin.height + this._topArrowGap : 0;
@@ -1381,6 +1397,31 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function positionToOrigin():void
+		{
+			if(!this._origin)
+			{
+				return;
+			}
+			this._origin.getBounds(Starling.current.stage, HELPER_RECT);
+			const hasGlobalBounds:Boolean = this._lastGlobalBounds != null;
+			if(!hasGlobalBounds || !this._lastGlobalBounds.equals(HELPER_RECT))
+			{
+				if(!hasGlobalBounds)
+				{
+					this._lastGlobalBounds = new Rectangle();
+				}
+				this._lastGlobalBounds.x = HELPER_RECT.x;
+				this._lastGlobalBounds.y = HELPER_RECT.y;
+				this._lastGlobalBounds.width = HELPER_RECT.width;
+				this._lastGlobalBounds.height = HELPER_RECT.height;
+				positionCalloutByDirection(this, this._lastGlobalBounds, this._supportedDirections);
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function callout_addedToStageHandler(event:Event):void
 		{
 			//to avoid touch events bubbling up to the callout and causing it to
@@ -1413,20 +1454,7 @@ package feathers.controls
 		 */
 		protected function callout_enterFrameHandler(event:EnterFrameEvent):void
 		{
-			this._origin.getBounds(Starling.current.stage, HELPER_RECT);
-			const hasGlobalBounds:Boolean = this._lastGlobalBounds != null;
-			if(!hasGlobalBounds || !this._lastGlobalBounds.equals(HELPER_RECT))
-			{
-				if(!hasGlobalBounds)
-				{
-					this._lastGlobalBounds = new Rectangle();
-				}
-				this._lastGlobalBounds.x = HELPER_RECT.x;
-				this._lastGlobalBounds.y = HELPER_RECT.y;
-				this._lastGlobalBounds.width = HELPER_RECT.width;
-				this._lastGlobalBounds.height = HELPER_RECT.height;
-				positionCalloutByDirection(this, this._lastGlobalBounds, this._supportedDirections);
-			}
+			this.positionToOrigin();
 		}
 
 		/**
