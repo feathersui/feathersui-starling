@@ -244,6 +244,10 @@ package feathers.controls.supportClasses
 				this._dataProvider.addEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_updateItemHandler);
 			}
+			if(this._layout is IVariableVirtualLayout)
+			{
+				IVariableVirtualLayout(this._layout).resetVariableVirtualCache();
+			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
@@ -379,6 +383,10 @@ package feathers.controls.supportClasses
 			this._layout = value;
 			if(this._layout)
 			{
+				if(this._layout is IVariableVirtualLayout)
+				{
+					IVariableVirtualLayout(this._layout).resetVariableVirtualCache();
+				}
 				EventDispatcher(this._layout).addEventListener(Event.CHANGE, layout_changeHandler);
 			}
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
@@ -446,26 +454,45 @@ package feathers.controls.supportClasses
 			this._isSelectable = value;
 			if(!value)
 			{
-				this.selectedIndex = -1;
+				this.selectedIndices = null;
 			}
 		}
 
-		private var _selectedIndex:int = -1;
+		private var _allowMultipleSelection:Boolean = false;
 
-		public function get selectedIndex():int
+		public function get allowMultipleSelection():Boolean
 		{
-			return this._selectedIndex;
+			return this._allowMultipleSelection;
 		}
 
-		public function set selectedIndex(value:int):void
+		public function set allowMultipleSelection(value:Boolean):void
 		{
-			if(this._selectedIndex == value)
+			this._allowMultipleSelection = value;
+		}
+
+		private var _selectedIndices:ListCollection;
+
+		public function get selectedIndices():ListCollection
+		{
+			return this._selectedIndices;
+		}
+
+		public function set selectedIndices(value:ListCollection):void
+		{
+			if(this._selectedIndices == value)
 			{
 				return;
 			}
-			this._selectedIndex = value;
+			if(this._selectedIndices)
+			{
+				this._selectedIndices.removeEventListener(Event.CHANGE, selectedIndices_changeHandler);
+			}
+			this._selectedIndices = value;
+			if(this._selectedIndices)
+			{
+				this._selectedIndices.addEventListener(Event.CHANGE, selectedIndices_changeHandler);
+			}
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
-			this.dispatchEventWith(Event.CHANGE);
 		}
 
 		public function getScrollPositionForIndex(index:int, result:Point = null):Point
@@ -542,15 +569,29 @@ package feathers.controls.supportClasses
 				}
 			}
 
-			const typicalRenderer:IListItemRenderer = this.createRenderer(typicalItem, 0, true);
+			var needsDestruction:Boolean = true;
+			var typicalRenderer:IListItemRenderer = IListItemRenderer(this._rendererMap[typicalItem]);
+			if(typicalRenderer)
+			{
+				typicalRenderer.width = NaN;
+				typicalRenderer.height = NaN;
+				needsDestruction = false;
+			}
+			else
+			{
+				typicalRenderer = this.createRenderer(typicalItem, 0, true);
+			}
 			this.refreshOneItemRendererStyles(typicalRenderer);
 			if(typicalRenderer is FeathersControl)
 			{
 				FeathersControl(typicalRenderer).validate();
 			}
-			this._typicalItemWidth = DisplayObject(typicalRenderer).width;
-			this._typicalItemHeight = DisplayObject(typicalRenderer).height;
-			this.destroyRenderer(typicalRenderer);
+			this._typicalItemWidth = typicalRenderer.width;
+			this._typicalItemHeight = typicalRenderer.height;
+			if(needsDestruction)
+			{
+				this.destroyRenderer(typicalRenderer);
+			}
 		}
 
 		private function refreshItemRendererStyles():void
@@ -579,7 +620,7 @@ package feathers.controls.supportClasses
 			this._ignoreSelectionChanges = true;
 			for each(var renderer:IListItemRenderer in this._activeRenderers)
 			{
-				renderer.isSelected = renderer.index == this._selectedIndex;
+				renderer.isSelected = this._selectedIndices.getItemIndex(renderer.index) >= 0;
 			}
 			this._ignoreSelectionChanges = false;
 		}
@@ -700,8 +741,7 @@ package feathers.controls.supportClasses
 				var item:Object = this._unrenderedData.shift();
 				var index:int = this._dataProvider.getItemIndex(item);
 				var renderer:IListItemRenderer = this.createRenderer(item, index, false);
-				var displayRenderer:DisplayObject = DisplayObject(renderer);
-				this._layoutItems[index + this._layoutIndexOffset] = displayRenderer;
+				this._layoutItems[index + this._layoutIndexOffset] = DisplayObject(renderer);
 			}
 		}
 
@@ -793,6 +833,24 @@ package feathers.controls.supportClasses
 
 		private function dataProvider_addItemHandler(event:Event, index:int):void
 		{
+			var selectionChanged:Boolean = false;
+			const newIndices:Vector.<int> = new <int>[];
+			const indexCount:int = this._selectedIndices.length;
+			for(var i:int = 0; i < indexCount; i++)
+			{
+				var currentIndex:int = this._selectedIndices.getItemAt(i) as int;
+				if(currentIndex >= index)
+				{
+					currentIndex++;
+					selectionChanged = true;
+				}
+				newIndices.push(currentIndex);
+			}
+			if(selectionChanged)
+			{
+				this._selectedIndices.data = newIndices;
+			}
+
 			const layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
 			if(!layout || !layout.hasVariableItemDimensions)
 			{
@@ -803,6 +861,31 @@ package feathers.controls.supportClasses
 
 		private function dataProvider_removeItemHandler(event:Event, index:int):void
 		{
+			var selectionChanged:Boolean = false;
+			const newIndices:Vector.<int> = new <int>[];
+			const indexCount:int = this._selectedIndices.length;
+			for(var i:int = 0; i < indexCount; i++)
+			{
+				var currentIndex:int = this._selectedIndices.getItemAt(i) as int;
+				if(currentIndex == index)
+				{
+					selectionChanged = true;
+				}
+				else
+				{
+					if(currentIndex > index)
+					{
+						currentIndex--;
+						selectionChanged = true;
+					}
+					newIndices.push(currentIndex);
+				}
+			}
+			if(selectionChanged)
+			{
+				this._selectedIndices.data = newIndices;
+			}
+
 			const layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
 			if(!layout || !layout.hasVariableItemDimensions)
 			{
@@ -813,6 +896,12 @@ package feathers.controls.supportClasses
 
 		private function dataProvider_replaceItemHandler(event:Event, index:int):void
 		{
+			const indexOfIndex:int = this._selectedIndices.getItemIndex(index);
+			if(indexOfIndex >= 0)
+			{
+				this._selectedIndices.removeItemAt(indexOfIndex);
+			}
+
 			const layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
 			if(!layout || !layout.hasVariableItemDimensions)
 			{
@@ -823,6 +912,8 @@ package feathers.controls.supportClasses
 
 		private function dataProvider_resetHandler(event:Event):void
 		{
+			this._selectedIndices.removeAll();
+
 			const layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
 			if(!layout || !layout.hasVariableItemDimensions)
 			{
@@ -877,13 +968,34 @@ package feathers.controls.supportClasses
 				return;
 			}
 			const renderer:IListItemRenderer = IListItemRenderer(event.currentTarget);
-			if(!this._isSelectable || this._isScrolling || this._selectedIndex == renderer.index)
+			if(!this._isSelectable || this._isScrolling)
 			{
-				//reset to the old value
-				renderer.isSelected = this._selectedIndex == renderer.index;
+				renderer.isSelected = false;
 				return;
 			}
-			this.selectedIndex = renderer.index;
+			const isSelected:Boolean = renderer.isSelected;
+			const index:int = renderer.index;
+			if(this._allowMultipleSelection)
+			{
+				const indexOfIndex:int = this._selectedIndices.getItemIndex(index);
+				if(isSelected && indexOfIndex < 0)
+				{
+					this._selectedIndices.addItem(index);
+				}
+				else if(!isSelected && indexOfIndex >= 0)
+				{
+					this._selectedIndices.removeItemAt(indexOfIndex);
+				}
+			}
+			else
+			{
+				this._selectedIndices.data = new <int>[index];
+			}
+		}
+
+		private function selectedIndices_changeHandler(event:Event):void
+		{
+			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
 
 		private function removedFromStageHandler(event:Event):void

@@ -220,7 +220,7 @@ package feathers.dragDrop
 			const source:IDragSource = _dragSource;
 			const data:DragData = _dragData;
 			cleanup();
-			source.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_COMPLETE, _dragData, isDropped));
+			source.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_COMPLETE, data, isDropped));
 		}
 
 		/**

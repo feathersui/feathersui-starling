@@ -129,6 +129,11 @@ package feathers.data
 			{
 				return;
 			}
+			if(!value)
+			{
+				this.removeAll();
+				return;
+			}
 			this._data = value;
 			//we'll automatically detect an array, vector, or xmllist for convenience
 			if(this._data is Array && !(this._dataDescriptor is ArrayListCollectionDataDescriptor))
@@ -263,11 +268,8 @@ package feathers.data
 		 */
 		public function removeAll():void
 		{
-			const length:int = this.length;
-			for(var i:int = 0; i < length; i++)
-			{
-				this.removeItemAt(0);
-			}
+			this._dataDescriptor.removeAll(this._data);
+			this.dispatchEventWith(CollectionEventType.RESET, false);
 		}
 		
 		/**

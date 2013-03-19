@@ -4,16 +4,19 @@ Noteworthy changes in official releases of [Feathers](http://feathersui.com/).
 
 ## 1.1.0 PRERELEASE
 
+* List: support for optional multiple selection.
 * MetalWorksMobileTheme: tweaked colors and appearances. embeds open source Source Sans Pro font.
 * List, GroupedList, ScrollContainer, and ScrollText all extend Scroller, instead of using it as a sub-component. The scrollerProperties property on each of these is now deprecated because all public properties of Scroller are now direct public properties of these components.
-* Focus management and keyboard control can be enabled with FocusManager.isEnabled = true.
+* Focus management and keyboard control can be enabled with FocusManager.isEnabled = true. TextInput must use TextFieldTextEditor when focus management is enabled.
 * Slider: measurement now includes thumb dimensions and a new property called trackScaleMode has been added.
+* Callout: content disposal is more consistent. Set disposeContent to false to reuse content in another callout later.
 * Added ILayoutObject to support extra data for layouts to use.
 * AnchorLayout: added to support fluid layouts and relative positioning.
 * MultiColumnGridLayout: added to support fluid layouts on standard columns with device responsiveness.
 * All sub-components are created from factories and can receive custom names for theming.
 * PopUpManager: Supports custom root to place pop-ups somewhere other than the stage.
 * PopUpManager: modal pop-ups receive a different focus manager.
+* FeathersControl: setSizeInternal() is now stricter. It can never receive a NaN value for width or height. This is a common source of bugs, and throwing an error here will help make it easier to find those bugs.
 * PickerList: supports prompt when no item is selected.
 * Panel: A new container similar to ScrollContainer, but with a header component too (defaults to feathers.controls.Header).
 * PanelScreen: An IScreen implementation based on Panel.
@@ -60,6 +63,7 @@ This release includes a number of bug fixes.
 * ImageLoader: does a better job keeping aspect ratio when only one dimension is explicit.
 * ImageLoader: properly scales content when dimensions are explicit.
 * ImageLoader: no runtime errors if content loads after dispose.
+* ScrollContainer, List, GroupedList, ScrollText: fix for detecting changes in scrollToPageIndex().
 
 ## 1.0.0
 

@@ -1237,15 +1237,14 @@ package feathers.controls
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
-			if(stylesInvalid || sizeInvalid || stateInvalid)
-			{
-				this.thumb.y = (this.actualHeight - this.thumb.height) / 2;
-				this.drawLabels();
-			}
-
 			if(sizeInvalid || stylesInvalid || selectionInvalid)
 			{
 				this.updateSelection();
+			}
+
+			if(stylesInvalid || sizeInvalid || stateInvalid)
+			{
+				this.layoutChildren();
 			}
 		}
 
@@ -1411,8 +1410,91 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function layoutChildren():void
+		{
+			this.thumb.validate();
+			this.thumb.y = (this.actualHeight - this.thumb.height) / 2;
+
+			const maxLabelWidth:Number = Math.max(0, this.actualWidth - this.thumb.width - this._paddingLeft - this._paddingRight);
+			var totalLabelHeight:Number = Math.max(this.onTextRenderer.height, this.offTextRenderer.height);
+			var labelHeight:Number;
+			if(this._labelAlign == LABEL_ALIGN_MIDDLE)
+			{
+				labelHeight = totalLabelHeight;
+			}
+			else //baseline
+			{
+				labelHeight = Math.max(this.onTextRenderer.baseline, this.offTextRenderer.baseline);
+			}
+
+			if(this.onTextRenderer is FeathersControl)
+			{
+				var clipRect:Rectangle = FeathersControl(this.onTextRenderer).clipRect;
+				clipRect.width = maxLabelWidth;
+				clipRect.height = totalLabelHeight;
+				FeathersControl(this.onTextRenderer).clipRect = clipRect;
+			}
+
+			this.onTextRenderer.y = (this.actualHeight - labelHeight) / 2;
+
+			if(this.offTextRenderer is FeathersControl)
+			{
+				clipRect = FeathersControl(this.offTextRenderer).clipRect;
+				clipRect.width = maxLabelWidth;
+				clipRect.height = totalLabelHeight;
+				FeathersControl(this.offTextRenderer).clipRect = clipRect;
+			}
+
+			this.offTextRenderer.y = (this.actualHeight - labelHeight) / 2;
+
+			this.layoutTracks();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function layoutTracks():void
+		{
+			const maxLabelWidth:Number = Math.max(0, this.actualWidth - this.thumb.width - this._paddingLeft - this._paddingRight);
+			const thumbOffset:Number = this.thumb.x - this._paddingLeft;
+
+			var onScrollOffset:Number = maxLabelWidth - thumbOffset - (maxLabelWidth - this.onTextRenderer.width) / 2;
+			if(this.onTextRenderer is FeathersControl)
+			{
+				const displayOnLabelRenderer:FeathersControl = FeathersControl(this.onTextRenderer);
+				var currentClipRect:Rectangle = displayOnLabelRenderer.clipRect;
+				currentClipRect.x = onScrollOffset
+				displayOnLabelRenderer.clipRect = currentClipRect;
+			}
+			this.onTextRenderer.x = this._paddingLeft - onScrollOffset;
+
+			var offScrollOffset:Number = -thumbOffset - (maxLabelWidth - this.offTextRenderer.width) / 2;
+			if(this.offTextRenderer is FeathersControl)
+			{
+				const displayOffLabelRenderer:FeathersControl = FeathersControl(this.offTextRenderer);
+				currentClipRect = displayOffLabelRenderer.clipRect;
+				currentClipRect.x = offScrollOffset
+				displayOffLabelRenderer.clipRect = currentClipRect;
+			}
+			this.offTextRenderer.x = this.actualWidth - this._paddingRight - maxLabelWidth - offScrollOffset;
+
+			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_ON_OFF)
+			{
+				this.layoutTrackWithOnOff();
+			}
+			else
+			{
+				this.layoutTrackWithSingle();
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function updateSelection():void
 		{
+			this.thumb.validate();
+
 			var xPosition:Number = this._paddingLeft;
 			if(this._isSelected)
 			{
@@ -1439,12 +1521,6 @@ package feathers.controls
 				this.thumb.x = xPosition;
 			}
 			this._isSelectionChangedByUser = false;
-
-			//we want to be sure that the onLabel isn't visible behind the thumb
-			//on init so that if we fade out the toggle switch alpha, on won't
-			//suddenly appear due to the way that flash changes alpha values
-			//of containers.
-			this.layout();
 		}
 
 		/**
@@ -1578,82 +1654,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function drawLabels():void
-		{
-			const maxLabelWidth:Number = Math.max(0, this.actualWidth - this.thumb.width - this._paddingLeft - this._paddingRight);
-			var totalLabelHeight:Number = Math.max(this.onTextRenderer.height, this.offTextRenderer.height);
-			var labelHeight:Number;
-			if(this._labelAlign == LABEL_ALIGN_MIDDLE)
-			{
-				labelHeight = totalLabelHeight;
-			}
-			else //baseline
-			{
-				labelHeight = Math.max(this.onTextRenderer.baseline, this.offTextRenderer.baseline);
-			}
-
-			if(this.onTextRenderer is FeathersControl)
-			{
-				var clipRect:Rectangle = FeathersControl(this.onTextRenderer).clipRect;
-				clipRect.width = maxLabelWidth;
-				clipRect.height = totalLabelHeight;
-				FeathersControl(this.onTextRenderer).clipRect = clipRect;
-			}
-
-			this.onTextRenderer.y = (this.actualHeight - labelHeight) / 2;
-
-			if(this.offTextRenderer is FeathersControl)
-			{
-				clipRect = FeathersControl(this.offTextRenderer).clipRect;
-				clipRect.width = maxLabelWidth;
-				clipRect.height = totalLabelHeight;
-				FeathersControl(this.offTextRenderer).clipRect = clipRect;
-			}
-
-			this.offTextRenderer.y = (this.actualHeight - labelHeight) / 2;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function layout():void
-		{
-			const maxLabelWidth:Number = Math.max(0, this.actualWidth - this.thumb.width - this._paddingLeft - this._paddingRight);
-			const thumbOffset:Number = this.thumb.x - this._paddingLeft;
-
-			var onScrollOffset:Number = maxLabelWidth - thumbOffset - (maxLabelWidth - this.onTextRenderer.width) / 2;
-			if(this.onTextRenderer is FeathersControl)
-			{
-				const displayOnLabelRenderer:FeathersControl = FeathersControl(this.onTextRenderer);
-				var currentClipRect:Rectangle = displayOnLabelRenderer.clipRect;
-				currentClipRect.x = onScrollOffset
-				displayOnLabelRenderer.clipRect = currentClipRect;
-			}
-			this.onTextRenderer.x = this._paddingLeft - onScrollOffset;
-
-			var offScrollOffset:Number = -thumbOffset - (maxLabelWidth - this.offTextRenderer.width) / 2;
-			if(this.offTextRenderer is FeathersControl)
-			{
-				const displayOffLabelRenderer:FeathersControl = FeathersControl(this.offTextRenderer);
-				currentClipRect = displayOffLabelRenderer.clipRect;
-				currentClipRect.x = offScrollOffset
-				displayOffLabelRenderer.clipRect = currentClipRect;
-			}
-			this.offTextRenderer.x = this.actualWidth - this._paddingRight - maxLabelWidth - offScrollOffset;
-
-			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_ON_OFF)
-			{
-				this.layoutTrackWithOnOff();
-			}
-			else
-			{
-				this.layoutTrackWithSingle();
-			}
-		}
-
-		/**
-		 * @private
-		 */
 		protected function layoutTrackWithOnOff():void
 		{
 			this.onTrack.x = 0;
@@ -1750,8 +1750,8 @@ package feathers.controls
 			}
 
 			this._touchPointID = -1;
-			touch.getLocation(this, HELPER_POINT);
-			if(this.hitTest(HELPER_POINT, true))
+			touch.getLocation(this.stage, HELPER_POINT);
+			if(this.contains(this.stage.hitTest(HELPER_POINT, true)))
 			{
 				this.isSelected = !this._isSelected;
 				this._isSelectionChangedByUser = true;
@@ -1796,7 +1796,7 @@ package feathers.controls
 					const xOffset:Number = HELPER_POINT.x - this._touchStartX;
 					const xPosition:Number = Math.min(Math.max(this._paddingLeft, this._thumbStartX + xOffset), this._paddingLeft + trackScrollableWidth);
 					this.thumb.x = xPosition;
-					this.layout();
+					this.layoutTracks();
 				}
 				else if(touch.phase == TouchPhase.ENDED)
 				{
@@ -1861,7 +1861,7 @@ package feathers.controls
 		 */
 		protected function selectionTween_onUpdate():void
 		{
-			this.layout();
+			this.layoutTracks();
 		}
 
 		/**

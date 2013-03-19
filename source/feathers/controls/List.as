@@ -119,6 +119,7 @@ package feathers.controls
 			super();
 			this.addEventListener(FeathersEventType.FOCUS_IN, list_focusInHandler);
 			this.addEventListener(FeathersEventType.FOCUS_OUT, list_focusOutHandler);
+			this._selectedIndices.addEventListener(Event.CHANGE, selectedIndices_changeHandler);
 		}
 
 		/**
@@ -200,9 +201,15 @@ package feathers.controls
 		protected var _isSelectable:Boolean = true;
 		
 		/**
-		 * Determines if an item in the list may be selected.
+		 * Determines if items in the list may be selected. By default only a
+		 * single item may be selected at any given time. In other words, if
+		 * item A is selected, and the user selects item B, item A will be
+		 * deselected automatically. Set <code>allowMultipleSelection</code>
+		 * to <code>true</code> to select more than one item without
+		 * automatically deselecting other items.
 		 * 
 		 * @default true
+		 * @see #allowMultipleSelection
 		 */
 		public function get isSelectable():Boolean
 		{
@@ -249,11 +256,17 @@ package feathers.controls
 			{
 				return;
 			}
-			this._selectedIndex = value;
+			if(value >= 0)
+			{
+				this._selectedIndices.data = new <int>[value];
+			}
+			else
+			{
+				this._selectedIndices.removeAll();
+			}
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
-			this.dispatchEventWith(Event.CHANGE);
 		}
-		
+
 		/**
 		 * The currently selected item. Returns null if no item is selected.
 		 */
@@ -263,16 +276,135 @@ package feathers.controls
 			{
 				return null;
 			}
-			
+
 			return this._dataProvider.getItemAt(this._selectedIndex);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		public function set selectedItem(value:Object):void
 		{
 			this.selectedIndex = this._dataProvider.getItemIndex(value);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _allowMultipleSelection:Boolean = false;
+
+		/**
+		 * If <code>true</code> multiple items may be selected at a time. If
+		 * <code>false</code>, then only a single item may be selected at a
+		 * time, and if the selection changes, other items are deselected. Has
+		 * no effect if <code>isSelectable</code> is <code>false</code>.
+		 *
+		 * @see #isSelectable
+		 */
+		public function get allowMultipleSelection():Boolean
+		{
+			return this._allowMultipleSelection;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set allowMultipleSelection(value:Boolean):void
+		{
+			if(this._allowMultipleSelection == value)
+			{
+				return;
+			}
+			this._allowMultipleSelection = value;
+			this.invalidate(INVALIDATION_FLAG_SELECTED);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _selectedIndices:ListCollection = new ListCollection(new <int>[]);
+
+		/**
+		 * The indices of the currently selected items. Returns an empty <code>Vector.&lt;int&gt;</code>
+		 * if no items are selected. If <code>allowMultipleSelection</code> is
+		 * <code>false</code>, only one item may be selected at a time.
+		 */
+		public function get selectedIndices():Vector.<int>
+		{
+			return this._selectedIndices.data as Vector.<int>;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set selectedIndices(value:Vector.<int>):void
+		{
+			const oldValue:Vector.<int> = this._selectedIndices.data as Vector.<int>;
+			if(oldValue == value)
+			{
+				return;
+			}
+			if(!value)
+			{
+				if(this._selectedIndices.length == 0)
+				{
+					return;
+				}
+				this._selectedIndices.removeAll();
+			}
+			else
+			{
+				if(!this._allowMultipleSelection && value.length > 0)
+				{
+					value.length = 1;
+				}
+				this._selectedIndices.data = value;
+			}
+			this.invalidate(INVALIDATION_FLAG_SELECTED);
+		}
+
+		/**
+		 * The currently selected item. The getter returns an empty
+		 * <code>Vector.&lt;Object&gt;</code> if no item is selected. If any
+		 * items are selected, the getter creates a new
+		 * <code>Vector.&lt;Object&gt;</code> to return a list of selected
+		 * items.
+		 */
+		public function get selectedItems():Vector.<Object>
+		{
+			const items:Vector.<Object> = new <Object>[];
+			const indexCount:int = this._selectedIndices.length;
+			for(var i:int = 0; i < indexCount; i++)
+			{
+				var index:int = this._selectedIndices.getItemAt(i) as int;
+				var item:Object = this._dataProvider[index];
+				items.push(item);
+			}
+			return items;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set selectedItems(value:Vector.<Object>):void
+		{
+			if(!value)
+			{
+				this.selectedIndex = -1;
+				return;
+			}
+			const indices:Vector.<int> = new <int>[];
+			const itemCount:int = value.length;
+			for(var i:int = 0; i < itemCount; i++)
+			{
+				var item:Object = value[i];
+				var index:int = this._dataProvider.getItemIndex(item);
+				if(index >= 0)
+				{
+					indices.push(index);
+				}
+			}
+			this.selectedIndices = indices;
 		}
 		
 		/**
@@ -527,7 +659,6 @@ package feathers.controls
 			{
 				this.viewPort = this.dataViewPort = new ListDataViewPort();
 				this.dataViewPort.owner = this;
-				this.dataViewPort.addEventListener(Event.CHANGE, dataViewPort_changeHandler);
 				this.viewPort = this.dataViewPort;
 			}
 
@@ -568,7 +699,8 @@ package feathers.controls
 		protected function refreshDataViewPortProperties():void
 		{
 			this.dataViewPort.isSelectable = this._isSelectable;
-			this.dataViewPort.selectedIndex = this._selectedIndex;
+			this.dataViewPort.allowMultipleSelection = this._allowMultipleSelection;
+			this.dataViewPort.selectedIndices = this._selectedIndices;
 			this.dataViewPort.dataProvider = this._dataProvider;
 			this.dataViewPort.itemRendererType = this._itemRendererType;
 			this.dataViewPort.itemRendererFactory = this._itemRendererFactory;
@@ -664,9 +796,22 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function dataViewPort_changeHandler(event:Event):void
+		protected function selectedIndices_changeHandler(event:Event):void
 		{
-			this.selectedIndex = this.dataViewPort.selectedIndex;
+			if(this._selectedIndices.length > 0)
+			{
+				this._selectedIndex = this._selectedIndices.getItemAt(0) as int;
+			}
+			else
+			{
+				if(this._selectedIndex < 0)
+				{
+					//no change
+					return;
+				}
+				this._selectedIndex = -1;
+			}
+			this.dispatchEventWith(Event.CHANGE);
 		}
 	}
 }

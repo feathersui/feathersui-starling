@@ -8,5 +8,6 @@ package feathers.examples.componentsExplorer.data
 
 		public var isSelectable:Boolean = true;
 		public var hasElasticEdges:Boolean = true;
+		public var allowMultipleSelection:Boolean = false;
 	}
 }

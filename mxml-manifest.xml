@@ -8,7 +8,10 @@
 	<component id="ImageLoader" class="feathers.controls.ImageLoader"/>
 	<component id="Label" class="feathers.controls.Label"/>
 	<component id="List" class="feathers.controls.List"/>
+	<component id="NumericStepper" class="feathers.controls.NumericStepper"/>
 	<component id="PageIndicator" class="feathers.controls.PageIndicator"/>
+	<component id="Panel" class="feathers.controls.Panel"/>
+	<component id="PanelScreen" class="feathers.controls.PanelScreen"/>
 	<component id="PickerList" class="feathers.controls.PickerList"/>
 	<component id="ProgressBar" class="feathers.controls.ProgressBar"/>
 	<component id="Radio" class="feathers.controls.Radio"/>
@@ -46,4 +49,6 @@
 	<component id="VerticalLayout" class="feathers.layout.VerticalLayout"/>
 	<component id="TiledRowsLayout" class="feathers.layout.TiledRowsLayout"/>
 	<component id="TiledColumnsLayout" class="feathers.layout.TiledColumnsLayout"/>
+	<component id="AnchorLayout" class="feathers.layout.AnchorLayout"/>
+	<component id="AnchorLayoutData" class="feathers.layout.AnchorLayoutData"/>
 </componentPackage>

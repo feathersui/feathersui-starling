@@ -14,12 +14,10 @@ package feathers.core
 	import feathers.layout.ILayoutDisplayObject;
 
 	import flash.errors.IllegalOperationError;
-
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
-	import starling.core.RenderSupport;
 	import starling.display.DisplayObject;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -128,6 +126,16 @@ package feathers.core
 		 * @private
 		 */
 		protected static const INVALIDATION_FLAG_TEXT_EDITOR:String = "textEditor";
+
+		/**
+		 * @private
+		 */
+		protected static const ILLEGAL_WIDTH_ERROR:String = "A component's width cannot be NaN.";
+
+		/**
+		 * @private
+		 */
+		protected static const ILLEGAL_HEIGHT_ERROR:String = "A component's height cannot be NaN.";
 
 		/**
 		 * A function used by all UI controls that support text renderers to
@@ -343,12 +351,25 @@ package feathers.core
 		 */
 		override public function set width(value:Number):void
 		{
-			if(this.explicitWidth == value || (isNaN(value) && isNaN(this.explicitWidth)))
+			if(this.explicitWidth == value)
+			{
+				return;
+			}
+			const valueIsNaN:Boolean = isNaN(value);
+			if(valueIsNaN && isNaN(this.explicitWidth))
 			{
 				return;
 			}
 			this.explicitWidth = value;
-			this.setSizeInternal(value, this.actualHeight, true);
+			if(valueIsNaN)
+			{
+				this.actualWidth = 0;
+				this.invalidate(INVALIDATION_FLAG_SIZE);
+			}
+			else
+			{
+				this.setSizeInternal(value, this.actualHeight, true);
+			}
 		}
 
 		/**
@@ -394,12 +415,25 @@ package feathers.core
 		 */
 		override public function set height(value:Number):void
 		{
-			if(this.explicitHeight == value || (isNaN(value) && isNaN(this.explicitHeight)))
+			if(this.explicitHeight == value)
+			{
+				return;
+			}
+			const valueIsNaN:Boolean = isNaN(value);
+			if(valueIsNaN && isNaN(this.explicitHeight))
 			{
 				return;
 			}
 			this.explicitHeight = value;
-			this.setSizeInternal(this.actualWidth, value, true);
+			if(valueIsNaN)
+			{
+				this.actualHeight = 0;
+				this.invalidate(INVALIDATION_FLAG_SIZE);
+			}
+			else
+			{
+				this.setSizeInternal(this.actualWidth, value, true);
+			}
 		}
 
 		/**
@@ -982,9 +1016,6 @@ package feathers.core
 		 */
 		protected function setSizeInternal(width:Number, height:Number, canInvalidate:Boolean):Boolean
 		{
-			const oldWidth:Number = this.actualWidth;
-			const oldHeight:Number = this.actualHeight;
-			var resized:Boolean = false;
 			if(!isNaN(this.explicitWidth))
 			{
 				width = this.explicitWidth;
@@ -1001,6 +1032,15 @@ package feathers.core
 			{
 				height = Math.min(this._maxHeight, Math.max(this._minHeight, height));
 			}
+			if(isNaN(width))
+			{
+				throw new ArgumentError(ILLEGAL_WIDTH_ERROR);
+			}
+			if(isNaN(height))
+			{
+				throw new ArgumentError(ILLEGAL_HEIGHT_ERROR);
+			}
+			var resized:Boolean = false;
 			if(this.actualWidth != width)
 			{
 				this.actualWidth = width;

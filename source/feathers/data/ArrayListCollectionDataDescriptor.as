@@ -68,6 +68,15 @@ package feathers.data
 			this.checkForCorrectDataType(data);
 			return (data as Array).splice(index, 1)[0];
 		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function removeAll(data:Object):void
+		{
+			this.checkForCorrectDataType(data);
+			(data as Array).length = 0;
+		}
 		
 		/**
 		 * @inheritDoc

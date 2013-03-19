@@ -11,11 +11,13 @@ package feathers.controls
 	import feathers.core.PopUpManager;
 
 	import flash.events.KeyboardEvent;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
+	import starling.display.DisplayObjectContainer;
 	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
 	import starling.events.Touch;
@@ -41,6 +43,16 @@ package feathers.controls
 		 * The callout may be positioned on any side of the origin region.
 		 */
 		public static const DIRECTION_ANY:String = "any";
+
+		/**
+		 * The callout may be positioned on top or bottom of the origin region.
+		 */
+		public static const DIRECTION_VERTICAL:String = "vertical";
+
+		/**
+		 * The callout may be positioned on top or bottom of the origin region.
+		 */
+		public static const DIRECTION_HORIZONTAL:String = "horizontal";
 
 		/**
 		 * The callout must be positioned above the origin region.
@@ -85,7 +97,12 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private static var helperRect:Rectangle = new Rectangle();
+		protected static const INVALIDATION_FLAG_ORIGIN:String = "origin";
+
+		/**
+		 * @private
+		 */
+		private static const HELPER_RECT:Rectangle = new Rectangle();
 
 		/**
 		 * @private
@@ -95,17 +112,19 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected static const DIRECTION_TO_FUNCTION:Object = {};
-		DIRECTION_TO_FUNCTION[DIRECTION_ANY] = positionCalloutAny;
-		DIRECTION_TO_FUNCTION[DIRECTION_UP] = positionCalloutAbove;
-		DIRECTION_TO_FUNCTION[DIRECTION_DOWN] = positionCalloutBelow;
-		DIRECTION_TO_FUNCTION[DIRECTION_LEFT] = positionCalloutLeftSide;
-		DIRECTION_TO_FUNCTION[DIRECTION_RIGHT] = positionCalloutRightSide;
+		private static const HELPER_POINT:Point = new Point();
 
 		/**
 		 * @private
 		 */
-		protected static const callouts:Vector.<Callout> = new <Callout>[];
+		protected static const DIRECTION_TO_FUNCTION:Object = {};
+		DIRECTION_TO_FUNCTION[DIRECTION_ANY] = positionBestSideOfOrigin;
+		DIRECTION_TO_FUNCTION[DIRECTION_UP] = positionAboveOrigin;
+		DIRECTION_TO_FUNCTION[DIRECTION_DOWN] = positionBelowOrigin;
+		DIRECTION_TO_FUNCTION[DIRECTION_LEFT] = positionToLeftOfOrigin;
+		DIRECTION_TO_FUNCTION[DIRECTION_RIGHT] = positionToRightOfOrigin;
+		DIRECTION_TO_FUNCTION[DIRECTION_VERTICAL] = positionAboveOrBelowOrigin;
+		DIRECTION_TO_FUNCTION[DIRECTION_HORIZONTAL] = positionToLeftOrRightOfOrigin;
 
 		/**
 		 * The padding between a callout and the top edge of the stage when the
@@ -163,7 +182,7 @@ package feathers.controls
 		 * these values may be ignored if the callout cannot be drawn at the
 		 * specified dimensions.
 		 */
-		public static function show(content:DisplayObject, origin:DisplayObject, direction:String = DIRECTION_ANY,
+		public static function show(content:DisplayObject, origin:DisplayObject, supportedDirections:String = DIRECTION_ANY,
 			isModal:Boolean = true, customCalloutFactory:Function = null):Callout
 		{
 			if(!origin.stage)
@@ -177,45 +196,10 @@ package feathers.controls
 			}
 			const callout:Callout = Callout(factory());
 			callout.content = content;
-			callout._isPopUp = true;
+			callout.supportedDirections = supportedDirections;
+			callout.origin = origin;
 			const overlayFactory:Function = calloutOverlayFactory != null ? calloutOverlayFactory : PopUpManager.defaultOverlayFactory;
 			PopUpManager.addPopUp(callout, isModal, false, overlayFactory);
-
-			var globalBounds:Rectangle = origin.getBounds(Starling.current.stage);
-			positionCalloutByDirection(callout, globalBounds, direction);
-			callouts.push(callout);
-
-			function enterFrameHandler(event:EnterFrameEvent):void
-			{
-				origin.getBounds(Starling.current.stage, helperRect);
-				if(globalBounds.equals(helperRect))
-				{
-					return;
-				}
-				const temp:Rectangle = globalBounds;
-				globalBounds = helperRect;
-				helperRect = temp;
-				positionCalloutByDirection(callout, globalBounds, direction);
-			}
-			function origin_removedFromStageHandler(event:Event):void
-			{
-				callout.close();
-			}
-			function callout_closeHandler(event:Event):void
-			{
-				origin.removeEventListener(Event.REMOVED_FROM_STAGE, origin_removedFromStageHandler);
-				Starling.current.stage.removeEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
-				callout.removeEventListener(Event.CLOSE, callout_closeHandler);
-				const index:int = callouts.indexOf(callout);
-				if(index >= 0)
-				{
-					callouts.splice(index, 1);
-				}
-			}
-			callout.addEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
-			callout.addEventListener(Event.CLOSE, callout_closeHandler);
-			origin.addEventListener(Event.REMOVED_FROM_STAGE, origin_removedFromStageHandler);
-
 			return callout;
 		}
 
@@ -237,7 +221,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected static function positionCalloutByDirection(callout:Callout, globalOrigin:Rectangle, direction:String):void
+		protected static function positionWithSupportedDirections(callout:Callout, globalOrigin:Rectangle, direction:String):void
 		{
 			if(DIRECTION_TO_FUNCTION.hasOwnProperty(direction))
 			{
@@ -246,125 +230,184 @@ package feathers.controls
 			}
 			else
 			{
-				positionCalloutAny(callout, globalOrigin);
+				positionBestSideOfOrigin(callout, globalOrigin);
 			}
 		}
 
 		/**
 		 * @private
 		 */
-		protected static function positionCalloutAny(callout:Callout, globalOrigin:Rectangle):void
+		protected static function positionBestSideOfOrigin(callout:Callout, globalOrigin:Rectangle):void
 		{
-			callout.arrowPosition = ARROW_POSITION_TOP;
-			callout.validate();
-			const downSpace:Number = (Starling.current.stage.stageHeight - callout.height) - (globalOrigin.y + globalOrigin.height);
+			callout.measureWithArrowPosition(ARROW_POSITION_TOP, HELPER_POINT);
+			const downSpace:Number = (Starling.current.stage.stageHeight - HELPER_POINT.y) - (globalOrigin.y + globalOrigin.height);
 			if(downSpace >= stagePaddingBottom)
 			{
-				positionCalloutBelow(callout, globalOrigin);
+				positionBelowOrigin(callout, globalOrigin);
 				return;
 			}
 
-			callout.arrowPosition = ARROW_POSITION_BOTTOM;
-			callout.validate();
-			const upSpace:Number = globalOrigin.y - callout.height;
+			callout.measureWithArrowPosition(ARROW_POSITION_BOTTOM, HELPER_POINT);
+			const upSpace:Number = globalOrigin.y - HELPER_POINT.y;
 			if(upSpace >= stagePaddingTop)
 			{
-				positionCalloutAbove(callout, globalOrigin);
+				positionAboveOrigin(callout, globalOrigin);
 				return;
 			}
 
-			callout.arrowPosition = ARROW_POSITION_LEFT;
-			callout.validate();
-			const rightSpace:Number = (Starling.current.stage.stageWidth - callout.width) - (globalOrigin.x + globalOrigin.width);
+			callout.measureWithArrowPosition(ARROW_POSITION_LEFT, HELPER_POINT);
+			const rightSpace:Number = (Starling.current.stage.stageWidth - HELPER_POINT.x) - (globalOrigin.x + globalOrigin.width);
 			if(rightSpace >= stagePaddingRight)
 			{
-				positionCalloutRightSide(callout, globalOrigin);
+				positionToRightOfOrigin(callout, globalOrigin);
 				return;
 			}
 
-			callout.arrowPosition = ARROW_POSITION_RIGHT;
-			callout.validate();
-			const leftSpace:Number = globalOrigin.x - callout.width;
+			callout.measureWithArrowPosition(ARROW_POSITION_RIGHT, HELPER_POINT);
+			const leftSpace:Number = globalOrigin.x - HELPER_POINT.x;
 			if(leftSpace >= stagePaddingLeft)
 			{
-				positionCalloutLeftSide(callout, globalOrigin);
+				positionToLeftOfOrigin(callout, globalOrigin);
 				return;
 			}
 
 			//worst case: pick the side that has the most available space
 			if(downSpace >= upSpace && downSpace >= rightSpace && downSpace >= leftSpace)
 			{
-				positionCalloutBelow(callout, globalOrigin);
+				positionBelowOrigin(callout, globalOrigin);
 			}
 			else if(upSpace >= rightSpace && upSpace >= leftSpace)
 			{
-				positionCalloutAbove(callout, globalOrigin);
+				positionAboveOrigin(callout, globalOrigin);
 			}
 			else if(rightSpace >= leftSpace)
 			{
-				positionCalloutRightSide(callout, globalOrigin);
+				positionToRightOfOrigin(callout, globalOrigin);
 			}
 			else
 			{
-				positionCalloutLeftSide(callout, globalOrigin);
+				positionToLeftOfOrigin(callout, globalOrigin);
 			}
-
 		}
 
 		/**
 		 * @private
 		 */
-		protected static function positionCalloutBelow(callout:Callout, globalOrigin:Rectangle):void
+		protected static function positionAboveOrBelowOrigin(callout:Callout, globalOrigin:Rectangle):void
 		{
-			callout.arrowPosition = ARROW_POSITION_TOP;
-			callout.validate();
-			const idealXPosition:Number = globalOrigin.x + (globalOrigin.width - callout.width) / 2;
-			const xPosition:Number = Math.max(stagePaddingLeft, Math.min(Starling.current.stage.stageWidth - callout.width - stagePaddingRight, idealXPosition));
+			callout.measureWithArrowPosition(ARROW_POSITION_TOP, HELPER_POINT);
+			const downSpace:Number = (Starling.current.stage.stageHeight - HELPER_POINT.y) - (globalOrigin.y + globalOrigin.height);
+			if(downSpace >= stagePaddingBottom)
+			{
+				positionBelowOrigin(callout, globalOrigin);
+				return;
+			}
+
+			callout.measureWithArrowPosition(ARROW_POSITION_BOTTOM, HELPER_POINT);
+			const upSpace:Number = globalOrigin.y - HELPER_POINT.y;
+			if(upSpace >= stagePaddingTop)
+			{
+				positionAboveOrigin(callout, globalOrigin);
+				return;
+			}
+
+			//worst case: pick the side that has the most available space
+			if(downSpace >= upSpace)
+			{
+				positionBelowOrigin(callout, globalOrigin);
+			}
+			else
+			{
+				positionAboveOrigin(callout, globalOrigin);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected static function positionToLeftOrRightOfOrigin(callout:Callout, globalOrigin:Rectangle):void
+		{
+			callout.measureWithArrowPosition(ARROW_POSITION_LEFT, HELPER_POINT);
+			const rightSpace:Number = (Starling.current.stage.stageWidth - HELPER_POINT.x) - (globalOrigin.x + globalOrigin.width);
+			if(rightSpace >= stagePaddingRight)
+			{
+				positionToRightOfOrigin(callout, globalOrigin);
+				return;
+			}
+
+			callout.measureWithArrowPosition(ARROW_POSITION_RIGHT, HELPER_POINT);
+			const leftSpace:Number = globalOrigin.x - HELPER_POINT.x;
+			if(leftSpace >= stagePaddingLeft)
+			{
+				positionToLeftOfOrigin(callout, globalOrigin);
+				return;
+			}
+
+			//worst case: pick the side that has the most available space
+			if(rightSpace >= leftSpace)
+			{
+				positionToRightOfOrigin(callout, globalOrigin);
+			}
+			else
+			{
+				positionToLeftOfOrigin(callout, globalOrigin);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected static function positionBelowOrigin(callout:Callout, globalOrigin:Rectangle):void
+		{
+			callout.measureWithArrowPosition(ARROW_POSITION_TOP, HELPER_POINT);
+			const idealXPosition:Number = globalOrigin.x + (globalOrigin.width - HELPER_POINT.x) / 2;
+			const xPosition:Number = Math.max(stagePaddingLeft, Math.min(Starling.current.stage.stageWidth - HELPER_POINT.x - stagePaddingRight, idealXPosition));
 			callout.x = xPosition;
 			callout.y = globalOrigin.y + globalOrigin.height;
 			callout.arrowOffset = idealXPosition - xPosition;
+			callout.arrowPosition = ARROW_POSITION_TOP;
 		}
 
 		/**
 		 * @private
 		 */
-		protected static function positionCalloutAbove(callout:Callout, globalOrigin:Rectangle):void
+		protected static function positionAboveOrigin(callout:Callout, globalOrigin:Rectangle):void
 		{
-			callout.arrowPosition = ARROW_POSITION_BOTTOM;
-			callout.validate();
-			const idealXPosition:Number = globalOrigin.x + (globalOrigin.width - callout.width) / 2;
-			const xPosition:Number = Math.max(stagePaddingLeft, Math.min(Starling.current.stage.stageWidth - callout.width - stagePaddingRight, idealXPosition));
+			callout.measureWithArrowPosition(ARROW_POSITION_BOTTOM, HELPER_POINT);
+			const idealXPosition:Number = globalOrigin.x + (globalOrigin.width - HELPER_POINT.x) / 2;
+			const xPosition:Number = Math.max(stagePaddingLeft, Math.min(Starling.current.stage.stageWidth - HELPER_POINT.x - stagePaddingRight, idealXPosition));
 			callout.x = xPosition;
-			callout.y = globalOrigin.y - callout.height;
+			callout.y = globalOrigin.y - HELPER_POINT.y;
 			callout.arrowOffset = idealXPosition - xPosition;
+			callout.arrowPosition = ARROW_POSITION_BOTTOM;
 		}
 
 		/**
 		 * @private
 		 */
-		protected static function positionCalloutRightSide(callout:Callout, globalOrigin:Rectangle):void
+		protected static function positionToRightOfOrigin(callout:Callout, globalOrigin:Rectangle):void
 		{
-			callout.arrowPosition = ARROW_POSITION_LEFT;
-			callout.validate();
+			callout.measureWithArrowPosition(ARROW_POSITION_LEFT, HELPER_POINT);
 			callout.x = globalOrigin.x + globalOrigin.width;
-			const idealYPosition:Number = globalOrigin.y + (globalOrigin.height - callout.height) / 2;
-			const yPosition:Number = Math.max(stagePaddingTop, Math.min(Starling.current.stage.stageHeight - callout.height - stagePaddingBottom, idealYPosition));
+			const idealYPosition:Number = globalOrigin.y + (globalOrigin.height - HELPER_POINT.y) / 2;
+			const yPosition:Number = Math.max(stagePaddingTop, Math.min(Starling.current.stage.stageHeight - HELPER_POINT.y - stagePaddingBottom, idealYPosition));
 			callout.y = yPosition;
 			callout.arrowOffset = idealYPosition - yPosition;
+			callout.arrowPosition = ARROW_POSITION_LEFT;
 		}
 
 		/**
 		 * @private
 		 */
-		protected static function positionCalloutLeftSide(callout:Callout, globalOrigin:Rectangle):void
+		protected static function positionToLeftOfOrigin(callout:Callout, globalOrigin:Rectangle):void
 		{
-			callout.arrowPosition = ARROW_POSITION_RIGHT;
-			callout.validate();
-			callout.x = globalOrigin.x - callout.width;
-			const idealYPosition:Number = globalOrigin.y + (globalOrigin.height - callout.height) / 2;
-			const yPosition:Number = Math.max(stagePaddingLeft, Math.min(Starling.current.stage.stageHeight - callout.height - stagePaddingBottom, idealYPosition));
+			callout.measureWithArrowPosition(ARROW_POSITION_RIGHT, HELPER_POINT);
+			callout.x = globalOrigin.x - HELPER_POINT.x;
+			const idealYPosition:Number = globalOrigin.y + (globalOrigin.height - HELPER_POINT.y) / 2;
+			const yPosition:Number = Math.max(stagePaddingLeft, Math.min(Starling.current.stage.stageHeight - HELPER_POINT.y - stagePaddingBottom, idealYPosition));
 			callout.y = yPosition;
 			callout.arrowOffset = idealYPosition - yPosition;
+			callout.arrowPosition = ARROW_POSITION_RIGHT;
 		}
 
 		/**
@@ -372,7 +415,7 @@ package feathers.controls
 		 */
 		public function Callout()
 		{
-			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
+			this.addEventListener(Event.ADDED_TO_STAGE, callout_addedToStageHandler);
 		}
 
 		/**
@@ -395,9 +438,23 @@ package feathers.controls
 		public var closeOnKeys:Vector.<uint>;
 
 		/**
-		 * @private
+		 * Determines if the callout will be disposed when <code>close()</code>
+		 * is called internally. Close may be called internally in a variety of
+		 * cases, depending on values such as <code>closeOnTouchBeganOutside</code>,
+		 * <code>closeOnTouchEndedOutside</code>, and <code>closeOnKeys</code>.
+		 *
+		 * @see #closeOnTouchBeganOutside
+		 * @see #closeOnTouchEndedOutside
+		 * @see #closeOnKeys
+		 * @see #close()
 		 */
-		protected var _isPopUp:Boolean = false;
+		public var disposeOnSelfClose:Boolean = true;
+
+		/**
+		 * Determines if the callout's content will be disposed when the callout
+		 * is disposed.
+		 */
+		public var disposeContent:Boolean = true;
 
 		/**
 		 * @private
@@ -452,6 +509,83 @@ package feathers.controls
 			this._originalContentWidth = NaN;
 			this._originalContentHeight = NaN;
 			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _origin:DisplayObject;
+
+		/**
+		 * A callout may be positioned relative to another display object, known
+		 * as the callout's origin. Even if the position of the origin changes,
+		 * the callout will reposition itself to always point at the origin.
+		 *
+		 * <p>When an origin is set, the <code>arrowPosition</code> property
+		 * will be managed by the callout. The <code>arrowPosition</code> should
+		 * only be managed manually when the callout does not have an origin
+		 * (which should be very uncommon).</p>
+		 *
+		 * @see #supportedDirections
+		 * @see #arrowPosition
+		 */
+		public function get origin():DisplayObject
+		{
+			return this._origin;
+		}
+
+		public function set origin(value:DisplayObject):void
+		{
+			if(this._origin == value)
+			{
+				return;
+			}
+			if(value && !value.stage)
+			{
+				throw new ArgumentError("Callout origin must have access to the stage.");
+			}
+			if(this._origin)
+			{
+				this.removeEventListener(EnterFrameEvent.ENTER_FRAME, callout_enterFrameHandler);
+				this._origin.removeEventListener(Event.REMOVED_FROM_STAGE, origin_removedFromStageHandler);
+			}
+			this._origin = value;
+			this._lastGlobalBoundsOfOrigin = null;
+			if(this._origin)
+			{
+				this._origin.addEventListener(Event.REMOVED_FROM_STAGE, origin_removedFromStageHandler);
+				this.addEventListener(EnterFrameEvent.ENTER_FRAME, callout_enterFrameHandler);
+			}
+			this.invalidate(INVALIDATION_FLAG_ORIGIN);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _supportedDirections:String = DIRECTION_ANY;
+
+		/**
+		 * The directions that the callout may be positioned, relative to its
+		 * origin. If the callout's origin is not set, this value will be
+		 * ignored.
+		 *
+		 * @see #origin
+		 * @see #DIRECTION_ANY
+		 * @see #DIRECTION_VERTICAL
+		 * @see #DIRECTION_HORIZONTAL
+		 * @see #DIRECTION_UP
+		 * @see #DIRECTION_DOWN
+		 * @see #DIRECTION_LEFT
+		 * @see #DIRECTION_RIGHT
+		 */
+		public function get supportedDirections():String
+		{
+			return this._supportedDirections;
+		}
+
+		public function set supportedDirections(value:String):void
+		{
+			this._supportedDirections = value;
 		}
 
 		/**
@@ -591,9 +725,13 @@ package feathers.controls
 
 		[Inspectable(type="String",enumeration="top,right,bottom,left")]
 		/**
-		 * The position of the callout's arrow relative to the background. Do
-		 * not confuse this with the direction that the callout opens when using
-		 * <code>Callout.create()</code>.
+		 * The position of the callout's arrow relative to the callout's
+		 * background. If the callout's <code>origin</code> is set, this value
+		 * will be managed by the callout and may change as the origin moves or
+		 * the stage resizes.
+		 *
+		 * @see #origin
+		 * @see #supportedDirections
 		 */
 		public function get arrowPosition():String
 		{
@@ -992,6 +1130,25 @@ package feathers.controls
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _lastGlobalBoundsOfOrigin:Rectangle;
+
+		/**
+		 * @private
+		 */
+		override public function dispose():void
+		{
+			this.origin = null;
+			//remove the content safely if it should not be disposed
+			if(!this.disposeContent && this._content && this._content.parent == this)
+			{
+				this.removeChild(this._content, false);
+			}
+			super.dispose();
+		}
+
+		/**
 		 * Closes the callout.
 		 */
 		public function close(dispose:Boolean = false):void
@@ -1015,7 +1172,7 @@ package feathers.controls
 		{
 			this.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			Starling.current.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler, false, int.MAX_VALUE, true);
-			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
+			this.addEventListener(Event.REMOVED_FROM_STAGE, callout_removedFromStageHandler);
 		}
 
 		/**
@@ -1027,6 +1184,12 @@ package feathers.controls
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			const originInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_ORIGIN);
+
+			if(originInvalid)
+			{
+				this.positionToOrigin();
+			}
 
 			if(stylesInvalid || stateInvalid)
 			{
@@ -1045,20 +1208,32 @@ package feathers.controls
 
 			if(sizeInvalid || stylesInvalid || dataInvalid || stateInvalid)
 			{
-				this.layout();
+				this.layoutChildren();
 			}
+		}
+
+		protected function autoSizeIfNeeded():Boolean
+		{
+			this.measureWithArrowPosition(this._arrowPosition, HELPER_POINT);
+			return this.setSizeInternal(HELPER_POINT.x, HELPER_POINT.y, false);
 		}
 
 		/**
 		 * @private
 		 */
-		protected function autoSizeIfNeeded():Boolean
+		protected function measureWithArrowPosition(arrowPosition:String, result:Point = null):Point
 		{
+			if(!result)
+			{
+				result = new Point();
+			}
 			const needsWidth:Boolean = isNaN(this.explicitWidth);
 			const needsHeight:Boolean = isNaN(this.explicitHeight);
 			if(!needsWidth && !needsHeight)
 			{
-				return false;
+				result.x = this.explicitWidth;
+				result.y = this.explicitHeight;
+				return result;
 			}
 
 			const needsContentWidth:Boolean = isNaN(this._originalContentWidth);
@@ -1088,19 +1263,19 @@ package feathers.controls
 				{
 					newWidth = Math.max(this._originalBackgroundWidth, newWidth);
 				}
-				if(this._arrowPosition == ARROW_POSITION_LEFT && this._leftArrowSkin)
+				if(arrowPosition == ARROW_POSITION_LEFT && this._leftArrowSkin)
 				{
 					newWidth += this._leftArrowSkin.width + this._leftArrowGap;
 				}
-				if(this._arrowPosition == ARROW_POSITION_RIGHT && this._rightArrowSkin)
+				if(arrowPosition == ARROW_POSITION_RIGHT && this._rightArrowSkin)
 				{
 					newWidth += this._rightArrowSkin.width + this._rightArrowGap;
 				}
-				if(this._arrowPosition == ARROW_POSITION_TOP && this._topArrowSkin)
+				if(arrowPosition == ARROW_POSITION_TOP && this._topArrowSkin)
 				{
 					newWidth = Math.max(newWidth, this._topArrowSkin.width + this._paddingLeft + this._paddingRight);
 				}
-				if(this._arrowPosition == ARROW_POSITION_BOTTOM && this._bottomArrowSkin)
+				if(arrowPosition == ARROW_POSITION_BOTTOM && this._bottomArrowSkin)
 				{
 					newWidth = Math.max(newWidth, this._bottomArrowSkin.width + this._paddingLeft + this._paddingRight);
 				}
@@ -1113,25 +1288,27 @@ package feathers.controls
 				{
 					newHeight = Math.max(this._originalBackgroundHeight, newHeight);
 				}
-				if(this._arrowPosition == ARROW_POSITION_TOP && this._topArrowSkin)
+				if(arrowPosition == ARROW_POSITION_TOP && this._topArrowSkin)
 				{
 					newHeight += this._topArrowSkin.height + this._topArrowGap;
 				}
-				if(this._arrowPosition == ARROW_POSITION_BOTTOM && this._bottomArrowSkin)
+				if(arrowPosition == ARROW_POSITION_BOTTOM && this._bottomArrowSkin)
 				{
 					newHeight += this._bottomArrowSkin.height + this._bottomArrowGap;
 				}
-				if(this._arrowPosition == ARROW_POSITION_LEFT && this._leftArrowSkin)
+				if(arrowPosition == ARROW_POSITION_LEFT && this._leftArrowSkin)
 				{
 					newHeight = Math.max(newHeight, this._leftArrowSkin.height + this._paddingTop + this._paddingBottom);
 				}
-				if(this._arrowPosition == ARROW_POSITION_RIGHT && this._rightArrowSkin)
+				if(arrowPosition == ARROW_POSITION_RIGHT && this._rightArrowSkin)
 				{
 					newHeight = Math.max(newHeight, this._rightArrowSkin.height + this._paddingTop + this._paddingBottom);
 				}
 				newHeight = Math.min(newHeight, this.stage.stageHeight - stagePaddingTop - stagePaddingBottom);
 			}
-			return this.setSizeInternal(newWidth, newHeight, false);
+			result.x = Math.max(this._minWidth, Math.min(this._maxWidth, newWidth));
+			result.y = Math.max(this._minHeight,  Math.min(this._maxHeight, newHeight));
+			return result;
 		}
 
 		/**
@@ -1181,7 +1358,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function layout():void
+		protected function layoutChildren():void
 		{
 			const xPosition:Number = (this._leftArrowSkin && this._arrowPosition == ARROW_POSITION_LEFT) ? this._leftArrowSkin.width + this._leftArrowGap : 0;
 			const yPosition:Number = (this._topArrowSkin &&  this._arrowPosition == ARROW_POSITION_TOP) ? this._topArrowSkin.height + this._topArrowGap : 0;
@@ -1232,19 +1409,44 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function addedToStageHandler(event:Event):void
+		protected function positionToOrigin():void
 		{
-			//to avoid touch events bubbling up to the callout and causing it to
-			//close immediately, we wait one frame before allowing it to close
-			//based on touches.
-			this._isReadyToClose = false;
-			this.addEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
+			if(!this._origin)
+			{
+				return;
+			}
+			this._origin.getBounds(Starling.current.stage, HELPER_RECT);
+			const hasGlobalBounds:Boolean = this._lastGlobalBoundsOfOrigin != null;
+			if(!hasGlobalBounds || !this._lastGlobalBoundsOfOrigin.equals(HELPER_RECT))
+			{
+				if(!hasGlobalBounds)
+				{
+					this._lastGlobalBoundsOfOrigin = new Rectangle();
+				}
+				this._lastGlobalBoundsOfOrigin.x = HELPER_RECT.x;
+				this._lastGlobalBoundsOfOrigin.y = HELPER_RECT.y;
+				this._lastGlobalBoundsOfOrigin.width = HELPER_RECT.width;
+				this._lastGlobalBoundsOfOrigin.height = HELPER_RECT.height;
+				positionWithSupportedDirections(this, this._lastGlobalBoundsOfOrigin, this._supportedDirections);
+			}
 		}
 
 		/**
 		 * @private
 		 */
-		protected function removedFromStageHandler(event:Event):void
+		protected function callout_addedToStageHandler(event:Event):void
+		{
+			//to avoid touch events bubbling up to the callout and causing it to
+			//close immediately, we wait one frame before allowing it to close
+			//based on touches.
+			this._isReadyToClose = false;
+			this.addEventListener(EnterFrameEvent.ENTER_FRAME, callout_oneEnterFrameHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function callout_removedFromStageHandler(event:Event):void
 		{
 			this.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
@@ -1253,10 +1455,18 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function enterFrameHandler(event:Event):void
+		protected function callout_oneEnterFrameHandler(event:Event):void
 		{
-			this.removeEventListener(EnterFrameEvent.ENTER_FRAME, enterFrameHandler);
+			this.removeEventListener(EnterFrameEvent.ENTER_FRAME, callout_oneEnterFrameHandler);
 			this._isReadyToClose = true;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function callout_enterFrameHandler(event:EnterFrameEvent):void
+		{
+			this.positionToOrigin();
 		}
 
 		/**
@@ -1264,9 +1474,15 @@ package feathers.controls
 		 */
 		protected function stage_touchHandler(event:TouchEvent):void
 		{
-			if(!this._isReadyToClose || (!this.closeOnTouchEndedOutside && !this.closeOnTouchBeganOutside) ||
-				this.contains(DisplayObject(event.target)) ||
+			const target:DisplayObject = DisplayObject(event.target);
+			if(!this._isReadyToClose ||
+				(!this.closeOnTouchEndedOutside && !this.closeOnTouchBeganOutside) || this.contains(target) ||
 				(PopUpManager.isPopUp(this) && !PopUpManager.isTopLevelPopUp(this)))
+			{
+				return;
+			}
+
+			if(this._origin == target || (this._origin is DisplayObjectContainer && DisplayObjectContainer(this._origin).contains(target)))
 			{
 				return;
 			}
@@ -1280,7 +1496,7 @@ package feathers.controls
 				if((this.closeOnTouchBeganOutside && phase == TouchPhase.BEGAN) ||
 					(this.closeOnTouchEndedOutside && phase == TouchPhase.ENDED))
 				{
-					this.close(this._isPopUp);
+					this.close(this.disposeOnSelfClose);
 					break;
 				}
 			}
@@ -1300,7 +1516,15 @@ package feathers.controls
 			event.preventDefault();
 			//don't let other event handlers handle the event
 			event.stopImmediatePropagation();
-			this.close(this._isPopUp);
+			this.close(this.disposeOnSelfClose);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function origin_removedFromStageHandler(event:Event):void
+		{
+			this.close(this.disposeOnSelfClose);
 		}
 	}
 }

@@ -72,6 +72,7 @@ package feathers.themes
 	import flash.display.BitmapData;
 	import flash.geom.Rectangle;
 	import flash.text.TextFormat;
+	import flash.text.TextFormatAlign;
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
@@ -210,6 +211,10 @@ package feathers.themes
 		protected var buttonSelectedDisabledSkinTextures:Scale9Textures;
 		protected var buttonCallToActionUpSkinTextures:Scale9Textures;
 		protected var buttonCallToActionDownSkinTextures:Scale9Textures;
+		protected var buttonQuietUpSkinTextures:Scale9Textures;
+		protected var buttonQuietDownSkinTextures:Scale9Textures;
+		protected var buttonDangerUpSkinTextures:Scale9Textures;
+		protected var buttonDangerDownSkinTextures:Scale9Textures;
 		protected var buttonBackUpSkinTextures:Scale3Textures;
 		protected var buttonBackDownSkinTextures:Scale3Textures;
 		protected var buttonBackDisabledSkinTextures:Scale3Textures;
@@ -366,6 +371,10 @@ package feathers.themes
 			this.buttonSelectedDisabledSkinTextures = new Scale9Textures(this.atlas.getTexture("button-selected-disabled-skin"), BUTTON_SELECTED_SCALE9_GRID);
 			this.buttonCallToActionUpSkinTextures = new Scale9Textures(this.atlas.getTexture("button-call-to-action-up-skin"), BUTTON_SCALE9_GRID);
 			this.buttonCallToActionDownSkinTextures = new Scale9Textures(this.atlas.getTexture("button-call-to-action-down-skin"), BUTTON_SCALE9_GRID);
+			this.buttonQuietUpSkinTextures = new Scale9Textures(this.atlas.getTexture("button-quiet-up-skin"), BUTTON_SCALE9_GRID);
+			this.buttonQuietDownSkinTextures = new Scale9Textures(this.atlas.getTexture("button-quiet-down-skin"), BUTTON_SCALE9_GRID);
+			this.buttonDangerUpSkinTextures = new Scale9Textures(this.atlas.getTexture("button-danger-up-skin"), BUTTON_SCALE9_GRID);
+			this.buttonDangerDownSkinTextures = new Scale9Textures(this.atlas.getTexture("button-danger-down-skin"), BUTTON_SCALE9_GRID);
 			this.buttonBackUpSkinTextures = new Scale3Textures(this.atlas.getTexture("button-back-up-skin"), BACK_BUTTON_SCALE3_REGION1, BACK_BUTTON_SCALE3_REGION2);
 			this.buttonBackDownSkinTextures = new Scale3Textures(this.atlas.getTexture("button-back-down-skin"), BACK_BUTTON_SCALE3_REGION1, BACK_BUTTON_SCALE3_REGION2);
 			this.buttonBackDisabledSkinTextures = new Scale3Textures(this.atlas.getTexture("button-back-disabled-skin"), BACK_BUTTON_SCALE3_REGION1, BACK_BUTTON_SCALE3_REGION2);
@@ -432,6 +441,8 @@ package feathers.themes
 			this.setInitializerForClass(ScrollText, scrollTextInitializer);
 			this.setInitializerForClass(Button, buttonInitializer);
 			this.setInitializerForClass(Button, callToActionButtonInitializer, Button.ALTERNATE_NAME_CALL_TO_ACTION_BUTTON);
+			this.setInitializerForClass(Button, quietButtonInitializer, Button.ALTERNATE_NAME_QUIET_BUTTON);
+			this.setInitializerForClass(Button, dangerButtonInitializer, Button.ALTERNATE_NAME_DANGER_BUTTON);
 			this.setInitializerForClass(Button, backButtonInitializer, Button.ALTERNATE_NAME_BACK_BUTTON);
 			this.setInitializerForClass(Button, forwardButtonInitializer, Button.ALTERNATE_NAME_FORWARD_BUTTON);
 			this.setInitializerForClass(Button, buttonInitializer);
@@ -608,6 +619,38 @@ package feathers.themes
 			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = this.buttonCallToActionUpSkinTextures;
 			skinSelector.setValueForState(this.buttonCallToActionDownSkinTextures, Button.STATE_DOWN, false);
+			skinSelector.setValueForState(this.buttonDisabledSkinTextures, Button.STATE_DISABLED, false);
+			skinSelector.displayObjectProperties =
+			{
+				width: 60 * this.scale,
+				height: 60 * this.scale,
+				textureScale: this.scale
+			};
+			button.stateToSkinFunction = skinSelector.updateValue;
+			this.baseButtonInitializer(button);
+		}
+
+		protected function quietButtonInitializer(button:Button):void
+		{
+			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.buttonQuietUpSkinTextures;
+			skinSelector.setValueForState(this.buttonQuietDownSkinTextures, Button.STATE_DOWN, false);
+			skinSelector.setValueForState(this.buttonDisabledSkinTextures, Button.STATE_DISABLED, false);
+			skinSelector.displayObjectProperties =
+			{
+				width: 60 * this.scale,
+				height: 60 * this.scale,
+				textureScale: this.scale
+			};
+			button.stateToSkinFunction = skinSelector.updateValue;
+			this.baseButtonInitializer(button);
+		}
+
+		protected function dangerButtonInitializer(button:Button):void
+		{
+			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.buttonDangerUpSkinTextures;
+			skinSelector.setValueForState(this.buttonDangerDownSkinTextures, Button.STATE_DOWN, false);
 			skinSelector.setValueForState(this.buttonDisabledSkinTextures, Button.STATE_DISABLED, false);
 			skinSelector.displayObjectProperties =
 			{
@@ -1058,6 +1101,7 @@ package feathers.themes
 			input.textEditorProperties.fontFamily = "Helvetica";
 			input.textEditorProperties.fontSize = 30 * this.scale;
 			input.textEditorProperties.color = LIGHT_TEXT_COLOR;
+			input.textEditorProperties.textAlign = TextFormatAlign.CENTER;
 		}
 
 		protected function pageIndicatorInitializer(pageIndicator:PageIndicator):void

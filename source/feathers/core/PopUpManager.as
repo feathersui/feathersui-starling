@@ -193,6 +193,10 @@ package feathers.core
 		public static function centerPopUp(popUp:DisplayObject):void
 		{
 			const stage:Stage = Starling.current.stage;
+			if(popUp is IFeathersControl)
+			{
+				IFeathersControl(popUp).validate();
+			}
 			popUp.x = (stage.stageWidth - popUp.width) / 2;
 			popUp.y = (stage.stageHeight - popUp.height) / 2;
 		}

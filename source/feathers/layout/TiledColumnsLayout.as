@@ -955,132 +955,20 @@ package feathers.layout
 				result = new <int>[];
 			}
 			result.length = 0;
-			const tileWidth:Number = this._useSquareTiles ? Math.max(0, this._typicalItemWidth, this._typicalItemHeight) : this._typicalItemWidth;
-			const tileHeight:Number = this._useSquareTiles ? tileWidth : this._typicalItemHeight;
-			const verticalTileCount:int = Math.max(1, (height - this._paddingTop - this._paddingBottom + this._verticalGap) / (tileHeight + this._verticalGap));
-			if(this._paging != PAGING_NONE)
+
+			if(this._paging == PAGING_HORIZONTAL)
 			{
-				var horizontalTileCount:int = Math.max(1, (width - this._paddingLeft - this._paddingRight + this._horizontalGap) / (tileWidth + this._horizontalGap));
-				const perPage:Number = horizontalTileCount * verticalTileCount;
-				if(this._paging == PAGING_HORIZONTAL)
-				{
-					var startPageIndex:int = Math.round(scrollX / width);
-					var minimum:int = startPageIndex * perPage;
-					if(minimum > 0)
-					{
-						var pageStartPosition:Number = startPageIndex * width;
-						var partialPageSize:Number = scrollX - pageStartPosition;
-						if(partialPageSize < 0)
-						{
-							minimum -= verticalTileCount * Math.ceil((-partialPageSize - this._paddingRight) / (tileWidth + this._horizontalGap));
-						}
-						else if(partialPageSize > 0)
-						{
-							minimum += verticalTileCount * Math.floor((partialPageSize - this._paddingLeft) / (tileWidth + this._horizontalGap));
-						}
-					}
-					var maximum:int = minimum + perPage + 2 * verticalTileCount - 1;
-					for(var i:int = minimum; i <= maximum; i++)
-					{
-						result.push(i);
-					}
-					return result;
-				}
-				else
-				{
-					startPageIndex = Math.round(scrollY / height);
-					minimum = startPageIndex * perPage;
-					var totalColumnHeight:Number = verticalTileCount * (tileHeight + this._verticalGap) - this._verticalGap;
-					var topSideOffset:Number = 0;
-					var bottomSideOffset:Number = 0;
-					if(totalColumnHeight < height)
-					{
-						if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
-						{
-							topSideOffset = height - this._paddingTop - this._paddingBottom - totalColumnHeight;
-							bottomSideOffset = 0;
-						}
-						else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
-						{
-							topSideOffset = bottomSideOffset = (height - this._paddingTop - this._paddingBottom - totalColumnHeight) / 2;
-						}
-						else if(this._verticalAlign == VERTICAL_ALIGN_TOP)
-						{
-							topSideOffset = 0;
-							bottomSideOffset = height - this._paddingTop - this._paddingBottom - totalColumnHeight;
-						}
-					}
-					var rowOffset:int = 0;
-					pageStartPosition = startPageIndex * height;
-					partialPageSize = scrollY - pageStartPosition;
-					if(partialPageSize < 0)
-					{
-						partialPageSize = Math.max(0, -partialPageSize - this._paddingBottom - bottomSideOffset);
-						rowOffset = -Math.floor(partialPageSize / (tileHeight + this._verticalGap)) - 1;
-						minimum += -perPage + verticalTileCount + rowOffset;
-					}
-					else if(partialPageSize > 0)
-					{
-						partialPageSize = Math.max(0, partialPageSize - this._paddingTop - topSideOffset);
-						rowOffset = Math.floor(partialPageSize / (tileHeight + this._verticalGap));
-						minimum += rowOffset;
-					}
-					if(minimum < 0)
-					{
-						minimum = 0;
-						rowOffset = 0;
-					}
-					var rowIndex:int = (verticalTileCount + rowOffset) % verticalTileCount;
-					var columnIndex:int = 0;
-					var maxRowIndex:int = rowIndex + verticalTileCount + 2;
-					var pageStart:int = int(minimum / perPage) * perPage;
-					i = minimum;
-					do
-					{
-						result.push(i);
-						columnIndex++;
-						if(columnIndex == horizontalTileCount)
-						{
-							columnIndex = 0;
-							rowIndex++;
-							if(rowIndex == verticalTileCount)
-							{
-								rowIndex = 0;
-								pageStart += perPage;
-								maxRowIndex -= verticalTileCount;
-							}
-							i = pageStart + rowIndex - verticalTileCount;
-						}
-						i += verticalTileCount;
-					}
-					while(rowIndex != maxRowIndex)
-					return result;
-				}
+				this.getVisibleIndicesAtScrollPositionWithHorizontalPaging(scrollX, scrollY, width, height, itemCount, result);
+			}
+			else if(this._paging == PAGING_VERTICAL)
+			{
+				this.getVisibleIndicesAtScrollPositionWithVerticalPaging(scrollX, scrollY, width, height, itemCount, result);
 			}
 			else
 			{
-				var columnIndexOffset:int = 0;
-				const totalColumnWidth:Number = Math.ceil(itemCount / verticalTileCount) * (tileWidth + this._horizontalGap) - this._horizontalGap;
-				if(totalColumnWidth < width)
-				{
-					if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
-					{
-						columnIndexOffset = Math.ceil((width - totalColumnWidth) / (tileWidth + this._horizontalGap));
-					}
-					else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
-					{
-						columnIndexOffset = Math.ceil((width - totalColumnWidth) / (tileWidth + this._horizontalGap) / 2);
-					}
-				}
-				columnIndex = -columnIndexOffset + Math.floor((scrollX - this._paddingLeft + this._horizontalGap) / (tileWidth + this._horizontalGap));
-				horizontalTileCount = Math.ceil((width - this._paddingLeft + this._horizontalGap) / (tileWidth + this._horizontalGap)) + 1;
-				minimum = columnIndex * verticalTileCount;
-				maximum = minimum + verticalTileCount * horizontalTileCount;
-				for(i = minimum; i <= maximum; i++)
-				{
-					result.push(i);
-				}
+				this.getVisibleIndicesAtScrollPositionWithoutPaging(scrollX, scrollY, width, height, itemCount, result);
 			}
+
 			return result;
 		}
 
@@ -1209,6 +1097,199 @@ package feathers.layout
 				{
 					control.validate();
 				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getVisibleIndicesAtScrollPositionWithHorizontalPaging(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int, result:Vector.<int>):void
+		{
+			const tileWidth:Number = this._useSquareTiles ? Math.max(0, this._typicalItemWidth, this._typicalItemHeight) : this._typicalItemWidth;
+			const tileHeight:Number = this._useSquareTiles ? tileWidth : this._typicalItemHeight;
+			const horizontalTileCount:int = Math.max(1, (width - this._paddingLeft - this._paddingRight + this._horizontalGap) / (tileWidth + this._horizontalGap));
+			const verticalTileCount:int = Math.max(1, (height - this._paddingTop - this._paddingBottom + this._verticalGap) / (tileHeight + this._verticalGap));
+			const perPage:int = horizontalTileCount * verticalTileCount;
+			const minimumItemCount:int = Math.min(itemCount, perPage + 2 * verticalTileCount);
+
+			var startPageIndex:int = Math.round(scrollX / width);
+			var minimum:int = startPageIndex * perPage;
+			var totalRowWidth:Number = horizontalTileCount * (tileWidth + this._horizontalGap) - this._horizontalGap;
+			var leftSideOffset:Number = 0;
+			var rightSideOffset:Number = 0;
+			if(totalRowWidth < width)
+			{
+				if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
+				{
+					leftSideOffset = width - this._paddingLeft - this._paddingRight - totalRowWidth;
+					rightSideOffset = 0;
+				}
+				else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
+				{
+					leftSideOffset = rightSideOffset = (width - this._paddingLeft - this._paddingRight - totalRowWidth) / 2;
+				}
+				else if(this._horizontalAlign == HORIZONTAL_ALIGN_LEFT)
+				{
+					leftSideOffset = 0;
+					rightSideOffset = width - this._paddingLeft - this._paddingRight - totalRowWidth;
+				}
+			}
+			var columnOffset:int = 0;
+			var pageStartPosition:Number = startPageIndex * width;
+			var partialPageSize:Number = scrollX - pageStartPosition;
+			if(partialPageSize < 0)
+			{
+				partialPageSize = Math.max(0, -partialPageSize - this._paddingRight - rightSideOffset);
+				columnOffset = -Math.floor(partialPageSize / (tileWidth + this._horizontalGap)) - 1;
+				minimum += -perPage + horizontalTileCount + columnOffset;
+			}
+			else if(partialPageSize > 0)
+			{
+				partialPageSize = Math.max(0, partialPageSize - this._paddingLeft - leftSideOffset);
+				columnOffset = Math.floor(partialPageSize / (tileWidth + this._horizontalGap));
+				minimum += columnOffset;
+			}
+			if(minimum < 0)
+			{
+				minimum = 0;
+				columnOffset = 0;
+			}
+
+			const maximum:int = Math.min(itemCount, minimum + minimumItemCount);
+			minimum = maximum - minimumItemCount;
+			for(var i:int = minimum; i < maximum; i++)
+			{
+				result.push(i);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getVisibleIndicesAtScrollPositionWithVerticalPaging(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int, result:Vector.<int>):void
+		{
+			const tileWidth:Number = this._useSquareTiles ? Math.max(0, this._typicalItemWidth, this._typicalItemHeight) : this._typicalItemWidth;
+			const tileHeight:Number = this._useSquareTiles ? tileWidth : this._typicalItemHeight;
+			const horizontalTileCount:int = Math.max(1, (width - this._paddingLeft - this._paddingRight + this._horizontalGap) / (tileWidth + this._horizontalGap));
+			const verticalTileCount:int = Math.max(1, (height - this._paddingTop - this._paddingBottom + this._verticalGap) / (tileHeight + this._verticalGap));
+			const perPage:int = horizontalTileCount * verticalTileCount;
+			const minimumItemCount:int = Math.min(itemCount, perPage + 2 * verticalTileCount);
+
+			var startPageIndex:int = Math.round(scrollY / height);
+			var minimum:int = startPageIndex * perPage;
+			var totalColumnHeight:Number = verticalTileCount * (tileHeight + this._verticalGap) - this._verticalGap;
+			var topSideOffset:Number = 0;
+			var bottomSideOffset:Number = 0;
+			if(totalColumnHeight < height)
+			{
+				if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
+				{
+					topSideOffset = height - this._paddingTop - this._paddingBottom - totalColumnHeight;
+					bottomSideOffset = 0;
+				}
+				else if(this._horizontalAlign == VERTICAL_ALIGN_MIDDLE)
+				{
+					topSideOffset = bottomSideOffset = (height - this._paddingTop - this._paddingBottom - totalColumnHeight) / 2;
+				}
+				else if(this._horizontalAlign == VERTICAL_ALIGN_TOP)
+				{
+					topSideOffset = 0;
+					bottomSideOffset = height - this._paddingTop - this._paddingBottom - totalColumnHeight;
+				}
+			}
+			var rowOffset:int = 0;
+			var pageStartPosition:Number = startPageIndex * height;
+			var partialPageSize:Number = scrollY - pageStartPosition;
+			if(partialPageSize < 0)
+			{
+				partialPageSize = Math.max(0, -partialPageSize - this._paddingBottom - bottomSideOffset);
+				rowOffset = -Math.floor(partialPageSize / (tileWidth + this._verticalGap)) - 1;
+				minimum += -perPage + horizontalTileCount + rowOffset;
+			}
+			else if(partialPageSize > 0)
+			{
+				partialPageSize = Math.max(0, partialPageSize - this._paddingTop - topSideOffset);
+				rowOffset = Math.floor(partialPageSize / (tileWidth + this._verticalGap));
+				minimum += rowOffset;
+			}
+			if(minimum < 0)
+			{
+				minimum = 0;
+				rowOffset = 0;
+			}
+
+			if(minimum + minimumItemCount >= itemCount)
+			{
+				//an optimized path when we're on or near the last page
+				minimum = itemCount - minimumItemCount;
+				for(var i:int = minimum; i < itemCount; i++)
+				{
+					result.push(i);
+				}
+			}
+			else
+			{
+				var columnIndex:int = 0;
+				var rowIndex:int = (verticalTileCount + rowOffset) % verticalTileCount;
+				var pageStart:int = int(minimum / perPage) * perPage;
+				i = minimum;
+				var resultLength:int = 0;
+				do
+				{
+					if(i < itemCount)
+					{
+						result.push(i);
+						resultLength++;
+					}
+					columnIndex++;
+					if(columnIndex == horizontalTileCount)
+					{
+						columnIndex = 0;
+						rowIndex++;
+						if(rowIndex == verticalTileCount)
+						{
+							rowIndex = 0;
+							pageStart += perPage;
+						}
+						i = pageStart + rowIndex - verticalTileCount;
+					}
+					i += verticalTileCount;
+				}
+				while(resultLength < minimumItemCount && pageStart < itemCount)
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function getVisibleIndicesAtScrollPositionWithoutPaging(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int, result:Vector.<int>):void
+		{
+			const tileWidth:Number = this._useSquareTiles ? Math.max(0, this._typicalItemWidth, this._typicalItemHeight) : this._typicalItemWidth;
+			const tileHeight:Number = this._useSquareTiles ? tileWidth : this._typicalItemHeight;
+			const verticalTileCount:int = Math.max(1, (height - this._paddingTop - this._paddingBottom + this._verticalGap) / (tileHeight + this._verticalGap));
+
+			const horizontalTileCount:int = Math.ceil((width - this._paddingLeft + this._horizontalGap) / (tileWidth + this._horizontalGap)) + 1;
+			const minimumItemCount:int = Math.min(itemCount, verticalTileCount * horizontalTileCount);
+			var columnIndexOffset:int = 0;
+			const totalColumnWidth:Number = Math.ceil(itemCount / verticalTileCount) * (tileWidth + this._horizontalGap) - this._horizontalGap;
+			if(totalColumnWidth < width)
+			{
+				if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
+				{
+					columnIndexOffset = Math.ceil((width - totalColumnWidth) / (tileWidth + this._horizontalGap));
+				}
+				else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
+				{
+					columnIndexOffset = Math.ceil((width - totalColumnWidth) / (tileWidth + this._horizontalGap) / 2);
+				}
+			}
+			const columnIndex:int = -columnIndexOffset + Math.floor((scrollX - this._paddingLeft + this._horizontalGap) / (tileWidth + this._horizontalGap));
+			var minimum:int = Math.max(0, columnIndex * verticalTileCount);
+			const maximum:int = Math.min(itemCount, minimum + minimumItemCount);
+			minimum = maximum - minimumItemCount;
+			for(var i:int = minimum; i < maximum; i++)
+			{
+				result.push(i);
 			}
 		}
 	}

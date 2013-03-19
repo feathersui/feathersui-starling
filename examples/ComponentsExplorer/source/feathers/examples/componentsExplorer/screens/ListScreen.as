@@ -49,6 +49,7 @@ package feathers.examples.componentsExplorer.screens
 			this._list.dataProvider = new ListCollection(items);
 			this._list.typicalItem = {text: "Item 1000"};
 			this._list.isSelectable = this.settings.isSelectable;
+			this._list.allowMultipleSelection = this.settings.allowMultipleSelection;
 			this._list.hasElasticEdges = this.settings.hasElasticEdges;
 			this._list.itemRendererProperties.labelField = "text";
 			this._list.addEventListener(Event.CHANGE, list_changeHandler);
@@ -100,7 +101,8 @@ package feathers.examples.componentsExplorer.screens
 
 		private function list_changeHandler(event:Event):void
 		{
-			trace("List onChange:", this._list.selectedIndex);
+			const selectedIndices:Vector.<int> = this._list.selectedIndices;
+			trace("List onChange:", selectedIndices.length > 0 ? selectedIndices : this._list.selectedIndex);
 		}
 	}
 }

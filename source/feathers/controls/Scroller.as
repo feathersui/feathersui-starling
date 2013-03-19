@@ -34,31 +34,86 @@ package feathers.controls
 	import starling.events.TouchPhase;
 
 	/**
-	 * Dispatched when the scroller scrolls in either direction.
+	 * Dispatched when the scroller scrolls in either direction or when the view
+	 * port's scrolling bounds have changed. Listen for <code>FeathersEventType.SCROLL_START</code>
+	 * to know when scrolling starts as a result of user interaction or when
+	 * scrolling is triggered by an animation. Similarly, listen for
+	 * <code>FeathersEventType.SCROLL_COMPLETE</code> to know when the scrolling
+	 * ends.
 	 *
 	 * @eventType starling.events.Event.SCROLL
+	 * @see feathers.events.FeathersEventType.SCROLL_START
+	 * @see feathers.events.FeathersEventType.SCROLL_COMPLETE
 	 */
 	[Event(name="scroll",type="starling.events.Event")]
 
 	/**
-	 * Dispatched when the scroller finishes scrolling in either direction after
-	 * being thrown.
+	 * Dispatched when the scroller starts scrolling in either direction
+	 * as a result of either user interaction or animation.
+	 *
+	 * <p>Note: If <code>horizontalScrollPosition</code> or <code>verticalScrollPosition</code>
+	 * is set manually (in other words, the scrolling is not triggered by user
+	 * interaction or an animated scroll), no <code>FeathersEventType.SCROLL_START</code>
+	 * or <code>FeathersEventType.SCROLL_COMPLETE</code> events will be
+	 * dispatched.</p>
+	 *
+	 * @eventType feathers.events.FeathersEventType.SCROLL_START
+	 * @see feathers.events.FeathersEventType.SCROLL_COMPLETE
+	 * @see feathers.events.FeathersEventType.SCROLL
+	 */
+	[Event(name="scrollStart",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the scroller finishes scrolling in either direction
+	 * as a result of either user interaction or animation. Animations may not
+	 * end at the same time that user interaction ends, so the event may be
+	 * delayed if user interaction triggers scrolling again.
+	 *
+	 * <p>Note: If <code>horizontalScrollPosition</code> or <code>verticalScrollPosition</code>
+	 * is set manually (in other words, the scrolling is not triggered by user
+	 * interaction or an animated scroll), no <code>FeathersEventType.SCROLL_START</code>
+	 * or <code>FeathersEventType.SCROLL_COMPLETE</code> events will be
+	 * dispatched.</p>
 	 *
 	 * @eventType feathers.events.FeathersEventType.SCROLL_COMPLETE
+	 * @see feathers.events.FeathersEventType.SCROLL_START
+	 * @see feathers.events.FeathersEventType.SCROLL
 	 */
 	[Event(name="scrollComplete",type="starling.events.Event")]
 
 	/**
-	 * Dispatched when the user starts dragging the scroller.
+	 * Dispatched when the user starts dragging the scroller when
+	 * <code>INTERACTION_MODE_TOUCH</code> is enabled or when the user starts
+	 * interacting with the scroll bar.
+	 *
+	 * <p>Note: If <code>horizontalScrollPosition</code> or <code>verticalScrollPosition</code>
+	 * is set manually (in other words, the scrolling is not triggered by user
+	 * interaction), no <code>FeathersEventType.BEGIN_INTERACTION</code>
+	 * or <code>FeathersEventType.END_INTERACTION</code> events will be
+	 * dispatched.</p>
 	 *
 	 * @eventType feathers.events.FeathersEventType.BEGIN_INTERACTION
+	 * @see feathers.events.FeathersEventType.END_INTERACTION
+	 * @see feathers.events.FeathersEventType.SCROLL
 	 */
 	[Event(name="beginInteraction",type="starling.events.Event")]
 
 	/**
-	 * Dispatched when the user stops dragging the scroller.
+	 * Dispatched when the user stops dragging the scroller when
+	 * <code>INTERACTION_MODE_TOUCH</code> is enabled or when the user stops
+	 * interacting with the scroll bar. The scroller may continue scrolling
+	 * after this event is dispatched if the user interaction has also triggered
+	 * an animation.
+	 *
+	 * <p>Note: If <code>horizontalScrollPosition</code> or <code>verticalScrollPosition</code>
+	 * is set manually (in other words, the scrolling is not triggered by user
+	 * interaction), no <code>FeathersEventType.BEGIN_INTERACTION</code>
+	 * or <code>FeathersEventType.END_INTERACTION</code> events will be
+	 * dispatched.</p>
 	 *
 	 * @eventType feathers.events.FeathersEventType.END_INTERACTION
+	 * @see feathers.events.FeathersEventType.BEGIN_INTERACTION
+	 * @see feathers.events.FeathersEventType.SCROLL
 	 */
 	[Event(name="endInteraction",type="starling.events.Event")]
 
@@ -263,8 +318,8 @@ package feathers.controls
 			this._viewPortWrapper = new Sprite();
 			this.addChild(this._viewPortWrapper);
 
-			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
-			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
+			this.addEventListener(Event.ADDED_TO_STAGE, scroller_addedToStageHandler);
+			this.addEventListener(Event.REMOVED_FROM_STAGE, scroller_removedFromStageHandler);
 		}
 
 		/**
@@ -814,7 +869,25 @@ package feathers.controls
 		 */
 		public function get horizontalPageIndex():int
 		{
+			if(this.pendingHorizontalPageIndex >= 0)
+			{
+				return this.pendingHorizontalPageIndex;
+			}
 			return this._horizontalPageIndex;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _horizontalPageCount:int = 1;
+
+		/**
+		 * The number of horizontal pages, if snapping is enabled. If snapping
+		 * is disabled, the page count will always be <code>1</code>.
+		 */
+		public function get horizontalPageCount():int
+		{
+			return this._horizontalPageCount;
 		}
 
 		/**
@@ -959,7 +1032,25 @@ package feathers.controls
 		 */
 		public function get verticalPageIndex():int
 		{
+			if(this.pendingVerticalPageIndex >= 0)
+			{
+				return this.pendingVerticalPageIndex;
+			}
 			return this._verticalPageIndex;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _verticalPageCount:int = 1;
+
+		/**
+		 * The number of vertical pages, if snapping is enabled. If snapping
+		 * is disabled, the page count will always be <code>1</code>.
+		 */
+		public function get verticalPageCount():int
+		{
+			return this._verticalPageCount;
 		}
 		
 		/**
@@ -1522,6 +1613,26 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _horizontalScrollBarIsScrolling:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected var _verticalScrollBarIsScrolling:Boolean = false;
+
+		/**
+		 * Determines if the scroller is currently scrolling with touch or with
+		 * animation.
+		 */
+		public function get isScrolling():Boolean
+		{
+			return this._touchPointID >= 0 || this._horizontalScrollBarIsScrolling || this._verticalScrollBarIsScrolling ||
+				this._horizontalAutoScrollTween || this._verticalAutoScrollTween;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _isScrollingStopped:Boolean = false;
 
 		/**
@@ -1637,6 +1748,8 @@ package feathers.controls
 			this._velocityY = 0;
 			this._previousVelocityX.length = 0;
 			this._previousVelocityY.length = 0;
+			this.hideHorizontalScrollBar();
+			this.hideVerticalScrollBar();
 		}
 
 		/**
@@ -1851,12 +1964,16 @@ package feathers.controls
 		{
 			if(this.horizontalScrollBar)
 			{
+				this.horizontalScrollBar.removeEventListener(FeathersEventType.BEGIN_INTERACTION, horizontalScrollBar_beginInteractionHandler);
+				this.horizontalScrollBar.removeEventListener(FeathersEventType.END_INTERACTION, horizontalScrollBar_endInteractionHandler);
 				this.horizontalScrollBar.removeEventListener(Event.CHANGE, horizontalScrollBar_changeHandler);
 				this.removeChild(DisplayObject(this.horizontalScrollBar), true);
 				this.horizontalScrollBar = null;
 			}
 			if(this.verticalScrollBar)
 			{
+				this.verticalScrollBar.removeEventListener(FeathersEventType.BEGIN_INTERACTION, verticalScrollBar_beginInteractionHandler);
+				this.verticalScrollBar.removeEventListener(FeathersEventType.END_INTERACTION, verticalScrollBar_endInteractionHandler);
 				this.verticalScrollBar.removeEventListener(Event.CHANGE, verticalScrollBar_changeHandler);
 				this.removeChild(DisplayObject(this.verticalScrollBar), true);
 				this.verticalScrollBar = null;
@@ -1868,6 +1985,8 @@ package feathers.controls
 				this.horizontalScrollBar = IScrollBar(this._horizontalScrollBarFactory());
 				this.horizontalScrollBar.nameList.add(this.horizontalScrollBarName);
 				this.horizontalScrollBar.addEventListener(Event.CHANGE, horizontalScrollBar_changeHandler);
+				this.horizontalScrollBar.addEventListener(FeathersEventType.BEGIN_INTERACTION, horizontalScrollBar_beginInteractionHandler);
+				this.horizontalScrollBar.addEventListener(FeathersEventType.END_INTERACTION, horizontalScrollBar_endInteractionHandler);
 				this.addChild(DisplayObject(this.horizontalScrollBar));
 			}
 			if(this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_NONE &&
@@ -1876,6 +1995,8 @@ package feathers.controls
 				this.verticalScrollBar = IScrollBar(this._verticalScrollBarFactory());
 				this.verticalScrollBar.nameList.add(this.verticalScrollBarName);
 				this.verticalScrollBar.addEventListener(Event.CHANGE, verticalScrollBar_changeHandler);
+				this.verticalScrollBar.addEventListener(FeathersEventType.BEGIN_INTERACTION, verticalScrollBar_beginInteractionHandler);
+				this.verticalScrollBar.addEventListener(FeathersEventType.END_INTERACTION, verticalScrollBar_endInteractionHandler);
 				this.addChild(DisplayObject(this.verticalScrollBar));
 			}
 		}
@@ -2086,6 +2207,16 @@ package feathers.controls
 				this._maxHorizontalScrollPosition = 0;
 				this._maxVerticalScrollPosition = 0;
 			}
+			if(this._snapToPages)
+			{
+				this._horizontalPageCount = int(this._maxHorizontalScrollPosition / pageWidth) + 1;
+				this._verticalPageCount = int(this._maxVerticalScrollPosition / pageHeight) + 1;
+			}
+			else
+			{
+				this._horizontalPageCount = 1;
+				this._verticalPageCount = 1;
+			}
 
 			const maximumPositionsChanged:Boolean = this._maxHorizontalScrollPosition != oldMaxHSP || this._maxVerticalScrollPosition != oldMaxVSP;
 			if(maximumPositionsChanged)
@@ -2110,11 +2241,11 @@ package feathers.controls
 
 			if(this._snapToPages)
 			{
-				if(isScrollInvalid && !this._isDraggingHorizontally && !this._horizontalAutoScrollTween)
+				if(isScrollInvalid && !this._isDraggingHorizontally && !this._horizontalAutoScrollTween && this.pendingHorizontalPageIndex < 0)
 				{
 					this._horizontalPageIndex = Math.max(0, Math.floor(this._horizontalScrollPosition / pageWidth));
 				}
-				if(isScrollInvalid && !this._isDraggingVertically && !this._verticalAutoScrollTween)
+				if(isScrollInvalid && !this._isDraggingVertically && !this._verticalAutoScrollTween && this.pendingVerticalPageIndex < 0)
 				{
 					this._verticalPageIndex = Math.max(0, Math.floor(this._verticalScrollPosition / pageHeight));
 				}
@@ -2839,6 +2970,46 @@ package feathers.controls
 		{
 			this.horizontalScrollPosition = this.horizontalScrollBar.value;
 		}
+
+		/**
+		 * @private
+		 */
+		protected function horizontalScrollBar_beginInteractionHandler(event:Event):void
+		{
+			this._horizontalScrollBarIsScrolling = true;
+			this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
+			this.dispatchEventWith(FeathersEventType.SCROLL_START);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function horizontalScrollBar_endInteractionHandler(event:Event):void
+		{
+			this._horizontalScrollBarIsScrolling = false;
+			this.dispatchEventWith(FeathersEventType.END_INTERACTION);
+			this.dispatchEventWith(FeathersEventType.SCROLL_COMPLETE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function verticalScrollBar_beginInteractionHandler(event:Event):void
+		{
+			this._verticalScrollBarIsScrolling = true;
+			this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
+			this.dispatchEventWith(FeathersEventType.SCROLL_START);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function verticalScrollBar_endInteractionHandler(event:Event):void
+		{
+			this._verticalScrollBarIsScrolling = false;
+			this.dispatchEventWith(FeathersEventType.END_INTERACTION);
+			this.dispatchEventWith(FeathersEventType.SCROLL_COMPLETE);
+		}
 		
 		/**
 		 * @private
@@ -2987,6 +3158,7 @@ package feathers.controls
 						this._touchBlocker.visible = true;
 					}
 					this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
+					this.dispatchEventWith(FeathersEventType.SCROLL_START);
 				}
 				this._startTouchX = this._currentTouchX;
 				this._startHorizontalScrollPosition = this._horizontalScrollPosition;
@@ -3015,6 +3187,7 @@ package feathers.controls
 						this._touchBlocker.visible = true;
 					}
 					this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
+					this.dispatchEventWith(FeathersEventType.SCROLL_START);
 				}
 				this._startTouchY = this._currentTouchY;
 				this._startVerticalScrollPosition = this._verticalScrollPosition;
@@ -3137,11 +3310,14 @@ package feathers.controls
 		 */
 		protected function nativeStage_mouseWheelHandler(event:MouseEvent):void
 		{
+			if(!this._isEnabled)
+			{
+				return;
+			}
 			const starlingViewPort:Rectangle = Starling.current.viewPort;
 			HELPER_POINT.x = (event.stageX - starlingViewPort.x) / Starling.contentScaleFactor;
 			HELPER_POINT.y = (event.stageY - starlingViewPort.y) / Starling.contentScaleFactor;
-			this.globalToLocal(HELPER_POINT, HELPER_POINT);
-			if(this.hitTest(HELPER_POINT, true))
+			if(this.contains(this.stage.hitTest(HELPER_POINT, true)))
 			{
 				if(this._verticalScrollBarHideTween)
 				{
@@ -3317,7 +3493,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function addedToStageHandler(event:Event):void
+		protected function scroller_addedToStageHandler(event:Event):void
 		{
 			Starling.current.nativeStage.addEventListener(MouseEvent.MOUSE_WHEEL, nativeStage_mouseWheelHandler, false, 0, true);
 			Starling.current.nativeStage.addEventListener("orientationChange", nativeStage_orientationChangeHandler, false, 0, true);
@@ -3326,7 +3502,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function removedFromStageHandler(event:Event):void
+		protected function scroller_removedFromStageHandler(event:Event):void
 		{
 			Starling.current.nativeStage.removeEventListener(MouseEvent.MOUSE_WHEEL, nativeStage_mouseWheelHandler);
 			Starling.current.nativeStage.removeEventListener("orientationChange", nativeStage_orientationChangeHandler);
@@ -3337,6 +3513,8 @@ package feathers.controls
 			this._velocityY = 0;
 			this._previousVelocityX.length = 0;
 			this._previousVelocityY.length = 0;
+			this._horizontalScrollBarIsScrolling = false;
+			this._verticalScrollBarIsScrolling = false;
 			this.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
 			this.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			if(this._verticalAutoScrollTween)
