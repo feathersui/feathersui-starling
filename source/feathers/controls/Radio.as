@@ -20,6 +20,28 @@ package feathers.controls
 	 * A toggleable control that exists in a set that requires a single,
 	 * exclusive toggled item.
 	 *
+	 * <p>In the following example, a set of radios are created, along with a
+	 * toggle group to group them together:</p>
+	 *
+	 * <listing version="3.0">
+	 * var group:ToggleGroup = new ToggleGroup();
+	 * group.addEventListener( Event.CHANGE, group_changeHandler );
+	 *
+	 * var radio1:Radio = new Radio();
+	 * radio1.label = "One";
+	 * radio1.toggleGroup = group;
+	 * this.addChild( radio1 );
+	 *
+	 * var radio2:Radio = new Radio();
+	 * radio2.label = "Two";
+	 * radio2.toggleGroup = group;
+	 * this.addChild( radio2 );
+	 *
+	 * var radio3:Radio = new Radio();
+	 * radio3.label = "Three";
+	 * radio3.toggleGroup = group;
+	 * this.addChild( radio3 );</listing>
+	 *
 	 * @see http://wiki.starling-framework.org/feathers/radio
 	 * @see feathers.core.ToggleGroup
 	 */
