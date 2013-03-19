@@ -60,56 +60,78 @@ package feathers.controls
 	{
 		/**
 		 * The callout may be positioned on any side of the origin region.
+		 *
+		 * @see #supportedDirections
 		 */
 		public static const DIRECTION_ANY:String = "any";
 
 		/**
 		 * The callout may be positioned on top or bottom of the origin region.
+		 *
+		 * @see #supportedDirections
 		 */
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
 		/**
 		 * The callout may be positioned on top or bottom of the origin region.
+		 *
+		 * @see #supportedDirections
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
 
 		/**
 		 * The callout must be positioned above the origin region.
+		 *
+		 * @see #supportedDirections
 		 */
 		public static const DIRECTION_UP:String = "up";
 
 		/**
 		 * The callout must be positioned below the origin region.
+		 *
+		 * @see #supportedDirections
 		 */
 		public static const DIRECTION_DOWN:String = "down";
 
 		/**
 		 * The callout must be positioned to the left side of the origin region.
+		 *
+		 * @see #supportedDirections
 		 */
 		public static const DIRECTION_LEFT:String = "left";
 
 		/**
 		 * The callout must be positioned to the right side of the origin region.
+		 *
+		 * @see #supportedDirections
 		 */
 		public static const DIRECTION_RIGHT:String = "right";
 
 		/**
 		 * The arrow will appear on the top side of the callout.
+		 *
+		 * @see #arrowPosition
 		 */
 		public static const ARROW_POSITION_TOP:String = "top";
 
 		/**
 		 * The arrow will appear on the right side of the callout.
+		 *
+		 * @see #arrowPosition
 		 */
 		public static const ARROW_POSITION_RIGHT:String = "right";
 
 		/**
 		 * The arrow will appear on the bottom side of the callout.
+		 *
+		 * @see #arrowPosition
 		 */
 		public static const ARROW_POSITION_BOTTOM:String = "bottom";
 
 		/**
 		 * The arrow will appear on the left side of the callout.
+		 *
+		 * @see #arrowPosition
 		 */
 		public static const ARROW_POSITION_LEFT:String = "left";
 
@@ -215,6 +237,8 @@ package feathers.controls
 		 *     //set properties here!
 		 *     return callout;
 		 * };</listing>
+		 *
+		 * @see #show()
 		 */
 		public static var calloutFactory:Function = defaultCalloutFactory;
 
@@ -239,6 +263,8 @@ package feathers.controls
 		 * };</listing>
 		 *
 		 * @see feathers.core.PopUpManager#overlayFactory
+		 *
+		 * @see #show()
 		 */
 		public static var calloutOverlayFactory:Function = PopUpManager.defaultOverlayFactory;
 
