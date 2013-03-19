@@ -17,6 +17,18 @@ package feathers.controls
 	/**
 	 * A set of related buttons with layout, customized using a data provider.
 	 *
+	 * <p>The following example creates a button group with a few buttons:</p>
+	 *
+	 * <listing version="3.0">
+	 * var group:ButtonGroup = new ButtonGroup();
+	 * group.dataProvider = new ListCollection(
+	 * [
+	 *     { label: "Yes", triggered: yesButton_triggeredHandler },
+	 *     { label: "No", triggered: noButton_triggeredHandler },
+	 *     { label: "Cancel", triggered: cancelButton_triggeredHandler },
+	 * ]);;
+	 * this.addChild( group );</listing>
+	 *
 	 * @see http://wiki.starling-framework.org/feathers/button-group
 	 */
 	public class ButtonGroup extends FeathersControl
@@ -149,6 +161,47 @@ package feathers.controls
 		/**
 		 * The collection of data to be displayed with buttons.
 		 *
+		 * <p>The following example sets the button group's data provider:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.dataProvider = new ListCollection(
+		 * [
+		 *     { label: "Yes", triggered: yesButton_triggeredHandler },
+		 *     { label: "No", triggered: noButton_triggeredHandler },
+		 *     { label: "Cancel", triggered: cancelButton_triggeredHandler },
+		 * ]);</listing>
+		 *
+		 * <p>By default, items in the data provider support the following
+		 * properties from <code>Button</code></p>
+		 *
+		 * <ul>
+		 *     <li>label</li>
+		 *     <li>defaultIcon</li>
+		 *     <li>upIcon</li>
+		 *     <li>downIcon</li>
+		 *     <li>hoverIcon</li>
+		 *     <li>disabledIcon</li>
+		 *     <li>defaultSelectedIcon</li>
+		 *     <li>selectedUpIcon</li>
+		 *     <li>selectedDownIcon</li>
+		 *     <li>selectedHoverIcon</li>
+		 *     <li>selectedDisabledIcon</li>
+		 *     <li>isSelected</li>
+		 *     <li>isToggle</li>
+		 * </ul>
+		 *
+		 * <p>Additionally, you can add the following event listeners:</p>
+		 *
+		 * <ul>
+		 *     <li>Event.TRIGGERED</li>
+		 *     <li>Event.CHANGE</li>
+		 * </ul>
+		 *
+		 * <p>You can pass a function to the <code>buttonInitializer</code>
+		 * property that can provide custom logic to interpret each item in the
+		 * data provider differently.</p>
+		 *
+		 * @see Button
 		 * @see #buttonInitializer
 		 */
 		public function get dataProvider():ListCollection
@@ -185,6 +238,12 @@ package feathers.controls
 		[Inspectable(type="String",enumeration="horizontal,vertical")]
 		/**
 		 * The button group layout is either vertical or horizontal.
+		 *
+		 * <p>The following example sets the layout direction of the buttons
+		 * to line them up horizontally:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.direction = ButtonGroup.DIRECTION_HORIZONTAL;</listing>
 		 */
 		public function get direction():String
 		{
@@ -211,6 +270,12 @@ package feathers.controls
 
 		/**
 		 * Space, in pixels, between buttons.
+		 *
+		 * <p>The following example sets the gap used for the button layout to
+		 * 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.gap = 20;</listing>
 		 */
 		public function get gap():Number
 		{
@@ -238,6 +303,13 @@ package feathers.controls
 		/**
 		 * Space, in pixels, between the first two buttons. If NaN, the standard
 		 * gap will be used.
+		 *
+		 * <p>The following example sets the gap between the first and second
+		 * button to a different value than the standard gap:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.firstGap = 30;
+		 * group.gap = 20;</listing>
 		 *
 		 * @see #gap
 		 * @see #lastGap
@@ -268,6 +340,13 @@ package feathers.controls
 		/**
 		 * Space, in pixels, between the last two buttons. If NaN, the standard
 		 * gap will be used.
+		 *
+		 * <p>The following example sets the gap between the last and next to last
+		 * button to a different value than the standard gap:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.lastGap = 30;
+		 * group.gap = 20;</listing>
 		 *
 		 * @see #gap
 		 * @see #firstGap
@@ -301,6 +380,17 @@ package feathers.controls
 		 * <p>This function is expected to have the following signature:</p>
 		 *
 		 * <pre>function():Button</pre>
+		 *
+		 * <p>The following example skins the buttons using a custom button
+		 * factory:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.buttonFactory = function():Button
+		 * {
+		 *     var button:Button = new Button();
+		 *     button.defaultSkin = new Image( texture );
+		 *     return button;
+		 * };</listing>
 		 *
 		 * @see feathers.controls.Button
 		 * @see #firstButtonFactory
@@ -337,6 +427,17 @@ package feathers.controls
 		 *
 		 * <pre>function():Button</pre>
 		 *
+		 * <p>The following example skins the first button using a custom
+		 * factory:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.firstButtonFactory = function():Button
+		 * {
+		 *     var button:Button = new Button();
+		 *     button.defaultSkin = new Image( texture );
+		 *     return button;
+		 * };</listing>
+		 *
 		 * @see feathers.controls.Button
 		 * @see #buttonFactory
 		 * @see #lastButtonFactory
@@ -372,6 +473,17 @@ package feathers.controls
 		 *
 		 * <pre>function():Button</pre>
 		 *
+		 * <p>The following example skins the last button using a custom
+		 * factory:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.lastButtonFactory = function():Button
+		 * {
+		 *     var button:Button = new Button();
+		 *     button.defaultSkin = new Image( texture );
+		 *     return button;
+		 * };</listing>
+		 *
 		 * @see feathers.controls.Button
 		 * @see #buttonFactory
 		 * @see #firstButtonFactory
@@ -405,8 +517,20 @@ package feathers.controls
 		 * default buttonInitializer function can set the button's label and icons if
 		 * <code>label</code> and/or any of the <code>Button</code> icon fields
 		 * (<code>defaultIcon</code>, <code>upIcon</code>, etc.) are present in
-		 * the item. onPress and onRelease events can also be listened to by
-		 * passing in functions for each.
+		 * the item. You can listen to <code>Event.TRIGGERED</code> and
+		 * <code>Event.CHANGE</code> by passing in functions for each.
+		 *
+		 * <p>This function is expected to have the following signature:</p>
+		 *
+		 * <pre>function( button:Button, item:Object ):void</pre>
+		 *
+		 * <p>The following example provides a custom button initializer:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.buttonInitializer = function( button:Button, item:Object ):void
+		 * {
+		 *     button.label = item.label;
+		 * };</listing>
 		 */
 		public function get buttonInitializer():Function
 		{
@@ -435,7 +559,13 @@ package feathers.controls
 		 * A name to add to all buttons in this button group. Typically used by
 		 * a theme to provide different skins to different button groups.
 		 *
+		 * <p>The following example provides a custom button name:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.customButtonName = "my-custom-button-name";</listing>
+		 *
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see http://wiki.starling-framework.org/feathers/custom-themes
 		 */
 		public function get customButtonName():String
 		{
@@ -471,7 +601,13 @@ package feathers.controls
 		 * A name to add to the first button in this button group. Typically
 		 * used by a theme to provide different skins to the first button.
 		 *
+		 * <p>The following example provides a custom first button name:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.customFirstButtonName = "my-custom-first-button-name";</listing>
+		 *
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see http://wiki.starling-framework.org/feathers/custom-themes
 		 */
 		public function get customFirstButtonName():String
 		{
@@ -505,7 +641,13 @@ package feathers.controls
 		 * A name to add to the last button in this button group. Typically used
 		 * by a theme to provide different skins to the last button.
 		 *
+		 * <p>The following example provides a custom last button name:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.customLastButtonName = "my-custom-last-button-name";</listing>
+		 *
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see http://wiki.starling-framework.org/feathers/custom-themes
 		 */
 		public function get customLastButtonName():String
 		{
@@ -549,6 +691,15 @@ package feathers.controls
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
+		 * <p>The following example sets some properties on all of the buttons:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.buttonProperties.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
+		 * group.buttonProperties.verticalAlign = Button.VERTICAL_ALIGN_TOP;</listing>
+		 *
+		 * @see #buttonFactory
+		 * @see #firstButtonFactory
+		 * @see #lastButtonFactory
 		 * @see feathers.controls.Button
 		 * @see feathers.core.DisplayListWatcher
 		 */
