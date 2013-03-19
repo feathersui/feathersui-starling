@@ -773,8 +773,8 @@ package feathers.themes
 
 		protected function pageIndicatorInitializer(pageIndicator:PageIndicator):void
 		{
-			pageIndicator.normalSymbolFactory = this.pageIndicatorNormalSymbolFactory;
-			pageIndicator.selectedSymbolFactory = this.pageIndicatorSelectedSymbolFactory;
+//			pageIndicator.normalSymbolFactory = this.pageIndicatorNormalSymbolFactory;
+//			pageIndicator.selectedSymbolFactory = this.pageIndicatorSelectedSymbolFactory;
 			pageIndicator.gap = 12 * this.scale;
 			pageIndicator.paddingTop = pageIndicator.paddingRight = pageIndicator.paddingBottom =
 				pageIndicator.paddingLeft = 12 * this.scale;
