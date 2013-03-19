@@ -79,6 +79,18 @@ package feathers.controls
 		 * grouped list, the theme will automatically fall back to using the
 		 * default grouped list skin.
 		 *
+		 * <p>An alternate name should always be added to a component's
+		 * <code>nameList</code> before the component is added to the stage for
+		 * the first time.</p>
+		 *
+		 * <p>In the following example, the inset style is applied to a grouped
+		 * list:</p>
+		 *
+		 * <listing version="3.0">
+		 * var list:GroupedList = new GroupedList();
+		 * list.nameList.add( GroupedList.ALTERNATE_NAME_INSET_GROUPED_LIST );
+		 * this.addChild( list );</listing>
+		 *
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const ALTERNATE_NAME_INSET_GROUPED_LIST:String = "feathers-inset-grouped-list";
@@ -92,7 +104,13 @@ package feathers.controls
 
 		/**
 		 * An alternate name to use with header renderers to give them an inset
-		 * style.
+		 * style. This name is usually only referenced inside themes.
+		 *
+		 * <p>In the following example, the inset style is applied to a grouped
+		 * list's header:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.headerRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_HEADER_RENDERER;</listing>
 		 *
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
@@ -107,13 +125,25 @@ package feathers.controls
 
 		/**
 		 * An alternate name to use with footer renderers to give them an inset
-		 * style.
+		 * style. This name is usually only referenced inside themes.
+		 *
+		 * <p>In the following example, the inset style is applied to a grouped
+		 * list's footer:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.footerRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_FOOTER_RENDERER;</listing>
 		 */
 		public static const ALTERNATE_CHILD_NAME_INSET_FOOTER_RENDERER:String = "feathers-grouped-list-inset-footer-renderer";
 
 		/**
 		 * An alternate name to use with item renderers to give them an inset
-		 * style.
+		 * style. This name is usually only referenced inside themes.
+		 *
+		 * <p>In the following example, the inset style is applied to a grouped
+		 * list's item renderer:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_ITEM_RENDERER;</listing>
 		 *
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
@@ -122,7 +152,13 @@ package feathers.controls
 		/**
 		 * An alternate name to use for item renderers to give them an inset
 		 * style. Typically meant to be used for the renderer of the first item
-		 * in a group.
+		 * in a group. This name is usually only referenced inside themes.
+		 *
+		 * <p>In the following example, the inset style is applied to a grouped
+		 * list's first item renderer:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.firstItemRendererRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_FIRST_ITEM_RENDERER;</listing>
 		 *
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
@@ -131,7 +167,13 @@ package feathers.controls
 		/**
 		 * An alternate name to use for item renderers to give them an inset
 		 * style. Typically meant to be used for the renderer of the last item
-		 * in a group.
+		 * in a group. This name is usually only referenced inside themes.
+		 *
+		 * <p>In the following example, the inset style is applied to a grouped
+		 * list's last item renderer:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.lastItemRendererRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_LAST_ITEM_RENDERER;</listing>
 		 *
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
@@ -140,7 +182,14 @@ package feathers.controls
 		/**
 		 * An alternate name to use for item renderers to give them an inset
 		 * style. Typically meant to be used for the renderer of an item in a
-		 * group that has no other items.
+		 * group that has no other items. This name is usually only referenced
+		 * inside themes.
+		 *
+		 * <p>In the following example, the inset style is applied to a grouped
+		 * list's single item renderer:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.singleItemRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_SINGLE_ITEM_RENDERER;</listing>
 		 *
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
@@ -148,41 +197,60 @@ package feathers.controls
 
 		/**
 		 * @copy feathers.controls.Scroller#SCROLL_POLICY_AUTO
+		 *
+		 * @see feathers.controls.Scroller#horizontalScrollPolicy
+		 * @see feathers.controls.Scroller#verticalScrollPolicy
 		 */
 		public static const SCROLL_POLICY_AUTO:String = "auto";
 
 		/**
 		 * @copy feathers.controls.Scroller#SCROLL_POLICY_ON
+		 *
+		 * @see feathers.controls.Scroller#horizontalScrollPolicy
+		 * @see feathers.controls.Scroller#verticalScrollPolicy
 		 */
 		public static const SCROLL_POLICY_ON:String = "on";
 
 		/**
 		 * @copy feathers.controls.Scroller#SCROLL_POLICY_OFF
+		 *
+		 * @see feathers.controls.Scroller#horizontalScrollPolicy
+		 * @see feathers.controls.Scroller#verticalScrollPolicy
 		 */
 		public static const SCROLL_POLICY_OFF:String = "off";
 
 		/**
 		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_FLOAT
+		 *
+		 * @see feathers.controls.Scroller#scrollBarDisplayMode
 		 */
 		public static const SCROLL_BAR_DISPLAY_MODE_FLOAT:String = "float";
 
 		/**
 		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_FIXED
+		 *
+		 * @see feathers.controls.Scroller#scrollBarDisplayMode
 		 */
 		public static const SCROLL_BAR_DISPLAY_MODE_FIXED:String = "fixed";
 
 		/**
 		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_NONE
+		 *
+		 * @see feathers.controls.Scroller#scrollBarDisplayMode
 		 */
 		public static const SCROLL_BAR_DISPLAY_MODE_NONE:String = "none";
 
 		/**
 		 * @copy feathers.controls.Scroller#INTERACTION_MODE_TOUCH
+		 *
+		 * @see feathers.controls.Scroller#interactionMode
 		 */
 		public static const INTERACTION_MODE_TOUCH:String = "touch";
 
 		/**
 		 * @copy feathers.controls.Scroller#INTERACTION_MODE_MOUSE
+		 *
+		 * @see feathers.controls.Scroller#interactionMode
 		 */
 		public static const INTERACTION_MODE_MOUSE:String = "mouse";
 
