@@ -15,7 +15,19 @@ package feathers.core
 	public interface IGroupedToggle extends IToggle
 	{
 		/**
-		 * The group that the toggle has been added to.
+		 * When the toggle is added to a <code>ToggleGroup</code>, the group
+		 * will manage the entire group's selection when one of the toggles in
+		 * the group changes.
+		 *
+		 * <p>In the following example, a <code>Radio</code> is added to a <code>ToggleGroup</code>:</p>
+		 *
+		 * <listing version="3.0">
+		 * var group:ToggleGroup = new ToggleGroup();
+		 * group.addEventListener( Event.CHANGE, group_changeHandler );
+		 *
+		 * var radio:Radio = new Radio();
+		 * radio.toggleGroup = group;
+		 * this.addChild( radio );</listing>
 		 */
 		function get toggleGroup():ToggleGroup;
 
