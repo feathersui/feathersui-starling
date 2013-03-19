@@ -84,6 +84,18 @@ package feathers.controls
 		 * a skin for the call-to-action button, the theme will automatically
 		 * fall back to using the default button skin.
 		 *
+		 * <p>An alternate name should always be added to a component's
+		 * <code>nameList</code> before the component is added to the stage for
+		 * the first time.</p>
+		 *
+		 * <p>In the following example, the call-to-action style is applied to
+		 * a button:</p>
+		 *
+		 * <listing version="3.0">
+		 * var button:Button = new Button();
+		 * button.nameList.add( Button.ALTERNATE_NAME_CALL_TO_ACTION_BUTTON );
+		 * this.addChild( button );</listing>
+		 *
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const ALTERNATE_NAME_CALL_TO_ACTION_BUTTON:String = "feathers-call-to-action-button";
@@ -93,6 +105,18 @@ package feathers.controls
 		 * a less prominent, "quiet" style. If a theme does not provide
 		 * a skin for the quiet button, the theme will automatically fall back
 		 * to using the default button skin.
+		 *
+		 * <p>An alternate name should always be added to a component's
+		 * <code>nameList</code> before the component is added to the stage for
+		 * the first time.</p>
+		 *
+		 * <p>In the following example, the quiet button style is applied to
+		 * a button:</p>
+		 *
+		 * <listing version="3.0">
+		 * var button:Button = new Button();
+		 * button.nameList.add( Button.ALTERNATE_NAME_QUIET_BUTTON );
+		 * this.addChild( button );</listing>
 		 *
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
@@ -106,6 +130,18 @@ package feathers.controls
 		 * a skin for the danger button, the theme will automatically fall back
 		 * to using the default button skin.
 		 *
+		 * <p>An alternate name should always be added to a component's
+		 * <code>nameList</code> before the component is added to the stage for
+		 * the first time.</p>
+		 *
+		 * <p>In the following example, the danger button style is applied to
+		 * a button:</p>
+		 *
+		 * <listing version="3.0">
+		 * var button:Button = new Button();
+		 * button.nameList.add( Button.ALTERNATE_NAME_DANGER_BUTTON );
+		 * this.addChild( button );</listing>
+		 *
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const ALTERNATE_NAME_DANGER_BUTTON:String = "feathers-danger-button";
@@ -115,6 +151,18 @@ package feathers.controls
 		 * a "back button" style, perhaps with an arrow pointing backward. If a
 		 * theme does not provide a skin for the back button, the theme will
 		 * automatically fall back to using the default button skin.
+		 *
+		 * <p>An alternate name should always be added to a component's
+		 * <code>nameList</code> before the component is added to the stage for
+		 * the first time.</p>
+		 *
+		 * <p>In the following example, the back button style is applied to
+		 * a button:</p>
+		 *
+		 * <listing version="3.0">
+		 * var button:Button = new Button();
+		 * button.nameList.add( Button.ALTERNATE_NAME_BACK_BUTTON );
+		 * this.addChild( button );</listing>
 		 *
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
@@ -126,27 +174,55 @@ package feathers.controls
 		 * a theme does not provide a skin for the forward button, the theme
 		 * will automatically fall back to using the default button skin.
 		 *
+		 * <p>An alternate name should always be added to a component's
+		 * <code>nameList</code> before the component is added to the stage for
+		 * the first time.</p>
+		 *
+		 * <p>In the following example, the forward button style is applied to
+		 * a button:</p>
+		 *
+		 * <listing version="3.0">
+		 * var button:Button = new Button();
+		 * button.nameList.add( Button.ALTERNATE_NAME_FORWARD_BUTTON );
+		 * this.addChild( button );</listing>
+		 *
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const ALTERNATE_NAME_FORWARD_BUTTON:String = "feathers-forward-button";
 		
 		/**
-		 * @private
+		 * Identifier for the button's up state. Can be used for styling purposes.
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
 		 */
 		public static const STATE_UP:String = "up";
 		
 		/**
-		 * @private
+		 * Identifier for the button's down state. Can be used for styling purposes.
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
 		 */
 		public static const STATE_DOWN:String = "down";
 
 		/**
-		 * @private
+		 * Identifier for the button's hover state. Can be used for styling purposes.
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
 		 */
 		public static const STATE_HOVER:String = "hover";
 		
 		/**
-		 * @private
+		 * Identifier for the button's disabled state. Can be used for styling purposes.
+		 *
+		 * @see #stateToSkinFunction
+		 * @see #stateToIconFunction
+		 * @see #stateToLabelPropertiesFunction
 		 */
 		public static const STATE_DISABLED:String = "disabled";
 		
