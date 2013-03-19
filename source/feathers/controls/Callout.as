@@ -364,8 +364,17 @@ package feathers.controls
 			const xPosition:Number = Math.max(stagePaddingLeft, Math.min(Starling.current.stage.stageWidth - HELPER_POINT.x - stagePaddingRight, idealXPosition));
 			callout.x = xPosition;
 			callout.y = globalOrigin.y + globalOrigin.height;
-			callout.arrowOffset = idealXPosition - xPosition;
-			callout.arrowPosition = ARROW_POSITION_TOP;
+			if(callout._isValidating)
+			{
+				//no need to invalidate and need to validate again next frame
+				callout._arrowOffset = idealXPosition - xPosition;
+				callout._arrowPosition = ARROW_POSITION_TOP;
+			}
+			else
+			{
+				callout.arrowOffset = idealXPosition - xPosition;
+				callout.arrowPosition = ARROW_POSITION_TOP;
+			}
 		}
 
 		/**
@@ -378,8 +387,17 @@ package feathers.controls
 			const xPosition:Number = Math.max(stagePaddingLeft, Math.min(Starling.current.stage.stageWidth - HELPER_POINT.x - stagePaddingRight, idealXPosition));
 			callout.x = xPosition;
 			callout.y = globalOrigin.y - HELPER_POINT.y;
-			callout.arrowOffset = idealXPosition - xPosition;
-			callout.arrowPosition = ARROW_POSITION_BOTTOM;
+			if(callout._isValidating)
+			{
+				//no need to invalidate and need to validate again next frame
+				callout._arrowOffset = idealXPosition - xPosition;
+				callout._arrowPosition = ARROW_POSITION_BOTTOM;
+			}
+			else
+			{
+				callout.arrowOffset = idealXPosition - xPosition;
+				callout.arrowPosition = ARROW_POSITION_BOTTOM;
+			}
 		}
 
 		/**
@@ -392,8 +410,17 @@ package feathers.controls
 			const idealYPosition:Number = globalOrigin.y + (globalOrigin.height - HELPER_POINT.y) / 2;
 			const yPosition:Number = Math.max(stagePaddingTop, Math.min(Starling.current.stage.stageHeight - HELPER_POINT.y - stagePaddingBottom, idealYPosition));
 			callout.y = yPosition;
-			callout.arrowOffset = idealYPosition - yPosition;
-			callout.arrowPosition = ARROW_POSITION_LEFT;
+			if(callout._isValidating)
+			{
+				//no need to invalidate and need to validate again next frame
+				callout._arrowOffset = idealYPosition - yPosition;
+				callout._arrowPosition = ARROW_POSITION_LEFT;
+			}
+			else
+			{
+				callout.arrowOffset = idealYPosition - yPosition;
+				callout.arrowPosition = ARROW_POSITION_LEFT;
+			}
 		}
 
 		/**
@@ -406,8 +433,17 @@ package feathers.controls
 			const idealYPosition:Number = globalOrigin.y + (globalOrigin.height - HELPER_POINT.y) / 2;
 			const yPosition:Number = Math.max(stagePaddingLeft, Math.min(Starling.current.stage.stageHeight - HELPER_POINT.y - stagePaddingBottom, idealYPosition));
 			callout.y = yPosition;
-			callout.arrowOffset = idealYPosition - yPosition;
-			callout.arrowPosition = ARROW_POSITION_RIGHT;
+			if(callout._isValidating)
+			{
+				//no need to invalidate and need to validate again next frame
+				callout._arrowOffset = idealYPosition - yPosition;
+				callout._arrowPosition = ARROW_POSITION_RIGHT;
+			}
+			else
+			{
+				callout.arrowOffset = idealYPosition - yPosition;
+				callout.arrowPosition = ARROW_POSITION_RIGHT;
+			}
 		}
 
 		/**
