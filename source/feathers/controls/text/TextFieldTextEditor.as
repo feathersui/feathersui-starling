@@ -665,11 +665,27 @@ package feathers.controls.text
 			}
 			if(this._isHTML)
 			{
-				this.textField.htmlText = this._text;
+				if(this.textField.htmlText != this._text)
+				{
+					if(this._pendingSelectionStartIndex < 0)
+					{
+						this._pendingSelectionStartIndex = this.textField.selectionBeginIndex;
+						this._pendingSelectionEndIndex = this.textField.selectionEndIndex;
+					}
+					this.textField.htmlText = this._text;
+				}
 			}
 			else
 			{
-				this.textField.text = this._text;
+				if(this.textField.text != this._text)
+				{
+					if(this._pendingSelectionStartIndex < 0)
+					{
+						this._pendingSelectionStartIndex = this.textField.selectionBeginIndex;
+						this._pendingSelectionEndIndex = this.textField.selectionEndIndex;
+					}
+					this.textField.text = this._text;
+				}
 			}
 		}
 
