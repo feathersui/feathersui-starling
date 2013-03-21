@@ -7,5 +7,6 @@ package feathers.examples.componentsExplorer.data
 		}
 
 		public var displayAsPassword:Boolean = false;
+		public var maxChars:int = 0;
 	}
 }
