@@ -2,6 +2,7 @@ package feathers.examples.componentsExplorer.screens
 {
 	import feathers.controls.Button;
 	import feathers.controls.List;
+	import feathers.controls.NumericStepper;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.ToggleSwitch;
 	import feathers.data.ListCollection;
@@ -27,6 +28,7 @@ package feathers.examples.componentsExplorer.screens
 		private var _list:List;
 		private var _backButton:Button;
 		private var _displayAsPasswordToggle:ToggleSwitch;
+		private var _maxCharsStepper:NumericStepper;
 
 		protected function initializeHandler(event:Event):void
 		{
@@ -36,11 +38,20 @@ package feathers.examples.componentsExplorer.screens
 			this._displayAsPasswordToggle.isSelected = this.settings.displayAsPassword;
 			this._displayAsPasswordToggle.addEventListener(Event.CHANGE, displayAsPasswordToggle_changeHandler);
 
+			this._maxCharsStepper = new NumericStepper();
+			this._maxCharsStepper.minimum = 0;
+			//this is completely arbitrary. maxChars may be larger.
+			this._maxCharsStepper.maximum = 99;
+			this._maxCharsStepper.step = 1;
+			this._maxCharsStepper.value = this.settings.maxChars;
+			this._maxCharsStepper.addEventListener(Event.CHANGE, maxCharsStepper_changeHandler);
+
 			this._list = new List();
 			this._list.isSelectable = false;
 			this._list.dataProvider = new ListCollection(
 			[
 				{ label: "displayAsPassword", accessory: this._displayAsPasswordToggle },
+				{ label: "maxChars", accessory: this._maxCharsStepper },
 			]);
 			this._list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
 			this.addChild(this._list);
@@ -67,6 +78,11 @@ package feathers.examples.componentsExplorer.screens
 		private function displayAsPasswordToggle_changeHandler(event:Event):void
 		{
 			this.settings.displayAsPassword = this._displayAsPasswordToggle.isSelected;
+		}
+
+		private function maxCharsStepper_changeHandler(event:Event):void
+		{
+			this.settings.maxChars = this._maxCharsStepper.value;
 		}
 
 		private function backButton_triggeredHandler(event:Event):void
