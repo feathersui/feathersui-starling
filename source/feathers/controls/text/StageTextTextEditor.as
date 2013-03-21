@@ -473,7 +473,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _maxChars:int = int.MAX_VALUE;
+		protected var _maxChars:int = 0;
 
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
