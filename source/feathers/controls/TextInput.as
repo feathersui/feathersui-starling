@@ -174,6 +174,85 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _maxChars:int = 0;
+
+		/**
+		 * The maximum number of characters that may be entered.
+		 */
+		public function get maxChars():int
+		{
+			return this._maxChars;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set maxChars(value:int):void
+		{
+			if(this._maxChars == value)
+			{
+				return;
+			}
+			this._maxChars = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _displayAsPassword:Boolean = false;
+
+		/**
+		 * Determines if the entered text will be masked so that it cannot be
+		 * seen, such as for a password input.
+		 */
+		public function get displayAsPassword():Boolean
+		{
+			return this._displayAsPassword;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _restrict:String;
+
+		/**
+		 * Limits the set of characters that may be entered.
+		 */
+		public function get restrict():String
+		{
+			return this._restrict;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set restrict(value:String):void
+		{
+			if(this._restrict == value)
+			{
+				return;
+			}
+			this._restrict = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		public function set displayAsPassword(value:Boolean):void
+		{
+			if(this._displayAsPassword == value)
+			{
+				return;
+			}
+			this._displayAsPassword = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _textEditorFactory:Function;
 
 		/**
@@ -745,6 +824,9 @@ package feathers.controls
 		 */
 		protected function refreshTextEditorProperties():void
 		{
+			this.textEditor.displayAsPassword = this._displayAsPassword;
+			this.textEditor.maxChars = this._maxChars;
+			this.textEditor.restrict = this._restrict;
 			const displayTextEditor:DisplayObject = DisplayObject(this.textEditor);
 			for(var propertyName:String in this._textEditorProperties)
 			{
