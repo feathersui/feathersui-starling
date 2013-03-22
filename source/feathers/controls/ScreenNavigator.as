@@ -532,7 +532,8 @@ package feathers.controls
 				return false;
 			}
 
-			if(this._activeScreen is IFeathersControl)
+			if(this._autoSizeMode == AUTO_SIZE_MODE_CONTENT &&
+				this._activeScreen is IFeathersControl)
 			{
 				IFeathersControl(this._activeScreen).validate();
 			}
