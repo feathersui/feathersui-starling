@@ -195,10 +195,8 @@ package feathers.controls.text
 
 		/**
 		 * @private
-		 * Stores the snapshot of the StageText to display when the StageText
-		 * isn't visible.
 		 */
-		protected var textSnapshotBitmapData:BitmapData;
+		protected var _textSnapshotBitmapData:BitmapData;
 
 		/**
 		 * @private
@@ -605,23 +603,7 @@ package feathers.controls.text
 		 */
 		override public function dispose():void
 		{
-			if(this.textSnapshotBitmapData)
-			{
-				this.textSnapshotBitmapData.dispose();
-				this.textSnapshotBitmapData = null;
-			}
-
-			if(this.stageText)
-			{
-				this.disposeStageText();
-			}
-
-			if(this._measureTextField)
-			{
-				Starling.current.nativeStage.removeChild(this._measureTextField);
-				this._measureTextField = null;
-			}
-
+			this.disposeContent();
 			super.dispose();
 		}
 
@@ -873,7 +855,7 @@ package feathers.controls.text
 					const hasText:Boolean = this._text.length > 0;
 					if(hasText)
 					{
-						this.refreshSnapshot(sizeInvalid || !this.textSnapshotBitmapData);
+						this.refreshSnapshot(sizeInvalid || !this._textSnapshotBitmapData);
 					}
 					if(this.textSnapshot)
 					{
@@ -978,25 +960,25 @@ package feathers.controls.text
 				{
 					return;
 				}
-				if(!this.textSnapshotBitmapData || this.textSnapshotBitmapData.width != viewPort.width || this.textSnapshotBitmapData.height != viewPort.height)
+				if(!this._textSnapshotBitmapData || this._textSnapshotBitmapData.width != viewPort.width || this._textSnapshotBitmapData.height != viewPort.height)
 				{
-					if(this.textSnapshotBitmapData)
+					if(this._textSnapshotBitmapData)
 					{
-						this.textSnapshotBitmapData.dispose();
+						this._textSnapshotBitmapData.dispose();
 					}
-					this.textSnapshotBitmapData = new BitmapData(viewPort.width, viewPort.height, true, 0x00ff00ff);
+					this._textSnapshotBitmapData = new BitmapData(viewPort.width, viewPort.height, true, 0x00ff00ff);
 				}
 			}
 
-			if(!this.textSnapshotBitmapData)
+			if(!this._textSnapshotBitmapData)
 			{
 				return;
 			}
-			this.textSnapshotBitmapData.fillRect(this.textSnapshotBitmapData.rect, 0x00ff00ff);
-			this.stageText.drawViewPortToBitmapData(this.textSnapshotBitmapData);
+			this._textSnapshotBitmapData.fillRect(this._textSnapshotBitmapData.rect, 0x00ff00ff);
+			this.stageText.drawViewPortToBitmapData(this._textSnapshotBitmapData);
 			if(!this.textSnapshot)
 			{
-				this.textSnapshot = new Image(starling.textures.Texture.fromBitmapData(this.textSnapshotBitmapData, false, false, Starling.contentScaleFactor));
+				this.textSnapshot = new Image(starling.textures.Texture.fromBitmapData(this._textSnapshotBitmapData, false, false, Starling.contentScaleFactor));
 				this.addChild(this.textSnapshot);
 			}
 			else
@@ -1004,7 +986,7 @@ package feathers.controls.text
 				if(needsNewBitmap)
 				{
 					this.textSnapshot.texture.dispose();
-					this.textSnapshot.texture = starling.textures.Texture.fromBitmapData(this.textSnapshotBitmapData, false, false, Starling.contentScaleFactor);
+					this.textSnapshot.texture = starling.textures.Texture.fromBitmapData(this._textSnapshotBitmapData, false, false, Starling.contentScaleFactor);
 					this.textSnapshot.readjustSize();
 				}
 				else
@@ -1014,9 +996,9 @@ package feathers.controls.text
 					const texture:starling.textures.Texture = this.textSnapshot.texture;
 					if(Starling.handleLostContext && texture is ConcreteTexture)
 					{
-						ConcreteTexture(texture).restoreOnLostContext(this.textSnapshotBitmapData);
+						ConcreteTexture(texture).restoreOnLostContext(this._textSnapshotBitmapData);
 					}
-					flash.display3D.textures.Texture(texture.base).uploadFromBitmapData(this.textSnapshotBitmapData);
+					flash.display3D.textures.Texture(texture.base).uploadFromBitmapData(this._textSnapshotBitmapData);
 				}
 			}
 
@@ -1061,16 +1043,40 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function disposeStageText():void
+		protected function disposeContent():void
 		{
-			this.stageText.removeEventListener(flash.events.Event.CHANGE, stageText_changeHandler);
-			this.stageText.removeEventListener(KeyboardEvent.KEY_DOWN, stageText_keyDownHandler);
-			this.stageText.removeEventListener(FocusEvent.FOCUS_IN, stageText_focusInHandler);
-			this.stageText.removeEventListener(FocusEvent.FOCUS_OUT, stageText_focusOutHandler);
-			this.stageText.removeEventListener(flash.events.Event.COMPLETE, stageText_completeHandler);
-			this.stageText.stage = null;
-			this.stageText.dispose();
-			this.stageText = null;
+			if(this._measureTextField)
+			{
+				Starling.current.nativeStage.removeChild(this._measureTextField);
+				this._measureTextField = null;
+			}
+
+			if(this.stageText)
+			{
+				this.stageText.removeEventListener(flash.events.Event.CHANGE, stageText_changeHandler);
+				this.stageText.removeEventListener(KeyboardEvent.KEY_DOWN, stageText_keyDownHandler);
+				this.stageText.removeEventListener(FocusEvent.FOCUS_IN, stageText_focusInHandler);
+				this.stageText.removeEventListener(FocusEvent.FOCUS_OUT, stageText_focusOutHandler);
+				this.stageText.removeEventListener(flash.events.Event.COMPLETE, stageText_completeHandler);
+				this.stageText.stage = null;
+				this.stageText.dispose();
+				this.stageText = null;
+			}
+
+			if(this._textSnapshotBitmapData)
+			{
+				this._textSnapshotBitmapData.dispose();
+				this._textSnapshotBitmapData = null;
+			}
+
+			if(this.textSnapshot)
+			{
+				//avoid the need to call dispose(). we'll create a new snapshot
+				//when the renderer is added to stage again.
+				this.textSnapshot.texture.dispose();
+				this.removeChild(this.textSnapshot, true);
+				this.textSnapshot = null;
+			}
 		}
 
 		/**
@@ -1124,10 +1130,7 @@ package feathers.controls.text
 		 */
 		protected function removedFromStageHandler(event:starling.events.Event):void
 		{
-			Starling.current.nativeStage.removeChild(this._measureTextField);
-			this._measureTextField = null;
-
-			this.disposeStageText();
+			this.disposeContent();
 		}
 
 		/**
