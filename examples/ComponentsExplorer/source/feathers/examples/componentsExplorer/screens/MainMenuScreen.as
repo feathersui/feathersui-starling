@@ -21,6 +21,7 @@ package feathers.examples.componentsExplorer.screens
 	[Event(name="showButtonGroup",type="starling.events.Event")]
 	[Event(name="showCallout",type="starling.events.Event")]
 	[Event(name="showGroupedList",type="starling.events.Event")]
+	[Event(name="showItemRenderer",type="starling.events.Event")]
 	[Event(name="showList",type="starling.events.Event")]
 	[Event(name="showNumericStepper",type="starling.events.Event")]
 	[Event(name="showPageIndicator",type="starling.events.Event")]
@@ -38,6 +39,7 @@ package feathers.examples.componentsExplorer.screens
 		public static const SHOW_BUTTON_GROUP:String = "showButtonGroup";
 		public static const SHOW_CALLOUT:String = "showCallout";
 		public static const SHOW_GROUPED_LIST:String = "showGroupedList";
+		public static const SHOW_ITEM_RENDERER:String = "showItemRenderer";
 		public static const SHOW_LIST:String = "showList";
 		public static const SHOW_NUMERIC_STEPPER:String = "showNumericStepper";
 		public static const SHOW_PAGE_INDICATOR:String = "showPageIndicator";
@@ -70,6 +72,7 @@ package feathers.examples.componentsExplorer.screens
 				{ label: "Button Group", event: SHOW_BUTTON_GROUP },
 				{ label: "Callout", event: SHOW_CALLOUT },
 				{ label: "Grouped List", event: SHOW_GROUPED_LIST },
+				{ label: "Item Renderer", event: SHOW_ITEM_RENDERER },
 				{ label: "List", event: SHOW_LIST },
 				{ label: "Numeric Stepper", event: SHOW_NUMERIC_STEPPER },
 				{ label: "Page Indicator", event: SHOW_PAGE_INDICATOR },
