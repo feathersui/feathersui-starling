@@ -89,6 +89,7 @@ package feathers.controls.text
 		public function TextFieldTextEditor()
 		{
 			this.isQuickHitAreaEnabled = true;
+			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 		}
 
@@ -408,10 +409,7 @@ package feathers.controls.text
 		 */
 		override public function dispose():void
 		{
-			if(this.textField.parent)
-			{
-				Starling.current.nativeStage.removeChild(this.textField);
-			}
+			this.disposeSnapshot();
 			super.dispose();
 		}
 
@@ -793,15 +791,44 @@ package feathers.controls.text
 			this._needsNewBitmap = false;
 		}
 
+		protected function disposeSnapshot():void
+		{
+			if(this._textSnapshotBitmapData)
+			{
+				this._textSnapshotBitmapData.dispose();
+				this._textSnapshotBitmapData = null;
+			}
+
+			if(this.textSnapshot)
+			{
+				//avoid the need to call dispose(). we'll create a new snapshot
+				//when the renderer is added to stage again.
+				this.textSnapshot.texture.dispose();
+				this.removeChild(this.textSnapshot, true);
+				this.textSnapshot = null;
+			}
+
+			if(this.textField.parent)
+			{
+				Starling.current.nativeStage.removeChild(this.textField);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function addedToStageHandler(event:Event):void
+		{
+			//we need to invalidate in order to get a fresh snapshot
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
 		/**
 		 * @private
 		 */
 		protected function removedFromStageHandler(event:Event):void
 		{
-			if(this.textField.parent)
-			{
-				Starling.current.nativeStage.removeChild(this.textField);
-			}
+			this.disposeSnapshot();
 		}
 
 		/**
