@@ -409,7 +409,7 @@ package feathers.controls.text
 		 */
 		override public function dispose():void
 		{
-			this.disposeSnapshot();
+			this.disposeContent();
 			super.dispose();
 		}
 
@@ -791,7 +791,10 @@ package feathers.controls.text
 			this._needsNewBitmap = false;
 		}
 
-		protected function disposeSnapshot():void
+		/**
+		 * @private
+		 */
+		protected function disposeContent():void
 		{
 			if(this._textSnapshotBitmapData)
 			{
@@ -828,7 +831,7 @@ package feathers.controls.text
 		 */
 		protected function removedFromStageHandler(event:Event):void
 		{
-			this.disposeSnapshot();
+			this.disposeContent();
 		}
 
 		/**
