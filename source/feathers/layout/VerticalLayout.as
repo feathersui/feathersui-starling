@@ -16,7 +16,10 @@ package feathers.layout
 	import starling.events.EventDispatcher;
 
 	/**
-	 * @inheritDoc
+	 * Dispatched when a property of the layout changes, indicating that a
+	 * redraw is probably needed.
+	 *
+	 * @eventType starling.events.Event.CHANGE
 	 */
 	[Event(name="change",type="starling.events.Event")]
 
