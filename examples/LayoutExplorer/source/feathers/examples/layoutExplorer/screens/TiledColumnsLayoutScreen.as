@@ -53,9 +53,16 @@ package feathers.examples.layoutExplorer.screens
 			this._container.snapToPages = this.settings.paging != TiledColumnsLayout.PAGING_NONE;
 			this._container.snapScrollPositionsToPixels = true;
 			this.addChild(this._container);
+			const isTablet:Boolean = DeviceCapabilities.isTablet(Starling.current.nativeStage);
 			for(var i:int = 0; i < this.settings.itemCount; i++)
 			{
 				var size:Number = (44 + 88 * Math.random()) * this.dpiScale;
+				if(isTablet)
+				{
+					//bigger for tablets, just because there's so much more room
+					//and this demo should include scrolling
+					size *= 1.5;
+				}
 				var quad:Quad = new Quad(size, size, 0xff8800);
 				this._container.addChild(quad);
 			}
