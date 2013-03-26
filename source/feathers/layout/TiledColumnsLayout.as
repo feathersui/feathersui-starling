@@ -510,6 +510,12 @@ package feathers.layout
 		}
 
 		/**
+		 * Determines if items will be set invisible if they are outside the
+		 * view port.
+		 */
+		public var manageVisibility:Boolean = true;
+
+		/**
 		 * @private
 		 */
 		protected var _useVirtualLayout:Boolean = true;
@@ -590,6 +596,8 @@ package feathers.layout
 		 */
 		public function layout(items:Vector.<DisplayObject>, viewPortBounds:ViewPortBounds = null, result:LayoutBoundsResult = null):LayoutBoundsResult
 		{
+			const scrollX:Number = viewPortBounds.scrollX;
+			const scrollY:Number = viewPortBounds.scrollY;
 			const boundsX:Number = viewPortBounds ? viewPortBounds.x : 0;
 			const boundsY:Number = viewPortBounds ? viewPortBounds.y : 0;
 			const minWidth:Number = viewPortBounds ? viewPortBounds.minWidth : 0;
@@ -820,6 +828,16 @@ package feathers.layout
 				discoveredItemsLastIndex = discoveredItems.length - 1;
 				this.applyHorizontalAlign(discoveredItems, 0, discoveredItemsLastIndex, totalWidth, availableWidth);
 				this.applyVerticalAlign(discoveredItems, 0, discoveredItemsLastIndex, totalHeight, availableHeight);
+			}
+			if(this.manageVisibility)
+			{
+				//the discoveredItemsLastIndex will be saved from above and will
+				//still work here
+				for(i = 0; i <= discoveredItemsLastIndex; i++)
+				{
+					item = discoveredItems[i];
+					item.visible = ((item.x + item.width) >= (boundsX + scrollX)) && (item.x < (scrollX + availableWidth));
+				}
 			}
 			this._discoveredItemsCache.length = 0;
 
