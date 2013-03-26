@@ -346,6 +346,12 @@ package feathers.layout
 		}
 
 		/**
+		 * Determines if items will be set invisible if they are outside the
+		 * view port.
+		 */
+		public var manageVisibility:Boolean = true;
+
+		/**
 		 * @private
 		 */
 		protected var _beforeVirtualizedItemCount:int = 0;
@@ -475,6 +481,8 @@ package feathers.layout
 		 */
 		public function layout(items:Vector.<DisplayObject>, suggestedBounds:ViewPortBounds = null, result:LayoutBoundsResult = null):LayoutBoundsResult
 		{
+			const scrollX:Number = suggestedBounds.scrollX;
+			const scrollY:Number = suggestedBounds.scrollY;
 			const boundsX:Number = suggestedBounds ? suggestedBounds.x : 0;
 			const boundsY:Number = suggestedBounds ? suggestedBounds.y : 0;
 			const minWidth:Number = suggestedBounds ? suggestedBounds.minWidth : 0;
@@ -553,9 +561,34 @@ package feathers.layout
 			}
 
 			const discoveredItems:Vector.<DisplayObject> = this._useVirtualLayout ? this._discoveredItemsCache : items;
+			const discoveredItemCount:int = discoveredItems.length;
+
 			const totalHeight:Number = maxItemHeight + this._paddingTop + this._paddingBottom;
 			const availableHeight:Number = isNaN(explicitHeight) ? Math.min(maxHeight, Math.max(minHeight, totalHeight)) : explicitHeight;
-			const discoveredItemCount:int = discoveredItems.length;
+			const totalWidth:Number = positionX - this._gap + this._paddingRight - boundsX;
+			const availableWidth:Number = isNaN(explicitWidth) ? Math.min(maxWidth, Math.max(minWidth, totalWidth)) : explicitWidth;
+
+			if(totalWidth < availableWidth)
+			{
+				var horizontalAlignOffsetX:Number = 0;
+				if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
+				{
+					horizontalAlignOffsetX = availableWidth - totalWidth;
+				}
+				else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
+				{
+					horizontalAlignOffsetX = (availableWidth - totalWidth) / 2;
+				}
+				if(horizontalAlignOffsetX != 0)
+				{
+					for(i = 0; i < discoveredItemCount; i++)
+					{
+						item = discoveredItems[i];
+						item.x += horizontalAlignOffsetX;
+					}
+				}
+			}
+
 			for(i = 0; i < discoveredItemCount; i++)
 			{
 				item = discoveredItems[i];
@@ -582,28 +615,9 @@ package feathers.layout
 						item.y = boundsY + this._paddingTop;
 					}
 				}
-			}
-
-			const totalWidth:Number = positionX - this._gap + this._paddingRight - boundsX;
-			const availableWidth:Number = isNaN(explicitWidth) ? Math.min(maxWidth, Math.max(minWidth, totalWidth)) : explicitWidth;
-			if(totalWidth < availableWidth)
-			{
-				var horizontalAlignOffsetX:Number = 0;
-				if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
+				if(this.manageVisibility)
 				{
-					horizontalAlignOffsetX = availableWidth - totalWidth;
-				}
-				else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
-				{
-					horizontalAlignOffsetX = (availableWidth - totalWidth) / 2;
-				}
-				if(horizontalAlignOffsetX != 0)
-				{
-					for(i = 0; i < discoveredItemCount; i++)
-					{
-						item = discoveredItems[i];
-						item.x += horizontalAlignOffsetX;
-					}
+					item.visible = ((item.x + item.width) >= (boundsX + scrollX)) && (item.x < (scrollX + availableWidth));
 				}
 			}
 			this._discoveredItemsCache.length = 0;
