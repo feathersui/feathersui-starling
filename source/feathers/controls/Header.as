@@ -262,7 +262,7 @@ package feathers.controls
 			this._leftItems = value;
 			if(this._leftItems)
 			{
-				for each(var item:DisplayObject in this._leftItems)
+				for each(item in this._leftItems)
 				{
 					if(item is IFeathersControl)
 					{
@@ -310,7 +310,7 @@ package feathers.controls
 			this._rightItems = value;
 			if(this._rightItems)
 			{
-				for each(var item:DisplayObject in this._rightItems)
+				for each(item in this._rightItems)
 				{
 					if(item is IFeathersControl)
 					{
