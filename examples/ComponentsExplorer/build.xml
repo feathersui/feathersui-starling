@@ -58,6 +58,8 @@
 		<exec executable="${adt}" dir="${basedir}" failonerror="true">
 			<arg line="-package"/>
 			<arg line="-target ipa-app-store"/>
+			<!-- uncomment for actionscript sampling with scout on ios -->
+			<!--<arg line="-sampler"/>-->
 			<arg line="-provisioning-profile ${ios.provision.path}"/>
 			<arg line="-keystore ${ios.certificate.path}"/>
 			<arg line="-storetype pkcs12"/>
