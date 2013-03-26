@@ -1615,6 +1615,7 @@ package feathers.controls.renderers
 
 			if(this.accessory)
 			{
+				this.accessory.removeEventListener(FeathersEventType.RESIZE, accessory_resizeHandler);
 				this.accessory.removeEventListener(TouchEvent.TOUCH, accessory_touchHandler);
 
 				//the accessory may have come from outside of this class. it's
@@ -1645,9 +1646,13 @@ package feathers.controls.renderers
 
 			if(this.accessory)
 			{
-				if(this.accessory is IFeathersControl && !(this.accessory is BitmapFontTextRenderer))
+				if(this.accessory is IFeathersControl)
 				{
-					this.accessory.addEventListener(TouchEvent.TOUCH, accessory_touchHandler);
+					if(!(this.accessory is BitmapFontTextRenderer))
+					{
+						this.accessory.addEventListener(TouchEvent.TOUCH, accessory_touchHandler);
+					}
+					this.accessory.addEventListener(FeathersEventType.RESIZE, accessory_resizeHandler);
 				}
 				this.addChild(this.accessory);
 			}
@@ -2042,6 +2047,14 @@ package feathers.controls.renderers
 				return;
 			}
 			event.stopPropagation();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function accessory_resizeHandler(event:Event):void
+		{
+			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
 		/**
