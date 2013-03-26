@@ -253,9 +253,8 @@ package feathers.controls
 				{
 					if(item is IFeathersControl)
 					{
-						var uiItem:IFeathersControl = IFeathersControl(item);
-						uiItem.nameList.remove(this.itemName);
-						uiItem.removeEventListener(FeathersEventType.RESIZE, item_resizeHandler);
+						IFeathersControl(item).nameList.remove(this.itemName);
+						item.removeEventListener(FeathersEventType.RESIZE, item_resizeHandler);
 					}
 					item.removeFromParent();
 				}
@@ -267,8 +266,7 @@ package feathers.controls
 				{
 					if(item is IFeathersControl)
 					{
-						uiItem = IFeathersControl(item);
-						uiItem.addEventListener(FeathersEventType.RESIZE, item_resizeHandler);
+						item.addEventListener(FeathersEventType.RESIZE, item_resizeHandler);
 					}
 				}
 			}
@@ -303,9 +301,8 @@ package feathers.controls
 				{
 					if(item is IFeathersControl)
 					{
-						var uiItem:IFeathersControl = IFeathersControl(item);
-						uiItem.nameList.remove(this.itemName);
-						uiItem.removeEventListener(FeathersEventType.RESIZE, item_resizeHandler);
+						IFeathersControl(item).nameList.remove(this.itemName);
+						item.removeEventListener(FeathersEventType.RESIZE, item_resizeHandler);
 					}
 					item.removeFromParent();
 				}
@@ -317,8 +314,7 @@ package feathers.controls
 				{
 					if(item is IFeathersControl)
 					{
-						uiItem = IFeathersControl(item);
-						uiItem.addEventListener(FeathersEventType.RESIZE, item_resizeHandler);
+						item.addEventListener(FeathersEventType.RESIZE, item_resizeHandler);
 					}
 				}
 			}
