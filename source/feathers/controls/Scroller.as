@@ -1725,6 +1725,16 @@ package feathers.controls
 		 * The duration of the pending scroll action.
 		 */
 		protected var pendingScrollDuration:Number;
+
+		/**
+		 * @private
+		 */
+		override public function dispose():void
+		{
+			Starling.current.nativeStage.removeEventListener(MouseEvent.MOUSE_WHEEL, nativeStage_mouseWheelHandler);
+			Starling.current.nativeStage.removeEventListener("orientationChange", nativeStage_orientationChangeHandler);
+			super.dispose();
+		}
 		
 		/**
 		 * If the user is scrolling with touch or if the scrolling is animated,
