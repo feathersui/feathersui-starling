@@ -11,6 +11,7 @@ package feathers.controls
 	import feathers.core.IFeathersControl;
 	import feathers.core.ITextRenderer;
 	import feathers.core.PropertyProxy;
+	import feathers.events.FeathersEventType;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.LayoutBoundsResult;
 	import feathers.layout.ViewPortBounds;
@@ -18,6 +19,7 @@ package feathers.controls
 	import flash.geom.Point;
 
 	import starling.display.DisplayObject;
+	import starling.events.Event;
 
 	/**
 	 * A header that displays an optional title along with a horizontal regions
@@ -251,12 +253,25 @@ package feathers.controls
 				{
 					if(item is IFeathersControl)
 					{
-						IFeathersControl(item).nameList.remove(this.itemName);
+						var uiItem:IFeathersControl = IFeathersControl(item);
+						uiItem.nameList.remove(this.itemName);
+						uiItem.removeEventListener(FeathersEventType.RESIZE, item_resizeHandler);
 					}
 					item.removeFromParent();
 				}
 			}
 			this._leftItems = value;
+			if(this._leftItems)
+			{
+				for each(var item:DisplayObject in this._leftItems)
+				{
+					if(item is IFeathersControl)
+					{
+						uiItem = IFeathersControl(item);
+						uiItem.addEventListener(FeathersEventType.RESIZE, item_resizeHandler);
+					}
+				}
+			}
 			this.invalidate(INVALIDATION_FLAG_LEFT_CONTENT);
 		}
 
@@ -288,12 +303,25 @@ package feathers.controls
 				{
 					if(item is IFeathersControl)
 					{
-						IFeathersControl(item).nameList.remove(this.itemName);
+						var uiItem:IFeathersControl = IFeathersControl(item);
+						uiItem.nameList.remove(this.itemName);
+						uiItem.removeEventListener(FeathersEventType.RESIZE, item_resizeHandler);
 					}
 					item.removeFromParent();
 				}
 			}
 			this._rightItems = value;
+			if(this._rightItems)
+			{
+				for each(var item:DisplayObject in this._rightItems)
+				{
+					if(item is IFeathersControl)
+					{
+						uiItem = IFeathersControl(item);
+						uiItem.addEventListener(FeathersEventType.RESIZE, item_resizeHandler);
+					}
+				}
+			}
 			this.invalidate(INVALIDATION_FLAG_RIGHT_CONTENT);
 		}
 
@@ -1106,6 +1134,14 @@ package feathers.controls
 		protected function titleProperties_onChange(proxy:PropertyProxy, propertyName:String):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function item_resizeHandler(event:Event):void
+		{
+			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 	}
 }
