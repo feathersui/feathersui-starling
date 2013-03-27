@@ -481,8 +481,8 @@ package feathers.layout
 		 */
 		public function layout(items:Vector.<DisplayObject>, suggestedBounds:ViewPortBounds = null, result:LayoutBoundsResult = null):LayoutBoundsResult
 		{
-			const scrollX:Number = suggestedBounds.scrollX;
-			const scrollY:Number = suggestedBounds.scrollY;
+			const scrollX:Number = suggestedBounds ? suggestedBounds.scrollX : 0;
+			const scrollY:Number = suggestedBounds ? suggestedBounds.scrollY : 0;
 			const boundsX:Number = suggestedBounds ? suggestedBounds.x : 0;
 			const boundsY:Number = suggestedBounds ? suggestedBounds.y : 0;
 			const minWidth:Number = suggestedBounds ? suggestedBounds.minWidth : 0;
