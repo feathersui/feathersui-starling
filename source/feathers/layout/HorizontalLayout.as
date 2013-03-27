@@ -479,18 +479,18 @@ package feathers.layout
 		/**
 		 * @inheritDoc
 		 */
-		public function layout(items:Vector.<DisplayObject>, suggestedBounds:ViewPortBounds = null, result:LayoutBoundsResult = null):LayoutBoundsResult
+		public function layout(items:Vector.<DisplayObject>, viewPortBounds:ViewPortBounds = null, result:LayoutBoundsResult = null):LayoutBoundsResult
 		{
-			const scrollX:Number = suggestedBounds ? suggestedBounds.scrollX : 0;
-			const scrollY:Number = suggestedBounds ? suggestedBounds.scrollY : 0;
-			const boundsX:Number = suggestedBounds ? suggestedBounds.x : 0;
-			const boundsY:Number = suggestedBounds ? suggestedBounds.y : 0;
-			const minWidth:Number = suggestedBounds ? suggestedBounds.minWidth : 0;
-			const minHeight:Number = suggestedBounds ? suggestedBounds.minHeight : 0;
-			const maxWidth:Number = suggestedBounds ? suggestedBounds.maxWidth : Number.POSITIVE_INFINITY;
-			const maxHeight:Number = suggestedBounds ? suggestedBounds.maxHeight : Number.POSITIVE_INFINITY;
-			const explicitWidth:Number = suggestedBounds ? suggestedBounds.explicitWidth : NaN;
-			const explicitHeight:Number = suggestedBounds ? suggestedBounds.explicitHeight : NaN;
+			const scrollX:Number = viewPortBounds ? viewPortBounds.scrollX : 0;
+			const scrollY:Number = viewPortBounds ? viewPortBounds.scrollY : 0;
+			const boundsX:Number = viewPortBounds ? viewPortBounds.x : 0;
+			const boundsY:Number = viewPortBounds ? viewPortBounds.y : 0;
+			const minWidth:Number = viewPortBounds ? viewPortBounds.minWidth : 0;
+			const minHeight:Number = viewPortBounds ? viewPortBounds.minHeight : 0;
+			const maxWidth:Number = viewPortBounds ? viewPortBounds.maxWidth : Number.POSITIVE_INFINITY;
+			const maxHeight:Number = viewPortBounds ? viewPortBounds.maxHeight : Number.POSITIVE_INFINITY;
+			const explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
+			const explicitHeight:Number = viewPortBounds ? viewPortBounds.explicitHeight : NaN;
 
 			if(!this._useVirtualLayout || this._hasVariableItemDimensions ||
 				this._verticalAlign != VERTICAL_ALIGN_JUSTIFY || isNaN(explicitHeight))
