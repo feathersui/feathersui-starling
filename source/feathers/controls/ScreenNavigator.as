@@ -261,6 +261,8 @@ package feathers.controls
 			{
 				this.clearScreenInternal(false);
 			}
+			
+			this._transitionIsActive = true;
 
 			const item:ScreenNavigatorItem = ScreenNavigatorItem(this._screens[id]);
 			this._activeScreen = item.getScreen();
@@ -321,7 +323,6 @@ package feathers.controls
 				VALIDATION_QUEUE.advanceTime(0);
 			}
 
-			this._transitionIsActive = true;
 			this.dispatchEventWith(FeathersEventType.TRANSITION_START);
 			this.transition(this._previousScreenInTransition, this._activeScreen, transitionComplete);
 
