@@ -13,7 +13,10 @@ package feathers.controls
 	import starling.display.DisplayObject;
 
 	/**
-	 * A container with a header and layout.
+	 * A container with layout, optional scrolling, a header, and an optional
+	 * footer.
+	 *
+	 * @see http://wiki.starling-framework.org/feathers/panel
 	 */
 	public class Panel extends ScrollContainer
 	{
@@ -23,6 +26,13 @@ package feathers.controls
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		public static const DEFAULT_CHILD_NAME_HEADER:String = "feathers-panel-header";
+
+		/**
+		 * The default value added to the <code>nameList</code> of the footer.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
+		 */
+		public static const DEFAULT_CHILD_NAME_FOOTER:String = "feathers-panel-footer";
 
 		/**
 		 * @copy feathers.controls.Scroller#SCROLL_POLICY_AUTO
@@ -72,6 +82,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected static const INVALIDATION_FLAG_FOOTER_FACTORY:String = "footerFactory";
+
+		/**
+		 * @private
+		 */
 		protected static function defaultHeaderFactory():IFeathersControl
 		{
 			return new Header();
@@ -91,11 +106,23 @@ package feathers.controls
 		protected var header:IFeathersControl;
 
 		/**
+		 * The footer sub-component.
+		 */
+		protected var footer:IFeathersControl;
+
+		/**
 		 * The default value added to the <code>nameList</code> of the header.
 		 *
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var headerName:String = DEFAULT_CHILD_NAME_HEADER;
+
+		/**
+		 * The default value added to the <code>nameList</code> of the footer.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
+		 */
+		protected var footerName:String = DEFAULT_CHILD_NAME_FOOTER;
 
 		/**
 		 * @private
@@ -236,9 +263,144 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _footerFactory:Function;
+
+		/**
+		 * A function used to generate the panel's footer sub-component.
+		 * This can be used to change properties on the footer when it is first
+		 * created. For instance, if you are skinning Feathers components
+		 * without a theme, you might use <code>footerFactory</code> to set
+		 * skins and text styles on the footer.
+		 *
+		 * <p>The function should have the following signature:</p>
+		 * <pre>function():IFeathersControl</pre>
+		 *
+		 * @see #footerProperties
+		 */
+		public function get footerFactory():Function
+		{
+			return this._footerFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set footerFactory(value:Function):void
+		{
+			if(this._footerFactory == value)
+			{
+				return;
+			}
+			this._footerFactory = value;
+			this.invalidate(INVALIDATION_FLAG_FOOTER_FACTORY);
+			//hack because the super class doesn't know anything about the
+			//header factory
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _customFooterName:String;
+
+		/**
+		 * A name to add to the panel's footer sub-component. Typically
+		 * used by a theme to provide different skins to different panels.
+		 *
+		 * @see #DEFAULT_CHILD_NAME_FOOTER
+		 * @see feathers.core.FeathersControl#nameList
+		 * @see #footerFactory
+		 * @see #footerProperties
+		 */
+		public function get customFooterName():String
+		{
+			return this._customFooterName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customFooterName(value:String):void
+		{
+			if(this._customFooterName == value)
+			{
+				return;
+			}
+			this._customFooterName = value;
+			this.invalidate(INVALIDATION_FLAG_FOOTER_FACTORY);
+			//hack because the super class doesn't know anything about the
+			//header factory
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _footerProperties:PropertyProxy;
+
+		/**
+		 * A set of key/value pairs to be passed down to the container's
+		 * footer sub-component. The footer may be any
+		 * <code>feathers.core.IFeathersControl</code> instance, but there is no
+		 * default.
+		 *
+		 * <p>If the subcomponent has its own subcomponents, their properties
+		 * can be set too, using attribute <code>&#64;</code> notation. For example,
+		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
+		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
+		 * you can use the following syntax:</p>
+		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 */
+		public function get footerProperties():Object
+		{
+			if(!this._footerProperties)
+			{
+				this._footerProperties = new PropertyProxy(childProperties_onChange);
+			}
+			return this._footerProperties;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set footerProperties(value:Object):void
+		{
+			if(this._footerProperties == value)
+			{
+				return;
+			}
+			if(!value)
+			{
+				value = new PropertyProxy();
+			}
+			if(!(value is PropertyProxy))
+			{
+				const newValue:PropertyProxy = new PropertyProxy();
+				for(var propertyName:String in value)
+				{
+					newValue[propertyName] = value[propertyName];
+				}
+				value = newValue;
+			}
+			if(this._footerProperties)
+			{
+				this._footerProperties.removeOnChangeCallback(childProperties_onChange);
+			}
+			this._footerProperties = PropertyProxy(value);
+			if(this._footerProperties)
+			{
+				this._footerProperties.addOnChangeCallback(childProperties_onChange);
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function draw():void
 		{
 			const headerFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_HEADER_FACTORY);
+			const footerFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_FOOTER_FACTORY);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 
 			if(headerFactoryInvalid)
@@ -246,9 +408,19 @@ package feathers.controls
 				this.createHeader();
 			}
 
+			if(footerFactoryInvalid)
+			{
+				this.createFooter();
+			}
+
 			if(headerFactoryInvalid || stylesInvalid)
 			{
 				this.refreshHeaderStyles();
+			}
+
+			if(footerFactoryInvalid || stylesInvalid)
+			{
+				this.refreshFooterStyles();
 			}
 
 			super.draw();
@@ -273,11 +445,25 @@ package feathers.controls
 			this.header.height = NaN;
 			this.header.validate();
 
+			if(this.footer)
+			{
+				const oldFooterWidth:Number = this.footer.width;
+				const oldFooterHeight:Number = this.footer.height;
+				this.footer.width = this.explicitWidth;
+				this.footer.maxWidth = this._maxWidth;
+				this.footer.height = NaN;
+				this.footer.validate();
+			}
+
 			var newWidth:Number = this.explicitWidth;
 			var newHeight:Number = this.explicitHeight;
 			if(needsWidth)
 			{
 				newWidth = Math.max(this.header.width, this._viewPort.width + this._rightViewPortOffset + this._leftViewPortOffset);
+				if(this.footer)
+				{
+					newWidth = Math.max(newWidth, this.footer.width);
+				}
 				if(!isNaN(this.originalBackgroundWidth))
 				{
 					newWidth = Math.max(newWidth, this.originalBackgroundWidth);
@@ -286,6 +472,10 @@ package feathers.controls
 			if(needsHeight)
 			{
 				newHeight = this.header.height + this._viewPort.height + this._bottomViewPortOffset + this._topViewPortOffset;
+				if(this.footer)
+				{
+					newHeight += this.footer.height;
+				}
 				if(!isNaN(this.originalBackgroundHeight))
 				{
 					newHeight = Math.max(newHeight, this.originalBackgroundHeight);
@@ -294,6 +484,11 @@ package feathers.controls
 
 			this.header.width = oldHeaderWidth;
 			this.header.height = oldHeaderHeight;
+			if(this.footer)
+			{
+				this.footer.width = oldFooterWidth;
+				this.footer.height = oldFooterHeight;
+			}
 
 			return this.setSizeInternal(newWidth, newHeight, false);
 		}
@@ -322,6 +517,30 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function createFooter():void
+		{
+			const oldDisplayListBypassEnabled:Boolean = this.displayListBypassEnabled;
+			this.displayListBypassEnabled = false;
+			if(this.footer)
+			{
+				this.removeChild(DisplayObject(this.footer), true);
+				this.footer = null;
+			}
+
+			if(this._footerFactory == null)
+			{
+				return;
+			}
+			const footerName:String = this._customFooterName != null ? this._customFooterName : this.footerName;
+			this.footer = IFeathersControl(this._footerFactory());
+			this.footer.nameList.add(footerName);
+			this.addChild(DisplayObject(this.footer));
+			this.displayListBypassEnabled = oldDisplayListBypassEnabled;
+		}
+
+		/**
+		 * @private
+		 */
 		protected function refreshHeaderStyles():void
 		{
 			const headerAsObject:Object = this.header;
@@ -331,6 +550,22 @@ package feathers.controls
 				{
 					var propertyValue:Object = this._headerProperties[propertyName];
 					this.header[propertyName] = propertyValue;
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshFooterStyles():void
+		{
+			const footerAsObject:Object = this.footer;
+			for(var propertyName:String in this._footerProperties)
+			{
+				if(footerAsObject.hasOwnProperty(propertyName))
+				{
+					var propertyValue:Object = this._footerProperties[propertyName];
+					this.footer[propertyName] = propertyValue;
 				}
 			}
 		}
@@ -349,9 +584,21 @@ package feathers.controls
 			this.header.height = NaN;
 			this.header.validate();
 			this._topViewPortOffset += this.header.height;
-
 			this.header.width = oldHeaderWidth;
 			this.header.height = oldHeaderHeight;
+
+			if(this.footer)
+			{
+				const oldFooterWidth:Number = this.footer.width;
+				const oldFooterHeight:Number = this.footer.height;
+				this.footer.width = this.explicitWidth;
+				this.footer.maxWidth = this._maxWidth;
+				this.footer.height = NaN;
+				this.footer.validate();
+				this._bottomViewPortOffset += this.footer.height;
+				this.footer.width = oldFooterWidth;
+				this.footer.height = oldFooterHeight;
+			}
 		}
 
 		/**
@@ -364,6 +611,14 @@ package feathers.controls
 			this.header.width = this.actualWidth;
 			this.header.height = NaN;
 			this.header.validate();
+
+			if(this.footer)
+			{
+				this.footer.width = this.actualWidth;
+				this.footer.height = NaN;
+				this.footer.validate();
+				this.footer.y = this.actualHeight - this.footer.height;
+			}
 		}
 	}
 }
