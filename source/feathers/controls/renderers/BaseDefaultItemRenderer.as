@@ -1748,7 +1748,7 @@ package feathers.controls.renderers
 				this.positionSingleChild(labelRenderer);
 				if(this._layoutOrder == LAYOUT_ORDER_LABEL_ACCESSORY_ICON)
 				{
-					this.positionRelativeToOthers(this.accessory, labelRenderer, null, this._accessoryPosition, accessoryGap);
+					this.positionRelativeToOthers(this.accessory, labelRenderer, null, this._accessoryPosition, accessoryGap, null, 0);
 					var iconPosition:String = this._iconPosition;
 					if(iconPosition == ICON_POSITION_LEFT_BASELINE)
 					{
@@ -1758,12 +1758,12 @@ package feathers.controls.renderers
 					{
 						iconPosition = ICON_POSITION_RIGHT;
 					}
-					this.positionRelativeToOthers(this.currentIcon, labelRenderer, this.accessory, iconPosition, this._gap);
+					this.positionRelativeToOthers(this.currentIcon, labelRenderer, this.accessory, iconPosition, this._gap, this._accessoryPosition, accessoryGap);
 				}
 				else
 				{
 					this.positionLabelAndIcon();
-					this.positionRelativeToOthers(this.accessory, labelRenderer, this.currentIcon, this._accessoryPosition, accessoryGap);
+					this.positionRelativeToOthers(this.accessory, labelRenderer, this.currentIcon, this._accessoryPosition, accessoryGap, this._iconPosition, this._gap);
 				}
 			}
 			else if(this._label)
@@ -1777,7 +1777,7 @@ package feathers.controls.renderers
 				}
 				else if(accessoryIsInLayout)
 				{
-					this.positionRelativeToOthers(this.accessory, labelRenderer, null, this._accessoryPosition, accessoryGap);
+					this.positionRelativeToOthers(this.accessory, labelRenderer, null, this._accessoryPosition, accessoryGap, null, 0);
 				}
 			}
 			else if(iconIsInLayout)
@@ -1785,7 +1785,7 @@ package feathers.controls.renderers
 				this.positionSingleChild(this.currentIcon);
 				if(accessoryIsInLayout)
 				{
-					this.positionRelativeToOthers(this.accessory, this.currentIcon, null, this._accessoryPosition, accessoryGap);
+					this.positionRelativeToOthers(this.accessory, this.currentIcon, null, this._accessoryPosition, accessoryGap, null, 0);
 				}
 			}
 			else if(accessoryIsInLayout)
@@ -1857,7 +1857,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected function positionRelativeToOthers(object:DisplayObject, relativeTo:DisplayObject, relativeTo2:DisplayObject, position:String, gap:Number):void
+		protected function positionRelativeToOthers(object:DisplayObject, relativeTo:DisplayObject, relativeTo2:DisplayObject, position:String, gap:Number, otherPosition:String, otherGap:Number):void
 		{
 			const relativeToX:Number = relativeTo2 ? Math.min(relativeTo.x, relativeTo2.x) : relativeTo.x;
 			const relativeToY:Number = relativeTo2 ? Math.min(relativeTo.y, relativeTo2.y) : relativeTo.y;
@@ -1882,6 +1882,10 @@ package feathers.controls.renderers
 					{
 						newRelativeToY += (object.height + gap) / 2;
 					}
+					if(relativeTo2)
+					{
+						newRelativeToY = Math.max(newRelativeToY, this._paddingTop + object.height + gap);
+					}
 					object.y = newRelativeToY - object.height - gap;
 				}
 			}
@@ -1901,6 +1905,10 @@ package feathers.controls.renderers
 					else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
 					{
 						newRelativeToX -= (object.width + gap) / 2;
+					}
+					if(relativeTo2)
+					{
+						newRelativeToX = Math.min(newRelativeToX, this.actualWidth - this._paddingRight - object.width - relativeToWidth - gap);
 					}
 					object.x = newRelativeToX + relativeToWidth + gap;
 				}
@@ -1922,6 +1930,10 @@ package feathers.controls.renderers
 					{
 						newRelativeToY -= (object.height + gap) / 2;
 					}
+					if(relativeTo2)
+					{
+						newRelativeToY = Math.min(newRelativeToY, this.actualHeight - this._paddingBottom - object.height - relativeToHeight - gap);
+					}
 					object.y = newRelativeToY + relativeToHeight + gap;
 				}
 			}
@@ -1942,18 +1954,38 @@ package feathers.controls.renderers
 					{
 						newRelativeToX += (gap + object.width) / 2;
 					}
+					if(relativeTo2)
+					{
+						newRelativeToX = Math.max(newRelativeToX, this._paddingLeft + object.width + gap);
+					}
 					object.x = newRelativeToX - gap - object.width;
 				}
 			}
 
 			var offsetX:Number = newRelativeToX - relativeToX;
 			var offsetY:Number = newRelativeToY - relativeToY;
-			relativeTo.x += offsetX;
-			relativeTo.y += offsetY;
+			if(!relativeTo2 || otherGap != Number.POSITIVE_INFINITY || !(
+				(position == ACCESSORY_POSITION_TOP && otherPosition == ACCESSORY_POSITION_TOP) ||
+				(position == ACCESSORY_POSITION_RIGHT && otherPosition == ACCESSORY_POSITION_RIGHT) ||
+				(position == ACCESSORY_POSITION_BOTTOM && otherPosition == ACCESSORY_POSITION_BOTTOM) ||
+				(position == ACCESSORY_POSITION_LEFT && otherPosition == ACCESSORY_POSITION_LEFT)
+			))
+			{
+				relativeTo.x += offsetX;
+				relativeTo.y += offsetY;
+			}
 			if(relativeTo2)
 			{
-				relativeTo2.x += offsetX;
-				relativeTo2.y += offsetY;
+				if(otherGap != Number.POSITIVE_INFINITY || !(
+					(position == ACCESSORY_POSITION_LEFT && otherPosition == ACCESSORY_POSITION_RIGHT) ||
+					(position == ACCESSORY_POSITION_RIGHT && otherPosition == ACCESSORY_POSITION_LEFT) ||
+					(position == ACCESSORY_POSITION_TOP && otherPosition == ACCESSORY_POSITION_BOTTOM) ||
+					(position == ACCESSORY_POSITION_BOTTOM && otherPosition == ACCESSORY_POSITION_TOP)
+				))
+				{
+					relativeTo2.x += offsetX;
+					relativeTo2.y += offsetY;
+				}
 			}
 
 			if(position == ACCESSORY_POSITION_LEFT || position == ACCESSORY_POSITION_RIGHT)
