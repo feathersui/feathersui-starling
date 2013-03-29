@@ -1027,7 +1027,7 @@ package feathers.controls.supportClasses
 		
 		private function invalidateParent():void
 		{
-			Scroller(this.parent.parent).invalidate(INVALIDATION_FLAG_DATA);
+			Scroller(this.parent).invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		private function calculateTypicalValues():void
