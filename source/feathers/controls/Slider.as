@@ -287,6 +287,9 @@ package feathers.controls
 			}
 			this._direction = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
+			this.invalidate(INVALIDATION_FLAG_MINIMUM_TRACK_FACTORY);
+			this.invalidate(INVALIDATION_FLAG_MAXIMUM_TRACK_FACTORY);
+			this.invalidate(INVALIDATION_FLAG_THUMB_FACTORY);
 		}
 		
 		/**
