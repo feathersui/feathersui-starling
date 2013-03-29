@@ -22,6 +22,8 @@ package feathers.controls
 	 *
 	 * @see ScreenNavigator
 	 * @see Panel
+	 * @see Screen
+	 * @see http://wiki.starling-framework.org/feathers/panel-screen
 	 */
 	public class PanelScreen extends Panel implements IScreen
 	{
