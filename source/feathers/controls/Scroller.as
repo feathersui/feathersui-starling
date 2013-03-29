@@ -315,9 +315,6 @@ package feathers.controls
 		{
 			super();
 
-			this._viewPortWrapper = new Sprite();
-			this.addChild(this._viewPortWrapper);
-
 			this.addEventListener(Event.ADDED_TO_STAGE, scroller_addedToStageHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, scroller_removedFromStageHandler);
 		}
@@ -496,11 +493,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _viewPortWrapper:Sprite;
-
-		/**
-		 * @private
-		 */
 		protected var ignoreViewPortResizing:Boolean = false;
 
 		/**
@@ -533,13 +525,13 @@ package feathers.controls
 			if(this._viewPort)
 			{
 				this._viewPort.removeEventListener(FeathersEventType.RESIZE, viewPort_resizeHandler);
-				this._viewPortWrapper.removeChild(DisplayObject(this._viewPort));
+				this.removeChild(DisplayObject(this._viewPort));
 			}
 			this._viewPort = value;
 			if(this._viewPort)
 			{
 				this._viewPort.addEventListener(FeathersEventType.RESIZE, viewPort_resizeHandler);
-				this._viewPortWrapper.addChild(DisplayObject(this._viewPort));
+				this.addChild(DisplayObject(this._viewPort));
 			}
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
@@ -2459,8 +2451,8 @@ package feathers.controls
 				this._touchBlocker.height = this.actualHeight;
 			}
 
-			this._viewPortWrapper.x = this._leftViewPortOffset - this._horizontalScrollPosition;
-			this._viewPortWrapper.y = this._topViewPortOffset - this._verticalScrollPosition;
+			this._viewPort.x = this._leftViewPortOffset - this._horizontalScrollPosition;
+			this._viewPort.y = this._topViewPortOffset - this._verticalScrollPosition;
 
 			if(this.horizontalScrollBar)
 			{
