@@ -43,6 +43,7 @@ package feathers.controls
 			super();
 			this.headerName = DEFAULT_CHILD_NAME_HEADER;
 			this.originalDPI = DeviceCapabilities.dpi;
+			this.clipContent = false;
 		}
 
 		/**
