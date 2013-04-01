@@ -64,6 +64,30 @@ package feathers.controls
 	 * renderer for every single item. This allows for optimal performance with
 	 * very large data providers.</p>
 	 *
+	 * <p>The following example creates a grouped list, gives it a data
+	 * provider, and listens for when the selection changes:</p>
+	 *
+	 * <listing version="3.0">
+	 * var list:GroupedList = new GroupedList();
+	 * list.dataProvider = new HierarchicalCollection(
+	 * {
+	 *     header: "A",
+	 *     children:
+	 *     [
+	 *         { text: "Aardvark" },
+	 *         { text: "Alligator" }
+	 *     ]
+	 * },
+	 * {
+	 *     header: "B",
+	 *     children:
+	 *     [
+	 *         { text: "Baboon" }
+	 *     ]
+	 * });
+	 * list.addEventListener( Event.CHANGE, list_changeHandler );
+	 * this.addChild( list );</listing>
+	 *
 	 * @see http://wiki.starling-framework.org/feathers/grouped-list
 	 */
 	public class GroupedList extends Scroller implements IFocusDisplayObject
@@ -278,6 +302,14 @@ package feathers.controls
 		/**
 		 * The layout algorithm used to position and, optionally, size the
 		 * list's items.
+		 *
+		 * <p>The following example tells the list to use a horizontal layout:</p>
+		 *
+		 * <listing version="3.0">
+		 * var layout:HorizontalLayout = new HorizontalLayout();
+		 * layout.gap = 20;
+		 * layout.padding = 20;
+		 * list.layout = layout;</listing>
 		 */
 		public function get layout():ILayout
 		{
@@ -304,6 +336,45 @@ package feathers.controls
 
 		/**
 		 * The collection of data displayed by the list.
+		 *
+		 * <p>The following example passes in a data provider:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.dataProvider = new HierarchicalCollection(
+		 * {
+		 *     header: "A",
+		 *     children:
+		 *     [
+		 *         { text: "Aardvark" },
+		 *         { text: "Alligator" }
+		 *     ]
+		 * },
+		 * {
+		 *     header: "B",
+		 *     children:
+		 *     [
+		 *         { text: "Baboon" }
+		 *     ]
+		 * });</listing>
+		 *
+		 * <p>By default, a <code>HierarchicalCollection</code> accepts an
+		 * <code>Array</code> containing objects for each group. By default, the
+		 * <code>header</code> and <code>footer</code> fields in each group will
+		 * contain data to pass to the header and footer renderers of the
+		 * grouped list. The <code>children</code> field of each group should be
+		 * be an <code>Array</code> of data where each item is passed to an item
+		 * renderer.</p>
+		 *
+		 * <p>A custom <em>data descriptor</em> may be passed to the
+		 * <code>HierarchicalCollection</code> to tell it to parse the data
+		 * source differently than the default behavior described above. For
+		 * instance, you might want to use <code>Vector</code> instead of
+		 * <code>Array</code> or structure the data differently. Custom data
+		 * descriptors may be implemented with the
+		 * <code>IHierarchicalCollectionDataDescriptor</code> interface.</p>
+		 *
+		 * @see feathers.data.HierarchicalCollection
+		 * @see feathers.data.IHierarchicalCollectionDataDescriptor
 		 */
 		public function get dataProvider():HierarchicalCollection
 		{
@@ -344,6 +415,11 @@ package feathers.controls
 
 		/**
 		 * Determines if an item in the list may be selected.
+		 *
+		 * <p>The following example disables selection:</p>
+		 *
+		 * <listing version="3.0">
+	 	 * list.isSelectable = false;</listing>
 		 */
 		public function get isSelectable():Boolean
 		{
@@ -376,6 +452,19 @@ package feathers.controls
 		 * The group index of the currently selected item. Returns -1 if no item
 		 * is selected.
 		 *
+		 * <p>The following example listens for when selection changes and
+		 * requests the selected group index and selected item index:</p>
+		 *
+		 * <listing version="3.0">
+		 * function list_changeHandler( event:Event ):void
+		 * {
+		 *     var list:List = List(event.currentTarget);
+		 *     var groupIndex:int = list.selectedGroupIndex;
+		 *     var itemIndex:int = list.selectedItemIndex;
+		 *
+		 * }
+		 * list.addEventListener( Event.CHANGE, list_changeHandler );</listing>
+		 *
 		 * @see #selectedItemIndex
 		 */
 		public function get selectedGroupIndex():int
@@ -392,6 +481,19 @@ package feathers.controls
 		 * The item index of the currently selected item. Returns -1 if no item
 		 * is selected.
 		 *
+		 * <p>The following example listens for when selection changes and
+		 * requests the selected group index and selected item index:</p>
+		 *
+		 * <listing version="3.0">
+		 * function list_changeHandler( event:Event ):void
+		 * {
+		 *     var list:List = List(event.currentTarget);
+		 *     var groupIndex:int = list.selectedGroupIndex;
+		 *     var itemIndex:int = list.selectedItemIndex;
+		 *
+		 * }
+		 * list.addEventListener( Event.CHANGE, list_changeHandler );</listing>
+		 *
 		 * @see #selectedGroupIndex
 		 */
 		public function get selectedItemIndex():int
@@ -401,6 +503,18 @@ package feathers.controls
 
 		/**
 		 * The currently selected item. Returns null if no item is selected.
+		 *
+		 * <p>The following example listens for when selection changes and
+		 * requests the selected item:</p>
+		 *
+		 * <listing version="3.0">
+		 * function list_changeHandler( event:Event ):void
+		 * {
+		 *     var list:List = List(event.currentTarget);
+		 *     var selectedItem:Object = list.selectedItem;
+		 *
+		 * }
+		 * list.addEventListener( Event.CHANGE, list_changeHandler );</listing>
 		 */
 		public function get selectedItem():Object
 		{
@@ -434,16 +548,26 @@ package feathers.controls
 		protected var _itemRendererType:Class = DefaultGroupedListItemRenderer;
 
 		/**
-		 * The class used to instantiate item renderers.
+		 * The class used to instantiate item renderers. Must implement the
+		 * <code>IGroupedListItemRenderer</code> interface.
+		 *
+		 * <p>The following example changes the item renderer type:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererType = CustomItemRendererClass;</listing>
+		 *
+		 * <p>The first item and last item in a group may optionally use
+		 * different item renderer types, if desired. Use the
+		 * <code>firstItemRendererType</code> and <code>lastItemRendererType</code>,
+		 * respectively. Additionally, if a group contains only one item, it may
+		 * also have a different type. Use the <code>singleItemRendererType</code>.
+		 * Finally, factories for each of these types may also be customized.</p>
 		 *
 		 * @see feathers.controls.renderer.IGroupedListItemRenderer
 		 * @see #itemRendererFactory
 		 * @see #firstItemRendererType
-		 * @see #firstItemRendererFactory
 		 * @see #lastItemRendererType
-		 * @see #lastItemRendererFactory
 		 * @see #singleItemRendererType
-		 * @see #singleItemRendererFactory
 		 */
 		public function get itemRendererType():Class
 		{
@@ -480,13 +604,26 @@ package feathers.controls
 		 *
 		 * <pre>function():IGroupedListItemRenderer</pre>
 		 *
+		 * <p>The following example provides a factory for the item renderer:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererFactory = function():IGroupedListItemRenderer
+		 * {
+		 *     var renderer:CustomItemRendererClass = new CustomItemRendererClass();
+		 *     renderer.backgroundSkin = new Quad( 10, 10, 0xff0000 );
+		 *     return renderer;
+		 * };</listing>
+		 *
+		 * <p>The first item and last item in a group may optionally use
+		 * different item renderer factories, if desired. Use the
+		 * <code>firstItemRendererFactory</code> and <code>lastItemRendererFactory</code>,
+		 * respectively. Additionally, if a group contains only one item, it may
+		 * also have a different factory. Use the <code>singleItemRendererFactory</code>.</p>
+		 *
 		 * @see feathers.controls.renderers.IGroupedListItemRenderer
 		 * @see #itemRendererType
-		 * @see #firstItemRendererType
 		 * @see #firstItemRendererFactory
-		 * @see #lastItemRendererType
 		 * @see #lastItemRendererFactory
-		 * @see #singleItemRendererType
 		 * @see #singleItemRendererFactory
 		 */
 		public function get itemRendererFactory():Function
@@ -516,6 +653,13 @@ package feathers.controls
 		/**
 		 * An item used to create a sample item renderer used for virtual layout
 		 * measurement.
+		 *
+		 * <p>The following example provides a typical item:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.typicalItem = { text: "A typical item", icon: texture };
+		 * list.itemRendererProperties.labelField = "text";
+		 * list.itemRendererProperties.iconSourceField = "icon";</listing>
 		 */
 		public function get typicalItem():Object
 		{
@@ -543,6 +687,17 @@ package feathers.controls
 		/**
 		 * A name to add to all item renderers in this list. Typically used by a
 		 * theme to provide different skins to different lists.
+		 *
+		 * <p>The following example sets the item renderer name:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererName = "my-custom-item-renderer-name";</listing>
+		 *
+		 * <p>In your theme, you can target this item renderer name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( DefaultListItemRenderer, customItemRendererInitializer, "my-custom-item-renderer-name");</listing>
 		 *
 		 * @see feathers.core.FeathersControl#nameList
 		 * @see #firstItemRendererName
@@ -578,6 +733,12 @@ package feathers.controls
 		 * that cannot be shared (such as display objects that need to be added
 		 * to the display list) should be passed to the item renderers using an
 		 * <code>itemRendererFactory</code> or with a theme.
+		 *
+		 * <p>The following example customizes some item renderer properties:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererProperties.&#64;defaultLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );
+		 * list.itemRendererProperties.padding = 20;</listing>
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -639,16 +800,18 @@ package feathers.controls
 
 		/**
 		 * The class used to instantiate the item renderer for the first item in
-		 * a group.
+		 * a group. Must implement the <code>IGroupedListItemRenderer</code>
+		 * interface.
+		 *
+		 * <p>The following example changes the first item renderer type:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.firstItemRendererType = CustomItemRendererClass;</listing>
 		 *
 		 * @see feathers.controls.renderer.IGroupedListItemRenderer
-		 * @see #firstItemRendererFactory
 		 * @see #itemRendererType
-		 * @see #itemRendererFactory
 		 * @see #lastItemRendererType
-		 * @see #lastItemRendererFactory
 		 * @see #singleItemRendererType
-		 * @see #singleItemRendererFactory
 		 */
 		public function get firstItemRendererType():Class
 		{
@@ -686,13 +849,21 @@ package feathers.controls
 		 *
 		 * <pre>function():IGroupedListItemRenderer</pre>
 		 *
+		 * <p>The following example provides a factory for the item renderer
+		 * used for the first item in a group:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.firstItemRendererFactory = function():IGroupedListItemRenderer
+		 * {
+		 *     var renderer:CustomItemRendererClass = new CustomItemRendererClass();
+		 *     renderer.backgroundSkin = new Quad( 10, 10, 0xff0000 );
+		 *     return renderer;
+		 * };</listing>
+		 *
 		 * @see feathers.controls.renderers.IGroupedListItemRenderer
 		 * @see #firstItemRendererType
-		 * @see #itemRendererType
 		 * @see #itemRendererFactory
-		 * @see #lastItemRendererType
 		 * @see #lastItemRendererFactory
-		 * @see #singleItemRendererType
 		 * @see #singleItemRendererFactory
 		 */
 		public function get firstItemRendererFactory():Function
@@ -726,6 +897,18 @@ package feathers.controls
 		 * items if they are created with the same class. If this value is null
 		 * the regular <code>itemRendererName</code> will be used instead.
 		 *
+		 * <p>The following example provides an name for the first item renderer
+		 * in a group:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.firstItemRendererName = "my-custom-first-item-renderer-name";</listing>
+		 *
+		 * <p>In your theme, you can target this item renderer name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( DefaultListItemRenderer, customFirstItemRendererInitializer, "my-custom-first-item-renderer-name");</listing>
+		 *
 		 * @see feathers.core.FeathersControl#nameList
 		 * @see #itemRendererName
 		 * @see #lastItemRendererName
@@ -756,16 +939,19 @@ package feathers.controls
 
 		/**
 		 * The class used to instantiate the item renderer for the last item in
-		 * a group.
+		 * a group. Must implement the <code>IGroupedListItemRenderer</code>
+		 * interface.
+		 *
+		 * <p>The following example changes the last item renderer type:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.lastItemRendererType = CustomItemRendererClass;</listing>
 		 *
 		 * @see feathers.controls.renderer.IGroupedListItemRenderer
 		 * @see #lastItemRendererFactory
 		 * @see #itemRendererType
-		 * @see #itemRendererFactory
 		 * @see #firstItemRendererType
-		 * @see #firstItemRendererFactory
 		 * @see #singleItemRendererType
-		 * @see #singleItemRendererFactory
 		 */
 		public function get lastItemRendererType():Class
 		{
@@ -803,13 +989,21 @@ package feathers.controls
 		 *
 		 * <pre>function():IGroupedListItemRenderer</pre>
 		 *
+		 * <p>The following example provides a factory for the item renderer
+		 * used for the last item in a group:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.firstItemRendererFactory = function():IGroupedListItemRenderer
+		 * {
+		 *     var renderer:CustomItemRendererClass = new CustomItemRendererClass();
+		 *     renderer.backgroundSkin = new Quad( 10, 10, 0xff0000 );
+		 *     return renderer;
+		 * };</listing>
+		 *
 		 * @see feathers.controls.renderers.IGroupedListItemRenderer
 		 * @see #lastItemRendererType
-		 * @see #itemRendererType
 		 * @see #itemRendererFactory
-		 * @see #firstItemRendererType
 		 * @see #firstItemRendererFactory
-		 * @see #singleItemRendererType
 		 * @see #singleItemRendererFactory
 		 */
 		public function get lastItemRendererFactory():Function
@@ -843,6 +1037,18 @@ package feathers.controls
 		 * items if they are created with the same class. If this value is null
 		 * the regular <code>itemRendererName</code> will be used instead.
 		 *
+		 * <p>The following example provides an name for the last item renderer
+		 * in a group:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.lastItemRendererName = "my-custom-last-item-renderer-name";</listing>
+		 *
+		 * <p>In your theme, you can target this item renderer name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( DefaultListItemRenderer, customLastItemRendererInitializer, "my-custom-last-item-renderer-name");</listing>
+		 *
 		 * @see feathers.core.FeathersControl#nameList
 		 * @see #itemRendererName
 		 * @see #firstItemRendererName
@@ -873,16 +1079,19 @@ package feathers.controls
 
 		/**
 		 * The class used to instantiate the item renderer for an item in a
-		 * group with no other items.
+		 * group with no other items. Must implement the
+		 * <code>IGroupedListItemRenderer</code> interface.
+		 *
+		 * <p>The following example changes the single item renderer type:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.singleItemRendererType = CustomItemRendererClass;</listing>
 		 *
 		 * @see feathers.controls.renderer.IGroupedListItemRenderer
 		 * @see #singleItemRendererFactory
 		 * @see #itemRendererType
-		 * @see #itemRendererFactory
 		 * @see #firstItemRendererType
-		 * @see #firstItemRendererFactory
 		 * @see #lastItemRendererType
-		 * @see #lastItemRendererFactory
 		 */
 		public function get singleItemRendererType():Class
 		{
@@ -920,13 +1129,21 @@ package feathers.controls
 		 *
 		 * <pre>function():IGroupedListItemRenderer</pre>
 		 *
+		 * <p>The following example provides a factory for the item renderer
+		 * used for when only one item appears in a group:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.firstItemRendererFactory = function():IGroupedListItemRenderer
+		 * {
+		 *     var renderer:CustomItemRendererClass = new CustomItemRendererClass();
+		 *     renderer.backgroundSkin = new Quad( 10, 10, 0xff0000 );
+		 *     return renderer;
+		 * };</listing>
+		 *
 		 * @see feathers.controls.renderers.IGroupedListItemRenderer
 		 * @see #singleItemRendererType
-		 * @see #itemRendererType
 		 * @see #itemRendererFactory
-		 * @see #firstItemRendererType
 		 * @see #firstItemRendererFactory
-		 * @see #lastItemRendererType
 		 * @see #lastItemRendererFactory
 		 */
 		public function get singleItemRendererFactory():Function
@@ -961,6 +1178,18 @@ package feathers.controls
 		 * value is null the regular <code>itemRendererName</code> will be used
 		 * instead.
 		 *
+		 * <p>The following example provides an name for a single item renderer
+		 * in a group:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.singleItemRendererName = "my-custom-single-item-renderer-name";</listing>
+		 *
+		 * <p>In your theme, you can target this item renderer name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( DefaultListItemRenderer, customSingleItemRendererInitializer, "my-custom-single-item-renderer-name");</listing>
+		 *
 		 * @see feathers.core.FeathersControl#nameList
 		 * @see #itemRendererName
 		 * @see #firstItemRendererName
@@ -990,7 +1219,13 @@ package feathers.controls
 		protected var _headerRendererType:Class = DefaultGroupedListHeaderOrFooterRenderer;
 
 		/**
-		 * The class used to instantiate header renderers.
+		 * The class used to instantiate header renderers. Must implement the
+		 * <code>IGroupedListHeaderOrFooterRenderer</code> interface.
+		 *
+		 * <p>The following example changes the header renderer type:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.headerRendererType = CustomHeaderRendererClass;</listing>
 		 *
 		 * @see feathers.controls.renderers.IGroupedListHeaderOrFooterRenderer
 		 * @see #headerRendererFactory
@@ -1031,6 +1266,16 @@ package feathers.controls
 		 *
 		 * <pre>function():IGroupedListHeaderOrFooterRenderer</pre>
 		 *
+		 * <p>The following example provides a factory for the header renderer:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererFactory = function():IGroupedListHeaderOrFooterRenderer
+		 * {
+		 *     var renderer:CustomHeaderRendererClass = new CustomHeaderRendererClass();
+		 *     renderer.backgroundSkin = new Quad( 10, 10, 0xff0000 );
+		 *     return renderer;
+		 * };</listing>
+		 *
 		 * @see feathers.controls.renderers.IGroupedListHeaderOrFooterRenderer
 		 * @see #headerRendererType
 		 */
@@ -1060,8 +1305,15 @@ package feathers.controls
 
 		/**
 		 * Used to auto-size the grouped list. If the list's width or height is
-		 * NaN, the grouped list will try to automatically pick an ideal size.
-		 * This data is used in that process to create a sample header renderer.
+		 * <code>NaN</code>, the grouped list will try to automatically pick an
+		 * ideal size. This data is used in that process to create a sample
+		 * header renderer.
+		 *
+		 * <p>The following example provides a typical header:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.typicalHeader = { text: "A typical header" };
+		 * list.headerRendererProperties.contentLabelField = "text";</listing>
 		 */
 		public function get typicalHeader():Object
 		{
@@ -1089,6 +1341,17 @@ package feathers.controls
 		/**
 		 * A name to add to all header renderers in this grouped list. Typically
 		 * used by a theme to provide different skins to different lists.
+		 *
+		 * <p>The following example sets the header renderer name:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.headerRendererName = "my-custom-header-renderer-name";</listing>
+		 *
+		 * <p>In your theme, you can target this header renderer name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( DefaultGroupedListHeaderOrFooterRenderer, customHeaderRendererInitializer, "my-custom-header-renderer-name");</listing>
 		 *
 		 * @see feathers.core.FeathersControl#nameList
 		 */
@@ -1122,6 +1385,12 @@ package feathers.controls
 		 * that need to be added to the display list) should be passed to the
 		 * header renderers using a <code>headerRendererFactory</code> or with a
 		 * theme.
+		 *
+		 * <p>The following example customizes some header renderer properties:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.headerRendererProperties.&#64;contentLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );
+		 * list.headerRendererProperties.padding = 20;</listing>
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -1181,7 +1450,13 @@ package feathers.controls
 		protected var _footerRendererType:Class = DefaultGroupedListHeaderOrFooterRenderer;
 
 		/**
-		 * The class used to instantiate footer renderers.
+		 * The class used to instantiate footer renderers. Must implement the
+		 * <code>IGroupedListHeaderOrFooterRenderer</code> interface.
+		 *
+		 * <p>The following example changes the footer renderer type:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.footerRendererType = CustomFooterRendererClass;</listing>
 		 *
 		 * @see feathers.controls.renderers.IGroupedListHeaderOrFooterRenderer
 		 * @see #footerRendererFactory
@@ -1222,6 +1497,16 @@ package feathers.controls
 		 *
 		 * <pre>function():IGroupedListHeaderOrFooterRenderer</pre>
 		 *
+		 * <p>The following example provides a factory for the footer renderer:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererFactory = function():IGroupedListHeaderOrFooterRenderer
+		 * {
+		 *     var renderer:CustomFooterRendererClass = new CustomFooterRendererClass();
+		 *     renderer.backgroundSkin = new Quad( 10, 10, 0xff0000 );
+		 *     return renderer;
+		 * };</listing>
+		 *
 		 * @see feathers.controls.renderers.IGroupedListHeaderOrFooterRenderer
 		 * @see #footerRendererType
 		 */
@@ -1251,9 +1536,15 @@ package feathers.controls
 
 		/**
 		 * Used to auto-size the grouped list. If the grouped list's width or
-		 * height is NaN, the grouped list will try to automatically pick an
-		 * ideal size. This data is used in that process to create a sample
-		 * footer renderer.
+		 * height is <code>NaN</code>, the grouped list will try to
+		 * automatically pick an ideal size. This data is used in that process
+		 * to create a sample footer renderer.
+		 *
+		 * <p>The following example provides a typical footer:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.typicalHeader = { text: "A typical footer" };
+		 * list.footerRendererProperties.contentLabelField = "text";</listing>
 		 */
 		public function get typicalFooter():Object
 		{
@@ -1281,6 +1572,18 @@ package feathers.controls
 		/**
 		 * A name to add to all footer renderers in this grouped list. Typically
 		 * used by a theme to provide different skins to different lists.
+		 *
+		 * <p>The following example sets the footer renderer name:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.footerRendererName = "my-custom-footer-renderer-name";</listing>
+		 *
+		 * <p>In your theme, you can target this footer renderer name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( DefaultGroupedListHeaderOrFooterRenderer, customFooterRendererInitializer, "my-custom-footer-renderer-name");</listing>
+		 *
 		 *
 		 * @see feathers.core.FeathersControl#nameList
 		 */
@@ -1315,6 +1618,12 @@ package feathers.controls
 		 * footer renderers using a <code>footerRendererFactory</code> or with
 		 * a theme.
 		 *
+		 * <p>The following example customizes some header renderer properties:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.footerRendererProperties.&#64;contentLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );
+		 * list.footerRendererProperties.padding = 20;</listing>
+		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
 		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
@@ -1322,7 +1631,7 @@ package feathers.controls
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
-		 * @see #itemRendererFactory
+		 * @see #footerRendererFactory
 		 */
 		public function get footerRendererProperties():Object
 		{
@@ -1384,6 +1693,11 @@ package feathers.controls
 		 *     <li><code>headerField</code></li>
 		 * </ol>
 		 *
+		 * <p>The following example sets the header field:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.headerField = "header";</listing>
+		 *
 		 * @see #headerFunction
 		 */
 		public function get headerField():String
@@ -1414,11 +1728,22 @@ package feathers.controls
 		 * function is not null, then the <code>headerField</code> will be
 		 * ignored.
 		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 * <pre>function( item:Object ):Object</pre>
+		 *
 		 * <p>All of the header fields and functions, ordered by priority:</p>
 		 * <ol>
 		 *     <li><code>headerFunction</code></li>
 		 *     <li><code>headerField</code></li>
 		 * </ol>
+		 *
+		 * <p>The following example sets the header function:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.headerFunction = function( group:Object ):Object
+		 * {
+		 *    return group.header;
+		 * };</listing>
 		 *
 		 * @see #headerField
 		 */
@@ -1457,6 +1782,11 @@ package feathers.controls
 		 *     <li><code>footerField</code></li>
 		 * </ol>
 		 *
+		 * <p>The following example sets the footer field:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.footerField = "footer";</listing>
+		 *
 		 * @see #footerFunction
 		 */
 		public function get footerField():String
@@ -1487,11 +1817,22 @@ package feathers.controls
 		 * function is not null, then the <code>footerField</code> will be
 		 * ignored.
 		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 * <pre>function( item:Object ):Object</pre>
+		 *
 		 * <p>All of the footer fields and functions, ordered by priority:</p>
 		 * <ol>
 		 *     <li><code>footerFunction</code></li>
 		 *     <li><code>footerField</code></li>
 		 * </ol>
+		 *
+		 * <p>The following example sets the footer function:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.footerFunction = function( group:Object ):Object
+		 * {
+		 *    return group.footer;
+		 * };</listing>
 		 *
 		 * @see #footerField
 		 */
