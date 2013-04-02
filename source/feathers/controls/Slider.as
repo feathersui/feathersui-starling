@@ -644,14 +644,16 @@ package feathers.controls
 
 		/**
 		 * A function used to generate the slider's minimum track sub-component.
-		 * This can be used to change properties on the minimum track when it is first
-		 * created. For instance, if you are skinning Feathers components
-		 * without a theme, you might use <code>minimumTrackFactory</code> to set
-		 * skins and other styles on the minimum track.
+		 * The minimum track must be an instance of <code>Button</code>. This
+		 * factory can be used to change properties on the minimum track when it
+		 * is first created. For instance, if you are skinning Feathers
+		 * components without a theme, you might use this factory to set skins
+		 * and other styles on the minimum track.
 		 *
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():Button</pre>
 		 *
+		 * @see feathers.controls.Button
 		 * @see #minimumTrackProperties
 		 */
 		public function get minimumTrackFactory():Function
@@ -711,7 +713,8 @@ package feathers.controls
 		/**
 		 * A set of key/value pairs to be passed down to the slider's minimum
 		 * track sub-component. The minimum track is a
-		 * <code>feathers.controls.Button</code> instance.
+		 * <code>feathers.controls.Button</code> instance that is created by
+		 * <code>minimumTrackFactory</code>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -723,9 +726,9 @@ package feathers.controls
 		 * <p>Setting properties in a <code>minimumTrackFactory</code> function
 		 * instead of using <code>minimumTrackProperties</code> will result in
 		 * better performance.</p>
-		 * 
-		 * @see feathers.controls.Button
+		 *
 		 * @see #minimumTrackFactory
+		 * @see feathers.controls.Button
 		 */
 		public function get minimumTrackProperties():Object
 		{
@@ -777,14 +780,16 @@ package feathers.controls
 
 		/**
 		 * A function used to generate the slider's maximum track sub-component.
-		 * This can be used to change properties on the maximum track when it is first
-		 * created. For instance, if you are skinning Feathers components
-		 * without a theme, you might use <code>maximumTrackFactory</code> to set
-		 * skins and other styles on the maximum track.
+		 * The maximum track must be an instance of <code>Button</code>.
+		 * This factory can be used to change properties on the maximum track
+		 * when it is first created. For instance, if you are skinning Feathers
+		 * components without a theme, you might use this factory to set skins
+		 * and other styles on the maximum track.
 		 *
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():Button</pre>
 		 *
+		 * @see feathers.controls.Button
 		 * @see #maximumTrackProperties
 		 */
 		public function get maximumTrackFactory():Function
@@ -844,7 +849,8 @@ package feathers.controls
 		/**
 		 * A set of key/value pairs to be passed down to the slider's maximum
 		 * track sub-component. The maximum track is a
-		 * <code>feathers.controls.Button</code> instance.
+		 * <code>feathers.controls.Button</code> instance that is created by
+		 * <code>maximumTrackFactory</code>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -856,9 +862,9 @@ package feathers.controls
 		 * <p>Setting properties in a <code>maximumTrackFactory</code> function
 		 * instead of using <code>maximumTrackProperties</code> will result in
 		 * better performance.</p>
-		 * 
-		 * @see feathers.controls.Button
+		 *
 		 * @see #maximumTrackFactory
+		 * @see feathers.controls.Button
 		 */
 		public function get maximumTrackProperties():Object
 		{
@@ -910,14 +916,16 @@ package feathers.controls
 
 		/**
 		 * A function used to generate the slider's thumb sub-component.
-		 * This can be used to change properties on the thumb when it is first
+		 * The thumb must be an instance of <code>Button</code>. This factory
+		 * can be used to change properties on the thumb when it is first
 		 * created. For instance, if you are skinning Feathers components
-		 * without a theme, you might use <code>thumbFactory</code> to set
-		 * skins and text styles on the thumb.
+		 * without a theme, you might use this factory to set skins and other
+		 * styles on the thumb.
 		 *
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():Button</pre>
 		 *
+		 * @see feathers.controls.Button
 		 * @see #thumbProperties
 		 */
 		public function get thumbFactory():Function
@@ -977,7 +985,7 @@ package feathers.controls
 		/**
 		 * A set of key/value pairs to be passed down to the slider's thumb
 		 * sub-component. The thumb is a <code>feathers.controls.Button</code>
-		 * instance.
+		 * instance that is created by <code>thumbFactory</code>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,

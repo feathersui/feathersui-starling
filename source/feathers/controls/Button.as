@@ -1098,7 +1098,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.defaultSkin = new Image( texture );</listing>
-		 * 
+		 *
+		 * @see #stateToSkinFunction
 		 * @see #upSkin
 		 * @see #downSkin
 		 * @see #hoverSkin
@@ -1417,7 +1418,14 @@ package feathers.controls
 		protected var _labelFactory:Function;
 
 		/**
-		 * A function used to instantiate the button's label subcomponent.
+		 * A function used to instantiate the button's label text renderer
+		 * sub-component. By default, the button will use the global text
+		 * renderer factory, <code>FeathersControl.defaultTextRendererFactory()</code>,
+		 * to create the label text renderer. The label text renderer must be an
+		 * instance of <code>ITextRenderer</code>. To change properties on the
+		 * label text renderer, see <code>defaultLabelProperties</code> and the
+		 * other "<code>LabelProperties</code>" properties for each button
+		 * state.
 		 *
 		 * <p>The factory should have the following function signature:</p>
 		 * <pre>function():ITextRenderer</pre>
@@ -1428,11 +1436,13 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * button.labelFactory = function():ITextRenderer
 		 * {
-		 * 	return new TextFieldTextRenderer();
+		 *     return new TextFieldTextRenderer();
 		 * }</listing>
 		 *
 		 * @see feathers.core.ITextRenderer
 		 * @see feathers.core.FeathersControl#defaultTextRendererFactory
+		 * @see feathers.controls.text.BitmapFontTextRenderer
+		 * @see feathers.controls.text.TextFieldTextRenderer
 		 */
 		public function get labelFactory():Function
 		{
@@ -1459,9 +1469,14 @@ package feathers.controls
 		
 		/**
 		 * The default label properties are a set of key/value pairs to be
-		 * passed down ot the button's label instance, and it is used when no
-		 * other properties are defined for the button's current state. Intended
-		 * for use when multiple states should use the same properties.
+		 * passed down to the button's label text renderer, and it is used when
+		 * no specific properties are defined for the button's current state.
+		 * Intended for use when multiple states should share the same
+		 * properties. The label text renderer is an <code>ITextRenderer</code>
+		 * instance. The available properties depend on which <code>ITextRenderer</code>
+		 * implementation is returned by <code>labelFactory</code>. The most
+		 * common implementations are <code>BitmapFontTextRenderer</code> and
+		 * <code>TextFieldTextRenderer</code>.
 		 *
 		 * <p>The following example gives the button default label properties to
 		 * use for all states when no specific label properties are available:</p>
@@ -1471,15 +1486,10 @@ package feathers.controls
 		 * button.defaultLabelProperties.wordWrap = true;</listing>
 		 *
 		 * @see feathers.core.ITextRenderer
+		 * @see feathers.controls.text.BitmapFontTextRenderer
+		 * @see feathers.controls.text.TextFieldTextRenderer
 		 * @see #defaultSelectedLabelProperties
-		 * @see #upLabelProperties
-		 * @see #downLabelProperties
-		 * @see #hoverLabelProperties
-		 * @see #disabledLabelProperties
-		 * @see #selectedUpLabelProperties
-		 * @see #selectedDownLabelProperties
-		 * @see #selectedHoverLabelProperties
-		 * @see #selectedDisabledLabelProperties
+		 * @see #stateToLabelPropertiesFunction
 		 */
 		public function get defaultLabelProperties():Object
 		{
@@ -1516,8 +1526,13 @@ package feathers.controls
 		
 		/**
 		 * A set of key/value pairs to be passed down ot the button's label
-		 * instance when the button is in the up state. If <code>null</code>,
-		 * then <code>defaultLabelProperties</code> is used instead.
+		 * text renderer when the button is in the up state. If <code>null</code>,
+		 * then <code>defaultLabelProperties</code> is used instead. The label
+		 * text renderer is an <code>ITextRenderer</code> instance. The
+		 * available properties depend on which <code>ITextRenderer</code>
+		 * implementation is returned by <code>labelFactory</code>. The most
+		 * common implementations are <code>BitmapFontTextRenderer</code> and
+		 * <code>TextFieldTextRenderer</code>.
 		 *
 		 * <p>The following example gives the button label properties for the
 		 * up state:</p>
@@ -1526,6 +1541,8 @@ package feathers.controls
 		 * button.upLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );</listing>
 		 *
 		 * @see feathers.core.ITextRenderer
+		 * @see feathers.controls.text.BitmapFontTextRenderer
+		 * @see feathers.controls.text.TextFieldTextRenderer
 		 * @see #defaultLabelProperties
 		 * @see #selectedUpLabelProperties
 		 */
@@ -1564,8 +1581,13 @@ package feathers.controls
 		
 		/**
 		 * A set of key/value pairs to be passed down ot the button's label
-		 * instance when the button is in the down state. If <code>null</code>,
-		 * then <code>defaultLabelProperties</code> is used instead.
+		 * text renderer when the button is in the down state. If <code>null</code>,
+		 * then <code>defaultLabelProperties</code> is used instead. The label
+		 * text renderer is an <code>ITextRenderer</code> instance. The
+		 * available properties depend on which <code>ITextRenderer</code>
+		 * implementation is returned by <code>labelFactory</code>. The most
+		 * common implementations are <code>BitmapFontTextRenderer</code> and
+		 * <code>TextFieldTextRenderer</code>.
 		 *
 		 * <p>The following example gives the button label properties for the
 		 * down state:</p>
@@ -1574,6 +1596,8 @@ package feathers.controls
 		 * button.downLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );</listing>
 		 *
 		 * @see feathers.core.ITextRenderer
+		 * @see feathers.controls.text.BitmapFontTextRenderer
+		 * @see feathers.controls.text.TextFieldTextRenderer
 		 * @see #defaultLabelProperties
 		 * @see #selectedDownLabelProperties
 		 */
@@ -1612,8 +1636,13 @@ package feathers.controls
 
 		/**
 		 * A set of key/value pairs to be passed down ot the button's label
-		 * instance when the button is in the hover state. If <code>null</code>,
-		 * then <code>defaultLabelProperties</code> is used instead.
+		 * text renderer when the button is in the hover state. If <code>null</code>,
+		 * then <code>defaultLabelProperties</code> is used instead. The label
+		 * text renderer is an <code>ITextRenderer</code> instance. The
+		 * available properties depend on which <code>ITextRenderer</code>
+		 * implementation is returned by <code>labelFactory</code>. The most
+		 * common implementations are <code>BitmapFontTextRenderer</code> and
+		 * <code>TextFieldTextRenderer</code>.
 		 *
 		 * <p>The following example gives the button label properties for the
 		 * hover state:</p>
@@ -1622,6 +1651,8 @@ package feathers.controls
 		 * button.hoverLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );</listing>
 		 *
 		 * @see feathers.core.ITextRenderer
+		 * @see feathers.controls.text.BitmapFontTextRenderer
+		 * @see feathers.controls.text.TextFieldTextRenderer
 		 * @see #defaultLabelProperties
 		 * @see #selectedHoverLabelProperties
 		 */
@@ -1660,8 +1691,13 @@ package feathers.controls
 		
 		/**
 		 * A set of key/value pairs to be passed down ot the button's label
-		 * instance when the button is in the disabled state. If <code>null</code>,
-		 * then <code>defaultLabelProperties</code> is used instead.
+		 * text renderer when the button is in the disabled state. If <code>null</code>,
+		 * then <code>defaultLabelProperties</code> is used instead. The label
+		 * text renderer is an <code>ITextRenderer</code> instance. The
+		 * available properties depend on which <code>ITextRenderer</code>
+		 * implementation is returned by <code>labelFactory</code>. The most
+		 * common implementations are <code>BitmapFontTextRenderer</code> and
+		 * <code>TextFieldTextRenderer</code>.
 		 *
 		 * <p>The following example gives the button label properties for the
 		 * disabled state:</p>
@@ -1670,6 +1706,8 @@ package feathers.controls
 		 * button.disabledLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );</listing>
 		 *
 		 * @see feathers.core.ITextRenderer
+		 * @see feathers.controls.text.BitmapFontTextRenderer
+		 * @see feathers.controls.text.TextFieldTextRenderer
 		 * @see #defaultLabelProperties
 		 * @see #selectedDisabledLabelProperties
 		 */
@@ -1708,10 +1746,15 @@ package feathers.controls
 		
 		/**
 		 * The default selected label properties are a set of key/value pairs to
-		 * be passed down ot the button's label instance, and it is used when
-		 * the button is selected and no other properties are defined for the
-		 * button's current state. If <code>null</code>, then
-		 * <code>defaultLabelProperties</code> is used instead.
+		 * be passed down ot the button's label text renderer, and it is used
+		 * when the button is selected and no specific properties are defined
+		 * for the button's current state. If <code>null</code>, then
+		 * <code>defaultLabelProperties</code> is used instead. The label
+		 * text renderer is an <code>ITextRenderer</code> instance. The
+		 * available properties depend on which <code>ITextRenderer</code>
+		 * implementation is returned by <code>labelFactory</code>. The most
+		 * common implementations are <code>BitmapFontTextRenderer</code> and
+		 * <code>TextFieldTextRenderer</code>.
 		 *
 		 * <p>The following example gives the button default label properties to
 		 * use for all selected states when no specific label properties are
@@ -1722,11 +1765,9 @@ package feathers.controls
 		 * button.defaultSelectedLabelProperties.wordWrap = true;</listing>
 		 *
 		 * @see feathers.core.ITextRenderer
+		 * @see feathers.controls.text.BitmapFontTextRenderer
+		 * @see feathers.controls.text.TextFieldTextRenderer
 		 * @see #defaultLabelProperties
-		 * @see #selectedUpLabelProperties
-		 * @see #selectedDownLabelProperties
-		 * @see #selectedHoverLabelProperties
-		 * @see #selectedDisabledLabelProperties
 		 */
 		public function get defaultSelectedLabelProperties():Object
 		{
@@ -1763,10 +1804,15 @@ package feathers.controls
 		
 		/**
 		 * A set of key/value pairs to be passed down ot the button's label
-		 * instance when the button is in the up state and is selected. If
+		 * text renderer when the button is in the up state and is selected. If
 		 * <code>null</code>, then <code>defaultSelectedLabelProperties</code>
 		 * is used instead. If <code>defaultSelectedLabelProperties</code> is also
 		 * <code>null</code>, then <code>defaultLabelProperties</code> is used.
+		 * The label text renderer is an <code>ITextRenderer</code> instance.
+		 * The available properties depend on which <code>ITextRenderer</code>
+		 * implementation is returned by <code>labelFactory</code>. The most
+		 * common implementations are <code>BitmapFontTextRenderer</code> and
+		 * <code>TextFieldTextRenderer</code>.
 		 *
 		 * <p>The following example gives the button label properties for the
 		 * selected up state:</p>
@@ -1775,8 +1821,11 @@ package feathers.controls
 		 * button.selectedUpLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );</listing>
 		 *
 		 * @see feathers.core.ITextRenderer
+		 * @see feathers.controls.text.BitmapFontTextRenderer
+		 * @see feathers.controls.text.TextFieldTextRenderer
 		 * @see #defaultLabelProperties
 		 * @see #defaultSelectedLabelProperties
+		 * @see #upLabelProperties
 		 */
 		public function get selectedUpLabelProperties():Object
 		{
@@ -1813,10 +1862,15 @@ package feathers.controls
 		
 		/**
 		 * A set of key/value pairs to be passed down ot the button's label
-		 * instance when the button is in the down state and is selected. If
-		 * <code>null</code>, then <code>defaultSelectedLabelProperties</code>
+		 * text renderer when the button is in the down state and is selected.
+		 * If <code>null</code>, then <code>defaultSelectedLabelProperties</code>
 		 * is used instead. If <code>defaultSelectedLabelProperties</code> is also
 		 * <code>null</code>, then <code>defaultLabelProperties</code> is used.
+		 * The label text renderer is an <code>ITextRenderer</code> instance.
+		 * The available properties depend on which <code>ITextRenderer</code>
+		 * implementation is returned by <code>labelFactory</code>. The most
+		 * common implementations are <code>BitmapFontTextRenderer</code> and
+		 * <code>TextFieldTextRenderer</code>.
 		 *
 		 * <p>The following example gives the button label properties for the
 		 * selected down state:</p>
@@ -1825,8 +1879,11 @@ package feathers.controls
 		 * button.selectedDownLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );</listing>
 		 *
 		 * @see feathers.core.ITextRenderer
+		 * @see feathers.controls.text.BitmapFontTextRenderer
+		 * @see feathers.controls.text.TextFieldTextRenderer
 		 * @see #defaultLabelProperties
 		 * @see #defaultSelectedLabelProperties
+		 * @see #downLabelProperties
 		 */
 		public function get selectedDownLabelProperties():Object
 		{
@@ -1863,10 +1920,15 @@ package feathers.controls
 
 		/**
 		 * A set of key/value pairs to be passed down ot the button's label
-		 * instance when the button is in the hover state and is selected. If
-		 * <code>null</code>, then <code>defaultSelectedLabelProperties</code>
+		 * text renderer when the button is in the hover state and is selected.
+		 * If <code>null</code>, then <code>defaultSelectedLabelProperties</code>
 		 * is used instead. If <code>defaultSelectedLabelProperties</code> is also
 		 * <code>null</code>, then <code>defaultLabelProperties</code> is used.
+		 * The label text renderer is an <code>ITextRenderer</code> instance.
+		 * The available properties depend on which <code>ITextRenderer</code>
+		 * implementation is returned by <code>labelFactory</code>. The most
+		 * common implementations are <code>BitmapFontTextRenderer</code> and
+		 * <code>TextFieldTextRenderer</code>.
 		 *
 		 * <p>The following example gives the button label properties for the
 		 * selected hover state:</p>
@@ -1875,8 +1937,11 @@ package feathers.controls
 		 * button.selectedHoverLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );</listing>
 		 *
 		 * @see feathers.core.ITextRenderer
+		 * @see feathers.controls.text.BitmapFontTextRenderer
+		 * @see feathers.controls.text.TextFieldTextRenderer
 		 * @see #defaultLabelProperties
 		 * @see #defaultSelectedLabelProperties
+		 * @see #hoverLabelProperties
 		 */
 		public function get selectedHoverLabelProperties():Object
 		{
@@ -1913,10 +1978,15 @@ package feathers.controls
 
 		/**
 		 * A set of key/value pairs to be passed down ot the button's label
-		 * instance when the button is in the disabled state and is selected. If
-		 * <code>null</code>, then <code>defaultSelectedLabelProperties</code>
+		 * text renderer when the button is in the disabled state and is
+		 * selected. If <code>null</code>, then <code>defaultSelectedLabelProperties</code>
 		 * is used instead. If <code>defaultSelectedLabelProperties</code> is also
 		 * <code>null</code>, then <code>defaultLabelProperties</code> is used.
+		 * The label text renderer is an <code>ITextRenderer</code> instance.
+		 * The available properties depend on which <code>ITextRenderer</code>
+		 * implementation is returned by <code>labelFactory</code>. The most
+		 * common implementations are <code>BitmapFontTextRenderer</code> and
+		 * <code>TextFieldTextRenderer</code>.
 		 *
 		 * <p>The following example gives the button label properties for the
 		 * selected disabled state:</p>
@@ -1925,8 +1995,11 @@ package feathers.controls
 		 * button.selectedDisabledLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );</listing>
 		 *
 		 * @see feathers.core.ITextRenderer
+		 * @see feathers.controls.text.BitmapFontTextRenderer
+		 * @see feathers.controls.text.TextFieldTextRenderer
 		 * @see #defaultLabelProperties
 		 * @see #defaultSelectedLabelProperties
+		 * @see #disabledLabelProperties
 		 */
 		public function get selectedDisabledLabelProperties():Object
 		{
@@ -1975,7 +2048,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.defaultIcon = new Image( texture );</listing>
-		 * 
+		 *
+		 * @see #stateToIconFunction
 		 * @see #upIcon
 		 * @see #downIcon
 		 * @see #hoverIcon

@@ -436,7 +436,10 @@ package feathers.controls
 		 * renderers. These values are shared by each item renderer, so values
 		 * that cannot be shared (such as display objects that need to be added
 		 * to the display list) should be passed to the item renderers using an
-		 * <code>itemRendererFactory</code> or with a theme.
+		 * <code>itemRendererFactory</code> or with a theme. The item renderers
+		 * are instances of <code>IListItemRenderer</code>. The available
+		 * properties depend on which <code>IListItemRenderer</code>
+		 * implementation is returned by <code>itemRendererFactory</code>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -449,8 +452,9 @@ package feathers.controls
 		 * instead of using <code>itemRendererProperties</code> will result in
 		 * better performance.</p>
 		 *
-		 * @see feathers.controls.renderers.IListItemRenderer
 		 * @see #itemRendererFactory
+		 * @see feathers.controls.renderers.IListItemRenderer
+		 * @see feathers.controls.renderers.DefaultListItemRenderer
 		 */
 		public function get itemRendererProperties():Object
 		{

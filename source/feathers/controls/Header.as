@@ -213,8 +213,18 @@ package feathers.controls
 		protected var _titleFactory:Function;
 
 		/**
-		 * A function used to instantiate the header's title sub-component. If
-		 * you are not using a theme, this can be used to skin the header.
+		 * A function used to instantiate the header's title text renderer
+		 * sub-component. By default, the header will use the global text
+		 * renderer factory, <code>FeathersControl.defaultTextRendererFactory()</code>,
+		 * to create the title text renderer. The title text renderer must be an
+		 * instance of <code>ITextRenderer</code>. This factory can be used to
+		 * change properties on the title text renderer when it is first
+		 * created. For instance, if you are skinning Feathers components
+		 * without a theme, you might use this factory to style the title text
+		 * renderer.
+		 *
+		 * <p>If you are not using a theme, the title factory can be used to
+		 * provide skin the title with appropriate text styles.</p>
 		 *
 		 * <p>The factory should have the following function signature:</p>
 		 * <pre>function():ITextRenderer</pre>
@@ -232,6 +242,8 @@ package feathers.controls
 		 *
 		 * @see feathers.core.ITextRenderer
 		 * @see feathers.core.FeathersControl#defaultTextRendererFactory
+		 * @see feathers.controls.text.BitmapFontTextRenderer
+		 * @see feathers.controls.text.TextFieldTextRenderer
 		 */
 		public function get titleFactory():Function
 		{
@@ -749,7 +761,9 @@ package feathers.controls
 		 * A set of key/value pairs to be passed down to the header's title. The
 		 * title is an <code>ITextRenderer</code> instance. The available
 		 * properties depend on which <code>ITextRenderer</code> implementation
-		 * is used.
+		 * is returned by <code>titleFactory</code>. The most common
+		 * implementations are <code>BitmapFontTextRenderer</code> and
+		 * <code>TextFieldTextRenderer</code>.
 		 *
 		 * <p>In the following example, some properties are set for the header's
 		 * title text renderer:</p>

@@ -131,14 +131,18 @@ package feathers.controls
 
 		/**
 		 * A function used to generate the panel's header sub-component.
-		 * This can be used to change properties on the header when it is first
+		 * The header must be an instance of <code>IFeathersControl</code>, but
+		 * the default is an instance of <code>Header</code>. This factory can
+		 * be used to change properties on the header when it is first
 		 * created. For instance, if you are skinning Feathers components
-		 * without a theme, you might use <code>headerFactory</code> to set
-		 * skins and text styles on the header.
+		 * without a theme, you might use this factory to set skins and other
+		 * styles on the header.
 		 *
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():IFeathersControl</pre>
 		 *
+		 * @see feathers.core.IFeathersControl
+		 * @see feathers.controls.Header
 		 * @see #headerProperties
 		 */
 		public function get headerFactory():Function
@@ -206,7 +210,9 @@ package feathers.controls
 		 * A set of key/value pairs to be passed down to the container's
 		 * header sub-component. The header may be any
 		 * <code>feathers.core.IFeathersControl</code> instance, but the default
-		 * is a <code>feathers.controls.Header</code> instance.
+		 * is a <code>feathers.controls.Header</code> instance. The available
+		 * properties depend on what type of component is returned by
+		 * <code>footerFactory</code>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -219,8 +225,8 @@ package feathers.controls
 		 * instead of using <code>headerProperties</code> will result in better
 		 * performance.</p>
 		 *
-		 * @see feathers.controls.Header
 		 * @see #headerFactory
+		 * @see feathers.controls.Header
 		 */
 		public function get headerProperties():Object
 		{
@@ -272,14 +278,16 @@ package feathers.controls
 
 		/**
 		 * A function used to generate the panel's footer sub-component.
-		 * This can be used to change properties on the footer when it is first
-		 * created. For instance, if you are skinning Feathers components
-		 * without a theme, you might use <code>footerFactory</code> to set
-		 * skins and text styles on the footer.
+		 * The footer must be an instance of <code>IFeathersControl</code>, and
+		 * by default, there is no footer. This factory can be used to change
+		 * properties on the footer when it is first created. For instance, if
+		 * you are skinning Feathers components without a theme, you might use
+		 * this factory to set skins and other styles on the footer.
 		 *
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():IFeathersControl</pre>
 		 *
+		 * @see feathers.core.IFeathersControl
 		 * @see #footerProperties
 		 */
 		public function get footerFactory():Function
@@ -347,7 +355,8 @@ package feathers.controls
 		 * A set of key/value pairs to be passed down to the container's
 		 * footer sub-component. The footer may be any
 		 * <code>feathers.core.IFeathersControl</code> instance, but there is no
-		 * default.
+		 * default. The available properties depend on what type of component is
+		 * returned by <code>footerFactory</code>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,

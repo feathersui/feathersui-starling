@@ -568,7 +568,12 @@ package feathers.controls
 		protected var _horizontalScrollBarFactory:Function = defaultHorizontalScrollBarFactory;
 
 		/**
-		 * Creates the horizontal scroll bar.
+		 * Creates the horizontal scroll bar. The horizontal scroll bar must be
+		 * an instance of <code>IScrollBar</code>. This factory can be used to
+		 * change properties on the horizontal scroll bar when it is first
+		 * created. For instance, if you are skinning Feathers components
+		 * without a theme, you might use this factory to set skins and other
+		 * styles on the horizontal scroll bar.
 		 *
 		 * <p>This function is expected to have the following signature:</p>
 		 *
@@ -603,7 +608,10 @@ package feathers.controls
 		/**
 		 * A set of key/value pairs to be passed down to the scroller's
 		 * horizontal scroll bar instance (if it exists). The scroll bar is an
-		 * <code>IScrollBar</code> implementation.
+		 * <code>IScrollBar</code> instance. The available properties depend on
+		 * which implementation of <code>IScrollBar</code> is returned by
+		 * <code>horizontalScrollBarFactory</code>. The most common
+		 * implementations are <code>SimpleScrollBar</code> and <code>ScrollBar</code>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -616,8 +624,10 @@ package feathers.controls
 		 * function instead of using <code>horizontalScrollBarProperties</code>
 		 * will result in better performance.</p>
 		 *
-		 * @see feathers.controls.IScrollBar
 		 * @see #horizontalScrollBarFactory
+		 * @see feathers.controls.IScrollBar
+		 * @see feathers.controls.SimpleScrollBar
+		 * @see feathers.controls.ScrollBar
 		 */
 		public function get horizontalScrollBarProperties():Object
 		{
@@ -668,7 +678,12 @@ package feathers.controls
 		protected var _verticalScrollBarFactory:Function = defaultVerticalScrollBarFactory;
 
 		/**
-		 * Creates the vertical scroll bar.
+		 * Creates the vertical scroll bar. The vertical scroll bar must be an
+		 * instance of <code>Button</code>. This factory can be used to change
+		 * properties on the vertical scroll bar when it is first created. For
+		 * instance, if you are skinning Feathers components without a theme,
+		 * you might use this factory to set skins and other styles on the
+		 * vertical scroll bar.
 		 *
 		 * <p>This function is expected to have the following signature:</p>
 		 *
@@ -703,7 +718,10 @@ package feathers.controls
 		/**
 		 * A set of key/value pairs to be passed down to the scroller's
 		 * vertical scroll bar instance (if it exists). The scroll bar is an
-		 * <code>IScrollBar</code> implementation.
+		 * <code>IScrollBar</code> instance. The available properties depend on
+		 * which implementation of <code>IScrollBar</code> is returned by
+		 * <code>verticalScrollBarFactory</code>. The most common
+		 * implementations are <code>SimpleScrollBar</code> and <code>ScrollBar</code>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -716,8 +734,10 @@ package feathers.controls
 		 * function instead of using <code>verticalScrollBarProperties</code>
 		 * will result in better performance.</p>
 		 *
-		 * @see feathers.controls.IScrollBar
 		 * @see #verticalScrollBarFactory
+		 * @see feathers.controls.IScrollBar
+		 * @see feathers.controls.SimpleScrollBar
+		 * @see feathers.controls.ScrollBar
 		 */
 		public function get verticalScrollBarProperties():Object
 		{
@@ -1644,7 +1664,8 @@ package feathers.controls
 
 		/**
 		 * DEPRECATED: A set of key/value pairs to be passed down to the
-		 * container's scroller sub-component.
+		 * container's scroller sub-component. As of 1.1, the "scroller" is no
+		 * longer a sub-component, but the component itself.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 1.1. It will be removed in a future version of

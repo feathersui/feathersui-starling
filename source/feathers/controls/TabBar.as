@@ -256,7 +256,11 @@ package feathers.controls
 		protected var _tabFactory:Function = defaultTabFactory;
 
 		/**
-		 * Creates a new tab.
+		 * Creates a new tab. A tab must be an instance of <code>Button</code>.
+		 * This factory can be used to change properties on the tabs when they
+		 * are first created. For instance, if you are skinning Feathers
+		 * components without a theme, you might use this factory to set skins
+		 * and other styles on a tab.
 		 *
 		 * <p>This function is expected to have the following signature:</p>
 		 *
@@ -290,8 +294,13 @@ package feathers.controls
 		protected var _firstTabFactory:Function;
 
 		/**
-		 * Creates a new first tab. If the firstTabFactory is null, then the
-		 * TabBar will use the tabFactory.
+		 * Creates a new first tab. If the <code>firstTabFactory</code> is
+		 * <code>null</code>, then the tab bar will use the <code>tabFactory</code>.
+		 * The first tab must be an instance of <code>Button</code>. This
+		 * factory can be used to change properties on the first tab when it
+		 * is first created. For instance, if you are skinning Feathers
+		 * components without a theme, you might use this factory to set skins
+		 * and other styles on the first tab.
 		 *
 		 * <p>This function is expected to have the following signature:</p>
 		 *
@@ -325,8 +334,13 @@ package feathers.controls
 		protected var _lastTabFactory:Function;
 
 		/**
-		 * Creates a new last tab. If the lastTabFactory is null, then the
-		 * TabBar will use the tabFactory.
+		 * Creates a new last tab. If the <code>lastTabFactory</code> is
+		 * <code>null</code>, then the tab bar will use the <code>tabFactory</code>.
+		 * The last tab must be an instance of <code>Button</code>. This
+		 * factory can be used to change properties on the last tab when it
+		 * is first created. For instance, if you are skinning Feathers
+		 * components without a theme, you might use this factory to set skins
+		 * and other styles on the last tab.
 		 *
 		 * <p>This function is expected to have the following signature:</p>
 		 *
@@ -565,8 +579,10 @@ package feathers.controls
 		 * A set of key/value pairs to be passed down to all of the tab bar's
 		 * tabs. These values are shared by each tabs, so values that cannot be
 		 * shared (such as display objects that need to be added to the display
-		 * list) should be passed to tabs in another way (such as with an
-		 * <code>DisplayListWatcher</code>).
+		 * list) should be passed to tabs using the <code>tabFactory</code> or
+		 * in a theme. The buttons in a tab bar are instances of
+		 * <code>feathers.controls.Button</code> that are created by
+		 * <code>tabFactory</code>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -579,9 +595,8 @@ package feathers.controls
 		 * of using <code>tabProperties</code> will result in better
 		 * performance.</p>
 		 *
-		 * @see feathers.controls.Button
-		 * @see feathers.core.DisplayListWatcher
 		 * @see #tabFactory
+		 * @see feathers.controls.Button
 		 */
 		public function get tabProperties():Object
 		{

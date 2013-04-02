@@ -315,15 +315,16 @@ package feathers.controls
 
 		/**
 		 * A function used to generate the numeric stepper's decrement button
-		 * sub-component. This can be used to change properties on the decrement
-		 * button when it is first created. For instance, if you are skinning
-		 * Feathers components without a theme, you might use
-		 * <code>decrementButtonFactory</code> to set skins and other styles on
-		 * the decrement button.
+		 * sub-component. The decrement button must be an instance of
+		 * <code>Button</code>. This factory can be used to change properties on
+		 * the decrement button when it is first created. For instance, if you
+		 * are skinning Feathers components without a theme, you might use this
+		 * factory to set skins and other styles on the decrement button.
 		 *
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():Button</pre>
 		 *
+		 * @see feathers.controls.Button
 		 * @see #decrementButtonProperties
 		 */
 		public function get decrementButtonFactory():Function
@@ -384,7 +385,8 @@ package feathers.controls
 		/**
 		 * A set of key/value pairs to be passed down to the numeric stepper's
 		 * decrement button sub-component. The decrement button is a
-		 * <code>feathers.controls.Button</code> instance.
+		 * <code>feathers.controls.Button</code> instance that is created by
+		 * <code>decrementButtonFactory</code>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -397,8 +399,8 @@ package feathers.controls
 		 * function instead of using <code>decrementButtonProperties</code> will
 		 * result in better performance.</p>
 		 *
-		 * @see feathers.controls.Button
 		 * @see #decrementButtonFactory
+		 * @see feathers.controls.Button
 		 */
 		public function get decrementButtonProperties():Object
 		{
@@ -476,15 +478,16 @@ package feathers.controls
 
 		/**
 		 * A function used to generate the numeric stepper's increment button
-		 * sub-component. This can be used to change properties on the increment
-		 * button when it is first created. For instance, if you are skinning
-		 * Feathers components without a theme, you might use
-		 * <code>incrementButtonFactory</code> to set skins and other styles on
-		 * the increment button.
+		 * sub-component. The increment button must be an instance of
+		 * <code>Button</code>. This factory can be used to change properties on
+		 * the increment button when it is first created. For instance, if you
+		 * are skinning Feathers components without a theme, you might use this
+		 * factory to set skins and other styles on the increment button.
 		 *
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():Button</pre>
 		 *
+		 * @see feathers.controls.Button
 		 * @see #incrementButtonProperties
 		 */
 		public function get incrementButtonFactory():Function
@@ -545,7 +548,8 @@ package feathers.controls
 		/**
 		 * A set of key/value pairs to be passed down to the numeric stepper's
 		 * increment button sub-component. The increment button is a
-		 * <code>feathers.controls.Button</code> instance.
+		 * <code>feathers.controls.Button</code> instance that is created by
+		 * <code>incrementButtonFactory</code>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -558,8 +562,8 @@ package feathers.controls
 		 * function instead of using <code>incrementButtonProperties</code> will
 		 * result in better performance.</p>
 		 *
-		 * @see feathers.controls.Button
 		 * @see #incrementButtonFactory
+		 * @see feathers.controls.Button
 		 */
 		public function get incrementButtonProperties():Object
 		{
@@ -637,15 +641,16 @@ package feathers.controls
 
 		/**
 		 * A function used to generate the numeric stepper's text input
-		 * sub-component. This can be used to change properties on the text
-		 * input when it is first created. For instance, if you are skinning
-		 * Feathers components without a theme, you might use
-		 * <code>textInputFactory</code> to set skins and text styles on the
-		 * text input.
+		 * sub-component. The text input must be an instance of <code>TextInput</code>.
+		 * This factory can be used to change properties on the text input when
+		 * it is first created. For instance, if you are skinning Feathers
+		 * components without a theme, you might use this factory to set skins
+		 * and other styles on the text input.
 		 *
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():TextInput</pre>
 		 *
+		 * @see feathers.controls.TextInput
 		 * @see #textInputProperties
 		 */
 		public function get textInputFactory():Function
@@ -672,8 +677,9 @@ package feathers.controls
 		protected var _customTextInputName:String;
 
 		/**
-		 * A name to add to the slider's thumb sub-component. Typically
-		 * used by a theme to provide different skins to different sliders.
+		 * A name to add to the numeric stepper's text input sub-component.
+		 * Typically used by a theme to provide different skins to different
+		 * text inputs.
 		 *
 		 * @see feathers.core.FeathersControl#nameList
 		 * @see #textInputFactory
@@ -703,9 +709,10 @@ package feathers.controls
 		protected var _textInputProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the slider's thumb
-		 * sub-component. The thumb is a <code>feathers.controls.Button</code>
-		 * instance.
+		 * A set of key/value pairs to be passed down to the numeric stepper's
+		 * text input sub-component. The text input is a
+		 * <code>feathers.controls.TextInput</code> instance that is created by
+		 * <code>textInputFactory</code>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -718,8 +725,8 @@ package feathers.controls
 		 * instead of using <code>textInputProperties</code> will result in
 		 * better performance.</p>
 		 *
-		 * @see feathers.controls.TextInput
 		 * @see #textInputFactory
+		 * @see feathers.controls.TextInput
 		 */
 		public function get textInputProperties():Object
 		{
