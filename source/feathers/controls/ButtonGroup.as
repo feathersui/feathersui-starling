@@ -375,7 +375,11 @@ package feathers.controls
 		protected var _buttonFactory:Function = defaultButtonFactory;
 
 		/**
-		 * Creates a new button.
+		 * Creates a new button. A button must be an instance of <code>Button</code>.
+		 * This factory can be used to change properties on the buttons when
+		 * they are first created. For instance, if you are skinning Feathers
+		 * components without a theme, you might use this factory to set skins
+		 * and other styles on a button.
 		 *
 		 * <p>This function is expected to have the following signature:</p>
 		 *
@@ -420,8 +424,13 @@ package feathers.controls
 		protected var _firstButtonFactory:Function;
 
 		/**
-		 * Creates a new first button. If the firstButtonFactory is null, then the
-		 * ButtonGroup will use the buttonFactory.
+		 * Creates a new first button. If the <code>firstButtonFactory</code> is
+		 * <code>null</code>, then the button group will use the <code>buttonFactory</code>.
+		 * The first button must be an instance of <code>Button</code>. This
+		 * factory can be used to change properties on the first button when
+		 * it is first created. For instance, if you are skinning Feathers
+		 * components without a theme, you might use this factory to set skins
+		 * and other styles on the first button.
 		 *
 		 * <p>This function is expected to have the following signature:</p>
 		 *
@@ -466,8 +475,13 @@ package feathers.controls
 		protected var _lastButtonFactory:Function;
 
 		/**
-		 * Creates a new last button. If the lastButtonFactory is null, then the
-		 * ButtonGroup will use the buttonFactory.
+		 * Creates a new last button. If the <code>lastButtonFactory</code> is
+		 * <code>null</code>, then the button group will use the <code>buttonFactory</code>.
+		 * The last button must be an instance of <code>Button</code>. This
+		 * factory can be used to change properties on the last button when
+		 * it is first created. For instance, if you are skinning Feathers
+		 * components without a theme, you might use this factory to set skins
+		 * and other styles on the last button.
 		 *
 		 * <p>This function is expected to have the following signature:</p>
 		 *
@@ -681,8 +695,9 @@ package feathers.controls
 		 * A set of key/value pairs to be passed down to all of the button
 		 * group's buttons. These values are shared by each button, so values
 		 * that cannot be shared (such as display objects that need to be added
-		 * to the display list) should be passed to buttons in another way (such
-		 * as with an <code>DisplayListWatcher</code>).
+		 * to the display list) should be passed to buttons using the
+		 * <code>buttonFactory</code> or in a theme. The buttons in a button
+		 * group are instances of <code>feathers.controls.Button</code>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -705,7 +720,6 @@ package feathers.controls
 		 * @see #firstButtonFactory
 		 * @see #lastButtonFactory
 		 * @see feathers.controls.Button
-		 * @see feathers.core.DisplayListWatcher
 		 */
 		public function get buttonProperties():Object
 		{

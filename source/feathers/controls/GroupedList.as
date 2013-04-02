@@ -731,8 +731,11 @@ package feathers.controls
 		 * A set of key/value pairs to be passed down to all of the list's item
 		 * renderers. These values are shared by each item renderer, so values
 		 * that cannot be shared (such as display objects that need to be added
-		 * to the display list) should be passed to the item renderers using an
-		 * <code>itemRendererFactory</code> or with a theme.
+		 * to the display list) should be passed to the item renderers using the
+		 * <code>itemRendererFactory</code> or with a theme. The item renderers
+		 * are instances of <code>IGroupedListItemRenderer</code>. The available
+		 * properties depend on which <code>IGroupedListItemRenderer</code>
+		 * implementation is returned by <code>itemRendererFactory</code>.
 		 *
 		 * <p>The following example customizes some item renderer properties:</p>
 		 *
@@ -751,8 +754,9 @@ package feathers.controls
 		 * of using <code>itemRendererProperties</code> will result in better
 		 * performance.</p>
 		 *
-		 * @see feathers.controls.renderers.IGroupedListItemRenderer
 		 * @see #itemRendererFactory
+		 * @see feathers.controls.renderers.IGroupedListItemRenderer
+		 * @see feathers.controls.renderers.DefaultGroupedListItemRenderer
 		 */
 		public function get itemRendererProperties():Object
 		{
@@ -1387,8 +1391,11 @@ package feathers.controls
 		 * list's header renderers. These values are shared by each header
 		 * renderer, so values that cannot be shared (such as display objects
 		 * that need to be added to the display list) should be passed to the
-		 * header renderers using a <code>headerRendererFactory</code> or with a
-		 * theme.
+		 * header renderers using the <code>headerRendererFactory</code> or in a
+		 * theme. The header renderers are instances of
+		 * <code>IGroupedListHeaderOrFooterRenderer</code>. The available
+		 * properties depend on which <code>IGroupedListItemRenderer</code>
+		 * implementation is returned by <code>headerRendererFactory</code>.
 		 *
 		 * <p>The following example customizes some header renderer properties:</p>
 		 *
@@ -1408,6 +1415,8 @@ package feathers.controls
 		 * performance.</p>
 		 *
 		 * @see #headerRendererFactory
+		 * @see feathers.controls.renderers.IGroupedListHeaderOrFooterRenderer
+		 * @see feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer
 		 */
 		public function get headerRendererProperties():Object
 		{
@@ -1624,7 +1633,10 @@ package feathers.controls
 		 * renderer, so values that cannot be shared (such as display objects
 		 * that need to be added to the display list) should be passed to the
 		 * footer renderers using a <code>footerRendererFactory</code> or with
-		 * a theme.
+		 * a theme. The header renderers are instances of
+		 * <code>IGroupedListHeaderOrFooterRenderer</code>. The available
+		 * properties depend on which <code>IGroupedListItemRenderer</code>
+		 * implementation is returned by <code>headerRendererFactory</code>.
 		 *
 		 * <p>The following example customizes some header renderer properties:</p>
 		 *
@@ -1644,6 +1656,8 @@ package feathers.controls
 		 * performance.</p>
 		 *
 		 * @see #footerRendererFactory
+		 * @see feathers.controls.renderers.IGroupedListHeaderOrFooterRenderer
+		 * @see feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer
 		 */
 		public function get footerRendererProperties():Object
 		{

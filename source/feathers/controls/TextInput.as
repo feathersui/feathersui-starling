@@ -258,7 +258,11 @@ package feathers.controls
 		/**
 		 * A function used to instantiate the text editor. If null,
 		 * <code>FeathersControl.defaultTextEditorFactory</code> is used
-		 * instead.
+		 * instead. The text editor must be an instance of
+		 * <code>ITextEditor</code>. This factory can be used to change
+		 * properties on the text editor when it is first created. For instance,
+		 * if you are skinning Feathers components without a theme, you might
+		 * use this factory to set styles on the text editor.
 		 *
 		 * <p>The factory should have the following function signature:</p>
 		 * <pre>function():ITextEditor</pre>
@@ -570,7 +574,8 @@ package feathers.controls
 
 		/**
 		 * A set of key/value pairs to be passed down to the text input's
-		 * <code>ITextEditor</code> instance.
+		 * text editor. The text editor is an <code>ITextEditor</code> instanc
+		 * that is created by <code>textEditorFactory</code>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -583,8 +588,8 @@ package feathers.controls
 		 * instead of using <code>textEditorProperties</code> will result in
 		 * better performance.</p>
 		 *
-		 * @see feathers.core.ITextEditor
 		 * @see #textEditorFactory
+		 * @see feathers.core.ITextEditor
 		 */
 		public function get textEditorProperties():Object
 		{

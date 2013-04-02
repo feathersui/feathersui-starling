@@ -699,15 +699,17 @@ package feathers.controls
 		protected var _minimumTrackFactory:Function;
 
 		/**
-		 * A function used to generate the scroll bar's minimum track sub-component.
-		 * This can be used to change properties on the minimum track when it is first
-		 * created. For instance, if you are skinning Feathers components
-		 * without a theme, you might use <code>minimumTrackFactory</code> to set
-		 * skins and other styles on the minimum track.
+		 * A function used to generate the scroll bar's minimum track
+		 * sub-component. The minimum track must be an instance of
+		 * <code>Button</code>. This factory can be used to change properties on
+		 * the minimum track when it is first created. For instance, if you
+		 * are skinning Feathers components without a theme, you might use this
+		 * factory to set skins and other styles on the minimum track.
 		 *
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():Button</pre>
 		 *
+		 * @see feathers.controls.Button
 		 * @see #minimumTrackProperties
 		 */
 		public function get minimumTrackFactory():Function
@@ -767,7 +769,8 @@ package feathers.controls
 		/**
 		 * A set of key/value pairs to be passed down to the scroll bar's
 		 * minimum track sub-component. The minimum track is a
-		 * <code>feathers.controls.Button</code> instance.
+		 * <code>feathers.controls.Button</code> instance. that is created by
+		 * <code>minimumTrackFactory</code>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -779,9 +782,9 @@ package feathers.controls
 		 * <p>Setting properties in a <code>minimumTrackFactory</code> function
 		 * instead of using <code>minimumTrackProperties</code> will result in
 		 * better performance.</p>
-		 * 
-		 * @see feathers.controls.Button
+		 *
 		 * @see #minimumTrackFactory
+		 * @see feathers.controls.Button
 		 */
 		public function get minimumTrackProperties():Object
 		{
@@ -832,15 +835,17 @@ package feathers.controls
 		protected var _maximumTrackFactory:Function;
 
 		/**
-		 * A function used to generate the scroll bar's maximum track sub-component.
-		 * This can be used to change properties on the maximum track when it is first
-		 * created. For instance, if you are skinning Feathers components
-		 * without a theme, you might use <code>maximumTrackFactory</code> to set
-		 * skins and other styles on the maximum track.
+		 * A function used to generate the scroll bar's maximum track
+		 * sub-component. The maximum track must be an instance of
+		 * <code>Button</code>. This factory can be used to change properties on
+		 * the maximum track when it is first created. For instance, if you
+		 * are skinning Feathers components without a theme, you might use this
+		 * factory to set skins and other styles on the maximum track.
 		 *
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():Button</pre>
 		 *
+		 * @see feathers.controls.Button
 		 * @see #maximumTrackProperties
 		 */
 		public function get maximumTrackFactory():Function
@@ -900,7 +905,8 @@ package feathers.controls
 		/**
 		 * A set of key/value pairs to be passed down to the scroll bar's
 		 * maximum track sub-component. The maximum track is a
-		 * <code>feathers.controls.Button</code> instance.
+		 * <code>feathers.controls.Button</code> instance that is created by
+		 * <code>maximumTrackFactory</code>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -912,9 +918,9 @@ package feathers.controls
 		 * <p>Setting properties in a <code>maximumTrackFactory</code> function
 		 * instead of using <code>maximumTrackProperties</code> will result in
 		 * better performance.</p>
-		 * 
-		 * @see feathers.controls.Button
+		 *
 		 * @see #maximumTrackFactory
+		 * @see feathers.controls.Button
 		 */
 		public function get maximumTrackProperties():Object
 		{
@@ -966,14 +972,16 @@ package feathers.controls
 
 		/**
 		 * A function used to generate the scroll bar's thumb sub-component.
-		 * This can be used to change properties on the thumb when it is first
+		 * The thumb must be an instance of <code>Button</code>. This factory
+		 * can be used to change properties on the thumb when it is first
 		 * created. For instance, if you are skinning Feathers components
-		 * without a theme, you might use <code>thumbFactory</code> to set
-		 * skins and text styles on the thumb.
+		 * without a theme, you might use this factory to set skins and other
+		 * styles on the thumb.
 		 *
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():Button</pre>
 		 *
+		 * @see feathers.controls.Button
 		 * @see #thumbProperties
 		 */
 		public function get thumbFactory():Function
@@ -1033,7 +1041,7 @@ package feathers.controls
 		/**
 		 * A set of key/value pairs to be passed down to the scroll bar's thumb
 		 * sub-component. The thumb is a <code>feathers.controls.Button</code>
-		 * instance.
+		 * instance that is created by <code>thumbFactory</code>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -1045,9 +1053,9 @@ package feathers.controls
 		 * <p>Setting properties in a <code>thumbFactory</code> function instead
 		 * of using <code>thumbProperties</code> will result in better
 		 * performance.</p>
-		 * 
-		 * @see feathers.controls.Button
+		 *
 		 * @see #thumbFactory
+		 * @see feathers.controls.Button
 		 */
 		public function get thumbProperties():Object
 		{
@@ -1098,15 +1106,17 @@ package feathers.controls
 		protected var _decrementButtonFactory:Function;
 
 		/**
-		 * A function used to generate the scroll bar's decrement button sub-component.
-		 * This can be used to change properties on the decrement button when it is first
-		 * created. For instance, if you are skinning Feathers components
-		 * without a theme, you might use <code>decrementButtonFactory</code> to set
-		 * skins and other styles on the maximum track.
+		 * A function used to generate the scroll bar's decrement button
+		 * sub-component. The decrement button must be an instance of
+		 * <code>Button</code>. This factory can be used to change properties on
+		 * the decrement button when it is first created. For instance, if you
+		 * are skinning Feathers components without a theme, you might use this
+		 * factory to set skins and other styles on the decrement button.
 		 *
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():Button</pre>
 		 *
+		 * @see feathers.controls.Button
 		 * @see #decrementButtonProperties
 		 */
 		public function get decrementButtonFactory():Function
@@ -1166,7 +1176,8 @@ package feathers.controls
 		/**
 		 * A set of key/value pairs to be passed down to the scroll bar's
 		 * decrement button sub-component. The decrement button is a
-		 * <code>feathers.controls.Button</code> instance.
+		 * <code>feathers.controls.Button</code> instance that is created by
+		 * <code>decrementButtonFactory</code>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -1178,9 +1189,9 @@ package feathers.controls
 		 * <p>Setting properties in a <code>decrementButtonFactory</code>
 		 * function instead of using <code>decrementButtonProperties</code> will
 		 * result in better performance.</p>
-		 * 
-		 * @see feathers.controls.Button
+		 *
 		 * @see #decrementButtonFactory
+		 * @see feathers.controls.Button
 		 */
 		public function get decrementButtonProperties():Object
 		{
@@ -1231,15 +1242,17 @@ package feathers.controls
 		protected var _incrementButtonFactory:Function;
 
 		/**
-		 * A function used to generate the scroll bar's increment button sub-component.
-		 * This can be used to change properties on the increment button when it is first
-		 * created. For instance, if you are skinning Feathers components
-		 * without a theme, you might use <code>incrementButtonFactory</code> to set
-		 * skins and other styles on the maximum track.
+		 * A function used to generate the scroll bar's increment button
+		 * sub-component. The increment button must be an instance of
+		 * <code>Button</code>. This factory can be used to change properties on
+		 * the increment button when it is first created. For instance, if you
+		 * are skinning Feathers components without a theme, you might use this
+		 * factory to set skins and other styles on the increment button.
 		 *
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():Button</pre>
 		 *
+		 * @see feathers.controls.Button
 		 * @see #incrementButtonProperties
 		 */
 		public function get incrementButtonFactory():Function
@@ -1299,7 +1312,8 @@ package feathers.controls
 		/**
 		 * A set of key/value pairs to be passed down to the scroll bar's
 		 * increment button sub-component. The increment button is a
-		 * <code>feathers.controls.Button</code> instance.
+		 * <code>feathers.controls.Button</code> instance that is created by
+		 * <code>incrementButtonFactory</code>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -1311,9 +1325,9 @@ package feathers.controls
 		 * <p>Setting properties in a <code>incrementButtonFactory</code>
 		 * function instead of using <code>incrementButtonProperties</code> will
 		 * result in better performance.</p>
-		 * 
-		 * @see feathers.controls.Button
+		 *
 		 * @see #incrementButtonFactory
+		 * @see feathers.controls.Button
 		 */
 		public function get incrementButtonProperties():Object
 		{

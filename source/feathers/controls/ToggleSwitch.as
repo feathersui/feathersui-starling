@@ -396,12 +396,19 @@ package feathers.controls
 		protected var _defaultLabelProperties:PropertyProxy;
 
 		/**
-		 * The key/value pairs to pass to the labels, if no higher priority
-		 * format is available. For the ON label, <code>onLabelProperties</code>
-		 * takes priority. For the OFF label, <code>offLabelProperties</code>
-		 * takes priority.
+		 * The default label properties are a set of key/value pairs to be
+		 * passed down to the toggle switch's label text renderers, and it is
+		 * used when no specific properties are defined for a specific label
+		 * text renderer's current state. The label text renderers are <code>ITextRenderer</code>
+		 * instances. The available properties depend on which <code>ITextRenderer</code>
+		 * implementation is returned by <code>labelFactory</code>. The most
+		 * common implementations are <code>BitmapFontTextRenderer</code> and
+		 * <code>TextFieldTextRenderer</code>.
 		 *
+		 * @see #labelFactory
 		 * @see feathers.core.ITextRenderer
+		 * @see feathers.core.BitmapFontTextRenderer
+		 * @see feathers.core.TextFieldTextRenderer
 		 * @see #onLabelProperties
 		 * @see #offLabelProperties
 		 * @see #disabledLabelProperties
@@ -442,10 +449,19 @@ package feathers.controls
 		protected var _disabledLabelProperties:PropertyProxy;
 
 		/**
-		 * The key/value pairs to pass to the labels, if the toggle switch is
-		 * disabled.
+		 * A set of key/value pairs to be passed down to the toggle switch's
+		 * label text renderers when the toggle switch is disabled. The label
+		 * text renderers are <code>ITextRenderer</code> instances. The
+		 * available properties depend on which <code>ITextRenderer</code>
+		 * implementation is returned by <code>labelFactory</code>. The most
+		 * common implementations are <code>BitmapFontTextRenderer</code> and
+		 * <code>TextFieldTextRenderer</code>.
 		 *
+		 * @see #labelFactory
 		 * @see feathers.core.ITextRenderer
+		 * @see feathers.core.BitmapFontTextRenderer
+		 * @see feathers.core.TextFieldTextRenderer
+		 * @see #defaultLabelProperties
 		 */
 		public function get disabledLabelProperties():Object
 		{
@@ -483,10 +499,20 @@ package feathers.controls
 		protected var _onLabelProperties:PropertyProxy;
 
 		/**
-		 * The key/value pairs passed to the ON label. If <code>null</code>,
-		 * then <code>defaultLabelProperties</code> will be used instead.
+		 * A set of key/value pairs to be passed down to the toggle switch's
+		 * ON label text renderer. If <code>null</code>, then
+		 * <code>defaultLabelProperties</code> is used instead. The label text
+		 * renderers are <code>ITextRenderer</code> instances. The available
+		 * properties depend on which <code>ITextRenderer</code> implementation
+		 * is returned by <code>labelFactory</code>. The most common
+		 * implementations are <code>BitmapFontTextRenderer</code> and
+		 * <code>TextFieldTextRenderer</code>.
 		 *
+		 * @see #labelFactory
 		 * @see feathers.core.ITextRenderer
+		 * @see feathers.core.BitmapFontTextRenderer
+		 * @see feathers.core.TextFieldTextRenderer
+		 * @see #defaultLabelProperties
 		 */
 		public function get onLabelProperties():Object
 		{
@@ -524,10 +550,20 @@ package feathers.controls
 		protected var _offLabelProperties:PropertyProxy;
 
 		/**
-		 * The key/value pairs passed to the OFF label. If <code>null</code>,
-		 * then <code>defaultLabelProperties</code> will be used instead.
+		 * A set of key/value pairs to be passed down to the toggle switch's
+		 * OFF label text renderer. If <code>null</code>, then
+		 * <code>defaultLabelProperties</code> is used instead. The label text
+		 * renderers are <code>ITextRenderer</code> instances. The available
+		 * properties depend on which <code>ITextRenderer</code> implementation
+		 * is returned by <code>labelFactory</code>. The most common
+		 * implementations are <code>BitmapFontTextRenderer</code> and
+		 * <code>TextFieldTextRenderer</code>.
 		 *
+		 * @see #labelFactory
 		 * @see feathers.core.ITextRenderer
+		 * @see feathers.core.BitmapFontTextRenderer
+		 * @see feathers.core.TextFieldTextRenderer
+		 * @see #defaultLabelProperties
 		 */
 		public function get offLabelProperties():Object
 		{
@@ -592,7 +628,12 @@ package feathers.controls
 		protected var _labelFactory:Function;
 
 		/**
-		 * A function used to instantiate the toggle switch's label subcomponents.
+		 * A function used to instantiate the toggle switch's label text
+		 * renderer sub-components. The label text renderers must be instances
+		 * of <code>ITextRenderer</code>. This factory can be used to change
+		 * properties on the label text renderer when it is first created. For
+		 * instance, if you are skinning Feathers components without a theme,
+		 * you might use this factory to style the label text renderer.
 		 *
 		 * <p>The factory should have the following function signature:</p>
 		 * <pre>function():ITextRenderer</pre>
@@ -809,15 +850,17 @@ package feathers.controls
 		protected var _onTrackFactory:Function;
 
 		/**
-		 * A function used to generate the toggle switch's on track sub-component.
-		 * This can be used to change properties on the on track when it is first
-		 * created. For instance, if you are skinning Feathers components
-		 * without a theme, you might use <code>onTrackFactory</code> to set
-		 * skins and other styles on the on track.
+		 * A function used to generate the toggle switch's on track
+		 * sub-component. The on track must be an instance of <code>Button</code>.
+		 * This factory can be used to change properties on the on track when it
+		 * is first created. For instance, if you are skinning Feathers
+		 * components without a theme, you might use this factory to set skins
+		 * and other styles on the on track.
 		 *
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():Button</pre>
 		 *
+		 * @see feathers.controls.Button
 		 * @see #onTrackProperties
 		 */
 		public function get onTrackFactory():Function
@@ -942,15 +985,17 @@ package feathers.controls
 		protected var _offTrackFactory:Function;
 
 		/**
-		 * A function used to generate the toggle switch's off track sub-component.
-		 * This can be used to change properties on the off track when it is first
-		 * created. For instance, if you are skinning Feathers components
-		 * without a theme, you might use <code>offTrackFactory</code> to set
-		 * skins and other styles on the off track.
+		 * A function used to generate the toggle switch's off track
+		 * sub-component. The off track must be an instance of <code>Button</code>.
+		 * This factory can be used to change properties on the off track when it
+		 * is first created. For instance, if you are skinning Feathers
+		 * components without a theme, you might use this factory to set skins
+		 * and other styles on the off track.
 		 *
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():Button</pre>
 		 *
+		 * @see feathers.controls.Button
 		 * @see #offTrackProperties
 		 */
 		public function get offTrackFactory():Function

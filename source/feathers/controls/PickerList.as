@@ -386,14 +386,16 @@ package feathers.controls
 
 		/**
 		 * A function used to generate the picker list's button sub-component.
-		 * This can be used to change properties on the button when it is first
+		 * The button must be an instance of <code>Button</code>. This factory
+		 * can be used to change properties on the button when it is first
 		 * created. For instance, if you are skinning Feathers components
-		 * without a theme, you might use <code>buttonFactory</code> to set
-		 * skins and text styles on the button.
+		 * without a theme, you might use this factory to set skins and other
+		 * styles on the button.
 		 *
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():Button</pre>
 		 *
+		 * @see feathers.controls.Button
 		 * @see #buttonProperties
 		 */
 		public function get buttonFactory():Function
@@ -453,7 +455,7 @@ package feathers.controls
 		/**
 		 * A set of key/value pairs to be passed down to the picker's button
 		 * sub-component. It is a <code>feathers.controls.Button</code>
-		 * instance.
+		 * instance that is created by <code>buttonFactory</code>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -465,9 +467,9 @@ package feathers.controls
 		 * <p>Setting properties in a <code>buttonFactory</code> function
 		 * instead of using <code>buttonProperties</code> will result in better
 		 * performance.</p>
-		 * 
-		 * @see feathers.controls.Button
+		 *
 		 * @see #buttonFactory
+		 * @see feathers.controls.Button
 		 */
 		public function get buttonProperties():Object
 		{
@@ -519,14 +521,16 @@ package feathers.controls
 
 		/**
 		 * A function used to generate the picker list's pop-up list
-		 * sub-component. This can be used to change properties on the list when
-		 * it is first created. For instance, if you are skinning Feathers
-		 * components without a theme, you might use <code>listFactory</code> to
-		 * set skins and other styles on the list.
+		 * sub-component. The list must be an instance of <code>List</code>.
+		 * This factory can be used to change properties on the list when it is
+		 * first created. For instance, if you are skinning Feathers components
+		 * without a theme, you might use this factory to set skins and other
+		 * styles on the list.
 		 *
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():List</pre>
 		 *
+		 * @see feathers.controls.List
 		 * @see #listProperties
 		 */
 		public function get listFactory():Function
@@ -586,7 +590,8 @@ package feathers.controls
 		/**
 		 * A set of key/value pairs to be passed down to the picker's pop-up
 		 * list sub-component. The pop-up list is a
-		 * <code>feathers.controls.List</code> instance.
+		 * <code>feathers.controls.List</code> instance that is created by
+		 * <code>listFactory</code>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -598,9 +603,9 @@ package feathers.controls
 		 * <p>Setting properties in a <code>listFactory</code> function
 		 * instead of using <code>listProperties</code> will result in better
 		 * performance.</p>
-		 * 
-		 * @see feathers.controls.List
+		 *
 		 * @see #listFactory
+		 * @see feathers.controls.List
 		 */
 		public function get listProperties():Object
 		{
