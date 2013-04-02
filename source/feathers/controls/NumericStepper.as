@@ -393,7 +393,12 @@ package feathers.controls
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
+		 * <p>Setting properties in a <code>decrementButtonFactory</code>
+		 * function instead of using <code>decrementButtonProperties</code> will
+		 * result in better performance.</p>
+		 *
 		 * @see feathers.controls.Button
+		 * @see #decrementButtonFactory
 		 */
 		public function get decrementButtonProperties():Object
 		{
@@ -549,7 +554,12 @@ package feathers.controls
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
+		 * <p>Setting properties in a <code>incrementButtonFactory</code>
+		 * function instead of using <code>incrementButtonProperties</code> will
+		 * result in better performance.</p>
+		 *
 		 * @see feathers.controls.Button
+		 * @see #incrementButtonFactory
 		 */
 		public function get incrementButtonProperties():Object
 		{
@@ -704,7 +714,12 @@ package feathers.controls
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
-		 * @see feathers.controls.Button
+		 * <p>Setting properties in a <code>textInputFactory</code> function
+		 * instead of using <code>textInputProperties</code> will result in
+		 * better performance.</p>
+		 *
+		 * @see feathers.controls.TextInput
+		 * @see #textInputFactory
 		 */
 		public function get textInputProperties():Object
 		{

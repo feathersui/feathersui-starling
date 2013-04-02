@@ -885,8 +885,13 @@ package feathers.controls
 		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 *
+		 * <p>Setting properties in a <code>onTrackFactory</code> function
+		 * instead of using <code>onTrackProperties</code> will result in
+		 * better performance.</p>
 		 * 
 		 * @see feathers.controls.Button
+		 * @see #onTrackFactory
 		 */
 		public function get onTrackProperties():Object
 		{
@@ -1013,8 +1018,13 @@ package feathers.controls
 		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 *
+		 * <p>Setting properties in a <code>offTrackFactory</code> function
+		 * instead of using <code>offTrackProperties</code> will result in
+		 * better performance.</p>
 		 * 
 		 * @see feathers.controls.Button
+		 * @see #offTrackFactory
 		 */
 		public function get offTrackProperties():Object
 		{
@@ -1141,8 +1151,13 @@ package feathers.controls
 		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 *
+		 * <p>Setting properties in a <code>thumbFactory</code> function instead
+		 * of using <code>thumbProperties</code> will result in better
+		 * performance.</p>
 		 * 
 		 * @see feathers.controls.Button
+		 * @see #thumbFactory
 		 */
 		public function get thumbProperties():Object
 		{

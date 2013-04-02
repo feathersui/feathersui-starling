@@ -1168,7 +1168,10 @@ package feathers.controls.renderers
 		protected var _accessoryLabelProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to a label accessory.
+		 * A set of key/value pairs to be passed down to a label accessory. The
+		 * title is an <code>ITextRenderer</code> instance. The available
+		 * properties depend on which <code>ITextRenderer</code> implementation
+		 * is used.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -1177,7 +1180,12 @@ package feathers.controls.renderers
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
+		 * <p>Setting properties in a <code>accessoryLabelFactory</code>
+		 * function instead of using <code>accessoryLabelProperties</code> will
+		 * result in better performance.</p>
+		 *
 		 * @see feathers.core.ITextRenderer
+		 * @see #accessoryLabelFactory
 		 * @see #accessoryLabelField
 		 * @see #accessoryLabelFunction
 		 */
