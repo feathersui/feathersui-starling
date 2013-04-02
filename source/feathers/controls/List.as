@@ -668,6 +668,15 @@ package feathers.controls
 			this.pendingScrollDuration = animationDuration;
 			this.invalidate(INVALIDATION_FLAG_PENDING_SCROLL);
 		}
+
+		/**
+		 * @private
+		 */
+		override public function dispose():void
+		{
+			this.dataProvider = null;
+			super.dispose();
+		}
 		
 		/**
 		 * @private

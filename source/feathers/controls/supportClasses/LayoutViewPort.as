@@ -263,10 +263,7 @@ package feathers.controls.supportClasses
 
 		override public function dispose():void
 		{
-			if(this._layout)
-			{
-				EventDispatcher(this._layout).removeEventListener(Event.CHANGE, layout_changeHandler);
-			}
+			this.layout = null;
 			super.dispose();
 		}
 

@@ -912,6 +912,14 @@ package feathers.controls.supportClasses
 			return this._layout.getScrollPositionForIndex(displayIndex, this._layoutItems, 0, 0, this.actualVisibleWidth, this.actualVisibleHeight, result);
 		}
 
+		override public function dispose():void
+		{
+			this.owner = null;
+			this.dataProvider = null;
+			this.layout = null;
+			super.dispose();
+		}
+
 		override protected function draw():void
 		{
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);

@@ -126,6 +126,15 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		override public function dispose():void
+		{
+			this.owner = null;
+			super.dispose();
+		}
+
+		/**
+		 * @private
+		 */
 		protected function owner_scrollHandler(event:Event):void
 		{
 			if(this._touchPointID < 0)
