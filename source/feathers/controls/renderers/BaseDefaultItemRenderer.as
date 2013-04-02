@@ -1239,6 +1239,15 @@ package feathers.controls.renderers
 		{
 			this.replaceIcon(null);
 			this.replaceAccessory(null);
+			if(this._stateDelayTimer)
+			{
+				if(this._stateDelayTimer.running)
+				{
+					this._stateDelayTimer.stop();
+				}
+				this._stateDelayTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, stateDelayTimer_timerCompleteHandler);
+				this._stateDelayTimer = null;
+			}
 			super.dispose();
 		}
 

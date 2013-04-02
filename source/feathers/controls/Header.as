@@ -851,6 +851,16 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override public function dispose():void
+		{
+			this.leftItems = null;
+			this.rightItems = null;
+			super.dispose();
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function initialize():void
 		{
 			if(!this._layout)

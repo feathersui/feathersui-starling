@@ -1883,6 +1883,15 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override public function dispose():void
+		{
+			this.dataProvider = null;
+			super.dispose();
+		}
+
+		/**
+		 * @private
+		 */
 		override public function scrollToPosition(horizontalScrollPosition:Number, verticalScrollPosition:Number, animationDuration:Number = 0):void
 		{
 			this.pendingItemIndex = -1;
