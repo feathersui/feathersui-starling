@@ -575,6 +575,7 @@ package feathers.controls
 		 * <pre>function():IScrollBar</pre>
 		 *
 		 * @see feathers.controls.IScrollBar
+		 * @see #horizontalScrollBarProperties
 		 */
 		public function get horizontalScrollBarFactory():Function
 		{
@@ -610,6 +611,10 @@ package feathers.controls
 		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 *
+		 * <p>Setting properties in a <code>horizontalScrollBarFactory</code>
+		 * function instead of using <code>horizontalScrollBarProperties</code>
+		 * will result in better performance.</p>
 		 *
 		 * @see feathers.controls.IScrollBar
 		 * @see #horizontalScrollBarFactory
@@ -670,6 +675,7 @@ package feathers.controls
 		 * <pre>function():IScrollBar</pre>
 		 *
 		 * @see feathers.controls.IScrollBar
+		 * @see #verticalScrollBarProperties
 		 */
 		public function get verticalScrollBarFactory():Function
 		{
@@ -705,6 +711,10 @@ package feathers.controls
 		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 *
+		 * <p>Setting properties in a <code>verticalScrollBarFactory</code>
+		 * function instead of using <code>verticalScrollBarProperties</code>
+		 * will result in better performance.</p>
 		 *
 		 * @see feathers.controls.IScrollBar
 		 * @see #verticalScrollBarFactory

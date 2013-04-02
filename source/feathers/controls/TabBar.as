@@ -575,8 +575,13 @@ package feathers.controls
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
+		 * <p>Setting properties in a <code>tabFactory</code> function instead
+		 * of using <code>tabProperties</code> will result in better
+		 * performance.</p>
+		 *
 		 * @see feathers.controls.Button
 		 * @see feathers.core.DisplayListWatcher
+		 * @see #tabFactory
 		 */
 		public function get tabProperties():Object
 		{

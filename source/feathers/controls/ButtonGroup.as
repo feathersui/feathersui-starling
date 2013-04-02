@@ -682,7 +682,7 @@ package feathers.controls
 		 * group's buttons. These values are shared by each button, so values
 		 * that cannot be shared (such as display objects that need to be added
 		 * to the display list) should be passed to buttons in another way (such
-		 * as with an <code>AddedWatcher</code>).
+		 * as with an <code>DisplayListWatcher</code>).
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -696,6 +696,10 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * group.buttonProperties.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 		 * group.buttonProperties.verticalAlign = Button.VERTICAL_ALIGN_TOP;</listing>
+		 *
+		 * <p>Setting properties in a <code>buttonFactory</code> function instead
+		 * of using <code>buttonProperties</code> will result in better
+		 * performance.</p>
 		 *
 		 * @see #buttonFactory
 		 * @see #firstButtonFactory

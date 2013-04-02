@@ -747,6 +747,10 @@ package feathers.controls
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
+		 * <p>Setting properties in a <code>itemRendererFactory</code> function instead
+		 * of using <code>itemRendererProperties</code> will result in better
+		 * performance.</p>
+		 *
 		 * @see feathers.controls.renderers.IGroupedListItemRenderer
 		 * @see #itemRendererFactory
 		 */
@@ -1399,6 +1403,10 @@ package feathers.controls
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
+		 * <p>Setting properties in a <code>headerRendererFactory</code> function instead
+		 * of using <code>headerRendererProperties</code> will result in better
+		 * performance.</p>
+		 *
 		 * @see #headerRendererFactory
 		 */
 		public function get headerRendererProperties():Object
@@ -1630,6 +1638,10 @@ package feathers.controls
 		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 *
+		 * <p>Setting properties in a <code>footerRendererFactory</code> function instead
+		 * of using <code>footerRendererProperties</code> will result in better
+		 * performance.</p>
 		 *
 		 * @see #footerRendererFactory
 		 */

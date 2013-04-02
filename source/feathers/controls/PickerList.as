@@ -461,8 +461,13 @@ package feathers.controls
 		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 *
+		 * <p>Setting properties in a <code>buttonFactory</code> function
+		 * instead of using <code>buttonProperties</code> will result in better
+		 * performance.</p>
 		 * 
 		 * @see feathers.controls.Button
+		 * @see #buttonFactory
 		 */
 		public function get buttonProperties():Object
 		{
@@ -589,8 +594,13 @@ package feathers.controls
 		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 *
+		 * <p>Setting properties in a <code>listFactory</code> function
+		 * instead of using <code>listProperties</code> will result in better
+		 * performance.</p>
 		 * 
 		 * @see feathers.controls.List
+		 * @see #listFactory
 		 */
 		public function get listProperties():Object
 		{

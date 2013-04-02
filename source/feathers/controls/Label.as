@@ -128,7 +128,12 @@ package feathers.controls
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
+		 * <p>Setting properties in a <code>textRendererFactory</code> function
+		 * instead of using <code>textRendererProperties</code> will result in
+		 * better performance.</p>
+		 *
 		 * @see feathers.core.ITextRenderer
+		 * @see #textRendererFactory
 		 */
 		public function get textRendererProperties():Object
 		{

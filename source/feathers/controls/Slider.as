@@ -719,8 +719,13 @@ package feathers.controls
 		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 *
+		 * <p>Setting properties in a <code>minimumTrackFactory</code> function
+		 * instead of using <code>minimumTrackProperties</code> will result in
+		 * better performance.</p>
 		 * 
 		 * @see feathers.controls.Button
+		 * @see #minimumTrackFactory
 		 */
 		public function get minimumTrackProperties():Object
 		{
@@ -847,8 +852,13 @@ package feathers.controls
 		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 *
+		 * <p>Setting properties in a <code>maximumTrackFactory</code> function
+		 * instead of using <code>maximumTrackProperties</code> will result in
+		 * better performance.</p>
 		 * 
 		 * @see feathers.controls.Button
+		 * @see #maximumTrackFactory
 		 */
 		public function get maximumTrackProperties():Object
 		{
@@ -975,8 +985,13 @@ package feathers.controls
 		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 *
+		 * <p>Setting properties in a <code>thumbFactory</code> function instead
+		 * of using <code>thumbProperties</code> will result in better
+		 * performance.</p>
 		 * 
 		 * @see feathers.controls.Button
+		 * @see #thumbFactory
 		 */
 		public function get thumbProperties():Object
 		{

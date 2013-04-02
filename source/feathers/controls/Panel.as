@@ -215,7 +215,12 @@ package feathers.controls
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
+		 * <p>Setting properties in a <code>headerFactory</code> function
+		 * instead of using <code>headerProperties</code> will result in better
+		 * performance.</p>
+		 *
 		 * @see feathers.controls.Header
+		 * @see #headerFactory
 		 */
 		public function get headerProperties():Object
 		{
@@ -350,6 +355,12 @@ package feathers.controls
 		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 *
+		 * <p>Setting properties in a <code>footerFactory</code> function
+		 * instead of using <code>footerProperties</code> will result in better
+		 * performance.</p>
+		 *
+		 * @see #footerFactory
 		 */
 		public function get footerProperties():Object
 		{
