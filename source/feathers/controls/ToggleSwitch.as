@@ -192,36 +192,63 @@ package feathers.controls
 		}
 
 		/**
-		 * The value added to the <code>nameList</code> of the off label.
+		 * The value added to the <code>nameList</code> of the off label. This
+		 * variable is <code>protected</code> so that sub-classes can customize
+		 * the on label name in their constructors instead of using the default
+		 * name defined by <code>DEFAULT_CHILD_NAME_ON_LABEL</code>.
 		 *
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var onLabelName:String = DEFAULT_CHILD_NAME_ON_LABEL;
 
 		/**
-		 * The value added to the <code>nameList</code> of the on label.
+		 * The value added to the <code>nameList</code> of the on label. This
+		 * variable is <code>protected</code> so that sub-classes can customize
+		 * the off label name in their constructors instead of using the default
+		 * name defined by <code>DEFAULT_CHILD_NAME_OFF_LABEL</code>.
 		 *
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var offLabelName:String = DEFAULT_CHILD_NAME_OFF_LABEL;
 
 		/**
-		 * The value added to the <code>nameList</code> of the on track.
+		 * The value added to the <code>nameList</code> of the on track. This
+		 * variable is <code>protected</code> so that sub-classes can customize
+		 * the on track name in their constructors instead of using the default
+		 * name defined by <code>DEFAULT_CHILD_NAME_ON_TRACK</code>.
 		 *
+		 * <p>To customize the on track name without subclassing, see
+		 * <code>customOnTrackName</code>.</p>
+		 *
+		 * @see #customOnTrackName
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var onTrackName:String = DEFAULT_CHILD_NAME_ON_TRACK;
 
 		/**
-		 * The value added to the <code>nameList</code> of the off track.
+		 * The value added to the <code>nameList</code> of the off track. This
+		 * variable is <code>protected</code> so that sub-classes can customize
+		 * the off track name in their constructors instead of using the default
+		 * name defined by <code>DEFAULT_CHILD_NAME_OFF_TRACK</code>.
 		 *
+		 * <p>To customize the off track name without subclassing, see
+		 * <code>customOffTrackName</code>.</p>
+		 *
+		 * @see #customOffTrackName
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var offTrackName:String = DEFAULT_CHILD_NAME_OFF_TRACK;
 
 		/**
-		 * The value added to the <code>nameList</code> of the thumb.
+		 * The value added to the <code>nameList</code> of the thumb. This
+		 * variable is <code>protected</code> so that sub-classes can customize
+		 * the thumb name in their constructors instead of using the default
+		 * name defined by <code>DEFAULT_CHILD_NAME_THUMB</code>.
 		 *
+		 * <p>To customize the thumb name without subclassing, see
+		 * <code>customThumbName</code>.</p>
+		 *
+		 * @see #customThumbName
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var thumbName:String = DEFAULT_CHILD_NAME_THUMB;

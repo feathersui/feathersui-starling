@@ -143,14 +143,20 @@ package feathers.controls
 		}
 
 		/**
-		 * The value added to the <code>nameList</code> of the header's title.
+		 * The value added to the <code>nameList</code> of the header's title. This
+		 * variable is <code>protected</code> so that sub-classes can customize
+		 * the title name in their constructors instead of using the default
+		 * name defined by <code>DEFAULT_CHILD_NAME_TITLE</code>.
 		 *
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var titleName:String = DEFAULT_CHILD_NAME_TITLE;
 
 		/**
-		 * The value added to the <code>nameList</code> of the header's items.
+		 * The value added to the <code>nameList</code> of the header's items. This
+		 * variable is <code>protected</code> so that sub-classes can customize
+		 * the item name in their constructors instead of using the default
+		 * name defined by <code>DEFAULT_CHILD_NAME_ITEM</code>.
 		 *
 		 * @see feathers.core.IFeathersControl#nameList
 		 */

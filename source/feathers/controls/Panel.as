@@ -113,13 +113,27 @@ package feathers.controls
 		/**
 		 * The default value added to the <code>nameList</code> of the header.
 		 *
+		 * <p>To customize the header name without subclassing, see
+		 * <code>customHeaderName</code>.</p> This
+		 * variable is <code>protected</code> so that sub-classes can customize
+		 * the header name in their constructors instead of using the default
+		 * name defined by <code>DEFAULT_CHILD_NAME_HEADER</code>.
+		 *
+		 * @see #customHeaderName
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var headerName:String = DEFAULT_CHILD_NAME_HEADER;
 
 		/**
-		 * The default value added to the <code>nameList</code> of the footer.
+		 * The default value added to the <code>nameList</code> of the footer. This
+		 * variable is <code>protected</code> so that sub-classes can customize
+		 * the footer name in their constructors instead of using the default
+		 * name defined by <code>DEFAULT_CHILD_NAME_FOOTER</code>.
 		 *
+		 * <p>To customize the footer name without subclassing, see
+		 * <code>customFooterName</code>.</p>
+		 *
+		 * @see #customFooterName
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var footerName:String = DEFAULT_CHILD_NAME_FOOTER;

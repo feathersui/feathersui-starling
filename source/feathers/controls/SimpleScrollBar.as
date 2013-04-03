@@ -110,8 +110,15 @@ package feathers.controls
 		}
 
 		/**
-		 * The value added to the <code>nameList</code> of the thumb.
+		 * The value added to the <code>nameList</code> of the thumb. This
+		 * variable is <code>protected</code> so that sub-classes can customize
+		 * the thumb name in their constructors instead of using the default
+		 * name defined by <code>DEFAULT_CHILD_NAME_THUMB</code>.
 		 *
+		 * <p>To customize the thumb name without subclassing, see
+		 * <code>customThumbName</code>.</p>
+		 *
+		 * @see #customThumbName
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var thumbName:String = DEFAULT_CHILD_NAME_THUMB;

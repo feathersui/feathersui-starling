@@ -321,16 +321,28 @@ package feathers.controls
 
 		/**
 		 * The value added to the <code>nameList</code> of the horizontal scroll
-		 * bar.
+		 * bar. This variable is <code>protected</code> so that sub-classes can
+		 * customize the horizontal scroll bar name in their constructors
+		 * instead of using the default name defined by <code>DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR</code>.
 		 *
+		 * <p>To customize the horizontal scroll bar name without subclassing, see
+		 * <code>customHorizontalScrollBarName</code>.</p>
+		 *
+		 * @see #customHorizontalScrollBarName
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var horizontalScrollBarName:String = DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR;
 
 		/**
 		 * The value added to the <code>nameList</code> of the vertical scroll
-		 * bar.
+		 * bar. This variable is <code>protected</code> so that sub-classes can
+		 * customize the horizontal scroll bar name in their constructors
+		 * instead of using the default name defined by <code>DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR</code>.
 		 *
+		 * <p>To customize the vertical scroll bar name without subclassing, see
+		 * <code>customVerticalScrollBarName</code>.</p>
+		 *
+		 * @see #customVerticalScrollBarName
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var verticalScrollBarName:String = DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR;
@@ -603,6 +615,38 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _customHorizontalScrollBarName:String;
+
+		/**
+		 * A name to add to the container's horizontal scroll bar sub-component.
+		 * Typically used by a theme to provide different skins to different
+		 * containers.
+		 *
+		 * @see feathers.core.FeathersControl#nameList
+		 * @see #horizontalScrollBarFactory
+		 * @see #horizontalScrollBarProperties
+		 */
+		public function get customHorizontalScrollBarName():String
+		{
+			return this._customHorizontalScrollBarName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customHorizontalScrollBarName(value:String):void
+		{
+			if(this._customHorizontalScrollBarName == value)
+			{
+				return;
+			}
+			this._customHorizontalScrollBarName = value;
+			this.invalidate(INVALIDATION_FLAG_SCROLL_BAR_RENDERER);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _horizontalScrollBarProperties:PropertyProxy;
 
 		/**
@@ -707,6 +751,38 @@ package feathers.controls
 				return;
 			}
 			this._verticalScrollBarFactory = value;
+			this.invalidate(INVALIDATION_FLAG_SCROLL_BAR_RENDERER);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _customVerticalScrollBarName:String;
+
+		/**
+		 * A name to add to the container's vertical scroll bar sub-component.
+		 * Typically used by a theme to provide different skins to different
+		 * containers.
+		 *
+		 * @see feathers.core.FeathersControl#nameList
+		 * @see #verticalScrollBarFactory
+		 * @see #verticalScrollBarProperties
+		 */
+		public function get customVerticalScrollBarName():String
+		{
+			return this._customVerticalScrollBarName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customVerticalScrollBarName(value:String):void
+		{
+			if(this._customVerticalScrollBarName == value)
+			{
+				return;
+			}
+			this._customVerticalScrollBarName = value;
 			this.invalidate(INVALIDATION_FLAG_SCROLL_BAR_RENDERER);
 		}
 
@@ -2016,7 +2092,8 @@ package feathers.controls
 				this._horizontalScrollPolicy != SCROLL_POLICY_OFF && this._horizontalScrollBarFactory != null)
 			{
 				this.horizontalScrollBar = IScrollBar(this._horizontalScrollBarFactory());
-				this.horizontalScrollBar.nameList.add(this.horizontalScrollBarName);
+				const horizontalScrollBarName:String = this._customHorizontalScrollBarName != null ? this._customHorizontalScrollBarName : this.horizontalScrollBarName;
+				this.horizontalScrollBar.nameList.add(horizontalScrollBarName);
 				this.horizontalScrollBar.addEventListener(Event.CHANGE, horizontalScrollBar_changeHandler);
 				this.horizontalScrollBar.addEventListener(FeathersEventType.BEGIN_INTERACTION, horizontalScrollBar_beginInteractionHandler);
 				this.horizontalScrollBar.addEventListener(FeathersEventType.END_INTERACTION, horizontalScrollBar_endInteractionHandler);
@@ -2026,7 +2103,8 @@ package feathers.controls
 				this._verticalScrollPolicy != SCROLL_POLICY_OFF && this._verticalScrollBarFactory != null)
 			{
 				this.verticalScrollBar = IScrollBar(this._verticalScrollBarFactory());
-				this.verticalScrollBar.nameList.add(this.verticalScrollBarName);
+				const verticalScrollBarName:String = this._customVerticalScrollBarName != null ? this._customVerticalScrollBarName : this.verticalScrollBarName;
+				this.verticalScrollBar.nameList.add(verticalScrollBarName);
 				this.verticalScrollBar.addEventListener(Event.CHANGE, verticalScrollBar_changeHandler);
 				this.verticalScrollBar.addEventListener(FeathersEventType.BEGIN_INTERACTION, verticalScrollBar_beginInteractionHandler);
 				this.verticalScrollBar.addEventListener(FeathersEventType.END_INTERACTION, verticalScrollBar_endInteractionHandler);

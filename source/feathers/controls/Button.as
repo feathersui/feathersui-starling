@@ -334,7 +334,10 @@ package feathers.controls
 		}
 
 		/**
-		 * The value added to the <code>nameList</code> of the label.
+		 * The value added to the <code>nameList</code> of the label. This
+		 * variable is <code>protected</code> so that sub-classes can customize
+		 * the label name in their constructors instead of using the default
+		 * name defined by <code>DEFAULT_CHILD_NAME_LABEL</code>.
 		 *
 		 * @see feathers.core.IFeathersControl#nameList
 		 */

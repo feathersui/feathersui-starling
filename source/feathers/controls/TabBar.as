@@ -95,22 +95,43 @@ package feathers.controls
 		}
 
 		/**
-		 * The value added to the <code>nameList</code> of the tabs.
+		 * The value added to the <code>nameList</code> of the tabs. This
+		 * variable is <code>protected</code> so that sub-classes can customize
+		 * the tab name in their constructors instead of using the default
+		 * name defined by <code>DEFAULT_CHILD_NAME_TAB</code>.
 		 *
+		 * <p>To customize the tab name without subclassing, see
+		 * <code>customTabName</code>.</p>
+		 *
+		 * @see #customTabName
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var tabName:String = DEFAULT_CHILD_NAME_TAB;
 
 		/**
-		 * The value added to the <code>nameList</code> of the first tab.
+		 * The value added to the <code>nameList</code> of the first tab. This
+		 * variable is <code>protected</code> so that sub-classes can customize
+		 * the first tab name in their constructors instead of using the default
+		 * name defined by <code>DEFAULT_CHILD_NAME_TAB</code>.
 		 *
+		 * <p>To customize the first tab name without subclassing, see
+		 * <code>customFirstTabName</code>.</p>
+		 *
+		 * @see #customFirstTabName
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var firstTabName:String = DEFAULT_CHILD_NAME_TAB;
 
 		/**
-		 * The value added to the <code>nameList</code> of the last tab.
+		 * The value added to the <code>nameList</code> of the last tab. This
+		 * variable is <code>protected</code> so that sub-classes can customize
+		 * the last tab name in their constructors instead of using the default
+		 * name defined by <code>DEFAULT_CHILD_NAME_TAB</code>.
 		 *
+		 * <p>To customize the last tab name without subclassing, see
+		 * <code>customLastTabName</code>.</p>
+		 *
+		 * @see #customLastTabName
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var lastTabName:String = DEFAULT_CHILD_NAME_TAB;

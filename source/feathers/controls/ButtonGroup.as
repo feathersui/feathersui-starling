@@ -103,8 +103,15 @@ package feathers.controls
 		}
 
 		/**
-		 * The value added to the <code>nameList</code> of the buttons.
+		 * The value added to the <code>nameList</code> of the buttons. This
+		 * variable is <code>protected</code> so that sub-classes can customize
+		 * the button name in their constructors instead of using the default
+		 * name defined by <code>DEFAULT_CHILD_NAME_BUTTON</code>.
 		 *
+		 * <p>To customize the button name without subclassing, see
+		 * <code>customButtonName</code>.</p>
+		 *
+		 * @see #customButtonName
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var buttonName:String = DEFAULT_CHILD_NAME_BUTTON;
@@ -112,6 +119,10 @@ package feathers.controls
 		/**
 		 * The value added to the <code>nameList</code> of the first button.
 		 *
+		 * <p>To customize the first button name without subclassing, see
+		 * <code>customFirstButtonName</code>.</p>
+		 *
+		 * @see #customFirstButtonName
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var firstButtonName:String = DEFAULT_CHILD_NAME_BUTTON;
@@ -119,6 +130,10 @@ package feathers.controls
 		/**
 		 * The value added to the <code>nameList</code> of the last button.
 		 *
+		 * <p>To customize the last button name without subclassing, see
+		 * <code>customLastButtonName</code>.</p>
+		 *
+		 * @see #customLastButtonName
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var lastButtonName:String = DEFAULT_CHILD_NAME_BUTTON;
