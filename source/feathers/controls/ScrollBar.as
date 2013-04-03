@@ -225,36 +225,71 @@ package feathers.controls
 		}
 
 		/**
-		 * The value added to the <code>nameList</code> of the minimum track.
+		 * The value added to the <code>nameList</code> of the minimum track. This
+		 * variable is <code>protected</code> so that sub-classes can customize
+		 * the minimum track name in their constructors instead of using the default
+		 * name defined by <code>DEFAULT_CHILD_NAME_MINIMUM_TRACK</code>.
 		 *
+		 * <p>To customize the minimum track name without subclassing, see
+		 * <code>customMinimumTrackName</code>.</p>
+		 *
+		 * @see #customMinimumTrackName
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var minimumTrackName:String = DEFAULT_CHILD_NAME_MINIMUM_TRACK;
 
 		/**
-		 * The value added to the <code>nameList</code> of the maximum track.
+		 * The value added to the <code>nameList</code> of the maximum track. This
+		 * variable is <code>protected</code> so that sub-classes can customize
+		 * the maximum track name in their constructors instead of using the default
+		 * name defined by <code>DEFAULT_CHILD_NAME_MAXIMUM_TRACK</code>.
 		 *
+		 * <p>To customize the maximum track name without subclassing, see
+		 * <code>customMaximumTrackName</code>.</p>
+		 *
+		 * @see #customMaximumTrackName
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var maximumTrackName:String = DEFAULT_CHILD_NAME_MAXIMUM_TRACK;
 
 		/**
-		 * The value added to the <code>nameList</code> of the thumb.
+		 * The value added to the <code>nameList</code> of the thumb. This
+		 * variable is <code>protected</code> so that sub-classes can customize
+		 * the thumb name in their constructors instead of using the default
+		 * name defined by <code>DEFAULT_CHILD_NAME_THUMB</code>.
 		 *
+		 * <p>To customize the thumb name without subclassing, see
+		 * <code>customThumbName</code>.</p>
+		 *
+		 * @see #customThumbName
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var thumbName:String = DEFAULT_CHILD_NAME_THUMB;
 
 		/**
-		 * The value added to the <code>nameList</code> of the decrement button.
+		 * The value added to the <code>nameList</code> of the decrement button. This
+		 * variable is <code>protected</code> so that sub-classes can customize
+		 * the decrement button name in their constructors instead of using the default
+		 * name defined by <code>DEFAULT_CHILD_NAME_DECREMENT_BUTTON</code>.
 		 *
+		 * <p>To customize the decrement button name without subclassing, see
+		 * <code>customDecrementButtonName</code>.</p>
+		 *
+		 * @see #customDecrementButtonName
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var decrementButtonName:String = DEFAULT_CHILD_NAME_DECREMENT_BUTTON;
 
 		/**
-		 * The value added to the <code>nameList</code> of the increment button.
+		 * The value added to the <code>nameList</code> of the increment button. This
+		 * variable is <code>protected</code> so that sub-classes can customize
+		 * the increment button name in their constructors instead of using the default
+		 * name defined by <code>DEFAULT_CHILD_NAME_INCREMENT_BUTTON</code>.
 		 *
+		 * <p>To customize the increment button name without subclassing, see
+		 * <code>customIncrementButtonName</code>.</p>
+		 *
+		 * @see #customIncrementButtonName
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var incrementButtonName:String = DEFAULT_CHILD_NAME_INCREMENT_BUTTON;

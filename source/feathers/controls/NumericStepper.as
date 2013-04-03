@@ -120,22 +120,43 @@ package feathers.controls
 		}
 
 		/**
-		 * The value added to the <code>nameList</code> of the decrement button.
+		 * The value added to the <code>nameList</code> of the decrement button. This
+		 * variable is <code>protected</code> so that sub-classes can customize
+		 * the decrement button name in their constructors instead of using the default
+		 * name defined by <code>DEFAULT_CHILD_NAME_DECREMENT_BUTTON</code>.
 		 *
+		 * <p>To customize the decrement button name without subclassing, see
+		 * <code>customDecrementButtonName</code>.</p>
+		 *
+		 * @see #customDecrementButtonName
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var decrementButtonName:String = DEFAULT_CHILD_NAME_DECREMENT_BUTTON;
 
 		/**
-		 * The value added to the <code>nameList</code> of the increment button.
+		 * The value added to the <code>nameList</code> of the increment button. This
+		 * variable is <code>protected</code> so that sub-classes can customize
+		 * the increment button name in their constructors instead of using the default
+		 * name defined by <code>DEFAULT_CHILD_NAME_INCREMENT_BUTTON</code>.
 		 *
+		 * <p>To customize the increment button name without subclassing, see
+		 * <code>customIncrementButtonName</code>.</p>
+		 *
+		 * @see #customIncrementButtonName
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var incrementButtonName:String = DEFAULT_CHILD_NAME_INCREMENT_BUTTON;
 
 		/**
-		 * The value added to the <code>nameList</code> of the text input.
+		 * The value added to the <code>nameList</code> of the text input. This
+		 * variable is <code>protected</code> so that sub-classes can customize
+		 * the text input name in their constructors instead of using the default
+		 * name defined by <code>DEFAULT_CHILD_NAME_TEXT_INPUT</code>.
 		 *
+		 * <p>To customize the text input name without subclassing, see
+		 * <code>customTextInputName</code>.</p>
+		 *
+		 * @see #customTextInputName
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var textInputName:String = DEFAULT_CHILD_NAME_TEXT_INPUT;

@@ -94,15 +94,29 @@ package feathers.controls
 		}
 
 		/**
-		 * The default value added to the <code>nameList</code> of the button.
+		 * The default value added to the <code>nameList</code> of the button. This
+		 * variable is <code>protected</code> so that sub-classes can customize
+		 * the button name in their constructors instead of using the default
+		 * name defined by <code>DEFAULT_CHILD_NAME_BUTTON</code>.
 		 *
+		 * <p>To customize the button name without subclassing, see
+		 * <code>customButtonName</code>.</p>
+		 *
+		 * @see #customButtonName
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var buttonName:String = DEFAULT_CHILD_NAME_BUTTON;
 
 		/**
-		 * The default value added to the <code>nameList</code> of the pop-up list.
+		 * The default value added to the <code>nameList</code> of the pop-up list. This
+		 * variable is <code>protected</code> so that sub-classes can customize
+		 * the list name in their constructors instead of using the default
+		 * name defined by <code>DEFAULT_CHILD_NAME_LIST</code>.
 		 *
+		 * <p>To customize the pop-up list name without subclassing, see
+		 * <code>customListName</code>.</p>
+		 *
+		 * @see #customListName
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var listName:String = DEFAULT_CHILD_NAME_LIST;
