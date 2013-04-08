@@ -2320,8 +2320,8 @@ package feathers.controls
 			}
 			if(this._snapToPages)
 			{
-				this._horizontalPageCount = int(this._maxHorizontalScrollPosition / pageWidth) + 1;
-				this._verticalPageCount = int(this._maxVerticalScrollPosition / pageHeight) + 1;
+				this._horizontalPageCount = Math.ceil(this._maxHorizontalScrollPosition / pageWidth) + 1;
+				this._verticalPageCount = Math.ceil(this._maxVerticalScrollPosition / pageHeight) + 1;
 			}
 			else
 			{
@@ -2354,11 +2354,25 @@ package feathers.controls
 			{
 				if(isScrollInvalid && !this._isDraggingHorizontally && !this._horizontalAutoScrollTween && this.pendingHorizontalPageIndex < 0)
 				{
-					this._horizontalPageIndex = Math.max(0, Math.floor(this._horizontalScrollPosition / pageWidth));
+					if(this._horizontalScrollPosition == this._maxHorizontalScrollPosition)
+					{
+						this._horizontalPageIndex = this._horizontalPageCount - 1;
+					}
+					else
+					{
+						this._horizontalPageIndex = Math.max(0, Math.floor(this._horizontalScrollPosition / pageWidth));
+					}
 				}
 				if(isScrollInvalid && !this._isDraggingVertically && !this._verticalAutoScrollTween && this.pendingVerticalPageIndex < 0)
 				{
-					this._verticalPageIndex = Math.max(0, Math.floor(this._verticalScrollPosition / pageHeight));
+					if(this._verticalScrollPosition == this._maxVerticalScrollPosition)
+					{
+						this._verticalPageIndex = this._verticalPageCount - 1;
+					}
+					else
+					{
+						this._verticalPageIndex = Math.max(0, Math.floor(this._verticalScrollPosition / pageHeight));
+					}
 				}
 			}
 			else
@@ -2850,10 +2864,39 @@ package feathers.controls
 				}
 				else
 				{
-					snappedPageHorizontalScrollPosition = roundToNearest(this._horizontalScrollPosition, pageWidth);
+					const lastPageWidth:Number = this._maxHorizontalScrollPosition % pageWidth;
+					var startOfLastPage:Number = this._maxHorizontalScrollPosition - lastPageWidth;
+					if(lastPageWidth < pageWidth && this._horizontalScrollPosition >= startOfLastPage)
+					{
+						const lastPagePosition:Number = this._horizontalScrollPosition - startOfLastPage;
+						if(inchesPerSecond > MINIMUM_PAGE_VELOCITY)
+						{
+							snappedPageHorizontalScrollPosition = startOfLastPage + roundDownToNearest(lastPagePosition, lastPageWidth);
+						}
+						else if(inchesPerSecond < -MINIMUM_PAGE_VELOCITY)
+						{
+							snappedPageHorizontalScrollPosition = startOfLastPage + roundUpToNearest(lastPagePosition, lastPageWidth);
+						}
+						else
+						{
+							snappedPageHorizontalScrollPosition = startOfLastPage + roundToNearest(lastPagePosition, lastPageWidth);
+						}
+					}
+					else
+					{
+						snappedPageHorizontalScrollPosition = roundToNearest(this._horizontalScrollPosition, pageWidth);
+					}
 				}
 				snappedPageHorizontalScrollPosition = Math.max(0, Math.min(this._maxHorizontalScrollPosition, snappedPageHorizontalScrollPosition));
-				this.throwToPage(snappedPageHorizontalScrollPosition / pageWidth, -1, this._pageThrowDuration);
+				if(snappedPageHorizontalScrollPosition == this._maxHorizontalScrollPosition)
+				{
+					var targetHorizontalPageIndex:int = this._horizontalPageCount - 1;
+				}
+				else
+				{
+					targetHorizontalPageIndex = snappedPageHorizontalScrollPosition / pageWidth;
+				}
+				this.throwToPage(targetHorizontalPageIndex, -1, this._pageThrowDuration);
 				return;
 			}
 
@@ -2917,10 +2960,39 @@ package feathers.controls
 				}
 				else
 				{
-					snappedPageVerticalScrollPosition = roundToNearest(this._verticalScrollPosition, pageHeight);
+					const lastPageHeight:Number = this._maxVerticalScrollPosition % pageHeight;
+					var startOfLastPage:Number = this._maxVerticalScrollPosition - lastPageHeight;
+					if(lastPageHeight < pageHeight && this._verticalScrollPosition >= startOfLastPage)
+					{
+						const lastPagePosition:Number = this._verticalScrollPosition - startOfLastPage;
+						if(inchesPerSecond > MINIMUM_PAGE_VELOCITY)
+						{
+							snappedPageVerticalScrollPosition = startOfLastPage + roundDownToNearest(lastPagePosition, lastPageHeight);
+						}
+						else if(inchesPerSecond < -MINIMUM_PAGE_VELOCITY)
+						{
+							snappedPageVerticalScrollPosition = startOfLastPage + roundUpToNearest(lastPagePosition, lastPageHeight);
+						}
+						else
+						{
+							snappedPageVerticalScrollPosition = startOfLastPage + roundToNearest(lastPagePosition, lastPageHeight);
+						}
+					}
+					else
+					{
+						snappedPageVerticalScrollPosition = roundToNearest(this._verticalScrollPosition, pageHeight);
+					}
 				}
 				snappedPageVerticalScrollPosition = Math.max(0, Math.min(this._maxVerticalScrollPosition, snappedPageVerticalScrollPosition));
-				this.throwToPage(-1, snappedPageVerticalScrollPosition / pageHeight, this._pageThrowDuration);
+				if(snappedPageVerticalScrollPosition == this._maxVerticalScrollPosition)
+				{
+					var targetVerticalPageIndex:int = this._verticalPageCount - 1;
+				}
+				else
+				{
+					targetVerticalPageIndex = snappedPageVerticalScrollPosition / pageHeight
+				}
+				this.throwToPage(-1, targetVerticalPageIndex, this._pageThrowDuration);
 				return;
 			}
 
