@@ -315,26 +315,27 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _editable:Boolean = true;
+		protected var _isEditable:Boolean = true;
 
 		/**
-		 * Same as the <code>StageText</code> property with the same name.
+		 * Determines if the text input is editable. If the text input is not
+		 * editable, it will still appear enabled.
 		 */
-		public function get editable():Boolean
+		public function get isEditable():Boolean
 		{
-			return this._editable;
+			return this._isEditable;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set editable(value:Boolean):void
+		public function set isEditable(value:Boolean):void
 		{
-			if(this._editable == value)
+			if(this._isEditable == value)
 			{
 				return;
 			}
-			this._editable = value;
+			this._isEditable = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -785,9 +786,9 @@ package feathers.controls.text
 				this._measureTextField.text = this.stageText.text;
 			}
 
-			if(stateInvalid)
+			if(stylesInvalid || stateInvalid)
 			{
-				this.stageText.editable = this._isEnabled;
+				this.stageText.editable = this._isEditable && this._isEnabled;
 			}
 		}
 
@@ -892,7 +893,6 @@ package feathers.controls.text
 			this.stageText.autoCorrect = this._autoCorrect;
 			this.stageText.color = this._color;
 			this.stageText.displayAsPassword = this._displayAsPassword;
-			this.stageText.editable = this._editable;
 			this.stageText.fontFamily = this._fontFamily;
 			this.stageText.fontPosture = this._fontPosture;
 			this.stageText.fontSize = this._fontSize * Starling.contentScaleFactor;
