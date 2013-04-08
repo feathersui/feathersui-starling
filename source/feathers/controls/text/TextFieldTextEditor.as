@@ -142,11 +142,6 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _savedSelectionIndex:int = -1;
-
-		/**
-		 * @private
-		 */
 		protected var _text:String = "";
 
 		/**
@@ -488,21 +483,26 @@ package feathers.controls.text
 					const positionY:Number = position.y;
 					if(positionX < 0)
 					{
-						this._savedSelectionIndex = 0;
+						this._pendingSelectionStartIndex = this._pendingSelectionEndIndex = 0;
 					}
 					else
 					{
-						this._savedSelectionIndex = this.textField.getCharIndexAtPoint(positionX, positionY);
-						const bounds:Rectangle = this.textField.getCharBoundaries(this._savedSelectionIndex);
+						this._pendingSelectionStartIndex = this.textField.getCharIndexAtPoint(positionX, positionY);
+						if(this._pendingSelectionStartIndex < 0)
+						{
+							this._pendingSelectionStartIndex = this._text.length;
+						}
+						const bounds:Rectangle = this.textField.getCharBoundaries(this._pendingSelectionStartIndex);
 						if(bounds && (bounds.x + bounds.width - positionX) < (positionX - bounds.x))
 						{
-							this._savedSelectionIndex++;
+							this._pendingSelectionStartIndex++;
 						}
+						this._pendingSelectionEndIndex = this._pendingSelectionStartIndex;
 					}
 				}
 				else
 				{
-					this._savedSelectionIndex = -1;
+					this._pendingSelectionStartIndex = this._pendingSelectionEndIndex = -1;
 				}
 				Starling.current.nativeStage.focus = this.textField;
 			}
@@ -897,12 +897,6 @@ package feathers.controls.text
 			if(this.textSnapshot)
 			{
 				this.textSnapshot.visible = false;
-			}
-			if(this._savedSelectionIndex >= 0)
-			{
-				const selectionIndex:int = this._savedSelectionIndex;
-				this._savedSelectionIndex = -1;
-				this.selectRange(selectionIndex, selectionIndex)
 			}
 			this.invalidate(INVALIDATION_FLAG_SKIN);
 			this.dispatchEventWith(FeathersEventType.FOCUS_IN);

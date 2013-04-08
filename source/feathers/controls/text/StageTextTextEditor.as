@@ -661,6 +661,10 @@ package feathers.controls.text
 					else
 					{
 						this._pendingSelectionStartIndex = this._measureTextField.getCharIndexAtPoint(position.x, position.y);
+						if(this._pendingSelectionStartIndex < 0)
+						{
+							this._pendingSelectionStartIndex = this._text.length;
+						}
 						const bounds:Rectangle = this._measureTextField.getCharBoundaries(this._pendingSelectionStartIndex);
 						if(bounds && (bounds.x + bounds.width - position.x) < (position.x - bounds.x))
 						{
