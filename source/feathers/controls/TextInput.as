@@ -200,20 +200,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _displayAsPassword:Boolean = false;
-
-		/**
-		 * Determines if the entered text will be masked so that it cannot be
-		 * seen, such as for a password input.
-		 */
-		public function get displayAsPassword():Boolean
-		{
-			return this._displayAsPassword;
-		}
-
-		/**
-		 * @private
-		 */
 		protected var _restrict:String;
 
 		/**
@@ -240,6 +226,20 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _displayAsPassword:Boolean = false;
+
+		/**
+		 * Determines if the entered text will be masked so that it cannot be
+		 * seen, such as for a password input.
+		 */
+		public function get displayAsPassword():Boolean
+		{
+			return this._displayAsPassword;
+		}
+
+		/**
+		 * @private
+		 */
 		public function set displayAsPassword(value:Boolean):void
 		{
 			if(this._displayAsPassword == value)
@@ -247,6 +247,33 @@ package feathers.controls
 				return;
 			}
 			this._displayAsPassword = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _isEditable:Boolean = true;
+
+		/**
+		 * Determines if the text input is editable. If the text input is not
+		 * editable, it will still appear enabled.
+		 */
+		public function get isEditable():Boolean
+		{
+			return this._isEditable;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set isEditable(value:Boolean):void
+		{
+			if(this._isEditable == value)
+			{
+				return;
+			}
+			this._isEditable = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -837,6 +864,7 @@ package feathers.controls
 			this.textEditor.displayAsPassword = this._displayAsPassword;
 			this.textEditor.maxChars = this._maxChars;
 			this.textEditor.restrict = this._restrict;
+			this.textEditor.isEditable = this._isEditable;
 			const displayTextEditor:DisplayObject = DisplayObject(this.textEditor);
 			for(var propertyName:String in this._textEditorProperties)
 			{

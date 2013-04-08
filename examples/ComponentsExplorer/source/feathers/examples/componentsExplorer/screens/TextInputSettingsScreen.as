@@ -27,12 +27,17 @@ package feathers.examples.componentsExplorer.screens
 
 		private var _list:List;
 		private var _backButton:Button;
+		private var _isEditableToggle:ToggleSwitch;
 		private var _displayAsPasswordToggle:ToggleSwitch;
 		private var _maxCharsStepper:NumericStepper;
 
 		protected function initializeHandler(event:Event):void
 		{
 			this.layout = new AnchorLayout();
+
+			this._isEditableToggle = new ToggleSwitch();
+			this._isEditableToggle.isSelected = this.settings.isEditable;
+			this._isEditableToggle.addEventListener(Event.CHANGE, isEditableToggle_changeHandler);
 
 			this._displayAsPasswordToggle = new ToggleSwitch();
 			this._displayAsPasswordToggle.isSelected = this.settings.displayAsPassword;
@@ -50,6 +55,7 @@ package feathers.examples.componentsExplorer.screens
 			this._list.isSelectable = false;
 			this._list.dataProvider = new ListCollection(
 			[
+				{ label: "isEditable", accessory: this._isEditableToggle },
 				{ label: "displayAsPassword", accessory: this._displayAsPasswordToggle },
 				{ label: "maxChars", accessory: this._maxCharsStepper },
 			]);
@@ -73,6 +79,11 @@ package feathers.examples.componentsExplorer.screens
 		private function onBackButton():void
 		{
 			this.dispatchEventWith(Event.COMPLETE);
+		}
+
+		private function isEditableToggle_changeHandler(event:Event):void
+		{
+			this.settings.isEditable = this._isEditableToggle.isSelected;
 		}
 
 		private function displayAsPasswordToggle_changeHandler(event:Event):void

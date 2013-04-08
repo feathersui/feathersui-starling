@@ -84,6 +84,16 @@ package feathers.core
 		function set restrict(value:String):void;
 
 		/**
+		 * Determines if the text is editable.
+		 */
+		function get isEditable():Boolean;
+
+		/**
+		 * @private
+		 */
+		function set isEditable(value:Boolean):void;
+
+		/**
 		 * Gives focus to the text editor. Includes an optional position which
 		 * may be used by the text editor to determine the cursor position. The
 		 * position may be outside of the editors bounds.
