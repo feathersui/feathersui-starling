@@ -321,18 +321,18 @@ package feathers.themes
 			this.smallUISelectedTextFormat = new TextFormat(semiboldFontNames, 24 * this.scale, SELECTED_TEXT_COLOR, true);
 			this.smallUIDisabledTextFormat = new TextFormat(semiboldFontNames, 24 * this.scale, DISABLED_TEXT_COLOR, true);
 
-			this.largeUIDarkTextFormat = new TextFormat(semiboldFontNames, 30 * this.scale, DARK_TEXT_COLOR, true);
-			this.largeUILightTextFormat = new TextFormat(semiboldFontNames, 30 * this.scale, LIGHT_TEXT_COLOR, true);
-			this.largeUISelectedTextFormat = new TextFormat(semiboldFontNames, 30 * this.scale, SELECTED_TEXT_COLOR, true);
-			this.largeUIDisabledTextFormat = new TextFormat(semiboldFontNames, 30 * this.scale, DISABLED_TEXT_COLOR, true);
+			this.largeUIDarkTextFormat = new TextFormat(semiboldFontNames, 28 * this.scale, DARK_TEXT_COLOR, true);
+			this.largeUILightTextFormat = new TextFormat(semiboldFontNames, 28 * this.scale, LIGHT_TEXT_COLOR, true);
+			this.largeUISelectedTextFormat = new TextFormat(semiboldFontNames, 28 * this.scale, SELECTED_TEXT_COLOR, true);
+			this.largeUIDisabledTextFormat = new TextFormat(semiboldFontNames, 28 * this.scale, DISABLED_TEXT_COLOR, true);
 
 			this.smallDarkTextFormat = new TextFormat(regularFontNames, 24 * this.scale, DARK_TEXT_COLOR);
 			this.smallLightTextFormat = new TextFormat(regularFontNames, 24 * this.scale, LIGHT_TEXT_COLOR);
 			this.smallDisabledTextFormat = new TextFormat(regularFontNames, 24 * this.scale, DISABLED_TEXT_COLOR);
 
-			this.largeDarkTextFormat = new TextFormat(regularFontNames, 30 * this.scale, DARK_TEXT_COLOR);
-			this.largeLightTextFormat = new TextFormat(regularFontNames, 30 * this.scale, LIGHT_TEXT_COLOR);
-			this.largeDisabledTextFormat = new TextFormat(regularFontNames, 30 * this.scale, DISABLED_TEXT_COLOR);
+			this.largeDarkTextFormat = new TextFormat(regularFontNames, 28 * this.scale, DARK_TEXT_COLOR);
+			this.largeLightTextFormat = new TextFormat(regularFontNames, 28 * this.scale, LIGHT_TEXT_COLOR);
+			this.largeDisabledTextFormat = new TextFormat(regularFontNames, 28 * this.scale, DISABLED_TEXT_COLOR);
 
 			PopUpManager.overlayFactory = popUpOverlayFactory;
 			Callout.stagePaddingTop = Callout.stagePaddingRight = Callout.stagePaddingBottom =
@@ -1100,11 +1100,14 @@ package feathers.themes
 
 			input.minWidth = input.minHeight = 60 * this.scale;
 			input.minTouchWidth = input.minTouchHeight = 88 * this.scale;
-			input.paddingTop = input.paddingBottom = 12 * this.scale;
-			input.paddingLeft = input.paddingRight = 16 * this.scale;
+			input.paddingTop = input.paddingBottom = 10 * this.scale;
+			input.paddingLeft = input.paddingRight = 14 * this.scale;
 			input.textEditorProperties.fontFamily = "Helvetica";
-			input.textEditorProperties.fontSize = 30 * this.scale;
+			input.textEditorProperties.fontSize = 24 * this.scale;
 			input.textEditorProperties.color = LIGHT_TEXT_COLOR;
+
+			input.promptProperties.textFormat = this.smallLightTextFormat;
+			input.promptProperties.embedFonts = true;
 		}
 
 		protected function numericStepperTextInputInitializer(input:TextInput):void
@@ -1126,10 +1129,10 @@ package feathers.themes
 
 			input.minWidth = input.minHeight = 60 * this.scale;
 			input.minTouchWidth = input.minTouchHeight = 88 * this.scale;
-			input.paddingTop = input.paddingBottom = 12 * this.scale;
-			input.paddingLeft = input.paddingRight = 16 * this.scale;
+			input.paddingTop = input.paddingBottom = 10 * this.scale;
+			input.paddingLeft = input.paddingRight = 14 * this.scale;
 			input.textEditorProperties.fontFamily = "Helvetica";
-			input.textEditorProperties.fontSize = 30 * this.scale;
+			input.textEditorProperties.fontSize = 24 * this.scale;
 			input.textEditorProperties.color = LIGHT_TEXT_COLOR;
 			input.textEditorProperties.textAlign = TextFormatAlign.CENTER;
 		}
