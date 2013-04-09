@@ -350,9 +350,11 @@ package feathers.layout
 
 		/**
 		 * Determines if items will be set invisible if they are outside the
-		 * view port.
+		 * view port. Can improve performance, especially for non-virtual
+		 * layouts. If <code>true</code>, you will not be able to manually
+		 * change the <code>visible</code> property of any items in the layout.
 		 */
-		public var manageVisibility:Boolean = true;
+		public var manageVisibility:Boolean = false;
 
 		/**
 		 * @private
