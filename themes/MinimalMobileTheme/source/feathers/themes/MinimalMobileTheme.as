@@ -966,7 +966,7 @@ package feathers.themes
 			input.paddingTop = input.paddingBottom = 14 * this.scale;
 			input.paddingLeft = input.paddingRight = 16 * this.scale;
 			input.textEditorProperties.fontFamily = "Helvetica";
-			input.textEditorProperties.fontSize = 30 * this.scale;
+			input.textEditorProperties.fontSize = 36 * this.scale;
 			input.textEditorProperties.color = PRIMARY_TEXT_COLOR;
 
 			const backgroundSkin:Scale9Image = new Scale9Image(insetBackgroundSkinTextures, this.scale);
@@ -978,6 +978,9 @@ package feathers.themes
 			backgroundDisabledSkin.width = 264 * this.scale;
 			backgroundDisabledSkin.height = 66 * this.scale;
 			input.backgroundDisabledSkin = backgroundDisabledSkin;
+
+			input.promptProperties.textFormat = this.primaryTextFormat;
+			input.promptProperties.disabledTextFormat = this.disabledTextFormat;
 		}
 
 		protected function numericStepperTextInputInitializer(input:TextInput):void
@@ -987,7 +990,7 @@ package feathers.themes
 			input.paddingTop = input.paddingBottom = 14 * this.scale;
 			input.paddingLeft = input.paddingRight = 16 * this.scale;
 			input.textEditorProperties.fontFamily = "Helvetica";
-			input.textEditorProperties.fontSize = 30 * this.scale;
+			input.textEditorProperties.fontSize = 36 * this.scale;
 			input.textEditorProperties.color = PRIMARY_TEXT_COLOR;
 			input.textEditorProperties.textAlign = TextFormatAlign.CENTER;
 
