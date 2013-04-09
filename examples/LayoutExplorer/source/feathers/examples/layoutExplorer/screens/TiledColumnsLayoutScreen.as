@@ -2,8 +2,10 @@ package feathers.examples.layoutExplorer.screens
 {
 	import feathers.controls.Button;
 	import feathers.controls.Header;
+	import feathers.controls.PanelScreen;
 	import feathers.controls.Screen;
 	import feathers.controls.ScrollContainer;
+	import feathers.events.FeathersEventType;
 	import feathers.examples.layoutExplorer.data.TiledColumnsLayoutSettings;
 	import feathers.layout.TiledColumnsLayout;
 	import feathers.system.DeviceCapabilities;
@@ -18,23 +20,22 @@ package feathers.examples.layoutExplorer.screens
 
 	[Event(name="showSettings",type="starling.events.Event")]
 
-	public class TiledColumnsLayoutScreen extends Screen
+	public class TiledColumnsLayoutScreen extends PanelScreen
 	{
 		public static const SHOW_SETTINGS:String = "showSettings";
 
 		public function TiledColumnsLayoutScreen()
 		{
 			super();
+			this.addEventListener(FeathersEventType.INITIALIZE, initializeHandler);
 		}
 
 		public var settings:TiledColumnsLayoutSettings;
 
-		private var _container:ScrollContainer;
-		private var _header:Header;
 		private var _backButton:Button;
 		private var _settingsButton:Button;
 
-		override protected function initialize():void
+		protected function initializeHandler(event:Event):void
 		{
 			const layout:TiledColumnsLayout = new TiledColumnsLayout();
 			layout.paging = this.settings.paging;
@@ -49,11 +50,10 @@ package feathers.examples.layoutExplorer.screens
 			layout.tileVerticalAlign = this.settings.tileVerticalAlign;
 			layout.manageVisibility = true;
 
-			this._container = new ScrollContainer();
-			this._container.layout = layout;
-			this._container.snapToPages = this.settings.paging != TiledColumnsLayout.PAGING_NONE;
-			this._container.snapScrollPositionsToPixels = true;
-			this.addChild(this._container);
+			this.layout = layout;
+			this.snapToPages = this.settings.paging != TiledColumnsLayout.PAGING_NONE;
+			this.snapScrollPositionsToPixels = true;
+
 			const isTablet:Boolean = DeviceCapabilities.isTablet(Starling.current.nativeStage);
 			for(var i:int = 0; i < this.settings.itemCount; i++)
 			{
@@ -65,12 +65,10 @@ package feathers.examples.layoutExplorer.screens
 					size *= 1.5;
 				}
 				var quad:Quad = new Quad(size, size, 0xff8800);
-				this._container.addChild(quad);
+				this.addChild(quad);
 			}
 
-			this._header = new Header();
-			this._header.title = "Tiled Columns Layout";
-			this.addChild(this._header);
+			this.headerProperties.title = "Tiled Columns Layout";
 
 			if(!DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
@@ -79,33 +77,22 @@ package feathers.examples.layoutExplorer.screens
 				this._backButton.label = "Back";
 				this._backButton.addEventListener(Event.TRIGGERED, backButton_triggeredHandler);
 
-				this._header.leftItems = new <DisplayObject>
+				this.headerProperties.leftItems = new <DisplayObject>
 				[
 					this._backButton
 				];
+
+				this.backButtonHandler = this.onBackButton;
 			}
 
 			this._settingsButton = new Button();
 			this._settingsButton.label = "Settings";
 			this._settingsButton.addEventListener(Event.TRIGGERED, settingsButton_triggeredHandler);
 
-			this._header.rightItems = new <DisplayObject>
+			this.headerProperties.rightItems = new <DisplayObject>
 			[
 				this._settingsButton
 			];
-
-			// handles the back hardware key on android
-			this.backButtonHandler = this.onBackButton;
-		}
-
-		override protected function draw():void
-		{
-			this._header.width = this.actualWidth;
-			this._header.validate();
-
-			this._container.y = this._header.height;
-			this._container.width = this.actualWidth;
-			this._container.height = this.actualHeight - this._container.y;
 		}
 
 		private function onBackButton():void

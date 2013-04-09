@@ -3,11 +3,15 @@ package feathers.examples.layoutExplorer.screens
 	import feathers.controls.Button;
 	import feathers.controls.Header;
 	import feathers.controls.List;
+	import feathers.controls.PanelScreen;
 	import feathers.controls.PickerList;
 	import feathers.controls.Screen;
 	import feathers.controls.Slider;
 	import feathers.data.ListCollection;
+	import feathers.events.FeathersEventType;
 	import feathers.examples.layoutExplorer.data.VerticalLayoutSettings;
+	import feathers.layout.AnchorLayout;
+	import feathers.layout.AnchorLayoutData;
 	import feathers.layout.VerticalLayout;
 
 	import starling.display.DisplayObject;
@@ -15,15 +19,16 @@ package feathers.examples.layoutExplorer.screens
 
 	[Event(name="complete",type="starling.events.Event")]
 
-	public class VerticalLayoutSettingsScreen extends Screen
+	public class VerticalLayoutSettingsScreen extends PanelScreen
 	{
 		public function VerticalLayoutSettingsScreen()
 		{
+			super();
+			this.addEventListener(FeathersEventType.INITIALIZE, initializeHandler);
 		}
 
 		public var settings:VerticalLayoutSettings;
 
-		private var _header:Header;
 		private var _list:List;
 		private var _backButton:Button;
 
@@ -36,8 +41,10 @@ package feathers.examples.layoutExplorer.screens
 		private var _horizontalAlignPicker:PickerList;
 		private var _verticalAlignPicker:PickerList;
 
-		override protected function initialize():void
+		protected function initializeHandler(event:Event):void
 		{
+			this.layout = new AnchorLayout();
+
 			this._itemCountSlider = new Slider();
 			this._itemCountSlider.direction = Slider.DIRECTION_HORIZONTAL;
 			this._itemCountSlider.minimum = 1;
@@ -122,6 +129,7 @@ package feathers.examples.layoutExplorer.screens
 				{ label: "paddingBottom", accessory: this._paddingBottomSlider },
 				{ label: "paddingLeft", accessory: this._paddingLeftSlider },
 			]);
+			this._list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
 			this.addChild(this._list);
 
 			this._backButton = new Button();
@@ -129,25 +137,13 @@ package feathers.examples.layoutExplorer.screens
 			this._backButton.label = "Back";
 			this._backButton.addEventListener(Event.TRIGGERED, backButton_triggeredHandler);
 
-			this._header = new Header();
-			this._header.title = "Vertical Layout Settings";
-			this.addChild(this._header);
-			this._header.leftItems = new <DisplayObject>
+			this.headerProperties.title = "Vertical Layout Settings";
+			this.headerProperties.leftItems = new <DisplayObject>
 			[
 				this._backButton
 			];
 
 			this.backButtonHandler = this.onBackButton;
-		}
-
-		override protected function draw():void
-		{
-			this._header.width = this.actualWidth;
-			this._header.validate();
-
-			this._list.y = this._header.height;
-			this._list.width = this.actualWidth;
-			this._list.height = this.actualHeight - this._list.y;
 		}
 
 		private function onBackButton():void

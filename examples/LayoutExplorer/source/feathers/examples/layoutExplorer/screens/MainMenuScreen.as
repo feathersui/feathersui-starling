@@ -2,8 +2,12 @@ package feathers.examples.layoutExplorer.screens
 {
 	import feathers.controls.Header;
 	import feathers.controls.List;
+	import feathers.controls.PanelScreen;
 	import feathers.controls.Screen;
 	import feathers.data.ListCollection;
+	import feathers.events.FeathersEventType;
+	import feathers.layout.AnchorLayout;
+	import feathers.layout.AnchorLayoutData;
 	import feathers.skins.StandardIcons;
 	import feathers.system.DeviceCapabilities;
 
@@ -20,7 +24,7 @@ package feathers.examples.layoutExplorer.screens
 
 	[Event(name="showTiledColumns",type="starling.events.Event")]
 
-	public class MainMenuScreen extends Screen
+	public class MainMenuScreen extends PanelScreen
 	{
 		public static const SHOW_HORIZONTAL:String = "showHorizontal";
 		public static const SHOW_VERTICAL:String = "showVertical";
@@ -30,16 +34,16 @@ package feathers.examples.layoutExplorer.screens
 		public function MainMenuScreen()
 		{
 			super();
+			this.addEventListener(FeathersEventType.INITIALIZE, initializeHandler);
 		}
 
-		private var _header:Header;
 		private var _list:List;
 
-		override protected function initialize():void
+		protected function initializeHandler(event:Event):void
 		{
-			this._header = new Header();
-			this._header.title = "Layouts in Feathers";
-			this.addChild(this._header);
+			this.layout = new AnchorLayout();
+
+			this.headerProperties.title = "Layouts in Feathers";
 
 			this._list = new List();
 			this._list.dataProvider = new ListCollection(
@@ -50,6 +54,7 @@ package feathers.examples.layoutExplorer.screens
 				{ text: "Tiled Columns", event: SHOW_TILED_COLUMNS },
 			]);
 			this._list.itemRendererProperties.labelField = "text";
+			this._list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
 			this._list.addEventListener(Event.CHANGE, list_changeHandler);
 			if(!DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
@@ -60,16 +65,6 @@ package feathers.examples.layoutExplorer.screens
 				this._list.selectedIndex = 0;
 			}
 			this.addChild(this._list);
-		}
-
-		override protected function draw():void
-		{
-			this._header.width = this.actualWidth;
-			this._header.validate();
-
-			this._list.y = this._header.height;
-			this._list.width = this.actualWidth;
-			this._list.height = this.actualHeight - this._list.y;
 		}
 
 		private function accessorySourceFunction(item:Object):Texture
