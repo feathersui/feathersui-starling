@@ -1004,8 +1004,26 @@ package feathers.core
 		public function setSize(width:Number, height:Number):void
 		{
 			this.explicitWidth = width;
+			var widthIsNaN:Boolean = isNaN(width);
+			if(widthIsNaN)
+			{
+				this.actualWidth = 0;
+			}
 			this.explicitHeight = height;
-			this.setSizeInternal(width, height, true);
+			var heightIsNaN:Boolean = isNaN(height);
+			if(heightIsNaN)
+			{
+				this.actualHeight = 0;
+			}
+
+			if(widthIsNaN || heightIsNaN)
+			{
+				this.invalidate(INVALIDATION_FLAG_SIZE);
+			}
+			else
+			{
+				this.setSizeInternal(width, height, true);
+			}
 		}
 
 		/**
