@@ -203,6 +203,7 @@ package feathers.controls
 		 *     <li>selectedDisabledIcon</li>
 		 *     <li>isSelected</li>
 		 *     <li>isToggle</li>
+		 *     <li>isEnabled</li>
 		 * </ul>
 		 *
 		 * <p>Additionally, you can add the following event listeners:</p>
@@ -799,7 +800,7 @@ package feathers.controls
 			const buttonFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_BUTTON_FACTORY);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 
-			if(dataInvalid || buttonFactoryInvalid)
+			if(dataInvalid || stateInvalid || buttonFactoryInvalid)
 			{
 				this.refreshButtons(buttonFactoryInvalid);
 			}
@@ -809,7 +810,7 @@ package feathers.controls
 				this.refreshButtonStyles();
 			}
 
-			if(dataInvalid || buttonFactoryInvalid || stateInvalid)
+			if(dataInvalid || stateInvalid || buttonFactoryInvalid)
 			{
 				this.commitEnabled();
 			}
@@ -827,9 +828,11 @@ package feathers.controls
 		 */
 		protected function commitEnabled():void
 		{
-			for each(var button:Button in this.activeButtons)
+			const buttonCount:int = this.activeButtons.length;
+			for(var i:int = 0; i < buttonCount; i++)
 			{
-				button.isEnabled = this._isEnabled;
+				var button:Button = this.activeButtons[i];
+				button.isEnabled &&= this._isEnabled;
 			}
 		}
 
@@ -879,11 +882,15 @@ package feathers.controls
 			{
 				if(item.hasOwnProperty("label"))
 				{
-					button.label = item.label;
+					button.label = item.label as String;
 				}
 				else
 				{
 					button.label = item.toString();
+				}
+				if(item.hasOwnProperty("isEnabled"))
+				{
+					button.isEnabled = item.isEnabled as Boolean;
 				}
 				for each(var field:String in DEFAULT_BUTTON_FIELDS)
 				{
