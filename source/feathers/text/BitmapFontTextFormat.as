@@ -76,5 +76,7 @@ package feathers.text
 		 * will be used for layout.
 		 */
 		public var isKerningEnabled:Boolean = true;
+
+		public var margin:Number = 0;
 	}
 }

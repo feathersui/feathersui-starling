@@ -829,7 +829,7 @@ package feathers.controls
 		{
 			for each(var button:Button in this.activeButtons)
 			{
-				button.isEnabled = this._isEnabled;
+				button.isEnabled = this._isEnabled && button.isEnabled;
 			}
 		}
 
