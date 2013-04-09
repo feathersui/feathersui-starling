@@ -43,6 +43,7 @@ package feathers.examples.layoutExplorer.screens
 			layout.paddingLeft = this.settings.paddingLeft;
 			layout.horizontalAlign = this.settings.horizontalAlign;
 			layout.verticalAlign = this.settings.verticalAlign;
+			layout.manageVisibility = true;
 
 			this._container = new ScrollContainer();
 			this._container.layout = layout;

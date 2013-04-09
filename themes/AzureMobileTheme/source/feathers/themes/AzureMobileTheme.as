@@ -792,6 +792,7 @@ package feathers.themes
 			layout.gap = 0;
 			layout.paddingTop = layout.paddingRight = layout.paddingBottom =
 				layout.paddingLeft = 0;
+			layout.manageVisibility = true;
 			list.listProperties.layout = layout;
 			list.listProperties.verticalScrollPolicy = List.SCROLL_POLICY_ON;
 
