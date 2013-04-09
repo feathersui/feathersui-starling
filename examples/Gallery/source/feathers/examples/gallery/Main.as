@@ -114,6 +114,7 @@ package feathers.examples.gallery
 			const listLayout:HorizontalLayout = new HorizontalLayout();
 			listLayout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_JUSTIFY;
 			listLayout.hasVariableItemDimensions = true;
+			listLayout.manageVisibility = true;
 
 			this.list = new List();
 			this.list.layout = listLayout;
