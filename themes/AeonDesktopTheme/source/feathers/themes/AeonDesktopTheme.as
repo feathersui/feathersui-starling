@@ -688,6 +688,8 @@ package feathers.themes
 
 			input.backgroundSkin = new Scale9Image(textInputBackgroundSkinTextures);
 			input.backgroundDisabledSkin = new Scale9Image(textInputBackgroundDisabledSkinTextures);
+
+			input.promptProperties.textFormat = this.defaultTextFormat;
 		}
 
 		protected function pageIndicatorInitializer(pageIndicator:PageIndicator):void
