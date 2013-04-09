@@ -35,6 +35,7 @@ package feathers.examples.componentsExplorer.screens
 			this.layout = new AnchorLayout();
 
 			this._input = new TextInput();
+			this._input.prompt = "Type Something";
 			this._input.displayAsPassword = this.settings.displayAsPassword;
 			this._input.maxChars = this.settings.maxChars;
 			this._input.isEditable = this.settings.isEditable;

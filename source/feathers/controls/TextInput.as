@@ -10,6 +10,7 @@ package feathers.controls
 	import feathers.core.FeathersControl;
 	import feathers.core.IFocusDisplayObject;
 	import feathers.core.ITextEditor;
+	import feathers.core.ITextRenderer;
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
 
@@ -77,6 +78,11 @@ package feathers.controls
 		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
 
 		/**
+		 * @private
+		 */
+		protected static const INVALIDATION_FLAG_PROMPT_FACTORY:String = "promptFactory";
+
+		/**
 		 * Constructor.
 		 */
 		public function TextInput()
@@ -91,6 +97,11 @@ package feathers.controls
 		 * The text editor sub-component.
 		 */
 		protected var textEditor:ITextEditor;
+
+		/**
+		 * The prompt text renderer sub-component.
+		 */
+		protected var promptTextRenderer:ITextRenderer;
 
 		/**
 		 * The currently selected background, based on state.
@@ -142,6 +153,33 @@ package feathers.controls
 			this._text = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _prompt:String;
+
+		/**
+		 * The prompt, hint, or description text displayed by the input when the
+		 * value of its text is empty.
+		 */
+		public function get prompt():String
+		{
+			return this._prompt;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set prompt(value:String):void
+		{
+			if(this._prompt == value)
+			{
+				return;
+			}
+			this._prompt = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
@@ -313,6 +351,119 @@ package feathers.controls
 			}
 			this._textEditorFactory = value;
 			this.invalidate(INVALIDATION_FLAG_TEXT_EDITOR);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _promptFactory:Function;
+
+		/**
+		 * A function used to instantiate the prompt text renderer. If null,
+		 * <code>FeathersControl.defaultTextRendererFactory</code> is used
+		 * instead. The prompt text renderer must be an instance of
+		 * <code>ITextRenderer</code>. This factory can be used to change
+		 * properties on the prompt when it is first created. For instance, if
+		 * you are skinning Feathers components without a theme, you might use
+		 * this factory to set styles on the prompt.
+		 *
+		 * <p>The factory should have the following function signature:</p>
+		 * <pre>function():ITextRenderer</pre>
+		 *
+		 * @see feathers.core.ITextRenderer
+		 * @see feathers.core.FeathersControl#defaultTextRendererFactory
+		 * @see feathers.controls.text.BitmapFontTextRenderer
+		 * @see feathers.controls.text.TextFieldTextRenderer
+		 */
+		public function get promptFactory():Function
+		{
+			return this._promptFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set promptFactory(value:Function):void
+		{
+			if(this._promptFactory == value)
+			{
+				return;
+			}
+			this._promptFactory = value;
+			this.invalidate(INVALIDATION_FLAG_PROMPT_FACTORY);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _promptProperties:PropertyProxy;
+
+		/**
+		 * A set of key/value pairs to be passed down to the text input's prompt
+		 * text renderer. The prompt text renderer is an <code>ITextRenderer</code>
+		 * instance that is created by <code>promptFactory</code>. The available
+		 * properties depend on which <code>ITextRenderer</code> implementation
+		 * is returned by <code>promptFactory</code>. The most common
+		 * implementations are <code>BitmapFontTextRenderer</code> and
+		 * <code>TextFieldTextRenderer</code>.
+		 *
+		 * <p>If the subcomponent has its own subcomponents, their properties
+		 * can be set too, using attribute <code>&#64;</code> notation. For example,
+		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
+		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
+		 * you can use the following syntax:</p>
+		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 *
+		 * <p>Setting properties in a <code>promptFactory</code> function
+		 * instead of using <code>promptProperties</code> will result in
+		 * better performance.</p>
+		 *
+		 * @see #promptFactory
+		 * @see feathers.core.ITextRenderer
+		 * @see feathers.controls.text.BitmapFontTextRenderer
+		 * @see feathers.controls.text.TextFieldTextRenderer
+		 */
+		public function get promptProperties():Object
+		{
+			if(!this._promptProperties)
+			{
+				this._promptProperties = new PropertyProxy(childProperties_onChange);
+			}
+			return this._promptProperties;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set promptProperties(value:Object):void
+		{
+			if(this._promptProperties == value)
+			{
+				return;
+			}
+			if(!value)
+			{
+				value = new PropertyProxy();
+			}
+			if(!(value is PropertyProxy))
+			{
+				const newValue:PropertyProxy = new PropertyProxy();
+				for(var propertyName:String in value)
+				{
+					newValue[propertyName] = value[propertyName];
+				}
+				value = newValue;
+			}
+			if(this._promptProperties)
+			{
+				this._promptProperties.removeOnChangeCallback(childProperties_onChange);
+			}
+			this._promptProperties = PropertyProxy(value);
+			if(this._promptProperties)
+			{
+				this._promptProperties.addOnChangeCallback(childProperties_onChange);
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
@@ -720,15 +871,26 @@ package feathers.controls
 			const skinInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SKIN);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const textEditorInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_TEXT_EDITOR);
+			const promptFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_PROMPT_FACTORY);
 
 			if(textEditorInvalid)
 			{
 				this.createTextEditor();
 			}
 
+			if(promptFactoryInvalid)
+			{
+				this.createPrompt();
+			}
+
 			if(textEditorInvalid || stylesInvalid)
 			{
 				this.refreshTextEditorProperties();
+			}
+
+			if(promptFactoryInvalid || stylesInvalid)
+			{
+				this.refreshPromptProperties();
 			}
 
 			if(textEditorInvalid || dataInvalid)
@@ -737,6 +899,11 @@ package feathers.controls
 				this._ignoreTextChanges = true;
 				this.textEditor.text = this._text;
 				this._ignoreTextChanges = oldIgnoreTextChanges;
+			}
+
+			if(promptFactoryInvalid || dataInvalid)
+			{
+				this.promptTextRenderer.visible = this._prompt && !this._text;
 			}
 
 			if(textEditorInvalid || stateInvalid)
@@ -756,7 +923,7 @@ package feathers.controls
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
-			if(textEditorInvalid || sizeInvalid || stylesInvalid || skinInvalid || stateInvalid)
+			if(textEditorInvalid || promptFactoryInvalid || sizeInvalid || stylesInvalid || skinInvalid || stateInvalid)
 			{
 				this.layout();
 			}
@@ -782,14 +949,20 @@ package feathers.controls
 			{
 				const oldIgnoreTextChanges:Boolean = this._ignoreTextChanges;
 				this._ignoreTextChanges = true;
-				this.textEditor.width = NaN;
-				this.textEditor.height = NaN;
+				this.textEditor.setSize(NaN, NaN);
 				this.textEditor.text = this._typicalText;
 				this.textEditor.measureText(HELPER_POINT);
 				this.textEditor.text = this._text;
 				this._ignoreTextChanges = oldIgnoreTextChanges;
 				typicalTextWidth = HELPER_POINT.x;
 				typicalTextHeight = HELPER_POINT.y;
+			}
+			if(this._prompt)
+			{
+				this.promptTextRenderer.setSize(NaN, NaN);
+				this.promptTextRenderer.measureText(HELPER_POINT);
+				typicalTextWidth = Math.max(typicalTextWidth, HELPER_POINT.x);
+				typicalTextHeight = Math.max(typicalTextHeight, HELPER_POINT.y);
 			}
 
 			var newWidth:Number = this.explicitWidth;
@@ -839,6 +1012,22 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function createPrompt():void
+		{
+			if(this.promptTextRenderer)
+			{
+				this.removeChild(DisplayObject(this.promptTextRenderer), true);
+				this.promptTextRenderer = null;
+			}
+
+			const factory:Function = this._promptFactory != null ? this._promptFactory : FeathersControl.defaultTextRendererFactory;
+			this.promptTextRenderer = ITextRenderer(factory());
+			this.addChild(DisplayObject(this.promptTextRenderer));
+		}
+
+		/**
+		 * @private
+		 */
 		protected function doPendingActions():void
 		{
 			if(this._isWaitingToSetFocus)
@@ -872,6 +1061,23 @@ package feathers.controls
 				{
 					var propertyValue:Object = this._textEditorProperties[propertyName];
 					this.textEditor[propertyName] = propertyValue;
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshPromptProperties():void
+		{
+			this.promptTextRenderer.text = this._prompt;
+			const displayPrompt:DisplayObject = DisplayObject(this.promptTextRenderer);
+			for(var propertyName:String in this._promptProperties)
+			{
+				if(displayPrompt.hasOwnProperty(propertyName))
+				{
+					var propertyValue:Object = this._promptProperties[propertyName];
+					this.promptTextRenderer[propertyName] = propertyValue;
 				}
 			}
 		}
@@ -945,6 +1151,11 @@ package feathers.controls
 			this.textEditor.y = this._paddingTop;
 			this.textEditor.width = this.actualWidth - this._paddingLeft - this._paddingRight;
 			this.textEditor.height = this.actualHeight - this._paddingTop - this._paddingBottom;
+
+			this.promptTextRenderer.x = this._paddingLeft;
+			this.promptTextRenderer.y = this._paddingTop;
+			this.promptTextRenderer.width = this.actualWidth - this._paddingLeft - this._paddingRight;
+			this.promptTextRenderer.height = this.actualHeight - this._paddingTop - this._paddingBottom;
 		}
 
 		/**
