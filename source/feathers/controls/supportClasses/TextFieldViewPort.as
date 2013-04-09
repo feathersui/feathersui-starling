@@ -730,7 +730,7 @@ package feathers.controls.supportClasses
 		{
 			const starlingViewPort:Rectangle = Starling.current.viewPort;
 			HELPER_POINT.x = HELPER_POINT.y = 0;
-			this.parent.parent.getTransformationMatrix(this.stage, HELPER_MATRIX);
+			this.parent.getTransformationMatrix(this.stage, HELPER_MATRIX);
 			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
 			this._textFieldContainer.x = starlingViewPort.x + HELPER_POINT.x * Starling.contentScaleFactor;
 			this._textFieldContainer.y = starlingViewPort.y + HELPER_POINT.y * Starling.contentScaleFactor;
