@@ -109,6 +109,8 @@ package feathers.examples.componentsExplorer.screens
 				[
 					this._backButton
 				];
+
+				this.backButtonHandler = this.onBackButton;
 			}
 
 			this._settingsButton = new Button();
@@ -119,9 +121,6 @@ package feathers.examples.componentsExplorer.screens
 			[
 				this._settingsButton
 			];
-
-			// handles the back hardware key on android
-			this.backButtonHandler = this.onBackButton;
 		}
 
 		private function onBackButton():void
