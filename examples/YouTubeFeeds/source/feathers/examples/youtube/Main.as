@@ -25,14 +25,13 @@ package feathers.examples.youtube
 			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 		}
 
-		private var _theme:MetalWorksMobileTheme;
 		private var _navigator:ScreenNavigator;
 		private var _transitionManager:ScreenSlidingStackTransitionManager;
 		private var _model:YouTubeModel;
 
 		private function addedToStageHandler(event:Event):void
 		{
-			this._theme = new MetalWorksMobileTheme();
+			new MetalWorksMobileTheme();
 
 			this._model = new YouTubeModel();
 

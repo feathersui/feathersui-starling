@@ -21,13 +21,12 @@ package feathers.examples.trainTimes
 			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 		}
 
-		private var _theme:TrainTimesTheme;
 		private var _navigator:ScreenNavigator;
 		private var _transitionManager:OldFadeNewSlideTransitionManager;
 
 		private function addedToStageHandler(event:Event):void
 		{
-			this._theme = new TrainTimesTheme();
+			new TrainTimesTheme();
 
 			this._navigator = new ScreenNavigator();
 			this.addChild(this._navigator);
