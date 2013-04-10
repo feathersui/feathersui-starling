@@ -80,10 +80,10 @@ package feathers.controls
 		/**
 		 * The default transition function.
 		 */
-		protected static function defaultTransition(oldScreen:DisplayObject, newScreen:DisplayObject, completeHandler:Function):void
+		protected static function defaultTransition(oldScreen:DisplayObject, newScreen:DisplayObject, completeCallback:Function):void
 		{
 			//in short, do nothing
-			completeHandler();
+			completeCallback();
 		}
 
 		/**
@@ -162,7 +162,33 @@ package feathers.controls
 
 		/**
 		 * A function that is called when the <code>ScreenNavigator</code> is
-		 * changing screens.
+		 * changing screens that is intended to display a transition effect and
+		 * to notify the <code>ScreenNavigator</code> when the effect is
+		 * finished.
+		 *
+		 * <p>The function should have the following signature:</p>
+		 * <pre>function(oldScreen:DisplayObject, newScreen:DisplayObject, completeCallback:Function):void</pre>
+		 *
+		 * <p>Either of the <code>oldScreen</code> and <code>newScreen</code>
+		 * arguments may be <code>null</code>, but never both. The
+		 * <code>oldScreen</code> argument will be <code>null</code> when the
+		 * first screen is displayed or when a new screen is displayed after
+		 * clearing the screen. The <code>newScreen</code> argument will
+		 * be null when clearing the screen.</p>
+		 *
+		 * <p>The <code>completeCallback</code> function <em>must</em> be called
+		 * when the transition effect finishes. It takes zero arguments and
+		 * returns nothing. In other words, it has the following signature:</p>
+		 *
+		 * <pre>function():void</pre>
+		 *
+		 * <p>In the future, it may be possible for a transition to cancel
+		 * itself. If this happens, the <code>completeCallback</code> may begin
+		 * accepting arguments, but they will have default values and existing
+		 * uses of <code>completeCallback</code> should continue to work.</p>
+		 *
+		 * @see #showScreen()
+		 * @see #clearScreen()
 		 */
 		public var transition:Function = defaultTransition;
 
