@@ -1533,21 +1533,11 @@ package feathers.controls
 			const page:Number = isNaN(this._page) ? this._step : this._page;
 			if(this._touchValue < this._value)
 			{
-				var newValue:Number = Math.max(this._touchValue, this._value - page);
-				if(page != 0)
-				{
-					newValue = roundToNearest(newValue, this._step);
-				}
-				this.value = newValue;
+				this.value = Math.max(this._touchValue, this._value - page);
 			}
 			else if(this._touchValue > this._value)
 			{
-				newValue = Math.min(this._touchValue, this._value + page);
-				if(page != 0)
-				{
-					newValue = roundToNearest(newValue, page);
-				}
-				this.value = newValue;
+				this.value = Math.min(this._touchValue, this._value + page);
 			}
 		}
 
