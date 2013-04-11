@@ -54,6 +54,7 @@ package feathers.themes
 	import feathers.controls.text.TextFieldTextRenderer;
 	import feathers.core.DisplayListWatcher;
 	import feathers.core.FeathersControl;
+	import feathers.core.FocusManager;
 	import feathers.core.IFeathersControl;
 	import feathers.core.ITextEditor;
 	import feathers.core.ITextRenderer;
@@ -272,6 +273,8 @@ package feathers.themes
 
 		protected function initialize():void
 		{
+			FocusManager.isEnabled = true;
+
 			FeathersControl.defaultTextRendererFactory = textRendererFactory;
 			FeathersControl.defaultTextEditorFactory = textEditorFactory;
 
