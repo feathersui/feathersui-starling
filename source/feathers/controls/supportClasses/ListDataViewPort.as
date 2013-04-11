@@ -544,7 +544,7 @@ package feathers.controls.supportClasses
 				this.refreshEnabled();
 			}
 
-			if(scrollInvalid || dataInvalid || itemRendererInvalid || sizeInvalid)
+			if(scrollInvalid || dataInvalid || itemRendererInvalid || sizeInvalid || stylesInvalid)
 			{
 				this._ignoreRendererResizing = true;
 				this._layout.layout(this._layoutItems, HELPER_BOUNDS, HELPER_LAYOUT_RESULT);
