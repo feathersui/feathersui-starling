@@ -989,6 +989,7 @@ package feathers.themes
 			input.minTouchWidth = input.minTouchHeight = 66 * this.scale;
 			input.paddingTop = input.paddingBottom = 14 * this.scale;
 			input.paddingLeft = input.paddingRight = 16 * this.scale;
+			input.isEditable = false;
 			input.textEditorProperties.fontFamily = "Helvetica";
 			input.textEditorProperties.fontSize = 36 * this.scale;
 			input.textEditorProperties.color = PRIMARY_TEXT_COLOR;

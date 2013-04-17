@@ -55,6 +55,7 @@ package feathers.themes
 	import feathers.controls.renderers.DefaultGroupedListItemRenderer;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.text.StageTextTextEditor;
+	import feathers.controls.text.TextFieldTextEditor;
 	import feathers.controls.text.TextFieldTextRenderer;
 	import feathers.core.DisplayListWatcher;
 	import feathers.core.FeathersControl;
@@ -140,6 +141,11 @@ package feathers.themes
 			return new StageTextTextEditor();
 		}
 
+		protected static function stepperTextEditorFactory():TextFieldTextEditor
+		{
+			return new TextFieldTextEditor();
+		}
+
 		protected static function popUpOverlayFactory():DisplayObject
 		{
 			const quad:Quad = new Quad(100, 100, MODAL_OVERLAY_COLOR);
@@ -195,6 +201,7 @@ package feathers.themes
 		protected var smallDarkTextFormat:TextFormat;
 		protected var smallLightTextFormat:TextFormat;
 		protected var smallDisabledTextFormat:TextFormat;
+		protected var smallLightTextFormatCentered:TextFormat;
 
 		protected var atlas:TextureAtlas;
 		protected var atlasBitmapData:BitmapData;
@@ -329,6 +336,7 @@ package feathers.themes
 			this.smallDarkTextFormat = new TextFormat(regularFontNames, 24 * this.scale, DARK_TEXT_COLOR);
 			this.smallLightTextFormat = new TextFormat(regularFontNames, 24 * this.scale, LIGHT_TEXT_COLOR);
 			this.smallDisabledTextFormat = new TextFormat(regularFontNames, 24 * this.scale, DISABLED_TEXT_COLOR);
+			this.smallLightTextFormatCentered = new TextFormat(regularFontNames, 24 * this.scale, LIGHT_TEXT_COLOR, null, null, null, null, null, TextFormatAlign.CENTER);
 
 			this.largeDarkTextFormat = new TextFormat(regularFontNames, 28 * this.scale, DARK_TEXT_COLOR);
 			this.largeLightTextFormat = new TextFormat(regularFontNames, 28 * this.scale, LIGHT_TEXT_COLOR);
@@ -1131,10 +1139,10 @@ package feathers.themes
 			input.minTouchWidth = input.minTouchHeight = 88 * this.scale;
 			input.paddingTop = input.paddingBottom = 10 * this.scale;
 			input.paddingLeft = input.paddingRight = 14 * this.scale;
-			input.textEditorProperties.fontFamily = "Helvetica";
-			input.textEditorProperties.fontSize = 24 * this.scale;
-			input.textEditorProperties.color = LIGHT_TEXT_COLOR;
-			input.textEditorProperties.textAlign = TextFormatAlign.CENTER;
+			input.isEditable = false;
+			input.textEditorFactory = stepperTextEditorFactory;
+			input.textEditorProperties.textFormat = this.smallLightTextFormatCentered;
+			input.textEditorProperties.embedFonts = true;
 		}
 
 		protected function pageIndicatorInitializer(pageIndicator:PageIndicator):void
