@@ -31,6 +31,7 @@ package feathers.examples.componentsExplorer.screens
 		private var _list:List;
 		private var _backButton:Button;
 		private var _stepStepper:NumericStepper;
+		private var _buttonLayoutModePicker:PickerList;
 
 		protected function initializeHandler(event:Event):void
 		{
@@ -43,11 +44,24 @@ package feathers.examples.componentsExplorer.screens
 			this._stepStepper.value = this.settings.step;
 			this._stepStepper.addEventListener(Event.CHANGE, stepStepper_changeHandler);
 
+			this._buttonLayoutModePicker = new PickerList();
+			this._buttonLayoutModePicker.typicalItem = NumericStepper.BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL;
+			this._buttonLayoutModePicker.dataProvider = new ListCollection(new <String>
+			[
+				NumericStepper.BUTTON_LAYOUT_MODE_SPLIT_HORIZONTAL,
+				NumericStepper.BUTTON_LAYOUT_MODE_SPLIT_VERTICAL,
+				NumericStepper.BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL,
+			]);
+			this._buttonLayoutModePicker.listProperties.typicalItem = NumericStepper.BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL;
+			this._buttonLayoutModePicker.selectedItem = this.settings.buttonLayoutMode;
+			this._buttonLayoutModePicker.addEventListener(Event.CHANGE, buttonLayoutModePicker_changeHandler);
+
 			this._list = new List();
 			this._list.isSelectable = false;
 			this._list.dataProvider = new ListCollection(
 			[
 				{ label: "step", accessory: this._stepStepper },
+				{ label: "buttonLayoutMode", accessory: this._buttonLayoutModePicker },
 			]);
 			this._list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
 			this.addChild(this._list);
@@ -74,6 +88,11 @@ package feathers.examples.componentsExplorer.screens
 		private function stepStepper_changeHandler(event:Event):void
 		{
 			this.settings.step = this._stepStepper.value;
+		}
+
+		private function buttonLayoutModePicker_changeHandler(event:Event):void
+		{
+			this.settings.buttonLayoutMode = this._buttonLayoutModePicker.selectedItem as String;
 		}
 
 		private function backButton_triggeredHandler(event:Event):void
