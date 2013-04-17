@@ -403,9 +403,20 @@ package feathers.core
 			}
 
 			var newFocus:IFocusDisplayObject;
+			const currentFocus:IFocusDisplayObject = this._focus;
 			if(event.shiftKey)
 			{
-				newFocus = this.findPreviousFocus(this._focus.parent, DisplayObject(this._focus));
+				if(currentFocus)
+				{
+					if(currentFocus.previousTabFocus)
+					{
+						newFocus = currentFocus.previousTabFocus;
+					}
+					else
+					{
+						newFocus = this.findPreviousFocus(currentFocus.parent, DisplayObject(currentFocus));
+					}
+				}
 				if(!newFocus)
 				{
 					newFocus = this.findPreviousFocus(this._topLevelContainer);
@@ -413,7 +424,6 @@ package feathers.core
 			}
 			else
 			{
-				var currentFocus:IFocusDisplayObject = this._focus;
 				if(currentFocus)
 				{
 					if(currentFocus.nextTabFocus)
@@ -422,7 +432,7 @@ package feathers.core
 					}
 					else
 					{
-						newFocus = this.findNextFocus(this._focus.parent, DisplayObject(this._focus));
+						newFocus = this.findNextFocus(currentFocus.parent, DisplayObject(currentFocus));
 					}
 				}
 				if(!newFocus)

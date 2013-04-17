@@ -754,11 +754,28 @@ package feathers.core
 		 */
 		public function set nextTabFocus(value:IFocusDisplayObject):void
 		{
-			if(this._nextTabFocus == value)
-			{
-				return;
-			}
 			this._nextTabFocus = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _previousTabFocus:IFocusDisplayObject;
+
+		/**
+		 * @copy feathers.core.IFocusDisplayObject#previousTabFocus
+		 */
+		public function get previousTabFocus():IFocusDisplayObject
+		{
+			return this._previousTabFocus;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set previousTabFocus(value:IFocusDisplayObject):void
+		{
+			this._previousTabFocus = value;
 		}
 
 		/**
