@@ -525,7 +525,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _decrementButtonLabel:String = "-";
+		protected var _decrementButtonLabel:String = null;
 
 		/**
 		 * The text displayed by the decrement button.
@@ -688,7 +688,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _incrementButtonLabel:String = "+";
+		protected var _incrementButtonLabel:String = null;
 
 		/**
 		 * The text displayed by the increment button.

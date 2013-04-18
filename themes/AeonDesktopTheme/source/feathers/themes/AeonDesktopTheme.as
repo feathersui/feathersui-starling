@@ -32,6 +32,7 @@ package feathers.themes
 	import feathers.controls.Header;
 	import feathers.controls.Label;
 	import feathers.controls.List;
+	import feathers.controls.NumericStepper;
 	import feathers.controls.PageIndicator;
 	import feathers.controls.PickerList;
 	import feathers.controls.ProgressBar;
@@ -42,6 +43,7 @@ package feathers.themes
 	import feathers.controls.ScrollText;
 	import feathers.controls.SimpleScrollBar;
 	import feathers.controls.Slider;
+	import feathers.controls.TabBar;
 	import feathers.controls.TextInput;
 	import feathers.controls.ToggleSwitch;
 	import feathers.controls.popups.DropDownPopUpContentManager;
@@ -90,6 +92,9 @@ package feathers.themes
 
 		protected static const BUTTON_SCALE_9_GRID:Rectangle = new Rectangle(6, 6, 70, 10);
 		protected static const SELECTED_BUTTON_SCALE_9_GRID:Rectangle = new Rectangle(6, 6, 52, 10);
+		protected static const TAB_SCALE_9_GRID:Rectangle = new Rectangle(4, 4, 55, 16);
+		protected static const STEPPER_INCREMENT_BUTTON_SCALE_9_GRID:Rectangle = new Rectangle(1, 9, 15, 1);
+		protected static const STEPPER_DECREMENT_BUTTON_SCALE_9_GRID:Rectangle = new Rectangle(1, 1, 15, 1);
 		protected static const HSLIDER_FIRST_REGION:Number = 2;
 		protected static const HSLIDER_SECOND_REGION:Number = 75;
 		protected static const TEXT_INPUT_SCALE_9_GRID:Rectangle = new Rectangle(2, 2, 148, 18);
@@ -174,6 +179,23 @@ package feathers.themes
 		protected var buttonSelectedHoverSkinTextures:Scale9Textures;
 		protected var buttonSelectedDownSkinTextures:Scale9Textures;
 		protected var buttonSelectedDisabledSkinTextures:Scale9Textures;
+
+		protected var tabUpSkinTextures:Scale9Textures;
+		protected var tabHoverSkinTextures:Scale9Textures;
+		protected var tabDownSkinTextures:Scale9Textures;
+		protected var tabDisabledSkinTextures:Scale9Textures;
+		protected var tabSelectedUpSkinTextures:Scale9Textures;
+		protected var tabSelectedDisabledSkinTextures:Scale9Textures;
+
+		protected var stepperIncrementButtonUpSkinTextures:Scale9Textures;
+		protected var stepperIncrementButtonHoverSkinTextures:Scale9Textures;
+		protected var stepperIncrementButtonDownSkinTextures:Scale9Textures;
+		protected var stepperIncrementButtonDisabledSkinTextures:Scale9Textures;
+
+		protected var stepperDecrementButtonUpSkinTextures:Scale9Textures;
+		protected var stepperDecrementButtonHoverSkinTextures:Scale9Textures;
+		protected var stepperDecrementButtonDownSkinTextures:Scale9Textures;
+		protected var stepperDecrementButtonDisabledSkinTextures:Scale9Textures;
 
 		protected var hSliderThumbUpSkinTexture:Texture;
 		protected var hSliderThumbHoverSkinTexture:Texture;
@@ -304,6 +326,23 @@ package feathers.themes
 			this.buttonSelectedDownSkinTextures = new Scale9Textures(this.atlas.getTexture("button-selected-down-skin"), SELECTED_BUTTON_SCALE_9_GRID);
 			this.buttonSelectedDisabledSkinTextures = new Scale9Textures(this.atlas.getTexture("button-selected-disabled-skin"), SELECTED_BUTTON_SCALE_9_GRID);
 
+			this.tabUpSkinTextures = new Scale9Textures(this.atlas.getTexture("tab-up-skin"), TAB_SCALE_9_GRID);
+			this.tabHoverSkinTextures = new Scale9Textures(this.atlas.getTexture("tab-hover-skin"), TAB_SCALE_9_GRID);
+			this.tabDownSkinTextures = new Scale9Textures(this.atlas.getTexture("tab-down-skin"), TAB_SCALE_9_GRID);
+			this.tabDisabledSkinTextures = new Scale9Textures(this.atlas.getTexture("tab-disabled-skin"), TAB_SCALE_9_GRID);
+			this.tabSelectedUpSkinTextures = new Scale9Textures(this.atlas.getTexture("tab-selected-up-skin"), TAB_SCALE_9_GRID);
+			this.tabSelectedDisabledSkinTextures = new Scale9Textures(this.atlas.getTexture("tab-selected-disabled-skin"), TAB_SCALE_9_GRID);
+
+			this.stepperIncrementButtonUpSkinTextures = new Scale9Textures(this.atlas.getTexture("numeric-stepper-increment-button-up-skin"), STEPPER_INCREMENT_BUTTON_SCALE_9_GRID);
+			this.stepperIncrementButtonHoverSkinTextures = new Scale9Textures(this.atlas.getTexture("numeric-stepper-increment-button-hover-skin"), STEPPER_INCREMENT_BUTTON_SCALE_9_GRID);
+			this.stepperIncrementButtonDownSkinTextures = new Scale9Textures(this.atlas.getTexture("numeric-stepper-increment-button-down-skin"), STEPPER_INCREMENT_BUTTON_SCALE_9_GRID);
+			this.stepperIncrementButtonDisabledSkinTextures = new Scale9Textures(this.atlas.getTexture("numeric-stepper-increment-button-disabled-skin"), STEPPER_INCREMENT_BUTTON_SCALE_9_GRID);
+
+			this.stepperDecrementButtonUpSkinTextures = new Scale9Textures(this.atlas.getTexture("numeric-stepper-decrement-button-up-skin"), STEPPER_DECREMENT_BUTTON_SCALE_9_GRID);
+			this.stepperDecrementButtonHoverSkinTextures = new Scale9Textures(this.atlas.getTexture("numeric-stepper-decrement-button-hover-skin"), STEPPER_DECREMENT_BUTTON_SCALE_9_GRID);
+			this.stepperDecrementButtonDownSkinTextures = new Scale9Textures(this.atlas.getTexture("numeric-stepper-decrement-button-down-skin"), STEPPER_DECREMENT_BUTTON_SCALE_9_GRID);
+			this.stepperDecrementButtonDisabledSkinTextures = new Scale9Textures(this.atlas.getTexture("numeric-stepper-decrement-button-disabled-skin"), STEPPER_DECREMENT_BUTTON_SCALE_9_GRID);
+
 			this.hSliderThumbUpSkinTexture = this.atlas.getTexture("hslider-thumb-up-skin");
 			this.hSliderThumbHoverSkinTexture = this.atlas.getTexture("hslider-thumb-hover-skin");
 			this.hSliderThumbDownSkinTexture = this.atlas.getTexture("hslider-thumb-down-skin");
@@ -388,9 +427,12 @@ package feathers.themes
 			this.setInitializerForClass(ScrollText, scrollTextInitializer);
 			this.setInitializerForClass(BitmapFontTextRenderer, itemRendererAccessoryLabelInitializer, BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ACCESSORY_LABEL);
 			this.setInitializerForClass(Button, buttonInitializer);
+			this.setInitializerForClass(Button, tabInitializer, TabBar.DEFAULT_CHILD_NAME_TAB);
 			this.setInitializerForClass(Button, toggleSwitchOnTrackInitializer, ToggleSwitch.DEFAULT_CHILD_NAME_ON_TRACK);
 			this.setInitializerForClass(Button, toggleSwitchThumbInitializer, ToggleSwitch.DEFAULT_CHILD_NAME_THUMB);
 			this.setInitializerForClass(Button, pickerListButtonInitializer, PickerList.DEFAULT_CHILD_NAME_BUTTON);
+			this.setInitializerForClass(Button, stepperIncrementButtonInitializer, NumericStepper.DEFAULT_CHILD_NAME_INCREMENT_BUTTON);
+			this.setInitializerForClass(Button, stepperDecrementButtonInitializer, NumericStepper.DEFAULT_CHILD_NAME_DECREMENT_BUTTON);
 			this.setInitializerForClass(Button, nothingInitializer, SimpleScrollBar.DEFAULT_CHILD_NAME_THUMB);
 			this.setInitializerForClass(Button, nothingInitializer, ScrollBar.DEFAULT_CHILD_NAME_THUMB);
 			this.setInitializerForClass(Button, nothingInitializer, ScrollBar.DEFAULT_CHILD_NAME_DECREMENT_BUTTON);
@@ -405,9 +447,11 @@ package feathers.themes
 			this.setInitializerForClass(Radio, radioInitializer);
 			this.setInitializerForClass(ToggleSwitch, toggleSwitchInitializer);
 			this.setInitializerForClass(Slider, sliderInitializer);
+			this.setInitializerForClass(NumericStepper, numericStepperInitializer);
 			this.setInitializerForClass(SimpleScrollBar, simpleScrollBarInitializer);
 			this.setInitializerForClass(ScrollBar, scrollBarInitializer);
 			this.setInitializerForClass(TextInput, textInputInitializer);
+			this.setInitializerForClass(TextInput, numericStepperTextInputInitializer, NumericStepper.DEFAULT_CHILD_NAME_TEXT_INPUT);
 			this.setInitializerForClass(PageIndicator, pageIndicatorInitializer);
 			this.setInitializerForClass(ProgressBar, progressBarInitializer);
 			this.setInitializerForClass(List, listInitializer);
@@ -552,6 +596,40 @@ package feathers.themes
 			radio.gap = 4;
 		}
 
+		protected function tabInitializer(tab:Button):void
+		{
+			tab.defaultSkin = new Scale9Image(tabUpSkinTextures);
+			tab.hoverSkin = new Scale9Image(tabHoverSkinTextures);
+			tab.downSkin = new Scale9Image(tabDownSkinTextures);
+			tab.disabledSkin = new Scale9Image(tabDisabledSkinTextures);
+			tab.defaultSelectedSkin = new Scale9Image(tabSelectedUpSkinTextures);
+			tab.selectedDisabledSkin = new Scale9Image(tabSelectedDisabledSkinTextures);
+
+			tab.defaultLabelProperties.textFormat = this.defaultTextFormat;
+			tab.disabledLabelProperties.textFormat = this.disabledTextFormat;
+
+			tab.paddingTop = tab.paddingBottom = 2;
+			tab.paddingLeft = tab.paddingRight = 10;
+			tab.gap = 2;
+			tab.minWidth = tab.minHeight = 12;
+		}
+
+		protected function stepperIncrementButtonInitializer(button:Button):void
+		{
+			button.defaultSkin = new Scale9Image(stepperIncrementButtonUpSkinTextures);
+			button.hoverSkin = new Scale9Image(stepperIncrementButtonHoverSkinTextures);
+			button.downSkin = new Scale9Image(stepperIncrementButtonDownSkinTextures);
+			button.disabledSkin = new Scale9Image(stepperIncrementButtonDisabledSkinTextures);
+		}
+
+		protected function stepperDecrementButtonInitializer(button:Button):void
+		{
+			button.defaultSkin = new Scale9Image(stepperDecrementButtonUpSkinTextures);
+			button.hoverSkin = new Scale9Image(stepperDecrementButtonHoverSkinTextures);
+			button.downSkin = new Scale9Image(stepperDecrementButtonDownSkinTextures);
+			button.disabledSkin = new Scale9Image(stepperDecrementButtonDisabledSkinTextures);
+		}
+
 		protected function toggleSwitchInitializer(toggle:ToggleSwitch):void
 		{
 			toggle.trackLayoutMode = ToggleSwitch.TRACK_LAYOUT_MODE_SINGLE;
@@ -586,6 +664,11 @@ package feathers.themes
 				slider.thumbProperties.disabledSkin = new Image(hSliderThumbDisabledSkinTexture);
 				slider.minimumTrackProperties.defaultSkin = new Scale3Image(hSliderTrackSkinTextures);
 			}
+		}
+
+		protected function numericStepperInitializer(stepper:NumericStepper):void
+		{
+			stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL;
 		}
 
 		protected function simpleScrollBarInitializer(scrollBar:SimpleScrollBar):void
@@ -693,6 +776,21 @@ package feathers.themes
 			input.backgroundDisabledSkin = new Scale9Image(textInputBackgroundDisabledSkinTextures);
 
 			input.promptProperties.textFormat = this.defaultTextFormat;
+		}
+
+		protected function numericStepperTextInputInitializer(input:TextInput):void
+		{
+			input.minWidth = input.minHeight = 22;
+			input.paddingTop = input.paddingBottom = 2;
+			input.paddingRight = input.paddingLeft = 4;
+			input.textEditorProperties.textFormat = this.defaultTextFormat;
+
+			const backgroundSkin:Scale9Image = new Scale9Image(textInputBackgroundSkinTextures);
+			backgroundSkin.width = backgroundSkin.height;
+			input.backgroundSkin = backgroundSkin;
+			const backgroundDisabledSkin:Scale9Image = new Scale9Image(textInputBackgroundDisabledSkinTextures);
+			backgroundDisabledSkin.width = backgroundDisabledSkin.height;
+			input.backgroundDisabledSkin = backgroundDisabledSkin;
 		}
 
 		protected function pageIndicatorInitializer(pageIndicator:PageIndicator):void
