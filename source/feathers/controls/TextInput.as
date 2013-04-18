@@ -88,7 +88,7 @@ package feathers.controls
 		public function TextInput()
 		{
 			this.isQuickHitAreaEnabled = true;
-			this.addEventListener(TouchEvent.TOUCH, touchHandler);
+			this.addEventListener(TouchEvent.TOUCH, textInput_touchHandler);
 			this.addEventListener(FeathersEventType.FOCUS_IN, textInput_focusInHandler);
 			this.addEventListener(FeathersEventType.FOCUS_OUT, textInput_focusOutHandler);
 		}
@@ -817,14 +817,12 @@ package feathers.controls
 		 */
 		public function setFocus():void
 		{
-			if(this.textEditor)
+			if(this._textEditorHasFocus)
 			{
-				this.textEditor.setFocus();
+				return;
 			}
-			else
-			{
-				this._isWaitingToSetFocus = true;
-			}
+			this._isWaitingToSetFocus = true;
+			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
 
 		/**
@@ -1033,7 +1031,10 @@ package feathers.controls
 			if(this._isWaitingToSetFocus)
 			{
 				this._isWaitingToSetFocus = false;
-				this.textEditor.setFocus();
+				if(!this._textEditorHasFocus)
+				{
+					this.textEditor.setFocus();
+				}
 			}
 			if(this._pendingSelectionStartIndex >= 0)
 			{
@@ -1169,7 +1170,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function touchHandler(event:TouchEvent):void
+		protected function textInput_touchHandler(event:TouchEvent):void
 		{
 			if(!this._isEnabled)
 			{
@@ -1208,15 +1209,6 @@ package feathers.controls
 				if(touch.phase == TouchPhase.ENDED)
 				{
 					this._touchPointID = -1;
-					touch.getLocation(this.stage, HELPER_POINT);
-					const isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
-					if(!this._textEditorHasFocus && isInBounds)
-					{
-						this.globalToLocal(HELPER_POINT, HELPER_POINT);
-						HELPER_POINT.x -= this._paddingLeft;
-						HELPER_POINT.y -= this._paddingTop;
-						this.textEditor.setFocus(HELPER_POINT);
-					}
 				}
 			}
 			else
@@ -1226,6 +1218,16 @@ package feathers.controls
 					if(touch.phase == TouchPhase.BEGAN)
 					{
 						this._touchPointID = touch.id;
+						touch.getLocation(this.stage, HELPER_POINT);
+						const isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
+						if(!this._textEditorHasFocus && isInBounds)
+						{
+							this.globalToLocal(HELPER_POINT, HELPER_POINT);
+							HELPER_POINT.x -= this._paddingLeft;
+							HELPER_POINT.y -= this._paddingTop;
+							this._isWaitingToSetFocus = false;
+							this.textEditor.setFocus(HELPER_POINT);
+						}
 						break;
 					}
 					else if(touch.phase == TouchPhase.HOVER)
@@ -1251,7 +1253,8 @@ package feathers.controls
 			{
 				return;
 			}
-			this.textEditor.setFocus();
+			this._isWaitingToSetFocus = true;
+			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
 
 		/**

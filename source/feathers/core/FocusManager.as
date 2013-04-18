@@ -10,6 +10,7 @@ package feathers.core
 	import feathers.events.FeathersEventType;
 
 	import flash.display.Sprite;
+	import flash.display.Stage;
 	import flash.events.FocusEvent;
 	import flash.ui.Keyboard;
 
@@ -253,9 +254,13 @@ package feathers.core
 				this._focus = value;
 				if(this._focus)
 				{
+					const nativeStage:Stage = Starling.current.nativeStage;
+					if(!nativeStage.focus)
+					{
+						nativeStage.focus = _nativeFocusTarget;
+					}
 					this._focus.addEventListener(Event.REMOVED_FROM_STAGE, focus_removedFromStageHandler);
 					this._focus.dispatchEventWith(FeathersEventType.FOCUS_IN);
-					Starling.current.nativeStage.focus = _nativeFocusTarget;
 				}
 				else
 				{
