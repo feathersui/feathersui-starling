@@ -22,6 +22,8 @@ package feathers.controls
 	 *
 	 * @see ScreenNavigator
 	 * @see Panel
+	 * @see Screen
+	 * @see http://wiki.starling-framework.org/feathers/panel-screen
 	 */
 	public class PanelScreen extends Panel implements IScreen
 	{
@@ -41,6 +43,7 @@ package feathers.controls
 			super();
 			this.headerName = DEFAULT_CHILD_NAME_HEADER;
 			this.originalDPI = DeviceCapabilities.dpi;
+			this.clipContent = false;
 		}
 
 		/**

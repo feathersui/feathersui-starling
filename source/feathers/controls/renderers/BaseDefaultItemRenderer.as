@@ -1168,7 +1168,10 @@ package feathers.controls.renderers
 		protected var _accessoryLabelProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to a label accessory.
+		 * A set of key/value pairs to be passed down to a label accessory. The
+		 * title is an <code>ITextRenderer</code> instance. The available
+		 * properties depend on which <code>ITextRenderer</code> implementation
+		 * is used.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -1177,7 +1180,12 @@ package feathers.controls.renderers
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
+		 * <p>Setting properties in a <code>accessoryLabelFactory</code>
+		 * function instead of using <code>accessoryLabelProperties</code> will
+		 * result in better performance.</p>
+		 *
 		 * @see feathers.core.ITextRenderer
+		 * @see #accessoryLabelFactory
 		 * @see #accessoryLabelField
 		 * @see #accessoryLabelFunction
 		 */
@@ -1231,6 +1239,15 @@ package feathers.controls.renderers
 		{
 			this.replaceIcon(null);
 			this.replaceAccessory(null);
+			if(this._stateDelayTimer)
+			{
+				if(this._stateDelayTimer.running)
+				{
+					this._stateDelayTimer.stop();
+				}
+				this._stateDelayTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, stateDelayTimer_timerCompleteHandler);
+				this._stateDelayTimer = null;
+			}
 			super.dispose();
 		}
 
@@ -1615,6 +1632,7 @@ package feathers.controls.renderers
 
 			if(this.accessory)
 			{
+				this.accessory.removeEventListener(FeathersEventType.RESIZE, accessory_resizeHandler);
 				this.accessory.removeEventListener(TouchEvent.TOUCH, accessory_touchHandler);
 
 				//the accessory may have come from outside of this class. it's
@@ -1645,9 +1663,13 @@ package feathers.controls.renderers
 
 			if(this.accessory)
 			{
-				if(this.accessory is IFeathersControl && !(this.accessory is BitmapFontTextRenderer))
+				if(this.accessory is IFeathersControl)
 				{
-					this.accessory.addEventListener(TouchEvent.TOUCH, accessory_touchHandler);
+					if(!(this.accessory is BitmapFontTextRenderer))
+					{
+						this.accessory.addEventListener(TouchEvent.TOUCH, accessory_touchHandler);
+					}
+					this.accessory.addEventListener(FeathersEventType.RESIZE, accessory_resizeHandler);
 				}
 				this.addChild(this.accessory);
 			}
@@ -1743,7 +1765,7 @@ package feathers.controls.renderers
 				this.positionSingleChild(labelRenderer);
 				if(this._layoutOrder == LAYOUT_ORDER_LABEL_ACCESSORY_ICON)
 				{
-					this.positionRelativeToOthers(this.accessory, labelRenderer, null, this._accessoryPosition, accessoryGap);
+					this.positionRelativeToOthers(this.accessory, labelRenderer, null, this._accessoryPosition, accessoryGap, null, 0);
 					var iconPosition:String = this._iconPosition;
 					if(iconPosition == ICON_POSITION_LEFT_BASELINE)
 					{
@@ -1753,12 +1775,12 @@ package feathers.controls.renderers
 					{
 						iconPosition = ICON_POSITION_RIGHT;
 					}
-					this.positionRelativeToOthers(this.currentIcon, labelRenderer, this.accessory, iconPosition, this._gap);
+					this.positionRelativeToOthers(this.currentIcon, labelRenderer, this.accessory, iconPosition, this._gap, this._accessoryPosition, accessoryGap);
 				}
 				else
 				{
 					this.positionLabelAndIcon();
-					this.positionRelativeToOthers(this.accessory, labelRenderer, this.currentIcon, this._accessoryPosition, accessoryGap);
+					this.positionRelativeToOthers(this.accessory, labelRenderer, this.currentIcon, this._accessoryPosition, accessoryGap, this._iconPosition, this._gap);
 				}
 			}
 			else if(this._label)
@@ -1772,7 +1794,7 @@ package feathers.controls.renderers
 				}
 				else if(accessoryIsInLayout)
 				{
-					this.positionRelativeToOthers(this.accessory, labelRenderer, null, this._accessoryPosition, accessoryGap);
+					this.positionRelativeToOthers(this.accessory, labelRenderer, null, this._accessoryPosition, accessoryGap, null, 0);
 				}
 			}
 			else if(iconIsInLayout)
@@ -1780,7 +1802,7 @@ package feathers.controls.renderers
 				this.positionSingleChild(this.currentIcon);
 				if(accessoryIsInLayout)
 				{
-					this.positionRelativeToOthers(this.accessory, this.currentIcon, null, this._accessoryPosition, accessoryGap);
+					this.positionRelativeToOthers(this.accessory, this.currentIcon, null, this._accessoryPosition, accessoryGap, null, 0);
 				}
 			}
 			else if(accessoryIsInLayout)
@@ -1852,7 +1874,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected function positionRelativeToOthers(object:DisplayObject, relativeTo:DisplayObject, relativeTo2:DisplayObject, position:String, gap:Number):void
+		protected function positionRelativeToOthers(object:DisplayObject, relativeTo:DisplayObject, relativeTo2:DisplayObject, position:String, gap:Number, otherPosition:String, otherGap:Number):void
 		{
 			const relativeToX:Number = relativeTo2 ? Math.min(relativeTo.x, relativeTo2.x) : relativeTo.x;
 			const relativeToY:Number = relativeTo2 ? Math.min(relativeTo.y, relativeTo2.y) : relativeTo.y;
@@ -1877,6 +1899,10 @@ package feathers.controls.renderers
 					{
 						newRelativeToY += (object.height + gap) / 2;
 					}
+					if(relativeTo2)
+					{
+						newRelativeToY = Math.max(newRelativeToY, this._paddingTop + object.height + gap);
+					}
 					object.y = newRelativeToY - object.height - gap;
 				}
 			}
@@ -1896,6 +1922,10 @@ package feathers.controls.renderers
 					else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
 					{
 						newRelativeToX -= (object.width + gap) / 2;
+					}
+					if(relativeTo2)
+					{
+						newRelativeToX = Math.min(newRelativeToX, this.actualWidth - this._paddingRight - object.width - relativeToWidth - gap);
 					}
 					object.x = newRelativeToX + relativeToWidth + gap;
 				}
@@ -1917,6 +1947,10 @@ package feathers.controls.renderers
 					{
 						newRelativeToY -= (object.height + gap) / 2;
 					}
+					if(relativeTo2)
+					{
+						newRelativeToY = Math.min(newRelativeToY, this.actualHeight - this._paddingBottom - object.height - relativeToHeight - gap);
+					}
 					object.y = newRelativeToY + relativeToHeight + gap;
 				}
 			}
@@ -1937,18 +1971,38 @@ package feathers.controls.renderers
 					{
 						newRelativeToX += (gap + object.width) / 2;
 					}
+					if(relativeTo2)
+					{
+						newRelativeToX = Math.max(newRelativeToX, this._paddingLeft + object.width + gap);
+					}
 					object.x = newRelativeToX - gap - object.width;
 				}
 			}
 
 			var offsetX:Number = newRelativeToX - relativeToX;
 			var offsetY:Number = newRelativeToY - relativeToY;
-			relativeTo.x += offsetX;
-			relativeTo.y += offsetY;
+			if(!relativeTo2 || otherGap != Number.POSITIVE_INFINITY || !(
+				(position == ACCESSORY_POSITION_TOP && otherPosition == ACCESSORY_POSITION_TOP) ||
+				(position == ACCESSORY_POSITION_RIGHT && otherPosition == ACCESSORY_POSITION_RIGHT) ||
+				(position == ACCESSORY_POSITION_BOTTOM && otherPosition == ACCESSORY_POSITION_BOTTOM) ||
+				(position == ACCESSORY_POSITION_LEFT && otherPosition == ACCESSORY_POSITION_LEFT)
+			))
+			{
+				relativeTo.x += offsetX;
+				relativeTo.y += offsetY;
+			}
 			if(relativeTo2)
 			{
-				relativeTo2.x += offsetX;
-				relativeTo2.y += offsetY;
+				if(otherGap != Number.POSITIVE_INFINITY || !(
+					(position == ACCESSORY_POSITION_LEFT && otherPosition == ACCESSORY_POSITION_RIGHT) ||
+					(position == ACCESSORY_POSITION_RIGHT && otherPosition == ACCESSORY_POSITION_LEFT) ||
+					(position == ACCESSORY_POSITION_TOP && otherPosition == ACCESSORY_POSITION_BOTTOM) ||
+					(position == ACCESSORY_POSITION_BOTTOM && otherPosition == ACCESSORY_POSITION_TOP)
+				))
+				{
+					relativeTo2.x += offsetX;
+					relativeTo2.y += offsetY;
+				}
 			}
 
 			if(position == ACCESSORY_POSITION_LEFT || position == ACCESSORY_POSITION_RIGHT)
@@ -2042,6 +2096,14 @@ package feathers.controls.renderers
 				return;
 			}
 			event.stopPropagation();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function accessory_resizeHandler(event:Event):void
+		{
+			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
 		/**

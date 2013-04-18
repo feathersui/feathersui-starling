@@ -110,8 +110,15 @@ package feathers.controls
 		}
 
 		/**
-		 * The value added to the <code>nameList</code> of the thumb.
+		 * The value added to the <code>nameList</code> of the thumb. This
+		 * variable is <code>protected</code> so that sub-classes can customize
+		 * the thumb name in their constructors instead of using the default
+		 * name defined by <code>DEFAULT_CHILD_NAME_THUMB</code>.
 		 *
+		 * <p>To customize the thumb name without subclassing, see
+		 * <code>customThumbName</code>.</p>
+		 *
+		 * @see #customThumbName
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var thumbName:String = DEFAULT_CHILD_NAME_THUMB;
@@ -163,6 +170,7 @@ package feathers.controls
 			}
 			this._direction = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
+			this.invalidate(INVALIDATION_FLAG_THUMB_FACTORY);
 		}
 
 		/**
@@ -487,14 +495,16 @@ package feathers.controls
 
 		/**
 		 * A function used to generate the scroll bar's thumb sub-component.
-		 * This can be used to change properties on the thumb when it is first
+		 * The thumb must be an instance of <code>Button</code>. This factory
+		 * can be used to change properties on the thumb when it is first
 		 * created. For instance, if you are skinning Feathers components
-		 * without a theme, you might use <code>thumbFactory</code> to set
-		 * skins and text styles on the thumb.
+		 * without a theme, you might use this factory to set skins and other
+		 * styles on the thumb.
 		 *
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():Button</pre>
 		 *
+		 * @see feathers.controls.Button
 		 * @see #thumbProperties
 		 */
 		public function get thumbFactory():Function
@@ -554,7 +564,7 @@ package feathers.controls
 		/**
 		 * A set of key/value pairs to be passed down to the scroll bar's thumb
 		 * sub-component. The thumb is a <code>feathers.controls.Button</code>
-		 * instance.
+		 * instance that is created by <code>thumbFactory</code>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -562,7 +572,12 @@ package feathers.controls
 		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
-		 * 
+		 *
+		 * <p>Setting properties in a <code>thumbFactory</code> function instead
+		 * of using <code>thumbProperties</code> will result in better
+		 * performance.</p>
+		 *
+		 * @see #thumbFactory
 		 * @see feathers.controls.Button
 		 */
 		public function get thumbProperties():Object

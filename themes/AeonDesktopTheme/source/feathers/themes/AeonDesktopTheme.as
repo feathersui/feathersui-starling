@@ -54,6 +54,7 @@ package feathers.themes
 	import feathers.controls.text.TextFieldTextRenderer;
 	import feathers.core.DisplayListWatcher;
 	import feathers.core.FeathersControl;
+	import feathers.core.FocusManager;
 	import feathers.core.IFeathersControl;
 	import feathers.core.ITextEditor;
 	import feathers.core.ITextRenderer;
@@ -272,6 +273,8 @@ package feathers.themes
 
 		protected function initialize():void
 		{
+			FocusManager.isEnabled = true;
+
 			FeathersControl.defaultTextRendererFactory = textRendererFactory;
 			FeathersControl.defaultTextEditorFactory = textEditorFactory;
 
@@ -688,6 +691,8 @@ package feathers.themes
 
 			input.backgroundSkin = new Scale9Image(textInputBackgroundSkinTextures);
 			input.backgroundDisabledSkin = new Scale9Image(textInputBackgroundDisabledSkinTextures);
+
+			input.promptProperties.textFormat = this.defaultTextFormat;
 		}
 
 		protected function pageIndicatorInitializer(pageIndicator:PageIndicator):void
@@ -730,15 +735,6 @@ package feathers.themes
 			list.paddingTop = list.paddingRight = list.paddingBottom =
 				list.paddingLeft = 1;
 
-			const layout:VerticalLayout = new VerticalLayout();
-			layout.useVirtualLayout = true;
-			layout.paddingTop = layout.paddingRight = layout.paddingBottom =
-				layout.paddingLeft = 0;
-			layout.gap = 0;
-			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
-			layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
-			list.layout = layout;
-
 			list.horizontalScrollBarFactory = horizontalScrollBarFactory;
 			list.verticalScrollBarFactory = verticalScrollBarFactory;
 
@@ -755,15 +751,6 @@ package feathers.themes
 
 			list.paddingTop = list.paddingRight = list.paddingBottom =
 				list.paddingLeft = 1;
-
-			const layout:VerticalLayout = new VerticalLayout();
-			layout.useVirtualLayout = true;
-			layout.paddingTop = layout.paddingRight = layout.paddingBottom =
-				layout.paddingLeft = 0;
-			layout.gap = 0;
-			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
-			layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
-			list.layout = layout;
 
 			list.horizontalScrollBarFactory = horizontalScrollBarFactory;
 			list.verticalScrollBarFactory = verticalScrollBarFactory;

@@ -396,7 +396,7 @@ package feathers.controls
 			for(var i:int = 0; i < indexCount; i++)
 			{
 				var index:int = this._selectedIndices.getItemAt(i) as int;
-				var item:Object = this._dataProvider[index];
+				var item:Object = this._dataProvider.getItemAt(index);
 				items.push(item);
 			}
 			return items;
@@ -436,7 +436,10 @@ package feathers.controls
 		 * renderers. These values are shared by each item renderer, so values
 		 * that cannot be shared (such as display objects that need to be added
 		 * to the display list) should be passed to the item renderers using an
-		 * <code>itemRendererFactory</code> or with a theme.
+		 * <code>itemRendererFactory</code> or with a theme. The item renderers
+		 * are instances of <code>IListItemRenderer</code>. The available
+		 * properties depend on which <code>IListItemRenderer</code>
+		 * implementation is returned by <code>itemRendererFactory</code>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -445,8 +448,13 @@ package feathers.controls
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
-		 * @see feathers.controls.renderers.IListItemRenderer
+		 * <p>Setting properties in a <code>itemRendererFactory</code> function
+		 * instead of using <code>itemRendererProperties</code> will result in
+		 * better performance.</p>
+		 *
 		 * @see #itemRendererFactory
+		 * @see feathers.controls.renderers.IListItemRenderer
+		 * @see feathers.controls.renderers.DefaultListItemRenderer
 		 */
 		public function get itemRendererProperties():Object
 		{
@@ -664,6 +672,15 @@ package feathers.controls
 			this.pendingScrollDuration = animationDuration;
 			this.invalidate(INVALIDATION_FLAG_PENDING_SCROLL);
 		}
+
+		/**
+		 * @private
+		 */
+		override public function dispose():void
+		{
+			this.dataProvider = null;
+			super.dispose();
+		}
 		
 		/**
 		 * @private
@@ -699,6 +716,7 @@ package feathers.controls
 				layout.gap = 0;
 				layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
 				layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
+				layout.manageVisibility = true;
 				this._layout = layout;
 			}
 		}

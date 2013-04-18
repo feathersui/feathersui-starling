@@ -4,6 +4,7 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.ImageLoader;
 	import feathers.controls.PanelScreen;
 	import feathers.events.FeathersEventType;
+	import feathers.examples.componentsExplorer.data.EmbeddedAssets;
 	import feathers.layout.VerticalLayout;
 	import feathers.system.DeviceCapabilities;
 
@@ -16,8 +17,6 @@ package feathers.examples.componentsExplorer.screens
 
 	public class ButtonScreen extends PanelScreen
 	{
-		[Embed(source="/../assets/images/skull.png")]
-		private static const SKULL_ICON:Class;
 		
 		public function ButtonScreen()
 		{
@@ -45,6 +44,7 @@ package feathers.examples.componentsExplorer.screens
 			{
 				//since we created this texture, it's up to us to dispose it
 				this._iconTexture.dispose();
+				this._iconTexture = null;
 			}
 			super.dispose();
 		}
@@ -63,7 +63,7 @@ package feathers.examples.componentsExplorer.screens
 			this._normalButton.addEventListener(Event.TRIGGERED, normalButton_triggeredHandler);
 			this.addChild(this._normalButton);
 
-			this._iconTexture = Texture.fromBitmap(new SKULL_ICON());
+			this._iconTexture = Texture.fromBitmap(new EmbeddedAssets.SKULL_ICON());
 			this._icon = new ImageLoader();
 			this._icon.source = this._iconTexture;
 			//the icon will be blurry if it's not on a whole pixel. ImageLoader
@@ -121,10 +121,9 @@ package feathers.examples.componentsExplorer.screens
 				[
 					this._backButton
 				];
+
+				this.backButtonHandler = this.onBackButton;
 			}
-			
-			// handles the back hardware key on android
-			this.backButtonHandler = this.onBackButton;
 		}
 		
 		private function onBackButton():void

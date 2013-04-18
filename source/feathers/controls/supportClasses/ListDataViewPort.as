@@ -504,6 +504,14 @@ package feathers.controls.supportClasses
 			return this._layout.getScrollPositionForIndex(index, this._layoutItems, 0, 0, this.actualVisibleWidth, this.actualVisibleHeight, result);
 		}
 
+		override public function dispose():void
+		{
+			this.owner = null;
+			this.layout = null;
+			this.dataProvider = null;
+			super.dispose();
+		}
+
 		override protected function draw():void
 		{
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
@@ -536,7 +544,7 @@ package feathers.controls.supportClasses
 				this.refreshEnabled();
 			}
 
-			if(scrollInvalid || dataInvalid || itemRendererInvalid || sizeInvalid)
+			if(scrollInvalid || dataInvalid || itemRendererInvalid || sizeInvalid || stylesInvalid)
 			{
 				this._ignoreRendererResizing = true;
 				this._layout.layout(this._layoutItems, HELPER_BOUNDS, HELPER_LAYOUT_RESULT);
@@ -549,7 +557,7 @@ package feathers.controls.supportClasses
 		
 		private function invalidateParent():void
 		{
-			Scroller(this.parent.parent).invalidate(INVALIDATION_FLAG_DATA);
+			Scroller(this.parent).invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		private function calculateTypicalValues():void

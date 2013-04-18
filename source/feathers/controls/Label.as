@@ -85,9 +85,14 @@ package feathers.controls
 		protected var _textRendererFactory:Function;
 
 		/**
-		 * A function used to instantiate the text renderer. If null,
-		 * <code>FeathersControl.defaultTextRendererFactory</code> is used
-		 * instead.
+		 * A function used to instantiate the label's text renderer
+		 * sub-component. By default, the label will use the global text
+		 * renderer factory, <code>FeathersControl.defaultTextRendererFactory()</code>,
+		 * to create the text renderer. The text renderer must be an instance of
+		 * <code>ITextRenderer</code>. This factory can be used to change
+		 * properties on the text renderer when it is first created. For
+		 * instance, if you are skinning Feathers components without a theme,
+		 * you might use this factory to style the text renderer.
 		 *
 		 * <p>The factory should have the following function signature:</p>
 		 * <pre>function():ITextRenderer</pre>
@@ -119,7 +124,12 @@ package feathers.controls
 		protected var _textRendererProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the text renderer.
+		 * A set of key/value pairs to be passed down to the text renderer. The
+		 * text renderer is an <code>ITextRenderer</code> instance. The
+		 * available properties depend on which <code>ITextRenderer</code>
+		 * implementation is returned by <code>textRendererFactory</code>. The
+		 * most common implementations are <code>BitmapFontTextRenderer</code>
+		 * and <code>TextFieldTextRenderer</code>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -128,7 +138,14 @@ package feathers.controls
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
+		 * <p>Setting properties in a <code>textRendererFactory</code> function
+		 * instead of using <code>textRendererProperties</code> will result in
+		 * better performance.</p>
+		 *
+		 * @see #textRendererFactory
 		 * @see feathers.core.ITextRenderer
+		 * @see feathers.controls.text.BitmapFontTextRenderer
+		 * @see feathers.controls.text.TextFieldTextRenderer
 		 */
 		public function get textRendererProperties():Object
 		{

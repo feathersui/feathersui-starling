@@ -16,7 +16,10 @@ package feathers.layout
 	import starling.events.EventDispatcher;
 
 	/**
-	 * @inheritDoc
+	 * Dispatched when a property of the layout changes, indicating that a
+	 * redraw is probably needed.
+	 *
+	 * @eventType starling.events.Event.CHANGE
 	 */
 	[Event(name="change",type="starling.events.Event")]
 
@@ -346,6 +349,14 @@ package feathers.layout
 		}
 
 		/**
+		 * Determines if items will be set invisible if they are outside the
+		 * view port. Can improve performance, especially for non-virtual
+		 * layouts. If <code>true</code>, you will not be able to manually
+		 * change the <code>visible</code> property of any items in the layout.
+		 */
+		public var manageVisibility:Boolean = false;
+
+		/**
 		 * @private
 		 */
 		protected var _beforeVirtualizedItemCount:int = 0;
@@ -475,6 +486,8 @@ package feathers.layout
 		 */
 		public function layout(items:Vector.<DisplayObject>, viewPortBounds:ViewPortBounds = null, result:LayoutBoundsResult = null):LayoutBoundsResult
 		{
+			const scrollX:Number = viewPortBounds ? viewPortBounds.scrollX : 0;
+			const scrollY:Number = viewPortBounds ? viewPortBounds.scrollY : 0;
 			const boundsX:Number = viewPortBounds ? viewPortBounds.x : 0;
 			const boundsY:Number = viewPortBounds ? viewPortBounds.y : 0;
 			const minWidth:Number = viewPortBounds ? viewPortBounds.minWidth : 0;
@@ -558,6 +571,30 @@ package feathers.layout
 			const totalWidth:Number = maxItemWidth + this._paddingLeft + this._paddingRight;
 			const availableWidth:Number = isNaN(explicitWidth) ? Math.min(maxWidth, Math.max(minWidth, totalWidth)) : explicitWidth;
 			const discoveredItemCount:int = discoveredItems.length;
+
+			const totalHeight:Number = positionY - this._gap + this._paddingBottom - boundsY;
+			const availableHeight:Number = isNaN(explicitHeight) ? Math.min(maxHeight, Math.max(minHeight, totalHeight)) : explicitHeight;
+			if(totalHeight < availableHeight)
+			{
+				var verticalAlignOffsetY:Number = 0;
+				if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
+				{
+					verticalAlignOffsetY = availableHeight - totalHeight;
+				}
+				else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
+				{
+					verticalAlignOffsetY = (availableHeight - totalHeight) / 2;
+				}
+				if(verticalAlignOffsetY != 0)
+				{
+					for(i = 0; i < discoveredItemCount; i++)
+					{
+						item = discoveredItems[i];
+						item.y += verticalAlignOffsetY;
+					}
+				}
+			}
+
 			for(i = 0; i < discoveredItemCount; i++)
 			{
 				item = discoveredItems[i];
@@ -584,30 +621,13 @@ package feathers.layout
 						item.x = boundsX + this._paddingLeft;
 					}
 				}
+				if(this.manageVisibility)
+				{
+					item.visible = ((item.y + item.height) >= (boundsY + scrollY)) && (item.y < (scrollY + availableHeight));
+				}
 			}
 
-			const totalHeight:Number = positionY - this._gap + this._paddingBottom - boundsY;
-			const availableHeight:Number = isNaN(explicitHeight) ? Math.min(maxHeight, Math.max(minHeight, totalHeight)) : explicitHeight;
-			if(totalHeight < availableHeight)
-			{
-				var verticalAlignOffsetY:Number = 0;
-				if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
-				{
-					verticalAlignOffsetY = availableHeight - totalHeight;
-				}
-				else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
-				{
-					verticalAlignOffsetY = (availableHeight - totalHeight) / 2;
-				}
-				if(verticalAlignOffsetY != 0)
-				{
-					for(i = 0; i < discoveredItemCount; i++)
-					{
-						item = discoveredItems[i];
-						item.y += verticalAlignOffsetY;
-					}
-				}
-			}
+
 			this._discoveredItemsCache.length = 0;
 
 			if(!result)

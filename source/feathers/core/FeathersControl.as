@@ -754,11 +754,28 @@ package feathers.core
 		 */
 		public function set nextTabFocus(value:IFocusDisplayObject):void
 		{
-			if(this._nextTabFocus == value)
-			{
-				return;
-			}
 			this._nextTabFocus = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _previousTabFocus:IFocusDisplayObject;
+
+		/**
+		 * @copy feathers.core.IFocusDisplayObject#previousTabFocus
+		 */
+		public function get previousTabFocus():IFocusDisplayObject
+		{
+			return this._previousTabFocus;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set previousTabFocus(value:IFocusDisplayObject):void
+		{
+			this._previousTabFocus = value;
 		}
 
 		/**
@@ -1004,8 +1021,26 @@ package feathers.core
 		public function setSize(width:Number, height:Number):void
 		{
 			this.explicitWidth = width;
+			var widthIsNaN:Boolean = isNaN(width);
+			if(widthIsNaN)
+			{
+				this.actualWidth = 0;
+			}
 			this.explicitHeight = height;
-			this.setSizeInternal(width, height, true);
+			var heightIsNaN:Boolean = isNaN(height);
+			if(heightIsNaN)
+			{
+				this.actualHeight = 0;
+			}
+
+			if(widthIsNaN || heightIsNaN)
+			{
+				this.invalidate(INVALIDATION_FLAG_SIZE);
+			}
+			else
+			{
+				this.setSizeInternal(width, height, true);
+			}
 		}
 
 		/**

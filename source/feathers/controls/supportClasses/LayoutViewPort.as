@@ -175,7 +175,12 @@ package feathers.controls.supportClasses
 
 		public function set horizontalScrollPosition(value:Number):void
 		{
+			if(this._horizontalScrollPosition == value)
+			{
+				return;
+			}
 			this._horizontalScrollPosition = value;
+			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
 
 		private var _verticalScrollPosition:Number = 0;
@@ -187,7 +192,12 @@ package feathers.controls.supportClasses
 
 		public function set verticalScrollPosition(value:Number):void
 		{
+			if(this._verticalScrollPosition == value)
+			{
+				return;
+			}
 			this._verticalScrollPosition = value;
+			this.invalidate(INVALIDATION_FLAG_SCROLL);
 		}
 
 		private var _ignoreChildChanges:Boolean = false;
@@ -253,10 +263,7 @@ package feathers.controls.supportClasses
 
 		override public function dispose():void
 		{
-			if(this._layout)
-			{
-				EventDispatcher(this._layout).removeEventListener(Event.CHANGE, layout_changeHandler);
-			}
+			this.layout = null;
 			super.dispose();
 		}
 
@@ -264,8 +271,9 @@ package feathers.controls.supportClasses
 		{
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			const sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
+			const scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
 
-			if(sizeInvalid || dataInvalid)
+			if(sizeInvalid || dataInvalid || scrollInvalid)
 			{
 				HELPER_BOUNDS.x = HELPER_BOUNDS.y = 0;
 				HELPER_BOUNDS.scrollX = this._horizontalScrollPosition;

@@ -29,15 +29,6 @@ package feathers.examples.helloWorld
 		}
 
 		/**
-		 * A Feathers theme will automatically pass skins to any components that
-		 * are added to the stage. Components do not have default skins, so you
-		 * must always use a theme or skin the components manually.
-		 *
-		 * @see http://wiki.starling-framework.org/feathers/themes
-		 */
-		protected var theme:MetalWorksMobileTheme;
-
-		/**
 		 * The Feathers Button control that we'll be creating.
 		 */
 		protected var button:Button;
@@ -51,10 +42,13 @@ package feathers.examples.helloWorld
 			this.removeEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 
 			//create the theme. this class will automatically pass skins to any
-			//Feathers component that is added to the stage. you should always
-			//create a theme immediately when your app starts up to ensure that
-			//all components are properly skinned.
-			this.theme = new MetalWorksMobileTheme();
+			//Feathers component that is added to the stage. components do not
+			//have default skins, so you must always use a theme or skin the
+			//components manually. you should always create a theme immediately
+			//when your app starts up to ensure that all components are
+			//properly skinned.
+			//see http://wiki.starling-framework.org/feathers/themes
+			new MetalWorksMobileTheme();
 
 			//create a button and give it some text to display.
 			this.button = new Button();

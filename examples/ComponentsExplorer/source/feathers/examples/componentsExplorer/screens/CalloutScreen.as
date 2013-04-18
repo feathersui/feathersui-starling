@@ -98,10 +98,9 @@ package feathers.examples.componentsExplorer.screens
 				[
 					this._backButton
 				];
-			}
 
-			// handles the back hardware key on android
-			this.backButtonHandler = this.onBackButton;
+				this.backButtonHandler = this.onBackButton;
+			}
 		}
 
 		private function showCallout(origin:DisplayObject, direction:String):void

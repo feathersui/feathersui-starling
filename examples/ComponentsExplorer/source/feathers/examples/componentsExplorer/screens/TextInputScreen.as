@@ -35,7 +35,10 @@ package feathers.examples.componentsExplorer.screens
 			this.layout = new AnchorLayout();
 
 			this._input = new TextInput();
-			this._input.textEditorProperties.displayAsPassword = this.settings.displayAsPassword;
+			this._input.prompt = "Type Something";
+			this._input.displayAsPassword = this.settings.displayAsPassword;
+			this._input.maxChars = this.settings.maxChars;
+			this._input.isEditable = this.settings.isEditable;
 			const inputLayoutData:AnchorLayoutData = new AnchorLayoutData();
 			inputLayoutData.horizontalCenter = 0;
 			inputLayoutData.verticalCenter = 0;
@@ -55,6 +58,8 @@ package feathers.examples.componentsExplorer.screens
 				[
 					this._backButton
 				];
+
+				this.backButtonHandler = this.onBackButton;
 			}
 
 			this._settingsButton = new Button();
@@ -65,9 +70,6 @@ package feathers.examples.componentsExplorer.screens
 			[
 				this._settingsButton
 			];
-
-			// handles the back hardware key on android
-			this.backButtonHandler = this.onBackButton;
 		}
 
 		private function onBackButton():void

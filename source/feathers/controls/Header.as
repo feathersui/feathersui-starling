@@ -11,6 +11,7 @@ package feathers.controls
 	import feathers.core.IFeathersControl;
 	import feathers.core.ITextRenderer;
 	import feathers.core.PropertyProxy;
+	import feathers.events.FeathersEventType;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.LayoutBoundsResult;
 	import feathers.layout.ViewPortBounds;
@@ -18,6 +19,7 @@ package feathers.controls
 	import flash.geom.Point;
 
 	import starling.display.DisplayObject;
+	import starling.events.Event;
 
 	/**
 	 * A header that displays an optional title along with a horizontal regions
@@ -26,6 +28,20 @@ package feathers.controls
 	 * additional actions. The title is displayed in the center by default,
 	 * but it may be aligned to the left or right if there are no items on the
 	 * desired side.
+	 *
+	 * <p>In the following example, a header is created, given a title, and a
+	 * back button:</p>
+	 *
+	 * <listing version="3.0">
+	 * var backButton:Button = new Button();
+	 * backButton.label = "Back";
+	 * backButton.nameList.add( Button.ALTERNATE_NAME_BACK_BUTTON );
+	 * backButton.addEventListener( Event.TRIGGERED, backButton_triggeredHandler );
+	 *
+	 * var header:Header = new Header();
+	 * header.title = "I'm a header";
+	 * header.leftItems = new &lt;DisplayObject&gt;[ backButton ];
+	 * this.addChild( header );</listing>
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/header
 	 */
@@ -127,14 +143,20 @@ package feathers.controls
 		}
 
 		/**
-		 * The value added to the <code>nameList</code> of the header's title.
+		 * The value added to the <code>nameList</code> of the header's title. This
+		 * variable is <code>protected</code> so that sub-classes can customize
+		 * the title name in their constructors instead of using the default
+		 * name defined by <code>DEFAULT_CHILD_NAME_TITLE</code>.
 		 *
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var titleName:String = DEFAULT_CHILD_NAME_TITLE;
 
 		/**
-		 * The value added to the <code>nameList</code> of the header's items.
+		 * The value added to the <code>nameList</code> of the header's items. This
+		 * variable is <code>protected</code> so that sub-classes can customize
+		 * the item name in their constructors instead of using the default
+		 * name defined by <code>DEFAULT_CHILD_NAME_ITEM</code>.
 		 *
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
@@ -163,6 +185,11 @@ package feathers.controls
 
 		/**
 		 * The text displayed for the header's title.
+		 *
+		 * <p>In the following example, the header's title is set:</p>
+		 *
+		 * <listing version="3.0">
+		 * header.title = "I'm a Header";</listing>
 		 */
 		public function get title():String
 		{
@@ -192,13 +219,37 @@ package feathers.controls
 		protected var _titleFactory:Function;
 
 		/**
-		 * A function used to instantiate the header's title subcomponent.
+		 * A function used to instantiate the header's title text renderer
+		 * sub-component. By default, the header will use the global text
+		 * renderer factory, <code>FeathersControl.defaultTextRendererFactory()</code>,
+		 * to create the title text renderer. The title text renderer must be an
+		 * instance of <code>ITextRenderer</code>. This factory can be used to
+		 * change properties on the title text renderer when it is first
+		 * created. For instance, if you are skinning Feathers components
+		 * without a theme, you might use this factory to style the title text
+		 * renderer.
+		 *
+		 * <p>If you are not using a theme, the title factory can be used to
+		 * provide skin the title with appropriate text styles.</p>
 		 *
 		 * <p>The factory should have the following function signature:</p>
 		 * <pre>function():ITextRenderer</pre>
 		 *
+		 * <p>In the following example, a custom title factory is passed to the
+		 * header:</p>
+		 *
+		 * <listing version="3.0">
+		 * header.titleFactory = function():ITextRenderer
+		 * {
+		 *     var titleRenderer:TextFieldTextRenderer = new TextFieldTextRenderer();
+		 *     titleRenderer.textFormat = new TextFormat( "_sans", 12, 0xff0000 );
+		 *     return titleRenderer;
+		 * }</listing>
+		 *
 		 * @see feathers.core.ITextRenderer
 		 * @see feathers.core.FeathersControl#defaultTextRendererFactory
+		 * @see feathers.controls.text.BitmapFontTextRenderer
+		 * @see feathers.controls.text.TextFieldTextRenderer
 		 */
 		public function get titleFactory():Function
 		{
@@ -230,6 +281,16 @@ package feathers.controls
 
 		/**
 		 * The UI controls that appear in the left region of the header.
+		 *
+		 * <p>In the following example, a back button is displayed on the left
+		 * side of the header:</p>
+		 *
+		 * <listing version="3.0">
+		 * var backButton:Button = new Button();
+		 * backButton.label = "Back";
+		 * backButton.nameList.add( Button.ALTERNATE_NAME_BACK_BUTTON );
+		 * backButton.addEventListener( Event.TRIGGERED, backButton_triggeredHandler );
+		 * header.leftItems = new &lt;DisplayObject&gt;[ backButton ];</listing>
 		 */
 		public function get leftItems():Vector.<DisplayObject>
 		{
@@ -252,11 +313,22 @@ package feathers.controls
 					if(item is IFeathersControl)
 					{
 						IFeathersControl(item).nameList.remove(this.itemName);
+						item.removeEventListener(FeathersEventType.RESIZE, item_resizeHandler);
 					}
 					item.removeFromParent();
 				}
 			}
 			this._leftItems = value;
+			if(this._leftItems)
+			{
+				for each(item in this._leftItems)
+				{
+					if(item is IFeathersControl)
+					{
+						item.addEventListener(FeathersEventType.RESIZE, item_resizeHandler);
+					}
+				}
+			}
 			this.invalidate(INVALIDATION_FLAG_LEFT_CONTENT);
 		}
 
@@ -267,6 +339,15 @@ package feathers.controls
 
 		/**
 		 * The UI controls that appear in the right region of the header.
+		 *
+		 * <p>In the following example, a settings button is displayed on the
+		 * right side of the header:</p>
+		 *
+		 * <listing version="3.0">
+		 * var settingsButton:Button = new Button();
+		 * settingsButton.label = "Settings";
+		 * settingsButton.addEventListener( Event.TRIGGERED, settingsButton_triggeredHandler );
+		 * header.rightItems = new &lt;DisplayObject&gt;[ settingsButton ];</listing>
 		 */
 		public function get rightItems():Vector.<DisplayObject>
 		{
@@ -289,11 +370,22 @@ package feathers.controls
 					if(item is IFeathersControl)
 					{
 						IFeathersControl(item).nameList.remove(this.itemName);
+						item.removeEventListener(FeathersEventType.RESIZE, item_resizeHandler);
 					}
 					item.removeFromParent();
 				}
 			}
 			this._rightItems = value;
+			if(this._rightItems)
+			{
+				for each(item in this._rightItems)
+				{
+					if(item is IFeathersControl)
+					{
+						item.addEventListener(FeathersEventType.RESIZE, item_resizeHandler);
+					}
+				}
+			}
 			this.invalidate(INVALIDATION_FLAG_RIGHT_CONTENT);
 		}
 
@@ -302,6 +394,11 @@ package feathers.controls
 		 * <code>padding</code> getter always returns the value of
 		 * <code>paddingTop</code>, but the other padding values may be
 		 * different.
+		 *
+		 * <p>In the following example, the header's padding is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * header.padding = 20;</listing>
 		 */
 		public function get padding():Number
 		{
@@ -327,6 +424,12 @@ package feathers.controls
 		/**
 		 * The minimum space, in pixels, between the header's top edge and the
 		 * header's content.
+		 *
+		 * <p>In the following example, the header's top padding is set to 20
+		 * pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * header.paddingTop = 20;</listing>
 		 */
 		public function get paddingTop():Number
 		{
@@ -354,6 +457,12 @@ package feathers.controls
 		/**
 		 * The minimum space, in pixels, between the header's right edge and the
 		 * header's content.
+		 *
+		 * <p>In the following example, the header's right padding is set to 20
+		 * pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * header.paddingRight = 20;</listing>
 		 */
 		public function get paddingRight():Number
 		{
@@ -381,6 +490,12 @@ package feathers.controls
 		/**
 		 * The minimum space, in pixels, between the header's bottom edge and
 		 * the header's content.
+		 *
+		 * <p>In the following example, the header's bottom padding is set to 20
+		 * pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * header.paddingBottom = 20;</listing>
 		 */
 		public function get paddingBottom():Number
 		{
@@ -408,6 +523,12 @@ package feathers.controls
 		/**
 		 * The minimum space, in pixels, between the header's left edge and the
 		 * header's content.
+		 *
+		 * <p>In the following example, the header's left padding is set to 20
+		 * pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * header.paddingLeft = 20;</listing>
 		 */
 		public function get paddingLeft():Number
 		{
@@ -433,7 +554,21 @@ package feathers.controls
 		protected var _gap:Number = 0;
 
 		/**
-		 * Space, in pixels, between items.
+		 * Space, in pixels, between items. The same value is used with the
+		 * <code>leftItems</code> and <code>rightItems</code>.
+		 *
+		 * <p>Set the <code>titleGap</code> to make the gap on the left and
+		 * right of the title use a different value.</p>
+		 *
+		 * <p>In the following example, the header's gap between items is set to
+		 * 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * header.gap = 20;</listing>
+		 *
+		 * @see #titleGap
+		 * @see #leftItems
+		 * @see #rightItems
 		 */
 		public function get gap():Number
 		{
@@ -462,6 +597,14 @@ package feathers.controls
 		 * Space, in pixels, between the title and the left or right groups of
 		 * items. If <code>NaN</code> (the default), the regular <code>gap</code>
 		 * property is used instead.
+		 *
+		 * <p>In the following example, the header's title gap is set to 20
+		 * pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * header.titleGap = 20;</listing>
+		 *
+		 * @see #gap
 		 */
 		public function get titleGap():Number
 		{
@@ -489,6 +632,12 @@ package feathers.controls
 		[Inspectable(type="String",enumeration="top,middle,bottom")]
 		/**
 		 * The alignment of the items vertically, on the y-axis.
+		 *
+		 * <p>In the following example, the header's vertical alignment is set
+		 * to the middle:</p>
+		 *
+		 * <listing version="3.0">
+		 * header.verticalAlign = Header.VERTICAL_ALIGN_MIDDLE;</listing>
 		 */
 		public function get verticalAlign():String
 		{
@@ -530,6 +679,12 @@ package feathers.controls
 
 		/**
 		 * A display object displayed behind the header's content.
+		 *
+		 * <p>In the following example, the header's background skin is set to
+		 * a <code>Quad</code>:</p>
+		 *
+		 * <listing version="3.0">
+		 * header.backgroundSkin = new Quad( 10, 10, 0xff0000 );</listing>
 		 */
 		public function get backgroundSkin():DisplayObject
 		{
@@ -567,6 +722,12 @@ package feathers.controls
 
 		/**
 		 * A background to display when the header is disabled.
+		 *
+		 * <p>In the following example, the header's disabled background skin is
+		 * set to a <code>Quad</code>:</p>
+		 *
+		 * <listing version="3.0">
+		 * header.backgroundDisabledSkin = new Quad( 10, 10, 0x999999 );</listing>
 		 */
 		public function get backgroundDisabledSkin():DisplayObject
 		{
@@ -603,8 +764,19 @@ package feathers.controls
 		protected var _titleProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the headers's title
-		 * instance.
+		 * A set of key/value pairs to be passed down to the header's title. The
+		 * title is an <code>ITextRenderer</code> instance. The available
+		 * properties depend on which <code>ITextRenderer</code> implementation
+		 * is returned by <code>titleFactory</code>. The most common
+		 * implementations are <code>BitmapFontTextRenderer</code> and
+		 * <code>TextFieldTextRenderer</code>.
+		 *
+		 * <p>In the following example, some properties are set for the header's
+		 * title text renderer:</p>
+		 *
+		 * <listing version="3.0">
+		 * header.titleProperties.textFormat = new BitmapFontTextFormat( bitmapFont );
+		 * header.titleProperties.wordWrap = true;</listing>
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -613,7 +785,14 @@ package feathers.controls
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
+		 * <p>Setting properties in a <code>titleFactory</code> function instead
+		 * of using <code>titleProperties</code> will result in better
+		 * performance.</p>
+		 *
+		 * @see #titleFactory
 		 * @see feathers.core.ITextRenderer
+		 * @see feathers.controls.text.BitmapFontTextRenderer
+		 * @see feathers.controls.text.TextFieldTextRenderer
 		 */
 		public function get titleProperties():Object
 		{
@@ -660,6 +839,12 @@ package feathers.controls
 		 * is defined, the title may be forced to the center even if the
 		 * preferred position is on the left or right.
 		 *
+		 * <p>In the following example, the header's title aligment is set to
+		 * prefer the left side:</p>
+		 *
+		 * <listing version="3.0">
+		 * header.titleAlign = Header.TITLE_ALIGN_PREFER_LEFT;</listing>
+		 *
 		 * @default TITLE_ALIGN_CENTER
 		 * @see #TITLE_ALIGN_CENTER
 		 * @see #TITLE_ALIGN_PREFER_LEFT
@@ -681,6 +866,16 @@ package feathers.controls
 			}
 			this._titleAlign = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		override public function dispose():void
+		{
+			this.leftItems = null;
+			this.rightItems = null;
+			super.dispose();
 		}
 
 		/**
@@ -1106,6 +1301,14 @@ package feathers.controls
 		protected function titleProperties_onChange(proxy:PropertyProxy, propertyName:String):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function item_resizeHandler(event:Event):void
+		{
+			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 	}
 }

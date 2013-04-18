@@ -14,6 +14,14 @@ package feathers.layout
 	import starling.events.EventDispatcher;
 
 	/**
+	 * Dispatched when a property of the layout changes, indicating that a
+	 * redraw is probably needed.
+	 *
+	 * @eventType starling.events.Event.CHANGE
+	 */
+	[Event(name="change",type="starling.events.Event")]
+
+	/**
 	 * Positions items in rows following a grid with a specific number of
 	 * columns, defaulting to <code>12</code> columns. Automatically flows from
 	 * row to row.

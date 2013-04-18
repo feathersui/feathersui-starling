@@ -89,6 +89,7 @@ package feathers.controls.text
 		public function TextFieldTextEditor()
 		{
 			this.isQuickHitAreaEnabled = true;
+			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 		}
 
@@ -137,11 +138,6 @@ package feathers.controls.text
 		 * @private
 		 */
 		protected var _frameCount:int = 0;
-
-		/**
-		 * @private
-		 */
-		protected var _savedSelectionIndex:int = -1;
 
 		/**
 		 * @private
@@ -334,7 +330,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _maxChars:int = int.MAX_VALUE;
+		protected var _maxChars:int = 0;
 
 		/**
 		 * Same as the <code>flash.text.TextField</code> property with the same name.
@@ -386,6 +382,33 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _isEditable:Boolean = true;
+
+		/**
+		 * Determines if the text input is editable. If the text input is not
+		 * editable, it will still appear enabled.
+		 */
+		public function get isEditable():Boolean
+		{
+			return this._isEditable;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set isEditable(value:Boolean):void
+		{
+			if(this._isEditable == value)
+			{
+				return;
+			}
+			this._isEditable = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _textFieldHasFocus:Boolean = false;
 
 		/**
@@ -408,10 +431,7 @@ package feathers.controls.text
 		 */
 		override public function dispose():void
 		{
-			if(this.textField.parent)
-			{
-				Starling.current.nativeStage.removeChild(this.textField);
-			}
+			this.disposeContent();
 			super.dispose();
 		}
 
@@ -463,21 +483,26 @@ package feathers.controls.text
 					const positionY:Number = position.y;
 					if(positionX < 0)
 					{
-						this._savedSelectionIndex = 0;
+						this._pendingSelectionStartIndex = this._pendingSelectionEndIndex = 0;
 					}
 					else
 					{
-						this._savedSelectionIndex = this.textField.getCharIndexAtPoint(positionX, positionY);
-						const bounds:Rectangle = this.textField.getCharBoundaries(this._savedSelectionIndex);
+						this._pendingSelectionStartIndex = this.textField.getCharIndexAtPoint(positionX, positionY);
+						if(this._pendingSelectionStartIndex < 0)
+						{
+							this._pendingSelectionStartIndex = this._text.length;
+						}
+						const bounds:Rectangle = this.textField.getCharBoundaries(this._pendingSelectionStartIndex);
 						if(bounds && (bounds.x + bounds.width - positionX) < (positionX - bounds.x))
 						{
-							this._savedSelectionIndex++;
+							this._pendingSelectionStartIndex++;
 						}
+						this._pendingSelectionEndIndex = this._pendingSelectionStartIndex;
 					}
 				}
 				else
 				{
-					this._savedSelectionIndex = -1;
+					this._pendingSelectionStartIndex = this._pendingSelectionEndIndex = -1;
 				}
 				Starling.current.nativeStage.focus = this.textField;
 			}
@@ -555,12 +580,10 @@ package feathers.controls.text
 		override protected function initialize():void
 		{
 			this.textField = new TextField();
-			this.textField.type = TextFieldType.INPUT;
-			this.textField.selectable = true;
 			this.textField.addEventListener(flash.events.Event.CHANGE, textField_changeHandler);
 			this.textField.addEventListener(FocusEvent.FOCUS_IN, textField_focusInHandler);
 			this.textField.addEventListener(FocusEvent.FOCUS_OUT, textField_focusOutHandler);
-			this.textField.addEventListener(flash.events.KeyboardEvent.KEY_DOWN, textField_keyDownHandler);
+			this.textField.addEventListener(KeyboardEvent.KEY_DOWN, textField_keyDownHandler);
 		}
 
 		/**
@@ -584,8 +607,9 @@ package feathers.controls.text
 		{
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 
-			if(dataInvalid || stylesInvalid)
+			if(dataInvalid || stylesInvalid || stateInvalid)
 			{
 				this.commitStylesAndData();
 			}
@@ -659,17 +683,35 @@ package feathers.controls.text
 			this.textField.displayAsPassword = this._displayAsPassword;
 			this.textField.wordWrap = this._wordWrap;
 			this.textField.embedFonts = this._embedFonts;
+			this.textField.type = this._isEditable ? TextFieldType.INPUT : TextFieldType.DYNAMIC;
+			this.textField.selectable = this._isEnabled;
 			if(this._textFormat)
 			{
 				this.textField.defaultTextFormat = this._textFormat;
 			}
 			if(this._isHTML)
 			{
-				this.textField.htmlText = this._text;
+				if(this.textField.htmlText != this._text)
+				{
+					if(this._pendingSelectionStartIndex < 0)
+					{
+						this._pendingSelectionStartIndex = this.textField.selectionBeginIndex;
+						this._pendingSelectionEndIndex = this.textField.selectionEndIndex;
+					}
+					this.textField.htmlText = this._text;
+				}
 			}
 			else
 			{
-				this.textField.text = this._text;
+				if(this.textField.text != this._text)
+				{
+					if(this._pendingSelectionStartIndex < 0)
+					{
+						this._pendingSelectionStartIndex = this.textField.selectionBeginIndex;
+						this._pendingSelectionEndIndex = this.textField.selectionEndIndex;
+					}
+					this.textField.text = this._text;
+				}
 			}
 		}
 
@@ -780,12 +822,44 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function removedFromStageHandler(event:Event):void
+		protected function disposeContent():void
 		{
+			if(this._textSnapshotBitmapData)
+			{
+				this._textSnapshotBitmapData.dispose();
+				this._textSnapshotBitmapData = null;
+			}
+
+			if(this.textSnapshot)
+			{
+				//avoid the need to call dispose(). we'll create a new snapshot
+				//when the renderer is added to stage again.
+				this.textSnapshot.texture.dispose();
+				this.removeChild(this.textSnapshot, true);
+				this.textSnapshot = null;
+			}
+
 			if(this.textField.parent)
 			{
 				Starling.current.nativeStage.removeChild(this.textField);
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function addedToStageHandler(event:Event):void
+		{
+			//we need to invalidate in order to get a fresh snapshot
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function removedFromStageHandler(event:Event):void
+		{
+			this.disposeContent();
 		}
 
 		/**
@@ -824,12 +898,6 @@ package feathers.controls.text
 			{
 				this.textSnapshot.visible = false;
 			}
-			if(this._savedSelectionIndex >= 0)
-			{
-				const selectionIndex:int = this._savedSelectionIndex;
-				this._savedSelectionIndex = -1;
-				this.selectRange(selectionIndex, selectionIndex)
-			}
 			this.invalidate(INVALIDATION_FLAG_SKIN);
 			this.dispatchEventWith(FeathersEventType.FOCUS_IN);
 		}
@@ -851,11 +919,11 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function textField_keyDownHandler(event:flash.events.KeyboardEvent):void
+		protected function textField_keyDownHandler(event:KeyboardEvent):void
 		{
-			if(event.keyCode == Keyboard.TAB)
+			if(event.keyCode == Keyboard.ENTER)
 			{
-				event.preventDefault();
+				this.dispatchEventWith(FeathersEventType.ENTER);
 			}
 		}
 	}

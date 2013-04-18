@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.core.FeathersControl;
+	import feathers.core.IFeathersControl;
 	import feathers.events.FeathersEventType;
 
 	import flash.errors.IllegalOperationError;
@@ -54,10 +55,23 @@ package feathers.controls
 	 * @see http://wiki.starling-framework.org/feathers/screen-navigator
 	 * @see http://wiki.starling-framework.org/feathers/transitions
 	 * @see feathers.controls.ScreenNavigatorItem
-	 * @see feathers.controls.Screen
 	 */
 	public class ScreenNavigator extends FeathersControl
 	{
+		/**
+		 * The screen navigator will auto size itself to fill the entire stage.
+		 *
+		 * @see #autoSizeMode
+		 */
+		public static const AUTO_SIZE_MODE_STAGE:String = "stage";
+
+		/**
+		 * The screen navigator will auto size itself to fit its content.
+		 *
+		 * @see #autoSizeMode
+		 */
+		public static const AUTO_SIZE_MODE_CONTENT:String = "content";
+
 		/**
 		 * @private
 		 */
@@ -66,10 +80,10 @@ package feathers.controls
 		/**
 		 * The default transition function.
 		 */
-		protected static function defaultTransition(oldScreen:DisplayObject, newScreen:DisplayObject, completeHandler:Function):void
+		protected static function defaultTransition(oldScreen:DisplayObject, newScreen:DisplayObject, completeCallback:Function):void
 		{
 			//in short, do nothing
-			completeHandler();
+			completeCallback();
 		}
 
 		/**
@@ -148,7 +162,33 @@ package feathers.controls
 
 		/**
 		 * A function that is called when the <code>ScreenNavigator</code> is
-		 * changing screens.
+		 * changing screens that is intended to display a transition effect and
+		 * to notify the <code>ScreenNavigator</code> when the effect is
+		 * finished.
+		 *
+		 * <p>The function should have the following signature:</p>
+		 * <pre>function(oldScreen:DisplayObject, newScreen:DisplayObject, completeCallback:Function):void</pre>
+		 *
+		 * <p>Either of the <code>oldScreen</code> and <code>newScreen</code>
+		 * arguments may be <code>null</code>, but never both. The
+		 * <code>oldScreen</code> argument will be <code>null</code> when the
+		 * first screen is displayed or when a new screen is displayed after
+		 * clearing the screen. The <code>newScreen</code> argument will
+		 * be null when clearing the screen.</p>
+		 *
+		 * <p>The <code>completeCallback</code> function <em>must</em> be called
+		 * when the transition effect finishes. It takes zero arguments and
+		 * returns nothing. In other words, it has the following signature:</p>
+		 *
+		 * <pre>function():void</pre>
+		 *
+		 * <p>In the future, it may be possible for a transition to cancel
+		 * itself. If this happens, the <code>completeCallback</code> may begin
+		 * accepting arguments, but they will have default values and existing
+		 * uses of <code>completeCallback</code> should continue to work.</p>
+		 *
+		 * @see #showScreen()
+		 * @see #clearScreen()
 		 */
 		public var transition:Function = defaultTransition;
 
@@ -188,6 +228,36 @@ package feathers.controls
 		protected var _clearAfterTransition:Boolean = false;
 
 		/**
+		 * @private
+		 */
+		protected var _autoSizeMode:String = AUTO_SIZE_MODE_STAGE;
+
+		/**
+		 * Determines how the screen navigator will set its own size when its
+		 * dimensions (width and height) aren't set explicitly.
+		 *
+		 * @see #AUTO_SIZE_MODE_STAGE
+		 * @see #AUTO_SIZE_MODE_CONTENT
+		 */
+		public function get autoSizeMode():String
+		{
+			return this._autoSizeMode;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set autoSizeMode(value:String):void
+		{
+			if(this._autoSizeMode == value)
+			{
+				return;
+			}
+			this._autoSizeMode = value;
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		/**
 		 * Displays a screen and returns a reference to it. If a previous
 		 * transition is running, the new screen will be queued, and no
 		 * reference will be returned.
@@ -217,6 +287,8 @@ package feathers.controls
 			{
 				this.clearScreenInternal(false);
 			}
+			
+			this._transitionIsActive = true;
 
 			const item:ScreenNavigatorItem = ScreenNavigatorItem(this._screens[id]);
 			this._activeScreen = item.getScreen();
@@ -277,7 +349,6 @@ package feathers.controls
 				VALIDATION_QUEUE.advanceTime(0);
 			}
 
-			this._transitionIsActive = true;
 			this.dispatchEventWith(FeathersEventType.TRANSITION_START);
 			this.transition(this._previousScreenInTransition, this._activeScreen, transitionComplete);
 
@@ -439,6 +510,15 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override public function dispose():void
+		{
+			this.clearScreenInternal(false);
+			super.dispose();
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function draw():void
 		{
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
@@ -487,16 +567,37 @@ package feathers.controls
 			{
 				return false;
 			}
+
+			if(this._autoSizeMode == AUTO_SIZE_MODE_CONTENT &&
+				this._activeScreen is IFeathersControl)
+			{
+				IFeathersControl(this._activeScreen).validate();
+			}
+
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
 			{
-				newWidth = this.stage.stageWidth;
+				if(this._autoSizeMode == AUTO_SIZE_MODE_CONTENT)
+				{
+					newWidth = this._activeScreen ? this._activeScreen.width : 0;
+				}
+				else
+				{
+					newWidth = this.stage.stageWidth;
+				}
 			}
 
 			var newHeight:Number = this.explicitHeight;
 			if(needsHeight)
 			{
-				newHeight = this.stage.stageHeight;
+				if(this._autoSizeMode == AUTO_SIZE_MODE_CONTENT)
+				{
+					newHeight = this._activeScreen ? this._activeScreen.height : 0;
+				}
+				else
+				{
+					newHeight = this.stage.stageHeight;
+				}
 			}
 
 			return this.setSizeInternal(newWidth, newHeight, false);

@@ -58,14 +58,16 @@ package feathers.controls.text
 		}
 
 		/**
-		 * @private
+		 * The TextField instance used to render the text before taking a
+		 * texture snapshot.
 		 */
-		protected var _textField:TextField;
+		protected var textField:TextField;
 
 		/**
-		 * @private
+		 * An image that displays a snapshot of the native <code>TextField</code>
+		 * in the Starling display list when the editor doesn't have focus.
 		 */
-		protected var _textSnapshot:Image;
+		protected var textSnapshot:Image;
 
 		/**
 		 * @private
@@ -244,7 +246,7 @@ package feathers.controls.text
 		public function get baseline():Number
 		{
 			//2 is the gutter Flash Player adds
-			return 2 + this._textField.getLineMetrics(0).ascent;
+			return 2 + this.textField.getLineMetrics(0).ascent;
 		}
 
 		/**
@@ -579,19 +581,28 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		override public function dispose():void
+		{
+			this.disposeContent();
+			super.dispose();
+		}
+
+		/**
+		 * @private
+		 */
 		override public function render(support:RenderSupport, parentAlpha:Number):void
 		{
-			if(this._textSnapshot)
+			if(this.textSnapshot)
 			{
 				if(this._snapToPixels)
 				{
 					this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-					this._textSnapshot.x = Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx;
-					this._textSnapshot.y = Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty;
+					this.textSnapshot.x = Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx;
+					this.textSnapshot.y = Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty;
 				}
 				else
 				{
-					this._textSnapshot.x = this._textSnapshot.y = 0;
+					this.textSnapshot.x = this.textSnapshot.y = 0;
 				}
 			}
 			super.render(support, parentAlpha);
@@ -607,7 +618,7 @@ package feathers.controls.text
 				result = new Point();
 			}
 
-			if(!this._textField)
+			if(!this.textField)
 			{
 				result.x = result.y = 0;
 				return result;
@@ -634,12 +645,12 @@ package feathers.controls.text
 		 */
 		override protected function initialize():void
 		{
-			if(!this._textField)
+			if(!this.textField)
 			{
-				this._textField = new TextField();
-				this._textField.mouseEnabled = this._textField.mouseWheelEnabled = false;
-				this._textField.selectable = false;
-				this._textField.multiline = true;
+				this.textField = new TextField();
+				this.textField.mouseEnabled = this.textField.mouseWheelEnabled = false;
+				this.textField.selectable = false;
+				this.textField.multiline = true;
 			}
 		}
 
@@ -667,34 +678,34 @@ package feathers.controls.text
 
 			if(stylesInvalid)
 			{
-				this._textField.antiAliasType = this._antiAliasType;
-				this._textField.background = this._background;
-				this._textField.backgroundColor = this._backgroundColor;
-				this._textField.border = this._border;
-				this._textField.borderColor = this._borderColor;
-				this._textField.condenseWhite = this._condenseWhite;
-				this._textField.displayAsPassword = this._displayAsPassword;
-				this._textField.gridFitType = this._gridFitType;
-				this._textField.sharpness = this._sharpness;
-				this._textField.thickness = this._thickness;
+				this.textField.antiAliasType = this._antiAliasType;
+				this.textField.background = this._background;
+				this.textField.backgroundColor = this._backgroundColor;
+				this.textField.border = this._border;
+				this.textField.borderColor = this._borderColor;
+				this.textField.condenseWhite = this._condenseWhite;
+				this.textField.displayAsPassword = this._displayAsPassword;
+				this.textField.gridFitType = this._gridFitType;
+				this.textField.sharpness = this._sharpness;
+				this.textField.thickness = this._thickness;
 			}
 
 			if(dataInvalid || stylesInvalid)
 			{
-				this._textField.wordWrap = this._wordWrap;
-				this._textField.embedFonts = this._embedFonts;
+				this.textField.wordWrap = this._wordWrap;
+				this.textField.embedFonts = this._embedFonts;
 				if(this._textFormat)
 				{
-					this._textField.defaultTextFormat = this._textFormat;
+					this.textField.defaultTextFormat = this._textFormat;
 				}
-				this._textField.styleSheet = this._styleSheet;
+				this.textField.styleSheet = this._styleSheet;
 				if(this._isHTML)
 				{
-					this._textField.htmlText = this._text;
+					this.textField.htmlText = this._text;
 				}
 				else
 				{
-					this._textField.text = this._text;
+					this.textField.text = this._text;
 				}
 			}
 		}
@@ -712,29 +723,29 @@ package feathers.controls.text
 			const needsWidth:Boolean = isNaN(this.explicitWidth);
 			const needsHeight:Boolean = isNaN(this.explicitHeight);
 
-			this._textField.autoSize = TextFieldAutoSize.LEFT;
-			this._textField.wordWrap = false;
+			this.textField.autoSize = TextFieldAutoSize.LEFT;
+			this.textField.wordWrap = false;
 
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
 			{
-				newWidth = Math.max(this._minWidth, Math.min(this._maxWidth, this._textField.width));
+				newWidth = Math.max(this._minWidth, Math.min(this._maxWidth, this.textField.width));
 			}
 
-			this._textField.width = newWidth;
-			this._textField.wordWrap = this._wordWrap;
+			this.textField.width = newWidth;
+			this.textField.wordWrap = this._wordWrap;
 			var newHeight:Number = this.explicitHeight;
 			if(needsHeight)
 			{
-				newHeight = Math.max(this._minHeight, Math.min(this._maxHeight, this._textField.height));
+				newHeight = Math.max(this._minHeight, Math.min(this._maxHeight, this.textField.height));
 			}
 
-			this._textField.autoSize = TextFieldAutoSize.NONE;
+			this.textField.autoSize = TextFieldAutoSize.NONE;
 
 			//put the width and height back just in case we measured without
 			//a full validation
-			this._textField.width = this.actualWidth;
-			this._textField.height = this.actualHeight;
+			this.textField.width = this.actualWidth;
+			this.textField.height = this.actualHeight;
 
 			result.x = newWidth;
 			result.y = newHeight;
@@ -752,8 +763,8 @@ package feathers.controls.text
 
 			if(sizeInvalid)
 			{
-				this._textField.width = this.actualWidth;
-				this._textField.height = this.actualHeight;
+				this.textField.width = this.actualWidth;
+				this.textField.height = this.actualHeight;
 				this._snapshotWidth = getNextPowerOfTwo(this.actualWidth * Starling.contentScaleFactor);
 				this._snapshotHeight = getNextPowerOfTwo(this.actualHeight * Starling.contentScaleFactor);
 				this._needsNewBitmap = this._needsNewBitmap || !this._textSnapshotBitmapData || this._snapshotWidth != this._textSnapshotBitmapData.width || this._snapshotHeight != this._textSnapshotBitmapData.height;
@@ -775,9 +786,9 @@ package feathers.controls.text
 					//properly. sometimes two, and this is a known issue.
 					this.addEventListener(Event.ENTER_FRAME, enterFrameHandler);
 				}
-				if(this._textSnapshot)
+				if(this.textSnapshot)
 				{
-					this._textSnapshot.visible = hasText;
+					this.textSnapshot.visible = hasText;
 				}
 			}
 		}
@@ -803,7 +814,7 @@ package feathers.controls.text
 		 */
 		protected function refreshSnapshot():void
 		{
-			if(this._textField.width == 0 || this._textField.height == 0)
+			if(this.textField.width == 0 || this.textField.height == 0)
 			{
 				return;
 			}
@@ -822,24 +833,24 @@ package feathers.controls.text
 			HELPER_MATRIX.identity();
 			HELPER_MATRIX.scale(Starling.contentScaleFactor, Starling.contentScaleFactor);
 			this._textSnapshotBitmapData.fillRect(this._textSnapshotBitmapData.rect, 0x00ff00ff);
-			this._textSnapshotBitmapData.draw(this._textField, HELPER_MATRIX);
-			if(!this._textSnapshot)
+			this._textSnapshotBitmapData.draw(this.textField, HELPER_MATRIX);
+			if(!this.textSnapshot)
 			{
-				this._textSnapshot = new Image(starling.textures.Texture.fromBitmapData(this._textSnapshotBitmapData, false, false, Starling.contentScaleFactor));
-				this.addChild(this._textSnapshot);
+				this.textSnapshot = new Image(starling.textures.Texture.fromBitmapData(this._textSnapshotBitmapData, false, false, Starling.contentScaleFactor));
+				this.addChild(this.textSnapshot);
 			}
 			else
 			{
 				if(this._needsNewBitmap)
 				{
-					this._textSnapshot.texture.dispose();
-					this._textSnapshot.texture = starling.textures.Texture.fromBitmapData(this._textSnapshotBitmapData, false, false, Starling.contentScaleFactor);
-					this._textSnapshot.readjustSize();
+					this.textSnapshot.texture.dispose();
+					this.textSnapshot.texture = starling.textures.Texture.fromBitmapData(this._textSnapshotBitmapData, false, false, Starling.contentScaleFactor);
+					this.textSnapshot.readjustSize();
 				}
 				else
 				{
 					//this is faster if we haven't resized the bitmapdata
-					const texture:starling.textures.Texture = this._textSnapshot.texture;
+					const texture:starling.textures.Texture = this.textSnapshot.texture;
 					if(Starling.handleLostContext && texture is ConcreteTexture)
 					{
 						ConcreteTexture(texture).restoreOnLostContext(this._textSnapshotBitmapData);
@@ -848,6 +859,27 @@ package feathers.controls.text
 				}
 			}
 			this._needsNewBitmap = false;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function disposeContent():void
+		{
+			if(this._textSnapshotBitmapData)
+			{
+				this._textSnapshotBitmapData.dispose();
+				this._textSnapshotBitmapData = null;
+			}
+
+			if(this.textSnapshot)
+			{
+				//avoid the need to call dispose(). we'll create a new snapshot
+				//when the renderer is added to stage again.
+				this.textSnapshot.texture.dispose();
+				this.removeChild(this.textSnapshot, true);
+				this.textSnapshot = null;
+			}
 		}
 
 		/**
@@ -864,20 +896,9 @@ package feathers.controls.text
 		 */
 		protected function removedFromStageHandler(event:Event):void
 		{
-			if(this._textSnapshotBitmapData)
-			{
-				this._textSnapshotBitmapData.dispose();
-				this._textSnapshotBitmapData = null;
-			}
+			this.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
 
-			if(this._textSnapshot)
-			{
-				//avoid the need to call dispose(). we'll create a new snapshot
-				//when the renderer is added to stage again.
-				this._textSnapshot.texture.dispose();
-				this.removeChild(this._textSnapshot, true);
-				this._textSnapshot = null;
-			}
+			this.disposeContent();
 		}
 
 		/**

@@ -154,6 +154,8 @@ package feathers.themes
 
 		protected var scale:Number;
 		protected var fontSize:int;
+		protected var primaryTextFormat:BitmapFontTextFormat;
+		protected var selectedTextFormat:BitmapFontTextFormat;
 
 		protected var atlas:TextureAtlas;
 		protected var atlasBitmapData:BitmapData;
@@ -283,6 +285,8 @@ package feathers.themes
 			}
 
 			this.bitmapFont = new BitmapFont(this.atlas.getTexture("lato30_0"), XML(new ATLAS_FONT_XML()));
+			this.primaryTextFormat = new BitmapFontTextFormat(this.bitmapFont, this.fontSize, PRIMARY_TEXT_COLOR);
+			this.selectedTextFormat = new BitmapFontTextFormat(this.bitmapFont, this.fontSize, SELECTED_TEXT_COLOR);
 
 			this.buttonUpSkinTextures = new Scale9Textures(this.atlas.getTexture("button-up-skin"), BUTTON_SCALE_9_GRID);
 			this.buttonDownSkinTextures = new Scale9Textures(this.atlas.getTexture("button-down-skin"), BUTTON_SCALE_9_GRID);
@@ -430,7 +434,7 @@ package feathers.themes
 
 		protected function labelInitializer(label:Label):void
 		{
-			label.textRendererProperties.textFormat = new BitmapFontTextFormat(bitmapFont, this.fontSize, PRIMARY_TEXT_COLOR);
+			label.textRendererProperties.textFormat = this.primaryTextFormat;
 		}
 
 		protected function scrollTextInitializer(text:ScrollText):void
@@ -442,7 +446,7 @@ package feathers.themes
 
 		protected function itemRendererAccessoryLabelInitializer(renderer:BitmapFontTextRenderer):void
 		{
-			renderer.textFormat = new BitmapFontTextFormat(bitmapFont, this.fontSize, PRIMARY_TEXT_COLOR);
+			renderer.textFormat = this.primaryTextFormat;
 		}
 
 		protected function buttonInitializer(button:Button):void
@@ -460,8 +464,8 @@ package feathers.themes
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
 
-			button.defaultLabelProperties.textFormat = new BitmapFontTextFormat(bitmapFont, this.fontSize, PRIMARY_TEXT_COLOR);
-			button.defaultSelectedLabelProperties.textFormat = new BitmapFontTextFormat(bitmapFont, this.fontSize, SELECTED_TEXT_COLOR);
+			button.defaultLabelProperties.textFormat = this.primaryTextFormat;
+			button.defaultSelectedLabelProperties.textFormat = this.selectedTextFormat;
 
 			button.paddingTop = button.paddingBottom = 8 * this.scale;
 			button.paddingLeft = button.paddingRight = 16 * this.scale;
@@ -485,8 +489,8 @@ package feathers.themes
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
 
-			button.defaultLabelProperties.textFormat = new BitmapFontTextFormat(bitmapFont, this.fontSize, PRIMARY_TEXT_COLOR);
-			button.defaultSelectedLabelProperties.textFormat = new BitmapFontTextFormat(bitmapFont, this.fontSize, SELECTED_TEXT_COLOR);
+			button.defaultLabelProperties.textFormat = this.primaryTextFormat;
+			button.defaultSelectedLabelProperties.textFormat = this.selectedTextFormat;
 
 			button.paddingTop = button.paddingBottom = 8 * this.scale;
 			button.paddingLeft = button.paddingRight = 16 * this.scale;
@@ -564,8 +568,8 @@ package feathers.themes
 			tab.gap = 12 * this.scale;
 			tab.iconPosition = Button.ICON_POSITION_TOP;
 
-			tab.defaultLabelProperties.textFormat = new BitmapFontTextFormat(bitmapFont, this.fontSize, PRIMARY_TEXT_COLOR);
-			tab.defaultSelectedLabelProperties.textFormat = new BitmapFontTextFormat(bitmapFont, this.fontSize, SELECTED_TEXT_COLOR);
+			tab.defaultLabelProperties.textFormat = this.primaryTextFormat;
+			tab.defaultSelectedLabelProperties.textFormat = this.selectedTextFormat;
 		}
 
 		protected function headerButtonInitializer(button:Button):void
@@ -583,8 +587,8 @@ package feathers.themes
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
 
-			button.defaultLabelProperties.textFormat = new BitmapFontTextFormat(bitmapFont, this.fontSize, PRIMARY_TEXT_COLOR);
-			button.defaultSelectedLabelProperties.textFormat = new BitmapFontTextFormat(bitmapFont, this.fontSize, SELECTED_TEXT_COLOR);
+			button.defaultLabelProperties.textFormat = this.primaryTextFormat;
+			button.defaultSelectedLabelProperties.textFormat = this.selectedTextFormat;
 
 			button.paddingTop = button.paddingBottom = 8 * this.scale;
 			button.paddingLeft = button.paddingRight = 16 * this.scale;
@@ -682,8 +686,8 @@ package feathers.themes
 			};
 			check.stateToIconFunction = iconSelector.updateValue;
 
-			check.defaultLabelProperties.textFormat = new BitmapFontTextFormat(bitmapFont, this.fontSize, PRIMARY_TEXT_COLOR);
-			check.defaultSelectedLabelProperties.textFormat = new BitmapFontTextFormat(bitmapFont, this.fontSize, SELECTED_TEXT_COLOR);
+			check.defaultLabelProperties.textFormat = this.primaryTextFormat;
+			check.defaultSelectedLabelProperties.textFormat = this.selectedTextFormat;
 
 			check.minTouchWidth = check.minTouchHeight = 88 * this.scale;
 			check.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
@@ -705,8 +709,8 @@ package feathers.themes
 			};
 			radio.stateToIconFunction = iconSelector.updateValue;
 
-			radio.defaultLabelProperties.textFormat = new BitmapFontTextFormat(bitmapFont, this.fontSize, PRIMARY_TEXT_COLOR);
-			radio.defaultSelectedLabelProperties.textFormat = new BitmapFontTextFormat(bitmapFont, this.fontSize, SELECTED_TEXT_COLOR);
+			radio.defaultLabelProperties.textFormat = this.primaryTextFormat;
+			radio.defaultSelectedLabelProperties.textFormat = this.selectedTextFormat;
 
 			radio.minTouchWidth = radio.minTouchHeight = 88 * this.scale;
 			radio.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
@@ -717,8 +721,8 @@ package feathers.themes
 		{
 			toggleSwitch.trackLayoutMode = ToggleSwitch.TRACK_LAYOUT_MODE_SINGLE;
 
-			toggleSwitch.defaultLabelProperties.textFormat = new BitmapFontTextFormat(bitmapFont, this.fontSize, PRIMARY_TEXT_COLOR);
-			toggleSwitch.onLabelProperties.textFormat = new BitmapFontTextFormat(bitmapFont, this.fontSize, SELECTED_TEXT_COLOR);
+			toggleSwitch.defaultLabelProperties.textFormat = this.primaryTextFormat;
+			toggleSwitch.onLabelProperties.textFormat = this.selectedTextFormat;
 		}
 
 		protected function itemRendererInitializer(renderer:BaseDefaultItemRenderer):void
@@ -734,7 +738,7 @@ package feathers.themes
 			};
 			renderer.stateToSkinFunction = skinSelector.updateValue;
 
-			renderer.defaultLabelProperties.textFormat = new BitmapFontTextFormat(bitmapFont, this.fontSize, PRIMARY_TEXT_COLOR);
+			renderer.defaultLabelProperties.textFormat = this.primaryTextFormat;
 
 			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			renderer.paddingTop = renderer.paddingBottom = 11 * this.scale;
@@ -758,7 +762,7 @@ package feathers.themes
 			backgroundSkin.height = 44 * this.scale;
 			renderer.backgroundSkin = backgroundSkin;
 
-			renderer.contentLabelProperties.textFormat = new BitmapFontTextFormat(bitmapFont, this.fontSize, PRIMARY_TEXT_COLOR);
+			renderer.contentLabelProperties.textFormat = this.primaryTextFormat;
 
 			renderer.paddingTop = renderer.paddingBottom = 9 * this.scale;
 			renderer.paddingLeft = renderer.paddingRight = 16 * this.scale;
@@ -788,6 +792,7 @@ package feathers.themes
 			layout.gap = 0;
 			layout.paddingTop = layout.paddingRight = layout.paddingBottom =
 				layout.paddingLeft = 0;
+			layout.manageVisibility = true;
 			list.listProperties.layout = layout;
 			list.listProperties.verticalScrollPolicy = List.SCROLL_POLICY_ON;
 
@@ -813,7 +818,7 @@ package feathers.themes
 			backgroundSkin.width = 88 * this.scale;
 			backgroundSkin.height = 88 * this.scale;
 			header.backgroundSkin = backgroundSkin;
-			header.titleProperties.textFormat = new BitmapFontTextFormat(bitmapFont, this.fontSize, PRIMARY_TEXT_COLOR);
+			header.titleProperties.textFormat = this.primaryTextFormat;
 			header.paddingTop = header.paddingRight = header.paddingBottom =
 				header.paddingLeft = 14 * this.scale;
 			header.gap = 8 * this.scale;
@@ -825,11 +830,12 @@ package feathers.themes
 		{
 			input.minWidth = input.minHeight = 66 * this.scale;
 			input.minTouchWidth = input.minTouchHeight = 66 * this.scale;
-			input.paddingTop = input.paddingBottom = 14 * this.scale;
-			input.paddingLeft = input.paddingRight = 16 * this.scale;
+			input.paddingTop = input.paddingBottom = 10 * this.scale;
+			input.paddingLeft = input.paddingRight = 14 * this.scale;
 			input.textEditorProperties.fontFamily = "Helvetica";
 			input.textEditorProperties.fontSize = 30 * this.scale;
 			input.textEditorProperties.color = 0xffffff;
+			input.promptProperties.textFormat = this.primaryTextFormat;
 
 			const backgroundSkin:Scale9Image = new Scale9Image(insetBackgroundSkinTextures, this.scale);
 			backgroundSkin.width = 264 * this.scale;

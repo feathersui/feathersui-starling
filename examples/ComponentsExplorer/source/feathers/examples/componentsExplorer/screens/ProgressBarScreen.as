@@ -54,10 +54,9 @@ package feathers.examples.componentsExplorer.screens
 				[
 					this._backButton
 				];
-			}
 
-			// handles the back hardware key on android
-			this.backButtonHandler = this.onBackButton;
+				this.backButtonHandler = this.onBackButton;
+			}
 
 			this._progressTween = new Tween(this._progress, 5);
 			this._progressTween.animate("value", 1);

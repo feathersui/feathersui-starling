@@ -315,25 +315,34 @@ package feathers.controls
 		{
 			super();
 
-			this._viewPortWrapper = new Sprite();
-			this.addChild(this._viewPortWrapper);
-
 			this.addEventListener(Event.ADDED_TO_STAGE, scroller_addedToStageHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, scroller_removedFromStageHandler);
 		}
 
 		/**
 		 * The value added to the <code>nameList</code> of the horizontal scroll
-		 * bar.
+		 * bar. This variable is <code>protected</code> so that sub-classes can
+		 * customize the horizontal scroll bar name in their constructors
+		 * instead of using the default name defined by <code>DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR</code>.
 		 *
+		 * <p>To customize the horizontal scroll bar name without subclassing, see
+		 * <code>customHorizontalScrollBarName</code>.</p>
+		 *
+		 * @see #customHorizontalScrollBarName
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var horizontalScrollBarName:String = DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR;
 
 		/**
 		 * The value added to the <code>nameList</code> of the vertical scroll
-		 * bar.
+		 * bar. This variable is <code>protected</code> so that sub-classes can
+		 * customize the horizontal scroll bar name in their constructors
+		 * instead of using the default name defined by <code>DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR</code>.
 		 *
+		 * <p>To customize the vertical scroll bar name without subclassing, see
+		 * <code>customVerticalScrollBarName</code>.</p>
+		 *
+		 * @see #customVerticalScrollBarName
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var verticalScrollBarName:String = DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR;
@@ -496,11 +505,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _viewPortWrapper:Sprite;
-
-		/**
-		 * @private
-		 */
 		protected var ignoreViewPortResizing:Boolean = false;
 
 		/**
@@ -533,13 +537,13 @@ package feathers.controls
 			if(this._viewPort)
 			{
 				this._viewPort.removeEventListener(FeathersEventType.RESIZE, viewPort_resizeHandler);
-				this._viewPortWrapper.removeChild(DisplayObject(this._viewPort));
+				this.removeChild(DisplayObject(this._viewPort));
 			}
 			this._viewPort = value;
 			if(this._viewPort)
 			{
 				this._viewPort.addEventListener(FeathersEventType.RESIZE, viewPort_resizeHandler);
-				this._viewPortWrapper.addChild(DisplayObject(this._viewPort));
+				this.addChild(DisplayObject(this._viewPort));
 			}
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
@@ -576,13 +580,19 @@ package feathers.controls
 		protected var _horizontalScrollBarFactory:Function = defaultHorizontalScrollBarFactory;
 
 		/**
-		 * Creates the horizontal scroll bar.
+		 * Creates the horizontal scroll bar. The horizontal scroll bar must be
+		 * an instance of <code>IScrollBar</code>. This factory can be used to
+		 * change properties on the horizontal scroll bar when it is first
+		 * created. For instance, if you are skinning Feathers components
+		 * without a theme, you might use this factory to set skins and other
+		 * styles on the horizontal scroll bar.
 		 *
 		 * <p>This function is expected to have the following signature:</p>
 		 *
 		 * <pre>function():IScrollBar</pre>
 		 *
 		 * @see feathers.controls.IScrollBar
+		 * @see #horizontalScrollBarProperties
 		 */
 		public function get horizontalScrollBarFactory():Function
 		{
@@ -605,12 +615,47 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _customHorizontalScrollBarName:String;
+
+		/**
+		 * A name to add to the container's horizontal scroll bar sub-component.
+		 * Typically used by a theme to provide different skins to different
+		 * containers.
+		 *
+		 * @see feathers.core.FeathersControl#nameList
+		 * @see #horizontalScrollBarFactory
+		 * @see #horizontalScrollBarProperties
+		 */
+		public function get customHorizontalScrollBarName():String
+		{
+			return this._customHorizontalScrollBarName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customHorizontalScrollBarName(value:String):void
+		{
+			if(this._customHorizontalScrollBarName == value)
+			{
+				return;
+			}
+			this._customHorizontalScrollBarName = value;
+			this.invalidate(INVALIDATION_FLAG_SCROLL_BAR_RENDERER);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _horizontalScrollBarProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to the scroller's
 		 * horizontal scroll bar instance (if it exists). The scroll bar is an
-		 * <code>IScrollBar</code> implementation.
+		 * <code>IScrollBar</code> instance. The available properties depend on
+		 * which implementation of <code>IScrollBar</code> is returned by
+		 * <code>horizontalScrollBarFactory</code>. The most common
+		 * implementations are <code>SimpleScrollBar</code> and <code>ScrollBar</code>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -619,8 +664,14 @@ package feathers.controls
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
-		 * @see feathers.controls.IScrollBar
+		 * <p>Setting properties in a <code>horizontalScrollBarFactory</code>
+		 * function instead of using <code>horizontalScrollBarProperties</code>
+		 * will result in better performance.</p>
+		 *
 		 * @see #horizontalScrollBarFactory
+		 * @see feathers.controls.IScrollBar
+		 * @see feathers.controls.SimpleScrollBar
+		 * @see feathers.controls.ScrollBar
 		 */
 		public function get horizontalScrollBarProperties():Object
 		{
@@ -671,13 +722,19 @@ package feathers.controls
 		protected var _verticalScrollBarFactory:Function = defaultVerticalScrollBarFactory;
 
 		/**
-		 * Creates the vertical scroll bar.
+		 * Creates the vertical scroll bar. The vertical scroll bar must be an
+		 * instance of <code>Button</code>. This factory can be used to change
+		 * properties on the vertical scroll bar when it is first created. For
+		 * instance, if you are skinning Feathers components without a theme,
+		 * you might use this factory to set skins and other styles on the
+		 * vertical scroll bar.
 		 *
 		 * <p>This function is expected to have the following signature:</p>
 		 *
 		 * <pre>function():IScrollBar</pre>
 		 *
 		 * @see feathers.controls.IScrollBar
+		 * @see #verticalScrollBarProperties
 		 */
 		public function get verticalScrollBarFactory():Function
 		{
@@ -700,12 +757,47 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _customVerticalScrollBarName:String;
+
+		/**
+		 * A name to add to the container's vertical scroll bar sub-component.
+		 * Typically used by a theme to provide different skins to different
+		 * containers.
+		 *
+		 * @see feathers.core.FeathersControl#nameList
+		 * @see #verticalScrollBarFactory
+		 * @see #verticalScrollBarProperties
+		 */
+		public function get customVerticalScrollBarName():String
+		{
+			return this._customVerticalScrollBarName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customVerticalScrollBarName(value:String):void
+		{
+			if(this._customVerticalScrollBarName == value)
+			{
+				return;
+			}
+			this._customVerticalScrollBarName = value;
+			this.invalidate(INVALIDATION_FLAG_SCROLL_BAR_RENDERER);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _verticalScrollBarProperties:PropertyProxy;
 
 		/**
 		 * A set of key/value pairs to be passed down to the scroller's
 		 * vertical scroll bar instance (if it exists). The scroll bar is an
-		 * <code>IScrollBar</code> implementation.
+		 * <code>IScrollBar</code> instance. The available properties depend on
+		 * which implementation of <code>IScrollBar</code> is returned by
+		 * <code>verticalScrollBarFactory</code>. The most common
+		 * implementations are <code>SimpleScrollBar</code> and <code>ScrollBar</code>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -714,8 +806,14 @@ package feathers.controls
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
-		 * @see feathers.controls.IScrollBar
+		 * <p>Setting properties in a <code>verticalScrollBarFactory</code>
+		 * function instead of using <code>verticalScrollBarProperties</code>
+		 * will result in better performance.</p>
+		 *
 		 * @see #verticalScrollBarFactory
+		 * @see feathers.controls.IScrollBar
+		 * @see feathers.controls.SimpleScrollBar
+		 * @see feathers.controls.ScrollBar
 		 */
 		public function get verticalScrollBarProperties():Object
 		{
@@ -1642,7 +1740,8 @@ package feathers.controls
 
 		/**
 		 * DEPRECATED: A set of key/value pairs to be passed down to the
-		 * container's scroller sub-component.
+		 * container's scroller sub-component. As of 1.1, the "scroller" is no
+		 * longer a sub-component, but the component itself.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 1.1. It will be removed in a future version of
@@ -1725,6 +1824,16 @@ package feathers.controls
 		 * The duration of the pending scroll action.
 		 */
 		protected var pendingScrollDuration:Number;
+
+		/**
+		 * @private
+		 */
+		override public function dispose():void
+		{
+			Starling.current.nativeStage.removeEventListener(MouseEvent.MOUSE_WHEEL, nativeStage_mouseWheelHandler);
+			Starling.current.nativeStage.removeEventListener("orientationChange", nativeStage_orientationChangeHandler);
+			super.dispose();
+		}
 		
 		/**
 		 * If the user is scrolling with touch or if the scrolling is animated,
@@ -1983,7 +2092,8 @@ package feathers.controls
 				this._horizontalScrollPolicy != SCROLL_POLICY_OFF && this._horizontalScrollBarFactory != null)
 			{
 				this.horizontalScrollBar = IScrollBar(this._horizontalScrollBarFactory());
-				this.horizontalScrollBar.nameList.add(this.horizontalScrollBarName);
+				const horizontalScrollBarName:String = this._customHorizontalScrollBarName != null ? this._customHorizontalScrollBarName : this.horizontalScrollBarName;
+				this.horizontalScrollBar.nameList.add(horizontalScrollBarName);
 				this.horizontalScrollBar.addEventListener(Event.CHANGE, horizontalScrollBar_changeHandler);
 				this.horizontalScrollBar.addEventListener(FeathersEventType.BEGIN_INTERACTION, horizontalScrollBar_beginInteractionHandler);
 				this.horizontalScrollBar.addEventListener(FeathersEventType.END_INTERACTION, horizontalScrollBar_endInteractionHandler);
@@ -1993,7 +2103,8 @@ package feathers.controls
 				this._verticalScrollPolicy != SCROLL_POLICY_OFF && this._verticalScrollBarFactory != null)
 			{
 				this.verticalScrollBar = IScrollBar(this._verticalScrollBarFactory());
-				this.verticalScrollBar.nameList.add(this.verticalScrollBarName);
+				const verticalScrollBarName:String = this._customVerticalScrollBarName != null ? this._customVerticalScrollBarName : this.verticalScrollBarName;
+				this.verticalScrollBar.nameList.add(verticalScrollBarName);
 				this.verticalScrollBar.addEventListener(Event.CHANGE, verticalScrollBar_changeHandler);
 				this.verticalScrollBar.addEventListener(FeathersEventType.BEGIN_INTERACTION, verticalScrollBar_beginInteractionHandler);
 				this.verticalScrollBar.addEventListener(FeathersEventType.END_INTERACTION, verticalScrollBar_endInteractionHandler);
@@ -2209,8 +2320,8 @@ package feathers.controls
 			}
 			if(this._snapToPages)
 			{
-				this._horizontalPageCount = int(this._maxHorizontalScrollPosition / pageWidth) + 1;
-				this._verticalPageCount = int(this._maxVerticalScrollPosition / pageHeight) + 1;
+				this._horizontalPageCount = Math.ceil(this._maxHorizontalScrollPosition / pageWidth) + 1;
+				this._verticalPageCount = Math.ceil(this._maxVerticalScrollPosition / pageHeight) + 1;
 			}
 			else
 			{
@@ -2243,11 +2354,25 @@ package feathers.controls
 			{
 				if(isScrollInvalid && !this._isDraggingHorizontally && !this._horizontalAutoScrollTween && this.pendingHorizontalPageIndex < 0)
 				{
-					this._horizontalPageIndex = Math.max(0, Math.floor(this._horizontalScrollPosition / pageWidth));
+					if(this._horizontalScrollPosition == this._maxHorizontalScrollPosition)
+					{
+						this._horizontalPageIndex = this._horizontalPageCount - 1;
+					}
+					else
+					{
+						this._horizontalPageIndex = Math.max(0, Math.floor(this._horizontalScrollPosition / pageWidth));
+					}
 				}
 				if(isScrollInvalid && !this._isDraggingVertically && !this._verticalAutoScrollTween && this.pendingVerticalPageIndex < 0)
 				{
-					this._verticalPageIndex = Math.max(0, Math.floor(this._verticalScrollPosition / pageHeight));
+					if(this._verticalScrollPosition == this._maxVerticalScrollPosition)
+					{
+						this._verticalPageIndex = this._verticalPageCount - 1;
+					}
+					else
+					{
+						this._verticalPageIndex = Math.max(0, Math.floor(this._verticalScrollPosition / pageHeight));
+					}
 				}
 			}
 			else
@@ -2449,8 +2574,8 @@ package feathers.controls
 				this._touchBlocker.height = this.actualHeight;
 			}
 
-			this._viewPortWrapper.x = this._leftViewPortOffset - this._horizontalScrollPosition;
-			this._viewPortWrapper.y = this._topViewPortOffset - this._verticalScrollPosition;
+			this._viewPort.x = this._leftViewPortOffset - this._horizontalScrollPosition;
+			this._viewPort.y = this._topViewPortOffset - this._verticalScrollPosition;
 
 			if(this.horizontalScrollBar)
 			{
@@ -2739,10 +2864,39 @@ package feathers.controls
 				}
 				else
 				{
-					snappedPageHorizontalScrollPosition = roundToNearest(this._horizontalScrollPosition, pageWidth);
+					const lastPageWidth:Number = this._maxHorizontalScrollPosition % pageWidth;
+					var startOfLastPage:Number = this._maxHorizontalScrollPosition - lastPageWidth;
+					if(lastPageWidth < pageWidth && this._horizontalScrollPosition >= startOfLastPage)
+					{
+						const lastPagePosition:Number = this._horizontalScrollPosition - startOfLastPage;
+						if(inchesPerSecond > MINIMUM_PAGE_VELOCITY)
+						{
+							snappedPageHorizontalScrollPosition = startOfLastPage + roundDownToNearest(lastPagePosition, lastPageWidth);
+						}
+						else if(inchesPerSecond < -MINIMUM_PAGE_VELOCITY)
+						{
+							snappedPageHorizontalScrollPosition = startOfLastPage + roundUpToNearest(lastPagePosition, lastPageWidth);
+						}
+						else
+						{
+							snappedPageHorizontalScrollPosition = startOfLastPage + roundToNearest(lastPagePosition, lastPageWidth);
+						}
+					}
+					else
+					{
+						snappedPageHorizontalScrollPosition = roundToNearest(this._horizontalScrollPosition, pageWidth);
+					}
 				}
 				snappedPageHorizontalScrollPosition = Math.max(0, Math.min(this._maxHorizontalScrollPosition, snappedPageHorizontalScrollPosition));
-				this.throwToPage(snappedPageHorizontalScrollPosition / pageWidth, -1, this._pageThrowDuration);
+				if(snappedPageHorizontalScrollPosition == this._maxHorizontalScrollPosition)
+				{
+					var targetHorizontalPageIndex:int = this._horizontalPageCount - 1;
+				}
+				else
+				{
+					targetHorizontalPageIndex = snappedPageHorizontalScrollPosition / pageWidth;
+				}
+				this.throwToPage(targetHorizontalPageIndex, -1, this._pageThrowDuration);
 				return;
 			}
 
@@ -2806,10 +2960,39 @@ package feathers.controls
 				}
 				else
 				{
-					snappedPageVerticalScrollPosition = roundToNearest(this._verticalScrollPosition, pageHeight);
+					const lastPageHeight:Number = this._maxVerticalScrollPosition % pageHeight;
+					var startOfLastPage:Number = this._maxVerticalScrollPosition - lastPageHeight;
+					if(lastPageHeight < pageHeight && this._verticalScrollPosition >= startOfLastPage)
+					{
+						const lastPagePosition:Number = this._verticalScrollPosition - startOfLastPage;
+						if(inchesPerSecond > MINIMUM_PAGE_VELOCITY)
+						{
+							snappedPageVerticalScrollPosition = startOfLastPage + roundDownToNearest(lastPagePosition, lastPageHeight);
+						}
+						else if(inchesPerSecond < -MINIMUM_PAGE_VELOCITY)
+						{
+							snappedPageVerticalScrollPosition = startOfLastPage + roundUpToNearest(lastPagePosition, lastPageHeight);
+						}
+						else
+						{
+							snappedPageVerticalScrollPosition = startOfLastPage + roundToNearest(lastPagePosition, lastPageHeight);
+						}
+					}
+					else
+					{
+						snappedPageVerticalScrollPosition = roundToNearest(this._verticalScrollPosition, pageHeight);
+					}
 				}
 				snappedPageVerticalScrollPosition = Math.max(0, Math.min(this._maxVerticalScrollPosition, snappedPageVerticalScrollPosition));
-				this.throwToPage(-1, snappedPageVerticalScrollPosition / pageHeight, this._pageThrowDuration);
+				if(snappedPageVerticalScrollPosition == this._maxVerticalScrollPosition)
+				{
+					var targetVerticalPageIndex:int = this._verticalPageCount - 1;
+				}
+				else
+				{
+					targetVerticalPageIndex = snappedPageVerticalScrollPosition / pageHeight
+				}
+				this.throwToPage(-1, targetVerticalPageIndex, this._pageThrowDuration);
 				return;
 			}
 

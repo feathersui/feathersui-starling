@@ -44,6 +44,7 @@ package feathers.examples.componentsExplorer.screens
 			this._stepper.maximum = 100;
 			this._stepper.value = 50;
 			this._stepper.step = this.settings.step;
+			this._stepper.buttonLayoutMode = this.settings.buttonLayoutMode;
 			this._stepper.addEventListener(Event.CHANGE, slider_changeHandler);
 			const stepperLayoutData:AnchorLayoutData = new AnchorLayoutData();
 			stepperLayoutData.horizontalCenter = 0;
@@ -64,6 +65,8 @@ package feathers.examples.componentsExplorer.screens
 				[
 					this._backButton
 				];
+
+				this.backButtonHandler = this.onBackButton;
 			}
 
 			this._settingsButton = new Button();
@@ -74,9 +77,6 @@ package feathers.examples.componentsExplorer.screens
 			[
 				this._settingsButton
 			];
-
-			// handles the back hardware key on android
-			this.backButtonHandler = this.onBackButton;
 		}
 
 		private function onBackButton():void

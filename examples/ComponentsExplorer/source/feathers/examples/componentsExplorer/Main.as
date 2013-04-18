@@ -4,6 +4,7 @@ package feathers.examples.componentsExplorer
 	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.ScrollContainer;
 	import feathers.examples.componentsExplorer.data.GroupedListSettings;
+	import feathers.examples.componentsExplorer.data.ItemRendererSettings;
 	import feathers.examples.componentsExplorer.data.ListSettings;
 	import feathers.examples.componentsExplorer.data.NumericStepperSettings;
 	import feathers.examples.componentsExplorer.data.SliderSettings;
@@ -13,6 +14,8 @@ package feathers.examples.componentsExplorer
 	import feathers.examples.componentsExplorer.screens.CalloutScreen;
 	import feathers.examples.componentsExplorer.screens.GroupedListScreen;
 	import feathers.examples.componentsExplorer.screens.GroupedListSettingsScreen;
+	import feathers.examples.componentsExplorer.screens.ItemRendererScreen;
+	import feathers.examples.componentsExplorer.screens.ItemRendererSettingsScreen;
 	import feathers.examples.componentsExplorer.screens.ListScreen;
 	import feathers.examples.componentsExplorer.screens.ListSettingsScreen;
 	import feathers.examples.componentsExplorer.screens.MainMenuScreen;
@@ -48,6 +51,8 @@ package feathers.examples.componentsExplorer
 		private static const CALLOUT:String = "callout";
 		private static const GROUPED_LIST:String = "groupedList";
 		private static const GROUPED_LIST_SETTINGS:String = "groupedListSettings";
+		private static const ITEM_RENDERER:String = "itemRenderer";
+		private static const ITEM_RENDERER_SETTINGS:String = "itemRendererSettings";
 		private static const LIST:String = "list";
 		private static const LIST_SETTINGS:String = "listSettings";
 		private static const NUMERIC_STEPPER:String = "numericStepper";
@@ -69,6 +74,7 @@ package feathers.examples.componentsExplorer
 			showButtonGroup: BUTTON_GROUP,
 			showCallout: CALLOUT,
 			showGroupedList: GROUPED_LIST,
+			showItemRenderer: ITEM_RENDERER,
 			showList: LIST,
 			showNumericStepper: NUMERIC_STEPPER,
 			showPageIndicator: PAGE_INDICATOR,
@@ -88,7 +94,6 @@ package feathers.examples.componentsExplorer
 			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 		}
 		
-		private var _theme:MetalWorksMobileTheme;
 		private var _container:ScrollContainer;
 		private var _navigator:ScreenNavigator;
 		private var _menu:MainMenuScreen;
@@ -102,7 +107,7 @@ package feathers.examples.componentsExplorer
 		
 		private function addedToStageHandler(event:Event):void
 		{
-			this._theme = new MetalWorksMobileTheme();
+			new MetalWorksMobileTheme();
 			
 			this._navigator = new ScreenNavigator();
 
@@ -166,6 +171,24 @@ package feathers.examples.componentsExplorer
 			},
 			{
 				settings: groupedListSettings
+			}));
+
+			const itemRendererSettings:ItemRendererSettings = new ItemRendererSettings();
+			this._navigator.addScreen(ITEM_RENDERER, new ScreenNavigatorItem(ItemRendererScreen,
+			{
+				complete: MAIN_MENU,
+				showSettings: ITEM_RENDERER_SETTINGS
+			},
+			{
+				settings: itemRendererSettings
+			}));
+
+			this._navigator.addScreen(ITEM_RENDERER_SETTINGS, new ScreenNavigatorItem(ItemRendererSettingsScreen,
+			{
+				complete: ITEM_RENDERER
+			},
+			{
+				settings: itemRendererSettings
 			}));
 
 			const listSettings:ListSettings = new ListSettings();

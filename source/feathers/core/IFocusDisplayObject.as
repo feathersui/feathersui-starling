@@ -50,6 +50,7 @@ package feathers.core
 
 		/**
 		 * The next object that will receive focus when the tab key is pressed.
+		 * If <code>null</code>, defaults to the next child on the display list.
 		 */
 		function get nextTabFocus():IFocusDisplayObject;
 
@@ -57,5 +58,17 @@ package feathers.core
 		 * @private
 		 */
 		function set nextTabFocus(value:IFocusDisplayObject):void;
+
+		/**
+		 * The previous object that will receive focus when the tab key is
+		 * pressed while holding shift. If <code>null</code>, defaults to the
+		 * previous child on the display list.
+		 */
+		function get previousTabFocus():IFocusDisplayObject;
+
+		/**
+		 * @private
+		 */
+		function set previousTabFocus(value:IFocusDisplayObject):void;
 	}
 }

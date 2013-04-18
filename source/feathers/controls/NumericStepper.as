@@ -86,6 +86,32 @@ package feathers.controls
 		public static const DEFAULT_CHILD_NAME_TEXT_INPUT:String = "feathers-numeric-stepper-text-input";
 
 		/**
+		 * The decrement button will be placed on the left side of the text
+		 * input and the increment button will be placed on the right side of
+		 * the text input.
+		 *
+		 * @see #buttonLayoutMode
+		 */
+		public static const BUTTON_LAYOUT_MODE_SPLIT_HORIZONTAL:String = "splitHorizontal";
+
+		/**
+		 * The decrement button will be placed below the text input and the
+		 * increment button will be placed above the text input.
+		 *
+		 * @see #buttonLayoutMode
+		 */
+		public static const BUTTON_LAYOUT_MODE_SPLIT_VERTICAL:String = "splitVertical";
+
+		/**
+		 * Both the decrement and increment button will be placed on the right
+		 * side of the text input. The increment button will be above the
+		 * decrement button.
+		 *
+		 * @see #buttonLayoutMode
+		 */
+		public static const BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL:String = "rightSideVertical";
+
+		/**
 		 * @private
 		 */
 		protected static function defaultDecrementButtonFactory():Button
@@ -120,22 +146,43 @@ package feathers.controls
 		}
 
 		/**
-		 * The value added to the <code>nameList</code> of the decrement button.
+		 * The value added to the <code>nameList</code> of the decrement button. This
+		 * variable is <code>protected</code> so that sub-classes can customize
+		 * the decrement button name in their constructors instead of using the default
+		 * name defined by <code>DEFAULT_CHILD_NAME_DECREMENT_BUTTON</code>.
 		 *
+		 * <p>To customize the decrement button name without subclassing, see
+		 * <code>customDecrementButtonName</code>.</p>
+		 *
+		 * @see #customDecrementButtonName
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var decrementButtonName:String = DEFAULT_CHILD_NAME_DECREMENT_BUTTON;
 
 		/**
-		 * The value added to the <code>nameList</code> of the increment button.
+		 * The value added to the <code>nameList</code> of the increment button. This
+		 * variable is <code>protected</code> so that sub-classes can customize
+		 * the increment button name in their constructors instead of using the default
+		 * name defined by <code>DEFAULT_CHILD_NAME_INCREMENT_BUTTON</code>.
 		 *
+		 * <p>To customize the increment button name without subclassing, see
+		 * <code>customIncrementButtonName</code>.</p>
+		 *
+		 * @see #customIncrementButtonName
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var incrementButtonName:String = DEFAULT_CHILD_NAME_INCREMENT_BUTTON;
 
 		/**
-		 * The value added to the <code>nameList</code> of the text input.
+		 * The value added to the <code>nameList</code> of the text input. This
+		 * variable is <code>protected</code> so that sub-classes can customize
+		 * the text input name in their constructors instead of using the default
+		 * name defined by <code>DEFAULT_CHILD_NAME_TEXT_INPUT</code>.
 		 *
+		 * <p>To customize the text input name without subclassing, see
+		 * <code>customTextInputName</code>.</p>
+		 *
+		 * @see #customTextInputName
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var textInputName:String = DEFAULT_CHILD_NAME_TEXT_INPUT;
@@ -311,19 +358,50 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _buttonLayoutMode:String = BUTTON_LAYOUT_MODE_SPLIT_HORIZONTAL;
+
+		/**
+		 * How the buttons are positioned relative to the text input.
+		 *
+		 * @see #BUTTON_LAYOUT_MODE_SPLIT_HORIZONTAL
+		 * @see #BUTTON_LAYOUT_MODE_SPLIT_VERTICAL
+		 * @see #BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL
+		 */
+		public function get buttonLayoutMode():String
+		{
+			return this._buttonLayoutMode;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set buttonLayoutMode(value:String):void
+		{
+			if(this._buttonLayoutMode == value)
+			{
+				return;
+			}
+			this._buttonLayoutMode = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _decrementButtonFactory:Function;
 
 		/**
 		 * A function used to generate the numeric stepper's decrement button
-		 * sub-component. This can be used to change properties on the decrement
-		 * button when it is first created. For instance, if you are skinning
-		 * Feathers components without a theme, you might use
-		 * <code>decrementButtonFactory</code> to set skins and other styles on
-		 * the decrement button.
+		 * sub-component. The decrement button must be an instance of
+		 * <code>Button</code>. This factory can be used to change properties on
+		 * the decrement button when it is first created. For instance, if you
+		 * are skinning Feathers components without a theme, you might use this
+		 * factory to set skins and other styles on the decrement button.
 		 *
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():Button</pre>
 		 *
+		 * @see feathers.controls.Button
 		 * @see #decrementButtonProperties
 		 */
 		public function get decrementButtonFactory():Function
@@ -384,7 +462,8 @@ package feathers.controls
 		/**
 		 * A set of key/value pairs to be passed down to the numeric stepper's
 		 * decrement button sub-component. The decrement button is a
-		 * <code>feathers.controls.Button</code> instance.
+		 * <code>feathers.controls.Button</code> instance that is created by
+		 * <code>decrementButtonFactory</code>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -393,6 +472,11 @@ package feathers.controls
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
+		 * <p>Setting properties in a <code>decrementButtonFactory</code>
+		 * function instead of using <code>decrementButtonProperties</code> will
+		 * result in better performance.</p>
+		 *
+		 * @see #decrementButtonFactory
 		 * @see feathers.controls.Button
 		 */
 		public function get decrementButtonProperties():Object
@@ -471,15 +555,16 @@ package feathers.controls
 
 		/**
 		 * A function used to generate the numeric stepper's increment button
-		 * sub-component. This can be used to change properties on the increment
-		 * button when it is first created. For instance, if you are skinning
-		 * Feathers components without a theme, you might use
-		 * <code>incrementButtonFactory</code> to set skins and other styles on
-		 * the increment button.
+		 * sub-component. The increment button must be an instance of
+		 * <code>Button</code>. This factory can be used to change properties on
+		 * the increment button when it is first created. For instance, if you
+		 * are skinning Feathers components without a theme, you might use this
+		 * factory to set skins and other styles on the increment button.
 		 *
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():Button</pre>
 		 *
+		 * @see feathers.controls.Button
 		 * @see #incrementButtonProperties
 		 */
 		public function get incrementButtonFactory():Function
@@ -540,7 +625,8 @@ package feathers.controls
 		/**
 		 * A set of key/value pairs to be passed down to the numeric stepper's
 		 * increment button sub-component. The increment button is a
-		 * <code>feathers.controls.Button</code> instance.
+		 * <code>feathers.controls.Button</code> instance that is created by
+		 * <code>incrementButtonFactory</code>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -549,6 +635,11 @@ package feathers.controls
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
+		 * <p>Setting properties in a <code>incrementButtonFactory</code>
+		 * function instead of using <code>incrementButtonProperties</code> will
+		 * result in better performance.</p>
+		 *
+		 * @see #incrementButtonFactory
 		 * @see feathers.controls.Button
 		 */
 		public function get incrementButtonProperties():Object
@@ -627,15 +718,16 @@ package feathers.controls
 
 		/**
 		 * A function used to generate the numeric stepper's text input
-		 * sub-component. This can be used to change properties on the text
-		 * input when it is first created. For instance, if you are skinning
-		 * Feathers components without a theme, you might use
-		 * <code>textInputFactory</code> to set skins and text styles on the
-		 * text input.
+		 * sub-component. The text input must be an instance of <code>TextInput</code>.
+		 * This factory can be used to change properties on the text input when
+		 * it is first created. For instance, if you are skinning Feathers
+		 * components without a theme, you might use this factory to set skins
+		 * and other styles on the text input.
 		 *
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():TextInput</pre>
 		 *
+		 * @see feathers.controls.TextInput
 		 * @see #textInputProperties
 		 */
 		public function get textInputFactory():Function
@@ -662,8 +754,9 @@ package feathers.controls
 		protected var _customTextInputName:String;
 
 		/**
-		 * A name to add to the slider's thumb sub-component. Typically
-		 * used by a theme to provide different skins to different sliders.
+		 * A name to add to the numeric stepper's text input sub-component.
+		 * Typically used by a theme to provide different skins to different
+		 * text inputs.
 		 *
 		 * @see feathers.core.FeathersControl#nameList
 		 * @see #textInputFactory
@@ -693,9 +786,10 @@ package feathers.controls
 		protected var _textInputProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the slider's thumb
-		 * sub-component. The thumb is a <code>feathers.controls.Button</code>
-		 * instance.
+		 * A set of key/value pairs to be passed down to the numeric stepper's
+		 * text input sub-component. The text input is a
+		 * <code>feathers.controls.TextInput</code> instance that is created by
+		 * <code>textInputFactory</code>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -704,7 +798,12 @@ package feathers.controls
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
-		 * @see feathers.controls.Button
+		 * <p>Setting properties in a <code>textInputFactory</code> function
+		 * instead of using <code>textInputProperties</code> will result in
+		 * better performance.</p>
+		 *
+		 * @see #textInputFactory
+		 * @see feathers.controls.TextInput
 		 */
 		public function get textInputProperties():Object
 		{
@@ -834,26 +933,64 @@ package feathers.controls
 				return false;
 			}
 
-			this.decrementButton.validate();
-			this.incrementButton.validate();
-
-			const oldTextInputWidth:Number = this.textInput.width;
-			const oldTextInputHeight:Number = this.textInput.height;
-			this.textInput.minWidth = this._minWidth - this.decrementButton.width - this.incrementButton.width;
-			this.textInput.maxWidth = this._maxWidth - this.decrementButton.width - this.incrementButton.width;
-			this.textInput.width = this.explicitWidth - this.decrementButton.width - this.incrementButton.width;
-			this.textInput.height = this.explicitHeight;
-			this.textInput.validate();
-
 			var newWidth:Number = this.explicitWidth;
 			var newHeight:Number = this.explicitHeight;
-			if(needsWidth)
+
+			this.decrementButton.validate();
+			this.incrementButton.validate();
+			const oldTextInputWidth:Number = this.textInput.width;
+			const oldTextInputHeight:Number = this.textInput.height;
+			if(this._buttonLayoutMode == BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL)
 			{
-				newWidth = this.decrementButton.width + this.textInput.width + this.incrementButton.width;
+				const maxButtonWidth:Number = Math.max(this.decrementButton.width, this.incrementButton.width);
+				this.textInput.minWidth = Math.max(0, this._minWidth - maxButtonWidth);
+				this.textInput.maxWidth = Math.max(0, this._maxWidth - maxButtonWidth);
+				this.textInput.width = Math.max(0, this.explicitWidth - maxButtonWidth)
+				this.textInput.height = this.explicitHeight;
+				this.textInput.validate();
+
+				if(needsWidth)
+				{
+					newWidth = this.textInput.width + maxButtonWidth;
+				}
+				if(needsHeight)
+				{
+					newHeight = Math.max(this.textInput.height, this.decrementButton.height + this.incrementButton.height);
+				}
 			}
-			if(needsHeight)
+			else if(this._buttonLayoutMode == BUTTON_LAYOUT_MODE_SPLIT_VERTICAL)
 			{
-				newHeight = Math.max(this.decrementButton.height, this.incrementButton.height, this.textInput.height);
+				this.textInput.minHeight = Math.max(0, this._minHeight - this.decrementButton.height - this.incrementButton.height);
+				this.textInput.maxHeight = Math.max(0, this._maxHeight - this.decrementButton.height - this.incrementButton.height);
+				this.textInput.height = Math.max(0, this.explicitHeight - this.decrementButton.height - this.incrementButton.height);
+				this.textInput.width = this.explicitWidth;
+				this.textInput.validate();
+
+				if(needsWidth)
+				{
+					newWidth = Math.max(this.decrementButton.width, this.incrementButton.width, this.textInput.width);
+				}
+				if(needsHeight)
+				{
+					newHeight = this.decrementButton.height + this.textInput.height + this.incrementButton.height;
+				}
+			}
+			else //split horizontal
+			{
+				this.textInput.minWidth = Math.max(0, this._minWidth - this.decrementButton.width - this.incrementButton.width);
+				this.textInput.maxWidth = Math.max(0, this._maxWidth - this.decrementButton.width - this.incrementButton.width);
+				this.textInput.width = Math.max(0, this.explicitWidth - this.decrementButton.width - this.incrementButton.width);
+				this.textInput.height = this.explicitHeight;
+				this.textInput.validate();
+
+				if(needsWidth)
+				{
+					newWidth = this.decrementButton.width + this.textInput.width + this.incrementButton.width;
+				}
+				if(needsHeight)
+				{
+					newHeight = Math.max(this.decrementButton.height, this.incrementButton.height, this.textInput.height);
+				}
 			}
 
 			this.textInput.width = oldTextInputWidth;
@@ -1001,19 +1138,60 @@ package feathers.controls
 		 */
 		protected function layoutChildren():void
 		{
-			this.decrementButton.x = 0;
-			this.decrementButton.y = 0;
-			this.decrementButton.height = this.actualHeight;
-			this.decrementButton.validate();
+			if(this._buttonLayoutMode == BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL)
+			{
+				const buttonHeight:Number = this.actualHeight / 2;
+				this.incrementButton.y = 0;
+				this.incrementButton.height = buttonHeight;
+				this.incrementButton.validate();
 
-			this.incrementButton.y = 0;
-			this.incrementButton.height = this.actualHeight;
-			this.incrementButton.validate();
-			this.incrementButton.x = this.actualWidth - this.incrementButton.width;
+				this.decrementButton.y = buttonHeight;
+				this.decrementButton.height = buttonHeight;
+				this.decrementButton.validate();
 
-			this.textInput.x = this.decrementButton.width;
-			this.textInput.width = this.incrementButton.x - this.textInput.x;
-			this.textInput.height = this.actualHeight;
+				const buttonWidth:Number = Math.max(this.decrementButton.width, this.incrementButton.width);
+				const buttonX:Number = this.actualWidth - buttonWidth;
+				this.decrementButton.x = buttonX;
+				this.incrementButton.x = buttonX;
+
+				this.textInput.x = 0;
+				this.textInput.y = 0;
+				this.textInput.width = buttonX;
+				this.textInput.height = this.actualHeight;
+			}
+			else if(this._buttonLayoutMode == BUTTON_LAYOUT_MODE_SPLIT_VERTICAL)
+			{
+				this.incrementButton.x = 0;
+				this.incrementButton.y = 0;
+				this.incrementButton.width = this.actualWidth;
+				this.incrementButton.validate();
+
+				this.decrementButton.x = 0;
+				this.decrementButton.width = this.actualWidth;
+				this.decrementButton.validate();
+				this.decrementButton.y = this.actualHeight - this.decrementButton.height;
+
+				this.textInput.x = 0;
+				this.textInput.y = this.incrementButton.height;
+				this.textInput.width = this.actualWidth;
+				this.textInput.height = Math.max(0, this.decrementButton.y - this.incrementButton.height - this.incrementButton.y);
+			}
+			else //split horizontal
+			{
+				this.decrementButton.x = 0;
+				this.decrementButton.y = 0;
+				this.decrementButton.height = this.actualHeight;
+				this.decrementButton.validate();
+
+				this.incrementButton.y = 0;
+				this.incrementButton.height = this.actualHeight;
+				this.incrementButton.validate();
+				this.incrementButton.x = this.actualWidth - this.incrementButton.width;
+
+				this.textInput.x = this.decrementButton.width;
+				this.textInput.width = this.incrementButton.x - this.textInput.x;
+				this.textInput.height = this.actualHeight;
+			}
 		}
 
 		/**

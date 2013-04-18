@@ -162,6 +162,28 @@ package feathers.core
 				this.root.removeEventListener(Event.ADDED, addedHandler);
 				this.root = null;
 			}
+			if(this._excludedObjects)
+			{
+				this._excludedObjects.length = 0;
+				this._excludedObjects = null;
+			}
+			for(var key:Object in this.initializedObjects)
+			{
+				delete this.initializedObjects[key];
+			}
+			for(key in this._initializerNameTypeMap)
+			{
+				delete this._initializerNameTypeMap[key];
+			}
+			for(key in this._initializerNoNameTypeMap)
+			{
+				delete this._initializerNoNameTypeMap[key];
+			}
+			for(key in this._initializerSuperTypeMap)
+			{
+				delete this._initializerSuperTypeMap[key];
+			}
+			this._initializerSuperTypes.length = 0;
 		}
 
 		/**

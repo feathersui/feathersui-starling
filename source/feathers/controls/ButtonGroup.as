@@ -103,8 +103,15 @@ package feathers.controls
 		}
 
 		/**
-		 * The value added to the <code>nameList</code> of the buttons.
+		 * The value added to the <code>nameList</code> of the buttons. This
+		 * variable is <code>protected</code> so that sub-classes can customize
+		 * the button name in their constructors instead of using the default
+		 * name defined by <code>DEFAULT_CHILD_NAME_BUTTON</code>.
 		 *
+		 * <p>To customize the button name without subclassing, see
+		 * <code>customButtonName</code>.</p>
+		 *
+		 * @see #customButtonName
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var buttonName:String = DEFAULT_CHILD_NAME_BUTTON;
@@ -112,6 +119,10 @@ package feathers.controls
 		/**
 		 * The value added to the <code>nameList</code> of the first button.
 		 *
+		 * <p>To customize the first button name without subclassing, see
+		 * <code>customFirstButtonName</code>.</p>
+		 *
+		 * @see #customFirstButtonName
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var firstButtonName:String = DEFAULT_CHILD_NAME_BUTTON;
@@ -119,6 +130,10 @@ package feathers.controls
 		/**
 		 * The value added to the <code>nameList</code> of the last button.
 		 *
+		 * <p>To customize the last button name without subclassing, see
+		 * <code>customLastButtonName</code>.</p>
+		 *
+		 * @see #customLastButtonName
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var lastButtonName:String = DEFAULT_CHILD_NAME_BUTTON;
@@ -188,6 +203,7 @@ package feathers.controls
 		 *     <li>selectedDisabledIcon</li>
 		 *     <li>isSelected</li>
 		 *     <li>isToggle</li>
+		 *     <li>isEnabled</li>
 		 * </ul>
 		 *
 		 * <p>Additionally, you can add the following event listeners:</p>
@@ -375,7 +391,11 @@ package feathers.controls
 		protected var _buttonFactory:Function = defaultButtonFactory;
 
 		/**
-		 * Creates a new button.
+		 * Creates a new button. A button must be an instance of <code>Button</code>.
+		 * This factory can be used to change properties on the buttons when
+		 * they are first created. For instance, if you are skinning Feathers
+		 * components without a theme, you might use this factory to set skins
+		 * and other styles on a button.
 		 *
 		 * <p>This function is expected to have the following signature:</p>
 		 *
@@ -420,8 +440,13 @@ package feathers.controls
 		protected var _firstButtonFactory:Function;
 
 		/**
-		 * Creates a new first button. If the firstButtonFactory is null, then the
-		 * ButtonGroup will use the buttonFactory.
+		 * Creates a new first button. If the <code>firstButtonFactory</code> is
+		 * <code>null</code>, then the button group will use the <code>buttonFactory</code>.
+		 * The first button must be an instance of <code>Button</code>. This
+		 * factory can be used to change properties on the first button when
+		 * it is first created. For instance, if you are skinning Feathers
+		 * components without a theme, you might use this factory to set skins
+		 * and other styles on the first button.
 		 *
 		 * <p>This function is expected to have the following signature:</p>
 		 *
@@ -466,8 +491,13 @@ package feathers.controls
 		protected var _lastButtonFactory:Function;
 
 		/**
-		 * Creates a new last button. If the lastButtonFactory is null, then the
-		 * ButtonGroup will use the buttonFactory.
+		 * Creates a new last button. If the <code>lastButtonFactory</code> is
+		 * <code>null</code>, then the button group will use the <code>buttonFactory</code>.
+		 * The last button must be an instance of <code>Button</code>. This
+		 * factory can be used to change properties on the last button when
+		 * it is first created. For instance, if you are skinning Feathers
+		 * components without a theme, you might use this factory to set skins
+		 * and other styles on the last button.
 		 *
 		 * <p>This function is expected to have the following signature:</p>
 		 *
@@ -681,8 +711,9 @@ package feathers.controls
 		 * A set of key/value pairs to be passed down to all of the button
 		 * group's buttons. These values are shared by each button, so values
 		 * that cannot be shared (such as display objects that need to be added
-		 * to the display list) should be passed to buttons in another way (such
-		 * as with an <code>AddedWatcher</code>).
+		 * to the display list) should be passed to buttons using the
+		 * <code>buttonFactory</code> or in a theme. The buttons in a button
+		 * group are instances of <code>feathers.controls.Button</code>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -697,11 +728,14 @@ package feathers.controls
 		 * group.buttonProperties.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 		 * group.buttonProperties.verticalAlign = Button.VERTICAL_ALIGN_TOP;</listing>
 		 *
+		 * <p>Setting properties in a <code>buttonFactory</code> function instead
+		 * of using <code>buttonProperties</code> will result in better
+		 * performance.</p>
+		 *
 		 * @see #buttonFactory
 		 * @see #firstButtonFactory
 		 * @see #lastButtonFactory
 		 * @see feathers.controls.Button
-		 * @see feathers.core.DisplayListWatcher
 		 */
 		public function get buttonProperties():Object
 		{
@@ -749,6 +783,15 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override public function dispose():void
+		{
+			this.dataProvider = null;
+			super.dispose();
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function draw():void
 		{
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
@@ -757,7 +800,7 @@ package feathers.controls
 			const buttonFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_BUTTON_FACTORY);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 
-			if(dataInvalid || buttonFactoryInvalid)
+			if(dataInvalid || stateInvalid || buttonFactoryInvalid)
 			{
 				this.refreshButtons(buttonFactoryInvalid);
 			}
@@ -767,7 +810,7 @@ package feathers.controls
 				this.refreshButtonStyles();
 			}
 
-			if(dataInvalid || buttonFactoryInvalid || stateInvalid)
+			if(dataInvalid || stateInvalid || buttonFactoryInvalid)
 			{
 				this.commitEnabled();
 			}
@@ -785,9 +828,11 @@ package feathers.controls
 		 */
 		protected function commitEnabled():void
 		{
-			for each(var button:Button in this.activeButtons)
+			const buttonCount:int = this.activeButtons.length;
+			for(var i:int = 0; i < buttonCount; i++)
 			{
-				button.isEnabled = this._isEnabled;
+				var button:Button = this.activeButtons[i];
+				button.isEnabled &&= this._isEnabled;
 			}
 		}
 
@@ -837,11 +882,15 @@ package feathers.controls
 			{
 				if(item.hasOwnProperty("label"))
 				{
-					button.label = item.label;
+					button.label = item.label as String;
 				}
 				else
 				{
 					button.label = item.toString();
+				}
+				if(item.hasOwnProperty("isEnabled"))
+				{
+					button.isEnabled = item.isEnabled as Boolean;
 				}
 				for each(var field:String in DEFAULT_BUTTON_FIELDS)
 				{

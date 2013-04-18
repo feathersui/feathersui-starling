@@ -54,7 +54,6 @@ package feathers.examples.layoutExplorer
 			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 		}
 
-		private var _theme:MetalWorksMobileTheme;
 		private var _container:ScrollContainer;
 		private var _navigator:ScreenNavigator;
 		private var _menu:MainMenuScreen;
@@ -68,7 +67,7 @@ package feathers.examples.layoutExplorer
 
 		private function addedToStageHandler(event:Event):void
 		{
-			this._theme = new MetalWorksMobileTheme();
+			new MetalWorksMobileTheme();
 
 			this._navigator = new ScreenNavigator();
 
@@ -158,7 +157,6 @@ package feathers.examples.layoutExplorer
 				{
 					this._menu.addEventListener(eventType, mainMenuEventHandler);
 				}
-				this._menu.width = 400 * DeviceCapabilities.dpi / this._theme.originalDPI;
 				const menuLayoutData:AnchorLayoutData = new AnchorLayoutData();
 				menuLayoutData.top = 0;
 				menuLayoutData.bottom = 0;

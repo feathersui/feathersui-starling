@@ -53,6 +53,47 @@ package feathers.core
 		function set text(value:String):void;
 
 		/**
+		 * Determines if the entered text will be masked so that it cannot be
+		 * seen, such as for a password input.
+		 */
+		function get displayAsPassword():Boolean;
+
+		/**
+		 * @private
+		 */
+		function set displayAsPassword(value:Boolean):void;
+
+		/**
+		 * The maximum number of characters that may be entered.
+		 */
+		function get maxChars():int;
+
+		/**
+		 * @private
+		 */
+		function set maxChars(value:int):void;
+
+		/**
+		 * Limits the set of characters that may be entered.
+		 */
+		function get restrict():String;
+
+		/**
+		 * @private
+		 */
+		function set restrict(value:String):void;
+
+		/**
+		 * Determines if the text is editable.
+		 */
+		function get isEditable():Boolean;
+
+		/**
+		 * @private
+		 */
+		function set isEditable(value:Boolean):void;
+
+		/**
 		 * Gives focus to the text editor. Includes an optional position which
 		 * may be used by the text editor to determine the cursor position. The
 		 * position may be outside of the editors bounds.
