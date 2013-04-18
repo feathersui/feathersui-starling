@@ -33,6 +33,7 @@ package feathers.themes
 	import feathers.controls.ImageLoader;
 	import feathers.controls.Label;
 	import feathers.controls.List;
+	import feathers.controls.NumericStepper;
 	import feathers.controls.PageIndicator;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.PickerList;
@@ -381,12 +382,14 @@ package feathers.themes
 			this.setInitializerForClass(Check, checkInitializer);
 			this.setInitializerForClass(Radio, radioInitializer);
 			this.setInitializerForClass(ToggleSwitch, toggleSwitchInitializer);
+			this.setInitializerForClass(NumericStepper, numericStepperInitializer);
 			this.setInitializerForClass(DefaultListItemRenderer, itemRendererInitializer);
 			this.setInitializerForClass(DefaultGroupedListItemRenderer, itemRendererInitializer);
 			this.setInitializerForClass(DefaultGroupedListHeaderOrFooterRenderer, headerOrFooterRendererInitializer);
 			this.setInitializerForClass(PickerList, pickerListInitializer);
 			this.setInitializerForClass(Header, headerInitializer);
 			this.setInitializerForClass(TextInput, textInputInitializer);
+			this.setInitializerForClass(TextInput, numericStepperTextInputInitializer, NumericStepper.DEFAULT_CHILD_NAME_TEXT_INPUT);
 			this.setInitializerForClass(PageIndicator, pageIndicatorInitializer);
 			this.setInitializerForClass(ProgressBar, progressBarInitializer);
 			this.setInitializerForClass(Callout, calloutInitializer);
@@ -725,6 +728,13 @@ package feathers.themes
 			toggleSwitch.onLabelProperties.textFormat = this.selectedTextFormat;
 		}
 
+		protected function numericStepperInitializer(stepper:NumericStepper):void
+		{
+			stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_SPLIT_HORIZONTAL;
+			stepper.incrementButtonLabel = "+";
+			stepper.decrementButtonLabel = "-";
+		}
+
 		protected function itemRendererInitializer(renderer:BaseDefaultItemRenderer):void
 		{
 			const skinSelector:ImageStateValueSelector = new ImageStateValueSelector();
@@ -830,8 +840,8 @@ package feathers.themes
 		{
 			input.minWidth = input.minHeight = 66 * this.scale;
 			input.minTouchWidth = input.minTouchHeight = 66 * this.scale;
-			input.paddingTop = input.paddingBottom = 10 * this.scale;
-			input.paddingLeft = input.paddingRight = 14 * this.scale;
+			input.paddingTop = input.paddingBottom = 14 * this.scale;
+			input.paddingLeft = input.paddingRight = 16 * this.scale;
 			input.textEditorProperties.fontFamily = "Helvetica";
 			input.textEditorProperties.fontSize = 30 * this.scale;
 			input.textEditorProperties.color = 0xffffff;
@@ -844,6 +854,29 @@ package feathers.themes
 
 			const backgroundDisabledSkin:Scale9Image = new Scale9Image(insetBackgroundDisabledSkinTextures, this.scale);
 			backgroundDisabledSkin.width = 264 * this.scale;
+			backgroundDisabledSkin.height = 66 * this.scale;
+			input.backgroundDisabledSkin = backgroundDisabledSkin;
+		}
+
+		protected function numericStepperTextInputInitializer(input:TextInput):void
+		{
+			input.minWidth = input.minHeight = 66 * this.scale;
+			input.minTouchWidth = input.minTouchHeight = 66 * this.scale;
+			input.paddingTop = input.paddingBottom = 14 * this.scale;
+			input.paddingLeft = input.paddingRight = 16 * this.scale;
+			input.isEditable = false;
+			input.textEditorProperties.fontFamily = "Helvetica";
+			input.textEditorProperties.fontSize = 30 * this.scale;
+			input.textEditorProperties.color = 0xffffff;
+			input.textEditorProperties.textAlign = "center";
+
+			const backgroundSkin:Scale9Image = new Scale9Image(insetBackgroundSkinTextures, this.scale);
+			backgroundSkin.width = 66 * this.scale;
+			backgroundSkin.height = 66 * this.scale;
+			input.backgroundSkin = backgroundSkin;
+
+			const backgroundDisabledSkin:Scale9Image = new Scale9Image(insetBackgroundDisabledSkinTextures, this.scale);
+			backgroundDisabledSkin.width = 66 * this.scale;
 			backgroundDisabledSkin.height = 66 * this.scale;
 			input.backgroundDisabledSkin = backgroundDisabledSkin;
 		}
