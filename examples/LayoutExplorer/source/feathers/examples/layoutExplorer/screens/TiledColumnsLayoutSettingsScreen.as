@@ -1,12 +1,10 @@
 package feathers.examples.layoutExplorer.screens
 {
 	import feathers.controls.Button;
-	import feathers.controls.Header;
 	import feathers.controls.List;
+	import feathers.controls.NumericStepper;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.PickerList;
-	import feathers.controls.Screen;
-	import feathers.controls.Slider;
 	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.examples.layoutExplorer.data.TiledColumnsLayoutSettings;
@@ -32,13 +30,13 @@ package feathers.examples.layoutExplorer.screens
 		private var _list:List;
 		private var _backButton:Button;
 
-		private var _itemCountSlider:Slider;
+		private var _itemCountStepper:NumericStepper;
 		private var _pagingPicker:PickerList;
-		private var _gapSlider:Slider;
-		private var _paddingTopSlider:Slider;
-		private var _paddingRightSlider:Slider;
-		private var _paddingBottomSlider:Slider;
-		private var _paddingLeftSlider:Slider;
+		private var _gapStepper:NumericStepper;
+		private var _paddingTopStepper:NumericStepper;
+		private var _paddingRightStepper:NumericStepper;
+		private var _paddingBottomStepper:NumericStepper;
+		private var _paddingLeftStepper:NumericStepper;
 		private var _horizontalAlignPicker:PickerList;
 		private var _verticalAlignPicker:PickerList;
 		private var _tileHorizontalAlignPicker:PickerList;
@@ -48,13 +46,13 @@ package feathers.examples.layoutExplorer.screens
 		{
 			this.layout = new AnchorLayout();
 
-			this._itemCountSlider = new Slider();
-			this._itemCountSlider.direction = Slider.DIRECTION_HORIZONTAL;
-			this._itemCountSlider.minimum = 1;
-			this._itemCountSlider.maximum = 100;
-			this._itemCountSlider.step = 1;
-			this._itemCountSlider.value = this.settings.itemCount;
-			this._itemCountSlider.addEventListener(Event.CHANGE, itemCountSlider_changeHandler);
+			this._itemCountStepper = new NumericStepper();
+			this._itemCountStepper.minimum = 1;
+			//the layout can certainly handle more. this value is arbitrary.
+			this._itemCountStepper.maximum = 100;
+			this._itemCountStepper.step = 1;
+			this._itemCountStepper.value = this.settings.itemCount;
+			this._itemCountStepper.addEventListener(Event.CHANGE, itemCountStepper_changeHandler);
 
 			this._pagingPicker = new PickerList();
 			this._pagingPicker.typicalItem = TiledColumnsLayout.PAGING_HORIZONTAL;
@@ -113,61 +111,57 @@ package feathers.examples.layoutExplorer.screens
 			this._tileVerticalAlignPicker.selectedItem = this.settings.tileVerticalAlign;
 			this._tileVerticalAlignPicker.addEventListener(Event.CHANGE, tileVerticalAlignPicker_changeHandler);
 
-			this._gapSlider = new Slider();
-			this._gapSlider.direction = Slider.DIRECTION_HORIZONTAL;
-			this._gapSlider.minimum = 0;
-			this._gapSlider.maximum = 100;
-			this._gapSlider.step = 1;
-			this._gapSlider.value = this.settings.gap;
-			this._gapSlider.addEventListener(Event.CHANGE, gapSlider_changeHandler);
+			this._gapStepper = new NumericStepper();
+			this._gapStepper.minimum = 0;
+			//these maximum values are completely arbitrary
+			this._gapStepper.maximum = 100;
+			this._gapStepper.step = 1;
+			this._gapStepper.value = this.settings.gap;
+			this._gapStepper.addEventListener(Event.CHANGE, gapStepper_changeHandler);
 
-			this._paddingTopSlider = new Slider();
-			this._paddingTopSlider.direction = Slider.DIRECTION_HORIZONTAL;
-			this._paddingTopSlider.minimum = 0;
-			this._paddingTopSlider.maximum = 100;
-			this._paddingTopSlider.step = 1;
-			this._paddingTopSlider.value = this.settings.paddingTop;
-			this._paddingTopSlider.addEventListener(Event.CHANGE, paddingTopSlider_changeHandler);
+			this._paddingTopStepper = new NumericStepper();
+			this._paddingTopStepper.minimum = 0;
+			this._paddingTopStepper.maximum = 100;
+			this._paddingTopStepper.step = 1;
+			this._paddingTopStepper.value = this.settings.paddingTop;
+			this._paddingTopStepper.addEventListener(Event.CHANGE, paddingTopStepper_changeHandler);
 
-			this._paddingRightSlider = new Slider();
-			this._paddingRightSlider.direction = Slider.DIRECTION_HORIZONTAL;
-			this._paddingRightSlider.minimum = 0;
-			this._paddingRightSlider.maximum = 100;
-			this._paddingRightSlider.step = 1;
-			this._paddingRightSlider.value = this.settings.paddingRight;
-			this._paddingRightSlider.addEventListener(Event.CHANGE, paddingRightSlider_changeHandler);
+			this._paddingRightStepper = new NumericStepper();
+			this._paddingRightStepper.minimum = 0;
+			this._paddingRightStepper.maximum = 100;
+			this._paddingRightStepper.step = 1;
+			this._paddingRightStepper.value = this.settings.paddingRight;
+			this._paddingRightStepper.addEventListener(Event.CHANGE, paddingRightStepper_changeHandler);
 
-			this._paddingBottomSlider = new Slider();
-			this._paddingBottomSlider.direction = Slider.DIRECTION_HORIZONTAL;
-			this._paddingBottomSlider.minimum = 0;
-			this._paddingBottomSlider.maximum = 100;
-			this._paddingBottomSlider.step = 1;
-			this._paddingBottomSlider.value = this.settings.paddingBottom;
-			this._paddingBottomSlider.addEventListener(Event.CHANGE, paddingBottomSlider_changeHandler);
+			this._paddingBottomStepper = new NumericStepper();
+			this._paddingBottomStepper.minimum = 0;
+			this._paddingBottomStepper.maximum = 100;
+			this._paddingBottomStepper.step = 1;
+			this._paddingBottomStepper.value = this.settings.paddingBottom;
+			this._paddingBottomStepper.addEventListener(Event.CHANGE, paddingBottomStepper_changeHandler);
 
-			this._paddingLeftSlider = new Slider();
-			this._paddingLeftSlider.direction = Slider.DIRECTION_HORIZONTAL;
-			this._paddingLeftSlider.minimum = 0;
-			this._paddingLeftSlider.maximum = 100;
-			this._paddingLeftSlider.step = 1;
-			this._paddingLeftSlider.value = this.settings.paddingLeft;
-			this._paddingLeftSlider.addEventListener(Event.CHANGE, paddingLeftSlider_changeHandler);
+			this._paddingLeftStepper = new NumericStepper();
+			this._paddingLeftStepper.minimum = 0;
+			this._paddingLeftStepper.maximum = 100;
+			this._paddingLeftStepper.step = 1;
+			this._paddingLeftStepper.value = this.settings.paddingLeft;
+			this._paddingLeftStepper.addEventListener(Event.CHANGE, paddingLeftStepper_changeHandler);
 
 			this._list = new List();
 			this._list.isSelectable = false;
 			this._list.dataProvider = new ListCollection(
 			[
-				{ label: "Item Count", accessory: this._itemCountSlider },
+				{ label: "Item Count", accessory: this._itemCountStepper },
 				{ label: "Paging", accessory: this._pagingPicker },
 				{ label: "horizontalAlign", accessory: this._horizontalAlignPicker },
 				{ label: "verticalAlign", accessory: this._verticalAlignPicker },
 				{ label: "tileHorizontalAlign", accessory: this._tileHorizontalAlignPicker },
 				{ label: "tileVerticalAlign", accessory: this._tileVerticalAlignPicker },
-				{ label: "gap", accessory: this._gapSlider },
-				{ label: "paddingTop", accessory: this._paddingTopSlider },
-				{ label: "paddingRight", accessory: this._paddingRightSlider },
-				{ label: "paddingBottom", accessory: this._paddingBottomSlider },
-				{ label: "paddingLeft", accessory: this._paddingLeftSlider },
+				{ label: "gap", accessory: this._gapStepper },
+				{ label: "paddingTop", accessory: this._paddingTopStepper },
+				{ label: "paddingRight", accessory: this._paddingRightStepper },
+				{ label: "paddingBottom", accessory: this._paddingBottomStepper },
+				{ label: "paddingLeft", accessory: this._paddingLeftStepper },
 			]);
 			this._list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
 			this.addChild(this._list);
@@ -196,9 +190,9 @@ package feathers.examples.layoutExplorer.screens
 			this.onBackButton();
 		}
 
-		private function itemCountSlider_changeHandler(event:Event):void
+		private function itemCountStepper_changeHandler(event:Event):void
 		{
-			this.settings.itemCount = this._itemCountSlider.value;
+			this.settings.itemCount = this._itemCountStepper.value;
 		}
 
 		private function pagingPicker_changeHandler(event:Event):void
@@ -226,29 +220,29 @@ package feathers.examples.layoutExplorer.screens
 			this.settings.tileVerticalAlign = this._tileVerticalAlignPicker.selectedItem as String;
 		}
 
-		private function gapSlider_changeHandler(event:Event):void
+		private function gapStepper_changeHandler(event:Event):void
 		{
-			this.settings.gap = this._gapSlider.value;
+			this.settings.gap = this._gapStepper.value;
 		}
 
-		private function paddingTopSlider_changeHandler(event:Event):void
+		private function paddingTopStepper_changeHandler(event:Event):void
 		{
-			this.settings.paddingTop = this._paddingTopSlider.value;
+			this.settings.paddingTop = this._paddingTopStepper.value;
 		}
 
-		private function paddingRightSlider_changeHandler(event:Event):void
+		private function paddingRightStepper_changeHandler(event:Event):void
 		{
-			this.settings.paddingRight = this._paddingRightSlider.value;
+			this.settings.paddingRight = this._paddingRightStepper.value;
 		}
 
-		private function paddingBottomSlider_changeHandler(event:Event):void
+		private function paddingBottomStepper_changeHandler(event:Event):void
 		{
-			this.settings.paddingBottom = this._paddingBottomSlider.value;
+			this.settings.paddingBottom = this._paddingBottomStepper.value;
 		}
 
-		private function paddingLeftSlider_changeHandler(event:Event):void
+		private function paddingLeftStepper_changeHandler(event:Event):void
 		{
-			this.settings.paddingLeft = this._paddingLeftSlider.value;
+			this.settings.paddingLeft = this._paddingLeftStepper.value;
 		}
 	}
 }

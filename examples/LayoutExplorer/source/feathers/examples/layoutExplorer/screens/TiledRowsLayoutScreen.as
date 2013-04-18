@@ -1,17 +1,13 @@
 package feathers.examples.layoutExplorer.screens
 {
 	import feathers.controls.Button;
-	import feathers.controls.Header;
 	import feathers.controls.PanelScreen;
-	import feathers.controls.Screen;
-	import feathers.controls.ScrollContainer;
 	import feathers.events.FeathersEventType;
 	import feathers.examples.layoutExplorer.data.TiledRowsLayoutSettings;
 	import feathers.layout.TiledRowsLayout;
 	import feathers.system.DeviceCapabilities;
 
 	import starling.core.Starling;
-
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.events.Event;

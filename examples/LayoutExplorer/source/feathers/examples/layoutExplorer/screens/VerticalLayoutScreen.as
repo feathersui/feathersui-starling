@@ -1,9 +1,7 @@
 package feathers.examples.layoutExplorer.screens
 {
 	import feathers.controls.Button;
-	import feathers.controls.Header;
 	import feathers.controls.PanelScreen;
-	import feathers.controls.Screen;
 	import feathers.controls.ScrollContainer;
 	import feathers.events.FeathersEventType;
 	import feathers.examples.layoutExplorer.data.VerticalLayoutSettings;
