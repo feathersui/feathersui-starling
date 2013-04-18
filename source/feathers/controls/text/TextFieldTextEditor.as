@@ -583,7 +583,7 @@ package feathers.controls.text
 			this.textField.addEventListener(flash.events.Event.CHANGE, textField_changeHandler);
 			this.textField.addEventListener(FocusEvent.FOCUS_IN, textField_focusInHandler);
 			this.textField.addEventListener(FocusEvent.FOCUS_OUT, textField_focusOutHandler);
-			this.textField.addEventListener(flash.events.KeyboardEvent.KEY_DOWN, textField_keyDownHandler);
+			this.textField.addEventListener(KeyboardEvent.KEY_DOWN, textField_keyDownHandler);
 		}
 
 		/**
@@ -919,11 +919,11 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function textField_keyDownHandler(event:flash.events.KeyboardEvent):void
+		protected function textField_keyDownHandler(event:KeyboardEvent):void
 		{
-			if(event.keyCode == Keyboard.TAB)
+			if(event.keyCode == Keyboard.ENTER)
 			{
-				event.preventDefault();
+				this.dispatchEventWith(FeathersEventType.ENTER);
 			}
 		}
 	}
