@@ -377,6 +377,7 @@ package feathers.themes
 			this.setInitializerForClass(ButtonGroup, buttonGroupInitializer);
 			this.setInitializerForClass(Slider, sliderInitializer);
 			this.setInitializerForClass(ToggleSwitch, toggleSwitchInitializer);
+			this.setInitializerForClass(NumericStepper, numericStepperInitializer);
 			this.setInitializerForClass(Check, checkInitializer);
 			this.setInitializerForClass(Radio, radioInitializer);
 			this.setInitializerForClass(DefaultListItemRenderer, itemRendererInitializer);
@@ -676,6 +677,13 @@ package feathers.themes
 			};
 			thumb.stateToSkinFunction = skinSelector.updateValue;
 			thumb.minTouchWidth = thumb.minTouchHeight = 88 * this.scale;
+		}
+
+		protected function numericStepperInitializer(stepper:NumericStepper):void
+		{
+			stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_SPLIT_HORIZONTAL;
+			stepper.incrementButtonLabel = "+";
+			stepper.decrementButtonLabel = "-";
 		}
 
 		protected function toggleSwitchInitializer(toggleSwitch:ToggleSwitch):void

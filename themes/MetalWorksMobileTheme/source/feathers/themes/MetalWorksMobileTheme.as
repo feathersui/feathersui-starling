@@ -477,6 +477,7 @@ package feathers.themes
 			this.setInitializerForClass(Check, checkInitializer);
 			this.setInitializerForClass(Slider, sliderInitializer);
 			this.setInitializerForClass(ToggleSwitch, toggleSwitchInitializer);
+			this.setInitializerForClass(NumericStepper, numericStepperInitializer);
 			this.setInitializerForClass(TextInput, textInputInitializer);
 			this.setInitializerForClass(TextInput, numericStepperTextInputInitializer, NumericStepper.DEFAULT_CHILD_NAME_TEXT_INPUT);
 			this.setInitializerForClass(PageIndicator, pageIndicatorInitializer);
@@ -1087,6 +1088,13 @@ package feathers.themes
 			toggle.defaultLabelProperties.embedFonts = true;
 			toggle.onLabelProperties.textFormat = this.smallUISelectedTextFormat;
 			toggle.onLabelProperties.embedFonts = true;
+		}
+
+		protected function numericStepperInitializer(stepper:NumericStepper):void
+		{
+			stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_SPLIT_HORIZONTAL;
+			stepper.incrementButtonLabel = "+";
+			stepper.decrementButtonLabel = "-";
 		}
 
 		protected function textInputInitializer(input:TextInput):void
