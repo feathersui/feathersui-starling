@@ -1,17 +1,15 @@
 package feathers.examples.componentsExplorer.screens
 {
 	import feathers.controls.Button;
-	import feathers.controls.List;
-	import feathers.controls.NumericStepper;
+	import feathers.controls.GroupedList;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.PickerList;
-	import feathers.controls.Slider;
 	import feathers.controls.ToggleSwitch;
 	import feathers.controls.renderers.BaseDefaultItemRenderer;
+	import feathers.data.HierarchicalCollection;
 	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.examples.componentsExplorer.data.ItemRendererSettings;
-	import feathers.examples.componentsExplorer.data.SliderSettings;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 
@@ -22,6 +20,9 @@ package feathers.examples.componentsExplorer.screens
 
 	public class ItemRendererSettingsScreen extends PanelScreen
 	{
+		private static const GAP_LABEL_INFINITE:String = "Fill Available Space";
+		private static const GAP_LABEL_DEFAULT:String = "No Fill";
+
 		public function ItemRendererSettingsScreen()
 		{
 			this.addEventListener(FeathersEventType.INITIALIZE, initializeHandler);
@@ -29,14 +30,18 @@ package feathers.examples.componentsExplorer.screens
 
 		public var settings:ItemRendererSettings;
 
-		private var _list:List;
+		private var _list:GroupedList;
 		private var _backButton:Button;
+		private var _gapPicker:PickerList;
 		private var _hasIconToggle:ToggleSwitch;
 		private var _hasAccessoryToggle:ToggleSwitch;
 		private var _layoutOrderPicker:PickerList;
 		private var _iconPositionPicker:PickerList;
 		private var _accessoryPositionPicker:PickerList;
 		private var _accessoryTypePicker:PickerList;
+		private var _accessoryGapPicker:PickerList;
+		private var _horizontalAlignPicker:PickerList;
+		private var _verticalAlignPicker:PickerList;
 
 		protected function initializeHandler(event:Event):void
 		{
@@ -61,6 +66,17 @@ package feathers.examples.componentsExplorer.screens
 			this._iconPositionPicker.listProperties.typicalItem = Button.ICON_POSITION_RIGHT_BASELINE;
 			this._iconPositionPicker.selectedItem = this.settings.iconPosition;
 			this._iconPositionPicker.addEventListener(Event.CHANGE, iconPositionPicker_changeHandler);
+
+			this._gapPicker = new PickerList();
+			this._gapPicker.dataProvider = new ListCollection(
+			[
+				{ label: GAP_LABEL_INFINITE, value: true },
+				{ label: GAP_LABEL_DEFAULT, value: false },
+			]);
+			this._gapPicker.typicalItem = this._gapPicker.dataProvider.getItemAt(0);
+			this._gapPicker.listProperties.typicalItem = this._gapPicker.dataProvider.getItemAt(0);
+			this._gapPicker.selectedItem = this._gapPicker.dataProvider.getItemAt(this.settings.useInfiniteGap ? 0 : 1);
+			this._gapPicker.addEventListener(Event.CHANGE, gapPicker_changeHandler);
 
 			this._hasAccessoryToggle = new ToggleSwitch();
 			this._hasAccessoryToggle.isSelected = this.settings.hasAccessory;
@@ -92,6 +108,17 @@ package feathers.examples.componentsExplorer.screens
 			this._accessoryPositionPicker.selectedItem = this.settings.accessoryPosition;
 			this._accessoryPositionPicker.addEventListener(Event.CHANGE, accessoryPositionPicker_changeHandler);
 
+			this._accessoryGapPicker = new PickerList();
+			this._accessoryGapPicker.dataProvider = new ListCollection(
+			[
+				{ label: GAP_LABEL_INFINITE, value: true },
+				{ label: GAP_LABEL_DEFAULT, value: false },
+			]);
+			this._accessoryGapPicker.typicalItem = this._accessoryGapPicker.dataProvider.getItemAt(0);
+			this._accessoryGapPicker.listProperties.typicalItem = this._accessoryGapPicker.dataProvider.getItemAt(0);
+			this._accessoryGapPicker.selectedItem = this._accessoryGapPicker.dataProvider.getItemAt(this.settings.useInfiniteAccessoryGap ? 0 : 1);
+			this._accessoryGapPicker.addEventListener(Event.CHANGE, accessoryGapPicker_changeHandler);
+
 			this._layoutOrderPicker = new PickerList();
 			this._layoutOrderPicker.typicalItem = BaseDefaultItemRenderer.LAYOUT_ORDER_LABEL_ACCESSORY_ICON;
 			this._layoutOrderPicker.dataProvider = new ListCollection(new <String>
@@ -103,16 +130,63 @@ package feathers.examples.componentsExplorer.screens
 			this._layoutOrderPicker.selectedItem = this.settings.layoutOrder;
 			this._layoutOrderPicker.addEventListener(Event.CHANGE, layoutOrderPicker_changeHandler);
 
-			this._list = new List();
-			this._list.isSelectable = false;
-			this._list.dataProvider = new ListCollection(
+			this._horizontalAlignPicker = new PickerList();
+			this._horizontalAlignPicker.dataProvider = new ListCollection(new <String>
 			[
-				{ label: "Has Icon", accessory: this._hasIconToggle },
-				{ label: "iconPosition", accessory: this._iconPositionPicker },
-				{ label: "Has Accessory", accessory: this._hasAccessoryToggle },
-				{ label: "Accessory Type", accessory: this._accessoryTypePicker },
-				{ label: "accessoryPosition", accessory: this._accessoryPositionPicker },
-				{ label: "layoutOrder", accessory: this._layoutOrderPicker },
+				Button.HORIZONTAL_ALIGN_LEFT,
+				Button.HORIZONTAL_ALIGN_CENTER,
+				Button.HORIZONTAL_ALIGN_RIGHT,
+			]);
+			this._horizontalAlignPicker.typicalItem = Button.HORIZONTAL_ALIGN_CENTER;
+			this._horizontalAlignPicker.listProperties.typicalItem = Button.HORIZONTAL_ALIGN_CENTER;
+			this._horizontalAlignPicker.selectedItem = this.settings.horizontalAlign;
+			this._horizontalAlignPicker.addEventListener(Event.CHANGE, horizontalAlignPicker_changeHandler);
+
+			this._verticalAlignPicker = new PickerList();
+			this._verticalAlignPicker.dataProvider = new ListCollection(new <String>
+			[
+				Button.VERTICAL_ALIGN_TOP,
+				Button.VERTICAL_ALIGN_MIDDLE,
+				Button.VERTICAL_ALIGN_BOTTOM,
+			]);
+			this._verticalAlignPicker.typicalItem = Button.VERTICAL_ALIGN_MIDDLE;
+			this._verticalAlignPicker.listProperties.typicalItem = Button.VERTICAL_ALIGN_MIDDLE;
+			this._verticalAlignPicker.selectedItem = this.settings.verticalAlign;
+			this._verticalAlignPicker.addEventListener(Event.CHANGE, verticalAlignPicker_changeHandler);
+
+			this._list = new GroupedList();
+			this._list.nameList.add(GroupedList.ALTERNATE_NAME_INSET_GROUPED_LIST);
+			this._list.isSelectable = false;
+			this._list.dataProvider = new HierarchicalCollection(
+			[
+				{
+					header: "Layout",
+					children:
+					[
+						{ label: "layoutOrder", accessory: this._layoutOrderPicker },
+						{ label: "horizontalAlign", accessory: this._horizontalAlignPicker },
+						{ label: "verticalAlign", accessory: this._verticalAlignPicker },
+					]
+				},
+				{
+					header: "Icon",
+					children:
+					[
+						{ label: "Has Icon", accessory: this._hasIconToggle },
+						{ label: "iconPosition", accessory: this._iconPositionPicker },
+						{ label: "gap", accessory: this._gapPicker },
+					]
+				},
+				{
+					header: "Accessory",
+					children:
+					[
+						{ label: "Has Accessory", accessory: this._hasAccessoryToggle },
+						{ label: "Accessory Type", accessory: this._accessoryTypePicker },
+						{ label: "accessoryPosition", accessory: this._accessoryPositionPicker },
+						{ label: "accessoryGap", accessory: this._accessoryGapPicker },
+					]
+				},
 			]);
 			this._list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
 			this.addChild(this._list);
@@ -146,6 +220,11 @@ package feathers.examples.componentsExplorer.screens
 			this.settings.iconPosition = this._iconPositionPicker.selectedItem as String;
 		}
 
+		private function gapPicker_changeHandler(event:Event):void
+		{
+			this.settings.useInfiniteGap = this._gapPicker.selectedIndex == 0;
+		}
+
 		private function hasAccessoryToggle_changeHandler(event:Event):void
 		{
 			this.settings.hasAccessory = this._hasAccessoryToggle.isSelected
@@ -161,9 +240,24 @@ package feathers.examples.componentsExplorer.screens
 			this.settings.accessoryPosition = this._accessoryPositionPicker.selectedItem as String;
 		}
 
+		private function accessoryGapPicker_changeHandler(event:Event):void
+		{
+			this.settings.useInfiniteAccessoryGap = this._accessoryGapPicker.selectedIndex == 0;
+		}
+
 		private function layoutOrderPicker_changeHandler(event:Event):void
 		{
 			this.settings.layoutOrder = this._layoutOrderPicker.selectedItem as String;
+		}
+
+		private function horizontalAlignPicker_changeHandler(event:Event):void
+		{
+			this.settings.horizontalAlign = this._horizontalAlignPicker.selectedItem as String;
+		}
+
+		private function verticalAlignPicker_changeHandler(event:Event):void
+		{
+			this.settings.verticalAlign = this._verticalAlignPicker.selectedItem as String;
 		}
 
 		private function backButton_triggeredHandler(event:Event):void
