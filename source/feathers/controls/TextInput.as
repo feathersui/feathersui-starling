@@ -1163,6 +1163,23 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function setFocusOnTextEditorWithTouch(touch:Touch):void
+		{
+			touch.getLocation(this.stage, HELPER_POINT);
+			const isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
+			if(!this._textEditorHasFocus && isInBounds)
+			{
+				this.globalToLocal(HELPER_POINT, HELPER_POINT);
+				HELPER_POINT.x -= this._paddingLeft;
+				HELPER_POINT.y -= this._paddingTop;
+				this._isWaitingToSetFocus = false;
+				this.textEditor.setFocus(HELPER_POINT);
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function childProperties_onChange(proxy:PropertyProxy, name:Object):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
@@ -1210,6 +1227,10 @@ package feathers.controls
 				if(touch.phase == TouchPhase.ENDED)
 				{
 					this._touchPointID = -1;
+					if(this.textEditor.setTouchFocusOnEndedPhase)
+					{
+						this.setFocusOnTextEditorWithTouch(touch);
+					}
 				}
 			}
 			else
@@ -1219,15 +1240,9 @@ package feathers.controls
 					if(touch.phase == TouchPhase.BEGAN)
 					{
 						this._touchPointID = touch.id;
-						touch.getLocation(this.stage, HELPER_POINT);
-						const isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
-						if(!this._textEditorHasFocus && isInBounds)
+						if(!this.textEditor.setTouchFocusOnEndedPhase)
 						{
-							this.globalToLocal(HELPER_POINT, HELPER_POINT);
-							HELPER_POINT.x -= this._paddingLeft;
-							HELPER_POINT.y -= this._paddingTop;
-							this._isWaitingToSetFocus = false;
-							this.textEditor.setFocus(HELPER_POINT);
+							this.setFocusOnTextEditorWithTouch(touch);
 						}
 						break;
 					}

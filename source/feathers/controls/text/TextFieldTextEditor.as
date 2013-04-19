@@ -407,6 +407,14 @@ package feathers.controls.text
 		}
 
 		/**
+		 * @inheritDoc
+		 */
+		public function get setTouchFocusOnEndedPhase():Boolean
+		{
+			return false;
+		}
+
+		/**
 		 * @private
 		 */
 		protected var _textFieldHasFocus:Boolean = false;
