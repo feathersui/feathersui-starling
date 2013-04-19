@@ -340,6 +340,14 @@ package feathers.controls.text
 		}
 
 		/**
+		 * @inheritDoc
+		 */
+		public function get setTouchFocusOnEndedPhase():Boolean
+		{
+			return true;
+		}
+
+		/**
 		 * @private
 		 */
 		protected var _fontFamily:String = null;
