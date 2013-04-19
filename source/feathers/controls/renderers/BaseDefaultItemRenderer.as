@@ -2003,6 +2003,41 @@ package feathers.controls.renderers
 					relativeTo2.x += offsetX;
 					relativeTo2.y += offsetY;
 				}
+				if(gap == Number.POSITIVE_INFINITY && otherGap == Number.POSITIVE_INFINITY)
+				{
+					if(position == ACCESSORY_POSITION_RIGHT && otherPosition == ACCESSORY_POSITION_LEFT)
+					{
+						relativeTo.x = relativeTo2.x + (object.x - relativeTo2.x + relativeTo2.width - relativeTo.width) / 2;
+					}
+					else if(position == ACCESSORY_POSITION_LEFT && otherPosition == ACCESSORY_POSITION_RIGHT)
+					{
+						relativeTo.x = object.x + (relativeTo2.x - object.x + object.width - relativeTo.width) / 2;
+					}
+					else if(position == ACCESSORY_POSITION_RIGHT && otherPosition == ACCESSORY_POSITION_RIGHT)
+					{
+						relativeTo2.x = relativeTo.x + (object.x - relativeTo.x + relativeTo.width - relativeTo2.width) / 2;
+					}
+					else if(position == ACCESSORY_POSITION_LEFT && otherPosition == ACCESSORY_POSITION_LEFT)
+					{
+						relativeTo2.x = object.x + (relativeTo.x - object.x + object.width - relativeTo2.width) / 2;
+					}
+					else if(position == ACCESSORY_POSITION_BOTTOM && otherPosition == ACCESSORY_POSITION_TOP)
+					{
+						relativeTo.y = relativeTo2.y + (object.y - relativeTo2.y + relativeTo2.height - relativeTo.height) / 2;
+					}
+					else if(position == ACCESSORY_POSITION_TOP && otherPosition == ACCESSORY_POSITION_BOTTOM)
+					{
+						relativeTo.y = object.y + (relativeTo2.y - object.y + object.height - relativeTo.height) / 2;
+					}
+					else if(position == ACCESSORY_POSITION_BOTTOM && otherPosition == ACCESSORY_POSITION_BOTTOM)
+					{
+						relativeTo2.y = relativeTo.y + (object.y - relativeTo.y + relativeTo.height - relativeTo2.height) / 2;
+					}
+					else if(position == ACCESSORY_POSITION_TOP && otherPosition == ACCESSORY_POSITION_TOP)
+					{
+						relativeTo2.y = object.y + (relativeTo.y - object.y + object.height - relativeTo2.height) / 2;
+					}
+				}
 			}
 
 			if(position == ACCESSORY_POSITION_LEFT || position == ACCESSORY_POSITION_RIGHT)
