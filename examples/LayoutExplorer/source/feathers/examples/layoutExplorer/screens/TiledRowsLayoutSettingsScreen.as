@@ -32,7 +32,8 @@ package feathers.examples.layoutExplorer.screens
 
 		private var _itemCountStepper:NumericStepper;
 		private var _pagingPicker:PickerList;
-		private var _gapStepper:NumericStepper;
+		private var _horizontalGapStepper:NumericStepper;
+		private var _verticalGapStepper:NumericStepper;
 		private var _paddingTopStepper:NumericStepper;
 		private var _paddingRightStepper:NumericStepper;
 		private var _paddingBottomStepper:NumericStepper;
@@ -111,13 +112,20 @@ package feathers.examples.layoutExplorer.screens
 			this._tileVerticalAlignPicker.selectedItem = this.settings.tileVerticalAlign;
 			this._tileVerticalAlignPicker.addEventListener(Event.CHANGE, tileVerticalAlignPicker_changeHandler);
 
-			this._gapStepper = new NumericStepper();
+			this._horizontalGapStepper = new NumericStepper();
+			this._horizontalGapStepper.minimum = 0;
 			//these maximum values are completely arbitrary
-			this._gapStepper.minimum = 0;
-			this._gapStepper.maximum = 100;
-			this._gapStepper.step = 1;
-			this._gapStepper.value = this.settings.gap;
-			this._gapStepper.addEventListener(Event.CHANGE, gapStepper_changeHandler);
+			this._horizontalGapStepper.maximum = 100;
+			this._horizontalGapStepper.step = 1;
+			this._horizontalGapStepper.value = this.settings.horizontalGap;
+			this._horizontalGapStepper.addEventListener(Event.CHANGE, horizontalGapStepper_changeHandler);
+
+			this._verticalGapStepper = new NumericStepper();
+			this._verticalGapStepper.minimum = 0;
+			this._verticalGapStepper.maximum = 100;
+			this._verticalGapStepper.step = 1;
+			this._verticalGapStepper.value = this.settings.verticalGap;
+			this._verticalGapStepper.addEventListener(Event.CHANGE, verticalGapStepper_changeHandler);
 
 			this._paddingTopStepper = new NumericStepper();
 			this._paddingTopStepper.minimum = 0;
@@ -157,7 +165,8 @@ package feathers.examples.layoutExplorer.screens
 				{ label: "verticalAlign", accessory: this._verticalAlignPicker },
 				{ label: "tileHorizontalAlign", accessory: this._tileHorizontalAlignPicker },
 				{ label: "tileVerticalAlign", accessory: this._tileVerticalAlignPicker },
-				{ label: "gap", accessory: this._gapStepper },
+				{ label: "horizontalGap", accessory: this._horizontalGapStepper },
+				{ label: "verticalGap", accessory: this._verticalGapStepper },
 				{ label: "paddingTop", accessory: this._paddingTopStepper },
 				{ label: "paddingRight", accessory: this._paddingRightStepper },
 				{ label: "paddingBottom", accessory: this._paddingBottomStepper },
@@ -220,9 +229,14 @@ package feathers.examples.layoutExplorer.screens
 			this.settings.tileVerticalAlign = this._tileVerticalAlignPicker.selectedItem as String;
 		}
 
-		private function gapStepper_changeHandler(event:Event):void
+		private function horizontalGapStepper_changeHandler(event:Event):void
 		{
-			this.settings.gap = this._gapStepper.value;
+			this.settings.horizontalGap = this._horizontalGapStepper.value;
+		}
+
+		private function verticalGapStepper_changeHandler(event:Event):void
+		{
+			this.settings.verticalGap = this._verticalGapStepper.value;
 		}
 
 		private function paddingTopStepper_changeHandler(event:Event):void
