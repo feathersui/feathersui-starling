@@ -19,6 +19,7 @@ package feathers.controls
 	 * Displays text.
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/label
+	 * @see http://wiki.starling-framework.org/feathers/text-renderers
 	 */
 	public class Label extends FeathersControl
 	{
