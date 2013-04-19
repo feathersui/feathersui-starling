@@ -505,6 +505,7 @@ package feathers.controls.text
 					this._pendingSelectionStartIndex = this._pendingSelectionEndIndex = -1;
 				}
 				Starling.current.nativeStage.focus = this.textField;
+				this.textField.requestSoftKeyboard();
 			}
 			else
 			{
@@ -580,6 +581,7 @@ package feathers.controls.text
 		override protected function initialize():void
 		{
 			this.textField = new TextField();
+			this.textField.needsSoftKeyboard = true;
 			this.textField.addEventListener(flash.events.Event.CHANGE, textField_changeHandler);
 			this.textField.addEventListener(FocusEvent.FOCUS_IN, textField_focusInHandler);
 			this.textField.addEventListener(FocusEvent.FOCUS_OUT, textField_focusOutHandler);
