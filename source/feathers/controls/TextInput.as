@@ -63,6 +63,7 @@ package feathers.controls
 	 * values to the <code>ITextEditor</code> instance.</p>
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/text-input
+	 * @see http://wiki.starling-framework.org/feathers/text-editors
 	 * @see feathers.core.ITextEditor
 	 */
 	public class TextInput extends FeathersControl implements IFocusDisplayObject
