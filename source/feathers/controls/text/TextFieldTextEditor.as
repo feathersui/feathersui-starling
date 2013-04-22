@@ -252,6 +252,32 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _multiline:Boolean = false;
+
+		/**
+		 * Same as the <code>TextField</code> property with the same name.
+		 */
+		public function get multiline():Boolean
+		{
+			return this._multiline;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set multiline(value:Boolean):void
+		{
+			if(this._multiline == value)
+			{
+				return;
+			}
+			this._multiline = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _isHTML:Boolean = false;
 
 		/**
@@ -692,6 +718,7 @@ package feathers.controls.text
 			this.textField.alwaysShowSelection = this._alwaysShowSelection;
 			this.textField.displayAsPassword = this._displayAsPassword;
 			this.textField.wordWrap = this._wordWrap;
+			this.textField.multiline = this._multiline;
 			this.textField.embedFonts = this._embedFonts;
 			this.textField.type = this._isEditable ? TextFieldType.INPUT : TextFieldType.DYNAMIC;
 			this.textField.selectable = this._isEnabled;
