@@ -92,6 +92,7 @@ package feathers.controls
 			this.addEventListener(TouchEvent.TOUCH, textInput_touchHandler);
 			this.addEventListener(FeathersEventType.FOCUS_IN, textInput_focusInHandler);
 			this.addEventListener(FeathersEventType.FOCUS_OUT, textInput_focusOutHandler);
+			this.addEventListener(Event.REMOVED_FROM_STAGE, textInput_removedFromStageHandler);
 		}
 
 		/**
@@ -822,8 +823,16 @@ package feathers.controls
 			{
 				return;
 			}
-			this._isWaitingToSetFocus = true;
-			this.invalidate(INVALIDATION_FLAG_SELECTED);
+			if(this.textEditor)
+			{
+				this._isWaitingToSetFocus = false;
+				this.textEditor.setFocus();
+			}
+			else
+			{
+				this._isWaitingToSetFocus = true;
+				this.invalidate(INVALIDATION_FLAG_SELECTED);
+			}
 		}
 
 		/**
@@ -856,6 +865,7 @@ package feathers.controls
 			{
 				this._pendingSelectionStartIndex = startIndex;
 				this._pendingSelectionEndIndex = endIndex;
+				this.invalidate(INVALIDATION_FLAG_SELECTED);
 			}
 		}
 
@@ -1188,6 +1198,20 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function textInput_removedFromStageHandler(event:Event):void
+		{
+			this._textEditorHasFocus = false;
+			this._touchPointID = -1;
+			if(Mouse.supportsNativeCursor && this._oldMouseCursor)
+			{
+				Mouse.cursor = this._oldMouseCursor;
+				this._oldMouseCursor = null;
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function textInput_touchHandler(event:TouchEvent):void
 		{
 			if(!this._isEnabled)
@@ -1269,8 +1293,7 @@ package feathers.controls
 			{
 				return;
 			}
-			this._isWaitingToSetFocus = true;
-			this.invalidate(INVALIDATION_FLAG_SELECTED);
+			this.setFocus();
 		}
 
 		/**
