@@ -44,51 +44,66 @@
 	</target>
 
 	<target name="-starling" depends="-prepare">
-
 		<echo message="Building starling.swc"/>
 		<java jar="${compc}" dir="${starling.root}" fork="true" failonerror="true">
-			<arg line="+flexlib='${flexframework.root}'"/>
-			<arg line="--swf-version=${swf.version}"/>
-			<arg line="--target-player=${player.version}"/>
-			<arg line="--source-path+=."/>
-			<arg line="--include-sources+=."/>
-			<arg line="--external-library-path+='${flexframework.lib}'"/>
-			<arg line="--output '${dependency.output}/starling.swc'"/>
+			<arg value="-load-config=${airsdk.config}"/>
+			<arg value="-swf-version=${swf.version}"/>
+			<arg value="-target-player=${player.version}"/>
+			<arg value="-source-path+=."/>
+			<arg value="-include-sources+=."/>
+			<arg value="-output=${dependency.output}/starling.swc"/>
 		</java>
 	</target>
 
 	<target name="-feathers" depends="-starling">
 		<echo message="Building feathers.swc"/>
 		<java jar="${compc}" dir="${basedir}" fork="true" failonerror="true">
-			<arg line="+flexlib='${flexframework.root}'"/>
-			<arg line="--swf-version=${swf.version}"/>
-			<arg line="--target-player=${player.version}"/>
-			<arg line="--namespace+=${mxml.namespace},mxml-manifest.xml"/>
-			<arg line="--source-path+='${source.root}'"/>
-			<arg line="--include-namespaces+=${mxml.namespace}"/>
-			<arg line="--include-sources+='${source.root}'"/>
-			<arg line="--external-library-path+='${dependency.output}'"/>
-			<arg line="--external-library-path+='${flexframework.lib}'"/>
-			<arg line="--output '${output.path}/feathers.swc'"/>
+			<arg value="-load-config=${airsdk.config}"/>
+			<arg value="-swf-version=${swf.version}"/>
+			<arg value="-target-player=${player.version}"/>
+			<arg value="-source-path+=${source.root}"/>
+			<arg value="-include-sources+=${source.root}"/>
+			<arg value="-external-library-path+=${dependency.output}"/>
+			<arg value="-output=${output.path}/feathers.swc"/>
+		</java>
+	</target>
+
+	<target name="mxml" depends="-starling">
+		<echo message="Building feathers-mxml.swc"/>
+		<java jar="${flex.compc}" dir="${basedir}" fork="true" failonerror="true">
+			<arg value="+flexlib=${flexframework.root}"/>
+			<arg value="-swf-version=${swf.version}"/>
+			<arg value="-target-player=${player.version}"/>
+			<arg value="-namespace+=${mxml.namespace},mxml-manifest.xml"/>
+			<arg value="-source-path+=${source.root}"/>
+			<arg value="-include-namespaces+=${mxml.namespace}"/>
+			<arg value="-include-sources+=${source.root}"/>
+			<arg value="-external-library-path+=${dependency.output}"/>
+			<arg value="-external-library-path+=${flexframework.lib}"/>
+			<arg value="-output=${output.path}/feathers-mxml.swc"/>
 		</java>
 	</target>
 
 	<target name="-docs" depends="-starling">
 		<echo message="Generating Documentation"/>
 		<java jar="${asdoc}" dir="${basedir}" fork="true" failonerror="true">
-			<arg line="+flexlib='${flexframework.root}'"/>
-			<arg line="--swf-version=${swf.version}"/>
-			<arg line="--target-player=${player.version}"/>
-			<arg line="--source-path+='${source.root}'"/>
-			<arg line="--library-path+='${dependency.output}'"/>
-			<arg line="--doc-sources+='${source.root}'"/>
-			<arg line="--external-library-path+='${flexframework.lib}'"/>
-			<arg line="--main-title 'Feathers ${feathers.version} API Documentation'"/>
-			<arg line="--window-title 'Feathers User Interface Controls for Starling Framework API Documentation'"/>
-			<arg value="--footer"/>
-			<arg value="${footer.text}"/>
-			<arg line="--package-description-file package-descriptions.xml"/>
-			<arg line="--output '${docs.output}'"/>
+			<arg value="+flexlib=${airsdk.framework}"/>
+			<arg value="-swf-version=${swf.version}"/>
+			<arg value="-target-player=${player.version}"/>
+			<arg value="-source-path+=${source.root}"/>
+			<arg value="-library-path+=${dependency.output}"/>
+			<arg value="-doc-sources+=${source.root}"/>
+
+			<!-- these two arguments are needed after switching to the AIR SDK
+				with ASC 2.0 to stop weird errors -->
+			<arg value="-theme="/>
+			<arg value="-compiler.fonts.local-fonts-snapshot="/>
+
+			<arg value="-main-title=Feathers ${feathers.version} API Documentation"/>
+			<arg value="-window-title=Feathers User Interface Controls for Starling Framework API Documentation"/>
+			<arg value="-footer=${footer.text}"/>
+			<arg value="-package-description-file=./package-descriptions.xml"/>
+			<arg value="-output=${docs.output}"/>
 		</java>
 	</target>
 
