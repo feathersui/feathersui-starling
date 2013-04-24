@@ -14,6 +14,7 @@ package feathers.controls
 
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
+	import starling.events.Event;
 
 	/**
 	 * Dispatched when the container is scrolled.
@@ -314,6 +315,17 @@ package feathers.controls
 				return;
 			}
 			DisplayObjectContainer(this.viewPort).sortChildren(compareFunction);
+		}
+
+		/**
+		 * @private
+		 */
+		override public function dispatchEvent(event:Event):void
+		{
+			const oldDisplayListBypassEnabled:Boolean = this.displayListBypassEnabled;
+			this.displayListBypassEnabled = true;
+			super.dispatchEvent(event);
+			this.displayListBypassEnabled = oldDisplayListBypassEnabled;
 		}
 
 		/**
