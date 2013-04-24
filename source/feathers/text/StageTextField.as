@@ -189,7 +189,7 @@ package feathers.text
 			this._textField.maxChars = value;
 		}
 
-		private function get multiline():Boolean
+		public function get multiline():Boolean
 		{
 			return this._textField.multiline;
 		}
