@@ -1661,6 +1661,13 @@ package feathers.controls.renderers
 				this.iconImage = null;
 			}
 
+			if(this._itemHasIcon && this.currentIcon && this.currentIcon != newIcon)
+			{
+				//the icon is created using the data provider, and it is not
+				//created inside this class, so it is not our responsibility to
+				//dispose the icon. if we dispose it, it may break something.
+				this.currentIcon.removeFromParent(false);
+			}
 			this.defaultIcon = newIcon;
 		}
 
