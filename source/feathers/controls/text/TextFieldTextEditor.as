@@ -71,11 +71,6 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected static const INVALIDATION_FLAG_POSITION:String = "position";
-
-		/**
-		 * @private
-		 */
 		private static const HELPER_MATRIX:Matrix = new Matrix();
 
 		/**
@@ -132,12 +127,22 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _needsNewBitmap:Boolean = false;
+		protected var _textFieldClipRect:Rectangle = new Rectangle();
 
 		/**
 		 * @private
 		 */
-		protected var _frameCount:int = 0;
+		protected var _textFieldOffsetX:Number = 0;
+
+		/**
+		 * @private
+		 */
+		protected var _textFieldOffsetY:Number = 0;
+
+		/**
+		 * @private
+		 */
+		protected var _needsNewBitmap:Boolean = false;
 
 		/**
 		 * @private
@@ -474,23 +479,7 @@ package feathers.controls.text
 		 */
 		override public function render(support:RenderSupport, parentAlpha:Number):void
 		{
-			HELPER_POINT.x = HELPER_POINT.y = 0;
-			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
-			if(HELPER_POINT.x != this._oldGlobalX || HELPER_POINT.y != this._oldGlobalY)
-			{
-				this._oldGlobalX = HELPER_POINT.x;
-				this._oldGlobalY = HELPER_POINT.y;
-				const starlingViewPort:Rectangle = Starling.current.viewPort;
-				this.textField.x = Math.round(starlingViewPort.x + (HELPER_POINT.x * Starling.contentScaleFactor));
-				this.textField.y = Math.round(starlingViewPort.y + (HELPER_POINT.y * Starling.contentScaleFactor));
-			}
-
-			if(this.textSnapshot)
-			{
-				this.textSnapshot.x = Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx;
-				this.textSnapshot.y = Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty;
-			}
+			this.positionTextField();
 
 			//theoretically, this will ensure that the TextField is set visible
 			//or invisible immediately after the snapshot changes visibility in
@@ -762,25 +751,71 @@ package feathers.controls.text
 
 			if(sizeInvalid)
 			{
+				this.refreshSnapshotParameters();
 				this.textField.width = this.actualWidth;
 				this.textField.height = this.actualHeight;
-				this._snapshotWidth = getNextPowerOfTwo(this.actualWidth * Starling.contentScaleFactor);
-				this._snapshotHeight = getNextPowerOfTwo(this.actualHeight * Starling.contentScaleFactor);
-				this._needsNewBitmap = this._needsNewBitmap || !this._textSnapshotBitmapData || this._snapshotWidth != this._textSnapshotBitmapData.width || this._snapshotHeight != this._textSnapshotBitmapData.height;
 			}
+
+			this.checkIfNewSnapshotIsNeeded();
 
 			if(!this._textFieldHasFocus && (stylesInvalid || dataInvalid || this._needsNewBitmap))
 			{
 				const hasText:Boolean = this._text.length > 0;
 				if(hasText)
 				{
-					//we need to wait a frame (sometimes two!) for the TextField
-					//to render properly. yes, really.
-					this._frameCount = 0;
+					//we need to wait a frame for the TextField to render
+					//properly. sometimes two, and this is a known issue.
 					this.addEventListener(Event.ENTER_FRAME, enterFrameHandler);
 				}
 			}
 			this.doPendingActions();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshSnapshotParameters():void
+		{
+			this._textFieldOffsetX = 0;
+			this._textFieldOffsetY = 0;
+			this._textFieldClipRect.x = 0;
+			this._textFieldClipRect.y = 0;
+			this._textFieldClipRect.width = this.actualWidth;
+			this._textFieldClipRect.height = this.actualHeight;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function positionTextField():void
+		{
+			HELPER_POINT.x = HELPER_POINT.y = 0;
+			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
+			if(HELPER_POINT.x != this._oldGlobalX || HELPER_POINT.y != this._oldGlobalY)
+			{
+				this._oldGlobalX = HELPER_POINT.x;
+				this._oldGlobalY = HELPER_POINT.y;
+				const starlingViewPort:Rectangle = Starling.current.viewPort;
+				this.textField.x = Math.round(starlingViewPort.x + (HELPER_POINT.x * Starling.contentScaleFactor));
+				this.textField.y = Math.round(starlingViewPort.y + (HELPER_POINT.y * Starling.contentScaleFactor));
+			}
+
+			if(this.textSnapshot)
+			{
+				this.textSnapshot.x = Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx;
+				this.textSnapshot.y = Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function checkIfNewSnapshotIsNeeded():void
+		{
+			this._snapshotWidth = getNextPowerOfTwo(this._textFieldClipRect.width * Starling.contentScaleFactor);
+			this._snapshotHeight = getNextPowerOfTwo(this._textFieldClipRect.height * Starling.contentScaleFactor);
+			this._needsNewBitmap = this._needsNewBitmap || !this._textSnapshotBitmapData || this._snapshotWidth != this._textSnapshotBitmapData.width || this._snapshotHeight != this._textSnapshotBitmapData.height;
 		}
 
 		/**
@@ -826,9 +861,10 @@ package feathers.controls.text
 				return;
 			}
 			HELPER_MATRIX.identity();
+			HELPER_MATRIX.translate(this._textFieldOffsetX, this._textFieldOffsetY);
 			HELPER_MATRIX.scale(Starling.contentScaleFactor, Starling.contentScaleFactor);
 			this._textSnapshotBitmapData.fillRect(this._textSnapshotBitmapData.rect, 0x00ff00ff);
-			this._textSnapshotBitmapData.draw(this.textField, HELPER_MATRIX);
+			this._textSnapshotBitmapData.draw(this.textField, HELPER_MATRIX, null, null, this._textFieldClipRect);
 			if(!this.textSnapshot)
 			{
 				this.textSnapshot = new Image(starling.textures.Texture.fromBitmapData(this._textSnapshotBitmapData, false, false, Starling.contentScaleFactor));
@@ -904,11 +940,6 @@ package feathers.controls.text
 		 */
 		protected function enterFrameHandler(event:Event):void
 		{
-			this._frameCount++;
-			if(this._frameCount < 2)
-			{
-				return;
-			}
 			this.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
 			if(this.textSnapshot)
 			{
