@@ -77,12 +77,12 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _previousTextFieldWidth:Number = 0;
+		protected var _previousTextFieldWidth:Number = NaN;
 
 		/**
 		 * @private
 		 */
-		protected var _previousTextFieldHeight:Number = 0;
+		protected var _previousTextFieldHeight:Number = NaN;
 
 		/**
 		 * @private
@@ -767,7 +767,7 @@ package feathers.controls.text
 				this.textField.height = this.actualHeight;
 				this._snapshotWidth = getNextPowerOfTwo(this.actualWidth * Starling.contentScaleFactor);
 				this._snapshotHeight = getNextPowerOfTwo(this.actualHeight * Starling.contentScaleFactor);
-				this._needsNewBitmap = this._needsNewBitmap || !this._textSnapshotBitmapData || this._snapshotWidth != this._textSnapshotBitmapData.width || this._snapshotHeight != this._textSnapshotBitmapData.height;
+				this._needsNewBitmap = this._needsNewBitmap || !this.textSnapshot || !this._textSnapshotBitmapData || this._snapshotWidth != this._textSnapshotBitmapData.width || this._snapshotHeight != this._textSnapshotBitmapData.height;
 			}
 
 			//instead of checking sizeInvalid, which will often be triggered by
@@ -880,6 +880,13 @@ package feathers.controls.text
 				this.removeChild(this.textSnapshot, true);
 				this.textSnapshot = null;
 			}
+
+			this._previousTextFieldWidth = NaN;
+			this._previousTextFieldHeight = NaN;
+
+			this._needsNewBitmap = false;
+			this._snapshotWidth = 0;
+			this._snapshotHeight = 0;
 		}
 
 		/**
@@ -888,7 +895,7 @@ package feathers.controls.text
 		protected function addedToStageHandler(event:Event):void
 		{
 			//we need to invalidate in order to get a fresh snapshot
-			this.invalidate(INVALIDATION_FLAG_DATA);
+			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
 		/**
