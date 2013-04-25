@@ -1201,6 +1201,7 @@ package feathers.controls
 		protected function textInput_removedFromStageHandler(event:Event):void
 		{
 			this._textEditorHasFocus = false;
+			this._isWaitingToSetFocus = false;
 			this._touchPointID = -1;
 			if(Mouse.supportsNativeCursor && this._oldMouseCursor)
 			{
