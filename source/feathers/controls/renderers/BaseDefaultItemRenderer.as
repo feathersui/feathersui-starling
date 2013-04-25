@@ -597,6 +597,15 @@ package feathers.controls.renderers
 		/**
 		 * A function used to generate an icon for a specific item.
 		 *
+		 * <p>Note: As the list scrolls, this function will almost always be
+		 * called more than once for each individual item in the list's data
+		 * provider. Your function should not simply return a new icon every
+		 * time. This will result in the unnecessary creation and destruction of
+		 * many icons, which will overwork the garbage collector and hurt
+		 * performance. It's better to return a new icon the first time this
+		 * function is called for a particular item and then return the same
+		 * icon if that item is passed to this function again.</p>
+		 *
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function( item:Object ):DisplayObject</pre>
 		 *
@@ -698,6 +707,19 @@ package feathers.controls.renderers
 		 * a <code>iconField</code> or <code>iconFunction</code>
 		 * because the renderer can avoid costly display list manipulation.</p>
 		 *
+		 * <p>Note: As the list scrolls, this function will almost always be
+		 * called more than once for each individual item in the list's data
+		 * provider. Your function should not simply return a new texture every
+		 * time. This will result in the unnecessary creation and destruction of
+		 * many textures, which will overwork the garbage collector and hurt
+		 * performance. Creating a new texture at all is dangerous, unless you
+		 * are absolutely sure to dispose it when necessary because neither the
+		 * list nor its item renderer will dispose of the texture for you. If
+		 * you are absolutely sure that you are managing the texture memory with
+		 * proper disposal, it's better to return a new texture the first
+		 * time this function is called for a particular item and then return
+		 * the same texture if that item is passed to this function again.</p>
+		 *
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function( item:Object ):Object</pre>
 		 *
@@ -791,6 +813,15 @@ package feathers.controls.renderers
 		 * accessory position of the renderer. If you wish to display an
 		 * <code>Image</code> in the accessory position, it's better for
 		 * performance to use <code>accessorySourceFunction</code> instead.
+		 *
+		 * <p>Note: As the list scrolls, this function will almost always be
+		 * called more than once for each individual item in the list's data
+		 * provider. Your function should not simply return a new accessory
+		 * every time. This will result in the unnecessary creation and
+		 * destruction of many icons, which will overwork the garbage collector
+		 * and hurt performance. It's better to return a new accessory the first
+		 * time this function is called for a particular item and then return
+		 * the same accessory if that item is passed to this function again.</p>
 		 *
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function( item:Object ):DisplayObject</pre>
@@ -900,6 +931,19 @@ package feathers.controls.renderers
 		 * passing in an <code>ImageLoader</code> or <code>Image</code> through
 		 * a <code>accessoryField</code> or <code>accessoryFunction</code>
 		 * because the renderer can avoid costly display list manipulation.</p>
+		 *
+		 * <p>Note: As the list scrolls, this function will almost always be
+		 * called more than once for each individual item in the list's data
+		 * provider. Your function should not simply return a new texture every
+		 * time. This will result in the unnecessary creation and destruction of
+		 * many textures, which will overwork the garbage collector and hurt
+		 * performance. Creating a new texture at all is dangerous, unless you
+		 * are absolutely sure to dispose it when necessary because neither the
+		 * list nor its item renderer will dispose of the texture for you. If
+		 * you are absolutely sure that you are managing the texture memory with
+		 * proper disposal, it's better to return a new texture the first
+		 * time this function is called for a particular item and then return
+		 * the same texture if that item is passed to this function again.</p>
 		 *
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function( item:Object ):Object</pre>
