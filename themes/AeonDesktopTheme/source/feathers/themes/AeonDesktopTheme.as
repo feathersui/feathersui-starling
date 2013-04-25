@@ -44,6 +44,7 @@ package feathers.themes
 	import feathers.controls.SimpleScrollBar;
 	import feathers.controls.Slider;
 	import feathers.controls.TabBar;
+	import feathers.controls.TextArea;
 	import feathers.controls.TextInput;
 	import feathers.controls.ToggleSwitch;
 	import feathers.controls.popups.DropDownPopUpContentManager;
@@ -62,7 +63,6 @@ package feathers.themes
 	import feathers.core.ITextRenderer;
 	import feathers.display.Scale3Image;
 	import feathers.display.Scale9Image;
-	import feathers.layout.VerticalLayout;
 	import feathers.skins.StandardIcons;
 	import feathers.system.DeviceCapabilities;
 	import feathers.textures.Scale3Textures;
@@ -452,6 +452,7 @@ package feathers.themes
 			this.setInitializerForClass(ScrollBar, scrollBarInitializer);
 			this.setInitializerForClass(TextInput, textInputInitializer);
 			this.setInitializerForClass(TextInput, numericStepperTextInputInitializer, NumericStepper.DEFAULT_CHILD_NAME_TEXT_INPUT);
+			this.setInitializerForClass(TextArea, textAreaInitializer);
 			this.setInitializerForClass(PageIndicator, pageIndicatorInitializer);
 			this.setInitializerForClass(ProgressBar, progressBarInitializer);
 			this.setInitializerForClass(List, listInitializer);
@@ -791,6 +792,29 @@ package feathers.themes
 			const backgroundDisabledSkin:Scale9Image = new Scale9Image(textInputBackgroundDisabledSkinTextures);
 			backgroundDisabledSkin.width = backgroundDisabledSkin.height;
 			input.backgroundDisabledSkin = backgroundDisabledSkin;
+		}
+
+		protected function textAreaInitializer(textArea:TextArea):void
+		{
+			textArea.horizontalScrollBarFactory = horizontalScrollBarFactory;
+			textArea.verticalScrollBarFactory = verticalScrollBarFactory;
+
+			textArea.interactionMode = ScrollContainer.INTERACTION_MODE_MOUSE;
+			textArea.scrollBarDisplayMode = ScrollContainer.SCROLL_BAR_DISPLAY_MODE_FIXED;
+
+			textArea.verticalScrollPolicy = ScrollContainer.SCROLL_POLICY_AUTO;
+			textArea.horizontalScrollPolicy = ScrollContainer.SCROLL_POLICY_AUTO;
+
+			textArea.textEditorProperties.textFormat = this.defaultTextFormat;
+
+			const backgroundSkin:Scale9Image = new Scale9Image(textInputBackgroundSkinTextures);
+			backgroundSkin.width = 264;
+			backgroundSkin.height = 88;
+			textArea.backgroundSkin = backgroundSkin;
+			const backgroundDisabledSkin:Scale9Image = new Scale9Image(textInputBackgroundDisabledSkinTextures);
+			backgroundDisabledSkin.width = 264;
+			backgroundDisabledSkin.height = 88;
+			textArea.backgroundDisabledSkin = backgroundDisabledSkin;
 		}
 
 		protected function pageIndicatorInitializer(pageIndicator:PageIndicator):void
