@@ -59,7 +59,7 @@
 			<arg value="-target"/>
 			<arg value="ipa-app-store"/>
 			<!-- uncomment for actionscript sampling with scout on ios -->
-			<arg value="-sampler"/>
+			<!--<arg value="-sampler"/>-->
 			<arg value="-provisioning-profile"/>
 			<arg value="${ios.provision.path}"/>
 			<arg value="-keystore"/>

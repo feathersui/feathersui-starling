@@ -27,7 +27,7 @@
 			<arg line="+flexlib='${flexframework.root}'"/>
 			<arg line="+configname=air"/>
 			<arg line="--swf-version=${swf.version}"/>
-			<arg line="--target-player=${target.player}"/>
+			<arg line="--target-player=${player.version}"/>
 			<arg line="--namespace+=${mxml.namespace},${feathers.root}/../mxml-manifest.xml"/>
 			<arg line="--source-path+='source'"/>
 			<arg line="--source-path+='${starling.root}'"/>
@@ -50,7 +50,7 @@
 			<arg line="${output.path}/MXML.ipa"/>
 			<arg line="source/MXML-app.xml"/>
 			<arg line="-C ${icon.path}"/>
-			<arg line="icon29.png icon48.png icon50.png icon57.png icon58.png icon72.png icon100.png icon114.png icon128.png icon144.png"/>
+			<arg line="icon29.png icon48.png icon50.png icon57.png icon58.png icon72.png icon96.png icon100.png icon114.png icon128.png icon144.png"/>
 			<arg line="-C ${output.path}"/>
 			<arg line="MXML.swf"/>
 		</java>
@@ -67,7 +67,7 @@
 			<arg line="${output.path}/MXML.apk"/>
 			<arg line="source/MXML-app.xml"/>
 			<arg line="-C ${icon.path}"/>
-			<arg line="icon29.png icon48.png icon50.png icon57.png icon58.png icon72.png icon100.png icon114.png icon128.png icon144.png"/>
+			<arg line="icon29.png icon48.png icon50.png icon57.png icon58.png icon72.png icon96.png icon100.png icon114.png icon128.png icon144.png"/>
 			<arg line="-C ${output.path}"/>
 			<arg line="MXML.swf"/>
 		</java>

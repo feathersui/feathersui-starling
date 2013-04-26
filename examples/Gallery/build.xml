@@ -26,67 +26,77 @@
 	<target name="build-web" depends="prepare">
 		<echo message="Building GalleryWeb.swf"/>
 		<java jar="${mxmlc}" dir="${basedir}" fork="true" failonerror="true">
-			<arg line="+flexlib='${flexframework.root}'"/>
-			<arg line="--swf-version=${swf.version}"/>
-			<arg line="--target-player=${target.player}"/>
+			<arg value="-load-config=${flashplayer.config}"/>
+			<arg value="-target-player=${player.version}"/>
+			<arg value="-swf-version=${swf.version}"/>
 			<arg value="--define+=CONFIG::FLICKR_API_KEY,'${flickr.api.key}'"/>
-			<arg line="--static-link-runtime-shared-libraries=true"/>
-			<arg line="--frame two feathers.examples.gallery.Main"/>
-			<arg line="--source-path+='source'"/>
-			<arg line="--source-path+='${starling.root}'"/>
-			<arg line="--source-path+='${feathers.root}'"/>
-			<arg line="source/GalleryWeb.as"/>
-			<arg line="--output ${output.path}/GalleryWeb.swf"/>
+			<arg value="-frame=two,feathers.examples.gallery.Main"/>
+			<arg value="-source-path+=source"/>
+			<arg value="-source-path+=${starling.root}"/>
+			<arg value="-source-path+=${feathers.root}"/>
+			<arg value="source/GalleryWeb.as"/>
+			<arg value="-output=${output.path}/GalleryWeb.swf"/>
 		</java>
 	</target>
+
 	<target name="build-air-swf" depends="prepare">
 		<echo message="Building Gallery.swf"/>
 		<java jar="${mxmlc}" dir="${basedir}" fork="true" failonerror="true">
-			<arg line="+flexlib='${flexframework.root}'"/>
-			<arg line="+configname=air"/>
-			<arg line="--swf-version=${swf.version}"/>
-			<arg line="--target-player=${target.player}"/>
+			<arg value="-load-config=${airmobile.config}"/>
+			<arg value="-target-player=${player.version}"/>
+			<arg value="-swf-version=${swf.version}"/>
 			<arg value="--define+=CONFIG::FLICKR_API_KEY,'${flickr.api.key}'"/>
-			<arg line="--source-path+='source'"/>
-			<arg line="--source-path+='${starling.root}'"/>
-			<arg line="--source-path+='${feathers.root}'"/>
-			<arg line="source/Gallery.as"/>
-			<arg line="--output ${output.path}/Gallery.swf"/>
+			<arg value="-source-path+=source"/>
+			<arg value="-source-path+=${starling.root}"/>
+			<arg value="-source-path+=${feathers.root}"/>
+			<arg value="source/Gallery.as"/>
+			<arg value="-output=${output.path}/Gallery.swf"/>
 		</java>
 	</target>
 	<target name="build-ios" depends="build-air-swf">
 		<echo message="Packaging Gallery.ipa"/>
-		<java jar="${adt}" dir="${basedir}" fork="true" 
-			failonerror="true" maxmemory="512m">
-			<arg line="-package"/>
-			<arg line="-target ipa-app-store"/>
-			<arg line="-provisioning-profile ${ios.provision.path}"/>
-			<arg line="-keystore ${ios.certificate.path}"/>
-			<arg line="-storetype pkcs12"/>
-			<arg line="-storepass ${ios.certificate.password}"/>
-			<arg line="${output.path}/Gallery.ipa"/>
-			<arg line="source/Gallery-app.xml"/>
-			<arg line="-C ${icon.path}"/>
-			<arg line="icon29.png icon48.png icon50.png icon57.png icon58.png icon72.png icon100.png icon114.png icon128.png icon144.png"/>
-			<arg line="-C ${output.path}"/>
-			<arg line="Gallery.swf"/>
+		<java jar="${adt}" dir="${basedir}" fork="true" failonerror="true">
+			<arg value="-package"/>
+			<arg value="-target"/>
+			<arg value="ipa-app-store"/>
+			<arg value="-provisioning-profile"/>
+			<arg value="${ios.provision.path}"/>
+			<arg value="-keystore"/>
+			<arg value="${ios.certificate.path}"/>
+			<arg value="-storetype"/>
+			<arg value="pkcs12"/>
+			<arg value="-storepass"/>
+			<arg value="${ios.certificate.password}"/>
+			<arg value="${output.path}/Gallery.ipa"/>
+			<arg value="source/Gallery-app.xml"/>
+			<arg value="-C"/>
+			<arg value="${icon.path}"/>
+			<arg line="icon29.png icon48.png icon50.png icon57.png icon58.png icon72.png icon96.png icon100.png icon114.png icon128.png icon144.png Default.png Default@2x.png Default-Portrait.png Default-Portrait@2x.png Default-Landscape.png Default-Landscape@2x.png Default-568h@2x.png"/>
+			<arg value="-C"/>
+			<arg value="${output.path}"/>
+			<arg value="Gallery.swf"/>
 		</java>
 	</target>
 	<target name="build-android" depends="build-air-swf">
 		<echo message="Packaging Gallery.apk"/>
-		<java jar="${adt}" dir="${basedir}" fork="true" 
-			failonerror="true" maxmemory="512m">
-			<arg line="-package"/>
-			<arg line="-target apk-captive-runtime"/>
-			<arg line="-storetype pkcs12"/>
-			<arg line="-keystore ${android.certificate.path}"/>
-			<arg line="-storepass ${android.certificate.password}"/>
-			<arg line="${output.path}/Gallery.apk"/>
-			<arg line="source/Gallery-app.xml"/>
-			<arg line="-C ${icon.path}"/>
-			<arg line="icon29.png icon48.png icon50.png icon57.png icon58.png icon72.png icon100.png icon114.png icon128.png icon144.png"/>
-			<arg line="-C ${output.path}"/>
-			<arg line="Gallery.swf"/>
+		<java jar="${adt}" dir="${basedir}" fork="true" failonerror="true">
+			<arg value="-package"/>
+			<arg value="-target"/>
+			<arg value="apk-captive-runtime"/>
+			<arg value="-storetype"/>
+			<arg value="pkcs12"/>
+			<arg value="-keystore"/>
+			<arg value="${android.certificate.path}"/>
+			<arg value="-storepass"/>
+			<arg value="${android.certificate.password}"/>
+			<arg value="${output.path}/Gallery.apk"/>
+			<arg value="source/Gallery-app.xml"/>
+			<arg value="-C"/>
+			<arg value="${icon.path}"/>
+			<arg line="icon29.png icon48.png icon50.png icon57.png icon58.png icon72.png icon96.png icon100.png icon114.png icon128.png icon144.png"/>
+			<arg value="-C"/>
+			<arg value="${output.path}"/>
+			<arg value="Gallery.swf"/>
 		</java>
 	</target>
 </project>
