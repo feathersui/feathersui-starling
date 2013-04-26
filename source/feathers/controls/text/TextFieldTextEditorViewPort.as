@@ -343,12 +343,32 @@ package feathers.controls.text
 				}
 			}
 
-			this._textFieldOffsetX = -this._horizontalScrollPosition;
-			this._textFieldOffsetY = -this._verticalScrollPosition;
+			const clipContent:Boolean = Scroller(this.parent).clipContent;
+
+			this._textFieldOffsetX = 0;
+			this._textFieldOffsetY = 0;
 			this._textFieldClipRect.x = 0;
 			this._textFieldClipRect.y = 0;
 			this._textFieldClipRect.width = textFieldWidth;
-			this._textFieldClipRect.height = textFieldHeight;
+			this._textFieldClipRect.height = clipContent ? textFieldHeight : this.actualHeight;
+
+			if(clipContent)
+			{
+				var scrollRect:Rectangle = this.textField.scrollRect;
+				if(!scrollRect)
+				{
+					scrollRect = new Rectangle();
+				}
+				scrollRect.x = this._horizontalScrollPosition;
+				scrollRect.y = this._verticalScrollPosition;
+				scrollRect.width = textFieldWidth;
+				scrollRect.height = textFieldHeight;
+				this.textField.scrollRect = scrollRect;
+			}
+			else
+			{
+				this.textField.scrollRect = null;
+			}
 		}
 
 		/**
@@ -368,19 +388,22 @@ package feathers.controls.text
 			HELPER_POINT.x = HELPER_POINT.y = 0;
 			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
 			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
+			const clipContent:Boolean = Scroller(this.parent).clipContent;
+			const offsetX:Number = clipContent ? Math.round(this._horizontalScrollPosition) : 0;
+			const offsetY:Number = clipContent ? Math.round(this._verticalScrollPosition) : 0;
 			if(HELPER_POINT.x != this._oldGlobalX || HELPER_POINT.y != this._oldGlobalY)
 			{
 				this._oldGlobalX = HELPER_POINT.x;
 				this._oldGlobalY = HELPER_POINT.y;
 				const starlingViewPort:Rectangle = Starling.current.viewPort;
-				this.textField.x = Math.round(starlingViewPort.x + (HELPER_POINT.x * Starling.contentScaleFactor));
-				this.textField.y = Math.round(starlingViewPort.y + (HELPER_POINT.y * Starling.contentScaleFactor));
+				this.textField.x = offsetX + Math.round(starlingViewPort.x + (HELPER_POINT.x * Starling.contentScaleFactor));
+				this.textField.y = offsetY + Math.round(starlingViewPort.y + (HELPER_POINT.y * Starling.contentScaleFactor));
 			}
 
 			if(this.textSnapshot)
 			{
-				this.textSnapshot.x = Math.round(this._horizontalScrollPosition) + Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx;
-				this.textSnapshot.y = Math.round(this._verticalScrollPosition) + Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty;
+				this.textSnapshot.x = offsetX + Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx;
+				this.textSnapshot.y = offsetY + Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty;
 			}
 		}
 
