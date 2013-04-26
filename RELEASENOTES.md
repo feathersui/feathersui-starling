@@ -4,27 +4,33 @@ Noteworthy changes in official releases of [Feathers](http://feathersui.com/).
 
 ## 1.1.0 PRERELEASE
 
-* List: support for optional multiple selection.
-* MetalWorksMobileTheme: tweaked colors and appearances. embeds open source Source Sans Pro font.
-* List, GroupedList, ScrollContainer, and ScrollText all extend Scroller, instead of using it as a sub-component. The scrollerProperties property on each of these is now deprecated because all public properties of Scroller are now direct public properties of these components.
-* Focus management and keyboard control can be enabled with FocusManager.isEnabled = true. TextInput must use TextFieldTextEditor when focus management is enabled.
-* Slider: measurement now includes thumb dimensions and a new property called trackScaleMode has been added.
-* Callout: content disposal is more consistent. Set disposeContent to false to reuse content in another callout later.
-* Added ILayoutObject to support extra data for layouts to use.
-* AnchorLayout: added to support fluid layouts and relative positioning.
-* MultiColumnGridLayout: added to support fluid layouts on standard columns with device responsiveness.
+* New Beta Component: NumericStepper. Add and subtract from a numeric value with buttons. Optional text editing.
+* New Beta Component: TextArea. A multiline text input. Recommended for desktop only. Not recommended for mobile.
+* New Beta Component: Panel. A new container subclassing ScrollContainer that adds a header and an optional footer.
+* New Beta Component: PanelScreen. An IScreen implementation (similar to Screen) based on Panel.
+* New Beta Layout: AnchorLayout. Added to support fluid layouts and relative positioning. Can position relative to parent container and also to other children of the parent container.
+* Added FocusManager for keyboard navigation and interaction. Not intended for mobile. Use a desktop theme or set `FocusManager.isEnabled = true`. TextInput *cannot* use StageTextTextEditor when focus management is enabled. TextFieldTextEditor is recommended.
 * All sub-components are created from factories and can receive custom names for theming.
-* PopUpManager: Supports custom root to place pop-ups somewhere other than the stage.
-* PopUpManager: modal pop-ups receive a different focus manager.
-* FeathersControl: setSizeInternal() is now stricter. It can never receive a NaN value for width or height. This is a common source of bugs, and throwing an error here will help make it easier to find those bugs.
+* Added ILayoutObject interface to support extra data for layouts to use, like includeInLayout property.
+* List: support for optional multiple selection.
+* TextInput/StageTextTextEditor: supports multiline on mobile.
 * PickerList: supports prompt when no item is selected.
-* Panel: A new container similar to ScrollContainer, but with a header component too (defaults to feathers.controls.Header).
-* PanelScreen: An IScreen implementation based on Panel.
+* Slider: measurement now includes thumb dimensions and a new property called trackScaleMode has been added.
+* Callout: disposal is more consistent. Set combination of disposeOnSelfClose and disposeContent.
+* Callout: added origin and supportedDirections properties to make Callout capable of switching origins after creation.
+* PopUpManager: Supports custom root to place pop-ups somewhere other than the stage.
+* PopUpManager: modal pop-ups receive a diff`erent focus manager.
 * ScreenNavigator: added hasScreen(), getScreen(), and getScreenIDs().
 * ScrollContainer, List, GroupedList: better auto-sizing with a background skin.
+* TextInput: exposed isEditable, maxChars, restrict, and displayAsPassword properties.
 * BitmapFontTextRenderer, Scale3Image, Scale9Image: option to turn off the use of a separate QuadBatch.
-* Scroller/Button: better blocking of touches on children when scrolling with touch.
 * TiledRowsLayout, TiledColumnsLayout: supports separate horizontal and vertical gaps.
+* ButtonGroup: supports isEnabled as a property in the data provider.
+* ImageLoader: added delayTextureCreation flag to avoid creating textures while scrolling (or during any action that requires best performance).
+* Scroller: adds an invisible overlay during scrolling to block touch events on children.
+* Button: better detection of click to avoid other display objects moving on top of button before TouchPhase.ENDED.
+* List, GroupedList, ScrollContainer, and ScrollText all extend Scroller, instead of using it as a sub-component. The scrollerProperties property on each of these is now deprecated because all public properties of Scroller are now direct public properties of these components.
+* FeathersControl: setSizeInternal() is now stricter. It can never receive a NaN value for width or height. This is a common source of bugs, and throwing an error here will help make it easier to find those bugs.
 * IVariableVirtualLayout: added function addToVariableVirtualCacheAtIndex() for more specific control over the cache of item dimensions. The following implementation can be added to existing classes to simulate the old behavior:
 
 		public addToVariableVirtualCacheAtIndex(index:int, item:DisplayObject = null):void
@@ -40,10 +46,14 @@ Noteworthy changes in official releases of [Feathers](http://feathersui.com/).
 		}
 * ScrollText: now properly handles visible and alpha properties.
 * ListCollection: added removeAll(), addAll(), addAllAt() and contains().
-* Scroller: adds an invisible overlay during scrolling to block touch events on children.
-* Scroller: scrolling animates forf mouse wheel.
+* Scroller: scrolling animates for mouse wheel.
 * List, VerticalLayout, HorizontalLayout: optimized case where useVirtualLayout is true and hasVariableItemDimensions is false.
+* HorizontalLayout, VerticalLayout, TiledRowsLayout, TiledColumnsLayout: added manageVisibility property to set items to false when not in view. Set to true to improve performance.
 * Screen: default value of originalDPI is DeviceCapabilities.dpi. It used to be 168. Can still be changed.
+* MetalWorksMobileTheme and MinimalMobileTheme: major overhaul with improved skins and new alternate skins.
+* AeonDesktopTheme: added some missing skins, like TabBar.
+* Added 96x96 icons to examples for Android xhdpi. Requires AIR 3.7.
+* Extended API documentation and Wiki tutorials.
 
 ## 1.0.1
 
