@@ -25,6 +25,27 @@ package feathers.controls
 	import starling.events.TouchPhase;
 
 	/**
+	 * Dispatched when the text area's <code>text</code> property changes.
+	 *
+	 * @eventType starling.events.Event.CHANGE
+	 */
+	[Event(name="change",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the text area receives focus.
+	 *
+	 * @eventType feathers.events.FeathersEventType.FOCUS_IN
+	 */
+	[Event(name="focusIn",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the text area loses focus.
+	 *
+	 * @eventType feathers.events.FeathersEventType.FOCUS_OUT
+	 */
+	[Event(name="focusOut",type="starling.events.Event")]
+
+	/**
 	 * A text entry control that allows users to enter and edit multiple lines
 	 * of uniformly-formatted text with the ability to scroll.
 	 *
@@ -169,7 +190,11 @@ package feathers.controls
 		protected var _text:String = "";
 
 		/**
-		 * The text displayed by the input.
+		 * The text displayed by the text area. The text area dispatches
+		 * <code>Event.CHANGE</code> when the value of the <code>text</code>
+		 * property changes for any reason.
+		 *
+		 * @see #event:change
 		 */
 		public function get text():String
 		{
@@ -253,7 +278,7 @@ package feathers.controls
 		protected var _isEditable:Boolean = true;
 
 		/**
-		 * Determines if the text input is editable. If the text input is not
+		 * Determines if the text area is editable. If the text area is not
 		 * editable, it will still appear enabled.
 		 */
 		public function get isEditable():Boolean
@@ -284,9 +309,10 @@ package feathers.controls
 		 * <code>null</code>, a <code>TextFieldTextEditorViewPort</code> will
 		 * be instantiated. The text editor must be an instance of
 		 * <code>ITextEditorViewPort</code>. This factory can be used to change
-		 * properties on the text editor when it is first created. For instance,
-		 * if you are skinning Feathers components without a theme, you might
-		 * use this factory to set styles on the text editor.
+		 * properties on the text editor view port when it is first created. For
+		 * instance, if you are skinning Feathers components without a theme,
+		 * you might use this factory to set styles on the text editor view
+		 * port.
 		 *
 		 * <p>The factory should have the following function signature:</p>
 		 * <pre>function():ITextEditorViewPort</pre>
@@ -318,9 +344,9 @@ package feathers.controls
 		protected var _textEditorProperties:PropertyProxy;
 
 		/**
-		 * A set of key/value pairs to be passed down to the text input's
-		 * text editor. The text editor is an <code>ITextEditor</code> instanc
-		 * that is created by <code>textEditorFactory</code>.
+		 * A set of key/value pairs to be passed down to the text area's text
+		 * editor view port. The text editor view port is an <code>ITextEditorViewPort</code>
+		 * instance that is created by <code>textEditorFactory</code>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -334,7 +360,8 @@ package feathers.controls
 		 * better performance.</p>
 		 *
 		 * @see #textEditorFactory
-		 * @see feathers.core.ITextEditor
+		 * @see feathers.controls.text.ITextEditorViewPort
+		 * @see feathers.controls.text.TextFieldTextEditorViewPort
 		 */
 		public function get textEditorProperties():Object
 		{
@@ -380,7 +407,7 @@ package feathers.controls
 		}
 
 		/**
-		 * Focuses the text input control so that it may be edited.
+		 * Focuses the text area control so that it may be edited.
 		 */
 		public function setFocus():void
 		{
@@ -638,7 +665,6 @@ package feathers.controls
 						this._textAreaTouchPointID = touch.id;
 						if(!this.textEditorViewPort.setTouchFocusOnEndedPhase)
 						{
-							trace("setting focus", touch.isTouching(verticalScrollBar), touch.isTouching(horizontalScrollBar));
 							this.setFocusOnTextEditorWithTouch(touch);
 						}
 						this.addEventListener(Event.SCROLL, textArea_scrollHandler);

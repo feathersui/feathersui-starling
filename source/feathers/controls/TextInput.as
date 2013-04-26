@@ -26,7 +26,7 @@ package feathers.controls
 	import starling.events.TouchPhase;
 
 	/**
-	 * Dispatched when the text input's text value changes.
+	 * Dispatched when the text input's <code>text</code> property changes.
 	 *
 	 * @eventType starling.events.Event.CHANGE
 	 */
@@ -131,7 +131,11 @@ package feathers.controls
 		protected var _text:String = "";
 
 		/**
-		 * The text displayed by the input.
+		 * The text displayed by the text input. The text input dispatches
+		 * <code>Event.CHANGE</code> when the value of the <code>text</code>
+		 * property changes for any reason.
+		 *
+		 * @see #event:change
 		 */
 		public function get text():String
 		{
@@ -754,7 +758,7 @@ package feathers.controls
 
 		/**
 		 * A set of key/value pairs to be passed down to the text input's
-		 * text editor. The text editor is an <code>ITextEditor</code> instanc
+		 * text editor. The text editor is an <code>ITextEditor</code> instance
 		 * that is created by <code>textEditorFactory</code>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
