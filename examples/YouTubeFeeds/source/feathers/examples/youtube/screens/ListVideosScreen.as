@@ -4,6 +4,8 @@ package feathers.examples.youtube.screens
 	import feathers.controls.Label;
 	import feathers.controls.List;
 	import feathers.controls.PanelScreen;
+	import feathers.controls.renderers.DefaultListItemRenderer;
+	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.examples.youtube.models.VideoDetails;
@@ -67,8 +69,14 @@ package feathers.examples.youtube.screens
 
 			this._list = new List();
 			this._list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
-			this._list.itemRendererProperties.labelField = "title";
-			this._list.itemRendererProperties.accessoryLabelField = "author";
+			this._list.itemRendererFactory = function():IListItemRenderer
+			{
+				var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+				renderer.labelField = "title";
+				renderer.accessoryLabelField = "author";
+				renderer.isQuickHitAreaEnabled = true;
+				return renderer;
+			}
 			this._list.addEventListener(starling.events.Event.CHANGE, list_changeHandler);
 			this.addChild(this._list);
 
