@@ -805,6 +805,9 @@ package feathers.controls
 			this._isTextureOwner = false;
 		}
 
+		/**
+		 * @private
+		 */
 		protected function replaceTexture(bitmapData:BitmapData):void
 		{
 			this._texture = Texture.fromBitmapData(bitmapData, false);
