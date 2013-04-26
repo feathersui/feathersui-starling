@@ -2,6 +2,8 @@ package feathers.examples.youtube.screens
 {
 	import feathers.controls.List;
 	import feathers.controls.PanelScreen;
+	import feathers.controls.renderers.DefaultListItemRenderer;
+	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.examples.youtube.models.VideoFeed;
@@ -43,8 +45,14 @@ package feathers.examples.youtube.screens
 				new VideoFeed("Trending Videos", "http://gdata.youtube.com/feeds/api/standardfeeds/on_the_web?fields=entry[link/@rel='http://gdata.youtube.com/schemas/2007%23mobile']"),
 			]);
 			this._list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
-			this._list.itemRendererProperties.labelField = "name";
-			this._list.itemRendererProperties.accessorySourceFunction = accessorySourceFunction;
+			this._list.itemRendererFactory = function():IListItemRenderer
+			{
+				var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+				renderer.labelField = "name";
+				renderer.isQuickHitAreaEnabled = true;
+				renderer.accessorySourceFunction = accessorySourceFunction;
+				return renderer;
+			}
 			this._list.addEventListener(Event.CHANGE, list_changeHandler);
 			this.addChild(this._list);
 
