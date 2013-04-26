@@ -1309,11 +1309,11 @@ package feathers.controls.renderers
 		{
 			if(this._labelFunction != null)
 			{
-				return this._labelFunction(item) as String;
+				return this._labelFunction(item).toString();
 			}
 			else if(this._labelField != null && item && item.hasOwnProperty(this._labelField))
 			{
-				return item[this._labelField] as String;
+				return item[this._labelField].toString();
 			}
 			else if(item is Object)
 			{
@@ -1390,13 +1390,13 @@ package feathers.controls.renderers
 			}
 			else if(this._accessoryLabelFunction != null)
 			{
-				var label:String = this._accessoryLabelFunction(item) as String;
+				var label:String = this._accessoryLabelFunction(item).toString();
 				this.refreshAccessoryLabel(label);
 				return DisplayObject(this.accessoryLabel);
 			}
 			else if(this._accessoryLabelField != null && item && item.hasOwnProperty(this._accessoryLabelField))
 			{
-				label = item[this._accessoryLabelField] as String;
+				label = item[this._accessoryLabelField].toString();
 				this.refreshAccessoryLabel(label);
 				return DisplayObject(this.accessoryLabel);
 			}
