@@ -681,7 +681,7 @@ package feathers.controls.text
 			var newHeight:Number = this.explicitHeight;
 			if(needsHeight)
 			{
-				newHeight = Math.max(this._minHeight, Math.min(this._maxHeight, this.textField.height));
+				newHeight = Math.max(this._minHeight, Math.min(this._maxHeight, this.textField.textHeight + 4));
 			}
 
 			this.textField.autoSize = TextFieldAutoSize.NONE;
