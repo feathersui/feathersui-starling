@@ -34,6 +34,7 @@ package feathers.themes
 	import feathers.controls.List;
 	import feathers.controls.NumericStepper;
 	import feathers.controls.PageIndicator;
+	import feathers.controls.Panel;
 	import feathers.controls.PickerList;
 	import feathers.controls.ProgressBar;
 	import feathers.controls.Radio;
@@ -468,8 +469,10 @@ package feathers.themes
 			this.setInitializerForClass(DefaultGroupedListItemRenderer, defaultItemRendererInitializer);
 			this.setInitializerForClass(DefaultGroupedListHeaderOrFooterRenderer, defaultHeaderOrFooterRendererInitializer);
 			this.setInitializerForClass(Header, headerInitializer);
+			this.setInitializerForClass(Header, panelHeaderInitializer, Panel.DEFAULT_CHILD_NAME_HEADER);
 			this.setInitializerForClass(Callout, calloutInitializer);
 			this.setInitializerForClass(ScrollContainer, scrollContainerInitializer);
+			this.setInitializerForClass(Panel, panelInitializer);
 		}
 
 		protected function pageIndicatorNormalSymbolFactory():Image
@@ -887,6 +890,15 @@ package feathers.themes
 			container.horizontalScrollPolicy = ScrollContainer.SCROLL_POLICY_AUTO;
 		}
 
+		protected function panelInitializer(panel:Panel):void
+		{
+			panel.backgroundSkin = new Scale9Image(panelBorderBackgroundSkinTextures);
+			panel.paddingTop = 0;
+			panel.paddingRight = 10;
+			panel.paddingBottom = 10;
+			panel.paddingLeft = 10;
+		}
+
 		protected function listInitializer(list:List):void
 		{
 			list.backgroundSkin = new Scale9Image(simpleBorderBackgroundSkinTextures);
@@ -988,7 +1000,22 @@ package feathers.themes
 		{
 			header.backgroundSkin = new Scale9Image(headerBackgroundSkinTextures);
 
+			header.minHeight = 22;
+
 			header.titleProperties.textFormat = this.defaultTextFormat;
+
+			header.paddingTop = header.paddingBottom = 2;
+			header.paddingRight = header.paddingLeft = 6;
+
+			header.gap = 2;
+			header.titleGap = 4;
+		}
+
+		protected function panelHeaderInitializer(header:Header):void
+		{
+			header.titleProperties.textFormat = this.defaultTextFormat;
+
+			header.minHeight = 22;
 
 			header.paddingTop = header.paddingBottom = 2;
 			header.paddingRight = header.paddingLeft = 6;
