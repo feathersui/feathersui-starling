@@ -1205,8 +1205,8 @@ package feathers.themes
 		{
 			header.minWidth = 88 * this.scale;
 			header.minHeight = 88 * this.scale;
-			header.paddingTop = header.paddingRight = header.paddingBottom =
-				header.paddingLeft = 14 * this.scale;
+			header.paddingTop = header.paddingBottom = 14 * this.scale;
+			header.paddingLeft = header.paddingRight = 18 * this.scale;
 
 			header.titleProperties.textFormat = this.headerTextFormat;
 			header.titleProperties.embedFonts = true;
@@ -1282,7 +1282,7 @@ package feathers.themes
 
 		protected function panelInitializer(panel:Panel):void
 		{
-			const backgroundSkin:Scale9Image = new Scale9Image(this.backgroundDisabledSkinTextures, this.scale);
+			const backgroundSkin:Scale9Image = new Scale9Image(this.backgroundPopUpSkinTextures, this.scale);
 			panel.backgroundSkin = backgroundSkin;
 
 			panel.paddingTop = 0;
