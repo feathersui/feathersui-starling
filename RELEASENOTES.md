@@ -52,6 +52,7 @@ Noteworthy changes in official releases of [Feathers](http://feathersui.com/).
 * Screen: default value of originalDPI is DeviceCapabilities.dpi. It used to be 168. Can still be changed.
 * MetalWorksMobileTheme and MinimalMobileTheme: major overhaul with improved skins and new alternate skins.
 * AeonDesktopTheme: added some missing skins, like TabBar.
+* AzureMobileTheme: removed this example theme. Please feel free to continue using the old version, if desired.
 * Added 96x96 icons to examples for Android xhdpi. Requires AIR 3.7.
 * Extended API documentation and Wiki tutorials.
 
