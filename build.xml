@@ -132,14 +132,6 @@
 			</fileset>
 		</copy>
 
-		<copy overwrite="true" todir="${themes.output}/AzureMobileTheme">
-			<fileset dir="${themes.root}/AzureMobileTheme">
-				<include name="README.md"/>
-				<include name="source/**"/>
-				<include name="assets/**"/>
-			</fileset>
-		</copy>
-
 		<copy overwrite="true" todir="${themes.output}/MetalWorksMobileTheme">
 			<fileset dir="${themes.root}/MetalWorksMobileTheme">
 				<include name="README.md"/>
