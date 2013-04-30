@@ -32,6 +32,9 @@ package feathers.core
 	 */
 	public class FocusManager implements IFocusManager
 	{
+		/**
+		 * @private
+		 */
 		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
 
 		/**
@@ -455,6 +458,11 @@ package feathers.core
 				event.preventDefault();
 			}
 			this.focus = newFocus;
+			if(this._focus && "showFocus" in this._focus)
+			{
+				this._focus["showFocus"]();
+			}
+
 		}
 
 		/**

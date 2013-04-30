@@ -139,8 +139,6 @@ package feathers.controls
 			super();
 
 			this.addEventListener(TouchEvent.TOUCH, textArea_touchHandler);
-			this.addEventListener(FeathersEventType.FOCUS_IN, textArea_focusInHandler);
-			this.addEventListener(FeathersEventType.FOCUS_OUT, textArea_focusOutHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, textArea_removedFromStageHandler);
 		}
 
@@ -407,6 +405,19 @@ package feathers.controls
 		}
 
 		/**
+		 * @inheritDoc
+		 */
+		override public function showFocus():void
+		{
+			if(!this._focusManager || this._focusManager.focus != this)
+			{
+				return;
+			}
+			this.selectRange(0, this._text.length);
+			super.showFocus();
+		}
+
+		/**
 		 * Focuses the text area control so that it may be edited.
 		 */
 		public function setFocus():void
@@ -500,6 +511,8 @@ package feathers.controls
 			}
 
 			super.draw();
+
+			this.refreshFocusIndicator();
 
 			this.doPendingActions();
 		}
@@ -712,24 +725,26 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function textArea_focusInHandler(event:Event):void
+		override protected function focusInHandler(event:Event):void
 		{
 			if(!this._focusManager)
 			{
 				return;
 			}
+			super.focusInHandler(event);
 			this.setFocus();
 		}
 
 		/**
 		 * @private
 		 */
-		protected function textArea_focusOutHandler(event:Event):void
+		override protected function focusOutHandler(event:Event):void
 		{
 			if(!this._focusManager)
 			{
 				return;
 			}
+			super.focusOutHandler(event);
 			this.textEditorViewPort.clearFocus();
 		}
 

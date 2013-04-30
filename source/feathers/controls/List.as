@@ -136,8 +136,6 @@ package feathers.controls
 		public function List()
 		{
 			super();
-			this.addEventListener(FeathersEventType.FOCUS_IN, list_focusInHandler);
-			this.addEventListener(FeathersEventType.FOCUS_OUT, list_focusOutHandler);
 			this._selectedIndices.addEventListener(Event.CHANGE, selectedIndices_changeHandler);
 		}
 
@@ -728,6 +726,7 @@ package feathers.controls
 		{
 			this.refreshDataViewPortProperties();
 			super.draw();
+			this.refreshFocusIndicator();
 		}
 
 		/**
@@ -778,16 +777,18 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function list_focusInHandler(event:Event):void
+		override protected function focusInHandler(event:Event):void
 		{
+			super.focusInHandler(event);
 			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 		}
 
 		/**
 		 * @private
 		 */
-		protected function list_focusOutHandler(event:Event):void
+		override protected function focusOutHandler(event:Event):void
 		{
+			super.focusOutHandler(event);
 			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 		}
 

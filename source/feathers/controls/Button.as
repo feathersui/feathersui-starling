@@ -328,8 +328,6 @@ package feathers.controls
 		{
 			this.isQuickHitAreaEnabled = true;
 			this.addEventListener(TouchEvent.TOUCH, button_touchHandler);
-			this.addEventListener(FeathersEventType.FOCUS_IN, button_focusInHandler);
-			this.addEventListener(FeathersEventType.FOCUS_OUT, button_focusOutHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, button_removedFromStageHandler);
 		}
 
@@ -2413,6 +2411,7 @@ package feathers.controls
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 			const selectedInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SELECTED);
 			const textRendererInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_TEXT_RENDERER);
+			const focusInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_FOCUS);
 
 			if(textRendererInvalid)
 			{
@@ -2445,7 +2444,12 @@ package feathers.controls
 			if(textRendererInvalid || stylesInvalid || stateInvalid || selectedInvalid || dataInvalid || sizeInvalid)
 			{
 				this.layoutContent();
-			}
+				}
+
+				if(sizeInvalid || focusInvalid)
+				{
+					this.refreshFocusIndicator();
+				}
 			
 			if(this._autoFlatten)
 			{
@@ -2680,6 +2684,8 @@ package feathers.controls
 			{
 				return;
 			}
+			this.currentSkin.x = 0;
+			this.currentSkin.y = 0;
 			if(this.currentSkin.width != this.actualWidth)
 			{
 				this.currentSkin.width = this.actualWidth;
@@ -2931,8 +2937,9 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function button_focusInHandler(event:Event):void
+		override protected function focusInHandler(event:Event):void
 		{
+			super.focusInHandler(event);
 			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 			this.stage.addEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
 		}
@@ -2940,8 +2947,9 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function button_focusOutHandler(event:Event):void
+		override protected function focusOutHandler(event:Event):void
 		{
+			super.focusOutHandler(event);
 			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 			this.stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
 		}
