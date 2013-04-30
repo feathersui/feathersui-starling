@@ -23,7 +23,6 @@ package feathers.controls.renderers
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.events.TouchEvent;
-	import starling.textures.Texture;
 
 	/**
 	 * An abstract class for item renderer implementations.
@@ -1378,7 +1377,7 @@ package feathers.controls.renderers
 		{
 			if(this._accessorySourceFunction != null)
 			{
-				var source:Texture = this._accessorySourceFunction(item);
+				var source:Object = this._accessorySourceFunction(item);
 				this.refreshAccessorySource(source);
 				return this.accessoryImage;
 			}
