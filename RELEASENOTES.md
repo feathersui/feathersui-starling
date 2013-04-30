@@ -2,7 +2,7 @@
 
 Noteworthy changes in official releases of [Feathers](http://feathersui.com/).
 
-## 1.1.0 PRERELEASE
+## 1.1.0 BETA
 
 * New Beta Component: NumericStepper. Add and subtract from a numeric value with buttons. Optional text editing.
 * New Beta Component: TextArea. A multiline text input. Recommended for desktop only. Not recommended for mobile.
