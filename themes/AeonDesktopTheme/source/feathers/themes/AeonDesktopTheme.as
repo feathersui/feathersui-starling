@@ -90,6 +90,7 @@ package feathers.themes
 		[Embed(source="/../assets/images/aeon.xml",mimeType="application/octet-stream")]
 		protected static const ATLAS_XML:Class;
 
+		protected static const FOCUS_INDICATOR_SCALE_9_GRID:Rectangle = new Rectangle(5, 4, 1, 14);
 		protected static const BUTTON_SCALE_9_GRID:Rectangle = new Rectangle(6, 6, 70, 10);
 		protected static const SELECTED_BUTTON_SCALE_9_GRID:Rectangle = new Rectangle(6, 6, 52, 10);
 		protected static const TAB_SCALE_9_GRID:Rectangle = new Rectangle(4, 4, 55, 16);
@@ -170,6 +171,8 @@ package feathers.themes
 
 		protected var defaultTextFormat:TextFormat;
 		protected var disabledTextFormat:TextFormat;
+
+		protected var focusIndicatorSkinTextures:Scale9Textures;
 
 		protected var buttonUpSkinTextures:Scale9Textures;
 		protected var buttonHoverSkinTextures:Scale9Textures;
@@ -314,8 +317,10 @@ package feathers.themes
 				atlasBitmapData.dispose();
 			}
 
-			this.defaultTextFormat = new TextFormat("_sans", 11, PRIMARY_TEXT_COLOR, false, false, false, "", "", TextFormatAlign.LEFT, 0, 0, 0, 0);
-			this.disabledTextFormat = new TextFormat("_sans", 11, DISABLED_TEXT_COLOR, false, false, false, "", "", TextFormatAlign.LEFT, 0, 0, 0, 0);
+			this.defaultTextFormat = new TextFormat("_sans", 11, PRIMARY_TEXT_COLOR, false, false, false, null, null, TextFormatAlign.LEFT, 0, 0, 0, 0);
+			this.disabledTextFormat = new TextFormat("_sans", 11, DISABLED_TEXT_COLOR, false, false, false, null, null, TextFormatAlign.LEFT, 0, 0, 0, 0);
+
+			this.focusIndicatorSkinTextures = new Scale9Textures(this.atlas.getTexture("focus-indicator-skin"), FOCUS_INDICATOR_SCALE_9_GRID);
 
 			this.buttonUpSkinTextures = new Scale9Textures(this.atlas.getTexture("button-up-skin"), BUTTON_SCALE_9_GRID);
 			this.buttonHoverSkinTextures = new Scale9Textures(this.atlas.getTexture("button-hover-skin"), BUTTON_SCALE_9_GRID);
@@ -523,6 +528,9 @@ package feathers.themes
 			button.selectedDownSkin = new Scale9Image(buttonSelectedDownSkinTextures);
 			button.selectedDisabledSkin = new Scale9Image(buttonSelectedDisabledSkinTextures);
 
+			button.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
+			button.focusPadding = -1;
+
 			button.defaultLabelProperties.textFormat = this.defaultTextFormat;
 			button.disabledLabelProperties.textFormat = this.disabledTextFormat;
 
@@ -568,6 +576,9 @@ package feathers.themes
 			check.selectedDownIcon = new Image(checkSelectedDownIconTexture);
 			check.selectedDisabledIcon = new Image(checkSelectedDisabledIconTexture);
 
+			check.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
+			check.focusPadding = -2;
+
 			check.defaultLabelProperties.textFormat = this.defaultTextFormat;
 			check.disabledLabelProperties.textFormat = this.disabledTextFormat;
 
@@ -587,6 +598,9 @@ package feathers.themes
 			radio.selectedHoverIcon = new Image(radioSelectedHoverIconTexture);
 			radio.selectedDownIcon = new Image(radioSelectedDownIconTexture);
 			radio.selectedDisabledIcon = new Image(radioSelectedDisabledIconTexture);
+
+			radio.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
+			radio.focusPadding = -2;
 
 			radio.defaultLabelProperties.textFormat = this.defaultTextFormat;
 			radio.disabledLabelProperties.textFormat = this.disabledTextFormat;
@@ -637,6 +651,9 @@ package feathers.themes
 			toggle.labelAlign = ToggleSwitch.LABEL_ALIGN_MIDDLE;
 			toggle.defaultLabelProperties.textFormat = this.defaultTextFormat;
 			toggle.disabledLabelProperties.textFormat = this.disabledTextFormat;
+
+			toggle.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
+			toggle.focusPadding = -1;
 		}
 
 		protected function buttonGroupInitializer(group:ButtonGroup):void
@@ -656,6 +673,8 @@ package feathers.themes
 				slider.thumbProperties.downSkin = new Image(vSliderThumbDownSkinTexture);
 				slider.thumbProperties.disabledSkin = new Image(vSliderThumbDisabledSkinTexture);
 				slider.minimumTrackProperties.defaultSkin = new Scale3Image(vSliderTrackSkinTextures);
+				slider.focusPaddingLeft = slider.focusPaddingRight = -2;
+				slider.focusPaddingTop = slider.focusPaddingBottom = -2 + slider.minimumPadding;
 			}
 			else //horizontal
 			{
@@ -664,12 +683,19 @@ package feathers.themes
 				slider.thumbProperties.downSkin = new Image(hSliderThumbDownSkinTexture);
 				slider.thumbProperties.disabledSkin = new Image(hSliderThumbDisabledSkinTexture);
 				slider.minimumTrackProperties.defaultSkin = new Scale3Image(hSliderTrackSkinTextures);
+				slider.focusPaddingTop = slider.focusPaddingBottom = -2;
+				slider.focusPaddingLeft = slider.focusPaddingRight = -2 + slider.minimumPadding;
 			}
+
+			slider.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
 		}
 
 		protected function numericStepperInitializer(stepper:NumericStepper):void
 		{
 			stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL;
+
+			stepper.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
+			stepper.focusPadding = -1;
 		}
 
 		protected function simpleScrollBarInitializer(scrollBar:SimpleScrollBar):void
@@ -776,6 +802,9 @@ package feathers.themes
 			input.backgroundSkin = new Scale9Image(textInputBackgroundSkinTextures);
 			input.backgroundDisabledSkin = new Scale9Image(textInputBackgroundDisabledSkinTextures);
 
+			input.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
+			input.focusPadding = -1;
+
 			input.promptProperties.textFormat = this.defaultTextFormat;
 		}
 
@@ -806,6 +835,14 @@ package feathers.themes
 			textArea.horizontalScrollPolicy = ScrollContainer.SCROLL_POLICY_AUTO;
 
 			textArea.textEditorProperties.textFormat = this.defaultTextFormat;
+
+			textArea.paddingTop = 2;
+			textArea.paddingBottom = 2;
+			textArea.paddingRight = 4;
+			textArea.paddingLeft = 4;
+
+			textArea.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
+			textArea.focusPadding = -1;
 
 			const backgroundSkin:Scale9Image = new Scale9Image(textInputBackgroundSkinTextures);
 			backgroundSkin.width = 264;
@@ -854,6 +891,9 @@ package feathers.themes
 		{
 			list.backgroundSkin = new Scale9Image(simpleBorderBackgroundSkinTextures);
 
+			list.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
+			list.focusPadding = -1;
+
 			list.paddingTop = list.paddingRight = list.paddingBottom =
 				list.paddingLeft = 1;
 
@@ -870,6 +910,9 @@ package feathers.themes
 		protected function groupedListInitializer(list:GroupedList):void
 		{
 			list.backgroundSkin = new Scale9Image(simpleBorderBackgroundSkinTextures);
+
+			list.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
+			list.focusPadding = -1;
 
 			list.paddingTop = list.paddingRight = list.paddingBottom =
 				list.paddingLeft = 1;
