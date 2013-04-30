@@ -467,9 +467,9 @@ package feathers.core
 				event.preventDefault();
 			}
 			this.focus = newFocus;
-			if(this._focus && "showFocus" in this._focus)
+			if(this._focus)
 			{
-				this._focus["showFocus"]();
+				this._focus.showFocus();
 			}
 
 		}
