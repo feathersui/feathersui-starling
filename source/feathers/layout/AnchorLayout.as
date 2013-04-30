@@ -31,6 +31,15 @@ package feathers.layout
 	/**
 	 * Positions and sizes items based on anchor positions.
 	 *
+	 * <p><strong>Beta Layout:</strong> This is a new layout, and its APIs
+	 * may need some changes between now and the next version of Feathers to
+	 * account for overlooked requirements or other issues. Upgrading to future
+	 * versions of Feathers may involve manual changes to your code that uses
+	 * this layout. The
+	 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>
+	 * will not go into effect until this layout's status is upgraded from
+	 * beta to stable.</p>
+	 *
 	 * @see http://wiki.starling-framework.org/feathers/anchor-layout
 	 * @see AnchorLayoutData
 	 */
