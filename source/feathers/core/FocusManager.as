@@ -7,6 +7,7 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.core
 {
+	import feathers.controls.supportClasses.LayoutViewPort;
 	import feathers.events.FeathersEventType;
 
 	import flash.display.Sprite;
@@ -330,6 +331,10 @@ package feathers.core
 		 */
 		protected function findPreviousFocus(container:DisplayObjectContainer, beforeChild:DisplayObject = null):IFocusDisplayObject
 		{
+			if(container is LayoutViewPort)
+			{
+				container = container.parent;
+			}
 			var startIndex:int = container.numChildren - 1;
 			if(beforeChild)
 			{
@@ -369,6 +374,10 @@ package feathers.core
 		 */
 		protected function findNextFocus(container:DisplayObjectContainer, afterChild:DisplayObject = null):IFocusDisplayObject
 		{
+			if(container is LayoutViewPort)
+			{
+				container = container.parent;
+			}
 			var startIndex:int = 0;
 			if(afterChild)
 			{
