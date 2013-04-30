@@ -140,8 +140,6 @@ package feathers.controls
 		 */
 		public function NumericStepper()
 		{
-			this.addEventListener(FeathersEventType.FOCUS_IN, numericStepper_focusInHandler);
-			this.addEventListener(FeathersEventType.FOCUS_OUT, numericStepper_focusOutHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, numericStepper_removedFromStageHandler);
 		}
 
@@ -860,6 +858,7 @@ package feathers.controls
 			const decrementButtonFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DECREMENT_BUTTON_FACTORY);
 			const incrementButtonFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_INCREMENT_BUTTON_FACTORY);
 			const textInputFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_TEXT_INPUT_FACTORY);
+			const focusInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_FOCUS);
 
 			if(decrementButtonFactoryInvalid)
 			{
@@ -918,6 +917,11 @@ package feathers.controls
 				dataInvalid || stylesInvalid || sizeInvalid)
 			{
 				this.layoutChildren();
+			}
+
+			if(sizeInvalid || focusInvalid)
+			{
+				this.refreshFocusIndicator();
 			}
 		}
 
@@ -1235,16 +1239,18 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function numericStepper_focusInHandler(event:Event):void
+		override protected function focusInHandler(event:Event):void
 		{
+			super.focusInHandler(event);
 			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 		}
 
 		/**
 		 * @private
 		 */
-		protected function numericStepper_focusOutHandler(event:Event):void
+		override protected function focusOutHandler(event:Event):void
 		{
+			super.focusOutHandler(event);
 			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 		}
 

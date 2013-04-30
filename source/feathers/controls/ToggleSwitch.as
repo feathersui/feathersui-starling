@@ -186,8 +186,6 @@ package feathers.controls
 		{
 			super();
 			this.addEventListener(TouchEvent.TOUCH, toggleSwitch_touchHandler);
-			this.addEventListener(FeathersEventType.FOCUS_IN, toggleSwitch_focusInHandler);
-			this.addEventListener(FeathersEventType.FOCUS_OUT, toggleSwitch_focusOutHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, toggleSwitch_removedFromStageHandler);
 		}
 
@@ -1283,6 +1281,7 @@ package feathers.controls
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
+			const focusInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_FOCUS);
 			const textRendererInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_TEXT_RENDERER);
 			const thumbFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_THUMB_FACTORY);
 			const onTrackFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_ON_TRACK_FACTORY);
@@ -1309,17 +1308,32 @@ package feathers.controls
 			{
 				this.refreshOnLabelStyles();
 				this.refreshOffLabelStyles();
-				this.refreshThumbStyles();
-				this.refreshTrackStyles();
 			}
 
-			if(stateInvalid)
+			if(thumbFactoryInvalid || stylesInvalid)
 			{
-				this.thumb.isEnabled = this.onTrack.isEnabled = this._isEnabled;
-				if(this.offTrack)
-				{
-					this.offTrack.isEnabled = this._isEnabled;
-				}
+				this.refreshThumbStyles();
+			}
+			if(onTrackFactoryInvalid || stylesInvalid)
+			{
+				this.refreshOnTrackStyles();
+			}
+			if((offTrackFactoryInvalid || stylesInvalid) && this.offTrack)
+			{
+				this.refreshOffTrackStyles();
+			}
+
+			if(thumbFactoryInvalid || stateInvalid)
+			{
+				this.thumb.isEnabled = this._isEnabled;
+			}
+			if(onTrackFactoryInvalid || stateInvalid)
+			{
+				this.onTrack.isEnabled = this._isEnabled;
+			}
+			if((offTrackFactoryInvalid || stateInvalid) && this.offTrack)
+			{
+				this.offTrack.isEnabled = this._isEnabled;
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
@@ -1329,9 +1343,14 @@ package feathers.controls
 				this.updateSelection();
 			}
 
-			if(stylesInvalid || sizeInvalid || stateInvalid)
+			if(stylesInvalid || sizeInvalid || stateInvalid || selectionInvalid)
 			{
 				this.layoutChildren();
+			}
+
+			if(sizeInvalid || focusInvalid)
+			{
+				this.refreshFocusIndicator();
 			}
 		}
 
@@ -1715,7 +1734,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function refreshTrackStyles():void
+		protected function refreshOnTrackStyles():void
 		{
 			for(var propertyName:String in this._onTrackProperties)
 			{
@@ -1725,15 +1744,23 @@ package feathers.controls
 					this.onTrack[propertyName] = propertyValue;
 				}
 			}
-			if(this.offTrack)
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshOffTrackStyles():void
+		{
+			if(!this.offTrack)
 			{
-				for(propertyName in this._offTrackProperties)
+				return;
+			}
+			for(var propertyName:String in this._offTrackProperties)
+			{
+				if(this.offTrack.hasOwnProperty(propertyName))
 				{
-					if(this.offTrack.hasOwnProperty(propertyName))
-					{
-						propertyValue = this._offTrackProperties[propertyName];
-						this.offTrack[propertyName] = propertyValue;
-					}
+					var propertyValue:Object = this._offTrackProperties[propertyName];
+					this.offTrack[propertyName] = propertyValue;
 				}
 			}
 		}
@@ -1784,8 +1811,9 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function toggleSwitch_focusInHandler(event:Event):void
+		override protected function focusInHandler(event:Event):void
 		{
+			super.focusInHandler(event);
 			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 			this.stage.addEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
 		}
@@ -1793,8 +1821,9 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function toggleSwitch_focusOutHandler(event:Event):void
+		override protected function focusOutHandler(event:Event):void
 		{
+			super.focusOutHandler(event);
 			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 			this.stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
 		}

@@ -90,8 +90,6 @@ package feathers.controls
 		{
 			this.isQuickHitAreaEnabled = true;
 			this.addEventListener(TouchEvent.TOUCH, textInput_touchHandler);
-			this.addEventListener(FeathersEventType.FOCUS_IN, textInput_focusInHandler);
-			this.addEventListener(FeathersEventType.FOCUS_OUT, textInput_focusOutHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, textInput_removedFromStageHandler);
 		}
 
@@ -819,6 +817,19 @@ package feathers.controls
 		}
 
 		/**
+		 * @inheritDoc
+		 */
+		override public function showFocus():void
+		{
+			if(!this._focusManager || this._focusManager.focus != this)
+			{
+				return;
+			}
+			this.selectRange(0, this._text.length);
+			super.showFocus();
+		}
+
+		/**
 		 * Focuses the text input control so that it may be edited.
 		 */
 		public function setFocus():void
@@ -885,6 +896,7 @@ package feathers.controls
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const textEditorInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_TEXT_EDITOR);
 			const promptFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_PROMPT_FACTORY);
+			const focusInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_FOCUS);
 
 			if(textEditorInvalid)
 			{
@@ -939,6 +951,11 @@ package feathers.controls
 			if(textEditorInvalid || promptFactoryInvalid || sizeInvalid || stylesInvalid || skinInvalid || stateInvalid)
 			{
 				this.layout();
+			}
+
+			if(sizeInvalid || focusInvalid)
+			{
+				this.refreshFocusIndicator();
 			}
 
 			this.doPendingActions();
@@ -1292,24 +1309,26 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function textInput_focusInHandler(event:Event):void
+		override protected function focusInHandler(event:Event):void
 		{
 			if(!this._focusManager)
 			{
 				return;
 			}
+			super.focusInHandler(event);
 			this.setFocus();
 		}
 
 		/**
 		 * @private
 		 */
-		protected function textInput_focusOutHandler(event:Event):void
+		override protected function focusOutHandler(event:Event):void
 		{
 			if(!this._focusManager)
 			{
 				return;
 			}
+			super.focusOutHandler(event);
 			this.textEditor.clearFocus();
 		}
 

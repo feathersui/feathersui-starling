@@ -14,7 +14,6 @@ package feathers.controls
 	import feathers.core.PropertyProxy;
 	import feathers.data.HierarchicalCollection;
 	import feathers.events.CollectionEventType;
-	import feathers.events.FeathersEventType;
 	import feathers.layout.ILayout;
 	import feathers.layout.VerticalLayout;
 
@@ -284,8 +283,6 @@ package feathers.controls
 		public function GroupedList()
 		{
 			super();
-			this.addEventListener(FeathersEventType.FOCUS_IN, list_focusInHandler);
-			this.addEventListener(FeathersEventType.FOCUS_OUT, list_focusOutHandler);
 		}
 
 		/**
@@ -2046,6 +2043,7 @@ package feathers.controls
 		{
 			this.refreshDataViewPortProperties();
 			super.draw();
+			this.refreshFocusIndicator();
 		}
 
 		/**
@@ -2122,16 +2120,18 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function list_focusInHandler(event:Event):void
+		override protected function focusInHandler(event:Event):void
 		{
+			super.focusInHandler(event);
 			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 		}
 
 		/**
 		 * @private
 		 */
-		protected function list_focusOutHandler(event:Event):void
+		override protected function focusOutHandler(event:Event):void
 		{
+			super.focusOutHandler(event);
 			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 		}
 
