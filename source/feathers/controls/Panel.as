@@ -514,11 +514,7 @@ package feathers.controls
 			}
 			if(needsHeight)
 			{
-				newHeight = this.header.height + this._viewPort.height + this._bottomViewPortOffset + this._topViewPortOffset;
-				if(this.footer)
-				{
-					newHeight += this.footer.height;
-				}
+				newHeight = this._viewPort.height + this._bottomViewPortOffset + this._topViewPortOffset;
 				if(!isNaN(this.originalBackgroundHeight))
 				{
 					newHeight = Math.max(newHeight, this.originalBackgroundHeight);
