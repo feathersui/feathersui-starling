@@ -43,7 +43,7 @@ Noteworthy changes in official releases of [Feathers](http://feathersui.com/).
 * Scroller: added FeathersEventType.SCROLL_START event.
 * Scroller: scroll bars are hidden when stopScrolling() is called.
 * Button: better detection of click to avoid other display objects moving on top of button before TouchPhase.ENDED.
-* Button: new styles for themes, including back, forward, quiet, danger, 
+* Button: new styles for themes, including back, forward, call-to-action, quiet, and danger.
 * List: if items are added or removed, selected indices are adjusted.
 * List, GroupedList, ScrollContainer, and ScrollText all extend Scroller, instead of using it as a sub-component. The scrollerProperties property on each of these is now deprecated because all public properties of Scroller are now direct public properties of these components.
 * FeathersControl: setSizeInternal() is now stricter. It can never receive a NaN value for width or height. This is a common source of bugs, and throwing an error here will help make it easier to find those bugs.
