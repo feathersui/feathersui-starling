@@ -549,6 +549,9 @@ package feathers.themes
 		protected function panelScreenInitializer(screen:PanelScreen):void
 		{
 			screen.originalDPI = this._originalDPI;
+
+			screen.verticalScrollBarFactory = this.verticalScrollBarFactory;
+			screen.horizontalScrollBarFactory = this.horizontalScrollBarFactory;
 		}
 
 		protected function simpleButtonInitializer(button:Button):void
