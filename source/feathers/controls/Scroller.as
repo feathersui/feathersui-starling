@@ -543,7 +543,7 @@ package feathers.controls
 			if(this._viewPort)
 			{
 				this._viewPort.addEventListener(FeathersEventType.RESIZE, viewPort_resizeHandler);
-				this.addChild(DisplayObject(this._viewPort));
+				this.addChildAt(DisplayObject(this._viewPort), 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
@@ -1366,7 +1366,7 @@ package feathers.controls
 			if(this._backgroundSkin && this._backgroundSkin.parent != this)
 			{
 				this._backgroundSkin.visible = false;
-				this.addChildAt(this._backgroundSkin, 0);
+				this.addChild(this._backgroundSkin);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1402,7 +1402,7 @@ package feathers.controls
 			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin.parent != this)
 			{
 				this._backgroundDisabledSkin.visible = false;
-				this.addChildAt(this._backgroundDisabledSkin, 0);
+				this.addChild(this._backgroundDisabledSkin);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -2133,6 +2133,8 @@ package feathers.controls
 			}
 			if(this.currentBackgroundSkin)
 			{
+				//force it to the bottom
+				this.setChildIndex(this.currentBackgroundSkin, 0);
 				this.currentBackgroundSkin.visible = true;
 
 				if(isNaN(this.originalBackgroundWidth))
@@ -3479,7 +3481,7 @@ package feathers.controls
 		 */
 		protected function nativeStage_mouseWheelHandler(event:MouseEvent):void
 		{
-			if(!this._isEnabled)
+			if(!this._isEnabled || this._maxVerticalScrollPosition == 0)
 			{
 				return;
 			}
