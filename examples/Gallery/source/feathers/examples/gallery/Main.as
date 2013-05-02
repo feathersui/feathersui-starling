@@ -1,7 +1,7 @@
 package feathers.examples.gallery
 {
+	import feathers.controls.Label;
 	import feathers.controls.List;
-	import feathers.controls.text.TextFieldTextRenderer;
 	import feathers.data.ListCollection;
 	import feathers.layout.HorizontalLayout;
 
@@ -13,7 +13,6 @@ package feathers.examples.gallery
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.system.LoaderContext;
-	import flash.text.TextFormat;
 
 	import starling.animation.Transitions;
 	import starling.animation.Tween;
@@ -27,6 +26,9 @@ package feathers.examples.gallery
 
 	public class Main extends Sprite
 	{
+		//used by the extended theme
+		public static const THUMBNAIL_LIST_NAME:String = "thumbnailList";
+
 		private static const LOADER_CONTEXT:LoaderContext = new LoaderContext(true);
 		private static const FLICKR_URL:String = "http://api.flickr.com/services/rest/?method=flickr.interestingness.getList&api_key=" + CONFIG::FLICKR_API_KEY + "&format=rest";
 		private static const FLICKR_PHOTO_URL:String = "http://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}_{size}.jpg";
@@ -38,7 +40,7 @@ package feathers.examples.gallery
 
 		protected var selectedImage:Image;
 		protected var list:List;
-		protected var message:TextFieldTextRenderer;
+		protected var message:Label;
 		protected var apiLoader:URLLoader;
 		protected var loader:Loader;
 		protected var fadeTween:Tween;
@@ -105,8 +107,13 @@ package feathers.examples.gallery
 
 		protected function addedToStageHandler(event:starling.events.Event):void
 		{
+			//this is an *extended* version of MetalWorksMobileTheme
+			new GalleryTheme();
+
 			this.apiLoader = new URLLoader();
 			this.apiLoader.addEventListener(flash.events.Event.COMPLETE, apiLoader_completeListener);
+			this.apiLoader.addEventListener(IOErrorEvent.IO_ERROR, apiLoader_errorListener);
+			this.apiLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, apiLoader_errorListener);
 			this.apiLoader.load(new URLRequest(FLICKR_URL));
 
 			this.stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
@@ -117,16 +124,15 @@ package feathers.examples.gallery
 			listLayout.manageVisibility = true;
 
 			this.list = new List();
+			this.list.nameList.add(THUMBNAIL_LIST_NAME);
 			this.list.layout = listLayout;
-			this.list.backgroundSkin = new Quad(100, 100, 0x222222);
 			this.list.horizontalScrollPolicy = List.SCROLL_POLICY_ON;
 			this.list.snapScrollPositionsToPixels = true;
 			this.list.itemRendererType = GalleryItemRenderer;
 			this.list.addEventListener(starling.events.Event.CHANGE, list_changeHandler);
 			this.addChild(this.list);
 
-			this.message = new TextFieldTextRenderer();
-			this.message.textFormat = new TextFormat("Helvetica,Arial,_sans", 14, 0xffffff, true);
+			this.message = new Label();
 			this.message.text = "Loading...";
 			this.addChild(this.message);
 
@@ -167,6 +173,12 @@ package feathers.examples.gallery
 
 			this.list.dataProvider = new ListCollection(items);
 			this.list.selectedIndex = 0;
+		}
+
+		protected function apiLoader_errorListener(event:flash.events.Event):void
+		{
+			this.message.text = "Error loading images.";
+			this.layout();
 		}
 
 		protected function loader_completeHandler(event:flash.events.Event):void
