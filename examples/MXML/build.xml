@@ -50,7 +50,7 @@
 			<arg line="${output.path}/MXML.ipa"/>
 			<arg line="source/MXML-app.xml"/>
 			<arg line="-C ${icon.path}"/>
-			<arg line="icon29.png icon48.png icon50.png icon57.png icon58.png icon72.png icon96.png icon100.png icon114.png icon128.png icon144.png"/>
+			<arg line="icon29.png icon48.png icon50.png icon57.png icon58.png icon72.png icon96.png icon100.png icon114.png icon128.png icon144.png Default.png Default@2x.png Default-Portrait.png Default-Portrait@2x.png Default-Landscape.png Default-Landscape@2x.png Default-568h@2x.png"/>
 			<arg line="-C ${output.path}"/>
 			<arg line="MXML.swf"/>
 		</java>
