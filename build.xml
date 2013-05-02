@@ -202,6 +202,15 @@
 			</fileset>
 		</copy>
 
+		<copy overwrite="true" todir="${examples.output}/TrainTimes">
+			<fileset dir="${examples.root}/TrainTimes">
+				<include name="README.md"/>
+				<include name="source/**"/>
+				<include name="assets/**"/>
+				<exclude name="source/TrainTimesWeb.as"/>
+			</fileset>
+		</copy>
+
 		<copy overwrite="true" todir="${examples.output}/YouTubeFeeds">
 			<fileset dir="${examples.root}/YouTubeFeeds">
 				<include name="README.md"/>
