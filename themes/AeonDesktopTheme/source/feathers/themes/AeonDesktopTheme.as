@@ -35,6 +35,7 @@ package feathers.themes
 	import feathers.controls.NumericStepper;
 	import feathers.controls.PageIndicator;
 	import feathers.controls.Panel;
+	import feathers.controls.PanelScreen;
 	import feathers.controls.PickerList;
 	import feathers.controls.ProgressBar;
 	import feathers.controls.Radio;
@@ -495,6 +496,14 @@ package feathers.themes
 			screen.originalDPI = this.originalDPI;
 		}
 
+		protected function panelScreenInitializer(screen:PanelScreen):void
+		{
+			screen.originalDPI = this.originalDPI;
+
+			screen.horizontalScrollBarFactory = horizontalScrollBarFactory;
+			screen.verticalScrollBarFactory = verticalScrollBarFactory;
+		}
+
 		protected function labelInitializer(label:Label):void
 		{
 			label.textRendererProperties.textFormat = this.defaultTextFormat;
@@ -897,6 +906,9 @@ package feathers.themes
 			panel.paddingRight = 10;
 			panel.paddingBottom = 10;
 			panel.paddingLeft = 10;
+
+			panel.horizontalScrollBarFactory = horizontalScrollBarFactory;
+			panel.verticalScrollBarFactory = verticalScrollBarFactory;
 		}
 
 		protected function listInitializer(list:List):void
