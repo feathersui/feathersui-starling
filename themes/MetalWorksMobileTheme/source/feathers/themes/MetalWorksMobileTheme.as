@@ -1119,7 +1119,8 @@ package feathers.themes
 
 			input.minWidth = input.minHeight = 60 * this.scale;
 			input.minTouchWidth = input.minTouchHeight = 88 * this.scale;
-			input.paddingTop = input.paddingBottom = 10 * this.scale;
+			input.paddingTop = 12 * this.scale;
+			input.paddingBottom = 10 * this.scale;
 			input.paddingLeft = input.paddingRight = 14 * this.scale;
 			input.textEditorProperties.fontFamily = "Helvetica";
 			input.textEditorProperties.fontSize = 24 * this.scale;
@@ -1148,7 +1149,8 @@ package feathers.themes
 
 			input.minWidth = input.minHeight = 60 * this.scale;
 			input.minTouchWidth = input.minTouchHeight = 88 * this.scale;
-			input.paddingTop = input.paddingBottom = 10 * this.scale;
+			input.paddingTop = 12 * this.scale;
+			input.paddingBottom = 10 * this.scale;
 			input.paddingLeft = input.paddingRight = 14 * this.scale;
 			input.isEditable = false;
 			input.textEditorFactory = stepperTextEditorFactory;
