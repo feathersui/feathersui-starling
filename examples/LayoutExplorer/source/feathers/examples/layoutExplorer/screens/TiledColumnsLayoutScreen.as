@@ -1,17 +1,13 @@
 package feathers.examples.layoutExplorer.screens
 {
 	import feathers.controls.Button;
-	import feathers.controls.Header;
 	import feathers.controls.PanelScreen;
-	import feathers.controls.Screen;
-	import feathers.controls.ScrollContainer;
 	import feathers.events.FeathersEventType;
 	import feathers.examples.layoutExplorer.data.TiledColumnsLayoutSettings;
 	import feathers.layout.TiledColumnsLayout;
 	import feathers.system.DeviceCapabilities;
 
 	import starling.core.Starling;
-
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.events.Event;
@@ -39,7 +35,8 @@ package feathers.examples.layoutExplorer.screens
 		{
 			const layout:TiledColumnsLayout = new TiledColumnsLayout();
 			layout.paging = this.settings.paging;
-			layout.gap = this.settings.gap;
+			layout.horizontalGap = this.settings.horizontalGap;
+			layout.verticalGap = this.settings.verticalGap;
 			layout.paddingTop = this.settings.paddingTop;
 			layout.paddingRight = this.settings.paddingRight;
 			layout.paddingBottom = this.settings.paddingBottom;

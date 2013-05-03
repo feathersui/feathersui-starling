@@ -23,6 +23,7 @@
 	<component id="SimpleScrollBar" class="feathers.controls.SimpleScrollBar"/>
 	<component id="Slider" class="feathers.controls.Slider"/>
 	<component id="TabBar" class="feathers.controls.TabBar"/>
+	<component id="TextArea" class="feathers.controls.TextArea"/>
 	<component id="TextInput" class="feathers.controls.TextInput"/>
 	<component id="ToggleSwitch" class="feathers.controls.ToggleSwitch"/>
 
@@ -38,6 +39,7 @@
 	<component id="TextFieldTextRenderer" class="feathers.controls.text.TextFieldTextRenderer"/>
 	<component id="TextFieldTextEditor" class="feathers.controls.text.TextFieldTextEditor"/>
 	<component id="StageTextTextEditor" class="feathers.controls.text.StageTextTextEditor"/>
+	<component id="TextFieldTextEditorViewPort" class="feathers.controls.text.TextFieldTextEditorViewPort"/>
 
 	<component id="FeathersControl" class="feathers.core.FeathersControl"/>
 	<component id="ToggleGroup" class="feathers.core.ToggleGroup"/>

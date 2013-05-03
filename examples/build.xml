@@ -7,8 +7,9 @@
 		<ant dir="${basedir}/Gallery" target="build-web" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/HelloWorld" target="build-web" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/LayoutExplorer" target="build-web" inheritAll="false" useNativeBasedir="true"/>
+		<!--<ant dir="${basedir}/MXML" target="build-web" inheritAll="false" useNativeBasedir="true"/>-->
 		<ant dir="${basedir}/TileList" target="build-web" inheritAll="false" useNativeBasedir="true"/>
-		<ant dir="${basedir}/TrainTimes" target="build-web" inheritAll="false" useNativeBasedir="true"/>
+		<!--<ant dir="${basedir}/TrainTimes" target="build-web" inheritAll="false" useNativeBasedir="true"/>-->
 		<ant dir="${basedir}/YouTubeFeeds" target="build-web" inheritAll="false" useNativeBasedir="true"/>
 	</target>
 	<target name="android" description="Builds Android APKs from all examples.">

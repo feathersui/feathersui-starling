@@ -1,8 +1,11 @@
 package feathers.examples.componentsExplorer.screens
 {
 	import feathers.controls.Button;
+	import feathers.controls.List;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.PickerList;
+	import feathers.controls.renderers.DefaultListItemRenderer;
+	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.AnchorLayout;
@@ -55,17 +58,26 @@ package feathers.examples.componentsExplorer.screens
 			this._list.typicalItem = { text: "Select an Item" };
 			this._list.labelField = "text";
 
-			//notice that we're setting typicalItem on the list separately. we
-			//may want to have the list measure at a different width, so it
-			//might need a different typical item than the picker list's button.
-			this._list.listProperties.typicalItem = { text: "Item 1000" };
-
-			//notice that we're setting labelField on the item renderers
-			//separately. the default item renderer has a labelField property,
-			//but a custom item renderer may not even have a label, so
-			//PickerList cannot simply pass its labelField down to item
-			//renderers automatically
-			this._list.listProperties.@itemRendererProperties.labelField = "text";
+			this._list.listFactory = function():List
+			{
+				var list:List = new List();
+				//notice that we're setting typicalItem on the list separately. we
+				//may want to have the list measure at a different width, so it
+				//might need a different typical item than the picker list's button.
+				list.typicalItem = { text: "Item 1000" };
+				list.itemRendererFactory = function():IListItemRenderer
+				{
+					var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+					//notice that we're setting labelField on the item renderers
+					//separately. the default item renderer has a labelField property,
+					//but a custom item renderer may not even have a label, so
+					//PickerList cannot simply pass its labelField down to item
+					//renderers automatically
+					renderer.labelField = "text";
+					return renderer;
+				};
+				return list;
+			};
 
 			this.headerProperties.title = "Picker List";
 

@@ -477,6 +477,7 @@ package feathers.themes
 			this.setInitializerForClass(Check, checkInitializer);
 			this.setInitializerForClass(Slider, sliderInitializer);
 			this.setInitializerForClass(ToggleSwitch, toggleSwitchInitializer);
+			this.setInitializerForClass(NumericStepper, numericStepperInitializer);
 			this.setInitializerForClass(TextInput, textInputInitializer);
 			this.setInitializerForClass(TextInput, numericStepperTextInputInitializer, NumericStepper.DEFAULT_CHILD_NAME_TEXT_INPUT);
 			this.setInitializerForClass(PageIndicator, pageIndicatorInitializer);
@@ -1089,6 +1090,13 @@ package feathers.themes
 			toggle.onLabelProperties.embedFonts = true;
 		}
 
+		protected function numericStepperInitializer(stepper:NumericStepper):void
+		{
+			stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_SPLIT_HORIZONTAL;
+			stepper.incrementButtonLabel = "+";
+			stepper.decrementButtonLabel = "-";
+		}
+
 		protected function textInputInitializer(input:TextInput):void
 		{
 			const backgroundSkin:Scale9Image = new Scale9Image(this.backgroundSkinTextures, this.scale);
@@ -1197,8 +1205,8 @@ package feathers.themes
 		{
 			header.minWidth = 88 * this.scale;
 			header.minHeight = 88 * this.scale;
-			header.paddingTop = header.paddingRight = header.paddingBottom =
-				header.paddingLeft = 14 * this.scale;
+			header.paddingTop = header.paddingBottom = 14 * this.scale;
+			header.paddingLeft = header.paddingRight = 18 * this.scale;
 
 			header.titleProperties.textFormat = this.headerTextFormat;
 			header.titleProperties.embedFonts = true;
@@ -1274,7 +1282,7 @@ package feathers.themes
 
 		protected function panelInitializer(panel:Panel):void
 		{
-			const backgroundSkin:Scale9Image = new Scale9Image(this.backgroundDisabledSkinTextures, this.scale);
+			const backgroundSkin:Scale9Image = new Scale9Image(this.backgroundPopUpSkinTextures, this.scale);
 			panel.backgroundSkin = backgroundSkin;
 
 			panel.paddingTop = 0;

@@ -2221,22 +2221,8 @@ package feathers.controls
 			//if scroll bars are fixed, we're going to include the offsets even
 			//if they may not be needed in the final pass. if not fixed, the
 			//view port fills the entire bounds.
-			if(isNaN(this.explicitWidth))
-			{
-				this._viewPort.visibleWidth = NaN;
-			}
-			else
-			{
-				this._viewPort.visibleWidth = this.explicitWidth  - horizontalWidthOffset;
-			}
-			if(isNaN(this.explicitHeight))
-			{
-				this._viewPort.visibleHeight = NaN;
-			}
-			else
-			{
-				this._viewPort.visibleHeight = this.explicitHeight - verticalHeightOffset;
-			}
+			this._viewPort.visibleWidth = this.explicitWidth - horizontalWidthOffset;
+			this._viewPort.visibleHeight = this.explicitHeight - verticalHeightOffset;
 			this._viewPort.minVisibleWidth = Math.max(0, this._minWidth - horizontalWidthOffset);
 			this._viewPort.maxVisibleWidth = this._maxWidth - horizontalWidthOffset;
 			this._viewPort.minVisibleHeight = Math.max(0, this._minHeight - verticalHeightOffset);

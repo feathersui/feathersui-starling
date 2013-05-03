@@ -70,5 +70,37 @@ package feathers.core
 		 * @private
 		 */
 		function set previousTabFocus(value:IFocusDisplayObject):void;
+
+		/**
+		 * If the object has focus, an additional visual indicator may
+		 * optionally be displayed to highlight the object. Calling this
+		 * function may have no effect. It's merely a suggestion to the object.
+		 *
+		 * <p><strong>Important:</strong> This function will not give focus to
+		 * the display object if it doesn't have focus. To give focus to the
+		 * display object, you should set the <code>focus</code> property on
+		 * the focus manager.</p>
+		 *
+		 * <listing version="3.0">
+		 * object.focusManager.focus = object;</listing>
+		 *
+		 * @see #hideFocus()
+		 * @see feathers.core.IFocusManager#focus
+		 */
+		function showFocus():void;
+
+		/**
+		 * If the visual indicator of focus has been displayed by
+		 * <code>showFocus()</code>, call this function to hide it.
+		 *
+		 * <p><strong>Important:</strong> This function will not clear focus
+		 * from the display object if it has focus. To clear focus from the
+		 * display object, you should set the <code>focus</code> property on
+		 * the focus manager to <code>null</code> or another display object.</p>
+		 *
+		 * @see #showFocus()
+		 * @see feathers.core.IFocusManager#focus
+		 */
+		function hideFocus():void;
 	}
 }

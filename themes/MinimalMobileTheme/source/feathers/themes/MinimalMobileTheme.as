@@ -35,6 +35,7 @@ package feathers.themes
 	import feathers.controls.List;
 	import feathers.controls.NumericStepper;
 	import feathers.controls.PageIndicator;
+	import feathers.controls.Panel;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.PickerList;
 	import feathers.controls.ProgressBar;
@@ -377,6 +378,7 @@ package feathers.themes
 			this.setInitializerForClass(ButtonGroup, buttonGroupInitializer);
 			this.setInitializerForClass(Slider, sliderInitializer);
 			this.setInitializerForClass(ToggleSwitch, toggleSwitchInitializer);
+			this.setInitializerForClass(NumericStepper, numericStepperInitializer);
 			this.setInitializerForClass(Check, checkInitializer);
 			this.setInitializerForClass(Radio, radioInitializer);
 			this.setInitializerForClass(DefaultListItemRenderer, itemRendererInitializer);
@@ -391,11 +393,13 @@ package feathers.themes
 			this.setInitializerForClass(GroupedList, groupedListInsetInitializer, GroupedList.ALTERNATE_NAME_INSET_GROUPED_LIST);
 			this.setInitializerForClass(PickerList, pickerListInitializer);
 			this.setInitializerForClass(Header, headerInitializer);
+			this.setInitializerForClass(Header, panelHeaderInitializer, Panel.DEFAULT_CHILD_NAME_HEADER);
 			this.setInitializerForClass(TextInput, textInputInitializer);
 			this.setInitializerForClass(TextInput, numericStepperTextInputInitializer, NumericStepper.DEFAULT_CHILD_NAME_TEXT_INPUT);
 			this.setInitializerForClass(PageIndicator, pageIndicatorInitializer);
 			this.setInitializerForClass(ProgressBar, progressBarInitializer);
 			this.setInitializerForClass(Callout, calloutInitializer);
+			this.setInitializerForClass(Panel, panelInitializer);
 		}
 
 		protected function pageIndicatorNormalSymbolFactory():DisplayObject
@@ -676,6 +680,13 @@ package feathers.themes
 			};
 			thumb.stateToSkinFunction = skinSelector.updateValue;
 			thumb.minTouchWidth = thumb.minTouchHeight = 88 * this.scale;
+		}
+
+		protected function numericStepperInitializer(stepper:NumericStepper):void
+		{
+			stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_SPLIT_HORIZONTAL;
+			stepper.incrementButtonLabel = "+";
+			stepper.decrementButtonLabel = "-";
 		}
 
 		protected function toggleSwitchInitializer(toggleSwitch:ToggleSwitch):void
@@ -959,6 +970,24 @@ package feathers.themes
 			header.titleProperties.disabledTextFormat = this.disabledTextFormat;
 		}
 
+		protected function panelHeaderInitializer(header:Header):void
+		{
+			header.minWidth = 88 * this.scale;
+			header.minHeight = 88 * this.scale;
+			header.paddingTop = header.paddingBottom = 18 * this.scale;
+			header.paddingLeft = header.paddingRight = 14 * this.scale;
+			header.gap = 8 * this.scale;
+			header.titleGap = 12 * this.scale;
+
+			const backgroundSkin:Scale9Image = new Scale9Image(popUpBackgroundSkinTextures, this.scale);
+			backgroundSkin.width = 88 * this.scale;
+			backgroundSkin.height = 88 * this.scale;
+			header.backgroundSkin = backgroundSkin;
+
+			header.titleProperties.textFormat = this.primaryTextFormat;
+			header.titleProperties.disabledTextFormat = this.disabledTextFormat;
+		}
+
 		protected function textInputInitializer(input:TextInput):void
 		{
 			input.minWidth = input.minHeight = 66 * this.scale;
@@ -1069,6 +1098,17 @@ package feathers.themes
 			rightArrowSkin.scaleX = rightArrowSkin.scaleY = this.scale;
 			callout.rightArrowSkin = rightArrowSkin;
 			callout.rightArrowGap = -8 * this.scale;
+		}
+
+		protected function panelInitializer(panel:Panel):void
+		{
+			const backgroundSkin:Scale9Image = new Scale9Image(popUpBackgroundSkinTextures, this.scale);
+			backgroundSkin.width = 20 * this.scale;
+			backgroundSkin.height = 20 * this.scale;
+			panel.backgroundSkin = backgroundSkin;
+
+			panel.paddingTop = panel.paddingRight = panel.paddingBottom =
+				panel.paddingLeft = 14 * this.scale;
 		}
 
 		protected function root_addedToStageHandler(event:Event):void

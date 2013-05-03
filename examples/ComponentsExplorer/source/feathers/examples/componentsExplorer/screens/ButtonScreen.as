@@ -36,18 +36,6 @@ package feathers.examples.componentsExplorer.screens
 		private var _backButton:Button;
 		
 		private var _icon:ImageLoader;
-		private var _iconTexture:Texture;
-
-		override public function dispose():void
-		{
-			if(this._iconTexture)
-			{
-				//since we created this texture, it's up to us to dispose it
-				this._iconTexture.dispose();
-				this._iconTexture = null;
-			}
-			super.dispose();
-		}
 		
 		protected function initializeHandler(event:Event):void
 		{
@@ -63,9 +51,8 @@ package feathers.examples.componentsExplorer.screens
 			this._normalButton.addEventListener(Event.TRIGGERED, normalButton_triggeredHandler);
 			this.addChild(this._normalButton);
 
-			this._iconTexture = Texture.fromBitmap(new EmbeddedAssets.SKULL_ICON());
 			this._icon = new ImageLoader();
-			this._icon.source = this._iconTexture;
+			this._icon.source = EmbeddedAssets.SKULL_ICON_DARK;
 			//the icon will be blurry if it's not on a whole pixel. ImageLoader
 			//can snap to pixels to fix that issue.
 			this._icon.snapToPixels = true;

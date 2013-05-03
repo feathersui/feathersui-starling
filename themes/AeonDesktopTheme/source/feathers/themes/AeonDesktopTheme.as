@@ -32,7 +32,9 @@ package feathers.themes
 	import feathers.controls.Header;
 	import feathers.controls.Label;
 	import feathers.controls.List;
+	import feathers.controls.NumericStepper;
 	import feathers.controls.PageIndicator;
+	import feathers.controls.Panel;
 	import feathers.controls.PickerList;
 	import feathers.controls.ProgressBar;
 	import feathers.controls.Radio;
@@ -42,6 +44,8 @@ package feathers.themes
 	import feathers.controls.ScrollText;
 	import feathers.controls.SimpleScrollBar;
 	import feathers.controls.Slider;
+	import feathers.controls.TabBar;
+	import feathers.controls.TextArea;
 	import feathers.controls.TextInput;
 	import feathers.controls.ToggleSwitch;
 	import feathers.controls.popups.DropDownPopUpContentManager;
@@ -60,7 +64,6 @@ package feathers.themes
 	import feathers.core.ITextRenderer;
 	import feathers.display.Scale3Image;
 	import feathers.display.Scale9Image;
-	import feathers.layout.VerticalLayout;
 	import feathers.skins.StandardIcons;
 	import feathers.system.DeviceCapabilities;
 	import feathers.textures.Scale3Textures;
@@ -88,8 +91,12 @@ package feathers.themes
 		[Embed(source="/../assets/images/aeon.xml",mimeType="application/octet-stream")]
 		protected static const ATLAS_XML:Class;
 
+		protected static const FOCUS_INDICATOR_SCALE_9_GRID:Rectangle = new Rectangle(5, 4, 1, 14);
 		protected static const BUTTON_SCALE_9_GRID:Rectangle = new Rectangle(6, 6, 70, 10);
 		protected static const SELECTED_BUTTON_SCALE_9_GRID:Rectangle = new Rectangle(6, 6, 52, 10);
+		protected static const TAB_SCALE_9_GRID:Rectangle = new Rectangle(4, 4, 55, 16);
+		protected static const STEPPER_INCREMENT_BUTTON_SCALE_9_GRID:Rectangle = new Rectangle(1, 9, 15, 1);
+		protected static const STEPPER_DECREMENT_BUTTON_SCALE_9_GRID:Rectangle = new Rectangle(1, 1, 15, 1);
 		protected static const HSLIDER_FIRST_REGION:Number = 2;
 		protected static const HSLIDER_SECOND_REGION:Number = 75;
 		protected static const TEXT_INPUT_SCALE_9_GRID:Rectangle = new Rectangle(2, 2, 148, 18);
@@ -166,6 +173,8 @@ package feathers.themes
 		protected var defaultTextFormat:TextFormat;
 		protected var disabledTextFormat:TextFormat;
 
+		protected var focusIndicatorSkinTextures:Scale9Textures;
+
 		protected var buttonUpSkinTextures:Scale9Textures;
 		protected var buttonHoverSkinTextures:Scale9Textures;
 		protected var buttonDownSkinTextures:Scale9Textures;
@@ -174,6 +183,23 @@ package feathers.themes
 		protected var buttonSelectedHoverSkinTextures:Scale9Textures;
 		protected var buttonSelectedDownSkinTextures:Scale9Textures;
 		protected var buttonSelectedDisabledSkinTextures:Scale9Textures;
+
+		protected var tabUpSkinTextures:Scale9Textures;
+		protected var tabHoverSkinTextures:Scale9Textures;
+		protected var tabDownSkinTextures:Scale9Textures;
+		protected var tabDisabledSkinTextures:Scale9Textures;
+		protected var tabSelectedUpSkinTextures:Scale9Textures;
+		protected var tabSelectedDisabledSkinTextures:Scale9Textures;
+
+		protected var stepperIncrementButtonUpSkinTextures:Scale9Textures;
+		protected var stepperIncrementButtonHoverSkinTextures:Scale9Textures;
+		protected var stepperIncrementButtonDownSkinTextures:Scale9Textures;
+		protected var stepperIncrementButtonDisabledSkinTextures:Scale9Textures;
+
+		protected var stepperDecrementButtonUpSkinTextures:Scale9Textures;
+		protected var stepperDecrementButtonHoverSkinTextures:Scale9Textures;
+		protected var stepperDecrementButtonDownSkinTextures:Scale9Textures;
+		protected var stepperDecrementButtonDisabledSkinTextures:Scale9Textures;
 
 		protected var hSliderThumbUpSkinTexture:Texture;
 		protected var hSliderThumbHoverSkinTexture:Texture;
@@ -292,8 +318,10 @@ package feathers.themes
 				atlasBitmapData.dispose();
 			}
 
-			this.defaultTextFormat = new TextFormat("_sans", 11, PRIMARY_TEXT_COLOR, false, false, false, "", "", TextFormatAlign.LEFT, 0, 0, 0, 0);
-			this.disabledTextFormat = new TextFormat("_sans", 11, DISABLED_TEXT_COLOR, false, false, false, "", "", TextFormatAlign.LEFT, 0, 0, 0, 0);
+			this.defaultTextFormat = new TextFormat("_sans", 11, PRIMARY_TEXT_COLOR, false, false, false, null, null, TextFormatAlign.LEFT, 0, 0, 0, 0);
+			this.disabledTextFormat = new TextFormat("_sans", 11, DISABLED_TEXT_COLOR, false, false, false, null, null, TextFormatAlign.LEFT, 0, 0, 0, 0);
+
+			this.focusIndicatorSkinTextures = new Scale9Textures(this.atlas.getTexture("focus-indicator-skin"), FOCUS_INDICATOR_SCALE_9_GRID);
 
 			this.buttonUpSkinTextures = new Scale9Textures(this.atlas.getTexture("button-up-skin"), BUTTON_SCALE_9_GRID);
 			this.buttonHoverSkinTextures = new Scale9Textures(this.atlas.getTexture("button-hover-skin"), BUTTON_SCALE_9_GRID);
@@ -303,6 +331,23 @@ package feathers.themes
 			this.buttonSelectedHoverSkinTextures = new Scale9Textures(this.atlas.getTexture("button-selected-hover-skin"), SELECTED_BUTTON_SCALE_9_GRID);
 			this.buttonSelectedDownSkinTextures = new Scale9Textures(this.atlas.getTexture("button-selected-down-skin"), SELECTED_BUTTON_SCALE_9_GRID);
 			this.buttonSelectedDisabledSkinTextures = new Scale9Textures(this.atlas.getTexture("button-selected-disabled-skin"), SELECTED_BUTTON_SCALE_9_GRID);
+
+			this.tabUpSkinTextures = new Scale9Textures(this.atlas.getTexture("tab-up-skin"), TAB_SCALE_9_GRID);
+			this.tabHoverSkinTextures = new Scale9Textures(this.atlas.getTexture("tab-hover-skin"), TAB_SCALE_9_GRID);
+			this.tabDownSkinTextures = new Scale9Textures(this.atlas.getTexture("tab-down-skin"), TAB_SCALE_9_GRID);
+			this.tabDisabledSkinTextures = new Scale9Textures(this.atlas.getTexture("tab-disabled-skin"), TAB_SCALE_9_GRID);
+			this.tabSelectedUpSkinTextures = new Scale9Textures(this.atlas.getTexture("tab-selected-up-skin"), TAB_SCALE_9_GRID);
+			this.tabSelectedDisabledSkinTextures = new Scale9Textures(this.atlas.getTexture("tab-selected-disabled-skin"), TAB_SCALE_9_GRID);
+
+			this.stepperIncrementButtonUpSkinTextures = new Scale9Textures(this.atlas.getTexture("numeric-stepper-increment-button-up-skin"), STEPPER_INCREMENT_BUTTON_SCALE_9_GRID);
+			this.stepperIncrementButtonHoverSkinTextures = new Scale9Textures(this.atlas.getTexture("numeric-stepper-increment-button-hover-skin"), STEPPER_INCREMENT_BUTTON_SCALE_9_GRID);
+			this.stepperIncrementButtonDownSkinTextures = new Scale9Textures(this.atlas.getTexture("numeric-stepper-increment-button-down-skin"), STEPPER_INCREMENT_BUTTON_SCALE_9_GRID);
+			this.stepperIncrementButtonDisabledSkinTextures = new Scale9Textures(this.atlas.getTexture("numeric-stepper-increment-button-disabled-skin"), STEPPER_INCREMENT_BUTTON_SCALE_9_GRID);
+
+			this.stepperDecrementButtonUpSkinTextures = new Scale9Textures(this.atlas.getTexture("numeric-stepper-decrement-button-up-skin"), STEPPER_DECREMENT_BUTTON_SCALE_9_GRID);
+			this.stepperDecrementButtonHoverSkinTextures = new Scale9Textures(this.atlas.getTexture("numeric-stepper-decrement-button-hover-skin"), STEPPER_DECREMENT_BUTTON_SCALE_9_GRID);
+			this.stepperDecrementButtonDownSkinTextures = new Scale9Textures(this.atlas.getTexture("numeric-stepper-decrement-button-down-skin"), STEPPER_DECREMENT_BUTTON_SCALE_9_GRID);
+			this.stepperDecrementButtonDisabledSkinTextures = new Scale9Textures(this.atlas.getTexture("numeric-stepper-decrement-button-disabled-skin"), STEPPER_DECREMENT_BUTTON_SCALE_9_GRID);
 
 			this.hSliderThumbUpSkinTexture = this.atlas.getTexture("hslider-thumb-up-skin");
 			this.hSliderThumbHoverSkinTexture = this.atlas.getTexture("hslider-thumb-hover-skin");
@@ -388,9 +433,12 @@ package feathers.themes
 			this.setInitializerForClass(ScrollText, scrollTextInitializer);
 			this.setInitializerForClass(BitmapFontTextRenderer, itemRendererAccessoryLabelInitializer, BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ACCESSORY_LABEL);
 			this.setInitializerForClass(Button, buttonInitializer);
+			this.setInitializerForClass(Button, tabInitializer, TabBar.DEFAULT_CHILD_NAME_TAB);
 			this.setInitializerForClass(Button, toggleSwitchOnTrackInitializer, ToggleSwitch.DEFAULT_CHILD_NAME_ON_TRACK);
 			this.setInitializerForClass(Button, toggleSwitchThumbInitializer, ToggleSwitch.DEFAULT_CHILD_NAME_THUMB);
 			this.setInitializerForClass(Button, pickerListButtonInitializer, PickerList.DEFAULT_CHILD_NAME_BUTTON);
+			this.setInitializerForClass(Button, stepperIncrementButtonInitializer, NumericStepper.DEFAULT_CHILD_NAME_INCREMENT_BUTTON);
+			this.setInitializerForClass(Button, stepperDecrementButtonInitializer, NumericStepper.DEFAULT_CHILD_NAME_DECREMENT_BUTTON);
 			this.setInitializerForClass(Button, nothingInitializer, SimpleScrollBar.DEFAULT_CHILD_NAME_THUMB);
 			this.setInitializerForClass(Button, nothingInitializer, ScrollBar.DEFAULT_CHILD_NAME_THUMB);
 			this.setInitializerForClass(Button, nothingInitializer, ScrollBar.DEFAULT_CHILD_NAME_DECREMENT_BUTTON);
@@ -405,9 +453,12 @@ package feathers.themes
 			this.setInitializerForClass(Radio, radioInitializer);
 			this.setInitializerForClass(ToggleSwitch, toggleSwitchInitializer);
 			this.setInitializerForClass(Slider, sliderInitializer);
+			this.setInitializerForClass(NumericStepper, numericStepperInitializer);
 			this.setInitializerForClass(SimpleScrollBar, simpleScrollBarInitializer);
 			this.setInitializerForClass(ScrollBar, scrollBarInitializer);
 			this.setInitializerForClass(TextInput, textInputInitializer);
+			this.setInitializerForClass(TextInput, numericStepperTextInputInitializer, NumericStepper.DEFAULT_CHILD_NAME_TEXT_INPUT);
+			this.setInitializerForClass(TextArea, textAreaInitializer);
 			this.setInitializerForClass(PageIndicator, pageIndicatorInitializer);
 			this.setInitializerForClass(ProgressBar, progressBarInitializer);
 			this.setInitializerForClass(List, listInitializer);
@@ -418,8 +469,10 @@ package feathers.themes
 			this.setInitializerForClass(DefaultGroupedListItemRenderer, defaultItemRendererInitializer);
 			this.setInitializerForClass(DefaultGroupedListHeaderOrFooterRenderer, defaultHeaderOrFooterRendererInitializer);
 			this.setInitializerForClass(Header, headerInitializer);
+			this.setInitializerForClass(Header, panelHeaderInitializer, Panel.DEFAULT_CHILD_NAME_HEADER);
 			this.setInitializerForClass(Callout, calloutInitializer);
 			this.setInitializerForClass(ScrollContainer, scrollContainerInitializer);
+			this.setInitializerForClass(Panel, panelInitializer);
 		}
 
 		protected function pageIndicatorNormalSymbolFactory():Image
@@ -478,6 +531,9 @@ package feathers.themes
 			button.selectedDownSkin = new Scale9Image(buttonSelectedDownSkinTextures);
 			button.selectedDisabledSkin = new Scale9Image(buttonSelectedDisabledSkinTextures);
 
+			button.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
+			button.focusPadding = -1;
+
 			button.defaultLabelProperties.textFormat = this.defaultTextFormat;
 			button.disabledLabelProperties.textFormat = this.disabledTextFormat;
 
@@ -523,6 +579,9 @@ package feathers.themes
 			check.selectedDownIcon = new Image(checkSelectedDownIconTexture);
 			check.selectedDisabledIcon = new Image(checkSelectedDisabledIconTexture);
 
+			check.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
+			check.focusPadding = -2;
+
 			check.defaultLabelProperties.textFormat = this.defaultTextFormat;
 			check.disabledLabelProperties.textFormat = this.disabledTextFormat;
 
@@ -543,6 +602,9 @@ package feathers.themes
 			radio.selectedDownIcon = new Image(radioSelectedDownIconTexture);
 			radio.selectedDisabledIcon = new Image(radioSelectedDisabledIconTexture);
 
+			radio.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
+			radio.focusPadding = -2;
+
 			radio.defaultLabelProperties.textFormat = this.defaultTextFormat;
 			radio.disabledLabelProperties.textFormat = this.disabledTextFormat;
 
@@ -552,12 +614,49 @@ package feathers.themes
 			radio.gap = 4;
 		}
 
+		protected function tabInitializer(tab:Button):void
+		{
+			tab.defaultSkin = new Scale9Image(tabUpSkinTextures);
+			tab.hoverSkin = new Scale9Image(tabHoverSkinTextures);
+			tab.downSkin = new Scale9Image(tabDownSkinTextures);
+			tab.disabledSkin = new Scale9Image(tabDisabledSkinTextures);
+			tab.defaultSelectedSkin = new Scale9Image(tabSelectedUpSkinTextures);
+			tab.selectedDisabledSkin = new Scale9Image(tabSelectedDisabledSkinTextures);
+
+			tab.defaultLabelProperties.textFormat = this.defaultTextFormat;
+			tab.disabledLabelProperties.textFormat = this.disabledTextFormat;
+
+			tab.paddingTop = tab.paddingBottom = 2;
+			tab.paddingLeft = tab.paddingRight = 10;
+			tab.gap = 2;
+			tab.minWidth = tab.minHeight = 12;
+		}
+
+		protected function stepperIncrementButtonInitializer(button:Button):void
+		{
+			button.defaultSkin = new Scale9Image(stepperIncrementButtonUpSkinTextures);
+			button.hoverSkin = new Scale9Image(stepperIncrementButtonHoverSkinTextures);
+			button.downSkin = new Scale9Image(stepperIncrementButtonDownSkinTextures);
+			button.disabledSkin = new Scale9Image(stepperIncrementButtonDisabledSkinTextures);
+		}
+
+		protected function stepperDecrementButtonInitializer(button:Button):void
+		{
+			button.defaultSkin = new Scale9Image(stepperDecrementButtonUpSkinTextures);
+			button.hoverSkin = new Scale9Image(stepperDecrementButtonHoverSkinTextures);
+			button.downSkin = new Scale9Image(stepperDecrementButtonDownSkinTextures);
+			button.disabledSkin = new Scale9Image(stepperDecrementButtonDisabledSkinTextures);
+		}
+
 		protected function toggleSwitchInitializer(toggle:ToggleSwitch):void
 		{
 			toggle.trackLayoutMode = ToggleSwitch.TRACK_LAYOUT_MODE_SINGLE;
 			toggle.labelAlign = ToggleSwitch.LABEL_ALIGN_MIDDLE;
 			toggle.defaultLabelProperties.textFormat = this.defaultTextFormat;
 			toggle.disabledLabelProperties.textFormat = this.disabledTextFormat;
+
+			toggle.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
+			toggle.focusPadding = -1;
 		}
 
 		protected function buttonGroupInitializer(group:ButtonGroup):void
@@ -577,6 +676,8 @@ package feathers.themes
 				slider.thumbProperties.downSkin = new Image(vSliderThumbDownSkinTexture);
 				slider.thumbProperties.disabledSkin = new Image(vSliderThumbDisabledSkinTexture);
 				slider.minimumTrackProperties.defaultSkin = new Scale3Image(vSliderTrackSkinTextures);
+				slider.focusPaddingLeft = slider.focusPaddingRight = -2;
+				slider.focusPaddingTop = slider.focusPaddingBottom = -2 + slider.minimumPadding;
 			}
 			else //horizontal
 			{
@@ -585,7 +686,19 @@ package feathers.themes
 				slider.thumbProperties.downSkin = new Image(hSliderThumbDownSkinTexture);
 				slider.thumbProperties.disabledSkin = new Image(hSliderThumbDisabledSkinTexture);
 				slider.minimumTrackProperties.defaultSkin = new Scale3Image(hSliderTrackSkinTextures);
+				slider.focusPaddingTop = slider.focusPaddingBottom = -2;
+				slider.focusPaddingLeft = slider.focusPaddingRight = -2 + slider.minimumPadding;
 			}
+
+			slider.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
+		}
+
+		protected function numericStepperInitializer(stepper:NumericStepper):void
+		{
+			stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL;
+
+			stepper.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
+			stepper.focusPadding = -1;
 		}
 
 		protected function simpleScrollBarInitializer(scrollBar:SimpleScrollBar):void
@@ -692,7 +805,56 @@ package feathers.themes
 			input.backgroundSkin = new Scale9Image(textInputBackgroundSkinTextures);
 			input.backgroundDisabledSkin = new Scale9Image(textInputBackgroundDisabledSkinTextures);
 
+			input.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
+			input.focusPadding = -1;
+
 			input.promptProperties.textFormat = this.defaultTextFormat;
+		}
+
+		protected function numericStepperTextInputInitializer(input:TextInput):void
+		{
+			input.minWidth = input.minHeight = 22;
+			input.paddingTop = input.paddingBottom = 2;
+			input.paddingRight = input.paddingLeft = 4;
+			input.textEditorProperties.textFormat = this.defaultTextFormat;
+
+			const backgroundSkin:Scale9Image = new Scale9Image(textInputBackgroundSkinTextures);
+			backgroundSkin.width = backgroundSkin.height;
+			input.backgroundSkin = backgroundSkin;
+			const backgroundDisabledSkin:Scale9Image = new Scale9Image(textInputBackgroundDisabledSkinTextures);
+			backgroundDisabledSkin.width = backgroundDisabledSkin.height;
+			input.backgroundDisabledSkin = backgroundDisabledSkin;
+		}
+
+		protected function textAreaInitializer(textArea:TextArea):void
+		{
+			textArea.horizontalScrollBarFactory = horizontalScrollBarFactory;
+			textArea.verticalScrollBarFactory = verticalScrollBarFactory;
+
+			textArea.interactionMode = ScrollContainer.INTERACTION_MODE_MOUSE;
+			textArea.scrollBarDisplayMode = ScrollContainer.SCROLL_BAR_DISPLAY_MODE_FIXED;
+
+			textArea.verticalScrollPolicy = ScrollContainer.SCROLL_POLICY_AUTO;
+			textArea.horizontalScrollPolicy = ScrollContainer.SCROLL_POLICY_AUTO;
+
+			textArea.textEditorProperties.textFormat = this.defaultTextFormat;
+
+			textArea.paddingTop = 2;
+			textArea.paddingBottom = 2;
+			textArea.paddingRight = 4;
+			textArea.paddingLeft = 4;
+
+			textArea.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
+			textArea.focusPadding = -1;
+
+			const backgroundSkin:Scale9Image = new Scale9Image(textInputBackgroundSkinTextures);
+			backgroundSkin.width = 264;
+			backgroundSkin.height = 88;
+			textArea.backgroundSkin = backgroundSkin;
+			const backgroundDisabledSkin:Scale9Image = new Scale9Image(textInputBackgroundDisabledSkinTextures);
+			backgroundDisabledSkin.width = 264;
+			backgroundDisabledSkin.height = 88;
+			textArea.backgroundDisabledSkin = backgroundDisabledSkin;
 		}
 
 		protected function pageIndicatorInitializer(pageIndicator:PageIndicator):void
@@ -728,9 +890,21 @@ package feathers.themes
 			container.horizontalScrollPolicy = ScrollContainer.SCROLL_POLICY_AUTO;
 		}
 
+		protected function panelInitializer(panel:Panel):void
+		{
+			panel.backgroundSkin = new Scale9Image(panelBorderBackgroundSkinTextures);
+			panel.paddingTop = 0;
+			panel.paddingRight = 10;
+			panel.paddingBottom = 10;
+			panel.paddingLeft = 10;
+		}
+
 		protected function listInitializer(list:List):void
 		{
 			list.backgroundSkin = new Scale9Image(simpleBorderBackgroundSkinTextures);
+
+			list.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
+			list.focusPadding = -1;
 
 			list.paddingTop = list.paddingRight = list.paddingBottom =
 				list.paddingLeft = 1;
@@ -748,6 +922,9 @@ package feathers.themes
 		protected function groupedListInitializer(list:GroupedList):void
 		{
 			list.backgroundSkin = new Scale9Image(simpleBorderBackgroundSkinTextures);
+
+			list.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
+			list.focusPadding = -1;
 
 			list.paddingTop = list.paddingRight = list.paddingBottom =
 				list.paddingLeft = 1;
@@ -823,7 +1000,22 @@ package feathers.themes
 		{
 			header.backgroundSkin = new Scale9Image(headerBackgroundSkinTextures);
 
+			header.minHeight = 22;
+
 			header.titleProperties.textFormat = this.defaultTextFormat;
+
+			header.paddingTop = header.paddingBottom = 2;
+			header.paddingRight = header.paddingLeft = 6;
+
+			header.gap = 2;
+			header.titleGap = 4;
+		}
+
+		protected function panelHeaderInitializer(header:Header):void
+		{
+			header.titleProperties.textFormat = this.defaultTextFormat;
+
+			header.minHeight = 22;
 
 			header.paddingTop = header.paddingBottom = 2;
 			header.paddingRight = header.paddingLeft = 6;

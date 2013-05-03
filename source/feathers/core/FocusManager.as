@@ -7,6 +7,7 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.core
 {
+	import feathers.controls.supportClasses.LayoutViewPort;
 	import feathers.events.FeathersEventType;
 
 	import flash.display.Sprite;
@@ -24,9 +25,17 @@ package feathers.core
 
 	/**
 	 * Manages touch and keyboard focus.
+	 *
+	 * <p>Note: When enabling focus management, you should always use
+	 * <code>TextFieldTextEditor</code> as the text editor for <code>TextInput</code>
+	 * components. <code>StageTextTextEditor</code> is not compatible with the
+	 * focus manager.</p>
 	 */
 	public class FocusManager implements IFocusManager
 	{
+		/**
+		 * @private
+		 */
 		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
 
 		/**
@@ -322,6 +331,10 @@ package feathers.core
 		 */
 		protected function findPreviousFocus(container:DisplayObjectContainer, beforeChild:DisplayObject = null):IFocusDisplayObject
 		{
+			if(container is LayoutViewPort)
+			{
+				container = container.parent;
+			}
 			var startIndex:int = container.numChildren - 1;
 			if(beforeChild)
 			{
@@ -361,6 +374,10 @@ package feathers.core
 		 */
 		protected function findNextFocus(container:DisplayObjectContainer, afterChild:DisplayObject = null):IFocusDisplayObject
 		{
+			if(container is LayoutViewPort)
+			{
+				container = container.parent;
+			}
 			var startIndex:int = 0;
 			if(afterChild)
 			{
@@ -450,6 +467,11 @@ package feathers.core
 				event.preventDefault();
 			}
 			this.focus = newFocus;
+			if(this._focus)
+			{
+				this._focus.showFocus();
+			}
+
 		}
 
 		/**

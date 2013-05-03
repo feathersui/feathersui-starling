@@ -37,6 +37,15 @@ package feathers.controls
 	 * Select a value between a minimum and a maximum by using increment and
 	 * decrement buttons or typing in a value in a text input.
 	 *
+	 * <p><strong>Beta Component:</strong> This is a new component, and its APIs
+	 * may need some changes between now and the next version of Feathers to
+	 * account for overlooked requirements or other issues. Upgrading to future
+	 * versions of Feathers may involve manual changes to your code that uses
+	 * this component. The
+	 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>
+	 * will not go into effect until this component's status is upgraded from
+	 * beta to stable.</p>
+	 *
 	 * @see http://wiki.starling-framework.org/feathers/numeric-stepper
 	 */
 	public class NumericStepper extends FeathersControl implements IFocusDisplayObject
@@ -140,8 +149,6 @@ package feathers.controls
 		 */
 		public function NumericStepper()
 		{
-			this.addEventListener(FeathersEventType.FOCUS_IN, numericStepper_focusInHandler);
-			this.addEventListener(FeathersEventType.FOCUS_OUT, numericStepper_focusOutHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, numericStepper_removedFromStageHandler);
 		}
 
@@ -525,7 +532,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _decrementButtonLabel:String = "-";
+		protected var _decrementButtonLabel:String = null;
 
 		/**
 		 * The text displayed by the decrement button.
@@ -688,7 +695,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _incrementButtonLabel:String = "+";
+		protected var _incrementButtonLabel:String = null;
 
 		/**
 		 * The text displayed by the increment button.
@@ -860,6 +867,7 @@ package feathers.controls
 			const decrementButtonFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DECREMENT_BUTTON_FACTORY);
 			const incrementButtonFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_INCREMENT_BUTTON_FACTORY);
 			const textInputFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_TEXT_INPUT_FACTORY);
+			const focusInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_FOCUS);
 
 			if(decrementButtonFactoryInvalid)
 			{
@@ -918,6 +926,11 @@ package feathers.controls
 				dataInvalid || stylesInvalid || sizeInvalid)
 			{
 				this.layoutChildren();
+			}
+
+			if(sizeInvalid || focusInvalid)
+			{
+				this.refreshFocusIndicator();
 			}
 		}
 
@@ -1235,16 +1248,18 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function numericStepper_focusInHandler(event:Event):void
+		override protected function focusInHandler(event:Event):void
 		{
+			super.focusInHandler(event);
 			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 		}
 
 		/**
 		 * @private
 		 */
-		protected function numericStepper_focusOutHandler(event:Event):void
+		override protected function focusOutHandler(event:Event):void
 		{
+			super.focusOutHandler(event);
 			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 		}
 

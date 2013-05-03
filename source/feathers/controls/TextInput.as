@@ -26,7 +26,7 @@ package feathers.controls
 	import starling.events.TouchPhase;
 
 	/**
-	 * Dispatched when the text input's text value changes.
+	 * Dispatched when the text input's <code>text</code> property changes.
 	 *
 	 * @eventType starling.events.Event.CHANGE
 	 */
@@ -63,6 +63,7 @@ package feathers.controls
 	 * values to the <code>ITextEditor</code> instance.</p>
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/text-input
+	 * @see http://wiki.starling-framework.org/feathers/text-editors
 	 * @see feathers.core.ITextEditor
 	 */
 	public class TextInput extends FeathersControl implements IFocusDisplayObject
@@ -89,8 +90,7 @@ package feathers.controls
 		{
 			this.isQuickHitAreaEnabled = true;
 			this.addEventListener(TouchEvent.TOUCH, textInput_touchHandler);
-			this.addEventListener(FeathersEventType.FOCUS_IN, textInput_focusInHandler);
-			this.addEventListener(FeathersEventType.FOCUS_OUT, textInput_focusOutHandler);
+			this.addEventListener(Event.REMOVED_FROM_STAGE, textInput_removedFromStageHandler);
 		}
 
 		/**
@@ -129,7 +129,11 @@ package feathers.controls
 		protected var _text:String = "";
 
 		/**
-		 * The text displayed by the input.
+		 * The text displayed by the text input. The text input dispatches
+		 * <code>Event.CHANGE</code> when the value of the <code>text</code>
+		 * property changes for any reason.
+		 *
+		 * @see #event:change
 		 */
 		public function get text():String
 		{
@@ -752,7 +756,7 @@ package feathers.controls
 
 		/**
 		 * A set of key/value pairs to be passed down to the text input's
-		 * text editor. The text editor is an <code>ITextEditor</code> instanc
+		 * text editor. The text editor is an <code>ITextEditor</code> instance
 		 * that is created by <code>textEditorFactory</code>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
@@ -813,6 +817,19 @@ package feathers.controls
 		}
 
 		/**
+		 * @inheritDoc
+		 */
+		override public function showFocus():void
+		{
+			if(!this._focusManager || this._focusManager.focus != this)
+			{
+				return;
+			}
+			this.selectRange(0, this._text.length);
+			super.showFocus();
+		}
+
+		/**
 		 * Focuses the text input control so that it may be edited.
 		 */
 		public function setFocus():void
@@ -821,8 +838,16 @@ package feathers.controls
 			{
 				return;
 			}
-			this._isWaitingToSetFocus = true;
-			this.invalidate(INVALIDATION_FLAG_SELECTED);
+			if(this.textEditor)
+			{
+				this._isWaitingToSetFocus = false;
+				this.textEditor.setFocus();
+			}
+			else
+			{
+				this._isWaitingToSetFocus = true;
+				this.invalidate(INVALIDATION_FLAG_SELECTED);
+			}
 		}
 
 		/**
@@ -855,6 +880,7 @@ package feathers.controls
 			{
 				this._pendingSelectionStartIndex = startIndex;
 				this._pendingSelectionEndIndex = endIndex;
+				this.invalidate(INVALIDATION_FLAG_SELECTED);
 			}
 		}
 
@@ -870,6 +896,7 @@ package feathers.controls
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const textEditorInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_TEXT_EDITOR);
 			const promptFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_PROMPT_FACTORY);
+			const focusInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_FOCUS);
 
 			if(textEditorInvalid)
 			{
@@ -924,6 +951,11 @@ package feathers.controls
 			if(textEditorInvalid || promptFactoryInvalid || sizeInvalid || stylesInvalid || skinInvalid || stateInvalid)
 			{
 				this.layout();
+			}
+
+			if(sizeInvalid || focusInvalid)
+			{
+				this.refreshFocusIndicator();
 			}
 
 			this.doPendingActions();
@@ -1162,9 +1194,41 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function setFocusOnTextEditorWithTouch(touch:Touch):void
+		{
+			touch.getLocation(this.stage, HELPER_POINT);
+			const isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
+			if(!this._textEditorHasFocus && isInBounds)
+			{
+				this.globalToLocal(HELPER_POINT, HELPER_POINT);
+				HELPER_POINT.x -= this._paddingLeft;
+				HELPER_POINT.y -= this._paddingTop;
+				this._isWaitingToSetFocus = false;
+				this.textEditor.setFocus(HELPER_POINT);
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function childProperties_onChange(proxy:PropertyProxy, name:Object):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function textInput_removedFromStageHandler(event:Event):void
+		{
+			this._textEditorHasFocus = false;
+			this._isWaitingToSetFocus = false;
+			this._touchPointID = -1;
+			if(Mouse.supportsNativeCursor && this._oldMouseCursor)
+			{
+				Mouse.cursor = this._oldMouseCursor;
+				this._oldMouseCursor = null;
+			}
 		}
 
 		/**
@@ -1209,6 +1273,10 @@ package feathers.controls
 				if(touch.phase == TouchPhase.ENDED)
 				{
 					this._touchPointID = -1;
+					if(this.textEditor.setTouchFocusOnEndedPhase)
+					{
+						this.setFocusOnTextEditorWithTouch(touch);
+					}
 				}
 			}
 			else
@@ -1218,15 +1286,9 @@ package feathers.controls
 					if(touch.phase == TouchPhase.BEGAN)
 					{
 						this._touchPointID = touch.id;
-						touch.getLocation(this.stage, HELPER_POINT);
-						const isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
-						if(!this._textEditorHasFocus && isInBounds)
+						if(!this.textEditor.setTouchFocusOnEndedPhase)
 						{
-							this.globalToLocal(HELPER_POINT, HELPER_POINT);
-							HELPER_POINT.x -= this._paddingLeft;
-							HELPER_POINT.y -= this._paddingTop;
-							this._isWaitingToSetFocus = false;
-							this.textEditor.setFocus(HELPER_POINT);
+							this.setFocusOnTextEditorWithTouch(touch);
 						}
 						break;
 					}
@@ -1247,25 +1309,26 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function textInput_focusInHandler(event:Event):void
+		override protected function focusInHandler(event:Event):void
 		{
 			if(!this._focusManager)
 			{
 				return;
 			}
-			this._isWaitingToSetFocus = true;
-			this.invalidate(INVALIDATION_FLAG_SELECTED);
+			super.focusInHandler(event);
+			this.setFocus();
 		}
 
 		/**
 		 * @private
 		 */
-		protected function textInput_focusOutHandler(event:Event):void
+		override protected function focusOutHandler(event:Event):void
 		{
 			if(!this._focusManager)
 			{
 				return;
 			}
+			super.focusOutHandler(event);
 			this.textEditor.clearFocus();
 		}
 

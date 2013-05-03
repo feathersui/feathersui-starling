@@ -195,8 +195,6 @@ package feathers.controls
 		public function Slider()
 		{
 			super();
-			this.addEventListener(FeathersEventType.FOCUS_IN, slider_focusInHandler);
-			this.addEventListener(FeathersEventType.FOCUS_OUT, slider_focusOutHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, slider_removedFromStageHandler);
 		}
 
@@ -1104,6 +1102,7 @@ package feathers.controls
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
+			const focusInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_FOCUS);
 			const thumbFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_THUMB_FACTORY);
 			const minimumTrackFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_MINIMUM_TRACK_FACTORY);
 			const maximumTrackFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_MAXIMUM_TRACK_FACTORY);
@@ -1124,22 +1123,23 @@ package feathers.controls
 			{
 				this.refreshThumbStyles();
 			}
-
-			if(minimumTrackFactoryInvalid || maximumTrackFactoryInvalid || stylesInvalid)
+			if(minimumTrackFactoryInvalid || stylesInvalid)
 			{
-				this.refreshTrackStyles();
+				this.refreshMinimumTrackStyles();
+			}
+			if((maximumTrackFactoryInvalid || stylesInvalid) && this.maximumTrack)
+			{
+				this.refreshMaximumTrackStyles();
 			}
 			
 			if(thumbFactoryInvalid || stateInvalid)
 			{
 				this.thumb.isEnabled = this._isEnabled;
 			}
-
 			if(minimumTrackFactoryInvalid || stateInvalid)
 			{
 				this.minimumTrack.isEnabled = this._isEnabled;
 			}
-
 			if((maximumTrackFactoryInvalid || stateInvalid) && this.maximumTrack)
 			{
 				this.maximumTrack.isEnabled = this._isEnabled;
@@ -1151,6 +1151,11 @@ package feathers.controls
 				dataInvalid || stylesInvalid || sizeInvalid)
 			{
 				this.layoutChildren();
+			}
+
+			if(sizeInvalid || focusInvalid)
+			{
+				this.refreshFocusIndicator();
 			}
 		}
 
@@ -1329,7 +1334,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function refreshTrackStyles():void
+		protected function refreshMinimumTrackStyles():void
 		{
 			for(var propertyName:String in this._minimumTrackProperties)
 			{
@@ -1339,15 +1344,23 @@ package feathers.controls
 					this.minimumTrack[propertyName] = propertyValue;
 				}
 			}
-			if(this.maximumTrack)
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshMaximumTrackStyles():void
+		{
+			if(!this.maximumTrack)
 			{
-				for(propertyName in this._maximumTrackProperties)
+				return;
+			}
+			for(var propertyName:String in this._maximumTrackProperties)
+			{
+				if(this.maximumTrack.hasOwnProperty(propertyName))
 				{
-					if(this.maximumTrack.hasOwnProperty(propertyName))
-					{
-						propertyValue = this._maximumTrackProperties[propertyName];
-						this.maximumTrack[propertyName] = propertyValue;
-					}
+					var propertyValue:Object = this._maximumTrackProperties[propertyName];
+					this.maximumTrack[propertyName] = propertyValue;
 				}
 			}
 		}
@@ -1566,16 +1579,18 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function slider_focusInHandler(event:Event):void
+		override protected function focusInHandler(event:Event):void
 		{
+			super.focusInHandler(event);
 			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 		}
 
 		/**
 		 * @private
 		 */
-		protected function slider_focusOutHandler(event:Event):void
+		override protected function focusOutHandler(event:Event):void
 		{
+			super.focusOutHandler(event);
 			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 		}
 		

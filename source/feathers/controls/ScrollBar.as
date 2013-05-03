@@ -1478,7 +1478,7 @@ package feathers.controls
 			{
 				this.refreshMinimumTrackStyles();
 			}
-			if(maximumTrackFactoryInvalid || stylesInvalid)
+			if((maximumTrackFactoryInvalid || stylesInvalid) && this.maximumTrack)
 			{
 				this.refreshMaximumTrackStyles();
 			}

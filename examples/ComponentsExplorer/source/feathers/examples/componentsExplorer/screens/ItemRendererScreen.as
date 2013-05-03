@@ -13,11 +13,8 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.system.DeviceCapabilities;
 
 	import starling.core.Starling;
-
 	import starling.display.DisplayObject;
-
 	import starling.events.Event;
-	import starling.textures.Texture;
 
 	[Event(name="complete",type="starling.events.Event")]
 	[Event(name="showSettings",type="starling.events.Event")]
@@ -36,18 +33,6 @@ package feathers.examples.componentsExplorer.screens
 		private var _list:List;
 		private var _backButton:Button;
 		private var _settingsButton:Button;
-		private var _iconTexture:Texture;
-
-		override public function dispose():void
-		{
-			if(this._iconTexture)
-			{
-				//since we created this texture, it's up to us to dispose it
-				this._iconTexture.dispose();
-				this._iconTexture = null;
-			}
-			super.dispose();
-		}
 
 		protected function initializeHandler(event:Event):void
 		{
@@ -60,8 +45,7 @@ package feathers.examples.componentsExplorer.screens
 
 			if(this.settings.hasIcon)
 			{
-				this._iconTexture = Texture.fromBitmap(new EmbeddedAssets.SKULL_ICON());
-				item.texture = this._iconTexture;
+				item.texture = EmbeddedAssets.SKULL_ICON_LIGHT;
 
 				this._list.itemRendererProperties.iconSourceField = "texture";
 				this._list.itemRendererProperties.iconPosition = this.settings.iconPosition;
@@ -78,7 +62,7 @@ package feathers.examples.componentsExplorer.screens
 					}
 					case ItemRendererSettings.ACCESSORY_TYPE_TEXTURE:
 					{
-						item.accessoryTexture = this._iconTexture;
+						item.accessoryTexture = EmbeddedAssets.SKULL_ICON_LIGHT;
 						this._list.itemRendererProperties.accessorySourceField = "accessoryTexture";
 						break;
 					}
@@ -90,11 +74,37 @@ package feathers.examples.componentsExplorer.screens
 				}
 				this._list.itemRendererProperties.accessoryPosition = this.settings.accessoryPosition;
 			}
+			if(this.settings.useInfiniteGap)
+			{
+				this._list.itemRendererProperties.gap = Number.POSITIVE_INFINITY;
+			}
+			else
+			{
+				this._list.itemRendererProperties.gap = 20 * this.dpiScale;
+			}
+			if(this.settings.useInfiniteAccessoryGap)
+			{
+				this._list.itemRendererProperties.accessoryGap = Number.POSITIVE_INFINITY;
+			}
+			else
+			{
+				this._list.itemRendererProperties.accessoryGap = 20 * this.dpiScale;
+			}
+			this._list.itemRendererProperties.horizontalAlign = this.settings.horizontalAlign;
+			this._list.itemRendererProperties.verticalAlign = this.settings.verticalAlign;
 			this._list.itemRendererProperties.layoutOrder = this.settings.layoutOrder;
+
+			//ideally, styles like gap, accessoryGap, horizontalAlign,
+			//verticalAlign, layoutOrder, iconPosition, and accessoryPosition
+			//will be handled in the theme.
+			//this is a special case because this screen is designed to
+			//configure those styles at runtime
+
 			this._list.dataProvider = new ListCollection([item]);
 			this._list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
 			this._list.isSelectable = false;
 			this.addChild(this._list);
+
 
 			this.headerProperties.title = "Item Renderer";
 

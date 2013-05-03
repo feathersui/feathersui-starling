@@ -38,6 +38,7 @@ package feathers.core
 	/**
 	 * Handles the editing of text.
 	 *
+	 * @see feathers.controls.TextInput
 	 * @see http://wiki.starling-framework.org/feathers/text-editors
 	 */
 	public interface ITextEditor extends IFeathersControl
@@ -92,6 +93,17 @@ package feathers.core
 		 * @private
 		 */
 		function set isEditable(value:Boolean):void;
+
+		/**
+		 * Determines if the owner should call <code>setFocus()</code> on
+		 * <code>TouchPhase.ENDED</code> or on <code>TouchPhase.BEGAN</code>.
+		 * This is a hack because <code>StageText</code> doesn't like being
+		 * assigned focus on <code>TouchPhase.BEGAN</code>. In general, most
+		 * text editors should simply return <code>false</code>.
+		 *
+		 * @see #setFocus()
+		 */
+		function get setTouchFocusOnEndedPhase():Boolean;
 
 		/**
 		 * Gives focus to the text editor. Includes an optional position which
