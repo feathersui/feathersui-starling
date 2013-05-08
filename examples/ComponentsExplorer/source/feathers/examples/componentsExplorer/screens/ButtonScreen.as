@@ -25,6 +25,7 @@ package feathers.examples.componentsExplorer.screens
 		}
 
 		private var _normalButton:Button;
+		private var _disabledButton:Button;
 		private var _iconButton:Button;
 		private var _toggleButton:Button;
 		private var _callToActionButton:Button;
@@ -44,12 +45,18 @@ package feathers.examples.componentsExplorer.screens
 			verticalLayout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
 			verticalLayout.padding = 20 * this.dpiScale;
 			verticalLayout.gap = 16 * this.dpiScale;
+			verticalLayout.manageVisibility = true;
 			this.layout = verticalLayout;
 			
 			this._normalButton = new Button();
 			this._normalButton.label = "Normal Button";
 			this._normalButton.addEventListener(Event.TRIGGERED, normalButton_triggeredHandler);
 			this.addChild(this._normalButton);
+
+			this._disabledButton = new Button();
+			this._disabledButton.label = "Disabled Button";
+			this._disabledButton.isEnabled = false;
+			this.addChild(this._disabledButton);
 
 			this._icon = new ImageLoader();
 			this._icon.source = EmbeddedAssets.SKULL_ICON_DARK;
