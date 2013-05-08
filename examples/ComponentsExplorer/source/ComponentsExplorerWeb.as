@@ -15,7 +15,7 @@ package
 	import starling.utils.HAlign;
 	import starling.utils.VAlign;
 
-	[SWF(width="960",height="640",frameRate="60",backgroundColor="#2f2f2f")]
+	[SWF(width="960",height="640",frameRate="60",backgroundColor="#4a4137")]
 	public class ComponentsExplorerWeb extends MovieClip
 	{
 		public function ComponentsExplorerWeb()
