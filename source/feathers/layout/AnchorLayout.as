@@ -796,7 +796,7 @@ package feathers.layout
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var otherItem:ILayoutDisplayObject = items[i] as ILayoutDisplayObject;
-				if(!item || otherItem == item)
+				if(!otherItem || otherItem == item)
 				{
 					continue;
 				}
