@@ -483,7 +483,7 @@ package feathers.themes
 			this.setInitializerForClass(Header, headerWithoutBackgroundInitializer, Panel.DEFAULT_CHILD_NAME_HEADER);
 			this.setInitializerForClass(Callout, calloutInitializer);
 			this.setInitializerForClass(List, listInitializer);
-			this.setInitializerForClass(List, nothingInitializer, PickerList.DEFAULT_CHILD_NAME_LIST);
+			this.setInitializerForClass(List, pickerListListInitializer, PickerList.DEFAULT_CHILD_NAME_LIST);
 			this.setInitializerForClass(GroupedList, groupedListInitializer);
 			this.setInitializerForClass(GroupedList, insetGroupedListInitializer, GroupedList.ALTERNATE_NAME_INSET_GROUPED_LIST);
 			this.setInitializerForClass(Panel, panelInitializer);
@@ -741,8 +741,10 @@ package feathers.themes
 		{
 			this.buttonInitializer(button);
 
-			const defaultIcon:Image = new Image(this.pickerListButtonIconTexture);
-			defaultIcon.scaleX = defaultIcon.scaleY = this.scale;
+			const defaultIcon:ImageLoader = new ImageLoader();
+			defaultIcon.source = this.pickerListButtonIconTexture;
+			defaultIcon.textureScale = this.scale;
+			defaultIcon.snapToPixels = true;
 			button.defaultIcon = defaultIcon;
 
 			button.gap = Number.POSITIVE_INFINITY;
@@ -1301,6 +1303,12 @@ package feathers.themes
 			const backgroundSkin:Quad = new Quad(100, 100, LIST_BACKGROUND_COLOR);
 			list.backgroundSkin = backgroundSkin;
 
+			list.verticalScrollBarFactory = this.verticalScrollBarFactory;
+			list.horizontalScrollBarFactory = this.horizontalScrollBarFactory;
+		}
+
+		protected function pickerListListInitializer(list:List):void
+		{
 			list.verticalScrollBarFactory = this.verticalScrollBarFactory;
 			list.horizontalScrollBarFactory = this.horizontalScrollBarFactory;
 		}
