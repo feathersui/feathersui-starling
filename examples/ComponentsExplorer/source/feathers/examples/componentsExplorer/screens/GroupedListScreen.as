@@ -91,6 +91,13 @@ package feathers.examples.componentsExplorer.screens
 						{ text: "Eel" },
 						{ text: "Elk" },
 					]
+				},
+				{
+					header: "F",
+					children:
+					[
+						{ text: "Fox" },
+					]
 				}
 			];
 			groups.fixed = true;
