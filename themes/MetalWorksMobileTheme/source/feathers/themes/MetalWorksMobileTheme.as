@@ -207,6 +207,7 @@ package feathers.themes
 		protected var atlasBitmapData:BitmapData;
 		protected var headerBackgroundSkinTexture:Texture;
 		protected var backgroundSkinTextures:Scale9Textures;
+		protected var backgroundInsetSkinTextures:Scale9Textures;
 		protected var backgroundDisabledSkinTextures:Scale9Textures;
 		protected var backgroundFocusedSkinTextures:Scale9Textures;
 		protected var buttonUpSkinTextures:Scale9Textures;
@@ -354,12 +355,14 @@ package feathers.themes
 
 
 			const backgroundSkinTexture:Texture = this.atlas.getTexture("background-skin");
+			const backgroundInsetSkinTexture:Texture = this.atlas.getTexture("background-inset-skin");
 			const backgroundDownSkinTexture:Texture = this.atlas.getTexture("background-down-skin");
 			const backgroundDisabledSkinTexture:Texture = this.atlas.getTexture("background-disabled-skin");
 			const backgroundFocusedSkinTexture:Texture = this.atlas.getTexture("background-focused-skin");
 			const backgroundPopUpSkinTexture:Texture = this.atlas.getTexture("background-popup-skin");
 
 			this.backgroundSkinTextures = new Scale9Textures(backgroundSkinTexture, DEFAULT_SCALE9_GRID);
+			this.backgroundInsetSkinTextures = new Scale9Textures(backgroundInsetSkinTexture, DEFAULT_SCALE9_GRID);
 			this.backgroundDisabledSkinTextures = new Scale9Textures(backgroundDisabledSkinTexture, DEFAULT_SCALE9_GRID);
 			this.backgroundFocusedSkinTextures = new Scale9Textures(backgroundFocusedSkinTexture, DEFAULT_SCALE9_GRID);
 			this.backgroundPopUpSkinTextures = new Scale9Textures(backgroundPopUpSkinTexture, DEFAULT_SCALE9_GRID);
@@ -1100,7 +1103,7 @@ package feathers.themes
 
 		protected function textInputInitializer(input:TextInput):void
 		{
-			const backgroundSkin:Scale9Image = new Scale9Image(this.backgroundSkinTextures, this.scale);
+			const backgroundSkin:Scale9Image = new Scale9Image(this.backgroundInsetSkinTextures, this.scale);
 			backgroundSkin.width = 264 * this.scale;
 			backgroundSkin.height = 60 * this.scale;
 			input.backgroundSkin = backgroundSkin;
