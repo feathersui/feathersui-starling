@@ -31,11 +31,13 @@ package feathers.layout
 
 		/**
 		 * The width, in pixels, of a "typical" item that is used to virtually
-		 * fill in blanks for the layout. This value is usually set by a
-		 * component that is using the layout, such as a <code>List</code> or
-		 * a <code>ScrollContainer</code>. In most cases, unless you are
-		 * creating a new custom component that supports layouts, you should
-		 * never need to set this value.
+		 * fill in blanks for the layout. This value is meant to be set by a
+		 * component that is using the layout, such as a <code>List</code>. For
+		 * instance, the <code>List</code> class provides a <code>typicalItem</code>
+		 * property that will be used to calculate this value. If you set
+		 * <code>typicalItemWidth</code> manually, your value will be completely
+		 * replaced by the value calculated by the <code>List</code>. In other
+		 * words, you should use that <code>typicalItem</code> property instead.
 		 */
 		function get typicalItemWidth():Number;
 
@@ -47,10 +49,12 @@ package feathers.layout
 		/**
 		 * The height, in pixels, of a "typical" item that is used to virtually
 		 * fill in blanks for the layout. This value is usually set by a
-		 * component that is using the layout, such as a <code>List</code> or
-		 * a <code>ScrollContainer</code>. In most cases, unless you are
-		 * creating a new custom component that supports layouts, you should
-		 * never need to set this value.
+		 * component that is using the layout, such as a <code>List</code>. For
+		 * instance, the <code>List</code> class provides a <code>typicalItem</code>
+		 * property that will be used to calculate this value. If you set
+		 * <code>typicalItemHeight</code> manually, your value will be completely
+		 * replaced by the value calculated by the <code>List</code>. In other
+		 * words, you should use that <code>typicalItem</code> property instead.
 		 */
 		function get typicalItemHeight():Number;
 

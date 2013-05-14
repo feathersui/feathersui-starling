@@ -8,13 +8,15 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.text
 {
 	import feathers.controls.Scroller;
+	import feathers.utils.math.roundToNearest;
 
 	import flash.events.Event;
+	import flash.events.FocusEvent;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.text.TextField;
 
-	import starling.core.RenderSupport;
 	import starling.core.Starling;
 	import starling.utils.MatrixUtil;
 
@@ -44,7 +46,13 @@ package feathers.controls.text
 			super();
 			this.multiline = true;
 			this.wordWrap = true;
+			this.resetScrollOnFocusOut = false;
 		}
+
+		/**
+		 * @private
+		 */
+		private var _ignoreScrolling:Boolean = false;
 
 		/**
 		 * @private
@@ -292,28 +300,6 @@ package feathers.controls.text
 		}
 
 		/**
-		 * @inheritDoc
-		 */
-		override public function setFocus(position:Point = null):void
-		{
-			if(position)
-			{
-				position.x += this._horizontalScrollPosition;
-				position.y += this._verticalScrollPosition;
-			}
-			super.setFocus(position);
-		}
-
-		/**
-		 * @private
-		 */
-		override protected function initialize():void
-		{
-			super.initialize();
-			this.textField.mouseWheelEnabled = false;
-		}
-
-		/**
 		 * @private
 		 */
 		override protected function refreshSnapshotParameters():void
@@ -343,41 +329,40 @@ package feathers.controls.text
 				}
 			}
 
-			const clipContent:Boolean = Scroller(this.parent).clipContent;
-
 			this._textFieldOffsetX = 0;
 			this._textFieldOffsetY = 0;
 			this._textFieldClipRect.x = 0;
 			this._textFieldClipRect.y = 0;
 			this._textFieldClipRect.width = textFieldWidth;
-			this._textFieldClipRect.height = clipContent ? textFieldHeight : this.actualHeight;
-
-			if(clipContent)
-			{
-				var scrollRect:Rectangle = this.textField.scrollRect;
-				if(!scrollRect)
-				{
-					scrollRect = new Rectangle();
-				}
-				scrollRect.x = this._horizontalScrollPosition;
-				scrollRect.y = this._verticalScrollPosition;
-				scrollRect.width = textFieldWidth;
-				scrollRect.height = textFieldHeight;
-				this.textField.scrollRect = scrollRect;
-			}
-			else
-			{
-				this.textField.scrollRect = null;
-			}
+			this._textFieldClipRect.height = textFieldHeight;
 		}
 
 		/**
 		 * @private
 		 */
-		override protected function commitStylesAndData():void
+		override protected function refreshTextFieldSize():void
 		{
-			super.commitStylesAndData();
-			this._scrollStep = this.textField.getLineMetrics(0).height;
+			const oldIgnoreScrolling:Boolean = this._ignoreScrolling;
+			this._ignoreScrolling = true;
+			if(this.textField.height != this._visibleHeight)
+			{
+				this.textField.height = this._visibleHeight;
+			}
+			const scroller:Scroller = Scroller(this.parent);
+			this.textField.scrollV = Math.round(1 + ((this.textField.maxScrollV - 1) * (this._verticalScrollPosition / scroller.maxVerticalScrollPosition)));
+			this._ignoreScrolling = oldIgnoreScrolling;
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function commitStylesAndData(textField:TextField):void
+		{
+			super.commitStylesAndData(textField);
+			if(textField == this.textField)
+			{
+				this._scrollStep = textField.getLineMetrics(0).height;
+			}
 		}
 
 		/**
@@ -388,9 +373,8 @@ package feathers.controls.text
 			HELPER_POINT.x = HELPER_POINT.y = 0;
 			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
 			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
-			const clipContent:Boolean = Scroller(this.parent).clipContent;
-			const offsetX:Number = clipContent ? Math.round(this._horizontalScrollPosition) : 0;
-			const offsetY:Number = clipContent ? Math.round(this._verticalScrollPosition) : 0;
+			const offsetX:Number = Math.round(this._horizontalScrollPosition);
+			const offsetY:Number = Math.round(this._verticalScrollPosition);
 			if(HELPER_POINT.x != this._oldGlobalX || HELPER_POINT.y != this._oldGlobalY)
 			{
 				this._oldGlobalX = HELPER_POINT.x;
@@ -414,6 +398,51 @@ package feathers.controls.text
 		{
 			super.checkIfNewSnapshotIsNeeded();
 			this._needsNewBitmap ||= this.isInvalid(INVALIDATION_FLAG_SCROLL);
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function textField_focusInHandler(event:FocusEvent):void
+		{
+			const oldIgnoreScrolling:Boolean = this._ignoreScrolling;
+			this._ignoreScrolling = true;
+			this.textField.height = this._visibleHeight;
+			this._ignoreScrolling = oldIgnoreScrolling;
+			this.textField.addEventListener(Event.SCROLL, textField_scrollHandler);
+			super.textField_focusInHandler(event);
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function textField_focusOutHandler(event:FocusEvent):void
+		{
+			this.textField.removeEventListener(Event.SCROLL, textField_scrollHandler);
+			super.textField_focusOutHandler(event);
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function textField_scrollHandler(event:Event):void
+		{
+			//for some reason, the text field's scroll positions don't work
+			//properly unless we access the values here. weird.
+			var scrollH:Number = this.textField.scrollH;
+			var scrollV:Number = this.textField.scrollV;
+			if(this._ignoreScrolling)
+			{
+				return;
+			}
+			const scroller:Scroller = Scroller(this.parent);
+			if(scroller.maxVerticalScrollPosition > 0 && this.textField.maxScrollV > 1)
+			{
+				const calculatedVerticalScrollPosition:Number = scroller.maxVerticalScrollPosition * (scrollV - 1) / (this.textField.maxScrollV - 1);
+				scroller.verticalScrollPosition = roundToNearest(calculatedVerticalScrollPosition, this._scrollStep);
+			}
 		}
 
 	}

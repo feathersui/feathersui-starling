@@ -63,6 +63,7 @@ package feathers.themes
 	import feathers.display.Scale3Image;
 	import feathers.display.Scale9Image;
 	import feathers.display.TiledImage;
+	import feathers.layout.HorizontalLayout;
 	import feathers.layout.VerticalLayout;
 	import feathers.skins.SmartDisplayObjectStateValueSelector;
 	import feathers.skins.StandardIcons;
@@ -491,6 +492,7 @@ package feathers.themes
 			this.setInitializerForClass(GroupedList, insetGroupedListInitializer, GroupedList.ALTERNATE_NAME_INSET_GROUPED_LIST);
 			this.setInitializerForClass(Panel, panelInitializer);
 			this.setInitializerForClass(ScrollContainer, scrollContainerInitializer);
+			this.setInitializerForClass(ScrollContainer, scrollContainerToolbarInitializer, ScrollContainer.ALTERNATE_NAME_TOOLBAR);
 		}
 
 		protected function pageIndicatorNormalSymbolFactory():DisplayObject
@@ -1327,6 +1329,24 @@ package feathers.themes
 
 		protected function scrollContainerInitializer(container:ScrollContainer):void
 		{
+			container.verticalScrollBarFactory = this.verticalScrollBarFactory;
+			container.horizontalScrollBarFactory = this.horizontalScrollBarFactory;
+		}
+
+		protected function scrollContainerToolbarInitializer(container:ScrollContainer):void
+		{
+			const layout:HorizontalLayout = new HorizontalLayout();
+			layout.paddingTop = layout.paddingRight = layout.paddingBottom =
+				layout.paddingLeft = 14 * this.scale;
+			layout.gap = 8 * this.scale;
+			container.layout = layout;
+			container.minWidth = 88 * this.scale;
+			container.minHeight = 88 * this.scale;
+
+			const backgroundSkin:TiledImage = new TiledImage(this.headerBackgroundSkinTexture, this.scale);
+			backgroundSkin.width = backgroundSkin.height = 88 * this.scale;
+			container.backgroundSkin = backgroundSkin;
+
 			container.verticalScrollBarFactory = this.verticalScrollBarFactory;
 			container.horizontalScrollBarFactory = this.horizontalScrollBarFactory;
 		}

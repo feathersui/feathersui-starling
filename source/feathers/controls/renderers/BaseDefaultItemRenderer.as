@@ -242,7 +242,12 @@ package feathers.controls.renderers
 		 */
 		public function set itemHasLabel(value:Boolean):void
 		{
+			if(this._itemHasLabel == value)
+			{
+				return;
+			}
 			this._itemHasLabel = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		/**
@@ -265,7 +270,40 @@ package feathers.controls.renderers
 		 */
 		public function set itemHasIcon(value:Boolean):void
 		{
+			if(this._itemHasIcon == value)
+			{
+				return;
+			}
 			this._itemHasIcon = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _itemHasAccessory:Boolean = true;
+
+		/**
+		 * If true, the accessory will come from the renderer's item using the
+		 * appropriate field or function for the accessory. If false, the
+		 * accessory may be set using other means.
+		 */
+		public function get itemHasAccessory():Boolean
+		{
+			return this._itemHasAccessory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set itemHasAccessory(value:Boolean):void
+		{
+			if(this._itemHasAccessory == value)
+			{
+				return;
+			}
+			this._itemHasAccessory = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		/**
@@ -1627,8 +1665,11 @@ package feathers.controls.renderers
 					const newIcon:DisplayObject = this.itemToIcon(this._data);
 					this.replaceIcon(newIcon);
 				}
-				const newAccessory:DisplayObject = this.itemToAccessory(this._data);
-				this.replaceAccessory(newAccessory);
+				if(this._itemHasAccessory)
+				{
+					const newAccessory:DisplayObject = this.itemToAccessory(this._data);
+					this.replaceAccessory(newAccessory);
+				}
 			}
 			else
 			{
@@ -1640,7 +1681,7 @@ package feathers.controls.renderers
 				{
 					this.replaceIcon(null);
 				}
-				if(this.accessory)
+				if(this._itemHasAccessory)
 				{
 					this.replaceAccessory(null);
 				}
