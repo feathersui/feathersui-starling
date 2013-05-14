@@ -850,7 +850,7 @@ package feathers.themes
 
 			textArea.paddingTop = 2;
 			textArea.paddingBottom = 2;
-			textArea.paddingRight = 4;
+			textArea.paddingRight = 2;
 			textArea.paddingLeft = 4;
 
 			textArea.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
