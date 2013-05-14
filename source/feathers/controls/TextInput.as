@@ -34,7 +34,12 @@ package feathers.controls
 
 	/**
 	 * Dispatched when the user presses the Enter key while the text input
-	 * has focus.
+	 * has focus. This event may not be dispatched at all times. Certain text
+	 * editors will not dispatch an event for the enter key on some platforms,
+	 * depending on the values of certain properties. This may include the
+	 * default values for some platforms! If you've encountered this issue,
+	 * please see the specific text editor's API documentation for complete
+	 * details of this event's limitations and requirements.
 	 *
 	 * @eventType feathers.events.FeathersEventType.ENTER
 	 */

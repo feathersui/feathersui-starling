@@ -43,9 +43,14 @@ package feathers.controls.text
 	[Event(name="change",type="starling.events.Event")]
 
 	/**
-	 * Dispatched when the user presses the Enter key while the editor has focus.
+	 * Dispatched when the user presses the Enter key while the editor has
+	 * focus. This event may not be dispatched on some platforms, depending on
+	 * the value of <code>returnKeyLabel</code>. This issue may even occur when
+	 * using the <em>default value</em> of <code>returnKeyLabel</code>!
 	 *
 	 * @eventType feathers.events.FeathersEventType.ENTER
+	 * @see #returnKeyLabel
+	 * @see flash.text.ReturnKeyLabel
 	 */
 	[Event(name="enter",type="starling.events.Event")]
 
@@ -1134,6 +1139,7 @@ package feathers.controls.text
 			}
 			this.stageText.removeEventListener(flash.events.Event.CHANGE, stageText_changeHandler);
 			this.stageText.removeEventListener(KeyboardEvent.KEY_DOWN, stageText_keyDownHandler);
+			this.stageText.removeEventListener(KeyboardEvent.KEY_UP, stageText_keyUpHandler);
 			this.stageText.removeEventListener(FocusEvent.FOCUS_IN, stageText_focusInHandler);
 			this.stageText.removeEventListener(FocusEvent.FOCUS_OUT, stageText_focusOutHandler);
 			this.stageText.removeEventListener(flash.events.Event.COMPLETE, stageText_completeHandler);
@@ -1165,6 +1171,7 @@ package feathers.controls.text
 			this.stageText.visible = false;
 			this.stageText.addEventListener(flash.events.Event.CHANGE, stageText_changeHandler);
 			this.stageText.addEventListener(KeyboardEvent.KEY_DOWN, stageText_keyDownHandler);
+			this.stageText.addEventListener(KeyboardEvent.KEY_UP, stageText_keyUpHandler);
 			this.stageText.addEventListener(FocusEvent.FOCUS_IN, stageText_focusInHandler);
 			this.stageText.addEventListener(FocusEvent.FOCUS_OUT, stageText_focusOutHandler);
 			this.stageText.addEventListener(flash.events.Event.COMPLETE, stageText_completeHandler);
@@ -1259,8 +1266,9 @@ package feathers.controls.text
 		 */
 		protected function stageText_keyDownHandler(event:KeyboardEvent):void
 		{
-			if(event.keyCode == Keyboard.ENTER)
+			if(!this._multiline && (event.keyCode == Keyboard.ENTER || event.keyCode == Keyboard.NEXT))
 			{
+				event.preventDefault();
 				this.dispatchEventWith(FeathersEventType.ENTER);
 			}
 			else if(event.keyCode == Keyboard.BACK)
@@ -1270,6 +1278,17 @@ package feathers.controls.text
 				//always need to prevent it here
 				event.preventDefault();
 				Starling.current.nativeStage.focus = Starling.current.nativeStage;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function stageText_keyUpHandler(event:KeyboardEvent):void
+		{
+			if(!this._multiline && (event.keyCode == Keyboard.ENTER || event.keyCode == Keyboard.NEXT))
+			{
+				event.preventDefault();
 			}
 		}
 	}

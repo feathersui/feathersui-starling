@@ -65,6 +65,7 @@ package feathers.themes
 	import feathers.core.ITextRenderer;
 	import feathers.display.Scale3Image;
 	import feathers.display.Scale9Image;
+	import feathers.layout.HorizontalLayout;
 	import feathers.skins.StandardIcons;
 	import feathers.system.DeviceCapabilities;
 	import feathers.textures.Scale3Textures;
@@ -473,6 +474,7 @@ package feathers.themes
 			this.setInitializerForClass(Header, panelHeaderInitializer, Panel.DEFAULT_CHILD_NAME_HEADER);
 			this.setInitializerForClass(Callout, calloutInitializer);
 			this.setInitializerForClass(ScrollContainer, scrollContainerInitializer);
+			this.setInitializerForClass(ScrollContainer, scrollContainerToolbarInitializer, ScrollContainer.ALTERNATE_NAME_TOOLBAR);
 			this.setInitializerForClass(Panel, panelInitializer);
 		}
 
@@ -850,7 +852,7 @@ package feathers.themes
 
 			textArea.paddingTop = 2;
 			textArea.paddingBottom = 2;
-			textArea.paddingRight = 4;
+			textArea.paddingRight = 2;
 			textArea.paddingLeft = 4;
 
 			textArea.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
@@ -897,6 +899,28 @@ package feathers.themes
 
 			container.verticalScrollPolicy = ScrollContainer.SCROLL_POLICY_AUTO;
 			container.horizontalScrollPolicy = ScrollContainer.SCROLL_POLICY_AUTO;
+		}
+
+		protected function scrollContainerToolbarInitializer(container:ScrollContainer):void
+		{
+			const layout:HorizontalLayout = new HorizontalLayout();
+			layout.paddingTop = layout.paddingBottom = 2;
+			layout.paddingRight = layout.paddingLeft = 6;
+			layout.gap = 2;
+			container.layout = layout;
+
+			container.minHeight = 22;
+
+			container.horizontalScrollBarFactory = horizontalScrollBarFactory;
+			container.verticalScrollBarFactory = verticalScrollBarFactory;
+
+			container.interactionMode = ScrollContainer.INTERACTION_MODE_MOUSE;
+			container.scrollBarDisplayMode = ScrollContainer.SCROLL_BAR_DISPLAY_MODE_FIXED;
+
+			container.verticalScrollPolicy = ScrollContainer.SCROLL_POLICY_AUTO;
+			container.horizontalScrollPolicy = ScrollContainer.SCROLL_POLICY_AUTO;
+
+			container.backgroundSkin = new Scale9Image(headerBackgroundSkinTextures);
 		}
 
 		protected function panelInitializer(panel:Panel):void
