@@ -41,6 +41,7 @@ package feathers.themes
 	import feathers.controls.ProgressBar;
 	import feathers.controls.Radio;
 	import feathers.controls.Screen;
+	import feathers.controls.ScrollContainer;
 	import feathers.controls.ScrollText;
 	import feathers.controls.SimpleScrollBar;
 	import feathers.controls.Slider;
@@ -58,6 +59,7 @@ package feathers.themes
 	import feathers.core.DisplayListWatcher;
 	import feathers.core.FeathersControl;
 	import feathers.display.Scale9Image;
+	import feathers.layout.HorizontalLayout;
 	import feathers.layout.VerticalLayout;
 	import feathers.skins.SmartDisplayObjectStateValueSelector;
 	import feathers.skins.StandardIcons;
@@ -402,6 +404,7 @@ package feathers.themes
 			this.setInitializerForClass(ProgressBar, progressBarInitializer);
 			this.setInitializerForClass(Callout, calloutInitializer);
 			this.setInitializerForClass(Panel, panelInitializer);
+			this.setInitializerForClass(ScrollContainer, scrollContainerToolbarInitializer, ScrollContainer.ALTERNATE_NAME_TOOLBAR);
 		}
 
 		protected function pageIndicatorNormalSymbolFactory():DisplayObject
@@ -1112,6 +1115,23 @@ package feathers.themes
 
 			panel.paddingTop = panel.paddingRight = panel.paddingBottom =
 				panel.paddingLeft = 14 * this.scale;
+		}
+
+		protected function scrollContainerToolbarInitializer(container:ScrollContainer):void
+		{
+			const layout:HorizontalLayout = new HorizontalLayout();
+			layout.paddingTop = layout.paddingRight = layout.paddingBottom =
+				layout.paddingLeft = 14 * this.scale;
+			layout.gap = 8 * this.scale;
+			container.layout = layout;
+
+			container.minWidth = 88 * this.scale;
+			container.minHeight = 88 * this.scale;
+
+			const backgroundSkin:Scale9Image = new Scale9Image(headerSkinTextures, this.scale);
+			backgroundSkin.width = 88 * this.scale;
+			backgroundSkin.height = 88 * this.scale;
+			container.backgroundSkin = backgroundSkin;
 		}
 
 		protected function root_addedToStageHandler(event:Event):void
