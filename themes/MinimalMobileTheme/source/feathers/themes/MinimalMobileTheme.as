@@ -166,6 +166,7 @@ package feathers.themes
 
 		protected var scale:Number;
 		protected var fontSize:int;
+		protected var inputFontSize:int;
 
 		protected var atlas:TextureAtlas;
 		protected var atlasBitmapData:BitmapData;
@@ -274,6 +275,7 @@ package feathers.themes
 			//since it's a pixel font, we want a multiple of the original size,
 			//which, in this case, is 8.
 			this.fontSize = Math.max(4, roundToNearest(24 * this.scale, 8));
+			this.inputFontSize = 26 * this.scale;
 
 			Callout.stagePaddingTop = Callout.stagePaddingRight = Callout.stagePaddingBottom =
 				Callout.stagePaddingLeft = 16 * this.scale;
@@ -992,10 +994,11 @@ package feathers.themes
 		{
 			input.minWidth = input.minHeight = 66 * this.scale;
 			input.minTouchWidth = input.minTouchHeight = 66 * this.scale;
-			input.paddingTop = input.paddingBottom = 14 * this.scale;
+			input.paddingTop = 14 * this.scale;
+			input.paddingBottom = 8 * this.scale;
 			input.paddingLeft = input.paddingRight = 16 * this.scale;
-			input.textEditorProperties.fontFamily = "Helvetica";
-			input.textEditorProperties.fontSize = 36 * this.scale;
+			input.textEditorProperties.fontFamily = "_sans";
+			input.textEditorProperties.fontSize = this.inputFontSize;
 			input.textEditorProperties.color = PRIMARY_TEXT_COLOR;
 
 			const backgroundSkin:Scale9Image = new Scale9Image(insetBackgroundSkinTextures, this.scale);
@@ -1019,8 +1022,8 @@ package feathers.themes
 			input.paddingTop = input.paddingBottom = 14 * this.scale;
 			input.paddingLeft = input.paddingRight = 16 * this.scale;
 			input.isEditable = false;
-			input.textEditorProperties.fontFamily = "Helvetica";
-			input.textEditorProperties.fontSize = 36 * this.scale;
+			input.textEditorProperties.fontFamily = "_sans";
+			input.textEditorProperties.fontSize = this.inputFontSize;
 			input.textEditorProperties.color = PRIMARY_TEXT_COLOR;
 			input.textEditorProperties.textAlign = TextFormatAlign.CENTER;
 
