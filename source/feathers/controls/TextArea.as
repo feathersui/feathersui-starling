@@ -18,7 +18,6 @@ package feathers.controls
 	import flash.ui.MouseCursor;
 
 	import starling.display.DisplayObject;
-
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -565,7 +564,7 @@ package feathers.controls
 		 */
 		protected function doPendingActions():void
 		{
-			if(this._isWaitingToSetFocus)
+			if(this._isWaitingToSetFocus || (this._focusManager && this._focusManager.focus == this))
 			{
 				this._isWaitingToSetFocus = false;
 				if(!this._textEditorHasFocus)
@@ -755,6 +754,7 @@ package feathers.controls
 			}
 			super.focusOutHandler(event);
 			this.textEditorViewPort.clearFocus();
+			this.invalidate(INVALIDATION_FLAG_STATE);
 		}
 
 		/**
@@ -796,15 +796,9 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_STATE);
 			if(this._focusManager)
 			{
-				if(this._focusManager.focus == this)
-				{
-					this._focusManager.focus = null;
-				}
+				return;
 			}
-			else
-			{
-				this.dispatchEventWith(FeathersEventType.FOCUS_OUT);
-			}
+			this.dispatchEventWith(FeathersEventType.FOCUS_OUT);
 		}
 	}
 }
