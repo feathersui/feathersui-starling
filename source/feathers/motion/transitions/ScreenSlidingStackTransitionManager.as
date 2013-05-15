@@ -41,13 +41,22 @@ package feathers.motion.transitions
 		/**
 		 * Constructor.
 		 */
-		public function ScreenSlidingStackTransitionManager(navigator:ScreenNavigator, quickStack:Class = null)
+		public function ScreenSlidingStackTransitionManager(navigator:ScreenNavigator, quickStackScreenClass:Class = null, quickStackScreenID:String = null)
 		{
 			if(!navigator)
 			{
 				throw new ArgumentError("ScreenNavigator cannot be null.");
 			}
 			this.navigator = navigator;
+			var quickStack:String;
+			if(quickStackScreenClass)
+			{
+				quickStack = getQualifiedClassName(quickStackScreenClass);
+			}
+			if(quickStack && quickStackScreenID)
+			{
+				quickStack += "~" + quickStackScreenID;
+			}
 			if(quickStack)
 			{
 				this._stack.push(quickStack);
