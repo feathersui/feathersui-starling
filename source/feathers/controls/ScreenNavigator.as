@@ -189,6 +189,7 @@ package feathers.controls
 		 *
 		 * @see #showScreen()
 		 * @see #clearScreen()
+		 * @see http://wiki.starling-framework.org/feathers/transitions
 		 */
 		public var transition:Function = defaultTransition;
 
