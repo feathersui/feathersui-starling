@@ -1488,12 +1488,13 @@ package feathers.controls
 		 */
 		public function close(dispose:Boolean = false):void
 		{
-			if(!this.parent)
+			if(this.parent)
 			{
-				return;
+				//don't dispose here because we need to keep the event listeners
+				//when dispatching Event.CLOSE. we'll dispose after that.
+				this.removeFromParent(false);
+				this.dispatchEventWith(Event.CLOSE);
 			}
-			this.removeFromParent();
-			this.dispatchEventWith(Event.CLOSE);
 			if(dispose)
 			{
 				this.dispose();
