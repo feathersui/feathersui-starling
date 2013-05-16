@@ -7,14 +7,11 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls.text
 {
-	import feathers.core.FeathersControl;
-	import feathers.core.ITextEditor;
-	import feathers.events.FeathersEventType;
-
 	import flash.display.BitmapData;
 	import flash.display3D.textures.Texture;
 	import flash.events.FocusEvent;
 	import flash.events.KeyboardEvent;
+	import flash.events.SoftKeyboardEvent;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -23,7 +20,11 @@ package feathers.controls.text
 	import flash.text.TextFieldType;
 	import flash.text.TextFormat;
 	import flash.ui.Keyboard;
-
+	
+	import feathers.core.FeathersControl;
+	import feathers.core.ITextEditor;
+	import feathers.events.FeathersEventType;
+	
 	import starling.core.RenderSupport;
 	import starling.core.Starling;
 	import starling.display.Image;
@@ -624,6 +625,9 @@ package feathers.controls.text
 			this.textField.addEventListener(FocusEvent.FOCUS_IN, textField_focusInHandler);
 			this.textField.addEventListener(FocusEvent.FOCUS_OUT, textField_focusOutHandler);
 			this.textField.addEventListener(KeyboardEvent.KEY_DOWN, textField_keyDownHandler);
+			this.textField.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATING, textField_softKeyboardActivatingHandler);
+			this.textField.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATE, textField_softKeyboardActivateHandler);
+			this.textField.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_DEACTIVATE, textField_softKeyboardDeactivateHandler);
 
 			this.measureTextField = new TextField();
 			this.measureTextField.autoSize = TextFieldAutoSize.LEFT;
@@ -1026,5 +1030,27 @@ package feathers.controls.text
 				this.dispatchEventWith(FeathersEventType.ENTER);
 			}
 		}
+		
+		/**
+		 * @private
+		 */
+		protected function textField_softKeyboardActivatingHandler(event:SoftKeyboardEvent):void {
+			this.dispatchEventWith(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATING);
+		}
+		
+		/**
+		 * @private
+		 */
+		protected function textField_softKeyboardActivateHandler(event:SoftKeyboardEvent):void {
+			this.dispatchEventWith(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATE);
+		}
+		
+		/**
+		 * @private
+		 */
+		protected function textField_softKeyboardDeactivateHandler(event:SoftKeyboardEvent):void {
+			this.dispatchEventWith(SoftKeyboardEvent.SOFT_KEYBOARD_DEACTIVATE);
+		}
+		
 	}
 }

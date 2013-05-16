@@ -7,16 +7,12 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls.text
 {
-	import feathers.core.FeathersControl;
-	import feathers.core.ITextEditor;
-	import feathers.events.FeathersEventType;
-	import feathers.text.StageTextField;
-
 	import flash.display.BitmapData;
 	import flash.display3D.textures.Texture;
 	import flash.events.Event;
 	import flash.events.FocusEvent;
 	import flash.events.KeyboardEvent;
+	import flash.events.SoftKeyboardEvent;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -28,7 +24,12 @@ package feathers.controls.text
 	import flash.text.engine.FontWeight;
 	import flash.ui.Keyboard;
 	import flash.utils.getDefinitionByName;
-
+	
+	import feathers.core.FeathersControl;
+	import feathers.core.ITextEditor;
+	import feathers.events.FeathersEventType;
+	import feathers.text.StageTextField;
+	
 	import starling.core.RenderSupport;
 	import starling.core.Starling;
 	import starling.display.Image;
@@ -1143,6 +1144,9 @@ package feathers.controls.text
 			this.stageText.removeEventListener(FocusEvent.FOCUS_IN, stageText_focusInHandler);
 			this.stageText.removeEventListener(FocusEvent.FOCUS_OUT, stageText_focusOutHandler);
 			this.stageText.removeEventListener(flash.events.Event.COMPLETE, stageText_completeHandler);
+			this.stageText.removeEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATING, stageText_softKeyboardActivatingHandler);
+			this.stageText.removeEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATE, stageText_softKeyboardActivateHandler);
+			this.stageText.removeEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_DEACTIVATE, stageText_softKeyboardDeactivateHandler);
 			this.stageText.stage = null;
 			this.stageText.dispose();
 			this.stageText = null;
@@ -1175,6 +1179,9 @@ package feathers.controls.text
 			this.stageText.addEventListener(FocusEvent.FOCUS_IN, stageText_focusInHandler);
 			this.stageText.addEventListener(FocusEvent.FOCUS_OUT, stageText_focusOutHandler);
 			this.stageText.addEventListener(flash.events.Event.COMPLETE, stageText_completeHandler);
+			this.stageText.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATING, stageText_softKeyboardActivatingHandler);
+			this.stageText.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATE, stageText_softKeyboardActivateHandler);
+			this.stageText.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_DEACTIVATE, stageText_softKeyboardDeactivateHandler);
 			this.invalidate();
 		}
 
@@ -1290,6 +1297,27 @@ package feathers.controls.text
 			{
 				event.preventDefault();
 			}
+		}
+		
+		/**
+		 * @private
+		 */
+		protected function stageText_softKeyboardActivatingHandler(event:SoftKeyboardEvent):void {
+			this.dispatchEventWith(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATING);
+		}
+		
+		/**
+		 * @private
+		 */
+		protected function stageText_softKeyboardActivateHandler(event:SoftKeyboardEvent):void {
+			this.dispatchEventWith(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATE);
+		}
+		
+		/**
+		 * @private
+		 */
+		protected function stageText_softKeyboardDeactivateHandler(event:SoftKeyboardEvent):void {
+			this.dispatchEventWith(SoftKeyboardEvent.SOFT_KEYBOARD_DEACTIVATE);
 		}
 	}
 }
