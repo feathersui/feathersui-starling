@@ -923,11 +923,16 @@ package feathers.layout
 			const itemCount:int = items.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
-				var control:IFeathersControl = items[i] as IFeathersControl;
-				if(control)
+				var item:DisplayObject = items[i];
+				if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
 				{
-					control.validate();
+					continue;
 				}
+				if(!(item is IFeathersControl))
+				{
+					continue;
+				}
+				IFeathersControl(item).validate();
 			}
 		}
 	}
