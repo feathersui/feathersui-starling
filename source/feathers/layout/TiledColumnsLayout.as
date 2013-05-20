@@ -843,6 +843,10 @@ package feathers.layout
 				for(i = 0; i <= discoveredItemsLastIndex; i++)
 				{
 					item = discoveredItems[i];
+					if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+					{
+						continue;
+					}
 					item.visible = ((item.x + item.width) >= (boundsX + scrollX)) && (item.x < (scrollX + availableWidth));
 				}
 			}
@@ -1025,6 +1029,10 @@ package feathers.layout
 					{
 						continue;
 					}
+					if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+					{
+						continue;
+					}
 					tileWidth = this._useSquareTiles ? Math.max(tileWidth, item.width, item.height) : Math.max(tileWidth, item.width);
 					tileHeight = this._useSquareTiles ? Math.max(tileWidth, tileHeight) : Math.max(tileHeight, item.height);
 				}
@@ -1079,6 +1087,10 @@ package feathers.layout
 				for(var i:int = startIndex; i <= endIndex; i++)
 				{
 					var item:DisplayObject = items[i];
+					if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+					{
+						continue;
+					}
 					item.x += horizontalAlignOffsetX;
 				}
 			}
@@ -1107,6 +1119,10 @@ package feathers.layout
 				for(var i:int = startIndex; i <= endIndex; i++)
 				{
 					var item:DisplayObject = items[i];
+					if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+					{
+						continue;
+					}
 					item.y += verticalAlignOffsetY;
 				}
 			}
@@ -1120,11 +1136,16 @@ package feathers.layout
 			const itemCount:int = items.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
-				var control:IFeathersControl = items[i] as IFeathersControl;
-				if(control)
+				var item:DisplayObject = items[i];
+				if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
 				{
-					control.validate();
+					continue;
 				}
+				if(!(item is IFeathersControl))
+				{
+					continue;
+				}
+				IFeathersControl(item).validate();
 			}
 		}
 
