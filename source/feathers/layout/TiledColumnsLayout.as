@@ -598,6 +598,19 @@ package feathers.layout
 		 */
 		public function layout(items:Vector.<DisplayObject>, viewPortBounds:ViewPortBounds = null, result:LayoutBoundsResult = null):LayoutBoundsResult
 		{
+			if(!result)
+			{
+				result = new LayoutBoundsResult();
+			}
+			if(items.length == 0)
+			{
+				result.contentWidth = 0;
+				result.contentHeight = 0;
+				result.viewPortWidth = 0;
+				result.viewPortHeight = 0;
+				return result;
+			}
+
 			const scrollX:Number = viewPortBounds ? viewPortBounds.scrollX : 0;
 			const scrollY:Number = viewPortBounds ? viewPortBounds.scrollY : 0;
 			const boundsX:Number = viewPortBounds ? viewPortBounds.x : 0;
