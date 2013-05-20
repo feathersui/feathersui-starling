@@ -697,21 +697,48 @@ package feathers.controls.text
 			{
 				if(position)
 				{
-					if(position.x < 0)
+					const positionX:Number = position.x;
+					const positionY:Number = position.y;
+					if(positionX < 0)
 					{
 						this._pendingSelectionStartIndex = this._pendingSelectionEndIndex = 0;
 					}
 					else
 					{
-						this._pendingSelectionStartIndex = this._measureTextField.getCharIndexAtPoint(position.x, position.y);
+						this._pendingSelectionStartIndex = this._measureTextField.getCharIndexAtPoint(positionX, positionY);
 						if(this._pendingSelectionStartIndex < 0)
 						{
-							this._pendingSelectionStartIndex = this._text.length;
+							if(this._multiline)
+							{
+								const lineIndex:int = int(positionY / this._measureTextField.getLineMetrics(0).height);
+								try
+								{
+									this._pendingSelectionStartIndex = this._measureTextField.getLineOffset(lineIndex) + this._measureTextField.getLineLength(lineIndex);
+									if(this._pendingSelectionStartIndex != this._text.length)
+									{
+										this._pendingSelectionStartIndex--;
+									}
+								}
+								catch(error:Error)
+								{
+									//we may be checking for a line beyond the
+									//end that doesn't exist
+									this._pendingSelectionStartIndex = this._text.length;
+								}
+							}
+							else
+							{
+								this._pendingSelectionStartIndex = this._text.length;
+							}
 						}
-						const bounds:Rectangle = this._measureTextField.getCharBoundaries(this._pendingSelectionStartIndex);
-						if(bounds && (bounds.x + bounds.width - position.x) < (position.x - bounds.x))
+						else
 						{
-							this._pendingSelectionStartIndex++;
+							const bounds:Rectangle = this._measureTextField.getCharBoundaries(this._pendingSelectionStartIndex);
+							const boundsX:Number = bounds.x;
+							if(bounds && (boundsX + bounds.width - positionX) < (positionX - boundsX))
+							{
+								this._pendingSelectionStartIndex++;
+							}
 						}
 						this._pendingSelectionEndIndex = this._pendingSelectionStartIndex;
 					}
@@ -963,6 +990,7 @@ package feathers.controls.text
 			this._measureTextField.displayAsPassword = this._displayAsPassword;
 			this._measureTextField.maxChars = this._maxChars;
 			this._measureTextField.restrict = this._restrict;
+			this._measureTextField.multiline = this._measureTextField.wordWrap = this._multiline;
 
 			const format:TextFormat = this._measureTextField.defaultTextFormat;
 			format.color = this._color;
@@ -1094,6 +1122,9 @@ package feathers.controls.text
 				stageTextViewPort.height = 1;
 			}
 			this.stageText.viewPort = stageTextViewPort;
+
+			this._measureTextField.width = this.actualWidth;
+			this._measureTextField.height = this.actualHeight;
 		}
 
 		/**
