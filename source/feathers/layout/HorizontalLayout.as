@@ -525,13 +525,9 @@ package feathers.layout
 				}
 				else
 				{
-					if(item is ILayoutDisplayObject)
+					if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
 					{
-						var layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(item);
-						if(!layoutItem.includeInLayout)
-						{
-							continue;
-						}
+						continue;
 					}
 					item.x = positionX;
 					if(this._useVirtualLayout)
@@ -586,6 +582,10 @@ package feathers.layout
 					for(i = 0; i < discoveredItemCount; i++)
 					{
 						item = discoveredItems[i];
+						if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+						{
+							continue;
+						}
 						item.x += horizontalAlignOffsetX;
 					}
 				}
@@ -594,6 +594,10 @@ package feathers.layout
 			for(i = 0; i < discoveredItemCount; i++)
 			{
 				item = discoveredItems[i];
+				if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+				{
+					continue;
+				}
 				switch(this._verticalAlign)
 				{
 					case VERTICAL_ALIGN_BOTTOM:

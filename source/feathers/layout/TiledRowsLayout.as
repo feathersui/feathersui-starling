@@ -643,13 +643,9 @@ package feathers.layout
 					{
 						continue;
 					}
-					if(item is ILayoutDisplayObject)
+					if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
 					{
-						var layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(item);
-						if(!layoutItem.includeInLayout)
-						{
-							continue;
-						}
+						continue;
 					}
 					tileWidth = this._useSquareTiles ? Math.max(tileWidth, item.width, item.height) : Math.max(tileWidth, item.width);
 					tileHeight = this._useSquareTiles ? Math.max(tileWidth, tileHeight) : Math.max(tileHeight, item.height);
@@ -699,13 +695,9 @@ package feathers.layout
 			for(i = 0; i < itemCount; i++)
 			{
 				item = items[i];
-				if(item is ILayoutDisplayObject)
+				if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
 				{
-					layoutItem = ILayoutDisplayObject(item);
-					if(!layoutItem.includeInLayout)
-					{
-						continue;
-					}
+					continue;
 				}
 				if(itemIndex != 0 && itemIndex % horizontalTileCount == 0)
 				{
