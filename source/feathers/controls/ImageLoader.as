@@ -124,7 +124,10 @@ package feathers.controls
 
 		/**
 		 * The texture to display, or a URL to load the image from to create the
-		 * texture.
+		 * texture. Supports image files that may be loaded by
+		 * <code>flash.display.Loader</code>, including JPG, GIF, and PNG.
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/Loader.html
 		 */
 		public function get source():Object
 		{
