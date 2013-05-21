@@ -103,7 +103,6 @@ package feathers.examples.tileList
 			listLayout.tileHorizontalAlign = TiledRowsLayout.TILE_HORIZONTAL_ALIGN_CENTER;
 			listLayout.horizontalAlign = TiledRowsLayout.HORIZONTAL_ALIGN_CENTER;
 			listLayout.manageVisibility = true;
-			listLayout.manageVisibility = true;
 
 			this._list = new List();
 			this._list.dataProvider = collection;
