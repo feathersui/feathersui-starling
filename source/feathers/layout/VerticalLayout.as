@@ -530,13 +530,9 @@ package feathers.layout
 				}
 				else
 				{
-					if(item is ILayoutDisplayObject)
+					if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
 					{
-						var layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(item);
-						if(!layoutItem.includeInLayout)
-						{
-							continue;
-						}
+						continue;
 					}
 					item.y = positionY;
 					if(this._useVirtualLayout)
@@ -590,6 +586,10 @@ package feathers.layout
 					for(i = 0; i < discoveredItemCount; i++)
 					{
 						item = discoveredItems[i];
+						if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+						{
+							continue;
+						}
 						item.y += verticalAlignOffsetY;
 					}
 				}
@@ -598,6 +598,10 @@ package feathers.layout
 			for(i = 0; i < discoveredItemCount; i++)
 			{
 				item = discoveredItems[i];
+				if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+				{
+					continue;
+				}
 				switch(this._horizontalAlign)
 				{
 					case HORIZONTAL_ALIGN_RIGHT:
@@ -626,7 +630,6 @@ package feathers.layout
 					item.visible = ((item.y + item.height) >= (boundsY + scrollY)) && (item.y < (scrollY + availableHeight));
 				}
 			}
-
 
 			this._discoveredItemsCache.length = 0;
 
@@ -920,11 +923,16 @@ package feathers.layout
 			const itemCount:int = items.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
-				var control:IFeathersControl = items[i] as IFeathersControl;
-				if(control)
+				var item:DisplayObject = items[i];
+				if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
 				{
-					control.validate();
+					continue;
 				}
+				if(!(item is IFeathersControl))
+				{
+					continue;
+				}
+				IFeathersControl(item).validate();
 			}
 		}
 	}
