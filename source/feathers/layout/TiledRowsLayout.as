@@ -643,13 +643,9 @@ package feathers.layout
 					{
 						continue;
 					}
-					if(item is ILayoutDisplayObject)
+					if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
 					{
-						var layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(item);
-						if(!layoutItem.includeInLayout)
-						{
-							continue;
-						}
+						continue;
 					}
 					tileWidth = this._useSquareTiles ? Math.max(tileWidth, item.width, item.height) : Math.max(tileWidth, item.width);
 					tileHeight = this._useSquareTiles ? Math.max(tileWidth, tileHeight) : Math.max(tileHeight, item.height);
@@ -699,13 +695,9 @@ package feathers.layout
 			for(i = 0; i < itemCount; i++)
 			{
 				item = items[i];
-				if(item is ILayoutDisplayObject)
+				if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
 				{
-					layoutItem = ILayoutDisplayObject(item);
-					if(!layoutItem.includeInLayout)
-					{
-						continue;
-					}
+					continue;
 				}
 				if(itemIndex != 0 && itemIndex % horizontalTileCount == 0)
 				{
@@ -849,6 +841,10 @@ package feathers.layout
 				for(i = 0; i <= discoveredItemsLastIndex; i++)
 				{
 					item = discoveredItems[i];
+					if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+					{
+						continue;
+					}
 					item.visible = ((item.y + item.height) >= (boundsY + scrollY)) && (item.y < (scrollY + availableHeight));
 				}
 			}
@@ -1034,6 +1030,10 @@ package feathers.layout
 					{
 						continue;
 					}
+					if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+					{
+						continue;
+					}
 					tileWidth = this._useSquareTiles ? Math.max(tileWidth, item.width, item.height) : Math.max(tileWidth, item.width);
 					tileHeight = this._useSquareTiles ? Math.max(tileWidth, tileHeight) : Math.max(tileHeight, item.height);
 				}
@@ -1088,6 +1088,10 @@ package feathers.layout
 				for(var i:int = startIndex; i <= endIndex; i++)
 				{
 					var item:DisplayObject = items[i];
+					if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+					{
+						continue;
+					}
 					item.x += horizontalAlignOffsetX;
 				}
 			}
@@ -1116,6 +1120,10 @@ package feathers.layout
 				for(var i:int = startIndex; i <= endIndex; i++)
 				{
 					var item:DisplayObject = items[i];
+					if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+					{
+						continue;
+					}
 					item.y += verticalAlignOffsetY;
 				}
 			}
@@ -1129,11 +1137,16 @@ package feathers.layout
 			const itemCount:int = items.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
-				var control:IFeathersControl = items[i] as IFeathersControl;
-				if(control)
+				var item:DisplayObject = items[i];
+				if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
 				{
-					control.validate();
+					continue;
 				}
+				if(!(item is IFeathersControl))
+				{
+					continue;
+				}
+				IFeathersControl(item).validate();
 			}
 		}
 
@@ -1256,11 +1269,11 @@ package feathers.layout
 					topSideOffset = height - this._paddingTop - this._paddingBottom - totalColumnHeight;
 					bottomSideOffset = 0;
 				}
-				else if(this._horizontalAlign == VERTICAL_ALIGN_MIDDLE)
+				else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
 				{
 					topSideOffset = bottomSideOffset = (height - this._paddingTop - this._paddingBottom - totalColumnHeight) / 2;
 				}
-				else if(this._horizontalAlign == VERTICAL_ALIGN_TOP)
+				else if(this._verticalAlign == VERTICAL_ALIGN_TOP)
 				{
 					topSideOffset = 0;
 					bottomSideOffset = height - this._paddingTop - this._paddingBottom - totalColumnHeight;
@@ -1272,20 +1285,21 @@ package feathers.layout
 			if(partialPageSize < 0)
 			{
 				partialPageSize = Math.max(0, -partialPageSize - this._paddingBottom - bottomSideOffset);
-				rowOffset = -Math.floor(partialPageSize / (tileWidth + this._verticalGap)) - 1;
-				minimum += -perPage + horizontalTileCount + rowOffset;
+				rowOffset = -Math.floor(partialPageSize / (tileHeight + this._verticalGap)) - 1;
+				minimum += horizontalTileCount * rowOffset;
 			}
 			else if(partialPageSize > 0)
 			{
 				partialPageSize = Math.max(0, partialPageSize - this._paddingTop - topSideOffset);
-				rowOffset = Math.floor(partialPageSize / (tileWidth + this._verticalGap));
-				minimum += rowOffset;
+				rowOffset = Math.floor(partialPageSize / (tileHeight + this._verticalGap));
+				minimum += horizontalTileCount * rowOffset;
 			}
 			if(minimum < 0)
 			{
 				minimum = 0;
 				rowOffset = 0;
 			}
+
 
 			const maximum:int = Math.min(itemCount, minimum + minimumItemCount);
 			minimum = maximum - minimumItemCount;
