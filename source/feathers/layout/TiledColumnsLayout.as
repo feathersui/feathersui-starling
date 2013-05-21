@@ -1190,13 +1190,13 @@ package feathers.layout
 			{
 				partialPageSize = Math.max(0, -partialPageSize - this._paddingRight - rightSideOffset);
 				columnOffset = -Math.floor(partialPageSize / (tileWidth + this._horizontalGap)) - 1;
-				minimum += -perPage + horizontalTileCount + columnOffset;
+				minimum += columnOffset * verticalTileCount;
 			}
 			else if(partialPageSize > 0)
 			{
 				partialPageSize = Math.max(0, partialPageSize - this._paddingLeft - leftSideOffset);
 				columnOffset = Math.floor(partialPageSize / (tileWidth + this._horizontalGap));
-				minimum += columnOffset;
+				minimum += columnOffset * verticalTileCount;
 			}
 			if(minimum < 0)
 			{
