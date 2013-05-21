@@ -1269,11 +1269,11 @@ package feathers.layout
 					topSideOffset = height - this._paddingTop - this._paddingBottom - totalColumnHeight;
 					bottomSideOffset = 0;
 				}
-				else if(this._horizontalAlign == VERTICAL_ALIGN_MIDDLE)
+				else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
 				{
 					topSideOffset = bottomSideOffset = (height - this._paddingTop - this._paddingBottom - totalColumnHeight) / 2;
 				}
-				else if(this._horizontalAlign == VERTICAL_ALIGN_TOP)
+				else if(this._verticalAlign == VERTICAL_ALIGN_TOP)
 				{
 					topSideOffset = 0;
 					bottomSideOffset = height - this._paddingTop - this._paddingBottom - totalColumnHeight;
@@ -1285,20 +1285,21 @@ package feathers.layout
 			if(partialPageSize < 0)
 			{
 				partialPageSize = Math.max(0, -partialPageSize - this._paddingBottom - bottomSideOffset);
-				rowOffset = -Math.floor(partialPageSize / (tileWidth + this._verticalGap)) - 1;
-				minimum += -perPage + horizontalTileCount + rowOffset;
+				rowOffset = -Math.floor(partialPageSize / (tileHeight + this._verticalGap)) - 1;
+				minimum += horizontalTileCount * rowOffset;
 			}
 			else if(partialPageSize > 0)
 			{
 				partialPageSize = Math.max(0, partialPageSize - this._paddingTop - topSideOffset);
-				rowOffset = Math.floor(partialPageSize / (tileWidth + this._verticalGap));
-				minimum += rowOffset;
+				rowOffset = Math.floor(partialPageSize / (tileHeight + this._verticalGap));
+				minimum += horizontalTileCount * rowOffset;
 			}
 			if(minimum < 0)
 			{
 				minimum = 0;
 				rowOffset = 0;
 			}
+
 
 			const maximum:int = Math.min(itemCount, minimum + minimumItemCount);
 			minimum = maximum - minimumItemCount;
