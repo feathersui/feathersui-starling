@@ -56,15 +56,15 @@ public addToVariableVirtualCacheAtIndex(index:int, item:DisplayObject = null):vo
 {
 	this.resetVariableVirtualCache();
 }
-```		
+```
 * IVariableVirtualLayout: added function removeFromVariableVirtualCacheAtIndex() for more specific control over the cache of item dimensions. The following implementation can be added to existing classes to simulate the old behavior:
-	
+
 ```
 public removeFromVariableVirtualCacheAtIndex(index:int, item:DisplayObject = null):void
 {
 	this.resetVariableVirtualCache();
 }
-```		
+```
 * ScrollText: now properly handles visible and alpha properties.
 * ListCollection: added removeAll(), addAll(), addAllAt() and contains().
 * Scroller: scrolling animates for mouse wheel.
