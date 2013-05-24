@@ -263,6 +263,12 @@ package feathers.controls
 
 		/**
 		 * @private
+		 * The current velocity is given high importance.
+		 */
+		private static const CURRENT_VELOCITY_WEIGHT:Number = 2.33;
+
+		/**
+		 * @private
 		 * Older saved velocities are given less importance.
 		 */
 		private static const VELOCITY_WEIGHTS:Vector.<Number> = new <Number>[2, 1.66, 1.33, 1];
@@ -3439,9 +3445,9 @@ package feathers.controls
 				if(!isFinishingHorizontally && this._isDraggingHorizontally)
 				{
 					//take the average for more accuracy
-					var sum:Number = this._velocityX * 2.33;
+					var sum:Number = this._velocityX * CURRENT_VELOCITY_WEIGHT;
 					var velocityCount:int = this._previousVelocityX.length;
-					var totalWeight:Number = 0;
+					var totalWeight:Number = CURRENT_VELOCITY_WEIGHT;
 					for(var i:int = 0; i < velocityCount; i++)
 					{
 						var weight:Number = VELOCITY_WEIGHTS[i];
@@ -3457,9 +3463,9 @@ package feathers.controls
 				
 				if(!isFinishingVertically && this._isDraggingVertically)
 				{
-					sum = this._velocityY * 2.33;
+					sum = this._velocityY * CURRENT_VELOCITY_WEIGHT;
 					velocityCount = this._previousVelocityY.length;
-					totalWeight = 0;
+					totalWeight = CURRENT_VELOCITY_WEIGHT;
 					for(i = 0; i < velocityCount; i++)
 					{
 						weight = VELOCITY_WEIGHTS[i];
