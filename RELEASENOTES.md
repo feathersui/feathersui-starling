@@ -49,17 +49,22 @@ Noteworthy changes in official releases of [Feathers](http://feathersui.com/).
 * FeathersControl: setSizeInternal() is now stricter. It can never receive a NaN value for width or height. This is a common source of bugs, and throwing an error here will help make it easier to find those bugs.
 * IVariableVirtualLayout: added function addToVariableVirtualCacheAtIndex() for more specific control over the cache of item dimensions. The following implementation can be added to existing classes to simulate the old behavior:
 
-		public addToVariableVirtualCacheAtIndex(index:int, item:DisplayObject = null):void
-		{
-			this.resetVariableVirtualCache();
-		}
+<!--- markdown is failing miserably. I'll take separate lists over inconsistent formatting -->
 
+```
+public addToVariableVirtualCacheAtIndex(index:int, item:DisplayObject = null):void
+{
+	this.resetVariableVirtualCache();
+}
+```		
 * IVariableVirtualLayout: added function removeFromVariableVirtualCacheAtIndex() for more specific control over the cache of item dimensions. The following implementation can be added to existing classes to simulate the old behavior:
-
-		public removeFromVariableVirtualCacheAtIndex(index:int, item:DisplayObject = null):void
-		{
-			this.resetVariableVirtualCache();
-		}
+	
+```
+public removeFromVariableVirtualCacheAtIndex(index:int, item:DisplayObject = null):void
+{
+	this.resetVariableVirtualCache();
+}
+```		
 * ScrollText: now properly handles visible and alpha properties.
 * ListCollection: added removeAll(), addAll(), addAllAt() and contains().
 * Scroller: scrolling animates for mouse wheel.
