@@ -531,8 +531,8 @@ package feathers.controls
 		protected var _backgroundFocusedSkin:DisplayObject;
 
 		/**
-		 * A display object displayed behind the header's content when the
-		 * TextInput has focus.
+		 * A display object displayed behind the text input's content when it
+		 * has focus.
 		 */
 		public function get backgroundFocusedSkin():DisplayObject
 		{
