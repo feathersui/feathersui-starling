@@ -318,7 +318,7 @@ package feathers.controls.text
 			{
 				newWidth = Math.max(this._minVisibleWidth, Math.min(this._maxVisibleWidth, this.measureTextField.textWidth + 4));
 			}
-			var newHeight:Number = this.textField.textHeight + 4;
+			var newHeight:Number = this.measureTextField.textHeight + 4;
 
 			result.x = newWidth;
 			result.y = newHeight;
