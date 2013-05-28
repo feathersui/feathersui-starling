@@ -567,6 +567,45 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override protected function autoSizeIfNeeded():Boolean
+		{
+			const needsWidth:Boolean = isNaN(this.explicitWidth);
+			const needsHeight:Boolean = isNaN(this.explicitHeight);
+			if(!needsWidth && !needsHeight)
+			{
+				return false;
+			}
+
+			var newWidth:Number = this.explicitWidth;
+			var newHeight:Number = this.explicitHeight;
+			if(needsWidth)
+			{
+				if(!isNaN(this.originalBackgroundWidth))
+				{
+					newWidth = this.originalBackgroundWidth;
+				}
+				else
+				{
+					newWidth = 0;
+				}
+			}
+			if(needsHeight)
+			{
+				if(!isNaN(this.originalBackgroundHeight))
+				{
+					newHeight = this.originalBackgroundHeight;
+				}
+				else
+				{
+					newHeight = 0;
+				}
+			}
+			return this.setSizeInternal(newWidth, newHeight, false);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function createTextEditor():void
 		{
 			if(this.textEditorViewPort)
