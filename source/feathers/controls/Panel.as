@@ -612,13 +612,13 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override protected function calculateViewPortOffsets(forceScrollBars:Boolean = false):void
+		override protected function calculateViewPortOffsets(forceScrollBars:Boolean = false, useActualBounds:Boolean = false):void
 		{
 			super.calculateViewPortOffsets(forceScrollBars);
 
 			const oldHeaderWidth:Number = this.header.width;
 			const oldHeaderHeight:Number = this.header.height;
-			this.header.width = this.explicitWidth;
+			this.header.width = useActualBounds ? this.actualWidth : this.explicitWidth;
 			this.header.maxWidth = this._maxWidth;
 			this.header.height = NaN;
 			this.header.validate();
@@ -630,7 +630,7 @@ package feathers.controls
 			{
 				const oldFooterWidth:Number = this.footer.width;
 				const oldFooterHeight:Number = this.footer.height;
-				this.footer.width = this.explicitWidth;
+				this.footer.width = useActualBounds ? this.actualWidth : this.explicitWidth;
 				this.footer.maxWidth = this._maxWidth;
 				this.footer.height = NaN;
 				this.footer.validate();

@@ -308,6 +308,45 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _backgroundFocusedSkin:DisplayObject;
+
+		/**
+		 * A display object displayed behind the text area's content when it
+		 * has focus.
+		 */
+		public function get backgroundFocusedSkin():DisplayObject
+		{
+			return this._backgroundFocusedSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set backgroundFocusedSkin(value:DisplayObject):void
+		{
+			if(this._backgroundFocusedSkin == value)
+			{
+				return;
+			}
+
+			if(this._backgroundFocusedSkin && this._backgroundFocusedSkin != this._backgroundSkin &&
+				this._backgroundFocusedSkin != this._backgroundDisabledSkin)
+			{
+				this.removeChild(this._backgroundFocusedSkin);
+			}
+			this._backgroundFocusedSkin = value;
+			if(this._backgroundFocusedSkin && this._backgroundFocusedSkin.parent != this)
+			{
+				this._backgroundFocusedSkin.visible = false;
+				this._backgroundFocusedSkin.touchable = false;
+				this.addChildAt(this._backgroundFocusedSkin, 0);
+			}
+			this.invalidate(INVALIDATION_FLAG_SKIN);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _textEditorFactory:Function;
 
 		/**
@@ -528,6 +567,45 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override protected function autoSizeIfNeeded():Boolean
+		{
+			const needsWidth:Boolean = isNaN(this.explicitWidth);
+			const needsHeight:Boolean = isNaN(this.explicitHeight);
+			if(!needsWidth && !needsHeight)
+			{
+				return false;
+			}
+
+			var newWidth:Number = this.explicitWidth;
+			var newHeight:Number = this.explicitHeight;
+			if(needsWidth)
+			{
+				if(!isNaN(this.originalBackgroundWidth))
+				{
+					newWidth = this.originalBackgroundWidth;
+				}
+				else
+				{
+					newWidth = 0;
+				}
+			}
+			if(needsHeight)
+			{
+				if(!isNaN(this.originalBackgroundHeight))
+				{
+					newHeight = this.originalBackgroundHeight;
+				}
+				else
+				{
+					newHeight = 0;
+				}
+			}
+			return this.setSizeInternal(newWidth, newHeight, false);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function createTextEditor():void
 		{
 			if(this.textEditorViewPort)
@@ -599,6 +677,30 @@ package feathers.controls
 					this.textEditorViewPort[propertyName] = propertyValue;
 				}
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function refreshBackgroundSkin():void
+		{
+			if(this._hasFocus && this._backgroundFocusedSkin)
+			{
+				this.currentBackgroundSkin = this._backgroundFocusedSkin;
+				this.setChildIndex(this.currentBackgroundSkin, 0);
+				this.currentBackgroundSkin.visible = true;
+
+				if(isNaN(this.originalBackgroundWidth))
+				{
+					this.originalBackgroundWidth = this.currentBackgroundSkin.width;
+				}
+				if(isNaN(this.originalBackgroundHeight))
+				{
+					this.originalBackgroundHeight = this.currentBackgroundSkin.height;
+				}
+				return;
+			}
+			super.refreshBackgroundSkin();
 		}
 
 		/**
