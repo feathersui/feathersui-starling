@@ -1987,15 +1987,21 @@ package feathers.controls
 			do
 			{
 				this._hasViewPortBoundsChanged = false;
-				//even if fixed, we need to measure without them first
+				//even if fixed, we need to measure without them first because
+				//if the scroll policy is auto, we only show them when needed.
 				if(scrollInvalid || sizeInvalid || stylesInvalid || scrollBarInvalid)
 				{
-					this.calculateViewPortOffsets(true);
+					this.calculateViewPortOffsets(true, false);
 					this.refreshViewPortBoundsWithoutFixedScrollBars();
-					this.calculateViewPortOffsets(false);
+					this.calculateViewPortOffsets(false, false);
 				}
 
 				sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
+
+				//just in case autoSizeIfNeeded() is overridden, we need to call
+				//this again and use actualWidth/Height instead of
+				//explicitWidth/Height.
+				this.calculateViewPortOffsets(false, true);
 
 				if(scrollInvalid || sizeInvalid || stylesInvalid || scrollBarInvalid)
 				{
@@ -2442,7 +2448,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function calculateViewPortOffsets(forceScrollBars:Boolean = false):void
+		protected function calculateViewPortOffsets(forceScrollBars:Boolean = false, useActualBounds:Boolean = false):void
 		{
 			//in fixed mode, if we determine that scrolling is required, we
 			//remember the offsets for later. if scrolling is not needed, then
@@ -2455,8 +2461,9 @@ package feathers.controls
 			{
 				if(this.horizontalScrollBar)
 				{
+					const scrollerWidth:Number = useActualBounds ? this.actualWidth : (this.explicitWidth);
 					if(forceScrollBars || this._horizontalScrollPolicy == SCROLL_POLICY_ON ||
-						((this._viewPort.width > this.explicitWidth || this._viewPort.width > this._maxWidth) &&
+						((this._viewPort.width > scrollerWidth || this._viewPort.width > this._maxWidth) &&
 							this._horizontalScrollPolicy != SCROLL_POLICY_OFF))
 					{
 						this._hasHorizontalScrollBar = true;
@@ -2473,8 +2480,9 @@ package feathers.controls
 				}
 				if(this.verticalScrollBar)
 				{
+					const scrollerHeight:Number = useActualBounds ? this.actualHeight : this.explicitHeight;
 					if(forceScrollBars || this._verticalScrollPolicy == SCROLL_POLICY_ON ||
-						((this._viewPort.height > this.explicitHeight || this._viewPort.height > this._maxHeight) &&
+						((this._viewPort.height > scrollerHeight || this._viewPort.height > this._maxHeight) &&
 							this._verticalScrollPolicy != SCROLL_POLICY_OFF))
 					{
 						this._hasVerticalScrollBar = true;
