@@ -14,6 +14,14 @@ package feathers.layout
 	public class ViewPortBounds
 	{
 		/**
+		 * Constructor.
+		 */
+		public function ViewPortBounds()
+		{
+
+		}
+
+		/**
 		 * The x position of the view port, in pixels.
 		 */
 		public var x:Number = 0;

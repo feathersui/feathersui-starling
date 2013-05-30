@@ -1032,6 +1032,11 @@ import starling.text.BitmapChar;
 
 class CharLocation
 {
+	public function CharLocation()
+	{
+
+	}
+
 	public var char:BitmapChar;
 	public var scale:Number;
 	public var x:Number;
