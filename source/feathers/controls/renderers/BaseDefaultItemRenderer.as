@@ -1701,13 +1701,17 @@ package feathers.controls.renderers
 				this.iconImage = null;
 			}
 
-			if(this._itemHasIcon && this.currentIcon && this.currentIcon != newIcon)
+			if(this._itemHasIcon && this.currentIcon && this.currentIcon != newIcon && this.currentIcon.parent == this)
 			{
 				//the icon is created using the data provider, and it is not
 				//created inside this class, so it is not our responsibility to
 				//dispose the icon. if we dispose it, it may break something.
 				this.currentIcon.removeFromParent(false);
+				this.currentIcon = null;
 			}
+			//we're using currentIcon above, but defaultIcon here. if you're
+			//wondering, that's intentional. the currentIcon will set to the
+			//defaultIcon elsewhere.
 			this.defaultIcon = newIcon;
 		}
 
@@ -1726,11 +1730,14 @@ package feathers.controls.renderers
 				this.accessory.removeEventListener(FeathersEventType.RESIZE, accessory_resizeHandler);
 				this.accessory.removeEventListener(TouchEvent.TOUCH, accessory_touchHandler);
 
-				//the accessory may have come from outside of this class. it's
-				//up to that code to dispose of the accessory. in fact, if we
-				//disposed of it here, we will probably screw something up, so
-				//let's just remove it.
-				this.accessory.removeFromParent();
+				if(this.accessory.parent == this)
+				{
+					//the accessory may have come from outside of this class. it's
+					//up to that code to dispose of the accessory. in fact, if we
+					//disposed of it here, we will probably screw something up, so
+					//let's just remove it.
+					this.accessory.removeFromParent(false);
+				}
 			}
 
 			if(this.accessoryLabel && this.accessoryLabel != newAccessory)
