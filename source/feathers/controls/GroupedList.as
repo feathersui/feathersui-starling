@@ -69,21 +69,23 @@ package feathers.controls
 	 * <listing version="3.0">
 	 * var list:GroupedList = new GroupedList();
 	 * list.dataProvider = new HierarchicalCollection(
-	 * {
-	 *     header: "A",
-	 *     children:
-	 *     [
-	 *         { text: "Aardvark" },
-	 *         { text: "Alligator" }
-	 *     ]
-	 * },
-	 * {
-	 *     header: "B",
-	 *     children:
-	 *     [
-	 *         { text: "Baboon" }
-	 *     ]
-	 * });
+	 * [
+	 *     {
+	 *         header: "A",
+	 *         children:
+	 *         [
+	 *             { text: "Aardvark" },
+	 *             { text: "Alligator" }
+	 *         ]
+	 *     },
+	 *     {
+	 *         header: "B",
+	 *         children:
+	 *         [
+	 *             { text: "Baboon" }
+	 *         ]
+	 *     }
+	 * ]);
 	 * list.addEventListener( Event.CHANGE, list_changeHandler );
 	 * this.addChild( list );</listing>
 	 *
