@@ -1737,6 +1737,7 @@ package feathers.controls.supportClasses
 			for(var i:int = 0; i < keepCount; i++)
 			{
 				var itemRenderer:IGroupedListItemRenderer = this._inactiveItemRenderers.shift();
+				itemRenderer.data = null;
 				itemRenderer.visible = false;
 				this._activeItemRenderers.push(itemRenderer);
 			}
@@ -1753,6 +1754,7 @@ package feathers.controls.supportClasses
 				for(i = 0; i < keepCount; i++)
 				{
 					itemRenderer = this._inactiveFirstItemRenderers.shift();
+					itemRenderer.data = null;
 					itemRenderer.visible = false;
 					this._activeFirstItemRenderers.push(itemRenderer);
 				}
@@ -1770,6 +1772,7 @@ package feathers.controls.supportClasses
 				for(i = 0; i < keepCount; i++)
 				{
 					itemRenderer = this._inactiveLastItemRenderers.shift();
+					itemRenderer.data = null;
 					itemRenderer.visible = false;
 					this._activeLastItemRenderers.push(itemRenderer);
 				}
@@ -1787,6 +1790,7 @@ package feathers.controls.supportClasses
 				for(i = 0; i < keepCount; i++)
 				{
 					itemRenderer = this._inactiveSingleItemRenderers.shift();
+					itemRenderer.data = null;
 					itemRenderer.visible = false;
 					this._activeSingleItemRenderers.push(itemRenderer);
 				}
@@ -1803,6 +1807,7 @@ package feathers.controls.supportClasses
 			{
 				var headerOrFooterRenderer:IGroupedListHeaderOrFooterRenderer = this._inactiveHeaderRenderers.shift();
 				headerOrFooterRenderer.visible = false;
+				headerOrFooterRenderer.data = null;
 				this._activeHeaderRenderers.push(headerOrFooterRenderer);
 			}
 			rendererCount = this._inactiveHeaderRenderers.length;
@@ -1817,6 +1822,7 @@ package feathers.controls.supportClasses
 			{
 				headerOrFooterRenderer = this._inactiveFooterRenderers.shift();
 				headerOrFooterRenderer.visible = false;
+				headerOrFooterRenderer.data = null;
 				this._activeFooterRenderers.push(headerOrFooterRenderer);
 			}
 			rendererCount = this._inactiveFooterRenderers.length;
