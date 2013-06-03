@@ -353,21 +353,35 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override protected function initialize():void
-		{
-			super.initialize();
-			this.refreshMXMLContent();
-		}
-
-		/**
-		 * @private
-		 */
 		override public function validate():void
 		{
 			const oldDisplayListBypassEnabled:Boolean = this.displayListBypassEnabled;
 			this.displayListBypassEnabled = false;
 			super.validate();
 			this.displayListBypassEnabled = oldDisplayListBypassEnabled;
+		}
+
+		/**
+		 * Readjusts the layout of the container according to its current
+		 * content. Call this method when changes to the content cannot be
+		 * automatically detected by the container. For instance, Feathers
+		 * components dispatch <code>FeathersEventType.RESIZE</code> when their
+		 * width and height values change, but standard Starling display objects
+		 * like Sprites and Images do not.
+		 */
+		public function readjustLayout():void
+		{
+			this.layoutViewPort.readjustLayout();
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function initialize():void
+		{
+			super.initialize();
+			this.refreshMXMLContent();
 		}
 
 		/**

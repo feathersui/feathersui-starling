@@ -7,6 +7,7 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls.supportClasses
 {
+	import feathers.controls.Scroller;
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
 	import feathers.events.FeathersEventType;
@@ -230,8 +231,17 @@ package feathers.controls.supportClasses
 				}
 				this._layout.addEventListener(Event.CHANGE, layout_changeHandler);
 				//if we don't have a layout, nothing will need to be redrawn
-				this.invalidate(INVALIDATION_FLAG_DATA);
+				this.invalidate(INVALIDATION_FLAG_LAYOUT);
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		public function readjustLayout():void
+		{
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+			this.invalidateParent();
 		}
 
 		override public function addChildAt(child:DisplayObject, index:int):DisplayObject
@@ -269,11 +279,11 @@ package feathers.controls.supportClasses
 
 		override protected function draw():void
 		{
-			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			const layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
 			const sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
 
-			if(sizeInvalid || dataInvalid || scrollInvalid)
+			if(sizeInvalid || layoutInvalid || scrollInvalid)
 			{
 				HELPER_BOUNDS.x = HELPER_BOUNDS.y = 0;
 				HELPER_BOUNDS.scrollX = this._horizontalScrollPosition;
@@ -318,9 +328,15 @@ package feathers.controls.supportClasses
 			}
 		}
 
+		private function invalidateParent():void
+		{
+			Scroller(this.parent).invalidate(INVALIDATION_FLAG_LAYOUT);
+		}
+
 		private function layout_changeHandler(event:Event):void
 		{
-			this.invalidate(INVALIDATION_FLAG_DATA);
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+			this.invalidateParent();
 		}
 
 		private function child_resizeHandler(event:Event):void
@@ -329,7 +345,8 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
-			this.invalidate(INVALIDATION_FLAG_DATA);
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+			this.invalidateParent();
 		}
 
 		private function child_layoutDataChangeHandler(event:Event):void
@@ -338,7 +355,8 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
-			this.invalidate(INVALIDATION_FLAG_DATA);
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+			this.invalidateParent();
 		}
 
 		private function addedHandler(event:Event):void
@@ -350,7 +368,8 @@ package feathers.controls.supportClasses
 			}
 			const index:int = this.getChildIndex(item);
 			this.items.splice(index, 0, item);
-			this.invalidate(INVALIDATION_FLAG_DATA);
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+			this.invalidateParent();
 		}
 
 		private function removedHandler(event:Event):void
@@ -362,7 +381,8 @@ package feathers.controls.supportClasses
 			}
 			const index:int = this.items.indexOf(item);
 			this.items.splice(index, 1);
-			this.invalidate(INVALIDATION_FLAG_DATA);
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+			this.invalidateParent();
 		}
 	}
 }
