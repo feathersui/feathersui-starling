@@ -1414,6 +1414,44 @@ package feathers.controls
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _autoHideBackground:Boolean = false;
+
+		/**
+		 * If <code>true</code>, the background's <code>visible</code> property
+		 * will be set to <code>false</code> when the scroll position is greater
+		 * than or equal to the minimum scroll position and less than or equal
+		 * to the maximum scroll position. The background will be visible when
+		 * the content is extended beyond the scrolling bounds, such as when
+		 * <code>hasElasticEdges</code> is <code>true</code>.
+		 *
+		 * <p>If the content is not fully opaque, this setting should not be
+		 * enabled.</p>
+		 *
+		 * <p>This setting may be enabled as a small performance optimization.</p>
+		 *
+		 * @default false
+		 */
+		public function get autoHideBackground():Boolean
+		{
+			return this._autoHideBackground;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set autoHideBackground(value:Boolean):void
+		{
+			if(this._autoHideBackground == value)
+			{
+				return;
+			}
+			this._autoHideBackground = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
 		 * Quickly sets all padding properties to the same value. The
 		 * <code>padding</code> getter always returns the value of
 		 * <code>paddingTop</code>, but the other padding values may be
@@ -2019,7 +2057,7 @@ package feathers.controls
 			this._lastViewPortWidth = viewPort.width;
 			this._lastViewPortHeight = viewPort.height;
 
-			this.showOrHideScrollBars();
+			this.showOrHideChildren();
 
 			if(scrollInvalid || sizeInvalid || stylesInvalid || scrollBarInvalid)
 			{
@@ -2147,7 +2185,6 @@ package feathers.controls
 			{
 				//force it to the bottom
 				this.setChildIndex(this.currentBackgroundSkin, 0);
-				this.currentBackgroundSkin.visible = true;
 
 				if(isNaN(this.originalBackgroundWidth))
 				{
@@ -2430,7 +2467,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function showOrHideScrollBars():void
+		protected function showOrHideChildren():void
 		{
 			const isFixed:Boolean = this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FIXED;
 			if(this.horizontalScrollBar)
@@ -2443,6 +2480,23 @@ package feathers.controls
 				this.verticalScrollBar.visible = !isFixed || this._hasVerticalScrollBar;
 				this.setChildIndex(DisplayObject(this.verticalScrollBar), this.numChildren - 1);
 			}
+			if(this.currentBackgroundSkin)
+			{
+				if(this._autoHideBackground)
+				{
+					this.currentBackgroundSkin.visible = this._viewPort.width < this.actualWidth ||
+						this._viewPort.height < this.actualHeight ||
+						this._horizontalScrollPosition < 0 ||
+						this._horizontalScrollPosition > this._maxHorizontalScrollPosition ||
+						this._verticalScrollPosition < 0 ||
+						this._verticalScrollPosition > this._maxVerticalScrollPosition;
+				}
+				else
+				{
+					this.currentBackgroundSkin.visible = true;
+				}
+			}
+
 		}
 
 		/**
