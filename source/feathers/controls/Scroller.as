@@ -152,6 +152,11 @@ package feathers.controls
 		protected static const INVALIDATION_FLAG_PENDING_SCROLL:String = "pendingScroll";
 
 		/**
+		 * @private
+		 */
+		protected static const INVALIDATION_FLAG_PENDING_REVEAL_SCROLL_BARS:String = "pendingRevealScrollBars";
+
+		/**
 		 * The scroller may scroll if the view port is larger than the
 		 * scroller's bounds. If the interaction mode is touch, the elastic
 		 * edges will only be active if the maximum scroll position is greater
@@ -1872,6 +1877,35 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var isScrollBarRevealPending:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected var _revealScrollBarsDuration:Number = 1.0;
+
+		/**
+		 * The duration, in seconds, that the scroll bars will be shown when
+		 * calling <code>revealScrollBars()</code>
+		 *
+		 * @see #revealScrollBars()
+		 */
+		public function get revealScrollBarsDuration():Number
+		{
+			return this._revealScrollBarsDuration;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set revealScrollBarsDuration(value:Number):void
+		{
+			this._revealScrollBarsDuration = value;
+		}
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			Starling.current.nativeStage.removeEventListener(MouseEvent.MOUSE_WHEEL, nativeStage_mouseWheelHandler);
@@ -1956,6 +1990,20 @@ package feathers.controls
 		}
 
 		/**
+		 * If the scroll bars are floating, briefly show them as a hint to the
+		 * user. Useful when first navigating to a screen to give the user
+		 * context about both the ability to scroll and the current scroll
+		 * position.
+		 *
+		 * @see #revealScrollBarsDuration
+		 */
+		public function revealScrollBars():void
+		{
+			this.isScrollBarRevealPending = true;
+			this.invalidate(INVALIDATION_FLAG_PENDING_REVEAL_SCROLL_BARS);
+		}
+
+		/**
 		 * @private
 		 */
 		override public function hitTest(localPoint:Point, forTouch:Boolean = false):DisplayObject
@@ -1990,6 +2038,7 @@ package feathers.controls
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 			const scrollBarInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL_BAR_RENDERER);
 			const pendingScrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_PENDING_SCROLL);
+			const pendingRevealScrollBarsInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_PENDING_REVEAL_SCROLL_BARS);
 
 			if(scrollBarInvalid)
 			{
@@ -2078,6 +2127,11 @@ package feathers.controls
 			if(pendingScrollInvalid)
 			{
 				this.handlePendingScroll();
+			}
+
+			if(pendingRevealScrollBarsInvalid)
+			{
+				this.handlePendingRevealScrollBars();
 			}
 		}
 
@@ -3150,6 +3204,37 @@ package feathers.controls
 				this.pendingHorizontalPageIndex = -1;
 				this.pendingVerticalPageIndex = -1;
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function handlePendingRevealScrollBars():void
+		{
+			if(!this.isScrollBarRevealPending)
+			{
+				return;
+			}
+			if(this._horizontalScrollBarHideTween)
+			{
+				Starling.juggler.remove(this._horizontalScrollBarHideTween);
+				this._horizontalScrollBarHideTween = null;
+			}
+			if(this.horizontalScrollBar && this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FLOAT)
+			{
+				this.horizontalScrollBar.alpha = 1;
+			}
+			if(this._verticalScrollBarHideTween)
+			{
+				Starling.juggler.remove(this._verticalScrollBarHideTween);
+				this._verticalScrollBarHideTween = null;
+			}
+			if(this.verticalScrollBar && this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FLOAT)
+			{
+				this.verticalScrollBar.alpha = 1;
+			}
+			this.hideHorizontalScrollBar(this._revealScrollBarsDuration);
+			this.hideVerticalScrollBar(this._revealScrollBarsDuration);
 		}
 
 		/**
