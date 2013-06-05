@@ -90,6 +90,7 @@ package feathers.examples.componentsExplorer.screens
 			]);
 			this._list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
 			this._list.clipContent = false;
+			this._list.autoHideBackground = true;
 			this._list.addEventListener(Event.CHANGE, list_changeHandler);
 
 			var itemRendererAccessorySourceFunction:Function = null;

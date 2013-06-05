@@ -103,8 +103,9 @@ package feathers.examples.componentsExplorer.screens
 			this._list.dataProvider = new ListCollection([item]);
 			this._list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
 			this._list.isSelectable = false;
+			this._list.clipContent = false;
+			this._list.autoHideBackground = true;
 			this.addChild(this._list);
-
 
 			this.headerProperties.title = "Item Renderer";
 
