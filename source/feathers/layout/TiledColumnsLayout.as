@@ -918,15 +918,11 @@ package feathers.layout
 				verticalTileCount = Math.max(1, (maxHeight - this._paddingTop - this._paddingBottom + this._verticalGap) / (tileHeight + this._verticalGap));
 			}
 
-			const totalPageWidth:Number = horizontalTileCount * (tileWidth + this._horizontalGap) - this._horizontalGap + this._paddingLeft + this._paddingRight;
 			const totalPageHeight:Number = verticalTileCount * (tileHeight + this._verticalGap) - this._verticalGap + this._paddingTop + this._paddingBottom;
-			const availablePageWidth:Number = isNaN(availableWidth) ? totalPageWidth : availableWidth;
-			const availablePageHeight:Number = isNaN(availableHeight) ? totalPageHeight : availableHeight;
 
 			const startX:Number = boundsX + this._paddingLeft;
 
 			const perPage:int = horizontalTileCount * verticalTileCount;
-
 			var pageIndex:int = 0;
 			var nextPageStartIndex:int = perPage;
 			var positionX:Number = startX;
@@ -972,8 +968,8 @@ package feathers.layout
 			{
 				totalHeight = Math.ceil(itemCount / perPage) * availableHeight;
 			}
-			result.x = needsWidth ? Math.max(minWidth, totalWidth) : explicitWidth;
-			result.y = needsHeight ? Math.max(minHeight, totalHeight) : explicitHeight;
+			result.x = needsWidth ? Math.min(maxWidth, Math.max(minWidth, totalWidth)) : explicitWidth;
+			result.y = needsHeight ? Math.min(maxHeight, Math.max(minHeight, totalHeight)) : explicitHeight;
 			return result;
 		}
 
