@@ -729,6 +729,11 @@ package feathers.controls.text
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
 			{
+				//yes, this value is never used. this is a workaround for a bug
+				//in AIR for iOS where getting the value for textField.width the
+				//first time results in an incorrect value, but if you query it
+				//again, for some reason, it reports the correct width value.
+				var hackWorkaround:Number = this.textField.width;
 				newWidth = Math.max(this._minWidth, Math.min(this._maxWidth, this.textField.width));
 			}
 
