@@ -1028,6 +1028,8 @@ package feathers.controls
 			if(this.inactiveLastButton)
 			{
 				var button:Button = this.inactiveLastButton;
+				button.width = NaN;
+				button.height = NaN;
 				this.inactiveLastButton = null;
 			}
 			else
