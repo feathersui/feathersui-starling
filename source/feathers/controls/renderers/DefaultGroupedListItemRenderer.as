@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.renderers
 {
 	import feathers.controls.GroupedList;
+	import feathers.events.FeathersEventType;
 
 	import starling.events.Event;
 
@@ -111,14 +112,14 @@ package feathers.controls.renderers
 			}
 			if(this._owner)
 			{
-				this._owner.removeEventListener(Event.SCROLL, owner_scrollHandler);
+				this._owner.removeEventListener(FeathersEventType.SCROLL_START, owner_scrollStartHandler);
 			}
 			this._owner = value;
 			if(this._owner)
 			{
 				const list:GroupedList = GroupedList(this._owner);
 				this.isSelectableWithoutToggle = list.isSelectable;
-				this._owner.addEventListener(Event.SCROLL, owner_scrollHandler);
+				this._owner.addEventListener(FeathersEventType.SCROLL_START, owner_scrollStartHandler);
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -135,7 +136,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected function owner_scrollHandler(event:Event):void
+		protected function owner_scrollStartHandler(event:Event):void
 		{
 			if(this._touchPointID < 0)
 			{
