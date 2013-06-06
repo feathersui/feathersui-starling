@@ -27,7 +27,6 @@ package feathers.controls
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
-	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -3473,6 +3472,9 @@ package feathers.controls
 						this.horizontalScrollBar.alpha = 1;
 					}
 				}
+				this._startTouchX = this._currentTouchX;
+				this._startHorizontalScrollPosition = this._horizontalScrollPosition;
+				this._isDraggingHorizontally = true;
 				//if we haven't already started dragging in the other direction,
 				//we need to dispatch the event that says we're starting.
 				if(!this._isDraggingVertically)
@@ -3484,9 +3486,6 @@ package feathers.controls
 					this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 					this.dispatchEventWith(FeathersEventType.SCROLL_START);
 				}
-				this._startTouchX = this._currentTouchX;
-				this._startHorizontalScrollPosition = this._horizontalScrollPosition;
-				this._isDraggingHorizontally = true;
 			}
 			if((this._verticalScrollPolicy == SCROLL_POLICY_ON ||
 				(this._verticalScrollPolicy == SCROLL_POLICY_AUTO && this._maxVerticalScrollPosition > 0)) &&
@@ -3504,6 +3503,9 @@ package feathers.controls
 						this.verticalScrollBar.alpha = 1;
 					}
 				}
+				this._startTouchY = this._currentTouchY;
+				this._startVerticalScrollPosition = this._verticalScrollPosition;
+				this._isDraggingVertically = true;
 				if(!this._isDraggingHorizontally)
 				{
 					if(this._touchBlocker)
@@ -3513,9 +3515,6 @@ package feathers.controls
 					this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 					this.dispatchEventWith(FeathersEventType.SCROLL_START);
 				}
-				this._startTouchY = this._currentTouchY;
-				this._startVerticalScrollPosition = this._verticalScrollPosition;
-				this._isDraggingVertically = true;
 			}
 			if(this._isDraggingHorizontally && !this._horizontalAutoScrollTween)
 			{

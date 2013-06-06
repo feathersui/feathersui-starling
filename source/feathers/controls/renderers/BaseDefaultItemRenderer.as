@@ -9,6 +9,7 @@ package feathers.controls.renderers
 {
 	import feathers.controls.Button;
 	import feathers.controls.ImageLoader;
+	import feathers.controls.Scroller;
 	import feathers.controls.text.BitmapFontTextRenderer;
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
@@ -22,7 +23,9 @@ package feathers.controls.renderers
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
+	import starling.events.Touch;
 	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 
 	/**
 	 * An abstract class for item renderer implementations.
@@ -110,6 +113,11 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
+
+		/**
+		 * @private
+		 */
 		protected static function defaultLoaderFactory():ImageLoader
 		{
 			return new ImageLoader();
@@ -121,6 +129,7 @@ package feathers.controls.renderers
 		public function BaseDefaultItemRenderer()
 		{
 			super();
+			this.isFocusEnabled = false;
 			this.isQuickHitAreaEnabled = false;
 			this.addEventListener(Event.TRIGGERED, itemRenderer_triggeredHandler);
 		}
@@ -503,10 +512,15 @@ package feathers.controls.renderers
 		}
 
 		/**
-		 * If enabled, calls event.stopPropagation() when TouchEvents are
+		 * @private
+		 */
+		protected var _accessoryTouchPointID:int = -1;
+
+		/**
+		 * If enabled, calls owner.stopScrolling() when TouchEvents are
 		 * dispatched by the accessory.
 		 */
-		public var stopAccessoryTouchEventPropagation:Boolean = true;
+		public var stopScrollingOnAccessoryTouch:Boolean = true;
 
 		/**
 		 * @private
@@ -2185,6 +2199,20 @@ package feathers.controls.renderers
 			{
 				super.currentState = Button.STATE_UP;
 			}
+
+			if(this._accessoryTouchPointID >= 0)
+			{
+				Scroller(this._owner).stopScrolling();
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function button_removedFromStageHandler(event:Event):void
+		{
+			super.button_removedFromStageHandler(event);
+			this._accessoryTouchPointID = -1;
 		}
 
 		/**
@@ -2221,14 +2249,55 @@ package feathers.controls.renderers
 		 */
 		protected function accessory_touchHandler(event:TouchEvent):void
 		{
-			if(!this.stopAccessoryTouchEventPropagation ||
+			if(!this._isEnabled ||
+				!this.stopScrollingOnAccessoryTouch ||
 				this.accessory == this.accessoryLabel ||
 				this.accessory == this.accessoryImage)
 			{
 				//do nothing
 				return;
 			}
-			event.stopPropagation();
+
+			const touches:Vector.<Touch> = event.getTouches(this.accessory, null, HELPER_TOUCHES_VECTOR);
+			if(touches.length == 0)
+			{
+				return;
+			}
+			if(this._accessoryTouchPointID >= 0)
+			{
+				var touch:Touch;
+				for each(var currentTouch:Touch in touches)
+				{
+					if(currentTouch.id == this._accessoryTouchPointID)
+					{
+						touch = currentTouch;
+						break;
+					}
+				}
+
+				if(!touch)
+				{
+					HELPER_TOUCHES_VECTOR.length = 0;
+					return;
+				}
+
+				if(touch.phase == TouchPhase.ENDED)
+				{
+					this._accessoryTouchPointID = -1;
+				}
+			}
+			else //if we get here, we don't have a saved touch ID yet
+			{
+				for each(touch in touches)
+				{
+					if(touch.phase == TouchPhase.BEGAN)
+					{
+						this._accessoryTouchPointID = touch.id;
+						break;
+					}
+				}
+			}
+			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 
 		/**

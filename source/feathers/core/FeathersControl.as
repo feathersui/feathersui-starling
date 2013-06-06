@@ -1481,6 +1481,7 @@ package feathers.core
 		protected function focusOutHandler(event:Event):void
 		{
 			this._hasFocus = false;
+			this._showFocus = false;
 			this.invalidate(INVALIDATION_FLAG_FOCUS);
 		}
 
