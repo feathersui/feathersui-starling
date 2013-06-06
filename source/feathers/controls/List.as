@@ -148,6 +148,14 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override public function get isFocusEnabled():Boolean
+		{
+			return this._isSelectable && this._isFocusEnabled;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _layout:ILayout;
 
 		/**
