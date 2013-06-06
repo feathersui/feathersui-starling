@@ -131,6 +131,14 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override public function get isFocusEnabled():Boolean
+		{
+			return this._isEditable && this._isFocusEnabled;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _text:String = "";
 
 		/**
@@ -1201,6 +1209,10 @@ package feathers.controls
 		 */
 		protected function setFocusOnTextEditorWithTouch(touch:Touch):void
 		{
+			if(!this.isFocusEnabled)
+			{
+				return;
+			}
 			touch.getLocation(this.stage, HELPER_POINT);
 			const isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
 			if(!this._textEditorHasFocus && isInBounds)
