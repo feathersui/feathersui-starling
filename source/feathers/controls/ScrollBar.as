@@ -1630,6 +1630,7 @@ package feathers.controls
 			this.thumb = Button(factory());
 			this.thumb.nameList.add(thumbName);
 			this.thumb.keepDownStateOnRollOut = true;
+			this.thumb.isFocusEnabled = false;
 			this.thumb.addEventListener(TouchEvent.TOUCH, thumb_touchHandler);
 			this.addChild(this.thumb);
 		}
@@ -1650,6 +1651,7 @@ package feathers.controls
 			this.minimumTrack = Button(factory());
 			this.minimumTrack.nameList.add(minimumTrackName);
 			this.minimumTrack.keepDownStateOnRollOut = true;
+			this.minimumTrack.isFocusEnabled = false;
 			this.minimumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
 			this.addChildAt(this.minimumTrack, 0);
 		}
@@ -1675,6 +1677,7 @@ package feathers.controls
 				this.maximumTrack = Button(factory());
 				this.maximumTrack.nameList.add(maximumTrackName);
 				this.maximumTrack.keepDownStateOnRollOut = true;
+				this.maximumTrack.isFocusEnabled = false;
 				this.maximumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
 				this.addChildAt(this.maximumTrack, 1);
 			}
@@ -1701,6 +1704,7 @@ package feathers.controls
 			this.decrementButton = Button(factory());
 			this.decrementButton.nameList.add(decrementButtonName);
 			this.decrementButton.keepDownStateOnRollOut = true;
+			this.decrementButton.isFocusEnabled = false;
 			this.decrementButton.addEventListener(TouchEvent.TOUCH, decrementButton_touchHandler);
 			this.addChild(this.decrementButton);
 		}
@@ -1721,6 +1725,7 @@ package feathers.controls
 			this.incrementButton = Button(factory());
 			this.incrementButton.nameList.add(incrementButtonName);
 			this.incrementButton.keepDownStateOnRollOut = true;
+			this.incrementButton.isFocusEnabled = false;
 			this.incrementButton.addEventListener(TouchEvent.TOUCH, incrementButton_touchHandler);
 			this.addChild(this.incrementButton);
 		}
