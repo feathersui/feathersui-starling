@@ -44,7 +44,6 @@ package feathers.controls.supportClasses
 		private static const HELPER_BOUNDS:ViewPortBounds = new ViewPortBounds();
 		private static const HELPER_LAYOUT_RESULT:LayoutBoundsResult = new LayoutBoundsResult();
 		private static const HELPER_VECTOR:Vector.<int> = new <int>[];
-		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
 
 		public function GroupedListDataViewPort()
 		{
@@ -281,12 +280,12 @@ package feathers.controls.supportClasses
 			}
 			if(this._owner)
 			{
-				this._owner.removeEventListener(Event.SCROLL, owner_scrollHandler);
+				this._owner.removeEventListener(FeathersEventType.SCROLL_START, owner_scrollStartHandler);
 			}
 			this._owner = value;
 			if(this._owner)
 			{
-				this._owner.addEventListener(Event.SCROLL, owner_scrollHandler);
+				this._owner.addEventListener(FeathersEventType.SCROLL_START, owner_scrollStartHandler);
 			}
 		}
 
@@ -2093,7 +2092,7 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
-		private function owner_scrollHandler(event:Event):void
+		private function owner_scrollStartHandler(event:Event):void
 		{
 			this._isScrolling = true;
 		}
@@ -2324,45 +2323,25 @@ package feathers.controls.supportClasses
 				return;
 			}
 
-			const touches:Vector.<Touch> = event.getTouches(this, null, HELPER_TOUCHES_VECTOR);
-			if(touches.length == 0)
-			{
-				return;
-			}
 			if(this.touchPointID >= 0)
 			{
-				var touch:Touch;
-				for each(var currentTouch:Touch in touches)
-				{
-					if(currentTouch.id == this.touchPointID)
-					{
-						touch = currentTouch;
-						break;
-					}
-				}
+				var touch:Touch = event.getTouch(this, TouchPhase.ENDED, this.touchPointID);
 				if(!touch)
 				{
-					HELPER_TOUCHES_VECTOR.length = 0;
 					return;
 				}
-				if(touch.phase == TouchPhase.ENDED)
-				{
-					this.touchPointID = -1;
-				}
+				this.touchPointID = -1;
 			}
 			else
 			{
-				for each(touch in touches)
+				touch = event.getTouch(this, TouchPhase.BEGAN);
+				if(!touch)
 				{
-					if(touch.phase == TouchPhase.BEGAN)
-					{
-						this.touchPointID = touch.id;
-						this._isScrolling = false;
-						break;
-					}
+					return;
 				}
+				this.touchPointID = touch.id;
+				this._isScrolling = false;
 			}
-			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 	}
 }

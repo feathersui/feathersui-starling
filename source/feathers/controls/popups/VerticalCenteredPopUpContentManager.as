@@ -13,10 +13,13 @@ package feathers.controls.popups
 
 	import flash.errors.IllegalOperationError;
 	import flash.events.KeyboardEvent;
+	import flash.geom.Point;
 	import flash.ui.Keyboard;
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
+	import starling.display.DisplayObjectContainer;
+	import starling.display.Stage;
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
 	import starling.events.ResizeEvent;
@@ -39,7 +42,7 @@ package feathers.controls.popups
 		/**
 		 * @private
 		 */
-		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
+		private static const HELPER_POINT:Point = new Point();
 
 		/**
 		 * Constructor.
@@ -204,32 +207,30 @@ package feathers.controls.popups
 		 */
 		protected function stage_touchHandler(event:TouchEvent):void
 		{
-			if(event.interactsWith(this.content) || !PopUpManager.isTopLevelPopUp(this.content))
+			if(!PopUpManager.isTopLevelPopUp(this.content))
 			{
 				return;
 			}
-			const touches:Vector.<Touch> = event.getTouches(Starling.current.stage, null, HELPER_TOUCHES_VECTOR);
-			if(touches.length == 0)
-			{
-				return;
-			}
+			const stage:Stage = Starling.current.stage;
 			if(this.touchPointID >= 0)
 			{
-				var touch:Touch;
-				for each(var currentTouch:Touch in touches)
-				{
-					if(currentTouch.id == this.touchPointID)
-					{
-						touch = currentTouch;
-						break;
-					}
-				}
+				var touch:Touch = event.getTouch(stage, TouchPhase.ENDED, this.touchPointID);
 				if(!touch)
 				{
-					HELPER_TOUCHES_VECTOR.length = 0;
 					return;
 				}
-				if(touch.phase == TouchPhase.ENDED)
+				touch.getLocation(stage, HELPER_POINT);
+				const hitTestResult:DisplayObject = stage.hitTest(HELPER_POINT, true);
+				var isInBounds:Boolean = false;
+				if(this.content is DisplayObjectContainer)
+				{
+					isInBounds = DisplayObjectContainer(this.content).contains(hitTestResult);
+				}
+				else
+				{
+					isInBounds = this.content == hitTestResult;
+				}
+				if(!isInBounds)
 				{
 					this.touchPointID = -1;
 					this.close();
@@ -237,16 +238,13 @@ package feathers.controls.popups
 			}
 			else
 			{
-				for each(touch in touches)
+				touch = event.getTouch(stage, TouchPhase.BEGAN);
+				if(!touch)
 				{
-					if(touch.phase == TouchPhase.BEGAN)
-					{
-						this.touchPointID = touch.id;
-						break;
-					}
+					return;
 				}
+				this.touchPointID = touch.id;
 			}
-			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 
 

@@ -113,11 +113,6 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
-
-		/**
-		 * @private
-		 */
 		protected static function defaultLoaderFactory():ImageLoader
 		{
 			return new ImageLoader();
@@ -2249,8 +2244,12 @@ package feathers.controls.renderers
 		 */
 		protected function accessory_touchHandler(event:TouchEvent):void
 		{
-			if(!this._isEnabled ||
-				!this.stopScrollingOnAccessoryTouch ||
+			if(!this._isEnabled)
+			{
+				this._accessoryTouchPointID = -1;
+				return;
+			}
+			if(!this.stopScrollingOnAccessoryTouch ||
 				this.accessory == this.accessoryLabel ||
 				this.accessory == this.accessoryImage)
 			{
@@ -2258,46 +2257,24 @@ package feathers.controls.renderers
 				return;
 			}
 
-			const touches:Vector.<Touch> = event.getTouches(this.accessory, null, HELPER_TOUCHES_VECTOR);
-			if(touches.length == 0)
-			{
-				return;
-			}
 			if(this._accessoryTouchPointID >= 0)
 			{
-				var touch:Touch;
-				for each(var currentTouch:Touch in touches)
-				{
-					if(currentTouch.id == this._accessoryTouchPointID)
-					{
-						touch = currentTouch;
-						break;
-					}
-				}
-
+				var touch:Touch = event.getTouch(this.accessory, TouchPhase.ENDED, this._accessoryTouchPointID);
 				if(!touch)
 				{
-					HELPER_TOUCHES_VECTOR.length = 0;
 					return;
 				}
-
-				if(touch.phase == TouchPhase.ENDED)
-				{
-					this._accessoryTouchPointID = -1;
-				}
+				this._accessoryTouchPointID = -1;
 			}
 			else //if we get here, we don't have a saved touch ID yet
 			{
-				for each(touch in touches)
+				touch = event.getTouch(this.accessory, TouchPhase.BEGAN);
+				if(!touch)
 				{
-					if(touch.phase == TouchPhase.BEGAN)
-					{
-						this._accessoryTouchPointID = touch.id;
-						break;
-					}
+					return;
 				}
+				this._accessoryTouchPointID = touch.id;
 			}
-			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 
 		/**

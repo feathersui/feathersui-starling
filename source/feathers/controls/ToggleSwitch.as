@@ -50,11 +50,6 @@ package feathers.controls
 
 		/**
 		 * @private
-		 */
-		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
-
-		/**
-		 * @private
 		 * The minimum physical distance (in inches) that a touch must move
 		 * before the scroller starts scrolling.
 		 */
@@ -1844,35 +1839,19 @@ package feathers.controls
 				return;
 			}
 
-			const touches:Vector.<Touch> = event.getTouches(this, null, HELPER_TOUCHES_VECTOR);
-			if(touches.length == 0)
+			var touch:Touch = event.getTouch(this, TouchPhase.ENDED);
+			if(!touch)
 			{
 				return;
 			}
-			var touch:Touch;
-			for each(var currentTouch:Touch in touches)
-			{
-				if((this._touchPointID >= 0 && currentTouch.id == this._touchPointID) ||
-					(this._touchPointID < 0 && currentTouch.phase == TouchPhase.ENDED))
-				{
-					touch = currentTouch;
-					break;
-				}
-			}
-			if(!touch || touch.phase != TouchPhase.ENDED)
-			{
-				HELPER_TOUCHES_VECTOR.length = 0;
-				return;
-			}
-
 			this._touchPointID = -1;
 			touch.getLocation(this.stage, HELPER_POINT);
-			if(this.contains(this.stage.hitTest(HELPER_POINT, true)))
+			var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
+			if(isInBounds)
 			{
 				this.isSelected = !this._isSelected;
 				this._isSelectionChangedByUser = true;
 			}
-			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 
 		/**
@@ -1882,27 +1861,15 @@ package feathers.controls
 		{
 			if(!this._isEnabled)
 			{
+				this._touchPointID = -1;
 				return;
 			}
-			const touches:Vector.<Touch> = event.getTouches(this.thumb, null, HELPER_TOUCHES_VECTOR);
-			if(touches.length == 0)
-			{
-				return;
-			}
+
 			if(this._touchPointID >= 0)
 			{
-				var touch:Touch;
-				for each(var currentTouch:Touch in touches)
-				{
-					if(currentTouch.id == this._touchPointID)
-					{
-						touch = currentTouch;
-						break;
-					}
-				}
+				var touch:Touch = event.getTouch(this.thumb, null, this._touchPointID);
 				if(!touch)
 				{
-					HELPER_TOUCHES_VECTOR.length = 0;
 					return;
 				}
 				touch.getLocation(this, HELPER_POINT);
@@ -1928,19 +1895,16 @@ package feathers.controls
 			}
 			else
 			{
-				for each(touch in touches)
+				touch = event.getTouch(this.thumb, TouchPhase.BEGAN);
+				if(!touch)
 				{
-					if(touch.phase == TouchPhase.BEGAN)
-					{
-						touch.getLocation(this, HELPER_POINT);
-						this._touchPointID = touch.id;
-						this._thumbStartX = this.thumb.x;
-						this._touchStartX = HELPER_POINT.x;
-						break;
-					}
+					return;
 				}
+				touch.getLocation(this, HELPER_POINT);
+				this._touchPointID = touch.id;
+				this._thumbStartX = this.thumb.x;
+				this._touchStartX = HELPER_POINT.x;
 			}
-			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 
 		/**

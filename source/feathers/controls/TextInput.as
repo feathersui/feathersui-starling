@@ -81,11 +81,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
-
-		/**
-		 * @private
-		 */
 		protected static const INVALIDATION_FLAG_PROMPT_FACTORY:String = "promptFactory";
 
 		/**
@@ -1259,68 +1254,49 @@ package feathers.controls
 				return;
 			}
 
-			const touches:Vector.<Touch> = event.getTouches(this, null, HELPER_TOUCHES_VECTOR);
-			if(touches.length == 0)
+			if(this._touchPointID >= 0)
 			{
+				var touch:Touch = event.getTouch(this, TouchPhase.ENDED, this._touchPointID);
+				if(!touch)
+				{
+					return;
+				}
+				this._touchPointID = -1;
+				if(this.textEditor.setTouchFocusOnEndedPhase)
+				{
+					this.setFocusOnTextEditorWithTouch(touch);
+				}
+			}
+			else
+			{
+				touch = event.getTouch(this, TouchPhase.BEGAN);
+				if(touch)
+				{
+					this._touchPointID = touch.id;
+					if(!this.textEditor.setTouchFocusOnEndedPhase)
+					{
+						this.setFocusOnTextEditorWithTouch(touch);
+					}
+					return;
+				}
+				touch = event.getTouch(this, TouchPhase.HOVER);
+				if(touch)
+				{
+					if(Mouse.supportsNativeCursor && !this._oldMouseCursor)
+					{
+						this._oldMouseCursor = Mouse.cursor;
+						Mouse.cursor = MouseCursor.IBEAM;
+					}
+					return;
+				}
+
 				//end hover
 				if(Mouse.supportsNativeCursor && this._oldMouseCursor)
 				{
 					Mouse.cursor = this._oldMouseCursor;
 					this._oldMouseCursor = null;
 				}
-				return;
 			}
-
-			if(this._touchPointID >= 0)
-			{
-				var touch:Touch;
-				for each(var currentTouch:Touch in touches)
-				{
-					if(currentTouch.id == this._touchPointID)
-					{
-						touch = currentTouch;
-						break;
-					}
-				}
-				if(!touch)
-				{
-					HELPER_TOUCHES_VECTOR.length = 0;
-					return;
-				}
-				if(touch.phase == TouchPhase.ENDED)
-				{
-					this._touchPointID = -1;
-					if(this.textEditor.setTouchFocusOnEndedPhase)
-					{
-						this.setFocusOnTextEditorWithTouch(touch);
-					}
-				}
-			}
-			else
-			{
-				for each(touch in touches)
-				{
-					if(touch.phase == TouchPhase.BEGAN)
-					{
-						this._touchPointID = touch.id;
-						if(!this.textEditor.setTouchFocusOnEndedPhase)
-						{
-							this.setFocusOnTextEditorWithTouch(touch);
-						}
-						break;
-					}
-					else if(touch.phase == TouchPhase.HOVER)
-					{
-						if(Mouse.supportsNativeCursor && !this._oldMouseCursor)
-						{
-							this._oldMouseCursor = Mouse.cursor;
-							Mouse.cursor = MouseCursor.IBEAM;
-						}
-						break;
-					}
-				}
-			}
-			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 
 		/**

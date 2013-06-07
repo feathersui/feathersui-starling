@@ -36,11 +36,6 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
-
-		/**
-		 * @private
-		 */
 		protected static const stack:Vector.<IFocusManager> = new <IFocusManager>[];
 
 		/**
@@ -506,14 +501,11 @@ package feathers.core
 		 */
 		protected function topLevelContainer_touchHandler(event:TouchEvent):void
 		{
-			HELPER_TOUCHES_VECTOR.length = 0;
-			event.getTouches(this._topLevelContainer, TouchPhase.BEGAN, HELPER_TOUCHES_VECTOR);
-			if(HELPER_TOUCHES_VECTOR.length == 0)
+			const touch:Touch = event.getTouch(this._topLevelContainer, TouchPhase.BEGAN);
+			if(!touch)
 			{
 				return;
 			}
-			const touch:Touch = HELPER_TOUCHES_VECTOR[0];
-			HELPER_TOUCHES_VECTOR.length = 0;
 
 			var focusTarget:IFocusDisplayObject = null;
 			var target:DisplayObject = touch.target;

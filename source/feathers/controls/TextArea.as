@@ -76,11 +76,6 @@ package feathers.controls
 		private static const HELPER_POINT:Point = new Point();
 
 		/**
-		 * @private
-		 */
-		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
-
-		/**
 		 * @copy feathers.controls.Scroller#SCROLL_POLICY_AUTO
 		 *
 		 * @see feathers.controls.Scroller#horizontalScrollPolicy
@@ -743,80 +738,60 @@ package feathers.controls
 				return;
 			}
 
-			const touches:Vector.<Touch> = event.getTouches(this, null, HELPER_TOUCHES_VECTOR);
-			if(touches.length == 0)
+			const horizontalScrollBar:DisplayObject = DisplayObject(this.horizontalScrollBar);
+			const verticalScrollBar:DisplayObject = DisplayObject(this.verticalScrollBar);
+			if(this._textAreaTouchPointID >= 0)
 			{
+				var touch:Touch = event.getTouch(this, TouchPhase.ENDED, this._textAreaTouchPointID);
+				if(!touch || touch.isTouching(verticalScrollBar) || touch.isTouching(horizontalScrollBar))
+				{
+					return;
+				}
+				this.removeEventListener(Event.SCROLL, textArea_scrollHandler);
+				this._textAreaTouchPointID = -1;
+				if(this.textEditorViewPort.setTouchFocusOnEndedPhase)
+				{
+					this.setFocusOnTextEditorWithTouch(touch);
+				}
+			}
+			else
+			{
+				touch = event.getTouch(this, TouchPhase.BEGAN);
+				if(touch)
+				{
+					if(touch.isTouching(verticalScrollBar) || touch.isTouching(horizontalScrollBar))
+					{
+						return;
+					}
+					this._textAreaTouchPointID = touch.id;
+					if(!this.textEditorViewPort.setTouchFocusOnEndedPhase)
+					{
+						this.setFocusOnTextEditorWithTouch(touch);
+					}
+					this.addEventListener(Event.SCROLL, textArea_scrollHandler);
+					return;
+				}
+				touch = event.getTouch(this, TouchPhase.HOVER);
+				if(touch)
+				{
+					if(touch.isTouching(verticalScrollBar) || touch.isTouching(horizontalScrollBar))
+					{
+						return;
+					}
+					if(Mouse.supportsNativeCursor && !this._oldMouseCursor)
+					{
+						this._oldMouseCursor = Mouse.cursor;
+						Mouse.cursor = MouseCursor.IBEAM;
+					}
+					return;
+				}
 				//end hover
 				if(Mouse.supportsNativeCursor && this._oldMouseCursor)
 				{
 					Mouse.cursor = this._oldMouseCursor;
 					this._oldMouseCursor = null;
 				}
-				return;
 			}
-
-			const horizontalScrollBar:DisplayObject = DisplayObject(this.horizontalScrollBar);
-			const verticalScrollBar:DisplayObject = DisplayObject(this.verticalScrollBar);
-			if(this._textAreaTouchPointID >= 0)
-			{
-				var touch:Touch;
-				for each(var currentTouch:Touch in touches)
-				{
-					if(currentTouch.id == this._textAreaTouchPointID)
-					{
-						touch = currentTouch;
-						break;
-					}
-				}
-				if(!touch)
-				{
-					HELPER_TOUCHES_VECTOR.length = 0;
-					return;
-				}
-				if(touch.isTouching(verticalScrollBar) || touch.isTouching(horizontalScrollBar))
-				{
-					return;
-				}
-				if(touch.phase == TouchPhase.ENDED)
-				{
-					this.removeEventListener(Event.SCROLL, textArea_scrollHandler);
-					this._textAreaTouchPointID = -1;
-					if(this.textEditorViewPort.setTouchFocusOnEndedPhase)
-					{
-						this.setFocusOnTextEditorWithTouch(touch);
-					}
-				}
-			}
-			else
-			{
-				for each(touch in touches)
-				{
-					if(touch.isTouching(verticalScrollBar) || touch.isTouching(horizontalScrollBar))
-					{
-						continue;
-					}
-					if(touch.phase == TouchPhase.BEGAN)
-					{
-						this._textAreaTouchPointID = touch.id;
-						if(!this.textEditorViewPort.setTouchFocusOnEndedPhase)
-						{
-							this.setFocusOnTextEditorWithTouch(touch);
-						}
-						this.addEventListener(Event.SCROLL, textArea_scrollHandler);
-						break;
-					}
-					else if(touch.phase == TouchPhase.HOVER)
-					{
-						if(Mouse.supportsNativeCursor && !this._oldMouseCursor)
-						{
-							this._oldMouseCursor = Mouse.cursor;
-							Mouse.cursor = MouseCursor.IBEAM;
-						}
-						break;
-					}
-				}
-			}
-			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 
 		/**
