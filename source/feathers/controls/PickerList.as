@@ -56,11 +56,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
-
-		/**
-		 * @private
-		 */
 		protected static const INVALIDATION_FLAG_BUTTON_FACTORY:String = "buttonFactory";
 
 		/**
@@ -130,11 +125,6 @@ package feathers.controls
 		 * The list sub-component.
 		 */
 		protected var list:List;
-
-		/**
-		 * @private
-		 */
-		protected var _buttonTouchPointID:int = -1;
 
 		/**
 		 * @private
@@ -860,7 +850,6 @@ package feathers.controls
 			this.button = Button(factory());
 			this.button.nameList.add(buttonName);
 			this.button.addEventListener(Event.TRIGGERED, button_triggeredHandler);
-			this.button.addEventListener(TouchEvent.TOUCH, button_touchHandler);
 			this.addChild(this.button);
 		}
 
@@ -998,58 +987,7 @@ package feathers.controls
 		 */
 		protected function removedFromStageHandler(event:Event):void
 		{
-			this._buttonTouchPointID = -1;
 			this._listTouchPointID = -1;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function button_touchHandler(event:TouchEvent):void
-		{
-			if(!this._isEnabled)
-			{
-				this._buttonTouchPointID = -1;
-				return;
-			}
-			const touches:Vector.<Touch> = event.getTouches(this.button, null, HELPER_TOUCHES_VECTOR);
-			if(touches.length == 0)
-			{
-				return;
-			}
-			if(this._buttonTouchPointID >= 0)
-			{
-				var touch:Touch;
-				for each(var currentTouch:Touch in touches)
-				{
-					if(currentTouch.id == this._buttonTouchPointID)
-					{
-						touch = currentTouch;
-						break;
-					}
-				}
-				if(!touch)
-				{
-					HELPER_TOUCHES_VECTOR.length = 0;
-					return;
-				}
-				if(touch.phase == TouchPhase.ENDED)
-				{
-					this._buttonTouchPointID = -1;
-				}
-			}
-			else
-			{
-				for each(touch in touches)
-				{
-					if(touch.phase == TouchPhase.BEGAN)
-					{
-						this._buttonTouchPointID = touch.id;
-						break;
-					}
-				}
-			}
-			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 		
 		/**
@@ -1062,60 +1000,40 @@ package feathers.controls
 				this._listTouchPointID = -1;
 				return;
 			}
-			const touches:Vector.<Touch> = event.getTouches(this.list, null, HELPER_TOUCHES_VECTOR);
-			if(touches.length == 0)
-			{
-				HELPER_TOUCHES_VECTOR.length = 0;
-				return;
-			}
+
 			if(this._listTouchPointID >= 0)
 			{
-				var touch:Touch;
-				for each(var currentTouch:Touch in touches)
-				{
-					if(currentTouch.id == this._listTouchPointID)
-					{
-						touch = currentTouch;
-						break;
-					}
-				}
+				var touch:Touch = event.getTouch(this.list, TouchPhase.ENDED, this._listTouchPointID);
 				if(!touch)
 				{
-					HELPER_TOUCHES_VECTOR.length = 0;
 					return;
 				}
-				if(touch.phase == TouchPhase.ENDED)
+				if(!this._hasBeenScrolled)
 				{
-					if(!this._hasBeenScrolled)
+					var target:DisplayObject = DisplayObject(event.target);
+					do
 					{
-						var target:DisplayObject = DisplayObject(event.target);
-						do
+						if(target is IListItemRenderer)
 						{
-							if(target is IListItemRenderer)
-							{
-								this.closePopUpList();
-								break;
-							}
-							target = target.parent;
+							this.closePopUpList();
+							break;
 						}
-						while(target)
+						target = target.parent;
 					}
-					this._listTouchPointID = -1;
+					while(target)
 				}
+				this._listTouchPointID = -1;
 			}
 			else
 			{
-				for each(touch in touches)
+				touch = event.getTouch(this.list, TouchPhase.BEGAN);
+				if(!touch)
 				{
-					if(touch.phase == TouchPhase.BEGAN)
-					{
-						this._listTouchPointID = touch.id;
-						this._hasBeenScrolled = false;
-						break;
-					}
+					return;
 				}
+				this._listTouchPointID = touch.id;
+				this._hasBeenScrolled = false;
 			}
-			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 	}
 }

@@ -56,11 +56,6 @@ package feathers.controls
 		private static const HELPER_POINT:Point = new Point();
 
 		/**
-		 * @private
-		 */
-		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
-
-		/**
 		 * The page indicator's symbols will be positioned vertically, from top
 		 * to bottom.
 		 */
@@ -662,76 +657,52 @@ package feathers.controls
 				return;
 			}
 
-			const touches:Vector.<Touch> = event.getTouches(this, null, HELPER_TOUCHES_VECTOR);
-			if(touches.length == 0)
-			{
-				//end of hover
-				return;
-			}
 			if(this.touchPointID >= 0)
 			{
-				var touch:Touch;
-				for each(var currentTouch:Touch in touches)
-				{
-					if(currentTouch.id == this.touchPointID)
-					{
-						touch = currentTouch;
-						break;
-					}
-				}
-
+				var touch:Touch = event.getTouch(this, TouchPhase.ENDED, this.touchPointID);
 				if(!touch)
 				{
-					//end of hover
-					HELPER_TOUCHES_VECTOR.length = 0;
 					return;
 				}
-
-				if(touch.phase == TouchPhase.ENDED)
+				this.touchPointID = -1;
+				touch.getLocation(this.stage, HELPER_POINT);
+				const isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
+				if(isInBounds)
 				{
-					this.touchPointID = -1;
-					touch.getLocation(this.stage, HELPER_POINT);
-					const isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
-					if(isInBounds)
+					this.globalToLocal(HELPER_POINT, HELPER_POINT);
+					if(this._direction == DIRECTION_VERTICAL)
 					{
-						this.globalToLocal(HELPER_POINT, HELPER_POINT);
-						if(this._direction == DIRECTION_VERTICAL)
+						if(HELPER_POINT.y < this.selectedSymbol.y)
 						{
-							if(HELPER_POINT.y < this.selectedSymbol.y)
-							{
-								this.selectedIndex = Math.max(0, this._selectedIndex - 1);
-							}
-							if(HELPER_POINT.y > (this.selectedSymbol.y + this.selectedSymbol.height))
-							{
-								this.selectedIndex = Math.min(this._pageCount - 1, this._selectedIndex + 1);
-							}
+							this.selectedIndex = Math.max(0, this._selectedIndex - 1);
 						}
-						else
+						if(HELPER_POINT.y > (this.selectedSymbol.y + this.selectedSymbol.height))
 						{
-							if(HELPER_POINT.x < this.selectedSymbol.x)
-							{
-								this.selectedIndex = Math.max(0, this._selectedIndex - 1);
-							}
-							if(HELPER_POINT.x > (this.selectedSymbol.x + this.selectedSymbol.width))
-							{
-								this.selectedIndex = Math.min(this._pageCount - 1, this._selectedIndex + 1);
-							}
+							this.selectedIndex = Math.min(this._pageCount - 1, this._selectedIndex + 1);
+						}
+					}
+					else
+					{
+						if(HELPER_POINT.x < this.selectedSymbol.x)
+						{
+							this.selectedIndex = Math.max(0, this._selectedIndex - 1);
+						}
+						if(HELPER_POINT.x > (this.selectedSymbol.x + this.selectedSymbol.width))
+						{
+							this.selectedIndex = Math.min(this._pageCount - 1, this._selectedIndex + 1);
 						}
 					}
 				}
 			}
 			else //if we get here, we don't have a saved touch ID yet
 			{
-				for each(touch in touches)
+				touch = event.getTouch(this, TouchPhase.BEGAN);
+				if(!touch)
 				{
-					if(touch.phase == TouchPhase.BEGAN)
-					{
-						this.touchPointID = touch.id;
-						break;
-					}
+					return;
 				}
+				this.touchPointID = touch.id;
 			}
-			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 
 	}

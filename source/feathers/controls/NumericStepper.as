@@ -53,11 +53,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
-
-		/**
-		 * @private
-		 */
 		protected static const INVALIDATION_FLAG_DECREMENT_BUTTON_FACTORY:String = "decrementButtonFactory";
 
 		/**
@@ -1294,54 +1289,33 @@ package feathers.controls
 		{
 			if(!this._isEnabled)
 			{
-				return;
-			}
-			const touches:Vector.<Touch> = event.getTouches(this.decrementButton, null, HELPER_TOUCHES_VECTOR);
-			if(touches.length == 0)
-			{
+				this.touchPointID = -1;
 				return;
 			}
 
 			if(this.touchPointID >= 0)
 			{
-				var touch:Touch;
-				for each(var currentTouch:Touch in touches)
-				{
-					if(currentTouch.id == this.touchPointID)
-					{
-						touch = currentTouch;
-						break;
-					}
-				}
-
+				var touch:Touch = event.getTouch(this.decrementButton, TouchPhase.ENDED, this.touchPointID);
 				if(!touch)
 				{
-					//end of hover
-					HELPER_TOUCHES_VECTOR.length = 0;
 					return;
 				}
-				if(touch.phase == TouchPhase.ENDED)
-				{
-					this.touchPointID = -1;
-					this._repeatTimer.stop();
-					this.dispatchEventWith(FeathersEventType.END_INTERACTION);
-				}
+				this.touchPointID = -1;
+				this._repeatTimer.stop();
+				this.dispatchEventWith(FeathersEventType.END_INTERACTION);
 			}
 			else //if we get here, we don't have a saved touch ID yet
 			{
-				for each(touch in touches)
+				touch = event.getTouch(this.decrementButton, TouchPhase.BEGAN);
+				if(!touch)
 				{
-					if(touch.phase == TouchPhase.BEGAN)
-					{
-						this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
-						this.decrement();
-						this.startRepeatTimer(this.decrement);
-						this.touchPointID = touch.id;
-						break;
-					}
+					return;
 				}
+				this.touchPointID = touch.id;
+				this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
+				this.decrement();
+				this.startRepeatTimer(this.decrement);
 			}
-			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 
 		/**
@@ -1351,54 +1325,33 @@ package feathers.controls
 		{
 			if(!this._isEnabled)
 			{
-				return;
-			}
-			const touches:Vector.<Touch> = event.getTouches(this.incrementButton, null, HELPER_TOUCHES_VECTOR);
-			if(touches.length == 0)
-			{
+				this.touchPointID = -1;
 				return;
 			}
 
 			if(this.touchPointID >= 0)
 			{
-				var touch:Touch;
-				for each(var currentTouch:Touch in touches)
-				{
-					if(currentTouch.id == this.touchPointID)
-					{
-						touch = currentTouch;
-						break;
-					}
-				}
-
+				var touch:Touch = event.getTouch(this.incrementButton, TouchPhase.ENDED, this.touchPointID);
 				if(!touch)
 				{
-					//end of hover
-					HELPER_TOUCHES_VECTOR.length = 0;
 					return;
 				}
-				if(touch.phase == TouchPhase.ENDED)
-				{
-					this.touchPointID = -1;
-					this._repeatTimer.stop();
-					this.dispatchEventWith(FeathersEventType.END_INTERACTION);
-				}
+				this.touchPointID = -1;
+				this._repeatTimer.stop();
+				this.dispatchEventWith(FeathersEventType.END_INTERACTION);
 			}
 			else //if we get here, we don't have a saved touch ID yet
 			{
-				for each(touch in touches)
+				touch = event.getTouch(this.incrementButton, TouchPhase.BEGAN);
+				if(!touch)
 				{
-					if(touch.phase == TouchPhase.BEGAN)
-					{
-						this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
-						this.increment();
-						this.startRepeatTimer(this.increment);
-						this.touchPointID = touch.id;
-						break;
-					}
+					return;
 				}
+				this.touchPointID = touch.id;
+				this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
+				this.increment();
+				this.startRepeatTimer(this.increment);
 			}
-			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 
 		/**

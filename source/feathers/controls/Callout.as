@@ -150,11 +150,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
-
-		/**
-		 * @private
-		 */
 		private static const HELPER_POINT:Point = new Point();
 
 		/**
@@ -1833,20 +1828,24 @@ package feathers.controls
 				return;
 			}
 
-			const touches:Vector.<Touch> = event.getTouches(this.stage, null, HELPER_TOUCHES_VECTOR);
-			const touchCount:int = touches.length;
-			for(var i:int = 0; i < touchCount; i++)
+			if(this.closeOnTouchBeganOutside)
 			{
-				var touch:Touch = touches[i];
-				var phase:String = touch.phase;
-				if((this.closeOnTouchBeganOutside && phase == TouchPhase.BEGAN) ||
-					(this.closeOnTouchEndedOutside && phase == TouchPhase.ENDED))
+				var touch:Touch = event.getTouch(this.stage, TouchPhase.BEGAN);
+				if(touch)
 				{
 					this.close(this.disposeOnSelfClose);
-					break;
+					return;
 				}
 			}
-			HELPER_TOUCHES_VECTOR.length = 0;
+			if(this.closeOnTouchEndedOutside)
+			{
+				touch = event.getTouch(this.stage, TouchPhase.ENDED);
+				if(touch)
+				{
+					this.close(this.disposeOnSelfClose);
+					return;
+				}
+			}
 		}
 
 		/**
