@@ -48,6 +48,11 @@ package feathers.controls
 
 		/**
 		 * The text displayed by the label.
+		 *
+		 * <p>In the following example, the label's text is updated:</p>
+		 *
+		 * <listing version="3.0">
+		 * label.text = "Hello World";</listing>
 		 */
 		public function get text():String
 		{
@@ -98,6 +103,15 @@ package feathers.controls
 		 * <p>The factory should have the following function signature:</p>
 		 * <pre>function():ITextRenderer</pre>
 		 *
+		 * <p>In the following example, a custom text renderer factory is passed
+		 * to the label:</p>
+		 *
+		 * <listing version="3.0">
+		 * label.textRendererFactory = function():ITextRenderer
+		 * {
+		 *     return new TextFieldTextRenderer();
+		 * }</listing>
+		 *
 		 * @see feathers.core.ITextRenderer
 		 * @see feathers.core.FeathersControl#defaultTextRendererFactory
 		 */
@@ -142,6 +156,14 @@ package feathers.controls
 		 * <p>Setting properties in a <code>textRendererFactory</code> function
 		 * instead of using <code>textRendererProperties</code> will result in
 		 * better performance.</p>
+		 *
+		 * <p>In the following example, the label's text renderer's properties
+		 * are updated (this example assumes that the label text renderer is a
+		 * <code>TextFieldTextRenderer</code>):</p>
+		 *
+		 * <listing version="3.0">
+		 * label.textRendererProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333 );
+		 * label.textRendererProperties.embedFonts = true;</listing>
 		 *
 		 * @see #textRendererFactory
 		 * @see feathers.core.ITextRenderer

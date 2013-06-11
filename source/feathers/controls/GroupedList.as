@@ -744,7 +744,9 @@ package feathers.controls
 		 * properties depend on which <code>IGroupedListItemRenderer</code>
 		 * implementation is returned by <code>itemRendererFactory</code>.
 		 *
-		 * <p>The following example customizes some item renderer properties:</p>
+		 * <p>The following example customizes some item renderer properties
+		 * (this example assumes that the item renderer's label text renderer
+		 * is a <code>BitmapFontTextRenderer</code>):</p>
 		 *
 		 * <listing version="3.0">
 		 * list.itemRendererProperties.&#64;defaultLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );

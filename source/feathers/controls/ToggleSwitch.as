@@ -30,7 +30,7 @@ package feathers.controls
 	import starling.events.TouchPhase;
 
 	/**
-	 * @inheritDoc
+	 * @copy feathers.core.IToggle#event:change
 	 */
 	[Event(name="change",type="starling.events.Event")]
 
@@ -279,6 +279,14 @@ package feathers.controls
 		/**
 		 * The minimum space, in pixels, between the switch's right edge and the
 		 * switch's content.
+		 *
+		 * <p>In the following example, the toggle switch's right padding is
+		 * set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.paddingRight = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingRight():Number
 		{
@@ -306,6 +314,17 @@ package feathers.controls
 		/**
 		 * The minimum space, in pixels, between the switch's left edge and the
 		 * switch's content.
+		 *
+		 * <p>In the following example, the toggle switch's left padding is
+		 * set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 *
+		 *
+		 * <listing version="3.0">
+		 * toggle.customOnTrackName = "my-custom-on-track";</listing>.paddingLeft = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingLeft():Number
 		{
@@ -333,6 +352,13 @@ package feathers.controls
 		/**
 		 * Determines if the labels should be drawn. The onTrackSkin and
 		 * offTrackSkin backgrounds may include the text instead.
+		 *
+		 * <p>In the following example, the toggle switch's labels are hidden:</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.showLabels = false;</listing>
+		 *
+		 * @default true
 		 */
 		public function get showLabels():Boolean
 		{
@@ -360,6 +386,13 @@ package feathers.controls
 		/**
 		 * Determines if the thumb should be displayed. This stops interaction
 		 * while still displaying the background.
+		 *
+		 * <p>In the following example, the toggle switch's thumb is hidden:</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.showThumb = false;</listing>
+		 *
+		 * @default true
 		 */
 		public function get showThumb():Boolean
 		{
@@ -387,6 +420,12 @@ package feathers.controls
 		[Inspectable(type="String",enumeration="single,onOff")]
 		/**
 		 * Determines how the on and off track skins are positioned and sized.
+		 *
+		 * <p>In the following example, the toggle switch's track layout mode is
+		 * updated to use two tracks:</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.trackLayoutMode = TRACK_LAYOUT_MODE_ON_OFF;</listing>
 		 *
 		 * @default TRACK_LAYOUT_MODE_SINGLE
 		 * @see #TRACK_LAYOUT_MODE_SINGLE
@@ -425,10 +464,18 @@ package feathers.controls
 		 * common implementations are <code>BitmapFontTextRenderer</code> and
 		 * <code>TextFieldTextRenderer</code>.
 		 *
+		 * <p>In the following example, the toggle switch's default label
+		 * properties are updated (this example assumes that the label text
+		 * renderers are of type <code>TextFieldTextRenderer</code>):</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.defaultLabelProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333 );
+		 * toggle.defaultLabelProperties.embedFonts = true;</listing>
+		 *
 		 * @see #labelFactory
 		 * @see feathers.core.ITextRenderer
-		 * @see feathers.core.BitmapFontTextRenderer
-		 * @see feathers.core.TextFieldTextRenderer
+		 * @see feathers.controls.text.BitmapFontTextRenderer
+		 * @see feathers.controls.text.TextFieldTextRenderer
 		 * @see #onLabelProperties
 		 * @see #offLabelProperties
 		 * @see #disabledLabelProperties
@@ -477,10 +524,18 @@ package feathers.controls
 		 * common implementations are <code>BitmapFontTextRenderer</code> and
 		 * <code>TextFieldTextRenderer</code>.
 		 *
+		 * <p>In the following example, the toggle switch's disabled label
+		 * properties are updated (this example assumes that the label text
+		 * renderers are of type <code>TextFieldTextRenderer</code>):</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.disabledLabelProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333 );
+		 * toggle.disabledLabelProperties.embedFonts = true;</listing>
+		 *
 		 * @see #labelFactory
 		 * @see feathers.core.ITextRenderer
-		 * @see feathers.core.BitmapFontTextRenderer
-		 * @see feathers.core.TextFieldTextRenderer
+		 * @see feathers.controls.text.BitmapFontTextRenderer
+		 * @see feathers.controls.text.TextFieldTextRenderer
 		 * @see #defaultLabelProperties
 		 */
 		public function get disabledLabelProperties():Object
@@ -528,10 +583,18 @@ package feathers.controls
 		 * implementations are <code>BitmapFontTextRenderer</code> and
 		 * <code>TextFieldTextRenderer</code>.
 		 *
+		 * <p>In the following example, the toggle switch's on label properties
+		 * are updated (this example assumes that the on label text renderer is a
+		 * <code>TextFieldTextRenderer</code>):</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.onLabelProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333 );
+		 * toggle.onLabelProperties.embedFonts = true;</listing>
+		 *
 		 * @see #labelFactory
 		 * @see feathers.core.ITextRenderer
-		 * @see feathers.core.BitmapFontTextRenderer
-		 * @see feathers.core.TextFieldTextRenderer
+		 * @see feathers.controls.text.BitmapFontTextRenderer
+		 * @see feathers.controls.text.TextFieldTextRenderer
 		 * @see #defaultLabelProperties
 		 */
 		public function get onLabelProperties():Object
@@ -579,10 +642,18 @@ package feathers.controls
 		 * implementations are <code>BitmapFontTextRenderer</code> and
 		 * <code>TextFieldTextRenderer</code>.
 		 *
+		 * <p>In the following example, the toggle switch's off label properties
+		 * are updated (this example assumes that the off label text renderer is a
+		 * <code>TextFieldTextRenderer</code>):</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.offLabelProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333 );
+		 * toggle.offLabelProperties.embedFonts = true;</listing>
+		 *
 		 * @see #labelFactory
 		 * @see feathers.core.ITextRenderer
-		 * @see feathers.core.BitmapFontTextRenderer
-		 * @see feathers.core.TextFieldTextRenderer
+		 * @see feathers.controls.text.BitmapFontTextRenderer
+		 * @see feathers.controls.text.TextFieldTextRenderer
 		 * @see #defaultLabelProperties
 		 */
 		public function get offLabelProperties():Object
@@ -623,6 +694,16 @@ package feathers.controls
 		[Inspectable(type="String",enumeration="baseline,middle")]
 		/**
 		 * The vertical alignment of the label.
+		 *
+		 * <p>In the following example, the toggle switch's label alignment is
+		 * updated:</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.labelAlign = LABEL_ALIGN_MIDDLE;</listing>
+		 *
+		 * @default LABEL_ALIGN_BASELINE
+		 * @see #LABEL_ALIGN_BASELINE
+		 * @see #LABEL_ALIGN_MIDDLE
 		 */
 		public function get labelAlign():String
 		{
@@ -657,6 +738,15 @@ package feathers.controls
 		 *
 		 * <p>The factory should have the following function signature:</p>
 		 * <pre>function():ITextRenderer</pre>
+		 *
+		 * <p>In the following example, the toggle switch uses a custom label
+		 * factory:</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.labelFactory = function():ITextRenderer
+		 * {
+		 *     return new TextFieldTextRenderer();
+		 * }</listing>
 		 *
 		 * @see feathers.core.ITextRenderer
 		 * @see feathers.core.FeathersControl#defaultTextRendererFactory
@@ -706,6 +796,13 @@ package feathers.controls
 
 		/**
 		 * Indicates if the toggle switch is selected (ON) or not (OFF).
+		 *
+		 * <p>In the following example, the toggle switch is selected:</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.isSelected = true;</listing>
+		 *
+		 * @default false
 		 */
 		public function get isSelected():Boolean
 		{
@@ -739,6 +836,12 @@ package feathers.controls
 		/**
 		 * The duration, in seconds, of the animation when the toggle switch
 		 * is toggled and animates the position of the thumb.
+		 *
+		 * <p>In the following example, the duration of the toggle switch thumb
+		 * animation is updated:</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.toggleDuration = 0.5;</listing>
 		 */
 		public function get toggleDuration():Number
 		{
@@ -760,6 +863,12 @@ package feathers.controls
 
 		/**
 		 * The easing function used for toggle animations.
+		 *
+		 * <p>In the following example, the easing function used by the toggle
+		 * switch's thumb animation is updated:</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.toggleEase = Transitions.EASE_IN_OUT;</listing>
 		 */
 		public function get toggleEase():Object
 		{
@@ -781,6 +890,12 @@ package feathers.controls
 
 		/**
 		 * The text to display in the ON label.
+		 *
+		 * <p>In the following example, the toggle switch's on label text is
+		 * updated:</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.onText = "on";</listing>
 		 */
 		public function get onText():String
 		{
@@ -811,6 +926,12 @@ package feathers.controls
 
 		/**
 		 * The text to display in the OFF label.
+		 *
+		 * <p>In the following example, the toggle switch's off label text is
+		 * updated:</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.offText = "off";</listing>
 		 */
 		public function get offText():String
 		{
@@ -880,6 +1001,17 @@ package feathers.controls
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():Button</pre>
 		 *
+		 * <p>In the following example, a custom on track factory is passed to
+		 * the toggle switch:</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.onTrackFactory = function():Button
+		 * {
+		 *     var onTrack:Button = new Button();
+		 *     onTrack.defaultSkin = new Image( texture );
+		 *     return onTrack;
+		 * };</listing>
+		 *
 		 * @see feathers.controls.Button
 		 * @see #onTrackProperties
 		 */
@@ -909,6 +1041,12 @@ package feathers.controls
 		/**
 		 * A name to add to the toggle switch's on track sub-component. Typically
 		 * used by a theme to provide different skins to different toggle switches.
+		 *
+		 * <p>In the following example, a custom on track name is passed to
+		 * the toggle switch:</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.customOnTrackName = "my-custom-on-track";</listing>
 		 *
 		 * @see feathers.core.FeathersControl#nameList
 		 * @see #onTrackFactory
@@ -952,6 +1090,12 @@ package feathers.controls
 		 * <p>Setting properties in a <code>onTrackFactory</code> function
 		 * instead of using <code>onTrackProperties</code> will result in
 		 * better performance.</p>
+		 *
+		 * <p>In the following example, the toggle switch's on track properties
+		 * are updated:</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.onTrackProperties.defaultSkin = new Image( texture );</listing>
 		 * 
 		 * @see feathers.controls.Button
 		 * @see #onTrackFactory
@@ -1015,6 +1159,17 @@ package feathers.controls
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():Button</pre>
 		 *
+		 * <p>In the following example, a custom off track factory is passed to
+		 * the toggle switch:</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.offTrackFactory = function():Button
+		 * {
+		 *     var offTrack:Button = new Button();
+		 *     offTrack.defaultSkin = new Image( texture );
+		 *     return offTrack;
+		 * };</listing>
+		 *
 		 * @see feathers.controls.Button
 		 * @see #offTrackProperties
 		 */
@@ -1044,6 +1199,12 @@ package feathers.controls
 		/**
 		 * A name to add to the toggle switch's off track sub-component. Typically
 		 * used by a theme to provide different skins to different toggle switches.
+		 *
+		 * <p>In the following example, a custom off track name is passed to the
+		 * toggle switch:</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.customOnTrackName = "my-custom-off-track";</listing>
 		 *
 		 * @see feathers.core.FeathersControl#nameList
 		 * @see #offTrackFactory
@@ -1087,6 +1248,12 @@ package feathers.controls
 		 * <p>Setting properties in a <code>offTrackFactory</code> function
 		 * instead of using <code>offTrackProperties</code> will result in
 		 * better performance.</p>
+		 *
+		 * <p>In the following example, the toggle switch's off track properties
+		 * are updated:</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.offTrackProperties.defaultSkin = new Image( texture );</listing>
 		 * 
 		 * @see feathers.controls.Button
 		 * @see #offTrackFactory
@@ -1149,6 +1316,17 @@ package feathers.controls
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():Button</pre>
 		 *
+		 * <p>In the following example, a custom thumb factory is passed to the
+		 * toggle switch:</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.thumbFactory = function():Button
+		 * {
+		 *     var button:Button = new Button();
+		 *     button.defaultSkin = new Image( texture );
+		 *     return button;
+		 * };</listing>
+		 *
 		 * @see #thumbProperties
 		 */
 		public function get thumbFactory():Function
@@ -1177,6 +1355,12 @@ package feathers.controls
 		/**
 		 * A name to add to the toggle switch's thumb sub-component. Typically
 		 * used by a theme to provide different skins to different toggle switches.
+		 *
+		 * <p>In the following example, a custom thumb name is passed to the
+		 * toggle switch:</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.customThumbName = "my-custom-thumb";</listing>
 		 *
 		 * @see feathers.core.FeathersControl#nameList
 		 * @see #thumbFactory
@@ -1220,6 +1404,12 @@ package feathers.controls
 		 * <p>Setting properties in a <code>thumbFactory</code> function instead
 		 * of using <code>thumbProperties</code> will result in better
 		 * performance.</p>
+		 *
+		 * <p>In the following example, the toggle switch's thumb properties
+		 * are updated:</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.thumbProperties.defaultSkin = new Image( texture );</listing>
 		 * 
 		 * @see feathers.controls.Button
 		 * @see #thumbFactory
