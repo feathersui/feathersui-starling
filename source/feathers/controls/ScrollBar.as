@@ -126,7 +126,7 @@ package feathers.controls
 		 * track when it is triggered to scroll by a page instead of a step.
 		 *
 		 * <p>Since the width and height of the tracks will change, consider
-		 * sing a special display object such as a <code>Scale9Image</code>,
+		 * using a special display object such as a <code>Scale9Image</code>,
 		 * <code>Scale3Image</code> or a <code>TiledImage</code> that is
 		 * designed to be resized dynamically.</p>
 		 *
