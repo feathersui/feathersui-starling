@@ -1218,14 +1218,13 @@ package feathers.core
 		 */
 		override public function hitTest(localPoint:Point, forTouch:Boolean=false):DisplayObject
 		{
+			if(this._clipRect && !this._clipRect.contains(localPoint.x, localPoint.y))
+			{
+				return null;
+			}
 			if(this._isQuickHitAreaEnabled)
 			{
 				if(forTouch && (!this.visible || !this.touchable))
-				{
-					return null;
-				}
-				const clipRect:Rectangle = this.clipRect;
-				if(clipRect && !clipRect.containsPoint(localPoint))
 				{
 					return null;
 				}
