@@ -506,7 +506,8 @@ package feathers.controls
 		 * better performance.</p>
 		 *
 		 * <p>In the following example, the text input's prompt's properties are
-		 * updated:</p>
+		 * updated (this example assumes that the prompt text renderer is a
+		 * <code>TextFieldTextRenderer</code>):</p>
 		 *
 		 * <listing version="3.0">
 		 * input.promptProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333 );
@@ -919,7 +920,8 @@ package feathers.controls
 		 * better performance.</p>
 		 *
 		 * <p>In the following example, the text input's text editor properties
-		 * are specified:</p>
+		 * are specified (this example assumes that the text editor is a
+		 * <code>StageTextTextEditor</code>):</p>
 		 *
 		 * <listing version="3.0">
 		 * input.textEditorProperties.fontName = "Helvetica";

@@ -158,7 +158,8 @@ package feathers.controls
 		 * better performance.</p>
 		 *
 		 * <p>In the following example, the label's text renderer's properties
-		 * are updated:</p>
+		 * are updated (this example assumes that the label text renderer is a
+		 * <code>TextFieldTextRenderer</code>):</p>
 		 *
 		 * <listing version="3.0">
 		 * label.textRendererProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333 );

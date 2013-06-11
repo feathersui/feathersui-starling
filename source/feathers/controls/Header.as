@@ -772,7 +772,8 @@ package feathers.controls
 		 * <code>TextFieldTextRenderer</code>.
 		 *
 		 * <p>In the following example, some properties are set for the header's
-		 * title text renderer:</p>
+		 * title text renderer (this example assumes that the title text renderer
+		 * is a <code>BitmapFontTextRenderer</code>):</p>
 		 *
 		 * <listing version="3.0">
 		 * header.titleProperties.textFormat = new BitmapFontTextFormat( bitmapFont );

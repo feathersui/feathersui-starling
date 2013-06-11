@@ -30,7 +30,7 @@ package feathers.controls
 	import starling.events.TouchPhase;
 
 	/**
-	 * @inheritDoc
+	 * @copy feathers.core.IToggle#event:change
 	 */
 	[Event(name="change",type="starling.events.Event")]
 
@@ -469,10 +469,18 @@ package feathers.controls
 		 * common implementations are <code>BitmapFontTextRenderer</code> and
 		 * <code>TextFieldTextRenderer</code>.
 		 *
+		 * <p>In the following example, the toggle switch's default label
+		 * properties are updated (this example assumes that the label text
+		 * renderers are of type <code>TextFieldTextRenderer</code>):</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.defaultLabelProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333 );
+		 * toggle.defaultLabelProperties.embedFonts = true;</listing>
+		 *
 		 * @see #labelFactory
 		 * @see feathers.core.ITextRenderer
-		 * @see feathers.core.BitmapFontTextRenderer
-		 * @see feathers.core.TextFieldTextRenderer
+		 * @see feathers.controls.text.BitmapFontTextRenderer
+		 * @see feathers.controls.text.TextFieldTextRenderer
 		 * @see #onLabelProperties
 		 * @see #offLabelProperties
 		 * @see #disabledLabelProperties
@@ -521,10 +529,18 @@ package feathers.controls
 		 * common implementations are <code>BitmapFontTextRenderer</code> and
 		 * <code>TextFieldTextRenderer</code>.
 		 *
+		 * <p>In the following example, the toggle switch's disabled label
+		 * properties are updated (this example assumes that the label text
+		 * renderers are of type <code>TextFieldTextRenderer</code>):</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.disabledLabelProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333 );
+		 * toggle.disabledLabelProperties.embedFonts = true;</listing>
+		 *
 		 * @see #labelFactory
 		 * @see feathers.core.ITextRenderer
-		 * @see feathers.core.BitmapFontTextRenderer
-		 * @see feathers.core.TextFieldTextRenderer
+		 * @see feathers.controls.text.BitmapFontTextRenderer
+		 * @see feathers.controls.text.TextFieldTextRenderer
 		 * @see #defaultLabelProperties
 		 */
 		public function get disabledLabelProperties():Object
@@ -573,7 +589,8 @@ package feathers.controls
 		 * <code>TextFieldTextRenderer</code>.
 		 *
 		 * <p>In the following example, the toggle switch's on label properties
-		 * are updated:</p>
+		 * are updated (this example assumes that the on label text renderer is a
+		 * <code>TextFieldTextRenderer</code>):</p>
 		 *
 		 * <listing version="3.0">
 		 * toggle.onLabelProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333 );
@@ -581,8 +598,8 @@ package feathers.controls
 		 *
 		 * @see #labelFactory
 		 * @see feathers.core.ITextRenderer
-		 * @see feathers.core.BitmapFontTextRenderer
-		 * @see feathers.core.TextFieldTextRenderer
+		 * @see feathers.controls.text.BitmapFontTextRenderer
+		 * @see feathers.controls.text.TextFieldTextRenderer
 		 * @see #defaultLabelProperties
 		 */
 		public function get onLabelProperties():Object
@@ -631,7 +648,8 @@ package feathers.controls
 		 * <code>TextFieldTextRenderer</code>.
 		 *
 		 * <p>In the following example, the toggle switch's off label properties
-		 * are updated:</p>
+		 * are updated (this example assumes that the off label text renderer is a
+		 * <code>TextFieldTextRenderer</code>):</p>
 		 *
 		 * <listing version="3.0">
 		 * toggle.offLabelProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333 );
@@ -639,8 +657,8 @@ package feathers.controls
 		 *
 		 * @see #labelFactory
 		 * @see feathers.core.ITextRenderer
-		 * @see feathers.core.BitmapFontTextRenderer
-		 * @see feathers.core.TextFieldTextRenderer
+		 * @see feathers.controls.text.BitmapFontTextRenderer
+		 * @see feathers.controls.text.TextFieldTextRenderer
 		 * @see #defaultLabelProperties
 		 */
 		public function get offLabelProperties():Object
