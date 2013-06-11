@@ -1480,7 +1480,9 @@ package feathers.controls
 		 * <code>TextFieldTextRenderer</code>.
 		 *
 		 * <p>The following example gives the button default label properties to
-		 * use for all states when no specific label properties are available:</p>
+		 * use for all states when no specific label properties are available
+		 * (this example assumes that the label text renderer is a
+		 * <code>BitmapFontTextRenderer</code>):</p>
 		 *
 		 * <listing version="3.0">
 		 * button.defaultLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );
