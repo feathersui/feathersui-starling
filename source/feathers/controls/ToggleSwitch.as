@@ -38,6 +38,15 @@ package feathers.controls
 	 * Similar to a light switch with on and off states. Generally considered an
 	 * alternative to a check box.
 	 *
+	 * <p>The following example programmatically selects a toggle switch and
+	 * listens for when the selection changes:</p>
+	 *
+	 * <listing version="3.0">
+	 * var toggle:ToggleSwitch = new ToggleSwitch();
+	 * toggle.isSelected = true;
+	 * toggle.addEventListener( Event.CHANGE, toggle_changeHandler );
+	 * this.addChild( toggle );</listing>
+	 *
 	 * @see http://wiki.starling-framework.org/feathers/toggle-switch
 	 * @see Check
 	 */

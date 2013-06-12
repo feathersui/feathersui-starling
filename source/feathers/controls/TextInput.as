@@ -67,6 +67,16 @@ package feathers.controls
 	 * password, and character restrictions, use the <code>textEditorProperties</code> to pass
 	 * values to the <code>ITextEditor</code> instance.</p>
 	 *
+	 * <p>The following example sets the text in a text input, selects the text,
+	 * and listens for when the text value changes:</p>
+	 *
+	 * <listing version="3.0">
+	 * var input:TextInput = new TextInput();
+	 * input.text = "Hello World";
+	 * input.selectRange( 0, input.text.length );
+	 * input.addEventListener( Event.CHANGE, input_changeHandler );
+	 * this.addChild( input );</listing>
+	 *
 	 * @see http://wiki.starling-framework.org/feathers/text-input
 	 * @see http://wiki.starling-framework.org/feathers/text-editors
 	 * @see feathers.core.ITextEditor

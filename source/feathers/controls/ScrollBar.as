@@ -53,6 +53,18 @@ package feathers.controls
 	 * <code>SimpleScrollBar</code> is probably a better choice as it provides
 	 * only the thumb to indicate position without all the extra chrome.
 	 *
+	 * <p>The following example updates a list to use scroll bars:</p>
+	 *
+	 * <listing version="3.0">
+	 * list.horizontalScrollBarFactory = function():IScrollBar
+	 * {
+	 *     return new ScrollBar();
+	 * };
+	 * list.verticalScrollBarFactory = function():IScrollBar
+	 * {
+	 *     return new ScrollBar();
+	 * };</listing>
+	 *
 	 * @see http://wiki.starling-framework.org/feathers/scroll-bar
 	 * @see SimpleScrollBar
 	 */
