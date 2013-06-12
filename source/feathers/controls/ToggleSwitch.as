@@ -104,7 +104,7 @@ package feathers.controls
 		 * differentiate between the on state and the off state.
 		 *
 		 * <p>Since the width and height of the tracks will change, consider
-		 * sing a special display object such as a <code>Scale9Image</code>,
+		 * using a special display object such as a <code>Scale9Image</code>,
 		 * <code>Scale3Image</code> or a <code>TiledImage</code> that is
 		 * designed to be resized dynamically.</p>
 		 *
