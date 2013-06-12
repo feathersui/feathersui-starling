@@ -26,6 +26,15 @@ package feathers.controls
 	{
 		/**
 		 * The minimum value of the scroll bar.
+		 *
+		 * <p>In the following example, the minimum is changed to 0:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollBar.minimum = 0;
+		 * scrollBar.maximum = 100;
+		 * scrollBar.step = 1;
+		 * scrollBar.page = 10
+		 * scrollBar.value = 12;</listing>
 		 */
 		function get minimum():Number;
 
@@ -36,6 +45,15 @@ package feathers.controls
 
 		/**
 		 * The maximum value of the scroll bar.
+		 *
+		 * <p>In the following example, the maximum is changed to 100:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollBar.minimum = 0;
+		 * scrollBar.maximum = 100;
+		 * scrollBar.step = 1;
+		 * scrollBar.page = 10
+		 * scrollBar.value = 12;</listing>
 		 */
 		function get maximum():Number;
 
@@ -46,6 +64,15 @@ package feathers.controls
 
 		/**
 		 * The current value of the scroll bar.
+		 *
+		 * <p>In the following example, the value is changed to 12:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollBar.minimum = 0;
+		 * scrollBar.maximum = 100;
+		 * scrollBar.step = 1;
+		 * scrollBar.page = 10
+		 * scrollBar.value = 12;</listing>
 		 */
 		function get value():Number;
 
@@ -57,6 +84,15 @@ package feathers.controls
 		/**
 		 * The amount the scroll bar value must change to increment or
 		 * decrement.
+		 *
+		 * <p>In the following example, the step is changed to 1:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollBar.minimum = 0;
+		 * scrollBar.maximum = 100;
+		 * scrollBar.step = 1;
+		 * scrollBar.page = 10
+		 * scrollBar.value = 12;</listing>
 		 */
 		function get step():Number;
 
@@ -68,6 +104,15 @@ package feathers.controls
 		/**
 		 * The amount the scroll bar value must change to get from one "page" to
 		 * the next.
+		 *
+		 * <p>In the following example, the page is changed to 10:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollBar.minimum = 0;
+		 * scrollBar.maximum = 100;
+		 * scrollBar.step = 1;
+		 * scrollBar.page = 10
+		 * scrollBar.value = 12;</listing>
 		 */
 		function get page():Number;
 
