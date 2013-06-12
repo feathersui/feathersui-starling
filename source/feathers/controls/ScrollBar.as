@@ -360,7 +360,13 @@ package feathers.controls
 		 * vertically. When this value changes, the scroll bar's width and
 		 * height values do not change automatically.
 		 *
+		 * <p>In the following example, the direction is changed to vertical:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollBar.direction = DIRECTION_VERTICAL;</listing>
+		 *
 		 * @default DIRECTION_HORIZONTAL
+		 *
 		 * @see #DIRECTION_HORIZONTAL
 		 * @see #DIRECTION_VERTICAL
 		 */
@@ -522,6 +528,13 @@ package feathers.controls
 		 * <code>padding</code> getter always returns the value of
 		 * <code>paddingTop</code>, but the other padding values may be
 		 * different.
+		 *
+		 * <p>In the following example, the padding is changed to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollBar.padding = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get padding():Number
 		{
@@ -547,6 +560,13 @@ package feathers.controls
 		/**
 		 * The minimum space, in pixels, above the content, not
 		 * including the track(s).
+		 *
+		 * <p>In the following example, the top padding is changed to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollBar.paddingTop = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingTop():Number
 		{
@@ -574,6 +594,13 @@ package feathers.controls
 		/**
 		 * The minimum space, in pixels, to the right of the content, not
 		 * including the track(s).
+		 *
+		 * <p>In the following example, the right padding is changed to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollBar.paddingRight = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingRight():Number
 		{
@@ -601,6 +628,13 @@ package feathers.controls
 		/**
 		 * The minimum space, in pixels, below the content, not
 		 * including the track(s).
+		 *
+		 * <p>In the following example, the bottom padding is changed to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollBar.paddingBottom = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingBottom():Number
 		{
@@ -628,6 +662,13 @@ package feathers.controls
 		/**
 		 * The minimum space, in pixels, to the left of the content, not
 		 * including the track(s).
+		 *
+		 * <p>In the following example, the left padding is changed to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollBar.paddingLeft = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingLeft():Number
 		{
@@ -666,6 +707,13 @@ package feathers.controls
 		 * The time, in seconds, before actions are repeated. The first repeat
 		 * happens after a delay that is five times longer than the following
 		 * repeats.
+		 *
+		 * <p>In the following example, the repeat delay is changed to 500 milliseconds:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollBar.repeatDelay = 0.5;</listing>
+		 *
+		 * @default 0.05
 		 */
 		public function get repeatDelay():Number
 		{
@@ -693,6 +741,13 @@ package feathers.controls
 		/**
 		 * Determines if the scroll bar dispatches the <code>Event.CHANGE</code>
 		 * event every time the thumb moves, or only once it stops moving.
+		 *
+		 * <p>In the following example, live dragging is disabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollBar.liveDragging = false;</listing>
+		 *
+		 * @default true
 		 */
 		public var liveDragging:Boolean = true;
 
@@ -706,7 +761,13 @@ package feathers.controls
 		 * Determines how the minimum and maximum track skins are positioned and
 		 * sized.
 		 *
+		 * <p>In the following example, the scroll bar is given two tracks:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollBar.trackLayoutMode = ScrollBar.TRACK_LAYOUT_MODE_MIN_MAX;</listing>
+		 *
 		 * @default TRACK_LAYOUT_MODE_SINGLE
+		 *
 		 * @see #TRACK_LAYOUT_MODE_SINGLE
 		 * @see #TRACK_LAYOUT_MODE_MIN_MAX
 		 */
@@ -744,6 +805,18 @@ package feathers.controls
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():Button</pre>
 		 *
+		 * <p>In the following example, a custom minimum track factory is passed
+		 * to the scroll bar:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollBar.minimumTrackFactory = function():Button
+		 * {
+		 *     var track:Button = new Button();
+		 *     track.defaultSkin = new Image( upTexture );
+		 *     track.downSkin = new Image( downTexture );
+		 *     return track;
+		 * };</listing>
+		 *
 		 * @see feathers.controls.Button
 		 * @see #minimumTrackProperties
 		 */
@@ -773,6 +846,12 @@ package feathers.controls
 		/**
 		 * A name to add to the scroll bar's minimum track sub-component. Typically
 		 * used by a theme to provide different skins to different scroll bars.
+		 *
+		 * <p>In the following example, a custom minimum track name is passed
+		 * to the scroll bar:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollBar.customMinimumTrackName = "my-custom-minimum-track";</listing>
 		 *
 		 * @see feathers.core.FeathersControl#nameList
 		 * @see #minimumTrackFactory
@@ -817,6 +896,13 @@ package feathers.controls
 		 * <p>Setting properties in a <code>minimumTrackFactory</code> function
 		 * instead of using <code>minimumTrackProperties</code> will result in
 		 * better performance.</p>
+		 *
+		 * <p>In the following example, the scroll bar's minimum track properties
+		 * are updated:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollBar.minimumTrackProperties.defaultSkin = new Image( upTexture );
+		 * scrollBar.minimumTrackProperties.downSkin = new Image( downTexture );</listing>
 		 *
 		 * @see #minimumTrackFactory
 		 * @see feathers.controls.Button
@@ -880,6 +966,18 @@ package feathers.controls
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():Button</pre>
 		 *
+		 * <p>In the following example, a custom maximum track factory is passed
+		 * to the scroll bar:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollBar.maximumTrackFactory = function():Button
+		 * {
+		 *     var track:Button = new Button();
+		 *     track.defaultSkin = new Image( upTexture );
+		 *     track.downSkin = new Image( downTexture );
+		 *     return track;
+		 * };</listing>
+		 *
 		 * @see feathers.controls.Button
 		 * @see #maximumTrackProperties
 		 */
@@ -909,6 +1007,12 @@ package feathers.controls
 		/**
 		 * A name to add to the scroll bar's maximum track sub-component. Typically
 		 * used by a theme to provide different skins to different scroll bars.
+		 *
+		 * <p>In the following example, a custom maximum track name is passed
+		 * to the scroll bar:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollBar.customMaximumTrackName = "my-custom-maximum-track";</listing>
 		 *
 		 * @see feathers.core.FeathersControl#nameList
 		 * @see #maximumTrackFactory
@@ -953,6 +1057,13 @@ package feathers.controls
 		 * <p>Setting properties in a <code>maximumTrackFactory</code> function
 		 * instead of using <code>maximumTrackProperties</code> will result in
 		 * better performance.</p>
+		 *
+		 * <p>In the following example, the scroll bar's maximum track properties
+		 * are updated:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollBar.maximumTrackProperties.defaultSkin = new Image( upTexture );
+		 * scrollBar.maximumTrackProperties.downSkin = new Image( downTexture );</listing>
 		 *
 		 * @see #maximumTrackFactory
 		 * @see feathers.controls.Button
@@ -1016,6 +1127,18 @@ package feathers.controls
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():Button</pre>
 		 *
+		 * <p>In the following example, a custom thumb factory is passed
+		 * to the scroll bar:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollBar.thumbFactory = function():Button
+		 * {
+		 *     var thumb:Button = new Button();
+		 *     thumb.defaultSkin = new Image( upTexture );
+		 *     thumb.downSkin = new Image( downTexture );
+		 *     return thumb;
+		 * };</listing>
+		 *
 		 * @see feathers.controls.Button
 		 * @see #thumbProperties
 		 */
@@ -1045,6 +1168,12 @@ package feathers.controls
 		/**
 		 * A name to add to the scroll bar's thumb sub-component. Typically
 		 * used by a theme to provide different skins to different scroll bars.
+		 *
+		 * <p>In the following example, a custom thumb name is passed
+		 * to the scroll bar:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollBar.customThumbName = "my-custom-thumb";</listing>
 		 *
 		 * @see feathers.core.FeathersControl#nameList
 		 * @see #thumbFactory
@@ -1088,6 +1217,13 @@ package feathers.controls
 		 * <p>Setting properties in a <code>thumbFactory</code> function instead
 		 * of using <code>thumbProperties</code> will result in better
 		 * performance.</p>
+		 *
+		 * <p>In the following example, the scroll bar's thumb properties
+		 * are updated:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollBar.thumbProperties.defaultSkin = new Image( upTexture );
+		 * scrollBar.thumbProperties.downSkin = new Image( downTexture );</listing>
 		 *
 		 * @see #thumbFactory
 		 * @see feathers.controls.Button
@@ -1151,6 +1287,18 @@ package feathers.controls
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():Button</pre>
 		 *
+		 * <p>In the following example, a custom decrement button factory is passed
+		 * to the scroll bar:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollBar.decrementButtonFactory = function():Button
+		 * {
+		 *     var button:Button = new Button();
+		 *     button.defaultSkin = new Image( upTexture );
+		 *     button.downSkin = new Image( downTexture );
+		 *     return button;
+		 * };</listing>
+		 *
 		 * @see feathers.controls.Button
 		 * @see #decrementButtonProperties
 		 */
@@ -1180,6 +1328,12 @@ package feathers.controls
 		/**
 		 * A name to add to the scroll bar's decrement button sub-component. Typically
 		 * used by a theme to provide different skins to different scroll bars.
+		 *
+		 * <p>In the following example, a custom decrement button name is passed
+		 * to the scroll bar:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollBar.customDecrementButtonName = "my-custom-decrement-button";</listing>
 		 *
 		 * @see feathers.core.FeathersControl#nameList
 		 * @see #decrementButtonFactory
@@ -1224,6 +1378,13 @@ package feathers.controls
 		 * <p>Setting properties in a <code>decrementButtonFactory</code>
 		 * function instead of using <code>decrementButtonProperties</code> will
 		 * result in better performance.</p>
+		 *
+		 * <p>In the following example, the scroll bar's decrement button properties
+		 * are updated:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollBar.decrementButtonProperties.defaultSkin = new Image( upTexture );
+		 * scrollBar.decrementButtonProperties.downSkin = new Image( downTexture );</listing>
 		 *
 		 * @see #decrementButtonFactory
 		 * @see feathers.controls.Button
@@ -1287,6 +1448,18 @@ package feathers.controls
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():Button</pre>
 		 *
+		 * <p>In the following example, a custom increment button factory is passed
+		 * to the scroll bar:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollBar.incrementButtonFactory = function():Button
+		 * {
+		 *     var button:Button = new Button();
+		 *     button.defaultSkin = new Image( upTexture );
+		 *     button.downSkin = new Image( downTexture );
+		 *     return button;
+		 * };</listing>
+		 *
 		 * @see feathers.controls.Button
 		 * @see #incrementButtonProperties
 		 */
@@ -1316,6 +1489,12 @@ package feathers.controls
 		/**
 		 * A name to add to the scroll bar's increment button sub-component. Typically
 		 * used by a theme to provide different skins to different scroll bars.
+		 *
+		 * <p>In the following example, a custom increment button name is passed
+		 * to the scroll bar:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollBar.customIncrementButtonName = "my-custom-increment-button";</listing>
 		 *
 		 * @see feathers.core.FeathersControl#nameList
 		 * @see #incrementButtonFactory
@@ -1360,6 +1539,13 @@ package feathers.controls
 		 * <p>Setting properties in a <code>incrementButtonFactory</code>
 		 * function instead of using <code>incrementButtonProperties</code> will
 		 * result in better performance.</p>
+		 *
+		 * <p>In the following example, the scroll bar's increment button properties
+		 * are updated:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollBar.incrementButtonProperties.defaultSkin = new Image( upTexture );
+		 * scrollBar.incrementButtonProperties.downSkin = new Image( downTexture );</listing>
 		 *
 		 * @see #incrementButtonFactory
 		 * @see feathers.controls.Button
