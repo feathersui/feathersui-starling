@@ -219,6 +219,11 @@ package feathers.controls
 		[Inspectable(type="String",enumeration="horizontal,vertical")]
 		/**
 		 * The symbols may be positioned vertically or horizontally.
+		 *
+		 * @default PageIndicator.DIRECTION_HORIZONTAL
+		 *
+		 * @see #DIRECTION_HORIZONTAL
+		 * @see #DIRECTION_VERTICAL
 		 */
 		public function get direction():String
 		{
@@ -243,9 +248,15 @@ package feathers.controls
 		 */
 		protected var _horizontalAlign:String = HORIZONTAL_ALIGN_CENTER;
 
-		[Inspectable(type="String",enumeration="horizontal,vertical")]
+		[Inspectable(type="String",enumeration="left,center,right")]
 		/**
 		 * The alignment of the symbols on the horizontal axis.
+		 *
+		 * @default PageIndicator.HORIZONTAL_ALIGN_CENTER
+		 *
+		 * @see #HORIZONTAL_ALIGN_LEFT
+		 * @see #HORIZONTAL_ALIGN_CENTER
+		 * @see #HORIZONTAL_ALIGN_RIGHT
 		 */
 		public function get horizontalAlign():String
 		{
@@ -273,6 +284,12 @@ package feathers.controls
 		[Inspectable(type="String",enumeration="top,middle,bottom")]
 		/**
 		 * The alignment of the symbols on the vertical axis.
+		 *
+		 * @default PageIndicator.VERTICAL_ALIGN_MIDDLE
+		 *
+		 * @see #VERTICAL_ALIGN_TOP
+		 * @see #VERTICAL_ALIGN_MIDDLE
+		 * @see #VERTICAL_ALIGN_BOTTOM
 		 */
 		public function get verticalAlign():String
 		{

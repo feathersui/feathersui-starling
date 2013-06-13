@@ -326,6 +326,13 @@ package feathers.controls.renderers
 		 * Use <code>ACCESSORY_POSITION_MANUAL</code> to position the accessory
 		 * from the top-left corner.
 		 *
+		 * @default BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT
+		 *
+		 * @see #ACCESSORY_POSITION_TOP
+		 * @see #ACCESSORY_POSITION_RIGHT
+		 * @see #ACCESSORY_POSITION_BOTTOM
+		 * @see #ACCESSORY_POSITION_LEFT
+		 * @see #ACCESSORY_POSITION_MANUAL
 		 * @see #layoutOrder
 		 */
 		public function get accessoryPosition():String
@@ -359,10 +366,12 @@ package feathers.controls.renderers
 		 * <p>The <code>accessoryPositionOrigin</code> property will be ignored
 		 * if <code>accessoryPosition</code> is set to <code>ACCESSORY_POSITION_MANUAL</code>.</p>
 		 *
-		 * @see #accessoryPosition
-		 * @see #iconPosition
+		 * @default BaseDefaultItemRenderer.LAYOUT_ORDER_LABEL_ICON_ACCESSORY
+		 *
 		 * @see LAYOUT_ORDER_LABEL_ICON_ACCESSORY
 		 * @see LAYOUT_ORDER_LABEL_ACCESSORY_ICON
+		 * @see #accessoryPosition
+		 * @see #iconPosition
 		 */
 		public function get layoutOrder():String
 		{

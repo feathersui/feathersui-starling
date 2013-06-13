@@ -375,9 +375,9 @@ package feathers.controls
 		 * <p>In the following example, the direction is changed to vertical:</p>
 		 *
 		 * <listing version="3.0">
-		 * scrollBar.direction = DIRECTION_VERTICAL;</listing>
+		 * scrollBar.direction = ScrollBar.DIRECTION_VERTICAL;</listing>
 		 *
-		 * @default DIRECTION_HORIZONTAL
+		 * @default ScrollBar.DIRECTION_HORIZONTAL
 		 *
 		 * @see #DIRECTION_HORIZONTAL
 		 * @see #DIRECTION_VERTICAL
@@ -778,7 +778,7 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * scrollBar.trackLayoutMode = ScrollBar.TRACK_LAYOUT_MODE_MIN_MAX;</listing>
 		 *
-		 * @default TRACK_LAYOUT_MODE_SINGLE
+		 * @default ScrollBar.TRACK_LAYOUT_MODE_SINGLE
 		 *
 		 * @see #TRACK_LAYOUT_MODE_SINGLE
 		 * @see #TRACK_LAYOUT_MODE_MIN_MAX

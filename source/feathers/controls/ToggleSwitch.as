@@ -439,9 +439,10 @@ package feathers.controls
 		 * updated to use two tracks:</p>
 		 *
 		 * <listing version="3.0">
-		 * toggle.trackLayoutMode = TRACK_LAYOUT_MODE_ON_OFF;</listing>
+		 * toggle.trackLayoutMode = ToggleSwitch.TRACK_LAYOUT_MODE_ON_OFF;</listing>
 		 *
-		 * @default TRACK_LAYOUT_MODE_SINGLE
+		 * @default ToggleSwitch.TRACK_LAYOUT_MODE_SINGLE
+		 *
 		 * @see #TRACK_LAYOUT_MODE_SINGLE
 		 * @see #TRACK_LAYOUT_MODE_ON_OFF
 		 */
@@ -713,9 +714,10 @@ package feathers.controls
 		 * updated:</p>
 		 *
 		 * <listing version="3.0">
-		 * toggle.labelAlign = LABEL_ALIGN_MIDDLE;</listing>
+		 * toggle.labelAlign = ToggleSwitch.LABEL_ALIGN_MIDDLE;</listing>
 		 *
-		 * @default LABEL_ALIGN_BASELINE
+		 * @default ToggleSwitch.LABEL_ALIGN_BASELINE
+		 *
 		 * @see #LABEL_ALIGN_BASELINE
 		 * @see #LABEL_ALIGN_MIDDLE
 		 */

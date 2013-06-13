@@ -260,6 +260,11 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * group.direction = ButtonGroup.DIRECTION_HORIZONTAL;</listing>
+		 *
+		 * @default ButtonGroup.DIRECTION_VERTICAL
+		 *
+		 * @see #DIRECTION_HORIZONTAL
+		 * @see #DIRECTION_VERTICAL
 		 */
 		public function get direction():String
 		{
