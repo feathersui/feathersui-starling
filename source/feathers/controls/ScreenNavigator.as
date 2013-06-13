@@ -52,6 +52,16 @@ package feathers.controls
 	 * A "view stack"-like container that supports navigation between screens
 	 * (any display object) through events.
 	 *
+	 * <p>The following example creates a screen navigator, adds a screen and
+	 * displays it:</p>
+	 *
+	 * <listing version="3.0">
+	 * var navigator:ScreenNavigator = new ScreenNavigator();
+	 * navigator.addScreen( "mainMenu", new ScreenNavigatorItem( MainMenuScreen );
+	 * this.addChild( navigator );
+	 *
+	 * navigator.showScreen( "mainMenu" );</listing>
+	 *
 	 * @see http://wiki.starling-framework.org/feathers/screen-navigator
 	 * @see http://wiki.starling-framework.org/feathers/transitions
 	 * @see feathers.controls.ScreenNavigatorItem
@@ -141,6 +151,13 @@ package feathers.controls
 		/**
 		 * Determines if the navigator's content should be clipped to the width
 		 * and height.
+		 *
+		 * <p>In the following example, clipping is enabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * navigator.clipContent = true;</listing>
+		 *
+		 * @default false
 		 */
 		public function get clipContent():Boolean
 		{
@@ -236,6 +253,14 @@ package feathers.controls
 		/**
 		 * Determines how the screen navigator will set its own size when its
 		 * dimensions (width and height) aren't set explicitly.
+		 *
+		 * <p>In the following example, the screen navigator will be sized to
+		 * match its content:</p>
+		 *
+		 * <listing version="3.0">
+		 * navigator.autoSizeMode = ScreenNavigator.AUTO_SIZE_MODE_CONTENT;</listing>
+		 *
+		 * @default ScreenNavigator.AUTO_SIZE_MODE_STAGE
 		 *
 		 * @see #AUTO_SIZE_MODE_STAGE
 		 * @see #AUTO_SIZE_MODE_CONTENT
