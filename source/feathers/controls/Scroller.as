@@ -2074,7 +2074,19 @@ package feathers.controls
 		/**
 		 * If the user is scrolling with touch or if the scrolling is animated,
 		 * calling stopScrolling() will cause the scroller to ignore the drag
-		 * and stop animations.
+		 * and stop animations. This function may only be called during scrolling,
+		 * so if you need to stop scrolling on a <code>TouchEvent</code> with
+		 * <code>TouchPhase.BEGAN</code>, you may need to wait for the scroller
+		 * to start scrolling before you can call this function.
+		 *
+		 * <p>In the following example, we listen for <code>FeathersEventType.SCROLL_START</code>
+		 * to stop scrolling:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.addEventListener( FeathersEventType.SCROLL_START, function( event:Event ):void
+		 * {
+		 *     scroller.stopScrolling();
+		 * });</listing>
 		 */
 		public function stopScrolling():void
 		{
@@ -2103,6 +2115,12 @@ package feathers.controls
 		 * either scroll position. If the <code>animationDuration</code> argument
 		 * is greater than zero, the scroll will animate. The duration is in
 		 * seconds.
+		 *
+		 * <p>In the following example, we scroll to the maximum vertical scroll
+		 * position:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.scrollToPosition( scroller.horizontalScrollPosition, scroller.maxVerticalScrollPosition );</listing>
 		 */
 		public function scrollToPosition(horizontalScrollPosition:Number, verticalScrollPosition:Number, animationDuration:Number = 0):void
 		{
@@ -2126,6 +2144,16 @@ package feathers.controls
 		 * either page index. If the <code>animationDuration</code> argument
 		 * is greater than zero, the scroll will animate. The duration is in
 		 * seconds.
+		 *
+		 * <p>You can only scroll to a page if the <code>snapToPages</code>
+		 * property is <code>true</code>.</p>
+		 *
+		 * <p>In the following example, we scroll to the last horizontal page:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.scrollToPageIndex( scroller.horizontalPageCount - 1, scroller.verticalPageIndex );</listing>
+		 *
+		 * @see #snapToPages
 		 */
 		public function scrollToPageIndex(horizontalPageIndex:int, verticalPageIndex:int, animationDuration:Number = 0):void
 		{
