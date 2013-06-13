@@ -200,6 +200,7 @@ package feathers.controls
 		 *
 		 * @see #DEFAULT_CHILD_NAME_HEADER
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 * @see #headerFactory
 		 * @see #headerProperties
 		 */
@@ -345,6 +346,7 @@ package feathers.controls
 		 *
 		 * @see #DEFAULT_CHILD_NAME_FOOTER
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 * @see #footerFactory
 		 * @see #footerProperties
 		 */

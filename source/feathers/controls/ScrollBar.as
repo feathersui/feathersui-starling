@@ -865,7 +865,15 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * scrollBar.customMinimumTrackName = "my-custom-minimum-track";</listing>
 		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( Button, customMinimumTrackInitializer, "my-custom-minimum-track");</listing>
+		 *
+		 * @see #DEFAULT_CHILD_NAME_MINIMUM_TRACK
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 * @see #minimumTrackFactory
 		 * @see #minimumTrackProperties
 		 */
@@ -1026,7 +1034,15 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * scrollBar.customMaximumTrackName = "my-custom-maximum-track";</listing>
 		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( Button, customMaximumTrackInitializer, "my-custom-maximum-track");</listing>
+		 *
+		 * @see #DEFAULT_CHILD_NAME_MAXIMUM_TRACK
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 * @see #maximumTrackFactory
 		 * @see #maximumTrackProperties
 		 */
@@ -1187,7 +1203,15 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * scrollBar.customThumbName = "my-custom-thumb";</listing>
 		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( Button, customThumbInitializer, "my-custom-thumb");</listing>
+		 *
+		 * @see #DEFAULT_CHILD_NAME_THUMB
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 * @see #thumbFactory
 		 * @see #thumbProperties
 		 */
@@ -1347,7 +1371,15 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * scrollBar.customDecrementButtonName = "my-custom-decrement-button";</listing>
 		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( Button, customDecrementButtonInitializer, "my-custom-decrement-button");</listing>
+		 *
+		 * @see #DEFAULT_CHILD_NAME_DECREMENT_BUTTON
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 * @see #decrementButtonFactory
 		 * @see #decrementButtonProperties
 		 */
@@ -1508,7 +1540,15 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * scrollBar.customIncrementButtonName = "my-custom-increment-button";</listing>
 		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( Button, customIncrementInitializer, "my-custom-increment-button");</listing>
+		 *
+		 * @see #DEFAULT_CHILD_NAME_INCREMENT_BUTTON
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 * @see #incrementButtonFactory
 		 * @see #incrementButtonProperties
 		 */

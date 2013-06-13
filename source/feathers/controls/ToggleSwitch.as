@@ -1062,7 +1062,21 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * toggle.customOnTrackName = "my-custom-on-track";</listing>
 		 *
+		 * <p>In your theme, you can target this item renderer name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( Button, customOnTrackInitializer, "my-custom-on-track");</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( Button, customOnTrackInitializer, "my-custom-on-track");</listing>
+		 *
+		 * @see #DEFAULT_CHILD_NAME_ON_TRACK
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 * @see #onTrackFactory
 		 * @see #onTrackProperties
 		 */
@@ -1220,7 +1234,15 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * toggle.customOnTrackName = "my-custom-off-track";</listing>
 		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( Button, customOffTrackInitializer, "my-custom-off-track");</listing>
+		 *
+		 * @see #DEFAULT_CHILD_NAME_OFF_TRACK
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 * @see #offTrackFactory
 		 * @see #offTrackProperties
 		 */
@@ -1376,7 +1398,15 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * toggle.customThumbName = "my-custom-thumb";</listing>
 		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( Button, customThumbInitializer, "my-custom-thumb");</listing>
+		 *
+		 * @see #DEFAULT_CHILD_NAME_THUMB
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 * @see #thumbFactory
 		 * @see #thumbProperties
 		 */

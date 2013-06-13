@@ -439,7 +439,9 @@ package feathers.controls
 		 * A name to add to the picker list's button sub-component. Typically
 		 * used by a theme to provide different skins to different picker lists.
 		 *
+		 * @see #DEFAULT_CHILD_NAME_BUTTON
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 * @see #buttonFactory
 		 * @see #buttonProperties
 		 */
@@ -574,7 +576,9 @@ package feathers.controls
 		 * A name to add to the picker list's list sub-component. Typically used
 		 * by a theme to provide different skins to different picker lists.
 		 *
+		 * @see #DEFAULT_CHILD_NAME_LIST
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 * @see #listFactory
 		 * @see #listProperties
 		 */

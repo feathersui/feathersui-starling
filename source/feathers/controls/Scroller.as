@@ -653,7 +653,15 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * scroller.customHorizontalScrollBarName = "my-custom-horizontal-scroll-bar";</listing>
 		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( SimpleScrollBar, customHorizontalScrollBarInitializer, "my-custom-horizontal-scroll-bar");</listing>
+		 *
+		 * @see #DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 * @see #horizontalScrollBarFactory
 		 * @see #horizontalScrollBarProperties
 		 */
@@ -816,7 +824,15 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * scroller.customVerticalScrollBarName = "my-custom-vertical-scroll-bar";</listing>
 		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( SimpleScrollBar, customVerticalScrollBarInitializer, "my-custom-vertical-scroll-bar");</listing>
+		 *
+		 * @see #DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 * @see #verticalScrollBarFactory
 		 * @see #verticalScrollBarProperties
 		 */
