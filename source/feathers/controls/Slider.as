@@ -302,9 +302,9 @@ package feathers.controls
 		 * <p>In the following example, the direction is changed to vertical:</p>
 		 *
 		 * <listing version="3.0">
-		 * slider.direction = DIRECTION_VERTICAL;</listing>
+		 * slider.direction = Slider.DIRECTION_VERTICAL;</listing>
 		 *
-		 * @default DIRECTION_HORIZONTAL
+		 * @default Slider.DIRECTION_HORIZONTAL
 		 *
 		 * @see #DIRECTION_HORIZONTAL
 		 * @see #DIRECTION_VERTICAL
@@ -668,7 +668,7 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * slider.trackLayoutMode = Slider.TRACK_LAYOUT_MODE_MIN_MAX;</listing>
 		 *
-		 * @default TRACK_LAYOUT_MODE_SINGLE
+		 * @default Slider.TRACK_LAYOUT_MODE_SINGLE
 		 *
 		 * @see #TRACK_LAYOUT_MODE_SINGLE
 		 * @see #TRACK_LAYOUT_MODE_MIN_MAX
@@ -706,7 +706,7 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * slider.trackScaleMode = Slider.TRACK_SCALE_MODE_EXACT_FIT;</listing>
 		 *
-		 * @default TRACK_SCALE_MODE_DIRECTIONAL
+		 * @default Slider.TRACK_SCALE_MODE_DIRECTIONAL
 		 *
 		 * @see #TRACK_SCALE_MODE_DIRECTIONAL
 		 * @see #TRACK_SCALE_MODE_EXACT_FIT
@@ -755,6 +755,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * slider.repeatDelay = 0.5;</listing>
+		 *
+		 * @default 0.05
 		 */
 		public function get repeatDelay():Number
 		{

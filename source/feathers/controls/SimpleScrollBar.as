@@ -169,9 +169,9 @@ package feathers.controls
 		 * <p>In the following example, the direction is changed to vertical:</p>
 		 *
 		 * <listing version="3.0">
-		 * scrollBar.direction = DIRECTION_VERTICAL;</listing>
+		 * scrollBar.direction = SimpleScrollBar.DIRECTION_VERTICAL;</listing>
 		 *
-		 * @default DIRECTION_HORIZONTAL
+		 * @default SimpleScrollBar.DIRECTION_HORIZONTAL
 		 *
 		 * @see #DIRECTION_HORIZONTAL
 		 * @see #DIRECTION_VERTICAL

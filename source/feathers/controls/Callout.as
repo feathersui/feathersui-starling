@@ -767,6 +767,7 @@ package feathers.controls
 		 */
 		protected var _supportedDirections:String = DIRECTION_ANY;
 
+		[Inspectable(type="String",enumeration="any,vertical,horizontal,up,down,left,right")]
 		/**
 		 * The directions that the callout may be positioned, relative to its
 		 * origin. If the callout's origin is not set, this value will be
@@ -989,6 +990,13 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * callout.arrowPosition = Callout.ARROW_POSITION_LEFT;</listing>
+		 *
+		 * @default Callout.ARROW_POSITION_TOP
+		 *
+		 * @see #ARROW_POSITION_TOP
+		 * @see #ARROW_POSITION_RIGHT
+		 * @see #ARROW_POSITION_BOTTOM
+		 * @see #ARROW_POSITION_LEFT
 		 *
 		 * @see #origin
 		 * @see #supportedDirections

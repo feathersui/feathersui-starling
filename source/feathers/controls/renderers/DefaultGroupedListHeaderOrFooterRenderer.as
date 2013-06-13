@@ -207,9 +207,16 @@ package feathers.controls.renderers
 		 */
 		protected var _horizontalAlign:String = HORIZONTAL_ALIGN_LEFT;
 
+		[Inspectable(type="String",enumeration="left,center,right")]
 		/**
 		 * The location where the renderer's content is aligned horizontally
 		 * (on the x-axis).
+		 *
+		 * @default DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_LEFT
+		 *
+		 * @see #HORIZONTAL_ALIGN_LEFT
+		 * @see #HORIZONTAL_ALIGN_CENTER
+		 * @see #HORIZONTAL_ALIGN_RIGHT
 		 */
 		public function get horizontalAlign():String
 		{
@@ -234,9 +241,16 @@ package feathers.controls.renderers
 		 */
 		protected var _verticalAlign:String = VERTICAL_ALIGN_MIDDLE;
 
+		[Inspectable(type="String",enumeration="top,middle,bottom")]
 		/**
 		 * The location where the renderer's content is aligned vertically (on
 		 * the y-axis).
+		 *
+		 * @default DefaultGroupedListHeaderOrFooterRenderer.VERTICAL_ALIGN_MIDDLE
+		 *
+		 * @see #VERTICAL_ALIGN_TOP
+		 * @see #VERTICAL_ALIGN_MIDDLE
+		 * @see #VERTICAL_ALIGN_BOTTOM
 		 */
 		public function get verticalAlign():String
 		{
