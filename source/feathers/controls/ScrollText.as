@@ -29,6 +29,13 @@ package feathers.controls
 	 * rather than on the GPU, it may not perform very well on mobile devices
 	 * with high resolution screens.</p>
 	 *
+	 * <p>The following example displays some text:</p>
+	 *
+	 * <listing version="3.0">
+	 * var scrollText:ScrollText = new ScrollText();
+	 * scrollText.text = "Hello World";
+	 * this.addChild( scrollText );</listing>
+	 *
 	 * @see http://wiki.starling-framework.org/feathers/scroll-text
 	 * @see feathers.controls.text.TextFieldTextRenderer
 	 */
@@ -117,6 +124,11 @@ package feathers.controls
 		 * text will be rendered as HTML with the same capabilities as the
 		 * <code>htmlText</code> property of <code>flash.text.TextField</code>.
 		 *
+		 * <p>In the following example, some text is displayed:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollText.text = "Hello World";</listing>
+		 *
 		 * @see #isHTML
 		 * @see flash.text.TextField#htmlText
 		 */
@@ -150,6 +162,14 @@ package feathers.controls
 		/**
 		 * Determines if the TextField should display the text as HTML or not.
 		 *
+		 * <p>In the following example, some HTML-formatted text is displayed:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollText.isHTML = true;
+		 * scrollText.text = "&lt;b&gt;Hello&lt;/b&gt; &lt;i&gt;World&lt;/i&gt;";</listing>
+		 *
+		 * @default false
+		 *
 		 * @see #text
 		 * @see flash.text.TextField#htmlText
 		 */
@@ -178,6 +198,11 @@ package feathers.controls
 
 		/**
 		 * The font and styles used to draw the text.
+		 *
+		 * <p>In the following example, the text is formatted:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollText.textFormat = new TextFormat( "_sans", 16, 0x333333 );</listing>
 		 *
 		 * @see flash.text.TextFormat
 		 */
@@ -234,6 +259,15 @@ package feathers.controls
 
 		/**
 		 * Determines if the TextField should use an embedded font or not.
+		 *
+		 * <p>In the following example, some text is formatted with an embedded
+		 * font:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollText.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333;
+		 * scrollText.embedFonts = true;</listing>
+		 *
+		 * @default false
 		 */
 		public function get embedFonts():Boolean
 		{
@@ -259,9 +293,11 @@ package feathers.controls
 		private var _antiAliasType:String = AntiAliasType.ADVANCED;
 
 		/**
-		 * Same as the TextField property with the same name.
+		 * Same as the flash.text.TextField property with the same name.
 		 *
 		 * @see flash.text.TextField#antiAliasType
+		 *
+		 * @default AntiAliasType.ADVANCED
 		 */
 		public function get antiAliasType():String
 		{
@@ -287,9 +323,11 @@ package feathers.controls
 		private var _background:Boolean = false;
 
 		/**
-		 * Same as the TextField property with the same name.
+		 * Same as the flash.text.TextField property with the same name.
 		 *
 		 * @see flash.text.TextField#background
+		 *
+		 * @default false
 		 */
 		public function get background():Boolean
 		{
@@ -315,9 +353,11 @@ package feathers.controls
 		private var _backgroundColor:uint = 0xffffff;
 
 		/**
-		 * Same as the TextField property with the same name.
+		 * Same as the flash.text.TextField property with the same name.
 		 *
 		 * @see flash.text.TextField#backgroundColor
+		 *
+		 * @default 0xffffff
 		 */
 		public function get backgroundColor():uint
 		{
@@ -343,7 +383,9 @@ package feathers.controls
 		private var _border:Boolean = false;
 
 		/**
-		 * Same as the TextField property with the same name.
+		 * Same as the flash.text.TextField property with the same name.
+		 *
+		 * @default false
 		 *
 		 * @see flash.text.TextField#border
 		 */
@@ -371,7 +413,9 @@ package feathers.controls
 		private var _borderColor:uint = 0x000000;
 
 		/**
-		 * Same as the TextField property with the same name.
+		 * Same as the flash.text.TextField property with the same name.
+		 *
+		 * @default 0x000000
 		 *
 		 * @see flash.text.TextField#borderColor
 		 */
@@ -399,7 +443,9 @@ package feathers.controls
 		private var _condenseWhite:Boolean = false;
 
 		/**
-		 * Same as the TextField property with the same name.
+		 * Same as the flash.text.TextField property with the same name.
+		 *
+		 * @default false
 		 *
 		 * @see flash.text.TextField#condenseWhite
 		 */
@@ -427,7 +473,9 @@ package feathers.controls
 		private var _displayAsPassword:Boolean = false;
 
 		/**
-		 * Same as the TextField property with the same name.
+		 * Same as the flash.text.TextField property with the same name.
+		 *
+		 * @default false
 		 *
 		 * @see flash.text.TextField#displayAsPassword
 		 */
@@ -455,7 +503,9 @@ package feathers.controls
 		private var _gridFitType:String = GridFitType.PIXEL;
 
 		/**
-		 * Same as the TextField property with the same name.
+		 * Same as the flash.text.TextField property with the same name.
+		 *
+		 * @default GridFitType.PIXEL
 		 *
 		 * @see flash.text.TextField#gridFitType
 		 */
@@ -483,7 +533,9 @@ package feathers.controls
 		private var _sharpness:Number = 0;
 
 		/**
-		 * Same as the TextField property with the same name.
+		 * Same as the flash.text.TextField property with the same name.
+		 *
+		 * @default 0
 		 *
 		 * @see flash.text.TextField#sharpness
 		 */
@@ -511,7 +563,9 @@ package feathers.controls
 		private var _thickness:Number = 0;
 
 		/**
-		 * Same as the TextField property with the same name.
+		 * Same as the flash.text.TextField property with the same name.
+		 *
+		 * @default 0
 		 *
 		 * @see flash.text.TextField#thickness
 		 */
@@ -541,6 +595,13 @@ package feathers.controls
 		/**
 		 * The minimum space, in pixels, between the component's top edge and
 		 * the top edge of the text.
+		 *
+		 * <p>In the following example, the top padding is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollText.paddingTop = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		override public function get paddingTop():Number
 		{
@@ -568,6 +629,11 @@ package feathers.controls
 		/**
 		 * The minimum space, in pixels, between the component's right edge and
 		 * the right edge of the text.
+		 *
+		 * <p>In the following example, the right padding is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollText.paddingRight = 20;</listing>
 		 */
 		override public function get paddingRight():Number
 		{
@@ -595,6 +661,11 @@ package feathers.controls
 		/**
 		 * The minimum space, in pixels, between the component's bottom edge and
 		 * the bottom edge of the text.
+		 *
+		 * <p>In the following example, the bottom padding is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollText.paddingBottom = 20;</listing>
 		 */
 		override public function get paddingBottom():Number
 		{
@@ -622,6 +693,11 @@ package feathers.controls
 		/**
 		 * The minimum space, in pixels, between the component's left edge and
 		 * the left edge of the text.
+		 *
+		 * <p>In the following example, the left padding is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollText.paddingLeft = 20;</listing>
 		 */
 		override public function get paddingLeft():Number
 		{
