@@ -166,7 +166,7 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * scrollText.isHTML = true;
-		 * scrollText.text = "<b>Hello</b> <i>World</i>";</listing>
+		 * scrollText.text = "&lt;b&gt;Hello&lt;/b&gt; &lt;i&gt;World&lt;/i&gt;";</listing>
 		 *
 		 * @default false
 		 *
