@@ -27,6 +27,25 @@ package feathers.controls
 	/**
 	 * A generic container that supports layout and scrolling.
 	 *
+	 * <p>The following example creates a scroll container with a horizontal
+	 * layout and adds two buttons to it:</p>
+	 *
+	 * <listing version="3.0">
+	 * var container:ScrollContainer = new ScrollContainer();
+	 * var layout:HorizontalLayout = new HorizontalLayout();
+	 * layout.gap = 20;
+	 * layout.padding = 20;
+	 * container.layout = layout;
+	 * this.addChild( container );
+	 *
+	 * var yesButton:Button = new Button();
+	 * yesButton.label = "Yes";
+	 * container.addChild( yesButton );
+	 *
+	 * var noButton:Button = new Button();
+	 * noButton.label = "No";
+	 * container.addChild( noButton );</listing>
+	 *
 	 * @see http://wiki.starling-framework.org/feathers/scroll-container
 	 */
 	public class ScrollContainer extends Scroller
@@ -132,6 +151,11 @@ package feathers.controls
 			this.displayListBypassEnabled = oldDisplayListBypassEnabled;
 		}
 
+		/**
+		 * A flag that indicates if the display list functions like <code>addChild()</code>
+		 * and <code>removeChild()</code> will be passed to the internal view
+		 * port.
+		 */
 		protected var displayListBypassEnabled:Boolean = true;
 
 		/**
@@ -147,6 +171,14 @@ package feathers.controls
 		/**
 		 * Controls the way that the container's children are positioned and
 		 * sized.
+		 *
+		 * <p>The following example tells the container to use a horizontal layout:</p>
+		 *
+		 * <listing version="3.0">
+		 * var layout:HorizontalLayout = new HorizontalLayout();
+		 * layout.gap = 20;
+		 * layout.padding = 20;
+		 * container.layout = layout;</listing>
 		 */
 		public function get layout():ILayout
 		{
