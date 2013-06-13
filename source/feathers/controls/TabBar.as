@@ -27,6 +27,21 @@ package feathers.controls
 	 * A line of tabs (vertical or horizontal), where one may be selected at a
 	 * time.
 	 *
+	 * <p>The following example sets the data provider, selects the second tab,
+	 * and listens for when the selection changes:</p>
+	 *
+	 * <listing version="3.0">
+	 * var tabs:TabBar = new TabBar();
+	 * tabs.dataProvider = new ListCollection(
+	 * [
+	 *     { label: "One" },
+	 *     { label: "Two" },
+	 *     { label: "Three" },
+	 * ]);
+	 * tabs.selectedIndex = 1;
+	 * tabs.addEventListener( Event.CHANGE, tabs_changeHandler );
+	 * this.addChild( tabs );</listing>
+	 *
 	 * @see http://wiki.starling-framework.org/feathers/tab-bar
 	 */
 	public class TabBar extends FeathersControl

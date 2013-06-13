@@ -49,6 +49,22 @@ package feathers.controls
 	/**
 	 * Displays an image, either from a <code>Texture</code> or loaded from a
 	 * URL.
+	 *
+	 * <p>The following example passes a URL to an image loader and listens for
+	 * its complete event:</p>
+	 *
+	 * <listing version="3.0">
+	 * var loader:ImageLoader = new ImageLoader();
+	 * loader.source = "http://example.com/example.png";
+	 * loader.addEventListener( Event.COMPLETE, loader_completeHandler );
+	 * this.addChild( loader );</listing>
+	 *
+	 * <p>The following example passes a texture to an image loader:</p>
+	 *
+	 * <listing version="3.0">
+	 * var loader:ImageLoader = new ImageLoader();
+	 * loader.source = Texture.fromBitmap( bitmap );
+	 * this.addChild( loader );</listing>
 	 */
 	public class ImageLoader extends FeathersControl
 	{

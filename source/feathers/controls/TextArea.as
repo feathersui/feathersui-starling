@@ -64,6 +64,16 @@ package feathers.controls
 	 * will not go into effect until this component's status is upgraded from
 	 * beta to stable.</p>
 	 *
+	 * <p>The following example sets the text in a text area, selects the text,
+	 * and listens for when the text value changes:</p>
+	 *
+	 * <listing version="3.0">
+	 * var textArea:TextArea = new TextArea();
+	 * textArea.text = "Hello\nWorld"; //it's multiline!
+	 * textArea.selectRange( 0, textArea.text.length );
+	 * textArea.addEventListener( Event.CHANGE, input_changeHandler );
+	 * this.addChild( textArea );</listing>
+	 *
 	 * @see http://wiki.starling-framework.org/feathers/text-area
 	 * @see feathers.controls.TextInput
 	 * @see http://wiki.starling-framework.org/feathers/text-editors

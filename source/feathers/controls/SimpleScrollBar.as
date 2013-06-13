@@ -52,6 +52,18 @@ package feathers.controls
 	 * to indicate the scroll position. For a more feature-rich scroll bar,
 	 * see the <code>ScrollBar</code> component.
 	 *
+	 * <p>The following example updates a list to use simple scroll bars:</p>
+	 *
+	 * <listing version="3.0">
+	 * list.horizontalScrollBarFactory = function():IScrollBar
+	 * {
+	 *     return new SimpleScrollBar();
+	 * };
+	 * list.verticalScrollBarFactory = function():IScrollBar
+	 * {
+	 *     return new SimpleScrollBar();
+	 * };</listing>
+	 *
 	 * @see http://wiki.starling-framework.org/feathers/simple-scroll-bar
 	 * @see ScrollBar
 	 */
