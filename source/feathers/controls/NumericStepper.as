@@ -37,6 +37,18 @@ package feathers.controls
 	 * Select a value between a minimum and a maximum by using increment and
 	 * decrement buttons or typing in a value in a text input.
 	 *
+	 * <p>The following example sets the stepper's values and listens for when
+	 * when the value changes:</p>
+	 *
+	 * <listing version="3.0">
+	 * var stepper:NumericStepper = new NumericStepper();
+	 * stepper.minimum = 0;
+	 * stepper.maximum = 100;
+	 * stepper.step = 1;
+	 * stepper.value = 12;
+	 * stepper.addEventListener( Event.CHANGE, stepper_changeHandler );
+	 * this.addChild( stepper );</listing>
+	 *
 	 * <p><strong>Beta Component:</strong> This is a new component, and its APIs
 	 * may need some changes between now and the next version of Feathers to
 	 * account for overlooked requirements or other issues. Upgrading to future
@@ -221,6 +233,21 @@ package feathers.controls
 
 		/**
 		 * The value of the numeric stepper, between the minimum and maximum.
+		 *
+		 * <p>In the following example, the value is changed to 12:</p>
+		 *
+		 * <listing version="3.0">
+		 * stepper.minimum = 0;
+		 * stepper.maximum = 100;
+		 * stepper.step = 1;
+		 * stepper.value = 12;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #minimum
+		 * @see #maximum
+		 * @see #step
+		 * @see #event:change
 		 */
 		public function get value():Number
 		{
@@ -253,6 +280,20 @@ package feathers.controls
 
 		/**
 		 * The numeric stepper's value will not go lower than the minimum.
+		 *
+		 * <p>In the following example, the minimum is changed to 0:</p>
+		 *
+		 * <listing version="3.0">
+		 * stepper.minimum = 0;
+		 * stepper.maximum = 100;
+		 * stepper.step = 1;
+		 * stepper.value = 12;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #value
+		 * @see #maximum
+		 * @see #step
 		 */
 		public function get minimum():Number
 		{
@@ -279,6 +320,20 @@ package feathers.controls
 
 		/**
 		 * The numeric stepper's value will not go higher than the maximum.
+		 *
+		 * <p>In the following example, the maximum is changed to 100:</p>
+		 *
+		 * <listing version="3.0">
+		 * stepper.minimum = 0;
+		 * stepper.maximum = 100;
+		 * stepper.step = 1;
+		 * stepper.value = 12;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #value
+		 * @see #minimum
+		 * @see #step
 		 */
 		public function get maximum():Number
 		{
@@ -306,6 +361,20 @@ package feathers.controls
 		/**
 		 * As the numeric stepper's buttons are pressed, the value is snapped to
 		 * a multiple of the step.
+		 *
+		 * <p>In the following example, the step is changed to 1:</p>
+		 *
+		 * <listing version="3.0">
+		 * stepper.minimum = 0;
+		 * stepper.maximum = 100;
+		 * stepper.step = 1;
+		 * stepper.value = 12;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #value
+		 * @see #minimum
+		 * @see #maximum
 		 */
 		public function get step():Number
 		{
@@ -343,6 +412,14 @@ package feathers.controls
 		 * The time, in seconds, before actions are repeated. The first repeat
 		 * happens after a delay that is five times longer than the following
 		 * repeats.
+		 *
+		 * <p>In the following example, the slider's repeat delay is set to
+		 * 500 milliseconds:</p>
+		 *
+		 * <listing version="3.0">
+		 * stepper.repeatDelay = 0.5;</listing>
+		 *
+		 * @default 0.05
 		 */
 		public function get repeatDelay():Number
 		{
@@ -367,8 +444,18 @@ package feathers.controls
 		 */
 		protected var _buttonLayoutMode:String = BUTTON_LAYOUT_MODE_SPLIT_HORIZONTAL;
 
+		[Inspectable(type="String",enumeration="splitHorizontal,splitVertical,rightSideVertical")]
 		/**
 		 * How the buttons are positioned relative to the text input.
+		 *
+		 * <p>In the following example, the button layout is set to place the
+		 * buttons on the right side, stacked vertically, for a desktop
+		 * appearance:</p>
+		 *
+		 * <listing version="3.0">
+		 * stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL;</listing>
+		 *
+		 * @default NumericStepper.BUTTON_LAYOUT_MODE_SPLIT_HORIZONTAL
 		 *
 		 * @see #BUTTON_LAYOUT_MODE_SPLIT_HORIZONTAL
 		 * @see #BUTTON_LAYOUT_MODE_SPLIT_VERTICAL
@@ -408,6 +495,18 @@ package feathers.controls
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():Button</pre>
 		 *
+		 * <p>In the following example, a custom decrement button factory is passed
+		 * to the stepper:</p>
+		 *
+		 * <listing version="3.0">
+		 * slider.decrementButtonFactory = function():Button
+		 * {
+		 *     var button:Button = new Button();
+		 *     button.defaultSkin = new Image( upTexture );
+		 *     button.downSkin = new Image( downTexture );
+		 *     return button;
+		 * };</listing>
+		 *
 		 * @see feathers.controls.Button
 		 * @see #decrementButtonProperties
 		 */
@@ -438,6 +537,18 @@ package feathers.controls
 		 * A name to add to the numeric stepper's decrement button
 		 * sub-component. Typically used by a theme to provide different skins
 		 * to different numeric steppers.
+		 *
+		 * <p>In the following example, a custom decrement button name is passed
+		 * to the stepper:</p>
+		 *
+		 * <listing version="3.0">
+		 * slider.customDecrementButtonName = "my-custom-decrement-button";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( Button, customDecrementButtonInitializer, "my-custom-decrement-button");</listing>
 		 *
 		 * @see #DEFAULT_CHILD_NAME_DECREMENT_BUTTON
 		 * @see feathers.core.FeathersControl#nameList
@@ -484,6 +595,13 @@ package feathers.controls
 		 * <p>Setting properties in a <code>decrementButtonFactory</code>
 		 * function instead of using <code>decrementButtonProperties</code> will
 		 * result in better performance.</p>
+		 *
+		 * <p>In the following example, the stepper's decrement button properties
+		 * are updated:</p>
+		 *
+		 * <listing version="3.0">
+		 * stepper.decrementButtonProperties.defaultSkin = new Image( upTexture );
+		 * stepper.decrementButtonProperties.downSkin = new Image( downTexture );</listing>
 		 *
 		 * @see #decrementButtonFactory
 		 * @see feathers.controls.Button
@@ -537,7 +655,15 @@ package feathers.controls
 		protected var _decrementButtonLabel:String = null;
 
 		/**
-		 * The text displayed by the decrement button.
+		 * The text displayed by the decrement button. Often, there is no text
+		 * displayed on this button and an icon is used instead.
+		 *
+		 * <p>In the following example, the decrement button's label is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * stepper.decrementButtonLabel = "-";</listing>
+		 *
+		 * @default null
 		 */
 		public function get decrementButtonLabel():String
 		{
@@ -573,6 +699,18 @@ package feathers.controls
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():Button</pre>
 		 *
+		 * <p>In the following example, a custom increment button factory is passed
+		 * to the stepper:</p>
+		 *
+		 * <listing version="3.0">
+		 * slider.incrementButtonFactory = function():Button
+		 * {
+		 *     var button:Button = new Button();
+		 *     button.defaultSkin = new Image( upTexture );
+		 *     button.downSkin = new Image( downTexture );
+		 *     return button;
+		 * };</listing>
+		 *
 		 * @see feathers.controls.Button
 		 * @see #incrementButtonProperties
 		 */
@@ -603,6 +741,18 @@ package feathers.controls
 		 * A name to add to the numeric stepper's increment button
 		 * sub-component. Typically used by a theme to provide different skins
 		 * to different numeric steppers.
+		 *
+		 * <p>In the following example, a custom increment button name is passed
+		 * to the stepper:</p>
+		 *
+		 * <listing version="3.0">
+		 * slider.customIncrementButtonName = "my-custom-increment-button";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( Button, customIncrementButtonInitializer, "my-custom-increment-button");</listing>
 		 *
 		 * @see #DEFAULT_CHILD_NAME_INCREMENT_BUTTON
 		 * @see feathers.core.FeathersControl#nameList
@@ -649,6 +799,13 @@ package feathers.controls
 		 * <p>Setting properties in a <code>incrementButtonFactory</code>
 		 * function instead of using <code>incrementButtonProperties</code> will
 		 * result in better performance.</p>
+		 *
+		 * <p>In the following example, the stepper's increment button properties
+		 * are updated:</p>
+		 *
+		 * <listing version="3.0">
+		 * stepper.incrementButtonProperties.defaultSkin = new Image( upTexture );
+		 * stepper.incrementButtonProperties.downSkin = new Image( downTexture );</listing>
 		 *
 		 * @see #incrementButtonFactory
 		 * @see feathers.controls.Button
@@ -702,7 +859,13 @@ package feathers.controls
 		protected var _incrementButtonLabel:String = null;
 
 		/**
-		 * The text displayed by the increment button.
+		 * The text displayed by the increment button. Often, there is no text
+		 * displayed on this button and an icon is used instead.
+		 *
+		 * <p>In the following example, the increment button's label is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * stepper.incrementButtonLabel = "+";</listing>
 		 */
 		public function get incrementButtonLabel():String
 		{
@@ -738,6 +901,17 @@ package feathers.controls
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():TextInput</pre>
 		 *
+		 * <p>In the following example, a custom text input factory is passed
+		 * to the stepper:</p>
+		 *
+		 * <listing version="3.0">
+		 * stepper.incrementButtonFactory = function():TextInput
+		 * {
+		 *     var textInput:TextInput = new Button();
+		 *     textInput.textEditorProperties.backgroundSkin = new Image( texture );
+		 *     return textInput;
+		 * };</listing>
+		 *
 		 * @see feathers.controls.TextInput
 		 * @see #textInputProperties
 		 */
@@ -768,6 +942,18 @@ package feathers.controls
 		 * A name to add to the numeric stepper's text input sub-component.
 		 * Typically used by a theme to provide different skins to different
 		 * text inputs.
+		 *
+		 * <p>In the following example, a custom text input name is passed
+		 * to the stepper:</p>
+		 *
+		 * <listing version="3.0">
+		 * slider.customTextInputName = "my-custom-text-input";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( Button, customTextInputInitializer, "my-custom-text-input");</listing>
 		 *
 		 * @see #DEFAULT_CHILD_NAME_TEXT_INPUT
 		 * @see feathers.core.FeathersControl#nameList
@@ -814,6 +1000,12 @@ package feathers.controls
 		 * <p>Setting properties in a <code>textInputFactory</code> function
 		 * instead of using <code>textInputProperties</code> will result in
 		 * better performance.</p>
+		 *
+		 * <p>In the following example, the stepper's text input properties
+		 * are updated:</p>
+		 *
+		 * <listing version="3.0">
+		 * stepper.textInputProperties.backgroundSkin = new Image( texture );</listing>
 		 *
 		 * @see #textInputFactory
 		 * @see feathers.controls.TextInput
