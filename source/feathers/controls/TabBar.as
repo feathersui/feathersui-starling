@@ -269,7 +269,7 @@ package feathers.controls
 		 * vertical:</p>
 		 *
 		 * <listing version="3.0">
-		 * tabBar.direction = TabBar.DIRECTION_VERTICAL;</listing>
+		 * tabs.direction = TabBar.DIRECTION_VERTICAL;</listing>
 		 *
 		 * @default TabBar.DIRECTION_HORIZONTAL
 		 *
@@ -305,7 +305,7 @@ package feathers.controls
 		 * <p>In the following example, the tab bar's gap is set to 20 pixels:</p>
 		 *
 		 * <listing version="3.0">
-		 * tabBar.gap = 20;</listing>
+		 * tabs.gap = 20;</listing>
 		 *
 		 * @deafult 0
 		 */
@@ -347,7 +347,7 @@ package feathers.controls
 		 * tab bar:</p>
 		 *
 		 * <listing version="3.0">
-		 * tabBar.tabFactory = function():Button
+		 * tabs.tabFactory = function():Button
 		 * {
 		 *     var tab:Button = new Button();
 		 *     tab.defaultSkin = new Image( upTexture );
@@ -400,7 +400,7 @@ package feathers.controls
 		 * tab bar:</p>
 		 *
 		 * <listing version="3.0">
-		 * tabBar.firstTabFactory = function():Button
+		 * tabs.firstTabFactory = function():Button
 		 * {
 		 *     var tab:Button = new Button();
 		 *     tab.defaultSkin = new Image( upTexture );
@@ -453,7 +453,7 @@ package feathers.controls
 		 * tab bar:</p>
 		 *
 		 * <listing version="3.0">
-		 * tabBar.lastTabFactory = function():Button
+		 * tabs.lastTabFactory = function():Button
 		 * {
 		 *     var tab:Button = new Button();
 		 *     tab.defaultSkin = new Image( upTexture );
@@ -502,7 +502,7 @@ package feathers.controls
 		 * tab bar:</p>
 		 *
 		 * <listing version="3.0">
-		 * tabBar.tabInitializer = function( tab:Button, item:Object ):void
+		 * tabs.tabInitializer = function( tab:Button, item:Object ):void
 		 * {
 		 *     tab.label = item.text;
 		 *     tab.defaultIcon = item.icon;
@@ -543,7 +543,23 @@ package feathers.controls
 		 * <p>In the following example, the tab bar's selected index is changed:</p>
 		 *
 		 * <listing version="3.0">
-		 * tabBar.selectedIndex = 2;</listing>
+		 * tabs.selectedIndex = 2;</listing>
+		 *
+		 * <p>The following example listens for when selection changes and
+		 * requests the selected index:</p>
+		 *
+		 * <listing version="3.0">
+		 * function tabs_changeHandler( event:Event ):void
+		 * {
+		 *     var tabs:TabBar = TabBar( event.currentTarget );
+		 *     var index:int = tabs.selectedIndex;
+		 *
+		 * }
+		 * tabs.addEventListener( Event.CHANGE, tabs_changeHandler );</listing>
+		 * 
+		 * @default -1
+		 * 
+		 * @see #selectedItem
 		 */
 		public function get selectedIndex():int
 		{
@@ -579,7 +595,23 @@ package feathers.controls
 		 * <p>In the following example, the tab bar's selected item is changed:</p>
 		 *
 		 * <listing version="3.0">
-		 * tabBar.selectedItem = tabBar.dataProvider.getItemAt(2);</listing>
+		 * tabs.selectedItem = tabs.dataProvider.getItemAt(2);</listing>
+		 *
+		 * <p>The following example listens for when selection changes and
+		 * requests the selected item:</p>
+		 *
+		 * <listing version="3.0">
+		 * function tabs_changeHandler( event:Event ):void
+		 * {
+		 *     var tabs:TabBar = TabBar( event.currentTarget );
+		 *     var item:Object = tabs.selectedItem;
+		 *
+		 * }
+		 * tabs.addEventListener( Event.CHANGE, tabs_changeHandler );</listing>
+		 * 
+		 * @default null
+		 * 
+		 * @see #selectedIndex
 		 */
 		public function get selectedItem():Object
 		{
@@ -613,9 +645,17 @@ package feathers.controls
 		 * bar:</p>
 		 *
 		 * <listing version="3.0">
-		 * tabBar.customTabName = "my-custom-tab";</listing>
+		 * tabs.customTabName = "my-custom-tab";</listing>
 		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( Button, customTabInitializer, "my-custom-tab");</listing>
+		 *
+		 * @see #DEFAULT_CHILD_NAME_TAB
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 */
 		public function get customTabName():String
 		{
@@ -655,9 +695,16 @@ package feathers.controls
 		 * bar:</p>
 		 *
 		 * <listing version="3.0">
-		 * tabBar.customFirstTabName = "my-custom-first-tab";</listing>
+		 * tabs.customFirstTabName = "my-custom-first-tab";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( Button, customFirstTabInitializer, "my-custom-first-tab");</listing>
 		 *
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 */
 		public function get customFirstTabName():String
 		{
@@ -695,9 +742,16 @@ package feathers.controls
 		 * bar:</p>
 		 *
 		 * <listing version="3.0">
-		 * tabBar.customLastTabName = "my-custom-last-tab";</listing>
+		 * tabs.customLastTabName = "my-custom-last-tab";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( Button, customLastTabInitializer, "my-custom-last-tab");</listing>
 		 *
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 */
 		public function get customLastTabName():String
 		{
@@ -750,7 +804,7 @@ package feathers.controls
 		 * <p>In the following example, the tab bar's tab properties are updated:</p>
 		 *
 		 * <listing version="3.0">
-		 * tabBar.tabProperties.iconPosition = Button.ICON_POSITION_RIGHT;</listing>
+		 * tabs.tabProperties.iconPosition = Button.ICON_POSITION_RIGHT;</listing>
 		 *
 		 * @see #tabFactory
 		 * @see feathers.controls.Button

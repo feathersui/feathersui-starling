@@ -838,7 +838,15 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * slider.customMinimumTrackName = "my-custom-minimum-track";</listing>
 		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( Button, customMinimumTrackInitializer, "my-custom-minimum-track");</listing>
+		 *
+		 * @see #DEFAULT_CHILD_NAME_MINIMUM_TRACK
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 * @see #minimumTrackFactory
 		 * @see #minimumTrackProperties
 		 */
@@ -999,7 +1007,15 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * slider.customMaximumTrackName = "my-custom-maximum-track";</listing>
 		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( Button, customMaximumTrackInitializer, "my-custom-maximum-track");</listing>
+		 *
+		 * @see #DEFAULT_CHILD_NAME_MAXIMUM_TRACK
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 * @see #maximumTrackFactory
 		 * @see #maximumTrackProperties
 		 */
@@ -1160,7 +1176,15 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * slider.customThumbName = "my-custom-thumb";</listing>
 		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( Button, customThumbInitializer, "my-custom-thumb");</listing>
+		 *
+		 * @see #DEFAULT_CHILD_NAME_THUMB
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 * @see #thumbFactory
 		 * @see #thumbProperties
 		 */

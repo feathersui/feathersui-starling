@@ -439,7 +439,9 @@ package feathers.controls
 		 * sub-component. Typically used by a theme to provide different skins
 		 * to different numeric steppers.
 		 *
+		 * @see #DEFAULT_CHILD_NAME_DECREMENT_BUTTON
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 * @see #decrementButtonFactory
 		 * @see #decrementButtonProperties
 		 */
@@ -602,7 +604,9 @@ package feathers.controls
 		 * sub-component. Typically used by a theme to provide different skins
 		 * to different numeric steppers.
 		 *
+		 * @see #DEFAULT_CHILD_NAME_INCREMENT_BUTTON
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 * @see #incrementButtonFactory
 		 * @see #incrementButtonProperties
 		 */
@@ -765,7 +769,9 @@ package feathers.controls
 		 * Typically used by a theme to provide different skins to different
 		 * text inputs.
 		 *
+		 * @see #DEFAULT_CHILD_NAME_TEXT_INPUT
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 * @see #textInputFactory
 		 * @see #textInputProperties
 		 */
