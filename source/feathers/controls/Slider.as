@@ -92,14 +92,14 @@ package feathers.controls
 		/**
 		 * The slider's thumb may be dragged horizontally (on the x-axis).
 		 *
-		 * #direction
+		 * @see #direction
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
 		
 		/**
 		 * The slider's thumb may be dragged vertically (on the y-axis).
 		 *
-		 * #direction
+		 * @see #direction
 		 */
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
@@ -109,7 +109,7 @@ package feathers.controls
 		 * fills the entire length of the slider. The maximum track will not
 		 * exist.
 		 *
-		 * #trackLayoutMode
+		 * @see #trackLayoutMode
 		 */
 		public static const TRACK_LAYOUT_MODE_SINGLE:String = "single";
 
@@ -125,7 +125,7 @@ package feathers.controls
 		 * <code>Scale3Image</code> or a <code>TiledImage</code> that is
 		 * designed to be resized dynamically.</p>
 		 *
-		 * #trackLayoutMode
+		 * @see #trackLayoutMode
 		 * @see feathers.display.Scale9Image
 		 * @see feathers.display.Scale3Image
 		 * @see feathers.display.TiledImage
@@ -136,7 +136,7 @@ package feathers.controls
 		 * The slider's track dimensions fill the full width and height of the
 		 * slider.
 		 *
-		 * #trackScaleMode
+		 * @see #trackScaleMode
 		 */
 		public static const TRACK_SCALE_MODE_EXACT_FIT:String = "exactFit";
 
@@ -146,7 +146,7 @@ package feathers.controls
 		 * vertical, the height of the track will fill the full height of the
 		 * slider. The other edge will not be scaled.
 		 *
-		 * #trackScaleMode
+		 * @see #trackScaleMode
 		 */
 		public static const TRACK_SCALE_MODE_DIRECTIONAL:String = "directional";
 
@@ -297,9 +297,9 @@ package feathers.controls
 		 * <p>In the following example, the direction is changed to vertical:</p>
 		 *
 		 * <listing version="3.0">
-		 * slider.direction = DIRECTION_VERTICAL;</listing>
+		 * slider.direction = Slider.DIRECTION_VERTICAL;</listing>
 		 *
-		 * @default DIRECTION_HORIZONTAL
+		 * @default Slider.DIRECTION_HORIZONTAL
 		 *
 		 * @see #DIRECTION_HORIZONTAL
 		 * @see #DIRECTION_VERTICAL
@@ -663,7 +663,7 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * slider.trackLayoutMode = Slider.TRACK_LAYOUT_MODE_MIN_MAX;</listing>
 		 *
-		 * @default TRACK_LAYOUT_MODE_SINGLE
+		 * @default Slider.TRACK_LAYOUT_MODE_SINGLE
 		 *
 		 * @see #TRACK_LAYOUT_MODE_SINGLE
 		 * @see #TRACK_LAYOUT_MODE_MIN_MAX
@@ -701,7 +701,7 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * slider.trackScaleMode = Slider.TRACK_SCALE_MODE_EXACT_FIT;</listing>
 		 *
-		 * @default TRACK_SCALE_MODE_DIRECTIONAL
+		 * @default Slider.TRACK_SCALE_MODE_DIRECTIONAL
 		 *
 		 * @see #TRACK_SCALE_MODE_DIRECTIONAL
 		 * @see #TRACK_SCALE_MODE_EXACT_FIT
@@ -750,6 +750,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * slider.repeatDelay = 0.5;</listing>
+		 *
+		 * @default 0.05
 		 */
 		public function get repeatDelay():Number
 		{
@@ -833,7 +835,15 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * slider.customMinimumTrackName = "my-custom-minimum-track";</listing>
 		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( Button, customMinimumTrackInitializer, "my-custom-minimum-track");</listing>
+		 *
+		 * @see #DEFAULT_CHILD_NAME_MINIMUM_TRACK
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 * @see #minimumTrackFactory
 		 * @see #minimumTrackProperties
 		 */
@@ -994,7 +1004,15 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * slider.customMaximumTrackName = "my-custom-maximum-track";</listing>
 		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( Button, customMaximumTrackInitializer, "my-custom-maximum-track");</listing>
+		 *
+		 * @see #DEFAULT_CHILD_NAME_MAXIMUM_TRACK
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 * @see #maximumTrackFactory
 		 * @see #maximumTrackProperties
 		 */
@@ -1155,7 +1173,15 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * slider.customThumbName = "my-custom-thumb";</listing>
 		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( Button, customThumbInitializer, "my-custom-thumb");</listing>
+		 *
+		 * @see #DEFAULT_CHILD_NAME_THUMB
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 * @see #thumbFactory
 		 * @see #thumbProperties
 		 */

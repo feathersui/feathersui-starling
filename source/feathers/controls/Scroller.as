@@ -653,7 +653,15 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * scroller.customHorizontalScrollBarName = "my-custom-horizontal-scroll-bar";</listing>
 		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( SimpleScrollBar, customHorizontalScrollBarInitializer, "my-custom-horizontal-scroll-bar");</listing>
+		 *
+		 * @see #DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 * @see #horizontalScrollBarFactory
 		 * @see #horizontalScrollBarProperties
 		 */
@@ -816,7 +824,15 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * scroller.customVerticalScrollBarName = "my-custom-vertical-scroll-bar";</listing>
 		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( SimpleScrollBar, customVerticalScrollBarInitializer, "my-custom-vertical-scroll-bar");</listing>
+		 *
+		 * @see #DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 * @see #verticalScrollBarFactory
 		 * @see #verticalScrollBarProperties
 		 */
@@ -1073,7 +1089,7 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * scroller.horizontalScrollPolicy = Scroller.SCROLL_POLICY_OFF;</listing>
 		 *
-		 * @default SCROLL_POLICY_AUTO
+		 * @default Scroller.SCROLL_POLICY_AUTO
 		 *
 		 * @see #SCROLL_POLICY_AUTO
 		 * @see #SCROLL_POLICY_ON
@@ -1255,7 +1271,7 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * scroller.horizontalScrollPolicy = Scroller.SCROLL_POLICY_OFF;</listing>
 		 *
-		 * @default SCROLL_POLICY_AUTO
+		 * @default Scroller.SCROLL_POLICY_AUTO
 		 *
 		 * @see #SCROLL_POLICY_AUTO
 		 * @see #SCROLL_POLICY_ON
@@ -1388,9 +1404,9 @@ package feathers.controls
 		 * <p>In the following example, the scroll bars are fixed:</p>
 		 *
 		 * <listing version="3.0">
-		 * scroller.scrollBarDisplayMode = SCROLL_BAR_DISPLAY_MODE_FIXED;</listing>
+		 * scroller.scrollBarDisplayMode = Scroller.SCROLL_BAR_DISPLAY_MODE_FIXED;</listing>
 		 *
-		 * @default SCROLL_BAR_DISPLAY_MODE_FLOAT
+		 * @default Scroller.SCROLL_BAR_DISPLAY_MODE_FLOAT
 		 *
 		 * @see #SCROLL_BAR_DISPLAY_MODE_FLOAT
 		 * @see #SCROLL_BAR_DISPLAY_MODE_FIXED
@@ -1426,9 +1442,9 @@ package feathers.controls
 		 * <p>In the following example, the interaction mode is optimized for mouse:</p>
 		 *
 		 * <listing version="3.0">
-		 * scroller.scrollBarDisplayMode = INTERACTION_MODE_MOUSE;</listing>
+		 * scroller.scrollBarDisplayMode = Scroller.INTERACTION_MODE_MOUSE;</listing>
 		 *
-		 * @default INTERACTION_MODE_TOUCH
+		 * @default Scroller.INTERACTION_MODE_TOUCH
 		 *
 		 * @see #INTERACTION_MODE_TOUCH
 		 * @see #INTERACTION_MODE_MOUSE

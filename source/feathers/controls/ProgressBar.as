@@ -65,7 +65,7 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * progress.direction = ProgressBar.DIRECTION_VERTICAL;</listing>
 		 *
-		 * @default DIRECTION_HORIZONTAL
+		 * @default ProgressBar.DIRECTION_HORIZONTAL
 		 *
 		 * @see #DIRECTION_HORIZONTAL
 		 * @see #DIRECTION_VERTICAL

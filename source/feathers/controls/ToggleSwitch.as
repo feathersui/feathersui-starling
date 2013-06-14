@@ -434,9 +434,10 @@ package feathers.controls
 		 * updated to use two tracks:</p>
 		 *
 		 * <listing version="3.0">
-		 * toggle.trackLayoutMode = TRACK_LAYOUT_MODE_ON_OFF;</listing>
+		 * toggle.trackLayoutMode = ToggleSwitch.TRACK_LAYOUT_MODE_ON_OFF;</listing>
 		 *
-		 * @default TRACK_LAYOUT_MODE_SINGLE
+		 * @default ToggleSwitch.TRACK_LAYOUT_MODE_SINGLE
+		 *
 		 * @see #TRACK_LAYOUT_MODE_SINGLE
 		 * @see #TRACK_LAYOUT_MODE_ON_OFF
 		 */
@@ -708,9 +709,10 @@ package feathers.controls
 		 * updated:</p>
 		 *
 		 * <listing version="3.0">
-		 * toggle.labelAlign = LABEL_ALIGN_MIDDLE;</listing>
+		 * toggle.labelAlign = ToggleSwitch.LABEL_ALIGN_MIDDLE;</listing>
 		 *
-		 * @default LABEL_ALIGN_BASELINE
+		 * @default ToggleSwitch.LABEL_ALIGN_BASELINE
+		 *
 		 * @see #LABEL_ALIGN_BASELINE
 		 * @see #LABEL_ALIGN_MIDDLE
 		 */
@@ -1057,7 +1059,21 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * toggle.customOnTrackName = "my-custom-on-track";</listing>
 		 *
+		 * <p>In your theme, you can target this item renderer name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( Button, customOnTrackInitializer, "my-custom-on-track");</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( Button, customOnTrackInitializer, "my-custom-on-track");</listing>
+		 *
+		 * @see #DEFAULT_CHILD_NAME_ON_TRACK
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 * @see #onTrackFactory
 		 * @see #onTrackProperties
 		 */
@@ -1215,7 +1231,15 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * toggle.customOnTrackName = "my-custom-off-track";</listing>
 		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( Button, customOffTrackInitializer, "my-custom-off-track");</listing>
+		 *
+		 * @see #DEFAULT_CHILD_NAME_OFF_TRACK
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 * @see #offTrackFactory
 		 * @see #offTrackProperties
 		 */
@@ -1371,7 +1395,15 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * toggle.customThumbName = "my-custom-thumb";</listing>
 		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( Button, customThumbInitializer, "my-custom-thumb");</listing>
+		 *
+		 * @see #DEFAULT_CHILD_NAME_THUMB
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 * @see #thumbFactory
 		 * @see #thumbProperties
 		 */
