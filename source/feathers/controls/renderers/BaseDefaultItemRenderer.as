@@ -215,7 +215,7 @@ package feathers.controls.renderers
 		 * <p>In the following example, the state delay timer is disabled:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.itemRendererProperties.useStateDelayTimer = false;</listing>
+		 * renderer.useStateDelayTimer = false;</listing>
 		 *
 		 * @default true
 		 */
@@ -252,7 +252,7 @@ package feathers.controls.renderers
 		 * <p>In the following example, the item doesn't have a label:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.itemRendererProperties.itemHasLabel = false;</listing>
+		 * renderer.itemHasLabel = false;</listing>
 		 *
 		 * @default true
 		 */
@@ -287,7 +287,7 @@ package feathers.controls.renderers
 		 * <p>In the following example, the item doesn't have an icon:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.itemRendererProperties.itemHasIcon = false;</listing>
+		 * renderer.itemHasIcon = false;</listing>
 		 *
 		 * @default true
 		 */
@@ -322,7 +322,7 @@ package feathers.controls.renderers
 		 * <p>In the following example, the item doesn't have an accessory:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.itemRendererProperties.itemHasAccessory = false;</listing>
+		 * renderer.itemHasAccessory = false;</listing>
 		 *
 		 * @default true
 		 */
@@ -358,7 +358,7 @@ package feathers.controls.renderers
 		 * <p>In the following example, the accessory is placed on the bottom:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.itemRendererProperties.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_BOTTOM;</listing>
+		 * renderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_BOTTOM;</listing>
 		 *
 		 * @default BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT
 		 *
@@ -403,7 +403,7 @@ package feathers.controls.renderers
 		 * <p>In the following example, the layout order is changed:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.itemRendererProperties.layoutOrder = BaseDefaultItemRenderer.LAYOUT_ORDER_LABEL_ACCESSORY_ICON;</listing>
+		 * renderer.layoutOrder = BaseDefaultItemRenderer.LAYOUT_ORDER_LABEL_ACCESSORY_ICON;</listing>
 		 *
 		 * @default BaseDefaultItemRenderer.LAYOUT_ORDER_LABEL_ICON_ACCESSORY
 		 *
@@ -441,7 +441,7 @@ package feathers.controls.renderers
 		 * <p>In the following example, the accessory x position is adjusted by 20 pixels:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.itemRendererProperties.accessoryOffsetX = 20;</listing>
+		 * renderer.accessoryOffsetX = 20;</listing>
 		 *
 		 * @default 0
 		 *
@@ -476,7 +476,7 @@ package feathers.controls.renderers
 		 * <p>In the following example, the accessory y position is adjusted by 20 pixels:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.itemRendererProperties.accessoryOffsetY = 20;</listing>
+		 * renderer.accessoryOffsetY = 20;</listing>
 		 *
 		 * @default 0
 		 *
@@ -519,7 +519,7 @@ package feathers.controls.renderers
 		 * <p>In the following example, the accessory gap is set to 20 pixels:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.itemRendererProperties.accessoryGap = 20;</listing>
+		 * renderer.accessoryGap = 20;</listing>
 		 *
 		 * @default NaN
 		 *
@@ -597,7 +597,7 @@ package feathers.controls.renderers
 		 * accessory is touched:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.itemRendererProperties.stopScrollingOnAccessoryTouch = false;</listing>
+		 * renderer.stopScrollingOnAccessoryTouch = false;</listing>
 		 *
 		 * @default true
 		 */
@@ -626,7 +626,7 @@ package feathers.controls.renderers
 		 * <p>In the following example, the label field is customized:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.itemRendererProperties.labelField = "text";</listing>
+		 * renderer.labelField = "text";</listing>
 		 *
 		 * @default "label"
 		 *
@@ -672,7 +672,7 @@ package feathers.controls.renderers
 		 * <p>In the following example, the label function is customized:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.itemRendererProperties.labelFunction = function( item:Object ):String
+		 * renderer.labelFunction = function( item:Object ):String
 		 * {
 		 *    return item.firstName + " " + item.lastName;
 		 * };</listing>
@@ -719,7 +719,7 @@ package feathers.controls.renderers
 		 * <p>In the following example, the icon field is customized:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.itemRendererProperties.iconField = "photo";</listing>
+		 * renderer.iconField = "photo";</listing>
 		 *
 		 * @default "icon"
 		 *
@@ -776,7 +776,7 @@ package feathers.controls.renderers
 		 * <p>In the following example, the icon function is customized:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.itemRendererProperties.iconFunction = function( item:Object ):DisplayObject
+		 * renderer.iconFunction = function( item:Object ):DisplayObject
 		 * {
 		 *    if(item in cachedIcons)
 		 *    {
@@ -840,7 +840,7 @@ package feathers.controls.renderers
 		 * <p>In the following example, the icon source field is customized:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.itemRendererProperties.iconSourceField = "texture";</listing>
+		 * renderer.iconSourceField = "texture";</listing>
 		 *
 		 * @default "iconSource"
 		 *
@@ -916,7 +916,7 @@ package feathers.controls.renderers
 		 * <p>In the following example, the icon source function is customized:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.itemRendererProperties.iconSourceFunction = function( item:Object ):Object
+		 * renderer.iconSourceFunction = function( item:Object ):Object
 		 * {
 		 *    return "http://www.example.com/thumbs/" + item.name + "-thumb.png";
 		 * };</listing>
@@ -971,7 +971,7 @@ package feathers.controls.renderers
 		 * <p>In the following example, the accessory field is customized:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.itemRendererProperties.accessoryField = "component";</listing>
+		 * renderer.accessoryField = "component";</listing>
 		 *
 		 * @default "accessory"
 		 *
@@ -1035,7 +1035,7 @@ package feathers.controls.renderers
 		 * <p>In the following example, the accessory function is customized:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.itemRendererProperties.accessoryFunction = function( item:Object ):DisplayObject
+		 * renderer.accessoryFunction = function( item:Object ):DisplayObject
 		 * {
 		 *    if(item in cachedAccessories)
 		 *    {
@@ -1103,7 +1103,7 @@ package feathers.controls.renderers
 		 * <p>In the following example, the accessory source field is customized:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.itemRendererProperties.accessorySourceField = "texture";</listing>
+		 * renderer.accessorySourceField = "texture";</listing>
 		 *
 		 * @default "accessorySource"
 		 *
@@ -1183,7 +1183,7 @@ package feathers.controls.renderers
 		 * <p>In the following example, the accessory source function is customized:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.itemRendererProperties.accessorySourceFunction = function( item:Object ):Object
+		 * renderer.accessorySourceFunction = function( item:Object ):Object
 		 * {
 		 *    return "http://www.example.com/thumbs/" + item.name + "-thumb.png";
 		 * };</listing>
@@ -1247,7 +1247,7 @@ package feathers.controls.renderers
 		 * <p>In the following example, the accessory label field is customized:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.itemRendererProperties.accessoryLabelField = "text";</listing>
+		 * renderer.accessoryLabelField = "text";</listing>
 		 *
 		 * @default "accessoryLabel"
 		 *
@@ -1310,7 +1310,7 @@ package feathers.controls.renderers
 		 * <p>In the following example, the accessory label function is customized:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.itemRendererProperties.accessoryLabelFunction = function( item:Object ):String
+		 * renderer.accessoryLabelFunction = function( item:Object ):String
 		 * {
 		 *    return item.firstName + " " + item.lastName;
 		 * };</listing>
@@ -1360,7 +1360,7 @@ package feathers.controls.renderers
 		 * <p>In the following example, the loader factory is customized:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.itemRendererProperties.iconLoaderFactory = function():ImageLoader
+		 * renderer.iconLoaderFactory = function():ImageLoader
 		 * {
 		 *    var loader:ImageLoader = new ImageLoader();
 		 *    loader.snapToPixels = true;
@@ -1407,7 +1407,7 @@ package feathers.controls.renderers
 		 * <p>In the following example, the loader factory is customized:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.itemRendererProperties.accessoryLoaderFactory = function():ImageLoader
+		 * renderer.accessoryLoaderFactory = function():ImageLoader
 		 * {
 		 *    var loader:ImageLoader = new ImageLoader();
 		 *    loader.snapToPixels = true;
@@ -1452,7 +1452,7 @@ package feathers.controls.renderers
 		 * <p>In the following example, the accessory label factory is customized:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.itemRendererProperties.accessoryLabelFactory = function():ITextRenderer
+		 * renderer.accessoryLabelFactory = function():ITextRenderer
 		 * {
 		 *    var renderer:TextFieldTextRenderer = new TextFieldTextRenderer();
 		 *    renderer.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333 );
@@ -1508,8 +1508,8 @@ package feathers.controls.renderers
 		 * <p>In the following example, the accessory label properties are customized:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.itemRendererProperties.&#64;accessoryLabelProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333 );
-		 * list.itemRendererProperties.&#64;accessoryLabelProperties.embedFonts = true;</listing>
+		 * renderer.&#64;accessoryLabelProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333 );
+		 * renderer.&#64;accessoryLabelProperties.embedFonts = true;</listing>
 		 *
 		 * @see feathers.core.ITextRenderer
 		 * @see #accessoryLabelFactory
