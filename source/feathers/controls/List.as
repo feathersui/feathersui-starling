@@ -61,6 +61,33 @@ package feathers.controls
 	 * renderer for every single item. This allows for optimal performance with
 	 * very large data providers.</p>
 	 *
+	 * <p>The following example creates a list, gives it a data provider, tells
+	 * the item renderer how to interpret the data, and listens for when the
+	 * selection changes:</p>
+	 *
+	 * <listing version="3.0">
+	 * var list:List = new List();
+	 *
+	 * list.dataProvider = new ListCollection(
+	 * [
+	 *     { text: "Milk", thumbnail: textureAtlas.getTexture( "milk" ) },
+	 *     { text: "Eggs", thumbnail: textureAtlas.getTexture( "eggs" ) },
+	 *     { text: "Bread", thumbnail: textureAtlas.getTexture( "bread" ) },
+	 *     { text: "Chicken", thumbnail: textureAtlas.getTexture( "chicken" ) },
+	 * ]);
+	 *
+	 * list.itemRendererFactory = function():IListItemRenderer
+	 * {
+	 *     var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+	 *     renderer.labelField = "text";
+	 *     renderer.iconSourceField = "thumbnail";
+	 *     return renderer;
+	 * };
+	 *
+	 * list.addEventListener( Event.CHANGE, list_changeHandler );
+	 *
+	 * this.addChild( list );</listing>
+	 *
 	 * @see http://wiki.starling-framework.org/feathers/list
 	 * @see GroupedList
 	 */
@@ -161,6 +188,18 @@ package feathers.controls
 		/**
 		 * The layout algorithm used to position and, optionally, size the
 		 * list's items.
+		 *
+		 * <p>By default, if no layout is provided by the time that the list
+		 * initializes, a vertical layout with options targeted at touch screens
+		 * is created.</p>
+		 *
+		 * <p>The following example tells the list to use a horizontal layout:</p>
+		 *
+		 * <listing version="3.0">
+		 * var layout:HorizontalLayout = new HorizontalLayout();
+		 * layout.gap = 20;
+		 * layout.padding = 20;
+		 * list.layout = layout;</listing>
 		 */
 		public function get layout():ILayout
 		{
@@ -187,6 +226,28 @@ package feathers.controls
 		
 		/**
 		 * The collection of data displayed by the list.
+		 *
+		 * <p>The following example passes in a data provider and tells the item
+		 * renderer how to intrepret the data:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.dataProvider = new ListCollection(
+		 * [
+		 *     { text: "Milk", thumbnail: textureAtlas.getTexture( "milk" ) },
+		 *     { text: "Eggs", thumbnail: textureAtlas.getTexture( "eggs" ) },
+		 *     { text: "Bread", thumbnail: textureAtlas.getTexture( "bread" ) },
+		 *     { text: "Chicken", thumbnail: textureAtlas.getTexture( "chicken" ) },
+		 * ]);
+		 *
+		 * list.itemRendererFactory = function():IListItemRenderer
+		 * {
+		 *     var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+		 *     renderer.labelField = "text";
+		 *     renderer.iconSourceField = "thumbnail";
+		 *     return renderer;
+		 * };</listing>
+		 *
+		 * @default null
 		 */
 		public function get dataProvider():ListCollection
 		{
@@ -232,8 +293,14 @@ package feathers.controls
 		 * deselected automatically. Set <code>allowMultipleSelection</code>
 		 * to <code>true</code> to select more than one item without
 		 * automatically deselecting other items.
-		 * 
+		 *
+		 * <p>The following example disables selection:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.isSelectable = false;</listing>
+		 *
 		 * @default true
+		 *
 		 * @see #allowMultipleSelection
 		 */
 		public function get isSelectable():Boolean
@@ -264,8 +331,32 @@ package feathers.controls
 		protected var _selectedIndex:int = -1;
 		
 		/**
-		 * The index of the currently selected item. Returns -1 if no item is
-		 * selected.
+		 * The index of the currently selected item. Returns <code>-1</code> if
+		 * no item is selected.
+		 *
+		 * <p>The following example selects an item by its index:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.selectedIndex = 2;</listing>
+		 *
+		 * <p>The following example clears the selected index:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.selectedIndex = -1;</listing>
+		 *
+		 * <p>The following example listens for when selection changes and
+		 * requests the selected index:</p>
+		 *
+		 * <listing version="3.0">
+		 * function list_changeHandler( event:Event ):void
+		 * {
+		 *     var list:List = List( event.currentTarget );
+		 *     var index:int = list.selectedIndex;
+		 *
+		 * }
+		 * list.addEventListener( Event.CHANGE, list_changeHandler );</listing>
+		 *
+		 * @default -1
 		 */
 		public function get selectedIndex():int
 		{
@@ -293,7 +384,32 @@ package feathers.controls
 		}
 
 		/**
-		 * The currently selected item. Returns null if no item is selected.
+		 * The currently selected item. Returns <code>null</code> if no item is
+		 * selected.
+		 *
+		 * <p>The following example changes the selected item:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.selectedItem = list.dataProvider.getItemAt(0);</listing>
+		 *
+		 * <p>The following example clears the selected item:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.selectedItem = null;</listing>
+		 *
+		 * <p>The following example listens for when selection changes and
+		 * requests the selected item:</p>
+		 *
+		 * <listing version="3.0">
+		 * function list_changeHandler( event:Event ):void
+		 * {
+		 *     var list:List = List( event.currentTarget );
+		 *     var item:Object = list.selectedItem;
+		 *
+		 * }
+		 * list.addEventListener( Event.CHANGE, list_changeHandler );</listing>
+		 *
+		 * @default null
 		 */
 		public function get selectedItem():Object
 		{
@@ -324,7 +440,16 @@ package feathers.controls
 		 * time, and if the selection changes, other items are deselected. Has
 		 * no effect if <code>isSelectable</code> is <code>false</code>.
 		 *
+		 * <p>In the following example, multiple selection is enabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.allowMultipleSelection = true;</listing>
+		 *
+		 * @default false
+		 *
 		 * @see #isSelectable
+		 * @see #selectedIndices
+		 * @see #selectedItems
 		 */
 		public function get allowMultipleSelection():Boolean
 		{
@@ -353,6 +478,31 @@ package feathers.controls
 		 * The indices of the currently selected items. Returns an empty <code>Vector.&lt;int&gt;</code>
 		 * if no items are selected. If <code>allowMultipleSelection</code> is
 		 * <code>false</code>, only one item may be selected at a time.
+		 *
+		 * <p>The following example selects two items by their indices:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.selectedIndices = new &lt;int&gt;[ 2, 3 ];</listing>
+		 *
+		 * <p>The following example clears the selected indices:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.selectedIndices = null;</listing>
+		 *
+		 * <p>The following example listens for when selection changes and
+		 * requests the selected indices:</p>
+		 *
+		 * <listing version="3.0">
+		 * function list_changeHandler( event:Event ):void
+		 * {
+		 *     var list:List = List( event.currentTarget );
+		 *     var indices:Vector.&lt;int&gt; = list.selectedIndices;
+		 *
+		 * }
+		 * list.addEventListener( Event.CHANGE, list_changeHandler );</listing>
+		 *
+		 * @see #allowMultipleSelection
+		 * @see #selectedItems
 		 */
 		public function get selectedIndices():Vector.<int>
 		{
@@ -394,6 +544,31 @@ package feathers.controls
 		 * items are selected, the getter creates a new
 		 * <code>Vector.&lt;Object&gt;</code> to return a list of selected
 		 * items.
+		 *
+		 * <p>The following example selects two items:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.selectedItems = new &lt;Object&gt;[ list.dataProvider.getItemAt(2) , list.dataProvider.getItemAt(3) ];</listing>
+		 *
+		 * <p>The following example clears the selected items:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.selectedItems = null;</listing>
+		 *
+		 * <p>The following example listens for when selection changes and
+		 * requests the selected items:</p>
+		 *
+		 * <listing version="3.0">
+		 * function list_changeHandler( event:Event ):void
+		 * {
+		 *     var list:List = List( event.currentTarget );
+		 *     var items:Vector.&lt;Object&gt; = list.selectedItems;
+		 *
+		 * }
+		 * list.addEventListener( Event.CHANGE, list_changeHandler );</listing>
+		 *
+		 * @see #allowMultipleSelection
+		 * @see #selectedIndices
 		 */
 		public function get selectedItems():Vector.<Object>
 		{
@@ -435,6 +610,176 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _itemRendererType:Class = DefaultListItemRenderer;
+		
+		/**
+		 * The class used to instantiate item renderers. Must implement the
+		 * <code>IListItemRenderer</code> interface.
+		 *
+		 * <p>To customize properties on the item renderer, use
+		 * <code>itemRendererFactory</code> instead.</p>
+		 *
+		 * <p>The following example changes the item renderer type:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererType = CustomItemRendererClass;</listing>
+		 *
+		 * @default DefaultListItemRenderer
+		 *
+		 * @see feathers.controls.renderers.IListItemRenderer
+		 * @see #itemRendererFactory
+		 */
+		public function get itemRendererType():Class
+		{
+			return this._itemRendererType;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set itemRendererType(value:Class):void
+		{
+			if(this._itemRendererType == value)
+			{
+				return;
+			}
+			
+			this._itemRendererType = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+		
+		/**
+		 * @private
+		 */
+		protected var _itemRendererFactory:Function;
+		
+		/**
+		 * A function called that is expected to return a new item renderer. Has
+		 * a higher priority than <code>itemRendererType</code>. Typically, you
+		 * would use an <code>itemRendererFactory</code> instead of an
+		 * <code>itemRendererType</code> if you wanted to initialize some
+		 * properties on each separate item renderer, such as skins.
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 *
+		 * <pre>function():IListItemRenderer</pre>
+		 *
+		 * <p>The following example provides a factory for the item renderer:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererFactory = function():IListItemRenderer
+		 * {
+		 *     var renderer:CustomItemRendererClass = new CustomItemRendererClass();
+		 *     renderer.backgroundSkin = new Quad( 10, 10, 0xff0000 );
+		 *     return renderer;
+		 * };</listing>
+		 *
+		 * @default null
+		 *
+		 * @see feathers.controls.renderers.IListItemRenderer
+		 * @see #itemRendererType
+		 */
+		public function get itemRendererFactory():Function
+		{
+			return this._itemRendererFactory;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set itemRendererFactory(value:Function):void
+		{
+			if(this._itemRendererFactory === value)
+			{
+				return;
+			}
+			
+			this._itemRendererFactory = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+		
+		/**
+		 * @private
+		 */
+		protected var _typicalItem:Object = null;
+		
+		/**
+		 * Used to auto-size the list when a virtualized layout is used. If the
+		 * list's width or height is unknown, the list will try to automatically
+		 * pick an ideal size. This item is used to create a sample item
+		 * renderer to measure item renderers that are virtual and not visible
+		 * in the viewport.
+		 *
+		 * <p>The following example provides a typical item:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.typicalItem = { text: "A typical item", icon: texture };
+		 * list.itemRendererProperties.labelField = "text";
+		 * list.itemRendererProperties.iconSourceField = "icon";</listing>
+		 *
+		 * @default null
+		 */
+		public function get typicalItem():Object
+		{
+			return this._typicalItem;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set typicalItem(value:Object):void
+		{
+			if(this._typicalItem == value)
+			{
+				return;
+			}
+			this._typicalItem = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _itemRendererName:String;
+
+		/**
+		 * A name to add to all item renderers in this list. Typically used by a
+		 * theme to provide different skins to different lists.
+		 *
+		 * <p>The following example sets the item renderer name:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererName = "my-custom-item-renderer";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( DefaultListItemRenderer, customItemRendererInitializer, "my-custom-item-renderer");</listing>
+		 *
+		 * @see feathers.core.FeathersControl#nameList
+		 */
+		public function get itemRendererName():String
+		{
+			return this._itemRendererName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set itemRendererName(value:String):void
+		{
+			if(this._itemRendererName == value)
+			{
+				return;
+			}
+			this._itemRendererName = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _itemRendererProperties:PropertyProxy;
 
 		/**
@@ -446,6 +791,14 @@ package feathers.controls
 		 * are instances of <code>IListItemRenderer</code>. The available
 		 * properties depend on which <code>IListItemRenderer</code>
 		 * implementation is returned by <code>itemRendererFactory</code>.
+		 *
+		 * <p>The following example customizes some item renderer properties
+		 * (this example assumes that the item renderer's label text renderer
+		 * is a <code>BitmapFontTextRenderer</code>):</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererProperties.&#64;defaultLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );
+		 * list.itemRendererProperties.padding = 20;</listing>
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -504,131 +857,6 @@ package feathers.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
-		/**
-		 * @private
-		 */
-		protected var _itemRendererType:Class = DefaultListItemRenderer;
-		
-		/**
-		 * The class used to instantiate item renderers.
-		 *
-		 * @see feathers.controls.renderer.IListItemRenderer
-		 * @see #itemRendererFactory
-		 */
-		public function get itemRendererType():Class
-		{
-			return this._itemRendererType;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set itemRendererType(value:Class):void
-		{
-			if(this._itemRendererType == value)
-			{
-				return;
-			}
-			
-			this._itemRendererType = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-		
-		/**
-		 * @private
-		 */
-		protected var _itemRendererFactory:Function;
-		
-		/**
-		 * A function called that is expected to return a new item renderer. Has
-		 * a higher priority than <code>itemRendererType</code>. Typically, you
-		 * would use an <code>itemRendererFactory</code> instead of an
-		 * <code>itemRendererType</code> if you wanted to initialize some
-		 * properties on each separate item renderer, such as skins.
-		 *
-		 * <p>The function is expected to have the following signature:</p>
-		 *
-		 * <pre>function():IListItemRenderer</pre>
-		 *
-		 * @see feathers.controls.renderers.IListItemRenderer
-		 * @see #itemRendererType
-		 */
-		public function get itemRendererFactory():Function
-		{
-			return this._itemRendererFactory;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set itemRendererFactory(value:Function):void
-		{
-			if(this._itemRendererFactory === value)
-			{
-				return;
-			}
-			
-			this._itemRendererFactory = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-		
-		/**
-		 * @private
-		 */
-		protected var _typicalItem:Object = null;
-		
-		/**
-		 * Used to auto-size the list. If the list's width or height is NaN, the
-		 * list will try to automatically pick an ideal size. This item is
-		 * used in that process to create a sample item renderer.
-		 */
-		public function get typicalItem():Object
-		{
-			return this._typicalItem;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set typicalItem(value:Object):void
-		{
-			if(this._typicalItem == value)
-			{
-				return;
-			}
-			this._typicalItem = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _itemRendererName:String;
-
-		/**
-		 * A name to add to all item renderers in this list. Typically used by a
-		 * theme to provide different skins to different lists.
-		 *
-		 * @see feathers.core.FeathersControl#nameList
-		 */
-		public function get itemRendererName():String
-		{
-			return this._itemRendererName;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set itemRendererName(value:String):void
-		{
-			if(this._itemRendererName == value)
-			{
-				return;
-			}
-			this._itemRendererName = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
 
 		/**
 		 * The pending item index to scroll to after validating. A value of
@@ -659,6 +887,11 @@ package feathers.controls
 		 * Scrolls the list so that the specified item is visible. If
 		 * <code>animationDuration</code> is greater than zero, the scroll will
 		 * animate. The duration is in seconds.
+		 *
+		 * <p>In the following example, the list is scrolled to display index 10:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.scrollToDisplayIndex( 10 );</listing>
 		 * 
 		 * @param index The integer index of an item from the data provider.
 		 * @param animationDuration The length of time, in seconds, of the animation. May be zero to scroll instantly.

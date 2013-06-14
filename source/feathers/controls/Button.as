@@ -535,6 +535,16 @@ package feathers.controls
 		 * button.label = "Click Me";
 		 * button.defaultIcon = new Image( texture );
 		 * button.iconPosition = Button.ICON_POSITION_RIGHT;</listing>
+		 *
+		 * @default Button.ICON_POSITION_LEFT
+		 *
+		 * @see #ICON_POSITION_TOP
+		 * @see #ICON_POSITION_RIGHT
+		 * @see #ICON_POSITION_BOTTOM
+		 * @see #ICON_POSITION_LEFT
+		 * @see #ICON_POSITION_RIGHT_BASELINE
+		 * @see #ICON_POSITION_LEFT_BASELINE
+		 * @see #ICON_POSITION_MANUAL
 		 */
 		public function get iconPosition():String
 		{
@@ -611,6 +621,12 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;</listing>
+		 *
+		 * @default Button.HORIZONTAL_ALIGN_CENTER
+		 *
+		 * @see #HORIZONTAL_ALIGN_LEFT
+		 * @see #HORIZONTAL_ALIGN_CENTER
+		 * @see #HORIZONTAL_ALIGN_RIGHT
 		 */
 		public function get horizontalAlign():String
 		{
@@ -644,6 +660,12 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.verticalAlign = Button.VERTICAL_ALIGN_TOP;</listing>
+		 *
+		 * @default Button.VERTICAL_ALIGN_MIDDLE
+		 *
+		 * @see #VERTICAL_ALIGN_TOP
+		 * @see #VERTICAL_ALIGN_MIDDLE
+		 * @see #VERTICAL_ALIGN_RIGHT
 		 */
 		public function get verticalAlign():String
 		{

@@ -260,6 +260,11 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * group.direction = ButtonGroup.DIRECTION_HORIZONTAL;</listing>
+		 *
+		 * @default ButtonGroup.DIRECTION_VERTICAL
+		 *
+		 * @see #DIRECTION_HORIZONTAL
+		 * @see #DIRECTION_VERTICAL
 		 */
 		public function get direction():String
 		{
@@ -592,9 +597,17 @@ package feathers.controls
 		 * <p>The following example provides a custom button name:</p>
 		 *
 		 * <listing version="3.0">
-		 * group.customButtonName = "my-custom-button-name";</listing>
+		 * group.customButtonName = "my-custom-button";</listing>
 		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( Button, customButtonInitializer, "my-custom-button");</listing>
+		 *
+		 * @see #DEFAULT_CHILD_NAME_BUTTON
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 * @see http://wiki.starling-framework.org/feathers/custom-themes
 		 */
 		public function get customButtonName():String
@@ -634,9 +647,16 @@ package feathers.controls
 		 * <p>The following example provides a custom first button name:</p>
 		 *
 		 * <listing version="3.0">
-		 * group.customFirstButtonName = "my-custom-first-button-name";</listing>
+		 * group.customFirstButtonName = "my-custom-first-button";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( Button, customFirstButtonInitializer, "my-custom-first-button");</listing>
 		 *
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 * @see http://wiki.starling-framework.org/feathers/custom-themes
 		 */
 		public function get customFirstButtonName():String
@@ -674,9 +694,16 @@ package feathers.controls
 		 * <p>The following example provides a custom last button name:</p>
 		 *
 		 * <listing version="3.0">
-		 * group.customLastButtonName = "my-custom-last-button-name";</listing>
+		 * group.customLastButtonName = "my-custom-last-button";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( Button, customLastButtonInitializer, "my-custom-last-button");</listing>
 		 *
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 * @see http://wiki.starling-framework.org/feathers/custom-themes
 		 */
 		public function get customLastButtonName():String

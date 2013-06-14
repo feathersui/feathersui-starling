@@ -19,6 +19,8 @@ package feathers.controls.renderers
 		 * An item from the list's data provider. The data may change if this
 		 * item renderer is reused for a new item because it's no longer needed
 		 * for the original item.
+		 *
+		 * <p>This property is set by the list, and should not be set manually.</p>
 		 */
 		function get data():Object;
 		
@@ -32,6 +34,8 @@ package feathers.controls.renderers
 		 * the list's data provider. Like the <code>data</code> property, this
 		 * value may change if this item renderer is reused by the list for a
 		 * different item.
+		 *
+		 * <p>This property is set by the list, and should not be set manually.</p>
 		 */
 		function get index():int;
 		
@@ -42,6 +46,8 @@ package feathers.controls.renderers
 		
 		/**
 		 * The list that contains this item renderer.
+		 *
+		 * <p>This property is set by the list, and should not be set manually.</p>
 		 */
 		function get owner():List;
 		

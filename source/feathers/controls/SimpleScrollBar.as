@@ -164,9 +164,9 @@ package feathers.controls
 		 * <p>In the following example, the direction is changed to vertical:</p>
 		 *
 		 * <listing version="3.0">
-		 * scrollBar.direction = DIRECTION_VERTICAL;</listing>
+		 * scrollBar.direction = SimpleScrollBar.DIRECTION_VERTICAL;</listing>
 		 *
-		 * @default DIRECTION_HORIZONTAL
+		 * @default SimpleScrollBar.DIRECTION_HORIZONTAL
 		 *
 		 * @see #DIRECTION_HORIZONTAL
 		 * @see #DIRECTION_VERTICAL
@@ -625,7 +625,15 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * scrollBar.customThumbName = "my-custom-thumb";</listing>
 		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( Button, customThumbInitializer, "my-custom-thumb");</listing>
+		 *
+		 * @see #DEFAULT_CHILD_NAME_THUMB
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 * @see #thumbFactory
 		 * @see #thumbProperties
 		 */

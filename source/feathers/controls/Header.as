@@ -638,6 +638,12 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * header.verticalAlign = Header.VERTICAL_ALIGN_MIDDLE;</listing>
+		 *
+		 * @default Header.VERTICAL_ALIGN_MIDDLE
+		 *
+		 * @see #VERTICAL_ALIGN_TOP
+		 * @see #VERTICAL_ALIGN_MIDDLE
+		 * @see #VERTICAL_ALIGN_BOTTOM
 		 */
 		public function get verticalAlign():String
 		{
@@ -846,7 +852,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * header.titleAlign = Header.TITLE_ALIGN_PREFER_LEFT;</listing>
 		 *
-		 * @default TITLE_ALIGN_CENTER
+		 * @default Header.TITLE_ALIGN_CENTER
+		 *
 		 * @see #TITLE_ALIGN_CENTER
 		 * @see #TITLE_ALIGN_PREFER_LEFT
 		 * @see #TITLE_ALIGN_PREFER_RIGHT
