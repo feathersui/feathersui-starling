@@ -63,42 +63,58 @@ package feathers.controls
 		/**
 		 * The page indicator's symbols will be positioned vertically, from top
 		 * to bottom.
+		 *
+		 * @see #direction
 		 */
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
 		/**
 		 * The page indicator's symbols will be positioned horizontally, from
 		 * left to right.
+		 *
+		 * @see #direction
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
 
 		/**
 		 * The symbols will be vertically aligned to the top.
+		 *
+		 * @see #verticalAlign
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
 
 		/**
 		 * The symbols will be vertically aligned to the middle.
+		 *
+		 * @see #verticalAlign
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
 
 		/**
 		 * The symbols will be vertically aligned to the bottom.
+		 *
+		 * @see #verticalAlign
 		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 
 		/**
 		 * The symbols will be horizontally aligned to the left.
+		 *
+		 * @see #horizontalAlign
 		 */
 		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
 
 		/**
 		 * The symbols will be horizontally aligned to the center.
+		 *
+		 * @see #horizontalAlign
 		 */
 		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
 
 		/**
 		 * The symbols will be horizontally aligned to the right.
+		 *
+		 * @see #horizontalAlign
 		 */
 		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
 
@@ -159,6 +175,13 @@ package feathers.controls
 
 		/**
 		 * The number of available pages.
+		 *
+		 * <p>In the following example, the page count is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * pages.pageCount = 5;</listing>
+		 *
+		 * @default 1
 		 */
 		public function get pageCount():int
 		{
@@ -185,6 +208,26 @@ package feathers.controls
 
 		/**
 		 * The currently selected index.
+		 *
+		 * <p>In the following example, the page indicator's selected index is
+		 * changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * pages.selectedIndex = 2;</listing>
+		 *
+		 * <p>The following example listens for when selection changes and
+		 * requests the selected index:</p>
+		 *
+		 * <listing version="3.0">
+		 * function pages_changeHandler( event:Event ):void
+		 * {
+		 *     var pages:PageIndicator = PageIndicator( event.currentTarget );
+		 *     var index:int = pages.selectedIndex;
+		 *
+		 * }
+		 * pages.addEventListener( Event.CHANGE, pages_changeHandler );</listing>
+		 *
+		 * @default 0
 		 */
 		public function get selectedIndex():int
 		{
@@ -220,6 +263,11 @@ package feathers.controls
 		/**
 		 * The symbols may be positioned vertically or horizontally.
 		 *
+		 * <p>In the following example, the direction is changed to vertical:</p>
+		 *
+		 * <listing version="3.0">
+		 * pages.direction = PageIndicator.DIRECTION_VERTICAL;</listing>
+		 *
 		 * @default PageIndicator.DIRECTION_HORIZONTAL
 		 *
 		 * @see #DIRECTION_HORIZONTAL
@@ -251,6 +299,12 @@ package feathers.controls
 		[Inspectable(type="String",enumeration="left,center,right")]
 		/**
 		 * The alignment of the symbols on the horizontal axis.
+		 *
+		 * <p>In the following example, the symbols are horizontally aligned to
+		 * the right:</p>
+		 *
+		 * <listing version="3.0">
+		 * pages.horizontalAlign = PageIndicator.HORIZONTAL_ALIGN_RIGHT;</listing>
 		 *
 		 * @default PageIndicator.HORIZONTAL_ALIGN_CENTER
 		 *
@@ -285,6 +339,12 @@ package feathers.controls
 		/**
 		 * The alignment of the symbols on the vertical axis.
 		 *
+		 * <p>In the following example, the symbols are vertically aligned to
+		 * the bottom:</p>
+		 *
+		 * <listing version="3.0">
+		 * pages.verticalAlign = PageIndicator.VERTICAL_ALIGN_BOTTOM;</listing>
+		 *
 		 * @default PageIndicator.VERTICAL_ALIGN_MIDDLE
 		 *
 		 * @see #VERTICAL_ALIGN_TOP
@@ -316,6 +376,13 @@ package feathers.controls
 
 		/**
 		 * The spacing, in pixels, between symbols.
+		 *
+		 * <p>In the following example, the gap between symbols is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * pages.gap = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get gap():Number
 		{
@@ -340,6 +407,13 @@ package feathers.controls
 		 * <code>padding</code> getter always returns the value of
 		 * <code>paddingTop</code>, but the other padding values may be
 		 * different.
+		 *
+		 * <p>In the following example, the padding is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * pages.padding = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get padding():Number
 		{
@@ -365,6 +439,13 @@ package feathers.controls
 		/**
 		 * The minimum space, in pixels, between the top edge of the component
 		 * and the top edge of the content.
+		 *
+		 * <p>In the following example, the top padding is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * pages.paddingTop = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingTop():Number
 		{
@@ -392,6 +473,13 @@ package feathers.controls
 		/**
 		 * The minimum space, in pixels, between the right edge of the component
 		 * and the right edge of the content.
+		 *
+		 * <p>In the following example, the right padding is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * pages.paddingRight = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingRight():Number
 		{
@@ -419,6 +507,13 @@ package feathers.controls
 		/**
 		 * The minimum space, in pixels, between the bottom edge of the component
 		 * and the bottom edge of the content.
+		 *
+		 * <p>In the following example, the bottom padding is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * pages.paddingBottom = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingBottom():Number
 		{
@@ -446,6 +541,13 @@ package feathers.controls
 		/**
 		 * The minimum space, in pixels, between the left edge of the component
 		 * and the left edge of the content.
+		 *
+		 * <p>In the following example, the left padding is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * pages.paddingLeft = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingLeft():Number
 		{
@@ -476,6 +578,15 @@ package feathers.controls
 		 *
 		 * <p>This function should have the following signature:</p>
 		 * <pre>function():DisplayObject</pre>
+		 *
+		 * <p>In the following example, a custom normal symbol factory is provided
+		 * to the page indicator:</p>
+		 *
+		 * <listing version="3.0">
+		 * pages.normalSymbolFactory = function():DisplayObject
+		 * {
+		 *     return new Image( texture );
+		 * };</listing>
 		 *
 		 * @see starling.display.DisplayObject
 		 * @see #selectedSymbolFactory
@@ -509,6 +620,15 @@ package feathers.controls
 		 *
 		 * <p>This function should have the following signature:</p>
 		 * <pre>function():DisplayObject</pre>
+		 *
+		 * <p>In the following example, a custom selected symbol factory is provided
+		 * to the page indicator:</p>
+		 *
+		 * <listing version="3.0">
+		 * pages.selectedSymbolFactory = function():DisplayObject
+		 * {
+		 *     return new Image( texture );
+		 * };</listing>
 		 *
 		 * @see starling.display.DisplayObject
 		 * @see #normalSymbolFactory
