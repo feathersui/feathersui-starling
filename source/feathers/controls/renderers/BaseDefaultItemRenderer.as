@@ -167,7 +167,8 @@ package feathers.controls.renderers
 		protected var _data:Object;
 
 		/**
-		 * The item displayed by this renderer.
+		 * The item displayed by this renderer. This property is set by the
+		 * list, and should not be set manually.
 		 */
 		public function get data():Object
 		{
@@ -210,6 +211,13 @@ package feathers.controls.renderers
 		/**
 		 * If true, the down state (and subsequent state changes) will be
 		 * delayed to make scrolling look nicer.
+		 *
+		 * <p>In the following example, the state delay timer is disabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererProperties.useStateDelayTimer = false;</listing>
+		 *
+		 * @default true
 		 */
 		public function get useStateDelayTimer():Boolean
 		{
@@ -240,6 +248,13 @@ package feathers.controls.renderers
 		 * If true, the label will come from the renderer's item using the
 		 * appropriate field or function for the label. If false, the label may
 		 * be set externally.
+		 *
+		 * <p>In the following example, the item doesn't have a label:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererProperties.itemHasLabel = false;</listing>
+		 *
+		 * @default true
 		 */
 		public function get itemHasLabel():Boolean
 		{
@@ -268,6 +283,13 @@ package feathers.controls.renderers
 		 * If true, the icon will come from the renderer's item using the
 		 * appropriate field or function for the icon. If false, the icon may
 		 * be skinned for each state externally.
+		 *
+		 * <p>In the following example, the item doesn't have an icon:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererProperties.itemHasIcon = false;</listing>
+		 *
+		 * @default true
 		 */
 		public function get itemHasIcon():Boolean
 		{
@@ -296,6 +318,13 @@ package feathers.controls.renderers
 		 * If true, the accessory will come from the renderer's item using the
 		 * appropriate field or function for the accessory. If false, the
 		 * accessory may be set using other means.
+		 *
+		 * <p>In the following example, the item doesn't have an accessory:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererProperties.itemHasAccessory = false;</listing>
+		 *
+		 * @default true
 		 */
 		public function get itemHasAccessory():Boolean
 		{
@@ -325,6 +354,11 @@ package feathers.controls.renderers
 		 * The location of the accessory, relative to one of the other children.
 		 * Use <code>ACCESSORY_POSITION_MANUAL</code> to position the accessory
 		 * from the top-left corner.
+		 *
+		 * <p>In the following example, the accessory is placed on the bottom:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererProperties.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_BOTTOM;</listing>
 		 *
 		 * @default BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT
 		 *
@@ -366,6 +400,11 @@ package feathers.controls.renderers
 		 * <p>The <code>accessoryPositionOrigin</code> property will be ignored
 		 * if <code>accessoryPosition</code> is set to <code>ACCESSORY_POSITION_MANUAL</code>.</p>
 		 *
+		 * <p>In the following example, the layout order is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererProperties.layoutOrder = BaseDefaultItemRenderer.LAYOUT_ORDER_LABEL_ACCESSORY_ICON;</listing>
+		 *
 		 * @default BaseDefaultItemRenderer.LAYOUT_ORDER_LABEL_ICON_ACCESSORY
 		 *
 		 * @see LAYOUT_ORDER_LABEL_ICON_ACCESSORY
@@ -398,6 +437,15 @@ package feathers.controls.renderers
 
 		/**
 		 * Offsets the x position of the accessory by a certain number of pixels.
+		 *
+		 * <p>In the following example, the accessory x position is adjusted by 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererProperties.accessoryOffsetX = 20;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #accessoryOffsetY
 		 */
 		public function get accessoryOffsetX():Number
 		{
@@ -424,6 +472,15 @@ package feathers.controls.renderers
 
 		/**
 		 * Offsets the y position of the accessory by a certain number of pixels.
+		 *
+		 * <p>In the following example, the accessory y position is adjusted by 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererProperties.accessoryOffsetY = 20;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #accessoryOffsetX
 		 */
 		public function get accessoryOffsetY():Number
 		{
@@ -458,6 +515,13 @@ package feathers.controls.renderers
 		 * <p>If <code>accessoryGap</code> is set to <code>Number.POSITIVE_INFINITY</code>,
 		 * the accessory and the component it is relative to will be positioned
 		 * as far apart as possible.</p>
+		 *
+		 * <p>In the following example, the accessory gap is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererProperties.accessoryGap = 20;</listing>
+		 *
+		 * @default NaN
 		 *
 		 * @see #gap
 		 * @see #accessoryPosition
@@ -528,6 +592,14 @@ package feathers.controls.renderers
 		/**
 		 * If enabled, calls owner.stopScrolling() when TouchEvents are
 		 * dispatched by the accessory.
+		 *
+		 * <p>In the following example, the list won't stop scrolling when the
+		 * accessory is touched:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererProperties.stopScrollingOnAccessoryTouch = false;</listing>
+		 *
+		 * @default true
 		 */
 		public var stopScrollingOnAccessoryTouch:Boolean = true;
 
@@ -550,6 +622,13 @@ package feathers.controls.renderers
 		 *     <li><code>labelFunction</code></li>
 		 *     <li><code>labelField</code></li>
 		 * </ol>
+		 *
+		 * <p>In the following example, the label field is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererProperties.labelField = "text";</listing>
+		 *
+		 * @default "label"
 		 *
 		 * @see #labelFunction
 		 */
@@ -590,6 +669,16 @@ package feathers.controls.renderers
 		 *     <li><code>labelField</code></li>
 		 * </ol>
 		 *
+		 * <p>In the following example, the label function is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererProperties.labelFunction = function( item:Object ):String
+		 * {
+		 *    return item.firstName + " " + item.lastName;
+		 * };</listing>
+		 *
+		 * @default null
+		 *
 		 * @see #labelField
 		 */
 		public function get labelFunction():Function
@@ -626,6 +715,13 @@ package feathers.controls.renderers
 		 *     <li><code>iconFunction</code></li>
 		 *     <li><code>iconField</code></li>
 		 * </ol>
+		 *
+		 * <p>In the following example, the icon field is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererProperties.iconField = "photo";</listing>
+		 *
+		 * @default "icon"
 		 *
 		 * @see #iconFunction
 		 * @see #iconSourceField
@@ -677,6 +773,22 @@ package feathers.controls.renderers
 		 *     <li><code>iconField</code></li>
 		 * </ol>
 		 *
+		 * <p>In the following example, the icon function is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererProperties.iconFunction = function( item:Object ):DisplayObject
+		 * {
+		 *    if(item in cachedIcons)
+		 *    {
+		 *        return cachedIcons[item];
+		 *    }
+		 *    var icon:Image = new Image( textureAtlas.getTexture( item.textureName ) );
+		 *    cachedIcons[item] = icon;
+		 *    return icon;
+		 * };</listing>
+		 *
+		 * @default null
+		 *
 		 * @see #iconField
 		 * @see #iconSourceField
 		 * @see #iconSourceFunction
@@ -724,6 +836,13 @@ package feathers.controls.renderers
 		 *     <li><code>iconFunction</code></li>
 		 *     <li><code>iconField</code></li>
 		 * </ol>
+		 *
+		 * <p>In the following example, the icon source field is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererProperties.iconSourceField = "texture";</listing>
+		 *
+		 * @default "iconSource"
 		 *
 		 * @see feathers.controls.ImageLoader#source
 		 * @see #iconLoaderFactory
@@ -794,6 +913,16 @@ package feathers.controls.renderers
 		 *     <li><code>iconField</code></li>
 		 * </ol>
 		 *
+		 * <p>In the following example, the icon source function is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererProperties.iconSourceFunction = function( item:Object ):Object
+		 * {
+		 *    return "http://www.example.com/thumbs/" + item.name + "-thumb.png";
+		 * };</listing>
+		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.ImageLoader#source
 		 * @see #iconLoaderFactory
 		 * @see #iconSourceField
@@ -838,6 +967,13 @@ package feathers.controls.renderers
 		 *     <li><code>accessoryFunction</code></li>
 		 *     <li><code>accessoryField</code></li>
 		 * </ol>
+		 *
+		 * <p>In the following example, the accessory field is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererProperties.accessoryField = "component";</listing>
+		 *
+		 * @default "accessory"
 		 *
 		 * @see #accessorySourceField
 		 * @see #accessoryFunction
@@ -896,6 +1032,22 @@ package feathers.controls.renderers
 		 *     <li><code>accessoryField</code></li>
 		 * </ol>
 		 *
+		 * <p>In the following example, the accessory function is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererProperties.accessoryFunction = function( item:Object ):DisplayObject
+		 * {
+		 *    if(item in cachedAccessories)
+		 *    {
+		 *        return cachedAccessories[item];
+		 *    }
+		 *    var accessory:Image = createAccessoryForItem( item );;
+		 *    cachedAccessories[item] = accessory;
+		 *    return accessory;
+		 * };</listing>
+		 *
+		 * @default null
+		 *
 		 * @see #accessoryField
 		 * @see #accessorySourceField
 		 * @see #accessorySourceFunction
@@ -947,6 +1099,13 @@ package feathers.controls.renderers
 		 *     <li><code>accessoryFunction</code></li>
 		 *     <li><code>accessoryField</code></li>
 		 * </ol>
+		 *
+		 * <p>In the following example, the accessory source field is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererProperties.accessorySourceField = "texture";</listing>
+		 *
+		 * @default "accessorySource"
 		 *
 		 * @see feathers.controls.ImageLoader#source
 		 * @see #accessoryLoaderFactory
@@ -1021,6 +1180,16 @@ package feathers.controls.renderers
 		 *     <li><code>accessoryField</code></li>
 		 * </ol>
 		 *
+		 * <p>In the following example, the accessory source function is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererProperties.accessorySourceFunction = function( item:Object ):Object
+		 * {
+		 *    return "http://www.example.com/thumbs/" + item.name + "-thumb.png";
+		 * };</listing>
+		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.ImageLoader#source
 		 * @see #accessoryLoaderFactory
 		 * @see #accessorySourceField
@@ -1074,6 +1243,13 @@ package feathers.controls.renderers
 		 *     <li><code>accessoryFunction</code></li>
 		 *     <li><code>accessoryField</code></li>
 		 * </ol>
+		 *
+		 * <p>In the following example, the accessory label field is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererProperties.accessoryLabelField = "text";</listing>
+		 *
+		 * @default "accessoryLabel"
 		 *
 		 * @see #accessoryLabelFactory
 		 * @see #accessoryLabelFunction
@@ -1131,6 +1307,16 @@ package feathers.controls.renderers
 		 *     <li><code>accessoryField</code></li>
 		 * </ol>
 		 *
+		 * <p>In the following example, the accessory label function is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererProperties.accessoryLabelFunction = function( item:Object ):String
+		 * {
+		 *    return item.firstName + " " + item.lastName;
+		 * };</listing>
+		 *
+		 * @default null
+		 *
 		 * @see #accessoryLabelFactory
 		 * @see #accessoryLabelField
 		 * @see #accessoryField
@@ -1171,6 +1357,16 @@ package feathers.controls.renderers
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function():ImageLoader</pre>
 		 *
+		 * <p>In the following example, the loader factory is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererProperties.iconLoaderFactory = function():ImageLoader
+		 * {
+		 *    var loader:ImageLoader = new ImageLoader();
+		 *    loader.snapToPixels = true;
+		 *    return loader;
+		 * };</listing>
+		 *
 		 * @see feathers.controls.ImageLoader
 		 * @see #iconSourceField
 		 * @see #iconSourceFunction
@@ -1208,6 +1404,16 @@ package feathers.controls.renderers
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function():ImageLoader</pre>
 		 *
+		 * <p>In the following example, the loader factory is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererProperties.accessoryLoaderFactory = function():ImageLoader
+		 * {
+		 *    var loader:ImageLoader = new ImageLoader();
+		 *    loader.snapToPixels = true;
+		 *    return loader;
+		 * };</listing>
+		 *
 		 * @see feathers.controls.ImageLoader
 		 * @see #accessorySourceField;
 		 * @see #accessorySourceFunction;
@@ -1242,6 +1448,17 @@ package feathers.controls.renderers
 		 *
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function():ITextRenderer</pre>
+		 *
+		 * <p>In the following example, the accessory label factory is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererProperties.accessoryLabelFactory = function():ITextRenderer
+		 * {
+		 *    var renderer:TextFieldTextRenderer = new TextFieldTextRenderer();
+		 *    renderer.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333 );
+		 *    renderer.embedFonts = true;
+		 *    return renderer;
+		 * };</listing>
 		 *
 		 * @see feathers.core.ITextRenderer
 		 * @see feathers.core.FeathersControl#defaultTextRendererFactory
@@ -1287,6 +1504,12 @@ package feathers.controls.renderers
 		 * <p>Setting properties in a <code>accessoryLabelFactory</code>
 		 * function instead of using <code>accessoryLabelProperties</code> will
 		 * result in better performance.</p>
+		 *
+		 * <p>In the following example, the accessory label properties are customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.itemRendererProperties.&#64;accessoryLabelProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333 );
+		 * list.itemRendererProperties.&#64;accessoryLabelProperties.embedFonts = true;</listing>
 		 *
 		 * @see feathers.core.ITextRenderer
 		 * @see #accessoryLabelFactory
