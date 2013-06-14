@@ -97,14 +97,14 @@ package feathers.controls
 		/**
 		 * The slider's thumb may be dragged horizontally (on the x-axis).
 		 *
-		 * #direction
+		 * @see #direction
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
 		
 		/**
 		 * The slider's thumb may be dragged vertically (on the y-axis).
 		 *
-		 * #direction
+		 * @see #direction
 		 */
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
@@ -114,7 +114,7 @@ package feathers.controls
 		 * fills the entire length of the slider. The maximum track will not
 		 * exist.
 		 *
-		 * #trackLayoutMode
+		 * @see #trackLayoutMode
 		 */
 		public static const TRACK_LAYOUT_MODE_SINGLE:String = "single";
 
@@ -130,7 +130,7 @@ package feathers.controls
 		 * <code>Scale3Image</code> or a <code>TiledImage</code> that is
 		 * designed to be resized dynamically.</p>
 		 *
-		 * #trackLayoutMode
+		 * @see #trackLayoutMode
 		 * @see feathers.display.Scale9Image
 		 * @see feathers.display.Scale3Image
 		 * @see feathers.display.TiledImage
@@ -141,7 +141,7 @@ package feathers.controls
 		 * The slider's track dimensions fill the full width and height of the
 		 * slider.
 		 *
-		 * #trackScaleMode
+		 * @see #trackScaleMode
 		 */
 		public static const TRACK_SCALE_MODE_EXACT_FIT:String = "exactFit";
 
@@ -151,7 +151,7 @@ package feathers.controls
 		 * vertical, the height of the track will fill the full height of the
 		 * slider. The other edge will not be scaled.
 		 *
-		 * #trackScaleMode
+		 * @see #trackScaleMode
 		 */
 		public static const TRACK_SCALE_MODE_DIRECTIONAL:String = "directional";
 
