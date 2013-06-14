@@ -1041,7 +1041,7 @@ package feathers.controls.renderers
 		 *    {
 		 *        return cachedAccessories[item];
 		 *    }
-		 *    var accessory:Image = createAccessoryForItem( item );;
+		 *    var accessory:DisplayObject = createAccessoryForItem( item );
 		 *    cachedAccessories[item] = accessory;
 		 *    return accessory;
 		 * };</listing>
