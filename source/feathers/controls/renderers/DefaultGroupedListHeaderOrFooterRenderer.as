@@ -18,6 +18,8 @@ package feathers.controls.renderers
 	/**
 	 * The default renderer used for headers and footers in a GroupedList
 	 * control.
+	 *
+	 * @see feathers.controls.GroupedList
 	 */
 	public class DefaultGroupedListHeaderOrFooterRenderer extends FeathersControl implements IGroupedListHeaderOrFooterRenderer
 	{
@@ -212,6 +214,12 @@ package feathers.controls.renderers
 		 * The location where the renderer's content is aligned horizontally
 		 * (on the x-axis).
 		 *
+		 * <p>In the following example, the horizontal alignment is changed to
+		 * right:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.horizontalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_RIGHT;</listing>
+		 *
 		 * @default DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_LEFT
 		 *
 		 * @see #HORIZONTAL_ALIGN_LEFT
@@ -245,6 +253,12 @@ package feathers.controls.renderers
 		/**
 		 * The location where the renderer's content is aligned vertically (on
 		 * the y-axis).
+		 *
+		 * <p>In the following example, the vertical alignment is changed to
+		 * bottom:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.verticalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_BOTTOM;</listing>
 		 *
 		 * @default DefaultGroupedListHeaderOrFooterRenderer.VERTICAL_ALIGN_MIDDLE
 		 *
@@ -290,6 +304,13 @@ package feathers.controls.renderers
 		 *     <li><code>contentFunction</code></li>
 		 *     <li><code>contentField</code></li>
 		 * </ol>
+		 *
+		 * <p>In the following example, the content field is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.contentField = "header";</listing>
+		 *
+		 * @default "content"
 		 *
 		 * @see #contentSourceField
 		 * @see #contentFunction
@@ -339,6 +360,22 @@ package feathers.controls.renderers
 		 *     <li><code>contentField</code></li>
 		 * </ol>
 		 *
+		 * <p>In the following example, the content function is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.contentFunction = function( item:Object ):DisplayObject
+		 * {
+		 *    if(item in cachedContent)
+		 *    {
+		 *        return cachedContent[item];
+		 *    }
+		 *    var content:DisplayObject = createContentForHeader( item );
+		 *    cachedContent[item] = content;
+		 *    return content;
+		 * };</listing>
+		 *
+		 * @default null
+		 *
 		 * @see #contentField
 		 * @see #contentSourceField
 		 * @see #contentSourceFunction
@@ -366,7 +403,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected var _contentSourceField:String = "texture";
+		protected var _contentSourceField:String = "source";
 
 		/**
 		 * The field in the data that contains a <code>starling.textures.Texture</code>
@@ -384,12 +421,19 @@ package feathers.controls.renderers
 		 * <p>All of the content fields and functions, ordered by priority:</p>
 		 * <ol>
 		 *     <li><code>contentSourceFunction</code></li>
-		 *     <li><code>contentSourceeField</code></li>
+		 *     <li><code>contentSourceField</code></li>
 		 *     <li><code>contentLabelFunction</code></li>
 		 *     <li><code>contentLabelField</code></li>
 		 *     <li><code>contentFunction</code></li>
 		 *     <li><code>contentField</code></li>
 		 * </ol>
+		 *
+		 * <p>In the following example, the content source field is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.contentSourceField = "texture";</listing>
+		 *
+		 * @default "source"
 		 *
 		 * @see feathers.controls.ImageLoader#source
 		 * @see #contentLoaderFactory
@@ -451,6 +495,16 @@ package feathers.controls.renderers
 		 *     <li><code>contentField</code></li>
 		 * </ol>
 		 *
+		 * <p>In the following example, the content source function is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.contentSourceFunction = function( item:Object ):Object
+		 * {
+		 *    return "http://www.example.com/thumbs/" + item.name + "-thumb.png";
+		 * };</listing>
+		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.ImageLoader#source
 		 * @see #contentLoaderFactory
 		 * @see #contentSourceField
@@ -504,6 +558,13 @@ package feathers.controls.renderers
 		 *     <li><code>contentFunction</code></li>
 		 *     <li><code>contentField</code></li>
 		 * </ol>
+		 *
+		 * <p>In the following example, the content label field is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.contentLabelField = "text";</listing>
+		 *
+		 * @default "label"
 		 *
 		 * @see #contentLabelFactory
 		 * @see #contentLabelFunction
@@ -561,6 +622,16 @@ package feathers.controls.renderers
 		 *     <li><code>contentField</code></li>
 		 * </ol>
 		 *
+		 * <p>In the following example, the content label function is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.contentLabelFunction = function( item:Object ):String
+		 * {
+		 *    return item.category + " > " + item.subCategory;
+		 * };</listing>
+		 *
+		 * @default null
+		 *
 		 * @see #contentLabelFactory
 		 * @see #contentLabelField
 		 * @see #contentField
@@ -587,63 +658,6 @@ package feathers.controls.renderers
 		}
 
 		/**
-		 * Uses the content fields and functions to generate content for a
-		 * specific group header or footer.
-		 *
-		 * <p>All of the content fields and functions, ordered by priority:</p>
-		 * <ol>
-		 *     <li><code>contentTextureFunction</code></li>
-		 *     <li><code>contentTextureField</code></li>
-		 *     <li><code>contentLabelFunction</code></li>
-		 *     <li><code>contentLabelField</code></li>
-		 *     <li><code>contentFunction</code></li>
-		 *     <li><code>contentField</code></li>
-		 * </ol>
-		 */
-		protected function itemToContent(item:Object):DisplayObject
-		{
-			if(this._contentSourceFunction != null)
-			{
-				var source:Object = this._contentSourceFunction(item);
-				this.refreshContentSource(source);
-				return this.contentImage;
-			}
-			else if(this._contentSourceField != null && item && item.hasOwnProperty(this._contentSourceField))
-			{
-				source = item[this._contentSourceField];
-				this.refreshContentSource(source);
-				return this.contentImage;
-			}
-			else if(this._contentLabelFunction != null)
-			{
-				var label:String = this._contentLabelFunction(item) as String;
-				this.refreshContentLabel(label);
-				return DisplayObject(this.contentLabel);
-			}
-			else if(this._contentLabelField != null && item && item.hasOwnProperty(this._contentLabelField))
-			{
-				label = item[this._contentLabelField] as String;
-				this.refreshContentLabel(label);
-				return DisplayObject(this.contentLabel);
-			}
-			else if(this._contentFunction != null)
-			{
-				return this._contentFunction(item) as DisplayObject;
-			}
-			else if(this._contentField != null && item && item.hasOwnProperty(this._contentField))
-			{
-				return item[this._contentField] as DisplayObject;
-			}
-			else if(item)
-			{
-				this.refreshContentLabel(item.toString());
-				return DisplayObject(this.contentLabel);
-			}
-
-			return null;
-		}
-
-		/**
 		 * @private
 		 */
 		protected var _contentLoaderFactory:Function = defaultImageLoaderFactory;
@@ -654,6 +668,17 @@ package feathers.controls.renderers
 		 * Useful for transforming the <code>ImageLoader</code> in some way. For
 		 * example, you might want to scale it for current DPI or apply pixel
 		 * snapping.
+		 *
+		 * <p>In the following example, a custom content loader factory is passed
+		 * to the renderer:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.contentLoaderFactory = function():ImageLoader
+		 * {
+		 *     var loader:ImageLoader = new ImageLoader();
+		 *     loader.snapToPixels = true;
+		 *     return loader;
+		 * };</listing>
 		 *
 		 * @see feathers.controls.ImageLoader
 		 * @see #contentSourceField
@@ -686,6 +711,18 @@ package feathers.controls.renderers
 		 * A function that generates an <code>ITextRenderer</code> that uses the result
 		 * of <code>contentLabelField</code> or <code>contentLabelFunction</code>.
 		 * Can be used to set properties on the <code>ITextRenderer</code>.
+		 *
+		 * <p>In the following example, a custom content label factory is passed
+		 * to the renderer:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.contentLabelFactory = function():ITextRenderer
+		 * {
+		 *     var renderer:TextFieldTextRenderer = new TextFieldTextRenderer();
+		 *     renderer.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333 );
+		 *     renderer.embedFonts = true;
+		 *     return renderer;
+		 * };</listing>
 		 *
 		 * @see feathers.core.ITextRenderer
 		 * @see feathers.core.FeathersControl#defaultTextRendererFactory
@@ -724,6 +761,13 @@ package feathers.controls.renderers
 		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
 		 * you can use the following syntax:</p>
 		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 *
+		 * <p>In the following example, a custom content label properties are
+		 * customized:</p>
+		 * 
+		 * <listing version="3.0">
+		 * renderer.contentLabelProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333 );
+		 * renderer.contentLabelProperties.embedFonts = true;</listing>
 		 *
 		 * @see feathers.core.ITextRenderer
 		 * @see #contentLabelField
@@ -794,6 +838,14 @@ package feathers.controls.renderers
 
 		/**
 		 * A background to behind the component's content.
+		 *
+		 * <p>In the following example, the header renderers is given a
+		 * background skin:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.backgroundSkin = new Image( texture );</listing>
+		 *
+		 * @default null
 		 */
 		public function get backgroundSkin():DisplayObject
 		{
@@ -830,6 +882,14 @@ package feathers.controls.renderers
 
 		/**
 		 * A background to display when the component is disabled.
+		 *
+		 * <p>In the following example, the header renderers is given a
+		 * disabled background skin:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.backgroundDisabledSkin = new Image( texture );</listing>
+		 *
+		 * @default null
 		 */
 		public function get backgroundDisabledSkin():DisplayObject
 		{
@@ -864,6 +924,13 @@ package feathers.controls.renderers
 		 * <code>padding</code> getter always returns the value of
 		 * <code>paddingTop</code>, but the other padding values may be
 		 * different.
+		 *
+		 * <p>In the following example, the padding is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.padding = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get padding():Number
 		{
@@ -889,6 +956,13 @@ package feathers.controls.renderers
 		/**
 		 * The minimum space, in pixels, between the component's top edge and
 		 * the component's content.
+		 *
+		 * <p>In the following example, the top padding is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.paddingTop = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingTop():Number
 		{
@@ -916,6 +990,13 @@ package feathers.controls.renderers
 		/**
 		 * The minimum space, in pixels, between the component's right edge
 		 * and the component's content.
+		 *
+		 * <p>In the following example, the right padding is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.paddingRight = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingRight():Number
 		{
@@ -943,6 +1024,13 @@ package feathers.controls.renderers
 		/**
 		 * The minimum space, in pixels, between the component's bottom edge
 		 * and the component's content.
+		 *
+		 * <p>In the following example, the bottom padding is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.paddingBottom = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingBottom():Number
 		{
@@ -970,6 +1058,13 @@ package feathers.controls.renderers
 		/**
 		 * The minimum space, in pixels, between the component's left edge
 		 * and the component's content.
+		 * 
+		 * <p>In the following example, the left padding is set to 20 pixels:</p>
+		 * 
+		 * <listing version="3.0">
+		 * renderer.paddingLeft = 20;</listing>
+		 * 
+		 * @default 0
 		 */
 		public function get paddingLeft():Number
 		{
@@ -1015,6 +1110,63 @@ package feathers.controls.renderers
 				this.contentLabel = null;
 			}
 			super.dispose();
+		}
+
+		/**
+		 * Uses the content fields and functions to generate content for a
+		 * specific group header or footer.
+		 *
+		 * <p>All of the content fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>contentTextureFunction</code></li>
+		 *     <li><code>contentTextureField</code></li>
+		 *     <li><code>contentLabelFunction</code></li>
+		 *     <li><code>contentLabelField</code></li>
+		 *     <li><code>contentFunction</code></li>
+		 *     <li><code>contentField</code></li>
+		 * </ol>
+		 */
+		protected function itemToContent(item:Object):DisplayObject
+		{
+			if(this._contentSourceFunction != null)
+			{
+				var source:Object = this._contentSourceFunction(item);
+				this.refreshContentSource(source);
+				return this.contentImage;
+			}
+			else if(this._contentSourceField != null && item && item.hasOwnProperty(this._contentSourceField))
+			{
+				source = item[this._contentSourceField];
+				this.refreshContentSource(source);
+				return this.contentImage;
+			}
+			else if(this._contentLabelFunction != null)
+			{
+				var label:String = this._contentLabelFunction(item) as String;
+				this.refreshContentLabel(label);
+				return DisplayObject(this.contentLabel);
+			}
+			else if(this._contentLabelField != null && item && item.hasOwnProperty(this._contentLabelField))
+			{
+				label = item[this._contentLabelField] as String;
+				this.refreshContentLabel(label);
+				return DisplayObject(this.contentLabel);
+			}
+			else if(this._contentFunction != null)
+			{
+				return this._contentFunction(item) as DisplayObject;
+			}
+			else if(this._contentField != null && item && item.hasOwnProperty(this._contentField))
+			{
+				return item[this._contentField] as DisplayObject;
+			}
+			else if(item)
+			{
+				this.refreshContentLabel(item.toString());
+				return DisplayObject(this.contentLabel);
+			}
+
+			return null;
 		}
 
 		/**
