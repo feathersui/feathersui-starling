@@ -228,7 +228,7 @@ package feathers.controls
 		 * The collection of data displayed by the list.
 		 *
 		 * <p>The following example passes in a data provider and tells the item
-		 * renderer how to intrepret the data:</p>
+		 * renderer how to interpret the data:</p>
 		 *
 		 * <listing version="3.0">
 		 * list.dataProvider = new ListCollection(
@@ -357,6 +357,11 @@ package feathers.controls
 		 * list.addEventListener( Event.CHANGE, list_changeHandler );</listing>
 		 *
 		 * @default -1
+		 *
+		 * @see #selectedItem
+		 * @see #allowMultipleSelection
+		 * @see #selectedItems
+		 * @see #selectedIndices
 		 */
 		public function get selectedIndex():int
 		{
@@ -410,6 +415,11 @@ package feathers.controls
 		 * list.addEventListener( Event.CHANGE, list_changeHandler );</listing>
 		 *
 		 * @default null
+		 *
+		 * @see #selectedIndex
+		 * @see #allowMultipleSelection
+		 * @see #selectedItems
+		 * @see #selectedIndices
 		 */
 		public function get selectedItem():Object
 		{
@@ -503,6 +513,8 @@ package feathers.controls
 		 *
 		 * @see #allowMultipleSelection
 		 * @see #selectedItems
+		 * @see #selectedIndex
+		 * @see #selectedItem
 		 */
 		public function get selectedIndices():Vector.<int>
 		{
@@ -569,6 +581,8 @@ package feathers.controls
 		 *
 		 * @see #allowMultipleSelection
 		 * @see #selectedIndices
+		 * @see #selectedIndex
+		 * @see #selectedItem
 		 */
 		public function get selectedItems():Vector.<Object>
 		{
@@ -713,9 +727,9 @@ package feathers.controls
 		 * <p>The following example provides a typical item:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.typicalItem = { text: "A typical item", icon: texture };
+		 * list.typicalItem = { text: "A typical item", thumbnail: texture };
 		 * list.itemRendererProperties.labelField = "text";
-		 * list.itemRendererProperties.iconSourceField = "icon";</listing>
+		 * list.itemRendererProperties.iconSourceField = "thumbnail";</listing>
 		 *
 		 * @default null
 		 */

@@ -16,6 +16,28 @@ package feathers.controls
 	 * A container with layout, optional scrolling, a header, and an optional
 	 * footer.
 	 *
+	 * <p>The following example creates a panel with a horizontal layout and
+	 * adds two buttons to it:</p>
+	 *
+	 * <listing version="3.0">
+	 * var panel:Panel = new Panel();
+	 * panel.headerProperties.title = "Is it time to party?";
+	 *
+	 * var layout:HorizontalLayout = new HorizontalLayout();
+	 * layout.gap = 20;
+	 * layout.padding = 20;
+	 * panel.layout = layout;
+	 *
+	 * this.addChild( panel );
+	 *
+	 * var yesButton:Button = new Button();
+	 * yesButton.label = "Yes";
+	 * panel.addChild( yesButton );
+	 *
+	 * var noButton:Button = new Button();
+	 * noButton.label = "No";
+	 * panel.addChild( noButton );</listing>
+	 *
 	 * <p><strong>Beta Component:</strong> This is a new component, and its APIs
 	 * may need some changes between now and the next version of Feathers to
 	 * account for overlooked requirements or other issues. Upgrading to future
@@ -183,6 +205,24 @@ package feathers.controls
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():IFeathersControl</pre>
 		 *
+		 * <p>In the following example, a custom header factory is provided to
+		 * the panel:</p>
+		 *
+		 * <listing version="3.0">
+		 * panel.headerFactory = function():IFeathersControl
+		 * {
+		 *     var backButton:Button = new Button();
+		 *     backButton.label = "Back";
+		 *     backButton.addEventListener( Event.TRIGGERED, backButton_triggeredHandler );
+		 *
+		 *     var header:Header = new Header();
+		 *     header.leftItems = new &lt;DisplayObject&gt;
+		 *     [
+		 *         backButton
+		 *     ];
+		 *     return header;
+		 * };</listing>
+		 *
 		 * @see feathers.core.IFeathersControl
 		 * @see feathers.controls.Header
 		 * @see #headerProperties
@@ -216,6 +256,20 @@ package feathers.controls
 		/**
 		 * A name to add to the panel's header sub-component. Typically
 		 * used by a theme to provide different skins to different panels.
+		 *
+		 * <p>In the following example, a custom header name is passed to the
+		 * panel:</p>
+		 *
+		 * <listing version="3.0">
+		 * panel.customHeaderName = "my-custom-header";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style (this example assumes that the
+		 * header is a <code>Header</code>, but it can be any
+		 * <code>IFeathersControl</code>):</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( Header, customHeaderInitializer, "my-custom-header");</listing>
 		 *
 		 * @see #DEFAULT_CHILD_NAME_HEADER
 		 * @see feathers.core.FeathersControl#nameList
@@ -267,6 +321,11 @@ package feathers.controls
 		 * <p>Setting properties in a <code>headerFactory</code> function
 		 * instead of using <code>headerProperties</code> will result in better
 		 * performance.</p>
+		 *
+		 * <p>In the following example, the header properties are customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * panel.headerProperties.title = "Hello World";</listing>
 		 *
 		 * @see #headerFactory
 		 * @see feathers.controls.Header
@@ -330,6 +389,15 @@ package feathers.controls
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():IFeathersControl</pre>
 		 *
+		 * <p>In the following example, a custom footer factory is provided to
+		 * the panel:</p>
+		 *
+		 * <listing version="3.0">
+		 * panel.footerFactory = function():IFeathersControl
+		 * {
+		 *     return new ScrollContainer();
+		 * };</listing>
+		 *
 		 * @see feathers.core.IFeathersControl
 		 * @see #footerProperties
 		 */
@@ -362,6 +430,20 @@ package feathers.controls
 		/**
 		 * A name to add to the panel's footer sub-component. Typically
 		 * used by a theme to provide different skins to different panels.
+		 *
+		 * <p>In the following example, a custom footer name is passed to the
+		 * panel:</p>
+		 *
+		 * <listing version="3.0">
+		 * panel.customFooterName = "my-custom-footer";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style (this example assumes that the
+		 * footer is a <code>ScrollContainer</code>, but it can be any
+		 * <code>IFeathersControl</code>):</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( ScrollContainer, customFooterInitializer, "my-custom-footer");</listing>
 		 *
 		 * @see #DEFAULT_CHILD_NAME_FOOTER
 		 * @see feathers.core.FeathersControl#nameList
@@ -412,6 +494,11 @@ package feathers.controls
 		 * <p>Setting properties in a <code>footerFactory</code> function
 		 * instead of using <code>footerProperties</code> will result in better
 		 * performance.</p>
+		 *
+		 * <p>In the following example, the footer properties are customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * panel.footerProperties.verticalScrollPolicy = ScrollContainer.SCROLL_POLICY_OFF;</listing>
 		 *
 		 * @see #footerFactory
 		 */
