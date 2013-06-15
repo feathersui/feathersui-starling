@@ -16,6 +16,28 @@ package feathers.controls
 	 * A container with layout, optional scrolling, a header, and an optional
 	 * footer.
 	 *
+	 * <p>The following example creates a panel with a horizontal layout and
+	 * adds two buttons to it:</p>
+	 *
+	 * <listing version="3.0">
+	 * var panel:Panel = new Panel();
+	 * panel.headerProperties.title = "Is it time to party?";
+	 *
+	 * var layout:HorizontalLayout = new HorizontalLayout();
+	 * layout.gap = 20;
+	 * layout.padding = 20;
+	 * panel.layout = layout;
+	 *
+	 * this.addChild( panel );
+	 *
+	 * var yesButton:Button = new Button();
+	 * yesButton.label = "Yes";
+	 * panel.addChild( yesButton );
+	 *
+	 * var noButton:Button = new Button();
+	 * noButton.label = "No";
+	 * panel.addChild( noButton );</listing>
+	 *
 	 * <p><strong>Beta Component:</strong> This is a new component, and its APIs
 	 * may need some changes between now and the next version of Feathers to
 	 * account for overlooked requirements or other issues. Upgrading to future
