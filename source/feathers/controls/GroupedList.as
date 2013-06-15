@@ -740,9 +740,9 @@ package feathers.controls
 		 * <p>The following example provides a typical item:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.typicalItem = { text: "A typical item", icon: texture };
+		 * list.typicalItem = { text: "A typical item", thumbnail: texture };
 		 * list.itemRendererProperties.labelField = "text";
-		 * list.itemRendererProperties.iconSourceField = "icon";</listing>
+		 * list.itemRendererProperties.iconSourceField = "thumbnail";</listing>
 		 *
 		 * @default null
 		 */
