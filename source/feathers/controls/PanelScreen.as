@@ -13,7 +13,6 @@ package feathers.controls
 	import flash.ui.Keyboard;
 
 	import starling.core.Starling;
-
 	import starling.events.Event;
 
 	/**
