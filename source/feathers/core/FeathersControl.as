@@ -19,7 +19,6 @@ package feathers.core
 	import flash.geom.Rectangle;
 
 	import starling.core.RenderSupport;
-
 	import starling.display.DisplayObject;
 	import starling.display.Sprite;
 	import starling.events.Event;
