@@ -12,7 +12,6 @@ package feathers.controls
 	import feathers.core.ITextRenderer;
 	import feathers.core.IToggle;
 	import feathers.core.PropertyProxy;
-	import feathers.events.FeathersEventType;
 	import feathers.system.DeviceCapabilities;
 
 	import flash.geom.Point;
@@ -2000,11 +1999,15 @@ package feathers.controls
 			this.onTrack.y = 0;
 			this.onTrack.width = this.thumb.x + this.thumb.width / 2;
 			this.onTrack.height = this.actualHeight;
+			//validation is required for the toggle tween. otherwise the tracks
+			//don't appear correctly until the next frame.
+			this.onTrack.validate();
 
 			this.offTrack.x = this.onTrack.width;
 			this.offTrack.y = 0;
 			this.offTrack.width = this.actualWidth - this.offTrack.x;
 			this.offTrack.height = this.actualHeight;
+			this.offTrack.validate();
 		}
 
 		/**

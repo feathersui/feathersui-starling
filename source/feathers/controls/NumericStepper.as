@@ -15,9 +15,7 @@ package feathers.controls
 	import feathers.utils.math.roundToNearest;
 
 	import flash.events.TimerEvent;
-
 	import flash.ui.Keyboard;
-
 	import flash.utils.Timer;
 
 	import starling.events.Event;
