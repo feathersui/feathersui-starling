@@ -12,7 +12,6 @@ package feathers.controls
 	import feathers.core.ITextRenderer;
 	import feathers.core.IToggle;
 	import feathers.core.PropertyProxy;
-	import feathers.events.FeathersEventType;
 	import feathers.system.DeviceCapabilities;
 
 	import flash.geom.Point;
