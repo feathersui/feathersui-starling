@@ -19,7 +19,7 @@
 		<ant dir="${basedir}/Gallery" target="build-android" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/HelloWorld" target="build-android" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/LayoutExplorer" target="build-android" inheritAll="false" useNativeBasedir="true"/>
-		<ant dir="${basedir}/MXML" target="build-android" inheritAll="false" useNativeBasedir="true"/>
+		<!--<ant dir="${basedir}/MXML" target="build-android" inheritAll="false" useNativeBasedir="true"/>-->
 		<ant dir="${basedir}/TileList" target="build-android" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/Todos" target="build-android" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/TrainTimes" target="build-android" inheritAll="false" useNativeBasedir="true"/>
@@ -31,7 +31,7 @@
 		<ant dir="${basedir}/Gallery" target="build-ios" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/HelloWorld" target="build-ios" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/LayoutExplorer" target="build-ios" inheritAll="false" useNativeBasedir="true"/>
-		<ant dir="${basedir}/MXML" target="build-ios" inheritAll="false" useNativeBasedir="true"/>
+		<!--<ant dir="${basedir}/MXML" target="build-ios" inheritAll="false" useNativeBasedir="true"/>-->
 		<ant dir="${basedir}/TileList" target="build-ios" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/Todos" target="build-ios" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/TrainTimes" target="build-ios" inheritAll="false" useNativeBasedir="true"/>
