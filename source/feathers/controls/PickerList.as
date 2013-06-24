@@ -14,14 +14,11 @@ package feathers.controls
 	import feathers.core.FeathersControl;
 	import feathers.core.PropertyProxy;
 	import feathers.data.ListCollection;
+	import feathers.events.FeathersEventType;
 	import feathers.system.DeviceCapabilities;
 
 	import starling.core.Starling;
-	import starling.display.DisplayObject;
 	import starling.events.Event;
-	import starling.events.Touch;
-	import starling.events.TouchEvent;
-	import starling.events.TouchPhase;
 
 	/**
 	 * Dispatched when the selected item changes.
@@ -112,7 +109,6 @@ package feathers.controls
 		public function PickerList()
 		{
 			super();
-			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 		}
 
 		/**
@@ -152,16 +148,6 @@ package feathers.controls
 		 * The list sub-component.
 		 */
 		protected var list:List;
-
-		/**
-		 * @private
-		 */
-		protected var _listTouchPointID:int = -1;
-
-		/**
-		 * @private
-		 */
-		protected var _hasBeenScrolled:Boolean = false;
 		
 		/**
 		 * @private
@@ -985,7 +971,6 @@ package feathers.controls
 			if(listFactoryInvalid || dataInvalid)
 			{
 				this.list.dataProvider = this._dataProvider;
-				this._hasBeenScrolled = false;
 			}
 			
 			if(buttonFactoryInvalid || listFactoryInvalid || stateInvalid)
@@ -1092,9 +1077,9 @@ package feathers.controls
 			const listName:String = this._customListName != null ? this._customListName : this.listName;
 			this.list = List(factory());
 			this.list.nameList.add(listName);
-			this.list.addEventListener(Event.SCROLL, list_scrollHandler);
 			this.list.addEventListener(Event.CHANGE, list_changeHandler);
-			this.list.addEventListener(TouchEvent.TOUCH, list_touchHandler);
+			this.list.addEventListener(FeathersEventType.RENDERER_ADD, list_rendererAddHandler);
+			this.list.addEventListener(FeathersEventType.RENDERER_REMOVE, list_rendererRemoveHandler);
 		}
 		
 		/**
@@ -1181,8 +1166,6 @@ package feathers.controls
 			this._popUpContentManager.open(this.list, this);
 			this.list.scrollToDisplayIndex(this._selectedIndex);
 			this.list.validate();
-
-			this._hasBeenScrolled = false;
 		}
 		
 		/**
@@ -1192,70 +1175,33 @@ package feathers.controls
 		{
 			this.selectedIndex = this.list.selectedIndex;
 		}
-		
+
 		/**
 		 * @private
 		 */
-		protected function list_scrollHandler(event:Event):void
+		protected function list_rendererAddHandler(event:Event, renderer:IListItemRenderer):void
 		{
-			if(this._listTouchPointID >= 0)
-			{
-				this._hasBeenScrolled = true;
-			}
+			renderer.addEventListener(Event.TRIGGERED, renderer_triggeredHandler);
 		}
 
 		/**
 		 * @private
 		 */
-		protected function removedFromStageHandler(event:Event):void
+		protected function list_rendererRemoveHandler(event:Event, renderer:IListItemRenderer):void
 		{
-			this._listTouchPointID = -1;
+			renderer.removeEventListener(Event.TRIGGERED, renderer_triggeredHandler);
 		}
-		
+
 		/**
 		 * @private
 		 */
-		protected function list_touchHandler(event:TouchEvent):void
+		protected function renderer_triggeredHandler(event:Event):void
 		{
 			if(!this._isEnabled)
 			{
-				this._listTouchPointID = -1;
 				return;
 			}
-
-			if(this._listTouchPointID >= 0)
-			{
-				var touch:Touch = event.getTouch(this.list, TouchPhase.ENDED, this._listTouchPointID);
-				if(!touch)
-				{
-					return;
-				}
-				if(!this._hasBeenScrolled)
-				{
-					var target:DisplayObject = DisplayObject(event.target);
-					do
-					{
-						if(target is IListItemRenderer)
-						{
-							this.closePopUpList();
-							break;
-						}
-						target = target.parent;
-					}
-					while(target)
-				}
-				this._listTouchPointID = -1;
-			}
-			else
-			{
-				touch = event.getTouch(this.list, TouchPhase.BEGAN);
-				if(!touch)
-				{
-					return;
-				}
-				this._listTouchPointID = touch.id;
-				this._hasBeenScrolled = false;
-			}
+			this.closePopUpList();
 		}
 	}
 }
