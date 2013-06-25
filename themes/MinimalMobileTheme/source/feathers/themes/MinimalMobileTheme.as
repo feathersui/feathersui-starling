@@ -1119,11 +1119,14 @@ package feathers.themes
 
 		protected function scrollContainerToolbarInitializer(container:ScrollContainer):void
 		{
-			const layout:HorizontalLayout = new HorizontalLayout();
-			layout.paddingTop = layout.paddingRight = layout.paddingBottom =
-				layout.paddingLeft = 14 * this.scale;
-			layout.gap = 8 * this.scale;
-			container.layout = layout;
+			if(!container.layout)
+			{
+				const layout:HorizontalLayout = new HorizontalLayout();
+				layout.paddingTop = layout.paddingRight = layout.paddingBottom =
+					layout.paddingLeft = 14 * this.scale;
+				layout.gap = 8 * this.scale;
+				container.layout = layout;
+			}
 
 			container.minWidth = 88 * this.scale;
 			container.minHeight = 88 * this.scale;
