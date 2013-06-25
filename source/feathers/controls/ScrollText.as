@@ -590,6 +590,16 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override public function get padding():Number
+		{
+			return this._textPaddingTop;
+		}
+
+		//no setter for padding because the one in Scroller is acceptable
+
+		/**
+		 * @private
+		 */
 		protected var _textPaddingTop:Number = 0;
 
 		/**
