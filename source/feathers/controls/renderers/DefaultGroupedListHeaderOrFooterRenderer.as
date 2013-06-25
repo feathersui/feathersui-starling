@@ -1142,14 +1142,28 @@ package feathers.controls.renderers
 			}
 			else if(this._contentLabelFunction != null)
 			{
-				var label:String = this._contentLabelFunction(item) as String;
-				this.refreshContentLabel(label);
+				var labelResult:Object = this._contentLabelFunction(item);
+				if(labelResult is String)
+				{
+					this.refreshContentLabel(labelResult as String);
+				}
+				else
+				{
+					this.refreshContentLabel(labelResult.toString());
+				}
 				return DisplayObject(this.contentLabel);
 			}
 			else if(this._contentLabelField != null && item && item.hasOwnProperty(this._contentLabelField))
 			{
-				label = item[this._contentLabelField] as String;
-				this.refreshContentLabel(label);
+				labelResult = item[this._contentLabelField];
+				if(labelResult is String)
+				{
+					this.refreshContentLabel(labelResult as String);
+				}
+				else
+				{
+					this.refreshContentLabel(labelResult.toString());
+				}
 				return DisplayObject(this.contentLabel);
 			}
 			else if(this._contentFunction != null)
@@ -1159,6 +1173,11 @@ package feathers.controls.renderers
 			else if(this._contentField != null && item && item.hasOwnProperty(this._contentField))
 			{
 				return item[this._contentField] as DisplayObject;
+			}
+			else if(item is String)
+			{
+				this.refreshContentLabel(item as String);
+				return DisplayObject(this.contentLabel);
 			}
 			else if(item)
 			{
