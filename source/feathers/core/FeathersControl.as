@@ -339,6 +339,15 @@ package feathers.core
 		protected var actualWidth:Number = 0;
 
 		/**
+		 * @private
+		 * The <code>actualWidth</code> value that accounts for
+		 * <code>scaleX</code>. Not intended to be used for layout since layout
+		 * uses unscaled values. This is the value exposed externally through
+		 * the <code>width</code> getter.
+		 */
+		protected var scaledActualWidth:Number = 0;
+
+		/**
 		 * The width of the component, in pixels. This could be a value that was
 		 * set explicitly, or the component will automatically resize if no
 		 * explicit width value is provided. Each component has a different
@@ -358,7 +367,7 @@ package feathers.core
 		 */
 		override public function get width():Number
 		{
-			return this.actualWidth;
+			return this.scaledActualWidth;
 		}
 
 		/**
@@ -378,7 +387,7 @@ package feathers.core
 			this.explicitWidth = value;
 			if(valueIsNaN)
 			{
-				this.actualWidth = 0;
+				this.actualWidth = this.scaledActualWidth = 0;
 				this.invalidate(INVALIDATION_FLAG_SIZE);
 			}
 			else
@@ -403,6 +412,15 @@ package feathers.core
 		protected var actualHeight:Number = 0;
 
 		/**
+		 * @private
+		 * The <code>actualHeight</code> value that accounts for
+		 * <code>scaleY</code>. Not intended to be used for layout since layout
+		 * uses unscaled values. This is the value exposed externally through
+		 * the <code>height</code> getter.
+		 */
+		protected var scaledActualHeight:Number = 0;
+
+		/**
 		 * The height of the component, in pixels. This could be a value that
 		 * was set explicitly, or the component will automatically resize if no
 		 * explicit height value is provided. Each component has a different
@@ -422,7 +440,7 @@ package feathers.core
 		 */
 		override public function get height():Number
 		{
-			return this.actualHeight;
+			return this.scaledActualHeight;
 		}
 
 		/**
@@ -442,7 +460,7 @@ package feathers.core
 			this.explicitHeight = value;
 			if(valueIsNaN)
 			{
-				this.actualHeight = 0;
+				this.actualHeight = this.scaledActualHeight = 0;
 				this.invalidate(INVALIDATION_FLAG_SIZE);
 			}
 			else
@@ -639,6 +657,24 @@ package feathers.core
 			}
 			this._maxHeight = value;
 			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		/**
+		 * @private
+		 */
+		override public function set scaleX(value:Number):void
+		{
+			super.scaleX = value;
+			this.setSizeInternal(this.actualWidth, this.actualHeight, false);
+		}
+
+		/**
+		 * @private
+		 */
+		override public function set scaleY(value:Number):void
+		{
+			super.scaleY = value;
+			this.setSizeInternal(this.actualWidth, this.actualHeight, false);
 		}
 
 		/**
@@ -1392,6 +1428,8 @@ package feathers.core
 				}
 				resized = true;
 			}
+			this.scaledActualWidth = this.actualWidth * this.scaleX;
+			this.scaledActualHeight = this.actualHeight * this.scaleY;
 			if(resized)
 			{
 				if(canInvalidate)
