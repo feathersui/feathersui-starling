@@ -13,6 +13,7 @@ package feathers.controls.text
 
 	import flash.display.BitmapData;
 	import flash.display3D.textures.Texture;
+	import flash.display3D.textures.TextureBase;
 	import flash.events.FocusEvent;
 	import flash.events.KeyboardEvent;
 	import flash.geom.Matrix;
@@ -940,7 +941,16 @@ package feathers.controls.text
 					{
 						ConcreteTexture(texture).restoreOnLostContext(this._textSnapshotBitmapData);
 					}
-					flash.display3D.textures.Texture(texture.base).uploadFromBitmapData(this._textSnapshotBitmapData);
+					const textureBase:TextureBase = texture.base;
+					if(textureBase is flash.display3D.textures.Texture)
+					{
+						flash.display3D.textures.Texture(textureBase).uploadFromBitmapData(this._textSnapshotBitmapData);
+					}
+					else //rectangle texture
+					{
+
+						texture.base["uploadFromBitmapData"](this._textSnapshotBitmapData);
+					}
 				}
 			}
 			this._needsNewBitmap = false;
