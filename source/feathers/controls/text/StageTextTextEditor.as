@@ -1091,7 +1091,7 @@ package feathers.controls.text
 					else //rectangle texture
 					{
 
-						texture.base["uploadFromBitmapData"](this._textSnapshotBitmapData);
+						textureBase["uploadFromBitmapData"](this._textSnapshotBitmapData);
 					}
 				}
 			}
