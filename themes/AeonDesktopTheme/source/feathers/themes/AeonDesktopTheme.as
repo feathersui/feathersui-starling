@@ -30,6 +30,7 @@ package feathers.themes
 	import feathers.controls.Check;
 	import feathers.controls.GroupedList;
 	import feathers.controls.Header;
+	import feathers.controls.IScrollBar;
 	import feathers.controls.Label;
 	import feathers.controls.List;
 	import feathers.controls.NumericStepper;
@@ -43,6 +44,7 @@ package feathers.themes
 	import feathers.controls.ScrollBar;
 	import feathers.controls.ScrollContainer;
 	import feathers.controls.ScrollText;
+	import feathers.controls.Scroller;
 	import feathers.controls.SimpleScrollBar;
 	import feathers.controls.Slider;
 	import feathers.controls.TabBar;
@@ -66,6 +68,7 @@ package feathers.themes
 	import feathers.display.Scale3Image;
 	import feathers.display.Scale9Image;
 	import feathers.layout.HorizontalLayout;
+	import feathers.skins.SmartDisplayObjectStateValueSelector;
 	import feathers.skins.StandardIcons;
 	import feathers.system.DeviceCapabilities;
 	import feathers.textures.Scale3Textures;
@@ -87,6 +90,25 @@ package feathers.themes
 
 	public class AeonDesktopTheme extends DisplayListWatcher
 	{
+		public static const THEME_NAME_HORIZONTAL_SCROLL_BAR_INCREMENT_BUTTON:String = "aeon-horizontal-scroll-bar-increment-button";
+		public static const THEME_NAME_HORIZONTAL_SCROLL_BAR_DECREMENT_BUTTON:String = "aeon-horizontal-scroll-bar-decrement-button";
+		public static const THEME_NAME_HORIZONTAL_SCROLL_BAR_THUMB:String = "aeon-horizontal-scroll-bar-thumb";
+		public static const THEME_NAME_HORIZONTAL_SCROLL_BAR_MINIMUM_TRACK:String = "aeon-horizontal-scroll-bar-minimum-track";
+
+		public static const THEME_NAME_VERTICAL_SCROLL_BAR_INCREMENT_BUTTON:String = "aeon-vertical-scroll-bar-increment-button";
+		public static const THEME_NAME_VERTICAL_SCROLL_BAR_DECREMENT_BUTTON:String = "aeon-vertical-scroll-bar-decrement-button";
+		public static const THEME_NAME_VERTICAL_SCROLL_BAR_THUMB:String = "aeon-vertical-scroll-bar-thumb";
+		public static const THEME_NAME_VERTICAL_SCROLL_BAR_MINIMUM_TRACK:String = "aeon-vertical-scroll-bar-minimum-track";
+
+		public static const THEME_NAME_HORIZONTAL_SIMPLE_SCROLL_BAR_THUMB:String = "aeon-horizontal-simple-scroll-bar-thumb";
+		public static const THEME_NAME_VERTICAL_SIMPLE_SCROLL_BAR_THUMB:String = "aeon-vertical-simple-scroll-bar-thumb";
+
+		public static const THEME_NAME_HORIZONTAL_SLIDER_THUMB:String = "aeon-horizontal-slider-thumb";
+		public static const THEME_NAME_HORIZONTAL_SLIDER_MINIMUM_TRACK:String = "aeon-horizontal-slider-minimum-track";
+
+		public static const THEME_NAME_VERTICAL_SLIDER_THUMB:String = "aeon-vertical-slider-thumb";
+		public static const THEME_NAME_VERTICAL_SLIDER_MINIMUM_TRACK:String = "aeon-vertical-slider-minimum-track";
+
 		[Embed(source="/../assets/images/aeon.png")]
 		protected static const ATLAS_IMAGE:Class;
 
@@ -114,21 +136,7 @@ package feathers.themes
 
 		protected static const BACKGROUND_COLOR:uint = 0x869CA7;
 		protected static const PRIMARY_TEXT_COLOR:uint = 0x0B333C;
-		protected static const DISABLED_TEXT_COLOR:uint = 0xAAB3B3;
-
-		protected static function verticalScrollBarFactory():ScrollBar
-		{
-			const scrollBar:ScrollBar = new ScrollBar();
-			scrollBar.direction = ScrollBar.DIRECTION_VERTICAL;
-			return scrollBar;
-		}
-
-		protected static function horizontalScrollBarFactory():ScrollBar
-		{
-			const scrollBar:ScrollBar = new ScrollBar();
-			scrollBar.direction = ScrollBar.DIRECTION_HORIZONTAL;
-			return scrollBar;
-		}
+		protected static const DISABLED_TEXT_COLOR:uint = 0x5B6770;
 
 		protected static function textRendererFactory():ITextRenderer
 		{
@@ -138,6 +146,11 @@ package feathers.themes
 		protected static function textEditorFactory():ITextEditor
 		{
 			return new TextFieldTextEditor();
+		}
+
+		protected static function scrollBarFactory():IScrollBar
+		{
+			return new ScrollBar();
 		}
 
 		public function AeonDesktopTheme(container:DisplayObjectContainer = null)
@@ -266,7 +279,7 @@ package feathers.themes
 		protected var hScrollBarThumbUpSkinTextures:Scale9Textures;
 		protected var hScrollBarThumbHoverSkinTextures:Scale9Textures;
 		protected var hScrollBarThumbDownSkinTextures:Scale9Textures;
-		protected var hScrollBarTrackTextures:Scale9Textures;
+		protected var hScrollBarTrackSkinTextures:Scale9Textures;
 		protected var hScrollBarThumbIconTexture:Texture;
 		protected var hScrollBarStepButtonUpSkinTextures:Scale9Textures;
 		protected var hScrollBarStepButtonHoverSkinTextures:Scale9Textures;
@@ -414,7 +427,7 @@ package feathers.themes
 			this.hScrollBarThumbUpSkinTextures = new Scale9Textures(this.atlas.getTexture("horizontal-scroll-bar-thumb-up-skin"), HORIZONTAL_SCROLL_BAR_THUMB_SCALE_9_GRID);
 			this.hScrollBarThumbHoverSkinTextures = new Scale9Textures(this.atlas.getTexture("horizontal-scroll-bar-thumb-hover-skin"), HORIZONTAL_SCROLL_BAR_THUMB_SCALE_9_GRID);
 			this.hScrollBarThumbDownSkinTextures = new Scale9Textures(this.atlas.getTexture("horizontal-scroll-bar-thumb-down-skin"), HORIZONTAL_SCROLL_BAR_THUMB_SCALE_9_GRID);
-			this.hScrollBarTrackTextures = new Scale9Textures(this.atlas.getTexture("horizontal-scroll-bar-track-skin"), HORIZONTAL_SCROLL_BAR_TRACK_SCALE_9_GRID);
+			this.hScrollBarTrackSkinTextures = new Scale9Textures(this.atlas.getTexture("horizontal-scroll-bar-track-skin"), HORIZONTAL_SCROLL_BAR_TRACK_SCALE_9_GRID);
 			this.hScrollBarThumbIconTexture = this.atlas.getTexture("horizontal-scroll-bar-thumb-icon");
 			this.hScrollBarStepButtonUpSkinTextures = new Scale9Textures(this.atlas.getTexture("horizontal-scroll-bar-step-button-up-skin"), HORIZONTAL_SCROLL_BAR_STEP_BUTTON_SCALE_9_GRID);
 			this.hScrollBarStepButtonHoverSkinTextures = new Scale9Textures(this.atlas.getTexture("horizontal-scroll-bar-step-button-hover-skin"), HORIZONTAL_SCROLL_BAR_STEP_BUTTON_SCALE_9_GRID);
@@ -431,6 +444,7 @@ package feathers.themes
 			StandardIcons.listDrillDownAccessoryTexture = this.atlas.getTexture("list-accessory-drill-down-icon");
 
 			this.setInitializerForClassAndSubclasses(Screen, screenInitializer);
+			this.setInitializerForClassAndSubclasses(PanelScreen, panelScreenInitializer);
 			this.setInitializerForClass(Label, labelInitializer);
 			this.setInitializerForClass(ScrollText, scrollTextInitializer);
 			this.setInitializerForClass(BitmapFontTextRenderer, itemRendererAccessoryLabelInitializer, BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ACCESSORY_LABEL);
@@ -441,28 +455,37 @@ package feathers.themes
 			this.setInitializerForClass(Button, pickerListButtonInitializer, PickerList.DEFAULT_CHILD_NAME_BUTTON);
 			this.setInitializerForClass(Button, stepperIncrementButtonInitializer, NumericStepper.DEFAULT_CHILD_NAME_INCREMENT_BUTTON);
 			this.setInitializerForClass(Button, stepperDecrementButtonInitializer, NumericStepper.DEFAULT_CHILD_NAME_DECREMENT_BUTTON);
-			this.setInitializerForClass(Button, nothingInitializer, SimpleScrollBar.DEFAULT_CHILD_NAME_THUMB);
-			this.setInitializerForClass(Button, nothingInitializer, ScrollBar.DEFAULT_CHILD_NAME_THUMB);
-			this.setInitializerForClass(Button, nothingInitializer, ScrollBar.DEFAULT_CHILD_NAME_DECREMENT_BUTTON);
-			this.setInitializerForClass(Button, nothingInitializer, ScrollBar.DEFAULT_CHILD_NAME_INCREMENT_BUTTON);
-			this.setInitializerForClass(Button, nothingInitializer, ScrollBar.DEFAULT_CHILD_NAME_MINIMUM_TRACK);
-			this.setInitializerForClass(Button, nothingInitializer, ScrollBar.DEFAULT_CHILD_NAME_MAXIMUM_TRACK);
-			this.setInitializerForClass(Button, nothingInitializer, Slider.DEFAULT_CHILD_NAME_THUMB);
-			this.setInitializerForClass(Button, nothingInitializer, Slider.DEFAULT_CHILD_NAME_MINIMUM_TRACK);
-			this.setInitializerForClass(Button, nothingInitializer, Slider.DEFAULT_CHILD_NAME_MAXIMUM_TRACK);
+			this.setInitializerForClass(Button, horizontalSliderThumbInitializer, THEME_NAME_HORIZONTAL_SLIDER_THUMB);
+			this.setInitializerForClass(Button, horizontalSliderMinimumTrackInitializer, THEME_NAME_HORIZONTAL_SLIDER_MINIMUM_TRACK);
+			this.setInitializerForClass(Button, verticalSliderThumbInitializer, THEME_NAME_VERTICAL_SLIDER_THUMB);
+			this.setInitializerForClass(Button, verticalSliderMinimumTrackInitializer, THEME_NAME_VERTICAL_SLIDER_MINIMUM_TRACK);
+			this.setInitializerForClass(Button, horizontalSimpleScrollBarThumbInitializer, THEME_NAME_HORIZONTAL_SIMPLE_SCROLL_BAR_THUMB);
+			this.setInitializerForClass(Button, verticalSimpleScrollBarThumbInitializer, THEME_NAME_VERTICAL_SIMPLE_SCROLL_BAR_THUMB);
+			this.setInitializerForClass(Button, horizontalScrollBarIncrementButtonInitializer, THEME_NAME_HORIZONTAL_SCROLL_BAR_INCREMENT_BUTTON);
+			this.setInitializerForClass(Button, horizontalScrollBarDecrementButtonInitializer, THEME_NAME_HORIZONTAL_SCROLL_BAR_DECREMENT_BUTTON);
+			this.setInitializerForClass(Button, horizontalScrollBarThumbInitializer, THEME_NAME_HORIZONTAL_SCROLL_BAR_THUMB);
+			this.setInitializerForClass(Button, horizontalScrollBarMinimumTrackInitializer, THEME_NAME_HORIZONTAL_SCROLL_BAR_MINIMUM_TRACK);
+			this.setInitializerForClass(Button, verticalScrollBarIncrementButtonInitializer, THEME_NAME_VERTICAL_SCROLL_BAR_INCREMENT_BUTTON);
+			this.setInitializerForClass(Button, verticalScrollBarDecrementButtonInitializer, THEME_NAME_VERTICAL_SCROLL_BAR_DECREMENT_BUTTON);
+			this.setInitializerForClass(Button, verticalScrollBarThumbInitializer, THEME_NAME_VERTICAL_SCROLL_BAR_THUMB);
+			this.setInitializerForClass(Button, verticalScrollBarMinimumTrackInitializer, THEME_NAME_VERTICAL_SCROLL_BAR_MINIMUM_TRACK);
 			this.setInitializerForClass(ButtonGroup, buttonGroupInitializer);
 			this.setInitializerForClass(Check, checkInitializer);
 			this.setInitializerForClass(Radio, radioInitializer);
 			this.setInitializerForClass(ToggleSwitch, toggleSwitchInitializer);
 			this.setInitializerForClass(Slider, sliderInitializer);
 			this.setInitializerForClass(NumericStepper, numericStepperInitializer);
-			this.setInitializerForClass(SimpleScrollBar, simpleScrollBarInitializer);
-			this.setInitializerForClass(ScrollBar, scrollBarInitializer);
+			this.setInitializerForClass(SimpleScrollBar, horizontalSimpleScrollBarInitializer, Scroller.DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR);
+			this.setInitializerForClass(SimpleScrollBar, verticalSimpleScrollBarInitializer, Scroller.DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR);
+			this.setInitializerForClass(ScrollBar, horizontalScrollBarInitializer, Scroller.DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR);
+			this.setInitializerForClass(ScrollBar, verticalScrollBarInitializer, Scroller.DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR);
 			this.setInitializerForClass(TextInput, textInputInitializer);
 			this.setInitializerForClass(TextInput, numericStepperTextInputInitializer, NumericStepper.DEFAULT_CHILD_NAME_TEXT_INPUT);
 			this.setInitializerForClass(TextArea, textAreaInitializer);
 			this.setInitializerForClass(PageIndicator, pageIndicatorInitializer);
 			this.setInitializerForClass(ProgressBar, progressBarInitializer);
+			this.setInitializerForClass(ScrollBar, horizontalScrollBarInitializer, Scroller.DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR);
+			this.setInitializerForClass(ScrollBar, verticalScrollBarInitializer, Scroller.DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR);
 			this.setInitializerForClass(List, listInitializer);
 			this.setInitializerForClass(List, pickerListListInitializer, PickerList.DEFAULT_CHILD_NAME_LIST);
 			this.setInitializerForClass(GroupedList, groupedListInitializer);
@@ -502,8 +525,11 @@ package feathers.themes
 		{
 			screen.originalDPI = this.originalDPI;
 
-			screen.horizontalScrollBarFactory = horizontalScrollBarFactory;
-			screen.verticalScrollBarFactory = verticalScrollBarFactory;
+			screen.interactionMode = ScrollContainer.INTERACTION_MODE_MOUSE;
+			screen.scrollBarDisplayMode = ScrollContainer.SCROLL_BAR_DISPLAY_MODE_FIXED;
+
+			screen.horizontalScrollBarFactory = scrollBarFactory;
+			screen.verticalScrollBarFactory = scrollBarFactory;
 		}
 
 		protected function labelInitializer(label:Label):void
@@ -516,14 +542,11 @@ package feathers.themes
 			text.textFormat = this.defaultTextFormat;
 			text.paddingTop = text.paddingRight = text.paddingBottom = text.paddingLeft = 8;
 
-			text.horizontalScrollBarFactory = horizontalScrollBarFactory;
-			text.verticalScrollBarFactory = verticalScrollBarFactory;
-
 			text.interactionMode = ScrollText.INTERACTION_MODE_MOUSE;
 			text.scrollBarDisplayMode = ScrollText.SCROLL_BAR_DISPLAY_MODE_FIXED;
 
-			text.verticalScrollPolicy = ScrollText.SCROLL_POLICY_AUTO;
-			text.horizontalScrollPolicy = ScrollText.SCROLL_POLICY_AUTO;
+			text.horizontalScrollBarFactory = scrollBarFactory;
+			text.verticalScrollBarFactory = scrollBarFactory;
 		}
 
 		protected function itemRendererAccessoryLabelInitializer(renderer:TextFieldTextRenderer):void
@@ -533,14 +556,16 @@ package feathers.themes
 
 		protected function buttonInitializer(button:Button):void
 		{
-			button.defaultSkin = new Scale9Image(buttonUpSkinTextures);
-			button.hoverSkin = new Scale9Image(buttonHoverSkinTextures);
-			button.downSkin = new Scale9Image(buttonDownSkinTextures);
-			button.disabledSkin = new Scale9Image(buttonDisabledSkinTextures);
-			button.defaultSelectedSkin = new Scale9Image(buttonSelectedUpSkinTextures);
-			button.selectedHoverSkin = new Scale9Image(buttonSelectedHoverSkinTextures);
-			button.selectedDownSkin = new Scale9Image(buttonSelectedDownSkinTextures);
-			button.selectedDisabledSkin = new Scale9Image(buttonSelectedDisabledSkinTextures);
+			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.buttonUpSkinTextures;
+			skinSelector.defaultSelectedValue = this.buttonSelectedUpSkinTextures;
+			skinSelector.setValueForState(this.buttonHoverSkinTextures, Button.STATE_HOVER, false);
+			skinSelector.setValueForState(this.buttonDownSkinTextures, Button.STATE_DOWN, false);
+			skinSelector.setValueForState(this.buttonDisabledSkinTextures, Button.STATE_DISABLED, false);
+			skinSelector.setValueForState(this.buttonSelectedHoverSkinTextures, Button.STATE_HOVER, true);
+			skinSelector.setValueForState(this.buttonSelectedDownSkinTextures, Button.STATE_DOWN, true);
+			skinSelector.setValueForState(this.buttonSelectedDisabledSkinTextures, Button.STATE_DISABLED, true);
+			button.stateToSkinFunction = skinSelector.updateValue;
 
 			button.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
 			button.focusPadding = -1;
@@ -558,10 +583,13 @@ package feathers.themes
 		{
 			this.buttonInitializer(button);
 
-			button.defaultIcon = new Image(pickerListUpIconTexture);
-			button.hoverIcon = new Image(pickerListHoverIconTexture);
-			button.downIcon = new Image(pickerListDownIconTexture);
-			button.disabledIcon = new Image(pickerListDisabledIconTexture);
+			const iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			iconSelector.defaultValue = this.pickerListUpIconTexture;
+			iconSelector.setValueForState(this.pickerListHoverIconTexture, Button.STATE_HOVER, false);
+			iconSelector.setValueForState(this.pickerListDownIconTexture, Button.STATE_DOWN, false);
+			iconSelector.setValueForState(this.pickerListDisabledIconTexture, Button.STATE_DISABLED, false);
+			button.stateToIconFunction = iconSelector.updateValue;
+
 			button.gap = Number.POSITIVE_INFINITY; //fill as completely as possible
 			button.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			button.iconPosition = Button.ICON_POSITION_RIGHT;
@@ -576,19 +604,178 @@ package feathers.themes
 		protected function toggleSwitchThumbInitializer(thumb:Button):void
 		{
 			this.buttonInitializer(thumb);
+
 			thumb.width = thumb.height = buttonUpSkinTextures.texture.frame.height;
+		}
+
+		protected function horizontalScrollBarIncrementButtonInitializer(button:Button):void
+		{
+			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.hScrollBarStepButtonUpSkinTextures;
+			skinSelector.setValueForState(this.hScrollBarStepButtonHoverSkinTextures, Button.STATE_HOVER, false);
+			skinSelector.setValueForState(this.hScrollBarStepButtonDownSkinTextures, Button.STATE_DOWN, false);
+			skinSelector.setValueForState(this.hScrollBarStepButtonDisabledSkinTextures, Button.STATE_DISABLED, false);
+			button.stateToSkinFunction = skinSelector.updateValue;
+
+			button.defaultIcon = new Image(this.hScrollBarIncrementButtonIconTexture);
+
+			const incrementButtonDisabledIcon:Quad = new Quad(1, 1, 0xff00ff);
+			incrementButtonDisabledIcon.alpha = 0;
+			button.disabledIcon = incrementButtonDisabledIcon;
+		}
+
+		protected function horizontalScrollBarDecrementButtonInitializer(button:Button):void
+		{
+			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = hScrollBarStepButtonUpSkinTextures;
+			skinSelector.setValueForState(this.hScrollBarStepButtonHoverSkinTextures, Button.STATE_HOVER, false);
+			skinSelector.setValueForState(this.hScrollBarStepButtonDownSkinTextures, Button.STATE_DOWN, false);
+			skinSelector.setValueForState(this.hScrollBarStepButtonDisabledSkinTextures, Button.STATE_DISABLED, false);
+			button.stateToSkinFunction = skinSelector.updateValue;
+
+			button.defaultIcon = new Image(this.hScrollBarDecrementButtonIconTexture);
+
+			const decrementButtonDisabledIcon:Quad = new Quad(1, 1, 0xff00ff);
+			decrementButtonDisabledIcon.alpha = 0;
+			button.disabledIcon = decrementButtonDisabledIcon;
+		}
+
+		protected function horizontalScrollBarThumbInitializer(thumb:Button):void
+		{
+			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.hScrollBarThumbUpSkinTextures;
+			skinSelector.setValueForState(this.hScrollBarThumbHoverSkinTextures, Button.STATE_HOVER, false);
+			skinSelector.setValueForState(this.hScrollBarThumbDownSkinTextures, Button.STATE_DOWN, false);
+			thumb.stateToSkinFunction = skinSelector.updateValue;
+
+			thumb.defaultIcon = new Image(this.hScrollBarThumbIconTexture);
+			thumb.verticalAlign = Button.VERTICAL_ALIGN_TOP;
+			thumb.paddingTop = 4;
+		}
+
+		protected function horizontalScrollBarMinimumTrackInitializer(track:Button):void
+		{
+			track.defaultSkin = new Scale9Image(this.hScrollBarTrackSkinTextures);
+		}
+
+		protected function verticalScrollBarIncrementButtonInitializer(button:Button):void
+		{
+			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.vScrollBarStepButtonUpSkinTextures;
+			skinSelector.setValueForState(this.vScrollBarStepButtonHoverSkinTextures, Button.STATE_HOVER, false);
+			skinSelector.setValueForState(this.vScrollBarStepButtonDownSkinTextures, Button.STATE_DOWN, false);
+			skinSelector.setValueForState(this.vScrollBarStepButtonDisabledSkinTextures, Button.STATE_DISABLED, false);
+			button.stateToSkinFunction = skinSelector.updateValue;
+
+			button.defaultIcon = new Image(this.vScrollBarIncrementButtonIconTexture);
+
+			const incrementButtonDisabledIcon:Quad = new Quad(1, 1, 0xff00ff);
+			incrementButtonDisabledIcon.alpha = 0;
+			button.disabledIcon = incrementButtonDisabledIcon;
+		}
+
+		protected function verticalScrollBarDecrementButtonInitializer(button:Button):void
+		{
+			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.vScrollBarStepButtonUpSkinTextures;
+			skinSelector.setValueForState(this.vScrollBarStepButtonHoverSkinTextures, Button.STATE_HOVER, false);
+			skinSelector.setValueForState(this.vScrollBarStepButtonDownSkinTextures, Button.STATE_DOWN, false);
+			skinSelector.setValueForState(this.vScrollBarStepButtonDisabledSkinTextures, Button.STATE_DISABLED, false);
+			button.stateToSkinFunction = skinSelector.updateValue;
+
+			button.defaultIcon = new Image(this.vScrollBarDecrementButtonIconTexture);
+
+			const decrementButtonDisabledIcon:Quad = new Quad(1, 1, 0xff00ff);
+			decrementButtonDisabledIcon.alpha = 0;
+			button.disabledIcon = decrementButtonDisabledIcon;
+		}
+
+		protected function verticalScrollBarThumbInitializer(thumb:Button):void
+		{
+			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.vScrollBarThumbUpSkinTextures;
+			skinSelector.setValueForState(this.vScrollBarThumbHoverSkinTextures, Button.STATE_HOVER, false);
+			skinSelector.setValueForState(this.vScrollBarThumbDownSkinTextures, Button.STATE_DOWN, false);
+			thumb.stateToSkinFunction = skinSelector.updateValue;
+
+			thumb.defaultIcon = new Image(this.vScrollBarThumbIconTexture);
+			thumb.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
+			thumb.paddingLeft = 4;
+		}
+
+		protected function verticalScrollBarMinimumTrackInitializer(track:Button):void
+		{
+			track.defaultSkin = new Scale9Image(this.vScrollBarTrackSkinTextures);
+		}
+
+		protected function horizontalSimpleScrollBarThumbInitializer(thumb:Button):void
+		{
+			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.hScrollBarThumbUpSkinTextures;
+			skinSelector.setValueForState(this.hScrollBarThumbHoverSkinTextures, Button.STATE_HOVER, false);
+			skinSelector.setValueForState(this.hScrollBarThumbDownSkinTextures, Button.STATE_DOWN, false);
+			thumb.stateToSkinFunction = skinSelector.updateValue;
+
+			thumb.defaultIcon = new Image(this.hScrollBarThumbIconTexture);
+			thumb.verticalAlign = Button.VERTICAL_ALIGN_TOP;
+			thumb.paddingTop = 4;
+		}
+
+		protected function verticalSimpleScrollBarThumbInitializer(thumb:Button):void
+		{
+			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.vScrollBarThumbUpSkinTextures;
+			skinSelector.setValueForState(this.vScrollBarThumbHoverSkinTextures, Button.STATE_HOVER, false);
+			skinSelector.setValueForState(this.vScrollBarThumbDownSkinTextures, Button.STATE_DOWN, false);
+			thumb.stateToSkinFunction = skinSelector.updateValue;
+
+			thumb.defaultIcon = new Image(this.vScrollBarThumbIconTexture);
+			thumb.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
+			thumb.paddingLeft = 4;
+		}
+
+		protected function horizontalSliderThumbInitializer(thumb:Button):void
+		{
+			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.hSliderThumbUpSkinTexture;
+			skinSelector.setValueForState(this.hSliderThumbHoverSkinTexture, Button.STATE_HOVER, false);
+			skinSelector.setValueForState(this.hSliderThumbDownSkinTexture, Button.STATE_DOWN, false);
+			skinSelector.setValueForState(this.hSliderThumbDisabledSkinTexture, Button.STATE_DISABLED, false);
+			thumb.stateToSkinFunction = skinSelector.updateValue;
+		}
+
+		protected function horizontalSliderMinimumTrackInitializer(track:Button):void
+		{
+			track.defaultSkin = new Scale3Image(this.hSliderTrackSkinTextures);
+		}
+
+		protected function verticalSliderThumbInitializer(thumb:Button):void
+		{
+			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.vSliderThumbUpSkinTexture;
+			skinSelector.setValueForState(this.vSliderThumbHoverSkinTexture, Button.STATE_HOVER, false);
+			skinSelector.setValueForState(this.vSliderThumbDownSkinTexture, Button.STATE_DOWN, false);
+			skinSelector.setValueForState(this.vSliderThumbDisabledSkinTexture, Button.STATE_DISABLED, false);
+			thumb.stateToSkinFunction = skinSelector.updateValue;
+		}
+
+		protected function verticalSliderMinimumTrackInitializer(track:Button):void
+		{
+			track.defaultSkin = new Scale3Image(this.vSliderTrackSkinTextures);
 		}
 
 		protected function checkInitializer(check:Check):void
 		{
-			check.defaultIcon = new Image(checkUpIconTexture);
-			check.hoverIcon = new Image(checkHoverIconTexture);
-			check.downIcon = new Image(checkDownIconTexture);
-			check.disabledIcon = new Image(checkDisabledIconTexture);
-			check.defaultSelectedIcon = new Image(checkSelectedUpIconTexture);
-			check.selectedHoverIcon = new Image(checkSelectedHoverIconTexture);
-			check.selectedDownIcon = new Image(checkSelectedDownIconTexture);
-			check.selectedDisabledIcon = new Image(checkSelectedDisabledIconTexture);
+			const iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			iconSelector.defaultValue = this.checkUpIconTexture;
+			iconSelector.defaultSelectedValue = this.checkSelectedUpIconTexture;
+			iconSelector.setValueForState(this.checkHoverIconTexture, Button.STATE_HOVER, false);
+			iconSelector.setValueForState(this.checkDownIconTexture, Button.STATE_DOWN, false);
+			iconSelector.setValueForState(this.checkDisabledIconTexture, Button.STATE_DISABLED, false);
+			iconSelector.setValueForState(this.checkSelectedHoverIconTexture, Button.STATE_HOVER, true);
+			iconSelector.setValueForState(this.checkSelectedDownIconTexture, Button.STATE_DOWN, true);
+			iconSelector.setValueForState(this.checkSelectedDisabledIconTexture, Button.STATE_DISABLED, true);
+			check.stateToIconFunction = iconSelector.updateValue;
 
 			check.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
 			check.focusPadding = -2;
@@ -604,14 +791,16 @@ package feathers.themes
 
 		protected function radioInitializer(radio:Radio):void
 		{
-			radio.defaultIcon = new Image(radioUpIconTexture);
-			radio.hoverIcon = new Image(radioHoverIconTexture);
-			radio.downIcon = new Image(radioDownIconTexture);
-			radio.disabledIcon = new Image(radioDisabledIconTexture);
-			radio.defaultSelectedIcon = new Image(radioSelectedUpIconTexture);
-			radio.selectedHoverIcon = new Image(radioSelectedHoverIconTexture);
-			radio.selectedDownIcon = new Image(radioSelectedDownIconTexture);
-			radio.selectedDisabledIcon = new Image(radioSelectedDisabledIconTexture);
+			const iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			iconSelector.defaultValue = this.radioUpIconTexture;
+			iconSelector.defaultSelectedValue = this.radioSelectedUpIconTexture;
+			iconSelector.setValueForState(this.radioHoverIconTexture, Button.STATE_HOVER, false);
+			iconSelector.setValueForState(this.radioDownIconTexture, Button.STATE_DOWN, false);
+			iconSelector.setValueForState(this.radioDisabledIconTexture, Button.STATE_DISABLED, false);
+			iconSelector.setValueForState(this.radioSelectedHoverIconTexture, Button.STATE_HOVER, true);
+			iconSelector.setValueForState(this.radioSelectedDownIconTexture, Button.STATE_DOWN, true);
+			iconSelector.setValueForState(this.radioSelectedDisabledIconTexture, Button.STATE_DISABLED, true);
+			radio.stateToIconFunction = iconSelector.updateValue;
 
 			radio.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
 			radio.focusPadding = -2;
@@ -627,12 +816,14 @@ package feathers.themes
 
 		protected function tabInitializer(tab:Button):void
 		{
-			tab.defaultSkin = new Scale9Image(tabUpSkinTextures);
-			tab.hoverSkin = new Scale9Image(tabHoverSkinTextures);
-			tab.downSkin = new Scale9Image(tabDownSkinTextures);
-			tab.disabledSkin = new Scale9Image(tabDisabledSkinTextures);
-			tab.defaultSelectedSkin = new Scale9Image(tabSelectedUpSkinTextures);
-			tab.selectedDisabledSkin = new Scale9Image(tabSelectedDisabledSkinTextures);
+			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.tabUpSkinTextures;
+			skinSelector.defaultSelectedValue = this.tabSelectedUpSkinTextures;
+			skinSelector.setValueForState(this.tabHoverSkinTextures, Button.STATE_HOVER, false);
+			skinSelector.setValueForState(this.tabDownSkinTextures, Button.STATE_DOWN, false);
+			skinSelector.setValueForState(this.tabDisabledSkinTextures, Button.STATE_DISABLED, false);
+			skinSelector.setValueForState(this.tabSelectedDisabledSkinTextures, Button.STATE_DISABLED, true);
+			tab.stateToSkinFunction = skinSelector.updateValue;
 
 			tab.defaultLabelProperties.textFormat = this.defaultTextFormat;
 			tab.disabledLabelProperties.textFormat = this.disabledTextFormat;
@@ -645,18 +836,22 @@ package feathers.themes
 
 		protected function stepperIncrementButtonInitializer(button:Button):void
 		{
-			button.defaultSkin = new Scale9Image(stepperIncrementButtonUpSkinTextures);
-			button.hoverSkin = new Scale9Image(stepperIncrementButtonHoverSkinTextures);
-			button.downSkin = new Scale9Image(stepperIncrementButtonDownSkinTextures);
-			button.disabledSkin = new Scale9Image(stepperIncrementButtonDisabledSkinTextures);
+			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.stepperIncrementButtonUpSkinTextures;
+			skinSelector.setValueForState(this.stepperIncrementButtonHoverSkinTextures, Button.STATE_HOVER, false);
+			skinSelector.setValueForState(this.stepperIncrementButtonDownSkinTextures, Button.STATE_DOWN, false);
+			skinSelector.setValueForState(this.stepperIncrementButtonDisabledSkinTextures, Button.STATE_DISABLED, false);
+			button.stateToSkinFunction = skinSelector.updateValue;
 		}
 
 		protected function stepperDecrementButtonInitializer(button:Button):void
 		{
-			button.defaultSkin = new Scale9Image(stepperDecrementButtonUpSkinTextures);
-			button.hoverSkin = new Scale9Image(stepperDecrementButtonHoverSkinTextures);
-			button.downSkin = new Scale9Image(stepperDecrementButtonDownSkinTextures);
-			button.disabledSkin = new Scale9Image(stepperDecrementButtonDisabledSkinTextures);
+			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.stepperDecrementButtonUpSkinTextures;
+			skinSelector.setValueForState(this.stepperDecrementButtonHoverSkinTextures, Button.STATE_HOVER, false);
+			skinSelector.setValueForState(this.stepperDecrementButtonDownSkinTextures, Button.STATE_DOWN, false);
+			skinSelector.setValueForState(this.stepperDecrementButtonDisabledSkinTextures, Button.STATE_DISABLED, false);
+			button.stateToSkinFunction = skinSelector.updateValue;
 		}
 
 		protected function toggleSwitchInitializer(toggle:ToggleSwitch):void
@@ -682,26 +877,54 @@ package feathers.themes
 
 			if(slider.direction == Slider.DIRECTION_VERTICAL)
 			{
-				slider.thumbProperties.defaultSkin = new Image(vSliderThumbUpSkinTexture);
-				slider.thumbProperties.hoverSkin = new Image(vSliderThumbHoverSkinTexture);
-				slider.thumbProperties.downSkin = new Image(vSliderThumbDownSkinTexture);
-				slider.thumbProperties.disabledSkin = new Image(vSliderThumbDisabledSkinTexture);
-				slider.minimumTrackProperties.defaultSkin = new Scale3Image(vSliderTrackSkinTextures);
+				slider.customThumbName = THEME_NAME_VERTICAL_SLIDER_THUMB;
+				slider.customMinimumTrackName = THEME_NAME_VERTICAL_SLIDER_MINIMUM_TRACK;
+
 				slider.focusPaddingLeft = slider.focusPaddingRight = -2;
 				slider.focusPaddingTop = slider.focusPaddingBottom = -2 + slider.minimumPadding;
 			}
 			else //horizontal
 			{
-				slider.thumbProperties.defaultSkin = new Image(hSliderThumbUpSkinTexture);
-				slider.thumbProperties.hoverSkin = new Image(hSliderThumbHoverSkinTexture);
-				slider.thumbProperties.downSkin = new Image(hSliderThumbDownSkinTexture);
-				slider.thumbProperties.disabledSkin = new Image(hSliderThumbDisabledSkinTexture);
-				slider.minimumTrackProperties.defaultSkin = new Scale3Image(hSliderTrackSkinTextures);
+				slider.customThumbName = THEME_NAME_HORIZONTAL_SLIDER_THUMB;
+				slider.customMinimumTrackName = THEME_NAME_HORIZONTAL_SLIDER_MINIMUM_TRACK;
+
 				slider.focusPaddingTop = slider.focusPaddingBottom = -2;
 				slider.focusPaddingLeft = slider.focusPaddingRight = -2 + slider.minimumPadding;
 			}
 
 			slider.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
+		}
+
+		protected function verticalScrollBarInitializer(scrollBar:ScrollBar):void
+		{
+			scrollBar.direction = ScrollBar.DIRECTION_VERTICAL;
+			scrollBar.trackLayoutMode = ScrollBar.TRACK_LAYOUT_MODE_SINGLE;
+
+			scrollBar.customIncrementButtonName = THEME_NAME_VERTICAL_SCROLL_BAR_INCREMENT_BUTTON;
+			scrollBar.customDecrementButtonName = THEME_NAME_VERTICAL_SCROLL_BAR_DECREMENT_BUTTON;
+			scrollBar.customThumbName = THEME_NAME_VERTICAL_SCROLL_BAR_THUMB;
+			scrollBar.customMinimumTrackName = THEME_NAME_VERTICAL_SCROLL_BAR_MINIMUM_TRACK;
+		}
+
+		protected function horizontalScrollBarInitializer(scrollBar:ScrollBar):void
+		{
+			scrollBar.direction = ScrollBar.DIRECTION_HORIZONTAL;
+			scrollBar.trackLayoutMode = ScrollBar.TRACK_LAYOUT_MODE_SINGLE;
+
+			scrollBar.customIncrementButtonName = THEME_NAME_HORIZONTAL_SCROLL_BAR_INCREMENT_BUTTON;
+			scrollBar.customDecrementButtonName = THEME_NAME_HORIZONTAL_SCROLL_BAR_DECREMENT_BUTTON;
+			scrollBar.customThumbName = THEME_NAME_HORIZONTAL_SCROLL_BAR_THUMB;
+			scrollBar.customMinimumTrackName = THEME_NAME_HORIZONTAL_SCROLL_BAR_MINIMUM_TRACK;
+		}
+
+		protected function horizontalSimpleScrollBarInitializer(scrollBar:SimpleScrollBar):void
+		{
+			scrollBar.customThumbName = THEME_NAME_HORIZONTAL_SIMPLE_SCROLL_BAR_THUMB;
+		}
+
+		protected function verticalSimpleScrollBarInitializer(scrollBar:SimpleScrollBar):void
+		{
+			scrollBar.customThumbName = THEME_NAME_VERTICAL_SIMPLE_SCROLL_BAR_THUMB;
 		}
 
 		protected function numericStepperInitializer(stepper:NumericStepper):void
@@ -710,100 +933,6 @@ package feathers.themes
 
 			stepper.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
 			stepper.focusPadding = -1;
-		}
-
-		protected function simpleScrollBarInitializer(scrollBar:SimpleScrollBar):void
-		{
-			if(scrollBar.direction == Slider.DIRECTION_VERTICAL)
-			{
-				scrollBar.thumbProperties.defaultSkin = new Scale9Image(vScrollBarThumbUpSkinTextures);
-				scrollBar.thumbProperties.hoverSkin = new Scale9Image(vScrollBarThumbHoverSkinTextures);
-				scrollBar.thumbProperties.downSkin = new Scale9Image(vScrollBarThumbDownSkinTextures);
-				scrollBar.thumbProperties.defaultIcon = new Image(vScrollBarThumbIconTexture);
-				scrollBar.thumbProperties.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
-				scrollBar.thumbProperties.paddingLeft = 4;
-			}
-			else //horizontal
-			{
-				scrollBar.thumbProperties.defaultSkin = new Scale9Image(hScrollBarThumbUpSkinTextures);
-				scrollBar.thumbProperties.hoverSkin = new Scale9Image(hScrollBarThumbHoverSkinTextures);
-				scrollBar.thumbProperties.downSkin = new Scale9Image(hScrollBarThumbDownSkinTextures);
-				scrollBar.thumbProperties.defaultIcon = new Image(hScrollBarThumbIconTexture);
-				scrollBar.thumbProperties.verticalAlign = Button.VERTICAL_ALIGN_TOP;
-				scrollBar.thumbProperties.paddingTop = 4;
-			}
-		}
-
-		protected function scrollBarInitializer(scrollBar:ScrollBar):void
-		{
-			scrollBar.trackLayoutMode = ScrollBar.TRACK_LAYOUT_MODE_SINGLE;
-
-			const decrementButtonDisabledIcon:Quad = new Quad(1, 1, 0xff00ff);
-			decrementButtonDisabledIcon.alpha = 0;
-			scrollBar.decrementButtonProperties.disabledIcon = decrementButtonDisabledIcon;
-
-			const incrementButtonDisabledIcon:Quad = new Quad(1, 1, 0xff00ff);
-			incrementButtonDisabledIcon.alpha = 0;
-			scrollBar.incrementButtonProperties.disabledIcon = incrementButtonDisabledIcon;
-
-			if(scrollBar.direction == Slider.DIRECTION_VERTICAL)
-			{
-				scrollBar.decrementButtonProperties.defaultSkin = new Scale9Image(vScrollBarStepButtonUpSkinTextures);
-				scrollBar.decrementButtonProperties.hoverSkin = new Scale9Image(vScrollBarStepButtonHoverSkinTextures);
-				scrollBar.decrementButtonProperties.downSkin = new Scale9Image(vScrollBarStepButtonDownSkinTextures);
-				scrollBar.decrementButtonProperties.disabledSkin = new Scale9Image(vScrollBarStepButtonDisabledSkinTextures);
-				scrollBar.decrementButtonProperties.defaultIcon = new Image(vScrollBarDecrementButtonIconTexture);
-
-				scrollBar.incrementButtonProperties.defaultSkin = new Scale9Image(vScrollBarStepButtonUpSkinTextures);
-				scrollBar.incrementButtonProperties.hoverSkin = new Scale9Image(vScrollBarStepButtonHoverSkinTextures);
-				scrollBar.incrementButtonProperties.downSkin = new Scale9Image(vScrollBarStepButtonDownSkinTextures);
-				scrollBar.incrementButtonProperties.disabledSkin = new Scale9Image(vScrollBarStepButtonDisabledSkinTextures);
-				scrollBar.incrementButtonProperties.defaultIcon = new Image(vScrollBarIncrementButtonIconTexture);
-
-				var thumbSkin:Scale9Image = new Scale9Image(vScrollBarThumbUpSkinTextures);
-				thumbSkin.height = thumbSkin.width;
-				scrollBar.thumbProperties.defaultSkin = thumbSkin;
-				thumbSkin = new Scale9Image(vScrollBarThumbHoverSkinTextures);
-				thumbSkin.height = thumbSkin.width;
-				scrollBar.thumbProperties.hoverSkin = thumbSkin;
-				thumbSkin = new Scale9Image(vScrollBarThumbDownSkinTextures);
-				thumbSkin.height = thumbSkin.width;
-				scrollBar.thumbProperties.downSkin = thumbSkin;
-				scrollBar.thumbProperties.defaultIcon = new Image(vScrollBarThumbIconTexture);
-				scrollBar.thumbProperties.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
-				scrollBar.thumbProperties.paddingLeft = 4;
-
-				scrollBar.minimumTrackProperties.defaultSkin = new Scale9Image(vScrollBarTrackSkinTextures);
-			}
-			else //horizontal
-			{
-				scrollBar.decrementButtonProperties.defaultSkin = new Scale9Image(hScrollBarStepButtonUpSkinTextures);
-				scrollBar.decrementButtonProperties.hoverSkin = new Scale9Image(hScrollBarStepButtonHoverSkinTextures);
-				scrollBar.decrementButtonProperties.downSkin = new Scale9Image(hScrollBarStepButtonDownSkinTextures);
-				scrollBar.decrementButtonProperties.disabledSkin = new Scale9Image(hScrollBarStepButtonDisabledSkinTextures);
-				scrollBar.decrementButtonProperties.defaultIcon = new Image(hScrollBarDecrementButtonIconTexture);
-
-				scrollBar.incrementButtonProperties.defaultSkin = new Scale9Image(hScrollBarStepButtonUpSkinTextures);
-				scrollBar.incrementButtonProperties.hoverSkin = new Scale9Image(hScrollBarStepButtonHoverSkinTextures);
-				scrollBar.incrementButtonProperties.downSkin = new Scale9Image(hScrollBarStepButtonDownSkinTextures);
-				scrollBar.incrementButtonProperties.disabledSkin = new Scale9Image(hScrollBarStepButtonDisabledSkinTextures);
-				scrollBar.incrementButtonProperties.defaultIcon = new Image(hScrollBarIncrementButtonIconTexture);
-
-				thumbSkin = new Scale9Image(hScrollBarThumbUpSkinTextures);
-				thumbSkin.width = thumbSkin.height;
-				scrollBar.thumbProperties.defaultSkin = thumbSkin;
-				thumbSkin = new Scale9Image(hScrollBarThumbHoverSkinTextures);
-				thumbSkin.width = thumbSkin.height;
-				scrollBar.thumbProperties.hoverSkin = thumbSkin;
-				thumbSkin = new Scale9Image(hScrollBarThumbDownSkinTextures);
-				thumbSkin.width = thumbSkin.height;
-				scrollBar.thumbProperties.downSkin = thumbSkin;
-				scrollBar.thumbProperties.defaultIcon = new Image(hScrollBarThumbIconTexture);
-				scrollBar.thumbProperties.verticalAlign = Button.VERTICAL_ALIGN_TOP;
-				scrollBar.thumbProperties.paddingTop = 4;
-
-				scrollBar.minimumTrackProperties.defaultSkin = new Scale9Image(hScrollBarTrackTextures);
-			}
 		}
 
 		protected function textInputInitializer(input:TextInput):void
@@ -832,6 +961,7 @@ package feathers.themes
 			const backgroundSkin:Scale9Image = new Scale9Image(textInputBackgroundSkinTextures);
 			backgroundSkin.width = backgroundSkin.height;
 			input.backgroundSkin = backgroundSkin;
+
 			const backgroundDisabledSkin:Scale9Image = new Scale9Image(textInputBackgroundDisabledSkinTextures);
 			backgroundDisabledSkin.width = backgroundDisabledSkin.height;
 			input.backgroundDisabledSkin = backgroundDisabledSkin;
@@ -839,15 +969,6 @@ package feathers.themes
 
 		protected function textAreaInitializer(textArea:TextArea):void
 		{
-			textArea.horizontalScrollBarFactory = horizontalScrollBarFactory;
-			textArea.verticalScrollBarFactory = verticalScrollBarFactory;
-
-			textArea.interactionMode = ScrollContainer.INTERACTION_MODE_MOUSE;
-			textArea.scrollBarDisplayMode = ScrollContainer.SCROLL_BAR_DISPLAY_MODE_FIXED;
-
-			textArea.verticalScrollPolicy = ScrollContainer.SCROLL_POLICY_AUTO;
-			textArea.horizontalScrollPolicy = ScrollContainer.SCROLL_POLICY_AUTO;
-
 			textArea.textEditorProperties.textFormat = this.defaultTextFormat;
 
 			textArea.paddingTop = 2;
@@ -862,10 +983,17 @@ package feathers.themes
 			backgroundSkin.width = 264;
 			backgroundSkin.height = 88;
 			textArea.backgroundSkin = backgroundSkin;
+
 			const backgroundDisabledSkin:Scale9Image = new Scale9Image(textInputBackgroundDisabledSkinTextures);
 			backgroundDisabledSkin.width = 264;
 			backgroundDisabledSkin.height = 88;
 			textArea.backgroundDisabledSkin = backgroundDisabledSkin;
+
+			textArea.interactionMode = ScrollContainer.INTERACTION_MODE_MOUSE;
+			textArea.scrollBarDisplayMode = ScrollContainer.SCROLL_BAR_DISPLAY_MODE_FIXED;
+
+			textArea.horizontalScrollBarFactory = scrollBarFactory;
+			textArea.verticalScrollBarFactory = scrollBarFactory;
 		}
 
 		protected function pageIndicatorInitializer(pageIndicator:PageIndicator):void
@@ -883,6 +1011,7 @@ package feathers.themes
 			const backgroundSkin:Scale9Image = new Scale9Image(simpleBorderBackgroundSkinTextures);
 			backgroundSkin.width = backgroundSkin.height * 30;
 			progress.backgroundSkin = backgroundSkin;
+
 			progress.fillSkin = new Image(progressBarFillSkinTexture);
 
 			progress.paddingTop = progress.paddingRight = progress.paddingBottom =
@@ -891,34 +1020,31 @@ package feathers.themes
 
 		protected function scrollContainerInitializer(container:ScrollContainer):void
 		{
-			container.horizontalScrollBarFactory = horizontalScrollBarFactory;
-			container.verticalScrollBarFactory = verticalScrollBarFactory;
-
 			container.interactionMode = ScrollContainer.INTERACTION_MODE_MOUSE;
 			container.scrollBarDisplayMode = ScrollContainer.SCROLL_BAR_DISPLAY_MODE_FIXED;
 
-			container.verticalScrollPolicy = ScrollContainer.SCROLL_POLICY_AUTO;
-			container.horizontalScrollPolicy = ScrollContainer.SCROLL_POLICY_AUTO;
+			container.horizontalScrollBarFactory = scrollBarFactory;
+			container.verticalScrollBarFactory = scrollBarFactory;
 		}
 
 		protected function scrollContainerToolbarInitializer(container:ScrollContainer):void
 		{
-			const layout:HorizontalLayout = new HorizontalLayout();
-			layout.paddingTop = layout.paddingBottom = 2;
-			layout.paddingRight = layout.paddingLeft = 6;
-			layout.gap = 2;
-			container.layout = layout;
+			if(!container.layout)
+			{
+				const layout:HorizontalLayout = new HorizontalLayout();
+				layout.paddingTop = layout.paddingBottom = 2;
+				layout.paddingRight = layout.paddingLeft = 6;
+				layout.gap = 2;
+				container.layout = layout;
+			}
 
 			container.minHeight = 22;
-
-			container.horizontalScrollBarFactory = horizontalScrollBarFactory;
-			container.verticalScrollBarFactory = verticalScrollBarFactory;
 
 			container.interactionMode = ScrollContainer.INTERACTION_MODE_MOUSE;
 			container.scrollBarDisplayMode = ScrollContainer.SCROLL_BAR_DISPLAY_MODE_FIXED;
 
-			container.verticalScrollPolicy = ScrollContainer.SCROLL_POLICY_AUTO;
-			container.horizontalScrollPolicy = ScrollContainer.SCROLL_POLICY_AUTO;
+			container.horizontalScrollBarFactory = scrollBarFactory;
+			container.verticalScrollBarFactory = scrollBarFactory;
 
 			container.backgroundSkin = new Scale9Image(headerBackgroundSkinTextures);
 		}
@@ -926,13 +1052,17 @@ package feathers.themes
 		protected function panelInitializer(panel:Panel):void
 		{
 			panel.backgroundSkin = new Scale9Image(panelBorderBackgroundSkinTextures);
+
 			panel.paddingTop = 0;
 			panel.paddingRight = 10;
 			panel.paddingBottom = 10;
 			panel.paddingLeft = 10;
 
-			panel.horizontalScrollBarFactory = horizontalScrollBarFactory;
-			panel.verticalScrollBarFactory = verticalScrollBarFactory;
+			panel.interactionMode = ScrollContainer.INTERACTION_MODE_MOUSE;
+			panel.scrollBarDisplayMode = ScrollContainer.SCROLL_BAR_DISPLAY_MODE_FIXED;
+
+			panel.horizontalScrollBarFactory = scrollBarFactory;
+			panel.verticalScrollBarFactory = scrollBarFactory;
 		}
 
 		protected function listInitializer(list:List):void
@@ -945,14 +1075,11 @@ package feathers.themes
 			list.paddingTop = list.paddingRight = list.paddingBottom =
 				list.paddingLeft = 1;
 
-			list.horizontalScrollBarFactory = horizontalScrollBarFactory;
-			list.verticalScrollBarFactory = verticalScrollBarFactory;
-
 			list.interactionMode = List.INTERACTION_MODE_MOUSE;
 			list.scrollBarDisplayMode = List.SCROLL_BAR_DISPLAY_MODE_FIXED;
 
-			list.verticalScrollPolicy = List.SCROLL_POLICY_AUTO;
-			list.horizontalScrollPolicy = List.SCROLL_POLICY_AUTO;
+			list.horizontalScrollBarFactory = scrollBarFactory;
+			list.verticalScrollBarFactory = scrollBarFactory;
 		}
 
 		protected function groupedListInitializer(list:GroupedList):void
@@ -965,14 +1092,11 @@ package feathers.themes
 			list.paddingTop = list.paddingRight = list.paddingBottom =
 				list.paddingLeft = 1;
 
-			list.horizontalScrollBarFactory = horizontalScrollBarFactory;
-			list.verticalScrollBarFactory = verticalScrollBarFactory;
-
 			list.interactionMode = GroupedList.INTERACTION_MODE_MOUSE;
 			list.scrollBarDisplayMode = GroupedList.SCROLL_BAR_DISPLAY_MODE_FIXED;
 
-			list.verticalScrollPolicy = GroupedList.SCROLL_POLICY_AUTO;
-			list.horizontalScrollPolicy = GroupedList.SCROLL_POLICY_AUTO;
+			list.horizontalScrollBarFactory = scrollBarFactory;
+			list.verticalScrollBarFactory = scrollBarFactory;
 		}
 
 		protected function pickerListInitializer(list:PickerList):void
@@ -988,10 +1112,12 @@ package feathers.themes
 
 		protected function defaultItemRendererInitializer(renderer:BaseDefaultItemRenderer):void
 		{
-			renderer.defaultSkin = new Image(itemRendererUpSkinTexture);
-			renderer.hoverSkin = new Image(itemRendererHoverSkinTexture);
-			renderer.downSkin = new Image(itemRendererSelectedUpSkinTexture);
-			renderer.defaultSelectedSkin = new Image(itemRendererSelectedUpSkinTexture);
+			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.itemRendererUpSkinTexture;
+			skinSelector.defaultSelectedValue = this.itemRendererSelectedUpSkinTexture;
+			skinSelector.setValueForState(this.itemRendererHoverSkinTexture, Button.STATE_HOVER, false);
+			skinSelector.setValueForState(this.itemRendererSelectedUpSkinTexture, Button.STATE_DOWN, false);
+			renderer.stateToSkinFunction = skinSelector.updateValue;
 
 			renderer.defaultLabelProperties.textFormat = this.defaultTextFormat;
 			renderer.disabledLabelProperties.textFormat = this.disabledTextFormat;
@@ -1023,6 +1149,7 @@ package feathers.themes
 		protected function calloutInitializer(callout:Callout):void
 		{
 			callout.backgroundSkin = new Scale9Image(panelBorderBackgroundSkinTextures);
+
 			const arrowSkin:Quad = new Quad(8, 8, 0xff00ff);
 			arrowSkin.alpha = 0;
 			callout.topArrowSkin =  callout.rightArrowSkin =  callout.bottomArrowSkin =
