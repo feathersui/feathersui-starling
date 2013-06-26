@@ -274,7 +274,7 @@ package feathers.controls
 		 * @private
 		 * Older saved velocities are given less importance.
 		 */
-		private static const VELOCITY_WEIGHTS:Vector.<Number> = new <Number>[2, 1.66, 1.33, 1];
+		private static const VELOCITY_WEIGHTS:Vector.<Number> = new <Number>[1, 1.33, 1.66, 2];
 
 		/**
 		 * @private
@@ -2665,8 +2665,16 @@ package feathers.controls
 			const oldMaxVSP:Number = this._maxVerticalScrollPosition;
 			if(this._viewPort)
 			{
-				this._maxHorizontalScrollPosition = Math.max(0, this._viewPort.width - pageWidth);
-				this._maxVerticalScrollPosition = Math.max(0, this._viewPort.height - pageHeight);
+				this._maxHorizontalScrollPosition = this._viewPort.width - pageWidth;
+				if(this._maxHorizontalScrollPosition < 0)
+				{
+					this._maxHorizontalScrollPosition = 0;
+				}
+				this._maxVerticalScrollPosition = this._viewPort.height - pageHeight;
+				if(this._maxVerticalScrollPosition < 0)
+				{
+					this._maxVerticalScrollPosition = 0;
+				}
 				if(this._snapScrollPositionsToPixels)
 				{
 					this._maxHorizontalScrollPosition = Math.round(this._maxHorizontalScrollPosition);
@@ -2696,7 +2704,11 @@ package feathers.controls
 				{
 					if(this._snapToPages)
 					{
-						this._horizontalScrollPosition = Math.max(0, roundToNearest(this._horizontalScrollPosition, pageWidth));
+						this._horizontalScrollPosition = roundToNearest(this._horizontalScrollPosition, pageWidth);
+						if(this._horizontalScrollPosition < 0)
+						{
+							this._horizontalScrollPosition = 0;
+						}
 					}
 					this.horizontalScrollPosition = clamp(this._horizontalScrollPosition, 0, this._maxHorizontalScrollPosition);
 				}
@@ -2704,7 +2716,11 @@ package feathers.controls
 				{
 					if(this._snapToPages)
 					{
-						this._verticalScrollPosition = Math.max(0, roundToNearest(this._verticalScrollPosition, pageHeight));
+						this._verticalScrollPosition = roundToNearest(this._verticalScrollPosition, pageHeight);
+						if(this._verticalScrollPosition < 0)
+						{
+							this._verticalScrollPosition = 0;
+						}
 					}
 					this.verticalScrollPosition = clamp(this._verticalScrollPosition, 0, this._maxVerticalScrollPosition);
 				}
@@ -2720,7 +2736,11 @@ package feathers.controls
 					}
 					else
 					{
-						this._horizontalPageIndex = Math.max(0, Math.floor(this._horizontalScrollPosition / pageWidth));
+						this._horizontalPageIndex = Math.floor(this._horizontalScrollPosition / pageWidth);
+						if(this._horizontalPageIndex < 0)
+						{
+							this._horizontalPageIndex = 0;
+						}
 					}
 				}
 				if(isScrollInvalid && !this._isDraggingVertically && !this._verticalAutoScrollTween && this.pendingVerticalPageIndex < 0)
@@ -2731,7 +2751,11 @@ package feathers.controls
 					}
 					else
 					{
-						this._verticalPageIndex = Math.max(0, Math.floor(this._verticalScrollPosition / pageHeight));
+						this._verticalPageIndex = Math.floor(this._verticalScrollPosition / pageHeight);
+						if(this._verticalPageIndex < 0)
+						{
+							this._verticalPageIndex = 0;
+						}
 					}
 				}
 			}
@@ -2793,15 +2817,23 @@ package feathers.controls
 		protected function showOrHideChildren():void
 		{
 			const isFixed:Boolean = this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FIXED;
-			if(this.horizontalScrollBar)
-			{
-				this.horizontalScrollBar.visible = !isFixed || this._hasHorizontalScrollBar;
-				this.setChildIndex(DisplayObject(this.horizontalScrollBar), this.numChildren - 1);
-			}
+			const childCount:int = this.numChildren;
 			if(this.verticalScrollBar)
 			{
 				this.verticalScrollBar.visible = !isFixed || this._hasVerticalScrollBar;
-				this.setChildIndex(DisplayObject(this.verticalScrollBar), this.numChildren - 1);
+				this.setChildIndex(DisplayObject(this.verticalScrollBar), childCount - 1);
+			}
+			if(this.horizontalScrollBar)
+			{
+				this.horizontalScrollBar.visible = !isFixed || this._hasHorizontalScrollBar;
+				if(this.verticalScrollBar)
+				{
+					this.setChildIndex(DisplayObject(this.horizontalScrollBar), childCount - 2);
+				}
+				else
+				{
+					this.setChildIndex(DisplayObject(this.horizontalScrollBar), childCount - 1);
+				}
 			}
 			if(this.currentBackgroundSkin)
 			{
@@ -3713,15 +3745,15 @@ package feathers.controls
 			if(timeOffset > 0)
 			{
 				//we're keeping previous velocity updates to improve accuracy
-				this._previousVelocityX.unshift(this._velocityX);
+				this._previousVelocityX[this._previousVelocityX.length] = this._velocityX;
 				if(this._previousVelocityX.length > MAXIMUM_SAVED_VELOCITY_COUNT)
 				{
-					this._previousVelocityX.pop();
+					this._previousVelocityX.shift();
 				}
-				this._previousVelocityY.unshift(this._velocityY);
+				this._previousVelocityY[this._previousVelocityY.length] = this._velocityY;
 				if(this._previousVelocityY.length > MAXIMUM_SAVED_VELOCITY_COUNT)
 				{
-					this._previousVelocityY.pop();
+					this._previousVelocityY.shift();
 				}
 				this._velocityX = (this._currentTouchX - this._previousTouchX) / timeOffset;
 				this._velocityY = (this._currentTouchY - this._previousTouchY) / timeOffset;

@@ -72,7 +72,14 @@ package feathers.core
 					break;
 				}
 			}
-			currentQueue.splice(i, 0, control);
+			if(i == queueLength)
+			{
+				currentQueue[queueLength] = control;
+			}
+			else
+			{
+				currentQueue.splice(i, 0, control);
+			}
 		}
 
 		/**

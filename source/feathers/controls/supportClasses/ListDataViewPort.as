@@ -841,7 +841,7 @@ package feathers.controls.supportClasses
 			if(!isTemporary)
 			{
 				this._rendererMap[item] = renderer;
-				this._activeRenderers.push(renderer);
+				this._activeRenderers[this._activeRenderers.length] = renderer;
 				renderer.addEventListener(Event.CHANGE, renderer_changeHandler);
 				renderer.addEventListener(FeathersEventType.RESIZE, renderer_resizeHandler);
 				this._owner.dispatchEventWith(FeathersEventType.RENDERER_ADD, false, renderer);

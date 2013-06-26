@@ -971,7 +971,16 @@ package feathers.controls
 				this.thumb.height = thumbHeight;
 				this.thumb.x = this._paddingLeft + (this.actualWidth - this._paddingLeft - this._paddingRight - this.thumb.width) / 2;
 				const trackScrollableHeight:Number = contentHeight - this.thumb.height;
-				this.thumb.y = this._paddingTop + Math.max(0, Math.min(trackScrollableHeight, trackScrollableHeight * (this._value - this._minimum) / range));
+				var thumbY:Number = trackScrollableHeight * (this._value - this._minimum) / range;
+				if(thumbY > trackScrollableHeight)
+				{
+					thumbY = trackScrollableHeight;
+				}
+				else if(thumbY < 0)
+				{
+					thumbY = 0;
+				}
+				this.thumb.y = this._paddingTop + thumbY;
 			}
 			else //horizontal
 			{
@@ -991,7 +1000,16 @@ package feathers.controls
 				this.thumb.width = thumbWidth;
 				this.thumb.height = this.thumbOriginalHeight;
 				const trackScrollableWidth:Number = contentWidth - this.thumb.width;
-				this.thumb.x = this._paddingLeft + Math.max(0, Math.min(trackScrollableWidth, trackScrollableWidth * (this._value - this._minimum) / range));
+				var thumbX:Number = trackScrollableWidth * (this._value - this._minimum) / range;
+				if(thumbX > trackScrollableWidth)
+				{
+					thumbX = trackScrollableWidth;
+				}
+				else if(thumbX < 0)
+				{
+					thumbX = 0;
+				}
+				this.thumb.x = this._paddingLeft + thumbX;
 				this.thumb.y = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - this.thumb.height) / 2;
 			}
 		}
