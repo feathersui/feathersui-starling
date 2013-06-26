@@ -11,8 +11,6 @@ package feathers.controls.text
 	import feathers.core.ITextRenderer;
 
 	import flash.display.BitmapData;
-	import flash.display3D.textures.Texture;
-	import flash.display3D.textures.TextureBase;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.text.AntiAliasType;
@@ -26,7 +24,6 @@ package feathers.controls.text
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.events.Event;
-	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
 	import starling.utils.getNextPowerOfTwo;
 
@@ -835,6 +832,14 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected function texture_onRestore():void
+		{
+			this.refreshSnapshot();
+		}
+
+		/**
+		 * @private
+		 */
 		protected function refreshSnapshot():void
 		{
 			if(this.textField.width == 0 || this.textField.height == 0)
@@ -857,9 +862,15 @@ package feathers.controls.text
 			HELPER_MATRIX.scale(Starling.contentScaleFactor, Starling.contentScaleFactor);
 			this._textSnapshotBitmapData.fillRect(this._textSnapshotBitmapData.rect, 0x00ff00ff);
 			this._textSnapshotBitmapData.draw(this.textField, HELPER_MATRIX);
+			var newTexture:Texture;
+			if(!this.textSnapshot || this._needsNewBitmap)
+			{
+				newTexture = Texture.fromBitmapData(this._textSnapshotBitmapData, false, false, Starling.contentScaleFactor);
+				newTexture.root.onRestore = texture_onRestore;
+			}
 			if(!this.textSnapshot)
 			{
-				this.textSnapshot = new Image(starling.textures.Texture.fromBitmapData(this._textSnapshotBitmapData, false, false, Starling.contentScaleFactor));
+				this.textSnapshot = new Image(newTexture);
 				this.addChild(this.textSnapshot);
 			}
 			else
@@ -867,27 +878,14 @@ package feathers.controls.text
 				if(this._needsNewBitmap)
 				{
 					this.textSnapshot.texture.dispose();
-					this.textSnapshot.texture = starling.textures.Texture.fromBitmapData(this._textSnapshotBitmapData, false, false, Starling.contentScaleFactor);
+					this.textSnapshot.texture = newTexture;
 					this.textSnapshot.readjustSize();
 				}
 				else
 				{
-					//this is faster if we haven't resized the bitmapdata
-					const texture:starling.textures.Texture = this.textSnapshot.texture;
-					if(Starling.handleLostContext && texture is ConcreteTexture)
-					{
-						ConcreteTexture(texture).restoreOnLostContext(this._textSnapshotBitmapData);
-					}
-					const textureBase:TextureBase = texture.base;
-					if(textureBase is flash.display3D.textures.Texture)
-					{
-						flash.display3D.textures.Texture(textureBase).uploadFromBitmapData(this._textSnapshotBitmapData);
-					}
-					else //rectangle texture
-					{
-
-						textureBase["uploadFromBitmapData"](this._textSnapshotBitmapData);
-					}
+					//this is faster, if we haven't resized the bitmapdata
+					const existingTexture:Texture = this.textSnapshot.texture;
+					existingTexture.root.uploadBitmapData(this._textSnapshotBitmapData);
 				}
 			}
 			this._needsNewBitmap = false;
