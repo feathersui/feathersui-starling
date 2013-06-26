@@ -508,6 +508,7 @@ package feathers.layout
 				positionX += (this._beforeVirtualizedItemCount * (this._typicalItemWidth + this._gap));
 			}
 			const itemCount:int = items.length;
+			var discoveredItemsCacheLastIndex:int = 0;
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var item:DisplayObject = items[i];
@@ -546,10 +547,15 @@ package feathers.layout
 						}
 					}
 					positionX += item.width + this._gap;
-					maxItemHeight = Math.max(maxItemHeight, item.height);
+					var itemHeight:Number = item.height;
+					if(itemHeight > maxItemHeight)
+					{
+						maxItemHeight = itemHeight;
+					}
 					if(this._useVirtualLayout)
 					{
-						this._discoveredItemsCache.push(item);
+						this._discoveredItemsCache[discoveredItemsCacheLastIndex] = item;
+						discoveredItemsCacheLastIndex++;
 					}
 				}
 			}
@@ -562,9 +568,33 @@ package feathers.layout
 			const discoveredItemCount:int = discoveredItems.length;
 
 			const totalHeight:Number = maxItemHeight + this._paddingTop + this._paddingBottom;
-			const availableHeight:Number = isNaN(explicitHeight) ? Math.min(maxHeight, Math.max(minHeight, totalHeight)) : explicitHeight;
+			var availableHeight:Number = explicitHeight;
+			if(isNaN(availableHeight))
+			{
+				availableHeight = totalHeight;
+				if(availableHeight < minHeight)
+				{
+					availableHeight = minHeight;
+				}
+				else if(availableHeight > maxHeight)
+				{
+					availableHeight = maxHeight;
+				}
+			}
 			const totalWidth:Number = positionX - this._gap + this._paddingRight - boundsX;
-			const availableWidth:Number = isNaN(explicitWidth) ? Math.min(maxWidth, Math.max(minWidth, totalWidth)) : explicitWidth;
+			var availableWidth:Number = explicitWidth;
+			if(isNaN(availableWidth))
+			{
+				availableWidth = totalWidth;
+				if(availableWidth < minWidth)
+				{
+					availableWidth = minWidth;
+				}
+				else if(availableWidth > maxWidth)
+				{
+					availableWidth = maxWidth;
+				}
+			}
 
 			if(totalWidth < availableWidth)
 			{
@@ -688,7 +718,16 @@ package feathers.layout
 
 			if(needsWidth)
 			{
-				result.x = Math.min(maxWidth, Math.max(minWidth, positionX - this._gap + this._paddingLeft + this._paddingRight));
+				var resultWidth:Number = positionX - this._gap + this._paddingLeft + this._paddingRight;
+				if(resultWidth < minWidth)
+				{
+					resultWidth = minWidth;
+				}
+				else if(resultWidth > maxWidth)
+				{
+					resultWidth = maxWidth;
+				}
+				result.x = resultWidth;
 			}
 			else
 			{
@@ -697,7 +736,16 @@ package feathers.layout
 
 			if(needsHeight)
 			{
-				result.y = Math.min(maxHeight, Math.max(minHeight, maxItemHeight + this._paddingTop + this._paddingBottom));
+				var resultHeight:Number = maxItemHeight + this._paddingTop + this._paddingBottom;
+				if(resultHeight < minHeight)
+				{
+					resultHeight = minHeight;
+				}
+				else if(resultHeight > maxHeight)
+				{
+					resultHeight = maxHeight;
+				}
+				result.y = resultHeight;
 			}
 			else
 			{
@@ -755,6 +803,7 @@ package feathers.layout
 				result = new <int>[];
 			}
 			result.length = 0;
+			var resultLastIndex:int = 0;
 			const visibleTypicalItemCount:int = Math.ceil(width / (this._typicalItemWidth + this._gap));
 			if(!this._hasVariableItemDimensions)
 			{
@@ -773,15 +822,29 @@ package feathers.layout
 						indexOffset = Math.ceil(((width - totalItemWidth) / (this._typicalItemWidth + this._gap)) / 2);
 					}
 				}
-				var minimum:int = -indexOffset + Math.max(0, (scrollX - this._paddingLeft) / (this._typicalItemWidth + this._gap));
+				var minimum:int = (scrollX - this._paddingLeft) / (this._typicalItemWidth + this._gap);
+				if(minimum < 0)
+				{
+					minimum = 0;
+				}
+				minimum -= indexOffset;
 				//if we're scrolling beyond the final item, we should keep the
 				//indices consistent so that items aren't destroyed and
 				//recreated unnecessarily
-				var maximum:int = Math.min(itemCount - 1, minimum + visibleTypicalItemCount);
-				minimum = Math.max(0, maximum - visibleTypicalItemCount);
+				var maximum:int = minimum + visibleTypicalItemCount;
+				if(maximum >= itemCount)
+				{
+					maximum = itemCount - 1;
+				}
+				minimum = maximum - visibleTypicalItemCount;
+				if(minimum < 0)
+				{
+					minimum = 0;
+				}
 				for(var i:int = minimum; i <= maximum; i++)
 				{
-					result.push(i);
+					result[resultLastIndex] = i;
+					resultLastIndex++;
 				}
 				return result;
 			}
@@ -801,7 +864,8 @@ package feathers.layout
 				positionX += itemWidth + this._gap;
 				if(positionX > scrollX && oldPositionX < maxPositionX)
 				{
-					result.push(i);
+					result[resultLastIndex] = i;
+					resultLastIndex++;
 				}
 
 				if(positionX >= maxPositionX)
@@ -819,22 +883,32 @@ package feathers.layout
 			{
 				//add extra items before the first index
 				const firstExistingIndex:int = result[0];
-				const lastIndexToAdd:int = Math.max(0, firstExistingIndex - visibleItemCountDifference);
+				var lastIndexToAdd:int = firstExistingIndex - visibleItemCountDifference;
+				if(lastIndexToAdd < 0)
+				{
+					lastIndexToAdd = 0;
+				}
 				for(i = firstExistingIndex - 1; i >= lastIndexToAdd; i--)
 				{
 					result.unshift(i);
 				}
 			}
 			resultLength = result.length;
+			resultLastIndex = resultLength;
 			visibleItemCountDifference = visibleTypicalItemCount - resultLength;
 			if(visibleItemCountDifference > 0)
 			{
 				//add extra items after the last index
 				const startIndex:int = resultLength > 0 ? (result[resultLength - 1] + 1) : 0;
-				const endIndex:int = Math.min(itemCount, startIndex + visibleItemCountDifference);
+				var endIndex:int = Math.min(itemCount, startIndex + visibleItemCountDifference);
+				if(endIndex > itemCount)
+				{
+					endIndex = itemCount;
+				}
 				for(i = startIndex; i < endIndex; i++)
 				{
-					result.push(i);
+					result[resultLastIndex] = i;
+					resultLastIndex++;
 				}
 			}
 			return result;
@@ -858,7 +932,11 @@ package feathers.layout
 				startIndexOffset = this._beforeVirtualizedItemCount;
 				positionX += (this._beforeVirtualizedItemCount * (this._typicalItemWidth + this._gap));
 
-				endIndexOffset = Math.max(0, index - items.length - this._beforeVirtualizedItemCount + 1);
+				endIndexOffset = index - items.length - this._beforeVirtualizedItemCount + 1;
+				if(endIndexOffset < 0)
+				{
+					endIndexOffset = 0;
+				}
 				positionX += (endIndexOffset * (this._typicalItemWidth + this._gap));
 			}
 			index -= (startIndexOffset + endIndexOffset);

@@ -1387,7 +1387,14 @@ package feathers.core
 			}
 			else
 			{
-				width = Math.min(this._maxWidth, Math.max(this._minWidth, width));
+				if(width < this._minWidth)
+				{
+					width = this._minWidth;
+				}
+				else if(width > this._maxWidth)
+				{
+					width = this._maxWidth;
+				}
 			}
 			if(!isNaN(this.explicitHeight))
 			{
@@ -1395,7 +1402,14 @@ package feathers.core
 			}
 			else
 			{
-				height = Math.min(this._maxHeight, Math.max(this._minHeight, height));
+				if(height < this._minHeight)
+				{
+					height = this._minHeight;
+				}
+				else if(height > this._maxHeight)
+				{
+					height = this._maxHeight;
+				}
 			}
 			if(isNaN(width))
 			{
@@ -1409,9 +1423,17 @@ package feathers.core
 			if(this.actualWidth != width)
 			{
 				this.actualWidth = width;
-				this._hitArea.width = Math.max(width, this._minTouchWidth);
-				this._hitArea.x = (this.actualWidth - this._hitArea.width) / 2;
-				if(this._hitArea.x != this._hitArea.x)
+				if(width < this._minTouchWidth)
+				{
+					this._hitArea.width = this._minTouchWidth;
+				}
+				else
+				{
+					this._hitArea.width = width;
+				}
+				var hitAreaX:Number = (this.actualWidth - this._hitArea.width) / 2;
+				this._hitArea.x = hitAreaX;
+				if(hitAreaX != hitAreaX) //faster than isNaN
 				{
 					this._hitArea.x = 0;
 				}
@@ -1420,9 +1442,17 @@ package feathers.core
 			if(this.actualHeight != height)
 			{
 				this.actualHeight = height;
-				this._hitArea.height = Math.max(height, this._minTouchHeight);
-				this._hitArea.y = (this.actualHeight - this._hitArea.height) / 2;
-				if(this._hitArea.y != this._hitArea.y)
+				if(height < this._minTouchHeight)
+				{
+					this._hitArea.height = this._minTouchHeight;
+				}
+				else
+				{
+					this._hitArea.height = height;
+				}
+				var hitAreaY:Number = (this.actualHeight - this._hitArea.height) / 2;
+				this._hitArea.y = hitAreaY;
+				if(hitAreaY != hitAreaY) //faster than isNaN
 				{
 					this._hitArea.y = 0;
 				}

@@ -393,12 +393,20 @@ package feathers.controls.supportClasses
 
 		public function get horizontalScrollStep():Number
 		{
-			return Math.min(this._typicalItemWidth, this._typicalItemHeight);
+			if(this._typicalItemWidth < this._typicalItemHeight)
+			{
+				return this._typicalItemWidth;
+			}
+			return this._typicalItemHeight;
 		}
 
 		public function get verticalScrollStep():Number
 		{
-			return Math.min(this._typicalItemWidth, this._typicalItemHeight);
+			if(this._typicalItemWidth < this._typicalItemHeight)
+			{
+				return this._typicalItemWidth;
+			}
+			return this._typicalItemHeight;
 		}
 
 		private var _horizontalScrollPosition:Number = 0;
@@ -698,10 +706,20 @@ package feathers.controls.supportClasses
 				for(var i:int = 1; i < unrenderedItemCount; i++)
 				{
 					var index:int = HELPER_VECTOR[i];
-					minIndex = Math.min(minIndex, index);
-					maxIndex = Math.max(maxIndex, index);
+					if(index < minIndex)
+					{
+						minIndex = index;
+					}
+					if(index > maxIndex)
+					{
+						maxIndex = index;
+					}
 				}
-				const beforeItemCount:int = Math.max(0, minIndex - 1);
+				var beforeItemCount:int = minIndex - 1;
+				if(beforeItemCount < 0)
+				{
+					beforeItemCount = 0;
+				}
 				const afterItemCount:int = itemCount - 1 - maxIndex;
 				const sequentialVirtualLayout:ITrimmedVirtualLayout = ITrimmedVirtualLayout(this._layout);
 				sequentialVirtualLayout.beforeVirtualizedItemCount = beforeItemCount;
@@ -715,7 +733,8 @@ package feathers.controls.supportClasses
 				this._layoutItems.length = itemCount;
 			}
 
-			const layoutItemCount:int = this._layoutItems.length;
+			var activeRenderersLastIndex:int = this._activeRenderers.length;
+			var unrenderedDataLastIndex:int = this._unrenderedData.length;
 			for(i = 0; i < unrenderedItemCount; i++)
 			{
 				index = useVirtualLayout ? HELPER_VECTOR[i] : i;
@@ -729,13 +748,15 @@ package feathers.controls.supportClasses
 				{
 					//the index may have changed if data was added or removed
 					renderer.index = index;
-					this._activeRenderers.push(renderer);
-					this._inactiveRenderers.splice(this._inactiveRenderers.indexOf(renderer), 1);
+					this._activeRenderers[activeRenderersLastIndex] = renderer;
+					activeRenderersLastIndex++;
+					this._inactiveRenderers[this._inactiveRenderers.indexOf(renderer)] = null;
 					this._layoutItems[index + this._layoutIndexOffset] = DisplayObject(renderer);
 				}
 				else
 				{
-					this._unrenderedData.push(item);
+					this._unrenderedData[unrenderedDataLastIndex] = item;
+					unrenderedDataLastIndex++;
 				}
 			}
 		}
@@ -758,6 +779,10 @@ package feathers.controls.supportClasses
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var renderer:IListItemRenderer = this._inactiveRenderers[i];
+				if(!renderer)
+				{
+					continue;
+				}
 				this._owner.dispatchEventWith(FeathersEventType.RENDERER_REMOVE, false, renderer);
 				delete this._rendererMap[renderer.data];
 			}
@@ -769,34 +794,46 @@ package feathers.controls.supportClasses
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var renderer:IListItemRenderer = this._inactiveRenderers.shift();
+				if(!renderer)
+				{
+					continue;
+				}
 				this.destroyRenderer(renderer);
 			}
 		}
 
 		private function createRenderer(item:Object, index:int, isTemporary:Boolean = false):IListItemRenderer
 		{
-			if(isTemporary || this._inactiveRenderers.length == 0)
+			var renderer:IListItemRenderer;
+			do
 			{
-				var renderer:IListItemRenderer;
-				if(this._itemRendererFactory != null)
+				if(isTemporary || this._inactiveRenderers.length == 0)
 				{
-					renderer = IListItemRenderer(this._itemRendererFactory());
+					if(this._itemRendererFactory != null)
+					{
+						renderer = IListItemRenderer(this._itemRendererFactory());
+					}
+					else
+					{
+						renderer = new this._itemRendererType();
+					}
+					var uiRenderer:IFeathersControl = IFeathersControl(renderer);
+					if(this._itemRendererName && this._itemRendererName.length > 0)
+					{
+						uiRenderer.nameList.add(this._itemRendererName);
+					}
+					this.addChild(DisplayObject(renderer));
 				}
 				else
 				{
-					renderer = new this._itemRendererType();
+					renderer = this._inactiveRenderers.shift();
 				}
-				var uiRenderer:IFeathersControl = IFeathersControl(renderer);
-				if(this._itemRendererName && this._itemRendererName.length > 0)
-				{
-					uiRenderer.nameList.add(this._itemRendererName);
-				}
-				this.addChild(DisplayObject(renderer));
+				//wondering why this all is in a loop?
+				//_inactiveRenderers.shift() may return null because we're
+				//storing null values instead of calling splice() to improve
+				//performance.
 			}
-			else
-			{
-				renderer = this._inactiveRenderers.shift();
-			}
+			while(!renderer)
 			renderer.data = item;
 			renderer.index = index;
 			renderer.owner = this._owner;
