@@ -954,11 +954,21 @@ package feathers.controls
 			}
 			if(this._direction == DIRECTION_VERTICAL)
 			{
-				const thumbMinHeight:Number = this.thumb.minHeight > 0 ? this.thumb.minHeight : this.thumbOriginalHeight;
-				const thumbHeight:Number = contentHeight * adjustedPageStep / range;
-				const heightOffset:Number = Math.min(thumbHeight, contentHeight - thumbHeight) * valueOffset / (range * thumbHeight / contentHeight);
 				this.thumb.width = this.thumbOriginalWidth;
-				this.thumb.height = Math.max(thumbMinHeight, -heightOffset + thumbHeight);
+				const thumbMinHeight:Number = this.thumb.minHeight > 0 ? this.thumb.minHeight : this.thumbOriginalHeight;
+				var thumbHeight:Number = contentHeight * adjustedPageStep / range;
+				var heightOffset:Number = contentHeight - thumbHeight;
+				if(heightOffset > thumbHeight)
+				{
+					heightOffset = thumbHeight;
+				}
+				heightOffset *=  valueOffset / (range * thumbHeight / contentHeight);
+				thumbHeight -= heightOffset;
+				if(thumbHeight < thumbMinHeight)
+				{
+					thumbHeight = thumbMinHeight;
+				}
+				this.thumb.height = thumbHeight;
 				this.thumb.x = this._paddingLeft + (this.actualWidth - this._paddingLeft - this._paddingRight - this.thumb.width) / 2;
 				const trackScrollableHeight:Number = contentHeight - this.thumb.height;
 				this.thumb.y = this._paddingTop + Math.max(0, Math.min(trackScrollableHeight, trackScrollableHeight * (this._value - this._minimum) / range));
@@ -966,9 +976,19 @@ package feathers.controls
 			else //horizontal
 			{
 				const thumbMinWidth:Number = this.thumb.minWidth > 0 ? this.thumb.minWidth : this.thumbOriginalWidth;
-				const thumbWidth:Number = contentWidth * adjustedPageStep / range;
-				const widthOffset:Number = Math.min(thumbWidth, contentWidth - thumbWidth) * valueOffset / (range * thumbWidth / contentWidth);
-				this.thumb.width = Math.max(thumbMinWidth, -widthOffset + thumbWidth);
+				var thumbWidth:Number = contentWidth * adjustedPageStep / range;
+				var widthOffset:Number = contentWidth - thumbWidth;
+				if(widthOffset > thumbWidth)
+				{
+					widthOffset = thumbWidth;
+				}
+				widthOffset *= valueOffset / (range * thumbWidth / contentWidth);
+				thumbWidth -= widthOffset;
+				if(thumbWidth < thumbMinWidth)
+				{
+					thumbWidth = thumbMinWidth;
+				}
+				this.thumb.width = thumbWidth;
 				this.thumb.height = this.thumbOriginalHeight;
 				const trackScrollableWidth:Number = contentWidth - this.thumb.width;
 				this.thumb.x = this._paddingLeft + Math.max(0, Math.min(trackScrollableWidth, trackScrollableWidth * (this._value - this._minimum) / range));

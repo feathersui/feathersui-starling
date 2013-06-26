@@ -735,7 +735,16 @@ package feathers.controls.text
 				//first time results in an incorrect value, but if you query it
 				//again, for some reason, it reports the correct width value.
 				var hackWorkaround:Number = this.textField.width;
-				newWidth = Math.max(this._minWidth, Math.min(this._maxWidth, this.textField.width));
+
+				newWidth = this.textField.width;
+				if(newWidth < this._minWidth)
+				{
+					newWidth = this._minWidth;
+				}
+				else if(newWidth > this._maxWidth)
+				{
+					newWidth = this._maxWidth;
+				}
 			}
 
 			this.textField.width = newWidth;
@@ -743,7 +752,15 @@ package feathers.controls.text
 			var newHeight:Number = this.explicitHeight;
 			if(needsHeight)
 			{
-				newHeight = Math.max(this._minHeight, Math.min(this._maxHeight, this.textField.height));
+				newHeight = this.textField.height;
+				if(newHeight < this._minHeight)
+				{
+					newHeight = this._minHeight;
+				}
+				else if(newHeight > this._maxHeight)
+				{
+					newHeight = this._maxHeight;
+				}
 			}
 
 			this.textField.autoSize = TextFieldAutoSize.NONE;
