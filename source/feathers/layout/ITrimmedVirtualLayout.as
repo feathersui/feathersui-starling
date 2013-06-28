@@ -14,10 +14,17 @@ package feathers.layout
 	public interface ITrimmedVirtualLayout extends IVirtualLayout
 	{
 		/**
-		 * The number of virtualized items that appear before the items passed
-		 * to <code>layout()</code>. Allows the array of items to be smaller
-		 * than the full size. Does not work if the layout has variable item
+		 * Used internally by a component, such as <code>List</code>, to set the
+		 * number of virtualized items that appear before the items passed to
+		 * <code>layout()</code>. Allows the array of items to be smaller than
+		 * the full size. Does not work if the layout has variable item
 		 * dimensions.
+		 *
+		 * <p>This property is meant to be set by the <code>List</code> or other
+		 * component that uses the virtual layout. If you're simply creating
+		 * a layout for a <code>List</code> or another component, do not use
+		 * this property. It is meant for developers creating custom components
+		 * only.</p>
 		 */
 		function get beforeVirtualizedItemCount():int;
 
@@ -27,10 +34,17 @@ package feathers.layout
 		function set beforeVirtualizedItemCount(value:int):void;
 
 		/**
-		 * The number of virtualized items that appear after the items passed
-		 * to <code>layout()</code>. Allows the array of items to be smaller
-		 * than the full size. Does not work if the layout has variable item
+		 * Used internally by a component, such as <code>List</code>, to set the
+		 * number of virtualized items that appear after the items passed to
+		 * <code>layout()</code>. Allows the array of items to be smaller than
+		 * the full size. Does not work if the layout has variable item
 		 * dimensions.
+		 *
+		 * <p>This property is meant to be set by the <code>List</code> or other
+		 * component that uses the virtual layout. If you're simply creating
+		 * a layout for a <code>List</code> or another component, do not use
+		 * this property. It is meant for developers creating custom components
+		 * only.</p>
 		 */
 		function get afterVirtualizedItemCount():int;
 

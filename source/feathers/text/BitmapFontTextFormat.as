@@ -38,6 +38,9 @@ package feathers.text
 			this.align = align;
 		}
 
+		/**
+		 * The name of the font.
+		 */
 		public function get fontName():String
 		{
 			return this.font ? this.font.name : null;
@@ -50,30 +53,40 @@ package feathers.text
 		
 		/**
 		 * The multiply color.
+		 *
+		 * @default 0xffffff
 		 */
 		public var color:uint;
 		
 		/**
 		 * The size at which to display the bitmap font. Set to <code>NaN</code>
 		 * to use the default size in the BitmapFont instance.
+		 *
+		 * @default NaN
 		 */
 		public var size:Number;
 		
 		/**
 		 * The number of extra pixels between characters. May be positive or
 		 * negative.
+		 *
+		 * @default 0
 		 */
 		public var letterSpacing:Number = 0;
 
 		[Inspectable(type="String",enumeration="left,center,right")]
 		/**
 		 * Determines the alignment of the text, either left, center, or right.
+		 *
+		 * @default flash.text.TextFormatAlign.LEFT
 		 */
 		public var align:String = TextFormatAlign.LEFT;
 		
 		/**
 		 * Determines if the kerning values defined in the BitmapFont instance
 		 * will be used for layout.
+		 *
+		 * @default true
 		 */
 		public var isKerningEnabled:Boolean = true;
 	}

@@ -141,6 +141,8 @@ package feathers.controls.text
 
 		/**
 		 * The text displayed by the input.
+		 *
+		 * @default ""
 		 */
 		public function get text():String
 		{
@@ -218,6 +220,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
+		 *
+		 * @default flash.text.AutoCapitalize.NONE
 		 */
 		public function get autoCapitalize():String
 		{
@@ -244,6 +248,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
+		 *
+		 * @default false
 		 */
 		public function get autoCorrect():Boolean
 		{
@@ -270,6 +276,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
+		 *
+		 * @default 0x000000
 		 */
 		public function get color():uint
 		{
@@ -296,6 +304,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
+		 *
+		 * @default false
 		 */
 		public function get displayAsPassword():Boolean
 		{
@@ -323,6 +333,8 @@ package feathers.controls.text
 		/**
 		 * Determines if the text input is editable. If the text input is not
 		 * editable, it will still appear enabled.
+		 *
+		 * @default true
 		 */
 		public function get isEditable():Boolean
 		{
@@ -344,6 +356,8 @@ package feathers.controls.text
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @default true
 		 */
 		public function get setTouchFocusOnEndedPhase():Boolean
 		{
@@ -357,6 +371,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
+		 *
+		 * @default null
 		 */
 		public function get fontFamily():String
 		{
@@ -383,6 +399,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
+		 *
+		 * @default flash.text.engine.FontPosture.NORMAL
 		 */
 		public function get fontPosture():String
 		{
@@ -409,6 +427,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
+		 *
+		 * @default 12
 		 */
 		public function get fontSize():int
 		{
@@ -435,6 +455,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
+		 *
+		 * @default flash.text.engine.FontWeight.NORMAL
 		 */
 		public function get fontWeight():String
 		{
@@ -461,6 +483,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
+		 *
+		 * @default "en"
 		 */
 		public function get locale():String
 		{
@@ -487,6 +511,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
+		 *
+		 * @default 0
 		 */
 		public function get maxChars():int
 		{
@@ -517,6 +543,8 @@ package feathers.controls.text
 		 * <code>StageText</code> instance will be disposed and recreated when
 		 * this property changes after the <code>StageText</code> text was
 		 * initially created.
+		 *
+		 * @default false
 		 */
 		public function get multiline():Boolean
 		{
@@ -543,6 +571,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
+		 *
+		 * @default null
 		 */
 		public function get restrict():String
 		{
@@ -569,6 +599,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
+		 *
+		 * @default flash.text.ReturnKeyLabel.DEFAULT
 		 */
 		public function get returnKeyLabel():String
 		{
@@ -595,6 +627,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
+		 *
+		 * @default flash.text.SoftKeyboardType.DEFAULT
 		 */
 		public function get softKeyboardType():String
 		{
@@ -621,6 +655,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
+		 *
+		 * @default flash.text.TextFormatAlign.START
 		 */
 		public function get textAlign():String
 		{

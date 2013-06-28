@@ -171,6 +171,8 @@ package feathers.display
 		
 		/**
 		 * The amount to scale the texture. Useful for DPI changes.
+		 *
+		 * @default 1
 		 */
 		public function get textureScale():Number
 		{
@@ -197,6 +199,8 @@ package feathers.display
 		
 		/**
 		 * The smoothing value to pass to the images.
+		 *
+		 * @default starling.textures.TextureSmoothing.BILINEAR
 		 *
 		 * @see starling.textures.TextureSmoothing
 		 */
@@ -225,6 +229,8 @@ package feathers.display
 
 		/**
 		 * The color value to pass to the images.
+		 *
+		 * @default 0xffffff
 		 */
 		public function get color():uint
 		{
@@ -252,6 +258,8 @@ package feathers.display
 		/**
 		 * Determines if the regions are batched normally by Starling or if
 		 * they're batched separately.
+		 *
+		 * @default true
 		 */
 		public function get useSeparateBatch():Boolean
 		{

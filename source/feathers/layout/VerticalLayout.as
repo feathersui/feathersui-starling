@@ -33,38 +33,52 @@ package feathers.layout
 		/**
 		 * If the total item height is smaller than the height of the bounds,
 		 * the items will be aligned to the top.
+		 *
+		 * @see #verticalAlign
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
 
 		/**
 		 * If the total item height is smaller than the height of the bounds,
 		 * the items will be aligned to the middle.
+		 *
+		 * @see #verticalAlign
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
 
 		/**
 		 * If the total item height is smaller than the height of the bounds,
 		 * the items will be aligned to the bottom.
+		 *
+		 * @see #verticalAlign
 		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 
 		/**
 		 * The items will be aligned to the left of the bounds.
+		 *
+		 * @see #horizontalAlign
 		 */
 		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
 
 		/**
 		 * The items will be aligned to the center of the bounds.
+		 *
+		 * @see #horizontalAlign
 		 */
 		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
 
 		/**
 		 * The items will be aligned to the right of the bounds.
+		 *
+		 * @see #horizontalAlign
 		 */
 		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
 
 		/**
 		 * The items will fill the width of the bounds.
+		 *
+		 * @see #horizontalAlign
 		 */
 		public static const HORIZONTAL_ALIGN_JUSTIFY:String = "justify";
 
@@ -91,7 +105,9 @@ package feathers.layout
 		protected var _gap:Number = 0;
 
 		/**
-		 * THe space, in pixels, between items.
+		 * The space, in pixels, between items.
+		 *
+		 * @default 0
 		 */
 		public function get gap():Number
 		{
@@ -116,6 +132,13 @@ package feathers.layout
 		 * <code>padding</code> getter always returns the value of
 		 * <code>paddingTop</code>, but the other padding values may be
 		 * different.
+		 *
+		 * @default 0
+		 *
+		 * @see #paddingTop
+		 * @see #paddingRight
+		 * @see #paddingBottom
+		 * @see #paddingLeft
 		 */
 		public function get padding():Number
 		{
@@ -140,6 +163,8 @@ package feathers.layout
 
 		/**
 		 * The space, in pixels, that appears on top, before the first item.
+		 *
+		 * @default 0
 		 */
 		public function get paddingTop():Number
 		{
@@ -166,6 +191,8 @@ package feathers.layout
 
 		/**
 		 * The minimum space, in pixels, to the right of the items.
+		 *
+		 * @default 0
 		 */
 		public function get paddingRight():Number
 		{
@@ -193,6 +220,8 @@ package feathers.layout
 		/**
 		 * The space, in pixels, that appears on the bottom, after the last
 		 * item.
+		 *
+		 * @default 0
 		 */
 		public function get paddingBottom():Number
 		{
@@ -219,6 +248,8 @@ package feathers.layout
 
 		/**
 		 * The minimum space, in pixels, to the left of the items.
+		 *
+		 * @default 0
 		 */
 		public function get paddingLeft():Number
 		{
@@ -248,6 +279,12 @@ package feathers.layout
 		/**
 		 * If the total item height is less than the bounds, the positions of
 		 * the items can be aligned vertically.
+		 *
+		 * @default VerticalLayout.VERTICAL_ALIGN_TOP
+		 *
+		 * @see #VERTICAL_ALIGN_TOP
+		 * @see #VERTICAL_ALIGN_MIDDLE
+		 * @see #VERTICAL_ALIGN_BOTTOM
 		 */
 		public function get verticalAlign():String
 		{
@@ -275,6 +312,13 @@ package feathers.layout
 		[Inspectable(type="String",enumeration="left,center,right,justify")]
 		/**
 		 * The alignment of the items horizontally, on the x-axis.
+		 *
+		 * @default VerticalLayout.HORIZONTAL_ALIGN_LEFT
+		 *
+		 * @see #HORIZONTAL_ALIGN_LEFT
+		 * @see #HORIZONTAL_ALIGN_CENTER
+		 * @see #HORIZONTAL_ALIGN_RIGHT
+		 * @see #HORIZONTAL_ALIGN_JUSTIFY
 		 */
 		public function get horizontalAlign():String
 		{
@@ -301,6 +345,8 @@ package feathers.layout
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @default true
 		 */
 		public function get useVirtualLayout():Boolean
 		{
@@ -329,6 +375,8 @@ package feathers.layout
 		 * When the layout is virtualized, and this value is true, the items may
 		 * have variable width values. If false, the items will all share the
 		 * same width value with the typical item.
+		 *
+		 * @default false
 		 */
 		public function get hasVariableItemDimensions():Boolean
 		{
@@ -353,6 +401,8 @@ package feathers.layout
 		 * view port. Can improve performance, especially for non-virtual
 		 * layouts. If <code>true</code>, you will not be able to manually
 		 * change the <code>visible</code> property of any items in the layout.
+		 *
+		 * @default false
 		 */
 		public var manageVisibility:Boolean = false;
 
@@ -467,6 +517,12 @@ package feathers.layout
 		/**
 		 * When the scroll position is calculated for an item, an attempt will
 		 * be made to align the item to this position.
+		 *
+		 * @default VerticalLayout.VERTICAL_ALIGN_MIDDLE
+		 *
+		 * @see #VERTICAL_ALIGN_TOP
+		 * @see #VERTICAL_ALIGN_MIDDLE
+		 * @see #VERTICAL_ALIGN_BOTTOM
 		 */
 		public function get scrollPositionVerticalAlign():String
 		{
