@@ -36,98 +36,132 @@ package feathers.layout
 		/**
 		 * If the total item height is smaller than the height of the bounds,
 		 * the items will be aligned to the top.
+		 *
+		 * @see #verticalAlign
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
 
 		/**
 		 * If the total item height is smaller than the height of the bounds,
 		 * the items will be aligned to the middle.
+		 *
+		 * @see #verticalAlign
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
 
 		/**
 		 * If the total item height is smaller than the height of the bounds,
 		 * the items will be aligned to the bottom.
+		 *
+		 * @see #verticalAlign
 		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 
 		/**
 		 * If the total item width is smaller than the width of the bounds, the
 		 * items will be aligned to the left.
+		 *
+		 * @see #horizontalAlign
 		 */
 		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
 
 		/**
 		 * If the total item width is smaller than the width of the bounds, the
 		 * items will be aligned to the center.
+		 *
+		 * @see #horizontalAlign
 		 */
 		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
 
 		/**
 		 * If the total item width is smaller than the width of the bounds, the
 		 * items will be aligned to the right.
+		 *
+		 * @see #horizontalAlign
 		 */
 		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
 
 		/**
 		 * If an item height is smaller than the height of a tile, the item will
 		 * be aligned to the top edge of the tile.
+		 *
+		 * @see #tileVerticalAlign
 		 */
 		public static const TILE_VERTICAL_ALIGN_TOP:String = "top";
 
 		/**
 		 * If an item height is smaller than the height of a tile, the item will
 		 * be aligned to the middle of the tile.
+		 *
+		 * @see #tileVerticalAlign
 		 */
 		public static const TILE_VERTICAL_ALIGN_MIDDLE:String = "middle";
 
 		/**
 		 * If an item height is smaller than the height of a tile, the item will
 		 * be aligned to the bottom edge of the tile.
+		 *
+		 * @see #tileVerticalAlign
 		 */
 		public static const TILE_VERTICAL_ALIGN_BOTTOM:String = "bottom";
 
 		/**
 		 * The item will be resized to fit the height of the tile.
+		 *
+		 * @see #tileVerticalAlign
 		 */
 		public static const TILE_VERTICAL_ALIGN_JUSTIFY:String = "justify";
 
 		/**
 		 * If an item width is smaller than the width of a tile, the item will
 		 * be aligned to the left edge of the tile.
+		 *
+		 * @see #tileHorizontalAlign
 		 */
 		public static const TILE_HORIZONTAL_ALIGN_LEFT:String = "left";
 
 		/**
 		 * If an item width is smaller than the width of a tile, the item will
 		 * be aligned to the center of the tile.
+		 *
+		 * @see #tileHorizontalAlign
 		 */
 		public static const TILE_HORIZONTAL_ALIGN_CENTER:String = "center";
 
 		/**
 		 * If an item width is smaller than the width of a tile, the item will
 		 * be aligned to the right edge of the tile.
+		 *
+		 * @see #tileHorizontalAlign
 		 */
 		public static const TILE_HORIZONTAL_ALIGN_RIGHT:String = "right";
 
 		/**
 		 * The item will be resized to fit the width of the tile.
+		 *
+		 * @see #tileHorizontalAlign
 		 */
 		public static const TILE_HORIZONTAL_ALIGN_JUSTIFY:String = "justify";
 
 		/**
 		 * The items will be positioned in pages horizontally from left to right.
+		 *
+		 * @see #paging
 		 */
 		public static const PAGING_HORIZONTAL:String = "horizontal";
 
 		/**
 		 * The items will be positioned in pages vertically from top to bottom.
+		 *
+		 * @see #paging
 		 */
 		public static const PAGING_VERTICAL:String = "vertical";
 
 		/**
 		 * The items will not be paged. In other words, they will be positioned
 		 * in a continuous set of rows without gaps.
+		 *
+		 * @see #paging
 		 */
 		public static const PAGING_NONE:String = "none";
 
@@ -148,6 +182,11 @@ package feathers.layout
 		 * to the same value. The <code>gap</code> getter always returns the
 		 * value of <code>horizontalGap</code>, but the value of
 		 * <code>verticalGap</code> may be different.
+		 *
+		 * @default 0
+		 *
+		 * @see #horizontalGap
+		 * @see #verticalGap
 		 */
 		public function get gap():Number
 		{
@@ -170,6 +209,8 @@ package feathers.layout
 
 		/**
 		 * The horizontal space, in pixels, between tiles.
+		 *
+		 * @default 0
 		 */
 		public function get horizontalGap():Number
 		{
@@ -196,6 +237,8 @@ package feathers.layout
 
 		/**
 		 * The vertical space, in pixels, between tiles.
+		 *
+		 * @default 0
 		 */
 		public function get verticalGap():Number
 		{
@@ -220,6 +263,13 @@ package feathers.layout
 		 * <code>padding</code> getter always returns the value of
 		 * <code>paddingTop</code>, but the other padding values may be
 		 * different.
+		 *
+		 * @default 0
+		 *
+		 * @see #paddingTop
+		 * @see #paddingRight
+		 * @see #paddingBottom
+		 * @see #paddingLeft
 		 */
 		public function get padding():Number
 		{
@@ -244,6 +294,8 @@ package feathers.layout
 
 		/**
 		 * The space, in pixels, above of items.
+		 *
+		 * @default 0
 		 */
 		public function get paddingTop():Number
 		{
@@ -270,6 +322,8 @@ package feathers.layout
 
 		/**
 		 * The space, in pixels, to the right of the items.
+		 *
+		 * @default 0
 		 */
 		public function get paddingRight():Number
 		{
@@ -296,6 +350,8 @@ package feathers.layout
 
 		/**
 		 * The space, in pixels, below the items.
+		 *
+		 * @default 0
 		 */
 		public function get paddingBottom():Number
 		{
@@ -322,6 +378,8 @@ package feathers.layout
 
 		/**
 		 * The space, in pixels, to the left of the items.
+		 *
+		 * @default 0
 		 */
 		public function get paddingLeft():Number
 		{
@@ -350,6 +408,12 @@ package feathers.layout
 		/**
 		 * If the total column height is less than the bounds, the items in the
 		 * column can be aligned vertically.
+		 *
+		 * @default TiledRowsLayout.VERTICAL_ALIGN_TOP
+		 *
+		 * @see #VERTICAL_ALIGN_TOP
+		 * @see #VERTICAL_ALIGN_MIDDLE
+		 * @see #VERTICAL_ALIGN_BOTTOM
 		 */
 		public function get verticalAlign():String
 		{
@@ -378,6 +442,12 @@ package feathers.layout
 		/**
 		 * If the total row width is less than the bounds, the items in the row
 		 * can be aligned horizontally.
+		 *
+		 * @default TiledRowsLayout.HORIZONTAL_ALIGN_CENTER
+		 *
+		 * @see #HORIZONTAL_ALIGN_LEFT
+		 * @see #HORIZONTAL_ALIGN_CENTER
+		 * @see #HORIZONTAL_ALIGN_RIGHT
 		 */
 		public function get horizontalAlign():String
 		{
@@ -406,6 +476,13 @@ package feathers.layout
 		/**
 		 * If an item's height is less than the tile bounds, the position of the
 		 * item can be aligned vertically.
+		 *
+		 * @default TiledRowsLayout.TILE_VERTICAL_ALIGN_MIDDLE
+		 *
+		 * @see #TILE_VERTICAL_ALIGN_TOP
+		 * @see #TILE_VERTICAL_ALIGN_MIDDLE
+		 * @see #TILE_VERTICAL_ALIGN_BOTTOM
+		 * @see #TILE_VERTICAL_ALIGN_JUSTIFY
 		 */
 		public function get tileVerticalAlign():String
 		{
@@ -434,6 +511,13 @@ package feathers.layout
 		/**
 		 * If the item's width is less than the tile bounds, the position of the
 		 * item can be aligned horizontally.
+		 *
+		 * @default TiledRowsLayout.TILE_HORIZONTAL_ALIGN_CENTER
+		 *
+		 * @see #TILE_HORIZONTAL_ALIGN_LEFT
+		 * @see #TILE_HORIZONTAL_ALIGN_CENTER
+		 * @see #TILE_HORIZONTAL_ALIGN_RIGHT
+		 * @see #TILE_HORIZONTAL_ALIGN_JUSTIFY
 		 */
 		public function get tileHorizontalAlign():String
 		{
@@ -463,6 +547,12 @@ package feathers.layout
 		 * of the view port, the layout will be split into pages where each
 		 * page is filled with the maximum number of rows that may be displayed
 		 * without cutting off any items.
+		 *
+		 * @default TiledRowsLayout.PAGING_NONE
+		 *
+		 * @see #PAGING_NONE
+		 * @see #PAGING_HORIZONTAL
+		 * @see #PAGING_VERTICAL
 		 */
 		public function get paging():String
 		{
@@ -490,6 +580,8 @@ package feathers.layout
 		/**
 		 * Determines if the tiles must be square or if their width and height
 		 * may have different values.
+		 *
+		 * @default true
 		 */
 		public function get useSquareTiles():Boolean
 		{
@@ -514,6 +606,8 @@ package feathers.layout
 		 * view port. Can improve performance, especially for non-virtual
 		 * layouts. If <code>true</code>, you will not be able to manually
 		 * change the <code>visible</code> property of any items in the layout.
+		 *
+		 * @default false
 		 */
 		public var manageVisibility:Boolean = false;
 
@@ -524,6 +618,8 @@ package feathers.layout
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @default true
 		 */
 		public function get useVirtualLayout():Boolean
 		{

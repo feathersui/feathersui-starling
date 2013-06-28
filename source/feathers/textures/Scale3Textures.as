@@ -87,6 +87,8 @@ package feathers.textures
 		/**
 		 * The direction of the sub-texture layout.
 		 *
+		 * @default Scale3Textures.DIRECTION_HORIZONTAL
+		 *
 		 * @see #DIRECTION_HORIZONTAL
 		 * @see #DIRECTION_VERTICAL
 		 */
