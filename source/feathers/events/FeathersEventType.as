@@ -132,5 +132,13 @@ package feathers.events
 		 * used by Feathers controls when their layout data has changed.
 		 */
 		public static const LAYOUT_DATA_CHANGE:String = "layoutDataChange";
+
+		/**
+		 * The <code>FeathersEventType.LONG_PRESS</code> event type is used by
+		 * the Feathers <code>Button</code> when it is pressed for a long time.
+		 *
+		 * @see feathers.controls.Button#event:longPress
+		 */
+		public static const LONG_PRESS:String = "longPress";
 	}
 }
