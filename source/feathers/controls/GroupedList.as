@@ -447,11 +447,13 @@ package feathers.controls
 			if(this._dataProvider)
 			{
 				this._dataProvider.removeEventListener(CollectionEventType.RESET, dataProvider_resetHandler);
+				this._dataProvider.removeEventListener(Event.CHANGE, dataProvider_changeHandler);
 			}
 			this._dataProvider = value;
 			if(this._dataProvider)
 			{
 				this._dataProvider.addEventListener(CollectionEventType.RESET, dataProvider_resetHandler);
+				this._dataProvider.addEventListener(Event.CHANGE, dataProvider_changeHandler);
 			}
 
 			//reset the scroll position because this is a drastic change and
@@ -2339,6 +2341,14 @@ package feathers.controls
 					this.setSelectedLocation(groupIndex, itemIndex);
 				}
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function dataProvider_changeHandler(event:Event):void
+		{
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		/**
