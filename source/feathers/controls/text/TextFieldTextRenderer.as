@@ -104,6 +104,8 @@ package feathers.controls.text
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @default ""
 		 */
 		public function get text():String
 		{
@@ -113,10 +115,30 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		public function set text(value:String):void
+		{
+			if(this._text == value)
+			{
+				return;
+			}
+			if(value === null)
+			{
+				//flash.text.TextField won't accept a null value
+				value = "";
+			}
+			this._text = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _isHTML:Boolean = false;
 
 		/**
 		 * Determines if the TextField should display the text as HTML or not.
+		 *
+		 * @default false
 		 *
 		 * @see flash.text.TextField#htmlText
 		 */
@@ -141,28 +163,12 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		public function set text(value:String):void
-		{
-			if(this._text == value)
-			{
-				return;
-			}
-			if(value === null)
-			{
-				//flash.text.TextField won't accept a null value
-				value = "";
-			}
-			this._text = value;
-			this.invalidate(INVALIDATION_FLAG_DATA);
-		}
-
-		/**
-		 * @private
-		 */
 		protected var _textFormat:TextFormat;
 
 		/**
 		 * The font and styles used to draw the text.
+		 *
+		 * @default null
 		 *
 		 * @see flash.text.TextFormat
 		 */
@@ -192,6 +198,8 @@ package feathers.controls.text
 		/**
 		 * The <code>StyleSheet</code> object to pass to the TextField.
 		 *
+		 * @default null
+		 *
 		 * @see flash.text.StyleSheet
 		 */
 		public function get styleSheet():StyleSheet
@@ -219,6 +227,8 @@ package feathers.controls.text
 
 		/**
 		 * Determines if the TextField should use an embedded font or not.
+		 *
+		 * @default false
 		 */
 		public function get embedFonts():Boolean
 		{
@@ -254,6 +264,8 @@ package feathers.controls.text
 
 		/**
 		 * Determines if the TextField wraps text to the next line.
+		 *
+		 * @default false
 		 */
 		public function get wordWrap():Boolean
 		{
@@ -281,7 +293,10 @@ package feathers.controls.text
 		/**
 		 * Determines if the text should be snapped to the nearest whole pixel
 		 * when rendered. When this is <code>false</code>, text may be displayed
-		 * on sub-pixels, which often results in blurred rendering.
+		 * on sub-pixels, which often results in blurred rendering due to
+		 * texture smoothing.
+		 *
+		 * @default true
 		 */
 		public function get snapToPixels():Boolean
 		{
@@ -303,6 +318,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the TextField property with the same name.
+		 *
+		 * @default flash.text.AntiAliasType.ADVANCED
 		 *
 		 * @see flash.text.TextField#antiAliasType
 		 */
@@ -332,6 +349,8 @@ package feathers.controls.text
 		/**
 		 * Same as the TextField property with the same name.
 		 *
+		 * @default false
+		 *
 		 * @see flash.text.TextField#background
 		 */
 		public function get background():Boolean
@@ -359,6 +378,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the TextField property with the same name.
+		 *
+		 * @default 0xffffff
 		 *
 		 * @see flash.text.TextField#backgroundColor
 		 */
@@ -388,6 +409,8 @@ package feathers.controls.text
 		/**
 		 * Same as the TextField property with the same name.
 		 *
+		 * @default false
+		 *
 		 * @see flash.text.TextField#border
 		 */
 		public function get border():Boolean
@@ -415,6 +438,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the TextField property with the same name.
+		 *
+		 * @default 0x000000
 		 *
 		 * @see flash.text.TextField#borderColor
 		 */
@@ -444,6 +469,8 @@ package feathers.controls.text
 		/**
 		 * Same as the TextField property with the same name.
 		 *
+		 * @default false
+		 *
 		 * @see flash.text.TextField#condenseWhite
 		 */
 		public function get condenseWhite():Boolean
@@ -471,6 +498,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the TextField property with the same name.
+		 *
+		 * @default false
 		 *
 		 * @see flash.text.TextField#displayAsPassword
 		 */
@@ -500,6 +529,8 @@ package feathers.controls.text
 		/**
 		 * Same as the TextField property with the same name.
 		 *
+		 * @default flash.text.GridFitType.PIXEL
+		 *
 		 * @see flash.text.TextField#gridFitType
 		 */
 		public function get gridFitType():String
@@ -528,6 +559,8 @@ package feathers.controls.text
 		/**
 		 * Same as the TextField property with the same name.
 		 *
+		 * @default 0
+		 *
 		 * @see flash.text.TextField#sharpness
 		 */
 		public function get sharpness():Number
@@ -555,6 +588,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the TextField property with the same name.
+		 *
+		 * @default 0
 		 *
 		 * @see flash.text.TextField#thickness
 		 */

@@ -58,11 +58,8 @@ package feathers.core
 
 		/**
 		 * @private
-		 * Meant to be constant, but the ValidationQueue needs access to
-		 * Starling in its constructor, so it needs to be instantiated after
-		 * Starling is initialized.
 		 */
-		protected static var VALIDATION_QUEUE:ValidationQueue = new ValidationQueue();
+		protected static const VALIDATION_QUEUE:ValidationQueue = new ValidationQueue();
 
 		/**
 		 * @private

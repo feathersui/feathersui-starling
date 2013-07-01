@@ -680,6 +680,8 @@ package feathers.controls.renderers
 		 *     return loader;
 		 * };</listing>
 		 *
+		 * @default function():ImageLoader { return new ImageLoader(); }
+		 *
 		 * @see feathers.controls.ImageLoader
 		 * @see #contentSourceField
 		 * @see #contentSourceFunction
@@ -723,6 +725,8 @@ package feathers.controls.renderers
 		 *     renderer.embedFonts = true;
 		 *     return renderer;
 		 * };</listing>
+		 *
+		 * @default null
 		 *
 		 * @see feathers.core.ITextRenderer
 		 * @see feathers.core.FeathersControl#defaultTextRendererFactory
@@ -768,6 +772,8 @@ package feathers.controls.renderers
 		 * <listing version="3.0">
 		 * renderer.contentLabelProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333 );
 		 * renderer.contentLabelProperties.embedFonts = true;</listing>
+		 *
+		 * @default null
 		 *
 		 * @see feathers.core.ITextRenderer
 		 * @see #contentLabelField

@@ -156,6 +156,8 @@ package feathers.controls.text
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @default ""
 		 */
 		public function get text():String
 		{
@@ -188,6 +190,8 @@ package feathers.controls.text
 
 		/**
 		 * The format of the text, such as font and styles.
+		 *
+		 * @default null
 		 */
 		public function get textFormat():TextFormat
 		{
@@ -214,6 +218,8 @@ package feathers.controls.text
 
 		/**
 		 * Determines if the TextField should use an embedded font or not.
+		 *
+		 * @default false
 		 */
 		public function get embedFonts():Boolean
 		{
@@ -240,6 +246,8 @@ package feathers.controls.text
 
 		/**
 		 * Determines if the TextField wraps text to the next line.
+		 *
+		 * @default false
 		 */
 		public function get wordWrap():Boolean
 		{
@@ -266,6 +274,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>TextField</code> property with the same name.
+		 *
+		 * @default false
 		 */
 		public function get multiline():Boolean
 		{
@@ -292,6 +302,8 @@ package feathers.controls.text
 
 		/**
 		 * Determines if the TextField should display the text as HTML or not.
+		 *
+		 * @default false
 		 */
 		public function get isHTML():Boolean
 		{
@@ -318,6 +330,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>flash.text.TextField</code> property with the same name.
+		 *
+		 * @default false
 		 */
 		public function get alwaysShowSelection():Boolean
 		{
@@ -344,6 +358,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>flash.text.TextField</code> property with the same name.
+		 *
+		 * @default false
 		 */
 		public function get displayAsPassword():Boolean
 		{
@@ -370,6 +386,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>flash.text.TextField</code> property with the same name.
+		 *
+		 * @default 0
 		 */
 		public function get maxChars():int
 		{
@@ -396,6 +414,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>flash.text.TextField</code> property with the same name.
+		 *
+		 * @default null
 		 */
 		public function get restrict():String
 		{
@@ -423,6 +443,8 @@ package feathers.controls.text
 		/**
 		 * Determines if the text input is editable. If the text input is not
 		 * editable, it will still appear enabled.
+		 *
+		 * @default true
 		 */
 		public function get isEditable():Boolean
 		{

@@ -161,6 +161,8 @@ package feathers.display
 		/**
 		 * The smoothing value to pass to the tiled images.
 		 *
+		 * @default starling.textures.TextureSmoothing.BILINEAR
+		 *
 		 * @see starling.textures.TextureSmoothing
 		 */
 		public function get smoothing():String
@@ -191,6 +193,8 @@ package feathers.display
 
 		/**
 		 * The color value to pass to the tiled images.
+		 *
+		 * @default 0xffffff
 		 */
 		public function get color():uint
 		{
@@ -217,6 +221,8 @@ package feathers.display
 		
 		/**
 		 * The amount to scale the texture. Useful for DPI changes.
+		 *
+		 * @default 1
 		 */
 		public function get textureScale():Number
 		{
