@@ -740,11 +740,13 @@ package feathers.controls
 
 		/**
 		 * A function used to instantiate the toggle switch's label text
-		 * renderer sub-components. The label text renderers must be instances
-		 * of <code>ITextRenderer</code>. This factory can be used to change
-		 * properties on the label text renderer when it is first created. For
-		 * instance, if you are skinning Feathers components without a theme,
-		 * you might use this factory to style the label text renderer.
+		 * renderer sub-components, if specific factories for those label text
+		 * renderers are not provided. The label text renderers must be
+		 * instances of <code>ITextRenderer</code>. This factory can be used to
+		 * change properties of the label text renderers when they are first
+		 * created. For instance, if you are skinning Feathers components
+		 * without a theme, you might use this factory to style the label text
+		 * renderers.
 		 *
 		 * <p>The factory should have the following function signature:</p>
 		 * <pre>function():ITextRenderer</pre>
@@ -758,6 +760,8 @@ package feathers.controls
 		 *     return new TextFieldTextRenderer();
 		 * }</listing>
 		 *
+		 * @see #onLabelFactory
+		 * @see #offLabelFactory
 		 * @see feathers.core.ITextRenderer
 		 * @see feathers.core.FeathersControl#defaultTextRendererFactory
 		 */
@@ -776,6 +780,114 @@ package feathers.controls
 				return;
 			}
 			this._labelFactory = value;
+			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _onLabelFactory:Function;
+
+		/**
+		 * A function used to instantiate the toggle switch's on label text
+		 * renderer sub-component. The on label text renderer must be an
+		 * instance of <code>ITextRenderer</code>. This factory can be used to
+		 * change properties of the on label text renderer when it is first
+		 * created. For instance, if you are skinning Feathers components
+		 * without a theme, you might use this factory to style the on label
+		 * text renderer.
+		 *
+		 * <p>If an <code>onLabelFactory</code> is not provided, the default
+		 * <code>labelFactory will be used.</p>
+		 *
+		 * <p>The factory should have the following function signature:</p>
+		 * <pre>function():ITextRenderer</pre>
+		 *
+		 * <p>In the following example, the toggle switch uses a custom on label
+		 * factory:</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.onLabelFactory = function():ITextRenderer
+		 * {
+		 *     return new TextFieldTextRenderer();
+		 * }</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #labelFactory
+		 * @see #offLabelFactory
+		 * @see feathers.core.ITextRenderer
+		 * @see feathers.core.FeathersControl#defaultTextRendererFactory
+		 */
+		public function get onLabelFactory():Function
+		{
+			return this._onLabelFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set onLabelFactory(value:Function):void
+		{
+			if(this._onLabelFactory == value)
+			{
+				return;
+			}
+			this._onLabelFactory = value;
+			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _offLabelFactory:Function;
+
+		/**
+		 * A function used to instantiate the toggle switch's off label text
+		 * renderer sub-component. The off label text renderer must be an
+		 * instance of <code>ITextRenderer</code>. This factory can be used to
+		 * change properties of the off label text renderer when it is first
+		 * created. For instance, if you are skinning Feathers components
+		 * without a theme, you might use this factory to style the off label
+		 * text renderer.
+		 *
+		 * <p>If an <code>offLabelFactory</code> is not provided, the default
+		 * <code>labelFactory</code> will be used.</p>
+		 *
+		 * <p>The factory should have the following function signature:</p>
+		 * <pre>function():ITextRenderer</pre>
+		 *
+		 * <p>In the following example, the toggle switch uses a custom on label
+		 * factory:</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.offLabelFactory = function():ITextRenderer
+		 * {
+		 *     return new TextFieldTextRenderer();
+		 * }</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #labelFactory
+		 * @see #onLabelFactory
+		 * @see feathers.core.ITextRenderer
+		 * @see feathers.core.FeathersControl#defaultTextRendererFactory
+		 */
+		public function get offLabelFactory():Function
+		{
+			return this._offLabelFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set offLabelFactory(value:Function):void
+		{
+			if(this._offLabelFactory == value)
+			{
+				return;
+			}
+			this._offLabelFactory = value;
 			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
 		}
 
@@ -1720,8 +1832,16 @@ package feathers.controls
 			}
 
 			const index:int = this.getChildIndex(this.thumb);
-			const factory:Function = this._labelFactory != null ? this._labelFactory : FeathersControl.defaultTextRendererFactory;
-			this.offTextRenderer = ITextRenderer(factory());
+			var offLabelFactory:Function = this._offLabelFactory;
+			if(!offLabelFactory)
+			{
+				offLabelFactory = this._labelFactory;
+			}
+			if(!offLabelFactory)
+			{
+				offLabelFactory = FeathersControl.defaultTextRendererFactory;
+			}
+			this.offTextRenderer = ITextRenderer(offLabelFactory());
 			this.offTextRenderer.nameList.add(this.offLabelName);
 			if(this.offTextRenderer is FeathersControl)
 			{
@@ -1729,7 +1849,16 @@ package feathers.controls
 			}
 			this.addChildAt(DisplayObject(this.offTextRenderer), index);
 
-			this.onTextRenderer = ITextRenderer(factory());
+			var onLabelFactory:Function = this._onLabelFactory;
+			if(!onLabelFactory)
+			{
+				onLabelFactory = this._labelFactory;
+			}
+			if(!onLabelFactory)
+			{
+				onLabelFactory = FeathersControl.defaultTextRendererFactory;
+			}
+			this.onTextRenderer = ITextRenderer(onLabelFactory());
 			this.onTextRenderer.nameList.add(this.onLabelName);
 			if(this.onTextRenderer is FeathersControl)
 			{
