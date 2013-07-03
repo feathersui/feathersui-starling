@@ -138,7 +138,7 @@ package feathers.controls.renderers
 		 */
 		protected function owner_scrollStartHandler(event:Event):void
 		{
-			if(this._touchPointID < 0)
+			if(this.touchPointID < 0)
 			{
 				return;
 			}
