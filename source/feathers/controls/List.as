@@ -749,7 +749,7 @@ package feathers.controls
 				return;
 			}
 			this._typicalItem = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		/**
