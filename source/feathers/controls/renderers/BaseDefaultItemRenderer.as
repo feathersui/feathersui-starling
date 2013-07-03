@@ -2452,7 +2452,7 @@ package feathers.controls.renderers
 		 */
 		protected function handleOwnerScroll():void
 		{
-			this._touchPointID = -1;
+			this.touchPointID = -1;
 			if(this._stateDelayTimer && this._stateDelayTimer.running)
 			{
 				this._stateDelayTimer.stop();

@@ -353,29 +353,42 @@ package feathers.controls
 		 * the label name in their constructors instead of using the default
 		 * name defined by <code>DEFAULT_CHILD_NAME_LABEL</code>.
 		 *
+		 * <p>For internal use in subclasses.</p>
+		 *
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var labelName:String = DEFAULT_CHILD_NAME_LABEL;
 		
 		/**
 		 * The text renderer for the button's label.
+		 *
+		 * <p>For internal use in subclasses.</p>
 		 */
 		protected var labelTextRenderer:ITextRenderer;
 		
 		/**
-		 * @private
+		 * The currently visible skin. The value will be <code>null</code> if
+		 * there is no currently visible skin.
+		 *
+		 * <p>For internal use in subclasses.</p>
 		 */
 		protected var currentSkin:DisplayObject;
 		
 		/**
-		 * @private
+		 * The currently visible icon. The value will be <code>null</code> if
+		 * there is no currently visible icon.
+		 *
+		 * <p>For internal use in subclasses.</p>
 		 */
 		protected var currentIcon:DisplayObject;
 		
 		/**
-		 * @private
+		 * The saved ID of the currently active touch. The value will be
+		 * <code>-1</code> if there is no currently active touch.
+		 *
+		 * <p>For internal use in subclasses.</p>
 		 */
-		protected var _touchPointID:int = -1;
+		protected var touchPointID:int = -1;
 
 		/**
 		 * @private
@@ -396,7 +409,7 @@ package feathers.controls
 			{
 				this.touchable = false;
 				this.currentState = STATE_DISABLED;
-				this._touchPointID = -1;
+				this.touchPointID = -1;
 			}
 			else
 			{
@@ -416,7 +429,9 @@ package feathers.controls
 		protected var _currentState:String = STATE_UP;
 		
 		/**
-		 * @private
+		 * The current touch state of the button.
+		 *
+		 * <p>For internal use in subclasses.</p>
 		 */
 		protected function get currentState():String
 		{
@@ -1018,7 +1033,11 @@ package feathers.controls
 		];
 
 		/**
-		 * A list of all valid state names.
+		 * A list of all valid touch state names for use with <code>currentState</code>.
+		 *
+		 * <p>For internal use in subclasses.</p>
+		 *
+		 * @see #currentState
 		 */
 		protected function get stateNames():Vector.<String>
 		{
@@ -2581,7 +2600,10 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * Calculates the dimensions of the button. Uses the explicit width and
+		 * explicit height, if set.
+		 *
+		 * <p>For internal use in subclasses.</p>
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
@@ -2684,7 +2706,9 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * Creates the label text renderer.
+		 *
+		 * <p>For internal use in subclasses.</p>
 		 */
 		protected function createLabel():void
 		{
@@ -2710,7 +2734,9 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * Sets the <code>currentSkin</code> property.
+		 *
+		 * <p>For internal use in subclasses.</p>
 		 */
 		protected function refreshSkin():void
 		{
@@ -2746,7 +2772,9 @@ package feathers.controls
 		}
 		
 		/**
-		 * @private
+		 * Sets the <code>currentIcon</code> property.
+		 *
+		 * <p>For internal use in subclasses.</p>
 		 */
 		protected function refreshIcon():void
 		{
@@ -2819,7 +2847,9 @@ package feathers.controls
 		}
 		
 		/**
-		 * @private
+		 * Positions and sizes the button's content.
+		 *
+		 * <p>For internal use in subclasses.</p>
 		 */
 		protected function layoutContent():void
 		{
@@ -3081,7 +3111,7 @@ package feathers.controls
 		 */
 		protected function button_removedFromStageHandler(event:Event):void
 		{
-			this._touchPointID = -1;
+			this.touchPointID = -1;
 			this.removeEventListener(Event.ENTER_FRAME, longPress_enterFrameHandler);
 			this.currentState = this._isEnabled ? STATE_UP : STATE_DISABLED;
 		}
@@ -3093,13 +3123,13 @@ package feathers.controls
 		{
 			if(!this._isEnabled)
 			{
-				this._touchPointID = -1;
+				this.touchPointID = -1;
 				return;
 			}
 
-			if(this._touchPointID >= 0)
+			if(this.touchPointID >= 0)
 			{
-				var touch:Touch = event.getTouch(this, null, this._touchPointID);
+				var touch:Touch = event.getTouch(this, null, this.touchPointID);
 				if(!touch)
 				{
 					return;
@@ -3120,7 +3150,7 @@ package feathers.controls
 				}
 				else if(touch.phase == TouchPhase.ENDED)
 				{
-					this._touchPointID = -1;
+					this.touchPointID = -1;
 					this.removeEventListener(Event.ENTER_FRAME, longPress_enterFrameHandler);
 					//we we dispatched a long press, then triggered and change
 					//won't be able to happen until the next touch begins
@@ -3153,7 +3183,7 @@ package feathers.controls
 				if(touch)
 				{
 					this.currentState = STATE_DOWN;
-					this._touchPointID = touch.id;
+					this.touchPointID = touch.id;
 					if(this._isLongPressEnabled)
 					{
 						this._touchBeginTime = getTimer();
@@ -3196,14 +3226,14 @@ package feathers.controls
 		{
 			if(event.keyCode == Keyboard.ESCAPE)
 			{
-				this._touchPointID = -1;
+				this.touchPointID = -1;
 				this.currentState = STATE_UP;
 			}
-			if(this._touchPointID >= 0 || event.keyCode != Keyboard.SPACE)
+			if(this.touchPointID >= 0 || event.keyCode != Keyboard.SPACE)
 			{
 				return;
 			}
-			this._touchPointID = int.MAX_VALUE;
+			this.touchPointID = int.MAX_VALUE;
 			this.currentState = STATE_DOWN;
 		}
 
@@ -3212,11 +3242,11 @@ package feathers.controls
 		 */
 		protected function stage_keyUpHandler(event:KeyboardEvent):void
 		{
-			if(this._touchPointID != int.MAX_VALUE || event.keyCode != Keyboard.SPACE)
+			if(this.touchPointID != int.MAX_VALUE || event.keyCode != Keyboard.SPACE)
 			{
 				return;
 			}
-			this._touchPointID = -1;
+			this.touchPointID = -1;
 			this.currentState = STATE_UP;
 			this.dispatchEventWith(Event.TRIGGERED);
 			if(this._isToggle)
