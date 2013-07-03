@@ -3081,6 +3081,32 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function resetTouchState(touch:Touch = null):void
+		{
+			this.touchPointID = -1;
+			this.removeEventListener(Event.ENTER_FRAME, longPress_enterFrameHandler);
+			if(this._isEnabled)
+			{
+				if(this._isHoverSupported && touch)
+				{
+					touch.getLocation(this.stage, HELPER_POINT);
+					const isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
+					this.currentState = isInBounds ? STATE_HOVER : STATE_UP;
+				}
+				else
+				{
+					this.currentState = STATE_UP;
+				}
+			}
+			else
+			{
+				this.currentState = STATE_DISABLED;
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function childProperties_onChange(proxy:PropertyProxy, name:Object):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
@@ -3111,9 +3137,7 @@ package feathers.controls
 		 */
 		protected function button_removedFromStageHandler(event:Event):void
 		{
-			this.touchPointID = -1;
-			this.removeEventListener(Event.ENTER_FRAME, longPress_enterFrameHandler);
-			this.currentState = this._isEnabled ? STATE_UP : STATE_DISABLED;
+			this.resetTouchState();
 		}
 		
 		/**
@@ -3150,29 +3174,16 @@ package feathers.controls
 				}
 				else if(touch.phase == TouchPhase.ENDED)
 				{
-					this.touchPointID = -1;
-					this.removeEventListener(Event.ENTER_FRAME, longPress_enterFrameHandler);
+					this.resetTouchState(touch);
 					//we we dispatched a long press, then triggered and change
 					//won't be able to happen until the next touch begins
 					if(!this._hasLongPressed && isInBounds)
 					{
-						if(this._isHoverSupported)
-						{
-							this.currentState = (isInBounds && this._isHoverSupported) ? STATE_HOVER : STATE_UP;
-						}
-						else
-						{
-							this.currentState = STATE_UP;
-						}
 						this.dispatchEventWith(Event.TRIGGERED);
 						if(this._isToggle)
 						{
 							this.isSelected = !this._isSelected;
 						}
-					}
-					else
-					{
-						this.currentState = STATE_UP;
 					}
 				}
 				return;
