@@ -358,7 +358,7 @@ package feathers.controls
 				return;
 			}
 			this._layout = value;
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
 
 		/**

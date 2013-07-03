@@ -356,7 +356,7 @@ package feathers.controls.supportClasses
 			{
 				this._itemRendererProperties.addOnChangeCallback(childProperties_onChange);
 			}
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		private var _ignoreLayoutChanges:Boolean = false;
@@ -388,7 +388,7 @@ package feathers.controls.supportClasses
 				}
 				EventDispatcher(this._layout).addEventListener(Event.CHANGE, layout_changeHandler);
 			}
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
 
 		public function get horizontalScrollStep():Number
@@ -528,30 +528,31 @@ package feathers.controls.supportClasses
 			const itemRendererInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_ITEM_RENDERER_FACTORY);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
+			const layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
 
-			if(stylesInvalid || dataInvalid || itemRendererInvalid)
+			if(stylesInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
 			{
 				this.calculateTypicalValues();
 			}
 
-			if(scrollInvalid || sizeInvalid || dataInvalid || itemRendererInvalid)
+			if(scrollInvalid || sizeInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
 			{
 				this.refreshRenderers(itemRendererInvalid);
 			}
-			if(scrollInvalid || sizeInvalid || dataInvalid || stylesInvalid || itemRendererInvalid)
+			if(scrollInvalid || stylesInvalid || sizeInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
 			{
 				this.refreshItemRendererStyles();
 			}
-			if(scrollInvalid || selectionInvalid || sizeInvalid || dataInvalid || itemRendererInvalid)
+			if(scrollInvalid || selectionInvalid || sizeInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
 			{
 				this.refreshSelection();
 			}
-			if(stateInvalid || dataInvalid || scrollInvalid || itemRendererInvalid)
+			if(scrollInvalid || stateInvalid || sizeInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
 			{
 				this.refreshEnabled();
 			}
 
-			if(scrollInvalid || dataInvalid || itemRendererInvalid || sizeInvalid || stylesInvalid)
+			if(scrollInvalid || stylesInvalid || sizeInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
 			{
 				this._ignoreRendererResizing = true;
 				this._layout.layout(this._layoutItems, HELPER_BOUNDS, HELPER_LAYOUT_RESULT);
@@ -562,9 +563,9 @@ package feathers.controls.supportClasses
 			}
 		}
 		
-		private function invalidateParent():void
+		private function invalidateParent(flag:String = INVALIDATION_FLAG_ALL):void
 		{
-			Scroller(this.parent).invalidate(INVALIDATION_FLAG_DATA);
+			Scroller(this.parent).invalidate(flag);
 		}
 
 		private function calculateTypicalValues():void
@@ -584,6 +585,7 @@ package feathers.controls.supportClasses
 				}
 			}
 
+			this._ignoreRendererResizing = true;
 			var needsDestruction:Boolean = true;
 			var typicalRenderer:IListItemRenderer = IListItemRenderer(this._rendererMap[typicalItem]);
 			if(typicalRenderer)
@@ -607,6 +609,7 @@ package feathers.controls.supportClasses
 			{
 				this.destroyRenderer(typicalRenderer);
 			}
+			this._ignoreRendererResizing = false;
 		}
 
 		private function refreshItemRendererStyles():void
@@ -722,8 +725,10 @@ package feathers.controls.supportClasses
 				}
 				const afterItemCount:int = itemCount - 1 - maxIndex;
 				const sequentialVirtualLayout:ITrimmedVirtualLayout = ITrimmedVirtualLayout(this._layout);
+				this._ignoreLayoutChanges = true;
 				sequentialVirtualLayout.beforeVirtualizedItemCount = beforeItemCount;
 				sequentialVirtualLayout.afterVirtualizedItemCount = afterItemCount;
+				this._ignoreLayoutChanges = false;
 				this._layoutItems.length = itemCount - beforeItemCount - afterItemCount;
 				this._layoutIndexOffset = -beforeItemCount;
 			}
@@ -872,7 +877,6 @@ package feathers.controls.supportClasses
 		private function dataProvider_changeHandler(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_DATA);
-			this.invalidateParent();
 		}
 
 		private function dataProvider_addItemHandler(event:Event, index:int):void
@@ -984,8 +988,8 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
-			this.invalidateParent();
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+			this.invalidateParent(INVALIDATION_FLAG_LAYOUT);
 		}
 
 		private function renderer_resizeHandler(event:Event):void
@@ -1001,8 +1005,8 @@ package feathers.controls.supportClasses
 			}
 			const renderer:IListItemRenderer = IListItemRenderer(event.currentTarget);
 			layout.resetVariableVirtualCacheAtIndex(renderer.index, DisplayObject(renderer));
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
-			this.invalidateParent();
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+			this.invalidateParent(INVALIDATION_FLAG_LAYOUT);
 		}
 
 		private function renderer_changeHandler(event:Event):void

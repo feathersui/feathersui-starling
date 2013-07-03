@@ -692,7 +692,7 @@ package feathers.controls.supportClasses
 				return;
 			}
 			this._typicalHeader = value;
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		private var _headerRendererProperties:PropertyProxy;
@@ -787,7 +787,7 @@ package feathers.controls.supportClasses
 				return;
 			}
 			this._typicalFooter = value;
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		private var _footerRendererProperties:PropertyProxy;
@@ -846,7 +846,7 @@ package feathers.controls.supportClasses
 				}
 				this._layout.addEventListener(Event.CHANGE, layout_changeHandler);
 			}
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
 
 		private var _horizontalScrollPosition:Number = 0;
@@ -936,33 +936,34 @@ package feathers.controls.supportClasses
 			const itemRendererInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_ITEM_RENDERER_FACTORY);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
+			const layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
 
-			if(stylesInvalid || dataInvalid || itemRendererInvalid)
+			if(stylesInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
 			{
 				this.calculateTypicalValues();
 			}
 
-			if(scrollInvalid || sizeInvalid || dataInvalid || itemRendererInvalid)
+			if(scrollInvalid || sizeInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
 			{
 				this.refreshRenderers(itemRendererInvalid);
 			}
-			if(scrollInvalid || sizeInvalid || dataInvalid || stylesInvalid || itemRendererInvalid)
+			if(scrollInvalid || stylesInvalid || sizeInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
 			{
 				this.refreshHeaderRendererStyles();
 				this.refreshFooterRendererStyles();
 				this.refreshItemRendererStyles();
 			}
-			if(scrollInvalid || selectionInvalid || sizeInvalid || dataInvalid || itemRendererInvalid)
+			if(scrollInvalid || selectionInvalid || sizeInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
 			{
 				this.refreshSelection();
 			}
 
-			if(scrollInvalid || stateInvalid || sizeInvalid || dataInvalid || itemRendererInvalid)
+			if(scrollInvalid || stateInvalid || sizeInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
 			{
 				this.refreshEnabled();
 			}
 
-			if(scrollInvalid || dataInvalid || itemRendererInvalid || sizeInvalid || stylesInvalid)
+			if(scrollInvalid || stylesInvalid || sizeInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
 			{
 				this._ignoreRendererResizing = true;
 				this._layout.layout(this._layoutItems, HELPER_BOUNDS, HELPER_LAYOUT_RESULT);
@@ -1039,14 +1040,15 @@ package feathers.controls.supportClasses
 				}
 			}
 		}
-		
-		private function invalidateParent():void
+
+		private function invalidateParent(flag:String = INVALIDATION_FLAG_ALL):void
 		{
-			Scroller(this.parent).invalidate(INVALIDATION_FLAG_DATA);
+			Scroller(this.parent).invalidate(flag);
 		}
 
 		private function calculateTypicalValues():void
 		{
+			this._ignoreRendererResizing = true;
 			var typicalHeader:Object = this._typicalHeader;
 			var typicalFooter:Object = this._typicalFooter;
 			if(!typicalHeader || !typicalFooter)
@@ -1127,6 +1129,7 @@ package feathers.controls.supportClasses
 					this.destroyFooterRenderer(typicalFooterRenderer);
 				}
 			}
+			this._ignoreRendererResizing = false;
 
 			var typicalItem:Object = this._typicalItem;
 			if(!typicalItem && this._dataProvider && this._dataProvider.getLength() > 0 && this._dataProvider.getLength(0) > 0)
@@ -1140,6 +1143,7 @@ package feathers.controls.supportClasses
 				return;
 			}
 
+			this._ignoreRendererResizing = true;
 			needsDestruction = true;
 			var typicalItemRenderer:IGroupedListItemRenderer = this._itemRendererMap[typicalItem];
 			if(typicalItemRenderer)
@@ -1165,6 +1169,7 @@ package feathers.controls.supportClasses
 			{
 				this.destroyItemRenderer(typicalItemRenderer);
 			}
+			this._ignoreRendererResizing = false;
 		}
 
 		private function refreshItemRendererStyles():void
@@ -2111,7 +2116,6 @@ package feathers.controls.supportClasses
 		private function dataProvider_changeHandler(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_DATA);
-			this.invalidateParent();
 		}
 
 		private function dataProvider_addItemHandler(event:Event, indices:Array):void
@@ -2266,8 +2270,8 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
-			this.invalidateParent();
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+			this.invalidateParent(INVALIDATION_FLAG_LAYOUT);
 		}
 
 		private function itemRenderer_resizeHandler(event:Event):void
@@ -2283,8 +2287,8 @@ package feathers.controls.supportClasses
 			}
 			const renderer:IGroupedListItemRenderer = IGroupedListItemRenderer(event.currentTarget);
 			layout.resetVariableVirtualCacheAtIndex(renderer.layoutIndex, DisplayObject(renderer));
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
-			this.invalidateParent();
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+			this.invalidateParent(INVALIDATION_FLAG_LAYOUT);
 		}
 
 		private function headerOrFooterRenderer_resizeHandler(event:Event):void
@@ -2300,7 +2304,8 @@ package feathers.controls.supportClasses
 			}
 			const renderer:IGroupedListHeaderOrFooterRenderer = IGroupedListHeaderOrFooterRenderer(event.currentTarget);
 			layout.resetVariableVirtualCacheAtIndex(renderer.layoutIndex, DisplayObject(renderer));
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+			this.invalidateParent(INVALIDATION_FLAG_LAYOUT);
 		}
 
 		private function renderer_changeHandler(event:Event):void
