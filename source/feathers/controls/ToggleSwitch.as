@@ -798,7 +798,7 @@ package feathers.controls
 		 * text renderer.
 		 *
 		 * <p>If an <code>onLabelFactory</code> is not provided, the default
-		 * <code>labelFactory will be used.</p>
+		 * <code>labelFactory</code> will be used.</p>
 		 *
 		 * <p>The factory should have the following function signature:</p>
 		 * <pre>function():ITextRenderer</pre>
@@ -1833,11 +1833,11 @@ package feathers.controls
 
 			const index:int = this.getChildIndex(this.thumb);
 			var offLabelFactory:Function = this._offLabelFactory;
-			if(!offLabelFactory)
+			if(offLabelFactory == null)
 			{
 				offLabelFactory = this._labelFactory;
 			}
-			if(!offLabelFactory)
+			if(offLabelFactory == null)
 			{
 				offLabelFactory = FeathersControl.defaultTextRendererFactory;
 			}
@@ -1850,11 +1850,11 @@ package feathers.controls
 			this.addChildAt(DisplayObject(this.offTextRenderer), index);
 
 			var onLabelFactory:Function = this._onLabelFactory;
-			if(!onLabelFactory)
+			if(onLabelFactory == null)
 			{
 				onLabelFactory = this._labelFactory;
 			}
-			if(!onLabelFactory)
+			if(onLabelFactory == null)
 			{
 				onLabelFactory = FeathersControl.defaultTextRendererFactory;
 			}
