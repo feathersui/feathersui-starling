@@ -1128,6 +1128,7 @@ package feathers.controls
 				newWidth = 0;
 				for each(var button:Button in this.activeButtons)
 				{
+					button.setSize(NaN, NaN);
 					button.validate();
 					newWidth = Math.max(button.width, newWidth);
 				}
