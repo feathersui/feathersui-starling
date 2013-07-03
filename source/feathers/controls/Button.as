@@ -2449,6 +2449,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _hasLongPressed:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _longPressDuration:Number = 0.5;
 
 		/**
@@ -3117,7 +3122,9 @@ package feathers.controls
 				{
 					this._touchPointID = -1;
 					this.removeEventListener(Event.ENTER_FRAME, longPress_enterFrameHandler);
-					if(isInBounds)
+					//we we dispatched a long press, then triggered and change
+					//won't be able to happen until the next touch begins
+					if(!this._hasLongPressed && isInBounds)
 					{
 						if(this._isHoverSupported)
 						{
@@ -3150,6 +3157,7 @@ package feathers.controls
 					if(this._isLongPressEnabled)
 					{
 						this._touchBeginTime = getTimer();
+						this._hasLongPressed = false;
 						this.addEventListener(Event.ENTER_FRAME, longPress_enterFrameHandler);
 					}
 					return;
@@ -3176,6 +3184,7 @@ package feathers.controls
 			if(accumulatedTime >= this._longPressDuration)
 			{
 				this.removeEventListener(Event.ENTER_FRAME, longPress_enterFrameHandler);
+				this._hasLongPressed = true;
 				this.dispatchEventWith(FeathersEventType.LONG_PRESS);
 			}
 		}
