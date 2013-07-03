@@ -582,7 +582,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected var _accessoryTouchPointID:int = -1;
+		protected var accessoryTouchPointID:int = -1;
 
 		/**
 		 * If enabled, calls owner.stopScrolling() when TouchEvents are
@@ -2450,20 +2450,20 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected function handleOwnerScroll():void
+		protected function owner_scrollStartHandler(event:Event):void
 		{
-			this.touchPointID = -1;
+			if(this.touchPointID < 0 && this.accessoryTouchPointID < 0)
+			{
+				return;
+			}
+			this.resetTouchState();
 			if(this._stateDelayTimer && this._stateDelayTimer.running)
 			{
 				this._stateDelayTimer.stop();
 			}
 			this._delayedCurrentState = null;
-			if(this._currentState != Button.STATE_UP)
-			{
-				super.currentState = Button.STATE_UP;
-			}
 
-			if(this._accessoryTouchPointID >= 0)
+			if(this.accessoryTouchPointID >= 0)
 			{
 				Scroller(this._owner).stopScrolling();
 			}
@@ -2475,7 +2475,7 @@ package feathers.controls.renderers
 		override protected function button_removedFromStageHandler(event:Event):void
 		{
 			super.button_removedFromStageHandler(event);
-			this._accessoryTouchPointID = -1;
+			this.accessoryTouchPointID = -1;
 		}
 
 		/**
@@ -2510,11 +2510,29 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		override protected function button_touchHandler(event:TouchEvent):void
+		{
+			if(this.accessory && this.touchPointID < 0)
+			{
+				//ignore all touches on accessory. return to up state.
+				var touch:Touch = event.getTouch(this.accessory);
+				if(touch)
+				{
+					this.currentState = Button.STATE_UP;
+					return;
+				}
+			}
+			super.button_touchHandler(event);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function accessory_touchHandler(event:TouchEvent):void
 		{
 			if(!this._isEnabled)
 			{
-				this._accessoryTouchPointID = -1;
+				this.accessoryTouchPointID = -1;
 				return;
 			}
 			if(!this.stopScrollingOnAccessoryTouch ||
@@ -2525,14 +2543,14 @@ package feathers.controls.renderers
 				return;
 			}
 
-			if(this._accessoryTouchPointID >= 0)
+			if(this.accessoryTouchPointID >= 0)
 			{
-				var touch:Touch = event.getTouch(this.accessory, TouchPhase.ENDED, this._accessoryTouchPointID);
+				var touch:Touch = event.getTouch(this.accessory, TouchPhase.ENDED, this.accessoryTouchPointID);
 				if(!touch)
 				{
 					return;
 				}
-				this._accessoryTouchPointID = -1;
+				this.accessoryTouchPointID = -1;
 			}
 			else //if we get here, we don't have a saved touch ID yet
 			{
@@ -2541,7 +2559,7 @@ package feathers.controls.renderers
 				{
 					return;
 				}
-				this._accessoryTouchPointID = touch.id;
+				this.accessoryTouchPointID = touch.id;
 			}
 		}
 
