@@ -27,6 +27,8 @@ package feathers.core
 
 		/**
 		 * The tokens formated with space delimiters.
+		 *
+		 * @default ""
 		 */
 		public function get value():String
 		{

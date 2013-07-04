@@ -50,6 +50,8 @@ package feathers.core
 
 		/**
 		 * Determines if the default focus manager is enabled.
+		 *
+		 * @default false
 		 */
 		public static function get isEnabled():Boolean
 		{
@@ -174,6 +176,8 @@ package feathers.core
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @default false
 		 */
 		public function get isEnabled():Boolean
 		{
@@ -229,6 +233,8 @@ package feathers.core
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @default null
 		 */
 		public function get focus():IFocusDisplayObject
 		{

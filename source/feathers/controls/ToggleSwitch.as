@@ -481,6 +481,8 @@ package feathers.controls
 		 * toggle.defaultLabelProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333 );
 		 * toggle.defaultLabelProperties.embedFonts = true;</listing>
 		 *
+		 * @default null
+		 *
 		 * @see #labelFactory
 		 * @see feathers.core.ITextRenderer
 		 * @see feathers.controls.text.BitmapFontTextRenderer
@@ -541,6 +543,8 @@ package feathers.controls
 		 * toggle.disabledLabelProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333 );
 		 * toggle.disabledLabelProperties.embedFonts = true;</listing>
 		 *
+		 * @default null
+		 *
 		 * @see #labelFactory
 		 * @see feathers.core.ITextRenderer
 		 * @see feathers.controls.text.BitmapFontTextRenderer
@@ -600,6 +604,8 @@ package feathers.controls
 		 * toggle.onLabelProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333 );
 		 * toggle.onLabelProperties.embedFonts = true;</listing>
 		 *
+		 * @default null
+		 *
 		 * @see #labelFactory
 		 * @see feathers.core.ITextRenderer
 		 * @see feathers.controls.text.BitmapFontTextRenderer
@@ -658,6 +664,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * toggle.offLabelProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333 );
 		 * toggle.offLabelProperties.embedFonts = true;</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #labelFactory
 		 * @see feathers.core.ITextRenderer
@@ -759,6 +767,8 @@ package feathers.controls
 		 * {
 		 *     return new TextFieldTextRenderer();
 		 * }</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #onLabelFactory
 		 * @see #offLabelFactory
@@ -964,6 +974,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * toggle.toggleDuration = 0.5;</listing>
+		 *
+		 * @default 0.15
 		 */
 		public function get toggleDuration():Number
 		{
@@ -991,6 +1003,10 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * toggle.toggleEase = Transitions.EASE_IN_OUT;</listing>
+		 *
+		 * @default starling.animation.Transitions.EASE_OUT
+		 *
+		 * @see starling.animation.Transitions
 		 */
 		public function get toggleEase():Object
 		{
@@ -1018,6 +1034,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * toggle.onText = "on";</listing>
+		 *
+		 * @default "ON"
 		 */
 		public function get onText():String
 		{
@@ -1054,6 +1072,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * toggle.offText = "off";</listing>
+		 *
+		 * @default "OFF"
 		 */
 		public function get offText():String
 		{
@@ -1134,6 +1154,8 @@ package feathers.controls
 		 *     return onTrack;
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.Button
 		 * @see #onTrackProperties
 		 */
@@ -1181,6 +1203,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customOnTrackInitializer, "my-custom-on-track");</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_ON_TRACK
 		 * @see feathers.core.FeathersControl#nameList
@@ -1232,6 +1256,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * toggle.onTrackProperties.defaultSkin = new Image( texture );</listing>
+		 *
+		 * @default null
 		 * 
 		 * @see feathers.controls.Button
 		 * @see #onTrackFactory
@@ -1306,6 +1332,8 @@ package feathers.controls
 		 *     return offTrack;
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.Button
 		 * @see #offTrackProperties
 		 */
@@ -1347,6 +1375,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customOffTrackInitializer, "my-custom-off-track");</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_OFF_TRACK
 		 * @see feathers.core.FeathersControl#nameList
@@ -1398,6 +1428,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * toggle.offTrackProperties.defaultSkin = new Image( texture );</listing>
+		 *
+		 * @default null
 		 * 
 		 * @see feathers.controls.Button
 		 * @see #offTrackFactory
@@ -1471,6 +1503,8 @@ package feathers.controls
 		 *     return button;
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see #thumbProperties
 		 */
 		public function get thumbFactory():Function
@@ -1511,6 +1545,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customThumbInitializer, "my-custom-thumb");</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_THUMB
 		 * @see feathers.core.FeathersControl#nameList
@@ -1562,6 +1598,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * toggle.thumbProperties.defaultSkin = new Image( texture );</listing>
+		 *
+		 * @default null
 		 * 
 		 * @see feathers.controls.Button
 		 * @see #thumbFactory

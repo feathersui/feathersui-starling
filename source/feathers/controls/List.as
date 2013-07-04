@@ -199,6 +199,8 @@ package feathers.controls
 		 * layout.gap = 20;
 		 * layout.padding = 20;
 		 * list.layout = layout;</listing>
+		 *
+		 * @default null
 		 */
 		public function get layout():ILayout
 		{
@@ -639,7 +641,7 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * list.itemRendererType = CustomItemRendererClass;</listing>
 		 *
-		 * @default DefaultListItemRenderer
+		 * @default feathers.controls.renderers.DefaultListItemRenderer
 		 *
 		 * @see feathers.controls.renderers.IListItemRenderer
 		 * @see #itemRendererFactory
@@ -772,6 +774,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * setInitializerForClass( DefaultListItemRenderer, customItemRendererInitializer, "my-custom-item-renderer");</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.core.FeathersControl#nameList
 		 */
 		public function get itemRendererName():String
@@ -825,6 +829,8 @@ package feathers.controls
 		 * <p>Setting properties in a <code>itemRendererFactory</code> function
 		 * instead of using <code>itemRendererProperties</code> will result in
 		 * better performance.</p>
+		 *
+		 * @default null
 		 *
 		 * @see #itemRendererFactory
 		 * @see feathers.controls.renderers.IListItemRenderer

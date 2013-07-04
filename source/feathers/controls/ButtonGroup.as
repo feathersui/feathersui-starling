@@ -217,6 +217,8 @@ package feathers.controls
 		 * property that can provide custom logic to interpret each item in the
 		 * data provider differently.</p>
 		 *
+		 * @default null
+		 *
 		 * @see Button
 		 * @see #buttonInitializer
 		 */
@@ -297,6 +299,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * group.gap = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get gap():Number
 		{
@@ -322,8 +326,8 @@ package feathers.controls
 		protected var _firstGap:Number = NaN;
 
 		/**
-		 * Space, in pixels, between the first two buttons. If NaN, the standard
-		 * gap will be used.
+		 * Space, in pixels, between the first two buttons. If <code>NaN</code>,
+		 * the default <code>gap</code> property will be used.
 		 *
 		 * <p>The following example sets the gap between the first and second
 		 * button to a different value than the standard gap:</p>
@@ -331,6 +335,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * group.firstGap = 30;
 		 * group.gap = 20;</listing>
+		 *
+		 * @default NaN
 		 *
 		 * @see #gap
 		 * @see #lastGap
@@ -359,8 +365,8 @@ package feathers.controls
 		protected var _lastGap:Number = NaN;
 
 		/**
-		 * Space, in pixels, between the last two buttons. If NaN, the standard
-		 * gap will be used.
+		 * Space, in pixels, between the last two buttons. If <code>NaN</code>,
+		 * the default <code>gap</code> property will be used.
 		 *
 		 * <p>The following example sets the gap between the last and next to last
 		 * button to a different value than the standard gap:</p>
@@ -368,6 +374,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * group.lastGap = 30;
 		 * group.gap = 20;</listing>
+		 *
+		 * @default NaN
 		 *
 		 * @see #gap
 		 * @see #firstGap
@@ -416,6 +424,8 @@ package feathers.controls
 		 *     button.defaultSkin = new Image( texture );
 		 *     return button;
 		 * };</listing>
+		 *
+		 * @default null
 		 *
 		 * @see feathers.controls.Button
 		 * @see #firstButtonFactory
@@ -468,6 +478,8 @@ package feathers.controls
 		 *     return button;
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.Button
 		 * @see #buttonFactory
 		 * @see #lastButtonFactory
@@ -519,6 +531,8 @@ package feathers.controls
 		 *     return button;
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.Button
 		 * @see #buttonFactory
 		 * @see #firstButtonFactory
@@ -566,6 +580,8 @@ package feathers.controls
 		 * {
 		 *     button.label = item.label;
 		 * };</listing>
+		 *
+		 * @see #dataProvider
 		 */
 		public function get buttonInitializer():Function
 		{
@@ -604,6 +620,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customButtonInitializer, "my-custom-button");</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_BUTTON
 		 * @see feathers.core.FeathersControl#nameList
@@ -655,6 +673,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customFirstButtonInitializer, "my-custom-first-button");</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.core.FeathersControl#nameList
 		 * @see feathers.core.DisplayListWatcher
 		 * @see http://wiki.starling-framework.org/feathers/custom-themes
@@ -701,6 +721,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customLastButtonInitializer, "my-custom-last-button");</listing>
+		 *
+		 * @default null
 		 *
 		 * @see feathers.core.FeathersControl#nameList
 		 * @see feathers.core.DisplayListWatcher
@@ -758,6 +780,8 @@ package feathers.controls
 		 * <p>Setting properties in a <code>buttonFactory</code> function instead
 		 * of using <code>buttonProperties</code> will result in better
 		 * performance.</p>
+		 *
+		 * @default null
 		 *
 		 * @see #buttonFactory
 		 * @see #firstButtonFactory

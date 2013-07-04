@@ -155,8 +155,9 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * loader.source = "http://example.com/example.png";</listing>
 		 *
-		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/Loader.html
 		 * @default null
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/Loader.html
 		 */
 		public function get source():Object
 		{
@@ -218,6 +219,7 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * loader.textureScale = 0.5;</listing>
+		 *
 		 * @default 1
 		 */
 		public function get textureScale():Number
@@ -252,9 +254,10 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * loader.source = TextureSmoothing.NONE;</listing>
 		 *
+		 * @default starling.textures.TextureSmoothing.BILINEAR
+		 *
 		 * @see starling.textures.TextureSmoothing
 		 * @see starling.display.Image#smoothing
-		 * @default TextureSmoothing.BILINEAR
 		 */
 		public function get smoothing():String
 		{
@@ -288,8 +291,9 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * loader.color = 0xff00ff;</listing>
 		 *
-		 * @see starling.display.Image#color
 		 * @default 0xffffff
+		 *
+		 * @see starling.display.Image#color
 		 */
 		public function get color():uint
 		{
@@ -441,6 +445,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * loader.delayTextureCreation = true;</listing>
 		 *
+		 * @default false
+		 *
 		 * @see feathers.controls.Scroller#event:scrollStart
 		 * @see feathers.controls.Scroller#event:scrollComplete
 		 * @see feathers.controls.Scroller#isScrolling
@@ -481,6 +487,11 @@ package feathers.controls
 		 * loader.padding = 20;</listing>
 		 *
 		 * @default 0
+		 *
+		 * @see #paddingTop
+		 * @see #paddingRight
+		 * @see #paddingBottom
+		 * @see #paddingLeft
 		 */
 		public function get padding():Number
 		{

@@ -467,6 +467,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.label = "Click Me";</listing>
+		 *
+		 * @default null
 		 */
 		public function get label():String
 		{
@@ -501,6 +503,8 @@ package feathers.controls
 		 * button.isToggle = true;
 		 * button.addEventListener( Event.CHANGE, button_changeHandler );</listing>
 		 *
+		 * @default false
+		 *
 		 * @see #event:change
 		 */
 		public function get isToggle():Boolean
@@ -533,6 +537,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * button.isToggle = true;
 		 * button.isSelected = true;</listing>
+		 *
+		 * @default false
 		 * 
 		 * @see #isToggle
 		 */
@@ -622,6 +628,8 @@ package feathers.controls
 		 * button.label = "Click Me";
 		 * button.defaultIcon = new Image( texture );
 		 * button.gap = 50;</listing>
+		 *
+		 * @default 0
 		 * 
 		 * @see #iconPosition
 		 */
@@ -732,6 +740,13 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.padding = 20;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #paddingTop
+		 * @see #paddingRight
+		 * @see #paddingBottom
+		 * @see #paddingLeft
 		 */
 		public function get padding():Number
 		{
@@ -763,6 +778,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.paddingTop = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingTop():Number
 		{
@@ -796,6 +813,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.paddingRight = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingRight():Number
 		{
@@ -829,6 +848,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.paddingBottom = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingBottom():Number
 		{
@@ -862,6 +883,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.paddingLeft = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingLeft():Number
 		{
@@ -894,6 +917,10 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.labelOffsetX = 20;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #labelOffsetY
 		 */
 		public function get labelOffsetX():Number
 		{
@@ -926,6 +953,10 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.labelOffsetY = 20;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #labelOffsetX
 		 */
 		public function get labelOffsetY():Number
 		{
@@ -958,6 +989,10 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.iconOffsetX = 20;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #iconOffsetY
 		 */
 		public function get iconOffsetX():Number
 		{
@@ -990,6 +1025,10 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.iconOffsetY = 20;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #iconOffsetX
 		 */
 		public function get iconOffsetY():Number
 		{
@@ -1064,6 +1103,8 @@ package feathers.controls
 		 *
 		 * <p>The following function signature is expected:</p>
 		 * <pre>function(target:Button, state:Object, oldSkin:DisplayObject = null):DisplayObject</pre>
+		 *
+		 * @default null
 		 */
 		public function get stateToSkinFunction():Function
 		{
@@ -1093,6 +1134,8 @@ package feathers.controls
 		 *
 		 * <p>The following function signature is expected:</p>
 		 * <pre>function(target:Button, state:Object, oldIcon:DisplayObject = null):DisplayObject</pre>
+		 *
+		 * @default null
 		 */
 		public function get stateToIconFunction():Function
 		{
@@ -1122,6 +1165,8 @@ package feathers.controls
 		 *
 		 * <p>The following function signature is expected:</p>
 		 * <pre>function(target:Button, state:Object):Object</pre>
+		 *
+		 * @default null
 		 */
 		public function get stateToLabelPropertiesFunction():Function
 		{
@@ -1156,6 +1201,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.defaultSkin = new Image( texture );</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #stateToSkinFunction
 		 * @see #upSkin
@@ -1197,6 +1244,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.defaultSelectedSkin = new Image( texture );</listing>
+		 *
+		 * @default null
 		 * 
 		 * @see #defaultSkin
 		 * @see #selectedUpSkin
@@ -1230,6 +1279,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.upSkin = new Image( texture );</listing>
+		 *
+		 * @default null
 		 * 
 		 * @see #defaultSkin
 		 * @see #selectedUpSkin
@@ -1260,6 +1311,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.downSkin = new Image( texture );</listing>
+		 *
+		 * @default null
 		 * 
 		 * @see #defaultSkin
 		 * @see #selectedDownSkin
@@ -1291,6 +1344,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * button.hoverSkin = new Image( texture );</listing>
 		 *
+		 * @default null
+		 *
 		 * @see #defaultSkin
 		 * @see #selectedHoverSkin
 		 */
@@ -1320,6 +1375,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.disabledSkin = new Image( texture );</listing>
+		 *
+		 * @default null
 		 * 
 		 * @see #defaultSkin
 		 * @see #selectedDisabledSkin
@@ -1352,6 +1409,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.selectedUpSkin = new Image( texture );</listing>
+		 *
+		 * @default null
 		 * 
 		 * @see #defaultSkin
 		 * @see #defaultSelectedSkin
@@ -1384,6 +1443,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.selectedDownSkin = new Image( texture );</listing>
+		 *
+		 * @default null
 		 * 
 		 * @see #defaultSkin
 		 * @see #defaultSelectedSkin
@@ -1417,6 +1478,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * button.selectedHoverSkin = new Image( texture );</listing>
 		 *
+		 * @default null
+		 *
 		 * @see #defaultSkin
 		 * @see #defaultSelectedSkin
 		 */
@@ -1448,6 +1511,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.selectedDisabledSkin = new Image( texture );</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #defaultSkin
 		 * @see #defaultSelectedSkin
@@ -1497,6 +1562,8 @@ package feathers.controls
 		 *     return new TextFieldTextRenderer();
 		 * }</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.core.ITextRenderer
 		 * @see feathers.core.FeathersControl#defaultTextRendererFactory
 		 * @see feathers.controls.text.BitmapFontTextRenderer
@@ -1544,6 +1611,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * button.defaultLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );
 		 * button.defaultLabelProperties.wordWrap = true;</listing>
+		 *
+		 * @default null
 		 *
 		 * @see feathers.core.ITextRenderer
 		 * @see feathers.controls.text.BitmapFontTextRenderer
@@ -1600,6 +1669,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * button.upLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.core.ITextRenderer
 		 * @see feathers.controls.text.BitmapFontTextRenderer
 		 * @see feathers.controls.text.TextFieldTextRenderer
@@ -1654,6 +1725,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.downLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );</listing>
+		 *
+		 * @default null
 		 *
 		 * @see feathers.core.ITextRenderer
 		 * @see feathers.controls.text.BitmapFontTextRenderer
@@ -1710,6 +1783,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * button.hoverLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.core.ITextRenderer
 		 * @see feathers.controls.text.BitmapFontTextRenderer
 		 * @see feathers.controls.text.TextFieldTextRenderer
@@ -1764,6 +1839,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.disabledLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );</listing>
+		 *
+		 * @default null
 		 *
 		 * @see feathers.core.ITextRenderer
 		 * @see feathers.controls.text.BitmapFontTextRenderer
@@ -1824,6 +1901,8 @@ package feathers.controls
 		 * button.defaultSelectedLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );
 		 * button.defaultSelectedLabelProperties.wordWrap = true;</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.core.ITextRenderer
 		 * @see feathers.controls.text.BitmapFontTextRenderer
 		 * @see feathers.controls.text.TextFieldTextRenderer
@@ -1879,6 +1958,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.selectedUpLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );</listing>
+		 *
+		 * @default null
 		 *
 		 * @see feathers.core.ITextRenderer
 		 * @see feathers.controls.text.BitmapFontTextRenderer
@@ -1938,6 +2019,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * button.selectedDownLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.core.ITextRenderer
 		 * @see feathers.controls.text.BitmapFontTextRenderer
 		 * @see feathers.controls.text.TextFieldTextRenderer
@@ -1995,6 +2078,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.selectedHoverLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );</listing>
+		 *
+		 * @default null
 		 *
 		 * @see feathers.core.ITextRenderer
 		 * @see feathers.controls.text.BitmapFontTextRenderer
@@ -2054,6 +2139,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * button.selectedDisabledLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.core.ITextRenderer
 		 * @see feathers.controls.text.BitmapFontTextRenderer
 		 * @see feathers.controls.text.TextFieldTextRenderer
@@ -2109,6 +2196,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * button.defaultIcon = new Image( texture );</listing>
 		 *
+		 * @default null
+		 *
 		 * @see #stateToIconFunction
 		 * @see #upIcon
 		 * @see #downIcon
@@ -2149,6 +2238,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.defaultSelectedIcon = new Image( texture );</listing>
+		 *
+		 * @default null
 		 * 
 		 * @see #defaultIcon
 		 * @see #selectedUpIcon
@@ -2182,6 +2273,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.upIcon = new Image( texture );</listing>
+		 *
+		 * @default null
 		 * 
 		 * @see #defaultIcon
 		 * @see #selectedUpIcon
@@ -2212,6 +2305,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.downIcon = new Image( texture );</listing>
+		 *
+		 * @default null
 		 * 
 		 * @see #defaultIcon
 		 * @see #selectedDownIcon
@@ -2243,6 +2338,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * button.hoverIcon = new Image( texture );</listing>
 		 *
+		 * @default null
+		 *
 		 * @see #defaultIcon
 		 * @see #selectedDownIcon
 		 */
@@ -2272,6 +2369,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.disabledIcon = new Image( texture );</listing>
+		 *
+		 * @default null
 		 * 
 		 * @see #defaultIcon
 		 * @see #selectedDisabledIcon
@@ -2304,6 +2403,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.selectedUpIcon = new Image( texture );</listing>
+		 *
+		 * @default null
 		 * 
 		 * @see #defaultIcon
 		 * @see #defaultSelectedIcon
@@ -2336,6 +2437,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.selectedDownIcon = new Image( texture );</listing>
+		 *
+		 * @default null
 		 * 
 		 * @see #defaultIcon
 		 * @see #defaultSelectedIcon
@@ -2369,6 +2472,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * button.selectedHoverIcon = new Image( texture );</listing>
 		 *
+		 * @default null
+		 *
 		 * @see #defaultIcon
 		 * @see #defaultSelectedIcon
 		 */
@@ -2400,6 +2505,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.selectedDisabledIcon = new Image( texture );</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #defaultIcon
 		 * @see #defaultSelectedIcon
@@ -2436,6 +2543,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.autoFlatten = true;</listing>
+		 *
+		 * @default false
 		 */
 		public function get autoFlatten():Boolean
 		{

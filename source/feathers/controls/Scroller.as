@@ -528,6 +528,8 @@ package feathers.controls
 
 		/**
 		 * The display object displayed and scrolled within the Scroller.
+		 *
+		 * @default null
 		 */
 		public function get viewPort():IViewPort
 		{
@@ -616,6 +618,8 @@ package feathers.controls
 		 *    return new ScrollBar();
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.IScrollBar
 		 * @see #horizontalScrollBarProperties
 		 */
@@ -658,6 +662,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( SimpleScrollBar, customHorizontalScrollBarInitializer, "my-custom-horizontal-scroll-bar");</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR
 		 * @see feathers.core.FeathersControl#nameList
@@ -712,6 +718,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * scroller.horizontalScrollBarProperties.liveDragging = false;</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #horizontalScrollBarFactory
 		 * @see feathers.controls.IScrollBar
@@ -787,6 +795,8 @@ package feathers.controls
 		 *    return new ScrollBar();
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.IScrollBar
 		 * @see #verticalScrollBarProperties
 		 */
@@ -829,6 +839,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( SimpleScrollBar, customVerticalScrollBarInitializer, "my-custom-vertical-scroll-bar");</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR
 		 * @see feathers.core.FeathersControl#nameList
@@ -883,6 +895,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * scroller.verticalScrollBarProperties.liveDragging = false;</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #verticalScrollBarFactory
 		 * @see feathers.controls.IScrollBar
@@ -967,11 +981,6 @@ package feathers.controls
 			if(this.explicitHorizontalScrollStep == value)
 			{
 				return;
-			}
-			if(isNaN(value))
-			{
-				//nope
-				throw new ArgumentError("horizontalScrollStep cannot be NaN.");
 			}
 			this.explicitHorizontalScrollStep = value;
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
@@ -1149,11 +1158,6 @@ package feathers.controls
 			if(this.explicitVerticalScrollStep == value)
 			{
 				return;
-			}
-			if(isNaN(value))
-			{
-				//nope
-				throw new ArgumentError("verticalScrollStep cannot be NaN.");
 			}
 			this.explicitVerticalScrollStep = value;
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
@@ -1618,6 +1622,11 @@ package feathers.controls
 		 * scroller.padding = 20;</listing>
 		 *
 		 * @default 0
+		 *
+		 * @see #paddingTop
+		 * @see #paddingRight
+		 * @see #paddingBottom
+		 * @see #paddingLeft
 		 */
 		public function get padding():Number
 		{
@@ -1825,7 +1834,9 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * scroller.hideScrollBarAnimationEase = Transitions.EASE_IN_OUT;</listing>
 		 *
-		 * @default Transitions.EASE_OUT
+		 * @default starling.animation.Transitions.EASE_OUT
+		 *
+		 * @see starling.animation.Transitions
 		 */
 		public function get hideScrollBarAnimationEase():Object
 		{
@@ -1945,7 +1956,9 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * scroller.throwEase = Transitions.EASE_IN_OUT;</listing>
 		 *
-		 * @default Transitions.EASE_OUT
+		 * @default starling.animation.Transitions.EASE_OUT
+		 *
+		 * @see starling.animation.Transitions
 		 */
 		public function get throwEase():Object
 		{
@@ -2038,6 +2051,8 @@ package feathers.controls
 		 * Feathers according to the standard
 		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.
 		 * The properties of <code>Scroller</code> are now exposed individually.</p>
+		 *
+		 * @default null
 		 */
 		public function get scrollerProperties():Object
 		{
@@ -2128,6 +2143,8 @@ package feathers.controls
 		/**
 		 * The duration, in seconds, that the scroll bars will be shown when
 		 * calling <code>revealScrollBars()</code>
+		 *
+		 * @default 1.0
 		 *
 		 * @see #revealScrollBars()
 		 */
