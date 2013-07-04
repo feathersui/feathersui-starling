@@ -53,6 +53,10 @@ package feathers.examples.componentsExplorer.screens
 			this._list.isSelectable = this.settings.isSelectable;
 			this._list.allowMultipleSelection = this.settings.allowMultipleSelection;
 			this._list.hasElasticEdges = this.settings.hasElasticEdges;
+			//optimization to reduce draw calls.
+			//only do this if the header or other content covers the edges of
+			//the list. otherwise, the list items may be displayed outside of
+			//the list's bounds.
 			this._list.clipContent = false;
 			this._list.itemRendererFactory = function():IListItemRenderer
 			{

@@ -34,6 +34,7 @@
 			<arg value="-source-path+=source"/>
 			<arg value="-source-path+=${starling.root}"/>
 			<arg value="-source-path+=${feathers.root}"/>
+			<arg value="-source-path+=${theme.root}"/>
 			<arg value="source/GalleryWeb.as"/>
 			<arg value="-output=${output.path}/GalleryWeb.swf"/>
 		</java>
@@ -49,6 +50,7 @@
 			<arg value="-source-path+=source"/>
 			<arg value="-source-path+=${starling.root}"/>
 			<arg value="-source-path+=${feathers.root}"/>
+			<arg value="-source-path+=${theme.root}"/>
 			<arg value="source/Gallery.as"/>
 			<arg value="-output=${output.path}/Gallery.swf"/>
 		</java>

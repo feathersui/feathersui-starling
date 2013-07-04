@@ -27,6 +27,25 @@ package feathers.controls
 	/**
 	 * A generic container that supports layout and scrolling.
 	 *
+	 * <p>The following example creates a scroll container with a horizontal
+	 * layout and adds two buttons to it:</p>
+	 *
+	 * <listing version="3.0">
+	 * var container:ScrollContainer = new ScrollContainer();
+	 * var layout:HorizontalLayout = new HorizontalLayout();
+	 * layout.gap = 20;
+	 * layout.padding = 20;
+	 * container.layout = layout;
+	 * this.addChild( container );
+	 *
+	 * var yesButton:Button = new Button();
+	 * yesButton.label = "Yes";
+	 * container.addChild( yesButton );
+	 *
+	 * var noButton:Button = new Button();
+	 * noButton.label = "No";
+	 * container.addChild( noButton );</listing>
+	 *
 	 * @see http://wiki.starling-framework.org/feathers/scroll-container
 	 */
 	public class ScrollContainer extends Scroller
@@ -35,6 +54,28 @@ package feathers.controls
 		 * @private
 		 */
 		protected static const INVALIDATION_FLAG_MXML_CONTENT:String = "mxmlContent";
+
+		/**
+		 * An alternate name to use with ScrollContainer to allow a theme to
+		 * give it a toolbar style. If a theme does not provide a skin for the
+		 * toolbar style, the theme will automatically fall back to using the
+		 * default scroll container skin.
+		 *
+		 * <p>An alternate name should always be added to a component's
+		 * <code>nameList</code> before the component is added to the stage for
+		 * the first time.</p>
+		 *
+		 * <p>In the following example, the toolbar style is applied to a scroll
+		 * container:</p>
+		 *
+		 * <listing version="3.0">
+		 * var container:ScrollContainer = new ScrollContainer();
+		 * container.nameList.add( ScrollContainer.ALTERNATE_NAME_TOOLBAR );
+		 * this.addChild( container );</listing>
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
+		 */
+		public static const ALTERNATE_NAME_TOOLBAR:String = "feathers-toolbar-scroll-container";
 
 		/**
 		 * @copy feathers.controls.Scroller#SCROLL_POLICY_AUTO
@@ -110,6 +151,11 @@ package feathers.controls
 			this.displayListBypassEnabled = oldDisplayListBypassEnabled;
 		}
 
+		/**
+		 * A flag that indicates if the display list functions like <code>addChild()</code>
+		 * and <code>removeChild()</code> will be passed to the internal view
+		 * port.
+		 */
 		protected var displayListBypassEnabled:Boolean = true;
 
 		/**
@@ -125,6 +171,14 @@ package feathers.controls
 		/**
 		 * Controls the way that the container's children are positioned and
 		 * sized.
+		 *
+		 * <p>The following example tells the container to use a horizontal layout:</p>
+		 *
+		 * <listing version="3.0">
+		 * var layout:HorizontalLayout = new HorizontalLayout();
+		 * layout.gap = 20;
+		 * layout.padding = 20;
+		 * container.layout = layout;</listing>
 		 */
 		public function get layout():ILayout
 		{

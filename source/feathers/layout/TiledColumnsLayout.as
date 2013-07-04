@@ -598,6 +598,19 @@ package feathers.layout
 		 */
 		public function layout(items:Vector.<DisplayObject>, viewPortBounds:ViewPortBounds = null, result:LayoutBoundsResult = null):LayoutBoundsResult
 		{
+			if(!result)
+			{
+				result = new LayoutBoundsResult();
+			}
+			if(items.length == 0)
+			{
+				result.contentWidth = 0;
+				result.contentHeight = 0;
+				result.viewPortWidth = 0;
+				result.viewPortHeight = 0;
+				return result;
+			}
+
 			const scrollX:Number = viewPortBounds ? viewPortBounds.scrollX : 0;
 			const scrollY:Number = viewPortBounds ? viewPortBounds.scrollY : 0;
 			const boundsX:Number = viewPortBounds ? viewPortBounds.x : 0;
@@ -630,13 +643,9 @@ package feathers.layout
 					{
 						continue;
 					}
-					if(item is ILayoutDisplayObject)
+					if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
 					{
-						var layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(item);
-						if(!layoutItem.includeInLayout)
-						{
-							continue;
-						}
+						continue;
 					}
 					tileWidth = this._useSquareTiles ? Math.max(tileWidth, item.width, item.height) : Math.max(tileWidth, item.width);
 					tileHeight = this._useSquareTiles ? Math.max(tileWidth, tileHeight) : Math.max(tileHeight, item.height);
@@ -687,13 +696,9 @@ package feathers.layout
 			for(i = 0; i < itemCount; i++)
 			{
 				item = items[i];
-				if(item is ILayoutDisplayObject)
+				if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
 				{
-					layoutItem = ILayoutDisplayObject(item);
-					if(!layoutItem.includeInLayout)
-					{
-						continue;
-					}
+					continue;
 				}
 				if(itemIndex != 0 && i % verticalTileCount == 0)
 				{
@@ -838,6 +843,10 @@ package feathers.layout
 				for(i = 0; i <= discoveredItemsLastIndex; i++)
 				{
 					item = discoveredItems[i];
+					if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+					{
+						continue;
+					}
 					item.visible = ((item.x + item.width) >= (boundsX + scrollX)) && (item.x < (scrollX + availableWidth));
 				}
 			}
@@ -909,15 +918,11 @@ package feathers.layout
 				verticalTileCount = Math.max(1, (maxHeight - this._paddingTop - this._paddingBottom + this._verticalGap) / (tileHeight + this._verticalGap));
 			}
 
-			const totalPageWidth:Number = horizontalTileCount * (tileWidth + this._horizontalGap) - this._horizontalGap + this._paddingLeft + this._paddingRight;
 			const totalPageHeight:Number = verticalTileCount * (tileHeight + this._verticalGap) - this._verticalGap + this._paddingTop + this._paddingBottom;
-			const availablePageWidth:Number = isNaN(availableWidth) ? totalPageWidth : availableWidth;
-			const availablePageHeight:Number = isNaN(availableHeight) ? totalPageHeight : availableHeight;
 
 			const startX:Number = boundsX + this._paddingLeft;
 
 			const perPage:int = horizontalTileCount * verticalTileCount;
-
 			var pageIndex:int = 0;
 			var nextPageStartIndex:int = perPage;
 			var positionX:Number = startX;
@@ -963,8 +968,8 @@ package feathers.layout
 			{
 				totalHeight = Math.ceil(itemCount / perPage) * availableHeight;
 			}
-			result.x = needsWidth ? Math.max(minWidth, totalWidth) : explicitWidth;
-			result.y = needsHeight ? Math.max(minHeight, totalHeight) : explicitHeight;
+			result.x = needsWidth ? Math.min(maxWidth, Math.max(minWidth, totalWidth)) : explicitWidth;
+			result.y = needsHeight ? Math.min(maxHeight, Math.max(minHeight, totalHeight)) : explicitHeight;
 			return result;
 		}
 
@@ -1017,6 +1022,10 @@ package feathers.layout
 				{
 					var item:DisplayObject = items[i];
 					if(!item)
+					{
+						continue;
+					}
+					if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
 					{
 						continue;
 					}
@@ -1074,6 +1083,10 @@ package feathers.layout
 				for(var i:int = startIndex; i <= endIndex; i++)
 				{
 					var item:DisplayObject = items[i];
+					if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+					{
+						continue;
+					}
 					item.x += horizontalAlignOffsetX;
 				}
 			}
@@ -1102,6 +1115,10 @@ package feathers.layout
 				for(var i:int = startIndex; i <= endIndex; i++)
 				{
 					var item:DisplayObject = items[i];
+					if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+					{
+						continue;
+					}
 					item.y += verticalAlignOffsetY;
 				}
 			}
@@ -1115,11 +1132,16 @@ package feathers.layout
 			const itemCount:int = items.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
-				var control:IFeathersControl = items[i] as IFeathersControl;
-				if(control)
+				var item:DisplayObject = items[i];
+				if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
 				{
-					control.validate();
+					continue;
 				}
+				if(!(item is IFeathersControl))
+				{
+					continue;
+				}
+				IFeathersControl(item).validate();
 			}
 		}
 
@@ -1164,13 +1186,13 @@ package feathers.layout
 			{
 				partialPageSize = Math.max(0, -partialPageSize - this._paddingRight - rightSideOffset);
 				columnOffset = -Math.floor(partialPageSize / (tileWidth + this._horizontalGap)) - 1;
-				minimum += -perPage + horizontalTileCount + columnOffset;
+				minimum += columnOffset * verticalTileCount;
 			}
 			else if(partialPageSize > 0)
 			{
 				partialPageSize = Math.max(0, partialPageSize - this._paddingLeft - leftSideOffset);
 				columnOffset = Math.floor(partialPageSize / (tileWidth + this._horizontalGap));
-				minimum += columnOffset;
+				minimum += columnOffset * verticalTileCount;
 			}
 			if(minimum < 0)
 			{

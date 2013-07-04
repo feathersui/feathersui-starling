@@ -18,7 +18,6 @@ package feathers.controls
 	import flash.ui.MouseCursor;
 
 	import starling.display.DisplayObject;
-
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -64,6 +63,16 @@ package feathers.controls
 	 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>
 	 * will not go into effect until this component's status is upgraded from
 	 * beta to stable.</p>
+	 *
+	 * <p>The following example sets the text in a text area, selects the text,
+	 * and listens for when the text value changes:</p>
+	 *
+	 * <listing version="3.0">
+	 * var textArea:TextArea = new TextArea();
+	 * textArea.text = "Hello\nWorld"; //it's multiline!
+	 * textArea.selectRange( 0, textArea.text.length );
+	 * textArea.addEventListener( Event.CHANGE, input_changeHandler );
+	 * this.addChild( textArea );</listing>
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/text-area
 	 * @see feathers.controls.TextInput
@@ -194,6 +203,14 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override public function get isFocusEnabled():Boolean
+		{
+			return this._isEditable && this._isFocusEnabled;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _text:String = "";
 
 		/**
@@ -201,7 +218,14 @@ package feathers.controls
 		 * <code>Event.CHANGE</code> when the value of the <code>text</code>
 		 * property changes for any reason.
 		 *
+		 * <p>In the following example, the text area's text is updated:</p>
+		 *
+		 * <listing version="3.0">
+		 * textArea.text = "Hello World";</listing>
+		 *
 		 * @see #event:change
+		 *
+		 * @default ""
 		 */
 		public function get text():String
 		{
@@ -234,6 +258,14 @@ package feathers.controls
 
 		/**
 		 * The maximum number of characters that may be entered.
+		 *
+		 * <p>In the following example, the text area's maximum characters is
+		 * specified:</p>
+		 *
+		 * <listing version="3.0">
+		 * textArea.maxChars = 10;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get maxChars():int
 		{
@@ -260,6 +292,12 @@ package feathers.controls
 
 		/**
 		 * Limits the set of characters that may be entered.
+		 *
+		 * <p>In the following example, the text area's allowed characters are
+		 * restricted:</p>
+		 *
+		 * <listing version="3.0">
+		 * textArea.restrict = "0-9;</listing>
 		 */
 		public function get restrict():String
 		{
@@ -287,6 +325,13 @@ package feathers.controls
 		/**
 		 * Determines if the text area is editable. If the text area is not
 		 * editable, it will still appear enabled.
+		 *
+		 * <p>In the following example, the text area is not editable:</p>
+		 *
+		 * <listing version="3.0">
+		 * textArea.isEditable = false;</listing>
+		 *
+		 * @default true
 		 */
 		public function get isEditable():Boolean
 		{
@@ -309,6 +354,51 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _backgroundFocusedSkin:DisplayObject;
+
+		/**
+		 * A display object displayed behind the text area's content when it
+		 * has focus.
+		 *
+		 * <p>In the following example, the text area's focused background skin is
+		 * specified:</p>
+		 *
+		 * <listing version="3.0">
+		 * textArea.backgroundFocusedSkin = new Image( texture );</listing>
+		 */
+		public function get backgroundFocusedSkin():DisplayObject
+		{
+			return this._backgroundFocusedSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set backgroundFocusedSkin(value:DisplayObject):void
+		{
+			if(this._backgroundFocusedSkin == value)
+			{
+				return;
+			}
+
+			if(this._backgroundFocusedSkin && this._backgroundFocusedSkin != this._backgroundSkin &&
+				this._backgroundFocusedSkin != this._backgroundDisabledSkin)
+			{
+				this.removeChild(this._backgroundFocusedSkin);
+			}
+			this._backgroundFocusedSkin = value;
+			if(this._backgroundFocusedSkin && this._backgroundFocusedSkin.parent != this)
+			{
+				this._backgroundFocusedSkin.visible = false;
+				this._backgroundFocusedSkin.touchable = false;
+				this.addChildAt(this._backgroundFocusedSkin, 0);
+			}
+			this.invalidate(INVALIDATION_FLAG_SKIN);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _textEditorFactory:Function;
 
 		/**
@@ -323,6 +413,15 @@ package feathers.controls
 		 *
 		 * <p>The factory should have the following function signature:</p>
 		 * <pre>function():ITextEditorViewPort</pre>
+		 *
+		 * <p>In the following example, a custom text editor factory is passed
+		 * to the text area:</p>
+		 *
+		 * <listing version="3.0">
+		 * input.textEditorFactory = function():ITextEditorViewPort
+		 * {
+		 *     return new TextFieldTextEditorViewPort();
+		 * };</listing>
 		 *
 		 * @see feathers.controls.text.ITextEditorViewPort
 		 * @see feathers.controls.text.TextFieldTextEditorViewPort
@@ -365,6 +464,14 @@ package feathers.controls
 		 * <p>Setting properties in a <code>textEditorFactory</code> function
 		 * instead of using <code>textEditorProperties</code> will result in
 		 * better performance.</p>
+		 *
+		 * <p>In the following example, the text input's text editor properties
+		 * are specified (this example assumes that the text editor is a
+		 * <code>TextFieldTextEditorViewPort</code>):</p>
+		 *
+		 * <listing version="3.0">
+		 * input.textEditorProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333);
+		 * input.textEditorProperties.embedFonts = true;</listing>
 		 *
 		 * @see #textEditorFactory
 		 * @see feathers.controls.text.ITextEditorViewPort
@@ -529,6 +636,45 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override protected function autoSizeIfNeeded():Boolean
+		{
+			const needsWidth:Boolean = isNaN(this.explicitWidth);
+			const needsHeight:Boolean = isNaN(this.explicitHeight);
+			if(!needsWidth && !needsHeight)
+			{
+				return false;
+			}
+
+			var newWidth:Number = this.explicitWidth;
+			var newHeight:Number = this.explicitHeight;
+			if(needsWidth)
+			{
+				if(!isNaN(this.originalBackgroundWidth))
+				{
+					newWidth = this.originalBackgroundWidth;
+				}
+				else
+				{
+					newWidth = 0;
+				}
+			}
+			if(needsHeight)
+			{
+				if(!isNaN(this.originalBackgroundHeight))
+				{
+					newHeight = this.originalBackgroundHeight;
+				}
+				else
+				{
+					newHeight = 0;
+				}
+			}
+			return this.setSizeInternal(newWidth, newHeight, false);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function createTextEditor():void
 		{
 			if(this.textEditorViewPort)
@@ -565,7 +711,7 @@ package feathers.controls
 		 */
 		protected function doPendingActions():void
 		{
-			if(this._isWaitingToSetFocus)
+			if(this._isWaitingToSetFocus || (this._focusManager && this._focusManager.focus == this))
 			{
 				this._isWaitingToSetFocus = false;
 				if(!this._textEditorHasFocus)
@@ -605,8 +751,36 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override protected function refreshBackgroundSkin():void
+		{
+			if(this._hasFocus && this._backgroundFocusedSkin)
+			{
+				this.currentBackgroundSkin = this._backgroundFocusedSkin;
+				this.setChildIndex(this.currentBackgroundSkin, 0);
+				this.currentBackgroundSkin.visible = true;
+
+				if(isNaN(this.originalBackgroundWidth))
+				{
+					this.originalBackgroundWidth = this.currentBackgroundSkin.width;
+				}
+				if(isNaN(this.originalBackgroundHeight))
+				{
+					this.originalBackgroundHeight = this.currentBackgroundSkin.height;
+				}
+				return;
+			}
+			super.refreshBackgroundSkin();
+		}
+
+		/**
+		 * @private
+		 */
 		protected function setFocusOnTextEditorWithTouch(touch:Touch):void
 		{
+			if(!this.isFocusEnabled)
+			{
+				return;
+			}
 			touch.getLocation(this.stage, HELPER_POINT);
 			const isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
 			if(!this._textEditorHasFocus && isInBounds)
@@ -755,6 +929,7 @@ package feathers.controls
 			}
 			super.focusOutHandler(event);
 			this.textEditorViewPort.clearFocus();
+			this.invalidate(INVALIDATION_FLAG_STATE);
 		}
 
 		/**
@@ -796,15 +971,9 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_STATE);
 			if(this._focusManager)
 			{
-				if(this._focusManager.focus == this)
-				{
-					this._focusManager.focus = null;
-				}
+				return;
 			}
-			else
-			{
-				this.dispatchEventWith(FeathersEventType.FOCUS_OUT);
-			}
+			this.dispatchEventWith(FeathersEventType.FOCUS_OUT);
 		}
 	}
 }

@@ -17,7 +17,7 @@ package
 
 	import starling.core.Starling;
 
-	[SWF(width="640",height="960",frameRate="60",backgroundColor="#2f2f2f")]
+	[SWF(width="640",height="960",frameRate="60",backgroundColor="#4a4137")]
 	public class DisplayObjectExplorer extends Sprite
 	{
 		public function DisplayObjectExplorer()

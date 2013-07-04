@@ -26,6 +26,33 @@ package feathers.controls
 	 * Provides useful capabilities for a menu screen displayed by
 	 * <code>ScreenNavigator</code>.
 	 *
+	 * <p>The following example provides a basic framework for a new screen:</p>
+	 *
+	 * <listing version="3.0">
+	 * package
+	 * {
+	 *     import feathers.controls.Screen;
+	 *
+	 *     public class CustomScreen extends Screen
+	 *     {
+	 *         public function CustomScreen()
+	 *         {
+	 *         }
+	 *
+	 *         override protected function initialize():void
+	 *         {
+	 *             //runs once when screen is first added to the stage.
+	 *             //a good place to add children and things.
+	 *         }
+	 *
+	 *         override protected function draw():void
+	 *         {
+	 *             //runs every time invalidate() is called
+	 *             //a good place for measurement and layout
+	 *         }
+	 *     }
+	 * }</listing>
+	 *
 	 * @see http://wiki.starling-framework.org/feathers/screen
 	 * @see ScreenNavigator
 	 */
@@ -51,6 +78,13 @@ package feathers.controls
 		 * The original intended width of the application. If not set manually,
 		 * <code>loaderInfo.width</code> is automatically detected (to get
 		 * width value from <code>[SWF]</code> metadata.
+		 *
+		 * <p>In the following example, the original width is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * this.originalWidth = 960; //iPhone with Retina Display in landscape</listing>
+		 *
+		 * @see #pixelScale
 		 */
 		public function get originalWidth():Number
 		{
@@ -82,6 +116,13 @@ package feathers.controls
 		 * The original intended height of the application. If not set manually,
 		 * <code>loaderInfo.height</code> is automatically detected (to get
 		 * height value from <code>[SWF]</code> metadata.
+		 *
+		 * <p>In the following example, the original height is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * this.originalWidth = 640; //iPhone with Retina Display in landscape</listing>
+		 *
+		 * @see #pixelScale
 		 */
 		public function get originalHeight():Number
 		{
@@ -112,6 +153,14 @@ package feathers.controls
 		/**
 		 * The original intended DPI of the application. This value cannot be
 		 * automatically detected and it must be set manually.
+		 *
+		 * <p>In the following example, the original DPI is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * this.originalDPI = 326; //iPhone with Retina Display</listing>
+		 *
+		 * @see #dpiScale
+		 * @see feathers.system.DeviceCapabilities#dpi
 		 */
 		public function get originalDPI():int
 		{
@@ -186,6 +235,9 @@ package feathers.controls
 		 * within the current stage bounds using the same relative layout. This
 		 * scale value does not account for differences between the original DPI
 		 * and the current device's DPI.
+		 *
+		 * @see #originalWidth
+		 * @see #originalHeight
 		 */
 		protected function get pixelScale():Number
 		{
@@ -206,6 +258,9 @@ package feathers.controls
 		 * of touches. Likewise, it won't scale items to become ridiculously
 		 * physically large. Most useful when targeting many different platforms
 		 * with the same code.
+		 *
+		 * @see #originalDPI
+		 * @see feathers.system.DeviceCapabilities#dpi
 		 */
 		protected function get dpiScale():Number
 		{
@@ -215,18 +270,69 @@ package feathers.controls
 		/**
 		 * Optional callback for the back hardware key. Automatically handles
 		 * keyboard events to cancel the default behavior.
+		 *
+		 * <p>This function has the following signature:</p>
+		 *
+		 * <pre>function():void</pre>
+		 *
+		 * <p>In the following example, a function will dispatch <code>Event.COMPLETE</code>
+		 * when the back button is pressed:</p>
+		 *
+		 * <listing version="3.0">
+		 * this.backButtonHandler = onBackButton;
+		 *
+		 * private function onBackButton():void
+		 * {
+		 *     this.dispatchEvent( Event.COMPLETE );
+		 * };</listing>
+		 *
+		 * @default null
 		 */
 		protected var backButtonHandler:Function;
 		
 		/**
 		 * Optional callback for the menu hardware key. Automatically handles
 		 * keyboard events to cancel the default behavior.
+		 *
+		 * <p>This function has the following signature:</p>
+		 *
+		 * <pre>function():void</pre>
+		 *
+		 * <p>In the following example, a function will be called when the menu
+		 * button is pressed:</p>
+		 *
+		 * <listing version="3.0">
+		 * this.menuButtonHandler = onMenuButton;
+		 *
+		 * private function onMenuButton():void
+		 * {
+		 *     //do something with the menu button
+		 * };</listing>
+		 *
+		 * @default null
 		 */
 		protected var menuButtonHandler:Function;
 		
 		/**
 		 * Optional callback for the search hardware key. Automatically handles
 		 * keyboard events to cancel the default behavior.
+		 *
+		 * <p>This function has the following signature:</p>
+		 *
+		 * <pre>function():void</pre>
+		 *
+		 * <p>In the following example, a function will be called when the search
+		 * button is pressed:</p>
+		 *
+		 * <listing version="3.0">
+		 * this.searchButtonHandler = onSearchButton;
+		 *
+		 * private function onSearchButton():void
+		 * {
+		 *     //do something with the search button
+		 * };</listing>
+		 *
+		 * @default null
 		 */
 		protected var searchButtonHandler:Function;
 

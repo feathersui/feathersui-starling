@@ -13,7 +13,6 @@ package feathers.controls
 	import feathers.core.ITextRenderer;
 	import feathers.core.IToggle;
 	import feathers.core.PropertyProxy;
-	import feathers.events.FeathersEventType;
 	import feathers.skins.StateWithToggleValueSelector;
 
 	import flash.geom.Point;
@@ -540,6 +539,16 @@ package feathers.controls
 		 * button.label = "Click Me";
 		 * button.defaultIcon = new Image( texture );
 		 * button.iconPosition = Button.ICON_POSITION_RIGHT;</listing>
+		 *
+		 * @default Button.ICON_POSITION_LEFT
+		 *
+		 * @see #ICON_POSITION_TOP
+		 * @see #ICON_POSITION_RIGHT
+		 * @see #ICON_POSITION_BOTTOM
+		 * @see #ICON_POSITION_LEFT
+		 * @see #ICON_POSITION_RIGHT_BASELINE
+		 * @see #ICON_POSITION_LEFT_BASELINE
+		 * @see #ICON_POSITION_MANUAL
 		 */
 		public function get iconPosition():String
 		{
@@ -616,6 +625,12 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;</listing>
+		 *
+		 * @default Button.HORIZONTAL_ALIGN_CENTER
+		 *
+		 * @see #HORIZONTAL_ALIGN_LEFT
+		 * @see #HORIZONTAL_ALIGN_CENTER
+		 * @see #HORIZONTAL_ALIGN_RIGHT
 		 */
 		public function get horizontalAlign():String
 		{
@@ -649,6 +664,12 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * button.verticalAlign = Button.VERTICAL_ALIGN_TOP;</listing>
+		 *
+		 * @default Button.VERTICAL_ALIGN_MIDDLE
+		 *
+		 * @see #VERTICAL_ALIGN_TOP
+		 * @see #VERTICAL_ALIGN_MIDDLE
+		 * @see #VERTICAL_ALIGN_RIGHT
 		 */
 		public function get verticalAlign():String
 		{
@@ -1480,7 +1501,9 @@ package feathers.controls
 		 * <code>TextFieldTextRenderer</code>.
 		 *
 		 * <p>The following example gives the button default label properties to
-		 * use for all states when no specific label properties are available:</p>
+		 * use for all states when no specific label properties are available
+		 * (this example assumes that the label text renderer is a
+		 * <code>BitmapFontTextRenderer</code>):</p>
 		 *
 		 * <listing version="3.0">
 		 * button.defaultLabelProperties.textFormat = new BitmapFontTextFormat( bitmapFont );

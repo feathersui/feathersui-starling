@@ -27,7 +27,6 @@ package feathers.controls
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
-	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -124,6 +123,10 @@ package feathers.controls
 	 * scrolling. To put components in a generic scrollable container (with
 	 * optional layout), see <code>ScrollContainer</code>. To scroll long
 	 * passages of text, see <code>ScrollText</code>.
+	 *
+	 * <p>This component is generally not instantiated directly. Instead it is
+	 * typically used as a super class for other scrolling components like lists
+	 * and containers. With that in mind, no code example is included here.</p>
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/scroller
 	 * @see ScrollContainer
@@ -260,6 +263,12 @@ package feathers.controls
 		 * needs to bounce back.
 		 */
 		private static const EXTRA_FRICTION:Number = 0.95;
+
+		/**
+		 * @private
+		 * The current velocity is given high importance.
+		 */
+		private static const CURRENT_VELOCITY_WEIGHT:Number = 2.33;
 
 		/**
 		 * @private
@@ -543,7 +552,7 @@ package feathers.controls
 			if(this._viewPort)
 			{
 				this._viewPort.addEventListener(FeathersEventType.RESIZE, viewPort_resizeHandler);
-				this.addChild(DisplayObject(this._viewPort));
+				this.addChildAt(DisplayObject(this._viewPort), 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
@@ -555,6 +564,13 @@ package feathers.controls
 
 		/**
 		 * Determines if scrolling will snap to the nearest page.
+		 *
+		 * <p>In the following example, the scroller snaps to the nearest page:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.snapToPages = true;</listing>
+		 *
+		 * @default false
 		 */
 		public function get snapToPages():Boolean
 		{
@@ -591,6 +607,15 @@ package feathers.controls
 		 *
 		 * <pre>function():IScrollBar</pre>
 		 *
+		 * <p>In the following example, a custom horizontal scroll bar factory
+		 * is passed to the scroller:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.horizontalScrollBarFactory = function():IScrollBar
+		 * {
+		 *    return new ScrollBar();
+		 * };</listing>
+		 *
 		 * @see feathers.controls.IScrollBar
 		 * @see #horizontalScrollBarProperties
 		 */
@@ -622,7 +647,21 @@ package feathers.controls
 		 * Typically used by a theme to provide different skins to different
 		 * containers.
 		 *
+		 * <p>In the following example, a custom horizontal scroll bar name
+		 * is passed to the scroller:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.customHorizontalScrollBarName = "my-custom-horizontal-scroll-bar";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( SimpleScrollBar, customHorizontalScrollBarInitializer, "my-custom-horizontal-scroll-bar");</listing>
+		 *
+		 * @see #DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 * @see #horizontalScrollBarFactory
 		 * @see #horizontalScrollBarProperties
 		 */
@@ -667,6 +706,12 @@ package feathers.controls
 		 * <p>Setting properties in a <code>horizontalScrollBarFactory</code>
 		 * function instead of using <code>horizontalScrollBarProperties</code>
 		 * will result in better performance.</p>
+		 *
+		 * <p>In the following example, properties for the horizontal scroll bar
+		 * are passed to the scroller:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.horizontalScrollBarProperties.liveDragging = false;</listing>
 		 *
 		 * @see #horizontalScrollBarFactory
 		 * @see feathers.controls.IScrollBar
@@ -733,6 +778,15 @@ package feathers.controls
 		 *
 		 * <pre>function():IScrollBar</pre>
 		 *
+		 * <p>In the following example, a custom vertical scroll bar factory
+		 * is passed to the scroller:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.verticalScrollBarFactory = function():IScrollBar
+		 * {
+		 *    return new ScrollBar();
+		 * };</listing>
+		 *
 		 * @see feathers.controls.IScrollBar
 		 * @see #verticalScrollBarProperties
 		 */
@@ -764,7 +818,21 @@ package feathers.controls
 		 * Typically used by a theme to provide different skins to different
 		 * containers.
 		 *
+		 * <p>In the following example, a custom vertical scroll bar name
+		 * is passed to the scroller:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.customVerticalScrollBarName = "my-custom-vertical-scroll-bar";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style:</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( SimpleScrollBar, customVerticalScrollBarInitializer, "my-custom-vertical-scroll-bar");</listing>
+		 *
+		 * @see #DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 * @see #verticalScrollBarFactory
 		 * @see #verticalScrollBarProperties
 		 */
@@ -809,6 +877,12 @@ package feathers.controls
 		 * <p>Setting properties in a <code>verticalScrollBarFactory</code>
 		 * function instead of using <code>verticalScrollBarProperties</code>
 		 * will result in better performance.</p>
+		 *
+		 * <p>In the following example, properties for the vertical scroll bar
+		 * are passed to the scroller:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.verticalScrollBarProperties.liveDragging = false;</listing>
 		 *
 		 * @see #verticalScrollBarFactory
 		 * @see feathers.controls.IScrollBar
@@ -872,6 +946,13 @@ package feathers.controls
 		 * The number of pixels the scroller can be stepped horizontally. Passed
 		 * to the horizontal scroll bar, if one exists. Touch scrolling is not
 		 * affected by the step value.
+		 *
+		 * <p>In the following example, the horizontal scroll step is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.horizontalScrollStep = 0;</listing>
+		 *
+		 * @default NaN
 		 */
 		public function get horizontalScrollStep():Number
 		{
@@ -909,6 +990,11 @@ package feathers.controls
 		/**
 		 * The number of pixels the scroller has been scrolled horizontally (on
 		 * the x-axis).
+		 *
+		 * <p>In the following example, the horizontal scroll position is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.horizontalScrollPosition = scroller.maxHorizontalScrollPosition;</listing>
 		 */
 		public function get horizontalScrollPosition():Number
 		{
@@ -998,6 +1084,13 @@ package feathers.controls
 		 * Determines whether the scroller may scroll horizontally (on the
 		 * x-axis) or not.
 		 *
+		 * <p>In the following example, horizontal scrolling is disabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.horizontalScrollPolicy = Scroller.SCROLL_POLICY_OFF;</listing>
+		 *
+		 * @default Scroller.SCROLL_POLICY_AUTO
+		 *
 		 * @see #SCROLL_POLICY_AUTO
 		 * @see #SCROLL_POLICY_ON
 		 * @see #SCROLL_POLICY_OFF
@@ -1035,6 +1128,13 @@ package feathers.controls
 		 * The number of pixels the scroller can be stepped vertically. Passed
 		 * to the vertical scroll bar, if it exists, and used for scrolling with
 		 * the mouse wheel. Touch scrolling is not affected by the step value.
+		 *
+		 * <p>In the following example, the vertical scroll step is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.verticalScrollStep = 0;</listing>
+		 *
+		 * @default NaN
 		 */
 		public function get verticalScrollStep():Number
 		{
@@ -1072,6 +1172,11 @@ package feathers.controls
 		/**
 		 * The number of pixels the scroller has been scrolled vertically (on
 		 * the y-axis).
+		 *
+		 * <p>In the following example, the vertical scroll position is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.verticalScrollPosition = scroller.maxVerticalScrollPosition;</listing>
 		 */
 		public function get verticalScrollPosition():Number
 		{
@@ -1161,6 +1266,13 @@ package feathers.controls
 		 * Determines whether the scroller may scroll vertically (on the
 		 * y-axis) or not.
 		 *
+		 * <p>In the following example, vertical scrolling is disabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.horizontalScrollPolicy = Scroller.SCROLL_POLICY_OFF;</listing>
+		 *
+		 * @default Scroller.SCROLL_POLICY_AUTO
+		 *
 		 * @see #SCROLL_POLICY_AUTO
 		 * @see #SCROLL_POLICY_ON
 		 * @see #SCROLL_POLICY_OFF
@@ -1197,6 +1309,13 @@ package feathers.controls
 		 * <p>To improve performance, turn off clipping and place other display
 		 * objects over the edges of the scroller to hide the content that
 		 * bleeds outside of the scroller's bounds.</p>
+		 *
+		 * <p>In the following example, clipping is disabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.clipContent = false;</listing>
+		 *
+		 * @default true
 		 */
 		public function get clipContent():Boolean
 		{
@@ -1223,6 +1342,13 @@ package feathers.controls
 		
 		/**
 		 * Determines if the scrolling can go beyond the edges of the viewport.
+		 *
+		 * <p>In the following example, elastic edges are disabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.hasElasticEdges = false;</listing>
+		 *
+		 * @default true
 		 */
 		public function get hasElasticEdges():Boolean
 		{
@@ -1245,6 +1371,13 @@ package feathers.controls
 		/**
 		 * If the scroll position goes outside the minimum or maximum bounds,
 		 * the scrolling will be constrained using this multiplier.
+		 *
+		 * <p>In the following example, the elasticity is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.elasticity = 0.5;</listing>
+		 *
+		 * @default 0.33
 		 */
 		public function get elasticity():Number
 		{
@@ -1267,6 +1400,13 @@ package feathers.controls
 		[Inspectable(type="String",enumeration="float,fixed,none")]
 		/**
 		 * Determines how the scroll bars are displayed.
+		 *
+		 * <p>In the following example, the scroll bars are fixed:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.scrollBarDisplayMode = Scroller.SCROLL_BAR_DISPLAY_MODE_FIXED;</listing>
+		 *
+		 * @default Scroller.SCROLL_BAR_DISPLAY_MODE_FLOAT
 		 *
 		 * @see #SCROLL_BAR_DISPLAY_MODE_FLOAT
 		 * @see #SCROLL_BAR_DISPLAY_MODE_FIXED
@@ -1298,6 +1438,13 @@ package feathers.controls
 		[Inspectable(type="String",enumeration="touch,mouse")]
 		/**
 		 * Determines how the user may interact with the scroller.
+		 *
+		 * <p>In the following example, the interaction mode is optimized for mouse:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.scrollBarDisplayMode = Scroller.INTERACTION_MODE_MOUSE;</listing>
+		 *
+		 * @default Scroller.INTERACTION_MODE_TOUCH
 		 *
 		 * @see #INTERACTION_MODE_TOUCH
 		 * @see #INTERACTION_MODE_MOUSE
@@ -1342,6 +1489,13 @@ package feathers.controls
 
 		/**
 		 * The default background to display.
+		 *
+		 * <p>In the following example, the scroller is given a background skin:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.backgroundSkin = new Image( texture );</listing>
+		 *
+		 * @default null
 		 */
 		public function get backgroundSkin():DisplayObject
 		{
@@ -1366,7 +1520,7 @@ package feathers.controls
 			if(this._backgroundSkin && this._backgroundSkin.parent != this)
 			{
 				this._backgroundSkin.visible = false;
-				this.addChildAt(this._backgroundSkin, 0);
+				this.addChild(this._backgroundSkin);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1378,6 +1532,13 @@ package feathers.controls
 
 		/**
 		 * A background to display when the container is disabled.
+		 *
+		 * <p>In the following example, the scroller is given a disabled background skin:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.backgroundDisabledSkin = new Image( texture );</listing>
+		 *
+		 * @default null
 		 */
 		public function get backgroundDisabledSkin():DisplayObject
 		{
@@ -1402,7 +1563,7 @@ package feathers.controls
 			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin.parent != this)
 			{
 				this._backgroundDisabledSkin.visible = false;
-				this.addChildAt(this._backgroundDisabledSkin, 0);
+				this.addChild(this._backgroundDisabledSkin);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1412,6 +1573,13 @@ package feathers.controls
 		 * <code>padding</code> getter always returns the value of
 		 * <code>paddingTop</code>, but the other padding values may be
 		 * different.
+		 *
+		 * <p>In the following example, the padding is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.padding = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get padding():Number
 		{
@@ -1437,6 +1605,13 @@ package feathers.controls
 		/**
 		 * The minimum space, in pixels, between the container's top edge and the
 		 * container's content.
+		 *
+		 * <p>In the following example, the top padding is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.paddingTop = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingTop():Number
 		{
@@ -1464,6 +1639,13 @@ package feathers.controls
 		/**
 		 * The minimum space, in pixels, between the container's right edge and
 		 * the container's content.
+		 *
+		 * <p>In the following example, the right padding is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.paddingRight = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingRight():Number
 		{
@@ -1491,6 +1673,13 @@ package feathers.controls
 		/**
 		 * The minimum space, in pixels, between the container's bottom edge and
 		 * the container's content.
+		 *
+		 * <p>In the following example, the bottom padding is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.paddingBottom = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingBottom():Number
 		{
@@ -1518,6 +1707,13 @@ package feathers.controls
 		/**
 		 * The minimum space, in pixels, between the container's left edge and the
 		 * container's content.
+		 *
+		 * <p>In the following example, the left padding is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.paddingLeft = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingLeft():Number
 		{
@@ -1555,6 +1751,14 @@ package feathers.controls
 		/**
 		 * The duration, in seconds, of the animation when a scroll bar fades
 		 * out.
+		 *
+		 * <p>In the following example, the duration of the animation that hides
+		 * the scroll bars is set to 500 milliseconds:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.hideScrollBarAnimationDuration = 0.5;</listing>
+		 *
+		 * @default 0.2
 		 */
 		public function get hideScrollBarAnimationDuration():Number
 		{
@@ -1576,6 +1780,14 @@ package feathers.controls
 
 		/**
 		 * The easing function used for hiding the scroll bars, if applicable.
+		 *
+		 * <p>In the following example, the ease of the animation that hides
+		 * the scroll bars is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.hideScrollBarAnimationEase = Transitions.EASE_IN_OUT;</listing>
+		 *
+		 * @default Transitions.EASE_OUT
 		 */
 		public function get hideScrollBarAnimationEase():Object
 		{
@@ -1598,6 +1810,15 @@ package feathers.controls
 		/**
 		 * The duration, in seconds, of the animation when a the scroller snaps
 		 * back to the minimum or maximum position after going out of bounds.
+		 *
+		 * <p>In the following example, the duration of the animation that snaps
+		 * the content back after pulling it beyond the edge is set to 500
+		 * milliseconds:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.elasticSnapDuration = 0.5;</listing>
+		 *
+		 * @default 0.24
 		 */
 		public function get elasticSnapDuration():Number
 		{
@@ -1620,6 +1841,14 @@ package feathers.controls
 		/**
 		 * The duration, in seconds, of the animation when the scroller is
 		 * thrown to a page.
+		 *
+		 * <p>In the following example, the duration of the animation that
+		 * changes the page when thrown is set to 250 milliseconds:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.pageThrowDuration = 0.25;</listing>
+		 *
+		 * @default 0.5
 		 */
 		public function get pageThrowDuration():Number
 		{
@@ -1642,6 +1871,14 @@ package feathers.controls
 		/**
 		 * The duration, in seconds, of the animation when the mouse wheel
 		 * initiates a scroll action.
+		 *
+		 * <p>In the following example, the duration of the animation that runs
+		 * when the mouse wheel is scrolled is set to 500 milliseconds:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.mouseWheelScrollDuration = 0.5;</listing>
+		 *
+		 * @default 0.35
 		 */
 		public function get mouseWheelScrollDuration():Number
 		{
@@ -1663,6 +1900,14 @@ package feathers.controls
 
 		/**
 		 * The easing function used for "throw" animations.
+		 *
+		 * <p>In the following example, the ease of throwing animations is
+		 * customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.throwEase = Transitions.EASE_IN_OUT;</listing>
+		 *
+		 * @default Transitions.EASE_OUT
 		 */
 		public function get throwEase():Object
 		{
@@ -1685,6 +1930,13 @@ package feathers.controls
 		/**
 		 * If enabled, the scroll position will always be adjusted to whole
 		 * pixels.
+		 *
+		 * <p>In the following example, the scroll position is snapped to pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.snapScrollPositionsToPixels = true;</listing>
+		 *
+		 * @default false
 		 */
 		public function get snapScrollPositionsToPixels():Boolean
 		{
@@ -1838,7 +2090,19 @@ package feathers.controls
 		/**
 		 * If the user is scrolling with touch or if the scrolling is animated,
 		 * calling stopScrolling() will cause the scroller to ignore the drag
-		 * and stop animations.
+		 * and stop animations. This function may only be called during scrolling,
+		 * so if you need to stop scrolling on a <code>TouchEvent</code> with
+		 * <code>TouchPhase.BEGAN</code>, you may need to wait for the scroller
+		 * to start scrolling before you can call this function.
+		 *
+		 * <p>In the following example, we listen for <code>FeathersEventType.SCROLL_START</code>
+		 * to stop scrolling:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.addEventListener( FeathersEventType.SCROLL_START, function( event:Event ):void
+		 * {
+		 *     scroller.stopScrolling();
+		 * });</listing>
 		 */
 		public function stopScrolling():void
 		{
@@ -1867,6 +2131,12 @@ package feathers.controls
 		 * either scroll position. If the <code>animationDuration</code> argument
 		 * is greater than zero, the scroll will animate. The duration is in
 		 * seconds.
+		 *
+		 * <p>In the following example, we scroll to the maximum vertical scroll
+		 * position:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.scrollToPosition( scroller.horizontalScrollPosition, scroller.maxVerticalScrollPosition );</listing>
 		 */
 		public function scrollToPosition(horizontalScrollPosition:Number, verticalScrollPosition:Number, animationDuration:Number = 0):void
 		{
@@ -1890,6 +2160,16 @@ package feathers.controls
 		 * either page index. If the <code>animationDuration</code> argument
 		 * is greater than zero, the scroll will animate. The duration is in
 		 * seconds.
+		 *
+		 * <p>You can only scroll to a page if the <code>snapToPages</code>
+		 * property is <code>true</code>.</p>
+		 *
+		 * <p>In the following example, we scroll to the last horizontal page:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.scrollToPageIndex( scroller.horizontalPageCount - 1, scroller.verticalPageIndex );</listing>
+		 *
+		 * @see #snapToPages
 		 */
 		public function scrollToPageIndex(horizontalPageIndex:int, verticalPageIndex:int, animationDuration:Number = 0):void
 		{
@@ -1981,15 +2261,21 @@ package feathers.controls
 			do
 			{
 				this._hasViewPortBoundsChanged = false;
-				//even if fixed, we need to measure without them first
+				//even if fixed, we need to measure without them first because
+				//if the scroll policy is auto, we only show them when needed.
 				if(scrollInvalid || sizeInvalid || stylesInvalid || scrollBarInvalid)
 				{
-					this.calculateViewPortOffsets(true);
+					this.calculateViewPortOffsets(true, false);
 					this.refreshViewPortBoundsWithoutFixedScrollBars();
-					this.calculateViewPortOffsets(false);
+					this.calculateViewPortOffsets(false, false);
 				}
 
 				sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
+
+				//just in case autoSizeIfNeeded() is overridden, we need to call
+				//this again and use actualWidth/Height instead of
+				//explicitWidth/Height.
+				this.calculateViewPortOffsets(false, true);
 
 				if(scrollInvalid || sizeInvalid || stylesInvalid || scrollBarInvalid)
 				{
@@ -2133,6 +2419,8 @@ package feathers.controls
 			}
 			if(this.currentBackgroundSkin)
 			{
+				//force it to the bottom
+				this.setChildIndex(this.currentBackgroundSkin, 0);
 				this.currentBackgroundSkin.visible = true;
 
 				if(isNaN(this.originalBackgroundWidth))
@@ -2434,7 +2722,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function calculateViewPortOffsets(forceScrollBars:Boolean = false):void
+		protected function calculateViewPortOffsets(forceScrollBars:Boolean = false, useActualBounds:Boolean = false):void
 		{
 			//in fixed mode, if we determine that scrolling is required, we
 			//remember the offsets for later. if scrolling is not needed, then
@@ -2447,8 +2735,9 @@ package feathers.controls
 			{
 				if(this.horizontalScrollBar)
 				{
+					const scrollerWidth:Number = useActualBounds ? this.actualWidth : (this.explicitWidth);
 					if(forceScrollBars || this._horizontalScrollPolicy == SCROLL_POLICY_ON ||
-						((this._viewPort.width > this.explicitWidth || this._viewPort.width > this._maxWidth) &&
+						((this._viewPort.width > scrollerWidth || this._viewPort.width > this._maxWidth) &&
 							this._horizontalScrollPolicy != SCROLL_POLICY_OFF))
 					{
 						this._hasHorizontalScrollBar = true;
@@ -2465,8 +2754,9 @@ package feathers.controls
 				}
 				if(this.verticalScrollBar)
 				{
+					const scrollerHeight:Number = useActualBounds ? this.actualHeight : this.explicitHeight;
 					if(forceScrollBars || this._verticalScrollPolicy == SCROLL_POLICY_ON ||
-						((this._viewPort.height > this.explicitHeight || this._viewPort.height > this._maxHeight) &&
+						((this._viewPort.height > scrollerHeight || this._viewPort.height > this._maxHeight) &&
 							this._verticalScrollPolicy != SCROLL_POLICY_OFF))
 					{
 						this._hasVerticalScrollBar = true;
@@ -3318,6 +3608,9 @@ package feathers.controls
 						this.horizontalScrollBar.alpha = 1;
 					}
 				}
+				this._startTouchX = this._currentTouchX;
+				this._startHorizontalScrollPosition = this._horizontalScrollPosition;
+				this._isDraggingHorizontally = true;
 				//if we haven't already started dragging in the other direction,
 				//we need to dispatch the event that says we're starting.
 				if(!this._isDraggingVertically)
@@ -3329,9 +3622,6 @@ package feathers.controls
 					this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 					this.dispatchEventWith(FeathersEventType.SCROLL_START);
 				}
-				this._startTouchX = this._currentTouchX;
-				this._startHorizontalScrollPosition = this._horizontalScrollPosition;
-				this._isDraggingHorizontally = true;
 			}
 			if((this._verticalScrollPolicy == SCROLL_POLICY_ON ||
 				(this._verticalScrollPolicy == SCROLL_POLICY_AUTO && this._maxVerticalScrollPosition > 0)) &&
@@ -3349,6 +3639,9 @@ package feathers.controls
 						this.verticalScrollBar.alpha = 1;
 					}
 				}
+				this._startTouchY = this._currentTouchY;
+				this._startVerticalScrollPosition = this._verticalScrollPosition;
+				this._isDraggingVertically = true;
 				if(!this._isDraggingHorizontally)
 				{
 					if(this._touchBlocker)
@@ -3358,9 +3651,6 @@ package feathers.controls
 					this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 					this.dispatchEventWith(FeathersEventType.SCROLL_START);
 				}
-				this._startTouchY = this._currentTouchY;
-				this._startVerticalScrollPosition = this._verticalScrollPosition;
-				this._isDraggingVertically = true;
 			}
 			if(this._isDraggingHorizontally && !this._horizontalAutoScrollTween)
 			{
@@ -3437,9 +3727,9 @@ package feathers.controls
 				if(!isFinishingHorizontally && this._isDraggingHorizontally)
 				{
 					//take the average for more accuracy
-					var sum:Number = this._velocityX * 2.33;
+					var sum:Number = this._velocityX * CURRENT_VELOCITY_WEIGHT;
 					var velocityCount:int = this._previousVelocityX.length;
-					var totalWeight:Number = 0;
+					var totalWeight:Number = CURRENT_VELOCITY_WEIGHT;
 					for(var i:int = 0; i < velocityCount; i++)
 					{
 						var weight:Number = VELOCITY_WEIGHTS[i];
@@ -3455,9 +3745,9 @@ package feathers.controls
 				
 				if(!isFinishingVertically && this._isDraggingVertically)
 				{
-					sum = this._velocityY * 2.33;
+					sum = this._velocityY * CURRENT_VELOCITY_WEIGHT;
 					velocityCount = this._previousVelocityY.length;
-					totalWeight = 0;
+					totalWeight = CURRENT_VELOCITY_WEIGHT;
 					for(i = 0; i < velocityCount; i++)
 					{
 						weight = VELOCITY_WEIGHTS[i];
@@ -3479,7 +3769,7 @@ package feathers.controls
 		 */
 		protected function nativeStage_mouseWheelHandler(event:MouseEvent):void
 		{
-			if(!this._isEnabled)
+			if(!this._isEnabled || this._maxVerticalScrollPosition == 0)
 			{
 				return;
 			}

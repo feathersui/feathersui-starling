@@ -7,8 +7,6 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.core
 {
-	import feathers.core.IFocusManager;
-
 	import flash.utils.Dictionary;
 
 	import starling.core.Starling;

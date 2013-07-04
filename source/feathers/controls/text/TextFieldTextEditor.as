@@ -100,6 +100,13 @@ package feathers.controls.text
 		protected var textSnapshot:Image;
 
 		/**
+		 * The separate text field sub-component used for measurement.
+		 * Typically, the main text field often doesn't report correct values
+		 * for a full frame if its dimensions are changed too often.
+		 */
+		protected var measureTextField:TextField;
+
+		/**
 		 * @private
 		 */
 		protected var _textSnapshotBitmapData:BitmapData;
@@ -468,6 +475,11 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var resetScrollOnFocusOut:Boolean = true;
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			this.disposeContent();
@@ -513,12 +525,37 @@ package feathers.controls.text
 						this._pendingSelectionStartIndex = this.textField.getCharIndexAtPoint(positionX, positionY);
 						if(this._pendingSelectionStartIndex < 0)
 						{
-							this._pendingSelectionStartIndex = this._text.length;
+							if(this._multiline)
+							{
+								const lineIndex:int = int(positionY / this.textField.getLineMetrics(0).height) + (this.textField.scrollV - 1);
+								try
+								{
+									this._pendingSelectionStartIndex = this.textField.getLineOffset(lineIndex) + this.textField.getLineLength(lineIndex);
+									if(this._pendingSelectionStartIndex != this._text.length)
+									{
+										this._pendingSelectionStartIndex--;
+									}
+								}
+								catch(error:Error)
+								{
+									//we may be checking for a line beyond the
+									//end that doesn't exist
+									this._pendingSelectionStartIndex = this._text.length;
+								}
+							}
+							else
+							{
+								this._pendingSelectionStartIndex = this._text.length;
+							}
 						}
-						const bounds:Rectangle = this.textField.getCharBoundaries(this._pendingSelectionStartIndex);
-						if(bounds && (bounds.x + bounds.width - positionX) < (positionX - bounds.x))
+						else
 						{
-							this._pendingSelectionStartIndex++;
+							const bounds:Rectangle = this.textField.getCharBoundaries(this._pendingSelectionStartIndex);
+							const boundsX:Number = bounds.x;
+							if(bounds && (boundsX + bounds.width - positionX) < (positionX - boundsX))
+							{
+								this._pendingSelectionStartIndex++;
+							}
 						}
 						this._pendingSelectionEndIndex = this._pendingSelectionStartIndex;
 					}
@@ -527,7 +564,10 @@ package feathers.controls.text
 				{
 					this._pendingSelectionStartIndex = this._pendingSelectionEndIndex = -1;
 				}
-				Starling.current.nativeStage.focus = this.textField;
+				if(!this._focusManager)
+				{
+					Starling.current.nativeStage.focus = this.textField;
+				}
 				this.textField.requestSoftKeyboard();
 			}
 			else
@@ -541,7 +581,7 @@ package feathers.controls.text
 		 */
 		public function clearFocus():void
 		{
-			if(!this._textFieldHasFocus)
+			if(!this._textFieldHasFocus || this._focusManager)
 			{
 				return;
 			}
@@ -609,6 +649,12 @@ package feathers.controls.text
 			this.textField.addEventListener(FocusEvent.FOCUS_IN, textField_focusInHandler);
 			this.textField.addEventListener(FocusEvent.FOCUS_OUT, textField_focusOutHandler);
 			this.textField.addEventListener(KeyboardEvent.KEY_DOWN, textField_keyDownHandler);
+
+			this.measureTextField = new TextField();
+			this.measureTextField.autoSize = TextFieldAutoSize.LEFT;
+			this.measureTextField.selectable = false;
+			this.measureTextField.mouseWheelEnabled = false;
+			this.measureTextField.mouseEnabled = false;
 		}
 
 		/**
@@ -636,7 +682,7 @@ package feathers.controls.text
 
 			if(dataInvalid || stylesInvalid || stateInvalid)
 			{
-				this.commitStylesAndData();
+				this.commitStylesAndData(this.textField);
 			}
 		}
 
@@ -669,27 +715,27 @@ package feathers.controls.text
 			const needsWidth:Boolean = isNaN(this.explicitWidth);
 			const needsHeight:Boolean = isNaN(this.explicitHeight);
 
-			this.textField.autoSize = TextFieldAutoSize.LEFT;
+			if(!needsWidth && !needsHeight)
+			{
+				result.x = this.explicitWidth;
+				result.y = this.explicitHeight;
+				return result;
+			}
 
+			this.commitStylesAndData(this.measureTextField);
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
 			{
-				newWidth = Math.max(this._minWidth, Math.min(this._maxWidth, this.textField.width));
+				this.measureTextField.width = newWidth;
+				newWidth = Math.max(this._minWidth, Math.min(this._maxWidth, this.measureTextField.textWidth + 4));
 			}
 
-			this.textField.width = newWidth;
 			var newHeight:Number = this.explicitHeight;
 			if(needsHeight)
 			{
+				this.measureTextField.width = newWidth;
 				newHeight = Math.max(this._minHeight, Math.min(this._maxHeight, this.textField.textHeight + 4));
 			}
-
-			this.textField.autoSize = TextFieldAutoSize.NONE;
-
-			//put the width and height back just in case we measured without
-			//a full validation
-			this.textField.width = this.actualWidth;
-			this.textField.height = this.actualHeight;
 
 			result.x = newWidth;
 			result.y = newHeight;
@@ -700,43 +746,43 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function commitStylesAndData():void
+		protected function commitStylesAndData(textField:TextField):void
 		{
-			this.textField.maxChars = this._maxChars;
-			this.textField.restrict = this._restrict;
-			this.textField.alwaysShowSelection = this._alwaysShowSelection;
-			this.textField.displayAsPassword = this._displayAsPassword;
-			this.textField.wordWrap = this._wordWrap;
-			this.textField.multiline = this._multiline;
-			this.textField.embedFonts = this._embedFonts;
-			this.textField.type = this._isEditable ? TextFieldType.INPUT : TextFieldType.DYNAMIC;
-			this.textField.selectable = this._isEnabled;
+			textField.maxChars = this._maxChars;
+			textField.restrict = this._restrict;
+			textField.alwaysShowSelection = this._alwaysShowSelection;
+			textField.displayAsPassword = this._displayAsPassword;
+			textField.wordWrap = this._wordWrap;
+			textField.multiline = this._multiline;
+			textField.embedFonts = this._embedFonts;
+			textField.type = this._isEditable ? TextFieldType.INPUT : TextFieldType.DYNAMIC;
+			textField.selectable = this._isEnabled;
 			if(this._textFormat)
 			{
-				this.textField.defaultTextFormat = this._textFormat;
+				textField.defaultTextFormat = this._textFormat;
 			}
 			if(this._isHTML)
 			{
-				if(this.textField.htmlText != this._text)
+				if(textField.htmlText != this._text)
 				{
-					if(this._pendingSelectionStartIndex < 0)
+					if(textField == this.textField && this._pendingSelectionStartIndex < 0)
 					{
 						this._pendingSelectionStartIndex = this.textField.selectionBeginIndex;
 						this._pendingSelectionEndIndex = this.textField.selectionEndIndex;
 					}
-					this.textField.htmlText = this._text;
+					textField.htmlText = this._text;
 				}
 			}
 			else
 			{
-				if(this.textField.text != this._text)
+				if(textField.text != this._text)
 				{
-					if(this._pendingSelectionStartIndex < 0)
+					if(textField == this.textField && this._pendingSelectionStartIndex < 0)
 					{
 						this._pendingSelectionStartIndex = this.textField.selectionBeginIndex;
 						this._pendingSelectionEndIndex = this.textField.selectionEndIndex;
 					}
-					this.textField.text = this._text;
+					textField.text = this._text;
 				}
 			}
 		}
@@ -752,8 +798,7 @@ package feathers.controls.text
 			if(sizeInvalid)
 			{
 				this.refreshSnapshotParameters();
-				this.textField.width = this.actualWidth;
-				this.textField.height = this.actualHeight;
+				this.refreshTextFieldSize();
 			}
 
 			this.checkIfNewSnapshotIsNeeded();
@@ -769,6 +814,15 @@ package feathers.controls.text
 				}
 			}
 			this.doPendingActions();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshTextFieldSize():void
+		{
+			this.textField.width = this.actualWidth;
+			this.textField.height = this.actualHeight;
 		}
 
 		/**
@@ -977,7 +1031,10 @@ package feathers.controls.text
 		{
 			this._textFieldHasFocus = false;
 
-			this.textField.scrollH = this.textField.scrollV = 0;
+			if(this.resetScrollOnFocusOut)
+			{
+				this.textField.scrollH = this.textField.scrollV = 0;
+			}
 
 			this.invalidate(INVALIDATION_FLAG_DATA);
 			this.invalidate(INVALIDATION_FLAG_SKIN);

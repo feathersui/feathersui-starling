@@ -18,7 +18,6 @@ package feathers.controls
 	import flash.ui.Mouse;
 	import flash.ui.MouseCursor;
 
-	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.events.Touch;
@@ -34,7 +33,12 @@ package feathers.controls
 
 	/**
 	 * Dispatched when the user presses the Enter key while the text input
-	 * has focus.
+	 * has focus. This event may not be dispatched at all times. Certain text
+	 * editors will not dispatch an event for the enter key on some platforms,
+	 * depending on the values of certain properties. This may include the
+	 * default values for some platforms! If you've encountered this issue,
+	 * please see the specific text editor's API documentation for complete
+	 * details of this event's limitations and requirements.
 	 *
 	 * @eventType feathers.events.FeathersEventType.ENTER
 	 */
@@ -61,6 +65,16 @@ package feathers.controls
 	 * <p>To set things like font properties, the ability to display as
 	 * password, and character restrictions, use the <code>textEditorProperties</code> to pass
 	 * values to the <code>ITextEditor</code> instance.</p>
+	 *
+	 * <p>The following example sets the text in a text input, selects the text,
+	 * and listens for when the text value changes:</p>
+	 *
+	 * <listing version="3.0">
+	 * var input:TextInput = new TextInput();
+	 * input.text = "Hello World";
+	 * input.selectRange( 0, input.text.length );
+	 * input.addEventListener( Event.CHANGE, input_changeHandler );
+	 * this.addChild( input );</listing>
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/text-input
 	 * @see http://wiki.starling-framework.org/feathers/text-editors
@@ -126,6 +140,14 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override public function get isFocusEnabled():Boolean
+		{
+			return this._isEditable && this._isFocusEnabled;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _text:String = "";
 
 		/**
@@ -133,7 +155,14 @@ package feathers.controls
 		 * <code>Event.CHANGE</code> when the value of the <code>text</code>
 		 * property changes for any reason.
 		 *
+		 * <p>In the following example, the text input's text is updated:</p>
+		 *
+		 * <listing version="3.0">
+		 * input.text = "Hello World";</listing>
+		 *
 		 * @see #event:change
+		 *
+		 * @default ""
 		 */
 		public function get text():String
 		{
@@ -167,6 +196,13 @@ package feathers.controls
 		/**
 		 * The prompt, hint, or description text displayed by the input when the
 		 * value of its text is empty.
+		 *
+		 * <p>In the following example, the text input's prompt is updated:</p>
+		 *
+		 * <listing version="3.0">
+		 * input.prompt = "User Name";</listing>
+		 *
+		 * @default null
 		 */
 		public function get prompt():String
 		{
@@ -194,6 +230,14 @@ package feathers.controls
 		/**
 		 * The text used to measure the input when the dimensions are not set
 		 * explicitly (in addition to using the background skin for measurement).
+		 *
+		 * <p>In the following example, the text input's typical text is
+		 * updated:</p>
+		 *
+		 * <listing version="3.0">
+		 * input.text = "We want to allow the text input to show all of this text";</listing>
+		 *
+		 * @default null
 		 */
 		public function get typicalText():String
 		{
@@ -219,7 +263,16 @@ package feathers.controls
 		protected var _maxChars:int = 0;
 
 		/**
-		 * The maximum number of characters that may be entered.
+		 * The maximum number of characters that may be entered. If <code>0</code>,
+		 * any number of characters may be entered.
+		 *
+		 * <p>In the following example, the text input's maximum characters is
+		 * specified:</p>
+		 *
+		 * <listing version="3.0">
+		 * input.maxChars = 10;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get maxChars():int
 		{
@@ -246,6 +299,12 @@ package feathers.controls
 
 		/**
 		 * Limits the set of characters that may be entered.
+		 *
+		 * <p>In the following example, the text input's allowed characters are
+		 * restricted:</p>
+		 *
+		 * <listing version="3.0">
+		 * input.restrict = "0-9;</listing>
 		 */
 		public function get restrict():String
 		{
@@ -273,6 +332,14 @@ package feathers.controls
 		/**
 		 * Determines if the entered text will be masked so that it cannot be
 		 * seen, such as for a password input.
+		 *
+		 * <p>In the following example, the text input's text is displayed as
+		 * a password:</p>
+		 *
+		 * <listing version="3.0">
+		 * input.displayAsPassword = true;</listing>
+		 *
+		 * @default false
 		 */
 		public function get displayAsPassword():Boolean
 		{
@@ -300,6 +367,13 @@ package feathers.controls
 		/**
 		 * Determines if the text input is editable. If the text input is not
 		 * editable, it will still appear enabled.
+		 *
+		 * <p>In the following example, the text input is not editable:</p>
+		 *
+		 * <listing version="3.0">
+		 * input.isEditable = false;</listing>
+		 *
+		 * @default true
 		 */
 		public function get isEditable():Boolean
 		{
@@ -335,6 +409,15 @@ package feathers.controls
 		 *
 		 * <p>The factory should have the following function signature:</p>
 		 * <pre>function():ITextEditor</pre>
+		 *
+		 * <p>In the following example, a custom text editor factory is passed
+		 * to the text input:</p>
+		 *
+		 * <listing version="3.0">
+		 * input.textEditorFactory = function():ITextEditor
+		 * {
+		 *     return new TextFieldTextEditor();
+		 * };</listing>
 		 *
 		 * @see feathers.core.ITextEditor
 		 * @see feathers.core.FeathersControl#defaultTextEditorFactory
@@ -373,6 +456,15 @@ package feathers.controls
 		 *
 		 * <p>The factory should have the following function signature:</p>
 		 * <pre>function():ITextRenderer</pre>
+		 *
+		 * <p>In the following example, a custom prompt factory is passed to the
+		 * text input:</p>
+		 *
+		 * <listing version="3.0">
+		 * input.promptFactory = function():ITextRenderer
+		 * {
+		 *     return new TextFieldTextRenderer();
+		 * };</listing>
 		 *
 		 * @see feathers.core.ITextRenderer
 		 * @see feathers.core.FeathersControl#defaultTextRendererFactory
@@ -421,6 +513,14 @@ package feathers.controls
 		 * <p>Setting properties in a <code>promptFactory</code> function
 		 * instead of using <code>promptProperties</code> will result in
 		 * better performance.</p>
+		 *
+		 * <p>In the following example, the text input's prompt's properties are
+		 * updated (this example assumes that the prompt text renderer is a
+		 * <code>TextFieldTextRenderer</code>):</p>
+		 *
+		 * <listing version="3.0">
+		 * input.promptProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333 );
+		 * input.promptProperties.embedFonts = true;</listing>
 		 *
 		 * @see #promptFactory
 		 * @see feathers.core.ITextRenderer
@@ -488,7 +588,13 @@ package feathers.controls
 		protected var _backgroundSkin:DisplayObject;
 
 		/**
-		 * A display object displayed behind the header's content.
+		 * A display object displayed behind the text input's content.
+		 *
+		 * <p>In the following example, the text input's background skin is
+		 * specified:</p>
+		 *
+		 * <listing version="3.0">
+		 * input.backgroundSkin = new Image( texture );</listing>
 		 */
 		public function get backgroundSkin():DisplayObject
 		{
@@ -526,8 +632,14 @@ package feathers.controls
 		protected var _backgroundFocusedSkin:DisplayObject;
 
 		/**
-		 * A display object displayed behind the header's content when the
-		 * TextInput has focus.
+		 * A display object displayed behind the text input's content when it
+		 * has focus.
+		 *
+		 * <p>In the following example, the text input's focused background skin is
+		 * specified:</p>
+		 *
+		 * <listing version="3.0">
+		 * input.backgroundFocusedSkin = new Image( texture );</listing>
 		 */
 		public function get backgroundFocusedSkin():DisplayObject
 		{
@@ -565,7 +677,13 @@ package feathers.controls
 		protected var _backgroundDisabledSkin:DisplayObject;
 
 		/**
-		 * A background to display when the header is disabled.
+		 * A background to display when the text input is disabled.
+		 *
+		 * <p>In the following example, the text input's disabled background skin is
+		 * specified:</p>
+		 *
+		 * <listing version="3.0">
+		 * input.backgroundDisabledSkin = new Image( texture );</listing>
 		 */
 		public function get backgroundDisabledSkin():DisplayObject
 		{
@@ -602,6 +720,14 @@ package feathers.controls
 		 * <code>padding</code> getter always returns the value of
 		 * <code>paddingTop</code>, but the other padding values may be
 		 * different.
+		 *
+		 * <p>In the following example, the text input's padding is set to
+		 * 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * input.padding = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get padding():Number
 		{
@@ -627,6 +753,14 @@ package feathers.controls
 		/**
 		 * The minimum space, in pixels, between the input's top edge and the
 		 * input's content.
+		 *
+		 * <p>In the following example, the text input's top padding is set to
+		 * 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * input.paddingTop = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingTop():Number
 		{
@@ -654,6 +788,14 @@ package feathers.controls
 		/**
 		 * The minimum space, in pixels, between the input's right edge and the
 		 * input's content.
+		 *
+		 * <p>In the following example, the text input's right padding is set to
+		 * 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * input.paddingRight = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingRight():Number
 		{
@@ -681,6 +823,14 @@ package feathers.controls
 		/**
 		 * The minimum space, in pixels, between the input's bottom edge and
 		 * the input's content.
+		 *
+		 * <p>In the following example, the text input's bottom padding is set to
+		 * 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * input.paddingBottom = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingBottom():Number
 		{
@@ -708,6 +858,14 @@ package feathers.controls
 		/**
 		 * The minimum space, in pixels, between the input's left edge and the
 		 * input's content.
+		 *
+		 * <p>In the following example, the text input's left padding is set to
+		 * 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * input.paddingLeft = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingLeft():Number
 		{
@@ -769,6 +927,16 @@ package feathers.controls
 		 * <p>Setting properties in a <code>textEditorFactory</code> function
 		 * instead of using <code>textEditorProperties</code> will result in
 		 * better performance.</p>
+		 *
+		 * <p>In the following example, the text input's text editor properties
+		 * are specified (this example assumes that the text editor is a
+		 * <code>StageTextTextEditor</code>):</p>
+		 *
+		 * <listing version="3.0">
+		 * input.textEditorProperties.fontName = "Helvetica";
+		 * input.textEditorProperties.fontSize = 16;</listing>
+		 *
+		 * @default 0
 		 *
 		 * @see #textEditorFactory
 		 * @see feathers.core.ITextEditor
@@ -1196,6 +1364,10 @@ package feathers.controls
 		 */
 		protected function setFocusOnTextEditorWithTouch(touch:Touch):void
 		{
+			if(!this.isFocusEnabled)
+			{
+				return;
+			}
 			touch.getLocation(this.stage, HELPER_POINT);
 			const isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
 			if(!this._textEditorHasFocus && isInBounds)

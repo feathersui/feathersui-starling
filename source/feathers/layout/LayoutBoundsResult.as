@@ -13,6 +13,14 @@ package feathers.layout
 	public class LayoutBoundsResult
 	{
 		/**
+		 * Constructor.
+		 */
+		public function LayoutBoundsResult()
+		{
+
+		}
+
+		/**
 		 * The visible width of the view port. The view port's content may be
 		 * clipped.
 		 */

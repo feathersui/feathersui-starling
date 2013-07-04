@@ -15,6 +15,20 @@ package feathers.controls
 	 * Data for an individual screen that will be used by a <code>ScreenNavigator</code>
 	 * object.
 	 *
+	 * <p>The following example creates a new screen navigator item that
+	 * navigates to a "main menu" screen on <code>Event.COMPLETE</code> and
+	 * sets the <code>settings</code> property when the screen is displayed:</p>
+	 *
+	 * <listing version="3.0">
+	 * var item:ScreenNavigatorItem = new ScreenNavigatorItem( SettingsScreen,
+	 * {
+	 *     complete: MAIN_MENU_SCREEN_ID
+	 * },
+	 * {
+	 *     settings: settingsData
+	 * });
+	 * navigator.addScreen( SETTINGS_SCREEN_ID, item );</listing>
+	 *
 	 * @see http://wiki.starling-framework.org/feathers/screen-navigator
 	 * @see feathers.controls.ScreenNavigator
 	 */
