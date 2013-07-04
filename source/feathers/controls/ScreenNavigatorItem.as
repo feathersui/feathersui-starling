@@ -47,6 +47,8 @@ package feathers.controls
 		/**
 		 * A Starling DisplayObject, a Class that may be instantiated to create
 		 * a DisplayObject, or a Function that returns a DisplayObject.
+		 *
+		 * @default null
 		 */
 		public var screen:Object;
 		
@@ -58,11 +60,15 @@ package feathers.controls
 		 * <code>ScreenNavigator</code> to display. If the value is a
 		 * <code>Function</code>, it must be a listener for the screen's event
 		 * or <code>ISignal</code>.
+		 *
+		 * @default null
 		 */
 		public var events:Object;
 		
 		/**
 		 * A hash of properties to set on the screen.
+		 *
+		 * @default null
 		 */
 		public var properties:Object;
 		

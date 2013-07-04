@@ -223,6 +223,8 @@ package feathers.controls
 		 *     return header;
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.core.IFeathersControl
 		 * @see feathers.controls.Header
 		 * @see #headerProperties
@@ -270,6 +272,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Header, customHeaderInitializer, "my-custom-header");</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_HEADER
 		 * @see feathers.core.FeathersControl#nameList
@@ -326,6 +330,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * panel.headerProperties.title = "Hello World";</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #headerFactory
 		 * @see feathers.controls.Header
@@ -398,6 +404,8 @@ package feathers.controls
 		 *     return new ScrollContainer();
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.core.IFeathersControl
 		 * @see #footerProperties
 		 */
@@ -444,6 +452,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( ScrollContainer, customFooterInitializer, "my-custom-footer");</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_FOOTER
 		 * @see feathers.core.FeathersControl#nameList
@@ -499,6 +509,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * panel.footerProperties.verticalScrollPolicy = ScrollContainer.SCROLL_POLICY_OFF;</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #footerFactory
 		 */

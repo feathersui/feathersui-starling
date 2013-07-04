@@ -220,6 +220,8 @@ package feathers.controls
 		 *     { label: "Advanced", defaultIcon: new Image( advancedTexture ) },
 		 * ]);</listing>
 		 *
+		 * @default null
+		 *
 		 * @see #tabInitializer
 		 */
 		public function get dataProvider():ListCollection
@@ -307,7 +309,7 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * tabs.gap = 20;</listing>
 		 *
-		 * @deafult 0
+		 * @default 0
 		 */
 		public function get gap():Number
 		{
@@ -355,6 +357,8 @@ package feathers.controls
 		 *     tab.downSkin = new Image( downTexture );
 		 *     return tab;
 		 * };</listing>
+		 *
+		 * @default null
 		 *
 		 * @see feathers.controls.Button
 		 * @see #firstTabFactory
@@ -409,6 +413,8 @@ package feathers.controls
 		 *     return tab;
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.Button
 		 * @see #tabFactory
 		 * @see #lastTabFactory
@@ -462,6 +468,8 @@ package feathers.controls
 		 *     return tab;
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.Button
 		 * @see #tabFactory
 		 * @see #firstTabFactory
@@ -507,6 +515,8 @@ package feathers.controls
 		 *     tab.label = item.text;
 		 *     tab.defaultIcon = item.icon;
 		 * };</listing>
+		 *
+		 * @see #dataProvider
 		 */
 		public function get tabInitializer():Function
 		{
@@ -653,6 +663,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customTabInitializer, "my-custom-tab");</listing>
 		 *
+		 * @default null
+		 *
 		 * @see #DEFAULT_CHILD_NAME_TAB
 		 * @see feathers.core.FeathersControl#nameList
 		 * @see feathers.core.DisplayListWatcher
@@ -703,6 +715,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customFirstTabInitializer, "my-custom-first-tab");</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.core.FeathersControl#nameList
 		 * @see feathers.core.DisplayListWatcher
 		 */
@@ -749,6 +763,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customLastTabInitializer, "my-custom-last-tab");</listing>
+		 *
+		 * @default null
 		 *
 		 * @see feathers.core.FeathersControl#nameList
 		 * @see feathers.core.DisplayListWatcher
@@ -805,6 +821,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * tabs.tabProperties.iconPosition = Button.ICON_POSITION_RIGHT;</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #tabFactory
 		 * @see feathers.controls.Button

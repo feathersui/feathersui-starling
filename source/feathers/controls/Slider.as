@@ -343,6 +343,11 @@ package feathers.controls
 		 * slider.value = 12;</listing>
 		 *
 		 * @default 0
+		 *
+		 * @see #minimum
+		 * @see #maximum
+		 * @see #step
+		 * @see #page
 		 */
 		public function get value():Number
 		{
@@ -390,6 +395,7 @@ package feathers.controls
 		 *
 		 * @default 0
 		 *
+		 * @see #value
 		 * @see #maximum
 		 */
 		public function get minimum():Number
@@ -430,6 +436,9 @@ package feathers.controls
 		 * slider.value = 12;</listing>
 		 *
 		 * @default 0
+		 *
+		 * @see #value
+		 * @see #minimum
 		 */
 		public function get maximum():Number
 		{
@@ -471,6 +480,7 @@ package feathers.controls
 		 *
 		 * @default 0
 		 *
+		 * @see #value
 		 * @see #page
 		 */
 		public function get step():Number
@@ -513,6 +523,11 @@ package feathers.controls
 		 * slider.step = 1;
 		 * slider.page = 10
 		 * slider.value = 12;</listing>
+		 *
+		 * @default NaN
+		 *
+		 * @see #value
+		 * @see #page
 		 */
 		public function get page():Number
 		{
@@ -596,6 +611,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * slider.minimumPadding = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get minimumPadding():Number
 		{
@@ -629,6 +646,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * slider.maximumPadding = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get maximumPadding():Number
 		{
@@ -799,6 +818,8 @@ package feathers.controls
 		 *     return track;
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.Button
 		 * @see #minimumTrackProperties
 		 */
@@ -840,6 +861,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customMinimumTrackInitializer, "my-custom-minimum-track");</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_MINIMUM_TRACK
 		 * @see feathers.core.FeathersControl#nameList
@@ -893,6 +916,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * slider.minimumTrackProperties.defaultSkin = new Image( upTexture );
 		 * slider.minimumTrackProperties.downSkin = new Image( downTexture );</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #minimumTrackFactory
 		 * @see feathers.controls.Button
@@ -968,6 +993,8 @@ package feathers.controls
 		 *     return track;
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.Button
 		 * @see #maximumTrackProperties
 		 */
@@ -1009,6 +1036,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customMaximumTrackInitializer, "my-custom-maximum-track");</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_MAXIMUM_TRACK
 		 * @see feathers.core.FeathersControl#nameList
@@ -1062,6 +1091,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * slider.maximumTrackProperties.defaultSkin = new Image( upTexture );
 		 * slider.maximumTrackProperties.downSkin = new Image( downTexture );</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #maximumTrackFactory
 		 * @see feathers.controls.Button
@@ -1137,6 +1168,8 @@ package feathers.controls
 		 *     return thumb;
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.Button
 		 * @see #thumbProperties
 		 */
@@ -1178,6 +1211,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customThumbInitializer, "my-custom-thumb");</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_THUMB
 		 * @see feathers.core.FeathersControl#nameList
@@ -1230,6 +1265,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * slider.thumbProperties.defaultSkin = new Image( upTexture );
 		 * slider.thumbProperties.downSkin = new Image( downTexture );</listing>
+		 *
+		 * @default null
 		 * 
 		 * @see feathers.controls.Button
 		 * @see #thumbFactory

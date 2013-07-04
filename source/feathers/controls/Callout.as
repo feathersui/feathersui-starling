@@ -662,6 +662,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * callout.content = new Image( texture );</listing>
+		 *
+		 * @default null
 		 */
 		public function get content():DisplayObject
 		{
@@ -725,6 +727,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * callout.origin = button;</listing>
 		 *
+		 * @default null
+		 *
 		 * @see #supportedDirections
 		 * @see #arrowPosition
 		 * @see #arrowOffset
@@ -781,6 +785,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * callout.supportedDirections = Callout.DIRECTION_VERTICAL;</listing>
 		 *
+		 * @default Callout.DIRECTION_ANY
+		 *
 		 * @see #origin
 		 * @see #DIRECTION_ANY
 		 * @see #DIRECTION_VERTICAL
@@ -812,6 +818,13 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * callout.padding = 20;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #paddingTop
+		 * @see #paddingRight
+		 * @see #paddingBottom
+		 * @see #paddingLeft
 		 */
 		public function get padding():Number
 		{
@@ -843,6 +856,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * callout.paddingTop = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingTop():Number
 		{
@@ -876,6 +891,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * callout.paddingRight = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingRight():Number
 		{
@@ -909,6 +926,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * callout.paddingBottom = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingBottom():Number
 		{
@@ -942,6 +961,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * callout.paddingLeft = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingLeft():Number
 		{
@@ -1039,6 +1060,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * callout.backgroundSkin = new Image( texture );</listing>
+		 *
+		 * @default null
 		 */
 		public function get backgroundSkin():DisplayObject
 		{
@@ -1089,6 +1112,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * callout.bottomArrowSkin = new Image( texture );</listing>
+		 *
+		 * @default null
 		 */
 		public function get bottomArrowSkin():DisplayObject
 		{
@@ -1141,6 +1166,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * callout.topArrowSkin = new Image( texture );</listing>
+		 *
+		 * @default null
 		 */
 		public function get topArrowSkin():DisplayObject
 		{
@@ -1193,6 +1220,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * callout.leftArrowSkin = new Image( texture );</listing>
+		 *
+		 * @default null
 		 */
 		public function get leftArrowSkin():DisplayObject
 		{
@@ -1245,6 +1274,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * callout.rightArrowSkin = new Image( texture );</listing>
+		 *
+		 * @default null
 		 */
 		public function get rightArrowSkin():DisplayObject
 		{
@@ -1298,6 +1329,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * callout.topArrowGap = -4;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get topArrowGap():Number
 		{
@@ -1333,6 +1366,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * callout.bottomArrowGap = -4;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get bottomArrowGap():Number
 		{
@@ -1368,6 +1403,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * callout.rightArrowGap = -4;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get rightArrowGap():Number
 		{
@@ -1403,6 +1440,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * callout.leftArrowGap = -4;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get leftArrowGap():Number
 		{
@@ -1447,6 +1486,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * callout.arrowOffset = 20;</listing>
+		 *
+		 * @default 0
 		 *
 		 * @see #arrowPosition
 		 * @see #origin

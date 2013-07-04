@@ -293,6 +293,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * textArea.restrict = "0-9;</listing>
+		 *
+		 * @default null
 		 */
 		public function get restrict():String
 		{
@@ -360,6 +362,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * textArea.backgroundFocusedSkin = new Image( texture );</listing>
+		 *
+		 * @default null
 		 */
 		public function get backgroundFocusedSkin():DisplayObject
 		{
@@ -418,6 +422,8 @@ package feathers.controls
 		 *     return new TextFieldTextEditorViewPort();
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.text.ITextEditorViewPort
 		 * @see feathers.controls.text.TextFieldTextEditorViewPort
 		 */
@@ -467,6 +473,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * input.textEditorProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333);
 		 * input.textEditorProperties.embedFonts = true;</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #textEditorFactory
 		 * @see feathers.controls.text.ITextEditorViewPort

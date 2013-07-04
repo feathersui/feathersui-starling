@@ -500,6 +500,8 @@ package feathers.controls
 		 *     return button;
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.Button
 		 * @see #decrementButtonProperties
 		 */
@@ -542,6 +544,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customDecrementButtonInitializer, "my-custom-decrement-button");</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_DECREMENT_BUTTON
 		 * @see feathers.core.FeathersControl#nameList
@@ -595,6 +599,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * stepper.decrementButtonProperties.defaultSkin = new Image( upTexture );
 		 * stepper.decrementButtonProperties.downSkin = new Image( downTexture );</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #decrementButtonFactory
 		 * @see feathers.controls.Button
@@ -704,6 +710,8 @@ package feathers.controls
 		 *     return button;
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.Button
 		 * @see #incrementButtonProperties
 		 */
@@ -746,6 +754,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customIncrementButtonInitializer, "my-custom-increment-button");</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_INCREMENT_BUTTON
 		 * @see feathers.core.FeathersControl#nameList
@@ -799,6 +809,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * stepper.incrementButtonProperties.defaultSkin = new Image( upTexture );
 		 * stepper.incrementButtonProperties.downSkin = new Image( downTexture );</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #incrementButtonFactory
 		 * @see feathers.controls.Button
@@ -859,6 +871,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * stepper.incrementButtonLabel = "+";</listing>
+		 *
+		 * @default null
 		 */
 		public function get incrementButtonLabel():String
 		{
@@ -905,6 +919,8 @@ package feathers.controls
 		 *     return textInput;
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.TextInput
 		 * @see #textInputProperties
 		 */
@@ -947,6 +963,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customTextInputInitializer, "my-custom-text-input");</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_TEXT_INPUT
 		 * @see feathers.core.FeathersControl#nameList
@@ -999,6 +1017,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * stepper.textInputProperties.backgroundSkin = new Image( texture );</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #textInputFactory
 		 * @see feathers.controls.TextInput

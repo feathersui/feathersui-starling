@@ -104,6 +104,9 @@ package feathers.controls
 		 * progress.value = 12;</listing>
 		 *
 		 * @default 0
+		 *
+		 * @see #minimum
+		 * @see #maximum
 		 */
 		public function get value():Number
 		{
@@ -140,6 +143,9 @@ package feathers.controls
 		 * progress.value = 12;</listing>
 		 *
 		 * @default 0
+		 *
+		 * @see #value
+		 * @see #maximum
 		 */
 		public function get minimum():Number
 		{
@@ -175,6 +181,9 @@ package feathers.controls
 		 * progress.value = 12;</listing>
 		 *
 		 * @default 1
+		 *
+		 * @see #value
+		 * @see #minimum
 		 */
 		public function get maximum():Number
 		{
@@ -429,6 +438,11 @@ package feathers.controls
 		 * progress.padding = 20;</listing>
 		 *
 		 * @default 0
+		 *
+		 * @see #paddingTop
+		 * @see #paddingRight
+		 * @see #paddingBottom
+		 * @see #paddingLeft
 		 */
 		public function get padding():Number
 		{

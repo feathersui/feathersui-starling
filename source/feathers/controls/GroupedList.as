@@ -641,7 +641,7 @@ package feathers.controls
 		 * also have a different type. Use the <code>singleItemRendererType</code>.
 		 * Finally, factories for each of these types may also be customized.</p>
 		 *
-		 * @default DefaultGroupedListItemRenderer
+		 * @default feathers.controls.renderers.DefaultGroupedListItemRenderer
 		 *
 		 * @see feathers.controls.renderers.IGroupedListItemRenderer
 		 * @see #itemRendererFactory
@@ -786,6 +786,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * setInitializerForClass( DefaultGroupedListItemRenderer, customItemRendererInitializer, "my-custom-item-renderer");</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.core.FeathersControl#nameList
 		 * @see feathers.core.DisplayListWatcher
 		 * @see #firstItemRendererName
@@ -843,6 +845,8 @@ package feathers.controls
 		 * <p>Setting properties in a <code>itemRendererFactory</code> function instead
 		 * of using <code>itemRendererProperties</code> will result in better
 		 * performance.</p>
+		 *
+		 * @default null
 		 *
 		 * @see #itemRendererFactory
 		 * @see feathers.controls.renderers.IGroupedListItemRenderer
@@ -906,6 +910,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * list.firstItemRendererType = CustomItemRendererClass;</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.renderer.IGroupedListItemRenderer
 		 * @see #itemRendererType
 		 * @see #lastItemRendererType
@@ -958,6 +964,8 @@ package feathers.controls
 		 *     return renderer;
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.renderers.IGroupedListItemRenderer
 		 * @see #firstItemRendererType
 		 * @see #itemRendererFactory
@@ -1007,6 +1015,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * setInitializerForClass( DefaultGroupedListItemRenderer, customFirstItemRendererInitializer, "my-custom-first-item-renderer");</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.core.FeathersControl#nameList
 		 * @see feathers.core.DisplayListWatcher
 		 * @see #itemRendererName
@@ -1045,6 +1055,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * list.lastItemRendererType = CustomItemRendererClass;</listing>
+		 *
+		 * @default null
 		 *
 		 * @see feathers.controls.renderer.IGroupedListItemRenderer
 		 * @see #lastItemRendererFactory
@@ -1099,6 +1111,8 @@ package feathers.controls
 		 *     return renderer;
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.renderers.IGroupedListItemRenderer
 		 * @see #lastItemRendererType
 		 * @see #itemRendererFactory
@@ -1148,6 +1162,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * setInitializerForClass( DefaultGroupedListItemRenderer, customLastItemRendererInitializer, "my-custom-last-item-renderer");</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.core.FeathersControl#nameList
 		 * @see feathers.core.DisplayListWatcher
 		 * @see #itemRendererName
@@ -1186,6 +1202,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * list.singleItemRendererType = CustomItemRendererClass;</listing>
+		 *
+		 * @default null
 		 *
 		 * @see feathers.controls.renderer.IGroupedListItemRenderer
 		 * @see #singleItemRendererFactory
@@ -1240,6 +1258,8 @@ package feathers.controls
 		 *     return renderer;
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.renderers.IGroupedListItemRenderer
 		 * @see #singleItemRendererType
 		 * @see #itemRendererFactory
@@ -1290,6 +1310,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * setInitializerForClass( DefaultGroupedListItemRenderer, customSingleItemRendererInitializer, "my-custom-single-item-renderer");</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.core.FeathersControl#nameList
 		 * @see feathers.core.DisplayListWatcher
 		 * @see #itemRendererName
@@ -1327,6 +1349,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * list.headerRendererType = CustomHeaderRendererClass;</listing>
+		 *
+		 * @default feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer
 		 *
 		 * @see feathers.controls.renderers.IGroupedListHeaderOrFooterRenderer
 		 * @see #headerRendererFactory
@@ -1377,6 +1401,8 @@ package feathers.controls
 		 *     return renderer;
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.renderers.IGroupedListHeaderOrFooterRenderer
 		 * @see #headerRendererType
 		 */
@@ -1415,6 +1441,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * list.typicalHeader = { text: "A typical header" };
 		 * list.headerRendererProperties.contentLabelField = "text";</listing>
+		 *
+		 * @default null
 		 */
 		public function get typicalHeader():Object
 		{
@@ -1453,6 +1481,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( DefaultGroupedListHeaderOrFooterRenderer, customHeaderRendererInitializer, "my-custom-header-renderer");</listing>
+		 *
+		 * @default null
 		 *
 		 * @see feathers.core.FeathersControl#nameList
 		 * @see feathers.core.DisplayListWatcher
@@ -1507,6 +1537,8 @@ package feathers.controls
 		 * <p>Setting properties in a <code>headerRendererFactory</code> function instead
 		 * of using <code>headerRendererProperties</code> will result in better
 		 * performance.</p>
+		 *
+		 * @default null
 		 *
 		 * @see #headerRendererFactory
 		 * @see feathers.controls.renderers.IGroupedListHeaderOrFooterRenderer
@@ -1569,6 +1601,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * list.footerRendererType = CustomFooterRendererClass;</listing>
 		 *
+		 * @default feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer
+		 *
 		 * @see feathers.controls.renderers.IGroupedListHeaderOrFooterRenderer
 		 * @see #footerRendererFactory
 		 */
@@ -1618,6 +1652,8 @@ package feathers.controls
 		 *     return renderer;
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.renderers.IGroupedListHeaderOrFooterRenderer
 		 * @see #footerRendererType
 		 */
@@ -1656,6 +1692,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * list.typicalHeader = { text: "A typical footer" };
 		 * list.footerRendererProperties.contentLabelField = "text";</listing>
+		 *
+		 * @default null
 		 */
 		public function get typicalFooter():Object
 		{
@@ -1694,6 +1732,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( DefaultGroupedListHeaderOrFooterRenderer, customFooterRendererInitializer, "my-custom-footer-renderer");</listing>
+		 *
+		 * @default null
 		 *
 		 * @see feathers.core.FeathersControl#nameList
 		 * @see feathers.core.DisplayListWatcher
@@ -1748,6 +1788,8 @@ package feathers.controls
 		 * <p>Setting properties in a <code>footerRendererFactory</code> function instead
 		 * of using <code>footerRendererProperties</code> will result in better
 		 * performance.</p>
+		 *
+		 * @default null
 		 *
 		 * @see #footerRendererFactory
 		 * @see feathers.controls.renderers.IGroupedListHeaderOrFooterRenderer
@@ -1816,7 +1858,9 @@ package feathers.controls
 		 * <p>The following example sets the header field:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.headerField = "header";</listing>
+		 * list.headerField = "alphabet";</listing>
+		 *
+		 * @default "header"
 		 *
 		 * @see #headerFunction
 		 */
@@ -1865,6 +1909,8 @@ package feathers.controls
 		 *    return group.header;
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see #headerField
 		 */
 		public function get headerFunction():Function
@@ -1905,7 +1951,9 @@ package feathers.controls
 		 * <p>The following example sets the footer field:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.footerField = "footer";</listing>
+		 * list.footerField = "controls";</listing>
+		 *
+		 * @default "footer"
 		 *
 		 * @see #footerFunction
 		 */
@@ -1953,6 +2001,8 @@ package feathers.controls
 		 * {
 		 *    return group.footer;
 		 * };</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #footerField
 		 */
