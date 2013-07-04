@@ -45,7 +45,6 @@ package feathers.controls.supportClasses
 		private static const HELPER_BOUNDS:ViewPortBounds = new ViewPortBounds();
 		private static const HELPER_LAYOUT_RESULT:LayoutBoundsResult = new LayoutBoundsResult();
 		private static const HELPER_VECTOR:Vector.<int> = new <int>[];
-		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
 
 		public function ListDataViewPort()
 		{
@@ -203,12 +202,12 @@ package feathers.controls.supportClasses
 			}
 			if(this._owner)
 			{
-				this._owner.removeEventListener(Event.SCROLL, owner_scrollHandler);
+				this._owner.removeEventListener(FeathersEventType.SCROLL_START, owner_scrollStartHandler);
 			}
 			this._owner = value;
 			if(this._owner)
 			{
-				this._owner.addEventListener(Event.SCROLL, owner_scrollHandler);
+				this._owner.addEventListener(FeathersEventType.SCROLL_START, owner_scrollStartHandler);
 			}
 		}
 
@@ -332,7 +331,7 @@ package feathers.controls.supportClasses
 				return;
 			}
 			this._typicalItem = value;
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		private var _itemRendererProperties:PropertyProxy;
@@ -357,7 +356,7 @@ package feathers.controls.supportClasses
 			{
 				this._itemRendererProperties.addOnChangeCallback(childProperties_onChange);
 			}
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		private var _ignoreLayoutChanges:Boolean = false;
@@ -389,17 +388,25 @@ package feathers.controls.supportClasses
 				}
 				EventDispatcher(this._layout).addEventListener(Event.CHANGE, layout_changeHandler);
 			}
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
 
 		public function get horizontalScrollStep():Number
 		{
-			return Math.min(this._typicalItemWidth, this._typicalItemHeight);
+			if(this._typicalItemWidth < this._typicalItemHeight)
+			{
+				return this._typicalItemWidth;
+			}
+			return this._typicalItemHeight;
 		}
 
 		public function get verticalScrollStep():Number
 		{
-			return Math.min(this._typicalItemWidth, this._typicalItemHeight);
+			if(this._typicalItemWidth < this._typicalItemHeight)
+			{
+				return this._typicalItemWidth;
+			}
+			return this._typicalItemHeight;
 		}
 
 		private var _horizontalScrollPosition:Number = 0;
@@ -521,30 +528,31 @@ package feathers.controls.supportClasses
 			const itemRendererInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_ITEM_RENDERER_FACTORY);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
+			const layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
 
-			if(stylesInvalid || dataInvalid || itemRendererInvalid)
+			if(stylesInvalid || sizeInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
 			{
 				this.calculateTypicalValues();
 			}
 
-			if(scrollInvalid || sizeInvalid || dataInvalid || itemRendererInvalid)
+			if(scrollInvalid || sizeInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
 			{
 				this.refreshRenderers(itemRendererInvalid);
 			}
-			if(scrollInvalid || sizeInvalid || dataInvalid || stylesInvalid || itemRendererInvalid)
+			if(scrollInvalid || stylesInvalid || sizeInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
 			{
 				this.refreshItemRendererStyles();
 			}
-			if(scrollInvalid || selectionInvalid || sizeInvalid || dataInvalid || itemRendererInvalid)
+			if(scrollInvalid || selectionInvalid || sizeInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
 			{
 				this.refreshSelection();
 			}
-			if(stateInvalid || dataInvalid || scrollInvalid || itemRendererInvalid)
+			if(scrollInvalid || stateInvalid || sizeInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
 			{
 				this.refreshEnabled();
 			}
 
-			if(scrollInvalid || dataInvalid || itemRendererInvalid || sizeInvalid || stylesInvalid)
+			if(scrollInvalid || stylesInvalid || sizeInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
 			{
 				this._ignoreRendererResizing = true;
 				this._layout.layout(this._layoutItems, HELPER_BOUNDS, HELPER_LAYOUT_RESULT);
@@ -555,9 +563,9 @@ package feathers.controls.supportClasses
 			}
 		}
 		
-		private function invalidateParent():void
+		private function invalidateParent(flag:String = INVALIDATION_FLAG_ALL):void
 		{
-			Scroller(this.parent).invalidate(INVALIDATION_FLAG_DATA);
+			Scroller(this.parent).invalidate(flag);
 		}
 
 		private function calculateTypicalValues():void
@@ -577,6 +585,7 @@ package feathers.controls.supportClasses
 				}
 			}
 
+			this._ignoreRendererResizing = true;
 			var needsDestruction:Boolean = true;
 			var typicalRenderer:IListItemRenderer = IListItemRenderer(this._rendererMap[typicalItem]);
 			if(typicalRenderer)
@@ -600,6 +609,7 @@ package feathers.controls.supportClasses
 			{
 				this.destroyRenderer(typicalRenderer);
 			}
+			this._ignoreRendererResizing = false;
 		}
 
 		private function refreshItemRendererStyles():void
@@ -699,14 +709,26 @@ package feathers.controls.supportClasses
 				for(var i:int = 1; i < unrenderedItemCount; i++)
 				{
 					var index:int = HELPER_VECTOR[i];
-					minIndex = Math.min(minIndex, index);
-					maxIndex = Math.max(maxIndex, index);
+					if(index < minIndex)
+					{
+						minIndex = index;
+					}
+					if(index > maxIndex)
+					{
+						maxIndex = index;
+					}
 				}
-				const beforeItemCount:int = Math.max(0, minIndex - 1);
+				var beforeItemCount:int = minIndex - 1;
+				if(beforeItemCount < 0)
+				{
+					beforeItemCount = 0;
+				}
 				const afterItemCount:int = itemCount - 1 - maxIndex;
 				const sequentialVirtualLayout:ITrimmedVirtualLayout = ITrimmedVirtualLayout(this._layout);
+				this._ignoreLayoutChanges = true;
 				sequentialVirtualLayout.beforeVirtualizedItemCount = beforeItemCount;
 				sequentialVirtualLayout.afterVirtualizedItemCount = afterItemCount;
+				this._ignoreLayoutChanges = false;
 				this._layoutItems.length = itemCount - beforeItemCount - afterItemCount;
 				this._layoutIndexOffset = -beforeItemCount;
 			}
@@ -716,7 +738,8 @@ package feathers.controls.supportClasses
 				this._layoutItems.length = itemCount;
 			}
 
-			const layoutItemCount:int = this._layoutItems.length;
+			var activeRenderersLastIndex:int = this._activeRenderers.length;
+			var unrenderedDataLastIndex:int = this._unrenderedData.length;
 			for(i = 0; i < unrenderedItemCount; i++)
 			{
 				index = useVirtualLayout ? HELPER_VECTOR[i] : i;
@@ -730,13 +753,15 @@ package feathers.controls.supportClasses
 				{
 					//the index may have changed if data was added or removed
 					renderer.index = index;
-					this._activeRenderers.push(renderer);
-					this._inactiveRenderers.splice(this._inactiveRenderers.indexOf(renderer), 1);
+					this._activeRenderers[activeRenderersLastIndex] = renderer;
+					activeRenderersLastIndex++;
+					this._inactiveRenderers[this._inactiveRenderers.indexOf(renderer)] = null;
 					this._layoutItems[index + this._layoutIndexOffset] = DisplayObject(renderer);
 				}
 				else
 				{
-					this._unrenderedData.push(item);
+					this._unrenderedData[unrenderedDataLastIndex] = item;
+					unrenderedDataLastIndex++;
 				}
 			}
 		}
@@ -759,6 +784,10 @@ package feathers.controls.supportClasses
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var renderer:IListItemRenderer = this._inactiveRenderers[i];
+				if(!renderer)
+				{
+					continue;
+				}
 				this._owner.dispatchEventWith(FeathersEventType.RENDERER_REMOVE, false, renderer);
 				delete this._rendererMap[renderer.data];
 			}
@@ -770,39 +799,46 @@ package feathers.controls.supportClasses
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var renderer:IListItemRenderer = this._inactiveRenderers.shift();
+				if(!renderer)
+				{
+					continue;
+				}
 				this.destroyRenderer(renderer);
 			}
 		}
 
 		private function createRenderer(item:Object, index:int, isTemporary:Boolean = false):IListItemRenderer
 		{
-			if(isTemporary || this._inactiveRenderers.length == 0)
+			var renderer:IListItemRenderer;
+			do
 			{
-				var renderer:IListItemRenderer;
-				if(this._itemRendererFactory != null)
+				if(isTemporary || this._inactiveRenderers.length == 0)
 				{
-                    switch (this._itemRendererFactory.length)
-                    {
-                        case 0 : renderer = this._itemRendererFactory(); break;
-                        case 1 : renderer = this._itemRendererFactory(item); break;
-                        case 2 : renderer = this._itemRendererFactory(item, index); break;
-                    }
+					if(this._itemRendererFactory != null)
+					{
+						renderer = IListItemRenderer(this._itemRendererFactory());
+					}
+					else
+					{
+						renderer = new this._itemRendererType();
+					}
+					var uiRenderer:IFeathersControl = IFeathersControl(renderer);
+					if(this._itemRendererName && this._itemRendererName.length > 0)
+					{
+						uiRenderer.nameList.add(this._itemRendererName);
+					}
+					this.addChild(DisplayObject(renderer));
 				}
 				else
 				{
-					renderer = new this._itemRendererType();
+					renderer = this._inactiveRenderers.shift();
 				}
-				var uiRenderer:IFeathersControl = IFeathersControl(renderer);
-				if(this._itemRendererName && this._itemRendererName.length > 0)
-				{
-					uiRenderer.nameList.add(this._itemRendererName);
-				}
-				this.addChild(DisplayObject(renderer));
+				//wondering why this all is in a loop?
+				//_inactiveRenderers.shift() may return null because we're
+				//storing null values instead of calling splice() to improve
+				//performance.
 			}
-			else
-			{
-				renderer = this._inactiveRenderers.shift();
-			}
+			while(!renderer)
 			renderer.data = item;
 			renderer.index = index;
 			renderer.owner = this._owner;
@@ -810,7 +846,7 @@ package feathers.controls.supportClasses
 			if(!isTemporary)
 			{
 				this._rendererMap[item] = renderer;
-				this._activeRenderers.push(renderer);
+				this._activeRenderers[this._activeRenderers.length] = renderer;
 				renderer.addEventListener(Event.CHANGE, renderer_changeHandler);
 				renderer.addEventListener(FeathersEventType.RESIZE, renderer_resizeHandler);
 				this._owner.dispatchEventWith(FeathersEventType.RENDERER_ADD, false, renderer);
@@ -833,7 +869,7 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
-		private function owner_scrollHandler(event:Event):void
+		private function owner_scrollStartHandler(event:Event):void
 		{
 			this._isScrolling = true;
 		}
@@ -841,7 +877,6 @@ package feathers.controls.supportClasses
 		private function dataProvider_changeHandler(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_DATA);
-			this.invalidateParent();
 		}
 
 		private function dataProvider_addItemHandler(event:Event, index:int):void
@@ -953,8 +988,8 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
-			this.invalidateParent();
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+			this.invalidateParent(INVALIDATION_FLAG_LAYOUT);
 		}
 
 		private function renderer_resizeHandler(event:Event):void
@@ -970,8 +1005,8 @@ package feathers.controls.supportClasses
 			}
 			const renderer:IListItemRenderer = IListItemRenderer(event.currentTarget);
 			layout.resetVariableVirtualCacheAtIndex(renderer.index, DisplayObject(renderer));
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
-			this.invalidateParent();
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+			this.invalidateParent(INVALIDATION_FLAG_LAYOUT);
 		}
 
 		private function renderer_changeHandler(event:Event):void
@@ -1024,45 +1059,25 @@ package feathers.controls.supportClasses
 				return;
 			}
 
-			const touches:Vector.<Touch> = event.getTouches(this, null, HELPER_TOUCHES_VECTOR);
-			if(touches.length == 0)
-			{
-				return;
-			}
 			if(this.touchPointID >= 0)
 			{
-				var touch:Touch;
-				for each(var currentTouch:Touch in touches)
-				{
-					if(currentTouch.id == this.touchPointID)
-					{
-						touch = currentTouch;
-						break;
-					}
-				}
+				var touch:Touch = event.getTouch(this, TouchPhase.ENDED, this.touchPointID);
 				if(!touch)
 				{
-					HELPER_TOUCHES_VECTOR.length = 0;
 					return;
 				}
-				if(touch.phase == TouchPhase.ENDED)
-				{
-					this.touchPointID = -1;
-				}
+				this.touchPointID = -1;
 			}
 			else
 			{
-				for each(touch in touches)
+				touch = event.getTouch(this, TouchPhase.BEGAN);
+				if(!touch)
 				{
-					if(touch.phase == TouchPhase.BEGAN)
-					{
-						this.touchPointID = touch.id;
-						this._isScrolling = false;
-						break;
-					}
+					return;
 				}
+				this.touchPointID = touch.id;
+				this._isScrolling = false;
 			}
-			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 	}
 }

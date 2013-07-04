@@ -53,6 +53,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * label.text = "Hello World";</listing>
+		 *
+		 * @default null
 		 */
 		public function get text():String
 		{
@@ -112,6 +114,8 @@ package feathers.controls
 		 *     return new TextFieldTextRenderer();
 		 * }</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.core.ITextRenderer
 		 * @see feathers.core.FeathersControl#defaultTextRendererFactory
 		 */
@@ -164,6 +168,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * label.textRendererProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333 );
 		 * label.textRendererProperties.embedFonts = true;</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #textRendererFactory
 		 * @see feathers.core.ITextRenderer

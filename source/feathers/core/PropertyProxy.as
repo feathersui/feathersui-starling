@@ -99,12 +99,13 @@ package feathers.core
 		 */
 		override flash_proxy function setProperty(name:*, value:*):void
 		{
-			this._storage[name] = value;
-			if(this._names.indexOf(name) < 0)
+			const nameAsString:String = name is QName ? QName(name).localName : name.toString();
+			this._storage[nameAsString] = value;
+			if(this._names.indexOf(nameAsString) < 0)
 			{
-				this._names.push(name);
+				this._names.push(nameAsString);
 			}
-			this.fireOnChangeCallback(name);
+			this.fireOnChangeCallback(nameAsString);
 		}
 
 		/**
@@ -112,15 +113,16 @@ package feathers.core
 		 */
 		override flash_proxy function deleteProperty(name:*):Boolean
 		{
-			const index:int = this._names.indexOf(name);
+			const nameAsString:String = name is QName ? QName(name).localName : name.toString();
+			const index:int = this._names.indexOf(nameAsString);
 			if(index >= 0)
 			{
 				this._names.splice(index, 1);
 			}
-			const result:Boolean = delete this._storage[name];
+			const result:Boolean = delete this._storage[nameAsString];
 			if(result)
 			{
-				this.fireOnChangeCallback(name);
+				this.fireOnChangeCallback(nameAsString);
 			}
 			return result;
 		}

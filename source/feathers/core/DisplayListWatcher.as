@@ -70,12 +70,16 @@ package feathers.core
 		/**
 		 * The minimum base class required before the AddedWatcher will check
 		 * to see if a particular display object has any initializers.
+		 *
+		 * @default feathers.core.IFeathersControl
 		 */
 		public var requiredBaseClass:Class = IFeathersControl;
 
 		/**
 		 * Determines if only the object added should be processed or if its
 		 * children should be processed recursively.
+		 *
+		 * @default true
 		 */
 		public var processRecursively:Boolean = true;
 
@@ -94,6 +98,8 @@ package feathers.core
 		/**
 		 * Determines if objects added to the display list are initialized only
 		 * once or every time that they are re-added.
+		 *
+		 * @default true
 		 */
 		public function get initializeOnce():Boolean
 		{

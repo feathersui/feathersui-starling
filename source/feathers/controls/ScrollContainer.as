@@ -25,7 +25,9 @@ package feathers.controls
 
 	[DefaultProperty("mxmlContent")]
 	/**
-	 * A generic container that supports layout and scrolling.
+	 * A generic container that supports layout, scrolling, and a background
+	 * skin. For a lighter container, see <code>LayoutGroup</code>, which
+	 * focuses specifically on layout without scrolling.
 	 *
 	 * <p>The following example creates a scroll container with a horizontal
 	 * layout and adds two buttons to it:</p>
@@ -47,6 +49,7 @@ package feathers.controls
 	 * container.addChild( noButton );</listing>
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/scroll-container
+	 * @see feathers.controls.LayoutGroup
 	 */
 	public class ScrollContainer extends Scroller
 	{
@@ -179,6 +182,8 @@ package feathers.controls
 		 * layout.gap = 20;
 		 * layout.padding = 20;
 		 * container.layout = layout;</listing>
+		 *
+		 * @default null
 		 */
 		public function get layout():ILayout
 		{
@@ -228,9 +233,11 @@ package feathers.controls
 			}
 			if(this._mxmlContent && this._mxmlContentIsReady)
 			{
-				for each(var child:IFeathersControl in this._mxmlContent)
+				const childCount:int = this._mxmlContent.length;
+				for(var i:int = 0; i < childCount; i++)
 				{
-					this.removeChild(DisplayObject(child), true);
+					var child:DisplayObject = DisplayObject(this._mxmlContent[i]);
+					this.removeChild(child, true);
 				}
 			}
 			this._mxmlContent = value;
@@ -385,21 +392,35 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override protected function initialize():void
-		{
-			super.initialize();
-			this.refreshMXMLContent();
-		}
-
-		/**
-		 * @private
-		 */
 		override public function validate():void
 		{
 			const oldDisplayListBypassEnabled:Boolean = this.displayListBypassEnabled;
 			this.displayListBypassEnabled = false;
 			super.validate();
 			this.displayListBypassEnabled = oldDisplayListBypassEnabled;
+		}
+
+		/**
+		 * Readjusts the layout of the container according to its current
+		 * content. Call this method when changes to the content cannot be
+		 * automatically detected by the container. For instance, Feathers
+		 * components dispatch <code>FeathersEventType.RESIZE</code> when their
+		 * width and height values change, but standard Starling display objects
+		 * like <code>Sprite</code> and <code>Image</code> do not.
+		 */
+		public function readjustLayout():void
+		{
+			this.layoutViewPort.readjustLayout();
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function initialize():void
+		{
+			super.initialize();
+			this.refreshMXMLContent();
 		}
 
 		/**

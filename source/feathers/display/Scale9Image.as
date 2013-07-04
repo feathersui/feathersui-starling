@@ -171,6 +171,8 @@ package feathers.display
 		
 		/**
 		 * The amount to scale the texture. Useful for DPI changes.
+		 *
+		 * @default 1
 		 */
 		public function get textureScale():Number
 		{
@@ -197,6 +199,8 @@ package feathers.display
 		
 		/**
 		 * The smoothing value to pass to the images.
+		 *
+		 * @default starling.textures.TextureSmoothing.BILINEAR
 		 *
 		 * @see starling.textures.TextureSmoothing
 		 */
@@ -225,6 +229,8 @@ package feathers.display
 
 		/**
 		 * The color value to pass to the images.
+		 *
+		 * @default 0xffffff
 		 */
 		public function get color():uint
 		{
@@ -252,6 +258,8 @@ package feathers.display
 		/**
 		 * Determines if the regions are batched normally by Starling or if
 		 * they're batched separately.
+		 *
+		 * @default true
 		 */
 		public function get useSeparateBatch():Boolean
 		{
@@ -435,12 +443,24 @@ package feathers.display
 				this.refreshBatch();
 
 				const grid:Rectangle = this._textures.scale9Grid;
-				const scaledLeftWidth:Number = grid.x * this._textureScale;
-				const scaledTopHeight:Number = grid.y * this._textureScale;
-				const scaledRightWidth:Number = (this._frame.width - grid.x - grid.width) * this._textureScale;
-				const scaledBottomHeight:Number = (this._frame.height - grid.y - grid.height) * this._textureScale;
+				var scaledLeftWidth:Number = grid.x * this._textureScale;
+				var scaledTopHeight:Number = grid.y * this._textureScale;
+				var scaledRightWidth:Number = (this._frame.width - grid.x - grid.width) * this._textureScale;
+				var scaledBottomHeight:Number = (this._frame.height - grid.y - grid.height) * this._textureScale;
 				const scaledCenterWidth:Number = this._width - scaledLeftWidth - scaledRightWidth;
 				const scaledMiddleHeight:Number = this._height - scaledTopHeight - scaledBottomHeight;
+				if(scaledCenterWidth < 0)
+				{
+					var offset:Number = scaledCenterWidth / 2;
+					scaledLeftWidth += offset;
+					scaledRightWidth += offset;
+				}
+				if(scaledMiddleHeight < 0)
+				{
+					offset = scaledMiddleHeight / 2;
+					scaledTopHeight += offset;
+					scaledBottomHeight += offset;
+				}
 
 				var image:Image;
 				if(scaledTopHeight > 0)
@@ -456,8 +476,10 @@ package feathers.display
 						image = this._topLeftImage;
 						image.smoothing = this._smoothing;
 						image.color = this._color;
+						image.visible = true;
 					}
-					image.scaleX = image.scaleY = this._textureScale;
+					image.width = scaledLeftWidth;
+					image.height = scaledTopHeight;
 					image.x = scaledLeftWidth - image.width;
 					image.y = scaledTopHeight - image.height;
 					if(this._useSeparateBatch && scaledLeftWidth > 0)
@@ -465,25 +487,33 @@ package feathers.display
 						this._batch.addImage(helperImage);
 					}
 
-					if(this._useSeparateBatch)
+					if(scaledCenterWidth > 0)
 					{
-						image = helperImage;
-						helperImage.texture = this._textures.topCenter;
-						helperImage.readjustSize();
+						if(this._useSeparateBatch)
+						{
+							image = helperImage;
+							helperImage.texture = this._textures.topCenter;
+							helperImage.readjustSize();
+						}
+						else
+						{
+							image = this._topCenterImage;
+							image.smoothing = this._smoothing;
+							image.color = this._color;
+							image.visible = true;
+						}
+						image.width = scaledCenterWidth;
+						image.height = scaledTopHeight;
+						image.x = scaledLeftWidth;
+						image.y = scaledTopHeight - image.height;
+						if(this._useSeparateBatch)
+						{
+							this._batch.addImage(helperImage);
+						}
 					}
-					else
+					else if(!this._useSeparateBatch)
 					{
-						image = this._topCenterImage;
-						image.smoothing = this._smoothing;
-						image.color = this._color;
-					}
-					image.scaleX = image.scaleY = this._textureScale;
-					image.x = scaledLeftWidth;
-					image.y = scaledTopHeight - image.height;
-					image.width = scaledCenterWidth;
-					if(this._useSeparateBatch && scaledCenterWidth > 0)
-					{
-						this._batch.addImage(helperImage);
+						this._topCenterImage.visible = false;
 					}
 
 					if(this._useSeparateBatch)
@@ -497,14 +527,22 @@ package feathers.display
 						image = this._topRightImage;
 						image.smoothing = this._smoothing;
 						image.color = this._color;
+						image.visible = true;
 					}
-					image.scaleX = image.scaleY = this._textureScale;
+					image.width = scaledRightWidth;
+					image.height = scaledTopHeight;
 					image.x = this._width - scaledRightWidth;
 					image.y = scaledTopHeight - image.height;
 					if(this._useSeparateBatch && scaledRightWidth > 0)
 					{
 						this._batch.addImage(helperImage);
 					}
+				}
+				else if(!this._useSeparateBatch)
+				{
+					this._topLeftImage.visible = false;
+					this._topCenterImage.visible = false;
+					this._topRightImage.visible = false;
 				}
 
 				if(scaledMiddleHeight > 0)
@@ -520,36 +558,44 @@ package feathers.display
 						image = this._middleLeftImage;
 						image.smoothing = this._smoothing;
 						image.color = this._color;
+						image.visible = true;
 					}
-					image.scaleX = image.scaleY = this._textureScale;
+					image.width = scaledLeftWidth;
+					image.height = scaledMiddleHeight;
 					image.x = scaledLeftWidth - image.width;
 					image.y = scaledTopHeight;
-					image.height = scaledMiddleHeight;
 					if(this._useSeparateBatch && scaledLeftWidth > 0)
 					{
 						this._batch.addImage(helperImage);
 					}
 
-					if(this._useSeparateBatch)
+					if(scaledCenterWidth > 0)
 					{
-						image = helperImage;
-						helperImage.texture = this._textures.middleCenter;
-						helperImage.readjustSize();
+						if(this._useSeparateBatch)
+						{
+							image = helperImage;
+							helperImage.texture = this._textures.middleCenter;
+							helperImage.readjustSize();
+						}
+						else
+						{
+							image = this._middleCenterImage;
+							image.smoothing = this._smoothing;
+							image.color = this._color;
+							image.visible = true;
+						}
+						image.width = scaledCenterWidth;
+						image.height = scaledMiddleHeight;
+						image.x = scaledLeftWidth;
+						image.y = scaledTopHeight;
+						if(this._useSeparateBatch)
+						{
+							this._batch.addImage(helperImage);
+						}
 					}
-					else
+					else if(!this._useSeparateBatch)
 					{
-						image = this._middleCenterImage;
-						image.smoothing = this._smoothing;
-						image.color = this._color;
-					}
-					image.scaleX = image.scaleY = this._textureScale;
-					image.x = scaledLeftWidth;
-					image.y = scaledTopHeight;
-					image.width = scaledCenterWidth;
-					image.height = scaledMiddleHeight;
-					if(this._useSeparateBatch && scaledCenterWidth > 0)
-					{
-						this._batch.addImage(helperImage);
+						this._middleCenterImage.visible = false;
 					}
 
 					if(this._useSeparateBatch)
@@ -563,15 +609,22 @@ package feathers.display
 						image = this._middleRightImage;
 						image.smoothing = this._smoothing;
 						image.color = this._color;
+						image.visible = true;
 					}
-					image.scaleX = image.scaleY = this._textureScale;
+					image.width = scaledRightWidth;
+					image.height = scaledMiddleHeight;
 					image.x = this._width - scaledRightWidth;
 					image.y = scaledTopHeight;
-					image.height = scaledMiddleHeight;
 					if(this._useSeparateBatch && scaledRightWidth > 0)
 					{
 						this._batch.addImage(helperImage);
 					}
+				}
+				else if(!this._useSeparateBatch)
+				{
+					this._middleLeftImage.visible = false;
+					this._middleCenterImage.visible = false;
+					this._middleRightImage.visible = false;
 				}
 
 				if(scaledBottomHeight > 0)
@@ -587,8 +640,10 @@ package feathers.display
 						image = this._bottomLeftImage;
 						image.smoothing = this._smoothing;
 						image.color = this._color;
+						image.visible = true;
 					}
-					image.scaleX = image.scaleY = this._textureScale;
+					image.width = scaledLeftWidth;
+					image.height = scaledBottomHeight;
 					image.x = scaledLeftWidth - image.width;
 					image.y = this._height - scaledBottomHeight;
 					if(this._useSeparateBatch && scaledLeftWidth > 0)
@@ -596,25 +651,33 @@ package feathers.display
 						this._batch.addImage(helperImage);
 					}
 
-					if(this._useSeparateBatch)
+					if(scaledCenterWidth > 0)
 					{
-						image = helperImage;
-						helperImage.texture = this._textures.bottomCenter;
-						helperImage.readjustSize();
+						if(this._useSeparateBatch)
+						{
+							image = helperImage;
+							helperImage.texture = this._textures.bottomCenter;
+							helperImage.readjustSize();
+						}
+						else
+						{
+							image = this._bottomCenterImage;
+							image.smoothing = this._smoothing;
+							image.color = this._color;
+							image.visible = true;
+						}
+						image.width = scaledCenterWidth;
+						image.height = scaledBottomHeight;
+						image.x = scaledLeftWidth;
+						image.y = this._height - scaledBottomHeight;
+						if(this._useSeparateBatch)
+						{
+							this._batch.addImage(helperImage);
+						}
 					}
-					else
+					else if(!this._useSeparateBatch)
 					{
-						image = this._bottomCenterImage;
-						image.smoothing = this._smoothing;
-						image.color = this._color;
-					}
-					image.scaleX = image.scaleY = this._textureScale;
-					image.x = scaledLeftWidth;
-					image.y = this._height - scaledBottomHeight;
-					image.width = scaledCenterWidth;
-					if(this._useSeparateBatch && scaledCenterWidth > 0)
-					{
-						this._batch.addImage(helperImage);
+						this._bottomCenterImage.visible = true;
 					}
 
 					if(this._useSeparateBatch)
@@ -628,14 +691,22 @@ package feathers.display
 						image = this._bottomRightImage;
 						image.smoothing = this._smoothing;
 						image.color = this._color;
+						image.visible = true;
 					}
-					image.scaleX = image.scaleY = this._textureScale;
+					image.width = scaledRightWidth;
+					image.height = scaledBottomHeight;
 					image.x = this._width - scaledRightWidth;
 					image.y = this._height - scaledBottomHeight;
 					if(this._useSeparateBatch && scaledRightWidth > 0)
 					{
 						this._batch.addImage(helperImage);
 					}
+				}
+				else if(!this._useSeparateBatch)
+				{
+					this._bottomLeftImage.visible = false;
+					this._bottomCenterImage.visible = false;
+					this._bottomRightImage.visible = false;
 				}
 			}
 

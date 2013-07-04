@@ -132,17 +132,5 @@ package feathers.controls.renderers
 			this.owner = null;
 			super.dispose();
 		}
-
-		/**
-		 * @private
-		 */
-		protected function owner_scrollStartHandler(event:Event):void
-		{
-			if(this._touchPointID < 0)
-			{
-				return;
-			}
-			this.handleOwnerScroll();
-		}
 	}
 }

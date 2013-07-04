@@ -14,14 +14,11 @@ package feathers.controls
 	import feathers.core.FeathersControl;
 	import feathers.core.PropertyProxy;
 	import feathers.data.ListCollection;
+	import feathers.events.FeathersEventType;
 	import feathers.system.DeviceCapabilities;
 
 	import starling.core.Starling;
-	import starling.display.DisplayObject;
 	import starling.events.Event;
-	import starling.events.Touch;
-	import starling.events.TouchEvent;
-	import starling.events.TouchPhase;
 
 	/**
 	 * Dispatched when the selected item changes.
@@ -83,11 +80,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
-
-		/**
-		 * @private
-		 */
 		protected static const INVALIDATION_FLAG_BUTTON_FACTORY:String = "buttonFactory";
 
 		/**
@@ -117,7 +109,6 @@ package feathers.controls
 		public function PickerList()
 		{
 			super();
-			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 		}
 
 		/**
@@ -157,21 +148,6 @@ package feathers.controls
 		 * The list sub-component.
 		 */
 		protected var list:List;
-
-		/**
-		 * @private
-		 */
-		protected var _buttonTouchPointID:int = -1;
-
-		/**
-		 * @private
-		 */
-		protected var _listTouchPointID:int = -1;
-
-		/**
-		 * @private
-		 */
-		protected var _hasBeenScrolled:Boolean = false;
 		
 		/**
 		 * @private
@@ -263,8 +239,6 @@ package feathers.controls
 		 * @default -1
 		 *
 		 * @see #selectedItem
-		 *
-		 * @see #selectedItem
 		 */
 		public function get selectedIndex():int
 		{
@@ -312,8 +286,6 @@ package feathers.controls
 		 * list.addEventListener( Event.CHANGE, list_changeHandler );</listing>
 		 *
 		 * @default null
-		 *
-		 * @see #selectedIndex
 		 *
 		 * @see #selectedIndex
 		 */
@@ -579,6 +551,8 @@ package feathers.controls
 		 *     return button;
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.Button
 		 * @see #buttonProperties
 		 */
@@ -620,6 +594,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customButtonInitializer, "my-custom-button");</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_BUTTON
 		 * @see feathers.core.FeathersControl#nameList
@@ -672,6 +648,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * list.buttonProperties.defaultSkin = new Image( upTexture );
 		 * list.buttonProperties.downSkin = new Image( downTexture );</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #buttonFactory
 		 * @see feathers.controls.Button
@@ -746,6 +724,8 @@ package feathers.controls
 		 *     return popUpList;
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.List
 		 * @see #listProperties
 		 */
@@ -787,6 +767,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( List, customListInitializer, "my-custom-list");</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_LIST
 		 * @see feathers.core.FeathersControl#nameList
@@ -839,6 +821,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * list.listProperties.backgroundSkin = new Image( texture );</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #listFactory
 		 * @see feathers.controls.List
@@ -899,13 +883,27 @@ package feathers.controls
 		{
 			if(this._labelFunction != null)
 			{
-				return this._labelFunction(item) as String;
+				var labelResult:Object = this._labelFunction(item);
+				if(labelResult is String)
+				{
+					return labelResult as String;
+				}
+				return labelResult.toString();
 			}
 			else if(this._labelField != null && item && item.hasOwnProperty(this._labelField))
 			{
-				return item[this._labelField] as String;
+				labelResult = item[this._labelField];
+				if(labelResult is String)
+				{
+					return labelResult as String;
+				}
+				return labelResult.toString();
 			}
-			else if(item is Object)
+			else if(item is String)
+			{
+				return item as String;
+			}
+			else if(item)
 			{
 				return item.toString();
 			}
@@ -995,7 +993,6 @@ package feathers.controls
 			if(listFactoryInvalid || dataInvalid)
 			{
 				this.list.dataProvider = this._dataProvider;
-				this._hasBeenScrolled = false;
 			}
 			
 			if(buttonFactoryInvalid || listFactoryInvalid || stateInvalid)
@@ -1082,7 +1079,6 @@ package feathers.controls
 			this.button = Button(factory());
 			this.button.nameList.add(buttonName);
 			this.button.addEventListener(Event.TRIGGERED, button_triggeredHandler);
-			this.button.addEventListener(TouchEvent.TOUCH, button_touchHandler);
 			this.addChild(this.button);
 		}
 
@@ -1103,9 +1099,9 @@ package feathers.controls
 			const listName:String = this._customListName != null ? this._customListName : this.listName;
 			this.list = List(factory());
 			this.list.nameList.add(listName);
-			this.list.addEventListener(Event.SCROLL, list_scrollHandler);
 			this.list.addEventListener(Event.CHANGE, list_changeHandler);
-			this.list.addEventListener(TouchEvent.TOUCH, list_touchHandler);
+			this.list.addEventListener(FeathersEventType.RENDERER_ADD, list_rendererAddHandler);
+			this.list.addEventListener(FeathersEventType.RENDERER_REMOVE, list_rendererRemoveHandler);
 		}
 		
 		/**
@@ -1192,8 +1188,6 @@ package feathers.controls
 			this._popUpContentManager.open(this.list, this);
 			this.list.scrollToDisplayIndex(this._selectedIndex);
 			this.list.validate();
-
-			this._hasBeenScrolled = false;
 		}
 		
 		/**
@@ -1203,141 +1197,33 @@ package feathers.controls
 		{
 			this.selectedIndex = this.list.selectedIndex;
 		}
-		
+
 		/**
 		 * @private
 		 */
-		protected function list_scrollHandler(event:Event):void
+		protected function list_rendererAddHandler(event:Event, renderer:IListItemRenderer):void
 		{
-			if(this._listTouchPointID >= 0)
-			{
-				this._hasBeenScrolled = true;
-			}
+			renderer.addEventListener(Event.TRIGGERED, renderer_triggeredHandler);
 		}
 
 		/**
 		 * @private
 		 */
-		protected function removedFromStageHandler(event:Event):void
+		protected function list_rendererRemoveHandler(event:Event, renderer:IListItemRenderer):void
 		{
-			this._buttonTouchPointID = -1;
-			this._listTouchPointID = -1;
+			renderer.removeEventListener(Event.TRIGGERED, renderer_triggeredHandler);
 		}
 
 		/**
 		 * @private
 		 */
-		protected function button_touchHandler(event:TouchEvent):void
+		protected function renderer_triggeredHandler(event:Event):void
 		{
 			if(!this._isEnabled)
 			{
-				this._buttonTouchPointID = -1;
 				return;
 			}
-			const touches:Vector.<Touch> = event.getTouches(this.button, null, HELPER_TOUCHES_VECTOR);
-			if(touches.length == 0)
-			{
-				return;
-			}
-			if(this._buttonTouchPointID >= 0)
-			{
-				var touch:Touch;
-				for each(var currentTouch:Touch in touches)
-				{
-					if(currentTouch.id == this._buttonTouchPointID)
-					{
-						touch = currentTouch;
-						break;
-					}
-				}
-				if(!touch)
-				{
-					HELPER_TOUCHES_VECTOR.length = 0;
-					return;
-				}
-				if(touch.phase == TouchPhase.ENDED)
-				{
-					this._buttonTouchPointID = -1;
-				}
-			}
-			else
-			{
-				for each(touch in touches)
-				{
-					if(touch.phase == TouchPhase.BEGAN)
-					{
-						this._buttonTouchPointID = touch.id;
-						break;
-					}
-				}
-			}
-			HELPER_TOUCHES_VECTOR.length = 0;
-		}
-		
-		/**
-		 * @private
-		 */
-		protected function list_touchHandler(event:TouchEvent):void
-		{
-			if(!this._isEnabled)
-			{
-				this._listTouchPointID = -1;
-				return;
-			}
-			const touches:Vector.<Touch> = event.getTouches(this.list, null, HELPER_TOUCHES_VECTOR);
-			if(touches.length == 0)
-			{
-				HELPER_TOUCHES_VECTOR.length = 0;
-				return;
-			}
-			if(this._listTouchPointID >= 0)
-			{
-				var touch:Touch;
-				for each(var currentTouch:Touch in touches)
-				{
-					if(currentTouch.id == this._listTouchPointID)
-					{
-						touch = currentTouch;
-						break;
-					}
-				}
-				if(!touch)
-				{
-					HELPER_TOUCHES_VECTOR.length = 0;
-					return;
-				}
-				if(touch.phase == TouchPhase.ENDED)
-				{
-					if(!this._hasBeenScrolled)
-					{
-						var target:DisplayObject = DisplayObject(event.target);
-						do
-						{
-							if(target is IListItemRenderer)
-							{
-								this.closePopUpList();
-								break;
-							}
-							target = target.parent;
-						}
-						while(target)
-					}
-					this._listTouchPointID = -1;
-				}
-			}
-			else
-			{
-				for each(touch in touches)
-				{
-					if(touch.phase == TouchPhase.BEGAN)
-					{
-						this._listTouchPointID = touch.id;
-						this._hasBeenScrolled = false;
-						break;
-					}
-				}
-			}
-			HELPER_TOUCHES_VECTOR.length = 0;
+			this.closePopUpList();
 		}
 	}
 }

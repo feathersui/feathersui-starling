@@ -90,11 +90,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
-
-		/**
-		 * @private
-		 */
 		protected static const INVALIDATION_FLAG_PROMPT_FACTORY:String = "promptFactory";
 
 		/**
@@ -305,6 +300,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * input.restrict = "0-9;</listing>
+		 *
+		 * @default null
 		 */
 		public function get restrict():String
 		{
@@ -419,6 +416,8 @@ package feathers.controls
 		 *     return new TextFieldTextEditor();
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.core.ITextEditor
 		 * @see feathers.core.FeathersControl#defaultTextEditorFactory
 		 */
@@ -465,6 +464,8 @@ package feathers.controls
 		 * {
 		 *     return new TextFieldTextRenderer();
 		 * };</listing>
+		 *
+		 * @default null
 		 *
 		 * @see feathers.core.ITextRenderer
 		 * @see feathers.core.FeathersControl#defaultTextRendererFactory
@@ -521,6 +522,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * input.promptProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333 );
 		 * input.promptProperties.embedFonts = true;</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #promptFactory
 		 * @see feathers.core.ITextRenderer
@@ -595,6 +598,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * input.backgroundSkin = new Image( texture );</listing>
+		 *
+		 * @default null
 		 */
 		public function get backgroundSkin():DisplayObject
 		{
@@ -640,6 +645,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * input.backgroundFocusedSkin = new Image( texture );</listing>
+		 *
+		 * @default null
 		 */
 		public function get backgroundFocusedSkin():DisplayObject
 		{
@@ -684,6 +691,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * input.backgroundDisabledSkin = new Image( texture );</listing>
+		 *
+		 * @default null
 		 */
 		public function get backgroundDisabledSkin():DisplayObject
 		{
@@ -728,6 +737,11 @@ package feathers.controls
 		 * input.padding = 20;</listing>
 		 *
 		 * @default 0
+		 *
+		 * @see #paddingTop
+		 * @see #paddingRight
+		 * @see #paddingBottom
+		 * @see #paddingLeft
 		 */
 		public function get padding():Number
 		{
@@ -936,7 +950,7 @@ package feathers.controls
 		 * input.textEditorProperties.fontName = "Helvetica";
 		 * input.textEditorProperties.fontSize = 16;</listing>
 		 *
-		 * @default 0
+		 * @default null
 		 *
 		 * @see #textEditorFactory
 		 * @see feathers.core.ITextEditor
@@ -1414,68 +1428,49 @@ package feathers.controls
 				return;
 			}
 
-			const touches:Vector.<Touch> = event.getTouches(this, null, HELPER_TOUCHES_VECTOR);
-			if(touches.length == 0)
+			if(this._touchPointID >= 0)
 			{
+				var touch:Touch = event.getTouch(this, TouchPhase.ENDED, this._touchPointID);
+				if(!touch)
+				{
+					return;
+				}
+				this._touchPointID = -1;
+				if(this.textEditor.setTouchFocusOnEndedPhase)
+				{
+					this.setFocusOnTextEditorWithTouch(touch);
+				}
+			}
+			else
+			{
+				touch = event.getTouch(this, TouchPhase.BEGAN);
+				if(touch)
+				{
+					this._touchPointID = touch.id;
+					if(!this.textEditor.setTouchFocusOnEndedPhase)
+					{
+						this.setFocusOnTextEditorWithTouch(touch);
+					}
+					return;
+				}
+				touch = event.getTouch(this, TouchPhase.HOVER);
+				if(touch)
+				{
+					if(Mouse.supportsNativeCursor && !this._oldMouseCursor)
+					{
+						this._oldMouseCursor = Mouse.cursor;
+						Mouse.cursor = MouseCursor.IBEAM;
+					}
+					return;
+				}
+
 				//end hover
 				if(Mouse.supportsNativeCursor && this._oldMouseCursor)
 				{
 					Mouse.cursor = this._oldMouseCursor;
 					this._oldMouseCursor = null;
 				}
-				return;
 			}
-
-			if(this._touchPointID >= 0)
-			{
-				var touch:Touch;
-				for each(var currentTouch:Touch in touches)
-				{
-					if(currentTouch.id == this._touchPointID)
-					{
-						touch = currentTouch;
-						break;
-					}
-				}
-				if(!touch)
-				{
-					HELPER_TOUCHES_VECTOR.length = 0;
-					return;
-				}
-				if(touch.phase == TouchPhase.ENDED)
-				{
-					this._touchPointID = -1;
-					if(this.textEditor.setTouchFocusOnEndedPhase)
-					{
-						this.setFocusOnTextEditorWithTouch(touch);
-					}
-				}
-			}
-			else
-			{
-				for each(touch in touches)
-				{
-					if(touch.phase == TouchPhase.BEGAN)
-					{
-						this._touchPointID = touch.id;
-						if(!this.textEditor.setTouchFocusOnEndedPhase)
-						{
-							this.setFocusOnTextEditorWithTouch(touch);
-						}
-						break;
-					}
-					else if(touch.phase == TouchPhase.HOVER)
-					{
-						if(Mouse.supportsNativeCursor && !this._oldMouseCursor)
-						{
-							this._oldMouseCursor = Mouse.cursor;
-							Mouse.cursor = MouseCursor.IBEAM;
-						}
-						break;
-					}
-				}
-			}
-			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 
 		/**

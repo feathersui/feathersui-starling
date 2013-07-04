@@ -58,6 +58,7 @@ package feathers.examples.componentsExplorer.screens
 			//the list. otherwise, the list items may be displayed outside of
 			//the list's bounds.
 			this._list.clipContent = false;
+			this._list.autoHideBackground = true;
 			this._list.itemRendererFactory = function():IListItemRenderer
 			{
 				var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();

@@ -129,6 +129,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * scrollText.text = "Hello World";</listing>
 		 *
+		 * @default ""
+		 *
 		 * @see #isHTML
 		 * @see flash.text.TextField#htmlText
 		 */
@@ -204,6 +206,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * scrollText.textFormat = new TextFormat( "_sans", 16, 0x333333 );</listing>
 		 *
+		 * @default null
+		 *
 		 * @see flash.text.TextFormat
 		 */
 		public function get textFormat():TextFormat
@@ -231,6 +235,8 @@ package feathers.controls
 
 		/**
 		 * The <code>StyleSheet</code> object to pass to the TextField.
+		 *
+		 * @default null
 		 *
 		 * @see flash.text.StyleSheet
 		 */
@@ -297,7 +303,7 @@ package feathers.controls
 		 *
 		 * @see flash.text.TextField#antiAliasType
 		 *
-		 * @default AntiAliasType.ADVANCED
+		 * @default flash.text.AntiAliasType.ADVANCED
 		 */
 		public function get antiAliasType():String
 		{
@@ -505,7 +511,7 @@ package feathers.controls
 		/**
 		 * Same as the flash.text.TextField property with the same name.
 		 *
-		 * @default GridFitType.PIXEL
+		 * @default flash.text.GridFitType.PIXEL
 		 *
 		 * @see flash.text.TextField#gridFitType
 		 */
@@ -586,6 +592,16 @@ package feathers.controls
 			this._thickness = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
+
+		/**
+		 * @private
+		 */
+		override public function get padding():Number
+		{
+			return this._textPaddingTop;
+		}
+
+		//no setter for padding because the one in Scroller is acceptable
 
 		/**
 		 * @private

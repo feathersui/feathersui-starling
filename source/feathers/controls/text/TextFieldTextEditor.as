@@ -12,7 +12,6 @@ package feathers.controls.text
 	import feathers.events.FeathersEventType;
 
 	import flash.display.BitmapData;
-	import flash.display3D.textures.Texture;
 	import flash.events.FocusEvent;
 	import flash.events.KeyboardEvent;
 	import flash.geom.Matrix;
@@ -28,7 +27,6 @@ package feathers.controls.text
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.events.Event;
-	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
 	import starling.utils.MatrixUtil;
 	import starling.utils.getNextPowerOfTwo;
@@ -158,6 +156,8 @@ package feathers.controls.text
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @default ""
 		 */
 		public function get text():String
 		{
@@ -190,6 +190,8 @@ package feathers.controls.text
 
 		/**
 		 * The format of the text, such as font and styles.
+		 *
+		 * @default null
 		 */
 		public function get textFormat():TextFormat
 		{
@@ -216,6 +218,8 @@ package feathers.controls.text
 
 		/**
 		 * Determines if the TextField should use an embedded font or not.
+		 *
+		 * @default false
 		 */
 		public function get embedFonts():Boolean
 		{
@@ -242,6 +246,8 @@ package feathers.controls.text
 
 		/**
 		 * Determines if the TextField wraps text to the next line.
+		 *
+		 * @default false
 		 */
 		public function get wordWrap():Boolean
 		{
@@ -268,6 +274,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>TextField</code> property with the same name.
+		 *
+		 * @default false
 		 */
 		public function get multiline():Boolean
 		{
@@ -294,6 +302,8 @@ package feathers.controls.text
 
 		/**
 		 * Determines if the TextField should display the text as HTML or not.
+		 *
+		 * @default false
 		 */
 		public function get isHTML():Boolean
 		{
@@ -320,6 +330,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>flash.text.TextField</code> property with the same name.
+		 *
+		 * @default false
 		 */
 		public function get alwaysShowSelection():Boolean
 		{
@@ -346,6 +358,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>flash.text.TextField</code> property with the same name.
+		 *
+		 * @default false
 		 */
 		public function get displayAsPassword():Boolean
 		{
@@ -372,6 +386,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>flash.text.TextField</code> property with the same name.
+		 *
+		 * @default 0
 		 */
 		public function get maxChars():int
 		{
@@ -398,6 +414,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>flash.text.TextField</code> property with the same name.
+		 *
+		 * @default null
 		 */
 		public function get restrict():String
 		{
@@ -425,6 +443,8 @@ package feathers.controls.text
 		/**
 		 * Determines if the text input is editable. If the text input is not
 		 * editable, it will still appear enabled.
+		 *
+		 * @default true
 		 */
 		public function get isEditable():Boolean
 		{
@@ -896,6 +916,14 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected function texture_onRestore():void
+		{
+			this.refreshSnapshot();
+		}
+
+		/**
+		 * @private
+		 */
 		protected function refreshSnapshot():void
 		{
 			if(this.textField.width == 0 || this.textField.height == 0)
@@ -919,9 +947,15 @@ package feathers.controls.text
 			HELPER_MATRIX.scale(Starling.contentScaleFactor, Starling.contentScaleFactor);
 			this._textSnapshotBitmapData.fillRect(this._textSnapshotBitmapData.rect, 0x00ff00ff);
 			this._textSnapshotBitmapData.draw(this.textField, HELPER_MATRIX, null, null, this._textFieldClipRect);
+			var newTexture:Texture;
+			if(!this.textSnapshot || this._needsNewBitmap)
+			{
+				newTexture = Texture.fromBitmapData(this._textSnapshotBitmapData, false, false, Starling.contentScaleFactor);
+				newTexture.root.onRestore = texture_onRestore;
+			}
 			if(!this.textSnapshot)
 			{
-				this.textSnapshot = new Image(starling.textures.Texture.fromBitmapData(this._textSnapshotBitmapData, false, false, Starling.contentScaleFactor));
+				this.textSnapshot = new Image(newTexture);
 				this.addChild(this.textSnapshot);
 			}
 			else
@@ -929,18 +963,14 @@ package feathers.controls.text
 				if(this._needsNewBitmap)
 				{
 					this.textSnapshot.texture.dispose();
-					this.textSnapshot.texture = starling.textures.Texture.fromBitmapData(this._textSnapshotBitmapData, false, false, Starling.contentScaleFactor);
+					this.textSnapshot.texture = newTexture;
 					this.textSnapshot.readjustSize();
 				}
 				else
 				{
-					//this is faster if we haven't resized the bitmapdata
-					const texture:starling.textures.Texture = this.textSnapshot.texture;
-					if(Starling.handleLostContext && texture is ConcreteTexture)
-					{
-						ConcreteTexture(texture).restoreOnLostContext(this._textSnapshotBitmapData);
-					}
-					flash.display3D.textures.Texture(texture.base).uploadFromBitmapData(this._textSnapshotBitmapData);
+					//this is faster, if we haven't resized the bitmapdata
+					const existingTexture:Texture = this.textSnapshot.texture;
+					existingTexture.root.uploadBitmapData(this._textSnapshotBitmapData);
 				}
 			}
 			this._needsNewBitmap = false;

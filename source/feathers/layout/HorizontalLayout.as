@@ -32,39 +32,53 @@ package feathers.layout
 	{
 		/**
 		 * The items will be aligned to the top of the bounds.
+		 *
+		 * @see #verticalAlign
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
 
 		/**
 		 * The items will be aligned to the middle of the bounds.
+		 *
+		 * @see #verticalAlign
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
 
 		/**
 		 * The items will be aligned to the bottom of the bounds.
+		 *
+		 * @see #verticalAlign
 		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 
 		/**
 		 * The items will fill the height of the bounds.
+		 *
+		 * @see #verticalAlign
 		 */
 		public static const VERTICAL_ALIGN_JUSTIFY:String = "justify";
 
 		/**
 		 * If the total item width is smaller than the width of the bounds, the
 		 * items will be aligned to the left.
+		 *
+		 * @see #horizontalAlign
 		 */
 		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
 
 		/**
 		 * If the total item width is smaller than the width of the bounds, the
 		 * items will be aligned to the center.
+		 *
+		 * @see #horizontalAlign
 		 */
 		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
 
 		/**
 		 * If the total item width is smaller than the width of the bounds, the
 		 * items will be aligned to the right.
+		 *
+		 * @see #horizontalAlign
 		 */
 		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
 
@@ -92,6 +106,8 @@ package feathers.layout
 
 		/**
 		 * The space, in pixels, between items.
+		 *
+		 * @default 0
 		 */
 		public function get gap():Number
 		{
@@ -116,6 +132,13 @@ package feathers.layout
 		 * <code>padding</code> getter always returns the value of
 		 * <code>paddingTop</code>, but the other padding values may be
 		 * different.
+		 *
+		 * @default 0
+		 *
+		 * @see #paddingTop
+		 * @see #paddingRight
+		 * @see #paddingBottom
+		 * @see #paddingLeft
 		 */
 		public function get padding():Number
 		{
@@ -140,6 +163,8 @@ package feathers.layout
 
 		/**
 		 * The minimum space, in pixels, above the items.
+		 *
+		 * @default 0
 		 */
 		public function get paddingTop():Number
 		{
@@ -166,6 +191,8 @@ package feathers.layout
 
 		/**
 		 * The space, in pixels, after the last item.
+		 *
+		 * @default 0
 		 */
 		public function get paddingRight():Number
 		{
@@ -192,6 +219,8 @@ package feathers.layout
 
 		/**
 		 * The minimum space, in pixels, above the items.
+		 *
+		 * @default 0
 		 */
 		public function get paddingBottom():Number
 		{
@@ -218,6 +247,8 @@ package feathers.layout
 
 		/**
 		 * The space, in pixels, before the first item.
+		 *
+		 * @default 0
 		 */
 		public function get paddingLeft():Number
 		{
@@ -246,6 +277,13 @@ package feathers.layout
 		[Inspectable(type="String",enumeration="top,middle,bottom,justify")]
 		/**
 		 * The alignment of the items vertically, on the y-axis.
+		 *
+		 * @default HorizontalLayout.VERTICAL_ALIGN_TOP
+		 *
+		 * @see #VERTICAL_ALIGN_TOP
+		 * @see #VERTICAL_ALIGN_MIDDLE
+		 * @see #VERTICAL_ALIGN_BOTTOM
+		 * @see #VERTICAL_ALIGN_JUSTIFY
 		 */
 		public function get verticalAlign():String
 		{
@@ -274,6 +312,12 @@ package feathers.layout
 		/**
 		 * If the total item width is less than the bounds, the positions of
 		 * the items can be aligned horizontally.
+		 *
+		 * @default HorizontalLayout.HORIZONTAL_ALIGN_LEFT
+		 *
+		 * @see #HORIZONTAL_ALIGN_LEFT
+		 * @see #HORIZONTAL_ALIGN_CENTER
+		 * @see #HORIZONTAL_ALIGN_RIGHT
 		 */
 		public function get horizontalAlign():String
 		{
@@ -300,6 +344,8 @@ package feathers.layout
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @default true
 		 */
 		public function get useVirtualLayout():Boolean
 		{
@@ -326,6 +372,8 @@ package feathers.layout
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @default false
 		 */
 		public function get hasVariableItemDimensions():Boolean
 		{
@@ -350,6 +398,8 @@ package feathers.layout
 		 * view port. Can improve performance, especially for non-virtual
 		 * layouts. If <code>true</code>, you will not be able to manually
 		 * change the <code>visible</code> property of any items in the layout.
+		 *
+		 * @default false
 		 */
 		public var manageVisibility:Boolean = false;
 
@@ -464,6 +514,12 @@ package feathers.layout
 		/**
 		 * When the scroll position is calculated for an item, an attempt will
 		 * be made to align the item to this position.
+		 *
+		 * @default HorizontalLayout.HORIZONTAL_ALIGN_CENTER
+		 *
+		 * @see #HORIZONTAL_ALIGN_LEFT
+		 * @see #HORIZONTAL_ALIGN_CENTER
+		 * @see #HORIZONTAL_ALIGN_RIGHT
 		 */
 		public function get scrollPositionHorizontalAlign():String
 		{
@@ -508,6 +564,7 @@ package feathers.layout
 				positionX += (this._beforeVirtualizedItemCount * (this._typicalItemWidth + this._gap));
 			}
 			const itemCount:int = items.length;
+			var discoveredItemsCacheLastIndex:int = 0;
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var item:DisplayObject = items[i];
@@ -546,10 +603,15 @@ package feathers.layout
 						}
 					}
 					positionX += item.width + this._gap;
-					maxItemHeight = Math.max(maxItemHeight, item.height);
+					var itemHeight:Number = item.height;
+					if(itemHeight > maxItemHeight)
+					{
+						maxItemHeight = itemHeight;
+					}
 					if(this._useVirtualLayout)
 					{
-						this._discoveredItemsCache.push(item);
+						this._discoveredItemsCache[discoveredItemsCacheLastIndex] = item;
+						discoveredItemsCacheLastIndex++;
 					}
 				}
 			}
@@ -562,9 +624,33 @@ package feathers.layout
 			const discoveredItemCount:int = discoveredItems.length;
 
 			const totalHeight:Number = maxItemHeight + this._paddingTop + this._paddingBottom;
-			const availableHeight:Number = isNaN(explicitHeight) ? Math.min(maxHeight, Math.max(minHeight, totalHeight)) : explicitHeight;
+			var availableHeight:Number = explicitHeight;
+			if(isNaN(availableHeight))
+			{
+				availableHeight = totalHeight;
+				if(availableHeight < minHeight)
+				{
+					availableHeight = minHeight;
+				}
+				else if(availableHeight > maxHeight)
+				{
+					availableHeight = maxHeight;
+				}
+			}
 			const totalWidth:Number = positionX - this._gap + this._paddingRight - boundsX;
-			const availableWidth:Number = isNaN(explicitWidth) ? Math.min(maxWidth, Math.max(minWidth, totalWidth)) : explicitWidth;
+			var availableWidth:Number = explicitWidth;
+			if(isNaN(availableWidth))
+			{
+				availableWidth = totalWidth;
+				if(availableWidth < minWidth)
+				{
+					availableWidth = minWidth;
+				}
+				else if(availableWidth > maxWidth)
+				{
+					availableWidth = maxWidth;
+				}
+			}
 
 			if(totalWidth < availableWidth)
 			{
@@ -688,7 +774,16 @@ package feathers.layout
 
 			if(needsWidth)
 			{
-				result.x = Math.min(maxWidth, Math.max(minWidth, positionX - this._gap + this._paddingLeft + this._paddingRight));
+				var resultWidth:Number = positionX - this._gap + this._paddingLeft + this._paddingRight;
+				if(resultWidth < minWidth)
+				{
+					resultWidth = minWidth;
+				}
+				else if(resultWidth > maxWidth)
+				{
+					resultWidth = maxWidth;
+				}
+				result.x = resultWidth;
 			}
 			else
 			{
@@ -697,7 +792,16 @@ package feathers.layout
 
 			if(needsHeight)
 			{
-				result.y = Math.min(maxHeight, Math.max(minHeight, maxItemHeight + this._paddingTop + this._paddingBottom));
+				var resultHeight:Number = maxItemHeight + this._paddingTop + this._paddingBottom;
+				if(resultHeight < minHeight)
+				{
+					resultHeight = minHeight;
+				}
+				else if(resultHeight > maxHeight)
+				{
+					resultHeight = maxHeight;
+				}
+				result.y = resultHeight;
 			}
 			else
 			{
@@ -755,6 +859,7 @@ package feathers.layout
 				result = new <int>[];
 			}
 			result.length = 0;
+			var resultLastIndex:int = 0;
 			const visibleTypicalItemCount:int = Math.ceil(width / (this._typicalItemWidth + this._gap));
 			if(!this._hasVariableItemDimensions)
 			{
@@ -773,15 +878,29 @@ package feathers.layout
 						indexOffset = Math.ceil(((width - totalItemWidth) / (this._typicalItemWidth + this._gap)) / 2);
 					}
 				}
-				var minimum:int = -indexOffset + Math.max(0, (scrollX - this._paddingLeft) / (this._typicalItemWidth + this._gap));
+				var minimum:int = (scrollX - this._paddingLeft) / (this._typicalItemWidth + this._gap);
+				if(minimum < 0)
+				{
+					minimum = 0;
+				}
+				minimum -= indexOffset;
 				//if we're scrolling beyond the final item, we should keep the
 				//indices consistent so that items aren't destroyed and
 				//recreated unnecessarily
-				var maximum:int = Math.min(itemCount - 1, minimum + visibleTypicalItemCount);
-				minimum = Math.max(0, maximum - visibleTypicalItemCount);
+				var maximum:int = minimum + visibleTypicalItemCount;
+				if(maximum >= itemCount)
+				{
+					maximum = itemCount - 1;
+				}
+				minimum = maximum - visibleTypicalItemCount;
+				if(minimum < 0)
+				{
+					minimum = 0;
+				}
 				for(var i:int = minimum; i <= maximum; i++)
 				{
-					result.push(i);
+					result[resultLastIndex] = i;
+					resultLastIndex++;
 				}
 				return result;
 			}
@@ -801,7 +920,8 @@ package feathers.layout
 				positionX += itemWidth + this._gap;
 				if(positionX > scrollX && oldPositionX < maxPositionX)
 				{
-					result.push(i);
+					result[resultLastIndex] = i;
+					resultLastIndex++;
 				}
 
 				if(positionX >= maxPositionX)
@@ -819,22 +939,32 @@ package feathers.layout
 			{
 				//add extra items before the first index
 				const firstExistingIndex:int = result[0];
-				const lastIndexToAdd:int = Math.max(0, firstExistingIndex - visibleItemCountDifference);
+				var lastIndexToAdd:int = firstExistingIndex - visibleItemCountDifference;
+				if(lastIndexToAdd < 0)
+				{
+					lastIndexToAdd = 0;
+				}
 				for(i = firstExistingIndex - 1; i >= lastIndexToAdd; i--)
 				{
 					result.unshift(i);
 				}
 			}
 			resultLength = result.length;
+			resultLastIndex = resultLength;
 			visibleItemCountDifference = visibleTypicalItemCount - resultLength;
 			if(visibleItemCountDifference > 0)
 			{
 				//add extra items after the last index
 				const startIndex:int = resultLength > 0 ? (result[resultLength - 1] + 1) : 0;
-				const endIndex:int = Math.min(itemCount, startIndex + visibleItemCountDifference);
+				var endIndex:int = Math.min(itemCount, startIndex + visibleItemCountDifference);
+				if(endIndex > itemCount)
+				{
+					endIndex = itemCount;
+				}
 				for(i = startIndex; i < endIndex; i++)
 				{
-					result.push(i);
+					result[resultLastIndex] = i;
+					resultLastIndex++;
 				}
 			}
 			return result;
@@ -858,7 +988,11 @@ package feathers.layout
 				startIndexOffset = this._beforeVirtualizedItemCount;
 				positionX += (this._beforeVirtualizedItemCount * (this._typicalItemWidth + this._gap));
 
-				endIndexOffset = Math.max(0, index - items.length - this._beforeVirtualizedItemCount + 1);
+				endIndexOffset = index - items.length - this._beforeVirtualizedItemCount + 1;
+				if(endIndexOffset < 0)
+				{
+					endIndexOffset = 0;
+				}
 				positionX += (endIndexOffset * (this._typicalItemWidth + this._gap));
 			}
 			index -= (startIndexOffset + endIndexOffset);

@@ -43,6 +43,7 @@ package feathers.themes
 	import feathers.controls.Screen;
 	import feathers.controls.ScrollContainer;
 	import feathers.controls.ScrollText;
+	import feathers.controls.Scroller;
 	import feathers.controls.SimpleScrollBar;
 	import feathers.controls.Slider;
 	import feathers.controls.TabBar;
@@ -82,7 +83,6 @@ package feathers.themes
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.events.Event;
-	import starling.events.ResizeEvent;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 
@@ -486,12 +486,12 @@ package feathers.themes
 			this.setInitializerForClass(Header, headerInitializer);
 			this.setInitializerForClass(Header, headerWithoutBackgroundInitializer, Panel.DEFAULT_CHILD_NAME_HEADER);
 			this.setInitializerForClass(Callout, calloutInitializer);
+			this.setInitializerForClass(SimpleScrollBar, horizontalScrollBarInitializer, Scroller.DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR);
+			this.setInitializerForClass(SimpleScrollBar, verticalScrollBarInitializer, Scroller.DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR);
 			this.setInitializerForClass(List, listInitializer);
-			this.setInitializerForClass(List, pickerListListInitializer, PickerList.DEFAULT_CHILD_NAME_LIST);
 			this.setInitializerForClass(GroupedList, groupedListInitializer);
 			this.setInitializerForClass(GroupedList, insetGroupedListInitializer, GroupedList.ALTERNATE_NAME_INSET_GROUPED_LIST);
 			this.setInitializerForClass(Panel, panelInitializer);
-			this.setInitializerForClass(ScrollContainer, scrollContainerInitializer);
 			this.setInitializerForClass(ScrollContainer, scrollContainerToolbarInitializer, ScrollContainer.ALTERNATE_NAME_TOOLBAR);
 		}
 
@@ -518,28 +518,6 @@ package feathers.themes
 			return image;
 		}
 
-		protected function horizontalScrollBarFactory():SimpleScrollBar
-		{
-			const scrollBar:SimpleScrollBar = new SimpleScrollBar();
-			scrollBar.direction = SimpleScrollBar.DIRECTION_HORIZONTAL;
-			const defaultSkin:Scale3Image = new Scale3Image(this.horizontalScrollBarThumbSkinTextures, this.scale);
-			defaultSkin.width = 10 * this.scale;
-			scrollBar.thumbProperties.defaultSkin = defaultSkin;
-			scrollBar.paddingRight = scrollBar.paddingBottom = scrollBar.paddingLeft = 4 * this.scale;
-			return scrollBar;
-		}
-
-		protected function verticalScrollBarFactory():SimpleScrollBar
-		{
-			const scrollBar:SimpleScrollBar = new SimpleScrollBar();
-			scrollBar.direction = SimpleScrollBar.DIRECTION_VERTICAL;
-			const defaultSkin:Scale3Image = new Scale3Image(this.verticalScrollBarThumbSkinTextures, this.scale);
-			defaultSkin.height = 10 * this.scale;
-			scrollBar.thumbProperties.defaultSkin = defaultSkin;
-			scrollBar.paddingTop = scrollBar.paddingRight = scrollBar.paddingBottom = 4 * this.scale;
-			return scrollBar;
-		}
-
 		protected function nothingInitializer(target:DisplayObject):void {}
 
 		protected function screenInitializer(screen:Screen):void
@@ -550,9 +528,6 @@ package feathers.themes
 		protected function panelScreenInitializer(screen:PanelScreen):void
 		{
 			screen.originalDPI = this._originalDPI;
-
-			screen.verticalScrollBarFactory = this.verticalScrollBarFactory;
-			screen.horizontalScrollBarFactory = this.horizontalScrollBarFactory;
 		}
 
 		protected function simpleButtonInitializer(button:Button):void
@@ -591,9 +566,6 @@ package feathers.themes
 			text.embedFonts = true;
 			text.paddingTop = text.paddingBottom = text.paddingLeft = 32 * this.scale;
 			text.paddingRight = 36 * this.scale;
-
-			text.verticalScrollBarFactory = this.verticalScrollBarFactory;
-			text.horizontalScrollBarFactory = this.horizontalScrollBarFactory;
 		}
 
 		protected function baseButtonInitializer(button:Button):void
@@ -1103,6 +1075,24 @@ package feathers.themes
 			stepper.decrementButtonLabel = "-";
 		}
 
+		protected function horizontalScrollBarInitializer(scrollBar:SimpleScrollBar):void
+		{
+			scrollBar.direction = SimpleScrollBar.DIRECTION_HORIZONTAL;
+			const defaultSkin:Scale3Image = new Scale3Image(this.horizontalScrollBarThumbSkinTextures, this.scale);
+			defaultSkin.width = 10 * this.scale;
+			scrollBar.thumbProperties.defaultSkin = defaultSkin;
+			scrollBar.paddingRight = scrollBar.paddingBottom = scrollBar.paddingLeft = 4 * this.scale;
+		}
+
+		protected function verticalScrollBarInitializer(scrollBar:SimpleScrollBar):void
+		{
+			scrollBar.direction = SimpleScrollBar.DIRECTION_VERTICAL;
+			const defaultSkin:Scale3Image = new Scale3Image(this.verticalScrollBarThumbSkinTextures, this.scale);
+			defaultSkin.height = 10 * this.scale;
+			scrollBar.thumbProperties.defaultSkin = defaultSkin;
+			scrollBar.paddingTop = scrollBar.paddingRight = scrollBar.paddingBottom = 4 * this.scale;
+		}
+
 		protected function textInputInitializer(input:TextInput):void
 		{
 			const backgroundSkin:Scale9Image = new Scale9Image(this.backgroundInsetSkinTextures, this.scale);
@@ -1244,8 +1234,6 @@ package feathers.themes
 				layout.paddingLeft = 0;
 			list.listProperties.layout = layout;
 			list.listProperties.verticalScrollPolicy = List.SCROLL_POLICY_ON;
-			list.listProperties.verticalScrollBarFactory = this.verticalScrollBarFactory;
-			list.listProperties.horizontalScrollBarFactory = this.horizontalScrollBarFactory;
 
 			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
@@ -1298,57 +1286,36 @@ package feathers.themes
 			panel.paddingRight = 8 * this.scale;
 			panel.paddingBottom = 8 * this.scale;
 			panel.paddingLeft = 8 * this.scale;
-
-			panel.verticalScrollBarFactory = this.verticalScrollBarFactory;
-			panel.horizontalScrollBarFactory = this.horizontalScrollBarFactory;
 		}
 
 		protected function listInitializer(list:List):void
 		{
 			const backgroundSkin:Quad = new Quad(100, 100, LIST_BACKGROUND_COLOR);
 			list.backgroundSkin = backgroundSkin;
-
-			list.verticalScrollBarFactory = this.verticalScrollBarFactory;
-			list.horizontalScrollBarFactory = this.horizontalScrollBarFactory;
-		}
-
-		protected function pickerListListInitializer(list:List):void
-		{
-			list.verticalScrollBarFactory = this.verticalScrollBarFactory;
-			list.horizontalScrollBarFactory = this.horizontalScrollBarFactory;
 		}
 
 		protected function groupedListInitializer(list:GroupedList):void
 		{
 			const backgroundSkin:Quad = new Quad(100, 100, LIST_BACKGROUND_COLOR);
 			list.backgroundSkin = backgroundSkin;
-
-			list.verticalScrollBarFactory = this.verticalScrollBarFactory;
-			list.horizontalScrollBarFactory = this.horizontalScrollBarFactory;
-		}
-
-		protected function scrollContainerInitializer(container:ScrollContainer):void
-		{
-			container.verticalScrollBarFactory = this.verticalScrollBarFactory;
-			container.horizontalScrollBarFactory = this.horizontalScrollBarFactory;
 		}
 
 		protected function scrollContainerToolbarInitializer(container:ScrollContainer):void
 		{
-			const layout:HorizontalLayout = new HorizontalLayout();
-			layout.paddingTop = layout.paddingRight = layout.paddingBottom =
-				layout.paddingLeft = 14 * this.scale;
-			layout.gap = 8 * this.scale;
-			container.layout = layout;
+			if(!container.layout)
+			{
+				const layout:HorizontalLayout = new HorizontalLayout();
+				layout.paddingTop = layout.paddingRight = layout.paddingBottom =
+					layout.paddingLeft = 14 * this.scale;
+				layout.gap = 8 * this.scale;
+				container.layout = layout;
+			}
 			container.minWidth = 88 * this.scale;
 			container.minHeight = 88 * this.scale;
 
 			const backgroundSkin:TiledImage = new TiledImage(this.headerBackgroundSkinTexture, this.scale);
 			backgroundSkin.width = backgroundSkin.height = 88 * this.scale;
 			container.backgroundSkin = backgroundSkin;
-
-			container.verticalScrollBarFactory = this.verticalScrollBarFactory;
-			container.horizontalScrollBarFactory = this.horizontalScrollBarFactory;
 		}
 
 		protected function insetGroupedListInitializer(list:GroupedList):void
@@ -1368,9 +1335,6 @@ package feathers.themes
 			layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
 			layout.manageVisibility = true;
 			list.layout = layout;
-
-			list.verticalScrollBarFactory = this.verticalScrollBarFactory;
-			list.horizontalScrollBarFactory = this.horizontalScrollBarFactory;
 		}
 
 		protected function root_addedToStageHandler(event:Event):void

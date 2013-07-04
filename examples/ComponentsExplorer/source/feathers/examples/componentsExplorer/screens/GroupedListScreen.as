@@ -114,6 +114,7 @@ package feathers.examples.componentsExplorer.screens
 			this._list.isSelectable = this.settings.isSelectable;
 			this._list.hasElasticEdges = this.settings.hasElasticEdges;
 			this._list.clipContent = false;
+			this._list.autoHideBackground = true;
 			this._list.itemRendererFactory = function():IGroupedListItemRenderer
 			{
 				var renderer:DefaultGroupedListItemRenderer = new DefaultGroupedListItemRenderer();

@@ -65,6 +65,8 @@ package feathers.core
 		/**
 		 * The container where pop-ups are added. If not set manually, defaults
 		 * to the Starling stage.
+		 *
+		 * @default null
 		 */
 		public static function get root():DisplayObjectContainer
 		{

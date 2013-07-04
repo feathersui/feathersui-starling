@@ -126,6 +126,8 @@ package feathers.controls.text
 		
 		/**
 		 * The font and styles used to draw the text.
+		 *
+		 * @default null
 		 */
 		public function get textFormat():BitmapFontTextFormat
 		{
@@ -152,6 +154,8 @@ package feathers.controls.text
 
 		/**
 		 * The font and styles used to draw the text when the label is disabled.
+		 *
+		 * @default null
 		 */
 		public function get disabledTextFormat():BitmapFontTextFormat
 		{
@@ -178,6 +182,8 @@ package feathers.controls.text
 		
 		/**
 		 * The text to display.
+		 *
+		 * @default null
 		 */
 		public function get text():String
 		{
@@ -205,6 +211,8 @@ package feathers.controls.text
 		[Inspectable(type="String",enumeration="bilinear,trilinear,none")]
 		/**
 		 * A smoothing value passed to each character image.
+		 *
+		 * @default starling.textures.TextureSmoothing.BILINEAR
 		 *
 		 * @see starling.textures.TextureSmoothing
 		 */
@@ -234,6 +242,8 @@ package feathers.controls.text
 		/**
 		 * If the width or maxWidth values are set, then the text will continue
 		 * on the next line, if it is too long.
+		 *
+		 * @default false
 		 */
 		public function get wordWrap():Boolean
 		{
@@ -259,8 +269,12 @@ package feathers.controls.text
 		protected var _snapToPixels:Boolean = true;
 
 		/**
-		 * Determines if characters should be snapped to the nearest whole pixel
-		 * when rendered.
+		 * Determines if the position of the text should be snapped to the
+		 * nearest whole pixel when rendered. When snapped to a whole pixel, the
+		 * text is often more readable. When not snapped, the text may become
+		 * blurry due to texture smoothing.
+		 *
+		 * @default true
 		 */
 		public function get snapToPixels():Boolean
 		{
@@ -287,6 +301,8 @@ package feathers.controls.text
 
 		/**
 		 * The text to display at the end of the label if it is truncated.
+		 *
+		 * @default "..."
 		 */
 		public function get truncationText():String
 		{
@@ -316,6 +332,8 @@ package feathers.controls.text
 		 * they're batched separately. Batching separately may improve
 		 * performance for text that changes often, while batching normally
 		 * may be better when a lot of text is displayed on screen at once.
+		 *
+		 * @default true
 		 */
 		public function get useSeparateBatch():Boolean
 		{

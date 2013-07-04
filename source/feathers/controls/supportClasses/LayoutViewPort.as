@@ -7,6 +7,7 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls.supportClasses
 {
+	import feathers.controls.Scroller;
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
 	import feathers.events.FeathersEventType;
@@ -27,7 +28,6 @@ package feathers.controls.supportClasses
 	 */
 	public final class LayoutViewPort extends FeathersControl implements IViewPort
 	{
-		private static const HELPER_POINT:Point = new Point();
 		private static const HELPER_BOUNDS:ViewPortBounds = new ViewPortBounds();
 		private static const HELPER_LAYOUT_RESULT:LayoutBoundsResult = new LayoutBoundsResult();
 
@@ -229,8 +229,17 @@ package feathers.controls.supportClasses
 				}
 				this._layout.addEventListener(Event.CHANGE, layout_changeHandler);
 				//if we don't have a layout, nothing will need to be redrawn
-				this.invalidate(INVALIDATION_FLAG_DATA);
+				this.invalidate(INVALIDATION_FLAG_LAYOUT);
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		public function readjustLayout():void
+		{
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+			this.invalidateParent();
 		}
 
 		override public function addChildAt(child:DisplayObject, index:int):DisplayObject
@@ -268,11 +277,11 @@ package feathers.controls.supportClasses
 
 		override protected function draw():void
 		{
-			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			const layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
 			const sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
 
-			if(sizeInvalid || dataInvalid || scrollInvalid)
+			if(sizeInvalid || layoutInvalid || scrollInvalid)
 			{
 				HELPER_BOUNDS.x = HELPER_BOUNDS.y = 0;
 				HELPER_BOUNDS.scrollX = this._horizontalScrollPosition;
@@ -292,34 +301,61 @@ package feathers.controls.supportClasses
 				}
 				else
 				{
+					var maxX:Number = isNaN(HELPER_BOUNDS.explicitWidth) ? 0 : HELPER_BOUNDS.explicitWidth;
+					var maxY:Number = isNaN(HELPER_BOUNDS.explicitHeight) ? 0 : HELPER_BOUNDS.explicitHeight;
 					this._ignoreChildChanges = true;
 					const itemCount:int = this.items.length;
 					for(var i:int = 0; i < itemCount; i++)
 					{
-						var control:IFeathersControl = this.items[i] as IFeathersControl;
-						if(control)
+						var item:DisplayObject = this.items[i];
+						if(item is IFeathersControl)
 						{
-							control.validate();
+							IFeathersControl(item).validate();
+						}
+						var itemMaxX:Number = item.x + item.width;
+						var itemMaxY:Number = item.y + item.height;
+						if(itemMaxX > maxX)
+						{
+							maxX = itemMaxX;
+						}
+						if(itemMaxY > maxY)
+						{
+							maxY = itemMaxY;
 						}
 					}
 					this._ignoreChildChanges = false;
-					var maxX:Number = isNaN(HELPER_BOUNDS.explicitWidth) ? 0 : HELPER_BOUNDS.explicitWidth;
-					var maxY:Number = isNaN(HELPER_BOUNDS.explicitHeight) ? 0 : HELPER_BOUNDS.explicitHeight;
-					for each(var item:DisplayObject in this.items)
+					var calculatedWidth:Number = maxX;
+					if(calculatedWidth < this._minVisibleWidth)
 					{
-						maxX = Math.max(maxX, item.x + item.width);
-						maxY = Math.max(maxY, item.y + item.height);
+						calculatedWidth = this._minVisibleWidth;
 					}
-					HELPER_POINT.x = Math.max(Math.min(maxX, this._maxVisibleWidth), this._minVisibleWidth);
-					HELPER_POINT.y = Math.max(Math.min(maxY, this._maxVisibleHeight), this._minVisibleHeight);
-					this.setSizeInternal(HELPER_POINT.x, HELPER_POINT.y, false);
+					else if(calculatedWidth > this._maxVisibleWidth)
+					{
+						calculatedWidth = this._maxVisibleWidth;
+					}
+					var calculatedHeight:Number = maxY;
+					if(calculatedHeight < this._minVisibleHeight)
+					{
+						calculatedHeight = this._minVisibleHeight;
+					}
+					else if(calculatedHeight > this._maxVisibleHeight)
+					{
+						calculatedHeight = this._maxVisibleHeight;
+					}
+					this.setSizeInternal(calculatedWidth, calculatedHeight, false);
 				}
 			}
 		}
 
+		private function invalidateParent():void
+		{
+			Scroller(this.parent).invalidate(INVALIDATION_FLAG_LAYOUT);
+		}
+
 		private function layout_changeHandler(event:Event):void
 		{
-			this.invalidate(INVALIDATION_FLAG_DATA);
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+			this.invalidateParent();
 		}
 
 		private function child_resizeHandler(event:Event):void
@@ -328,7 +364,8 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
-			this.invalidate(INVALIDATION_FLAG_DATA);
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+			this.invalidateParent();
 		}
 
 		private function child_layoutDataChangeHandler(event:Event):void
@@ -337,7 +374,8 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
-			this.invalidate(INVALIDATION_FLAG_DATA);
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+			this.invalidateParent();
 		}
 
 		private function addedHandler(event:Event):void
@@ -349,7 +387,8 @@ package feathers.controls.supportClasses
 			}
 			const index:int = this.getChildIndex(item);
 			this.items.splice(index, 0, item);
-			this.invalidate(INVALIDATION_FLAG_DATA);
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+			this.invalidateParent();
 		}
 
 		private function removedHandler(event:Event):void
@@ -361,7 +400,8 @@ package feathers.controls.supportClasses
 			}
 			const index:int = this.items.indexOf(item);
 			this.items.splice(index, 1);
-			this.invalidate(INVALIDATION_FLAG_DATA);
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+			this.invalidateParent();
 		}
 	}
 }

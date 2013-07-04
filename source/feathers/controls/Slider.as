@@ -77,11 +77,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
-
-		/**
-		 * @private
-		 */
 		protected static const INVALIDATION_FLAG_THUMB_FACTORY:String = "thumbFactory";
 
 		/**
@@ -348,6 +343,11 @@ package feathers.controls
 		 * slider.value = 12;</listing>
 		 *
 		 * @default 0
+		 *
+		 * @see #minimum
+		 * @see #maximum
+		 * @see #step
+		 * @see #page
 		 */
 		public function get value():Number
 		{
@@ -395,6 +395,7 @@ package feathers.controls
 		 *
 		 * @default 0
 		 *
+		 * @see #value
 		 * @see #maximum
 		 */
 		public function get minimum():Number
@@ -435,6 +436,9 @@ package feathers.controls
 		 * slider.value = 12;</listing>
 		 *
 		 * @default 0
+		 *
+		 * @see #value
+		 * @see #minimum
 		 */
 		public function get maximum():Number
 		{
@@ -476,6 +480,7 @@ package feathers.controls
 		 *
 		 * @default 0
 		 *
+		 * @see #value
 		 * @see #page
 		 */
 		public function get step():Number
@@ -518,6 +523,11 @@ package feathers.controls
 		 * slider.step = 1;
 		 * slider.page = 10
 		 * slider.value = 12;</listing>
+		 *
+		 * @default NaN
+		 *
+		 * @see #value
+		 * @see #page
 		 */
 		public function get page():Number
 		{
@@ -601,6 +611,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * slider.minimumPadding = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get minimumPadding():Number
 		{
@@ -634,6 +646,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * slider.maximumPadding = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get maximumPadding():Number
 		{
@@ -804,6 +818,8 @@ package feathers.controls
 		 *     return track;
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.Button
 		 * @see #minimumTrackProperties
 		 */
@@ -845,6 +861,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customMinimumTrackInitializer, "my-custom-minimum-track");</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_MINIMUM_TRACK
 		 * @see feathers.core.FeathersControl#nameList
@@ -898,6 +916,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * slider.minimumTrackProperties.defaultSkin = new Image( upTexture );
 		 * slider.minimumTrackProperties.downSkin = new Image( downTexture );</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #minimumTrackFactory
 		 * @see feathers.controls.Button
@@ -973,6 +993,8 @@ package feathers.controls
 		 *     return track;
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.Button
 		 * @see #maximumTrackProperties
 		 */
@@ -1014,6 +1036,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customMaximumTrackInitializer, "my-custom-maximum-track");</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_MAXIMUM_TRACK
 		 * @see feathers.core.FeathersControl#nameList
@@ -1067,6 +1091,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * slider.maximumTrackProperties.defaultSkin = new Image( upTexture );
 		 * slider.maximumTrackProperties.downSkin = new Image( downTexture );</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #maximumTrackFactory
 		 * @see feathers.controls.Button
@@ -1142,6 +1168,8 @@ package feathers.controls
 		 *     return thumb;
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.Button
 		 * @see #thumbProperties
 		 */
@@ -1183,6 +1211,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customThumbInitializer, "my-custom-thumb");</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_THUMB
 		 * @see feathers.core.FeathersControl#nameList
@@ -1235,6 +1265,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * slider.thumbProperties.defaultSkin = new Image( upTexture );
 		 * slider.thumbProperties.downSkin = new Image( downTexture );</listing>
+		 *
+		 * @default null
 		 * 
 		 * @see feathers.controls.Button
 		 * @see #thumbFactory
@@ -1823,21 +1855,13 @@ package feathers.controls
 				this._touchPointID = -1;
 				return;
 			}
-			const touches:Vector.<Touch> = event.getTouches(DisplayObject(event.currentTarget), null, HELPER_TOUCHES_VECTOR);
+
+			const track:DisplayObject = DisplayObject(event.currentTarget);
 			if(this._touchPointID >= 0)
 			{
-				var touch:Touch;
-				for each(var currentTouch:Touch in touches)
-				{
-					if(currentTouch.id == this._touchPointID)
-					{
-						touch = currentTouch;
-						break;
-					}
-				}
+				var touch:Touch = event.getTouch(track, null, this._touchPointID);
 				if(!touch)
 				{
-					HELPER_TOUCHES_VECTOR.length = 0;
 					return;
 				}
 				if(!this._showThumb && touch.phase == TouchPhase.MOVED)
@@ -1862,41 +1886,38 @@ package feathers.controls
 			}
 			else
 			{
-				for each(touch in touches)
+				touch = event.getTouch(track, TouchPhase.BEGAN);
+				if(!touch)
 				{
-					if(touch.phase == TouchPhase.BEGAN)
-					{
-						touch.getLocation(this, HELPER_POINT);
-						this._touchPointID = touch.id;
-						if(this._direction == DIRECTION_VERTICAL)
-						{
-							this._thumbStartX = HELPER_POINT.x;
-							this._thumbStartY = Math.min(this.actualHeight - this.thumb.height, Math.max(0, HELPER_POINT.y - this.thumb.height / 2));
-						}
-						else //horizontal
-						{
-							this._thumbStartX = Math.min(this.actualWidth - this.thumb.width, Math.max(0, HELPER_POINT.x - this.thumb.width / 2));
-							this._thumbStartY = HELPER_POINT.y;
-						}
-						this._touchStartX = HELPER_POINT.x;
-						this._touchStartY = HELPER_POINT.y;
-						this._touchValue = this.locationToValue(HELPER_POINT);
-						this.isDragging = true;
-						this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
-						if(this._showThumb)
-						{
-							this.adjustPage();
-							this.startRepeatTimer(this.adjustPage);
-						}
-						else
-						{
-							this.value = this._touchValue;
-						}
-						break;
-					}
+					return;
+				}
+				touch.getLocation(this, HELPER_POINT);
+				this._touchPointID = touch.id;
+				if(this._direction == DIRECTION_VERTICAL)
+				{
+					this._thumbStartX = HELPER_POINT.x;
+					this._thumbStartY = Math.min(this.actualHeight - this.thumb.height, Math.max(0, HELPER_POINT.y - this.thumb.height / 2));
+				}
+				else //horizontal
+				{
+					this._thumbStartX = Math.min(this.actualWidth - this.thumb.width, Math.max(0, HELPER_POINT.x - this.thumb.width / 2));
+					this._thumbStartY = HELPER_POINT.y;
+				}
+				this._touchStartX = HELPER_POINT.x;
+				this._touchStartY = HELPER_POINT.y;
+				this._touchValue = this.locationToValue(HELPER_POINT);
+				this.isDragging = true;
+				this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
+				if(this._showThumb)
+				{
+					this.adjustPage();
+					this.startRepeatTimer(this.adjustPage);
+				}
+				else
+				{
+					this.value = this._touchValue;
 				}
 			}
-			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 		
 		/**
@@ -1909,25 +1930,12 @@ package feathers.controls
 				this._touchPointID = -1;
 				return;
 			}
-			const touches:Vector.<Touch> = event.getTouches(this.thumb, null, HELPER_TOUCHES_VECTOR);
-			if(touches.length == 0)
-			{
-				return;
-			}
+
 			if(this._touchPointID >= 0)
 			{
-				var touch:Touch;
-				for each(var currentTouch:Touch in touches)
-				{
-					if(currentTouch.id == this._touchPointID)
-					{
-						touch = currentTouch;
-						break;
-					}
-				}
+				var touch:Touch = event.getTouch(this.thumb, null, this._touchPointID);
 				if(!touch)
 				{
-					HELPER_TOUCHES_VECTOR.length = 0;
 					return;
 				}
 				if(touch.phase == TouchPhase.MOVED)
@@ -1948,23 +1956,20 @@ package feathers.controls
 			}
 			else
 			{
-				for each(touch in touches)
+				touch = event.getTouch(this.thumb, TouchPhase.BEGAN);
+				if(!touch)
 				{
-					if(touch.phase == TouchPhase.BEGAN)
-					{
-						touch.getLocation(this, HELPER_POINT);
-						this._touchPointID = touch.id;
-						this._thumbStartX = this.thumb.x;
-						this._thumbStartY = this.thumb.y;
-						this._touchStartX = HELPER_POINT.x;
-						this._touchStartY = HELPER_POINT.y;
-						this.isDragging = true;
-						this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
-						break;
-					}
+					return;
 				}
+				touch.getLocation(this, HELPER_POINT);
+				this._touchPointID = touch.id;
+				this._thumbStartX = this.thumb.x;
+				this._thumbStartY = this.thumb.y;
+				this._touchStartX = HELPER_POINT.x;
+				this._touchStartY = HELPER_POINT.y;
+				this.isDragging = true;
+				this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 			}
-			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 
 		/**

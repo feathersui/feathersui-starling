@@ -59,6 +59,8 @@ package feathers.core
 		 * and the toggle group has items that were added previously, and there
 		 * is no currently selected item, the item at index <code>0</code> will
 		 * be selected automatically.</p>
+		 *
+		 * @default true
 		 */
 		public function get isSelectionRequired():Boolean
 		{
@@ -83,6 +85,8 @@ package feathers.core
 		
 		/**
 		 * The currently selected toggle.
+		 *
+		 * @default null
 		 */
 		public function get selectedItem():IToggle
 		{
@@ -108,6 +112,8 @@ package feathers.core
 		
 		/**
 		 * The index of the currently selected toggle.
+		 *
+		 * @default -1
 		 */
 		public function get selectedIndex():int
 		{

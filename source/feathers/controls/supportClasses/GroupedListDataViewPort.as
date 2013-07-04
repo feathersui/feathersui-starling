@@ -44,7 +44,6 @@ package feathers.controls.supportClasses
 		private static const HELPER_BOUNDS:ViewPortBounds = new ViewPortBounds();
 		private static const HELPER_LAYOUT_RESULT:LayoutBoundsResult = new LayoutBoundsResult();
 		private static const HELPER_VECTOR:Vector.<int> = new <int>[];
-		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
 
 		public function GroupedListDataViewPort()
 		{
@@ -179,12 +178,20 @@ package feathers.controls.supportClasses
 
 		public function get horizontalScrollStep():Number
 		{
-			return Math.min(this._typicalItemWidth, this._typicalItemHeight);
+			if(this._typicalItemWidth < this._typicalItemHeight)
+			{
+				return this._typicalItemWidth;
+			}
+			return this._typicalItemHeight;
 		}
 
 		public function get verticalScrollStep():Number
 		{
-			return Math.min(this._typicalItemWidth, this._typicalItemHeight);
+			if(this._typicalItemWidth < this._typicalItemHeight)
+			{
+				return this._typicalItemWidth;
+			}
+			return this._typicalItemHeight;
 		}
 
 		private var _typicalItemWidth:Number = NaN;
@@ -281,12 +288,12 @@ package feathers.controls.supportClasses
 			}
 			if(this._owner)
 			{
-				this._owner.removeEventListener(Event.SCROLL, owner_scrollHandler);
+				this._owner.removeEventListener(FeathersEventType.SCROLL_START, owner_scrollStartHandler);
 			}
 			this._owner = value;
 			if(this._owner)
 			{
-				this._owner.addEventListener(Event.SCROLL, owner_scrollHandler);
+				this._owner.addEventListener(FeathersEventType.SCROLL_START, owner_scrollStartHandler);
 			}
 		}
 
@@ -431,7 +438,7 @@ package feathers.controls.supportClasses
 				return;
 			}
 			this._typicalItem = value;
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		private var _itemRendererProperties:PropertyProxy;
@@ -685,7 +692,7 @@ package feathers.controls.supportClasses
 				return;
 			}
 			this._typicalHeader = value;
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		private var _headerRendererProperties:PropertyProxy;
@@ -780,7 +787,7 @@ package feathers.controls.supportClasses
 				return;
 			}
 			this._typicalFooter = value;
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		private var _footerRendererProperties:PropertyProxy;
@@ -839,7 +846,7 @@ package feathers.controls.supportClasses
 				}
 				this._layout.addEventListener(Event.CHANGE, layout_changeHandler);
 			}
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
 
 		private var _horizontalScrollPosition:Number = 0;
@@ -929,33 +936,34 @@ package feathers.controls.supportClasses
 			const itemRendererInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_ITEM_RENDERER_FACTORY);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
+			const layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
 
-			if(stylesInvalid || dataInvalid || itemRendererInvalid)
+			if(stylesInvalid || sizeInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
 			{
 				this.calculateTypicalValues();
 			}
 
-			if(scrollInvalid || sizeInvalid || dataInvalid || itemRendererInvalid)
+			if(scrollInvalid || sizeInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
 			{
 				this.refreshRenderers(itemRendererInvalid);
 			}
-			if(scrollInvalid || sizeInvalid || dataInvalid || stylesInvalid || itemRendererInvalid)
+			if(scrollInvalid || stylesInvalid || sizeInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
 			{
 				this.refreshHeaderRendererStyles();
 				this.refreshFooterRendererStyles();
 				this.refreshItemRendererStyles();
 			}
-			if(scrollInvalid || selectionInvalid || sizeInvalid || dataInvalid || itemRendererInvalid)
+			if(scrollInvalid || selectionInvalid || sizeInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
 			{
 				this.refreshSelection();
 			}
 
-			if(scrollInvalid || stateInvalid || sizeInvalid || dataInvalid || itemRendererInvalid)
+			if(scrollInvalid || stateInvalid || sizeInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
 			{
 				this.refreshEnabled();
 			}
 
-			if(scrollInvalid || dataInvalid || itemRendererInvalid || sizeInvalid || stylesInvalid)
+			if(scrollInvalid || stylesInvalid || sizeInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
 			{
 				this._ignoreRendererResizing = true;
 				this._layout.layout(this._layoutItems, HELPER_BOUNDS, HELPER_LAYOUT_RESULT);
@@ -1032,14 +1040,15 @@ package feathers.controls.supportClasses
 				}
 			}
 		}
-		
-		private function invalidateParent():void
+
+		private function invalidateParent(flag:String = INVALIDATION_FLAG_ALL):void
 		{
-			Scroller(this.parent).invalidate(INVALIDATION_FLAG_DATA);
+			Scroller(this.parent).invalidate(flag);
 		}
 
 		private function calculateTypicalValues():void
 		{
+			this._ignoreRendererResizing = true;
 			var typicalHeader:Object = this._typicalHeader;
 			var typicalFooter:Object = this._typicalFooter;
 			if(!typicalHeader || !typicalFooter)
@@ -1059,9 +1068,9 @@ package feathers.controls.supportClasses
 				else
 				{
 					this._typicalHeaderWidth = 0;
-					this._typicalFooterWidth = 0;
-					this._typicalFooterHeight= 0;
 					this._typicalHeaderHeight = 0;
+					this._typicalFooterWidth = 0;
+					this._typicalFooterHeight = 0;
 				}
 			}
 
@@ -1120,22 +1129,21 @@ package feathers.controls.supportClasses
 					this.destroyFooterRenderer(typicalFooterRenderer);
 				}
 			}
+			this._ignoreRendererResizing = false;
 
 			var typicalItem:Object = this._typicalItem;
+			if(!typicalItem && this._dataProvider && this._dataProvider.getLength() > 0 && this._dataProvider.getLength(0) > 0)
+			{
+				typicalItem = this._dataProvider.getItemAt(0, 0);
+			}
 			if(!typicalItem)
 			{
-				if(this._dataProvider && this._dataProvider.getLength() > 0)
-				{
-					typicalItem = this._dataProvider.getItemAt(0);
-				}
-				else
-				{
-					this._typicalItemWidth = 0;
-					this._typicalItemHeight = 0;
-					return;
-				}
+				this._typicalItemWidth = 0;
+				this._typicalItemHeight = 0;
+				return;
 			}
 
+			this._ignoreRendererResizing = true;
 			needsDestruction = true;
 			var typicalItemRenderer:IGroupedListItemRenderer = this._itemRendererMap[typicalItem];
 			if(typicalItemRenderer)
@@ -1161,6 +1169,7 @@ package feathers.controls.supportClasses
 			{
 				this.destroyItemRenderer(typicalItemRenderer);
 			}
+			this._ignoreRendererResizing = false;
 		}
 
 		private function refreshItemRendererStyles():void
@@ -1459,6 +1468,8 @@ package feathers.controls.supportClasses
 				this._minimumItemCount = Math.ceil(HELPER_POINT.y / this._typicalItemHeight) + 1;
 			}
 			var currentIndex:int = 0;
+			var unrenderedHeadersLastIndex:int = this._unrenderedHeaders.length;
+			var unrenderedFootersLastIndex:int = this._unrenderedFooters.length;
 			for(i = 0; i < groupCount; i++)
 			{
 				group = this._dataProvider.getItemAt(i);
@@ -1484,8 +1495,10 @@ package feathers.controls.supportClasses
 						}
 						else
 						{
-							this._unrenderedHeaders.push(i);
-							this._unrenderedHeaders.push(currentIndex);
+							this._unrenderedHeaders[unrenderedHeadersLastIndex] = i;
+							unrenderedHeadersLastIndex++;
+							this._unrenderedHeaders[unrenderedHeadersLastIndex] = currentIndex;
+							unrenderedHeadersLastIndex++;
 						}
 					}
 					currentIndex++;
@@ -1545,8 +1558,10 @@ package feathers.controls.supportClasses
 						}
 						else
 						{
-							this._unrenderedFooters.push(i);
-							this._unrenderedFooters.push(currentIndex);
+							this._unrenderedFooters[unrenderedFootersLastIndex] = i;
+							unrenderedFootersLastIndex++;
+							this._unrenderedFooters[unrenderedFootersLastIndex] = currentIndex;
+							unrenderedFootersLastIndex++;
 						}
 					}
 					currentIndex++;
@@ -2093,7 +2108,7 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
-		private function owner_scrollHandler(event:Event):void
+		private function owner_scrollStartHandler(event:Event):void
 		{
 			this._isScrolling = true;
 		}
@@ -2101,7 +2116,6 @@ package feathers.controls.supportClasses
 		private function dataProvider_changeHandler(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_DATA);
-			this.invalidateParent();
 		}
 
 		private function dataProvider_addItemHandler(event:Event, indices:Array):void
@@ -2256,8 +2270,8 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
-			this.invalidateParent();
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+			this.invalidateParent(INVALIDATION_FLAG_LAYOUT);
 		}
 
 		private function itemRenderer_resizeHandler(event:Event):void
@@ -2273,8 +2287,8 @@ package feathers.controls.supportClasses
 			}
 			const renderer:IGroupedListItemRenderer = IGroupedListItemRenderer(event.currentTarget);
 			layout.resetVariableVirtualCacheAtIndex(renderer.layoutIndex, DisplayObject(renderer));
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
-			this.invalidateParent();
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+			this.invalidateParent(INVALIDATION_FLAG_LAYOUT);
 		}
 
 		private function headerOrFooterRenderer_resizeHandler(event:Event):void
@@ -2290,7 +2304,8 @@ package feathers.controls.supportClasses
 			}
 			const renderer:IGroupedListHeaderOrFooterRenderer = IGroupedListHeaderOrFooterRenderer(event.currentTarget);
 			layout.resetVariableVirtualCacheAtIndex(renderer.layoutIndex, DisplayObject(renderer));
-			this.invalidate(INVALIDATION_FLAG_SCROLL);
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+			this.invalidateParent(INVALIDATION_FLAG_LAYOUT);
 		}
 
 		private function renderer_changeHandler(event:Event):void
@@ -2324,45 +2339,25 @@ package feathers.controls.supportClasses
 				return;
 			}
 
-			const touches:Vector.<Touch> = event.getTouches(this, null, HELPER_TOUCHES_VECTOR);
-			if(touches.length == 0)
-			{
-				return;
-			}
 			if(this.touchPointID >= 0)
 			{
-				var touch:Touch;
-				for each(var currentTouch:Touch in touches)
-				{
-					if(currentTouch.id == this.touchPointID)
-					{
-						touch = currentTouch;
-						break;
-					}
-				}
+				var touch:Touch = event.getTouch(this, TouchPhase.ENDED, this.touchPointID);
 				if(!touch)
 				{
-					HELPER_TOUCHES_VECTOR.length = 0;
 					return;
 				}
-				if(touch.phase == TouchPhase.ENDED)
-				{
-					this.touchPointID = -1;
-				}
+				this.touchPointID = -1;
 			}
 			else
 			{
-				for each(touch in touches)
+				touch = event.getTouch(this, TouchPhase.BEGAN);
+				if(!touch)
 				{
-					if(touch.phase == TouchPhase.BEGAN)
-					{
-						this.touchPointID = touch.id;
-						this._isScrolling = false;
-						break;
-					}
+					return;
 				}
+				this.touchPointID = touch.id;
+				this._isScrolling = false;
 			}
-			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 	}
 }

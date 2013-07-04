@@ -113,11 +113,6 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
-
-		/**
-		 * @private
-		 */
 		protected static function defaultLoaderFactory():ImageLoader
 		{
 			return new ImageLoader();
@@ -587,7 +582,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected var _accessoryTouchPointID:int = -1;
+		protected var accessoryTouchPointID:int = -1;
 
 		/**
 		 * If enabled, calls owner.stopScrolling() when TouchEvents are
@@ -1367,6 +1362,8 @@ package feathers.controls.renderers
 		 *    return loader;
 		 * };</listing>
 		 *
+		 * @default function():ImageLoader { return new ImageLoader(); }
+		 *
 		 * @see feathers.controls.ImageLoader
 		 * @see #iconSourceField
 		 * @see #iconSourceFunction
@@ -1414,6 +1411,8 @@ package feathers.controls.renderers
 		 *    return loader;
 		 * };</listing>
 		 *
+		 * @default function():ImageLoader { return new ImageLoader(); }
+		 *
 		 * @see feathers.controls.ImageLoader
 		 * @see #accessorySourceField;
 		 * @see #accessorySourceFunction;
@@ -1459,6 +1458,8 @@ package feathers.controls.renderers
 		 *    renderer.embedFonts = true;
 		 *    return renderer;
 		 * };</listing>
+		 *
+		 * @default null
 		 *
 		 * @see feathers.core.ITextRenderer
 		 * @see feathers.core.FeathersControl#defaultTextRendererFactory
@@ -1510,6 +1511,8 @@ package feathers.controls.renderers
 		 * <listing version="3.0">
 		 * renderer.&#64;accessoryLabelProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333 );
 		 * renderer.&#64;accessoryLabelProperties.embedFonts = true;</listing>
+		 *
+		 * @default null
 		 *
 		 * @see feathers.core.ITextRenderer
 		 * @see #accessoryLabelFactory
@@ -1592,13 +1595,27 @@ package feathers.controls.renderers
 		{
 			if(this._labelFunction != null)
 			{
-				return this._labelFunction(item).toString();
+				var labelResult:Object = this._labelFunction(item);
+				if(labelResult is String)
+				{
+					return labelResult as String;
+				}
+				return labelResult.toString();
 			}
 			else if(this._labelField != null && item && item.hasOwnProperty(this._labelField))
 			{
-				return item[this._labelField].toString();
+				labelResult = item[this._labelField];
+				if(labelResult is String)
+				{
+					return labelResult as String;
+				}
+				return labelResult.toString();
 			}
-			else if(item is Object)
+			else if(item is String)
+			{
+				return item as String;
+			}
+			else if(item)
 			{
 				return item.toString();
 			}
@@ -1673,14 +1690,28 @@ package feathers.controls.renderers
 			}
 			else if(this._accessoryLabelFunction != null)
 			{
-				var label:String = this._accessoryLabelFunction(item).toString();
-				this.refreshAccessoryLabel(label);
+				var labelResult:Object = this._accessoryLabelFunction(item);
+				if(labelResult is String)
+				{
+					this.refreshAccessoryLabel(labelResult as String);
+				}
+				else
+				{
+					this.refreshAccessoryLabel(labelResult.toString());
+				}
 				return DisplayObject(this.accessoryLabel);
 			}
 			else if(this._accessoryLabelField != null && item && item.hasOwnProperty(this._accessoryLabelField))
 			{
-				label = item[this._accessoryLabelField].toString();
-				this.refreshAccessoryLabel(label);
+				labelResult = item[this._accessoryLabelField];
+				if(labelResult is String)
+				{
+					this.refreshAccessoryLabel(labelResult as String);
+				}
+				else
+				{
+					this.refreshAccessoryLabel(labelResult.toString());
+				}
 				return DisplayObject(this.accessoryLabel);
 			}
 			else if(this._accessoryFunction != null)
@@ -2419,20 +2450,20 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected function handleOwnerScroll():void
+		protected function owner_scrollStartHandler(event:Event):void
 		{
-			this._touchPointID = -1;
+			if(this.touchPointID < 0 && this.accessoryTouchPointID < 0)
+			{
+				return;
+			}
+			this.resetTouchState();
 			if(this._stateDelayTimer && this._stateDelayTimer.running)
 			{
 				this._stateDelayTimer.stop();
 			}
 			this._delayedCurrentState = null;
-			if(this._currentState != Button.STATE_UP)
-			{
-				super.currentState = Button.STATE_UP;
-			}
 
-			if(this._accessoryTouchPointID >= 0)
+			if(this.accessoryTouchPointID >= 0)
 			{
 				Scroller(this._owner).stopScrolling();
 			}
@@ -2444,7 +2475,7 @@ package feathers.controls.renderers
 		override protected function button_removedFromStageHandler(event:Event):void
 		{
 			super.button_removedFromStageHandler(event);
-			this._accessoryTouchPointID = -1;
+			this.accessoryTouchPointID = -1;
 		}
 
 		/**
@@ -2479,10 +2510,32 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		override protected function button_touchHandler(event:TouchEvent):void
+		{
+			if(this.accessory && this.touchPointID < 0)
+			{
+				//ignore all touches on accessory. return to up state.
+				var touch:Touch = event.getTouch(this.accessory);
+				if(touch)
+				{
+					this.currentState = Button.STATE_UP;
+					return;
+				}
+			}
+			super.button_touchHandler(event);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function accessory_touchHandler(event:TouchEvent):void
 		{
-			if(!this._isEnabled ||
-				!this.stopScrollingOnAccessoryTouch ||
+			if(!this._isEnabled)
+			{
+				this.accessoryTouchPointID = -1;
+				return;
+			}
+			if(!this.stopScrollingOnAccessoryTouch ||
 				this.accessory == this.accessoryLabel ||
 				this.accessory == this.accessoryImage)
 			{
@@ -2490,46 +2543,24 @@ package feathers.controls.renderers
 				return;
 			}
 
-			const touches:Vector.<Touch> = event.getTouches(this.accessory, null, HELPER_TOUCHES_VECTOR);
-			if(touches.length == 0)
+			if(this.accessoryTouchPointID >= 0)
 			{
-				return;
-			}
-			if(this._accessoryTouchPointID >= 0)
-			{
-				var touch:Touch;
-				for each(var currentTouch:Touch in touches)
-				{
-					if(currentTouch.id == this._accessoryTouchPointID)
-					{
-						touch = currentTouch;
-						break;
-					}
-				}
-
+				var touch:Touch = event.getTouch(this.accessory, TouchPhase.ENDED, this.accessoryTouchPointID);
 				if(!touch)
 				{
-					HELPER_TOUCHES_VECTOR.length = 0;
 					return;
 				}
-
-				if(touch.phase == TouchPhase.ENDED)
-				{
-					this._accessoryTouchPointID = -1;
-				}
+				this.accessoryTouchPointID = -1;
 			}
 			else //if we get here, we don't have a saved touch ID yet
 			{
-				for each(touch in touches)
+				touch = event.getTouch(this.accessory, TouchPhase.BEGAN);
+				if(!touch)
 				{
-					if(touch.phase == TouchPhase.BEGAN)
-					{
-						this._accessoryTouchPointID = touch.id;
-						break;
-					}
+					return;
 				}
+				this.accessoryTouchPointID = touch.id;
 			}
-			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 
 		/**

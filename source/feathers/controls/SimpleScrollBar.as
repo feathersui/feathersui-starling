@@ -77,11 +77,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
-
-		/**
-		 * @private
-		 */
 		protected static const INVALIDATION_FLAG_THUMB_FACTORY:String = "thumbFactory";
 
 		/**
@@ -216,6 +211,14 @@ package feathers.controls
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @default 0
+		 *
+		 * @see #maximum
+		 * @see #minimum
+		 * @see #step
+		 * @see #page
+		 * @see #event:change
 		 */
 		public function get value():Number
 		{
@@ -250,6 +253,11 @@ package feathers.controls
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @default 0
+		 *
+		 * @see #value
+		 * @see #maximum
 		 */
 		public function get minimum():Number
 		{
@@ -276,6 +284,11 @@ package feathers.controls
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @default 0
+		 *
+		 * @see #value
+		 * @see #minimum
 		 */
 		public function get maximum():Number
 		{
@@ -302,6 +315,11 @@ package feathers.controls
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @default 0
+		 *
+		 * @see #value
+		 * @see #page
 		 */
 		public function get step():Number
 		{
@@ -323,6 +341,11 @@ package feathers.controls
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @default 0
+		 *
+		 * @see #value
+		 * @see #step
 		 */
 		public function get page():Number
 		{
@@ -354,6 +377,11 @@ package feathers.controls
 		 * scrollBar.padding = 20;</listing>
 		 *
 		 * @default 0
+		 *
+		 * @see #paddingTop
+		 * @see #paddingRight
+		 * @see #paddingBottom
+		 * @see #paddingLeft
 		 */
 		public function get padding():Number
 		{
@@ -594,6 +622,8 @@ package feathers.controls
 		 *     return thumb;
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.Button
 		 * @see #thumbProperties
 		 */
@@ -635,6 +665,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customThumbInitializer, "my-custom-thumb");</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_THUMB
 		 * @see feathers.core.FeathersControl#nameList
@@ -687,6 +719,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * scrollBar.thumbProperties.defaultSkin = new Image( upTexture );
 		 * scrollBar.thumbProperties.downSkin = new Image( downTexture );</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #thumbFactory
 		 * @see feathers.controls.Button
@@ -959,24 +993,62 @@ package feathers.controls
 			}
 			if(this._direction == DIRECTION_VERTICAL)
 			{
-				const thumbMinHeight:Number = this.thumb.minHeight > 0 ? this.thumb.minHeight : this.thumbOriginalHeight;
-				const thumbHeight:Number = contentHeight * adjustedPageStep / range;
-				const heightOffset:Number = Math.min(thumbHeight, contentHeight - thumbHeight) * valueOffset / (range * thumbHeight / contentHeight);
 				this.thumb.width = this.thumbOriginalWidth;
-				this.thumb.height = Math.max(thumbMinHeight, -heightOffset + thumbHeight);
+				const thumbMinHeight:Number = this.thumb.minHeight > 0 ? this.thumb.minHeight : this.thumbOriginalHeight;
+				var thumbHeight:Number = contentHeight * adjustedPageStep / range;
+				var heightOffset:Number = contentHeight - thumbHeight;
+				if(heightOffset > thumbHeight)
+				{
+					heightOffset = thumbHeight;
+				}
+				heightOffset *=  valueOffset / (range * thumbHeight / contentHeight);
+				thumbHeight -= heightOffset;
+				if(thumbHeight < thumbMinHeight)
+				{
+					thumbHeight = thumbMinHeight;
+				}
+				this.thumb.height = thumbHeight;
 				this.thumb.x = this._paddingLeft + (this.actualWidth - this._paddingLeft - this._paddingRight - this.thumb.width) / 2;
 				const trackScrollableHeight:Number = contentHeight - this.thumb.height;
-				this.thumb.y = this._paddingTop + Math.max(0, Math.min(trackScrollableHeight, trackScrollableHeight * (this._value - this._minimum) / range));
+				var thumbY:Number = trackScrollableHeight * (this._value - this._minimum) / range;
+				if(thumbY > trackScrollableHeight)
+				{
+					thumbY = trackScrollableHeight;
+				}
+				else if(thumbY < 0)
+				{
+					thumbY = 0;
+				}
+				this.thumb.y = this._paddingTop + thumbY;
 			}
 			else //horizontal
 			{
 				const thumbMinWidth:Number = this.thumb.minWidth > 0 ? this.thumb.minWidth : this.thumbOriginalWidth;
-				const thumbWidth:Number = contentWidth * adjustedPageStep / range;
-				const widthOffset:Number = Math.min(thumbWidth, contentWidth - thumbWidth) * valueOffset / (range * thumbWidth / contentWidth);
-				this.thumb.width = Math.max(thumbMinWidth, -widthOffset + thumbWidth);
+				var thumbWidth:Number = contentWidth * adjustedPageStep / range;
+				var widthOffset:Number = contentWidth - thumbWidth;
+				if(widthOffset > thumbWidth)
+				{
+					widthOffset = thumbWidth;
+				}
+				widthOffset *= valueOffset / (range * thumbWidth / contentWidth);
+				thumbWidth -= widthOffset;
+				if(thumbWidth < thumbMinWidth)
+				{
+					thumbWidth = thumbMinWidth;
+				}
+				this.thumb.width = thumbWidth;
 				this.thumb.height = this.thumbOriginalHeight;
 				const trackScrollableWidth:Number = contentWidth - this.thumb.width;
-				this.thumb.x = this._paddingLeft + Math.max(0, Math.min(trackScrollableWidth, trackScrollableWidth * (this._value - this._minimum) / range));
+				var thumbX:Number = trackScrollableWidth * (this._value - this._minimum) / range;
+				if(thumbX > trackScrollableWidth)
+				{
+					thumbX = trackScrollableWidth;
+				}
+				else if(thumbX < 0)
+				{
+					thumbX = 0;
+				}
+				this.thumb.x = this._paddingLeft + thumbX;
 				this.thumb.y = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - this.thumb.height) / 2;
 			}
 		}
@@ -1082,53 +1154,34 @@ package feathers.controls
 				this._touchPointID = -1;
 				return;
 			}
-			const touches:Vector.<Touch> = event.getTouches(this.track, null, HELPER_TOUCHES_VECTOR);
-			if(touches.length == 0)
-			{
-				return;
-			}
+
 			if(this._touchPointID >= 0)
 			{
-				var touch:Touch;
-				for each(var currentTouch:Touch in touches)
-				{
-					if(currentTouch.id == this._touchPointID)
-					{
-						touch = currentTouch;
-						break;
-					}
-				}
+				var touch:Touch = event.getTouch(this.track, TouchPhase.ENDED, this._touchPointID);
 				if(!touch)
 				{
-					HELPER_TOUCHES_VECTOR.length = 0;
 					return;
 				}
-				if(touch.phase == TouchPhase.ENDED)
-				{
-					this._touchPointID = -1;
-					this._repeatTimer.stop();
-				}
+				this._touchPointID = -1;
+				this._repeatTimer.stop();
 			}
 			else
 			{
-				for each(touch in touches)
+				touch = event.getTouch(this.track, TouchPhase.BEGAN);
+				if(!touch)
 				{
-					if(touch.phase == TouchPhase.BEGAN)
-					{
-						this._touchPointID = touch.id;
-						touch.getLocation(this, HELPER_POINT);
-						this._touchStartX = HELPER_POINT.x;
-						this._touchStartY = HELPER_POINT.y;
-						this._thumbStartX = HELPER_POINT.x;
-						this._thumbStartY = HELPER_POINT.y;
-						this._touchValue = this.locationToValue(HELPER_POINT);
-						this.adjustPage();
-						this.startRepeatTimer(this.adjustPage);
-						break;
-					}
+					return;
 				}
+				this._touchPointID = touch.id;
+				touch.getLocation(this, HELPER_POINT);
+				this._touchStartX = HELPER_POINT.x;
+				this._touchStartY = HELPER_POINT.y;
+				this._thumbStartX = HELPER_POINT.x;
+				this._thumbStartY = HELPER_POINT.y;
+				this._touchValue = this.locationToValue(HELPER_POINT);
+				this.adjustPage();
+				this.startRepeatTimer(this.adjustPage);
 			}
-			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 
 		/**
@@ -1140,25 +1193,12 @@ package feathers.controls
 			{
 				return;
 			}
-			const touches:Vector.<Touch> = event.getTouches(this.thumb, null, HELPER_TOUCHES_VECTOR);
-			if(touches.length == 0)
-			{
-				return;
-			}
+
 			if(this._touchPointID >= 0)
 			{
-				var touch:Touch;
-				for each(var currentTouch:Touch in touches)
-				{
-					if(currentTouch.id == this._touchPointID)
-					{
-						touch = currentTouch;
-						break;
-					}
-				}
+				var touch:Touch = event.getTouch(this.thumb, null, this._touchPointID);
 				if(!touch)
 				{
-					HELPER_TOUCHES_VECTOR.length = 0;
 					return;
 				}
 
@@ -1185,23 +1225,20 @@ package feathers.controls
 			}
 			else
 			{
-				for each(touch in touches)
+				touch = event.getTouch(this.thumb, TouchPhase.BEGAN);
+				if(!touch)
 				{
-					if(touch.phase == TouchPhase.BEGAN)
-					{
-						touch.getLocation(this, HELPER_POINT);
-						this._touchPointID = touch.id;
-						this._thumbStartX = this.thumb.x;
-						this._thumbStartY = this.thumb.y;
-						this._touchStartX = HELPER_POINT.x;
-						this._touchStartY = HELPER_POINT.y;
-						this.isDragging = true;
-						this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
-						break;
-					}
+					return;
 				}
+				touch.getLocation(this, HELPER_POINT);
+				this._touchPointID = touch.id;
+				this._thumbStartX = this.thumb.x;
+				this._thumbStartY = this.thumb.y;
+				this._touchStartX = HELPER_POINT.x;
+				this._touchStartY = HELPER_POINT.y;
+				this.isDragging = true;
+				this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 			}
-			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 
 		/**

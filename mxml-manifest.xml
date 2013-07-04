@@ -7,6 +7,7 @@
 	<component id="Header" class="feathers.controls.Header"/>
 	<component id="ImageLoader" class="feathers.controls.ImageLoader"/>
 	<component id="Label" class="feathers.controls.Label"/>
+	<component id="LayoutGroup" class="feathers.controls.LayoutGroup"/>
 	<component id="List" class="feathers.controls.List"/>
 	<component id="NumericStepper" class="feathers.controls.NumericStepper"/>
 	<component id="PageIndicator" class="feathers.controls.PageIndicator"/>
@@ -30,6 +31,7 @@
 	<component id="DefaultGroupedListItemRenderer" class="feathers.controls.renderers.DefaultGroupedListItemRenderer"/>
 	<component id="DefaultGroupedListHeaderOrFooterRenderer" class="feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer"/>
 	<component id="DefaultListItemRenderer" class="feathers.controls.renderers.DefaultListItemRenderer"/>
+	<component id="LayoutGroupListItemRenderer" class="feathers.controls.renderers.LayoutGroupListItemRenderer"/>
 
 	<component id="CalloutPopUpContentManager" class="feathers.controls.popups.CalloutPopUpContentManager"/>
 	<component id="DropDownPopUpContentManager" class="feathers.controls.popups.DropDownPopUpContentManager"/>
