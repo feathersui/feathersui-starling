@@ -17,6 +17,7 @@ package feathers.controls
 	import feathers.layout.ViewPortBounds;
 
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -290,6 +291,7 @@ package feathers.controls
 		{
 			const layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
 			const sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
+			const clippingInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_CLIPPING);
 
 			if(sizeInvalid || layoutInvalid)
 			{
@@ -337,6 +339,11 @@ package feathers.controls
 					this.setSizeInternal(maxX, maxY, false);
 				}
 			}
+
+			if(sizeInvalid || clippingInvalid)
+			{
+				this.refreshClipRect();
+			}
 		}
 
 		/**
@@ -355,6 +362,31 @@ package feathers.controls
 				this.addChild(child);
 			}
 			this._mxmlContentIsReady = true;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshClipRect():void
+		{
+			if(this._clipContent && this.actualWidth > 0 && this.actualHeight > 0)
+			{
+				if(!this.clipRect)
+				{
+					this.clipRect = new Rectangle();
+				}
+
+				const clipRect:Rectangle = this.clipRect;
+				clipRect.x = 0;
+				clipRect.y = 0;
+				clipRect.width = this.actualWidth;
+				clipRect.height = this.actualHeight;
+				this.clipRect = clipRect;
+			}
+			else
+			{
+				this.clipRect = null;
+			}
 		}
 
 		/**
