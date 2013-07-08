@@ -2325,6 +2325,10 @@ package feathers.controls
 		override protected function draw():void
 		{
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
+			//we don't use this flag in this class, but subclasses will use it,
+			//and it's better to handle it here instead of having them
+			//invalidate unrelated flags
+			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			const scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
 			const clippingInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_CLIPPING);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
@@ -2363,13 +2367,15 @@ package feathers.controls
 				this.verticalScrollBar.validate();
 			}
 
+			const oldMaxHorizontalScrollPosition:Number = this._maxHorizontalScrollPosition;
+			const oldMaxVerticalScrollPosition:Number = this._maxVerticalScrollPosition;
 			var loopCount:int = 0;
 			do
 			{
 				this._hasViewPortBoundsChanged = false;
 				//even if fixed, we need to measure without them first because
 				//if the scroll policy is auto, we only show them when needed.
-				if(scrollInvalid || sizeInvalid || stylesInvalid || scrollBarInvalid)
+				if(scrollInvalid || dataInvalid || sizeInvalid || stylesInvalid || scrollBarInvalid)
 				{
 					this.calculateViewPortOffsets(true, false);
 					this.refreshViewPortBoundsWithoutFixedScrollBars();
@@ -2383,9 +2389,10 @@ package feathers.controls
 				//explicitWidth/Height.
 				this.calculateViewPortOffsets(false, true);
 
-				if(scrollInvalid || sizeInvalid || stylesInvalid || scrollBarInvalid)
+				if(scrollInvalid || dataInvalid || sizeInvalid || stylesInvalid || scrollBarInvalid)
 				{
 					this.refreshViewPortBoundsWithFixedScrollBars();
+					this.refreshScrollValues(scrollInvalid);
 				}
 				loopCount++;
 				if(loopCount >= 10)
@@ -2398,6 +2405,11 @@ package feathers.controls
 			while(this._hasViewPortBoundsChanged)
 			this._lastViewPortWidth = viewPort.width;
 			this._lastViewPortHeight = viewPort.height;
+			if(scrollInvalid || this._maxHorizontalScrollPosition != oldMaxHorizontalScrollPosition ||
+				this._maxVerticalScrollPosition != oldMaxVerticalScrollPosition)
+			{
+				this.dispatchEventWith(Event.SCROLL);
+			}
 
 			this.showOrHideChildren();
 
@@ -2408,7 +2420,6 @@ package feathers.controls
 
 			if(scrollInvalid || sizeInvalid || stylesInvalid || scrollBarInvalid)
 			{
-				this.refreshScrollValues(scrollInvalid);
 				this.refreshScrollBarValues();
 			}
 
@@ -2802,10 +2813,6 @@ package feathers.controls
 					this._targetVerticalScrollPosition -= (oldMaxVSP - this._maxVerticalScrollPosition);
 					this.throwTo(NaN, this._targetVerticalScrollPosition, this._verticalAutoScrollTween.totalTime - this._verticalAutoScrollTween.currentTime);
 				}
-			}
-			if(maximumPositionsChanged || isScrollInvalid)
-			{
-				this.dispatchEventWith(Event.SCROLL);
 			}
 		}
 
