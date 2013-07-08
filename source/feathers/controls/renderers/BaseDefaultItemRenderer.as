@@ -1931,7 +1931,7 @@ package feathers.controls.renderers
 		 */
 		protected function commitData():void
 		{
-			if(this._owner)
+			if(this._data && this._owner)
 			{
 				if(this._itemHasLabel)
 				{
