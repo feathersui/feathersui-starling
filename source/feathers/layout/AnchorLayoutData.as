@@ -340,10 +340,10 @@ package feathers.layout
 
 		/**
 		 * The position, in pixels, of the horizontal center relative to the
-		 * horizontal center anchor, or, if there is no vertical center anchor,
-		 * then the position is relative to the horizontal center of the parent
-		 * container. If this value is <code>NaN</code>, the object's horizontal
-		 * center will not be anchored.
+		 * horizontal center anchor, or, if there is no horizontal center
+		 * anchor, then the position is relative to the horizontal center of the
+		 * parent container. If this value is <code>NaN</code>, the object's
+		 * horizontal center will not be anchored.
 		 *
 		 * @default NaN
 		 *
