@@ -25,12 +25,21 @@ package feathers.core
 	import starling.utils.MatrixUtil;
 
 	/**
-	 * Dispatched after initialize() has been called, but before the first time
-	 * that draw() has been called.
+	 * Dispatched after <code>initialize()</code> has been called, but before
+	 * the first time that <code>draw()</code> has been called.
 	 *
 	 * @eventType feathers.events.FeathersEventType.INITIALIZE
 	 */
 	[Event(name="initialize",type="starling.events.Event")]
+
+	/**
+	 * Dispatched after the component has validated for the first time. Both
+	 * <code>initialize()</code> and <code>draw()</code> will have been called,
+	 * and all children will have been created.
+	 *
+	 * @eventType feathers.events.FeathersEventType.CREATION_COMPLETE
+	 */
+	[Event(name="creationComplete",type="starling.events.Event")]
 
 	/**
 	 * Dispatched when the width or height of the control changes.
@@ -1133,6 +1142,12 @@ package feathers.core
 
 		/**
 		 * @private
+		 * Flag to indicate that the control has validated at least once.
+		 */
+		protected var _hasValidated:Boolean = false;
+
+		/**
+		 * @private
 		 */
 		protected var _invalidateCount:int = 0;
 
@@ -1335,6 +1350,11 @@ package feathers.core
 				delete this._delayedInvalidationFlags[flag];
 			}
 			this._isValidating = false;
+			if(!this._hasValidated)
+			{
+				this._hasValidated = true;
+				this.dispatchEventWith(FeathersEventType.CREATION_COMPLETE);
+			}
 		}
 
 		/**
