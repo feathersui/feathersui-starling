@@ -2216,11 +2216,18 @@ package feathers.controls
 		 * is greater than zero, the scroll will animate. The duration is in
 		 * seconds.
 		 *
+		 * <p>Because this function is primarily designed for animation, using a
+		 * duration of <code>0</code> may require a frame or two before the
+		 * scroll position updates.</p>
+		 *
 		 * <p>In the following example, we scroll to the maximum vertical scroll
 		 * position:</p>
 		 *
 		 * <listing version="3.0">
 		 * scroller.scrollToPosition( scroller.horizontalScrollPosition, scroller.maxVerticalScrollPosition );</listing>
+		 *
+		 * @see #horizontalScrollPosition
+		 * @see #verticalScrollPosition
 		 */
 		public function scrollToPosition(horizontalScrollPosition:Number, verticalScrollPosition:Number, animationDuration:Number = 0):void
 		{
