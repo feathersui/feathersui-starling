@@ -909,6 +909,15 @@ package feathers.controls
 		 * <code>animationDuration</code> is greater than zero, the scroll will
 		 * animate. The duration is in seconds.
 		 *
+		 * <p>If the layout is virtual with variable item dimensions, this
+		 * function may not accurately scroll to the exact correct position. A
+		 * virtual layout with variable item dimensions is often forced to
+		 * estimate positions, so the results aren't guaranteed to be accurate.</p>
+		 *
+		 * <p>If you want to scroll to the end of the list, it is better to use
+		 * <code>scrollToPosition()</code> with <code>maxHorizontalScrollPosition</code>
+		 * or <code>maxVerticalScrollPosition</code>.</p>
+		 *
 		 * <p>In the following example, the list is scrolled to display index 10:</p>
 		 *
 		 * <listing version="3.0">
@@ -916,6 +925,8 @@ package feathers.controls
 		 * 
 		 * @param index The integer index of an item from the data provider.
 		 * @param animationDuration The length of time, in seconds, of the animation. May be zero to scroll instantly.
+		 *
+		 * @see #scrollToPosition()
 		 */
 		public function scrollToDisplayIndex(index:int, animationDuration:Number = 0):void
 		{
