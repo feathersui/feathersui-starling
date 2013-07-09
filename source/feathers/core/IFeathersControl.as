@@ -7,6 +7,8 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.core
 {
+	import flash.geom.Rectangle;
+
 	/**
 	 * Dispatched after the control has been initialized, but before it has
 	 * drawn for the first time. Typically, the component's children will have
@@ -69,6 +71,15 @@ package feathers.core
 		 */
 		function set maxHeight(value:Number):void;
 
+		/**
+		 * @private
+		 */
+		function get clipRect():Rectangle;
+
+		/**
+		 * @private
+		 */
+		function set clipRect(value:Rectangle):void;
 
 		/**
 		 * @copy feathers.core.FeathersControl#isEnabled
