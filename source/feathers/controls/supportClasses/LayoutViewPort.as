@@ -155,6 +155,20 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
+		private var _contentX:Number = 0;
+
+		public function get contentX():Number
+		{
+			return this._contentX;
+		}
+
+		private var _contentY:Number = 0;
+
+		public function get contentY():Number
+		{
+			return this._contentY;
+		}
+
 		public function get horizontalScrollStep():Number
 		{
 			return Math.min(this.actualWidth, this.actualHeight) / 10;
@@ -297,10 +311,14 @@ package feathers.controls.supportClasses
 					this._ignoreChildChanges = true;
 					this._layout.layout(this.items, HELPER_BOUNDS, HELPER_LAYOUT_RESULT);
 					this._ignoreChildChanges = false;
+					this._contentX = HELPER_LAYOUT_RESULT.contentX;
+					this._contentY = HELPER_LAYOUT_RESULT.contentY;
 					this.setSizeInternal(HELPER_LAYOUT_RESULT.contentWidth, HELPER_LAYOUT_RESULT.contentHeight, false);
 				}
 				else
 				{
+					var minX:Number = 0;
+					var minY:Number = 0;
 					var maxX:Number = isNaN(HELPER_BOUNDS.explicitWidth) ? 0 : HELPER_BOUNDS.explicitWidth;
 					var maxY:Number = isNaN(HELPER_BOUNDS.explicitHeight) ? 0 : HELPER_BOUNDS.explicitHeight;
 					this._ignoreChildChanges = true;
@@ -312,8 +330,18 @@ package feathers.controls.supportClasses
 						{
 							IFeathersControl(item).validate();
 						}
-						var itemMaxX:Number = item.x + item.width;
-						var itemMaxY:Number = item.y + item.height;
+						var itemX:Number = item.x;
+						var itemY:Number = item.y;
+						var itemMaxX:Number = itemX + item.width;
+						var itemMaxY:Number = itemY + item.height;
+						if(itemX < minX)
+						{
+							minX = itemX;
+						}
+						if(itemY < minY)
+						{
+							minY = itemY;
+						}
 						if(itemMaxX > maxX)
 						{
 							maxX = itemMaxX;
@@ -324,6 +352,8 @@ package feathers.controls.supportClasses
 						}
 					}
 					this._ignoreChildChanges = false;
+					this._contentX = minX;
+					this._contentY = minY;
 					var calculatedWidth:Number = maxX;
 					if(calculatedWidth < this._minVisibleWidth)
 					{

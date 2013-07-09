@@ -176,6 +176,20 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
+		protected var _contentX:Number = 0;
+
+		public function get contentX():Number
+		{
+			return this._contentX;
+		}
+
+		protected var _contentY:Number = 0;
+
+		public function get contentY():Number
+		{
+			return this._contentY;
+		}
+
 		public function get horizontalScrollStep():Number
 		{
 			if(this._typicalItemWidth < this._typicalItemHeight)
@@ -968,6 +982,8 @@ package feathers.controls.supportClasses
 				this._ignoreRendererResizing = true;
 				this._layout.layout(this._layoutItems, HELPER_BOUNDS, HELPER_LAYOUT_RESULT);
 				this._ignoreRendererResizing = false;
+				this._contentX = HELPER_LAYOUT_RESULT.contentX;
+				this._contentY = HELPER_LAYOUT_RESULT.contentY;
 				this.setSizeInternal(HELPER_LAYOUT_RESULT.contentWidth, HELPER_LAYOUT_RESULT.contentHeight, false);
 				this.actualVisibleWidth = HELPER_LAYOUT_RESULT.viewPortWidth;
 				this.actualVisibleHeight = HELPER_LAYOUT_RESULT.viewPortHeight;

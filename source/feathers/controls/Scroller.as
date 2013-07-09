@@ -12,7 +12,6 @@ package feathers.controls
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
 	import feathers.system.DeviceCapabilities;
-	import feathers.utils.math.clamp;
 	import feathers.utils.math.roundDownToNearest;
 	import feathers.utils.math.roundToNearest;
 	import feathers.utils.math.roundUpToNearest;
@@ -1004,6 +1003,9 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * scroller.horizontalScrollPosition = scroller.maxHorizontalScrollPosition;</listing>
+		 *
+		 * @see #minHorizontalScrollPosition
+		 * @see #maxHorizontalScrollPosition
 		 */
 		public function get horizontalScrollPosition():Number
 		{
@@ -1035,16 +1037,39 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _minHorizontalScrollPosition:Number = 0;
+
+		/**
+		 * The number of pixels the scroller may be scrolled horizontally to the
+		 * left. This value is automatically calculated based on the bounds of
+		 * the viewport. The <code>horizontalScrollPosition</code> property may
+		 * have a lower value than the minimum due to elastic edges. However,
+		 * once the user stops interacting with the scroller, it will
+		 * automatically animate back to the maximum or minimum position.
+		 *
+		 * @see #horizontalScrollPosition
+		 * @see #maxHorizontalScrollPosition
+		 */
+		public function get minHorizontalScrollPosition():Number
+		{
+			return this._minHorizontalScrollPosition;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _maxHorizontalScrollPosition:Number = 0;
 
 		/**
-		 * The maximum number of pixels the scroller may be scrolled
-		 * horizontally (on the x-axis). This value is automatically calculated
-		 * based on the width of the viewport. The <code>horizontalScrollPosition</code>
-		 * property may have a higher value than the maximum due to elastic
-		 * edges. However, once the user stops interacting with the scroller,
-		 * it will automatically animate back to the maximum (or minimum, if
-		 * below 0).
+		 * The number of pixels the scroller may be scrolled horizontally to the
+		 * right. This value is automatically calculated based on the bounds of
+		 * the viewport. The <code>horizontalScrollPosition</code> property may
+		 * have a higher value than the maximum due to elastic edges. However,
+		 * once the user stops interacting with the scroller, it will
+		 * automatically animate back to the maximum or minimum position.
+		 *
+		 * @see #horizontalScrollPosition
+		 * @see #minHorizontalScrollPosition
 		 */
 		public function get maxHorizontalScrollPosition():Number
 		{
@@ -1212,16 +1237,39 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _minVerticalScrollPosition:Number = 0;
+
+		/**
+		 * The number of pixels the scroller may be scrolled vertically beyond
+		 * the top edge. This value is automatically calculated based on the
+		 * bounds of the viewport. The <code>verticalScrollPosition</code>
+		 * property may have a lower value than the minimum due to elastic
+		 * edges. However, once the user stops interacting with the scroller, it
+		 * will automatically animate back to the maximum or minimum position.
+		 *
+		 * @see #verticalScrollPosition
+		 * @see #maxVerticalScrollPosition
+		 */
+		public function get minVerticalScrollPosition():Number
+		{
+			return this._minVerticalScrollPosition;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _maxVerticalScrollPosition:Number = 0;
 
 		/**
-		 * The maximum number of pixels the scroller may be scrolled vertically
-		 * (on the y-axis). This value is automatically calculated based on the
-		 * height of the viewport. The <code>verticalScrollPosition</code>
-		 * property may have a higher value than the maximum due to elastic
-		 * edges. However, once the user stops interacting with the scroller,
-		 * it will automatically animate back to the maximum (or minimum, if
-		 * below 0).
+		 * The number of pixels the scroller may be scrolled vertically beyond
+		 * the bottom edge. This value is automatically calculated based on the
+		 * bounds of the viewport. The <code>verticalScrollPosition</code>
+		 * property may have a lower value than the minimum due to elastic
+		 * edges. However, once the user stops interacting with the scroller, it
+		 * will automatically animate back to the maximum or minimum position.
+		 *
+		 * @see #verticalScrollPosition
+		 * @see #minVerticalScrollPosition
 		 */
 		public function get maxVerticalScrollPosition():Number
 		{
@@ -2700,31 +2748,39 @@ package feathers.controls
 			const oldMaxVSP:Number = this._maxVerticalScrollPosition;
 			if(this._viewPort)
 			{
+				this._minHorizontalScrollPosition = this._viewPort.contentX;
 				this._maxHorizontalScrollPosition = this._viewPort.width - pageWidth;
-				if(this._maxHorizontalScrollPosition < 0)
+				if(this._maxHorizontalScrollPosition < this._minHorizontalScrollPosition)
 				{
-					this._maxHorizontalScrollPosition = 0;
+					this._maxHorizontalScrollPosition = this._minHorizontalScrollPosition;
 				}
+				this._minVerticalScrollPosition = this._viewPort.contentY;
 				this._maxVerticalScrollPosition = this._viewPort.height - pageHeight;
-				if(this._maxVerticalScrollPosition < 0)
+				if(this._maxVerticalScrollPosition < this._minVerticalScrollPosition)
 				{
-					this._maxVerticalScrollPosition = 0;
+					this._maxVerticalScrollPosition =  this._minVerticalScrollPosition;
 				}
 				if(this._snapScrollPositionsToPixels)
 				{
+					this._minHorizontalScrollPosition = Math.round(this._minHorizontalScrollPosition);
+					this._minVerticalScrollPosition = Math.round(this._minVerticalScrollPosition);
 					this._maxHorizontalScrollPosition = Math.round(this._maxHorizontalScrollPosition);
 					this._maxVerticalScrollPosition = Math.round(this._maxVerticalScrollPosition);
 				}
 			}
 			else
 			{
+				this._minHorizontalScrollPosition = 0;
+				this._minVerticalScrollPosition = 0;
 				this._maxHorizontalScrollPosition = 0;
 				this._maxVerticalScrollPosition = 0;
 			}
 			if(this._snapToPages)
 			{
-				this._horizontalPageCount = Math.ceil(this._maxHorizontalScrollPosition / pageWidth) + 1;
-				this._verticalPageCount = Math.ceil(this._maxVerticalScrollPosition / pageHeight) + 1;
+				var horizontalRange:Number = this._maxHorizontalScrollPosition - this._minHorizontalScrollPosition;
+				var verticalPageRange:Number = this._maxVerticalScrollPosition - this._minVerticalScrollPosition;
+				this._horizontalPageCount = Math.ceil(horizontalRange / pageWidth) + 1;
+				this._verticalPageCount = Math.ceil(verticalPageRange / pageHeight) + 1;
 			}
 			else
 			{
@@ -2740,24 +2796,34 @@ package feathers.controls
 					if(this._snapToPages)
 					{
 						this._horizontalScrollPosition = roundToNearest(this._horizontalScrollPosition, pageWidth);
-						if(this._horizontalScrollPosition < 0)
-						{
-							this._horizontalScrollPosition = 0;
-						}
 					}
-					this.horizontalScrollPosition = clamp(this._horizontalScrollPosition, 0, this._maxHorizontalScrollPosition);
+					var targetHorizontalScrollPosition:Number = this._horizontalScrollPosition;
+					if(targetHorizontalScrollPosition < this._minHorizontalScrollPosition)
+					{
+						targetHorizontalScrollPosition = this._minHorizontalScrollPosition;
+					}
+					else if(targetHorizontalScrollPosition > this._maxHorizontalScrollPosition)
+					{
+						targetHorizontalScrollPosition = this._maxHorizontalScrollPosition;
+					}
+					this.horizontalScrollPosition = targetHorizontalScrollPosition;
 				}
 				if(this._touchPointID < 0 && !this._verticalAutoScrollTween)
 				{
 					if(this._snapToPages)
 					{
 						this._verticalScrollPosition = roundToNearest(this._verticalScrollPosition, pageHeight);
-						if(this._verticalScrollPosition < 0)
-						{
-							this._verticalScrollPosition = 0;
-						}
 					}
-					this.verticalScrollPosition = clamp(this._verticalScrollPosition, 0, this._maxVerticalScrollPosition);
+					var targetVerticalScrollPosition:Number = this._verticalScrollPosition;
+					if(targetVerticalScrollPosition < this._minVerticalScrollPosition)
+					{
+						targetVerticalScrollPosition = this._minVerticalScrollPosition;
+					}
+					else if(targetVerticalScrollPosition > this._maxVerticalScrollPosition)
+					{
+						targetVerticalScrollPosition = this._maxVerticalScrollPosition;
+					}
+					this.verticalScrollPosition = targetVerticalScrollPosition;
 				}
 			}
 
@@ -2771,11 +2837,8 @@ package feathers.controls
 					}
 					else
 					{
-						this._horizontalPageIndex = Math.floor(this._horizontalScrollPosition / pageWidth);
-						if(this._horizontalPageIndex < 0)
-						{
-							this._horizontalPageIndex = 0;
-						}
+						var adjustedHorizontalScrollPosition:Number = this._horizontalScrollPosition - this._minHorizontalScrollPosition;
+						this._horizontalPageIndex = Math.floor(adjustedHorizontalScrollPosition / pageWidth);
 					}
 				}
 				if(isScrollInvalid && !this._isDraggingVertically && !this._verticalAutoScrollTween && this.pendingVerticalPageIndex < 0)
@@ -2786,11 +2849,8 @@ package feathers.controls
 					}
 					else
 					{
-						this._verticalPageIndex = Math.floor(this._verticalScrollPosition / pageHeight);
-						if(this._verticalPageIndex < 0)
-						{
-							this._verticalPageIndex = 0;
-						}
+						var adjustedVerticalScrollPosition:Number = this._verticalScrollPosition - this._minVerticalScrollPosition;
+						this._verticalPageIndex = Math.floor(adjustedVerticalScrollPosition / pageHeight);
 					}
 				}
 			}
@@ -2824,7 +2884,7 @@ package feathers.controls
 			if(this.horizontalScrollBar)
 			{
 				const pageWidth:Number = this.actualWidth - (this._leftViewPortOffset + this._rightViewPortOffset);
-				this.horizontalScrollBar.minimum = 0;
+				this.horizontalScrollBar.minimum = this._minHorizontalScrollPosition;
 				this.horizontalScrollBar.maximum = this._maxHorizontalScrollPosition;
 				this.horizontalScrollBar.value = this._horizontalScrollPosition;
 				this.horizontalScrollBar.page = this._maxHorizontalScrollPosition * pageWidth / this._viewPort.width;
@@ -2834,7 +2894,7 @@ package feathers.controls
 			if(this.verticalScrollBar)
 			{
 				const pageHeight:Number = this.actualHeight - (this._topViewPortOffset + this._bottomViewPortOffset);
-				this.verticalScrollBar.minimum = 0;
+				this.verticalScrollBar.minimum = this._minVerticalScrollPosition;
 				this.verticalScrollBar.maximum = this._maxVerticalScrollPosition;
 				this.verticalScrollBar.value = this._verticalScrollPosition;
 				this.verticalScrollBar.page = this._maxVerticalScrollPosition * pageHeight / this._viewPort.height;
@@ -3057,7 +3117,7 @@ package feathers.controls
 		{
 			if(this._clipContent &&
 				((this._interactionMode == INTERACTION_MODE_TOUCH && this._hasElasticEdges) ||
-					this._maxHorizontalScrollPosition > 0 || this._maxVerticalScrollPosition > 0))
+					this._maxHorizontalScrollPosition != this._minHorizontalScrollPosition || this._maxVerticalScrollPosition != this._minVerticalScrollPosition))
 			{
 				if(!this._viewPort.clipRect)
 				{
@@ -3084,15 +3144,15 @@ package feathers.controls
 		{
 			const offset:Number = this._startTouchX - touchX;
 			var position:Number = this._startHorizontalScrollPosition + offset;
-			if(position < 0)
+			if(position < this._minHorizontalScrollPosition)
 			{
 				if(this._hasElasticEdges)
 				{
-					position *= this._elasticity;
+					position -= (position - this._minHorizontalScrollPosition) * (1 - this._elasticity);
 				}
 				else
 				{
-					position = 0;
+					position = this._minHorizontalScrollPosition;
 				}
 			}
 			else if(position > this._maxHorizontalScrollPosition)
@@ -3106,7 +3166,6 @@ package feathers.controls
 					position = this._maxHorizontalScrollPosition;
 				}
 			}
-
 			this.horizontalScrollPosition = position;
 		}
 
@@ -3117,15 +3176,15 @@ package feathers.controls
 		{
 			const offset:Number = this._startTouchY - touchY;
 			var position:Number = this._startVerticalScrollPosition + offset;
-			if(position < 0)
+			if(position < this._minVerticalScrollPosition)
 			{
 				if(this._hasElasticEdges)
 				{
-					position *= this._elasticity;
+					position -= (position - this._minVerticalScrollPosition) * (1 - this._elasticity);
 				}
 				else
 				{
-					position = 0;
+					position = this._minVerticalScrollPosition;
 				}
 			}
 			else if(position > this._maxVerticalScrollPosition)
@@ -3139,7 +3198,6 @@ package feathers.controls
 					position = this._maxVerticalScrollPosition;
 				}
 			}
-
 			this.verticalScrollPosition = position;
 		}
 
@@ -3208,8 +3266,32 @@ package feathers.controls
 		{
 			const pageWidth:Number = this.actualWidth - (this._leftViewPortOffset + this._rightViewPortOffset);
 			const pageHeight:Number = this.actualHeight - (this._topViewPortOffset + this._bottomViewPortOffset);
-			const targetHorizontalScrollPosition:Number = Math.max(0, Math.min(this._maxHorizontalScrollPosition, (targetHorizontalPageIndex >= 0 ? (pageWidth * targetHorizontalPageIndex) : this._horizontalScrollPosition)));
-			const targetVerticalScrollPosition:Number = Math.max(0, Math.min(this._maxVerticalScrollPosition, (targetVerticalPageIndex >= 0 ? (pageHeight * targetVerticalPageIndex) : this._verticalScrollPosition)));
+			var targetHorizontalScrollPosition:Number = this._horizontalScrollPosition;
+			if(targetHorizontalPageIndex >= 0)
+			{
+				targetHorizontalScrollPosition = pageWidth * targetHorizontalPageIndex;
+			}
+			if(targetHorizontalScrollPosition < this._minHorizontalScrollPosition)
+			{
+				targetHorizontalScrollPosition = this._minHorizontalScrollPosition;
+			}
+			if(targetHorizontalScrollPosition > this._maxHorizontalScrollPosition)
+			{
+				targetHorizontalScrollPosition = this._maxHorizontalScrollPosition;
+			}
+			var targetVerticalScrollPosition:Number = this._verticalScrollPosition;
+			if(targetHorizontalPageIndex >= 0)
+			{
+				targetVerticalScrollPosition = pageHeight * targetVerticalPageIndex;
+			}
+			if(targetVerticalScrollPosition < this._minVerticalScrollPosition)
+			{
+				targetVerticalScrollPosition = this._minVerticalScrollPosition;
+			}
+			if(targetVerticalScrollPosition > this._maxVerticalScrollPosition)
+			{
+				targetVerticalScrollPosition = this._maxVerticalScrollPosition;
+			}
 			if(duration > 0)
 			{
 				this.throwTo(targetHorizontalScrollPosition, targetVerticalScrollPosition, duration);
@@ -3235,9 +3317,9 @@ package feathers.controls
 		protected function finishScrollingHorizontally():void
 		{
 			var targetHorizontalScrollPosition:Number = NaN;
-			if(this._horizontalScrollPosition < 0)
+			if(this._horizontalScrollPosition < this._minHorizontalScrollPosition)
 			{
-				targetHorizontalScrollPosition = 0;
+				targetHorizontalScrollPosition = this._minHorizontalScrollPosition;
 			}
 			else if(this._horizontalScrollPosition > this._maxHorizontalScrollPosition)
 			{
@@ -3268,9 +3350,9 @@ package feathers.controls
 		protected function finishScrollingVertically():void
 		{
 			var targetVerticalScrollPosition:Number = NaN;
-			if(this._verticalScrollPosition < 0)
+			if(this._verticalScrollPosition < this._minVerticalScrollPosition)
 			{
-				targetVerticalScrollPosition = 0;
+				targetVerticalScrollPosition = this._minVerticalScrollPosition;
 			}
 			else if(this._verticalScrollPosition > this._maxVerticalScrollPosition)
 			{
@@ -3337,14 +3419,21 @@ package feathers.controls
 						snappedPageHorizontalScrollPosition = roundToNearest(this._horizontalScrollPosition, pageWidth);
 					}
 				}
-				snappedPageHorizontalScrollPosition = Math.max(0, Math.min(this._maxHorizontalScrollPosition, snappedPageHorizontalScrollPosition));
+				if(snappedPageHorizontalScrollPosition < this._minHorizontalScrollPosition)
+				{
+					snappedPageHorizontalScrollPosition = this._minHorizontalScrollPosition;
+				}
+				else if(snappedPageHorizontalScrollPosition > this._maxHorizontalScrollPosition)
+				{
+					snappedPageHorizontalScrollPosition = this._maxHorizontalScrollPosition;
+				}
 				if(snappedPageHorizontalScrollPosition == this._maxHorizontalScrollPosition)
 				{
 					var targetHorizontalPageIndex:int = this._horizontalPageCount - 1;
 				}
 				else
 				{
-					targetHorizontalPageIndex = snappedPageHorizontalScrollPosition / pageWidth;
+					targetHorizontalPageIndex = (snappedPageHorizontalScrollPosition - this._minHorizontalScrollPosition) / pageWidth;
 				}
 				this.throwToPage(targetHorizontalPageIndex, -1, this._pageThrowDuration);
 				return;
@@ -3357,14 +3446,14 @@ package feathers.controls
 				return;
 			}
 			var targetHorizontalScrollPosition:Number = this._horizontalScrollPosition + (pixelsPerMS - MINIMUM_VELOCITY) / Math.log(FRICTION);
-			if(targetHorizontalScrollPosition < 0 || targetHorizontalScrollPosition > this._maxHorizontalScrollPosition)
+			if(targetHorizontalScrollPosition < this._minHorizontalScrollPosition || targetHorizontalScrollPosition > this._maxHorizontalScrollPosition)
 			{
 				var duration:Number = 0;
 				targetHorizontalScrollPosition = this._horizontalScrollPosition;
 				while(Math.abs(pixelsPerMS) > MINIMUM_VELOCITY)
 				{
 					targetHorizontalScrollPosition -= pixelsPerMS;
-					if(targetHorizontalScrollPosition < 0 || targetHorizontalScrollPosition > this._maxHorizontalScrollPosition)
+					if(targetHorizontalScrollPosition < this._minHorizontalScrollPosition || targetHorizontalScrollPosition > this._maxHorizontalScrollPosition)
 					{
 						if(this._hasElasticEdges)
 						{
@@ -3372,7 +3461,14 @@ package feathers.controls
 						}
 						else
 						{
-							targetHorizontalScrollPosition = clamp(targetHorizontalScrollPosition, 0, this._maxHorizontalScrollPosition);
+							if(targetHorizontalScrollPosition < this._minHorizontalScrollPosition)
+							{
+								targetHorizontalScrollPosition = this._minHorizontalScrollPosition;
+							}
+							else if(targetHorizontalScrollPosition > this._maxHorizontalScrollPosition)
+							{
+								targetHorizontalScrollPosition = this._maxHorizontalScrollPosition;
+							}
 							duration++;
 							break;
 						}
@@ -3433,14 +3529,21 @@ package feathers.controls
 						snappedPageVerticalScrollPosition = roundToNearest(this._verticalScrollPosition, pageHeight);
 					}
 				}
-				snappedPageVerticalScrollPosition = Math.max(0, Math.min(this._maxVerticalScrollPosition, snappedPageVerticalScrollPosition));
+				if(snappedPageVerticalScrollPosition < this._minVerticalScrollPosition)
+				{
+					snappedPageVerticalScrollPosition = this._minVerticalScrollPosition;
+				}
+				else if(snappedPageVerticalScrollPosition > this._maxVerticalScrollPosition)
+				{
+					snappedPageVerticalScrollPosition = this._maxVerticalScrollPosition;
+				}
 				if(snappedPageVerticalScrollPosition == this._maxVerticalScrollPosition)
 				{
 					var targetVerticalPageIndex:int = this._verticalPageCount - 1;
 				}
 				else
 				{
-					targetVerticalPageIndex = snappedPageVerticalScrollPosition / pageHeight
+					targetVerticalPageIndex = (snappedPageVerticalScrollPosition - this._minVerticalScrollPosition) / pageHeight;
 				}
 				this.throwToPage(-1, targetVerticalPageIndex, this._pageThrowDuration);
 				return;
@@ -3453,14 +3556,14 @@ package feathers.controls
 				return;
 			}
 			var targetVerticalScrollPosition:Number = this._verticalScrollPosition + (pixelsPerMS - MINIMUM_VELOCITY) / Math.log(FRICTION);
-			if(targetVerticalScrollPosition < 0 || targetVerticalScrollPosition > this._maxVerticalScrollPosition)
+			if(targetVerticalScrollPosition < this._minVerticalScrollPosition || targetVerticalScrollPosition > this._maxVerticalScrollPosition)
 			{
 				var duration:Number = 0;
 				targetVerticalScrollPosition = this._verticalScrollPosition;
 				while(Math.abs(pixelsPerMS) > MINIMUM_VELOCITY)
 				{
 					targetVerticalScrollPosition -= pixelsPerMS;
-					if(targetVerticalScrollPosition < 0 || targetVerticalScrollPosition > this._maxVerticalScrollPosition)
+					if(targetVerticalScrollPosition < this._minVerticalScrollPosition || targetVerticalScrollPosition > this._maxVerticalScrollPosition)
 					{
 						if(this._hasElasticEdges)
 						{
@@ -3468,7 +3571,14 @@ package feathers.controls
 						}
 						else
 						{
-							targetVerticalScrollPosition = clamp(targetVerticalScrollPosition, 0, this._maxVerticalScrollPosition);
+							if(targetVerticalScrollPosition < this._minVerticalScrollPosition)
+							{
+								targetVerticalScrollPosition = this._minVerticalScrollPosition;
+							}
+							else if(targetVerticalScrollPosition > this._maxVerticalScrollPosition)
+							{
+								targetVerticalScrollPosition = this._maxVerticalScrollPosition;
+							}
 							duration++;
 							break;
 						}
@@ -3795,7 +3905,7 @@ package feathers.controls
 			const horizontalInchesMoved:Number = Math.abs(this._currentTouchX - this._startTouchX) / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
 			const verticalInchesMoved:Number = Math.abs(this._currentTouchY - this._startTouchY) / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
 			if((this._horizontalScrollPolicy == SCROLL_POLICY_ON ||
-				(this._horizontalScrollPolicy == SCROLL_POLICY_AUTO && this._maxHorizontalScrollPosition > 0)) &&
+				(this._horizontalScrollPolicy == SCROLL_POLICY_AUTO && this._minHorizontalScrollPosition != this._maxHorizontalScrollPosition)) &&
 				!this._isDraggingHorizontally && horizontalInchesMoved >= MINIMUM_DRAG_DISTANCE)
 			{
 				if(this.horizontalScrollBar)
@@ -3826,7 +3936,7 @@ package feathers.controls
 				}
 			}
 			if((this._verticalScrollPolicy == SCROLL_POLICY_ON ||
-				(this._verticalScrollPolicy == SCROLL_POLICY_AUTO && this._maxVerticalScrollPosition > 0)) &&
+				(this._verticalScrollPolicy == SCROLL_POLICY_AUTO && this._minVerticalScrollPosition != this._maxVerticalScrollPosition)) &&
 				!this._isDraggingVertically && verticalInchesMoved >= MINIMUM_DRAG_DISTANCE)
 			{
 				if(this.verticalScrollBar)
@@ -3891,12 +4001,12 @@ package feathers.controls
 				this.dispatchEventWith(FeathersEventType.END_INTERACTION);
 				var isFinishingHorizontally:Boolean = false;
 				var isFinishingVertically:Boolean = false;
-				if(this._horizontalScrollPosition < 0 || this._horizontalScrollPosition > this._maxHorizontalScrollPosition)
+				if(this._horizontalScrollPosition < this._minHorizontalScrollPosition || this._horizontalScrollPosition > this._maxHorizontalScrollPosition)
 				{
 					isFinishingHorizontally = true;
 					this.finishScrollingHorizontally();
 				}
-				if(this._verticalScrollPosition < 0 || this._verticalScrollPosition > this._maxVerticalScrollPosition)
+				if(this._verticalScrollPosition < this._minVerticalScrollPosition || this._verticalScrollPosition > this._maxVerticalScrollPosition)
 				{
 					isFinishingVertically = true;
 					this.finishScrollingVertically();
@@ -3974,7 +4084,15 @@ package feathers.controls
 				{
 					this.verticalScrollBar.alpha = 1;
 				}
-				const targetVerticalScrollPosition:Number = Math.min(this._maxVerticalScrollPosition, Math.max(0, this._verticalScrollPosition - event.delta * this.actualVerticalScrollStep));
+				var targetVerticalScrollPosition:Number = this._verticalScrollPosition - event.delta * this.actualVerticalScrollStep;
+				if(targetVerticalScrollPosition < this._minVerticalScrollPosition)
+				{
+					targetVerticalScrollPosition = this._minVerticalScrollPosition;
+				}
+				else if(targetVerticalScrollPosition > this._maxVerticalScrollPosition)
+				{
+					targetVerticalScrollPosition = this._maxVerticalScrollPosition;
+				}
 				this.throwTo(NaN, targetVerticalScrollPosition, this._mouseWheelScrollDuration);
 			}
 		}
@@ -4142,8 +4260,22 @@ package feathers.controls
 			//bounds, then let's account for that
 			const oldHorizontalScrollPosition:Number = this._horizontalScrollPosition;
 			const oldVerticalScrollPosition:Number = this._verticalScrollPosition;
-			this._horizontalScrollPosition = clamp(this._horizontalScrollPosition, 0, this._maxHorizontalScrollPosition);
-			this._verticalScrollPosition = clamp(this._verticalScrollPosition, 0, this._maxVerticalScrollPosition);
+			if(this._horizontalScrollPosition < this._minHorizontalScrollPosition)
+			{
+				this._horizontalScrollPosition = this._minHorizontalScrollPosition;
+			}
+			else if(this._horizontalScrollPosition > this._maxHorizontalScrollPosition)
+			{
+				this._horizontalScrollPosition = this._maxHorizontalScrollPosition;
+			}
+			if(this._verticalScrollPosition < this._minVerticalScrollPosition)
+			{
+				this._verticalScrollPosition = this._minVerticalScrollPosition;
+			}
+			else if(this._verticalScrollPosition > this._maxVerticalScrollPosition)
+			{
+				this._verticalScrollPosition = this._maxVerticalScrollPosition;
+			}
 			if(oldHorizontalScrollPosition != this._horizontalScrollPosition ||
 				oldVerticalScrollPosition != this._verticalScrollPosition)
 			{
