@@ -64,6 +64,16 @@ package feathers.controls
 	 * will not go into effect until this component's status is upgraded from
 	 * beta to stable.</p>
 	 *
+	 * <p>The following example sets the text in a text area, selects the text,
+	 * and listens for when the text value changes:</p>
+	 *
+	 * <listing version="3.0">
+	 * var textArea:TextArea = new TextArea();
+	 * textArea.text = "Hello\nWorld"; //it's multiline!
+	 * textArea.selectRange( 0, textArea.text.length );
+	 * textArea.addEventListener( Event.CHANGE, input_changeHandler );
+	 * this.addChild( textArea );</listing>
+	 *
 	 * @see http://wiki.starling-framework.org/feathers/text-area
 	 * @see feathers.controls.TextInput
 	 * @see http://wiki.starling-framework.org/feathers/text-editors
@@ -74,11 +84,6 @@ package feathers.controls
 		 * @private
 		 */
 		private static const HELPER_POINT:Point = new Point();
-
-		/**
-		 * @private
-		 */
-		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
 
 		/**
 		 * @copy feathers.controls.Scroller#SCROLL_POLICY_AUTO
@@ -193,6 +198,14 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override public function get isFocusEnabled():Boolean
+		{
+			return this._isEditable && this._isFocusEnabled;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _text:String = "";
 
 		/**
@@ -200,7 +213,14 @@ package feathers.controls
 		 * <code>Event.CHANGE</code> when the value of the <code>text</code>
 		 * property changes for any reason.
 		 *
+		 * <p>In the following example, the text area's text is updated:</p>
+		 *
+		 * <listing version="3.0">
+		 * textArea.text = "Hello World";</listing>
+		 *
 		 * @see #event:change
+		 *
+		 * @default ""
 		 */
 		public function get text():String
 		{
@@ -233,6 +253,14 @@ package feathers.controls
 
 		/**
 		 * The maximum number of characters that may be entered.
+		 *
+		 * <p>In the following example, the text area's maximum characters is
+		 * specified:</p>
+		 *
+		 * <listing version="3.0">
+		 * textArea.maxChars = 10;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get maxChars():int
 		{
@@ -259,6 +287,14 @@ package feathers.controls
 
 		/**
 		 * Limits the set of characters that may be entered.
+		 *
+		 * <p>In the following example, the text area's allowed characters are
+		 * restricted:</p>
+		 *
+		 * <listing version="3.0">
+		 * textArea.restrict = "0-9;</listing>
+		 *
+		 * @default null
 		 */
 		public function get restrict():String
 		{
@@ -286,6 +322,13 @@ package feathers.controls
 		/**
 		 * Determines if the text area is editable. If the text area is not
 		 * editable, it will still appear enabled.
+		 *
+		 * <p>In the following example, the text area is not editable:</p>
+		 *
+		 * <listing version="3.0">
+		 * textArea.isEditable = false;</listing>
+		 *
+		 * @default true
 		 */
 		public function get isEditable():Boolean
 		{
@@ -308,6 +351,53 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _backgroundFocusedSkin:DisplayObject;
+
+		/**
+		 * A display object displayed behind the text area's content when it
+		 * has focus.
+		 *
+		 * <p>In the following example, the text area's focused background skin is
+		 * specified:</p>
+		 *
+		 * <listing version="3.0">
+		 * textArea.backgroundFocusedSkin = new Image( texture );</listing>
+		 *
+		 * @default null
+		 */
+		public function get backgroundFocusedSkin():DisplayObject
+		{
+			return this._backgroundFocusedSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set backgroundFocusedSkin(value:DisplayObject):void
+		{
+			if(this._backgroundFocusedSkin == value)
+			{
+				return;
+			}
+
+			if(this._backgroundFocusedSkin && this._backgroundFocusedSkin != this._backgroundSkin &&
+				this._backgroundFocusedSkin != this._backgroundDisabledSkin)
+			{
+				this.removeChild(this._backgroundFocusedSkin);
+			}
+			this._backgroundFocusedSkin = value;
+			if(this._backgroundFocusedSkin && this._backgroundFocusedSkin.parent != this)
+			{
+				this._backgroundFocusedSkin.visible = false;
+				this._backgroundFocusedSkin.touchable = false;
+				this.addChildAt(this._backgroundFocusedSkin, 0);
+			}
+			this.invalidate(INVALIDATION_FLAG_SKIN);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _textEditorFactory:Function;
 
 		/**
@@ -322,6 +412,17 @@ package feathers.controls
 		 *
 		 * <p>The factory should have the following function signature:</p>
 		 * <pre>function():ITextEditorViewPort</pre>
+		 *
+		 * <p>In the following example, a custom text editor factory is passed
+		 * to the text area:</p>
+		 *
+		 * <listing version="3.0">
+		 * input.textEditorFactory = function():ITextEditorViewPort
+		 * {
+		 *     return new TextFieldTextEditorViewPort();
+		 * };</listing>
+		 *
+		 * @default null
 		 *
 		 * @see feathers.controls.text.ITextEditorViewPort
 		 * @see feathers.controls.text.TextFieldTextEditorViewPort
@@ -364,6 +465,16 @@ package feathers.controls
 		 * <p>Setting properties in a <code>textEditorFactory</code> function
 		 * instead of using <code>textEditorProperties</code> will result in
 		 * better performance.</p>
+		 *
+		 * <p>In the following example, the text input's text editor properties
+		 * are specified (this example assumes that the text editor is a
+		 * <code>TextFieldTextEditorViewPort</code>):</p>
+		 *
+		 * <listing version="3.0">
+		 * input.textEditorProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333);
+		 * input.textEditorProperties.embedFonts = true;</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #textEditorFactory
 		 * @see feathers.controls.text.ITextEditorViewPort
@@ -459,11 +570,11 @@ package feathers.controls
 			}
 			if(startIndex < 0)
 			{
-				throw new RangeError("Expected start index >= 0. Received " + startIndex + ".");
+				throw new RangeError("Expected start index greater than or equal to 0. Received " + startIndex + ".");
 			}
 			if(endIndex > this._text.length)
 			{
-				throw new RangeError("Expected start index > " + this._text.length + ". Received " + endIndex + ".");
+				throw new RangeError("Expected start index less than " + this._text.length + ". Received " + endIndex + ".");
 			}
 
 			if(this.textEditorViewPort)
@@ -523,6 +634,45 @@ package feathers.controls
 			this.refreshFocusIndicator();
 
 			this.doPendingActions();
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function autoSizeIfNeeded():Boolean
+		{
+			const needsWidth:Boolean = isNaN(this.explicitWidth);
+			const needsHeight:Boolean = isNaN(this.explicitHeight);
+			if(!needsWidth && !needsHeight)
+			{
+				return false;
+			}
+
+			var newWidth:Number = this.explicitWidth;
+			var newHeight:Number = this.explicitHeight;
+			if(needsWidth)
+			{
+				if(!isNaN(this.originalBackgroundWidth))
+				{
+					newWidth = this.originalBackgroundWidth;
+				}
+				else
+				{
+					newWidth = 0;
+				}
+			}
+			if(needsHeight)
+			{
+				if(!isNaN(this.originalBackgroundHeight))
+				{
+					newHeight = this.originalBackgroundHeight;
+				}
+				else
+				{
+					newHeight = 0;
+				}
+			}
+			return this.setSizeInternal(newWidth, newHeight, false);
 		}
 
 		/**
@@ -604,8 +754,36 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override protected function refreshBackgroundSkin():void
+		{
+			if(this._hasFocus && this._backgroundFocusedSkin)
+			{
+				this.currentBackgroundSkin = this._backgroundFocusedSkin;
+				this.setChildIndex(this.currentBackgroundSkin, 0);
+				this.currentBackgroundSkin.visible = true;
+
+				if(isNaN(this.originalBackgroundWidth))
+				{
+					this.originalBackgroundWidth = this.currentBackgroundSkin.width;
+				}
+				if(isNaN(this.originalBackgroundHeight))
+				{
+					this.originalBackgroundHeight = this.currentBackgroundSkin.height;
+				}
+				return;
+			}
+			super.refreshBackgroundSkin();
+		}
+
+		/**
+		 * @private
+		 */
 		protected function setFocusOnTextEditorWithTouch(touch:Touch):void
 		{
+			if(!this.isFocusEnabled)
+			{
+				return;
+			}
 			touch.getLocation(this.stage, HELPER_POINT);
 			const isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
 			if(!this._textEditorHasFocus && isInBounds)
@@ -629,80 +807,60 @@ package feathers.controls
 				return;
 			}
 
-			const touches:Vector.<Touch> = event.getTouches(this, null, HELPER_TOUCHES_VECTOR);
-			if(touches.length == 0)
+			const horizontalScrollBar:DisplayObject = DisplayObject(this.horizontalScrollBar);
+			const verticalScrollBar:DisplayObject = DisplayObject(this.verticalScrollBar);
+			if(this._textAreaTouchPointID >= 0)
 			{
+				var touch:Touch = event.getTouch(this, TouchPhase.ENDED, this._textAreaTouchPointID);
+				if(!touch || touch.isTouching(verticalScrollBar) || touch.isTouching(horizontalScrollBar))
+				{
+					return;
+				}
+				this.removeEventListener(Event.SCROLL, textArea_scrollHandler);
+				this._textAreaTouchPointID = -1;
+				if(this.textEditorViewPort.setTouchFocusOnEndedPhase)
+				{
+					this.setFocusOnTextEditorWithTouch(touch);
+				}
+			}
+			else
+			{
+				touch = event.getTouch(this, TouchPhase.BEGAN);
+				if(touch)
+				{
+					if(touch.isTouching(verticalScrollBar) || touch.isTouching(horizontalScrollBar))
+					{
+						return;
+					}
+					this._textAreaTouchPointID = touch.id;
+					if(!this.textEditorViewPort.setTouchFocusOnEndedPhase)
+					{
+						this.setFocusOnTextEditorWithTouch(touch);
+					}
+					this.addEventListener(Event.SCROLL, textArea_scrollHandler);
+					return;
+				}
+				touch = event.getTouch(this, TouchPhase.HOVER);
+				if(touch)
+				{
+					if(touch.isTouching(verticalScrollBar) || touch.isTouching(horizontalScrollBar))
+					{
+						return;
+					}
+					if(Mouse.supportsNativeCursor && !this._oldMouseCursor)
+					{
+						this._oldMouseCursor = Mouse.cursor;
+						Mouse.cursor = MouseCursor.IBEAM;
+					}
+					return;
+				}
 				//end hover
 				if(Mouse.supportsNativeCursor && this._oldMouseCursor)
 				{
 					Mouse.cursor = this._oldMouseCursor;
 					this._oldMouseCursor = null;
 				}
-				return;
 			}
-
-			const horizontalScrollBar:DisplayObject = DisplayObject(this.horizontalScrollBar);
-			const verticalScrollBar:DisplayObject = DisplayObject(this.verticalScrollBar);
-			if(this._textAreaTouchPointID >= 0)
-			{
-				var touch:Touch;
-				for each(var currentTouch:Touch in touches)
-				{
-					if(currentTouch.id == this._textAreaTouchPointID)
-					{
-						touch = currentTouch;
-						break;
-					}
-				}
-				if(!touch)
-				{
-					HELPER_TOUCHES_VECTOR.length = 0;
-					return;
-				}
-				if(touch.isTouching(verticalScrollBar) || touch.isTouching(horizontalScrollBar))
-				{
-					return;
-				}
-				if(touch.phase == TouchPhase.ENDED)
-				{
-					this.removeEventListener(Event.SCROLL, textArea_scrollHandler);
-					this._textAreaTouchPointID = -1;
-					if(this.textEditorViewPort.setTouchFocusOnEndedPhase)
-					{
-						this.setFocusOnTextEditorWithTouch(touch);
-					}
-				}
-			}
-			else
-			{
-				for each(touch in touches)
-				{
-					if(touch.isTouching(verticalScrollBar) || touch.isTouching(horizontalScrollBar))
-					{
-						continue;
-					}
-					if(touch.phase == TouchPhase.BEGAN)
-					{
-						this._textAreaTouchPointID = touch.id;
-						if(!this.textEditorViewPort.setTouchFocusOnEndedPhase)
-						{
-							this.setFocusOnTextEditorWithTouch(touch);
-						}
-						this.addEventListener(Event.SCROLL, textArea_scrollHandler);
-						break;
-					}
-					else if(touch.phase == TouchPhase.HOVER)
-					{
-						if(Mouse.supportsNativeCursor && !this._oldMouseCursor)
-						{
-							this._oldMouseCursor = Mouse.cursor;
-							Mouse.cursor = MouseCursor.IBEAM;
-						}
-						break;
-					}
-				}
-			}
-			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 
 		/**

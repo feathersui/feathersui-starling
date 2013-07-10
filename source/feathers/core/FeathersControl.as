@@ -19,19 +19,27 @@ package feathers.core
 	import flash.geom.Rectangle;
 
 	import starling.core.RenderSupport;
-
 	import starling.display.DisplayObject;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.utils.MatrixUtil;
 
 	/**
-	 * Dispatched after initialize() has been called, but before the first time
-	 * that draw() has been called.
+	 * Dispatched after <code>initialize()</code> has been called, but before
+	 * the first time that <code>draw()</code> has been called.
 	 *
 	 * @eventType feathers.events.FeathersEventType.INITIALIZE
 	 */
 	[Event(name="initialize",type="starling.events.Event")]
+
+	/**
+	 * Dispatched after the component has validated for the first time. Both
+	 * <code>initialize()</code> and <code>draw()</code> will have been called,
+	 * and all children will have been created.
+	 *
+	 * @eventType feathers.events.FeathersEventType.CREATION_COMPLETE
+	 */
+	[Event(name="creationComplete",type="starling.events.Event")]
 
 	/**
 	 * Dispatched when the width or height of the control changes.
@@ -59,11 +67,8 @@ package feathers.core
 
 		/**
 		 * @private
-		 * Meant to be constant, but the ValidationQueue needs access to
-		 * Starling in its constructor, so it needs to be instantiated after
-		 * Starling is initialized.
 		 */
-		protected static var VALIDATION_QUEUE:ValidationQueue = new ValidationQueue();
+		protected static const VALIDATION_QUEUE:ValidationQueue = new ValidationQueue();
 
 		/**
 		 * @private
@@ -223,6 +228,8 @@ package feathers.core
 		 * same type of UI control. A single control may have many names, and
 		 * many controls can share a single name.
 		 *
+		 * @default ""
+		 *
 		 * @see #nameList
 		 */
 		override public function get name():String
@@ -244,9 +251,12 @@ package feathers.core
 		protected var _isQuickHitAreaEnabled:Boolean = false;
 
 		/**
-		 * Similar to mouseChildren on the classic display list. If true,
-		 * children cannot dispatch touch events, but hit tests will be much
-		 * faster.
+		 * Similar to <code>mouseChildren</code> on the classic display list. If
+		 * <code>true</code>, children cannot dispatch touch events, but hit
+		 * tests will be much faster. Easier than overriding
+		 * <code>hitTest()</code>.
+		 *
+		 * @default false
 		 */
 		public function get isQuickHitAreaEnabled():Boolean
 		{
@@ -305,6 +315,8 @@ package feathers.core
 
 		/**
 		 * Indicates whether the control is interactive or not.
+		 *
+		 * @default true
 		 */
 		public function get isEnabled():Boolean
 		{
@@ -340,6 +352,15 @@ package feathers.core
 		protected var actualWidth:Number = 0;
 
 		/**
+		 * @private
+		 * The <code>actualWidth</code> value that accounts for
+		 * <code>scaleX</code>. Not intended to be used for layout since layout
+		 * uses unscaled values. This is the value exposed externally through
+		 * the <code>width</code> getter.
+		 */
+		protected var scaledActualWidth:Number = 0;
+
+		/**
 		 * The width of the component, in pixels. This could be a value that was
 		 * set explicitly, or the component will automatically resize if no
 		 * explicit width value is provided. Each component has a different
@@ -359,7 +380,7 @@ package feathers.core
 		 */
 		override public function get width():Number
 		{
-			return this.actualWidth;
+			return this.scaledActualWidth;
 		}
 
 		/**
@@ -379,7 +400,7 @@ package feathers.core
 			this.explicitWidth = value;
 			if(valueIsNaN)
 			{
-				this.actualWidth = 0;
+				this.actualWidth = this.scaledActualWidth = 0;
 				this.invalidate(INVALIDATION_FLAG_SIZE);
 			}
 			else
@@ -404,6 +425,15 @@ package feathers.core
 		protected var actualHeight:Number = 0;
 
 		/**
+		 * @private
+		 * The <code>actualHeight</code> value that accounts for
+		 * <code>scaleY</code>. Not intended to be used for layout since layout
+		 * uses unscaled values. This is the value exposed externally through
+		 * the <code>height</code> getter.
+		 */
+		protected var scaledActualHeight:Number = 0;
+
+		/**
 		 * The height of the component, in pixels. This could be a value that
 		 * was set explicitly, or the component will automatically resize if no
 		 * explicit height value is provided. Each component has a different
@@ -423,7 +453,7 @@ package feathers.core
 		 */
 		override public function get height():Number
 		{
-			return this.actualHeight;
+			return this.scaledActualHeight;
 		}
 
 		/**
@@ -443,7 +473,7 @@ package feathers.core
 			this.explicitHeight = value;
 			if(valueIsNaN)
 			{
-				this.actualHeight = 0;
+				this.actualHeight = this.scaledActualHeight = 0;
 				this.invalidate(INVALIDATION_FLAG_SIZE);
 			}
 			else
@@ -460,6 +490,8 @@ package feathers.core
 		/**
 		 * If using <code>isQuickHitAreaEnabled</code>, and the hit area's
 		 * width is smaller than this value, it will be expanded.
+		 *
+		 * @default 0
 		 */
 		public function get minTouchWidth():Number
 		{
@@ -487,6 +519,8 @@ package feathers.core
 		/**
 		 * If using <code>isQuickHitAreaEnabled</code>, and the hit area's
 		 * height is smaller than this value, it will be expanded.
+		 *
+		 * @default 0
 		 */
 		public function get minTouchHeight():Number
 		{
@@ -517,6 +551,8 @@ package feathers.core
 		 * is not strictly enforced in all cases. An explicit width value that
 		 * is smaller than <code>minWidth</code> may be set and will not be
 		 * affected by the minimum.
+		 *
+		 * @default 0
 		 */
 		public function get minWidth():Number
 		{
@@ -551,6 +587,8 @@ package feathers.core
 		 * is not strictly enforced in all cases. An explicit height value that
 		 * is smaller than <code>minHeight</code> may be set and will not be
 		 * affected by the minimum.
+		 *
+		 * @default 0
 		 */
 		public function get minHeight():Number
 		{
@@ -585,6 +623,8 @@ package feathers.core
 		 * is not strictly enforced in all cases. An explicit width value that
 		 * is larger than <code>maxWidth</code> may be set and will not be
 		 * affected by the maximum.
+		 *
+		 * @default Number.POSITIVE_INFINITY
 		 */
 		public function get maxWidth():Number
 		{
@@ -619,6 +659,8 @@ package feathers.core
 		 * is not strictly enforced in all cases. An explicit height value that
 		 * is larger than <code>maxHeight</code> may be set and will not be
 		 * affected by the maximum.
+		 *
+		 * @default Number.POSITIVE_INFINITY
 		 */
 		public function get maxHeight():Number
 		{
@@ -645,10 +687,30 @@ package feathers.core
 		/**
 		 * @private
 		 */
+		override public function set scaleX(value:Number):void
+		{
+			super.scaleX = value;
+			this.setSizeInternal(this.actualWidth, this.actualHeight, false);
+		}
+
+		/**
+		 * @private
+		 */
+		override public function set scaleY(value:Number):void
+		{
+			super.scaleY = value;
+			this.setSizeInternal(this.actualWidth, this.actualHeight, false);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _includeInLayout:Boolean = true;
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @default true
 		 */
 		public function get includeInLayout():Boolean
 		{
@@ -675,6 +737,8 @@ package feathers.core
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @default null
 		 */
 		public function get layoutData():ILayoutData
 		{
@@ -709,6 +773,8 @@ package feathers.core
 
 		/**
 		 * @copy feathers.core.IFocusDisplayObject#focusManager
+		 *
+		 * @default null
 		 */
 		public function get focusManager():IFocusManager
 		{
@@ -748,6 +814,8 @@ package feathers.core
 
 		/**
 		 * @copy feathers.core.IFocusDisplayObject#isFocusEnabled
+		 *
+		 * @default true
 		 */
 		public function get isFocusEnabled():Boolean
 		{
@@ -777,6 +845,8 @@ package feathers.core
 
 		/**
 		 * @copy feathers.core.IFocusDisplayObject#nextTabFocus
+		 *
+		 * @default null
 		 */
 		public function get nextTabFocus():IFocusDisplayObject
 		{
@@ -802,6 +872,8 @@ package feathers.core
 
 		/**
 		 * @copy feathers.core.IFocusDisplayObject#previousTabFocus
+		 *
+		 * @default null
 		 */
 		public function get previousTabFocus():IFocusDisplayObject
 		{
@@ -837,6 +909,8 @@ package feathers.core
 		 * component or its sub-components. This skin will not affect the
 		 * dimensions of the component or its hit area. It is simply a visual
 		 * indicator of focus.</p>
+		 *
+		 * @default null
 		 */
 		public function get focusIndicatorSkin():DisplayObject
 		{
@@ -882,6 +956,13 @@ package feathers.core
 		 *
 		 * <listing version="3.0">
 		 * object.padding = 2;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #focusPaddingTop
+		 * @see #focusPaddingRight
+		 * @see #focusPaddingBottom
+		 * @see #focusPaddingLeft
 		 */
 		public function get focusPadding():Number
 		{
@@ -914,6 +995,8 @@ package feathers.core
 		 *
 		 * <listing version="3.0">
 		 * button.focusPaddingTop = -2;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get focusPaddingTop():Number
 		{
@@ -948,6 +1031,8 @@ package feathers.core
 		 *
 		 * <listing version="3.0">
 		 * button.focusPaddingRight = -2;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get focusPaddingRight():Number
 		{
@@ -982,6 +1067,8 @@ package feathers.core
 		 *
 		 * <listing version="3.0">
 		 * button.focusPaddingBottom = -2;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get focusPaddingBottom():Number
 		{
@@ -1016,6 +1103,8 @@ package feathers.core
 		 *
 		 * <listing version="3.0">
 		 * button.focusPaddingLeft = -2;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get focusPaddingLeft():Number
 		{
@@ -1050,6 +1139,12 @@ package feathers.core
 		 * Flag to indicate that the control is currently validating.
 		 */
 		protected var _isValidating:Boolean = false;
+
+		/**
+		 * @private
+		 * Flag to indicate that the control has validated at least once.
+		 */
+		protected var _hasValidated:Boolean = false;
 
 		/**
 		 * @private
@@ -1255,6 +1350,11 @@ package feathers.core
 				delete this._delayedInvalidationFlags[flag];
 			}
 			this._isValidating = false;
+			if(!this._hasValidated)
+			{
+				this._hasValidated = true;
+				this.dispatchEventWith(FeathersEventType.CREATION_COMPLETE);
+			}
 		}
 
 		/**
@@ -1352,7 +1452,14 @@ package feathers.core
 			}
 			else
 			{
-				width = Math.min(this._maxWidth, Math.max(this._minWidth, width));
+				if(width < this._minWidth)
+				{
+					width = this._minWidth;
+				}
+				else if(width > this._maxWidth)
+				{
+					width = this._maxWidth;
+				}
 			}
 			if(!isNaN(this.explicitHeight))
 			{
@@ -1360,7 +1467,14 @@ package feathers.core
 			}
 			else
 			{
-				height = Math.min(this._maxHeight, Math.max(this._minHeight, height));
+				if(height < this._minHeight)
+				{
+					height = this._minHeight;
+				}
+				else if(height > this._maxHeight)
+				{
+					height = this._maxHeight;
+				}
 			}
 			if(isNaN(width))
 			{
@@ -1374,9 +1488,17 @@ package feathers.core
 			if(this.actualWidth != width)
 			{
 				this.actualWidth = width;
-				this._hitArea.width = Math.max(width, this._minTouchWidth);
-				this._hitArea.x = (this.actualWidth - this._hitArea.width) / 2;
-				if(this._hitArea.x != this._hitArea.x)
+				if(width < this._minTouchWidth)
+				{
+					this._hitArea.width = this._minTouchWidth;
+				}
+				else
+				{
+					this._hitArea.width = width;
+				}
+				var hitAreaX:Number = (this.actualWidth - this._hitArea.width) / 2;
+				this._hitArea.x = hitAreaX;
+				if(hitAreaX != hitAreaX) //faster than isNaN
 				{
 					this._hitArea.x = 0;
 				}
@@ -1385,14 +1507,24 @@ package feathers.core
 			if(this.actualHeight != height)
 			{
 				this.actualHeight = height;
-				this._hitArea.height = Math.max(height, this._minTouchHeight);
-				this._hitArea.y = (this.actualHeight - this._hitArea.height) / 2;
-				if(this._hitArea.y != this._hitArea.y)
+				if(height < this._minTouchHeight)
+				{
+					this._hitArea.height = this._minTouchHeight;
+				}
+				else
+				{
+					this._hitArea.height = height;
+				}
+				var hitAreaY:Number = (this.actualHeight - this._hitArea.height) / 2;
+				this._hitArea.y = hitAreaY;
+				if(hitAreaY != hitAreaY) //faster than isNaN
 				{
 					this._hitArea.y = 0;
 				}
 				resized = true;
 			}
+			this.scaledActualWidth = this.actualWidth * this.scaleX;
+			this.scaledActualHeight = this.actualHeight * this.scaleY;
 			if(resized)
 			{
 				if(canInvalidate)
@@ -1481,6 +1613,7 @@ package feathers.core
 		protected function focusOutHandler(event:Event):void
 		{
 			this._hasFocus = false;
+			this._showFocus = false;
 			this.invalidate(INVALIDATION_FLAG_FOCUS);
 		}
 

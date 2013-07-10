@@ -190,6 +190,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * header.title = "I'm a Header";</listing>
+		 *
+		 * @default ""
 		 */
 		public function get title():String
 		{
@@ -246,6 +248,8 @@ package feathers.controls
 		 *     return titleRenderer;
 		 * }</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.core.ITextRenderer
 		 * @see feathers.core.FeathersControl#defaultTextRendererFactory
 		 * @see feathers.controls.text.BitmapFontTextRenderer
@@ -291,6 +295,8 @@ package feathers.controls
 		 * backButton.nameList.add( Button.ALTERNATE_NAME_BACK_BUTTON );
 		 * backButton.addEventListener( Event.TRIGGERED, backButton_triggeredHandler );
 		 * header.leftItems = new &lt;DisplayObject&gt;[ backButton ];</listing>
+		 *
+		 * @default null
 		 */
 		public function get leftItems():Vector.<DisplayObject>
 		{
@@ -348,6 +354,8 @@ package feathers.controls
 		 * settingsButton.label = "Settings";
 		 * settingsButton.addEventListener( Event.TRIGGERED, settingsButton_triggeredHandler );
 		 * header.rightItems = new &lt;DisplayObject&gt;[ settingsButton ];</listing>
+		 *
+		 * @default null
 		 */
 		public function get rightItems():Vector.<DisplayObject>
 		{
@@ -399,6 +407,13 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * header.padding = 20;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #paddingTop
+		 * @see #paddingRight
+		 * @see #paddingBottom
+		 * @see #paddingLeft
 		 */
 		public function get padding():Number
 		{
@@ -430,6 +445,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * header.paddingTop = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingTop():Number
 		{
@@ -463,6 +480,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * header.paddingRight = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingRight():Number
 		{
@@ -496,6 +515,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * header.paddingBottom = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingBottom():Number
 		{
@@ -529,6 +550,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * header.paddingLeft = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingLeft():Number
 		{
@@ -566,6 +589,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * header.gap = 20;</listing>
 		 *
+		 * @default 0
+		 *
 		 * @see #titleGap
 		 * @see #leftItems
 		 * @see #rightItems
@@ -595,7 +620,7 @@ package feathers.controls
 
 		/**
 		 * Space, in pixels, between the title and the left or right groups of
-		 * items. If <code>NaN</code> (the default), the regular <code>gap</code>
+		 * items. If <code>NaN</code> (the default), the default <code>gap</code>
 		 * property is used instead.
 		 *
 		 * <p>In the following example, the header's title gap is set to 20
@@ -603,6 +628,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * header.titleGap = 20;</listing>
+		 *
+		 * @default NaN
 		 *
 		 * @see #gap
 		 */
@@ -638,6 +665,12 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * header.verticalAlign = Header.VERTICAL_ALIGN_MIDDLE;</listing>
+		 *
+		 * @default Header.VERTICAL_ALIGN_MIDDLE
+		 *
+		 * @see #VERTICAL_ALIGN_TOP
+		 * @see #VERTICAL_ALIGN_MIDDLE
+		 * @see #VERTICAL_ALIGN_BOTTOM
 		 */
 		public function get verticalAlign():String
 		{
@@ -685,6 +718,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * header.backgroundSkin = new Quad( 10, 10, 0xff0000 );</listing>
+		 *
+		 * @default null
 		 */
 		public function get backgroundSkin():DisplayObject
 		{
@@ -728,6 +763,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * header.backgroundDisabledSkin = new Quad( 10, 10, 0x999999 );</listing>
+		 *
+		 * @default null
 		 */
 		public function get backgroundDisabledSkin():DisplayObject
 		{
@@ -772,7 +809,8 @@ package feathers.controls
 		 * <code>TextFieldTextRenderer</code>.
 		 *
 		 * <p>In the following example, some properties are set for the header's
-		 * title text renderer:</p>
+		 * title text renderer (this example assumes that the title text renderer
+		 * is a <code>BitmapFontTextRenderer</code>):</p>
 		 *
 		 * <listing version="3.0">
 		 * header.titleProperties.textFormat = new BitmapFontTextFormat( bitmapFont );
@@ -788,6 +826,8 @@ package feathers.controls
 		 * <p>Setting properties in a <code>titleFactory</code> function instead
 		 * of using <code>titleProperties</code> will result in better
 		 * performance.</p>
+		 *
+		 * @default null
 		 *
 		 * @see #titleFactory
 		 * @see feathers.core.ITextRenderer
@@ -845,7 +885,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * header.titleAlign = Header.TITLE_ALIGN_PREFER_LEFT;</listing>
 		 *
-		 * @default TITLE_ALIGN_CENTER
+		 * @default Header.TITLE_ALIGN_CENTER
+		 *
 		 * @see #TITLE_ALIGN_CENTER
 		 * @see #TITLE_ALIGN_PREFER_LEFT
 		 * @see #TITLE_ALIGN_PREFER_RIGHT

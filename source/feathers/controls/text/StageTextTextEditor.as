@@ -8,7 +8,6 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.text
 {
 	import flash.display.BitmapData;
-	import flash.display3D.textures.Texture;
 	import flash.events.Event;
 	import flash.events.FocusEvent;
 	import flash.events.KeyboardEvent;
@@ -34,7 +33,6 @@ package feathers.controls.text
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.events.Event;
-	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
 	import starling.utils.MatrixUtil;
 
@@ -144,6 +142,8 @@ package feathers.controls.text
 
 		/**
 		 * The text displayed by the input.
+		 *
+		 * @default ""
 		 */
 		public function get text():String
 		{
@@ -221,6 +221,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
+		 *
+		 * @default flash.text.AutoCapitalize.NONE
 		 */
 		public function get autoCapitalize():String
 		{
@@ -247,6 +249,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
+		 *
+		 * @default false
 		 */
 		public function get autoCorrect():Boolean
 		{
@@ -273,6 +277,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
+		 *
+		 * @default 0x000000
 		 */
 		public function get color():uint
 		{
@@ -299,6 +305,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
+		 *
+		 * @default false
 		 */
 		public function get displayAsPassword():Boolean
 		{
@@ -326,6 +334,8 @@ package feathers.controls.text
 		/**
 		 * Determines if the text input is editable. If the text input is not
 		 * editable, it will still appear enabled.
+		 *
+		 * @default true
 		 */
 		public function get isEditable():Boolean
 		{
@@ -347,6 +357,8 @@ package feathers.controls.text
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @default true
 		 */
 		public function get setTouchFocusOnEndedPhase():Boolean
 		{
@@ -360,6 +372,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
+		 *
+		 * @default null
 		 */
 		public function get fontFamily():String
 		{
@@ -386,6 +400,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
+		 *
+		 * @default flash.text.engine.FontPosture.NORMAL
 		 */
 		public function get fontPosture():String
 		{
@@ -412,6 +428,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
+		 *
+		 * @default 12
 		 */
 		public function get fontSize():int
 		{
@@ -438,6 +456,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
+		 *
+		 * @default flash.text.engine.FontWeight.NORMAL
 		 */
 		public function get fontWeight():String
 		{
@@ -464,6 +484,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
+		 *
+		 * @default "en"
 		 */
 		public function get locale():String
 		{
@@ -490,6 +512,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
+		 *
+		 * @default 0
 		 */
 		public function get maxChars():int
 		{
@@ -520,6 +544,8 @@ package feathers.controls.text
 		 * <code>StageText</code> instance will be disposed and recreated when
 		 * this property changes after the <code>StageText</code> text was
 		 * initially created.
+		 *
+		 * @default false
 		 */
 		public function get multiline():Boolean
 		{
@@ -546,6 +572,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
+		 *
+		 * @default null
 		 */
 		public function get restrict():String
 		{
@@ -572,6 +600,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
+		 *
+		 * @default flash.text.ReturnKeyLabel.DEFAULT
 		 */
 		public function get returnKeyLabel():String
 		{
@@ -598,6 +628,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
+		 *
+		 * @default flash.text.SoftKeyboardType.DEFAULT
 		 */
 		public function get softKeyboardType():String
 		{
@@ -624,6 +656,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
+		 *
+		 * @default flash.text.TextFormatAlign.START
 		 */
 		public function get textAlign():String
 		{
@@ -698,21 +732,48 @@ package feathers.controls.text
 			{
 				if(position)
 				{
-					if(position.x < 0)
+					const positionX:Number = position.x;
+					const positionY:Number = position.y;
+					if(positionX < 0)
 					{
 						this._pendingSelectionStartIndex = this._pendingSelectionEndIndex = 0;
 					}
 					else
 					{
-						this._pendingSelectionStartIndex = this._measureTextField.getCharIndexAtPoint(position.x, position.y);
+						this._pendingSelectionStartIndex = this._measureTextField.getCharIndexAtPoint(positionX, positionY);
 						if(this._pendingSelectionStartIndex < 0)
 						{
-							this._pendingSelectionStartIndex = this._text.length;
+							if(this._multiline)
+							{
+								const lineIndex:int = int(positionY / this._measureTextField.getLineMetrics(0).height);
+								try
+								{
+									this._pendingSelectionStartIndex = this._measureTextField.getLineOffset(lineIndex) + this._measureTextField.getLineLength(lineIndex);
+									if(this._pendingSelectionStartIndex != this._text.length)
+									{
+										this._pendingSelectionStartIndex--;
+									}
+								}
+								catch(error:Error)
+								{
+									//we may be checking for a line beyond the
+									//end that doesn't exist
+									this._pendingSelectionStartIndex = this._text.length;
+								}
+							}
+							else
+							{
+								this._pendingSelectionStartIndex = this._text.length;
+							}
 						}
-						const bounds:Rectangle = this._measureTextField.getCharBoundaries(this._pendingSelectionStartIndex);
-						if(bounds && (bounds.x + bounds.width - position.x) < (position.x - bounds.x))
+						else
 						{
-							this._pendingSelectionStartIndex++;
+							const bounds:Rectangle = this._measureTextField.getCharBoundaries(this._pendingSelectionStartIndex);
+							const boundsX:Number = bounds.x;
+							if(bounds && (boundsX + bounds.width - positionX) < (positionX - boundsX))
+							{
+								this._pendingSelectionStartIndex++;
+							}
 						}
 						this._pendingSelectionEndIndex = this._pendingSelectionStartIndex;
 					}
@@ -964,6 +1025,7 @@ package feathers.controls.text
 			this._measureTextField.displayAsPassword = this._displayAsPassword;
 			this._measureTextField.maxChars = this._maxChars;
 			this._measureTextField.restrict = this._restrict;
+			this._measureTextField.multiline = this._measureTextField.wordWrap = this._multiline;
 
 			const format:TextFormat = this._measureTextField.defaultTextFormat;
 			format.color = this._color;
@@ -1008,6 +1070,14 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected function texture_onRestore():void
+		{
+			this.refreshSnapshot(!this._textSnapshotBitmapData);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function refreshSnapshot(needsNewBitmap:Boolean):void
 		{
 			if(needsNewBitmap)
@@ -1033,9 +1103,15 @@ package feathers.controls.text
 			}
 			this._textSnapshotBitmapData.fillRect(this._textSnapshotBitmapData.rect, 0x00ff00ff);
 			this.stageText.drawViewPortToBitmapData(this._textSnapshotBitmapData);
+			var newTexture:Texture;
+			if(!this.textSnapshot || needsNewBitmap)
+			{
+				newTexture = Texture.fromBitmapData(this._textSnapshotBitmapData, false, false, Starling.contentScaleFactor);
+				newTexture.root.onRestore = texture_onRestore;
+			}
 			if(!this.textSnapshot)
 			{
-				this.textSnapshot = new Image(starling.textures.Texture.fromBitmapData(this._textSnapshotBitmapData, false, false, Starling.contentScaleFactor));
+				this.textSnapshot = new Image(newTexture);
 				this.addChild(this.textSnapshot);
 			}
 			else
@@ -1043,19 +1119,14 @@ package feathers.controls.text
 				if(needsNewBitmap)
 				{
 					this.textSnapshot.texture.dispose();
-					this.textSnapshot.texture = starling.textures.Texture.fromBitmapData(this._textSnapshotBitmapData, false, false, Starling.contentScaleFactor);
+					this.textSnapshot.texture = newTexture;
 					this.textSnapshot.readjustSize();
 				}
 				else
 				{
-					//this is faster, so use it if we haven't resized the
-					//bitmapdata
-					const texture:starling.textures.Texture = this.textSnapshot.texture;
-					if(Starling.handleLostContext && texture is ConcreteTexture)
-					{
-						ConcreteTexture(texture).restoreOnLostContext(this._textSnapshotBitmapData);
-					}
-					flash.display3D.textures.Texture(texture.base).uploadFromBitmapData(this._textSnapshotBitmapData);
+					//this is faster, if we haven't resized the bitmapdata
+					const existingTexture:Texture = this.textSnapshot.texture;
+					existingTexture.root.uploadBitmapData(this._textSnapshotBitmapData);
 				}
 			}
 
@@ -1095,6 +1166,9 @@ package feathers.controls.text
 				stageTextViewPort.height = 1;
 			}
 			this.stageText.viewPort = stageTextViewPort;
+
+			this._measureTextField.width = this.actualWidth;
+			this._measureTextField.height = this.actualHeight;
 		}
 
 		/**

@@ -49,6 +49,22 @@ package feathers.controls
 	/**
 	 * Displays an image, either from a <code>Texture</code> or loaded from a
 	 * URL.
+	 *
+	 * <p>The following example passes a URL to an image loader and listens for
+	 * its complete event:</p>
+	 *
+	 * <listing version="3.0">
+	 * var loader:ImageLoader = new ImageLoader();
+	 * loader.source = "http://example.com/example.png";
+	 * loader.addEventListener( Event.COMPLETE, loader_completeHandler );
+	 * this.addChild( loader );</listing>
+	 *
+	 * <p>The following example passes a texture to an image loader:</p>
+	 *
+	 * <listing version="3.0">
+	 * var loader:ImageLoader = new ImageLoader();
+	 * loader.source = Texture.fromBitmap( bitmap );
+	 * this.addChild( loader );</listing>
 	 */
 	public class ImageLoader extends FeathersControl
 	{
@@ -124,7 +140,24 @@ package feathers.controls
 
 		/**
 		 * The texture to display, or a URL to load the image from to create the
-		 * texture.
+		 * texture. Supports image files that may be loaded by
+		 * <code>flash.display.Loader</code>, including JPG, GIF, and PNG.
+		 *
+		 * <p>In the following example, the image loader's source is set to a
+		 * texture:</p>
+		 *
+		 * <listing version="3.0">
+		 * loader.source = Texture.fromBitmap( bitmap );</listing>
+		 *
+		 * <p>In the following example, the image loader's source is set to the
+		 * URL of an image:</p>
+		 *
+		 * <listing version="3.0">
+		 * loader.source = "http://example.com/example.png";</listing>
+		 *
+		 * @default null
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/Loader.html
 		 */
 		public function get source():Object
 		{
@@ -158,6 +191,15 @@ package feathers.controls
 
 		/**
 		 * Indicates if the source has fully loaded.
+		 *
+		 * <p>In the following example, we check if the image loader's source
+		 * has finished loading:</p>
+		 *
+		 * <listing version="3.0">
+		 * if( loader.isLoaded )
+		 * {
+		 *     //do something
+		 * }</listing>
 		 */
 		public function get isLoaded():Boolean
 		{
@@ -170,7 +212,15 @@ package feathers.controls
 		private var _textureScale:Number = 1;
 
 		/**
-		 * The scale of the texture.
+		 * The scale of the texture. Useful for UI that scales to DPI.
+		 *
+		 * <p>In the following example, the image loader's texture scale is
+		 * customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * loader.textureScale = 0.5;</listing>
+		 *
+		 * @default 1
 		 */
 		public function get textureScale():Number
 		{
@@ -197,6 +247,14 @@ package feathers.controls
 
 		/**
 		 * The smoothing value to use on the internal <code>Image</code>.
+		 *
+		 * <p>In the following example, the image loader's smoothing is set to a
+		 * custom value:</p>
+		 *
+		 * <listing version="3.0">
+		 * loader.source = TextureSmoothing.NONE;</listing>
+		 *
+		 * @default starling.textures.TextureSmoothing.BILINEAR
 		 *
 		 * @see starling.textures.TextureSmoothing
 		 * @see starling.display.Image#smoothing
@@ -227,6 +285,14 @@ package feathers.controls
 		/**
 		 * The tint value to use on the internal <code>Image</code>.
 		 *
+		 * <p>In the following example, the image loader's texture color is
+		 * customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * loader.color = 0xff00ff;</listing>
+		 *
+		 * @default 0xffffff
+		 *
 		 * @see starling.display.Image#color
 		 */
 		public function get color():uint
@@ -255,6 +321,14 @@ package feathers.controls
 		/**
 		 * Determines if the image should be snapped to the nearest global whole
 		 * pixel when rendered. Turning this on helps to avoid blurring.
+		 *
+		 * <p>In the following example, the image loader's position is snapped
+		 * to pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * loader.snapToPixels = true;</listing>
+		 *
+		 * @default false
 		 */
 		public function get snapToPixels():Boolean
 		{
@@ -281,6 +355,14 @@ package feathers.controls
 		/**
 		 * Determines if the aspect ratio of the texture is maintained when the
 		 * aspect ratio of the component is different.
+		 *
+		 * <p>In the following example, the image loader's aspect ratio is not
+		 * maintained:</p>
+		 *
+		 * <listing version="3.0">
+		 * loader.maintainAspectRatio = false;</listing>
+		 *
+		 * @default true
 		 */
 		public function get maintainAspectRatio():Boolean
 		{
@@ -357,6 +439,14 @@ package feathers.controls
 		 * <code>List</code> is <code>true</code> before you listen to those
 		 * events.</p>
 		 *
+		 * <p>In the following example, the image loader's texture creation is
+		 * delayed:</p>
+		 *
+		 * <listing version="3.0">
+		 * loader.delayTextureCreation = true;</listing>
+		 *
+		 * @default false
+		 *
 		 * @see feathers.controls.Scroller#event:scrollStart
 		 * @see feathers.controls.Scroller#event:scrollComplete
 		 * @see feathers.controls.Scroller#isScrolling
@@ -389,6 +479,19 @@ package feathers.controls
 		 * <code>padding</code> getter always returns the value of
 		 * <code>paddingTop</code>, but the other padding values may be
 		 * different.
+		 *
+		 * <p>In the following example, the image loader's padding is set to
+		 * 20 pixels on all sides:</p>
+		 *
+		 * <listing version="3.0">
+		 * loader.padding = 20;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #paddingTop
+		 * @see #paddingRight
+		 * @see #paddingBottom
+		 * @see #paddingLeft
 		 */
 		public function get padding():Number
 		{
@@ -415,6 +518,14 @@ package feathers.controls
 		 * The minimum space, in pixels, between the control's top edge and the
 		 * control's content. Value may be negative to extend the content
 		 * outside the edges of the control. Useful for skinning.
+		 *
+		 * <p>In the following example, the image loader's top padding is set
+		 * to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * loader.paddingTop = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingTop():Number
 		{
@@ -443,6 +554,14 @@ package feathers.controls
 		 * The minimum space, in pixels, between the control's right edge and the
 		 * control's content. Value may be negative to extend the content
 		 * outside the edges of the control. Useful for skinning.
+		 *
+		 * <p>In the following example, the image loader's right padding is set
+		 * to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * loader.paddingRight = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingRight():Number
 		{
@@ -471,6 +590,14 @@ package feathers.controls
 		 * The minimum space, in pixels, between the control's bottom edge and the
 		 * control's content. Value may be negative to extend the content
 		 * outside the edges of the control. Useful for skinning.
+		 *
+		 * <p>In the following example, the image loader's bottom padding is set
+		 * to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * loader.paddingBottom = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingBottom():Number
 		{
@@ -499,6 +626,14 @@ package feathers.controls
 		 * The minimum space, in pixels, between the control's left edge and the
 		 * control's content. Value may be negative to extend the content
 		 * outside the edges of the control. Useful for skinning.
+		 *
+		 * <p>In the following example, the image loader's left padding is set
+		 * to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * loader.paddingLeft = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingLeft():Number
 		{

@@ -8,7 +8,6 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.text
 {
 	import flash.display.BitmapData;
-	import flash.display3D.textures.Texture;
 	import flash.events.FocusEvent;
 	import flash.events.KeyboardEvent;
 	import flash.events.SoftKeyboardEvent;
@@ -29,7 +28,6 @@ package feathers.controls.text
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.events.Event;
-	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
 	import starling.utils.MatrixUtil;
 	import starling.utils.getNextPowerOfTwo;
@@ -159,6 +157,8 @@ package feathers.controls.text
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @default ""
 		 */
 		public function get text():String
 		{
@@ -191,6 +191,8 @@ package feathers.controls.text
 
 		/**
 		 * The format of the text, such as font and styles.
+		 *
+		 * @default null
 		 */
 		public function get textFormat():TextFormat
 		{
@@ -217,6 +219,8 @@ package feathers.controls.text
 
 		/**
 		 * Determines if the TextField should use an embedded font or not.
+		 *
+		 * @default false
 		 */
 		public function get embedFonts():Boolean
 		{
@@ -243,6 +247,8 @@ package feathers.controls.text
 
 		/**
 		 * Determines if the TextField wraps text to the next line.
+		 *
+		 * @default false
 		 */
 		public function get wordWrap():Boolean
 		{
@@ -269,6 +275,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>TextField</code> property with the same name.
+		 *
+		 * @default false
 		 */
 		public function get multiline():Boolean
 		{
@@ -295,6 +303,8 @@ package feathers.controls.text
 
 		/**
 		 * Determines if the TextField should display the text as HTML or not.
+		 *
+		 * @default false
 		 */
 		public function get isHTML():Boolean
 		{
@@ -321,6 +331,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>flash.text.TextField</code> property with the same name.
+		 *
+		 * @default false
 		 */
 		public function get alwaysShowSelection():Boolean
 		{
@@ -347,6 +359,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>flash.text.TextField</code> property with the same name.
+		 *
+		 * @default false
 		 */
 		public function get displayAsPassword():Boolean
 		{
@@ -373,6 +387,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>flash.text.TextField</code> property with the same name.
+		 *
+		 * @default 0
 		 */
 		public function get maxChars():int
 		{
@@ -399,6 +415,8 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>flash.text.TextField</code> property with the same name.
+		 *
+		 * @default null
 		 */
 		public function get restrict():String
 		{
@@ -426,6 +444,8 @@ package feathers.controls.text
 		/**
 		 * Determines if the text input is editable. If the text input is not
 		 * editable, it will still appear enabled.
+		 *
+		 * @default true
 		 */
 		public function get isEditable():Boolean
 		{
@@ -526,12 +546,37 @@ package feathers.controls.text
 						this._pendingSelectionStartIndex = this.textField.getCharIndexAtPoint(positionX, positionY);
 						if(this._pendingSelectionStartIndex < 0)
 						{
-							this._pendingSelectionStartIndex = this._text.length;
+							if(this._multiline)
+							{
+								const lineIndex:int = int(positionY / this.textField.getLineMetrics(0).height) + (this.textField.scrollV - 1);
+								try
+								{
+									this._pendingSelectionStartIndex = this.textField.getLineOffset(lineIndex) + this.textField.getLineLength(lineIndex);
+									if(this._pendingSelectionStartIndex != this._text.length)
+									{
+										this._pendingSelectionStartIndex--;
+									}
+								}
+								catch(error:Error)
+								{
+									//we may be checking for a line beyond the
+									//end that doesn't exist
+									this._pendingSelectionStartIndex = this._text.length;
+								}
+							}
+							else
+							{
+								this._pendingSelectionStartIndex = this._text.length;
+							}
 						}
-						const bounds:Rectangle = this.textField.getCharBoundaries(this._pendingSelectionStartIndex);
-						if(bounds && (bounds.x + bounds.width - positionX) < (positionX - bounds.x))
+						else
 						{
-							this._pendingSelectionStartIndex++;
+							const bounds:Rectangle = this.textField.getCharBoundaries(this._pendingSelectionStartIndex);
+							const boundsX:Number = bounds.x;
+							if(bounds && (boundsX + bounds.width - positionX) < (positionX - boundsX))
+							{
+								this._pendingSelectionStartIndex++;
+							}
 						}
 						this._pendingSelectionEndIndex = this._pendingSelectionStartIndex;
 					}
@@ -875,6 +920,14 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected function texture_onRestore():void
+		{
+			this.refreshSnapshot();
+		}
+
+		/**
+		 * @private
+		 */
 		protected function refreshSnapshot():void
 		{
 			if(this.textField.width == 0 || this.textField.height == 0)
@@ -898,9 +951,15 @@ package feathers.controls.text
 			HELPER_MATRIX.scale(Starling.contentScaleFactor, Starling.contentScaleFactor);
 			this._textSnapshotBitmapData.fillRect(this._textSnapshotBitmapData.rect, 0x00ff00ff);
 			this._textSnapshotBitmapData.draw(this.textField, HELPER_MATRIX, null, null, this._textFieldClipRect);
+			var newTexture:Texture;
+			if(!this.textSnapshot || this._needsNewBitmap)
+			{
+				newTexture = Texture.fromBitmapData(this._textSnapshotBitmapData, false, false, Starling.contentScaleFactor);
+				newTexture.root.onRestore = texture_onRestore;
+			}
 			if(!this.textSnapshot)
 			{
-				this.textSnapshot = new Image(starling.textures.Texture.fromBitmapData(this._textSnapshotBitmapData, false, false, Starling.contentScaleFactor));
+				this.textSnapshot = new Image(newTexture);
 				this.addChild(this.textSnapshot);
 			}
 			else
@@ -908,18 +967,14 @@ package feathers.controls.text
 				if(this._needsNewBitmap)
 				{
 					this.textSnapshot.texture.dispose();
-					this.textSnapshot.texture = starling.textures.Texture.fromBitmapData(this._textSnapshotBitmapData, false, false, Starling.contentScaleFactor);
+					this.textSnapshot.texture = newTexture;
 					this.textSnapshot.readjustSize();
 				}
 				else
 				{
-					//this is faster if we haven't resized the bitmapdata
-					const texture:starling.textures.Texture = this.textSnapshot.texture;
-					if(Starling.handleLostContext && texture is ConcreteTexture)
-					{
-						ConcreteTexture(texture).restoreOnLostContext(this._textSnapshotBitmapData);
-					}
-					flash.display3D.textures.Texture(texture.base).uploadFromBitmapData(this._textSnapshotBitmapData);
+					//this is faster, if we haven't resized the bitmapdata
+					const existingTexture:Texture = this.textSnapshot.texture;
+					existingTexture.root.uploadBitmapData(this._textSnapshotBitmapData);
 				}
 			}
 			this._needsNewBitmap = false;

@@ -7,8 +7,6 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.core
 {
-	import feathers.core.IFocusManager;
-
 	import flash.utils.Dictionary;
 
 	import starling.core.Starling;
@@ -67,6 +65,8 @@ package feathers.core
 		/**
 		 * The container where pop-ups are added. If not set manually, defaults
 		 * to the Starling stage.
+		 *
+		 * @default null
 		 */
 		public static function get root():DisplayObjectContainer
 		{

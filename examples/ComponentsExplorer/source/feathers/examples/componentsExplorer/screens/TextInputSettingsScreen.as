@@ -60,6 +60,8 @@ package feathers.examples.componentsExplorer.screens
 				{ label: "maxChars", accessory: this._maxCharsStepper },
 			]);
 			this._list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
+			this._list.clipContent = false;
+			this._list.autoHideBackground = true;
 			this.addChild(this._list);
 
 			this._backButton = new Button();

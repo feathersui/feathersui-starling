@@ -24,6 +24,15 @@ package feathers.events
 		public static const INITIALIZE:String = "initialize";
 
 		/**
+		 * The <code>FeathersEventType.CREATION_COMPLETE</code> event type is
+		 * meant to be used when an <code>IFeathersControl</code> has finished
+		 * validating for the first time. A well-designed component will have
+		 * created all of its children and it will be fully ready for user
+		 * interaction.
+		 */
+		public static const CREATION_COMPLETE:String = "creationComplete";
+
+		/**
 		 * The <code>FeathersEventType.RESIZE</code> event type is meant to
 		 * be used when an <code>IFeathersControl</code> has resized.
 		 */
@@ -132,5 +141,13 @@ package feathers.events
 		 * used by Feathers controls when their layout data has changed.
 		 */
 		public static const LAYOUT_DATA_CHANGE:String = "layoutDataChange";
+
+		/**
+		 * The <code>FeathersEventType.LONG_PRESS</code> event type is used by
+		 * the Feathers <code>Button</code> when it is pressed for a long time.
+		 *
+		 * @see feathers.controls.Button#event:longPress
+		 */
+		public static const LONG_PRESS:String = "longPress";
 	}
 }

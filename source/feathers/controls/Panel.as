@@ -16,6 +16,28 @@ package feathers.controls
 	 * A container with layout, optional scrolling, a header, and an optional
 	 * footer.
 	 *
+	 * <p>The following example creates a panel with a horizontal layout and
+	 * adds two buttons to it:</p>
+	 *
+	 * <listing version="3.0">
+	 * var panel:Panel = new Panel();
+	 * panel.headerProperties.title = "Is it time to party?";
+	 *
+	 * var layout:HorizontalLayout = new HorizontalLayout();
+	 * layout.gap = 20;
+	 * layout.padding = 20;
+	 * panel.layout = layout;
+	 *
+	 * this.addChild( panel );
+	 *
+	 * var yesButton:Button = new Button();
+	 * yesButton.label = "Yes";
+	 * panel.addChild( yesButton );
+	 *
+	 * var noButton:Button = new Button();
+	 * noButton.label = "No";
+	 * panel.addChild( noButton );</listing>
+	 *
 	 * <p><strong>Beta Component:</strong> This is a new component, and its APIs
 	 * may need some changes between now and the next version of Feathers to
 	 * account for overlooked requirements or other issues. Upgrading to future
@@ -45,41 +67,60 @@ package feathers.controls
 
 		/**
 		 * @copy feathers.controls.Scroller#SCROLL_POLICY_AUTO
+		 *
+		 * @see feathers.controls.Scroller#horizontalScrollPolicy
+		 * @see feathers.controls.Scroller#verticalScrollPolicy
 		 */
 		public static const SCROLL_POLICY_AUTO:String = "auto";
 
 		/**
 		 * @copy feathers.controls.Scroller#SCROLL_POLICY_ON
+		 *
+		 * @see feathers.controls.Scroller#horizontalScrollPolicy
+		 * @see feathers.controls.Scroller#verticalScrollPolicy
 		 */
 		public static const SCROLL_POLICY_ON:String = "on";
 
 		/**
 		 * @copy feathers.controls.Scroller#SCROLL_POLICY_OFF
+		 *
+		 * @see feathers.controls.Scroller#horizontalScrollPolicy
+		 * @see feathers.controls.Scroller#verticalScrollPolicy
 		 */
 		public static const SCROLL_POLICY_OFF:String = "off";
 
 		/**
 		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_FLOAT
+		 *
+		 * @see feathers.controls.Scroller#scrollBarDisplayMode
 		 */
 		public static const SCROLL_BAR_DISPLAY_MODE_FLOAT:String = "float";
 
 		/**
 		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_FIXED
+		 *
+		 * @see feathers.controls.Scroller#scrollBarDisplayMode
 		 */
 		public static const SCROLL_BAR_DISPLAY_MODE_FIXED:String = "fixed";
 
 		/**
 		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_NONE
+		 *
+		 * @see feathers.controls.Scroller#scrollBarDisplayMode
 		 */
 		public static const SCROLL_BAR_DISPLAY_MODE_NONE:String = "none";
 
 		/**
 		 * @copy feathers.controls.Scroller#INTERACTION_MODE_TOUCH
+		 *
+		 * @see feathers.controls.Scroller#interactionMode
 		 */
 		public static const INTERACTION_MODE_TOUCH:String = "touch";
 
 		/**
 		 * @copy feathers.controls.Scroller#INTERACTION_MODE_MOUSE
+		 *
+		 * @see feathers.controls.Scroller#interactionMode
 		 */
 		public static const INTERACTION_MODE_MOUSE:String = "mouse";
 
@@ -164,6 +205,26 @@ package feathers.controls
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():IFeathersControl</pre>
 		 *
+		 * <p>In the following example, a custom header factory is provided to
+		 * the panel:</p>
+		 *
+		 * <listing version="3.0">
+		 * panel.headerFactory = function():IFeathersControl
+		 * {
+		 *     var backButton:Button = new Button();
+		 *     backButton.label = "Back";
+		 *     backButton.addEventListener( Event.TRIGGERED, backButton_triggeredHandler );
+		 *
+		 *     var header:Header = new Header();
+		 *     header.leftItems = new &lt;DisplayObject&gt;
+		 *     [
+		 *         backButton
+		 *     ];
+		 *     return header;
+		 * };</listing>
+		 *
+		 * @default null
+		 *
 		 * @see feathers.core.IFeathersControl
 		 * @see feathers.controls.Header
 		 * @see #headerProperties
@@ -198,8 +259,25 @@ package feathers.controls
 		 * A name to add to the panel's header sub-component. Typically
 		 * used by a theme to provide different skins to different panels.
 		 *
+		 * <p>In the following example, a custom header name is passed to the
+		 * panel:</p>
+		 *
+		 * <listing version="3.0">
+		 * panel.customHeaderName = "my-custom-header";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style (this example assumes that the
+		 * header is a <code>Header</code>, but it can be any
+		 * <code>IFeathersControl</code>):</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( Header, customHeaderInitializer, "my-custom-header");</listing>
+		 *
+		 * @default null
+		 *
 		 * @see #DEFAULT_CHILD_NAME_HEADER
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 * @see #headerFactory
 		 * @see #headerProperties
 		 */
@@ -247,6 +325,13 @@ package feathers.controls
 		 * <p>Setting properties in a <code>headerFactory</code> function
 		 * instead of using <code>headerProperties</code> will result in better
 		 * performance.</p>
+		 *
+		 * <p>In the following example, the header properties are customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * panel.headerProperties.title = "Hello World";</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #headerFactory
 		 * @see feathers.controls.Header
@@ -310,6 +395,17 @@ package feathers.controls
 		 * <p>The function should have the following signature:</p>
 		 * <pre>function():IFeathersControl</pre>
 		 *
+		 * <p>In the following example, a custom footer factory is provided to
+		 * the panel:</p>
+		 *
+		 * <listing version="3.0">
+		 * panel.footerFactory = function():IFeathersControl
+		 * {
+		 *     return new ScrollContainer();
+		 * };</listing>
+		 *
+		 * @default null
+		 *
 		 * @see feathers.core.IFeathersControl
 		 * @see #footerProperties
 		 */
@@ -343,8 +439,25 @@ package feathers.controls
 		 * A name to add to the panel's footer sub-component. Typically
 		 * used by a theme to provide different skins to different panels.
 		 *
+		 * <p>In the following example, a custom footer name is passed to the
+		 * panel:</p>
+		 *
+		 * <listing version="3.0">
+		 * panel.customFooterName = "my-custom-footer";</listing>
+		 *
+		 * <p>In your theme, you can target this sub-component name to provide
+		 * different skins than the default style (this example assumes that the
+		 * footer is a <code>ScrollContainer</code>, but it can be any
+		 * <code>IFeathersControl</code>):</p>
+		 *
+		 * <listing version="3.0">
+		 * setInitializerForClass( ScrollContainer, customFooterInitializer, "my-custom-footer");</listing>
+		 *
+		 * @default null
+		 *
 		 * @see #DEFAULT_CHILD_NAME_FOOTER
 		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.DisplayListWatcher
 		 * @see #footerFactory
 		 * @see #footerProperties
 		 */
@@ -391,6 +504,13 @@ package feathers.controls
 		 * <p>Setting properties in a <code>footerFactory</code> function
 		 * instead of using <code>footerProperties</code> will result in better
 		 * performance.</p>
+		 *
+		 * <p>In the following example, the footer properties are customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * panel.footerProperties.verticalScrollPolicy = ScrollContainer.SCROLL_POLICY_OFF;</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #footerFactory
 		 */
@@ -612,13 +732,13 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override protected function calculateViewPortOffsets(forceScrollBars:Boolean = false):void
+		override protected function calculateViewPortOffsets(forceScrollBars:Boolean = false, useActualBounds:Boolean = false):void
 		{
 			super.calculateViewPortOffsets(forceScrollBars);
 
 			const oldHeaderWidth:Number = this.header.width;
 			const oldHeaderHeight:Number = this.header.height;
-			this.header.width = this.explicitWidth;
+			this.header.width = useActualBounds ? this.actualWidth : this.explicitWidth;
 			this.header.maxWidth = this._maxWidth;
 			this.header.height = NaN;
 			this.header.validate();
@@ -630,7 +750,7 @@ package feathers.controls
 			{
 				const oldFooterWidth:Number = this.footer.width;
 				const oldFooterHeight:Number = this.footer.height;
-				this.footer.width = this.explicitWidth;
+				this.footer.width = useActualBounds ? this.actualWidth : this.explicitWidth;
 				this.footer.maxWidth = this._maxWidth;
 				this.footer.height = NaN;
 				this.footer.validate();

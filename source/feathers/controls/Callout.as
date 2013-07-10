@@ -8,7 +8,9 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.core.FeathersControl;
+	import feathers.core.IFeathersControl;
 	import feathers.core.PopUpManager;
+	import feathers.events.FeathersEventType;
 
 	import flash.events.KeyboardEvent;
 	import flash.geom.Point;
@@ -144,11 +146,6 @@ package feathers.controls
 		 * @private
 		 */
 		private static const HELPER_RECT:Rectangle = new Rectangle();
-
-		/**
-		 * @private
-		 */
-		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
 
 		/**
 		 * @private
@@ -652,16 +649,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _originalContentWidth:Number = NaN;
-
-		/**
-		 * @private
-		 */
-		protected var _originalContentHeight:Number = NaN;
-
-		/**
-		 * @private
-		 */
 		protected var _content:DisplayObject;
 
 		/**
@@ -675,6 +662,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * callout.content = new Image( texture );</listing>
+		 *
+		 * @default null
 		 */
 		public function get content():DisplayObject
 		{
@@ -692,15 +681,25 @@ package feathers.controls
 			}
 			if(this._content)
 			{
-				this._content.removeFromParent(false);
+				if(this._content is IFeathersControl)
+				{
+					IFeathersControl(this._content).removeEventListener(FeathersEventType.RESIZE, content_resizeHandler);
+				}
+				if(this._content.parent == this)
+				{
+					this._content.removeFromParent(false);
+				}
 			}
 			this._content = value;
 			if(this._content)
 			{
+				if(this._content is IFeathersControl)
+				{
+					IFeathersControl(this._content).addEventListener(FeathersEventType.RESIZE, content_resizeHandler);
+				}
 				this.addChild(this._content);
 			}
-			this._originalContentWidth = NaN;
-			this._originalContentHeight = NaN;
+			this.invalidate(INVALIDATION_FLAG_SIZE);
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
@@ -727,6 +726,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * callout.origin = button;</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #supportedDirections
 		 * @see #arrowPosition
@@ -767,6 +768,7 @@ package feathers.controls
 		 */
 		protected var _supportedDirections:String = DIRECTION_ANY;
 
+		[Inspectable(type="String",enumeration="any,vertical,horizontal,up,down,left,right")]
 		/**
 		 * The directions that the callout may be positioned, relative to its
 		 * origin. If the callout's origin is not set, this value will be
@@ -782,6 +784,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * callout.supportedDirections = Callout.DIRECTION_VERTICAL;</listing>
+		 *
+		 * @default Callout.DIRECTION_ANY
 		 *
 		 * @see #origin
 		 * @see #DIRECTION_ANY
@@ -814,6 +818,13 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * callout.padding = 20;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #paddingTop
+		 * @see #paddingRight
+		 * @see #paddingBottom
+		 * @see #paddingLeft
 		 */
 		public function get padding():Number
 		{
@@ -845,6 +856,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * callout.paddingTop = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingTop():Number
 		{
@@ -878,6 +891,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * callout.paddingRight = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingRight():Number
 		{
@@ -911,6 +926,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * callout.paddingBottom = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingBottom():Number
 		{
@@ -944,6 +961,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * callout.paddingLeft = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingLeft():Number
 		{
@@ -990,6 +1009,13 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * callout.arrowPosition = Callout.ARROW_POSITION_LEFT;</listing>
 		 *
+		 * @default Callout.ARROW_POSITION_TOP
+		 *
+		 * @see #ARROW_POSITION_TOP
+		 * @see #ARROW_POSITION_RIGHT
+		 * @see #ARROW_POSITION_BOTTOM
+		 * @see #ARROW_POSITION_LEFT
+		 *
 		 * @see #origin
 		 * @see #supportedDirections
 		 * @see #arrowOffset
@@ -1034,6 +1060,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * callout.backgroundSkin = new Image( texture );</listing>
+		 *
+		 * @default null
 		 */
 		public function get backgroundSkin():DisplayObject
 		{
@@ -1084,6 +1112,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * callout.bottomArrowSkin = new Image( texture );</listing>
+		 *
+		 * @default null
 		 */
 		public function get bottomArrowSkin():DisplayObject
 		{
@@ -1136,6 +1166,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * callout.topArrowSkin = new Image( texture );</listing>
+		 *
+		 * @default null
 		 */
 		public function get topArrowSkin():DisplayObject
 		{
@@ -1188,6 +1220,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * callout.leftArrowSkin = new Image( texture );</listing>
+		 *
+		 * @default null
 		 */
 		public function get leftArrowSkin():DisplayObject
 		{
@@ -1240,6 +1274,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * callout.rightArrowSkin = new Image( texture );</listing>
+		 *
+		 * @default null
 		 */
 		public function get rightArrowSkin():DisplayObject
 		{
@@ -1293,6 +1329,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * callout.topArrowGap = -4;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get topArrowGap():Number
 		{
@@ -1328,6 +1366,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * callout.bottomArrowGap = -4;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get bottomArrowGap():Number
 		{
@@ -1363,6 +1403,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * callout.rightArrowGap = -4;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get rightArrowGap():Number
 		{
@@ -1398,6 +1440,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * callout.leftArrowGap = -4;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get leftArrowGap():Number
 		{
@@ -1443,6 +1487,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * callout.arrowOffset = 20;</listing>
 		 *
+		 * @default 0
+		 *
 		 * @see #arrowPosition
 		 * @see #origin
 		 */
@@ -1472,13 +1518,20 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _ignoreContentResize:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			this.origin = null;
+			const savedContent:DisplayObject = this._content;
+			this.content = null;
 			//remove the content safely if it should not be disposed
-			if(!this.disposeContent && this._content && this._content.parent == this)
+			if(savedContent && this.disposeContent)
 			{
-				this.removeChild(this._content, false);
+				savedContent.dispose();
 			}
 			super.dispose();
 		}
@@ -1575,29 +1628,16 @@ package feathers.controls
 				return result;
 			}
 
-			const needsContentWidth:Boolean = isNaN(this._originalContentWidth);
-			const needsContentHeight:Boolean = isNaN(this._originalContentHeight);
-			if(this._content && (needsContentWidth || needsContentHeight))
+			if(this._content is IFeathersControl)
 			{
-				if(this._content is FeathersControl)
-				{
-					FeathersControl(this._content).validate();
-				}
-				if(needsContentWidth)
-				{
-					this._originalContentWidth = this._content.width;
-				}
-				if(needsContentHeight)
-				{
-					this._originalContentHeight = this._content.height;
-				}
+				IFeathersControl(this._content).validate();
 			}
 
 			var newWidth:Number = this.explicitWidth;
 			var newHeight:Number = this.explicitHeight;
 			if(needsWidth)
 			{
-				newWidth = this._originalContentWidth + this._paddingLeft + this._paddingRight;
+				newWidth = this._content.width + this._paddingLeft + this._paddingRight;
 				if(!isNaN(this._originalBackgroundWidth))
 				{
 					newWidth = Math.max(this._originalBackgroundWidth, newWidth);
@@ -1622,7 +1662,7 @@ package feathers.controls
 			}
 			if(needsHeight)
 			{
-				newHeight = this._originalContentHeight + this._paddingTop + this._paddingBottom;
+				newHeight = this._content.height + this._paddingTop + this._paddingBottom;
 				if(!isNaN(this._originalBackgroundHeight))
 				{
 					newHeight = Math.max(this._originalBackgroundHeight, newHeight);
@@ -1740,8 +1780,19 @@ package feathers.controls
 			{
 				this._content.x = this._backgroundSkin.x + this._paddingLeft;
 				this._content.y = this._backgroundSkin.y + this._paddingTop;
-				this._content.width = this._backgroundSkin.width - this._paddingLeft - this._paddingRight;
-				this._content.height = this._backgroundSkin.height - this._paddingTop - this._paddingBottom;
+				const oldIgnoreContentResize:Boolean = this._ignoreContentResize;
+				this._ignoreContentResize = true;
+				const contentWidth:Number = this._backgroundSkin.width - this._paddingLeft - this._paddingRight;
+				if(this._content.width != contentWidth)
+				{
+					this._content.width = contentWidth;
+				}
+				const contentHeight:Number = this._backgroundSkin.height - this._paddingTop - this._paddingBottom;
+				if(this._content.height != contentHeight)
+				{
+					this._content.height = contentHeight;
+				}
+				this._ignoreContentResize = oldIgnoreContentResize;
 			}
 		}
 
@@ -1826,20 +1877,24 @@ package feathers.controls
 				return;
 			}
 
-			const touches:Vector.<Touch> = event.getTouches(this.stage, null, HELPER_TOUCHES_VECTOR);
-			const touchCount:int = touches.length;
-			for(var i:int = 0; i < touchCount; i++)
+			if(this.closeOnTouchBeganOutside)
 			{
-				var touch:Touch = touches[i];
-				var phase:String = touch.phase;
-				if((this.closeOnTouchBeganOutside && phase == TouchPhase.BEGAN) ||
-					(this.closeOnTouchEndedOutside && phase == TouchPhase.ENDED))
+				var touch:Touch = event.getTouch(this.stage, TouchPhase.BEGAN);
+				if(touch)
 				{
 					this.close(this.disposeOnSelfClose);
-					break;
+					return;
 				}
 			}
-			HELPER_TOUCHES_VECTOR.length = 0;
+			if(this.closeOnTouchEndedOutside)
+			{
+				touch = event.getTouch(this.stage, TouchPhase.ENDED);
+				if(touch)
+				{
+					this.close(this.disposeOnSelfClose);
+					return;
+				}
+			}
 		}
 
 		/**
@@ -1864,6 +1919,18 @@ package feathers.controls
 		protected function origin_removedFromStageHandler(event:Event):void
 		{
 			this.close(this.disposeOnSelfClose);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function content_resizeHandler(event:Event):void
+		{
+			if(this._ignoreContentResize)
+			{
+				return;
+			}
+			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 	}
 }

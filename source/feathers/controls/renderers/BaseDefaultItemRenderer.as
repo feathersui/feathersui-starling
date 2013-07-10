@@ -9,6 +9,7 @@ package feathers.controls.renderers
 {
 	import feathers.controls.Button;
 	import feathers.controls.ImageLoader;
+	import feathers.controls.Scroller;
 	import feathers.controls.text.BitmapFontTextRenderer;
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
@@ -22,7 +23,9 @@ package feathers.controls.renderers
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
+	import starling.events.Touch;
 	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 
 	/**
 	 * An abstract class for item renderer implementations.
@@ -121,6 +124,7 @@ package feathers.controls.renderers
 		public function BaseDefaultItemRenderer()
 		{
 			super();
+			this.isFocusEnabled = false;
 			this.isQuickHitAreaEnabled = false;
 			this.addEventListener(Event.TRIGGERED, itemRenderer_triggeredHandler);
 		}
@@ -158,7 +162,8 @@ package feathers.controls.renderers
 		protected var _data:Object;
 
 		/**
-		 * The item displayed by this renderer.
+		 * The item displayed by this renderer. This property is set by the
+		 * list, and should not be set manually.
 		 */
 		public function get data():Object
 		{
@@ -201,6 +206,13 @@ package feathers.controls.renderers
 		/**
 		 * If true, the down state (and subsequent state changes) will be
 		 * delayed to make scrolling look nicer.
+		 *
+		 * <p>In the following example, the state delay timer is disabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.useStateDelayTimer = false;</listing>
+		 *
+		 * @default true
 		 */
 		public function get useStateDelayTimer():Boolean
 		{
@@ -231,6 +243,13 @@ package feathers.controls.renderers
 		 * If true, the label will come from the renderer's item using the
 		 * appropriate field or function for the label. If false, the label may
 		 * be set externally.
+		 *
+		 * <p>In the following example, the item doesn't have a label:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.itemHasLabel = false;</listing>
+		 *
+		 * @default true
 		 */
 		public function get itemHasLabel():Boolean
 		{
@@ -259,6 +278,13 @@ package feathers.controls.renderers
 		 * If true, the icon will come from the renderer's item using the
 		 * appropriate field or function for the icon. If false, the icon may
 		 * be skinned for each state externally.
+		 *
+		 * <p>In the following example, the item doesn't have an icon:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.itemHasIcon = false;</listing>
+		 *
+		 * @default true
 		 */
 		public function get itemHasIcon():Boolean
 		{
@@ -287,6 +313,13 @@ package feathers.controls.renderers
 		 * If true, the accessory will come from the renderer's item using the
 		 * appropriate field or function for the accessory. If false, the
 		 * accessory may be set using other means.
+		 *
+		 * <p>In the following example, the item doesn't have an accessory:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.itemHasAccessory = false;</listing>
+		 *
+		 * @default true
 		 */
 		public function get itemHasAccessory():Boolean
 		{
@@ -317,6 +350,18 @@ package feathers.controls.renderers
 		 * Use <code>ACCESSORY_POSITION_MANUAL</code> to position the accessory
 		 * from the top-left corner.
 		 *
+		 * <p>In the following example, the accessory is placed on the bottom:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_BOTTOM;</listing>
+		 *
+		 * @default BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT
+		 *
+		 * @see #ACCESSORY_POSITION_TOP
+		 * @see #ACCESSORY_POSITION_RIGHT
+		 * @see #ACCESSORY_POSITION_BOTTOM
+		 * @see #ACCESSORY_POSITION_LEFT
+		 * @see #ACCESSORY_POSITION_MANUAL
 		 * @see #layoutOrder
 		 */
 		public function get accessoryPosition():String
@@ -350,10 +395,17 @@ package feathers.controls.renderers
 		 * <p>The <code>accessoryPositionOrigin</code> property will be ignored
 		 * if <code>accessoryPosition</code> is set to <code>ACCESSORY_POSITION_MANUAL</code>.</p>
 		 *
-		 * @see #accessoryPosition
-		 * @see #iconPosition
+		 * <p>In the following example, the layout order is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.layoutOrder = BaseDefaultItemRenderer.LAYOUT_ORDER_LABEL_ACCESSORY_ICON;</listing>
+		 *
+		 * @default BaseDefaultItemRenderer.LAYOUT_ORDER_LABEL_ICON_ACCESSORY
+		 *
 		 * @see LAYOUT_ORDER_LABEL_ICON_ACCESSORY
 		 * @see LAYOUT_ORDER_LABEL_ACCESSORY_ICON
+		 * @see #accessoryPosition
+		 * @see #iconPosition
 		 */
 		public function get layoutOrder():String
 		{
@@ -380,6 +432,15 @@ package feathers.controls.renderers
 
 		/**
 		 * Offsets the x position of the accessory by a certain number of pixels.
+		 *
+		 * <p>In the following example, the accessory x position is adjusted by 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.accessoryOffsetX = 20;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #accessoryOffsetY
 		 */
 		public function get accessoryOffsetX():Number
 		{
@@ -406,6 +467,15 @@ package feathers.controls.renderers
 
 		/**
 		 * Offsets the y position of the accessory by a certain number of pixels.
+		 *
+		 * <p>In the following example, the accessory y position is adjusted by 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.accessoryOffsetY = 20;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #accessoryOffsetX
 		 */
 		public function get accessoryOffsetY():Number
 		{
@@ -440,6 +510,13 @@ package feathers.controls.renderers
 		 * <p>If <code>accessoryGap</code> is set to <code>Number.POSITIVE_INFINITY</code>,
 		 * the accessory and the component it is relative to will be positioned
 		 * as far apart as possible.</p>
+		 *
+		 * <p>In the following example, the accessory gap is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.accessoryGap = 20;</listing>
+		 *
+		 * @default NaN
 		 *
 		 * @see #gap
 		 * @see #accessoryPosition
@@ -503,10 +580,23 @@ package feathers.controls.renderers
 		}
 
 		/**
-		 * If enabled, calls event.stopPropagation() when TouchEvents are
-		 * dispatched by the accessory.
+		 * @private
 		 */
-		public var stopAccessoryTouchEventPropagation:Boolean = true;
+		protected var accessoryTouchPointID:int = -1;
+
+		/**
+		 * If enabled, calls owner.stopScrolling() when TouchEvents are
+		 * dispatched by the accessory.
+		 *
+		 * <p>In the following example, the list won't stop scrolling when the
+		 * accessory is touched:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.stopScrollingOnAccessoryTouch = false;</listing>
+		 *
+		 * @default true
+		 */
+		public var stopScrollingOnAccessoryTouch:Boolean = true;
 
 		/**
 		 * @private
@@ -527,6 +617,13 @@ package feathers.controls.renderers
 		 *     <li><code>labelFunction</code></li>
 		 *     <li><code>labelField</code></li>
 		 * </ol>
+		 *
+		 * <p>In the following example, the label field is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.labelField = "text";</listing>
+		 *
+		 * @default "label"
 		 *
 		 * @see #labelFunction
 		 */
@@ -567,6 +664,16 @@ package feathers.controls.renderers
 		 *     <li><code>labelField</code></li>
 		 * </ol>
 		 *
+		 * <p>In the following example, the label function is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.labelFunction = function( item:Object ):String
+		 * {
+		 *    return item.firstName + " " + item.lastName;
+		 * };</listing>
+		 *
+		 * @default null
+		 *
 		 * @see #labelField
 		 */
 		public function get labelFunction():Function
@@ -603,6 +710,13 @@ package feathers.controls.renderers
 		 *     <li><code>iconFunction</code></li>
 		 *     <li><code>iconField</code></li>
 		 * </ol>
+		 *
+		 * <p>In the following example, the icon field is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.iconField = "photo";</listing>
+		 *
+		 * @default "icon"
 		 *
 		 * @see #iconFunction
 		 * @see #iconSourceField
@@ -654,6 +768,22 @@ package feathers.controls.renderers
 		 *     <li><code>iconField</code></li>
 		 * </ol>
 		 *
+		 * <p>In the following example, the icon function is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.iconFunction = function( item:Object ):DisplayObject
+		 * {
+		 *    if(item in cachedIcons)
+		 *    {
+		 *        return cachedIcons[item];
+		 *    }
+		 *    var icon:Image = new Image( textureAtlas.getTexture( item.textureName ) );
+		 *    cachedIcons[item] = icon;
+		 *    return icon;
+		 * };</listing>
+		 *
+		 * @default null
+		 *
 		 * @see #iconField
 		 * @see #iconSourceField
 		 * @see #iconSourceFunction
@@ -701,6 +831,13 @@ package feathers.controls.renderers
 		 *     <li><code>iconFunction</code></li>
 		 *     <li><code>iconField</code></li>
 		 * </ol>
+		 *
+		 * <p>In the following example, the icon source field is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.iconSourceField = "texture";</listing>
+		 *
+		 * @default "iconSource"
 		 *
 		 * @see feathers.controls.ImageLoader#source
 		 * @see #iconLoaderFactory
@@ -771,6 +908,16 @@ package feathers.controls.renderers
 		 *     <li><code>iconField</code></li>
 		 * </ol>
 		 *
+		 * <p>In the following example, the icon source function is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.iconSourceFunction = function( item:Object ):Object
+		 * {
+		 *    return "http://www.example.com/thumbs/" + item.name + "-thumb.png";
+		 * };</listing>
+		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.ImageLoader#source
 		 * @see #iconLoaderFactory
 		 * @see #iconSourceField
@@ -815,6 +962,13 @@ package feathers.controls.renderers
 		 *     <li><code>accessoryFunction</code></li>
 		 *     <li><code>accessoryField</code></li>
 		 * </ol>
+		 *
+		 * <p>In the following example, the accessory field is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.accessoryField = "component";</listing>
+		 *
+		 * @default "accessory"
 		 *
 		 * @see #accessorySourceField
 		 * @see #accessoryFunction
@@ -873,6 +1027,22 @@ package feathers.controls.renderers
 		 *     <li><code>accessoryField</code></li>
 		 * </ol>
 		 *
+		 * <p>In the following example, the accessory function is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.accessoryFunction = function( item:Object ):DisplayObject
+		 * {
+		 *    if(item in cachedAccessories)
+		 *    {
+		 *        return cachedAccessories[item];
+		 *    }
+		 *    var accessory:DisplayObject = createAccessoryForItem( item );
+		 *    cachedAccessories[item] = accessory;
+		 *    return accessory;
+		 * };</listing>
+		 *
+		 * @default null
+		 *
 		 * @see #accessoryField
 		 * @see #accessorySourceField
 		 * @see #accessorySourceFunction
@@ -924,6 +1094,13 @@ package feathers.controls.renderers
 		 *     <li><code>accessoryFunction</code></li>
 		 *     <li><code>accessoryField</code></li>
 		 * </ol>
+		 *
+		 * <p>In the following example, the accessory source field is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.accessorySourceField = "texture";</listing>
+		 *
+		 * @default "accessorySource"
 		 *
 		 * @see feathers.controls.ImageLoader#source
 		 * @see #accessoryLoaderFactory
@@ -998,6 +1175,16 @@ package feathers.controls.renderers
 		 *     <li><code>accessoryField</code></li>
 		 * </ol>
 		 *
+		 * <p>In the following example, the accessory source function is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.accessorySourceFunction = function( item:Object ):Object
+		 * {
+		 *    return "http://www.example.com/thumbs/" + item.name + "-thumb.png";
+		 * };</listing>
+		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.ImageLoader#source
 		 * @see #accessoryLoaderFactory
 		 * @see #accessorySourceField
@@ -1051,6 +1238,13 @@ package feathers.controls.renderers
 		 *     <li><code>accessoryFunction</code></li>
 		 *     <li><code>accessoryField</code></li>
 		 * </ol>
+		 *
+		 * <p>In the following example, the accessory label field is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.accessoryLabelField = "text";</listing>
+		 *
+		 * @default "accessoryLabel"
 		 *
 		 * @see #accessoryLabelFactory
 		 * @see #accessoryLabelFunction
@@ -1108,6 +1302,16 @@ package feathers.controls.renderers
 		 *     <li><code>accessoryField</code></li>
 		 * </ol>
 		 *
+		 * <p>In the following example, the accessory label function is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.accessoryLabelFunction = function( item:Object ):String
+		 * {
+		 *    return item.firstName + " " + item.lastName;
+		 * };</listing>
+		 *
+		 * @default null
+		 *
 		 * @see #accessoryLabelFactory
 		 * @see #accessoryLabelField
 		 * @see #accessoryField
@@ -1148,6 +1352,18 @@ package feathers.controls.renderers
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function():ImageLoader</pre>
 		 *
+		 * <p>In the following example, the loader factory is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.iconLoaderFactory = function():ImageLoader
+		 * {
+		 *    var loader:ImageLoader = new ImageLoader();
+		 *    loader.snapToPixels = true;
+		 *    return loader;
+		 * };</listing>
+		 *
+		 * @default function():ImageLoader { return new ImageLoader(); }
+		 *
 		 * @see feathers.controls.ImageLoader
 		 * @see #iconSourceField
 		 * @see #iconSourceFunction
@@ -1185,6 +1401,18 @@ package feathers.controls.renderers
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function():ImageLoader</pre>
 		 *
+		 * <p>In the following example, the loader factory is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.accessoryLoaderFactory = function():ImageLoader
+		 * {
+		 *    var loader:ImageLoader = new ImageLoader();
+		 *    loader.snapToPixels = true;
+		 *    return loader;
+		 * };</listing>
+		 *
+		 * @default function():ImageLoader { return new ImageLoader(); }
+		 *
 		 * @see feathers.controls.ImageLoader
 		 * @see #accessorySourceField;
 		 * @see #accessorySourceFunction;
@@ -1219,6 +1447,19 @@ package feathers.controls.renderers
 		 *
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function():ITextRenderer</pre>
+		 *
+		 * <p>In the following example, the accessory label factory is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.accessoryLabelFactory = function():ITextRenderer
+		 * {
+		 *    var renderer:TextFieldTextRenderer = new TextFieldTextRenderer();
+		 *    renderer.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333 );
+		 *    renderer.embedFonts = true;
+		 *    return renderer;
+		 * };</listing>
+		 *
+		 * @default null
 		 *
 		 * @see feathers.core.ITextRenderer
 		 * @see feathers.core.FeathersControl#defaultTextRendererFactory
@@ -1264,6 +1505,14 @@ package feathers.controls.renderers
 		 * <p>Setting properties in a <code>accessoryLabelFactory</code>
 		 * function instead of using <code>accessoryLabelProperties</code> will
 		 * result in better performance.</p>
+		 *
+		 * <p>In the following example, the accessory label properties are customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.&#64;accessoryLabelProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333 );
+		 * renderer.&#64;accessoryLabelProperties.embedFonts = true;</listing>
+		 *
+		 * @default null
 		 *
 		 * @see feathers.core.ITextRenderer
 		 * @see #accessoryLabelFactory
@@ -1346,13 +1595,27 @@ package feathers.controls.renderers
 		{
 			if(this._labelFunction != null)
 			{
-				return this._labelFunction(item).toString();
+				var labelResult:Object = this._labelFunction(item);
+				if(labelResult is String)
+				{
+					return labelResult as String;
+				}
+				return labelResult.toString();
 			}
 			else if(this._labelField != null && item && item.hasOwnProperty(this._labelField))
 			{
-				return item[this._labelField].toString();
+				labelResult = item[this._labelField];
+				if(labelResult is String)
+				{
+					return labelResult as String;
+				}
+				return labelResult.toString();
 			}
-			else if(item is Object)
+			else if(item is String)
+			{
+				return item as String;
+			}
+			else if(item)
 			{
 				return item.toString();
 			}
@@ -1427,14 +1690,28 @@ package feathers.controls.renderers
 			}
 			else if(this._accessoryLabelFunction != null)
 			{
-				var label:String = this._accessoryLabelFunction(item).toString();
-				this.refreshAccessoryLabel(label);
+				var labelResult:Object = this._accessoryLabelFunction(item);
+				if(labelResult is String)
+				{
+					this.refreshAccessoryLabel(labelResult as String);
+				}
+				else
+				{
+					this.refreshAccessoryLabel(labelResult.toString());
+				}
 				return DisplayObject(this.accessoryLabel);
 			}
 			else if(this._accessoryLabelField != null && item && item.hasOwnProperty(this._accessoryLabelField))
 			{
-				label = item[this._accessoryLabelField].toString();
-				this.refreshAccessoryLabel(label);
+				labelResult = item[this._accessoryLabelField];
+				if(labelResult is String)
+				{
+					this.refreshAccessoryLabel(labelResult as String);
+				}
+				else
+				{
+					this.refreshAccessoryLabel(labelResult.toString());
+				}
 				return DisplayObject(this.accessoryLabel);
 			}
 			else if(this._accessoryFunction != null)
@@ -1654,7 +1931,7 @@ package feathers.controls.renderers
 		 */
 		protected function commitData():void
 		{
-			if(this._owner)
+			if(this._data && this._owner)
 			{
 				if(this._itemHasLabel)
 				{
@@ -1701,13 +1978,17 @@ package feathers.controls.renderers
 				this.iconImage = null;
 			}
 
-			if(this._itemHasIcon && this.currentIcon && this.currentIcon != newIcon)
+			if(this._itemHasIcon && this.currentIcon && this.currentIcon != newIcon && this.currentIcon.parent == this)
 			{
 				//the icon is created using the data provider, and it is not
 				//created inside this class, so it is not our responsibility to
 				//dispose the icon. if we dispose it, it may break something.
 				this.currentIcon.removeFromParent(false);
+				this.currentIcon = null;
 			}
+			//we're using currentIcon above, but defaultIcon here. if you're
+			//wondering, that's intentional. the currentIcon will set to the
+			//defaultIcon elsewhere.
 			this.defaultIcon = newIcon;
 		}
 
@@ -1726,11 +2007,14 @@ package feathers.controls.renderers
 				this.accessory.removeEventListener(FeathersEventType.RESIZE, accessory_resizeHandler);
 				this.accessory.removeEventListener(TouchEvent.TOUCH, accessory_touchHandler);
 
-				//the accessory may have come from outside of this class. it's
-				//up to that code to dispose of the accessory. in fact, if we
-				//disposed of it here, we will probably screw something up, so
-				//let's just remove it.
-				this.accessory.removeFromParent();
+				if(this.accessory.parent == this)
+				{
+					//the accessory may have come from outside of this class. it's
+					//up to that code to dispose of the accessory. in fact, if we
+					//disposed of it here, we will probably screw something up, so
+					//let's just remove it.
+					this.accessory.removeFromParent(false);
+				}
 			}
 
 			if(this.accessoryLabel && this.accessoryLabel != newAccessory)
@@ -2166,18 +2450,32 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected function handleOwnerScroll():void
+		protected function owner_scrollStartHandler(event:Event):void
 		{
-			this._touchPointID = -1;
+			if(this.touchPointID < 0 && this.accessoryTouchPointID < 0)
+			{
+				return;
+			}
+			this.resetTouchState();
 			if(this._stateDelayTimer && this._stateDelayTimer.running)
 			{
 				this._stateDelayTimer.stop();
 			}
 			this._delayedCurrentState = null;
-			if(this._currentState != Button.STATE_UP)
+
+			if(this.accessoryTouchPointID >= 0)
 			{
-				super.currentState = Button.STATE_UP;
+				Scroller(this._owner).stopScrolling();
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function button_removedFromStageHandler(event:Event):void
+		{
+			super.button_removedFromStageHandler(event);
+			this.accessoryTouchPointID = -1;
 		}
 
 		/**
@@ -2212,16 +2510,57 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		override protected function button_touchHandler(event:TouchEvent):void
+		{
+			if(this.accessory && this.touchPointID < 0)
+			{
+				//ignore all touches on accessory. return to up state.
+				var touch:Touch = event.getTouch(this.accessory);
+				if(touch)
+				{
+					this.currentState = Button.STATE_UP;
+					return;
+				}
+			}
+			super.button_touchHandler(event);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function accessory_touchHandler(event:TouchEvent):void
 		{
-			if(!this.stopAccessoryTouchEventPropagation ||
+			if(!this._isEnabled)
+			{
+				this.accessoryTouchPointID = -1;
+				return;
+			}
+			if(!this.stopScrollingOnAccessoryTouch ||
 				this.accessory == this.accessoryLabel ||
 				this.accessory == this.accessoryImage)
 			{
 				//do nothing
 				return;
 			}
-			event.stopPropagation();
+
+			if(this.accessoryTouchPointID >= 0)
+			{
+				var touch:Touch = event.getTouch(this.accessory, TouchPhase.ENDED, this.accessoryTouchPointID);
+				if(!touch)
+				{
+					return;
+				}
+				this.accessoryTouchPointID = -1;
+			}
+			else //if we get here, we don't have a saved touch ID yet
+			{
+				touch = event.getTouch(this.accessory, TouchPhase.BEGAN);
+				if(!touch)
+				{
+					return;
+				}
+				this.accessoryTouchPointID = touch.id;
+			}
 		}
 
 		/**

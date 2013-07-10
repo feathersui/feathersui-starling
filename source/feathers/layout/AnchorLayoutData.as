@@ -51,6 +51,8 @@ package feathers.layout
 		 * If there is no anchor, the top edge of the parent container will be
 		 * the anchor.
 		 *
+		 * @default null
+		 *
 		 * @see #top
 		 */
 		public function get topAnchorDisplayObject():DisplayObject
@@ -79,7 +81,10 @@ package feathers.layout
 		/**
 		 * The position, in pixels, of the top edge relative to the top
 		 * anchor, or, if there is no top anchor, then the position is relative
-		 * to the top edge of the parent container.
+		 * to the top edge of the parent container. If this value is
+		 * <code>NaN</code>, the object's top edge will not be anchored.
+		 *
+		 * @default NaN
 		 *
 		 * @see #topAnchorDisplayObject
 		 */
@@ -111,6 +116,8 @@ package feathers.layout
 		 * If there is no anchor, the right edge of the parent container will be
 		 * the anchor.
 		 *
+		 * @default null
+		 *
 		 * @see #right
 		 */
 		public function get rightAnchorDisplayObject():DisplayObject
@@ -139,7 +146,10 @@ package feathers.layout
 		/**
 		 * The position, in pixels, of the right edge relative to the right
 		 * anchor, or, if there is no right anchor, then the position is relative
-		 * to the right edge of the parent container.
+		 * to the right edge of the parent container. If this value is
+		 * <code>NaN</code>, the object's right edge will not be anchored.
+		 *
+		 * @default NaN
 		 *
 		 * @see #rightAnchorDisplayObject
 		 */
@@ -171,6 +181,8 @@ package feathers.layout
 		 * If there is no anchor, the bottom edge of the parent container will be
 		 * the anchor.
 		 *
+		 * @default null
+		 *
 		 * @see #bottom
 		 */
 		public function get bottomAnchorDisplayObject():DisplayObject
@@ -199,7 +211,10 @@ package feathers.layout
 		/**
 		 * The position, in pixels, of the bottom edge relative to the bottom
 		 * anchor, or, if there is no bottom anchor, then the position is relative
-		 * to the bottom edge of the parent container.
+		 * to the bottom edge of the parent container. If this value is
+		 * <code>NaN</code>, the object's bottom edge will not be anchored.
+		 *
+		 * @default NaN
 		 *
 		 * @see #bottomAnchorDisplayObject
 		 */
@@ -231,6 +246,8 @@ package feathers.layout
 		 * If there is no anchor, the left edge of the parent container will be
 		 * the anchor.
 		 *
+		 * @default null
+		 *
 		 * @see #left
 		 */
 		public function get leftAnchorDisplayObject():DisplayObject
@@ -259,7 +276,10 @@ package feathers.layout
 		/**
 		 * The position, in pixels, of the left edge relative to the left
 		 * anchor, or, if there is no left anchor, then the position is relative
-		 * to the left edge of the parent container.
+		 * to the left edge of the parent container. If this value is
+		 * <code>NaN</code>, the object's left edge will not be anchored.
+		 *
+		 * @default NaN
 		 *
 		 * @see #leftAnchorDisplayObject
 		 */
@@ -291,6 +311,8 @@ package feathers.layout
 		 * anchor. If there is no anchor, the horizontal center of the parent
 		 * container will be the anchor.
 		 *
+		 * @default null
+		 *
 		 * @see #horizontalCenter
 		 */
 		public function get horizontalCenterAnchorDisplayObject():DisplayObject
@@ -318,9 +340,12 @@ package feathers.layout
 
 		/**
 		 * The position, in pixels, of the horizontal center relative to the
-		 * horizontal center anchor, or, if there is no vertical center anchor,
-		 * then the position is relative to the horizontal center of the parent
-		 * container.
+		 * horizontal center anchor, or, if there is no horizontal center
+		 * anchor, then the position is relative to the horizontal center of the
+		 * parent container. If this value is <code>NaN</code>, the object's
+		 * horizontal center will not be anchored.
+		 *
+		 * @default NaN
 		 *
 		 * @see #horizontalCenterAnchorDisplayObject
 		 */
@@ -352,6 +377,8 @@ package feathers.layout
 		 * anchor. If there is no anchor, the vertical center of the parent
 		 * container will be the anchor.
 		 *
+		 * @default null
+		 *
 		 * @see #verticalCenter
 		 */
 		public function get verticalCenterAnchorDisplayObject():DisplayObject
@@ -381,7 +408,10 @@ package feathers.layout
 		 * The position, in pixels, of the vertical center relative to the
 		 * vertical center anchor, or, if there is no vertical center anchor,
 		 * then the position is relative to the vertical center of the parent
-		 * container.
+		 * container. If this value is <code>NaN</code>, the object's vertical
+		 * center will not be anchored.
+		 *
+		 * @default NaN
 		 *
 		 * @see #verticalCenterAnchorDisplayObject
 		 */

@@ -8,14 +8,9 @@ accordance with the terms of the accompanying license agreement.
 package feathers.layout
 {
 	import feathers.core.IFeathersControl;
-	import feathers.layout.ILayoutData;
-
-	import flash.display.DisplayObjectContainer;
 
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Point;
-
-	import starling.display.DisplayObject;
 
 	import starling.display.DisplayObject;
 	import starling.events.EventDispatcher;
@@ -29,7 +24,8 @@ package feathers.layout
 	[Event(name="change",type="starling.events.Event")]
 
 	/**
-	 * Positions and sizes items based on anchor positions.
+	 * Positions and sizes items by anchoring their edges (or center points)
+	 * to their parent container or to other items.
 	 *
 	 * <p><strong>Beta Layout:</strong> This is a new layout, and its APIs
 	 * may need some changes between now and the next version of Feathers to

@@ -226,6 +226,16 @@ package feathers.controls.text
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
+		public function get contentX():Number
+		{
+			return 0;
+		}
+
+		public function get contentY():Number
+		{
+			return 0;
+		}
+
 		/**
 		 * @private
 		 */
@@ -302,6 +312,33 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		override protected function measure(result:Point = null):Point
+		{
+			if(!result)
+			{
+				result = new Point();
+			}
+
+			const needsWidth:Boolean = isNaN(this._visibleWidth);
+
+			this.commitStylesAndData(this.measureTextField);
+			var newWidth:Number = this._visibleWidth;
+			this.measureTextField.width = newWidth;
+			if(needsWidth)
+			{
+				newWidth = Math.max(this._minVisibleWidth, Math.min(this._maxVisibleWidth, this.measureTextField.textWidth + 4));
+			}
+			var newHeight:Number = this.measureTextField.textHeight + 4;
+
+			result.x = newWidth;
+			result.y = newHeight;
+
+			return result;
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function refreshSnapshotParameters():void
 		{
 			var textFieldWidth:Number = this._visibleWidth;
@@ -344,6 +381,7 @@ package feathers.controls.text
 		{
 			const oldIgnoreScrolling:Boolean = this._ignoreScrolling;
 			this._ignoreScrolling = true;
+			this.textField.width = this._visibleWidth;
 			if(this.textField.height != this._visibleHeight)
 			{
 				this.textField.height = this._visibleHeight;

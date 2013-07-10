@@ -2,7 +2,7 @@
 
 Noteworthy changes in official releases of [Feathers](http://feathersui.com/).
 
-## 1.1.0 BETA
+## 1.1.0
 
 * New Beta Component: NumericStepper. Add and subtract from a numeric value with buttons. Optional text editing.
 * New Beta Component: TextArea. A multiline text input. Recommended for desktop only. Not recommended for mobile.
@@ -28,54 +28,67 @@ Noteworthy changes in official releases of [Feathers](http://feathersui.com/).
 * ScreenNavigator: added hasScreen(), getScreen(), and getScreenIDs().
 * ScreenNavigator: added autoSizeMode property to select between sizing to fit stage or to fit content.
 * ScreenNavigator: fix for broken transition if showScreen() is calleed before transition begins but after new screen is added to stage.
+* Transitions: fix for quickStack constructor argument.
 * ScrollContainer, List, GroupedList: better auto-sizing with a background skin.
+* ScrollContainer: new alternate name for toolbar style.
 * TextInput: exposed isEditable, maxChars, restrict, and displayAsPassword properties.
 * BitmapFontTextRenderer, Scale3Image, Scale9Image: option to turn off the use of a separate QuadBatch.
 * TextFieldTextEditor: better selection on mobile.
 * TextFieldTextEditor: properly dispatches FeathersEventType.ENTER.
 * Text Renderers and Editors: better snapshot disposal.
+* TextFieldTextRenderer: better measurement to workaround runtime dimensions being wrong.
 * TiledRowsLayout, TiledColumnsLayout: supports separate horizontal and vertical gaps.
 * TiledRowsLayout, TiledColumnsLayout: more stable virtualized item renderer count to improve performance.
+* TiledRowsLayout, TiledColumnsLayout: fixes for certain issues with paging.
 * ButtonGroup: supports isEnabled as a property in the data provider.
 * ImageLoader: added delayTextureCreation flag to avoid creating textures while scrolling (or during any action that requires best performance).
 * Scroller: adds an invisible overlay during scrolling to block touch events on children.
 * Scroller: exposes horizontal and vertical page count properties.
 * Scroller: added FeathersEventType.SCROLL_START event.
 * Scroller: scroll bars are hidden when stopScrolling() is called.
+* Scroller: fix for velocity calculation.
 * Button: better detection of click to avoid other display objects moving on top of button before TouchPhase.ENDED.
 * Button: new styles for themes, including back, forward, call-to-action, quiet, and danger.
 * List: if items are added or removed, selected indices are adjusted.
-* List, GroupedList, ScrollContainer, and ScrollText all extend Scroller, instead of using it as a sub-component. The scrollerProperties property on each of these is now deprecated because all public properties of Scroller are now direct public properties of these components.
+* List, GroupedList, ScrollContainer, and ScrollText all extend Scroller, instead of using it as a sub-component. The scrollerProperties property on each of these is now deprecated because all public properties of Scroller are now direct public properties of these components. Theme initializers that target Scroller will break because Scroller is no longer a sub-component, but a super class of classes like List. Move this stuff into initializers for List, GroupedList, ScrollContainer, and ScrollText.
 * FeathersControl: setSizeInternal() is now stricter. It can never receive a NaN value for width or height. This is a common source of bugs, and throwing an error here will help make it easier to find those bugs.
 * IVariableVirtualLayout: added function addToVariableVirtualCacheAtIndex() for more specific control over the cache of item dimensions. The following implementation can be added to existing classes to simulate the old behavior:
 
-		public addToVariableVirtualCacheAtIndex(index:int, item:DisplayObject = null):void
-		{
-			this.resetVariableVirtualCache();
-		}
+<!--- markdown is failing miserably. I'll take separate lists over inconsistent formatting -->
 
+```
+public addToVariableVirtualCacheAtIndex(index:int, item:DisplayObject = null):void
+{
+	this.resetVariableVirtualCache();
+}
+```
 * IVariableVirtualLayout: added function removeFromVariableVirtualCacheAtIndex() for more specific control over the cache of item dimensions. The following implementation can be added to existing classes to simulate the old behavior:
 
-		public removeFromVariableVirtualCacheAtIndex(index:int, item:DisplayObject = null):void
-		{
-			this.resetVariableVirtualCache();
-		}
+```
+public removeFromVariableVirtualCacheAtIndex(index:int, item:DisplayObject = null):void
+{
+	this.resetVariableVirtualCache();
+}
+```
 * ScrollText: now properly handles visible and alpha properties.
 * ListCollection: added removeAll(), addAll(), addAllAt() and contains().
 * Scroller: scrolling animates for mouse wheel.
 * List, VerticalLayout, HorizontalLayout: optimized case where useVirtualLayout is true and hasVariableItemDimensions is false.
 * HorizontalLayout, VerticalLayout, TiledRowsLayout, TiledColumnsLayout: added manageVisibility property to set items to false when not in view. Set to true to improve performance.
+* Item Renderers: added stopScrollingOnAccessoryTouch property to make accessory touch behavior configurable.
 * Screen: default value of originalDPI is DeviceCapabilities.dpi. It used to be 168. Can still be changed.
 * MetalWorksMobileTheme and MinimalMobileTheme: major overhaul with improved skins and new alternate skins.
 * AeonDesktopTheme: added some missing skins, like TabBar.
 * AeonDesktopTheme: uses FocusManager.
 * AzureMobileTheme: removed this example theme. Please feel free to continue using the old version, if desired.
 * ComponentsExplorer: better button screen to show off various styles of buttons.
+* Todos: new example.
 * All Examples: Use PanelScreen instead of Screen and Header where appropriate.
 * All Examples: Use AnchorLayout where appropriate.
 * All Examples: Uses NumericStepper instead of Slider where appropriate.
 * Added 96x96 icons to examples for Android xhdpi. Requires AIR 3.7.
-* Extended API documentation and Wiki tutorials.
+* Extended API documentation with inline examples and improved descriptions.
+* Added many new articles to the Feathers Manual.
 * Now built with ASC 2.0.
 
 ## 1.0.1

@@ -56,49 +56,60 @@ package feathers.controls
 		private static const HELPER_POINT:Point = new Point();
 
 		/**
-		 * @private
-		 */
-		private static const HELPER_TOUCHES_VECTOR:Vector.<Touch> = new <Touch>[];
-
-		/**
 		 * The page indicator's symbols will be positioned vertically, from top
 		 * to bottom.
+		 *
+		 * @see #direction
 		 */
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
 		/**
 		 * The page indicator's symbols will be positioned horizontally, from
 		 * left to right.
+		 *
+		 * @see #direction
 		 */
 		public static const DIRECTION_HORIZONTAL:String = "horizontal";
 
 		/**
 		 * The symbols will be vertically aligned to the top.
+		 *
+		 * @see #verticalAlign
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
 
 		/**
 		 * The symbols will be vertically aligned to the middle.
+		 *
+		 * @see #verticalAlign
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
 
 		/**
 		 * The symbols will be vertically aligned to the bottom.
+		 *
+		 * @see #verticalAlign
 		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 
 		/**
 		 * The symbols will be horizontally aligned to the left.
+		 *
+		 * @see #horizontalAlign
 		 */
 		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
 
 		/**
 		 * The symbols will be horizontally aligned to the center.
+		 *
+		 * @see #horizontalAlign
 		 */
 		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
 
 		/**
 		 * The symbols will be horizontally aligned to the right.
+		 *
+		 * @see #horizontalAlign
 		 */
 		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
 
@@ -159,6 +170,13 @@ package feathers.controls
 
 		/**
 		 * The number of available pages.
+		 *
+		 * <p>In the following example, the page count is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * pages.pageCount = 5;</listing>
+		 *
+		 * @default 1
 		 */
 		public function get pageCount():int
 		{
@@ -185,6 +203,26 @@ package feathers.controls
 
 		/**
 		 * The currently selected index.
+		 *
+		 * <p>In the following example, the page indicator's selected index is
+		 * changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * pages.selectedIndex = 2;</listing>
+		 *
+		 * <p>The following example listens for when selection changes and
+		 * requests the selected index:</p>
+		 *
+		 * <listing version="3.0">
+		 * function pages_changeHandler( event:Event ):void
+		 * {
+		 *     var pages:PageIndicator = PageIndicator( event.currentTarget );
+		 *     var index:int = pages.selectedIndex;
+		 *
+		 * }
+		 * pages.addEventListener( Event.CHANGE, pages_changeHandler );</listing>
+		 *
+		 * @default 0
 		 */
 		public function get selectedIndex():int
 		{
@@ -219,6 +257,16 @@ package feathers.controls
 		[Inspectable(type="String",enumeration="horizontal,vertical")]
 		/**
 		 * The symbols may be positioned vertically or horizontally.
+		 *
+		 * <p>In the following example, the direction is changed to vertical:</p>
+		 *
+		 * <listing version="3.0">
+		 * pages.direction = PageIndicator.DIRECTION_VERTICAL;</listing>
+		 *
+		 * @default PageIndicator.DIRECTION_HORIZONTAL
+		 *
+		 * @see #DIRECTION_HORIZONTAL
+		 * @see #DIRECTION_VERTICAL
 		 */
 		public function get direction():String
 		{
@@ -243,9 +291,21 @@ package feathers.controls
 		 */
 		protected var _horizontalAlign:String = HORIZONTAL_ALIGN_CENTER;
 
-		[Inspectable(type="String",enumeration="horizontal,vertical")]
+		[Inspectable(type="String",enumeration="left,center,right")]
 		/**
 		 * The alignment of the symbols on the horizontal axis.
+		 *
+		 * <p>In the following example, the symbols are horizontally aligned to
+		 * the right:</p>
+		 *
+		 * <listing version="3.0">
+		 * pages.horizontalAlign = PageIndicator.HORIZONTAL_ALIGN_RIGHT;</listing>
+		 *
+		 * @default PageIndicator.HORIZONTAL_ALIGN_CENTER
+		 *
+		 * @see #HORIZONTAL_ALIGN_LEFT
+		 * @see #HORIZONTAL_ALIGN_CENTER
+		 * @see #HORIZONTAL_ALIGN_RIGHT
 		 */
 		public function get horizontalAlign():String
 		{
@@ -273,6 +333,18 @@ package feathers.controls
 		[Inspectable(type="String",enumeration="top,middle,bottom")]
 		/**
 		 * The alignment of the symbols on the vertical axis.
+		 *
+		 * <p>In the following example, the symbols are vertically aligned to
+		 * the bottom:</p>
+		 *
+		 * <listing version="3.0">
+		 * pages.verticalAlign = PageIndicator.VERTICAL_ALIGN_BOTTOM;</listing>
+		 *
+		 * @default PageIndicator.VERTICAL_ALIGN_MIDDLE
+		 *
+		 * @see #VERTICAL_ALIGN_TOP
+		 * @see #VERTICAL_ALIGN_MIDDLE
+		 * @see #VERTICAL_ALIGN_BOTTOM
 		 */
 		public function get verticalAlign():String
 		{
@@ -299,6 +371,13 @@ package feathers.controls
 
 		/**
 		 * The spacing, in pixels, between symbols.
+		 *
+		 * <p>In the following example, the gap between symbols is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * pages.gap = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get gap():Number
 		{
@@ -323,6 +402,18 @@ package feathers.controls
 		 * <code>padding</code> getter always returns the value of
 		 * <code>paddingTop</code>, but the other padding values may be
 		 * different.
+		 *
+		 * <p>In the following example, the padding is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * pages.padding = 20;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #paddingTop
+		 * @see #paddingRight
+		 * @see #paddingBottom
+		 * @see #paddingLeft
 		 */
 		public function get padding():Number
 		{
@@ -348,6 +439,13 @@ package feathers.controls
 		/**
 		 * The minimum space, in pixels, between the top edge of the component
 		 * and the top edge of the content.
+		 *
+		 * <p>In the following example, the top padding is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * pages.paddingTop = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingTop():Number
 		{
@@ -375,6 +473,13 @@ package feathers.controls
 		/**
 		 * The minimum space, in pixels, between the right edge of the component
 		 * and the right edge of the content.
+		 *
+		 * <p>In the following example, the right padding is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * pages.paddingRight = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingRight():Number
 		{
@@ -402,6 +507,13 @@ package feathers.controls
 		/**
 		 * The minimum space, in pixels, between the bottom edge of the component
 		 * and the bottom edge of the content.
+		 *
+		 * <p>In the following example, the bottom padding is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * pages.paddingBottom = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingBottom():Number
 		{
@@ -429,6 +541,13 @@ package feathers.controls
 		/**
 		 * The minimum space, in pixels, between the left edge of the component
 		 * and the left edge of the content.
+		 *
+		 * <p>In the following example, the left padding is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * pages.paddingLeft = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get paddingLeft():Number
 		{
@@ -459,6 +578,15 @@ package feathers.controls
 		 *
 		 * <p>This function should have the following signature:</p>
 		 * <pre>function():DisplayObject</pre>
+		 *
+		 * <p>In the following example, a custom normal symbol factory is provided
+		 * to the page indicator:</p>
+		 *
+		 * <listing version="3.0">
+		 * pages.normalSymbolFactory = function():DisplayObject
+		 * {
+		 *     return new Image( texture );
+		 * };</listing>
 		 *
 		 * @see starling.display.DisplayObject
 		 * @see #selectedSymbolFactory
@@ -492,6 +620,15 @@ package feathers.controls
 		 *
 		 * <p>This function should have the following signature:</p>
 		 * <pre>function():DisplayObject</pre>
+		 *
+		 * <p>In the following example, a custom selected symbol factory is provided
+		 * to the page indicator:</p>
+		 *
+		 * <listing version="3.0">
+		 * pages.selectedSymbolFactory = function():DisplayObject
+		 * {
+		 *     return new Image( texture );
+		 * };</listing>
 		 *
 		 * @see starling.display.DisplayObject
 		 * @see #normalSymbolFactory
@@ -662,76 +799,52 @@ package feathers.controls
 				return;
 			}
 
-			const touches:Vector.<Touch> = event.getTouches(this, null, HELPER_TOUCHES_VECTOR);
-			if(touches.length == 0)
-			{
-				//end of hover
-				return;
-			}
 			if(this.touchPointID >= 0)
 			{
-				var touch:Touch;
-				for each(var currentTouch:Touch in touches)
-				{
-					if(currentTouch.id == this.touchPointID)
-					{
-						touch = currentTouch;
-						break;
-					}
-				}
-
+				var touch:Touch = event.getTouch(this, TouchPhase.ENDED, this.touchPointID);
 				if(!touch)
 				{
-					//end of hover
-					HELPER_TOUCHES_VECTOR.length = 0;
 					return;
 				}
-
-				if(touch.phase == TouchPhase.ENDED)
+				this.touchPointID = -1;
+				touch.getLocation(this.stage, HELPER_POINT);
+				const isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
+				if(isInBounds)
 				{
-					this.touchPointID = -1;
-					touch.getLocation(this.stage, HELPER_POINT);
-					const isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
-					if(isInBounds)
+					this.globalToLocal(HELPER_POINT, HELPER_POINT);
+					if(this._direction == DIRECTION_VERTICAL)
 					{
-						this.globalToLocal(HELPER_POINT, HELPER_POINT);
-						if(this._direction == DIRECTION_VERTICAL)
+						if(HELPER_POINT.y < this.selectedSymbol.y)
 						{
-							if(HELPER_POINT.y < this.selectedSymbol.y)
-							{
-								this.selectedIndex = Math.max(0, this._selectedIndex - 1);
-							}
-							if(HELPER_POINT.y > (this.selectedSymbol.y + this.selectedSymbol.height))
-							{
-								this.selectedIndex = Math.min(this._pageCount - 1, this._selectedIndex + 1);
-							}
+							this.selectedIndex = Math.max(0, this._selectedIndex - 1);
 						}
-						else
+						if(HELPER_POINT.y > (this.selectedSymbol.y + this.selectedSymbol.height))
 						{
-							if(HELPER_POINT.x < this.selectedSymbol.x)
-							{
-								this.selectedIndex = Math.max(0, this._selectedIndex - 1);
-							}
-							if(HELPER_POINT.x > (this.selectedSymbol.x + this.selectedSymbol.width))
-							{
-								this.selectedIndex = Math.min(this._pageCount - 1, this._selectedIndex + 1);
-							}
+							this.selectedIndex = Math.min(this._pageCount - 1, this._selectedIndex + 1);
+						}
+					}
+					else
+					{
+						if(HELPER_POINT.x < this.selectedSymbol.x)
+						{
+							this.selectedIndex = Math.max(0, this._selectedIndex - 1);
+						}
+						if(HELPER_POINT.x > (this.selectedSymbol.x + this.selectedSymbol.width))
+						{
+							this.selectedIndex = Math.min(this._pageCount - 1, this._selectedIndex + 1);
 						}
 					}
 				}
 			}
 			else //if we get here, we don't have a saved touch ID yet
 			{
-				for each(touch in touches)
+				touch = event.getTouch(this, TouchPhase.BEGAN);
+				if(!touch)
 				{
-					if(touch.phase == TouchPhase.BEGAN)
-					{
-						this.touchPointID = touch.id;
-						break;
-					}
+					return;
 				}
+				this.touchPointID = touch.id;
 			}
-			HELPER_TOUCHES_VECTOR.length = 0;
 		}
 
 	}

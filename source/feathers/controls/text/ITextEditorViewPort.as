@@ -1,7 +1,7 @@
 package feathers.controls.text
 {
-	import feathers.core.ITextEditor;
 	import feathers.controls.supportClasses.IViewPort;
+	import feathers.core.ITextEditor;
 
 	/**
 	 * Handles the editing of multiline text.

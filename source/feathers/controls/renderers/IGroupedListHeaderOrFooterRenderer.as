@@ -19,6 +19,8 @@ package feathers.controls.renderers
 		 * Data for a header or footer from the grouped list's data provider.
 		 * The data may change if this renderer is reused for a new header or
 		 * footer because it's no longer needed for the original data.
+		 *
+		 * <p>This property is set by the list, and should not be set manually.</p>
 		 */
 		function get data():Object;
 
@@ -29,6 +31,8 @@ package feathers.controls.renderers
 
 		/**
 		 * The index of the group within the data provider of the grouped list.
+		 *
+		 * <p>This property is set by the list, and should not be set manually.</p>
 		 */
 		function get groupIndex():int;
 
@@ -39,6 +43,8 @@ package feathers.controls.renderers
 
 		/**
 		 * The index of the item within the layout.
+		 *
+		 * <p>This property is set by the list, and should not be set manually.</p>
 		 */
 		function get layoutIndex():int;
 
@@ -49,6 +55,8 @@ package feathers.controls.renderers
 
 		/**
 		 * The grouped list that contains this header or footer renderer.
+		 *
+		 * <p>This property is set by the list, and should not be set manually.</p>
 		 */
 		function get owner():GroupedList;
 
