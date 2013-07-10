@@ -2998,6 +2998,11 @@ package feathers.controls
 					this._hasVerticalScrollBar = false;
 				}
 			}
+			else
+			{
+				this._hasHorizontalScrollBar = this._isDraggingHorizontally || this._horizontalAutoScrollTween;
+				this._hasVerticalScrollBar = this._isDraggingVertically || this._verticalAutoScrollTween;
+			}
 		}
 
 		/**
@@ -3087,10 +3092,13 @@ package feathers.controls
 				{
 					this.horizontalScrollBar.y -= this.horizontalScrollBar.height;
 				}
-				this.horizontalScrollBar.width = this._viewPort.visibleWidth;
 				if(this._hasVerticalScrollBar && this.verticalScrollBar)
 				{
-					this.horizontalScrollBar.width -= this.verticalScrollBar.width;
+					this.horizontalScrollBar.width = this._viewPort.visibleWidth - this.verticalScrollBar.width;
+				}
+				else
+				{
+					this.horizontalScrollBar.width = this._viewPort.visibleWidth;
 				}
 			}
 
@@ -3102,10 +3110,13 @@ package feathers.controls
 					this.verticalScrollBar.x -= this.verticalScrollBar.width;
 				}
 				this.verticalScrollBar.y = this._topViewPortOffset;
-				this.verticalScrollBar.height = this._viewPort.visibleHeight;
 				if(this._hasHorizontalScrollBar && this.horizontalScrollBar)
 				{
-					this.verticalScrollBar.height -= this.horizontalScrollBar.height;
+					this.verticalScrollBar.height = this._viewPort.visibleHeight - this.horizontalScrollBar.height;
+				}
+				else
+				{
+					this.verticalScrollBar.height = this._viewPort.visibleHeight;
 				}
 			}
 		}
