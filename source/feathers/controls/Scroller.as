@@ -2070,12 +2070,17 @@ package feathers.controls
 		protected var _verticalScrollBarIsScrolling:Boolean = false;
 
 		/**
+		 * @private
+		 */
+		protected var _isScrolling:Boolean = false;
+
+		/**
 		 * Determines if the scroller is currently scrolling with user
 		 * interaction or with animation.
 		 */
 		public function get isScrolling():Boolean
 		{
-			return this._touchBlocker.visible;
+			return this._isScrolling;
 		}
 
 		/**
@@ -3090,10 +3095,14 @@ package feathers.controls
 				if(this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_FIXED)
 				{
 					this.horizontalScrollBar.y -= this.horizontalScrollBar.height;
-				}
-				if(this._hasVerticalScrollBar && this.verticalScrollBar)
-				{
-					this.horizontalScrollBar.width = this._viewPort.visibleWidth - this.verticalScrollBar.width;
+					if((this._hasVerticalScrollBar || this._verticalScrollBarHideTween) && this.verticalScrollBar)
+					{
+						this.horizontalScrollBar.width = this._viewPort.visibleWidth - this.verticalScrollBar.width;
+					}
+					else
+					{
+						this.horizontalScrollBar.width = this._viewPort.visibleWidth;
+					}
 				}
 				else
 				{
@@ -3104,14 +3113,18 @@ package feathers.controls
 			if(this.verticalScrollBar)
 			{
 				this.verticalScrollBar.x = this._leftViewPortOffset + this._viewPort.visibleWidth;
+				this.verticalScrollBar.y = this._topViewPortOffset;
 				if(this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_FIXED)
 				{
 					this.verticalScrollBar.x -= this.verticalScrollBar.width;
-				}
-				this.verticalScrollBar.y = this._topViewPortOffset;
-				if(this._hasHorizontalScrollBar && this.horizontalScrollBar)
-				{
-					this.verticalScrollBar.height = this._viewPort.visibleHeight - this.horizontalScrollBar.height;
+					if((this._hasHorizontalScrollBar || this._horizontalScrollBarHideTween) && this.horizontalScrollBar)
+					{
+						this.verticalScrollBar.height = this._viewPort.visibleHeight - this.horizontalScrollBar.height;
+					}
+					else
+					{
+						this.verticalScrollBar.height = this._viewPort.visibleHeight;
+					}
 				}
 				else
 				{
@@ -3710,10 +3723,11 @@ package feathers.controls
 		 */
 		protected function startScroll():void
 		{
-			if(this.isScrolling)
+			if(this._isScrolling)
 			{
 				return;
 			}
+			this._isScrolling = true;
 			if(this._touchBlocker)
 			{
 				this._touchBlocker.visible = true;
@@ -3727,12 +3741,13 @@ package feathers.controls
 		 */
 		protected function completeScroll():void
 		{
-			if(!this.isScrolling || this._verticalAutoScrollTween || this._horizontalAutoScrollTween ||
+			if(!this._isScrolling || this._verticalAutoScrollTween || this._horizontalAutoScrollTween ||
 				this._isDraggingHorizontally || this._isDraggingVertically ||
 				this._horizontalScrollBarIsScrolling || this._verticalScrollBarIsScrolling)
 			{
 				return;
 			}
+			this._isScrolling = false;
 			if(this._touchBlocker)
 			{
 				this._touchBlocker.visible = false;
