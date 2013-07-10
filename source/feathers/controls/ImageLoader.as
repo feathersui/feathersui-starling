@@ -195,6 +195,17 @@ package feathers.controls
 		protected var _loadingTexture:Texture;
 
 		/**
+		 * A texture to display while a URL source is loading.
+		 *
+		 * <p>In the following example, the image loader's loading texture is
+		 * customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * loader.source = "http://example.com/example.png";
+		 * loader.loadingTexture = texture;</listing>
+		 *
+		 * @default null
+		 *
 		 * @see #errorTexture
 		 */
 		public function get loadingTexture():Texture
@@ -221,6 +232,18 @@ package feathers.controls
 		protected var _errorTexture:Texture;
 
 		/**
+		 * A texture to display when a URL source cannot be loaded for any
+		 * reason.
+		 *
+		 * <p>In the following example, the image loader's error texture is
+		 * customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * loader.source = "http://example.com/example.png";
+		 * loader.errorTexture = texture;</listing>
+		 *
+		 * @default null
+		 *
 		 * @see #loadingTexture
 		 */
 		public function get errorTexture():Texture
