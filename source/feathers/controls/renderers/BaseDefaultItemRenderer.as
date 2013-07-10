@@ -601,6 +601,40 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		protected var _delayTextureCreationOnScroll:Boolean = false;
+
+		/**
+		 * If enabled, automatically manages the <code>delayTextureCreation</code>
+		 * property on accessory and icon <code>ImageLoader</code> instances
+		 * when the owner scrolls. This applies to the loaders created when the
+		 * following properties are set: <code>accessorySourceField</code>,
+		 * <code>accessorySourceFunction</code>, <code>iconSourceField</code>,
+		 * and <code>iconSourceFunction</code>.
+		 *
+		 * <p>In the following example, any loaded textures won't be uploaded to
+		 * the GPU until the owner stops scrolling:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.delayTextureCreationOnScroll = true;</listing>
+		 *
+		 * @default false
+		 */
+		public function get delayTextureCreationOnScroll():Boolean
+		{
+			return this._delayTextureCreationOnScroll;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set delayTextureCreationOnScroll(value:Boolean):void
+		{
+			this._delayTextureCreationOnScroll = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _labelField:String = "label";
 
 		/**
@@ -2475,6 +2509,18 @@ package feathers.controls.renderers
 		 */
 		protected function owner_scrollStartHandler(event:Event):void
 		{
+			if(this._delayTextureCreationOnScroll)
+			{
+				if(this.accessoryImage)
+				{
+					this.accessoryImage.delayTextureCreation = true;
+				}
+				if(this.iconImage)
+				{
+					this.iconImage.delayTextureCreation = true;
+				}
+			}
+
 			if(this.touchPointID < 0 && this.accessoryTouchPointID < 0)
 			{
 				return;
@@ -2489,6 +2535,24 @@ package feathers.controls.renderers
 			if(this.accessoryTouchPointID >= 0)
 			{
 				Scroller(this._owner).stopScrolling();
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function owner_scrollCompleteHandler(event:Event):void
+		{
+			if(this._delayTextureCreationOnScroll)
+			{
+				if(this.accessoryImage)
+				{
+					this.accessoryImage.delayTextureCreation = false;
+				}
+				if(this.iconImage)
+				{
+					this.iconImage.delayTextureCreation = false;
+				}
 			}
 		}
 
