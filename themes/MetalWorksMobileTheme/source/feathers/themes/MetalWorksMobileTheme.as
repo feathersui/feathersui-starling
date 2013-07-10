@@ -485,7 +485,8 @@ package feathers.themes
 			this.setInitializerForClass(PickerList, pickerListInitializer);
 			this.setInitializerForClass(Header, headerInitializer);
 			this.setInitializerForClass(Header, headerWithoutBackgroundInitializer, Panel.DEFAULT_CHILD_NAME_HEADER);
-			this.setInitializerForClass(Callout, calloutInitializer);
+			this.setInitializerForClass(Callout, calloutInitializer);			
+            		this.setInitializerForClass(Toast, toastInitializer);
 			this.setInitializerForClass(SimpleScrollBar, horizontalScrollBarInitializer, Scroller.DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR);
 			this.setInitializerForClass(SimpleScrollBar, verticalScrollBarInitializer, Scroller.DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR);
 			this.setInitializerForClass(List, listInitializer);
@@ -1276,6 +1277,13 @@ package feathers.themes
 
 			callout.padding = 8 * this.scale;
 		}
+
+        	protected function toastInitializer(toast:Toast):void
+        	{
+            		toast.backgroundSkin = new Scale9Image(this.backgroundPopUpSkinTextures, this.scale);
+            		toast.paddingBottom = toast.paddingTop = 8 * this.scale;
+            		toast.paddingLeft = toast.paddingRight = 8 * this.scale;
+        	}
 
 		protected function panelInitializer(panel:Panel):void
 		{
