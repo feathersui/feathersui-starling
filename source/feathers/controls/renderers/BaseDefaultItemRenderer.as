@@ -585,6 +585,11 @@ package feathers.controls.renderers
 		protected var accessoryTouchPointID:int = -1;
 
 		/**
+		 * @private
+		 */
+		protected var _stopScrollingOnAccessoryTouch:Boolean = true;
+
+		/**
 		 * If enabled, calls owner.stopScrolling() when TouchEvents are
 		 * dispatched by the accessory.
 		 *
@@ -596,7 +601,18 @@ package feathers.controls.renderers
 		 *
 		 * @default true
 		 */
-		public var stopScrollingOnAccessoryTouch:Boolean = true;
+		public function get stopScrollingOnAccessoryTouch():Boolean
+		{
+			return this._stopScrollingOnAccessoryTouch;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set stopScrollingOnAccessoryTouch(value:Boolean):void
+		{
+			this._stopScrollingOnAccessoryTouch = value;
+		}
 
 		/**
 		 * @private
