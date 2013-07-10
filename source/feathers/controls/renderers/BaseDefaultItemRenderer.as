@@ -186,7 +186,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected var _owner:IFeathersControl;
+		protected var _owner:Scroller;
 
 		/**
 		 * @private
@@ -2063,6 +2063,11 @@ package feathers.controls.renderers
 			//wondering, that's intentional. the currentIcon will set to the
 			//defaultIcon elsewhere.
 			this.defaultIcon = newIcon;
+
+			if(this.iconImage)
+			{
+				this.iconImage.delayTextureCreation = this._owner.isScrolling;
+			}
 		}
 
 		/**
@@ -2120,6 +2125,11 @@ package feathers.controls.renderers
 					this.accessory.addEventListener(FeathersEventType.RESIZE, accessory_resizeHandler);
 				}
 				this.addChild(this.accessory);
+			}
+			
+			if(this.accessoryImage)
+			{
+				this.accessoryImage.delayTextureCreation = this._owner.isScrolling;
 			}
 		}
 
@@ -2550,7 +2560,7 @@ package feathers.controls.renderers
 
 			if(this.accessoryTouchPointID >= 0)
 			{
-				Scroller(this._owner).stopScrolling();
+				this._owner.stopScrolling();
 			}
 		}
 
