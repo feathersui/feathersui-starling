@@ -1108,9 +1108,9 @@ package feathers.controls
 				this._ignoreTextChanges = oldIgnoreTextChanges;
 			}
 
-			if(promptFactoryInvalid || dataInvalid)
+			if(promptFactoryInvalid || dataInvalid || stylesInvalid)
 			{
-				this.promptTextRenderer.visible = this._prompt && !this._text;
+				this.promptTextRenderer.visible = this._prompt && this._text.length == 0;
 			}
 
 			if(textEditorInvalid || stateInvalid)
