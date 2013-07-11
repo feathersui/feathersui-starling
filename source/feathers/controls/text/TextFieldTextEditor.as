@@ -825,13 +825,9 @@ package feathers.controls.text
 
 			if(!this._textFieldHasFocus && (stylesInvalid || dataInvalid || this._needsNewBitmap))
 			{
-				const hasText:Boolean = this._text.length > 0;
-				if(hasText)
-				{
-					//we need to wait a frame for the TextField to render
-					//properly. sometimes two, and this is a known issue.
-					this.addEventListener(Event.ENTER_FRAME, enterFrameHandler);
-				}
+				//we need to wait a frame for the flash.text.TextField to render
+				//properly. sometimes two, and this is a known issue.
+				this.addEventListener(Event.ENTER_FRAME, enterFrameHandler);
 			}
 			this.doPendingActions();
 		}
@@ -1025,11 +1021,11 @@ package feathers.controls.text
 		protected function enterFrameHandler(event:Event):void
 		{
 			this.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
+			this.refreshSnapshot();
 			if(this.textSnapshot)
 			{
 				this.textSnapshot.visible = this._text.length > 0;
 			}
-			this.refreshSnapshot();
 		}
 
 		/**
