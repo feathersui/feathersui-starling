@@ -1,8 +1,9 @@
 package feathers.examples.layoutExplorer
 {
+	import feathers.controls.Drawers;
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
-	import feathers.controls.ScrollContainer;
+	import feathers.events.FeathersEventType;
 	import feathers.examples.layoutExplorer.data.HorizontalLayoutSettings;
 	import feathers.examples.layoutExplorer.data.TiledColumnsLayoutSettings;
 	import feathers.examples.layoutExplorer.data.TiledRowsLayoutSettings;
@@ -16,18 +17,14 @@ package feathers.examples.layoutExplorer
 	import feathers.examples.layoutExplorer.screens.TiledRowsLayoutSettingsScreen;
 	import feathers.examples.layoutExplorer.screens.VerticalLayoutScreen;
 	import feathers.examples.layoutExplorer.screens.VerticalLayoutSettingsScreen;
-	import feathers.layout.AnchorLayout;
-	import feathers.layout.AnchorLayoutData;
 	import feathers.motion.transitions.ScreenSlidingStackTransitionManager;
 	import feathers.system.DeviceCapabilities;
 	import feathers.themes.MetalWorksMobileTheme;
 
 	import starling.core.Starling;
-	import starling.display.Sprite;
 	import starling.events.Event;
-	import starling.events.ResizeEvent;
 
-	public class Main extends Sprite
+	public class Main extends Drawers
 	{
 		private static const MAIN_MENU:String = "mainMenu";
 		private static const HORIZONTAL:String = "horizontal";
@@ -50,26 +47,19 @@ package feathers.examples.layoutExplorer
 		public function Main()
 		{
 			super();
-			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
-			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
+			this.addEventListener(FeathersEventType.INITIALIZE, initializeHandler);
 		}
 
-		private var _container:ScrollContainer;
 		private var _navigator:ScreenNavigator;
 		private var _menu:MainMenuScreen;
 		private var _transitionManager:ScreenSlidingStackTransitionManager;
 
-		private function layoutForTablet():void
-		{
-			this._container.width = this.stage.stageWidth;
-			this._container.height = this.stage.stageHeight;
-		}
-
-		private function addedToStageHandler(event:Event):void
+		private function initializeHandler(event:Event):void
 		{
 			new MetalWorksMobileTheme();
 
 			this._navigator = new ScreenNavigator();
+			this.content = this._navigator;
 
 			const horizontalLayoutSettings:HorizontalLayoutSettings = new HorizontalLayoutSettings();
 			this._navigator.addScreen(HORIZONTAL, new ScreenNavigatorItem(HorizontalLayoutScreen,
@@ -144,51 +134,19 @@ package feathers.examples.layoutExplorer
 
 			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
-				this.stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
-
-				this._container = new ScrollContainer();
-				this._container.layout = new AnchorLayout();
-				this._container.horizontalScrollPolicy = ScrollContainer.SCROLL_POLICY_OFF;
-				this._container.verticalScrollPolicy = ScrollContainer.SCROLL_POLICY_OFF;
-				this.addChild(this._container);
-
 				this._menu = new MainMenuScreen();
 				for(var eventType:String in MAIN_MENU_EVENTS)
 				{
 					this._menu.addEventListener(eventType, mainMenuEventHandler);
 				}
-				const menuLayoutData:AnchorLayoutData = new AnchorLayoutData();
-				menuLayoutData.top = 0;
-				menuLayoutData.bottom = 0;
-				menuLayoutData.left = 0;
-				this._menu.layoutData = menuLayoutData;
-				this._container.addChild(this._menu);
-
-				this._navigator.clipContent = true;
-				const navigatorLayoutData:AnchorLayoutData = new AnchorLayoutData();
-				navigatorLayoutData.top = 0;
-				navigatorLayoutData.right = 0;
-				navigatorLayoutData.bottom = 0;
-				navigatorLayoutData.leftAnchorDisplayObject = this._menu;
-				navigatorLayoutData.left = 0;
-				this._navigator.layoutData = navigatorLayoutData;
-				this._container.addChild(this._navigator);
-
-				this.layoutForTablet();
+				this.leftDrawer = this._menu;
+				this.leftDrawerDockMode = Drawers.DOCK_MODE_BOTH;
 			}
 			else
 			{
 				this._navigator.addScreen(MAIN_MENU, new ScreenNavigatorItem(MainMenuScreen, MAIN_MENU_EVENTS));
-
-				this.addChild(this._navigator);
-
 				this._navigator.showScreen(MAIN_MENU);
 			}
-		}
-
-		private function removedFromStageHandler(event:Event):void
-		{
-			this.stage.removeEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
 		}
 
 		private function mainMenuEventHandler(event:Event):void
@@ -199,14 +157,6 @@ package feathers.examples.layoutExplorer
 			this._transitionManager.clearStack();
 			this._transitionManager.skipNextTransition = true;
 			this._navigator.showScreen(screenName);
-		}
-
-		private function stage_resizeHandler(event:ResizeEvent):void
-		{
-			//we don't need to layout for phones because ScreenNavigator knows
-			//to automatically resize itself to fill the stage if we don't give
-			//it a width and height.
-			this.layoutForTablet();
 		}
 	}
 }
