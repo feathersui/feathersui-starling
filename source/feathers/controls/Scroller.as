@@ -2975,7 +2975,7 @@ package feathers.controls
 			{
 				if(this.horizontalScrollBar)
 				{
-					const scrollerWidth:Number = useActualBounds ? this.actualWidth : (this.explicitWidth);
+					const scrollerWidth:Number = useActualBounds ? this.actualWidth : this.explicitWidth;
 					if(forceScrollBars || this._horizontalScrollPolicy == SCROLL_POLICY_ON ||
 						((this._viewPort.width > scrollerWidth || this._viewPort.width > this._maxWidth) &&
 							this._horizontalScrollPolicy != SCROLL_POLICY_OFF))
@@ -4026,8 +4026,8 @@ package feathers.controls
 
 			const horizontalPixelsMoved:Number = this._currentTouchX - this._startTouchX; // used for ternary Math.abs() replacement below
 			const verticalPixelsMoved:Number = this._currentTouchY - this._startTouchY; // used for ternary Math.abs() replacement below
-			const horizontalInchesMoved:Number = horizontalPixelsMoved < 0 ? -horizontalPixelsMoved : horizontalPixelsMoved / this._scaledDpi;
-			const verticalInchesMoved:Number = verticalPixelsMoved < 0 ? -verticalPixelsMoved : verticalPixelsMoved / this._scaledDpi;
+			const horizontalInchesMoved:Number = (horizontalPixelsMoved < 0 ? -horizontalPixelsMoved : horizontalPixelsMoved) / this._scaledDpi;
+			const verticalInchesMoved:Number = (verticalPixelsMoved < 0 ? -verticalPixelsMoved : verticalPixelsMoved) / this._scaledDpi;
 			if((this._horizontalScrollPolicy == SCROLL_POLICY_ON ||
 				(this._horizontalScrollPolicy == SCROLL_POLICY_AUTO && this._minHorizontalScrollPosition != this._maxHorizontalScrollPosition)) &&
 				!this._isDraggingHorizontally && horizontalInchesMoved >= MINIMUM_DRAG_DISTANCE)
