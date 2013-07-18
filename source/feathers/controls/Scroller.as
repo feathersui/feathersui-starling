@@ -2515,7 +2515,7 @@ package feathers.controls
 			if(needsWidth)
 			{
 				newWidth = this._viewPort.width + this._rightViewPortOffset + this._leftViewPortOffset;
-				if(this.originalBackgroundWidth == this.originalBackgroundWidth) // isNaN()
+				if(this.originalBackgroundWidth == this.originalBackgroundWidth) // !isNaN()
 				{
 					newWidth = Math.max(newWidth, this.originalBackgroundWidth);
 				}
@@ -2523,7 +2523,7 @@ package feathers.controls
 			if(needsHeight)
 			{
 				newHeight = this._viewPort.height + this._bottomViewPortOffset + this._topViewPortOffset;
-				if(this.originalBackgroundHeight == this.originalBackgroundHeight) // isNaN()
+				if(this.originalBackgroundHeight == this.originalBackgroundHeight) // !isNaN()
 				{
 					newHeight = Math.max(newHeight, this.originalBackgroundHeight);
 				}
@@ -3492,7 +3492,7 @@ package feathers.controls
 			{
 				var duration:Number = 0;
 				targetHorizontalScrollPosition = this._horizontalScrollPosition;
-				while(pixelsPerMS < 0 ? -pixelsPerMS : pixelsPerMS > MINIMUM_VELOCITY) // Math.abs()
+				while((pixelsPerMS < 0 ? -pixelsPerMS : pixelsPerMS) > MINIMUM_VELOCITY) // Math.abs()
 				{
 					targetHorizontalScrollPosition -= pixelsPerMS;
 					if(targetHorizontalScrollPosition < this._minHorizontalScrollPosition || targetHorizontalScrollPosition > this._maxHorizontalScrollPosition)
@@ -3602,7 +3602,7 @@ package feathers.controls
 			{
 				var duration:Number = 0;
 				targetVerticalScrollPosition = this._verticalScrollPosition;
-				while(pixelsPerMS < 0 ? -pixelsPerMS : pixelsPerMS > MINIMUM_VELOCITY) // Math.abs()
+				while((pixelsPerMS < 0 ? -pixelsPerMS : pixelsPerMS) > MINIMUM_VELOCITY) // Math.abs()
 				{
 					targetVerticalScrollPosition -= pixelsPerMS;
 					if(targetVerticalScrollPosition < this._minVerticalScrollPosition || targetVerticalScrollPosition > this._maxVerticalScrollPosition)
