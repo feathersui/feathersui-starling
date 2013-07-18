@@ -71,6 +71,7 @@ package feathers.controls.renderers
 			if(this._owner)
 			{
 				this._owner.removeEventListener(FeathersEventType.SCROLL_START, owner_scrollStartHandler);
+				this._owner.removeEventListener(FeathersEventType.SCROLL_COMPLETE, owner_scrollCompleteHandler);
 			}
 			this._owner = value;
 			if(this._owner)
@@ -79,6 +80,7 @@ package feathers.controls.renderers
 				this.isSelectableWithoutToggle = list.isSelectable;
 				this.isToggle = list.allowMultipleSelection;
 				this._owner.addEventListener(FeathersEventType.SCROLL_START, owner_scrollStartHandler);
+				this._owner.addEventListener(FeathersEventType.SCROLL_COMPLETE, owner_scrollCompleteHandler);
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}

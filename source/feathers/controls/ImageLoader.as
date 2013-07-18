@@ -116,7 +116,12 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _textureFrame:Rectangle;
+		protected var _currentTextureFrame:Rectangle;
+
+		/**
+		 * @private
+		 */
+		protected var _currentTexture:Texture;
 
 		/**
 		 * @private
@@ -182,6 +187,81 @@ package feathers.controls
 			this._lastURL = null;
 			this._isLoaded = false;
 			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _loadingTexture:Texture;
+
+		/**
+		 * A texture to display while a URL source is loading.
+		 *
+		 * <p>In the following example, the image loader's loading texture is
+		 * customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * loader.source = "http://example.com/example.png";
+		 * loader.loadingTexture = texture;</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #errorTexture
+		 */
+		public function get loadingTexture():Texture
+		{
+			return this._loadingTexture;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set loadingTexture(value:Texture):void
+		{
+			if(this._loadingTexture == value)
+			{
+				return;
+			}
+			this._loadingTexture = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _errorTexture:Texture;
+
+		/**
+		 * A texture to display when a URL source cannot be loaded for any
+		 * reason.
+		 *
+		 * <p>In the following example, the image loader's error texture is
+		 * customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * loader.source = "http://example.com/example.png";
+		 * loader.errorTexture = texture;</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #loadingTexture
+		 */
+		public function get errorTexture():Texture
+		{
+			return this._errorTexture;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set errorTexture(value:Texture):void
+		{
+			if(this._errorTexture == value)
+			{
+				return;
+			}
+			this._errorTexture = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
@@ -390,9 +470,9 @@ package feathers.controls
 		 */
 		public function get originalSourceWidth():Number
 		{
-			if(this._textureFrame)
+			if(this._currentTextureFrame)
 			{
-				return this._textureFrame.width;
+				return this._currentTextureFrame.width;
 			}
 			return 0;
 		}
@@ -405,9 +485,9 @@ package feathers.controls
 		 */
 		public function get originalSourceHeight():Number
 		{
-			if(this._textureFrame)
+			if(this._currentTextureFrame)
 			{
-				return this._textureFrame.height;
+				return this._currentTextureFrame.height;
 			}
 			return 0;
 		}
@@ -716,7 +796,7 @@ package feathers.controls
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
-			if(dataInvalid || layoutInvalid || sizeInvalid)
+			if(dataInvalid || layoutInvalid || sizeInvalid || stylesInvalid)
 			{
 				this.layout();
 			}
@@ -737,12 +817,12 @@ package feathers.controls
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
 			{
-				if(this._textureFrame)
+				if(this._currentTextureFrame)
 				{
-					newWidth = this._textureFrame.width * this._textureScale;
+					newWidth = this._currentTextureFrame.width * this._textureScale;
 					if(!needsHeight)
 					{
-						const heightScale:Number = this.explicitHeight / (this._textureFrame.height * this._textureScale);
+						const heightScale:Number = this.explicitHeight / (this._currentTextureFrame.height * this._textureScale);
 						newWidth *= heightScale;
 					}
 				}
@@ -756,12 +836,12 @@ package feathers.controls
 			var newHeight:Number = this.explicitHeight;
 			if(needsHeight)
 			{
-				if(this._textureFrame)
+				if(this._currentTextureFrame)
 				{
-					newHeight = this._textureFrame.height * this._textureScale;
+					newHeight = this._currentTextureFrame.height * this._textureScale;
 					if(!needsWidth)
 					{
-						const widthScale:Number = this.explicitWidth / (this._textureFrame.width * this._textureScale);
+						const widthScale:Number = this.explicitWidth / (this._currentTextureFrame.width * this._textureScale);
 						newHeight *= widthScale;
 					}
 				}
@@ -784,7 +864,7 @@ package feathers.controls
 			{
 				this._lastURL = null;
 				this._texture = Texture(this._source);
-				this.commitTexture();
+				this.refreshCurrentTexture();
 				this._isLoaded = true;
 			}
 			else
@@ -792,20 +872,9 @@ package feathers.controls
 				const sourceURL:String = this._source as String;
 				if(!sourceURL)
 				{
-					this._lastURL = sourceURL;
-					this.commitTexture();
-					return;
+					this._lastURL = null;
 				}
-
-				if(sourceURL == this._lastURL)
-				{
-					//if it's not loaded yet, we'll come back later
-					if(this._isLoaded)
-					{
-						this.commitTexture();
-					}
-				}
-				else
+				else if(sourceURL != this._lastURL)
 				{
 					this._lastURL = sourceURL;
 
@@ -832,6 +901,7 @@ package feathers.controls
 					this.loader.contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_errorHandler);
 					this.loader.load(new URLRequest(sourceURL), LOADER_CONTEXT);
 				}
+				this.refreshCurrentTexture();
 			}
 		}
 
@@ -853,7 +923,7 @@ package feathers.controls
 		 */
 		protected function layout():void
 		{
-			if(!this.image || !this._texture)
+			if(!this.image || !this._currentTexture)
 			{
 				return;
 			}
@@ -861,8 +931,8 @@ package feathers.controls
 			{
 				HELPER_RECTANGLE.x = 0;
 				HELPER_RECTANGLE.y = 0;
-				HELPER_RECTANGLE.width = this._textureFrame.width * this._textureScale;
-				HELPER_RECTANGLE.height = this._textureFrame.height * this._textureScale;
+				HELPER_RECTANGLE.width = this._currentTextureFrame.width * this._textureScale;
+				HELPER_RECTANGLE.height = this._currentTextureFrame.height * this._textureScale;
 				HELPER_RECTANGLE2.x = 0;
 				HELPER_RECTANGLE2.y = 0;
 				HELPER_RECTANGLE2.width = this.actualWidth - this._paddingLeft - this._paddingRight;
@@ -885,9 +955,28 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function commitTexture():void
+		protected function refreshCurrentTexture():void
 		{
-			if(!this._texture)
+			var newTexture:Texture = this._texture;
+			if(!newTexture)
+			{
+				if(this.loader)
+				{
+					newTexture = this._loadingTexture;
+				}
+				else
+				{
+					newTexture = this._errorTexture;
+				}
+			}
+
+			if(this._currentTexture == newTexture)
+			{
+				return;
+			}
+			this._currentTexture = newTexture;
+
+			if(!this._currentTexture)
 			{
 				if(this.image)
 				{
@@ -899,15 +988,15 @@ package feathers.controls
 
 			//save the texture's frame so that we don't need to create a new
 			//rectangle every time that we want to access it.
-			this._textureFrame = this._texture.frame;
+			this._currentTextureFrame = this._currentTexture.frame;
 			if(!this.image)
 			{
-				this.image = new Image(this._texture);
+				this.image = new Image(this._currentTexture);
 				this.addChild(this.image);
 			}
 			else
 			{
-				this.image.texture = this._texture;
+				this.image.texture = this._currentTexture;
 				this.image.readjustSize();
 			}
 			this.image.visible = true;
@@ -934,7 +1023,8 @@ package feathers.controls
 				this._pendingTexture.dispose();
 				this._pendingTexture = null;
 			}
-			this._textureFrame = null;
+			this._currentTexture = null;
+			this._currentTextureFrame = null;
 			this._textureBitmapData = null;
 			this._texture = null;
 			this._isTextureOwner = false;
@@ -957,9 +1047,8 @@ package feathers.controls
 				bitmapData.dispose();
 			}
 			this._isTextureOwner = true;
-			this.commitTexture();
 			this._isLoaded = true;
-			this.invalidate(INVALIDATION_FLAG_SIZE);
+			this.invalidate(INVALIDATION_FLAG_DATA);
 			this.dispatchEventWith(starling.events.Event.COMPLETE);
 		}
 
@@ -997,8 +1086,7 @@ package feathers.controls
 			this.loader = null;
 			
 			this.cleanupTexture();
-			this.commitTexture();
-			this.invalidate(INVALIDATION_FLAG_SIZE);
+			this.invalidate(INVALIDATION_FLAG_DATA);
 			this.dispatchEventWith(FeathersEventType.ERROR, false, event);
 		}
 	}

@@ -176,6 +176,20 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
+		protected var _contentX:Number = 0;
+
+		public function get contentX():Number
+		{
+			return this._contentX;
+		}
+
+		protected var _contentY:Number = 0;
+
+		public function get contentY():Number
+		{
+			return this._contentY;
+		}
+
 		public function get horizontalScrollStep():Number
 		{
 			if(this._typicalItemWidth < this._typicalItemHeight)
@@ -968,6 +982,8 @@ package feathers.controls.supportClasses
 				this._ignoreRendererResizing = true;
 				this._layout.layout(this._layoutItems, HELPER_BOUNDS, HELPER_LAYOUT_RESULT);
 				this._ignoreRendererResizing = false;
+				this._contentX = HELPER_LAYOUT_RESULT.contentX;
+				this._contentY = HELPER_LAYOUT_RESULT.contentY;
 				this.setSizeInternal(HELPER_LAYOUT_RESULT.contentWidth, HELPER_LAYOUT_RESULT.contentHeight, false);
 				this.actualVisibleWidth = HELPER_LAYOUT_RESULT.viewPortWidth;
 				this.actualVisibleHeight = HELPER_LAYOUT_RESULT.viewPortHeight;
@@ -1131,10 +1147,23 @@ package feathers.controls.supportClasses
 			}
 			this._ignoreRendererResizing = false;
 
+			const hasCustomFirstItemRenderer:Boolean = this._firstItemRendererType || this._firstItemRendererFactory != null || this._firstItemRendererName;
+			const hasCustomSingleItemRenderer:Boolean = this._singleItemRendererType || this._singleItemRendererFactory != null || this._singleItemRendererName;
+
 			var typicalItem:Object = this._typicalItem;
-			if(!typicalItem && this._dataProvider && this._dataProvider.getLength() > 0 && this._dataProvider.getLength(0) > 0)
+			var groupCount:int = 0;
+			var firstGroupLength:int = 0;
+			if(!typicalItem && this._dataProvider)
 			{
-				typicalItem = this._dataProvider.getItemAt(0, 0);
+				groupCount = this._dataProvider.getLength();
+				if(groupCount > 0)
+				{
+					firstGroupLength = this._dataProvider.getLength(0);
+					if(firstGroupLength > 0)
+					{
+						typicalItem = this._dataProvider.getItemAt(0, 0);
+					}
+				}
 			}
 			if(!typicalItem)
 			{
@@ -1145,7 +1174,30 @@ package feathers.controls.supportClasses
 
 			this._ignoreRendererResizing = true;
 			needsDestruction = true;
-			var typicalItemRenderer:IGroupedListItemRenderer = this._itemRendererMap[typicalItem];
+			var isFirst:Boolean = false;
+			var isSingle:Boolean = false;
+			var typicalItemRenderer:IGroupedListItemRenderer;
+			if(hasCustomSingleItemRenderer && firstGroupLength == 1)
+			{
+				if(this._singleItemRendererMap)
+				{
+					typicalItemRenderer = this._singleItemRendererMap[typicalItem];
+				}
+				isSingle = true;
+			}
+			else if(hasCustomFirstItemRenderer && firstGroupLength > 1)
+			{
+				if(this._firstItemRendererMap)
+				{
+					typicalItemRenderer = this._firstItemRendererMap[typicalItem];
+				}
+				isFirst = true;
+			}
+			else
+			{
+				typicalItemRenderer = this._itemRendererMap[typicalItem];
+			}
+
 			if(typicalItemRenderer)
 			{
 				needsDestruction = false;
@@ -1154,9 +1206,30 @@ package feathers.controls.supportClasses
 			}
 			else
 			{
-				typicalItemRenderer = this.createItemRenderer(this._inactiveItemRenderers,
-				this._activeItemRenderers, this._itemRendererMap, this._itemRendererType, this._itemRendererFactory,
-				this._itemRendererName, typicalItem, 0, 0, 0, true);
+				if(isFirst)
+				{
+					var type:Class = this._firstItemRendererType ? this._firstItemRendererType : this._itemRendererType;
+					var factory:Function = this._firstItemRendererFactory != null ? this._firstItemRendererFactory : this._itemRendererFactory;
+					var name:String = this._firstItemRendererName ? this._firstItemRendererName : this._itemRendererName;
+					typicalItemRenderer = this.createItemRenderer(this._inactiveFirstItemRenderers,
+						this._activeFirstItemRenderers, this._firstItemRendererMap, type, factory,
+						name, typicalItem, 0, 0, 0, true);
+				}
+				else if(isSingle)
+				{
+					type = this._singleItemRendererType ? this._singleItemRendererType : this._itemRendererType;
+					factory = this._singleItemRendererFactory != null ? this._singleItemRendererFactory : this._itemRendererFactory;
+					name = this._singleItemRendererName ? this._singleItemRendererName : this._itemRendererName;
+					typicalItemRenderer = this.createItemRenderer(this._inactiveSingleItemRenderers,
+						this._activeSingleItemRenderers, this._singleItemRendererMap, type, factory,
+						name, typicalItem, 0, 0, 0, true);
+				}
+				else
+				{
+					typicalItemRenderer = this.createItemRenderer(this._inactiveItemRenderers,
+						this._activeItemRenderers, this._itemRendererMap, this._itemRendererType, this._itemRendererFactory,
+						this._itemRendererName, typicalItem, 0, 0, 0, true);
+				}
 			}
 			this.refreshOneItemRendererStyles(typicalItemRenderer);
 			if(typicalItemRenderer is FeathersControl)

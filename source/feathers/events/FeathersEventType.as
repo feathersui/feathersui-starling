@@ -24,6 +24,15 @@ package feathers.events
 		public static const INITIALIZE:String = "initialize";
 
 		/**
+		 * The <code>FeathersEventType.CREATION_COMPLETE</code> event type is
+		 * meant to be used when an <code>IFeathersControl</code> has finished
+		 * validating for the first time. A well-designed component will have
+		 * created all of its children and it will be fully ready for user
+		 * interaction.
+		 */
+		public static const CREATION_COMPLETE:String = "creationComplete";
+
+		/**
 		 * The <code>FeathersEventType.RESIZE</code> event type is meant to
 		 * be used when an <code>IFeathersControl</code> has resized.
 		 */

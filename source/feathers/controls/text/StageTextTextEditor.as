@@ -137,6 +137,11 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _ignoreStageTextChanges:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _text:String = "";
 
 		/**
@@ -875,6 +880,8 @@ package feathers.controls.text
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 
+			const oldIgnoreStageTextChanges:Boolean = this._ignoreStageTextChanges;
+			this._ignoreStageTextChanges = true;
 			if(stylesInvalid)
 			{
 				this.refreshStageTextProperties();
@@ -893,6 +900,7 @@ package feathers.controls.text
 				}
 				this._measureTextField.text = this.stageText.text;
 			}
+			this._ignoreStageTextChanges = oldIgnoreStageTextChanges;
 
 			if(stylesInvalid || stateInvalid)
 			{
@@ -1290,6 +1298,10 @@ package feathers.controls.text
 		 */
 		protected function stageText_changeHandler(event:flash.events.Event):void
 		{
+			if(this._ignoreStageTextChanges)
+			{
+				return;
+			}
 			this.text = this.stageText.text;
 		}
 

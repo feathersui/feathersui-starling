@@ -226,6 +226,16 @@ package feathers.controls.text
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
+		public function get contentX():Number
+		{
+			return 0;
+		}
+
+		public function get contentY():Number
+		{
+			return 0;
+		}
+
 		/**
 		 * @private
 		 */
