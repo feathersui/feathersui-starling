@@ -10,10 +10,13 @@ package feathers.controls
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
 	import feathers.system.DeviceCapabilities;
+	import feathers.utils.display.getDisplayObjectDepthFromStage;
 	import feathers.utils.math.roundToNearest;
 
+	import flash.events.KeyboardEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.ui.Keyboard;
 
 	import starling.animation.Transitions;
 	import starling.animation.Tween;
@@ -2316,6 +2319,10 @@ package feathers.controls
 		protected function drawers_addedToStageHandler(event:Event):void
 		{
 			this.stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
+			//using priority here is a hack so that objects higher up in the
+			//display list have a chance to cancel the event first.
+			var priority:int = -getDisplayObjectDepthFromStage(this);
+			Starling.current.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, drawers_nativeStage_keyDownHandler, false, priority, true);
 		}
 
 		/**
@@ -2324,6 +2331,7 @@ package feathers.controls
 		protected function drawers_removedFromStageHandler(event:Event):void
 		{
 			this.stage.removeEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
+			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, drawers_nativeStage_keyDownHandler);
 		}
 
 		/**
@@ -2348,6 +2356,46 @@ package feathers.controls
 				this._isLeftDrawerOpen = false;
 			}
 			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function drawers_nativeStage_keyDownHandler(event:KeyboardEvent):void
+		{
+			if(event.isDefaultPrevented())
+			{
+				//someone else already handled this one
+				return;
+			}
+			if(event.keyCode == Keyboard.BACK)
+			{
+				var isAnyDrawerOpen:Boolean = false;
+				if(this.isTopDrawerOpen)
+				{
+					this.toggleTopDrawer();
+					isAnyDrawerOpen = true;
+				}
+				else if(this.isRightDrawerOpen)
+				{
+					this.toggleRightDrawer();
+					isAnyDrawerOpen = true;
+				}
+				else if(this.isBottomDrawerOpen)
+				{
+					this.toggleBottomDrawer();
+					isAnyDrawerOpen = true;
+				}
+				else if(this.isLeftDrawerOpen)
+				{
+					this.toggleLeftDrawer();
+					isAnyDrawerOpen = true;
+				}
+				if(isAnyDrawerOpen)
+				{
+					event.preventDefault();
+				}
+			}
 		}
 
 		/**
