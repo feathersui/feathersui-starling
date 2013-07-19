@@ -2066,7 +2066,7 @@ package feathers.controls.renderers
 
 			if(this.iconImage)
 			{
-				this.iconImage.delayTextureCreation = this._owner.isScrolling;
+				this.iconImage.delayTextureCreation = this._delayTextureCreationOnScroll && this._owner.isScrolling;
 			}
 		}
 
@@ -2129,7 +2129,7 @@ package feathers.controls.renderers
 			
 			if(this.accessoryImage)
 			{
-				this.accessoryImage.delayTextureCreation = this._owner.isScrolling;
+				this.accessoryImage.delayTextureCreation = this._delayTextureCreationOnScroll && this._owner.isScrolling;
 			}
 		}
 
