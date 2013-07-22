@@ -243,6 +243,50 @@ package feathers.core
 			const index:int = this._items.indexOf(item);
 			return index >= 0;
 		}
+
+		/**
+		 * Returns the index of the specified item. Result will be <code>-1</code>
+		 * if the item has not been added to the group.
+		 */
+		public function getItemIndex(item:IToggle):int
+		{
+			return this._items.indexOf(item);
+		}
+
+		/**
+		 * Changes the index of a specified item. Throws an <code>ArgumentError</code>
+		 * if the specified item hasn't already been added to this group.
+		 */
+		public function setItemIndex(item:IToggle, index:int):void
+		{
+			var oldIndex:int = this._items.indexOf(item);
+			if(oldIndex < 0)
+			{
+				throw new ArgumentError("Attempting to set index of an item that has not been added to this ToggleGroup.");
+			}
+			if(oldIndex == index)
+			{
+				//no change needed
+				return;
+			}
+			this._items.splice(oldIndex, 1);
+			this._items.splice(index, 0, item);
+			if(this._selectedIndex >= 0)
+			{
+				if(this._selectedIndex == oldIndex)
+				{
+					this.selectedIndex = index;
+				}
+				else if(oldIndex < this._selectedIndex && index > this._selectedIndex)
+				{
+					this.selectedIndex--;
+				}
+				else if(oldIndex > this._selectedIndex && index < this._selectedIndex)
+				{
+					this.selectedIndex++;
+				}
+			}
+		}
 		
 		/**
 		 * @private
