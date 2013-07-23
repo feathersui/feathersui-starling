@@ -141,11 +141,21 @@ package feathers.controls
 
 		/**
 		 * The button sub-component.
+		 *
+		 * <p>For internal use in subclasses.</p>
+		 *
+		 * @see #buttonFactory
+		 * @see #createButton()
 		 */
 		protected var button:Button;
 
 		/**
 		 * The list sub-component.
+		 *
+		 * <p>For internal use in subclasses.</p>
+		 *
+		 * @see #listFactory
+		 * @see #createList()
 		 */
 		protected var list:List;
 		
@@ -1077,7 +1087,15 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * Creates and adds the <code>button</code> sub-component and
+		 * removes the old instance, if one exists.
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
+		 *
+		 * @see #button
+		 * @see #buttonFactory
+		 * @see #customButtonName
 		 */
 		protected function createButton():void
 		{
@@ -1096,7 +1114,15 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * Creates and adds the <code>list</code> sub-component and
+		 * removes the old instance, if one exists.
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
+		 *
+		 * @see #list
+		 * @see #listFactory
+		 * @see #customListName
 		 */
 		protected function createList():void
 		{

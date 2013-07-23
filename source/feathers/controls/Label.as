@@ -38,6 +38,9 @@ package feathers.controls
 
 		/**
 		 * The text renderer.
+		 *
+		 * @see #createTextRenderer()
+		 * @see #textRendererFactory
 		 */
 		protected var textRenderer:ITextRenderer;
 
@@ -307,7 +310,14 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * Creates and adds the <code>textRenderer</code> sub-component and
+		 * removes the old instance, if one exists.
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
+		 *
+		 * @see #textRenderer
+		 * @see #textRendererFactory
 		 */
 		protected function createTextRenderer():void
 		{

@@ -353,8 +353,6 @@ package feathers.controls
 		 * the label name in their constructors instead of using the default
 		 * name defined by <code>DEFAULT_CHILD_NAME_LABEL</code>.
 		 *
-		 * <p>For internal use in subclasses.</p>
-		 *
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var labelName:String = DEFAULT_CHILD_NAME_LABEL;
@@ -363,6 +361,10 @@ package feathers.controls
 		 * The text renderer for the button's label.
 		 *
 		 * <p>For internal use in subclasses.</p>
+		 *
+		 * @see #label
+		 * @see #labelFactory
+		 * @see #createLabel()
 		 */
 		protected var labelTextRenderer:ITextRenderer;
 		
@@ -2825,9 +2827,14 @@ package feathers.controls
 		}
 
 		/**
-		 * Creates the label text renderer.
+		 * Creates the label text renderer sub-component and
+		 * removes the old instance, if one exists.
 		 *
-		 * <p>For internal use in subclasses.</p>
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
+		 *
+		 * @see #labelTextRenderer
+		 * @see #labelFactory
 		 */
 		protected function createLabel():void
 		{

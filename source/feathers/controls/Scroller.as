@@ -357,11 +357,21 @@ package feathers.controls
 
 		/**
 		 * The horizontal scrollbar instance. May be null.
+		 *
+		 * <p>For internal use in subclasses.</p>
+		 *
+		 * @see #horizontalScrollBarFactory
+		 * @see #createScrollBars()
 		 */
 		protected var horizontalScrollBar:IScrollBar;
 
 		/**
 		 * The vertical scrollbar instance. May be null.
+		 *
+		 * <p>For internal use in subclasses.</p>
+		 *
+		 * @see #verticalScrollBarFactory
+		 * @see #createScrollBars()
 		 */
 		protected var verticalScrollBar:IScrollBar;
 
@@ -2538,7 +2548,17 @@ package feathers.controls
 		}
 
 		/**
-		 * Creates the scroll bars from the provided factories.
+		 * Creates and adds the <code>horizontalScrollBar</code> and
+		 * <code>verticalScrollBar</code> sub-components and removes the old
+		 * instances, if they exist.
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
+		 *
+		 * @see #horizontalScrollBar
+		 * @see #verticalScrollBar
+		 * @see #horizontalScrollBarFactory
+		 * @see #verticalScrollBarFactory
 		 */
 		protected function createScrollBars():void
 		{
