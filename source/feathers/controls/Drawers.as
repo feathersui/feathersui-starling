@@ -551,7 +551,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _rightToggleEventType:String;
+		protected var _rightDrawerToggleEventType:String;
 
 		/**
 		 * When this event is dispatched by the content event dispatcher, the
@@ -561,28 +561,28 @@ package feathers.controls
 		 * content dispatches an event of type <code>Event.OPEN</code>:</p>
 		 *
 		 * <listing version="3.0">
-		 * drawers.rightToggleEventType = Event.OPEN;</listing>
+		 * drawers.rightDrawerToggleEventType = Event.OPEN;</listing>
 		 *
 		 * @default null
 		 *
 		 * @see #content
 		 * @see #rightDrawer
 		 */
-		public function get rightToggleEventType():String
+		public function get rightDrawerToggleEventType():String
 		{
-			return this._rightToggleEventType;
+			return this._rightDrawerToggleEventType;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set rightToggleEventType(value:String):void
+		public function set rightDrawerToggleEventType(value:String):void
 		{
-			if(this._rightToggleEventType == value)
+			if(this._rightDrawerToggleEventType == value)
 			{
 				return;
 			}
-			this._rightToggleEventType = value;
+			this._rightDrawerToggleEventType = value;
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
 
@@ -752,7 +752,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _bottomToggleEventType:String;
+		protected var _bottomDrawerToggleEventType:String;
 
 		/**
 		 * When this event is dispatched by the content event dispatcher, the
@@ -762,28 +762,28 @@ package feathers.controls
 		 * content dispatches an event of type <code>Event.OPEN</code>:</p>
 		 *
 		 * <listing version="3.0">
-		 * drawers.bottomToggleEventType = Event.OPEN;</listing>
+		 * drawers.bottomDrawerToggleEventType = Event.OPEN;</listing>
 		 *
 		 * @default null
 		 *
 		 * @see #content
 		 * @see #bottomDrawer
 		 */
-		public function get bottomToggleEventType():String
+		public function get bottomDrawerToggleEventType():String
 		{
-			return this._bottomToggleEventType;
+			return this._bottomDrawerToggleEventType;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set bottomToggleEventType(value:String):void
+		public function set bottomDrawerToggleEventType(value:String):void
 		{
-			if(this._bottomToggleEventType == value)
+			if(this._bottomDrawerToggleEventType == value)
 			{
 				return;
 			}
-			this._bottomToggleEventType = value;
+			this._bottomDrawerToggleEventType = value;
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
 
@@ -887,7 +887,7 @@ package feathers.controls
 		 */
 		public function get leftDrawer():DisplayObject
 		{
-			return this._leftDrawer
+			return this._leftDrawer;
 		}
 
 		/**
@@ -953,7 +953,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _leftToggleEventType:String;
+		protected var _leftDrawerToggleEventType:String;
 
 		/**
 		 * When this event is dispatched by the content event dispatcher, the
@@ -963,28 +963,28 @@ package feathers.controls
 		 * content dispatches and event of type <code>Event.OPEN</code>:</p>
 		 *
 		 * <listing version="3.0">
-		 * drawers.leftToggleEventType = Event.OPEN;</listing>
+		 * drawers.leftDrawerToggleEventType = Event.OPEN;</listing>
 		 *
 		 * @default null
 		 *
 		 * @see #content
 		 * @see #leftDrawer
 		 */
-		public function get leftToggleEventType():String
+		public function get leftDrawerToggleEventType():String
 		{
-			return this._leftToggleEventType;
+			return this._leftDrawerToggleEventType;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set leftToggleEventType(value:String):void
+		public function set leftDrawerToggleEventType(value:String):void
 		{
-			if(this._leftToggleEventType == value)
+			if(this._leftDrawerToggleEventType == value)
 			{
 				return;
 			}
-			this._leftToggleEventType = value;
+			this._leftDrawerToggleEventType = value;
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
 
@@ -1225,9 +1225,9 @@ package feathers.controls
 		 * @see #contentEventDispatcherFunction
 		 * @see #contentEventDispatcherChangeEventType
 		 * @see #topDrawerToggleEventType
-		 * @see #rightToggleEventType
-		 * @see #bottomToggleEventType
-		 * @see #leftToggleEventType
+		 * @see #rightDrawerToggleEventType
+		 * @see #bottomDrawerToggleEventType
+		 * @see #leftDrawerToggleEventType
 		 */
 		public function get contentEventDispatcherField():String
 		{
@@ -1274,9 +1274,9 @@ package feathers.controls
 		 * @see #contentEventDispatcherField
 		 * @see #contentEventDispatcherChangeEventType
 		 * @see #topDrawerToggleEventType
-		 * @see #rightToggleEventType
-		 * @see #bottomToggleEventType
-		 * @see #leftToggleEventType
+		 * @see #rightDrawerToggleEventType
+		 * @see #bottomDrawerToggleEventType
+		 * @see #leftDrawerToggleEventType
 		 */
 		public function get contentEventDispatcherFunction():Function
 		{
@@ -2028,17 +2028,17 @@ package feathers.controls
 			if(this.contentEventDispatcher)
 			{
 				this.contentEventDispatcher.removeEventListener(this._topDrawerToggleEventType, content_topDrawerToggleEventTypeHandler);
-				this.contentEventDispatcher.removeEventListener(this._rightToggleEventType, content_rightDrawerToggleEventTypeHandler);
-				this.contentEventDispatcher.removeEventListener(this._bottomToggleEventType, content_bottomDrawerToggleEventTypeHandler);
-				this.contentEventDispatcher.removeEventListener(this._leftToggleEventType, content_leftDrawerToggleEventTypeHandler);
+				this.contentEventDispatcher.removeEventListener(this._rightDrawerToggleEventType, content_rightDrawerToggleEventTypeHandler);
+				this.contentEventDispatcher.removeEventListener(this._bottomDrawerToggleEventType, content_bottomDrawerToggleEventTypeHandler);
+				this.contentEventDispatcher.removeEventListener(this._leftDrawerToggleEventType, content_leftDrawerToggleEventTypeHandler);
 			}
 			this.contentEventDispatcher = this.contentToContentEventDispatcher();
 			if(this.contentEventDispatcher)
 			{
 				this.contentEventDispatcher.addEventListener(this._topDrawerToggleEventType, content_topDrawerToggleEventTypeHandler);
-				this.contentEventDispatcher.addEventListener(this._rightToggleEventType, content_rightDrawerToggleEventTypeHandler);
-				this.contentEventDispatcher.addEventListener(this._bottomToggleEventType, content_bottomDrawerToggleEventTypeHandler);
-				this.contentEventDispatcher.addEventListener(this._leftToggleEventType, content_leftDrawerToggleEventTypeHandler);
+				this.contentEventDispatcher.addEventListener(this._rightDrawerToggleEventType, content_rightDrawerToggleEventTypeHandler);
+				this.contentEventDispatcher.addEventListener(this._bottomDrawerToggleEventType, content_bottomDrawerToggleEventTypeHandler);
+				this.contentEventDispatcher.addEventListener(this._leftDrawerToggleEventType, content_leftDrawerToggleEventTypeHandler);
 			}
 		}
 
