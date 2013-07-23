@@ -1244,7 +1244,10 @@ package feathers.controls.text
 		}
 
 		/**
-		 * @private
+		 * Creates and adds the <code>stageText</code> instance.
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
 		 */
 		protected function createStageText():void
 		{

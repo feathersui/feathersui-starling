@@ -256,26 +256,47 @@ package feathers.controls
 
 		/**
 		 * The thumb sub-component.
+		 *
+		 * <p>For internal use in subclasses.</p>
+		 *
+		 * @see #thumbFactory
+		 * @see #createThumb()
 		 */
 		protected var thumb:Button;
 
 		/**
 		 * The "on" text renderer sub-component.
+		 *
+		 * @see #labelFactory
 		 */
 		protected var onTextRenderer:ITextRenderer;
 
 		/**
 		 * The "off" text renderer sub-component.
+		 *
+		 * <p>For internal use in subclasses.</p>
+		 *
+		 * @see #labelFactory
 		 */
 		protected var offTextRenderer:ITextRenderer;
 
 		/**
 		 * The "on" track sub-component.
+		 *
+		 * <p>For internal use in subclasses.</p>
+		 *
+		 * @see #onTrackFactory
+		 * @see #createOnTrack()
 		 */
 		protected var onTrack:Button;
 
 		/**
 		 * The "off" track sub-component.
+		 *
+		 * <p>For internal use in subclasses.</p>
+		 *
+		 * @see #offTrackFactory
+		 * @see #createOffTrack()
 		 */
 		protected var offTrack:Button;
 
@@ -455,7 +476,7 @@ package feathers.controls
 				return;
 			}
 			this._trackLayoutMode = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
 
 		/**
@@ -1657,6 +1678,7 @@ package feathers.controls
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 			const focusInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_FOCUS);
+			const layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
 			const textRendererInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_TEXT_RENDERER);
 			const thumbFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_THUMB_FACTORY);
 			const onTrackFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_ON_TRACK_FACTORY);
@@ -1672,7 +1694,10 @@ package feathers.controls
 				this.createOnTrack();
 			}
 
-			this.createOrDestroyOffTrackIfNeeded(offTrackFactoryInvalid);
+			if(offTrackFactoryInvalid || layoutInvalid)
+			{
+				this.createOffTrack();
+			}
 
 			if(textRendererInvalid)
 			{
@@ -1693,7 +1718,7 @@ package feathers.controls
 			{
 				this.refreshOnTrackStyles();
 			}
-			if((offTrackFactoryInvalid || stylesInvalid) && this.offTrack)
+			if((offTrackFactoryInvalid || layoutInvalid || stylesInvalid) && this.offTrack)
 			{
 				this.refreshOffTrackStyles();
 			}
@@ -1706,7 +1731,7 @@ package feathers.controls
 			{
 				this.onTrack.isEnabled = this._isEnabled;
 			}
-			if((offTrackFactoryInvalid || stateInvalid) && this.offTrack)
+			if((offTrackFactoryInvalid || layoutInvalid || stateInvalid) && this.offTrack)
 			{
 				this.offTrack.isEnabled = this._isEnabled;
 			}
@@ -1718,10 +1743,7 @@ package feathers.controls
 				this.updateSelection();
 			}
 
-			if(stylesInvalid || sizeInvalid || stateInvalid || selectionInvalid)
-			{
-				this.layoutChildren();
-			}
+			this.layoutChildren();
 
 			if(sizeInvalid || focusInvalid)
 			{
@@ -1798,7 +1820,15 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * Creates and adds the <code>thumb</code> sub-component and
+		 * removes the old instance, if one exists.
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
+		 *
+		 * @see #thumb
+		 * @see #thumbFactory
+		 * @see #customThumbName
 		 */
 		protected function createThumb():void
 		{
@@ -1818,7 +1848,15 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * Creates and adds the <code>onTrack</code> sub-component and
+		 * removes the old instance, if one exists.
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
+		 *
+		 * @see #onTrack
+		 * @see #onTrackFactory
+		 * @see #customOnTrackName
 		 */
 		protected function createOnTrack():void
 		{
@@ -1837,16 +1875,21 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * Creates and adds the <code>offTrack</code> sub-component and
+		 * removes the old instance, if one exists. If the off track is not
+		 * needed, it will not be created.
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
+		 *
+		 * @see #offTrack
+		 * @see #offTrackFactory
+		 * @see #customOffTrackName
 		 */
-		protected function createOrDestroyOffTrackIfNeeded(offTrackFactoryInvalid:Boolean):void
+		protected function createOffTrack():void
 		{
 			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_ON_OFF)
 			{
-				if(!offTrackFactoryInvalid)
-				{
-					return;
-				}
 				if(this.offTrack)
 				{
 					this.offTrack.removeFromParent(true);

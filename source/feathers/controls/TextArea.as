@@ -676,7 +676,14 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * Creates and adds the <code>textEditorViewPort</code> sub-component and
+		 * removes the old instance, if one exists.
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
+		 *
+		 * @see #textEditorViewPort
+		 * @see #textEditorFactory
 		 */
 		protected function createTextEditor():void
 		{

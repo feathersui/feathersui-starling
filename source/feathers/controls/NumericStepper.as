@@ -201,16 +201,28 @@ package feathers.controls
 
 		/**
 		 * The decrement button sub-component.
+		 *
+		 * <p>For internal use in subclasses.</p>
+		 *
+		 * @see #createDecrementButton()
 		 */
 		protected var decrementButton:Button;
 
 		/**
 		 * The increment button sub-component.
+		 *
+		 * <p>For internal use in subclasses.</p>
+		 *
+		 * @see #createIncrementButton()
 		 */
 		protected var incrementButton:Button;
 
 		/**
 		 * The text input sub-component.
+		 *
+		 * <p>For internal use in subclasses.</p>
+		 *
+		 * @see #createTextInput()
 		 */
 		protected var textInput:TextInput;
 
@@ -1252,7 +1264,15 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * Creates and adds the <code>decrementButton</code> sub-component and
+		 * removes the old instance, if one exists.
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
+		 *
+		 * @see #decrementButton
+		 * @see #decrementButtonFactory
+		 * @see #customDecrementButtonName
 		 */
 		protected function createDecrementButton():void
 		{
@@ -1271,7 +1291,15 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * Creates and adds the <code>incrementButton</code> sub-component and
+		 * removes the old instance, if one exists.
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
+		 *
+		 * @see #incrementButton
+		 * @see #incrementButtonFactory
+		 * @see #customIncrementButtonName
 		 */
 		protected function createIncrementButton():void
 		{
@@ -1290,7 +1318,15 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * Creates and adds the <code>textInput</code> sub-component and
+		 * removes the old instance, if one exists.
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
+		 *
+		 * @see #textInput
+		 * @see #textInputFactory
+		 * @see #customTextInputName
 		 */
 		protected function createTextInput():void
 		{

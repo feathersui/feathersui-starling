@@ -142,6 +142,11 @@ package feathers.controls
 
 		/**
 		 * The thumb sub-component.
+		 *
+		 * <p>For internal use in subclasses.</p>
+		 *
+		 * @see #thumbFactory
+		 * @see #createThumb()
 		 */
 		protected var thumb:Button;
 
@@ -817,7 +822,6 @@ package feathers.controls
 		 */
 		override protected function draw():void
 		{
-			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
@@ -840,10 +844,7 @@ package feathers.controls
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
-			if(thumbFactoryInvalid || dataInvalid || stylesInvalid || sizeInvalid)
-			{
-				this.layout();
-			}
+			this.layout();
 		}
 
 		/**
@@ -939,7 +940,15 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * Creates and adds the <code>thumb</code> sub-component and
+		 * removes the old instance, if one exists.
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
+		 *
+		 * @see #thumb
+		 * @see #thumbFactory
+		 * @see #customThumbName
 		 */
 		protected function createThumb():void
 		{
