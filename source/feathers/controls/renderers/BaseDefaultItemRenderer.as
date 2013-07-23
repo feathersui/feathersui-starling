@@ -1795,7 +1795,7 @@ package feathers.controls.renderers
 		}
 
 		/**
-		 * @private
+		 * @inheritDoc
 		 */
 		override protected function autoSizeIfNeeded():Boolean
 		{

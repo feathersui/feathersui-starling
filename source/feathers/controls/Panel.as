@@ -590,7 +590,7 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * @inheritDoc
 		 */
 		override protected function autoSizeIfNeeded():Boolean
 		{
