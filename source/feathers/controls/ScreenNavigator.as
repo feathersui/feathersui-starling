@@ -281,6 +281,17 @@ package feathers.controls
 				return;
 			}
 			this._autoSizeMode = value;
+			if(this._activeScreen)
+			{
+				if(this._autoSizeMode == AUTO_SIZE_MODE_CONTENT)
+				{
+					this._activeScreen.addEventListener(FeathersEventType.RESIZE, activeScreen_resizeHandler);
+				}
+				else
+				{
+					this._activeScreen.removeEventListener(FeathersEventType.RESIZE, activeScreen_resizeHandler);
+				}
+			}
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
@@ -366,6 +377,10 @@ package feathers.controls
 
 			this._screenEvents[id] = savedScreenEvents;
 
+			if(this._autoSizeMode == AUTO_SIZE_MODE_CONTENT)
+			{
+				this._activeScreen.addEventListener(FeathersEventType.RESIZE, activeScreen_resizeHandler);
+			}
 			this.addChild(this._activeScreen);
 
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
@@ -556,7 +571,7 @@ package feathers.controls
 
 			if(sizeInvalid || selectionInvalid)
 			{
-				if(this._activeScreen)
+				if(this._activeScreen && this._autoSizeMode == AUTO_SIZE_MODE_CONTENT)
 				{
 					this._activeScreen.width = this.actualWidth;
 					this._activeScreen.height = this.actualHeight;
@@ -647,6 +662,10 @@ package feathers.controls
 					screen.screenID = null;
 					screen.owner = null;
 				}
+				if(this._autoSizeMode == AUTO_SIZE_MODE_CONTENT)
+				{
+					this._previousScreenInTransition.removeEventListener(FeathersEventType.RESIZE, activeScreen_resizeHandler);
+				}
 				this.removeChild(this._previousScreenInTransition, canBeDisposed);
 				this._previousScreenInTransition = null;
 				this._previousScreenInTransitionID = null;
@@ -718,6 +737,18 @@ package feathers.controls
 		protected function removedFromStageHandler(event:Event):void
 		{
 			this.stage.removeEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function activeScreen_resizeHandler(event:Event):void
+		{
+			if(this._isValidating || this._autoSizeMode != AUTO_SIZE_MODE_CONTENT)
+			{
+				return;
+			}
+			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
 		/**
