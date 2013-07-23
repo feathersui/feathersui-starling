@@ -25,6 +25,7 @@ package feathers.controls
 	import starling.animation.Tween;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
+	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.events.Event;
 	import starling.events.Touch;
@@ -210,18 +211,36 @@ package feathers.controls
 		public static const SCROLL_BAR_DISPLAY_MODE_NONE:String = "none";
 
 		/**
-		 * The user may touch anywhere on the scroller and drag to scroll.
+		 * The user may touch anywhere on the scroller and drag to scroll. The
+		 * scroll bars will be visual indicator of position, but they will not
+		 * be interactive.
 		 *
 		 * @see feathers.controls.Scroller#interactionMode
 		 */
 		public static const INTERACTION_MODE_TOUCH:String = "touch";
 
 		/**
-		 * The user may interact with the scroll bars to scroll.
+		 * The user may only interact with the scroll bars to scroll. The user
+		 * cannot touch anywhere in the scroller's content and drag like a touch
+		 * interface.
 		 *
 		 * @see feathers.controls.Scroller#interactionMode
 		 */
 		public static const INTERACTION_MODE_MOUSE:String = "mouse";
+
+		/**
+		 * The user may touch anywhere on the scroller and drag to scroll, and
+		 * the scroll bars may be dragged separately. For most touch interfaces,
+		 * this is not a common behavior. The scroll bar on touch interfaces is
+		 * often simply a visual indicator and non-interactive.
+		 *
+		 * <p>One case where this mode might be used is a "scroll bar" that
+		 * displays a tappable alphabetical index to navigate a
+		 * <code>GroupedList</code> with alphabetical categories.</p>
+		 *
+		 * @see feathers.controls.Scroller#interactionMode
+		 */
+		public static const INTERACTION_MODE_TOUCH_AND_SCROLL_BARS:String = "touchAndScrollBars";
 
 		/**
 		 * Flag to indicate that the clipping has changed.
@@ -1497,7 +1516,7 @@ package feathers.controls
 		 */
 		protected var _interactionMode:String = INTERACTION_MODE_TOUCH;
 
-		[Inspectable(type="String",enumeration="touch,mouse")]
+		[Inspectable(type="String",enumeration="touch,mouse,touchAndScrollBars")]
 		/**
 		 * Determines how the user may interact with the scroller.
 		 *
@@ -1510,6 +1529,7 @@ package feathers.controls
 		 *
 		 * @see #INTERACTION_MODE_TOUCH
 		 * @see #INTERACTION_MODE_MOUSE
+		 * @see #INTERACTION_MODE_TOUCH_AND_SCROLL_BARS
 		 */
 		public function get interactionMode():String
 		{
@@ -2660,7 +2680,7 @@ package feathers.controls
 					this._horizontalScrollBarHideTween = null;
 				}
 				this.horizontalScrollBar.alpha = this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FLOAT ? 0 : 1;
-				this.horizontalScrollBar.touchable = this._interactionMode == INTERACTION_MODE_MOUSE;
+				this.horizontalScrollBar.touchable = this._interactionMode == INTERACTION_MODE_MOUSE || this._interactionMode == INTERACTION_MODE_TOUCH_AND_SCROLL_BARS;
 			}
 			if(this.verticalScrollBar)
 			{
@@ -2679,7 +2699,7 @@ package feathers.controls
 					this._verticalScrollBarHideTween = null;
 				}
 				this.verticalScrollBar.alpha = this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FLOAT ? 0 : 1;
-				this.verticalScrollBar.touchable = this._interactionMode == INTERACTION_MODE_MOUSE;
+				this.verticalScrollBar.touchable = this._interactionMode == INTERACTION_MODE_MOUSE || this._interactionMode == INTERACTION_MODE_TOUCH_AND_SCROLL_BARS;
 			}
 		}
 
@@ -3045,7 +3065,7 @@ package feathers.controls
 		 */
 		protected function refreshInteractionModeEvents():void
 		{
-			if(this._interactionMode == INTERACTION_MODE_TOUCH)
+			if(this._interactionMode == INTERACTION_MODE_TOUCH || this._interactionMode == INTERACTION_MODE_TOUCH_AND_SCROLL_BARS)
 			{
 				this.addEventListener(TouchEvent.TOUCH, scroller_touchHandler);
 				if(!this._touchBlocker)
@@ -3066,7 +3086,8 @@ package feathers.controls
 				}
 			}
 
-			if(this._interactionMode == INTERACTION_MODE_MOUSE && this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FLOAT)
+			if((this._interactionMode == INTERACTION_MODE_MOUSE || this._interactionMode == INTERACTION_MODE_TOUCH_AND_SCROLL_BARS) &&
+				this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FLOAT)
 			{
 				if(this.horizontalScrollBar)
 				{
@@ -3169,9 +3190,9 @@ package feathers.controls
 		 */
 		protected function refreshClipRect():void
 		{
-			if(this._clipContent &&
-				((this._interactionMode == INTERACTION_MODE_TOUCH && this._hasElasticEdges) ||
-					this._maxHorizontalScrollPosition != this._minHorizontalScrollPosition || this._maxVerticalScrollPosition != this._minVerticalScrollPosition))
+			const hasElasticEdgesAndTouch:Boolean = this._hasElasticEdges && (this._interactionMode == INTERACTION_MODE_TOUCH || this._interactionMode == INTERACTION_MODE_TOUCH_AND_SCROLL_BARS);
+			const contentIsLargeEnoughToScroll:Boolean = this._maxHorizontalScrollPosition != this._minHorizontalScrollPosition || this._maxVerticalScrollPosition != this._minVerticalScrollPosition;
+			if(this._clipContent && (hasElasticEdgesAndTouch || contentIsLargeEnoughToScroll))
 			{
 				if(!this._viewPort.clipRect)
 				{
@@ -3978,6 +3999,13 @@ package feathers.controls
 			{
 				return;
 			}
+
+			if(this._interactionMode == INTERACTION_MODE_TOUCH_AND_SCROLL_BARS &&
+				(event.interactsWith(DisplayObject(this.horizontalScrollBar)) || event.interactsWith(DisplayObject(this.verticalScrollBar))))
+			{
+				return;
+			}
+
 			touch.getLocation(this, HELPER_POINT);
 			if(this._horizontalAutoScrollTween)
 			{
