@@ -999,6 +999,22 @@ package feathers.controls
 		}
 
 		/**
+		 * @private
+		 */
+		override public function set visible(value:Boolean):void
+		{
+			if(!value)
+			{
+				this._isWaitingToSetFocus = false;
+				if(this._textEditorHasFocus)
+				{
+					this.textEditor.clearFocus();
+				}
+			}
+			super.visible = value;
+		}
+
+		/**
 		 * @inheritDoc
 		 */
 		override public function showFocus():void
@@ -1016,7 +1032,7 @@ package feathers.controls
 		 */
 		public function setFocus():void
 		{
-			if(this._textEditorHasFocus)
+			if(this._textEditorHasFocus || !this.visible)
 			{
 				return;
 			}
@@ -1544,8 +1560,13 @@ package feathers.controls
 		 */
 		protected function textEditor_focusInHandler(event:Event):void
 		{
-			this._textEditorHasFocus = true;
 			this._touchPointID = -1;
+			if(!this.visible)
+			{
+				this.textEditor.clearFocus();
+				return;
+			}
+			this._textEditorHasFocus = true;
 			this.invalidate(INVALIDATION_FLAG_STATE);
 			if(this._focusManager)
 			{
