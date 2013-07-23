@@ -290,7 +290,7 @@ package feathers.controls
 		override protected function draw():void
 		{
 			const layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
-			const sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
+			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const clippingInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_CLIPPING);
 
 			if(sizeInvalid || layoutInvalid)
@@ -309,7 +309,7 @@ package feathers.controls
 					this._ignoreChildChanges = true;
 					this._layout.layout(this.items, HELPER_BOUNDS, HELPER_LAYOUT_RESULT);
 					this._ignoreChildChanges = false;
-					this.setSizeInternal(HELPER_LAYOUT_RESULT.contentWidth, HELPER_LAYOUT_RESULT.contentHeight, false);
+					sizeInvalid = this.setSizeInternal(HELPER_LAYOUT_RESULT.contentWidth, HELPER_LAYOUT_RESULT.contentHeight, false) || sizeInvalid;
 				}
 				else
 				{
@@ -336,7 +336,7 @@ package feathers.controls
 						}
 					}
 					this._ignoreChildChanges = false;
-					this.setSizeInternal(maxX, maxY, false);
+					sizeInvalid = this.setSizeInternal(maxX, maxY, false) || sizeInvalid;
 				}
 			}
 
