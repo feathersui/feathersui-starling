@@ -14,6 +14,7 @@ package feathers.controls.text
 	import flash.display.BitmapData;
 	import flash.events.FocusEvent;
 	import flash.events.KeyboardEvent;
+	import flash.events.SoftKeyboardEvent;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -56,6 +57,22 @@ package feathers.controls.text
 	 * @eventType feathers.events.FeathersEventType.FOCUS_OUT
 	 */
 	[Event(name="focusOut",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the soft keyboard is activated. Not all text editors will
+	 * activate a soft keyboard.
+	 *
+	 * @eventType feathers.events.FeathersEventType.SOFT_KEYBOARD_ACTIVATE
+	 */
+	[Event(name="softKeyboardActivate",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the soft keyboard is deactivated. Not all text editors
+	 * will activate a soft keyboard.
+	 *
+	 * @eventType feathers.events.FeathersEventType.SOFT_KEYBOARD_DEACTIVATE
+	 */
+	[Event(name="softKeyboardDectivate",type="starling.events.Event")]
 
 	/**
 	 * A Feathers text editor that uses the native <code>TextField</code> class
@@ -669,6 +686,8 @@ package feathers.controls.text
 			this.textField.addEventListener(FocusEvent.FOCUS_IN, textField_focusInHandler);
 			this.textField.addEventListener(FocusEvent.FOCUS_OUT, textField_focusOutHandler);
 			this.textField.addEventListener(KeyboardEvent.KEY_DOWN, textField_keyDownHandler);
+			this.textField.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATE, textField_softKeyboardActivateHandler);
+			this.textField.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_DEACTIVATE, textField_softKeyboardDeactivateHandler);
 
 			this.measureTextField = new TextField();
 			this.measureTextField.autoSize = TextFieldAutoSize.LEFT;
@@ -1089,6 +1108,22 @@ package feathers.controls.text
 			{
 				this.dispatchEventWith(FeathersEventType.ENTER);
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function textField_softKeyboardActivateHandler(event:SoftKeyboardEvent):void
+		{
+			this.dispatchEventWith(FeathersEventType.SOFT_KEYBOARD_ACTIVATE, true);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function textField_softKeyboardDeactivateHandler(event:SoftKeyboardEvent):void
+		{
+			this.dispatchEventWith(FeathersEventType.SOFT_KEYBOARD_DEACTIVATE, true);
 		}
 	}
 }
