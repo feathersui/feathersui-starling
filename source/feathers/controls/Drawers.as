@@ -9,6 +9,7 @@ package feathers.controls
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
+	import feathers.events.FeathersEventType;
 	import feathers.system.DeviceCapabilities;
 	import feathers.utils.display.getDisplayObjectDepthFromStage;
 	import feathers.utils.math.roundToNearest;
@@ -239,6 +240,10 @@ package feathers.controls
 				{
 					this._content.removeEventListener(this._contentEventDispatcherChangeEventType, content_eventDispatcherChangeHandler);
 				}
+				if(this._autoSizeMode == AUTO_SIZE_MODE_CONTENT)
+				{
+					this._content.removeEventListener(FeathersEventType.RESIZE, content_resizeHandler);
+				}
 				if(this._content.parent == this)
 				{
 					this.removeChild(this._content, false);
@@ -255,6 +260,10 @@ package feathers.controls
 				if(this._contentEventDispatcherChangeEventType)
 				{
 					this._content.addEventListener(this._contentEventDispatcherChangeEventType, content_eventDispatcherChangeHandler);
+				}
+				if(this._autoSizeMode == AUTO_SIZE_MODE_CONTENT)
+				{
+					this._content.addEventListener(FeathersEventType.RESIZE, content_resizeHandler);
 				}
 				this.addChild(this._content);
 			}
@@ -1101,6 +1110,17 @@ package feathers.controls
 				return;
 			}
 			this._autoSizeMode = value;
+			if(this._content)
+			{
+				if(this._autoSizeMode == AUTO_SIZE_MODE_CONTENT)
+				{
+					this._content.addEventListener(FeathersEventType.RESIZE, content_resizeHandler);
+				}
+				else
+				{
+					this._content.removeEventListener(FeathersEventType.RESIZE, content_resizeHandler);
+				}
+			}
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
@@ -1745,8 +1765,11 @@ package feathers.controls
 			{
 				this._content.y = 0;
 			}
-			this._content.width = contentWidth;
-			this._content.height = contentHeight;
+			if(this._autoSizeMode != AUTO_SIZE_MODE_CONTENT)
+			{
+				this._content.width = contentWidth;
+				this._content.height = contentHeight;
+			}
 
 			if(this._topDrawer)
 			{
@@ -2460,6 +2483,18 @@ package feathers.controls
 			}
 			this._isLeftDrawerOpen = !this._isLeftDrawerOpen;
 			this.openOrCloseLeftDrawer();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function content_resizeHandler(event:Event):void
+		{
+			if(this._isValidating || this._autoSizeMode != AUTO_SIZE_MODE_CONTENT)
+			{
+				return;
+			}
+			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
 		/**
