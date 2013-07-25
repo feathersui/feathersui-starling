@@ -249,21 +249,6 @@ package feathers.controls
 
 		/**
 		 * @private
-		 * The minimum physical distance (in inches) that a touch must move
-		 * before the scroller starts scrolling.
-		 */
-		private static const MINIMUM_DRAG_DISTANCE:Number = 0.04;
-
-		/**
-		 * @private
-		 * The minimum physical velocity (in inches per second) that a touch
-		 * must move before the scroller will "throw" to the next page.
-		 * Otherwise, it will settle to the nearest page.
-		 */
-		private static const MINIMUM_PAGE_VELOCITY:Number = 5;
-
-		/**
-		 * @private
 		 * The point where we stop calculating velocity changes because floating
 		 * point issues can start to appear.
 		 */
@@ -1666,7 +1651,12 @@ package feathers.controls
 		 * <p>If the content is not fully opaque, this setting should not be
 		 * enabled.</p>
 		 *
-		 * <p>This setting may be enabled as a small performance optimization.</p>
+		 * <p>This setting may be enabled to potentially improve performance.</p>
+		 *
+		 * <p>In the following example, the background is automatically hidden:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.autoHideBackground = true;</listing>
 		 *
 		 * @default false
 		 */
@@ -1686,6 +1676,65 @@ package feathers.controls
 			}
 			this._autoHideBackground = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _minimumDragDistance:Number = 0.04;
+
+		/**
+		 * The minimum physical distance (in inches) that a touch must move
+		 * before the scroller starts scrolling.
+		 *
+		 * <p>In the following example, the minimum drag distance is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.minimumDragDistance = 0.1;</listing>
+		 *
+		 * @default 0.04
+		 */
+		public function get minimumDragDistance():Number
+		{
+			return this._minimumDragDistance;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set minimumDragDistance(value:Number):void
+		{
+			this._minimumDragDistance = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _minimumPageThrowVelocity:Number = 5;
+
+		/**
+		 * The minimum physical velocity (in inches per second) that a touch
+		 * must move before the scroller will "throw" to the next page.
+		 * Otherwise, it will settle to the nearest page.
+		 *
+		 * <p>In the following example, the minimum page throw velocity is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.minimumPageThrowVelocity = 2;</listing>
+		 *
+		 * @default 5
+		 */
+		public function get minimumPageThrowVelocity():Number
+		{
+			return this._minimumPageThrowVelocity;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set minimumPageThrowVelocity(value:Number):void
+		{
+			this._minimumPageThrowVelocity = value;
 		}
 
 		/**
@@ -3470,11 +3519,11 @@ package feathers.controls
 			{
 				const pageWidth:Number = this.actualWidth - (this._leftViewPortOffset + this._rightViewPortOffset);
 				const inchesPerSecond:Number = 1000 * pixelsPerMS / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
-				if(inchesPerSecond > MINIMUM_PAGE_VELOCITY)
+				if(inchesPerSecond > this._minimumPageThrowVelocity)
 				{
 					var snappedPageHorizontalScrollPosition:Number = roundDownToNearest(this._horizontalScrollPosition, pageWidth);
 				}
-				else if(inchesPerSecond < -MINIMUM_PAGE_VELOCITY)
+				else if(inchesPerSecond < -this._minimumPageThrowVelocity)
 				{
 					snappedPageHorizontalScrollPosition = roundUpToNearest(this._horizontalScrollPosition, pageWidth);
 				}
@@ -3485,11 +3534,11 @@ package feathers.controls
 					if(lastPageWidth < pageWidth && this._horizontalScrollPosition >= startOfLastPage)
 					{
 						const lastPagePosition:Number = this._horizontalScrollPosition - startOfLastPage;
-						if(inchesPerSecond > MINIMUM_PAGE_VELOCITY)
+						if(inchesPerSecond > this._minimumPageThrowVelocity)
 						{
 							snappedPageHorizontalScrollPosition = startOfLastPage + roundDownToNearest(lastPagePosition, lastPageWidth);
 						}
-						else if(inchesPerSecond < -MINIMUM_PAGE_VELOCITY)
+						else if(inchesPerSecond < -this._minimumPageThrowVelocity)
 						{
 							snappedPageHorizontalScrollPosition = startOfLastPage + roundUpToNearest(lastPagePosition, lastPageWidth);
 						}
@@ -3580,11 +3629,11 @@ package feathers.controls
 			{
 				const pageHeight:Number = this.actualHeight - (this._topViewPortOffset + this._bottomViewPortOffset);
 				const inchesPerSecond:Number = 1000 * pixelsPerMS / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
-				if(inchesPerSecond > MINIMUM_PAGE_VELOCITY)
+				if(inchesPerSecond > this._minimumPageThrowVelocity)
 				{
 					var snappedPageVerticalScrollPosition:Number = roundDownToNearest(this._verticalScrollPosition, pageHeight);
 				}
-				else if(inchesPerSecond < -MINIMUM_PAGE_VELOCITY)
+				else if(inchesPerSecond < -this._minimumPageThrowVelocity)
 				{
 					snappedPageVerticalScrollPosition = roundUpToNearest(this._verticalScrollPosition, pageHeight);
 				}
@@ -3595,11 +3644,11 @@ package feathers.controls
 					if(lastPageHeight < pageHeight && this._verticalScrollPosition >= startOfLastPage)
 					{
 						const lastPagePosition:Number = this._verticalScrollPosition - startOfLastPage;
-						if(inchesPerSecond > MINIMUM_PAGE_VELOCITY)
+						if(inchesPerSecond > this._minimumPageThrowVelocity)
 						{
 							snappedPageVerticalScrollPosition = startOfLastPage + roundDownToNearest(lastPagePosition, lastPageHeight);
 						}
-						else if(inchesPerSecond < -MINIMUM_PAGE_VELOCITY)
+						else if(inchesPerSecond < -this._minimumPageThrowVelocity)
 						{
 							snappedPageVerticalScrollPosition = startOfLastPage + roundUpToNearest(lastPagePosition, lastPageHeight);
 						}
@@ -4072,7 +4121,7 @@ package feathers.controls
 			const verticalInchesMoved:Number = Math.abs(this._currentTouchY - this._startTouchY) / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
 			if((this._horizontalScrollPolicy == SCROLL_POLICY_ON ||
 				(this._horizontalScrollPolicy == SCROLL_POLICY_AUTO && this._minHorizontalScrollPosition != this._maxHorizontalScrollPosition)) &&
-				!this._isDraggingHorizontally && horizontalInchesMoved >= MINIMUM_DRAG_DISTANCE)
+				!this._isDraggingHorizontally && horizontalInchesMoved >= this._minimumDragDistance)
 			{
 				if(this.horizontalScrollBar)
 				{
@@ -4091,7 +4140,7 @@ package feathers.controls
 			}
 			if((this._verticalScrollPolicy == SCROLL_POLICY_ON ||
 				(this._verticalScrollPolicy == SCROLL_POLICY_AUTO && this._minVerticalScrollPosition != this._maxVerticalScrollPosition)) &&
-				!this._isDraggingVertically && verticalInchesMoved >= MINIMUM_DRAG_DISTANCE)
+				!this._isDraggingVertically && verticalInchesMoved >= this._minimumDragDistance)
 			{
 				if(this.verticalScrollBar)
 				{
