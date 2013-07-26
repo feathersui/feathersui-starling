@@ -18,12 +18,13 @@ package feathers.controls
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
+	import flash.utils.getTimer;
 
 	import starling.animation.Transitions;
 	import starling.animation.Tween;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
-	import starling.display.Quad;
+	import starling.display.DisplayObjectContainer;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
@@ -126,18 +127,49 @@ package feathers.controls
 		public static const DOCK_MODE_NONE:String = "none";
 
 		/**
-		 * The screen navigator will auto size itself to fill the entire stage.
+		 * The drawers container  will auto size itself to fill the entire stage.
 		 *
 		 * @see #autoSizeMode
 		 */
 		public static const AUTO_SIZE_MODE_STAGE:String = "stage";
 
 		/**
-		 * The screen navigator will auto size itself to fit its content.
+		 * The drawers container will auto size itself to fit its content.
 		 *
 		 * @see #autoSizeMode
 		 */
 		public static const AUTO_SIZE_MODE_CONTENT:String = "content";
+
+		/**
+		 * A drawer will open by dragging the content starting from a certain
+		 * physical distance (in inches) from the nearest edge of the content.
+		 * To customize this distance, use the <code>openGestureDragContentEdgeDistance</code>
+		 * property.
+		 *
+		 * @see #openGesture
+		 * @see openGestureEdgeSize
+		 */
+		public static const OPEN_GESTURE_DRAG_CONTENT_EDGE:String = "dragContentEdge";
+
+		/**
+		 * A drawer will open by dragging the content from any location in the
+		 * appropriate direction.
+		 *
+		 * @see #openGesture
+		 */
+		public static const OPEN_GESTURE_DRAG_CONTENT:String = "dragContent";
+
+		/**
+		 * The drawers container will only open using the toggle event types
+		 * dispatched by the content. No gesture can be used to open a drawer.
+		 *
+		 * @see #openGesture
+		 * @see #topDrawerToggleEventType
+		 * @see #rightDrawerToggleEventType
+		 * @see #bottomDrawerToggleEventType
+		 * @see #leftDrawerToggleEventType
+		 */
+		public static const OPEN_GESTURE_NONE:String = "none";
 
 		/**
 		 * The field used to access the "content event dispatcher" of a
@@ -151,15 +183,25 @@ package feathers.controls
 
 		/**
 		 * @private
+		 * The current velocity is given high importance.
 		 */
-		private static const HELPER_POINT:Point = new Point();
+		private static const CURRENT_VELOCITY_WEIGHT:Number = 2.33;
 
 		/**
 		 * @private
-		 * The minimum physical distance (in inches) that a touch must move
-		 * before the drawer starts closing.
+		 * Older saved velocities are given less importance.
 		 */
-		private static const MINIMUM_DRAG_DISTANCE:Number = 0.04;
+		private static const VELOCITY_WEIGHTS:Vector.<Number> = new <Number>[1, 1.33, 1.66, 2];
+
+		/**
+		 * @private
+		 */
+		private static const MAXIMUM_SAVED_VELOCITY_COUNT:int = 4;
+
+		/**
+		 * @private
+		 */
+		private static const HELPER_POINT:Point = new Point();
 
 		/**
 		 * Constructor.
@@ -169,13 +211,8 @@ package feathers.controls
 			this.content = content;
 			this.addEventListener(Event.ADDED_TO_STAGE, drawers_addedToStageHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, drawers_removedFromStageHandler);
+			this.addEventListener(TouchEvent.TOUCH, drawers_touchHandler);
 		}
-
-		/**
-		 * An overlay displayed over the content when a drawer is open to block
-		 * touches to the content.
-		 */
-		protected var contentOverlay:Quad;
 
 		/**
 		 * The event dispatcher that controls opening and closing drawers with
@@ -1170,6 +1207,128 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _openGesture:String = OPEN_GESTURE_NONE;
+
+		/**
+		 * An optional touch gesture used to open a drawer.
+		 *
+		 * <p>In the following example, the drawers are opened by dragging the
+		 * nearest edge of the content:</p>
+		 *
+		 * <listing version="3.0">
+		 * drawers.openGesture = Drawers.OPEN_GESTURE_CONTENT_EDGE;</listing>
+		 *
+		 * @default Drawers.OPEN_GESTURE_NONE
+		 *
+		 * @see #OPEN_GESTURE_NONE
+		 * @see #OPEN_GESTURE_DRAG_CONTENT
+		 * @see #OPEN_GESTURE_DRAG_CONTENT_EDGE
+		 */
+		public function get openGesture():String
+		{
+			return this._openGesture;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set openGesture(value:String):void
+		{
+			this._openGesture = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _minimumDragDistance:Number = 0.04;
+
+		/**
+		 * The minimum physical distance (in inches) that a touch must move
+		 * before a drag gesture begins.
+		 *
+		 * <p>In the following example, the minimum drag distance is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.minimumDragDistance = 0.1;</listing>
+		 *
+		 * @default 0.04
+		 */
+		public function get minimumDragDistance():Number
+		{
+			return this._minimumDragDistance;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set minimumDragDistance(value:Number):void
+		{
+			this._minimumDragDistance = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _minimumDrawerThrowVelocity:Number = 5;
+
+		/**
+		 * The minimum physical velocity (in inches per second) that a touch
+		 * must move before the a drawern can be "thrown" to open or close it.
+		 * Otherwise, it will settle open or closed based on which state is
+		 * closer when the touch ends.
+		 *
+		 * <p>In the following example, the minimum drawer throw velocity is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.minimumDrawerThrowVelocity = 2;</listing>
+		 *
+		 * @default 5
+		 */
+		public function get minimumDrawerThrowVelocity():Number
+		{
+			return this._minimumDrawerThrowVelocity;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set minimumDrawerThrowVelocity(value:Number):void
+		{
+			this._minimumDrawerThrowVelocity = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _openGestureEdgeSize:Number = 0.1;
+
+		/**
+		 * The minimum physical distance (in inches) that a touch must move
+		 * before a drag gesture begins.
+		 *
+		 * <p>In the following example, the open gesture edge size customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.openGestureEdgeSize = ;</listing>
+		 *
+		 * @default
+		 */
+		public function get openGestureEdgeSize():Number
+		{
+			return this._openGestureEdgeSize;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set openGestureEdgeSize(value:Number):void
+		{
+			this._openGestureEdgeSize = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _contentEventDispatcherChangeEventType:String;
 
 		/**
@@ -1418,12 +1577,27 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _isDraggingHorizontally:Boolean = false;
+		protected var _isDragging:Boolean = false;
 
 		/**
 		 * @private
 		 */
-		protected var _isDraggingVertically:Boolean = false;
+		protected var _isDraggingTopDrawer:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected var _isDraggingRightDrawer:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected var _isDraggingBottomDrawer:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected var _isDraggingLeftDrawer:Boolean = false;
 
 		/**
 		 * @private
@@ -1444,6 +1618,74 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _currentTouchY:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _previousTouchTime:int;
+
+		/**
+		 * @private
+		 */
+		protected var _previousTouchX:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _previousTouchY:Number;
+
+		/**
+		 * @private
+		 */
+		protected var _velocityX:Number = 0;
+
+		/**
+		 * @private
+		 */
+		protected var _velocityY:Number = 0;
+
+		/**
+		 * @private
+		 */
+		protected var _previousVelocityX:Vector.<Number> = new <Number>[];
+
+		/**
+		 * @private
+		 */
+		protected var _previousVelocityY:Vector.<Number> = new <Number>[];
+
+		/**
+		 * @private
+		 */
+		override public function hitTest(localPoint:Point, forTouch:Boolean = false):DisplayObject
+		{
+			var result:DisplayObject = super.hitTest(localPoint, forTouch);
+			if(result)
+			{
+				if(this._isDragging)
+				{
+					return this;
+				}
+				if(this.isTopDrawerOpen && result != this._topDrawer && !(this._topDrawer is DisplayObjectContainer && DisplayObjectContainer(this._topDrawer).contains(result)))
+				{
+					return this;
+				}
+				else if(this.isRightDrawerOpen && result != this._rightDrawer && !(this._rightDrawer is DisplayObjectContainer && DisplayObjectContainer(this._rightDrawer).contains(result)))
+				{
+					return this;
+				}
+				else if(this.isBottomDrawerOpen && result != this._bottomDrawer && !(this._bottomDrawer is DisplayObjectContainer && DisplayObjectContainer(this._bottomDrawer).contains(result)))
+				{
+					return this;
+				}
+				else if(this.isLeftDrawerOpen && result != this._leftDrawer && !(this._leftDrawer is DisplayObjectContainer && DisplayObjectContainer(this._leftDrawer).contains(result)))
+				{
+					return this;
+				}
+				return result;
+			}
+			return null;
+		}
 
 		/**
 		 * Opens or closes the top drawer. If the <code>duration</code> argument
@@ -1555,21 +1797,6 @@ package feathers.controls
 			this.isToggleLeftDrawerPending = true;
 			this.pendingToggleDuration = duration;
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
-		}
-
-		/**
-		 * @private
-		 */
-		override protected function initialize():void
-		{
-			if(!this.contentOverlay)
-			{
-				this.contentOverlay = new Quad(10, 10, 0xff00ff);
-				this.contentOverlay.alpha = 0;
-				this.contentOverlay.visible = false;
-				this.contentOverlay.addEventListener(TouchEvent.TOUCH, contentOverlay_touchHandler);
-				this.addChild(this.contentOverlay);
-			}
 		}
 
 		/**
@@ -1802,16 +2029,6 @@ package feathers.controls
 				this._leftDrawer.height = this.actualHeight;
 				this._leftDrawer.visible = isLeftDrawerOpen || isLeftDrawerDocked;
 			}
-
-			this.contentOverlay.x = this._content.x;
-			this.contentOverlay.y = this._content.y;
-			this.contentOverlay.width = this._content.width;
-			this.contentOverlay.height = this._content.height;
-			this.contentOverlay.visible = isTopDrawerOpen || isRightDrawerOpen ||
-				isBottomDrawerOpen || isLeftDrawerOpen;
-
-			//always on top
-			this.setChildIndex(this.contentOverlay, this.numChildren - 1);
 		}
 
 		/**
@@ -1862,7 +2079,6 @@ package feathers.controls
 			}
 			this.applyTopClipRect();
 			this._topDrawer.visible = true;
-			this.contentOverlay.visible = true;
 			var targetPosition:Number = this._isTopDrawerOpen ? this._topDrawer.height : 0;
 			this._openOrCloseTween = new Tween(this._content, this._openOrCloseDuration, this._openOrCloseEase);
 			this._openOrCloseTween.animate("y", targetPosition);
@@ -1888,7 +2104,6 @@ package feathers.controls
 			}
 			this.applyRightClipRect();
 			this._rightDrawer.visible = true;
-			this.contentOverlay.visible = true;
 			var targetPosition:Number = this._isRightDrawerOpen ? -this._rightDrawer.width : 0;
 			this._openOrCloseTween = new Tween(this._content, this._openOrCloseDuration, this._openOrCloseEase);
 			this._openOrCloseTween.animate("x", targetPosition);
@@ -1914,7 +2129,6 @@ package feathers.controls
 			}
 			this.applyBottomClipRect();
 			this._bottomDrawer.visible = true;
-			this.contentOverlay.visible = true;
 			var targetPosition:Number = this._isBottomDrawerOpen ? -this._bottomDrawer.height : 0;
 			this._openOrCloseTween = new Tween(this._content, this._openOrCloseDuration, this._openOrCloseEase);
 			this._openOrCloseTween.animate("y", targetPosition);
@@ -1940,7 +2154,6 @@ package feathers.controls
 			}
 			this.applyLeftClipRect();
 			this._leftDrawer.visible = true;
-			this.contentOverlay.visible = true;
 			var targetPosition:Number = this._isLeftDrawerOpen ? this._leftDrawer.width : 0;
 			var duration:Number = !isNaN(this.pendingToggleDuration) ? this.pendingToggleDuration : this._openOrCloseDuration;
 			this._openOrCloseTween = new Tween(this._content, duration, this._openOrCloseEase);
@@ -2068,10 +2281,10 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function handleOverlayTap(touch:Touch):void
+		protected function handleTapToClose(touch:Touch):void
 		{
 			touch.getLocation(this.stage, HELPER_POINT);
-			if(this.contentOverlay != this.stage.hitTest(HELPER_POINT, true))
+			if(this != this.stage.hitTest(HELPER_POINT, true))
 			{
 				return;
 			}
@@ -2101,28 +2314,183 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function handleTouchBegan(touch:Touch):void
+		{
+			touch.getLocation(this, HELPER_POINT);
+			var localX:Number = HELPER_POINT.x;
+			var localY:Number = HELPER_POINT.y;
+			if(!this.isTopDrawerOpen && !this.isRightDrawerOpen && !this.isBottomDrawerOpen && !this.isLeftDrawerOpen)
+			{
+				if(this._openGesture == OPEN_GESTURE_NONE)
+				{
+					return;
+				}
+				if(this._openGesture == OPEN_GESTURE_DRAG_CONTENT_EDGE)
+				{
+					var topInches:Number = localY / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
+					if(this._topDrawer && (topInches < 0 || topInches > this._openGestureEdgeSize))
+					{
+						return;
+					}
+					var rightInches:Number = (this.actualWidth - localX) / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
+					if(this._rightDrawer && (rightInches < 0 || rightInches > this._openGestureEdgeSize))
+					{
+						return;
+					}
+					var bottomInches:Number = (this.actualHeight - localY) / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
+					if(this._bottomDrawer && (bottomInches < 0 || bottomInches > this._openGestureEdgeSize))
+					{
+						return;
+					}
+					var leftInches:Number = localX / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
+					if(this._leftDrawer && (leftInches < 0 || leftInches > this._openGestureEdgeSize))
+					{
+						return;
+					}
+				}
+			}
+
+			this.touchPointID = touch.id;
+			this._velocityX = 0;
+			this._velocityY = 0;
+			this._previousVelocityX.length = 0;
+			this._previousVelocityY.length = 0;
+			this._previousTouchTime = getTimer();
+			this._previousTouchX = this._startTouchX = this._currentTouchX = localX;
+			this._previousTouchY = this._startTouchY = this._currentTouchY = localY;
+			this._isDragging = false;
+			this._isDraggingTopDrawer = false;
+			this._isDraggingRightDrawer = false;
+			this._isDraggingBottomDrawer = false;
+			this._isDraggingLeftDrawer = false;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function handleTouchMoved(touch:Touch):void
+		{
+			touch.getLocation(this, HELPER_POINT);
+			this._currentTouchX = HELPER_POINT.x;
+			this._currentTouchY = HELPER_POINT.y;
+			const now:int = getTimer();
+			const timeOffset:int = now - this._previousTouchTime;
+			if(timeOffset > 0)
+			{
+				//we're keeping previous velocity updates to improve accuracy
+				this._previousVelocityX[this._previousVelocityX.length] = this._velocityX;
+				if(this._previousVelocityX.length > MAXIMUM_SAVED_VELOCITY_COUNT)
+				{
+					this._previousVelocityX.shift();
+				}
+				this._previousVelocityY[this._previousVelocityY.length] = this._velocityY;
+				if(this._previousVelocityY.length > MAXIMUM_SAVED_VELOCITY_COUNT)
+				{
+					this._previousVelocityY.shift();
+				}
+				this._velocityX = (this._currentTouchX - this._previousTouchX) / timeOffset;
+				this._velocityY = (this._currentTouchY - this._previousTouchY) / timeOffset;
+				this._previousTouchTime = now;
+				this._previousTouchX = this._currentTouchX;
+				this._previousTouchY = this._currentTouchY;
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function handleDragEnd():void
 		{
-			this._isDraggingHorizontally = false;
-			this._isDraggingVertically = false;
-			if(this.isTopDrawerOpen)
+			//take the average for more accuracy
+			var sum:Number = this._velocityX * CURRENT_VELOCITY_WEIGHT;
+			var velocityCount:int = this._previousVelocityX.length;
+			var totalWeight:Number = CURRENT_VELOCITY_WEIGHT;
+			for(var i:int = 0; i < velocityCount; i++)
 			{
-				this._isTopDrawerOpen = roundToNearest(this._content.y, this._topDrawer.height) != 0;
+				var weight:Number = VELOCITY_WEIGHTS[i];
+				sum += this._previousVelocityX.shift() * weight;
+				totalWeight += weight;
+			}
+			var inchesPerSecondX:Number = 1000 * (sum / totalWeight) / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
+
+			sum = this._velocityY * CURRENT_VELOCITY_WEIGHT;
+			velocityCount = this._previousVelocityY.length;
+			totalWeight = CURRENT_VELOCITY_WEIGHT;
+			for(i = 0; i < velocityCount; i++)
+			{
+				weight = VELOCITY_WEIGHTS[i];
+				sum += this._previousVelocityY.shift() * weight;
+				totalWeight += weight;
+			}
+			var inchesPerSecondY:Number = 1000 * (sum / totalWeight) / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
+
+			this._isDragging = false;
+			if(this._isDraggingTopDrawer)
+			{
+				this._isDraggingTopDrawer = false;
+				if(!this._isTopDrawerOpen && inchesPerSecondY > this._minimumDrawerThrowVelocity)
+				{
+					this._isTopDrawerOpen = true;
+				}
+				else if(this._isTopDrawerOpen && inchesPerSecondY < -this._minimumDrawerThrowVelocity)
+				{
+					this._isTopDrawerOpen = false;
+				}
+				else
+				{
+					this._isTopDrawerOpen = roundToNearest(this._content.y, this._topDrawer.height) != 0;
+				}
 				this.openOrCloseTopDrawer();
 			}
-			else if(this.isRightDrawerOpen)
+			else if(this._isDraggingRightDrawer)
 			{
-				this._isRightDrawerOpen = roundToNearest(this._content.x, this._rightDrawer.width) != 0;
+				this._isDraggingRightDrawer = false;
+				if(!this._isRightDrawerOpen && inchesPerSecondX < -this._minimumDrawerThrowVelocity)
+				{
+					this._isRightDrawerOpen = true;
+				}
+				else if(this._isRightDrawerOpen && inchesPerSecondX > this._minimumDrawerThrowVelocity)
+				{
+					this._isRightDrawerOpen = false;
+				}
+				else
+				{
+					this._isRightDrawerOpen = roundToNearest(this._content.x, this._rightDrawer.width) != 0;
+				}
 				this.openOrCloseRightDrawer();
 			}
-			else if(this.isBottomDrawerOpen)
+			else if(this._isDraggingBottomDrawer)
 			{
-				this._isBottomDrawerOpen = roundToNearest(this._content.y, this._bottomDrawer.height) != 0;
+				this._isDraggingBottomDrawer = false;
+				if(!this._isBottomDrawerOpen && inchesPerSecondY < -this._minimumDrawerThrowVelocity)
+				{
+					this._isBottomDrawerOpen = true;
+				}
+				else if(this._isBottomDrawerOpen && inchesPerSecondY > this._minimumDrawerThrowVelocity)
+				{
+					this._isBottomDrawerOpen = false;
+				}
+				else
+				{
+					this._isBottomDrawerOpen = roundToNearest(this._content.y, this._bottomDrawer.height) != 0;
+				}
 				this.openOrCloseBottomDrawer();
 			}
-			else if(this.isLeftDrawerOpen)
+			else if(this._isDraggingLeftDrawer)
 			{
-				this._isLeftDrawerOpen = roundToNearest(this._content.x, this._leftDrawer.width) != 0;
+				this._isDraggingLeftDrawer = false;
+				if(!this._isLeftDrawerOpen && inchesPerSecondX > this._minimumDrawerThrowVelocity)
+				{
+					this._isLeftDrawerOpen = true;
+				}
+				else if(this._isLeftDrawerOpen && inchesPerSecondX < -this._minimumDrawerThrowVelocity)
+				{
+					this._isLeftDrawerOpen = false;
+				}
+				else
+				{
+					this._isLeftDrawerOpen = roundToNearest(this._content.x, this._leftDrawer.width) != 0;
+				}
 				this.openOrCloseLeftDrawer();
 			}
 		}
@@ -2130,12 +2498,21 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function dragHorizontally():void
+		protected function handleDragMove():void
 		{
-			if(this._isLeftDrawerOpen)
+			var contentX:Number = 0;
+			var contentY:Number = 0;
+			if(this._isDraggingLeftDrawer)
 			{
 				var leftDrawerWidth:Number = this._leftDrawer.width;
-				var contentX:Number = leftDrawerWidth + this._currentTouchX - this._startTouchX;
+				if(this.isLeftDrawerOpen)
+				{
+					contentX = leftDrawerWidth + this._currentTouchX - this._startTouchX;
+				}
+				else
+				{
+					contentX = this._currentTouchX - this._startTouchX;
+				}
 				if(contentX < 0)
 				{
 					contentX = 0;
@@ -2145,10 +2522,17 @@ package feathers.controls
 					contentX = leftDrawerWidth;
 				}
 			}
-			else //right drawer is open
+			else if(this._isDraggingRightDrawer)
 			{
 				var rightDrawerWidth:Number = this._rightDrawer.width;
-				contentX = -rightDrawerWidth + this._currentTouchX - this._startTouchX;
+				if(this.isRightDrawerOpen)
+				{
+					contentX = -rightDrawerWidth + this._currentTouchX - this._startTouchX;
+				}
+				else
+				{
+					contentX = this._currentTouchX - this._startTouchX;
+				}
 				if(contentX < -rightDrawerWidth)
 				{
 					contentX = -rightDrawerWidth;
@@ -2158,19 +2542,17 @@ package feathers.controls
 					contentX = 0;
 				}
 			}
-			this._content.x = contentX;
-			this.openOrCloseTween_onUpdate();
-		}
-
-		/**
-		 * @private
-		 */
-		protected function dragVertically():void
-		{
-			if(this.isTopDrawerOpen)
+			else if(this._isDraggingTopDrawer)
 			{
-				var topDrawerHeight:Number = this._topDrawer.width;
-				var contentY:Number = topDrawerHeight + this._currentTouchY - this._startTouchY;
+				var topDrawerHeight:Number = this._topDrawer.height;
+				if(this.isTopDrawerOpen)
+				{
+					contentY = topDrawerHeight + this._currentTouchY - this._startTouchY;
+				}
+				else
+				{
+					contentY = this._currentTouchY - this._startTouchY;
+				}
 				if(contentY < 0)
 				{
 					contentY = 0;
@@ -2181,10 +2563,17 @@ package feathers.controls
 				}
 				this._content.y = contentY;
 			}
-			else // bottom drawer is open
+			else if(this._isDraggingBottomDrawer)
 			{
 				var bottomDrawerHeight:Number = this._bottomDrawer.height;
-				contentY = -bottomDrawerHeight + this._currentTouchY - this._startTouchY;
+				if(this.isBottomDrawerOpen)
+				{
+					contentY = -bottomDrawerHeight + this._currentTouchY - this._startTouchY;
+				}
+				else
+				{
+					contentY = this._currentTouchY - this._startTouchY;
+				}
 				if(contentY < -bottomDrawerHeight)
 				{
 					contentY = -bottomDrawerHeight;
@@ -2194,6 +2583,7 @@ package feathers.controls
 					contentY = 0;
 				}
 			}
+			this._content.x = contentX;
 			this._content.y = contentY;
 			this.openOrCloseTween_onUpdate();
 		}
@@ -2201,44 +2591,78 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function checkForDrag():void
+		protected function checkForDragToClose():void
 		{
-			var isTopDrawerOpen:Boolean = this.isTopDrawerOpen;
-			var isRightDrawerOpen:Boolean = this.isRightDrawerOpen;
-			var isBottomDrawerOpen:Boolean = this.isBottomDrawerOpen;
-			var isLeftDrawerOpen:Boolean = this.isLeftDrawerOpen;
-
 			var horizontalInchesMoved:Number = (this._currentTouchX - this._startTouchX) / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
 			var verticalInchesMoved:Number = (this._currentTouchY - this._startTouchY) / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
-			if(((isLeftDrawerOpen && horizontalInchesMoved <= -MINIMUM_DRAG_DISTANCE) ||
-				(isRightDrawerOpen && horizontalInchesMoved >= MINIMUM_DRAG_DISTANCE)) &&
-				!this._isDraggingHorizontally && !this._isDraggingVertically)
+			if(this.isLeftDrawerOpen && horizontalInchesMoved <= -this._minimumDragDistance)
 			{
 				this._startTouchX = this._currentTouchX;
-				this._isDraggingHorizontally = true;
-				if(isLeftDrawerOpen)
-				{
-					this.applyLeftClipRect();
-				}
-				else
-				{
-					this.applyRightClipRect();
-				}
+				this._isDraggingLeftDrawer = true;
+				this._isDragging = true;
+				this.applyLeftClipRect();
 			}
-			else if(((isTopDrawerOpen && verticalInchesMoved <= -MINIMUM_DRAG_DISTANCE) ||
-				(isBottomDrawerOpen && verticalInchesMoved >= MINIMUM_DRAG_DISTANCE)) &&
-				!this._isDraggingHorizontally && !this._isDraggingVertically)
+			else if(this.isRightDrawerOpen && horizontalInchesMoved >= this._minimumDragDistance)
+			{
+				this._startTouchX = this._currentTouchX;
+				this._isDraggingRightDrawer = true;
+				this._isDragging = true;
+				this.applyRightClipRect();
+			}
+			else if(this.isTopDrawerOpen && verticalInchesMoved <= -this._minimumDragDistance)
 			{
 				this._startTouchY = this._currentTouchY;
-				this._isDraggingVertically = true;
-				if(isTopDrawerOpen)
-				{
-					this.applyTopClipRect();
-				}
-				else
-				{
-					this.applyBottomClipRect();
-				}
+				this._isDraggingTopDrawer = true;
+				this._isDragging = true;
+				this.applyTopClipRect();
+			}
+			else if(this.isBottomDrawerOpen && verticalInchesMoved >= this._minimumDragDistance)
+			{
+				this._startTouchY = this._currentTouchY;
+				this._isDraggingBottomDrawer = true;
+				this._isDragging = true;
+				this.applyBottomClipRect();
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function checkForDragToOpen():void
+		{
+			var horizontalInchesMoved:Number = (this._currentTouchX - this._startTouchX) / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
+			var verticalInchesMoved:Number = (this._currentTouchY - this._startTouchY) / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
+			if(this._leftDrawer && !this.isLeftDrawerDocked && horizontalInchesMoved >= this._minimumDragDistance)
+			{
+				this._startTouchX = this._currentTouchX;
+				this._isDraggingLeftDrawer = true;
+				this._isDragging = true;
+				this._leftDrawer.visible = true;
+				this.applyLeftClipRect();
+			}
+			else if(this._rightDrawer && !this.isRightDrawerDocked && horizontalInchesMoved <= -this._minimumDragDistance)
+			{
+				this._startTouchX = this._currentTouchX;
+				this._isDraggingRightDrawer = true;
+				this._isDragging = true;
+				this._rightDrawer.visible = true;
+				this.applyRightClipRect();
+			}
+			else if(this._topDrawer && !this.isTopDrawerDocked && verticalInchesMoved >= this._minimumDragDistance)
+			{
+				this._startTouchY = this._currentTouchY;
+				this._isDraggingTopDrawer = true;
+				this._isDragging = true;
+				this._topDrawer.visible = true;
+				this.applyTopClipRect();
+			}
+			else if(this._bottomDrawer && !this.isBottomDrawerDocked && verticalInchesMoved <= -this._minimumDragDistance)
+			{
+				this._startTouchY = this._currentTouchY;
+				this._isDraggingBottomDrawer = true;
+				this._isDragging = true;
+				this._bottomDrawer.visible = true;
+				this.applyBottomClipRect();
 			}
 		}
 
@@ -2247,49 +2671,48 @@ package feathers.controls
 		 */
 		protected function openOrCloseTween_onUpdate():void
 		{
-			this.contentOverlay.x = this._content.x;
-			this.contentOverlay.y = this._content.y;
-			if(this._clipDrawers)
+			if(!this._clipDrawers)
 			{
-				if(this._topDrawer is Sprite)
+				return;
+			}
+			if(this._topDrawer is Sprite)
+			{
+				var sprite:Sprite = Sprite(this._topDrawer);
+				var clipRect:Rectangle = sprite.clipRect;
+				if(clipRect)
 				{
-					var sprite:Sprite = Sprite(this._topDrawer);
-					var clipRect:Rectangle = sprite.clipRect;
-					if(clipRect)
-					{
-						clipRect.height = this._content.y;
-					}
+					clipRect.height = this._content.y;
 				}
-				if(this._rightDrawer is Sprite)
+			}
+			if(this._rightDrawer is Sprite)
+			{
+				sprite = Sprite(this._rightDrawer);
+				clipRect = sprite.clipRect;
+				if(clipRect)
 				{
-					sprite = Sprite(this._rightDrawer);
-					clipRect = sprite.clipRect;
-					if(clipRect)
-					{
-						var rightClipWidth:Number = -this._content.x;
-						clipRect.x = this._rightDrawer.width - rightClipWidth;
-						clipRect.width = rightClipWidth;
-					}
+					var rightClipWidth:Number = -this._content.x;
+					clipRect.x = this._rightDrawer.width - rightClipWidth;
+					clipRect.width = rightClipWidth;
 				}
-				if(this._bottomDrawer is Sprite)
+			}
+			if(this._bottomDrawer is Sprite)
+			{
+				sprite = Sprite(this._bottomDrawer);
+				clipRect = sprite.clipRect;
+				if(clipRect)
 				{
-					sprite = Sprite(this._bottomDrawer);
-					clipRect = sprite.clipRect;
-					if(clipRect)
-					{
-						var bottomClipHeight:Number = -this._content.y;
-						clipRect.y = this._bottomDrawer.height - bottomClipHeight;
-						clipRect.height = bottomClipHeight;
-					}
+					var bottomClipHeight:Number = -this._content.y;
+					clipRect.y = this._bottomDrawer.height - bottomClipHeight;
+					clipRect.height = bottomClipHeight;
 				}
-				if(this._leftDrawer is Sprite)
+			}
+			if(this._leftDrawer is Sprite)
+			{
+				sprite = Sprite(this._leftDrawer);
+				clipRect = sprite.clipRect;
+				if(clipRect)
 				{
-					sprite = Sprite(this._leftDrawer);
-					clipRect = sprite.clipRect;
-					if(clipRect)
-					{
-						clipRect.width = this._content.x;
-					}
+					clipRect.width = this._content.x;
 				}
 			}
 		}
@@ -2336,8 +2759,6 @@ package feathers.controls
 				}
 				this._leftDrawer.visible = isLeftDrawerOpen || this.isLeftDrawerDocked;
 			}
-			this.contentOverlay.visible = isTopDrawerOpen || isRightDrawerOpen ||
-				isBottomDrawerOpen || isLeftDrawerOpen;
 		}
 
 		/**
@@ -2367,6 +2788,73 @@ package feathers.controls
 		{
 			this.stage.removeEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
 			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, drawers_nativeStage_keyDownHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function drawers_touchHandler(event:TouchEvent):void
+		{
+			if(!this._isEnabled || this._openOrCloseTween)
+			{
+				this.touchPointID = -1;
+				return;
+			}
+			if(this.touchPointID >= 0)
+			{
+				var touch:Touch = event.getTouch(this, null, this.touchPointID);
+				if(!touch)
+				{
+					return;
+				}
+				if(touch.phase == TouchPhase.MOVED)
+				{
+					this.handleTouchMoved(touch);
+
+					if(!this._isDragging)
+					{
+						if(this.isTopDrawerOpen || this.isRightDrawerOpen || this.isBottomDrawerOpen || this.isLeftDrawerOpen)
+						{
+							this.checkForDragToClose();
+						}
+						else
+						{
+							this.checkForDragToOpen();
+						}
+					}
+					if(this._isDragging)
+					{
+						this.handleDragMove();
+					}
+				}
+				else if(touch.phase == TouchPhase.ENDED)
+				{
+					this.touchPointID = -1;
+					if(this._isDragging)
+					{
+						this.handleDragEnd();
+					}
+					else
+					{
+						if(this.isTopDrawerOpen || this.isRightDrawerOpen || this.isBottomDrawerOpen || this.isLeftDrawerOpen)
+						{
+							//there is no drag, so we may have a tap
+							this.handleTapToClose(touch);
+						}
+					}
+
+				}
+			}
+			else
+			{
+				touch = event.getTouch(this, TouchPhase.BEGAN);
+				if(!touch)
+				{
+					return;
+				}
+
+				this.handleTouchBegan(touch);
+			}
 		}
 
 		/**
@@ -2495,74 +2983,6 @@ package feathers.controls
 				return;
 			}
 			this.invalidate(INVALIDATION_FLAG_SIZE);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function contentOverlay_touchHandler(event:TouchEvent):void
-		{
-			if(!this._isEnabled || this._openOrCloseTween)
-			{
-				this.touchPointID = -1;
-				return;
-			}
-			if(this.touchPointID >= 0)
-			{
-				var touch:Touch = event.getTouch(this.contentOverlay, null, this.touchPointID);
-				if(!touch)
-				{
-					return;
-				}
-				if(touch.phase == TouchPhase.MOVED)
-				{
-					touch.getLocation(this, HELPER_POINT);
-					this._currentTouchX = HELPER_POINT.x;
-					this._currentTouchY = HELPER_POINT.y;
-
-					if(!this._isDraggingHorizontally && !this._isDraggingVertically)
-					{
-						this.checkForDrag();
-					}
-
-					if(this._isDraggingHorizontally)
-					{
-						this.dragHorizontally();
-					}
-					else if(this._isDraggingVertically)
-					{
-						this.dragVertically();
-					}
-				}
-				else if(touch.phase == TouchPhase.ENDED)
-				{
-					this.touchPointID = -1;
-					if(!this._isDraggingHorizontally && !this._isDraggingVertically)
-					{
-						//there is no drag, so we may have a tap
-						this.handleOverlayTap(touch);
-					}
-					else
-					{
-						this.handleDragEnd();
-					}
-
-				}
-			}
-			else
-			{
-				touch = event.getTouch(this.contentOverlay, TouchPhase.BEGAN);
-				if(!touch)
-				{
-					return;
-				}
-				this.touchPointID = touch.id;
-				touch.getLocation(this, HELPER_POINT);
-				this._startTouchX = this._currentTouchX = HELPER_POINT.x;
-				this._startTouchY = this._currentTouchY = HELPER_POINT.y;
-				this._isDraggingHorizontally = false;
-				this._isDraggingVertically = false;
-			}
 		}
 	}
 }
