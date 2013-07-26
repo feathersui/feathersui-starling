@@ -149,5 +149,23 @@ package feathers.events
 		 * @see feathers.controls.Button#event:longPress
 		 */
 		public static const LONG_PRESS:String = "longPress";
+
+		/**
+		 * The <code>FeathersEventType.SOFT_KEYBOARD_ACTIVATE</code> event type
+		 * is used by Feathers text editors when they activate a device's soft
+		 * keyboard.
+		 *
+		 * @see feathers.core.ITextEditor
+		 */
+		public static const SOFT_KEYBOARD_ACTIVATE:String = "softKeyboardActivate";
+
+		/**
+		 * The <code>FeathersEventType.SOFT_KEYBOARD_DEACTIVATE</code> event type
+		 * is used by Feathers text editors when they deactivate a device's soft
+		 * keyboard.
+		 *
+		 * @see feathers.core.ITextEditor
+		 */
+		public static const SOFT_KEYBOARD_DEACTIVATE:String = "softKeyboardDectivate";
 	}
 }

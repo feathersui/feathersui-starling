@@ -192,6 +192,8 @@ package feathers.controls
 		 * header.title = "I'm a Header";</listing>
 		 *
 		 * @default ""
+		 *
+		 * @see #titleFactory
 		 */
 		public function get title():String
 		{
@@ -250,6 +252,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
+		 * @see #title
 		 * @see feathers.core.ITextRenderer
 		 * @see feathers.core.FeathersControl#defaultTextRendererFactory
 		 * @see feathers.controls.text.BitmapFontTextRenderer
@@ -274,9 +277,15 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * The text renderer for the header's title.
+		 *
+		 * <p>For internal use in subclasses.</p>
+		 *
+		 * @see #title
+		 * @see #titleFactory
+		 * @see #createTitle()
 		 */
-		protected var _titleRenderer:ITextRenderer;
+		protected var titleTextRenderer:ITextRenderer;
 
 		/**
 		 * @private
@@ -952,7 +961,7 @@ package feathers.controls
 
 			if(textRendererInvalid || dataInvalid)
 			{
-				this._titleRenderer.text = this._title;
+				this.titleTextRenderer.text = this._title;
 			}
 
 			if(stateInvalid || stylesInvalid)
@@ -1025,7 +1034,20 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * If the component's dimensions have not been set explicitly, it will
+		 * measure its content and determine an ideal size for itself. If the
+		 * <code>explicitWidth</code> or <code>explicitHeight</code> member
+		 * variables are set, those value will be used without additional
+		 * measurement. If one is set, but not the other, the dimension with the
+		 * explicit value will not be measured, but the other non-explicit
+		 * dimension will still need measurement.
+		 *
+		 * <p>Calls <code>setSizeInternal()</code> to set up the
+		 * <code>actualWidth</code> and <code>actualHeight</code> member
+		 * variables used for layout.</p>
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
@@ -1096,8 +1118,8 @@ package feathers.controls
 				{
 					maxTitleWidth -= calculatedTitleGap;
 				}
-				this._titleRenderer.maxWidth = maxTitleWidth;
-				this._titleRenderer.measureText(HELPER_POINT);
+				this.titleTextRenderer.maxWidth = maxTitleWidth;
+				this.titleTextRenderer.measureText(HELPER_POINT);
 				const measuredTitleWidth:Number = HELPER_POINT.x;
 				const measuredTitleHeight:Number = HELPER_POINT.y;
 				if(needsWidth && !isNaN(measuredTitleWidth))
@@ -1134,19 +1156,27 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * Creates and adds the <code>titleTextRenderer</code> sub-component and
+		 * removes the old instance, if one exists.
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
+		 *
+		 * @see #title
+		 * @see #titleTextRenderer
+		 * @see #titleFactory
 		 */
 		protected function createTitle():void
 		{
-			if(this._titleRenderer)
+			if(this.titleTextRenderer)
 			{
-				this.removeChild(DisplayObject(this._titleRenderer), true);
-				this._titleRenderer = null;
+				this.removeChild(DisplayObject(this.titleTextRenderer), true);
+				this.titleTextRenderer = null;
 			}
 
 			const factory:Function = this._titleFactory != null ? this._titleFactory : FeathersControl.defaultTextRendererFactory;
-			this._titleRenderer = ITextRenderer(factory());
-			const uiTitleRenderer:IFeathersControl = IFeathersControl(this._titleRenderer);
+			this.titleTextRenderer = ITextRenderer(factory());
+			const uiTitleRenderer:IFeathersControl = IFeathersControl(this.titleTextRenderer);
 			uiTitleRenderer.nameList.add(this.titleName);
 			uiTitleRenderer.touchable = false;
 			this.addChild(DisplayObject(uiTitleRenderer));
@@ -1201,7 +1231,7 @@ package feathers.controls
 		 */
 		protected function refreshTitleStyles():void
 		{
-			const displayTitleRenderer:DisplayObject = DisplayObject(this._titleRenderer);
+			const displayTitleRenderer:DisplayObject = DisplayObject(this.titleTextRenderer);
 			for(var propertyName:String in this._titleProperties)
 			{
 				if(displayTitleRenderer.hasOwnProperty(propertyName))
@@ -1295,44 +1325,44 @@ package feathers.controls
 			const rightOffset:Number = (this._rightItems && this._rightItems.length > 0) ? (this.rightItemsWidth + calculatedTitleGap) : 0;
 			if(this._titleAlign == TITLE_ALIGN_PREFER_LEFT && (!this._leftItems || this._leftItems.length == 0))
 			{
-				this._titleRenderer.maxWidth = this.actualWidth - this._paddingLeft - rightOffset;
-				this._titleRenderer.validate();
-				this._titleRenderer.x = this._paddingLeft;
+				this.titleTextRenderer.maxWidth = this.actualWidth - this._paddingLeft - rightOffset;
+				this.titleTextRenderer.validate();
+				this.titleTextRenderer.x = this._paddingLeft;
 			}
 			else if(this._titleAlign == TITLE_ALIGN_PREFER_RIGHT && (!this._rightItems || this._rightItems.length == 0))
 			{
-				this._titleRenderer.maxWidth = this.actualWidth - this._paddingRight - leftOffset;
-				this._titleRenderer.validate();
-				this._titleRenderer.x = this.actualWidth - this._paddingRight - this._titleRenderer.width;
+				this.titleTextRenderer.maxWidth = this.actualWidth - this._paddingRight - leftOffset;
+				this.titleTextRenderer.validate();
+				this.titleTextRenderer.x = this.actualWidth - this._paddingRight - this.titleTextRenderer.width;
 			}
 			else
 			{
 				const actualWidthMinusPadding:Number = this.actualWidth - this._paddingLeft - this._paddingRight;
 				const actualWidthMinusOffsets:Number = this.actualWidth - leftOffset - rightOffset;
-				this._titleRenderer.maxWidth = actualWidthMinusOffsets;
-				this._titleRenderer.validate();
-				const idealTitlePosition:Number = this._paddingLeft + (actualWidthMinusPadding - this._titleRenderer.width) / 2;
+				this.titleTextRenderer.maxWidth = actualWidthMinusOffsets;
+				this.titleTextRenderer.validate();
+				const idealTitlePosition:Number = this._paddingLeft + (actualWidthMinusPadding - this.titleTextRenderer.width) / 2;
 				if(leftOffset > idealTitlePosition ||
-					(idealTitlePosition + this._titleRenderer.width) > (this.actualWidth - rightOffset))
+					(idealTitlePosition + this.titleTextRenderer.width) > (this.actualWidth - rightOffset))
 				{
-					this._titleRenderer.x = leftOffset + (actualWidthMinusOffsets - this._titleRenderer.width) / 2;
+					this.titleTextRenderer.x = leftOffset + (actualWidthMinusOffsets - this.titleTextRenderer.width) / 2;
 				}
 				else
 				{
-					this._titleRenderer.x = idealTitlePosition;
+					this.titleTextRenderer.x = idealTitlePosition;
 				}
 			}
 			if(this._verticalAlign == VERTICAL_ALIGN_TOP)
 			{
-				this._titleRenderer.y = this._paddingTop;
+				this.titleTextRenderer.y = this._paddingTop;
 			}
 			else if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
 			{
-				this._titleRenderer.y = this.actualHeight - this._paddingBottom - this._titleRenderer.height;
+				this.titleTextRenderer.y = this.actualHeight - this._paddingBottom - this.titleTextRenderer.height;
 			}
 			else
 			{
-				this._titleRenderer.y = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - this._titleRenderer.height) / 2;
+				this.titleTextRenderer.y = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - this.titleTextRenderer.height) / 2;
 			}
 		}
 

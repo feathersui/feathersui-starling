@@ -142,6 +142,11 @@ package feathers.controls
 
 		/**
 		 * The thumb sub-component.
+		 *
+		 * <p>For internal use in subclasses.</p>
+		 *
+		 * @see #thumbFactory
+		 * @see #createThumb()
 		 */
 		protected var thumb:Button;
 
@@ -817,7 +822,6 @@ package feathers.controls
 		 */
 		override protected function draw():void
 		{
-			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
@@ -840,14 +844,24 @@ package feathers.controls
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
-			if(thumbFactoryInvalid || dataInvalid || stylesInvalid || sizeInvalid)
-			{
-				this.layout();
-			}
+			this.layout();
 		}
 
 		/**
-		 * @private
+		 * If the component's dimensions have not been set explicitly, it will
+		 * measure its content and determine an ideal size for itself. If the
+		 * <code>explicitWidth</code> or <code>explicitHeight</code> member
+		 * variables are set, those value will be used without additional
+		 * measurement. If one is set, but not the other, the dimension with the
+		 * explicit value will not be measured, but the other non-explicit
+		 * dimension will still need measurement.
+		 *
+		 * <p>Calls <code>setSizeInternal()</code> to set up the
+		 * <code>actualWidth</code> and <code>actualHeight</code> member
+		 * variables used for layout.</p>
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
@@ -926,7 +940,15 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * Creates and adds the <code>thumb</code> sub-component and
+		 * removes the old instance, if one exists.
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
+		 *
+		 * @see #thumb
+		 * @see #thumbFactory
+		 * @see #customThumbName
 		 */
 		protected function createThumb():void
 		{

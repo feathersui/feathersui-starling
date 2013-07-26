@@ -7,6 +7,10 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls.text
 {
+	import feathers.core.FeathersControl;
+	import feathers.core.ITextEditor;
+	import feathers.events.FeathersEventType;
+
 	import flash.display.BitmapData;
 	import flash.events.FocusEvent;
 	import flash.events.KeyboardEvent;
@@ -19,15 +23,12 @@ package feathers.controls.text
 	import flash.text.TextFieldType;
 	import flash.text.TextFormat;
 	import flash.ui.Keyboard;
-	
-	import feathers.core.FeathersControl;
-	import feathers.core.ITextEditor;
-	import feathers.events.FeathersEventType;
-	
+
 	import starling.core.RenderSupport;
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.events.Event;
+	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
 	import starling.utils.MatrixUtil;
 	import starling.utils.getNextPowerOfTwo;
@@ -57,6 +58,22 @@ package feathers.controls.text
 	 * @eventType feathers.events.FeathersEventType.FOCUS_OUT
 	 */
 	[Event(name="focusOut",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the soft keyboard is activated. Not all text editors will
+	 * activate a soft keyboard.
+	 *
+	 * @eventType feathers.events.FeathersEventType.SOFT_KEYBOARD_ACTIVATE
+	 */
+	[Event(name="softKeyboardActivate",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the soft keyboard is deactivated. Not all text editors
+	 * will activate a soft keyboard.
+	 *
+	 * @eventType feathers.events.FeathersEventType.SOFT_KEYBOARD_DEACTIVATE
+	 */
+	[Event(name="softKeyboardDectivate",type="starling.events.Event")]
 
 	/**
 	 * A Feathers text editor that uses the native <code>TextField</code> class
@@ -108,11 +125,6 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _textSnapshotBitmapData:BitmapData;
-
-		/**
-		 * @private
-		 */
 		protected var _oldGlobalX:Number = 0;
 
 		/**
@@ -148,7 +160,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _needsNewBitmap:Boolean = false;
+		protected var _needsNewTexture:Boolean = false;
 
 		/**
 		 * @private
@@ -670,7 +682,6 @@ package feathers.controls.text
 			this.textField.addEventListener(FocusEvent.FOCUS_IN, textField_focusInHandler);
 			this.textField.addEventListener(FocusEvent.FOCUS_OUT, textField_focusOutHandler);
 			this.textField.addEventListener(KeyboardEvent.KEY_DOWN, textField_keyDownHandler);
-			this.textField.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATING, textField_softKeyboardActivatingHandler);
 			this.textField.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATE, textField_softKeyboardActivateHandler);
 			this.textField.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_DEACTIVATE, textField_softKeyboardDeactivateHandler);
 
@@ -711,7 +722,20 @@ package feathers.controls.text
 		}
 
 		/**
-		 * @private
+		 * If the component's dimensions have not been set explicitly, it will
+		 * measure its content and determine an ideal size for itself. If the
+		 * <code>explicitWidth</code> or <code>explicitHeight</code> member
+		 * variables are set, those value will be used without additional
+		 * measurement. If one is set, but not the other, the dimension with the
+		 * explicit value will not be measured, but the other non-explicit
+		 * dimension will still need measurement.
+		 *
+		 * <p>Calls <code>setSizeInternal()</code> to set up the
+		 * <code>actualWidth</code> and <code>actualHeight</code> member
+		 * variables used for layout.</p>
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
@@ -827,15 +851,11 @@ package feathers.controls.text
 
 			this.checkIfNewSnapshotIsNeeded();
 
-			if(!this._textFieldHasFocus && (stylesInvalid || dataInvalid || this._needsNewBitmap))
+			if(!this._textFieldHasFocus && (stylesInvalid || dataInvalid || this._needsNewTexture))
 			{
-				const hasText:Boolean = this._text.length > 0;
-				if(hasText)
-				{
-					//we need to wait a frame for the TextField to render
-					//properly. sometimes two, and this is a known issue.
-					this.addEventListener(Event.ENTER_FRAME, enterFrameHandler);
-				}
+				//we need to wait a frame for the flash.text.TextField to render
+				//properly. sometimes two, and this is a known issue.
+				this.addEventListener(Event.ENTER_FRAME, enterFrameHandler);
 			}
 			this.doPendingActions();
 		}
@@ -893,7 +913,8 @@ package feathers.controls.text
 		{
 			this._snapshotWidth = getNextPowerOfTwo(this._textFieldClipRect.width * Starling.contentScaleFactor);
 			this._snapshotHeight = getNextPowerOfTwo(this._textFieldClipRect.height * Starling.contentScaleFactor);
-			this._needsNewBitmap = this._needsNewBitmap || !this._textSnapshotBitmapData || this._snapshotWidth != this._textSnapshotBitmapData.width || this._snapshotHeight != this._textSnapshotBitmapData.height;
+			const textureRoot:ConcreteTexture = this.textSnapshot ? this.textSnapshot.texture.root : null;
+			this._needsNewTexture = this._needsNewTexture || !this.textSnapshot || this._snapshotWidth != textureRoot.width || this._snapshotHeight != textureRoot.height;
 		}
 
 		/**
@@ -934,27 +955,16 @@ package feathers.controls.text
 			{
 				return;
 			}
-			if(this._needsNewBitmap || !this._textSnapshotBitmapData)
-			{
-				if(this._textSnapshotBitmapData)
-				{
-					this._textSnapshotBitmapData.dispose();
-				}
-				this._textSnapshotBitmapData = new BitmapData(this._snapshotWidth, this._snapshotHeight, true, 0x00ff00ff);
-			}
-			if(!this._textSnapshotBitmapData)
-			{
-				return;
-			}
 			HELPER_MATRIX.identity();
 			HELPER_MATRIX.translate(this._textFieldOffsetX, this._textFieldOffsetY);
 			HELPER_MATRIX.scale(Starling.contentScaleFactor, Starling.contentScaleFactor);
-			this._textSnapshotBitmapData.fillRect(this._textSnapshotBitmapData.rect, 0x00ff00ff);
-			this._textSnapshotBitmapData.draw(this.textField, HELPER_MATRIX, null, null, this._textFieldClipRect);
+			var bitmapData:BitmapData = new BitmapData(this._snapshotWidth, this._snapshotHeight, true, 0x00ff00ff);
+			bitmapData.fillRect(bitmapData.rect, 0x00ff00ff);
+			bitmapData.draw(this.textField, HELPER_MATRIX, null, null, this._textFieldClipRect);
 			var newTexture:Texture;
-			if(!this.textSnapshot || this._needsNewBitmap)
+			if(!this.textSnapshot || this._needsNewTexture)
 			{
-				newTexture = Texture.fromBitmapData(this._textSnapshotBitmapData, false, false, Starling.contentScaleFactor);
+				newTexture = Texture.fromBitmapData(bitmapData, false, false, Starling.contentScaleFactor);
 				newTexture.root.onRestore = texture_onRestore;
 			}
 			if(!this.textSnapshot)
@@ -964,7 +974,7 @@ package feathers.controls.text
 			}
 			else
 			{
-				if(this._needsNewBitmap)
+				if(this._needsNewTexture)
 				{
 					this.textSnapshot.texture.dispose();
 					this.textSnapshot.texture = newTexture;
@@ -974,10 +984,11 @@ package feathers.controls.text
 				{
 					//this is faster, if we haven't resized the bitmapdata
 					const existingTexture:Texture = this.textSnapshot.texture;
-					existingTexture.root.uploadBitmapData(this._textSnapshotBitmapData);
+					existingTexture.root.uploadBitmapData(bitmapData);
 				}
 			}
-			this._needsNewBitmap = false;
+			bitmapData.dispose();
+			this._needsNewTexture = false;
 		}
 
 		/**
@@ -985,12 +996,6 @@ package feathers.controls.text
 		 */
 		protected function disposeContent():void
 		{
-			if(this._textSnapshotBitmapData)
-			{
-				this._textSnapshotBitmapData.dispose();
-				this._textSnapshotBitmapData = null;
-			}
-
 			if(this.textSnapshot)
 			{
 				//avoid the need to call dispose(). we'll create a new snapshot
@@ -1029,11 +1034,11 @@ package feathers.controls.text
 		protected function enterFrameHandler(event:Event):void
 		{
 			this.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
+			this.refreshSnapshot();
 			if(this.textSnapshot)
 			{
 				this.textSnapshot.visible = this._text.length > 0;
 			}
-			this.refreshSnapshot();
 		}
 
 		/**
@@ -1085,27 +1090,21 @@ package feathers.controls.text
 				this.dispatchEventWith(FeathersEventType.ENTER);
 			}
 		}
-		
+
 		/**
 		 * @private
 		 */
-		protected function textField_softKeyboardActivatingHandler(event:SoftKeyboardEvent):void {
-			this.dispatchEventWith(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATING);
+		protected function textField_softKeyboardActivateHandler(event:SoftKeyboardEvent):void
+		{
+			this.dispatchEventWith(FeathersEventType.SOFT_KEYBOARD_ACTIVATE, true);
 		}
-		
+
 		/**
 		 * @private
 		 */
-		protected function textField_softKeyboardActivateHandler(event:SoftKeyboardEvent):void {
-			this.dispatchEventWith(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATE);
+		protected function textField_softKeyboardDeactivateHandler(event:SoftKeyboardEvent):void
+		{
+			this.dispatchEventWith(FeathersEventType.SOFT_KEYBOARD_DEACTIVATE, true);
 		}
-		
-		/**
-		 * @private
-		 */
-		protected function textField_softKeyboardDeactivateHandler(event:SoftKeyboardEvent):void {
-			this.dispatchEventWith(SoftKeyboardEvent.SOFT_KEYBOARD_DEACTIVATE);
-		}
-		
 	}
 }

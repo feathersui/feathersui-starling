@@ -301,6 +301,13 @@ package feathers.controls
 		public static const INTERACTION_MODE_MOUSE:String = "mouse";
 
 		/**
+		 * @copy feathers.controls.Scroller#INTERACTION_MODE_TOUCH_AND_SCROLL_BARS
+		 *
+		 * @see feathers.controls.Scroller#interactionMode
+		 */
+		public static const INTERACTION_MODE_TOUCH_AND_SCROLL_BARS:String = "touchAndScrollBars";
+
+		/**
 		 * Constructor.
 		 */
 		public function GroupedList()
@@ -2270,16 +2277,25 @@ package feathers.controls
 					this.pendingGroupIndex = -1;
 					this.pendingItemIndex = -1;
 
-					if(this.pendingScrollDuration > 0)
+					var targetHorizontalScrollPosition:Number = HELPER_POINT.x;
+					if(targetHorizontalScrollPosition < this._minHorizontalScrollPosition)
 					{
-						this.throwTo(Math.max(0, Math.min(HELPER_POINT.x, this._maxHorizontalScrollPosition)),
-							Math.max(0, Math.min(HELPER_POINT.y, this._maxVerticalScrollPosition)), this.pendingScrollDuration);
+						targetHorizontalScrollPosition = this._minHorizontalScrollPosition;
 					}
-					else
+					else if(targetHorizontalScrollPosition > this._maxHorizontalScrollPosition)
 					{
-						this.horizontalScrollPosition = Math.max(0, Math.min(HELPER_POINT.x, this._maxHorizontalScrollPosition));
-						this.verticalScrollPosition = Math.max(0, Math.min(HELPER_POINT.y, this._maxVerticalScrollPosition));
+						targetHorizontalScrollPosition = this._maxHorizontalScrollPosition;
 					}
+					var targetVerticalScrollPosition:Number = HELPER_POINT.y;
+					if(targetVerticalScrollPosition < this._minVerticalScrollPosition)
+					{
+						targetVerticalScrollPosition = this._minVerticalScrollPosition;
+					}
+					else if(targetVerticalScrollPosition > this._maxVerticalScrollPosition)
+					{
+						targetVerticalScrollPosition = this._maxVerticalScrollPosition;
+					}
+					this.throwTo(targetHorizontalScrollPosition, targetVerticalScrollPosition, this.pendingScrollDuration);
 				}
 			}
 			super.handlePendingScroll();

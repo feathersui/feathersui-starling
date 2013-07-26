@@ -36,6 +36,22 @@ package feathers.core
 	[Event(name="focusOut",type="starling.events.Event")]
 
 	/**
+	 * Dispatched when the soft keyboard is activated. Not all text editors will
+	 * activate a soft keyboard.
+	 *
+	 * @eventType feathers.events.FeathersEventType.SOFT_KEYBOARD_ACTIVATE
+	 */
+	[Event(name="softKeyboardActivate",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the soft keyboard is deactivated. Not all text editors
+	 * will activate a soft keyboard.
+	 *
+	 * @eventType feathers.events.FeathersEventType.SOFT_KEYBOARD_DEACTIVATE
+	 */
+	[Event(name="softKeyboardDectivate",type="starling.events.Event")]
+
+	/**
 	 * Handles the editing of text.
 	 *
 	 * @see feathers.controls.TextInput

@@ -201,16 +201,28 @@ package feathers.controls
 
 		/**
 		 * The decrement button sub-component.
+		 *
+		 * <p>For internal use in subclasses.</p>
+		 *
+		 * @see #createDecrementButton()
 		 */
 		protected var decrementButton:Button;
 
 		/**
 		 * The increment button sub-component.
+		 *
+		 * <p>For internal use in subclasses.</p>
+		 *
+		 * @see #createIncrementButton()
 		 */
 		protected var incrementButton:Button;
 
 		/**
 		 * The text input sub-component.
+		 *
+		 * <p>For internal use in subclasses.</p>
+		 *
+		 * @see #createTextInput()
 		 */
 		protected var textInput:TextInput;
 
@@ -1146,7 +1158,20 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * If the component's dimensions have not been set explicitly, it will
+		 * measure its content and determine an ideal size for itself. If the
+		 * <code>explicitWidth</code> or <code>explicitHeight</code> member
+		 * variables are set, those value will be used without additional
+		 * measurement. If one is set, but not the other, the dimension with the
+		 * explicit value will not be measured, but the other non-explicit
+		 * dimension will still need measurement.
+		 *
+		 * <p>Calls <code>setSizeInternal()</code> to set up the
+		 * <code>actualWidth</code> and <code>actualHeight</code> member
+		 * variables used for layout.</p>
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
@@ -1239,7 +1264,15 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * Creates and adds the <code>decrementButton</code> sub-component and
+		 * removes the old instance, if one exists.
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
+		 *
+		 * @see #decrementButton
+		 * @see #decrementButtonFactory
+		 * @see #customDecrementButtonName
 		 */
 		protected function createDecrementButton():void
 		{
@@ -1258,7 +1291,15 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * Creates and adds the <code>incrementButton</code> sub-component and
+		 * removes the old instance, if one exists.
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
+		 *
+		 * @see #incrementButton
+		 * @see #incrementButtonFactory
+		 * @see #customIncrementButtonName
 		 */
 		protected function createIncrementButton():void
 		{
@@ -1277,7 +1318,15 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * Creates and adds the <code>textInput</code> sub-component and
+		 * removes the old instance, if one exists.
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
+		 *
+		 * @see #textInput
+		 * @see #textInputFactory
+		 * @see #customTextInputName
 		 */
 		protected function createTextInput():void
 		{

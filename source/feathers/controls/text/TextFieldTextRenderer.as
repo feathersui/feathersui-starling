@@ -24,6 +24,7 @@ package feathers.controls.text
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.events.Event;
+	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
 	import starling.utils.getNextPowerOfTwo;
 
@@ -70,11 +71,6 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _textSnapshotBitmapData:BitmapData;
-
-		/**
-		 * @private
-		 */
 		protected var _previousTextFieldWidth:Number = NaN;
 
 		/**
@@ -95,7 +91,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _needsNewBitmap:Boolean = false;
+		protected var _needsNewTexture:Boolean = false;
 
 		/**
 		 * @private
@@ -822,13 +818,14 @@ package feathers.controls.text
 				this.textField.height = this.actualHeight;
 				this._snapshotWidth = getNextPowerOfTwo(this.actualWidth * Starling.contentScaleFactor);
 				this._snapshotHeight = getNextPowerOfTwo(this.actualHeight * Starling.contentScaleFactor);
-				this._needsNewBitmap = this._needsNewBitmap || !this.textSnapshot || !this._textSnapshotBitmapData || this._snapshotWidth != this._textSnapshotBitmapData.width || this._snapshotHeight != this._textSnapshotBitmapData.height;
+				const textureRoot:ConcreteTexture = this.textSnapshot ? this.textSnapshot.texture.root : null;
+				this._needsNewTexture = this._needsNewTexture || !this.textSnapshot || this._snapshotWidth != textureRoot.width || this._snapshotHeight != textureRoot.height;
 			}
 
 			//instead of checking sizeInvalid, which will often be triggered by
 			//changing maxWidth or something for measurement, we check against
 			//the previous actualWidth/Height used for the snapshot.
-			if(stylesInvalid || dataInvalid || this._needsNewBitmap ||
+			if(stylesInvalid || dataInvalid || this._needsNewTexture ||
 				this.actualWidth != this._previousTextFieldWidth ||
 				this.actualHeight != this._previousTextFieldHeight)
 			{
@@ -849,7 +846,20 @@ package feathers.controls.text
 		}
 
 		/**
-		 * @private
+		 * If the component's dimensions have not been set explicitly, it will
+		 * measure its content and determine an ideal size for itself. If the
+		 * <code>explicitWidth</code> or <code>explicitHeight</code> member
+		 * variables are set, those value will be used without additional
+		 * measurement. If one is set, but not the other, the dimension with the
+		 * explicit value will not be measured, but the other non-explicit
+		 * dimension will still need measurement.
+		 *
+		 * <p>Calls <code>setSizeInternal()</code> to set up the
+		 * <code>actualWidth</code> and <code>actualHeight</code> member
+		 * variables used for layout.</p>
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
@@ -881,26 +891,15 @@ package feathers.controls.text
 			{
 				return;
 			}
-			if(this._needsNewBitmap || !this._textSnapshotBitmapData)
-			{
-				if(this._textSnapshotBitmapData)
-				{
-					this._textSnapshotBitmapData.dispose();
-				}
-				this._textSnapshotBitmapData = new BitmapData(this._snapshotWidth, this._snapshotHeight, true, 0x00ff00ff);
-			}
-			if(!this._textSnapshotBitmapData)
-			{
-				return;
-			}
 			HELPER_MATRIX.identity();
 			HELPER_MATRIX.scale(Starling.contentScaleFactor, Starling.contentScaleFactor);
-			this._textSnapshotBitmapData.fillRect(this._textSnapshotBitmapData.rect, 0x00ff00ff);
-			this._textSnapshotBitmapData.draw(this.textField, HELPER_MATRIX);
+			var bitmapData:BitmapData = new BitmapData(this._snapshotWidth, this._snapshotHeight, true, 0x00ff00ff);
+			bitmapData.fillRect(bitmapData.rect, 0x00ff00ff);
+			bitmapData.draw(this.textField, HELPER_MATRIX);
 			var newTexture:Texture;
-			if(!this.textSnapshot || this._needsNewBitmap)
+			if(!this.textSnapshot || this._needsNewTexture)
 			{
-				newTexture = Texture.fromBitmapData(this._textSnapshotBitmapData, false, false, Starling.contentScaleFactor);
+				newTexture = Texture.fromBitmapData(bitmapData, false, false, Starling.contentScaleFactor);
 				newTexture.root.onRestore = texture_onRestore;
 			}
 			if(!this.textSnapshot)
@@ -910,7 +909,7 @@ package feathers.controls.text
 			}
 			else
 			{
-				if(this._needsNewBitmap)
+				if(this._needsNewTexture)
 				{
 					this.textSnapshot.texture.dispose();
 					this.textSnapshot.texture = newTexture;
@@ -920,10 +919,11 @@ package feathers.controls.text
 				{
 					//this is faster, if we haven't resized the bitmapdata
 					const existingTexture:Texture = this.textSnapshot.texture;
-					existingTexture.root.uploadBitmapData(this._textSnapshotBitmapData);
+					existingTexture.root.uploadBitmapData(bitmapData);
 				}
 			}
-			this._needsNewBitmap = false;
+			bitmapData.dispose();
+			this._needsNewTexture = false;
 		}
 
 		/**
@@ -931,12 +931,6 @@ package feathers.controls.text
 		 */
 		protected function disposeContent():void
 		{
-			if(this._textSnapshotBitmapData)
-			{
-				this._textSnapshotBitmapData.dispose();
-				this._textSnapshotBitmapData = null;
-			}
-
 			if(this.textSnapshot)
 			{
 				//avoid the need to call dispose(). we'll create a new snapshot
@@ -949,7 +943,7 @@ package feathers.controls.text
 			this._previousTextFieldWidth = NaN;
 			this._previousTextFieldHeight = NaN;
 
-			this._needsNewBitmap = false;
+			this._needsNewTexture = false;
 			this._snapshotWidth = 0;
 			this._snapshotHeight = 0;
 		}

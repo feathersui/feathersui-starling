@@ -1000,6 +1000,22 @@ package feathers.controls
 		}
 
 		/**
+		 * @private
+		 */
+		override public function set visible(value:Boolean):void
+		{
+			if(!value)
+			{
+				this._isWaitingToSetFocus = false;
+				if(this._textEditorHasFocus)
+				{
+					this.textEditor.clearFocus();
+				}
+			}
+			super.visible = value;
+		}
+
+		/**
 		 * @inheritDoc
 		 */
 		override public function showFocus():void
@@ -1017,7 +1033,7 @@ package feathers.controls
 		 */
 		public function setFocus():void
 		{
-			if(this._textEditorHasFocus)
+			if(this._textEditorHasFocus || !this.visible)
 			{
 				return;
 			}
@@ -1109,9 +1125,9 @@ package feathers.controls
 				this._ignoreTextChanges = oldIgnoreTextChanges;
 			}
 
-			if(promptFactoryInvalid || dataInvalid)
+			if(promptFactoryInvalid || dataInvalid || stylesInvalid)
 			{
-				this.promptTextRenderer.visible = this._prompt && !this._text;
+				this.promptTextRenderer.visible = this._prompt && this._text.length == 0;
 			}
 
 			if(textEditorInvalid || stateInvalid)
@@ -1145,7 +1161,20 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * If the component's dimensions have not been set explicitly, it will
+		 * measure its content and determine an ideal size for itself. If the
+		 * <code>explicitWidth</code> or <code>explicitHeight</code> member
+		 * variables are set, those value will be used without additional
+		 * measurement. If one is set, but not the other, the dimension with the
+		 * explicit value will not be measured, but the other non-explicit
+		 * dimension will still need measurement.
+		 *
+		 * <p>Calls <code>setSizeInternal()</code> to set up the
+		 * <code>actualWidth</code> and <code>actualHeight</code> member
+		 * variables used for layout.</p>
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
@@ -1199,7 +1228,14 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * Creates and adds the <code>textEditor</code> sub-component and
+		 * removes the old instance, if one exists.
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
+		 *
+		 * @see #textEditor
+		 * @see #textEditorFactory
 		 */
 		protected function createTextEditor():void
 		{
@@ -1532,8 +1568,13 @@ package feathers.controls
 		 */
 		protected function textEditor_focusInHandler(event:Event):void
 		{
-			this._textEditorHasFocus = true;
 			this._touchPointID = -1;
+			if(!this.visible)
+			{
+				this.textEditor.clearFocus();
+				return;
+			}
+			this._textEditorHasFocus = true;
 			this.invalidate(INVALIDATION_FLAG_STATE);
 			if(this._focusManager)
 			{
