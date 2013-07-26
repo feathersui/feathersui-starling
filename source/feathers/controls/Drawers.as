@@ -1968,25 +1968,35 @@ package feathers.controls
 				contentHeight -= bottomDrawerHeight;
 			}
 
-			if(isLeftDrawerOpen || isLeftDrawerDocked)
+			if(isRightDrawerOpen)
+			{
+				var contentX:Number = -rightDrawerWidth;
+				if(isLeftDrawerDocked)
+				{
+					contentX += leftDrawerWidth;
+				}
+				this._content.x = contentX;
+			}
+			else if(isLeftDrawerOpen || isLeftDrawerDocked)
 			{
 				this._content.x = leftDrawerWidth;
-			}
-			else if(isRightDrawerOpen)
-			{
-				this._content.x = -rightDrawerWidth;
 			}
 			else
 			{
 				this._content.x = 0;
 			}
-			if(isTopDrawerOpen || isTopDrawerDocked)
+			if(isBottomDrawerOpen)
+			{
+				var contentY:Number = -bottomDrawerHeight;
+				if(isTopDrawerDocked)
+				{
+					contentY += topDrawerHeight;
+				}
+				this._content.y = contentY;
+			}
+			else if(isTopDrawerOpen || isTopDrawerDocked)
 			{
 				this._content.y = topDrawerHeight;
-			}
-			else if(isBottomDrawerOpen)
-			{
-				this._content.y = -bottomDrawerHeight;
 			}
 			else
 			{
@@ -2000,8 +2010,21 @@ package feathers.controls
 
 			if(this._topDrawer)
 			{
-				this._topDrawer.x = 0;
-				this._topDrawer.y = 0;
+				var topDrawerX:Number = 0;
+				var topDrawerY:Number = 0;
+				if(isTopDrawerDocked)
+				{
+					if(isBottomDrawerOpen)
+					{
+						topDrawerY -= bottomDrawerHeight;
+					}
+					if(!isLeftDrawerDocked)
+					{
+						topDrawerX = this._content.x;
+					}
+				}
+				this._topDrawer.x = topDrawerX;
+				this._topDrawer.y = topDrawerY;
 				this._topDrawer.width = this.actualWidth;
 				this._topDrawer.visible = isTopDrawerOpen || isTopDrawerDocked;
 			}
@@ -2009,14 +2032,33 @@ package feathers.controls
 			if(this._rightDrawer)
 			{
 				this._rightDrawer.x = this.actualWidth - rightDrawerWidth;
-				this._rightDrawer.y = 0;
-				this._rightDrawer.height = this.actualHeight;
+				var rightDrawerY:Number = 0;
+				var rightDrawerHeight:Number = this.actualHeight;
+				if(isRightDrawerDocked)
+				{
+					if(isTopDrawerDocked)
+					{
+						rightDrawerHeight -= topDrawerHeight;
+					}
+					if(isBottomDrawerDocked)
+					{
+						rightDrawerHeight -= bottomDrawerHeight;
+					}
+					rightDrawerY = this._content.y;
+				}
+				this._rightDrawer.y = rightDrawerY;
+				this._rightDrawer.height = rightDrawerHeight;
 				this._rightDrawer.visible = isRightDrawerOpen || isRightDrawerDocked;
 			}
 
 			if(this._bottomDrawer)
 			{
-				this._bottomDrawer.x = 0;
+				var bottomDrawerX:Number = 0;
+				if(isBottomDrawerDocked && !isLeftDrawerDocked)
+				{
+					bottomDrawerX = this._content.x;
+				}
+				this._bottomDrawer.x = bottomDrawerX;
 				this._bottomDrawer.y = this.actualHeight - bottomDrawerHeight;
 				this._bottomDrawer.width = this.actualWidth;
 				this._bottomDrawer.visible = isBottomDrawerOpen || isBottomDrawerDocked;
@@ -2024,9 +2066,28 @@ package feathers.controls
 
 			if(this._leftDrawer)
 			{
-				this._leftDrawer.x = 0;
-				this._leftDrawer.y = 0;
-				this._leftDrawer.height = this.actualHeight;
+				var leftDrawerX:Number = 0;
+				var leftDrawerY:Number = 0;
+				var leftDrawerHeight:Number = this.actualHeight;
+				if(isLeftDrawerDocked)
+				{
+					if(isRightDrawerOpen)
+					{
+						leftDrawerX -= rightDrawerWidth;
+					}
+					if(isTopDrawerDocked)
+					{
+						leftDrawerHeight -= topDrawerHeight;
+					}
+					if(isBottomDrawerDocked)
+					{
+						leftDrawerHeight -= bottomDrawerHeight;
+					}
+					leftDrawerY = this._content.y;
+				}
+				this._leftDrawer.x = leftDrawerX;
+				this._leftDrawer.y = leftDrawerY;
+				this._leftDrawer.height = leftDrawerHeight;
 				this._leftDrawer.visible = isLeftDrawerOpen || isLeftDrawerDocked;
 			}
 		}
@@ -2104,7 +2165,15 @@ package feathers.controls
 			}
 			this.applyRightClipRect();
 			this._rightDrawer.visible = true;
-			var targetPosition:Number = this._isRightDrawerOpen ? -this._rightDrawer.width : 0;
+			var targetPosition:Number = 0;
+			if(this._isRightDrawerOpen)
+			{
+				targetPosition = -this._rightDrawer.width
+			}
+			if(this.isLeftDrawerDocked)
+			{
+				targetPosition += this._leftDrawer.width;
+			}
 			this._openOrCloseTween = new Tween(this._content, this._openOrCloseDuration, this._openOrCloseEase);
 			this._openOrCloseTween.animate("x", targetPosition);
 			this._openOrCloseTween.onUpdate = openOrCloseTween_onUpdate;
@@ -2129,7 +2198,15 @@ package feathers.controls
 			}
 			this.applyBottomClipRect();
 			this._bottomDrawer.visible = true;
-			var targetPosition:Number = this._isBottomDrawerOpen ? -this._bottomDrawer.height : 0;
+			var targetPosition:Number = 0;
+			if(this._isBottomDrawerOpen)
+			{
+				targetPosition = -this._bottomDrawer.height;
+			}
+			if(this.isTopDrawerDocked)
+			{
+				targetPosition += this._topDrawer.height;
+			}
 			this._openOrCloseTween = new Tween(this._content, this._openOrCloseDuration, this._openOrCloseEase);
 			this._openOrCloseTween.animate("y", targetPosition);
 			this._openOrCloseTween.onUpdate = openOrCloseTween_onUpdate;
@@ -2327,23 +2404,49 @@ package feathers.controls
 				}
 				if(this._openGesture == OPEN_GESTURE_DRAG_CONTENT_EDGE)
 				{
-					var topInches:Number = localY / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
-					if(this._topDrawer && (topInches < 0 || topInches > this._openGestureEdgeSize))
+					var isNearAnyEdge:Boolean = false;
+					if(this._topDrawer && !this.isTopDrawerDocked)
 					{
-						return;
+						var topInches:Number = localY / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
+						if(topInches >= 0 && topInches <= this._openGestureEdgeSize)
+						{
+							isNearAnyEdge = true;
+						}
 					}
-					var rightInches:Number = (this.actualWidth - localX) / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
-					if(this._rightDrawer && (rightInches < 0 || rightInches > this._openGestureEdgeSize))
+					if(!isNearAnyEdge)
 					{
-						return;
+						if(this._rightDrawer && !this.isRightDrawerDocked)
+						{
+							var rightInches:Number = (this.actualWidth - localX) / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
+							if(rightInches >= 0 && rightInches <= this._openGestureEdgeSize)
+							{
+								isNearAnyEdge = true;
+							}
+						}
+						if(!isNearAnyEdge)
+						{
+							if(this._bottomDrawer && !this.isBottomDrawerDocked)
+							{
+								var bottomInches:Number = (this.actualHeight - localY) / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
+								if(bottomInches >= 0 && bottomInches <= this._openGestureEdgeSize)
+								{
+									isNearAnyEdge = true;
+								}
+							}
+							if(!isNearAnyEdge)
+							{
+								if(this._leftDrawer && !this.isLeftDrawerDocked)
+								{
+									var leftInches:Number = localX / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
+									if(leftInches >= 0 && leftInches <= this._openGestureEdgeSize)
+									{
+										isNearAnyEdge = true;
+									}
+								}
+							}
+						}
 					}
-					var bottomInches:Number = (this.actualHeight - localY) / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
-					if(this._bottomDrawer && (bottomInches < 0 || bottomInches > this._openGestureEdgeSize))
-					{
-						return;
-					}
-					var leftInches:Number = localX / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
-					if(this._leftDrawer && (leftInches < 0 || leftInches > this._openGestureEdgeSize))
+					if(!isNearAnyEdge)
 					{
 						return;
 					}
@@ -2455,7 +2558,12 @@ package feathers.controls
 				}
 				else
 				{
-					this._isRightDrawerOpen = roundToNearest(this._content.x, this._rightDrawer.width) != 0;
+					var positionToCheck:Number = 0;
+					if(this.isLeftDrawerDocked)
+					{
+						positionToCheck = this._leftDrawer.width;
+					}
+					this._isRightDrawerOpen = roundToNearest(this._content.x, this._rightDrawer.width) != positionToCheck;
 				}
 				this.openOrCloseRightDrawer();
 			}
@@ -2472,7 +2580,12 @@ package feathers.controls
 				}
 				else
 				{
-					this._isBottomDrawerOpen = roundToNearest(this._content.y, this._bottomDrawer.height) != 0;
+					positionToCheck = 0;
+					if(this.isTopDrawerDocked)
+					{
+						positionToCheck = this._topDrawer.height;
+					}
+					this._isBottomDrawerOpen = roundToNearest(this._content.y, this._bottomDrawer.height) != positionToCheck;
 				}
 				this.openOrCloseBottomDrawer();
 			}
@@ -2502,6 +2615,14 @@ package feathers.controls
 		{
 			var contentX:Number = 0;
 			var contentY:Number = 0;
+			if(this.isLeftDrawerDocked)
+			{
+				contentX = this._leftDrawer.width;
+			}
+			if(this.isTopDrawerDocked)
+			{
+				contentY = this._topDrawer.height;
+			}
 			if(this._isDraggingLeftDrawer)
 			{
 				var leftDrawerWidth:Number = this._leftDrawer.width;
@@ -2540,6 +2661,10 @@ package feathers.controls
 				if(contentX > 0)
 				{
 					contentX = 0;
+				}
+				if(this.isLeftDrawerDocked)
+				{
+					contentX += this._leftDrawer.width;
 				}
 			}
 			else if(this._isDraggingTopDrawer)
@@ -2581,6 +2706,10 @@ package feathers.controls
 				if(contentY > 0)
 				{
 					contentY = 0;
+				}
+				if(this.isTopDrawerDocked)
+				{
+					contentY += this._topDrawer.height;
 				}
 			}
 			this._content.x = contentX;
@@ -2675,6 +2804,10 @@ package feathers.controls
 			{
 				return;
 			}
+			var isTopDrawerDocked:Boolean = this.isTopDrawerDocked;
+			var isRightDrawerDocked:Boolean = this.isRightDrawerDocked;
+			var isBottomDrawerDocked:Boolean = this.isBottomDrawerDocked;
+			var isLeftDrawerDocked:Boolean = this.isLeftDrawerDocked;
 			if(this._topDrawer is Sprite)
 			{
 				var sprite:Sprite = Sprite(this._topDrawer);
@@ -2691,6 +2824,10 @@ package feathers.controls
 				if(clipRect)
 				{
 					var rightClipWidth:Number = -this._content.x;
+					if(isLeftDrawerDocked)
+					{
+						rightClipWidth += this.leftDrawer.width;
+					}
 					clipRect.x = this._rightDrawer.width - rightClipWidth;
 					clipRect.width = rightClipWidth;
 				}
@@ -2702,6 +2839,10 @@ package feathers.controls
 				if(clipRect)
 				{
 					var bottomClipHeight:Number = -this._content.y;
+					if(isTopDrawerDocked)
+					{
+						bottomClipHeight += this.topDrawer.height;
+					}
 					clipRect.y = this._bottomDrawer.height - bottomClipHeight;
 					clipRect.height = bottomClipHeight;
 				}
@@ -2714,6 +2855,40 @@ package feathers.controls
 				{
 					clipRect.width = this._content.x;
 				}
+			}
+			var contentX:Number = this._content.x;
+			var contentY:Number = this._content.y;
+			if(isTopDrawerDocked)
+			{
+				if(isLeftDrawerDocked)
+				{
+					this._topDrawer.x = contentX - this._leftDrawer.width;
+				}
+				else
+				{
+					this._topDrawer.x = contentX;
+				}
+				this._topDrawer.y = contentY - this._topDrawer.height;
+			}
+			if(isRightDrawerDocked)
+			{
+				this._rightDrawer.y = contentY;
+			}
+			if(isBottomDrawerDocked)
+			{
+				if(isLeftDrawerDocked)
+				{
+					this._bottomDrawer.x = contentX - this._leftDrawer.width;
+				}
+				else
+				{
+					this._bottomDrawer.x = contentX;
+				}
+			}
+			if(isLeftDrawerDocked)
+			{
+				this._leftDrawer.x = contentX - this._leftDrawer.width;
+				this._leftDrawer.y = contentY;
 			}
 		}
 
