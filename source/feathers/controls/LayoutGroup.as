@@ -177,7 +177,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _clipContent:Boolean = true;
+		protected var _clipContent:Boolean = false;
 
 		/**
 		 * If true, the group will be clipped to its bounds. In other words,
