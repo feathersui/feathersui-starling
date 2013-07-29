@@ -68,8 +68,12 @@ package feathers.examples.layoutExplorer.screens
 			this._list.itemRendererFactory = function():IListItemRenderer
 			{
 				var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
-				renderer.labelField = "text";
+
+				//enable the quick hit area to optimize hit tests when an item
+				//is only selectable and doesn't have interactive children.
 				renderer.isQuickHitAreaEnabled = true;
+
+				renderer.labelField = "text";
 				renderer.accessorySourceFunction = itemRendererAccessorySourceFunction;
 				return renderer;
 			};
