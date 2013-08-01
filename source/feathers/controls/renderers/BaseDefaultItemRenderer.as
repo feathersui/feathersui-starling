@@ -1615,6 +1615,11 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		protected var _ignoreAccessoryResizes:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			this.replaceIcon(null);
@@ -1805,6 +1810,8 @@ package feathers.controls.renderers
 			{
 				return false;
 			}
+			const oldIgnoreAccessoryResizes:Boolean = this._ignoreAccessoryResizes;
+			this._ignoreAccessoryResizes = true;
 			this.refreshMaxLabelWidth(true);
 			this.labelTextRenderer.measureText(HELPER_POINT);
 			if(this.accessory is IFeathersControl)
@@ -1880,6 +1887,7 @@ package feathers.controls.renderers
 					newHeight = 0;
 				}
 			}
+			this._ignoreAccessoryResizes = oldIgnoreAccessoryResizes;
 
 			return this.setSizeInternal(newWidth, newHeight, false);
 		}
@@ -2200,6 +2208,8 @@ package feathers.controls.renderers
 		 */
 		override protected function layoutContent():void
 		{
+			const oldIgnoreAccessoryResizes:Boolean = this._ignoreAccessoryResizes;
+			this._ignoreAccessoryResizes = true;
 			this.refreshMaxLabelWidth(false);
 			if(this._label)
 			{
@@ -2293,6 +2303,7 @@ package feathers.controls.renderers
 				this.labelTextRenderer.x += this._labelOffsetX;
 				this.labelTextRenderer.y += this._labelOffsetY;
 			}
+			this._ignoreAccessoryResizes = oldIgnoreAccessoryResizes;
 		}
 
 		/**
@@ -2681,6 +2692,10 @@ package feathers.controls.renderers
 		 */
 		protected function accessory_resizeHandler(event:Event):void
 		{
+			if(this._ignoreAccessoryResizes)
+			{
+				return;
+			}
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
