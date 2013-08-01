@@ -1662,6 +1662,10 @@ package feathers.controls
 			var result:DisplayObject = super.hitTest(localPoint, forTouch);
 			if(result)
 			{
+				if(!forTouch)
+				{
+					return result;
+				}
 				if(this._isDragging)
 				{
 					return this;
@@ -2450,6 +2454,23 @@ package feathers.controls
 					{
 						return;
 					}
+				}
+			}
+			else //a drawer is open, let's only work with touches over the content
+			{
+				//not testing for touch because we just want to know if we're
+				//over the content or one of its children.
+				var hitTarget:DisplayObject = this.hitTest(touch.getLocation(this), false);
+				if(this._content is DisplayObjectContainer)
+				{
+					if(!DisplayObjectContainer(this._content).contains(hitTarget))
+					{
+						return;
+					}
+				}
+				else if(this._content != hitTarget)
+				{
+					return;
 				}
 			}
 
