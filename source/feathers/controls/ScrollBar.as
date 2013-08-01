@@ -1763,6 +1763,7 @@ package feathers.controls
 		 */
 		override protected function draw():void
 		{
+			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
@@ -1816,23 +1817,23 @@ package feathers.controls
 			}
 
 			const isEnabled:Boolean = this._isEnabled && this._maximum > this._minimum;
-			if(stateInvalid || thumbFactoryInvalid)
+			if(dataInvalid || stateInvalid || thumbFactoryInvalid)
 			{
 				this.thumb.isEnabled = isEnabled;
 			}
-			if(stateInvalid || minimumTrackFactoryInvalid)
+			if(dataInvalid || stateInvalid || minimumTrackFactoryInvalid)
 			{
 				this.minimumTrack.isEnabled = isEnabled;
 			}
-			if((stateInvalid || maximumTrackFactoryInvalid || layoutInvalid) && this.maximumTrack)
+			if((dataInvalid || stateInvalid || maximumTrackFactoryInvalid || layoutInvalid) && this.maximumTrack)
 			{
 				this.maximumTrack.isEnabled = isEnabled;
 			}
-			if(stateInvalid || decrementButtonFactoryInvalid)
+			if(dataInvalid || stateInvalid || decrementButtonFactoryInvalid)
 			{
 				this.decrementButton.isEnabled = isEnabled;
 			}
-			if(stateInvalid || incrementButtonFactoryInvalid)
+			if(dataInvalid || stateInvalid || incrementButtonFactoryInvalid)
 			{
 				this.incrementButton.isEnabled = isEnabled;
 			}

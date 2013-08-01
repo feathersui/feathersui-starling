@@ -822,6 +822,7 @@ package feathers.controls
 		 */
 		override protected function draw():void
 		{
+			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA)
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
@@ -837,9 +838,9 @@ package feathers.controls
 				this.refreshThumbStyles();
 			}
 
-			if(thumbFactoryInvalid || stateInvalid)
+			if(dataInvalid || thumbFactoryInvalid || stateInvalid)
 			{
-				this.thumb.isEnabled = this._isEnabled;
+				this.thumb.isEnabled = this._isEnabled && this._maximum > this._minimum;
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
