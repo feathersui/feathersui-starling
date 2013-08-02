@@ -959,7 +959,6 @@ package feathers.controls.text
 			HELPER_MATRIX.translate(this._textFieldOffsetX, this._textFieldOffsetY);
 			HELPER_MATRIX.scale(Starling.contentScaleFactor, Starling.contentScaleFactor);
 			var bitmapData:BitmapData = new BitmapData(this._snapshotWidth, this._snapshotHeight, true, 0x00ff00ff);
-			bitmapData.fillRect(bitmapData.rect, 0x00ff00ff);
 			bitmapData.draw(this.textField, HELPER_MATRIX, null, null, this._textFieldClipRect);
 			var newTexture:Texture;
 			if(!this.textSnapshot || this._needsNewTexture)
