@@ -61,16 +61,6 @@ package feathers.controls
 		protected static const INVALIDATION_FLAG_CLIPPING:String = "clipping";
 
 		/**
-		 * @private
-		 */
-		private static const HELPER_BOUNDS:ViewPortBounds = new ViewPortBounds();
-
-		/**
-		 * @private
-		 */
-		private static const HELPER_LAYOUT_RESULT:LayoutBoundsResult = new LayoutBoundsResult();
-
-		/**
 		 * Constructor.
 		 */
 		public function LayoutGroup()
@@ -81,6 +71,17 @@ package feathers.controls
 		 * The items added to the group.
 		 */
 		protected var items:Vector.<DisplayObject> = new <DisplayObject>[];
+
+		/**
+		 * The view port bounds result object passed to the layout. Its values
+		 * should be set in <code>refreshViewPortBounds()</code>.
+		 */
+		protected var viewPortBounds:ViewPortBounds = new ViewPortBounds();
+
+		/**
+		 * @private
+		 */
+		protected var _layoutResult:LayoutBoundsResult = new LayoutBoundsResult();
 
 		/**
 		 * @private
@@ -292,51 +293,22 @@ package feathers.controls
 			const layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const clippingInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_CLIPPING);
+			//we don't have scrolling, but a subclass might
+			const scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
 
-			if(sizeInvalid || layoutInvalid)
+			if(scrollInvalid || sizeInvalid || layoutInvalid)
 			{
-				HELPER_BOUNDS.x = HELPER_BOUNDS.y = 0;
-				HELPER_BOUNDS.scrollX = 0;
-				HELPER_BOUNDS.scrollY = 0;
-				HELPER_BOUNDS.explicitWidth = this.explicitWidth;
-				HELPER_BOUNDS.explicitHeight = this.explicitHeight;
-				HELPER_BOUNDS.minWidth = this._minWidth;
-				HELPER_BOUNDS.minHeight = this._minHeight;
-				HELPER_BOUNDS.maxWidth = this._maxWidth;
-				HELPER_BOUNDS.maxHeight = this._maxHeight;
+				this.refreshViewPortBounds();
 				if(this._layout)
 				{
 					this._ignoreChildChanges = true;
-					this._layout.layout(this.items, HELPER_BOUNDS, HELPER_LAYOUT_RESULT);
+					this._layout.layout(this.items, this.viewPortBounds, this._layoutResult);
 					this._ignoreChildChanges = false;
-					sizeInvalid = this.setSizeInternal(HELPER_LAYOUT_RESULT.contentWidth, HELPER_LAYOUT_RESULT.contentHeight, false) || sizeInvalid;
+					sizeInvalid = this.setSizeInternal(this._layoutResult.contentWidth, this._layoutResult.contentHeight, false) || sizeInvalid;
 				}
 				else
 				{
-					var maxX:Number = isNaN(HELPER_BOUNDS.explicitWidth) ? 0 : HELPER_BOUNDS.explicitWidth;
-					var maxY:Number = isNaN(HELPER_BOUNDS.explicitHeight) ? 0 : HELPER_BOUNDS.explicitHeight;
-					this._ignoreChildChanges = true;
-					const itemCount:int = this.items.length;
-					for(var i:int = 0; i < itemCount; i++)
-					{
-						var item:DisplayObject = this.items[i];
-						if(item is IFeathersControl)
-						{
-							IFeathersControl(item).validate();
-						}
-						var itemMaxX:Number = item.x + item.width;
-						var itemMaxY:Number = item.y + item.height;
-						if(itemMaxX > maxX)
-						{
-							maxX = itemMaxX;
-						}
-						if(itemMaxY > maxY)
-						{
-							maxY = itemMaxY;
-						}
-					}
-					this._ignoreChildChanges = false;
-					sizeInvalid = this.setSizeInternal(maxX, maxY, false) || sizeInvalid;
+					sizeInvalid = this.handleManualLayout() || sizeInvalid;
 				}
 			}
 
@@ -344,6 +316,55 @@ package feathers.controls
 			{
 				this.refreshClipRect();
 			}
+		}
+
+		/**
+		 * Refreshes the values in the <code>viewPortBounds</code> variable that
+		 * is passed to the layout.
+		 */
+		protected function refreshViewPortBounds():void
+		{
+			this.viewPortBounds.x = 0;
+			this.viewPortBounds.y = 0;
+			this.viewPortBounds.scrollX = 0;
+			this.viewPortBounds.scrollY = 0;
+			this.viewPortBounds.explicitWidth = this.explicitWidth;
+			this.viewPortBounds.explicitHeight = this.explicitHeight;
+			this.viewPortBounds.minWidth = this._minWidth;
+			this.viewPortBounds.minHeight = this._minHeight;
+			this.viewPortBounds.maxWidth = this._maxWidth;
+			this.viewPortBounds.maxHeight = this._maxHeight;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function handleManualLayout():Boolean
+		{
+			var maxX:Number = isNaN(this.viewPortBounds.explicitWidth) ? 0 : this.viewPortBounds.explicitWidth;
+			var maxY:Number = isNaN(this.viewPortBounds.explicitHeight) ? 0 : this.viewPortBounds.explicitHeight;
+			this._ignoreChildChanges = true;
+			const itemCount:int = this.items.length;
+			for(var i:int = 0; i < itemCount; i++)
+			{
+				var item:DisplayObject = this.items[i];
+				if(item is IFeathersControl)
+				{
+					IFeathersControl(item).validate();
+				}
+				var itemMaxX:Number = item.x + item.width;
+				var itemMaxY:Number = item.y + item.height;
+				if(!isNaN(itemMaxX) && itemMaxX > maxX)
+				{
+					maxX = itemMaxX;
+				}
+				if(!isNaN(itemMaxY) && itemMaxY > maxY)
+				{
+					maxY = itemMaxY;
+				}
+			}
+			this._ignoreChildChanges = false;
+			return this.setSizeInternal(maxX, maxY, false)
 		}
 
 		/**
