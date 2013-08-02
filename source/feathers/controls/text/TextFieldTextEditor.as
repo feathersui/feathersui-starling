@@ -73,7 +73,7 @@ package feathers.controls.text
 	 *
 	 * @eventType feathers.events.FeathersEventType.SOFT_KEYBOARD_DEACTIVATE
 	 */
-	[Event(name="softKeyboardDectivate",type="starling.events.Event")]
+	[Event(name="softKeyboardDeactivate",type="starling.events.Event")]
 
 	/**
 	 * A Feathers text editor that uses the native <code>TextField</code> class
