@@ -166,6 +166,6 @@ package feathers.events
 		 *
 		 * @see feathers.core.ITextEditor
 		 */
-		public static const SOFT_KEYBOARD_DEACTIVATE:String = "softKeyboardDectivate";
+		public static const SOFT_KEYBOARD_DEACTIVATE:String = "softKeyboardDeactivate";
 	}
 }
