@@ -229,7 +229,7 @@ package feathers.controls.popups
 					return;
 				}
 				touch.getLocation(stage, HELPER_POINT);
-				const hitTestResult:DisplayObject = stage.hitTest(HELPER_POINT, true);
+				var hitTestResult:DisplayObject = stage.hitTest(HELPER_POINT, true);
 				var isInBounds:Boolean = false;
 				if(this.content is DisplayObjectContainer)
 				{
@@ -249,6 +249,21 @@ package feathers.controls.popups
 			{
 				touch = event.getTouch(stage, TouchPhase.BEGAN);
 				if(!touch)
+				{
+					return;
+				}
+				touch.getLocation(stage, HELPER_POINT);
+				hitTestResult = stage.hitTest(HELPER_POINT, true);
+				isInBounds = false;
+				if(this.content is DisplayObjectContainer)
+				{
+					isInBounds = DisplayObjectContainer(this.content).contains(hitTestResult);
+				}
+				else
+				{
+					isInBounds = this.content == hitTestResult;
+				}
+				if(isInBounds)
 				{
 					return;
 				}
