@@ -1786,15 +1786,16 @@ package feathers.controls.renderers
 		 */
 		override protected function draw():void
 		{
+			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			if(dataInvalid)
 			{
 				this.commitData();
 			}
-			if(dataInvalid || stylesInvalid)
+			if(stateInvalid || dataInvalid || stylesInvalid)
 			{
-				this.refreshAccessoryLabelStyles();
+				this.refreshAccessory();
 			}
 			super.draw();
 		}
@@ -2144,19 +2145,22 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected function refreshAccessoryLabelStyles():void
+		protected function refreshAccessory():void
 		{
-			if(!this.accessoryLabel)
+			if(this.accessory is IFeathersControl)
 			{
-				return;
+				IFeathersControl(this.accessory).isEnabled = this._isEnabled;
 			}
-			const displayAccessoryLabel:DisplayObject = DisplayObject(this.accessoryLabel);
-			for(var propertyName:String in this._accessoryLabelProperties)
+			if(this.accessoryLabel)
 			{
-				if(displayAccessoryLabel.hasOwnProperty(propertyName))
+				const displayAccessoryLabel:DisplayObject = DisplayObject(this.accessoryLabel);
+				for(var propertyName:String in this._accessoryLabelProperties)
 				{
-					var propertyValue:Object = this._accessoryLabelProperties[propertyName];
-					displayAccessoryLabel[propertyName] = propertyValue;
+					if(displayAccessoryLabel.hasOwnProperty(propertyName))
+					{
+						var propertyValue:Object = this._accessoryLabelProperties[propertyName];
+						displayAccessoryLabel[propertyName] = propertyValue;
+					}
 				}
 			}
 		}
