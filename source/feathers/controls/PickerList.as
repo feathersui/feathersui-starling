@@ -1198,12 +1198,29 @@ package feathers.controls
 		}
 		
 		/**
-		 * @private
+		 * @public
 		 */
-		protected function closePopUpList():void
+		public function closePopUpList():void
 		{
 			this.list.validate();
 			this._popUpContentManager.close();
+		}
+
+		/**
+		 * @public
+		 */
+		public function openPopUpList():void
+		{
+			if(this.list.stage)
+			{
+				this.closePopUpList();
+				return;
+			}
+			this._popUpContentManager.open(this.list, this);
+			this.list.scrollToDisplayIndex(this._selectedIndex);
+			this.list.validate();
+
+			
 		}
 
 		/**
@@ -1219,14 +1236,7 @@ package feathers.controls
 		 */
 		protected function button_triggeredHandler(event:Event):void
 		{
-			if(this.list.stage)
-			{
-				this.closePopUpList();
-				return;
-			}
-			this._popUpContentManager.open(this.list, this);
-			this.list.scrollToDisplayIndex(this._selectedIndex);
-			this.list.validate();
+			openPopUpList();
 		}
 		
 		/**

@@ -7,17 +7,18 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
+	import flash.events.SoftKeyboardEvent;
+	import flash.geom.Point;
+	import flash.ui.Mouse;
+	import flash.ui.MouseCursor;
+	
 	import feathers.core.FeathersControl;
 	import feathers.core.IFocusDisplayObject;
 	import feathers.core.ITextEditor;
 	import feathers.core.ITextRenderer;
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
-
-	import flash.geom.Point;
-	import flash.ui.Mouse;
-	import flash.ui.MouseCursor;
-
+	
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.events.Touch;
@@ -1245,6 +1246,9 @@ package feathers.controls
 				this.textEditor.removeEventListener(FeathersEventType.ENTER, textEditor_enterHandler);
 				this.textEditor.removeEventListener(FeathersEventType.FOCUS_IN, textEditor_focusInHandler);
 				this.textEditor.removeEventListener(FeathersEventType.FOCUS_OUT, textEditor_focusOutHandler);
+				this.textEditor.removeEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATING, textEditor_softKeyboardActivatingHandler);
+				this.textEditor.removeEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATE, textEditor_softKeyboardActivateHandler);
+				this.textEditor.removeEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_DEACTIVATE, textEditor_softKeyboardDeactivateHandler);
 				this.textEditor = null;
 			}
 
@@ -1254,9 +1258,13 @@ package feathers.controls
 			this.textEditor.addEventListener(FeathersEventType.ENTER, textEditor_enterHandler);
 			this.textEditor.addEventListener(FeathersEventType.FOCUS_IN, textEditor_focusInHandler);
 			this.textEditor.addEventListener(FeathersEventType.FOCUS_OUT, textEditor_focusOutHandler);
+			this.textEditor.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATING, textEditor_softKeyboardActivatingHandler);
+			this.textEditor.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATE, textEditor_softKeyboardActivateHandler);
+			this.textEditor.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_DEACTIVATE, textEditor_softKeyboardDeactivateHandler);
 			this.addChild(DisplayObject(this.textEditor));
 		}
 
+		
 		/**
 		 * @private
 		 */
@@ -1597,5 +1605,26 @@ package feathers.controls
 				this.dispatchEventWith(FeathersEventType.FOCUS_OUT);
 			}
 		}
+		
+		/**
+		 * @private
+		 */
+		protected function textEditor_softKeyboardActivatingHandler(event:Event):void {
+			this.dispatchEventWith(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATING);
+		}
+		
+		/**
+		 * @private
+		 */
+		protected function textEditor_softKeyboardActivateHandler(event:Event):void {
+			this.dispatchEventWith(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATE);
+		}
+		
+		/**
+		 * @private
+		 */
+		protected function textEditor_softKeyboardDeactivateHandler(event:Event):void {
+			this.dispatchEventWith(SoftKeyboardEvent.SOFT_KEYBOARD_DEACTIVATE);
+		}		
 	}
 }
