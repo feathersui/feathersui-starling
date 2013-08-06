@@ -2670,9 +2670,9 @@ package feathers.controls
 				this.createLabel();
 			}
 			
-			if(textRendererInvalid || dataInvalid)
+			if(textRendererInvalid || stateInvalid || dataInvalid)
 			{
-				this.refreshLabelData();
+				this.refreshLabel();
 			}
 
 			if(stylesInvalid || stateInvalid || selectedInvalid)
@@ -2853,10 +2853,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function refreshLabelData():void
+		protected function refreshLabel():void
 		{
 			this.labelTextRenderer.text = this._label;
-			this.labelTextRenderer.visible = this._label && this._label.length > 0;
+			this.labelTextRenderer.visible = this._label !== null && this._label.length > 0;
+			this.labelTextRenderer.isEnabled = this._isEnabled;
 		}
 
 		/**
@@ -2912,6 +2913,10 @@ package feathers.controls
 			else
 			{
 				this.currentIcon = DisplayObject(this._iconSelector.updateValue(this, this._currentState, this.currentIcon));
+			}
+			if(this.currentIcon is IFeathersControl)
+			{
+				IFeathersControl(this.currentIcon).isEnabled = this._isEnabled;
 			}
 			if(this.currentIcon != oldIcon)
 			{
