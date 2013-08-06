@@ -59,6 +59,22 @@ package feathers.controls
 	[Event(name="focusOut",type="starling.events.Event")]
 
 	/**
+	 * Dispatched when the soft keyboard is activated by the text editor. Not
+	 * all text editors will activate a soft keyboard.
+	 *
+	 * @eventType feathers.events.FeathersEventType.SOFT_KEYBOARD_ACTIVATE
+	 */
+	[Event(name="softKeyboardActivate",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the soft keyboard is deactivated by the text editor. Not
+	 * all text editors will activate a soft keyboard.
+	 *
+	 * @eventType feathers.events.FeathersEventType.SOFT_KEYBOARD_DEACTIVATE
+	 */
+	[Event(name="softKeyboardDeactivate",type="starling.events.Event")]
+
+	/**
 	 * A text entry control that allows users to enter and edit a single line of
 	 * uniformly-formatted text.
 	 *
