@@ -423,6 +423,181 @@ package feathers.controls
 		}
 
 		/**
+		 * Quickly sets all padding properties to the same value. The
+		 * <code>padding</code> getter always returns the value of
+		 * <code>paddingTop</code>, but the other padding values may be
+		 * different.
+		 *
+		 * <p>In the following example, the padding of all sides of the group
+		 * is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.padding = 20;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #paddingTop
+		 * @see #paddingRight
+		 * @see #paddingBottom
+		 * @see #paddingLeft
+		 */
+		public function get padding():Number
+		{
+			return this._paddingTop;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set padding(value:Number):void
+		{
+			this.paddingTop = value;
+			this.paddingRight = value;
+			this.paddingBottom = value;
+			this.paddingLeft = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingTop:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the group's top edge and the
+		 * group's buttons.
+		 *
+		 * <p>In the following example, the padding on the top edge of the
+		 * group is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.paddingTop = 20;</listing>
+		 *
+		 * @default 0
+		 */
+		public function get paddingTop():Number
+		{
+			return this._paddingTop;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingTop(value:Number):void
+		{
+			if(this._paddingTop == value)
+			{
+				return;
+			}
+			this._paddingTop = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingRight:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the group's right edge and the
+		 * group's buttons.
+		 *
+		 * <p>In the following example, the padding on the right edge of the
+		 * group is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.paddingRight = 20;</listing>
+		 *
+		 * @default 0
+		 */
+		public function get paddingRight():Number
+		{
+			return this._paddingRight;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingRight(value:Number):void
+		{
+			if(this._paddingRight == value)
+			{
+				return;
+			}
+			this._paddingRight = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingBottom:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the group's bottom edge and the
+		 * group's buttons.
+		 *
+		 * <p>In the following example, the padding on the bottom edge of the
+		 * group is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.paddingBottom = 20;</listing>
+		 *
+		 * @default 0
+		 */
+		public function get paddingBottom():Number
+		{
+			return this._paddingBottom;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingBottom(value:Number):void
+		{
+			if(this._paddingBottom == value)
+			{
+				return;
+			}
+			this._paddingBottom = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingLeft:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the group's left edge and the
+		 * group's buttons.
+		 *
+		 * <p>In the following example, the padding on the left edge of the
+		 * group is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.paddingLeft = 20;</listing>
+		 *
+		 * @default 0
+		 */
+		public function get paddingLeft():Number
+		{
+			return this._paddingLeft;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingLeft(value:Number):void
+		{
+			if(this._paddingLeft == value)
+			{
+				return;
+			}
+			this._paddingLeft = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
 		 * @private
 		 */
 		protected var _buttonFactory:Function = defaultButtonFactory;
@@ -1212,6 +1387,7 @@ package feathers.controls
 						newWidth += this._lastGap;
 					}
 				}
+				newWidth += this._paddingLeft + this._paddingRight;
 			}
 
 			if(needsHeight)
@@ -1237,6 +1413,7 @@ package feathers.controls
 						newHeight += this._lastGap;
 					}
 				}
+				newHeight += this._paddingTop + this._paddingBottom;
 			}
 			return this.setSizeInternal(newWidth, newHeight, false);
 		}
@@ -1250,7 +1427,16 @@ package feathers.controls
 			const hasLastGap:Boolean = !isNaN(this._lastGap);
 			const buttonCount:int = this.activeButtons.length;
 			const secondToLastIndex:int = buttonCount - 2;
-			const totalSize:Number = this._direction == DIRECTION_VERTICAL ? this.actualHeight : this.actualWidth;
+			if(this._direction == DIRECTION_VERTICAL)
+			{
+				var totalSize:Number = this.actualHeight - this._paddingTop - this._paddingBottom;
+				var oppositeSize:Number = this.actualWidth - this._paddingLeft - this._paddingRight;
+			}
+			else
+			{
+				totalSize = this.actualWidth - this._paddingLeft - this._paddingRight;
+				oppositeSize = this.actualHeight - this._paddingTop - this._paddingBottom;
+			}
 			var totalButtonSize:Number = totalSize - (this._gap * (buttonCount - 1));
 			if(hasFirstGap)
 			{
@@ -1261,24 +1447,24 @@ package feathers.controls
 				totalButtonSize += this._gap - this._lastGap;
 			}
 			const buttonSize:Number = totalButtonSize / buttonCount;
-			var position:Number = 0;
+			var position:Number = this._direction == DIRECTION_VERTICAL ? this._paddingTop : this._paddingLeft;
 			for(var i:int = 0; i < buttonCount; i++)
 			{
 				var button:Button = this.activeButtons[i];
 				if(this._direction == DIRECTION_VERTICAL)
 				{
-					button.width = this.actualWidth;
+					button.width = oppositeSize;
 					button.height = buttonSize;
-					button.x = 0;
+					button.x = this._paddingLeft;
 					button.y = position;
 					position += button.height;
 				}
 				else //horizontal
 				{
 					button.width = buttonSize;
-					button.height = this.actualHeight;
+					button.height = oppositeSize;
 					button.x = position;
-					button.y = 0;
+					button.y = this._paddingTop;
 					position += button.width;
 				}
 
