@@ -13,6 +13,30 @@ package feathers.controls
 
 	import starling.events.Event;
 
+	/**
+	 * Dispatched when one of the buttons is triggered. The <code>data</code>
+	 * property of the event contains the item from the data provider that is
+	 * associated with the button that was triggered.
+	 *
+	 * <p>The following example listens to <code>Event.TRIGGERED</code> on the
+	 * button group instead of on individual buttons:</p>
+	 *
+	 * <listing version="3.0">
+	 * group.dataProvider = new ListCollection(
+	 * [
+	 *     { label: "Yes" },
+	 *     { label: "No" },
+	 *     { label: "Cancel" },
+	 * ]);
+	 * group.addEventListener( Event.TRIGGERED, function( event:Event, data:Object ):void
+	 * {
+	 *    trace( "The button with label \"" + data.label + "\" was triggered." );
+	 * }</listing>
+	 *
+	 * @eventType starling.events.Event.TRIGGERED
+	 */
+	[Event(name="triggered", type="starling.events.Event")]
+
 	[DefaultProperty("dataProvider")]
 	/**
 	 * A set of related buttons with layout, customized using a data provider.
@@ -26,7 +50,7 @@ package feathers.controls
 	 *     { label: "Yes", triggered: yesButton_triggeredHandler },
 	 *     { label: "No", triggered: noButton_triggeredHandler },
 	 *     { label: "Cancel", triggered: cancelButton_triggeredHandler },
-	 * ]);;
+	 * ]);
 	 * this.addChild( group );</listing>
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/button-group
@@ -1065,6 +1089,7 @@ package feathers.controls
 				{
 					button.nameList.add(this.firstButtonName);
 				}
+				button.addEventListener(Event.TRIGGERED, button_triggeredHandler);
 				this.addChild(button);
 			}
 			this._buttonInitializer(button, item);
@@ -1093,6 +1118,7 @@ package feathers.controls
 				{
 					button.nameList.add(this.lastButtonName);
 				}
+				button.addEventListener(Event.TRIGGERED, button_triggeredHandler);
 				this.addChild(button);
 			}
 			this._buttonInitializer(button, item);
@@ -1115,6 +1141,7 @@ package feathers.controls
 				{
 					button.nameList.add(this.buttonName);
 				}
+				button.addEventListener(Event.TRIGGERED, button_triggeredHandler);
 				this.addChild(button);
 			}
 			else
@@ -1130,6 +1157,7 @@ package feathers.controls
 		 */
 		protected function destroyButton(button:Button):void
 		{
+			button.removeEventListener(Event.TRIGGERED, button_triggeredHandler);
 			this.removeChild(button, true);
 		}
 
@@ -1283,6 +1311,17 @@ package feathers.controls
 		protected function dataProvider_changeHandler(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function button_triggeredHandler(event:Event):void
+		{
+			var button:Button = Button(event.currentTarget);
+			var index:int = this.activeButtons.indexOf(button);
+			var item:Object = this._dataProvider.getItemAt(index);
+			this.dispatchEventWith(Event.TRIGGERED, false, item);
 		}
 	}
 }
