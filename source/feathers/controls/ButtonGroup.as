@@ -1468,6 +1468,9 @@ package feathers.controls
 					position += button.width;
 				}
 
+				//final validation to avoid juggler next frame issues
+				button.validate();
+
 				if(hasFirstGap && i == 0)
 				{
 					position += this._firstGap;

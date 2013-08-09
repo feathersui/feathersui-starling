@@ -1465,6 +1465,9 @@ package feathers.controls
 				this.textInput.width = this.incrementButton.x - this.textInput.x;
 				this.textInput.height = this.actualHeight;
 			}
+
+			//final validation to avoid juggler next frame issues
+			this.textInput.validate();
 		}
 
 		/**

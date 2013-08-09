@@ -578,12 +578,25 @@ package feathers.controls.supportClasses
 				this.setSizeInternal(this._layoutResult.contentWidth, this._layoutResult.contentHeight, false);
 				this.actualVisibleWidth = this._layoutResult.viewPortWidth;
 				this.actualVisibleHeight = this._layoutResult.viewPortHeight;
+
+				//final validation to avoid juggler next frame issues
+				this.validateItemRenderers();
 			}
 		}
 		
 		private function invalidateParent(flag:String = INVALIDATION_FLAG_ALL):void
 		{
 			Scroller(this.parent).invalidate(flag);
+		}
+
+		private function validateItemRenderers():void
+		{
+			var rendererCount:int = this._activeRenderers.length;
+			for(var i:int = 0; i < rendererCount; i++)
+			{
+				var renderer:IListItemRenderer = this._activeRenderers[i];
+				renderer.validate();
+			}
 		}
 
 		private function calculateTypicalValues():void
