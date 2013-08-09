@@ -780,6 +780,7 @@ package feathers.controls.supportClasses
 					unrenderedDataLastIndex++;
 				}
 			}
+			HELPER_VECTOR.length = 0;
 		}
 
 		private function renderUnrenderedData():void

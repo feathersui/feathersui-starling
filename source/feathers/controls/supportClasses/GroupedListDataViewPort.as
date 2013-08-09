@@ -1640,6 +1640,7 @@ package feathers.controls.supportClasses
 					currentIndex++;
 				}
 			}
+			HELPER_VECTOR.length = 0;
 		}
 
 		private function findRendererForItem(item:Object, groupIndex:int, itemIndex:int, layoutIndex:int,

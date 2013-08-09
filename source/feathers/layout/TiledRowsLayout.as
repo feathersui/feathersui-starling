@@ -1180,12 +1180,14 @@ package feathers.layout
 		 */
 		public function getVisibleIndicesAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int, result:Vector.<int> = null):Vector.<int>
 		{
-			if(!result)
+			if(result)
+			{
+				result.length = 0;
+			}
+			else
 			{
 				result = new <int>[];
 			}
-			result.length = 0;
-
 			if(this._paging == PAGING_HORIZONTAL)
 			{
 				this.getVisibleIndicesAtScrollPositionWithHorizontalPaging(scrollX, scrollY, width, height, itemCount, result);

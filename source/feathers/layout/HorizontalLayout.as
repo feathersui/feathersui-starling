@@ -854,11 +854,14 @@ package feathers.layout
 		 */
 		public function getVisibleIndicesAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int, result:Vector.<int> = null):Vector.<int>
 		{
-			if(!result)
+			if(result)
+			{
+				result.length = 0;
+			}
+			else
 			{
 				result = new <int>[];
 			}
-			result.length = 0;
 			var resultLastIndex:int = 0;
 			const visibleTypicalItemCount:int = Math.ceil(width / (this._typicalItemWidth + this._gap));
 			if(!this._hasVariableItemDimensions)
