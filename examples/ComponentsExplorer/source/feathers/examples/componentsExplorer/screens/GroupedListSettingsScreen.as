@@ -73,7 +73,7 @@ package feathers.examples.componentsExplorer.screens
 			this._backButton.label = "Back";
 			this._backButton.addEventListener(Event.TRIGGERED, backButton_triggeredHandler);
 
-			this.headerProperties.title = "List Settings";
+			this.headerProperties.title = "Grouped List Settings";
 			this.headerProperties.leftItems = new <DisplayObject>
 			[
 				this._backButton
