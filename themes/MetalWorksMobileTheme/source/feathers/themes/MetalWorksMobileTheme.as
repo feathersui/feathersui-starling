@@ -24,6 +24,7 @@
  */
 package feathers.themes
 {
+	import feathers.controls.Alert;
 	import feathers.controls.Button;
 	import feathers.controls.ButtonGroup;
 	import feathers.controls.Callout;
@@ -131,7 +132,8 @@ package feathers.themes
 		protected static const SCROLL_BAR_THUMB_REGION1:int = 5;
 		protected static const SCROLL_BAR_THUMB_REGION2:int = 14;
 
-		public static const COMPONENT_NAME_PICKER_LIST_ITEM_RENDERER:String = "feathers-mobile-picker-list-item-renderer";
+		public static const COMPONENT_NAME_PICKER_LIST_ITEM_RENDERER:String = "metal-works-mobile-picker-list-item-renderer";
+		public static const COMPONENT_NAME_ALERT_BUTTON_GROUP_BUTTON:String = "metal-works-mobile-alert-button-group-button";
 
 		protected static function textRendererFactory():TextFieldTextRenderer
 		{
@@ -444,6 +446,7 @@ package feathers.themes
 			this.setInitializerForClassAndSubclasses(PanelScreen, panelScreenInitializer);
 			this.setInitializerForClass(Label, labelInitializer);
 			this.setInitializerForClass(TextFieldTextRenderer, itemRendererAccessoryLabelInitializer, BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ACCESSORY_LABEL);
+			this.setInitializerForClass(TextFieldTextRenderer, alertMessageInitializer, Alert.DEFAULT_CHILD_NAME_MESSAGE);
 			this.setInitializerForClass(ScrollText, scrollTextInitializer);
 			this.setInitializerForClass(Button, buttonInitializer);
 			this.setInitializerForClass(Button, callToActionButtonInitializer, Button.ALTERNATE_NAME_CALL_TO_ACTION_BUTTON);
@@ -453,6 +456,7 @@ package feathers.themes
 			this.setInitializerForClass(Button, forwardButtonInitializer, Button.ALTERNATE_NAME_FORWARD_BUTTON);
 			this.setInitializerForClass(Button, buttonInitializer);
 			this.setInitializerForClass(Button, buttonGroupButtonInitializer, ButtonGroup.DEFAULT_CHILD_NAME_BUTTON);
+			this.setInitializerForClass(Button, alertButtonGroupButtonInitializer, COMPONENT_NAME_ALERT_BUTTON_GROUP_BUTTON);
 			this.setInitializerForClass(Button, simpleButtonInitializer, ToggleSwitch.DEFAULT_CHILD_NAME_THUMB);
 			this.setInitializerForClass(Button, simpleButtonInitializer, Slider.DEFAULT_CHILD_NAME_THUMB);
 			this.setInitializerForClass(Button, pickerListButtonInitializer, PickerList.DEFAULT_CHILD_NAME_BUTTON);
@@ -462,6 +466,7 @@ package feathers.themes
 			this.setInitializerForClass(Button, toggleSwitchTrackInitializer, ToggleSwitch.DEFAULT_CHILD_NAME_ON_TRACK);
 			this.setInitializerForClass(Button, nothingInitializer, SimpleScrollBar.DEFAULT_CHILD_NAME_THUMB);
 			this.setInitializerForClass(ButtonGroup, buttonGroupInitializer);
+			this.setInitializerForClass(ButtonGroup, alertButtonGroupInitializer, Alert.DEFAULT_CHILD_NAME_BUTTON_GROUP);
 			this.setInitializerForClass(DefaultListItemRenderer, itemRendererInitializer);
 			this.setInitializerForClass(DefaultListItemRenderer, pickerListItemRendererInitializer, COMPONENT_NAME_PICKER_LIST_ITEM_RENDERER);
 			this.setInitializerForClass(DefaultGroupedListItemRenderer, itemRendererInitializer);
@@ -485,6 +490,7 @@ package feathers.themes
 			this.setInitializerForClass(PickerList, pickerListInitializer);
 			this.setInitializerForClass(Header, headerInitializer);
 			this.setInitializerForClass(Header, headerWithoutBackgroundInitializer, Panel.DEFAULT_CHILD_NAME_HEADER);
+			this.setInitializerForClass(Header, headerWithoutBackgroundInitializer, Alert.DEFAULT_CHILD_NAME_HEADER);
 			this.setInitializerForClass(Callout, calloutInitializer);
 			this.setInitializerForClass(SimpleScrollBar, horizontalScrollBarInitializer, Scroller.DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR);
 			this.setInitializerForClass(SimpleScrollBar, verticalScrollBarInitializer, Scroller.DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR);
@@ -492,6 +498,7 @@ package feathers.themes
 			this.setInitializerForClass(GroupedList, groupedListInitializer);
 			this.setInitializerForClass(GroupedList, insetGroupedListInitializer, GroupedList.ALTERNATE_NAME_INSET_GROUPED_LIST);
 			this.setInitializerForClass(Panel, panelInitializer);
+			this.setInitializerForClass(Alert, alertInitializer);
 			this.setInitializerForClass(ScrollContainer, scrollContainerToolbarInitializer, ScrollContainer.ALTERNATE_NAME_TOOLBAR);
 		}
 
@@ -556,6 +563,13 @@ package feathers.themes
 
 		protected function itemRendererAccessoryLabelInitializer(renderer:TextFieldTextRenderer):void
 		{
+			renderer.textFormat = this.smallLightTextFormat;
+			renderer.embedFonts = true;
+		}
+
+		protected function alertMessageInitializer(renderer:TextFieldTextRenderer):void
+		{
+			renderer.wordWrap = true;
 			renderer.textFormat = this.smallLightTextFormat;
 			renderer.embedFonts = true;
 		}
@@ -714,6 +728,11 @@ package feathers.themes
 			button.minTouchWidth = button.minTouchHeight = 88 * this.scale;
 		}
 
+		protected function alertButtonGroupButtonInitializer(button:Button):void
+		{
+			this.buttonInitializer(button);
+		}
+
 		protected function pickerListButtonInitializer(button:Button):void
 		{
 			this.buttonInitializer(button);
@@ -779,6 +798,17 @@ package feathers.themes
 		{
 			group.minWidth = 560 * this.scale;
 			group.gap = 18 * this.scale;
+		}
+
+		protected function alertButtonGroupInitializer(group:ButtonGroup):void
+		{
+			group.direction = ButtonGroup.DIRECTION_HORIZONTAL;
+			group.gap = 12 * this.scale;
+			group.paddingTop = 12 * this.scale;
+			group.paddingRight = 12 * this.scale;
+			group.paddingBottom = 12 * this.scale;
+			group.paddingLeft = 12 * this.scale;
+			group.customButtonName = COMPONENT_NAME_ALERT_BUTTON_GROUP_BUTTON;
 		}
 
 		protected function itemRendererInitializer(renderer:BaseDefaultItemRenderer):void
@@ -1286,6 +1316,18 @@ package feathers.themes
 			panel.paddingRight = 8 * this.scale;
 			panel.paddingBottom = 8 * this.scale;
 			panel.paddingLeft = 8 * this.scale;
+		}
+
+		protected function alertInitializer(alert:Alert):void
+		{
+			const backgroundSkin:Scale9Image = new Scale9Image(this.backgroundPopUpSkinTextures, this.scale);
+			alert.backgroundSkin = backgroundSkin;
+
+			alert.paddingTop = 0;
+			alert.paddingRight = 16 * this.scale;
+			alert.paddingBottom = 16 * this.scale;
+			alert.paddingLeft = 16 * this.scale;
+			alert.maxWidth = alert.maxHeight = 560 * this.scale;
 		}
 
 		protected function listInitializer(list:List):void
