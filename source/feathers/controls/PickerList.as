@@ -1195,6 +1195,9 @@ package feathers.controls
 		{
 			this.button.width = this.actualWidth;
 			this.button.height = this.actualHeight;
+
+			//final validation to avoid juggler next frame issues
+			this.button.validate();
 		}
 		
 		/**

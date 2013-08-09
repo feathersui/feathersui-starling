@@ -1730,6 +1730,10 @@ package feathers.controls
 					this.maximumTrack.width = this.actualWidth;
 					this.minimumTrack.x = 0;
 					this.minimumTrack.width = this.actualWidth;
+
+					//final validation to avoid juggler next frame issues
+					this.minimumTrack.validate();
+					this.maximumTrack.validate();
 				}
 			}
 			else //horizontal
@@ -1754,6 +1758,10 @@ package feathers.controls
 					this.minimumTrack.height = this.actualHeight;
 					this.maximumTrack.y = 0;
 					this.maximumTrack.height = this.actualHeight;
+
+					//final validation to avoid juggler next frame issues
+					this.minimumTrack.validate();
+					this.maximumTrack.validate();
 				}
 			}
 		}
@@ -1788,6 +1796,9 @@ package feathers.controls
 				this.minimumTrack.y = 0;
 				this.minimumTrack.width = this.actualWidth;
 				this.minimumTrack.height = this.actualHeight;
+
+				//final validation to avoid juggler next frame issues
+				this.minimumTrack.validate();
 			}
 		}
 
