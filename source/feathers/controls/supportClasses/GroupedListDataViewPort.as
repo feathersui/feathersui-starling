@@ -1025,13 +1025,13 @@ package feathers.controls.supportClasses
 			for(i = 0; i < rendererCount; i++)
 			{
 				var headerOrFooterRenderer:IGroupedListHeaderOrFooterRenderer = this._activeHeaderRenderers[i];
-				renderer.validate();
+				headerOrFooterRenderer.validate();
 			}
 			rendererCount = this._activeFooterRenderers.length;
 			for(i = 0; i < rendererCount; i++)
 			{
 				headerOrFooterRenderer = this._activeFooterRenderers[i];
-				renderer.validate();
+				headerOrFooterRenderer.validate();
 			}
 		}
 
