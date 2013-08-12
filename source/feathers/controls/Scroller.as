@@ -4160,6 +4160,14 @@ package feathers.controls
 			}
 
 			touch.getLocation(this, HELPER_POINT);
+			var touchX:Number = HELPER_POINT.x;
+			var touchY:Number = HELPER_POINT.y;
+			if(touchX < this._leftViewPortOffset || touchY < this._topViewPortOffset ||
+				touchX >= this.actualWidth - this._rightViewPortOffset ||
+				touchY >= this.actualHeight - this._bottomViewPortOffset)
+			{
+				return;
+			}
 			if(this._horizontalAutoScrollTween)
 			{
 				Starling.juggler.remove(this._horizontalAutoScrollTween);
@@ -4177,8 +4185,8 @@ package feathers.controls
 			this._previousVelocityX.length = 0;
 			this._previousVelocityY.length = 0;
 			this._previousTouchTime = getTimer();
-			this._previousTouchX = this._startTouchX = this._currentTouchX = HELPER_POINT.x;
-			this._previousTouchY = this._startTouchY = this._currentTouchY = HELPER_POINT.y;
+			this._previousTouchX = this._startTouchX = this._currentTouchX = touchX;
+			this._previousTouchY = this._startTouchY = this._currentTouchY = touchY;
 			this._startHorizontalScrollPosition = this._horizontalScrollPosition;
 			this._startVerticalScrollPosition = this._verticalScrollPosition;
 			this._isScrollingStopped = false;
