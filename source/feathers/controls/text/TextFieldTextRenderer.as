@@ -818,6 +818,10 @@ package feathers.controls.text
 				//again, for some reason, it reports the correct width value.
 				var hackWorkaround:Number = this.textField.width;
 
+				//we use Math.ceil() as another workaround. even though we're
+				//setting width to exact same value reported here when we turn
+				//on word wrap in a moment, sometimes the last character moves
+				//to the next line. Bumping up to a whole pixel seems to help.
 				newWidth = Math.ceil(this.textField.width);
 				if(newWidth < this._minWidth)
 				{
