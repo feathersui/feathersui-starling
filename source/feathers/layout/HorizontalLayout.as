@@ -553,7 +553,12 @@ package feathers.layout
 			if(!this._useVirtualLayout || this._hasVariableItemDimensions ||
 				this._verticalAlign != VERTICAL_ALIGN_JUSTIFY || isNaN(explicitHeight))
 			{
-				this.validateItems(items);
+				//if we have variable item dimensions and the alignment is
+				//justified, then we want to set the height of each item before
+				//validating because setting the height may cause the width to
+				//change, and that will invalidate the layout if it happens
+				//after validation
+				this.validateItems(items, this._verticalAlign == VERTICAL_ALIGN_JUSTIFY ? explicitHeight : NaN);
 			}
 
 			this._discoveredItemsCache.length = 0;
@@ -1051,8 +1056,9 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected function validateItems(items:Vector.<DisplayObject>):void
+		protected function validateItems(items:Vector.<DisplayObject>, justifyHeight:Number):void
 		{
+			const hasJustifyHeight:Boolean = !isNaN(justifyHeight);
 			const itemCount:int = items.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
@@ -1064,6 +1070,10 @@ package feathers.layout
 				if(!(item is IFeathersControl))
 				{
 					continue;
+				}
+				if(hasJustifyHeight)
+				{
+					item.height = justifyHeight;
 				}
 				IFeathersControl(item).validate();
 			}
