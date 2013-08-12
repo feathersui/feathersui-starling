@@ -1074,6 +1074,9 @@ package feathers.controls
 				this.thumb.x = this._paddingLeft + thumbX;
 				this.thumb.y = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - this.thumb.height) / 2;
 			}
+
+			//final validation to avoid juggler next frame issues
+			this.thumb.validate();
 		}
 
 		/**

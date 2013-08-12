@@ -111,7 +111,7 @@ package feathers.skins
 			if(target is IToggle && IToggle(target).isSelected)
 			{
 				value = this.stateToSelectedValue[state];
-				if(!value)
+				if(value === null)
 				{
 					value = this.defaultSelectedValue;
 				}
@@ -120,7 +120,7 @@ package feathers.skins
 			{
 				value = this.stateToValue[state];
 			}
-			if(!value)
+			if(value === null)
 			{
 				value = this.defaultValue;
 			}
