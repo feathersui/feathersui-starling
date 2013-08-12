@@ -3427,7 +3427,7 @@ package feathers.controls
 				targetHorizontalScrollPosition = this._maxHorizontalScrollPosition;
 			}
 			var targetVerticalScrollPosition:Number = this._verticalScrollPosition;
-			if(targetHorizontalPageIndex >= 0)
+			if(targetVerticalPageIndex >= 0)
 			{
 				targetVerticalScrollPosition = pageHeight * targetVerticalPageIndex;
 			}
