@@ -1304,6 +1304,9 @@ package feathers.controls
 					tab.y = 0;
 					position += tab.width + this._gap;
 				}
+
+				//final validation to avoid juggler next frame issues
+				tab.validate();
 			}
 		}
 

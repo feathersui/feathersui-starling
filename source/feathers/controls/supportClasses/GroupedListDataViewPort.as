@@ -989,6 +989,49 @@ package feathers.controls.supportClasses
 				this.setSizeInternal(this._layoutResult.contentWidth, this._layoutResult.contentHeight, false);
 				this.actualVisibleWidth = this._layoutResult.viewPortWidth;
 				this.actualVisibleHeight = this._layoutResult.viewPortHeight;
+
+				//final validation to avoid juggler next frame issues
+				this.validateRenderers();
+			}
+		}
+
+		private function validateRenderers():void
+		{
+			var rendererCount:int = this._activeFirstItemRenderers ? this._activeFirstItemRenderers.length : 0;
+			for(var i:int = 0; i < rendererCount; i++)
+			{
+				var renderer:IGroupedListItemRenderer = this._activeFirstItemRenderers[i];
+				renderer.validate();
+			}
+			rendererCount = this._activeLastItemRenderers ? this._activeLastItemRenderers.length : 0;
+			for(i = 0; i < rendererCount; i++)
+			{
+				renderer = this._activeLastItemRenderers[i];
+				renderer.validate();
+			}
+			rendererCount = this._activeSingleItemRenderers ? this._activeSingleItemRenderers.length : 0;
+			for(i = 0; i < rendererCount; i++)
+			{
+				renderer = this._activeSingleItemRenderers[i];
+				renderer.validate();
+			}
+			rendererCount = this._activeItemRenderers.length;
+			for(i = 0; i < rendererCount; i++)
+			{
+				renderer = this._activeItemRenderers[i];
+				renderer.validate();
+			}
+			rendererCount = this._activeHeaderRenderers.length;
+			for(i = 0; i < rendererCount; i++)
+			{
+				var headerOrFooterRenderer:IGroupedListHeaderOrFooterRenderer = this._activeHeaderRenderers[i];
+				headerOrFooterRenderer.validate();
+			}
+			rendererCount = this._activeFooterRenderers.length;
+			for(i = 0; i < rendererCount; i++)
+			{
+				headerOrFooterRenderer = this._activeFooterRenderers[i];
+				headerOrFooterRenderer.validate();
 			}
 		}
 

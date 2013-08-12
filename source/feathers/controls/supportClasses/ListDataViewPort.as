@@ -193,6 +193,7 @@ package feathers.controls.supportClasses
 			return this._contentY;
 		}
 
+		private var _typicalItemRenderer:IListItemRenderer;
 		private var _unrenderedData:Array = [];
 		private var _layoutItems:Vector.<DisplayObject> = new <DisplayObject>[];
 		private var _inactiveRenderers:Vector.<IListItemRenderer> = new <IListItemRenderer>[];
@@ -578,6 +579,9 @@ package feathers.controls.supportClasses
 				this.setSizeInternal(this._layoutResult.contentWidth, this._layoutResult.contentHeight, false);
 				this.actualVisibleWidth = this._layoutResult.viewPortWidth;
 				this.actualVisibleHeight = this._layoutResult.viewPortHeight;
+
+				//final validation to avoid juggler next frame issues
+				this.validateItemRenderers();
 			}
 		}
 		
@@ -586,11 +590,27 @@ package feathers.controls.supportClasses
 			Scroller(this.parent).invalidate(flag);
 		}
 
+		private function validateItemRenderers():void
+		{
+			var rendererCount:int = this._activeRenderers.length;
+			for(var i:int = 0; i < rendererCount; i++)
+			{
+				var renderer:IListItemRenderer = this._activeRenderers[i];
+				renderer.validate();
+			}
+		}
+
 		private function calculateTypicalValues():void
 		{
+			var typicalItemIsInDataProvider:Boolean = false;
 			var typicalItem:Object = this._typicalItem;
-			if(!typicalItem)
+			if(typicalItem)
 			{
+				typicalItemIsInDataProvider = this._dataProvider.getItemIndex(typicalItem) >= 0;
+			}
+			else
+			{
+				typicalItemIsInDataProvider = true;
 				if(this._dataProvider && this._dataProvider.length > 0)
 				{
 					typicalItem = this._dataProvider.getItemAt(0);
@@ -616,6 +636,23 @@ package feathers.controls.supportClasses
 			{
 				typicalRenderer = this.createRenderer(typicalItem, 0, true);
 			}
+
+			//get rid of the old one, if needed
+			if(this._typicalItemRenderer && (typicalItemIsInDataProvider || this._typicalItemRenderer != typicalRenderer))
+			{
+				this.destroyRenderer(this._typicalItemRenderer);
+				this._typicalItemRenderer = null;
+			}
+			//save it, if needed
+			if(!typicalItemIsInDataProvider)
+			{
+				this._typicalItemRenderer = typicalRenderer;
+				//we're going to keep it around to avoid extra allocation and
+				//garbage collection, but it'll be invisible and non-interactive
+				this._typicalItemRenderer.visible = false;
+				needsDestruction = false;
+			}
+
 			this.refreshOneItemRendererStyles(typicalRenderer);
 			if(typicalRenderer is FeathersControl)
 			{
