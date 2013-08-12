@@ -6,9 +6,7 @@ package feathers.controls
 	import feathers.core.PopUpManager;
 	import feathers.core.PropertyProxy;
 	import feathers.data.ListCollection;
-	import feathers.layout.AnchorLayout;
-	import feathers.layout.AnchorLayoutData;
-	import feathers.layout.ILayoutDisplayObject;
+	import feathers.layout.VerticalLayout;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -48,7 +46,6 @@ package feathers.controls
 			this.headerName = DEFAULT_CHILD_NAME_HEADER;
 			this.footerName = DEFAULT_CHILD_NAME_BUTTON_GROUP;
 			this.footerFactory = defaultFooterFactory;
-			this.layout = new AnchorLayout();
 		}
 
 		/**
@@ -269,6 +266,17 @@ package feathers.controls
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
+		override protected function initialize():void
+		{
+			if(!this.layout)
+			{
+				var layout:VerticalLayout = new VerticalLayout();
+				layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
+				this.layout = layout;
+			}
+			super.initialize();
+		}
+
 		/**
 		 * @private
 		 */
@@ -346,8 +354,6 @@ package feathers.controls
 			const uiTextRenderer:IFeathersControl = IFeathersControl(this.messageTextRenderer);
 			uiTextRenderer.nameList.add(this.messageName);
 			uiTextRenderer.touchable = false;
-			const layoutTextRenderer:ILayoutDisplayObject = ILayoutDisplayObject(this.messageTextRenderer);
-			layoutTextRenderer.layoutData = new AnchorLayoutData(0, 0, NaN, 0);
 			this.addChild(DisplayObject(this.messageTextRenderer));
 		}
 
