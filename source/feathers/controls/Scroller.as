@@ -4378,6 +4378,15 @@ package feathers.controls
 			HELPER_POINT.y = (event.stageY - starlingViewPort.y) / Starling.contentScaleFactor;
 			if(this.contains(this.stage.hitTest(HELPER_POINT, true)))
 			{
+				this.globalToLocal(HELPER_POINT, HELPER_POINT);
+				var localMouseX:Number = HELPER_POINT.x;
+				var localMouseY:Number = HELPER_POINT.y;
+				if(localMouseX < this._leftViewPortOffset || localMouseY < this._topViewPortOffset ||
+					localMouseX >= this.actualWidth - this._rightViewPortOffset ||
+					localMouseY >= this.actualHeight - this._bottomViewPortOffset)
+				{
+					return;
+				}
 				this.revealVerticalScrollBar();
 				var targetVerticalScrollPosition:Number = this._verticalScrollPosition - event.delta * this.actualVerticalScrollStep;
 				if(targetVerticalScrollPosition < this._minVerticalScrollPosition)
