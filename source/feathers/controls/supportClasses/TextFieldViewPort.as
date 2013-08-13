@@ -8,6 +8,8 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.supportClasses
 {
 	import feathers.core.FeathersControl;
+	import feathers.utils.geom.matrixToScaleX;
+	import feathers.utils.geom.matrixToScaleY;
 
 	import flash.display.Sprite;
 	import flash.geom.Matrix;
@@ -744,8 +746,8 @@ package feathers.controls.supportClasses
 			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
 			this._textFieldContainer.x = starlingViewPort.x + HELPER_POINT.x * Starling.contentScaleFactor;
 			this._textFieldContainer.y = starlingViewPort.y + HELPER_POINT.y * Starling.contentScaleFactor;
-			this._textFieldContainer.scaleX = HELPER_MATRIX.a * Starling.contentScaleFactor;
-			this._textFieldContainer.scaleY = HELPER_MATRIX.d * Starling.contentScaleFactor;
+			this._textFieldContainer.scaleX = matrixToScaleX(HELPER_MATRIX) * Starling.contentScaleFactor;
+			this._textFieldContainer.scaleY = matrixToScaleY(HELPER_MATRIX) * Starling.contentScaleFactor;
 			this._textFieldContainer.visible = true;
 			this._textFieldContainer.alpha = parentAlpha * this.alpha;
 			this._textFieldContainer.visible = this.visible;
