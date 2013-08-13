@@ -10,6 +10,7 @@ package feathers.controls.text
 	import feathers.core.FeathersControl;
 	import feathers.core.ITextEditor;
 	import feathers.events.FeathersEventType;
+	import feathers.utils.geom.matrixToRotation;
 	import feathers.utils.geom.matrixToScaleX;
 	import feathers.utils.geom.matrixToScaleY;
 
@@ -905,6 +906,7 @@ package feathers.controls.text
 				this.textField.x = Math.round(starlingViewPort.x + (HELPER_POINT.x * Starling.contentScaleFactor));
 				this.textField.y = Math.round(starlingViewPort.y + (HELPER_POINT.y * Starling.contentScaleFactor));
 			}
+			this.textField.rotation = matrixToRotation(HELPER_MATRIX) * 180 / Math.PI;
 
 			if(this.textSnapshot)
 			{
