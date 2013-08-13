@@ -750,7 +750,6 @@ package feathers.controls.supportClasses
 			this._textFieldContainer.scaleX = matrixToScaleX(HELPER_MATRIX) * Starling.contentScaleFactor;
 			this._textFieldContainer.scaleY = matrixToScaleY(HELPER_MATRIX) * Starling.contentScaleFactor;
 			this._textFieldContainer.rotation = matrixToRotation(HELPER_MATRIX) * 180 / Math.PI;
-			trace(matrixToRotation(HELPER_MATRIX));
 			this._textFieldContainer.visible = true;
 			this._textFieldContainer.alpha = parentAlpha * this.alpha;
 			this._textFieldContainer.visible = this.visible;
