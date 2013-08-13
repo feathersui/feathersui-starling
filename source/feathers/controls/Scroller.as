@@ -3359,8 +3359,18 @@ package feathers.controls
 				const clipRect:Rectangle = this._viewPort.clipRect;
 				clipRect.x = this._horizontalScrollPosition;
 				clipRect.y = this._verticalScrollPosition;
-				clipRect.width = this.actualWidth - this._leftViewPortOffset - this._rightViewPortOffset;
-				clipRect.height = this.actualHeight - this._topViewPortOffset - this._bottomViewPortOffset;
+				var clipWidth:Number = this.actualWidth - this._leftViewPortOffset - this._rightViewPortOffset;
+				if(clipWidth < 0)
+				{
+					clipWidth = 0;
+				}
+				clipRect.width = clipWidth;
+				var clipHeight:Number = this.actualHeight - this._topViewPortOffset - this._bottomViewPortOffset;
+				if(clipHeight < 0)
+				{
+					clipHeight = 0;
+				}
+				clipRect.height = clipHeight;
 				this._viewPort.clipRect = clipRect;
 			}
 			else
