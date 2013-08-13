@@ -435,7 +435,7 @@ package feathers.controls.text
 		override protected function checkIfNewSnapshotIsNeeded():void
 		{
 			super.checkIfNewSnapshotIsNeeded();
-			this._needsNewBitmap ||= this.isInvalid(INVALIDATION_FLAG_SCROLL);
+			this._needsNewTexture ||= this.isInvalid(INVALIDATION_FLAG_SCROLL);
 		}
 
 		/**

@@ -12,6 +12,7 @@ package feathers.controls
 	import feathers.events.FeathersEventType;
 	import feathers.system.DeviceCapabilities;
 	import feathers.utils.display.calculateScaleRatioToFit;
+	import feathers.utils.display.getDisplayObjectDepthFromStage;
 
 	import flash.display.DisplayObjectContainer;
 	import flash.display.LoaderInfo;
@@ -425,7 +426,10 @@ package feathers.controls
 			}
 			this.refreshPixelScale();
 			this.addEventListener(Event.REMOVED_FROM_STAGE, screen_removedFromStageHandler);
-			Starling.current.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, screen_stage_keyDownHandler, false, 0, true);
+			//using priority here is a hack so that objects higher up in the
+			//display list have a chance to cancel the event first.
+			var priority:int = -getDisplayObjectDepthFromStage(this);
+			Starling.current.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, screen_nativeStage_keyDownHandler, false, priority, true);
 		}
 
 		/**
@@ -438,7 +442,7 @@ package feathers.controls
 				return;
 			}
 			this.removeEventListener(Event.REMOVED_FROM_STAGE, screen_removedFromStageHandler);
-			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, screen_stage_keyDownHandler);
+			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, screen_nativeStage_keyDownHandler);
 		}
 		
 		/**
@@ -452,30 +456,29 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function screen_stage_keyDownHandler(event:KeyboardEvent):void
+		protected function screen_nativeStage_keyDownHandler(event:KeyboardEvent):void
 		{
-			//we're accessing Keyboard.BACK (and others) using a string because
-			//this code may be compiled for both Flash Player and AIR.
-			if(this.backButtonHandler != null &&
-				Object(Keyboard).hasOwnProperty("BACK") &&
-				event.keyCode == Keyboard["BACK"])
+			if(event.isDefaultPrevented())
 			{
-				event.stopImmediatePropagation();
+				//someone else already handled this one
+				return;
+			}
+			if(this.backButtonHandler != null &&
+				event.keyCode == Keyboard.BACK)
+			{
 				event.preventDefault();
 				this.backButtonHandler();
 			}
 			
 			if(this.menuButtonHandler != null &&
-				Object(Keyboard).hasOwnProperty("MENU") &&
-				event.keyCode == Keyboard["MENU"])
+				event.keyCode == Keyboard.MENU)
 			{
 				event.preventDefault();
 				this.menuButtonHandler();
 			}
 			
 			if(this.searchButtonHandler != null &&
-				Object(Keyboard).hasOwnProperty("SEARCH") &&
-				event.keyCode == Keyboard["SEARCH"])
+				event.keyCode == Keyboard.SEARCH)
 			{
 				event.preventDefault();
 				this.searchButtonHandler();

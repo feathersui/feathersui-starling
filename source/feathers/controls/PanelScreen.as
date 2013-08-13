@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.system.DeviceCapabilities;
+	import feathers.utils.display.getDisplayObjectDepthFromStage;
 
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
@@ -126,6 +127,13 @@ package feathers.controls
 		 * @see feathers.controls.Scroller#interactionMode
 		 */
 		public static const INTERACTION_MODE_MOUSE:String = "mouse";
+
+		/**
+		 * @copy feathers.controls.Scroller#INTERACTION_MODE_TOUCH_AND_SCROLL_BARS
+		 *
+		 * @see feathers.controls.Scroller#interactionMode
+		 */
+		public static const INTERACTION_MODE_TOUCH_AND_SCROLL_BARS:String = "touchAndScrollBars";
 
 		/**
 		 * Constructor.
@@ -319,7 +327,10 @@ package feathers.controls
 				return;
 			}
 			this.addEventListener(Event.REMOVED_FROM_STAGE, panelScreen_removedFromStageHandler);
-			Starling.current.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, panelScreen_stage_keyDownHandler, false, 0, true);
+			//using priority here is a hack so that objects higher up in the
+			//display list have a chance to cancel the event first.
+			var priority:int = -getDisplayObjectDepthFromStage(this);
+			Starling.current.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, panelScreen_nativeStage_keyDownHandler, false, priority, true);
 		}
 
 		/**
@@ -332,36 +343,35 @@ package feathers.controls
 				return;
 			}
 			this.removeEventListener(Event.REMOVED_FROM_STAGE, panelScreen_removedFromStageHandler);
-			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, panelScreen_stage_keyDownHandler);
+			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, panelScreen_nativeStage_keyDownHandler);
 		}
 
 		/**
 		 * @private
 		 */
-		protected function panelScreen_stage_keyDownHandler(event:KeyboardEvent):void
+		protected function panelScreen_nativeStage_keyDownHandler(event:KeyboardEvent):void
 		{
-			//we're accessing Keyboard.BACK (and others) using a string because
-			//this code may be compiled for both Flash Player and AIR.
-			if(this.backButtonHandler != null &&
-				Object(Keyboard).hasOwnProperty("BACK") &&
-				event.keyCode == Keyboard["BACK"])
+			if(event.isDefaultPrevented())
 			{
-				event.stopImmediatePropagation();
+				//someone else already handled this one
+				return;
+			}
+			if(this.backButtonHandler != null &&
+				event.keyCode == Keyboard.BACK)
+			{
 				event.preventDefault();
 				this.backButtonHandler();
 			}
 
 			if(this.menuButtonHandler != null &&
-				Object(Keyboard).hasOwnProperty("MENU") &&
-				event.keyCode == Keyboard["MENU"])
+				event.keyCode == Keyboard.MENU)
 			{
 				event.preventDefault();
 				this.menuButtonHandler();
 			}
 
 			if(this.searchButtonHandler != null &&
-				Object(Keyboard).hasOwnProperty("SEARCH") &&
-				event.keyCode == Keyboard["SEARCH"])
+				event.keyCode == Keyboard.SEARCH)
 			{
 				event.preventDefault();
 				this.searchButtonHandler();

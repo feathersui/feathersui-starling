@@ -17,6 +17,7 @@ package feathers.skins
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.Quad;
+	import starling.textures.ConcreteTexture;
 	import starling.textures.SubTexture;
 	import starling.textures.Texture;
 
@@ -113,10 +114,12 @@ package feathers.skins
 		public function SmartDisplayObjectStateValueSelector()
 		{
 			this.setValueTypeHandler(Texture, textureValueTypeHandler);
+			this.setValueTypeHandler(ConcreteTexture, textureValueTypeHandler);
 			this.setValueTypeHandler(SubTexture, textureValueTypeHandler);
 			this.setValueTypeHandler(Scale9Textures, scale9TextureValueTypeHandler);
 			this.setValueTypeHandler(Scale3Textures, scale3TextureValueTypeHandler);
-			this.setValueTypeHandler(uint, uintValueTypeHandler);
+			//the constructor property of a uint is actually Number.
+			this.setValueTypeHandler(Number, uintValueTypeHandler);
 		}
 
 		/**
@@ -170,7 +173,7 @@ package feathers.skins
 		override public function updateValue(target:Object, state:Object, oldValue:Object = null):Object
 		{
 			const value:Object = super.updateValue(target, state);
-			if(!value)
+			if(value === null)
 			{
 				return null;
 			}

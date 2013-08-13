@@ -353,8 +353,6 @@ package feathers.controls
 		 * the label name in their constructors instead of using the default
 		 * name defined by <code>DEFAULT_CHILD_NAME_LABEL</code>.
 		 *
-		 * <p>For internal use in subclasses.</p>
-		 *
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var labelName:String = DEFAULT_CHILD_NAME_LABEL;
@@ -363,6 +361,10 @@ package feathers.controls
 		 * The text renderer for the button's label.
 		 *
 		 * <p>For internal use in subclasses.</p>
+		 *
+		 * @see #label
+		 * @see #labelFactory
+		 * @see #createLabel()
 		 */
 		protected var labelTextRenderer:ITextRenderer;
 		
@@ -2668,9 +2670,9 @@ package feathers.controls
 				this.createLabel();
 			}
 			
-			if(textRendererInvalid || dataInvalid)
+			if(textRendererInvalid || stateInvalid || dataInvalid)
 			{
-				this.refreshLabelData();
+				this.refreshLabel();
 			}
 
 			if(stylesInvalid || stateInvalid || selectedInvalid)
@@ -2709,10 +2711,20 @@ package feathers.controls
 		}
 
 		/**
-		 * Calculates the dimensions of the button. Uses the explicit width and
-		 * explicit height, if set.
+		 * If the component's dimensions have not been set explicitly, it will
+		 * measure its content and determine an ideal size for itself. If the
+		 * <code>explicitWidth</code> or <code>explicitHeight</code> member
+		 * variables are set, those value will be used without additional
+		 * measurement. If one is set, but not the other, the dimension with the
+		 * explicit value will not be measured, but the other non-explicit
+		 * dimension will still need measurement.
 		 *
-		 * <p>For internal use in subclasses.</p>
+		 * <p>Calls <code>setSizeInternal()</code> to set up the
+		 * <code>actualWidth</code> and <code>actualHeight</code> member
+		 * variables used for layout.</p>
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
@@ -2815,9 +2827,14 @@ package feathers.controls
 		}
 
 		/**
-		 * Creates the label text renderer.
+		 * Creates the label text renderer sub-component and
+		 * removes the old instance, if one exists.
 		 *
-		 * <p>For internal use in subclasses.</p>
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
+		 *
+		 * @see #labelTextRenderer
+		 * @see #labelFactory
 		 */
 		protected function createLabel():void
 		{
@@ -2836,10 +2853,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function refreshLabelData():void
+		protected function refreshLabel():void
 		{
 			this.labelTextRenderer.text = this._label;
-			this.labelTextRenderer.visible = this._label && this._label.length > 0;
+			this.labelTextRenderer.visible = this._label !== null && this._label.length > 0;
+			this.labelTextRenderer.isEnabled = this._isEnabled;
 		}
 
 		/**
@@ -2895,6 +2913,10 @@ package feathers.controls
 			else
 			{
 				this.currentIcon = DisplayObject(this._iconSelector.updateValue(this, this._currentState, this.currentIcon));
+			}
+			if(this.currentIcon is IFeathersControl)
+			{
+				IFeathersControl(this.currentIcon).isEnabled = this._isEnabled;
 			}
 			if(this.currentIcon != oldIcon)
 			{

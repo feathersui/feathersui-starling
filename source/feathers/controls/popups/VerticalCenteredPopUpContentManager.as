@@ -10,6 +10,7 @@ package feathers.controls.popups
 	import feathers.core.IFeathersControl;
 	import feathers.core.PopUpManager;
 	import feathers.events.FeathersEventType;
+	import feathers.utils.display.getDisplayObjectDepthFromStage;
 
 	import flash.errors.IllegalOperationError;
 	import flash.events.KeyboardEvent;
@@ -105,7 +106,11 @@ package feathers.controls.popups
 			this.layout();
 			Starling.current.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			Starling.current.stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
-			Starling.current.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler, false, int.MAX_VALUE, true);
+
+			//using priority here is a hack so that objects higher up in the
+			//display list have a chance to cancel the event first.
+			var priority:int = -getDisplayObjectDepthFromStage(this.content);
+			Starling.current.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler, false, priority, true);
 		}
 
 		/**
@@ -119,7 +124,7 @@ package feathers.controls.popups
 			}
 			Starling.current.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			Starling.current.stage.removeEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
-			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler);
 			if(this.content is IFeathersControl)
 			{
 				this.content.removeEventListener(FeathersEventType.RESIZE, content_resizeHandler);
@@ -181,16 +186,20 @@ package feathers.controls.popups
 		/**
 		 * @private
 		 */
-		protected function stage_keyDownHandler(event:KeyboardEvent):void
+		protected function nativeStage_keyDownHandler(event:KeyboardEvent):void
 		{
+			if(event.isDefaultPrevented())
+			{
+				//someone else already handled this one
+				return;
+			}
 			if(event.keyCode != Keyboard.BACK && event.keyCode != Keyboard.ESCAPE)
 			{
 				return;
 			}
 			//don't let the OS handle the event
 			event.preventDefault();
-			//don't let other event handlers handle the event
-			event.stopImmediatePropagation();
+
 			this.close();
 		}
 
@@ -220,7 +229,7 @@ package feathers.controls.popups
 					return;
 				}
 				touch.getLocation(stage, HELPER_POINT);
-				const hitTestResult:DisplayObject = stage.hitTest(HELPER_POINT, true);
+				var hitTestResult:DisplayObject = stage.hitTest(HELPER_POINT, true);
 				var isInBounds:Boolean = false;
 				if(this.content is DisplayObjectContainer)
 				{
@@ -240,6 +249,21 @@ package feathers.controls.popups
 			{
 				touch = event.getTouch(stage, TouchPhase.BEGAN);
 				if(!touch)
+				{
+					return;
+				}
+				touch.getLocation(stage, HELPER_POINT);
+				hitTestResult = stage.hitTest(HELPER_POINT, true);
+				isInBounds = false;
+				if(this.content is DisplayObjectContainer)
+				{
+					isInBounds = DisplayObjectContainer(this.content).contains(hitTestResult);
+				}
+				else
+				{
+					isInBounds = this.content == hitTestResult;
+				}
+				if(isInBounds)
 				{
 					return;
 				}

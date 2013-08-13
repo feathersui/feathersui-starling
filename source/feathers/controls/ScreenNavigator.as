@@ -281,6 +281,17 @@ package feathers.controls
 				return;
 			}
 			this._autoSizeMode = value;
+			if(this._activeScreen)
+			{
+				if(this._autoSizeMode == AUTO_SIZE_MODE_CONTENT)
+				{
+					this._activeScreen.addEventListener(FeathersEventType.RESIZE, activeScreen_resizeHandler);
+				}
+				else
+				{
+					this._activeScreen.removeEventListener(FeathersEventType.RESIZE, activeScreen_resizeHandler);
+				}
+			}
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
@@ -366,6 +377,10 @@ package feathers.controls
 
 			this._screenEvents[id] = savedScreenEvents;
 
+			if(this._autoSizeMode == AUTO_SIZE_MODE_CONTENT)
+			{
+				this._activeScreen.addEventListener(FeathersEventType.RESIZE, activeScreen_resizeHandler);
+			}
 			this.addChild(this._activeScreen);
 
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
@@ -556,7 +571,7 @@ package feathers.controls
 
 			if(sizeInvalid || selectionInvalid)
 			{
-				if(this._activeScreen)
+				if(this._activeScreen && this._autoSizeMode != AUTO_SIZE_MODE_CONTENT)
 				{
 					this._activeScreen.width = this.actualWidth;
 					this._activeScreen.height = this.actualHeight;
@@ -584,7 +599,20 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * If the component's dimensions have not been set explicitly, it will
+		 * measure its content and determine an ideal size for itself. If the
+		 * <code>explicitWidth</code> or <code>explicitHeight</code> member
+		 * variables are set, those value will be used without additional
+		 * measurement. If one is set, but not the other, the dimension with the
+		 * explicit value will not be measured, but the other non-explicit
+		 * dimension will still need measurement.
+		 *
+		 * <p>Calls <code>setSizeInternal()</code> to set up the
+		 * <code>actualWidth</code> and <code>actualHeight</code> member
+		 * variables used for layout.</p>
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
@@ -646,6 +674,10 @@ package feathers.controls
 					const screen:IScreen = IScreen(this._previousScreenInTransition);
 					screen.screenID = null;
 					screen.owner = null;
+				}
+				if(this._autoSizeMode == AUTO_SIZE_MODE_CONTENT)
+				{
+					this._previousScreenInTransition.removeEventListener(FeathersEventType.RESIZE, activeScreen_resizeHandler);
 				}
 				this.removeChild(this._previousScreenInTransition, canBeDisposed);
 				this._previousScreenInTransition = null;
@@ -718,6 +750,18 @@ package feathers.controls
 		protected function removedFromStageHandler(event:Event):void
 		{
 			this.stage.removeEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function activeScreen_resizeHandler(event:Event):void
+		{
+			if(this._isValidating || this._autoSizeMode != AUTO_SIZE_MODE_CONTENT)
+			{
+				return;
+			}
+			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
 		/**

@@ -556,7 +556,12 @@ package feathers.layout
 			if(!this._useVirtualLayout || this._hasVariableItemDimensions ||
 				this._horizontalAlign != HORIZONTAL_ALIGN_JUSTIFY || isNaN(explicitWidth))
 			{
-				this.validateItems(items);
+				//if we have variable item dimensions and the alignment is
+				//justified, then we want to set the width of each item before
+				//validating because setting the width may cause the height to
+				//change, and that will invalidate the layout if it happens
+				//after validation
+				this.validateItems(items, this._horizontalAlign == HORIZONTAL_ALIGN_JUSTIFY ? explicitWidth : NaN);
 			}
 
 			this._discoveredItemsCache.length = 0;
@@ -858,11 +863,14 @@ package feathers.layout
 		 */
 		public function getVisibleIndicesAtScrollPosition(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int, result:Vector.<int> = null):Vector.<int>
 		{
-			if(!result)
+			if(result)
+			{
+				result.length = 0;
+			}
+			else
 			{
 				result = new <int>[];
 			}
-			result.length = 0;
 			var resultLastIndex:int = 0;
 			const visibleTypicalItemCount:int = Math.ceil(height / (this._typicalItemHeight + this._gap));
 			if(!this._hasVariableItemDimensions)
@@ -1052,8 +1060,9 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected function validateItems(items:Vector.<DisplayObject>):void
+		protected function validateItems(items:Vector.<DisplayObject>, justifyWidth:Number):void
 		{
+			const hasJustifyWidth:Boolean = !isNaN(justifyWidth);
 			const itemCount:int = items.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
@@ -1065,6 +1074,10 @@ package feathers.layout
 				if(!(item is IFeathersControl))
 				{
 					continue;
+				}
+				if(hasJustifyWidth)
+				{
+					item.width = justifyWidth;
 				}
 				IFeathersControl(item).validate();
 			}

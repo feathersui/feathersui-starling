@@ -19,9 +19,12 @@ package feathers.controls
 	import flash.events.SecurityErrorEvent;
 	import flash.geom.Matrix;
 	import flash.geom.Rectangle;
+	import flash.net.URLLoader;
+	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
 	import flash.system.ImageDecodingPolicy;
 	import flash.system.LoaderContext;
+	import flash.utils.ByteArray;
 
 	import starling.core.RenderSupport;
 	import starling.core.Starling;
@@ -47,8 +50,10 @@ package feathers.controls
 	[Event(name="error",type="starling.events.Event")]
 
 	/**
-	 * Displays an image, either from a <code>Texture</code> or loaded from a
-	 * URL.
+	 * Displays an image, either from an existing <code>Texture</code> object or
+	 * from an image file loaded with its URL. Supported image files include ATF
+	 * format and any bitmap formats that may be loaded by
+	 * <code>flash.display.Loader</code>, including JPG, GIF, and PNG.
 	 *
 	 * <p>The following example passes a URL to an image loader and listens for
 	 * its complete event:</p>
@@ -59,7 +64,7 @@ package feathers.controls
 	 * loader.addEventListener( Event.COMPLETE, loader_completeHandler );
 	 * this.addChild( loader );</listing>
 	 *
-	 * <p>The following example passes a texture to an image loader:</p>
+	 * <p>The following example passes an existing texture to an image loader:</p>
 	 *
 	 * <listing version="3.0">
 	 * var loader:ImageLoader = new ImageLoader();
@@ -86,8 +91,13 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private static const LOADER_CONTEXT:LoaderContext = new LoaderContext(true);
+		protected static const LOADER_CONTEXT:LoaderContext = new LoaderContext(true);
 		LOADER_CONTEXT.imageDecodingPolicy = ImageDecodingPolicy.ON_LOAD;
+
+		/**
+		 * @private
+		 */
+		protected static const ATF_FILE_EXTENSION:String = "atf";
 
 		/**
 		 * Constructor.
@@ -109,6 +119,12 @@ package feathers.controls
 		protected var loader:Loader;
 
 		/**
+		 * The internal <code>flash.net.URLLoader</code> used to load raw data
+		 * from URLs.
+		 */
+		protected var urlLoader:URLLoader;
+
+		/**
 		 * @private
 		 */
 		protected var _lastURL:String;
@@ -127,11 +143,16 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _texture:Texture;
-		
+
 		/**
 		 * @private
 		 */
 		protected var _textureBitmapData:BitmapData;
+
+		/**
+		 * @private
+		 */
+		protected var _textureRawData:ByteArray;
 
 		/**
 		 * @private
@@ -144,9 +165,10 @@ package feathers.controls
 		protected var _source:Object;
 
 		/**
-		 * The texture to display, or a URL to load the image from to create the
-		 * texture. Supports image files that may be loaded by
-		 * <code>flash.display.Loader</code>, including JPG, GIF, and PNG.
+		 * The <code>Texture</code> to display, or a URL pointing to an image
+		 * file. Supported image files include ATF format and any bitmap formats
+		 * that may be loaded by <code>flash.display.Loader</code>, including
+		 * JPG, GIF, and PNG.
 		 *
 		 * <p>In the following example, the image loader's source is set to a
 		 * texture:</p>
@@ -155,7 +177,7 @@ package feathers.controls
 		 * loader.source = Texture.fromBitmap( bitmap );</listing>
 		 *
 		 * <p>In the following example, the image loader's source is set to the
-		 * URL of an image:</p>
+		 * URL of a PNG image:</p>
 		 *
 		 * <listing version="3.0">
 		 * loader.source = "http://example.com/example.png";</listing>
@@ -163,6 +185,7 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/Loader.html
+		 * @see http://wiki.starling-framework.org/manual/atf_textures
 		 */
 		public function get source():Object
 		{
@@ -495,7 +518,12 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _pendingTexture:BitmapData;
+		protected var _pendingBitmapDataTexture:BitmapData;
+
+		/**
+		 * @private
+		 */
+		protected var _pendingRawTextureData:ByteArray;
 
 		/**
 		 * @private
@@ -546,11 +574,20 @@ package feathers.controls
 				return;
 			}
 			this._delayTextureCreation = value;
-			if(!this._delayTextureCreation && this._pendingTexture)
+			if(!this._delayTextureCreation)
 			{
-				const bitmapData:BitmapData = this._pendingTexture;
-				this._pendingTexture = null;
-				this.replaceTexture(bitmapData);
+				if(this._pendingBitmapDataTexture)
+				{
+					const bitmapData:BitmapData = this._pendingBitmapDataTexture;
+					this._pendingBitmapDataTexture = null;
+					this.replaceBitmapDataTexture(bitmapData);
+				}
+				if(this._pendingRawTextureData)
+				{
+					const rawData:ByteArray = this._pendingRawTextureData;
+					this._pendingRawTextureData = null;
+					this.replaceRawTextureData(rawData);
+				}
 			}
 		}
 
@@ -749,7 +786,7 @@ package feathers.controls
 				support.translateMatrix(-(Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx), -(Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty));
 			}
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -803,7 +840,20 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * If the component's dimensions have not been set explicitly, it will
+		 * measure its content and determine an ideal size for itself. If the
+		 * <code>explicitWidth</code> or <code>explicitHeight</code> member
+		 * variables are set, those value will be used without additional
+		 * measurement. If one is set, but not the other, the dimension with the
+		 * explicit value will not be measured, but the other non-explicit
+		 * dimension will still need measurement.
+		 *
+		 * <p>Calls <code>setSizeInternal()</code> to set up the
+		 * <code>actualWidth</code> and <code>actualHeight</code> member
+		 * variables used for layout.</p>
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
@@ -878,6 +928,21 @@ package feathers.controls
 				{
 					this._lastURL = sourceURL;
 
+					if(this.urlLoader)
+					{
+						this.urlLoader.removeEventListener(flash.events.Event.COMPLETE, rawDataLoader_completeHandler);
+						this.urlLoader.removeEventListener(IOErrorEvent.IO_ERROR, rawDataLoader_errorHandler);
+						this.urlLoader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, rawDataLoader_errorHandler);
+						try
+						{
+							this.urlLoader.close();
+						}
+						catch(error:Error)
+						{
+							//no need to do anything in response
+						}
+					}
+
 					if(this.loader)
 					{
 						this.loader.contentLoaderInfo.removeEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
@@ -892,14 +957,39 @@ package feathers.controls
 							//no need to do anything in response
 						}
 					}
-					else
+
+					if(sourceURL.toLowerCase().lastIndexOf(ATF_FILE_EXTENSION) == sourceURL.length - 3)
 					{
-						this.loader = new Loader();
+						if(this.loader)
+						{
+							this.loader = null;
+						}
+						if(!this.urlLoader)
+						{
+							this.urlLoader = new URLLoader();
+							this.urlLoader.dataFormat = URLLoaderDataFormat.BINARY;
+						}
+						this.urlLoader.addEventListener(flash.events.Event.COMPLETE, rawDataLoader_completeHandler);
+						this.urlLoader.addEventListener(IOErrorEvent.IO_ERROR, rawDataLoader_errorHandler);
+						this.urlLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, rawDataLoader_errorHandler);
+						this.urlLoader.load(new URLRequest(sourceURL));
+						return;
 					}
-					this.loader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
-					this.loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, loader_errorHandler);
-					this.loader.contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_errorHandler);
-					this.loader.load(new URLRequest(sourceURL), LOADER_CONTEXT);
+					else //not ATF
+					{
+						if(this.urlLoader)
+						{
+							this.urlLoader = null;
+						}
+						if(!this.loader)
+						{
+							this.loader = new Loader();
+						}
+						this.loader.contentLoaderInfo.addEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
+						this.loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, loader_errorHandler);
+						this.loader.contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_errorHandler);
+						this.loader.load(new URLRequest(sourceURL), LOADER_CONTEXT);
+					}
 				}
 				this.refreshCurrentTexture();
 			}
@@ -1001,7 +1091,7 @@ package feathers.controls
 			}
 			this.image.visible = true;
 		}
-		
+
 		/**
 		 * @private
 		 */
@@ -1013,19 +1103,29 @@ package feathers.controls
 				{
 					this._textureBitmapData.dispose();
 				}
+				if(this._textureRawData)
+				{
+					this._textureRawData.clear();
+				}
 				if(this._texture)
 				{
 					this._texture.dispose();
 				}
 			}
-			if(this._pendingTexture)
+			if(this._pendingBitmapDataTexture)
 			{
-				this._pendingTexture.dispose();
-				this._pendingTexture = null;
+				this._pendingBitmapDataTexture.dispose();
+			}
+			if(this._pendingRawTextureData)
+			{
+				this._pendingRawTextureData.clear();
 			}
 			this._currentTexture = null;
 			this._currentTextureFrame = null;
+			this._pendingBitmapDataTexture = null;
+			this._pendingRawTextureData = null;
 			this._textureBitmapData = null;
+			this._textureRawData = null;
 			this._texture = null;
 			this._isTextureOwner = false;
 		}
@@ -1033,11 +1133,13 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function replaceTexture(bitmapData:BitmapData):void
+		protected function replaceBitmapDataTexture(bitmapData:BitmapData):void
 		{
 			this._texture = Texture.fromBitmapData(bitmapData, false);
 			if(Starling.handleLostContext)
 			{
+				//we're saving it so that we can dispose it when we get a new
+				//texture or when we're disposed
 				this._textureBitmapData = bitmapData;
 			}
 			else
@@ -1055,6 +1157,30 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function replaceRawTextureData(rawData:ByteArray):void
+		{
+			this._texture = Texture.fromAtfData(rawData);
+			if(Starling.handleLostContext)
+			{
+				//we're saving it so that we can clear it when we get a new
+				//texture or when we're disposed
+				this._textureRawData = rawData;
+			}
+			else
+			{
+				//since Starling isn't handling the lost context, we don't need
+				//to save the raw texture data.
+				rawData.clear();
+			}
+			this._isTextureOwner = true;
+			this._isLoaded = true;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+			this.dispatchEventWith(starling.events.Event.COMPLETE);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function loader_completeHandler(event:flash.events.Event):void
 		{
 			const bitmap:Bitmap = Bitmap(this.loader.content);
@@ -1062,16 +1188,16 @@ package feathers.controls
 			this.loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, loader_errorHandler);
 			this.loader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_errorHandler);
 			this.loader = null;
-			
+
 			this.cleanupTexture();
 			const bitmapData:BitmapData = bitmap.bitmapData;
 			if(this._delayTextureCreation)
 			{
-				this._pendingTexture = bitmapData;
+				this._pendingBitmapDataTexture = bitmapData;
 			}
 			else
 			{
-				this.replaceTexture(bitmapData);
+				this.replaceBitmapDataTexture(bitmapData);
 			}
 		}
 
@@ -1084,7 +1210,44 @@ package feathers.controls
 			this.loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, loader_errorHandler);
 			this.loader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_errorHandler);
 			this.loader = null;
-			
+
+			this.cleanupTexture();
+			this.invalidate(INVALIDATION_FLAG_DATA);
+			this.dispatchEventWith(FeathersEventType.ERROR, false, event);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function rawDataLoader_completeHandler(event:flash.events.Event):void
+		{
+			const rawData:ByteArray = ByteArray(this.urlLoader.data);
+			this.urlLoader.removeEventListener(flash.events.Event.COMPLETE, rawDataLoader_completeHandler);
+			this.urlLoader.removeEventListener(IOErrorEvent.IO_ERROR, rawDataLoader_errorHandler);
+			this.urlLoader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, rawDataLoader_errorHandler);
+			this.urlLoader = null;
+
+			this.cleanupTexture();
+			if(this._delayTextureCreation)
+			{
+				this._pendingRawTextureData = rawData;
+			}
+			else
+			{
+				this.replaceRawTextureData(rawData);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function rawDataLoader_errorHandler(event:ErrorEvent):void
+		{
+			this.urlLoader.removeEventListener(flash.events.Event.COMPLETE, rawDataLoader_completeHandler);
+			this.urlLoader.removeEventListener(IOErrorEvent.IO_ERROR, rawDataLoader_errorHandler);
+			this.urlLoader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, rawDataLoader_errorHandler);
+			this.urlLoader = null;
+
 			this.cleanupTexture();
 			this.invalidate(INVALIDATION_FLAG_DATA);
 			this.dispatchEventWith(FeathersEventType.ERROR, false, event);

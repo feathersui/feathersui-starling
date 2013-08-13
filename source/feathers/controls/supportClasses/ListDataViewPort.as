@@ -42,8 +42,6 @@ package feathers.controls.supportClasses
 		private static const INVALIDATION_FLAG_ITEM_RENDERER_FACTORY:String = "itemRendererFactory";
 
 		private static const HELPER_POINT:Point = new Point();
-		private static const HELPER_BOUNDS:ViewPortBounds = new ViewPortBounds();
-		private static const HELPER_LAYOUT_RESULT:LayoutBoundsResult = new LayoutBoundsResult();
 		private static const HELPER_VECTOR:Vector.<int> = new <int>[];
 
 		public function ListDataViewPort()
@@ -54,6 +52,10 @@ package feathers.controls.supportClasses
 		}
 
 		private var touchPointID:int = -1;
+
+		private var _viewPortBounds:ViewPortBounds = new ViewPortBounds();
+
+		private var _layoutResult:LayoutBoundsResult = new LayoutBoundsResult();
 
 		private var _minVisibleWidth:Number = 0;
 
@@ -191,6 +193,7 @@ package feathers.controls.supportClasses
 			return this._contentY;
 		}
 
+		private var _typicalItemRenderer:IListItemRenderer;
 		private var _unrenderedData:Array = [];
 		private var _layoutItems:Vector.<DisplayObject> = new <DisplayObject>[];
 		private var _inactiveRenderers:Vector.<IListItemRenderer> = new <IListItemRenderer>[];
@@ -569,13 +572,16 @@ package feathers.controls.supportClasses
 			if(scrollInvalid || stylesInvalid || sizeInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
 			{
 				this._ignoreRendererResizing = true;
-				this._layout.layout(this._layoutItems, HELPER_BOUNDS, HELPER_LAYOUT_RESULT);
+				this._layout.layout(this._layoutItems, this._viewPortBounds, this._layoutResult);
 				this._ignoreRendererResizing = false;
-				this._contentX = HELPER_LAYOUT_RESULT.contentX;
-				this._contentY = HELPER_LAYOUT_RESULT.contentY;
-				this.setSizeInternal(HELPER_LAYOUT_RESULT.contentWidth, HELPER_LAYOUT_RESULT.contentHeight, false);
-				this.actualVisibleWidth = HELPER_LAYOUT_RESULT.viewPortWidth;
-				this.actualVisibleHeight = HELPER_LAYOUT_RESULT.viewPortHeight;
+				this._contentX = this._layoutResult.contentX;
+				this._contentY = this._layoutResult.contentY;
+				this.setSizeInternal(this._layoutResult.contentWidth, this._layoutResult.contentHeight, false);
+				this.actualVisibleWidth = this._layoutResult.viewPortWidth;
+				this.actualVisibleHeight = this._layoutResult.viewPortHeight;
+
+				//final validation to avoid juggler next frame issues
+				this.validateItemRenderers();
 			}
 		}
 		
@@ -584,11 +590,27 @@ package feathers.controls.supportClasses
 			Scroller(this.parent).invalidate(flag);
 		}
 
+		private function validateItemRenderers():void
+		{
+			var rendererCount:int = this._activeRenderers.length;
+			for(var i:int = 0; i < rendererCount; i++)
+			{
+				var renderer:IListItemRenderer = this._activeRenderers[i];
+				renderer.validate();
+			}
+		}
+
 		private function calculateTypicalValues():void
 		{
+			var typicalItemIsInDataProvider:Boolean = false;
 			var typicalItem:Object = this._typicalItem;
-			if(!typicalItem)
+			if(typicalItem)
 			{
+				typicalItemIsInDataProvider = this._dataProvider.getItemIndex(typicalItem) >= 0;
+			}
+			else
+			{
+				typicalItemIsInDataProvider = true;
 				if(this._dataProvider && this._dataProvider.length > 0)
 				{
 					typicalItem = this._dataProvider.getItemAt(0);
@@ -614,6 +636,23 @@ package feathers.controls.supportClasses
 			{
 				typicalRenderer = this.createRenderer(typicalItem, 0, true);
 			}
+
+			//get rid of the old one, if needed
+			if(this._typicalItemRenderer && (typicalItemIsInDataProvider || this._typicalItemRenderer != typicalRenderer))
+			{
+				this.destroyRenderer(this._typicalItemRenderer);
+				this._typicalItemRenderer = null;
+			}
+			//save it, if needed
+			if(!typicalItemIsInDataProvider)
+			{
+				this._typicalItemRenderer = typicalRenderer;
+				//we're going to keep it around to avoid extra allocation and
+				//garbage collection, but it'll be invisible and non-interactive
+				this._typicalItemRenderer.visible = false;
+				needsDestruction = false;
+			}
+
 			this.refreshOneItemRendererStyles(typicalRenderer);
 			if(typicalRenderer is FeathersControl)
 			{
@@ -683,15 +722,15 @@ package feathers.controls.supportClasses
 
 			this._layoutItems.length = 0;
 
-			HELPER_BOUNDS.x = HELPER_BOUNDS.y = 0;
-			HELPER_BOUNDS.scrollX = this._horizontalScrollPosition;
-			HELPER_BOUNDS.scrollY = this._verticalScrollPosition;
-			HELPER_BOUNDS.explicitWidth = this.explicitVisibleWidth;
-			HELPER_BOUNDS.explicitHeight = this.explicitVisibleHeight;
-			HELPER_BOUNDS.minWidth = this._minVisibleWidth;
-			HELPER_BOUNDS.minHeight = this._minVisibleHeight;
-			HELPER_BOUNDS.maxWidth = this._maxVisibleWidth;
-			HELPER_BOUNDS.maxHeight = this._maxVisibleHeight;
+			this._viewPortBounds.x = this._viewPortBounds.y = 0;
+			this._viewPortBounds.scrollX = this._horizontalScrollPosition;
+			this._viewPortBounds.scrollY = this._verticalScrollPosition;
+			this._viewPortBounds.explicitWidth = this.explicitVisibleWidth;
+			this._viewPortBounds.explicitHeight = this.explicitVisibleHeight;
+			this._viewPortBounds.minWidth = this._minVisibleWidth;
+			this._viewPortBounds.minHeight = this._minVisibleHeight;
+			this._viewPortBounds.maxWidth = this._maxVisibleWidth;
+			this._viewPortBounds.maxHeight = this._maxVisibleHeight;
 
 			this.findUnrenderedData();
 			this.recoverInactiveRenderers();
@@ -710,7 +749,7 @@ package feathers.controls.supportClasses
 				virtualLayout.typicalItemWidth = this._typicalItemWidth;
 				virtualLayout.typicalItemHeight = this._typicalItemHeight;
 				this._ignoreLayoutChanges = false;
-				virtualLayout.measureViewPort(itemCount, HELPER_BOUNDS, HELPER_POINT);
+				virtualLayout.measureViewPort(itemCount, this._viewPortBounds, HELPER_POINT);
 				virtualLayout.getVisibleIndicesAtScrollPosition(this._horizontalScrollPosition, this._verticalScrollPosition, HELPER_POINT.x, HELPER_POINT.y, itemCount, HELPER_VECTOR);
 			}
 
@@ -780,6 +819,7 @@ package feathers.controls.supportClasses
 					unrenderedDataLastIndex++;
 				}
 			}
+			HELPER_VECTOR.length = 0;
 		}
 
 		private function renderUnrenderedData():void

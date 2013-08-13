@@ -262,6 +262,9 @@ package feathers.examples.componentsExplorer
 
 			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
+				//we don't want the screens bleeding outside the navigator's
+				//bounds when a transition is active, so clip it.
+				this._navigator.clipContent = true;
 				this._menu = new MainMenuScreen();
 				for(var eventType:String in MAIN_MENU_EVENTS)
 				{

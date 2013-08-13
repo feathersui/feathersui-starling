@@ -16,6 +16,7 @@ package feathers.controls.text
 	import flash.events.Event;
 	import flash.events.FocusEvent;
 	import flash.events.KeyboardEvent;
+	import flash.events.SoftKeyboardEvent;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -32,6 +33,7 @@ package feathers.controls.text
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.events.Event;
+	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
 	import starling.utils.MatrixUtil;
 
@@ -65,6 +67,22 @@ package feathers.controls.text
 	 * @eventType feathers.events.FeathersEventType.FOCUS_OUT
 	 */
 	[Event(name="focusOut",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the soft keyboard is activated. Not all text editors will
+	 * activate a soft keyboard.
+	 *
+	 * @eventType feathers.events.FeathersEventType.SOFT_KEYBOARD_ACTIVATE
+	 */
+	[Event(name="softKeyboardActivate",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the soft keyboard is deactivated. Not all text editors
+	 * will activate a soft keyboard.
+	 *
+	 * @eventType feathers.events.FeathersEventType.SOFT_KEYBOARD_DEACTIVATE
+	 */
+	[Event(name="softKeyboardDeactivate",type="starling.events.Event")]
 
 	/**
 	 * A Feathers text editor that uses the native <code>StageText</code> class
@@ -137,6 +155,11 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _needsNewTexture:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _ignoreStageTextChanges:Boolean = false;
 
 		/**
@@ -202,11 +225,6 @@ package feathers.controls.text
 		 * @private
 		 */
 		protected var _stageTextIsComplete:Boolean = false;
-
-		/**
-		 * @private
-		 */
-		protected var _textSnapshotBitmapData:BitmapData;
 
 		/**
 		 * @private
@@ -963,21 +981,21 @@ package feathers.controls.text
 			if(positionInvalid || sizeInvalid || stylesInvalid || skinInvalid || stateInvalid)
 			{
 				this.refreshViewPort();
+				const viewPort:Rectangle = this.stageText.viewPort;
+				const textureRoot:ConcreteTexture = this.textSnapshot ? this.textSnapshot.texture.root : null;
+				this._needsNewTexture = this._needsNewTexture || !this.textSnapshot || viewPort.width != textureRoot.width || viewPort.height != textureRoot.height;
 			}
 
-			if(stylesInvalid || dataInvalid || sizeInvalid)
+			if(!this._stageTextHasFocus && (stylesInvalid || dataInvalid || sizeInvalid || this._needsNewTexture))
 			{
-				if(!this._stageTextHasFocus)
+				const hasText:Boolean = this._text.length > 0;
+				if(hasText)
 				{
-					const hasText:Boolean = this._text.length > 0;
-					if(hasText)
-					{
-						this.refreshSnapshot(sizeInvalid || !this._textSnapshotBitmapData);
-					}
-					if(this.textSnapshot)
-					{
-						this.textSnapshot.visible = hasText;
-					}
+					this.refreshSnapshot();
+				}
+				if(this.textSnapshot)
+				{
+					this.textSnapshot.visible = hasText;
 				}
 			}
 
@@ -985,7 +1003,20 @@ package feathers.controls.text
 		}
 
 		/**
-		 * @private
+		 * If the component's dimensions have not been set explicitly, it will
+		 * measure its content and determine an ideal size for itself. If the
+		 * <code>explicitWidth</code> or <code>explicitHeight</code> member
+		 * variables are set, those value will be used without additional
+		 * measurement. If one is set, but not the other, the dimension with the
+		 * explicit value will not be measured, but the other non-explicit
+		 * dimension will still need measurement.
+		 *
+		 * <p>Calls <code>setSizeInternal()</code> to set up the
+		 * <code>actualWidth</code> and <code>actualHeight</code> member
+		 * variables used for layout.</p>
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
@@ -1079,41 +1110,28 @@ package feathers.controls.text
 		 */
 		protected function texture_onRestore():void
 		{
-			this.refreshSnapshot(!this._textSnapshotBitmapData);
+			this.refreshSnapshot();
 		}
 
 		/**
 		 * @private
 		 */
-		protected function refreshSnapshot(needsNewBitmap:Boolean):void
+		protected function refreshSnapshot():void
 		{
-			if(needsNewBitmap)
-			{
-				const viewPort:Rectangle = this.stageText.viewPort;
-				if(viewPort.width == 0 || viewPort.height == 0)
-				{
-					return;
-				}
-				if(!this._textSnapshotBitmapData || this._textSnapshotBitmapData.width != viewPort.width || this._textSnapshotBitmapData.height != viewPort.height)
-				{
-					if(this._textSnapshotBitmapData)
-					{
-						this._textSnapshotBitmapData.dispose();
-					}
-					this._textSnapshotBitmapData = new BitmapData(viewPort.width, viewPort.height, true, 0x00ff00ff);
-				}
-			}
-
-			if(!this._textSnapshotBitmapData)
+			const viewPort:Rectangle = this.stageText.viewPort;
+			if(viewPort.width == 0 || viewPort.height == 0)
 			{
 				return;
 			}
-			this._textSnapshotBitmapData.fillRect(this._textSnapshotBitmapData.rect, 0x00ff00ff);
-			this.stageText.drawViewPortToBitmapData(this._textSnapshotBitmapData);
+
+			//StageText sucks because it requires that the BitmapData's width
+			//and height exactly match its view port width and height.
+			var bitmapData:BitmapData = new BitmapData(viewPort.width, viewPort.height, true, 0x00ff00ff);
+			this.stageText.drawViewPortToBitmapData(bitmapData);
 			var newTexture:Texture;
-			if(!this.textSnapshot || needsNewBitmap)
+			if(!this.textSnapshot || this._needsNewTexture)
 			{
-				newTexture = Texture.fromBitmapData(this._textSnapshotBitmapData, false, false, Starling.contentScaleFactor);
+				newTexture = Texture.fromBitmapData(bitmapData, false, false, Starling.contentScaleFactor);
 				newTexture.root.onRestore = texture_onRestore;
 			}
 			if(!this.textSnapshot)
@@ -1123,7 +1141,7 @@ package feathers.controls.text
 			}
 			else
 			{
-				if(needsNewBitmap)
+				if(this._needsNewTexture)
 				{
 					this.textSnapshot.texture.dispose();
 					this.textSnapshot.texture = newTexture;
@@ -1133,13 +1151,12 @@ package feathers.controls.text
 				{
 					//this is faster, if we haven't resized the bitmapdata
 					const existingTexture:Texture = this.textSnapshot.texture;
-					existingTexture.root.uploadBitmapData(this._textSnapshotBitmapData);
+					existingTexture.root.uploadBitmapData(bitmapData);
 				}
 			}
-
-			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-			this.textSnapshot.x = Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx;
-			this.textSnapshot.y = Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty;
+			bitmapData.dispose();
+			this.textSnapshot.visible = !this._stageTextHasFocus;
+			this._needsNewTexture = false;
 		}
 
 		/**
@@ -1194,12 +1211,6 @@ package feathers.controls.text
 				this.disposeStageText();
 			}
 
-			if(this._textSnapshotBitmapData)
-			{
-				this._textSnapshotBitmapData.dispose();
-				this._textSnapshotBitmapData = null;
-			}
-
 			if(this.textSnapshot)
 			{
 				//avoid the need to call dispose(). we'll create a new snapshot
@@ -1225,13 +1236,18 @@ package feathers.controls.text
 			this.stageText.removeEventListener(FocusEvent.FOCUS_IN, stageText_focusInHandler);
 			this.stageText.removeEventListener(FocusEvent.FOCUS_OUT, stageText_focusOutHandler);
 			this.stageText.removeEventListener(flash.events.Event.COMPLETE, stageText_completeHandler);
+			this.stageText.removeEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATE, stageText_softKeyboardActivateHandler);
+			this.stageText.removeEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_DEACTIVATE, stageText_softKeyboardDeactivateHandler);
 			this.stageText.stage = null;
 			this.stageText.dispose();
 			this.stageText = null;
 		}
 
 		/**
-		 * @private
+		 * Creates and adds the <code>stageText</code> instance.
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
 		 */
 		protected function createStageText():void
 		{
@@ -1256,6 +1272,8 @@ package feathers.controls.text
 			this.stageText.addEventListener(KeyboardEvent.KEY_UP, stageText_keyUpHandler);
 			this.stageText.addEventListener(FocusEvent.FOCUS_IN, stageText_focusInHandler);
 			this.stageText.addEventListener(FocusEvent.FOCUS_OUT, stageText_focusOutHandler);
+			this.stageText.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATE, stageText_softKeyboardActivateHandler);
+			this.stageText.addEventListener(SoftKeyboardEvent.SOFT_KEYBOARD_DEACTIVATE, stageText_softKeyboardDeactivateHandler);
 			this.stageText.addEventListener(flash.events.Event.COMPLETE, stageText_completeHandler);
 			this.invalidate();
 		}
@@ -1376,6 +1394,22 @@ package feathers.controls.text
 			{
 				event.preventDefault();
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function stageText_softKeyboardActivateHandler(event:SoftKeyboardEvent):void
+		{
+			this.dispatchEventWith(FeathersEventType.SOFT_KEYBOARD_ACTIVATE, true);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function stageText_softKeyboardDeactivateHandler(event:SoftKeyboardEvent):void
+		{
+			this.dispatchEventWith(FeathersEventType.SOFT_KEYBOARD_DEACTIVATE, true);
 		}
 	}
 }

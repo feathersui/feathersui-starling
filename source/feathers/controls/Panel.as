@@ -125,6 +125,13 @@ package feathers.controls
 		public static const INTERACTION_MODE_MOUSE:String = "mouse";
 
 		/**
+		 * @copy feathers.controls.Scroller#INTERACTION_MODE_TOUCH_AND_SCROLL_BARS
+		 *
+		 * @see feathers.controls.Scroller#interactionMode
+		 */
+		public static const INTERACTION_MODE_TOUCH_AND_SCROLL_BARS:String = "touchAndScrollBars";
+
+		/**
 		 * @private
 		 */
 		protected static const INVALIDATION_FLAG_HEADER_FACTORY:String = "headerFactory";
@@ -152,11 +159,21 @@ package feathers.controls
 
 		/**
 		 * The header sub-component.
+		 *
+		 * <p>For internal use in subclasses.</p>
+		 *
+		 * @see #headerFactory
+		 * @see #createHeader()
 		 */
 		protected var header:IFeathersControl;
 
 		/**
 		 * The footer sub-component.
+		 *
+		 * <p>For internal use in subclasses.</p>
+		 *
+		 * @see #footerFactory
+		 * @see #createFooter()
 		 */
 		protected var footer:IFeathersControl;
 
@@ -590,7 +607,7 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * @inheritDoc
 		 */
 		override protected function autoSizeIfNeeded():Boolean
 		{
@@ -653,7 +670,15 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * Creates and adds the <code>header</code> sub-component and
+		 * removes the old instance, if one exists.
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
+		 *
+		 * @see #header
+		 * @see #headerFactory
+		 * @see #customHeaderName
 		 */
 		protected function createHeader():void
 		{
@@ -674,7 +699,15 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * Creates and adds the <code>footer</code> sub-component and
+		 * removes the old instance, if one exists.
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
+		 *
+		 * @see #footer
+		 * @see #footerFactory
+		 * @see #customFooterName
 		 */
 		protected function createFooter():void
 		{

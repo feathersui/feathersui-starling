@@ -24,11 +24,21 @@ package feathers.controls.text
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.events.Event;
+	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
 	import starling.utils.getNextPowerOfTwo;
 
 	/**
-	 * Renders text with a native <code>flash.text.TextField</code>.
+	 * Renders text with a native <code>flash.text.TextField</code> and draws
+	 * it to <code>BitmapData</code> to convert to Starling textures. Textures
+	 * are completely managed by this component, and they will be automatically
+	 * disposed when the component is removed from the stage.
+	 *
+	 * <p>For longer passages of text, this component will stitch together
+	 * multiple individual textures both horizontally and vertically, as a grid,
+	 * if required. This may require quite a lot of texture memory, possibly
+	 * exceeding the limits of some mobile devices, so use this component with
+	 * caution when displaying a lot of text.</p>
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/text-renderers
 	 * @see flash.text.TextField
@@ -68,9 +78,10 @@ package feathers.controls.text
 		protected var textSnapshot:Image;
 
 		/**
-		 * @private
+		 * If multiple snapshots are needed due to texture size limits, the
+		 * snapshots appearing after the first are stored here.
 		 */
-		protected var _textSnapshotBitmapData:BitmapData;
+		protected var textSnapshots:Vector.<Image>;
 
 		/**
 		 * @private
@@ -95,7 +106,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _needsNewBitmap:Boolean = false;
+		protected var _needsNewTexture:Boolean = false;
 
 		/**
 		 * @private
@@ -614,6 +625,45 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _maxTextureDimensions:int = 2048;
+
+		/**
+		 * The maximum size of individual textures that are managed by this text
+		 * renderer. Must be a power of 2. A larger value will create fewer
+		 * individual textures, but a smaller value may use less overall texture
+		 * memory by incrementing over smaller powers of two.
+		 *
+		 * <p>In the following example, the maximum size of the textures is
+		 * changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.maxTextureDimensions = 4096;</listing>
+		 *
+		 * @default 2048
+		 */
+		public function get maxTextureDimensions():int
+		{
+			return this._maxTextureDimensions;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set maxTextureDimensions(value:int):void
+		{
+			value = getNextPowerOfTwo(value);
+			if(this._maxTextureDimensions == value)
+			{
+				return;
+			}
+			this._maxTextureDimensions = value;
+			this._needsNewTexture = true;
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			this.disposeContent();
@@ -768,7 +818,11 @@ package feathers.controls.text
 				//again, for some reason, it reports the correct width value.
 				var hackWorkaround:Number = this.textField.width;
 
-				newWidth = this.textField.width;
+				//we use Math.ceil() as another workaround. even though we're
+				//setting width to exact same value reported here when we turn
+				//on word wrap in a moment, sometimes the last character moves
+				//to the next line. Bumping up to a whole pixel seems to help.
+				newWidth = Math.ceil(this.textField.width);
 				if(newWidth < this._minWidth)
 				{
 					newWidth = this._minWidth;
@@ -784,7 +838,7 @@ package feathers.controls.text
 			var newHeight:Number = this.explicitHeight;
 			if(needsHeight)
 			{
-				newHeight = this.textField.height;
+				newHeight = Math.ceil(this.textField.height);
 				if(newHeight < this._minHeight)
 				{
 					newHeight = this._minHeight;
@@ -820,15 +874,32 @@ package feathers.controls.text
 			{
 				this.textField.width = this.actualWidth;
 				this.textField.height = this.actualHeight;
-				this._snapshotWidth = getNextPowerOfTwo(this.actualWidth * Starling.contentScaleFactor);
-				this._snapshotHeight = getNextPowerOfTwo(this.actualHeight * Starling.contentScaleFactor);
-				this._needsNewBitmap = this._needsNewBitmap || !this.textSnapshot || !this._textSnapshotBitmapData || this._snapshotWidth != this._textSnapshotBitmapData.width || this._snapshotHeight != this._textSnapshotBitmapData.height;
+				var rectangleSnapshotWidth:Number = this.actualWidth * Starling.contentScaleFactor;
+				if(rectangleSnapshotWidth > this._maxTextureDimensions)
+				{
+					this._snapshotWidth = int(rectangleSnapshotWidth / this._maxTextureDimensions) * this._maxTextureDimensions + getNextPowerOfTwo(rectangleSnapshotWidth % this._maxTextureDimensions);
+				}
+				else
+				{
+					this._snapshotWidth = getNextPowerOfTwo(rectangleSnapshotWidth);
+				}
+				var rectangleSnapshotHeight:Number = this.actualHeight * Starling.contentScaleFactor;
+				if(rectangleSnapshotHeight > this._maxTextureDimensions)
+				{
+					this._snapshotHeight = int(rectangleSnapshotHeight / this._maxTextureDimensions) * this._maxTextureDimensions + getNextPowerOfTwo(rectangleSnapshotHeight % this._maxTextureDimensions);
+				}
+				else
+				{
+					this._snapshotHeight = getNextPowerOfTwo(rectangleSnapshotHeight);
+				}
+				const textureRoot:ConcreteTexture = this.textSnapshot ? this.textSnapshot.texture.root : null;
+				this._needsNewTexture = this._needsNewTexture || !this.textSnapshot || this._snapshotWidth != textureRoot.width || this._snapshotHeight != textureRoot.height;
 			}
 
 			//instead of checking sizeInvalid, which will often be triggered by
 			//changing maxWidth or something for measurement, we check against
 			//the previous actualWidth/Height used for the snapshot.
-			if(stylesInvalid || dataInvalid || this._needsNewBitmap ||
+			if(stylesInvalid || dataInvalid || this._needsNewTexture ||
 				this.actualWidth != this._previousTextFieldWidth ||
 				this.actualHeight != this._previousTextFieldHeight)
 			{
@@ -849,7 +920,20 @@ package feathers.controls.text
 		}
 
 		/**
-		 * @private
+		 * If the component's dimensions have not been set explicitly, it will
+		 * measure its content and determine an ideal size for itself. If the
+		 * <code>explicitWidth</code> or <code>explicitHeight</code> member
+		 * variables are set, those value will be used without additional
+		 * measurement. If one is set, but not the other, the dimension with the
+		 * explicit value will not be measured, but the other non-explicit
+		 * dimension will still need measurement.
+		 *
+		 * <p>Calls <code>setSizeInternal()</code> to set up the
+		 * <code>actualWidth</code> and <code>actualHeight</code> member
+		 * variables used for layout.</p>
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
@@ -881,49 +965,128 @@ package feathers.controls.text
 			{
 				return;
 			}
-			if(this._needsNewBitmap || !this._textSnapshotBitmapData)
-			{
-				if(this._textSnapshotBitmapData)
-				{
-					this._textSnapshotBitmapData.dispose();
-				}
-				this._textSnapshotBitmapData = new BitmapData(this._snapshotWidth, this._snapshotHeight, true, 0x00ff00ff);
-			}
-			if(!this._textSnapshotBitmapData)
-			{
-				return;
-			}
 			HELPER_MATRIX.identity();
 			HELPER_MATRIX.scale(Starling.contentScaleFactor, Starling.contentScaleFactor);
-			this._textSnapshotBitmapData.fillRect(this._textSnapshotBitmapData.rect, 0x00ff00ff);
-			this._textSnapshotBitmapData.draw(this.textField, HELPER_MATRIX);
-			var newTexture:Texture;
-			if(!this.textSnapshot || this._needsNewBitmap)
+			var totalBitmapWidth:Number = this._snapshotWidth;
+			var totalBitmapHeight:Number = this._snapshotHeight;
+			var xPosition:Number = 0;
+			var yPosition:Number = 0;
+			var bitmapData:BitmapData;
+			var snapshotIndex:int = -1;
+			do
 			{
-				newTexture = Texture.fromBitmapData(this._textSnapshotBitmapData, false, false, Starling.contentScaleFactor);
-				newTexture.root.onRestore = texture_onRestore;
-			}
-			if(!this.textSnapshot)
-			{
-				this.textSnapshot = new Image(newTexture);
-				this.addChild(this.textSnapshot);
-			}
-			else
-			{
-				if(this._needsNewBitmap)
+				var currentBitmapWidth:Number = totalBitmapWidth;
+				if(currentBitmapWidth > this._maxTextureDimensions)
 				{
-					this.textSnapshot.texture.dispose();
-					this.textSnapshot.texture = newTexture;
-					this.textSnapshot.readjustSize();
+					currentBitmapWidth = this._maxTextureDimensions;
+				}
+				do
+				{
+					var currentBitmapHeight:Number = totalBitmapHeight;
+					if(currentBitmapHeight > this._maxTextureDimensions)
+					{
+						currentBitmapHeight = this._maxTextureDimensions;
+					}
+					if(!bitmapData || bitmapData.width != currentBitmapWidth || bitmapData.height != currentBitmapHeight)
+					{
+						if(bitmapData)
+						{
+							bitmapData.dispose();
+						}
+						bitmapData = new BitmapData(currentBitmapWidth, currentBitmapHeight, true, 0x00ff00ff);
+					}
+					else
+					{
+						//clear the bitmap data and reuse it
+						bitmapData.fillRect(bitmapData.rect, 0x00ff00ff);
+					}
+					HELPER_MATRIX.tx = -xPosition;
+					HELPER_MATRIX.ty = -yPosition;
+					bitmapData.draw(this.textField, HELPER_MATRIX);
+					var newTexture:Texture;
+					if(!this.textSnapshot || this._needsNewTexture)
+					{
+						newTexture = Texture.fromBitmapData(bitmapData, false, false, Starling.contentScaleFactor);
+						newTexture.root.onRestore = texture_onRestore;
+					}
+					var snapshot:Image = null;
+					if(snapshotIndex >= 0)
+					{
+						if(!this.textSnapshots)
+						{
+							this.textSnapshots = new <Image>[];
+						}
+						else if(this.textSnapshots.length > snapshotIndex)
+						{
+							snapshot = this.textSnapshots[snapshotIndex]
+						}
+					}
+					else
+					{
+						snapshot = this.textSnapshot;
+					}
+
+					if(!snapshot)
+					{
+						snapshot = new Image(newTexture);
+						this.addChild(snapshot);
+					}
+					else
+					{
+						if(this._needsNewTexture)
+						{
+							snapshot.texture.dispose();
+							snapshot.texture = newTexture;
+							snapshot.readjustSize();
+						}
+						else
+						{
+							//this is faster, if we haven't resized the bitmapdata
+							const existingTexture:Texture = snapshot.texture;
+							existingTexture.root.uploadBitmapData(bitmapData);
+						}
+					}
+					if(snapshotIndex >= 0)
+					{
+						this.textSnapshots[snapshotIndex] = snapshot;
+					}
+					else
+					{
+						this.textSnapshot = snapshot;
+					}
+					snapshot.x = xPosition;
+					snapshot.y = yPosition;
+					snapshotIndex++;
+					yPosition += currentBitmapHeight;
+					totalBitmapHeight -= currentBitmapHeight;
+				}
+				while(totalBitmapHeight > 0)
+				xPosition += currentBitmapWidth;
+				totalBitmapWidth -= currentBitmapWidth;
+				yPosition = 0;
+				totalBitmapHeight = this._snapshotHeight;
+			}
+			while(totalBitmapWidth > 0)
+			bitmapData.dispose();
+			if(this.textSnapshots)
+			{
+				var snapshotCount:int = this.textSnapshots.length;
+				for(var i:int = snapshotIndex; i < snapshotCount; i++)
+				{
+					snapshot = this.textSnapshots[i];
+					snapshot.texture.dispose();
+					snapshot.removeFromParent(true);
+				}
+				if(snapshotIndex == 0)
+				{
+					this.textSnapshots = null;
 				}
 				else
 				{
-					//this is faster, if we haven't resized the bitmapdata
-					const existingTexture:Texture = this.textSnapshot.texture;
-					existingTexture.root.uploadBitmapData(this._textSnapshotBitmapData);
+					this.textSnapshots.length = snapshotIndex;
 				}
 			}
-			this._needsNewBitmap = false;
+			this._needsNewTexture = false;
 		}
 
 		/**
@@ -931,25 +1094,28 @@ package feathers.controls.text
 		 */
 		protected function disposeContent():void
 		{
-			if(this._textSnapshotBitmapData)
-			{
-				this._textSnapshotBitmapData.dispose();
-				this._textSnapshotBitmapData = null;
-			}
-
 			if(this.textSnapshot)
 			{
-				//avoid the need to call dispose(). we'll create a new snapshot
-				//when the renderer is added to stage again.
 				this.textSnapshot.texture.dispose();
 				this.removeChild(this.textSnapshot, true);
 				this.textSnapshot = null;
+			}
+			if(this.textSnapshots)
+			{
+				var snapshotCount:int = this.textSnapshots.length;
+				for(var i:int = 0; i < snapshotCount; i++)
+				{
+					var snapshot:Image = this.textSnapshots[i];
+					snapshot.texture.dispose();
+					this.removeChild(snapshot, true);
+				}
+				this.textSnapshots = null;
 			}
 
 			this._previousTextFieldWidth = NaN;
 			this._previousTextFieldHeight = NaN;
 
-			this._needsNewBitmap = false;
+			this._needsNewTexture = false;
 			this._snapshotWidth = 0;
 			this._snapshotHeight = 0;
 		}
@@ -970,6 +1136,8 @@ package feathers.controls.text
 		{
 			this.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
 
+			//avoid the need to call dispose(). we'll create a new snapshot
+			//when the renderer is added to stage again.
 			this.disposeContent();
 		}
 
