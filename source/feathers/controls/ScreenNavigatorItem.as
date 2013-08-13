@@ -97,14 +97,17 @@ package feathers.controls
 				throw new IllegalOperationError("ScreenNavigatorItem \"screen\" must be a Class, a Function, or a Starling display object.");
 			}
 			
-			if(this.properties)
-			{
-				for(var property:String in this.properties)
-				{
-					screenInstance[property] = this.properties[property];
-				}
-			}
-			
+            if(this.properties)
+            {
+                for(var property:String in this.properties)
+                {
+                    if(Object(screenInstance).hasOwnProperty(property))
+                    {
+                        screenInstance[property] = this.properties[property];
+                    }
+                }
+            }
+
 			return screenInstance;
 		}
 	}
