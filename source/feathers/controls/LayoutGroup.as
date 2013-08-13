@@ -408,7 +408,7 @@ package feathers.controls
 		 */
 		protected function refreshClipRect():void
 		{
-			if(this._clipContent && this.actualWidth > 0 && this.actualHeight > 0)
+			if(this._clipContent)
 			{
 				if(!this.clipRect)
 				{
