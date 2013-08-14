@@ -4378,7 +4378,7 @@ package feathers.controls
 				this._touchPointID = -1;
 				return;
 			}
-			if(this._maxVerticalScrollPosition == 0)
+			if(this._maxVerticalScrollPosition == 0 || this._verticalScrollPolicy == SCROLL_POLICY_OFF)
 			{
 				return;
 			}
