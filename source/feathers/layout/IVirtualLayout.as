@@ -9,6 +9,8 @@ package feathers.layout
 {
 	import flash.geom.Point;
 
+	import starling.display.DisplayObject;
+
 	/**
 	 * A layout algorithm that supports virtualization of items so that only
 	 * the visible items need to be created. Useful in lists with dozens or
@@ -31,17 +33,44 @@ package feathers.layout
 		function set useVirtualLayout(value:Boolean):void;
 
 		/**
-		 * Used internally by a component, such as <code>List</code>, to provide
-		 * the width, in pixels, of a "typical" item that is used to virtually
-		 * fill in blanks for the layout.
+		 * Used internally by a component that supports virtualized layouts,
+		 * such as <code>List</code>, to provide a display object with
+		 * dimensions that represent a "typical" item in the layout. These
+		 * dimensions will be used to fill in blanks for the layout when an
+		 * item is virtual and isn't actually on the display list.
 		 *
-		 * <p>This property is meant to be set by the <code>List</code> or other
-		 * component that uses the virtual layout. If you're simply creating
-		 * a layout for a <code>List</code> or another component, do not use
-		 * this property. It is meant for developers creating custom components
-		 * only.</p>
+		 * <p>The <code>typicalItem</code> property is considered
+		 * exclusively internal to Feathers components like <code>List</code>
+		 * and other components that support layout virtualization. However,
+		 * the <code>typicalItemWidth</code> and <code>typicalItemHeight</code>
+		 * properties may be used anywhere and they take precedence over
+		 * <code>typicalItem</code>. <strong>If you are simply setting a layout
+		 * on a component, use <code>typicalItemWidth</code> and
+		 * <code>typicalItemHeight</code> instead of <code>typicalItem</code>.</strong></p>
 		 *
-		 * @see feathers.controls.List#typicalItem
+		 * @see #typicalItemWidth
+		 * @see #typicalItemHeight
+		 */
+		function get typicalItem():DisplayObject;
+
+		/**
+		 * @private
+		 */
+		function set typicalItem(value:DisplayObject):void;
+
+		/**
+		 * Used to provide the width, in pixels, of a "typical" item that is
+		 * used to virtually fill in blanks for the layout when an
+		 * item is virtual and isn't actually on the display list.
+		 *
+		 * <p>The related <code>typicalItem</code> property is considered
+		 * exclusively internal to Feathers components like <code>List</code>
+		 * and other components that support layout virtualization. However,
+		 * the <code>typicalItemWidth</code> and <code>typicalItemHeight</code>
+		 * properties may be used anywhere and they take precedence over
+		 * <code>typicalItem</code>.</p>
+		 *
+		 * @see #typicalItemHeight
 		 */
 		function get typicalItemWidth():Number;
 
@@ -51,17 +80,18 @@ package feathers.layout
 		function set typicalItemWidth(value:Number):void;
 
 		/**
-		 * Used internally by a component, such as <code>List</code>, to provide
-		 * the height, in pixels, of a "typical" item that is used to virtually
-		 * fill in blanks for the layout.
+		 * Used to provide the height, in pixels, of a "typical" item that is
+		 * used to virtually fill in blanks for the layout when an
+		 * item is virtual and isn't actually on the display list.
 		 *
-		 * <p>This property is meant to be set by the <code>List</code> or other
-		 * component that uses the virtual layout. If you're simply creating
-		 * a layout for a <code>List</code> or another component, do not use
-		 * this property. It is meant for developers creating custom components
-		 * only.</p>
+		 * <p>The related <code>typicalItem</code> property is considered
+		 * exclusively internal to Feathers components like <code>List</code>
+		 * and other components that support layout virtualization. However,
+		 * the <code>typicalItemWidth</code> and <code>typicalItemHeight</code>
+		 * properties may be used anywhere and they take precedence over
+		 * <code>typicalItem</code>.</p>
 		 *
-		 * @see feathers.controls.List#typicalItem
+		 * @see #typicalItemWidth
 		 */
 		function get typicalItemHeight():Number;
 
