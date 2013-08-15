@@ -670,10 +670,69 @@ package feathers.layout
 		/**
 		 * @private
 		 */
+		protected var _resetTypicalItemDimensionsOnMeasure:Boolean = false;
+
+		/**
+		 * If set to <code>true</code>, the width and height of the
+		 * <code>typicalItem</code> will be reset to <code>typicalItemWidth</code>
+		 * and <code>typicalItemHeight</code>, respectively, whenever the
+		 * typical item needs to be measured. The measured dimensions of the
+		 * typical item are used to fill in the blanks of a virtualized layout
+		 * for virtual items that don't have their own display objects to
+		 * measure yet.
+		 *
+		 * @default false
+		 *
+		 * @see #typicalItemWidth
+		 * @see #typicalItemHeight
+		 * @see #typicalItem
+		 */
+		public function get resetTypicalItemDimensionsOnMeasure():Boolean
+		{
+			return this._resetTypicalItemDimensionsOnMeasure;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set resetTypicalItemDimensionsOnMeasure(value:Boolean):void
+		{
+			if(this._resetTypicalItemDimensionsOnMeasure == value)
+			{
+				return;
+			}
+			this._resetTypicalItemDimensionsOnMeasure = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _typicalItemWidth:Number = NaN;
 
 		/**
-		 * @inheritDoc
+		 * Used to reset the width, in pixels, of the <code>typicalItem</code>
+		 * for measurement. The measured dimensions of the typical item are used
+		 * to fill in the blanks of a virtualized layout for virtual items that
+		 * don't have their own display objects to measure yet.
+		 *
+		 * <p>This value is only used when <code>resetTypicalItemDimensionsOnMeasure</code>
+		 * is set to <code>true</code>. If <code>resetTypicalItemDimensionsOnMeasure</code>
+		 * is set to <code>false</code>, this value will be ignored and the
+		 * <code>typicalItem</code> dimensions will not be reset before
+		 * measurement.</p>
+		 *
+		 * <p>If <code>typicalItemWidth</code> is set to <code>NaN</code>, the
+		 * typical item will auto-size itself to its preferred width. If you
+		 * pass a valid <code>Number</code> value, the typical item's width will
+		 * be set to a fixed size. May be used in combination with
+		 * <code>typicalItemHeight</code>.</p>
+		 *
+		 * @default NaN
+		 *
+		 * @see #resetTypicalItemDimensionsOnMeasure
+		 * @see #typicalItemHeight
+		 * @see #typicalItem
 		 */
 		public function get typicalItemWidth():Number
 		{
@@ -699,7 +758,28 @@ package feathers.layout
 		protected var _typicalItemHeight:Number = NaN;
 
 		/**
-		 * @inheritDoc
+		 * Used to reset the height, in pixels, of the <code>typicalItem</code>
+		 * for measurement. The measured dimensions of the typical item are used
+		 * to fill in the blanks of a virtualized layout for virtual items that
+		 * don't have their own display objects to measure yet.
+		 *
+		 * <p>This value is only used when <code>resetTypicalItemDimensionsOnMeasure</code>
+		 * is set to <code>true</code>. If <code>resetTypicalItemDimensionsOnMeasure</code>
+		 * is set to <code>false</code>, this value will be ignored and the
+		 * <code>typicalItem</code> dimensions will not be reset before
+		 * measurement.</p>
+		 *
+		 * <p>If <code>typicalItemHeight</code> is set to <code>NaN</code>, the
+		 * typical item will auto-size itself to its preferred height. If you
+		 * pass a valid <code>Number</code> value, the typical item's height will
+		 * be set to a fixed size. May be used in combination with
+		 * <code>typicalItemWidth</code>.</p>
+		 *
+		 * @default NaN
+		 *
+		 * @see #resetTypicalItemDimensionsOnMeasure
+		 * @see #typicalItemWidth
+		 * @see #typicalItem
 		 */
 		public function get typicalItemHeight():Number
 		{
@@ -1793,8 +1873,11 @@ package feathers.layout
 			{
 				return;
 			}
-			this._typicalItem.width = this._typicalItemWidth;
-			this._typicalItem.height = this._typicalItemHeight;
+			if(this._resetTypicalItemDimensionsOnMeasure)
+			{
+				this._typicalItem.width = this._typicalItemWidth;
+				this._typicalItem.height = this._typicalItemHeight;
+			}
 			if(this._typicalItem is IFeathersControl)
 			{
 				IFeathersControl(this._typicalItem).validate();

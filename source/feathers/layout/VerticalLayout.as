@@ -467,6 +467,10 @@ package feathers.layout
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @see #resetTypicalItemDimensionsOnMeasure
+		 * @see #typicalItemWidth
+		 * @see #typicalItemHeight
 		 */
 		public function get typicalItem():DisplayObject
 		{
@@ -489,10 +493,69 @@ package feathers.layout
 		/**
 		 * @private
 		 */
+		protected var _resetTypicalItemDimensionsOnMeasure:Boolean = false;
+
+		/**
+		 * If set to <code>true</code>, the width and height of the
+		 * <code>typicalItem</code> will be reset to <code>typicalItemWidth</code>
+		 * and <code>typicalItemHeight</code>, respectively, whenever the
+		 * typical item needs to be measured. The measured dimensions of the
+		 * typical item are used to fill in the blanks of a virtualized layout
+		 * for virtual items that don't have their own display objects to
+		 * measure yet.
+		 *
+		 * @default false
+		 *
+		 * @see #typicalItemWidth
+		 * @see #typicalItemHeight
+		 * @see #typicalItem
+		 */
+		public function get resetTypicalItemDimensionsOnMeasure():Boolean
+		{
+			return this._resetTypicalItemDimensionsOnMeasure;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set resetTypicalItemDimensionsOnMeasure(value:Boolean):void
+		{
+			if(this._resetTypicalItemDimensionsOnMeasure == value)
+			{
+				return;
+			}
+			this._resetTypicalItemDimensionsOnMeasure = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _typicalItemWidth:Number = NaN;
 
 		/**
-		 * @inheritDoc
+		 * Used to reset the width, in pixels, of the <code>typicalItem</code>
+		 * for measurement. The measured dimensions of the typical item are used
+		 * to fill in the blanks of a virtualized layout for virtual items that
+		 * don't have their own display objects to measure yet.
+		 *
+		 * <p>This value is only used when <code>resetTypicalItemDimensionsOnMeasure</code>
+		 * is set to <code>true</code>. If <code>resetTypicalItemDimensionsOnMeasure</code>
+		 * is set to <code>false</code>, this value will be ignored and the
+		 * <code>typicalItem</code> dimensions will not be reset before
+		 * measurement.</p>
+		 *
+		 * <p>If <code>typicalItemWidth</code> is set to <code>NaN</code>, the
+		 * typical item will auto-size itself to its preferred width. If you
+		 * pass a valid <code>Number</code> value, the typical item's width will
+		 * be set to a fixed size. May be used in combination with
+		 * <code>typicalItemHeight</code>.</p>
+		 *
+		 * @default NaN
+		 *
+		 * @see #resetTypicalItemDimensionsOnMeasure
+		 * @see #typicalItemHeight
+		 * @see #typicalItem
 		 */
 		public function get typicalItemWidth():Number
 		{
@@ -518,7 +581,28 @@ package feathers.layout
 		protected var _typicalItemHeight:Number = NaN;
 
 		/**
-		 * @inheritDoc
+		 * Used to reset the height, in pixels, of the <code>typicalItem</code>
+		 * for measurement. The measured dimensions of the typical item are used
+		 * to fill in the blanks of a virtualized layout for virtual items that
+		 * don't have their own display objects to measure yet.
+		 *
+		 * <p>This value is only used when <code>resetTypicalItemDimensionsOnMeasure</code>
+		 * is set to <code>true</code>. If <code>resetTypicalItemDimensionsOnMeasure</code>
+		 * is set to <code>false</code>, this value will be ignored and the
+		 * <code>typicalItem</code> dimensions will not be reset before
+		 * measurement.</p>
+		 *
+		 * <p>If <code>typicalItemHeight</code> is set to <code>NaN</code>, the
+		 * typical item will auto-size itself to its preferred height. If you
+		 * pass a valid <code>Number</code> value, the typical item's height will
+		 * be set to a fixed size. May be used in combination with
+		 * <code>typicalItemWidth</code>.</p>
+		 *
+		 * @default NaN
+		 *
+		 * @see #resetTypicalItemDimensionsOnMeasure
+		 * @see #typicalItemWidth
+		 * @see #typicalItem
 		 */
 		public function get typicalItemHeight():Number
 		{
@@ -585,7 +669,7 @@ package feathers.layout
 
 			if(this._useVirtualLayout)
 			{
-				this.prepareTypicalItem(explicitWidth);
+				this.prepareTypicalItem(explicitWidth - this._paddingLeft - this._paddingRight);
 				var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
 				var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
 			}
@@ -593,7 +677,7 @@ package feathers.layout
 			if(!this._useVirtualLayout || this._hasVariableItemDimensions ||
 				this._horizontalAlign != HORIZONTAL_ALIGN_JUSTIFY || isNaN(explicitWidth))
 			{
-				this.validateItems(items, explicitWidth);
+				this.validateItems(items, explicitWidth - this._paddingLeft - this._paddingRight);
 			}
 
 			this._discoveredItemsCache.length = 0;
@@ -611,15 +695,19 @@ package feathers.layout
 			{
 				var item:DisplayObject = items[i];
 				var iNormalized:int = i + indexOffset;
+				if(this._useVirtualLayout && this._hasVariableItemDimensions)
+				{
+					var cachedHeight:Number = this._heightCache[iNormalized];
+				}
 				if(this._useVirtualLayout && !item)
 				{
-					if(!this._hasVariableItemDimensions || isNaN(this._heightCache[iNormalized]))
+					if(!this._hasVariableItemDimensions || isNaN(cachedHeight))
 					{
 						positionY += calculatedTypicalItemHeight + this._gap;
 					}
 					else
 					{
-						positionY += this._heightCache[iNormalized] + this._gap;
+						positionY += cachedHeight + this._gap;
 					}
 				}
 				else
@@ -629,23 +717,24 @@ package feathers.layout
 						continue;
 					}
 					item.y = positionY;
+					var itemWidth:Number = item.width;
+					var itemHeight:Number = item.height;
 					if(this._useVirtualLayout)
 					{
 						if(this._hasVariableItemDimensions)
 						{
-							if(isNaN(this._heightCache[iNormalized]))
+							if(cachedHeight != itemHeight)
 							{
-								this._heightCache[iNormalized] = item.height;
+								this._heightCache[iNormalized] = itemHeight;
 								this.dispatchEventWith(Event.CHANGE);
 							}
 						}
 						else if(calculatedTypicalItemHeight >= 0)
 						{
-							item.height = calculatedTypicalItemHeight;
+							item.height = itemHeight = calculatedTypicalItemHeight;
 						}
 					}
-					positionY += item.height + this._gap;
-					var itemWidth:Number = item.width;
+					positionY += itemHeight + this._gap;
 					if(itemWidth > maxItemWidth)
 					{
 						maxItemWidth = itemWidth;
@@ -798,7 +887,7 @@ package feathers.layout
 
 			if(this._useVirtualLayout)
 			{
-				this.prepareTypicalItem(explicitWidth);
+				this.prepareTypicalItem(explicitWidth - this._paddingLeft - this._paddingRight);
 				var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
 				var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
 			}
@@ -919,7 +1008,7 @@ package feathers.layout
 				throw new IllegalOperationError("getVisibleIndicesAtScrollPosition() may be called only if useVirtualLayout is true.")
 			}
 
-			this.prepareTypicalItem(width);
+			this.prepareTypicalItem(width - this._paddingLeft - this._paddingRight);
 			var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
 			var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
 
@@ -1046,7 +1135,7 @@ package feathers.layout
 
 			if(this._useVirtualLayout)
 			{
-				this.prepareTypicalItem(width);
+				this.prepareTypicalItem(width - this._paddingLeft - this._paddingRight);
 				var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
 				var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
 			}
@@ -1072,32 +1161,40 @@ package feathers.layout
 			{
 				var item:DisplayObject = items[i];
 				var iNormalized:int = i + startIndexOffset;
+				if(this._useVirtualLayout && this._hasVariableItemDimensions)
+				{
+					var cachedHeight:Number = this._heightCache[iNormalized];
+				}
 				if(this._useVirtualLayout && !item)
 				{
-					if(!this._hasVariableItemDimensions || isNaN(this._heightCache[iNormalized]))
+					if(!this._hasVariableItemDimensions || isNaN(cachedHeight))
 					{
 						lastHeight = calculatedTypicalItemHeight;
 					}
 					else
 					{
-						lastHeight = this._heightCache[iNormalized];
+						lastHeight = cachedHeight;
 					}
 				}
 				else
 				{
-					if(this._hasVariableItemDimensions)
+					var itemHeight:Number = item.height;
+					if(this._useVirtualLayout)
 					{
-						if(isNaN(this._heightCache[iNormalized]))
+						if(this._hasVariableItemDimensions)
 						{
-							this._heightCache[iNormalized] = item.height;
-							this.dispatchEventWith(Event.CHANGE);
+							if(itemHeight != cachedHeight)
+							{
+								this._heightCache[iNormalized] = itemHeight;
+								this.dispatchEventWith(Event.CHANGE);
+							}
+						}
+						else if(calculatedTypicalItemHeight >= 0)
+						{
+							item.height = itemHeight = calculatedTypicalItemHeight;
 						}
 					}
-					else if(calculatedTypicalItemHeight >= 0)
-					{
-						item.height = calculatedTypicalItemHeight;
-					}
-					lastHeight = item.height;
+					lastHeight = itemHeight;
 				}
 				positionY += lastHeight + this._gap;
 			}
@@ -1119,13 +1216,13 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected function validateItems(items:Vector.<DisplayObject>, explicitWidth:Number):void
+		protected function validateItems(items:Vector.<DisplayObject>, justifyWidth:Number):void
 		{
 			//if the alignment is justified, then we want to set the width of
 			//each item before validating because setting one dimension may
 			//cause the other dimension to change, and that will invalidate the
 			//layout if it happens after validation, causing more invalidation
-			var mustSetExplicitWidth:Boolean = this._horizontalAlign == HORIZONTAL_ALIGN_JUSTIFY && !isNaN(explicitWidth);
+			var mustSetJustifyWidth:Boolean = this._horizontalAlign == HORIZONTAL_ALIGN_JUSTIFY && !isNaN(justifyWidth);
 
 			var itemCount:int = items.length;
 			for(var i:int = 0; i < itemCount; i++)
@@ -1135,9 +1232,9 @@ package feathers.layout
 				{
 					continue;
 				}
-				if(mustSetExplicitWidth)
+				if(mustSetJustifyWidth)
 				{
-					item.width = explicitWidth;
+					item.width = justifyWidth;
 				}
 				if(item is IFeathersControl)
 				{
@@ -1149,21 +1246,24 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected function prepareTypicalItem(explicitWidth:Number):void
+		protected function prepareTypicalItem(justifyWidth:Number):void
 		{
 			if(!this._typicalItem)
 			{
 				return;
 			}
-			if(this._horizontalAlign == HORIZONTAL_ALIGN_JUSTIFY && !isNaN(explicitWidth))
+			if(this._horizontalAlign == HORIZONTAL_ALIGN_JUSTIFY && !isNaN(justifyWidth))
 			{
-				this._typicalItem.width = explicitWidth;
+				this._typicalItem.width = justifyWidth;
 			}
-			else
+			else if(this._resetTypicalItemDimensionsOnMeasure)
 			{
 				this._typicalItem.width = this._typicalItemWidth;
 			}
-			this._typicalItem.height = this._typicalItemHeight;
+			if(this._resetTypicalItemDimensionsOnMeasure)
+			{
+				this._typicalItem.height = this._typicalItemHeight;
+			}
 			if(this._typicalItem is IFeathersControl)
 			{
 				IFeathersControl(this._typicalItem).validate();
