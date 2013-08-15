@@ -23,6 +23,8 @@ package feathers.controls.supportClasses
 	import feathers.layout.LayoutBoundsResult;
 	import feathers.layout.ViewPortBounds;
 
+	import flash.errors.IllegalOperationError;
+
 	import flash.geom.Point;
 	import flash.utils.Dictionary;
 
@@ -193,6 +195,7 @@ package feathers.controls.supportClasses
 			return this._contentY;
 		}
 
+		private var _typicalItemIsInDataProvider:Boolean = false;
 		private var _typicalItemRenderer:IListItemRenderer;
 		private var _unrenderedData:Array = [];
 		private var _layoutItems:Vector.<DisplayObject> = new <DisplayObject>[];
@@ -617,23 +620,25 @@ package feathers.controls.supportClasses
 		private function refreshLayoutTypicalItem():void
 		{
 			var virtualLayout:IVirtualLayout = this._layout as IVirtualLayout;
+
 			if(!virtualLayout || !virtualLayout.useVirtualLayout)
 			{
-				if(this._typicalItemRenderer)
+				//the old layout was virtual, but this one isn't
+				if(!this._typicalItemIsInDataProvider && this._typicalItemRenderer)
 				{
-					//the old layout was virtual, but this one isn't
+					//it's safe to destroy this renderer
 					this.destroyRenderer(this._typicalItemRenderer);
 					this._typicalItemRenderer = null;
 				}
 				return;
 			}
 			var typicalItemIndex:int = 0;
-			var typicalItemIsInDataProvider:Boolean = false;
+			var newTypicalItemIsInDataProvider:Boolean = false;
 			var typicalItem:Object = this._typicalItem;
 			if(typicalItem)
 			{
 				typicalItemIndex = this._dataProvider.getItemIndex(typicalItem);
-				typicalItemIsInDataProvider = typicalItemIndex >= 0;
+				newTypicalItemIsInDataProvider = typicalItemIndex >= 0;
 				if(typicalItemIndex < 0)
 				{
 					typicalItemIndex = 0;
@@ -641,7 +646,7 @@ package feathers.controls.supportClasses
 			}
 			else
 			{
-				typicalItemIsInDataProvider = true;
+				newTypicalItemIsInDataProvider = true;
 				if(this._dataProvider && this._dataProvider.length > 0)
 				{
 					typicalItem = this._dataProvider.getItemAt(0);
@@ -654,21 +659,17 @@ package feathers.controls.supportClasses
 			}
 
 			var typicalRenderer:IListItemRenderer = IListItemRenderer(this._rendererMap[typicalItem]);
-			if(!typicalRenderer && !typicalItemIsInDataProvider && this._typicalItemRenderer)
+			if(!typicalRenderer && !newTypicalItemIsInDataProvider && !this._typicalItemIsInDataProvider && this._typicalItemRenderer)
 			{
-				//reuse the old one
+				//can use reuse the old item renderer instance
 				typicalRenderer = this._typicalItemRenderer;
 				typicalRenderer.data = typicalItem;
+				typicalRenderer.index = typicalItemIndex;
 			}
 			if(!typicalRenderer)
 			{
-				typicalRenderer = this.createRenderer(typicalItem, typicalItemIndex, !typicalItemIsInDataProvider);
-				if(!typicalItemIsInDataProvider)
-				{
-					typicalRenderer.visible = false;
-					this._typicalItemRenderer = typicalRenderer;
-				}
-				else if(this._typicalItemRenderer)
+				typicalRenderer = this.createRenderer(typicalItem, typicalItemIndex, !newTypicalItemIsInDataProvider);
+				if(!this._typicalItemIsInDataProvider && this._typicalItemRenderer)
 				{
 					//get rid of the old one if it isn't needed anymore
 					this.destroyRenderer(this._typicalItemRenderer);
@@ -678,19 +679,15 @@ package feathers.controls.supportClasses
 
 			this.refreshOneItemRendererStyles(typicalRenderer);
 			virtualLayout.typicalItem = DisplayObject(typicalRenderer);
+			this._typicalItemRenderer = typicalRenderer;
+			this._typicalItemIsInDataProvider = newTypicalItemIsInDataProvider;
 
-			if(typicalItemIsInDataProvider)
+			//if we called createRenderer() above, we may have moved a renderer
+			//to the active renderers. we want to put it back in the inactive
+			//renderers so that later code can grab it from there
+			if(this._activeRenderers.length > 0)
 			{
-				var index:int = this._activeRenderers.indexOf(typicalRenderer);
-				if(index >= 0)
-				{
-					this._activeRenderers.splice(index, 1);
-				}
-				index = this._inactiveRenderers.indexOf(typicalRenderer);
-				if(index < 0)
-				{
-					this._inactiveRenderers[this._inactiveRenderers.length] = typicalRenderer;
-				}
+				this._activeRenderers.shift();
 			}
 		}
 
@@ -756,6 +753,28 @@ package feathers.controls.supportClasses
 			{
 				this.recoverInactiveRenderers();
 				this.freeInactiveRenderers();
+				if(this._typicalItemRenderer)
+				{
+					if(this._typicalItemIsInDataProvider)
+					{
+						delete this._rendererMap[this._typicalItemRenderer];
+					}
+					this.destroyRenderer(this._typicalItemRenderer);
+					this._typicalItemRenderer = null;
+					this._typicalItemIsInDataProvider = false;
+				}
+			}
+
+			if(this._typicalItemIsInDataProvider && this._typicalItemRenderer)
+			{
+				//this renderer is special and doesn't need to appear in the
+				//inactive renderers cache. in fact, if it did, it could be
+				//reused for other data, which we definitely don't want!
+				var index:int = this._inactiveRenderers.indexOf(this._typicalItemRenderer);
+				if(index >= 0)
+				{
+					this._inactiveRenderers.splice(index, 1);
+				}
 			}
 
 			this._layoutItems.length = 0;
@@ -835,13 +854,48 @@ package feathers.controls.supportClasses
 					renderer.index = index;
 					this._activeRenderers[activeRenderersLastIndex] = renderer;
 					activeRenderersLastIndex++;
-					this._inactiveRenderers[this._inactiveRenderers.indexOf(renderer)] = null;
+					var inactiveIndex:int = this._inactiveRenderers.indexOf(renderer);
+					if(inactiveIndex >= 0)
+					{
+						this._inactiveRenderers[inactiveIndex] = null;
+					}
+					else if(renderer != this._typicalItemRenderer)
+					{
+						//the typicalItemRenderer may not be in the inactiveRenderers
+						throw new IllegalOperationError("This List is in an unrecoverable state.");
+					}
 					this._layoutItems[index + this._layoutIndexOffset] = DisplayObject(renderer);
 				}
 				else
 				{
 					this._unrenderedData[unrenderedDataLastIndex] = item;
 					unrenderedDataLastIndex++;
+				}
+			}
+			//update the typical item renderer's visibility
+			if(this._typicalItemRenderer)
+			{
+				if(useVirtualLayout && this._typicalItemIsInDataProvider)
+				{
+					index = HELPER_VECTOR.indexOf(this._typicalItemRenderer.index);
+					if(index >= 0)
+					{
+						this._typicalItemRenderer.visible = true;
+					}
+					else
+					{
+						this._typicalItemRenderer.visible = false;
+
+						//uncomment these lines to see a hidden typical item for
+						//debugging purposes...
+						/*this._typicalItemRenderer.visible = true;
+						this._typicalItemRenderer.x = this._horizontalScrollPosition;
+						this._typicalItemRenderer.y = this._verticalScrollPosition;*/
+					}
+				}
+				else
+				{
+					this._typicalItemRenderer.visible = this._typicalItemIsInDataProvider;
 				}
 			}
 			HELPER_VECTOR.length = 0;
