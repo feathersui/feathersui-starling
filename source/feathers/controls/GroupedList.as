@@ -1435,43 +1435,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _typicalHeader:Object = null;
-
-		/**
-		 * Used to auto-size the grouped list. If the list's width or height is
-		 * <code>NaN</code>, the grouped list will try to automatically pick an
-		 * ideal size. This data is used in that process to create a sample
-		 * header renderer.
-		 *
-		 * <p>The following example provides a typical header:</p>
-		 *
-		 * <listing version="3.0">
-		 * list.typicalHeader = { text: "A typical header" };
-		 * list.headerRendererProperties.contentLabelField = "text";</listing>
-		 *
-		 * @default null
-		 */
-		public function get typicalHeader():Object
-		{
-			return this._typicalHeader;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set typicalHeader(value:Object):void
-		{
-			if(this._typicalHeader == value)
-			{
-				return;
-			}
-			this._typicalHeader = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
 		protected var _headerRendererName:String = DEFAULT_CHILD_NAME_HEADER_RENDERER;
 
 		/**
@@ -1680,43 +1643,6 @@ package feathers.controls
 			}
 
 			this._footerRendererFactory = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _typicalFooter:Object = null;
-
-		/**
-		 * Used to auto-size the grouped list. If the grouped list's width or
-		 * height is <code>NaN</code>, the grouped list will try to
-		 * automatically pick an ideal size. This data is used in that process
-		 * to create a sample footer renderer.
-		 *
-		 * <p>The following example provides a typical footer:</p>
-		 *
-		 * <listing version="3.0">
-		 * list.typicalHeader = { text: "A typical footer" };
-		 * list.footerRendererProperties.contentLabelField = "text";</listing>
-		 *
-		 * @default null
-		 */
-		public function get typicalFooter():Object
-		{
-			return this._typicalFooter;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set typicalFooter(value:Object):void
-		{
-			if(this._typicalFooter == value)
-			{
-				return;
-			}
-			this._typicalFooter = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -2229,12 +2155,12 @@ package feathers.controls
 			this.dataViewPort.isSelectable = this._isSelectable;
 			this.dataViewPort.setSelectedLocation(this._selectedGroupIndex, this._selectedItemIndex);
 			this.dataViewPort.dataProvider = this._dataProvider;
+			this.dataViewPort.typicalItem = this._typicalItem;
 
 			this.dataViewPort.itemRendererType = this._itemRendererType;
 			this.dataViewPort.itemRendererFactory = this._itemRendererFactory;
 			this.dataViewPort.itemRendererProperties = this._itemRendererProperties;
 			this.dataViewPort.itemRendererName = this._itemRendererName;
-			this.dataViewPort.typicalItem = this._typicalItem;
 
 			this.dataViewPort.firstItemRendererType = this._firstItemRendererType;
 			this.dataViewPort.firstItemRendererFactory = this._firstItemRendererFactory;
@@ -2252,13 +2178,11 @@ package feathers.controls
 			this.dataViewPort.headerRendererFactory = this._headerRendererFactory;
 			this.dataViewPort.headerRendererProperties = this._headerRendererProperties;
 			this.dataViewPort.headerRendererName = this._headerRendererName;
-			this.dataViewPort.typicalHeader = this._typicalHeader;
 
 			this.dataViewPort.footerRendererType = this._footerRendererType;
 			this.dataViewPort.footerRendererFactory = this._footerRendererFactory;
 			this.dataViewPort.footerRendererProperties = this._footerRendererProperties;
 			this.dataViewPort.footerRendererName = this._footerRendererName;
-			this.dataViewPort.typicalFooter = this._typicalFooter;
 
 			this.dataViewPort.layout = this._layout;
 		}
