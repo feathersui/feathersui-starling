@@ -14,6 +14,7 @@ package feathers.controls
 	import feathers.core.FeathersControl;
 	import feathers.core.PropertyProxy;
 	import feathers.data.ListCollection;
+	import feathers.events.FeathersEventType;
 	import feathers.system.DeviceCapabilities;
 
 	import starling.core.Starling;
@@ -162,16 +163,6 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _buttonTouchPointID:int = -1;
-
-		/**
-		 * @private
-		 */
-		protected var _listTouchPointID:int = -1;
-
-		/**
-		 * @private
-		 */
-		protected var _hasBeenScrolled:Boolean = false;
 		
 		/**
 		 * @private
@@ -995,7 +986,6 @@ package feathers.controls
 			if(listFactoryInvalid || dataInvalid)
 			{
 				this.list.dataProvider = this._dataProvider;
-				this._hasBeenScrolled = false;
 			}
 			
 			if(buttonFactoryInvalid || listFactoryInvalid || stateInvalid)
@@ -1103,9 +1093,9 @@ package feathers.controls
 			const listName:String = this._customListName != null ? this._customListName : this.listName;
 			this.list = List(factory());
 			this.list.nameList.add(listName);
-			this.list.addEventListener(Event.SCROLL, list_scrollHandler);
 			this.list.addEventListener(Event.CHANGE, list_changeHandler);
-			this.list.addEventListener(TouchEvent.TOUCH, list_touchHandler);
+			this.list.addEventListener(FeathersEventType.RENDERER_ADD, list_rendererAddHandler);
+			this.list.addEventListener(FeathersEventType.RENDERER_REMOVE, list_rendererRemoveHandler);
 		}
 		
 		/**
@@ -1192,8 +1182,6 @@ package feathers.controls
 			this._popUpContentManager.open(this.list, this);
 			this.list.scrollToDisplayIndex(this._selectedIndex);
 			this.list.validate();
-
-			this._hasBeenScrolled = false;
 		}
 		
 		/**
@@ -1203,17 +1191,6 @@ package feathers.controls
 		{
 			this.selectedIndex = this.list.selectedIndex;
 		}
-		
-		/**
-		 * @private
-		 */
-		protected function list_scrollHandler(event:Event):void
-		{
-			if(this._listTouchPointID >= 0)
-			{
-				this._hasBeenScrolled = true;
-			}
-		}
 
 		/**
 		 * @private
@@ -1221,7 +1198,6 @@ package feathers.controls
 		protected function removedFromStageHandler(event:Event):void
 		{
 			this._buttonTouchPointID = -1;
-			this._listTouchPointID = -1;
 		}
 
 		/**
@@ -1273,71 +1249,33 @@ package feathers.controls
 			}
 			HELPER_TOUCHES_VECTOR.length = 0;
 		}
-		
+
 		/**
 		 * @private
 		 */
-		protected function list_touchHandler(event:TouchEvent):void
+		protected function list_rendererAddHandler(event:Event, renderer:IListItemRenderer):void
+		{
+			renderer.addEventListener(Event.TRIGGERED, renderer_triggeredHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function list_rendererRemoveHandler(event:Event, renderer:IListItemRenderer):void
+		{
+			renderer.removeEventListener(Event.TRIGGERED, renderer_triggeredHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function renderer_triggeredHandler(event:Event):void
 		{
 			if(!this._isEnabled)
 			{
-				this._listTouchPointID = -1;
 				return;
 			}
-			const touches:Vector.<Touch> = event.getTouches(this.list, null, HELPER_TOUCHES_VECTOR);
-			if(touches.length == 0)
-			{
-				HELPER_TOUCHES_VECTOR.length = 0;
-				return;
-			}
-			if(this._listTouchPointID >= 0)
-			{
-				var touch:Touch;
-				for each(var currentTouch:Touch in touches)
-				{
-					if(currentTouch.id == this._listTouchPointID)
-					{
-						touch = currentTouch;
-						break;
-					}
-				}
-				if(!touch)
-				{
-					HELPER_TOUCHES_VECTOR.length = 0;
-					return;
-				}
-				if(touch.phase == TouchPhase.ENDED)
-				{
-					if(!this._hasBeenScrolled)
-					{
-						var target:DisplayObject = DisplayObject(event.target);
-						do
-						{
-							if(target is IListItemRenderer)
-							{
-								this.closePopUpList();
-								break;
-							}
-							target = target.parent;
-						}
-						while(target)
-					}
-					this._listTouchPointID = -1;
-				}
-			}
-			else
-			{
-				for each(touch in touches)
-				{
-					if(touch.phase == TouchPhase.BEGAN)
-					{
-						this._listTouchPointID = touch.id;
-						this._hasBeenScrolled = false;
-						break;
-					}
-				}
-			}
-			HELPER_TOUCHES_VECTOR.length = 0;
+			this.closePopUpList();
 		}
 	}
 }
