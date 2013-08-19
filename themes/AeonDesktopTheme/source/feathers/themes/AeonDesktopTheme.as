@@ -114,7 +114,7 @@ package feathers.themes
 
 		protected static const BACKGROUND_COLOR:uint = 0x869CA7;
 		protected static const PRIMARY_TEXT_COLOR:uint = 0x0B333C;
-		protected static const DISABLED_TEXT_COLOR:uint = 0xAAB3B3;
+		protected static const DISABLED_TEXT_COLOR:uint = 0x5B6770;
 
 		protected static function verticalScrollBarFactory():ScrollBar
 		{
