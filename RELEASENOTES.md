@@ -2,6 +2,31 @@
 
 Noteworthy changes in official releases of [Feathers](http://feathersui.com/).
 
+## 1.1.1
+
+This release includes minor updates to support Starling Framework 1.4 and a few
+minor bug fixes.
+
+* Switches to Starling's implementation of the `clipRect` property.
+* Uses Texture onRestore for internally managed textures, like in text controls.
+* StageTextTextEditor: fix for displayAsPassword clearing the text.
+* Panel: won't scroll if mouse wheel or touch occurs in header or footer.
+* AeonDesktopTheme: uses a better disabled text color.
+* SmartDisplayObjectStateValueSelector: properly supports uint color value of 0.
+* Item Renderers: smarter handling of accessory resizing.
+* Item Renderers: better measurement to account for NaN.
+* Item Renderers: properly checks for _data, in addition to _owner, in commitData().
+* Radio: better handling of setting toggleGroup to avoid accidentally adding to defaultRadioGroup.
+* Scroll bars: better isEnabled handling.
+* TextInput: better handling of focus when not visible.
+* TextInput: better prompt handling.
+* TextFieldTextEditor: snapshot is properly hidden when text is cleared.
+* ButtonGroup: properly resizes when data provider changes.
+* GroupedList: requests proper typical item from data provider.
+* ScrollText: better padding getter.
+* PickerList: closes pop-up list on Event.TRIGGERED.
+* TiledRowsLayout, TiledColumnsLayout: fixed manageVisibility implementation.
+
 ## 1.1.0
 
 * New Beta Component: NumericStepper. Add and subtract from a numeric value with buttons. Optional text editing.
