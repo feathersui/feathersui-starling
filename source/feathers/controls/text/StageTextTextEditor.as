@@ -13,7 +13,6 @@ package feathers.controls.text
 	import feathers.text.StageTextField;
 
 	import flash.display.BitmapData;
-	import flash.display3D.textures.Texture;
 	import flash.events.Event;
 	import flash.events.FocusEvent;
 	import flash.events.KeyboardEvent;
@@ -139,6 +138,16 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _needsNewTexture:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected var _ignoreStageTextChanges:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _text:String = "";
 
 		/**
@@ -197,11 +206,6 @@ package feathers.controls.text
 		 * @private
 		 */
 		protected var _stageTextIsComplete:Boolean = false;
-
-		/**
-		 * @private
-		 */
-		protected var _textSnapshotBitmapData:BitmapData;
 
 		/**
 		 * @private
@@ -841,6 +845,8 @@ package feathers.controls.text
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 
+			const oldIgnoreStageTextChanges:Boolean = this._ignoreStageTextChanges;
+			this._ignoreStageTextChanges = true;
 			if(stylesInvalid)
 			{
 				this.refreshStageTextProperties();
@@ -859,6 +865,7 @@ package feathers.controls.text
 				}
 				this._measureTextField.text = this.stageText.text;
 			}
+			this._ignoreStageTextChanges = oldIgnoreStageTextChanges;
 
 			if(stylesInvalid || stateInvalid)
 			{
@@ -921,21 +928,21 @@ package feathers.controls.text
 			if(positionInvalid || sizeInvalid || stylesInvalid || skinInvalid || stateInvalid)
 			{
 				this.refreshViewPort();
+				const viewPort:Rectangle = this.stageText.viewPort;
+				const textureRoot:ConcreteTexture = this.textSnapshot ? this.textSnapshot.texture.root : null;
+				this._needsNewTexture = this._needsNewTexture || !this.textSnapshot || viewPort.width != textureRoot.width || viewPort.height != textureRoot.height;
 			}
 
-			if(stylesInvalid || dataInvalid || sizeInvalid)
+			if(!this._stageTextHasFocus && (stylesInvalid || dataInvalid || sizeInvalid || this._needsNewTexture))
 			{
-				if(!this._stageTextHasFocus)
+				const hasText:Boolean = this._text.length > 0;
+				if(hasText)
 				{
-					const hasText:Boolean = this._text.length > 0;
-					if(hasText)
-					{
-						this.refreshSnapshot(sizeInvalid || !this._textSnapshotBitmapData);
-					}
-					if(this.textSnapshot)
-					{
-						this.textSnapshot.visible = hasText;
-					}
+					this.refreshSnapshot();
+				}
+				if(this.textSnapshot)
+				{
+					this.textSnapshot.visible = hasText;
 				}
 			}
 
@@ -1035,60 +1042,56 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function refreshSnapshot(needsNewBitmap:Boolean):void
+		protected function texture_onRestore():void
 		{
-			if(needsNewBitmap)
-			{
-				const viewPort:Rectangle = this.stageText.viewPort;
-				if(viewPort.width == 0 || viewPort.height == 0)
-				{
-					return;
-				}
-				if(!this._textSnapshotBitmapData || this._textSnapshotBitmapData.width != viewPort.width || this._textSnapshotBitmapData.height != viewPort.height)
-				{
-					if(this._textSnapshotBitmapData)
-					{
-						this._textSnapshotBitmapData.dispose();
-					}
-					this._textSnapshotBitmapData = new BitmapData(viewPort.width, viewPort.height, true, 0x00ff00ff);
-				}
-			}
+			this.refreshSnapshot();
+		}
 
-			if(!this._textSnapshotBitmapData)
+		/**
+		 * @private
+		 */
+		protected function refreshSnapshot():void
+		{
+			const viewPort:Rectangle = this.stageText.viewPort;
+			if(viewPort.width == 0 || viewPort.height == 0)
 			{
 				return;
 			}
-			this._textSnapshotBitmapData.fillRect(this._textSnapshotBitmapData.rect, 0x00ff00ff);
-			this.stageText.drawViewPortToBitmapData(this._textSnapshotBitmapData);
+
+			//StageText sucks because it requires that the BitmapData's width
+			//and height exactly match its view port width and height.
+			var bitmapData:BitmapData = new BitmapData(viewPort.width, viewPort.height, true, 0x00ff00ff);
+			this.stageText.drawViewPortToBitmapData(bitmapData);
+
+			var newTexture:Texture;
+			if(!this.textSnapshot || this._needsNewTexture)
+			{
+				newTexture = Texture.fromBitmapData(bitmapData, false, false, Starling.contentScaleFactor);
+				newTexture.root.onRestore = texture_onRestore;
+			}
 			if(!this.textSnapshot)
 			{
-				this.textSnapshot = new Image(starling.textures.Texture.fromBitmapData(this._textSnapshotBitmapData, false, false, Starling.contentScaleFactor));
+				this.textSnapshot = new Image(newTexture);
 				this.addChild(this.textSnapshot);
 			}
 			else
 			{
-				if(needsNewBitmap)
+				if(this._needsNewTexture)
 				{
 					this.textSnapshot.texture.dispose();
-					this.textSnapshot.texture = starling.textures.Texture.fromBitmapData(this._textSnapshotBitmapData, false, false, Starling.contentScaleFactor);
+					this.textSnapshot.texture = newTexture;
 					this.textSnapshot.readjustSize();
 				}
 				else
 				{
-					//this is faster, so use it if we haven't resized the
-					//bitmapdata
-					const texture:starling.textures.Texture = this.textSnapshot.texture;
-					if(Starling.handleLostContext && texture is ConcreteTexture)
-					{
-						ConcreteTexture(texture).restoreOnLostContext(this._textSnapshotBitmapData);
-					}
-					flash.display3D.textures.Texture(texture.base).uploadFromBitmapData(this._textSnapshotBitmapData);
+					//this is faster, if we haven't resized the bitmapdata
+					const existingTexture:Texture = this.textSnapshot.texture;
+					existingTexture.root.uploadBitmapData(bitmapData);
 				}
 			}
-
-			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-			this.textSnapshot.x = Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx;
-			this.textSnapshot.y = Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty;
+			bitmapData.dispose();
+			this.textSnapshot.visible = !this._stageTextHasFocus;
+			this._needsNewTexture = false;
 		}
 
 		/**
@@ -1141,12 +1144,6 @@ package feathers.controls.text
 			if(this.stageText)
 			{
 				this.disposeStageText();
-			}
-
-			if(this._textSnapshotBitmapData)
-			{
-				this._textSnapshotBitmapData.dispose();
-				this._textSnapshotBitmapData = null;
 			}
 
 			if(this.textSnapshot)
@@ -1247,6 +1244,10 @@ package feathers.controls.text
 		 */
 		protected function stageText_changeHandler(event:flash.events.Event):void
 		{
+			if(this._ignoreStageTextChanges)
+			{
+				return;
+			}
 			this.text = this.stageText.text;
 		}
 

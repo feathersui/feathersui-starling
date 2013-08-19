@@ -12,7 +12,6 @@ package feathers.controls.text
 	import feathers.events.FeathersEventType;
 
 	import flash.display.BitmapData;
-	import flash.display3D.textures.Texture;
 	import flash.events.FocusEvent;
 	import flash.events.KeyboardEvent;
 	import flash.geom.Matrix;
@@ -109,11 +108,6 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _textSnapshotBitmapData:BitmapData;
-
-		/**
-		 * @private
-		 */
 		protected var _oldGlobalX:Number = 0;
 
 		/**
@@ -149,7 +143,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _needsNewBitmap:Boolean = false;
+		protected var _needsNewTexture:Boolean = false;
 
 		/**
 		 * @private
@@ -803,15 +797,11 @@ package feathers.controls.text
 
 			this.checkIfNewSnapshotIsNeeded();
 
-			if(!this._textFieldHasFocus && (stylesInvalid || dataInvalid || this._needsNewBitmap))
+			if(!this._textFieldHasFocus && (stylesInvalid || dataInvalid || this._needsNewTexture))
 			{
-				const hasText:Boolean = this._text.length > 0;
-				if(hasText)
-				{
-					//we need to wait a frame for the TextField to render
-					//properly. sometimes two, and this is a known issue.
-					this.addEventListener(Event.ENTER_FRAME, enterFrameHandler);
-				}
+				//we need to wait a frame for the flash.text.TextField to render
+				//properly. sometimes two, and this is a known issue.
+				this.addEventListener(Event.ENTER_FRAME, enterFrameHandler);
 			}
 			this.doPendingActions();
 		}
@@ -867,9 +857,10 @@ package feathers.controls.text
 		 */
 		protected function checkIfNewSnapshotIsNeeded():void
 		{
-			this._snapshotWidth = getNextPowerOfTwo(this._textFieldClipRect.width * Starling.contentScaleFactor);
-			this._snapshotHeight = getNextPowerOfTwo(this._textFieldClipRect.height * Starling.contentScaleFactor);
-			this._needsNewBitmap = this._needsNewBitmap || !this._textSnapshotBitmapData || this._snapshotWidth != this._textSnapshotBitmapData.width || this._snapshotHeight != this._textSnapshotBitmapData.height;
+			this._snapshotWidth = getNextPowerOfTwo(this._textFieldClipRect.width);
+			this._snapshotHeight = getNextPowerOfTwo(this._textFieldClipRect.height);
+			const textureRoot:ConcreteTexture = this.textSnapshot ? this.textSnapshot.texture.root : null;
+			this._needsNewTexture = this._needsNewTexture || !this.textSnapshot || this._snapshotWidth != textureRoot.width || this._snapshotHeight != textureRoot.height;
 		}
 
 		/**
@@ -896,54 +887,55 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected function texture_onRestore():void
+		{
+			this.refreshSnapshot();
+		}
+
+		/**
+		 * @private
+		 */
 		protected function refreshSnapshot():void
 		{
 			if(this.textField.width == 0 || this.textField.height == 0)
 			{
 				return;
 			}
-			if(this._needsNewBitmap || !this._textSnapshotBitmapData)
-			{
-				if(this._textSnapshotBitmapData)
-				{
-					this._textSnapshotBitmapData.dispose();
-				}
-				this._textSnapshotBitmapData = new BitmapData(this._snapshotWidth, this._snapshotHeight, true, 0x00ff00ff);
-			}
-			if(!this._textSnapshotBitmapData)
-			{
-				return;
-			}
+			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
 			HELPER_MATRIX.identity();
 			HELPER_MATRIX.translate(this._textFieldOffsetX, this._textFieldOffsetY);
 			HELPER_MATRIX.scale(Starling.contentScaleFactor, Starling.contentScaleFactor);
-			this._textSnapshotBitmapData.fillRect(this._textSnapshotBitmapData.rect, 0x00ff00ff);
-			this._textSnapshotBitmapData.draw(this.textField, HELPER_MATRIX, null, null, this._textFieldClipRect);
+			var bitmapData:BitmapData = new BitmapData(this._snapshotWidth, this._snapshotHeight, true, 0x00ff00ff);
+			bitmapData.draw(this.textField, HELPER_MATRIX, null, null, this._textFieldClipRect);
+			var newTexture:Texture;
+			if(!this.textSnapshot || this._needsNewTexture)
+			{
+				newTexture = Texture.fromBitmapData(bitmapData, false, false, Starling.contentScaleFactor);
+				newTexture.root.onRestore = texture_onRestore;
+			}
 			if(!this.textSnapshot)
 			{
-				this.textSnapshot = new Image(starling.textures.Texture.fromBitmapData(this._textSnapshotBitmapData, false, false, Starling.contentScaleFactor));
+				this.textSnapshot = new Image(newTexture);
 				this.addChild(this.textSnapshot);
 			}
 			else
 			{
-				if(this._needsNewBitmap)
+				if(this._needsNewTexture)
 				{
 					this.textSnapshot.texture.dispose();
-					this.textSnapshot.texture = starling.textures.Texture.fromBitmapData(this._textSnapshotBitmapData, false, false, Starling.contentScaleFactor);
+					this.textSnapshot.texture = newTexture;
 					this.textSnapshot.readjustSize();
 				}
 				else
 				{
-					//this is faster if we haven't resized the bitmapdata
-					const texture:starling.textures.Texture = this.textSnapshot.texture;
-					if(Starling.handleLostContext && texture is ConcreteTexture)
-					{
-						ConcreteTexture(texture).restoreOnLostContext(this._textSnapshotBitmapData);
-					}
-					flash.display3D.textures.Texture(texture.base).uploadFromBitmapData(this._textSnapshotBitmapData);
+					//this is faster, if we haven't resized the bitmapdata
+					const existingTexture:Texture = this.textSnapshot.texture;
+					existingTexture.root.uploadBitmapData(bitmapData);
 				}
 			}
-			this._needsNewBitmap = false;
+			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+			bitmapData.dispose();
+			this._needsNewTexture = false;
 		}
 
 		/**
@@ -951,12 +943,6 @@ package feathers.controls.text
 		 */
 		protected function disposeContent():void
 		{
-			if(this._textSnapshotBitmapData)
-			{
-				this._textSnapshotBitmapData.dispose();
-				this._textSnapshotBitmapData = null;
-			}
-
 			if(this.textSnapshot)
 			{
 				//avoid the need to call dispose(). we'll create a new snapshot
@@ -995,11 +981,11 @@ package feathers.controls.text
 		protected function enterFrameHandler(event:Event):void
 		{
 			this.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
+			this.refreshSnapshot();
 			if(this.textSnapshot)
 			{
 				this.textSnapshot.visible = this._text.length > 0;
 			}
-			this.refreshSnapshot();
 		}
 
 		/**

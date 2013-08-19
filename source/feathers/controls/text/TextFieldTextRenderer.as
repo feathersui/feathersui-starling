@@ -11,7 +11,6 @@ package feathers.controls.text
 	import feathers.core.ITextRenderer;
 
 	import flash.display.BitmapData;
-	import flash.display3D.textures.Texture;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.text.AntiAliasType;
@@ -72,11 +71,6 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _textSnapshotBitmapData:BitmapData;
-
-		/**
-		 * @private
-		 */
 		protected var _previousTextFieldWidth:Number = NaN;
 
 		/**
@@ -97,7 +91,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _needsNewBitmap:Boolean = false;
+		protected var _needsNewTexture:Boolean = false;
 
 		/**
 		 * @private
@@ -772,13 +766,14 @@ package feathers.controls.text
 				this.textField.height = this.actualHeight;
 				this._snapshotWidth = getNextPowerOfTwo(this.actualWidth * Starling.contentScaleFactor);
 				this._snapshotHeight = getNextPowerOfTwo(this.actualHeight * Starling.contentScaleFactor);
-				this._needsNewBitmap = this._needsNewBitmap || !this.textSnapshot || !this._textSnapshotBitmapData || this._snapshotWidth != this._textSnapshotBitmapData.width || this._snapshotHeight != this._textSnapshotBitmapData.height;
+				const textureRoot:ConcreteTexture = this.textSnapshot ? this.textSnapshot.texture.root : null;
+				this._needsNewTexture = this._needsNewTexture || !this.textSnapshot || this._snapshotWidth != textureRoot.width || this._snapshotHeight != textureRoot.height;
 			}
 
 			//instead of checking sizeInvalid, which will often be triggered by
 			//changing maxWidth or something for measurement, we check against
 			//the previous actualWidth/Height used for the snapshot.
-			if(stylesInvalid || dataInvalid || this._needsNewBitmap ||
+			if(stylesInvalid || dataInvalid || this._needsNewTexture ||
 				this.actualWidth != this._previousTextFieldWidth ||
 				this.actualHeight != this._previousTextFieldHeight)
 			{
@@ -817,53 +812,53 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected function texture_onRestore():void
+		{
+			this.refreshSnapshot();
+		}
+
+		/**
+		 * @private
+		 */
 		protected function refreshSnapshot():void
 		{
 			if(this.textField.width == 0 || this.textField.height == 0)
 			{
 				return;
 			}
-			if(this._needsNewBitmap || !this._textSnapshotBitmapData)
-			{
-				if(this._textSnapshotBitmapData)
-				{
-					this._textSnapshotBitmapData.dispose();
-				}
-				this._textSnapshotBitmapData = new BitmapData(this._snapshotWidth, this._snapshotHeight, true, 0x00ff00ff);
-			}
-			if(!this._textSnapshotBitmapData)
-			{
-				return;
-			}
 			HELPER_MATRIX.identity();
 			HELPER_MATRIX.scale(Starling.contentScaleFactor, Starling.contentScaleFactor);
-			this._textSnapshotBitmapData.fillRect(this._textSnapshotBitmapData.rect, 0x00ff00ff);
-			this._textSnapshotBitmapData.draw(this.textField, HELPER_MATRIX);
+			var bitmapData:BitmapData = new BitmapData(this._snapshotWidth, this._snapshotHeight, true, 0x00ff00ff);
+			bitmapData.draw(this.textField, HELPER_MATRIX);
+			var newTexture:Texture;
+			if(!this.textSnapshot || this._needsNewTexture)
+			{
+				newTexture = Texture.fromBitmapData(bitmapData, false, false, Starling.contentScaleFactor);
+				newTexture.root.onRestore = texture_onRestore;
+			}
 			if(!this.textSnapshot)
 			{
-				this.textSnapshot = new Image(starling.textures.Texture.fromBitmapData(this._textSnapshotBitmapData, false, false, Starling.contentScaleFactor));
+				this.textSnapshot = new Image(newTexture);
 				this.addChild(this.textSnapshot);
 			}
 			else
 			{
-				if(this._needsNewBitmap)
+				if(this._needsNewTexture)
 				{
 					this.textSnapshot.texture.dispose();
-					this.textSnapshot.texture = starling.textures.Texture.fromBitmapData(this._textSnapshotBitmapData, false, false, Starling.contentScaleFactor);
+					this.textSnapshot.texture = newTexture;
 					this.textSnapshot.readjustSize();
 				}
 				else
 				{
-					//this is faster if we haven't resized the bitmapdata
-					const texture:starling.textures.Texture = this.textSnapshot.texture;
-					if(Starling.handleLostContext && texture is ConcreteTexture)
-					{
-						ConcreteTexture(texture).restoreOnLostContext(this._textSnapshotBitmapData);
-					}
-					flash.display3D.textures.Texture(texture.base).uploadFromBitmapData(this._textSnapshotBitmapData);
+					//this is faster, if we haven't resized the bitmapdata
+					const existingTexture:Texture = this.textSnapshot.texture;
+					existingTexture.root.uploadBitmapData(bitmapData);
 				}
 			}
-			this._needsNewBitmap = false;
+			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+			bitmapData.dispose();
+			this._needsNewTexture = false;
 		}
 
 		/**
@@ -871,12 +866,6 @@ package feathers.controls.text
 		 */
 		protected function disposeContent():void
 		{
-			if(this._textSnapshotBitmapData)
-			{
-				this._textSnapshotBitmapData.dispose();
-				this._textSnapshotBitmapData = null;
-			}
-
 			if(this.textSnapshot)
 			{
 				//avoid the need to call dispose(). we'll create a new snapshot
@@ -889,7 +878,7 @@ package feathers.controls.text
 			this._previousTextFieldWidth = NaN;
 			this._previousTextFieldHeight = NaN;
 
-			this._needsNewBitmap = false;
+			this._needsNewTexture = false;
 			this._snapshotWidth = 0;
 			this._snapshotHeight = 0;
 		}
