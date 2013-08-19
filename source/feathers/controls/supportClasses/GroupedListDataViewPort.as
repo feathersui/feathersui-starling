@@ -197,19 +197,19 @@ package feathers.controls.supportClasses
 		public function get horizontalScrollStep():Number
 		{
 			var renderers:Vector.<IGroupedListItemRenderer> = this._activeItemRenderers;
-			if(!renderers)
+			if(!renderers || renderers.length == 0)
 			{
 				renderers = this._activeFirstItemRenderers;
 			}
-			if(!renderers)
+			if(!renderers || renderers.length == 0)
 			{
 				renderers = this._activeLastItemRenderers;
 			}
-			if(!renderers)
+			if(!renderers || renderers.length == 0)
 			{
 				renderers = this._activeSingleItemRenderers;
 			}
-			if(!renderers)
+			if(!renderers || renderers.length == 0)
 			{
 				return 0;
 			}
@@ -226,19 +226,19 @@ package feathers.controls.supportClasses
 		public function get verticalScrollStep():Number
 		{
 			var renderers:Vector.<IGroupedListItemRenderer> = this._activeItemRenderers;
-			if(!renderers)
+			if(!renderers || renderers.length == 0)
 			{
 				renderers = this._activeFirstItemRenderers;
 			}
-			if(!renderers)
+			if(!renderers || renderers.length == 0)
 			{
 				renderers = this._activeLastItemRenderers;
 			}
-			if(!renderers)
+			if(!renderers || renderers.length == 0)
 			{
 				renderers = this._activeSingleItemRenderers;
 			}
-			if(!renderers)
+			if(!renderers || renderers.length == 0)
 			{
 				return 0;
 			}
