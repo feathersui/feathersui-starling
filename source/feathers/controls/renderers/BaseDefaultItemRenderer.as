@@ -1909,7 +1909,7 @@ package feathers.controls.renderers
 			{
 				height = 0;
 			}
-			
+
 			if(this._accessoryPosition == ACCESSORY_POSITION_TOP || this._accessoryPosition == ACCESSORY_POSITION_BOTTOM)
 			{
 				var adjustedAccessoryGap:Number = isNaN(this._accessoryGap) ? gap : this._accessoryGap;
@@ -1931,7 +1931,7 @@ package feathers.controls.renderers
 		 */
 		protected function commitData():void
 		{
-			if(this._owner)
+			if(this._data && this._owner)
 			{
 				if(this._itemHasLabel)
 				{
