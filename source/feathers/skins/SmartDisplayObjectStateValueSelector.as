@@ -170,7 +170,7 @@ package feathers.skins
 		override public function updateValue(target:Object, state:Object, oldValue:Object = null):Object
 		{
 			const value:Object = super.updateValue(target, state);
-			if(!value)
+			if(value === null)
 			{
 				return null;
 			}
