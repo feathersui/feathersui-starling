@@ -95,7 +95,13 @@ package feathers.controls
 			{
 				return;
 			}
-			if(!value && this.stage)
+			//a null toggle group will automatically add it to
+			//defaultRadioGroup. however, if toggleGroup is already
+			// defaultRadioGroup, then we really want to use null because
+			//otherwise we'd remove the radio from defaultRadioGroup and then
+			//immediately add it back because ToggleGroup sets the toggleGroup
+			//property to null when removing an item.
+			if(!value && this._toggleGroup != defaultRadioGroup && this.stage)
 			{
 				value = defaultRadioGroup;
 			}
@@ -104,7 +110,7 @@ package feathers.controls
 				this._toggleGroup.removeItem(this);
 			}
 			this._toggleGroup = value;
-			if(!this._toggleGroup.hasItem(this))
+			if(this._toggleGroup && !this._toggleGroup.hasItem(this))
 			{
 				this._toggleGroup.addItem(this);
 			}
