@@ -1059,9 +1059,9 @@ package feathers.controls.supportClasses
 				else
 				{
 					this._typicalHeaderWidth = 0;
+					this._typicalHeaderHeight = 0;
 					this._typicalFooterWidth = 0;
 					this._typicalFooterHeight= 0;
-					this._typicalHeaderHeight = 0;
 				}
 			}
 
@@ -1122,18 +1122,15 @@ package feathers.controls.supportClasses
 			}
 
 			var typicalItem:Object = this._typicalItem;
+			if(!typicalItem && this._dataProvider && this._dataProvider.getLength() > 0 && this._dataProvider.getLength(0) > 0)
+			{
+				typicalItem = this._dataProvider.getItemAt(0, 0);
+			}
 			if(!typicalItem)
 			{
-				if(this._dataProvider && this._dataProvider.getLength() > 0)
-				{
-					typicalItem = this._dataProvider.getItemAt(0);
-				}
-				else
-				{
-					this._typicalItemWidth = 0;
-					this._typicalItemHeight = 0;
-					return;
-				}
+				this._typicalItemWidth = 0;
+				this._typicalItemHeight = 0;
+				return;
 			}
 
 			needsDestruction = true;
