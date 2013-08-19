@@ -1820,6 +1820,12 @@ package feathers.controls.renderers
 			{
 				return width;
 			}
+
+			if(isNaN(width))
+			{
+				width = 0;
+			}
+
 			if(this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE || this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
 			{
 				width += this.currentIcon.width + gap;
@@ -1839,6 +1845,11 @@ package feathers.controls.renderers
 			if(!this.accessory || isNaN(this.accessory.width))
 			{
 				return width;
+			}
+
+			if(isNaN(width))
+			{
+				width = 0;
 			}
 
 			if(this._accessoryPosition == ACCESSORY_POSITION_LEFT || this._accessoryPosition == ACCESSORY_POSITION_RIGHT)
@@ -1867,6 +1878,12 @@ package feathers.controls.renderers
 			{
 				return height;
 			}
+
+			if(isNaN(height))
+			{
+				height = 0;
+			}
+
 			if(this._iconPosition == ICON_POSITION_TOP || this._iconPosition == ICON_POSITION_BOTTOM)
 			{
 				height += this.currentIcon.height + gap;
@@ -1887,6 +1904,12 @@ package feathers.controls.renderers
 			{
 				return height;
 			}
+
+			if(isNaN(height))
+			{
+				height = 0;
+			}
+			
 			if(this._accessoryPosition == ACCESSORY_POSITION_TOP || this._accessoryPosition == ACCESSORY_POSITION_BOTTOM)
 			{
 				var adjustedAccessoryGap:Number = isNaN(this._accessoryGap) ? gap : this._accessoryGap;
