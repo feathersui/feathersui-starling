@@ -757,7 +757,7 @@ package feathers.controls.supportClasses
 				{
 					if(this._typicalItemIsInDataProvider)
 					{
-						delete this._rendererMap[this._typicalItemRenderer];
+						delete this._rendererMap[this._typicalItemRenderer.data];
 					}
 					this.destroyRenderer(this._typicalItemRenderer);
 					this._typicalItemRenderer = null;
