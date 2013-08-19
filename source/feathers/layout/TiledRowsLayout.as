@@ -715,6 +715,11 @@ package feathers.layout
 						var discoveredItemsLastIndex:int = this._useVirtualLayout ? (this._discoveredItemsCache.length - 1) : (itemIndex - 1);
 						this.applyHorizontalAlign(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex, totalPageWidth, availablePageWidth);
 						this.applyVerticalAlign(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex, totalPageHeight, availablePageHeight);
+						if(this.manageVisibility)
+						{
+							this.applyVisible(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex,
+								boundsX + scrollX, scrollX + availableWidth, boundsY + scrollY, scrollY + availableHeight);
+						}
 						this._discoveredItemsCache.length = 0;
 					}
 					pageIndex++;
@@ -797,6 +802,11 @@ package feathers.layout
 				discoveredItemsLastIndex = this._useVirtualLayout ? (discoveredItems.length - 1) : (i - 1);
 				this.applyHorizontalAlign(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex, totalPageWidth, availablePageWidth);
 				this.applyVerticalAlign(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex, totalPageHeight, availablePageHeight);
+				if(this.manageVisibility)
+				{
+					this.applyVisible(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex,
+						boundsX + scrollX, scrollX + availableWidth, boundsY + scrollY, scrollY + availableHeight);
+				}
 			}
 
 			var totalWidth:Number = totalPageWidth;
@@ -833,19 +843,10 @@ package feathers.layout
 				discoveredItemsLastIndex = discoveredItems.length - 1;
 				this.applyHorizontalAlign(discoveredItems, 0, discoveredItemsLastIndex, totalWidth, availableWidth);
 				this.applyVerticalAlign(discoveredItems, 0, discoveredItemsLastIndex, totalHeight, availableHeight);
-			}
-			if(this.manageVisibility)
-			{
-				//the discoveredItemsLastIndex will be saved from above and will
-				//still work here
-				for(i = 0; i <= discoveredItemsLastIndex; i++)
+				if(this.manageVisibility)
 				{
-					item = discoveredItems[i];
-					if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
-					{
-						continue;
-					}
-					item.visible = ((item.y + item.height) >= (boundsY + scrollY)) && (item.y < (scrollY + availableHeight));
+					this.applyVisible(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex,
+						boundsX + scrollX, scrollX + availableWidth, boundsY + scrollY, scrollY + availableHeight);
 				}
 			}
 			this._discoveredItemsCache.length = 0;
@@ -1058,6 +1059,25 @@ package feathers.layout
 				result.y = this._paddingTop + ((tileHeight + this._verticalGap) * index / horizontalTileCount) + (height - tileHeight) / 2;
 			}
 			return result;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function applyVisible(items:Vector.<DisplayObject>, startIndex:int, endIndex:int, startX:Number, endX:Number, startY:Number, endY:Number):void
+		{
+			for(var i:int = startIndex; i <= endIndex; i++)
+			{
+				var item:DisplayObject = items[i];
+				if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+				{
+					continue;
+				}
+				var itemX:Number = item.x;
+				var itemY:Number = item.y;
+				item.visible = ((itemX + item.width) >= startX) && (itemX < endX) &&
+					((itemY + item.height) >= startY) && (itemY < endY);
+			}
 		}
 
 		/**
