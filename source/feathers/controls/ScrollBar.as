@@ -1730,23 +1730,23 @@ package feathers.controls
 			}
 
 			const isEnabled:Boolean = this._isEnabled && this._maximum > this._minimum;
-			if(stateInvalid || dataInvalid || thumbFactoryInvalid)
+			if(dataInvalid || stateInvalid || thumbFactoryInvalid)
 			{
 				this.thumb.isEnabled = isEnabled;
 			}
-			if(stateInvalid || dataInvalid || minimumTrackFactoryInvalid)
+			if(dataInvalid || stateInvalid || minimumTrackFactoryInvalid)
 			{
 				this.minimumTrack.isEnabled = isEnabled;
 			}
-			if((stateInvalid || dataInvalid || maximumTrackFactoryInvalid) && this.maximumTrack)
+			if((dataInvalid || stateInvalid || stylesInvalid || maximumTrackFactoryInvalid) && this.maximumTrack)
 			{
 				this.maximumTrack.isEnabled = isEnabled;
 			}
-			if(stateInvalid || dataInvalid || decrementButtonFactoryInvalid)
+			if(dataInvalid || stateInvalid || decrementButtonFactoryInvalid)
 			{
 				this.decrementButton.isEnabled = isEnabled;
 			}
-			if(stateInvalid || dataInvalid || incrementButtonFactoryInvalid)
+			if(dataInvalid || stateInvalid || incrementButtonFactoryInvalid)
 			{
 				this.incrementButton.isEnabled = isEnabled;
 			}

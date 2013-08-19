@@ -799,9 +799,9 @@ package feathers.controls
 				this.refreshThumbStyles();
 			}
 
-			if(thumbFactoryInvalid || stateInvalid)
+			if(dataInvalid || thumbFactoryInvalid || stateInvalid)
 			{
-				this.thumb.isEnabled = this._isEnabled;
+				this.thumb.isEnabled = this._isEnabled && this._maximum > this._minimum;;
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
