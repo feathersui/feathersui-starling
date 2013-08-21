@@ -58,28 +58,12 @@ package feathers.core
 			}
 			const currentQueue:Vector.<IFeathersControl> = (this._isValidating && delayIfValidating) ? this._delayedQueue : this._queue;
 			const queueLength:int = currentQueue.length;
-			const containerControl:DisplayObjectContainer = control as DisplayObjectContainer;
-			for(var i:int = 0; i < queueLength; i++)
-			{
-				var item:DisplayObject = DisplayObject(currentQueue[i]);
-				if(control == item && currentQueue == this._queue)
-				{
-					//already queued
-					return;
-				}
-				if(containerControl && containerControl.contains(item))
-				{
-					break;
-				}
-			}
-			if(i == queueLength)
-			{
-				currentQueue[queueLength] = control;
-			}
-			else
-			{
-				currentQueue.splice(i, 0, control);
-			}
+
+			//already queued
+			if ( currentQueue == this._queue && currentQueue.indexOf(control) != -1) return;
+
+			//push at the end end, we'll sort later
+			currentQueue[queueLength] = control;
 		}
 
 		/**
@@ -88,6 +72,33 @@ package feathers.core
 		public function advanceTime(time:Number):void
 		{
 			this._isValidating = true;
+
+			// Sort queue here based on depth
+			if ( this._queue.length > 1 ) {
+				var item2depth:Object = {};
+				function calculateDepth(item:IFeathersControl, ...rest):void {
+					var depth:int = 0;
+					var currentDisplayObject:DisplayObject = (item as DisplayObject);
+					while (currentDisplayObject) {
+						currentDisplayObject = currentDisplayObject.parent;
+						++depth;
+					}
+					item2depth[item] = depth;
+				}
+	
+				this._queue.forEach(calculateDepth);
+				
+				function compareDepth(a:IFeathersControl, b:IFeathersControl):int {
+					var a_depth:int = item2depth[a];
+					var b_depth:int = item2depth[b];
+					if ( a_depth < b_depth ) return -1;
+					else if ( a_depth > b_depth ) return 1;
+					else return 0;
+				}
+				this._queue = this._queue.sort(compareDepth);
+				item2depth = null;
+			}
+
 			while(this._queue.length > 0)
 			{
 				var item:IFeathersControl = this._queue.shift();
