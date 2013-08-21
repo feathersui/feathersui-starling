@@ -637,8 +637,11 @@ package feathers.controls.supportClasses
 			var typicalItem:Object = this._typicalItem;
 			if(typicalItem)
 			{
-				typicalItemIndex = this._dataProvider.getItemIndex(typicalItem);
-				newTypicalItemIsInDataProvider = typicalItemIndex >= 0;
+				if(this._dataProvider)
+				{
+					typicalItemIndex = this._dataProvider.getItemIndex(typicalItem);
+					newTypicalItemIsInDataProvider = typicalItemIndex >= 0;
+				}
 				if(typicalItemIndex < 0)
 				{
 					typicalItemIndex = 0;
