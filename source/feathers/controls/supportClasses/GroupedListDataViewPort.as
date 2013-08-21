@@ -1114,27 +1114,30 @@ package feathers.controls.supportClasses
 			var firstGroupLength:int = 0;
 			var typicalItemGroupIndex:int = 0;
 			var typicalItemItemIndex:int = 0;
-			if(!typicalItem && this._dataProvider)
+			if(this._dataProvider)
 			{
-				groupCount = this._dataProvider.getLength();
-				if(groupCount > 0)
+				if(!typicalItem)
 				{
-					firstGroupLength = this._dataProvider.getLength(0);
-					if(firstGroupLength > 0)
+					groupCount = this._dataProvider.getLength();
+					if(groupCount > 0)
 					{
-						newTypicalItemIsInDataProvider = true;
-						typicalItem = this._dataProvider.getItemAt(0, 0);
+						firstGroupLength = this._dataProvider.getLength(0);
+						if(firstGroupLength > 0)
+						{
+							newTypicalItemIsInDataProvider = true;
+							typicalItem = this._dataProvider.getItemAt(0, 0);
+						}
 					}
 				}
-			}
-			else if(typicalItem)
-			{
-				this._dataProvider.getItemLocation(typicalItem, HELPER_VECTOR);
-				if(HELPER_VECTOR.length > 1)
+				else if(typicalItem)
 				{
-					newTypicalItemIsInDataProvider = true;
-					typicalItemGroupIndex = HELPER_VECTOR[0];
-					typicalItemItemIndex = HELPER_VECTOR[1];
+					this._dataProvider.getItemLocation(typicalItem, HELPER_VECTOR);
+					if(HELPER_VECTOR.length > 1)
+					{
+						newTypicalItemIsInDataProvider = true;
+						typicalItemGroupIndex = HELPER_VECTOR[0];
+						typicalItemItemIndex = HELPER_VECTOR[1];
+					}
 				}
 			}
 			if(!typicalItem)
