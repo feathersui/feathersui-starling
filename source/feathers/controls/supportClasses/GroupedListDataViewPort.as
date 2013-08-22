@@ -254,7 +254,7 @@ package feathers.controls.supportClasses
 
 		private var _layoutItems:Vector.<DisplayObject> = new <DisplayObject>[];
 
-		private var _typicalItemIsInDataProvider:Boolean = false;;
+		private var _typicalItemIsInDataProvider:Boolean = false;
 		private var _typicalItemRenderer:IGroupedListItemRenderer;
 
 		private var _unrenderedItems:Vector.<int> = new <int>[];
@@ -1410,21 +1410,35 @@ package feathers.controls.supportClasses
 				}
 				else
 				{
-					inactiveIndex = this._inactiveSingleItemRenderers.indexOf(this._typicalItemRenderer);
+					if(this._inactiveSingleItemRenderers)
+					{
+						inactiveIndex = this._inactiveSingleItemRenderers.indexOf(this._typicalItemRenderer);
+					}
+					else
+					{
+						inactiveIndex = -1;
+					}
 					if(inactiveIndex >= 0)
 					{
 						this._inactiveSingleItemRenderers.splice(inactiveIndex, 1);
 					}
 					else
 					{
-						inactiveIndex = this._inactiveFirstItemRenderers.indexOf(this._typicalItemRenderer);
+						if(this._inactiveFirstItemRenderers)
+						{
+							inactiveIndex = this._inactiveFirstItemRenderers.indexOf(this._typicalItemRenderer);
+						}
+						else
+						{
+							inactiveIndex = -1;
+						}
 						if(inactiveIndex >= 0)
 						{
 							this._inactiveFirstItemRenderers.splice(inactiveIndex, 1);
 						}
+						//no else... can't be in inactive last item renderers
 					}
 				}
-				//can't be in last item renderers
 			}
 
 			this.findUnrenderedData();
