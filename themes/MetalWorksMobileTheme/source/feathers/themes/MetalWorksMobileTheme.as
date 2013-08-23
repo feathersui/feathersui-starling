@@ -1256,6 +1256,7 @@ package feathers.themes
 		protected function calloutInitializer(callout:Callout):void
 		{
 			const backgroundSkin:Scale9Image = new Scale9Image(this.backgroundPopUpSkinTextures, this.scale);
+			backgroundSkin.height = 88 * this.scale;
 			callout.backgroundSkin = backgroundSkin;
 
 			const topArrowSkin:Image = new Image(this.calloutTopArrowSkinTexture);
@@ -1290,13 +1291,13 @@ package feathers.themes
 
 		protected function listInitializer(list:List):void
 		{
-			const backgroundSkin:Quad = new Quad(100, 100, LIST_BACKGROUND_COLOR);
+			const backgroundSkin:Quad = new Quad(88 * this.scale, 88 * this.scale, LIST_BACKGROUND_COLOR);
 			list.backgroundSkin = backgroundSkin;
 		}
 
 		protected function groupedListInitializer(list:GroupedList):void
 		{
-			const backgroundSkin:Quad = new Quad(100, 100, LIST_BACKGROUND_COLOR);
+			const backgroundSkin:Quad = new Quad(88 * this.scale, 88 * this.scale, LIST_BACKGROUND_COLOR);
 			list.backgroundSkin = backgroundSkin;
 		}
 
