@@ -674,7 +674,7 @@ package feathers.layout
 			}
 
 			this._discoveredItemsCache.length = 0;
-			var maxItemHeight:Number = this._useVirtualLayout ? this._typicalItemHeight : 0;
+			var maxItemHeight:Number = this._useVirtualLayout ? var maxItemHeight:Number = this._useVirtualLayout ? calculatedTypicalItemHeight : 0;
 			var positionX:Number = boundsX + this._paddingLeft;
 			if(this._useVirtualLayout && !this._hasVariableItemDimensions)
 			{
