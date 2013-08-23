@@ -1148,12 +1148,9 @@ package feathers.layout
 			const maxWidth:Number = viewPortBounds ? viewPortBounds.maxWidth : Number.POSITIVE_INFINITY;
 			const maxHeight:Number = viewPortBounds ? viewPortBounds.maxHeight : Number.POSITIVE_INFINITY;
 
-			if(this._useVirtualLayout)
-			{
-				this.prepareTypicalItem();
-				var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
-				var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
-			}
+			this.prepareTypicalItem();
+			var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
+			var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
 
 			var tileWidth:Number = calculatedTypicalItemWidth;
 			var tileHeight:Number = calculatedTypicalItemHeight;
