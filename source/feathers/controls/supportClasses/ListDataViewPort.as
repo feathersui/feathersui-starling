@@ -587,17 +587,18 @@ package feathers.controls.supportClasses
 			}
 			this._ignoreLayoutChanges = oldIgnoreLayoutChanges;
 			this._ignoreSelectionChanges = oldIgnoreSelectionChanges;
-
-			this._layout.layout(this._layoutItems, this._viewPortBounds, this._layoutResult);
-
-			this._ignoreRendererResizing = oldIgnoreRendererResizing;
-
-			this._contentX = this._layoutResult.contentX;
-			this._contentY = this._layoutResult.contentY;
-			this.setSizeInternal(this._layoutResult.contentWidth, this._layoutResult.contentHeight, false);
-			this.actualVisibleWidth = this._layoutResult.viewPortWidth;
-			this.actualVisibleHeight = this._layoutResult.viewPortHeight;
-
+			if(_layout)
+			{
+				this._layout.layout(this._layoutItems, this._viewPortBounds, this._layoutResult);
+	
+				this._ignoreRendererResizing = oldIgnoreRendererResizing;
+	
+				this._contentX = this._layoutResult.contentX;
+				this._contentY = this._layoutResult.contentY;
+				this.setSizeInternal(this._layoutResult.contentWidth, this._layoutResult.contentHeight, false);
+				this.actualVisibleWidth = this._layoutResult.viewPortWidth;
+				this.actualVisibleHeight = this._layoutResult.viewPortHeight;
+			}
 			//final validation to avoid juggler next frame issues
 			this.validateItemRenderers();
 		}
