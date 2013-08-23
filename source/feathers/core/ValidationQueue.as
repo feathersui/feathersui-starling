@@ -14,7 +14,6 @@ package feathers.core
 	import starling.animation.IAnimatable;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
-	import starling.display.DisplayObjectContainer;
 
 	[ExcludeClass]
 	public final class ValidationQueue implements IAnimatable
@@ -67,7 +66,45 @@ package feathers.core
 				//already queued
 				return;
 			}
-			currentQueue[currentQueue.length] = control;
+			var queueLength:int = currentQueue.length;
+			if(this._isValidating && currentQueue == this._queue)
+			{
+				//special case: we need to keep it sorted
+				var depth:int = getDisplayObjectDepthFromStage(DisplayObject(control));
+				this._depthDictionary[control] = depth;
+
+				//we're traversing the queue backwards because it's
+				//significantly more likely that we're going to push than that
+				//we're going to splice, so there's no point to iterating over
+				//the whole queue
+				for(var i:int = queueLength - 1; i >= 0; i--)
+				{
+					var otherControl:IFeathersControl = IFeathersControl(currentQueue[i]);
+					var otherDepth:int = this._depthDictionary[otherControl] as int;
+					//we can skip the overhead of calling queueSortFunction and
+					//of looking up the value we've already stored in the depth
+					//local variable.
+					if(depth >= otherDepth)
+					{
+						break;
+					}
+				}
+				//add one because we're going after the last item we checked
+				//if we made it through all of them, i will be -1, and we want 0
+				i++;
+				if(i == queueLength)
+				{
+					currentQueue[queueLength] = control;
+				}
+				else
+				{
+					currentQueue.splice(i, 0, control);
+				}
+			}
+			else
+			{
+				currentQueue[queueLength] = control;
+			}
 		}
 
 		/**
@@ -75,6 +112,10 @@ package feathers.core
 		 */
 		public function advanceTime(time:Number):void
 		{
+			if(this._isValidating)
+			{
+				return;
+			}
 			var queueLength:int = this._queue.length;
 			if(queueLength == 0)
 			{
