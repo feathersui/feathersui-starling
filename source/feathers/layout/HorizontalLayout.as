@@ -663,8 +663,8 @@ package feathers.layout
 			if(this._useVirtualLayout)
 			{
 				this.prepareTypicalItem(explicitHeight - this._paddingTop - this._paddingBottom);
-				var calculatedTypicalItemWidth:Number = isNaN(this._typicalItemWidth) ? this._typicalItem.width : this._typicalItemWidth;
-				var calculatedTypicalItemHeight:Number = isNaN(this._typicalItemHeight) ? this._typicalItem.height : this._typicalItemHeight;
+				var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
+				var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
 			}
 
 			if(!this._useVirtualLayout || this._hasVariableItemDimensions ||
@@ -674,7 +674,7 @@ package feathers.layout
 			}
 
 			this._discoveredItemsCache.length = 0;
-			var maxItemHeight:Number = this._useVirtualLayout ? this._typicalItemHeight : 0;
+			var maxItemHeight:Number = this._useVirtualLayout ? calculatedTypicalItemHeight : 0;
 			var positionX:Number = boundsX + this._paddingLeft;
 			if(this._useVirtualLayout && !this._hasVariableItemDimensions)
 			{
@@ -876,14 +876,11 @@ package feathers.layout
 			const maxWidth:Number = viewPortBounds ? viewPortBounds.maxWidth : Number.POSITIVE_INFINITY;
 			const maxHeight:Number = viewPortBounds ? viewPortBounds.maxHeight : Number.POSITIVE_INFINITY;
 
-			if(this._useVirtualLayout)
-			{
-				this.prepareTypicalItem(explicitHeight - this._paddingTop - this._paddingBottom);
-				var calculatedTypicalItemWidth:Number = isNaN(this._typicalItemWidth) ? this._typicalItem.width : this._typicalItemWidth;
-				var calculatedTypicalItemHeight:Number = isNaN(this._typicalItemHeight) ? this._typicalItem.height : this._typicalItemHeight;
-			}
+			this.prepareTypicalItem(explicitHeight - this._paddingTop - this._paddingBottom);
+			var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
+			var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
 
-			var maxItemHeight:Number = this._typicalItemHeight;
+			var maxItemHeight:Number = calculatedTypicalItemHeight;
 			var positionX:Number = 0;
 
 			if(!this._hasVariableItemDimensions)
@@ -1000,12 +997,9 @@ package feathers.layout
 				throw new IllegalOperationError("getVisibleIndicesAtScrollPosition() may be called only if useVirtualLayout is true.")
 			}
 
-			if(this._useVirtualLayout)
-			{
-				this.prepareTypicalItem(height - this._paddingTop - this._paddingBottom);
-				var calculatedTypicalItemWidth:Number = isNaN(this._typicalItemWidth) ? this._typicalItem.width : this._typicalItemWidth;
-				var calculatedTypicalItemHeight:Number = isNaN(this._typicalItemHeight) ? this._typicalItem.height : this._typicalItemHeight;
-			}
+			this.prepareTypicalItem(height - this._paddingTop - this._paddingBottom);
+			var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
+			var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
 
 			var resultLastIndex:int = 0;
 			const visibleTypicalItemCount:int = Math.ceil(width / (calculatedTypicalItemWidth + this._gap));
@@ -1131,8 +1125,8 @@ package feathers.layout
 			if(this._useVirtualLayout)
 			{
 				this.prepareTypicalItem(height - this._paddingTop - this._paddingBottom);
-				var calculatedTypicalItemWidth:Number = isNaN(this._typicalItemWidth) ? this._typicalItem.width : this._typicalItemWidth;
-				var calculatedTypicalItemHeight:Number = isNaN(this._typicalItemHeight) ? this._typicalItem.height : this._typicalItemHeight;
+				var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
+				var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
 			}
 
 			var positionX:Number = x + this._paddingLeft;
