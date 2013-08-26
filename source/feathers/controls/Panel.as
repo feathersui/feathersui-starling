@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.core.IFeathersControl;
+	import feathers.core.IFocusExtras;
 	import feathers.core.PropertyProxy;
 
 	import starling.display.DisplayObject;
@@ -49,7 +50,7 @@ package feathers.controls
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/panel
 	 */
-	public class Panel extends ScrollContainer
+	public class Panel extends ScrollContainer implements IFocusExtras
 	{
 		/**
 		 * The default value added to the <code>nameList</code> of the header.
@@ -577,6 +578,32 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		private var _focusExtrasBefore:Vector.<DisplayObject> = new <DisplayObject>[];
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get focusExtrasBefore():Vector.<DisplayObject>
+		{
+			return this._focusExtrasBefore;
+		}
+
+		/**
+		 * @private
+		 */
+		private var _focusExtrasAfter:Vector.<DisplayObject> = new <DisplayObject>[];
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get focusExtrasAfter():Vector.<DisplayObject>
+		{
+			return this._focusExtrasAfter;
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function draw():void
 		{
 			const headerFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_HEADER_FACTORY);
@@ -686,7 +713,9 @@ package feathers.controls
 			this.displayListBypassEnabled = false;
 			if(this.header)
 			{
-				this.removeChild(DisplayObject(this.header), true);
+				var displayHeader:DisplayObject = DisplayObject(this.header);
+				this._focusExtrasBefore.splice(this._focusExtrasBefore.indexOf(displayHeader), 1);
+				this.removeChild(displayHeader, true);
 				this.header = null;
 			}
 
@@ -694,7 +723,9 @@ package feathers.controls
 			const headerName:String = this._customHeaderName != null ? this._customHeaderName : this.headerName;
 			this.header = IFeathersControl(factory());
 			this.header.nameList.add(headerName);
-			this.addChild(DisplayObject(this.header));
+			displayHeader = DisplayObject(this.header);
+			this.addChild(displayHeader);
+			this._focusExtrasBefore.push(displayHeader);
 			this.displayListBypassEnabled = oldDisplayListBypassEnabled;
 		}
 
@@ -715,7 +746,9 @@ package feathers.controls
 			this.displayListBypassEnabled = false;
 			if(this.footer)
 			{
-				this.removeChild(DisplayObject(this.footer), true);
+				var displayFooter:DisplayObject = DisplayObject(this.footer);
+				this._focusExtrasAfter.splice(this._focusExtrasAfter.indexOf(displayFooter), 1);
+				this.removeChild(displayFooter, true);
 				this.footer = null;
 			}
 
@@ -726,7 +759,9 @@ package feathers.controls
 			const footerName:String = this._customFooterName != null ? this._customFooterName : this.footerName;
 			this.footer = IFeathersControl(this._footerFactory());
 			this.footer.nameList.add(footerName);
-			this.addChild(DisplayObject(this.footer));
+			displayFooter = DisplayObject(this.footer);
+			this.addChild(displayFooter);
+			this._focusExtrasAfter.push(displayFooter);
 			this.displayListBypassEnabled = oldDisplayListBypassEnabled;
 		}
 
