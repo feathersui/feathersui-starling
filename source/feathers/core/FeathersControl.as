@@ -18,7 +18,6 @@ package feathers.core
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
-	import starling.core.RenderSupport;
 	import starling.display.DisplayObject;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -819,7 +818,7 @@ package feathers.core
 		 */
 		public function get isFocusEnabled():Boolean
 		{
-			return this._isFocusEnabled;
+			return this._isEnabled && this._isFocusEnabled;
 		}
 
 		/**
