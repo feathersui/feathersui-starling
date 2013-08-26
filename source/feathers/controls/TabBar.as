@@ -254,6 +254,14 @@ package feathers.controls
 				this._dataProvider.addEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_updateItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.RESET, dataProvider_resetHandler);
+				if(this.selectedIndex < 0 && this._dataProvider.length > 0)
+				{
+					this.selectedIndex = 0;
+				}
+			}
+			else
+			{
+				this.selectedIndex = -1;
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
