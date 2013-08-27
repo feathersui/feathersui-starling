@@ -938,6 +938,7 @@ package feathers.themes
 		protected function textInputInitializer(input:TextInput):void
 		{
 			input.minWidth = input.minHeight = 22;
+			input.gap = 2;
 			input.paddingTop = input.paddingBottom = 2;
  			input.paddingRight = input.paddingLeft = 4;
 			input.textEditorProperties.textFormat = this.defaultTextFormat;
@@ -954,6 +955,7 @@ package feathers.themes
 		protected function numericStepperTextInputInitializer(input:TextInput):void
 		{
 			input.minWidth = input.minHeight = 22;
+			input.gap = 2;
 			input.paddingTop = input.paddingBottom = 2;
 			input.paddingRight = input.paddingLeft = 4;
 			input.textEditorProperties.textFormat = this.defaultTextFormat;
