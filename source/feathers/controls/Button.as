@@ -2921,7 +2921,9 @@ package feathers.controls
 				}
 				if(this.currentIcon)
 				{
-					this.addChild(this.currentIcon);
+					//we want the icon to appear below the label text renderer
+					var index:int = this.getChildIndex(DisplayObject(this.labelTextRenderer));
+					this.addChildAt(this.currentIcon, index);
 				}
 			}
 		}
