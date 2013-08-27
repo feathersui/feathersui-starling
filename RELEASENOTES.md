@@ -26,6 +26,7 @@ minor bug fixes.
 * ScrollText: better padding getter.
 * PickerList: closes pop-up list on Event.TRIGGERED.
 * TiledRowsLayout, TiledColumnsLayout: fixed manageVisibility implementation.
+* TiledRowsLayout, TiledColumnsLayout: fixed bad positioning when useSquareTiles is true.
 
 ## 1.1.0
 
