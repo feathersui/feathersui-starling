@@ -622,10 +622,7 @@ package feathers.layout
 			const explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
 			const explicitHeight:Number = viewPortBounds ? viewPortBounds.explicitHeight : NaN;
 
-			if(!this._useSquareTiles || !this._useVirtualLayout)
-			{
-				this.validateItems(items);
-			}
+			this.validateItems(items);
 			
 			this._discoveredItemsCache.length = 0;
 			const itemCount:int = items.length;
