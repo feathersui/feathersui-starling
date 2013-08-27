@@ -90,6 +90,7 @@ This release includes minor updates to support Starling Framework 1.4 and a numb
 * ScrollText: better padding getter.
 * PickerList: closes pop-up list on Event.TRIGGERED.
 * TiledRowsLayout, TiledColumnsLayout: fixed manageVisibility implementation.
+* TiledRowsLayout, TiledColumnsLayout: fixed bad positioning when useSquareTiles is true.
 
 ## 1.1.0
 
