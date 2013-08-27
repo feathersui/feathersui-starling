@@ -1688,7 +1688,6 @@ package feathers.controls
 			}
 			else
 			{
-				trace(this._currentState);
 				this.currentBackground = DisplayObject(this._skinSelector.updateValue(this, this._currentState, this.currentBackground));
 			}
 			if(this.currentBackground != oldSkin)
