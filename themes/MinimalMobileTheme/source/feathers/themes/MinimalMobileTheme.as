@@ -997,6 +997,7 @@ package feathers.themes
 		{
 			input.minWidth = input.minHeight = 66 * this.scale;
 			input.minTouchWidth = input.minTouchHeight = 66 * this.scale;
+			input.gap = 12 * this.scale;
 			input.paddingTop = 14 * this.scale;
 			input.paddingBottom = 8 * this.scale;
 			input.paddingLeft = input.paddingRight = 16 * this.scale;
@@ -1022,6 +1023,7 @@ package feathers.themes
 		{
 			input.minWidth = input.minHeight = 66 * this.scale;
 			input.minTouchWidth = input.minTouchHeight = 66 * this.scale;
+			input.gap = 12 * this.scale;
 			input.paddingTop = input.paddingBottom = 14 * this.scale;
 			input.paddingLeft = input.paddingRight = 16 * this.scale;
 			input.isEditable = false;
