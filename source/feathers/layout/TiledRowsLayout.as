@@ -9,6 +9,8 @@ package feathers.layout
 {
 	import feathers.core.IFeathersControl;
 
+	import flash.errors.IllegalOperationError;
+
 	import flash.geom.Point;
 
 	import starling.display.DisplayObject;
@@ -642,10 +644,95 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected var _typicalItemWidth:Number = 0;
+		protected var _typicalItem:DisplayObject;
 
 		/**
 		 * @inheritDoc
+		 */
+		public function get typicalItem():DisplayObject
+		{
+			return this._typicalItem;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set typicalItem(value:DisplayObject):void
+		{
+			if(this._typicalItem == value)
+			{
+				return;
+			}
+			this._typicalItem = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _resetTypicalItemDimensionsOnMeasure:Boolean = false;
+
+		/**
+		 * If set to <code>true</code>, the width and height of the
+		 * <code>typicalItem</code> will be reset to <code>typicalItemWidth</code>
+		 * and <code>typicalItemHeight</code>, respectively, whenever the
+		 * typical item needs to be measured. The measured dimensions of the
+		 * typical item are used to fill in the blanks of a virtualized layout
+		 * for virtual items that don't have their own display objects to
+		 * measure yet.
+		 *
+		 * @default false
+		 *
+		 * @see #typicalItemWidth
+		 * @see #typicalItemHeight
+		 * @see #typicalItem
+		 */
+		public function get resetTypicalItemDimensionsOnMeasure():Boolean
+		{
+			return this._resetTypicalItemDimensionsOnMeasure;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set resetTypicalItemDimensionsOnMeasure(value:Boolean):void
+		{
+			if(this._resetTypicalItemDimensionsOnMeasure == value)
+			{
+				return;
+			}
+			this._resetTypicalItemDimensionsOnMeasure = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _typicalItemWidth:Number = NaN;
+
+		/**
+		 * Used to reset the width, in pixels, of the <code>typicalItem</code>
+		 * for measurement. The measured dimensions of the typical item are used
+		 * to fill in the blanks of a virtualized layout for virtual items that
+		 * don't have their own display objects to measure yet.
+		 *
+		 * <p>This value is only used when <code>resetTypicalItemDimensionsOnMeasure</code>
+		 * is set to <code>true</code>. If <code>resetTypicalItemDimensionsOnMeasure</code>
+		 * is set to <code>false</code>, this value will be ignored and the
+		 * <code>typicalItem</code> dimensions will not be reset before
+		 * measurement.</p>
+		 *
+		 * <p>If <code>typicalItemWidth</code> is set to <code>NaN</code>, the
+		 * typical item will auto-size itself to its preferred width. If you
+		 * pass a valid <code>Number</code> value, the typical item's width will
+		 * be set to a fixed size. May be used in combination with
+		 * <code>typicalItemHeight</code>.</p>
+		 *
+		 * @default NaN
+		 *
+		 * @see #resetTypicalItemDimensionsOnMeasure
+		 * @see #typicalItemHeight
+		 * @see #typicalItem
 		 */
 		public function get typicalItemWidth():Number
 		{
@@ -662,15 +749,37 @@ package feathers.layout
 				return;
 			}
 			this._typicalItemWidth = value;
+			this.dispatchEventWith(Event.CHANGE);
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _typicalItemHeight:Number = 0;
+		protected var _typicalItemHeight:Number = NaN;
 
 		/**
-		 * @inheritDoc
+		 * Used to reset the height, in pixels, of the <code>typicalItem</code>
+		 * for measurement. The measured dimensions of the typical item are used
+		 * to fill in the blanks of a virtualized layout for virtual items that
+		 * don't have their own display objects to measure yet.
+		 *
+		 * <p>This value is only used when <code>resetTypicalItemDimensionsOnMeasure</code>
+		 * is set to <code>true</code>. If <code>resetTypicalItemDimensionsOnMeasure</code>
+		 * is set to <code>false</code>, this value will be ignored and the
+		 * <code>typicalItem</code> dimensions will not be reset before
+		 * measurement.</p>
+		 *
+		 * <p>If <code>typicalItemHeight</code> is set to <code>NaN</code>, the
+		 * typical item will auto-size itself to its preferred height. If you
+		 * pass a valid <code>Number</code> value, the typical item's height will
+		 * be set to a fixed size. May be used in combination with
+		 * <code>typicalItemWidth</code>.</p>
+		 *
+		 * @default NaN
+		 *
+		 * @see #resetTypicalItemDimensionsOnMeasure
+		 * @see #typicalItemWidth
+		 * @see #typicalItem
 		 */
 		public function get typicalItemHeight():Number
 		{
@@ -687,6 +796,7 @@ package feathers.layout
 				return;
 			}
 			this._typicalItemHeight = value;
+			this.dispatchEventWith(Event.CHANGE);
 		}
 
 		/**
@@ -718,15 +828,19 @@ package feathers.layout
 			const explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
 			const explicitHeight:Number = viewPortBounds ? viewPortBounds.explicitHeight : NaN;
 
-			if(!this._useSquareTiles || !this._useVirtualLayout)
+			if(this._useVirtualLayout)
 			{
-				this.validateItems(items);
+				this.prepareTypicalItem();
+				var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
+				var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
 			}
+
+			this.validateItems(items);
 
 			this._discoveredItemsCache.length = 0;
 			const itemCount:int = items.length;
-			var tileWidth:Number = this._typicalItemWidth;
-			var tileHeight:Number = this._typicalItemHeight;
+			var tileWidth:Number = this._useVirtualLayout ? calculatedTypicalItemWidth : 0;
+			var tileHeight:Number = this._useVirtualLayout ? calculatedTypicalItemHeight : 0;
 			//a virtual layout assumes that all items are the same size as
 			//the typical item, so we don't need to measure every item in
 			//that case
@@ -1008,6 +1122,11 @@ package feathers.layout
 			{
 				result = new Point();
 			}
+			if(!this._useVirtualLayout)
+			{
+				throw new IllegalOperationError("measureViewPort() may be called only if useVirtualLayout is true.")
+			}
+
 			const explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
 			const explicitHeight:Number = viewPortBounds ? viewPortBounds.explicitHeight : NaN;
 			const needsWidth:Boolean = isNaN(explicitWidth);
@@ -1018,7 +1137,6 @@ package feathers.layout
 				result.y = explicitHeight;
 				return result;
 			}
-
 			const boundsX:Number = viewPortBounds ? viewPortBounds.x : 0;
 			const boundsY:Number = viewPortBounds ? viewPortBounds.y : 0;
 			const minWidth:Number = viewPortBounds ? viewPortBounds.minWidth : 0;
@@ -1026,8 +1144,12 @@ package feathers.layout
 			const maxWidth:Number = viewPortBounds ? viewPortBounds.maxWidth : Number.POSITIVE_INFINITY;
 			const maxHeight:Number = viewPortBounds ? viewPortBounds.maxHeight : Number.POSITIVE_INFINITY;
 
-			var tileWidth:Number = this._typicalItemWidth;
-			var tileHeight:Number = this._typicalItemHeight;
+			this.prepareTypicalItem();
+			var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
+			var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
+
+			var tileWidth:Number = calculatedTypicalItemWidth;
+			var tileHeight:Number = calculatedTypicalItemHeight;
 			if(tileWidth < 0)
 			{
 				tileWidth = 0;
@@ -1188,6 +1310,11 @@ package feathers.layout
 			{
 				result = new <int>[];
 			}
+			if(!this._useVirtualLayout)
+			{
+				throw new IllegalOperationError("getVisibleIndicesAtScrollPosition() may be called only if useVirtualLayout is true.")
+			}
+
 			if(this._paging == PAGING_HORIZONTAL)
 			{
 				this.getVisibleIndicesAtScrollPositionWithHorizontalPaging(scrollX, scrollY, width, height, itemCount, result);
@@ -1214,9 +1341,16 @@ package feathers.layout
 				result = new Point();
 			}
 
+			if(this._useVirtualLayout)
+			{
+				this.prepareTypicalItem();
+				var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
+				var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
+			}
+
 			const itemCount:int = items.length;
-			var tileWidth:Number = this._typicalItemWidth;
-			var tileHeight:Number = this._typicalItemHeight;
+			var tileWidth:Number = this._useVirtualLayout ? calculatedTypicalItemWidth : 0;
+			var tileHeight:Number = this._useVirtualLayout ? calculatedTypicalItemHeight : 0;
 			//a virtual layout assumes that all items are the same size as
 			//the typical item, so we don't need to measure every item in
 			//that case
@@ -1385,31 +1519,14 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected function validateItems(items:Vector.<DisplayObject>):void
-		{
-			const itemCount:int = items.length;
-			for(var i:int = 0; i < itemCount; i++)
-			{
-				var item:DisplayObject = items[i];
-				if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
-				{
-					continue;
-				}
-				if(!(item is IFeathersControl))
-				{
-					continue;
-				}
-				IFeathersControl(item).validate();
-			}
-		}
-
-		/**
-		 * @private
-		 */
 		protected function getVisibleIndicesAtScrollPositionWithHorizontalPaging(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int, result:Vector.<int>):void
 		{
-			var tileWidth:Number = this._typicalItemWidth;
-			var tileHeight:Number = this._typicalItemHeight;
+			this.prepareTypicalItem();
+			var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
+			var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
+
+			var tileWidth:Number = calculatedTypicalItemWidth;
+			var tileHeight:Number = calculatedTypicalItemHeight;
 			if(tileWidth < 0)
 			{
 				tileWidth = 0;
@@ -1544,8 +1661,12 @@ package feathers.layout
 		 */
 		protected function getVisibleIndicesAtScrollPositionWithVerticalPaging(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int, result:Vector.<int>):void
 		{
-			var tileWidth:Number = this._typicalItemWidth;
-			var tileHeight:Number = this._typicalItemHeight;
+			this.prepareTypicalItem();
+			var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
+			var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
+
+			var tileWidth:Number = calculatedTypicalItemWidth;
+			var tileHeight:Number = calculatedTypicalItemHeight;
 			if(tileWidth < 0)
 			{
 				tileWidth = 0;
@@ -1653,8 +1774,12 @@ package feathers.layout
 		 */
 		protected function getVisibleIndicesAtScrollPositionWithoutPaging(scrollX:Number, scrollY:Number, width:Number, height:Number, itemCount:int, result:Vector.<int>):void
 		{
-			var tileWidth:Number = this._typicalItemWidth;
-			var tileHeight:Number = this._typicalItemHeight;
+			this.prepareTypicalItem();
+			var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
+			var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
+
+			var tileWidth:Number = calculatedTypicalItemWidth;
+			var tileHeight:Number = calculatedTypicalItemHeight;
 			if(tileWidth < 0)
 			{
 				tileWidth = 0;
@@ -1715,6 +1840,47 @@ package feathers.layout
 			{
 				result[resultPushIndex] = i;
 				resultPushIndex++;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function validateItems(items:Vector.<DisplayObject>):void
+		{
+			const itemCount:int = items.length;
+			for(var i:int = 0; i < itemCount; i++)
+			{
+				var item:DisplayObject = items[i];
+				if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+				{
+					continue;
+				}
+				if(!(item is IFeathersControl))
+				{
+					continue;
+				}
+				IFeathersControl(item).validate();
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function prepareTypicalItem():void
+		{
+			if(!this._typicalItem)
+			{
+				return;
+			}
+			if(this._resetTypicalItemDimensionsOnMeasure)
+			{
+				this._typicalItem.width = this._typicalItemWidth;
+				this._typicalItem.height = this._typicalItemHeight;
+			}
+			if(this._typicalItem is IFeathersControl)
+			{
+				IFeathersControl(this._typicalItem).validate();
 			}
 		}
 	}

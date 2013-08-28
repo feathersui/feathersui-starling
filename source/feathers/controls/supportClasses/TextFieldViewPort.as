@@ -8,6 +8,9 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.supportClasses
 {
 	import feathers.core.FeathersControl;
+	import feathers.utils.geom.matrixToRotation;
+	import feathers.utils.geom.matrixToScaleX;
+	import feathers.utils.geom.matrixToScaleY;
 
 	import flash.display.Sprite;
 	import flash.geom.Matrix;
@@ -28,7 +31,7 @@ package feathers.controls.supportClasses
 	/**
 	 * @private
 	 */
-	public final class TextFieldViewPort extends FeathersControl implements IViewPort
+	public class TextFieldViewPort extends FeathersControl implements IViewPort
 	{
 		private static const HELPER_MATRIX:Matrix = new Matrix();
 		private static const HELPER_POINT:Point = new Point();
@@ -744,8 +747,9 @@ package feathers.controls.supportClasses
 			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
 			this._textFieldContainer.x = starlingViewPort.x + HELPER_POINT.x * Starling.contentScaleFactor;
 			this._textFieldContainer.y = starlingViewPort.y + HELPER_POINT.y * Starling.contentScaleFactor;
-			this._textFieldContainer.scaleX = HELPER_MATRIX.a * Starling.contentScaleFactor;
-			this._textFieldContainer.scaleY = HELPER_MATRIX.d * Starling.contentScaleFactor;
+			this._textFieldContainer.scaleX = matrixToScaleX(HELPER_MATRIX) * Starling.contentScaleFactor;
+			this._textFieldContainer.scaleY = matrixToScaleY(HELPER_MATRIX) * Starling.contentScaleFactor;
+			this._textFieldContainer.rotation = matrixToRotation(HELPER_MATRIX) * 180 / Math.PI;
 			this._textFieldContainer.visible = true;
 			this._textFieldContainer.alpha = parentAlpha * this.alpha;
 			this._textFieldContainer.visible = this.visible;

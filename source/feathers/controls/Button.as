@@ -391,11 +391,6 @@ package feathers.controls
 		 * <p>For internal use in subclasses.</p>
 		 */
 		protected var touchPointID:int = -1;
-
-		/**
-		 * @private
-		 */
-		protected var _isHoverSupported:Boolean = false;
 		
 		/**
 		 * @private
@@ -2926,7 +2921,9 @@ package feathers.controls
 				}
 				if(this.currentIcon)
 				{
-					this.addChild(this.currentIcon);
+					//we want the icon to appear below the label text renderer
+					var index:int = this.getChildIndex(DisplayObject(this.labelTextRenderer));
+					this.addChildAt(this.currentIcon, index);
 				}
 			}
 		}
@@ -3218,16 +3215,7 @@ package feathers.controls
 			this.removeEventListener(Event.ENTER_FRAME, longPress_enterFrameHandler);
 			if(this._isEnabled)
 			{
-				if(this._isHoverSupported && touch)
-				{
-					touch.getLocation(this.stage, HELPER_POINT);
-					const isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
-					this.currentState = isInBounds ? STATE_HOVER : STATE_UP;
-				}
-				else
-				{
-					this.currentState = STATE_UP;
-				}
+				this.currentState = STATE_UP;
 			}
 			else
 			{
@@ -3287,6 +3275,7 @@ package feathers.controls
 				var touch:Touch = event.getTouch(this, null, this.touchPointID);
 				if(!touch)
 				{
+					//this should never happen
 					return;
 				}
 
@@ -3338,7 +3327,6 @@ package feathers.controls
 				if(touch)
 				{
 					this.currentState = STATE_HOVER;
-					this._isHoverSupported = true;
 					return;
 				}
 

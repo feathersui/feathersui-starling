@@ -100,4 +100,24 @@
 			<arg value="Todos.swf"/>
 		</java>
 	</target>
+	<target name="install-android">
+		<echo message="Installing Todos.apk"/>
+		<java jar="${adt}" dir="${basedir}" fork="true" failonerror="true">
+			<arg value="-installApp"/>
+			<arg value="-platform"/>
+			<arg value="android"/>
+			<arg value="-package"/>
+			<arg value="${output.path}/Todos.apk"/>
+		</java>
+	</target>
+	<target name="install-ios">
+		<echo message="Installing Todos.ipa"/>
+		<java jar="${adt}" dir="${basedir}" fork="true" failonerror="true">
+			<arg value="-installApp"/>
+			<arg value="-platform"/>
+			<arg value="iOS"/>
+			<arg value="-package"/>
+			<arg value="${output.path}/Todos.ipa"/>
+		</java>
+	</target>
 </project>

@@ -31,6 +31,7 @@ package feathers.themes
 	import feathers.controls.GroupedList;
 	import feathers.controls.Header;
 	import feathers.controls.IScrollBar;
+	import feathers.controls.ImageLoader;
 	import feathers.controls.Label;
 	import feathers.controls.List;
 	import feathers.controls.NumericStepper;
@@ -263,6 +264,7 @@ package feathers.themes
 
 		protected var textInputBackgroundSkinTextures:Scale9Textures;
 		protected var textInputBackgroundDisabledSkinTextures:Scale9Textures;
+		protected var textInputSearchIconTexture:Texture;
 
 		protected var vScrollBarThumbUpSkinTextures:Scale9Textures;
 		protected var vScrollBarThumbHoverSkinTextures:Scale9Textures;
@@ -411,6 +413,7 @@ package feathers.themes
 
 			this.textInputBackgroundSkinTextures = new Scale9Textures(this.atlas.getTexture("text-input-background-skin"), TEXT_INPUT_SCALE_9_GRID);
 			this.textInputBackgroundDisabledSkinTextures = new Scale9Textures(this.atlas.getTexture("text-input-background-disabled-skin"), TEXT_INPUT_SCALE_9_GRID);
+			this.textInputSearchIconTexture = this.atlas.getTexture("search-icon");
 
 			this.vScrollBarThumbUpSkinTextures = new Scale9Textures(this.atlas.getTexture("vertical-scroll-bar-thumb-up-skin"), VERTICAL_SCROLL_BAR_THUMB_SCALE_9_GRID);
 			this.vScrollBarThumbHoverSkinTextures = new Scale9Textures(this.atlas.getTexture("vertical-scroll-bar-thumb-hover-skin"), VERTICAL_SCROLL_BAR_THUMB_SCALE_9_GRID);
@@ -480,6 +483,7 @@ package feathers.themes
 			this.setInitializerForClass(ScrollBar, horizontalScrollBarInitializer, Scroller.DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR);
 			this.setInitializerForClass(ScrollBar, verticalScrollBarInitializer, Scroller.DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR);
 			this.setInitializerForClass(TextInput, textInputInitializer);
+			this.setInitializerForClass(TextInput, searchTextInputInitializer, TextInput.ALTERNATE_NAME_SEARCH_TEXT_INPUT);
 			this.setInitializerForClass(TextInput, numericStepperTextInputInitializer, NumericStepper.DEFAULT_CHILD_NAME_TEXT_INPUT);
 			this.setInitializerForClass(TextArea, textAreaInitializer);
 			this.setInitializerForClass(PageIndicator, pageIndicatorInitializer);
@@ -935,25 +939,44 @@ package feathers.themes
 			stepper.focusPadding = -1;
 		}
 
-		protected function textInputInitializer(input:TextInput):void
+		protected function baseTextInputInitializer(input:TextInput):void
 		{
-			input.minWidth = input.minHeight = 22;
-			input.paddingTop = input.paddingBottom = 2;
- 			input.paddingRight = input.paddingLeft = 4;
-			input.textEditorProperties.textFormat = this.defaultTextFormat;
-
-			input.backgroundSkin = new Scale9Image(textInputBackgroundSkinTextures);
-			input.backgroundDisabledSkin = new Scale9Image(textInputBackgroundDisabledSkinTextures);
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.textInputBackgroundSkinTextures;
+			skinSelector.setValueForState(this.textInputBackgroundDisabledSkinTextures, TextInput.STATE_DISABLED);
+			input.stateToSkinFunction = skinSelector.updateValue;
 
 			input.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
 			input.focusPadding = -1;
 
+			input.minWidth = input.minHeight = 22;
+			input.gap = 2;
+			input.paddingTop = input.paddingBottom = 2;
+			input.paddingRight = input.paddingLeft = 4;
+
+			input.textEditorProperties.textFormat = this.defaultTextFormat;
 			input.promptProperties.textFormat = this.defaultTextFormat;
+		}
+
+		protected function textInputInitializer(input:TextInput):void
+		{
+			this.baseTextInputInitializer(input);
+		}
+
+		protected function searchTextInputInitializer(input:TextInput):void
+		{
+			this.baseTextInputInitializer(input);
+
+			var searchIcon:ImageLoader = new ImageLoader();
+			searchIcon.source = this.textInputSearchIconTexture;
+			searchIcon.snapToPixels = true;
+			input.defaultIcon = searchIcon;
 		}
 
 		protected function numericStepperTextInputInitializer(input:TextInput):void
 		{
 			input.minWidth = input.minHeight = 22;
+			input.gap = 2;
 			input.paddingTop = input.paddingBottom = 2;
 			input.paddingRight = input.paddingLeft = 4;
 			input.textEditorProperties.textFormat = this.defaultTextFormat;

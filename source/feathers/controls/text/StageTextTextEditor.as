@@ -11,6 +11,8 @@ package feathers.controls.text
 	import feathers.core.ITextEditor;
 	import feathers.events.FeathersEventType;
 	import feathers.text.StageTextField;
+	import feathers.utils.geom.matrixToScaleX;
+	import feathers.utils.geom.matrixToScaleY;
 
 	import flash.display.BitmapData;
 	import flash.events.Event;
@@ -1051,7 +1053,17 @@ package feathers.controls.text
 			this.stageText.displayAsPassword = this._displayAsPassword;
 			this.stageText.fontFamily = this._fontFamily;
 			this.stageText.fontPosture = this._fontPosture;
-			this.stageText.fontSize = this._fontSize * Starling.contentScaleFactor;
+
+			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+			var globalScaleX:Number = matrixToScaleX(HELPER_MATRIX);
+			var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
+			var smallerGlobalScale:Number = globalScaleX;
+			if(globalScaleY < globalScaleX)
+			{
+				smallerGlobalScale = globalScaleY;
+			}
+			this.stageText.fontSize = this._fontSize * Starling.contentScaleFactor * smallerGlobalScale;
+
 			this.stageText.fontWeight = this._fontWeight;
 			this.stageText.locale = this._locale;
 			this.stageText.maxChars = this._maxChars;
@@ -1128,6 +1140,7 @@ package feathers.controls.text
 			//and height exactly match its view port width and height.
 			var bitmapData:BitmapData = new BitmapData(viewPort.width, viewPort.height, true, 0x00ff00ff);
 			this.stageText.drawViewPortToBitmapData(bitmapData);
+
 			var newTexture:Texture;
 			if(!this.textSnapshot || this._needsNewTexture)
 			{
@@ -1154,6 +1167,9 @@ package feathers.controls.text
 					existingTexture.root.uploadBitmapData(bitmapData);
 				}
 			}
+			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+			this.textSnapshot.scaleX = 1 / matrixToScaleX(HELPER_MATRIX);
+			this.textSnapshot.scaleY = 1 / matrixToScaleY(HELPER_MATRIX);
 			bitmapData.dispose();
 			this.textSnapshot.visible = !this._stageTextHasFocus;
 			this._needsNewTexture = false;
@@ -1177,18 +1193,25 @@ package feathers.controls.text
 
 			HELPER_POINT.x = HELPER_POINT.y = 0;
 			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+			var globalScaleX:Number = matrixToScaleX(HELPER_MATRIX);
+			var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
 			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
 			this._oldGlobalX = HELPER_POINT.x;
 			this._oldGlobalY = HELPER_POINT.y;
 			stageTextViewPort.x = Math.round(starlingViewPort.x + HELPER_POINT.x * Starling.contentScaleFactor);
 			stageTextViewPort.y = Math.round(starlingViewPort.y + HELPER_POINT.y * Starling.contentScaleFactor);
-			stageTextViewPort.width = Math.round(Math.max(1, this.actualWidth * Starling.contentScaleFactor * this.scaleX));
-			stageTextViewPort.height = Math.round(Math.max(1, this.actualHeight * Starling.contentScaleFactor * this.scaleY));
-			if(isNaN(stageTextViewPort.width) || isNaN(stageTextViewPort.height))
+			var viewPortWidth:Number = Math.round(this.actualWidth * Starling.contentScaleFactor * globalScaleX);
+			if(viewPortWidth < 1 || isNaN(viewPortWidth))
 			{
-				stageTextViewPort.width = 1;
-				stageTextViewPort.height = 1;
+				viewPortWidth = 1;
 			}
+			var viewPortHeight:Number = Math.round(this.actualHeight * Starling.contentScaleFactor * globalScaleY);
+			if(viewPortHeight < 1 || isNaN(viewPortHeight))
+			{
+				viewPortHeight = 1;
+			}
+			stageTextViewPort.width = viewPortWidth;
+			stageTextViewPort.height = viewPortHeight;
 			this.stageText.viewPort = stageTextViewPort;
 
 			this._measureTextField.width = this.actualWidth;

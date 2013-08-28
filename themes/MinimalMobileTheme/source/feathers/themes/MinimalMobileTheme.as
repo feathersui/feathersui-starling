@@ -202,6 +202,7 @@ package feathers.themes
 		protected var insetBackgroundDisabledSkinTextures:Scale9Textures;
 
 		protected var dropDownArrowTexture:Texture;
+		protected var searchIconTexture:Texture;
 
 		protected var listItemUpTextures:Scale9Textures;
 		protected var listItemDownTextures:Scale9Textures;
@@ -324,6 +325,7 @@ package feathers.themes
 			this.insetBackgroundDisabledSkinTextures = new Scale9Textures(this.atlas.getTexture("inset-background-disabled-skin"), SCALE_9_GRID);
 
 			this.dropDownArrowTexture = this.atlas.getTexture("drop-down-arrow");
+			this.searchIconTexture = this.atlas.getTexture("search-icon");
 
 			this.listItemUpTextures = new Scale9Textures(this.atlas.getTexture("list-item-up"), LIST_ITEM_SCALE_9_GRID);
 			this.listItemDownTextures = new Scale9Textures(this.atlas.getTexture("list-item-down"), LIST_ITEM_SCALE_9_GRID);
@@ -399,6 +401,7 @@ package feathers.themes
 			this.setInitializerForClass(Header, headerInitializer);
 			this.setInitializerForClass(Header, panelHeaderInitializer, Panel.DEFAULT_CHILD_NAME_HEADER);
 			this.setInitializerForClass(TextInput, textInputInitializer);
+			this.setInitializerForClass(TextInput, searchTextInputInitializer, TextInput.ALTERNATE_NAME_SEARCH_TEXT_INPUT);
 			this.setInitializerForClass(TextInput, numericStepperTextInputInitializer, NumericStepper.DEFAULT_CHILD_NAME_TEXT_INPUT);
 			this.setInitializerForClass(PageIndicator, pageIndicatorInitializer);
 			this.setInitializerForClass(ProgressBar, progressBarInitializer);
@@ -993,10 +996,11 @@ package feathers.themes
 			header.titleProperties.disabledTextFormat = this.disabledTextFormat;
 		}
 
-		protected function textInputInitializer(input:TextInput):void
+		protected function baseTextInputInitializer(input:TextInput):void
 		{
 			input.minWidth = input.minHeight = 66 * this.scale;
 			input.minTouchWidth = input.minTouchHeight = 66 * this.scale;
+			input.gap = 8 * this.scale;
 			input.paddingTop = 14 * this.scale;
 			input.paddingBottom = 8 * this.scale;
 			input.paddingLeft = input.paddingRight = 16 * this.scale;
@@ -1018,10 +1022,26 @@ package feathers.themes
 			input.promptProperties.disabledTextFormat = this.disabledTextFormat;
 		}
 
+		protected function textInputInitializer(input:TextInput):void
+		{
+			this.baseTextInputInitializer(input);
+		}
+
+		protected function searchTextInputInitializer(input:TextInput):void
+		{
+			this.baseTextInputInitializer(input);
+
+			var searchIcon:ImageLoader = new ImageLoader();
+			searchIcon.source = this.searchIconTexture;
+			searchIcon.snapToPixels = true;
+			input.defaultIcon = searchIcon;
+		}
+
 		protected function numericStepperTextInputInitializer(input:TextInput):void
 		{
 			input.minWidth = input.minHeight = 66 * this.scale;
 			input.minTouchWidth = input.minTouchHeight = 66 * this.scale;
+			input.gap = 12 * this.scale;
 			input.paddingTop = input.paddingBottom = 14 * this.scale;
 			input.paddingLeft = input.paddingRight = 16 * this.scale;
 			input.isEditable = false;

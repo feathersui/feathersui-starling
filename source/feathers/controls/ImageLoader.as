@@ -355,7 +355,7 @@ package feathers.controls
 		 * custom value:</p>
 		 *
 		 * <listing version="3.0">
-		 * loader.source = TextureSmoothing.NONE;</listing>
+		 * loader.smoothing = TextureSmoothing.NONE;</listing>
 		 *
 		 * @default starling.textures.TextureSmoothing.BILINEAR
 		 *
