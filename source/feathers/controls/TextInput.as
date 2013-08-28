@@ -121,6 +121,28 @@ package feathers.controls
 		public static const STATE_FOCUSED:String = "focused";
 
 		/**
+		 * An alternate name to use with TextInput to allow a theme to give it
+		 * a search input style. If a theme does not provide a skin for the
+		 * search text input, the theme will automatically fall back to using
+		 * the default text input skin.
+		 *
+		 * <p>An alternate name should always be added to a component's
+		 * <code>nameList</code> before the component is added to the stage for
+		 * the first time.</p>
+		 *
+		 * <p>In the following example, the searc style is applied to a text
+		 * input:</p>
+		 *
+		 * <listing version="3.0">
+		 * var input:TextInput = new TextInput();
+		 * input.nameList.add( TextInput.ALTERNATE_NAME_SEARCH_TEXT_INPUT );
+		 * this.addChild( input );</listing>
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
+		 */
+		public static const ALTERNATE_NAME_SEARCH_TEXT_INPUT:String = "feathers-search-text-input";
+
+		/**
 		 * @private
 		 */
 		protected static const INVALIDATION_FLAG_PROMPT_FACTORY:String = "promptFactory";
