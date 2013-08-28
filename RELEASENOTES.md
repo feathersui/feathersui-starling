@@ -11,6 +11,12 @@ Version 1.2.0 of Feathers is still in active development. This list of changes i
 * New Component: LayoutGroupListItemRenderer
 * Many performance improvements with the help of Adobe Scout.
 
+### 1.2.0 Deprecated APIs
+
+All deprecated APIs are subject to the [Feathers deprecation policy](http://wiki.starling-framework.org/feathers/deprecation-policy). Please migrate to the new APIs as soon as possible because the deprecated APIs **will** be removed in a future version of Feathers.
+
+The `scrollerProperties` property on scrolling components, including List, GroupedList, ScrollText and ScrollContainer is deprecated. Because these components now extend `Scroller` instead of adding a `Scroller` as a child, all of the properties that could be set through `scrollerProperties` can now be set directly on the components. The `scrollerProperties` property was deprecated in Feathers 1.1.0, and it remains deprecated in Feathers 1.2.0. 
+
 ### 1.2.0 Interface Changes
 
 Three changes have been made to the `IVirtualLayout` interface. Custom implementations of `IVirtualLayout` created before Feathers 1.2.0 will have compiler errors until the required changes are made. It is expected that a small number of Feathers developers have created custom implementations of `IVirtualLayout`, so this change will have no impact on the majority of projects that are upgraded from older versions of Feathers.
@@ -164,6 +170,12 @@ This release includes minor updates to support Starling Framework 1.4 and a numb
 * Extended API documentation with inline examples and improved descriptions.
 * Added many new articles to the Feathers Manual.
 * Now built with ASC 2.0.
+
+### 1.1.0 Deprecated APIs
+
+All deprecated APIs are subject to the [Feathers deprecation policy](http://wiki.starling-framework.org/feathers/deprecation-policy). Please migrate to the new APIs as soon as possible because the deprecated APIs **will** be removed in a future version of Feathers.
+
+The `scrollerProperties` property on scrolling components, including List, GroupedList, ScrollText and ScrollContainer is deprecated. Because these components now extend `Scroller` instead of adding a `Scroller` as a child, all of the properties that could be set through `scrollerProperties` can now be set directly on the components.
 
 ### 1.1.0 Interface Changes
 
