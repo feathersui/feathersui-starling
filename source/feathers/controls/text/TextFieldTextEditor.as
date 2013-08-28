@@ -10,6 +10,9 @@ package feathers.controls.text
 	import feathers.core.FeathersControl;
 	import feathers.core.ITextEditor;
 	import feathers.events.FeathersEventType;
+	import feathers.utils.geom.matrixToRotation;
+	import feathers.utils.geom.matrixToScaleX;
+	import feathers.utils.geom.matrixToScaleY;
 
 	import flash.display.BitmapData;
 	import flash.events.FocusEvent;
@@ -847,6 +850,9 @@ package feathers.controls.text
 			{
 				this.refreshSnapshotParameters();
 				this.refreshTextFieldSize();
+				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+				this.textField.scaleX = matrixToScaleX(HELPER_MATRIX);
+				this.textField.scaleY = matrixToScaleY(HELPER_MATRIX);
 			}
 
 			this.checkIfNewSnapshotIsNeeded();
@@ -878,8 +884,10 @@ package feathers.controls.text
 			this._textFieldOffsetY = 0;
 			this._textFieldClipRect.x = 0;
 			this._textFieldClipRect.y = 0;
-			this._textFieldClipRect.width = this.actualWidth;
-			this._textFieldClipRect.height = this.actualHeight;
+
+			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+			this._textFieldClipRect.width = this.actualWidth * Starling.contentScaleFactor * matrixToScaleX(HELPER_MATRIX);
+			this._textFieldClipRect.height = this.actualHeight * Starling.contentScaleFactor * matrixToScaleY(HELPER_MATRIX);
 		}
 
 		/**
@@ -898,6 +906,7 @@ package feathers.controls.text
 				this.textField.x = Math.round(starlingViewPort.x + (HELPER_POINT.x * Starling.contentScaleFactor));
 				this.textField.y = Math.round(starlingViewPort.y + (HELPER_POINT.y * Starling.contentScaleFactor));
 			}
+			this.textField.rotation = matrixToRotation(HELPER_MATRIX) * 180 / Math.PI;
 
 			if(this.textSnapshot)
 			{
@@ -911,8 +920,8 @@ package feathers.controls.text
 		 */
 		protected function checkIfNewSnapshotIsNeeded():void
 		{
-			this._snapshotWidth = getNextPowerOfTwo(this._textFieldClipRect.width * Starling.contentScaleFactor);
-			this._snapshotHeight = getNextPowerOfTwo(this._textFieldClipRect.height * Starling.contentScaleFactor);
+			this._snapshotWidth = getNextPowerOfTwo(this._textFieldClipRect.width);
+			this._snapshotHeight = getNextPowerOfTwo(this._textFieldClipRect.height);
 			const textureRoot:ConcreteTexture = this.textSnapshot ? this.textSnapshot.texture.root : null;
 			this._needsNewTexture = this._needsNewTexture || !this.textSnapshot || this._snapshotWidth != textureRoot.width || this._snapshotHeight != textureRoot.height;
 		}
@@ -955,9 +964,12 @@ package feathers.controls.text
 			{
 				return;
 			}
+			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+			var globalScaleX:Number = matrixToScaleX(HELPER_MATRIX);
+			var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
 			HELPER_MATRIX.identity();
 			HELPER_MATRIX.translate(this._textFieldOffsetX, this._textFieldOffsetY);
-			HELPER_MATRIX.scale(Starling.contentScaleFactor, Starling.contentScaleFactor);
+			HELPER_MATRIX.scale(Starling.contentScaleFactor * globalScaleX, Starling.contentScaleFactor * globalScaleY);
 			var bitmapData:BitmapData = new BitmapData(this._snapshotWidth, this._snapshotHeight, true, 0x00ff00ff);
 			bitmapData.draw(this.textField, HELPER_MATRIX, null, null, this._textFieldClipRect);
 			var newTexture:Texture;
@@ -986,6 +998,9 @@ package feathers.controls.text
 					existingTexture.root.uploadBitmapData(bitmapData);
 				}
 			}
+			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+			this.textSnapshot.scaleX = 1 / matrixToScaleX(HELPER_MATRIX);
+			this.textSnapshot.scaleY = 1 / matrixToScaleY(HELPER_MATRIX);
 			bitmapData.dispose();
 			this._needsNewTexture = false;
 		}

@@ -156,20 +156,22 @@ package feathers.controls.popups
 				uiContent.maxHeight = maxHeight;
 				uiContent.validate();
 			}
-
-			//if it's a ui control that is able to auto-size, the above
-			//section will ensure that the control stays within the required
-			//bounds.
-			//if it's not a ui control, or if the control's explicit width
-			//and height values are greater than our maximum bounds, then we
-			//will enforce the maximum bounds the hard way.
-			if(this.content.width > maxWidth)
+			else
 			{
-				this.content.width = maxWidth;
-			}
-			if(this.content.height > maxHeight)
-			{
-				this.content.height = maxHeight;
+				//if it's a ui control that is able to auto-size, the above
+				//section will ensure that the control stays within the required
+				//bounds.
+				//if it's not a ui control, or if the control's explicit width
+				//and height values are greater than our maximum bounds, then we
+				//will enforce the maximum bounds the hard way.
+				if(this.content.width > maxWidth)
+				{
+					this.content.width = maxWidth;
+				}
+				if(this.content.height > maxHeight)
+				{
+					this.content.height = maxHeight;
+				}
 			}
 			this.content.x = (Starling.current.stage.stageWidth - this.content.width) / 2;
 			this.content.y = (Starling.current.stage.stageHeight - this.content.height) / 2;

@@ -254,6 +254,14 @@ package feathers.controls
 				this._dataProvider.addEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_updateItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.RESET, dataProvider_resetHandler);
+				if(this.selectedIndex < 0 && this._dataProvider.length > 0)
+				{
+					this.selectedIndex = 0;
+				}
+			}
+			else
+			{
+				this.selectedIndex = -1;
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -938,6 +946,11 @@ package feathers.controls
 			{
 				return;
 			}
+			if(this.toggleGroup.selectedIndex == this._pendingSelectedIndex)
+			{
+				this._pendingSelectedIndex = NOT_PENDING_INDEX;
+				return;
+			}
 
 			this.toggleGroup.selectedIndex = this._pendingSelectedIndex;
 			this._pendingSelectedIndex = NOT_PENDING_INDEX;
@@ -1027,6 +1040,7 @@ package feathers.controls
 		 */
 		protected function refreshTabs(isFactoryInvalid:Boolean):void
 		{
+			var oldIgnoreSelectionChanges:Boolean = this._ignoreSelectionChanges;
 			this._ignoreSelectionChanges = true;
 			var oldSelectedIndex:int = this.toggleGroup.selectedIndex;
 			this.toggleGroup.removeAllItems();
@@ -1078,17 +1092,22 @@ package feathers.controls
 			}
 
 			this.clearInactiveTabs();
+			this._ignoreSelectionChanges = oldIgnoreSelectionChanges;
 			if(oldSelectedIndex >= 0)
 			{
-				const newSelectedIndex:int = Math.min(this.activeTabs.length - 1, oldSelectedIndex);
-				this._ignoreSelectionChanges = newSelectedIndex == oldSelectedIndex;
+				var newSelectedIndex:int = this.activeTabs.length - 1;
+				if(oldSelectedIndex < newSelectedIndex)
+				{
+					newSelectedIndex = oldSelectedIndex;
+				}
+				//removing all items from the ToggleGroup clears the selection,
+				//so we need to set it back to the old value (or a new clamped
+				//value). we want the change event to dispatch only if the old
+				//value and the new value don't match.
+				this._ignoreSelectionChanges = oldSelectedIndex == newSelectedIndex;
 				this.toggleGroup.selectedIndex = newSelectedIndex;
+				this._ignoreSelectionChanges = oldIgnoreSelectionChanges;
 			}
-			else
-			{
-				this.dispatchEventWith(Event.CHANGE);
-			}
-			this._ignoreSelectionChanges = false;
 		}
 
 		/**

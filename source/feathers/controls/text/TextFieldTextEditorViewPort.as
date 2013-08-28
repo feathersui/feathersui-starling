@@ -8,6 +8,8 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.text
 {
 	import feathers.controls.Scroller;
+	import feathers.utils.geom.matrixToScaleX;
+	import feathers.utils.geom.matrixToScaleY;
 	import feathers.utils.math.roundToNearest;
 
 	import flash.events.Event;
@@ -370,8 +372,10 @@ package feathers.controls.text
 			this._textFieldOffsetY = 0;
 			this._textFieldClipRect.x = 0;
 			this._textFieldClipRect.y = 0;
-			this._textFieldClipRect.width = textFieldWidth;
-			this._textFieldClipRect.height = textFieldHeight;
+
+			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+			this._textFieldClipRect.width = textFieldWidth * Starling.contentScaleFactor * matrixToScaleX(HELPER_MATRIX);
+			this._textFieldClipRect.height = textFieldHeight * Starling.contentScaleFactor * matrixToScaleY(HELPER_MATRIX);
 		}
 
 		/**

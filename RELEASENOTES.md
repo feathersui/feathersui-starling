@@ -2,6 +2,102 @@
 
 Noteworthy changes in official releases of [Feathers](http://feathersui.com/).
 
+## 1.2.0
+
+Version 1.2.0 of Feathers is still in active development. This list of changes is a work in progress, and one may find missing or outdated information below. The complete list of changes will be made available when beta and final builds Feathers 1.2.0 are officially released.
+
+* New Component: Drawers
+* New Component: LayoutGroup
+* New Component: LayoutGroupListItemRenderer
+* Many performance improvements with the help of Adobe Scout.
+
+### 1.2.0 Deprecated APIs
+
+All deprecated APIs are subject to the [Feathers deprecation policy](http://wiki.starling-framework.org/feathers/deprecation-policy). Please migrate to the new APIs as soon as possible because the deprecated APIs **will** be removed in a future version of Feathers.
+
+The `scrollerProperties` property on scrolling components, including List, GroupedList, ScrollText and ScrollContainer is deprecated. Because these components now extend `Scroller` instead of adding a `Scroller` as a child, all of the properties that could be set through `scrollerProperties` can now be set directly on the components. The `scrollerProperties` property was deprecated in Feathers 1.1.0, and it remains deprecated in Feathers 1.2.0. 
+
+### 1.2.0 Interface Changes
+
+Three changes have been made to the `IVirtualLayout` interface. Custom implementations of `IVirtualLayout` created before Feathers 1.2.0 will have compiler errors until the required changes are made. It is expected that a small number of Feathers developers have created custom implementations of `IVirtualLayout`, so this change will have no impact on the majority of projects that are upgraded from older versions of Feathers.
+
+The `typicalItemWidth` and `typicalItemHeight` properties may be removed completely from custom `IVirtualLayout` implementations. In their place, the `typicalItem` property must be added. Components like `List` previously passed pre-calculated width and height values for a typical item display object. However, a layout may need to manipulate the typical item before calculating its dimensions. By giving more control to the layouts, their estimation of virtualized items will be more accurate.
+
+The new `typicalItem` property might be declared as follows:
+
+	/**
+	 * @private
+	 */
+	protected var _typicalItem:DisplayObject;
+
+	/**
+	 * @inheritDoc
+	 */
+	public function get typicalItem():DisplayObject
+	{
+		return this._typicalItem;
+	}
+
+	/**
+	 * @private
+	 */
+	public function set typicalItem(value:DisplayObject):void
+	{
+		if(this._typicalItem == value)
+		{
+			return;
+		}
+		this._typicalItem = value;
+		this.dispatchEventWith(Event.CHANGE);
+	}
+
+Usage of the new `typicalItem` property may depend on factors that are specific to each implementation. In general, an implementation will measure the typical item at the beginning of most of its public functions, including `layout()`, `getScrollPositionForIndex()`, `getVisibleIndicesAtScrollPosition()`, and `measureViewPort()`. If the typical item is a Feathers control, it should be validated. The following snippet shows the most basic case for how to request the typical item's dimensions:
+
+	var measuredTypicalItemWidth:Number = 0;
+	var measuredTypicalItemHeight:Number = 0;
+	if( this._useVirtualLayout && this._typicalItem )
+	{
+		if( this._typicalItem is IFeathersControl )
+		{
+			//validate the typical item so that it reports the correct width and height
+			this._typicalItem.validate();
+		}
+
+		measuredTypicalItemWidth = this._typicalItem.width;
+		measuredTypicalItemHeight = this._typicalItem.height;
+	}
+
+If the typical item is a Feathers control, validate() should be called before requesting its dimensions. Optionally, the dimensions of a Feathers control may be reset to `NaN` in order to ask the control for its ideal dimensions. This will match the behavior introduced Feathers 1.1.x. However, in Feathers 1.2.0, the built-in layouts have chosen to reset the typical item's dimensions only when a flag is enabled. For many layouts, resetting the dimensions of the typical item is rarely required, and it may be undesireable. This change reverts the behavior to match Feathers 1.0.x, while still allowing advanced developers to re-enable the behavior introduced in Feathers 1.1.x.
+
+For more advanced code, take a look at one of the built-in layout classes, such as `VerticalLayout`.
+
+Note: The built-in layout classes repurpose the `typicalItemWidth` and `typicalItemHeight` properties that were removed from `IVirtualLayout` to work with a new `resetTypicalItemDimensionsOnMeasure` property. By default, setting these properties outside of a component like `List` will have no effect, which exactly matches the behavior from all older versions of Feathers. Custom layouts may elect to provide this same capability, but it is not required by the `IVirtualLayout` interface.
+
+## 1.1.1
+
+This release includes minor updates to support Starling Framework 1.4 and a number of minor bug fixes.
+
+* Switches to Starling's implementation of the `clipRect` property.
+* Uses Texture onRestore for internally managed textures, like in text controls.
+* StageTextTextEditor: fix for displayAsPassword clearing the text.
+* Panel: won't scroll if mouse wheel or touch occurs in header or footer.
+* AeonDesktopTheme: uses a better disabled text color.
+* SmartDisplayObjectStateValueSelector: properly supports uint color value of 0.
+* Item Renderers: smarter handling of accessory resizing.
+* Item Renderers: better measurement to account for NaN.
+* Item Renderers: properly checks for _data, in addition to _owner, in commitData().
+* Radio: better handling of setting toggleGroup to avoid accidentally adding to defaultRadioGroup.
+* Scroll bars: better isEnabled handling.
+* TextInput: better handling of focus when not visible.
+* TextInput: better prompt handling.
+* TextFieldTextEditor: snapshot is properly hidden when text is cleared.
+* ButtonGroup: properly resizes when data provider changes.
+* GroupedList: requests proper typical item from data provider.
+* ScrollText: better padding getter.
+* PickerList: closes pop-up list on Event.TRIGGERED.
+* TiledRowsLayout, TiledColumnsLayout: fixed manageVisibility implementation.
+* TiledRowsLayout, TiledColumnsLayout: fixed bad positioning when useSquareTiles is true.
+
 ## 1.1.0
 
 * New Beta Component: NumericStepper. Add and subtract from a numeric value with buttons. Optional text editing.
@@ -52,24 +148,8 @@ Noteworthy changes in official releases of [Feathers](http://feathersui.com/).
 * List: if items are added or removed, selected indices are adjusted.
 * List, GroupedList, ScrollContainer, and ScrollText all extend Scroller, instead of using it as a sub-component. The scrollerProperties property on each of these is now deprecated because all public properties of Scroller are now direct public properties of these components. Theme initializers that target Scroller will break because Scroller is no longer a sub-component, but a super class of classes like List. Move this stuff into initializers for List, GroupedList, ScrollContainer, and ScrollText.
 * FeathersControl: setSizeInternal() is now stricter. It can never receive a NaN value for width or height. This is a common source of bugs, and throwing an error here will help make it easier to find those bugs.
-* IVariableVirtualLayout: added function addToVariableVirtualCacheAtIndex() for more specific control over the cache of item dimensions. The following implementation can be added to existing classes to simulate the old behavior:
-
-<!--- markdown is failing miserably. I'll take separate lists over inconsistent formatting -->
-
-```
-public addToVariableVirtualCacheAtIndex(index:int, item:DisplayObject = null):void
-{
-	this.resetVariableVirtualCache();
-}
-```
-* IVariableVirtualLayout: added function removeFromVariableVirtualCacheAtIndex() for more specific control over the cache of item dimensions. The following implementation can be added to existing classes to simulate the old behavior:
-
-```
-public removeFromVariableVirtualCacheAtIndex(index:int, item:DisplayObject = null):void
-{
-	this.resetVariableVirtualCache();
-}
-```
+* IVariableVirtualLayout: added function addToVariableVirtualCacheAtIndex() for more specific control over the cache of item dimensions.
+* IVariableVirtualLayout: added function removeFromVariableVirtualCacheAtIndex() for more specific control over the cache of item dimensions.
 * ScrollText: now properly handles visible and alpha properties.
 * ListCollection: added removeAll(), addAll(), addAllAt() and contains().
 * Scroller: scrolling animates for mouse wheel.
@@ -90,6 +170,30 @@ public removeFromVariableVirtualCacheAtIndex(index:int, item:DisplayObject = nul
 * Extended API documentation with inline examples and improved descriptions.
 * Added many new articles to the Feathers Manual.
 * Now built with ASC 2.0.
+
+### 1.1.0 Deprecated APIs
+
+All deprecated APIs are subject to the [Feathers deprecation policy](http://wiki.starling-framework.org/feathers/deprecation-policy). Please migrate to the new APIs as soon as possible because the deprecated APIs **will** be removed in a future version of Feathers.
+
+The `scrollerProperties` property on scrolling components, including List, GroupedList, ScrollText and ScrollContainer is deprecated. Because these components now extend `Scroller` instead of adding a `Scroller` as a child, all of the properties that could be set through `scrollerProperties` can now be set directly on the components.
+
+### 1.1.0 Interface Changes
+
+Two changes have been made to the `IVariableVirtualLayout` interface. Custom implementations of `IVariableVirtualLayout` created before Feathers 1.1.0 will have compiler errors until the required changes are made. It is expected that a very small number of Feathers developers have created custom implementations of `IVariableVirtualLayout`, so this change will have no impact on the vast majority of projects that are upgraded from older versions of Feathers.
+
+The functions `addToVariableVirtualCacheAtIndex()` and `removeFromVariableVirtualCacheAtIndex()` have been added to `IVariableVirtualLayout` to provide lower-level control over the cache of item dimensions. Instead of clearing the entire cache, a component may insert or remove a specific index from the cache. For instance, the `List` component uses these functions when its data provider is manipulated. These functions allow the layout to provide more accuracy to its virtualization and to improve performance.
+
+ These two functions can easily simulate the old behavior from Feathers 1.0.x, if needed. The following implementations of `addToVariableVirtualCacheAtIndex()` and `removeFromVariableVirtualCacheAtIndex()` can easily be copied into a custom implementations of `IVariableVirtualLayout` to quickly migrate existing Feathers 1.0.x implementations to behave exactly the same in Feathers 1.1.0:
+
+	public addToVariableVirtualCacheAtIndex(index:int, item:DisplayObject = null):void
+	{
+		this.resetVariableVirtualCache();
+	}
+
+	public removeFromVariableVirtualCacheAtIndex(index:int, item:DisplayObject = null):void
+	{
+		this.resetVariableVirtualCache();
+	}
 
 ## 1.0.1
 

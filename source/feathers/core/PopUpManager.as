@@ -32,6 +32,11 @@ package feathers.core
 		 * @private
 		 */
 		private static const POPUP_TO_FOCUS_MANAGER:Dictionary = new Dictionary(true);
+
+		/**
+		 * @private
+		 */
+		private static const CENTERED_POPUPS:Vector.<DisplayObject> = new <DisplayObject>[];
 		
 		/**
 		 * A function that returns a display object to use as an overlay for
@@ -154,6 +159,7 @@ package feathers.core
 
 			if(isCentered)
 			{
+				CENTERED_POPUPS.push(popUp);
 				centerPopUp(popUp);
 			}
 		}
@@ -212,7 +218,7 @@ package feathers.core
 			}
 			const popUp:DisplayObject = DisplayObject(event.currentTarget);
 			popUp.removeEventListener(Event.REMOVED_FROM_STAGE, popUp_removedFromStageHandler);
-			const index:int = popUps.indexOf(popUp);
+			var index:int = popUps.indexOf(popUp);
 			popUps.splice(index, 1);
 			const overlay:DisplayObject = DisplayObject(POPUP_TO_OVERLAY[popUp]);
 			if(overlay)
@@ -231,6 +237,11 @@ package feathers.core
 				delete POPUP_TO_FOCUS_MANAGER[popUp];
 				FocusManager.removeFocusManager(focusManager);
 			}
+			index = CENTERED_POPUPS.indexOf(popUp);
+			if(index >= 0)
+			{
+				CENTERED_POPUPS.splice(index, 1);
+			}
 
 			if(popUps.length == 0)
 			{
@@ -244,7 +255,7 @@ package feathers.core
 		protected static function stage_resizeHandler(event:ResizeEvent):void
 		{
 			const stage:Stage = Starling.current.stage;
-			const popUpCount:int = popUps.length;
+			var popUpCount:int = popUps.length;
 			for(var i:int = 0; i < popUpCount; i++)
 			{
 				var popUp:DisplayObject = popUps[i];
@@ -254,6 +265,12 @@ package feathers.core
 					overlay.width = stage.stageWidth;
 					overlay.height = stage.stageHeight;
 				}
+			}
+			popUpCount = CENTERED_POPUPS.length;
+			for(i = 0; i < popUpCount; i++)
+			{
+				popUp = CENTERED_POPUPS[i];
+				centerPopUp(popUp);
 			}
 		}
 	}

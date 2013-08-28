@@ -7,10 +7,13 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.core
 {
+	import feathers.utils.display.getDisplayObjectDepthFromStage;
+
+	import flash.utils.Dictionary;
+
 	import starling.animation.IAnimatable;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
-	import starling.display.DisplayObjectContainer;
 
 	[ExcludeClass]
 	public final class ValidationQueue implements IAnimatable
@@ -36,6 +39,7 @@ package feathers.core
 
 		private var _delayedQueue:Vector.<IFeathersControl> = new <IFeathersControl>[];
 		private var _queue:Vector.<IFeathersControl> = new <IFeathersControl>[];
+		private var _depthDictionary:Dictionary = new Dictionary(true);
 
 		/**
 		 * @private
@@ -56,29 +60,50 @@ package feathers.core
 			{
 				this._starling.juggler.add(this);
 			}
-			const currentQueue:Vector.<IFeathersControl> = (this._isValidating && delayIfValidating) ? this._delayedQueue : this._queue;
-			const queueLength:int = currentQueue.length;
-			const containerControl:DisplayObjectContainer = control as DisplayObjectContainer;
-			for(var i:int = 0; i < queueLength; i++)
+			var currentQueue:Vector.<IFeathersControl> = (this._isValidating && delayIfValidating) ? this._delayedQueue : this._queue;
+			if(currentQueue.indexOf(control) >= 0)
 			{
-				var item:DisplayObject = DisplayObject(currentQueue[i]);
-				if(control == item && currentQueue == this._queue)
-				{
-					//already queued
-					return;
-				}
-				if(containerControl && containerControl.contains(item))
-				{
-					break;
-				}
+				//already queued
+				return;
 			}
-			if(i == queueLength)
+			var queueLength:int = currentQueue.length;
+			if(this._isValidating && currentQueue == this._queue)
 			{
-				currentQueue[queueLength] = control;
+				//special case: we need to keep it sorted
+				var depth:int = getDisplayObjectDepthFromStage(DisplayObject(control));
+				this._depthDictionary[control] = depth;
+
+				//we're traversing the queue backwards because it's
+				//significantly more likely that we're going to push than that
+				//we're going to splice, so there's no point to iterating over
+				//the whole queue
+				for(var i:int = queueLength - 1; i >= 0; i--)
+				{
+					var otherControl:IFeathersControl = IFeathersControl(currentQueue[i]);
+					var otherDepth:int = this._depthDictionary[otherControl] as int;
+					//we can skip the overhead of calling queueSortFunction and
+					//of looking up the value we've already stored in the depth
+					//local variable.
+					if(depth >= otherDepth)
+					{
+						break;
+					}
+				}
+				//add one because we're going after the last item we checked
+				//if we made it through all of them, i will be -1, and we want 0
+				i++;
+				if(i == queueLength)
+				{
+					currentQueue[queueLength] = control;
+				}
+				else
+				{
+					currentQueue.splice(i, 0, control);
+				}
 			}
 			else
 			{
-				currentQueue.splice(i, 0, control);
+				currentQueue[queueLength] = control;
 			}
 		}
 
@@ -87,16 +112,50 @@ package feathers.core
 		 */
 		public function advanceTime(time:Number):void
 		{
+			if(this._isValidating)
+			{
+				return;
+			}
+			var queueLength:int = this._queue.length;
+			if(queueLength == 0)
+			{
+				return;
+			}
 			this._isValidating = true;
-			while(this._queue.length > 0)
+			for(var i:int = 0; i < queueLength; i++)
+			{
+				var displayQueueItem:DisplayObject = DisplayObject(this._queue[i]);
+				this._depthDictionary[displayQueueItem] = getDisplayObjectDepthFromStage(displayQueueItem);
+			}
+			this._queue = this._queue.sort(queueSortFunction);
+			while(this._queue.length > 0) //rechecking length after the shift
 			{
 				var item:IFeathersControl = this._queue.shift();
 				item.validate();
+				delete this._depthDictionary[item];
 			}
 			const temp:Vector.<IFeathersControl> = this._queue;
 			this._queue = this._delayedQueue;
 			this._delayedQueue = temp;
 			this._isValidating = false;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function queueSortFunction(first:IFeathersControl, second:IFeathersControl):int
+		{
+			var firstDepth:int = this._depthDictionary[first] as int;
+			var secondDepth:int = this._depthDictionary[second] as int;
+			if(firstDepth < secondDepth)
+			{
+				return -1;
+			}
+			else if(firstDepth > secondDepth)
+			{
+				return 1;
+			}
+			return 0;
 		}
 	}
 }

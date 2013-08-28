@@ -101,4 +101,24 @@
 			<arg value="Gallery.swf"/>
 		</java>
 	</target>
+	<target name="install-android">
+		<echo message="Installing Gallery.apk"/>
+		<java jar="${adt}" dir="${basedir}" fork="true" failonerror="true">
+			<arg value="-installApp"/>
+			<arg value="-platform"/>
+			<arg value="android"/>
+			<arg value="-package"/>
+			<arg value="${output.path}/Gallery.apk"/>
+		</java>
+	</target>
+	<target name="install-ios">
+		<echo message="Installing Gallery.ipa"/>
+		<java jar="${adt}" dir="${basedir}" fork="true" failonerror="true">
+			<arg value="-installApp"/>
+			<arg value="-platform"/>
+			<arg value="iOS"/>
+			<arg value="-package"/>
+			<arg value="${output.path}/Gallery.ipa"/>
+		</java>
+	</target>
 </project>

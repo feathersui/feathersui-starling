@@ -9,6 +9,8 @@ package feathers.layout
 {
 	import flash.geom.Point;
 
+	import starling.display.DisplayObject;
+
 	/**
 	 * A layout algorithm that supports virtualization of items so that only
 	 * the visible items need to be created. Useful in lists with dozens or
@@ -31,44 +33,21 @@ package feathers.layout
 		function set useVirtualLayout(value:Boolean):void;
 
 		/**
-		 * Used internally by a component, such as <code>List</code>, to provide
-		 * the width, in pixels, of a "typical" item that is used to virtually
-		 * fill in blanks for the layout.
-		 *
-		 * <p>This property is meant to be set by the <code>List</code> or other
-		 * component that uses the virtual layout. If you're simply creating
-		 * a layout for a <code>List</code> or another component, do not use
-		 * this property. It is meant for developers creating custom components
-		 * only.</p>
-		 *
-		 * @see feathers.controls.List#typicalItem
+		 * Used internally by a component that supports layout virtualization,
+		 * such as <code>List</code>, to provide a display object with
+		 * dimensions that represent a "typical" item in the layout. These
+		 * dimensions will be used to fill in blanks for the layout when an
+		 * item is virtual and isn't actually on the display list. If you are
+		 * simply passing a layout to a component, setting this property will
+		 * have no effect. It is meant to be used by the component, and the
+		 * component will replace any value you pass to this property.
 		 */
-		function get typicalItemWidth():Number;
+		function get typicalItem():DisplayObject;
 
 		/**
 		 * @private
 		 */
-		function set typicalItemWidth(value:Number):void;
-
-		/**
-		 * Used internally by a component, such as <code>List</code>, to provide
-		 * the height, in pixels, of a "typical" item that is used to virtually
-		 * fill in blanks for the layout.
-		 *
-		 * <p>This property is meant to be set by the <code>List</code> or other
-		 * component that uses the virtual layout. If you're simply creating
-		 * a layout for a <code>List</code> or another component, do not use
-		 * this property. It is meant for developers creating custom components
-		 * only.</p>
-		 *
-		 * @see feathers.controls.List#typicalItem
-		 */
-		function get typicalItemHeight():Number;
-
-		/**
-		 * @private
-		 */
-		function set typicalItemHeight(value:Number):void;
+		function set typicalItem(value:DisplayObject):void;
 
 		/**
 		 * Used internally by a component, such as <code>List</code>, to measure
