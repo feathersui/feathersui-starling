@@ -288,7 +288,7 @@ package feathers.controls
 		 * }</listing>
 		 */
 		public static function show(content:DisplayObject, origin:DisplayObject, supportedDirections:String = DIRECTION_ANY,
-			isModal:Boolean = true, customCalloutFactory:Function = null):Callout
+			isModal:Boolean = true, customCalloutFactory:Function = null, customOverlayFactory:Function = null):Callout
 		{
 			if(!origin.stage)
 			{
@@ -303,8 +303,12 @@ package feathers.controls
 			callout.content = content;
 			callout.supportedDirections = supportedDirections;
 			callout.origin = origin;
-			const overlayFactory:Function = calloutOverlayFactory != null ? calloutOverlayFactory : PopUpManager.defaultOverlayFactory;
-			PopUpManager.addPopUp(callout, isModal, false, overlayFactory);
+			factory = customOverlayFactory;
+			if(factory == null)
+			{
+				factory = calloutOverlayFactory != null ? calloutOverlayFactory : PopUpManager.defaultOverlayFactory;
+			}
+			PopUpManager.addPopUp(callout, isModal, false, factory);
 			return callout;
 		}
 
