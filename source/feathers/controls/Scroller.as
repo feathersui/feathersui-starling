@@ -2564,7 +2564,7 @@ package feathers.controls
 			//and it's better to handle it here instead of having them
 			//invalidate unrelated flags
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
-			const scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
+			var scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
 			const clippingInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_CLIPPING);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
@@ -2588,7 +2588,7 @@ package feathers.controls
 				this.refreshInteractionModeEvents();
 			}
 
-			if(stateInvalid)
+			if(scrollBarInvalid || stateInvalid)
 			{
 				this.refreshEnabled();
 			}
@@ -2643,6 +2643,7 @@ package feathers.controls
 			if(scrollInvalid || this._maxHorizontalScrollPosition != oldMaxHorizontalScrollPosition ||
 				this._maxVerticalScrollPosition != oldMaxVerticalScrollPosition)
 			{
+				scrollInvalid = true;
 				this.dispatchEventWith(Event.SCROLL);
 			}
 
