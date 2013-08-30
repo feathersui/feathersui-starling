@@ -2079,11 +2079,14 @@ package feathers.controls.renderers
 			//the middle of validating, and it will just invalidate, which will
 			//require another validation later. we want the Button class to
 			//process the new icon immediately when we call super.draw().
-			this._iconSelector.defaultValue = newIcon;
-			//this feels kind of hacky, but we don't have another way of setting
-			//this invalidation flag without causing an unnecessary validation
-			//next frame.
-			this._invalidationFlags[INVALIDATION_FLAG_STYLES] = true;
+			if(this._iconSelector.defaultValue != newIcon)
+			{
+				this._iconSelector.defaultValue = newIcon;
+				//this feels kind of hacky, but we don't have another way of setting
+				//this invalidation flag without causing an unnecessary validation
+				//next frame.
+				this._invalidationFlags[INVALIDATION_FLAG_STYLES] = true;
+			}
 
 			if(this.iconImage)
 			{
