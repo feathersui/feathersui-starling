@@ -11,6 +11,7 @@ package feathers.examples.componentsExplorer
 	import feathers.examples.componentsExplorer.data.NumericStepperSettings;
 	import feathers.examples.componentsExplorer.data.SliderSettings;
 	import feathers.examples.componentsExplorer.data.TextInputSettings;
+	import feathers.examples.componentsExplorer.screens.AlertScreen;
 	import feathers.examples.componentsExplorer.screens.ButtonGroupScreen;
 	import feathers.examples.componentsExplorer.screens.ButtonScreen;
 	import feathers.examples.componentsExplorer.screens.CalloutScreen;
@@ -43,6 +44,7 @@ package feathers.examples.componentsExplorer
 	public class Main extends Drawers
 	{
 		private static const MAIN_MENU:String = "mainMenu";
+		private static const ALERT:String = "alert";
 		private static const BUTTON:String = "button";
 		private static const BUTTON_SETTINGS:String = "buttonSettings";
 		private static const BUTTON_GROUP:String = "buttonGroup";
@@ -68,6 +70,7 @@ package feathers.examples.componentsExplorer
 
 		private static const MAIN_MENU_EVENTS:Object =
 		{
+			showAlert: ALERT,
 			showButton: BUTTON,
 			showButtonGroup: BUTTON_GROUP,
 			showCallout: CALLOUT,
@@ -103,6 +106,11 @@ package feathers.examples.componentsExplorer
 			
 			this._navigator = new ScreenNavigator();
 			this.content = this._navigator;
+
+			this._navigator.addScreen(ALERT, new ScreenNavigatorItem(AlertScreen,
+			{
+				complete: MAIN_MENU
+			}));
 
 			this._navigator.addScreen(BUTTON, new ScreenNavigatorItem(ButtonScreen,
 			{
