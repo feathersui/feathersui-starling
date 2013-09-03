@@ -110,7 +110,7 @@ package feathers.themes
 		protected static const LIST_BACKGROUND_COLOR:uint = 0x383430;
 		protected static const TAB_BACKGROUND_COLOR:uint = 0x1a1816;
 		protected static const TAB_DISABLED_BACKGROUND_COLOR:uint = 0x292624;
-		protected static const MODAL_OVERLAY_COLOR:uint = 0x1a1816;
+		protected static const MODAL_OVERLAY_COLOR:uint = 0x29241e;
 		protected static const GROUPED_LIST_HEADER_BACKGROUND_COLOR:uint = 0x2e2a26;
 		protected static const GROUPED_LIST_FOOTER_BACKGROUND_COLOR:uint = 0x2e2a26;
 
@@ -153,7 +153,7 @@ package feathers.themes
 		protected static function popUpOverlayFactory():DisplayObject
 		{
 			const quad:Quad = new Quad(100, 100, MODAL_OVERLAY_COLOR);
-			quad.alpha = 0.75;
+			quad.alpha = 0.8;
 			return quad;
 		}
 
