@@ -1172,6 +1172,8 @@ package feathers.controls.supportClasses
 			if(!typicalItemRenderer && !newTypicalItemIsInDataProvider && this._typicalItemRenderer)
 			{
 				//can use reuse the old item renderer instance
+				//since it is not in the data provider, we don't need to mess
+				//with the renderer map dictionary.
 				typicalItemRenderer = this._typicalItemRenderer;
 				typicalItemRenderer.data = typicalItem;
 				typicalItemRenderer.groupIndex = typicalItemGroupIndex;
@@ -1214,6 +1216,8 @@ package feathers.controls.supportClasses
 				if(!this._typicalItemIsInDataProvider && this._typicalItemRenderer)
 				{
 					//get rid of the old one if it isn't needed anymore
+					//since it is not in the data provider, we don't need to mess
+					//with the renderer map dictionary.
 					this.destroyItemRenderer(this._typicalItemRenderer);
 					this._typicalItemRenderer = null;
 				}
@@ -1342,36 +1346,54 @@ package feathers.controls.supportClasses
 			var temp:Vector.<IGroupedListItemRenderer> = this._inactiveItemRenderers;
 			this._inactiveItemRenderers = this._activeItemRenderers;
 			this._activeItemRenderers = temp;
-			this._activeItemRenderers.length = 0;
+			if(this._activeItemRenderers.length > 0)
+			{
+				throw new IllegalOperationError("GroupedListDataViewPort: active item renderers should be empty.");
+			}
 			if(this._inactiveFirstItemRenderers)
 			{
 				temp = this._inactiveFirstItemRenderers;
 				this._inactiveFirstItemRenderers = this._activeFirstItemRenderers;
 				this._activeFirstItemRenderers = temp;
-				this._activeFirstItemRenderers.length = 0;
+				if(this._activeFirstItemRenderers.length > 0)
+				{
+					throw new IllegalOperationError("GroupedListDataViewPort: active first renderers should be empty.");
+				}
 			}
 			if(this._inactiveLastItemRenderers)
 			{
 				temp = this._inactiveLastItemRenderers;
 				this._inactiveLastItemRenderers = this._activeLastItemRenderers;
 				this._activeLastItemRenderers = temp;
-				this._activeLastItemRenderers.length = 0;
+				if(this._activeLastItemRenderers.length > 0)
+				{
+					throw new IllegalOperationError("GroupedListDataViewPort: active last renderers should be empty.");
+				}
 			}
 			if(this._inactiveSingleItemRenderers)
 			{
 				temp = this._inactiveSingleItemRenderers;
 				this._inactiveSingleItemRenderers = this._activeSingleItemRenderers;
 				this._activeSingleItemRenderers = temp;
-				this._activeSingleItemRenderers.length = 0;
+				if(this._activeSingleItemRenderers.length > 0)
+				{
+					throw new IllegalOperationError("GroupedListDataViewPort: active single renderers should be empty.");
+				}
 			}
 			var temp2:Vector.<IGroupedListHeaderOrFooterRenderer> = this._inactiveHeaderRenderers;
 			this._inactiveHeaderRenderers = this._activeHeaderRenderers;
 			this._activeHeaderRenderers = temp2;
-			this._activeHeaderRenderers.length = 0;
+			if(this._activeHeaderRenderers.length > 0)
+			{
+				throw new IllegalOperationError("GroupedListDataViewPort: active header renderers should be empty.");
+			}
 			temp2 = this._inactiveFooterRenderers;
 			this._inactiveFooterRenderers = this._activeFooterRenderers;
 			this._activeFooterRenderers = temp2;
-			this._activeFooterRenderers.length = 0;
+			if(this._activeFooterRenderers.length > 0)
+			{
+				throw new IllegalOperationError("GroupedListDataViewPort: active footer renderers should be empty.");
+			}
 			if(itemRendererTypeIsInvalid)
 			{
 				this.recoverInactiveRenderers();
@@ -1729,19 +1751,26 @@ package feathers.controls.supportClasses
 			var itemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(rendererMap[item]);
 			if(itemRenderer)
 			{
+				//the indices may have changed if data was added or removed
 				itemRenderer.groupIndex = groupIndex;
 				itemRenderer.itemIndex = itemIndex;
 				itemRenderer.layoutIndex = layoutIndex;
-				activeRenderers.push(itemRenderer);
-				var inactiveIndex:int = inactiveRenderers.indexOf(itemRenderer);
-				if(inactiveIndex >= 0)
+
+				//the typical item renderer is a special case, and we will
+				//have already put it into the active renderers, so we don't
+				//want to do it again!
+				if(this._typicalItemRenderer != itemRenderer)
 				{
-					inactiveRenderers.splice(inactiveIndex, 1);
-				}
-				else if(itemRenderer != this._typicalItemRenderer)
-				{
-					//the typicalItemRenderer may not be in the inactiveRenderers
-					throw new IllegalOperationError("This List is in an unrecoverable state.");
+					activeRenderers.push(itemRenderer);
+					var inactiveIndex:int = inactiveRenderers.indexOf(itemRenderer);
+					if(inactiveIndex >= 0)
+					{
+						inactiveRenderers.splice(inactiveIndex, 1);
+					}
+					else
+					{
+						throw new IllegalOperationError("GroupedListDataViewPort: renderer map contains bad data.");
+					}
 				}
 				itemRenderer.visible = true;
 				this._layoutItems[layoutIndex] = DisplayObject(itemRenderer);
