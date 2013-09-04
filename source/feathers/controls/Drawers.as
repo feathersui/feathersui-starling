@@ -34,6 +34,25 @@ package feathers.controls
 	import starling.events.TouchPhase;
 
 	/**
+	 * Dispatched when the user starts dragging the content to open or close a
+	 * drawer.
+	 *
+	 * @eventType feathers.events.FeathersEventType.BEGIN_INTERACTION
+	 * @see feathers.events.FeathersEventType.END_INTERACTION
+	 */
+	[Event(name="beginInteraction",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the user stops dragging the content to open or close a
+	 * drawer. The drawer may continue opening or closing after this event is
+	 * dispatched if the user interaction has also triggered an animation.
+	 *
+	 * @eventType feathers.events.FeathersEventType.END_INTERACTION
+	 * @see feathers.events.FeathersEventType.BEGIN_INTERACTION
+	 */
+	[Event(name="endInteraction",type="starling.events.Event")]
+
+	/**
 	 * A container that displays primary content in the center surrounded by
 	 * optional "drawers" that can open and close on the edges. Useful for
 	 * mobile-style app menus that slide open from the side of the screen.
@@ -2781,6 +2800,7 @@ package feathers.controls
 				this._isDraggingLeftDrawer = true;
 				this._isDragging = true;
 				this.applyLeftClipRect();
+				this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 			}
 			else if(this.isRightDrawerOpen && horizontalInchesMoved >= this._minimumDragDistance)
 			{
@@ -2788,6 +2808,7 @@ package feathers.controls
 				this._isDraggingRightDrawer = true;
 				this._isDragging = true;
 				this.applyRightClipRect();
+				this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 			}
 			else if(this.isTopDrawerOpen && verticalInchesMoved <= -this._minimumDragDistance)
 			{
@@ -2795,6 +2816,7 @@ package feathers.controls
 				this._isDraggingTopDrawer = true;
 				this._isDragging = true;
 				this.applyTopClipRect();
+				this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 			}
 			else if(this.isBottomDrawerOpen && verticalInchesMoved >= this._minimumDragDistance)
 			{
@@ -2802,6 +2824,7 @@ package feathers.controls
 				this._isDraggingBottomDrawer = true;
 				this._isDragging = true;
 				this.applyBottomClipRect();
+				this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 			}
 		}
 
@@ -2819,6 +2842,7 @@ package feathers.controls
 				this._isDragging = true;
 				this._leftDrawer.visible = true;
 				this.applyLeftClipRect();
+				this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 			}
 			else if(this._rightDrawer && !this.isRightDrawerDocked && horizontalInchesMoved <= -this._minimumDragDistance)
 			{
@@ -2827,6 +2851,7 @@ package feathers.controls
 				this._isDragging = true;
 				this._rightDrawer.visible = true;
 				this.applyRightClipRect();
+				this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 			}
 			else if(this._topDrawer && !this.isTopDrawerDocked && verticalInchesMoved >= this._minimumDragDistance)
 			{
@@ -2835,6 +2860,7 @@ package feathers.controls
 				this._isDragging = true;
 				this._topDrawer.visible = true;
 				this.applyTopClipRect();
+				this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 			}
 			else if(this._bottomDrawer && !this.isBottomDrawerDocked && verticalInchesMoved <= -this._minimumDragDistance)
 			{
@@ -2843,6 +2869,7 @@ package feathers.controls
 				this._isDragging = true;
 				this._bottomDrawer.visible = true;
 				this.applyBottomClipRect();
+				this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 			}
 		}
 
@@ -3059,6 +3086,7 @@ package feathers.controls
 					if(this._isDragging)
 					{
 						this.handleDragEnd();
+						this.dispatchEventWith(FeathersEventType.END_INTERACTION);
 					}
 					else
 					{
