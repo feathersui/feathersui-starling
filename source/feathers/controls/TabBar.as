@@ -691,15 +691,8 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._customTabName)
-			{
-				for each(var tab:Button in this.activeTabs)
-				{
-					tab.nameList.remove(this._customTabName);
-				}
-			}
 			this._customTabName = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.invalidate(INVALIDATION_FLAG_TAB_FACTORY);
 		}
 
 		/**
@@ -742,13 +735,8 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._customFirstTabName && this.activeFirstTab)
-			{
-				this.activeFirstTab.nameList.remove(this._customTabName);
-				this.activeFirstTab.nameList.remove(this._customFirstTabName);
-			}
 			this._customFirstTabName = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.invalidate(INVALIDATION_FLAG_TAB_FACTORY);
 		}
 
 		/**
@@ -791,13 +779,8 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._customLastTabName && this.activeLastTab)
-			{
-				this.activeLastTab.nameList.remove(this._customTabName);
-				this.activeLastTab.nameList.remove(this._customLastTabName);
-			}
 			this._customLastTabName = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.invalidate(INVALIDATION_FLAG_TAB_FACTORY);
 		}
 
 		/**
@@ -982,25 +965,6 @@ package feathers.controls
 					{
 						tab[propertyName] = propertyValue;
 					}
-				}
-
-				if(tab == this.activeFirstTab && this._customFirstTabName)
-				{
-					if(!tab.nameList.contains(this._customFirstTabName))
-					{
-						tab.nameList.add(this._customFirstTabName);
-					}
-				}
-				else if(tab == this.activeLastTab && this._customLastTabName)
-				{
-					if(!tab.nameList.contains(this._customLastTabName))
-					{
-						tab.nameList.add(this._customLastTabName);
-					}
-				}
-				else if(this._customTabName && !tab.nameList.contains(this._customTabName))
-				{
-					tab.nameList.add(this._customTabName);
 				}
 			}
 		}

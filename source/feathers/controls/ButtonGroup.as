@@ -991,15 +991,8 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._customButtonName)
-			{
-				for each(var button:Button in this.activeButtons)
-				{
-					button.nameList.remove(this._customButtonName);
-				}
-			}
 			this._customButtonName = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.invalidate(INVALIDATION_FLAG_BUTTON_FACTORY);
 		}
 
 		/**
@@ -1042,13 +1035,8 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._customFirstButtonName && this.activeFirstButton)
-			{
-				this.activeFirstButton.nameList.remove(this._customButtonName);
-				this.activeFirstButton.nameList.remove(this._customFirstButtonName);
-			}
 			this._customFirstButtonName = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.invalidate(INVALIDATION_FLAG_BUTTON_FACTORY);
 		}
 
 		/**
@@ -1091,13 +1079,8 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._customLastButtonName && this.activeLastButton)
-			{
-				this.activeLastButton.nameList.remove(this._customButtonName);
-				this.activeLastButton.nameList.remove(this._customLastButtonName);
-			}
 			this._customLastButtonName = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.invalidate(INVALIDATION_FLAG_BUTTON_FACTORY);
 		}
 
 		/**
@@ -1251,25 +1234,6 @@ package feathers.controls
 						button[propertyName] = propertyValue;
 					}
 				}
-
-				if(button == this.activeFirstButton && this._customFirstButtonName)
-				{
-					if(!button.nameList.contains(this._customFirstButtonName))
-					{
-						button.nameList.add(this._customFirstButtonName);
-					}
-				}
-				else if(button == this.activeLastButton && this._customLastButtonName)
-				{
-					if(!button.nameList.contains(this._customLastButtonName))
-					{
-						button.nameList.add(this._customLastButtonName);
-					}
-				}
-				else if(this._customButtonName && !button.nameList.contains(this._customButtonName))
-				{
-					button.nameList.add(this._customButtonName);
-				}
 			}
 		}
 
@@ -1410,6 +1374,10 @@ package feathers.controls
 				{
 					button.nameList.add(this._customFirstButtonName);
 				}
+				else if(this._customButtonName)
+				{
+					button.nameList.add(this._customButtonName);
+				}
 				else
 				{
 					button.nameList.add(this.firstButtonName);
@@ -1438,6 +1406,10 @@ package feathers.controls
 				if(this._customLastButtonName)
 				{
 					button.nameList.add(this._customLastButtonName);
+				}
+				else if(this._customButtonName)
+				{
+					button.nameList.add(this._customButtonName);
 				}
 				else
 				{
