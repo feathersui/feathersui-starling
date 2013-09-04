@@ -110,9 +110,10 @@ package feathers.themes
 		protected static const LIST_BACKGROUND_COLOR:uint = 0x383430;
 		protected static const TAB_BACKGROUND_COLOR:uint = 0x1a1816;
 		protected static const TAB_DISABLED_BACKGROUND_COLOR:uint = 0x292624;
-		protected static const MODAL_OVERLAY_COLOR:uint = 0x29241e;
 		protected static const GROUPED_LIST_HEADER_BACKGROUND_COLOR:uint = 0x2e2a26;
 		protected static const GROUPED_LIST_FOOTER_BACKGROUND_COLOR:uint = 0x2e2a26;
+		protected static const MODAL_OVERLAY_COLOR:uint = 0x29241e;
+		protected static const MODAL_OVERLAY_ALPHA:Number = 0.8;
 
 		protected static const ORIGINAL_DPI_IPHONE_RETINA:int = 326;
 		protected static const ORIGINAL_DPI_IPAD_RETINA:int = 264;
@@ -153,7 +154,7 @@ package feathers.themes
 		protected static function popUpOverlayFactory():DisplayObject
 		{
 			const quad:Quad = new Quad(100, 100, MODAL_OVERLAY_COLOR);
-			quad.alpha = 0.8;
+			quad.alpha = MODAL_OVERLAY_ALPHA;
 			return quad;
 		}
 
@@ -457,7 +458,6 @@ package feathers.themes
 			this.setInitializerForClass(Button, dangerButtonInitializer, Button.ALTERNATE_NAME_DANGER_BUTTON);
 			this.setInitializerForClass(Button, backButtonInitializer, Button.ALTERNATE_NAME_BACK_BUTTON);
 			this.setInitializerForClass(Button, forwardButtonInitializer, Button.ALTERNATE_NAME_FORWARD_BUTTON);
-			this.setInitializerForClass(Button, buttonInitializer);
 			this.setInitializerForClass(Button, buttonGroupButtonInitializer, ButtonGroup.DEFAULT_CHILD_NAME_BUTTON);
 			this.setInitializerForClass(Button, alertButtonGroupButtonInitializer, COMPONENT_NAME_ALERT_BUTTON_GROUP_BUTTON);
 			this.setInitializerForClass(Button, simpleButtonInitializer, ToggleSwitch.DEFAULT_CHILD_NAME_THUMB);
@@ -735,6 +735,7 @@ package feathers.themes
 		protected function alertButtonGroupButtonInitializer(button:Button):void
 		{
 			this.buttonInitializer(button);
+			button.minWidth = 120 * this.scale;
 		}
 
 		protected function pickerListButtonInitializer(button:Button):void
@@ -807,6 +808,8 @@ package feathers.themes
 		protected function alertButtonGroupInitializer(group:ButtonGroup):void
 		{
 			group.direction = ButtonGroup.DIRECTION_HORIZONTAL;
+			group.horizontalAlign = ButtonGroup.HORIZONTAL_ALIGN_CENTER;
+			group.verticalAlign = ButtonGroup.VERTICAL_ALIGN_JUSTIFY;
 			group.gap = 12 * this.scale;
 			group.paddingTop = 12 * this.scale;
 			group.paddingRight = 12 * this.scale;
