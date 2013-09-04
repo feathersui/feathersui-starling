@@ -24,6 +24,7 @@
  */
 package feathers.themes
 {
+	import feathers.controls.Alert;
 	import feathers.controls.Button;
 	import feathers.controls.ButtonGroup;
 	import feathers.controls.Callout;
@@ -58,6 +59,7 @@ package feathers.themes
 	import feathers.controls.text.StageTextTextEditor;
 	import feathers.core.DisplayListWatcher;
 	import feathers.core.FeathersControl;
+	import feathers.core.PopUpManager;
 	import feathers.display.Scale9Image;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.VerticalLayout;
@@ -115,6 +117,8 @@ package feathers.themes
 		protected static const LIST_HEADER_BACKGROUND_COLOR:uint = 0xeeeeee;
 		protected static const PRIMARY_TEXT_COLOR:uint = 0x666666;
 		protected static const DISABLED_TEXT_COLOR:uint = 0x999999;
+		protected static const MODAL_OVERLAY_COLOR:uint = 0x666666;
+		protected static const MODAL_OVERLAY_ALPHA:Number = 0.8;
 
 		protected static const ORIGINAL_DPI_IPHONE_RETINA:int = 326;
 		protected static const ORIGINAL_DPI_IPAD_RETINA:int = 264;
@@ -130,6 +134,13 @@ package feathers.themes
 		protected static function textEditorFactory():StageTextTextEditor
 		{
 			return new StageTextTextEditor();
+		}
+
+		protected static function popUpOverlayFactory():DisplayObject
+		{
+			const quad:Quad = new Quad(100, 100, MODAL_OVERLAY_COLOR);
+			quad.alpha = MODAL_OVERLAY_ALPHA;
+			return quad;
 		}
 
 		public function MinimalMobileTheme(container:DisplayObjectContainer = null, scaleToDPI:Boolean = true)
@@ -280,6 +291,7 @@ package feathers.themes
 			this.fontSize = Math.max(4, roundToNearest(24 * this.scale, 8));
 			this.inputFontSize = 26 * this.scale;
 
+			PopUpManager.overlayFactory = popUpOverlayFactory;
 			Callout.stagePaddingTop = Callout.stagePaddingRight = Callout.stagePaddingBottom =
 				Callout.stagePaddingLeft = 16 * this.scale;
 
@@ -366,6 +378,7 @@ package feathers.themes
 			this.setInitializerForClass(Label, labelInitializer);
 			this.setInitializerForClass(ScrollText, scrollTextInitializer);
 			this.setInitializerForClass(BitmapFontTextRenderer, itemRendererAccessoryLabelInitializer, BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ACCESSORY_LABEL);
+			this.setInitializerForClass(BitmapFontTextRenderer, alertMessageInitializer, Alert.DEFAULT_CHILD_NAME_MESSAGE);
 			this.setInitializerForClass(Button, buttonInitializer);
 			this.setInitializerForClass(Button, buttonCallToActionInitializer, Button.ALTERNATE_NAME_CALL_TO_ACTION_BUTTON);
 			this.setInitializerForClass(Button, buttonQuietInitializer, Button.ALTERNATE_NAME_QUIET_BUTTON);
@@ -382,6 +395,7 @@ package feathers.themes
 			this.setInitializerForClass(Button, tabInitializer, TabBar.DEFAULT_CHILD_NAME_TAB);
 			this.setInitializerForClass(Button, pickerListButtonInitializer, PickerList.DEFAULT_CHILD_NAME_BUTTON);
 			this.setInitializerForClass(ButtonGroup, buttonGroupInitializer);
+			this.setInitializerForClass(ButtonGroup, alertButtonGroupInitializer, Alert.DEFAULT_CHILD_NAME_BUTTON_GROUP);
 			this.setInitializerForClass(Slider, sliderInitializer);
 			this.setInitializerForClass(ToggleSwitch, toggleSwitchInitializer);
 			this.setInitializerForClass(NumericStepper, numericStepperInitializer);
@@ -400,6 +414,7 @@ package feathers.themes
 			this.setInitializerForClass(PickerList, pickerListInitializer);
 			this.setInitializerForClass(Header, headerInitializer);
 			this.setInitializerForClass(Header, panelHeaderInitializer, Panel.DEFAULT_CHILD_NAME_HEADER);
+			this.setInitializerForClass(Header, panelHeaderInitializer, Alert.DEFAULT_CHILD_NAME_HEADER);
 			this.setInitializerForClass(TextInput, textInputInitializer);
 			this.setInitializerForClass(TextInput, searchTextInputInitializer, TextInput.ALTERNATE_NAME_SEARCH_TEXT_INPUT);
 			this.setInitializerForClass(TextInput, numericStepperTextInputInitializer, NumericStepper.DEFAULT_CHILD_NAME_TEXT_INPUT);
@@ -407,6 +422,7 @@ package feathers.themes
 			this.setInitializerForClass(ProgressBar, progressBarInitializer);
 			this.setInitializerForClass(Callout, calloutInitializer);
 			this.setInitializerForClass(Panel, panelInitializer);
+			this.setInitializerForClass(Alert, alertInitializer);
 			this.setInitializerForClass(ScrollContainer, scrollContainerToolbarInitializer, ScrollContainer.ALTERNATE_NAME_TOOLBAR);
 		}
 
@@ -460,6 +476,12 @@ package feathers.themes
 
 		protected function itemRendererAccessoryLabelInitializer(renderer:BitmapFontTextRenderer):void
 		{
+			renderer.textFormat = this.primaryTextFormat;
+		}
+
+		protected function alertMessageInitializer(renderer:BitmapFontTextRenderer):void
+		{
+			renderer.wordWrap = true;
 			renderer.textFormat = this.primaryTextFormat;
 		}
 
@@ -655,6 +677,18 @@ package feathers.themes
 		{
 			group.minWidth = 560 * this.scale;
 			group.gap = 16 * this.scale;
+		}
+
+		protected function alertButtonGroupInitializer(group:ButtonGroup):void
+		{
+			group.direction = ButtonGroup.DIRECTION_VERTICAL;
+			group.horizontalAlign = ButtonGroup.HORIZONTAL_ALIGN_JUSTIFY;
+			group.verticalAlign = ButtonGroup.VERTICAL_ALIGN_JUSTIFY;
+			group.gap = 14 * this.scale;
+			group.paddingTop = 14 * this.scale;
+			group.paddingRight = 14 * this.scale;
+			group.paddingBottom = 14 * this.scale;
+			group.paddingLeft = 14 * this.scale;
 		}
 
 		protected function sliderInitializer(slider:Slider):void
@@ -1135,6 +1169,19 @@ package feathers.themes
 
 			panel.paddingTop = panel.paddingRight = panel.paddingBottom =
 				panel.paddingLeft = 14 * this.scale;
+		}
+
+		protected function alertInitializer(alert:Alert):void
+		{
+			const backgroundSkin:Scale9Image = new Scale9Image(this.popUpBackgroundSkinTextures, this.scale);
+			backgroundSkin.width = 20 * this.scale;
+			backgroundSkin.height = 20 * this.scale;
+			alert.backgroundSkin = backgroundSkin;
+
+			alert.paddingTop = alert.paddingBottom = 16 * this.scale;
+			alert.paddingLeft = alert.paddingRight = 32 * this.scale;
+
+			alert.maxWidth = alert.maxHeight = 560 * this.scale;
 		}
 
 		protected function scrollContainerToolbarInitializer(container:ScrollContainer):void
