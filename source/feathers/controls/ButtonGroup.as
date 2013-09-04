@@ -105,6 +105,76 @@ package feathers.controls
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
 		/**
+		 * The buttons will be aligned horizontally to the left edge of the
+		 * button group.
+		 *
+		 * @see #horizontalAlign
+		 */
+		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
+
+		/**
+		 * The buttons will be aligned horizontally to the center of the
+		 * button group.
+		 *
+		 * @see #horizontalAlign
+		 */
+		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
+
+		/**
+		 * The buttons will be aligned horizontally to the right edge of the
+		 * button group.
+		 *
+		 * @see #horizontalAlign
+		 */
+		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
+
+		/**
+		 * If the direction is vertical, each button will fill the entire
+		 * width of the button group, and if the direction is horizontal, the
+		 * width of the button group will be divided so that each button will
+		 * each have an equal width, and the total width of all buttons will
+		 * fill the entire space.
+		 *
+		 * @see #horizontalAlign
+		 * @see #direction
+		 */
+		public static const HORIZONTAL_ALIGN_JUSTIFY:String = "justify";
+
+		/**
+		 * The buttons will be aligned vertically to the top edge of the
+		 * button group.
+		 */
+		public static const VERTICAL_ALIGN_TOP:String = "top";
+
+		/**
+		 * The buttons will be aligned vertically to the middle of the
+		 * button group.
+		 *
+		 * @see #verticalAlign
+		 */
+		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
+
+		/**
+		 * The buttons will be aligned vertically to the bottom edge of the
+		 * button group.
+		 *
+		 * @see #verticalAlign
+		 */
+		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
+
+		/**
+		 * If the direction is horizontal, each button will fill the entire
+		 * height of the button group, and if the direction is vertical, the
+		 * height of the button group will be divided so that each button will
+		 * each have an equal height, and the total height of all buttons will
+		 * fill the entire space.
+		 *
+		 * @see #verticalAlign
+		 * @see #direction
+		 */
+		public static const VERTICAL_ALIGN_JUSTIFY:String = "justify";
+
+		/**
 		 * The default value added to the <code>nameList</code> of the buttons.
 		 *
 		 * @see feathers.core.IFeathersControl#nameList
@@ -307,6 +377,86 @@ package feathers.controls
 				return;
 			}
 			this._direction = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _horizontalAlign:String = HORIZONTAL_ALIGN_JUSTIFY;
+
+		[Inspectable(type="String",enumeration="left,center,right,justify")]
+		/**
+		 * Determines how the buttons are horizontally aligned within the bounds
+		 * of the button group (on the x-axis).
+		 *
+		 * <p>The following example aligns the group's content to the left:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.horizontalAlign = ButtonGroup.HORIZONTAL_ALIGN_LEFT;</listing>
+		 *
+		 * @default ButtonGroup.HORIZONTAL_ALIGN_JUSTIFY
+		 *
+		 * @see #HORIZONTAL_ALIGN_LEFT
+		 * @see #HORIZONTAL_ALIGN_CENTER
+		 * @see #HORIZONTAL_ALIGN_RIGHT
+		 * @see #HORIZONTAL_ALIGN_JUSTIFY
+		 */
+		public function get horizontalAlign():String
+		{
+			return this._horizontalAlign;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set horizontalAlign(value:String):void
+		{
+			if(this._horizontalAlign == value)
+			{
+				return;
+			}
+			this._horizontalAlign = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _verticalAlign:String = VERTICAL_ALIGN_JUSTIFY;
+
+		[Inspectable(type="String",enumeration="top,middle,bottom,justify")]
+		/**
+		 * Determines how the buttons are vertically aligned within the bounds
+		 * of the button group (on the y-axis).
+		 *
+		 * <p>The following example aligns the group's content to the top:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.verticalAlign = ButtonGroup.VERTICAL_ALIGN_TOP;</listing>
+		 *
+		 * @default ButtonGroup.VERTICAL_ALIGN_JUSTIFY
+		 *
+		 * @see #VERTICAL_ALIGN_TOP
+		 * @see #VERTICAL_ALIGN_MIDDLE
+		 * @see #VERTICAL_ALIGN_RIGHT
+		 * @see #VERTICAL_ALIGN_JUSTIFY
+		 */
+		public function get verticalAlign():String
+		{
+			return _verticalAlign;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set verticalAlign(value:String):void
+		{
+			if(this._verticalAlign == value)
+			{
+				return;
+			}
+			this._verticalAlign = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -1429,47 +1579,156 @@ package feathers.controls
 			const secondToLastIndex:int = buttonCount - 2;
 			if(this._direction == DIRECTION_VERTICAL)
 			{
-				var totalSize:Number = this.actualHeight - this._paddingTop - this._paddingBottom;
+				var maxButtonSize:Number = this.actualHeight - this._paddingTop - this._paddingBottom;
 				var oppositeSize:Number = this.actualWidth - this._paddingLeft - this._paddingRight;
 			}
 			else
 			{
-				totalSize = this.actualWidth - this._paddingLeft - this._paddingRight;
+				maxButtonSize = this.actualWidth - this._paddingLeft - this._paddingRight;
 				oppositeSize = this.actualHeight - this._paddingTop - this._paddingBottom;
 			}
-			var totalButtonSize:Number = totalSize - (this._gap * (buttonCount - 1));
+			maxButtonSize -= (this._gap * (buttonCount - 1));
 			if(hasFirstGap)
 			{
-				totalButtonSize += this._gap - this._firstGap;
+				maxButtonSize += this._gap - this._firstGap;
 			}
 			if(hasLastGap)
 			{
-				totalButtonSize += this._gap - this._lastGap;
+				maxButtonSize += this._gap - this._lastGap;
 			}
-			const buttonSize:Number = totalButtonSize / buttonCount;
+			maxButtonSize /= buttonCount;
+
 			var position:Number = this._direction == DIRECTION_VERTICAL ? this._paddingTop : this._paddingLeft;
-			for(var i:int = 0; i < buttonCount; i++)
+			if((this._horizontalAlign == HORIZONTAL_ALIGN_JUSTIFY && this._direction == DIRECTION_HORIZONTAL) ||
+				(this._verticalAlign == VERTICAL_ALIGN_JUSTIFY && this._direction == DIRECTION_VERTICAL))
 			{
-				var button:Button = this.activeButtons[i];
+				var buttonSize:Number = maxButtonSize;
+			}
+			else
+			{
+				buttonSize = 0;
+				for(var i:int = 0; i < buttonCount; i++)
+				{
+					var button:Button = this.activeButtons[i];
+					button.validate();
+					if(this._direction == DIRECTION_VERTICAL)
+					{
+						var currentButtonSize:Number = button.height;
+						if(!isNaN(currentButtonSize) && currentButtonSize > buttonSize)
+						{
+							buttonSize = currentButtonSize;
+						}
+					}
+					else //horizontal
+					{
+						currentButtonSize = button.width;
+						if(!isNaN(currentButtonSize) && currentButtonSize > buttonSize)
+						{
+							buttonSize = currentButtonSize;
+						}
+					}
+				}
+				if(buttonSize > maxButtonSize)
+				{
+					buttonSize = maxButtonSize;
+				}
+				var totalContentSize:Number = (buttonSize + this._gap) * buttonCount - this._gap;
+				if(hasFirstGap)
+				{
+					totalContentSize = totalContentSize - this._gap + this._firstGap;
+				}
+				if(hasLastGap)
+				{
+					totalContentSize = totalContentSize - this._gap + this._lastGap;
+				}
 				if(this._direction == DIRECTION_VERTICAL)
 				{
-					button.width = oppositeSize;
-					button.height = buttonSize;
-					button.x = this._paddingLeft;
-					button.y = position;
-					position += button.height;
+					if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
+					{
+						position = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - totalContentSize) / 2;
+					}
+					else if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
+					{
+						position = this.actualHeight - this._paddingBottom - totalContentSize;
+					}
 				}
 				else //horizontal
 				{
-					button.width = buttonSize;
-					button.height = oppositeSize;
-					button.x = position;
-					button.y = this._paddingTop;
-					position += button.width;
+					if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
+					{
+						position = this._paddingLeft + (this.actualWidth - this._paddingLeft - this._paddingRight - totalContentSize) / 2;
+					}
+					else if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
+					{
+						position = this.actualWidth - this._paddingRight - totalContentSize;
+					}
 				}
-
-				//final validation to avoid juggler next frame issues
-				button.validate();
+			}
+			for(i = 0; i < buttonCount; i++)
+			{
+				button = this.activeButtons[i];
+				if(this._direction == DIRECTION_VERTICAL)
+				{
+					button.height = buttonSize;
+					button.y = position;
+					button.validate();
+					switch(this._horizontalAlign)
+					{
+						case HORIZONTAL_ALIGN_CENTER:
+						{
+							button.x = this._paddingLeft + (oppositeSize - button.width) / 2;
+							break;
+						}
+						case HORIZONTAL_ALIGN_RIGHT:
+						{
+							button.x = this._paddingLeft + oppositeSize - button.width;
+							break;
+						}
+						case HORIZONTAL_ALIGN_LEFT:
+						{
+							button.x = this._paddingLeft;
+							break;
+						}
+						default: //justify
+						{
+							button.x = this._paddingLeft;
+							button.width = oppositeSize;
+							break;
+						}
+					}
+					position += buttonSize;
+				}
+				else //horizontal
+				{
+					button.x = position;
+					button.width = buttonSize;
+					button.validate();
+					switch(this._verticalAlign)
+					{
+						case VERTICAL_ALIGN_MIDDLE:
+						{
+							button.y = this._paddingTop + (oppositeSize - button.height) / 2;
+							break;
+						}
+						case VERTICAL_ALIGN_BOTTOM:
+						{
+							button.y = this._paddingTop + oppositeSize - button.height;
+							break;
+						}
+						case VERTICAL_ALIGN_TOP:
+						{
+							button.y = this._paddingTop;
+							break;
+						}
+						default: //justify
+						{
+							button.y = this._paddingTop;
+							button.height = oppositeSize;
+							break;
+						}
+					}
+					position += buttonSize;
+				}
 
 				if(hasFirstGap && i == 0)
 				{
