@@ -713,8 +713,10 @@ package feathers.controls.supportClasses
 
 		private function refreshSelection():void
 		{
-			for each(var renderer:IListItemRenderer in this._activeRenderers)
+			const rendererCount:int = this._activeRenderers.length;
+			for(var i:int = 0; i < rendererCount; i++)
 			{
+				var renderer:IListItemRenderer = this._activeRenderers[i];
 				renderer.isSelected = this._selectedIndices.getItemIndex(renderer.index) >= 0;
 			}
 		}
@@ -774,13 +776,20 @@ package feathers.controls.supportClasses
 		{
 			if(this._typicalItemRenderer && this._typicalItemIsInDataProvider)
 			{
-				//this renderer is special and doesn't need to appear in the
-				//inactive renderers cache. in fact, if it did, it could be
-				//reused for other data, which we definitely don't want!
+				//this renderer is already is use by the typical item, so we
+				//don't want to allow it to be used by other items.
 				var inactiveIndex:int = this._inactiveRenderers.indexOf(this._typicalItemRenderer);
 				if(inactiveIndex >= 0)
 				{
-					this._inactiveRenderers.splice(inactiveIndex, 1);
+					this._inactiveRenderers[inactiveIndex] = null;
+				}
+				//if refreshLayoutTypicalItem() was called, it will have already
+				//added the typical item renderer to the active renderers. if
+				//not, we need to do it here.
+				var activeRendererCount:int = this._activeRenderers.length;
+				if(activeRendererCount == 0)
+				{
+					this._activeRenderers[activeRendererCount] = this._typicalItemRenderer;
 				}
 			}
 

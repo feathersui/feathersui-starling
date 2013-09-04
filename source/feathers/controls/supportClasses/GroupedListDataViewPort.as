@@ -1306,25 +1306,42 @@ package feathers.controls.supportClasses
 
 		private function refreshSelection():void
 		{
-			for each(var renderer:IGroupedListItemRenderer in this._activeItemRenderers)
+			var rendererCount:int = this._activeItemRenderers.length;
+			for(var i:int = 0; i < rendererCount; i++)
 			{
+				var renderer:IGroupedListItemRenderer = this._activeItemRenderers[i];
 				renderer.isSelected = renderer.groupIndex == this._selectedGroupIndex &&
 					renderer.itemIndex == this._selectedItemIndex;
 			}
-			for each(renderer in this._activeFirstItemRenderers)
+			if(this._activeFirstItemRenderers)
 			{
-				renderer.isSelected = renderer.groupIndex == this._selectedGroupIndex &&
-					renderer.itemIndex == this._selectedItemIndex;
+				rendererCount = this._activeFirstItemRenderers.length;
+				for(i = 0; i < rendererCount; i++)
+				{
+					renderer = this._activeFirstItemRenderers[i];
+					renderer.isSelected = renderer.groupIndex == this._selectedGroupIndex &&
+						renderer.itemIndex == this._selectedItemIndex;
+				}
 			}
-			for each(renderer in this._activeLastItemRenderers)
+			if(this._activeLastItemRenderers)
 			{
-				renderer.isSelected = renderer.groupIndex == this._selectedGroupIndex &&
-					renderer.itemIndex == this._selectedItemIndex;
+				rendererCount = this._activeLastItemRenderers.length;
+				for(i = 0; i < rendererCount; i++)
+				{
+					renderer = this._activeLastItemRenderers[i];
+					renderer.isSelected = renderer.groupIndex == this._selectedGroupIndex &&
+						renderer.itemIndex == this._selectedItemIndex;
+				}
 			}
-			for each(renderer in this._activeSingleItemRenderers)
+			if(this._activeSingleItemRenderers)
 			{
-				renderer.isSelected = renderer.groupIndex == this._selectedGroupIndex &&
-					renderer.itemIndex == this._selectedItemIndex;
+				rendererCount = this._activeSingleItemRenderers.length;
+				for(i = 0; i < rendererCount; i++)
+				{
+					renderer = this._activeSingleItemRenderers[i];
+					renderer.isSelected = renderer.groupIndex == this._selectedGroupIndex &&
+						renderer.itemIndex == this._selectedItemIndex;
+				}
 			}
 		}
 
@@ -1421,46 +1438,52 @@ package feathers.controls.supportClasses
 		{
 			if(this._typicalItemRenderer && this._typicalItemIsInDataProvider)
 			{
-				//this renderer is special and doesn't need to appear in the
-				//inactive renderers cache. in fact, if it did, it could be
-				//reused for other data, which we definitely don't want!
-
-				var inactiveIndex:int = this._inactiveItemRenderers.indexOf(this._typicalItemRenderer);
-				if(inactiveIndex >= 0)
+				var typicalItem:Object = this._typicalItemRenderer.data;
+				if(this._itemRendererMap[typicalItem] == this._typicalItemRenderer)
 				{
-					this._inactiveItemRenderers.splice(inactiveIndex, 1);
+					//this renderer is already is use by the typical item, so we
+					//don't want to allow it to be used by other items.
+					var inactiveIndex:int = this._inactiveItemRenderers.indexOf(this._typicalItemRenderer);
+					if(inactiveIndex >= 0)
+					{
+						this._inactiveItemRenderers.splice(inactiveIndex, 1);
+					}
+					//if refreshLayoutTypicalItem() was called, it will have already
+					//added the typical item renderer to the active renderers. if
+					//not, we need to do it here.
+					var activeRenderersCount:int = this._activeItemRenderers.length;
+					if(activeRenderersCount == 0)
+					{
+						this._activeItemRenderers[activeRenderersCount] = this._typicalItemRenderer;
+					}
 				}
-				else
+				else if(this._firstItemRendererMap && this._firstItemRendererMap[typicalItem] == this._typicalItemRenderer)
 				{
-					if(this._inactiveSingleItemRenderers)
+					inactiveIndex = this._inactiveFirstItemRenderers.indexOf(this._typicalItemRenderer);
+					if(inactiveIndex >= 0)
 					{
-						inactiveIndex = this._inactiveSingleItemRenderers.indexOf(this._typicalItemRenderer);
+						this._inactiveFirstItemRenderers.splice(inactiveIndex, 1);
 					}
-					else
+					activeRenderersCount = this._activeFirstItemRenderers.length;
+					if(activeRenderersCount == 0)
 					{
-						inactiveIndex = -1;
+						this._activeFirstItemRenderers[activeRenderersCount] = this._typicalItemRenderer;
 					}
+				}
+				else if(this._singleItemRendererMap && this._singleItemRendererMap[typicalItem] == this._typicalItemRenderer)
+				{
+					inactiveIndex = this._inactiveSingleItemRenderers.indexOf(this._typicalItemRenderer);
 					if(inactiveIndex >= 0)
 					{
 						this._inactiveSingleItemRenderers.splice(inactiveIndex, 1);
 					}
-					else
+					activeRenderersCount = this._activeSingleItemRenderers.length;
+					if(activeRenderersCount == 0)
 					{
-						if(this._inactiveFirstItemRenderers)
-						{
-							inactiveIndex = this._inactiveFirstItemRenderers.indexOf(this._typicalItemRenderer);
-						}
-						else
-						{
-							inactiveIndex = -1;
-						}
-						if(inactiveIndex >= 0)
-						{
-							this._inactiveFirstItemRenderers.splice(inactiveIndex, 1);
-						}
-						//no else... can't be in inactive last item renderers
+						this._activeSingleItemRenderers[activeRenderersCount] = this._typicalItemRenderer;
 					}
 				}
+				//no else... can't be in last item renderers
 			}
 
 			this.findUnrenderedData();
