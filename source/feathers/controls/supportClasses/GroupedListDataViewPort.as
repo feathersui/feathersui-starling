@@ -1618,25 +1618,35 @@ package feathers.controls.supportClasses
 
 				averageItemsPerGroup /= groupCount;
 
-				var typicalItemRenderer:IGroupedListItemRenderer = IGroupedListItemRenderer(virtualLayout.typicalItem);
-				var minimumTypicalItemEdge:Number = typicalItemRenderer.height;
-				if(typicalItemRenderer.width < minimumTypicalItemEdge)
+				if(this._typicalItemRenderer)
 				{
-					minimumTypicalItemEdge = typicalItemRenderer.width;
-				}
+					var minimumTypicalItemEdge:Number = this._typicalItemRenderer.height;
+					if(this._typicalItemRenderer.width < minimumTypicalItemEdge)
+					{
+						minimumTypicalItemEdge = this._typicalItemRenderer.width;
+					}
 
-				var maximumViewPortEdge:Number = viewPortWidth;
-				if(viewPortHeight > viewPortWidth)
+					var maximumViewPortEdge:Number = viewPortWidth;
+					if(viewPortHeight > viewPortWidth)
+					{
+						maximumViewPortEdge = viewPortHeight;
+					}
+					this._minimumFirstAndLastItemCount = this._minimumSingleItemCount = this._minimumHeaderCount = this._minimumFooterCount = Math.ceil(maximumViewPortEdge / (minimumTypicalItemEdge * averageItemsPerGroup));
+					this._minimumHeaderCount = Math.min(this._minimumHeaderCount, totalHeaderCount);
+					this._minimumFooterCount = Math.min(this._minimumFooterCount, totalFooterCount);
+					this._minimumSingleItemCount = Math.min(this._minimumSingleItemCount, totalSingleItemCount);
+
+					//assumes that zero headers/footers might be visible
+					this._minimumItemCount = Math.ceil(maximumViewPortEdge / minimumTypicalItemEdge) + 1;
+				}
+				else
 				{
-					maximumViewPortEdge = viewPortHeight;
+					this._minimumFirstAndLastItemCount = 1;
+					this._minimumHeaderCount = 1;
+					this._minimumFooterCount = 1;
+					this._minimumSingleItemCount = 1;
+					this._minimumItemCount = 1;
 				}
-				this._minimumFirstAndLastItemCount = this._minimumSingleItemCount = this._minimumHeaderCount = this._minimumFooterCount = Math.ceil(maximumViewPortEdge / (minimumTypicalItemEdge * averageItemsPerGroup));
-				this._minimumHeaderCount = Math.min(this._minimumHeaderCount, totalHeaderCount);
-				this._minimumFooterCount = Math.min(this._minimumFooterCount, totalFooterCount);
-				this._minimumSingleItemCount = Math.min(this._minimumSingleItemCount, totalSingleItemCount);
-
-				//assumes that zero headers/footers might be visible
-				this._minimumItemCount = Math.ceil(maximumViewPortEdge / minimumTypicalItemEdge) + 1;
 			}
 			var currentIndex:int = 0;
 			var unrenderedHeadersLastIndex:int = this._unrenderedHeaders.length;
