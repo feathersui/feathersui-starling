@@ -8,14 +8,14 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.renderers
 {
 	import feathers.controls.LayoutGroup;
-	import feathers.controls.List;
+	import feathers.controls.GroupedList;
 
 	import starling.events.Event;
 
 	/**
 	 * Based on <code>LayoutGroup</code>, this component is meant as a base
-	 * class for creating a custom item renderer for a <code>List</code>
-	 * component.
+	 * class for creating a custom header or footer renderer for a
+	 * <code>GroupedList</code> component.
 	 *
 	 * <p>Sub-components may be created and added inside <code>initialize()</code>.
 	 * This is a good place to add event listeners and to set the layout.</p>
@@ -28,44 +28,65 @@ package feathers.controls.renderers
 	 * layouts that can automatically adjust positions when the list resizes.
 	 * Create <code>AnchorLayoutData</code> objects to define the constraints.</p>
 	 *
-	 * @see feathers.controls.List
+	 * @see feathers.controls.GroupedList
 	 */
-	public class LayoutGroupListItemRenderer extends LayoutGroup implements IListItemRenderer
+	public class LayoutGroupGroupedListHeaderOrFooterRenderer extends LayoutGroup implements IGroupedListHeaderOrFooterRenderer
 	{
 		/**
 		 * Constructor.
 		 */
-		public function LayoutGroupListItemRenderer()
+		public function LayoutGroupGroupedListHeaderOrFooterRenderer()
 		{
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _index:int = -1;
+		protected var _groupIndex:int = -1;
 
 		/**
 		 * @inheritDoc
 		 */
-		public function get index():int
+		public function get groupIndex():int
 		{
-			return this._index;
+			return this._groupIndex;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set index(value:int):void
+		public function set groupIndex(value:int):void
 		{
-			this._index = value;
+			this._groupIndex = value;
 		}
 
-		protected var _owner:List;
+		/**
+		 * @private
+		 */
+		protected var _layoutIndex:int = -1;
 
 		/**
 		 * @inheritDoc
 		 */
-		public function get owner():List
+		public function get layoutIndex():int
+		{
+			return this._layoutIndex;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set layoutIndex(value:int):void
+		{
+			this._layoutIndex = value;
+		}
+
+		protected var _owner:GroupedList;
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get owner():GroupedList
 		{
 			return this._owner;
 		}
@@ -73,7 +94,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		public function set owner(value:List):void
+		public function set owner(value:GroupedList):void
 		{
 			if(this._owner == value)
 			{
