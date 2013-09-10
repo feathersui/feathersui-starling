@@ -53,16 +53,7 @@ package feathers.controls
 	 * with a <code>StageTextTextEditor</code> that has its <code>multiline</code>
 	 * property set to <code>true</code>. In that situation, the
 	 * <code>StageText</code> instance will automatically provide its own
-	 * scroll bars.</p>
-	 *
-	 * <p><strong>Beta Component:</strong> This is a new component, and its APIs
-	 * may need some changes between now and the next version of Feathers to
-	 * account for overlooked requirements or other issues. Upgrading to future
-	 * versions of Feathers may involve manual changes to your code that uses
-	 * this component. The
-	 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>
-	 * will not go into effect until this component's status is upgraded from
-	 * beta to stable.</p>
+	 * scroll bars. <code>TextArea</code> is intended for use on desktop.</p>
 	 *
 	 * <p>The following example sets the text in a text area, selects the text,
 	 * and listens for when the text value changes:</p>
