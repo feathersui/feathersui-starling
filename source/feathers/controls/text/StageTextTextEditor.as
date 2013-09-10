@@ -172,6 +172,11 @@ package feathers.controls.text
 		/**
 		 * The text displayed by the input.
 		 *
+		 * <p>In the following example, the text is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.text = "Lorem ipsum";</listing>
+		 *
 		 * @default ""
 		 */
 		public function get text():String
@@ -246,6 +251,11 @@ package feathers.controls.text
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
 		 *
+		 * <p>In the following example, the auto capitalize behavior is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.autoCapitalize = AutoCapitalize.WORD;</listing>
+		 *
 		 * @default flash.text.AutoCapitalize.NONE
 		 */
 		public function get autoCapitalize():String
@@ -273,6 +283,11 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
+		 *
+		 * <p>In the following example, auto correct is enabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.autoCorrect = true;</listing>
 		 *
 		 * @default false
 		 */
@@ -302,6 +317,11 @@ package feathers.controls.text
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
 		 *
+		 * <p>In the following example, the text color is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.color = 0xff9900;</listing>
+		 *
 		 * @default 0x000000
 		 */
 		public function get color():uint
@@ -329,6 +349,11 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
+		 *
+		 * <p>In the following example, the text is displayed as a password:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.displayAsPassword = true;</listing>
 		 *
 		 * @default false
 		 */
@@ -358,6 +383,11 @@ package feathers.controls.text
 		/**
 		 * Determines if the text input is editable. If the text input is not
 		 * editable, it will still appear enabled.
+		 *
+		 * <p>In the following example, the text is not editable:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.isEditable = false;</listing>
 		 *
 		 * @default true
 		 */
@@ -397,6 +427,11 @@ package feathers.controls.text
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
 		 *
+		 * <p>In the following example, the font family is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.fontFamily = "Source Sans Pro";</listing>
+		 *
 		 * @default null
 		 */
 		public function get fontFamily():String
@@ -424,6 +459,11 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
+		 *
+		 * <p>In the following example, the font posture is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.fontPosture = FontPosture.ITALIC;</listing>
 		 *
 		 * @default flash.text.engine.FontPosture.NORMAL
 		 */
@@ -453,6 +493,11 @@ package feathers.controls.text
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
 		 *
+		 * <p>In the following example, the font size is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.fontSize = 16;</listing>
+		 *
 		 * @default 12
 		 */
 		public function get fontSize():int
@@ -480,6 +525,11 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
+		 *
+		 * <p>In the following example, the font weight is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.fontWeight = FontWeight.BOLD;</listing>
 		 *
 		 * @default flash.text.engine.FontWeight.NORMAL
 		 */
@@ -509,6 +559,11 @@ package feathers.controls.text
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
 		 *
+		 * <p>In the following example, the locale is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.locale = "ru";</listing>
+		 *
 		 * @default "en"
 		 */
 		public function get locale():String
@@ -536,6 +591,11 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
+		 *
+		 * <p>In the following example, the maximum character count is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.maxChars = 10;</listing>
 		 *
 		 * @default 0
 		 */
@@ -569,6 +629,11 @@ package feathers.controls.text
 		 * this property changes after the <code>StageText</code> text was
 		 * initially created.
 		 *
+		 * <p>In the following example, multiline is enabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.multiline = true;</listing>
+		 *
 		 * @default false
 		 */
 		public function get multiline():Boolean
@@ -596,6 +661,11 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
+		 *
+		 * <p>In the following example, the text is restricted to numbers:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.restrict = "0-9";</listing>
 		 *
 		 * @default null
 		 */
@@ -625,6 +695,11 @@ package feathers.controls.text
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
 		 *
+		 * <p>In the following example, the return key label is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.returnKeyLabel = ReturnKeyLabel.GO;</listing>
+		 *
 		 * @default flash.text.ReturnKeyLabel.DEFAULT
 		 */
 		public function get returnKeyLabel():String
@@ -653,6 +728,11 @@ package feathers.controls.text
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
 		 *
+		 * <p>In the following example, the soft keyboard type is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.softKeyboardType = SoftKeyboardType.NUMBER;</listing>
+		 *
 		 * @default flash.text.SoftKeyboardType.DEFAULT
 		 */
 		public function get softKeyboardType():String
@@ -680,6 +760,11 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>StageText</code> property with the same name.
+		 *
+		 * <p>In the following example, the text is centered:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.textAlign = TextFormatAlign.CENTER;</listing>
 		 *
 		 * @default flash.text.TextFormatAlign.START
 		 */

@@ -116,6 +116,11 @@ package feathers.controls.text
 		/**
 		 * @inheritDoc
 		 *
+		 * <p>In the following example, the text is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.text = "Lorem ipsum";</listing>
+		 *
 		 * @default ""
 		 */
 		public function get text():String
@@ -149,6 +154,11 @@ package feathers.controls.text
 		/**
 		 * Determines if the TextField should display the text as HTML or not.
 		 *
+		 * <p>In the following example, the text is displayed as HTML:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.isHTML = true;</listing>
+		 *
 		 * @default false
 		 *
 		 * @see flash.text.TextField#htmlText
@@ -178,6 +188,11 @@ package feathers.controls.text
 
 		/**
 		 * The font and styles used to draw the text.
+		 *
+		 * <p>In the following example, the text format is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.textFormat = new TextFormat( "Source Sans Pro" );</listing>
 		 *
 		 * @default null
 		 *
@@ -209,6 +224,23 @@ package feathers.controls.text
 		/**
 		 * The <code>StyleSheet</code> object to pass to the TextField.
 		 *
+		 * <p>In the following example, the text is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * var style:StyleSheet = new StyleSheet();
+		 * var heading:Object = new Object();
+		 * heading.fontWeight = "bold";
+		 * heading.color = "#FF0000";
+		 *
+		 * var body:Object = new Object();
+		 * body.fontStyle = "italic";
+		 *
+		 * style.setStyle(".heading", heading);
+		 * style.setStyle("body", body);
+		 *
+		 * textRenderer.styleSheet = style;
+		 * textRenderer.htmlText = "<body><span class='heading'>Hello </span>World...</body>";</listing>
+		 *
 		 * @default null
 		 *
 		 * @see flash.text.StyleSheet
@@ -238,6 +270,11 @@ package feathers.controls.text
 
 		/**
 		 * Determines if the TextField should use an embedded font or not.
+		 *
+		 * <p>In the following example, the font is embedded:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.embedFonts = true;</listing>
 		 *
 		 * @default false
 		 */
@@ -276,6 +313,11 @@ package feathers.controls.text
 		/**
 		 * Determines if the TextField wraps text to the next line.
 		 *
+		 * <p>In the following example, word wrap is enabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.wordWrap = true;</listing>
+		 *
 		 * @default false
 		 */
 		public function get wordWrap():Boolean
@@ -307,6 +349,11 @@ package feathers.controls.text
 		 * on sub-pixels, which often results in blurred rendering due to
 		 * texture smoothing.
 		 *
+		 * <p>In the following example, the text is not snapped to pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.snapToPixels = false;</listing>
+		 *
 		 * @default true
 		 */
 		public function get snapToPixels():Boolean
@@ -329,6 +376,11 @@ package feathers.controls.text
 
 		/**
 		 * Same as the TextField property with the same name.
+		 *
+		 * <p>In the following example, the anti-alias type is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.antiAliasType = AntiAliasType.NORMAL;</listing>
 		 *
 		 * @default flash.text.AntiAliasType.ADVANCED
 		 *
@@ -360,9 +412,15 @@ package feathers.controls.text
 		/**
 		 * Same as the TextField property with the same name.
 		 *
+		 * <p>In the following example, the background is enabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.background = true;</listing>
+		 *
 		 * @default false
 		 *
 		 * @see flash.text.TextField#background
+		 * @see #backgroundColor
 		 */
 		public function get background():Boolean
 		{
@@ -390,9 +448,15 @@ package feathers.controls.text
 		/**
 		 * Same as the TextField property with the same name.
 		 *
+		 * <p>In the following example, the background color is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.backgroundColor = 0xff000ff;</listing>
+		 *
 		 * @default 0xffffff
 		 *
 		 * @see flash.text.TextField#backgroundColor
+		 * @see #background
 		 */
 		public function get backgroundColor():uint
 		{
@@ -420,9 +484,15 @@ package feathers.controls.text
 		/**
 		 * Same as the TextField property with the same name.
 		 *
+		 * <p>In the following example, the border is enabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.border = true;</listing>
+		 *
 		 * @default false
 		 *
 		 * @see flash.text.TextField#border
+		 * @see #borderColor
 		 */
 		public function get border():Boolean
 		{
@@ -450,9 +520,15 @@ package feathers.controls.text
 		/**
 		 * Same as the TextField property with the same name.
 		 *
+		 * <p>In the following example, the border color is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.borderColor = 0xff00ff;</listing>
+		 *
 		 * @default 0x000000
 		 *
 		 * @see flash.text.TextField#borderColor
+		 * @see #border
 		 */
 		public function get borderColor():uint
 		{
@@ -479,6 +555,11 @@ package feathers.controls.text
 
 		/**
 		 * Same as the TextField property with the same name.
+		 *
+		 * <p>In the following example, whitespace is condensed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.condenseWhite = true;</listing>
 		 *
 		 * @default false
 		 *
@@ -510,6 +591,11 @@ package feathers.controls.text
 		/**
 		 * Same as the TextField property with the same name.
 		 *
+		 * <p>In the following example, the text is displayed as a password:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.displayAsPassword = true;</listing>
+		 *
 		 * @default false
 		 *
 		 * @see flash.text.TextField#displayAsPassword
@@ -539,6 +625,11 @@ package feathers.controls.text
 
 		/**
 		 * Same as the TextField property with the same name.
+		 *
+		 * <p>In the following example, the grid fit type is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.gridFitType = GridFitType.SUBPIXEL;</listing>
 		 *
 		 * @default flash.text.GridFitType.PIXEL
 		 *
@@ -570,6 +661,11 @@ package feathers.controls.text
 		/**
 		 * Same as the TextField property with the same name.
 		 *
+		 * <p>In the following example, the sharpness is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.sharpness = 200;</listing>
+		 *
 		 * @default 0
 		 *
 		 * @see flash.text.TextField#sharpness
@@ -599,6 +695,11 @@ package feathers.controls.text
 
 		/**
 		 * Same as the TextField property with the same name.
+		 *
+		 * <p>In the following example, the thickness is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.thickness = 100;</listing>
 		 *
 		 * @default 0
 		 *

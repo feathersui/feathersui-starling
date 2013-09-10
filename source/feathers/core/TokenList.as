@@ -26,7 +26,7 @@ package feathers.core
 		protected var names:Vector.<String> = new <String>[];
 
 		/**
-		 * The tokens formated with space delimiters.
+		 * The tokens formatted with space delimiters.
 		 *
 		 * @default ""
 		 */

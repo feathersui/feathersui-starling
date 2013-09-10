@@ -31,6 +31,14 @@ package feathers.core
 
 		/**
 		 * If true, the queue is currently validating.
+		 *
+		 * <p>In the following example, we check if the queue is currently validating:</p>
+		 *
+		 * <listing version="3.0">
+		 * if( queue.isValidating )
+		 * {
+		 *     // do something
+		 * }</listing>
 		 */
 		public function get isValidating():Boolean
 		{

@@ -49,7 +49,15 @@ package feathers.core
 		protected static var _nativeFocusTarget:Sprite;
 
 		/**
-		 * Determines if the default focus manager is enabled.
+		 * Determines if the default focus manager is enabled. For mobile apps,
+		 * the focus manager should generally remain disabled. For desktop apps,
+		 * it is recommended to enable the focus manager to support keyboard
+		 * navigation.
+		 *
+		 * <p>In the following example, focus management is enabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * FocusManager.isEnabled = true;</listing>
 		 *
 		 * @default false
 		 */

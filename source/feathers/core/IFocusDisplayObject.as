@@ -40,6 +40,11 @@ package feathers.core
 
 		/**
 		 * Determines if this component can receive focus.
+		 *
+		 * <p>In the following example, the focus is disabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * object.isFocusEnabled = false;</listing>
 		 */
 		function get isFocusEnabled():Boolean;
 
@@ -51,6 +56,11 @@ package feathers.core
 		/**
 		 * The next object that will receive focus when the tab key is pressed.
 		 * If <code>null</code>, defaults to the next child on the display list.
+		 *
+		 * <p>In the following example, the next tab focus is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * object.nextTabFocus = otherObject;</listing>
 		 */
 		function get nextTabFocus():IFocusDisplayObject;
 
@@ -63,6 +73,11 @@ package feathers.core
 		 * The previous object that will receive focus when the tab key is
 		 * pressed while holding shift. If <code>null</code>, defaults to the
 		 * previous child on the display list.
+		 *
+		 * <p>In the following example, the previous tab focus is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * object.previousTabFocus = otherObject;</listing>
 		 */
 		function get previousTabFocus():IFocusDisplayObject;
 

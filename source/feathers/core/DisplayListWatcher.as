@@ -71,13 +71,25 @@ package feathers.core
 		 * The minimum base class required before the AddedWatcher will check
 		 * to see if a particular display object has any initializers.
 		 *
+		 * <p>In the following example, the required base class is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * watcher.requiredBaseClass = Sprite;</listing>
+		 *
 		 * @default feathers.core.IFeathersControl
 		 */
 		public var requiredBaseClass:Class = IFeathersControl;
 
 		/**
 		 * Determines if only the object added should be processed or if its
-		 * children should be processed recursively.
+		 * children should be processed recursively. Disabling this property
+		 * may improve performance, but it limits the capabilities of
+		 * <code>DisplayListWatcher</code>.
+		 *
+		 * <p>In the following example, children are not processed recursively:</p>
+		 *
+		 * <listing version="3.0">
+		 * watcher.processRecursively = false;</listing>
 		 *
 		 * @default true
 		 */
@@ -207,6 +219,14 @@ package feathers.core
 
 		/**
 		 * Determines if an object is excluded from being watched.
+		 *
+		 * <p>In the following example, we check if a display object is excluded:</p>
+		 *
+		 * <listing version="3.0">
+		 * if( watcher.isExcluded( image ) )
+		 * {
+		 *     // this display object won't be processed by the watcher
+		 * }</listing>
 		 */
 		public function isExcluded(target:DisplayObject):Boolean
 		{
