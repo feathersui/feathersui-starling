@@ -10,6 +10,7 @@ package feathers.controls
 	import feathers.controls.supportClasses.IViewPort;
 	import feathers.core.FeathersControl;
 	import feathers.core.PropertyProxy;
+	import feathers.events.ExclusiveTouch;
 	import feathers.events.FeathersEventType;
 	import feathers.system.DeviceCapabilities;
 	import feathers.utils.math.roundDownToNearest;
@@ -24,7 +25,6 @@ package feathers.controls
 	import starling.animation.Transitions;
 	import starling.animation.Tween;
 	import starling.core.Starling;
-	import starling.display.DisplayObject;
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.events.Event;
@@ -4181,6 +4181,14 @@ package feathers.controls
 			{
 				return;
 			}
+
+			var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(this.stage);
+			if(exclusiveTouch.getClaim(touch.id))
+			{
+				//already claimed
+				return;
+			}
+
 			if(this._horizontalAutoScrollTween)
 			{
 				Starling.juggler.remove(this._horizontalAutoScrollTween);
@@ -4210,6 +4218,8 @@ package feathers.controls
 			//right edge past the top of the scroller, it gets stuck and we stop
 			//receiving touch events for "this".
 			this.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
+
+			exclusiveTouch.addEventListener(Event.CHANGE, exclusiveTouch_changeHandler);
 		}
 
 		/**
@@ -4260,6 +4270,9 @@ package feathers.controls
 				if(!this._isDraggingVertically)
 				{
 					this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
+					var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(this.stage);
+					exclusiveTouch.removeEventListener(Event.CHANGE, exclusiveTouch_changeHandler);
+					exclusiveTouch.claimTouch(this._touchPointID, this);
 					this.startScroll();
 				}
 			}
@@ -4276,6 +4289,9 @@ package feathers.controls
 				this._isDraggingVertically = true;
 				if(!this._isDraggingHorizontally)
 				{
+					exclusiveTouch = ExclusiveTouch.forStage(this.stage);
+					exclusiveTouch.removeEventListener(Event.CHANGE, exclusiveTouch_changeHandler);
+					exclusiveTouch.claimTouch(this._touchPointID, this);
 					this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 					this.startScroll();
 				}
@@ -4311,6 +4327,10 @@ package feathers.controls
 			}
 			else if(touch.phase == TouchPhase.ENDED)
 			{
+				if(!this._isDraggingHorizontally && !this._isDraggingVertically)
+				{
+					ExclusiveTouch.forStage(this.stage).removeEventListener(Event.CHANGE, exclusiveTouch_changeHandler);
+				}
 				this.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
 				this.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
 				this._touchPointID = -1;
@@ -4369,6 +4389,28 @@ package feathers.controls
 					this.hideVerticalScrollBar();
 				}
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function exclusiveTouch_changeHandler(event:Event, touchID:int):void
+		{
+			if(this._touchPointID < 0 || this._touchPointID != touchID || this._isDraggingHorizontally || this._isDraggingVertically)
+			{
+				return;
+			}
+			var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(this.stage);
+			if(exclusiveTouch.getClaim(touchID) == this)
+			{
+				return;
+			}
+
+			this._touchPointID = -1;
+			this.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
+			this.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
+			exclusiveTouch.removeEventListener(Event.CHANGE, exclusiveTouch_changeHandler);
+			this.dispatchEventWith(FeathersEventType.END_INTERACTION);
 		}
 
 		/**

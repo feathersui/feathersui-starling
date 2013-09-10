@@ -9,6 +9,7 @@ package feathers.controls
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
+	import feathers.events.ExclusiveTouch;
 	import feathers.events.FeathersEventType;
 	import feathers.system.DeviceCapabilities;
 	import feathers.utils.display.getDisplayObjectDepthFromStage;
@@ -2446,6 +2447,13 @@ package feathers.controls
 		 */
 		protected function handleTouchBegan(touch:Touch):void
 		{
+			var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(this.stage);
+			if(exclusiveTouch.getClaim(touch.id))
+			{
+				//already claimed
+				return;
+			}
+
 			touch.getLocation(this, HELPER_POINT);
 			var localX:Number = HELPER_POINT.x;
 			var localY:Number = HELPER_POINT.y;
@@ -2536,6 +2544,8 @@ package feathers.controls
 			this._isDraggingRightDrawer = false;
 			this._isDraggingBottomDrawer = false;
 			this._isDraggingLeftDrawer = false;
+
+			exclusiveTouch.addEventListener(Event.CHANGE, exclusiveTouch_changeHandler);
 		}
 
 		/**
@@ -2796,34 +2806,35 @@ package feathers.controls
 			var verticalInchesMoved:Number = (this._currentTouchY - this._startTouchY) / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
 			if(this.isLeftDrawerOpen && horizontalInchesMoved <= -this._minimumDragDistance)
 			{
-				this._startTouchX = this._currentTouchX;
-				this._isDraggingLeftDrawer = true;
 				this._isDragging = true;
+				this._isDraggingLeftDrawer = true;
 				this.applyLeftClipRect();
-				this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 			}
 			else if(this.isRightDrawerOpen && horizontalInchesMoved >= this._minimumDragDistance)
 			{
-				this._startTouchX = this._currentTouchX;
-				this._isDraggingRightDrawer = true;
 				this._isDragging = true;
+				this._isDraggingRightDrawer = true;
 				this.applyRightClipRect();
-				this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 			}
 			else if(this.isTopDrawerOpen && verticalInchesMoved <= -this._minimumDragDistance)
 			{
-				this._startTouchY = this._currentTouchY;
-				this._isDraggingTopDrawer = true;
 				this._isDragging = true;
+				this._isDraggingTopDrawer = true;
 				this.applyTopClipRect();
-				this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 			}
 			else if(this.isBottomDrawerOpen && verticalInchesMoved >= this._minimumDragDistance)
 			{
-				this._startTouchY = this._currentTouchY;
-				this._isDraggingBottomDrawer = true;
 				this._isDragging = true;
+				this._isDraggingBottomDrawer = true;
 				this.applyBottomClipRect();
+			}
+
+			if(this._isDragging)
+			{
+				this._startTouchY = this._currentTouchY;
+				var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(this.stage);
+				exclusiveTouch.removeEventListener(Event.CHANGE, exclusiveTouch_changeHandler);
+				exclusiveTouch.claimTouch(this.touchPointID, this);
 				this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 			}
 		}
@@ -2837,38 +2848,39 @@ package feathers.controls
 			var verticalInchesMoved:Number = (this._currentTouchY - this._startTouchY) / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
 			if(this._leftDrawer && !this.isLeftDrawerDocked && horizontalInchesMoved >= this._minimumDragDistance)
 			{
-				this._startTouchX = this._currentTouchX;
-				this._isDraggingLeftDrawer = true;
 				this._isDragging = true;
+				this._isDraggingLeftDrawer = true;
 				this._leftDrawer.visible = true;
 				this.applyLeftClipRect();
-				this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 			}
 			else if(this._rightDrawer && !this.isRightDrawerDocked && horizontalInchesMoved <= -this._minimumDragDistance)
 			{
-				this._startTouchX = this._currentTouchX;
-				this._isDraggingRightDrawer = true;
 				this._isDragging = true;
+				this._isDraggingRightDrawer = true;
 				this._rightDrawer.visible = true;
 				this.applyRightClipRect();
-				this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 			}
 			else if(this._topDrawer && !this.isTopDrawerDocked && verticalInchesMoved >= this._minimumDragDistance)
 			{
-				this._startTouchY = this._currentTouchY;
-				this._isDraggingTopDrawer = true;
 				this._isDragging = true;
+				this._isDraggingTopDrawer = true;
 				this._topDrawer.visible = true;
 				this.applyTopClipRect();
-				this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 			}
 			else if(this._bottomDrawer && !this.isBottomDrawerDocked && verticalInchesMoved <= -this._minimumDragDistance)
 			{
-				this._startTouchY = this._currentTouchY;
-				this._isDraggingBottomDrawer = true;
 				this._isDragging = true;
+				this._isDraggingBottomDrawer = true;
 				this._bottomDrawer.visible = true;
 				this.applyBottomClipRect();
+			}
+
+			if(this._isDragging)
+			{
+				this._startTouchY = this._currentTouchY;
+				var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(this.stage);
+				exclusiveTouch.claimTouch(this.touchPointID, this);
+				exclusiveTouch.removeEventListener(Event.CHANGE, exclusiveTouch_changeHandler);
 				this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
 			}
 		}
@@ -3090,6 +3102,7 @@ package feathers.controls
 					}
 					else
 					{
+						ExclusiveTouch.forStage(this.stage).removeEventListener(Event.CHANGE, exclusiveTouch_changeHandler);
 						if(this.isTopDrawerOpen || this.isRightDrawerOpen || this.isBottomDrawerOpen || this.isLeftDrawerOpen)
 						{
 							//there is no drag, so we may have a tap
@@ -3109,6 +3122,26 @@ package feathers.controls
 
 				this.handleTouchBegan(touch);
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function exclusiveTouch_changeHandler(event:Event, touchID:int):void
+		{
+			if(this.touchPointID < 0 || this.touchPointID != touchID || this._isDragging)
+			{
+				return;
+			}
+
+			var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(this.stage);
+			if(exclusiveTouch.getClaim(touchID) == this)
+			{
+				return;
+			}
+
+			this.touchPointID = -1;
+
 		}
 
 		/**
