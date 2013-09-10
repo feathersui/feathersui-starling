@@ -19,7 +19,8 @@ package feathers.events
 	import starling.events.TouchPhase;
 
 	/**
-	 * Dispatched when a touch ID is claimed or a claim is removed.
+	 * Dispatched when a touch ID is claimed or a claim is removed. The
+	 * <code>data</code> property is the touch ID.
 	 *
 	 * @eventType starling.events.Event.CHANGE
 	 */
