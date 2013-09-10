@@ -345,6 +345,48 @@ package feathers.core
 				this._initializerSuperTypes.splice(index, 1);
 			}
 		}
+
+		/**
+		 * Immediately initialize an object. Useful for initializing components
+		 * that are already on stage when this <code>DisplayListWatcher</code>
+		 * is created.
+		 *
+		 * <p>If the object has already been initialized, it won't be
+		 * initialized again. However, it's children may be initialized, if they
+		 * haven't been initialized yet.</p>
+		 */
+		public function initializeObject(target:DisplayObject):void
+		{
+			const targetAsRequiredBaseClass:DisplayObject = DisplayObject(target as requiredBaseClass);
+			if(targetAsRequiredBaseClass)
+			{
+				const isInitialized:Boolean = this._initializeOnce && this.initializedObjects[targetAsRequiredBaseClass];
+				if(!isInitialized)
+				{
+					if(this.isExcluded(target))
+					{
+						return;
+					}
+
+					this.initializedObjects[targetAsRequiredBaseClass] = true;
+					this.processAllInitializers(target);
+				}
+			}
+
+			if(this.processRecursively)
+			{
+				const targetAsContainer:DisplayObjectContainer = target as DisplayObjectContainer;
+				if(targetAsContainer)
+				{
+					const childCount:int = targetAsContainer.numChildren;
+					for(var i:int = 0; i < childCount; i++)
+					{
+						var child:DisplayObject = targetAsContainer.getChildAt(i);
+						this.initializeObject(child);
+					}
+				}
+			}
+		}
 		
 		/**
 		 * @private
@@ -400,49 +442,13 @@ package feathers.core
 				initializer(target);
 			}
 		}
-
-		/**
-		 * @private
-		 */
-		protected function addObject(target:DisplayObject):void
-		{
-			const targetAsRequiredBaseClass:DisplayObject = DisplayObject(target as requiredBaseClass);
-			if(targetAsRequiredBaseClass)
-			{
-				const isInitialized:Boolean = this._initializeOnce && this.initializedObjects[targetAsRequiredBaseClass];
-				if(!isInitialized)
-				{
-					if(this.isExcluded(target))
-					{
-						return;
-					}
-
-					this.initializedObjects[targetAsRequiredBaseClass] = true;
-					this.processAllInitializers(target);
-				}
-			}
-
-			if(this.processRecursively)
-			{
-				const targetAsContainer:DisplayObjectContainer = target as DisplayObjectContainer;
-				if(targetAsContainer)
-				{
-					const childCount:int = targetAsContainer.numChildren;
-					for(var i:int = 0; i < childCount; i++)
-					{
-						var child:DisplayObject = targetAsContainer.getChildAt(i);
-						this.addObject(child);
-					}
-				}
-			}
-		}
 		
 		/**
 		 * @private
 		 */
 		protected function addedHandler(event:Event):void
 		{
-			this.addObject(event.target as DisplayObject);
+			this.initializeObject(event.target as DisplayObject);
 		}
 	}
 }
