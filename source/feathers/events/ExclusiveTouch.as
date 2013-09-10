@@ -167,9 +167,10 @@ package feathers.events
 		 */
 		protected function stage_touchHandler(event:TouchEvent):void
 		{
-			for(var key:int in this._claims)
+			for(var key:Object in this._claims)
 			{
-				var touch:Touch = event.getTouch(this._stage, TouchPhase.ENDED, key);
+				var touchID:int = key as int;
+				var touch:Touch = event.getTouch(this._stage, TouchPhase.ENDED, touchID);
 				if(!touch)
 				{
 					continue;
