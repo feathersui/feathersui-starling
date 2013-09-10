@@ -70,14 +70,6 @@ package feathers.core
 		protected static const VALIDATION_QUEUE:ValidationQueue = new ValidationQueue();
 
 		/**
-		 * @private
-		 * Used for clipping.
-		 *
-		 * @see #clipRect
-		 */
-		protected static var currentScissorRect:Rectangle;
-
-		/**
 		 * Flag to indicate that everything is invalid and should be redrawn.
 		 */
 		public static const INVALIDATION_FLAG_ALL:String = "all";
