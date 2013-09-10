@@ -1433,7 +1433,8 @@ package feathers.controls.renderers
 				return;
 			}
 			this._iconLoaderFactory = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.replaceIcon(null);
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		/**
@@ -1482,7 +1483,8 @@ package feathers.controls.renderers
 				return;
 			}
 			this._accessoryLoaderFactory = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.replaceAccessory(null);
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		/**
@@ -1531,7 +1533,8 @@ package feathers.controls.renderers
 				return;
 			}
 			this._accessoryLabelFactory = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.replaceAccessory(null);
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		/**
