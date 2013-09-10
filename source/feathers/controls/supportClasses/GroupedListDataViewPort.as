@@ -1432,6 +1432,88 @@ package feathers.controls.supportClasses
 
 			this._headerIndices.length = 0;
 			this._footerIndices.length = 0;
+
+			const hasCustomFirstItemRenderer:Boolean = this._firstItemRendererType || this._firstItemRendererFactory != null || this._firstItemRendererName;
+			if(hasCustomFirstItemRenderer)
+			{
+				if(!this._firstItemRendererMap)
+				{
+					this._firstItemRendererMap = new Dictionary(true);
+				}
+				if(!this._inactiveFirstItemRenderers)
+				{
+					this._inactiveFirstItemRenderers = new <IGroupedListItemRenderer>[];
+				}
+				if(!this._activeFirstItemRenderers)
+				{
+					this._activeFirstItemRenderers = new <IGroupedListItemRenderer>[];
+				}
+				if(!this._unrenderedFirstItems)
+				{
+					this._unrenderedFirstItems = new <int>[];
+				}
+			}
+			else
+			{
+				this._firstItemRendererMap = null;
+				this._inactiveFirstItemRenderers = null;
+				this._activeFirstItemRenderers = null;
+				this._unrenderedFirstItems = null;
+			}
+			const hasCustomLastItemRenderer:Boolean = this._lastItemRendererType || this._lastItemRendererFactory != null || this._lastItemRendererName;
+			if(hasCustomLastItemRenderer)
+			{
+				if(!this._lastItemRendererMap)
+				{
+					this._lastItemRendererMap = new Dictionary(true);
+				}
+				if(!this._inactiveLastItemRenderers)
+				{
+					this._inactiveLastItemRenderers = new <IGroupedListItemRenderer>[];
+				}
+				if(!this._activeLastItemRenderers)
+				{
+					this._activeLastItemRenderers = new <IGroupedListItemRenderer>[];
+				}
+				if(!this._unrenderedLastItems)
+				{
+					this._unrenderedLastItems = new <int>[];
+				}
+			}
+			else
+			{
+				this._lastItemRendererMap = null;
+				this._inactiveLastItemRenderers = null;
+				this._activeLastItemRenderers = null;
+				this._unrenderedLastItems = null;
+			}
+			const hasCustomSingleItemRenderer:Boolean = this._singleItemRendererType || this._singleItemRendererFactory != null || this._singleItemRendererName;
+			if(hasCustomSingleItemRenderer)
+			{
+				if(!this._singleItemRendererMap)
+				{
+					this._singleItemRendererMap = new Dictionary(true);
+				}
+				if(!this._inactiveSingleItemRenderers)
+				{
+					this._inactiveSingleItemRenderers = new <IGroupedListItemRenderer>[];
+				}
+				if(!this._activeSingleItemRenderers)
+				{
+					this._activeSingleItemRenderers = new <IGroupedListItemRenderer>[];
+				}
+				if(!this._unrenderedSingleItems)
+				{
+					this._unrenderedSingleItems = new <int>[];
+				}
+			}
+			else
+			{
+				this._singleItemRendererMap = null;
+				this._inactiveSingleItemRenderers = null;
+				this._activeSingleItemRenderers = null;
+				this._unrenderedSingleItems = null;
+			}
 		}
 
 		private function refreshRenderers():void
@@ -1494,89 +1576,6 @@ package feathers.controls.supportClasses
 
 		private function findUnrenderedData():void
 		{
-			const hasCustomFirstItemRenderer:Boolean = this._firstItemRendererType || this._firstItemRendererFactory != null || this._firstItemRendererName;
-			const hasCustomLastItemRenderer:Boolean = this._lastItemRendererType || this._lastItemRendererFactory != null || this._lastItemRendererName;
-			const hasCustomSingleItemRenderer:Boolean = this._singleItemRendererType || this._singleItemRendererFactory != null || this._singleItemRendererName;
-
-			if(hasCustomFirstItemRenderer)
-			{
-				if(!this._firstItemRendererMap)
-				{
-					this._firstItemRendererMap = new Dictionary(true);
-				}
-				if(!this._inactiveFirstItemRenderers)
-				{
-					this._inactiveFirstItemRenderers = new <IGroupedListItemRenderer>[];
-				}
-				if(!this._activeFirstItemRenderers)
-				{
-					this._activeFirstItemRenderers = new <IGroupedListItemRenderer>[];
-				}
-				if(!this._unrenderedFirstItems)
-				{
-					this._unrenderedFirstItems = new <int>[];
-				}
-			}
-			else
-			{
-				this._firstItemRendererMap = null;
-				this._inactiveFirstItemRenderers = null;
-				this._activeFirstItemRenderers = null;
-				this._unrenderedFirstItems = null;
-			}
-			if(hasCustomLastItemRenderer)
-			{
-				if(!this._lastItemRendererMap)
-				{
-					this._lastItemRendererMap = new Dictionary(true);
-				}
-				if(!this._inactiveLastItemRenderers)
-				{
-					this._inactiveLastItemRenderers = new <IGroupedListItemRenderer>[];
-				}
-				if(!this._activeLastItemRenderers)
-				{
-					this._activeLastItemRenderers = new <IGroupedListItemRenderer>[];
-				}
-				if(!this._unrenderedLastItems)
-				{
-					this._unrenderedLastItems = new <int>[];
-				}
-			}
-			else
-			{
-				this._lastItemRendererMap = null;
-				this._inactiveLastItemRenderers = null;
-				this._activeLastItemRenderers = null;
-				this._unrenderedLastItems = null;
-			}
-			if(hasCustomSingleItemRenderer)
-			{
-				if(!this._singleItemRendererMap)
-				{
-					this._singleItemRendererMap = new Dictionary(true);
-				}
-				if(!this._inactiveSingleItemRenderers)
-				{
-					this._inactiveSingleItemRenderers = new <IGroupedListItemRenderer>[];
-				}
-				if(!this._activeSingleItemRenderers)
-				{
-					this._activeSingleItemRenderers = new <IGroupedListItemRenderer>[];
-				}
-				if(!this._unrenderedSingleItems)
-				{
-					this._unrenderedSingleItems = new <int>[];
-				}
-			}
-			else
-			{
-				this._singleItemRendererMap = null;
-				this._inactiveSingleItemRenderers = null;
-				this._activeSingleItemRenderers = null;
-				this._unrenderedSingleItems = null;
-			}
-
 			const groupCount:int = this._dataProvider ? this._dataProvider.getLength() : 0;
 			var totalLayoutCount:int = 0;
 			var totalHeaderCount:int = 0;
@@ -1648,6 +1647,9 @@ package feathers.controls.supportClasses
 					this._minimumItemCount = 1;
 				}
 			}
+			const hasCustomFirstItemRenderer:Boolean = this._firstItemRendererType || this._firstItemRendererFactory != null || this._firstItemRendererName;
+			const hasCustomLastItemRenderer:Boolean = this._lastItemRendererType || this._lastItemRendererFactory != null || this._lastItemRendererName;
+			const hasCustomSingleItemRenderer:Boolean = this._singleItemRendererType || this._singleItemRendererFactory != null || this._singleItemRendererName;
 			var currentIndex:int = 0;
 			var unrenderedHeadersLastIndex:int = this._unrenderedHeaders.length;
 			var unrenderedFootersLastIndex:int = this._unrenderedFooters.length;
