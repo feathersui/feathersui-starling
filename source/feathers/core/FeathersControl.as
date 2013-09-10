@@ -1272,7 +1272,7 @@ package feathers.core
 				{
 					this._delayedInvalidationFlags[flag] = true;
 				}
-				else if(flag != INVALIDATION_FLAG_ALL)
+				else if(flag != INVALIDATION_FLAG_ALL && !this._invalidationFlags.hasOwnProperty(flag))
 				{
 					this._invalidationFlags[flag] = true;
 				}
@@ -1557,6 +1557,32 @@ package feathers.core
 		protected function draw():void
 		{
 
+		}
+
+		/**
+		 * Sets an invalidation flag. This will not add the component to the
+		 * validation queue. It only sets the flag. A subclass might use
+		 * this function during <code>draw()</code> to manipulate the flags that
+		 * its superclass sees.
+		 */
+		protected function setInvalidationFlag(flag:String):void
+		{
+			if(this._invalidationFlags.hasOwnProperty(flag))
+			{
+				return;
+			}
+			this._invalidationFlags[flag] = true;
+		}
+
+		/**
+		 * Clears an invalidation flag. This will not remove the component from
+		 * the validation queue. It only clears the flag. A subclass might use
+		 * this function during <code>draw()</code> to manipulate the flags that
+		 * its superclass sees.
+		 */
+		protected function clearInvalidationFlag(flag:String):void
+		{
+			delete this._invalidationFlags[flag];
 		}
 
 		/**
