@@ -44,11 +44,24 @@ package feathers.core
 		 *
 		 * <p>This function is expected to have the following signature:</p>
 		 * <pre>function():DisplayObject</pre>
+		 *
+		 * <p>In the following example, the overlay factory is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * PopUpManager.overlayFactory = function():DisplayObject
+		 * {
+		 *     var overlay:Quad = new Quad( 100, 100, 0x000000 );
+		 *     overlay.alpha = 0.75;
+		 *     return overlay;
+		 * };</listing>
 		 */
 		public static var overlayFactory:Function = defaultOverlayFactory;
 
 		/**
-		 * The default factory that creates overlays for modal pop-ups.
+		 * The default factory that creates overlays for modal pop-ups. Creates
+		 * an invisible <code>Quad</code>.
+		 *
+		 * @see starling.display.Quad
 		 */
 		public static function defaultOverlayFactory():DisplayObject
 		{
@@ -70,6 +83,11 @@ package feathers.core
 		/**
 		 * The container where pop-ups are added. If not set manually, defaults
 		 * to the Starling stage.
+		 *
+		 * <p>In the following example, the next tab focus is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * PopUpManager.root = someSprite;</listing>
 		 *
 		 * @default null
 		 */
@@ -179,6 +197,14 @@ package feathers.core
 
 		/**
 		 * Determines if a display object is a pop-up.
+		 *
+		 * <p>In the following example, we check if a display object is a pop-up:</p>
+		 *
+		 * <listing version="3.0">
+		 * if( PopUpManager.isPopUp( displayObject ) )
+		 * {
+		 *     // do something
+		 * }</listing>
 		 */
 		public static function isPopUp(popUp:DisplayObject):Boolean
 		{
@@ -195,6 +221,11 @@ package feathers.core
 		
 		/**
 		 * Centers a pop-up on the stage.
+		 *
+		 * <p>In the following example, we center a pop-up:</p>
+		 *
+		 * <listing version="3.0">
+		 * PopUpManager.centerPopUp( displayObject );</listing>
 		 */
 		public static function centerPopUp(popUp:DisplayObject):void
 		{

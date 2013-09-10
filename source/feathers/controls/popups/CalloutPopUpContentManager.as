@@ -44,6 +44,8 @@ package feathers.controls.popups
 		 * callout is opened.</p>
 		 *
 		 * @see feathers.controls.Callout#calloutFactory
+		 *
+		 * @default null
 		 */
 		public var calloutFactory:Function;
 
@@ -54,11 +56,18 @@ package feathers.controls.popups
 		 * value will not go into effect until the callout is closed and a new
 		 * callout is opened.</p>
 		 *
+		 * <p>In the following example, the callout direction is restricted to down:</p>
+		 *
+		 * <listing version="3.0">
+		 * manager.direction = Callout.DIRECTION_DOWN;</listing>
+		 *
 		 * @see feathers.controls.Callout#DIRECTION_ANY
 		 * @see feathers.controls.Callout#DIRECTION_UP
 		 * @see feathers.controls.Callout#DIRECTION_DOWN
 		 * @see feathers.controls.Callout#DIRECTION_LEFT
 		 * @see feathers.controls.Callout#DIRECTION_RIGHT
+		 *
+		 * @default Callout.DIRECTION_ANY
 		 */
 		public var direction:String = Callout.DIRECTION_ANY;
 
@@ -68,6 +77,13 @@ package feathers.controls.popups
 		 * <p>Note: If you change this value while a callout is open, the new
 		 * value will not go into effect until the callout is closed and a new
 		 * callout is opened.</p>
+		 *
+		 * <p>In the following example, the callout is not modal:</p>
+		 *
+		 * <listing version="3.0">
+		 * manager.isModal = false;</listing>
+		 *
+		 * @default true
 		 */
 		public var isModal:Boolean = true;
 

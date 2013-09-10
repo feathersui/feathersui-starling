@@ -60,6 +60,11 @@ package feathers.core
 		 * is no currently selected item, the item at index <code>0</code> will
 		 * be selected automatically.</p>
 		 *
+		 * <p>In the following example, selection is not required:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.isSelectionRequired = false;</listing>
+		 *
 		 * @default true
 		 */
 		public function get isSelectionRequired():Boolean
@@ -85,6 +90,11 @@ package feathers.core
 		
 		/**
 		 * The currently selected toggle.
+		 *
+		 * <p>In the following example, the selected item is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.selectedItem = radio;</listing>
 		 *
 		 * @default null
 		 */
@@ -112,6 +122,11 @@ package feathers.core
 		
 		/**
 		 * The index of the currently selected toggle.
+		 *
+		 * <p>In the following example, the selected index is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.selectedIndex = 2;</listing>
 		 *
 		 * @default -1
 		 */
@@ -155,6 +170,11 @@ package feathers.core
 		 * Adds a toggle to the group. If it is the first item added to the
 		 * group, and <code>isSelectionRequired</code> is <code>true</code>, it
 		 * will be selected automatically.
+		 *
+		 * <p>In the following example, an item is added to the toggle group:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.addItem( radio );</listing>
 		 */
 		public function addItem(item:IToggle):void
 		{
@@ -190,6 +210,11 @@ package feathers.core
 		 * selected and <code>isSelectionRequired</code> is <code>true</code>,
 		 * the final item will be selected. If <code>isSelectionRequired</code>
 		 * is <code>false</code> instead, no item will be selected.
+		 *
+		 * <p>In the following example, an item is removed from the toggle group:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.removeItem( radio );</listing>
 		 */
 		public function removeItem(item:IToggle):void
 		{
@@ -219,6 +244,11 @@ package feathers.core
 
 		/**
 		 * Removes all toggles from the group. No item will be selected.
+		 *
+		 * <p>In the following example, all items are removed from the toggle group:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.removeAllItems();</listing>
 		 */
 		public function removeAllItems():void
 		{
@@ -237,6 +267,14 @@ package feathers.core
 
 		/**
 		 * Determines if the group includes the specified item.
+		 *
+		 * <p>In the following example, we check if an item is in the toggle group:</p>
+		 *
+		 * <listing version="3.0">
+		 * if( group.hasItem( radio ) )
+		 * {
+		 *     // do something
+		 * }</listing>
 		 */
 		public function hasItem(item:IToggle):Boolean
 		{
@@ -247,6 +285,11 @@ package feathers.core
 		/**
 		 * Returns the index of the specified item. Result will be <code>-1</code>
 		 * if the item has not been added to the group.
+		 *
+		 * <p>In the following example, an item's index is calculated:</p>
+		 *
+		 * <listing version="3.0">
+		 * var index:int = group.getItemIndex( radio );</listing>
 		 */
 		public function getItemIndex(item:IToggle):int
 		{
@@ -256,6 +299,11 @@ package feathers.core
 		/**
 		 * Changes the index of a specified item. Throws an <code>ArgumentError</code>
 		 * if the specified item hasn't already been added to this group.
+		 *
+		 * <p>In the following example, an item's index is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.setItemIndex( radio, 2 );</listing>
 		 */
 		public function setItemIndex(item:IToggle, index:int):void
 		{

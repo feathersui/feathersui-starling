@@ -117,6 +117,11 @@ package feathers.display
 		
 		/**
 		 * The texture to tile.
+		 *
+		 * <p>In the following example, the texture is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * image.texture = Texture.fromBitmapData( bitmapData );</listing>
 		 */
 		public function get texture():Texture
 		{
@@ -161,6 +166,11 @@ package feathers.display
 		/**
 		 * The smoothing value to pass to the tiled images.
 		 *
+		 * <p>In the following example, the smoothing is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * image.smoothing = TextureSmoothing.NONE;</listing>
+		 *
 		 * @default starling.textures.TextureSmoothing.BILINEAR
 		 *
 		 * @see starling.textures.TextureSmoothing
@@ -194,6 +204,11 @@ package feathers.display
 		/**
 		 * The color value to pass to the tiled images.
 		 *
+		 * <p>In the following example, the color is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * image.color = 0xff00ff;</listing>
+		 *
 		 * @default 0xffffff
 		 */
 		public function get color():uint
@@ -221,6 +236,11 @@ package feathers.display
 		
 		/**
 		 * The amount to scale the texture. Useful for DPI changes.
+		 *
+		 * <p>In the following example, the texture scale is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * image.textureScale = 2;</listing>
 		 *
 		 * @default 1
 		 */

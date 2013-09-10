@@ -30,6 +30,11 @@ package feathers.core
 		/**
 		 * The object that currently has focus. May be <code>null</code> if no
 		 * object has focus.
+		 *
+		 * <p>In the following example, the focus is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * object.focus = someObject;</listing>
 		 */
 		function get focus():IFocusDisplayObject;
 

@@ -53,26 +53,101 @@ package feathers.controls.popups
 		}
 
 		/**
+		 * Quickly sets all margin properties to the same value. The
+		 * <code>margin</code> getter always returns the value of
+		 * <code>marginTop</code>, but the other padding values may be
+		 * different.
+		 *
+		 * <p>The following example gives the pop-up a minimum of 20 pixels of
+		 * margin on all sides:</p>
+		 *
+		 * <listing version="3.0">
+		 * manager.margin = 20;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #marginTop
+		 * @see #marginRight
+		 * @see #marginBottom
+		 * @see #marginLeft
+		 */
+		public function get margin():Number
+		{
+			return this.marginTop;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set margin(value:Number):void
+		{
+			this.marginTop = 0;
+			this.marginRight = 0;
+			this.marginBottom = 0;
+			this.marginLeft = 0;
+		}
+
+		/**
 		 * The minimum space, in pixels, between the top edge of the content and
 		 * the top edge of the stage.
+		 *
+		 * <p>The following example gives the pop-up a minimum of 20 pixels of
+		 * margin on the top:</p>
+		 *
+		 * <listing version="3.0">
+		 * manager.marginTop = 20;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #margin
 		 */
 		public var marginTop:Number = 0;
 
 		/**
 		 * The minimum space, in pixels, between the right edge of the content
 		 * and the right edge of the stage.
+		 *
+		 * <p>The following example gives the pop-up a minimum of 20 pixels of
+		 * margin on the right:</p>
+		 *
+		 * <listing version="3.0">
+		 * manager.marginRight = 20;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #margin
 		 */
 		public var marginRight:Number = 0;
 
 		/**
 		 * The minimum space, in pixels, between the bottom edge of the content
 		 * and the bottom edge of the stage.
+		 *
+		 * <p>The following example gives the pop-up a minimum of 20 pixels of
+		 * margin on the bottom:</p>
+		 *
+		 * <listing version="3.0">
+		 * manager.marginBottom = 20;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #margin
 		 */
 		public var marginBottom:Number = 0;
 
 		/**
 		 * The minimum space, in pixels, between the left edge of the content
 		 * and the left edge of the stage.
+		 *
+		 * <p>The following example gives the pop-up a minimum of 20 pixels of
+		 * margin on the left:</p>
+		 *
+		 * <listing version="3.0">
+		 * manager.marginLeft = 20;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #margin
 		 */
 		public var marginLeft:Number = 0;
 

@@ -35,6 +35,12 @@ package feathers.layout
 
 		/**
 		 * Determines if the ILayout should use this object or ignore it.
+		 *
+		 * <p>In the following example, the display object is excluded from
+		 * the layout:</p>
+		 *
+		 * <listing version="3.0">
+		 * object.includeInLayout = false;</listing>
 		 */
 		function get includeInLayout():Boolean;
 

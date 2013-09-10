@@ -173,6 +173,11 @@ package feathers.controls.text
 		/**
 		 * @inheritDoc
 		 *
+		 * <p>In the following example, the text is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.text = "Lorem ipsum";</listing>
+		 *
 		 * @default ""
 		 */
 		public function get text():String
@@ -207,6 +212,11 @@ package feathers.controls.text
 		/**
 		 * The format of the text, such as font and styles.
 		 *
+		 * <p>In the following example, the text format is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.textFormat = new TextFormat( "Source Sans Pro" );;</listing>
+		 *
 		 * @default null
 		 */
 		public function get textFormat():TextFormat
@@ -234,6 +244,11 @@ package feathers.controls.text
 
 		/**
 		 * Determines if the TextField should use an embedded font or not.
+		 *
+		 * <p>In the following example, the font is embedded:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.embedFonts = true;</listing>
 		 *
 		 * @default false
 		 */
@@ -263,6 +278,11 @@ package feathers.controls.text
 		/**
 		 * Determines if the TextField wraps text to the next line.
 		 *
+		 * <p>In the following example, word wrap is enabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.wordWrap = true;</listing>
+		 *
 		 * @default false
 		 */
 		public function get wordWrap():Boolean
@@ -290,6 +310,11 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>TextField</code> property with the same name.
+		 *
+		 * <p>In the following example, multiline is enabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.multiline = true;</listing>
 		 *
 		 * @default false
 		 */
@@ -319,6 +344,11 @@ package feathers.controls.text
 		/**
 		 * Determines if the TextField should display the text as HTML or not.
 		 *
+		 * <p>In the following example, the text is displayed as HTML:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.isHTML = true;</listing>
+		 *
 		 * @default false
 		 */
 		public function get isHTML():Boolean
@@ -346,6 +376,11 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>flash.text.TextField</code> property with the same name.
+		 *
+		 * <p>In the following example, the selection is always shown:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.alwaysShowSelection = true;</listing>
 		 *
 		 * @default false
 		 */
@@ -375,6 +410,11 @@ package feathers.controls.text
 		/**
 		 * Same as the <code>flash.text.TextField</code> property with the same name.
 		 *
+		 * <p>In the following example, the text is displayed as as password:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.fontWeight = FontWeight.BOLD;</listing>
+		 *
 		 * @default false
 		 */
 		public function get displayAsPassword():Boolean
@@ -402,6 +442,11 @@ package feathers.controls.text
 
 		/**
 		 * Same as the <code>flash.text.TextField</code> property with the same name.
+		 *
+		 * <p>In the following example, the maximum character count is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.maxChars = 10;</listing>
 		 *
 		 * @default 0
 		 */
@@ -431,6 +476,11 @@ package feathers.controls.text
 		/**
 		 * Same as the <code>flash.text.TextField</code> property with the same name.
 		 *
+		 * <p>In the following example, the text is restricted to numbers:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.restrict = "0-9";</listing>
+		 *
 		 * @default null
 		 */
 		public function get restrict():String
@@ -459,6 +509,11 @@ package feathers.controls.text
 		/**
 		 * Determines if the text input is editable. If the text input is not
 		 * editable, it will still appear enabled.
+		 *
+		 * <p>In the following example, the text is not editable:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.isEditable = false;</listing>
 		 *
 		 * @default true
 		 */
