@@ -1154,7 +1154,7 @@ package feathers.themes
 			input.textEditorProperties.fontSize = 24 * this.scale;
 			input.textEditorProperties.color = LIGHT_TEXT_COLOR;
 
-			input.promptProperties.textFormat = this.smallLightTextFormat;
+			input.promptProperties.textFormat = this.smallDisabledTextFormat;
 			input.promptProperties.embedFonts = true;
 		}
 
