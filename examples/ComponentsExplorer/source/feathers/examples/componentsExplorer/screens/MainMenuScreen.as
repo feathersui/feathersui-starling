@@ -19,6 +19,7 @@ package feathers.examples.componentsExplorer.screens
 	import starling.textures.Texture;
 
 	[Event(name="complete",type="starling.events.Event")]
+	[Event(name="showAlert",type="starling.events.Event")]
 	[Event(name="showButton",type="starling.events.Event")]
 	[Event(name="showButtonGroup",type="starling.events.Event")]
 	[Event(name="showCallout",type="starling.events.Event")]
@@ -37,6 +38,7 @@ package feathers.examples.componentsExplorer.screens
 
 	public class MainMenuScreen extends PanelScreen
 	{
+		public static const SHOW_ALERT:String = "showAlert";
 		public static const SHOW_BUTTON:String = "showButton";
 		public static const SHOW_BUTTON_GROUP:String = "showButtonGroup";
 		public static const SHOW_CALLOUT:String = "showCallout";
@@ -72,6 +74,7 @@ package feathers.examples.componentsExplorer.screens
 			this._list = new List();
 			this._list.dataProvider = new ListCollection(
 			[
+				{ label: "Alert", event: SHOW_ALERT },
 				{ label: "Button", event: SHOW_BUTTON },
 				{ label: "Button Group", event: SHOW_BUTTON_GROUP },
 				{ label: "Callout", event: SHOW_CALLOUT },
@@ -101,8 +104,12 @@ package feathers.examples.componentsExplorer.screens
 			this._list.itemRendererFactory = function():IListItemRenderer
 			{
 				var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
-				renderer.labelField = "label";
+
+				//enable the quick hit area to optimize hit tests when an item
+				//is only selectable and doesn't have interactive children.
 				renderer.isQuickHitAreaEnabled = true;
+
+				renderer.labelField = "label";
 				renderer.accessorySourceFunction = itemRendererAccessorySourceFunction;
 				return renderer;
 			};

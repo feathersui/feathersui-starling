@@ -14,8 +14,8 @@ package feathers.controls.renderers
 
 	/**
 	 * Based on <code>LayoutGroup</code>, this component is meant as a base
-	 * class for creating a custom item renderer. To start creating a custom
-	 * item renderer, override
+	 * class for creating a custom item renderer for a <code>List</code>
+	 * component.
 	 *
 	 * <p>Sub-components may be created and added inside <code>initialize()</code>.
 	 * This is a good place to add event listeners and to set the layout.</p>
@@ -73,11 +73,23 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		public function set owner(value:List):void
+		{
+			if(this._owner == value)
+			{
+				return;
+			}
+			this._owner = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _data:Object;
 
 		/**
-		 * The item displayed by this renderer. This property is set by the
-		 * list, and should not be set manually.
+		 * @inheritDoc
 		 */
 		public function get data():Object
 		{
@@ -94,19 +106,6 @@ package feathers.controls.renderers
 				return;
 			}
 			this._data = value;
-			this.invalidate(INVALIDATION_FLAG_DATA);
-		}
-
-		/**
-		 * @private
-		 */
-		public function set owner(value:List):void
-		{
-			if(this._owner == value)
-			{
-				return;
-			}
-			this._owner = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
@@ -162,6 +161,8 @@ package feathers.controls.renderers
 		/**
 		 * Updates the renderer to display the item's data. Override this
 		 * function to pass data to sub-components and react to data changes.
+		 *
+		 * <p>Don't forget to handle the case where the data is <code>null</code>.</p>
 		 */
 		protected function commitData():void
 		{

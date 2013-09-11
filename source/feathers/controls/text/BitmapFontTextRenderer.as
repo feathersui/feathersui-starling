@@ -127,6 +127,11 @@ package feathers.controls.text
 		/**
 		 * The font and styles used to draw the text.
 		 *
+		 * <p>In the following example, the text format is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.textFormat = new BitmapFontTextFormat( bitmapFont );</listing>
+		 *
 		 * @default null
 		 */
 		public function get textFormat():BitmapFontTextFormat
@@ -154,6 +159,11 @@ package feathers.controls.text
 
 		/**
 		 * The font and styles used to draw the text when the label is disabled.
+		 *
+		 * <p>In the following example, the disabled text format is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.disabledTextFormat = new BitmapFontTextFormat( bitmapFont );</listing>
 		 *
 		 * @default null
 		 */
@@ -183,6 +193,11 @@ package feathers.controls.text
 		/**
 		 * The text to display.
 		 *
+		 * <p>In the following example, the text is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.text = "Lorem ipsum";</listing>
+		 *
 		 * @default null
 		 */
 		public function get text():String
@@ -211,6 +226,11 @@ package feathers.controls.text
 		[Inspectable(type="String",enumeration="bilinear,trilinear,none")]
 		/**
 		 * A smoothing value passed to each character image.
+		 *
+		 * <p>In the following example, the texture smoothing is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.smoothing = TextureSmoothing.NONE;</listing>
 		 *
 		 * @default starling.textures.TextureSmoothing.BILINEAR
 		 *
@@ -243,6 +263,11 @@ package feathers.controls.text
 		 * If the width or maxWidth values are set, then the text will continue
 		 * on the next line, if it is too long.
 		 *
+		 * <p>In the following example, word wrap is enabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.wordWrap = true;</listing>
+		 *
 		 * @default false
 		 */
 		public function get wordWrap():Boolean
@@ -274,6 +299,11 @@ package feathers.controls.text
 		 * text is often more readable. When not snapped, the text may become
 		 * blurry due to texture smoothing.
 		 *
+		 * <p>In the following example, the text is not snapped to pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.snapToPixels = false;</listing>
+		 *
 		 * @default true
 		 */
 		public function get snapToPixels():Boolean
@@ -301,6 +331,11 @@ package feathers.controls.text
 
 		/**
 		 * The text to display at the end of the label if it is truncated.
+		 *
+		 * <p>In the following example, the truncation text is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.truncationText = " [more]";</listing>
 		 *
 		 * @default "..."
 		 */
@@ -332,6 +367,11 @@ package feathers.controls.text
 		 * they're batched separately. Batching separately may improve
 		 * performance for text that changes often, while batching normally
 		 * may be better when a lot of text is displayed on screen at once.
+		 *
+		 * <p>In the following example, separate batching is disabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.useSeparateBatch = false;</listing>
 		 *
 		 * @default true
 		 */

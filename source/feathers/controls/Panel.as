@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.core.IFeathersControl;
+	import feathers.core.IFocusExtras;
 	import feathers.core.PropertyProxy;
 
 	import starling.display.DisplayObject;
@@ -38,18 +39,9 @@ package feathers.controls
 	 * noButton.label = "No";
 	 * panel.addChild( noButton );</listing>
 	 *
-	 * <p><strong>Beta Component:</strong> This is a new component, and its APIs
-	 * may need some changes between now and the next version of Feathers to
-	 * account for overlooked requirements or other issues. Upgrading to future
-	 * versions of Feathers may involve manual changes to your code that uses
-	 * this component. The
-	 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>
-	 * will not go into effect until this component's status is upgraded from
-	 * beta to stable.</p>
-	 *
 	 * @see http://wiki.starling-framework.org/feathers/panel
 	 */
-	public class Panel extends ScrollContainer
+	public class Panel extends ScrollContainer implements IFocusExtras
 	{
 		/**
 		 * The default value added to the <code>nameList</code> of the header.
@@ -125,6 +117,13 @@ package feathers.controls
 		public static const INTERACTION_MODE_MOUSE:String = "mouse";
 
 		/**
+		 * @copy feathers.controls.Scroller#INTERACTION_MODE_TOUCH_AND_SCROLL_BARS
+		 *
+		 * @see feathers.controls.Scroller#interactionMode
+		 */
+		public static const INTERACTION_MODE_TOUCH_AND_SCROLL_BARS:String = "touchAndScrollBars";
+
+		/**
 		 * @private
 		 */
 		protected static const INVALIDATION_FLAG_HEADER_FACTORY:String = "headerFactory";
@@ -152,11 +151,21 @@ package feathers.controls
 
 		/**
 		 * The header sub-component.
+		 *
+		 * <p>For internal use in subclasses.</p>
+		 *
+		 * @see #headerFactory
+		 * @see #createHeader()
 		 */
 		protected var header:IFeathersControl;
 
 		/**
 		 * The footer sub-component.
+		 *
+		 * <p>For internal use in subclasses.</p>
+		 *
+		 * @see #footerFactory
+		 * @see #createFooter()
 		 */
 		protected var footer:IFeathersControl;
 
@@ -223,6 +232,8 @@ package feathers.controls
 		 *     return header;
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.core.IFeathersControl
 		 * @see feathers.controls.Header
 		 * @see #headerProperties
@@ -270,6 +281,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Header, customHeaderInitializer, "my-custom-header");</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_HEADER
 		 * @see feathers.core.FeathersControl#nameList
@@ -326,6 +339,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * panel.headerProperties.title = "Hello World";</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #headerFactory
 		 * @see feathers.controls.Header
@@ -398,6 +413,8 @@ package feathers.controls
 		 *     return new ScrollContainer();
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.core.IFeathersControl
 		 * @see #footerProperties
 		 */
@@ -444,6 +461,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( ScrollContainer, customFooterInitializer, "my-custom-footer");</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_FOOTER
 		 * @see feathers.core.FeathersControl#nameList
@@ -500,6 +519,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * panel.footerProperties.verticalScrollPolicy = ScrollContainer.SCROLL_POLICY_OFF;</listing>
 		 *
+		 * @default null
+		 *
 		 * @see #footerFactory
 		 */
 		public function get footerProperties():Object
@@ -548,6 +569,32 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		private var _focusExtrasBefore:Vector.<DisplayObject> = new <DisplayObject>[];
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get focusExtrasBefore():Vector.<DisplayObject>
+		{
+			return this._focusExtrasBefore;
+		}
+
+		/**
+		 * @private
+		 */
+		private var _focusExtrasAfter:Vector.<DisplayObject> = new <DisplayObject>[];
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get focusExtrasAfter():Vector.<DisplayObject>
+		{
+			return this._focusExtrasAfter;
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function draw():void
 		{
 			const headerFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_HEADER_FACTORY);
@@ -578,7 +625,7 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * @inheritDoc
 		 */
 		override protected function autoSizeIfNeeded():Boolean
 		{
@@ -641,7 +688,15 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * Creates and adds the <code>header</code> sub-component and
+		 * removes the old instance, if one exists.
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
+		 *
+		 * @see #header
+		 * @see #headerFactory
+		 * @see #customHeaderName
 		 */
 		protected function createHeader():void
 		{
@@ -649,7 +704,9 @@ package feathers.controls
 			this.displayListBypassEnabled = false;
 			if(this.header)
 			{
-				this.removeChild(DisplayObject(this.header), true);
+				var displayHeader:DisplayObject = DisplayObject(this.header);
+				this._focusExtrasBefore.splice(this._focusExtrasBefore.indexOf(displayHeader), 1);
+				this.removeChild(displayHeader, true);
 				this.header = null;
 			}
 
@@ -657,12 +714,22 @@ package feathers.controls
 			const headerName:String = this._customHeaderName != null ? this._customHeaderName : this.headerName;
 			this.header = IFeathersControl(factory());
 			this.header.nameList.add(headerName);
-			this.addChild(DisplayObject(this.header));
+			displayHeader = DisplayObject(this.header);
+			this.addChild(displayHeader);
+			this._focusExtrasBefore.push(displayHeader);
 			this.displayListBypassEnabled = oldDisplayListBypassEnabled;
 		}
 
 		/**
-		 * @private
+		 * Creates and adds the <code>footer</code> sub-component and
+		 * removes the old instance, if one exists.
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
+		 *
+		 * @see #footer
+		 * @see #footerFactory
+		 * @see #customFooterName
 		 */
 		protected function createFooter():void
 		{
@@ -670,7 +737,9 @@ package feathers.controls
 			this.displayListBypassEnabled = false;
 			if(this.footer)
 			{
-				this.removeChild(DisplayObject(this.footer), true);
+				var displayFooter:DisplayObject = DisplayObject(this.footer);
+				this._focusExtrasAfter.splice(this._focusExtrasAfter.indexOf(displayFooter), 1);
+				this.removeChild(displayFooter, true);
 				this.footer = null;
 			}
 
@@ -681,7 +750,9 @@ package feathers.controls
 			const footerName:String = this._customFooterName != null ? this._customFooterName : this.footerName;
 			this.footer = IFeathersControl(this._footerFactory());
 			this.footer.nameList.add(footerName);
-			this.addChild(DisplayObject(this.footer));
+			displayFooter = DisplayObject(this.footer);
+			this.addChild(displayFooter);
+			this._focusExtrasAfter.push(displayFooter);
 			this.displayListBypassEnabled = oldDisplayListBypassEnabled;
 		}
 

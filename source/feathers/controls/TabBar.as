@@ -220,6 +220,8 @@ package feathers.controls
 		 *     { label: "Advanced", defaultIcon: new Image( advancedTexture ) },
 		 * ]);</listing>
 		 *
+		 * @default null
+		 *
 		 * @see #tabInitializer
 		 */
 		public function get dataProvider():ListCollection
@@ -252,6 +254,14 @@ package feathers.controls
 				this._dataProvider.addEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_updateItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.RESET, dataProvider_resetHandler);
+				if(this.selectedIndex < 0 && this._dataProvider.length > 0)
+				{
+					this.selectedIndex = 0;
+				}
+			}
+			else
+			{
+				this.selectedIndex = -1;
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -307,7 +317,7 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * tabs.gap = 20;</listing>
 		 *
-		 * @deafult 0
+		 * @default 0
 		 */
 		public function get gap():Number
 		{
@@ -355,6 +365,8 @@ package feathers.controls
 		 *     tab.downSkin = new Image( downTexture );
 		 *     return tab;
 		 * };</listing>
+		 *
+		 * @default null
 		 *
 		 * @see feathers.controls.Button
 		 * @see #firstTabFactory
@@ -409,6 +421,8 @@ package feathers.controls
 		 *     return tab;
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.Button
 		 * @see #tabFactory
 		 * @see #lastTabFactory
@@ -462,6 +476,8 @@ package feathers.controls
 		 *     return tab;
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.Button
 		 * @see #tabFactory
 		 * @see #firstTabFactory
@@ -507,6 +523,8 @@ package feathers.controls
 		 *     tab.label = item.text;
 		 *     tab.defaultIcon = item.icon;
 		 * };</listing>
+		 *
+		 * @see #dataProvider
 		 */
 		public function get tabInitializer():Function
 		{
@@ -653,6 +671,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customTabInitializer, "my-custom-tab");</listing>
 		 *
+		 * @default null
+		 *
 		 * @see #DEFAULT_CHILD_NAME_TAB
 		 * @see feathers.core.FeathersControl#nameList
 		 * @see feathers.core.DisplayListWatcher
@@ -671,15 +691,8 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._customTabName)
-			{
-				for each(var tab:Button in this.activeTabs)
-				{
-					tab.nameList.remove(this._customTabName);
-				}
-			}
 			this._customTabName = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.invalidate(INVALIDATION_FLAG_TAB_FACTORY);
 		}
 
 		/**
@@ -703,6 +716,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customFirstTabInitializer, "my-custom-first-tab");</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.core.FeathersControl#nameList
 		 * @see feathers.core.DisplayListWatcher
 		 */
@@ -720,13 +735,8 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._customFirstTabName && this.activeFirstTab)
-			{
-				this.activeFirstTab.nameList.remove(this._customTabName);
-				this.activeFirstTab.nameList.remove(this._customFirstTabName);
-			}
 			this._customFirstTabName = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.invalidate(INVALIDATION_FLAG_TAB_FACTORY);
 		}
 
 		/**
@@ -750,6 +760,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customLastTabInitializer, "my-custom-last-tab");</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.core.FeathersControl#nameList
 		 * @see feathers.core.DisplayListWatcher
 		 */
@@ -767,13 +779,8 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._customLastTabName && this.activeLastTab)
-			{
-				this.activeLastTab.nameList.remove(this._customTabName);
-				this.activeLastTab.nameList.remove(this._customLastTabName);
-			}
 			this._customLastTabName = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.invalidate(INVALIDATION_FLAG_TAB_FACTORY);
 		}
 
 		/**
@@ -805,6 +812,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * tabs.tabProperties.iconPosition = Button.ICON_POSITION_RIGHT;</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #tabFactory
 		 * @see feathers.controls.Button
@@ -920,6 +929,11 @@ package feathers.controls
 			{
 				return;
 			}
+			if(this.toggleGroup.selectedIndex == this._pendingSelectedIndex)
+			{
+				this._pendingSelectedIndex = NOT_PENDING_INDEX;
+				return;
+			}
 
 			this.toggleGroup.selectedIndex = this._pendingSelectedIndex;
 			this._pendingSelectedIndex = NOT_PENDING_INDEX;
@@ -951,25 +965,6 @@ package feathers.controls
 					{
 						tab[propertyName] = propertyValue;
 					}
-				}
-
-				if(tab == this.activeFirstTab && this._customFirstTabName)
-				{
-					if(!tab.nameList.contains(this._customFirstTabName))
-					{
-						tab.nameList.add(this._customFirstTabName);
-					}
-				}
-				else if(tab == this.activeLastTab && this._customLastTabName)
-				{
-					if(!tab.nameList.contains(this._customLastTabName))
-					{
-						tab.nameList.add(this._customLastTabName);
-					}
-				}
-				else if(this._customTabName && !tab.nameList.contains(this._customTabName))
-				{
-					tab.nameList.add(this._customTabName);
 				}
 			}
 		}
@@ -1009,6 +1004,7 @@ package feathers.controls
 		 */
 		protected function refreshTabs(isFactoryInvalid:Boolean):void
 		{
+			var oldIgnoreSelectionChanges:Boolean = this._ignoreSelectionChanges;
 			this._ignoreSelectionChanges = true;
 			var oldSelectedIndex:int = this.toggleGroup.selectedIndex;
 			this.toggleGroup.removeAllItems();
@@ -1060,17 +1056,22 @@ package feathers.controls
 			}
 
 			this.clearInactiveTabs();
+			this._ignoreSelectionChanges = oldIgnoreSelectionChanges;
 			if(oldSelectedIndex >= 0)
 			{
-				const newSelectedIndex:int = Math.min(this.activeTabs.length - 1, oldSelectedIndex);
-				this._ignoreSelectionChanges = newSelectedIndex == oldSelectedIndex;
+				var newSelectedIndex:int = this.activeTabs.length - 1;
+				if(oldSelectedIndex < newSelectedIndex)
+				{
+					newSelectedIndex = oldSelectedIndex;
+				}
+				//removing all items from the ToggleGroup clears the selection,
+				//so we need to set it back to the old value (or a new clamped
+				//value). we want the change event to dispatch only if the old
+				//value and the new value don't match.
+				this._ignoreSelectionChanges = oldSelectedIndex == newSelectedIndex;
 				this.toggleGroup.selectedIndex = newSelectedIndex;
+				this._ignoreSelectionChanges = oldIgnoreSelectionChanges;
 			}
-			else
-			{
-				this.dispatchEventWith(Event.CHANGE);
-			}
-			this._ignoreSelectionChanges = false;
 		}
 
 		/**
@@ -1201,7 +1202,20 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * If the component's dimensions have not been set explicitly, it will
+		 * measure its content and determine an ideal size for itself. If the
+		 * <code>explicitWidth</code> or <code>explicitHeight</code> member
+		 * variables are set, those value will be used without additional
+		 * measurement. If one is set, but not the other, the dimension with the
+		 * explicit value will not be measured, but the other non-explicit
+		 * dimension will still need measurement.
+		 *
+		 * <p>Calls <code>setSizeInternal()</code> to set up the
+		 * <code>actualWidth</code> and <code>actualHeight</code> member
+		 * variables used for layout.</p>
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
@@ -1273,6 +1287,9 @@ package feathers.controls
 					tab.y = 0;
 					position += tab.width + this._gap;
 				}
+
+				//final validation to avoid juggler next frame issues
+				tab.validate();
 			}
 		}
 

@@ -142,6 +142,11 @@ package feathers.controls
 
 		/**
 		 * The thumb sub-component.
+		 *
+		 * <p>For internal use in subclasses.</p>
+		 *
+		 * @see #thumbFactory
+		 * @see #createThumb()
 		 */
 		protected var thumb:Button;
 
@@ -211,6 +216,14 @@ package feathers.controls
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @default 0
+		 *
+		 * @see #maximum
+		 * @see #minimum
+		 * @see #step
+		 * @see #page
+		 * @see #event:change
 		 */
 		public function get value():Number
 		{
@@ -245,6 +258,11 @@ package feathers.controls
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @default 0
+		 *
+		 * @see #value
+		 * @see #maximum
 		 */
 		public function get minimum():Number
 		{
@@ -271,6 +289,11 @@ package feathers.controls
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @default 0
+		 *
+		 * @see #value
+		 * @see #minimum
 		 */
 		public function get maximum():Number
 		{
@@ -297,6 +320,11 @@ package feathers.controls
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @default 0
+		 *
+		 * @see #value
+		 * @see #page
 		 */
 		public function get step():Number
 		{
@@ -318,6 +346,11 @@ package feathers.controls
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @default 0
+		 *
+		 * @see #value
+		 * @see #step
 		 */
 		public function get page():Number
 		{
@@ -349,6 +382,11 @@ package feathers.controls
 		 * scrollBar.padding = 20;</listing>
 		 *
 		 * @default 0
+		 *
+		 * @see #paddingTop
+		 * @see #paddingRight
+		 * @see #paddingBottom
+		 * @see #paddingLeft
 		 */
 		public function get padding():Number
 		{
@@ -589,6 +627,8 @@ package feathers.controls
 		 *     return thumb;
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.Button
 		 * @see #thumbProperties
 		 */
@@ -630,6 +670,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customThumbInitializer, "my-custom-thumb");</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_THUMB
 		 * @see feathers.core.FeathersControl#nameList
@@ -682,6 +724,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * scrollBar.thumbProperties.defaultSkin = new Image( upTexture );
 		 * scrollBar.thumbProperties.downSkin = new Image( downTexture );</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #thumbFactory
 		 * @see feathers.controls.Button
@@ -778,7 +822,7 @@ package feathers.controls
 		 */
 		override protected function draw():void
 		{
-			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA)
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
@@ -794,21 +838,31 @@ package feathers.controls
 				this.refreshThumbStyles();
 			}
 
-			if(thumbFactoryInvalid || stateInvalid)
+			if(dataInvalid || thumbFactoryInvalid || stateInvalid)
 			{
-				this.thumb.isEnabled = this._isEnabled;
+				this.thumb.isEnabled = this._isEnabled && this._maximum > this._minimum;
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
-			if(thumbFactoryInvalid || dataInvalid || stylesInvalid || sizeInvalid)
-			{
-				this.layout();
-			}
+			this.layout();
 		}
 
 		/**
-		 * @private
+		 * If the component's dimensions have not been set explicitly, it will
+		 * measure its content and determine an ideal size for itself. If the
+		 * <code>explicitWidth</code> or <code>explicitHeight</code> member
+		 * variables are set, those value will be used without additional
+		 * measurement. If one is set, but not the other, the dimension with the
+		 * explicit value will not be measured, but the other non-explicit
+		 * dimension will still need measurement.
+		 *
+		 * <p>Calls <code>setSizeInternal()</code> to set up the
+		 * <code>actualWidth</code> and <code>actualHeight</code> member
+		 * variables used for layout.</p>
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
@@ -887,7 +941,15 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * Creates and adds the <code>thumb</code> sub-component and
+		 * removes the old instance, if one exists.
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
+		 *
+		 * @see #thumb
+		 * @see #thumbFactory
+		 * @see #customThumbName
 		 */
 		protected function createThumb():void
 		{
@@ -1012,6 +1074,9 @@ package feathers.controls
 				this.thumb.x = this._paddingLeft + thumbX;
 				this.thumb.y = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - this.thumb.height) / 2;
 			}
+
+			//final validation to avoid juggler next frame issues
+			this.thumb.validate();
 		}
 
 		/**

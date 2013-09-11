@@ -9,8 +9,6 @@ package feathers.controls.supportClasses
 {
 	import feathers.core.IFeathersControl;
 
-	import flash.geom.Rectangle;
-
 	[ExcludeClass]
 	public interface IViewPort extends IFeathersControl
 	{
@@ -27,14 +25,14 @@ package feathers.controls.supportClasses
 		function get maxVisibleHeight():Number;
 		function set maxVisibleHeight(value:Number):void;
 
+		function get contentX():Number;
+		function get contentY():Number;
+
 		function get horizontalScrollPosition():Number;
 		function set horizontalScrollPosition(value:Number):void;
 		function get verticalScrollPosition():Number;
 		function set verticalScrollPosition(value:Number):void;
 		function get horizontalScrollStep():Number;
 		function get verticalScrollStep():Number;
-
-		function get clipRect():Rectangle;
-		function set clipRect(value:Rectangle):void;
 	}
 }

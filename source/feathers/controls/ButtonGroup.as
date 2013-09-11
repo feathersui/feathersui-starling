@@ -13,6 +13,30 @@ package feathers.controls
 
 	import starling.events.Event;
 
+	/**
+	 * Dispatched when one of the buttons is triggered. The <code>data</code>
+	 * property of the event contains the item from the data provider that is
+	 * associated with the button that was triggered.
+	 *
+	 * <p>The following example listens to <code>Event.TRIGGERED</code> on the
+	 * button group instead of on individual buttons:</p>
+	 *
+	 * <listing version="3.0">
+	 * group.dataProvider = new ListCollection(
+	 * [
+	 *     { label: "Yes" },
+	 *     { label: "No" },
+	 *     { label: "Cancel" },
+	 * ]);
+	 * group.addEventListener( Event.TRIGGERED, function( event:Event, data:Object ):void
+	 * {
+	 *    trace( "The button with label \"" + data.label + "\" was triggered." );
+	 * }</listing>
+	 *
+	 * @eventType starling.events.Event.TRIGGERED
+	 */
+	[Event(name="triggered", type="starling.events.Event")]
+
 	[DefaultProperty("dataProvider")]
 	/**
 	 * A set of related buttons with layout, customized using a data provider.
@@ -26,7 +50,7 @@ package feathers.controls
 	 *     { label: "Yes", triggered: yesButton_triggeredHandler },
 	 *     { label: "No", triggered: noButton_triggeredHandler },
 	 *     { label: "Cancel", triggered: cancelButton_triggeredHandler },
-	 * ]);;
+	 * ]);
 	 * this.addChild( group );</listing>
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/button-group
@@ -79,6 +103,76 @@ package feathers.controls
 		 * @see #direction
 		 */
 		public static const DIRECTION_VERTICAL:String = "vertical";
+
+		/**
+		 * The buttons will be aligned horizontally to the left edge of the
+		 * button group.
+		 *
+		 * @see #horizontalAlign
+		 */
+		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
+
+		/**
+		 * The buttons will be aligned horizontally to the center of the
+		 * button group.
+		 *
+		 * @see #horizontalAlign
+		 */
+		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
+
+		/**
+		 * The buttons will be aligned horizontally to the right edge of the
+		 * button group.
+		 *
+		 * @see #horizontalAlign
+		 */
+		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
+
+		/**
+		 * If the direction is vertical, each button will fill the entire
+		 * width of the button group, and if the direction is horizontal, the
+		 * width of the button group will be divided so that each button will
+		 * each have an equal width, and the total width of all buttons will
+		 * fill the entire space.
+		 *
+		 * @see #horizontalAlign
+		 * @see #direction
+		 */
+		public static const HORIZONTAL_ALIGN_JUSTIFY:String = "justify";
+
+		/**
+		 * The buttons will be aligned vertically to the top edge of the
+		 * button group.
+		 */
+		public static const VERTICAL_ALIGN_TOP:String = "top";
+
+		/**
+		 * The buttons will be aligned vertically to the middle of the
+		 * button group.
+		 *
+		 * @see #verticalAlign
+		 */
+		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
+
+		/**
+		 * The buttons will be aligned vertically to the bottom edge of the
+		 * button group.
+		 *
+		 * @see #verticalAlign
+		 */
+		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
+
+		/**
+		 * If the direction is horizontal, each button will fill the entire
+		 * height of the button group, and if the direction is vertical, the
+		 * height of the button group will be divided so that each button will
+		 * each have an equal height, and the total height of all buttons will
+		 * fill the entire space.
+		 *
+		 * @see #verticalAlign
+		 * @see #direction
+		 */
+		public static const VERTICAL_ALIGN_JUSTIFY:String = "justify";
 
 		/**
 		 * The default value added to the <code>nameList</code> of the buttons.
@@ -217,6 +311,8 @@ package feathers.controls
 		 * property that can provide custom logic to interpret each item in the
 		 * data provider differently.</p>
 		 *
+		 * @default null
+		 *
 		 * @see Button
 		 * @see #buttonInitializer
 		 */
@@ -287,6 +383,86 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _horizontalAlign:String = HORIZONTAL_ALIGN_JUSTIFY;
+
+		[Inspectable(type="String",enumeration="left,center,right,justify")]
+		/**
+		 * Determines how the buttons are horizontally aligned within the bounds
+		 * of the button group (on the x-axis).
+		 *
+		 * <p>The following example aligns the group's content to the left:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.horizontalAlign = ButtonGroup.HORIZONTAL_ALIGN_LEFT;</listing>
+		 *
+		 * @default ButtonGroup.HORIZONTAL_ALIGN_JUSTIFY
+		 *
+		 * @see #HORIZONTAL_ALIGN_LEFT
+		 * @see #HORIZONTAL_ALIGN_CENTER
+		 * @see #HORIZONTAL_ALIGN_RIGHT
+		 * @see #HORIZONTAL_ALIGN_JUSTIFY
+		 */
+		public function get horizontalAlign():String
+		{
+			return this._horizontalAlign;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set horizontalAlign(value:String):void
+		{
+			if(this._horizontalAlign == value)
+			{
+				return;
+			}
+			this._horizontalAlign = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _verticalAlign:String = VERTICAL_ALIGN_JUSTIFY;
+
+		[Inspectable(type="String",enumeration="top,middle,bottom,justify")]
+		/**
+		 * Determines how the buttons are vertically aligned within the bounds
+		 * of the button group (on the y-axis).
+		 *
+		 * <p>The following example aligns the group's content to the top:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.verticalAlign = ButtonGroup.VERTICAL_ALIGN_TOP;</listing>
+		 *
+		 * @default ButtonGroup.VERTICAL_ALIGN_JUSTIFY
+		 *
+		 * @see #VERTICAL_ALIGN_TOP
+		 * @see #VERTICAL_ALIGN_MIDDLE
+		 * @see #VERTICAL_ALIGN_RIGHT
+		 * @see #VERTICAL_ALIGN_JUSTIFY
+		 */
+		public function get verticalAlign():String
+		{
+			return _verticalAlign;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set verticalAlign(value:String):void
+		{
+			if(this._verticalAlign == value)
+			{
+				return;
+			}
+			this._verticalAlign = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _gap:Number = 0;
 
 		/**
@@ -297,6 +473,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * group.gap = 20;</listing>
+		 *
+		 * @default 0
 		 */
 		public function get gap():Number
 		{
@@ -322,8 +500,8 @@ package feathers.controls
 		protected var _firstGap:Number = NaN;
 
 		/**
-		 * Space, in pixels, between the first two buttons. If NaN, the standard
-		 * gap will be used.
+		 * Space, in pixels, between the first two buttons. If <code>NaN</code>,
+		 * the default <code>gap</code> property will be used.
 		 *
 		 * <p>The following example sets the gap between the first and second
 		 * button to a different value than the standard gap:</p>
@@ -331,6 +509,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * group.firstGap = 30;
 		 * group.gap = 20;</listing>
+		 *
+		 * @default NaN
 		 *
 		 * @see #gap
 		 * @see #lastGap
@@ -359,8 +539,8 @@ package feathers.controls
 		protected var _lastGap:Number = NaN;
 
 		/**
-		 * Space, in pixels, between the last two buttons. If NaN, the standard
-		 * gap will be used.
+		 * Space, in pixels, between the last two buttons. If <code>NaN</code>,
+		 * the default <code>gap</code> property will be used.
 		 *
 		 * <p>The following example sets the gap between the last and next to last
 		 * button to a different value than the standard gap:</p>
@@ -368,6 +548,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * group.lastGap = 30;
 		 * group.gap = 20;</listing>
+		 *
+		 * @default NaN
 		 *
 		 * @see #gap
 		 * @see #firstGap
@@ -387,6 +569,181 @@ package feathers.controls
 				return;
 			}
 			this._lastGap = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * Quickly sets all padding properties to the same value. The
+		 * <code>padding</code> getter always returns the value of
+		 * <code>paddingTop</code>, but the other padding values may be
+		 * different.
+		 *
+		 * <p>In the following example, the padding of all sides of the group
+		 * is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.padding = 20;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #paddingTop
+		 * @see #paddingRight
+		 * @see #paddingBottom
+		 * @see #paddingLeft
+		 */
+		public function get padding():Number
+		{
+			return this._paddingTop;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set padding(value:Number):void
+		{
+			this.paddingTop = value;
+			this.paddingRight = value;
+			this.paddingBottom = value;
+			this.paddingLeft = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingTop:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the group's top edge and the
+		 * group's buttons.
+		 *
+		 * <p>In the following example, the padding on the top edge of the
+		 * group is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.paddingTop = 20;</listing>
+		 *
+		 * @default 0
+		 */
+		public function get paddingTop():Number
+		{
+			return this._paddingTop;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingTop(value:Number):void
+		{
+			if(this._paddingTop == value)
+			{
+				return;
+			}
+			this._paddingTop = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingRight:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the group's right edge and the
+		 * group's buttons.
+		 *
+		 * <p>In the following example, the padding on the right edge of the
+		 * group is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.paddingRight = 20;</listing>
+		 *
+		 * @default 0
+		 */
+		public function get paddingRight():Number
+		{
+			return this._paddingRight;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingRight(value:Number):void
+		{
+			if(this._paddingRight == value)
+			{
+				return;
+			}
+			this._paddingRight = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingBottom:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the group's bottom edge and the
+		 * group's buttons.
+		 *
+		 * <p>In the following example, the padding on the bottom edge of the
+		 * group is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.paddingBottom = 20;</listing>
+		 *
+		 * @default 0
+		 */
+		public function get paddingBottom():Number
+		{
+			return this._paddingBottom;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingBottom(value:Number):void
+		{
+			if(this._paddingBottom == value)
+			{
+				return;
+			}
+			this._paddingBottom = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingLeft:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the group's left edge and the
+		 * group's buttons.
+		 *
+		 * <p>In the following example, the padding on the left edge of the
+		 * group is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.paddingLeft = 20;</listing>
+		 *
+		 * @default 0
+		 */
+		public function get paddingLeft():Number
+		{
+			return this._paddingLeft;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingLeft(value:Number):void
+		{
+			if(this._paddingLeft == value)
+			{
+				return;
+			}
+			this._paddingLeft = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -416,6 +773,8 @@ package feathers.controls
 		 *     button.defaultSkin = new Image( texture );
 		 *     return button;
 		 * };</listing>
+		 *
+		 * @default null
 		 *
 		 * @see feathers.controls.Button
 		 * @see #firstButtonFactory
@@ -468,6 +827,8 @@ package feathers.controls
 		 *     return button;
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.Button
 		 * @see #buttonFactory
 		 * @see #lastButtonFactory
@@ -519,6 +880,8 @@ package feathers.controls
 		 *     return button;
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.Button
 		 * @see #buttonFactory
 		 * @see #firstButtonFactory
@@ -566,6 +929,8 @@ package feathers.controls
 		 * {
 		 *     button.label = item.label;
 		 * };</listing>
+		 *
+		 * @see #dataProvider
 		 */
 		public function get buttonInitializer():Function
 		{
@@ -605,6 +970,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customButtonInitializer, "my-custom-button");</listing>
 		 *
+		 * @default null
+		 *
 		 * @see #DEFAULT_CHILD_NAME_BUTTON
 		 * @see feathers.core.FeathersControl#nameList
 		 * @see feathers.core.DisplayListWatcher
@@ -624,15 +991,8 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._customButtonName)
-			{
-				for each(var button:Button in this.activeButtons)
-				{
-					button.nameList.remove(this._customButtonName);
-				}
-			}
 			this._customButtonName = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.invalidate(INVALIDATION_FLAG_BUTTON_FACTORY);
 		}
 
 		/**
@@ -655,6 +1015,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customFirstButtonInitializer, "my-custom-first-button");</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.core.FeathersControl#nameList
 		 * @see feathers.core.DisplayListWatcher
 		 * @see http://wiki.starling-framework.org/feathers/custom-themes
@@ -673,13 +1035,8 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._customFirstButtonName && this.activeFirstButton)
-			{
-				this.activeFirstButton.nameList.remove(this._customButtonName);
-				this.activeFirstButton.nameList.remove(this._customFirstButtonName);
-			}
 			this._customFirstButtonName = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.invalidate(INVALIDATION_FLAG_BUTTON_FACTORY);
 		}
 
 		/**
@@ -702,6 +1059,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customLastButtonInitializer, "my-custom-last-button");</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.core.FeathersControl#nameList
 		 * @see feathers.core.DisplayListWatcher
 		 * @see http://wiki.starling-framework.org/feathers/custom-themes
@@ -720,13 +1079,8 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this._customLastButtonName && this.activeLastButton)
-			{
-				this.activeLastButton.nameList.remove(this._customButtonName);
-				this.activeLastButton.nameList.remove(this._customLastButtonName);
-			}
 			this._customLastButtonName = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.invalidate(INVALIDATION_FLAG_BUTTON_FACTORY);
 		}
 
 		/**
@@ -758,6 +1112,8 @@ package feathers.controls
 		 * <p>Setting properties in a <code>buttonFactory</code> function instead
 		 * of using <code>buttonProperties</code> will result in better
 		 * performance.</p>
+		 *
+		 * @default null
 		 *
 		 * @see #buttonFactory
 		 * @see #firstButtonFactory
@@ -877,25 +1233,6 @@ package feathers.controls
 					{
 						button[propertyName] = propertyValue;
 					}
-				}
-
-				if(button == this.activeFirstButton && this._customFirstButtonName)
-				{
-					if(!button.nameList.contains(this._customFirstButtonName))
-					{
-						button.nameList.add(this._customFirstButtonName);
-					}
-				}
-				else if(button == this.activeLastButton && this._customLastButtonName)
-				{
-					if(!button.nameList.contains(this._customLastButtonName))
-					{
-						button.nameList.add(this._customLastButtonName);
-					}
-				}
-				else if(this._customButtonName && !button.nameList.contains(this._customButtonName))
-				{
-					button.nameList.add(this._customButtonName);
 				}
 			}
 		}
@@ -1037,10 +1374,15 @@ package feathers.controls
 				{
 					button.nameList.add(this._customFirstButtonName);
 				}
+				else if(this._customButtonName)
+				{
+					button.nameList.add(this._customButtonName);
+				}
 				else
 				{
 					button.nameList.add(this.firstButtonName);
 				}
+				button.addEventListener(Event.TRIGGERED, button_triggeredHandler);
 				this.addChild(button);
 			}
 			this._buttonInitializer(button, item);
@@ -1065,10 +1407,15 @@ package feathers.controls
 				{
 					button.nameList.add(this._customLastButtonName);
 				}
+				else if(this._customButtonName)
+				{
+					button.nameList.add(this._customButtonName);
+				}
 				else
 				{
 					button.nameList.add(this.lastButtonName);
 				}
+				button.addEventListener(Event.TRIGGERED, button_triggeredHandler);
 				this.addChild(button);
 			}
 			this._buttonInitializer(button, item);
@@ -1091,6 +1438,7 @@ package feathers.controls
 				{
 					button.nameList.add(this.buttonName);
 				}
+				button.addEventListener(Event.TRIGGERED, button_triggeredHandler);
 				this.addChild(button);
 			}
 			else
@@ -1106,11 +1454,25 @@ package feathers.controls
 		 */
 		protected function destroyButton(button:Button):void
 		{
+			button.removeEventListener(Event.TRIGGERED, button_triggeredHandler);
 			this.removeChild(button, true);
 		}
 
 		/**
-		 * @private
+		 * If the component's dimensions have not been set explicitly, it will
+		 * measure its content and determine an ideal size for itself. If the
+		 * <code>explicitWidth</code> or <code>explicitHeight</code> member
+		 * variables are set, those value will be used without additional
+		 * measurement. If one is set, but not the other, the dimension with the
+		 * explicit value will not be measured, but the other non-explicit
+		 * dimension will still need measurement.
+		 *
+		 * <p>Calls <code>setSizeInternal()</code> to set up the
+		 * <code>actualWidth</code> and <code>actualHeight</code> member
+		 * variables used for layout.</p>
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
@@ -1128,6 +1490,7 @@ package feathers.controls
 				newWidth = 0;
 				for each(var button:Button in this.activeButtons)
 				{
+					button.setSize(NaN, NaN);
 					button.validate();
 					newWidth = Math.max(button.width, newWidth);
 				}
@@ -1146,6 +1509,7 @@ package feathers.controls
 						newWidth += this._lastGap;
 					}
 				}
+				newWidth += this._paddingLeft + this._paddingRight;
 			}
 
 			if(needsHeight)
@@ -1171,6 +1535,7 @@ package feathers.controls
 						newHeight += this._lastGap;
 					}
 				}
+				newHeight += this._paddingTop + this._paddingBottom;
 			}
 			return this.setSizeInternal(newWidth, newHeight, false);
 		}
@@ -1184,36 +1549,157 @@ package feathers.controls
 			const hasLastGap:Boolean = !isNaN(this._lastGap);
 			const buttonCount:int = this.activeButtons.length;
 			const secondToLastIndex:int = buttonCount - 2;
-			const totalSize:Number = this._direction == DIRECTION_VERTICAL ? this.actualHeight : this.actualWidth;
-			var totalButtonSize:Number = totalSize - (this._gap * (buttonCount - 1));
+			if(this._direction == DIRECTION_VERTICAL)
+			{
+				var maxButtonSize:Number = this.actualHeight - this._paddingTop - this._paddingBottom;
+				var oppositeSize:Number = this.actualWidth - this._paddingLeft - this._paddingRight;
+			}
+			else
+			{
+				maxButtonSize = this.actualWidth - this._paddingLeft - this._paddingRight;
+				oppositeSize = this.actualHeight - this._paddingTop - this._paddingBottom;
+			}
+			maxButtonSize -= (this._gap * (buttonCount - 1));
 			if(hasFirstGap)
 			{
-				totalButtonSize += this._gap - this._firstGap;
+				maxButtonSize += this._gap - this._firstGap;
 			}
 			if(hasLastGap)
 			{
-				totalButtonSize += this._gap - this._lastGap;
+				maxButtonSize += this._gap - this._lastGap;
 			}
-			const buttonSize:Number = totalButtonSize / buttonCount;
-			var position:Number = 0;
-			for(var i:int = 0; i < buttonCount; i++)
+			maxButtonSize /= buttonCount;
+
+			var position:Number = this._direction == DIRECTION_VERTICAL ? this._paddingTop : this._paddingLeft;
+			if((this._horizontalAlign == HORIZONTAL_ALIGN_JUSTIFY && this._direction == DIRECTION_HORIZONTAL) ||
+				(this._verticalAlign == VERTICAL_ALIGN_JUSTIFY && this._direction == DIRECTION_VERTICAL))
 			{
-				var button:Button = this.activeButtons[i];
+				var buttonSize:Number = maxButtonSize;
+			}
+			else
+			{
+				buttonSize = 0;
+				for(var i:int = 0; i < buttonCount; i++)
+				{
+					var button:Button = this.activeButtons[i];
+					button.validate();
+					if(this._direction == DIRECTION_VERTICAL)
+					{
+						var currentButtonSize:Number = button.height;
+						if(!isNaN(currentButtonSize) && currentButtonSize > buttonSize)
+						{
+							buttonSize = currentButtonSize;
+						}
+					}
+					else //horizontal
+					{
+						currentButtonSize = button.width;
+						if(!isNaN(currentButtonSize) && currentButtonSize > buttonSize)
+						{
+							buttonSize = currentButtonSize;
+						}
+					}
+				}
+				if(buttonSize > maxButtonSize)
+				{
+					buttonSize = maxButtonSize;
+				}
+				var totalContentSize:Number = (buttonSize + this._gap) * buttonCount - this._gap;
+				if(hasFirstGap)
+				{
+					totalContentSize = totalContentSize - this._gap + this._firstGap;
+				}
+				if(hasLastGap)
+				{
+					totalContentSize = totalContentSize - this._gap + this._lastGap;
+				}
 				if(this._direction == DIRECTION_VERTICAL)
 				{
-					button.width = this.actualWidth;
-					button.height = buttonSize;
-					button.x = 0;
-					button.y = position;
-					position += button.height;
+					if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
+					{
+						position = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - totalContentSize) / 2;
+					}
+					else if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
+					{
+						position = this.actualHeight - this._paddingBottom - totalContentSize;
+					}
 				}
 				else //horizontal
 				{
-					button.width = buttonSize;
-					button.height = this.actualHeight;
+					if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
+					{
+						position = this._paddingLeft + (this.actualWidth - this._paddingLeft - this._paddingRight - totalContentSize) / 2;
+					}
+					else if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
+					{
+						position = this.actualWidth - this._paddingRight - totalContentSize;
+					}
+				}
+			}
+			for(i = 0; i < buttonCount; i++)
+			{
+				button = this.activeButtons[i];
+				if(this._direction == DIRECTION_VERTICAL)
+				{
+					button.height = buttonSize;
+					button.y = position;
+					button.validate();
+					switch(this._horizontalAlign)
+					{
+						case HORIZONTAL_ALIGN_CENTER:
+						{
+							button.x = this._paddingLeft + (oppositeSize - button.width) / 2;
+							break;
+						}
+						case HORIZONTAL_ALIGN_RIGHT:
+						{
+							button.x = this._paddingLeft + oppositeSize - button.width;
+							break;
+						}
+						case HORIZONTAL_ALIGN_LEFT:
+						{
+							button.x = this._paddingLeft;
+							break;
+						}
+						default: //justify
+						{
+							button.x = this._paddingLeft;
+							button.width = oppositeSize;
+							break;
+						}
+					}
+					position += buttonSize;
+				}
+				else //horizontal
+				{
 					button.x = position;
-					button.y = 0;
-					position += button.width;
+					button.width = buttonSize;
+					button.validate();
+					switch(this._verticalAlign)
+					{
+						case VERTICAL_ALIGN_MIDDLE:
+						{
+							button.y = this._paddingTop + (oppositeSize - button.height) / 2;
+							break;
+						}
+						case VERTICAL_ALIGN_BOTTOM:
+						{
+							button.y = this._paddingTop + oppositeSize - button.height;
+							break;
+						}
+						case VERTICAL_ALIGN_TOP:
+						{
+							button.y = this._paddingTop;
+							break;
+						}
+						default: //justify
+						{
+							button.y = this._paddingTop;
+							button.height = oppositeSize;
+							break;
+						}
+					}
+					position += buttonSize;
 				}
 
 				if(hasFirstGap && i == 0)
@@ -1245,6 +1731,17 @@ package feathers.controls
 		protected function dataProvider_changeHandler(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function button_triggeredHandler(event:Event):void
+		{
+			var button:Button = Button(event.currentTarget);
+			var index:int = this.activeButtons.indexOf(button);
+			var item:Object = this._dataProvider.getItemAt(index);
+			this.dispatchEventWith(Event.TRIGGERED, false, item);
 		}
 	}
 }

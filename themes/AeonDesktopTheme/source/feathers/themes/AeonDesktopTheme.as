@@ -24,6 +24,7 @@
  */
 package feathers.themes
 {
+	import feathers.controls.Alert;
 	import feathers.controls.Button;
 	import feathers.controls.ButtonGroup;
 	import feathers.controls.Callout;
@@ -31,6 +32,7 @@ package feathers.themes
 	import feathers.controls.GroupedList;
 	import feathers.controls.Header;
 	import feathers.controls.IScrollBar;
+	import feathers.controls.ImageLoader;
 	import feathers.controls.Label;
 	import feathers.controls.List;
 	import feathers.controls.NumericStepper;
@@ -56,7 +58,6 @@ package feathers.themes
 	import feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer;
 	import feathers.controls.renderers.DefaultGroupedListItemRenderer;
 	import feathers.controls.renderers.DefaultListItemRenderer;
-	import feathers.controls.text.BitmapFontTextRenderer;
 	import feathers.controls.text.TextFieldTextEditor;
 	import feathers.controls.text.TextFieldTextRenderer;
 	import feathers.core.DisplayListWatcher;
@@ -65,6 +66,7 @@ package feathers.themes
 	import feathers.core.IFeathersControl;
 	import feathers.core.ITextEditor;
 	import feathers.core.ITextRenderer;
+	import feathers.core.PopUpManager;
 	import feathers.display.Scale3Image;
 	import feathers.display.Scale9Image;
 	import feathers.layout.HorizontalLayout;
@@ -135,8 +137,10 @@ package feathers.themes
 		protected static const HEADER_SCALE_9_GRID:Rectangle = new Rectangle(0, 0, 4, 28);
 
 		protected static const BACKGROUND_COLOR:uint = 0x869CA7;
+		protected static const MODAL_OVERLAY_COLOR:uint = 0xDDDDDD;
 		protected static const PRIMARY_TEXT_COLOR:uint = 0x0B333C;
 		protected static const DISABLED_TEXT_COLOR:uint = 0x5B6770;
+		protected static const MODAL_OVERLAY_ALPHA:Number = 0.5;
 
 		protected static function textRendererFactory():ITextRenderer
 		{
@@ -151,6 +155,13 @@ package feathers.themes
 		protected static function scrollBarFactory():IScrollBar
 		{
 			return new ScrollBar();
+		}
+
+		protected static function popUpOverlayFactory():DisplayObject
+		{
+			const quad:Quad = new Quad(100, 100, MODAL_OVERLAY_COLOR);
+			quad.alpha = MODAL_OVERLAY_ALPHA;
+			return quad;
 		}
 
 		public function AeonDesktopTheme(container:DisplayObjectContainer = null)
@@ -263,6 +274,7 @@ package feathers.themes
 
 		protected var textInputBackgroundSkinTextures:Scale9Textures;
 		protected var textInputBackgroundDisabledSkinTextures:Scale9Textures;
+		protected var textInputSearchIconTexture:Texture;
 
 		protected var vScrollBarThumbUpSkinTextures:Scale9Textures;
 		protected var vScrollBarThumbHoverSkinTextures:Scale9Textures;
@@ -319,6 +331,7 @@ package feathers.themes
 			FeathersControl.defaultTextRendererFactory = textRendererFactory;
 			FeathersControl.defaultTextEditorFactory = textEditorFactory;
 
+			PopUpManager.overlayFactory = popUpOverlayFactory;
 			Callout.stagePaddingTop = Callout.stagePaddingRight = Callout.stagePaddingBottom =
 				Callout.stagePaddingLeft = 16;
 
@@ -411,6 +424,7 @@ package feathers.themes
 
 			this.textInputBackgroundSkinTextures = new Scale9Textures(this.atlas.getTexture("text-input-background-skin"), TEXT_INPUT_SCALE_9_GRID);
 			this.textInputBackgroundDisabledSkinTextures = new Scale9Textures(this.atlas.getTexture("text-input-background-disabled-skin"), TEXT_INPUT_SCALE_9_GRID);
+			this.textInputSearchIconTexture = this.atlas.getTexture("search-icon");
 
 			this.vScrollBarThumbUpSkinTextures = new Scale9Textures(this.atlas.getTexture("vertical-scroll-bar-thumb-up-skin"), VERTICAL_SCROLL_BAR_THUMB_SCALE_9_GRID);
 			this.vScrollBarThumbHoverSkinTextures = new Scale9Textures(this.atlas.getTexture("vertical-scroll-bar-thumb-hover-skin"), VERTICAL_SCROLL_BAR_THUMB_SCALE_9_GRID);
@@ -447,7 +461,8 @@ package feathers.themes
 			this.setInitializerForClassAndSubclasses(PanelScreen, panelScreenInitializer);
 			this.setInitializerForClass(Label, labelInitializer);
 			this.setInitializerForClass(ScrollText, scrollTextInitializer);
-			this.setInitializerForClass(BitmapFontTextRenderer, itemRendererAccessoryLabelInitializer, BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ACCESSORY_LABEL);
+			this.setInitializerForClass(TextFieldTextRenderer, itemRendererAccessoryLabelInitializer, BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ACCESSORY_LABEL);
+			this.setInitializerForClass(TextFieldTextRenderer, alertMessageInitializer, Alert.DEFAULT_CHILD_NAME_MESSAGE);
 			this.setInitializerForClass(Button, buttonInitializer);
 			this.setInitializerForClass(Button, tabInitializer, TabBar.DEFAULT_CHILD_NAME_TAB);
 			this.setInitializerForClass(Button, toggleSwitchOnTrackInitializer, ToggleSwitch.DEFAULT_CHILD_NAME_ON_TRACK);
@@ -470,6 +485,7 @@ package feathers.themes
 			this.setInitializerForClass(Button, verticalScrollBarThumbInitializer, THEME_NAME_VERTICAL_SCROLL_BAR_THUMB);
 			this.setInitializerForClass(Button, verticalScrollBarMinimumTrackInitializer, THEME_NAME_VERTICAL_SCROLL_BAR_MINIMUM_TRACK);
 			this.setInitializerForClass(ButtonGroup, buttonGroupInitializer);
+			this.setInitializerForClass(ButtonGroup, alertButtonGroupInitializer, Alert.DEFAULT_CHILD_NAME_BUTTON_GROUP);
 			this.setInitializerForClass(Check, checkInitializer);
 			this.setInitializerForClass(Radio, radioInitializer);
 			this.setInitializerForClass(ToggleSwitch, toggleSwitchInitializer);
@@ -480,6 +496,7 @@ package feathers.themes
 			this.setInitializerForClass(ScrollBar, horizontalScrollBarInitializer, Scroller.DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR);
 			this.setInitializerForClass(ScrollBar, verticalScrollBarInitializer, Scroller.DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR);
 			this.setInitializerForClass(TextInput, textInputInitializer);
+			this.setInitializerForClass(TextInput, searchTextInputInitializer, TextInput.ALTERNATE_NAME_SEARCH_TEXT_INPUT);
 			this.setInitializerForClass(TextInput, numericStepperTextInputInitializer, NumericStepper.DEFAULT_CHILD_NAME_TEXT_INPUT);
 			this.setInitializerForClass(TextArea, textAreaInitializer);
 			this.setInitializerForClass(PageIndicator, pageIndicatorInitializer);
@@ -495,10 +512,12 @@ package feathers.themes
 			this.setInitializerForClass(DefaultGroupedListHeaderOrFooterRenderer, defaultHeaderOrFooterRendererInitializer);
 			this.setInitializerForClass(Header, headerInitializer);
 			this.setInitializerForClass(Header, panelHeaderInitializer, Panel.DEFAULT_CHILD_NAME_HEADER);
+			this.setInitializerForClass(Header, panelHeaderInitializer, Alert.DEFAULT_CHILD_NAME_HEADER);
 			this.setInitializerForClass(Callout, calloutInitializer);
 			this.setInitializerForClass(ScrollContainer, scrollContainerInitializer);
 			this.setInitializerForClass(ScrollContainer, scrollContainerToolbarInitializer, ScrollContainer.ALTERNATE_NAME_TOOLBAR);
 			this.setInitializerForClass(Panel, panelInitializer);
+			this.setInitializerForClass(Alert, alertInitializer);
 		}
 
 		protected function pageIndicatorNormalSymbolFactory():Image
@@ -552,6 +571,12 @@ package feathers.themes
 		protected function itemRendererAccessoryLabelInitializer(renderer:TextFieldTextRenderer):void
 		{
 			renderer.textFormat = this.defaultTextFormat;
+		}
+
+		protected function alertMessageInitializer(renderer:TextFieldTextRenderer):void
+		{
+			renderer.textFormat = this.defaultTextFormat;
+			renderer.wordWrap = true;
 		}
 
 		protected function buttonInitializer(button:Button):void
@@ -870,6 +895,18 @@ package feathers.themes
 			group.gap = 4;
 		}
 
+		protected function alertButtonGroupInitializer(group:ButtonGroup):void
+		{
+			group.direction = ButtonGroup.DIRECTION_HORIZONTAL;
+			group.horizontalAlign = ButtonGroup.HORIZONTAL_ALIGN_CENTER;
+			group.verticalAlign = ButtonGroup.VERTICAL_ALIGN_JUSTIFY;
+			group.gap = 4;
+			group.paddingTop = 12;
+			group.paddingRight = 12;
+			group.paddingBottom = 12;
+			group.paddingLeft = 12;
+		}
+
 		protected function sliderInitializer(slider:Slider):void
 		{
 			slider.trackLayoutMode = Slider.TRACK_LAYOUT_MODE_SINGLE;
@@ -935,25 +972,44 @@ package feathers.themes
 			stepper.focusPadding = -1;
 		}
 
-		protected function textInputInitializer(input:TextInput):void
+		protected function baseTextInputInitializer(input:TextInput):void
 		{
-			input.minWidth = input.minHeight = 22;
-			input.paddingTop = input.paddingBottom = 2;
- 			input.paddingRight = input.paddingLeft = 4;
-			input.textEditorProperties.textFormat = this.defaultTextFormat;
-
-			input.backgroundSkin = new Scale9Image(textInputBackgroundSkinTextures);
-			input.backgroundDisabledSkin = new Scale9Image(textInputBackgroundDisabledSkinTextures);
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.textInputBackgroundSkinTextures;
+			skinSelector.setValueForState(this.textInputBackgroundDisabledSkinTextures, TextInput.STATE_DISABLED);
+			input.stateToSkinFunction = skinSelector.updateValue;
 
 			input.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
 			input.focusPadding = -1;
 
+			input.minWidth = input.minHeight = 22;
+			input.gap = 2;
+			input.paddingTop = input.paddingBottom = 2;
+			input.paddingRight = input.paddingLeft = 4;
+
+			input.textEditorProperties.textFormat = this.defaultTextFormat;
 			input.promptProperties.textFormat = this.defaultTextFormat;
+		}
+
+		protected function textInputInitializer(input:TextInput):void
+		{
+			this.baseTextInputInitializer(input);
+		}
+
+		protected function searchTextInputInitializer(input:TextInput):void
+		{
+			this.baseTextInputInitializer(input);
+
+			var searchIcon:ImageLoader = new ImageLoader();
+			searchIcon.source = this.textInputSearchIconTexture;
+			searchIcon.snapToPixels = true;
+			input.defaultIcon = searchIcon;
 		}
 
 		protected function numericStepperTextInputInitializer(input:TextInput):void
 		{
 			input.minWidth = input.minHeight = 22;
+			input.gap = 2;
 			input.paddingTop = input.paddingBottom = 2;
 			input.paddingRight = input.paddingLeft = 4;
 			input.textEditorProperties.textFormat = this.defaultTextFormat;
@@ -1063,6 +1119,24 @@ package feathers.themes
 
 			panel.horizontalScrollBarFactory = scrollBarFactory;
 			panel.verticalScrollBarFactory = scrollBarFactory;
+		}
+
+		protected function alertInitializer(alert:Alert):void
+		{
+			alert.backgroundSkin = new Scale9Image(panelBorderBackgroundSkinTextures);
+
+			alert.paddingTop = 0;
+			alert.paddingRight = 14;
+			alert.paddingBottom = 0;
+			alert.paddingLeft = 14;
+
+			alert.interactionMode = ScrollContainer.INTERACTION_MODE_MOUSE;
+			alert.scrollBarDisplayMode = ScrollContainer.SCROLL_BAR_DISPLAY_MODE_FIXED;
+
+			alert.horizontalScrollBarFactory = scrollBarFactory;
+			alert.verticalScrollBarFactory = scrollBarFactory;
+
+			alert.maxWidth = alert.maxHeight = 560;
 		}
 
 		protected function listInitializer(list:List):void
@@ -1180,7 +1254,7 @@ package feathers.themes
 
 			header.minHeight = 22;
 
-			header.paddingTop = header.paddingBottom = 2;
+			header.paddingTop = header.paddingBottom = 6;
 			header.paddingRight = header.paddingLeft = 6;
 
 			header.gap = 2;

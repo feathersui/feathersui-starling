@@ -24,6 +24,15 @@ package feathers.events
 		public static const INITIALIZE:String = "initialize";
 
 		/**
+		 * The <code>FeathersEventType.CREATION_COMPLETE</code> event type is
+		 * meant to be used when an <code>IFeathersControl</code> has finished
+		 * validating for the first time. A well-designed component will have
+		 * created all of its children and it will be fully ready for user
+		 * interaction.
+		 */
+		public static const CREATION_COMPLETE:String = "creationComplete";
+
+		/**
 		 * The <code>FeathersEventType.RESIZE</code> event type is meant to
 		 * be used when an <code>IFeathersControl</code> has resized.
 		 */
@@ -140,5 +149,23 @@ package feathers.events
 		 * @see feathers.controls.Button#event:longPress
 		 */
 		public static const LONG_PRESS:String = "longPress";
+
+		/**
+		 * The <code>FeathersEventType.SOFT_KEYBOARD_ACTIVATE</code> event type
+		 * is used by Feathers text editors when they activate a device's soft
+		 * keyboard.
+		 *
+		 * @see feathers.core.ITextEditor
+		 */
+		public static const SOFT_KEYBOARD_ACTIVATE:String = "softKeyboardActivate";
+
+		/**
+		 * The <code>FeathersEventType.SOFT_KEYBOARD_DEACTIVATE</code> event type
+		 * is used by Feathers text editors when they deactivate a device's soft
+		 * keyboard.
+		 *
+		 * @see feathers.core.ITextEditor
+		 */
+		public static const SOFT_KEYBOARD_DEACTIVATE:String = "softKeyboardDeactivate";
 	}
 }

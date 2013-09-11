@@ -13,12 +13,11 @@ package feathers.examples.displayObjects
 	import feathers.themes.MetalWorksMobileTheme;
 
 	import starling.display.Image;
-	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.ResizeEvent;
 	import starling.textures.Texture;
 
-	public class Main extends Sprite
+	public class Main extends ScreenNavigator
 	{
 		private static const SCALE_9_IMAGE:String = "scale9Image";
 		private static const SCALE_3_IMAGE:String = "scale3Image";
@@ -36,7 +35,6 @@ package feathers.examples.displayObjects
 		}
 
 		private var _theme:MetalWorksMobileTheme;
-		private var _navigator:ScreenNavigator;
 		private var _tabBar:TabBar;
 		private var _transitionManager:TabBarSlideTransitionManager;
 
@@ -72,15 +70,13 @@ package feathers.examples.displayObjects
 			this._theme.setInitializerForClass(Button, rightGripInitializer, "right-grip");
 			this._theme.setInitializerForClass(Button, bottomGripInitializer, "bottom-grip");
 
-			this._navigator = new ScreenNavigator();
-			this._navigator.addEventListener(Event.CHANGE, navigator_changeHandler);
-			this.addChild(this._navigator);
+			this.addEventListener(Event.CHANGE, navigator_changeHandler);
 
-			this._navigator.addScreen(SCALE_9_IMAGE, new ScreenNavigatorItem(Scale9ImageScreen));
+			this.addScreen(SCALE_9_IMAGE, new ScreenNavigatorItem(Scale9ImageScreen));
 
-			this._navigator.addScreen(SCALE_3_IMAGE, new ScreenNavigatorItem(Scale3ImageScreen));
+			this.addScreen(SCALE_3_IMAGE, new ScreenNavigatorItem(Scale3ImageScreen));
 
-			this._navigator.addScreen(TILED_IMAGE, new ScreenNavigatorItem(TiledImageScreen));
+			this.addScreen(TILED_IMAGE, new ScreenNavigatorItem(TiledImageScreen));
 
 			this._tabBar = new TabBar();
 			this._tabBar.addEventListener(Event.CHANGE, tabBar_changeHandler);
@@ -94,9 +90,9 @@ package feathers.examples.displayObjects
 			this._tabBar.validate();
 			this.layout(this.stage.stageWidth, this.stage.stageHeight);
 
-			this._navigator.showScreen(SCALE_9_IMAGE);
+			this.showScreen(SCALE_9_IMAGE);
 
-			this._transitionManager = new TabBarSlideTransitionManager(this._navigator, this._tabBar);
+			this._transitionManager = new TabBarSlideTransitionManager(this, this._tabBar);
 			this._transitionManager.duration = 0.4;
 		}
 
@@ -107,7 +103,7 @@ package feathers.examples.displayObjects
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var item:Object = dataProvider.getItemAt(i);
-				if(this._navigator.activeScreenID == item.action)
+				if(this.activeScreenID == item.action)
 				{
 					this._tabBar.selectedIndex = i;
 					break;
@@ -117,7 +113,7 @@ package feathers.examples.displayObjects
 
 		private function tabBar_changeHandler(event:Event):void
 		{
-			this._navigator.showScreen(this._tabBar.selectedItem.action);
+			this.showScreen(this._tabBar.selectedItem.action);
 		}
 
 		private function stage_resizeHandler(event:ResizeEvent):void

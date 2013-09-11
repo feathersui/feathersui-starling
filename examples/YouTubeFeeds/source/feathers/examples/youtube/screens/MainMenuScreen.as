@@ -48,8 +48,12 @@ package feathers.examples.youtube.screens
 			this._list.itemRendererFactory = function():IListItemRenderer
 			{
 				var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
-				renderer.labelField = "name";
+
+				//enable the quick hit area to optimize hit tests when an item
+				//is only selectable and doesn't have interactive children.
 				renderer.isQuickHitAreaEnabled = true;
+
+				renderer.labelField = "name";
 				renderer.accessorySourceFunction = accessorySourceFunction;
 				return renderer;
 			}

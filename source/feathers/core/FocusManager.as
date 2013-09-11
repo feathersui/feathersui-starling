@@ -49,7 +49,17 @@ package feathers.core
 		protected static var _nativeFocusTarget:Sprite;
 
 		/**
-		 * Determines if the default focus manager is enabled.
+		 * Determines if the default focus manager is enabled. For mobile apps,
+		 * the focus manager should generally remain disabled. For desktop apps,
+		 * it is recommended to enable the focus manager to support keyboard
+		 * navigation.
+		 *
+		 * <p>In the following example, focus management is enabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * FocusManager.isEnabled = true;</listing>
+		 *
+		 * @default false
 		 */
 		public static function get isEnabled():Boolean
 		{
@@ -174,6 +184,8 @@ package feathers.core
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @default false
 		 */
 		public function get isEnabled():Boolean
 		{
@@ -229,6 +241,8 @@ package feathers.core
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @default null
 		 */
 		public function get focus():IFocusDisplayObject
 		{
@@ -332,29 +346,83 @@ package feathers.core
 			{
 				container = container.parent;
 			}
-			var startIndex:int = container.numChildren - 1;
-			if(beforeChild)
+			var hasProcessedBeforeChild:Boolean = beforeChild == null;
+			if(container is IFocusExtras)
 			{
-				startIndex = container.getChildIndex(beforeChild) - 1;
-			}
-			for(var i:int = startIndex; i >= 0; i--)
-			{
-				var child:DisplayObject = container.getChildAt(i);
-				if(child is IFocusDisplayObject)
+				var focusContainer:IFocusExtras = IFocusExtras(container);
+				var extras:Vector.<DisplayObject> = focusContainer.focusExtrasAfter;
+				if(extras)
 				{
-					var childWithFocus:IFocusDisplayObject = IFocusDisplayObject(child);
-					if(childWithFocus.isFocusEnabled)
+					var skip:Boolean = false;
+					if(beforeChild)
 					{
-						return childWithFocus;
+						var startIndex:int = extras.indexOf(beforeChild) - 1;
+						hasProcessedBeforeChild = startIndex >= -1;
+						skip = !hasProcessedBeforeChild;
+					}
+					else
+					{
+						startIndex = extras.length - 1;
+					}
+					if(!skip)
+					{
+						for(var i:int = startIndex; i >= 0; i--)
+						{
+							var child:DisplayObject = extras[i];
+							var foundChild:IFocusDisplayObject = this.findPreviousChildFocus(child);
+							if(foundChild)
+							{
+								return foundChild;
+							}
+						}
 					}
 				}
-				if(child is DisplayObjectContainer)
+			}
+			if(beforeChild && !hasProcessedBeforeChild)
+			{
+				startIndex = container.getChildIndex(beforeChild) - 1;
+				hasProcessedBeforeChild = startIndex >= -1;
+			}
+			else
+			{
+				startIndex = container.numChildren - 1;
+			}
+			for(i = startIndex; i >= 0; i--)
+			{
+				child = container.getChildAt(i);
+				foundChild = this.findPreviousChildFocus(child);
+				if(foundChild)
 				{
-					var childContainer:DisplayObjectContainer = DisplayObjectContainer(child);
-					var foundChild:IFocusDisplayObject = this.findPreviousFocus(childContainer);
-					if(foundChild)
+					return foundChild;
+				}
+			}
+			if(container is IFocusExtras)
+			{
+				extras = focusContainer.focusExtrasBefore;
+				if(extras)
+				{
+					skip = false;
+					if(beforeChild && !hasProcessedBeforeChild)
 					{
-						return foundChild;
+						startIndex = extras.indexOf(beforeChild) - 1;
+						hasProcessedBeforeChild = startIndex >= -1;
+						skip = !hasProcessedBeforeChild;
+					}
+					else
+					{
+						startIndex = extras.length - 1;
+					}
+					if(!skip)
+					{
+						for(i = startIndex; i >= 0; i--)
+						{
+							child = extras[i];
+							foundChild = this.findPreviousChildFocus(child);
+							if(foundChild)
+							{
+								return foundChild;
+							}
+						}
 					}
 				}
 			}
@@ -375,30 +443,86 @@ package feathers.core
 			{
 				container = container.parent;
 			}
-			var startIndex:int = 0;
-			if(afterChild)
+			var hasProcessedAfterChild:Boolean = afterChild == null;
+			if(container is IFocusExtras)
 			{
-				startIndex = container.getChildIndex(afterChild) + 1;
-			}
-			const childCount:int = container.numChildren;
-			for(var i:int = startIndex; i < childCount; i++)
-			{
-				var child:DisplayObject = container.getChildAt(i);
-				if(child is IFocusDisplayObject)
+				var focusContainer:IFocusExtras = IFocusExtras(container);
+				var extras:Vector.<DisplayObject> = focusContainer.focusExtrasBefore;
+				if(extras)
 				{
-					var childWithFocus:IFocusDisplayObject = IFocusDisplayObject(child);
-					if(childWithFocus.isFocusEnabled)
+					var skip:Boolean = false;
+					if(afterChild)
 					{
-						return childWithFocus;
+						var startIndex:int = extras.indexOf(afterChild) + 1;
+						hasProcessedAfterChild = startIndex > 0;
+						skip = !hasProcessedAfterChild;
+					}
+					else
+					{
+						startIndex = 0;
+					}
+					if(!skip)
+					{
+						var childCount:int = extras.length;
+						for(var i:int = startIndex; i < childCount; i++)
+						{
+							var child:DisplayObject = extras[i];
+							var foundChild:IFocusDisplayObject = this.findNextChildFocus(child);
+							if(foundChild)
+							{
+								return foundChild;
+							}
+						}
 					}
 				}
-				if(child is DisplayObjectContainer)
+			}
+			if(afterChild && !hasProcessedAfterChild)
+			{
+				startIndex = container.getChildIndex(afterChild) + 1;
+				hasProcessedAfterChild = startIndex > 0;
+			}
+			else
+			{
+				startIndex = 0;
+			}
+			childCount = container.numChildren;
+			for(i = startIndex; i < childCount; i++)
+			{
+				child = container.getChildAt(i);
+				foundChild = this.findNextChildFocus(child);
+				if(foundChild)
 				{
-					var childContainer:DisplayObjectContainer = DisplayObjectContainer(child);
-					var foundChild:IFocusDisplayObject = this.findNextFocus(childContainer);
-					if(foundChild)
+					return foundChild;
+				}
+			}
+			if(container is IFocusExtras)
+			{
+				extras = focusContainer.focusExtrasAfter;
+				if(extras)
+				{
+					skip = false;
+					if(afterChild && !hasProcessedAfterChild)
 					{
-						return foundChild;
+						startIndex = extras.indexOf(afterChild) + 1;
+						hasProcessedAfterChild = startIndex > 0;
+						skip = !hasProcessedAfterChild;
+					}
+					else
+					{
+						startIndex = 0;
+					}
+					if(!skip)
+					{
+						childCount = extras.length;
+						for(i = startIndex; i < childCount; i++)
+						{
+							child = extras[i];
+							foundChild = this.findNextChildFocus(child);
+							if(foundChild)
+							{
+								return foundChild;
+							}
+						}
 					}
 				}
 			}
@@ -406,6 +530,56 @@ package feathers.core
 			if(afterChild && container != this._topLevelContainer)
 			{
 				return this.findNextFocus(container.parent, container);
+			}
+			return null;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function findPreviousChildFocus(child:DisplayObject):IFocusDisplayObject
+		{
+			if(child is IFocusDisplayObject)
+			{
+				var childWithFocus:IFocusDisplayObject = IFocusDisplayObject(child);
+				if(childWithFocus.isFocusEnabled)
+				{
+					return childWithFocus;
+				}
+			}
+			else if(child is DisplayObjectContainer)
+			{
+				var childContainer:DisplayObjectContainer = DisplayObjectContainer(child);
+				var foundChild:IFocusDisplayObject = this.findPreviousFocus(childContainer);
+				if(foundChild)
+				{
+					return foundChild;
+				}
+			}
+			return null;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function findNextChildFocus(child:DisplayObject):IFocusDisplayObject
+		{
+			if(child is IFocusDisplayObject)
+			{
+				var childWithFocus:IFocusDisplayObject = IFocusDisplayObject(child);
+				if(childWithFocus.isFocusEnabled)
+				{
+					return childWithFocus;
+				}
+			}
+			else if(child is DisplayObjectContainer)
+			{
+				var childContainer:DisplayObjectContainer = DisplayObjectContainer(child);
+				var foundChild:IFocusDisplayObject = this.findNextFocus(childContainer);
+				if(foundChild)
+				{
+					return foundChild;
+				}
 			}
 			return null;
 		}

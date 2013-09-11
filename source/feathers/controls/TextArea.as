@@ -53,16 +53,7 @@ package feathers.controls
 	 * with a <code>StageTextTextEditor</code> that has its <code>multiline</code>
 	 * property set to <code>true</code>. In that situation, the
 	 * <code>StageText</code> instance will automatically provide its own
-	 * scroll bars.</p>
-	 *
-	 * <p><strong>Beta Component:</strong> This is a new component, and its APIs
-	 * may need some changes between now and the next version of Feathers to
-	 * account for overlooked requirements or other issues. Upgrading to future
-	 * versions of Feathers may involve manual changes to your code that uses
-	 * this component. The
-	 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>
-	 * will not go into effect until this component's status is upgraded from
-	 * beta to stable.</p>
+	 * scroll bars. <code>TextArea</code> is intended for use on desktop.</p>
 	 *
 	 * <p>The following example sets the text in a text area, selects the text,
 	 * and listens for when the text value changes:</p>
@@ -143,6 +134,13 @@ package feathers.controls
 		 * @see feathers.controls.Scroller#interactionMode
 		 */
 		public static const INTERACTION_MODE_MOUSE:String = "mouse";
+
+		/**
+		 * @copy feathers.controls.Scroller#INTERACTION_MODE_TOUCH_AND_SCROLL_BARS
+		 *
+		 * @see feathers.controls.Scroller#interactionMode
+		 */
+		public static const INTERACTION_MODE_TOUCH_AND_SCROLL_BARS:String = "touchAndScrollBars";
 
 		/**
 		 * Constructor.
@@ -293,6 +291,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * textArea.restrict = "0-9;</listing>
+		 *
+		 * @default null
 		 */
 		public function get restrict():String
 		{
@@ -360,6 +360,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * textArea.backgroundFocusedSkin = new Image( texture );</listing>
+		 *
+		 * @default null
 		 */
 		public function get backgroundFocusedSkin():DisplayObject
 		{
@@ -418,6 +420,8 @@ package feathers.controls
 		 *     return new TextFieldTextEditorViewPort();
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.text.ITextEditorViewPort
 		 * @see feathers.controls.text.TextFieldTextEditorViewPort
 		 */
@@ -467,6 +471,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * input.textEditorProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333);
 		 * input.textEditorProperties.embedFonts = true;</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #textEditorFactory
 		 * @see feathers.controls.text.ITextEditorViewPort
@@ -562,11 +568,11 @@ package feathers.controls
 			}
 			if(startIndex < 0)
 			{
-				throw new RangeError("Expected start index >= 0. Received " + startIndex + ".");
+				throw new RangeError("Expected start index greater than or equal to 0. Received " + startIndex + ".");
 			}
 			if(endIndex > this._text.length)
 			{
-				throw new RangeError("Expected start index > " + this._text.length + ". Received " + endIndex + ".");
+				throw new RangeError("Expected start index less than " + this._text.length + ". Received " + endIndex + ".");
 			}
 
 			if(this.textEditorViewPort)
@@ -629,7 +635,7 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * @inheritDoc
 		 */
 		override protected function autoSizeIfNeeded():Boolean
 		{
@@ -668,7 +674,14 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * Creates and adds the <code>textEditorViewPort</code> sub-component and
+		 * removes the old instance, if one exists.
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
+		 *
+		 * @see #textEditorViewPort
+		 * @see #textEditorFactory
 		 */
 		protected function createTextEditor():void
 		{

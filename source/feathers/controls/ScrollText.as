@@ -101,6 +101,13 @@ package feathers.controls
 		public static const INTERACTION_MODE_MOUSE:String = "mouse";
 
 		/**
+		 * @copy feathers.controls.Scroller#INTERACTION_MODE_TOUCH_AND_SCROLL_BARS
+		 *
+		 * @see feathers.controls.Scroller#interactionMode
+		 */
+		public static const INTERACTION_MODE_TOUCH_AND_SCROLL_BARS:String = "touchAndScrollBars";
+
+		/**
 		 * Constructor.
 		 */
 		public function ScrollText()
@@ -128,6 +135,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * scrollText.text = "Hello World";</listing>
+		 *
+		 * @default ""
 		 *
 		 * @see #isHTML
 		 * @see flash.text.TextField#htmlText
@@ -204,6 +213,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * scrollText.textFormat = new TextFormat( "_sans", 16, 0x333333 );</listing>
 		 *
+		 * @default null
+		 *
 		 * @see flash.text.TextFormat
 		 */
 		public function get textFormat():TextFormat
@@ -231,6 +242,8 @@ package feathers.controls
 
 		/**
 		 * The <code>StyleSheet</code> object to pass to the TextField.
+		 *
+		 * @default null
 		 *
 		 * @see flash.text.StyleSheet
 		 */
@@ -297,7 +310,7 @@ package feathers.controls
 		 *
 		 * @see flash.text.TextField#antiAliasType
 		 *
-		 * @default AntiAliasType.ADVANCED
+		 * @default flash.text.AntiAliasType.ADVANCED
 		 */
 		public function get antiAliasType():String
 		{
@@ -505,7 +518,7 @@ package feathers.controls
 		/**
 		 * Same as the flash.text.TextField property with the same name.
 		 *
-		 * @default GridFitType.PIXEL
+		 * @default flash.text.GridFitType.PIXEL
 		 *
 		 * @see flash.text.TextField#gridFitType
 		 */

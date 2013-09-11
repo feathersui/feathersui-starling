@@ -333,26 +333,51 @@ package feathers.controls
 
 		/**
 		 * The scroll bar's decrement button sub-component.
+		 *
+		 * <p>For internal use in subclasses.</p>
+		 *
+		 * @see #decrementButtonFactory
+		 * @see #createDecrementButton()
 		 */
 		protected var decrementButton:Button;
 
 		/**
 		 * The scroll bar's increment button sub-component.
+		 *
+		 * <p>For internal use in subclasses.</p>
+		 *
+		 * @see #incrementButtonFactory
+		 * @see #createIncrementButton()
 		 */
 		protected var incrementButton:Button;
 
 		/**
 		 * The scroll bar's thumb sub-component.
+		 *
+		 * <p>For internal use in subclasses.</p>
+		 *
+		 * @see #thumbFactory
+		 * @see #createThumb()
 		 */
 		protected var thumb:Button;
 
 		/**
 		 * The scroll bar's minimum track sub-component.
+		 *
+		 * <p>For internal use in subclasses.</p>
+		 *
+		 * @see #minimumTrackFactory
+		 * @see #createMinimumTrack()
 		 */
 		protected var minimumTrack:Button;
 
 		/**
 		 * The scroll bar's maximum track sub-component.
+		 *
+		 * <p>For internal use in subclasses.</p>
+		 *
+		 * @see #maximumTrackFactory
+		 * @see #createMaximumTrack()
 		 */
 		protected var maximumTrack:Button;
 
@@ -407,6 +432,14 @@ package feathers.controls
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @default 0
+		 *
+		 * @see #minimum
+		 * @see #maximum
+		 * @see #step
+		 * @see #page
+		 * @see #event:change
 		 */
 		public function get value():Number
 		{
@@ -438,6 +471,11 @@ package feathers.controls
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @default 0
+		 *
+		 * @see #value
+		 * @see #maximum
 		 */
 		public function get minimum():Number
 		{
@@ -464,6 +502,11 @@ package feathers.controls
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @default 0
+		 *
+		 * @see #value
+		 * @see #minimum
 		 */
 		public function get maximum():Number
 		{
@@ -490,6 +533,11 @@ package feathers.controls
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @default 0
+		 *
+		 * @see #value
+		 * @see #page
 		 */
 		public function get step():Number
 		{
@@ -511,6 +559,11 @@ package feathers.controls
 
 		/**
 		 * @inheritDoc
+		 *
+		 * @default 0
+		 *
+		 * @see #value
+		 * @see #step
 		 */
 		public function get page():Number
 		{
@@ -542,6 +595,11 @@ package feathers.controls
 		 * scrollBar.padding = 20;</listing>
 		 *
 		 * @default 0
+		 *
+		 * @see #paddingTop
+		 * @see #paddingRight
+		 * @see #paddingBottom
+		 * @see #paddingLeft
 		 */
 		public function get padding():Number
 		{
@@ -793,7 +851,7 @@ package feathers.controls
 				return;
 			}
 			this._trackLayoutMode = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
 
 		/**
@@ -823,6 +881,8 @@ package feathers.controls
 		 *     track.downSkin = new Image( downTexture );
 		 *     return track;
 		 * };</listing>
+		 *
+		 * @default null
 		 *
 		 * @see feathers.controls.Button
 		 * @see #minimumTrackProperties
@@ -865,6 +925,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customMinimumTrackInitializer, "my-custom-minimum-track");</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_MINIMUM_TRACK
 		 * @see feathers.core.FeathersControl#nameList
@@ -918,6 +980,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * scrollBar.minimumTrackProperties.defaultSkin = new Image( upTexture );
 		 * scrollBar.minimumTrackProperties.downSkin = new Image( downTexture );</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #minimumTrackFactory
 		 * @see feathers.controls.Button
@@ -993,6 +1057,8 @@ package feathers.controls
 		 *     return track;
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.Button
 		 * @see #maximumTrackProperties
 		 */
@@ -1034,6 +1100,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customMaximumTrackInitializer, "my-custom-maximum-track");</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_MAXIMUM_TRACK
 		 * @see feathers.core.FeathersControl#nameList
@@ -1087,6 +1155,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * scrollBar.maximumTrackProperties.defaultSkin = new Image( upTexture );
 		 * scrollBar.maximumTrackProperties.downSkin = new Image( downTexture );</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #maximumTrackFactory
 		 * @see feathers.controls.Button
@@ -1162,6 +1232,8 @@ package feathers.controls
 		 *     return thumb;
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.Button
 		 * @see #thumbProperties
 		 */
@@ -1203,6 +1275,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customThumbInitializer, "my-custom-thumb");</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_THUMB
 		 * @see feathers.core.FeathersControl#nameList
@@ -1255,6 +1329,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * scrollBar.thumbProperties.defaultSkin = new Image( upTexture );
 		 * scrollBar.thumbProperties.downSkin = new Image( downTexture );</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #thumbFactory
 		 * @see feathers.controls.Button
@@ -1330,6 +1406,8 @@ package feathers.controls
 		 *     return button;
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.Button
 		 * @see #decrementButtonProperties
 		 */
@@ -1371,6 +1449,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customDecrementButtonInitializer, "my-custom-decrement-button");</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_DECREMENT_BUTTON
 		 * @see feathers.core.FeathersControl#nameList
@@ -1424,6 +1504,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * scrollBar.decrementButtonProperties.defaultSkin = new Image( upTexture );
 		 * scrollBar.decrementButtonProperties.downSkin = new Image( downTexture );</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #decrementButtonFactory
 		 * @see feathers.controls.Button
@@ -1499,6 +1581,8 @@ package feathers.controls
 		 *     return button;
 		 * };</listing>
 		 *
+		 * @default null
+		 *
 		 * @see feathers.controls.Button
 		 * @see #incrementButtonProperties
 		 */
@@ -1540,6 +1624,8 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customIncrementInitializer, "my-custom-increment-button");</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_INCREMENT_BUTTON
 		 * @see feathers.core.FeathersControl#nameList
@@ -1593,6 +1679,8 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * scrollBar.incrementButtonProperties.defaultSkin = new Image( upTexture );
 		 * scrollBar.incrementButtonProperties.downSkin = new Image( downTexture );</listing>
+		 *
+		 * @default null
 		 *
 		 * @see #incrementButtonFactory
 		 * @see feathers.controls.Button
@@ -1679,6 +1767,7 @@ package feathers.controls
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
+			const layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
 			const thumbFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_THUMB_FACTORY);
 			const minimumTrackFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_MINIMUM_TRACK_FACTORY);
 			const maximumTrackFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_MAXIMUM_TRACK_FACTORY);
@@ -1693,7 +1782,10 @@ package feathers.controls
 			{
 				this.createMinimumTrack();
 			}
-			this.createOrDestroyMaximumTrackIfNeeded(maximumTrackFactoryInvalid);
+			if(maximumTrackFactoryInvalid || layoutInvalid)
+			{
+				this.createMaximumTrack();
+			}
 			if(decrementButtonFactoryInvalid)
 			{
 				this.createDecrementButton();
@@ -1711,7 +1803,7 @@ package feathers.controls
 			{
 				this.refreshMinimumTrackStyles();
 			}
-			if((maximumTrackFactoryInvalid || stylesInvalid) && this.maximumTrack)
+			if((maximumTrackFactoryInvalid || stylesInvalid || layoutInvalid) && this.maximumTrack)
 			{
 				this.refreshMaximumTrackStyles();
 			}
@@ -1725,39 +1817,47 @@ package feathers.controls
 			}
 
 			const isEnabled:Boolean = this._isEnabled && this._maximum > this._minimum;
-			if(stateInvalid || dataInvalid || thumbFactoryInvalid)
+			if(dataInvalid || stateInvalid || thumbFactoryInvalid)
 			{
 				this.thumb.isEnabled = isEnabled;
 			}
-			if(stateInvalid || dataInvalid || minimumTrackFactoryInvalid)
+			if(dataInvalid || stateInvalid || minimumTrackFactoryInvalid)
 			{
 				this.minimumTrack.isEnabled = isEnabled;
 			}
-			if((stateInvalid || dataInvalid || maximumTrackFactoryInvalid) && this.maximumTrack)
+			if((dataInvalid || stateInvalid || maximumTrackFactoryInvalid || layoutInvalid) && this.maximumTrack)
 			{
 				this.maximumTrack.isEnabled = isEnabled;
 			}
-			if(stateInvalid || dataInvalid || decrementButtonFactoryInvalid)
+			if(dataInvalid || stateInvalid || decrementButtonFactoryInvalid)
 			{
 				this.decrementButton.isEnabled = isEnabled;
 			}
-			if(stateInvalid || dataInvalid || incrementButtonFactoryInvalid)
+			if(dataInvalid || stateInvalid || incrementButtonFactoryInvalid)
 			{
 				this.incrementButton.isEnabled = isEnabled;
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
-			if(thumbFactoryInvalid || minimumTrackFactoryInvalid || maximumTrackFactoryInvalid ||
-				decrementButtonFactoryInvalid || incrementButtonFactoryInvalid ||
-				dataInvalid || stylesInvalid || sizeInvalid)
-			{
-				this.layout();
-			}
+			this.layout();
 		}
 
 		/**
-		 * @private
+		 * If the component's dimensions have not been set explicitly, it will
+		 * measure its content and determine an ideal size for itself. If the
+		 * <code>explicitWidth</code> or <code>explicitHeight</code> member
+		 * variables are set, those value will be used without additional
+		 * measurement. If one is set, but not the other, the dimension with the
+		 * explicit value will not be measured, but the other non-explicit
+		 * dimension will still need measurement.
+		 *
+		 * <p>Calls <code>setSizeInternal()</code> to set up the
+		 * <code>actualWidth</code> and <code>actualHeight</code> member
+		 * variables used for layout.</p>
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
@@ -1848,7 +1948,15 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * Creates and adds the <code>thumb</code> sub-component and
+		 * removes the old instance, if one exists.
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
+		 *
+		 * @see #thumb
+		 * @see #thumbFactory
+		 * @see #customThumbName
 		 */
 		protected function createThumb():void
 		{
@@ -1869,7 +1977,15 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * Creates and adds the <code>minimumTrack</code> sub-component and
+		 * removes the old instance, if one exists.
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
+		 *
+		 * @see #minimumTrack
+		 * @see #minimumTrackFactory
+		 * @see #customMinimumTrackName
 		 */
 		protected function createMinimumTrack():void
 		{
@@ -1890,16 +2006,21 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * Creates and adds the <code>maximumTrack</code> sub-component and
+		 * removes the old instance, if one exists. If the maximum track is not
+		 * needed, it will not be created.
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
+		 *
+		 * @see #maximumTrack
+		 * @see #maximumTrackFactory
+		 * @see #customMaximumTrackName
 		 */
-		protected function createOrDestroyMaximumTrackIfNeeded(maximumTrackFactoryInvalid:Boolean):void
+		protected function createMaximumTrack():void
 		{
 			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_MIN_MAX)
 			{
-				if(!maximumTrackFactoryInvalid)
-				{
-					return;
-				}
 				if(this.maximumTrack)
 				{
 					this.maximumTrack.removeFromParent(true);
@@ -1922,7 +2043,15 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * Creates and adds the <code>decrementButton</code> sub-component and
+		 * removes the old instance, if one exists.
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
+		 *
+		 * @see #decrementButton
+		 * @see #decrementButtonFactory
+		 * @see #customDecremenButtonName
 		 */
 		protected function createDecrementButton():void
 		{
@@ -1943,7 +2072,15 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * Creates and adds the <code>incrementButton</code> sub-component and
+		 * removes the old instance, if one exists.
+		 *
+		 * <p>Meant for internal use, and subclasses may override this function
+		 * with a custom implementation.</p>
+		 *
+		 * @see #incrementButton
+		 * @see #incrementButtonFactory
+		 * @see #customIncrementButtonName
 		 */
 		protected function createIncrementButton():void
 		{
@@ -2159,6 +2296,10 @@ package feathers.controls
 				this.maximumTrack.width = this.actualWidth - this.maximumTrack.x;
 				this.maximumTrack.height = this.actualHeight;
 			}
+
+			//final validation to avoid juggler next frame issues
+			this.minimumTrack.validate();
+			this.maximumTrack.validate();
 		}
 
 		/**
@@ -2180,6 +2321,9 @@ package feathers.controls
 				this.minimumTrack.width = this.actualWidth - this.minimumTrack.x;
 				this.minimumTrack.height = this.actualHeight;
 			}
+
+			//final validation to avoid juggler next frame issues
+			this.minimumTrack.validate();
 		}
 
 		/**

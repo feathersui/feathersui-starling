@@ -10,6 +10,7 @@ package feathers.controls.popups
 	import feathers.core.IFeathersControl;
 	import feathers.core.PopUpManager;
 	import feathers.events.FeathersEventType;
+	import feathers.utils.display.getDisplayObjectDepthFromStage;
 
 	import flash.errors.IllegalOperationError;
 	import flash.events.KeyboardEvent;
@@ -52,26 +53,101 @@ package feathers.controls.popups
 		}
 
 		/**
+		 * Quickly sets all margin properties to the same value. The
+		 * <code>margin</code> getter always returns the value of
+		 * <code>marginTop</code>, but the other padding values may be
+		 * different.
+		 *
+		 * <p>The following example gives the pop-up a minimum of 20 pixels of
+		 * margin on all sides:</p>
+		 *
+		 * <listing version="3.0">
+		 * manager.margin = 20;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #marginTop
+		 * @see #marginRight
+		 * @see #marginBottom
+		 * @see #marginLeft
+		 */
+		public function get margin():Number
+		{
+			return this.marginTop;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set margin(value:Number):void
+		{
+			this.marginTop = 0;
+			this.marginRight = 0;
+			this.marginBottom = 0;
+			this.marginLeft = 0;
+		}
+
+		/**
 		 * The minimum space, in pixels, between the top edge of the content and
 		 * the top edge of the stage.
+		 *
+		 * <p>The following example gives the pop-up a minimum of 20 pixels of
+		 * margin on the top:</p>
+		 *
+		 * <listing version="3.0">
+		 * manager.marginTop = 20;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #margin
 		 */
 		public var marginTop:Number = 0;
 
 		/**
 		 * The minimum space, in pixels, between the right edge of the content
 		 * and the right edge of the stage.
+		 *
+		 * <p>The following example gives the pop-up a minimum of 20 pixels of
+		 * margin on the right:</p>
+		 *
+		 * <listing version="3.0">
+		 * manager.marginRight = 20;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #margin
 		 */
 		public var marginRight:Number = 0;
 
 		/**
 		 * The minimum space, in pixels, between the bottom edge of the content
 		 * and the bottom edge of the stage.
+		 *
+		 * <p>The following example gives the pop-up a minimum of 20 pixels of
+		 * margin on the bottom:</p>
+		 *
+		 * <listing version="3.0">
+		 * manager.marginBottom = 20;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #margin
 		 */
 		public var marginBottom:Number = 0;
 
 		/**
 		 * The minimum space, in pixels, between the left edge of the content
 		 * and the left edge of the stage.
+		 *
+		 * <p>The following example gives the pop-up a minimum of 20 pixels of
+		 * margin on the left:</p>
+		 *
+		 * <listing version="3.0">
+		 * manager.marginLeft = 20;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #margin
 		 */
 		public var marginLeft:Number = 0;
 
@@ -105,7 +181,11 @@ package feathers.controls.popups
 			this.layout();
 			Starling.current.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			Starling.current.stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
-			Starling.current.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler, false, int.MAX_VALUE, true);
+
+			//using priority here is a hack so that objects higher up in the
+			//display list have a chance to cancel the event first.
+			var priority:int = -getDisplayObjectDepthFromStage(this.content);
+			Starling.current.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler, false, priority, true);
 		}
 
 		/**
@@ -119,7 +199,7 @@ package feathers.controls.popups
 			}
 			Starling.current.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			Starling.current.stage.removeEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
-			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler);
 			if(this.content is IFeathersControl)
 			{
 				this.content.removeEventListener(FeathersEventType.RESIZE, content_resizeHandler);
@@ -151,20 +231,22 @@ package feathers.controls.popups
 				uiContent.maxHeight = maxHeight;
 				uiContent.validate();
 			}
-
-			//if it's a ui control that is able to auto-size, the above
-			//section will ensure that the control stays within the required
-			//bounds.
-			//if it's not a ui control, or if the control's explicit width
-			//and height values are greater than our maximum bounds, then we
-			//will enforce the maximum bounds the hard way.
-			if(this.content.width > maxWidth)
+			else
 			{
-				this.content.width = maxWidth;
-			}
-			if(this.content.height > maxHeight)
-			{
-				this.content.height = maxHeight;
+				//if it's a ui control that is able to auto-size, the above
+				//section will ensure that the control stays within the required
+				//bounds.
+				//if it's not a ui control, or if the control's explicit width
+				//and height values are greater than our maximum bounds, then we
+				//will enforce the maximum bounds the hard way.
+				if(this.content.width > maxWidth)
+				{
+					this.content.width = maxWidth;
+				}
+				if(this.content.height > maxHeight)
+				{
+					this.content.height = maxHeight;
+				}
 			}
 			this.content.x = (Starling.current.stage.stageWidth - this.content.width) / 2;
 			this.content.y = (Starling.current.stage.stageHeight - this.content.height) / 2;
@@ -181,16 +263,20 @@ package feathers.controls.popups
 		/**
 		 * @private
 		 */
-		protected function stage_keyDownHandler(event:KeyboardEvent):void
+		protected function nativeStage_keyDownHandler(event:KeyboardEvent):void
 		{
+			if(event.isDefaultPrevented())
+			{
+				//someone else already handled this one
+				return;
+			}
 			if(event.keyCode != Keyboard.BACK && event.keyCode != Keyboard.ESCAPE)
 			{
 				return;
 			}
 			//don't let the OS handle the event
 			event.preventDefault();
-			//don't let other event handlers handle the event
-			event.stopImmediatePropagation();
+
 			this.close();
 		}
 
@@ -220,7 +306,7 @@ package feathers.controls.popups
 					return;
 				}
 				touch.getLocation(stage, HELPER_POINT);
-				const hitTestResult:DisplayObject = stage.hitTest(HELPER_POINT, true);
+				var hitTestResult:DisplayObject = stage.hitTest(HELPER_POINT, true);
 				var isInBounds:Boolean = false;
 				if(this.content is DisplayObjectContainer)
 				{
@@ -240,6 +326,21 @@ package feathers.controls.popups
 			{
 				touch = event.getTouch(stage, TouchPhase.BEGAN);
 				if(!touch)
+				{
+					return;
+				}
+				touch.getLocation(stage, HELPER_POINT);
+				hitTestResult = stage.hitTest(HELPER_POINT, true);
+				isInBounds = false;
+				if(this.content is DisplayObjectContainer)
+				{
+					isInBounds = DisplayObjectContainer(this.content).contains(hitTestResult);
+				}
+				else
+				{
+					isInBounds = this.content == hitTestResult;
+				}
+				if(isInBounds)
 				{
 					return;
 				}

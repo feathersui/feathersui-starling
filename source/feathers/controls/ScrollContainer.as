@@ -140,6 +140,13 @@ package feathers.controls
 		public static const INTERACTION_MODE_MOUSE:String = "mouse";
 
 		/**
+		 * @copy feathers.controls.Scroller#INTERACTION_MODE_TOUCH_AND_SCROLL_BARS
+		 *
+		 * @see feathers.controls.Scroller#interactionMode
+		 */
+		public static const INTERACTION_MODE_TOUCH_AND_SCROLL_BARS:String = "touchAndScrollBars";
+
+		/**
 		 * Constructor.
 		 */
 		public function ScrollContainer()
@@ -182,6 +189,8 @@ package feathers.controls
 		 * layout.gap = 20;
 		 * layout.padding = 20;
 		 * container.layout = layout;</listing>
+		 *
+		 * @default null
 		 */
 		public function get layout():ILayout
 		{

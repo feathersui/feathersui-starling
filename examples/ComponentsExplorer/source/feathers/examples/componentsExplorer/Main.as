@@ -1,8 +1,9 @@
 package feathers.examples.componentsExplorer
 {
+	import feathers.controls.Drawers;
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
-	import feathers.controls.ScrollContainer;
+	import feathers.events.FeathersEventType;
 	import feathers.examples.componentsExplorer.data.EmbeddedAssets;
 	import feathers.examples.componentsExplorer.data.GroupedListSettings;
 	import feathers.examples.componentsExplorer.data.ItemRendererSettings;
@@ -10,6 +11,7 @@ package feathers.examples.componentsExplorer
 	import feathers.examples.componentsExplorer.data.NumericStepperSettings;
 	import feathers.examples.componentsExplorer.data.SliderSettings;
 	import feathers.examples.componentsExplorer.data.TextInputSettings;
+	import feathers.examples.componentsExplorer.screens.AlertScreen;
 	import feathers.examples.componentsExplorer.screens.ButtonGroupScreen;
 	import feathers.examples.componentsExplorer.screens.ButtonScreen;
 	import feathers.examples.componentsExplorer.screens.CalloutScreen;
@@ -32,20 +34,17 @@ package feathers.examples.componentsExplorer
 	import feathers.examples.componentsExplorer.screens.TextInputScreen;
 	import feathers.examples.componentsExplorer.screens.TextInputSettingsScreen;
 	import feathers.examples.componentsExplorer.screens.ToggleScreen;
-	import feathers.layout.AnchorLayout;
-	import feathers.layout.AnchorLayoutData;
 	import feathers.motion.transitions.ScreenSlidingStackTransitionManager;
 	import feathers.system.DeviceCapabilities;
 	import feathers.themes.MetalWorksMobileTheme;
-	
-	import starling.core.Starling;
-	import starling.display.Sprite;
-	import starling.events.Event;
-	import starling.events.ResizeEvent;
 
-	public class Main extends Sprite
+	import starling.core.Starling;
+	import starling.events.Event;
+
+	public class Main extends Drawers
 	{
 		private static const MAIN_MENU:String = "mainMenu";
+		private static const ALERT:String = "alert";
 		private static const BUTTON:String = "button";
 		private static const BUTTON_SETTINGS:String = "buttonSettings";
 		private static const BUTTON_GROUP:String = "buttonGroup";
@@ -71,6 +70,7 @@ package feathers.examples.componentsExplorer
 
 		private static const MAIN_MENU_EVENTS:Object =
 		{
+			showAlert: ALERT,
 			showButton: BUTTON,
 			showButtonGroup: BUTTON_GROUP,
 			showCallout: CALLOUT,
@@ -91,27 +91,26 @@ package feathers.examples.componentsExplorer
 		public function Main()
 		{
 			super();
-			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
-			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
+			this.addEventListener(FeathersEventType.INITIALIZE, initializeHandler);
 		}
-		
-		private var _container:ScrollContainer;
+
 		private var _navigator:ScreenNavigator;
 		private var _menu:MainMenuScreen;
 		private var _transitionManager:ScreenSlidingStackTransitionManager;
-
-		private function layoutForTablet():void
-		{
-			this._container.width = this.stage.stageWidth;
-			this._container.height = this.stage.stageHeight;
-		}
 		
-		private function addedToStageHandler(event:Event):void
+		private function initializeHandler(event:Event):void
 		{
 			EmbeddedAssets.initialize();
+
 			new MetalWorksMobileTheme();
 			
 			this._navigator = new ScreenNavigator();
+			this.content = this._navigator;
+
+			this._navigator.addScreen(ALERT, new ScreenNavigatorItem(AlertScreen,
+			{
+				complete: MAIN_MENU
+			}));
 
 			this._navigator.addScreen(BUTTON, new ScreenNavigatorItem(ButtonScreen,
 			{
@@ -271,51 +270,23 @@ package feathers.examples.componentsExplorer
 
 			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
-				this.stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
-
-				this._container = new ScrollContainer();
-				this._container.layout = new AnchorLayout();
-				this._container.horizontalScrollPolicy = ScrollContainer.SCROLL_POLICY_OFF;
-				this._container.verticalScrollPolicy = ScrollContainer.SCROLL_POLICY_OFF;
-				this.addChild(this._container);
-
+				//we don't want the screens bleeding outside the navigator's
+				//bounds when a transition is active, so clip it.
+				this._navigator.clipContent = true;
 				this._menu = new MainMenuScreen();
 				for(var eventType:String in MAIN_MENU_EVENTS)
 				{
 					this._menu.addEventListener(eventType, mainMenuEventHandler);
 				}
-				const menuLayoutData:AnchorLayoutData = new AnchorLayoutData();
-				menuLayoutData.top = 0;
-				menuLayoutData.bottom = 0;
-				menuLayoutData.left = 0;
-				this._menu.layoutData = menuLayoutData;
-				this._container.addChild(this._menu);
-
-				this._navigator.clipContent = true;
-				const navigatorLayoutData:AnchorLayoutData = new AnchorLayoutData();
-				navigatorLayoutData.top = 0;
-				navigatorLayoutData.right = 0;
-				navigatorLayoutData.bottom = 0;
-				navigatorLayoutData.leftAnchorDisplayObject = this._menu;
-				navigatorLayoutData.left = 0;
-				this._navigator.layoutData = navigatorLayoutData;
-				this._container.addChild(this._navigator);
-
-				this.layoutForTablet();
+				this._menu.height = 200;
+				this.leftDrawer = this._menu;
+				this.leftDrawerDockMode = Drawers.DOCK_MODE_BOTH;
 			}
 			else
 			{
 				this._navigator.addScreen(MAIN_MENU, new ScreenNavigatorItem(MainMenuScreen, MAIN_MENU_EVENTS));
-
-				this.addChild(this._navigator);
-
 				this._navigator.showScreen(MAIN_MENU);
 			}
-		}
-
-		private function removedFromStageHandler(event:Event):void
-		{
-			this.stage.removeEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
 		}
 
 		private function mainMenuEventHandler(event:Event):void
@@ -326,14 +297,6 @@ package feathers.examples.componentsExplorer
 			this._transitionManager.clearStack();
 			this._transitionManager.skipNextTransition = true;
 			this._navigator.showScreen(screenName);
-		}
-
-		private function stage_resizeHandler(event:ResizeEvent):void
-		{
-			//we don't need to layout for phones because ScreenNavigator knows
-			//to automatically resize itself to fill the stage if we don't give
-			//it a width and height.
-			this.layoutForTablet();
 		}
 	}
 }
