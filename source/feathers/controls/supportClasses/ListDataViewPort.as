@@ -926,6 +926,7 @@ package feathers.controls.supportClasses
 				var item:Object = this._unrenderedData.shift();
 				var index:int = this._dataProvider.getItemIndex(item);
 				var renderer:IListItemRenderer = this.createRenderer(item, index, true, false);
+				renderer.visible = true;
 				this._layoutItems[index + this._layoutIndexOffset] = DisplayObject(renderer);
 			}
 		}
