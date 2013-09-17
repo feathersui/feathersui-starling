@@ -255,6 +255,10 @@ package feathers.controls
 		 *     return renderer;
 		 * };</listing>
 		 *
+		 * <p><em>Warning:</em> A List's data provider cannot contain duplicate
+		 * items. To display the same item in multiple item renderers, you must
+		 * use separate objects with the same properties.</p>
+		 *
 		 * @default null
 		 */
 		public function get dataProvider():ListCollection

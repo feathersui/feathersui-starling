@@ -432,6 +432,10 @@ package feathers.controls
 		 * descriptors may be implemented with the
 		 * <code>IHierarchicalCollectionDataDescriptor</code> interface.</p>
 		 *
+		 * <p><em>Warning:</em> A Grouped List's data provider cannot contain
+		 * duplicate items. To display the same item in multiple item renderers,
+		 * you must use separate objects with the same properties.</p>
+		 *
 		 * @default null
 		 *
 		 * @see feathers.data.HierarchicalCollection
