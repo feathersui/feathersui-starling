@@ -1238,7 +1238,32 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		public override function getBounds(targetSpace:DisplayObject, resultRect:Rectangle=null):Rectangle
+		override public function getChildByName(name:String):DisplayObject
+		{
+			var childCount:int = this.numChildren;
+			for(var i:int = 0; i < childCount; i++)
+			{
+				var child:DisplayObject = this.getChildAt(i);
+				if(child is IFeathersControl)
+				{
+					var feathersChild:IFeathersControl = IFeathersControl(child);
+					if(feathersChild.nameList.contains(name))
+					{
+						return DisplayObject(feathersChild);
+					}
+				}
+				else if(child.name == name)
+				{
+					return child;
+				}
+			}
+			return null;
+		}
+
+		/**
+		 * @private
+		 */
+		override public function getBounds(targetSpace:DisplayObject, resultRect:Rectangle=null):Rectangle
 		{
 			if(!resultRect)
 			{
