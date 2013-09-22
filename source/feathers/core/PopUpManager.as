@@ -111,7 +111,7 @@ package feathers.core
 			for(var i:int = 0; i < popUpCount; i++)
 			{
 				var popUp:DisplayObject = popUps[i];
-				var overlay:DisplayObject = DisplayObject(POPUP_TO_OVERLAY[i]);
+				var overlay:DisplayObject = DisplayObject(POPUP_TO_OVERLAY[popUp]);
 				popUp.removeFromParent(false);
 				if(overlay)
 				{
@@ -124,7 +124,7 @@ package feathers.core
 			for(i = 0; i < popUpCount; i++)
 			{
 				popUp = popUps[i];
-				overlay = DisplayObject(POPUP_TO_OVERLAY[i]);
+				overlay = DisplayObject(POPUP_TO_OVERLAY[popUp]);
 				if(overlay)
 				{
 					calculatedRoot.addChild(overlay);
