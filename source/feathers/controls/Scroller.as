@@ -2243,7 +2243,7 @@ package feathers.controls
 				this.refreshInteractionModeEvents();
 			}
 
-			if(stateInvalid)
+			if(scrollBarInvalid || stateInvalid)
 			{
 				this.refreshEnabled();
 			}
