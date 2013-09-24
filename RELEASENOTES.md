@@ -10,6 +10,7 @@ Version 1.2.0 of Feathers is still in active development. This list of changes i
 * New Component: LayoutGroup
 * New Component: LayoutGroupListItemRenderer
 * Many performance improvements with the help of Adobe Scout.
+* New minimum runtime versions. Target SWF version rolled back to 18 (Flash Player 11.5 and AIR 3.5) to offer easier BlackBerry 10 support.
 
 ### 1.2.0 Deprecated APIs
 
