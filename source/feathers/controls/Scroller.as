@@ -3081,6 +3081,10 @@ package feathers.controls
 			this._isDraggingHorizontally = false;
 			if(isNaN(targetHorizontalScrollPosition) && !this._isDraggingVertically && !this._verticalAutoScrollTween)
 			{
+				if(this._touchBlocker)
+				{
+					this._touchBlocker.visible = false;
+				}
 				this.hideHorizontalScrollBar();
 				this.hideVerticalScrollBar();
 				this.validate();
@@ -3110,6 +3114,10 @@ package feathers.controls
 			this._isDraggingVertically = false;
 			if(isNaN(targetVerticalScrollPosition) && !this._isDraggingHorizontally && !this._horizontalAutoScrollTween)
 			{
+				if(this._touchBlocker)
+				{
+					this._touchBlocker.visible = false;
+				}
 				this.hideHorizontalScrollBar();
 				this.hideVerticalScrollBar();
 				this.validate();
@@ -3706,10 +3714,6 @@ package feathers.controls
 			}
 			else if(touch.phase == TouchPhase.ENDED)
 			{
-				if(this._touchBlocker)
-				{
-					this._touchBlocker.visible = false;
-				}
 				this.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
 				this.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
 				this._touchPointID = -1;
