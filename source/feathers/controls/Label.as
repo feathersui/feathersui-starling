@@ -237,10 +237,7 @@ package feathers.controls
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
-			if(textRendererInvalid || dataInvalid || stateInvalid || sizeInvalid || stylesInvalid)
-			{
-				this.layout();
-			}
+			this.layout();
 		}
 
 		/**
@@ -257,6 +254,9 @@ package feathers.controls
 			this.textRenderer.minWidth = this._minWidth;
 			this.textRenderer.maxWidth = this._maxWidth;
 			this.textRenderer.width = this.explicitWidth;
+			this.textRenderer.minHeight = this._minHeight;
+			this.textRenderer.maxHeight = this._maxHeight;
+			this.textRenderer.height = this.explicitHeight;
 			this.textRenderer.measureText(HELPER_POINT);
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
@@ -342,6 +342,7 @@ package feathers.controls
 		protected function layout():void
 		{
 			this.textRenderer.width = this.actualWidth;
+			this.textRenderer.height = this.actualHeight;
 			this.textRenderer.validate();
 			this._baseline = this.textRenderer.baseline;
 		}
