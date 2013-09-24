@@ -11,6 +11,7 @@ minor bug fixes.
 * Uses Texture onRestore for internally managed textures, like in text controls.
 * StageTextTextEditor: fix for displayAsPassword clearing the text.
 * Panel: won't scroll if mouse wheel or touch occurs in header or footer.
+* Panel: header and footer can be touched when content is scrolling.
 * AeonDesktopTheme: uses a better disabled text color.
 * SmartDisplayObjectStateValueSelector: properly supports uint color value of 0.
 * Item Renderers: smarter handling of accessory resizing.
