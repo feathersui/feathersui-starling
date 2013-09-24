@@ -89,6 +89,7 @@ This release includes minor updates to support Starling Framework 1.4 and a numb
 * Label: sets proper text renderer dimensions if height is explicitly set.
 * Radio: better handling of setting toggleGroup to avoid accidentally adding to defaultRadioGroup.
 * Scroller: properly updates isEnabled on scroll bars when they are first created.
+* Scroller: child touches are blocked until throw animation finishes to match native behavior.
 * Scroll bars: better isEnabled handling.
 * TextInput: better handling of focus when not visible.
 * TextInput: better prompt handling.
