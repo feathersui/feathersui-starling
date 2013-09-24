@@ -37,4 +37,28 @@
 		<ant dir="${basedir}/TrainTimes" target="build-ios" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/YouTubeFeeds" target="build-ios" inheritAll="false" useNativeBasedir="true"/>
 	</target>
+	<target name="install-android" description="Installs Android APKs to a device.">
+		<ant dir="${basedir}/ComponentsExplorer" target="install-android" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/DisplayObjectExplorer" target="install-android" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/Gallery" target="install-android" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/HelloWorld" target="install-android" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/LayoutExplorer" target="install-android" inheritAll="false" useNativeBasedir="true"/>
+		<!--<ant dir="${basedir}/MXML" target="install-android" inheritAll="false" useNativeBasedir="true"/>-->
+		<ant dir="${basedir}/TileList" target="install-android" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/Todos" target="install-android" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/TrainTimes" target="install-android" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/YouTubeFeeds" target="install-android" inheritAll="false" useNativeBasedir="true"/>
+	</target>
+	<target name="install-ios" description="Installs iOS IPAs to a device.">
+		<ant dir="${basedir}/ComponentsExplorer" target="install-ios" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/DisplayObjectExplorer" target="install-ios" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/Gallery" target="install-ios" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/HelloWorld" target="install-ios" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/LayoutExplorer" target="install-ios" inheritAll="false" useNativeBasedir="true"/>
+		<!--<ant dir="${basedir}/MXML" target="install-ios" inheritAll="false" useNativeBasedir="true"/>-->
+		<ant dir="${basedir}/TileList" target="install-ios" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/Todos" target="install-ios" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/TrainTimes" target="install-ios" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/YouTubeFeeds" target="install-ios" inheritAll="false" useNativeBasedir="true"/>
+	</target>
 </project>

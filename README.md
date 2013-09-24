@@ -14,8 +14,8 @@ Say hello to [Feathers](http://feathersui.com/), a library of light-weight, skin
 
 ## Requirements
 
-* Adobe AIR 3.7 or Adobe Flash Player 11.7
-* Starling Framework from Github
+* Adobe AIR 3.5 or Adobe Flash Player 11.5
+* Starling Framework 1.4
 
 ## Downloads
 
