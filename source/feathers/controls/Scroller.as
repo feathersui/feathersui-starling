@@ -2848,8 +2848,8 @@ package feathers.controls
 			{
 				this._touchBlocker.x = this._leftViewPortOffset;
 				this._touchBlocker.y = this._topViewPortOffset;
-				this._touchBlocker.width = this.actualWidth - this._leftViewPortOffset - this._rightViewPortOffset;
-				this._touchBlocker.height = this.actualHeight - this._topViewPortOffset - this._bottomViewPortOffset;
+				this._touchBlocker.width = this._viewPort.visibleWidth;
+				this._touchBlocker.height = this._viewPort.visibleHeight;
 			}
 
 			this._viewPort.x = this._leftViewPortOffset - this._horizontalScrollPosition;
