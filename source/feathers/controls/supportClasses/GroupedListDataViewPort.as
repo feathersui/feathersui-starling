@@ -1420,8 +1420,14 @@ package feathers.controls.supportClasses
 					if(this._typicalItemIsInDataProvider)
 					{
 						delete this._itemRendererMap[this._typicalItemRenderer.data];
-						delete this._firstItemRendererMap[this._typicalItemRenderer.data];
-						delete this._singleItemRendererMap[this._typicalItemRenderer.data];
+						if(this._firstItemRendererMap)
+						{
+							delete this._firstItemRendererMap[this._typicalItemRenderer.data];
+						}
+						if(this._singleItemRendererMap)
+						{
+							delete this._singleItemRendererMap[this._typicalItemRenderer.data];
+						}
 						//can't be in last item renderers
 					}
 					this.destroyItemRenderer(this._typicalItemRenderer);
