@@ -1106,7 +1106,8 @@ package feathers.controls.text
 			this.refreshSnapshot();
 			if(this.textSnapshot)
 			{
-				this.textSnapshot.visible = this._text.length > 0;
+				this.textSnapshot.visible = !this._textFieldHasFocus;
+				this.textSnapshot.alpha = this._text.length > 0 ? 1 : 0;
 			}
 		}
 
