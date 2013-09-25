@@ -2016,6 +2016,18 @@ package feathers.controls.renderers
 		 */
 		protected function commitData():void
 		{
+			if(!this._itemHasLabel)
+			{
+				this._label = "";
+			}
+			if(!this._itemHasIcon)
+			{
+				this.replaceIcon(null);
+			}
+			if(!this._itemHasAccessory)
+			{
+				this.replaceAccessory(null);
+			}
 			if(this._data && this._owner)
 			{
 				if(this._itemHasLabel)
