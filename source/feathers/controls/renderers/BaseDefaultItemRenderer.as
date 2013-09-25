@@ -2035,6 +2035,10 @@ package feathers.controls.renderers
 					const newAccessory:DisplayObject = this.itemToAccessory(this._data);
 					this.replaceAccessory(newAccessory);
 				}
+				else
+				{
+					this.replaceAccessory(null);
+				}
 			}
 			else
 			{
