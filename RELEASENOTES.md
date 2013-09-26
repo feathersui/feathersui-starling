@@ -9,6 +9,7 @@ Version 1.2.0 of Feathers is still in active development. This list of changes i
 * New Component: Drawers
 * New Component: LayoutGroup
 * New Component: LayoutGroupListItemRenderer
+* List, GroupedList: Setting a new data provider will clear selection. Now, selection cannot be set before data provider is passed in. If the same selection is desired after a data provider change, it should be done manually.
 * Many performance improvements with the help of Adobe Scout.
 * New minimum runtime versions. Target SWF version rolled back to 18 (Flash Player 11.5 and AIR 3.5) to offer easier BlackBerry 10 support.
 

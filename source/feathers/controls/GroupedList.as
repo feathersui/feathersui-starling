@@ -472,6 +472,9 @@ package feathers.controls
 			this.horizontalScrollPosition = 0;
 			this.verticalScrollPosition = 0;
 
+			//clear the selection for the same reason
+			this.setSelectedLocation(-1, -1);
+
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
@@ -1980,6 +1983,10 @@ package feathers.controls
 		 */
 		override public function dispose():void
 		{
+			//clearing selection now so that the data provider setter won't
+			//cause a selection change that triggers events.
+			this._selectedGroupIndex = -1;
+			this._selectedItemIndex = -1;
 			this.dataProvider = null;
 			super.dispose();
 		}
