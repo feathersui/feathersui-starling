@@ -1708,7 +1708,12 @@ package feathers.controls
 				}
 				return result;
 			}
-			return null;
+			//we want to register touches in our hitArea as a last resort
+			if(forTouch && (!this.visible || !this.touchable))
+			{
+				return null;
+			}
+			return this._hitArea.contains(localPoint.x, localPoint.y) ? this : null;
 		}
 
 		/**
@@ -2513,40 +2518,15 @@ package feathers.controls
 					}
 				}
 			}
-			else //a drawer is open, let's only work with touches over the content
+			else if(touch.target != this && !touch.isTouching(this._content) &&
+				!(this.isTopDrawerDocked && touch.isTouching(this._topDrawer)) &&
+				!(this.isRightDrawerDocked && touch.isTouching(this._rightDrawer)) &&
+				!(this.isBottomDrawerDocked && touch.isTouching(this._bottomDrawer)) &&
+				!(this.isLeftDrawerDocked && touch.isTouching(this._leftDrawer)))
 			{
-				//not testing for touch because we just want to know if we're
-				//over the content or one of its children.
-				var hitTarget:DisplayObject = this.hitTest(touch.getLocation(this), false);
-				var isHitTargetContentOrDocked:Boolean = false;
-				if(this._content == hitTarget || (this._content is DisplayObjectContainer && DisplayObjectContainer(this._content).contains(hitTarget)))
-				{
-					isHitTargetContentOrDocked = true;
-				}
-				else if(this.isTopDrawerDocked &&
-					(this._topDrawer == hitTarget || (this._topDrawer is DisplayObjectContainer && DisplayObjectContainer(this._topDrawer).contains(hitTarget))))
-				{
-					isHitTargetContentOrDocked = true;
-				}
-				else if(this.isRightDrawerDocked &&
-					(this._rightDrawer == hitTarget || (this._rightDrawer is DisplayObjectContainer && DisplayObjectContainer(this._rightDrawer).contains(hitTarget))))
-				{
-					isHitTargetContentOrDocked = true;
-				}
-				else if(this.isBottomDrawerDocked &&
-					(this._bottomDrawer == hitTarget || (this._bottomDrawer is DisplayObjectContainer && DisplayObjectContainer(this._bottomDrawer).contains(hitTarget))))
-				{
-					isHitTargetContentOrDocked = true;
-				}
-				else if(this.isLeftDrawerDocked &&
-					(this._leftDrawer == hitTarget || (this._leftDrawer is DisplayObjectContainer && DisplayObjectContainer(this._leftDrawer).contains(hitTarget))))
-				{
-					isHitTargetContentOrDocked = true;
-				}
-				if(!isHitTargetContentOrDocked)
-				{
-					return;
-				}
+				//a drawer is open, let's only work with touches over the
+				//content or other drawers that are docked
+				return;
 			}
 
 			this.touchPointID = touch.id;
