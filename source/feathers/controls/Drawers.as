@@ -2518,14 +2518,32 @@ package feathers.controls
 				//not testing for touch because we just want to know if we're
 				//over the content or one of its children.
 				var hitTarget:DisplayObject = this.hitTest(touch.getLocation(this), false);
-				if(this._content is DisplayObjectContainer)
+				var isHitTargetContentOrDocked:Boolean = false;
+				if(this._content == hitTarget || (this._content is DisplayObjectContainer && DisplayObjectContainer(this._content).contains(hitTarget)))
 				{
-					if(!DisplayObjectContainer(this._content).contains(hitTarget))
-					{
-						return;
-					}
+					isHitTargetContentOrDocked = true;
 				}
-				else if(this._content != hitTarget)
+				else if(this.isTopDrawerDocked &&
+					(this._topDrawer == hitTarget || (this._topDrawer is DisplayObjectContainer && DisplayObjectContainer(this._topDrawer).contains(hitTarget))))
+				{
+					isHitTargetContentOrDocked = true;
+				}
+				else if(this.isRightDrawerDocked &&
+					(this._rightDrawer == hitTarget || (this._rightDrawer is DisplayObjectContainer && DisplayObjectContainer(this._rightDrawer).contains(hitTarget))))
+				{
+					isHitTargetContentOrDocked = true;
+				}
+				else if(this.isBottomDrawerDocked &&
+					(this._bottomDrawer == hitTarget || (this._bottomDrawer is DisplayObjectContainer && DisplayObjectContainer(this._bottomDrawer).contains(hitTarget))))
+				{
+					isHitTargetContentOrDocked = true;
+				}
+				else if(this.isLeftDrawerDocked &&
+					(this._leftDrawer == hitTarget || (this._leftDrawer is DisplayObjectContainer && DisplayObjectContainer(this._leftDrawer).contains(hitTarget))))
+				{
+					isHitTargetContentOrDocked = true;
+				}
+				if(!isHitTargetContentOrDocked)
 				{
 					return;
 				}
