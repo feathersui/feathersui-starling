@@ -24,7 +24,6 @@ package feathers.controls.supportClasses
 	import feathers.layout.ViewPortBounds;
 
 	import flash.errors.IllegalOperationError;
-
 	import flash.geom.Point;
 	import flash.utils.Dictionary;
 
@@ -2379,6 +2378,40 @@ package feathers.controls.supportClasses
 			return -1;
 		}
 
+		private function getMappedItemRenderer(item:Object):IGroupedListItemRenderer
+		{
+			var renderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this._itemRendererMap[item]);
+			if(renderer)
+			{
+				return renderer;
+			}
+			if(this._firstItemRendererMap)
+			{
+				renderer = IGroupedListItemRenderer(this._firstItemRendererMap[item]);
+				if(renderer)
+				{
+					return renderer;
+				}
+			}
+			if(this._singleItemRendererMap)
+			{
+				renderer = IGroupedListItemRenderer(this._singleItemRendererMap[item]);
+				if(renderer)
+				{
+					return renderer;
+				}
+			}
+			if(this._lastItemRendererMap)
+			{
+				renderer = IGroupedListItemRenderer(this._lastItemRendererMap[item]);
+				if(renderer)
+				{
+					return renderer;
+				}
+			}
+			return null;
+		}
+
 		private function childProperties_onChange(proxy:PropertyProxy, name:String):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
@@ -2493,42 +2526,59 @@ package feathers.controls.supportClasses
 
 		private function dataProvider_updateItemHandler(event:Event, indices:Array):void
 		{
-			const groupIndex:int = indices[0] as int;
-			if(indices.length > 1) //updating a whole group
+			var groupIndex:int = indices[0] as int;
+			if(indices.length > 1) //updating a single item
 			{
-				const itemIndex:int = indices[1] as int;
-				const item:Object = this._dataProvider.getItemAt(groupIndex, itemIndex);
-				var renderer:IGroupedListItemRenderer = IGroupedListItemRenderer(this._itemRendererMap[item]);
-				if(!renderer)
+				var itemIndex:int = indices[1] as int;
+				var item:Object = this._dataProvider.getItemAt(groupIndex, itemIndex);
+				var itemRenderer:IGroupedListItemRenderer = this.getMappedItemRenderer(item);
+				if(itemRenderer)
 				{
-					if(this._firstItemRendererMap)
-					{
-						renderer = IGroupedListItemRenderer(this._firstItemRendererMap[item]);
-					}
-					if(!renderer)
-					{
-						if(this._lastItemRendererMap)
-						{
-							renderer = IGroupedListItemRenderer(this._lastItemRendererMap[item]);
-						}
-						if(!renderer)
-						{
-							if(this._singleItemRendererMap)
-							{
-								renderer = IGroupedListItemRenderer(this._singleItemRendererMap[item]);
-							}
-							if(!renderer)
-							{
-								return;
-							}
-						}
-					}
+					itemRenderer.data = null;
+					itemRenderer.data = item;
 				}
-				renderer.data = null;
-				renderer.data = item;
 			}
 			else //updating a whole group
 			{
+				var groupLength:int = this._dataProvider.getLength(groupIndex);
+				for(var i:int = 0; i < groupLength; i++)
+				{
+					item = this._dataProvider.getItemAt(groupIndex, i);
+					if(item)
+					{
+						itemRenderer = this.getMappedItemRenderer(item);
+						if(itemRenderer)
+						{
+							itemRenderer.data = null;
+							itemRenderer.data = item;
+						}
+					}
+				}
+				var group:Object = this._dataProvider.getItemAt(groupIndex);
+				item = this._owner.groupToHeaderData(group);
+				if(item)
+				{
+					var headerOrFooterRenderer:IGroupedListHeaderOrFooterRenderer = this._headerRendererMap[item];
+					if(headerOrFooterRenderer)
+					{
+						headerOrFooterRenderer.data = null;
+						headerOrFooterRenderer.data = item;
+					}
+				}
+				item = this._owner.groupToFooterData(group);
+				if(item)
+				{
+					headerOrFooterRenderer = this._footerRendererMap[item];
+					if(headerOrFooterRenderer)
+					{
+						headerOrFooterRenderer.data = null;
+						headerOrFooterRenderer.data = item;
+					}
+				}
+
+				//we need to invalidate because the group may have more or fewer items
+				this.invalidate(INVALIDATION_FLAG_DATA);
+
 				const layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
 				if(!layout || !layout.hasVariableItemDimensions)
 				{
