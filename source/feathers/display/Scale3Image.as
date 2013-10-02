@@ -55,6 +55,12 @@ package feathers.display
 			this.textures = textures;
 			this._textureScale = textureScale;
 			this._hitArea = new Rectangle();
+			if(!this._batch)
+			{
+				this._batch = new QuadBatch();
+				this._batch.touchable = false;
+				this.addChild(this._batch);
+			}
 			this.readjustSize();
 
 			this.addEventListener(Event.FLATTEN, flattenHandler);
@@ -317,21 +323,6 @@ package feathers.display
 		/**
 		 * @private
 		 */
-		private var _firstRegionImage:Image;
-
-		/**
-		 * @private
-		 */
-		private var _secondRegionImage:Image;
-
-		/**
-		 * @private
-		 */
-		private var _thirdRegionImage:Image;
-
-		/**
-		 * @private
-		 */
 		public override function getBounds(targetSpace:DisplayObject, resultRect:Rectangle=null):Rectangle
 		{
 			if(!resultRect)
@@ -432,10 +423,17 @@ package feathers.display
 		 */
 		private function validate():void
 		{
-			this.refreshImages();
 			if(this._propertiesChanged || this._layoutChanged || this._renderingChanged)
 			{
-				this.refreshBatch();
+				this._batch.batchable = !this._useSeparateBatch;
+				this._batch.reset();
+
+				if(!helperImage)
+				{
+					helperImage = new Image(this._textures.first);
+				}
+				helperImage.smoothing = this._smoothing;
+				helperImage.color = this._color;
 
 				var image:Image;
 				if(this._textures.direction == Scale3Textures.DIRECTION_VERTICAL)
@@ -454,74 +452,36 @@ package feathers.display
 
 					if(scaledOppositeEdgeSize > 0)
 					{
-						if(this._useSeparateBatch)
+						if(scaledFirstRegionSize > 0)
 						{
-							image = helperImage;
 							helperImage.texture = this._textures.first;
 							helperImage.readjustSize();
-						}
-						else
-						{
-							image = this._firstRegionImage;
-							image.smoothing = this._smoothing;
-							image.color = this._color;
-						}
-						image.x = 0;
-						image.y = 0;
-						image.width = scaledOppositeEdgeSize;
-						image.height = scaledFirstRegionSize;
-						if(this._useSeparateBatch && scaledFirstRegionSize > 0)
-						{
+							helperImage.x = 0;
+							helperImage.y = 0;
+							helperImage.width = scaledOppositeEdgeSize;
+							helperImage.height = scaledFirstRegionSize;
 							this._batch.addImage(helperImage);
 						}
 
 						if(scaledSecondRegionSize > 0)
 						{
-							if(this._useSeparateBatch)
-							{
-								image = helperImage;
-								helperImage.texture = this._textures.second;
-								helperImage.readjustSize();
-							}
-							else
-							{
-								image = this._secondRegionImage;
-								image.smoothing = this._smoothing;
-								image.color = this._color;
-								image.visible = true;
-							}
-							image.x = 0;
-							image.y = scaledFirstRegionSize;
-							image.width = scaledOppositeEdgeSize;
-							image.height = scaledSecondRegionSize;
-							if(this._useSeparateBatch)
-							{
-								this._batch.addImage(helperImage);
-							}
-						}
-						else if(!this._useSeparateBatch)
-						{
-							this._secondRegionImage.visible = false;
+							helperImage.texture = this._textures.second;
+							helperImage.readjustSize();
+							helperImage.x = 0;
+							helperImage.y = scaledFirstRegionSize;
+							helperImage.width = scaledOppositeEdgeSize;
+							helperImage.height = scaledSecondRegionSize;
+							this._batch.addImage(helperImage);
 						}
 
-						if(this._useSeparateBatch)
+						if(scaledThirdRegionSize > 0)
 						{
-							image = helperImage;
 							helperImage.texture = this._textures.third;
 							helperImage.readjustSize();
-						}
-						else
-						{
-							image = this._thirdRegionImage;
-							image.smoothing = this._smoothing;
-							image.color = this._color;
-						}
-						image.x = 0;
-						image.y = this._height - scaledThirdRegionSize;
-						image.width = scaledOppositeEdgeSize;
-						image.height = scaledThirdRegionSize;
-						if(this._useSeparateBatch && scaledThirdRegionSize > 0)
-						{
+							helperImage.x = 0;
+							helperImage.y = this._height - scaledThirdRegionSize;
+							helperImage.width = scaledOppositeEdgeSize;
+							helperImage.height = scaledThirdRegionSize;
 							this._batch.addImage(helperImage);
 						}
 					}
@@ -542,74 +502,36 @@ package feathers.display
 
 					if(scaledOppositeEdgeSize > 0)
 					{
-						if(this._useSeparateBatch)
+						if(scaledFirstRegionSize > 0)
 						{
-							image = helperImage;
 							helperImage.texture = this._textures.first;
 							helperImage.readjustSize();
-						}
-						else
-						{
-							image = this._firstRegionImage;
-							image.smoothing = this._smoothing;
-							image.color = this._color;
-						}
-						image.x = 0;
-						image.y = 0;
-						image.width = scaledFirstRegionSize;
-						image.height = scaledOppositeEdgeSize;
-						if(this._useSeparateBatch && scaledFirstRegionSize > 0)
-						{
+							helperImage.x = 0;
+							helperImage.y = 0;
+							helperImage.width = scaledFirstRegionSize;
+							helperImage.height = scaledOppositeEdgeSize;
 							this._batch.addImage(helperImage);
 						}
 
 						if(scaledSecondRegionSize > 0)
 						{
-							if(this._useSeparateBatch)
-							{
-								image = helperImage;
-								helperImage.texture = this._textures.second;
-								helperImage.readjustSize();
-							}
-							else
-							{
-								image = this._secondRegionImage
-								image.smoothing = this._smoothing;
-								image.color = this._color;
-								image.visible = true;
-							}
-							image.x = scaledFirstRegionSize;
-							image.y = 0;
-							image.width = scaledSecondRegionSize;
-							image.height = scaledOppositeEdgeSize;
-							if(this._useSeparateBatch)
-							{
-								this._batch.addImage(helperImage);
-							}
-						}
-						else if(!this._useSeparateBatch)
-						{
-							this._secondRegionImage.visible = false;
+							helperImage.texture = this._textures.second;
+							helperImage.readjustSize();
+							helperImage.x = scaledFirstRegionSize;
+							helperImage.y = 0;
+							helperImage.width = scaledSecondRegionSize;
+							helperImage.height = scaledOppositeEdgeSize;
+							this._batch.addImage(helperImage);
 						}
 
-						if(this._useSeparateBatch)
+						if(scaledThirdRegionSize > 0)
 						{
-							image = helperImage;
 							helperImage.texture = this._textures.third;
 							helperImage.readjustSize();
-						}
-						else
-						{
-							image = this._thirdRegionImage;
-							image.smoothing = this._smoothing;
-							image.color = this._color;
-						}
-						image.x = this._width - scaledThirdRegionSize;
-						image.y = 0;
-						image.width = scaledThirdRegionSize;
-						image.height = scaledOppositeEdgeSize;
-						if(this._useSeparateBatch && scaledThirdRegionSize > 0)
-						{
+							helperImage.x = this._width - scaledThirdRegionSize;
+							helperImage.y = 0;
+							helperImage.width = scaledThirdRegionSize;
+							helperImage.height = scaledOppositeEdgeSize;
 							this._batch.addImage(helperImage);
 						}
 					}
@@ -618,91 +540,6 @@ package feathers.display
 			this._propertiesChanged = false;
 			this._layoutChanged = false;
 			this._renderingChanged = false;
-		}
-
-		/**
-		 * @private
-		 */
-		private function refreshImages():void
-		{
-			if(!this._renderingChanged || this._useSeparateBatch)
-			{
-				return;
-			}
-			if(this._firstRegionImage)
-			{
-				this._firstRegionImage.texture = this._textures.first;
-				this._firstRegionImage.readjustSize();
-			}
-			else
-			{
-				this._firstRegionImage = new Image(this._textures.first);
-				this.addChild(this._firstRegionImage);
-			}
-			if(this._secondRegionImage)
-			{
-				this._secondRegionImage.texture = this._textures.second;
-				this._secondRegionImage.readjustSize();
-			}
-			else
-			{
-				this._secondRegionImage = new Image(this._textures.second);
-				this.addChild(this._secondRegionImage);
-			}
-			if(this._thirdRegionImage)
-			{
-				this._thirdRegionImage.texture = this._textures.third;
-				this._thirdRegionImage.readjustSize();
-			}
-			else
-			{
-				this._thirdRegionImage = new Image(this._textures.third);
-				this.addChild(this._thirdRegionImage);
-			}
-		}
-
-		/**
-		 * @private
-		 */
-		private function refreshBatch():void
-		{
-			if(this._useSeparateBatch)
-			{
-				if(!this._batch)
-				{
-					this._batch = new QuadBatch();
-					this._batch.touchable = false;
-					this.addChild(this._batch);
-				}
-				if(this._firstRegionImage)
-				{
-					this._firstRegionImage.removeFromParent(true);
-					this._firstRegionImage = null;
-				}
-				if(this._secondRegionImage)
-				{
-					this._secondRegionImage.removeFromParent(true);
-					this._secondRegionImage = null;
-				}
-				if(this._thirdRegionImage)
-				{
-					this._thirdRegionImage.removeFromParent(true);
-					this._thirdRegionImage = null;
-				}
-				this._batch.reset();
-
-				if(!helperImage)
-				{
-					helperImage = new Image(this._textures.first);
-				}
-				helperImage.smoothing = this._smoothing;
-				helperImage.color = this._color;
-			}
-			else if(this._batch)
-			{
-				this._batch.removeFromParent(true);
-				this._batch = null;
-			}
 		}
 
 		/**
