@@ -55,13 +55,11 @@ package feathers.display
 			this.textures = textures;
 			this._textureScale = textureScale;
 			this._hitArea = new Rectangle();
-			if(!this._batch)
-			{
-				this._batch = new QuadBatch();
-				this._batch.touchable = false;
-				this.addChild(this._batch);
-			}
 			this.readjustSize();
+
+			this._batch = new QuadBatch();
+			this._batch.touchable = false;
+			this.addChild(this._batch);
 
 			this.addEventListener(Event.FLATTEN, flattenHandler);
 		}
