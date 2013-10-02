@@ -698,7 +698,7 @@ package feathers.controls.text
 					charLocation.x = currentX + charData.xOffset * scale;
 					charLocation.y = currentY + charData.yOffset * scale;
 					charLocation.scale = scale;
-					CHARACTER_BUFFER.push(charLocation);
+					CHARACTER_BUFFER[CHARACTER_BUFFER.length] = charLocation;
 					wordLength++;
 				}
 				else
@@ -771,12 +771,14 @@ package feathers.controls.text
 		protected function addBufferToBatch(skipCount:int):void
 		{
 			const charCount:int = CHARACTER_BUFFER.length - skipCount;
+			var pushIndex:int = CHAR_LOCATION_POOL.length;
 			for(var i:int = 0; i < charCount; i++)
 			{
 				var charLocation:CharLocation = CHARACTER_BUFFER.shift();
 				this.addCharacterToBatch(charLocation.char, charLocation.x, charLocation.y, charLocation.scale);
 				charLocation.char = null;
-				CHAR_LOCATION_POOL.push(charLocation);
+				CHAR_LOCATION_POOL[pushIndex] = charLocation;
+				pushIndex++;
 			}
 		}
 
