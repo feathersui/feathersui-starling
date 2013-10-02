@@ -228,6 +228,40 @@ package feathers.display
 			this._color = value;
 			this._propertiesChanged = true;
 		}
+
+		/**
+		 * @private
+		 */
+		private var _useSeparateBatch:Boolean = true;
+
+		/**
+		 * Determines if the tiled images are batched normally by Starling or if
+		 * they're batched separately.
+		 *
+		 * <p>In the following example, separate batching is disabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * image.useSeparateBatch = false;</listing>
+		 *
+		 * @default true
+		 */
+		public function get useSeparateBatch():Boolean
+		{
+			return this._useSeparateBatch;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set useSeparateBatch(value:Boolean):void
+		{
+			if(this._useSeparateBatch == value)
+			{
+				return;
+			}
+			this._useSeparateBatch = value;
+			this._propertiesChanged = true;
+		}
 		
 		/**
 		 * @private
@@ -370,6 +404,7 @@ package feathers.display
 			}
 			if(this._propertiesChanged || this._layoutChanged)
 			{
+				this._batch.batchable = !this._useSeparateBatch;
 				this._batch.reset();
 				this._image.scaleX = this._image.scaleY = this._textureScale;
 				const scaledTextureWidth:Number = this._originalImageWidth * this._textureScale;
