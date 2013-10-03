@@ -168,6 +168,13 @@
 			</fileset>
 		</copy>
 
+		<copy overwrite="true" todir="${examples.output}/DragAndDrop">
+			<fileset dir="${examples.root}/DragAndDrop">
+				<include name="README.md"/>
+				<include name="source/**"/>
+			</fileset>
+		</copy>
+
 		<copy overwrite="true" todir="${examples.output}/Gallery">
 			<fileset dir="${examples.root}/Gallery">
 				<include name="README.md"/>
