@@ -4,6 +4,7 @@
 	<target name="web" description="Builds web SWFs from all examples.">
 		<ant dir="${basedir}/ComponentsExplorer" target="build-web" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/DisplayObjectExplorer" target="build-web" inheritAll="false" useNativeBasedir="true"/>
+		<ant dir="${basedir}/DragAndDrop" target="build" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/Gallery" target="build-web" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/HelloWorld" target="build-web" inheritAll="false" useNativeBasedir="true"/>
 		<ant dir="${basedir}/LayoutExplorer" target="build-web" inheritAll="false" useNativeBasedir="true"/>
