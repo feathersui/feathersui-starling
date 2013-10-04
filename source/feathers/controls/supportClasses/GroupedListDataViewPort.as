@@ -1024,7 +1024,7 @@ package feathers.controls.supportClasses
 			for(var i:int = 0; i < rendererCount; i++)
 			{
 				var renderer:DisplayObject = DisplayObject(this._activeItemRenderers[i]);
-				if(renderer is FeathersControl)
+				if(renderer is IFeathersControl)
 				{
 					FeathersControl(renderer).isEnabled = this._isEnabled;
 				}
@@ -1035,7 +1035,7 @@ package feathers.controls.supportClasses
 				for(i = 0; i < rendererCount; i++)
 				{
 					renderer = DisplayObject(this._activeFirstItemRenderers[i]);
-					if(renderer is FeathersControl)
+					if(renderer is IFeathersControl)
 					{
 						FeathersControl(renderer).isEnabled = this._isEnabled;
 					}
@@ -1047,7 +1047,7 @@ package feathers.controls.supportClasses
 				for(i = 0; i < rendererCount; i++)
 				{
 					renderer = DisplayObject(this._activeLastItemRenderers[i]);
-					if(renderer is FeathersControl)
+					if(renderer is IFeathersControl)
 					{
 						FeathersControl(renderer).isEnabled = this._isEnabled;
 					}
@@ -1059,7 +1059,7 @@ package feathers.controls.supportClasses
 				for(i = 0; i < rendererCount; i++)
 				{
 					renderer = DisplayObject(this._activeSingleItemRenderers[i]);
-					if(renderer is FeathersControl)
+					if(renderer is IFeathersControl)
 					{
 						FeathersControl(renderer).isEnabled = this._isEnabled;
 					}
@@ -1069,7 +1069,7 @@ package feathers.controls.supportClasses
 			for(i = 0; i < rendererCount; i++)
 			{
 				renderer = DisplayObject(this._activeHeaderRenderers[i]);
-				if(renderer is FeathersControl)
+				if(renderer is IFeathersControl)
 				{
 					FeathersControl(renderer).isEnabled = this._isEnabled;
 				}
@@ -1078,7 +1078,7 @@ package feathers.controls.supportClasses
 			for(i = 0; i < rendererCount; i++)
 			{
 				renderer = DisplayObject(this._activeFooterRenderers[i]);
-				if(renderer is FeathersControl)
+				if(renderer is IFeathersControl)
 				{
 					FeathersControl(renderer).isEnabled = this._isEnabled;
 				}
