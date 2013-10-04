@@ -1591,9 +1591,9 @@ package feathers.controls
 
 			if(stateInvalid)
 			{
-				if(this._content is FeathersControl)
+				if(this._content is IFeathersControl)
 				{
-					FeathersControl(this._content).isEnabled = this._isEnabled;
+					IFeathersControl(this._content).isEnabled = this._isEnabled;
 				}
 			}
 
