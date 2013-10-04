@@ -10,6 +10,7 @@ package feathers.controls.renderers
 	import feathers.controls.GroupedList;
 	import feathers.controls.ImageLoader;
 	import feathers.core.FeathersControl;
+	import feathers.core.IFeathersControl;
 	import feathers.core.ITextRenderer;
 	import feathers.core.PropertyProxy;
 
@@ -1260,13 +1261,18 @@ package feathers.controls.renderers
 			{
 				return false;
 			}
-			if(this.content is FeathersControl)
-			{
-				FeathersControl(this.content).validate();
-			}
 			if(!this.content)
 			{
 				return this.setSizeInternal(0, 0, false);
+			}
+			if(this.contentLabel)
+			{
+				var maxWidth:Number = isNaN(this.explicitWidth) ? this._maxWidth : this.explicitWidth;
+				this.contentLabel.maxWidth = maxWidth - this._paddingLeft - this._paddingRight;
+			}
+			if(this.content is IFeathersControl)
+			{
+				IFeathersControl(this.content).validate();
 			}
 			var newWidth:Number = this.explicitWidth;
 			var newHeight:Number = this.explicitHeight;
@@ -1414,6 +1420,11 @@ package feathers.controls.renderers
 			if(!this.content)
 			{
 				return;
+			}
+
+			if(this.contentLabel)
+			{
+				this.contentLabel.maxWidth = this.actualWidth - this._paddingLeft - this._paddingRight;
 			}
 
 			switch(this._horizontalAlign)
