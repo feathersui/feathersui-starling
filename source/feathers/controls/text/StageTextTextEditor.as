@@ -951,7 +951,14 @@ package feathers.controls.text
 				return result;
 			}
 
-			this.commit();
+
+			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+
+			if(stylesInvalid || dataInvalid)
+			{
+				this.refreshMeasureProperties();
+			}
 
 			result = this.measure(result);
 
@@ -981,6 +988,11 @@ package feathers.controls.text
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 
+			if(stylesInvalid || dataInvalid)
+			{
+				this.refreshMeasureProperties();
+			}
+
 			const oldIgnoreStageTextChanges:Boolean = this._ignoreStageTextChanges;
 			this._ignoreStageTextChanges = true;
 			if(stylesInvalid)
@@ -999,7 +1011,6 @@ package feathers.controls.text
 					}
 					this.stageText.text = this._text;
 				}
-				this._measureTextField.text = this.stageText.text;
 			}
 			this._ignoreStageTextChanges = oldIgnoreStageTextChanges;
 
@@ -1122,6 +1133,37 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected function refreshMeasureProperties():void
+		{
+			this._measureTextField.displayAsPassword = this._displayAsPassword;
+			this._measureTextField.maxChars = this._maxChars;
+			this._measureTextField.restrict = this._restrict;
+			this._measureTextField.multiline = this._measureTextField.wordWrap = this._multiline;
+
+			const format:TextFormat = this._measureTextField.defaultTextFormat;
+			format.color = this._color;
+			format.font = this._fontFamily;
+			format.italic = this._fontPosture == FontPosture.ITALIC;
+			format.size = this._fontSize;
+			format.bold = this._fontWeight == FontWeight.BOLD;
+			var alignValue:String = this._textAlign;
+			if(alignValue == TextFormatAlign.START)
+			{
+				alignValue = TextFormatAlign.LEFT;
+			}
+			else if(alignValue == TextFormatAlign.END)
+			{
+				alignValue = TextFormatAlign.RIGHT;
+			}
+			format.align = alignValue;
+			this._measureTextField.defaultTextFormat = format;
+			this._measureTextField.setTextFormat(format);
+			this._measureTextField.text = this._text;
+		}
+
+		/**
+		 * @private
+		 */
 		protected function refreshStageTextProperties():void
 		{
 			if(this.stageText.multiline != this._multiline)
@@ -1157,30 +1199,6 @@ package feathers.controls.text
 			this.stageText.returnKeyLabel = this._returnKeyLabel;
 			this.stageText.softKeyboardType = this._softKeyboardType;
 			this.stageText.textAlign = this._textAlign;
-
-			this._measureTextField.displayAsPassword = this._displayAsPassword;
-			this._measureTextField.maxChars = this._maxChars;
-			this._measureTextField.restrict = this._restrict;
-			this._measureTextField.multiline = this._measureTextField.wordWrap = this._multiline;
-
-			const format:TextFormat = this._measureTextField.defaultTextFormat;
-			format.color = this._color;
-			format.font = this._fontFamily;
-			format.italic = this._fontPosture == FontPosture.ITALIC;
-			format.size = this._fontSize;
-			format.bold = this._fontWeight == FontWeight.BOLD;
-			var alignValue:String = this._textAlign;
-			if(alignValue == TextFormatAlign.START)
-			{
-				alignValue = TextFormatAlign.LEFT;
-			}
-			else if(alignValue == TextFormatAlign.END)
-			{
-				alignValue = TextFormatAlign.RIGHT;
-			}
-			format.align = alignValue;
-			this._measureTextField.defaultTextFormat = format;
-			this._measureTextField.setTextFormat(format);
 		}
 
 		/**
