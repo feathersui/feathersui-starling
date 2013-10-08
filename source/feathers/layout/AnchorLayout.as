@@ -315,6 +315,10 @@ package feathers.layout
 							const verticalOffset:Number = verticalCenter - (item.height - verticalCenterAnchorDisplayObject.height) / 2;
 							top = Math.max(top, verticalOffset + this.getTopOffset(verticalCenterAnchorDisplayObject));
 						}
+						else if(verticalCenter < 0)
+						{
+							return -verticalCenter * 2;
+						}
 					}
 					return top;
 				}
@@ -370,6 +374,10 @@ package feathers.layout
 						{
 							const horizontalOffset:Number = -horizontalCenter - (item.width - horizontalCenterAnchorDisplayObject.width) / 2;
 							right = Math.max(right, horizontalOffset + this.getRightOffset(horizontalCenterAnchorDisplayObject));
+						}
+						else if(horizontalCenter > 0)
+						{
+							return horizontalCenter * 2;
 						}
 					}
 					return right;
@@ -427,6 +435,10 @@ package feathers.layout
 							const verticalOffset:Number = -verticalCenter - (item.height - verticalCenterAnchorDisplayObject.height) / 2;
 							bottom = Math.max(bottom, verticalOffset + this.getBottomOffset(verticalCenterAnchorDisplayObject));
 						}
+						else if(verticalCenter > 0)
+						{
+							return verticalCenter * 2;
+						}
 					}
 					return bottom;
 				}
@@ -482,6 +494,10 @@ package feathers.layout
 						{
 							const horizontalOffset:Number = horizontalCenter - (item.width - horizontalCenterAnchorDisplayObject.width) / 2;
 							left = Math.max(left, horizontalOffset + this.getLeftOffset(horizontalCenterAnchorDisplayObject));
+						}
+						else if(horizontalCenter < 0)
+						{
+							return -horizontalCenter * 2;
 						}
 					}
 					return left;
