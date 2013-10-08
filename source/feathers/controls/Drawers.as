@@ -1329,9 +1329,9 @@ package feathers.controls
 		 * <p>In the following example, the open gesture edge size customized:</p>
 		 *
 		 * <listing version="3.0">
-		 * scroller.openGestureEdgeSize = ;</listing>
+		 * scroller.openGestureEdgeSize = 0.25;</listing>
 		 *
-		 * @default
+		 * @default 0.1
 		 */
 		public function get openGestureEdgeSize():Number
 		{
