@@ -1835,10 +1835,16 @@ package feathers.controls
 		{
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			var layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
 
 			if(dataInvalid)
 			{
 				this.refreshCurrentEventTarget();
+			}
+
+			if(sizeInvalid || layoutInvalid)
+			{
+				this.refreshDrawerStates();
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
@@ -2072,11 +2078,12 @@ package feathers.controls
 
 			if(this._rightDrawer)
 			{
-				this._rightDrawer.x = this.actualWidth - rightDrawerWidth;
+				var rightDrawerX:Number = this.actualWidth - rightDrawerWidth;
 				var rightDrawerY:Number = 0;
 				var rightDrawerHeight:Number = this.actualHeight;
 				if(isRightDrawerDocked)
 				{
+					rightDrawerX = this._content.x + this._content.width;
 					if(isTopDrawerDocked)
 					{
 						rightDrawerHeight -= topDrawerHeight;
@@ -2087,6 +2094,7 @@ package feathers.controls
 					}
 					rightDrawerY = this._content.y;
 				}
+				this._rightDrawer.x = rightDrawerX;
 				this._rightDrawer.y = rightDrawerY;
 				this._rightDrawer.height = rightDrawerHeight;
 				this._rightDrawer.visible = isRightDrawerOpen || isRightDrawerDocked;
@@ -2101,12 +2109,17 @@ package feathers.controls
 			if(this._bottomDrawer)
 			{
 				var bottomDrawerX:Number = 0;
-				if(isBottomDrawerDocked && !isLeftDrawerDocked)
+				var bottomDrawerY:Number = this.actualHeight - bottomDrawerHeight;
+				if(isBottomDrawerDocked)
 				{
-					bottomDrawerX = this._content.x;
+					if(!isLeftDrawerDocked)
+					{
+						bottomDrawerX = this._content.x;
+					}
+					bottomDrawerY = this._content.y + this._content.height;
 				}
 				this._bottomDrawer.x = bottomDrawerX;
-				this._bottomDrawer.y = this.actualHeight - bottomDrawerHeight;
+				this._bottomDrawer.y = bottomDrawerY;
 				this._bottomDrawer.width = this.actualWidth;
 				this._bottomDrawer.visible = isBottomDrawerOpen || isBottomDrawerDocked;
 
@@ -2411,6 +2424,29 @@ package feathers.controls
 				this.contentEventDispatcher.addEventListener(this._rightDrawerToggleEventType, content_rightDrawerToggleEventTypeHandler);
 				this.contentEventDispatcher.addEventListener(this._bottomDrawerToggleEventType, content_bottomDrawerToggleEventTypeHandler);
 				this.contentEventDispatcher.addEventListener(this._leftDrawerToggleEventType, content_leftDrawerToggleEventTypeHandler);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshDrawerStates():void
+		{
+			if(this.isTopDrawerDocked)
+			{
+				this._isTopDrawerOpen = false;
+			}
+			if(this.isRightDrawerDocked)
+			{
+				this._isRightDrawerOpen = false;
+			}
+			if(this.isBottomDrawerDocked)
+			{
+				this._isBottomDrawerOpen = false;
+			}
+			if(this.isLeftDrawerDocked)
+			{
+				this._isLeftDrawerOpen = false;
 			}
 		}
 
@@ -2960,6 +2996,7 @@ package feathers.controls
 			}
 			if(isRightDrawerDocked)
 			{
+				this._rightDrawer.x = contentX + this._content.width;
 				this._rightDrawer.y = contentY;
 			}
 			if(isBottomDrawerDocked)
@@ -2972,6 +3009,7 @@ package feathers.controls
 				{
 					this._bottomDrawer.x = contentX;
 				}
+				this._bottomDrawer.y = contentY + this._content.height;
 			}
 			if(isLeftDrawerDocked)
 			{
@@ -3147,22 +3185,6 @@ package feathers.controls
 		 */
 		protected function stage_resizeHandler(event:ResizeEvent):void
 		{
-			if(this.isTopDrawerDocked)
-			{
-				this._isTopDrawerOpen = false;
-			}
-			if(this.isRightDrawerDocked)
-			{
-				this._isRightDrawerOpen = false;
-			}
-			if(this.isBottomDrawerDocked)
-			{
-				this._isBottomDrawerOpen = false;
-			}
-			if(this.isLeftDrawerDocked)
-			{
-				this._isLeftDrawerOpen = false;
-			}
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
