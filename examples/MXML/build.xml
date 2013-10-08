@@ -27,7 +27,6 @@
 			<arg line="+flexlib='${flexframework.root}'"/>
 			<arg line="+configname=air"/>
 			<arg line="--swf-version=${swf.version}"/>
-			<arg line="--target-player=${player.version}"/>
 			<arg line="--namespace+=${mxml.namespace},${feathers.root}/../mxml-manifest.xml"/>
 			<arg line="--source-path+='source'"/>
 			<arg line="--source-path+='${starling.root}'"/>

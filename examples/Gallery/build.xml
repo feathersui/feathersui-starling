@@ -27,7 +27,6 @@
 		<echo message="Building GalleryWeb.swf"/>
 		<java jar="${mxmlc}" dir="${basedir}" fork="true" failonerror="true">
 			<arg value="-load-config=${flashplayer.config}"/>
-			<arg value="-target-player=${player.version}"/>
 			<arg value="-swf-version=${swf.version}"/>
 			<arg value="--define+=CONFIG::FLICKR_API_KEY,'${flickr.api.key}'"/>
 			<arg value="-frame=two,feathers.examples.gallery.Main"/>
@@ -44,7 +43,6 @@
 		<echo message="Building Gallery.swf"/>
 		<java jar="${mxmlc}" dir="${basedir}" fork="true" failonerror="true">
 			<arg value="-load-config=${airmobile.config}"/>
-			<arg value="-target-player=${player.version}"/>
 			<arg value="-swf-version=${swf.version}"/>
 			<arg value="--define+=CONFIG::FLICKR_API_KEY,'${flickr.api.key}'"/>
 			<arg value="-source-path+=source"/>

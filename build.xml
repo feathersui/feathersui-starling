@@ -48,7 +48,6 @@
 		<java jar="${compc}" dir="${starling.root}" fork="true" failonerror="true">
 			<arg value="-load-config=${airsdk.config}"/>
 			<arg value="-swf-version=${swf.version}"/>
-			<arg value="-target-player=${player.version}"/>
 			<arg value="-source-path+=."/>
 			<arg value="-include-sources+=."/>
 			<arg value="-output=${dependency.output}/starling.swc"/>
@@ -60,7 +59,6 @@
 		<java jar="${compc}" dir="${basedir}" fork="true" failonerror="true">
 			<arg value="-load-config=${airsdk.config}"/>
 			<arg value="-swf-version=${swf.version}"/>
-			<arg value="-target-player=${player.version}"/>
 			<arg value="-source-path+=${source.root}"/>
 			<arg value="-include-sources+=${source.root}"/>
 			<arg value="-external-library-path+=${dependency.output}"/>
@@ -73,7 +71,6 @@
 		<java jar="${flex.compc}" dir="${basedir}" fork="true" failonerror="true">
 			<arg value="+flexlib=${flexframework.root}"/>
 			<arg value="-swf-version=${swf.version}"/>
-			<arg value="-target-player=${player.version}"/>
 			<arg value="-namespace+=${mxml.namespace},mxml-manifest.xml"/>
 			<arg value="-source-path+=${source.root}"/>
 			<arg value="-include-namespaces+=${mxml.namespace}"/>
@@ -89,7 +86,6 @@
 		<java jar="${asdoc}" dir="${basedir}" fork="true" failonerror="true">
 			<arg value="+flexlib=${airsdk.framework}"/>
 			<arg value="-swf-version=${swf.version}"/>
-			<arg value="-target-player=${player.version}"/>
 			<arg value="-source-path+=${source.root}"/>
 			<arg value="-library-path+=${dependency.output}"/>
 			<arg value="-doc-sources+=${source.root}"/>
