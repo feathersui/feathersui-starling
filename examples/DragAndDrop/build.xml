@@ -18,7 +18,6 @@
 		<echo message="Building DragAndDrop.swf"/>
 		<java jar="${mxmlc}" dir="${basedir}" fork="true" failonerror="true">
 			<arg value="-load-config=${flashplayer.config}"/>
-			<arg value="-target-player=${player.version}"/>
 			<arg value="-swf-version=${swf.version}"/>
 			<arg value="-source-path+=source"/>
 			<arg value="-source-path+=${starling.root}"/>
