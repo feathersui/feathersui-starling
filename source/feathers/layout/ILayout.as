@@ -67,6 +67,10 @@ package feathers.layout
 		 * Using the item dimensions, calculates a scroll position that will
 		 * ensure that the item at a given index will be visible within the
 		 * specified bounds.
+		 *
+		 * <p>This function should always be called <em>after</em> the
+		 * <code>layout()</code> function. The width and height arguments are
+		 * the final bounds of the view port.</p>
 		 */
 		function getScrollPositionForIndex(index:int, items:Vector.<DisplayObject>, x:Number, y:Number, width:Number, height:Number, result:Point = null):Point;
 	}
