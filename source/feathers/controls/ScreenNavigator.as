@@ -496,6 +496,10 @@ package feathers.controls
 			{
 				throw new IllegalOperationError("Screen '" + id + "' cannot be removed because it has not been added.");
 			}
+			if(this._activeScreenID == id)
+			{
+				this.clearScreen();
+			}
 			delete this._screens[id];
 		}
 
