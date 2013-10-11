@@ -155,6 +155,14 @@
 			</fileset>
 		</copy>
 
+		<copy overwrite="true" todir="${examples.output}/DrawersExplorer">
+			<fileset dir="${examples.root}/DrawersExplorer">
+				<include name="README.md"/>
+				<include name="source/**"/>
+				<exclude name="source/DrawersExplorerWeb.as"/>
+			</fileset>
+		</copy>
+
 		<copy overwrite="true" todir="${examples.output}/DisplayObjectExplorer">
 			<fileset dir="${examples.root}/DisplayObjectExplorer">
 				<include name="README.md"/>
