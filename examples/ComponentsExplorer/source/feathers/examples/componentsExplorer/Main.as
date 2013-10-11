@@ -19,6 +19,7 @@ package feathers.examples.componentsExplorer
 	import feathers.examples.componentsExplorer.screens.GroupedListSettingsScreen;
 	import feathers.examples.componentsExplorer.screens.ItemRendererScreen;
 	import feathers.examples.componentsExplorer.screens.ItemRendererSettingsScreen;
+	import feathers.examples.componentsExplorer.screens.LabelScreen;
 	import feathers.examples.componentsExplorer.screens.ListScreen;
 	import feathers.examples.componentsExplorer.screens.ListSettingsScreen;
 	import feathers.examples.componentsExplorer.screens.MainMenuScreen;
@@ -53,6 +54,7 @@ package feathers.examples.componentsExplorer
 		private static const GROUPED_LIST_SETTINGS:String = "groupedListSettings";
 		private static const ITEM_RENDERER:String = "itemRenderer";
 		private static const ITEM_RENDERER_SETTINGS:String = "itemRendererSettings";
+		private static const LABEL:String = "label";
 		private static const LIST:String = "list";
 		private static const LIST_SETTINGS:String = "listSettings";
 		private static const NUMERIC_STEPPER:String = "numericStepper";
@@ -76,6 +78,7 @@ package feathers.examples.componentsExplorer
 			showCallout: CALLOUT,
 			showGroupedList: GROUPED_LIST,
 			showItemRenderer: ITEM_RENDERER,
+			showLabel: LABEL,
 			showList: LIST,
 			showNumericStepper: NUMERIC_STEPPER,
 			showPageIndicator: PAGE_INDICATOR,
@@ -190,6 +193,11 @@ package feathers.examples.componentsExplorer
 			},
 			{
 				settings: itemRendererSettings
+			}));
+
+			this._navigator.addScreen(LABEL, new ScreenNavigatorItem(LabelScreen,
+			{
+				complete: MAIN_MENU
 			}));
 
 			const listSettings:ListSettings = new ListSettings();
