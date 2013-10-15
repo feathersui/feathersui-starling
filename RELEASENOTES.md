@@ -2,15 +2,82 @@
 
 Noteworthy changes in official releases of [Feathers](http://feathersui.com/).
 
-## 1.2.0
+## 1.2.0 BETA
 
-Version 1.2.0 of Feathers is still in active development. This list of changes is a work in progress, and one may find missing or outdated information below. The complete list of changes will be made available when beta and final builds Feathers 1.2.0 are officially released.
-
+* New Component: Alert
 * New Component: Drawers
 * New Component: LayoutGroup
-* New Component: LayoutGroupListItemRenderer
+* New Component(s): LayoutGroupListItemRenderer, LayoutGroupGroupedListItemRenderer, LayoutGroupedListHeaderOrFooterRenderer
+* FeathersControl: better support for scaleX and scaleY. Width and height are scaled.
+* FeathersControl: dispatches FeathersEventType.CREATION_COMPLETE after the first validation.
+* FeathersControl: ensures that keyboard focus is ignored if disabled.
+* FeathersControl: new protected functions setInvalidationFlag() and getInvalidationFlag() for better re-invalidation during draw().
+* FeathersControl: getChildByName() uses nameList.contains(). Doesn't work when an IFeathersControl is in a non-Feathers display object.
+* Button: added FeathersEventType.LONG_PRESS event.
+* Button: updates isEnabled on label text renderer and icon, if applicable.
+* Button: label is always on top of the icon.
 * List, GroupedList: Setting a new data provider will clear selection. Now, selection cannot be set before data provider is passed in. If the same selection is desired after a data provider change, it should be done manually.
+* List, GroupedList: improved invalidation when various properties are changed.
+* List, GroupedList: better handling of typical item to improve performance an accuracy of layout calculations.
+* GroupedList: improved handling of updateItemAt() to properly update whole groups.
+* ImageLoader: added loadingTexture and errorTexture properties.
+* ImageLoader: support for loading ATF files from URL.
+* ToggleSwitch: on and off labels can be created with separate factories.
+* Panel: header and footer contents can receive keyboard focus.
+* ButtonGroup: properly resizes when data provider changes.
+* ButtonGroup: support for padding around buttons.
+* ButtonGroup: dispatches its own Event.TRIGGERED when any button is triggered.
+* ButtonGroup: support for horizontal and vertical alignment.
+* ButtonGroup, TabBar: better handling of custom names for first and last items.
+* Callout: backgroundSkin is no longer required.
+* Callout: show() function adds an argument for a custom overlay factory.
+* Scale9Image, Scale3Image: support for scaling edge regions down to zero. Causes distortion, but removes overlapping.
+* Scale9Image, Scale3Image, TiledImage, BitmapFontTextRenderer: uses batchable property from QuadBatch for improved performance.
+* Scroller: support for minimum scroll positions less than zero.
+* Scroller: improved draw() function to avoid extra invalidation.
+* Scroller: new interactionMode value INTERACTION_MODE_TOUCH_AND_SCROLL_BARS.
+* Scroller: added minimumDragDistance and minimumPageThrowVelocity.
+* Scroller: fixed vertical page snapping.
+* Scroller: supports custom page dimensions for snapping.
+* Scroller: won't scroll with mouse wheel when scroll policy is off.
+* Text editors: visibility fixes when text is empty.
+* TextFieldTextEditor: support for rotation.
+* StageTextTextEditor: doesn't clear text when displayAsPassword is changed.
+* StageTextTextEditor: better scaling and support for rotation.
+* TextFieldTextRenderer: supports using multiple textures if text width or height is greater than 2048 pixels.
+* TextInput, text renderers: dispatches soft keyboard events.
+* TextInput: supports icon.
+* TextInput: alternate name for search input.
+* Screen, PanelScreen: better handling of back button that accounts for depth.
+* ScreenNavigator: properly resizes if content is resized.
+* ScreenNavigator: clears screen if removeScreen() is called for the active screen.
+* ToggleGroup: added getItemIndex() and setItemIndex().
+* VerticalCenteredPopUpContentManger: touch must begin and end outside of content to close the content.
+* DisplayListWatcher: added initializeObject() function to initialize display objects that are already added when a theme is created.
+* PropertyProxy: support for QName values.
+* SmartDisplayObjectValueSelector: fix to support uint values for Quads.
+* SmartDisplayObjectValueSelector: support for ConcreteTexture.
+* State value selectors: strict equality checks for null to support 0 values.
+* VerticalLayout, HorizontalLayout: improved item validation to account for justify alignment.
+* AnchorLayout: better measurement when using horizontalCenter or verticalCenter values.
+* ValidationQueue: items are added to the queue faster with better sorting.
+* ExclusiveTouch: allows a component to claim a touch so that nested scrolling components won't be in conflict.
+* Label: added ALTERNATE_NAME_HEADING for larger text and ALTERNATE_NAME_DETAIL for smaller text.
+* Default item renderers: better handling of data and fields.
+* Default item renderers: support for delaying texture creation on scroll in ImageLoaders.
+* Default item renderers: updates isEnabled on accessory, if applicable.
+* Default item renderers: accessory is cleared if itemHasAccessory is set to false.
+* DefaultGroupedListHeaderOrFooterRenderer: contentLabel maxWidth is used for proper wrapping, if needed.
+* DefaultGroupedListHeaderOrFooterRenderer: added support for justify alignments.
 * Many performance improvements with the help of Adobe Scout.
+* All built-in components ensure that sub-components are validated.
+* Examples: use drawers component where applicable.
+* Examples: new DrawersExplorer example.
+* Examples: new DragAndDrop example for DragDropManager.
+* Themes: updated to support new properties and alternate names.
+* Documentation: many properties now list default values.
+* Documentation: createSubComponent() and autoSizeIfNeeded() patterns are now documented parts of the architecture.
+* Fixes to better support iOS 7.
 * New minimum runtime versions. Target SWF version rolled back to 18 (Flash Player 11.5 and AIR 3.5) to offer easier BlackBerry 10 support.
 
 ### 1.2.0 Deprecated APIs
@@ -19,7 +86,11 @@ All deprecated APIs are subject to the [Feathers deprecation policy](http://wiki
 
 The `scrollerProperties` property on scrolling components, including List, GroupedList, ScrollText and ScrollContainer is deprecated. Because these components now extend `Scroller` instead of adding a `Scroller` as a child, all of the properties that could be set through `scrollerProperties` can now be set directly on the components. The `scrollerProperties` property was deprecated in Feathers 1.1.0, and it remains deprecated in Feathers 1.2.0. 
 
-### 1.2.0 Interface Changes
+### 1.2.0 API Changes
+
+Some changes have been made to Feathers that have the potential to break code in existing project. Changes of this type are considered [exceptions to the Feathers deprecation policy](http://wiki.starling-framework.org/feathers/deprecation-policy#exceptions), and careful consideration is made to limit the impact of these changes on existing projects. Most developers using Feathers will not be affected by these changes, except perhaps, to observe improved stability and consistency.
+
+#### IVirtualLayout ####
 
 Three changes have been made to the `IVirtualLayout` interface. Custom implementations of `IVirtualLayout` created before Feathers 1.2.0 will have compiler errors until the required changes are made. It is expected that a small number of Feathers developers have created custom implementations of `IVirtualLayout`, so this change will have no impact on the majority of projects that are upgraded from older versions of Feathers.
 
@@ -75,11 +146,15 @@ For more advanced code, take a look at one of the built-in layout classes, such 
 
 Note: The built-in layout classes repurpose the `typicalItemWidth` and `typicalItemHeight` properties that were removed from `IVirtualLayout` to work with a new `resetTypicalItemDimensionsOnMeasure` property. By default, setting these properties outside of a component like `List` will have no effect, which exactly matches the behavior from all older versions of Feathers. Custom layouts may elect to provide this same capability, but it is not required by the `IVirtualLayout` interface.
 
+#### GroupedList ####
+
+The `typicalHeader` and `typicalFooter` properties have been removed from `GroupedList` to support the better handling of typical items in virtual layouts, as discussed above. From now on, the `typicalItem` on a `GroupedList` is the only way to provide hints to the layout used by a `GroupedList`.
+
 ## 1.1.1
 
 This release includes minor updates to support Starling Framework 1.4 and a number of minor bug fixes.
 
-* Switches to Starling's implementation of the `clipRect` property.
+* Switches to Starling's implementation of the clipRect property.
 * Uses Texture onRestore for internally managed textures, like in text controls.
 * StageTextTextEditor: fix for displayAsPassword clearing the text.
 * Panel: won't scroll if mouse wheel or touch occurs in header or footer.
@@ -184,7 +259,11 @@ All deprecated APIs are subject to the [Feathers deprecation policy](http://wiki
 
 The `scrollerProperties` property on scrolling components, including List, GroupedList, ScrollText and ScrollContainer is deprecated. Because these components now extend `Scroller` instead of adding a `Scroller` as a child, all of the properties that could be set through `scrollerProperties` can now be set directly on the components.
 
-### 1.1.0 Interface Changes
+### 1.1.0 API Changes
+
+Some changes have been made to Feathers that have the potential to break code in existing project. Changes of this type are considered [exceptions to the Feathers deprecation policy](http://wiki.starling-framework.org/feathers/deprecation-policy#exceptions), and careful consideration is made to limit the impact of these changes on existing projects. Most developers using Feathers will not be affected by these changes, except perhaps, to observe improved stability and consistency.
+
+#### IVariableVirtualLayout ####
 
 Two changes have been made to the `IVariableVirtualLayout` interface. Custom implementations of `IVariableVirtualLayout` created before Feathers 1.1.0 will have compiler errors until the required changes are made. It is expected that a very small number of Feathers developers have created custom implementations of `IVariableVirtualLayout`, so this change will have no impact on the vast majority of projects that are upgraded from older versions of Feathers.
 
