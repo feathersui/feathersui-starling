@@ -13,6 +13,7 @@ package feathers.controls
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Loader;
+	import flash.display3D.Context3DTextureFormat;
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
@@ -414,6 +415,43 @@ package feathers.controls
 			}
 			this._color = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		private var _textureFormat:String = Context3DTextureFormat.BGRA;
+
+		/**
+		 * The texture format to use when creating a texture loaded from a URL.
+		 *
+		 * <p>In the following example, the image loader's texture format is set
+		 * to a custom value:</p>
+		 *
+		 * <listing version="3.0">
+		 * loader.textureFormat = Context3DTextureFormat.BGRA_PACKED;</listing>
+		 *
+		 * @default flash.display3d.Context3DTextureFormat.BGRA
+		 *
+		 * @see flash.display3d.Context3DTextureFormat
+		 */
+		public function get textureFormat():String
+		{
+			return this._textureFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set textureFormat(value:String):void
+		{
+			if(this._textureFormat == value)
+			{
+				return;
+			}
+			this._textureFormat = value;
+			this._lastURL = null;
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		/**
@@ -1135,7 +1173,7 @@ package feathers.controls
 		 */
 		protected function replaceBitmapDataTexture(bitmapData:BitmapData):void
 		{
-			this._texture = Texture.fromBitmapData(bitmapData, false);
+			this._texture = Texture.fromBitmapData(bitmapData, false, false, 1, this._textureFormat);
 			if(Starling.handleLostContext)
 			{
 				//we're saving it so that we can dispose it when we get a new
