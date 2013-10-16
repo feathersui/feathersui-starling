@@ -717,10 +717,9 @@ package feathers.controls
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
-		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
-		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
-		 * you can use the following syntax:</p>
-		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 * to set the skin on the thumb which is in a <code>SimpleScrollBar</code>,
+		 * which is in a <code>List</code>, you can use the following syntax:</p>
+		 * <pre>list.verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
 		 * <p>Setting properties in a <code>horizontalScrollBarFactory</code>
 		 * function instead of using <code>horizontalScrollBarProperties</code>
@@ -894,10 +893,9 @@ package feathers.controls
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
-		 * to set the skin on the thumb of a <code>SimpleScrollBar</code>
-		 * which is in a <code>Scroller</code> which is in a <code>List</code>,
-		 * you can use the following syntax:</p>
-		 * <pre>list.scrollerProperties.&#64;verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 * to set the skin on the thumb which is in a <code>SimpleScrollBar</code>,
+		 * which is in a <code>List</code>, you can use the following syntax:</p>
+		 * <pre>list.verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
 		 *
 		 * <p>Setting properties in a <code>verticalScrollBarFactory</code>
 		 * function instead of using <code>verticalScrollBarProperties</code>
@@ -2270,67 +2268,6 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _isScrollingStopped:Boolean = false;
-
-		/**
-		 * @private
-		 */
-		protected var _scrollerProperties:PropertyProxy;
-
-		/**
-		 * DEPRECATED: A set of key/value pairs to be passed down to the
-		 * container's scroller sub-component. As of 1.1, the "scroller" is no
-		 * longer a sub-component, but the component itself.
-		 *
-		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 1.1. It will be removed in a future version of
-		 * Feathers according to the standard
-		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.
-		 * The properties of <code>Scroller</code> are now exposed individually.</p>
-		 *
-		 * @default null
-		 */
-		public function get scrollerProperties():Object
-		{
-			if(!this._scrollerProperties)
-			{
-				this._scrollerProperties = new PropertyProxy(scrollerProperties_onChange);
-			}
-			return this._scrollerProperties;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set scrollerProperties(value:Object):void
-		{
-			if(this._scrollerProperties == value)
-			{
-				return;
-			}
-			if(!value)
-			{
-				value = new PropertyProxy();
-			}
-			if(!(value is PropertyProxy))
-			{
-				const newValue:PropertyProxy = new PropertyProxy();
-				for(var propertyName:String in value)
-				{
-					newValue[propertyName] = value[propertyName];
-				}
-				value = newValue;
-			}
-			if(this._scrollerProperties)
-			{
-				this._scrollerProperties.removeOnChangeCallback(scrollerProperties_onChange);
-			}
-			this._scrollerProperties = PropertyProxy(value);
-			if(this._scrollerProperties)
-			{
-				this._scrollerProperties.addOnChangeCallback(scrollerProperties_onChange);
-			}
-			this.invalidate(INVALIDATION_FLAG_STYLES);
-		}
 
 		/**
 		 * The pending horizontal scroll position to scroll to after validating.
@@ -4031,18 +3968,6 @@ package feathers.controls
 			else
 			{
 				this.invalidate(INVALIDATION_FLAG_SIZE);
-			}
-		}
-
-		/**
-		 * @private
-		 */
-		protected function scrollerProperties_onChange(proxy:PropertyProxy, name:String):void
-		{
-			if(this.hasOwnProperty(name))
-			{
-				const propertyValue:Object = this._scrollerProperties[name];
-				this[name] = propertyValue;
 			}
 		}
 
