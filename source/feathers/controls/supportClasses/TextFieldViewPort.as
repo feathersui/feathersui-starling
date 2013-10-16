@@ -797,11 +797,15 @@ package feathers.controls.supportClasses
 
 			if(dataInvalid || stylesInvalid)
 			{
-				if(this._textFormat)
+				if(this._styleSheet)
 				{
+					this._textField.styleSheet = this._styleSheet;
+				}
+				else
+				{
+					this._textField.styleSheet = null;
 					this._textField.defaultTextFormat = this._textFormat;
 				}
-				this._textField.styleSheet = this._styleSheet;
 				if(this._isHTML)
 				{
 					this._textField.htmlText = this._text;
