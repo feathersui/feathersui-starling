@@ -878,11 +878,15 @@ package feathers.controls.text
 			{
 				this.textField.wordWrap = this._wordWrap;
 				this.textField.embedFonts = this._embedFonts;
-				if(this._textFormat)
+				if(this._styleSheet)
 				{
+					this.textField.styleSheet = this._styleSheet;
+				}
+				else
+				{
+					this.textField.styleSheet = null;
 					this.textField.defaultTextFormat = this._textFormat;
 				}
-				this.textField.styleSheet = this._styleSheet;
 				if(this._isHTML)
 				{
 					this.textField.htmlText = this._text;
