@@ -41,7 +41,7 @@ package feathers.core
 		{
 			if(onChangeCallback != null)
 			{
-				this._onChangeCallbacks.push(onChangeCallback);
+				this._onChangeCallbacks[this._onChangeCallbacks.length] = onChangeCallback;
 			}
 		}
 
@@ -86,7 +86,7 @@ package feathers.core
 					const subProxy:PropertyProxy = new PropertyProxy(subProxy_onChange);
 					subProxy._subProxyName = nameAsString;
 					this._storage[nameAsString] = subProxy;
-					this._names.push(nameAsString);
+					this._names[this._names.length] = nameAsString;
 					this.fireOnChangeCallback(nameAsString);
 				}
 				return this._storage[nameAsString];
@@ -103,7 +103,7 @@ package feathers.core
 			this._storage[nameAsString] = value;
 			if(this._names.indexOf(nameAsString) < 0)
 			{
-				this._names.push(nameAsString);
+				this._names[this._names.length] = nameAsString;
 			}
 			this.fireOnChangeCallback(nameAsString);
 		}
@@ -113,13 +113,25 @@ package feathers.core
 		 */
 		override flash_proxy function deleteProperty(name:*):Boolean
 		{
-			const nameAsString:String = name is QName ? QName(name).localName : name.toString();
-			const index:int = this._names.indexOf(nameAsString);
-			if(index >= 0)
+			var nameAsString:String = name is QName ? QName(name).localName : name.toString();
+			var index:int = this._names.indexOf(nameAsString);
+			if(index == 0)
 			{
-				this._names.splice(index, 1);
+				this._names.shift();
 			}
-			const result:Boolean = delete this._storage[nameAsString];
+			else
+			{
+				var lastIndex:int = this._names.length - 1;
+				if(index == lastIndex)
+				{
+					this._names.pop();
+				}
+				else
+				{
+					this._names.splice(index, 1);
+				}
+			}
+			var result:Boolean = delete this._storage[nameAsString];
 			if(result)
 			{
 				this.fireOnChangeCallback(nameAsString);
@@ -161,7 +173,7 @@ package feathers.core
 		 */
 		public function addOnChangeCallback(callback:Function):void
 		{
-			this._onChangeCallbacks.push(callback);
+			this._onChangeCallbacks[this._onChangeCallbacks.length] = callback;
 		}
 
 		/**
@@ -169,11 +181,23 @@ package feathers.core
 		 */
 		public function removeOnChangeCallback(callback:Function):void
 		{
-			const index:int = this._onChangeCallbacks.indexOf(callback);
-			if(index >= 0)
+			var index:int = this._onChangeCallbacks.indexOf(callback);
+			if(index < 0)
 			{
-				this._onChangeCallbacks.splice(index, 1);
+				return;
 			}
+			if(index == 0)
+			{
+				this._onChangeCallbacks.shift();
+				return;
+			}
+			var lastIndex:int = this._onChangeCallbacks.length - 1;
+			if(index == lastIndex)
+			{
+				this._onChangeCallbacks.pop();
+				return;
+			}
+			this._onChangeCallbacks.splice(index, 1);
 		}
 
 		/**

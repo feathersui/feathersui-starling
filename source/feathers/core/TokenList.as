@@ -71,12 +71,12 @@ package feathers.core
 		 */
 		public function add(name:String):void
 		{
-			const index:int = this.names.indexOf(name);
+			var index:int = this.names.indexOf(name);
 			if(index >= 0)
 			{
 				return;
 			}
-			this.names.push(name);
+			this.names[this.names.length] = name;
 		}
 
 		/**
@@ -85,12 +85,8 @@ package feathers.core
 		 */
 		public function remove(name:String):void
 		{
-			const index:int = this.names.indexOf(name);
-			if(index < 0)
-			{
-				return;
-			}
-			this.names.splice(index,  1);
+			var index:int = this.names.indexOf(name);
+			this.removeAt(index);
 		}
 
 		/**
@@ -99,14 +95,14 @@ package feathers.core
 		 */
 		public function toggle(name:String):void
 		{
-			const index:int = this.names.indexOf(name);
+			var index:int = this.names.indexOf(name);
 			if(index < 0)
 			{
-				this.names.push(name);
+				this.names[this.names.length] = name;
 			}
 			else
 			{
-				this.names.splice(index,  1);
+				this.removeAt(index);
 			}
 		}
 
@@ -116,6 +112,29 @@ package feathers.core
 		public function contains(name:String):Boolean
 		{
 			return this.names.indexOf(name) >= 0;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function removeAt(index:int):void
+		{
+			if(index < 0)
+			{
+				return;
+			}
+			if(index == 0)
+			{
+				this.names.shift();
+				return;
+			}
+			var lastIndex:int = this.names.length - 1;
+			if(index == lastIndex)
+			{
+				this.names.pop();
+				return;
+			}
+			this.names.splice(index,  1);
 		}
 
 	}
