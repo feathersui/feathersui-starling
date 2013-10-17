@@ -12,6 +12,8 @@ package feathers.controls
 	import feathers.layout.ILayout;
 	import feathers.layout.IVirtualLayout;
 
+	import starling.core.RenderSupport;
+
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
 	import starling.events.Event;
@@ -393,6 +395,28 @@ package feathers.controls
 			const oldDisplayListBypassEnabled:Boolean = this.displayListBypassEnabled;
 			this.displayListBypassEnabled = true;
 			super.dispatchEvent(event);
+			this.displayListBypassEnabled = oldDisplayListBypassEnabled;
+		}
+
+		/**
+		 * @private
+		 */
+		override public function dispose():void
+		{
+			const oldDisplayListBypassEnabled:Boolean = this.displayListBypassEnabled;
+			this.displayListBypassEnabled = false;
+			super.dispose();
+			this.displayListBypassEnabled = oldDisplayListBypassEnabled;
+		}
+
+		/**
+		 * @private
+		 */
+		override public function render(support:RenderSupport, parentAlpha:Number):void
+		{
+			const oldDisplayListBypassEnabled:Boolean = this.displayListBypassEnabled;
+			this.displayListBypassEnabled = false;
+			super.render(support, parentAlpha);
 			this.displayListBypassEnabled = oldDisplayListBypassEnabled;
 		}
 
