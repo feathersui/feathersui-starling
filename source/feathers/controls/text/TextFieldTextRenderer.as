@@ -885,7 +885,10 @@ package feathers.controls.text
 				else
 				{
 					this.textField.styleSheet = null;
-					this.textField.defaultTextFormat = this._textFormat;
+					if(this._textFormat)
+					{
+						this.textField.defaultTextFormat = this._textFormat;
+					}
 				}
 				if(this._isHTML)
 				{
