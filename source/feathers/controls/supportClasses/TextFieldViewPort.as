@@ -804,7 +804,10 @@ package feathers.controls.supportClasses
 				else
 				{
 					this._textField.styleSheet = null;
-					this._textField.defaultTextFormat = this._textFormat;
+					if(this._textFormat)
+					{
+						this._textField.defaultTextFormat = this._textFormat;
+					}
 				}
 				if(this._isHTML)
 				{
