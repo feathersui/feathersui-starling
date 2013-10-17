@@ -37,7 +37,7 @@ package feathers.examples.componentsExplorer.screens
 			for(var i:int = 0; i < 150; i++)
 			{
 				var item:Object = {text: "Item " + (i + 1).toString()};
-				items.push(item);
+				items[i] = item;
 			}
 			items.fixed = true;
 
