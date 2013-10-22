@@ -209,6 +209,7 @@ package feathers.themes
 		protected var lightCenteredTextFormat:TextFormat;
 
 		protected var smallLightTextFormat:TextFormat;
+		protected var smallDisabledTextFormat:TextFormat;
 
 		protected var atlas:TextureAtlas;
 		protected var atlasBitmapData:BitmapData;
@@ -344,6 +345,7 @@ package feathers.themes
 			this.lightCenteredTextFormat = new TextFormat(regularFontNames, 24 * this.scale, LIGHT_TEXT_COLOR, null, null, null, null, null, TextFormatAlign.CENTER);
 
 			this.smallLightTextFormat = new TextFormat(regularFontNames, 18 * this.scale, LIGHT_TEXT_COLOR);
+			this.smallDisabledTextFormat = new TextFormat(regularFontNames, 18 * this.scale, DISABLED_TEXT_COLOR);
 
 			this.largeDarkTextFormat = new TextFormat(regularFontNames, 28 * this.scale, DARK_TEXT_COLOR);
 			this.largeLightTextFormat = new TextFormat(regularFontNames, 28 * this.scale, LIGHT_TEXT_COLOR);
@@ -570,18 +572,21 @@ package feathers.themes
 		protected function labelInitializer(label:Label):void
 		{
 			label.textRendererProperties.textFormat = this.lightTextFormat;
+			label.textRendererProperties.disabledTextFormat = this.disabledTextFormat;
 			label.textRendererProperties.embedFonts = true;
 		}
 
 		protected function headingLabelInitializer(label:Label):void
 		{
 			label.textRendererProperties.textFormat = this.largeLightTextFormat;
+			label.textRendererProperties.disabledTextFormat = this.largeDisabledTextFormat;
 			label.textRendererProperties.embedFonts = true;
 		}
 
 		protected function detailLabelInitializer(label:Label):void
 		{
 			label.textRendererProperties.textFormat = this.smallLightTextFormat;
+			label.textRendererProperties.disabledTextFormat = this.smallDisabledTextFormat;
 			label.textRendererProperties.embedFonts = true;
 		}
 
