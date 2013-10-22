@@ -196,6 +196,7 @@ package feathers.controls.text
 		 *
 		 * @default null
 		 *
+		 * @see #disabledTextFormat
 		 * @see flash.text.TextFormat
 		 */
 		public function get textFormat():TextFormat
@@ -213,6 +214,43 @@ package feathers.controls.text
 				return;
 			}
 			this._textFormat = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _disabledTextFormat:TextFormat;
+
+		/**
+		 * The font and styles used to draw the text when the component is disabled.
+		 *
+		 * <p>In the following example, the disabled text format is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.isEnabled = false;
+		 * textRenderer.disabledTextFormat = new TextFormat( "Source Sans Pro" );</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #textFormat
+		 * @see flash.text.TextFormat
+		 */
+		public function get disabledTextFormat():TextFormat
+		{
+			return this._disabledTextFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set disabledTextFormat(value:TextFormat):void
+		{
+			if(this._disabledTextFormat == value)
+			{
+				return;
+			}
+			this._disabledTextFormat = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -859,6 +897,7 @@ package feathers.controls.text
 		{
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 
 			if(stylesInvalid)
 			{
@@ -874,11 +913,15 @@ package feathers.controls.text
 				this.textField.thickness = this._thickness;
 			}
 
-			if(dataInvalid || stylesInvalid)
+			if(dataInvalid || stylesInvalid || stateInvalid)
 			{
 				this.textField.wordWrap = this._wordWrap;
 				this.textField.embedFonts = this._embedFonts;
-				if(this._textFormat)
+				if(!this._isEnabled && this._disabledTextFormat)
+				{
+					this.textField.defaultTextFormat = this._disabledTextFormat;
+				}
+				else if(this._textFormat)
 				{
 					this.textField.defaultTextFormat = this._textFormat;
 				}
