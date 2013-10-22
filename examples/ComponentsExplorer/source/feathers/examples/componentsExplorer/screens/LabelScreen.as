@@ -39,17 +39,17 @@ package feathers.examples.componentsExplorer.screens
 			this.layout = verticalLayout;
 
 			this._normalLabel = new Label();
-			this._normalLabel.text = "This is a normal Label";
+			this._normalLabel.text = "This is a normal label.";
 			this.addChild(this._normalLabel);
 
 			this._disabledLabel = new Label();
-			this._disabledLabel.text = "A Label may be disabled.";
+			this._disabledLabel.text = "A label may be disabled.";
 			this._disabledLabel.isEnabled = false;
 			this.addChild(this._disabledLabel);
 
 			this._headingLabel = new Label();
 			this._headingLabel.nameList.add(Label.ALTERNATE_NAME_HEADING);
-			this._headingLabel.text = "A heading Label is for larger, more important text.";
+			this._headingLabel.text = "A heading label is for larger, more important text.";
 			this.addChild(this._headingLabel);
 
 			this._detailLabel = new Label();
