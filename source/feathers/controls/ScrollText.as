@@ -87,6 +87,20 @@ package feathers.controls
 		public static const SCROLL_BAR_DISPLAY_MODE_NONE:String = "none";
 
 		/**
+		 * The vertical scroll bar will be positioned on the right.
+		 *
+		 * @see feathers.controls.Scroller#verticalScrollBarPosition
+		 */
+		public static const VERTICAL_SCROLL_BAR_POSITION_RIGHT:String = "right";
+
+		/**
+		 * The vertical scroll bar will be positioned on the left.
+		 *
+		 * @see feathers.controls.Scroller#verticalScrollBarPosition
+		 */
+		public static const VERTICAL_SCROLL_BAR_POSITION_LEFT:String = "left";
+
+		/**
 		 * @copy feathers.controls.Scroller#INTERACTION_MODE_TOUCH
 		 *
 		 * @see feathers.controls.Scroller#interactionMode

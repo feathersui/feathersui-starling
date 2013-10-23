@@ -211,6 +211,20 @@ package feathers.controls
 		public static const SCROLL_BAR_DISPLAY_MODE_NONE:String = "none";
 
 		/**
+		 * The vertical scroll bar will be positioned on the right.
+		 *
+		 * @see feathers.controls.Scroller#verticalScrollBarPosition
+		 */
+		public static const VERTICAL_SCROLL_BAR_POSITION_RIGHT:String = "right";
+
+		/**
+		 * The vertical scroll bar will be positioned on the left.
+		 *
+		 * @see feathers.controls.Scroller#verticalScrollBarPosition
+		 */
+		public static const VERTICAL_SCROLL_BAR_POSITION_LEFT:String = "left";
+
+		/**
 		 * The user may touch anywhere on the scroller and drag to scroll. The
 		 * scroll bars will be visual indicator of position, but they will not
 		 * be interactive.
@@ -778,6 +792,43 @@ package feathers.controls
 			{
 				this._horizontalScrollBarProperties.addOnChangeCallback(childProperties_onChange);
 			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _verticalScrollBarPosition:String = VERTICAL_SCROLL_BAR_POSITION_RIGHT;
+
+		[Inspectable(type="String",enumeration="right,left")]
+		/**
+		 * Determines where the vertical scroll bar will be positioned.
+		 *
+		 * <p>In the following example, the scroll bars is positioned on the left:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.verticalScrollBarPosition = Scroller.VERTICAL_SCROLL_BAR_POSITION_LEFT;</listing>
+		 *
+		 * @default Scroller.VERTICAL_SCROLL_BAR_POSITION_RIGHT
+		 *
+		 * @see #VERTICAL_SCROLL_BAR_POSITION_RIGHT
+		 * @see #VERTICAL_SCROLL_BAR_POSITION_LEFT
+		 */
+		public function get verticalScrollBarPosition():String
+		{
+			return this._verticalScrollBarPosition;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set verticalScrollBarPosition(value:String):void
+		{
+			if(this._verticalScrollBarPosition == value)
+			{
+				return;
+			}
+			this._verticalScrollBarPosition = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -3261,7 +3312,14 @@ package feathers.controls
 
 			if(this.verticalScrollBar)
 			{
-				this.verticalScrollBar.x = this._leftViewPortOffset + this._viewPort.visibleWidth;
+				if(this._verticalScrollBarPosition == VERTICAL_SCROLL_BAR_POSITION_LEFT)
+				{
+					this.verticalScrollBar.x = this._paddingLeft;
+				}
+				else
+				{
+					this.verticalScrollBar.x = this._leftViewPortOffset + this._viewPort.visibleWidth;
+				}
 				this.verticalScrollBar.y = this._topViewPortOffset;
 				if(this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_FIXED)
 				{
