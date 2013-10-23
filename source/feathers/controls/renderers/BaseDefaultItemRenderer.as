@@ -1906,14 +1906,19 @@ package feathers.controls.renderers
 				return width;
 			}
 
-			if(isNaN(width))
+			var hasPreviousItem:Boolean = !isNaN(width);
+			if(!hasPreviousItem)
 			{
 				width = 0;
 			}
 
 			if(this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE || this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
 			{
-				width += this.currentIcon.width + gap;
+				if(hasPreviousItem)
+				{
+					width += gap;
+				}
+				width += this.currentIcon.width;
 			}
 			else
 			{
@@ -1932,19 +1937,24 @@ package feathers.controls.renderers
 				return width;
 			}
 
-			if(isNaN(width))
+			var hasPreviousItem:Boolean = !isNaN(width);
+			if(!hasPreviousItem)
 			{
 				width = 0;
 			}
 
 			if(this._accessoryPosition == ACCESSORY_POSITION_LEFT || this._accessoryPosition == ACCESSORY_POSITION_RIGHT)
 			{
-				var adjustedAccessoryGap:Number = isNaN(this._accessoryGap) ? gap : this._accessoryGap;
-				if(adjustedAccessoryGap == Number.POSITIVE_INFINITY)
+				if(hasPreviousItem)
 				{
-					adjustedAccessoryGap = Math.min(this._paddingLeft, this._paddingRight, this._gap);
+					var adjustedAccessoryGap:Number = isNaN(this._accessoryGap) ? gap : this._accessoryGap;
+					if(adjustedAccessoryGap == Number.POSITIVE_INFINITY)
+					{
+						adjustedAccessoryGap = Math.min(this._paddingLeft, this._paddingRight, this._gap);
+					}
+					width += adjustedAccessoryGap;
 				}
-				width += this.accessory.width + adjustedAccessoryGap;
+				width += this.accessory.width;
 			}
 			else
 			{
@@ -1964,14 +1974,19 @@ package feathers.controls.renderers
 				return height;
 			}
 
-			if(isNaN(height))
+			var hasPreviousItem:Boolean = !isNaN(height);
+			if(!hasPreviousItem)
 			{
 				height = 0;
 			}
 
 			if(this._iconPosition == ICON_POSITION_TOP || this._iconPosition == ICON_POSITION_BOTTOM)
 			{
-				height += this.currentIcon.height + gap;
+				if(hasPreviousItem)
+				{
+					height += gap;
+				}
+				height += this.currentIcon.height;
 			}
 			else
 			{
@@ -1990,19 +2005,24 @@ package feathers.controls.renderers
 				return height;
 			}
 
-			if(isNaN(height))
+			var hasPreviousItem:Boolean = !isNaN(height);
+			if(!hasPreviousItem)
 			{
 				height = 0;
 			}
 
 			if(this._accessoryPosition == ACCESSORY_POSITION_TOP || this._accessoryPosition == ACCESSORY_POSITION_BOTTOM)
 			{
-				var adjustedAccessoryGap:Number = isNaN(this._accessoryGap) ? gap : this._accessoryGap;
-				if(adjustedAccessoryGap == Number.POSITIVE_INFINITY)
+				if(hasPreviousItem)
 				{
-					adjustedAccessoryGap = Math.min(this._paddingTop, this._paddingBottom, this._gap);
+					var adjustedAccessoryGap:Number = isNaN(this._accessoryGap) ? gap : this._accessoryGap;
+					if(adjustedAccessoryGap == Number.POSITIVE_INFINITY)
+					{
+						adjustedAccessoryGap = Math.min(this._paddingTop, this._paddingBottom, this._gap);
+					}
+					height += adjustedAccessoryGap;
 				}
-				height += this.accessory.height + adjustedAccessoryGap;
+				height += this.accessory.height;
 			}
 			else
 			{
