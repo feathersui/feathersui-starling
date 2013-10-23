@@ -3149,6 +3149,67 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function calculateViewPortOffsetsForFixedHorizontalScrollBar(forceScrollBars:Boolean = false, useActualBounds:Boolean = false):void
+		{
+			if(this.horizontalScrollBar)
+			{
+				var scrollerWidth:Number = useActualBounds ? this.actualWidth : (this.explicitWidth);
+				var totalWidth:Number = this._viewPort.width + this._leftViewPortOffset + this._rightViewPortOffset;
+				if(forceScrollBars || this._horizontalScrollPolicy == SCROLL_POLICY_ON ||
+					((totalWidth > scrollerWidth || totalWidth > this._maxWidth) &&
+						this._horizontalScrollPolicy != SCROLL_POLICY_OFF))
+				{
+					this._hasHorizontalScrollBar = true;
+					this._bottomViewPortOffset += this.horizontalScrollBar.height;
+				}
+				else
+				{
+					this._hasHorizontalScrollBar = false;
+				}
+			}
+			else
+			{
+				this._hasHorizontalScrollBar = false;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function calculateViewPortOffsetsForFixedVerticalScrollBar(forceScrollBars:Boolean = false, useActualBounds:Boolean = false):void
+		{
+			if(this.verticalScrollBar)
+			{
+				var scrollerHeight:Number = useActualBounds ? this.actualHeight : this.explicitHeight;
+				var totalHeight:Number = this._viewPort.height + this._topViewPortOffset + this._bottomViewPortOffset;
+				if(forceScrollBars || this._verticalScrollPolicy == SCROLL_POLICY_ON ||
+					((totalHeight > scrollerHeight || totalHeight > this._maxHeight) &&
+						this._verticalScrollPolicy != SCROLL_POLICY_OFF))
+				{
+					this._hasVerticalScrollBar = true;
+					if(this._verticalScrollBarPosition == VERTICAL_SCROLL_BAR_POSITION_LEFT)
+					{
+						this._leftViewPortOffset += this.verticalScrollBar.width;
+					}
+					else
+					{
+						this._rightViewPortOffset += this.verticalScrollBar.width;
+					}
+				}
+				else
+				{
+					this._hasVerticalScrollBar = false;
+				}
+			}
+			else
+			{
+				this._hasVerticalScrollBar = false;
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function calculateViewPortOffsets(forceScrollBars:Boolean = false, useActualBounds:Boolean = false):void
 		{
 			//in fixed mode, if we determine that scrolling is required, we
@@ -3160,43 +3221,13 @@ package feathers.controls
 			this._leftViewPortOffset = this._paddingLeft;
 			if(this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FIXED)
 			{
-				if(this.horizontalScrollBar)
+				this.calculateViewPortOffsetsForFixedHorizontalScrollBar(forceScrollBars, useActualBounds);
+				this.calculateViewPortOffsetsForFixedVerticalScrollBar(forceScrollBars, useActualBounds);
+				//we need to double check the horizontal scroll bar because
+				//adding a vertical scroll bar may require a horizontal one too.
+				if(this._hasVerticalScrollBar && !this._hasHorizontalScrollBar)
 				{
-					const scrollerWidth:Number = useActualBounds ? this.actualWidth : (this.explicitWidth);
-					if(forceScrollBars || this._horizontalScrollPolicy == SCROLL_POLICY_ON ||
-						((this._viewPort.width > scrollerWidth || this._viewPort.width > this._maxWidth) &&
-							this._horizontalScrollPolicy != SCROLL_POLICY_OFF))
-					{
-						this._hasHorizontalScrollBar = true;
-						this._bottomViewPortOffset += this.horizontalScrollBar.height;
-					}
-					else
-					{
-						this._hasHorizontalScrollBar = false;
-					}
-				}
-				else
-				{
-					this._hasHorizontalScrollBar = false;
-				}
-				if(this.verticalScrollBar)
-				{
-					const scrollerHeight:Number = useActualBounds ? this.actualHeight : this.explicitHeight;
-					if(forceScrollBars || this._verticalScrollPolicy == SCROLL_POLICY_ON ||
-						((this._viewPort.height > scrollerHeight || this._viewPort.height > this._maxHeight) &&
-							this._verticalScrollPolicy != SCROLL_POLICY_OFF))
-					{
-						this._hasVerticalScrollBar = true;
-						this._rightViewPortOffset += this.verticalScrollBar.width;
-					}
-					else
-					{
-						this._hasVerticalScrollBar = false;
-					}
-				}
-				else
-				{
-					this._hasVerticalScrollBar = false;
+					this.calculateViewPortOffsetsForFixedHorizontalScrollBar(forceScrollBars, useActualBounds);
 				}
 			}
 			else
