@@ -1188,9 +1188,13 @@ package feathers.controls.supportClasses
 					this._selectedIndices.removeItemAt(indexOfIndex);
 				}
 			}
-			else
+			else if(isSelected)
 			{
 				this._selectedIndices.data = new <int>[index];
+			}
+			else
+			{
+				this._selectedIndices.removeAll();
 			}
 		}
 
