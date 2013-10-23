@@ -231,7 +231,25 @@ package feathers.controls
 			{
 				child.addEventListener(FeathersEventType.LAYOUT_DATA_CHANGE, child_layoutDataChangeHandler);
 			}
-			this.items.splice(index, 0, child);
+			var oldIndex:int = this.items.indexOf(child);
+			if(oldIndex == index)
+			{
+				return child;
+			}
+			if(oldIndex >= 0)
+			{
+				this.items.splice(oldIndex, 1);
+			}
+			var itemCount:int = this.items.length;
+			if(index == itemCount)
+			{
+				//faster than splice because it avoids gc
+				this.items[index] = child;
+			}
+			else
+			{
+				this.items.splice(index, 0, child);
+			}
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 			return super.addChildAt(child, index);
 		}
