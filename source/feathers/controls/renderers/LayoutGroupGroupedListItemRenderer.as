@@ -28,6 +28,15 @@ package feathers.controls.renderers
 	 * layouts that can automatically adjust positions when the list resizes.
 	 * Create <code>AnchorLayoutData</code> objects to define the constraints.</p>
 	 *
+	 * <p><strong>Beta Component:</strong> This is a new component, and its APIs
+	 * may need some changes between now and the next version of Feathers to
+	 * account for overlooked requirements or other issues. Upgrading to future
+	 * versions of Feathers may involve manual changes to your code that uses
+	 * this component. The
+	 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>
+	 * will not go into effect until this component's status is upgraded from
+	 * beta to stable.</p>
+	 *
 	 * @see feathers.controls.GroupedList
 	 */
 	public class LayoutGroupGroupedListItemRenderer extends LayoutGroup implements IGroupedListItemRenderer
