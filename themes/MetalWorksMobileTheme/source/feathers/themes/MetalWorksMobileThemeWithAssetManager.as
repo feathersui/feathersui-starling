@@ -283,6 +283,8 @@ package feathers.themes
 			{
 				this.atlas.dispose();
 				this.atlas = null;
+				//no need to dispose the atlas texture because the atlas will do that
+				this.atlasTexture = null;
 			}
 			if(this.assetManager)
 			{

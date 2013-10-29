@@ -222,12 +222,25 @@ package feathers.themes
 			{
 				this.atlas.dispose();
 				this.atlas = null;
+				//no need to dispose the atlas texture because the atlas will do that
+				this.atlasTexture = null;
 			}
 			if(this.assetManager)
 			{
 				this.assetManager.removeTextureAtlas(ATLAS_NAME);
 			}
 			super.dispose();
+		}
+
+		protected function initializeRoot():void
+		{
+			if(this.root != this.root.stage)
+			{
+				return;
+			}
+
+			this.root.stage.color = BACKGROUND_COLOR;
+			Starling.current.nativeStage.color = BACKGROUND_COLOR;
 		}
 
 		protected function atlasTexture_onRestore():void
@@ -398,6 +411,15 @@ package feathers.themes
 
 			FeathersControl.defaultTextRendererFactory = textRendererFactory;
 			FeathersControl.defaultTextEditorFactory = textEditorFactory;
+
+			if(this.root.stage)
+			{
+				this.initializeRoot();
+			}
+			else
+			{
+				this.root.addEventListener(Event.ADDED_TO_STAGE, root_addedToStageHandler);
+			}
 
 			this.setInitializerForClassAndSubclasses(Screen, screenInitializer);
 			this.setInitializerForClassAndSubclasses(PanelScreen, panelScreenInitializer);
@@ -1232,7 +1254,7 @@ package feathers.themes
 
 		protected function root_addedToStageHandler(event:Event):void
 		{
-			DisplayObject(event.currentTarget).stage.color = BACKGROUND_COLOR;
+			this.initializeRoot();
 		}
 	}
 }
