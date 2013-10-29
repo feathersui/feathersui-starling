@@ -1133,7 +1133,7 @@ package feathers.layout
 			if(this._useVirtualLayout)
 			{
 				this.prepareTypicalItem(width - this._paddingLeft - this._paddingRight);
-				var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
+				//var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
 				var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
 			}
 
@@ -1145,11 +1145,20 @@ package feathers.layout
 				startIndexOffset = this._beforeVirtualizedItemCount;
 				positionY += (this._beforeVirtualizedItemCount * (calculatedTypicalItemHeight + this._gap));
 
-				endIndexOffset = index - items.length - this._beforeVirtualizedItemCount + 1;
-				if(endIndexOffset < 0)
-				{
-					endIndexOffset = 0;
-				}
+                if(index > this._beforeVirtualizedItemCount)
+                {
+                    endIndexOffset = index - items.length - this._beforeVirtualizedItemCount + 1;
+
+                    if(endIndexOffset < 0)
+                    {
+                        endIndexOffset = 0;
+                    }
+                }
+                else
+                {
+                    endIndexOffset = index - this._beforeVirtualizedItemCount;
+                }
+
 				positionY += (endIndexOffset * (calculatedTypicalItemHeight + this._gap));
 			}
 			index -= (startIndexOffset + endIndexOffset);
