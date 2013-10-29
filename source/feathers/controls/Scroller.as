@@ -2442,7 +2442,11 @@ package feathers.controls
 			this._previousVelocityY.length = 0;
 			this.hideHorizontalScrollBar();
 			this.hideVerticalScrollBar();
-		}
+            if(this._isDraggingHorizontally)
+                this.finishScrollingHorizontally();
+            if(this._isDraggingVertically)
+                this.finishScrollingVertically();
+        }
 
 		/**
 		 * After the next validation, scrolls to a specific position. May scroll
