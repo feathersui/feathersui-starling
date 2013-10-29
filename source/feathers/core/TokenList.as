@@ -8,7 +8,8 @@ accordance with the terms of the accompanying license agreement.
 package feathers.core
 {
 	/**
-	 * A list of space-delimited tokens.
+	 * A list of space-delimited tokens. Obviously, since they are delimited by
+	 * spaces, tokens cannot contain spaces.
 	 */
 	public class TokenList
 	{
