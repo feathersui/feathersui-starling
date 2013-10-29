@@ -132,6 +132,8 @@ package feathers.themes
 		protected static const SCROLL_BAR_THUMB_REGION1:int = 5;
 		protected static const SCROLL_BAR_THUMB_REGION2:int = 14;
 
+		protected static const ATLAS_NAME:String = "metalworks";
+
 		public static const COMPONENT_NAME_PICKER_LIST_ITEM_RENDERER:String = "metal-works-mobile-picker-list-item-renderer";
 		public static const COMPONENT_NAME_ALERT_BUTTON_GROUP_BUTTON:String = "metal-works-mobile-alert-button-group-button";
 
@@ -165,30 +167,7 @@ package feathers.themes
 			}
 			super(container);
 			this._scaleToDPI = scaleToDPI;
-			if(source is MetalWorksMobileTheme)
-			{
-				var ImageType:Class = MetalWorksMobileTheme.ATLAS_IMAGE;
-				var XMLType:Class = MetalWorksMobileTheme.ATLAS_XML;
-
-				var atlasBitmapData:BitmapData = Bitmap(new ImageType()).bitmapData;
-				var atlasTexture:Texture = Texture.fromBitmapData(atlasBitmapData, false);
-				atlasTexture.root.onRestore = this.atlasTexture_onRestore;
-				atlasBitmapData.dispose();
-				this.atlas = new TextureAtlas(atlasTexture, XML(new XMLType()));
-				this.initialize();
-				this.dispatchEventWith(Event.COMPLETE);
-			}
-			else
-			{
-				this.assetManager = assetManager;
-				if(!this.assetManager)
-				{
-					this.assetManager = new AssetManager(Starling.contentScaleFactor);
-				}
-				this.assetManager.enqueue(source + "/images/metalworks.xml");
-				this.assetManager.enqueue(source + "/images/metalworks.png");
-				this.assetManager.loadQueue(assetManager_onProgress);
-			}
+			this.processSource(source, assetManager);
 		}
 
 		protected var _originalDPI:int;
@@ -307,7 +286,7 @@ package feathers.themes
 			}
 			if(this.assetManager)
 			{
-				this.assetManager.removeTextureAtlas("metalworks");
+				this.assetManager.removeTextureAtlas(ATLAS_NAME);
 			}
 			super.dispose();
 		}
@@ -339,6 +318,43 @@ package feathers.themes
 			}
 			this.initialize();
 			this.dispatchEventWith(Event.COMPLETE);
+		}
+
+		protected function processSource(source:Object, assetManager:AssetManager):void
+		{
+			if(source is MetalWorksMobileTheme)
+			{
+				var ImageType:Class = MetalWorksMobileTheme.ATLAS_IMAGE;
+				var XMLType:Class = MetalWorksMobileTheme.ATLAS_XML;
+
+				var atlasBitmapData:BitmapData = Bitmap(new ImageType()).bitmapData;
+				var atlasTexture:Texture = Texture.fromBitmapData(atlasBitmapData, false);
+				atlasTexture.root.onRestore = this.atlasTexture_onRestore;
+				atlasBitmapData.dispose();
+				this.atlas = new TextureAtlas(atlasTexture, XML(new XMLType()));
+				this.initialize();
+				this.dispatchEventWith(Event.COMPLETE);
+			}
+			else
+			{
+				//add a trailing slash, if needed
+				if(source is String)
+				{
+					var sourceString:String = source as String;
+					if(sourceString.lastIndexOf("/") != sourceString.length - 1)
+					{
+						source = sourceString + "/";
+					}
+				}
+				this.assetManager = assetManager;
+				if(!this.assetManager)
+				{
+					this.assetManager = new AssetManager(Starling.contentScaleFactor);
+				}
+				this.assetManager.enqueue(source + "images/metalworks.xml");
+				this.assetManager.enqueue(source + "images/metalworks.png");
+				this.assetManager.loadQueue(assetManager_onProgress);
+			}
 		}
 
 		protected function initialize():void
@@ -398,7 +414,7 @@ package feathers.themes
 			{
 				if(this.assetManager)
 				{
-					this.atlas = this.assetManager.getTextureAtlas("metalworks");
+					this.atlas = this.assetManager.getTextureAtlas(ATLAS_NAME);
 				}
 				else
 				{
