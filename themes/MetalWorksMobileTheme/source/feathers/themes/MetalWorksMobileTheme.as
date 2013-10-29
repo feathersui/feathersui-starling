@@ -24,7 +24,6 @@
  */
 package feathers.themes
 {
-	import starling.core.Starling;
 	import starling.display.DisplayObjectContainer;
 
 	public class MetalWorksMobileTheme extends MetalWorksMobileThemeWithAssetManager
@@ -39,6 +38,5 @@ package feathers.themes
 		{
 			super(this, null, container, scaleToDPI);
 		}
-
 	}
 }
