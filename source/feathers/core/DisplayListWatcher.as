@@ -12,6 +12,7 @@ package feathers.core
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
 	import starling.events.Event;
+	import starling.events.EventDispatcher;
 
 	/**
 	 * Watches a container on the display list. As new display objects are
@@ -54,7 +55,7 @@ package feathers.core
 	 * that you create yourself) will trigger the <code>buttonInitializer()</code>
 	 * function.</p>
 	 */
-	public class DisplayListWatcher
+	public class DisplayListWatcher extends EventDispatcher
 	{
 		/**
 		 * Constructor.
