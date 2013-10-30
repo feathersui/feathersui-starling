@@ -536,6 +536,18 @@ package feathers.themes
 			label.textRendererProperties.disabledTextFormat = this.disabledTextFormat;
 		}
 
+		protected function headingLabelInitializer(label:Label):void
+		{
+			label.textRendererProperties.textFormat = this.headingTextFormat;
+			label.textRendererProperties.disabledTextFormat = this.headingDisabledTextFormat;
+		}
+
+		protected function detailLabelInitializer(label:Label):void
+		{
+			label.textRendererProperties.textFormat = this.detailTextFormat;
+			label.textRendererProperties.disabledTextFormat = this.detailDisabledTextFormat;
+		}
+
 		protected function itemRendererAccessoryLabelInitializer(renderer:BitmapFontTextRenderer):void
 		{
 			renderer.textFormat = this.primaryTextFormat;
