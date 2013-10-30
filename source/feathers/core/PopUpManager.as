@@ -7,6 +7,8 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.core
 {
+	import feathers.events.FeathersEventType;
+
 	import flash.utils.Dictionary;
 
 	import starling.core.Starling;
@@ -140,6 +142,25 @@ package feathers.core
 		
 		/**
 		 * Adds a pop-up to the stage.
+		 *
+		 * <p>The pop-up may be modal, meaning that an overlay will be displayed
+		 * between the pop-up and everything under the pop-up manager, and the
+		 * overlay will block touches. The default overlay used for modal
+		 * pop-ups is created by <code>PopUpManager.overlayFactory</code>. A
+		 * custom overlay factory may be passed to <code>PopUpManager.addPopUp()</code>
+		 * to create an overlay that is different from the default one.
+		 *
+		 * <p>A pop-up may be centered globally on the Starling stage. If the
+		 * stage or the pop-up resizes, the pop-up will be repositioned to
+		 * remain in the center. To position a pop-up in the center once,
+		 * specify a value of <code>false</code> when calling
+		 * <code>PopUpManager.addPopUp()</code> and call
+		 * <code>PopUpManager.centerPopUp()</code> manually.</p>
+		 *
+		 * <p>Note: The pop-up manager can only detect if Feathers components
+		 * have been resized in order to reposition them to remain centered.
+		 * Regular Starling display objects do not dispatch a proper resize
+		 * event that the pop-up manager can listen to.</p>
 		 */
 		public static function addPopUp(popUp:DisplayObject, isModal:Boolean = true, isCentered:Boolean = true, customOverlayFactory:Function = null):void
 		{
@@ -177,6 +198,10 @@ package feathers.core
 
 			if(isCentered)
 			{
+				if(popUp is IFeathersControl)
+				{
+					popUp.addEventListener(FeathersEventType.RESIZE, popUp_resizeHandler);
+				}
 				CENTERED_POPUPS.push(popUp);
 				centerPopUp(popUp);
 			}
@@ -220,7 +245,11 @@ package feathers.core
 		}
 		
 		/**
-		 * Centers a pop-up on the stage.
+		 * Centers a pop-up on the stage. Unlike the <code>isCentered</code>
+		 * argument passed to <code>PopUpManager.addPopUp()</code>, the pop-up
+		 * will only be positioned once. If the stage or the pop-up resizes,
+		 * <code>PopUpManager.centerPopUp()</code> will need to be called again
+		 * if it should remain centered.
 		 *
 		 * <p>In the following example, we center a pop-up:</p>
 		 *
@@ -236,6 +265,20 @@ package feathers.core
 			}
 			popUp.x = (stage.stageWidth - popUp.width) / 2;
 			popUp.y = (stage.stageHeight - popUp.height) / 2;
+		}
+
+		/**
+		 * @private
+		 */
+		protected static function popUp_resizeHandler(event:Event):void
+		{
+			var popUp:DisplayObject = DisplayObject(event.currentTarget);
+			var index:int = CENTERED_POPUPS.indexOf(popUp);
+			if(index < 0)
+			{
+				return;
+			}
+			centerPopUp(popUp);
 		}
 
 		/**
@@ -271,6 +314,10 @@ package feathers.core
 			index = CENTERED_POPUPS.indexOf(popUp);
 			if(index >= 0)
 			{
+				if(popUp is IFeathersControl)
+				{
+					popUp.removeEventListener(FeathersEventType.RESIZE, popUp_resizeHandler);
+				}
 				CENTERED_POPUPS.splice(index, 1);
 			}
 
