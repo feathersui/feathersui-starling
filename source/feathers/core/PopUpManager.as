@@ -148,7 +148,7 @@ package feathers.core
 		 * overlay will block touches. The default overlay used for modal
 		 * pop-ups is created by <code>PopUpManager.overlayFactory</code>. A
 		 * custom overlay factory may be passed to <code>PopUpManager.addPopUp()</code>
-		 * to create an overlay that is different from the default one.
+		 * to create an overlay that is different from the default one.</p>
 		 *
 		 * <p>A pop-up may be centered globally on the Starling stage. If the
 		 * stage or the pop-up resizes, the pop-up will be repositioned to
