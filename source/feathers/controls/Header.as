@@ -1155,7 +1155,7 @@ package feathers.controls
 			}
 			if(needsWidth && !isNaN(this.originalBackgroundWidth))
 			{
-				if(this.originalBackgroundWidth > newWidth);
+				if(this.originalBackgroundWidth > newWidth)
 				{
 					newWidth = this.originalBackgroundWidth;
 				}
