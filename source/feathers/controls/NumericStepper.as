@@ -7,6 +7,7 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
+	import feathers.controls.IRange;
 	import feathers.core.FeathersControl;
 	import feathers.core.IFocusDisplayObject;
 	import feathers.core.PropertyProxy;
@@ -49,7 +50,7 @@ package feathers.controls
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/numeric-stepper
 	 */
-	public class NumericStepper extends FeathersControl implements IFocusDisplayObject
+	public class NumericStepper extends FeathersControl implements IRange, IFocusDisplayObject
 	{
 		/**
 		 * @private
