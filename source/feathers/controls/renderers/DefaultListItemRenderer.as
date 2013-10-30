@@ -78,7 +78,11 @@ package feathers.controls.renderers
 			{
 				const list:List = List(this._owner);
 				this.isSelectableWithoutToggle = list.isSelectable;
-				this.isToggle = list.allowMultipleSelection;
+				if(list.allowMultipleSelection)
+				{
+					//toggling is forced in this case
+					this.isToggle = true;
+				}
 				this._owner.addEventListener(FeathersEventType.SCROLL_START, owner_scrollStartHandler);
 				this._owner.addEventListener(FeathersEventType.SCROLL_COMPLETE, owner_scrollCompleteHandler);
 			}
