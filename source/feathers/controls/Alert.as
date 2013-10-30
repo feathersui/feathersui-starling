@@ -577,10 +577,7 @@ package feathers.controls
 
 			if(textRendererInvalid)
 			{
-				const oldDisplayListBypassEnabled:Boolean = this.displayListBypassEnabled;
-				this.displayListBypassEnabled = true;
 				this.createMessage();
-				this.displayListBypassEnabled = oldDisplayListBypassEnabled;
 			}
 
 			if(textRendererInvalid || dataInvalid)

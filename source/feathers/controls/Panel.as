@@ -712,13 +712,11 @@ package feathers.controls
 		 */
 		protected function createHeader():void
 		{
-			const oldDisplayListBypassEnabled:Boolean = this.displayListBypassEnabled;
-			this.displayListBypassEnabled = false;
 			if(this.header)
 			{
 				var displayHeader:DisplayObject = DisplayObject(this.header);
 				this._focusExtrasBefore.splice(this._focusExtrasBefore.indexOf(displayHeader), 1);
-				this.removeChild(displayHeader, true);
+				this.removeRawChild(displayHeader, true);
 				this.header = null;
 			}
 
@@ -727,9 +725,8 @@ package feathers.controls
 			this.header = IFeathersControl(factory());
 			this.header.nameList.add(headerName);
 			displayHeader = DisplayObject(this.header);
-			this.addChild(displayHeader);
+			this.addRawChild(displayHeader);
 			this._focusExtrasBefore.push(displayHeader);
-			this.displayListBypassEnabled = oldDisplayListBypassEnabled;
 		}
 
 		/**
@@ -745,13 +742,11 @@ package feathers.controls
 		 */
 		protected function createFooter():void
 		{
-			const oldDisplayListBypassEnabled:Boolean = this.displayListBypassEnabled;
-			this.displayListBypassEnabled = false;
 			if(this.footer)
 			{
 				var displayFooter:DisplayObject = DisplayObject(this.footer);
 				this._focusExtrasAfter.splice(this._focusExtrasAfter.indexOf(displayFooter), 1);
-				this.removeChild(displayFooter, true);
+				this.removeRawChild(displayFooter, true);
 				this.footer = null;
 			}
 
@@ -763,9 +758,8 @@ package feathers.controls
 			this.footer = IFeathersControl(this._footerFactory());
 			this.footer.nameList.add(footerName);
 			displayFooter = DisplayObject(this.footer);
-			this.addChild(displayFooter);
+			this.addRawChild(displayFooter);
 			this._focusExtrasAfter.push(displayFooter);
-			this.displayListBypassEnabled = oldDisplayListBypassEnabled;
 		}
 
 		/**
