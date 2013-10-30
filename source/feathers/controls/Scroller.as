@@ -575,13 +575,13 @@ package feathers.controls
 			if(this._viewPort)
 			{
 				this._viewPort.removeEventListener(FeathersEventType.RESIZE, viewPort_resizeHandler);
-				this.removeChild(DisplayObject(this._viewPort));
+				this.removeRawChildInternal(DisplayObject(this._viewPort));
 			}
 			this._viewPort = value;
 			if(this._viewPort)
 			{
 				this._viewPort.addEventListener(FeathersEventType.RESIZE, viewPort_resizeHandler);
-				this.addChildAt(DisplayObject(this._viewPort), 0);
+				this.addRawChildAtInternal(DisplayObject(this._viewPort), 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
@@ -1734,13 +1734,13 @@ package feathers.controls
 
 			if(this._backgroundSkin && this._backgroundSkin != this._backgroundDisabledSkin)
 			{
-				this.removeChild(this._backgroundSkin);
+				this.removeRawChildInternal(this._backgroundSkin);
 			}
 			this._backgroundSkin = value;
 			if(this._backgroundSkin && this._backgroundSkin.parent != this)
 			{
 				this._backgroundSkin.visible = false;
-				this.addChild(this._backgroundSkin);
+				this.addRawChildInternal(this._backgroundSkin);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -1777,13 +1777,13 @@ package feathers.controls
 
 			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin != this._backgroundSkin)
 			{
-				this.removeChild(this._backgroundDisabledSkin);
+				this.removeRawChildInternal(this._backgroundDisabledSkin);
 			}
 			this._backgroundDisabledSkin = value;
 			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin.parent != this)
 			{
 				this._backgroundDisabledSkin.visible = false;
-				this.addChild(this._backgroundDisabledSkin);
+				this.addRawChildInternal(this._backgroundDisabledSkin);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -2729,7 +2729,7 @@ package feathers.controls
 				this.horizontalScrollBar.removeEventListener(FeathersEventType.BEGIN_INTERACTION, horizontalScrollBar_beginInteractionHandler);
 				this.horizontalScrollBar.removeEventListener(FeathersEventType.END_INTERACTION, horizontalScrollBar_endInteractionHandler);
 				this.horizontalScrollBar.removeEventListener(Event.CHANGE, horizontalScrollBar_changeHandler);
-				this.removeChild(DisplayObject(this.horizontalScrollBar), true);
+				this.removeRawChildInternal(DisplayObject(this.horizontalScrollBar), true);
 				this.horizontalScrollBar = null;
 			}
 			if(this.verticalScrollBar)
@@ -2737,7 +2737,7 @@ package feathers.controls
 				this.verticalScrollBar.removeEventListener(FeathersEventType.BEGIN_INTERACTION, verticalScrollBar_beginInteractionHandler);
 				this.verticalScrollBar.removeEventListener(FeathersEventType.END_INTERACTION, verticalScrollBar_endInteractionHandler);
 				this.verticalScrollBar.removeEventListener(Event.CHANGE, verticalScrollBar_changeHandler);
-				this.removeChild(DisplayObject(this.verticalScrollBar), true);
+				this.removeRawChildInternal(DisplayObject(this.verticalScrollBar), true);
 				this.verticalScrollBar = null;
 			}
 
@@ -2750,7 +2750,7 @@ package feathers.controls
 				this.horizontalScrollBar.addEventListener(Event.CHANGE, horizontalScrollBar_changeHandler);
 				this.horizontalScrollBar.addEventListener(FeathersEventType.BEGIN_INTERACTION, horizontalScrollBar_beginInteractionHandler);
 				this.horizontalScrollBar.addEventListener(FeathersEventType.END_INTERACTION, horizontalScrollBar_endInteractionHandler);
-				this.addChild(DisplayObject(this.horizontalScrollBar));
+				this.addRawChildInternal(DisplayObject(this.horizontalScrollBar));
 			}
 			if(this._scrollBarDisplayMode != SCROLL_BAR_DISPLAY_MODE_NONE &&
 				this._verticalScrollPolicy != SCROLL_POLICY_OFF && this._verticalScrollBarFactory != null)
@@ -2761,7 +2761,7 @@ package feathers.controls
 				this.verticalScrollBar.addEventListener(Event.CHANGE, verticalScrollBar_changeHandler);
 				this.verticalScrollBar.addEventListener(FeathersEventType.BEGIN_INTERACTION, verticalScrollBar_beginInteractionHandler);
 				this.verticalScrollBar.addEventListener(FeathersEventType.END_INTERACTION, verticalScrollBar_endInteractionHandler);
-				this.addChild(DisplayObject(this.verticalScrollBar));
+				this.addRawChildInternal(DisplayObject(this.verticalScrollBar));
 			}
 		}
 
@@ -2787,7 +2787,7 @@ package feathers.controls
 			if(this.currentBackgroundSkin)
 			{
 				//force it to the bottom
-				this.setChildIndex(this.currentBackgroundSkin, 0);
+				this.setRawChildIndexInternal(this.currentBackgroundSkin, 0);
 
 				if(isNaN(this.originalBackgroundWidth))
 				{
@@ -3113,18 +3113,18 @@ package feathers.controls
 			if(this.verticalScrollBar)
 			{
 				this.verticalScrollBar.visible = !isFixed || this._hasVerticalScrollBar;
-				this.setChildIndex(DisplayObject(this.verticalScrollBar), childCount - 1);
+				this.setRawChildIndexInternal(DisplayObject(this.verticalScrollBar), childCount - 1);
 			}
 			if(this.horizontalScrollBar)
 			{
 				this.horizontalScrollBar.visible = !isFixed || this._hasHorizontalScrollBar;
 				if(this.verticalScrollBar)
 				{
-					this.setChildIndex(DisplayObject(this.horizontalScrollBar), childCount - 2);
+					this.setRawChildIndexInternal(DisplayObject(this.horizontalScrollBar), childCount - 2);
 				}
 				else
 				{
-					this.setChildIndex(DisplayObject(this.horizontalScrollBar), childCount - 1);
+					this.setRawChildIndexInternal(DisplayObject(this.horizontalScrollBar), childCount - 1);
 				}
 			}
 			if(this.currentBackgroundSkin)
@@ -3250,7 +3250,7 @@ package feathers.controls
 					this._touchBlocker = new Quad(100, 100, 0xff00ff);
 					this._touchBlocker.alpha = 0;
 					this._touchBlocker.visible = false;
-					this.addChild(this._touchBlocker);
+					this.addRawChildInternal(this._touchBlocker);
 				}
 			}
 			else
@@ -3258,7 +3258,7 @@ package feathers.controls
 				this.removeEventListener(TouchEvent.TOUCH, scroller_touchHandler);
 				if(this._touchBlocker)
 				{
-					this.removeChild(this._touchBlocker, true);
+					this.removeRawChildInternal(this._touchBlocker, true);
 					this._touchBlocker = null;
 				}
 			}
@@ -3406,6 +3406,66 @@ package feathers.controls
 			{
 				this._viewPort.clipRect = null;
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function addRawChildInternal(child:DisplayObject):DisplayObject
+		{
+			if(this is IScrollContainer)
+			{
+				return IScrollContainer(this).addRawChild(child);
+			}
+			return this.addChild(child);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function addRawChildAtInternal(child:DisplayObject, index:int):DisplayObject
+		{
+			if(this is IScrollContainer)
+			{
+				return IScrollContainer(this).addRawChildAt(child, index);
+			}
+			return this.addChildAt(child, index);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function removeRawChildInternal(child:DisplayObject, dispose:Boolean = false):DisplayObject
+		{
+			if(this is IScrollContainer)
+			{
+				return IScrollContainer(this).removeRawChild(child, dispose);
+			}
+			return this.removeChild(child, dispose);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function removeRawChildAtInternal(index:int, dispose:Boolean = false):DisplayObject
+		{
+			if(this is IScrollContainer)
+			{
+				return IScrollContainer(this).removeRawChildAt(index, dispose);
+			}
+			return this.removeChildAt(index, dispose);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function setRawChildIndexInternal(child:DisplayObject, index:int):void
+		{
+			if(this is IScrollContainer)
+			{
+				return IScrollContainer(this).setRawChildIndex(child, index);
+			}
+			return this.setChildIndex(child, index);
 		}
 
 		/**
