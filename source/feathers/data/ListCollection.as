@@ -268,6 +268,10 @@ package feathers.data
 		 */
 		public function removeAll():void
 		{
+			if(this.length == 0)
+			{
+				return;
+			}
 			this._dataDescriptor.removeAll(this._data);
 			this.dispatchEventWith(Event.CHANGE);
 			this.dispatchEventWith(CollectionEventType.RESET, false);

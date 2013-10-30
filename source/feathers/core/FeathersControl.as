@@ -204,6 +204,7 @@ package feathers.core
 		 * can differentiate multiple styles of the same type of UI control. A
 		 * single control may have many names, and many controls can share a
 		 * single name. Names may be added, removed, or toggled on the <code>nameList</code>.
+		 * Names cannot contain spaces.
 		 *
 		 * <p>In the following example, a name is added to the name list:</p>
 		 *

@@ -193,8 +193,10 @@ package feathers.themes
 		protected var defaultTextFormat:TextFormat;
 		protected var disabledTextFormat:TextFormat;
 		protected var headingTextFormat:TextFormat;
-		protected var headerTitleTextFormat:TextFormat;
+		protected var headingDisabledTextFormat:TextFormat;
 		protected var detailTextFormat:TextFormat;
+		protected var detailDisabledTextFormat:TextFormat;
+		protected var headerTitleTextFormat:TextFormat;
 
 		protected var focusIndicatorSkinTextures:Scale9Textures;
 
@@ -415,7 +417,9 @@ package feathers.themes
 			this.disabledTextFormat = new TextFormat(FONT_NAME, 11, DISABLED_TEXT_COLOR, false, false, false, null, null, TextFormatAlign.LEFT, 0, 0, 0, 0);
 			this.headerTitleTextFormat = new TextFormat(FONT_NAME, 12, PRIMARY_TEXT_COLOR, false, false, false, null, null, TextFormatAlign.LEFT, 0, 0, 0, 0);
 			this.headingTextFormat = new TextFormat(FONT_NAME, 14, PRIMARY_TEXT_COLOR, false, false, false, null, null, TextFormatAlign.LEFT, 0, 0, 0, 0);
+			this.headingDisabledTextFormat = new TextFormat(FONT_NAME, 14, DISABLED_TEXT_COLOR, false, false, false, null, null, TextFormatAlign.LEFT, 0, 0, 0, 0);
 			this.detailTextFormat = new TextFormat(FONT_NAME, 10, PRIMARY_TEXT_COLOR, false, false, false, null, null, TextFormatAlign.LEFT, 0, 0, 0, 0);
+			this.detailDisabledTextFormat = new TextFormat(FONT_NAME, 10, DISABLED_TEXT_COLOR, false, false, false, null, null, TextFormatAlign.LEFT, 0, 0, 0, 0);
 
 			this.focusIndicatorSkinTextures = new Scale9Textures(this.atlas.getTexture("focus-indicator-skin"), FOCUS_INDICATOR_SCALE_9_GRID);
 
@@ -633,16 +637,19 @@ package feathers.themes
 		protected function labelInitializer(label:Label):void
 		{
 			label.textRendererProperties.textFormat = this.defaultTextFormat;
+			label.textRendererProperties.disabledTextFormat = this.disabledTextFormat;
 		}
 
 		protected function headingLabelInitializer(label:Label):void
 		{
 			label.textRendererProperties.textFormat = this.headingTextFormat;
+			label.textRendererProperties.disabledTextFormat = this.headingDisabledTextFormat;
 		}
 
 		protected function detailLabelInitializer(label:Label):void
 		{
 			label.textRendererProperties.textFormat = this.detailTextFormat;
+			label.textRendererProperties.disabledTextFormat = this.detailDisabledTextFormat;
 		}
 
 		protected function scrollTextInitializer(text:ScrollText):void

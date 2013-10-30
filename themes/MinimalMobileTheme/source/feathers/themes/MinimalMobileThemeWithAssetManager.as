@@ -147,6 +147,8 @@ package feathers.themes
 		protected var assetManager:AssetManager;
 		protected var scale:Number;
 		protected var fontSize:int;
+		protected var headingFontSize:int;
+		protected var detailFontSize:int;
 		protected var inputFontSize:int;
 
 		protected var atlas:TextureAtlas;
@@ -211,6 +213,10 @@ package feathers.themes
 
 		protected var primaryTextFormat:BitmapFontTextFormat;
 		protected var disabledTextFormat:BitmapFontTextFormat;
+		protected var headingTextFormat:BitmapFontTextFormat;
+		protected var headingDisabledTextFormat:BitmapFontTextFormat;
+		protected var detailTextFormat:BitmapFontTextFormat;
+		protected var detailDisabledTextFormat:BitmapFontTextFormat;
 
 		override public function dispose():void
 		{
@@ -329,6 +335,8 @@ package feathers.themes
 			//since it's a pixel font, we want a multiple of the original size,
 			//which, in this case, is 8.
 			this.fontSize = Math.max(4, roundToNearest(24 * this.scale, 8));
+			this.headingFontSize = Math.max(4, roundToNearest(32 * this.scale, 8));
+			this.detailFontSize = Math.max(4, roundToNearest(16 * this.scale, 8));
 			this.inputFontSize = 26 * this.scale;
 
 			PopUpManager.overlayFactory = popUpOverlayFactory;
@@ -408,6 +416,10 @@ package feathers.themes
 
 			this.primaryTextFormat = new BitmapFontTextFormat(FONT_NAME, this.fontSize, PRIMARY_TEXT_COLOR);
 			this.disabledTextFormat = new BitmapFontTextFormat(FONT_NAME, this.fontSize, DISABLED_TEXT_COLOR);
+			this.headingTextFormat = new BitmapFontTextFormat(FONT_NAME, this.headingFontSize, PRIMARY_TEXT_COLOR);
+			this.headingDisabledTextFormat = new BitmapFontTextFormat(FONT_NAME, this.headingFontSize, DISABLED_TEXT_COLOR);
+			this.detailTextFormat = new BitmapFontTextFormat(FONT_NAME, this.detailFontSize, PRIMARY_TEXT_COLOR);
+			this.detailDisabledTextFormat = new BitmapFontTextFormat(FONT_NAME, this.detailFontSize, DISABLED_TEXT_COLOR);
 
 			FeathersControl.defaultTextRendererFactory = textRendererFactory;
 			FeathersControl.defaultTextEditorFactory = textEditorFactory;
@@ -424,6 +436,8 @@ package feathers.themes
 			this.setInitializerForClassAndSubclasses(Screen, screenInitializer);
 			this.setInitializerForClassAndSubclasses(PanelScreen, panelScreenInitializer);
 			this.setInitializerForClass(Label, labelInitializer);
+			this.setInitializerForClass(Label, headingLabelInitializer, Label.ALTERNATE_NAME_HEADING);
+			this.setInitializerForClass(Label, detailLabelInitializer, Label.ALTERNATE_NAME_DETAIL);
 			this.setInitializerForClass(ScrollText, scrollTextInitializer);
 			this.setInitializerForClass(BitmapFontTextRenderer, itemRendererAccessoryLabelInitializer, BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ACCESSORY_LABEL);
 			this.setInitializerForClass(BitmapFontTextRenderer, alertMessageInitializer, Alert.DEFAULT_CHILD_NAME_MESSAGE);

@@ -2640,16 +2640,20 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
-			const renderer:IGroupedListItemRenderer = IGroupedListItemRenderer(event.currentTarget);
-			const isAlreadySelected:Boolean = this._selectedGroupIndex == renderer.groupIndex &&
-				this._selectedItemIndex == renderer.itemIndex;
-			if(!this._isSelectable || this._isScrolling || isAlreadySelected)
+			var renderer:IGroupedListItemRenderer = IGroupedListItemRenderer(event.currentTarget);
+			if(!this._isSelectable || this._isScrolling)
 			{
-				//reset to the old value
-				renderer.isSelected = isAlreadySelected;
+				renderer.isSelected = false;
 				return;
 			}
-			this.setSelectedLocation(renderer.groupIndex, renderer.itemIndex);
+			if(renderer.isSelected)
+			{
+				this.setSelectedLocation(renderer.groupIndex, renderer.itemIndex);
+			}
+			else
+			{
+				this.setSelectedLocation(-1, -1);
+			}
 		}
 
 		private function removedFromStageHandler(event:Event):void
