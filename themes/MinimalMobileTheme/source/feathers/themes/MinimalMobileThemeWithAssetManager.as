@@ -1,3 +1,27 @@
+/*
+ Copyright (c) 2012 Josh Tynjala
+
+ Permission is hereby granted, free of charge, to any person
+ obtaining a copy of this software and associated documentation
+ files (the "Software"), to deal in the Software without
+ restriction, including without limitation the rights to use,
+ copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the
+ Software is furnished to do so, subject to the following
+ conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ OTHER DEALINGS IN THE SOFTWARE.
+ */
 package feathers.themes
 {
 	import feathers.controls.Alert;
@@ -53,6 +77,7 @@ package feathers.themes
 	import flash.geom.Rectangle;
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
+	import flash.utils.getQualifiedClassName;
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
@@ -119,7 +144,7 @@ package feathers.themes
 			return quad;
 		}
 
-		public function MinimalMobileThemeWithAssetManager(source:Object, assetManager:AssetManager = null, container:DisplayObjectContainer = null, scaleToDPI:Boolean = true)
+		public function MinimalMobileThemeWithAssetManager(assets:Object = null, assetManager:AssetManager = null, container:DisplayObjectContainer = null, scaleToDPI:Boolean = true)
 		{
 			if(!container)
 			{
@@ -127,7 +152,7 @@ package feathers.themes
 			}
 			super(container);
 			this._scaleToDPI = scaleToDPI;
-			this.processSource(source, assetManager);
+			this.processSource(assets, assetManager);
 		}
 
 		protected var _originalDPI:int;
@@ -142,6 +167,33 @@ package feathers.themes
 		public function get scaleToDPI():Boolean
 		{
 			return this._scaleToDPI;
+		}
+
+		/**
+		 * A subclass may embed the theme's assets and override this setter to
+		 * return the class that creates the bitmap used for the texture atlas.
+		 */
+		protected function get atlasImageClass():Class
+		{
+			return null;
+		}
+
+		/**
+		 * A subclass may embed the theme's assets and override this setter to
+		 * return the class that creates the XML used for the texture atlas.
+		 */
+		protected function get atlasXMLClass():Class
+		{
+			return null;
+		}
+
+		/**
+		 * A subclass may embed the theme's assets and override this setter to
+		 * return the class that creates the XML used for the bitmap font.
+		 */
+		protected function get fontXMLClass():Class
+		{
+			return null;
 		}
 
 		protected var assetManager:AssetManager;
@@ -251,8 +303,8 @@ package feathers.themes
 
 		protected function atlasTexture_onRestore():void
 		{
-			var ImageType:Class = MinimalMobileTheme.ATLAS_IMAGE;
-			var atlasBitmapData:BitmapData = Bitmap(new ImageType()).bitmapData;
+			var AtlasImageClass:Class = this.atlasImageClass;
+			var atlasBitmapData:BitmapData = Bitmap(new AtlasImageClass()).bitmapData;
 			this.atlasTexture.root.uploadBitmapData(atlasBitmapData);
 			atlasBitmapData.dispose();
 		}
@@ -267,46 +319,62 @@ package feathers.themes
 			this.dispatchEventWith(Event.COMPLETE);
 		}
 
-		protected function processSource(source:Object, assetManager:AssetManager):void
+		protected function processSource(assets:Object, assetManager:AssetManager):void
 		{
-			if(source is MinimalMobileTheme)
+			if(assets)
 			{
-				var AtlasImageType:Class = MinimalMobileTheme.ATLAS_IMAGE;
-				var AtlasXMLType:Class = MinimalMobileTheme.ATLAS_XML;
-				var FontXMLType:Class = MinimalMobileTheme.FONT_XML;
-
-				var atlasBitmapData:BitmapData = Bitmap(new AtlasImageType()).bitmapData;
-				var atlasTexture:Texture = Texture.fromBitmapData(atlasBitmapData, false);
-				atlasTexture.root.onRestore = this.atlasTexture_onRestore;
-				atlasBitmapData.dispose();
-				this.atlas = new TextureAtlas(atlasTexture, XML(new AtlasXMLType()));
-
-				var bitmapFont:BitmapFont = new BitmapFont(this.atlas.getTexture("pf_ronda_seven_0"), XML(new FontXMLType()));
-				TextField.registerBitmapFont(bitmapFont, FONT_NAME);
-
-				this.initialize();
-				this.dispatchEventWith(Event.COMPLETE);
-			}
-			else
-			{
-				//add a trailing slash, if needed
-				if(source is String)
-				{
-					var sourceString:String = source as String;
-					if(sourceString.lastIndexOf("/") != sourceString.length - 1)
-					{
-						source = sourceString + "/";
-					}
-				}
 				this.assetManager = assetManager;
 				if(!this.assetManager)
 				{
 					this.assetManager = new AssetManager(Starling.contentScaleFactor);
 				}
-				this.assetManager.enqueue(source + "images/minimal.xml");
-				this.assetManager.enqueue(source + "images/minimal.png");
-				this.assetManager.enqueue(source + "fonts/pf_ronda_seven.fnt");
+				//add a trailing slash, if needed
+				if(assets is String)
+				{
+					var assetsDirectoryName:String = assets as String;
+					if(assetsDirectoryName.lastIndexOf("/") != assetsDirectoryName.length - 1)
+					{
+						assets = assetsDirectoryName + "/";
+					}
+					this.assetManager.enqueue(assets + "images/minimal.xml");
+					this.assetManager.enqueue(assets + "images/minimal.png");
+					this.assetManager.enqueue(assets + "fonts/pf_ronda_seven.fnt");
+				}
+				else if(getQualifiedClassName(assets) == "flash.filesystem::File" && assets["isDirectory"])
+				{
+					this.assetManager.enqueue(assets["resolvePath"]("images/minimal.xml"));
+					this.assetManager.enqueue(assets["resolvePath"]("images/minimal.png"));
+					this.assetManager.enqueue(assets["resolvePath"]("fonts/pf_ronda_seven.fnt"));
+				}
+				else
+				{
+					this.assetManager.enqueue(assets);
+				}
 				this.assetManager.loadQueue(assetManager_onProgress);
+			}
+			else
+			{
+				var AtlasImageClass:Class = this.atlasImageClass;
+				var AtlasXMLClass:Class = this.atlasXMLClass;
+				var FontXMLClass:Class = this.fontXMLClass;
+				if(AtlasImageClass && AtlasXMLClass && FontXMLClass)
+				{
+					var atlasBitmapData:BitmapData = Bitmap(new AtlasImageClass()).bitmapData;
+					var atlasTexture:Texture = Texture.fromBitmapData(atlasBitmapData, false);
+					atlasTexture.root.onRestore = this.atlasTexture_onRestore;
+					atlasBitmapData.dispose();
+					this.atlas = new TextureAtlas(atlasTexture, XML(new AtlasXMLClass()));
+
+					var bitmapFont:BitmapFont = new BitmapFont(this.atlas.getTexture("pf_ronda_seven_0"), XML(new FontXMLClass()));
+					TextField.registerBitmapFont(bitmapFont, FONT_NAME);
+
+					this.initialize();
+					this.dispatchEventWith(Event.COMPLETE);
+				}
+				else
+				{
+					throw new Error("Asset path or embedded assets not found. Theme not loaded.")
+				}
 			}
 		}
 

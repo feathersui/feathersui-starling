@@ -82,6 +82,7 @@ package feathers.themes
 	import flash.geom.Rectangle;
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
+	import flash.utils.getQualifiedClassName;
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
@@ -166,14 +167,14 @@ package feathers.themes
 			return quad;
 		}
 
-		public function AeonDesktopThemeWithAssetManager(source:Object, assetManager:AssetManager = null, container:DisplayObjectContainer = null)
+		public function AeonDesktopThemeWithAssetManager(assets:Object = null, assetManager:AssetManager = null, container:DisplayObjectContainer = null)
 		{
 			if(!container)
 			{
 				container = Starling.current.stage;
 			}
 			super(container);
-			this.processSource(source, assetManager);
+			this.processSource(assets, assetManager);
 		}
 
 		public function get originalDPI():int
@@ -184,6 +185,24 @@ package feathers.themes
 		public function get scaleToDPI():Boolean
 		{
 			return false;
+		}
+
+		/**
+		 * A subclass may embed the theme's assets and override this setter to
+		 * return the class that creates the bitmap used for the texture atlas.
+		 */
+		protected function get atlasImageClass():Class
+		{
+			return null;
+		}
+
+		/**
+		 * A subclass may embed the theme's assets and override this setter to
+		 * return the class that creates the XML used for the texture atlas.
+		 */
+		protected function get atlasXMLClass():Class
+		{
+			return null;
 		}
 
 		protected var assetManager:AssetManager;
@@ -337,8 +356,8 @@ package feathers.themes
 
 		protected function atlasTexture_onRestore():void
 		{
-			var ImageType:Class = AeonDesktopTheme.ATLAS_IMAGE;
-			var atlasBitmapData:BitmapData = Bitmap(new ImageType()).bitmapData;
+			var AtlasImageClass:Class = this.atlasImageClass;
+			var atlasBitmapData:BitmapData = Bitmap(new AtlasImageClass()).bitmapData;
 			this.atlasTexture.root.uploadBitmapData(atlasBitmapData);
 			atlasBitmapData.dispose();
 		}
@@ -353,40 +372,55 @@ package feathers.themes
 			this.dispatchEventWith(Event.COMPLETE);
 		}
 
-		protected function processSource(source:Object, assetManager:AssetManager):void
+		protected function processSource(assets:Object, assetManager:AssetManager):void
 		{
-			if(source is AeonDesktopTheme)
+			if(assets)
 			{
-				var ImageType:Class = AeonDesktopTheme.ATLAS_IMAGE;
-				var XMLType:Class = AeonDesktopTheme.ATLAS_XML;
-
-				var atlasBitmapData:BitmapData = Bitmap(new ImageType()).bitmapData;
-				var atlasTexture:Texture = Texture.fromBitmapData(atlasBitmapData, false);
-				atlasTexture.root.onRestore = this.atlasTexture_onRestore;
-				atlasBitmapData.dispose();
-				this.atlas = new TextureAtlas(atlasTexture, XML(new XMLType()));
-				this.initialize();
-				this.dispatchEventWith(Event.COMPLETE);
-			}
-			else
-			{
-				//add a trailing slash, if needed
-				if(source is String)
-				{
-					var sourceString:String = source as String;
-					if(sourceString.lastIndexOf("/") != sourceString.length - 1)
-					{
-						source = sourceString + "/";
-					}
-				}
 				this.assetManager = assetManager;
 				if(!this.assetManager)
 				{
 					this.assetManager = new AssetManager(Starling.contentScaleFactor);
 				}
-				this.assetManager.enqueue(source + "images/aeon.xml");
-				this.assetManager.enqueue(source + "images/aeon.png");
+				//add a trailing slash, if needed
+				if(assets is String)
+				{
+					var assetsDirectoryName:String = assets as String;
+					if(assetsDirectoryName.lastIndexOf("/") != assetsDirectoryName.length - 1)
+					{
+						assets = assetsDirectoryName + "/";
+					}
+					this.assetManager.enqueue(assets + "images/aeon.xml");
+					this.assetManager.enqueue(assets + "images/aeon.png");
+				}
+				else if(getQualifiedClassName(assets) == "flash.filesystem::File" && assets["isDirectory"])
+				{
+					this.assetManager.enqueue(assets["resolvePath"]("images/aeon.xml"));
+					this.assetManager.enqueue(assets["resolvePath"]("images/aeon.png"));
+				}
+				else
+				{
+					this.assetManager.enqueue(assets);
+				}
 				this.assetManager.loadQueue(assetManager_onProgress);
+			}
+			else
+			{
+				var AtlasImageClass:Class = this.atlasImageClass;
+				var AtlasXMLType:Class = this.atlasXMLClass;
+				if(AtlasImageClass && AtlasXMLType)
+				{
+					var atlasBitmapData:BitmapData = Bitmap(new AtlasImageClass()).bitmapData;
+					var atlasTexture:Texture = Texture.fromBitmapData(atlasBitmapData, false);
+					atlasTexture.root.onRestore = this.atlasTexture_onRestore;
+					atlasBitmapData.dispose();
+					this.atlas = new TextureAtlas(atlasTexture, XML(new AtlasXMLType()));
+					this.initialize();
+					this.dispatchEventWith(Event.COMPLETE);
+				}
+				else
+				{
+					throw new Error("Asset path or embedded assets not found. Theme not loaded.")
+				}
 			}
 		}
 
