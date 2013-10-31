@@ -1112,7 +1112,7 @@ package feathers.controls.text
 		 */
 		protected function refreshSnapshot():void
 		{
-			if(this.textField.width == 0 || this.textField.height == 0)
+			if(this._snapshotWidth == 0 || this._snapshotHeight == 0)
 			{
 				return;
 			}
