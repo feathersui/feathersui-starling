@@ -44,6 +44,64 @@ package feathers.layout
 		/**
 		 * @private
 		 */
+		protected var _percentWidth:Number = NaN;
+
+		/**
+		 * The width of the layout object, as a percentage of the container's
+		 * width.
+		 *
+		 * @default NaN
+		 */
+		public function get percentWidth():Number
+		{
+			return this._percentWidth;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set percentWidth(value:Number):void
+		{
+			if(this._percentWidth == value)
+			{
+				return;
+			}
+			this._percentWidth = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _percentHeight:Number = NaN;
+
+		/**
+		 * The height of the layout object, as a percentage of the container's
+		 * height.
+		 *
+		 * @default NaN
+		 */
+		public function get percentHeight():Number
+		{
+			return this._percentHeight;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set percentHeight(value:Number):void
+		{
+			if(this._percentHeight == value)
+			{
+				return;
+			}
+			this._percentHeight = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _topAnchorDisplayObject:DisplayObject;
 
 		/**
