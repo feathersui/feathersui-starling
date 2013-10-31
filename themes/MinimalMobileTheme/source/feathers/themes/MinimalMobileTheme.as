@@ -29,17 +29,32 @@ package feathers.themes
 	public class MinimalMobileTheme extends MinimalMobileThemeWithAssetManager
 	{
 		[Embed(source="/../assets/images/minimal.xml",mimeType="application/octet-stream")]
-		public static const ATLAS_XML:Class;
+		public static const minimal_xml:Class;
 
 		[Embed(source="/../assets/images/minimal.png")]
-		public static const ATLAS_IMAGE:Class;
+		public static const minimal:Class;
 
 		[Embed(source="/../assets/fonts/pf_ronda_seven.fnt",mimeType="application/octet-stream")]
-		public static const FONT_XML:Class;
+		public static const font_xml:Class;
 
 		public function MinimalMobileTheme(container:DisplayObjectContainer = null, scaleToDPI:Boolean = true)
 		{
-			super(this, null, container, scaleToDPI);
+			super(null, null, container, scaleToDPI);
+		}
+
+		override protected function get atlasImageClass():Class
+		{
+			return minimal;
+		}
+
+		override protected function get atlasXMLClass():Class
+		{
+			return minimal_xml;
+		}
+
+		override protected function get fontXMLClass():Class
+		{
+			return font_xml;
 		}
 	}
 }

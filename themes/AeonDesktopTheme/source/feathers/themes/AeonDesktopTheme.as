@@ -29,14 +29,24 @@ package feathers.themes
 	public class AeonDesktopTheme extends AeonDesktopThemeWithAssetManager
 	{
 		[Embed(source="/../assets/images/aeon.png")]
-		public static const ATLAS_IMAGE:Class;
+		public static const aeon:Class;
 
 		[Embed(source="/../assets/images/aeon.xml",mimeType="application/octet-stream")]
-		public static const ATLAS_XML:Class;
+		public static const aeon_xml:Class;
 
 		public function AeonDesktopTheme(container:DisplayObjectContainer = null)
 		{
-			super(this, null, container);
+			super(null, null, container);
+		}
+
+		override protected function get atlasImageClass():Class
+		{
+			return aeon;
+		}
+
+		override protected function get atlasXMLClass():Class
+		{
+			return aeon_xml;
 		}
 	}
 }

@@ -29,14 +29,24 @@ package feathers.themes
 	public class MetalWorksMobileTheme extends MetalWorksMobileThemeWithAssetManager
 	{
 		[Embed(source="/../assets/images/metalworks.xml",mimeType="application/octet-stream")]
-		public static const ATLAS_XML:Class;
+		public static const metalworks_xml:Class;
 
 		[Embed(source="/../assets/images/metalworks.png")]
-		public static const ATLAS_IMAGE:Class;
+		public static const metalworks:Class;
 
 		public function MetalWorksMobileTheme(container:DisplayObjectContainer = null, scaleToDPI:Boolean = true)
 		{
-			super(this, null, container, scaleToDPI);
+			super(null, null, container, scaleToDPI);
+		}
+
+		override protected function get atlasImageClass():Class
+		{
+			return metalworks;
+		}
+
+		override protected function get atlasXMLClass():Class
+		{
+			return metalworks_xml;
 		}
 	}
 }
