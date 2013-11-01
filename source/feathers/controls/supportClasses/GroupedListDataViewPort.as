@@ -1152,7 +1152,7 @@ package feathers.controls.supportClasses
 			{
 				if(this._singleItemRendererMap)
 				{
-					typicalItemRenderer = this._singleItemRendererMap[typicalItem];
+					typicalItemRenderer = IGroupedListItemRenderer(this._singleItemRendererMap[typicalItem]);
 				}
 				isSingle = true;
 			}
@@ -1160,13 +1160,13 @@ package feathers.controls.supportClasses
 			{
 				if(this._firstItemRendererMap)
 				{
-					typicalItemRenderer = this._firstItemRendererMap[typicalItem];
+					typicalItemRenderer = IGroupedListItemRenderer(this._firstItemRendererMap[typicalItem]);
 				}
 				isFirst = true;
 			}
 			else
 			{
-				typicalItemRenderer = this._itemRendererMap[typicalItem];
+				typicalItemRenderer = IGroupedListItemRenderer(this._itemRendererMap[typicalItem]);
 			}
 			if(!typicalItemRenderer && !newTypicalItemIsInDataProvider && this._typicalItemRenderer)
 			{
@@ -1526,7 +1526,7 @@ package feathers.controls.supportClasses
 			if(this._typicalItemRenderer && this._typicalItemIsInDataProvider)
 			{
 				var typicalItem:Object = this._typicalItemRenderer.data;
-				if(this._itemRendererMap[typicalItem] == this._typicalItemRenderer)
+				if(IGroupedListItemRenderer(this._itemRendererMap[typicalItem]) == this._typicalItemRenderer)
 				{
 					//this renderer is already is use by the typical item, so we
 					//don't want to allow it to be used by other items.
@@ -1544,7 +1544,7 @@ package feathers.controls.supportClasses
 						this._activeItemRenderers[activeRenderersCount] = this._typicalItemRenderer;
 					}
 				}
-				else if(this._firstItemRendererMap && this._firstItemRendererMap[typicalItem] == this._typicalItemRenderer)
+				else if(this._firstItemRendererMap && IGroupedListItemRenderer(this._firstItemRendererMap[typicalItem]) == this._typicalItemRenderer)
 				{
 					inactiveIndex = this._inactiveFirstItemRenderers.indexOf(this._typicalItemRenderer);
 					if(inactiveIndex >= 0)
@@ -1557,7 +1557,7 @@ package feathers.controls.supportClasses
 						this._activeFirstItemRenderers[activeRenderersCount] = this._typicalItemRenderer;
 					}
 				}
-				else if(this._singleItemRendererMap && this._singleItemRendererMap[typicalItem] == this._typicalItemRenderer)
+				else if(this._singleItemRendererMap && IGroupedListItemRenderer(this._singleItemRendererMap[typicalItem]) == this._typicalItemRenderer)
 				{
 					inactiveIndex = this._inactiveSingleItemRenderers.indexOf(this._typicalItemRenderer);
 					if(inactiveIndex >= 0)
@@ -2558,7 +2558,7 @@ package feathers.controls.supportClasses
 				item = this._owner.groupToHeaderData(group);
 				if(item)
 				{
-					var headerOrFooterRenderer:IGroupedListHeaderOrFooterRenderer = this._headerRendererMap[item];
+					var headerOrFooterRenderer:IGroupedListHeaderOrFooterRenderer = IGroupedListHeaderOrFooterRenderer(this._headerRendererMap[item]);
 					if(headerOrFooterRenderer)
 					{
 						headerOrFooterRenderer.data = null;
@@ -2568,7 +2568,7 @@ package feathers.controls.supportClasses
 				item = this._owner.groupToFooterData(group);
 				if(item)
 				{
-					headerOrFooterRenderer = this._footerRendererMap[item];
+					headerOrFooterRenderer = IGroupedListHeaderOrFooterRenderer(this._footerRendererMap[item]);
 					if(headerOrFooterRenderer)
 					{
 						headerOrFooterRenderer.data = null;
