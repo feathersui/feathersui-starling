@@ -44,7 +44,7 @@ package feathers.display
 		/**
 		 * @private
 		 */
-		private static var helperImage:Image;
+		protected static var helperImage:Image;
 
 		/**
 		 * Constructor.
@@ -67,27 +67,27 @@ package feathers.display
 		/**
 		 * @private
 		 */
-		private var _propertiesChanged:Boolean = true;
+		protected var _propertiesChanged:Boolean = true;
 
 		/**
 		 * @private
 		 */
-		private var _layoutChanged:Boolean = true;
+		protected var _layoutChanged:Boolean = true;
 
 		/**
 		 * @private
 		 */
-		private var _renderingChanged:Boolean = true;
+		protected var _renderingChanged:Boolean = true;
 
 		/**
 		 * @private
 		 */
-		private var _frame:Rectangle;
+		protected var _frame:Rectangle;
 
 		/**
 		 * @private
 		 */
-		private var _textures:Scale9Textures;
+		protected var _textures:Scale9Textures;
 
 		/**
 		 * The textures displayed by this image.
@@ -124,7 +124,7 @@ package feathers.display
 		/**
 		 * @private
 		 */
-		private var _width:Number = NaN;
+		protected var _width:Number = NaN;
 
 		/**
 		 * @private
@@ -150,7 +150,7 @@ package feathers.display
 		/**
 		 * @private
 		 */
-		private var _height:Number = NaN;
+		protected var _height:Number = NaN;
 
 		/**
 		 * @private
@@ -176,7 +176,7 @@ package feathers.display
 		/**
 		 * @private
 		 */
-		private var _textureScale:Number = 1;
+		protected var _textureScale:Number = 1;
 
 		/**
 		 * The amount to scale the texture. Useful for DPI changes.
@@ -209,7 +209,7 @@ package feathers.display
 		/**
 		 * @private
 		 */
-		private var _smoothing:String = TextureSmoothing.BILINEAR;
+		protected var _smoothing:String = TextureSmoothing.BILINEAR;
 
 		/**
 		 * The smoothing value to pass to the images.
@@ -244,7 +244,7 @@ package feathers.display
 		/**
 		 * @private
 		 */
-		private var _color:uint = 0xffffff;
+		protected var _color:uint = 0xffffff;
 
 		/**
 		 * The color value to pass to the images.
@@ -277,7 +277,7 @@ package feathers.display
 		/**
 		 * @private
 		 */
-		private var _useSeparateBatch:Boolean = true;
+		protected var _useSeparateBatch:Boolean = true;
 
 		/**
 		 * Determines if the regions are batched normally by Starling or if
@@ -311,12 +311,12 @@ package feathers.display
 		/**
 		 * @private
 		 */
-		private var _hitArea:Rectangle;
+		protected var _hitArea:Rectangle;
 
 		/**
 		 * @private
 		 */
-		private var _batch:QuadBatch;
+		protected var _batch:QuadBatch;
 
 		/**
 		 * @private
@@ -419,7 +419,7 @@ package feathers.display
 		/**
 		 * @private
 		 */
-		private function validate():void
+		protected function validate():void
 		{
 			if(this._propertiesChanged || this._layoutChanged || this._renderingChanged)
 			{
