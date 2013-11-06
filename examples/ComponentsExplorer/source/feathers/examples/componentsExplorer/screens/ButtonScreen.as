@@ -82,11 +82,6 @@ package feathers.examples.componentsExplorer.screens
 			this._callToActionButton.label = "Call to Action Button";
 			this.addChild(this._callToActionButton);
 
-			this._quietButton = new Button();
-			this._quietButton.nameList.add(Button.ALTERNATE_NAME_QUIET_BUTTON);
-			this._quietButton.label = "Quiet Button";
-			this.addChild(this._quietButton);
-
 			this._dangerButton = new Button();
 			this._dangerButton.nameList.add(Button.ALTERNATE_NAME_DANGER_BUTTON);
 			this._dangerButton.label = "Danger Button";
@@ -101,6 +96,14 @@ package feathers.examples.componentsExplorer.screens
 			this._forwardButton.nameList.add(Button.ALTERNATE_NAME_FORWARD_BUTTON);
 			this._forwardButton.label = "Forward Button";
 			this.addChild(this._forwardButton);
+
+			this._quietButton = new Button();
+			this._quietButton.nameList.add(Button.ALTERNATE_NAME_QUIET_BUTTON);
+			this._quietButton.label = "Quiet Button";
+			this.headerProperties.rightItems = new <DisplayObject>
+			[
+				this._quietButton
+			];
 
 			this.headerProperties.title = "Button";
 
