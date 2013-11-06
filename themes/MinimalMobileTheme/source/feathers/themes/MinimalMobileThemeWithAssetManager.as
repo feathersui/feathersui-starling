@@ -212,7 +212,6 @@ package feathers.themes
 		protected var buttonSelectedSkinTextures:Scale9Textures;
 		protected var buttonSelectedDisabledSkinTextures:Scale9Textures;
 		protected var buttonCallToActionUpSkinTextures:Scale9Textures;
-		protected var buttonQuietUpSkinTextures:Scale9Textures;
 		protected var buttonDangerUpSkinTextures:Scale9Textures;
 		protected var buttonDangerDownSkinTextures:Scale9Textures;
 		protected var buttonBackUpSkinTextures:Scale3Textures;
@@ -429,7 +428,6 @@ package feathers.themes
 			this.buttonSelectedSkinTextures = new Scale9Textures(this.atlas.getTexture("button-selected-skin"), BUTTON_DOWN_SCALE_9_GRID);
 			this.buttonSelectedDisabledSkinTextures = new Scale9Textures(this.atlas.getTexture("button-selected-disabled-skin"), BUTTON_DOWN_SCALE_9_GRID);
 			this.buttonCallToActionUpSkinTextures = new Scale9Textures(this.atlas.getTexture("button-call-to-action-up-skin"), BUTTON_SCALE_9_GRID);
-			this.buttonQuietUpSkinTextures = new Scale9Textures(this.atlas.getTexture("button-quiet-up-skin"), BUTTON_SCALE_9_GRID);
 			this.buttonDangerUpSkinTextures = new Scale9Textures(this.atlas.getTexture("button-danger-up-skin"), BUTTON_SCALE_9_GRID);
 			this.buttonDangerDownSkinTextures = new Scale9Textures(this.atlas.getTexture("button-danger-down-skin"), BUTTON_DOWN_SCALE_9_GRID);
 			this.buttonBackUpSkinTextures = new Scale3Textures(this.atlas.getTexture("button-back-up-skin"), BACK_BUTTON_SCALE_REGION1, BACK_BUTTON_SCALE_REGION2, Scale3Textures.DIRECTION_HORIZONTAL);
@@ -686,9 +684,12 @@ package feathers.themes
 		protected function buttonQuietInitializer(button:Button):void
 		{
 			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
-			skinSelector.defaultValue = this.buttonQuietUpSkinTextures;
+			skinSelector.defaultValue = null;
+			skinSelector.defaultSelectedValue = this.buttonSelectedSkinTextures;
 			skinSelector.setValueForState(this.buttonDownSkinTextures, Button.STATE_DOWN, false);
+			skinSelector.setValueForState(this.buttonDownSkinTextures, Button.STATE_DOWN, true);
 			skinSelector.setValueForState(this.buttonDisabledSkinTextures, Button.STATE_DISABLED, false);
+			skinSelector.setValueForState(this.buttonSelectedDisabledSkinTextures, Button.STATE_DISABLED, true);
 			skinSelector.displayObjectProperties =
 			{
 				width: 66 * this.scale,

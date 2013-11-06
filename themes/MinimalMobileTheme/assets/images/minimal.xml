@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:0964992d5655726f11d5c10f71e0b61c$ -->
+<!-- $TexturePacker:SmartUpdate:e15eeca56a187273e2b3c1d93ca2c2a1$ -->
 <TextureAtlas imagePath="minimal.png">
     <SubTexture name="button-back-disabled-skin" x="215" y="3" width="36" height="60"/>
     <SubTexture name="button-back-down-skin" x="175" y="3" width="36" height="60"/>
     <SubTexture name="button-back-up-skin" x="135" y="3" width="36" height="60"/>
-    <SubTexture name="button-call-to-action-up-skin" x="408" y="18" width="11" height="11"/>
+    <SubTexture name="button-call-to-action-up-skin" x="408" y="3" width="11" height="11"/>
     <SubTexture name="button-danger-down-skin" x="120" y="110" width="15" height="15"/>
-    <SubTexture name="button-danger-up-skin" x="408" y="3" width="11" height="11"/>
-    <SubTexture name="button-disabled-skin" x="393" y="18" width="11" height="11"/>
+    <SubTexture name="button-danger-up-skin" x="393" y="18" width="11" height="11"/>
+    <SubTexture name="button-disabled-skin" x="393" y="3" width="11" height="11"/>
     <SubTexture name="button-down-skin" x="101" y="110" width="15" height="15"/>
     <SubTexture name="button-forward-disabled-skin" x="91" y="3" width="40" height="60"/>
     <SubTexture name="button-forward-down-skin" x="47" y="3" width="40" height="60"/>
     <SubTexture name="button-forward-up-skin" x="3" y="3" width="40" height="60"/>
-    <SubTexture name="button-quiet-up-skin" x="393" y="3" width="11" height="11"/>
     <SubTexture name="button-selected-disabled-skin" x="82" y="110" width="15" height="15"/>
     <SubTexture name="button-selected-skin" x="63" y="110" width="15" height="15"/>
     <SubTexture name="button-up-skin" x="378" y="18" width="11" height="11"/>
@@ -27,12 +26,12 @@
     <SubTexture name="check-selected-disabled-icon" x="423" y="3" width="36" height="36"/>
     <SubTexture name="check-selected-icon" x="376" y="53" width="36" height="36"/>
     <SubTexture name="drop-down-arrow" x="3" y="115" width="21" height="10"/>
-    <SubTexture name="header-skin" x="463" y="18" width="5" height="11"/>
+    <SubTexture name="header-skin" x="463" y="3" width="5" height="11"/>
     <SubTexture name="inset-background-disabled-skin" x="363" y="18" width="11" height="11"/>
     <SubTexture name="inset-background-focus-skin" x="363" y="3" width="11" height="11"/>
     <SubTexture name="inset-background-skin" x="401" y="33" width="11" height="11"/>
     <SubTexture name="list-accessory-drill-down-icon" x="479" y="3" width="18" height="26"/>
-    <SubTexture name="list-item-down" x="463" y="3" width="6" height="11"/>
+    <SubTexture name="list-item-down" x="408" y="18" width="6" height="11"/>
     <SubTexture name="list-item-selected" x="501" y="18" width="6" height="11"/>
     <SubTexture name="list-item-up" x="501" y="3" width="6" height="11"/>
     <SubTexture name="page-indicator-normal-disabled-skin" x="385" y="33" width="12" height="12"/>
