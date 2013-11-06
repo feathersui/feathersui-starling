@@ -261,8 +261,6 @@ package feathers.themes
 		protected var buttonSelectedDisabledSkinTextures:Scale9Textures;
 		protected var buttonCallToActionUpSkinTextures:Scale9Textures;
 		protected var buttonCallToActionDownSkinTextures:Scale9Textures;
-		protected var buttonQuietUpSkinTextures:Scale9Textures;
-		protected var buttonQuietDownSkinTextures:Scale9Textures;
 		protected var buttonDangerUpSkinTextures:Scale9Textures;
 		protected var buttonDangerDownSkinTextures:Scale9Textures;
 		protected var buttonBackUpSkinTextures:Scale3Textures;
@@ -494,8 +492,6 @@ package feathers.themes
 			this.buttonSelectedDisabledSkinTextures = new Scale9Textures(this.atlas.getTexture("button-selected-disabled-skin"), BUTTON_SELECTED_SCALE9_GRID);
 			this.buttonCallToActionUpSkinTextures = new Scale9Textures(this.atlas.getTexture("button-call-to-action-up-skin"), BUTTON_SCALE9_GRID);
 			this.buttonCallToActionDownSkinTextures = new Scale9Textures(this.atlas.getTexture("button-call-to-action-down-skin"), BUTTON_SCALE9_GRID);
-			this.buttonQuietUpSkinTextures = new Scale9Textures(this.atlas.getTexture("button-quiet-up-skin"), BUTTON_SCALE9_GRID);
-			this.buttonQuietDownSkinTextures = new Scale9Textures(this.atlas.getTexture("button-quiet-down-skin"), BUTTON_SCALE9_GRID);
 			this.buttonDangerUpSkinTextures = new Scale9Textures(this.atlas.getTexture("button-danger-up-skin"), BUTTON_SCALE9_GRID);
 			this.buttonDangerDownSkinTextures = new Scale9Textures(this.atlas.getTexture("button-danger-down-skin"), BUTTON_SCALE9_GRID);
 			this.buttonBackUpSkinTextures = new Scale3Textures(this.atlas.getTexture("button-back-up-skin"), BACK_BUTTON_SCALE3_REGION1, BACK_BUTTON_SCALE3_REGION2);
@@ -762,9 +758,9 @@ package feathers.themes
 		protected function quietButtonInitializer(button:Button):void
 		{
 			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
-			skinSelector.defaultValue = this.buttonQuietUpSkinTextures;
-			skinSelector.setValueForState(this.buttonQuietDownSkinTextures, Button.STATE_DOWN, false);
-			skinSelector.setValueForState(this.buttonDisabledSkinTextures, Button.STATE_DISABLED, false);
+			skinSelector.defaultValue = null;
+			skinSelector.defaultSelectedValue = this.buttonSelectedUpSkinTextures;
+			skinSelector.setValueForState(this.buttonDownSkinTextures, Button.STATE_DOWN, false);
 			skinSelector.displayObjectProperties =
 			{
 				width: 60 * this.scale,
@@ -772,7 +768,18 @@ package feathers.themes
 				textureScale: this.scale
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
-			this.baseButtonInitializer(button);
+
+			button.defaultLabelProperties.elementFormat = this.lightUITextFormat;
+			button.downLabelProperties.elementFormat = this.darkUITextFormat;
+			button.disabledLabelProperties.elementFormat = this.lightUIDisabledTextFormat;
+			button.defaultSelectedLabelProperties.elementFormat = this.darkUITextFormat;
+			button.selectedDisabledLabelProperties.elementFormat = this.darkUIDisabledTextFormat;
+
+			button.paddingTop = button.paddingBottom = 8 * this.scale;
+			button.paddingLeft = button.paddingRight = 16 * this.scale;
+			button.gap = 12 * this.scale;
+			button.minWidth = button.minHeight = 60 * this.scale;
+			button.minTouchWidth = button.minTouchHeight = 88 * this.scale;
 		}
 
 		protected function dangerButtonInitializer(button:Button):void
