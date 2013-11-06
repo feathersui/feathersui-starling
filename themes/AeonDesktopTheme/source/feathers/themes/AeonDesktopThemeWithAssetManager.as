@@ -581,6 +581,7 @@ package feathers.themes
 			this.setInitializerForClass(TextFieldTextRenderer, itemRendererAccessoryLabelInitializer, BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ACCESSORY_LABEL);
 			this.setInitializerForClass(TextFieldTextRenderer, alertMessageInitializer, Alert.DEFAULT_CHILD_NAME_MESSAGE);
 			this.setInitializerForClass(Button, buttonInitializer);
+			this.setInitializerForClass(Button, quietButtonInitializer, Button.ALTERNATE_NAME_QUIET_BUTTON);
 			this.setInitializerForClass(Button, tabInitializer, TabBar.DEFAULT_CHILD_NAME_TAB);
 			this.setInitializerForClass(Button, toggleSwitchOnTrackInitializer, ToggleSwitch.DEFAULT_CHILD_NAME_ON_TRACK);
 			this.setInitializerForClass(Button, toggleSwitchThumbInitializer, ToggleSwitch.DEFAULT_CHILD_NAME_THUMB);
@@ -721,7 +722,26 @@ package feathers.themes
 			skinSelector.setValueForState(this.buttonSelectedDownSkinTextures, Button.STATE_DOWN, true);
 			skinSelector.setValueForState(this.buttonSelectedDisabledSkinTextures, Button.STATE_DISABLED, true);
 			button.stateToSkinFunction = skinSelector.updateValue;
+			this.baseButtonInitializer(button);
+		}
 
+		protected function quietButtonInitializer(button:Button):void
+		{
+			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = null;
+			skinSelector.defaultSelectedValue = this.buttonSelectedUpSkinTextures;
+			skinSelector.setValueForState(this.buttonHoverSkinTextures, Button.STATE_HOVER, false);
+			skinSelector.setValueForState(this.buttonDownSkinTextures, Button.STATE_DOWN, false);
+			skinSelector.setValueForState(this.buttonDisabledSkinTextures, Button.STATE_DISABLED, false);
+			skinSelector.setValueForState(this.buttonSelectedHoverSkinTextures, Button.STATE_HOVER, true);
+			skinSelector.setValueForState(this.buttonSelectedDownSkinTextures, Button.STATE_DOWN, true);
+			skinSelector.setValueForState(this.buttonSelectedDisabledSkinTextures, Button.STATE_DISABLED, true);
+			button.stateToSkinFunction = skinSelector.updateValue;
+			this.baseButtonInitializer(button);
+		}
+
+		protected function baseButtonInitializer(button:Button):void
+		{
 			button.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
 			button.focusPadding = -1;
 
