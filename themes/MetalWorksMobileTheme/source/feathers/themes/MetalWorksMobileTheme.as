@@ -1371,9 +1371,10 @@ package feathers.themes
 			alert.backgroundSkin = backgroundSkin;
 
 			alert.paddingTop = 0;
-			alert.paddingRight = 16 * this.scale;
+			alert.paddingRight = 24 * this.scale;
 			alert.paddingBottom = 16 * this.scale;
-			alert.paddingLeft = 16 * this.scale;
+			alert.paddingLeft = 24 * this.scale;
+			alert.gap = 16 * this.scale;
 			alert.maxWidth = alert.maxHeight = 560 * this.scale;
 		}
 
