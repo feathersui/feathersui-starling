@@ -167,7 +167,7 @@ package feathers.controls
 		 * }</listing>
 		 */
 		public static function show(message:String, title:String = null, buttons:ListCollection = null,
-			isModal:Boolean = true, isCentered:Boolean = true,
+			icon:DisplayObject = null, isModal:Boolean = true, isCentered:Boolean = true,
 			customAlertFactory:Function = null, customOverlayFactory:Function = null):Alert
 		{
 			var factory:Function = customAlertFactory;
@@ -179,6 +179,7 @@ package feathers.controls
 			alert.title = title;
 			alert.message = message;
 			alert.buttonsDataProvider = buttons;
+			alert.icon = icon;
 			factory = customOverlayFactory;
 			if(factory == null)
 			{
@@ -294,6 +295,77 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _icon:DisplayObject;
+
+		/**
+		 * The alert's optional icon content to display next to the text.
+		 */
+		public function get icon():DisplayObject
+		{
+			return this._icon;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set icon(value:DisplayObject):void
+		{
+			if(this._icon == value)
+			{
+				return;
+			}
+			var oldDisplayListBypassEnabled:Boolean = this.displayListBypassEnabled;
+			this.displayListBypassEnabled = false;
+			if(this._icon)
+			{
+				this.removeChild(this._icon);
+			}
+			this._icon = value;
+			if(this._icon)
+			{
+				this.addChild(this._icon);
+			}
+			this.displayListBypassEnabled = oldDisplayListBypassEnabled;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _gap:Number = 0;
+
+		/**
+		 * The space, in pixels, between the alert's icon and its message text
+		 * renderer.
+		 *
+		 * <p>In the following example, the gap is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * alert.gap = 20;</listing>
+		 *
+		 * @default 0
+		 */
+		public function get gap():Number
+		{
+			return this._gap;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set gap(value:Number):void
+		{
+			if(this._gap == value)
+			{
+				return;
+			}
+			this._gap = value;
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _buttonsDataProvider:ListCollection;
 
 		/**
@@ -343,7 +415,7 @@ package feathers.controls
 		 * the alert:</p>
 		 *
 		 * <listing version="3.0">
-		 * header.messageFactory = function():ITextRenderer
+		 * alert.messageFactory = function():ITextRenderer
 		 * {
 		 *     var messageRenderer:TextFieldTextRenderer = new TextFieldTextRenderer();
 		 *     messageRenderer.textFormat = new TextFormat( "_sans", 12, 0xff0000 );
@@ -394,8 +466,8 @@ package feathers.controls
 		 * renderer is a <code>BitmapFontTextRenderer</code>):</p>
 		 *
 		 * <listing version="3.0">
-		 * header.messageProperties.textFormat = new BitmapFontTextFormat( bitmapFont );
-		 * header.messageProperties.wordWrap = true;</listing>
+		 * alert.messageProperties.textFormat = new BitmapFontTextFormat( bitmapFont );
+		 * alert.messageProperties.wordWrap = true;</listing>
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
@@ -605,6 +677,94 @@ package feathers.controls
 			}
 
 			super.draw();
+
+			if(this._icon)
+			{
+				if(this._icon is IFeathersControl)
+				{
+					IFeathersControl(this._icon).validate();
+				}
+				this._icon.x = this._paddingLeft;
+				this._icon.y = this._topViewPortOffset + (this._viewPort.height - this._icon.height) / 2;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function autoSizeIfNeeded():Boolean
+		{
+			const needsWidth:Boolean = isNaN(this.explicitWidth);
+			const needsHeight:Boolean = isNaN(this.explicitHeight);
+			if(!needsWidth && !needsHeight)
+			{
+				return false;
+			}
+
+			if(this._icon is IFeathersControl)
+			{
+				IFeathersControl(this._icon).validate();
+			}
+
+			const oldHeaderWidth:Number = this.header.width;
+			const oldHeaderHeight:Number = this.header.height;
+			this.header.width = this.explicitWidth;
+			this.header.maxWidth = this._maxWidth;
+			this.header.height = NaN;
+			this.header.validate();
+
+			if(this.footer)
+			{
+				const oldFooterWidth:Number = this.footer.width;
+				const oldFooterHeight:Number = this.footer.height;
+				this.footer.width = this.explicitWidth;
+				this.footer.maxWidth = this._maxWidth;
+				this.footer.height = NaN;
+				this.footer.validate();
+			}
+
+			var newWidth:Number = this.explicitWidth;
+			var newHeight:Number = this.explicitHeight;
+			if(needsWidth)
+			{
+				newWidth = this._viewPort.width + this._rightViewPortOffset + this._leftViewPortOffset;
+				if(this._icon && !isNaN(this._icon.width))
+				{
+					newWidth += this._icon.width + this._gap;
+				}
+				newWidth = Math.max(newWidth, this.header.width);
+				if(this.footer)
+				{
+					newWidth = Math.max(newWidth, this.footer.width);
+				}
+				if(!isNaN(this.originalBackgroundWidth))
+				{
+					newWidth = Math.max(newWidth, this.originalBackgroundWidth);
+				}
+			}
+			if(needsHeight)
+			{
+				newHeight = this._viewPort.height;
+				if(this._icon && !isNaN(this._icon.height))
+				{
+					newHeight = Math.max(newHeight, this._icon.height);
+				}
+				newHeight += this._bottomViewPortOffset + this._topViewPortOffset
+				if(!isNaN(this.originalBackgroundHeight))
+				{
+					newHeight = Math.max(newHeight, this.originalBackgroundHeight);
+				}
+			}
+
+			this.header.width = oldHeaderWidth;
+			this.header.height = oldHeaderHeight;
+			if(this.footer)
+			{
+				this.footer.width = oldFooterWidth;
+				this.footer.height = oldFooterHeight;
+			}
+
+			return this.setSizeInternal(newWidth, newHeight, false);
 		}
 
 		/**
@@ -711,6 +871,25 @@ package feathers.controls
 				{
 					var propertyValue:Object = this._messageProperties[propertyName];
 					displayMessageRenderer[propertyName] = propertyValue;
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function calculateViewPortOffsets(forceScrollBars:Boolean = false, useActualBounds:Boolean = false):void
+		{
+			super.calculateViewPortOffsets(forceScrollBars, useActualBounds);
+			if(this._icon)
+			{
+				if(this._icon is IFeathersControl)
+				{
+					IFeathersControl(this._icon).validate();
+				}
+				if(!isNaN(this._icon.width))
+				{
+					this._leftViewPortOffset += this._icon.width + this._gap;
 				}
 			}
 		}
