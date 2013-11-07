@@ -237,11 +237,30 @@ package feathers.core
 		}
 
 		/**
-		 * Determines if a display object is the top-most pop-up.
+		 * Determines if a pop-up is above the highest overlay (of if there is
+		 * no overlay).
 		 */
 		public static function isTopLevelPopUp(popUp:DisplayObject):Boolean
 		{
-			return popUps.indexOf(popUp) == (popUps.length - 1);
+			var lastIndex:int = popUps.length - 1;
+			for(var i:int = lastIndex; i >= 0; i--)
+			{
+				var otherPopUp:DisplayObject = popUps[i];
+				if(otherPopUp == popUp)
+				{
+					//we haven't encountered an overlay yet, so it is top-level
+					return true;
+				}
+				var overlay:DisplayObject = POPUP_TO_OVERLAY[otherPopUp];
+				if(overlay)
+				{
+					//this is the first overlay, and we haven't found the pop-up
+					//yet, so it is not top-level
+					return false;
+				}
+			}
+			//pop-up was not found at all, so obviously, not top-level
+			return false;
 		}
 		
 		/**
