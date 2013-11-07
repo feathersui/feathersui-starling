@@ -426,15 +426,6 @@ package feathers.themes
 
 		protected function initialize():void
 		{
-			FocusManager.isEnabled = true;
-
-			FeathersControl.defaultTextRendererFactory = textRendererFactory;
-			FeathersControl.defaultTextEditorFactory = textEditorFactory;
-
-			PopUpManager.overlayFactory = popUpOverlayFactory;
-			Callout.stagePaddingTop = Callout.stagePaddingRight = Callout.stagePaddingBottom =
-				Callout.stagePaddingLeft = 16;
-
 			if(!this.atlas)
 			{
 				if(this.assetManager)
@@ -447,6 +438,36 @@ package feathers.themes
 				}
 			}
 
+			this.initializeFonts();
+			this.initializeTextures();
+			this.initializeGlobals();
+
+			if(this.root.stage)
+			{
+				this.initializeRoot();
+			}
+			else
+			{
+				this.root.addEventListener(Event.ADDED_TO_STAGE, root_addedToStageHandler);
+			}
+
+			this.setInitializers();
+		}
+
+		protected function initializeGlobals():void
+		{
+			FocusManager.isEnabled = true;
+
+			FeathersControl.defaultTextRendererFactory = textRendererFactory;
+			FeathersControl.defaultTextEditorFactory = textEditorFactory;
+
+			PopUpManager.overlayFactory = popUpOverlayFactory;
+			Callout.stagePaddingTop = Callout.stagePaddingRight = Callout.stagePaddingBottom =
+				Callout.stagePaddingLeft = 16;
+		}
+
+		protected function initializeFonts():void
+		{
 			this.defaultTextFormat = new TextFormat(FONT_NAME, 11, PRIMARY_TEXT_COLOR, false, false, false, null, null, TextFormatAlign.LEFT, 0, 0, 0, 0);
 			this.disabledTextFormat = new TextFormat(FONT_NAME, 11, DISABLED_TEXT_COLOR, false, false, false, null, null, TextFormatAlign.LEFT, 0, 0, 0, 0);
 			this.headerTitleTextFormat = new TextFormat(FONT_NAME, 12, PRIMARY_TEXT_COLOR, false, false, false, null, null, TextFormatAlign.LEFT, 0, 0, 0, 0);
@@ -454,7 +475,10 @@ package feathers.themes
 			this.headingDisabledTextFormat = new TextFormat(FONT_NAME, 14, DISABLED_TEXT_COLOR, false, false, false, null, null, TextFormatAlign.LEFT, 0, 0, 0, 0);
 			this.detailTextFormat = new TextFormat(FONT_NAME, 10, PRIMARY_TEXT_COLOR, false, false, false, null, null, TextFormatAlign.LEFT, 0, 0, 0, 0);
 			this.detailDisabledTextFormat = new TextFormat(FONT_NAME, 10, DISABLED_TEXT_COLOR, false, false, false, null, null, TextFormatAlign.LEFT, 0, 0, 0, 0);
+		}
 
+		protected function initializeTextures():void
+		{
 			this.focusIndicatorSkinTextures = new Scale9Textures(this.atlas.getTexture("focus-indicator-skin"), FOCUS_INDICATOR_SCALE_9_GRID);
 
 			this.buttonUpSkinTextures = new Scale9Textures(this.atlas.getTexture("button-up-skin"), BUTTON_SCALE_9_GRID);
@@ -562,16 +586,10 @@ package feathers.themes
 			this.progressBarFillSkinTexture = this.atlas.getTexture("progress-bar-fill-skin");
 
 			StandardIcons.listDrillDownAccessoryTexture = this.atlas.getTexture("list-accessory-drill-down-icon");
+		}
 
-			if(this.root.stage)
-			{
-				this.initializeRoot();
-			}
-			else
-			{
-				this.root.addEventListener(Event.ADDED_TO_STAGE, root_addedToStageHandler);
-			}
-
+		protected function setInitializers():void
+		{
 			this.setInitializerForClassAndSubclasses(Screen, screenInitializer);
 			this.setInitializerForClassAndSubclasses(PanelScreen, panelScreenInitializer);
 			this.setInitializerForClass(Label, labelInitializer);

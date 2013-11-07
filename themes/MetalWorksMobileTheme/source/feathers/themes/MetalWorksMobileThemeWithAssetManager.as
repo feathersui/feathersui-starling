@@ -411,7 +411,48 @@ package feathers.themes
 
 		protected function initialize():void
 		{
-			const scaledDPI:int = DeviceCapabilities.dpi / Starling.contentScaleFactor;
+			if(!this.atlas)
+			{
+				if(this.assetManager)
+				{
+					this.atlas = this.assetManager.getTextureAtlas(ATLAS_NAME);
+				}
+				else
+				{
+					throw new IllegalOperationError("Atlas not loaded.");
+				}
+			}
+
+			this.initializeScale();
+			this.initializeFonts();
+			this.initializeTextures();
+			this.initializeGlobals();
+
+			if(this.root.stage)
+			{
+				this.initializeRoot();
+			}
+			else
+			{
+				this.root.addEventListener(Event.ADDED_TO_STAGE, root_addedToStageHandler);
+			}
+
+			this.setInitializers();
+		}
+
+		protected function initializeGlobals():void
+		{
+			FeathersControl.defaultTextRendererFactory = textRendererFactory;
+			FeathersControl.defaultTextEditorFactory = textEditorFactory;
+
+			PopUpManager.overlayFactory = popUpOverlayFactory;
+			Callout.stagePaddingTop = Callout.stagePaddingRight = Callout.stagePaddingBottom =
+				Callout.stagePaddingLeft = 16 * this.scale;
+		}
+
+		protected function initializeScale():void
+		{
+			var scaledDPI:int = DeviceCapabilities.dpi / Starling.contentScaleFactor;
 			this._originalDPI = scaledDPI;
 			if(this._scaleToDPI)
 			{
@@ -424,12 +465,11 @@ package feathers.themes
 					this._originalDPI = ORIGINAL_DPI_IPHONE_RETINA;
 				}
 			}
-
 			this.scale = scaledDPI / this._originalDPI;
+		}
 
-			FeathersControl.defaultTextRendererFactory = textRendererFactory;
-			FeathersControl.defaultTextEditorFactory = textEditorFactory;
-
+		protected function initializeFonts():void
+		{
 			//these are for components that don't use FTE
 			this.scrollTextTextFormat = new TextFormat("Source Sans Pro,_sans", 24 * this.scale, LIGHT_TEXT_COLOR);
 			this.lightUICenteredTextFormat = new TextFormat(FONT_NAME, 24 * this.scale, LIGHT_TEXT_COLOR, true, null, null, null, null, TextFormatAlign.CENTER);
@@ -460,23 +500,10 @@ package feathers.themes
 			this.largeDarkElementFormat = new ElementFormat(this.regularFontDescription, 28 * this.scale, DARK_TEXT_COLOR);
 			this.largeLightElementFormat = new ElementFormat(this.regularFontDescription, 28 * this.scale, LIGHT_TEXT_COLOR);
 			this.largeDisabledElementFormat = new ElementFormat(this.regularFontDescription, 28 * this.scale, DISABLED_TEXT_COLOR);
+		}
 
-			PopUpManager.overlayFactory = popUpOverlayFactory;
-			Callout.stagePaddingTop = Callout.stagePaddingRight = Callout.stagePaddingBottom =
-				Callout.stagePaddingLeft = 16 * this.scale;
-
-			if(!this.atlas)
-			{
-				if(this.assetManager)
-				{
-					this.atlas = this.assetManager.getTextureAtlas(ATLAS_NAME);
-				}
-				else
-				{
-					throw new IllegalOperationError("Atlas not loaded.");
-				}
-			}
-
+		protected function initializeTextures():void
+		{
 			const backgroundSkinTexture:Texture = this.atlas.getTexture("background-skin");
 			const backgroundInsetSkinTexture:Texture = this.atlas.getTexture("background-inset-skin");
 			const backgroundDownSkinTexture:Texture = this.atlas.getTexture("background-down-skin");
@@ -552,16 +579,10 @@ package feathers.themes
 			this.verticalScrollBarThumbSkinTextures = new Scale3Textures(this.atlas.getTexture("vertical-scroll-bar-thumb-skin"), SCROLL_BAR_THUMB_REGION1, SCROLL_BAR_THUMB_REGION2, Scale3Textures.DIRECTION_VERTICAL);
 
 			StandardIcons.listDrillDownAccessoryTexture = this.atlas.getTexture("list-accessory-drill-down-icon");
+		}
 
-			if(this.root.stage)
-			{
-				this.initializeRoot();
-			}
-			else
-			{
-				this.root.addEventListener(Event.ADDED_TO_STAGE, root_addedToStageHandler);
-			}
-
+		protected function setInitializers():void
+		{
 			this.setInitializerForClassAndSubclasses(Screen, screenInitializer);
 			this.setInitializerForClassAndSubclasses(PanelScreen, panelScreenInitializer);
 			this.setInitializerForClass(Label, labelInitializer);

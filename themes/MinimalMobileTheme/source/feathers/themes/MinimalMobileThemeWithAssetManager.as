@@ -379,7 +379,48 @@ package feathers.themes
 
 		protected function initialize():void
 		{
-			const scaledDPI:int = DeviceCapabilities.dpi / Starling.contentScaleFactor;
+			if(!this.atlas)
+			{
+				if(this.assetManager)
+				{
+					this.atlas = this.assetManager.getTextureAtlas(ATLAS_NAME);
+				}
+				else
+				{
+					throw new IllegalOperationError("Atlas not loaded.");
+				}
+			}
+
+			this.initializeScale();
+			this.initializeTextures();
+			this.initializeFonts();
+			this.initializeGlobals();
+
+			if(this.root.stage)
+			{
+				this.initializeRoot();
+			}
+			else
+			{
+				this.root.addEventListener(Event.ADDED_TO_STAGE, root_addedToStageHandler);
+			}
+
+			this.setInitializers();
+		}
+
+		protected function initializeGlobals():void
+		{
+			PopUpManager.overlayFactory = popUpOverlayFactory;
+			Callout.stagePaddingTop = Callout.stagePaddingRight = Callout.stagePaddingBottom =
+				Callout.stagePaddingLeft = 16 * this.scale;
+
+			FeathersControl.defaultTextRendererFactory = textRendererFactory;
+			FeathersControl.defaultTextEditorFactory = textEditorFactory;
+		}
+
+		protected function initializeScale():void
+		{
+			var scaledDPI:int = DeviceCapabilities.dpi / Starling.contentScaleFactor;
 			if(this._scaleToDPI)
 			{
 				if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
@@ -398,30 +439,10 @@ package feathers.themes
 			//our min scale is 0.25 because lines in the graphics are four
 			//pixels wide and this will keep them crisp.
 			this.scale = Math.max(0.25, scaledDPI / this._originalDPI);
+		}
 
-			//since it's a pixel font, we want a multiple of the original size,
-			//which, in this case, is 8.
-			this.fontSize = Math.max(4, roundToNearest(24 * this.scale, 8));
-			this.headingFontSize = Math.max(4, roundToNearest(32 * this.scale, 8));
-			this.detailFontSize = Math.max(4, roundToNearest(16 * this.scale, 8));
-			this.inputFontSize = 26 * this.scale;
-
-			PopUpManager.overlayFactory = popUpOverlayFactory;
-			Callout.stagePaddingTop = Callout.stagePaddingRight = Callout.stagePaddingBottom =
-				Callout.stagePaddingLeft = 16 * this.scale;
-
-			if(!this.atlas)
-			{
-				if(this.assetManager)
-				{
-					this.atlas = this.assetManager.getTextureAtlas(ATLAS_NAME);
-				}
-				else
-				{
-					throw new IllegalOperationError("Atlas not loaded.");
-				}
-			}
-
+		protected function initializeTextures():void
+		{
 			this.buttonUpSkinTextures = new Scale9Textures(this.atlas.getTexture("button-up-skin"), BUTTON_SCALE_9_GRID);
 			this.buttonDownSkinTextures = new Scale9Textures(this.atlas.getTexture("button-down-skin"), BUTTON_DOWN_SCALE_9_GRID);
 			this.buttonDisabledSkinTextures = new Scale9Textures(this.atlas.getTexture("button-disabled-skin"), BUTTON_SCALE_9_GRID);
@@ -479,6 +500,16 @@ package feathers.themes
 			this.pageIndicatorSelectedSkinTexture = this.atlas.getTexture("page-indicator-selected-skin");
 
 			StandardIcons.listDrillDownAccessoryTexture = this.atlas.getTexture("list-accessory-drill-down-icon");
+		}
+
+		protected function initializeFonts():void
+		{
+			//since it's a pixel font, we want a multiple of the original size,
+			//which, in this case, is 8.
+			this.fontSize = Math.max(4, roundToNearest(24 * this.scale, 8));
+			this.headingFontSize = Math.max(4, roundToNearest(32 * this.scale, 8));
+			this.detailFontSize = Math.max(4, roundToNearest(16 * this.scale, 8));
+			this.inputFontSize = 26 * this.scale;
 
 			this.primaryTextFormat = new BitmapFontTextFormat(FONT_NAME, this.fontSize, PRIMARY_TEXT_COLOR);
 			this.disabledTextFormat = new BitmapFontTextFormat(FONT_NAME, this.fontSize, DISABLED_TEXT_COLOR);
@@ -486,19 +517,10 @@ package feathers.themes
 			this.headingDisabledTextFormat = new BitmapFontTextFormat(FONT_NAME, this.headingFontSize, DISABLED_TEXT_COLOR);
 			this.detailTextFormat = new BitmapFontTextFormat(FONT_NAME, this.detailFontSize, PRIMARY_TEXT_COLOR);
 			this.detailDisabledTextFormat = new BitmapFontTextFormat(FONT_NAME, this.detailFontSize, DISABLED_TEXT_COLOR);
+		}
 
-			FeathersControl.defaultTextRendererFactory = textRendererFactory;
-			FeathersControl.defaultTextEditorFactory = textEditorFactory;
-
-			if(this.root.stage)
-			{
-				this.initializeRoot();
-			}
-			else
-			{
-				this.root.addEventListener(Event.ADDED_TO_STAGE, root_addedToStageHandler);
-			}
-
+		protected function setInitializers():void
+		{
 			this.setInitializerForClassAndSubclasses(Screen, screenInitializer);
 			this.setInitializerForClassAndSubclasses(PanelScreen, panelScreenInitializer);
 			this.setInitializerForClass(Label, labelInitializer);
