@@ -11,7 +11,6 @@ package feathers.examples.componentsExplorer.screens
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
-
 	import starling.events.Event;
 
 	public class AlertScreen extends PanelScreen
@@ -67,10 +66,10 @@ package feathers.examples.componentsExplorer.screens
 
 		private function alertButton_triggeredHandler(event:Event):void
 		{
-			Alert.show("I just wanted you to know that I have something very important to say.", "Alert", new ListCollection(
+			Alert.show("I just wanted you to know that I have a very important message to share with you.", "Alert", new ListCollection(
 			[
 				{ label: "OK" }
-			]))
+			]));
 		}
 	}
 }
