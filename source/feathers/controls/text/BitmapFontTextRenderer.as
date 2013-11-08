@@ -76,6 +76,11 @@ package feathers.controls.text
 		private static var CHAR_LOCATION_POOL:Vector.<CharLocation>;
 
 		/**
+		 * @private
+		 */
+		private static const FUZZY_MAX_WIDTH_PADDING:Number = 0.000001;
+
+		/**
 		 * Constructor.
 		 */
 		public function BitmapFontTextRenderer()
@@ -886,8 +891,15 @@ package feathers.controls.text
 				currentX += currentKerning + charData.xAdvance * scale;
 				if(currentX > this._maxWidth)
 				{
-					truncationIndex = i;
-					break;
+					//floating point errors can cause unnecessary truncation,
+					//so we're going to be a little bit fuzzy on the greater
+					//than check. such tiny numbers shouldn't break anything.
+					var difference:Number = Math.abs(currentX - this._maxWidth);
+					if(difference > FUZZY_MAX_WIDTH_PADDING)
+					{
+						truncationIndex = i;
+						break;
+					}
 				}
 				currentX += customLetterSpacing;
 				previousCharID = charID;
