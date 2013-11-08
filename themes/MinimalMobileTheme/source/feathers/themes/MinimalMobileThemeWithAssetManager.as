@@ -97,9 +97,10 @@ package feathers.themes
 	public class MinimalMobileThemeWithAssetManager extends DisplayListWatcher
 	{
 		public static const COMPONENT_NAME_PICKER_LIST_ITEM_RENDERER:String = "feathers-mobile-picker-list-item-renderer";
+		public static const FONT_NAME:String = "PF Ronda Seven";
 
 		protected static const ATLAS_NAME:String = "minimal";
-		protected static const FONT_NAME:String = "pf_ronda_seven_0";
+		protected static const FONT_TEXTURE_NAME:String = "pf_ronda_seven_0";
 
 		protected static const SCALE_9_GRID:Rectangle = new Rectangle(9, 9, 2, 2);
 		protected static const BUTTON_SCALE_9_GRID:Rectangle = new Rectangle(5, 5, 1, 1);
@@ -364,7 +365,7 @@ package feathers.themes
 					atlasBitmapData.dispose();
 					this.atlas = new TextureAtlas(atlasTexture, XML(new AtlasXMLClass()));
 
-					var bitmapFont:BitmapFont = new BitmapFont(this.atlas.getTexture("pf_ronda_seven_0"), XML(new FontXMLClass()));
+					var bitmapFont:BitmapFont = new BitmapFont(this.atlas.getTexture(FONT_TEXTURE_NAME), XML(new FontXMLClass()));
 					TextField.registerBitmapFont(bitmapFont, FONT_NAME);
 
 					this.initialize();
@@ -1345,6 +1346,7 @@ package feathers.themes
 
 			alert.paddingTop = alert.paddingBottom = 16 * this.scale;
 			alert.paddingLeft = alert.paddingRight = 32 * this.scale;
+			alert.gap = 32 * this.scale;
 
 			alert.maxWidth = alert.maxHeight = 560 * this.scale;
 		}
