@@ -739,7 +739,7 @@ package feathers.layout
 			var maxItemHeight:Number = this._useVirtualLayout ? calculatedTypicalItemHeight : 0;
 			var positionX:Number = boundsX + this._paddingLeft;
 			var itemCount:int = items.length;
-			var totalItemCount = itemCount;
+			var totalItemCount:int = itemCount;
 			if(this._useVirtualLayout && !this._hasVariableItemDimensions)
 			{
 				totalItemCount += this._beforeVirtualizedItemCount + this._afterVirtualizedItemCount;
