@@ -10,6 +10,12 @@ package feathers.controls
 	import feathers.core.FeathersControl;
 	import feathers.core.PropertyProxy;
 	import feathers.data.ListCollection;
+	import feathers.layout.HorizontalLayout;
+	import feathers.layout.LayoutBoundsResult;
+	import feathers.layout.VerticalLayout;
+	import feathers.layout.ViewPortBounds;
+
+	import starling.display.DisplayObject;
 
 	import starling.events.Event;
 
@@ -61,6 +67,11 @@ package feathers.controls
 		 * @private
 		 */
 		protected static const INVALIDATION_FLAG_BUTTON_FACTORY:String = "buttonFactory";
+
+		/**
+		 * @private
+		 */
+		private static const HELPER_LAYOUT_BOUNDS_RESULT:LayoutBoundsResult = new LayoutBoundsResult();
 
 		/**
 		 * @private
@@ -255,6 +266,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _layoutItems:Vector.<DisplayObject> = new <DisplayObject>[];
+
+		/**
+		 * @private
+		 */
 		protected var activeButtons:Vector.<Button> = new <Button>[];
 
 		/**
@@ -341,6 +357,21 @@ package feathers.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
+
+		/**
+		 * @private
+		 */
+		protected var verticalLayout:VerticalLayout;
+
+		/**
+		 * @private
+		 */
+		protected var horizontalLayout:HorizontalLayout;
+
+		/**
+		 * @private
+		 */
+		protected var _viewPortBounds:ViewPortBounds = new ViewPortBounds();
 
 		/**
 		 * @private
@@ -1197,6 +1228,11 @@ package feathers.controls
 				this.commitEnabled();
 			}
 
+			if(stylesInvalid)
+			{
+				this.refreshLayoutStyles();
+			}
+
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
 			if(sizeInvalid || dataInvalid || buttonFactoryInvalid || stylesInvalid)
@@ -1233,6 +1269,55 @@ package feathers.controls
 						button[propertyName] = propertyValue;
 					}
 				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshLayoutStyles():void
+		{
+			if(this._direction == DIRECTION_VERTICAL)
+			{
+				if(this.horizontalLayout)
+				{
+					this.horizontalLayout = null;
+				}
+				if(!this.verticalLayout)
+				{
+					this.verticalLayout = new VerticalLayout();
+					this.verticalLayout.useVirtualLayout = false;
+				}
+				this.verticalLayout.horizontalAlign = this._horizontalAlign;
+				this.verticalLayout.verticalAlign = this._verticalAlign;
+				this.verticalLayout.gap = this._gap;
+				this.verticalLayout.firstGap = this._firstGap;
+				this.verticalLayout.lastGap = this._lastGap;
+				this.verticalLayout.paddingTop = this._paddingTop;
+				this.verticalLayout.paddingRight = this._paddingRight;
+				this.verticalLayout.paddingBottom = this._paddingBottom;
+				this.verticalLayout.paddingLeft = this._paddingLeft;
+			}
+			else //horizontal
+			{
+				if(this.verticalLayout)
+				{
+					this.verticalLayout = null;
+				}
+				if(!this.horizontalLayout)
+				{
+					this.horizontalLayout = new HorizontalLayout();
+					this.horizontalLayout.useVirtualLayout = false;
+				}
+				this.horizontalLayout.horizontalAlign = this._horizontalAlign;
+				this.horizontalLayout.verticalAlign = this._verticalAlign;
+				this.horizontalLayout.gap = this._gap;
+				this.horizontalLayout.firstGap = this._firstGap;
+				this.horizontalLayout.lastGap = this._lastGap;
+				this.horizontalLayout.paddingTop = this._paddingTop;
+				this.horizontalLayout.paddingRight = this._paddingRight;
+				this.horizontalLayout.paddingBottom = this._paddingBottom;
+				this.horizontalLayout.paddingLeft = this._paddingLeft;
 			}
 		}
 
@@ -1286,6 +1371,7 @@ package feathers.controls
 			this.inactiveButtons = this.activeButtons;
 			this.activeButtons = temp;
 			this.activeButtons.length = 0;
+			this._layoutItems.length = 0;
 			temp = null;
 			if(isFactoryInvalid)
 			{
@@ -1308,6 +1394,7 @@ package feathers.controls
 			this.activeFirstButton = null;
 			this.activeLastButton = null;
 
+			var pushIndex:int = 0;
 			const itemCount:int = this._dataProvider ? this._dataProvider.length : 0;
 			const lastItemIndex:int = itemCount - 1;
 			for(var i:int = 0; i < itemCount; i++)
@@ -1325,7 +1412,9 @@ package feathers.controls
 				{
 					button = this.createButton(item);
 				}
-				this.activeButtons.push(button);
+				this.activeButtons[pushIndex] = button;
+				this._layoutItems[pushIndex] = button;
+				pushIndex++;
 			}
 			this.clearInactiveButtons();
 		}
@@ -1544,175 +1633,23 @@ package feathers.controls
 		 */
 		protected function layoutButtons():void
 		{
-			const hasFirstGap:Boolean = !isNaN(this._firstGap);
-			const hasLastGap:Boolean = !isNaN(this._lastGap);
-			const buttonCount:int = this.activeButtons.length;
-			const secondToLastIndex:int = buttonCount - 2;
-			if(this._direction == DIRECTION_VERTICAL)
+			this._viewPortBounds.x = 0;
+			this._viewPortBounds.y = 0;
+			this._viewPortBounds.scrollX = 0;
+			this._viewPortBounds.scrollY = 0;
+			this._viewPortBounds.explicitWidth = this.explicitWidth;
+			this._viewPortBounds.explicitHeight = this.explicitHeight;
+			this._viewPortBounds.minWidth = this._minWidth;
+			this._viewPortBounds.minHeight = this._minHeight;
+			this._viewPortBounds.maxWidth = this._maxWidth;
+			this._viewPortBounds.maxHeight = this._maxHeight;
+			if(this.verticalLayout)
 			{
-				var maxButtonSize:Number = this.actualHeight - this._paddingTop - this._paddingBottom;
-				var oppositeSize:Number = this.actualWidth - this._paddingLeft - this._paddingRight;
+				this.verticalLayout.layout(this._layoutItems, this._viewPortBounds, HELPER_LAYOUT_BOUNDS_RESULT);
 			}
-			else
+			else if(this.horizontalLayout)
 			{
-				maxButtonSize = this.actualWidth - this._paddingLeft - this._paddingRight;
-				oppositeSize = this.actualHeight - this._paddingTop - this._paddingBottom;
-			}
-			maxButtonSize -= (this._gap * (buttonCount - 1));
-			if(hasFirstGap)
-			{
-				maxButtonSize += this._gap - this._firstGap;
-			}
-			if(hasLastGap)
-			{
-				maxButtonSize += this._gap - this._lastGap;
-			}
-			maxButtonSize /= buttonCount;
-
-			var position:Number = this._direction == DIRECTION_VERTICAL ? this._paddingTop : this._paddingLeft;
-			if((this._horizontalAlign == HORIZONTAL_ALIGN_JUSTIFY && this._direction == DIRECTION_HORIZONTAL) ||
-				(this._verticalAlign == VERTICAL_ALIGN_JUSTIFY && this._direction == DIRECTION_VERTICAL))
-			{
-				var buttonSize:Number = maxButtonSize;
-			}
-			else
-			{
-				buttonSize = 0;
-				for(var i:int = 0; i < buttonCount; i++)
-				{
-					var button:Button = this.activeButtons[i];
-					button.validate();
-					if(this._direction == DIRECTION_VERTICAL)
-					{
-						var currentButtonSize:Number = button.height;
-						if(!isNaN(currentButtonSize) && currentButtonSize > buttonSize)
-						{
-							buttonSize = currentButtonSize;
-						}
-					}
-					else //horizontal
-					{
-						currentButtonSize = button.width;
-						if(!isNaN(currentButtonSize) && currentButtonSize > buttonSize)
-						{
-							buttonSize = currentButtonSize;
-						}
-					}
-				}
-				if(buttonSize > maxButtonSize)
-				{
-					buttonSize = maxButtonSize;
-				}
-				var totalContentSize:Number = (buttonSize + this._gap) * buttonCount - this._gap;
-				if(hasFirstGap)
-				{
-					totalContentSize = totalContentSize - this._gap + this._firstGap;
-				}
-				if(hasLastGap)
-				{
-					totalContentSize = totalContentSize - this._gap + this._lastGap;
-				}
-				if(this._direction == DIRECTION_VERTICAL)
-				{
-					if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
-					{
-						position = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - totalContentSize) / 2;
-					}
-					else if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
-					{
-						position = this.actualHeight - this._paddingBottom - totalContentSize;
-					}
-				}
-				else //horizontal
-				{
-					if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
-					{
-						position = this._paddingLeft + (this.actualWidth - this._paddingLeft - this._paddingRight - totalContentSize) / 2;
-					}
-					else if(this._horizontalAlign == HORIZONTAL_ALIGN_RIGHT)
-					{
-						position = this.actualWidth - this._paddingRight - totalContentSize;
-					}
-				}
-			}
-			for(i = 0; i < buttonCount; i++)
-			{
-				button = this.activeButtons[i];
-				if(this._direction == DIRECTION_VERTICAL)
-				{
-					button.height = buttonSize;
-					button.y = position;
-					button.validate();
-					switch(this._horizontalAlign)
-					{
-						case HORIZONTAL_ALIGN_CENTER:
-						{
-							button.x = this._paddingLeft + (oppositeSize - button.width) / 2;
-							break;
-						}
-						case HORIZONTAL_ALIGN_RIGHT:
-						{
-							button.x = this._paddingLeft + oppositeSize - button.width;
-							break;
-						}
-						case HORIZONTAL_ALIGN_LEFT:
-						{
-							button.x = this._paddingLeft;
-							break;
-						}
-						default: //justify
-						{
-							button.x = this._paddingLeft;
-							button.width = oppositeSize;
-							break;
-						}
-					}
-					position += buttonSize;
-				}
-				else //horizontal
-				{
-					button.x = position;
-					button.width = buttonSize;
-					button.validate();
-					switch(this._verticalAlign)
-					{
-						case VERTICAL_ALIGN_MIDDLE:
-						{
-							button.y = this._paddingTop + (oppositeSize - button.height) / 2;
-							break;
-						}
-						case VERTICAL_ALIGN_BOTTOM:
-						{
-							button.y = this._paddingTop + oppositeSize - button.height;
-							break;
-						}
-						case VERTICAL_ALIGN_TOP:
-						{
-							button.y = this._paddingTop;
-							break;
-						}
-						default: //justify
-						{
-							button.y = this._paddingTop;
-							button.height = oppositeSize;
-							break;
-						}
-					}
-					position += buttonSize;
-				}
-
-				if(hasFirstGap && i == 0)
-				{
-					position += this._firstGap;
-				}
-				else if(hasLastGap && i == secondToLastIndex)
-				{
-					position += this._lastGap;
-				}
-				else
-				{
-					position += this._gap;
-				}
+				this.horizontalLayout.layout(this._layoutItems, this._viewPortBounds, HELPER_LAYOUT_BOUNDS_RESULT);
 			}
 		}
 
