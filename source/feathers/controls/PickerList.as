@@ -877,6 +877,16 @@ package feathers.controls
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _isOpenListPending:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected var _isCloseListPending:Boolean = false;
 		
 		/**
 		 * Using <code>labelField</code> and <code>labelFunction</code>,
@@ -917,6 +927,47 @@ package feathers.controls
 			}
 			return "";
 		}
+
+		/**
+		 * Opens the pop-up list, if it isn't already open.
+		 */
+		public function openList():void
+		{
+			this._isCloseListPending = false;
+			if(this._popUpContentManager.isOpen)
+			{
+				return;
+			}
+			if(!this._isValidating && this.isInvalid())
+			{
+				this._isOpenListPending = true;
+				return;
+			}
+			this._isOpenListPending = false;
+			this._popUpContentManager.open(this.list, this);
+			this.list.scrollToDisplayIndex(this._selectedIndex);
+			this.list.validate();
+		}
+
+		/**
+		 * Closes the pop-up list, if it is open.
+		 */
+		public function closeList():void
+		{
+			this._isOpenListPending = false;
+			if(!this._popUpContentManager.isOpen)
+			{
+				return;
+			}
+			if(!this._isValidating && this.isInvalid())
+			{
+				this._isCloseListPending = true;
+				return;
+			}
+			this._isCloseListPending = false;
+			this.list.validate();
+			this._popUpContentManager.close();
+		}
 		
 		/**
 		 * @inheritDoc
@@ -925,7 +976,7 @@ package feathers.controls
 		{
 			if(this.list)
 			{
-				this.closePopUpList();
+				this.closeList();
 				this.list.dispose();
 				this.list = null;
 			}
@@ -1033,6 +1084,8 @@ package feathers.controls
 			{
 				this.layout();
 			}
+
+			this.handlePendingActions();
 		}
 
 		/**
@@ -1206,14 +1259,20 @@ package feathers.controls
 			//final validation to avoid juggler next frame issues
 			this.button.validate();
 		}
-		
+
 		/**
 		 * @private
 		 */
-		protected function closePopUpList():void
+		protected function handlePendingActions():void
 		{
-			this.list.validate();
-			this._popUpContentManager.close();
+			if(this._isOpenListPending)
+			{
+				this.openList();
+			}
+			if(this._isCloseListPending)
+			{
+				this.closeList();
+			}
 		}
 
 		/**
@@ -1229,14 +1288,12 @@ package feathers.controls
 		 */
 		protected function button_triggeredHandler(event:Event):void
 		{
-			if(this.list.stage)
+			if(this._popUpContentManager.isOpen)
 			{
-				this.closePopUpList();
+				this.closeList();
 				return;
 			}
-			this._popUpContentManager.open(this.list, this);
-			this.list.scrollToDisplayIndex(this._selectedIndex);
-			this.list.validate();
+			this.openList();
 		}
 		
 		/**
@@ -1272,7 +1329,7 @@ package feathers.controls
 			{
 				return;
 			}
-			this.closePopUpList();
+			this.closeList();
 		}
 	}
 }
