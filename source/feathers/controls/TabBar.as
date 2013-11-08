@@ -12,7 +12,12 @@ package feathers.controls
 	import feathers.core.ToggleGroup;
 	import feathers.data.ListCollection;
 	import feathers.events.CollectionEventType;
+	import feathers.layout.HorizontalLayout;
+	import feathers.layout.LayoutBoundsResult;
+	import feathers.layout.VerticalLayout;
+	import feathers.layout.ViewPortBounds;
 
+	import starling.display.DisplayObject;
 	import starling.events.Event;
 
 	/**
@@ -86,6 +91,71 @@ package feathers.controls
 		 * @see #direction
 		 */
 		public static const DIRECTION_VERTICAL:String = "vertical";
+
+		/**
+		 * The tabs will be aligned horizontally to the left edge of the tab
+		 * bar.
+		 *
+		 * @see #horizontalAlign
+		 */
+		public static const HORIZONTAL_ALIGN_LEFT:String = "left";
+
+		/**
+		 * The tabs will be aligned horizontally to the center of the tab bar.
+		 *
+		 * @see #horizontalAlign
+		 */
+		public static const HORIZONTAL_ALIGN_CENTER:String = "center";
+
+		/**
+		 * The tabs will be aligned horizontally to the right edge of the tab
+		 * bar.
+		 *
+		 * @see #horizontalAlign
+		 */
+		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
+
+		/**
+		 * If the direction is vertical, each tab will fill the entire width of
+		 * the tab bar, and if the direction is horizontal, the width of the
+		 * tab bar will be divided so that each tab will each have an equal
+		 * width, and the total width of all tabs will fill the entire space.
+		 *
+		 * @see #horizontalAlign
+		 * @see #direction
+		 */
+		public static const HORIZONTAL_ALIGN_JUSTIFY:String = "justify";
+
+		/**
+		 * The tabs will be aligned vertically to the top edge of the tab bar.
+		 */
+		public static const VERTICAL_ALIGN_TOP:String = "top";
+
+		/**
+		 * The tabs will be aligned vertically to the middle of the tab bar.
+		 *
+		 * @see #verticalAlign
+		 */
+		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
+
+		/**
+		 * The tabs will be aligned vertically to the bottom edge of the tab
+		 * bar.
+		 *
+		 * @see #verticalAlign
+		 */
+		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
+
+		/**
+		 * If the direction is horizontal, each tab will fill the entire height
+		 * of the tab bar, and if the direction is vertical, the height of the
+		 * tab bar will be divided so that each tab will each have an equal
+		 * height, and the total height of all tabs will fill the entire space.
+		 *
+		 * @see #verticalAlign
+		 * @see #direction
+		 */
+		public static const VERTICAL_ALIGN_JUSTIFY:String = "justify";
 
 		/**
 		 * The default value added to the <code>nameList</code> of the tabs.
@@ -175,6 +245,11 @@ package feathers.controls
 		 * @private
 		 */
 		protected var inactiveLastTab:Button;
+
+		/**
+		 * @private
+		 */
+		protected var _layoutItems:Vector.<DisplayObject> = new <DisplayObject>[];
 
 		/**
 		 * @private
@@ -269,6 +344,26 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var verticalLayout:VerticalLayout;
+
+		/**
+		 * @private
+		 */
+		protected var horizontalLayout:HorizontalLayout;
+
+		/**
+		 * @private
+		 */
+		protected var _viewPortBounds:ViewPortBounds = new ViewPortBounds();
+
+		/**
+		 * @private
+		 */
+		protected var _layoutResult:LayoutBoundsResult = new LayoutBoundsResult();
+
+		/**
+		 * @private
+		 */
 		protected var _direction:String = DIRECTION_HORIZONTAL;
 
 		[Inspectable(type="String",enumeration="horizontal,vertical")]
@@ -307,6 +402,86 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _horizontalAlign:String = HORIZONTAL_ALIGN_JUSTIFY;
+
+		[Inspectable(type="String",enumeration="left,center,right,justify")]
+		/**
+		 * Determines how the tabs are horizontally aligned within the bounds
+		 * of the tab bar (on the x-axis).
+		 *
+		 * <p>The following example aligns the tabs to the left:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.horizontalAlign = TabBar.HORIZONTAL_ALIGN_LEFT;</listing>
+		 *
+		 * @default TabBar.HORIZONTAL_ALIGN_JUSTIFY
+		 *
+		 * @see #HORIZONTAL_ALIGN_LEFT
+		 * @see #HORIZONTAL_ALIGN_CENTER
+		 * @see #HORIZONTAL_ALIGN_RIGHT
+		 * @see #HORIZONTAL_ALIGN_JUSTIFY
+		 */
+		public function get horizontalAlign():String
+		{
+			return this._horizontalAlign;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set horizontalAlign(value:String):void
+		{
+			if(this._horizontalAlign == value)
+			{
+				return;
+			}
+			this._horizontalAlign = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _verticalAlign:String = VERTICAL_ALIGN_JUSTIFY;
+
+		[Inspectable(type="String",enumeration="top,middle,bottom,justify")]
+		/**
+		 * Determines how the tabs are vertically aligned within the bounds
+		 * of the tab bar (on the y-axis).
+		 *
+		 * <p>The following example aligns the tabs to the top:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.verticalAlign = TabBar.VERTICAL_ALIGN_TOP;</listing>
+		 *
+		 * @default TabBar.VERTICAL_ALIGN_JUSTIFY
+		 *
+		 * @see #VERTICAL_ALIGN_TOP
+		 * @see #VERTICAL_ALIGN_MIDDLE
+		 * @see #VERTICAL_ALIGN_RIGHT
+		 * @see #VERTICAL_ALIGN_JUSTIFY
+		 */
+		public function get verticalAlign():String
+		{
+			return _verticalAlign;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set verticalAlign(value:String):void
+		{
+			if(this._verticalAlign == value)
+			{
+				return;
+			}
+			this._verticalAlign = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _gap:Number = 0;
 
 		/**
@@ -334,6 +509,259 @@ package feathers.controls
 				return;
 			}
 			this._gap = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _firstGap:Number = NaN;
+
+		/**
+		 * Space, in pixels, between the first two tabs. If <code>NaN</code>,
+		 * the default <code>gap</code> property will be used.
+		 *
+		 * <p>The following example sets the gap between the first and second
+		 * tab to a different value than the standard gap:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.firstGap = 30;
+		 * tabs.gap = 20;</listing>
+		 *
+		 * @default NaN
+		 *
+		 * @see #gap
+		 * @see #lastGap
+		 */
+		public function get firstGap():Number
+		{
+			return this._firstGap;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set firstGap(value:Number):void
+		{
+			if(this._firstGap == value)
+			{
+				return;
+			}
+			this._firstGap = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _lastGap:Number = NaN;
+
+		/**
+		 * Space, in pixels, between the last two tabs. If <code>NaN</code>,
+		 * the default <code>gap</code> property will be used.
+		 *
+		 * <p>The following example sets the gap between the last and next to last
+		 * tab to a different value than the standard gap:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.lastGap = 30;
+		 * tabs.gap = 20;</listing>
+		 *
+		 * @default NaN
+		 *
+		 * @see #gap
+		 * @see #firstGap
+		 */
+		public function get lastGap():Number
+		{
+			return this._lastGap;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set lastGap(value:Number):void
+		{
+			if(this._lastGap == value)
+			{
+				return;
+			}
+			this._lastGap = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * Quickly sets all padding properties to the same value. The
+		 * <code>padding</code> getter always returns the value of
+		 * <code>paddingTop</code>, but the other padding values may be
+		 * different.
+		 *
+		 * <p>In the following example, the padding of all sides of the tab bar
+		 * is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.padding = 20;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #paddingTop
+		 * @see #paddingRight
+		 * @see #paddingBottom
+		 * @see #paddingLeft
+		 */
+		public function get padding():Number
+		{
+			return this._paddingTop;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set padding(value:Number):void
+		{
+			this.paddingTop = value;
+			this.paddingRight = value;
+			this.paddingBottom = value;
+			this.paddingLeft = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingTop:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the tab bar's top edge and the
+		 * tabs.
+		 *
+		 * <p>In the following example, the padding on the top edge of the
+		 * tab bar is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.paddingTop = 20;</listing>
+		 *
+		 * @default 0
+		 */
+		public function get paddingTop():Number
+		{
+			return this._paddingTop;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingTop(value:Number):void
+		{
+			if(this._paddingTop == value)
+			{
+				return;
+			}
+			this._paddingTop = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingRight:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the tab bar's right edge and
+		 * the tabs.
+		 *
+		 * <p>In the following example, the padding on the right edge of the
+		 * tab bar is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.paddingRight = 20;</listing>
+		 *
+		 * @default 0
+		 */
+		public function get paddingRight():Number
+		{
+			return this._paddingRight;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingRight(value:Number):void
+		{
+			if(this._paddingRight == value)
+			{
+				return;
+			}
+			this._paddingRight = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingBottom:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the tab bar's bottom edge and
+		 * the tabs.
+		 *
+		 * <p>In the following example, the padding on the bottom edge of the
+		 * tab bar is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.paddingBottom = 20;</listing>
+		 *
+		 * @default 0
+		 */
+		public function get paddingBottom():Number
+		{
+			return this._paddingBottom;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingBottom(value:Number):void
+		{
+			if(this._paddingBottom == value)
+			{
+				return;
+			}
+			this._paddingBottom = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingLeft:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the tab bar's left edge and the
+		 * tabs.
+		 *
+		 * <p>In the following example, the padding on the left edge of the
+		 * tab bar is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.paddingLeft = 20;</listing>
+		 *
+		 * @default 0
+		 */
+		public function get paddingLeft():Number
+		{
+			return this._paddingLeft;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingLeft(value:Number):void
+		{
+			if(this._paddingLeft == value)
+			{
+				return;
+			}
+			this._paddingLeft = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -911,12 +1339,12 @@ package feathers.controls
 				this.commitEnabled();
 			}
 
-			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
-
-			if(sizeInvalid || dataInvalid || tabFactoryInvalid || stylesInvalid)
+			if(stylesInvalid)
 			{
-				this.layoutTabs();
+				this.refreshLayoutStyles();
 			}
+
+			this.layoutTabs();
 		}
 
 		/**
@@ -971,6 +1399,55 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function refreshLayoutStyles():void
+		{
+			if(this._direction == DIRECTION_VERTICAL)
+			{
+				if(this.horizontalLayout)
+				{
+					this.horizontalLayout = null;
+				}
+				if(!this.verticalLayout)
+				{
+					this.verticalLayout = new VerticalLayout();
+					this.verticalLayout.useVirtualLayout = false;
+				}
+				this.verticalLayout.horizontalAlign = this._horizontalAlign;
+				this.verticalLayout.verticalAlign = this._verticalAlign;
+				this.verticalLayout.gap = this._gap;
+				this.verticalLayout.firstGap = this._firstGap;
+				this.verticalLayout.lastGap = this._lastGap;
+				this.verticalLayout.paddingTop = this._paddingTop;
+				this.verticalLayout.paddingRight = this._paddingRight;
+				this.verticalLayout.paddingBottom = this._paddingBottom;
+				this.verticalLayout.paddingLeft = this._paddingLeft;
+			}
+			else //horizontal
+			{
+				if(this.verticalLayout)
+				{
+					this.verticalLayout = null;
+				}
+				if(!this.horizontalLayout)
+				{
+					this.horizontalLayout = new HorizontalLayout();
+					this.horizontalLayout.useVirtualLayout = false;
+				}
+				this.horizontalLayout.horizontalAlign = this._horizontalAlign;
+				this.horizontalLayout.verticalAlign = this._verticalAlign;
+				this.horizontalLayout.gap = this._gap;
+				this.horizontalLayout.firstGap = this._firstGap;
+				this.horizontalLayout.lastGap = this._lastGap;
+				this.horizontalLayout.paddingTop = this._paddingTop;
+				this.horizontalLayout.paddingRight = this._paddingRight;
+				this.horizontalLayout.paddingBottom = this._paddingBottom;
+				this.horizontalLayout.paddingLeft = this._paddingLeft;
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function defaultTabInitializer(tab:Button, item:Object):void
 		{
 			if(item is Object)
@@ -1011,6 +1488,7 @@ package feathers.controls
 			this.inactiveTabs = this.activeTabs;
 			this.activeTabs = temp;
 			this.activeTabs.length = 0;
+			this._layoutItems.length = 0;
 			temp = null;
 			if(isFactoryInvalid)
 			{
@@ -1033,6 +1511,7 @@ package feathers.controls
 			this.activeFirstTab = null;
 			this.activeLastTab = null;
 
+			var pushIndex:int = 0;
 			const itemCount:int = this._dataProvider ? this._dataProvider.length : 0;
 			const lastItemIndex:int = itemCount - 1;
 			for(var i:int = 0; i < itemCount; i++)
@@ -1051,7 +1530,9 @@ package feathers.controls
 					tab = this.createTab(item);
 				}
 				this.toggleGroup.addItem(tab);
-				this.activeTabs.push(tab);
+				this.activeTabs[pushIndex] = tab;
+				this._layoutItems[pushIndex] = tab;
+				pushIndex++;
 			}
 
 			this.clearInactiveTabs();
@@ -1201,95 +1682,29 @@ package feathers.controls
 		}
 
 		/**
-		 * If the component's dimensions have not been set explicitly, it will
-		 * measure its content and determine an ideal size for itself. If the
-		 * <code>explicitWidth</code> or <code>explicitHeight</code> member
-		 * variables are set, those value will be used without additional
-		 * measurement. If one is set, but not the other, the dimension with the
-		 * explicit value will not be measured, but the other non-explicit
-		 * dimension will still need measurement.
-		 *
-		 * <p>Calls <code>setSizeInternal()</code> to set up the
-		 * <code>actualWidth</code> and <code>actualHeight</code> member
-		 * variables used for layout.</p>
-		 *
-		 * <p>Meant for internal use, and subclasses may override this function
-		 * with a custom implementation.</p>
-		 */
-		protected function autoSizeIfNeeded():Boolean
-		{
-			const needsWidth:Boolean = isNaN(this.explicitWidth);
-			const needsHeight:Boolean = isNaN(this.explicitHeight);
-			if(!needsWidth && !needsHeight)
-			{
-				return false;
-			}
-
-			var newWidth:Number = this.explicitWidth;
-			var newHeight:Number = this.explicitHeight;
-			if(needsWidth)
-			{
-				newWidth = 0;
-				for each(var tab:Button in this.activeTabs)
-				{
-					tab.validate();
-					newWidth = Math.max(tab.width, newWidth);
-				}
-				if(this._direction == DIRECTION_HORIZONTAL)
-				{
-					newWidth = this.activeTabs.length * (newWidth + this._gap) - this._gap;
-				}
-			}
-
-			if(needsHeight)
-			{
-				newHeight = 0;
-				for each(tab in this.activeTabs)
-				{
-					tab.validate();
-					newHeight = Math.max(tab.height, newHeight);
-				}
-				if(this._direction != DIRECTION_HORIZONTAL)
-				{
-					newHeight = this.activeTabs.length * (newHeight + this._gap) - this._gap;
-				}
-			}
-			return this.setSizeInternal(newWidth, newHeight, false);
-		}
-
-		/**
 		 * @private
 		 */
 		protected function layoutTabs():void
 		{
-			const tabCount:int = this.activeTabs.length;
-			const totalSize:Number = this._direction == DIRECTION_VERTICAL ? this.actualHeight : this.actualWidth;
-			const totalTabSize:Number = totalSize - (this._gap * (tabCount - 1));
-			const tabSize:Number = totalTabSize / tabCount;
-			var position:Number = 0;
-			for(var i:int = 0; i < tabCount; i++)
+			this._viewPortBounds.x = 0;
+			this._viewPortBounds.y = 0;
+			this._viewPortBounds.scrollX = 0;
+			this._viewPortBounds.scrollY = 0;
+			this._viewPortBounds.explicitWidth = this.explicitWidth;
+			this._viewPortBounds.explicitHeight = this.explicitHeight;
+			this._viewPortBounds.minWidth = this._minWidth;
+			this._viewPortBounds.minHeight = this._minHeight;
+			this._viewPortBounds.maxWidth = this._maxWidth;
+			this._viewPortBounds.maxHeight = this._maxHeight;
+			if(this.verticalLayout)
 			{
-				var tab:Button = this.activeTabs[i];
-				if(this._direction == DIRECTION_VERTICAL)
-				{
-					tab.width = this.actualWidth;
-					tab.height = tabSize;
-					tab.x = 0;
-					tab.y = position;
-					position += tab.height + this._gap;
-				}
-				else //horizontal
-				{
-					tab.width = tabSize;
-					tab.height = this.actualHeight;
-					tab.x = position;
-					tab.y = 0;
-					position += tab.width + this._gap;
-				}
-
-				//final validation to avoid juggler next frame issues
-				tab.validate();
+				this.verticalLayout.layout(this._layoutItems, this._viewPortBounds, this._layoutResult);
 			}
+			else if(this.horizontalLayout)
+			{
+				this.horizontalLayout.layout(this._layoutItems, this._viewPortBounds, this._layoutResult);
+			}
+			this.setSizeInternal(this._layoutResult.contentWidth, this._layoutResult.contentHeight, false);
 		}
 
 		/**
