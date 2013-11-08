@@ -16,7 +16,6 @@ package feathers.controls
 	import feathers.layout.ViewPortBounds;
 
 	import starling.display.DisplayObject;
-
 	import starling.events.Event;
 
 	/**
@@ -67,11 +66,6 @@ package feathers.controls
 		 * @private
 		 */
 		protected static const INVALIDATION_FLAG_BUTTON_FACTORY:String = "buttonFactory";
-
-		/**
-		 * @private
-		 */
-		private static const HELPER_LAYOUT_BOUNDS_RESULT:LayoutBoundsResult = new LayoutBoundsResult();
 
 		/**
 		 * @private
@@ -372,6 +366,11 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _viewPortBounds:ViewPortBounds = new ViewPortBounds();
+
+		/**
+		 * @private
+		 */
+		protected var _layoutResult:LayoutBoundsResult = new LayoutBoundsResult();
 
 		/**
 		 * @private
@@ -1233,12 +1232,7 @@ package feathers.controls
 				this.refreshLayoutStyles();
 			}
 
-			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
-
-			if(sizeInvalid || dataInvalid || buttonFactoryInvalid || stylesInvalid)
-			{
-				this.layoutButtons();
-			}
+			this.layoutButtons();
 		}
 
 		/**
@@ -1547,88 +1541,6 @@ package feathers.controls
 		}
 
 		/**
-		 * If the component's dimensions have not been set explicitly, it will
-		 * measure its content and determine an ideal size for itself. If the
-		 * <code>explicitWidth</code> or <code>explicitHeight</code> member
-		 * variables are set, those value will be used without additional
-		 * measurement. If one is set, but not the other, the dimension with the
-		 * explicit value will not be measured, but the other non-explicit
-		 * dimension will still need measurement.
-		 *
-		 * <p>Calls <code>setSizeInternal()</code> to set up the
-		 * <code>actualWidth</code> and <code>actualHeight</code> member
-		 * variables used for layout.</p>
-		 *
-		 * <p>Meant for internal use, and subclasses may override this function
-		 * with a custom implementation.</p>
-		 */
-		protected function autoSizeIfNeeded():Boolean
-		{
-			const needsWidth:Boolean = isNaN(this.explicitWidth);
-			const needsHeight:Boolean = isNaN(this.explicitHeight);
-			if(!needsWidth && !needsHeight)
-			{
-				return false;
-			}
-
-			var newWidth:Number = this.explicitWidth;
-			var newHeight:Number = this.explicitHeight;
-			if(needsWidth)
-			{
-				newWidth = 0;
-				for each(var button:Button in this.activeButtons)
-				{
-					button.setSize(NaN, NaN);
-					button.validate();
-					newWidth = Math.max(button.width, newWidth);
-				}
-				if(this._direction == DIRECTION_HORIZONTAL)
-				{
-					var buttonCount:int = this.activeButtons.length;
-					newWidth = buttonCount * (newWidth + this._gap) - this._gap;
-					if(!isNaN(this._firstGap) && buttonCount > 1)
-					{
-						newWidth -= this._gap;
-						newWidth += this._firstGap;
-					}
-					if(!isNaN(this._lastGap) && buttonCount > 2)
-					{
-						newWidth -= this._gap;
-						newWidth += this._lastGap;
-					}
-				}
-				newWidth += this._paddingLeft + this._paddingRight;
-			}
-
-			if(needsHeight)
-			{
-				newHeight = 0;
-				for each(button in this.activeButtons)
-				{
-					button.validate();
-					newHeight = Math.max(button.height, newHeight);
-				}
-				if(this._direction != DIRECTION_HORIZONTAL)
-				{
-					buttonCount = this.activeButtons.length;
-					newHeight = buttonCount * (newHeight + this._gap) - this._gap;
-					if(!isNaN(this._firstGap) && buttonCount > 1)
-					{
-						newHeight -= this._gap;
-						newHeight += this._firstGap;
-					}
-					if(!isNaN(this._lastGap) && buttonCount > 2)
-					{
-						newHeight -= this._gap;
-						newHeight += this._lastGap;
-					}
-				}
-				newHeight += this._paddingTop + this._paddingBottom;
-			}
-			return this.setSizeInternal(newWidth, newHeight, false);
-		}
-
-		/**
 		 * @private
 		 */
 		protected function layoutButtons():void
@@ -1645,12 +1557,13 @@ package feathers.controls
 			this._viewPortBounds.maxHeight = this._maxHeight;
 			if(this.verticalLayout)
 			{
-				this.verticalLayout.layout(this._layoutItems, this._viewPortBounds, HELPER_LAYOUT_BOUNDS_RESULT);
+				this.verticalLayout.layout(this._layoutItems, this._viewPortBounds, this._layoutResult);
 			}
 			else if(this.horizontalLayout)
 			{
-				this.horizontalLayout.layout(this._layoutItems, this._viewPortBounds, HELPER_LAYOUT_BOUNDS_RESULT);
+				this.horizontalLayout.layout(this._layoutItems, this._viewPortBounds, this._layoutResult);
 			}
+			this.setSizeInternal(this._layoutResult.contentWidth, this._layoutResult.contentHeight, false);
 		}
 
 		/**
