@@ -747,7 +747,7 @@ package feathers.layout
 			var positionY:Number = boundsY + this._paddingTop;
 			var indexOffset:int = 0;
 			var itemCount:int = items.length;
-			var totalItemCount = itemCount;
+			var totalItemCount:int = itemCount;
 			if(this._useVirtualLayout && !this._hasVariableItemDimensions)
 			{
 				totalItemCount += this._beforeVirtualizedItemCount + this._afterVirtualizedItemCount;
