@@ -807,6 +807,40 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _nativeFilters:Array;
+
+		/**
+		 * Native filters to pass to the <code>flash.text.engine.TextLine</code>
+		 * instances before creating the texture snapshot.
+		 *
+		 * <p>In the following example, the native filters are changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.nativeFilters = [ new GlowFilter() ];</listing>
+		 *
+		 * @default null
+		 */
+		public function get nativeFilters():Array
+		{
+			return this._nativeFilters;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set nativeFilters(value:Array):void
+		{
+			if(this._nativeFilters == value)
+			{
+				return;
+			}
+			this._nativeFilters = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			this.disposeContent();
@@ -1252,6 +1286,7 @@ package feathers.controls.text
 				var line:TextLine = textLines[i];
 				if(line.validity === TextLineValidity.VALID)
 				{
+					line.filters = this._nativeFilters;
 					lastLine = line;
 					continue;
 				}
@@ -1303,6 +1338,7 @@ package feathers.controls.text
 				yPosition += line.ascent;
 				line.y = yPosition;
 				yPosition += line.descent;
+				line.filters = this._nativeFilters;
 				textLines[pushIndex] = line;
 				pushIndex++;
 			}

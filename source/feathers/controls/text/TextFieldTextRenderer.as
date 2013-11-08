@@ -803,6 +803,40 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _nativeFilters:Array;
+
+		/**
+		 * Native filters to pass to the <code>flash.text.TextField</code>
+		 * before creating the texture snapshot.
+		 *
+		 * <p>In the following example, the native filters are changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.nativeFilters = [ new GlowFilter() ];</listing>
+		 *
+		 * @default null
+		 */
+		public function get nativeFilters():Array
+		{
+			return this._nativeFilters;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set nativeFilters(value:Array):void
+		{
+			if(this._nativeFilters == value)
+			{
+				return;
+			}
+			this._nativeFilters = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			this.disposeContent();
@@ -911,6 +945,7 @@ package feathers.controls.text
 				this.textField.gridFitType = this._gridFitType;
 				this.textField.sharpness = this._sharpness;
 				this.textField.thickness = this._thickness;
+				this.textField.filters = this._nativeFilters;
 			}
 
 			if(dataInvalid || stylesInvalid || stateInvalid)
