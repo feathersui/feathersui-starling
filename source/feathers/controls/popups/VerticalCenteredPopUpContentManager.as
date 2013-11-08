@@ -164,11 +164,19 @@ package feathers.controls.popups
 		/**
 		 * @inheritDoc
 		 */
+		public function get isOpen():Boolean
+		{
+			return this.content !== null;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
 		public function open(content:DisplayObject, source:DisplayObject):void
 		{
-			if(this.content)
+			if(this.isOpen)
 			{
-				throw new IllegalOperationError("Pop-up content is already defined.");
+				throw new IllegalOperationError("Pop-up content is already open. Close the previous content before opening new content.");
 			}
 
 			this.content = content;
@@ -193,7 +201,7 @@ package feathers.controls.popups
 		 */
 		public function close():void
 		{
-			if(!this.content)
+			if(!this.isOpen)
 			{
 				return;
 			}

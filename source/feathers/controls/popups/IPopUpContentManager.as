@@ -22,6 +22,11 @@ package feathers.controls.popups
 	public interface IPopUpContentManager
 	{
 		/**
+		 * Indicates if the pop-up content is open or not.
+		 */
+		function get isOpen():Boolean;
+
+		/**
 		 * Displays the pop-up content.
 		 *
 		 * @param content		The content for the pop-up content manager to display.
