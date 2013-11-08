@@ -598,7 +598,7 @@ package feathers.controls.text
 			const scale:Number = isNaN(customSize) ? 1 : (customSize / font.size);
 			const lineHeight:Number = font.lineHeight * scale;
 			const maxLineWidth:Number = !isNaN(this.explicitWidth) ? this.explicitWidth : this._maxWidth;
-			const textToDraw:String = this.getTruncatedText();
+			const textToDraw:String = this.getTruncatedText(maxLineWidth);
 			const isAligned:Boolean = this.currentTextFormat.align != TextFormatAlign.LEFT;
 			CHARACTER_BUFFER.length = 0;
 
@@ -852,16 +852,16 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function getTruncatedText():String
+		protected function getTruncatedText(width:Number):String
 		{
 			if(!this._text)
 			{
 				//this shouldn't be called if _text is null, but just in case...
 				return "";
 			}
-			//if the maxWidth is infinity or the string is multiline, don't
-			//allow truncation
-			if(this._maxWidth == Number.POSITIVE_INFINITY || this._wordWrap || this._text.indexOf(String.fromCharCode(CHARACTER_ID_LINE_FEED)) >= 0 || this._text.indexOf(String.fromCharCode(CHARACTER_ID_CARRIAGE_RETURN)) >= 0)
+
+			//if the width is infinity or the string is multiline, don't allow truncation
+			if(width == Number.POSITIVE_INFINITY || this._wordWrap || this._text.indexOf(String.fromCharCode(CHARACTER_ID_LINE_FEED)) >= 0 || this._text.indexOf(String.fromCharCode(CHARACTER_ID_CARRIAGE_RETURN)) >= 0)
 			{
 				return this._text;
 			}
@@ -889,12 +889,12 @@ package feathers.controls.text
 					currentKerning = charData.getKerning(previousCharID);
 				}
 				currentX += currentKerning + charData.xAdvance * scale;
-				if(currentX > this._maxWidth)
+				if(currentX > width)
 				{
 					//floating point errors can cause unnecessary truncation,
 					//so we're going to be a little bit fuzzy on the greater
 					//than check. such tiny numbers shouldn't break anything.
-					var difference:Number = Math.abs(currentX - this._maxWidth);
+					var difference:Number = Math.abs(currentX - width);
 					if(difference > FUZZY_MAX_WIDTH_PADDING)
 					{
 						truncationIndex = i;
@@ -927,7 +927,7 @@ package feathers.controls.text
 				}
 				currentX -= customLetterSpacing;
 
-				//then work our way backwards until we fit into the maxWidth
+				//then work our way backwards until we fit into the width
 				for(i = truncationIndex; i >= 0; i--)
 				{
 					charID = this._text.charCodeAt(i);
@@ -943,7 +943,7 @@ package feathers.controls.text
 						currentKerning = charData.getKerning(previousCharID);
 					}
 					currentX -= (currentKerning + charData.xAdvance * scale + customLetterSpacing);
-					if(currentX <= this._maxWidth)
+					if(currentX <= width)
 					{
 						return this._text.substr(0, i) + this._truncationText;
 					}
