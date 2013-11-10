@@ -302,6 +302,9 @@ package feathers.core
 		 * {
 		 *     control.addEventListener( FeathersEventType.INITIALIZE, initializeHandler );
 		 * }</listing>
+		 *
+		 * @see #event:initialize
+		 * @see #isCreated
 		 */
 		public function get isInitialized():Boolean
 		{
@@ -1230,6 +1233,27 @@ package feathers.core
 		 * Flag to indicate that the control has validated at least once.
 		 */
 		protected var _hasValidated:Boolean = false;
+
+		/**
+		 * Determines if the component has been initialized and validated for
+		 * the first time.
+		 *
+		 * <p>In the following example, we check if the component is created or
+		 * not, and we listen for an event if it isn't:</p>
+		 *
+		 * <listing version="3.0">
+		 * if( !control.isCreated )
+		 * {
+		 *     control.addEventListener( FeathersEventType.CREATION_COMPLETE, creationCompleteHandler );
+		 * }</listing>
+		 *
+		 * @see #event:creationComplete
+		 * @see #isInitialized
+		 */
+		public function get isCreated():Boolean
+		{
+			return this._hasValidated;
+		}
 
 		/**
 		 * @private
