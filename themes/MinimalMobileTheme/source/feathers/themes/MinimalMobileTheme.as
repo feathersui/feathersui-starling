@@ -1206,6 +1206,7 @@ package feathers.themes
 
 			alert.paddingTop = alert.paddingBottom = 16 * this.scale;
 			alert.paddingLeft = alert.paddingRight = 32 * this.scale;
+			alert.gap = 32 * this.scale;
 
 			alert.maxWidth = alert.maxHeight = 560 * this.scale;
 		}

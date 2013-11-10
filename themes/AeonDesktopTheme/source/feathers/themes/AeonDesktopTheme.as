@@ -1154,6 +1154,7 @@ package feathers.themes
 			alert.paddingRight = 14;
 			alert.paddingBottom = 0;
 			alert.paddingLeft = 14;
+			alert.gap = 12;
 
 			alert.interactionMode = ScrollContainer.INTERACTION_MODE_MOUSE;
 			alert.scrollBarDisplayMode = ScrollContainer.SCROLL_BAR_DISPLAY_MODE_FIXED;
@@ -1161,7 +1162,7 @@ package feathers.themes
 			alert.horizontalScrollBarFactory = scrollBarFactory;
 			alert.verticalScrollBarFactory = scrollBarFactory;
 
-			alert.maxWidth = alert.maxHeight = 560;
+			alert.maxWidth = alert.maxHeight = 300;
 		}
 
 		protected function listInitializer(list:List):void
