@@ -257,7 +257,6 @@ package feathers.controls
 			if(this._backgroundSkin && this._backgroundSkin.parent != this)
 			{
 				this._backgroundSkin.visible = false;
-				this._backgroundSkin.touchable = false;
 				this.addChildAt(this._backgroundSkin, 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
@@ -302,7 +301,6 @@ package feathers.controls
 			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin.parent != this)
 			{
 				this._backgroundDisabledSkin.visible = false;
-				this._backgroundDisabledSkin.touchable = false;
 				this.addChildAt(this._backgroundDisabledSkin, 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
@@ -375,7 +373,6 @@ package feathers.controls
 			if(this._fillSkin && this._fillSkin.parent != this)
 			{
 				this._fillSkin.visible = false;
-				this._fillSkin.touchable = false;
 				this.addChild(this._fillSkin);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
@@ -420,7 +417,6 @@ package feathers.controls
 			if(this._fillDisabledSkin && this._fillDisabledSkin.parent != this)
 			{
 				this._fillDisabledSkin.visible = false;
-				this._fillDisabledSkin.touchable = false;
 				this.addChild(this._fillDisabledSkin);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
