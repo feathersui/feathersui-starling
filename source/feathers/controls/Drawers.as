@@ -1236,18 +1236,18 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _openGesture:String = OPEN_GESTURE_NONE;
+		protected var _openGesture:String = OPEN_GESTURE_DRAG_CONTENT_EDGE;
 
 		/**
 		 * An optional touch gesture used to open a drawer.
 		 *
-		 * <p>In the following example, the drawers are opened by dragging the
-		 * nearest edge of the content:</p>
+		 * <p>In the following example, the drawers are opened by dragging
+		 * anywhere inside the content:</p>
 		 *
 		 * <listing version="3.0">
-		 * drawers.openGesture = Drawers.OPEN_GESTURE_CONTENT_EDGE;</listing>
+		 * drawers.openGesture = Drawers.OPEN_GESTURE_DRAG_CONTENT;</listing>
 		 *
-		 * @default Drawers.OPEN_GESTURE_NONE
+		 * @default Drawers.OPEN_GESTURE_DRAG_CONTENT_EDGE
 		 *
 		 * @see #OPEN_GESTURE_NONE
 		 * @see #OPEN_GESTURE_DRAG_CONTENT
