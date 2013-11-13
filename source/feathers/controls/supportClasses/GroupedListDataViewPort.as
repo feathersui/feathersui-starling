@@ -2004,6 +2004,9 @@ package feathers.controls.supportClasses
 			{
 				var itemRenderer:IGroupedListItemRenderer = this._inactiveItemRenderers.shift();
 				itemRenderer.data = null;
+				itemRenderer.groupIndex = -1;
+				itemRenderer.itemIndex = -1;
+				itemRenderer.layoutIndex = -1;
 				itemRenderer.visible = false;
 				this._activeItemRenderers.push(itemRenderer);
 			}
@@ -2025,6 +2028,9 @@ package feathers.controls.supportClasses
 				{
 					itemRenderer = this._inactiveFirstItemRenderers.shift();
 					itemRenderer.data = null;
+					itemRenderer.groupIndex = -1;
+					itemRenderer.itemIndex = -1;
+					itemRenderer.layoutIndex = -1;
 					itemRenderer.visible = false;
 					this._activeFirstItemRenderers.push(itemRenderer);
 				}
@@ -2047,6 +2053,9 @@ package feathers.controls.supportClasses
 				{
 					itemRenderer = this._inactiveLastItemRenderers.shift();
 					itemRenderer.data = null;
+					itemRenderer.groupIndex = -1;
+					itemRenderer.itemIndex = -1;
+					itemRenderer.layoutIndex = -1;
 					itemRenderer.visible = false;
 					this._activeLastItemRenderers.push(itemRenderer);
 				}
@@ -2069,6 +2078,9 @@ package feathers.controls.supportClasses
 				{
 					itemRenderer = this._inactiveSingleItemRenderers.shift();
 					itemRenderer.data = null;
+					itemRenderer.groupIndex = -1;
+					itemRenderer.itemIndex = -1;
+					itemRenderer.layoutIndex = -1;
 					itemRenderer.visible = false;
 					this._activeSingleItemRenderers.push(itemRenderer);
 				}
@@ -2090,6 +2102,8 @@ package feathers.controls.supportClasses
 				var headerOrFooterRenderer:IGroupedListHeaderOrFooterRenderer = this._inactiveHeaderRenderers.shift();
 				headerOrFooterRenderer.visible = false;
 				headerOrFooterRenderer.data = null;
+				headerOrFooterRenderer.groupIndex = -1;
+				headerOrFooterRenderer.layoutIndex = -1;
 				this._activeHeaderRenderers.push(headerOrFooterRenderer);
 			}
 			rendererCount = this._inactiveHeaderRenderers.length;
@@ -2109,6 +2123,8 @@ package feathers.controls.supportClasses
 				headerOrFooterRenderer = this._inactiveFooterRenderers.shift();
 				headerOrFooterRenderer.visible = false;
 				headerOrFooterRenderer.data = null;
+				headerOrFooterRenderer.groupIndex = -1;
+				headerOrFooterRenderer.layoutIndex = -1;
 				this._activeFooterRenderers.push(headerOrFooterRenderer);
 			}
 			rendererCount = this._inactiveFooterRenderers.length;
@@ -2612,6 +2628,10 @@ package feathers.controls.supportClasses
 				return;
 			}
 			const renderer:IGroupedListItemRenderer = IGroupedListItemRenderer(event.currentTarget);
+			if(renderer.layoutIndex < 0)
+			{
+				return;
+			}
 			layout.resetVariableVirtualCacheAtIndex(renderer.layoutIndex, DisplayObject(renderer));
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 			this.invalidateParent(INVALIDATION_FLAG_LAYOUT);
@@ -2629,6 +2649,10 @@ package feathers.controls.supportClasses
 				return;
 			}
 			const renderer:IGroupedListHeaderOrFooterRenderer = IGroupedListHeaderOrFooterRenderer(event.currentTarget);
+			if(renderer.layoutIndex < 0)
+			{
+				return;
+			}
 			layout.resetVariableVirtualCacheAtIndex(renderer.layoutIndex, DisplayObject(renderer));
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 			this.invalidateParent(INVALIDATION_FLAG_LAYOUT);
