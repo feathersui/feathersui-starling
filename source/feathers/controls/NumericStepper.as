@@ -1509,6 +1509,7 @@ package feathers.controls
 			if(this.textInput.isEditable)
 			{
 				this.textInput.setFocus();
+				this.textInput.selectRange(0, this.textInput.text.length);
 			}
 			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 		}
