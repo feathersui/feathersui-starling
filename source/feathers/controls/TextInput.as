@@ -162,7 +162,7 @@ package feathers.controls
 		 *
 		 * <p>For internal use in subclasses.</p>
 		 */
-		protected var textEditor:ITextEditor;
+		protected var   textEditor:ITextEditor;
 
 		/**
 		 * The prompt text renderer sub-component.
