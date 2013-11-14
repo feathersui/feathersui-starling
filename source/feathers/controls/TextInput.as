@@ -1445,7 +1445,7 @@ package feathers.controls
 
 			//if it's invalid, we need to wait until validation before changing
 			//the selection
-			if(this.textEditor && !this.isInvalid())
+			if(this.textEditor && (this._isValidating || !this.isInvalid()))
 			{
 				this._pendingSelectionStartIndex = -1;
 				this._pendingSelectionEndIndex = -1;
@@ -1666,10 +1666,18 @@ package feathers.controls
 			}
 			if(this._pendingSelectionStartIndex >= 0)
 			{
-				const startIndex:int = this._pendingSelectionStartIndex;
-				const endIndex:int = this._pendingSelectionEndIndex;
+				var startIndex:int = this._pendingSelectionStartIndex;
+				var endIndex:int = this._pendingSelectionEndIndex;
 				this._pendingSelectionStartIndex = -1;
 				this._pendingSelectionEndIndex = -1;
+				if(endIndex >= 0)
+				{
+					var textLength:int = this._text.length;
+					if(endIndex > textLength)
+					{
+						endIndex = textLength;
+					}
+				}
 				this.selectRange(startIndex, endIndex);
 			}
 		}
