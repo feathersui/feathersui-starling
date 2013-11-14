@@ -1333,6 +1333,7 @@ package feathers.controls
 			this.textInput.nameList.add(textInputName);
 			this.textInput.addEventListener(FeathersEventType.ENTER, textInput_enterHandler);
 			this.textInput.addEventListener(FeathersEventType.FOCUS_OUT, textInput_focusOutHandler);
+			this.textInput.isFocusEnabled = false;
 			this.addChild(this.textInput);
 		}
 
@@ -1505,6 +1506,10 @@ package feathers.controls
 		override protected function focusInHandler(event:Event):void
 		{
 			super.focusInHandler(event);
+			if(this.textInput.isEditable)
+			{
+				this.textInput.setFocus();
+			}
 			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 		}
 
@@ -1514,6 +1519,7 @@ package feathers.controls
 		override protected function focusOutHandler(event:Event):void
 		{
 			super.focusOutHandler(event);
+			this.textInput.clearFocus();
 			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 		}
 
@@ -1621,14 +1627,12 @@ package feathers.controls
 			if(event.keyCode == Keyboard.HOME)
 			{
 				this.value = this._minimum;
-				return;
 			}
-			if(event.keyCode == Keyboard.END)
+			else if(event.keyCode == Keyboard.END)
 			{
 				this.value = this._maximum;
-				return;
 			}
-			if(event.keyCode == Keyboard.UP)
+			else if(event.keyCode == Keyboard.UP)
 			{
 				this.value += this._step;
 			}
