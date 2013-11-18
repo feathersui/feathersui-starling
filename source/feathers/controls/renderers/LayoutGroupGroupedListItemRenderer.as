@@ -111,6 +111,9 @@ package feathers.controls.renderers
 			this._layoutIndex = value;
 		}
 
+		/**
+		 * @private
+		 */
 		protected var _owner:GroupedList;
 
 		/**
@@ -202,11 +205,59 @@ package feathers.controls.renderers
 		override protected function draw():void
 		{
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			const layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
+
 			if(dataInvalid)
 			{
 				this.commitData();
 			}
+
+			if(layoutInvalid)
+			{
+				this._ignoreChildChanges = true;
+				this.commitLayout();
+				this._ignoreChildChanges = false;
+			}
+
 			super.draw();
+		}
+
+		/**
+		 * Updates the layout based on changes to the item renderer's
+		 * properties. If your layout requires updating the <code>layoutData</code>
+		 * property on the item renderer's sub-components, override this
+		 * function and make those changes here.
+		 *
+		 * <p>In subclasses, if you create properties that affect the layout,
+		 * invalidate using <code>INVALIDATION_FLAG_LAYOUT</code> to trigger a
+		 * call to <code>commitLayout()</code> when the component validates.</p>
+		 *
+		 * <p>The final width and height of the item renderer are not yet known
+		 * when this function is called. It is meant mainly for adjusting values
+		 * used by fluid layouts, such as constraints or percentages. If you
+		 * need to know the final width and height, you have two options:</p>
+		 *
+		 * <ul>
+		 *     <li>Create your own custom <code>ILayout</code> implementation.
+		 *     You will have full control over measurement and the final dimensions.</li>
+		 *     <li>Subclass <code>FeathersControl</code> instead of this class
+		 *     and manually layout children in an override of the
+		 *     <code>draw()</code> function. Be sure to implement the
+		 *     <code>IGroupedListItemRenderer</code> interface.</li>
+		 * </ul>
+		 *
+		 * <p>Looking for more information about fluid layouts? Take a look at the following classes:</p>
+		 *
+		 * <ul>
+		 *     <li><code>feathers.layout.AnchorLayout</code></li>
+		 * </ul>
+		 *
+		 * @see feathers.controls.renderers.IGroupedListItemRenderer
+		 * @see feathers.layout.AnchorLayout
+		 */
+		protected function commitLayout():void
+		{
+
 		}
 
 		/**
