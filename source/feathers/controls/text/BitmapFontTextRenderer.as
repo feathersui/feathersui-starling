@@ -101,6 +101,11 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _batchX:Number = 0;
+
+		/**
+		 * @private
+		 */
 		protected var currentTextFormat:BitmapFontTextFormat;
 		
 		/**
@@ -409,7 +414,7 @@ package feathers.controls.text
 				offsetX = Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx;
 				offsetY = Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty;
 			}
-			this._characterBatch.x = offsetX;
+			this._characterBatch.x = this._batchX + offsetX;
 			this._characterBatch.y = offsetY;
 			super.render(support, parentAlpha);
 		}
@@ -443,7 +448,6 @@ package feathers.controls.text
 			const scale:Number = isNaN(customSize) ? 1 : (customSize / font.size);
 			const lineHeight:Number = font.lineHeight * scale;
 			const maxLineWidth:Number = !isNaN(this.explicitWidth) ? this.explicitWidth : this._maxWidth;
-			const isAligned:Boolean = this.currentTextFormat.align != TextFormatAlign.LEFT;
 
 			var maxX:Number = 0;
 			var currentX:Number = 0;
@@ -592,9 +596,17 @@ package feathers.controls.text
 			const isKerningEnabled:Boolean = this.currentTextFormat.isKerningEnabled;
 			const scale:Number = isNaN(customSize) ? 1 : (customSize / font.size);
 			const lineHeight:Number = font.lineHeight * scale;
-			const maxLineWidth:Number = !isNaN(this.explicitWidth) ? this.explicitWidth : this._maxWidth;
-			const textToDraw:String = this.getTruncatedText();
+			const hasExplicitWidth:Boolean = !isNaN(this.explicitWidth);
 			const isAligned:Boolean = this.currentTextFormat.align != TextFormatAlign.LEFT;
+			var maxLineWidth:Number = hasExplicitWidth ? this.explicitWidth : this._maxWidth;
+			if(isAligned && maxLineWidth == Number.POSITIVE_INFINITY)
+			{
+				//we need to measure the text to get the maximum line width
+				//so that we can align the text
+				this.measureText(HELPER_POINT);
+				maxLineWidth = HELPER_POINT.x;
+			}
+			const textToDraw:String = this.getTruncatedText();
 			CHARACTER_BUFFER.length = 0;
 
 			var maxX:Number = 0;
@@ -716,6 +728,24 @@ package feathers.controls.text
 				this.addBufferToBatch(0);
 			}
 			maxX = Math.max(maxX, currentX);
+
+			if(isAligned && !hasExplicitWidth)
+			{
+				var align:String = this._textFormat.align;
+				if(align == TextFormatAlign.CENTER)
+				{
+					this._batchX = (maxX - maxLineWidth) / 2;
+				}
+				else if(align == TextFormatAlign.RIGHT)
+				{
+					this._batchX = maxX - maxLineWidth;
+				}
+			}
+			else
+			{
+				this._batchX = 0;
+			}
+			this._characterBatch.x = this._batchX;
 
 			result.x = maxX;
 			result.y = currentY + font.lineHeight * scale;
