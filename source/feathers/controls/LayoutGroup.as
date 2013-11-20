@@ -16,7 +16,6 @@ package feathers.controls
 	import feathers.layout.LayoutBoundsResult;
 	import feathers.layout.ViewPortBounds;
 
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
 	import starling.display.DisplayObject;
@@ -262,6 +261,49 @@ package feathers.controls
 			this.items.splice(index, 1);
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 			return child;
+		}
+
+		/**
+		 * @private
+		 */
+		override public function setChildIndex(child:DisplayObject, index:int):void
+		{
+			super.setChildIndex(child, index);
+			var oldIndex:int = this.items.indexOf(child);
+			if(oldIndex == index)
+			{
+				return;
+			}
+
+			//the super function already checks if oldIndex < 0, and throws an
+			//appropriate error, so no need to do it again!
+
+			this.items.splice(oldIndex, 1);
+			this.items.splice(index, 0, child);
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+		}
+
+		/**
+		 * @private
+		 */
+		override public function swapChildrenAt(index1:int, index2:int):void
+		{
+			super.swapChildrenAt(index1, index2)
+			var child1:DisplayObject = this.items[index1];
+			var child2:DisplayObject = this.items[index2];
+			this.items[index1] = child2;
+			this.items[index2] = child1;
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+		}
+
+		/**
+		 * @private
+		 */
+		override public function sortChildren(compareFunction:Function):void
+		{
+			super.sortChildren(compareFunction);
+			this.items.sort(compareFunction);
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
 
 		/**
