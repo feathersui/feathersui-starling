@@ -8,7 +8,6 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.controls.supportClasses.LayoutViewPort;
-	import feathers.core.IFeathersControl;
 	import feathers.layout.ILayout;
 	import feathers.layout.IVirtualLayout;
 
