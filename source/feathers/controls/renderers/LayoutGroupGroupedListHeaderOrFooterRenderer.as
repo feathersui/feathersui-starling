@@ -7,8 +7,8 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls.renderers
 {
-	import feathers.controls.LayoutGroup;
 	import feathers.controls.GroupedList;
+	import feathers.controls.LayoutGroup;
 
 	import starling.events.Event;
 
@@ -90,6 +90,9 @@ package feathers.controls.renderers
 			this._layoutIndex = value;
 		}
 
+		/**
+		 * @private
+		 */
 		protected var _owner:GroupedList;
 
 		/**
@@ -181,11 +184,77 @@ package feathers.controls.renderers
 		override protected function draw():void
 		{
 			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			const scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
+			const sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
+			const layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
+
 			if(dataInvalid)
 			{
 				this.commitData();
 			}
+
+			if(scrollInvalid || sizeInvalid || layoutInvalid)
+			{
+				this._ignoreChildChanges = true;
+				this.preLayout();
+				this._ignoreChildChanges = false;
+			}
+
 			super.draw();
+
+			if(scrollInvalid || sizeInvalid || layoutInvalid)
+			{
+				this._ignoreChildChanges = true;
+				this.postLayout();
+				this._ignoreChildChanges = false;
+			}
+		}
+
+		/**
+		 * Makes final changes to the layout before it updates the item
+		 * renderer's children. If your layout requires changing the
+		 * <code>layoutData</code> property on the item renderer's
+		 * sub-components, override the <code>preLayout()</code> function to
+		 * make those changes.
+		 *
+		 * <p>In subclasses, if you create properties that affect the layout,
+		 * invalidate using <code>INVALIDATION_FLAG_LAYOUT</code> to trigger a
+		 * call to the <code>preLayout()</code> function when the component
+		 * validates.</p>
+		 *
+		 * <p>The final width and height of the item renderer are not yet known
+		 * when this function is called. It is meant mainly for adjusting values
+		 * used by fluid layouts, such as constraints or percentages. If you
+		 * need io access the final width and height of the item renderer,
+		 * override the <code>postLayout()</code> function instead.</p>
+		 *
+		 * @see #postLayout()
+		 */
+		protected function preLayout():void
+		{
+
+		}
+
+		/**
+		 * Called after the layout updates the item renderer's children. If any
+		 * children are excluded from the layout, you can update them in the
+		 * <code>postLayout()</code> function if you need to use the final width
+		 * and height in any calculations.
+		 *
+		 * <p>In subclasses, if you create properties that affect the layout,
+		 * invalidate using <code>INVALIDATION_FLAG_LAYOUT</code> to trigger a
+		 * call to the <code>postLayout()</code> function when the component
+		 * validates.</p>
+		 *
+		 * <p>To make changes to the layout before it updates the item
+		 * renderer's children, override the <code>preLayout()</code> function
+		 * instead.</p>
+		 *
+		 * @see #preLayout()
+		 */
+		protected function postLayout():void
+		{
+
 		}
 
 		/**
