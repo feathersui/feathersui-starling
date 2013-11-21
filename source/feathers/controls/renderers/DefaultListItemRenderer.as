@@ -10,8 +10,6 @@ package feathers.controls.renderers
 	import feathers.controls.List;
 	import feathers.events.FeathersEventType;
 
-	import starling.events.Event;
-
 	/**
 	 * The default item renderer for List control. Supports up to three optional
 	 * sub-views, including a label to display text, an icon to display an
