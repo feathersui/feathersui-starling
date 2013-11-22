@@ -82,6 +82,11 @@ package feathers.core
 		function set clipRect(value:Rectangle):void;
 
 		/**
+		 * @copy feathers.core.FeathersControl#depth
+		 */
+		function get depth():int;
+
+		/**
 		 * @copy feathers.core.FeathersControl#isEnabled
 		 */
 		function get isEnabled():Boolean;

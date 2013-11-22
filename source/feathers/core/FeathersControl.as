@@ -12,6 +12,7 @@ package feathers.core
 	import feathers.events.FeathersEventType;
 	import feathers.layout.ILayoutData;
 	import feathers.layout.ILayoutDisplayObject;
+	import feathers.utils.display.getDisplayObjectDepthFromStage;
 
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Matrix;
@@ -189,7 +190,8 @@ package feathers.core
 		public function FeathersControl()
 		{
 			super();
-			this.addEventListener(Event.ADDED_TO_STAGE, initialize_addedToStageHandler);
+			this.addEventListener(Event.ADDED_TO_STAGE, feathersControl_addedToStageHandler);
+			this.addEventListener(Event.REMOVED_FROM_STAGE, feathersControl_removedFromStageHandler);
 			this.addEventListener(Event.FLATTEN, feathersControl_flattenHandler);
 		}
 
@@ -1258,6 +1260,20 @@ package feathers.core
 		/**
 		 * @private
 		 */
+		protected var _depth:int = -1;
+
+		/**
+		 * The component's depth in the display list, relative to the stage. If
+		 * the component isn't on the stage, its depth will be <code>-1</code>.
+		 */
+		public function get depth():int
+		{
+			return this._depth;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _invalidateCount:int = 0;
 
 		/**
@@ -1792,14 +1808,12 @@ package feathers.core
 		/**
 		 * @private
 		 * Initialize the control, if it hasn't been initialized yet. Then,
-		 * invalidate.
+		 * invalidate. If already initialized, check if invalid and put back
+		 * into queue.
 		 */
-		protected function initialize_addedToStageHandler(event:Event):void
+		protected function feathersControl_addedToStageHandler(event:Event):void
 		{
-			if(event.target != this)
-			{
-				return;
-			}
+			this._depth = getDisplayObjectDepthFromStage(this);
 			if(!this._isInitialized)
 			{
 				this.initialize();
@@ -1807,12 +1821,19 @@ package feathers.core
 				this._isInitialized = true;
 				this.dispatchEventWith(FeathersEventType.INITIALIZE, false);
 			}
-
 			if(this.isInvalid())
 			{
 				this._invalidateCount = 0;
 				VALIDATION_QUEUE.addControl(this, false);
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function feathersControl_removedFromStageHandler(event:Event):void
+		{
+			this._depth = -1;
 		}
 
 		/**

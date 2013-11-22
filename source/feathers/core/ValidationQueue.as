@@ -7,13 +7,8 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.core
 {
-	import feathers.utils.display.getDisplayObjectDepthFromStage;
-
-	import flash.utils.Dictionary;
-
 	import starling.animation.IAnimatable;
 	import starling.core.Starling;
-	import starling.display.DisplayObject;
 
 	[ExcludeClass]
 	public final class ValidationQueue implements IAnimatable
@@ -47,7 +42,6 @@ package feathers.core
 
 		private var _delayedQueue:Vector.<IFeathersControl> = new <IFeathersControl>[];
 		private var _queue:Vector.<IFeathersControl> = new <IFeathersControl>[];
-		private var _depthDictionary:Dictionary = new Dictionary(true);
 
 		/**
 		 * @private
@@ -78,8 +72,7 @@ package feathers.core
 			if(this._isValidating && currentQueue == this._queue)
 			{
 				//special case: we need to keep it sorted
-				var depth:int = getDisplayObjectDepthFromStage(DisplayObject(control));
-				this._depthDictionary[control] = depth;
+				var depth:int = control.depth;
 
 				//we're traversing the queue backwards because it's
 				//significantly more likely that we're going to push than that
@@ -88,7 +81,7 @@ package feathers.core
 				for(var i:int = queueLength - 1; i >= 0; i--)
 				{
 					var otherControl:IFeathersControl = IFeathersControl(currentQueue[i]);
-					var otherDepth:int = this._depthDictionary[otherControl] as int;
+					var otherDepth:int = otherControl.depth;
 					//we can skip the overhead of calling queueSortFunction and
 					//of looking up the value we've already stored in the depth
 					//local variable.
@@ -130,17 +123,11 @@ package feathers.core
 				return;
 			}
 			this._isValidating = true;
-			for(var i:int = 0; i < queueLength; i++)
-			{
-				var displayQueueItem:DisplayObject = DisplayObject(this._queue[i]);
-				this._depthDictionary[displayQueueItem] = getDisplayObjectDepthFromStage(displayQueueItem);
-			}
 			this._queue = this._queue.sort(queueSortFunction);
 			while(this._queue.length > 0) //rechecking length after the shift
 			{
 				var item:IFeathersControl = this._queue.shift();
 				item.validate();
-				delete this._depthDictionary[item];
 			}
 			const temp:Vector.<IFeathersControl> = this._queue;
 			this._queue = this._delayedQueue;
@@ -153,13 +140,12 @@ package feathers.core
 		 */
 		protected function queueSortFunction(first:IFeathersControl, second:IFeathersControl):int
 		{
-			var firstDepth:int = this._depthDictionary[first] as int;
-			var secondDepth:int = this._depthDictionary[second] as int;
-			if(firstDepth < secondDepth)
+			var difference:int = second.depth - first.depth;
+			if(difference > 0)
 			{
 				return -1;
 			}
-			else if(firstDepth > secondDepth)
+			else if(difference < 0)
 			{
 				return 1;
 			}
