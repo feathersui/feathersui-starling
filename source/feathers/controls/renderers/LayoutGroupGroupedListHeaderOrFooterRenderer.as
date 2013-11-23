@@ -7,8 +7,8 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls.renderers
 {
-	import feathers.controls.LayoutGroup;
 	import feathers.controls.GroupedList;
+	import feathers.controls.LayoutGroup;
 
 	import starling.events.Event;
 

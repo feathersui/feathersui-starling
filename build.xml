@@ -10,7 +10,7 @@
 
 	<target name="quick" depends="-feathers,-cleanup" description="builds feathers.swc only"/>
 
-	<target name="docs" depends="-docs,-cleanup" description="builds API documentation only"/>
+	<target name="docs" depends="-docs,-cleanup" description="builds API reference only"/>
 
 	<target name="full" depends="-feathers,-docs,-includes,-cleanup" description="build everything">
 
@@ -82,7 +82,7 @@
 	</target>
 
 	<target name="-docs" depends="-starling">
-		<echo message="Generating Documentation"/>
+		<echo message="Generating API Reference"/>
 		<java jar="${asdoc}" dir="${basedir}" fork="true" failonerror="true">
 			<arg value="+flexlib=${airsdk.framework}"/>
 			<arg value="-swf-version=${swf.version}"/>
@@ -95,8 +95,8 @@
 			<arg value="-theme="/>
 			<arg value="-compiler.fonts.local-fonts-snapshot="/>
 
-			<arg value="-main-title=Feathers ${feathers.version} API Documentation"/>
-			<arg value="-window-title=Feathers User Interface Controls for Starling Framework API Documentation"/>
+			<arg value="-main-title=Feathers ${feathers.version} API Reference"/>
+			<arg value="-window-title=Feathers User Interface Controls for Starling Framework API Reference"/>
 			<arg value="-footer=${footer.text}"/>
 			<arg value="-package-description-file=./package-descriptions.xml"/>
 			<arg value="-output=${docs.output}"/>
