@@ -10,7 +10,6 @@ package feathers.events
 	import flash.utils.Dictionary;
 
 	import starling.display.DisplayObject;
-
 	import starling.display.Stage;
 	import starling.events.Event;
 	import starling.events.EventDispatcher;

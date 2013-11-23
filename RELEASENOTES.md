@@ -2,7 +2,7 @@
 
 Noteworthy changes in official releases of [Feathers](http://feathersui.com/).
 
-## 1.2.0 BETA
+## 1.2.0
 
 * New Component: Alert
 * New Component: Drawers
@@ -10,6 +10,7 @@ Noteworthy changes in official releases of [Feathers](http://feathersui.com/).
 * New Component(s): LayoutGroupListItemRenderer, LayoutGroupGroupedListItemRenderer, LayoutGroupedListHeaderOrFooterRenderer
 * FeathersControl: better support for scaleX and scaleY. Width and height are scaled.
 * FeathersControl: dispatches FeathersEventType.CREATION_COMPLETE after the first validation.
+* FeathersControl: added isCreated flag to indicate if FeathersEventType.CREATION_COMPLETE has been dispatched.
 * FeathersControl: ensures that keyboard focus is ignored if disabled.
 * FeathersControl: new protected functions setInvalidationFlag() and getInvalidationFlag() for better re-invalidation during draw().
 * FeathersControl: getChildByName() uses nameList.contains(). Doesn't work when an IFeathersControl is in a non-Feathers display object.
@@ -19,6 +20,8 @@ Noteworthy changes in official releases of [Feathers](http://feathersui.com/).
 * List, GroupedList: Setting a new data provider will clear selection. Now, selection cannot be set before data provider is passed in. If the same selection is desired after a data provider change, it should be done manually.
 * List, GroupedList: improved invalidation when various properties are changed.
 * List, GroupedList: better handling of typical item to improve performance an accuracy of layout calculations.
+* List, GroupedList: support for item renderers that can be deselected if multiple selection isn't enabled.
+* ListCollection: removeAll() checks if length is 0 to avoid dispatching an event.
 * GroupedList: improved handling of updateItemAt() to properly update whole groups.
 * ImageLoader: added loadingTexture and errorTexture properties.
 * ImageLoader: support for loading ATF files from URL.
@@ -33,6 +36,8 @@ Noteworthy changes in official releases of [Feathers](http://feathersui.com/).
 * Callout: show() function adds an argument for a custom overlay factory.
 * Scale9Image, Scale3Image: support for scaling edge regions down to zero. Causes distortion, but removes overlapping.
 * Scale9Image, Scale3Image, TiledImage, BitmapFontTextRenderer: uses batchable property from QuadBatch for improved performance.
+* BitmapFontTextRenderer: fix for center and right alignment when using maxWidth.
+* BitmapFontTextRenderer: fix for center and right alignment when no width or maxWidth is set.
 * Scroller: support for minimum scroll positions less than zero.
 * Scroller: improved draw() function to avoid extra invalidation.
 * Scroller: new interactionMode value INTERACTION_MODE_TOUCH_AND_SCROLL_BARS.
@@ -45,6 +50,7 @@ Noteworthy changes in official releases of [Feathers](http://feathersui.com/).
 * StageTextTextEditor: doesn't clear text when displayAsPassword is changed.
 * StageTextTextEditor: better scaling and support for rotation.
 * TextFieldTextRenderer: supports using multiple textures if text width or height is greater than 2048 pixels.
+* TextFieldTextRenderer: added disabledTextFormat property.
 * TextInput, text renderers: dispatches soft keyboard events.
 * TextInput: supports icon.
 * TextInput: alternate name for search input.
@@ -67,6 +73,7 @@ Noteworthy changes in official releases of [Feathers](http://feathersui.com/).
 * Default item renderers: support for delaying texture creation on scroll in ImageLoaders.
 * Default item renderers: updates isEnabled on accessory, if applicable.
 * Default item renderers: accessory is cleared if itemHasAccessory is set to false.
+* Default item renderers: fix for measurement when label is missing and gap isn't needed.
 * DefaultGroupedListHeaderOrFooterRenderer: contentLabel maxWidth is used for proper wrapping, if needed.
 * DefaultGroupedListHeaderOrFooterRenderer: added support for justify alignments.
 * Many performance improvements with the help of Adobe Scout.
@@ -89,6 +96,14 @@ The `scrollerProperties` property on scrolling components, including List, Group
 ### 1.2.0 API Changes
 
 Some changes have been made to Feathers that have the potential to break code in existing project. Changes of this type are considered [exceptions to the Feathers deprecation policy](http://wiki.starling-framework.org/feathers/deprecation-policy#exceptions), and careful consideration is made to limit the impact of these changes on existing projects. Most developers using Feathers will not be affected by these changes, except perhaps, to observe improved stability and consistency.
+
+#### PopUpManager ####
+
+Two changes have been made to the `PopUpManager`.
+
+The function `isTopLevelPopUp()` has been modified to indicate if a pop-up is above the top-most modal overlay. Previously, this function indicated if a pop-up is the single top-most pop-up.
+
+When a pop-up is centered when calling `PopUpManager.addPopUp()`, the `PopUpManager` will automatically realign the pop-up if the stage or the pop-up is resized. If you prefer that the pop-up isn't realigned, change the argument to `false` and call `PopUpManager.centerPopUp()` instead. It will align the pop-up only once. If you previously manually repositioned the pop-up to keep it centered when it or the stage resized, you may remove that code. However, if the code remains, it should not cause conflicts with the new behavior.
 
 #### IVirtualLayout ####
 
@@ -171,12 +186,15 @@ This release includes minor updates to support Starling Framework 1.4 and a numb
 * Scroll bars: better isEnabled handling.
 * TextInput: better handling of focus when not visible.
 * TextInput: better prompt handling.
+* TextInput: fix to allow TextFieldTextEditor to be selected on focus in.
+* TextInput: added clearFocus() to allow programmatic removal of focus in NumericStepper.
 * TextFieldTextEditor: snapshot is properly hidden when text is cleared.
 * ButtonGroup: properly resizes when data provider changes.
 * GroupedList: requests proper typical item from data provider.
 * ScrollText: better padding getter.
 * PickerList: closes pop-up list on Event.TRIGGERED.
 * PickerList: properly disposes pop-up list and IPopUpContentManager.
+* NumericStepper: if TextInput sub-component is editable, it will be selected on focus in.
 * TiledRowsLayout, TiledColumnsLayout: fixed manageVisibility implementation.
 * TiledRowsLayout, TiledColumnsLayout: fixed bad positioning when useSquareTiles is true.
 
