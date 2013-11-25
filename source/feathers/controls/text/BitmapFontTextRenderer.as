@@ -489,7 +489,7 @@ package feathers.controls.text
 
 				if(isKerningEnabled && !isNaN(previousCharID))
 				{
-					currentX += charData.getKerning(previousCharID);
+					currentX += charData.getKerning(previousCharID) * scale;
 				}
 
 				var offsetX:Number = charData.xAdvance * scale;
