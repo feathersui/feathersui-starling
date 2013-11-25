@@ -1,6 +1,8 @@
 package feathers.examples.componentsExplorer.screens
 {
-	import feathers.controls.Button;
+    import feathers.aoe.trig.data.EmbeddedAssets;
+    import feathers.aoe.trig.data.ItemRendererSettings;
+    import feathers.controls.Button;
 	import feathers.controls.List;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.ToggleSwitch;

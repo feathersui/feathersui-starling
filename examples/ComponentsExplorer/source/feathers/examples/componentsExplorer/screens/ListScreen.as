@@ -1,6 +1,7 @@
 package feathers.examples.componentsExplorer.screens
 {
-	import feathers.controls.Button;
+    import feathers.aoe.trig.data.ListSettings;
+    import feathers.controls.Button;
 	import feathers.controls.List;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.renderers.DefaultListItemRenderer;
