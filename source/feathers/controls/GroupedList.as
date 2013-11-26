@@ -628,7 +628,6 @@ package feathers.controls
 			{
 				return null;
 			}
-
 			return this._dataProvider.getItemAt(this._selectedGroupIndex, this._selectedItemIndex);
 		}
 
@@ -637,7 +636,12 @@ package feathers.controls
 		 */
 		public function set selectedItem(value:Object):void
 		{
-			const result:Vector.<int> = this._dataProvider.getItemLocation(value);
+			if(!this._dataProvider)
+			{
+				this.setSelectedLocation(-1, -1);
+				return;
+			}
+			var result:Vector.<int> = this._dataProvider.getItemLocation(value);
 			if(result.length == 2)
 			{
 				this.setSelectedLocation(result[0], result[1]);

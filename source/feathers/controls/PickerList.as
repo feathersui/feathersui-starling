@@ -301,7 +301,7 @@ package feathers.controls
 		 */
 		public function get selectedItem():Object
 		{
-			if(!this._dataProvider)
+			if(!this._dataProvider || this._selectedIndex < 0 || this._selectedIndex >= this._dataProvider.length)
 			{
 				return null;
 			}
@@ -318,7 +318,6 @@ package feathers.controls
 				this.selectedIndex = -1;
 				return;
 			}
-			
 			this.selectedIndex = this._dataProvider.getItemIndex(value);
 		}
 

@@ -470,6 +470,11 @@ package feathers.controls
 		 */
 		public function set selectedItem(value:Object):void
 		{
+			if(!this._dataProvider)
+			{
+				this.selectedIndex = -1;
+				return;
+			}
 			this.selectedIndex = this._dataProvider.getItemIndex(value);
 		}
 
@@ -620,15 +625,7 @@ package feathers.controls
 		 */
 		public function get selectedItems():Vector.<Object>
 		{
-			const items:Vector.<Object> = new <Object>[];
-			const indexCount:int = this._selectedIndices.length;
-			for(var i:int = 0; i < indexCount; i++)
-			{
-				var index:int = this._selectedIndices.getItemAt(i) as int;
-				var item:Object = this._dataProvider.getItemAt(index);
-				items.push(item);
-			}
-			return items;
+			return this.getSelectedItems(new <Object>[]);
 		}
 
 		/**
@@ -636,7 +633,7 @@ package feathers.controls
 		 */
 		public function set selectedItems(value:Vector.<Object>):void
 		{
-			if(!value)
+			if(!value || !this._dataProvider)
 			{
 				this.selectedIndex = -1;
 				return;
@@ -653,6 +650,38 @@ package feathers.controls
 				}
 			}
 			this.selectedIndices = indices;
+		}
+
+		/**
+		 * Returns the selected items, with the ability to pass in an optional
+		 * result vector. Better for performance than the <code>selectedItems</code>
+		 * getter because it can avoid the allocation, and possibly garbage
+		 * collection, of the result object.
+		 *
+		 * @see #selectedItems
+		 */
+		public function getSelectedItems(result:Vector.<Object> = null):Vector.<Object>
+		{
+			if(result)
+			{
+				result.length = 0;
+			}
+			else
+			{
+				result = new <Object>[];
+			}
+			if(!this._dataProvider)
+			{
+				return result;
+			}
+			var indexCount:int = this._selectedIndices.length;
+			for(var i:int = 0; i < indexCount; i++)
+			{
+				var index:int = this._selectedIndices.getItemAt(i) as int;
+				var item:Object = this._dataProvider.getItemAt(index);
+				result[i] = item;
+			}
+			return result;
 		}
 		
 		/**
