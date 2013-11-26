@@ -642,11 +642,14 @@ package feathers.controls.text
 						else
 						{
 							const bounds:Rectangle = this.textField.getCharBoundaries(this._pendingSelectionStartIndex);
-							const boundsX:Number = bounds.x;
-							if(bounds && (boundsX + bounds.width - positionX) < (positionX - boundsX))
-							{
-								this._pendingSelectionStartIndex++;
-							}
+                                                        if (bounds) 
+                                                        {
+                                                            const boundsX:Number = bounds.x;
+                                                            if((boundsX + bounds.width - positionX) < (positionX - boundsX))
+                                                            {
+                                                                    this._pendingSelectionStartIndex++;
+                                                            }
+                                                        }
 						}
 						this._pendingSelectionEndIndex = this._pendingSelectionStartIndex;
 					}
