@@ -458,6 +458,37 @@ package feathers.layout
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _distributeHeights:Boolean = false;
+
+		/**
+		 * Distributes the height of the view port equally to each item. If the
+		 * view port height needs to be measured, the largest item's height will
+		 * be used for all items, subject to any specified minimum and maximum
+		 * height values.
+		 *
+		 * @default false
+		 */
+		public function get distributeHeights():Boolean
+		{
+			return this._distributeHeights;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set distributeHeights(value:Boolean):void
+		{
+			if(this._distributeHeights == value)
+			{
+				return;
+			}
+			this._distributeHeights = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
 		 * Determines if items will be set invisible if they are outside the
 		 * view port. Can improve performance, especially for non-virtual
 		 * layouts. If <code>true</code>, you will not be able to manually
@@ -733,11 +764,18 @@ package feathers.layout
 				var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
 			}
 
-			if(!this._useVirtualLayout || this._hasVariableItemDimensions ||
+			if(!this._useVirtualLayout || this._hasVariableItemDimensions || this._distributeHeights ||
 				this._horizontalAlign != HORIZONTAL_ALIGN_JUSTIFY || isNaN(explicitWidth))
 			{
-				this.validateItems(items, explicitWidth - this._paddingLeft - this._paddingRight);
+				this.validateItems(items, explicitWidth - this._paddingLeft - this._paddingRight, explicitHeight);
 			}
+
+			var distributedHeight:Number;
+			if(this._distributeHeights)
+			{
+				distributedHeight = this.calculateDistributedHeight(items, explicitHeight, minHeight, maxHeight);
+			}
+			var hasDistributedHeight:Boolean = !isNaN(distributedHeight);
 
 			this._discoveredItemsCache.length = 0;
 			var hasFirstGap:Boolean = !isNaN(this._firstGap);
@@ -795,7 +833,15 @@ package feathers.layout
 					}
 					item.y = positionY;
 					var itemWidth:Number = item.width;
-					var itemHeight:Number = item.height;
+					var itemHeight:Number;
+					if(hasDistributedHeight)
+					{
+						item.height = itemHeight = distributedHeight;
+					}
+					else
+					{
+						itemHeight = item.height;
+					}
 					if(this._useVirtualLayout)
 					{
 						if(this._hasVariableItemDimensions)
@@ -972,23 +1018,31 @@ package feathers.layout
 
 			var hasFirstGap:Boolean = !isNaN(this._firstGap);
 			var hasLastGap:Boolean = !isNaN(this._lastGap);
-			var positionY:Number = 0;
-			var maxItemWidth:Number = calculatedTypicalItemWidth;
-			if(!this._hasVariableItemDimensions)
+			var positionY:Number;
+			if(this._distributeHeights)
 			{
-				positionY += ((calculatedTypicalItemHeight + this._gap) * itemCount);
+				positionY = (calculatedTypicalItemHeight + this._gap) * itemCount;
 			}
 			else
 			{
-				for(var i:int = 0; i < itemCount; i++)
+				positionY = 0;
+				var maxItemWidth:Number = calculatedTypicalItemWidth;
+				if(!this._hasVariableItemDimensions)
 				{
-					if(isNaN(this._heightCache[i]))
+					positionY += ((calculatedTypicalItemHeight + this._gap) * itemCount);
+				}
+				else
+				{
+					for(var i:int = 0; i < itemCount; i++)
 					{
-						positionY += calculatedTypicalItemHeight + this._gap;
-					}
-					else
-					{
-						positionY += this._heightCache[i] + this._gap;
+						if(isNaN(this._heightCache[i]))
+						{
+							positionY += calculatedTypicalItemHeight + this._gap;
+						}
+						else
+						{
+							positionY += this._heightCache[i] + this._gap;
+						}
 					}
 				}
 			}
@@ -1340,14 +1394,13 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected function validateItems(items:Vector.<DisplayObject>, justifyWidth:Number):void
+		protected function validateItems(items:Vector.<DisplayObject>, justifyWidth:Number, distributedHeight:Number):void
 		{
 			//if the alignment is justified, then we want to set the width of
 			//each item before validating because setting one dimension may
 			//cause the other dimension to change, and that will invalidate the
 			//layout if it happens after validation, causing more invalidation
 			var mustSetJustifyWidth:Boolean = this._horizontalAlign == HORIZONTAL_ALIGN_JUSTIFY && !isNaN(justifyWidth);
-
 			var itemCount:int = items.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
@@ -1359,6 +1412,10 @@ package feathers.layout
 				if(mustSetJustifyWidth)
 				{
 					item.width = justifyWidth;
+				}
+				if(this._distributeHeights)
+				{
+					item.height = distributedHeight;
 				}
 				if(item is IFeathersControl)
 				{
@@ -1392,6 +1449,53 @@ package feathers.layout
 			{
 				IFeathersControl(this._typicalItem).validate();
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function calculateDistributedHeight(items:Vector.<DisplayObject>, explicitHeight:Number, minHeight:Number, maxHeight:Number):Number
+		{
+			var itemCount:int = items.length;
+			if(isNaN(explicitHeight))
+			{
+				var maxItemHeight:Number = 0;
+				for(var i:int = 0; i < itemCount; i++)
+				{
+					var item:DisplayObject = items[i];
+					var itemHeight:Number = item.height;
+					if(itemHeight > maxItemHeight)
+					{
+						maxItemHeight = itemHeight;
+					}
+				}
+				explicitHeight = maxItemHeight * itemCount + this._paddingTop + this._paddingBottom + this._gap * (itemCount - 1);
+				var needsRecalculation:Boolean = false;
+				if(explicitHeight > maxHeight)
+				{
+					explicitHeight = maxHeight;
+					needsRecalculation = true;
+				}
+				else if(explicitHeight < minHeight)
+				{
+					explicitHeight = minHeight;
+					needsRecalculation = true;
+				}
+				if(!needsRecalculation)
+				{
+					return maxItemHeight;
+				}
+			}
+			var availableSpace:Number = explicitHeight - this._paddingTop - this._paddingBottom - this._gap * (itemCount - 1);
+			if(itemCount > 1 && !isNaN(this._firstGap))
+			{
+				availableSpace += this._gap - this._firstGap;
+			}
+			if(itemCount > 2 && !isNaN(this._lastGap))
+			{
+				availableSpace += this._gap - this._lastGap;
+			}
+			return availableSpace / itemCount;
 		}
 	}
 }

@@ -455,6 +455,37 @@ package feathers.layout
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _distributeWidths:Boolean = false;
+
+		/**
+		 * Distributes the width of the view port equally to each item. If the
+		 * view port width needs to be measured, the largest item's width will
+		 * be used for all items, subject to any specified minimum and maximum
+		 * width values.
+		 *
+		 * @default false
+		 */
+		public function get distributeWidths():Boolean
+		{
+			return this._distributeWidths;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set distributeWidths(value:Boolean):void
+		{
+			if(this._distributeWidths == value)
+			{
+				return;
+			}
+			this._distributeWidths = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
 		 * Determines if items will be set invisible if they are outside the
 		 * view port. Can improve performance, especially for non-virtual
 		 * layouts. If <code>true</code>, you will not be able to manually
@@ -726,11 +757,18 @@ package feathers.layout
 				var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
 			}
 
-			if(!this._useVirtualLayout || this._hasVariableItemDimensions ||
+			if(!this._useVirtualLayout || this._hasVariableItemDimensions || this._distributeWidths ||
 				this._verticalAlign != VERTICAL_ALIGN_JUSTIFY || isNaN(explicitHeight))
 			{
-				this.validateItems(items, explicitHeight - this._paddingTop - this._paddingBottom);
+				this.validateItems(items, explicitHeight - this._paddingTop - this._paddingBottom, explicitWidth);
 			}
+
+			var distributedWidth:Number;
+			if(this._distributeWidths)
+			{
+				distributedWidth = this.calculateDistributedWidth(items, explicitWidth, minWidth, maxWidth);
+			}
+			var hasDistributedWidth:Boolean = !isNaN(distributedWidth);
 
 			this._discoveredItemsCache.length = 0;
 			var hasFirstGap:Boolean = !isNaN(this._firstGap);
@@ -785,7 +823,15 @@ package feathers.layout
 						continue;
 					}
 					item.x = positionX;
-					var itemWidth:Number = item.width;
+					var itemWidth:Number;
+					if(hasDistributedWidth)
+					{
+						item.width = itemWidth = distributedWidth;
+					}
+					else
+					{
+						itemWidth = item.width;
+					}
 					var itemHeight:Number = item.height;
 					if(this._useVirtualLayout)
 					{
@@ -963,23 +1009,31 @@ package feathers.layout
 
 			var hasFirstGap:Boolean = !isNaN(this._firstGap);
 			var hasLastGap:Boolean = !isNaN(this._lastGap);
-			var positionX:Number = 0;
-			var maxItemHeight:Number = calculatedTypicalItemHeight;
-			if(!this._hasVariableItemDimensions)
+			var positionX:Number;
+			if(this._distributeWidths)
 			{
-				positionX += ((calculatedTypicalItemWidth + this._gap) * itemCount);
+				positionX = (calculatedTypicalItemWidth + this._gap) * itemCount;
 			}
 			else
 			{
-				for(var i:int = 0; i < itemCount; i++)
+				positionX = 0;
+				var maxItemHeight:Number = calculatedTypicalItemHeight;
+				if(!this._hasVariableItemDimensions)
 				{
-					if(isNaN(this._widthCache[i]))
+					positionX += ((calculatedTypicalItemWidth + this._gap) * itemCount);
+				}
+				else
+				{
+					for(var i:int = 0; i < itemCount; i++)
 					{
-						positionX += calculatedTypicalItemWidth + this._gap;
-					}
-					else
-					{
-						positionX += this._widthCache[i] + this._gap;
+						if(isNaN(this._widthCache[i]))
+						{
+							positionX += calculatedTypicalItemWidth + this._gap;
+						}
+						else
+						{
+							positionX += this._widthCache[i] + this._gap;
+						}
 					}
 				}
 			}
@@ -1331,7 +1385,7 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected function validateItems(items:Vector.<DisplayObject>, justifyHeight:Number):void
+		protected function validateItems(items:Vector.<DisplayObject>, justifyHeight:Number, distributedWidth:Number):void
 		{
 			//if the alignment is justified, then we want to set the height of
 			//each item before validating because setting one dimension may
@@ -1346,6 +1400,10 @@ package feathers.layout
 				if(!item || (item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout))
 				{
 					continue;
+				}
+				if(this._distributeWidths)
+				{
+					item.width = distributedWidth;
 				}
 				if(mustSetJustifyHeight)
 				{
@@ -1383,6 +1441,53 @@ package feathers.layout
 			{
 				IFeathersControl(this._typicalItem).validate();
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function calculateDistributedWidth(items:Vector.<DisplayObject>, explicitWidth:Number, minWidth:Number, maxWidth:Number):Number
+		{
+			var itemCount:int = items.length;
+			if(isNaN(explicitWidth))
+			{
+				var maxItemWidth:Number = 0;
+				for(var i:int = 0; i < itemCount; i++)
+				{
+					var item:DisplayObject = items[i];
+					var itemWidth:Number = item.width;
+					if(itemWidth > maxItemWidth)
+					{
+						maxItemWidth = itemWidth;
+					}
+				}
+				explicitWidth = maxItemWidth * itemCount + this._paddingLeft + this._paddingRight + this._gap * (itemCount - 1);
+				var needsRecalculation:Boolean = false;
+				if(explicitWidth > maxWidth)
+				{
+					explicitWidth = maxWidth;
+					needsRecalculation = true;
+				}
+				else if(explicitWidth < minWidth)
+				{
+					explicitWidth = minWidth;
+					needsRecalculation = true;
+				}
+				if(!needsRecalculation)
+				{
+					return maxItemWidth;
+				}
+			}
+			var availableSpace:Number = explicitWidth - this._paddingLeft - this._paddingRight - this._gap * (itemCount - 1);
+			if(itemCount > 1 && !isNaN(this._firstGap))
+			{
+				availableSpace += this._gap - this._firstGap;
+			}
+			if(itemCount > 2 && !isNaN(this._lastGap))
+			{
+				availableSpace += this._gap - this._lastGap;
+			}
+			return availableSpace / itemCount;
 		}
 	}
 }
