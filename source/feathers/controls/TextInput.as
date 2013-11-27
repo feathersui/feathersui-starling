@@ -1813,7 +1813,7 @@ package feathers.controls
 			if(this.currentIcon)
 			{
 				this.currentIcon.x = this._paddingLeft;
-				this.currentIcon.y = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingRight - this.currentIcon.height) / 2;
+				this.currentIcon.y = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - this.currentIcon.height) / 2;
 				this.textEditor.x = this.currentIcon.x + this.currentIcon.width + this._gap;
 				this.promptTextRenderer.x = this.currentIcon.x + this.currentIcon.width + this._gap;
 			}
