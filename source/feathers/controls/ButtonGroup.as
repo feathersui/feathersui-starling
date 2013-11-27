@@ -136,9 +136,7 @@ package feathers.controls
 		/**
 		 * If the direction is vertical, each button will fill the entire
 		 * width of the button group, and if the direction is horizontal, the
-		 * width of the button group will be divided so that each button will
-		 * each have an equal width, and the total width of all buttons will
-		 * fill the entire space.
+		 * alignment will behave the same as <code>HORIZONTAL_ALIGN_LEFT</code>.
 		 *
 		 * @see #horizontalAlign
 		 * @see #direction
@@ -170,9 +168,7 @@ package feathers.controls
 		/**
 		 * If the direction is horizontal, each button will fill the entire
 		 * height of the button group, and if the direction is vertical, the
-		 * height of the button group will be divided so that each button will
-		 * each have an equal height, and the total height of all buttons will
-		 * fill the entire space.
+		 * alignment will behave the same as <code>VERTICAL_ALIGN_TOP</code>.
 		 *
 		 * @see #verticalAlign
 		 * @see #direction
@@ -487,6 +483,44 @@ package feathers.controls
 				return;
 			}
 			this._verticalAlign = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _distributeButtonSizes:Boolean = false;
+
+		/**
+		 * If <code>true</code>, the buttons will be equally sized in the
+		 * direction of the layout. In other words, if the button group is
+		 * horizontal, each button will have the same width, and if the button
+		 * group is vertical, each button will have the same height. If
+		 * <code>false</code>, the buttons will be sized to their ideal
+		 * dimensions.
+		 *
+		 * <p>The following example distributes the button sizes:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.distributeButtonSizes = true;</listing>
+		 *
+		 * @default false
+		 */
+		public function get distributeButtonSizes():Boolean
+		{
+			return this._distributeButtonSizes;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set distributeButtonSizes(value:Boolean):void
+		{
+			if(this._distributeButtonSizes == value)
+			{
+				return;
+			}
+			this._distributeButtonSizes = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -1282,8 +1316,9 @@ package feathers.controls
 					this.verticalLayout = new VerticalLayout();
 					this.verticalLayout.useVirtualLayout = false;
 				}
+				this.verticalLayout.distributeHeights = this._distributeButtonSizes;
 				this.verticalLayout.horizontalAlign = this._horizontalAlign;
-				this.verticalLayout.verticalAlign = this._verticalAlign;
+				this.verticalLayout.verticalAlign = (this._verticalAlign == VERTICAL_ALIGN_JUSTIFY) ? VERTICAL_ALIGN_TOP : this._verticalAlign;
 				this.verticalLayout.gap = this._gap;
 				this.verticalLayout.firstGap = this._firstGap;
 				this.verticalLayout.lastGap = this._lastGap;
@@ -1303,7 +1338,8 @@ package feathers.controls
 					this.horizontalLayout = new HorizontalLayout();
 					this.horizontalLayout.useVirtualLayout = false;
 				}
-				this.horizontalLayout.horizontalAlign = this._horizontalAlign;
+				this.horizontalLayout.distributeWidths = this._distributeButtonSizes;
+				this.horizontalLayout.horizontalAlign = (this._horizontalAlign == HORIZONTAL_ALIGN_JUSTIFY) ? HORIZONTAL_ALIGN_LEFT : this._horizontalAlign;
 				this.horizontalLayout.verticalAlign = this._verticalAlign;
 				this.horizontalLayout.gap = this._gap;
 				this.horizontalLayout.firstGap = this._firstGap;
