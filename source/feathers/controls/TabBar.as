@@ -117,9 +117,8 @@ package feathers.controls
 
 		/**
 		 * If the direction is vertical, each tab will fill the entire width of
-		 * the tab bar, and if the direction is horizontal, the width of the
-		 * tab bar will be divided so that each tab will each have an equal
-		 * width, and the total width of all tabs will fill the entire space.
+		 * the tab bar, and if the direction is horizontal, the alignment will
+		 * behave the same as <code>HORIZONTAL_ALIGN_LEFT</code>.
 		 *
 		 * @see #horizontalAlign
 		 * @see #direction
@@ -148,9 +147,8 @@ package feathers.controls
 
 		/**
 		 * If the direction is horizontal, each tab will fill the entire height
-		 * of the tab bar, and if the direction is vertical, the height of the
-		 * tab bar will be divided so that each tab will each have an equal
-		 * height, and the total height of all tabs will fill the entire space.
+		 * of the tab bar. If the direction is vertical, the alignment will
+		 * behave the same as <code>VERTICAL_ALIGN_TOP</code>.
 		 *
 		 * @see #verticalAlign
 		 * @see #direction
@@ -463,7 +461,7 @@ package feathers.controls
 		 */
 		public function get verticalAlign():String
 		{
-			return _verticalAlign;
+			return this._verticalAlign;
 		}
 
 		/**
@@ -476,6 +474,45 @@ package feathers.controls
 				return;
 			}
 			this._verticalAlign = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _distributeTabSizes:Boolean = true;
+
+		/**
+		 * If <code>true</code>, the tabs will be equally sized in the direction
+		 * of the layout. In other words, if the tab bar is horizontal, each tab
+		 * will have the same width, and if the tab bar is vertical, each tab
+		 * will have the same height. If <code>false</code>, the tabs will be
+		 * sized to their ideal dimensions.
+		 *
+		 * <p>The following example aligns the tabs to the middle without distributing them:</p>
+		 *
+		 * <listing version="3.0">
+		 * tabs.direction = TabBar.DIRECTION_VERTICAL;
+		 * tabs.verticalAlign = TabBar.VERTICAL_ALIGN_MIDDLE;
+		 * tabs.distributeTabSizes = false;</listing>
+		 *
+		 * @default true
+		 */
+		public function get distributeTabSizes():Boolean
+		{
+			return this._distributeTabSizes;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set distributeTabSizes(value:Boolean):void
+		{
+			if(this._distributeTabSizes == value)
+			{
+				return;
+			}
+			this._distributeTabSizes = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -1412,8 +1449,9 @@ package feathers.controls
 					this.verticalLayout = new VerticalLayout();
 					this.verticalLayout.useVirtualLayout = false;
 				}
+				this.verticalLayout.distributeHeights = this._distributeTabSizes;
 				this.verticalLayout.horizontalAlign = this._horizontalAlign;
-				this.verticalLayout.verticalAlign = this._verticalAlign;
+				this.verticalLayout.verticalAlign = (this._verticalAlign == VERTICAL_ALIGN_JUSTIFY) ? VERTICAL_ALIGN_TOP : this._verticalAlign;
 				this.verticalLayout.gap = this._gap;
 				this.verticalLayout.firstGap = this._firstGap;
 				this.verticalLayout.lastGap = this._lastGap;
@@ -1433,7 +1471,8 @@ package feathers.controls
 					this.horizontalLayout = new HorizontalLayout();
 					this.horizontalLayout.useVirtualLayout = false;
 				}
-				this.horizontalLayout.horizontalAlign = this._horizontalAlign;
+				this.horizontalLayout.distributeWidths = this._distributeTabSizes;
+				this.horizontalLayout.horizontalAlign = (this._horizontalAlign == HORIZONTAL_ALIGN_JUSTIFY) ? HORIZONTAL_ALIGN_LEFT : this._horizontalAlign;
 				this.horizontalLayout.verticalAlign = this._verticalAlign;
 				this.horizontalLayout.gap = this._gap;
 				this.horizontalLayout.firstGap = this._firstGap;
