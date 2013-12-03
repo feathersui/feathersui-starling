@@ -43,6 +43,7 @@ package feathers.themes
 	import feathers.controls.Radio;
 	import feathers.controls.Screen;
 	import feathers.controls.ScrollContainer;
+	import feathers.controls.ScrollScreen;
 	import feathers.controls.ScrollText;
 	import feathers.controls.SimpleScrollBar;
 	import feathers.controls.Slider;
@@ -524,6 +525,7 @@ package feathers.themes
 		{
 			this.setInitializerForClassAndSubclasses(Screen, screenInitializer);
 			this.setInitializerForClassAndSubclasses(PanelScreen, panelScreenInitializer);
+			this.setInitializerForClassAndSubclasses(ScrollScreen, scrollScreenInitializer);
 			this.setInitializerForClass(Label, labelInitializer);
 			this.setInitializerForClass(Label, headingLabelInitializer, Label.ALTERNATE_NAME_HEADING);
 			this.setInitializerForClass(Label, detailLabelInitializer, Label.ALTERNATE_NAME_DETAIL);
@@ -615,6 +617,11 @@ package feathers.themes
 		}
 
 		protected function panelScreenInitializer(screen:PanelScreen):void
+		{
+			screen.originalDPI = this._originalDPI;
+		}
+
+		protected function scrollScreenInitializer(screen:ScrollScreen):void
 		{
 			screen.originalDPI = this._originalDPI;
 		}
