@@ -1673,8 +1673,14 @@ package feathers.core
 				}
 				resized = true;
 			}
+			width = this.scaledActualWidth;
+			height = this.scaledActualHeight;
 			this.scaledActualWidth = this.actualWidth * Math.abs(this.scaleX);
 			this.scaledActualHeight = this.actualHeight * Math.abs(this.scaleY);
+			if(width != this.scaledActualWidth || height != this.scaledActualHeight)
+			{
+				resized = true;
+			}
 			if(resized)
 			{
 				if(canInvalidate)
