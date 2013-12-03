@@ -3340,7 +3340,7 @@ package feathers.controls
 		 */
 		protected function longPress_enterFrameHandler(event:Event):void
 		{
-			const accumulatedTime:int = (getTimer() - this._touchBeginTime) / 1000;
+			var accumulatedTime:Number = (getTimer() - this._touchBeginTime) / 1000;
 			if(accumulatedTime >= this._longPressDuration)
 			{
 				this.removeEventListener(Event.ENTER_FRAME, longPress_enterFrameHandler);
