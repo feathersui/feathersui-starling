@@ -835,7 +835,7 @@ package feathers.controls.text
 					smallerGlobalScale = globalScaleY;
 				}
 				//for some reason, we don't need to account for the native scale factor here
-				var scaleFactor:Number = Starling.contentScaleFactor;
+				scaleFactor = Starling.contentScaleFactor;
 				this.stageText.fontSize = this._fontSize * scaleFactor * smallerGlobalScale;
 			}
 
