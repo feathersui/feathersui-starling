@@ -824,6 +824,21 @@ package feathers.controls.text
 				this.stageText.viewPort = stageTextViewPort;
 			}
 
+			if(this.stageText.visible)
+			{
+				this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+				var globalScaleX:Number = matrixToScaleX(HELPER_MATRIX);
+				var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
+				var smallerGlobalScale:Number = globalScaleX;
+				if(globalScaleY < globalScaleX)
+				{
+					smallerGlobalScale = globalScaleY;
+				}
+				//for some reason, we don't need to account for the native scale factor here
+				var scaleFactor:Number = Starling.contentScaleFactor;
+				this.stageText.fontSize = this._fontSize * scaleFactor * smallerGlobalScale;
+			}
+
 			if(this.textSnapshot)
 			{
 				this.textSnapshot.x = Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx;
