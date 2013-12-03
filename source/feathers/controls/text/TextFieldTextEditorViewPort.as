@@ -421,9 +421,15 @@ package feathers.controls.text
 			{
 				this._oldGlobalX = HELPER_POINT.x;
 				this._oldGlobalY = HELPER_POINT.y;
-				const starlingViewPort:Rectangle = Starling.current.viewPort;
-				this.textField.x = offsetX + Math.round(starlingViewPort.x + (HELPER_POINT.x * Starling.contentScaleFactor));
-				this.textField.y = offsetY + Math.round(starlingViewPort.y + (HELPER_POINT.y * Starling.contentScaleFactor));
+				var starlingViewPort:Rectangle = Starling.current.viewPort;
+				var nativeScaleFactor:Number = 1;
+				if(Starling.current.supportHighResolutions)
+				{
+					nativeScaleFactor = Starling.current.nativeStage.contentsScaleFactor;
+				}
+				var scaleFactor:Number = Starling.contentScaleFactor / nativeScaleFactor;
+				this.textField.x = offsetX + Math.round(starlingViewPort.x + (HELPER_POINT.x * scaleFactor));
+				this.textField.y = offsetY + Math.round(starlingViewPort.y + (HELPER_POINT.y * scaleFactor));
 			}
 
 			if(this.textSnapshot)

@@ -4502,9 +4502,15 @@ package feathers.controls
 				return;
 			}
 
-			const starlingViewPort:Rectangle = Starling.current.viewPort;
-			HELPER_POINT.x = (event.stageX - starlingViewPort.x) / Starling.contentScaleFactor;
-			HELPER_POINT.y = (event.stageY - starlingViewPort.y) / Starling.contentScaleFactor;
+			var nativeScaleFactor:Number = 1;
+			if(Starling.current.supportHighResolutions)
+			{
+				nativeScaleFactor = Starling.current.nativeStage.contentsScaleFactor;
+			}
+			var starlingViewPort:Rectangle = Starling.current.viewPort;
+			var scaleFactor:Number = Starling.current.nativeStage.contentsScaleFactor / Starling.contentScaleFactor;
+			HELPER_POINT.x = (event.stageX - starlingViewPort.x) / scaleFactor;
+			HELPER_POINT.y = (event.stageY - starlingViewPort.y) / scaleFactor;
 			if(this.contains(this.stage.hitTest(HELPER_POINT, true)))
 			{
 				this.globalToLocal(HELPER_POINT, HELPER_POINT);
