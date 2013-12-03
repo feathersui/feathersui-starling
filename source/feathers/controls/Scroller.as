@@ -4663,6 +4663,11 @@ package feathers.controls
 		{
 			Starling.current.nativeStage.removeEventListener(MouseEvent.MOUSE_WHEEL, nativeStage_mouseWheelHandler);
 			Starling.current.nativeStage.removeEventListener("orientationChange", nativeStage_orientationChangeHandler);
+			if(this._touchPointID >= 0)
+			{
+				var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(this.stage);
+				exclusiveTouch.removeEventListener(Event.CHANGE, exclusiveTouch_changeHandler);
+			}
 			this._touchPointID = -1;
 			this._horizontalScrollBarTouchPointID = -1;
 			this._verticalScrollBarTouchPointID = -1;

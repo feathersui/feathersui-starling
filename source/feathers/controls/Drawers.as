@@ -3096,6 +3096,17 @@ package feathers.controls
 		 */
 		protected function drawers_removedFromStageHandler(event:Event):void
 		{
+			if(this.touchPointID >= 0)
+			{
+				var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(this.stage);
+				exclusiveTouch.removeEventListener(Event.CHANGE, exclusiveTouch_changeHandler);
+			}
+			this.touchPointID = -1;
+			this._isDragging = false;
+			this._isDraggingTopDrawer = false;
+			this._isDraggingRightDrawer = false;
+			this._isDraggingBottomDrawer = false;
+			this._isDraggingLeftDrawer = false;
 			this.stage.removeEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
 			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, drawers_nativeStage_keyDownHandler);
 		}
