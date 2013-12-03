@@ -489,7 +489,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _distributeButtonSizes:Boolean = false;
+		protected var _distributeButtonSizes:Boolean = true;
 
 		/**
 		 * If <code>true</code>, the buttons will be equally sized in the
