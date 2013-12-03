@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.text
 {
 	import feathers.controls.Scroller;
+	import feathers.utils.geom.matrixToRotation;
 	import feathers.utils.geom.matrixToScaleX;
 	import feathers.utils.geom.matrixToScaleY;
 	import feathers.utils.math.roundToNearest;
@@ -410,8 +411,12 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		override protected function positionTextField():void
+		override protected function transformTextField():void
 		{
+			if(!this.textField.visible)
+			{
+				return;
+			}
 			HELPER_POINT.x = HELPER_POINT.y = 0;
 			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
 			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
@@ -431,12 +436,9 @@ package feathers.controls.text
 				this.textField.x = offsetX + Math.round(starlingViewPort.x + (HELPER_POINT.x * scaleFactor));
 				this.textField.y = offsetY + Math.round(starlingViewPort.y + (HELPER_POINT.y * scaleFactor));
 			}
-
-			if(this.textSnapshot)
-			{
-				this.textSnapshot.x = offsetX + Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx;
-				this.textSnapshot.y = offsetY + Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty;
-			}
+			this.textField.rotation = matrixToRotation(HELPER_MATRIX) * 180 / Math.PI;
+			this.textField.scaleX = matrixToScaleX(HELPER_MATRIX);
+			this.textField.scaleY = matrixToScaleY(HELPER_MATRIX);
 		}
 
 		/**
