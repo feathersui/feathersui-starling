@@ -643,7 +643,7 @@ package feathers.controls.text
 		 * <p>In the following example, the tab stops changed:</p>
 		 *
 		 * <listing version="3.0">
-		 * textRenderer.tabStops = new <TabStop>[ new TabStop( TabAlignment.CENTER ) ];</listing>
+		 * textRenderer.tabStops = new &lt;TabStop&gt;[ new TabStop( TabAlignment.CENTER ) ];</listing>
 		 *
 		 * @default null
 		 *
