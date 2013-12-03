@@ -47,8 +47,9 @@ package feathers.controls
 	 * }</listing>
 	 *
 	 * @see ScreenNavigator
-	 * @see Panel
+	 * @see ScrollScreen
 	 * @see Screen
+	 * @see Panel
 	 * @see http://wiki.starling-framework.org/feathers/panel-screen
 	 */
 	public class PanelScreen extends Panel implements IScreen
@@ -327,10 +328,6 @@ package feathers.controls
 		 */
 		protected function panelScreen_addedToStageHandler(event:Event):void
 		{
-			if(event.target != this)
-			{
-				return;
-			}
 			this.addEventListener(Event.REMOVED_FROM_STAGE, panelScreen_removedFromStageHandler);
 			//using priority here is a hack so that objects higher up in the
 			//display list have a chance to cancel the event first.
@@ -343,10 +340,6 @@ package feathers.controls
 		 */
 		protected function panelScreen_removedFromStageHandler(event:Event):void
 		{
-			if(event.target != this)
-			{
-				return;
-			}
 			this.removeEventListener(Event.REMOVED_FROM_STAGE, panelScreen_removedFromStageHandler);
 			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, panelScreen_nativeStage_keyDownHandler);
 		}
