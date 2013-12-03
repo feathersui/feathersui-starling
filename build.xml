@@ -12,7 +12,7 @@
 
 	<target name="docs" depends="-docs,-cleanup" description="builds API reference only"/>
 
-	<target name="full" depends="-feathers,-docs,-includes,-cleanup" description="build everything">
+	<target name="full" depends="-feathers,-docs,-themes,-includes,-cleanup" description="build everything">
 
 		<!-- move feathers.swc to its final location for distribution.
 			basically, we didn't want the extra swc directory for a quick build. -->
@@ -103,6 +103,41 @@
 		</java>
 	</target>
 
+	<target name="-themes" depends="-feathers">
+		<echo message="Building AeonDesktopTheme.swc"/>
+		<java jar="${compc}" dir="${themes.root}/AeonDesktopTheme" fork="true" failonerror="true">
+			<arg value="-load-config=${airsdk.config}"/>
+			<arg value="-swf-version=${swf.version}"/>
+			<arg value="-source-path+=${themes.root}/AeonDesktopTheme/source"/>
+			<arg value="-include-sources+=${themes.root}/AeonDesktopTheme/source"/>
+			<arg value="-external-library-path+=${dependency.output}"/>
+			<arg value="-external-library-path+=${output.path}/feathers.swc"/>
+			<arg value="-output=${themes.output}/AeonDesktopTheme/swc/AeonDesktopTheme.swc"/>
+		</java>
+
+		<echo message="Building MetalWorksMobileTheme.swc"/>
+		<java jar="${compc}" dir="${themes.root}/MetalWorksMobileTheme" fork="true" failonerror="true">
+			<arg value="-load-config=${airsdk.config}"/>
+			<arg value="-swf-version=${swf.version}"/>
+			<arg value="-source-path+=${themes.root}/MetalWorksMobileTheme/source"/>
+			<arg value="-include-sources+=${themes.root}/MetalWorksMobileTheme/source"/>
+			<arg value="-external-library-path+=${dependency.output}"/>
+			<arg value="-external-library-path+=${output.path}/feathers.swc"/>
+			<arg value="-output=${themes.output}/MetalWorksMobileTheme/swc/MetalWorksMobileTheme.swc"/>
+		</java>
+
+		<echo message="Building MinimalMobileTheme.swc"/>
+		<java jar="${compc}" dir="${themes.root}/MinimalMobileTheme" fork="true" failonerror="true">
+			<arg value="-load-config=${airsdk.config}"/>
+			<arg value="-swf-version=${swf.version}"/>
+			<arg value="-source-path+=${themes.root}/MinimalMobileTheme/source"/>
+			<arg value="-include-sources+=${themes.root}/MinimalMobileTheme/source"/>
+			<arg value="-external-library-path+=${dependency.output}"/>
+			<arg value="-external-library-path+=${output.path}/feathers.swc"/>
+			<arg value="-output=${themes.output}/MinimalMobileTheme/swc/MinimalMobileTheme.swc"/>
+		</java>
+	</target>
+
 	<target name="-includes">
 		<echo message="Copying Feathers source code"/>
 		<copy overwrite="true" todir="${source.output}">
@@ -118,7 +153,7 @@
 			</fileset>
 		</copy>
 
-		<echo message="Copying themes"/>
+		<echo message="Copying theme source code and assets"/>
 
 		<copy overwrite="true" todir="${themes.output}/AeonDesktopTheme">
 			<fileset dir="${themes.root}/AeonDesktopTheme">
