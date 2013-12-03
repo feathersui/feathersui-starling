@@ -320,6 +320,8 @@ package feathers.controls
 		
 		/**
 		 * The icon and label will be aligned vertically to the top edge of the button.
+		 *
+		 * @see #verticalAlign
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
 		
