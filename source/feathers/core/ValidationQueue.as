@@ -16,8 +16,9 @@ package feathers.core
 		/**
 		 * Constructor.
 		 */
-		public function ValidationQueue()
+		public function ValidationQueue(starling:Starling)
 		{
+			this._starling = starling;
 		}
 
 		private var _starling:Starling;
@@ -44,20 +45,23 @@ package feathers.core
 		private var _queue:Vector.<IFeathersControl> = new <IFeathersControl>[];
 
 		/**
-		 * @private
-		 * Adds a control to the queue.
+		 * Disposes the validation queue.
+		 */
+		public function dispose():void
+		{
+			if(this._starling)
+			{
+				this._starling.juggler.remove(this);
+				this._starling = null;
+			}
+		}
+
+		/**
+		 * Adds a validating component to the queue.
 		 */
 		public function addControl(control:IFeathersControl, delayIfValidating:Boolean):void
 		{
-			const currentStarling:Starling = Starling.current;
-			if(currentStarling && this._starling != currentStarling)
-			{
-				if(this._starling)
-				{
-					this._starling.juggler.remove(this);
-				}
-				this._starling = currentStarling;
-			}
+			//if the juggler was purged, we need to add the queue back in.
 			if(!this._starling.juggler.contains(this))
 			{
 				this._starling.juggler.add(this);
