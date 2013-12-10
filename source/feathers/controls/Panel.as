@@ -10,8 +10,10 @@ package feathers.controls
 	import feathers.core.IFeathersControl;
 	import feathers.core.IFocusExtras;
 	import feathers.core.PropertyProxy;
+	import feathers.events.FeathersEventType;
 
 	import starling.display.DisplayObject;
+	import starling.events.Event;
 
 	/**
 	 * A container with layout, optional scrolling, a header, and an optional
@@ -607,6 +609,16 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _ignoreHeaderResizing:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected var _ignoreFooterResizing:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		override protected function draw():void
 		{
 			const headerFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_HEADER_FACTORY);
@@ -647,6 +659,11 @@ package feathers.controls
 			{
 				return false;
 			}
+
+			var oldIgnoreHeaderResizing:Boolean = this._ignoreHeaderResizing;
+			this._ignoreHeaderResizing = true;
+			var oldIgnoreFooterResizing:Boolean = this._ignoreFooterResizing;
+			this._ignoreFooterResizing = true;
 
 			const oldHeaderWidth:Number = this.header.width;
 			const oldHeaderHeight:Number = this.header.height;
@@ -695,6 +712,7 @@ package feathers.controls
 				this.footer.width = oldFooterWidth;
 				this.footer.height = oldFooterHeight;
 			}
+			this._ignoreFooterResizing = oldIgnoreFooterResizing;
 
 			return this.setSizeInternal(newWidth, newHeight, false);
 		}
@@ -714,6 +732,7 @@ package feathers.controls
 		{
 			if(this.header)
 			{
+				this.header.removeEventListener(FeathersEventType.RESIZE, header_resizeHandler);
 				var displayHeader:DisplayObject = DisplayObject(this.header);
 				this._focusExtrasBefore.splice(this._focusExtrasBefore.indexOf(displayHeader), 1);
 				this.removeRawChild(displayHeader, true);
@@ -724,6 +743,7 @@ package feathers.controls
 			const headerName:String = this._customHeaderName != null ? this._customHeaderName : this.headerName;
 			this.header = IFeathersControl(factory());
 			this.header.nameList.add(headerName);
+			this.header.addEventListener(FeathersEventType.RESIZE, header_resizeHandler);
 			displayHeader = DisplayObject(this.header);
 			this.addRawChild(displayHeader);
 			this._focusExtrasBefore.push(displayHeader);
@@ -744,6 +764,7 @@ package feathers.controls
 		{
 			if(this.footer)
 			{
+				this.footer.removeEventListener(FeathersEventType.RESIZE, footer_resizeHandler);
 				var displayFooter:DisplayObject = DisplayObject(this.footer);
 				this._focusExtrasAfter.splice(this._focusExtrasAfter.indexOf(displayFooter), 1);
 				this.removeRawChild(displayFooter, true);
@@ -757,6 +778,7 @@ package feathers.controls
 			const footerName:String = this._customFooterName != null ? this._customFooterName : this.footerName;
 			this.footer = IFeathersControl(this._footerFactory());
 			this.footer.nameList.add(footerName);
+			this.footer.addEventListener(FeathersEventType.RESIZE, footer_resizeHandler);
 			displayFooter = DisplayObject(this.footer);
 			this.addRawChild(displayFooter);
 			this._focusExtrasAfter.push(displayFooter);
@@ -801,6 +823,8 @@ package feathers.controls
 		{
 			super.calculateViewPortOffsets(forceScrollBars);
 
+			var oldIgnoreHeaderResizing:Boolean = this._ignoreHeaderResizing;
+			this._ignoreHeaderResizing = true;
 			const oldHeaderWidth:Number = this.header.width;
 			const oldHeaderHeight:Number = this.header.height;
 			this.header.width = useActualBounds ? this.actualWidth : this.explicitWidth;
@@ -810,9 +834,12 @@ package feathers.controls
 			this._topViewPortOffset += this.header.height;
 			this.header.width = oldHeaderWidth;
 			this.header.height = oldHeaderHeight;
+			this._ignoreHeaderResizing = oldIgnoreHeaderResizing;
 
 			if(this.footer)
 			{
+				var oldIgnoreFooterResizing:Boolean = this._ignoreFooterResizing;
+				this._ignoreFooterResizing = true;
 				const oldFooterWidth:Number = this.footer.width;
 				const oldFooterHeight:Number = this.footer.height;
 				this.footer.width = useActualBounds ? this.actualWidth : this.explicitWidth;
@@ -822,6 +849,7 @@ package feathers.controls
 				this._bottomViewPortOffset += this.footer.height;
 				this.footer.width = oldFooterWidth;
 				this.footer.height = oldFooterHeight;
+				this._ignoreFooterResizing = oldIgnoreFooterResizing;
 			}
 		}
 
@@ -832,17 +860,39 @@ package feathers.controls
 		{
 			super.layoutChildren();
 
+			var oldIgnoreHeaderResizing:Boolean = this._ignoreHeaderResizing;
+			this._ignoreHeaderResizing = true;
 			this.header.width = this.actualWidth;
 			this.header.height = NaN;
 			this.header.validate();
+			this._ignoreHeaderResizing = oldIgnoreHeaderResizing;
 
 			if(this.footer)
 			{
+				var oldIgnoreFooterResizing:Boolean = this._ignoreFooterResizing;
+				this._ignoreFooterResizing = true;
 				this.footer.width = this.actualWidth;
 				this.footer.height = NaN;
 				this.footer.validate();
 				this.footer.y = this.actualHeight - this.footer.height;
+				this._ignoreFooterResizing = oldIgnoreFooterResizing;
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function header_resizeHandler(event:Event):void
+		{
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function footer_resizeHandler(event:Event):void
+		{
+			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 	}
 }
