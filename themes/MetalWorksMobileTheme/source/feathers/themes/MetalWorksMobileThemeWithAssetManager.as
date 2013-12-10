@@ -966,6 +966,7 @@ package feathers.themes
 			group.direction = ButtonGroup.DIRECTION_HORIZONTAL;
 			group.horizontalAlign = ButtonGroup.HORIZONTAL_ALIGN_CENTER;
 			group.verticalAlign = ButtonGroup.VERTICAL_ALIGN_JUSTIFY;
+			group.distributeButtonSizes = false;
 			group.gap = 12 * this.scale;
 			group.paddingTop = 12 * this.scale;
 			group.paddingRight = 12 * this.scale;
