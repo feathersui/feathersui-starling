@@ -386,7 +386,7 @@ package feathers.controls
 				return;
 			}
 			this._buttonsDataProvider = value;
-			this.invalidate(INVALIDATION_FLAG_DATA);
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
