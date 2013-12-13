@@ -4508,7 +4508,7 @@ package feathers.controls
 				nativeScaleFactor = Starling.current.nativeStage.contentsScaleFactor;
 			}
 			var starlingViewPort:Rectangle = Starling.current.viewPort;
-			var scaleFactor:Number = Starling.current.nativeStage.contentsScaleFactor / Starling.contentScaleFactor;
+			var scaleFactor:Number = nativeScaleFactor / Starling.contentScaleFactor;
 			HELPER_POINT.x = (event.stageX - starlingViewPort.x) / scaleFactor;
 			HELPER_POINT.y = (event.stageY - starlingViewPort.y) / scaleFactor;
 			if(this.contains(this.stage.hitTest(HELPER_POINT, true)))
