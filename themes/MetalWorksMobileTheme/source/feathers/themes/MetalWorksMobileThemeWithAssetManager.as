@@ -730,7 +730,7 @@ package feathers.themes
 
 		protected function alertMessageInitializer(renderer:TextBlockTextRenderer):void
 		{
-			//renderer.wordWrap = true;
+			renderer.wordWrap = true;
 			renderer.elementFormat = this.lightElementFormat;
 		}
 
