@@ -884,6 +884,10 @@ package feathers.controls
 		 */
 		protected function header_resizeHandler(event:Event):void
 		{
+			if(this._ignoreHeaderResizing)
+			{
+				return;
+			}
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
@@ -892,6 +896,10 @@ package feathers.controls
 		 */
 		protected function footer_resizeHandler(event:Event):void
 		{
+			if(this._ignoreFooterResizing)
+			{
+				return;
+			}
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 	}
