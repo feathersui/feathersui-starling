@@ -1364,43 +1364,46 @@ package feathers.controls.text
 				}
 			}
 
-			var pushIndex:int = textLines.length;
-			var inactiveTextLineCount:int = textLineCache ? textLineCache.length : 0;
-			while(true)
+			if(width >= 0)
 			{
-				if(inactiveTextLineCount > 0)
+				var pushIndex:int = textLines.length;
+				var inactiveTextLineCount:int = textLineCache ? textLineCache.length : 0;
+				while(true)
 				{
-					var inactiveLine:TextLine = textLineCache[0];
-					line = this.textBlock.recreateTextLine(inactiveLine, line, width);
-					if(line)
+					if(inactiveTextLineCount > 0)
 					{
-						textLineCache.shift();
-						inactiveTextLineCount--;
+						var inactiveLine:TextLine = textLineCache[0];
+						line = this.textBlock.recreateTextLine(inactiveLine, line, width, 0, true);
+						if(line)
+						{
+							textLineCache.shift();
+							inactiveTextLineCount--;
+						}
 					}
-				}
-				else
-				{
-					line = this.textBlock.createTextLine(line, width);
-					if(line)
+					else
 					{
-						textLineParent.addChild(line);
+						line = this.textBlock.createTextLine(line, width, 0, true);
+						if(line)
+						{
+							textLineParent.addChild(line);
+						}
 					}
+					if(!line)
+					{
+						//end of text
+						break;
+					}
+					if(pushIndex > 0)
+					{
+						yPosition += this._leading;
+					}
+					yPosition += line.ascent;
+					line.y = yPosition;
+					yPosition += line.descent;
+					line.filters = this._nativeFilters;
+					textLines[pushIndex] = line;
+					pushIndex++;
 				}
-				if(!line)
-				{
-					//end of text
-					break;
-				}
-				if(pushIndex > 0)
-				{
-					yPosition += this._leading;
-				}
-				yPosition += line.ascent;
-				line.y = yPosition;
-				yPosition += line.descent;
-				line.filters = this._nativeFilters;
-				textLines[pushIndex] = line;
-				pushIndex++;
 			}
 
 			lineCount = textLines.length;
