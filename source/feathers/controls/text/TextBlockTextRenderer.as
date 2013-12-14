@@ -15,6 +15,8 @@ package feathers.controls.text
 	import flash.display.Sprite;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
+	import flash.text.TextSnapshot;
 	import flash.text.engine.ContentElement;
 	import flash.text.engine.ElementFormat;
 	import flash.text.engine.FontDescription;
@@ -63,6 +65,11 @@ package feathers.controls.text
 		 * @private
 		 */
 		private static const HELPER_MATRIX:Matrix = new Matrix();
+
+		/**
+		 * @private
+		 */
+		private static const HELPER_RECTANGLE:Rectangle = new Rectangle();
 
 		/**
 		 * The text will be positioned to the left edge.
@@ -398,6 +405,40 @@ package feathers.controls.text
 				return;
 			}
 			this._textAlign = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _wordWrap:Boolean = false;
+
+		/**
+		 * Determines if the text wraps to the next line when it reaches the
+		 * width of the component.
+		 *
+		 * <p>In the following example, word wrap is enabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.wordWrap = true;</listing>
+		 *
+		 * @default false
+		 */
+		public function get wordWrap():Boolean
+		{
+			return this._wordWrap;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set wordWrap(value:Boolean):void
+		{
+			if(this._wordWrap == value)
+			{
+				return;
+			}
+			this._wordWrap = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -1002,10 +1043,19 @@ package feathers.controls.text
 			{
 				newHeight = this._maxHeight;
 			}
-			this.refreshTextLines(this._measurementTextLines, this._measurementTextLineContainer, newWidth, newHeight);
+			var textLineWidth:Number = newWidth;
+			if(!this._wordWrap)
+			{
+				textLineWidth = MAX_TEXT_LINE_WIDTH;
+			}
+			this.refreshTextLines(this._measurementTextLines, this._measurementTextLineContainer, textLineWidth, newHeight);
 			if(needsWidth)
 			{
 				newWidth = this._measurementTextLineContainer.width;
+				if(newWidth > this._maxWidth)
+				{
+					newWidth = this._maxWidth;
+				}
 			}
 			if(needsHeight)
 			{
@@ -1061,7 +1111,12 @@ package feathers.controls.text
 				this._previousContentHeight = this.actualHeight;
 				if(this._content)
 				{
-					this.refreshTextLines(this._textLines, this._textLineContainer, this.actualWidth, this.actualHeight);
+					var textLineWidth:Number = this.actualWidth;
+					if(!this._wordWrap)
+					{
+						textLineWidth = MAX_TEXT_LINE_WIDTH;
+					}
+					this.refreshTextLines(this._textLines, this._textLineContainer, textLineWidth, this.actualHeight);
 					this.refreshSnapshot();
 				}
 				if(this.textSnapshot)
@@ -1121,6 +1176,8 @@ package feathers.controls.text
 			HELPER_MATRIX.scale(Starling.contentScaleFactor, Starling.contentScaleFactor);
 			var totalBitmapWidth:Number = this._snapshotWidth;
 			var totalBitmapHeight:Number = this._snapshotHeight;
+			var clipWidth:Number = this.actualWidth;
+			var clipHeight:Number = this.actualHeight;
 			var xPosition:Number = 0;
 			var yPosition:Number = 0;
 			var bitmapData:BitmapData;
@@ -1154,7 +1211,8 @@ package feathers.controls.text
 					}
 					HELPER_MATRIX.tx = -xPosition;
 					HELPER_MATRIX.ty = -yPosition;
-					bitmapData.draw(this._textLineContainer, HELPER_MATRIX);
+					HELPER_RECTANGLE.setTo(0, 0, clipWidth, clipHeight);
+					bitmapData.draw(this._textLineContainer, HELPER_MATRIX, null, null, HELPER_RECTANGLE);
 					var newTexture:Texture;
 					if(!this.textSnapshot || this._needsNewTexture)
 					{
@@ -1211,10 +1269,12 @@ package feathers.controls.text
 					snapshotIndex++;
 					yPosition += currentBitmapHeight;
 					totalBitmapHeight -= currentBitmapHeight;
+					clipHeight -= currentBitmapHeight;
 				}
 				while(totalBitmapHeight > 0)
 				xPosition += currentBitmapWidth;
 				totalBitmapWidth -= currentBitmapWidth;
+				clipWidth -= currentBitmapWidth;
 				yPosition = 0;
 				totalBitmapHeight = this._snapshotHeight;
 			}
