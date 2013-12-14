@@ -475,8 +475,8 @@ package feathers.themes
 			this.scrollTextTextFormat = new TextFormat("Source Sans Pro,_sans", 24 * this.scale, LIGHT_TEXT_COLOR);
 			this.lightUICenteredTextFormat = new TextFormat(FONT_NAME, 24 * this.scale, LIGHT_TEXT_COLOR, true, null, null, null, null, TextFormatAlign.CENTER);
 
-			this.regularFontDescription = new FontDescription(FONT_NAME, FontWeight.NORMAL, FontPosture.NORMAL, FontLookup.EMBEDDED_CFF, RenderingMode.NORMAL, CFFHinting.HORIZONTAL_STEM);
-			this.boldFontDescription = new FontDescription(FONT_NAME, FontWeight.BOLD, FontPosture.NORMAL, FontLookup.EMBEDDED_CFF, RenderingMode.NORMAL, CFFHinting.HORIZONTAL_STEM);
+			this.regularFontDescription = new FontDescription(FONT_NAME, FontWeight.NORMAL, FontPosture.NORMAL, FontLookup.EMBEDDED_CFF, RenderingMode.CFF, CFFHinting.NONE);
+			this.boldFontDescription = new FontDescription(FONT_NAME, FontWeight.BOLD, FontPosture.NORMAL, FontLookup.EMBEDDED_CFF, RenderingMode.CFF, CFFHinting.NONE);
 
 			this.headerElementFormat = new ElementFormat(this.boldFontDescription, Math.round(36 * this.scale), LIGHT_TEXT_COLOR);
 
