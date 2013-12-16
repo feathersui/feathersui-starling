@@ -1297,6 +1297,8 @@ package feathers.layout
 			var hasFirstGap:Boolean = !isNaN(this._firstGap);
 			var hasLastGap:Boolean = !isNaN(this._lastGap);
 			var positionX:Number = x + this._paddingLeft;
+			var lastWidth:Number = 0;
+			var gap:Number = this._gap;
 			var startIndexOffset:int = 0;
 			var endIndexOffset:Number = 0;
 			var itemCount:int = items.length;
@@ -1304,22 +1306,31 @@ package feathers.layout
 			if(this._useVirtualLayout && !this._hasVariableItemDimensions)
 			{
 				totalItemCount += this._beforeVirtualizedItemCount + this._afterVirtualizedItemCount;
-				startIndexOffset = this._beforeVirtualizedItemCount;
-				positionX += (this._beforeVirtualizedItemCount * (calculatedTypicalItemWidth + this._gap));
-
-				endIndexOffset = index - items.length - this._beforeVirtualizedItemCount + 1;
-				if(endIndexOffset < 0)
+				if(index < this._beforeVirtualizedItemCount)
 				{
-					endIndexOffset = 0;
+					//this makes it skip the loop below
+					startIndexOffset = index + 1;
+					lastWidth = calculatedTypicalItemWidth;
+					gap = this._gap;
 				}
-				positionX += (endIndexOffset * (calculatedTypicalItemWidth + this._gap));
+				else
+				{
+					startIndexOffset = this._beforeVirtualizedItemCount;
+					endIndexOffset = index - items.length - this._beforeVirtualizedItemCount + 1;
+					if(endIndexOffset < 0)
+					{
+						endIndexOffset = 0;
+					}
+					positionX += (endIndexOffset * (calculatedTypicalItemWidth + this._gap));
+				}
+				positionX += (startIndexOffset * (calculatedTypicalItemWidth + this._gap));
 			}
 			index -= (startIndexOffset + endIndexOffset);
 			var secondToLastIndex:int = totalItemCount - 2;
-			var lastWidth:Number = 0;
 			for(var i:int = 0; i <= index; i++)
 			{
-				var gap:Number = this._gap;
+				var item:DisplayObject = items[i];
+				var iNormalized:int = i + startIndexOffset;
 				if(hasFirstGap && iNormalized == 0)
 				{
 					gap = this._firstGap;
@@ -1328,12 +1339,14 @@ package feathers.layout
 				{
 					gap = this._lastGap;
 				}
-				var item:DisplayObject = items[i];
+				else
+				{
+					gap = this._gap;
+				}
 				if(this._useVirtualLayout && this._hasVariableItemDimensions)
 				{
 					var cachedWidth:Number = this._widthCache[iNormalized];
 				}
-				var iNormalized:int = i + startIndexOffset;
 				if(this._useVirtualLayout && !item)
 				{
 					if(!this._hasVariableItemDimensions || isNaN(cachedWidth))
