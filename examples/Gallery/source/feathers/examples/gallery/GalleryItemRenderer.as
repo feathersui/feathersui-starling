@@ -111,12 +111,18 @@ package feathers.examples.gallery
 			}
 			if(this._owner)
 			{
-				this._owner.removeEventListener(Event.SCROLL, owner_scrollHandler);
+				this._owner.removeEventListener(FeathersEventType.SCROLL_START, owner_scrollStartHandler);
+				this._owner.removeEventListener(FeathersEventType.SCROLL_COMPLETE, owner_scrollCompleteHandler);
 			}
 			this._owner = value;
 			if(this._owner)
 			{
-				this._owner.addEventListener(Event.SCROLL, owner_scrollHandler);
+				if(this.image)
+				{
+					this.image.delayTextureCreation = this._owner.isScrolling;
+				}
+				this._owner.addEventListener(FeathersEventType.SCROLL_START, owner_scrollStartHandler);
+				this._owner.addEventListener(FeathersEventType.SCROLL_COMPLETE, owner_scrollCompleteHandler);
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -180,6 +186,7 @@ package feathers.examples.gallery
 		override protected function initialize():void
 		{
 			this.image = new ImageLoader();
+			this.image.textureQueueDuration = 0.25;
 			this.image.addEventListener(Event.COMPLETE, image_completeHandler);
 			this.image.addEventListener(FeathersEventType.ERROR, image_errorHandler);
 			this.addChild(this.image);
@@ -366,9 +373,18 @@ package feathers.examples.gallery
 		/**
 		 * @private
 		 */
-		protected function owner_scrollHandler(event:Event):void
+		protected function owner_scrollStartHandler(event:Event):void
 		{
 			this.touchPointID = -1;
+			this.image.delayTextureCreation = true;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function owner_scrollCompleteHandler(event:Event):void
+		{
+			this.image.delayTextureCreation = false;
 		}
 
 		/**
@@ -378,7 +394,7 @@ package feathers.examples.gallery
 		{
 			this.image.alpha = 0;
 			this.image.visible = true;
-			this.fadeTween = new Tween(this.image, 0.25, Transitions.EASE_OUT);
+			this.fadeTween = new Tween(this.image, 1, Transitions.EASE_OUT);
 			this.fadeTween.fadeTo(1);
 			this.fadeTween.onComplete = fadeTween_onComplete;
 			Starling.juggler.add(this.fadeTween);
