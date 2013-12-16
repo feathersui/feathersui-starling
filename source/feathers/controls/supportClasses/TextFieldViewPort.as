@@ -13,6 +13,7 @@ package feathers.controls.supportClasses
 	import feathers.utils.geom.matrixToScaleY;
 
 	import flash.display.Sprite;
+	import flash.events.TextEvent;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -766,14 +767,14 @@ package feathers.controls.supportClasses
 		override protected function initialize():void
 		{
 			this._textFieldContainer = new Sprite();
-			this._textFieldContainer.mouseChildren = this._textFieldContainer.mouseEnabled = false;
 			this._textFieldContainer.visible = false;
 			this._textField = new TextField();
 			this._textField.autoSize = TextFieldAutoSize.LEFT;
-			this._textField.selectable = this._textFieldContainer.mouseEnabled =
-				this._textField.mouseWheelEnabled = false;
+			this._textField.selectable = false;
+			this._textField.mouseWheelEnabled = false;
 			this._textField.wordWrap = true;
 			this._textField.multiline = true;
+			this._textField.addEventListener(TextEvent.LINK, textField_linkHandler);
 			this._textFieldContainer.addChild(this._textField);
 		}
 
@@ -855,6 +856,11 @@ package feathers.controls.supportClasses
 		private function removedFromStageHandler(event:Event):void
 		{
 			Starling.current.nativeStage.removeChild(this._textFieldContainer);
+		}
+
+		protected function textField_linkHandler(event:TextEvent):void
+		{
+			this.dispatchEventWith(Event.TRIGGERED, false, event.text);
 		}
 	}
 }

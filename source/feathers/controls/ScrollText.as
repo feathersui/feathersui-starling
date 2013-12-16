@@ -14,6 +14,44 @@ package feathers.controls
 	import flash.text.StyleSheet;
 	import flash.text.TextFormat;
 
+	import starling.events.Event;
+
+	/**
+	 * Dispatched when an anchor (<code>&lt;a&gt;</code>) element in the HTML
+	 * text is triggered when the <code>href</code> attribute begins with
+	 * <code>"event:"</code>. This event is dispatched when the internal
+	 * <code>flash.text.TextField</code> dispatches its own
+	 * <code>TextEvent.LINK</code>.
+	 *
+	 * <p>The <code>data</code> property of the <code>Event</code> object that
+	 * is dispatched by the <code>ScrollText</code> contains the value of the
+	 * <code>text</code> property of the <code>TextEvent</code> that is
+	 * dispatched by the <code>flash.text.TextField</code>.</p>
+	 *
+	 * <p>The following example listens for <code>Event.TRIGGERED</code> on a
+	 * <code>ScrollText</code> component:</p>
+	 *
+	 * <listing version="3.0">
+	 * var scrollText:ScrollText = new ScrollText();
+	 * scrollText.text = "&lt;a href=\"event:hello\"&gt;Hello&lt;/a&gt; World";
+	 * scrollText.addEventListener( Event.TRIGGERED, scrollText_triggeredHandler );
+	 * this.addChild( scrollText );</listing>
+	 *
+	 * <p>The following example shows a listener for <code>Event.TRIGGERED</code>:</p>
+	 *
+	 * <listing version="3.0">
+	 * function scrollText_triggeredHandler(event:Event):void
+	 * {
+	 *     trace( event.data ); //hello
+	 * }</listing>
+	 *
+	 * @eventType starling.events.Event.TRIGGERED
+	 *
+	 * @see flash.text.TextField
+	 * @see flash.events.TextEvent.LINK
+	 */
+	[Event(name="triggered",type="starling.events.Event")]
+
 	/**
 	 * Displays long passages of text in a scrollable container using the
 	 * runtime's software-based <code>flash.text.TextField</code> as an overlay
@@ -127,6 +165,7 @@ package feathers.controls
 		public function ScrollText()
 		{
 			this.textViewPort = new TextFieldViewPort();
+			this.textViewPort.addEventListener(Event.TRIGGERED, textViewPort_triggeredHandler);
 			this.viewPort = this.textViewPort;
 		}
 
@@ -854,6 +893,14 @@ package feathers.controls
 			}
 
 			super.draw();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function textViewPort_triggeredHandler(event:Event, link:String):void
+		{
+			this.dispatchEventWith(Event.TRIGGERED, false, link);
 		}
 	}
 }
