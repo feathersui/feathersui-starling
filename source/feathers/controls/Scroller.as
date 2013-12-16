@@ -3108,8 +3108,8 @@ package feathers.controls
 		 */
 		protected function showOrHideChildren():void
 		{
-			const isFixed:Boolean = this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FIXED;
-			const childCount:int = this.numChildren;
+			var isFixed:Boolean = this._scrollBarDisplayMode == SCROLL_BAR_DISPLAY_MODE_FIXED;
+			var childCount:int = this.numRawChildrenInternal;
 			if(this.verticalScrollBar)
 			{
 				this.verticalScrollBar.visible = !isFixed || this._hasVerticalScrollBar;
@@ -3406,6 +3406,18 @@ package feathers.controls
 			{
 				this._viewPort.clipRect = null;
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function get numRawChildrenInternal():int
+		{
+			if(this is IScrollContainer)
+			{
+				return IScrollContainer(this).numRawChildren;
+			}
+			return this.numChildren;
 		}
 
 		/**
