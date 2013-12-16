@@ -361,8 +361,8 @@ package feathers.themes
 				if(AtlasImageClass && AtlasXMLClass && FontXMLClass)
 				{
 					var atlasBitmapData:BitmapData = Bitmap(new AtlasImageClass()).bitmapData;
-					var atlasTexture:Texture = Texture.fromBitmapData(atlasBitmapData, false);
-					atlasTexture.root.onRestore = this.atlasTexture_onRestore;
+					this.atlasTexture = Texture.fromBitmapData(atlasBitmapData, false);
+					this.atlasTexture.root.onRestore = this.atlasTexture_onRestore;
 					atlasBitmapData.dispose();
 					this.atlas = new TextureAtlas(atlasTexture, XML(new AtlasXMLClass()));
 
