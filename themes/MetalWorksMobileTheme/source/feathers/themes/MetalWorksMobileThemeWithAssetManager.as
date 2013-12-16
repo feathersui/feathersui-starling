@@ -472,7 +472,7 @@ package feathers.themes
 		protected function initializeFonts():void
 		{
 			//these are for components that don't use FTE
-			this.scrollTextTextFormat = new TextFormat("Source Sans Pro,_sans", 24 * this.scale, LIGHT_TEXT_COLOR);
+			this.scrollTextTextFormat = new TextFormat("_sans", 24 * this.scale, LIGHT_TEXT_COLOR);
 			this.lightUICenteredTextFormat = new TextFormat(FONT_NAME, 24 * this.scale, LIGHT_TEXT_COLOR, true, null, null, null, null, TextFormatAlign.CENTER);
 
 			this.regularFontDescription = new FontDescription(FONT_NAME, FontWeight.NORMAL, FontPosture.NORMAL, FontLookup.EMBEDDED_CFF, RenderingMode.CFF, CFFHinting.NONE);
