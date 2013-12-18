@@ -644,11 +644,20 @@ package feathers.controls.text
 						}
 						else
 						{
-							const bounds:Rectangle = this.textField.getCharBoundaries(this._pendingSelectionStartIndex);
-							const boundsX:Number = bounds.x;
-							if(bounds && (boundsX + bounds.width - positionX) < (positionX - boundsX))
+							var bounds:Rectangle = this.textField.getCharBoundaries(this._pendingSelectionStartIndex);
+							//bounds should never be null because the character
+							//index passed to getCharBoundaries() comes from a
+							//call to getCharIndexAtPoint(). however, a user
+							//reported that a null reference error happened
+							//here! I couldn't reproduce, but I might as well
+							//assume that the runtime has a bug. won't hurt.
+							if(bounds)
 							{
-								this._pendingSelectionStartIndex++;
+								var boundsX:Number = bounds.x;
+								if(bounds && (boundsX + bounds.width - positionX) < (positionX - boundsX))
+								{
+									this._pendingSelectionStartIndex++;
+								}
 							}
 						}
 						this._pendingSelectionEndIndex = this._pendingSelectionStartIndex;
