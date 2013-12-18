@@ -1910,14 +1910,6 @@ package feathers.controls.renderers
 			this._ignoreAccessoryResizes = true;
 			this.refreshMaxLabelWidth(true);
 			this.labelTextRenderer.measureText(HELPER_POINT);
-			if(this.accessory is IFeathersControl)
-			{
-				IFeathersControl(this.accessory).validate();
-			}
-			if(this.currentIcon is IFeathersControl)
-			{
-				IFeathersControl(this.currentIcon).validate();
-			}
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
 			{
@@ -2378,15 +2370,6 @@ package feathers.controls.renderers
 				this.labelTextRenderer.validate();
 				const labelRenderer:DisplayObject = DisplayObject(this.labelTextRenderer);
 			}
-			if(this.accessory is IFeathersControl)
-			{
-				IFeathersControl(this.accessory).validate();
-			}
-			if(this.currentIcon is IFeathersControl)
-			{
-				IFeathersControl(this.currentIcon).validate();
-			}
-
 			const iconIsInLayout:Boolean = this.currentIcon && this._iconPosition != ICON_POSITION_MANUAL;
 			const accessoryIsInLayout:Boolean = this.accessory && this._accessoryPosition != ACCESSORY_POSITION_MANUAL;
 			const accessoryGap:Number = isNaN(this._accessoryGap) ? this._gap : this._accessoryGap;
@@ -2473,14 +2456,14 @@ package feathers.controls.renderers
 		 */
 		override protected function refreshMaxLabelWidth(forMeasurement:Boolean):void
 		{
-			if(!this._label)
-			{
-				return;
-			}
 			var calculatedWidth:Number = this.actualWidth;
 			if(forMeasurement)
 			{
 				calculatedWidth = isNaN(this.explicitWidth) ? this._maxWidth : this.explicitWidth;
+			}
+			if(this.currentIcon is IFeathersControl)
+			{
+				IFeathersControl(this.currentIcon).validate();
 			}
 			if(this.accessory is IFeathersControl)
 			{
