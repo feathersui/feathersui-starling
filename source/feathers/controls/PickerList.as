@@ -203,17 +203,30 @@ package feathers.controls
 			{
 				return;
 			}
+			var oldSelectedIndex:int = this.selectedIndex;
+			var oldSelectedItem:Object = this.selectedItem;
 			this._dataProvider = value;
 			if(!this._dataProvider || this._dataProvider.length == 0)
 			{
 				this.selectedIndex = -1;
 			}
-			else if(this._selectedIndex < 0)
+			else
 			{
 				this.selectedIndex = 0;
 			}
+			//this ensures that Event.CHANGE will dispatch for selectedItem
+			//changing, even if selectedIndex has not changed.
+			if(this.selectedIndex == oldSelectedIndex && this.selectedItem != oldSelectedItem)
+			{
+				this.dispatchEventWith(Event.CHANGE);
+			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _ignoreSelectionChanges:Boolean = false;
 		
 		/**
 		 * @private
@@ -1059,7 +1072,10 @@ package feathers.controls
 			
 			if(listFactoryInvalid || dataInvalid)
 			{
+				var oldIgnoreSelectionChanges:Boolean = this._ignoreSelectionChanges;
+				this._ignoreSelectionChanges = true;
 				this.list.dataProvider = this._dataProvider;
+				this._ignoreSelectionChanges = oldIgnoreSelectionChanges;
 			}
 			
 			if(buttonFactoryInvalid || listFactoryInvalid || stateInvalid)
@@ -1068,13 +1084,16 @@ package feathers.controls
 				this.list.isEnabled = this._isEnabled;
 			}
 
-			if(buttonFactoryInvalid || selectionInvalid)
+			if(buttonFactoryInvalid || dataInvalid || selectionInvalid)
 			{
 				this.refreshButtonLabel();
 			}
-			if(listFactoryInvalid || selectionInvalid)
+			if(listFactoryInvalid || dataInvalid || selectionInvalid)
 			{
+				oldIgnoreSelectionChanges = this._ignoreSelectionChanges;
+				this._ignoreSelectionChanges = true;
 				this.list.selectedIndex = this._selectedIndex;
+				this._ignoreSelectionChanges = oldIgnoreSelectionChanges;
 			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
@@ -1300,6 +1319,10 @@ package feathers.controls
 		 */
 		protected function list_changeHandler(event:Event):void
 		{
+			if(this._ignoreSelectionChanges)
+			{
+				return;
+			}
 			this.selectedIndex = this.list.selectedIndex;
 		}
 
