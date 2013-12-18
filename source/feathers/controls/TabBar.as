@@ -311,6 +311,8 @@ package feathers.controls
 			{
 				return;
 			}
+			var oldSelectedIndex:int = this.selectedIndex;
+			var oldSelectedItem:Object = this.selectedItem;
 			if(this._dataProvider)
 			{
 				this._dataProvider.removeEventListener(CollectionEventType.ADD_ITEM, dataProvider_addItemHandler);
@@ -327,14 +329,20 @@ package feathers.controls
 				this._dataProvider.addEventListener(CollectionEventType.REPLACE_ITEM, dataProvider_replaceItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.UPDATE_ITEM, dataProvider_updateItemHandler);
 				this._dataProvider.addEventListener(CollectionEventType.RESET, dataProvider_resetHandler);
-				if(this.selectedIndex < 0 && this._dataProvider.length > 0)
-				{
-					this.selectedIndex = 0;
-				}
+			}
+			if(!this._dataProvider || this._dataProvider.length == 0)
+			{
+				this.selectedIndex = -1;
 			}
 			else
 			{
-				this.selectedIndex = -1;
+				this.selectedIndex = 0;
+			}
+			//this ensures that Event.CHANGE will dispatch for selectedItem
+			//changing, even if selectedIndex has not changed.
+			if(this.selectedIndex == oldSelectedIndex && this.selectedItem != oldSelectedItem)
+			{
+				this.dispatchEventWith(Event.CHANGE);
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -1103,7 +1111,6 @@ package feathers.controls
 			{
 				return null;
 			}
-
 			return this._dataProvider.getItemAt(index);
 		}
 
@@ -1112,6 +1119,11 @@ package feathers.controls
 		 */
 		public function set selectedItem(value:Object):void
 		{
+			if(!this._dataProvider)
+			{
+				this.selectedIndex = -1;
+				return;
+			}
 			this.selectedIndex = this._dataProvider.getItemIndex(value);
 		}
 
