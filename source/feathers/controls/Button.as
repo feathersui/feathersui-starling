@@ -2733,10 +2733,6 @@ package feathers.controls
 			}
 			this.refreshMaxLabelWidth(true);
 			this.labelTextRenderer.measureText(HELPER_POINT);
-			if(this.currentIcon is IFeathersControl)
-			{
-				IFeathersControl(this.currentIcon).validate();
-			}
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
 			{
@@ -2983,10 +2979,6 @@ package feathers.controls
 		 */
 		protected function layoutContent():void
 		{
-			if(this.currentIcon is IFeathersControl)
-			{
-				IFeathersControl(this.currentIcon).validate();
-			}
 			this.refreshMaxLabelWidth(false);
 			if(this._label && this.currentIcon)
 			{
@@ -3030,6 +3022,10 @@ package feathers.controls
 		 */
 		protected function refreshMaxLabelWidth(forMeasurement:Boolean):void
 		{
+			if(this.currentIcon is IFeathersControl)
+			{
+				IFeathersControl(this.currentIcon).validate();
+			}
 			var calculatedWidth:Number = this.actualWidth;
 			if(forMeasurement)
 			{
