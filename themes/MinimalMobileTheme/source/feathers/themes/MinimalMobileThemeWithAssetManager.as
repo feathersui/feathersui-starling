@@ -523,60 +523,113 @@ package feathers.themes
 
 		protected function setInitializers():void
 		{
+			//screens
 			this.setInitializerForClassAndSubclasses(Screen, screenInitializer);
 			this.setInitializerForClassAndSubclasses(PanelScreen, panelScreenInitializer);
 			this.setInitializerForClassAndSubclasses(ScrollScreen, scrollScreenInitializer);
-			this.setInitializerForClass(Label, labelInitializer);
-			this.setInitializerForClass(Label, headingLabelInitializer, Label.ALTERNATE_NAME_HEADING);
-			this.setInitializerForClass(Label, detailLabelInitializer, Label.ALTERNATE_NAME_DETAIL);
-			this.setInitializerForClass(ScrollText, scrollTextInitializer);
-			this.setInitializerForClass(BitmapFontTextRenderer, itemRendererAccessoryLabelInitializer, BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ACCESSORY_LABEL);
+
+			//alert
+			this.setInitializerForClass(Alert, alertInitializer);
+			this.setInitializerForClass(Header, panelHeaderInitializer, Alert.DEFAULT_CHILD_NAME_HEADER);
+			this.setInitializerForClass(ButtonGroup, alertButtonGroupInitializer, Alert.DEFAULT_CHILD_NAME_BUTTON_GROUP);
 			this.setInitializerForClass(BitmapFontTextRenderer, alertMessageInitializer, Alert.DEFAULT_CHILD_NAME_MESSAGE);
+
+			//button
 			this.setInitializerForClass(Button, buttonInitializer);
 			this.setInitializerForClass(Button, buttonCallToActionInitializer, Button.ALTERNATE_NAME_CALL_TO_ACTION_BUTTON);
 			this.setInitializerForClass(Button, buttonQuietInitializer, Button.ALTERNATE_NAME_QUIET_BUTTON);
 			this.setInitializerForClass(Button, buttonDangerInitializer, Button.ALTERNATE_NAME_DANGER_BUTTON);
 			this.setInitializerForClass(Button, buttonBackInitializer, Button.ALTERNATE_NAME_BACK_BUTTON);
 			this.setInitializerForClass(Button, buttonForwardInitializer, Button.ALTERNATE_NAME_FORWARD_BUTTON);
-			this.setInitializerForClass(Button, buttonGroupButtonInitializer, ButtonGroup.DEFAULT_CHILD_NAME_BUTTON);
-			this.setInitializerForClass(Button, sliderThumbInitializer, Slider.DEFAULT_CHILD_NAME_THUMB);
-			this.setInitializerForClass(Button, simpleScrollBarThumbInitializer, SimpleScrollBar.DEFAULT_CHILD_NAME_THUMB);
-			this.setInitializerForClass(Button, nothingInitializer, Slider.DEFAULT_CHILD_NAME_MINIMUM_TRACK);
-			this.setInitializerForClass(Button, nothingInitializer, Slider.DEFAULT_CHILD_NAME_MAXIMUM_TRACK);
-			this.setInitializerForClass(Button, toggleSwitchOnTrackInitializer, ToggleSwitch.DEFAULT_CHILD_NAME_ON_TRACK);
-			this.setInitializerForClass(Button, toggleSwitchThumbInitializer, ToggleSwitch.DEFAULT_CHILD_NAME_THUMB);
-			this.setInitializerForClass(Button, tabInitializer, TabBar.DEFAULT_CHILD_NAME_TAB);
-			this.setInitializerForClass(Button, pickerListButtonInitializer, PickerList.DEFAULT_CHILD_NAME_BUTTON);
+
+			//button group
 			this.setInitializerForClass(ButtonGroup, buttonGroupInitializer);
-			this.setInitializerForClass(ButtonGroup, alertButtonGroupInitializer, Alert.DEFAULT_CHILD_NAME_BUTTON_GROUP);
-			this.setInitializerForClass(Slider, sliderInitializer);
-			this.setInitializerForClass(ToggleSwitch, toggleSwitchInitializer);
-			this.setInitializerForClass(NumericStepper, numericStepperInitializer);
+			this.setInitializerForClass(Button, buttonGroupButtonInitializer, ButtonGroup.DEFAULT_CHILD_NAME_BUTTON);
+
+			//callout
+			this.setInitializerForClass(Callout, calloutInitializer);
+
+			//check
 			this.setInitializerForClass(Check, checkInitializer);
-			this.setInitializerForClass(Radio, radioInitializer);
+
+			//grouped list (see also: item renderers)
+			this.setInitializerForClass(GroupedList, groupedListInitializer);
+			this.setInitializerForClass(GroupedList, groupedListInsetInitializer, GroupedList.ALTERNATE_NAME_INSET_GROUPED_LIST);
+
+			//header
+			this.setInitializerForClass(Header, headerInitializer);
+
+			//item renderers for lists
 			this.setInitializerForClass(DefaultListItemRenderer, itemRendererInitializer);
 			this.setInitializerForClass(DefaultListItemRenderer, pickerListItemRendererInitializer, COMPONENT_NAME_PICKER_LIST_ITEM_RENDERER);
 			this.setInitializerForClass(DefaultGroupedListItemRenderer, itemRendererInitializer);
+
+			//header and footer renderers for grouped list
 			this.setInitializerForClass(DefaultGroupedListHeaderOrFooterRenderer, headerOrFooterRendererInitializer);
 			this.setInitializerForClass(DefaultGroupedListHeaderOrFooterRenderer, insetHeaderOrFooterRendererInitializer, GroupedList.ALTERNATE_CHILD_NAME_INSET_HEADER_RENDERER);
 			this.setInitializerForClass(DefaultGroupedListHeaderOrFooterRenderer, insetHeaderOrFooterRendererInitializer, GroupedList.ALTERNATE_CHILD_NAME_INSET_FOOTER_RENDERER);
+
+			//label
+			this.setInitializerForClass(Label, labelInitializer);
+			this.setInitializerForClass(Label, headingLabelInitializer, Label.ALTERNATE_NAME_HEADING);
+			this.setInitializerForClass(Label, detailLabelInitializer, Label.ALTERNATE_NAME_DETAIL);
+
+			//list (see also: item renderers)
 			this.setInitializerForClass(List, listInitializer);
-			this.setInitializerForClass(List, nothingInitializer, PickerList.DEFAULT_CHILD_NAME_LIST);
-			this.setInitializerForClass(GroupedList, groupedListInitializer);
-			this.setInitializerForClass(GroupedList, groupedListInsetInitializer, GroupedList.ALTERNATE_NAME_INSET_GROUPED_LIST);
-			this.setInitializerForClass(PickerList, pickerListInitializer);
-			this.setInitializerForClass(Header, headerInitializer);
+
+			//numeric stepper
+			this.setInitializerForClass(NumericStepper, numericStepperInitializer);
+			this.setInitializerForClass(TextInput, numericStepperTextInputInitializer, NumericStepper.DEFAULT_CHILD_NAME_TEXT_INPUT);
+
+			//page indicator
+			this.setInitializerForClass(PageIndicator, pageIndicatorInitializer);
+
+			//panel
+			this.setInitializerForClass(Panel, panelInitializer);
 			this.setInitializerForClass(Header, panelHeaderInitializer, Panel.DEFAULT_CHILD_NAME_HEADER);
-			this.setInitializerForClass(Header, panelHeaderInitializer, Alert.DEFAULT_CHILD_NAME_HEADER);
+
+			//picker list (see also: item renderers)
+			this.setInitializerForClass(PickerList, pickerListInitializer);
+			this.setInitializerForClass(Button, pickerListButtonInitializer, PickerList.DEFAULT_CHILD_NAME_BUTTON);
+			this.setInitializerForClass(List, nothingInitializer, PickerList.DEFAULT_CHILD_NAME_LIST);
+
+			//progress bar
+			this.setInitializerForClass(ProgressBar, progressBarInitializer);
+
+			//radio
+			this.setInitializerForClass(Radio, radioInitializer);
+
+			//scroll container
+			//we don't need an initializer for the ScrollContainer class without
+			//a name because it has no background skin and the scroll bars have
+			//separate initializers
+			this.setInitializerForClass(ScrollContainer, scrollContainerToolbarInitializer, ScrollContainer.ALTERNATE_NAME_TOOLBAR);
+
+			//scroll text
+			this.setInitializerForClass(ScrollText, scrollTextInitializer);
+			this.setInitializerForClass(BitmapFontTextRenderer, itemRendererAccessoryLabelInitializer, BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ACCESSORY_LABEL);
+
+			//simple scroll bar
+			this.setInitializerForClass(Button, simpleScrollBarThumbInitializer, SimpleScrollBar.DEFAULT_CHILD_NAME_THUMB);
+
+			//slider
+			this.setInitializerForClass(Slider, sliderInitializer);
+			this.setInitializerForClass(Button, sliderThumbInitializer, Slider.DEFAULT_CHILD_NAME_THUMB);
+			//the tracks are skinned in the initializer for the Slider class
+			this.setInitializerForClass(Button, nothingInitializer, Slider.DEFAULT_CHILD_NAME_MINIMUM_TRACK);
+			this.setInitializerForClass(Button, nothingInitializer, Slider.DEFAULT_CHILD_NAME_MAXIMUM_TRACK);
+
+			//tab bar
+			this.setInitializerForClass(Button, tabInitializer, TabBar.DEFAULT_CHILD_NAME_TAB);
+
+			//text input
 			this.setInitializerForClass(TextInput, textInputInitializer);
 			this.setInitializerForClass(TextInput, searchTextInputInitializer, TextInput.ALTERNATE_NAME_SEARCH_TEXT_INPUT);
-			this.setInitializerForClass(TextInput, numericStepperTextInputInitializer, NumericStepper.DEFAULT_CHILD_NAME_TEXT_INPUT);
-			this.setInitializerForClass(PageIndicator, pageIndicatorInitializer);
-			this.setInitializerForClass(ProgressBar, progressBarInitializer);
-			this.setInitializerForClass(Callout, calloutInitializer);
-			this.setInitializerForClass(Panel, panelInitializer);
-			this.setInitializerForClass(Alert, alertInitializer);
-			this.setInitializerForClass(ScrollContainer, scrollContainerToolbarInitializer, ScrollContainer.ALTERNATE_NAME_TOOLBAR);
+
+			//toggle switch
+			this.setInitializerForClass(ToggleSwitch, toggleSwitchInitializer);
+			this.setInitializerForClass(Button, toggleSwitchThumbInitializer, ToggleSwitch.DEFAULT_CHILD_NAME_THUMB);
+			this.setInitializerForClass(Button, toggleSwitchOnTrackInitializer, ToggleSwitch.DEFAULT_CHILD_NAME_ON_TRACK);
 		}
 
 		protected function pageIndicatorNormalSymbolFactory():DisplayObject
