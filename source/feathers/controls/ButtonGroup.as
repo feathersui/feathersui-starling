@@ -1021,7 +1021,7 @@ package feathers.controls
 				return;
 			}
 			this._buttonInitializer = value;
-			this.invalidate(INVALIDATION_FLAG_DATA);
+			this.invalidate(INVALIDATION_FLAG_BUTTON_FACTORY);
 		}
 
 		/**
@@ -1393,6 +1393,7 @@ package feathers.controls
 				}
 				for each(field in DEFAULT_BUTTON_EVENTS)
 				{
+					var removeListener:Boolean = true;
 					if(item.hasOwnProperty(field))
 					{
 						var listener:Function = item[field] as Function;
@@ -1400,7 +1401,17 @@ package feathers.controls
 						{
 							continue;
 						}
-						button.addEventListener(field, listener);
+						removeListener =  false;
+						//we can't add the listener directly because we don't
+						//know how to remove it later if the data provider
+						//changes and we lose the old item. we'll use another
+						//event listener that we control as a delegate, and
+						//we'll be able to remove it later.
+						button.addEventListener(field, defaultButtonEventsListener);
+					}
+					if(removeListener)
+					{
+						button.removeEventListener(field, defaultButtonEventsListener);
 					}
 				}
 			}
@@ -1645,6 +1656,38 @@ package feathers.controls
 			var index:int = this.activeButtons.indexOf(button);
 			var item:Object = this._dataProvider.getItemAt(index);
 			this.dispatchEventWith(Event.TRIGGERED, false, item);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function defaultButtonEventsListener(event:Event):void
+		{
+			var button:Button = Button(event.currentTarget);
+			var index:int = this.activeButtons.indexOf(button);
+			var item:Object = this._dataProvider.getItemAt(index);
+			var field:String = event.type;
+			if(item.hasOwnProperty(field))
+			{
+				var listener:Function = item[field] as Function;
+				if(!listener)
+				{
+					return;
+				}
+				var argCount:int = listener.length;
+				if(argCount == 1)
+				{
+					listener(event);
+				}
+				else if(argCount == 2)
+				{
+					listener(event, event.data);
+				}
+				else
+				{
+					listener();
+				}
+			}
 		}
 	}
 }
