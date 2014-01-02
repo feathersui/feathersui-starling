@@ -7,18 +7,8 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.core
 {
-	import feathers.events.FeathersEventType;
-
-	import flash.utils.Dictionary;
-
-	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
-	import starling.display.Quad;
-	import starling.display.Stage;
-	import starling.events.EnterFrameEvent;
-	import starling.events.Event;
-	import starling.events.ResizeEvent;
 
 	/**
 	 * Adds a display object as a pop-up above all content.
@@ -28,17 +18,7 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		private static const POPUP_TO_OVERLAY:Dictionary = new Dictionary(true);
-
-		/**
-		 * @private
-		 */
-		private static const POPUP_TO_FOCUS_MANAGER:Dictionary = new Dictionary(true);
-
-		/**
-		 * @private
-		 */
-		private static const CENTERED_POPUPS:Vector.<DisplayObject> = new <DisplayObject>[];
+		protected static const _instance:IPopUpManager = new DefaultPopUpManager();
 		
 		/**
 		 * A function that returns a display object to use as an overlay for
@@ -57,7 +37,18 @@ package feathers.core
 		 *     return overlay;
 		 * };</listing>
 		 */
-		public static var overlayFactory:Function = defaultOverlayFactory;
+		public static function get overlayFactory():Function
+		{
+			return _instance.overlayFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public static function set overlayFactory(value:Function):void
+		{
+			_instance.overlayFactory = value;
+		}
 
 		/**
 		 * The default factory that creates overlays for modal pop-ups. Creates
@@ -67,20 +58,8 @@ package feathers.core
 		 */
 		public static function defaultOverlayFactory():DisplayObject
 		{
-			const quad:Quad = new Quad(100, 100, 0x000000);
-			quad.alpha = 0;
-			return quad;
+			return DefaultPopUpManager.defaultOverlayFactory();
 		}
-
-		/**
-		 * @private
-		 */
-		protected static var ignoreRemoval:Boolean = false;
-
-		/**
-		 * @private
-		 */
-		protected static var _root:DisplayObjectContainer;
 
 		/**
 		 * The container where pop-ups are added. If not set manually, defaults
@@ -95,7 +74,7 @@ package feathers.core
 		 */
 		public static function get root():DisplayObjectContainer
 		{
-			return _root;
+			return _instance.root;
 		}
 
 		/**
@@ -103,42 +82,8 @@ package feathers.core
 		 */
 		public static function set root(value:DisplayObjectContainer):void
 		{
-			if(_root == value)
-			{
-				return;
-			}
-			const popUpCount:int = popUps.length;
-			const oldIgnoreRemoval:Boolean = ignoreRemoval; //just in case
-			ignoreRemoval = true;
-			for(var i:int = 0; i < popUpCount; i++)
-			{
-				var popUp:DisplayObject = popUps[i];
-				var overlay:DisplayObject = DisplayObject(POPUP_TO_OVERLAY[popUp]);
-				popUp.removeFromParent(false);
-				if(overlay)
-				{
-					overlay.removeFromParent(false);
-				}
-			}
-			ignoreRemoval = oldIgnoreRemoval;
-			_root = value;
-			const calculatedRoot:DisplayObjectContainer = _root ? _root : Starling.current.stage;
-			for(i = 0; i < popUpCount; i++)
-			{
-				popUp = popUps[i];
-				overlay = DisplayObject(POPUP_TO_OVERLAY[popUp]);
-				if(overlay)
-				{
-					calculatedRoot.addChild(overlay);
-				}
-				calculatedRoot.addChild(popUp);
-			}
+			_instance.root = value;
 		}
-
-		/**
-		 * @private
-		 */
-		protected static var popUps:Vector.<DisplayObject> = new <DisplayObject>[];
 		
 		/**
 		 * Adds a pop-up to the stage.
@@ -162,62 +107,17 @@ package feathers.core
 		 * Regular Starling display objects do not dispatch a proper resize
 		 * event that the pop-up manager can listen to.</p>
 		 */
-		public static function addPopUp(popUp:DisplayObject, isModal:Boolean = true, isCentered:Boolean = true, customOverlayFactory:Function = null):void
+		public static function addPopUp(popUp:DisplayObject, isModal:Boolean = true, isCentered:Boolean = true, customOverlayFactory:Function = null):DisplayObject
 		{
-			const calculatedRoot:DisplayObjectContainer = _root ? _root : Starling.current.stage;
-			if(isModal)
-			{
-				if(customOverlayFactory == null)
-				{
-					customOverlayFactory = overlayFactory;
-				}
-				if(customOverlayFactory == null)
-				{
-					customOverlayFactory = defaultOverlayFactory;
-				}
-				const overlay:DisplayObject = customOverlayFactory();
-				overlay.width = calculatedRoot.stage.stageWidth;
-				overlay.height = calculatedRoot.stage.stageHeight;
-				calculatedRoot.addChild(overlay);
-				POPUP_TO_OVERLAY[popUp] = overlay;
-			}
-
-			popUps.push(popUp);
-			calculatedRoot.addChild(popUp);
-			popUp.addEventListener(Event.REMOVED_FROM_STAGE, popUp_removedFromStageHandler);
-
-			if(popUps.length == 1)
-			{
-				calculatedRoot.stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
-			}
-
-			if(FocusManager.isEnabled && popUp is DisplayObjectContainer)
-			{
-				POPUP_TO_FOCUS_MANAGER[popUp] = new FocusManager(DisplayObjectContainer(popUp));
-			}
-
-			if(isCentered)
-			{
-				if(popUp is IFeathersControl)
-				{
-					popUp.addEventListener(FeathersEventType.RESIZE, popUp_resizeHandler);
-				}
-				CENTERED_POPUPS.push(popUp);
-				centerPopUp(popUp);
-			}
+			return _instance.addPopUp(popUp, isModal, isCentered, customOverlayFactory);
 		}
 		
 		/**
 		 * Removes a pop-up from the stage.
 		 */
-		public static function removePopUp(popUp:DisplayObject, dispose:Boolean = false):void
+		public static function removePopUp(popUp:DisplayObject, dispose:Boolean = false):DisplayObject
 		{
-			const index:int = popUps.indexOf(popUp);
-			if(index < 0)
-			{
-				throw new ArgumentError("Display object is not a pop-up.");
-			}
-			popUp.removeFromParent(dispose);
+			return _instance.removePopUp(popUp, dispose);
 		}
 
 		/**
@@ -233,7 +133,7 @@ package feathers.core
 		 */
 		public static function isPopUp(popUp:DisplayObject):Boolean
 		{
-			return popUps.indexOf(popUp) >= 0;
+			return _instance.isPopUp(popUp);
 		}
 
 		/**
@@ -242,25 +142,7 @@ package feathers.core
 		 */
 		public static function isTopLevelPopUp(popUp:DisplayObject):Boolean
 		{
-			var lastIndex:int = popUps.length - 1;
-			for(var i:int = lastIndex; i >= 0; i--)
-			{
-				var otherPopUp:DisplayObject = popUps[i];
-				if(otherPopUp == popUp)
-				{
-					//we haven't encountered an overlay yet, so it is top-level
-					return true;
-				}
-				var overlay:DisplayObject = POPUP_TO_OVERLAY[otherPopUp];
-				if(overlay)
-				{
-					//this is the first overlay, and we haven't found the pop-up
-					//yet, so it is not top-level
-					return false;
-				}
-			}
-			//pop-up was not found at all, so obviously, not top-level
-			return false;
+			return _instance.isTopLevelPopUp(popUp);
 		}
 		
 		/**
@@ -277,98 +159,7 @@ package feathers.core
 		 */
 		public static function centerPopUp(popUp:DisplayObject):void
 		{
-			const stage:Stage = Starling.current.stage;
-			if(popUp is IFeathersControl)
-			{
-				IFeathersControl(popUp).validate();
-			}
-			popUp.x = (stage.stageWidth - popUp.width) / 2;
-			popUp.y = (stage.stageHeight - popUp.height) / 2;
-		}
-
-		/**
-		 * @private
-		 */
-		protected static function popUp_resizeHandler(event:Event):void
-		{
-			var popUp:DisplayObject = DisplayObject(event.currentTarget);
-			var index:int = CENTERED_POPUPS.indexOf(popUp);
-			if(index < 0)
-			{
-				return;
-			}
-			centerPopUp(popUp);
-		}
-
-		/**
-		 * @private
-		 */
-		protected static function popUp_removedFromStageHandler(event:Event):void
-		{
-			if(ignoreRemoval)
-			{
-				return;
-			}
-			const popUp:DisplayObject = DisplayObject(event.currentTarget);
-			popUp.removeEventListener(Event.REMOVED_FROM_STAGE, popUp_removedFromStageHandler);
-			var index:int = popUps.indexOf(popUp);
-			popUps.splice(index, 1);
-			const overlay:DisplayObject = DisplayObject(POPUP_TO_OVERLAY[popUp]);
-			if(overlay)
-			{
-				//this is a temporary workaround for Starling issue #131
-				Starling.current.stage.addEventListener(EnterFrameEvent.ENTER_FRAME, function(event:EnterFrameEvent):void
-				{
-					event.currentTarget.removeEventListener(event.type, arguments.callee);
-					overlay.removeFromParent(true);
-					delete POPUP_TO_OVERLAY[popUp];
-				});
-			}
-			const focusManager:IFocusManager = POPUP_TO_FOCUS_MANAGER[popUp];
-			if(focusManager)
-			{
-				delete POPUP_TO_FOCUS_MANAGER[popUp];
-				FocusManager.removeFocusManager(focusManager);
-			}
-			index = CENTERED_POPUPS.indexOf(popUp);
-			if(index >= 0)
-			{
-				if(popUp is IFeathersControl)
-				{
-					popUp.removeEventListener(FeathersEventType.RESIZE, popUp_resizeHandler);
-				}
-				CENTERED_POPUPS.splice(index, 1);
-			}
-
-			if(popUps.length == 0)
-			{
-				Starling.current.stage.removeEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
-			}
-		}
-
-		/**
-		 * @private
-		 */
-		protected static function stage_resizeHandler(event:ResizeEvent):void
-		{
-			const stage:Stage = Starling.current.stage;
-			var popUpCount:int = popUps.length;
-			for(var i:int = 0; i < popUpCount; i++)
-			{
-				var popUp:DisplayObject = popUps[i];
-				var overlay:DisplayObject = DisplayObject(POPUP_TO_OVERLAY[popUp]);
-				if(overlay)
-				{
-					overlay.width = stage.stageWidth;
-					overlay.height = stage.stageHeight;
-				}
-			}
-			popUpCount = CENTERED_POPUPS.length;
-			for(i = 0; i < popUpCount; i++)
-			{
-				popUp = CENTERED_POPUPS[i];
-				centerPopUp(popUp);
-			}
+			_instance.centerPopUp(popUp);
 		}
 	}
 }
