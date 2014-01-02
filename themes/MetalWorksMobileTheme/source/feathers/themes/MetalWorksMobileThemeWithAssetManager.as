@@ -238,7 +238,8 @@ package feathers.themes
 		protected var largeUIDarkElementFormat:ElementFormat;
 		protected var largeUILightElementFormat:ElementFormat;
 		protected var largeUISelectedElementFormat:ElementFormat;
-		protected var largeUIDisabledElementFormat:ElementFormat;
+		protected var largeUIDarkDisabledElementFormat:ElementFormat;
+		protected var largeUILightDisabledElementFormat:ElementFormat;
 
 		protected var largeDarkElementFormat:ElementFormat;
 		protected var largeLightElementFormat:ElementFormat;
@@ -489,7 +490,8 @@ package feathers.themes
 			this.largeUIDarkElementFormat = new ElementFormat(this.boldFontDescription, 28 * this.scale, DARK_TEXT_COLOR);
 			this.largeUILightElementFormat = new ElementFormat(this.boldFontDescription, 28 * this.scale, LIGHT_TEXT_COLOR);
 			this.largeUISelectedElementFormat = new ElementFormat(this.boldFontDescription, 28 * this.scale, SELECTED_TEXT_COLOR);
-			this.largeUIDisabledElementFormat = new ElementFormat(this.boldFontDescription, 28 * this.scale, DISABLED_TEXT_COLOR);
+			this.largeUIDarkDisabledElementFormat = new ElementFormat(this.boldFontDescription, 28 * this.scale, DARK_DISABLED_TEXT_COLOR);
+			this.largeUILightDisabledElementFormat = new ElementFormat(this.boldFontDescription, 28 * this.scale, DISABLED_TEXT_COLOR);
 
 			this.darkElementFormat = new ElementFormat(this.regularFontDescription, 24 * this.scale, DARK_TEXT_COLOR);
 			this.lightElementFormat = new ElementFormat(this.regularFontDescription, 24 * this.scale, LIGHT_TEXT_COLOR);
@@ -939,8 +941,8 @@ package feathers.themes
 			button.stateToSkinFunction = skinSelector.updateValue;
 
 			button.defaultLabelProperties.elementFormat = this.largeUIDarkElementFormat;
-			button.disabledLabelProperties.elementFormat = this.largeUIDisabledElementFormat;
-			button.selectedDisabledLabelProperties.elementFormat = this.largeUIDisabledElementFormat;
+			button.disabledLabelProperties.elementFormat = this.largeUIDarkDisabledElementFormat;
+			button.selectedDisabledLabelProperties.elementFormat = this.largeUIDarkDisabledElementFormat;
 
 			button.paddingTop = button.paddingBottom = 8 * this.scale;
 			button.paddingLeft = button.paddingRight = 16 * this.scale;
