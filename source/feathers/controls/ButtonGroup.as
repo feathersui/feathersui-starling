@@ -70,6 +70,16 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected static const LABEL_FIELD:String = "label";
+
+		/**
+		 * @private
+		 */
+		protected static const ENABLED_FIELD:String = "isEnabled";
+
+		/**
+		 * @private
+		 */
 		private static const DEFAULT_BUTTON_FIELDS:Vector.<String> = new <String>
 		[
 			"defaultIcon",
@@ -1358,7 +1368,7 @@ package feathers.controls
 		{
 			if(item is Object)
 			{
-				if(item.hasOwnProperty("label"))
+				if(item.hasOwnProperty(LABEL_FIELD))
 				{
 					button.label = item.label as String;
 				}
@@ -1366,9 +1376,13 @@ package feathers.controls
 				{
 					button.label = item.toString();
 				}
-				if(item.hasOwnProperty("isEnabled"))
+				if(item.hasOwnProperty(ENABLED_FIELD))
 				{
 					button.isEnabled = item.isEnabled as Boolean;
+				}
+				else
+				{
+					button.isEnabled = this._isEnabled;
 				}
 				for each(var field:String in DEFAULT_BUTTON_FIELDS)
 				{
@@ -1381,7 +1395,12 @@ package feathers.controls
 				{
 					if(item.hasOwnProperty(field))
 					{
-						button.addEventListener(field, item[field] as Function);
+						var listener:Function = item[field] as Function;
+						if(!listener)
+						{
+							continue;
+						}
+						button.addEventListener(field, listener);
 					}
 				}
 			}
@@ -1389,7 +1408,6 @@ package feathers.controls
 			{
 				button.label = "";
 			}
-
 		}
 
 		/**
