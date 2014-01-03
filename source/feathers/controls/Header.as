@@ -359,7 +359,7 @@ package feathers.controls
 
 		/**
 		 * The UI controls that appear in the center region of the header. If
-		 * <code>centerItems<code> is not <code>null</code>, and the
+		 * <code>centerItems</code> is not <code>null</code>, and the
 		 * <code>titleAlign</code> property is <code>Header.TITLE_ALIGN_CENTER</code>,
 		 * the title text renderer will be hidden.
 		 *

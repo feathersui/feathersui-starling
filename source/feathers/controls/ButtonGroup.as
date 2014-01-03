@@ -1397,7 +1397,7 @@ package feathers.controls
 					if(item.hasOwnProperty(field))
 					{
 						var listener:Function = item[field] as Function;
-						if(!listener)
+						if(listener == null)
 						{
 							continue;
 						}
@@ -1670,7 +1670,7 @@ package feathers.controls
 			if(item.hasOwnProperty(field))
 			{
 				var listener:Function = item[field] as Function;
-				if(!listener)
+				if(listener == null)
 				{
 					return;
 				}
