@@ -135,7 +135,7 @@ package feathers.core
 			}
 			else
 			{
-				this.initializedObjects = null
+				this.initializedObjects = null;
 			}
 		}
 
@@ -368,8 +368,10 @@ package feathers.core
 					{
 						return;
 					}
-
-					this.initializedObjects[targetAsRequiredBaseClass] = true;
+					if (this.initializedObjects) 
+					{
+						this.initializedObjects[targetAsRequiredBaseClass] = true;
+					}
 					this.processAllInitializers(target);
 				}
 			}
