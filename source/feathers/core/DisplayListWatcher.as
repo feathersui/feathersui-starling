@@ -135,7 +135,7 @@ package feathers.core
 			}
 			else
 			{
-				this.initializedObjects = null
+				this.initializedObjects = null;
 			}
 		}
 
@@ -358,10 +358,10 @@ package feathers.core
 		 */
 		public function initializeObject(target:DisplayObject):void
 		{
-			const targetAsRequiredBaseClass:DisplayObject = DisplayObject(target as requiredBaseClass);
+			var targetAsRequiredBaseClass:DisplayObject = DisplayObject(target as requiredBaseClass);
 			if(targetAsRequiredBaseClass)
 			{
-				const isInitialized:Boolean = this._initializeOnce && this.initializedObjects[targetAsRequiredBaseClass];
+				var isInitialized:Boolean = this._initializeOnce && this.initializedObjects[targetAsRequiredBaseClass];
 				if(!isInitialized)
 				{
 					if(this.isExcluded(target))
@@ -369,17 +369,20 @@ package feathers.core
 						return;
 					}
 
-					this.initializedObjects[targetAsRequiredBaseClass] = true;
+					if(this._initializeOnce)
+					{
+						this.initializedObjects[targetAsRequiredBaseClass] = true;
+					}
 					this.processAllInitializers(target);
 				}
 			}
 
 			if(this.processRecursively)
 			{
-				const targetAsContainer:DisplayObjectContainer = target as DisplayObjectContainer;
+				var targetAsContainer:DisplayObjectContainer = target as DisplayObjectContainer;
 				if(targetAsContainer)
 				{
-					const childCount:int = targetAsContainer.numChildren;
+					var childCount:int = targetAsContainer.numChildren;
 					for(var i:int = 0; i < childCount; i++)
 					{
 						var child:DisplayObject = targetAsContainer.getChildAt(i);
