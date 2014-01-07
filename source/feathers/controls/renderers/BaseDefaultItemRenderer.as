@@ -471,6 +471,41 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		protected var _itemHasEnabled:Boolean = false;
+
+		/**
+		 * If true, the renderer's enabled state will come from the renderer's
+		 * item using the appropriate field or function for enabled. If false,
+		 * the renderer will be enabled if its owner is enabled.
+		 *
+		 * <p>In the following example, the item doesn't have an accessory:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.itemHasEnabled = true;</listing>
+		 *
+		 * @default false
+		 */
+		public function get itemHasEnabled():Boolean
+		{
+			return this._itemHasEnabled;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set itemHasEnabled(value:Boolean):void
+		{
+			if(this._itemHasEnabled == value)
+			{
+				return;
+			}
+			this._itemHasEnabled = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _accessoryPosition:String = ACCESSORY_POSITION_RIGHT;
 
 		[Inspectable(type="String",enumeration="top,right,bottom,left,manual")]
@@ -673,7 +708,7 @@ package feathers.controls.renderers
 		 */
 		override protected function set currentState(value:String):void
 		{
-			if(!this._isToggle && (!this.isSelectableWithoutToggle || (this._itemHasSelectable && !this.itemToSelectable(this._data))))
+			if(this._isEnabled && !this._isToggle && (!this.isSelectableWithoutToggle || (this._itemHasSelectable && !this.itemToSelectable(this._data))))
 			{
 				value = STATE_UP;
 			}
@@ -1516,7 +1551,6 @@ package feathers.controls.renderers
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
-
 		/**
 		 * @private
 		 */
@@ -1613,6 +1647,99 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		protected var _enabledField:String = "enabled";
+
+		/**
+		 * The field in the item that determines if the item renderer is
+		 * enabled, if the list is enabled. If the item does not have
+		 * this field, and a <code>enabledFunction</code> is not defined,
+		 * then the renderer will default to being enabled.
+		 *
+		 * <p>All of the label fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>enabledFunction</code></li>
+		 *     <li><code>enabledField</code></li>
+		 * </ol>
+		 *
+		 * <p>In the following example, the enabled field is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.enabledField = "isEnabled";</listing>
+		 *
+		 * @default "enabled"
+		 *
+		 * @see #enabledFunction
+		 */
+		public function get enabledField():String
+		{
+			return this._enabledField;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set enabledField(value:String):void
+		{
+			if(this._enabledField == value)
+			{
+				return;
+			}
+			this._enabledField = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _enabledFunction:Function;
+
+		/**
+		 * A function used to determine if a specific item is enabled. If this
+		 * function is not null, then the <code>enabledField</code> will be
+		 * ignored.
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 * <pre>function( item:Object ):Boolean</pre>
+		 *
+		 * <p>All of the enabled fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>enabledFunction</code></li>
+		 *     <li><code>enabledField</code></li>
+		 * </ol>
+		 *
+		 * <p>In the following example, the enabled function is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.enabledFunction = function( item:Object ):Boolean
+		 * {
+		 *    return item.isEnabled;
+		 * };</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #enabledField
+		 */
+		public function get enabledFunction():Function
+		{
+			return this._enabledFunction;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set enabledFunction(value:Function):void
+		{
+			if(this._enabledFunction == value)
+			{
+				return;
+			}
+			this._enabledFunction = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _explicitIsToggle:Boolean = false;
 
 		/**
@@ -1627,6 +1754,26 @@ package feathers.controls.renderers
 			super.isToggle = value;
 			this._explicitIsToggle = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _explicitIsEnabled:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		override public function set isEnabled(value:Boolean):void
+		{
+			if(this._explicitIsEnabled == value)
+			{
+				return;
+			}
+			this._explicitIsEnabled = value;
+			super.isEnabled = value;;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+			this.invalidate(INVALIDATION_FLAG_STATE);
 		}
 
 		/**
@@ -2050,6 +2197,30 @@ package feathers.controls.renderers
 		}
 
 		/**
+		 * Uses the enabled fields and functions to generate a enabled value for
+		 * a specific item.
+		 *
+		 * <p>All of the enabled fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>enabledFunction</code></li>
+		 *     <li><code>enabledField</code></li>
+		 * </ol>
+		 */
+		protected function itemToEnabled(item:Object):Boolean
+		{
+			if(this._enabledFunction != null)
+			{
+				return this._enabledFunction(item) as Boolean;
+			}
+			else if(this._enabledField != null && item && item.hasOwnProperty(this._enabledField))
+			{
+				return item[this._enabledField] as Boolean;
+			}
+
+			return true;
+		}
+
+		/**
 		 * @private
 		 */
 		override protected function draw():void
@@ -2349,6 +2520,14 @@ package feathers.controls.renderers
 				{
 					this._isToggle = this._explicitIsToggle;
 				}
+				if(this._itemHasEnabled)
+				{
+					this.refreshIsEnabled(this._explicitIsEnabled && this.itemToEnabled(this._data));
+				}
+				else
+				{
+					this.refreshIsEnabled(this._explicitIsEnabled);
+				}
 			}
 			else
 			{
@@ -2368,7 +2547,40 @@ package feathers.controls.renderers
 				{
 					this._isToggle = this._explicitIsToggle;
 				}
+				if(this._itemHasEnabled)
+				{
+					this.refreshIsEnabled(this._explicitIsEnabled);
+				}
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshIsEnabled(value:Boolean):void
+		{
+			if(this._isEnabled == value)
+			{
+				return;
+			}
+			this._isEnabled = value;
+			if(!this._isEnabled)
+			{
+				this.touchable = false;
+				this._currentState = STATE_DISABLED;
+				this.touchPointID = -1;
+			}
+			else
+			{
+				//might be in another state for some reason
+				//let's only change to up if needed
+				if(this._currentState == STATE_DISABLED)
+				{
+					this._currentState = STATE_UP;
+				}
+				this.touchable = true;
+			}
+			this.setInvalidationFlag(INVALIDATION_FLAG_STATE);
 		}
 
 		/**
