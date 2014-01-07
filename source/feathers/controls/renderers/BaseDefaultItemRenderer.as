@@ -435,6 +435,42 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		protected var _itemHasSelectable:Boolean = false;
+
+		/**
+		 * If true, the ability to select the renderer will come from the
+		 * renderer's item using the appropriate field or function for
+		 * selectable. If false, the renderer will be selectable if its owner
+		 * is selectable.
+		 *
+		 * <p>In the following example, the item doesn't have an accessory:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.itemHasSelectable = true;</listing>
+		 *
+		 * @default false
+		 */
+		public function get itemHasSelectable():Boolean
+		{
+			return this._itemHasSelectable;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set itemHasSelectable(value:Boolean):void
+		{
+			if(this._itemHasSelectable == value)
+			{
+				return;
+			}
+			this._itemHasSelectable = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _accessoryPosition:String = ACCESSORY_POSITION_RIGHT;
 
 		[Inspectable(type="String",enumeration="top,right,bottom,left,manual")]
@@ -637,7 +673,7 @@ package feathers.controls.renderers
 		 */
 		override protected function set currentState(value:String):void
 		{
-			if(!this._isToggle && !this.isSelectableWithoutToggle)
+			if(!this._isToggle && (!this.isSelectableWithoutToggle || (this._itemHasSelectable && !this.itemToSelectable(this._data))))
 			{
 				value = STATE_UP;
 			}
@@ -1480,6 +1516,119 @@ package feathers.controls.renderers
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
+
+		/**
+		 * @private
+		 */
+		protected var _selectableField:String = "selectable";
+
+		/**
+		 * The field in the item that determines if the item renderer can be
+		 * selected, if the list allows selection. If the item does not have
+		 * this field, and a <code>selectableFunction</code> is not defined,
+		 * then the renderer will default to being selectable.
+		 *
+		 * <p>All of the label fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>selectableFunction</code></li>
+		 *     <li><code>selectableField</code></li>
+		 * </ol>
+		 *
+		 * <p>In the following example, the selectable field is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.selectableField = "isSelectable";</listing>
+		 *
+		 * @default "selectable"
+		 *
+		 * @see #selectableFunction
+		 */
+		public function get selectableField():String
+		{
+			return this._selectableField;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set selectableField(value:String):void
+		{
+			if(this._selectableField == value)
+			{
+				return;
+			}
+			this._selectableField = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _selectableFunction:Function;
+
+		/**
+		 * A function used to determine if a specific item is selectable. If this
+		 * function is not null, then the <code>selectableField</code> will be
+		 * ignored.
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 * <pre>function( item:Object ):Boolean</pre>
+		 *
+		 * <p>All of the selectable fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>selectableFunction</code></li>
+		 *     <li><code>selectableField</code></li>
+		 * </ol>
+		 *
+		 * <p>In the following example, the selectable function is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.selectableFunction = function( item:Object ):Boolean
+		 * {
+		 *    return item.isSelectable;
+		 * };</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #selectableField
+		 */
+		public function get selectableFunction():Function
+		{
+			return this._selectableFunction;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set selectableFunction(value:Function):void
+		{
+			if(this._selectableFunction == value)
+			{
+				return;
+			}
+			this._selectableFunction = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _explicitIsToggle:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		override public function set isToggle(value:Boolean):void
+		{
+			if(this._explicitIsToggle == value)
+			{
+				return;
+			}
+			super.isToggle = value;
+			this._explicitIsToggle = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
 		/**
 		 * @private
 		 */
@@ -1877,6 +2026,30 @@ package feathers.controls.renderers
 		}
 
 		/**
+		 * Uses the selectable fields and functions to generate a selectable
+		 * value for a specific item.
+		 *
+		 * <p>All of the selectable fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>selectableFunction</code></li>
+		 *     <li><code>selectableField</code></li>
+		 * </ol>
+		 */
+		protected function itemToSelectable(item:Object):Boolean
+		{
+			if(this._selectableFunction != null)
+			{
+				return this._selectableFunction(item) as Boolean;
+			}
+			else if(this._selectableField != null && item && item.hasOwnProperty(this._selectableField))
+			{
+				return item[this._selectableField] as Boolean;
+			}
+
+			return true;
+		}
+
+		/**
 		 * @private
 		 */
 		override protected function draw():void
@@ -2168,6 +2341,14 @@ package feathers.controls.renderers
 				{
 					this.replaceAccessory(null);
 				}
+				if(this._itemHasSelectable)
+				{
+					this._isToggle = this._explicitIsToggle && this.itemToSelectable(this._data);
+				}
+				else
+				{
+					this._isToggle = this._explicitIsToggle;
+				}
 			}
 			else
 			{
@@ -2182,6 +2363,10 @@ package feathers.controls.renderers
 				if(this._itemHasAccessory)
 				{
 					this.replaceAccessory(null);
+				}
+				if(this._itemHasSelectable)
+				{
+					this._isToggle = this._explicitIsToggle;
 				}
 			}
 		}
@@ -2752,7 +2937,7 @@ package feathers.controls.renderers
 		 */
 		protected function itemRenderer_triggeredHandler(event:Event):void
 		{
-			if(this._isToggle || !this.isSelectableWithoutToggle)
+			if(this._isToggle || !this.isSelectableWithoutToggle || (this._itemHasSelectable && !this.itemToSelectable(this._data)))
 			{
 				return;
 			}
