@@ -1051,6 +1051,7 @@ package feathers.themes
 			renderer.defaultLabelProperties.elementFormat = this.largeLightElementFormat;
 			renderer.downLabelProperties.elementFormat = this.largeDarkElementFormat;
 			renderer.defaultSelectedLabelProperties.elementFormat = this.largeDarkElementFormat;
+			renderer.disabledLabelProperties.elementFormat = this.largeDisabledElementFormat;
 
 			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			renderer.paddingTop = renderer.paddingBottom = 8 * this.scale;
@@ -1090,6 +1091,7 @@ package feathers.themes
 
 			renderer.defaultLabelProperties.elementFormat = this.largeLightElementFormat;
 			renderer.downLabelProperties.elementFormat = this.largeDarkElementFormat;
+			renderer.disabledLabelProperties.elementFormat = this.largeDisabledElementFormat;
 
 			renderer.itemHasIcon = false;
 			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
@@ -1121,6 +1123,7 @@ package feathers.themes
 			renderer.defaultLabelProperties.elementFormat = this.largeLightElementFormat;
 			renderer.downLabelProperties.elementFormat = this.largeDarkElementFormat;
 			renderer.defaultSelectedLabelProperties.elementFormat = this.largeDarkElementFormat;
+			renderer.disabledLabelProperties.elementFormat = this.largeDisabledElementFormat;
 
 			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			renderer.paddingTop = renderer.paddingBottom = 8 * this.scale;
