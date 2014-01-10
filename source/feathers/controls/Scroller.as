@@ -4275,12 +4275,13 @@ package feathers.controls
 				return;
 			}
 
-			if(this._horizontalAutoScrollTween)
+			//if the scroll policy is off, we shouldn't stop this animation
+			if(this._horizontalAutoScrollTween && this._horizontalScrollPolicy != Scroller.SCROLL_POLICY_OFF)
 			{
 				Starling.juggler.remove(this._horizontalAutoScrollTween);
 				this._horizontalAutoScrollTween = null;
 			}
-			if(this._verticalAutoScrollTween)
+			if(this._verticalAutoScrollTween && this._verticalScrollPolicy != Scroller.SCROLL_POLICY_OFF)
 			{
 				Starling.juggler.remove(this._verticalAutoScrollTween);
 				this._verticalAutoScrollTween = null;
