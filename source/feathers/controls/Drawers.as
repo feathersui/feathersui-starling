@@ -379,6 +379,7 @@ package feathers.controls
 			if(this._topDrawer)
 			{
 				this._topDrawer.visible = false;
+				this._topDrawer.addEventListener(FeathersEventType.RESIZE, drawer_resizeHandler);
 				this.addChildAt(this._topDrawer, 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
@@ -580,6 +581,7 @@ package feathers.controls
 			if(this._rightDrawer)
 			{
 				this._rightDrawer.visible = false;
+				this._rightDrawer.addEventListener(FeathersEventType.RESIZE, drawer_resizeHandler);
 				this.addChildAt(this._rightDrawer, 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
@@ -781,6 +783,7 @@ package feathers.controls
 			if(this._bottomDrawer)
 			{
 				this._bottomDrawer.visible = false;
+				this._bottomDrawer.addEventListener(FeathersEventType.RESIZE, drawer_resizeHandler);
 				this.addChildAt(this._bottomDrawer, 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
@@ -982,6 +985,7 @@ package feathers.controls
 			if(this._leftDrawer)
 			{
 				this._leftDrawer.visible = false;
+				this._leftDrawer.addEventListener(FeathersEventType.RESIZE, drawer_resizeHandler);
 				this.addChildAt(this._leftDrawer, 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
@@ -3306,6 +3310,18 @@ package feathers.controls
 		protected function content_resizeHandler(event:Event):void
 		{
 			if(this._isValidating || this._autoSizeMode != AUTO_SIZE_MODE_CONTENT)
+			{
+				return;
+			}
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function drawer_resizeHandler(event:Event):void
+		{
+			if(this._isValidating)
 			{
 				return;
 			}
