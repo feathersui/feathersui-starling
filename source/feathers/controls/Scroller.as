@@ -1254,6 +1254,42 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _verticalMouseWheelScrollStep:Number = NaN;
+
+		/**
+		 * The number of pixels the scroller can be stepped vertically when
+		 * using the mouse wheel. If this value is <code>NaN</code>, the mouse
+		 * wheel will use the same scroll step as the scroll bars.
+		 *
+		 * <p>In the following example, the vertical mouse wheel scroll step is
+		 * customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.verticalMouseWheelScrollStep = 10;</listing>
+		 *
+		 * @default NaN
+		 */
+		public function get verticalMouseWheelScrollStep():Number
+		{
+			return this._verticalMouseWheelScrollStep;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set verticalMouseWheelScrollStep(value:Number):void
+		{
+			if(this._verticalMouseWheelScrollStep == value)
+			{
+				return;
+			}
+			this._verticalMouseWheelScrollStep = value;
+			this.invalidate(INVALIDATION_FLAG_SCROLL);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _targetVerticalScrollPosition:Number;
 
 		/**
@@ -4536,7 +4572,12 @@ package feathers.controls
 					return;
 				}
 				this.revealVerticalScrollBar();
-				var targetVerticalScrollPosition:Number = this._verticalScrollPosition - event.delta * this.actualVerticalScrollStep;
+				var scrollStep:Number = this._verticalMouseWheelScrollStep;
+				if(isNaN(scrollStep))
+				{
+					scrollStep = this.actualVerticalScrollStep;
+				}
+				var targetVerticalScrollPosition:Number = this._verticalScrollPosition - event.delta * scrollStep;
 				if(targetVerticalScrollPosition < this._minVerticalScrollPosition)
 				{
 					targetVerticalScrollPosition = this._minVerticalScrollPosition;
