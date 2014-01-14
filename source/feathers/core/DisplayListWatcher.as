@@ -16,21 +16,40 @@ package feathers.core
 
 	/**
 	 * Watches a container on the display list. As new display objects are
-	 * added, and if they match a specific type, they will be passed to initializer
-	 * functions to set properties, call methods, or otherwise modify them.
-	 * Useful for initializing skins and styles on UI controls.
+	 * added, and if they match a specific type, they will be passed to
+	 * initializer functions to set properties, call methods, or otherwise
+	 * modify them. Useful for initializing skins and styles on UI controls.
 	 *
 	 * <p>In the example below, the <code>buttonInitializer()</code> function
-	 * will be called when a <code>Button</code> is added to the display list:</p>
+	 * will be called when a <code>Button</code> is added to the display list,
+	 * and no values are specified in its <code>nameList</code> that match other
+	 * initializers:</p>
 	 *
 	 * <listing version="3.0">
 	 * setInitializerForClass(Button, buttonInitializer);</listing>
 	 *
-	 * <p>However, initializers are not called for subclasses. If a
-	 * <code>Check</code> is added to the display list (<code>Check</code>
-	 * extends <code>Button</code>), the <code>buttonInitializer()</code>
-	 * function will not be called. This important restriction allows subclasses
-	 * to have different skins, for instance.</p>
+	 * <p>You can specify a value in the button's <code>nameList</code> to call
+	 * a different initializer for a button. You might do this to apply
+	 * different skins for some buttons:</p>
+	 *
+	 * <listing version="3.0">
+	 * var button:Button = new Button();
+	 * button.label = "Click Me";
+	 * button.nameList.add( Button.ALTERNATE_NAME_CALL_TO_ACTION );
+	 * this.addChild( button );</listing>
+	 *
+	 * <p>The <code>callToActionButtonInitializer()</code> function will be called
+	 * when a <code>Button</code> with the <code>Button.ALTERNATE_NAME_CALL_TO_ACTION</code>
+	 * value is added to its <code>nameList</code>:</p>
+	 *
+	 * <listing version="3.0">
+	 * setInitializerForClass( Button, callToActionButtonInitializer, Button.ALTERNATE_NAME_CALL_TO_ACTION );</listing>
+	 *
+	 * <p>Initializers are not called for subclasses. If a <code>Check</code> is
+	 * added to the display list (<code>Check</code> extends
+	 * <code>Button</code>), the <code>buttonInitializer()</code> function will
+	 * not be called. This important restriction allows subclasses to have
+	 * different skins.</p>
 	 *
 	 * <p>You can target a specific subclass with the same initializer function
 	 * without adding it for all subclasses:</p>
@@ -60,7 +79,7 @@ package feathers.core
 		/**
 		 * Constructor.
 		 *
-		 * @param topLevelContainer		The root display object to watch (not necessarily Starling's root object)
+		 * @param topLevelContainer		The root display object to watch (not necessarily Starling's stage or root object)
 		 */
 		public function DisplayListWatcher(topLevelContainer:DisplayObjectContainer)
 		{
@@ -84,7 +103,7 @@ package feathers.core
 		/**
 		 * Determines if only the object added should be processed or if its
 		 * children should be processed recursively. Disabling this property
-		 * may improve performance, but it limits the capabilities of
+		 * may improve performance slightly, but it limits the capabilities of
 		 * <code>DisplayListWatcher</code>.
 		 *
 		 * <p>In the following example, children are not processed recursively:</p>
@@ -110,7 +129,11 @@ package feathers.core
 
 		/**
 		 * Determines if objects added to the display list are initialized only
-		 * once or every time that they are re-added.
+		 * once or every time that they are re-added. Disabling this property
+		 * will allow you to reinitialize a component when it is removed and
+		 * added to the display list. However, this may also unnecessarily
+		 * reinitialize components that have not changed, which will affect
+		 * performance.
 		 *
 		 * @default true
 		 */
@@ -416,28 +439,30 @@ package feathers.core
 		protected function applyAllStylesForTypeFromMaps(target:DisplayObject, type:Class, map:Dictionary, nameMap:Dictionary = null):void
 		{
 			var initializer:Function;
-			if(nameMap)
+			var hasNameInitializer:Boolean = false;
+			if(target is IFeathersControl && nameMap)
 			{
-				const nameTable:Object = nameMap[type];
+				var nameTable:Object = nameMap[type];
 				if(nameTable)
 				{
-					if(target is IFeathersControl)
+					var uiControl:IFeathersControl = IFeathersControl(target);
+					var nameList:TokenList = uiControl.nameList;
+					var nameCount:int = nameList.length;
+					for(var i:int = 0; i < nameCount; i++)
 					{
-						const uiControl:IFeathersControl = IFeathersControl(target);
-						for(var name:String in nameTable)
+						var name:String = nameList.item(i);
+						initializer = nameTable[name] as Function;
+						if(initializer != null)
 						{
-							if(uiControl.nameList.contains(name))
-							{
-								initializer = nameTable[name] as Function;
-								if(initializer != null)
-								{
-									initializer(target);
-									return;
-								}
-							}
+							hasNameInitializer = true;
+							initializer(target);
 						}
 					}
 				}
+			}
+			if(hasNameInitializer)
+			{
+				return;
 			}
 
 			initializer = map[type] as Function;
