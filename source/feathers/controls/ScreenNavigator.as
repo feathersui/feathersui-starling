@@ -575,10 +575,16 @@ package feathers.controls
 
 			if(sizeInvalid || selectionInvalid)
 			{
-				if(this._activeScreen && this._autoSizeMode != AUTO_SIZE_MODE_CONTENT)
+				if(this._activeScreen)
 				{
-					this._activeScreen.width = this.actualWidth;
-					this._activeScreen.height = this.actualHeight;
+					if(this._activeScreen.width != this.actualWidth)
+					{
+						this._activeScreen.width = this.actualWidth;
+					}
+					if(this._activeScreen.height != this.actualHeight)
+					{
+						this._activeScreen.height = this.actualHeight;
+					}
 				}
 			}
 
