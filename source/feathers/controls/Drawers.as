@@ -54,6 +54,22 @@ package feathers.controls
 	[Event(name="endInteraction",type="starling.events.Event")]
 
 	/**
+	 * Dispatched when the a drawer has completed opening.
+	 *
+	 * @eventType starling.events.Event.OPEN
+	 * @see starling.events.Event.CLOSE
+	 */
+	[Event(name="open",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the a drawer has completed closing.
+	 *
+	 * @eventType starling.events.Event.CLOSE
+	 * @see starling.events.Event.OPEN
+	 */
+	[Event(name="close",type="starling.events.Event")]
+
+	/**
 	 * A container that displays primary content in the center surrounded by
 	 * optional "drawers" that can open and close on the edges. Useful for
 	 * mobile-style app menus that slide open from the side of the screen.
@@ -2220,7 +2236,7 @@ package feathers.controls
 			this._openOrCloseTween = new Tween(this._content, this._openOrCloseDuration, this._openOrCloseEase);
 			this._openOrCloseTween.animate("y", targetPosition);
 			this._openOrCloseTween.onUpdate = openOrCloseTween_onUpdate;
-			this._openOrCloseTween.onComplete = openOrCloseTween_onComplete;
+			this._openOrCloseTween.onComplete = topDrawerOpenOrCloseTween_onComplete;
 			Starling.juggler.add(this._openOrCloseTween);
 		}
 
@@ -2253,7 +2269,7 @@ package feathers.controls
 			this._openOrCloseTween = new Tween(this._content, this._openOrCloseDuration, this._openOrCloseEase);
 			this._openOrCloseTween.animate("x", targetPosition);
 			this._openOrCloseTween.onUpdate = openOrCloseTween_onUpdate;
-			this._openOrCloseTween.onComplete = openOrCloseTween_onComplete;
+			this._openOrCloseTween.onComplete = rightDrawerOpenOrCloseTween_onComplete;
 			Starling.juggler.add(this._openOrCloseTween);
 		}
 
@@ -2286,7 +2302,7 @@ package feathers.controls
 			this._openOrCloseTween = new Tween(this._content, this._openOrCloseDuration, this._openOrCloseEase);
 			this._openOrCloseTween.animate("y", targetPosition);
 			this._openOrCloseTween.onUpdate = openOrCloseTween_onUpdate;
-			this._openOrCloseTween.onComplete = openOrCloseTween_onComplete;
+			this._openOrCloseTween.onComplete = bottomDrawerOpenOrCloseTween_onComplete;
 			Starling.juggler.add(this._openOrCloseTween);
 		}
 
@@ -2312,7 +2328,7 @@ package feathers.controls
 			this._openOrCloseTween = new Tween(this._content, duration, this._openOrCloseEase);
 			this._openOrCloseTween.animate("x", targetPosition);
 			this._openOrCloseTween.onUpdate = openOrCloseTween_onUpdate;
-			this._openOrCloseTween.onComplete = openOrCloseTween_onComplete;
+			this._openOrCloseTween.onComplete = leftDrawerOpenOrCloseTween_onComplete;
 			Starling.juggler.add(this._openOrCloseTween);
 		}
 
@@ -3025,44 +3041,92 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function openOrCloseTween_onComplete():void
+		protected function topDrawerOpenOrCloseTween_onComplete():void
 		{
-			var isTopDrawerOpen:Boolean = this.isTopDrawerOpen;
-			var isRightDrawerOpen:Boolean = this.isRightDrawerOpen;
-			var isBottomDrawerOpen:Boolean = this.isBottomDrawerOpen;
-			var isLeftDrawerOpen:Boolean = this.isLeftDrawerOpen;
 			this._openOrCloseTween = null;
-			if(this._topDrawer)
+			if(this._topDrawer is Sprite)
 			{
-				if(this._topDrawer is Sprite)
-				{
-					Sprite(this._topDrawer).clipRect = null;
-				}
-				this._topDrawer.visible = isTopDrawerOpen || this.isTopDrawerDocked;
+				Sprite(this._topDrawer).clipRect = null;
 			}
-			if(this._rightDrawer)
+			var isTopDrawerOpen:Boolean = this.isTopDrawerOpen;
+			var isTopDrawerDocked:Boolean = this.isTopDrawerDocked;
+			this._topDrawer.visible = isTopDrawerOpen || isTopDrawerDocked;
+			if(isTopDrawerOpen)
 			{
-				if(this._rightDrawer is Sprite)
-				{
-					Sprite(this._rightDrawer).clipRect = null;
-				}
-				this._rightDrawer.visible = isRightDrawerOpen || this.isRightDrawerDocked;
+				this.dispatchEventWith(Event.OPEN);
 			}
-			if(this._bottomDrawer)
+			else
 			{
-				if(this._bottomDrawer is Sprite)
-				{
-					Sprite(this._bottomDrawer).clipRect = null;
-				}
-				this._bottomDrawer.visible = isBottomDrawerOpen || this.isBottomDrawerDocked;
+				this.dispatchEventWith(Event.CLOSE);
 			}
-			if(this._leftDrawer)
+		}
+
+		/**
+		 * @private
+		 */
+		protected function rightDrawerOpenOrCloseTween_onComplete():void
+		{
+			this._openOrCloseTween = null;
+			if(this._rightDrawer is Sprite)
 			{
-				if(this._leftDrawer is Sprite)
-				{
-					Sprite(this._leftDrawer).clipRect = null;
-				}
-				this._leftDrawer.visible = isLeftDrawerOpen || this.isLeftDrawerDocked;
+				Sprite(this._rightDrawer).clipRect = null;
+			}
+			var isRightDrawerOpen:Boolean = this.isRightDrawerOpen;
+			var isRightDrawerDocked:Boolean = this.isRightDrawerDocked;
+			this._rightDrawer.visible = isRightDrawerOpen || isRightDrawerDocked;
+			if(isRightDrawerOpen)
+			{
+				this.dispatchEventWith(Event.OPEN);
+			}
+			else
+			{
+				this.dispatchEventWith(Event.CLOSE);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function bottomDrawerOpenOrCloseTween_onComplete():void
+		{
+			this._openOrCloseTween = null;
+			if(this._bottomDrawer is Sprite)
+			{
+				Sprite(this._bottomDrawer).clipRect = null;
+			}
+			var isBottomDrawerOpen:Boolean = this.isBottomDrawerOpen;
+			var isBottomDrawerDocked:Boolean = this.isBottomDrawerDocked;
+			this._bottomDrawer.visible = isBottomDrawerOpen || isBottomDrawerDocked;
+			if(isBottomDrawerOpen)
+			{
+				this.dispatchEventWith(Event.OPEN);
+			}
+			else
+			{
+				this.dispatchEventWith(Event.CLOSE);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function leftDrawerOpenOrCloseTween_onComplete():void
+		{
+			this._openOrCloseTween = null;
+			if(this._leftDrawer is Sprite)
+			{
+				Sprite(this._leftDrawer).clipRect = null;
+			}
+			var isLeftDrawerOpen:Boolean = this.isLeftDrawerOpen;
+			var isLeftDrawerDocked:Boolean = this.isLeftDrawerDocked;
+			this._leftDrawer.visible = isLeftDrawerOpen || isLeftDrawerDocked;
+			if(isLeftDrawerOpen)
+			{
+				this.dispatchEventWith(Event.OPEN);
+			}
+			else
+			{
+				this.dispatchEventWith(Event.CLOSE);
 			}
 		}
 
