@@ -113,8 +113,8 @@ package feathers.controls
 					//signals not being used
 				}
 			}
-			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
-			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
+			this.addEventListener(Event.ADDED_TO_STAGE, screenNavigator_addedToStageHandler);
+			this.addEventListener(Event.REMOVED_FROM_STAGE, screenNavigator_removedFromStageHandler);
 		}
 
 		/**
@@ -749,7 +749,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function addedToStageHandler(event:Event):void
+		protected function screenNavigator_addedToStageHandler(event:Event):void
 		{
 			this.stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
 		}
@@ -757,7 +757,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function removedFromStageHandler(event:Event):void
+		protected function screenNavigator_removedFromStageHandler(event:Event):void
 		{
 			this.stage.removeEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
 		}
