@@ -1175,6 +1175,31 @@ package feathers.controls
 					}
 				}
 			}
+			const centerItemCount:int = this._centerItems ? this._centerItems.length : 0;
+			for(i = 0; i < centerItemCount; i++)
+			{
+				item = this._centerItems[i];
+				if(item is IFeathersControl)
+				{
+					IFeathersControl(item).validate();
+				}
+				if(needsWidth && !isNaN(item.width))
+				{
+					totalItemWidth += item.width;
+					if(i > 0)
+					{
+						totalItemWidth += this._gap;
+					}
+				}
+				if(needsHeight && !isNaN(item.height))
+				{
+					itemHeight = item.height;
+					if(itemHeight > newHeight)
+					{
+						newHeight = itemHeight;
+					}
+				}
+			}
 			const rightItemCount:int = this._rightItems ? this._rightItems.length : 0;
 			for(i = 0; i < rightItemCount; i++)
 			{
@@ -1202,12 +1227,16 @@ package feathers.controls
 			}
 			newWidth += totalItemWidth;
 
-			if(this._title)
+			if(this._title && !(this._titleAlign == TITLE_ALIGN_CENTER && this._centerItems))
 			{
 				const calculatedTitleGap:Number = isNaN(this._titleGap) ? this._gap : this._titleGap;
 				newWidth += 2 * calculatedTitleGap;
 				var maxTitleWidth:Number = (needsWidth ? this._maxWidth : this.explicitWidth) - totalItemWidth;
 				if(leftItemCount > 0)
+				{
+					maxTitleWidth -= calculatedTitleGap;
+				}
+				if(centerItemCount > 0)
 				{
 					maxTitleWidth -= calculatedTitleGap;
 				}
