@@ -236,16 +236,6 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _oldGlobalX:Number = 0;
-
-		/**
-		 * @private
-		 */
-		protected var _oldGlobalY:Number = 0;
-
-		/**
-		 * @private
-		 */
 		protected var _autoCapitalize:String = "none";
 
 		/**
@@ -803,26 +793,21 @@ package feathers.controls.text
 			HELPER_POINT.x = HELPER_POINT.y = 0;
 			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
 			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
-			if(HELPER_POINT.x != this._oldGlobalX || HELPER_POINT.y != this._oldGlobalY)
+			const starlingViewPort:Rectangle = Starling.current.viewPort;
+			var stageTextViewPort:Rectangle = this.stageText.viewPort;
+			if(!stageTextViewPort)
 			{
-				this._oldGlobalX = HELPER_POINT.x;
-				this._oldGlobalY = HELPER_POINT.y;
-				const starlingViewPort:Rectangle = Starling.current.viewPort;
-				var stageTextViewPort:Rectangle = this.stageText.viewPort;
-				if(!stageTextViewPort)
-				{
-					stageTextViewPort = new Rectangle();
-				}
-				var nativeScaleFactor:Number = 1;
-				if(Starling.current.supportHighResolutions)
-				{
-					nativeScaleFactor = Starling.current.nativeStage.contentsScaleFactor;
-				}
-				var scaleFactor:Number = Starling.contentScaleFactor / nativeScaleFactor;
-				stageTextViewPort.x = Math.round(starlingViewPort.x + (HELPER_POINT.x * scaleFactor));
-				stageTextViewPort.y = Math.round(starlingViewPort.y + (HELPER_POINT.y * scaleFactor));
-				this.stageText.viewPort = stageTextViewPort;
+				stageTextViewPort = new Rectangle();
 			}
+			var nativeScaleFactor:Number = 1;
+			if(Starling.current.supportHighResolutions)
+			{
+				nativeScaleFactor = Starling.current.nativeStage.contentsScaleFactor;
+			}
+			var scaleFactor:Number = Starling.contentScaleFactor / nativeScaleFactor;
+			stageTextViewPort.x = Math.round(starlingViewPort.x + (HELPER_POINT.x * scaleFactor));
+			stageTextViewPort.y = Math.round(starlingViewPort.y + (HELPER_POINT.y * scaleFactor));
+			this.stageText.viewPort = stageTextViewPort;
 
 			if(this.stageText.visible)
 			{
@@ -1328,8 +1313,6 @@ package feathers.controls.text
 			var globalScaleX:Number = matrixToScaleX(HELPER_MATRIX);
 			var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
 			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
-			this._oldGlobalX = HELPER_POINT.x;
-			this._oldGlobalY = HELPER_POINT.y;
 			var nativeScaleFactor:Number = 1;
 			if(Starling.current.supportHighResolutions)
 			{

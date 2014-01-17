@@ -128,16 +128,6 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _oldGlobalX:Number = 0;
-
-		/**
-		 * @private
-		 */
-		protected var _oldGlobalY:Number = 0;
-
-		/**
-		 * @private
-		 */
 		protected var _snapshotWidth:int = 0;
 
 		/**
@@ -968,23 +958,19 @@ package feathers.controls.text
 			HELPER_POINT.x = HELPER_POINT.y = 0;
 			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
 			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
-			if(HELPER_POINT.x != this._oldGlobalX || HELPER_POINT.y != this._oldGlobalY)
+			var starlingViewPort:Rectangle = Starling.current.viewPort;
+			var nativeScaleFactor:Number = 1;
+			if(Starling.current.supportHighResolutions)
 			{
-				this._oldGlobalX = HELPER_POINT.x;
-				this._oldGlobalY = HELPER_POINT.y;
-				var starlingViewPort:Rectangle = Starling.current.viewPort;
-				var nativeScaleFactor:Number = 1;
-				if(Starling.current.supportHighResolutions)
-				{
-					nativeScaleFactor = Starling.current.nativeStage.contentsScaleFactor;
-				}
-				var scaleFactor:Number = Starling.contentScaleFactor / nativeScaleFactor;
-				this.textField.x = Math.round(starlingViewPort.x + (HELPER_POINT.x * scaleFactor));
-				this.textField.y = Math.round(starlingViewPort.y + (HELPER_POINT.y * scaleFactor));
+				nativeScaleFactor = Starling.current.nativeStage.contentsScaleFactor;
 			}
+			var scaleFactor:Number = Starling.contentScaleFactor / nativeScaleFactor;
+			this.textField.x = Math.round(starlingViewPort.x + (HELPER_POINT.x * scaleFactor));
+			this.textField.y = Math.round(starlingViewPort.y + (HELPER_POINT.y * scaleFactor));
 			this.textField.rotation = matrixToRotation(HELPER_MATRIX) * 180 / Math.PI;
-			this.textField.scaleX = matrixToScaleX(HELPER_MATRIX);
-			this.textField.scaleY = matrixToScaleY(HELPER_MATRIX);
+			scaleFactor = Starling.contentScaleFactor;
+			this.textField.scaleX = matrixToScaleX(HELPER_MATRIX) * scaleFactor;
+			this.textField.scaleY = matrixToScaleY(HELPER_MATRIX) * scaleFactor;
 		}
 
 		/**
@@ -1053,9 +1039,10 @@ package feathers.controls.text
 			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
 			var globalScaleX:Number = matrixToScaleX(HELPER_MATRIX);
 			var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
+			var scaleFactor:Number = Starling.contentScaleFactor;
 			HELPER_MATRIX.identity();
 			HELPER_MATRIX.translate(this._textFieldOffsetX, this._textFieldOffsetY);
-			HELPER_MATRIX.scale(Starling.contentScaleFactor * globalScaleX, Starling.contentScaleFactor * globalScaleY);
+			HELPER_MATRIX.scale(scaleFactor * globalScaleX, scaleFactor * globalScaleY);
 			var bitmapData:BitmapData = new BitmapData(this._snapshotWidth, this._snapshotHeight, true, 0x00ff00ff);
 			bitmapData.draw(this.textField, HELPER_MATRIX, null, null, this._textFieldClipRect);
 			var newTexture:Texture;
