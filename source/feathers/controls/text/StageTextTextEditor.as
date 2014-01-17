@@ -1112,11 +1112,8 @@ package feathers.controls.text
 				{
 					this.textSnapshot.visible = !this._stageTextHasFocus;
 					this.textSnapshot.alpha = hasText ? 1 : 0;
-					if(!this._stageTextHasFocus)
-					{
-						this.stageText.visible = false;
-					}
 				}
+				this.stageText.visible = false;
 			}
 
 			this.doPendingActions();
@@ -1254,10 +1251,10 @@ package feathers.controls.text
 			{
 				this.textSnapshot.visible = !this._stageTextHasFocus;
 				this.textSnapshot.alpha = this._text.length > 0 ? 1 : 0;
-				if(!this._stageTextHasFocus)
-				{
-					this.stageText.visible = false;
-				}
+			}
+			if(!this._stageTextHasFocus)
+			{
+				this.stageText.visible = false;
 			}
 		}
 
