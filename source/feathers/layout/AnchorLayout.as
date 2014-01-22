@@ -189,7 +189,9 @@ package feathers.layout
 				result = new Point();
 			}
 
-			const itemCount:int = items.length;
+			unpositionedItems.length = 0;
+			var itemCount:int = items.length;
+			var pushIndex:int = 0;
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var item:DisplayObject = items[i];
@@ -203,11 +205,11 @@ package feathers.layout
 					}
 					layoutData = layoutItem.layoutData as AnchorLayoutData;
 				}
-
 				var isReadyForLayout:Boolean = !layoutData || this.isReadyForLayout(layoutData, i, items, unpositionedItems);
 				if(!isReadyForLayout)
 				{
-					unpositionedItems.push(item);
+					unpositionedItems[pushIndex] = item;
+					pushIndex++;
 					continue;
 				}
 
@@ -568,15 +570,18 @@ package feathers.layout
 		 */
 		protected function layoutVector(items:Vector.<DisplayObject>, unpositionedItems:Vector.<DisplayObject>, boundsX:Number, boundsY:Number, viewPortWidth:Number, viewPortHeight:Number):void
 		{
-			const itemCount:int = items.length;
+			unpositionedItems.length = 0;
+			var itemCount:int = items.length;
+			var pushIndex:int = 0;
 			for(var i:int = 0; i < itemCount; i++)
 			{
-				var item:ILayoutDisplayObject = items[i] as ILayoutDisplayObject;
-				if(!item || !item.includeInLayout)
+				var item:DisplayObject = items[i];
+				var layoutItem:ILayoutDisplayObject = item as ILayoutDisplayObject;
+				if(!item || !layoutItem.includeInLayout)
 				{
 					continue;
 				}
-				var layoutData:AnchorLayoutData = item.layoutData as AnchorLayoutData;
+				var layoutData:AnchorLayoutData = layoutItem.layoutData as AnchorLayoutData;
 				if(!layoutData)
 				{
 					continue;
@@ -585,12 +590,12 @@ package feathers.layout
 				var isReadyForLayout:Boolean = this.isReadyForLayout(layoutData, i, items, unpositionedItems);
 				if(!isReadyForLayout)
 				{
-					unpositionedItems.push(item);
+					unpositionedItems[pushIndex] = item;
+					pushIndex++;
 					continue;
 				}
-
-				this.positionHorizontally(item, layoutData, boundsX, boundsY, viewPortWidth, viewPortHeight);
-				this.positionVertically(item, layoutData, boundsX, boundsY, viewPortWidth, viewPortHeight);
+				this.positionHorizontally(layoutItem, layoutData, boundsX, boundsY, viewPortWidth, viewPortHeight);
+				this.positionVertically(layoutItem, layoutData, boundsX, boundsY, viewPortWidth, viewPortHeight);
 			}
 		}
 
@@ -914,24 +919,24 @@ package feathers.layout
 		 */
 		protected function isReadyForLayout(layoutData:AnchorLayoutData, index:int, items:Vector.<DisplayObject>, unpositionedItems:Vector.<DisplayObject>):Boolean
 		{
-			const lastIndex:int = index - 1;
-			const leftAnchorDisplayObject:DisplayObject = layoutData.leftAnchorDisplayObject;
-			if(leftAnchorDisplayObject && items.lastIndexOf(leftAnchorDisplayObject, lastIndex) >= 0 && unpositionedItems.indexOf(leftAnchorDisplayObject) >= 0)
+			var nextIndex:int = index + 1;
+			var leftAnchorDisplayObject:DisplayObject = layoutData.leftAnchorDisplayObject;
+			if(leftAnchorDisplayObject && (items.indexOf(leftAnchorDisplayObject, nextIndex) >= nextIndex || unpositionedItems.indexOf(leftAnchorDisplayObject) >= 0))
 			{
 				return false;
 			}
-			const rightAnchorDisplayObject:DisplayObject = layoutData.rightAnchorDisplayObject;
-			if(rightAnchorDisplayObject && items.lastIndexOf(rightAnchorDisplayObject, lastIndex) >= 0 && unpositionedItems.indexOf(rightAnchorDisplayObject) >= 0)
+			var rightAnchorDisplayObject:DisplayObject = layoutData.rightAnchorDisplayObject;
+			if(rightAnchorDisplayObject && (items.indexOf(rightAnchorDisplayObject, nextIndex) >= nextIndex || unpositionedItems.indexOf(rightAnchorDisplayObject) >= 0))
 			{
 				return false;
 			}
-			const topAnchorDisplayObject:DisplayObject = layoutData.topAnchorDisplayObject;
-			if(topAnchorDisplayObject && items.lastIndexOf(topAnchorDisplayObject, lastIndex) >= 0 && unpositionedItems.indexOf(topAnchorDisplayObject) >= 0)
+			var topAnchorDisplayObject:DisplayObject = layoutData.topAnchorDisplayObject;
+			if(topAnchorDisplayObject && (items.indexOf(topAnchorDisplayObject, nextIndex) >= nextIndex || unpositionedItems.indexOf(topAnchorDisplayObject) >= 0))
 			{
 				return false;
 			}
-			const bottomAnchorDisplayObject:DisplayObject = layoutData.bottomAnchorDisplayObject;
-			if(bottomAnchorDisplayObject && items.lastIndexOf(bottomAnchorDisplayObject, lastIndex) >= 0 && unpositionedItems.indexOf(bottomAnchorDisplayObject) >= 0)
+			var bottomAnchorDisplayObject:DisplayObject = layoutData.bottomAnchorDisplayObject;
+			if(bottomAnchorDisplayObject && (items.indexOf(bottomAnchorDisplayObject, nextIndex) >= nextIndex || unpositionedItems.indexOf(bottomAnchorDisplayObject) >= 0))
 			{
 				return false
 			}
