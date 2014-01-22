@@ -174,7 +174,17 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _truncationOffset:int = 0;
+
+		/**
+		 * @private
+		 */
 		protected var _textElement:TextElement;
+
+		/**
+		 * @private
+		 */
+		protected var _text:String;
 
 		/**
 		 * @inheritDoc
@@ -188,7 +198,7 @@ package feathers.controls.text
 		 */
 		public function get text():String
 		{
-			return this._textElement ? this._textElement.text : null;
+			return this._textElement ? this._text : null;
 		}
 
 		/**
@@ -196,18 +206,17 @@ package feathers.controls.text
 		 */
 		public function set text(value:String):void
 		{
-			var textElement:TextElement = this._textElement;
-			if(textElement && textElement.text == value)
+			if(this._text == value)
 			{
 				return;
 			}
-			if(!textElement)
+			this._text = value;
+			if(!this._textElement)
 			{
-				textElement = new TextElement(value);
-				this.content = textElement;
-				return;
+				this._textElement = new TextElement(value);
 			}
-			textElement.text = value;
+			this._textElement.text = value;
+			this.content = this._textElement;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
@@ -255,6 +264,10 @@ package feathers.controls.text
 			if(value is TextElement)
 			{
 				this._textElement = TextElement(value);
+			}
+			else
+			{
+				this._textElement = null;
 			}
 			this._content = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
@@ -882,6 +895,86 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _truncationText:String = "...";
+
+		/**
+		 * The text to display at the end of the label if it is truncated.
+		 *
+		 * <p>In the following example, the truncation text is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.truncationText = " [more]";</listing>
+		 *
+		 * @default "..."
+		 *
+		 * @see #truncateToFit
+		 */
+		public function get truncationText():String
+		{
+			return _truncationText;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set truncationText(value:String):void
+		{
+			if(this._truncationText == value)
+			{
+				return;
+			}
+			this._truncationText = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _truncateToFit:Boolean = true;
+
+		/**
+		 * If word wrap is disabled, and the text is longer than the width of
+		 * the label, the text may be truncated using <code>truncationText</code>.
+		 *
+		 * <p>This feature may be disabled to improve performance.</p>
+		 *
+		 * <p>This feature only works when the <code>text</code> property is
+		 * set to a string value. If the <code>content</code> property is set
+		 * instead, then the content will not be truncated.</p>
+		 *
+		 * <p>This feature does not currently support the truncation of text
+		 * displayed on multiple lines.</p>
+		 *
+		 * <p>In the following example, truncation is disabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.truncateToFit = false;</listing>
+		 *
+		 * @default true
+		 *
+		 * @see #truncationText
+		 */
+		public function get truncateToFit():Boolean
+		{
+			return _truncateToFit;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set truncateToFit(value:Boolean):void
+		{
+			if(this._truncateToFit == value)
+			{
+				return;
+			}
+			this._truncateToFit = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			this.disposeContent();
@@ -1043,12 +1136,7 @@ package feathers.controls.text
 			{
 				newHeight = this._maxHeight;
 			}
-			var textLineWidth:Number = newWidth;
-			if(!this._wordWrap)
-			{
-				textLineWidth = MAX_TEXT_LINE_WIDTH;
-			}
-			this.refreshTextLines(this._measurementTextLines, this._measurementTextLineContainer, textLineWidth, newHeight);
+			this.refreshTextLines(this._measurementTextLines, this._measurementTextLineContainer, newWidth, newHeight);
 			if(needsWidth)
 			{
 				newWidth = this._measurementTextLineContainer.width;
@@ -1111,12 +1199,7 @@ package feathers.controls.text
 				this._previousContentHeight = this.actualHeight;
 				if(this._content)
 				{
-					var textLineWidth:Number = this.actualWidth;
-					if(!this._wordWrap)
-					{
-						textLineWidth = MAX_TEXT_LINE_WIDTH;
-					}
-					this.refreshTextLines(this._textLines, this._textLineContainer, textLineWidth, this.actualHeight);
+					this.refreshTextLines(this._textLines, this._textLineContainer, this.actualWidth, this.actualHeight);
 					this.refreshSnapshot();
 				}
 				if(this.textSnapshot)
@@ -1337,6 +1420,11 @@ package feathers.controls.text
 		 */
 		protected function refreshTextLines(textLines:Vector.<TextLine>, textLineParent:DisplayObjectContainer, width:Number, height:Number):void
 		{
+			if(this._textElement)
+			{
+				this._textElement.text = this._text;
+				this._truncationOffset = 0;
+			}
 			var textLineCache:Vector.<TextLine>;
 			var yPosition:Number = 0;
 			var lineCount:int = textLines.length;
@@ -1370,10 +1458,16 @@ package feathers.controls.text
 				var inactiveTextLineCount:int = textLineCache ? textLineCache.length : 0;
 				while(true)
 				{
+					var previousLine:TextLine = line;
+					var lineWidth:Number = width;
+					if(!this._wordWrap)
+					{
+						lineWidth = MAX_TEXT_LINE_WIDTH;
+					}
 					if(inactiveTextLineCount > 0)
 					{
 						var inactiveLine:TextLine = textLineCache[0];
-						line = this.textBlock.recreateTextLine(inactiveLine, line, width, 0, true);
+						line = this.textBlock.recreateTextLine(inactiveLine, previousLine, lineWidth, 0, true);
 						if(line)
 						{
 							textLineCache.shift();
@@ -1382,7 +1476,7 @@ package feathers.controls.text
 					}
 					else
 					{
-						line = this.textBlock.createTextLine(line, width, 0, true);
+						line = this.textBlock.createTextLine(previousLine, lineWidth, 0, true);
 						if(line)
 						{
 							textLineParent.addChild(line);
@@ -1393,6 +1487,17 @@ package feathers.controls.text
 						//end of text
 						break;
 					}
+					while(this._truncateToFit && this._textElement && !this._wordWrap && line.width > width)
+					{
+						this._truncationOffset++;
+						var truncatedTextLength:int = this._text.length - this._truncationOffset;
+						this._textElement.text = this._text.substr(0, truncatedTextLength) + this._truncationText;
+						line = this.textBlock.recreateTextLine(line, previousLine, lineWidth, 0, true);
+						if(truncatedTextLength == 0)
+						{
+							break;
+						}
+					}
 					if(pushIndex > 0)
 					{
 						yPosition += this._leading;
@@ -1402,6 +1507,11 @@ package feathers.controls.text
 					yPosition += line.descent;
 					line.filters = this._nativeFilters;
 					textLines[pushIndex] = line;
+					if(!this._wordWrap)
+					{
+						//only one line, please!
+						break;
+					}
 					pushIndex++;
 				}
 			}
