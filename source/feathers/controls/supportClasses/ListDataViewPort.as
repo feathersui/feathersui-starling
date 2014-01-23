@@ -540,14 +540,22 @@ package feathers.controls.supportClasses
 
 		override protected function draw():void
 		{
-			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
-			const scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
-			const sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
-			const selectionInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SELECTED);
-			const itemRendererInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_ITEM_RENDERER_FACTORY);
-			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
-			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
-			const layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
+			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			var scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
+			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
+			var selectionInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SELECTED);
+			var itemRendererInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_ITEM_RENDERER_FACTORY);
+			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
+			var layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
+
+			//scrolling only affects the layout is requiresLayoutOnScroll is true
+			if(!layoutInvalid && scrollInvalid && this._layout && this._layout.requiresLayoutOnScroll)
+			{
+				layoutInvalid = true;
+			}
+
+			var basicsInvalid:Boolean = sizeInvalid || dataInvalid || layoutInvalid || itemRendererInvalid;
 
 			var oldIgnoreRendererResizing:Boolean = this._ignoreRendererResizing;
 			this._ignoreRendererResizing = true;
@@ -560,34 +568,37 @@ package feathers.controls.supportClasses
 			{
 				this.refreshViewPortBounds();
 			}
-			if(scrollInvalid || sizeInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
+			if(basicsInvalid)
 			{
 				this.refreshInactiveRenderers(itemRendererInvalid);
 			}
-			if(stylesInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
+			if(dataInvalid || layoutInvalid || itemRendererInvalid)
 			{
 				this.refreshLayoutTypicalItem();
 			}
-			if(scrollInvalid || sizeInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
+			if(basicsInvalid)
 			{
 				this.refreshRenderers();
 			}
-			if(scrollInvalid || stylesInvalid || sizeInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
+			if(stylesInvalid || basicsInvalid)
 			{
 				this.refreshItemRendererStyles();
 			}
-			if(scrollInvalid || selectionInvalid || sizeInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
+			if(selectionInvalid || basicsInvalid)
 			{
 				this.refreshSelection();
 			}
-			if(scrollInvalid || stateInvalid || sizeInvalid || dataInvalid || layoutInvalid || itemRendererInvalid)
+			if(stateInvalid || basicsInvalid)
 			{
 				this.refreshEnabled();
 			}
 			this._ignoreLayoutChanges = oldIgnoreLayoutChanges;
 			this._ignoreSelectionChanges = oldIgnoreSelectionChanges;
 
-			this._layout.layout(this._layoutItems, this._viewPortBounds, this._layoutResult);
+			if(stateInvalid || selectionInvalid || stylesInvalid || basicsInvalid)
+			{
+				this._layout.layout(this._layoutItems, this._viewPortBounds, this._layoutResult);
+			}
 
 			this._ignoreRendererResizing = oldIgnoreRendererResizing;
 
@@ -705,7 +716,6 @@ package feathers.controls.supportClasses
 				}
 			}
 
-			this.refreshOneItemRendererStyles(typicalRenderer);
 			virtualLayout.typicalItem = DisplayObject(typicalRenderer);
 			this._typicalItemRenderer = typicalRenderer;
 			this._typicalItemIsInDataProvider = newTypicalItemIsInDataProvider;
@@ -716,6 +726,10 @@ package feathers.controls.supportClasses
 			for each(var renderer:IListItemRenderer in this._activeRenderers)
 			{
 				this.refreshOneItemRendererStyles(renderer);
+			}
+			if(this._typicalItemRenderer && !this._typicalItemIsInDataProvider)
+			{
+				this.refreshOneItemRendererStyles(this._typicalItemRenderer);
 			}
 		}
 

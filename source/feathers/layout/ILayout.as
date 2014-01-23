@@ -27,6 +27,17 @@ package feathers.layout
 	public interface ILayout extends IFeathersEventDispatcher
 	{
 		/**
+		 * Determines if the container calls <code>layout()</code> when the
+		 * scroll position changes. Useful for transforming items as the view
+		 * port scrolls. This value should be <code>true</code> for layouts that
+		 * implement the <code>IVirtualLayout</code> interface and the
+		 * <code>useVirtualLayout</code> property is set to <code>true</code>.
+		 * May also be used by layouts that toggle item visibility as the items
+		 * scroll into and out of the view port.
+		 */
+		function get requiresLayoutOnScroll():Boolean;
+
+		/**
 		 * Positions (and possibly resizes) the supplied items within the
 		 * optional bounds argument. If no bounds are specified, the layout
 		 * algorithm will assume that the bounds start a 0,0 and have unbounded

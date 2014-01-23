@@ -350,13 +350,19 @@ package feathers.controls
 		 */
 		override protected function draw():void
 		{
-			const layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
+			var layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
-			const clippingInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_CLIPPING);
+			var clippingInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_CLIPPING);
 			//we don't have scrolling, but a subclass might
-			const scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
+			var scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
 
-			if(scrollInvalid || sizeInvalid || layoutInvalid)
+			//scrolling only affects the layout is requiresLayoutOnScroll is true
+			if(!layoutInvalid && scrollInvalid && this._layout && this._layout.requiresLayoutOnScroll)
+			{
+				layoutInvalid = true;
+			}
+
+			if(sizeInvalid || layoutInvalid)
 			{
 				this.refreshViewPortBounds();
 				if(this._layout)
