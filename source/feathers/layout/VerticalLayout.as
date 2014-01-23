@@ -489,6 +489,11 @@ package feathers.layout
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _manageVisibility:Boolean = false;
+
+		/**
 		 * Determines if items will be set invisible if they are outside the
 		 * view port. Can improve performance, especially for non-virtual
 		 * layouts. If <code>true</code>, you will not be able to manually
@@ -496,7 +501,23 @@ package feathers.layout
 		 *
 		 * @default false
 		 */
-		public var manageVisibility:Boolean = false;
+		public function get manageVisibility():Boolean
+		{
+			return this._manageVisibility;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set manageVisibility(value:Boolean):void
+		{
+			if(this._manageVisibility == value)
+			{
+				return;
+			}
+			this._manageVisibility = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
 
 		/**
 		 * @private
@@ -739,6 +760,14 @@ package feathers.layout
 		public function set scrollPositionVerticalAlign(value:String):void
 		{
 			this._scrollPositionVerticalAlign = value;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get requiresLayoutOnScroll():Boolean
+		{
+			return this._manageVisibility || this._useVirtualLayout;
 		}
 
 		/**

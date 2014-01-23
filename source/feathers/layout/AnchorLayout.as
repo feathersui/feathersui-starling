@@ -71,6 +71,14 @@ package feathers.layout
 		/**
 		 * @inheritDoc
 		 */
+		public function get requiresLayoutOnScroll():Boolean
+		{
+			return false;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
 		public function layout(items:Vector.<DisplayObject>, viewPortBounds:ViewPortBounds = null, result:LayoutBoundsResult = null):LayoutBoundsResult
 		{
 			const boundsX:Number = viewPortBounds ? viewPortBounds.x : 0;
