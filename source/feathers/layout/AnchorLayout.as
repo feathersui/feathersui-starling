@@ -577,7 +577,7 @@ package feathers.layout
 			{
 				var item:DisplayObject = items[i];
 				var layoutItem:ILayoutDisplayObject = item as ILayoutDisplayObject;
-				if(!item || !layoutItem.includeInLayout)
+				if(!layoutItem || !layoutItem.includeInLayout)
 				{
 					continue;
 				}
