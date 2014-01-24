@@ -37,7 +37,7 @@ package feathers.controls.supportClasses
 	 * @private
 	 * Used internally by GroupedList. Not meant to be used on its own.
 	 */
-	public final class GroupedListDataViewPort extends FeathersControl implements IViewPort
+	public class GroupedListDataViewPort extends FeathersControl implements IViewPort
 	{
 		private static const INVALIDATION_FLAG_ITEM_RENDERER_FACTORY:String = "itemRendererFactory";
 
