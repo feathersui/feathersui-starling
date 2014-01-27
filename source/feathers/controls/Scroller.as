@@ -1697,7 +1697,7 @@ package feathers.controls
 		 * <p>In the following example, the interaction mode is optimized for mouse:</p>
 		 *
 		 * <listing version="3.0">
-		 * scroller.scrollBarDisplayMode = Scroller.INTERACTION_MODE_MOUSE;</listing>
+		 * scroller.interactionMode = Scroller.INTERACTION_MODE_MOUSE;</listing>
 		 *
 		 * @default Scroller.INTERACTION_MODE_TOUCH
 		 *
