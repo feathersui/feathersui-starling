@@ -1508,6 +1508,7 @@ package feathers.controls
 		 */
 		protected function createFirstButton(item:Object):Button
 		{
+			var isNewInstance:Boolean = false;
 			if(this.inactiveFirstButton)
 			{
 				var button:Button = this.inactiveFirstButton;
@@ -1515,7 +1516,8 @@ package feathers.controls
 			}
 			else
 			{
-				const factory:Function = this._firstButtonFactory != null ? this._firstButtonFactory : this._buttonFactory;
+				isNewInstance = true;
+				var factory:Function = this._firstButtonFactory != null ? this._firstButtonFactory : this._buttonFactory;
 				button = Button(factory());
 				if(this._customFirstButtonName)
 				{
@@ -1529,10 +1531,16 @@ package feathers.controls
 				{
 					button.nameList.add(this.firstButtonName);
 				}
-				button.addEventListener(Event.TRIGGERED, button_triggeredHandler);
 				this.addChild(button);
 			}
 			this._buttonInitializer(button, item);
+			if(isNewInstance)
+			{
+				//we need to listen for Event.TRIGGERED after the initializer
+				//is called to avoid runtime errors because the button may be
+				//disposed by the time listeners in the initializer are called.
+				button.addEventListener(Event.TRIGGERED, button_triggeredHandler);
+			}
 			return button;
 		}
 
@@ -1541,6 +1549,7 @@ package feathers.controls
 		 */
 		protected function createLastButton(item:Object):Button
 		{
+			var isNewInstance:Boolean = false;
 			if(this.inactiveLastButton)
 			{
 				var button:Button = this.inactiveLastButton;
@@ -1548,7 +1557,8 @@ package feathers.controls
 			}
 			else
 			{
-				const factory:Function = this._lastButtonFactory != null ? this._lastButtonFactory : this._buttonFactory;
+				isNewInstance = true;
+				var factory:Function = this._lastButtonFactory != null ? this._lastButtonFactory : this._buttonFactory;
 				button = Button(factory());
 				if(this._customLastButtonName)
 				{
@@ -1562,10 +1572,16 @@ package feathers.controls
 				{
 					button.nameList.add(this.lastButtonName);
 				}
-				button.addEventListener(Event.TRIGGERED, button_triggeredHandler);
 				this.addChild(button);
 			}
 			this._buttonInitializer(button, item);
+			if(isNewInstance)
+			{
+				//we need to listen for Event.TRIGGERED after the initializer
+				//is called to avoid runtime errors because the button may be
+				//disposed by the time listeners in the initializer are called.
+				button.addEventListener(Event.TRIGGERED, button_triggeredHandler);
+			}
 			return button;
 		}
 
@@ -1574,8 +1590,10 @@ package feathers.controls
 		 */
 		protected function createButton(item:Object):Button
 		{
+			var isNewInstance:Boolean = false;
 			if(this.inactiveButtons.length == 0)
 			{
+				isNewInstance = true;
 				var button:Button = this._buttonFactory();
 				if(this._customButtonName)
 				{
@@ -1585,7 +1603,6 @@ package feathers.controls
 				{
 					button.nameList.add(this.buttonName);
 				}
-				button.addEventListener(Event.TRIGGERED, button_triggeredHandler);
 				this.addChild(button);
 			}
 			else
@@ -1593,6 +1610,13 @@ package feathers.controls
 				button = this.inactiveButtons.shift();
 			}
 			this._buttonInitializer(button, item);
+			if(isNewInstance)
+			{
+				//we need to listen for Event.TRIGGERED after the initializer
+				//is called to avoid runtime errors because the button may be
+				//disposed by the time listeners in the initializer are called.
+				button.addEventListener(Event.TRIGGERED, button_triggeredHandler);
+			}
 			return button;
 		}
 
@@ -1652,6 +1676,11 @@ package feathers.controls
 		 */
 		protected function button_triggeredHandler(event:Event):void
 		{
+			//if this was called after dispose, ignore it
+			if(!this._dataProvider || !this.activeButtons)
+			{
+				return;
+			}
 			var button:Button = Button(event.currentTarget);
 			var index:int = this.activeButtons.indexOf(button);
 			var item:Object = this._dataProvider.getItemAt(index);
