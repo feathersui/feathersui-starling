@@ -99,6 +99,16 @@ package feathers.controls.text
 		protected static const MAX_TEXT_LINE_WIDTH:Number = 1000000;
 
 		/**
+		 * @private
+		 */
+		protected static const LINE_FEED:String = "\n";
+
+		/**
+		 * @private
+		 */
+		protected static const CARRIAGE_RETURN:String = "\r";
+
+		/**
 		 * Constructor.
 		 */
 		public function TextBlockTextRenderer()
@@ -1454,6 +1464,8 @@ package feathers.controls.text
 
 			if(width >= 0)
 			{
+				var lineStartIndex:int = 0;
+				var canTruncate:Boolean = this._truncateToFit && this._textElement && !this._wordWrap;
 				var pushIndex:int = textLines.length;
 				var inactiveTextLineCount:int = textLineCache ? textLineCache.length : 0;
 				while(true)
@@ -1487,12 +1499,37 @@ package feathers.controls.text
 						//end of text
 						break;
 					}
-					while(this._truncateToFit && this._textElement && !this._wordWrap && line.width > width)
+					var lineLength:int = line.rawTextLength;
+					var isTruncated:Boolean = false;
+					while(canTruncate && line.width > width)
 					{
+						isTruncated = true;
+						if(this._truncationOffset == 0)
+						{
+							//this will quickly skip all of the characters after
+							//the maximum width of the line, instead of going
+							//one by one.
+							var endIndex:int = line.getAtomIndexAtPoint(width, 0);
+							if(endIndex >= 0)
+							{
+								this._truncationOffset = line.rawTextLength - endIndex;
+							}
+						}
 						this._truncationOffset++;
-						var truncatedTextLength:int = this._text.length - this._truncationOffset;
-						this._textElement.text = this._text.substr(0, truncatedTextLength) + this._truncationText;
-						line = this.textBlock.recreateTextLine(line, previousLine, lineWidth, 0, true);
+						var truncatedTextLength:int = lineLength - this._truncationOffset;
+						//we want to start at this line so that the previous
+						//lines don't become invalid.
+						this._textElement.text = this._text.substr(lineStartIndex, truncatedTextLength) + this._truncationText;
+						var lineBreakIndex:int = this._text.indexOf(LINE_FEED, lineStartIndex);
+						if(lineBreakIndex < 0)
+						{
+							lineBreakIndex = this._text.indexOf(CARRIAGE_RETURN, lineStartIndex);
+						}
+						if(lineBreakIndex >= 0)
+						{
+							this._textElement.text += this._text.substr(lineBreakIndex);
+						}
+						line = this.textBlock.recreateTextLine(line, null, lineWidth, 0, true);
 						if(truncatedTextLength == 0)
 						{
 							break;
@@ -1507,12 +1544,8 @@ package feathers.controls.text
 					yPosition += line.descent;
 					line.filters = this._nativeFilters;
 					textLines[pushIndex] = line;
-					if(!this._wordWrap)
-					{
-						//only one line, please!
-						break;
-					}
 					pushIndex++;
+					lineStartIndex += lineLength;
 				}
 			}
 
