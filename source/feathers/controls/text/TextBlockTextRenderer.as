@@ -1369,6 +1369,7 @@ package feathers.controls.text
 				totalBitmapWidth -= currentBitmapWidth;
 				clipWidth -= currentBitmapWidth;
 				yPosition = 0;
+				clipHeight = this.actualHeight;
 				totalBitmapHeight = this._snapshotHeight;
 			}
 			while(totalBitmapWidth > 0)
