@@ -3189,9 +3189,10 @@ package feathers.controls.renderers
 		 */
 		override protected function button_touchHandler(event:TouchEvent):void
 		{
-			if(this.accessory && this.touchPointID < 0)
+			if(this.accessory && this.accessory != this.accessoryLabel && this.accessory != this.accessoryImage && this.touchPointID < 0)
 			{
-				//ignore all touches on accessory. return to up state.
+				//ignore all touches on accessories that are not labels or
+				//loaders. return to up state.
 				var touch:Touch = event.getTouch(this.accessory);
 				if(touch)
 				{
