@@ -2853,33 +2853,44 @@ package feathers.controls.renderers
 		 */
 		override protected function refreshMaxLabelWidth(forMeasurement:Boolean):void
 		{
-			var calculatedWidth:Number = this.actualWidth;
+			var basicWidth:Number = this.actualWidth;
 			if(forMeasurement)
 			{
-				calculatedWidth = isNaN(this.explicitWidth) ? this._maxWidth : this.explicitWidth;
+				basicWidth = isNaN(this.explicitWidth) ? this._maxWidth : this.explicitWidth;
 			}
+			basicWidth -= (this._paddingLeft + this._paddingRight);
+			var calculatedWidth:Number = basicWidth;
 			if(this.currentIcon is IFeathersControl)
 			{
 				IFeathersControl(this.currentIcon).validate();
 			}
-			if(this.accessory is IFeathersControl)
-			{
-				IFeathersControl(this.accessory).validate();
-			}
-			const adjustedGap:Number = this._gap == Number.POSITIVE_INFINITY ? Math.min(this._paddingLeft, this._paddingRight) : this._gap;
+			var adjustedGap:Number = this._gap == Number.POSITIVE_INFINITY ? Math.min(this._paddingLeft, this._paddingRight) : this._gap;
+			var accessoryGap:Number = (isNaN(this._accessoryGap) || this._accessoryGap == Number.POSITIVE_INFINITY) ? adjustedGap : this._accessoryGap;
 			if(this.currentIcon && (this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE ||
 				this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE))
 			{
 				calculatedWidth -= (adjustedGap + this.currentIcon.width);
 			}
-
+			if(this.accessoryLabel)
+			{
+				if(this._accessoryPosition == ACCESSORY_POSITION_LEFT || this._accessoryPosition == ACCESSORY_POSITION_RIGHT)
+				{
+					this.accessoryLabel.maxWidth = calculatedWidth - accessoryGap;
+				}
+				else
+				{
+					this.accessoryLabel.maxWidth = basicWidth;
+				}
+			}
+			if(this.accessory is IFeathersControl)
+			{
+				IFeathersControl(this.accessory).validate();
+			}
 			if(this.accessory && (this._accessoryPosition == ACCESSORY_POSITION_LEFT || this._accessoryPosition == ACCESSORY_POSITION_RIGHT))
 			{
-				const accessoryGap:Number = (isNaN(this._accessoryGap) || this._accessoryGap == Number.POSITIVE_INFINITY) ? adjustedGap : this._accessoryGap;
 				calculatedWidth -= (accessoryGap + this.accessory.width);
 			}
-
-			this.labelTextRenderer.maxWidth = calculatedWidth - this._paddingLeft - this._paddingRight;
+			this.labelTextRenderer.maxWidth = calculatedWidth;
 		}
 
 		/**
