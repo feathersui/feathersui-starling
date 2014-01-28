@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project name="feathers" default="quick" basedir=".">
+<project name="feathers" default="swc" basedir=".">
 	
 	<!-- build.local.properties and sdk.local.proprties are optional files that
 		can be used to override the default properties. -->
@@ -8,7 +8,7 @@
 	<property file="./build.local.properties"/>
 	<property file="./build.properties"/>
 
-	<target name="quick" depends="-feathers,-cleanup" description="builds feathers.swc only"/>
+	<target name="swc" depends="-feathers,-cleanup" description="builds feathers.swc only"/>
 
 	<target name="docs" depends="-docs,-cleanup" description="builds API reference only"/>
 
