@@ -2975,26 +2975,28 @@ package feathers.controls
 				this.actualVerticalScrollStep = this.explicitVerticalScrollStep;
 			}
 
+			var visibleViewPortWidth:Number = this.actualWidth - (this._leftViewPortOffset + this._rightViewPortOffset);
+			var visibleViewPortHeight:Number = this.actualHeight - (this._topViewPortOffset + this._bottomViewPortOffset);
 			if(isNaN(this.explicitPageWidth))
 			{
-				this.actualPageWidth = this.actualWidth - (this._leftViewPortOffset + this._rightViewPortOffset);
+				this.actualPageWidth = visibleViewPortWidth;
 			}
 			if(isNaN(this.explicitPageHeight))
 			{
-				this.actualPageHeight = this.actualHeight - (this._topViewPortOffset + this._bottomViewPortOffset);
+				this.actualPageHeight = visibleViewPortHeight;
 			}
 			const oldMaxHSP:Number = this._maxHorizontalScrollPosition;
 			const oldMaxVSP:Number = this._maxVerticalScrollPosition;
 			if(this._viewPort)
 			{
 				this._minHorizontalScrollPosition = this._viewPort.contentX;
-				this._maxHorizontalScrollPosition = this._viewPort.width - this.actualPageWidth;
+				this._maxHorizontalScrollPosition = this._viewPort.width - visibleViewPortWidth;
 				if(this._maxHorizontalScrollPosition < this._minHorizontalScrollPosition)
 				{
 					this._maxHorizontalScrollPosition = this._minHorizontalScrollPosition;
 				}
 				this._minVerticalScrollPosition = this._viewPort.contentY;
-				this._maxVerticalScrollPosition = this._viewPort.height - this.actualPageHeight;
+				this._maxVerticalScrollPosition = this._viewPort.height - visibleViewPortHeight;
 				if(this._maxVerticalScrollPosition < this._minVerticalScrollPosition)
 				{
 					this._maxVerticalScrollPosition =  this._minVerticalScrollPosition;
