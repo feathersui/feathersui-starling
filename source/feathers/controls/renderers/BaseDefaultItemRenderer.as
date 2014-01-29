@@ -252,6 +252,30 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		protected var _iconIsFromItem:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected var _accessoryIsFromItem:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		override public function set defaultIcon(value:DisplayObject):void
+		{
+			if(this._iconSelector.defaultValue == value)
+			{
+				return;
+			}
+			this.replaceIcon(null);
+			this._iconIsFromItem = false;
+			super.defaultIcon = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _data:Object;
 
 		/**
@@ -2013,8 +2037,14 @@ package feathers.controls.renderers
 		 */
 		override public function dispose():void
 		{
-			this.replaceIcon(null);
-			this.replaceAccessory(null);
+			if(this._iconIsFromItem)
+			{
+				this.replaceIcon(null);
+			}
+			if(this._accessoryIsFromItem)
+			{
+				this.replaceAccessory(null);
+			}
 			if(this._stateDelayTimer)
 			{
 				if(this._stateDelayTimer.running)
@@ -2500,16 +2530,24 @@ package feathers.controls.renderers
 				}
 				if(this._itemHasIcon)
 				{
-					const newIcon:DisplayObject = this.itemToIcon(this._data);
+					var newIcon:DisplayObject = this.itemToIcon(this._data);
+					this._iconIsFromItem = newIcon != null;
 					this.replaceIcon(newIcon);
+				}
+				else if(this._iconIsFromItem)
+				{
+					this._iconIsFromItem = false;
+					this.replaceIcon(null);
 				}
 				if(this._itemHasAccessory)
 				{
-					const newAccessory:DisplayObject = this.itemToAccessory(this._data);
+					var newAccessory:DisplayObject = this.itemToAccessory(this._data);
+					this._accessoryIsFromItem = newAccessory != null;
 					this.replaceAccessory(newAccessory);
 				}
-				else
+				else if(this._accessoryIsFromItem)
 				{
+					this._accessoryIsFromItem = false;
 					this.replaceAccessory(null);
 				}
 				if(this._itemHasSelectable)
@@ -2535,12 +2573,14 @@ package feathers.controls.renderers
 				{
 					this._label = "";
 				}
-				if(this._itemHasIcon)
+				if(this._itemHasIcon || this._iconIsFromItem)
 				{
+					this._iconIsFromItem = false;
 					this.replaceIcon(null);
 				}
-				if(this._itemHasAccessory)
+				if(this._itemHasAccessory || this._accessoryIsFromItem)
 				{
+					this._accessoryIsFromItem = false;
 					this.replaceAccessory(null);
 				}
 				if(this._itemHasSelectable)
