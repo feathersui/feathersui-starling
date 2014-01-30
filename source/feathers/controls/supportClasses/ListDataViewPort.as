@@ -663,56 +663,54 @@ package feathers.controls.supportClasses
 				{
 					typicalItem = this._dataProvider.getItemAt(0);
 				}
-				else
-				{
-					virtualLayout.typicalItem = null;
-					return;
-				}
 			}
 
-			var typicalRenderer:IListItemRenderer = IListItemRenderer(this._rendererMap[typicalItem]);
-			if(!typicalRenderer && this._typicalItemRenderer)
+			if(typicalItem)
 			{
-				//we can reuse the typical item renderer if the old typical item
-				//wasn't in the data provider.
-				var canReuse:Boolean = !this._typicalItemIsInDataProvider;
-				if(!canReuse)
+				var typicalRenderer:IListItemRenderer = IListItemRenderer(this._rendererMap[typicalItem]);
+				if(!typicalRenderer && this._typicalItemRenderer)
 				{
-					//we can also reuse the typical item renderer if the old
-					//typical item was in the data provider, but it isn't now.
-					canReuse = this._dataProvider.getItemIndex(this._typicalItemRenderer.data) < 0;
-				}
-				if(canReuse)
-				{
-					//if the old typical item was in the data provider, remove
-					//it from the renderer map.
-					if(this._typicalItemIsInDataProvider)
+					//we can reuse the typical item renderer if the old typical item
+					//wasn't in the data provider.
+					var canReuse:Boolean = !this._typicalItemIsInDataProvider;
+					if(!canReuse)
 					{
-						delete this._rendererMap[this._typicalItemRenderer.data];
+						//we can also reuse the typical item renderer if the old
+						//typical item was in the data provider, but it isn't now.
+						canReuse = this._dataProvider.getItemIndex(this._typicalItemRenderer.data) < 0;
 					}
-					typicalRenderer = this._typicalItemRenderer;
-					typicalRenderer.data = typicalItem;
-					typicalRenderer.index = typicalItemIndex;
-					//if the new typical item is in the data provider, add it
-					//to the renderer map.
-					if(newTypicalItemIsInDataProvider)
+					if(canReuse)
 					{
-						this._rendererMap[typicalItem] = typicalRenderer;
+						//if the old typical item was in the data provider, remove
+						//it from the renderer map.
+						if(this._typicalItemIsInDataProvider)
+						{
+							delete this._rendererMap[this._typicalItemRenderer.data];
+						}
+						typicalRenderer = this._typicalItemRenderer;
+						typicalRenderer.data = typicalItem;
+						typicalRenderer.index = typicalItemIndex;
+						//if the new typical item is in the data provider, add it
+						//to the renderer map.
+						if(newTypicalItemIsInDataProvider)
+						{
+							this._rendererMap[typicalItem] = typicalRenderer;
+						}
 					}
 				}
-			}
-			if(!typicalRenderer)
-			{
-				//if we still don't have a typical item renderer, we need to
-				//create a new one.
-				typicalRenderer = this.createRenderer(typicalItem, typicalItemIndex, false, !newTypicalItemIsInDataProvider);
-				if(!this._typicalItemIsInDataProvider && this._typicalItemRenderer)
+				if(!typicalRenderer)
 				{
-					//get rid of the old typical item renderer if it isn't
-					//needed anymore.  since it was not in the data provider, we
-					//don't need to mess with the renderer map dictionary.
-					this.destroyRenderer(this._typicalItemRenderer);
-					this._typicalItemRenderer = null;
+					//if we still don't have a typical item renderer, we need to
+					//create a new one.
+					typicalRenderer = this.createRenderer(typicalItem, typicalItemIndex, false, !newTypicalItemIsInDataProvider);
+					if(!this._typicalItemIsInDataProvider && this._typicalItemRenderer)
+					{
+						//get rid of the old typical item renderer if it isn't
+						//needed anymore.  since it was not in the data provider, we
+						//don't need to mess with the renderer map dictionary.
+						this.destroyRenderer(this._typicalItemRenderer);
+						this._typicalItemRenderer = null;
+					}
 				}
 			}
 

@@ -1145,86 +1145,84 @@ package feathers.controls.supportClasses
 					}
 				}
 			}
-			if(!typicalItem)
-			{
-				virtualLayout.typicalItem = null;
-				return;
-			}
 
-			var isFirst:Boolean = false;
-			var isSingle:Boolean = false;
-			var typicalItemRenderer:IGroupedListItemRenderer;
-			if(hasCustomSingleItemRenderer && firstGroupLength == 1)
+			if(typicalItem)
 			{
-				if(this._singleItemRendererMap)
+				var isFirst:Boolean = false;
+				var isSingle:Boolean = false;
+				var typicalItemRenderer:IGroupedListItemRenderer;
+				if(hasCustomSingleItemRenderer && firstGroupLength == 1)
 				{
-					typicalItemRenderer = IGroupedListItemRenderer(this._singleItemRendererMap[typicalItem]);
+					if(this._singleItemRendererMap)
+					{
+						typicalItemRenderer = IGroupedListItemRenderer(this._singleItemRendererMap[typicalItem]);
+					}
+					isSingle = true;
 				}
-				isSingle = true;
-			}
-			else if(hasCustomFirstItemRenderer && firstGroupLength > 1)
-			{
-				if(this._firstItemRendererMap)
+				else if(hasCustomFirstItemRenderer && firstGroupLength > 1)
 				{
-					typicalItemRenderer = IGroupedListItemRenderer(this._firstItemRendererMap[typicalItem]);
-				}
-				isFirst = true;
-			}
-			else
-			{
-				typicalItemRenderer = IGroupedListItemRenderer(this._itemRendererMap[typicalItem]);
-			}
-			if(!typicalItemRenderer && !newTypicalItemIsInDataProvider && this._typicalItemRenderer)
-			{
-				//can use reuse the old item renderer instance
-				//since it is not in the data provider, we don't need to mess
-				//with the renderer map dictionary.
-				typicalItemRenderer = this._typicalItemRenderer;
-				typicalItemRenderer.data = typicalItem;
-				typicalItemRenderer.groupIndex = typicalItemGroupIndex;
-				typicalItemRenderer.itemIndex = typicalItemItemIndex;
-			}
-			if(!typicalItemRenderer)
-			{
-				if(isFirst)
-				{
-					var activeRenderers:Vector.<IGroupedListItemRenderer> = this._activeFirstItemRenderers;
-					var inactiveRenderers:Vector.<IGroupedListItemRenderer> = this._inactiveFirstItemRenderers;
-					var type:Class = this._firstItemRendererType ? this._firstItemRendererType : this._itemRendererType;
-					var factory:Function = this._firstItemRendererFactory != null ? this._firstItemRendererFactory : this._itemRendererFactory;
-					var name:String = this._firstItemRendererName ? this._firstItemRendererName : this._itemRendererName;
-					typicalItemRenderer = this.createItemRenderer(inactiveRenderers,
-						activeRenderers, this._firstItemRendererMap, type, factory,
-						name, typicalItem, 0, 0, 0, false, !newTypicalItemIsInDataProvider);
-				}
-				else if(isSingle)
-				{
-					activeRenderers = this._activeSingleItemRenderers;
-					inactiveRenderers = this._inactiveSingleItemRenderers;
-					type = this._singleItemRendererType ? this._singleItemRendererType : this._itemRendererType;
-					factory = this._singleItemRendererFactory != null ? this._singleItemRendererFactory : this._itemRendererFactory;
-					name = this._singleItemRendererName ? this._singleItemRendererName : this._itemRendererName;
-					typicalItemRenderer = this.createItemRenderer(inactiveRenderers,
-						activeRenderers, this._singleItemRendererMap, type, factory,
-						name, typicalItem, 0, 0, 0, false, !newTypicalItemIsInDataProvider);
+					if(this._firstItemRendererMap)
+					{
+						typicalItemRenderer = IGroupedListItemRenderer(this._firstItemRendererMap[typicalItem]);
+					}
+					isFirst = true;
 				}
 				else
 				{
-					activeRenderers = this._activeItemRenderers;
-					inactiveRenderers = this._inactiveItemRenderers;
-					typicalItemRenderer = this.createItemRenderer(inactiveRenderers,
-						activeRenderers, this._itemRendererMap, this._itemRendererType, this._itemRendererFactory,
-						this._itemRendererName, typicalItem, 0, 0, 0, false, !newTypicalItemIsInDataProvider);
+					typicalItemRenderer = IGroupedListItemRenderer(this._itemRendererMap[typicalItem]);
 				}
-				//can't be in a last item renderer
-
-				if(!this._typicalItemIsInDataProvider && this._typicalItemRenderer)
+				if(!typicalItemRenderer && !newTypicalItemIsInDataProvider && this._typicalItemRenderer)
 				{
-					//get rid of the old one if it isn't needed anymore
+					//can use reuse the old item renderer instance
 					//since it is not in the data provider, we don't need to mess
 					//with the renderer map dictionary.
-					this.destroyItemRenderer(this._typicalItemRenderer);
-					this._typicalItemRenderer = null;
+					typicalItemRenderer = this._typicalItemRenderer;
+					typicalItemRenderer.data = typicalItem;
+					typicalItemRenderer.groupIndex = typicalItemGroupIndex;
+					typicalItemRenderer.itemIndex = typicalItemItemIndex;
+				}
+				if(!typicalItemRenderer)
+				{
+					if(isFirst)
+					{
+						var activeRenderers:Vector.<IGroupedListItemRenderer> = this._activeFirstItemRenderers;
+						var inactiveRenderers:Vector.<IGroupedListItemRenderer> = this._inactiveFirstItemRenderers;
+						var type:Class = this._firstItemRendererType ? this._firstItemRendererType : this._itemRendererType;
+						var factory:Function = this._firstItemRendererFactory != null ? this._firstItemRendererFactory : this._itemRendererFactory;
+						var name:String = this._firstItemRendererName ? this._firstItemRendererName : this._itemRendererName;
+						typicalItemRenderer = this.createItemRenderer(inactiveRenderers,
+							activeRenderers, this._firstItemRendererMap, type, factory,
+							name, typicalItem, 0, 0, 0, false, !newTypicalItemIsInDataProvider);
+					}
+					else if(isSingle)
+					{
+						activeRenderers = this._activeSingleItemRenderers;
+						inactiveRenderers = this._inactiveSingleItemRenderers;
+						type = this._singleItemRendererType ? this._singleItemRendererType : this._itemRendererType;
+						factory = this._singleItemRendererFactory != null ? this._singleItemRendererFactory : this._itemRendererFactory;
+						name = this._singleItemRendererName ? this._singleItemRendererName : this._itemRendererName;
+						typicalItemRenderer = this.createItemRenderer(inactiveRenderers,
+							activeRenderers, this._singleItemRendererMap, type, factory,
+							name, typicalItem, 0, 0, 0, false, !newTypicalItemIsInDataProvider);
+					}
+					else
+					{
+						activeRenderers = this._activeItemRenderers;
+						inactiveRenderers = this._inactiveItemRenderers;
+						typicalItemRenderer = this.createItemRenderer(inactiveRenderers,
+							activeRenderers, this._itemRendererMap, this._itemRendererType, this._itemRendererFactory,
+							this._itemRendererName, typicalItem, 0, 0, 0, false, !newTypicalItemIsInDataProvider);
+					}
+					//can't be in a last item renderer
+
+					if(!this._typicalItemIsInDataProvider && this._typicalItemRenderer)
+					{
+						//get rid of the old one if it isn't needed anymore
+						//since it is not in the data provider, we don't need to mess
+						//with the renderer map dictionary.
+						this.destroyItemRenderer(this._typicalItemRenderer);
+						this._typicalItemRenderer = null;
+					}
 				}
 			}
 
@@ -1930,7 +1928,7 @@ package feathers.controls.supportClasses
 			for(var i:int = 0; i < rendererCount; i++)
 			{
 				var itemRenderer:IGroupedListItemRenderer = this._inactiveItemRenderers[i];
-				if(!itemRenderer)
+				if(!itemRenderer || itemRenderer.groupIndex < 0)
 				{
 					continue;
 				}
