@@ -1,9 +1,9 @@
 package feathers.examples.displayObjects.screens
 {
-	import feathers.display.Scale3Image;
 	import feathers.controls.Button;
-	import feathers.controls.Screen;
 	import feathers.controls.Header;
+	import feathers.controls.Screen;
+	import feathers.display.Scale3Image;
 	import feathers.textures.Scale3Textures;
 
 	import starling.events.Touch;
@@ -74,7 +74,7 @@ package feathers.examples.displayObjects.screens
 			this._bottomButton.validate();
 
 			this._maxDisplayObjectWidth = this.actualWidth - this._rightButton.width - this._image.x;
-			this._maxDisplayObjectHeight = this.actualHeight - this._bottomButton.height - this._image.y - this._header.height;
+			this._maxDisplayObjectHeight = this.actualHeight - this._bottomButton.height - this._image.y;
 
 			this._image.width = Math.max(this._minDisplayObjectWidth, Math.min(this._maxDisplayObjectWidth, this._image.width));
 			this._image.height = Math.max(this._minDisplayObjectHeight, Math.min(this._maxDisplayObjectHeight, this._image.height));
