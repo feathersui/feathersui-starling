@@ -149,8 +149,17 @@ package feathers.themes
 
 		protected static const ATLAS_NAME:String = "metalworks";
 
-		public static const COMPONENT_NAME_PICKER_LIST_ITEM_RENDERER:String = "metal-works-mobile-picker-list-item-renderer";
-		public static const COMPONENT_NAME_ALERT_BUTTON_GROUP_BUTTON:String = "metal-works-mobile-alert-button-group-button";
+		protected static const THEME_NAME_PICKER_LIST_ITEM_RENDERER:String = "metal-works-mobile-picker-list-item-renderer";
+		protected static const THEME_NAME_ALERT_BUTTON_GROUP_BUTTON:String = "metal-works_mobile-alert-button-group-button";
+
+		protected static const THEME_NAME_HORIZONTAL_SIMPLE_SCROLL_BAR_THUMB:String = "metal-works-mobile-horizontal-simple-scroll-bar-thumb";
+		protected static const THEME_NAME_VERTICAL_SIMPLE_SCROLL_BAR_THUMB:String = "metal-works-mobile-vertical-simple-scroll-bar-thumb";
+
+		protected static const THEME_NAME_HORIZONTAL_SLIDER_MINIMUM_TRACK:String = "metal-works-mobile-horizontal-slider-minimum-track";
+		protected static const THEME_NAME_HORIZONTAL_SLIDER_MAXIMUM_TRACK:String = "metal-works-mobile-horizontal-slider-maximum-track";
+
+		protected static const THEME_NAME_VERTICAL_SLIDER_MINIMUM_TRACK:String = "metal-works-mobile-vertical-slider-minimum-track";
+		protected static const THEME_NAME_VERTICAL_SLIDER_MAXIMUM_TRACK:String = "metal-works-mobile-vertical-slider-maximum-track";
 
 		protected static function textRendererFactory():TextBlockTextRenderer
 		{
@@ -594,7 +603,7 @@ package feathers.themes
 			//alert
 			this.setInitializerForClass(Alert, alertInitializer);
 			this.setInitializerForClass(ButtonGroup, alertButtonGroupInitializer, Alert.DEFAULT_CHILD_NAME_BUTTON_GROUP);
-			this.setInitializerForClass(Button, alertButtonGroupButtonInitializer, COMPONENT_NAME_ALERT_BUTTON_GROUP_BUTTON);
+			this.setInitializerForClass(Button, alertButtonGroupButtonInitializer, THEME_NAME_ALERT_BUTTON_GROUP_BUTTON);
 			this.setInitializerForClass(Header, headerWithoutBackgroundInitializer, Alert.DEFAULT_CHILD_NAME_HEADER);
 			this.setInitializerForClass(TextBlockTextRenderer, alertMessageInitializer, Alert.DEFAULT_CHILD_NAME_MESSAGE);
 
@@ -632,7 +641,7 @@ package feathers.themes
 			//item renderers for lists
 			this.setInitializerForClass(DefaultListItemRenderer, itemRendererInitializer);
 			//the picker list has a custom item renderer name defined by the theme
-			this.setInitializerForClass(DefaultListItemRenderer, pickerListItemRendererInitializer, COMPONENT_NAME_PICKER_LIST_ITEM_RENDERER);
+			this.setInitializerForClass(DefaultListItemRenderer, pickerListItemRendererInitializer, THEME_NAME_PICKER_LIST_ITEM_RENDERER);
 			this.setInitializerForClass(DefaultGroupedListItemRenderer, itemRendererInitializer);
 			this.setInitializerForClass(TextBlockTextRenderer, itemRendererAccessoryLabelInitializer, BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ACCESSORY_LABEL);
 			this.setInitializerForClass(DefaultGroupedListItemRenderer, insetMiddleItemRendererInitializer, GroupedList.ALTERNATE_CHILD_NAME_INSET_ITEM_RENDERER);
@@ -679,16 +688,17 @@ package feathers.themes
 			this.setInitializerForClass(ScrollText, scrollTextInitializer);
 
 			//simple scroll bar
-			this.setInitializerForClass(SimpleScrollBar, horizontalScrollBarInitializer, Scroller.DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR);
-			this.setInitializerForClass(SimpleScrollBar, verticalScrollBarInitializer, Scroller.DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR);
-			this.setInitializerForClass(Button, nothingInitializer, SimpleScrollBar.DEFAULT_CHILD_NAME_THUMB);
+			this.setInitializerForClass(SimpleScrollBar, simpleScrollBarInitializer);
+			this.setInitializerForClass(Button, horizontalSimpleScrollBarThumbInitializer, THEME_NAME_HORIZONTAL_SIMPLE_SCROLL_BAR_THUMB);
+			this.setInitializerForClass(Button, verticalSimpleScrollBarThumbInitializer, THEME_NAME_VERTICAL_SIMPLE_SCROLL_BAR_THUMB);
 
 			//slider
 			this.setInitializerForClass(Slider, sliderInitializer);
 			this.setInitializerForClass(Button, simpleButtonInitializer, Slider.DEFAULT_CHILD_NAME_THUMB);
-			//the tracks are skinned in the initializer for the Slider class
-			this.setInitializerForClass(Button, nothingInitializer, Slider.DEFAULT_CHILD_NAME_MINIMUM_TRACK);
-			this.setInitializerForClass(Button, nothingInitializer, Slider.DEFAULT_CHILD_NAME_MAXIMUM_TRACK);
+			this.setInitializerForClass(Button, horizontalSliderMinimumTrackInitializer, THEME_NAME_HORIZONTAL_SLIDER_MINIMUM_TRACK);
+			this.setInitializerForClass(Button, horizontalSliderMaximumTrackInitializer, THEME_NAME_HORIZONTAL_SLIDER_MAXIMUM_TRACK);
+			this.setInitializerForClass(Button, verticalSliderMinimumTrackInitializer, THEME_NAME_VERTICAL_SLIDER_MINIMUM_TRACK);
+			this.setInitializerForClass(Button, verticalSliderMaximumTrackInitializer, THEME_NAME_VERTICAL_SLIDER_MAXIMUM_TRACK);
 
 			//tab bar
 			//we don't need an initializer for the TabBar class in this theme
@@ -1031,7 +1041,7 @@ package feathers.themes
 			group.paddingRight = 12 * this.scale;
 			group.paddingBottom = 12 * this.scale;
 			group.paddingLeft = 12 * this.scale;
-			group.customButtonName = COMPONENT_NAME_ALERT_BUTTON_GROUP_BUTTON;
+			group.customButtonName = THEME_NAME_ALERT_BUTTON_GROUP_BUTTON;
 		}
 
 		protected function itemRendererInitializer(renderer:BaseDefaultItemRenderer):void
@@ -1273,8 +1283,21 @@ package feathers.themes
 		protected function sliderInitializer(slider:Slider):void
 		{
 			slider.trackLayoutMode = Slider.TRACK_LAYOUT_MODE_MIN_MAX;
+			if(slider.direction == Slider.DIRECTION_VERTICAL)
+			{
+				slider.customMinimumTrackName = THEME_NAME_VERTICAL_SLIDER_MINIMUM_TRACK;
+				slider.customMaximumTrackName = THEME_NAME_VERTICAL_SLIDER_MAXIMUM_TRACK;
+			}
+			else
+			{
+				slider.customMinimumTrackName = THEME_NAME_HORIZONTAL_SLIDER_MINIMUM_TRACK;
+				slider.customMaximumTrackName = THEME_NAME_HORIZONTAL_SLIDER_MAXIMUM_TRACK;
+			}
+		}
 
-			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+		protected function horizontalSliderMinimumTrackInitializer(track:Button):void
+		{
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = this.backgroundSkinTextures;
 			skinSelector.setValueForState(this.buttonDownSkinTextures, Button.STATE_DOWN, false);
 			skinSelector.setValueForState(this.backgroundDisabledSkinTextures, Button.STATE_DISABLED, false);
@@ -1282,18 +1305,54 @@ package feathers.themes
 			{
 				textureScale: this.scale
 			};
-			if(slider.direction == Slider.DIRECTION_VERTICAL)
+			skinSelector.displayObjectProperties.width = 210 * this.scale;
+			skinSelector.displayObjectProperties.height = 60 * this.scale;
+			track.stateToSkinFunction = skinSelector.updateValue;
+		}
+
+		protected function horizontalSliderMaximumTrackInitializer(track:Button):void
+		{
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.backgroundSkinTextures;
+			skinSelector.setValueForState(this.buttonDownSkinTextures, Button.STATE_DOWN, false);
+			skinSelector.setValueForState(this.backgroundDisabledSkinTextures, Button.STATE_DISABLED, false);
+			skinSelector.displayObjectProperties =
 			{
-				skinSelector.displayObjectProperties.width = 60 * this.scale;
-				skinSelector.displayObjectProperties.height = 210 * this.scale;
-			}
-			else
+				textureScale: this.scale
+			};
+			skinSelector.displayObjectProperties.width = 210 * this.scale;
+			skinSelector.displayObjectProperties.height = 60 * this.scale;
+			track.stateToSkinFunction = skinSelector.updateValue;
+		}
+
+		protected function verticalSliderMinimumTrackInitializer(track:Button):void
+		{
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.backgroundSkinTextures;
+			skinSelector.setValueForState(this.buttonDownSkinTextures, Button.STATE_DOWN, false);
+			skinSelector.setValueForState(this.backgroundDisabledSkinTextures, Button.STATE_DISABLED, false);
+			skinSelector.displayObjectProperties =
 			{
-				skinSelector.displayObjectProperties.width = 210 * this.scale;
-				skinSelector.displayObjectProperties.height = 60 * this.scale;
-			}
-			slider.minimumTrackProperties.stateToSkinFunction = skinSelector.updateValue;
-			slider.maximumTrackProperties.stateToSkinFunction = skinSelector.updateValue;
+				textureScale: this.scale
+			};
+			skinSelector.displayObjectProperties.width = 60 * this.scale;
+			skinSelector.displayObjectProperties.height = 210 * this.scale;
+			track.stateToSkinFunction = skinSelector.updateValue;
+		}
+
+		protected function verticalSliderMaximumTrackInitializer(track:Button):void
+		{
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.backgroundSkinTextures;
+			skinSelector.setValueForState(this.buttonDownSkinTextures, Button.STATE_DOWN, false);
+			skinSelector.setValueForState(this.backgroundDisabledSkinTextures, Button.STATE_DISABLED, false);
+			skinSelector.displayObjectProperties =
+			{
+				textureScale: this.scale
+			};
+			skinSelector.displayObjectProperties.width = 60 * this.scale;
+			skinSelector.displayObjectProperties.height = 210 * this.scale;
+			track.stateToSkinFunction = skinSelector.updateValue;
 		}
 
 		protected function toggleSwitchInitializer(toggle:ToggleSwitch):void
@@ -1311,22 +1370,32 @@ package feathers.themes
 			stepper.decrementButtonLabel = "-";
 		}
 
-		protected function horizontalScrollBarInitializer(scrollBar:SimpleScrollBar):void
+		protected function simpleScrollBarInitializer(scrollBar:SimpleScrollBar):void
 		{
-			scrollBar.direction = SimpleScrollBar.DIRECTION_HORIZONTAL;
-			const defaultSkin:Scale3Image = new Scale3Image(this.horizontalScrollBarThumbSkinTextures, this.scale);
-			defaultSkin.width = 10 * this.scale;
-			scrollBar.thumbProperties.defaultSkin = defaultSkin;
-			scrollBar.paddingRight = scrollBar.paddingBottom = scrollBar.paddingLeft = 4 * this.scale;
+			if(scrollBar.direction == SimpleScrollBar.DIRECTION_HORIZONTAL)
+			{
+				scrollBar.paddingRight = scrollBar.paddingBottom = scrollBar.paddingLeft = 4 * this.scale;
+				scrollBar.customThumbName = THEME_NAME_HORIZONTAL_SIMPLE_SCROLL_BAR_THUMB;
+			}
+			else
+			{
+				scrollBar.paddingTop = scrollBar.paddingRight = scrollBar.paddingBottom = 4 * this.scale;
+				scrollBar.customThumbName = THEME_NAME_VERTICAL_SIMPLE_SCROLL_BAR_THUMB;
+			}
 		}
 
-		protected function verticalScrollBarInitializer(scrollBar:SimpleScrollBar):void
+		protected function horizontalSimpleScrollBarThumbInitializer(thumb:Button):void
 		{
-			scrollBar.direction = SimpleScrollBar.DIRECTION_VERTICAL;
-			const defaultSkin:Scale3Image = new Scale3Image(this.verticalScrollBarThumbSkinTextures, this.scale);
+			var defaultSkin:Scale3Image = new Scale3Image(this.horizontalScrollBarThumbSkinTextures, this.scale);
+			defaultSkin.width = 10 * this.scale;
+			thumb.defaultSkin = defaultSkin;
+		}
+
+		protected function verticalSimpleScrollBarThumbInitializer(thumb:Button):void
+		{
+			var defaultSkin:Scale3Image = new Scale3Image(this.verticalScrollBarThumbSkinTextures, this.scale);
 			defaultSkin.height = 10 * this.scale;
-			scrollBar.thumbProperties.defaultSkin = defaultSkin;
-			scrollBar.paddingTop = scrollBar.paddingRight = scrollBar.paddingBottom = 4 * this.scale;
+			thumb.defaultSkin = defaultSkin;
 		}
 
 		protected function baseTextInputInitializer(input:TextInput):void
@@ -1497,7 +1566,7 @@ package feathers.themes
 					list.listProperties.paddingBottom = list.listProperties.paddingLeft = 8 * this.scale;
 			}
 
-			list.listProperties.itemRendererName = COMPONENT_NAME_PICKER_LIST_ITEM_RENDERER;
+			list.listProperties.itemRendererName = THEME_NAME_PICKER_LIST_ITEM_RENDERER;
 		}
 
 		protected function calloutInitializer(callout:Callout):void
