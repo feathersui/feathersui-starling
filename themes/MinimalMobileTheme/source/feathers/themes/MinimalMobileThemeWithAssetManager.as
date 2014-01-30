@@ -100,6 +100,9 @@ package feathers.themes
 		public static const COMPONENT_NAME_PICKER_LIST_ITEM_RENDERER:String = "feathers-mobile-picker-list-item-renderer";
 		public static const FONT_NAME:String = "PF Ronda Seven";
 
+		protected static const THEME_NAME_HORIZONTAL_SLIDER_MINIMUM_TRACK:String = "metal-works-mobile-horizontal-slider-minimum-track";
+		protected static const THEME_NAME_VERTICAL_SLIDER_MINIMUM_TRACK:String = "metal-works-mobile-vertical-slider-minimum-track";
+
 		protected static const ATLAS_NAME:String = "minimal";
 		protected static const FONT_TEXTURE_NAME:String = "pf_ronda_seven_0";
 
@@ -615,9 +618,8 @@ package feathers.themes
 			//slider
 			this.setInitializerForClass(Slider, sliderInitializer);
 			this.setInitializerForClass(Button, sliderThumbInitializer, Slider.DEFAULT_CHILD_NAME_THUMB);
-			//the tracks are skinned in the initializer for the Slider class
-			this.setInitializerForClass(Button, nothingInitializer, Slider.DEFAULT_CHILD_NAME_MINIMUM_TRACK);
-			this.setInitializerForClass(Button, nothingInitializer, Slider.DEFAULT_CHILD_NAME_MAXIMUM_TRACK);
+			this.setInitializerForClass(Button, horizontalSliderMinimumTrackInitializer, THEME_NAME_HORIZONTAL_SLIDER_MINIMUM_TRACK);
+			this.setInitializerForClass(Button, verticalSliderMinimumTrackInitializer, THEME_NAME_VERTICAL_SLIDER_MINIMUM_TRACK);
 
 			//tab bar
 			this.setInitializerForClass(Button, tabInitializer, TabBar.DEFAULT_CHILD_NAME_TAB);
@@ -921,23 +923,35 @@ package feathers.themes
 		{
 			slider.trackLayoutMode = Slider.TRACK_LAYOUT_MODE_SINGLE;
 
-			const sliderTrackDefaultSkin:Scale9Image = new Scale9Image(insetBackgroundSkinTextures, this.scale);
 			if(slider.direction == Slider.DIRECTION_VERTICAL)
 			{
-				sliderTrackDefaultSkin.width = 66 * this.scale;
-				sliderTrackDefaultSkin.height = 198 * this.scale;
+				slider.customMinimumTrackName = THEME_NAME_VERTICAL_SLIDER_MINIMUM_TRACK;
 			}
 			else //horizontal
 			{
-				sliderTrackDefaultSkin.width = 198 * this.scale;
-				sliderTrackDefaultSkin.height = 66 * this.scale;
+				slider.customMinimumTrackName = THEME_NAME_HORIZONTAL_SLIDER_MINIMUM_TRACK;
 			}
-			slider.minimumTrackProperties.defaultSkin = sliderTrackDefaultSkin;
+		}
+
+		protected function horizontalSliderMinimumTrackInitializer(track:Button):void
+		{
+			var sliderTrackDefaultSkin:Scale9Image = new Scale9Image(insetBackgroundSkinTextures, this.scale);
+			sliderTrackDefaultSkin.width = 198 * this.scale;
+			sliderTrackDefaultSkin.height = 66 * this.scale;
+			track.defaultSkin = sliderTrackDefaultSkin;
+		}
+
+		protected function verticalSliderMinimumTrackInitializer(track:Button):void
+		{
+			var sliderTrackDefaultSkin:Scale9Image = new Scale9Image(insetBackgroundSkinTextures, this.scale);
+			sliderTrackDefaultSkin.width = 66 * this.scale;
+			sliderTrackDefaultSkin.height = 198 * this.scale;
+			track.defaultSkin = sliderTrackDefaultSkin;
 		}
 
 		protected function sliderThumbInitializer(thumb:Button):void
 		{
-			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = this.thumbSkinTextures;
 			skinSelector.defaultSelectedValue = this.thumbDisabledSkinTextures;
 			skinSelector.displayObjectProperties =
