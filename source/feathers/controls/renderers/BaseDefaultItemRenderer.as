@@ -33,8 +33,16 @@ package feathers.controls.renderers
 	public class BaseDefaultItemRenderer extends Button
 	{
 		/**
+		 * The default value added to the <code>nameList</code> of the icon
+		 * label, if it exists.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
+		 */
+		public static const DEFAULT_CHILD_NAME_ICON_LABEL:String = "feathers-item-renderer-icon-label";
+
+		/**
 		 * The default value added to the <code>nameList</code> of the accessory
-		 * label.
+		 * label, if it exists.
 		 *
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
@@ -223,7 +231,16 @@ package feathers.controls.renderers
 		}
 
 		/**
-		 * The value added to the <code>nameList</code> of the accessory label.
+		 * The value added to the <code>nameList</code> of the icon label, if it
+		 * exists.
+		 *
+		 * @see feathers.core.IFeathersControl#nameList
+		 */
+		protected var iconLabelName:String = DEFAULT_CHILD_NAME_ICON_LABEL;
+
+		/**
+		 * The value added to the <code>nameList</code> of the accessory label,
+		 * if it exists.
 		 *
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
@@ -233,6 +250,11 @@ package feathers.controls.renderers
 		 * @private
 		 */
 		protected var iconImage:ImageLoader;
+
+		/**
+		 * @private
+		 */
+		protected var iconLabel:ITextRenderer;
 
 		/**
 		 * @private
@@ -945,6 +967,8 @@ package feathers.controls.renderers
 		 * <ol>
 		 *     <li><code>iconSourceFunction</code></li>
 		 *     <li><code>iconSourceField</code></li>
+		 *     <li><code>iconLabelFunction</code></li>
+		 *     <li><code>iconLabelField</code></li>
 		 *     <li><code>iconFunction</code></li>
 		 *     <li><code>iconField</code></li>
 		 * </ol>
@@ -1002,6 +1026,8 @@ package feathers.controls.renderers
 		 * <ol>
 		 *     <li><code>iconSourceFunction</code></li>
 		 *     <li><code>iconSourceField</code></li>
+		 *     <li><code>iconLabelFunction</code></li>
+		 *     <li><code>iconLabelField</code></li>
 		 *     <li><code>iconFunction</code></li>
 		 *     <li><code>iconField</code></li>
 		 * </ol>
@@ -1066,6 +1092,8 @@ package feathers.controls.renderers
 		 * <ol>
 		 *     <li><code>iconSourceFunction</code></li>
 		 *     <li><code>iconSourceField</code></li>
+		 *     <li><code>iconLabelFunction</code></li>
+		 *     <li><code>iconLabelField</code></li>
 		 *     <li><code>iconFunction</code></li>
 		 *     <li><code>iconField</code></li>
 		 * </ol>
@@ -1142,6 +1170,8 @@ package feathers.controls.renderers
 		 * <ol>
 		 *     <li><code>iconSourceFunction</code></li>
 		 *     <li><code>iconSourceField</code></li>
+		 *     <li><code>iconLabelFunction</code></li>
+		 *     <li><code>iconLabelField</code></li>
 		 *     <li><code>iconFunction</code></li>
 		 *     <li><code>iconField</code></li>
 		 * </ol>
@@ -1177,6 +1207,132 @@ package feathers.controls.renderers
 				return;
 			}
 			this._iconSourceFunction = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _iconLabelField:String = "iconLabel";
+
+		/**
+		 * The field in the item that contains a string to be displayed in a
+		 * renderer-managed <code>ITextRenderer</code> in the icon position of
+		 * the renderer. The renderer will automatically reuse an internal
+		 * <code>ITextRenderer</code> and swap the text when the data changes.
+		 * This <code>ITextRenderer</code> may be skinned by changing the
+		 * <code>iconLabelFactory</code>.
+		 *
+		 * <p>Using an icon label will result in better performance than
+		 * passing in an <code>ITextRenderer</code> through a <code>iconField</code>
+		 * or <code>iconFunction</code> because the renderer can avoid
+		 * costly display list manipulation.</p>
+		 *
+		 * <p>All of the icon fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>iconSourceFunction</code></li>
+		 *     <li><code>iconSourceField</code></li>
+		 *     <li><code>iconLabelFunction</code></li>
+		 *     <li><code>iconLabelField</code></li>
+		 *     <li><code>iconFunction</code></li>
+		 *     <li><code>iconField</code></li>
+		 * </ol>
+		 *
+		 * <p>In the following example, the icon label field is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.iconLabelField = "text";</listing>
+		 *
+		 * @default "iconLabel"
+		 *
+		 * @see #iconLabelFactory
+		 * @see #iconLabelFunction
+		 * @see #iconField
+		 * @see #iconFunction
+		 * @see #iconySourceField
+		 * @see #iconSourceFunction
+		 */
+		public function get iconLabelField():String
+		{
+			return this._iconLabelField;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set iconLabelField(value:String):void
+		{
+			if(this._iconLabelField == value)
+			{
+				return;
+			}
+			this._iconLabelField = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _iconLabelFunction:Function;
+
+		/**
+		 * A function that returns a string to be displayed in a
+		 * renderer-managed <code>ITextRenderer</code> in the icon position of
+		 * the renderer. The renderer will automatically reuse an internal
+		 * <code>ITextRenderer</code> and swap the text when the data changes.
+		 * This <code>ITextRenderer</code> may be skinned by changing the
+		 * <code>iconLabelFactory</code>.
+		 *
+		 * <p>Using an icon label will result in better performance than
+		 * passing in an <code>ITextRenderer</code> through a <code>iconField</code>
+		 * or <code>iconFunction</code> because the renderer can avoid costly
+		 * display list manipulation.</p>
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 * <pre>function( item:Object ):String</pre>
+		 *
+		 * <p>All of the icon fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>iconSourceFunction</code></li>
+		 *     <li><code>iconSourceField</code></li>
+		 *     <li><code>iconLabelFunction</code></li>
+		 *     <li><code>iconLabelField</code></li>
+		 *     <li><code>iconFunction</code></li>
+		 *     <li><code>iconField</code></li>
+		 * </ol>
+		 *
+		 * <p>In the following example, the icon label function is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.iconLabelFunction = function( item:Object ):String
+		 * {
+		 *    return item.firstName + " " + item.lastName;
+		 * };</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #iconLabelFactory
+		 * @see #iconLabelField
+		 * @see #iconField
+		 * @see #iconFunction
+		 * @see #iconSourceField
+		 * @see #iconSourceFunction
+		 */
+		public function get iconLabelFunction():Function
+		{
+			return this._iconLabelFunction;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set iconLabelFunction(value:Function):void
+		{
+			if(this._iconLabelFunction == value)
+			{
+				return;
+			}
+			this._iconLabelFunction = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
@@ -1456,14 +1612,14 @@ package feathers.controls.renderers
 
 		/**
 		 * The field in the item that contains a string to be displayed in a
-		 * renderer-managed <code>Label</code> in the accessory position of the
-		 * renderer. The renderer will automatically reuse an internal
-		 * <code>Label</code> and swap the text when the data changes. This
-		 * <code>Label</code> may be skinned by changing the
+		 * renderer-managed <code>ITextRenderer</code> in the accessory position
+		 * of the renderer. The renderer will automatically reuse an internal
+		 * <code>ITextRenderer</code> and swap the text when the data changes.
+		 * This <code>ITextRenderer</code> may be skinned by changing the
 		 * <code>accessoryLabelFactory</code>.
 		 *
 		 * <p>Using an accessory label will result in better performance than
-		 * passing in a <code>Label</code> through a <code>accessoryField</code>
+		 * passing in a <code>ITextRenderer</code> through an <code>accessoryField</code>
 		 * or <code>accessoryFunction</code> because the renderer can avoid
 		 * costly display list manipulation.</p>
 		 *
@@ -1516,14 +1672,14 @@ package feathers.controls.renderers
 
 		/**
 		 * A function that returns a string to be displayed in a
-		 * renderer-managed <code>Label</code> in the accessory position of the
-		 * renderer. The renderer will automatically reuse an internal
-		 * <code>Label</code> and swap the text when the data changes. This
-		 * <code>Label</code> may be skinned by changing the
+		 * renderer-managed <code>ITextRenderer</code> in the accessory position
+		 * of the renderer. The renderer will automatically reuse an internal
+		 * <code>ITextRenderer</code> and swap the text when the data changes.
+		 * This <code>ITextRenderer</code> may be skinned by changing the
 		 * <code>accessoryLabelFactory</code>.
 		 *
 		 * <p>Using an accessory label will result in better performance than
-		 * passing in a <code>Label</code> through a <code>accessoryField</code>
+		 * passing in an <code>ITextRenderer</code> through an <code>accessoryField</code>
 		 * or <code>accessoryFunction</code> because the renderer can avoid
 		 * costly display list manipulation.</p>
 		 *
@@ -1846,8 +2002,137 @@ package feathers.controls.renderers
 				return;
 			}
 			this._iconLoaderFactory = value;
+			this._iconIsFromItem = false;
 			this.replaceIcon(null);
 			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _iconLabelFactory:Function;
+
+		/**
+		 * A function that generates <code>ITextRenderer</code> that uses the result
+		 * of <code>iconLabelField</code> or <code>iconLabelFunction</code>.
+		 * CAn be used to set properties on the <code>ITextRenderer</code>.
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 * <pre>function():ITextRenderer</pre>
+		 *
+		 * <p>In the following example, the icon label factory is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.iconLabelFactory = function():ITextRenderer
+		 * {
+		 *    var renderer:TextFieldTextRenderer = new TextFieldTextRenderer();
+		 *    renderer.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333 );
+		 *    renderer.embedFonts = true;
+		 *    return renderer;
+		 * };</listing>
+		 *
+		 * @default null
+		 *
+		 * @see feathers.core.ITextRenderer
+		 * @see feathers.core.FeathersControl#defaultTextRendererFactory
+		 * @see #iconLabelField
+		 * @see #iconLabelFunction
+		 */
+		public function get iconLabelFactory():Function
+		{
+			return this._iconLabelFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set iconLabelFactory(value:Function):void
+		{
+			if(this._iconLabelFactory == value)
+			{
+				return;
+			}
+			this._iconLabelFactory = value;
+			this._iconIsFromItem = false;
+			this.replaceIcon(null);
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _iconLabelProperties:PropertyProxy;
+
+		/**
+		 * A set of key/value pairs to be passed down to a label icon, if one
+		 * exists. The title is an <code>ITextRenderer</code> instance. The
+		 * available properties depend on which <code>ITextRenderer</code>
+		 * implementation is used.
+		 *
+		 * <p>If the subcomponent has its own subcomponents, their properties
+		 * can be set too, using attribute <code>&#64;</code> notation. For example,
+		 * to set the skin on the thumb which is in a <code>SimpleScrollBar</code>,
+		 * which is in a <code>List</code>, you can use the following syntax:</p>
+		 * <pre>list.verticalScrollBarProperties.&#64;thumbProperties.defaultSkin = new Image(texture);</pre>
+		 *
+		 * <p>Setting properties in a <code>iconLabelFactory</code>
+		 * function instead of using <code>iconLabelProperties</code> will
+		 * result in better performance.</p>
+		 *
+		 * <p>In the following example, the icon label properties are customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.&#64;iconLabelProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333 );
+		 * renderer.&#64;iconLabelProperties.embedFonts = true;</listing>
+		 *
+		 * @default null
+		 *
+		 * @see feathers.core.ITextRenderer
+		 * @see #iconLabelFactory
+		 * @see #iconLabelField
+		 * @see #iconLabelFunction
+		 */
+		public function get iconLabelProperties():Object
+		{
+			if(!this._iconLabelProperties)
+			{
+				this._iconLabelProperties = new PropertyProxy(childProperties_onChange);
+			}
+			return this._iconLabelProperties;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set iconLabelProperties(value:Object):void
+		{
+			if(this._iconLabelProperties == value)
+			{
+				return;
+			}
+			if(!value)
+			{
+				value = new PropertyProxy();
+			}
+			if(!(value is PropertyProxy))
+			{
+				const newValue:PropertyProxy = new PropertyProxy();
+				for(var propertyName:String in value)
+				{
+					newValue[propertyName] = value[propertyName];
+				}
+				value = newValue;
+			}
+			if(this._iconLabelProperties)
+			{
+				this._iconLabelProperties.removeOnChangeCallback(childProperties_onChange);
+			}
+			this._iconLabelProperties = PropertyProxy(value);
+			if(this._iconLabelProperties)
+			{
+				this._iconLabelProperties.addOnChangeCallback(childProperties_onChange);
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
@@ -1896,6 +2181,7 @@ package feathers.controls.renderers
 				return;
 			}
 			this._accessoryLoaderFactory = value;
+			this._accessoryIsFromItem = false;
 			this.replaceAccessory(null);
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -1946,6 +2232,7 @@ package feathers.controls.renderers
 				return;
 			}
 			this._accessoryLabelFactory = value;
+			this._accessoryIsFromItem = false;
 			this.replaceAccessory(null);
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -1988,7 +2275,7 @@ package feathers.controls.renderers
 		{
 			if(!this._accessoryLabelProperties)
 			{
-				this._accessoryLabelProperties = new PropertyProxy(accessoryLabelProperties_onChange);
+				this._accessoryLabelProperties = new PropertyProxy(childProperties_onChange);
 			}
 			return this._accessoryLabelProperties;
 		}
@@ -2017,12 +2304,12 @@ package feathers.controls.renderers
 			}
 			if(this._accessoryLabelProperties)
 			{
-				this._accessoryLabelProperties.removeOnChangeCallback(accessoryLabelProperties_onChange);
+				this._accessoryLabelProperties.removeOnChangeCallback(childProperties_onChange);
 			}
 			this._accessoryLabelProperties = PropertyProxy(value);
 			if(this._accessoryLabelProperties)
 			{
-				this._accessoryLabelProperties.addOnChangeCallback(accessoryLabelProperties_onChange);
+				this._accessoryLabelProperties.addOnChangeCallback(childProperties_onChange);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -2106,6 +2393,8 @@ package feathers.controls.renderers
 		 * <ol>
 		 *     <li><code>iconSourceFunction</code></li>
 		 *     <li><code>iconSourceField</code></li>
+		 *     <li><code>iconLabelFunction</code></li>
+		 *     <li><code>iconLabelField</code></li>
 		 *     <li><code>iconFunction</code></li>
 		 *     <li><code>iconField</code></li>
 		 * </ol>
@@ -2123,6 +2412,32 @@ package feathers.controls.renderers
 				source = item[this._iconSourceField];
 				this.refreshIconSource(source);
 				return this.iconImage;
+			}
+			else if(this._iconLabelFunction != null)
+			{
+				var labelResult:Object = this._iconLabelFunction(item);
+				if(labelResult is String)
+				{
+					this.refreshIconLabel(labelResult as String);
+				}
+				else
+				{
+					this.refreshIconLabel(labelResult.toString());
+				}
+				return DisplayObject(this.iconLabel);
+			}
+			else if(this._iconLabelField != null && item && item.hasOwnProperty(this._iconLabelField))
+			{
+				labelResult = item[this._iconLabelField];
+				if(labelResult is String)
+				{
+					this.refreshIconLabel(labelResult as String);
+				}
+				else
+				{
+					this.refreshIconLabel(labelResult.toString());
+				}
+				return DisplayObject(this.iconLabel);
 			}
 			else if(this._iconFunction != null)
 			{
@@ -2636,6 +2951,13 @@ package feathers.controls.renderers
 				this.iconImage = null;
 			}
 
+			if(this.iconLabel && this.iconLabel != newIcon)
+			{
+				//we can dispose this one, though, since we created it
+				this.iconLabel.dispose();
+				this.iconLabel = null;
+			}
+
 			if(this._itemHasIcon && this.currentIcon && this.currentIcon != newIcon && this.currentIcon.parent == this)
 			{
 				//the icon is created using the data provider, and it is not
@@ -2732,6 +3054,26 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		override protected function refreshIcon():void
+		{
+			super.refreshIcon();
+			if(this.iconLabel)
+			{
+				var displayIconLabel:DisplayObject = DisplayObject(this.iconLabel);
+				for(var propertyName:String in this._iconLabelProperties)
+				{
+					if(displayIconLabel.hasOwnProperty(propertyName))
+					{
+						var propertyValue:Object = this._iconLabelProperties[propertyName];
+						displayIconLabel[propertyName] = propertyValue;
+					}
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function refreshAccessory():void
 		{
 			if(this.accessory is IFeathersControl)
@@ -2740,7 +3082,7 @@ package feathers.controls.renderers
 			}
 			if(this.accessoryLabel)
 			{
-				const displayAccessoryLabel:DisplayObject = DisplayObject(this.accessoryLabel);
+				var displayAccessoryLabel:DisplayObject = DisplayObject(this.accessoryLabel);
 				for(var propertyName:String in this._accessoryLabelProperties)
 				{
 					if(displayAccessoryLabel.hasOwnProperty(propertyName))
@@ -2769,6 +3111,20 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		protected function refreshIconLabel(label:String):void
+		{
+			if(!this.iconLabel)
+			{
+				var factory:Function = this._iconLabelFactory != null ? this._iconLabelFactory : FeathersControl.defaultTextRendererFactory;
+				this.iconLabel = ITextRenderer(factory());
+				this.iconLabel.nameList.add(this.iconLabelName);
+			}
+			this.iconLabel.text = label;
+		}
+
+		/**
+		 * @private
+		 */
 		protected function refreshAccessorySource(source:Object):void
 		{
 			if(!this.accessoryImage)
@@ -2787,7 +3143,7 @@ package feathers.controls.renderers
 		{
 			if(!this.accessoryLabel)
 			{
-				const factory:Function = this._accessoryLabelFactory != null ? this._accessoryLabelFactory : FeathersControl.defaultTextRendererFactory;
+				var factory:Function = this._accessoryLabelFactory != null ? this._accessoryLabelFactory : FeathersControl.defaultTextRendererFactory;
 				this.accessoryLabel = ITextRenderer(factory());
 				this.accessoryLabel.nameList.add(this.accessoryLabelName);
 			}
@@ -2893,42 +3249,110 @@ package feathers.controls.renderers
 		 */
 		override protected function refreshMaxLabelWidth(forMeasurement:Boolean):void
 		{
-			var basicWidth:Number = this.actualWidth;
+			var calculatedWidth:Number = this.actualWidth;
 			if(forMeasurement)
 			{
-				basicWidth = isNaN(this.explicitWidth) ? this._maxWidth : this.explicitWidth;
+				calculatedWidth = isNaN(this.explicitWidth) ? this._maxWidth : this.explicitWidth;
 			}
-			basicWidth -= (this._paddingLeft + this._paddingRight);
-			var calculatedWidth:Number = basicWidth;
-			if(this.currentIcon is IFeathersControl)
-			{
-				IFeathersControl(this.currentIcon).validate();
-			}
+			calculatedWidth -= (this._paddingLeft + this._paddingRight);
+
 			var adjustedGap:Number = this._gap == Number.POSITIVE_INFINITY ? Math.min(this._paddingLeft, this._paddingRight) : this._gap;
 			var accessoryGap:Number = (isNaN(this._accessoryGap) || this._accessoryGap == Number.POSITIVE_INFINITY) ? adjustedGap : this._accessoryGap;
-			if(this.currentIcon && (this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE ||
-				this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE))
-			{
-				calculatedWidth -= (adjustedGap + this.currentIcon.width);
-			}
+
+			var hasIconToLeftOrRight:Boolean = this.currentIcon && (this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE ||
+				this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE);
+			var hasAccessoryToLeftOrRight:Boolean = this.accessory && (this._accessoryPosition == ACCESSORY_POSITION_LEFT || this._accessoryPosition == ACCESSORY_POSITION_RIGHT);
+
 			if(this.accessoryLabel)
 			{
-				if(this._accessoryPosition == ACCESSORY_POSITION_LEFT || this._accessoryPosition == ACCESSORY_POSITION_RIGHT)
+				if(hasIconToLeftOrRight)
 				{
-					this.accessoryLabel.maxWidth = calculatedWidth - accessoryGap;
+					calculatedWidth -= adjustedGap;
 				}
-				else
+				if(this.iconLabel)
 				{
-					this.accessoryLabel.maxWidth = basicWidth;
+					if(calculatedWidth < 0)
+					{
+						calculatedWidth = 0;
+					}
+					this.iconLabel.maxWidth = calculatedWidth;
+				}
+				if(this.currentIcon is IFeathersControl)
+				{
+					IFeathersControl(this.currentIcon).validate();
+				}
+				if(hasIconToLeftOrRight)
+				{
+					calculatedWidth -= this.currentIcon.width;
+				}
+				if(hasAccessoryToLeftOrRight)
+				{
+					calculatedWidth -= accessoryGap;
+				}
+				if(calculatedWidth < 0)
+				{
+					calculatedWidth = 0;
+				}
+				this.accessoryLabel.maxWidth = calculatedWidth;
+				if(this.accessory is IFeathersControl)
+				{
+					IFeathersControl(this.accessory).validate();
+				}
+				if(hasAccessoryToLeftOrRight)
+				{
+					calculatedWidth -= this.accessory.width;
 				}
 			}
-			if(this.accessory is IFeathersControl)
+			else if(this.iconLabel)
 			{
-				IFeathersControl(this.accessory).validate();
+				if(this.accessory is IFeathersControl)
+				{
+					IFeathersControl(this.accessory).validate();
+				}
+				if(hasAccessoryToLeftOrRight)
+				{
+					calculatedWidth -= (accessoryGap + this.accessory.width);
+				}
+				if(hasIconToLeftOrRight)
+				{
+					calculatedWidth -= adjustedGap;
+				}
+				if(calculatedWidth < 0)
+				{
+					calculatedWidth = 0;
+				}
+				this.iconLabel.maxWidth = calculatedWidth;
+				if(this.currentIcon is IFeathersControl)
+				{
+					IFeathersControl(this.currentIcon).validate();
+				}
+				if(hasIconToLeftOrRight)
+				{
+					calculatedWidth -= this.currentIcon.width;
+				}
 			}
-			if(this.accessory && (this._accessoryPosition == ACCESSORY_POSITION_LEFT || this._accessoryPosition == ACCESSORY_POSITION_RIGHT))
+			else
 			{
-				calculatedWidth -= (accessoryGap + this.accessory.width);
+				if(this.currentIcon is IFeathersControl)
+				{
+					IFeathersControl(this.currentIcon).validate();
+				}
+				if(hasIconToLeftOrRight)
+				{
+					calculatedWidth -= (adjustedGap + this.currentIcon.width);
+				}
+				if(this.accessory is IFeathersControl)
+				{
+					IFeathersControl(this.accessory).validate();
+				}
+				if(hasAccessoryToLeftOrRight)
+				{
+					calculatedWidth -= (accessoryGap + this.accessory.width);
+				}
+			}
+			if(calculatedWidth < 0)
+			{
+				calculatedWidth = 0;
 			}
 			this.labelTextRenderer.maxWidth = calculatedWidth;
 		}
@@ -3205,14 +3629,6 @@ package feathers.controls.renderers
 				return;
 			}
 			this.isSelected = true;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function accessoryLabelProperties_onChange(proxy:PropertyProxy, name:String):void
-		{
-			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
