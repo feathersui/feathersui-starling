@@ -281,11 +281,11 @@ package feathers.core
 			if(overlay)
 			{
 				//this is a temporary workaround for Starling issue #131
+				delete _popUpToOverlay[popUp];
 				this._root.stage.addEventListener(EnterFrameEvent.ENTER_FRAME, function(event:EnterFrameEvent):void
 				{
 					event.currentTarget.removeEventListener(event.type, arguments.callee);
 					overlay.removeFromParent(true);
-					delete _popUpToOverlay[popUp];
 				});
 			}
 			var focusManager:IFocusManager = this._popUpToFocusManager[popUp];
