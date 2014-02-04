@@ -837,6 +837,8 @@ package feathers.layout
 			}
 			if(items.length == 0)
 			{
+				result.contentX = 0;
+				result.contentY = 0;
 				result.contentWidth = 0;
 				result.contentHeight = 0;
 				result.viewPortWidth = 0;
@@ -1137,6 +1139,8 @@ package feathers.layout
 			{
 				result = new LayoutBoundsResult();
 			}
+			result.contentX = 0;
+			result.contentY = 0;
 			result.contentWidth = totalWidth;
 			result.contentHeight = totalHeight;
 			result.viewPortWidth = availableWidth;
