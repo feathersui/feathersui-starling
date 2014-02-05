@@ -1269,8 +1269,8 @@ package feathers.controls.text
 			HELPER_MATRIX.scale(Starling.contentScaleFactor, Starling.contentScaleFactor);
 			var totalBitmapWidth:Number = this._snapshotWidth;
 			var totalBitmapHeight:Number = this._snapshotHeight;
-			var clipWidth:Number = this.actualWidth;
-			var clipHeight:Number = this.actualHeight;
+			var clipWidth:Number = this.actualWidth * Starling.contentScaleFactor;
+			var clipHeight:Number = this.actualHeight * Starling.contentScaleFactor;
 			var xPosition:Number = 0;
 			var yPosition:Number = 0;
 			var bitmapData:BitmapData;
