@@ -111,6 +111,11 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _hasMeasured:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _text:String = "";
 
 		/**
@@ -880,8 +885,8 @@ package feathers.controls.text
 				return result;
 			}
 
-			const needsWidth:Boolean = isNaN(this.explicitWidth);
-			const needsHeight:Boolean = isNaN(this.explicitHeight);
+			var needsWidth:Boolean = isNaN(this.explicitWidth);
+			var needsHeight:Boolean = isNaN(this.explicitHeight);
 			if(!needsWidth && !needsHeight)
 			{
 				result.x = this.explicitWidth;
@@ -919,6 +924,7 @@ package feathers.controls.text
 
 			this.commit();
 
+			this._hasMeasured = false;
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
 			this.layout(sizeInvalid);
@@ -989,8 +995,8 @@ package feathers.controls.text
 				result = new Point();
 			}
 
-			const needsWidth:Boolean = isNaN(this.explicitWidth);
-			const needsHeight:Boolean = isNaN(this.explicitHeight);
+			var needsWidth:Boolean = isNaN(this.explicitWidth);
+			var needsHeight:Boolean = isNaN(this.explicitHeight);
 
 			this.textField.autoSize = TextFieldAutoSize.LEFT;
 			this.textField.wordWrap = false;
@@ -1018,9 +1024,16 @@ package feathers.controls.text
 					newWidth = this._maxWidth;
 				}
 			}
-
-			this.textField.width = newWidth;
-			this.textField.wordWrap = this._wordWrap;
+			//and this is a workaround for an issue where flash.text.TextField
+			//will wrap the last word when you pass the value returned by the
+			//width getter (when TextFieldAutoSize.LEFT is used) to the width
+			//setter. In other words, the value technically isn't changing, but
+			//TextField behaves differently.
+			if(!needsWidth || this.textField.width > newWidth)
+			{
+				this.textField.width = newWidth;
+				this.textField.wordWrap = this._wordWrap;
+			}
 			var newHeight:Number = this.explicitHeight;
 			if(needsHeight)
 			{
@@ -1045,6 +1058,7 @@ package feathers.controls.text
 			result.x = newWidth;
 			result.y = newHeight;
 
+			this._hasMeasured = true;
 			return result;
 		}
 
@@ -1053,9 +1067,22 @@ package feathers.controls.text
 		 */
 		protected function layout(sizeInvalid:Boolean):void
 		{
-			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
-			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 
+			//if measure() isn't called, we need to apply the same workaround
+			//for the flash.text.TextField bug with wordWrap.
+			if(!this._hasMeasured && this._wordWrap && this.explicitWidth != this.explicitWidth)
+			{
+				this.textField.autoSize = TextFieldAutoSize.LEFT;
+				this.textField.wordWrap = false;
+				if(this.textField.width > this.actualWidth)
+				{
+					this.textField.wordWrap = true;
+				}
+				this.textField.autoSize = TextFieldAutoSize.NONE;
+				this.textField.width = this.actualWidth;
+			}
 			if(sizeInvalid)
 			{
 				this.textField.width = this.actualWidth;
