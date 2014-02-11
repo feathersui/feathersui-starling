@@ -9,6 +9,7 @@ package feathers.controls.supportClasses
 {
 	import feathers.controls.LayoutGroup;
 	import feathers.core.IFeathersControl;
+	import feathers.core.IValidating;
 
 	import starling.display.DisplayObject;
 
@@ -247,9 +248,9 @@ package feathers.controls.supportClasses
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var item:DisplayObject = this.items[i];
-				if(item is IFeathersControl)
+				if(item is IValidating)
 				{
-					IFeathersControl(item).validate();
+					IValidating(item).validate();
 				}
 				var itemX:Number = item.x;
 				var itemY:Number = item.y;

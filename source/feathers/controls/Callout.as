@@ -9,6 +9,7 @@ package feathers.controls
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
+	import feathers.core.IValidating;
 	import feathers.core.PopUpManager;
 	import feathers.events.FeathersEventType;
 	import feathers.utils.display.getDisplayObjectDepthFromStage;
@@ -1645,9 +1646,9 @@ package feathers.controls
 				return result;
 			}
 
-			if(this._content is IFeathersControl)
+			if(this._content is IValidating)
 			{
-				IFeathersControl(this._content).validate();
+				IValidating(this._content).validate();
 			}
 
 			var newWidth:Number = this.explicitWidth;

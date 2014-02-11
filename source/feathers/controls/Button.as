@@ -12,6 +12,7 @@ package feathers.controls
 	import feathers.core.IFocusDisplayObject;
 	import feathers.core.ITextRenderer;
 	import feathers.core.IToggle;
+	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.StateWithToggleValueSelector;
@@ -2882,9 +2883,9 @@ package feathers.controls
 			}
 			if(this.currentSkin && (isNaN(this._originalSkinWidth) || isNaN(this._originalSkinHeight)))
 			{
-				if(this.currentSkin is IFeathersControl)
+				if(this.currentSkin is IValidating)
 				{
-					IFeathersControl(this.currentSkin).validate();
+					IValidating(this.currentSkin).validate();
 				}
 				this._originalSkinWidth = this.currentSkin.width;
 				this._originalSkinHeight = this.currentSkin.height;
@@ -3022,9 +3023,9 @@ package feathers.controls
 		 */
 		protected function refreshMaxLabelWidth(forMeasurement:Boolean):void
 		{
-			if(this.currentIcon is IFeathersControl)
+			if(this.currentIcon is IValidating)
 			{
-				IFeathersControl(this.currentIcon).validate();
+				IValidating(this.currentIcon).validate();
 			}
 			var calculatedWidth:Number = this.actualWidth;
 			if(forMeasurement)

@@ -9,6 +9,7 @@ package feathers.controls
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
+	import feathers.core.IValidating;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.ILayout;
 	import feathers.layout.ILayoutDisplayObject;
@@ -416,9 +417,9 @@ package feathers.controls
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var item:DisplayObject = this.items[i];
-				if(item is IFeathersControl)
+				if(item is IValidating)
 				{
-					IFeathersControl(item).validate();
+					IValidating(item).validate();
 				}
 				var itemMaxX:Number = item.x + item.width;
 				var itemMaxY:Number = item.y + item.height;
@@ -444,9 +445,9 @@ package feathers.controls
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var item:DisplayObject = this.items[i];
-				if(item is IFeathersControl)
+				if(item is IValidating)
 				{
-					IFeathersControl(item).validate();
+					IValidating(item).validate();
 				}
 			}
 		}

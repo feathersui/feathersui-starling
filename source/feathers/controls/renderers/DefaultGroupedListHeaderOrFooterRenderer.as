@@ -12,6 +12,7 @@ package feathers.controls.renderers
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
 	import feathers.core.ITextRenderer;
+	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 
 	import starling.display.DisplayObject;
@@ -1295,9 +1296,9 @@ package feathers.controls.renderers
 			{
 				this.content.height = this.explicitHeight - this._paddingTop - this._paddingBottom;
 			}
-			if(this.content is IFeathersControl)
+			if(this.content is IValidating)
 			{
-				IFeathersControl(this.content).validate();
+				IValidating(this.content).validate();
 			}
 			var newWidth:Number = this.explicitWidth;
 			var newHeight:Number = this.explicitHeight;

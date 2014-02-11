@@ -3,6 +3,7 @@ package feathers.controls
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
 	import feathers.core.ITextRenderer;
+	import feathers.core.IValidating;
 	import feathers.core.PopUpManager;
 	import feathers.core.PropertyProxy;
 	import feathers.data.ListCollection;
@@ -666,9 +667,9 @@ package feathers.controls
 
 			if(this._icon)
 			{
-				if(this._icon is IFeathersControl)
+				if(this._icon is IValidating)
 				{
-					IFeathersControl(this._icon).validate();
+					IValidating(this._icon).validate();
 				}
 				this._icon.x = this._paddingLeft;
 				this._icon.y = this._topViewPortOffset + (this._viewPort.height - this._icon.height) / 2;
@@ -687,9 +688,9 @@ package feathers.controls
 				return false;
 			}
 
-			if(this._icon is IFeathersControl)
+			if(this._icon is IValidating)
 			{
-				IFeathersControl(this._icon).validate();
+				IValidating(this._icon).validate();
 			}
 
 			const oldHeaderWidth:Number = this.header.width;
@@ -869,9 +870,9 @@ package feathers.controls
 			super.calculateViewPortOffsets(forceScrollBars, useActualBounds);
 			if(this._icon)
 			{
-				if(this._icon is IFeathersControl)
+				if(this._icon is IValidating)
 				{
-					IFeathersControl(this._icon).validate();
+					IValidating(this._icon).validate();
 				}
 				if(!isNaN(this._icon.width))
 				{

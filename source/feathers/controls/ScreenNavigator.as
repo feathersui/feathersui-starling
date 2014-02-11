@@ -9,6 +9,7 @@ package feathers.controls
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
+	import feathers.core.IValidating;
 	import feathers.events.FeathersEventType;
 
 	import flash.errors.IllegalOperationError;
@@ -634,9 +635,9 @@ package feathers.controls
 			}
 
 			if(this._autoSizeMode == AUTO_SIZE_MODE_CONTENT &&
-				this._activeScreen is IFeathersControl)
+				this._activeScreen is IValidating)
 			{
-				IFeathersControl(this._activeScreen).validate();
+				IValidating(this._activeScreen).validate();
 			}
 
 			var newWidth:Number = this.explicitWidth;

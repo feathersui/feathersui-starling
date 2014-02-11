@@ -21,7 +21,6 @@ package feathers.core
 	import flash.utils.Dictionary;
 
 	import starling.core.Starling;
-
 	import starling.display.DisplayObject;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -67,11 +66,6 @@ package feathers.core
 		 * @private
 		 */
 		private static const HELPER_POINT:Point = new Point();
-
-		/**
-		 * @private
-		 */
-		protected static const STARLING_TO_VALIDATION_QUEUE:Dictionary = new Dictionary(true);
 
 		/**
 		 * Flag to indicate that everything is invalid and should be redrawn.
@@ -1271,8 +1265,7 @@ package feathers.core
 		protected var _depth:int = -1;
 
 		/**
-		 * The component's depth in the display list, relative to the stage. If
-		 * the component isn't on the stage, its depth will be <code>-1</code>.
+		 * @copy feathers.core.IValidating#depth
 		 */
 		public function get depth():int
 		{
@@ -1470,15 +1463,14 @@ package feathers.core
 		}
 
 		/**
-		 * Immediately validates the control, which triggers a redraw, if one
-		 * is pending. Validation exists to postpone redrawing a component until
-		 * the last possible moment before rendering so that multiple properties
-		 * can be changed at once without requiring a full redraw after each
-		 * change.
-		 * 
-		 * <p>A component cannot validate if it does not have access to the
-		 * stage and if it hasn't initialized yet. A component initializes the
-		 * first time that it has been added to the stage.</p>
+		 * @copy feathers.core.IValidating#validate()
+		 *
+		 * <p>Additionally, a Feathers component cannot validate until it
+		 * initializes. A component initializes after it has been added to the
+		 * stage. If the component has been added to its parent before the
+		 * parent has access to the stage, the component may not initialize
+		 * until after its parent's <code>Event.ADDED_TO_STAGE</code> has been
+		 * dispatched to all listeners.</p>
 		 * 
 		 * @see #invalidate()
 		 * @see #initialize()
@@ -1837,14 +1829,7 @@ package feathers.core
 		protected function feathersControl_addedToStageHandler(event:Event):void
 		{
 			this._depth = getDisplayObjectDepthFromStage(this);
-
-			var starling:Starling = Starling.current;
-			var queue:ValidationQueue = STARLING_TO_VALIDATION_QUEUE[starling];
-			if(!queue)
-			{
-				STARLING_TO_VALIDATION_QUEUE[starling] = queue = new ValidationQueue(starling);
-			}
-			this._validationQueue = queue;
+			this._validationQueue = ValidationQueue.forStarling(Starling.current);
 
 			if(!this._isInitialized)
 			{

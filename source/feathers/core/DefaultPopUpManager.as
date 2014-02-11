@@ -242,9 +242,9 @@ package feathers.core
 		public function centerPopUp(popUp:DisplayObject):void
 		{
 			var stage:Stage = this._root.stage;
-			if(popUp is IFeathersControl)
+			if(popUp is IValidating)
 			{
-				IFeathersControl(popUp).validate();
+				IValidating(popUp).validate();
 			}
 			popUp.x = (stage.stageWidth - popUp.width) / 2;
 			popUp.y = (stage.stageHeight - popUp.height) / 2;

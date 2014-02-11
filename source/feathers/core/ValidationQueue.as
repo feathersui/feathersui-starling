@@ -7,12 +7,38 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.core
 {
+	import flash.utils.Dictionary;
+
 	import starling.animation.IAnimatable;
 	import starling.core.Starling;
 
 	[ExcludeClass]
 	public final class ValidationQueue implements IAnimatable
 	{
+		/**
+		 * @private
+		 */
+		private static const STARLING_TO_VALIDATION_QUEUE:Dictionary = new Dictionary(true);
+
+		/**
+		 * Gets the validation queue for the specified Starling instance. If
+		 * a validation queue does not exist for the specified Starling
+		 * instance, a new one will be created.
+		 */
+		public static function forStarling(starling:Starling):ValidationQueue
+		{
+			if(!starling)
+			{
+				return null;
+			}
+			var queue:ValidationQueue = STARLING_TO_VALIDATION_QUEUE[starling];
+			if(!queue)
+			{
+				STARLING_TO_VALIDATION_QUEUE[starling] = queue = new ValidationQueue(starling);
+			}
+			return queue;
+		}
+
 		/**
 		 * Constructor.
 		 */
@@ -41,8 +67,8 @@ package feathers.core
 			return this._isValidating;
 		}
 
-		private var _delayedQueue:Vector.<IFeathersControl> = new <IFeathersControl>[];
-		private var _queue:Vector.<IFeathersControl> = new <IFeathersControl>[];
+		private var _delayedQueue:Vector.<IValidating> = new <IValidating>[];
+		private var _queue:Vector.<IValidating> = new <IValidating>[];
 
 		/**
 		 * Disposes the validation queue.
@@ -59,14 +85,14 @@ package feathers.core
 		/**
 		 * Adds a validating component to the queue.
 		 */
-		public function addControl(control:IFeathersControl, delayIfValidating:Boolean):void
+		public function addControl(control:IValidating, delayIfValidating:Boolean):void
 		{
 			//if the juggler was purged, we need to add the queue back in.
 			if(!this._starling.juggler.contains(this))
 			{
 				this._starling.juggler.add(this);
 			}
-			var currentQueue:Vector.<IFeathersControl> = (this._isValidating && delayIfValidating) ? this._delayedQueue : this._queue;
+			var currentQueue:Vector.<IValidating> = (this._isValidating && delayIfValidating) ? this._delayedQueue : this._queue;
 			if(currentQueue.indexOf(control) >= 0)
 			{
 				//already queued
@@ -84,7 +110,7 @@ package feathers.core
 				//the whole queue
 				for(var i:int = queueLength - 1; i >= 0; i--)
 				{
-					var otherControl:IFeathersControl = IFeathersControl(currentQueue[i]);
+					var otherControl:IValidating = IValidating(currentQueue[i]);
 					var otherDepth:int = otherControl.depth;
 					//we can skip the overhead of calling queueSortFunction and
 					//of looking up the value we've already stored in the depth
@@ -130,10 +156,10 @@ package feathers.core
 			this._queue = this._queue.sort(queueSortFunction);
 			while(this._queue.length > 0) //rechecking length after the shift
 			{
-				var item:IFeathersControl = this._queue.shift();
+				var item:IValidating = this._queue.shift();
 				item.validate();
 			}
-			const temp:Vector.<IFeathersControl> = this._queue;
+			const temp:Vector.<IValidating> = this._queue;
 			this._queue = this._delayedQueue;
 			this._delayedQueue = temp;
 			this._isValidating = false;
@@ -142,7 +168,7 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		protected function queueSortFunction(first:IFeathersControl, second:IFeathersControl):int
+		protected function queueSortFunction(first:IValidating, second:IValidating):int
 		{
 			var difference:int = second.depth - first.depth;
 			if(difference > 0)

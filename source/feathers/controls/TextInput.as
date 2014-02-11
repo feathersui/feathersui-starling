@@ -12,6 +12,7 @@ package feathers.controls
 	import feathers.core.IFocusDisplayObject;
 	import feathers.core.ITextEditor;
 	import feathers.core.ITextRenderer;
+	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.StateValueSelector;
@@ -1746,9 +1747,9 @@ package feathers.controls
 			}
 			if(this.currentBackground && (isNaN(this._originalSkinWidth) || isNaN(this._originalSkinHeight)))
 			{
-				if(this.currentBackground is IFeathersControl)
+				if(this.currentBackground is IValidating)
 				{
-					IFeathersControl(this.currentBackground).validate();
+					IValidating(this.currentBackground).validate();
 				}
 				this._originalSkinWidth = this.currentBackground.width;
 				this._originalSkinHeight = this.currentBackground.height;
@@ -1805,9 +1806,9 @@ package feathers.controls
 				this.currentBackground.height = this.actualHeight;
 			}
 
-			if(this.currentIcon is IFeathersControl)
+			if(this.currentIcon is IValidating)
 			{
-				IFeathersControl(this.currentIcon).validate();
+				IValidating(this.currentIcon).validate();
 			}
 
 			if(this.currentIcon)

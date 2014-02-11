@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.layout
 {
 	import feathers.core.IFeathersControl;
+	import feathers.core.IValidating;
 
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Point;
@@ -1451,9 +1452,9 @@ package feathers.layout
 				{
 					item.height = justifyHeight;
 				}
-				if(item is IFeathersControl)
+				if(item is IValidating)
 				{
-					IFeathersControl(item).validate()
+					IValidating(item).validate()
 				}
 			}
 		}
@@ -1479,9 +1480,9 @@ package feathers.layout
 			{
 				this._typicalItem.height = this._typicalItemHeight;
 			}
-			if(this._typicalItem is IFeathersControl)
+			if(this._typicalItem is IValidating)
 			{
-				IFeathersControl(this._typicalItem).validate();
+				IValidating(this._typicalItem).validate();
 			}
 		}
 
