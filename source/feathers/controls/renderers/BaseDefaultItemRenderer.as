@@ -2831,7 +2831,10 @@ package feathers.controls.renderers
 		}
 
 		/**
-		 * @private
+		 * Updates the renderer to display the item's data. Override this
+		 * function to pass data to sub-components and react to data changes.
+		 *
+		 * <p>Don't forget to handle the case where the data is <code>null</code>.</p>
 		 */
 		protected function commitData():void
 		{
