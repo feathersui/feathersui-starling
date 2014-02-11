@@ -14,6 +14,7 @@ package feathers.controls.renderers
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
 	import feathers.core.ITextRenderer;
+	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
 
@@ -3277,9 +3278,9 @@ package feathers.controls.renderers
 					}
 					this.iconLabel.maxWidth = calculatedWidth;
 				}
-				if(this.currentIcon is IFeathersControl)
+				if(this.currentIcon is IValidating)
 				{
-					IFeathersControl(this.currentIcon).validate();
+					IValidating(this.currentIcon).validate();
 				}
 				if(hasIconToLeftOrRight)
 				{
@@ -3294,9 +3295,9 @@ package feathers.controls.renderers
 					calculatedWidth = 0;
 				}
 				this.accessoryLabel.maxWidth = calculatedWidth;
-				if(this.accessory is IFeathersControl)
+				if(this.accessory is IValidating)
 				{
-					IFeathersControl(this.accessory).validate();
+					IValidating(this.accessory).validate();
 				}
 				if(hasAccessoryToLeftOrRight)
 				{
@@ -3305,9 +3306,9 @@ package feathers.controls.renderers
 			}
 			else if(this.iconLabel)
 			{
-				if(this.accessory is IFeathersControl)
+				if(this.accessory is IValidating)
 				{
-					IFeathersControl(this.accessory).validate();
+					IValidating(this.accessory).validate();
 				}
 				if(hasAccessoryToLeftOrRight)
 				{
@@ -3322,9 +3323,9 @@ package feathers.controls.renderers
 					calculatedWidth = 0;
 				}
 				this.iconLabel.maxWidth = calculatedWidth;
-				if(this.currentIcon is IFeathersControl)
+				if(this.currentIcon is IValidating)
 				{
-					IFeathersControl(this.currentIcon).validate();
+					IValidating(this.currentIcon).validate();
 				}
 				if(hasIconToLeftOrRight)
 				{
@@ -3333,17 +3334,17 @@ package feathers.controls.renderers
 			}
 			else
 			{
-				if(this.currentIcon is IFeathersControl)
+				if(this.currentIcon is IValidating)
 				{
-					IFeathersControl(this.currentIcon).validate();
+					IValidating(this.currentIcon).validate();
 				}
 				if(hasIconToLeftOrRight)
 				{
 					calculatedWidth -= (adjustedGap + this.currentIcon.width);
 				}
-				if(this.accessory is IFeathersControl)
+				if(this.accessory is IValidating)
 				{
-					IFeathersControl(this.accessory).validate();
+					IValidating(this.accessory).validate();
 				}
 				if(hasAccessoryToLeftOrRight)
 				{

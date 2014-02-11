@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.popups
 {
 	import feathers.core.IFeathersControl;
+	import feathers.core.IValidating;
 	import feathers.core.PopUpManager;
 	import feathers.events.FeathersEventType;
 	import feathers.utils.display.getDisplayObjectDepthFromStage;
@@ -126,9 +127,9 @@ package feathers.controls.popups
 		{
 			const globalOrigin:Rectangle = this.source.getBounds(Starling.current.stage);
 
-			if(this.source is IFeathersControl)
+			if(this.source is IValidating)
 			{
-				IFeathersControl(this.source).validate();
+				IValidating(this.source).validate();
 			}
 			if(this.content is IFeathersControl)
 			{

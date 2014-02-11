@@ -9,6 +9,7 @@ package feathers.controls
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
+	import feathers.core.IValidating;
 	import feathers.events.ExclusiveTouch;
 	import feathers.events.FeathersEventType;
 	import feathers.system.DeviceCapabilities;
@@ -1900,28 +1901,28 @@ package feathers.controls
 			}
 
 			if(this._autoSizeMode == AUTO_SIZE_MODE_CONTENT &&
-				this._content is IFeathersControl)
+				this._content is IValidating)
 			{
-				IFeathersControl(this._content).validate();
+				IValidating(this._content).validate();
 				var isTopDrawerDocked:Boolean = this.isTopDrawerDocked;
-				if(isTopDrawerDocked && this._topDrawer is IFeathersControl)
+				if(isTopDrawerDocked && this._topDrawer is IValidating)
 				{
-					IFeathersControl(this._topDrawer).validate();
+					IValidating(this._topDrawer).validate();
 				}
 				var isRightDrawerDocked:Boolean = this.isRightDrawerDocked;
-				if(isRightDrawerDocked && this._rightDrawer is IFeathersControl)
+				if(isRightDrawerDocked && this._rightDrawer is IValidating)
 				{
-					IFeathersControl(this._rightDrawer).validate();
+					IValidating(this._rightDrawer).validate();
 				}
 				var isBottomDrawerDocked:Boolean = this.isBottomDrawerDocked;
-				if(isBottomDrawerDocked && this._bottomDrawer is IFeathersControl)
+				if(isBottomDrawerDocked && this._bottomDrawer is IValidating)
 				{
-					IFeathersControl(this._bottomDrawer).validate();
+					IValidating(this._bottomDrawer).validate();
 				}
 				var isLeftDrawerDocked:Boolean = this.isLeftDrawerDocked;
-				if(isLeftDrawerDocked && this._leftDrawer is IFeathersControl)
+				if(isLeftDrawerDocked && this._leftDrawer is IValidating)
 				{
-					IFeathersControl(this._leftDrawer).validate();
+					IValidating(this._leftDrawer).validate();
 				}
 			}
 
@@ -1975,21 +1976,21 @@ package feathers.controls
 		 */
 		protected function layoutChildren():void
 		{
-			if(this._topDrawer is IFeathersControl)
+			if(this._topDrawer is IValidating)
 			{
-				IFeathersControl(this._topDrawer).validate();
+				IValidating(this._topDrawer).validate();
 			}
-			if(this._rightDrawer is IFeathersControl)
+			if(this._rightDrawer is IValidating)
 			{
-				IFeathersControl(this._rightDrawer).validate();
+				IValidating(this._rightDrawer).validate();
 			}
-			if(this._bottomDrawer is IFeathersControl)
+			if(this._bottomDrawer is IValidating)
 			{
-				IFeathersControl(this._bottomDrawer).validate();
+				IValidating(this._bottomDrawer).validate();
 			}
-			if(this._leftDrawer is IFeathersControl)
+			if(this._leftDrawer is IValidating)
 			{
-				IFeathersControl(this._leftDrawer).validate();
+				IValidating(this._leftDrawer).validate();
 			}
 			var isTopDrawerOpen:Boolean = this.isTopDrawerOpen;
 			var isRightDrawerOpen:Boolean = this.isRightDrawerOpen;
@@ -2063,9 +2064,9 @@ package feathers.controls
 				this._content.height = contentHeight;
 
 				//final validation to avoid juggler next frame issues
-				if(this._content is IFeathersControl)
+				if(this._content is IValidating)
 				{
-					IFeathersControl(this._content).validate();
+					IValidating(this._content).validate();
 				}
 			}
 
@@ -2090,9 +2091,9 @@ package feathers.controls
 				this._topDrawer.visible = isTopDrawerOpen || isTopDrawerDocked;
 
 				//final validation to avoid juggler next frame issues
-				if(this._topDrawer is IFeathersControl)
+				if(this._topDrawer is IValidating)
 				{
-					IFeathersControl(this._topDrawer).validate();
+					IValidating(this._topDrawer).validate();
 				}
 			}
 
@@ -2120,9 +2121,9 @@ package feathers.controls
 				this._rightDrawer.visible = isRightDrawerOpen || isRightDrawerDocked;
 
 				//final validation to avoid juggler next frame issues
-				if(this._rightDrawer is IFeathersControl)
+				if(this._rightDrawer is IValidating)
 				{
-					IFeathersControl(this._rightDrawer).validate();
+					IValidating(this._rightDrawer).validate();
 				}
 			}
 
@@ -2144,9 +2145,9 @@ package feathers.controls
 				this._bottomDrawer.visible = isBottomDrawerOpen || isBottomDrawerDocked;
 
 				//final validation to avoid juggler next frame issues
-				if(this._bottomDrawer is IFeathersControl)
+				if(this._bottomDrawer is IValidating)
 				{
-					IFeathersControl(this._bottomDrawer).validate();
+					IValidating(this._bottomDrawer).validate();
 				}
 			}
 
@@ -2177,9 +2178,9 @@ package feathers.controls
 				this._leftDrawer.visible = isLeftDrawerOpen || isLeftDrawerDocked;
 
 				//final validation to avoid juggler next frame issues
-				if(this._leftDrawer is IFeathersControl)
+				if(this._leftDrawer is IValidating)
 				{
-					IFeathersControl(this._leftDrawer).validate();
+					IValidating(this._leftDrawer).validate();
 				}
 			}
 		}

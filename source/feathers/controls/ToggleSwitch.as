@@ -1935,10 +1935,7 @@ package feathers.controls
 			}
 			this.offTextRenderer = ITextRenderer(offLabelFactory());
 			this.offTextRenderer.nameList.add(this.offLabelName);
-			if(this.offTextRenderer is IFeathersControl)
-			{
-				FeathersControl(this.offTextRenderer).clipRect = new Rectangle();
-			}
+			this.offTextRenderer.clipRect = new Rectangle();
 			this.addChildAt(DisplayObject(this.offTextRenderer), index);
 
 			var onLabelFactory:Function = this._onLabelFactory;
@@ -1952,10 +1949,7 @@ package feathers.controls
 			}
 			this.onTextRenderer = ITextRenderer(onLabelFactory());
 			this.onTextRenderer.nameList.add(this.onLabelName);
-			if(this.onTextRenderer is IFeathersControl)
-			{
-				FeathersControl(this.onTextRenderer).clipRect = new Rectangle();
-			}
+			this.onTextRenderer.clipRect = new Rectangle();
 			this.addChildAt(DisplayObject(this.onTextRenderer), index);
 		}
 
@@ -1979,23 +1973,17 @@ package feathers.controls
 				labelHeight = Math.max(this.onTextRenderer.baseline, this.offTextRenderer.baseline);
 			}
 
-			if(this.onTextRenderer is IFeathersControl)
-			{
-				var clipRect:Rectangle = FeathersControl(this.onTextRenderer).clipRect;
-				clipRect.width = maxLabelWidth;
-				clipRect.height = totalLabelHeight;
-				FeathersControl(this.onTextRenderer).clipRect = clipRect;
-			}
+			var clipRect:Rectangle = this.onTextRenderer.clipRect;
+			clipRect.width = maxLabelWidth;
+			clipRect.height = totalLabelHeight;
+			this.onTextRenderer.clipRect = clipRect;
 
 			this.onTextRenderer.y = (this.actualHeight - labelHeight) / 2;
 
-			if(this.offTextRenderer is IFeathersControl)
-			{
-				clipRect = FeathersControl(this.offTextRenderer).clipRect;
-				clipRect.width = maxLabelWidth;
-				clipRect.height = totalLabelHeight;
-				FeathersControl(this.offTextRenderer).clipRect = clipRect;
-			}
+			clipRect = this.offTextRenderer.clipRect;
+			clipRect.width = maxLabelWidth;
+			clipRect.height = totalLabelHeight;
+			this.offTextRenderer.clipRect = clipRect;
 
 			this.offTextRenderer.y = (this.actualHeight - labelHeight) / 2;
 
@@ -2011,23 +1999,15 @@ package feathers.controls
 			const thumbOffset:Number = this.thumb.x - this._paddingLeft;
 
 			var onScrollOffset:Number = maxLabelWidth - thumbOffset - (maxLabelWidth - this.onTextRenderer.width) / 2;
-			if(this.onTextRenderer is IFeathersControl)
-			{
-				const displayOnLabelRenderer:FeathersControl = FeathersControl(this.onTextRenderer);
-				var currentClipRect:Rectangle = displayOnLabelRenderer.clipRect;
-				currentClipRect.x = onScrollOffset
-				displayOnLabelRenderer.clipRect = currentClipRect;
-			}
+			var currentClipRect:Rectangle = this.onTextRenderer.clipRect;
+			currentClipRect.x = onScrollOffset
+			this.onTextRenderer.clipRect = currentClipRect;
 			this.onTextRenderer.x = this._paddingLeft - onScrollOffset;
 
 			var offScrollOffset:Number = -thumbOffset - (maxLabelWidth - this.offTextRenderer.width) / 2;
-			if(this.offTextRenderer is IFeathersControl)
-			{
-				const displayOffLabelRenderer:FeathersControl = FeathersControl(this.offTextRenderer);
-				currentClipRect = displayOffLabelRenderer.clipRect;
-				currentClipRect.x = offScrollOffset
-				displayOffLabelRenderer.clipRect = currentClipRect;
-			}
+			currentClipRect = this.offTextRenderer.clipRect;
+			currentClipRect.x = offScrollOffset
+			this.offTextRenderer.clipRect = currentClipRect;
 			this.offTextRenderer.x = this.actualWidth - this._paddingRight - maxLabelWidth - offScrollOffset;
 
 			if(this._trackLayoutMode == TRACK_LAYOUT_MODE_ON_OFF)

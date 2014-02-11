@@ -10,6 +10,7 @@ package feathers.controls
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
 	import feathers.core.ITextRenderer;
+	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.HorizontalLayout;
@@ -1154,9 +1155,9 @@ package feathers.controls
 			for(var i:int = 0; i < leftItemCount; i++)
 			{
 				var item:DisplayObject = this._leftItems[i];
-				if(item is IFeathersControl)
+				if(item is IValidating)
 				{
-					IFeathersControl(item).validate();
+					IValidating(item).validate();
 				}
 				if(needsWidth && !isNaN(item.width))
 				{
@@ -1179,9 +1180,9 @@ package feathers.controls
 			for(i = 0; i < centerItemCount; i++)
 			{
 				item = this._centerItems[i];
-				if(item is IFeathersControl)
+				if(item is IValidating)
 				{
-					IFeathersControl(item).validate();
+					IValidating(item).validate();
 				}
 				if(needsWidth && !isNaN(item.width))
 				{
@@ -1204,9 +1205,9 @@ package feathers.controls
 			for(i = 0; i < rightItemCount; i++)
 			{
 				item = this._rightItems[i];
-				if(item is IFeathersControl)
+				if(item is IValidating)
 				{
-					IFeathersControl(item).validate();
+					IValidating(item).validate();
 				}
 				if(needsWidth && !isNaN(item.width))
 				{
@@ -1397,9 +1398,9 @@ package feathers.controls
 		{
 			for each(var item:DisplayObject in this._leftItems)
 			{
-				if(item is IFeathersControl)
+				if(item is IValidating)
 				{
-					IFeathersControl(item).validate();
+					IValidating(item).validate();
 				}
 			}
 			HELPER_BOUNDS.x = HELPER_BOUNDS.y = 0;
@@ -1425,9 +1426,9 @@ package feathers.controls
 		{
 			for each(var item:DisplayObject in this._rightItems)
 			{
-				if(item is IFeathersControl)
+				if(item is IValidating)
 				{
-					IFeathersControl(item).validate();
+					IValidating(item).validate();
 				}
 			}
 			HELPER_BOUNDS.x = HELPER_BOUNDS.y = 0;
@@ -1452,9 +1453,9 @@ package feathers.controls
 		{
 			for each(var item:DisplayObject in this._centerItems)
 			{
-				if(item is IFeathersControl)
+				if(item is IValidating)
 				{
-					IFeathersControl(item).validate();
+					IValidating(item).validate();
 				}
 			}
 			HELPER_BOUNDS.x = HELPER_BOUNDS.y = 0;

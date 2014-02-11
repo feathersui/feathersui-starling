@@ -9,6 +9,7 @@ package feathers.controls
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
+	import feathers.core.IValidating;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.ILayout;
 	import feathers.layout.IVirtualLayout;
@@ -702,9 +703,9 @@ package feathers.controls
 						this.addChild(this.selectedSymbol);
 					}
 					this.symbols.push(this.selectedSymbol);
-					if(this.selectedSymbol is IFeathersControl)
+					if(this.selectedSymbol is IValidating)
 					{
-						IFeathersControl(this.selectedSymbol).validate();
+						IValidating(this.selectedSymbol).validate();
 					}
 				}
 				else
@@ -720,9 +721,9 @@ package feathers.controls
 					}
 					this.unselectedSymbols.push(symbol);
 					this.symbols.push(symbol);
-					if(symbol is IFeathersControl)
+					if(symbol is IValidating)
 					{
-						IFeathersControl(symbol).validate();
+						IValidating(symbol).validate();
 					}
 				}
 			}

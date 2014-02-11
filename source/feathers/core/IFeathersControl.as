@@ -38,7 +38,7 @@ package feathers.core
 	 * Basic interface for Feathers UI controls. A Feathers control must also
 	 * be a Starling display object.
 	 */
-	public interface IFeathersControl extends IFeathersDisplayObject
+	public interface IFeathersControl extends IValidating
 	{
 		/**
 		 * @copy feathers.core.FeathersControl#minWidth
@@ -91,11 +91,6 @@ package feathers.core
 		function set clipRect(value:Rectangle):void;
 
 		/**
-		 * @copy feathers.core.FeathersControl#depth
-		 */
-		function get depth():int;
-
-		/**
 		 * @copy feathers.core.FeathersControl#isEnabled
 		 */
 		function get isEnabled():Boolean;
@@ -124,10 +119,5 @@ package feathers.core
 		 * @copy feathers.core.FeathersControl#setSize()
 		 */
 		function setSize(width:Number, height:Number):void;
-
-		/**
-		 * @copy feathers.core.FeathersControl#validate()
-		 */
-		function validate():void;
 	}
 }

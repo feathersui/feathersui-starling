@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.popups
 {
 	import feathers.core.IFeathersControl;
+	import feathers.core.IValidating;
 	import feathers.core.PopUpManager;
 	import feathers.events.FeathersEventType;
 	import feathers.utils.display.getDisplayObjectDepthFromStage;
@@ -183,7 +184,6 @@ package feathers.controls.popups
 			PopUpManager.addPopUp(this.content, true, false);
 			if(this.content is IFeathersControl)
 			{
-				const uiContent:IFeathersControl = IFeathersControl(this.content);
 				this.content.addEventListener(FeathersEventType.RESIZE, content_resizeHandler);
 			}
 			this.layout();
@@ -230,14 +230,17 @@ package feathers.controls.popups
 		 */
 		protected function layout():void
 		{
-			const maxWidth:Number = Math.min(Starling.current.stage.stageWidth, Starling.current.stage.stageHeight) - this.marginLeft - this.marginRight;
-			const maxHeight:Number = Starling.current.stage.stageHeight - this.marginTop - this.marginBottom;
-			if(this.content is IFeathersControl)
+			var maxWidth:Number = Math.min(Starling.current.stage.stageWidth, Starling.current.stage.stageHeight) - this.marginLeft - this.marginRight;
+			var maxHeight:Number = Starling.current.stage.stageHeight - this.marginTop - this.marginBottom;
+			if(this.content is IValidating)
 			{
-				const uiContent:IFeathersControl = IFeathersControl(this.content);
-				uiContent.minWidth = uiContent.maxWidth = maxWidth;
-				uiContent.maxHeight = maxHeight;
-				uiContent.validate();
+				if(this.content is IFeathersControl)
+				{
+					var uiContent:IFeathersControl = IFeathersControl(this.content);
+					uiContent.minWidth = uiContent.maxWidth = maxWidth;
+					uiContent.maxHeight = maxHeight;
+				}
+				IValidating(this.content).validate();
 			}
 			else
 			{
