@@ -1265,12 +1265,13 @@ package feathers.controls.text
 			{
 				return;
 			}
+			var scaleFactor:Number = Starling.contentScaleFactor;
 			HELPER_MATRIX.identity();
-			HELPER_MATRIX.scale(Starling.contentScaleFactor, Starling.contentScaleFactor);
+			HELPER_MATRIX.scale(scaleFactor, scaleFactor);
 			var totalBitmapWidth:Number = this._snapshotWidth;
 			var totalBitmapHeight:Number = this._snapshotHeight;
-			var clipWidth:Number = this.actualWidth;
-			var clipHeight:Number = this.actualHeight;
+			var clipWidth:Number = this.actualWidth * scaleFactor;
+			var clipHeight:Number = this.actualHeight * scaleFactor;
 			var xPosition:Number = 0;
 			var yPosition:Number = 0;
 			var bitmapData:BitmapData;
@@ -1309,7 +1310,7 @@ package feathers.controls.text
 					var newTexture:Texture;
 					if(!this.textSnapshot || this._needsNewTexture)
 					{
-						newTexture = Texture.fromBitmapData(bitmapData, false, false, Starling.contentScaleFactor);
+						newTexture = Texture.fromBitmapData(bitmapData, false, false, scaleFactor);
 						newTexture.root.onRestore = texture_onRestore;
 					}
 					var snapshot:Image = null;
@@ -1357,8 +1358,8 @@ package feathers.controls.text
 					{
 						this.textSnapshot = snapshot;
 					}
-					snapshot.x = xPosition;
-					snapshot.y = yPosition;
+					snapshot.x = xPosition / scaleFactor;
+					snapshot.y = yPosition / scaleFactor;
 					snapshotIndex++;
 					yPosition += currentBitmapHeight;
 					totalBitmapHeight -= currentBitmapHeight;
@@ -1369,7 +1370,7 @@ package feathers.controls.text
 				totalBitmapWidth -= currentBitmapWidth;
 				clipWidth -= currentBitmapWidth;
 				yPosition = 0;
-				clipHeight = this.actualHeight;
+				clipHeight = this.actualHeight * scaleFactor;
 				totalBitmapHeight = this._snapshotHeight;
 			}
 			while(totalBitmapWidth > 0)
