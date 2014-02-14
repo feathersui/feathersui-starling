@@ -474,8 +474,7 @@ package feathers.controls.text
 			{
 				return 0;
 			}
-			var line:TextLine = this._textLines[0];
-			return line.getBaselinePosition(TextBaseline.ROMAN);
+			return this._textLines[0].ascent;
 		}
 
 		/**
