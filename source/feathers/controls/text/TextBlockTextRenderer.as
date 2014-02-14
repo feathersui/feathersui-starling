@@ -109,6 +109,11 @@ package feathers.controls.text
 		protected static const CARRIAGE_RETURN:String = "\r";
 
 		/**
+		 * @private
+		 */
+		protected static const FUZZY_TRUNCATION_DIFFERENCE:Number = 0.000001;
+
+		/**
 		 * Constructor.
 		 */
 		public function TextBlockTextRenderer()
@@ -1502,7 +1507,8 @@ package feathers.controls.text
 					}
 					var lineLength:int = line.rawTextLength;
 					var isTruncated:Boolean = false;
-					while(canTruncate && line.width > width)
+					var difference:Number = 0;
+					while(canTruncate && (difference = line.width - width) > FUZZY_TRUNCATION_DIFFERENCE)
 					{
 						isTruncated = true;
 						if(this._truncationOffset == 0)
