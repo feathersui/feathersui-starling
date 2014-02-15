@@ -3269,25 +3269,22 @@ package feathers.controls.renderers
 
 			if(this.accessoryLabel)
 			{
-				if(hasIconToLeftOrRight)
-				{
-					calculatedWidth -= adjustedGap;
-				}
+				var iconAffectsAccessoryLabelMaxWidth:Boolean = hasIconToLeftOrRight && (hasAccessoryToLeftOrRight || this._layoutOrder == LAYOUT_ORDER_LABEL_ACCESSORY_ICON);
 				if(this.iconLabel)
 				{
-					if(calculatedWidth < 0)
+					this.iconLabel.maxWidth = calculatedWidth - adjustedGap;
+					if(this.iconLabel.maxWidth < 0)
 					{
-						calculatedWidth = 0;
+						this.iconLabel.maxWidth = 0;
 					}
-					this.iconLabel.maxWidth = calculatedWidth;
 				}
 				if(this.currentIcon is IValidating)
 				{
 					IValidating(this.currentIcon).validate();
 				}
-				if(hasIconToLeftOrRight)
+				if(iconAffectsAccessoryLabelMaxWidth)
 				{
-					calculatedWidth -= this.currentIcon.width;
+					calculatedWidth -= (this.currentIcon.width + adjustedGap);
 				}
 				if(hasAccessoryToLeftOrRight)
 				{
@@ -3298,6 +3295,10 @@ package feathers.controls.renderers
 					calculatedWidth = 0;
 				}
 				this.accessoryLabel.maxWidth = calculatedWidth;
+				if(!iconAffectsAccessoryLabelMaxWidth)
+				{
+					calculatedWidth -= (this.currentIcon.width + adjustedGap);
+				}
 				if(this.accessory is IValidating)
 				{
 					IValidating(this.accessory).validate();
@@ -3309,11 +3310,12 @@ package feathers.controls.renderers
 			}
 			else if(this.iconLabel)
 			{
+				var accessoryAffectsIconLabelMaxWidth:Boolean = hasAccessoryToLeftOrRight && (hasIconToLeftOrRight || this._layoutOrder == LAYOUT_ORDER_LABEL_ICON_ACCESSORY);
 				if(this.accessory is IValidating)
 				{
 					IValidating(this.accessory).validate();
 				}
-				if(hasAccessoryToLeftOrRight)
+				if(accessoryAffectsIconLabelMaxWidth)
 				{
 					calculatedWidth -= (accessoryGap + this.accessory.width);
 				}
@@ -3326,6 +3328,10 @@ package feathers.controls.renderers
 					calculatedWidth = 0;
 				}
 				this.iconLabel.maxWidth = calculatedWidth;
+				if(!accessoryAffectsIconLabelMaxWidth)
+				{
+					calculatedWidth -= (accessoryGap + this.accessory.width);
+				}
 				if(this.currentIcon is IValidating)
 				{
 					IValidating(this.currentIcon).validate();
