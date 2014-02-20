@@ -460,7 +460,10 @@ package feathers.display
 
 				if(!helperImage)
 				{
-					helperImage = new Image(this._textures.topLeft);
+					//because Scale9Textures enforces it, we know for sure that
+					//this texture will have a size greater than zero, so there
+					//won't be an error from Quad.
+					helperImage = new Image(this._textures.middleCenter);
 				}
 				helperImage.smoothing = this._smoothing;
 				helperImage.color = this._color;

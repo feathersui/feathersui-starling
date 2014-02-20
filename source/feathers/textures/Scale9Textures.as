@@ -14,15 +14,24 @@ package feathers.textures
 	/**
 	 * A set of nine textures used by <code>Scale9Image</code>.
 	 *
-	 * @see org.josht.starling.display.Scale9Image
+	 * @see feathers.display.Scale9Image
 	 */
 	public final class Scale9Textures
 	{
+		/**
+		 * @private
+		 */
+		private static const DIMENSIONS_ERROR:String = "The width and height of the scale9Grid must be greater than zero.";
+
 		/**
 		 * Constructor.
 		 */
 		public function Scale9Textures(texture:Texture, scale9Grid:Rectangle)
 		{
+			if(scale9Grid.width <= 0 || scale9Grid.height <= 0)
+			{
+				throw new ArgumentError(DIMENSIONS_ERROR)
+			}
 			this._texture = texture;
 			this._scale9Grid = scale9Grid;
 			this.initialize();

@@ -14,10 +14,15 @@ package feathers.textures
 	/**
 	 * A set of three textures used by <code>Scale3Image</code>.
 	 *
-	 * @see org.josht.starling.display.Scale3Image
+	 * @see feathers.display.Scale3Image
 	 */
 	public final class Scale3Textures
 	{
+		/**
+		 * @private
+		 */
+		private static const DIMENSIONS_ERROR:String = "The size of the second region must be greater than zero.";
+
 		/**
 		 * If the direction is horizontal, the layout will start on the left and continue to the right.
 		 */
@@ -33,6 +38,10 @@ package feathers.textures
 		 */
 		public function Scale3Textures(texture:Texture, firstRegionSize:Number, secondRegionSize:Number, direction:String = DIRECTION_HORIZONTAL)
 		{
+			if(secondRegionSize <= 0)
+			{
+				throw new ArgumentError(DIMENSIONS_ERROR);
+			}
 			this._texture = texture;
 			this._firstRegionSize = firstRegionSize;
 			this._secondRegionSize = secondRegionSize;
