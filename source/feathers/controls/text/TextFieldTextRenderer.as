@@ -162,7 +162,8 @@ package feathers.controls.text
 		 * <p>In the following example, the text is displayed as HTML:</p>
 		 *
 		 * <listing version="3.0">
-		 * textRenderer.isHTML = true;</listing>
+		 * textRenderer.isHTML = true;
+		 * textRenderer.text = "&lt;span class='heading'&gt;hello&lt;/span&gt; world!";</listing>
 		 *
 		 * @default false
 		 *
@@ -282,7 +283,8 @@ package feathers.controls.text
 		 * style.setStyle("body", body);
 		 *
 		 * textRenderer.styleSheet = style;
-		 * textRenderer.htmlText = "<body><span class='heading'>Hello </span>World...</body>";</listing>
+		 * textRenderer.isHTML = true;
+		 * textRenderer.text = "&lt;body&gt;&lt;span class='heading'&gt;Hello&lt;/span&gt; World...&lt;/body&gt;";</listing>
 		 *
 		 * @default null
 		 *
