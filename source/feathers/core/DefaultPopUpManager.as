@@ -15,7 +15,6 @@ package feathers.core
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Quad;
 	import starling.display.Stage;
-	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
 	import starling.events.ResizeEvent;
 

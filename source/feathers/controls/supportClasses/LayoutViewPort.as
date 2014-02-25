@@ -8,7 +8,6 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.supportClasses
 {
 	import feathers.controls.LayoutGroup;
-	import feathers.core.IFeathersControl;
 	import feathers.core.IValidating;
 
 	import starling.display.DisplayObject;

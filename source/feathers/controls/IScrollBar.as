@@ -7,8 +7,6 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
-	import feathers.core.IFeathersControl;
-
 	/**
 	 * Dispatched when the scroll bar's value changes.
 	 *
