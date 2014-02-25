@@ -50,6 +50,8 @@ package feathers.layout
 		 * The width of the layout object, as a percentage of the container's
 		 * width.
 		 *
+		 * <p>If the value is <code>NaN</code>, this property is ignored.</p>
+		 *
 		 * @default NaN
 		 */
 		public function get percentWidth():Number
@@ -78,6 +80,8 @@ package feathers.layout
 		/**
 		 * The height of the layout object, as a percentage of the container's
 		 * height.
+		 *
+		 * <p>If the value is <code>NaN</code>, this property is ignored.</p>
 		 *
 		 * @default NaN
 		 */
