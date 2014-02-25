@@ -74,7 +74,10 @@ package feathers.layout
 		 * with explicit pixel heights, and then the remaining space will be
 		 * distributed to children with percent heights.
 		 *
-		 * <p>If the value is <code>NaN</code>, this property is ignored.</p>
+		 * <p>The <code>percentHeight</code> property is ignored when its value
+		 * is <code>NaN</code> or when the <code>useVirtualLayout</code>
+		 * property of the <code>VerticalLayout</code> is set to
+		 * <code>false</code>.</p>
 		 *
 		 * @default NaN
 		 */
