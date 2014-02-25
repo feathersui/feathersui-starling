@@ -7,7 +7,6 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.layout
 {
-	import feathers.core.IFeathersControl;
 	import feathers.core.IValidating;
 
 	import flash.errors.IllegalOperationError;

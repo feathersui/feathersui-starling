@@ -18,7 +18,6 @@ package feathers.core
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import flash.utils.Dictionary;
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;

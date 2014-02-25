@@ -11,11 +11,8 @@ package feathers.controls
 	import feathers.layout.ILayout;
 	import feathers.layout.IVirtualLayout;
 
-	import starling.core.RenderSupport;
-
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
-	import starling.events.Event;
 
 	/**
 	 * Dispatched when the container is scrolled.
