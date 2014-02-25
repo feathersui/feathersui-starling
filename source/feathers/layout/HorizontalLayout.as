@@ -983,7 +983,7 @@ package feathers.layout
 				}
 				else
 				{
-					if(!this._useVirtualLayout && layoutItem)
+					if(layoutItem)
 					{
 						var layoutData:HorizontalLayoutData = layoutItem.layoutData as HorizontalLayoutData;
 						if(layoutData)

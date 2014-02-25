@@ -984,7 +984,7 @@ package feathers.layout
 				}
 				else
 				{
-					if(!this._useVirtualLayout && layoutItem)
+					if(layoutItem)
 					{
 						var layoutData:VerticalLayoutData = layoutItem.layoutData as VerticalLayoutData;
 						if(layoutData)
