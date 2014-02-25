@@ -800,6 +800,11 @@ package feathers.layout
 				this.validateItems(items, explicitWidth - this._paddingLeft - this._paddingRight, explicitHeight);
 			}
 
+			if(!this._useVirtualLayout)
+			{
+				this.applyPercentHeights(items, explicitHeight, minHeight, maxHeight);
+			}
+
 			var distributedHeight:Number;
 			if(this._distributeHeights)
 			{
@@ -967,31 +972,72 @@ package feathers.layout
 			for(i = 0; i < discoveredItemCount; i++)
 			{
 				item = discoveredItems[i];
-				if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+				var layoutItem:ILayoutDisplayObject = item as ILayoutDisplayObject;
+				if(layoutItem && !layoutItem.includeInLayout)
 				{
 					continue;
 				}
-				switch(this._horizontalAlign)
+				if(this._horizontalAlign == HORIZONTAL_ALIGN_JUSTIFY)
 				{
-					case HORIZONTAL_ALIGN_RIGHT:
+					item.x = boundsX + this._paddingLeft;
+					item.width = availableWidth - this._paddingLeft - this._paddingRight;
+				}
+				else
+				{
+					if(!this._useVirtualLayout && layoutItem)
 					{
-						item.x = boundsX + availableWidth - this._paddingRight - item.width;
-						break;
+						var layoutData:VerticalLayoutData = layoutItem.layoutData as VerticalLayoutData;
+						if(layoutData)
+						{
+							var percentWidth:Number = layoutData.percentWidth;
+							if(percentWidth === percentWidth) //!isNaN()
+							{
+								if(percentWidth < 0)
+								{
+									percentWidth = 0;
+								}
+								if(percentWidth > 100)
+								{
+									percentWidth = 100;
+								}
+								itemWidth = percentWidth * (availableWidth - this._paddingLeft - this._paddingRight) / 100;
+								if(item is IFeathersControl)
+								{
+									var feathersItem:IFeathersControl = IFeathersControl(item);
+									var itemMinWidth:Number = feathersItem.minWidth;
+									if(itemWidth < itemMinWidth)
+									{
+										itemWidth = itemMinWidth;
+									}
+									else
+									{
+										var itemMaxWidth:Number = feathersItem.maxWidth;
+										if(itemWidth > itemMaxWidth)
+										{
+											itemWidth = itemMaxWidth;
+										}
+									}
+								}
+								item.width = itemWidth;
+							}
+						}
 					}
-					case HORIZONTAL_ALIGN_CENTER:
+					switch(this._horizontalAlign)
 					{
-						item.x = boundsX + this._paddingLeft + (availableWidth - this._paddingLeft - this._paddingRight - item.width) / 2;
-						break;
-					}
-					case HORIZONTAL_ALIGN_JUSTIFY:
-					{
-						item.x = boundsX + this._paddingLeft;
-						item.width = availableWidth - this._paddingLeft - this._paddingRight;
-						break;
-					}
-					default: //left
-					{
-						item.x = boundsX + this._paddingLeft;
+						case HORIZONTAL_ALIGN_RIGHT:
+						{
+							item.x = boundsX + availableWidth - this._paddingRight - item.width;
+							break;
+						}
+						case HORIZONTAL_ALIGN_CENTER:
+						{
+							item.x = boundsX + this._paddingLeft + (availableWidth - this._paddingLeft - this._paddingRight - item.width) / 2;
+							break;
+						}
+						default: //left
+						{
+							item.x = boundsX + this._paddingLeft;
+						}
 					}
 				}
 				if(this.manageVisibility)
@@ -1539,6 +1585,125 @@ package feathers.layout
 				availableSpace += this._gap - this._lastGap;
 			}
 			return availableSpace / itemCount;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function applyPercentHeights(items:Vector.<DisplayObject>, explicitHeight:Number, minHeight:Number, maxHeight:Number):void
+		{
+			var remainingHeight:Number = explicitHeight;
+			this._discoveredItemsCache.length = 0;
+			var totalExplicitHeight:Number = 0;
+			var totalMinHeight:Number = 0;
+			var totalPercentHeight:Number = 0;
+			var itemCount:int = items.length;
+			var pushIndex:int = 0;
+			for(var i:int = 0; i < itemCount; i++)
+			{
+				var item:DisplayObject = items[i];
+				if(item is ILayoutDisplayObject)
+				{
+					var layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(item);
+					if(!layoutItem.includeInLayout)
+					{
+						continue;
+					}
+					var layoutData:VerticalLayoutData = layoutItem.layoutData as VerticalLayoutData;
+					if(layoutData)
+					{
+						var percentHeight:Number = layoutData.percentHeight;
+						if(percentHeight === percentHeight) //!isNaN
+						{
+							if(layoutItem is IFeathersControl)
+							{
+								var feathersItem:IFeathersControl = IFeathersControl(layoutItem);
+								totalMinHeight += feathersItem.minHeight;
+							}
+							totalPercentHeight += percentHeight;
+							this._discoveredItemsCache[pushIndex] = item;
+							pushIndex++;
+							continue;
+						}
+					}
+				}
+				totalExplicitHeight += item.height;
+			}
+			totalExplicitHeight += this._gap * (itemCount - 1);
+			if(this._firstGap === this._firstGap && itemCount > 1)
+			{
+				totalExplicitHeight += (this._firstGap - this._gap);
+			}
+			else if(this._lastGap === this._lastGap && itemCount > 2)
+			{
+				totalExplicitHeight += (this._lastGap - this._gap);
+			}
+			totalExplicitHeight += this._paddingTop + this._paddingBottom;
+			if(totalPercentHeight < 100)
+			{
+				totalPercentHeight = 100;
+			}
+			if(remainingHeight != remainingHeight) //isNaN()
+			{
+				remainingHeight = totalExplicitHeight + totalMinHeight;
+				if(remainingHeight < minHeight)
+				{
+					remainingHeight = minHeight;
+				}
+				else if(remainingHeight > maxHeight)
+				{
+					remainingHeight = maxHeight;
+				}
+			}
+			remainingHeight -= totalExplicitHeight;
+			if(remainingHeight < 0)
+			{
+				remainingHeight = 0;
+			}
+			do
+			{
+				var needsAnotherPass:Boolean = false;
+				var percentToPixels:Number = remainingHeight / totalPercentHeight;
+				for(i = 0; i < pushIndex; i++)
+				{
+					layoutItem = ILayoutDisplayObject(this._discoveredItemsCache[i]);
+					if(!layoutItem)
+					{
+						continue;
+					}
+					layoutData = VerticalLayoutData(layoutItem.layoutData);
+					percentHeight = layoutData.percentHeight;
+					var itemHeight:Number = percentToPixels * percentHeight;
+					if(layoutItem is IFeathersControl)
+					{
+						feathersItem = IFeathersControl(layoutItem);
+						var itemMinHeight:Number = feathersItem.minHeight;
+						if(itemHeight < itemMinHeight)
+						{
+							itemHeight = itemMinHeight;
+							remainingHeight -= itemHeight;
+							totalPercentHeight -= percentHeight;
+							this._discoveredItemsCache[i] = null;
+							needsAnotherPass = true;
+						}
+						else
+						{
+							var itemMaxHeight:Number = feathersItem.maxHeight;
+							if(itemHeight > itemMaxHeight)
+							{
+								itemHeight = itemMaxHeight;
+								remainingHeight -= itemHeight;
+								totalPercentHeight -= percentHeight;
+								this._discoveredItemsCache[i] = null;
+								needsAnotherPass = true;
+							}
+						}
+					}
+					layoutItem.height = itemHeight;
+				}
+			}
+			while(needsAnotherPass)
+			this._discoveredItemsCache.length = 0;
 		}
 	}
 }
