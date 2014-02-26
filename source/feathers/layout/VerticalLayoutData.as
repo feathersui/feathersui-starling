@@ -28,14 +28,16 @@ package feathers.layout
 		/**
 		 * Constructor.
 		 */
-		public function VerticalLayoutData()
+		public function VerticalLayoutData(percentWidth:Number = NaN, percentHeight:Number = NaN)
 		{
+			this._percentWidth = percentWidth;
+			this._percentHeight = percentHeight;
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _percentWidth:Number = NaN;
+		protected var _percentWidth:Number;
 
 		/**
 		 * The width of the layout object, as a percentage of the container's
@@ -66,7 +68,7 @@ package feathers.layout
 		/**
 		 * @private
 		 */
-		protected var _percentHeight:Number = NaN;
+		protected var _percentHeight:Number;
 
 		/**
 		 * The height of the layout object, as a percentage of the container's
