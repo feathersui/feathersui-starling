@@ -3295,7 +3295,7 @@ package feathers.controls.renderers
 					calculatedWidth = 0;
 				}
 				this.accessoryLabel.maxWidth = calculatedWidth;
-				if(!iconAffectsAccessoryLabelMaxWidth)
+				if(this.currentIcon && !iconAffectsAccessoryLabelMaxWidth)
 				{
 					calculatedWidth -= (this.currentIcon.width + adjustedGap);
 				}
@@ -3328,7 +3328,7 @@ package feathers.controls.renderers
 					calculatedWidth = 0;
 				}
 				this.iconLabel.maxWidth = calculatedWidth;
-				if(!accessoryAffectsIconLabelMaxWidth)
+				if(this.accessory && !accessoryAffectsIconLabelMaxWidth)
 				{
 					calculatedWidth -= (accessoryGap + this.accessory.width);
 				}
