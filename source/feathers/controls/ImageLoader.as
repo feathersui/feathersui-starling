@@ -12,6 +12,7 @@ package feathers.controls
 
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.DisplayObject;
 	import flash.display.Loader;
 	import flash.display3D.Context3DTextureFormat;
 	import flash.errors.IllegalOperationError;
@@ -24,6 +25,7 @@ package feathers.controls
 	import flash.net.URLLoader;
 	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
+	import flash.system.Capabilities;
 	import flash.system.ImageDecodingPolicy;
 	import flash.system.LoaderContext;
 	import flash.utils.ByteArray;
@@ -892,6 +894,35 @@ package feathers.controls
 			this._paddingLeft = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
+		
+		/**
+		 * @private
+		 */
+		protected var _firstTry:Boolean;
+		
+		/**
+		 * @private
+		 */
+		private static var _isBrowserSet:Boolean;
+		
+		/**
+		 * @private
+		 */
+		private static var _isBrowser:Boolean;
+		
+		private static function isBrowser():Boolean
+		{
+			if(!_isBrowserSet)
+			{
+				switch (Capabilities.playerType) {
+					case 'PlugIn':
+					case 'ActiveX':
+						_isBrowser = true;
+				}
+				_isBrowserSet = true;
+			}
+			return _isBrowser;
+		}
 
 		/**
 		 * @private
@@ -1050,6 +1081,7 @@ package feathers.controls
 				else if(sourceURL != this._lastURL)
 				{
 					this._lastURL = sourceURL;
+					this._firstTry = true;
 
 					if(this.urlLoader)
 					{
@@ -1450,7 +1482,44 @@ package feathers.controls
 		 */
 		protected function loader_completeHandler(event:flash.events.Event):void
 		{
-			const bitmap:Bitmap = Bitmap(this.loader.content);
+			var content:DisplayObject;
+			if(!isBrowser())
+			{
+				content = this.loader.content;
+			}
+			else
+			{
+				try
+				{
+					content = this.loader.content;
+				} 
+				catch(error:SecurityError) 
+				{
+					import flash.system.Security;
+					
+					var loaderDomain:String = this.loader.contentLoaderInfo.url;
+					if(-1 == this._lastURL.indexOf(loaderDomain) && this._firstTry)
+					{
+						Security.loadPolicyFile(loaderDomain + 'crossdomain.xml');
+						if( 0 == loaderDomain.indexOf('https') )
+						{
+							Security.allowDomain(loaderDomain);
+						}
+						else
+						{
+							Security.allowInsecureDomain(loaderDomain)
+						}
+						
+						this.loader.load(new URLRequest(this._lastURL), LOADER_CONTEXT);
+						this._firstTry = false;
+						return;
+					}
+					throw error;
+				}
+			}
+			
+			const bitmap:Bitmap = Bitmap(content);
+			
 			this.loader.contentLoaderInfo.removeEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
 			this.loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, loader_errorHandler);
 			this.loader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_errorHandler);
