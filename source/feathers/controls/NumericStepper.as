@@ -913,10 +913,10 @@ package feathers.controls
 		 * to the stepper:</p>
 		 *
 		 * <listing version="3.0">
-		 * stepper.incrementButtonFactory = function():TextInput
+		 * stepper.textInputFactory = function():TextInput
 		 * {
-		 *     var textInput:TextInput = new Button();
-		 *     textInput.textEditorProperties.backgroundSkin = new Image( texture );
+		 *     var textInput:TextInput = new TextInput();
+		 *     textInput.backgroundSkin = new Image( texture );
 		 *     return textInput;
 		 * };</listing>
 		 *
