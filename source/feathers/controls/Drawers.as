@@ -464,8 +464,15 @@ package feathers.controls
 			{
 				return;
 			}
+			if(this.contentEventDispatcher && this._topDrawerToggleEventType)
+			{
+				this.contentEventDispatcher.removeEventListener(this._topDrawerToggleEventType, content_topDrawerToggleEventTypeHandler);
+			}
 			this._topDrawerToggleEventType = value;
-			this.invalidate(INVALIDATION_FLAG_SELECTED);
+			if(this.contentEventDispatcher && this._topDrawerToggleEventType)
+			{
+				this.contentEventDispatcher.addEventListener(this._topDrawerToggleEventType, content_topDrawerToggleEventTypeHandler);
+			}
 		}
 
 		/**
@@ -666,8 +673,15 @@ package feathers.controls
 			{
 				return;
 			}
+			if(this.contentEventDispatcher && this._rightDrawerToggleEventType)
+			{
+				this.contentEventDispatcher.removeEventListener(this._rightDrawerToggleEventType, content_rightDrawerToggleEventTypeHandler);
+			}
 			this._rightDrawerToggleEventType = value;
-			this.invalidate(INVALIDATION_FLAG_SELECTED);
+			if(this.contentEventDispatcher && this._rightDrawerToggleEventType)
+			{
+				this.contentEventDispatcher.addEventListener(this._rightDrawerToggleEventType, content_rightDrawerToggleEventTypeHandler);
+			}
 		}
 
 		/**
@@ -868,8 +882,15 @@ package feathers.controls
 			{
 				return;
 			}
+			if(this.contentEventDispatcher && this._bottomDrawerToggleEventType)
+			{
+				this.contentEventDispatcher.removeEventListener(this._bottomDrawerToggleEventType, content_bottomDrawerToggleEventTypeHandler);
+			}
 			this._bottomDrawerToggleEventType = value;
-			this.invalidate(INVALIDATION_FLAG_SELECTED);
+			if(this.contentEventDispatcher && this._bottomDrawerToggleEventType)
+			{
+				this.contentEventDispatcher.addEventListener(this._bottomDrawerToggleEventType, content_bottomDrawerToggleEventTypeHandler);
+			}
 		}
 
 		/**
@@ -1070,8 +1091,15 @@ package feathers.controls
 			{
 				return;
 			}
+			if(this.contentEventDispatcher && this._leftDrawerToggleEventType)
+			{
+				this.contentEventDispatcher.removeEventListener(this._leftDrawerToggleEventType, content_leftDrawerToggleEventTypeHandler);
+			}
 			this._leftDrawerToggleEventType = value;
-			this.invalidate(INVALIDATION_FLAG_SELECTED);
+			if(this.contentEventDispatcher && this._leftDrawerToggleEventType)
+			{
+				this.contentEventDispatcher.addEventListener(this._leftDrawerToggleEventType, content_leftDrawerToggleEventTypeHandler);
+			}
 		}
 
 		/**
@@ -1417,7 +1445,6 @@ package feathers.controls
 			{
 				this._content.addEventListener(this._contentEventDispatcherChangeEventType, content_eventDispatcherChangeHandler);
 			}
-			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
 
 		/**
@@ -1463,7 +1490,7 @@ package feathers.controls
 				return;
 			}
 			this._contentEventDispatcherField = value;
-			this.invalidate(INVALIDATION_FLAG_SELECTED);
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		/**
@@ -1512,7 +1539,7 @@ package feathers.controls
 				return;
 			}
 			this._contentEventDispatcherFunction = value;
-			this.invalidate(INVALIDATION_FLAG_SELECTED);
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		/**
@@ -2432,18 +2459,42 @@ package feathers.controls
 		{
 			if(this.contentEventDispatcher)
 			{
-				this.contentEventDispatcher.removeEventListener(this._topDrawerToggleEventType, content_topDrawerToggleEventTypeHandler);
-				this.contentEventDispatcher.removeEventListener(this._rightDrawerToggleEventType, content_rightDrawerToggleEventTypeHandler);
-				this.contentEventDispatcher.removeEventListener(this._bottomDrawerToggleEventType, content_bottomDrawerToggleEventTypeHandler);
-				this.contentEventDispatcher.removeEventListener(this._leftDrawerToggleEventType, content_leftDrawerToggleEventTypeHandler);
+				if(this._topDrawerToggleEventType)
+				{
+					this.contentEventDispatcher.removeEventListener(this._topDrawerToggleEventType, content_topDrawerToggleEventTypeHandler);
+				}
+				if(this._rightDrawerToggleEventType)
+				{
+					this.contentEventDispatcher.removeEventListener(this._rightDrawerToggleEventType, content_rightDrawerToggleEventTypeHandler);
+				}
+				if(this._bottomDrawerToggleEventType)
+				{
+					this.contentEventDispatcher.removeEventListener(this._bottomDrawerToggleEventType, content_bottomDrawerToggleEventTypeHandler);
+				}
+				if(this._leftDrawerToggleEventType)
+				{
+					this.contentEventDispatcher.removeEventListener(this._leftDrawerToggleEventType, content_leftDrawerToggleEventTypeHandler);
+				}
 			}
 			this.contentEventDispatcher = this.contentToContentEventDispatcher();
 			if(this.contentEventDispatcher)
 			{
-				this.contentEventDispatcher.addEventListener(this._topDrawerToggleEventType, content_topDrawerToggleEventTypeHandler);
-				this.contentEventDispatcher.addEventListener(this._rightDrawerToggleEventType, content_rightDrawerToggleEventTypeHandler);
-				this.contentEventDispatcher.addEventListener(this._bottomDrawerToggleEventType, content_bottomDrawerToggleEventTypeHandler);
-				this.contentEventDispatcher.addEventListener(this._leftDrawerToggleEventType, content_leftDrawerToggleEventTypeHandler);
+				if(this._topDrawerToggleEventType)
+				{
+					this.contentEventDispatcher.addEventListener(this._topDrawerToggleEventType, content_topDrawerToggleEventTypeHandler);
+				}
+				if(this._rightDrawerToggleEventType)
+				{
+					this.contentEventDispatcher.addEventListener(this._rightDrawerToggleEventType, content_rightDrawerToggleEventTypeHandler);
+				}
+				if(this._bottomDrawerToggleEventType)
+				{
+					this.contentEventDispatcher.addEventListener(this._bottomDrawerToggleEventType, content_bottomDrawerToggleEventTypeHandler);
+				}
+				if(this._leftDrawerToggleEventType)
+				{
+					this.contentEventDispatcher.addEventListener(this._leftDrawerToggleEventType, content_leftDrawerToggleEventTypeHandler);
+				}
 			}
 		}
 
