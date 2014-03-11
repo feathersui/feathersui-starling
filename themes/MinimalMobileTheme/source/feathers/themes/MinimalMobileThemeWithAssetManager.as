@@ -29,6 +29,7 @@ package feathers.themes
 	import feathers.controls.ButtonGroup;
 	import feathers.controls.Callout;
 	import feathers.controls.Check;
+	import feathers.controls.Drawers;
 	import feathers.controls.GroupedList;
 	import feathers.controls.Header;
 	import feathers.controls.ImageLoader;
@@ -123,8 +124,8 @@ package feathers.themes
 		protected static const LIST_HEADER_BACKGROUND_COLOR:uint = 0xeeeeee;
 		protected static const PRIMARY_TEXT_COLOR:uint = 0x666666;
 		protected static const DISABLED_TEXT_COLOR:uint = 0x999999;
-		protected static const MODAL_OVERLAY_COLOR:uint = 0x666666;
-		protected static const MODAL_OVERLAY_ALPHA:Number = 0.8;
+		protected static const MODAL_OVERLAY_COLOR:uint = 0xcccccc;
+		protected static const MODAL_OVERLAY_ALPHA:Number = 0.4;
 
 		protected static const ORIGINAL_DPI_IPHONE_RETINA:int = 326;
 		protected static const ORIGINAL_DPI_IPAD_RETINA:int = 264;
@@ -554,6 +555,9 @@ package feathers.themes
 
 			//check
 			this.setInitializerForClass(Check, checkInitializer);
+
+			//check
+			this.setInitializerForClass(Drawers, drawersInitializer);
 
 			//grouped list (see also: item renderers)
 			this.setInitializerForClass(GroupedList, groupedListInitializer);
@@ -1443,6 +1447,13 @@ package feathers.themes
 			backgroundSkin.width = 88 * this.scale;
 			backgroundSkin.height = 88 * this.scale;
 			container.backgroundSkin = backgroundSkin;
+		}
+
+		protected function drawersInitializer(drawers:Drawers):void
+		{
+			var overlaySkin:Quad = new Quad(10, 10, MODAL_OVERLAY_COLOR);
+			overlaySkin.alpha = MODAL_OVERLAY_ALPHA;
+			drawers.overlaySkin = overlaySkin;
 		}
 
 		protected function root_addedToStageHandler(event:Event):void

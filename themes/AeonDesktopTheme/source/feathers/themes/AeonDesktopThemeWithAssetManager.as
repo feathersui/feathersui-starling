@@ -29,6 +29,7 @@ package feathers.themes
 	import feathers.controls.ButtonGroup;
 	import feathers.controls.Callout;
 	import feathers.controls.Check;
+	import feathers.controls.Drawers;
 	import feathers.controls.GroupedList;
 	import feathers.controls.Header;
 	import feathers.controls.IScrollBar;
@@ -614,6 +615,9 @@ package feathers.themes
 
 			//check
 			this.setInitializerForClass(Check, checkInitializer);
+
+			//drawers
+			this.setInitializerForClass(Drawers, drawersInitializer);
 
 			//grouped list (see also: item renderers)
 			this.setInitializerForClass(GroupedList, groupedListInitializer);
@@ -1370,6 +1374,13 @@ package feathers.themes
 			alert.verticalScrollBarFactory = scrollBarFactory;
 
 			alert.maxWidth = alert.maxHeight = 300;
+		}
+
+		protected function drawersInitializer(drawers:Drawers):void
+		{
+			var overlaySkin:Quad = new Quad(10, 10, MODAL_OVERLAY_COLOR);
+			overlaySkin.alpha = MODAL_OVERLAY_ALPHA;
+			drawers.overlaySkin = overlaySkin;
 		}
 
 		protected function listInitializer(list:List):void
