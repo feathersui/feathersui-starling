@@ -29,6 +29,7 @@ package feathers.themes
 	import feathers.controls.ButtonGroup;
 	import feathers.controls.Callout;
 	import feathers.controls.Check;
+	import feathers.controls.Drawers;
 	import feathers.controls.GroupedList;
 	import feathers.controls.Header;
 	import feathers.controls.ImageLoader;
@@ -128,6 +129,8 @@ package feathers.themes
 		protected static const GROUPED_LIST_FOOTER_BACKGROUND_COLOR:uint = 0x2e2a26;
 		protected static const MODAL_OVERLAY_COLOR:uint = 0x29241e;
 		protected static const MODAL_OVERLAY_ALPHA:Number = 0.8;
+		protected static const DRAWER_OVERLAY_COLOR:uint = 0x29241e;
+		protected static const DRAWER_OVERLAY_ALPHA:Number = 0.4;
 
 		protected static const ORIGINAL_DPI_IPHONE_RETINA:int = 326;
 		protected static const ORIGINAL_DPI_IPAD_RETINA:int = 264;
@@ -624,6 +627,9 @@ package feathers.themes
 
 			//check
 			this.setInitializerForClass(Check, checkInitializer);
+
+			//drawers
+			this.setInitializerForClass(Drawers, drawersInitializer);
 
 			//grouped list (see also: item renderers)
 			this.setInitializerForClass(GroupedList, groupedListInitializer);
@@ -1278,6 +1284,13 @@ package feathers.themes
 
 			check.gap = 8 * this.scale;
 			check.minTouchWidth = check.minTouchHeight = 88 * this.scale;
+		}
+
+		protected function drawersInitializer(drawers:Drawers):void
+		{
+			var overlaySkin:Quad = new Quad(10, 10, DRAWER_OVERLAY_COLOR);
+			overlaySkin.alpha = DRAWER_OVERLAY_ALPHA;
+			drawers.overlaySkin = overlaySkin;
 		}
 
 		protected function sliderInitializer(slider:Slider):void
