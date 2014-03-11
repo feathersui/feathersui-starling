@@ -2273,6 +2273,8 @@ package feathers.controls
 			if(this._overlaySkin)
 			{
 				this.positionOverlaySkin();
+				this._overlaySkin.width = this.actualWidth;
+				this._overlaySkin.height = this.actualHeight;
 
 				//final validation to avoid juggler next frame issues
 				if(this._overlaySkin is IValidating)
