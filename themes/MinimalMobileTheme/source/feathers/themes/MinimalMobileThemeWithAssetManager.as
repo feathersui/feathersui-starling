@@ -49,6 +49,7 @@ package feathers.themes
 	import feathers.controls.SimpleScrollBar;
 	import feathers.controls.Slider;
 	import feathers.controls.TabBar;
+	import feathers.controls.TextArea;
 	import feathers.controls.TextInput;
 	import feathers.controls.ToggleSwitch;
 	import feathers.controls.popups.CalloutPopUpContentManager;
@@ -631,6 +632,9 @@ package feathers.themes
 			//text input
 			this.setInitializerForClass(TextInput, textInputInitializer);
 			this.setInitializerForClass(TextInput, searchTextInputInitializer, TextInput.ALTERNATE_NAME_SEARCH_TEXT_INPUT);
+
+			//text area
+			this.setInitializerForClass(TextArea, textAreaInitializer);
 
 			//toggle switch
 			this.setInitializerForClass(ToggleSwitch, toggleSwitchInitializer);
@@ -1314,6 +1318,26 @@ package feathers.themes
 			searchIcon.source = this.searchIconTexture;
 			searchIcon.snapToPixels = true;
 			input.defaultIcon = searchIcon;
+		}
+
+		protected function textAreaInitializer(textArea:TextArea):void
+		{
+			textArea.textEditorProperties.textFormat = new TextFormat("PF Ronda Seven,Roboto,Helvetica,Arial,_sans", this.fontSize, PRIMARY_TEXT_COLOR);
+			textArea.textEditorProperties.disabledTextFormat = new TextFormat("PF Ronda Seven,Roboto,Helvetica,Arial,_sans", this.fontSize, DISABLED_TEXT_COLOR);
+
+			textArea.paddingTop = 14 * this.scale;
+			textArea.paddingBottom = 8 * this.scale;
+			textArea.paddingLeft = textArea.paddingRight = 16 * this.scale;
+
+			var backgroundSkin:Scale9Image = new Scale9Image(insetBackgroundSkinTextures, this.scale);
+			backgroundSkin.width = 264 * this.scale;
+			backgroundSkin.height = 132 * this.scale;
+			textArea.backgroundSkin = backgroundSkin;
+
+			var backgroundDisabledSkin:Scale9Image = new Scale9Image(insetBackgroundDisabledSkinTextures, this.scale);
+			backgroundDisabledSkin.width = 264 * this.scale;
+			backgroundDisabledSkin.height = 132 * this.scale;
+			textArea.backgroundDisabledSkin = backgroundDisabledSkin;
 		}
 
 		protected function numericStepperTextInputInitializer(input:TextInput):void
