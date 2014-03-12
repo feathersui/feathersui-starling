@@ -46,7 +46,6 @@ package feathers.themes
 	import feathers.controls.ScrollContainer;
 	import feathers.controls.ScrollScreen;
 	import feathers.controls.ScrollText;
-	import feathers.controls.Scroller;
 	import feathers.controls.SimpleScrollBar;
 	import feathers.controls.Slider;
 	import feathers.controls.TabBar;
@@ -61,7 +60,6 @@ package feathers.themes
 	import feathers.controls.text.StageTextTextEditor;
 	import feathers.controls.text.TextBlockTextRenderer;
 	import feathers.controls.text.TextFieldTextEditor;
-	import feathers.controls.text.TextFieldTextRenderer;
 	import feathers.core.DisplayListWatcher;
 	import feathers.core.FeathersControl;
 	import feathers.core.PopUpManager;
@@ -237,6 +235,7 @@ package feathers.themes
 		protected var boldFontDescription:FontDescription;
 
 		protected var scrollTextTextFormat:TextFormat;
+		protected var scrollTextDisabledTextFormat:TextFormat;
 		protected var lightUICenteredTextFormat:TextFormat;
 
 		protected var headerElementFormat:ElementFormat;
@@ -486,6 +485,7 @@ package feathers.themes
 		{
 			//these are for components that don't use FTE
 			this.scrollTextTextFormat = new TextFormat("_sans", 24 * this.scale, LIGHT_TEXT_COLOR);
+			this.scrollTextDisabledTextFormat = new TextFormat("_sans", 24 * this.scale, DISABLED_TEXT_COLOR);
 			this.lightUICenteredTextFormat = new TextFormat(FONT_NAME, 24 * this.scale, LIGHT_TEXT_COLOR, true, null, null, null, null, TextFormatAlign.CENTER);
 
 			this.regularFontDescription = new FontDescription(FONT_NAME, FontWeight.NORMAL, FontPosture.NORMAL, FontLookup.EMBEDDED_CFF, RenderingMode.CFF, CFFHinting.NONE);
@@ -812,6 +812,7 @@ package feathers.themes
 		protected function scrollTextInitializer(text:ScrollText):void
 		{
 			text.textFormat = this.scrollTextTextFormat;
+			text.disabledTextFormat = this.scrollTextDisabledTextFormat;
 			text.paddingTop = text.paddingBottom = text.paddingLeft = 32 * this.scale;
 			text.paddingRight = 36 * this.scale;
 		}

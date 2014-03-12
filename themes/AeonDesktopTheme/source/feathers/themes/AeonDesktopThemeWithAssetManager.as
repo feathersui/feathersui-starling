@@ -776,6 +776,7 @@ package feathers.themes
 		protected function scrollTextInitializer(text:ScrollText):void
 		{
 			text.textFormat = this.defaultTextFormat;
+			text.disabledTextFormat = this.disabledTextFormat;
 			text.paddingTop = text.paddingRight = text.paddingBottom = text.paddingLeft = 8;
 
 			text.interactionMode = ScrollText.INTERACTION_MODE_MOUSE;
