@@ -307,16 +307,16 @@ package feathers.controls
 				throw new IllegalOperationError("Screen with id '" + id + "' cannot be shown because it has not been defined.");
 			}
 
-			if(this._activeScreenID == id)
-			{
-				return this._activeScreen;
-			}
-
 			if(this._transitionIsActive)
 			{
 				this._nextScreenID = id;
 				this._clearAfterTransition = false;
 				return null;
+			}
+
+			if(this._activeScreenID == id)
+			{
+				return this._activeScreen;
 			}
 
 			this._previousScreenInTransition = this._activeScreen;
