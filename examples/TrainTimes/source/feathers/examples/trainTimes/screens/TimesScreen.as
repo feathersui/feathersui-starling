@@ -52,7 +52,7 @@ package feathers.examples.trainTimes.screens
 			this.layout = new AnchorLayout();
 
 			this._list = new List();
-			this._list.nameList.add(CHILD_NAME_TIMES_LIST);
+			this._list.styleNameList.add(CHILD_NAME_TIMES_LIST);
 			this._list.dataProvider = new ListCollection(NORTH_TIMES);
 			this._list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
 			this._list.itemRendererProperties.labelFunction = list_labelFunction;

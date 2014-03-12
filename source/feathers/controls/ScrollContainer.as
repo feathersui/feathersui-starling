@@ -71,7 +71,7 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * var container:ScrollContainer = new ScrollContainer();
-		 * container.nameList.add( ScrollContainer.ALTERNATE_NAME_TOOLBAR );
+		 * container.styleNameList.add( ScrollContainer.ALTERNATE_NAME_TOOLBAR );
 		 * this.addChild( container );</listing>
 		 *
 		 * @see feathers.core.IFeathersControl#nameList

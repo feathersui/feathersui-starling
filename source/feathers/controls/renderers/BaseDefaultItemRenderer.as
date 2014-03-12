@@ -3121,7 +3121,7 @@ package feathers.controls.renderers
 			{
 				var factory:Function = this._iconLabelFactory != null ? this._iconLabelFactory : FeathersControl.defaultTextRendererFactory;
 				this.iconLabel = ITextRenderer(factory());
-				this.iconLabel.nameList.add(this.iconLabelName);
+				this.iconLabel.styleNameList.add(this.iconLabelName);
 			}
 			this.iconLabel.text = label;
 		}
@@ -3149,7 +3149,7 @@ package feathers.controls.renderers
 			{
 				var factory:Function = this._accessoryLabelFactory != null ? this._accessoryLabelFactory : FeathersControl.defaultTextRendererFactory;
 				this.accessoryLabel = ITextRenderer(factory());
-				this.accessoryLabel.nameList.add(this.accessoryLabelName);
+				this.accessoryLabel.styleNameList.add(this.accessoryLabelName);
 			}
 			this.accessoryLabel.text = label;
 		}

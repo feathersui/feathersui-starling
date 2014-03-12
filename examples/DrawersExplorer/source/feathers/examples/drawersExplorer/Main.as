@@ -68,7 +68,7 @@ package feathers.examples.drawersExplorer
 			this._drawers.leftDrawerToggleEventType = ContentView.TOGGLE_LEFT_DRAWER;
 
 			var topDrawer:DrawerView = new DrawerView("Top");
-			topDrawer.nameList.add(DrawersExplorerTheme.THEME_NAME_TOP_AND_BOTTOM_DRAWER);
+			topDrawer.styleNameList.add(DrawersExplorerTheme.THEME_NAME_TOP_AND_BOTTOM_DRAWER);
 			topDrawer.addEventListener(DrawerView.CHANGE_DOCK_MODE_TO_NONE, drawer_dockNoneHandler);
 			topDrawer.addEventListener(DrawerView.CHANGE_DOCK_MODE_TO_BOTH, drawer_dockBothHandler);
 			//a drawer may be any display object
@@ -78,21 +78,21 @@ package feathers.examples.drawersExplorer
 			this._drawers.topDrawerDockMode = Drawers.DOCK_MODE_NONE;
 
 			var rightDrawer:DrawerView = new DrawerView("Right");
-			rightDrawer.nameList.add(DrawersExplorerTheme.THEME_NAME_LEFT_AND_RIGHT_DRAWER);
+			rightDrawer.styleNameList.add(DrawersExplorerTheme.THEME_NAME_LEFT_AND_RIGHT_DRAWER);
 			rightDrawer.addEventListener(DrawerView.CHANGE_DOCK_MODE_TO_NONE, drawer_dockNoneHandler);
 			rightDrawer.addEventListener(DrawerView.CHANGE_DOCK_MODE_TO_BOTH, drawer_dockBothHandler);
 			this._drawers.rightDrawer = rightDrawer;
 			this._drawers.rightDrawerDockMode = Drawers.DOCK_MODE_NONE;
 
 			var bottomDrawer:DrawerView = new DrawerView("Bottom");
-			bottomDrawer.nameList.add(DrawersExplorerTheme.THEME_NAME_TOP_AND_BOTTOM_DRAWER);
+			bottomDrawer.styleNameList.add(DrawersExplorerTheme.THEME_NAME_TOP_AND_BOTTOM_DRAWER);
 			bottomDrawer.addEventListener(DrawerView.CHANGE_DOCK_MODE_TO_NONE, drawer_dockNoneHandler);
 			bottomDrawer.addEventListener(DrawerView.CHANGE_DOCK_MODE_TO_BOTH, drawer_dockBothHandler);
 			this._drawers.bottomDrawer = bottomDrawer;
 			this._drawers.bottomDrawerDockMode = Drawers.DOCK_MODE_NONE;
 
 			var leftDrawer:DrawerView = new DrawerView("Left");
-			leftDrawer.nameList.add(DrawersExplorerTheme.THEME_NAME_LEFT_AND_RIGHT_DRAWER);
+			leftDrawer.styleNameList.add(DrawersExplorerTheme.THEME_NAME_LEFT_AND_RIGHT_DRAWER);
 			leftDrawer.addEventListener(DrawerView.CHANGE_DOCK_MODE_TO_NONE, drawer_dockNoneHandler);
 			leftDrawer.addEventListener(DrawerView.CHANGE_DOCK_MODE_TO_BOTH, drawer_dockBothHandler);
 			this._drawers.leftDrawer = leftDrawer;

@@ -1014,7 +1014,7 @@ package feathers.controls.supportClasses
 					var uiRenderer:IFeathersControl = IFeathersControl(renderer);
 					if(this._itemRendererName && this._itemRendererName.length > 0)
 					{
-						uiRenderer.nameList.add(this._itemRendererName);
+						uiRenderer.styleNameList.add(this._itemRendererName);
 					}
 					this.addChild(DisplayObject(renderer));
 				}

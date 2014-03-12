@@ -134,7 +134,7 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * var list:GroupedList = new GroupedList();
-		 * list.nameList.add( GroupedList.ALTERNATE_NAME_INSET_GROUPED_LIST );
+		 * list.styleNameList.add( GroupedList.ALTERNATE_NAME_INSET_GROUPED_LIST );
 		 * this.addChild( list );</listing>
 		 *
 		 * @see feathers.core.IFeathersControl#nameList

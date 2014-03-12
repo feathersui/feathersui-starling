@@ -1521,15 +1521,15 @@ package feathers.controls
 				button = Button(factory());
 				if(this._customFirstButtonName)
 				{
-					button.nameList.add(this._customFirstButtonName);
+					button.styleNameList.add(this._customFirstButtonName);
 				}
 				else if(this._customButtonName)
 				{
-					button.nameList.add(this._customButtonName);
+					button.styleNameList.add(this._customButtonName);
 				}
 				else
 				{
-					button.nameList.add(this.firstButtonName);
+					button.styleNameList.add(this.firstButtonName);
 				}
 				this.addChild(button);
 			}
@@ -1562,15 +1562,15 @@ package feathers.controls
 				button = Button(factory());
 				if(this._customLastButtonName)
 				{
-					button.nameList.add(this._customLastButtonName);
+					button.styleNameList.add(this._customLastButtonName);
 				}
 				else if(this._customButtonName)
 				{
-					button.nameList.add(this._customButtonName);
+					button.styleNameList.add(this._customButtonName);
 				}
 				else
 				{
-					button.nameList.add(this.lastButtonName);
+					button.styleNameList.add(this.lastButtonName);
 				}
 				this.addChild(button);
 			}
@@ -1597,11 +1597,11 @@ package feathers.controls
 				var button:Button = this._buttonFactory();
 				if(this._customButtonName)
 				{
-					button.nameList.add(this._customButtonName);
+					button.styleNameList.add(this._customButtonName);
 				}
 				else
 				{
-					button.nameList.add(this.buttonName);
+					button.styleNameList.add(this.buttonName);
 				}
 				this.addChild(button);
 			}

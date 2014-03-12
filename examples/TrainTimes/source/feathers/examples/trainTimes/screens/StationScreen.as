@@ -44,7 +44,7 @@ package feathers.examples.trainTimes.screens
 		override protected function initialize():void
 		{
 			this._stationList = new List();
-			this._stationList.nameList.add(CHILD_NAME_STATION_LIST);
+			this._stationList.styleNameList.add(CHILD_NAME_STATION_LIST);
 			this._stationList.dataProvider = new ListCollection(
 			[
 				new StationData("Ten Stone Road"),

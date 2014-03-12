@@ -1186,7 +1186,7 @@ package feathers.controls
 			const factory:Function = this._buttonFactory != null ? this._buttonFactory : defaultButtonFactory;
 			const buttonName:String = this._customButtonName != null ? this._customButtonName : this.buttonName;
 			this.button = Button(factory());
-			this.button.nameList.add(buttonName);
+			this.button.styleNameList.add(buttonName);
 			this.button.addEventListener(Event.TRIGGERED, button_triggeredHandler);
 			this.addChild(this.button);
 		}
@@ -1215,7 +1215,7 @@ package feathers.controls
 			const factory:Function = this._listFactory != null ? this._listFactory : defaultListFactory;
 			const listName:String = this._customListName != null ? this._customListName : this.listName;
 			this.list = List(factory());
-			this.list.nameList.add(listName);
+			this.list.styleNameList.add(listName);
 			this.list.addEventListener(Event.CHANGE, list_changeHandler);
 			this.list.addEventListener(FeathersEventType.RENDERER_ADD, list_rendererAddHandler);
 			this.list.addEventListener(FeathersEventType.RENDERER_REMOVE, list_rendererRemoveHandler);

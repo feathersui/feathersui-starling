@@ -1406,7 +1406,7 @@ package feathers.controls.renderers
 				{
 					const factory:Function = this._contentLabelFactory != null ? this._contentLabelFactory : FeathersControl.defaultTextRendererFactory;
 					this.contentLabel = ITextRenderer(factory());
-					FeathersControl(this.contentLabel).nameList.add(this.contentLabelName);
+					FeathersControl(this.contentLabel).styleNameList.add(this.contentLabelName);
 				}
 				this.contentLabel.text = label;
 			}

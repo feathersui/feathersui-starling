@@ -116,6 +116,21 @@ package feathers.core
 		function get nameList():TokenList;
 
 		/**
+		 * @copy feathers.core.FeathersControl#styleList
+		 */
+		function get styleNameList():TokenList;
+
+		/**
+		 * @copy feathers.core.FeathersControl#styleName
+		 */
+		function get styleName():String;
+
+		/**
+		 * @private
+		 */
+		function set styleName(value:String):void
+
+		/**
 		 * @copy feathers.core.FeathersControl#setSize()
 		 */
 		function setSize(width:Number, height:Number):void;

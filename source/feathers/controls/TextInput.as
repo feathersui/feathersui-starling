@@ -136,7 +136,7 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * var input:TextInput = new TextInput();
-		 * input.nameList.add( TextInput.ALTERNATE_NAME_SEARCH_TEXT_INPUT );
+		 * input.styleNameList.add( TextInput.ALTERNATE_NAME_SEARCH_TEXT_INPUT );
 		 * this.addChild( input );</listing>
 		 *
 		 * @see feathers.core.IFeathersControl#nameList
