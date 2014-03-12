@@ -7,11 +7,14 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.core
 {
+	import starling.events.Event;
+	import starling.events.EventDispatcher;
+
 	/**
 	 * A list of space-delimited tokens. Obviously, since they are delimited by
 	 * spaces, tokens cannot contain spaces.
 	 */
-	public class TokenList
+	public class TokenList extends EventDispatcher
 	{
 		/**
 		 * Constructor.
@@ -41,8 +44,13 @@ package feathers.core
 		 */
 		public function set value(value:String):void
 		{
+			if(this.value == value)
+			{
+				return;
+			}
 			this.names.length = 0;
 			this.names = Vector.<String>(value.split(" "));
+			this.dispatchEventWith(Event.CHANGE);
 		}
 
 		/**
@@ -78,6 +86,7 @@ package feathers.core
 				return;
 			}
 			this.names[this.names.length] = name;
+			this.dispatchEventWith(Event.CHANGE);
 		}
 
 		/**
@@ -100,6 +109,7 @@ package feathers.core
 			if(index < 0)
 			{
 				this.names[this.names.length] = name;
+				this.dispatchEventWith(Event.CHANGE);
 			}
 			else
 			{
@@ -127,15 +137,18 @@ package feathers.core
 			if(index == 0)
 			{
 				this.names.shift();
+				this.dispatchEventWith(Event.CHANGE);
 				return;
 			}
 			var lastIndex:int = this.names.length - 1;
 			if(index == lastIndex)
 			{
 				this.names.pop();
+				this.dispatchEventWith(Event.CHANGE);
 				return;
 			}
 			this.names.splice(index,  1);
+			this.dispatchEventWith(Event.CHANGE);
 		}
 
 	}

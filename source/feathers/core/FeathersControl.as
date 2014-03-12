@@ -197,12 +197,42 @@ package feathers.core
 		protected var _validationQueue:ValidationQueue;
 
 		/**
-		 * @private
+		 * The concatenated <code>styleNameList</code>, with values separated
+		 * by spaces. Style names are somewhat similar to classes in CSS
+		 * selectors. In Feathers, they are a non-unique identifier that can
+		 * differentiate multiple styles of the same type of UI control. A
+		 * single control may have many style names, and many controls can share
+		 * a single style name. A <a href="">theme</a> or another
+		 *
+		 * <p>In general, the <code>styleName</code> property should not be set
+		 * directly on a Feathers component. You should add and remove style
+		 * names from the <code>styleNameList</code> property instead.</p>
+		 *
+		 * @default ""
+		 *
+		 * @see #styleNameList
+		 * @see http://wiki.starling-framework.org/feathers/extending-themes
 		 */
-		protected var _nameList:TokenList = new TokenList();
+		public function get styleName():String
+		{
+			return this._styleNameList.value;
+		}
 
 		/**
-		 * Contains a list of all "names" assigned to this control. Names are
+		 * @private
+		 */
+		public function set styleName(value:String):void
+		{
+			this._styleNameList.value = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _styleNameList:TokenList = new TokenList();
+
+		/**
+		 * Contains a list of all "styles" assigned to this control. Names are
 		 * like classes in CSS selectors. They are a non-unique identifier that
 		 * can differentiate multiple styles of the same type of UI control. A
 		 * single control may have many names, and many controls can share a
@@ -212,43 +242,27 @@ package feathers.core
 		 * <p>In the following example, a name is added to the name list:</p>
 		 *
 		 * <listing version="3.0">
-		 * control.nameList.add( "custom-component-name" );</listing>
+		 * control.styleNameList.add( "custom-component-name" );</listing>
 		 *
 		 * @see #name
 		 * @see http://wiki.starling-framework.org/feathers/extending-themes
 		 */
+		public function get styleNameList():TokenList
+		{
+			return this._styleNameList;
+		}
+
+		/**
+		 * DEPRECATED: Replaced by the <code>styleNameList</code> property.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 1.4. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 */
 		public function get nameList():TokenList
 		{
-			return this._nameList;
-		}
-
-		/**
-		 * The concatenated <code>nameList</code>, with each name separated by
-		 * spaces. Names are like classes in CSS selectors. They are a
-		 * non-unique identifier that can differentiate multiple styles of the
-		 * same type of UI control. A single control may have many names, and
-		 * many controls can share a single name.
-		 *
-		 * <p>In general, the <code>name</code> property should not be set on a
-		 * Feathers component. You should add and remove names from the
-		 * <code>nameList</code> property instead.</p>
-		 *
-		 * @default ""
-		 *
-		 * @see #nameList
-		 * @see http://wiki.starling-framework.org/feathers/extending-themes
-		 */
-		override public function get name():String
-		{
-			return this._nameList.value;
-		}
-
-		/**
-		 * @private
-		 */
-		override public function set name(value:String):void
-		{
-			this._nameList.value = value;
+			return this._styleNameList;
 		}
 
 		/**
@@ -1275,31 +1289,6 @@ package feathers.core
 		 * @private
 		 */
 		protected var _invalidateCount:int = 0;
-
-		/**
-		 * @private
-		 */
-		override public function getChildByName(name:String):DisplayObject
-		{
-			var childCount:int = this.numChildren;
-			for(var i:int = 0; i < childCount; i++)
-			{
-				var child:DisplayObject = this.getChildAt(i);
-				if(child is IFeathersControl)
-				{
-					var feathersChild:IFeathersControl = IFeathersControl(child);
-					if(feathersChild.nameList.contains(name))
-					{
-						return DisplayObject(feathersChild);
-					}
-				}
-				else if(child.name == name)
-				{
-					return child;
-				}
-			}
-			return null;
-		}
 
 		/**
 		 * @private

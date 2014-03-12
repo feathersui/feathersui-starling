@@ -25,7 +25,7 @@ package feathers.examples.drawersExplorer.views
 		private function initializeHandler(event:Event):void
 		{
 			this._titleLabel = new Label();
-			this._titleLabel.nameList.add(Label.ALTERNATE_NAME_HEADING);
+			this._titleLabel.styleNameList.add(Label.ALTERNATE_NAME_HEADING);
 			this._titleLabel.text = this._title;
 			this.addChild(this._titleLabel);
 

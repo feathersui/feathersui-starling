@@ -124,7 +124,7 @@ package feathers.examples.gallery
 			listLayout.manageVisibility = true;
 
 			this.list = new List();
-			this.list.nameList.add(THUMBNAIL_LIST_NAME);
+			this.list.styleNameList.add(THUMBNAIL_LIST_NAME);
 			this.list.layout = listLayout;
 			this.list.horizontalScrollPolicy = List.SCROLL_POLICY_ON;
 			this.list.snapScrollPositionsToPixels = true;

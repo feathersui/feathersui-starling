@@ -52,12 +52,12 @@ package feathers.examples.displayObjects.screens
 			this.addChild(this._image);
 
 			this._rightButton = new Button();
-			this._rightButton.nameList.add("right-grip");
+			this._rightButton.styleNameList.add("right-grip");
 			this._rightButton.addEventListener(TouchEvent.TOUCH, rightButton_touchHandler);
 			this.addChild(this._rightButton);
 
 			this._bottomButton = new Button();
-			this._bottomButton.nameList.add("bottom-grip");
+			this._bottomButton.styleNameList.add("bottom-grip");
 			this._bottomButton.addEventListener(TouchEvent.TOUCH, bottomButton_touchHandler);
 			this.addChild(this._bottomButton);
 		}

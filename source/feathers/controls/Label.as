@@ -38,7 +38,7 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * var label:Label = new Label();
 		 * label.text = "Very Important Heading";
-		 * label.nameList.add( Label.ALTERNATE_NAME_HEADING );
+		 * label.styleNameList.add( Label.ALTERNATE_NAME_HEADING );
 		 * this.addChild( label );</listing>
 		 *
 		 * @see feathers.core.IFeathersControl#nameList
@@ -60,7 +60,7 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * var label:Label = new Label();
 		 * label.text = "Less important, detailed text";
-		 * label.nameList.add( Label.ALTERNATE_NAME_DETAIL );
+		 * label.styleNameList.add( Label.ALTERNATE_NAME_DETAIL );
 		 * this.addChild( label );</listing>
 		 *
 		 * @see feathers.core.IFeathersControl#nameList

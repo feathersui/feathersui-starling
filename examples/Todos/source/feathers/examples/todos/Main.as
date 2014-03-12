@@ -60,7 +60,7 @@ package feathers.examples.todos
 			if(!this._toolbar)
 			{
 				this._toolbar = new ScrollContainer();
-				this._toolbar.nameList.add(ScrollContainer.ALTERNATE_NAME_TOOLBAR);
+				this._toolbar.styleNameList.add(ScrollContainer.ALTERNATE_NAME_TOOLBAR);
 			}
 			else
 			{

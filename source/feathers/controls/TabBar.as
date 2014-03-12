@@ -1646,15 +1646,15 @@ package feathers.controls
 				tab = Button(factory());
 				if(this._customFirstTabName)
 				{
-					tab.nameList.add(this._customFirstTabName);
+					tab.styleNameList.add(this._customFirstTabName);
 				}
 				else if(this._customTabName)
 				{
-					tab.nameList.add(this._customTabName);
+					tab.styleNameList.add(this._customTabName);
 				}
 				else
 				{
-					tab.nameList.add(this.firstTabName);
+					tab.styleNameList.add(this.firstTabName);
 				}
 				tab.isToggle = true;
 				this.addChild(tab);
@@ -1679,15 +1679,15 @@ package feathers.controls
 				tab = Button(factory());
 				if(this._customLastTabName)
 				{
-					tab.nameList.add(this._customLastTabName);
+					tab.styleNameList.add(this._customLastTabName);
 				}
 				else if(this._customTabName)
 				{
-					tab.nameList.add(this._customTabName);
+					tab.styleNameList.add(this._customTabName);
 				}
 				else
 				{
-					tab.nameList.add(this.lastTabName);
+					tab.styleNameList.add(this.lastTabName);
 				}
 				tab.isToggle = true;
 				this.addChild(tab);
@@ -1706,11 +1706,11 @@ package feathers.controls
 				var tab:Button = this._tabFactory();
 				if(this._customTabName)
 				{
-					tab.nameList.add(this._customTabName);
+					tab.styleNameList.add(this._customTabName);
 				}
 				else
 				{
-					tab.nameList.add(this.tabName);
+					tab.styleNameList.add(this.tabName);
 				}
 				tab.isToggle = true;
 				this.addChild(tab);

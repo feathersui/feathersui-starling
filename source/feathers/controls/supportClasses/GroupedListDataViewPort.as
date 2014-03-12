@@ -2165,7 +2165,7 @@ package feathers.controls.supportClasses
 				var uiRenderer:IFeathersControl = IFeathersControl(renderer);
 				if(name && name.length > 0)
 				{
-					uiRenderer.nameList.add(name);
+					uiRenderer.styleNameList.add(name);
 				}
 				this.addChild(DisplayObject(renderer));
 			}
@@ -2208,7 +2208,7 @@ package feathers.controls.supportClasses
 				var uiRenderer:IFeathersControl = IFeathersControl(renderer);
 				if(this._headerRendererName && this._headerRendererName.length > 0)
 				{
-					uiRenderer.nameList.add(this._headerRendererName);
+					uiRenderer.styleNameList.add(this._headerRendererName);
 				}
 				this.addChild(DisplayObject(renderer));
 			}
@@ -2249,7 +2249,7 @@ package feathers.controls.supportClasses
 				var uiRenderer:IFeathersControl = IFeathersControl(renderer);
 				if(this._footerRendererName && this._footerRendererName.length > 0)
 				{
-					uiRenderer.nameList.add(this._footerRendererName);
+					uiRenderer.styleNameList.add(this._footerRendererName);
 				}
 				this.addChild(DisplayObject(renderer));
 			}

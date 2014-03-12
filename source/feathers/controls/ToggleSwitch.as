@@ -1838,7 +1838,7 @@ package feathers.controls
 			const factory:Function = this._thumbFactory != null ? this._thumbFactory : defaultThumbFactory;
 			const thumbName:String = this._customThumbName != null ? this._customThumbName : this.thumbName;
 			this.thumb = Button(factory());
-			this.thumb.nameList.add(thumbName);
+			this.thumb.styleNameList.add(thumbName);
 			this.thumb.keepDownStateOnRollOut = true;
 			this.thumb.addEventListener(TouchEvent.TOUCH, thumb_touchHandler);
 			this.addChild(this.thumb);
@@ -1866,7 +1866,7 @@ package feathers.controls
 			const factory:Function = this._onTrackFactory != null ? this._onTrackFactory : defaultOnTrackFactory;
 			const onTrackName:String = this._customOnTrackName != null ? this._customOnTrackName : this.onTrackName;
 			this.onTrack = Button(factory());
-			this.onTrack.nameList.add(onTrackName);
+			this.onTrack.styleNameList.add(onTrackName);
 			this.onTrack.keepDownStateOnRollOut = true;
 			this.addChildAt(this.onTrack, 0);
 		}
@@ -1895,7 +1895,7 @@ package feathers.controls
 				const factory:Function = this._offTrackFactory != null ? this._offTrackFactory : defaultOffTrackFactory;
 				const offTrackName:String = this._customOffTrackName != null ? this._customOffTrackName : this.offTrackName;
 				this.offTrack = Button(factory());
-				this.offTrack.nameList.add(offTrackName);
+				this.offTrack.styleNameList.add(offTrackName);
 				this.offTrack.keepDownStateOnRollOut = true;
 				this.addChildAt(this.offTrack, 1);
 			}
@@ -1933,7 +1933,7 @@ package feathers.controls
 				offLabelFactory = FeathersControl.defaultTextRendererFactory;
 			}
 			this.offTextRenderer = ITextRenderer(offLabelFactory());
-			this.offTextRenderer.nameList.add(this.offLabelName);
+			this.offTextRenderer.styleNameList.add(this.offLabelName);
 			this.offTextRenderer.clipRect = new Rectangle();
 			this.addChildAt(DisplayObject(this.offTextRenderer), index);
 
@@ -1947,7 +1947,7 @@ package feathers.controls
 				onLabelFactory = FeathersControl.defaultTextRendererFactory;
 			}
 			this.onTextRenderer = ITextRenderer(onLabelFactory());
-			this.onTextRenderer.nameList.add(this.onLabelName);
+			this.onTextRenderer.styleNameList.add(this.onLabelName);
 			this.onTextRenderer.clipRect = new Rectangle();
 			this.addChildAt(DisplayObject(this.onTextRenderer), index);
 		}

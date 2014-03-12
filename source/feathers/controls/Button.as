@@ -110,7 +110,7 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * var button:Button = new Button();
-		 * button.nameList.add( Button.ALTERNATE_NAME_CALL_TO_ACTION_BUTTON );
+		 * button.styleNameList.add( Button.ALTERNATE_NAME_CALL_TO_ACTION_BUTTON );
 		 * this.addChild( button );</listing>
 		 *
 		 * @see feathers.core.IFeathersControl#nameList
@@ -132,7 +132,7 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * var button:Button = new Button();
-		 * button.nameList.add( Button.ALTERNATE_NAME_QUIET_BUTTON );
+		 * button.styleNameList.add( Button.ALTERNATE_NAME_QUIET_BUTTON );
 		 * this.addChild( button );</listing>
 		 *
 		 * @see feathers.core.IFeathersControl#nameList
@@ -156,7 +156,7 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * var button:Button = new Button();
-		 * button.nameList.add( Button.ALTERNATE_NAME_DANGER_BUTTON );
+		 * button.styleNameList.add( Button.ALTERNATE_NAME_DANGER_BUTTON );
 		 * this.addChild( button );</listing>
 		 *
 		 * @see feathers.core.IFeathersControl#nameList
@@ -178,7 +178,7 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * var button:Button = new Button();
-		 * button.nameList.add( Button.ALTERNATE_NAME_BACK_BUTTON );
+		 * button.styleNameList.add( Button.ALTERNATE_NAME_BACK_BUTTON );
 		 * this.addChild( button );</listing>
 		 *
 		 * @see feathers.core.IFeathersControl#nameList
@@ -200,7 +200,7 @@ package feathers.controls
 		 *
 		 * <listing version="3.0">
 		 * var button:Button = new Button();
-		 * button.nameList.add( Button.ALTERNATE_NAME_FORWARD_BUTTON );
+		 * button.styleNameList.add( Button.ALTERNATE_NAME_FORWARD_BUTTON );
 		 * this.addChild( button );</listing>
 		 *
 		 * @see feathers.core.IFeathersControl#nameList
@@ -2840,7 +2840,7 @@ package feathers.controls
 
 			const factory:Function = this._labelFactory != null ? this._labelFactory : FeathersControl.defaultTextRendererFactory;
 			this.labelTextRenderer = ITextRenderer(factory());
-			this.labelTextRenderer.nameList.add(this.labelName);
+			this.labelTextRenderer.styleNameList.add(this.labelName);
 			this.addChild(DisplayObject(this.labelTextRenderer));
 		}
 

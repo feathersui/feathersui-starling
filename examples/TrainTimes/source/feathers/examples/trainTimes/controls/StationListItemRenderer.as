@@ -413,27 +413,27 @@ package feathers.examples.trainTimes.controls
 			this.addChild(this.background);
 
 			this.detailsLabel = new Label();
-			this.detailsLabel.nameList.add(CHILD_NAME_STATION_LIST_DETAILS_LABEL);
+			this.detailsLabel.styleNameList.add(CHILD_NAME_STATION_LIST_DETAILS_LABEL);
 			this.addChild(this.detailsLabel);
 
 			this.nameLabel = new Label();
-			this.nameLabel.nameList.add(CHILD_NAME_STATION_LIST_NAME_LABEL);
+			this.nameLabel.styleNameList.add(CHILD_NAME_STATION_LIST_NAME_LABEL);
 			this.addChild(this.nameLabel);
 
 			this.actionContainer = new ScrollContainer();
-			this.actionContainer.nameList.add(CHILD_NAME_STATION_LIST_ACTION_CONTAINER);
+			this.actionContainer.styleNameList.add(CHILD_NAME_STATION_LIST_ACTION_CONTAINER);
 			this.actionContainer.horizontalScrollPolicy = ScrollContainer.SCROLL_POLICY_OFF;
 			this.actionContainer.verticalScrollPolicy = ScrollContainer.SCROLL_POLICY_OFF;
 			this.actionContainer.visible = false;
 			this.addChild(this.actionContainer);
 
 			this.confirmButton = new Button();
-			this.confirmButton.nameList.add(CHILD_NAME_STATION_LIST_CONFIRM_BUTTON);
+			this.confirmButton.styleNameList.add(CHILD_NAME_STATION_LIST_CONFIRM_BUTTON);
 			this.confirmButton.addEventListener(Event.TRIGGERED, confirmButton_triggeredHandler);
 			this.actionContainer.addChild(this.confirmButton);
 
 			this.cancelButton = new Button();
-			this.cancelButton.nameList.add(CHILD_NAME_STATION_LIST_CANCEL_BUTTON);
+			this.cancelButton.styleNameList.add(CHILD_NAME_STATION_LIST_CANCEL_BUTTON);
 			this.cancelButton.addEventListener(Event.TRIGGERED, cancelButton_triggeredHandler);
 			this.actionContainer.addChild(this.cancelButton);
 		}

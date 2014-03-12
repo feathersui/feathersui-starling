@@ -36,7 +36,7 @@ package feathers.controls
 	 * <listing version="3.0">
 	 * var backButton:Button = new Button();
 	 * backButton.label = "Back";
-	 * backButton.nameList.add( Button.ALTERNATE_NAME_BACK_BUTTON );
+	 * backButton.styleNameList.add( Button.ALTERNATE_NAME_BACK_BUTTON );
 	 * backButton.addEventListener( Event.TRIGGERED, backButton_triggeredHandler );
 	 *
 	 * var header:Header = new Header();
@@ -307,7 +307,7 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * var backButton:Button = new Button();
 		 * backButton.label = "Back";
-		 * backButton.nameList.add( Button.ALTERNATE_NAME_BACK_BUTTON );
+		 * backButton.styleNameList.add( Button.ALTERNATE_NAME_BACK_BUTTON );
 		 * backButton.addEventListener( Event.TRIGGERED, backButton_triggeredHandler );
 		 * header.leftItems = new &lt;DisplayObject&gt;[ backButton ];</listing>
 		 *
@@ -333,7 +333,7 @@ package feathers.controls
 				{
 					if(item is IFeathersControl)
 					{
-						IFeathersControl(item).nameList.remove(this.itemName);
+						IFeathersControl(item).styleNameList.remove(this.itemName);
 						item.removeEventListener(FeathersEventType.RESIZE, item_resizeHandler);
 					}
 					item.removeFromParent();
@@ -395,7 +395,7 @@ package feathers.controls
 				{
 					if(item is IFeathersControl)
 					{
-						IFeathersControl(item).nameList.remove(this.itemName);
+						IFeathersControl(item).styleNameList.remove(this.itemName);
 						item.removeEventListener(FeathersEventType.RESIZE, item_resizeHandler);
 					}
 					item.removeFromParent();
@@ -454,7 +454,7 @@ package feathers.controls
 				{
 					if(item is IFeathersControl)
 					{
-						IFeathersControl(item).nameList.remove(this.itemName);
+						IFeathersControl(item).styleNameList.remove(this.itemName);
 						item.removeEventListener(FeathersEventType.RESIZE, item_resizeHandler);
 					}
 					item.removeFromParent();
@@ -1054,7 +1054,7 @@ package feathers.controls
 					{
 						if(item is IFeathersControl)
 						{
-							IFeathersControl(item).nameList.add(this.itemName);
+							IFeathersControl(item).styleNameList.add(this.itemName);
 						}
 						this.addChild(item);
 					}
@@ -1069,7 +1069,7 @@ package feathers.controls
 					{
 						if(item is IFeathersControl)
 						{
-							IFeathersControl(item).nameList.add(this.itemName);
+							IFeathersControl(item).styleNameList.add(this.itemName);
 						}
 						this.addChild(item);
 					}
@@ -1084,7 +1084,7 @@ package feathers.controls
 					{
 						if(item is IFeathersControl)
 						{
-							IFeathersControl(item).nameList.add(this.itemName);
+							IFeathersControl(item).styleNameList.add(this.itemName);
 						}
 						this.addChild(item);
 					}
@@ -1313,7 +1313,7 @@ package feathers.controls
 			const factory:Function = this._titleFactory != null ? this._titleFactory : FeathersControl.defaultTextRendererFactory;
 			this.titleTextRenderer = ITextRenderer(factory());
 			const uiTitleRenderer:IFeathersControl = IFeathersControl(this.titleTextRenderer);
-			uiTitleRenderer.nameList.add(this.titleName);
+			uiTitleRenderer.styleNameList.add(this.titleName);
 			uiTitleRenderer.touchable = false;
 			this.addChild(DisplayObject(uiTitleRenderer));
 		}

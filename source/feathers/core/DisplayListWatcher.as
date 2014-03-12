@@ -35,7 +35,7 @@ package feathers.core
 	 * <listing version="3.0">
 	 * var button:Button = new Button();
 	 * button.label = "Click Me";
-	 * button.nameList.add( Button.ALTERNATE_NAME_CALL_TO_ACTION );
+	 * button.styleNameList.add( Button.ALTERNATE_NAME_CALL_TO_ACTION );
 	 * this.addChild( button );</listing>
 	 *
 	 * <p>The <code>callToActionButtonInitializer()</code> function will be called

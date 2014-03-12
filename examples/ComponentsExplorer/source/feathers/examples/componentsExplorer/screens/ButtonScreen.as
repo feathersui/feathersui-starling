@@ -78,27 +78,27 @@ package feathers.examples.componentsExplorer.screens
 			this.addChild(this._toggleButton);
 
 			this._callToActionButton = new Button();
-			this._callToActionButton.nameList.add(Button.ALTERNATE_NAME_CALL_TO_ACTION_BUTTON);
+			this._callToActionButton.styleNameList.add(Button.ALTERNATE_NAME_CALL_TO_ACTION_BUTTON);
 			this._callToActionButton.label = "Call to Action Button";
 			this.addChild(this._callToActionButton);
 
 			this._dangerButton = new Button();
-			this._dangerButton.nameList.add(Button.ALTERNATE_NAME_DANGER_BUTTON);
+			this._dangerButton.styleNameList.add(Button.ALTERNATE_NAME_DANGER_BUTTON);
 			this._dangerButton.label = "Danger Button";
 			this.addChild(this._dangerButton);
 
 			this._sampleBackButton = new Button();
-			this._sampleBackButton.nameList.add(Button.ALTERNATE_NAME_BACK_BUTTON);
+			this._sampleBackButton.styleNameList.add(Button.ALTERNATE_NAME_BACK_BUTTON);
 			this._sampleBackButton.label = "Back Button";
 			this.addChild(this._sampleBackButton);
 
 			this._forwardButton = new Button();
-			this._forwardButton.nameList.add(Button.ALTERNATE_NAME_FORWARD_BUTTON);
+			this._forwardButton.styleNameList.add(Button.ALTERNATE_NAME_FORWARD_BUTTON);
 			this._forwardButton.label = "Forward Button";
 			this.addChild(this._forwardButton);
 
 			this._quietButton = new Button();
-			this._quietButton.nameList.add(Button.ALTERNATE_NAME_QUIET_BUTTON);
+			this._quietButton.styleNameList.add(Button.ALTERNATE_NAME_QUIET_BUTTON);
 			this._quietButton.label = "Quiet Button";
 			this.headerProperties.rightItems = new <DisplayObject>
 			[
@@ -110,7 +110,7 @@ package feathers.examples.componentsExplorer.screens
 			if(!DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
 				this._backButton = new Button();
-				this._backButton.nameList.add(Button.ALTERNATE_NAME_BACK_BUTTON);
+				this._backButton.styleNameList.add(Button.ALTERNATE_NAME_BACK_BUTTON);
 				this._backButton.label = "Back";
 				this._backButton.addEventListener(Event.TRIGGERED, backButton_triggeredHandler);
 
