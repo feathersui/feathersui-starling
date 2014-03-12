@@ -231,6 +231,20 @@ package feathers.controls
 		}
 
 		/**
+		 * When the <code>FocusManager</code> isn't enabled, <code>hasFocus</code>
+		 * can be used instead of <code>FocusManager.focus == textArea</code>
+		 * to determine if the text area has focus.
+		 */
+		public function get hasFocus():Boolean
+		{
+			if(!this._focusManager)
+			{
+				return this._textEditorHasFocus;
+			}
+			return this._hasFocus;
+		}
+
+		/**
 		 * @private
 		 */
 		override public function set isEnabled(value:Boolean):void
