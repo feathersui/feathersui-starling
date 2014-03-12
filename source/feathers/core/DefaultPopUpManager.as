@@ -245,8 +245,8 @@ package feathers.core
 			{
 				IValidating(popUp).validate();
 			}
-			popUp.x = (stage.stageWidth - popUp.width) / 2;
-			popUp.y = (stage.stageHeight - popUp.height) / 2;
+			popUp.x = Math.round((stage.stageWidth - popUp.width) / 2);
+			popUp.y = Math.round((stage.stageHeight - popUp.height) / 2);
 		}
 
 		/**
