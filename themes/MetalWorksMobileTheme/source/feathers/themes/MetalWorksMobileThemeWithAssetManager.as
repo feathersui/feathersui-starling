@@ -49,6 +49,7 @@ package feathers.themes
 	import feathers.controls.SimpleScrollBar;
 	import feathers.controls.Slider;
 	import feathers.controls.TabBar;
+	import feathers.controls.TextArea;
 	import feathers.controls.TextInput;
 	import feathers.controls.ToggleSwitch;
 	import feathers.controls.popups.CalloutPopUpContentManager;
@@ -713,6 +714,9 @@ package feathers.themes
 			//text input
 			this.setInitializerForClass(TextInput, textInputInitializer);
 			this.setInitializerForClass(TextInput, searchTextInputInitializer, TextInput.ALTERNATE_NAME_SEARCH_TEXT_INPUT);
+
+			//text area
+			this.setInitializerForClass(TextArea, textAreaInitializer);
 
 			//toggle switch
 			this.setInitializerForClass(ToggleSwitch, toggleSwitchInitializer);
@@ -1452,6 +1456,28 @@ package feathers.themes
 			searchIcon.source = this.searchIconTexture;
 			searchIcon.snapToPixels = true;
 			input.defaultIcon = searchIcon;
+		}
+
+		protected function textAreaInitializer(textArea:TextArea):void
+		{
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.backgroundInsetSkinTextures;
+			skinSelector.setValueForState(this.backgroundDisabledSkinTextures, TextArea.STATE_DISABLED);
+			skinSelector.setValueForState(this.backgroundFocusedSkinTextures, TextArea.STATE_FOCUSED);
+			skinSelector.displayObjectProperties =
+			{
+				width: 264 * this.scale,
+				height: 120 * this.scale,
+				textureScale: this.scale
+			};
+			textArea.stateToSkinFunction = skinSelector.updateValue;
+
+			textArea.paddingTop = 12 * this.scale;
+			textArea.paddingBottom = 10 * this.scale;
+			textArea.paddingLeft = textArea.paddingRight = 14 * this.scale;
+
+			textArea.textEditorProperties.textFormat = this.scrollTextTextFormat;
+			textArea.textEditorProperties.disabledTextFormat = this.scrollTextDisabledTextFormat;
 		}
 
 		protected function numericStepperTextInputInitializer(input:TextInput):void
