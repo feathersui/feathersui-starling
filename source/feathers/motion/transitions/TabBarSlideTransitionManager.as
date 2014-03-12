@@ -36,7 +36,7 @@ package feathers.motion.transitions
 			}
 			this.navigator = navigator;
 			this.tabBar = tabBar;
-			this._oldIndex = tabBar.selectedIndex;
+			this._activeIndex = this._pendingIndex = tabBar.selectedIndex;
 			this.tabBar.addEventListener(Event.CHANGE, tabBar_changeHandler);
 			this.navigator.transition = this.onTransition;
 		}
@@ -79,7 +79,12 @@ package feathers.motion.transitions
 		/**
 		 * @private
 		 */
-		protected var _oldIndex:int;
+		protected var _pendingIndex:int;
+
+		/**
+		 * @private
+		 */
+		protected var _activeIndex:int;
 
 		/**
 		 * @private
@@ -152,6 +157,7 @@ package feathers.motion.transitions
 		 */
 		protected function transitionNow():void
 		{
+			this._activeIndex = this._pendingIndex;
 			if(this._activeTransition)
 			{
 				this._savedOtherTarget  = null;
@@ -248,9 +254,16 @@ package feathers.motion.transitions
 		 */
 		protected function tabBar_changeHandler(event:Event):void
 		{
-			var newIndex:int = this.tabBar.selectedIndex;
-			this._isFromRight = newIndex > this._oldIndex;
-			this._oldIndex = newIndex;
+			this._pendingIndex = this.tabBar.selectedIndex;
+			if(this._pendingIndex == this._activeIndex)
+			{
+				//someone is changing tabs very quickly, and they just went back
+				//to the tab we're currently transitioning to. cancel the next
+				//transition.
+				this._isWaitingOnTabBarChange = true;
+				return;
+			}
+			this._isFromRight = this._pendingIndex > this._activeIndex;
 
 			if(!this._isWaitingOnTransitionChange)
 			{
