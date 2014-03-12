@@ -134,6 +134,34 @@ package feathers.controls.supportClasses
 		/**
 		 * @private
 		 */
+		private var _disabledTextFormat:TextFormat;
+
+		/**
+		 * The font and styles used to draw the text when the component is disabled.
+		 *
+		 * @see flash.text.TextFormat
+		 */
+		public function get disabledTextFormat():TextFormat
+		{
+			return this._disabledTextFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set disabledTextFormat(value:TextFormat):void
+		{
+			if(this._disabledTextFormat == value)
+			{
+				return;
+			}
+			this._disabledTextFormat = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _styleSheet:StyleSheet;
 
 		/**
@@ -811,7 +839,11 @@ package feathers.controls.supportClasses
 				else
 				{
 					this._textField.styleSheet = null;
-					if(this._textFormat)
+					if(!this._isEnabled && this._disabledTextFormat)
+					{
+						this._textField.defaultTextFormat = this._disabledTextFormat;
+					}
+					else if(this._textFormat)
 					{
 						this._textField.defaultTextFormat = this._textFormat;
 					}

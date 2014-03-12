@@ -268,6 +268,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
+		 * @see #disabledTextFormat
 		 * @see flash.text.TextFormat
 		 */
 		public function get textFormat():TextFormat
@@ -285,6 +286,43 @@ package feathers.controls
 				return;
 			}
 			this._textFormat = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _disabledTextFormat:TextFormat;
+
+		/**
+		 * The font and styles used to draw the text when the component is disabled.
+		 *
+		 * <p>In the following example, the disabled text format is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.isEnabled = false;
+		 * textRenderer.disabledTextFormat = new TextFormat( "_sans", 16, 0xcccccc );</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #textFormat
+		 * @see flash.text.TextFormat
+		 */
+		public function get disabledTextFormat():TextFormat
+		{
+			return this._disabledTextFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set disabledTextFormat(value:TextFormat):void
+		{
+			if(this._disabledTextFormat == value)
+			{
+				return;
+			}
+			this._disabledTextFormat = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -882,6 +920,7 @@ package feathers.controls
 				this.textViewPort.sharpness = this._sharpness;
 				this.textViewPort.thickness = this._thickness;
 				this.textViewPort.textFormat = this._textFormat;
+				this.textViewPort.disabledTextFormat = this._disabledTextFormat;
 				this.textViewPort.styleSheet = this._styleSheet;
 				this.textViewPort.embedFonts = this._embedFonts;
 				this.textViewPort.paddingTop = this._textPaddingTop;
