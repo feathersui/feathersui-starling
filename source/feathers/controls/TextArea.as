@@ -233,6 +233,22 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override public function set isEnabled(value:Boolean):void
+		{
+			super.isEnabled = value;
+			if(this._isEnabled)
+			{
+				this.currentState = this._hasFocus ? STATE_FOCUSED : STATE_ENABLED;
+			}
+			else
+			{
+				this.currentState = STATE_DISABLED;
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _stateNames:Vector.<String> = new <String>
 		[
 			STATE_ENABLED, STATE_DISABLED, STATE_FOCUSED
