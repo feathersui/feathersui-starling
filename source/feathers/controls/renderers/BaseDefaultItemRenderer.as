@@ -3422,6 +3422,9 @@ package feathers.controls.renderers
 			if(this._iconSelector.defaultValue != newIcon)
 			{
 				this._iconSelector.defaultValue = newIcon;
+				//we don't want this taking precedence over our icon from the
+				//data provider.
+				this._stateToIconFunction = null;
 				//we don't need to do a full invalidation. the superclass will
 				//correctly see this flag when we call super.draw().
 				this.setInvalidationFlag(INVALIDATION_FLAG_STYLES);
@@ -3528,6 +3531,9 @@ package feathers.controls.renderers
 			if(this._skinSelector.defaultValue != newSkin)
 			{
 				this._skinSelector.defaultValue = newSkin;
+				//we don't want this taking precedence over our skin from the
+				//data provider.
+				this._stateToSkinFunction = null;
 				//we don't need to do a full invalidation. the superclass will
 				//correctly see this flag when we call super.draw().
 				this.setInvalidationFlag(INVALIDATION_FLAG_STYLES);
