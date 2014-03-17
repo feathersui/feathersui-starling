@@ -1235,10 +1235,18 @@ package feathers.controls.supportClasses
 		{
 			for each(var renderer:IGroupedListItemRenderer in this._activeItemRenderers)
 			{
+				if(renderer == this._typicalItemRenderer)
+				{
+					continue;
+				}
 				this.refreshOneItemRendererStyles(renderer);
 			}
 			for each(renderer in this._activeFirstItemRenderers)
 			{
+				if(renderer == this._typicalItemRenderer)
+				{
+					continue;
+				}
 				this.refreshOneItemRendererStyles(renderer);
 			}
 			for each(renderer in this._activeLastItemRenderers)
@@ -1247,10 +1255,10 @@ package feathers.controls.supportClasses
 			}
 			for each(renderer in this._activeSingleItemRenderers)
 			{
-				this.refreshOneItemRendererStyles(renderer);
-			}
-			if(this._typicalItemRenderer && !this._typicalItemIsInDataProvider)
-			{
+				if(renderer == this._typicalItemRenderer)
+				{
+					continue;
+				}
 				this.refreshOneItemRendererStyles(renderer);
 			}
 		}
@@ -1530,54 +1538,62 @@ package feathers.controls.supportClasses
 
 		private function refreshRenderers():void
 		{
-			if(this._typicalItemRenderer && this._typicalItemIsInDataProvider)
+			if(this._typicalItemRenderer)
 			{
-				var typicalItem:Object = this._typicalItemRenderer.data;
-				if(IGroupedListItemRenderer(this._itemRendererMap[typicalItem]) == this._typicalItemRenderer)
+				if(this._typicalItemIsInDataProvider)
 				{
-					//this renderer is already is use by the typical item, so we
-					//don't want to allow it to be used by other items.
-					var inactiveIndex:int = this._inactiveItemRenderers.indexOf(this._typicalItemRenderer);
-					if(inactiveIndex >= 0)
+					var typicalItem:Object = this._typicalItemRenderer.data;
+					if(IGroupedListItemRenderer(this._itemRendererMap[typicalItem]) == this._typicalItemRenderer)
 					{
-						this._inactiveItemRenderers.splice(inactiveIndex, 1);
+						//this renderer is already is use by the typical item, so we
+						//don't want to allow it to be used by other items.
+						var inactiveIndex:int = this._inactiveItemRenderers.indexOf(this._typicalItemRenderer);
+						if(inactiveIndex >= 0)
+						{
+							this._inactiveItemRenderers.splice(inactiveIndex, 1);
+						}
+						//if refreshLayoutTypicalItem() was called, it will have already
+						//added the typical item renderer to the active renderers. if
+						//not, we need to do it here.
+						var activeRenderersCount:int = this._activeItemRenderers.length;
+						if(activeRenderersCount == 0)
+						{
+							this._activeItemRenderers[activeRenderersCount] = this._typicalItemRenderer;
+						}
 					}
-					//if refreshLayoutTypicalItem() was called, it will have already
-					//added the typical item renderer to the active renderers. if
-					//not, we need to do it here.
-					var activeRenderersCount:int = this._activeItemRenderers.length;
-					if(activeRenderersCount == 0)
+					else if(this._firstItemRendererMap && IGroupedListItemRenderer(this._firstItemRendererMap[typicalItem]) == this._typicalItemRenderer)
 					{
-						this._activeItemRenderers[activeRenderersCount] = this._typicalItemRenderer;
+						inactiveIndex = this._inactiveFirstItemRenderers.indexOf(this._typicalItemRenderer);
+						if(inactiveIndex >= 0)
+						{
+							this._inactiveFirstItemRenderers.splice(inactiveIndex, 1);
+						}
+						activeRenderersCount = this._activeFirstItemRenderers.length;
+						if(activeRenderersCount == 0)
+						{
+							this._activeFirstItemRenderers[activeRenderersCount] = this._typicalItemRenderer;
+						}
 					}
+					else if(this._singleItemRendererMap && IGroupedListItemRenderer(this._singleItemRendererMap[typicalItem]) == this._typicalItemRenderer)
+					{
+						inactiveIndex = this._inactiveSingleItemRenderers.indexOf(this._typicalItemRenderer);
+						if(inactiveIndex >= 0)
+						{
+							this._inactiveSingleItemRenderers.splice(inactiveIndex, 1);
+						}
+						activeRenderersCount = this._activeSingleItemRenderers.length;
+						if(activeRenderersCount == 0)
+						{
+							this._activeSingleItemRenderers[activeRenderersCount] = this._typicalItemRenderer;
+						}
+					}
+					//no else... can't be in last item renderers
 				}
-				else if(this._firstItemRendererMap && IGroupedListItemRenderer(this._firstItemRendererMap[typicalItem]) == this._typicalItemRenderer)
-				{
-					inactiveIndex = this._inactiveFirstItemRenderers.indexOf(this._typicalItemRenderer);
-					if(inactiveIndex >= 0)
-					{
-						this._inactiveFirstItemRenderers.splice(inactiveIndex, 1);
-					}
-					activeRenderersCount = this._activeFirstItemRenderers.length;
-					if(activeRenderersCount == 0)
-					{
-						this._activeFirstItemRenderers[activeRenderersCount] = this._typicalItemRenderer;
-					}
-				}
-				else if(this._singleItemRendererMap && IGroupedListItemRenderer(this._singleItemRendererMap[typicalItem]) == this._typicalItemRenderer)
-				{
-					inactiveIndex = this._inactiveSingleItemRenderers.indexOf(this._typicalItemRenderer);
-					if(inactiveIndex >= 0)
-					{
-						this._inactiveSingleItemRenderers.splice(inactiveIndex, 1);
-					}
-					activeRenderersCount = this._activeSingleItemRenderers.length;
-					if(activeRenderersCount == 0)
-					{
-						this._activeSingleItemRenderers[activeRenderersCount] = this._typicalItemRenderer;
-					}
-				}
-				//no else... can't be in last item renderers
+				//we need to set the typical item renderer's properties here
+				//because they may be needed for proper measurement in a virtual
+				//layout. we'll skip this item renderer later when the
+				//properties on other item renderers are set.
+				this.refreshOneItemRendererStyles(this._typicalItemRenderer);
 			}
 
 			this.findUnrenderedData();
