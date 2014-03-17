@@ -250,7 +250,12 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected var iconImage:ImageLoader;
+		protected var skinLoader:ImageLoader;
+
+		/**
+		 * @private
+		 */
+		protected var iconLoader:ImageLoader;
 
 		/**
 		 * @private
@@ -260,7 +265,7 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected var accessoryImage:ImageLoader;
+		protected var accessoryLoader:ImageLoader;
 
 		/**
 		 * @private
@@ -271,6 +276,11 @@ package feathers.controls.renderers
 		 * @private
 		 */
 		protected var accessory:DisplayObject;
+
+		/**
+		 * @private
+		 */
+		protected var _skinIsFromItem:Boolean = false;
 
 		/**
 		 * @private
@@ -294,6 +304,20 @@ package feathers.controls.renderers
 			this.replaceIcon(null);
 			this._iconIsFromItem = false;
 			super.defaultIcon = value;
+		}
+
+		/**
+		 * @private
+		 */
+		override public function set defaultSkin(value:DisplayObject):void
+		{
+			if(this._skinSelector.defaultValue == value)
+			{
+				return;
+			}
+			this.replaceSkin(null);
+			this._skinIsFromItem = false;
+			super.defaultSkin = value;
 		}
 
 		/**
@@ -476,6 +500,42 @@ package feathers.controls.renderers
 				return;
 			}
 			this._itemHasAccessory = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _itemHasSkin:Boolean = false;
+
+		/**
+		 * If true, the skin will come from the renderer's item using the
+		 * appropriate field or function for the skin. If false, the skin may
+		 * be set for each state externally.
+		 *
+		 * <p>In the following example, the item has a skin:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.itemHasSkin = true;
+		 * renderer.skinField = "background";</listing>
+		 *
+		 * @default false
+		 */
+		public function get itemHasSkin():Boolean
+		{
+			return this._itemHasSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set itemHasSkin(value:Boolean):void
+		{
+			if(this._itemHasSkin == value)
+			{
+				return;
+			}
+			this._itemHasSkin = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
@@ -981,6 +1041,7 @@ package feathers.controls.renderers
 		 *
 		 * @default "icon"
 		 *
+		 * @see #itemHasIcon
 		 * @see #iconFunction
 		 * @see #iconSourceField
 		 * @see #iconSourceFunction
@@ -1049,6 +1110,7 @@ package feathers.controls.renderers
 		 *
 		 * @default null
 		 *
+		 * @see #itemHasIcon
 		 * @see #iconField
 		 * @see #iconSourceField
 		 * @see #iconSourceFunction
@@ -1107,6 +1169,7 @@ package feathers.controls.renderers
 		 * @default "iconSource"
 		 *
 		 * @see feathers.controls.ImageLoader#source
+		 * @see #itemHasIcon
 		 * @see #iconLoaderFactory
 		 * @see #iconSourceFunction
 		 * @see #iconField
@@ -1188,6 +1251,7 @@ package feathers.controls.renderers
 		 * @default null
 		 *
 		 * @see feathers.controls.ImageLoader#source
+		 * @see #itemHasIcon
 		 * @see #iconLoaderFactory
 		 * @see #iconSourceField
 		 * @see #iconField
@@ -1246,6 +1310,7 @@ package feathers.controls.renderers
 		 *
 		 * @default "iconLabel"
 		 *
+		 * @see #itemHasIcon
 		 * @see #iconLabelFactory
 		 * @see #iconLabelFunction
 		 * @see #iconField
@@ -1312,6 +1377,7 @@ package feathers.controls.renderers
 		 *
 		 * @default null
 		 *
+		 * @see #itemHasIcon
 		 * @see #iconLabelFactory
 		 * @see #iconLabelField
 		 * @see #iconField
@@ -1365,6 +1431,7 @@ package feathers.controls.renderers
 		 *
 		 * @default "accessory"
 		 *
+		 * @see #itemHasAccessory
 		 * @see #accessorySourceField
 		 * @see #accessoryFunction
 		 * @see #accessorySourceFunction
@@ -1437,7 +1504,8 @@ package feathers.controls.renderers
 		 * };</listing>
 		 *
 		 * @default null
-		 *
+		 **
+		 * @see #itemHasAccessory
 		 * @see #accessoryField
 		 * @see #accessorySourceField
 		 * @see #accessorySourceFunction
@@ -1498,6 +1566,7 @@ package feathers.controls.renderers
 		 * @default "accessorySource"
 		 *
 		 * @see feathers.controls.ImageLoader#source
+		 * @see #itemHasAccessory
 		 * @see #accessoryLoaderFactory
 		 * @see #accessorySourceFunction
 		 * @see #accessoryField
@@ -1581,6 +1650,7 @@ package feathers.controls.renderers
 		 * @default null
 		 *
 		 * @see feathers.controls.ImageLoader#source
+		 * @see #itemHasAccessory
 		 * @see #accessoryLoaderFactory
 		 * @see #accessorySourceField
 		 * @see #accessoryField
@@ -1640,7 +1710,8 @@ package feathers.controls.renderers
 		 * renderer.accessoryLabelField = "text";</listing>
 		 *
 		 * @default "accessoryLabel"
-		 *
+		 **
+		 * @see #itemHasAccessory
 		 * @see #accessoryLabelFactory
 		 * @see #accessoryLabelFunction
 		 * @see #accessoryField
@@ -1706,7 +1777,8 @@ package feathers.controls.renderers
 		 * };</listing>
 		 *
 		 * @default null
-		 *
+		 **
+		 * @see #itemHasAccessory
 		 * @see #accessoryLabelFactory
 		 * @see #accessoryLabelField
 		 * @see #accessoryField
@@ -1735,6 +1807,262 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		protected var _skinField:String = "skin";
+
+		/**
+		 * The field in the item that contains a display object to be displayed
+		 * as a background skin.
+		 *
+		 * <p>All of the icon fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>skinSourceFunction</code></li>
+		 *     <li><code>skinSourceField</code></li>
+		 *     <li><code>skinFunction</code></li>
+		 *     <li><code>skinField</code></li>
+		 * </ol>
+		 *
+		 * <p>In the following example, the skin field is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.itemHasSkin = true;
+		 * renderer.skinField = "background";</listing>
+		 *
+		 * @default "skin"
+		 *
+		 * @see #itemHasSkin
+		 * @see #skinFunction
+		 * @see #skinSourceField
+		 * @see #skinSourceFunction
+		 */
+		public function get skinField():String
+		{
+			return this._skinField;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set skinField(value:String):void
+		{
+			if(this._skinField == value)
+			{
+				return;
+			}
+			this._skinField = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _skinFunction:Function;
+
+		/**
+		 * A function used to generate a background skin for a specific item.
+		 *
+		 * <p>Note: As the list scrolls, this function will almost always be
+		 * called more than once for each individual item in the list's data
+		 * provider. Your function should not simply return a new display object
+		 * every time. This will result in the unnecessary creation and
+		 * destruction of many skins, which will overwork the garbage collector
+		 * and hurt performance. It's better to return a new skin the first time
+		 * this function is called for a particular item and then return the same
+		 * skin if that item is passed to this function again.</p>
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 * <pre>function( item:Object ):DisplayObject</pre>
+		 *
+		 * <p>All of the skin fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>skinSourceFunction</code></li>
+		 *     <li><code>skinSourceField</code></li>
+		 *     <li><code>skinFunction</code></li>
+		 *     <li><code>skinField</code></li>
+		 * </ol>
+		 *
+		 * <p>In the following example, the skin function is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.itemHasSkin = true;
+		 * renderer.skinFunction = function( item:Object ):DisplayObject
+		 * {
+		 *    if(item in cachedSkin)
+		 *    {
+		 *        return cachedSkin[item];
+		 *    }
+		 *    var skin:Image = new Image( textureAtlas.getTexture( item.textureName ) );
+		 *    cachedSkin[item] = skin;
+		 *    return skin;
+		 * };</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #itemHasSkin
+		 * @see #skinField
+		 * @see #skinSourceField
+		 * @see #skinSourceFunction
+		 */
+		public function get skinFunction():Function
+		{
+			return this._skinFunction;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set skinFunction(value:Function):void
+		{
+			if(this._skinFunction == value)
+			{
+				return;
+			}
+			this._skinFunction = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _skinSourceField:String = "skinSource";
+
+		/**
+		 * The field in the item that contains a <code>starling.textures.Texture</code>
+		 * or a URL that points to a bitmap to be used as the item renderer's
+		 * skin. The renderer will automatically manage and reuse an internal
+		 * <code>ImageLoader</code> sub-component and this value will be passed
+		 * to the <code>source</code> property. The <code>ImageLoader</code> may
+		 * be customized by changing the <code>skinLoaderFactory</code>.
+		 *
+		 * <p>Using a skin source will result in better performance than
+		 * passing in an <code>ImageLoader</code> or <code>Image</code> through
+		 * a <code>skinField</code> or <code>skinFunction</code>
+		 * because the renderer can avoid costly display list manipulation.</p>
+		 *
+		 * <p>All of the skin fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>skinSourceFunction</code></li>
+		 *     <li><code>skinSourceField</code></li>
+		 *     <li><code>skinFunction</code></li>
+		 *     <li><code>skinField</code></li>
+		 * </ol>
+		 *
+		 * <p>In the following example, the skin source field is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.itemHasSkin = true;
+		 * renderer.skinSourceField = "texture";</listing>
+		 *
+		 * @default "skinSource"
+		 *
+		 * @see feathers.controls.ImageLoader#source
+		 * @see #itemHasSkin
+		 * @see #skinLoaderFactory
+		 * @see #skinSourceFunction
+		 * @see #skinField
+		 * @see #skinFunction
+		 */
+		public function get skinSourceField():String
+		{
+			return this._skinSourceField;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set skinSourceField(value:String):void
+		{
+			if(this._iconSourceField == value)
+			{
+				return;
+			}
+			this._skinSourceField = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _skinSourceFunction:Function;
+
+		/**
+		 * A function used to generate a <code>starling.textures.Texture</code>
+		 * or a URL that points to a bitmap to be used as the item renderer's
+		 * skin. The renderer will automatically manage and reuse an internal
+		 * <code>ImageLoader</code> sub-component and this value will be passed
+		 * to the <code>source</code> property. The <code>ImageLoader</code> may
+		 * be customized by changing the <code>skinLoaderFactory</code>.
+		 *
+		 * <p>Using a skin source will result in better performance than
+		 * passing in an <code>ImageLoader</code> or <code>Image</code> through
+		 * a <code>skinField</code> or <code>skinnFunction</code>
+		 * because the renderer can avoid costly display list manipulation.</p>
+		 *
+		 * <p>Note: As the list scrolls, this function will almost always be
+		 * called more than once for each individual item in the list's data
+		 * provider. Your function should not simply return a new texture every
+		 * time. This will result in the unnecessary creation and destruction of
+		 * many textures, which will overwork the garbage collector and hurt
+		 * performance. Creating a new texture at all is dangerous, unless you
+		 * are absolutely sure to dispose it when necessary because neither the
+		 * list nor its item renderer will dispose of the texture for you. If
+		 * you are absolutely sure that you are managing the texture memory with
+		 * proper disposal, it's better to return a new texture the first
+		 * time this function is called for a particular item and then return
+		 * the same texture if that item is passed to this function again.</p>
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 * <pre>function( item:Object ):Object</pre>
+		 *
+		 * <p>The return value is a valid value for the <code>source</code>
+		 * property of an <code>ImageLoader</code> component.</p>
+		 *
+		 * <p>All of the skin fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>skinSourceFunction</code></li>
+		 *     <li><code>skinSourceField</code></li>
+		 *     <li><code>skinFunction</code></li>
+		 *     <li><code>skinField</code></li>
+		 * </ol>
+		 *
+		 * <p>In the following example, the skin source function is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.itemHasSkin = true;
+		 * renderer.skinSourceFunction = function( item:Object ):Object
+		 * {
+		 *    return "http://www.example.com/images/" + item.name + "-skin.png";
+		 * };</listing>
+		 *
+		 * @default null
+		 *
+		 * @see feathers.controls.ImageLoader#source
+		 * @see #itemHasSkin
+		 * @see #skinLoaderFactory
+		 * @see #skinSourceField
+		 * @see #skinField
+		 * @see #skinFunction
+		 */
+		public function get skinSourceFunction():Function
+		{
+			return this._skinSourceFunction;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set skinSourceFunction(value:Function):void
+		{
+			if(this._skinSourceFunction == value)
+			{
+				return;
+			}
+			this._skinSourceFunction = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _selectableField:String = "selectable";
 
 		/**
@@ -1752,6 +2080,7 @@ package feathers.controls.renderers
 		 * <p>In the following example, the selectable field is customized:</p>
 		 *
 		 * <listing version="3.0">
+		 * renderer.itemHasSelectable = true;
 		 * renderer.selectableField = "isSelectable";</listing>
 		 *
 		 * @default "selectable"
@@ -1798,6 +2127,7 @@ package feathers.controls.renderers
 		 * <p>In the following example, the selectable function is customized:</p>
 		 *
 		 * <listing version="3.0">
+		 * renderer.itemHasSelectable = true;
 		 * renderer.selectableFunction = function( item:Object ):Boolean
 		 * {
 		 *    return item.isSelectable;
@@ -1845,6 +2175,7 @@ package feathers.controls.renderers
 		 * <p>In the following example, the enabled field is customized:</p>
 		 *
 		 * <listing version="3.0">
+		 * renderer.itemHasEnabled = true;
 		 * renderer.enabledField = "isEnabled";</listing>
 		 *
 		 * @default "enabled"
@@ -1891,6 +2222,7 @@ package feathers.controls.renderers
 		 * <p>In the following example, the enabled function is customized:</p>
 		 *
 		 * <listing version="3.0">
+		 * renderer.itemHasEnabled = true;
 		 * renderer.enabledFunction = function( item:Object ):Boolean
 		 * {
 		 *    return item.isEnabled;
@@ -2318,6 +2650,57 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		protected var _skinLoaderFactory:Function = defaultLoaderFactory;
+
+		/**
+		 * A function that generates an <code>ImageLoader</code> that uses the result
+		 * of <code>skinSourceField</code> or <code>skinSourceFunction</code>.
+		 * Useful for transforming the <code>ImageLoader</code> in some way. For
+		 * example, you might want to scale the texture for current DPI or apply
+		 * pixel snapping.
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 * <pre>function():ImageLoader</pre>
+		 *
+		 * <p>In the following example, the loader factory is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.skinLoaderFactory = function():ImageLoader
+		 * {
+		 *    var loader:ImageLoader = new ImageLoader();
+		 *    loader.snapToPixels = true;
+		 *    return loader;
+		 * };</listing>
+		 *
+		 * @default function():ImageLoader { return new ImageLoader(); }
+		 *
+		 * @see feathers.controls.ImageLoader
+		 * @see #skinSourceField
+		 * @see #skinSourceFunction
+		 */
+		public function get skinLoaderFactory():Function
+		{
+			return this._skinLoaderFactory;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set skinLoaderFactory(value:Function):void
+		{
+			if(this._skinLoaderFactory == value)
+			{
+				return;
+			}
+			this._skinLoaderFactory = value;
+			this._skinIsFromItem = false;
+			this.replaceSkin(null);
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _ignoreAccessoryResizes:Boolean = false;
 
 		/**
@@ -2332,6 +2715,10 @@ package feathers.controls.renderers
 			if(this._accessoryIsFromItem)
 			{
 				this.replaceAccessory(null);
+			}
+			if(this._skinIsFromItem)
+			{
+				this.replaceSkin(null);
 			}
 			if(this._stateDelayTimer)
 			{
@@ -2406,13 +2793,13 @@ package feathers.controls.renderers
 			{
 				var source:Object = this._iconSourceFunction(item);
 				this.refreshIconSource(source);
-				return this.iconImage;
+				return this.iconLoader;
 			}
 			else if(this._iconSourceField != null && item && item.hasOwnProperty(this._iconSourceField))
 			{
 				source = item[this._iconSourceField];
 				this.refreshIconSource(source);
-				return this.iconImage;
+				return this.iconLoader;
 			}
 			else if(this._iconLabelFunction != null)
 			{
@@ -2472,13 +2859,13 @@ package feathers.controls.renderers
 			{
 				var source:Object = this._accessorySourceFunction(item);
 				this.refreshAccessorySource(source);
-				return this.accessoryImage;
+				return this.accessoryLoader;
 			}
 			else if(this._accessorySourceField != null && item && item.hasOwnProperty(this._accessorySourceField))
 			{
 				source = item[this._accessorySourceField];
 				this.refreshAccessorySource(source);
-				return this.accessoryImage;
+				return this.accessoryLoader;
 			}
 			else if(this._accessoryLabelFunction != null)
 			{
@@ -2513,6 +2900,44 @@ package feathers.controls.renderers
 			else if(this._accessoryField != null && item && item.hasOwnProperty(this._accessoryField))
 			{
 				return item[this._accessoryField] as DisplayObject;
+			}
+
+			return null;
+		}
+
+		/**
+		 * Uses the skin fields and functions to generate a skin for a specific
+		 * item.
+		 *
+		 * <p>All of the skin fields and functions, ordered by priority:</p>
+		 * <ol>
+		 *     <li><code>skinSourceFunction</code></li>
+		 *     <li><code>skinSourceField</code></li>
+		 *     <li><code>skinFunction</code></li>
+		 *     <li><code>skinField</code></li>
+		 * </ol>
+		 */
+		protected function itemToSkin(item:Object):DisplayObject
+		{
+			if(this._skinSourceFunction != null)
+			{
+				var source:Object = this._skinSourceFunction(item);
+				this.refreshSkinSource(source);
+				return this.skinLoader;
+			}
+			else if(this._skinSourceField != null && item && item.hasOwnProperty(this._skinSourceField))
+			{
+				source = item[this._skinSourceField];
+				this.refreshSkinSource(source);
+				return this.skinLoader;
+			}
+			else if(this._skinFunction != null)
+			{
+				return this._skinFunction(item) as DisplayObject;
+			}
+			else if(this._skinField != null && item && item.hasOwnProperty(this._skinField))
+			{
+				return item[this._skinField] as DisplayObject;
 			}
 
 			return null;
@@ -2571,9 +2996,9 @@ package feathers.controls.renderers
 		 */
 		override protected function draw():void
 		{
-			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
-			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
-			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
+			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			if(dataInvalid)
 			{
 				this.commitData();
@@ -2847,6 +3272,17 @@ package feathers.controls.renderers
 					//uses the same data invalidation flag that triggered this
 					//call to commitData(), so we're already properly invalid.
 				}
+				if(this._itemHasSkin)
+				{
+					var newSkin:DisplayObject = this.itemToSkin(this._data);
+					this._skinIsFromItem = newSkin != null;
+					this.replaceSkin(newSkin);
+				}
+				else if(this._skinIsFromItem)
+				{
+					this._skinIsFromItem = false;
+					this.replaceSkin(null);
+				}
 				if(this._itemHasIcon)
 				{
 					var newIcon:DisplayObject = this.itemToIcon(this._data);
@@ -2896,6 +3332,11 @@ package feathers.controls.renderers
 				{
 					this._iconIsFromItem = false;
 					this.replaceIcon(null);
+				}
+				if(this._itemHasSkin || this._skinIsFromItem)
+				{
+					this._skinIsFromItem = false;
+					this.replaceSkin(null);
 				}
 				if(this._itemHasAccessory || this._accessoryIsFromItem)
 				{
@@ -2947,12 +3388,12 @@ package feathers.controls.renderers
 		 */
 		protected function replaceIcon(newIcon:DisplayObject):void
 		{
-			if(this.iconImage && this.iconImage != newIcon)
+			if(this.iconLoader && this.iconLoader != newIcon)
 			{
-				this.iconImage.removeEventListener(Event.COMPLETE, loader_completeOrErrorHandler);
-				this.iconImage.removeEventListener(FeathersEventType.ERROR, loader_completeOrErrorHandler);
-				this.iconImage.dispose();
-				this.iconImage = null;
+				this.iconLoader.removeEventListener(Event.COMPLETE, loader_completeOrErrorHandler);
+				this.iconLoader.removeEventListener(FeathersEventType.ERROR, loader_completeOrErrorHandler);
+				this.iconLoader.dispose();
+				this.iconLoader = null;
 			}
 
 			if(this.iconLabel && this.iconLabel != newIcon)
@@ -2986,9 +3427,9 @@ package feathers.controls.renderers
 				this.setInvalidationFlag(INVALIDATION_FLAG_STYLES);
 			}
 
-			if(this.iconImage)
+			if(this.iconLoader)
 			{
-				this.iconImage.delayTextureCreation = this._delayTextureCreationOnScroll && this._owner.isScrolling;
+				this.iconLoader.delayTextureCreation = this._delayTextureCreationOnScroll && this._owner.isScrolling;
 			}
 		}
 
@@ -3024,14 +3465,14 @@ package feathers.controls.renderers
 				this.accessoryLabel = null;
 			}
 
-			if(this.accessoryImage && this.accessoryImage != newAccessory)
+			if(this.accessoryLoader && this.accessoryLoader != newAccessory)
 			{
-				this.accessoryImage.removeEventListener(Event.COMPLETE, loader_completeOrErrorHandler);
-				this.accessoryImage.removeEventListener(FeathersEventType.ERROR, loader_completeOrErrorHandler);
+				this.accessoryLoader.removeEventListener(Event.COMPLETE, loader_completeOrErrorHandler);
+				this.accessoryLoader.removeEventListener(FeathersEventType.ERROR, loader_completeOrErrorHandler);
 
 				//same ability to dispose here
-				this.accessoryImage.dispose();
-				this.accessoryImage = null;
+				this.accessoryLoader.dispose();
+				this.accessoryLoader = null;
 			}
 
 			this.accessory = newAccessory;
@@ -3049,9 +3490,52 @@ package feathers.controls.renderers
 				this.addChild(this.accessory);
 			}
 			
-			if(this.accessoryImage)
+			if(this.accessoryLoader)
 			{
-				this.accessoryImage.delayTextureCreation = this._delayTextureCreationOnScroll && this._owner.isScrolling;
+				this.accessoryLoader.delayTextureCreation = this._delayTextureCreationOnScroll && this._owner.isScrolling;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function replaceSkin(newSkin:DisplayObject):void
+		{
+			if(this.skinLoader && this.skinLoader != newSkin)
+			{
+				this.skinLoader.removeEventListener(Event.COMPLETE, loader_completeOrErrorHandler);
+				this.skinLoader.removeEventListener(FeathersEventType.ERROR, loader_completeOrErrorHandler);
+				this.skinLoader.dispose();
+				this.skinLoader = null;
+			}
+
+			if(this._itemHasSkin && this.currentSkin && this.currentSkin != newSkin && this.currentSkin.parent == this)
+			{
+				//the icon is created using the data provider, and it is not
+				//created inside this class, so it is not our responsibility to
+				//dispose the icon. if we dispose it, it may break something.
+				this.currentSkin.removeFromParent(false);
+				this.currentSkin = null;
+			}
+			//we're using currentIcon above, but we're emulating calling the
+			//defaultIcon setter here. the Button class sets the currentIcon
+			//elsewhere, so we want to take advantage of that exisiting code.
+
+			//we're not calling the defaultSkin setter directly because we're in
+			//the middle of validating, and it will just invalidate, which will
+			//require another validation later. we want the Button class to
+			//process the new skin immediately when we call super.draw().
+			if(this._skinSelector.defaultValue != newSkin)
+			{
+				this._skinSelector.defaultValue = newSkin;
+				//we don't need to do a full invalidation. the superclass will
+				//correctly see this flag when we call super.draw().
+				this.setInvalidationFlag(INVALIDATION_FLAG_STYLES);
+			}
+
+			if(this.skinLoader)
+			{
+				this.skinLoader.delayTextureCreation = this._delayTextureCreationOnScroll && this._owner.isScrolling;
 			}
 		}
 
@@ -3103,13 +3587,13 @@ package feathers.controls.renderers
 		 */
 		protected function refreshIconSource(source:Object):void
 		{
-			if(!this.iconImage)
+			if(!this.iconLoader)
 			{
-				this.iconImage = this._iconLoaderFactory();
-				this.iconImage.addEventListener(Event.COMPLETE, loader_completeOrErrorHandler);
-				this.iconImage.addEventListener(FeathersEventType.ERROR, loader_completeOrErrorHandler);
+				this.iconLoader = this._iconLoaderFactory();
+				this.iconLoader.addEventListener(Event.COMPLETE, loader_completeOrErrorHandler);
+				this.iconLoader.addEventListener(FeathersEventType.ERROR, loader_completeOrErrorHandler);
 			}
-			this.iconImage.source = source;
+			this.iconLoader.source = source;
 		}
 
 		/**
@@ -3131,13 +3615,13 @@ package feathers.controls.renderers
 		 */
 		protected function refreshAccessorySource(source:Object):void
 		{
-			if(!this.accessoryImage)
+			if(!this.accessoryLoader)
 			{
-				this.accessoryImage = this._accessoryLoaderFactory();
-				this.accessoryImage.addEventListener(Event.COMPLETE, loader_completeOrErrorHandler);
-				this.accessoryImage.addEventListener(FeathersEventType.ERROR, loader_completeOrErrorHandler);
+				this.accessoryLoader = this._accessoryLoaderFactory();
+				this.accessoryLoader.addEventListener(Event.COMPLETE, loader_completeOrErrorHandler);
+				this.accessoryLoader.addEventListener(FeathersEventType.ERROR, loader_completeOrErrorHandler);
 			}
-			this.accessoryImage.source = source;
+			this.accessoryLoader.source = source;
 		}
 
 		/**
@@ -3152,6 +3636,20 @@ package feathers.controls.renderers
 				this.accessoryLabel.styleNameList.add(this.accessoryLabelName);
 			}
 			this.accessoryLabel.text = label;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshSkinSource(source:Object):void
+		{
+			if(!this.skinLoader)
+			{
+				this.skinLoader = this._skinLoaderFactory();
+				this.skinLoader.addEventListener(Event.COMPLETE, loader_completeOrErrorHandler);
+				this.skinLoader.addEventListener(FeathersEventType.ERROR, loader_completeOrErrorHandler);
+			}
+			this.skinLoader.source = source;
 		}
 
 		/**
@@ -3575,13 +4073,13 @@ package feathers.controls.renderers
 		{
 			if(this._delayTextureCreationOnScroll)
 			{
-				if(this.accessoryImage)
+				if(this.accessoryLoader)
 				{
-					this.accessoryImage.delayTextureCreation = true;
+					this.accessoryLoader.delayTextureCreation = true;
 				}
-				if(this.iconImage)
+				if(this.iconLoader)
 				{
-					this.iconImage.delayTextureCreation = true;
+					this.iconLoader.delayTextureCreation = true;
 				}
 			}
 
@@ -3609,13 +4107,13 @@ package feathers.controls.renderers
 		{
 			if(this._delayTextureCreationOnScroll)
 			{
-				if(this.accessoryImage)
+				if(this.accessoryLoader)
 				{
-					this.accessoryImage.delayTextureCreation = false;
+					this.accessoryLoader.delayTextureCreation = false;
 				}
-				if(this.iconImage)
+				if(this.iconLoader)
 				{
-					this.iconImage.delayTextureCreation = false;
+					this.iconLoader.delayTextureCreation = false;
 				}
 			}
 		}
@@ -3655,7 +4153,7 @@ package feathers.controls.renderers
 		 */
 		override protected function button_touchHandler(event:TouchEvent):void
 		{
-			if(this.accessory && this.accessory != this.accessoryLabel && this.accessory != this.accessoryImage && this.touchPointID < 0)
+			if(this.accessory && this.accessory != this.accessoryLabel && this.accessory != this.accessoryLoader && this.touchPointID < 0)
 			{
 				//ignore all touches on accessories that are not labels or
 				//loaders. return to up state.
@@ -3681,7 +4179,7 @@ package feathers.controls.renderers
 			}
 			if(!this.stopScrollingOnAccessoryTouch ||
 				this.accessory == this.accessoryLabel ||
-				this.accessory == this.accessoryImage)
+				this.accessory == this.accessoryLoader)
 			{
 				//do nothing
 				return;
