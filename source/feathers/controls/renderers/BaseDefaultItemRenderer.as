@@ -888,6 +888,37 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		protected var _isSelectableOnAccessoryTouch:Boolean = false;
+
+		/**
+		 * If enabled, the item renderer may be selected by touching the
+		 * accessory. By default, the accessory will not trigger selection when
+		 * using <code>accessoryField</code> or <code>accessoryFunction</code>.
+		 *
+		 * <p>In the following example, the item renderer can be selected when
+		 * the accessory is touched:</p>
+		 *
+		 * <listing version="3.0">
+		 * renderer.isSelectableOnAccessoryTouch = true;</listing>
+		 *
+		 * @default false
+		 */
+		public function get isSelectableOnAccessoryTouch():Boolean
+		{
+			return this._isSelectableOnAccessoryTouch;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set isSelectableOnAccessoryTouch(value:Boolean):void
+		{
+			this._isSelectableOnAccessoryTouch = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _delayTextureCreationOnScroll:Boolean = false;
 
 		/**
@@ -4159,7 +4190,7 @@ package feathers.controls.renderers
 		 */
 		override protected function button_touchHandler(event:TouchEvent):void
 		{
-			if(this.accessory && this.accessory != this.accessoryLabel && this.accessory != this.accessoryLoader && this.touchPointID < 0)
+			if(this.accessory && !this._isSelectableOnAccessoryTouch && this.accessory != this.accessoryLabel && this.accessory != this.accessoryLoader && this.touchPointID < 0)
 			{
 				//ignore all touches on accessories that are not labels or
 				//loaders. return to up state.
@@ -4183,7 +4214,7 @@ package feathers.controls.renderers
 				this.accessoryTouchPointID = -1;
 				return;
 			}
-			if(!this.stopScrollingOnAccessoryTouch ||
+			if(!this._stopScrollingOnAccessoryTouch ||
 				this.accessory == this.accessoryLabel ||
 				this.accessory == this.accessoryLoader)
 			{
