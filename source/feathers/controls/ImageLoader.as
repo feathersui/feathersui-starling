@@ -1011,8 +1011,8 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			const needsWidth:Boolean = isNaN(this.explicitWidth);
-			const needsHeight:Boolean = isNaN(this.explicitHeight);
+			var needsWidth:Boolean = isNaN(this.explicitWidth);
+			var needsHeight:Boolean = isNaN(this.explicitHeight);
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -1024,9 +1024,9 @@ package feathers.controls
 				if(this._currentTextureFrame)
 				{
 					newWidth = this._currentTextureFrame.width * this._textureScale;
-					if(!needsHeight)
+					if(this._maintainAspectRatio && !needsHeight)
 					{
-						const heightScale:Number = this.explicitHeight / (this._currentTextureFrame.height * this._textureScale);
+						var heightScale:Number = this.explicitHeight / (this._currentTextureFrame.height * this._textureScale);
 						newWidth *= heightScale;
 					}
 				}
@@ -1043,9 +1043,9 @@ package feathers.controls
 				if(this._currentTextureFrame)
 				{
 					newHeight = this._currentTextureFrame.height * this._textureScale;
-					if(!needsWidth)
+					if(this._maintainAspectRatio && !needsWidth)
 					{
-						const widthScale:Number = this.explicitWidth / (this._currentTextureFrame.width * this._textureScale);
+						var widthScale:Number = this.explicitWidth / (this._currentTextureFrame.width * this._textureScale);
 						newHeight *= widthScale;
 					}
 				}
