@@ -596,6 +596,9 @@ package feathers.themes
 			this.setInitializerForClass(Panel, panelInitializer);
 			this.setInitializerForClass(Header, panelHeaderInitializer, Panel.DEFAULT_CHILD_NAME_HEADER);
 
+			//panel screen
+			this.setInitializerForClass(Header, panelScreenHeaderInitializer, PanelScreen.DEFAULT_CHILD_NAME_HEADER);
+
 			//picker list (see also: item renderers)
 			this.setInitializerForClass(PickerList, pickerListInitializer);
 			this.setInitializerForClass(Button, pickerListButtonInitializer, PickerList.DEFAULT_CHILD_NAME_BUTTON);
@@ -1277,6 +1280,12 @@ package feathers.themes
 
 			header.titleProperties.textFormat = this.primaryTextFormat;
 			header.titleProperties.disabledTextFormat = this.disabledTextFormat;
+		}
+
+		protected function panelScreenHeaderInitializer(header:Header):void
+		{
+			this.panelHeaderInitializer(header);
+			header.useExtraPaddingForOSStatusBar = true;
 		}
 
 		protected function baseTextInputInitializer(input:TextInput):void
