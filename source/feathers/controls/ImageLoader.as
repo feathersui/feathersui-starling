@@ -145,7 +145,12 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _currentTextureFrame:Rectangle;
+		protected var _currentTextureWidth:Number = NaN;
+
+		/**
+		 * @private
+		 */
+		protected var _currentTextureHeight:Number = NaN;
 
 		/**
 		 * @private
@@ -547,9 +552,9 @@ package feathers.controls
 		 */
 		public function get originalSourceWidth():Number
 		{
-			if(this._currentTextureFrame)
+			if(this._currentTextureWidth == this._currentTextureWidth) //!isNaN
 			{
-				return this._currentTextureFrame.width;
+				return this._currentTextureWidth;
 			}
 			return 0;
 		}
@@ -562,9 +567,9 @@ package feathers.controls
 		 */
 		public function get originalSourceHeight():Number
 		{
-			if(this._currentTextureFrame)
+			if(this._currentTextureHeight == this._currentTextureHeight) //!isNaN
 			{
-				return this._currentTextureFrame.height;
+				return this._currentTextureHeight;
 			}
 			return 0;
 		}
@@ -990,12 +995,12 @@ package feathers.controls
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
 			{
-				if(this._currentTextureFrame)
+				if(this._currentTextureWidth == this._currentTextureWidth) //!isNaN
 				{
-					newWidth = this._currentTextureFrame.width * this._textureScale;
+					newWidth = this._currentTextureWidth * this._textureScale;
 					if(!needsHeight)
 					{
-						const heightScale:Number = this.explicitHeight / (this._currentTextureFrame.height * this._textureScale);
+						const heightScale:Number = this.explicitHeight / (this._currentTextureHeight * this._textureScale);
 						newWidth *= heightScale;
 					}
 				}
@@ -1009,12 +1014,12 @@ package feathers.controls
 			var newHeight:Number = this.explicitHeight;
 			if(needsHeight)
 			{
-				if(this._currentTextureFrame)
+				if(this._currentTextureHeight == this._currentTextureHeight) //!isNaN
 				{
-					newHeight = this._currentTextureFrame.height * this._textureScale;
+					newHeight = this._currentTextureHeight * this._textureScale;
 					if(!needsWidth)
 					{
-						const widthScale:Number = this.explicitWidth / (this._currentTextureFrame.width * this._textureScale);
+						const widthScale:Number = this.explicitWidth / (this._currentTextureWidth * this._textureScale);
 						newHeight *= widthScale;
 					}
 				}
@@ -1144,8 +1149,8 @@ package feathers.controls
 			{
 				HELPER_RECTANGLE.x = 0;
 				HELPER_RECTANGLE.y = 0;
-				HELPER_RECTANGLE.width = this._currentTextureFrame.width * this._textureScale;
-				HELPER_RECTANGLE.height = this._currentTextureFrame.height * this._textureScale;
+				HELPER_RECTANGLE.width = this._currentTextureWidth * this._textureScale;
+				HELPER_RECTANGLE.height = this._currentTextureHeight * this._textureScale;
 				HELPER_RECTANGLE2.x = 0;
 				HELPER_RECTANGLE2.y = 0;
 				HELPER_RECTANGLE2.width = this.actualWidth - this._paddingLeft - this._paddingRight;
@@ -1201,7 +1206,17 @@ package feathers.controls
 
 			//save the texture's frame so that we don't need to create a new
 			//rectangle every time that we want to access it.
-			this._currentTextureFrame = this._currentTexture.frame;
+			var frame:Rectangle = this._currentTexture.frame;
+			if(frame)
+			{
+				this._currentTextureWidth = frame.width;
+				this._currentTextureHeight = frame.height;
+			}
+			else
+			{
+				this._currentTextureWidth = this._currentTexture.width;
+				this._currentTextureHeight = this._currentTexture.height;
+			}
 			if(!this.image)
 			{
 				this.image = new Image(this._currentTexture);
@@ -1244,7 +1259,8 @@ package feathers.controls
 				this._pendingRawTextureData.clear();
 			}
 			this._currentTexture = null;
-			this._currentTextureFrame = null;
+			this._currentTextureWidth = NaN;
+			this._currentTextureHeight = NaN;
 			this._pendingBitmapDataTexture = null;
 			this._pendingRawTextureData = null;
 			this._textureBitmapData = null;
