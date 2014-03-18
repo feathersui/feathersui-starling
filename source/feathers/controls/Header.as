@@ -1476,7 +1476,6 @@ package feathers.controls
 				return 0;
 			}
 			var os:String = Capabilities.os;
-			trace(os);
 			if(os.indexOf(IOS_NAME_PREFIX) != 0 || parseInt(os.substr(IOS_NAME_PREFIX.length, 1), 10) < STATUS_BAR_MIN_IOS_VERSION)
 			{
 				return 0;
