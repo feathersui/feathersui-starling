@@ -30,7 +30,14 @@ package feathers.display
 	 */
 	public class TiledImage extends Sprite implements IValidating
 	{
+		/**
+		 * @private
+		 */
 		private static const HELPER_POINT:Point = new Point();
+
+		/**
+		 * @private
+		 */
 		private static const HELPER_MATRIX:Matrix = new Matrix();
 		
 		/**
@@ -159,9 +166,17 @@ package feathers.display
 				this._image.texture = value;
 				this._image.readjustSize();
 			}
-			const frame:Rectangle = value.frame;
-			this._originalImageWidth = frame.width;
-			this._originalImageHeight = frame.height;
+			var frame:Rectangle = value.frame;
+			if(!frame)
+			{
+				this._originalImageWidth = value.width;
+				this._originalImageHeight = value.height;
+			}
+			else
+			{
+				this._originalImageWidth = frame.width;
+				this._originalImageHeight = frame.height;
+			}
 			this._layoutChanged = true;
 			this.invalidate();
 		}
