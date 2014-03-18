@@ -677,6 +677,7 @@ package feathers.controls
 		 * @default 0
 		 * 
 		 * @see #iconPosition
+		 * @see #minGap
 		 */
 		public function get gap():Number
 		{
@@ -693,6 +694,46 @@ package feathers.controls
 				return;
 			}
 			this._gap = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _minGap:Number = 0;
+
+		/**
+		 * If the value of the <code>gap</code> property is
+		 * <code>Number.POSITIVE_INFINITY</code>, meaning that the gap will
+		 * fill as much space as possible, the final calculated value will not be
+		 * smaller than the value of the <code>minGap</code> property.
+		 *
+		 * <p>The following example ensures that the gap is never smaller than
+		 * 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * button.gap = Number.POSITIVE_INFINITY;
+		 * button.minGap = 20;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #gap
+		 */
+		public function get minGap():Number
+		{
+			return this._minGap;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set minGap(value:Number):void
+		{
+			if(this._minGap == value)
+			{
+				return;
+			}
+			this._minGap = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 		
@@ -2771,8 +2812,8 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			const needsWidth:Boolean = isNaN(this.explicitWidth);
-			const needsHeight:Boolean = isNaN(this.explicitHeight);
+			var needsWidth:Boolean = isNaN(this.explicitWidth);
+			var needsHeight:Boolean = isNaN(this.explicitHeight);
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -2787,7 +2828,7 @@ package feathers.controls
 					if(this._iconPosition != ICON_POSITION_TOP && this._iconPosition != ICON_POSITION_BOTTOM &&
 						this._iconPosition != ICON_POSITION_MANUAL)
 					{
-						var adjustedGap:Number = this._gap == Number.POSITIVE_INFINITY ? Math.min(this._paddingLeft, this._paddingRight) : this._gap;
+						var adjustedGap:Number = this._gap == Number.POSITIVE_INFINITY ? this._minGap : this._gap;
 						newWidth = this.currentIcon.width + adjustedGap + HELPER_POINT.x;
 					}
 					else
@@ -2828,7 +2869,7 @@ package feathers.controls
 				{
 					if(this._iconPosition == ICON_POSITION_TOP || this._iconPosition == ICON_POSITION_BOTTOM)
 					{
-						adjustedGap = this._gap == Number.POSITIVE_INFINITY ? Math.min(this._paddingTop, this._paddingBottom) : this._gap;
+						adjustedGap = this._gap == Number.POSITIVE_INFINITY ? this._minGap : this._gap;
 						newHeight = this.currentIcon.height + adjustedGap + HELPER_POINT.y;
 					}
 					else
@@ -3082,7 +3123,7 @@ package feathers.controls
 				if(this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE ||
 					this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
 				{
-					const adjustedGap:Number = this._gap == Number.POSITIVE_INFINITY ? Math.min(this._paddingLeft, this._paddingRight) : this._gap;
+					var adjustedGap:Number = this._gap == Number.POSITIVE_INFINITY ? this._minGap : this._gap;
 					this.labelTextRenderer.maxWidth = calculatedWidth - this._paddingLeft - this._paddingRight - this.currentIcon.width - adjustedGap;
 				}
 				else
