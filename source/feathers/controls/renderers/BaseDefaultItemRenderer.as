@@ -813,6 +813,51 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
+		protected var _minAccessoryGap:Number = NaN;
+
+		/**
+		 * If the value of the <code>accessoryGap</code> property is
+		 * <code>Number.POSITIVE_INFINITY</code>, meaning that the gap will
+		 * fill as much space as possible, the final calculated value will not be
+		 * smaller than the value of the <code>minAccessoryGap</code> property.
+		 * If the value of <code>minAccessoryGap</code> is <code>NaN</code>, the
+		 * value of the <code>minGap</code> property will be used instead.
+		 *
+		 * <p>The following example ensures that the gap is never smaller than
+		 * 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * button.gap = Number.POSITIVE_INFINITY;
+		 * button.minGap = 20;</listing>
+		 *
+		 * <listing version="3.0">
+		 * renderer.accessoryGap = 20;</listing>
+		 *
+		 * @default NaN
+		 *
+		 * @see #accessoryGap
+		 */
+		public function get minAccessoryGap():Number
+		{
+			return this._minAccessoryGap;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set minAccessoryGap(value:Number):void
+		{
+			if(this._minAccessoryGap == value)
+			{
+				return;
+			}
+			this._minAccessoryGap = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function set currentState(value:String):void
 		{
 			if(this._isEnabled && !this._isToggle && (!this.isSelectableWithoutToggle || (this._itemHasSelectable && !this.itemToSelectable(this._data))))
@@ -3046,8 +3091,8 @@ package feathers.controls.renderers
 		 */
 		override protected function autoSizeIfNeeded():Boolean
 		{
-			const needsWidth:Boolean = isNaN(this.explicitWidth);
-			const needsHeight:Boolean = isNaN(this.explicitHeight);
+			var needsWidth:Boolean = isNaN(this.explicitWidth);
+			var needsHeight:Boolean = isNaN(this.explicitHeight);
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -3063,38 +3108,27 @@ package feathers.controls.renderers
 				{
 					newWidth = HELPER_POINT.x;
 				}
-				var adjustedGap:Number = this._gap;
-				if(this._gap == Number.POSITIVE_INFINITY)
-				{
-					if(this._paddingLeft < this._paddingRight)
-					{
-						adjustedGap = this._paddingLeft;
-					}
-					else
-					{
-						adjustedGap = this._paddingRight;
-					}
-				}
 				if(this._layoutOrder == LAYOUT_ORDER_LABEL_ACCESSORY_ICON)
 				{
-					newWidth = this.addAccessoryWidth(newWidth, adjustedGap);
-					newWidth = this.addIconWidth(newWidth, adjustedGap);
+					newWidth = this.addAccessoryWidth(newWidth);
+					newWidth = this.addIconWidth(newWidth);
 				}
 				else
 				{
-					newWidth = this.addIconWidth(newWidth, adjustedGap);
-					newWidth = this.addAccessoryWidth(newWidth, adjustedGap);
+					newWidth = this.addIconWidth(newWidth);
+					newWidth = this.addAccessoryWidth(newWidth);
 				}
 				newWidth += this._paddingLeft + this._paddingRight;
-				if(isNaN(newWidth))
+				if(newWidth != newWidth) //isNaN
 				{
 					newWidth = this._originalSkinWidth;
 				}
-				else if(!isNaN(this._originalSkinWidth))
+				else if(this._originalSkinWidth == this._originalSkinWidth && //!isNaN
+					this._originalSkinWidth > newWidth)
 				{
-					newWidth = Math.max(newWidth, this._originalSkinWidth);
+					newWidth = this._originalSkinWidth;
 				}
-				if(isNaN(newWidth))
+				if(newWidth != newWidth) //isNaN
 				{
 					newWidth = 0;
 				}
@@ -3107,41 +3141,27 @@ package feathers.controls.renderers
 				{
 					newHeight = HELPER_POINT.y;
 				}
-				adjustedGap = this._gap;
-				if(this._gap == Number.POSITIVE_INFINITY)
-				{
-					if(this._paddingTop < this._paddingBottom)
-					{
-						adjustedGap = this._paddingTop;
-					}
-					else
-					{
-						adjustedGap = this._paddingBottom;
-					}
-				}
 				if(this._layoutOrder == LAYOUT_ORDER_LABEL_ACCESSORY_ICON)
 				{
-					newHeight = this.addAccessoryHeight(newHeight, adjustedGap);
-					newHeight = this.addIconHeight(newHeight, adjustedGap);
+					newHeight = this.addAccessoryHeight(newHeight);
+					newHeight = this.addIconHeight(newHeight);
 				}
 				else
 				{
-					newHeight = this.addIconHeight(newHeight, adjustedGap);
-					newHeight = this.addAccessoryHeight(newHeight, adjustedGap);
+					newHeight = this.addIconHeight(newHeight);
+					newHeight = this.addAccessoryHeight(newHeight);
 				}
 				newHeight += this._paddingTop + this._paddingBottom;
-				if(isNaN(newHeight))
+				if(newHeight != newHeight) //isNaN
 				{
 					newHeight = this._originalSkinHeight;
 				}
-				else if(!isNaN(this._originalSkinHeight))
+				else if(this._originalSkinHeight == this._originalSkinHeight && //!isNaN
+					this._originalSkinHeight > newHeight)
 				{
-					if(this._originalSkinHeight > newHeight)
-					{
-						newHeight = this._originalSkinHeight;
-					}
+					newHeight = this._originalSkinHeight;
 				}
-				if(isNaN(newHeight))
+				if(newHeight != newHeight) //isNaN
 				{
 					newHeight = 0;
 				}
@@ -3154,14 +3174,19 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected function addIconWidth(width:Number, gap:Number):Number
+		protected function addIconWidth(width:Number):Number
 		{
-			if(!this.currentIcon || isNaN(this.currentIcon.width))
+			if(!this.currentIcon)
+			{
+				return width;
+			}
+			var iconWidth:Number = this.currentIcon.width;
+			if(iconWidth != iconWidth) //isNaN
 			{
 				return width;
 			}
 
-			var hasPreviousItem:Boolean = !isNaN(width);
+			var hasPreviousItem:Boolean = width == width; //!isNaN
 			if(!hasPreviousItem)
 			{
 				width = 0;
@@ -3171,13 +3196,18 @@ package feathers.controls.renderers
 			{
 				if(hasPreviousItem)
 				{
-					width += gap;
+					var adjustedGap:Number = this._gap;
+					if(this._gap == Number.POSITIVE_INFINITY)
+					{
+						adjustedGap = this._minGap;
+					}
+					width += adjustedGap;
 				}
-				width += this.currentIcon.width;
+				width += iconWidth;
 			}
-			else
+			else if(iconWidth > width)
 			{
-				width = Math.max(width, this.currentIcon.width);
+				width = iconWidth;
 			}
 			return width;
 		}
@@ -3185,14 +3215,19 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected function addAccessoryWidth(width:Number, gap:Number):Number
+		protected function addAccessoryWidth(width:Number):Number
 		{
-			if(!this.accessory || isNaN(this.accessory.width))
+			if(!this.accessory)
+			{
+				return width;
+			}
+			var accessoryWidth:Number = this.accessory.width;
+			if(accessoryWidth != accessoryWidth)
 			{
 				return width;
 			}
 
-			var hasPreviousItem:Boolean = !isNaN(width);
+			var hasPreviousItem:Boolean = width == width; //!isNaN;
 			if(!hasPreviousItem)
 			{
 				width = 0;
@@ -3202,18 +3237,29 @@ package feathers.controls.renderers
 			{
 				if(hasPreviousItem)
 				{
-					var adjustedAccessoryGap:Number = isNaN(this._accessoryGap) ? gap : this._accessoryGap;
+					var adjustedAccessoryGap:Number = this._accessoryGap;
+					if(adjustedAccessoryGap != adjustedAccessoryGap) //isNaN
+					{
+						adjustedAccessoryGap = this._gap;
+					}
 					if(adjustedAccessoryGap == Number.POSITIVE_INFINITY)
 					{
-						adjustedAccessoryGap = Math.min(this._paddingLeft, this._paddingRight, this._gap);
+						if(this._minAccessoryGap != this._minAccessoryGap) //isNaN
+						{
+							adjustedAccessoryGap = this._minGap;
+						}
+						else
+						{
+							adjustedAccessoryGap = this._minAccessoryGap;
+						}
 					}
 					width += adjustedAccessoryGap;
 				}
-				width += this.accessory.width;
+				width += accessoryWidth;
 			}
-			else
+			else if(accessoryWidth > width)
 			{
-				width = Math.max(width, this.accessory.width);
+				width = accessoryWidth;
 			}
 			return width;
 		}
@@ -3222,14 +3268,19 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected function addIconHeight(height:Number, gap:Number):Number
+		protected function addIconHeight(height:Number):Number
 		{
-			if(!this.currentIcon || isNaN(this.currentIcon.height))
+			if(!this.currentIcon)
+			{
+				return height;
+			}
+			var iconHeight:Number = this.currentIcon.height;
+			if(iconHeight != iconHeight) //isNaN
 			{
 				return height;
 			}
 
-			var hasPreviousItem:Boolean = !isNaN(height);
+			var hasPreviousItem:Boolean = height == height; //!isNaN
 			if(!hasPreviousItem)
 			{
 				height = 0;
@@ -3239,13 +3290,18 @@ package feathers.controls.renderers
 			{
 				if(hasPreviousItem)
 				{
-					height += gap;
+					var adjustedGap:Number = this._gap;
+					if(this._gap == Number.POSITIVE_INFINITY)
+					{
+						adjustedGap = this._minGap;
+					}
+					height += adjustedGap;
 				}
-				height += this.currentIcon.height;
+				height += iconHeight;
 			}
-			else
+			else if(iconHeight > height)
 			{
-				height = Math.max(height, this.currentIcon.height);
+				height = iconHeight;
 			}
 			return height;
 		}
@@ -3253,14 +3309,19 @@ package feathers.controls.renderers
 		/**
 		 * @private
 		 */
-		protected function addAccessoryHeight(height:Number, gap:Number):Number
+		protected function addAccessoryHeight(height:Number):Number
 		{
-			if(!this.accessory || isNaN(this.accessory.height))
+			if(!this.accessory)
+			{
+				return height;
+			}
+			var accessoryHeight:Number = this.accessory.height;
+			if(accessoryHeight != accessoryHeight) //isNaN
 			{
 				return height;
 			}
 
-			var hasPreviousItem:Boolean = !isNaN(height);
+			var hasPreviousItem:Boolean = height == height; //!isNaN
 			if(!hasPreviousItem)
 			{
 				height = 0;
@@ -3270,18 +3331,29 @@ package feathers.controls.renderers
 			{
 				if(hasPreviousItem)
 				{
-					var adjustedAccessoryGap:Number = isNaN(this._accessoryGap) ? gap : this._accessoryGap;
+					var adjustedAccessoryGap:Number = this._accessoryGap;
+					if(adjustedAccessoryGap != adjustedAccessoryGap)
+					{
+						adjustedAccessoryGap =  this._gap;
+					}
 					if(adjustedAccessoryGap == Number.POSITIVE_INFINITY)
 					{
-						adjustedAccessoryGap = Math.min(this._paddingTop, this._paddingBottom, this._gap);
+						if(this._minAccessoryGap != this._minAccessoryGap)
+						{
+							adjustedAccessoryGap = this._minGap;
+						}
+						else
+						{
+							adjustedAccessoryGap = this._minAccessoryGap;
+						}
 					}
 					height += adjustedAccessoryGap;
 				}
-				height += this.accessory.height;
+				height += accessoryHeight;
 			}
-			else
+			else if(accessoryHeight > height)
 			{
-				height = Math.max(height, this.accessory.height);
+				height = accessoryHeight;
 			}
 			return height;
 		}
@@ -3694,7 +3766,7 @@ package feathers.controls.renderers
 		 */
 		override protected function layoutContent():void
 		{
-			const oldIgnoreAccessoryResizes:Boolean = this._ignoreAccessoryResizes;
+			var oldIgnoreAccessoryResizes:Boolean = this._ignoreAccessoryResizes;
 			this._ignoreAccessoryResizes = true;
 			this.refreshMaxLabelWidth(false);
 			if(this._label)
@@ -3702,9 +3774,13 @@ package feathers.controls.renderers
 				this.labelTextRenderer.validate();
 				const labelRenderer:DisplayObject = DisplayObject(this.labelTextRenderer);
 			}
-			const iconIsInLayout:Boolean = this.currentIcon && this._iconPosition != ICON_POSITION_MANUAL;
-			const accessoryIsInLayout:Boolean = this.accessory && this._accessoryPosition != ACCESSORY_POSITION_MANUAL;
-			const accessoryGap:Number = isNaN(this._accessoryGap) ? this._gap : this._accessoryGap;
+			var iconIsInLayout:Boolean = this.currentIcon && this._iconPosition != ICON_POSITION_MANUAL;
+			var accessoryIsInLayout:Boolean = this.accessory && this._accessoryPosition != ACCESSORY_POSITION_MANUAL;
+			var accessoryGap:Number = this._accessoryGap;
+			if(accessoryGap != accessoryGap) //isNaN
+			{
+				accessoryGap = this._gap;
+			}
 			if(this._label && iconIsInLayout && accessoryIsInLayout)
 			{
 				this.positionSingleChild(labelRenderer);
@@ -3795,8 +3871,24 @@ package feathers.controls.renderers
 			}
 			calculatedWidth -= (this._paddingLeft + this._paddingRight);
 
-			var adjustedGap:Number = this._gap == Number.POSITIVE_INFINITY ? Math.min(this._paddingLeft, this._paddingRight) : this._gap;
-			var accessoryGap:Number = (isNaN(this._accessoryGap) || this._accessoryGap == Number.POSITIVE_INFINITY) ? adjustedGap : this._accessoryGap;
+			var adjustedGap:Number = this._gap;
+			if(adjustedGap == Number.POSITIVE_INFINITY)
+			{
+				adjustedGap = this._minGap;
+			}
+			var adjustedAccessoryGap:Number = this._accessoryGap;
+			if(adjustedAccessoryGap != adjustedAccessoryGap) //isNaN
+			{
+				adjustedAccessoryGap = this._gap;
+			}
+			if(adjustedAccessoryGap == Number.POSITIVE_INFINITY)
+			{
+				adjustedAccessoryGap = this._minAccessoryGap;
+				if(adjustedAccessoryGap != adjustedAccessoryGap) //isNaN
+				{
+					adjustedAccessoryGap = this._minGap;
+				}
+			}
 
 			var hasIconToLeftOrRight:Boolean = this.currentIcon && (this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE ||
 				this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE);
@@ -3823,7 +3915,7 @@ package feathers.controls.renderers
 				}
 				if(hasAccessoryToLeftOrRight)
 				{
-					calculatedWidth -= accessoryGap;
+					calculatedWidth -= adjustedAccessoryGap;
 				}
 				if(calculatedWidth < 0)
 				{
@@ -3852,7 +3944,7 @@ package feathers.controls.renderers
 				}
 				if(accessoryAffectsIconLabelMaxWidth)
 				{
-					calculatedWidth -= (accessoryGap + this.accessory.width);
+					calculatedWidth -= (adjustedAccessoryGap + this.accessory.width);
 				}
 				if(hasIconToLeftOrRight)
 				{
@@ -3865,7 +3957,7 @@ package feathers.controls.renderers
 				this.iconLabel.maxWidth = calculatedWidth;
 				if(this.accessory && !accessoryAffectsIconLabelMaxWidth)
 				{
-					calculatedWidth -= (accessoryGap + this.accessory.width);
+					calculatedWidth -= (adjustedAccessoryGap + this.accessory.width);
 				}
 				if(this.currentIcon is IValidating)
 				{
@@ -3892,7 +3984,7 @@ package feathers.controls.renderers
 				}
 				if(hasAccessoryToLeftOrRight)
 				{
-					calculatedWidth -= (accessoryGap + this.accessory.width);
+					calculatedWidth -= (adjustedAccessoryGap + this.accessory.width);
 				}
 			}
 			if(calculatedWidth < 0)
