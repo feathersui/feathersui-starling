@@ -838,6 +838,7 @@ package feathers.themes
 			button.paddingTop = button.paddingBottom = 2;
 			button.paddingLeft = button.paddingRight = 10;
 			button.gap = 2;
+			button.minGap = 2;
 			button.minWidth = button.minHeight = 12;
 		}
 
@@ -853,6 +854,7 @@ package feathers.themes
 			button.stateToIconFunction = iconSelector.updateValue;
 
 			button.gap = Number.POSITIVE_INFINITY; //fill as completely as possible
+			button.minGap = 2;
 			button.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			button.iconPosition = Button.ICON_POSITION_RIGHT;
 			button.paddingRight = 6;
@@ -1449,7 +1451,9 @@ package feathers.themes
 			renderer.paddingTop = renderer.paddingBottom = 2;
 			renderer.paddingRight = renderer.paddingLeft = 6;
 			renderer.gap = 2;
+			renderer.minGap = 2;
 			renderer.accessoryGap = Number.POSITIVE_INFINITY;
+			renderer.minAccessoryGap = 2;
 			renderer.minWidth = renderer.minHeight = 22;
 		}
 

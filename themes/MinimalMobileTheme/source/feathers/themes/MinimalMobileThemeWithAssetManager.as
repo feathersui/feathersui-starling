@@ -738,6 +738,7 @@ package feathers.themes
 			button.paddingTop = button.paddingBottom = 8 * this.scale;
 			button.paddingLeft = button.paddingRight = 16 * this.scale;
 			button.gap = 12 * this.scale;
+			button.minGap = 12 * this.scale;
 			button.minWidth = 66 * this.scale;
 			button.minHeight = 66 * this.scale;
 			button.minTouchWidth = button.minTouchHeight = 88 * this.scale;
@@ -871,6 +872,7 @@ package feathers.themes
 			button.paddingTop = button.paddingBottom = 8 * this.scale;
 			button.paddingLeft = button.paddingRight = 16 * this.scale;
 			button.gap = 12 * this.scale;
+			button.minGap = 12 * this.scale;
 			button.minWidth = 88 * this.scale;
 			button.minHeight = 88 * this.scale;
 			button.minTouchWidth = button.minTouchHeight = 88 * this.scale;
@@ -1093,8 +1095,10 @@ package feathers.themes
 			renderer.minWidth = renderer.minHeight = 88 * this.scale;
 
 			renderer.gap = 10 * this.scale;
+			renderer.minGap = 10 * this.scale;
 			renderer.iconPosition = Button.ICON_POSITION_LEFT;
 			renderer.accessoryGap = Number.POSITIVE_INFINITY;
+			renderer.minAccessoryGap = 10 * this.scale;
 			renderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
 
 			renderer.accessoryLoaderFactory = this.imageLoaderFactory;
@@ -1135,6 +1139,7 @@ package feathers.themes
 
 			renderer.iconPosition = Button.ICON_POSITION_RIGHT;
 			renderer.gap = Number.POSITIVE_INFINITY;
+			renderer.minGap = 10 * this.scale;
 
 			renderer.accessoryLoaderFactory = this.imageLoaderFactory;
 			renderer.iconLoaderFactory = this.imageLoaderFactory;
@@ -1242,8 +1247,9 @@ package feathers.themes
 			const defaultIcon:Image = new Image(dropDownArrowTexture);
 			defaultIcon.scaleX = defaultIcon.scaleY = this.scale;
 			button.defaultIcon = defaultIcon;
-			button.gap = Number.POSITIVE_INFINITY, //fill as completely as possible
-				button.iconPosition = Button.ICON_POSITION_RIGHT;
+			button.gap = Number.POSITIVE_INFINITY; //fill as completely as possible
+			button.minGap = 12 * this.scale;
+			button.iconPosition = Button.ICON_POSITION_RIGHT;
 			button.horizontalAlign =  Button.HORIZONTAL_ALIGN_LEFT;
 		}
 
