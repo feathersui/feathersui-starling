@@ -595,15 +595,15 @@ package feathers.controls.text
 				result = new Point();
 			}
 
-			const font:BitmapFont = this.currentTextFormat.font;
-			const customSize:Number = this.currentTextFormat.size;
-			const customLetterSpacing:Number = this.currentTextFormat.letterSpacing;
-			const isKerningEnabled:Boolean = this.currentTextFormat.isKerningEnabled;
-			const scale:Number = isNaN(customSize) ? 1 : (customSize / font.size);
-			const lineHeight:Number = font.lineHeight * scale;
+			var font:BitmapFont = this.currentTextFormat.font;
+			var customSize:Number = this.currentTextFormat.size;
+			var customLetterSpacing:Number = this.currentTextFormat.letterSpacing;
+			var isKerningEnabled:Boolean = this.currentTextFormat.isKerningEnabled;
+			var scale:Number = isNaN(customSize) ? 1 : (customSize / font.size);
+			var lineHeight:Number = font.lineHeight * scale;
 
-			const hasExplicitWidth:Boolean = !isNaN(this.explicitWidth);
-			const isAligned:Boolean = this.currentTextFormat.align != TextFormatAlign.LEFT;
+			var hasExplicitWidth:Boolean = !isNaN(this.explicitWidth);
+			var isAligned:Boolean = this.currentTextFormat.align != TextFormatAlign.LEFT;
 			var maxLineWidth:Number = hasExplicitWidth ? this.explicitWidth : this._maxWidth;
 			if(isAligned && maxLineWidth == Number.POSITIVE_INFINITY)
 			{
@@ -612,7 +612,7 @@ package feathers.controls.text
 				this.measureText(HELPER_POINT);
 				maxLineWidth = HELPER_POINT.x;
 			}
-			const textToDraw:String = this.getTruncatedText(maxLineWidth);
+			var textToDraw:String = this.getTruncatedText(maxLineWidth);
 			CHARACTER_BUFFER.length = 0;
 
 			var maxX:Number = 0;
@@ -624,7 +624,7 @@ package feathers.controls.text
 			var widthOfWhitespaceAfterWord:Number = 0;
 			var wordLength:int = 0;
 			var wordCountForLine:int = 0;
-			const charCount:int = textToDraw ? textToDraw.length : 0;
+			var charCount:int = textToDraw ? textToDraw.length : 0;
 			for(var i:int = 0; i < charCount; i++)
 			{
 				isWordComplete = false;
@@ -657,7 +657,7 @@ package feathers.controls.text
 
 				if(isKerningEnabled && !isNaN(previousCharID))
 				{
-					currentX += charData.getKerning(previousCharID);
+					currentX += charData.getKerning(previousCharID) * scale;
 				}
 
 				var offsetX:Number = charData.xAdvance * scale;
@@ -897,11 +897,11 @@ package feathers.controls.text
 				return this._text;
 			}
 
-			const font:BitmapFont = this.currentTextFormat.font;
-			const customSize:Number = this.currentTextFormat.size;
-			const customLetterSpacing:Number = this.currentTextFormat.letterSpacing;
-			const isKerningEnabled:Boolean = this.currentTextFormat.isKerningEnabled;
-			const scale:Number = isNaN(customSize) ? 1 : (customSize / font.size);
+			var font:BitmapFont = this.currentTextFormat.font;
+			var customSize:Number = this.currentTextFormat.size;
+			var customLetterSpacing:Number = this.currentTextFormat.letterSpacing;
+			var isKerningEnabled:Boolean = this.currentTextFormat.isKerningEnabled;
+			var scale:Number = isNaN(customSize) ? 1 : (customSize / font.size);
 			var currentX:Number = 0;
 			var previousCharID:Number = NaN;
 			var charCount:int = this._text.length;
@@ -917,7 +917,7 @@ package feathers.controls.text
 				var currentKerning:Number = 0;
 				if(isKerningEnabled && !isNaN(previousCharID))
 				{
-					currentKerning = charData.getKerning(previousCharID);
+					currentKerning = charData.getKerning(previousCharID) * scale;
 				}
 				currentX += currentKerning + charData.xAdvance * scale;
 				if(currentX > width)
@@ -951,7 +951,7 @@ package feathers.controls.text
 					currentKerning = 0;
 					if(isKerningEnabled && !isNaN(previousCharID))
 					{
-						currentKerning = charData.getKerning(previousCharID);
+						currentKerning = charData.getKerning(previousCharID) * scale;
 					}
 					currentX += currentKerning + charData.xAdvance * scale + customLetterSpacing;
 					previousCharID = charID;
@@ -971,7 +971,7 @@ package feathers.controls.text
 					currentKerning = 0;
 					if(isKerningEnabled && !isNaN(previousCharID))
 					{
-						currentKerning = charData.getKerning(previousCharID);
+						currentKerning = charData.getKerning(previousCharID) * scale;
 					}
 					currentX -= (currentKerning + charData.xAdvance * scale + customLetterSpacing);
 					if(currentX <= width)
