@@ -4382,11 +4382,21 @@ package feathers.controls
 			{
 				Starling.juggler.remove(this._horizontalAutoScrollTween);
 				this._horizontalAutoScrollTween = null;
+				if(this._isScrolling)
+				{
+					//immediately start dragging, since it was scrolling already
+					this._isDraggingHorizontally = true;
+				}
 			}
 			if(this._verticalAutoScrollTween && this._verticalScrollPolicy != Scroller.SCROLL_POLICY_OFF)
 			{
 				Starling.juggler.remove(this._verticalAutoScrollTween);
 				this._verticalAutoScrollTween = null;
+				if(this._isScrolling)
+				{
+					//immediately start dragging, since it was scrolling already
+					this._isDraggingVertically = true;
+				}
 			}
 
 			this._touchPointID = touch.id;
@@ -4408,7 +4418,14 @@ package feathers.controls
 			//receiving touch events for "this".
 			this.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
 
-			exclusiveTouch.addEventListener(Event.CHANGE, exclusiveTouch_changeHandler);
+			if(this._isScrolling && (this._isDraggingHorizontally || this._isDraggingVertically))
+			{
+				exclusiveTouch.claimTouch(this._touchPointID, this);
+			}
+			else
+			{
+				exclusiveTouch.addEventListener(Event.CHANGE, exclusiveTouch_changeHandler);
+			}
 		}
 
 		/**
