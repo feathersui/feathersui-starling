@@ -2828,7 +2828,11 @@ package feathers.controls
 					if(this._iconPosition != ICON_POSITION_TOP && this._iconPosition != ICON_POSITION_BOTTOM &&
 						this._iconPosition != ICON_POSITION_MANUAL)
 					{
-						var adjustedGap:Number = this._gap == Number.POSITIVE_INFINITY ? this._minGap : this._gap;
+						var adjustedGap:Number = this._gap;
+						if(adjustedGap == Number.POSITIVE_INFINITY)
+						{
+							adjustedGap = this._minGap;
+						}
 						newWidth = this.currentIcon.width + adjustedGap + HELPER_POINT.x;
 					}
 					else
@@ -2845,20 +2849,20 @@ package feathers.controls
 					newWidth = HELPER_POINT.x;
 				}
 				newWidth += this._paddingLeft + this._paddingRight;
-				if(isNaN(newWidth))
+				if(newWidth != newWidth) //isNaN
 				{
-					if(isNaN(this._originalSkinWidth))
+					newWidth = this._originalSkinWidth;
+					if(newWidth != newWidth)
 					{
 						newWidth = 0;
 					}
-					else
+				}
+				else if(this._originalSkinWidth == this._originalSkinWidth) //!isNaN
+				{
+					if(this._originalSkinWidth > newWidth)
 					{
 						newWidth = this._originalSkinWidth;
 					}
-				}
-				else if(!isNaN(this._originalSkinWidth))
-				{
-					newWidth = Math.max(newWidth, this._originalSkinWidth);
 				}
 			}
 
@@ -2869,7 +2873,11 @@ package feathers.controls
 				{
 					if(this._iconPosition == ICON_POSITION_TOP || this._iconPosition == ICON_POSITION_BOTTOM)
 					{
-						adjustedGap = this._gap == Number.POSITIVE_INFINITY ? this._minGap : this._gap;
+						adjustedGap = this._gap;
+						if(adjustedGap == Number.POSITIVE_INFINITY)
+						{
+							adjustedGap = this._minGap;
+						}
 						newHeight = this.currentIcon.height + adjustedGap + HELPER_POINT.y;
 					}
 					else
@@ -2886,20 +2894,20 @@ package feathers.controls
 					newHeight = HELPER_POINT.y;
 				}
 				newHeight += this._paddingTop + this._paddingBottom;
-				if(isNaN(newHeight))
+				if(newHeight != newHeight)
 				{
-					if(isNaN(this._originalSkinHeight))
+					newHeight = this._originalSkinHeight;
+					if(newHeight != newHeight)
 					{
 						newHeight = 0;
 					}
-					else
+				}
+				else if(this._originalSkinHeight != this._originalSkinHeight) //!isNaN
+				{
+					if(this._originalSkinHeight > newHeight)
 					{
 						newHeight = this._originalSkinHeight;
 					}
-				}
-				else if(!isNaN(this._originalSkinHeight))
-				{
-					newHeight = Math.max(newHeight, this._originalSkinHeight);
 				}
 			}
 
@@ -2967,7 +2975,9 @@ package feathers.controls
 					this.addChildAt(this.currentSkin, 0);
 				}
 			}
-			if(this.currentSkin && (isNaN(this._originalSkinWidth) || isNaN(this._originalSkinHeight)))
+			if(this.currentSkin &&
+				(this._originalSkinWidth != this._originalSkinWidth || //isNaN
+				this._originalSkinHeight != this._originalSkinHeight))
 			{
 				if(this.currentSkin is IValidating)
 				{
@@ -3116,14 +3126,22 @@ package feathers.controls
 			var calculatedWidth:Number = this.actualWidth;
 			if(forMeasurement)
 			{
-				calculatedWidth = isNaN(this.explicitWidth) ? this._maxWidth : this.explicitWidth;
+				calculatedWidth = this.explicitWidth;
+				if(calculatedWidth != calculatedWidth) //isNaN
+				{
+					calculatedWidth = this._maxWidth;
+				}
 			}
 			if(this._label && this.currentIcon)
 			{
 				if(this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE ||
 					this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
 				{
-					var adjustedGap:Number = this._gap == Number.POSITIVE_INFINITY ? this._minGap : this._gap;
+					var adjustedGap:Number = this._gap;
+					if(adjustedGap == Number.POSITIVE_INFINITY)
+					{
+						adjustedGap = this._minGap;
+					}
 					this.labelTextRenderer.maxWidth = calculatedWidth - this._paddingLeft - this._paddingRight - this.currentIcon.width - adjustedGap;
 				}
 				else

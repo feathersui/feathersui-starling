@@ -3122,15 +3122,17 @@ package feathers.controls.renderers
 				if(newWidth != newWidth) //isNaN
 				{
 					newWidth = this._originalSkinWidth;
+					if(newWidth != newWidth) //isNaN
+					{
+						newWidth = 0;
+					}
 				}
-				else if(this._originalSkinWidth == this._originalSkinWidth && //!isNaN
-					this._originalSkinWidth > newWidth)
+				else if(this._originalSkinWidth == this._originalSkinWidth) //!isNaN
 				{
-					newWidth = this._originalSkinWidth;
-				}
-				if(newWidth != newWidth) //isNaN
-				{
-					newWidth = 0;
+					if(this._originalSkinWidth > newWidth)
+					{
+						newWidth = this._originalSkinWidth;
+					}
 				}
 			}
 
@@ -3155,15 +3157,17 @@ package feathers.controls.renderers
 				if(newHeight != newHeight) //isNaN
 				{
 					newHeight = this._originalSkinHeight;
+					if(newHeight != newHeight) //isNaN
+					{
+						newHeight = 0;
+					}
 				}
-				else if(this._originalSkinHeight == this._originalSkinHeight && //!isNaN
-					this._originalSkinHeight > newHeight)
+				else if(this._originalSkinHeight == this._originalSkinHeight) //!isNaN
 				{
-					newHeight = this._originalSkinHeight;
-				}
-				if(newHeight != newHeight) //isNaN
-				{
-					newHeight = 0;
+					if(this._originalSkinHeight > newHeight)
+					{
+						newHeight = this._originalSkinHeight;
+					}
 				}
 			}
 			this._ignoreAccessoryResizes = oldIgnoreAccessoryResizes;
