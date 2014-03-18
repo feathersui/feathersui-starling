@@ -16,9 +16,15 @@ package feathers.controls
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.LayoutBoundsResult;
 	import feathers.layout.ViewPortBounds;
+	import feathers.system.DeviceCapabilities;
 
+	import flash.display.Stage;
+	import flash.display.StageDisplayState;
+	import flash.events.FullScreenEvent;
 	import flash.geom.Point;
+	import flash.system.Capabilities;
 
+	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 
@@ -62,6 +68,31 @@ package feathers.controls
 		 * @private
 		 */
 		protected static const INVALIDATION_FLAG_CENTER_CONTENT:String = "centerContent";
+
+		/**
+		 * @private
+		 */
+		protected static const IOS_RETINA_STATUS_BAR_HEIGHT:Number = 40;
+
+		/**
+		 * @private
+		 */
+		protected static const IOS_NON_RETINA_STATUS_BAR_HEIGHT:Number = 20;
+
+		/**
+		 * @private
+		 */
+		protected static const IOS_RETINA_MINIMUM_DPI:Number = 264;
+
+		/**
+		 * @private
+		 */
+		protected static const IOS_NAME_PREFIX:String = "iPhone OS ";
+
+		/**
+		 * @private
+		 */
+		protected static const STATUS_BAR_MIN_IOS_VERSION:int = 7;
 
 		/**
 		 * The title will appear in the center of the header.
@@ -146,6 +177,8 @@ package feathers.controls
 		public function Header()
 		{
 			super();
+			this.addEventListener(Event.ADDED_TO_STAGE, header_addedToStageHandler);
+			this.addEventListener(Event.REMOVED_FROM_STAGE, header_removedFromStageHandler);
 		}
 
 		/**
@@ -731,6 +764,48 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _useExtraPaddingForOSStatusBar:Boolean = false;
+
+		/**
+		 * If enabled, the header's top padding will be increased to account for
+		 * the height of the OS status bar when the app is rendered under the OS
+		 * status bar. The header will not add extra padding to apps that aren't
+		 * rendered under the OS status bar.
+		 *
+		 * <p>iOS started rendering apps that aren't full screen under the OS
+		 * status bar in version 7.</p>
+		 *
+		 * <p>In the following example, the header's padding will account for
+		 * the iOS status bar height:</p>
+		 *
+		 * <listing version="3.0">
+		 * header.useExtraPaddingForOSStatusBar = true;</listing>
+		 *
+		 * @default false;
+		 *
+		 * @see #paddingTop
+		 */
+		public function get useExtraPaddingForOSStatusBar():Boolean
+		{
+			return this._useExtraPaddingForOSStatusBar;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set useExtraPaddingForOSStatusBar(value:Boolean):void
+		{
+			if(this._useExtraPaddingForOSStatusBar == value)
+			{
+				return;
+			}
+			this._useExtraPaddingForOSStatusBar = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _verticalAlign:String = VERTICAL_ALIGN_MIDDLE;
 
 		[Inspectable(type="String",enumeration="top,middle,bottom")]
@@ -1040,9 +1115,12 @@ package feathers.controls
 				this.refreshBackground();
 			}
 
-			if(textRendererInvalid || stylesInvalid)
+			if(textRendererInvalid || stylesInvalid || sizeInvalid)
 			{
 				this.refreshLayout();
+			}
+			if(textRendererInvalid || stylesInvalid)
+			{
 				this.refreshTitleStyles();
 			}
 
@@ -1272,6 +1350,16 @@ package feathers.controls
 			if(needsHeight)
 			{
 				newHeight += this._paddingTop + this._paddingBottom;
+				var extraPaddingTop:Number = this.calculateExtraOSStatusBarPadding();
+				if(extraPaddingTop > 0)
+				{
+					//account for the minimum height before adding the padding
+					if(newHeight < this._minHeight)
+					{
+						newHeight = this._minHeight;
+					}
+					newHeight += extraPaddingTop;
+				}
 			}
 			if(needsWidth && !isNaN(this.originalBackgroundWidth))
 			{
@@ -1357,7 +1445,7 @@ package feathers.controls
 		protected function refreshLayout():void
 		{
 			this._layout.gap = this._gap;
-			this._layout.paddingTop = this._paddingTop;
+			this._layout.paddingTop = this._paddingTop + this.calculateExtraOSStatusBarPadding();
 			this._layout.paddingBottom = this._paddingBottom;
 			this._layout.verticalAlign = this._verticalAlign;
 		}
@@ -1376,6 +1464,33 @@ package feathers.controls
 					displayTitleRenderer[propertyName] = propertyValue;
 				}
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function calculateExtraOSStatusBarPadding():Number
+		{
+			if(!this._useExtraPaddingForOSStatusBar)
+			{
+				return 0;
+			}
+			var os:String = Capabilities.os;
+			trace(os);
+			if(os.indexOf(IOS_NAME_PREFIX) != 0 || parseInt(os.substr(IOS_NAME_PREFIX.length, 1), 10) < STATUS_BAR_MIN_IOS_VERSION)
+			{
+				return 0;
+			}
+			var nativeStage:Stage = Starling.current.nativeStage;
+			if(nativeStage.displayState != StageDisplayState.NORMAL)
+			{
+				return 0;
+			}
+			if(DeviceCapabilities.dpi >= IOS_RETINA_MINIMUM_DPI)
+			{
+				return IOS_RETINA_STATUS_BAR_HEIGHT;
+			}
+			return IOS_NON_RETINA_STATUS_BAR_HEIGHT;
 		}
 
 		/**
@@ -1512,9 +1627,10 @@ package feathers.controls
 					this.titleTextRenderer.x = idealTitlePosition;
 				}
 			}
+			var paddingTop:Number = this._paddingTop + this.calculateExtraOSStatusBarPadding();
 			if(this._verticalAlign == VERTICAL_ALIGN_TOP)
 			{
-				this.titleTextRenderer.y = this._paddingTop;
+				this.titleTextRenderer.y = paddingTop;
 			}
 			else if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
 			{
@@ -1522,8 +1638,32 @@ package feathers.controls
 			}
 			else
 			{
-				this.titleTextRenderer.y = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - this.titleTextRenderer.height) / 2;
+				this.titleTextRenderer.y = paddingTop + (this.actualHeight - paddingTop - this._paddingBottom - this.titleTextRenderer.height) / 2;
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function header_addedToStageHandler(event:Event):void
+		{
+			Starling.current.nativeStage.addEventListener("fullScreen", nativeStage_fullScreenHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function header_removedFromStageHandler(event:Event):void
+		{
+			Starling.current.nativeStage.removeEventListener("fullScreen", nativeStage_fullScreenHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function nativeStage_fullScreenHandler(event:FullScreenEvent):void
+		{
+			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
 		/**
