@@ -23,6 +23,7 @@ package feathers.display
 	import starling.display.QuadBatch;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;
 	import starling.utils.MatrixUtil;
 
@@ -120,7 +121,12 @@ package feathers.display
 				return;
 			}
 			this._textures = value;
-			this._frame = this._textures.texture.frame;
+			var texture:Texture = this._textures.texture;
+			this._frame = texture.frame;
+			if(!this._frame)
+			{
+				this._frame = new Rectangle(0, 0, texture.width, texture.height);
+			}
 			this._layoutChanged = true;
 			this._renderingChanged = true;
 			this.invalidate();
