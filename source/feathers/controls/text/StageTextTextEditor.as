@@ -177,9 +177,14 @@ package feathers.controls.text
 	[Event(name="softKeyboardDeactivate",type="starling.events.Event")]
 
 	/**
-	 * A Feathers text editor that uses the native <code>StageText</code> class
-	 * in AIR, and the custom <code>StageTextField</code> class (that simulates
-	 * <code>StageText</code>) in Flash Player.
+	 * A Feathers text editor that uses the native <code>flash.text.StageText</code>
+	 * class in Adobe AIR, and the custom <code>feathers.text.StageTextField</code>
+	 * class (that simulates <code>StageText</code> using
+	 * <code>flash.text.TextField</code>) in Adobe Flash Player.
+	 *
+	 * <p>Note: Due to quirks with how the runtime manages focus with
+	 * <code>StageText</code>, <code>StageTextTextEditor</code> is not
+	 * compatible with the Feathers <code>FocusManager</code>.</p>
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/text-editors
 	 * @see flash.text.StageText
