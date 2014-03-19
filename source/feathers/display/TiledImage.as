@@ -15,11 +15,11 @@ package feathers.display
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
+	import starling.core.RenderSupport;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.QuadBatch;
-	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;
@@ -28,7 +28,7 @@ package feathers.display
 	/**
 	 * Tiles a texture to fill the specified bounds.
 	 */
-	public class TiledImage extends Sprite implements IValidating
+	public class TiledImage extends DisplayObject implements IValidating
 	{
 		/**
 		 * @private
@@ -52,8 +52,6 @@ package feathers.display
 			this.initializeWidthAndHeight();
 
 			this._batch = new QuadBatch();
-			this._batch.touchable = false;
-			this.addChild(this._batch);
 
 			this.addEventListener(Event.FLATTEN, flattenHandler);
 			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
@@ -419,6 +417,14 @@ package feathers.display
 			}
 			return this._hitArea.containsPoint(localPoint) ? this : null;
 		}
+
+		/**
+		 * @private
+		 */
+		override public function render(support:RenderSupport, parentAlpha:Number):void
+		{
+			this._batch.render(support, parentAlpha * this.alpha);
+		}
 		
 		/**
 		 * Set both the width and height in one call.
@@ -427,15 +433,6 @@ package feathers.display
 		{
 			this.width = width;
 			this.height = height;
-		}
-
-		/**
-		 * @private
-		 */
-		override public function flatten():void
-		{
-			this.validate();
-			super.flatten();
 		}
 
 		/**
