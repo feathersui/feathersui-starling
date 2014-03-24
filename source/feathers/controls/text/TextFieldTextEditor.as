@@ -13,7 +13,7 @@ package feathers.controls.text
 	import feathers.utils.geom.matrixToRotation;
 	import feathers.utils.geom.matrixToScaleX;
 	import feathers.utils.geom.matrixToScaleY;
-
+	
 	import flash.display.BitmapData;
 	import flash.events.FocusEvent;
 	import flash.events.KeyboardEvent;
@@ -26,7 +26,7 @@ package feathers.controls.text
 	import flash.text.TextFieldType;
 	import flash.text.TextFormat;
 	import flash.ui.Keyboard;
-
+	
 	import starling.core.RenderSupport;
 	import starling.core.Starling;
 	import starling.display.Image;
@@ -1058,7 +1058,6 @@ package feathers.controls.text
 			this.textField.x = Math.round(starlingViewPort.x + (HELPER_POINT.x * scaleFactor));
 			this.textField.y = Math.round(starlingViewPort.y + (HELPER_POINT.y * scaleFactor));
 			this.textField.rotation = matrixToRotation(HELPER_MATRIX) * 180 / Math.PI;
-			scaleFactor = Starling.contentScaleFactor;
 			this.textField.scaleX = matrixToScaleX(HELPER_MATRIX) * scaleFactor;
 			this.textField.scaleY = matrixToScaleY(HELPER_MATRIX) * scaleFactor;
 		}
