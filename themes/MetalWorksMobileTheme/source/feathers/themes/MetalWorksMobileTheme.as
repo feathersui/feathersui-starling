@@ -26,6 +26,14 @@ package feathers.themes
 {
 	import starling.display.DisplayObjectContainer;
 
+	/**
+	 * The "Metal Works" theme for mobile Feathers apps.
+	 *
+	 * <p>This version of the theme embeds its assets. To load assets at
+	 * runtime, see <code>MetalWorksMobileThemeWithAssetManager</code> instead.</p>
+	 *
+	 * @see http://wiki.starling-framework.org/feathers/theme-assets
+	 */
 	public class MetalWorksMobileTheme extends MetalWorksMobileThemeWithAssetManager
 	{
 		[Embed(source="/../assets/images/metalworks.xml",mimeType="application/octet-stream")]

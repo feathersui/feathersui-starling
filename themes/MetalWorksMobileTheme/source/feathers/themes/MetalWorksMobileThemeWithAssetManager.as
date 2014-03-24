@@ -102,6 +102,21 @@ package feathers.themes
 
 	[Event(name="complete",type="starling.events.Event")]
 
+	/**
+	 * The "Metal Works" theme for mobile Feathers apps.
+	 *
+	 * <p>This version of the theme requires loading assets at runtime. To use
+	 * embedded assets, see <code>MetalWorksMobileTheme</code> instead.</p>
+	 *
+	 * <p>To use this theme, the following files must be included when packaging
+	 * your app:</p>
+	 * <ul>
+	 *     <li>images/metalworks.png</li>
+	 *     <li>images/metalworks.xml</li>
+	 * </ul>
+	 *
+	 * @see http://wiki.starling-framework.org/feathers/theme-assets
+	 */
 	public class MetalWorksMobileThemeWithAssetManager extends DisplayListWatcher
 	{
 		[Embed(source="/../assets/fonts/SourceSansPro-Regular.ttf",fontFamily="SourceSansPro",fontWeight="normal",mimeType="application/x-font",embedAsCFF="true")]
