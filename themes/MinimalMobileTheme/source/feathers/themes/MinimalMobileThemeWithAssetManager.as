@@ -97,6 +97,22 @@ package feathers.themes
 
 	[Event(name="complete",type="starling.events.Event")]
 
+	/**
+	 * The "Minimal" theme for mobile Feathers apps.
+	 *
+	 * <p>This version of the theme requires loading assets at runtime. To use
+	 * embedded assets, see <code>MinimalMobileTheme</code> instead.</p>
+	 *
+	 * <p>To use this theme, the following files must be included when packaging
+	 * your app:</p>
+	 * <ul>
+	 *     <li>images/minimal.png</li>
+	 *     <li>images/minimal.xml</li>
+	 *     <li>fonts/pf_ronda_seven.fnt</li>
+	 * </ul>
+	 *
+	 * @see http://wiki.starling-framework.org/feathers/theme-assets
+	 */
 	public class MinimalMobileThemeWithAssetManager extends DisplayListWatcher
 	{
 		public static const COMPONENT_NAME_PICKER_LIST_ITEM_RENDERER:String = "feathers-mobile-picker-list-item-renderer";

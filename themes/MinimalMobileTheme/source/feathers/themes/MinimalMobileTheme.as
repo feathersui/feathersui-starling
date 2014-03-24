@@ -26,6 +26,14 @@ package feathers.themes
 {
 	import starling.display.DisplayObjectContainer;
 
+	/**
+	 * The "Minimal" theme for mobile Feathers apps.
+	 *
+	 * <p>This version of the theme embeds its assets. To load assets at
+	 * runtime, see <code>MinimalMobileThemeWithAssetManager</code> instead.</p>
+	 *
+	 * @see http://wiki.starling-framework.org/feathers/theme-assets
+	 */
 	public class MinimalMobileTheme extends MinimalMobileThemeWithAssetManager
 	{
 		[Embed(source="/../assets/images/minimal.xml",mimeType="application/octet-stream")]
