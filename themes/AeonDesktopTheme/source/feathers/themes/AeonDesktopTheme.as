@@ -26,6 +26,14 @@ package feathers.themes
 {
 	import starling.display.DisplayObjectContainer;
 
+	/**
+	 * The "Aeon" theme for desktop Feathers apps.
+	 *
+	 * <p>This version of the theme embeds its assets. To load assets at
+	 * runtime, see <code>AeonDesktopThemeWithAssetManager</code> instead.</p>
+	 *
+	 * @see http://wiki.starling-framework.org/feathers/theme-assets
+	 */
 	public class AeonDesktopTheme extends AeonDesktopThemeWithAssetManager
 	{
 		[Embed(source="/../assets/images/aeon.png")]

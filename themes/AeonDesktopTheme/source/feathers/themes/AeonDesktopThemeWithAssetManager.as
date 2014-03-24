@@ -98,6 +98,21 @@ package feathers.themes
 
 	[Event(name="complete",type="starling.events.Event")]
 
+	/**
+	 * The "Aeon" theme for desktop Feathers apps.
+	 *
+	 * <p>This version of the theme requires loading assets at runtime. To use
+	 * embedded assets, see <code>AeonDesktopTheme</code> instead.</p>
+	 *
+	 * <p>To use this theme, the following files must be included when packaging
+	 * your app:</p>
+	 * <ul>
+	 *     <li>images/aeon.png</li>
+	 *     <li>images/aeon.xml</li>
+	 * </ul>
+	 *
+	 * @see http://wiki.starling-framework.org/feathers/theme-assets
+	 */
 	public class AeonDesktopThemeWithAssetManager extends DisplayListWatcher
 	{
 		protected static const THEME_NAME_HORIZONTAL_SCROLL_BAR_INCREMENT_BUTTON:String = "aeon-horizontal-scroll-bar-increment-button";
