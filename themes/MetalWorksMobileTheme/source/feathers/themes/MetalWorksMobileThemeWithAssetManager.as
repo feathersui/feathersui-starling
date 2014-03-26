@@ -659,6 +659,7 @@ package feathers.themes
 			this.setInitializerForClass(DefaultListItemRenderer, pickerListItemRendererInitializer, THEME_NAME_PICKER_LIST_ITEM_RENDERER);
 			this.setInitializerForClass(DefaultGroupedListItemRenderer, itemRendererInitializer);
 			this.setInitializerForClass(TextBlockTextRenderer, itemRendererAccessoryLabelInitializer, BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ACCESSORY_LABEL);
+			this.setInitializerForClass(TextBlockTextRenderer, itemRendererIconLabelInitializer, BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ICON_LABEL);
 			this.setInitializerForClass(DefaultGroupedListItemRenderer, insetMiddleItemRendererInitializer, GroupedList.ALTERNATE_CHILD_NAME_INSET_ITEM_RENDERER);
 			this.setInitializerForClass(DefaultGroupedListItemRenderer, insetFirstItemRendererInitializer, GroupedList.ALTERNATE_CHILD_NAME_INSET_FIRST_ITEM_RENDERER);
 			this.setInitializerForClass(DefaultGroupedListItemRenderer, insetLastItemRendererInitializer, GroupedList.ALTERNATE_CHILD_NAME_INSET_LAST_ITEM_RENDERER);
@@ -808,6 +809,11 @@ package feathers.themes
 		}
 
 		protected function itemRendererAccessoryLabelInitializer(renderer:TextBlockTextRenderer):void
+		{
+			renderer.elementFormat = this.lightElementFormat;
+		}
+
+		protected function itemRendererIconLabelInitializer(renderer:TextBlockTextRenderer):void
 		{
 			renderer.elementFormat = this.lightElementFormat;
 		}
