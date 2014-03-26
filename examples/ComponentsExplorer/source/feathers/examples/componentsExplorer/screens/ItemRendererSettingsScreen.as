@@ -37,6 +37,7 @@ package feathers.examples.componentsExplorer.screens
 		private var _hasAccessoryToggle:ToggleSwitch;
 		private var _layoutOrderPicker:PickerList;
 		private var _iconPositionPicker:PickerList;
+		private var _iconTypePicker:PickerList;
 		private var _accessoryPositionPicker:PickerList;
 		private var _accessoryTypePicker:PickerList;
 		private var _accessoryGapPicker:PickerList;
@@ -50,6 +51,18 @@ package feathers.examples.componentsExplorer.screens
 			this._hasIconToggle = new ToggleSwitch();
 			this._hasIconToggle.isSelected = this.settings.hasIcon;
 			this._hasIconToggle.addEventListener(Event.CHANGE, hasIconToggle_changeHandler);
+
+			this._iconTypePicker = new PickerList();
+			this._iconTypePicker.typicalItem = ItemRendererSettings.ICON_ACCESSORY_TYPE_DISPLAY_OBJECT;
+			this._iconTypePicker.dataProvider = new ListCollection(new <String>
+			[
+				ItemRendererSettings.ICON_ACCESSORY_TYPE_DISPLAY_OBJECT,
+				ItemRendererSettings.ICON_ACCESSORY_TYPE_TEXTURE,
+				ItemRendererSettings.ICON_ACCESSORY_TYPE_LABEL,
+			]);
+			this._iconTypePicker.listProperties.typicalItem = ItemRendererSettings.ICON_ACCESSORY_TYPE_DISPLAY_OBJECT;
+			this._iconTypePicker.selectedItem = this.settings.iconType;
+			this._iconTypePicker.addEventListener(Event.CHANGE, iconTypePicker_changeHandler);
 
 			this._iconPositionPicker = new PickerList();
 			this._iconPositionPicker.typicalItem = Button.ICON_POSITION_RIGHT_BASELINE;
@@ -83,14 +96,14 @@ package feathers.examples.componentsExplorer.screens
 			this._hasAccessoryToggle.addEventListener(Event.CHANGE, hasAccessoryToggle_changeHandler);
 
 			this._accessoryTypePicker = new PickerList();
-			this._accessoryTypePicker.typicalItem = ItemRendererSettings.ACCESSORY_TYPE_DISPLAY_OBJECT;
+			this._accessoryTypePicker.typicalItem = ItemRendererSettings.ICON_ACCESSORY_TYPE_DISPLAY_OBJECT;
 			this._accessoryTypePicker.dataProvider = new ListCollection(new <String>
 			[
-				ItemRendererSettings.ACCESSORY_TYPE_DISPLAY_OBJECT,
-				ItemRendererSettings.ACCESSORY_TYPE_TEXTURE,
-				ItemRendererSettings.ACCESSORY_TYPE_LABEL,
+				ItemRendererSettings.ICON_ACCESSORY_TYPE_DISPLAY_OBJECT,
+				ItemRendererSettings.ICON_ACCESSORY_TYPE_TEXTURE,
+				ItemRendererSettings.ICON_ACCESSORY_TYPE_LABEL,
 			]);
-			this._accessoryTypePicker.listProperties.typicalItem = ItemRendererSettings.ACCESSORY_TYPE_DISPLAY_OBJECT;
+			this._accessoryTypePicker.listProperties.typicalItem = ItemRendererSettings.ICON_ACCESSORY_TYPE_DISPLAY_OBJECT;
 			this._accessoryTypePicker.selectedItem = this.settings.accessoryType;
 			this._accessoryTypePicker.addEventListener(Event.CHANGE, accessoryTypePicker_changeHandler);
 
@@ -173,6 +186,7 @@ package feathers.examples.componentsExplorer.screens
 					children:
 					[
 						{ label: "Has Icon", accessory: this._hasIconToggle },
+						{ label: "Icon Type", accessory: this._iconTypePicker },
 						{ label: "iconPosition", accessory: this._iconPositionPicker },
 						{ label: "gap", accessory: this._gapPicker },
 					]
@@ -215,6 +229,11 @@ package feathers.examples.componentsExplorer.screens
 		private function hasIconToggle_changeHandler(event:Event):void
 		{
 			this.settings.hasIcon = this._hasIconToggle.isSelected
+		}
+
+		private function iconTypePicker_changeHandler(event:Event):void
+		{
+			this.settings.iconType = this._iconTypePicker.selectedItem as String;
 		}
 
 		private function iconPositionPicker_changeHandler(event:Event):void
