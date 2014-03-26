@@ -640,6 +640,7 @@ package feathers.themes
 			this.setInitializerForClass(DefaultListItemRenderer, defaultItemRendererInitializer);
 			this.setInitializerForClass(DefaultGroupedListItemRenderer, defaultItemRendererInitializer);
 			this.setInitializerForClass(TextFieldTextRenderer, itemRendererAccessoryLabelInitializer, BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ACCESSORY_LABEL);
+			this.setInitializerForClass(TextFieldTextRenderer, itemRendererIconLabelInitializer, BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ICON_LABEL);
 
 			//header and footer renderers for grouped list
 			this.setInitializerForClass(DefaultGroupedListHeaderOrFooterRenderer, defaultHeaderOrFooterRendererInitializer);
@@ -801,6 +802,11 @@ package feathers.themes
 			renderer.textFormat = this.defaultTextFormat;
 		}
 
+		protected function itemRendererIconLabelInitializer(renderer:TextFieldTextRenderer):void
+		{
+			renderer.textFormat = this.defaultTextFormat;
+		}
+
 		protected function alertMessageInitializer(renderer:TextFieldTextRenderer):void
 		{
 			renderer.textFormat = this.defaultTextFormat;
@@ -877,7 +883,15 @@ package feathers.themes
 		{
 			this.buttonInitializer(thumb);
 
-			thumb.width = thumb.height = buttonUpSkinTextures.texture.frame.height;
+			var frame:Rectangle = this.buttonUpSkinTextures.texture.frame;
+			if(frame)
+			{
+				thumb.width = thumb.height = buttonUpSkinTextures.texture.frame.height;
+			}
+			else
+			{
+				thumb.width = thumb.height = buttonUpSkinTextures.texture.height;
+			}
 		}
 
 		protected function horizontalScrollBarIncrementButtonInitializer(button:Button):void

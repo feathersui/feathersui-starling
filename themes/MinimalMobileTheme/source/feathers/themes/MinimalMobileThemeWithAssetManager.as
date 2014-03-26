@@ -627,6 +627,7 @@ package feathers.themes
 			//scroll text
 			this.setInitializerForClass(ScrollText, scrollTextInitializer);
 			this.setInitializerForClass(BitmapFontTextRenderer, itemRendererAccessoryLabelInitializer, BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ACCESSORY_LABEL);
+			this.setInitializerForClass(BitmapFontTextRenderer, itemRendererIconLabelInitializer, BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ICON_LABEL);
 
 			//simple scroll bar
 			this.setInitializerForClass(Button, simpleScrollBarThumbInitializer, SimpleScrollBar.DEFAULT_CHILD_NAME_THUMB);
@@ -716,6 +717,11 @@ package feathers.themes
 		}
 
 		protected function itemRendererAccessoryLabelInitializer(renderer:BitmapFontTextRenderer):void
+		{
+			renderer.textFormat = this.primaryTextFormat;
+		}
+
+		protected function itemRendererIconLabelInitializer(renderer:BitmapFontTextRenderer):void
 		{
 			renderer.textFormat = this.primaryTextFormat;
 		}
@@ -1124,7 +1130,18 @@ package feathers.themes
 			defaultSelectedIcon.snapToPixels = true;
 			renderer.defaultSelectedIcon = defaultSelectedIcon;
 
-			const defaultIcon:Quad = new Quad(defaultSelectedIcon.width, defaultSelectedIcon.height, 0xff00ff);
+			var frame:Rectangle = this.pickerListItemSelectedIconTexture.frame;
+			if(frame)
+			{
+				var iconWidth:Number = frame.width;
+				var iconHeight:Number = frame.height;
+			}
+			else
+			{
+				iconWidth = this.pickerListItemSelectedIconTexture.width;
+				iconHeight = this.pickerListItemSelectedIconTexture.height;
+			}
+			const defaultIcon:Quad = new Quad(iconWidth, iconHeight, 0xff00ff);
 			defaultIcon.alpha = 0;
 			renderer.defaultIcon = defaultIcon;
 
