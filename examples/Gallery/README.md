@@ -4,9 +4,9 @@ Displays a simple gallery of images from the [Flickr API](http://www.flickr.com/
 
 ## Requirements
 
-In addition to the Starling and Feathers libraries, this example project has the following requirements:
+In addition to Starling Framwork and Feathers, this example project requires the MetalWorksMobileTheme example theme. You can find the SWC file for this theme at the following location in the Feathers release build:
 
-* `MetalWorksMobileTheme` is an example theme included with Feathers. You can find it in the _themes_ directory. You may link this theme to your project as an external library, or you can copy the theme's source files and assets into your project instead, if you prefer.
+	themes/MetalWorksMobileTheme/swc/MetalWorksMobileTheme.swc
 
 Additionally, you will need a [Flickr API key](https://www.flickr.com/services/apps/create/apply/). Pass in this API key by defining a conditional constant named `CONFIG::FLICKR_API_KEY`. If you are compiling with an IDE, conditional constants are usually defined somewhere in your project's settings. On the command line, you may use the `-define` compiler argument:
 

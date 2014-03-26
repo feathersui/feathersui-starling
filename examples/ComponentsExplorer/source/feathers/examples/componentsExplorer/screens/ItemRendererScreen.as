@@ -45,22 +45,39 @@ package feathers.examples.componentsExplorer.screens
 
 			if(this.settings.hasIcon)
 			{
-				item.texture = EmbeddedAssets.SKULL_ICON_LIGHT;
-
-				this._list.itemRendererProperties.iconSourceField = "texture";
+				switch(this.settings.iconType)
+				{
+					case ItemRendererSettings.ICON_ACCESSORY_TYPE_LABEL:
+					{
+						item.iconText = "Icon Text";
+						this._list.itemRendererProperties.iconLabelField = "iconText";
+						break;
+					}
+					case ItemRendererSettings.ICON_ACCESSORY_TYPE_TEXTURE:
+					{
+						item.iconTexture = EmbeddedAssets.SKULL_ICON_LIGHT;
+						this._list.itemRendererProperties.iconSourceField = "iconTexture";
+						break;
+					}
+					default:
+					{
+						item.icon = new ToggleSwitch();
+						this._list.itemRendererProperties.iconField = "icon";
+					}
+				}
 				this._list.itemRendererProperties.iconPosition = this.settings.iconPosition;
 			}
 			if(this.settings.hasAccessory)
 			{
 				switch(this.settings.accessoryType)
 				{
-					case ItemRendererSettings.ACCESSORY_TYPE_LABEL:
+					case ItemRendererSettings.ICON_ACCESSORY_TYPE_LABEL:
 					{
-						item.secondaryText = "Secondary Text";
-						this._list.itemRendererProperties.accessoryLabelField = "secondaryText";
+						item.accessoryText = "Accessory Text";
+						this._list.itemRendererProperties.accessoryLabelField = "accessoryText";
 						break;
 					}
-					case ItemRendererSettings.ACCESSORY_TYPE_TEXTURE:
+					case ItemRendererSettings.ICON_ACCESSORY_TYPE_TEXTURE:
 					{
 						item.accessoryTexture = EmbeddedAssets.SKULL_ICON_LIGHT;
 						this._list.itemRendererProperties.accessorySourceField = "accessoryTexture";
