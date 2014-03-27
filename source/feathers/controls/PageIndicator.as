@@ -129,6 +129,23 @@ package feathers.controls
 		public static const HORIZONTAL_ALIGN_RIGHT:String = "right";
 
 		/**
+		 * Touching the page indicator on the left of the selected symbol will
+		 * select the previous index and to the right of the selected symbol
+		 * will select the next index.
+		 *
+		 * @see #interactionMode
+		 */
+		public static const INTERACTION_MODE_PREVIOUS_NEXT:String = "previousNext";
+
+		/**
+		 * Touching the page indicator on a symbol will select that symbol's
+		 * exact index.
+		 *
+		 * @see #interactionMode
+		 */
+		public static const INTERACTION_MODE_PRECISE:String = "precise";
+
+		/**
 		 * @private
 		 */
 		protected static function defaultSelectedSymbolFactory():Quad
@@ -257,6 +274,38 @@ package feathers.controls
 			this._selectedIndex = value;
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _interactionMode:String = INTERACTION_MODE_PREVIOUS_NEXT;
+
+		[Inspectable(type="String",enumeration="previousNext,precise")]
+		/**
+		 * Determines how the selected index changes on touch.
+		 *
+		 * <p>In the following example, the interaction mode is changed to precise:</p>
+		 *
+		 * <listing version="3.0">
+		 * pages.direction = PageIndicator.INTERACTION_MODE_PRECISE;</listing>
+		 *
+		 * @default PageIndicator.INTERACTION_MODE_PREVIOUS_NEXT
+		 *
+		 * @see #INTERACTION_MODE_PREVIOUS_NEXT
+		 * @see #INTERACTION_MODE_PRECISE
+		 */
+		public function get interactionMode():String
+		{
+			return this._interactionMode;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set interactionMode(value:String):void
+		{
+			this._interactionMode = value;
 		}
 
 		/**
@@ -808,7 +857,7 @@ package feathers.controls
 		 */
 		protected function touchHandler(event:TouchEvent):void
 		{
-			if(!this._isEnabled)
+			if(!this._isEnabled || this._pageCount < 2)
 			{
 				this.touchPointID = -1;
 				return;
@@ -823,30 +872,65 @@ package feathers.controls
 				}
 				this.touchPointID = -1;
 				touch.getLocation(this.stage, HELPER_POINT);
-				const isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
+				var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
 				if(isInBounds)
 				{
+					var lastPageIndex:int = this._pageCount - 1;
 					this.globalToLocal(HELPER_POINT, HELPER_POINT);
 					if(this._direction == DIRECTION_VERTICAL)
 					{
-						if(HELPER_POINT.y < this.selectedSymbol.y)
+						if(this._interactionMode == INTERACTION_MODE_PRECISE)
 						{
-							this.selectedIndex = Math.max(0, this._selectedIndex - 1);
+							var symbolHeight:Number = this.selectedSymbol.height + (this.unselectedSymbols[0].height + this._gap) * lastPageIndex;
+							var newIndex:int = Math.round(lastPageIndex * (HELPER_POINT.y - this.symbols[0].y) / symbolHeight);
+							if(newIndex < 0)
+							{
+								newIndex = 0;
+							}
+							else if(newIndex > lastPageIndex)
+							{
+								newIndex = lastPageIndex;
+							}
+							this.selectedIndex = newIndex;
 						}
-						if(HELPER_POINT.y > (this.selectedSymbol.y + this.selectedSymbol.height))
+						else
 						{
-							this.selectedIndex = Math.min(this._pageCount - 1, this._selectedIndex + 1);
+							if(HELPER_POINT.y < this.selectedSymbol.y)
+							{
+								this.selectedIndex = Math.max(0, this._selectedIndex - 1);
+							}
+							if(HELPER_POINT.y > (this.selectedSymbol.y + this.selectedSymbol.height))
+							{
+								this.selectedIndex = Math.min(lastPageIndex, this._selectedIndex + 1);
+							}
 						}
 					}
 					else
 					{
-						if(HELPER_POINT.x < this.selectedSymbol.x)
+						if(this._interactionMode == INTERACTION_MODE_PRECISE)
 						{
-							this.selectedIndex = Math.max(0, this._selectedIndex - 1);
+							var symbolWidth:Number = this.selectedSymbol.width + (this.unselectedSymbols[0].width + this._gap) * lastPageIndex;
+							newIndex = Math.round(lastPageIndex * (HELPER_POINT.x - this.symbols[0].x) / symbolWidth);
+							if(newIndex < 0)
+							{
+								newIndex = 0;
+							}
+							else if(newIndex >= this._pageCount)
+							{
+								newIndex = lastPageIndex;
+							}
+							this.selectedIndex = newIndex;
 						}
-						if(HELPER_POINT.x > (this.selectedSymbol.x + this.selectedSymbol.width))
+						else
 						{
-							this.selectedIndex = Math.min(this._pageCount - 1, this._selectedIndex + 1);
+							if(HELPER_POINT.x < this.selectedSymbol.x)
+							{
+								this.selectedIndex = Math.max(0, this._selectedIndex - 1);
+							}
+							if(HELPER_POINT.x > (this.selectedSymbol.x + this.selectedSymbol.width))
+							{
+								this.selectedIndex = Math.min(lastPageIndex, this._selectedIndex + 1);
+							}
 						}
 					}
 				}
