@@ -1806,13 +1806,13 @@ package feathers.core
 		 */
 		protected function refreshHitAreaX():void
 		{
-			if(width < this._minTouchWidth)
+			if(this.actualWidth < this._minTouchWidth)
 			{
 				this._hitArea.width = this._minTouchWidth;
 			}
 			else
 			{
-				this._hitArea.width = width;
+				this._hitArea.width = this.actualWidth;
 			}
 			var hitAreaX:Number = (this.actualWidth - this._hitArea.width) / 2;
 			if(hitAreaX != hitAreaX) //isNaN
@@ -1830,13 +1830,13 @@ package feathers.core
 		 */
 		protected function refreshHitAreaY():void
 		{
-			if(height < this._minTouchHeight)
+			if(this.actualHeight < this._minTouchHeight)
 			{
 				this._hitArea.height = this._minTouchHeight;
 			}
 			else
 			{
-				this._hitArea.height = height;
+				this._hitArea.height = this.actualHeight;
 			}
 			var hitAreaY:Number = (this.actualHeight - this._hitArea.height) / 2;
 			if(hitAreaY != hitAreaY) //isNaN
