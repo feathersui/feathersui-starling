@@ -2812,8 +2812,8 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = isNaN(this.explicitWidth);
-			var needsHeight:Boolean = isNaN(this.explicitHeight);
+			var needsWidth:Boolean = this.explicitWidth != this.explicitWidth; //isNaN
+			var needsHeight:Boolean = this.explicitHeight != this.explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -2902,7 +2902,7 @@ package feathers.controls
 						newHeight = 0;
 					}
 				}
-				else if(this._originalSkinHeight != this._originalSkinHeight) //!isNaN
+				else if(this._originalSkinHeight == this._originalSkinHeight) //!isNaN
 				{
 					if(this._originalSkinHeight > newHeight)
 					{
