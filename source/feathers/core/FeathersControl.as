@@ -632,7 +632,7 @@ package feathers.core
 				return;
 			}
 			this._minTouchWidth = value;
-			this.invalidate(INVALIDATION_FLAG_SIZE);
+			this.refreshHitAreaX();
 		}
 
 		/**
@@ -667,7 +667,7 @@ package feathers.core
 				return;
 			}
 			this._minTouchHeight = value;
-			this.invalidate(INVALIDATION_FLAG_SIZE);
+			this.refreshHitAreaY();
 		}
 
 		/**
@@ -1689,39 +1689,13 @@ package feathers.core
 			if(this.actualWidth != width)
 			{
 				this.actualWidth = width;
-				if(width < this._minTouchWidth)
-				{
-					this._hitArea.width = this._minTouchWidth;
-				}
-				else
-				{
-					this._hitArea.width = width;
-				}
-				var hitAreaX:Number = (this.actualWidth - this._hitArea.width) / 2;
-				this._hitArea.x = hitAreaX;
-				if(hitAreaX != hitAreaX) //faster than isNaN
-				{
-					this._hitArea.x = 0;
-				}
+				this.refreshHitAreaX();
 				resized = true;
 			}
 			if(this.actualHeight != height)
 			{
 				this.actualHeight = height;
-				if(height < this._minTouchHeight)
-				{
-					this._hitArea.height = this._minTouchHeight;
-				}
-				else
-				{
-					this._hitArea.height = height;
-				}
-				var hitAreaY:Number = (this.actualHeight - this._hitArea.height) / 2;
-				this._hitArea.y = hitAreaY;
-				if(hitAreaY != hitAreaY) //faster than isNaN
-				{
-					this._hitArea.y = 0;
-				}
+				this.refreshHitAreaY();
 				resized = true;
 			}
 			width = this.scaledActualWidth;
@@ -1824,6 +1798,54 @@ package feathers.core
 				this._focusIndicatorSkin.y = this._focusPaddingTop;
 				this._focusIndicatorSkin.width = this.actualWidth - this._focusPaddingLeft - this._focusPaddingRight;
 				this._focusIndicatorSkin.height = this.actualHeight - this._focusPaddingTop - this._focusPaddingBottom;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshHitAreaX():void
+		{
+			if(width < this._minTouchWidth)
+			{
+				this._hitArea.width = this._minTouchWidth;
+			}
+			else
+			{
+				this._hitArea.width = width;
+			}
+			var hitAreaX:Number = (this.actualWidth - this._hitArea.width) / 2;
+			if(hitAreaX != hitAreaX) //isNaN
+			{
+				this._hitArea.x = 0;
+			}
+			else
+			{
+				this._hitArea.x = hitAreaX;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshHitAreaY():void
+		{
+			if(height < this._minTouchHeight)
+			{
+				this._hitArea.height = this._minTouchHeight;
+			}
+			else
+			{
+				this._hitArea.height = height;
+			}
+			var hitAreaY:Number = (this.actualHeight - this._hitArea.height) / 2;
+			if(hitAreaY != hitAreaY) //isNaN
+			{
+				this._hitArea.y = 0;
+			}
+			else
+			{
+				this._hitArea.y = hitAreaY;
 			}
 		}
 
