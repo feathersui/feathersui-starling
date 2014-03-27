@@ -1322,6 +1322,7 @@ package feathers.themes
 
 		protected function pageIndicatorInitializer(pageIndicator:PageIndicator):void
 		{
+			pageIndicator.interactionMode = PageIndicator.INTERACTION_MODE_PRECISE;
 			pageIndicator.normalSymbolFactory = this.pageIndicatorNormalSymbolFactory;
 			pageIndicator.selectedSymbolFactory = this.pageIndicatorSelectedSymbolFactory;
 			pageIndicator.gap = 12;
