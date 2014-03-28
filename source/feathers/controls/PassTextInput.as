@@ -95,7 +95,7 @@ package com.gazeus.poker.ipad.views.login.ui
 				super.text = "";
 				arrText.length = 0;
 
-				if(value == "")
+				if(value == "" || _placeHolder.indexOf( value ) != -1)
 				{
 					return;
 				}else if(valueToChange.indexOf(_placeHolder) != -1)
