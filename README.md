@@ -7,7 +7,7 @@ Say hello to [Feathers](http://feathersui.com/), a library of light-weight, skin
 * [Feathers Website](http://feathersui.com/)
 * [List of Features](http://wiki.starling-framework.org/feathers/features)
 * [Feathers Documentation](http://wiki.starling-framework.org/feathers/start)
-* [BETA API Reference](http://feathersui.com/beta/documentation/)
+* [API Reference](http://feathersui.com/documentation/)
 * [Live Browser Examples](http://feathersui.com/examples/)
 * [Support Forum](http://forum.starling-framework.org/forum/feathers)
 * [Github Project](https://github.com/joshtynjala/feathers)

@@ -2,7 +2,7 @@
 
 Noteworthy changes in official releases of [Feathers](http://feathersui.com/).
 
-## 1.3 BETA
+## 1.3.0
 
 * New Component: ScrollScreen is new base class for ScreenNavigator screens that supports scrolling similar to ScrollContainer.
 * New Component: TextBlockTextRenderer is a new text renderer that renders text with flash.text.engine.TextBlock, with a texture snapshot similar to TextFieldTextRenderer.
