@@ -1473,7 +1473,7 @@ package feathers.layout
 			else
 			{
 				result.x = 0;
-				result.y = this._paddingTop + ((tileHeight + this._verticalGap) * index / horizontalTileCount) + (height - tileHeight) / 2;
+				result.y = this._paddingTop + ((tileHeight + this._verticalGap) * int(index / horizontalTileCount)) - (height - tileHeight) / 2;
 			}
 			return result;
 		}

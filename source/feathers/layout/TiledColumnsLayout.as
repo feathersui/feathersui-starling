@@ -1468,7 +1468,7 @@ package feathers.layout
 			}
 			else
 			{
-				result.x = this._paddingLeft + ((tileWidth + this._horizontalGap) * index / verticalTileCount) + (width - tileWidth) / 2;
+				result.x = this._paddingLeft + ((tileWidth + this._horizontalGap) * int(index / verticalTileCount)) - (width - tileWidth) / 2;
 				result.y = 0;
 			}
 			return result;
