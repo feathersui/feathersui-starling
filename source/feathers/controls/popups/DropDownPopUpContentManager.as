@@ -165,7 +165,9 @@ package feathers.controls.popups
 			{
 				layoutBelow(globalOrigin);
 			}
-
+			
+			//set the height of the list to the available space
+			this.content.height = Starling.current.stage.stageHeight - (globalOrigin.y + globalOrigin.height);
 		}
 
 		/**
