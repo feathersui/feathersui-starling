@@ -1235,18 +1235,10 @@ package feathers.controls.supportClasses
 		{
 			for each(var renderer:IGroupedListItemRenderer in this._activeItemRenderers)
 			{
-				if(renderer == this._typicalItemRenderer)
-				{
-					continue;
-				}
 				this.refreshOneItemRendererStyles(renderer);
 			}
 			for each(renderer in this._activeFirstItemRenderers)
 			{
-				if(renderer == this._typicalItemRenderer)
-				{
-					continue;
-				}
 				this.refreshOneItemRendererStyles(renderer);
 			}
 			for each(renderer in this._activeLastItemRenderers)
@@ -1255,10 +1247,6 @@ package feathers.controls.supportClasses
 			}
 			for each(renderer in this._activeSingleItemRenderers)
 			{
-				if(renderer == this._typicalItemRenderer)
-				{
-					continue;
-				}
 				this.refreshOneItemRendererStyles(renderer);
 			}
 		}
@@ -1591,8 +1579,7 @@ package feathers.controls.supportClasses
 				}
 				//we need to set the typical item renderer's properties here
 				//because they may be needed for proper measurement in a virtual
-				//layout. we'll skip this item renderer later when the
-				//properties on other item renderers are set.
+				//layout.
 				this.refreshOneItemRendererStyles(this._typicalItemRenderer);
 			}
 
