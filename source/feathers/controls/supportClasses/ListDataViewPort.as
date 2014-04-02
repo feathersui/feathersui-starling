@@ -723,10 +723,6 @@ package feathers.controls.supportClasses
 		{
 			for each(var renderer:IListItemRenderer in this._activeRenderers)
 			{
-				if(renderer == this._typicalItemRenderer)
-				{
-					continue;
-				}
 				this.refreshOneItemRendererStyles(renderer);
 			}
 		}
@@ -829,8 +825,7 @@ package feathers.controls.supportClasses
 				}
 				//we need to set the typical item renderer's properties here
 				//because they may be needed for proper measurement in a virtual
-				//layout. we'll skip this item renderer later when the
-				//properties on other item renderers are set.
+				//layout.
 				this.refreshOneItemRendererStyles(this._typicalItemRenderer);
 			}
 
