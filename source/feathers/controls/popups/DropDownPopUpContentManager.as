@@ -131,9 +131,11 @@ package feathers.controls.popups
 			{
 				IValidating(this.source).validate();
 			}
-			if(this.content is IFeathersControl)
+
+			const uiContent:IFeathersControl = IFeathersControl(this.content);
+
+			if(uiContent)
 			{
-				const uiContent:IFeathersControl = IFeathersControl(this.content);
 				uiContent.minWidth = Math.max(uiContent.minWidth, this.source.width);
 				uiContent.validate();
 			}
@@ -167,7 +169,14 @@ package feathers.controls.popups
 			}
 			
 			//set the height of the list to the available space
-			this.content.height = Starling.current.stage.stageHeight - (globalOrigin.y + globalOrigin.height);
+			if(uiContent)
+			{
+				uiContent.maxHeight = Math.min(uiContent.maxHeight, Starling.current.stage.stageHeight - (globalOrigin.y + globalOrigin.height));
+			}
+			else
+			{
+				this.content.height = Starling.current.stage.stageHeight - (globalOrigin.y + globalOrigin.height);
+			}
 		}
 
 		/**
