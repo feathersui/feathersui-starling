@@ -1732,6 +1732,11 @@ package feathers.controls
 			{
 				this.offTrack.isEnabled = this._isEnabled;
 			}
+			if(textRendererInvalid || stateInvalid)
+			{
+				this.onTextRenderer.isEnabled = this._isEnabled;
+				this.offTextRenderer.isEnabled = this._isEnabled;
+			}
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
