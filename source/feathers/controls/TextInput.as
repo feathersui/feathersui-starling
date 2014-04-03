@@ -1609,6 +1609,11 @@ package feathers.controls
 				this.promptTextRenderer.visible = this._prompt && this._text.length == 0;
 			}
 
+			if(promptFactoryInvalid || stateInvalid)
+			{
+				this.promptTextRenderer.isEnabled = this._isEnabled;
+			}
+
 			if(textEditorInvalid || stateInvalid)
 			{
 				this.textEditor.isEnabled = this._isEnabled;
