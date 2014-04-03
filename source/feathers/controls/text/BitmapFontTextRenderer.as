@@ -554,17 +554,17 @@ package feathers.controls.text
 		 */
 		override protected function draw():void
 		{
-			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
-			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
-			const sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
-			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
+			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
+			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 
 			if(stylesInvalid || stateInvalid)
 			{
 				this.refreshTextFormat();
 			}
 
-			if(dataInvalid || stylesInvalid || sizeInvalid)
+			if(dataInvalid || stylesInvalid || sizeInvalid || stateInvalid)
 			{
 				this._characterBatch.batchable = !this._useSeparateBatch;
 				this._characterBatch.reset();
