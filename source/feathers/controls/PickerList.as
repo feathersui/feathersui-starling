@@ -908,6 +908,46 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _toggleButtonOnOpenAndClose:Boolean = false;
+
+		/**
+		 * Determines if the <code>isSelected</code> property of the picker
+		 * list's button sub-component is toggled when the list is opened and
+		 * closed.
+		 *
+		 * <p>In the following example, the button is toggled on open and close:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.toggleButtonOnOpenAndClose = true;</listing>
+		 *
+		 * @default false
+		 *
+		 * @see feathers.controls.Button#isSelected
+		 */
+		public function get toggleButtonOnOpenAndClose():Boolean
+		{
+			return this._toggleButtonOnOpenAndClose;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set toggleButtonOnOpenAndClose(value:Boolean):void
+		{
+			if(this._toggleButtonOnOpenAndClose == value)
+			{
+				return;
+			}
+			this._toggleButtonOnOpenAndClose = value;
+			if(!this._toggleButtonOnOpenAndClose && this.button)
+			{
+				this.button.isSelected = false;
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _isOpenListPending:Boolean = false;
 
 		/**
@@ -1234,6 +1274,8 @@ package feathers.controls
 			this.list.addEventListener(Event.CHANGE, list_changeHandler);
 			this.list.addEventListener(FeathersEventType.RENDERER_ADD, list_rendererAddHandler);
 			this.list.addEventListener(FeathersEventType.RENDERER_REMOVE, list_rendererRemoveHandler);
+			this.list.addEventListener(Event.ADDED_TO_STAGE, list_addedToStageHandler);
+			this.list.addEventListener(Event.REMOVED_FROM_STAGE, list_removedFromStageHandler);
 		}
 		
 		/**
@@ -1355,6 +1397,30 @@ package feathers.controls
 		protected function list_rendererRemoveHandler(event:Event, renderer:IListItemRenderer):void
 		{
 			renderer.removeEventListener(Event.TRIGGERED, renderer_triggeredHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function list_addedToStageHandler(event:Event):void
+		{
+			if(!this._toggleButtonOnOpenAndClose)
+			{
+				return;
+			}
+			this.button.isSelected = true;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function list_removedFromStageHandler(event:Event):void
+		{
+			if(!this._toggleButtonOnOpenAndClose)
+			{
+				return;
+			}
+			this.button.isSelected = false;
 		}
 
 		/**
