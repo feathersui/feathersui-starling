@@ -90,6 +90,7 @@ package feathers.themes
 	import starling.events.Event;
 	import starling.text.BitmapFont;
 	import starling.text.TextField;
+	import starling.textures.SubTexture;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 	import starling.textures.TextureSmoothing;
@@ -165,6 +166,17 @@ package feathers.themes
 			const quad:Quad = new Quad(100, 100, MODAL_OVERLAY_COLOR);
 			quad.alpha = MODAL_OVERLAY_ALPHA;
 			return quad;
+		}
+
+		protected static function textureValueTypeHandler(value:Texture, oldDisplayObject:DisplayObject = null):DisplayObject
+		{
+			var displayObject:ImageLoader = oldDisplayObject as ImageLoader;
+			if(!displayObject)
+			{
+				displayObject = new ImageLoader();
+			}
+			displayObject.source = value;
+			return displayObject;
 		}
 
 		public function MinimalMobileThemeWithAssetManager(assets:Object = null, assetManager:AssetManager = null, container:DisplayObjectContainer = null, scaleToDPI:Boolean = true)
@@ -1047,15 +1059,16 @@ package feathers.themes
 
 		protected function checkInitializer(check:Check):void
 		{
-			const iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			iconSelector.setValueTypeHandler(SubTexture, textureValueTypeHandler);
 			iconSelector.defaultValue = this.checkIconTexture;
 			iconSelector.defaultSelectedValue = this.checkSelectedIconTexture;
 			iconSelector.setValueForState(this.checkDisabledIconTexture, Button.STATE_DISABLED, false);
 			iconSelector.setValueForState(this.checkSelectedDisabledIconTexture, Button.STATE_DISABLED, true);
 			iconSelector.displayObjectProperties =
 			{
-				scaleX: this.scale,
-				scaleY: this.scale
+				textureScale: this.scale,
+				snapToPixels: true
 			};
 			check.stateToIconFunction = iconSelector.updateValue;
 
@@ -1071,15 +1084,16 @@ package feathers.themes
 
 		protected function radioInitializer(radio:Radio):void
 		{
-			const iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			iconSelector.setValueTypeHandler(SubTexture, textureValueTypeHandler);
 			iconSelector.defaultValue = this.radioIconTexture;
 			iconSelector.defaultSelectedValue = this.radioSelectedIconTexture;
 			iconSelector.setValueForState(this.radioDisabledIconTexture, Button.STATE_DISABLED, false);
 			iconSelector.setValueForState(this.radioSelectedDisabledIconTexture, Button.STATE_DISABLED, true);
 			iconSelector.displayObjectProperties =
 			{
-				scaleX: this.scale,
-				scaleY: this.scale
+				textureScale: this.scale,
+				snapToPixels: true
 			};
 			radio.stateToIconFunction = iconSelector.updateValue;
 
