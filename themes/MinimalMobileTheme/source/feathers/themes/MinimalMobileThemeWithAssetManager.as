@@ -115,11 +115,11 @@ package feathers.themes
 	 */
 	public class MinimalMobileThemeWithAssetManager extends DisplayListWatcher
 	{
-		public static const COMPONENT_NAME_PICKER_LIST_ITEM_RENDERER:String = "feathers-mobile-picker-list-item-renderer";
 		public static const FONT_NAME:String = "PF Ronda Seven";
 
-		protected static const THEME_NAME_HORIZONTAL_SLIDER_MINIMUM_TRACK:String = "metal-works-mobile-horizontal-slider-minimum-track";
-		protected static const THEME_NAME_VERTICAL_SLIDER_MINIMUM_TRACK:String = "metal-works-mobile-vertical-slider-minimum-track";
+		protected static const THEME_NAME_PICKER_LIST_ITEM_RENDERER:String = "minimal-mobile-picker-list-item-renderer";
+		protected static const THEME_NAME_HORIZONTAL_SLIDER_MINIMUM_TRACK:String = "minimal-mobile-horizontal-slider-minimum-track";
+		protected static const THEME_NAME_VERTICAL_SLIDER_MINIMUM_TRACK:String = "minimal-mobile-vertical-slider-minimum-track";
 
 		protected static const ATLAS_NAME:String = "minimal";
 		protected static const FONT_TEXTURE_NAME:String = "pf_ronda_seven_0";
@@ -585,7 +585,7 @@ package feathers.themes
 
 			//item renderers for lists
 			this.setInitializerForClass(DefaultListItemRenderer, itemRendererInitializer);
-			this.setInitializerForClass(DefaultListItemRenderer, pickerListItemRendererInitializer, COMPONENT_NAME_PICKER_LIST_ITEM_RENDERER);
+			this.setInitializerForClass(DefaultListItemRenderer, pickerListItemRendererInitializer, THEME_NAME_PICKER_LIST_ITEM_RENDERER);
 			this.setInitializerForClass(DefaultGroupedListItemRenderer, itemRendererInitializer);
 
 			//header and footer renderers for grouped list
@@ -1269,7 +1269,7 @@ package feathers.themes
 					list.listProperties.paddingBottom = list.listProperties.paddingLeft = 4 * this.scale;
 			}
 
-			list.listProperties.itemRendererName = COMPONENT_NAME_PICKER_LIST_ITEM_RENDERER;
+			list.listProperties.itemRendererName = THEME_NAME_PICKER_LIST_ITEM_RENDERER;
 		}
 
 		protected function pickerListButtonInitializer(button:Button):void
