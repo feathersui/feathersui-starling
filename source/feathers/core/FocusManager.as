@@ -370,7 +370,7 @@ package feathers.core
 						{
 							var child:DisplayObject = extras[i];
 							var foundChild:IFocusDisplayObject = this.findPreviousChildFocus(child);
-							if(foundChild)
+							if(this.isValidFocus(foundChild))
 							{
 								return foundChild;
 							}
@@ -391,7 +391,7 @@ package feathers.core
 			{
 				child = container.getChildAt(i);
 				foundChild = this.findPreviousChildFocus(child);
-				if(foundChild)
+				if(this.isValidFocus(foundChild))
 				{
 					return foundChild;
 				}
@@ -418,7 +418,7 @@ package feathers.core
 						{
 							child = extras[i];
 							foundChild = this.findPreviousChildFocus(child);
-							if(foundChild)
+							if(this.isValidFocus(foundChild))
 							{
 								return foundChild;
 							}
@@ -468,7 +468,7 @@ package feathers.core
 						{
 							var child:DisplayObject = extras[i];
 							var foundChild:IFocusDisplayObject = this.findNextChildFocus(child);
-							if(foundChild)
+							if(this.isValidFocus(foundChild))
 							{
 								return foundChild;
 							}
@@ -490,7 +490,7 @@ package feathers.core
 			{
 				child = container.getChildAt(i);
 				foundChild = this.findNextChildFocus(child);
-				if(foundChild)
+				if(this.isValidFocus(foundChild))
 				{
 					return foundChild;
 				}
@@ -518,7 +518,7 @@ package feathers.core
 						{
 							child = extras[i];
 							foundChild = this.findNextChildFocus(child);
-							if(foundChild)
+							if(this.isValidFocus(foundChild))
 							{
 								return foundChild;
 							}
@@ -542,7 +542,7 @@ package feathers.core
 			if(child is IFocusDisplayObject)
 			{
 				var childWithFocus:IFocusDisplayObject = IFocusDisplayObject(child);
-				if(childWithFocus.isFocusEnabled)
+				if(this.isValidFocus(childWithFocus))
 				{
 					return childWithFocus;
 				}
@@ -567,7 +567,7 @@ package feathers.core
 			if(child is IFocusDisplayObject)
 			{
 				var childWithFocus:IFocusDisplayObject = IFocusDisplayObject(child);
-				if(childWithFocus.isFocusEnabled)
+				if(this.isValidFocus(childWithFocus))
 				{
 					return childWithFocus;
 				}
@@ -582,6 +582,27 @@ package feathers.core
 				}
 			}
 			return null;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function isValidFocus(child:IFocusDisplayObject):Boolean
+		{
+			if(!child)
+			{
+				return false;
+			}
+			if(!child.isFocusEnabled)
+			{
+				return false;
+			}
+			var uiChild:IFeathersControl = child as IFeathersControl;
+			if(uiChild && !uiChild.isEnabled)
+			{
+				return false;
+			}
+			return true;
 		}
 
 		/**
@@ -687,7 +708,11 @@ package feathers.core
 			{
 				if(target is IFocusDisplayObject)
 				{
-					focusTarget = IFocusDisplayObject(target);
+					var tempFocusTarget:IFocusDisplayObject = IFocusDisplayObject(target);
+					if(this.isValidFocus(tempFocusTarget))
+					{
+						focusTarget = tempFocusTarget;
+					}
 				}
 				target = target.parent;
 			}
