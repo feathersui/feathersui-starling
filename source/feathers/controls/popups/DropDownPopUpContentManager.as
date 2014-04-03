@@ -10,6 +10,7 @@ package feathers.controls.popups
 	import feathers.core.IFeathersControl;
 	import feathers.core.IValidating;
 	import feathers.core.PopUpManager;
+	import feathers.core.ValidationQueue;
 	import feathers.events.FeathersEventType;
 	import feathers.utils.display.getDisplayObjectDepthFromStage;
 
@@ -21,6 +22,7 @@ package feathers.controls.popups
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
+	import starling.display.Stage;
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
 	import starling.events.ResizeEvent;
@@ -81,8 +83,9 @@ package feathers.controls.popups
 				this.content.addEventListener(FeathersEventType.RESIZE, content_resizeHandler);
 			}
 			this.layout();
-			Starling.current.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
-			Starling.current.stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
+			var stage:Stage = Starling.current.stage;
+			stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
+			stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
 
 			//using priority here is a hack so that objects higher up in the
 			//display list have a chance to cancel the event first.
@@ -99,8 +102,9 @@ package feathers.controls.popups
 			{
 				return;
 			}
-			Starling.current.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
-			Starling.current.stage.removeEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
+			var stage:Stage = Starling.current.stage;
+			stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
+			stage.removeEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
 			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler);
 			if(this.content is IFeathersControl)
 			{
@@ -125,33 +129,49 @@ package feathers.controls.popups
 		 */
 		protected function layout():void
 		{
-			const globalOrigin:Rectangle = this.source.getBounds(Starling.current.stage);
+			var stage:Stage = Starling.current.stage;
+			var globalOrigin:Rectangle = this.source.getBounds(stage);
 
 			if(this.source is IValidating)
 			{
 				IValidating(this.source).validate();
 			}
 
-			const uiContent:IFeathersControl = IFeathersControl(this.content);
-
-			if(uiContent)
+			var sourceWidth:Number = this.source.width;
+			var hasSetBounds:Boolean = false;
+			var uiContent:IFeathersControl = this.content as IFeathersControl;
+			if(uiContent && uiContent.minWidth < sourceWidth)
 			{
-				uiContent.minWidth = Math.max(uiContent.minWidth, this.source.width);
+				uiContent.minWidth = sourceWidth;
+				hasSetBounds = true;
+			}
+			if(this.content is IValidating)
+			{
 				uiContent.validate();
 			}
-			else
+			if(!hasSetBounds && this.content.width < sourceWidth)
 			{
-				this.content.width = Math.max(this.content.width, this.source.width);
+				this.content.width = sourceWidth;
 			}
 
-			const downSpace:Number = (Starling.current.stage.stageHeight - this.content.height) - (globalOrigin.y + globalOrigin.height);
+			//we need to be sure that the source is properly positioned before
+			//positioning the content relative to it.
+			var validationQueue:ValidationQueue = ValidationQueue.forStarling(Starling.current)
+			if(validationQueue && !validationQueue.isValidating)
+			{
+				//force a COMPLETE validation of everything
+				//but only if we're not already doing that...
+				validationQueue.advanceTime(0);
+			}
+
+			var downSpace:Number = (stage.stageHeight - this.content.height) - (globalOrigin.y + globalOrigin.height);
 			if(downSpace >= 0)
 			{
 				layoutBelow(globalOrigin);
 				return;
 			}
 
-			const upSpace:Number = globalOrigin.y - this.content.height;
+			var upSpace:Number = globalOrigin.y - this.content.height;
 			if(upSpace >= 0)
 			{
 				layoutAbove(globalOrigin);
@@ -167,15 +187,20 @@ package feathers.controls.popups
 			{
 				layoutBelow(globalOrigin);
 			}
-			
-			//set the height of the list to the available space
+
+			//the content is too big for the space, so we need to adjust it to
+			//fit properly
+			var newMaxHeight:Number = stage.stageHeight - (globalOrigin.y + globalOrigin.height);
 			if(uiContent)
 			{
-				uiContent.maxHeight = Math.min(uiContent.maxHeight, Starling.current.stage.stageHeight - (globalOrigin.y + globalOrigin.height));
+				if(uiContent.maxHeight > newMaxHeight)
+				{
+					uiContent.maxHeight = newMaxHeight;
+				}
 			}
-			else
+			else if(this.content.height > newMaxHeight)
 			{
-				this.content.height = Starling.current.stage.stageHeight - (globalOrigin.y + globalOrigin.height);
+				this.content.height = newMaxHeight;
 			}
 		}
 
@@ -184,8 +209,8 @@ package feathers.controls.popups
 		 */
 		protected function layoutAbove(globalOrigin:Rectangle):void
 		{
-			const idealXPosition:Number = globalOrigin.x + (globalOrigin.width - this.content.width) / 2;
-			const xPosition:Number = Math.max(0, Math.min(Starling.current.stage.stageWidth - this.content.width, idealXPosition));
+			var idealXPosition:Number = globalOrigin.x + (globalOrigin.width - this.content.width) / 2;
+			var xPosition:Number = Math.max(0, Math.min(Starling.current.stage.stageWidth - this.content.width, idealXPosition));
 			this.content.x = xPosition;
 			this.content.y = globalOrigin.y - this.content.height;
 		}
@@ -195,8 +220,8 @@ package feathers.controls.popups
 		 */
 		protected function layoutBelow(globalOrigin:Rectangle):void
 		{
-			const idealXPosition:Number = globalOrigin.x;
-			const xPosition:Number = Math.max(0, Math.min(Starling.current.stage.stageWidth - this.content.width, idealXPosition));
+			var idealXPosition:Number = globalOrigin.x;
+			var xPosition:Number = Math.max(0, Math.min(Starling.current.stage.stageWidth - this.content.width, idealXPosition));
 			this.content.x = xPosition;
 			this.content.y = globalOrigin.y + globalOrigin.height;
 		}
@@ -242,7 +267,7 @@ package feathers.controls.popups
 		 */
 		protected function stage_touchHandler(event:TouchEvent):void
 		{
-			const target:DisplayObject = DisplayObject(event.target);
+			var target:DisplayObject = DisplayObject(event.target);
 			if(this.content == target || (this.content is DisplayObjectContainer && DisplayObjectContainer(this.content).contains(target)))
 			{
 				return;
@@ -256,7 +281,7 @@ package feathers.controls.popups
 				return;
 			}
 			//any began touch is okay here. we don't need to check all touches
-			const touch:Touch = event.getTouch(Starling.current.stage, TouchPhase.BEGAN);
+			var touch:Touch = event.getTouch(Starling.current.stage, TouchPhase.BEGAN);
 			if(!touch)
 			{
 				return;
