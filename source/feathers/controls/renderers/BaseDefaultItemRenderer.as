@@ -2360,7 +2360,7 @@ package feathers.controls.renderers
 				return;
 			}
 			this._explicitIsEnabled = value;
-			super.isEnabled = value;;
+			super.isEnabled = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 			this.invalidate(INVALIDATION_FLAG_STATE);
 		}
