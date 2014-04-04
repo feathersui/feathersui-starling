@@ -1,6 +1,7 @@
 package feathers.examples.componentsExplorer.screens
 {
 	import feathers.controls.Alert;
+	import feathers.controls.Alert;
 	import feathers.controls.Button;
 	import feathers.controls.PanelScreen;
 	import feathers.data.ListCollection;
@@ -21,20 +22,20 @@ package feathers.examples.componentsExplorer.screens
 		}
 
 		private var _backButton:Button;
-		private var _alertButton:Button;
+		private var _showAlertButton:Button;
 
 		protected function initializeHandler(event:Event):void
 		{
 			this.layout = new AnchorLayout();
 
-			this._alertButton = new Button();
-			this._alertButton.label = "Show Alert";
-			this._alertButton.addEventListener(Event.TRIGGERED, alertButton_triggeredHandler);
+			this._showAlertButton = new Button();
+			this._showAlertButton.label = "Show Alert";
+			this._showAlertButton.addEventListener(Event.TRIGGERED, showAlertButton_triggeredHandler);
 			const buttonGroupLayoutData:AnchorLayoutData = new AnchorLayoutData();
 			buttonGroupLayoutData.horizontalCenter = 0;
 			buttonGroupLayoutData.verticalCenter = 0;
-			this._alertButton.layoutData = buttonGroupLayoutData;
-			this.addChild(this._alertButton);
+			this._showAlertButton.layoutData = buttonGroupLayoutData;
+			this.addChild(this._showAlertButton);
 
 			this.headerProperties.title = "Alert";
 
@@ -64,12 +65,26 @@ package feathers.examples.componentsExplorer.screens
 			this.onBackButton();
 		}
 
-		private function alertButton_triggeredHandler(event:Event):void
+		private function showAlertButton_triggeredHandler(event:Event):void
 		{
-			Alert.show("I just wanted you to know that I have a very important message to share with you.", "Alert", new ListCollection(
+			var alert:Alert = Alert.show("I just wanted you to know that I have a very important message to share with you.", "Alert", new ListCollection(
 			[
-				{ label: "OK" }
+				{ label: "OK" },
+				{ label: "Cancel" }
 			]));
+			alert.addEventListener(Event.CLOSE, alert_closeHandler);
+		}
+
+		private function alert_closeHandler(event:Event, data:Object):void
+		{
+			if(data)
+			{
+				trace("alert closed with button:", data.label);
+			}
+			else
+			{
+				trace("alert closed without button");
+			}
 		}
 	}
 }
