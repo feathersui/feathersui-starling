@@ -4,9 +4,7 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.PanelScreen;
 	import feathers.controls.TextInput;
 	import feathers.events.FeathersEventType;
-	import feathers.examples.componentsExplorer.data.TextInputSettings;
-	import feathers.layout.AnchorLayout;
-	import feathers.layout.AnchorLayoutData;
+	import feathers.layout.VerticalLayout;
 	import feathers.system.DeviceCapabilities;
 
 	import starling.core.Starling;
@@ -14,36 +12,54 @@ package feathers.examples.componentsExplorer.screens
 	import starling.events.Event;
 
 	[Event(name="complete",type="starling.events.Event")]
-	[Event(name="showSettings",type="starling.events.Event")]
 
 	public class TextInputScreen extends PanelScreen
 	{
-		public static const SHOW_SETTINGS:String = "showSettings";
-
 		public function TextInputScreen()
 		{
 			this.addEventListener(FeathersEventType.INITIALIZE, initializeHandler);
 		}
 
-		public var settings:TextInputSettings;
 		private var _backButton:Button;
-		private var _settingsButton:Button;
 		private var _input:TextInput;
+		private var _disabledInput:TextInput;
+		private var _passwordInput:TextInput;
+		private var _notEditableInput:TextInput;
+		private var _searchInput:TextInput;
 
 		protected function initializeHandler(event:Event):void
 		{
-			this.layout = new AnchorLayout();
+			var verticalLayout:VerticalLayout = new VerticalLayout();
+			verticalLayout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_CENTER;
+			verticalLayout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
+			verticalLayout.padding = 20 * this.dpiScale;
+			verticalLayout.gap = 16 * this.dpiScale;
+			verticalLayout.manageVisibility = true;
+			this.layout = verticalLayout;
 
 			this._input = new TextInput();
-			this._input.prompt = "Type Something";
-			this._input.displayAsPassword = this.settings.displayAsPassword;
-			this._input.maxChars = this.settings.maxChars;
-			this._input.isEditable = this.settings.isEditable;
-			const inputLayoutData:AnchorLayoutData = new AnchorLayoutData();
-			inputLayoutData.horizontalCenter = 0;
-			inputLayoutData.verticalCenter = 0;
-			this._input.layoutData = inputLayoutData;
+			this._input.prompt = "Normal Text Input";
 			this.addChild(this._input);
+
+			this._disabledInput = new TextInput();
+			this._disabledInput.prompt = "Disabled Input";
+			this._disabledInput.isEnabled = false;
+			this.addChild(this._disabledInput);
+
+			this._searchInput = new TextInput();
+			this._searchInput.styleNameList.add(TextInput.ALTERNATE_NAME_SEARCH_TEXT_INPUT);
+			this._searchInput.prompt = "Search Input";
+			this.addChild(this._searchInput);
+
+			this._passwordInput = new TextInput();
+			this._passwordInput.prompt = "Password Input";
+			this._passwordInput.displayAsPassword = true;
+			this.addChild(this._passwordInput);
+
+			this._notEditableInput = new TextInput();
+			this._notEditableInput.prompt = "Not Editable";
+			this._notEditableInput.isEditable = false;
+			this.addChild(this._notEditableInput);
 
 			this.headerProperties.title = "Text Input";
 
@@ -61,15 +77,6 @@ package feathers.examples.componentsExplorer.screens
 
 				this.backButtonHandler = this.onBackButton;
 			}
-
-			this._settingsButton = new Button();
-			this._settingsButton.label = "Settings";
-			this._settingsButton.addEventListener(Event.TRIGGERED, settingsButton_triggeredHandler);
-
-			this.headerProperties.rightItems = new <DisplayObject>
-			[
-				this._settingsButton
-			];
 		}
 
 		private function onBackButton():void
@@ -80,11 +87,6 @@ package feathers.examples.componentsExplorer.screens
 		private function backButton_triggeredHandler(event:Event):void
 		{
 			this.onBackButton();
-		}
-
-		private function settingsButton_triggeredHandler(event:Event):void
-		{
-			this.dispatchEventWith(SHOW_SETTINGS);
 		}
 	}
 }
