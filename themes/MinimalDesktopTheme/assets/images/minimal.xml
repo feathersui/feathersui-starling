@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:18c65807233e26f0cb4c6c311051c151$ -->
+<TextureAtlas imagePath="minimal.png">
+    <SubTexture name="button-back-disabled-skin" x="60" y="3" width="13" height="20"/>
+    <SubTexture name="button-back-down-skin" x="57" y="27" width="13" height="20"/>
+    <SubTexture name="button-back-up-skin" x="40" y="27" width="13" height="20"/>
+    <SubTexture name="button-call-to-action-up-skin" x="245" y="3" width="5" height="5"/>
+    <SubTexture name="button-danger-down-skin" x="301" y="49" width="6" height="6"/>
+    <SubTexture name="button-danger-up-skin" x="236" y="12" width="5" height="5"/>
+    <SubTexture name="button-disabled-skin" x="236" y="3" width="5" height="5"/>
+    <SubTexture name="button-down-skin" x="291" y="49" width="6" height="6"/>
+    <SubTexture name="button-forward-disabled-skin" x="40" y="3" width="16" height="20"/>
+    <SubTexture name="button-forward-down-skin" x="20" y="27" width="16" height="20"/>
+    <SubTexture name="button-forward-up-skin" x="20" y="3" width="16" height="20"/>
+    <SubTexture name="button-selected-disabled-skin" x="13" y="55" width="6" height="6"/>
+    <SubTexture name="button-selected-skin" x="3" y="55" width="6" height="6"/>
+    <SubTexture name="button-up-skin" x="227" y="12" width="5" height="5"/>
+    <SubTexture name="callout-arrow-bottom" x="183" y="3" width="22" height="13"/>
+    <SubTexture name="callout-arrow-left" x="3" y="29" width="13" height="22"/>
+    <SubTexture name="callout-arrow-right" x="3" y="3" width="13" height="22"/>
+    <SubTexture name="callout-arrow-top" x="157" y="3" width="22" height="13"/>
+    <SubTexture name="callout-background-skin" x="227" y="3" width="5" height="5"/>
+    <SubTexture name="check-disabled-icon" x="145" y="49" width="10" height="10"/>
+    <SubTexture name="check-icon" x="131" y="49" width="10" height="10"/>
+    <SubTexture name="check-selected-disabled-icon" x="117" y="49" width="10" height="10"/>
+    <SubTexture name="check-selected-icon" x="103" y="49" width="10" height="10"/>
+    <SubTexture name="down-arrow-disabled-icon" x="335" y="58" width="4" height="3"/>
+    <SubTexture name="down-arrow-icon" x="327" y="58" width="4" height="3"/>
+    <SubTexture name="header-skin" x="80" y="49" width="5" height="11"/>
+    <SubTexture name="inset-background-disabled-skin" x="218" y="12" width="5" height="5"/>
+    <SubTexture name="inset-background-focus-skin" x="218" y="3" width="5" height="5"/>
+    <SubTexture name="inset-background-skin" x="209" y="12" width="5" height="5"/>
+    <SubTexture name="left-arrow-disabled-icon" x="260" y="19" width="3" height="4"/>
+    <SubTexture name="left-arrow-icon" x="261" y="3" width="3" height="4"/>
+    <SubTexture name="list-accessory-drill-down-icon" x="245" y="12" width="3" height="5"/>
+    <SubTexture name="page-indicator-normal-disabled-skin" x="279" y="49" width="8" height="8"/>
+    <SubTexture name="page-indicator-normal-skin" x="267" y="49" width="8" height="8"/>
+    <SubTexture name="page-indicator-selected-disabled-skin" x="255" y="49" width="8" height="8"/>
+    <SubTexture name="page-indicator-selected-skin" x="243" y="49" width="8" height="8"/>
+    <SubTexture name="pf_ronda_seven_0" x="74" y="27" width="256" height="18" frameX="0" frameY="0" frameWidth="256" frameHeight="32"/>
+    <SubTexture name="picker-list-disabled-icon" x="209" y="3" width="5" height="5"/>
+    <SubTexture name="picker-list-icon" x="329" y="49" width="5" height="5"/>
+    <SubTexture name="picker-list-selected-icon" x="291" y="59" width="5" height="1" frameX="0" frameY="-2" frameWidth="5" frameHeight="5"/>
+    <SubTexture name="radio-disabled-icon" x="89" y="49" width="10" height="10"/>
+    <SubTexture name="radio-icon" x="66" y="51" width="10" height="10"/>
+    <SubTexture name="radio-selected-disabled-icon" x="52" y="51" width="10" height="10"/>
+    <SubTexture name="radio-selected-icon" x="38" y="51" width="10" height="10"/>
+    <SubTexture name="right-arrow-disabled-icon" x="260" y="11" width="3" height="4"/>
+    <SubTexture name="right-arrow-icon" x="254" y="3" width="3" height="4"/>
+    <SubTexture name="scrollbar-thumb-skin" x="252" y="12" width="4" height="4"/>
+    <SubTexture name="search-icon" x="23" y="51" width="11" height="10"/>
+    <SubTexture name="tab-disabled-skin" x="222" y="49" width="17" height="8"/>
+    <SubTexture name="tab-selected-disabled-skin" x="201" y="49" width="17" height="8"/>
+    <SubTexture name="tab-selected-skin" x="180" y="49" width="17" height="8"/>
+    <SubTexture name="tab-skin" x="159" y="49" width="17" height="8"/>
+    <SubTexture name="thumb-disabled-skin" x="320" y="49" width="5" height="5"/>
+    <SubTexture name="thumb-skin" x="311" y="49" width="5" height="5"/>
+    <SubTexture name="toolbar-button-disabled-skin" x="137" y="3" width="16" height="16"/>
+    <SubTexture name="toolbar-button-down-skin" x="117" y="3" width="16" height="16"/>
+    <SubTexture name="toolbar-button-selected-skin" x="97" y="3" width="16" height="16"/>
+    <SubTexture name="toolbar-button-up-skin" x="77" y="3" width="16" height="16"/>
+    <SubTexture name="up-arrow-disabled-icon" x="319" y="58" width="4" height="3"/>
+    <SubTexture name="up-arrow-icon" x="311" y="58" width="4" height="3"/>
+</TextureAtlas>

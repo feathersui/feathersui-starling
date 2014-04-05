@@ -126,6 +126,17 @@
 			<arg value="-output=${themes.output}/MetalWorksMobileTheme/swc/MetalWorksMobileTheme.swc"/>
 		</java>
 
+		<echo message="Building MinimalDesktopTheme.swc"/>
+		<java jar="${compc}" dir="${themes.root}/MinimalDesktopTheme" fork="true" failonerror="true">
+			<arg value="-load-config=${airsdk.config}"/>
+			<arg value="-swf-version=${swf.version}"/>
+			<arg value="-source-path+=${themes.root}/MinimalDesktopTheme/source"/>
+			<arg value="-include-sources+=${themes.root}/MinimalDesktopTheme/source"/>
+			<arg value="-external-library-path+=${dependency.output}"/>
+			<arg value="-external-library-path+=${output.path}/feathers.swc"/>
+			<arg value="-output=${themes.output}/MinimalDesktopTheme/swc/MinimalDesktopTheme.swc"/>
+		</java>
+
 		<echo message="Building MinimalMobileTheme.swc"/>
 		<java jar="${compc}" dir="${themes.root}/MinimalMobileTheme" fork="true" failonerror="true">
 			<arg value="-load-config=${airsdk.config}"/>
@@ -165,6 +176,14 @@
 
 		<copy overwrite="true" todir="${themes.output}/MetalWorksMobileTheme">
 			<fileset dir="${themes.root}/MetalWorksMobileTheme">
+				<include name="README.md"/>
+				<include name="source/**"/>
+				<include name="assets/**"/>
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="${themes.output}/MinimalDesktopTheme">
+			<fileset dir="${themes.root}/MinimalDesktopTheme">
 				<include name="README.md"/>
 				<include name="source/**"/>
 				<include name="assets/**"/>
