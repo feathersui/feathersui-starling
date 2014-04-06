@@ -57,11 +57,6 @@ package feathers.skins
 		protected var _styleNameMap:Object;
 
 		/**
-		 * @private
-		 */
-		protected var _excludedContainers:Vector.<IFeathersControl>;
-
-		/**
 		 * The target Feathers UI component is passed to this function when
 		 * <code>applyStyles()</code> is called and the component's
 		 * <code>styleNameList</code> contains the specified style name.
