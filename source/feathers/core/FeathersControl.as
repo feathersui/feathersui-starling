@@ -12,6 +12,7 @@ package feathers.core
 	import feathers.events.FeathersEventType;
 	import feathers.layout.ILayoutData;
 	import feathers.layout.ILayoutDisplayObject;
+	import feathers.skins.IStyleProvider;
 	import feathers.utils.display.getDisplayObjectDepthFromStage;
 
 	import flash.errors.IllegalOperationError;
@@ -317,6 +318,38 @@ package feathers.core
 		public function get nameList():TokenList
 		{
 			return this._styleNameList;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _styleProvider:IStyleProvider;
+
+		/**
+		 * After the component initializes, it may be passed to a style provider
+		 * to set skin and style properties.
+		 *
+		 * @default null
+		 *
+		 * @see #styleName
+		 * @see #styleNameList
+		 * @see http://wiki.starling-framework.org/feathers/custom-themes
+		 */
+		public function get styleProvider():IStyleProvider
+		{
+			return this._styleProvider;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set styleProvider(value:IStyleProvider):void
+		{
+			if(this.isInitialized)
+			{
+				throw new IllegalOperationError("The styleProvider property cannot be changed after a component is initialized.");
+			}
+			this._styleProvider = value;
 		}
 
 		/**
@@ -1901,6 +1934,13 @@ package feathers.core
 				this.invalidate(); //invalidate everything
 				this._isInitialized = true;
 				this.dispatchEventWith(FeathersEventType.INITIALIZE);
+
+				//we're accessing the getter so that subclasses can override
+				var styleProvider:IStyleProvider = this.styleProvider;
+				if(styleProvider)
+				{
+					styleProvider.applyStyles(this);
+				}
 			}
 			if(this.isInvalid())
 			{

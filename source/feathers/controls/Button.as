@@ -15,6 +15,7 @@ package feathers.controls
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
+	import feathers.skins.IStyleProvider;
 	import feathers.skins.StateWithToggleValueSelector;
 
 	import flash.geom.Point;
@@ -132,6 +133,11 @@ package feathers.controls
 		 * @private
 		 */
 		private static const HELPER_POINT:Point = new Point();
+
+		/**
+		 * @private
+		 */
+		public static var styleProvider:IStyleProvider;
 
 		/**
 		 * The default value added to the <code>nameList</code> of the label.
@@ -439,6 +445,20 @@ package feathers.controls
 		 * <p>For internal use in subclasses.</p>
 		 */
 		protected var touchPointID:int = -1;
+
+		/**
+		 * @inheritDoc
+		 *
+		 * @default Button.styleProvider
+		 */
+		override public function get styleProvider():IStyleProvider
+		{
+			if(this._styleProvider)
+			{
+				return this._styleProvider;
+			}
+			return Button.styleProvider;
+		}
 		
 		/**
 		 * @private

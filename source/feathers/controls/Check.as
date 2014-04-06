@@ -7,6 +7,8 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
+	import feathers.skins.IStyleProvider;
+
 	import flash.errors.IllegalOperationError;
 
 	[Exclude(name="isToggle",kind="property")]
@@ -31,6 +33,11 @@ package feathers.controls
 	public class Check extends Button
 	{
 		/**
+		 * @private
+		 */
+		public static var styleProvider:IStyleProvider;
+
+		/**
 		 * Constructor.
 		 */
 		public function Check()
@@ -44,6 +51,20 @@ package feathers.controls
 		override public function set isToggle(value:Boolean):void
 		{
 			throw IllegalOperationError("CheckBox isToggle must always be true.");
+		}
+
+		/**
+		 * @inheritDoc
+		 *
+		 * @default Check.styleProvider
+		 */
+		override public function get styleProvider():IStyleProvider
+		{
+			if(this._styleProvider)
+			{
+				return this._styleProvider;
+			}
+			return Check.styleProvider;
 		}
 	}
 }
