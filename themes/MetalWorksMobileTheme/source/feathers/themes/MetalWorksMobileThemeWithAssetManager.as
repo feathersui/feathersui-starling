@@ -43,8 +43,6 @@ package feathers.themes
 	import feathers.controls.ProgressBar;
 	import feathers.controls.Radio;
 	import feathers.controls.Screen;
-	import feathers.controls.ScreenNavigator;
-	import feathers.controls.ScrollBar;
 	import feathers.controls.ScrollContainer;
 	import feathers.controls.ScrollScreen;
 	import feathers.controls.ScrollText;
@@ -785,7 +783,7 @@ package feathers.themes
 			this._buttonStyleProvider.setFunctionForStyleName(THEME_NAME_VERTICAL_SLIDER_MAXIMUM_TRACK, this.setVerticalSliderMaximumTrackStyles);
 
 			//tab bar
-			//we don't need a default style function for the TabBar class in this theme
+			this._tabBarStyleProvider.defaultStyleFunction = this.setTabBarStyles;
 			this._buttonStyleProvider.setFunctionForStyleName(TabBar.DEFAULT_CHILD_NAME_TAB, this.setTabStyles);
 
 			//text input
@@ -1092,6 +1090,11 @@ package feathers.themes
 				textureScale: this.scale
 			};
 			track.stateToSkinFunction = skinSelector.updateValue;
+		}
+
+		protected function setTabBarStyles(tabBar:TabBar):void
+		{
+			tabBar.distributeTabSizes = true;
 		}
 
 		protected function setTabStyles(tab:Button):void

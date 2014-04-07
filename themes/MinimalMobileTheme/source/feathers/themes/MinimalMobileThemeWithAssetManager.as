@@ -61,7 +61,6 @@ package feathers.themes
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.text.BitmapFontTextRenderer;
 	import feathers.controls.text.StageTextTextEditor;
-	import feathers.core.DisplayListWatcher;
 	import feathers.core.FeathersControl;
 	import feathers.core.PopUpManager;
 	import feathers.display.Scale9Image;
@@ -86,7 +85,6 @@ package feathers.themes
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
-	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.events.Event;
@@ -643,7 +641,7 @@ package feathers.themes
 
 			//grouped list (see also: item renderers)
 			this._groupedListStyleProvider.defaultStyleFunction = this.setGroupedListStyles;
-			this._groupedListStyleProvider.setFunctionForStyleName(GroupedList.ALTERNATE_NAME_INSET_GROUPED_LIST, this.setGroupedListInsetStyles);
+			this._groupedListStyleProvider.setFunctionForStyleName(GroupedList.ALTERNATE_NAME_INSET_GROUPED_LIST, this.setInsetGroupedListStyles);
 
 			//header
 			this._headerStyleProvider.defaultStyleFunction = this.setHeaderStyles;
@@ -720,6 +718,7 @@ package feathers.themes
 			this._buttonStyleProvider.setFunctionForStyleName(THEME_NAME_VERTICAL_SLIDER_MINIMUM_TRACK, this.setVerticalSliderMinimumTrackStyles);
 
 			//tab bar
+			this._tabBarStyleProvider.defaultStyleFunction = this.setTabBarStyles;
 			this._buttonStyleProvider.setFunctionForStyleName(TabBar.DEFAULT_CHILD_NAME_TAB, this.setTabStyles);
 
 			//text input
@@ -974,6 +973,11 @@ package feathers.themes
 			button.minWidth = 88 * this.scale;
 			button.minHeight = 88 * this.scale;
 			button.minTouchWidth = button.minTouchHeight = 88 * this.scale;
+		}
+
+		protected function setTabBarStyles(tabBar:TabBar):void
+		{
+			tabBar.distributeTabSizes = true;
 		}
 
 		protected function setTabStyles(tab:Button):void
@@ -1295,7 +1299,7 @@ package feathers.themes
 			list.backgroundSkin = backgroundSkin;
 		}
 
-		protected function setGroupedListInsetStyles(list:GroupedList):void
+		protected function setInsetGroupedListStyles(list:GroupedList):void
 		{
 			this.setScrollerStyles(list);
 

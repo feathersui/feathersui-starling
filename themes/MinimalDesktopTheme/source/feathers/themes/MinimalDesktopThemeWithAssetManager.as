@@ -1335,7 +1335,8 @@ package feathers.themes
 		{
 			renderer.contentLabelProperties.textFormat = this.primaryTextFormat;
 
-			renderer.paddingTop = renderer.paddingBottom = 2 * this.scale;
+			renderer.paddingTop = 8 * this.scale;
+			renderer.paddingBottom = 2 * this.scale;
 			renderer.paddingLeft = renderer.paddingRight = 6 * this.scale;
 			renderer.minWidth = renderer.minHeight = 20 * this.scale;
 
@@ -1380,7 +1381,7 @@ package feathers.themes
 			var layout:VerticalLayout = new VerticalLayout();
 			layout.useVirtualLayout = true;
 			layout.padding = 10 * this.scale;
-			layout.paddingTop = 4 * this.scale;
+			layout.paddingTop = 0;
 			layout.gap = 0;
 			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
 			layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;

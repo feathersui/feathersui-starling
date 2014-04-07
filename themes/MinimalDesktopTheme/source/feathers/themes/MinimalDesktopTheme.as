@@ -24,8 +24,6 @@
  */
 package feathers.themes
 {
-	import starling.display.DisplayObjectContainer;
-
 	/**
 	 * The "Minimal" theme for desktop Feathers apps.
 	 *
