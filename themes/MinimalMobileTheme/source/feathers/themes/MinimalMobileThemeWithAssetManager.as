@@ -347,7 +347,7 @@ package feathers.themes
 		protected var _textAreaStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
 		protected var _textInputStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
 		protected var _toggleSwitchStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
-		protected var _textBlockTextRendererStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
+		protected var _bitmapFontTextRendererStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
 
 		public function dispose():void
 		{
@@ -610,7 +610,7 @@ package feathers.themes
 			Slider.styleProvider = this._sliderStyleProvider;
 			TabBar.styleProvider = this._tabBarStyleProvider;
 			TextArea.styleProvider = this._textAreaStyleProvider;
-			BitmapFontTextRenderer.styleProvider = this._textBlockTextRendererStyleProvider;
+			BitmapFontTextRenderer.styleProvider = this._bitmapFontTextRendererStyleProvider;
 			TextInput.styleProvider = this._textInputStyleProvider;
 			ToggleSwitch.styleProvider = this._toggleSwitchStyleProvider;
 
@@ -618,7 +618,7 @@ package feathers.themes
 			this._alertStyleProvider.defaultStyleFunction = this.setAlertStyles;
 			this._headerStyleProvider.setFunctionForStyleName(Alert.DEFAULT_CHILD_NAME_HEADER, this.setPanelHeaderStyles);
 			this._buttonGroupStyleProvider.setFunctionForStyleName(Alert.DEFAULT_CHILD_NAME_BUTTON_GROUP, this.setAlertButtonGroupStyles);
-			this._textBlockTextRendererStyleProvider.setFunctionForStyleName(Alert.DEFAULT_CHILD_NAME_MESSAGE, this.setAlertMessageTextRendererStyles);
+			this._bitmapFontTextRendererStyleProvider.setFunctionForStyleName(Alert.DEFAULT_CHILD_NAME_MESSAGE, this.setAlertMessageTextRendererStyles);
 
 			//button
 			this._buttonStyleProvider.defaultStyleFunction = this.setButtonStyles;
@@ -652,8 +652,8 @@ package feathers.themes
 			this._listItemRendererStyleProvider.defaultStyleFunction = this.setItemRendererStyles;
 			this._listItemRendererStyleProvider.setFunctionForStyleName(THEME_NAME_PICKER_LIST_ITEM_RENDERER, this.setPickerListItemRendererStyles);
 			this._groupedListItemRendererStyleProvider.defaultStyleFunction = this.setItemRendererStyles;
-			this._textBlockTextRendererStyleProvider.setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ACCESSORY_LABEL, this.itemRendererAccessoryLabelStyles);
-			this._textBlockTextRendererStyleProvider.setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ICON_LABEL, this.itemRendererIconLabelStyles);
+			this._bitmapFontTextRendererStyleProvider.setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ACCESSORY_LABEL, this.itemRendererAccessoryLabelStyles);
+			this._bitmapFontTextRendererStyleProvider.setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ICON_LABEL, this.itemRendererIconLabelStyles);
 
 			//header and footer renderers for grouped list
 			this._groupedListHeaderOrFooterRendererStyleProvider.defaultStyleFunction = this.setGroupedListHeaderOrFooterRendererStyles;
