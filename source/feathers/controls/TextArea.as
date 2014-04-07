@@ -12,6 +12,7 @@ package feathers.controls
 	import feathers.core.IFocusDisplayObject;
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
+	import feathers.skins.IStyleProvider;
 
 	import flash.geom.Point;
 	import flash.ui.Mouse;
@@ -217,12 +218,21 @@ package feathers.controls
 		public static const STATE_FOCUSED:String = "focused";
 
 		/**
+		 * The default <code>IStyleProvider</code> for all <code>TextArea</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var styleProvider:IStyleProvider;
+
+		/**
 		 * Constructor.
 		 */
 		public function TextArea()
 		{
 			super();
-
+			this._styleProvider = TextArea.styleProvider;
 			this.addEventListener(TouchEvent.TOUCH, textArea_touchHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, textArea_removedFromStageHandler);
 		}

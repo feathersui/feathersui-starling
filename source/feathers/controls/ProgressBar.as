@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.core.FeathersControl;
+	import feathers.skins.IStyleProvider;
 	import feathers.utils.math.clamp;
 
 	import starling.display.DisplayObject;
@@ -43,10 +44,20 @@ package feathers.controls
 		public static const DIRECTION_VERTICAL:String = "vertical";
 
 		/**
+		 * The default <code>IStyleProvider</code> for all <code>ProgressBar</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var styleProvider:IStyleProvider;
+
+		/**
 		 * Constructor.
 		 */
 		public function ProgressBar()
 		{
+			this._styleProvider = ProgressBar.styleProvider;
 		}
 
 		/**

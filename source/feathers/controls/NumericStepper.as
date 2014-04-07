@@ -11,6 +11,7 @@ package feathers.controls
 	import feathers.core.IFocusDisplayObject;
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
+	import feathers.skins.IStyleProvider;
 	import feathers.utils.math.clamp;
 	import feathers.utils.math.roundToNearest;
 
@@ -132,6 +133,15 @@ package feathers.controls
 		public static const BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL:String = "rightSideVertical";
 
 		/**
+		 * The default <code>IStyleProvider</code> for all <code>NumericStepper</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var styleProvider:IStyleProvider;
+
+		/**
 		 * @private
 		 */
 		protected static function defaultDecrementButtonFactory():Button
@@ -160,6 +170,7 @@ package feathers.controls
 		 */
 		public function NumericStepper()
 		{
+			this._styleProvider = NumericStepper.styleProvider;
 			this.addEventListener(Event.REMOVED_FROM_STAGE, numericStepper_removedFromStageHandler);
 		}
 

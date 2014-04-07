@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.controls.supportClasses.TextFieldViewPort;
+	import feathers.skins.IStyleProvider;
 
 	import flash.text.AntiAliasType;
 	import flash.text.GridFitType;
@@ -160,10 +161,20 @@ package feathers.controls
 		public static const INTERACTION_MODE_TOUCH_AND_SCROLL_BARS:String = "touchAndScrollBars";
 
 		/**
+		 * The default <code>IStyleProvider</code> for all <code>ScrollText</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var styleProvider:IStyleProvider;
+
+		/**
 		 * Constructor.
 		 */
 		public function ScrollText()
 		{
+			this._styleProvider = ScrollText.styleProvider;
 			this.textViewPort = new TextFieldViewPort();
 			this.textViewPort.addEventListener(Event.TRIGGERED, textViewPort_triggeredHandler);
 			this.viewPort = this.textViewPort;

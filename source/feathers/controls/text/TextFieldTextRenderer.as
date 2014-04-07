@@ -9,6 +9,7 @@ package feathers.controls.text
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.ITextRenderer;
+	import feathers.skins.IStyleProvider;
 
 	import flash.display.BitmapData;
 	import flash.geom.Matrix;
@@ -56,10 +57,20 @@ package feathers.controls.text
 		private static const HELPER_MATRIX:Matrix = new Matrix();
 
 		/**
+		 * The default <code>IStyleProvider</code> for all <code>TextFieldTextRenderer</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var styleProvider:IStyleProvider;
+
+		/**
 		 * Constructor.
 		 */
 		public function TextFieldTextRenderer()
 		{
+			this._styleProvider = TextFieldTextRenderer.styleProvider;
 			this.isQuickHitAreaEnabled = true;
 			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);

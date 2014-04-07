@@ -12,6 +12,7 @@ package feathers.controls
 	import feathers.core.IValidating;
 	import feathers.core.PopUpManager;
 	import feathers.events.FeathersEventType;
+	import feathers.skins.IStyleProvider;
 	import feathers.utils.display.getDisplayObjectDepthFromStage;
 
 	import flash.events.KeyboardEvent;
@@ -77,6 +78,15 @@ package feathers.controls
 	 */
 	public class Callout extends FeathersControl
 	{
+		/**
+		 * The default <code>IStyleProvider</code> for all <code>Callout</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var styleProvider:IStyleProvider;
+
 		/**
 		 * The callout may be positioned on any side of the origin region.
 		 *
@@ -576,6 +586,7 @@ package feathers.controls
 		 */
 		public function Callout()
 		{
+			this._styleProvider = Callout.styleProvider;
 			this.addEventListener(Event.ADDED_TO_STAGE, callout_addedToStageHandler);
 		}
 

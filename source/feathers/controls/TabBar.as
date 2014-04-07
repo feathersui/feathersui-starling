@@ -16,6 +16,7 @@ package feathers.controls
 	import feathers.layout.LayoutBoundsResult;
 	import feathers.layout.VerticalLayout;
 	import feathers.layout.ViewPortBounds;
+	import feathers.skins.IStyleProvider;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -178,6 +179,15 @@ package feathers.controls
 		public static const DEFAULT_CHILD_NAME_TAB:String = "feathers-tab-bar-tab";
 
 		/**
+		 * The default <code>IStyleProvider</code> for all <code>TabBar</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var styleProvider:IStyleProvider;
+
+		/**
 		 * @private
 		 */
 		protected static function defaultTabFactory():Button
@@ -190,6 +200,7 @@ package feathers.controls
 		 */
 		public function TabBar()
 		{
+			this._styleProvider = TabBar.styleProvider;
 		}
 
 		/**

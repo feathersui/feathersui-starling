@@ -10,6 +10,7 @@ package feathers.controls
 	import feathers.controls.supportClasses.LayoutViewPort;
 	import feathers.layout.ILayout;
 	import feathers.layout.IVirtualLayout;
+	import feathers.skins.IStyleProvider;
 
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
@@ -174,11 +175,21 @@ package feathers.controls
 		public static const INTERACTION_MODE_TOUCH_AND_SCROLL_BARS:String = "touchAndScrollBars";
 
 		/**
+		 * The default <code>IStyleProvider</code> for all <code>ScrollContainer</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var styleProvider:IStyleProvider;
+
+		/**
 		 * Constructor.
 		 */
 		public function ScrollContainer()
 		{
 			super();
+			this._styleProvider = ScrollContainer.styleProvider;
 			this.layoutViewPort = new LayoutViewPort();
 			this.viewPort = this.layoutViewPort;
 		}

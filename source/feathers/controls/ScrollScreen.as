@@ -7,6 +7,7 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
+	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
 	import feathers.utils.display.getDisplayObjectDepthFromStage;
 
@@ -135,12 +136,22 @@ package feathers.controls
 		public static const INTERACTION_MODE_TOUCH_AND_SCROLL_BARS:String = "touchAndScrollBars";
 
 		/**
+		 * The default <code>IStyleProvider</code> for all <code>ScrollScreen</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var styleProvider:IStyleProvider;
+
+		/**
 		 * Constructor.
 		 */
 		public function ScrollScreen()
 		{
 			this.addEventListener(Event.ADDED_TO_STAGE, scrollScreen_addedToStageHandler);
 			super();
+			this._styleProvider = ScrollScreen.styleProvider;
 			this.originalDPI = DeviceCapabilities.dpi;
 		}
 

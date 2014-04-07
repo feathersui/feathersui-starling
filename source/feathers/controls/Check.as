@@ -33,7 +33,11 @@ package feathers.controls
 	public class Check extends Button
 	{
 		/**
-		 * @private
+		 * The default <code>IStyleProvider</code> for all <code>Check</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
 		 */
 		public static var styleProvider:IStyleProvider;
 
@@ -42,6 +46,7 @@ package feathers.controls
 		 */
 		public function Check()
 		{
+			this._styleProvider = Check.styleProvider;
 			super.isToggle = true;
 		}
 
@@ -51,20 +56,6 @@ package feathers.controls
 		override public function set isToggle(value:Boolean):void
 		{
 			throw IllegalOperationError("CheckBox isToggle must always be true.");
-		}
-
-		/**
-		 * @inheritDoc
-		 *
-		 * @default Check.styleProvider
-		 */
-		override public function get styleProvider():IStyleProvider
-		{
-			if(this._styleProvider)
-			{
-				return this._styleProvider;
-			}
-			return Check.styleProvider;
 		}
 	}
 }

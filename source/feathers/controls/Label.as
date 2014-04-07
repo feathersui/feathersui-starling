@@ -10,6 +10,7 @@ package feathers.controls
 	import feathers.core.FeathersControl;
 	import feathers.core.ITextRenderer;
 	import feathers.core.PropertyProxy;
+	import feathers.skins.IStyleProvider;
 
 	import flash.geom.Point;
 
@@ -23,6 +24,11 @@ package feathers.controls
 	 */
 	public class Label extends FeathersControl
 	{
+		/**
+		 * @private
+		 */
+		private static const HELPER_POINT:Point = new Point();
+
 		/**
 		 * An alternate name to use with <code>Label</code> to allow a theme to
 		 * give it a larger style meant for headings. If a theme does not provide
@@ -68,15 +74,20 @@ package feathers.controls
 		public static const ALTERNATE_NAME_DETAIL:String = "feathers-detail-label";
 
 		/**
-		 * @private
+		 * The default <code>IStyleProvider</code> for all <code>Label</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
 		 */
-		private static const HELPER_POINT:Point = new Point();
+		public static var styleProvider:IStyleProvider;
 
 		/**
 		 * Constructor.
 		 */
 		public function Label()
 		{
+			this._styleProvider = Label.styleProvider;
 			this.isQuickHitAreaEnabled = true;
 		}
 

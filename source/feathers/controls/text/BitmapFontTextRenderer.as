@@ -9,6 +9,7 @@ package feathers.controls.text
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.ITextRenderer;
+	import feathers.skins.IStyleProvider;
 	import feathers.text.BitmapFontTextFormat;
 
 	import flash.geom.Matrix;
@@ -81,6 +82,15 @@ package feathers.controls.text
 		private static const FUZZY_MAX_WIDTH_PADDING:Number = 0.000001;
 
 		/**
+		 * The default <code>IStyleProvider</code> for all <code>BitmapFontTextRenderer</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var styleProvider:IStyleProvider;
+
+		/**
 		 * Constructor.
 		 */
 		public function BitmapFontTextRenderer()
@@ -95,6 +105,7 @@ package feathers.controls.text
 			{
 				CHARACTER_BUFFER = new <CharLocation>[];
 			}
+			this._styleProvider = BitmapFontTextRenderer.styleProvider;
 			this.isQuickHitAreaEnabled = true;
 		}
 

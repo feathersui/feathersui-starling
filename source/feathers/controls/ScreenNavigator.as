@@ -10,6 +10,7 @@ package feathers.controls
 	import feathers.core.FeathersControl;
 	import feathers.core.IValidating;
 	import feathers.events.FeathersEventType;
+	import feathers.skins.IStyleProvider;
 
 	import flash.errors.IllegalOperationError;
 	import flash.geom.Rectangle;
@@ -129,6 +130,11 @@ package feathers.controls
 	public class ScreenNavigator extends FeathersControl
 	{
 		/**
+		 * @private
+		 */
+		protected static var SIGNAL_TYPE:Class;
+
+		/**
 		 * The screen navigator will auto size itself to fill the entire stage.
 		 *
 		 * @see #autoSizeMode
@@ -143,9 +149,13 @@ package feathers.controls
 		public static const AUTO_SIZE_MODE_CONTENT:String = "content";
 
 		/**
-		 * @private
+		 * The default <code>IStyleProvider</code> for all <code>ScreenNavigator</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
 		 */
-		protected static var SIGNAL_TYPE:Class;
+		public static var styleProvider:IStyleProvider;
 
 		/**
 		 * The default transition function.
@@ -162,6 +172,7 @@ package feathers.controls
 		public function ScreenNavigator()
 		{
 			super();
+			this._styleProvider = ScreenNavigator.styleProvider;
 			if(!SIGNAL_TYPE)
 			{
 				try

@@ -15,6 +15,7 @@ package feathers.controls
 	import feathers.events.CollectionEventType;
 	import feathers.layout.ILayout;
 	import feathers.layout.VerticalLayout;
+	import feathers.skins.IStyleProvider;
 
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
@@ -221,6 +222,15 @@ package feathers.controls
 		 * @see feathers.controls.Scroller#interactionMode
 		 */
 		public static const INTERACTION_MODE_TOUCH_AND_SCROLL_BARS:String = "touchAndScrollBars";
+
+		/**
+		 * The default <code>IStyleProvider</code> for all <code>List</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var styleProvider:IStyleProvider;
 		
 		/**
 		 * Constructor.
@@ -228,6 +238,7 @@ package feathers.controls
 		public function List()
 		{
 			super();
+			this._styleProvider = List.styleProvider;
 			this._selectedIndices.addEventListener(Event.CHANGE, selectedIndices_changeHandler);
 		}
 

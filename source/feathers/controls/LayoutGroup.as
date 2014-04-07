@@ -16,6 +16,7 @@ package feathers.controls
 	import feathers.layout.IVirtualLayout;
 	import feathers.layout.LayoutBoundsResult;
 	import feathers.layout.ViewPortBounds;
+	import feathers.skins.IStyleProvider;
 
 	import flash.geom.Rectangle;
 
@@ -61,10 +62,20 @@ package feathers.controls
 		protected static const INVALIDATION_FLAG_CLIPPING:String = "clipping";
 
 		/**
+		 * The default <code>IStyleProvider</code> for all <code>LayoutGroup</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var styleProvider:IStyleProvider;
+
+		/**
 		 * Constructor.
 		 */
 		public function LayoutGroup()
 		{
+			this._styleProvider = LayoutGroup.styleProvider;
 		}
 
 		/**

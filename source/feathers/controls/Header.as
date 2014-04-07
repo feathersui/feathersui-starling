@@ -16,6 +16,7 @@ package feathers.controls
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.LayoutBoundsResult;
 	import feathers.layout.ViewPortBounds;
+	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
 
 	import flash.display.Stage;
@@ -93,6 +94,15 @@ package feathers.controls
 		 * @private
 		 */
 		protected static const STATUS_BAR_MIN_IOS_VERSION:int = 7;
+
+		/**
+		 * The default <code>IStyleProvider</code> for all <code>Header</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var styleProvider:IStyleProvider;
 
 		/**
 		 * The title will appear in the center of the header.
@@ -177,6 +187,7 @@ package feathers.controls
 		public function Header()
 		{
 			super();
+			this._styleProvider = Header.styleProvider;
 			this.addEventListener(Event.ADDED_TO_STAGE, header_addedToStageHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, header_removedFromStageHandler);
 		}
