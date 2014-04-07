@@ -45,9 +45,9 @@ package feathers.themes
 		[Embed(source="/../assets/fonts/pf_ronda_seven.fnt",mimeType="application/octet-stream")]
 		public static const font_xml:Class;
 
-		public function MinimalMobileTheme(container:DisplayObjectContainer = null, scaleToDPI:Boolean = true)
+		public function MinimalMobileTheme(scaleToDPI:Boolean = true)
 		{
-			super(null, null, container, scaleToDPI);
+			super(null, null, scaleToDPI);
 		}
 
 		override protected function get atlasImageClass():Class
