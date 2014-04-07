@@ -10,22 +10,22 @@ package feathers.examples.gallery
 	 */
 	public class GalleryTheme extends MetalWorksMobileTheme
 	{
-		public function GalleryTheme(container:DisplayObjectContainer = null, scaleToDPI:Boolean = true)
+		public function GalleryTheme()
 		{
-			super(container, scaleToDPI)
+			super(true)
 		}
 
-		override protected function initialize():void
+		override protected function initializeStyleProviders():void
 		{
-			this.setInitializerForClass(List, thumbnailListInitializer, Main.THUMBNAIL_LIST_NAME)
-			super.initialize();
+			super.initializeStyleProviders();
+			this._listStyleProvider.setFunctionForStyleName(Main.THUMBNAIL_LIST_NAME, this.setThumbnailListStyles);
 		}
 
-		protected function thumbnailListInitializer(list:List):void
+		protected function setThumbnailListStyles(list:List):void
 		{
 			//start with the default list styles. we could start from scratch,
 			//if we wanted, but we're only making minor changes.
-			super.listInitializer(list);
+			super.setListStyles(list);
 
 			//we're not displaying scroll bars
 			list.scrollBarDisplayMode = List.SCROLL_BAR_DISPLAY_MODE_NONE;
