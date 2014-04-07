@@ -62,16 +62,15 @@ package feathers.themes
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.text.TextFieldTextEditor;
 	import feathers.controls.text.TextFieldTextRenderer;
-	import feathers.core.DisplayListWatcher;
 	import feathers.core.FeathersControl;
 	import feathers.core.FocusManager;
-	import feathers.core.IFeathersControl;
 	import feathers.core.ITextEditor;
 	import feathers.core.ITextRenderer;
 	import feathers.core.PopUpManager;
 	import feathers.display.Scale3Image;
 	import feathers.display.Scale9Image;
 	import feathers.layout.HorizontalLayout;
+	import feathers.layout.VerticalLayout;
 	import feathers.skins.SmartDisplayObjectStateValueSelector;
 	import feathers.skins.StandardIcons;
 	import feathers.skins.StyleNameFunctionStyleProvider;
@@ -89,7 +88,6 @@ package feathers.themes
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
-	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.events.Event;
@@ -688,6 +686,7 @@ package feathers.themes
 
 			//grouped list (see also: item renderers)
 			this._groupedListStyleProvider.defaultStyleFunction = this.setGroupedListStyles;
+			this._groupedListStyleProvider.setFunctionForStyleName(GroupedList.ALTERNATE_NAME_INSET_GROUPED_LIST, this.setInsetGroupedListStyles);
 
 			//header
 			this._headerStyleProvider.defaultStyleFunction = this.setHeaderStyles;
@@ -700,6 +699,7 @@ package feathers.themes
 
 			//header and footer renderers for grouped list
 			this._groupedListHeaderOrFooterRendererStyleProvider.defaultStyleFunction = this.setGroupedListHeaderOrFooterRendererStyles;
+			this._groupedListHeaderOrFooterRendererStyleProvider.setFunctionForStyleName(GroupedList.ALTERNATE_CHILD_NAME_INSET_HEADER_RENDERER, this.setInsetGroupedListHeaderOrFooterRendererStyles);
 
 			//label
 			this._labelStyleProvider.defaultStyleFunction = this.setLabelStyles;
@@ -1492,6 +1492,25 @@ package feathers.themes
 				list.paddingLeft = 1;
 		}
 
+		protected function setInsetGroupedListStyles(list:GroupedList):void
+		{
+			this.setScrollerStyles(list);
+
+			list.verticalScrollPolicy = GroupedList.SCROLL_POLICY_AUTO;
+
+			list.headerRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_HEADER_RENDERER;
+			list.footerRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_FOOTER_RENDERER;
+
+			var layout:VerticalLayout = new VerticalLayout();
+			layout.useVirtualLayout = true;
+			layout.padding = 10;
+			layout.paddingTop = 0;
+			layout.gap = 0;
+			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
+			layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
+			list.layout = layout;
+		}
+
 		protected function setPickerListStyles(list:PickerList):void
 		{
 			list.popUpContentManager = new DropDownPopUpContentManager();
@@ -1537,6 +1556,16 @@ package feathers.themes
 			renderer.contentLabelProperties.textFormat = this.defaultTextFormat;
 
 			renderer.paddingTop = renderer.paddingBottom = 2;
+			renderer.paddingRight = renderer.paddingLeft = 6;
+			renderer.minWidth = renderer.minHeight = 18;
+		}
+
+		protected function setInsetGroupedListHeaderOrFooterRendererStyles(renderer:DefaultGroupedListHeaderOrFooterRenderer):void
+		{
+			renderer.contentLabelProperties.textFormat = this.defaultTextFormat;
+
+			renderer.paddingTop = 8;
+			renderer.paddingBottom = 2;
 			renderer.paddingRight = renderer.paddingLeft = 6;
 			renderer.minWidth = renderer.minHeight = 18;
 		}
