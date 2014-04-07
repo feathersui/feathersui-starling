@@ -24,8 +24,6 @@
  */
 package feathers.themes
 {
-	import starling.display.DisplayObjectContainer;
-
 	/**
 	 * The "Metal Works" theme for mobile Feathers apps.
 	 *
@@ -42,9 +40,9 @@ package feathers.themes
 		[Embed(source="/../assets/images/metalworks.png")]
 		public static const metalworks:Class;
 
-		public function MetalWorksMobileTheme(container:DisplayObjectContainer = null, scaleToDPI:Boolean = true)
+		public function MetalWorksMobileTheme(scaleToDPI:Boolean = true)
 		{
-			super(null, null, container, scaleToDPI);
+			super(null, null, scaleToDPI);
 		}
 
 		override protected function get atlasImageClass():Class
