@@ -370,8 +370,6 @@ package feathers.themes
 		protected var _progressBarStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
 		protected var _radioStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
 		protected var _screenStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
-		protected var _screenNavigatorStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
-		protected var _scrollBarStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
 		protected var _scrollContainerStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
 		protected var _scrollScreenStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
 		protected var _scrollTextStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
@@ -662,8 +660,6 @@ package feathers.themes
 			ProgressBar.styleProvider = this._progressBarStyleProvider;
 			Radio.styleProvider = this._radioStyleProvider;
 			Screen.styleProvider = this._screenStyleProvider;
-			ScreenNavigator.styleProvider = this._screenNavigatorStyleProvider;
-			ScrollBar.styleProvider = this._scrollBarStyleProvider;
 			ScrollContainer.styleProvider = this._scrollContainerStyleProvider;
 			ScrollScreen.styleProvider = this._scrollScreenStyleProvider;
 			ScrollText.styleProvider = this._scrollTextStyleProvider;
