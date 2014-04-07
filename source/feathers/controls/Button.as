@@ -133,14 +133,6 @@ package feathers.controls
 		 * @private
 		 */
 		private static const HELPER_POINT:Point = new Point();
-		/**
-		 * The default <code>IStyleProvider</code> for all <code>Button</code>
-		 * components.
-		 *
-		 * @default null
-		 * @see feathers.core.FeathersControl#styleProvider
-		 */
-		public static var styleProvider:IStyleProvider;
 
 		/**
 		 * The default value added to the <code>nameList</code> of the label.
@@ -393,6 +385,15 @@ package feathers.controls
 		 * @see #verticalAlign
 		 */
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
+
+		/**
+		 * The default <code>IStyleProvider</code> for all <code>Button</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var styleProvider:IStyleProvider;
 		
 		/**
 		 * Constructor.
