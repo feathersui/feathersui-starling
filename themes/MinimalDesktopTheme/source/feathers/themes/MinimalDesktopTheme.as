@@ -45,9 +45,9 @@ package feathers.themes
 		[Embed(source="/../assets/fonts/pf_ronda_seven.fnt",mimeType="application/octet-stream")]
 		public static const font_xml:Class;
 
-		public function MinimalDesktopTheme(container:DisplayObjectContainer = null)
+		public function MinimalDesktopTheme()
 		{
-			super(null, null, container);
+			super(null, null);
 		}
 
 		override protected function get atlasImageClass():Class
