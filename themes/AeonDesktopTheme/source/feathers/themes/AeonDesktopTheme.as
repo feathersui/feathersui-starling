@@ -42,9 +42,9 @@ package feathers.themes
 		[Embed(source="/../assets/images/aeon.xml",mimeType="application/octet-stream")]
 		public static const aeon_xml:Class;
 
-		public function AeonDesktopTheme(container:DisplayObjectContainer = null)
+		public function AeonDesktopTheme()
 		{
-			super(null, null, container);
+			super(null, null);
 		}
 
 		override protected function get atlasImageClass():Class
