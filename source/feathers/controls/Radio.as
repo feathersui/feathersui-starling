@@ -9,6 +9,7 @@ package feathers.controls
 {
 	import feathers.core.IGroupedToggle;
 	import feathers.core.ToggleGroup;
+	import feathers.skins.IStyleProvider;
 
 	import flash.errors.IllegalOperationError;
 
@@ -56,10 +57,20 @@ package feathers.controls
 		public static const defaultRadioGroup:ToggleGroup = new ToggleGroup();
 
 		/**
+		 * The default <code>IStyleProvider</code> for all <code>Radio</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var styleProvider:IStyleProvider;
+
+		/**
 		 * Constructor.
 		 */
 		public function Radio()
 		{
+			this._styleProvider = Radio.styleProvider;
 			super.isToggle = true;
 			this.addEventListener(Event.ADDED_TO_STAGE, radio_addedToStageHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, radio_removedFromStageHandler);

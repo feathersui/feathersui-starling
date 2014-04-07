@@ -15,6 +15,7 @@ package feathers.controls
 	import feathers.layout.LayoutBoundsResult;
 	import feathers.layout.VerticalLayout;
 	import feathers.layout.ViewPortBounds;
+	import feathers.skins.IStyleProvider;
 
 	import flash.geom.Point;
 
@@ -146,6 +147,15 @@ package feathers.controls
 		public static const INTERACTION_MODE_PRECISE:String = "precise";
 
 		/**
+		 * The default <code>IStyleProvider</code> for all <code>PageIndicator</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var styleProvider:IStyleProvider;
+
+		/**
 		 * @private
 		 */
 		protected static function defaultSelectedSymbolFactory():Quad
@@ -166,6 +176,7 @@ package feathers.controls
 		 */
 		public function PageIndicator()
 		{
+			this._styleProvider = PageIndicator.styleProvider;
 			this.isQuickHitAreaEnabled = true;
 			this.addEventListener(TouchEvent.TOUCH, touchHandler);
 		}

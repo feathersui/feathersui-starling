@@ -14,6 +14,7 @@ package feathers.controls
 	import feathers.layout.LayoutBoundsResult;
 	import feathers.layout.VerticalLayout;
 	import feathers.layout.ViewPortBounds;
+	import feathers.skins.IStyleProvider;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -78,6 +79,15 @@ package feathers.controls
 	 */
 	public class ButtonGroup extends FeathersControl
 	{
+		/**
+		 * The default <code>IStyleProvider</code> for all <code>ButtonGroup</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var styleProvider:IStyleProvider;
+
 		/**
 		 * @private
 		 */
@@ -221,6 +231,7 @@ package feathers.controls
 		 */
 		public function ButtonGroup()
 		{
+			this._styleProvider = ButtonGroup.styleProvider;
 		}
 
 		/**

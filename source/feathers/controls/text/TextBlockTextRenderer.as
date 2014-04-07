@@ -9,6 +9,7 @@ package feathers.controls.text
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.ITextRenderer;
+	import feathers.skins.IStyleProvider;
 
 	import flash.display.BitmapData;
 	import flash.display.DisplayObjectContainer;
@@ -71,27 +72,6 @@ package feathers.controls.text
 		private static const HELPER_RECTANGLE:Rectangle = new Rectangle();
 
 		/**
-		 * The text will be positioned to the left edge.
-		 *
-		 * @see #textAlign
-		 */
-		public static const TEXT_ALIGN_LEFT:String = "left";
-
-		/**
-		 * The text will be centered horizontally.
-		 *
-		 * @see #textAlign
-		 */
-		public static const TEXT_ALIGN_CENTER:String = "center";
-
-		/**
-		 * The text will be positioned to the right edge.
-		 *
-		 * @see #textAlign
-		 */
-		public static const TEXT_ALIGN_RIGHT:String = "right";
-
-		/**
 		 * @private
 		 * This is enforced by the runtime.
 		 */
@@ -113,10 +93,41 @@ package feathers.controls.text
 		protected static const FUZZY_TRUNCATION_DIFFERENCE:Number = 0.000001;
 
 		/**
+		 * The text will be positioned to the left edge.
+		 *
+		 * @see #textAlign
+		 */
+		public static const TEXT_ALIGN_LEFT:String = "left";
+
+		/**
+		 * The text will be centered horizontally.
+		 *
+		 * @see #textAlign
+		 */
+		public static const TEXT_ALIGN_CENTER:String = "center";
+
+		/**
+		 * The text will be positioned to the right edge.
+		 *
+		 * @see #textAlign
+		 */
+		public static const TEXT_ALIGN_RIGHT:String = "right";
+
+		/**
+		 * The default <code>IStyleProvider</code> for all <code>TextBlockTextRenderer</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var styleProvider:IStyleProvider;
+
+		/**
 		 * Constructor.
 		 */
 		public function TextBlockTextRenderer()
 		{
+			this._styleProvider = TextBlockTextRenderer.styleProvider;
 			this.isQuickHitAreaEnabled = true;
 			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);

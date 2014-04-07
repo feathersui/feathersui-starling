@@ -16,6 +16,7 @@ package feathers.controls
 	import feathers.events.CollectionEventType;
 	import feathers.layout.ILayout;
 	import feathers.layout.VerticalLayout;
+	import feathers.skins.IStyleProvider;
 
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
@@ -163,6 +164,15 @@ package feathers.controls
 		 * @private
 		 */
 		private static const HELPER_POINT:Point = new Point();
+
+		/**
+		 * The default <code>IStyleProvider</code> for all <code>GroupedList</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var styleProvider:IStyleProvider;
 
 		/**
 		 * An alternate name to use with GroupedList to allow a theme to give it
@@ -372,6 +382,7 @@ package feathers.controls
 		public function GroupedList()
 		{
 			super();
+			this._styleProvider = GroupedList.styleProvider;
 		}
 
 		/**

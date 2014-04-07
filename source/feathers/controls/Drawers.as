@@ -11,6 +11,7 @@ package feathers.controls
 	import feathers.core.IValidating;
 	import feathers.events.ExclusiveTouch;
 	import feathers.events.FeathersEventType;
+	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
 	import feathers.utils.display.getDisplayObjectDepthFromStage;
 	import feathers.utils.math.roundToNearest;
@@ -164,6 +165,15 @@ package feathers.controls
 	public class Drawers extends FeathersControl
 	{
 		/**
+		 * The default <code>IStyleProvider</code> for all <code>Drawers</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var styleProvider:IStyleProvider;
+
+		/**
 		 * The drawer will be docked in portrait orientation, but it must be
 		 * opened and closed explicitly in landscape orientation.
 		 *
@@ -304,6 +314,7 @@ package feathers.controls
 		 */
 		public function Drawers(content:DisplayObject = null)
 		{
+			this._styleProvider = Drawers.styleProvider;
 			this.content = content;
 			this.addEventListener(Event.ADDED_TO_STAGE, drawers_addedToStageHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, drawers_removedFromStageHandler);

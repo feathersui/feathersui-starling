@@ -13,6 +13,7 @@ package feathers.controls.renderers
 	import feathers.core.ITextRenderer;
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
+	import feathers.skins.IStyleProvider;
 
 	import starling.display.DisplayObject;
 
@@ -91,6 +92,15 @@ package feathers.controls.renderers
 		public static const DEFAULT_CHILD_NAME_CONTENT_LABEL:String = "feathers-header-footer-renderer-content-label";
 
 		/**
+		 * The default <code>IStyleProvider</code> for all <code>DefaultGroupedListHeaderOrFooterRenderer</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var styleProvider:IStyleProvider;
+
+		/**
 		 * @private
 		 */
 		protected static function defaultImageLoaderFactory():ImageLoader
@@ -99,18 +109,19 @@ package feathers.controls.renderers
 		}
 
 		/**
+		 * Constructor.
+		 */
+		public function DefaultGroupedListHeaderOrFooterRenderer()
+		{
+			this._styleProvider = DefaultGroupedListHeaderOrFooterRenderer.styleProvider;
+		}
+
+		/**
 		 * The value added to the <code>nameList</code> of the content label.
 		 *
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var contentLabelName:String = DEFAULT_CHILD_NAME_CONTENT_LABEL;
-
-		/**
-		 * Constructor.
-		 */
-		public function DefaultGroupedListHeaderOrFooterRenderer()
-		{
-		}
 
 		/**
 		 * @private

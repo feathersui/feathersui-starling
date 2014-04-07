@@ -12,6 +12,7 @@ package feathers.controls
 	import feathers.core.ITextRenderer;
 	import feathers.core.IToggle;
 	import feathers.core.PropertyProxy;
+	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
 
 	import flash.geom.Point;
@@ -159,6 +160,15 @@ package feathers.controls
 		public static const DEFAULT_CHILD_NAME_THUMB:String = "feathers-toggle-switch-thumb";
 
 		/**
+		 * The default <code>IStyleProvider</code> for all <code>ToggleSwitch</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var styleProvider:IStyleProvider;
+
+		/**
 		 * @private
 		 */
 		protected static function defaultThumbFactory():Button
@@ -188,6 +198,7 @@ package feathers.controls
 		public function ToggleSwitch()
 		{
 			super();
+			this._styleProvider = ToggleSwitch.styleProvider;
 			this.addEventListener(TouchEvent.TOUCH, toggleSwitch_touchHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, toggleSwitch_removedFromStageHandler);
 		}

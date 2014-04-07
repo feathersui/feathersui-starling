@@ -11,6 +11,7 @@ package feathers.controls
 	import feathers.core.IFocusExtras;
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
+	import feathers.skins.IStyleProvider;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -140,6 +141,15 @@ package feathers.controls
 		public static const INTERACTION_MODE_TOUCH_AND_SCROLL_BARS:String = "touchAndScrollBars";
 
 		/**
+		 * The default <code>IStyleProvider</code> for all <code>Panel</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var styleProvider:IStyleProvider;
+
+		/**
 		 * @private
 		 */
 		protected static const INVALIDATION_FLAG_HEADER_FACTORY:String = "headerFactory";
@@ -163,6 +173,7 @@ package feathers.controls
 		public function Panel()
 		{
 			super();
+			this._styleProvider = Panel.styleProvider;
 		}
 
 		/**

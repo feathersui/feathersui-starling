@@ -9,6 +9,7 @@ package feathers.controls.renderers
 {
 	import feathers.controls.GroupedList;
 	import feathers.events.FeathersEventType;
+	import feathers.skins.IStyleProvider;
 
 	/**
 	 * The default item renderer for a GroupedList control. Supports up to three
@@ -165,11 +166,21 @@ package feathers.controls.renderers
 		public static const LAYOUT_ORDER_LABEL_ICON_ACCESSORY:String = "labelIconAccessory";
 
 		/**
+		 * The default <code>IStyleProvider</code> for all <code>DefaultGroupedListItemRenderer</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var styleProvider:IStyleProvider;
+
+		/**
 		 * Constructor.
 		 */
 		public function DefaultGroupedListItemRenderer()
 		{
 			super();
+			this._styleProvider = DefaultGroupedListItemRenderer.styleProvider;
 		}
 		
 		/**

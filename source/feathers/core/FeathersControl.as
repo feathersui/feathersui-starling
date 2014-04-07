@@ -1935,11 +1935,9 @@ package feathers.core
 				this._isInitialized = true;
 				this.dispatchEventWith(FeathersEventType.INITIALIZE);
 
-				//we're accessing the getter so that subclasses can override
-				var styleProvider:IStyleProvider = this.styleProvider;
-				if(styleProvider)
+				if(this._styleProvider)
 				{
-					styleProvider.applyStyles(this);
+					this._styleProvider.applyStyles(this);
 				}
 			}
 			if(this.isInvalid())

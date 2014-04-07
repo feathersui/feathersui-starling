@@ -15,6 +15,7 @@ package feathers.controls
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
 	import feathers.events.FeathersEventType;
+	import feathers.skins.IStyleProvider;
 	import feathers.skins.StateValueSelector;
 
 	import flash.geom.Point;
@@ -197,6 +198,11 @@ package feathers.controls
 		private static const HELPER_POINT:Point = new Point();
 
 		/**
+		 * @private
+		 */
+		protected static const INVALIDATION_FLAG_PROMPT_FACTORY:String = "promptFactory";
+
+		/**
 		 * The <code>TextInput</code> is enabled and does not have focus.
 		 */
 		public static const STATE_ENABLED:String = "enabled";
@@ -234,15 +240,20 @@ package feathers.controls
 		public static const ALTERNATE_NAME_SEARCH_TEXT_INPUT:String = "feathers-search-text-input";
 
 		/**
-		 * @private
+		 * The default <code>IStyleProvider</code> for all <code>TextInput</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
 		 */
-		protected static const INVALIDATION_FLAG_PROMPT_FACTORY:String = "promptFactory";
+		public static var styleProvider:IStyleProvider;
 
 		/**
 		 * Constructor.
 		 */
 		public function TextInput()
 		{
+			this._styleProvider = TextInput.styleProvider;
 			this.isQuickHitAreaEnabled = true;
 			this.addEventListener(TouchEvent.TOUCH, textInput_touchHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, textInput_removedFromStageHandler);

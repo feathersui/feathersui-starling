@@ -15,6 +15,7 @@ package feathers.controls
 	import feathers.core.PropertyProxy;
 	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
+	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
 
 	import starling.core.Starling;
@@ -78,6 +79,16 @@ package feathers.controls
 	public class PickerList extends FeathersControl
 	{
 		/**
+		 * @private
+		 */
+		protected static const INVALIDATION_FLAG_BUTTON_FACTORY:String = "buttonFactory";
+
+		/**
+		 * @private
+		 */
+		protected static const INVALIDATION_FLAG_LIST_FACTORY:String = "listFactory";
+
+		/**
 		 * The default value added to the <code>nameList</code> of the button.
 		 *
 		 * @see feathers.core.IFeathersControl#nameList
@@ -93,14 +104,13 @@ package feathers.controls
 		public static const DEFAULT_CHILD_NAME_LIST:String = "feathers-picker-list-list";
 
 		/**
-		 * @private
+		 * The default <code>IStyleProvider</code> for all <code>PickerList</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
 		 */
-		protected static const INVALIDATION_FLAG_BUTTON_FACTORY:String = "buttonFactory";
-
-		/**
-		 * @private
-		 */
-		protected static const INVALIDATION_FLAG_LIST_FACTORY:String = "listFactory";
+		public static var styleProvider:IStyleProvider;
 
 		/**
 		 * @private
@@ -124,6 +134,7 @@ package feathers.controls
 		public function PickerList()
 		{
 			super();
+			this._styleProvider = PickerList.styleProvider;
 		}
 
 		/**

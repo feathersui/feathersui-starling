@@ -9,6 +9,7 @@ package feathers.controls
 {
 	import feathers.core.FeathersControl;
 	import feathers.events.FeathersEventType;
+	import feathers.skins.IStyleProvider;
 
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -144,10 +145,20 @@ package feathers.controls
 		protected static var textureQueueTail:ImageLoader;
 
 		/**
+		 * The default <code>IStyleProvider</code> for all <code>ImageLoader</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var styleProvider:IStyleProvider;
+
+		/**
 		 * Constructor.
 		 */
 		public function ImageLoader()
 		{
+			this._styleProvider = ImageLoader.styleProvider;
 			this.isQuickHitAreaEnabled = true;
 		}
 

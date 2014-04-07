@@ -9,6 +9,7 @@ package feathers.controls.renderers
 {
 	import feathers.controls.List;
 	import feathers.events.FeathersEventType;
+	import feathers.skins.IStyleProvider;
 
 	/**
 	 * The default item renderer for List control. Supports up to three optional
@@ -20,7 +21,6 @@ package feathers.controls.renderers
 	 */
 	public class DefaultListItemRenderer extends BaseDefaultItemRenderer implements IListItemRenderer
 	{
-
 		/**
 		 * @copy feathers.controls.Button#ICON_POSITION_TOP
 		 *
@@ -166,11 +166,21 @@ package feathers.controls.renderers
 		public static const LAYOUT_ORDER_LABEL_ICON_ACCESSORY:String = "labelIconAccessory";
 
 		/**
+		 * The default <code>IStyleProvider</code> for all <code>DefaultListItemRenderer</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var styleProvider:IStyleProvider;
+
+		/**
 		 * Constructor.
 		 */
 		public function DefaultListItemRenderer()
 		{
 			super();
+			this._styleProvider = DefaultListItemRenderer.styleProvider;
 		}
 		
 		/**
