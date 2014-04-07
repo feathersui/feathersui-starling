@@ -74,6 +74,7 @@ package feathers.themes
 	import feathers.layout.HorizontalLayout;
 	import feathers.skins.SmartDisplayObjectStateValueSelector;
 	import feathers.skins.StandardIcons;
+	import feathers.skins.StyleNameFunctionStyleProvider;
 	import feathers.system.DeviceCapabilities;
 	import feathers.textures.Scale3Textures;
 	import feathers.textures.Scale9Textures;
@@ -92,6 +93,8 @@ package feathers.themes
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.events.Event;
+	import starling.events.EventDispatcher;
+	import starling.textures.SubTexture;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 	import starling.utils.AssetManager;
@@ -113,7 +116,7 @@ package feathers.themes
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/theme-assets
 	 */
-	public class AeonDesktopThemeWithAssetManager extends DisplayListWatcher
+	public class AeonDesktopThemeWithAssetManager extends EventDispatcher
 	{
 		protected static const THEME_NAME_HORIZONTAL_SCROLL_BAR_INCREMENT_BUTTON:String = "aeon-horizontal-scroll-bar-increment-button";
 		protected static const THEME_NAME_HORIZONTAL_SCROLL_BAR_DECREMENT_BUTTON:String = "aeon-horizontal-scroll-bar-decrement-button";
@@ -179,18 +182,25 @@ package feathers.themes
 
 		protected static function popUpOverlayFactory():DisplayObject
 		{
-			const quad:Quad = new Quad(100, 100, MODAL_OVERLAY_COLOR);
+			var quad:Quad = new Quad(100, 100, MODAL_OVERLAY_COLOR);
 			quad.alpha = MODAL_OVERLAY_ALPHA;
 			return quad;
 		}
 
-		public function AeonDesktopThemeWithAssetManager(assets:Object = null, assetManager:AssetManager = null, container:DisplayObjectContainer = null)
+		protected static function textureValueTypeHandler(value:Texture, oldDisplayObject:DisplayObject = null):DisplayObject
 		{
-			if(!container)
+			var displayObject:ImageLoader = oldDisplayObject as ImageLoader;
+			if(!displayObject)
 			{
-				container = Starling.current.stage;
+				displayObject = new ImageLoader();
 			}
-			super(container);
+			displayObject.source = value;
+			return displayObject;
+		}
+
+		public function AeonDesktopThemeWithAssetManager(assets:Object = null, assetManager:AssetManager = null)
+		{
+			super();
 			this.processSource(assets, assetManager);
 		}
 
@@ -340,12 +350,41 @@ package feathers.themes
 
 		protected var progressBarFillSkinTexture:Texture;
 
-		override public function dispose():void
+		protected var _alertStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
+		protected var _buttonStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
+		protected var _buttonGroupStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
+		protected var _calloutStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
+		protected var _checkStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
+		protected var _drawersStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
+		protected var _groupedListStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
+		protected var _headerStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
+		protected var _listItemRendererStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
+		protected var _groupedListItemRendererStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
+		protected var _groupedListHeaderOrFooterRendererStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
+		protected var _labelStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
+		protected var _listStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
+		protected var _numericStepperStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
+		protected var _pageIndicatorStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
+		protected var _panelStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
+		protected var _panelScreenStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
+		protected var _pickerListStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
+		protected var _progressBarStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
+		protected var _radioStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
+		protected var _screenStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
+		protected var _scrollContainerStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
+		protected var _scrollScreenStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
+		protected var _scrollTextStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
+		protected var _scrollBarStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
+		protected var _simpleScrollBarStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
+		protected var _sliderStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
+		protected var _tabBarStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
+		protected var _textAreaStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
+		protected var _textInputStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
+		protected var _toggleSwitchStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
+		protected var _textFieldTextRendererStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
+
+		public function dispose():void
 		{
-			if(this.root)
-			{
-				this.root.removeEventListener(Event.ADDED_TO_STAGE, root_addedToStageHandler);
-			}
 			if(this.atlas)
 			{
 				this.atlas.dispose();
@@ -357,17 +396,11 @@ package feathers.themes
 			{
 				this.assetManager.removeTextureAtlas(ATLAS_NAME);
 			}
-			super.dispose();
 		}
 
-		protected function initializeRoot():void
+		protected function initializeStage():void
 		{
-			if(this.root != this.root.stage)
-			{
-				return;
-			}
-
-			this.root.stage.color = BACKGROUND_COLOR;
+			Starling.current.stage.color = BACKGROUND_COLOR;
 			Starling.current.nativeStage.color = BACKGROUND_COLOR;
 		}
 
@@ -457,18 +490,9 @@ package feathers.themes
 
 			this.initializeFonts();
 			this.initializeTextures();
-			this.initializeGlobals();
-
-			if(this.root.stage)
-			{
-				this.initializeRoot();
-			}
-			else
-			{
-				this.root.addEventListener(Event.ADDED_TO_STAGE, root_addedToStageHandler);
-			}
-
-			this.setInitializers();
+			this.initializeGlobals()
+			this.initializeStage();
+			this.initializeStyleProviders();
 		}
 
 		protected function initializeGlobals():void
@@ -605,128 +629,166 @@ package feathers.themes
 			StandardIcons.listDrillDownAccessoryTexture = this.atlas.getTexture("list-accessory-drill-down-icon");
 		}
 
-		protected function setInitializers():void
+		protected function initializeStyleProviders():void
 		{
-			//screens
-			this.setInitializerForClassAndSubclasses(Screen, screenInitializer);
-			this.setInitializerForClassAndSubclasses(PanelScreen, panelScreenInitializer);
-			this.setInitializerForClassAndSubclasses(ScrollScreen, scrollScreenInitializer);
+			Alert.styleProvider = this._alertStyleProvider;
+			Button.styleProvider = this._buttonStyleProvider;
+			ButtonGroup.styleProvider = this._buttonGroupStyleProvider;
+			Callout.styleProvider = this._calloutStyleProvider;
+			Check.styleProvider = this._checkStyleProvider;
+			DefaultGroupedListItemRenderer.styleProvider = this._groupedListItemRendererStyleProvider;
+			DefaultGroupedListHeaderOrFooterRenderer.styleProvider = this._groupedListHeaderOrFooterRendererStyleProvider;
+			DefaultListItemRenderer.styleProvider = this._listItemRendererStyleProvider;
+			Drawers.styleProvider = this._drawersStyleProvider;
+			GroupedList.styleProvider = this._groupedListStyleProvider;
+			Header.styleProvider = this._headerStyleProvider;
+			Label.styleProvider = this._labelStyleProvider;
+			List.styleProvider = this._listStyleProvider;
+			NumericStepper.styleProvider = this._numericStepperStyleProvider;
+			PageIndicator.styleProvider = this._pageIndicatorStyleProvider;
+			Panel.styleProvider = this._panelStyleProvider;
+			PanelScreen.styleProvider = this._panelScreenStyleProvider;
+			PickerList.styleProvider = this._pickerListStyleProvider;
+			ProgressBar.styleProvider = this._progressBarStyleProvider;
+			Radio.styleProvider = this._radioStyleProvider;
+			Screen.styleProvider = this._screenStyleProvider;
+			ScrollBar.styleProvider = this._scrollBarStyleProvider;
+			ScrollContainer.styleProvider = this._scrollContainerStyleProvider;
+			ScrollScreen.styleProvider = this._scrollScreenStyleProvider;
+			ScrollText.styleProvider = this._scrollTextStyleProvider;
+			SimpleScrollBar.styleProvider = this._simpleScrollBarStyleProvider;
+			Slider.styleProvider = this._sliderStyleProvider;
+			TabBar.styleProvider = this._tabBarStyleProvider;
+			TextArea.styleProvider = this._textAreaStyleProvider;
+			TextFieldTextRenderer.styleProvider = this._textFieldTextRendererStyleProvider;
+			TextInput.styleProvider = this._textInputStyleProvider;
+			ToggleSwitch.styleProvider = this._toggleSwitchStyleProvider;
 
 			//alert
-			this.setInitializerForClass(Alert, alertInitializer);
-			this.setInitializerForClass(Header, panelHeaderInitializer, Alert.DEFAULT_CHILD_NAME_HEADER);
-			this.setInitializerForClass(ButtonGroup, alertButtonGroupInitializer, Alert.DEFAULT_CHILD_NAME_BUTTON_GROUP);
-			this.setInitializerForClass(TextFieldTextRenderer, alertMessageInitializer, Alert.DEFAULT_CHILD_NAME_MESSAGE);
+			this._alertStyleProvider.defaultStyleFunction = this.setAlertStyles;
+			this._headerStyleProvider.setFunctionForStyleName(Alert.DEFAULT_CHILD_NAME_HEADER, this.setPanelHeaderStyles);
+			this._buttonGroupStyleProvider.setFunctionForStyleName(Alert.DEFAULT_CHILD_NAME_BUTTON_GROUP, this.setAlertButtonGroupStyles);
+			this._textFieldTextRendererStyleProvider.setFunctionForStyleName(Alert.DEFAULT_CHILD_NAME_MESSAGE, this.setAlertMessageTextRendererStyles);
 
 			//button
-			this.setInitializerForClass(Button, buttonInitializer);
-			this.setInitializerForClass(Button, quietButtonInitializer, Button.ALTERNATE_NAME_QUIET_BUTTON);
+			this._buttonStyleProvider.defaultStyleFunction = this.setButtonStyles;
+			this._buttonStyleProvider.setFunctionForStyleName(Button.ALTERNATE_NAME_QUIET_BUTTON, this.setQuietButtonStyles);
 
 			//button group
-			this.setInitializerForClass(ButtonGroup, buttonGroupInitializer);
+			this._buttonGroupStyleProvider.defaultStyleFunction = this.setButtonGroupStyles;
 
 			//callout
-			this.setInitializerForClass(Callout, calloutInitializer);
+			this._calloutStyleProvider.defaultStyleFunction = this.setCalloutStyles;
 
 			//check
-			this.setInitializerForClass(Check, checkInitializer);
+			this._checkStyleProvider.defaultStyleFunction = this.setCheckStyles;
 
 			//drawers
-			this.setInitializerForClass(Drawers, drawersInitializer);
+			this._drawersStyleProvider.defaultStyleFunction = this.setDrawersStyles;
 
 			//grouped list (see also: item renderers)
-			this.setInitializerForClass(GroupedList, groupedListInitializer);
+			this._groupedListStyleProvider.defaultStyleFunction = this.setGroupedListStyles;
 
 			//header
-			this.setInitializerForClass(Header, headerInitializer);
+			this._headerStyleProvider.defaultStyleFunction = this.setHeaderStyles;
 
 			//item renderers for lists
-			this.setInitializerForClass(DefaultListItemRenderer, defaultItemRendererInitializer);
-			this.setInitializerForClass(DefaultGroupedListItemRenderer, defaultItemRendererInitializer);
-			this.setInitializerForClass(TextFieldTextRenderer, itemRendererAccessoryLabelInitializer, BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ACCESSORY_LABEL);
-			this.setInitializerForClass(TextFieldTextRenderer, itemRendererIconLabelInitializer, BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ICON_LABEL);
+			this._listItemRendererStyleProvider.defaultStyleFunction = this.setItemRendererStyles;
+			this._groupedListItemRendererStyleProvider.defaultStyleFunction = this.setItemRendererStyles;
+			this._textFieldTextRendererStyleProvider.setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ACCESSORY_LABEL, this.setItemRendererAccessoryLabelStyles);
+			this._textFieldTextRendererStyleProvider.setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ICON_LABEL, this.setItemRendererIconLabelStyles);
 
 			//header and footer renderers for grouped list
-			this.setInitializerForClass(DefaultGroupedListHeaderOrFooterRenderer, defaultHeaderOrFooterRendererInitializer);
+			this._groupedListHeaderOrFooterRendererStyleProvider.defaultStyleFunction = this.setGroupedListHeaderOrFooterRendererStyles;
 
 			//label
-			this.setInitializerForClass(Label, labelInitializer);
-			this.setInitializerForClass(Label, headingLabelInitializer, Label.ALTERNATE_NAME_HEADING);
-			this.setInitializerForClass(Label, detailLabelInitializer, Label.ALTERNATE_NAME_DETAIL);
+			this._labelStyleProvider.defaultStyleFunction = this.setLabelStyles;
+			this._labelStyleProvider.setFunctionForStyleName(Label.ALTERNATE_NAME_HEADING, this.setHeadingLabelStyles);
+			this._labelStyleProvider.setFunctionForStyleName(Label.ALTERNATE_NAME_DETAIL, this.setDetailLabelStyles);
 
 			//list (see also: item renderers)
-			this.setInitializerForClass(List, listInitializer);
+			this._listStyleProvider.defaultStyleFunction = this.setListStyles;
 
 			//numeric stepper
-			this.setInitializerForClass(NumericStepper, numericStepperInitializer);
-			this.setInitializerForClass(TextInput, numericStepperTextInputInitializer, NumericStepper.DEFAULT_CHILD_NAME_TEXT_INPUT);
-			this.setInitializerForClass(Button, stepperIncrementButtonInitializer, NumericStepper.DEFAULT_CHILD_NAME_INCREMENT_BUTTON);
-			this.setInitializerForClass(Button, stepperDecrementButtonInitializer, NumericStepper.DEFAULT_CHILD_NAME_DECREMENT_BUTTON);
+			this._numericStepperStyleProvider.defaultStyleFunction = this.setNumericStepperStyles;
+			this._textInputStyleProvider.setFunctionForStyleName(NumericStepper.DEFAULT_CHILD_NAME_TEXT_INPUT, this.setNumericStepperTextInputStyles);
+			this._buttonStyleProvider.setFunctionForStyleName(NumericStepper.DEFAULT_CHILD_NAME_INCREMENT_BUTTON, this.setNumericStepperIncrementButtonStyles);
+			this._buttonStyleProvider.setFunctionForStyleName(NumericStepper.DEFAULT_CHILD_NAME_DECREMENT_BUTTON, this.setNumericStepperDecrementButtonStyles);
 
 			//panel
-			this.setInitializerForClass(Panel, panelInitializer);
-			this.setInitializerForClass(Header, panelHeaderInitializer, Panel.DEFAULT_CHILD_NAME_HEADER);
+			this._panelStyleProvider.defaultStyleFunction = this.setPanelStyles;
+			this._headerStyleProvider.setFunctionForStyleName(Panel.DEFAULT_CHILD_NAME_HEADER, this.setPanelHeaderStyles);
+
+			//panel screen
+			this._panelScreenStyleProvider.defaultStyleFunction = this.setPanelScreenStyles;
 
 			//page indicator
-			this.setInitializerForClass(PageIndicator, pageIndicatorInitializer);
+			this._pageIndicatorStyleProvider.defaultStyleFunction = this.setPageIndicatorStyles;
 
 			//picker list (see also: item renderers)
-			this.setInitializerForClass(PickerList, pickerListInitializer);
-			this.setInitializerForClass(List, pickerListListInitializer, PickerList.DEFAULT_CHILD_NAME_LIST);
-			this.setInitializerForClass(Button, pickerListButtonInitializer, PickerList.DEFAULT_CHILD_NAME_BUTTON);
+			this._pickerListStyleProvider.defaultStyleFunction = this.setPickerListStyles;
+			this._listStyleProvider.setFunctionForStyleName(PickerList.DEFAULT_CHILD_NAME_LIST, this.setPickerListListStyles);
+			this._buttonStyleProvider.setFunctionForStyleName(PickerList.DEFAULT_CHILD_NAME_BUTTON, this.setPickerListButtonStyles);
 
 			//progress bar
-			this.setInitializerForClass(ProgressBar, progressBarInitializer);
+			this._progressBarStyleProvider.defaultStyleFunction = this.setProgressBarStyles;
 
 			//radio
-			this.setInitializerForClass(Radio, radioInitializer);
+			this._radioStyleProvider.defaultStyleFunction = this.setRadioStyles;
+
+			//screen
+			this._screenStyleProvider.defaultStyleFunction = this.setScreenStyles;
 
 			//scroll bar
-			this.setInitializerForClass(ScrollBar, horizontalScrollBarInitializer, Scroller.DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR);
-			this.setInitializerForClass(ScrollBar, verticalScrollBarInitializer, Scroller.DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR);
-			this.setInitializerForClass(Button, horizontalScrollBarIncrementButtonInitializer, THEME_NAME_HORIZONTAL_SCROLL_BAR_INCREMENT_BUTTON);
-			this.setInitializerForClass(Button, horizontalScrollBarDecrementButtonInitializer, THEME_NAME_HORIZONTAL_SCROLL_BAR_DECREMENT_BUTTON);
-			this.setInitializerForClass(Button, horizontalScrollBarThumbInitializer, THEME_NAME_HORIZONTAL_SCROLL_BAR_THUMB);
-			this.setInitializerForClass(Button, horizontalScrollBarMinimumTrackInitializer, THEME_NAME_HORIZONTAL_SCROLL_BAR_MINIMUM_TRACK);
-			this.setInitializerForClass(Button, verticalScrollBarIncrementButtonInitializer, THEME_NAME_VERTICAL_SCROLL_BAR_INCREMENT_BUTTON);
-			this.setInitializerForClass(Button, verticalScrollBarDecrementButtonInitializer, THEME_NAME_VERTICAL_SCROLL_BAR_DECREMENT_BUTTON);
-			this.setInitializerForClass(Button, verticalScrollBarThumbInitializer, THEME_NAME_VERTICAL_SCROLL_BAR_THUMB);
-			this.setInitializerForClass(Button, verticalScrollBarMinimumTrackInitializer, THEME_NAME_VERTICAL_SCROLL_BAR_MINIMUM_TRACK);
+			this._scrollBarStyleProvider.setFunctionForStyleName(Scroller.DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR, this.setHorizontalScrollBarStyles);
+			this._scrollBarStyleProvider.setFunctionForStyleName(Scroller.DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR, this.setVerticalScrollBarStyles);
+			this._buttonStyleProvider.setFunctionForStyleName(THEME_NAME_HORIZONTAL_SCROLL_BAR_INCREMENT_BUTTON, this.setHorizontalScrollBarIncrementButtonStyles);
+			this._buttonStyleProvider.setFunctionForStyleName(THEME_NAME_HORIZONTAL_SCROLL_BAR_DECREMENT_BUTTON, this.setHorizontalScrollBarDecrementButtonStyles);
+			this._buttonStyleProvider.setFunctionForStyleName(THEME_NAME_HORIZONTAL_SCROLL_BAR_THUMB, this.setHorizontalScrollBarThumbStyles);
+			this._buttonStyleProvider.setFunctionForStyleName(THEME_NAME_HORIZONTAL_SCROLL_BAR_MINIMUM_TRACK, this.setHorizontalScrollBarMinimumTrackStyles);
+			this._buttonStyleProvider.setFunctionForStyleName(THEME_NAME_VERTICAL_SCROLL_BAR_INCREMENT_BUTTON, this.setVerticalScrollBarIncrementButtonStyles);
+			this._buttonStyleProvider.setFunctionForStyleName(THEME_NAME_VERTICAL_SCROLL_BAR_DECREMENT_BUTTON, this.setVerticalScrollBarDecrementButtonStyles);
+			this._buttonStyleProvider.setFunctionForStyleName(THEME_NAME_VERTICAL_SCROLL_BAR_THUMB, this.setVerticalScrollBarThumbStyles);
+			this._buttonStyleProvider.setFunctionForStyleName(THEME_NAME_VERTICAL_SCROLL_BAR_MINIMUM_TRACK, this.setVerticalScrollBarMinimumTrackStyles);
 
 			//scroll container
-			this.setInitializerForClass(ScrollContainer, scrollContainerInitializer);
-			this.setInitializerForClass(ScrollContainer, scrollContainerToolbarInitializer, ScrollContainer.ALTERNATE_NAME_TOOLBAR);
+			this._scrollContainerStyleProvider.defaultStyleFunction = this.setScrollContainerStyles;
+			this._scrollContainerStyleProvider.setFunctionForStyleName(ScrollContainer.ALTERNATE_NAME_TOOLBAR, this.setToolbarScrollContainerStyles);
+
+			//scroll screen
+			this._scrollScreenStyleProvider.defaultStyleFunction = this.setScrollScreenStyles;
 
 			//scroll text
-			this.setInitializerForClass(ScrollText, scrollTextInitializer);
+			this._scrollTextStyleProvider.defaultStyleFunction = this.setScrollTextStyles;
 
 			//simple scroll bar
-			this.setInitializerForClass(SimpleScrollBar, horizontalSimpleScrollBarInitializer, Scroller.DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR);
-			this.setInitializerForClass(SimpleScrollBar, verticalSimpleScrollBarInitializer, Scroller.DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR);
-			this.setInitializerForClass(Button, horizontalSimpleScrollBarThumbInitializer, THEME_NAME_HORIZONTAL_SIMPLE_SCROLL_BAR_THUMB);
-			this.setInitializerForClass(Button, verticalSimpleScrollBarThumbInitializer, THEME_NAME_VERTICAL_SIMPLE_SCROLL_BAR_THUMB);
+			this._simpleScrollBarStyleProvider.setFunctionForStyleName(Scroller.DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR, this.setHorizontalSimpleScrollBarStyles);
+			this._simpleScrollBarStyleProvider.setFunctionForStyleName(Scroller.DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR, this.setVerticalSimpleScrollBarStyles);
+			this._buttonStyleProvider.setFunctionForStyleName(THEME_NAME_HORIZONTAL_SIMPLE_SCROLL_BAR_THUMB, this.setHorizontalSimpleScrollBarThumbStyles);
+			this._buttonStyleProvider.setFunctionForStyleName(THEME_NAME_VERTICAL_SIMPLE_SCROLL_BAR_THUMB, this.setVerticalSimpleScrollBarThumbStyles);
 
 			//slider
-			this.setInitializerForClass(Slider, sliderInitializer);
-			this.setInitializerForClass(Button, horizontalSliderThumbInitializer, THEME_NAME_HORIZONTAL_SLIDER_THUMB);
-			this.setInitializerForClass(Button, horizontalSliderMinimumTrackInitializer, THEME_NAME_HORIZONTAL_SLIDER_MINIMUM_TRACK);
-			this.setInitializerForClass(Button, verticalSliderThumbInitializer, THEME_NAME_VERTICAL_SLIDER_THUMB);
-			this.setInitializerForClass(Button, verticalSliderMinimumTrackInitializer, THEME_NAME_VERTICAL_SLIDER_MINIMUM_TRACK);
+			this._sliderStyleProvider.defaultStyleFunction = this.setSliderStyles;
+			this._buttonStyleProvider.setFunctionForStyleName(THEME_NAME_HORIZONTAL_SLIDER_THUMB, this.setHorizontalSliderThumbInitializer);
+			this._buttonStyleProvider.setFunctionForStyleName(THEME_NAME_HORIZONTAL_SLIDER_MINIMUM_TRACK, this.setHorizontalSliderMinimumTrackStyles);
+			this._buttonStyleProvider.setFunctionForStyleName(THEME_NAME_VERTICAL_SLIDER_THUMB, this.setVerticalSliderThumbStyles);
+			this._buttonStyleProvider.setFunctionForStyleName(THEME_NAME_VERTICAL_SLIDER_MINIMUM_TRACK, this.setVerticalSliderMinimumTrackStyles);
 
 			//tab bar
-			this.setInitializerForClass(Button, tabInitializer, TabBar.DEFAULT_CHILD_NAME_TAB);
+			this._tabBarStyleProvider.defaultStyleFunction = this.setTabBarStyles;
+			this._buttonStyleProvider.setFunctionForStyleName(TabBar.DEFAULT_CHILD_NAME_TAB, this.setTabStyles);
 
 			//text area
-			this.setInitializerForClass(TextArea, textAreaInitializer);
+			this._textAreaStyleProvider.defaultStyleFunction = this.setTextAreaStyles;
 
 			//text input
-			this.setInitializerForClass(TextInput, textInputInitializer);
-			this.setInitializerForClass(TextInput, searchTextInputInitializer, TextInput.ALTERNATE_NAME_SEARCH_TEXT_INPUT);
+			this._textInputStyleProvider.defaultStyleFunction = this.setTextInputStyles;
+			this._textInputStyleProvider.setFunctionForStyleName(TextInput.ALTERNATE_NAME_SEARCH_TEXT_INPUT, this.setSearchTextInputStyles);
 
 			//toggle switch
-			this.setInitializerForClass(ToggleSwitch, toggleSwitchInitializer);
-			this.setInitializerForClass(Button, toggleSwitchOnTrackInitializer, ToggleSwitch.DEFAULT_CHILD_NAME_ON_TRACK);
-			this.setInitializerForClass(Button, toggleSwitchThumbInitializer, ToggleSwitch.DEFAULT_CHILD_NAME_THUMB);
+			this._toggleSwitchStyleProvider.defaultStyleFunction = this.setToggleSwitchStyles;
+			this._buttonStyleProvider.setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_NAME_ON_TRACK, this.setToggleSwitchOnTrackStyles);
+			this._buttonStyleProvider.setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_NAME_THUMB, this.setToggleSwitchThumbStyles);
 		}
 
 		protected function pageIndicatorNormalSymbolFactory():Image
@@ -739,88 +801,80 @@ package feathers.themes
 			return new Image(this.pageIndicatorSelectedSkinTexture);
 		}
 
-		protected function nothingInitializer(target:IFeathersControl):void
-		{
-			//do nothing
-		}
-
-		protected function screenInitializer(screen:Screen):void
+		protected function setScreenStyles(screen:Screen):void
 		{
 			screen.originalDPI = this.originalDPI;
 		}
 
-		protected function panelScreenInitializer(screen:PanelScreen):void
+		protected function setScrollerStyles(scroller:Scroller):void
 		{
-			screen.originalDPI = this.originalDPI;
-
-			screen.interactionMode = ScrollContainer.INTERACTION_MODE_MOUSE;
-			screen.scrollBarDisplayMode = ScrollContainer.SCROLL_BAR_DISPLAY_MODE_FIXED;
-
-			screen.horizontalScrollBarFactory = scrollBarFactory;
-			screen.verticalScrollBarFactory = scrollBarFactory;
+			scroller.clipContent = true;
+			scroller.horizontalScrollBarFactory = scrollBarFactory;
+			scroller.verticalScrollBarFactory = scrollBarFactory;
+			scroller.interactionMode = ScrollContainer.INTERACTION_MODE_MOUSE;
+			scroller.scrollBarDisplayMode = ScrollContainer.SCROLL_BAR_DISPLAY_MODE_FIXED;
 		}
 
-		protected function scrollScreenInitializer(screen:ScrollScreen):void
+		protected function setPanelScreenStyles(screen:PanelScreen):void
 		{
+			this.setScrollerStyles(screen);
+
 			screen.originalDPI = this.originalDPI;
-
-			screen.interactionMode = ScrollContainer.INTERACTION_MODE_MOUSE;
-			screen.scrollBarDisplayMode = ScrollContainer.SCROLL_BAR_DISPLAY_MODE_FIXED;
-
-			screen.horizontalScrollBarFactory = scrollBarFactory;
-			screen.verticalScrollBarFactory = scrollBarFactory;
 		}
 
-		protected function labelInitializer(label:Label):void
+		protected function setScrollScreenStyles(screen:ScrollScreen):void
+		{
+			this.setScrollerStyles(screen);
+
+			screen.originalDPI = this.originalDPI;
+		}
+
+		protected function setLabelStyles(label:Label):void
 		{
 			label.textRendererProperties.textFormat = this.defaultTextFormat;
 			label.textRendererProperties.disabledTextFormat = this.disabledTextFormat;
 		}
 
-		protected function headingLabelInitializer(label:Label):void
+		protected function setHeadingLabelStyles(label:Label):void
 		{
 			label.textRendererProperties.textFormat = this.headingTextFormat;
 			label.textRendererProperties.disabledTextFormat = this.headingDisabledTextFormat;
 		}
 
-		protected function detailLabelInitializer(label:Label):void
+		protected function setDetailLabelStyles(label:Label):void
 		{
 			label.textRendererProperties.textFormat = this.detailTextFormat;
 			label.textRendererProperties.disabledTextFormat = this.detailDisabledTextFormat;
 		}
 
-		protected function scrollTextInitializer(text:ScrollText):void
+		protected function setScrollTextStyles(text:ScrollText):void
 		{
+			this.setScrollerStyles(text);
+
 			text.textFormat = this.defaultTextFormat;
 			text.disabledTextFormat = this.disabledTextFormat;
 			text.paddingTop = text.paddingRight = text.paddingBottom = text.paddingLeft = 8;
-
-			text.interactionMode = ScrollText.INTERACTION_MODE_MOUSE;
-			text.scrollBarDisplayMode = ScrollText.SCROLL_BAR_DISPLAY_MODE_FIXED;
-
-			text.horizontalScrollBarFactory = scrollBarFactory;
-			text.verticalScrollBarFactory = scrollBarFactory;
 		}
 
-		protected function itemRendererAccessoryLabelInitializer(renderer:TextFieldTextRenderer):void
+		protected function setItemRendererAccessoryLabelStyles(renderer:TextFieldTextRenderer):void
 		{
 			renderer.textFormat = this.defaultTextFormat;
 		}
 
-		protected function itemRendererIconLabelInitializer(renderer:TextFieldTextRenderer):void
+		protected function setItemRendererIconLabelStyles(renderer:TextFieldTextRenderer):void
 		{
 			renderer.textFormat = this.defaultTextFormat;
 		}
 
-		protected function alertMessageInitializer(renderer:TextFieldTextRenderer):void
+		protected function setAlertMessageTextRendererStyles(renderer:TextFieldTextRenderer):void
 		{
 			renderer.textFormat = this.defaultTextFormat;
 			renderer.wordWrap = true;
 		}
 
-		protected function buttonInitializer(button:Button):void
+		protected function setButtonStyles(button:Button):void
 		{
-			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = this.buttonUpSkinTextures;
 			skinSelector.defaultSelectedValue = this.buttonSelectedUpSkinTextures;
 			skinSelector.setValueForState(this.buttonHoverSkinTextures, Button.STATE_HOVER, false);
@@ -833,9 +887,9 @@ package feathers.themes
 			this.baseButtonInitializer(button);
 		}
 
-		protected function quietButtonInitializer(button:Button):void
+		protected function setQuietButtonStyles(button:Button):void
 		{
-			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = null;
 			skinSelector.defaultSelectedValue = this.buttonSelectedUpSkinTextures;
 			skinSelector.setValueForState(this.buttonHoverSkinTextures, Button.STATE_HOVER, false);
@@ -863,11 +917,11 @@ package feathers.themes
 			button.minWidth = button.minHeight = 12;
 		}
 
-		protected function pickerListButtonInitializer(button:Button):void
+		protected function setPickerListButtonStyles(button:Button):void
 		{
-			this.buttonInitializer(button);
+			this.setButtonStyles(button);
 
-			const iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			iconSelector.defaultValue = this.pickerListUpIconTexture;
 			iconSelector.setValueForState(this.pickerListHoverIconTexture, Button.STATE_HOVER, false);
 			iconSelector.setValueForState(this.pickerListDownIconTexture, Button.STATE_DOWN, false);
@@ -875,20 +929,20 @@ package feathers.themes
 			button.stateToIconFunction = iconSelector.updateValue;
 
 			button.gap = Number.POSITIVE_INFINITY; //fill as completely as possible
-			button.minGap = 2;
+			button.minGap = 10;
 			button.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			button.iconPosition = Button.ICON_POSITION_RIGHT;
 			button.paddingRight = 6;
 		}
 
-		protected function toggleSwitchOnTrackInitializer(track:Button):void
+		protected function setToggleSwitchOnTrackStyles(track:Button):void
 		{
 			track.defaultSkin = new Scale9Image(buttonSelectedUpSkinTextures);
 		}
 
-		protected function toggleSwitchThumbInitializer(thumb:Button):void
+		protected function setToggleSwitchThumbStyles(thumb:Button):void
 		{
-			this.buttonInitializer(thumb);
+			this.setButtonStyles(thumb);
 
 			var frame:Rectangle = this.buttonUpSkinTextures.texture.frame;
 			if(frame)
@@ -901,9 +955,9 @@ package feathers.themes
 			}
 		}
 
-		protected function horizontalScrollBarIncrementButtonInitializer(button:Button):void
+		protected function setHorizontalScrollBarIncrementButtonStyles(button:Button):void
 		{
-			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = this.hScrollBarStepButtonUpSkinTextures;
 			skinSelector.setValueForState(this.hScrollBarStepButtonHoverSkinTextures, Button.STATE_HOVER, false);
 			skinSelector.setValueForState(this.hScrollBarStepButtonDownSkinTextures, Button.STATE_DOWN, false);
@@ -912,14 +966,14 @@ package feathers.themes
 
 			button.defaultIcon = new Image(this.hScrollBarIncrementButtonIconTexture);
 
-			const incrementButtonDisabledIcon:Quad = new Quad(1, 1, 0xff00ff);
+			var incrementButtonDisabledIcon:Quad = new Quad(1, 1, 0xff00ff);
 			incrementButtonDisabledIcon.alpha = 0;
 			button.disabledIcon = incrementButtonDisabledIcon;
 		}
 
-		protected function horizontalScrollBarDecrementButtonInitializer(button:Button):void
+		protected function setHorizontalScrollBarDecrementButtonStyles(button:Button):void
 		{
-			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = hScrollBarStepButtonUpSkinTextures;
 			skinSelector.setValueForState(this.hScrollBarStepButtonHoverSkinTextures, Button.STATE_HOVER, false);
 			skinSelector.setValueForState(this.hScrollBarStepButtonDownSkinTextures, Button.STATE_DOWN, false);
@@ -928,14 +982,14 @@ package feathers.themes
 
 			button.defaultIcon = new Image(this.hScrollBarDecrementButtonIconTexture);
 
-			const decrementButtonDisabledIcon:Quad = new Quad(1, 1, 0xff00ff);
+			var decrementButtonDisabledIcon:Quad = new Quad(1, 1, 0xff00ff);
 			decrementButtonDisabledIcon.alpha = 0;
 			button.disabledIcon = decrementButtonDisabledIcon;
 		}
 
-		protected function horizontalScrollBarThumbInitializer(thumb:Button):void
+		protected function setHorizontalScrollBarThumbStyles(thumb:Button):void
 		{
-			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = this.hScrollBarThumbUpSkinTextures;
 			skinSelector.setValueForState(this.hScrollBarThumbHoverSkinTextures, Button.STATE_HOVER, false);
 			skinSelector.setValueForState(this.hScrollBarThumbDownSkinTextures, Button.STATE_DOWN, false);
@@ -946,14 +1000,14 @@ package feathers.themes
 			thumb.paddingTop = 4;
 		}
 
-		protected function horizontalScrollBarMinimumTrackInitializer(track:Button):void
+		protected function setHorizontalScrollBarMinimumTrackStyles(track:Button):void
 		{
 			track.defaultSkin = new Scale9Image(this.hScrollBarTrackSkinTextures);
 		}
 
-		protected function verticalScrollBarIncrementButtonInitializer(button:Button):void
+		protected function setVerticalScrollBarIncrementButtonStyles(button:Button):void
 		{
-			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = this.vScrollBarStepButtonUpSkinTextures;
 			skinSelector.setValueForState(this.vScrollBarStepButtonHoverSkinTextures, Button.STATE_HOVER, false);
 			skinSelector.setValueForState(this.vScrollBarStepButtonDownSkinTextures, Button.STATE_DOWN, false);
@@ -962,14 +1016,14 @@ package feathers.themes
 
 			button.defaultIcon = new Image(this.vScrollBarIncrementButtonIconTexture);
 
-			const incrementButtonDisabledIcon:Quad = new Quad(1, 1, 0xff00ff);
+			var incrementButtonDisabledIcon:Quad = new Quad(1, 1, 0xff00ff);
 			incrementButtonDisabledIcon.alpha = 0;
 			button.disabledIcon = incrementButtonDisabledIcon;
 		}
 
-		protected function verticalScrollBarDecrementButtonInitializer(button:Button):void
+		protected function setVerticalScrollBarDecrementButtonStyles(button:Button):void
 		{
-			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = this.vScrollBarStepButtonUpSkinTextures;
 			skinSelector.setValueForState(this.vScrollBarStepButtonHoverSkinTextures, Button.STATE_HOVER, false);
 			skinSelector.setValueForState(this.vScrollBarStepButtonDownSkinTextures, Button.STATE_DOWN, false);
@@ -978,14 +1032,14 @@ package feathers.themes
 
 			button.defaultIcon = new Image(this.vScrollBarDecrementButtonIconTexture);
 
-			const decrementButtonDisabledIcon:Quad = new Quad(1, 1, 0xff00ff);
+			var decrementButtonDisabledIcon:Quad = new Quad(1, 1, 0xff00ff);
 			decrementButtonDisabledIcon.alpha = 0;
 			button.disabledIcon = decrementButtonDisabledIcon;
 		}
 
-		protected function verticalScrollBarThumbInitializer(thumb:Button):void
+		protected function setVerticalScrollBarThumbStyles(thumb:Button):void
 		{
-			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = this.vScrollBarThumbUpSkinTextures;
 			skinSelector.setValueForState(this.vScrollBarThumbHoverSkinTextures, Button.STATE_HOVER, false);
 			skinSelector.setValueForState(this.vScrollBarThumbDownSkinTextures, Button.STATE_DOWN, false);
@@ -996,14 +1050,14 @@ package feathers.themes
 			thumb.paddingLeft = 4;
 		}
 
-		protected function verticalScrollBarMinimumTrackInitializer(track:Button):void
+		protected function setVerticalScrollBarMinimumTrackStyles(track:Button):void
 		{
 			track.defaultSkin = new Scale9Image(this.vScrollBarTrackSkinTextures);
 		}
 
-		protected function horizontalSimpleScrollBarThumbInitializer(thumb:Button):void
+		protected function setHorizontalSimpleScrollBarThumbStyles(thumb:Button):void
 		{
-			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = this.hScrollBarThumbUpSkinTextures;
 			skinSelector.setValueForState(this.hScrollBarThumbHoverSkinTextures, Button.STATE_HOVER, false);
 			skinSelector.setValueForState(this.hScrollBarThumbDownSkinTextures, Button.STATE_DOWN, false);
@@ -1014,9 +1068,9 @@ package feathers.themes
 			thumb.paddingTop = 4;
 		}
 
-		protected function verticalSimpleScrollBarThumbInitializer(thumb:Button):void
+		protected function setVerticalSimpleScrollBarThumbStyles(thumb:Button):void
 		{
-			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = this.vScrollBarThumbUpSkinTextures;
 			skinSelector.setValueForState(this.vScrollBarThumbHoverSkinTextures, Button.STATE_HOVER, false);
 			skinSelector.setValueForState(this.vScrollBarThumbDownSkinTextures, Button.STATE_DOWN, false);
@@ -1027,9 +1081,9 @@ package feathers.themes
 			thumb.paddingLeft = 4;
 		}
 
-		protected function horizontalSliderThumbInitializer(thumb:Button):void
+		protected function setHorizontalSliderThumbInitializer(thumb:Button):void
 		{
-			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = this.hSliderThumbUpSkinTexture;
 			skinSelector.setValueForState(this.hSliderThumbHoverSkinTexture, Button.STATE_HOVER, false);
 			skinSelector.setValueForState(this.hSliderThumbDownSkinTexture, Button.STATE_DOWN, false);
@@ -1037,14 +1091,14 @@ package feathers.themes
 			thumb.stateToSkinFunction = skinSelector.updateValue;
 		}
 
-		protected function horizontalSliderMinimumTrackInitializer(track:Button):void
+		protected function setHorizontalSliderMinimumTrackStyles(track:Button):void
 		{
 			track.defaultSkin = new Scale3Image(this.hSliderTrackSkinTextures);
 		}
 
-		protected function verticalSliderThumbInitializer(thumb:Button):void
+		protected function setVerticalSliderThumbStyles(thumb:Button):void
 		{
-			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = this.vSliderThumbUpSkinTexture;
 			skinSelector.setValueForState(this.vSliderThumbHoverSkinTexture, Button.STATE_HOVER, false);
 			skinSelector.setValueForState(this.vSliderThumbDownSkinTexture, Button.STATE_DOWN, false);
@@ -1052,14 +1106,15 @@ package feathers.themes
 			thumb.stateToSkinFunction = skinSelector.updateValue;
 		}
 
-		protected function verticalSliderMinimumTrackInitializer(track:Button):void
+		protected function setVerticalSliderMinimumTrackStyles(track:Button):void
 		{
 			track.defaultSkin = new Scale3Image(this.vSliderTrackSkinTextures);
 		}
 
-		protected function checkInitializer(check:Check):void
+		protected function setCheckStyles(check:Check):void
 		{
-			const iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			iconSelector.setValueTypeHandler(SubTexture, textureValueTypeHandler);
 			iconSelector.defaultValue = this.checkUpIconTexture;
 			iconSelector.defaultSelectedValue = this.checkSelectedUpIconTexture;
 			iconSelector.setValueForState(this.checkHoverIconTexture, Button.STATE_HOVER, false);
@@ -1068,6 +1123,10 @@ package feathers.themes
 			iconSelector.setValueForState(this.checkSelectedHoverIconTexture, Button.STATE_HOVER, true);
 			iconSelector.setValueForState(this.checkSelectedDownIconTexture, Button.STATE_DOWN, true);
 			iconSelector.setValueForState(this.checkSelectedDisabledIconTexture, Button.STATE_DISABLED, true);
+			iconSelector.displayObjectProperties =
+			{
+				snapToPixels: true
+			};
 			check.stateToIconFunction = iconSelector.updateValue;
 
 			check.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
@@ -1082,9 +1141,9 @@ package feathers.themes
 			check.gap = 4;
 		}
 
-		protected function radioInitializer(radio:Radio):void
+		protected function setRadioStyles(radio:Radio):void
 		{
-			const iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			iconSelector.defaultValue = this.radioUpIconTexture;
 			iconSelector.defaultSelectedValue = this.radioSelectedUpIconTexture;
 			iconSelector.setValueForState(this.radioHoverIconTexture, Button.STATE_HOVER, false);
@@ -1107,9 +1166,16 @@ package feathers.themes
 			radio.gap = 4;
 		}
 
-		protected function tabInitializer(tab:Button):void
+		protected function setTabBarStyles(tabBar:TabBar):void
 		{
-			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			tabBar.distributeTabSizes = false;
+			tabBar.horizontalAlign = TabBar.HORIZONTAL_ALIGN_LEFT;
+			tabBar.verticalAlign = TabBar.VERTICAL_ALIGN_JUSTIFY;
+		}
+
+		protected function setTabStyles(tab:Button):void
+		{
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = this.tabUpSkinTextures;
 			skinSelector.defaultSelectedValue = this.tabSelectedUpSkinTextures;
 			skinSelector.setValueForState(this.tabHoverSkinTextures, Button.STATE_HOVER, false);
@@ -1127,9 +1193,9 @@ package feathers.themes
 			tab.minWidth = tab.minHeight = 12;
 		}
 
-		protected function stepperIncrementButtonInitializer(button:Button):void
+		protected function setNumericStepperIncrementButtonStyles(button:Button):void
 		{
-			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = this.stepperIncrementButtonUpSkinTextures;
 			skinSelector.setValueForState(this.stepperIncrementButtonHoverSkinTextures, Button.STATE_HOVER, false);
 			skinSelector.setValueForState(this.stepperIncrementButtonDownSkinTextures, Button.STATE_DOWN, false);
@@ -1137,9 +1203,9 @@ package feathers.themes
 			button.stateToSkinFunction = skinSelector.updateValue;
 		}
 
-		protected function stepperDecrementButtonInitializer(button:Button):void
+		protected function setNumericStepperDecrementButtonStyles(button:Button):void
 		{
-			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = this.stepperDecrementButtonUpSkinTextures;
 			skinSelector.setValueForState(this.stepperDecrementButtonHoverSkinTextures, Button.STATE_HOVER, false);
 			skinSelector.setValueForState(this.stepperDecrementButtonDownSkinTextures, Button.STATE_DOWN, false);
@@ -1147,7 +1213,7 @@ package feathers.themes
 			button.stateToSkinFunction = skinSelector.updateValue;
 		}
 
-		protected function toggleSwitchInitializer(toggle:ToggleSwitch):void
+		protected function setToggleSwitchStyles(toggle:ToggleSwitch):void
 		{
 			toggle.trackLayoutMode = ToggleSwitch.TRACK_LAYOUT_MODE_SINGLE;
 			toggle.labelAlign = ToggleSwitch.LABEL_ALIGN_MIDDLE;
@@ -1158,12 +1224,12 @@ package feathers.themes
 			toggle.focusPadding = -1;
 		}
 
-		protected function buttonGroupInitializer(group:ButtonGroup):void
+		protected function setButtonGroupStyles(group:ButtonGroup):void
 		{
 			group.gap = 4;
 		}
 
-		protected function alertButtonGroupInitializer(group:ButtonGroup):void
+		protected function setAlertButtonGroupStyles(group:ButtonGroup):void
 		{
 			group.direction = ButtonGroup.DIRECTION_HORIZONTAL;
 			group.horizontalAlign = ButtonGroup.HORIZONTAL_ALIGN_CENTER;
@@ -1175,7 +1241,7 @@ package feathers.themes
 			group.paddingLeft = 12;
 		}
 
-		protected function sliderInitializer(slider:Slider):void
+		protected function setSliderStyles(slider:Slider):void
 		{
 			slider.trackLayoutMode = Slider.TRACK_LAYOUT_MODE_SINGLE;
 			slider.minimumPadding = slider.maximumPadding = -vSliderThumbUpSkinTexture.height / 2;
@@ -1200,7 +1266,7 @@ package feathers.themes
 			slider.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
 		}
 
-		protected function verticalScrollBarInitializer(scrollBar:ScrollBar):void
+		protected function setVerticalScrollBarStyles(scrollBar:ScrollBar):void
 		{
 			scrollBar.direction = ScrollBar.DIRECTION_VERTICAL;
 			scrollBar.trackLayoutMode = ScrollBar.TRACK_LAYOUT_MODE_SINGLE;
@@ -1211,7 +1277,7 @@ package feathers.themes
 			scrollBar.customMinimumTrackName = THEME_NAME_VERTICAL_SCROLL_BAR_MINIMUM_TRACK;
 		}
 
-		protected function horizontalScrollBarInitializer(scrollBar:ScrollBar):void
+		protected function setHorizontalScrollBarStyles(scrollBar:ScrollBar):void
 		{
 			scrollBar.direction = ScrollBar.DIRECTION_HORIZONTAL;
 			scrollBar.trackLayoutMode = ScrollBar.TRACK_LAYOUT_MODE_SINGLE;
@@ -1222,17 +1288,17 @@ package feathers.themes
 			scrollBar.customMinimumTrackName = THEME_NAME_HORIZONTAL_SCROLL_BAR_MINIMUM_TRACK;
 		}
 
-		protected function horizontalSimpleScrollBarInitializer(scrollBar:SimpleScrollBar):void
+		protected function setHorizontalSimpleScrollBarStyles(scrollBar:SimpleScrollBar):void
 		{
 			scrollBar.customThumbName = THEME_NAME_HORIZONTAL_SIMPLE_SCROLL_BAR_THUMB;
 		}
 
-		protected function verticalSimpleScrollBarInitializer(scrollBar:SimpleScrollBar):void
+		protected function setVerticalSimpleScrollBarStyles(scrollBar:SimpleScrollBar):void
 		{
 			scrollBar.customThumbName = THEME_NAME_VERTICAL_SIMPLE_SCROLL_BAR_THUMB;
 		}
 
-		protected function numericStepperInitializer(stepper:NumericStepper):void
+		protected function setNumericStepperStyles(stepper:NumericStepper):void
 		{
 			stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL;
 
@@ -1259,12 +1325,12 @@ package feathers.themes
 			input.promptProperties.textFormat = this.defaultTextFormat;
 		}
 
-		protected function textInputInitializer(input:TextInput):void
+		protected function setTextInputStyles(input:TextInput):void
 		{
 			this.baseTextInputInitializer(input);
 		}
 
-		protected function searchTextInputInitializer(input:TextInput):void
+		protected function setSearchTextInputStyles(input:TextInput):void
 		{
 			this.baseTextInputInitializer(input);
 
@@ -1274,7 +1340,7 @@ package feathers.themes
 			input.defaultIcon = searchIcon;
 		}
 
-		protected function numericStepperTextInputInitializer(input:TextInput):void
+		protected function setNumericStepperTextInputStyles(input:TextInput):void
 		{
 			input.minWidth = input.minHeight = 22;
 			input.gap = 2;
@@ -1282,17 +1348,19 @@ package feathers.themes
 			input.paddingRight = input.paddingLeft = 4;
 			input.textEditorProperties.textFormat = this.defaultTextFormat;
 
-			const backgroundSkin:Scale9Image = new Scale9Image(textInputBackgroundSkinTextures);
+			var backgroundSkin:Scale9Image = new Scale9Image(textInputBackgroundSkinTextures);
 			backgroundSkin.width = backgroundSkin.height;
 			input.backgroundSkin = backgroundSkin;
 
-			const backgroundDisabledSkin:Scale9Image = new Scale9Image(textInputBackgroundDisabledSkinTextures);
+			var backgroundDisabledSkin:Scale9Image = new Scale9Image(textInputBackgroundDisabledSkinTextures);
 			backgroundDisabledSkin.width = backgroundDisabledSkin.height;
 			input.backgroundDisabledSkin = backgroundDisabledSkin;
 		}
 
-		protected function textAreaInitializer(textArea:TextArea):void
+		protected function setTextAreaStyles(textArea:TextArea):void
 		{
+			this.setScrollerStyles(textArea);
+
 			textArea.textEditorProperties.textFormat = this.defaultTextFormat;
 
 			textArea.paddingTop = 2;
@@ -1303,24 +1371,18 @@ package feathers.themes
 			textArea.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
 			textArea.focusPadding = -1;
 
-			const backgroundSkin:Scale9Image = new Scale9Image(textInputBackgroundSkinTextures);
+			var backgroundSkin:Scale9Image = new Scale9Image(textInputBackgroundSkinTextures);
 			backgroundSkin.width = 264;
 			backgroundSkin.height = 88;
 			textArea.backgroundSkin = backgroundSkin;
 
-			const backgroundDisabledSkin:Scale9Image = new Scale9Image(textInputBackgroundDisabledSkinTextures);
+			var backgroundDisabledSkin:Scale9Image = new Scale9Image(textInputBackgroundDisabledSkinTextures);
 			backgroundDisabledSkin.width = 264;
 			backgroundDisabledSkin.height = 88;
 			textArea.backgroundDisabledSkin = backgroundDisabledSkin;
-
-			textArea.interactionMode = ScrollContainer.INTERACTION_MODE_MOUSE;
-			textArea.scrollBarDisplayMode = ScrollContainer.SCROLL_BAR_DISPLAY_MODE_FIXED;
-
-			textArea.horizontalScrollBarFactory = scrollBarFactory;
-			textArea.verticalScrollBarFactory = scrollBarFactory;
 		}
 
-		protected function pageIndicatorInitializer(pageIndicator:PageIndicator):void
+		protected function setPageIndicatorStyles(pageIndicator:PageIndicator):void
 		{
 			pageIndicator.interactionMode = PageIndicator.INTERACTION_MODE_PRECISE;
 			pageIndicator.normalSymbolFactory = this.pageIndicatorNormalSymbolFactory;
@@ -1331,9 +1393,9 @@ package feathers.themes
 			pageIndicator.minTouchWidth = pageIndicator.minTouchHeight = 12;
 		}
 
-		protected function progressBarInitializer(progress:ProgressBar):void
+		protected function setProgressBarStyles(progress:ProgressBar):void
 		{
-			const backgroundSkin:Scale9Image = new Scale9Image(simpleBorderBackgroundSkinTextures);
+			var backgroundSkin:Scale9Image = new Scale9Image(simpleBorderBackgroundSkinTextures);
 			backgroundSkin.width = backgroundSkin.height * 30;
 			progress.backgroundSkin = backgroundSkin;
 
@@ -1343,20 +1405,18 @@ package feathers.themes
 				progress.paddingLeft = 1;
 		}
 
-		protected function scrollContainerInitializer(container:ScrollContainer):void
+		protected function setScrollContainerStyles(container:ScrollContainer):void
 		{
-			container.interactionMode = ScrollContainer.INTERACTION_MODE_MOUSE;
-			container.scrollBarDisplayMode = ScrollContainer.SCROLL_BAR_DISPLAY_MODE_FIXED;
-
-			container.horizontalScrollBarFactory = scrollBarFactory;
-			container.verticalScrollBarFactory = scrollBarFactory;
+			this.setScrollerStyles(container);
 		}
 
-		protected function scrollContainerToolbarInitializer(container:ScrollContainer):void
+		protected function setToolbarScrollContainerStyles(container:ScrollContainer):void
 		{
+			this.setScrollerStyles(container);
+
 			if(!container.layout)
 			{
-				const layout:HorizontalLayout = new HorizontalLayout();
+				var layout:HorizontalLayout = new HorizontalLayout();
 				layout.paddingTop = layout.paddingBottom = 2;
 				layout.paddingRight = layout.paddingLeft = 6;
 				layout.gap = 2;
@@ -1365,33 +1425,25 @@ package feathers.themes
 
 			container.minHeight = 22;
 
-			container.interactionMode = ScrollContainer.INTERACTION_MODE_MOUSE;
-			container.scrollBarDisplayMode = ScrollContainer.SCROLL_BAR_DISPLAY_MODE_FIXED;
-
-			container.horizontalScrollBarFactory = scrollBarFactory;
-			container.verticalScrollBarFactory = scrollBarFactory;
-
 			container.backgroundSkin = new Scale9Image(headerBackgroundSkinTextures);
 		}
 
-		protected function panelInitializer(panel:Panel):void
+		protected function setPanelStyles(panel:Panel):void
 		{
+			this.setScrollerStyles(panel);
+
 			panel.backgroundSkin = new Scale9Image(panelBorderBackgroundSkinTextures);
 
 			panel.paddingTop = 0;
 			panel.paddingRight = 10;
 			panel.paddingBottom = 10;
 			panel.paddingLeft = 10;
-
-			panel.interactionMode = ScrollContainer.INTERACTION_MODE_MOUSE;
-			panel.scrollBarDisplayMode = ScrollContainer.SCROLL_BAR_DISPLAY_MODE_FIXED;
-
-			panel.horizontalScrollBarFactory = scrollBarFactory;
-			panel.verticalScrollBarFactory = scrollBarFactory;
 		}
 
-		protected function alertInitializer(alert:Alert):void
+		protected function setAlertStyles(alert:Alert):void
 		{
+			this.setScrollerStyles(alert);
+
 			alert.backgroundSkin = new Scale9Image(panelBorderBackgroundSkinTextures);
 
 			alert.paddingTop = 0;
@@ -1400,24 +1452,22 @@ package feathers.themes
 			alert.paddingLeft = 14;
 			alert.gap = 12;
 
-			alert.interactionMode = ScrollContainer.INTERACTION_MODE_MOUSE;
-			alert.scrollBarDisplayMode = ScrollContainer.SCROLL_BAR_DISPLAY_MODE_FIXED;
-
-			alert.horizontalScrollBarFactory = scrollBarFactory;
-			alert.verticalScrollBarFactory = scrollBarFactory;
-
 			alert.maxWidth = alert.maxHeight = 300;
 		}
 
-		protected function drawersInitializer(drawers:Drawers):void
+		protected function setDrawersStyles(drawers:Drawers):void
 		{
 			var overlaySkin:Quad = new Quad(10, 10, MODAL_OVERLAY_COLOR);
 			overlaySkin.alpha = MODAL_OVERLAY_ALPHA;
 			drawers.overlaySkin = overlaySkin;
 		}
 
-		protected function listInitializer(list:List):void
+		protected function setListStyles(list:List):void
 		{
+			this.setScrollerStyles(list);
+
+			list.verticalScrollPolicy = List.SCROLL_POLICY_AUTO;
+
 			list.backgroundSkin = new Scale9Image(simpleBorderBackgroundSkinTextures);
 
 			list.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
@@ -1425,16 +1475,14 @@ package feathers.themes
 
 			list.paddingTop = list.paddingRight = list.paddingBottom =
 				list.paddingLeft = 1;
-
-			list.interactionMode = List.INTERACTION_MODE_MOUSE;
-			list.scrollBarDisplayMode = List.SCROLL_BAR_DISPLAY_MODE_FIXED;
-
-			list.horizontalScrollBarFactory = scrollBarFactory;
-			list.verticalScrollBarFactory = scrollBarFactory;
 		}
 
-		protected function groupedListInitializer(list:GroupedList):void
+		protected function setGroupedListStyles(list:GroupedList):void
 		{
+			this.setScrollerStyles(list);
+
+			list.verticalScrollPolicy = GroupedList.SCROLL_POLICY_AUTO;
+
 			list.backgroundSkin = new Scale9Image(simpleBorderBackgroundSkinTextures);
 
 			list.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
@@ -1442,28 +1490,22 @@ package feathers.themes
 
 			list.paddingTop = list.paddingRight = list.paddingBottom =
 				list.paddingLeft = 1;
-
-			list.interactionMode = GroupedList.INTERACTION_MODE_MOUSE;
-			list.scrollBarDisplayMode = GroupedList.SCROLL_BAR_DISPLAY_MODE_FIXED;
-
-			list.horizontalScrollBarFactory = scrollBarFactory;
-			list.verticalScrollBarFactory = scrollBarFactory;
 		}
 
-		protected function pickerListInitializer(list:PickerList):void
+		protected function setPickerListStyles(list:PickerList):void
 		{
 			list.popUpContentManager = new DropDownPopUpContentManager();
 		}
 
-		protected function pickerListListInitializer(list:List):void
+		protected function setPickerListListStyles(list:List):void
 		{
-			this.listInitializer(list);
+			this.setListStyles(list);
 			list.maxHeight = 110;
 		}
 
-		protected function defaultItemRendererInitializer(renderer:BaseDefaultItemRenderer):void
+		protected function setItemRendererStyles(renderer:BaseDefaultItemRenderer):void
 		{
-			const skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = this.itemRendererUpSkinTexture;
 			skinSelector.defaultSelectedValue = this.itemRendererSelectedUpSkinTexture;
 			skinSelector.setValueForState(this.itemRendererHoverSkinTexture, Button.STATE_HOVER, false);
@@ -1487,7 +1529,7 @@ package feathers.themes
 			renderer.minWidth = renderer.minHeight = 22;
 		}
 
-		protected function defaultHeaderOrFooterRendererInitializer(renderer:DefaultGroupedListHeaderOrFooterRenderer):void
+		protected function setGroupedListHeaderOrFooterRendererStyles(renderer:DefaultGroupedListHeaderOrFooterRenderer):void
 		{
 			renderer.backgroundSkin = new Scale9Image(groupedListHeaderBackgroundSkinTextures);
 			renderer.backgroundSkin.height = 18;
@@ -1499,11 +1541,11 @@ package feathers.themes
 			renderer.minWidth = renderer.minHeight = 18;
 		}
 
-		protected function calloutInitializer(callout:Callout):void
+		protected function setCalloutStyles(callout:Callout):void
 		{
 			callout.backgroundSkin = new Scale9Image(panelBorderBackgroundSkinTextures);
 
-			const arrowSkin:Quad = new Quad(8, 8, 0xff00ff);
+			var arrowSkin:Quad = new Quad(8, 8, 0xff00ff);
 			arrowSkin.alpha = 0;
 			callout.topArrowSkin =  callout.rightArrowSkin =  callout.bottomArrowSkin =
 				callout.leftArrowSkin = arrowSkin;
@@ -1512,7 +1554,7 @@ package feathers.themes
 			callout.paddingRight = callout.paddingLeft = 10;
 		}
 
-		protected function headerInitializer(header:Header):void
+		protected function setHeaderStyles(header:Header):void
 		{
 			header.backgroundSkin = new Scale9Image(headerBackgroundSkinTextures);
 
@@ -1527,7 +1569,7 @@ package feathers.themes
 			header.titleGap = 4;
 		}
 
-		protected function panelHeaderInitializer(header:Header):void
+		protected function setPanelHeaderStyles(header:Header):void
 		{
 			header.titleProperties.textFormat = this.headerTitleTextFormat;
 
@@ -1538,11 +1580,6 @@ package feathers.themes
 
 			header.gap = 2;
 			header.titleGap = 4;
-		}
-
-		protected function root_addedToStageHandler(event:Event):void
-		{
-			DisplayObject(event.currentTarget).stage.color = BACKGROUND_COLOR;
 		}
 	}
 }
