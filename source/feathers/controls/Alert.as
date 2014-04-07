@@ -15,6 +15,7 @@ package feathers.controls
 	import feathers.core.PropertyProxy;
 	import feathers.data.ListCollection;
 	import feathers.layout.VerticalLayout;
+	import feathers.skins.IStyleProvider;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
@@ -148,6 +149,15 @@ package feathers.controls
 		public static var overlayFactory:Function;
 
 		/**
+		 * The default <code>IStyleProvider</code> for all <code>Alert</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var styleProvider:IStyleProvider;
+
+		/**
 		 * The default factory that creates alerts when <code>Alert.show()</code>
 		 * is called. To use a different factory, you need to set
 		 * <code>Alert.alertFactory</code> to a <code>Function</code>
@@ -217,6 +227,7 @@ package feathers.controls
 		public function Alert()
 		{
 			super();
+			this._styleProvider = Alert.styleProvider;
 			this.headerName = DEFAULT_CHILD_NAME_HEADER;
 			this.footerName = DEFAULT_CHILD_NAME_BUTTON_GROUP;
 			this.buttonGroupFactory = defaultButtonGroupFactory;
