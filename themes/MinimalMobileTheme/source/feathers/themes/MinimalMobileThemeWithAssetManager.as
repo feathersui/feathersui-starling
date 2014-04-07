@@ -1282,17 +1282,23 @@ package feathers.themes
 
 		protected function setListStyles(list:List):void
 		{
+			this.setScrollerStyles(list);
+
 			list.backgroundSkin = new Quad(88 * this.scale, 88 * this.scale, LIST_BACKGROUND_COLOR);
 		}
 
 		protected function setGroupedListStyles(list:GroupedList):void
 		{
+			this.setScrollerStyles(list);
+
 			var backgroundSkin:Quad = new Quad(88 * this.scale, 88 * this.scale, LIST_BACKGROUND_COLOR);
 			list.backgroundSkin = backgroundSkin;
 		}
 
 		protected function setGroupedListInsetStyles(list:GroupedList):void
 		{
+			this.setScrollerStyles(list);
+
 			list.headerRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_HEADER_RENDERER;
 			list.footerRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_FOOTER_RENDERER;
 
