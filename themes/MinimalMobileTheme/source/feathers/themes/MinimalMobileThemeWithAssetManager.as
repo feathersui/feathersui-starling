@@ -466,7 +466,7 @@ package feathers.themes
 			this.initializeFonts();
 			this.initializeGlobals();
 			this.initializeStage();
-			this.setInitializers();
+			this.initializeStyleProviders();
 		}
 
 		protected function initializeGlobals():void
@@ -580,7 +580,7 @@ package feathers.themes
 			this.detailDisabledTextFormat = new BitmapFontTextFormat(FONT_NAME, this.detailFontSize, DISABLED_TEXT_COLOR);
 		}
 
-		protected function setInitializers():void
+		protected function initializeStyleProviders():void
 		{
 			Alert.styleProvider = this._alertStyleProvider;
 			Button.styleProvider = this._buttonStyleProvider;
