@@ -118,7 +118,7 @@ package feathers.themes
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/theme-assets
 	 */
-	public class MetalWorksMobileThemeWithAssetManager extends EventDispatcher
+	public class MetalWorksMobileThemeWithAssetManager extends StyleNameFunctionTheme
 	{
 		[Embed(source="/../assets/fonts/SourceSansPro-Regular.ttf",fontFamily="SourceSansPro",fontWeight="normal",mimeType="application/x-font",embedAsCFF="true")]
 		protected static const SOURCE_SANS_PRO_REGULAR:Class;
@@ -253,6 +253,17 @@ package feathers.themes
 			return null;
 		}
 
+		protected var _assetPaths:Vector.<String> = new <String>
+		[
+			"images/metalworks.xml",
+			"images/metalworks.png"
+		];
+
+		protected function get assetPaths():Vector.<String>
+		{
+			return this._assetPaths;
+		}
+
 		protected var assetManager:AssetManager;
 
 		protected var scale:Number = 1;
@@ -347,38 +358,6 @@ package feathers.themes
 		protected var horizontalScrollBarThumbSkinTextures:Scale3Textures;
 		protected var searchIconTexture:Texture;
 
-		protected var _alertStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
-		protected var _buttonStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
-		protected var _buttonGroupStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
-		protected var _calloutStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
-		protected var _checkStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
-		protected var _drawersStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
-		protected var _groupedListStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
-		protected var _headerStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
-		protected var _listItemRendererStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
-		protected var _groupedListItemRendererStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
-		protected var _groupedListHeaderOrFooterRendererStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
-		protected var _labelStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
-		protected var _listStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
-		protected var _numericStepperStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
-		protected var _pageIndicatorStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
-		protected var _panelStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
-		protected var _panelScreenStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
-		protected var _pickerListStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
-		protected var _progressBarStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
-		protected var _radioStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
-		protected var _screenStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
-		protected var _scrollContainerStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
-		protected var _scrollScreenStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
-		protected var _scrollTextStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
-		protected var _simpleScrollBarStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
-		protected var _sliderStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
-		protected var _tabBarStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
-		protected var _textAreaStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
-		protected var _textInputStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
-		protected var _toggleSwitchStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
-		protected var _textBlockTextRendererStyleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider();
-
 		public function dispose():void
 		{
 			if(this.atlas)
@@ -427,21 +406,29 @@ package feathers.themes
 				{
 					this.assetManager = new AssetManager(Starling.contentScaleFactor);
 				}
-				//add a trailing slash, if needed
+				var assetsBasePath:String;
 				if(assets is String)
 				{
-					var assetsDirectoryName:String = assets as String;
-					if(assetsDirectoryName.lastIndexOf("/") != assetsDirectoryName.length - 1)
-					{
-						assets = assetsDirectoryName + "/";
-					}
-					this.assetManager.enqueue(assets + "images/metalworks.xml");
-					this.assetManager.enqueue(assets + "images/metalworks.png");
+					assetsBasePath = assets as String;
 				}
 				else if(getQualifiedClassName(assets) == "flash.filesystem::File" && assets["isDirectory"])
 				{
-					this.assetManager.enqueue(assets["resolvePath"]("images/metalworks.xml"));
-					this.assetManager.enqueue(assets["resolvePath"]("images/metalworks.png"));
+					assetsBasePath = assets.url;
+				}
+				if(assetsBasePath)
+				{
+					//add a trailing slash, if needed
+					if(assetsBasePath.lastIndexOf("/") != assetsBasePath.length - 1)
+					{
+						assetsBasePath += "/";
+					}
+					var assetPaths:Vector.<String> = this.assetPaths;
+					var assetCount:int = assetPaths.length;
+					for(var i:int = 0; i < assetCount; i++)
+					{
+						var asset:String = assetPaths[i];
+						this.assetManager.enqueue(assetsBasePath + asset);
+					}
 				}
 				else
 				{
@@ -637,166 +624,134 @@ package feathers.themes
 
 		protected function initializeStyleProviders():void
 		{
-			Alert.styleProvider = this._alertStyleProvider;
-			Button.styleProvider = this._buttonStyleProvider;
-			ButtonGroup.styleProvider = this._buttonGroupStyleProvider;
-			Callout.styleProvider = this._calloutStyleProvider;
-			Check.styleProvider = this._checkStyleProvider;
-			DefaultGroupedListItemRenderer.styleProvider = this._groupedListItemRendererStyleProvider;
-			DefaultGroupedListHeaderOrFooterRenderer.styleProvider = this._groupedListHeaderOrFooterRendererStyleProvider;
-			DefaultListItemRenderer.styleProvider = this._listItemRendererStyleProvider;
-			Drawers.styleProvider = this._drawersStyleProvider;
-			GroupedList.styleProvider = this._groupedListStyleProvider;
-			Header.styleProvider = this._headerStyleProvider;
-			Label.styleProvider = this._labelStyleProvider;
-			List.styleProvider = this._listStyleProvider;
-			NumericStepper.styleProvider = this._numericStepperStyleProvider;
-			PageIndicator.styleProvider = this._pageIndicatorStyleProvider;
-			Panel.styleProvider = this._panelStyleProvider;
-			PanelScreen.styleProvider = this._panelScreenStyleProvider;
-			PickerList.styleProvider = this._pickerListStyleProvider;
-			ProgressBar.styleProvider = this._progressBarStyleProvider;
-			Radio.styleProvider = this._radioStyleProvider;
-			Screen.styleProvider = this._screenStyleProvider;
-			ScrollContainer.styleProvider = this._scrollContainerStyleProvider;
-			ScrollScreen.styleProvider = this._scrollScreenStyleProvider;
-			ScrollText.styleProvider = this._scrollTextStyleProvider;
-			SimpleScrollBar.styleProvider = this._simpleScrollBarStyleProvider;
-			Slider.styleProvider = this._sliderStyleProvider;
-			TabBar.styleProvider = this._tabBarStyleProvider;
-			TextArea.styleProvider = this._textAreaStyleProvider;
-			TextBlockTextRenderer.styleProvider = this._textBlockTextRendererStyleProvider;
-			TextInput.styleProvider = this._textInputStyleProvider;
-			ToggleSwitch.styleProvider = this._toggleSwitchStyleProvider;
-
 			//alert
-			this._alertStyleProvider.defaultStyleFunction = this.setAlertStyles;
-			this._buttonGroupStyleProvider.setFunctionForStyleName(Alert.DEFAULT_CHILD_NAME_BUTTON_GROUP, this.setAlertButtonGroupStyles);
-			this._buttonStyleProvider.setFunctionForStyleName(THEME_NAME_ALERT_BUTTON_GROUP_BUTTON, this.setAlertButtonGroupButtonStyles);
-			this._headerStyleProvider.setFunctionForStyleName(Alert.DEFAULT_CHILD_NAME_HEADER, this.setHeaderWithoutBackgroundStyles);
-			this._textBlockTextRendererStyleProvider.setFunctionForStyleName(Alert.DEFAULT_CHILD_NAME_MESSAGE, this.setAlertMessageTextRendererStyles);
+			this.getStyleProviderForClass(Alert).defaultStyleFunction = this.setAlertStyles;
+			this.getStyleProviderForClass(ButtonGroup).setFunctionForStyleName(Alert.DEFAULT_CHILD_NAME_BUTTON_GROUP, this.setAlertButtonGroupStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(THEME_NAME_ALERT_BUTTON_GROUP_BUTTON, this.setAlertButtonGroupButtonStyles);
+			this.getStyleProviderForClass(Header).setFunctionForStyleName(Alert.DEFAULT_CHILD_NAME_HEADER, this.setHeaderWithoutBackgroundStyles);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(Alert.DEFAULT_CHILD_NAME_MESSAGE, this.setAlertMessageTextRendererStyles);
 
 			//button
-			this._buttonStyleProvider.defaultStyleFunction = this.setButtonStyles;
-			this._buttonStyleProvider.setFunctionForStyleName(Button.ALTERNATE_NAME_CALL_TO_ACTION_BUTTON, this.setCallToActionButtonStyles);
-			this._buttonStyleProvider.setFunctionForStyleName(Button.ALTERNATE_NAME_QUIET_BUTTON, this.setQuietButtonStyles);
-			this._buttonStyleProvider.setFunctionForStyleName(Button.ALTERNATE_NAME_DANGER_BUTTON, this.setDangerButtonStyles);
-			this._buttonStyleProvider.setFunctionForStyleName(Button.ALTERNATE_NAME_BACK_BUTTON, this.setBackButtonStyles);
-			this._buttonStyleProvider.setFunctionForStyleName(Button.ALTERNATE_NAME_FORWARD_BUTTON, this.setForwardButtonStyles);
+			this.getStyleProviderForClass(Button).defaultStyleFunction = this.setButtonStyles;
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(Button.ALTERNATE_NAME_CALL_TO_ACTION_BUTTON, this.setCallToActionButtonStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(Button.ALTERNATE_NAME_QUIET_BUTTON, this.setQuietButtonStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(Button.ALTERNATE_NAME_DANGER_BUTTON, this.setDangerButtonStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(Button.ALTERNATE_NAME_BACK_BUTTON, this.setBackButtonStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(Button.ALTERNATE_NAME_FORWARD_BUTTON, this.setForwardButtonStyles);
 
 			//button group
-			this._buttonGroupStyleProvider.defaultStyleFunction = this.setButtonGroupStyles;
-			this._buttonStyleProvider.setFunctionForStyleName(ButtonGroup.DEFAULT_CHILD_NAME_BUTTON, this.setButtonGroupButtonStyles);
+			this.getStyleProviderForClass(ButtonGroup).defaultStyleFunction = this.setButtonGroupStyles;
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(ButtonGroup.DEFAULT_CHILD_NAME_BUTTON, this.setButtonGroupButtonStyles);
 
 			//callout
-			this._calloutStyleProvider.defaultStyleFunction = this.setCalloutStyles;
+			this.getStyleProviderForClass(Callout).defaultStyleFunction = this.setCalloutStyles;
 
 			//check
-			this._checkStyleProvider.defaultStyleFunction = this.setCheckStyles;
+			this.getStyleProviderForClass(Check).defaultStyleFunction = this.setCheckStyles;
 
 			//drawers
-			this._drawersStyleProvider.defaultStyleFunction = this.setDrawersStyles;
+			this.getStyleProviderForClass(Drawers).defaultStyleFunction = this.setDrawersStyles;
 
 			//grouped list (see also: item renderers)
-			this._groupedListStyleProvider.defaultStyleFunction = this.setGroupedListStyles;
-			this._groupedListStyleProvider.setFunctionForStyleName(GroupedList.ALTERNATE_NAME_INSET_GROUPED_LIST, this.setInsetGroupedListStyles);
+			this.getStyleProviderForClass(GroupedList).defaultStyleFunction = this.setGroupedListStyles;
+			this.getStyleProviderForClass(GroupedList).setFunctionForStyleName(GroupedList.ALTERNATE_NAME_INSET_GROUPED_LIST, this.setInsetGroupedListStyles);
 
 			//header
-			this._headerStyleProvider.defaultStyleFunction = this.setHeaderStyles;
+			this.getStyleProviderForClass(Header).defaultStyleFunction = this.setHeaderStyles;
 
 			//header and footer renderers for grouped list
-			this._groupedListHeaderOrFooterRendererStyleProvider.defaultStyleFunction = this.setGroupedListHeaderRendererStyles;
-			this._groupedListHeaderOrFooterRendererStyleProvider.setFunctionForStyleName(GroupedList.DEFAULT_CHILD_NAME_FOOTER_RENDERER, this.setGroupedListFooterRendererStyles);
-			this._groupedListHeaderOrFooterRendererStyleProvider.setFunctionForStyleName(GroupedList.ALTERNATE_CHILD_NAME_INSET_HEADER_RENDERER, this.setInsetGroupedListHeaderRendererStyles);
-			this._groupedListHeaderOrFooterRendererStyleProvider.setFunctionForStyleName(GroupedList.ALTERNATE_CHILD_NAME_INSET_FOOTER_RENDERER, this.setInsetGroupedListFooterRendererStyles);
+			this.getStyleProviderForClass(DefaultGroupedListHeaderOrFooterRenderer).defaultStyleFunction = this.setGroupedListHeaderRendererStyles;
+			this.getStyleProviderForClass(DefaultGroupedListHeaderOrFooterRenderer).setFunctionForStyleName(GroupedList.DEFAULT_CHILD_NAME_FOOTER_RENDERER, this.setGroupedListFooterRendererStyles);
+			this.getStyleProviderForClass(DefaultGroupedListHeaderOrFooterRenderer).setFunctionForStyleName(GroupedList.ALTERNATE_CHILD_NAME_INSET_HEADER_RENDERER, this.setInsetGroupedListHeaderRendererStyles);
+			this.getStyleProviderForClass(DefaultGroupedListHeaderOrFooterRenderer).setFunctionForStyleName(GroupedList.ALTERNATE_CHILD_NAME_INSET_FOOTER_RENDERER, this.setInsetGroupedListFooterRendererStyles);
 
 			//item renderers for lists
-			this._groupedListItemRendererStyleProvider.defaultStyleFunction = this.setItemRendererStyles;
-			this._listItemRendererStyleProvider.defaultStyleFunction = this.setItemRendererStyles;
+			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
+			this.getStyleProviderForClass(DefaultListItemRenderer).defaultStyleFunction = this.setItemRendererStyles;
 			//the picker list has a custom item renderer name defined by the theme
-			this._listItemRendererStyleProvider.setFunctionForStyleName(THEME_NAME_PICKER_LIST_ITEM_RENDERER, this.setPickerListItemRendererStyles);
-			this._textBlockTextRendererStyleProvider.setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ACCESSORY_LABEL, this.setItemRendererAccessoryLabelRendererStyles);
-			this._textBlockTextRendererStyleProvider.setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ICON_LABEL, this.setItemRendererIconLabelStyles);
+			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(THEME_NAME_PICKER_LIST_ITEM_RENDERER, this.setPickerListItemRendererStyles);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ACCESSORY_LABEL, this.setItemRendererAccessoryLabelRendererStyles);
+			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ICON_LABEL, this.setItemRendererIconLabelStyles);
 
-			this._groupedListItemRendererStyleProvider.setFunctionForStyleName(GroupedList.ALTERNATE_CHILD_NAME_INSET_ITEM_RENDERER, this.setInsetGroupedListMiddleItemRendererStyles);
-			this._groupedListItemRendererStyleProvider.setFunctionForStyleName(GroupedList.ALTERNATE_CHILD_NAME_INSET_FIRST_ITEM_RENDERER, this.setInsetGroupedListFirstItemRendererStyles);
-			this._groupedListItemRendererStyleProvider.setFunctionForStyleName(GroupedList.ALTERNATE_CHILD_NAME_INSET_LAST_ITEM_RENDERER, this.setInsetGroupedListLastItemRendererStyles);
-			this._groupedListItemRendererStyleProvider.setFunctionForStyleName(GroupedList.ALTERNATE_CHILD_NAME_INSET_SINGLE_ITEM_RENDERER, this.setInsetGroupedListSingleItemRendererStyles);
+			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).setFunctionForStyleName(GroupedList.ALTERNATE_CHILD_NAME_INSET_ITEM_RENDERER, this.setInsetGroupedListMiddleItemRendererStyles);
+			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).setFunctionForStyleName(GroupedList.ALTERNATE_CHILD_NAME_INSET_FIRST_ITEM_RENDERER, this.setInsetGroupedListFirstItemRendererStyles);
+			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).setFunctionForStyleName(GroupedList.ALTERNATE_CHILD_NAME_INSET_LAST_ITEM_RENDERER, this.setInsetGroupedListLastItemRendererStyles);
+			this.getStyleProviderForClass(DefaultGroupedListItemRenderer).setFunctionForStyleName(GroupedList.ALTERNATE_CHILD_NAME_INSET_SINGLE_ITEM_RENDERER, this.setInsetGroupedListSingleItemRendererStyles);
 
 			//labels
-			this._labelStyleProvider.defaultStyleFunction = this.setLabelStyles;
-			this._labelStyleProvider.setFunctionForStyleName(Label.ALTERNATE_NAME_HEADING, this.setHeadingLabelStyles);
-			this._labelStyleProvider.setFunctionForStyleName(Label.ALTERNATE_NAME_DETAIL, this.setDetailLabelStyles);
+			this.getStyleProviderForClass(Label).defaultStyleFunction = this.setLabelStyles;
+			this.getStyleProviderForClass(Label).setFunctionForStyleName(Label.ALTERNATE_NAME_HEADING, this.setHeadingLabelStyles);
+			this.getStyleProviderForClass(Label).setFunctionForStyleName(Label.ALTERNATE_NAME_DETAIL, this.setDetailLabelStyles);
 
 			//list (see also: item renderers)
-			this._listStyleProvider.defaultStyleFunction = this.setListStyles;
+			this.getStyleProviderForClass(List).defaultStyleFunction = this.setListStyles;
 
 			//numeric stepper
-			this._numericStepperStyleProvider.defaultStyleFunction = this.setNumericStepperStyles;
-			this._textInputStyleProvider.setFunctionForStyleName(NumericStepper.DEFAULT_CHILD_NAME_TEXT_INPUT, this.setNumericStepperTextInputStyles);
+			this.getStyleProviderForClass(NumericStepper).defaultStyleFunction = this.setNumericStepperStyles;
+			this.getStyleProviderForClass(TextInput).setFunctionForStyleName(NumericStepper.DEFAULT_CHILD_NAME_TEXT_INPUT, this.setNumericStepperTextInputStyles);
 
 			//page indicator
-			this._pageIndicatorStyleProvider.defaultStyleFunction = this.setPageIndicatorStyles;
+			this.getStyleProviderForClass(PageIndicator).defaultStyleFunction = this.setPageIndicatorStyles;
 
 			//panel
-			this._panelStyleProvider.defaultStyleFunction = this.setPanelStyles;
-			this._headerStyleProvider.setFunctionForStyleName(Panel.DEFAULT_CHILD_NAME_HEADER, this.setHeaderWithoutBackgroundStyles);
+			this.getStyleProviderForClass(Panel).defaultStyleFunction = this.setPanelStyles;
+			this.getStyleProviderForClass(Header).setFunctionForStyleName(Panel.DEFAULT_CHILD_NAME_HEADER, this.setHeaderWithoutBackgroundStyles);
 
 			//panel screen
-			this._panelScreenStyleProvider.defaultStyleFunction = this.setPanelScreenStyles;
-			this._headerStyleProvider.setFunctionForStyleName(PanelScreen.DEFAULT_CHILD_NAME_HEADER, this.setPanelScreenHeaderStyles);
+			this.getStyleProviderForClass(PanelScreen).defaultStyleFunction = this.setPanelScreenStyles;
+			this.getStyleProviderForClass(Header).setFunctionForStyleName(PanelScreen.DEFAULT_CHILD_NAME_HEADER, this.setPanelScreenHeaderStyles);
 
 			//picker list (see also: list and item renderers)
-			this._pickerListStyleProvider.defaultStyleFunction = this.setPickerListStyles;
-			this._buttonStyleProvider.setFunctionForStyleName(PickerList.DEFAULT_CHILD_NAME_BUTTON, this.setPickerListButtonStyles);
+			this.getStyleProviderForClass(PickerList).defaultStyleFunction = this.setPickerListStyles;
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(PickerList.DEFAULT_CHILD_NAME_BUTTON, this.setPickerListButtonStyles);
 
 			//progress bar
-			this._progressBarStyleProvider.defaultStyleFunction = this.setProgressBarStyles;
+			this.getStyleProviderForClass(ProgressBar).defaultStyleFunction = this.setProgressBarStyles;
 
 			//radio
-			this._radioStyleProvider.defaultStyleFunction = this.setRadioStyles;
+			this.getStyleProviderForClass(Radio).defaultStyleFunction = this.setRadioStyles;
 
 			//screen
-			this._screenStyleProvider.defaultStyleFunction = this.setScreenStyles;
+			this.getStyleProviderForClass(Screen).defaultStyleFunction = this.setScreenStyles;
 
 			//scroll container
-			this._scrollContainerStyleProvider.defaultStyleFunction = this.setScrollContainerStyles;
-			this._scrollContainerStyleProvider.setFunctionForStyleName(ScrollContainer.ALTERNATE_NAME_TOOLBAR, this.setToolbarScrollContainerStyles);
+			this.getStyleProviderForClass(ScrollContainer).defaultStyleFunction = this.setScrollContainerStyles;
+			this.getStyleProviderForClass(ScrollContainer).setFunctionForStyleName(ScrollContainer.ALTERNATE_NAME_TOOLBAR, this.setToolbarScrollContainerStyles);
 
 			//scroll screen
-			this._scrollScreenStyleProvider.defaultStyleFunction = this.setScrollScreenStyles;
+			this.getStyleProviderForClass(ScrollScreen).defaultStyleFunction = this.setScrollScreenStyles;
 
 			//scroll text
-			this._scrollTextStyleProvider.defaultStyleFunction = this.setScrollTextStyles;
+			this.getStyleProviderForClass(ScrollText).defaultStyleFunction = this.setScrollTextStyles;
 
 			//simple scroll bar
-			this._simpleScrollBarStyleProvider.defaultStyleFunction = this.setSimpleScrollBarStyles;
-			this._buttonStyleProvider.setFunctionForStyleName(THEME_NAME_HORIZONTAL_SIMPLE_SCROLL_BAR_THUMB, this.setHorizontalSimpleScrollBarThumbStyles);
-			this._buttonStyleProvider.setFunctionForStyleName(THEME_NAME_VERTICAL_SIMPLE_SCROLL_BAR_THUMB, this.setVerticalSimpleScrollBarThumbStyles);
+			this.getStyleProviderForClass(SimpleScrollBar).defaultStyleFunction = this.setSimpleScrollBarStyles;
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(THEME_NAME_HORIZONTAL_SIMPLE_SCROLL_BAR_THUMB, this.setHorizontalSimpleScrollBarThumbStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(THEME_NAME_VERTICAL_SIMPLE_SCROLL_BAR_THUMB, this.setVerticalSimpleScrollBarThumbStyles);
 
 			//slider
-			this._sliderStyleProvider.defaultStyleFunction = this.setSliderStyles;
-			this._buttonStyleProvider.setFunctionForStyleName(Slider.DEFAULT_CHILD_NAME_THUMB, this.setSimpleButtonStyles);
-			this._buttonStyleProvider.setFunctionForStyleName(THEME_NAME_HORIZONTAL_SLIDER_MINIMUM_TRACK, this.setHorizontalSliderMinimumTrackStyles);
-			this._buttonStyleProvider.setFunctionForStyleName(THEME_NAME_HORIZONTAL_SLIDER_MAXIMUM_TRACK, this.setHorizontalSliderMaximumTrackStyles);
-			this._buttonStyleProvider.setFunctionForStyleName(THEME_NAME_VERTICAL_SLIDER_MINIMUM_TRACK, this.setVerticalSliderMinimumTrackStyles);
-			this._buttonStyleProvider.setFunctionForStyleName(THEME_NAME_VERTICAL_SLIDER_MAXIMUM_TRACK, this.setVerticalSliderMaximumTrackStyles);
+			this.getStyleProviderForClass(Slider).defaultStyleFunction = this.setSliderStyles;
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(Slider.DEFAULT_CHILD_NAME_THUMB, this.setSimpleButtonStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(THEME_NAME_HORIZONTAL_SLIDER_MINIMUM_TRACK, this.setHorizontalSliderMinimumTrackStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(THEME_NAME_HORIZONTAL_SLIDER_MAXIMUM_TRACK, this.setHorizontalSliderMaximumTrackStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(THEME_NAME_VERTICAL_SLIDER_MINIMUM_TRACK, this.setVerticalSliderMinimumTrackStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(THEME_NAME_VERTICAL_SLIDER_MAXIMUM_TRACK, this.setVerticalSliderMaximumTrackStyles);
 
 			//tab bar
-			this._tabBarStyleProvider.defaultStyleFunction = this.setTabBarStyles;
-			this._buttonStyleProvider.setFunctionForStyleName(TabBar.DEFAULT_CHILD_NAME_TAB, this.setTabStyles);
+			this.getStyleProviderForClass(TabBar).defaultStyleFunction = this.setTabBarStyles;
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(TabBar.DEFAULT_CHILD_NAME_TAB, this.setTabStyles);
 
 			//text input
-			this._textInputStyleProvider.defaultStyleFunction = this.setTextInputStyles;
-			this._textInputStyleProvider.setFunctionForStyleName(TextInput.ALTERNATE_NAME_SEARCH_TEXT_INPUT, this.setSearchTextInputStyles);
+			this.getStyleProviderForClass(TextInput).defaultStyleFunction = this.setTextInputStyles;
+			this.getStyleProviderForClass(TextInput).setFunctionForStyleName(TextInput.ALTERNATE_NAME_SEARCH_TEXT_INPUT, this.setSearchTextInputStyles);
 
 			//text area
-			this._textAreaStyleProvider.defaultStyleFunction = this.setTextAreaStyles;
+			this.getStyleProviderForClass(TextArea).defaultStyleFunction = this.setTextAreaStyles;
 
 			//toggle switch
-			this._toggleSwitchStyleProvider.defaultStyleFunction = this.setToggleSwitchStyles;
-			this._buttonStyleProvider.setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_NAME_THUMB, this.setSimpleButtonStyles);
-			this._buttonStyleProvider.setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_NAME_ON_TRACK, this.setToggleSwitchTrackStyles);
+			this.getStyleProviderForClass(ToggleSwitch).defaultStyleFunction = this.setToggleSwitchStyles;
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_NAME_THUMB, this.setSimpleButtonStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_NAME_ON_TRACK, this.setToggleSwitchTrackStyles);
 			//we don't need a style function for the off track in this theme
 			//the toggle switch layout uses a single track
 		}
