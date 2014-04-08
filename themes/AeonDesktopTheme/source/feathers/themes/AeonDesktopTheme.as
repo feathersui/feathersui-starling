@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2012 Josh Tynjala
+ Copyright (c) 2014 Josh Tynjala
 
  Permission is hereby granted, free of charge, to any person
  obtaining a copy of this software and associated documentation
@@ -24,6 +24,13 @@
  */
 package feathers.themes
 {
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
+
+	import starling.events.Event;
+	import starling.textures.Texture;
+	import starling.textures.TextureAtlas;
+
 	/**
 	 * The "Aeon" theme for desktop Feathers apps.
 	 *
@@ -32,27 +39,37 @@ package feathers.themes
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/theme-assets
 	 */
-	public class AeonDesktopTheme extends AeonDesktopThemeWithAssetManager
+	public class AeonDesktopTheme extends BaseAeonDesktopTheme
 	{
 		[Embed(source="/../assets/images/aeon.png")]
-		public static const aeon:Class;
+		protected static const ATLAS_BITMAP:Class;
 
 		[Embed(source="/../assets/images/aeon.xml",mimeType="application/octet-stream")]
-		public static const aeon_xml:Class;
+		protected static const ATLAS_XML:Class;
 
 		public function AeonDesktopTheme()
 		{
-			super(null, null);
+			super();
+			this.initialize();
+			this.dispatchEventWith(Event.COMPLETE);
 		}
 
-		override protected function get atlasImageClass():Class
+		override protected function initialize():void
 		{
-			return aeon;
+			var atlasBitmapData:BitmapData = Bitmap(new ATLAS_BITMAP()).bitmapData;
+			this.atlasTexture = Texture.fromBitmapData(atlasBitmapData, false);
+			this.atlasTexture.root.onRestore = this.atlasTexture_onRestore;
+			atlasBitmapData.dispose();
+			this.atlas = new TextureAtlas(atlasTexture, XML(new ATLAS_XML()));
+
+			super.initialize();
 		}
 
-		override protected function get atlasXMLClass():Class
+		protected function atlasTexture_onRestore():void
 		{
-			return aeon_xml;
+			var atlasBitmapData:BitmapData = Bitmap(new ATLAS_BITMAP()).bitmapData;
+			this.atlasTexture.root.uploadBitmapData(atlasBitmapData);
+			atlasBitmapData.dispose();
 		}
 	}
 }
