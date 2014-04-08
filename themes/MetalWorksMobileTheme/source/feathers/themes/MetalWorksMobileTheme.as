@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2012 Josh Tynjala
+ Copyright (c) 2014 Josh Tynjala
 
  Permission is hereby granted, free of charge, to any person
  obtaining a copy of this software and associated documentation
@@ -24,6 +24,13 @@
  */
 package feathers.themes
 {
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
+
+	import starling.events.Event;
+	import starling.textures.Texture;
+	import starling.textures.TextureAtlas;
+
 	/**
 	 * The "Metal Works" theme for mobile Feathers apps.
 	 *
@@ -32,27 +39,37 @@ package feathers.themes
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/theme-assets
 	 */
-	public class MetalWorksMobileTheme extends MetalWorksMobileThemeWithAssetManager
+	public class MetalWorksMobileTheme extends BaseMetalWorksMobileTheme
 	{
 		[Embed(source="/../assets/images/metalworks.xml",mimeType="application/octet-stream")]
-		public static const metalworks_xml:Class;
+		public static const ATLAS_XML:Class;
 
 		[Embed(source="/../assets/images/metalworks.png")]
-		public static const metalworks:Class;
+		public static const ATLAS_BITMAP:Class;
 
 		public function MetalWorksMobileTheme(scaleToDPI:Boolean = true)
 		{
-			super(null, null, scaleToDPI);
+			super(scaleToDPI);
+			this.initialize();
+			this.dispatchEventWith(Event.COMPLETE);
 		}
 
-		override protected function get atlasImageClass():Class
+		override protected function initialize():void
 		{
-			return metalworks;
+			var atlasBitmapData:BitmapData = Bitmap(new ATLAS_BITMAP()).bitmapData;
+			this.atlasTexture = Texture.fromBitmapData(atlasBitmapData, false);
+			this.atlasTexture.root.onRestore = this.atlasTexture_onRestore;
+			atlasBitmapData.dispose();
+			this.atlas = new TextureAtlas(atlasTexture, XML(new ATLAS_XML()));
+
+			super.initialize();
 		}
 
-		override protected function get atlasXMLClass():Class
+		protected function atlasTexture_onRestore():void
 		{
-			return metalworks_xml;
+			var atlasBitmapData:BitmapData = Bitmap(new ATLAS_BITMAP()).bitmapData;
+			this.atlasTexture.root.uploadBitmapData(atlasBitmapData);
+			atlasBitmapData.dispose();
 		}
 	}
 }

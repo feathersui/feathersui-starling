@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2012 Josh Tynjala
+ Copyright (c) 2014 Josh Tynjala
 
  Permission is hereby granted, free of charge, to any person
  obtaining a copy of this software and associated documentation
@@ -24,6 +24,14 @@
  */
 package feathers.themes
 {
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
+
+	import starling.text.BitmapFont;
+	import starling.text.TextField;
+	import starling.textures.Texture;
+	import starling.textures.TextureAtlas;
+
 	/**
 	 * The "Minimal" theme for desktop Feathers apps.
 	 *
@@ -32,35 +40,42 @@ package feathers.themes
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/theme-assets
 	 */
-	public class MinimalDesktopTheme extends MinimalDesktopThemeWithAssetManager
+	public class MinimalDesktopTheme extends BaseMinimalDesktopTheme
 	{
 		[Embed(source="/../assets/images/minimal.xml",mimeType="application/octet-stream")]
-		public static const minimal_xml:Class;
+		protected static const ATLAS_XML:Class;
 
 		[Embed(source="/../assets/images/minimal.png")]
-		public static const minimal:Class;
+		protected static const ATLAS_BITMAP:Class;
 
 		[Embed(source="/../assets/fonts/pf_ronda_seven.fnt",mimeType="application/octet-stream")]
-		public static const font_xml:Class;
+		protected static const FONT_XML:Class;
 
 		public function MinimalDesktopTheme()
 		{
-			super(null, null);
+			super();
+			this.initialize();
 		}
 
-		override protected function get atlasImageClass():Class
+		override protected function initialize():void
 		{
-			return minimal;
+			var atlasBitmapData:BitmapData = Bitmap(new ATLAS_BITMAP()).bitmapData;
+			this.atlasTexture = Texture.fromBitmapData(atlasBitmapData, false);
+			this.atlasTexture.root.onRestore = this.atlasTexture_onRestore;
+			atlasBitmapData.dispose();
+			this.atlas = new TextureAtlas(atlasTexture, XML(new ATLAS_XML()));
+
+			var bitmapFont:BitmapFont = new BitmapFont(this.atlas.getTexture(FONT_TEXTURE_NAME), XML(new FONT_XML()));
+			TextField.registerBitmapFont(bitmapFont, FONT_NAME);
+
+			super.initialize();
 		}
 
-		override protected function get atlasXMLClass():Class
+		protected function atlasTexture_onRestore():void
 		{
-			return minimal_xml;
-		}
-
-		override protected function get fontXMLClass():Class
-		{
-			return font_xml;
+			var atlasBitmapData:BitmapData = Bitmap(new ATLAS_BITMAP()).bitmapData;
+			this.atlasTexture.root.uploadBitmapData(atlasBitmapData);
+			atlasBitmapData.dispose();
 		}
 	}
 }
