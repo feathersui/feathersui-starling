@@ -806,7 +806,7 @@ package feathers.controls
 		 *
 		 * @see #VERTICAL_ALIGN_TOP
 		 * @see #VERTICAL_ALIGN_MIDDLE
-		 * @see #VERTICAL_ALIGN_RIGHT
+		 * @see #VERTICAL_ALIGN_BOTTOM
 		 */
 		public function get verticalAlign():String
 		{
