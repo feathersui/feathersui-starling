@@ -1547,7 +1547,7 @@ package feathers.controls.text
 							this._textElement.text += this._text.substr(lineBreakIndex);
 						}
 						line = this.textBlock.recreateTextLine(line, null, lineWidth, 0, true);
-						if(truncatedTextLength == 0)
+						if(truncatedTextLength <= 0)
 						{
 							break;
 						}
