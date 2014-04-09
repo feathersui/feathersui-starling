@@ -2382,20 +2382,26 @@ package feathers.controls
 		 */
 		protected function locationToValue(location:Point):Number
 		{
-			var percentage:Number;
+			var percentage:Number = 0;
 			if(this._direction == DIRECTION_VERTICAL)
 			{
-				const trackScrollableHeight:Number = this.actualHeight - this.thumb.height - this.decrementButton.height - this.incrementButton.height - this._paddingTop - this._paddingBottom;
-				const yOffset:Number = location.y - this._touchStartY - this._paddingTop;
-				const yPosition:Number = Math.min(Math.max(0, this._thumbStartY + yOffset - this.decrementButton.height), trackScrollableHeight);
-				percentage = yPosition / trackScrollableHeight;
+				var trackScrollableHeight:Number = this.actualHeight - this.thumb.height - this.decrementButton.height - this.incrementButton.height - this._paddingTop - this._paddingBottom;
+				if(trackScrollableHeight > 0)
+				{
+					var yOffset:Number = location.y - this._touchStartY - this._paddingTop;
+					var yPosition:Number = Math.min(Math.max(0, this._thumbStartY + yOffset - this.decrementButton.height), trackScrollableHeight);
+					percentage = yPosition / trackScrollableHeight;
+				}
 			}
 			else //horizontal
 			{
-				const trackScrollableWidth:Number = this.actualWidth - this.thumb.width - this.decrementButton.width - this.incrementButton.width - this._paddingLeft - this._paddingRight;
-				const xOffset:Number = location.x - this._touchStartX - this._paddingLeft;
-				const xPosition:Number = Math.min(Math.max(0, this._thumbStartX + xOffset - this.decrementButton.width), trackScrollableWidth);
-				percentage = xPosition / trackScrollableWidth;
+				var trackScrollableWidth:Number = this.actualWidth - this.thumb.width - this.decrementButton.width - this.incrementButton.width - this._paddingLeft - this._paddingRight;
+				if(trackScrollableWidth > 0)
+				{
+					var xOffset:Number = location.x - this._touchStartX - this._paddingLeft;
+					var xPosition:Number = Math.min(Math.max(0, this._thumbStartX + xOffset - this.decrementButton.width), trackScrollableWidth);
+					percentage = xPosition / trackScrollableWidth;
+				}
 			}
 
 			return this._minimum + percentage * (this._maximum - this._minimum);
