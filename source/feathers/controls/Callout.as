@@ -192,6 +192,11 @@ package feathers.controls
 		DIRECTION_TO_FUNCTION[DIRECTION_HORIZONTAL] = positionToLeftOrRightOfOrigin;
 
 		/**
+		 * @private
+		 */
+		protected static const FUZZY_CONTENT_DIMENSIONS_PADDING:Number = 0.000001;
+
+		/**
 		 * The padding between a callout and the top edge of the stage when the
 		 * callout is positioned automatically. May be ignored if the callout
 		 * is too big for the stage.
@@ -1783,12 +1788,12 @@ package feathers.controls
 		 */
 		protected function layoutChildren():void
 		{
-			const xPosition:Number = (this._leftArrowSkin && this._arrowPosition == ARROW_POSITION_LEFT) ? this._leftArrowSkin.width + this._leftArrowGap : 0;
-			const yPosition:Number = (this._topArrowSkin &&  this._arrowPosition == ARROW_POSITION_TOP) ? this._topArrowSkin.height + this._topArrowGap : 0;
-			const widthOffset:Number = (this._rightArrowSkin && this._arrowPosition == ARROW_POSITION_RIGHT) ? this._rightArrowSkin.width + this._rightArrowGap : 0;
-			const heightOffset:Number = (this._bottomArrowSkin && this._arrowPosition == ARROW_POSITION_BOTTOM) ? this._bottomArrowSkin.height + this._bottomArrowGap : 0;
-			const backgroundWidth:Number = this.actualWidth - xPosition - widthOffset;
-			const backgroundHeight:Number = this.actualHeight - yPosition - heightOffset;
+			var xPosition:Number = (this._leftArrowSkin && this._arrowPosition == ARROW_POSITION_LEFT) ? this._leftArrowSkin.width + this._leftArrowGap : 0;
+			var yPosition:Number = (this._topArrowSkin &&  this._arrowPosition == ARROW_POSITION_TOP) ? this._topArrowSkin.height + this._topArrowGap : 0;
+			var widthOffset:Number = (this._rightArrowSkin && this._arrowPosition == ARROW_POSITION_RIGHT) ? this._rightArrowSkin.width + this._rightArrowGap : 0;
+			var heightOffset:Number = (this._bottomArrowSkin && this._arrowPosition == ARROW_POSITION_BOTTOM) ? this._bottomArrowSkin.height + this._bottomArrowGap : 0;
+			var backgroundWidth:Number = this.actualWidth - xPosition - widthOffset;
+			var backgroundHeight:Number = this.actualHeight - yPosition - heightOffset;
 			if(this._backgroundSkin)
 			{
 				this._backgroundSkin.x = xPosition;
@@ -1829,15 +1834,21 @@ package feathers.controls
 			{
 				this._content.x = xPosition + this._paddingLeft;
 				this._content.y = yPosition + this._paddingTop;
-				const oldIgnoreContentResize:Boolean = this._ignoreContentResize;
+				var oldIgnoreContentResize:Boolean = this._ignoreContentResize;
 				this._ignoreContentResize = true;
-				const contentWidth:Number = backgroundWidth - this._paddingLeft - this._paddingRight;
-				if(this._content.width != contentWidth)
+				var contentWidth:Number = backgroundWidth - this._paddingLeft - this._paddingRight;
+				var difference:Number = Math.abs(this._content.width - contentWidth);
+				//instead of !=, we do some fuzzy math to account for possible
+				//floating point errors.
+				if(difference > FUZZY_CONTENT_DIMENSIONS_PADDING)
 				{
 					this._content.width = contentWidth;
 				}
-				const contentHeight:Number = backgroundHeight - this._paddingTop - this._paddingBottom;
-				if(this._content.height != contentHeight)
+				var contentHeight:Number = backgroundHeight - this._paddingTop - this._paddingBottom;
+				difference = Math.abs(this._content.height - contentHeight);
+				//instead of !=, we do some fuzzy math to account for possible
+				//floating point errors.
+				if(difference > FUZZY_CONTENT_DIMENSIONS_PADDING)
 				{
 					this._content.height = contentHeight;
 				}
