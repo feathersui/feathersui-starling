@@ -719,6 +719,10 @@ package feathers.controls.text
 		 * <listing version="3.0">
 		 * textEditor.multiline = true;</listing>
 		 *
+		 * When setting this property to <code>true</code>, it is recommended
+		 * that the text input's <code>verticalAlign</code> property is set to
+		 * <code>TextInput.VERTICAL_ALIGN_JUSTIFY</code>.
+		 *
 		 * @default false
 		 */
 		public function get multiline():Boolean
