@@ -278,7 +278,7 @@ package feathers.controls.supportClasses
 			var maxWidth:Number = this.viewPortBounds.maxWidth;
 			var minHeight:Number = this.viewPortBounds.minHeight;
 			var maxHeight:Number = this.viewPortBounds.maxHeight;
-			var calculatedWidth:Number = maxX;
+			var calculatedWidth:Number = maxX - minX;
 			if(calculatedWidth < minWidth)
 			{
 				calculatedWidth = minWidth;
@@ -287,7 +287,7 @@ package feathers.controls.supportClasses
 			{
 				calculatedWidth = maxWidth;
 			}
-			var calculatedHeight:Number = maxY;
+			var calculatedHeight:Number = maxY - minY;
 			if(calculatedHeight < minHeight)
 			{
 				calculatedHeight = minHeight;
