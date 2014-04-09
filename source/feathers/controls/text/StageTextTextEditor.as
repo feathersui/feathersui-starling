@@ -1256,7 +1256,14 @@ package feathers.controls.text
 			format.align = alignValue;
 			this._measureTextField.defaultTextFormat = format;
 			this._measureTextField.setTextFormat(format);
-			this._measureTextField.text = this._text;
+			if(this._text.length == 0)
+			{
+				this._measureTextField.text = " ";
+			}
+			else
+			{
+				this._measureTextField.text = this._text;
+			}
 		}
 
 		/**
