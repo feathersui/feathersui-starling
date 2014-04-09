@@ -240,6 +240,38 @@ package feathers.controls
 		public static const ALTERNATE_NAME_SEARCH_TEXT_INPUT:String = "feathers-search-text-input";
 
 		/**
+		 * The text editor will be aligned vertically to the top edge of the
+		 * text input.
+		 *
+		 * @see #verticalAlign
+		 */
+		public static const VERTICAL_ALIGN_TOP:String = "top";
+
+		/**
+		 * The text editor will be aligned vertically to the middle of the text
+		 * input.
+		 *
+		 * @see #verticalAlign
+		 */
+		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
+
+		/**
+		 * The text editor will be aligned vertically to the bottom edge of the
+		 * text input.
+		 *
+		 * @see #verticalAlign
+		 */
+		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
+
+		/**
+		 * The text editor will fill the full height of the text input (minus
+		 * top and bottom padding).
+		 *
+		 * @see #verticalAlign
+		 */
+		public static const VERTICAL_ALIGN_JUSTIFY:String = "justify";
+
+		/**
 		 * The default <code>IStyleProvider</code> for all <code>TextInput</code>
 		 * components.
 		 *
@@ -1378,6 +1410,46 @@ package feathers.controls
 
 		/**
 		 * @private
+		 */
+		protected var _verticalAlign:String = VERTICAL_ALIGN_MIDDLE;
+
+		[Inspectable(type="String",enumeration="top,middle,bottom,justify")]
+		/**
+		 * The location where the text editor is aligned vertically (on
+		 * the y-axis).
+		 *
+		 * <p>The following example aligns the text editor to the top:</p>
+		 *
+		 * <listing version="3.0">
+		 * input.verticalAlign = TextInput.VERTICAL_ALIGN_TOP;</listing>
+		 *
+		 * @default TextInput.VERTICAL_ALIGN_MIDDLE
+		 *
+		 * @see #VERTICAL_ALIGN_TOP
+		 * @see #VERTICAL_ALIGN_MIDDLE
+		 * @see #VERTICAL_ALIGN_BOTTOM
+		 * @see #VERTICAL_ALIGN_JUSTIFY
+		 */
+		public function get verticalAlign():String
+		{
+			return _verticalAlign;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set verticalAlign(value:String):void
+		{
+			if(this._verticalAlign == value)
+			{
+				return;
+			}
+			this._verticalAlign = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
 		 * Flag indicating that the text editor should get focus after it is
 		 * created.
 		 */
@@ -1685,7 +1757,9 @@ package feathers.controls
 			var typicalTextHeight:Number = 0;
 			if(this._typicalText)
 			{
-				const oldIgnoreTextChanges:Boolean = this._ignoreTextChanges;
+				var oldTextEditorWidth:Number = this.textEditor.width;
+				var oldTextEditorHeight:Number = this.textEditor.height;
+				var oldIgnoreTextChanges:Boolean = this._ignoreTextChanges;
 				this._ignoreTextChanges = true;
 				this.textEditor.setSize(NaN, NaN);
 				this.textEditor.text = this._typicalText;
@@ -1714,10 +1788,10 @@ package feathers.controls
 				newHeight = Math.max(this._originalSkinHeight, typicalTextHeight + this._paddingTop + this._paddingBottom);
 			}
 
-			if(this._typicalText)
+			if(this._typicalText && this._verticalAlign == VERTICAL_ALIGN_JUSTIFY)
 			{
-				this.textEditor.width = this.actualWidth - this._paddingLeft - this._paddingRight;
-				this.textEditor.height = this.actualHeight - this._paddingTop - this._paddingBottom;
+				this.textEditor.width = oldTextEditorWidth;
+				this.textEditor.height = oldTextEditorHeight;
 			}
 
 			return this.setSizeInternal(newWidth, newHeight, false);
@@ -1934,7 +2008,6 @@ package feathers.controls
 			if(this.currentIcon)
 			{
 				this.currentIcon.x = this._paddingLeft;
-				this.currentIcon.y = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - this.currentIcon.height) / 2;
 				this.textEditor.x = this.currentIcon.x + this.currentIcon.width + this._gap;
 				this.promptTextRenderer.x = this.currentIcon.x + this.currentIcon.width + this._gap;
 			}
@@ -1943,13 +2016,56 @@ package feathers.controls
 				this.textEditor.x = this._paddingLeft;
 				this.promptTextRenderer.x = this._paddingLeft;
 			}
-			this.textEditor.y = this._paddingTop;
 			this.textEditor.width = this.actualWidth - this._paddingRight - this.textEditor.x;
-			this.textEditor.height = this.actualHeight - this._paddingTop - this._paddingBottom;
-
-			this.promptTextRenderer.y = this._paddingTop;
 			this.promptTextRenderer.width = this.actualWidth - this._paddingRight - this.promptTextRenderer.x;
-			this.promptTextRenderer.height = this.actualHeight - this._paddingTop - this._paddingBottom;
+
+			this.textEditor.validate();
+			this.promptTextRenderer.validate();
+
+			switch(this._verticalAlign)
+			{
+				case VERTICAL_ALIGN_JUSTIFY:
+				{
+					this.textEditor.y = this._paddingTop;
+					this.textEditor.height = this.actualHeight - this._paddingTop - this._paddingBottom;
+					this.promptTextRenderer.y = this._paddingTop;
+					this.promptTextRenderer.height = this.actualHeight - this._paddingTop - this._paddingBottom;
+					if(this.currentIcon)
+					{
+						this.currentIcon.y = this._paddingTop;
+					}
+					break;
+				}
+				case VERTICAL_ALIGN_TOP:
+				{
+					this.textEditor.y = this._paddingTop;
+					this.promptTextRenderer.y = this._paddingTop;
+					if(this.currentIcon)
+					{
+						this.currentIcon.y = this._paddingTop;
+					}
+					break;
+				}
+				case VERTICAL_ALIGN_BOTTOM:
+				{
+					this.textEditor.y = this.actualHeight - this._paddingBottom - this.textEditor.height;
+					this.promptTextRenderer.y = this.actualHeight - this._paddingBottom - this.promptTextRenderer.height;
+					if(this.currentIcon)
+					{
+						this.currentIcon.y = this.actualHeight - this._paddingBottom - this.currentIcon.height;
+					}
+					break;
+				}
+				default:
+				{
+					this.textEditor.y = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - this.textEditor.height) / 2;
+					this.promptTextRenderer.y = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - this.promptTextRenderer.height) / 2;
+					if(this.currentIcon)
+					{
+						this.currentIcon.y = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - this.currentIcon.height) / 2;
+					}
+				}
+			}
 		}
 
 		/**
