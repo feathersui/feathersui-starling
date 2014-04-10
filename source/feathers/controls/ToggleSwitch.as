@@ -995,6 +995,42 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _toggleThumbSelection:Boolean = false;
+
+		/**
+		 * Determines if the <code>isSelected</code> property of the thumb
+		 * is updated to match the <code>isSelected</code> property of the
+		 * toggle switch. Useful for skinning to provide a different appearance
+		 * for the thumb based on whether the toggle switch is selected or not.
+		 *
+		 * <p>In the following example, the thumb selection is toggled:</p>
+		 *
+		 * <listing version="3.0">
+		 * toggle.toggleThumbSelection = true;</listing>
+		 *
+		 * @default false
+		 */
+		public function get toggleThumbSelection():Boolean
+		{
+			return this._toggleThumbSelection;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set toggleThumbSelection(value:Boolean):void
+		{
+			if(this._toggleThumbSelection == value)
+			{
+				return;
+			}
+			this._toggleThumbSelection = value;
+			this.invalidate(INVALIDATION_FLAG_SELECTED);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _toggleDuration:Number = 0.15;
 
 		/**
@@ -1681,16 +1717,16 @@ package feathers.controls
 		 */
 		override protected function draw():void
 		{
-			const selectionInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SELECTED);
-			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			var selectionInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SELECTED);
+			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
-			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
-			const focusInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_FOCUS);
-			const layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
-			const textRendererInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_TEXT_RENDERER);
-			const thumbFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_THUMB_FACTORY);
-			const onTrackFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_ON_TRACK_FACTORY);
-			const offTrackFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_OFF_TRACK_FACTORY);
+			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
+			var focusInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_FOCUS);
+			var layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
+			var textRendererInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_TEXT_RENDERER);
+			var thumbFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_THUMB_FACTORY);
+			var onTrackFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_ON_TRACK_FACTORY);
+			var offTrackFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_OFF_TRACK_FACTORY);
 
 			if(thumbFactoryInvalid)
 			{
@@ -2040,6 +2076,14 @@ package feathers.controls
 		 */
 		protected function updateSelection():void
 		{
+			if(this._toggleThumbSelection)
+			{
+				this.thumb.isSelected = this._isSelected;
+			}
+			else
+			{
+				this.thumb.isSelected = false;
+			}
 			this.thumb.validate();
 
 			var xPosition:Number = this._paddingLeft;
