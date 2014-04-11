@@ -345,19 +345,6 @@ package feathers.controls
 
 		/**
 		 * @private
-		 * The friction applied every frame when the scroller is "thrown".
-		 */
-		private static const FRICTION:Number = 0.998;
-
-		/**
-		 * @private
-		 * Extra friction applied when the scroller is beyond its bounds and
-		 * needs to bounce back.
-		 */
-		private static const EXTRA_FRICTION:Number = 0.95;
-
-		/**
-		 * @private
 		 * The current velocity is given high importance.
 		 */
 		private static const CURRENT_VELOCITY_WEIGHT:Number = 2.33;
@@ -372,6 +359,20 @@ package feathers.controls
 		 * @private
 		 */
 		private static const MAXIMUM_SAVED_VELOCITY_COUNT:int = 4;
+
+		/**
+		 * The default deceleration rate per millisecond.
+		 *
+		 * @see #decelerationRate
+		 */
+		public static const DECELERATION_RATE_NORMAL:Number = 0.998;
+
+		/**
+		 * Decelerates a bit faster per millisecond than the default.
+		 *
+		 * @see #decelerationRate
+		 */
+		public static const DECELERATION_RATE_FAST:Number = 0.99;
 
 		/**
 		 * The default value added to the <code>nameList</code> of the
@@ -1679,6 +1680,9 @@ package feathers.controls
 		 * scroller.hasElasticEdges = false;</listing>
 		 *
 		 * @default true
+		 *
+		 * @see #elasticity
+		 * @see #throwElasticity
 		 */
 		public function get hasElasticEdges():Boolean
 		{
@@ -1699,15 +1703,23 @@ package feathers.controls
 		protected var _elasticity:Number = 0.33;
 
 		/**
-		 * If the scroll position goes outside the minimum or maximum bounds,
-		 * the scrolling will be constrained using this multiplier.
+		 * If the scroll position goes outside the minimum or maximum bounds
+		 * when the scroller's content is being actively dragged, the scrolling
+		 * will be constrained using this multiplier. A value of <code>0</code>
+		 * means that the scroller will not go beyond its minimum or maximum
+		 * bounds. A value of <code>1</code> means that going beyond the minimum
+		 * or maximum bounds is completely unrestrained.
 		 *
-		 * <p>In the following example, the elasticity is customized:</p>
+		 * <p>In the following example, the elasticity of dragging beyond the
+		 * scroller's edges is customized:</p>
 		 *
 		 * <listing version="3.0">
 		 * scroller.elasticity = 0.5;</listing>
 		 *
 		 * @default 0.33
+		 *
+		 * @see #hasElasticEdges
+		 * @see #throwElasticity
 		 */
 		public function get elasticity():Number
 		{
@@ -1720,6 +1732,43 @@ package feathers.controls
 		public function set elasticity(value:Number):void
 		{
 			this._elasticity = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _throwElasticity:Number = 0.03;
+
+		/**
+		 * If the scroll position goes outside the minimum or maximum bounds
+		 * when the scroller's content is "thrown", the scrolling will be
+		 * constrained using this multiplier. A value of <code>0</code> means
+		 * that the scroller will not go beyond its minimum or maximum bounds.
+		 * A value of <code>1</code> means that going beyond the minimum or
+		 * maximum bounds is completely unrestrained.
+		 *
+		 * <p>In the following example, the elasticity of throwing beyond the
+		 * scroller's edges is customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.elasticity = 0.5;</listing>
+		 *
+		 * @default 0.03
+		 *
+		 * @see #hasElasticEdges
+		 * @see #elasticity
+		 */
+		public function get throwElasticity():Number
+		{
+			return this._throwElasticity;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set throwElasticity(value:Number):void
+		{
+			this._throwElasticity = value;
 		}
 
 		/**
@@ -2275,6 +2324,100 @@ package feathers.controls
 
 		/**
 		 * @private
+		 * This value is precalculated. See the <code>decelerationRate</code>
+		 * setter for the dynamic calculation.
+		 */
+		protected var _logDecelerationRate:Number = -0.0020020026706730793;
+
+		/**
+		 * @private
+		 */
+		protected var _decelerationRate:Number = DECELERATION_RATE_NORMAL;
+
+		/**
+		 * This value is used to decelerate the scroller when "thrown". The
+		 * velocity of a throw is multiplied by this value once per millisecond
+		 * to decelerate. A value greater than <code>0</code> and less than
+		 * <code>1</code> is expected.
+		 *
+		 * <p>In the following example, deceleration rate is lowered to adjust
+		 * the behavior of a throw:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.decelerationRate = Scroller.DECELERATION_RATE_FAST;</listing>
+		 *
+		 * @default Scroller.DECELERATION_RATE_NORMAL
+		 *
+		 * @see #DECELERATION_RATE_NORMAL
+		 * @see #DECELERATION_RATE_FAST
+		 */
+		public function get decelerationRate():Number
+		{
+			return this._decelerationRate;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set decelerationRate(value:Number):void
+		{
+			if(this._decelerationRate == value)
+			{
+				return;
+			}
+			this._decelerationRate = value;
+			this._logDecelerationRate = Math.log(this._decelerationRate);
+			this._fixedThrowDuration = -0.1 / Math.log(Math.pow(this._decelerationRate, 1000 / 60))
+		}
+
+		/**
+		 * @private
+		 * This value is precalculated. See the <code>decelerationRate</code>
+		 * setter for the dynamic calculation.
+		 */
+		protected var _fixedThrowDuration:Number = 2.996998998998728;
+
+		/**
+		 * @private
+		 */
+		protected var _useFixedThrowDuration:Boolean = true;
+
+		/**
+		 * If <code>true</code>, the duration of a "throw" animation will be the
+		 * same no matter the value of the throw's initial velocity. This value
+		 * may be set to <code>false</code> to have the scroller calculate a
+		 * variable duration based on the velocity of the throw.
+		 *
+		 * <p>It may seem unintuitive, but using the same fixed duration for any
+		 * velocity is recommended if you are looking to closely match the
+		 * behavior of native scrolling on iOS.</p>
+		 *
+		 * <p>In the following example, the duration of the animation that
+		 * changes the scroller's content is equal:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.throwDuration = 1.5;</listing>
+		 *
+		 * @default 2.0
+		 *
+		 * @see #decelerationRate
+		 * @see #pageThrowDuration
+		 */
+		public function get useFixedThrowDuration():Boolean
+		{
+			return this._useFixedThrowDuration;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set useFixedThrowDuration(value:Boolean):void
+		{
+			this._useFixedThrowDuration = value;
+		}
+
+		/**
+		 * @private
 		 */
 		protected var _pageThrowDuration:Number = 0.5;
 
@@ -2544,11 +2687,12 @@ package feathers.controls
 		}
 
 		/**
-		 * After the next validation, scrolls to a specific position. May scroll
-		 * in only one direction by passing in a value of <code>NaN</code> for
-		 * either scroll position. If the <code>animationDuration</code> argument
-		 * is greater than zero, the scroll will animate. The duration is in
-		 * seconds.
+		 * After the next validation, animates the scroll positions to a
+		 * specific location. May scroll in only one direction by passing in a
+		 * value of <code>NaN</code> for either scroll position. If the
+		 * <code>animationDuration</code> argument is <code>NaN</code> (the
+		 * default value), the duration of a standard throw is used. The
+		 * duration is in seconds.
 		 *
 		 * <p>Because this function is primarily designed for animation, using a
 		 * duration of <code>0</code> may require a frame or two before the
@@ -2562,9 +2706,22 @@ package feathers.controls
 		 *
 		 * @see #horizontalScrollPosition
 		 * @see #verticalScrollPosition
+		 * @see #throwEase
 		 */
-		public function scrollToPosition(horizontalScrollPosition:Number, verticalScrollPosition:Number, animationDuration:Number = 0):void
+		public function scrollToPosition(horizontalScrollPosition:Number, verticalScrollPosition:Number, animationDuration:Number = NaN):void
 		{
+			if(animationDuration != animationDuration) //isNaN
+			{
+				if(this._useFixedThrowDuration)
+				{
+					animationDuration = this._fixedThrowDuration;
+				}
+				else
+				{
+					HELPER_POINT.setTo(horizontalScrollPosition - this._horizontalScrollPosition, verticalScrollPosition - this._verticalScrollPosition);
+					animationDuration = this.calculateDynamicThrowDuration(HELPER_POINT.length * this._logDecelerationRate + MINIMUM_VELOCITY);
+				}
+			}
 			this.pendingHorizontalPageIndex = -1;
 			this.pendingVerticalPageIndex = -1;
 			if(this.pendingHorizontalScrollPosition == horizontalScrollPosition &&
@@ -2580,11 +2737,12 @@ package feathers.controls
 		}
 
 		/**
-		 * After the next validation, scrolls to a specific page index. May scroll
-		 * in only one direction by passing in a value of <code>-1</code> for
-		 * either page index. If the <code>animationDuration</code> argument
-		 * is greater than zero, the scroll will animate. The duration is in
-		 * seconds.
+		 * After the next validation, animates the scroll position to a specific
+		 * page index. May scroll in only one direction by passing in a value of
+		 * <code>-1</code> for either page index. If the
+		 * <code>animationDuration</code> argument is <code>NaN</code> (the
+		 * default value) the value of the <code>pageThrowDuration</code>
+		 * property is used for the duration. The duration is in seconds.
 		 *
 		 * <p>You can only scroll to a page if the <code>snapToPages</code>
 		 * property is <code>true</code>.</p>
@@ -2595,16 +2753,22 @@ package feathers.controls
 		 * scroller.scrollToPageIndex( scroller.horizontalPageCount - 1, scroller.verticalPageIndex );</listing>
 		 *
 		 * @see #snapToPages
+		 * @see #pageThrowDuration
+		 * @see #throwEase
 		 */
-		public function scrollToPageIndex(horizontalPageIndex:int, verticalPageIndex:int, animationDuration:Number = 0):void
+		public function scrollToPageIndex(horizontalPageIndex:int, verticalPageIndex:int, animationDuration:Number = NaN):void
 		{
+			if(animationDuration != animationDuration) //isNaN
+			{
+				animationDuration = this._pageThrowDuration;
+			}
 			this.pendingHorizontalScrollPosition = NaN;
 			this.pendingVerticalScrollPosition = NaN;
-			const horizontalPageHasChanged:Boolean = (this.pendingHorizontalPageIndex >= 0 && this.pendingHorizontalPageIndex != horizontalPageIndex) ||
+			var horizontalPageHasChanged:Boolean = (this.pendingHorizontalPageIndex >= 0 && this.pendingHorizontalPageIndex != horizontalPageIndex) ||
 				(this.pendingHorizontalPageIndex < 0 && this._horizontalPageIndex != horizontalPageIndex);
-			const verticalPageHasChanged:Boolean = (this.pendingVerticalPageIndex >= 0 && this.pendingVerticalPageIndex != verticalPageIndex) ||
+			var verticalPageHasChanged:Boolean = (this.pendingVerticalPageIndex >= 0 && this.pendingVerticalPageIndex != verticalPageIndex) ||
 				(this.pendingVerticalPageIndex < 0 && this._verticalPageIndex != verticalPageIndex);
-			const durationHasChanged:Boolean = (this.pendingHorizontalPageIndex >= 0 || this.pendingVerticalPageIndex >= 0) && this.pendingScrollDuration == animationDuration
+			var durationHasChanged:Boolean = (this.pendingHorizontalPageIndex >= 0 || this.pendingVerticalPageIndex >= 0) && this.pendingScrollDuration == animationDuration
 			if(!horizontalPageHasChanged && !verticalPageHasChanged &&
 				!durationHasChanged)
 			{
@@ -3855,6 +4019,22 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function calculateDynamicThrowDuration(pixelsPerMS:Number):Number
+		{
+			return (Math.log(MINIMUM_VELOCITY / Math.abs(pixelsPerMS)) / this._logDecelerationRate) / 1000;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function calculateThrowDistance(pixelsPerMS:Number):Number
+		{
+			return (pixelsPerMS - MINIMUM_VELOCITY) / this._logDecelerationRate;
+		}
+
+		/**
+		 * @private
+		 */
 		protected function finishScrollingHorizontally():void
 		{
 			var targetHorizontalScrollPosition:Number = NaN;
@@ -3911,7 +4091,7 @@ package feathers.controls
 		{
 			if(this._snapToPages)
 			{
-				const inchesPerSecond:Number = 1000 * pixelsPerMS / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
+				var inchesPerSecond:Number = 1000 * pixelsPerMS / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
 				if(inchesPerSecond > this._minimumPageThrowVelocity)
 				{
 					var snappedPageHorizontalScrollPosition:Number = roundDownToNearest(this._horizontalScrollPosition, this.actualPageWidth);
@@ -3922,11 +4102,11 @@ package feathers.controls
 				}
 				else
 				{
-					const lastPageWidth:Number = this._maxHorizontalScrollPosition % this.actualPageWidth;
+					var lastPageWidth:Number = this._maxHorizontalScrollPosition % this.actualPageWidth;
 					var startOfLastPage:Number = this._maxHorizontalScrollPosition - lastPageWidth;
 					if(lastPageWidth < this.actualPageWidth && this._horizontalScrollPosition >= startOfLastPage)
 					{
-						const lastPagePosition:Number = this._horizontalScrollPosition - startOfLastPage;
+						var lastPagePosition:Number = this._horizontalScrollPosition - startOfLastPage;
 						if(inchesPerSecond > this._minimumPageThrowVelocity)
 						{
 							snappedPageHorizontalScrollPosition = startOfLastPage + roundDownToNearest(lastPagePosition, lastPageWidth);
@@ -3965,52 +4145,39 @@ package feathers.controls
 				return;
 			}
 
-			const absPixelsPerMS:Number = Math.abs(pixelsPerMS);
+			var absPixelsPerMS:Number = Math.abs(pixelsPerMS);
 			if(absPixelsPerMS <= MINIMUM_VELOCITY)
 			{
 				this.finishScrollingHorizontally();
 				return;
 			}
-			var targetHorizontalScrollPosition:Number = this._horizontalScrollPosition + (pixelsPerMS - MINIMUM_VELOCITY) / Math.log(FRICTION);
-			if(targetHorizontalScrollPosition < this._minHorizontalScrollPosition || targetHorizontalScrollPosition > this._maxHorizontalScrollPosition)
+
+			var distance:Number = this.calculateThrowDistance(pixelsPerMS);
+			var idealDuration:Number = this._fixedThrowDuration;
+			if(!this._useFixedThrowDuration)
 			{
-				var duration:Number = 0;
-				targetHorizontalScrollPosition = this._horizontalScrollPosition;
-				while(Math.abs(pixelsPerMS) > MINIMUM_VELOCITY)
+				idealDuration = this.calculateDynamicThrowDuration(pixelsPerMS);
+			}
+			var actualDuration:Number = idealDuration;
+			var targetHorizontalScrollPosition:Number = this._horizontalScrollPosition + distance;
+			var isBeyondMaximum:Boolean = targetHorizontalScrollPosition > this._maxHorizontalScrollPosition;
+			if(isBeyondMaximum || targetHorizontalScrollPosition < this._minHorizontalScrollPosition)
+			{
+				if(isBeyondMaximum)
 				{
-					targetHorizontalScrollPosition -= pixelsPerMS;
-					if(targetHorizontalScrollPosition < this._minHorizontalScrollPosition || targetHorizontalScrollPosition > this._maxHorizontalScrollPosition)
-					{
-						if(this._hasElasticEdges)
-						{
-							pixelsPerMS *= FRICTION * EXTRA_FRICTION;
-						}
-						else
-						{
-							if(targetHorizontalScrollPosition < this._minHorizontalScrollPosition)
-							{
-								targetHorizontalScrollPosition = this._minHorizontalScrollPosition;
-							}
-							else if(targetHorizontalScrollPosition > this._maxHorizontalScrollPosition)
-							{
-								targetHorizontalScrollPosition = this._maxHorizontalScrollPosition;
-							}
-							duration++;
-							break;
-						}
-					}
-					else
-					{
-						pixelsPerMS *= FRICTION;
-					}
-					duration++;
+					var ratioOutOfBounds:Number = (targetHorizontalScrollPosition - this._maxHorizontalScrollPosition) / Math.abs(distance);
 				}
+				else
+				{
+					ratioOutOfBounds = (this._minHorizontalScrollPosition - targetHorizontalScrollPosition) / Math.abs(distance);
+				}
+				var ratioInBounds:Number = 1 - ratioOutOfBounds;
+				ratioOutOfBounds *= this._throwElasticity;
+				var newRatio:Number = ratioInBounds + ratioOutOfBounds;
+				targetHorizontalScrollPosition = this._horizontalScrollPosition + distance * newRatio;
+				actualDuration = idealDuration * newRatio;
 			}
-			else
-			{
-				duration = Math.log(MINIMUM_VELOCITY / absPixelsPerMS) / Math.log(FRICTION);
-			}
-			this.throwTo(targetHorizontalScrollPosition, NaN, duration / 1000);
+			this.throwTo(targetHorizontalScrollPosition, NaN, actualDuration);
 		}
 
 		/**
@@ -4020,7 +4187,7 @@ package feathers.controls
 		{
 			if(this._snapToPages)
 			{
-				const inchesPerSecond:Number = 1000 * pixelsPerMS / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
+				var inchesPerSecond:Number = 1000 * pixelsPerMS / (DeviceCapabilities.dpi / Starling.contentScaleFactor);
 				if(inchesPerSecond > this._minimumPageThrowVelocity)
 				{
 					var snappedPageVerticalScrollPosition:Number = roundDownToNearest(this._verticalScrollPosition, this.actualPageHeight);
@@ -4031,11 +4198,11 @@ package feathers.controls
 				}
 				else
 				{
-					const lastPageHeight:Number = this._maxVerticalScrollPosition % this.actualPageHeight;
+					var lastPageHeight:Number = this._maxVerticalScrollPosition % this.actualPageHeight;
 					var startOfLastPage:Number = this._maxVerticalScrollPosition - lastPageHeight;
 					if(lastPageHeight < this.actualPageHeight && this._verticalScrollPosition >= startOfLastPage)
 					{
-						const lastPagePosition:Number = this._verticalScrollPosition - startOfLastPage;
+						var lastPagePosition:Number = this._verticalScrollPosition - startOfLastPage;
 						if(inchesPerSecond > this._minimumPageThrowVelocity)
 						{
 							snappedPageVerticalScrollPosition = startOfLastPage + roundDownToNearest(lastPagePosition, lastPageHeight);
@@ -4074,52 +4241,39 @@ package feathers.controls
 				return;
 			}
 
-			const absPixelsPerMS:Number = Math.abs(pixelsPerMS);
+			var absPixelsPerMS:Number = Math.abs(pixelsPerMS);
 			if(absPixelsPerMS <= MINIMUM_VELOCITY)
 			{
 				this.finishScrollingVertically();
 				return;
 			}
-			var targetVerticalScrollPosition:Number = this._verticalScrollPosition + (pixelsPerMS - MINIMUM_VELOCITY) / Math.log(FRICTION);
-			if(targetVerticalScrollPosition < this._minVerticalScrollPosition || targetVerticalScrollPosition > this._maxVerticalScrollPosition)
+
+			var distance:Number = this.calculateThrowDistance(pixelsPerMS);
+			var idealDuration:Number = this._fixedThrowDuration;
+			if(!this._useFixedThrowDuration)
 			{
-				var duration:Number = 0;
-				targetVerticalScrollPosition = this._verticalScrollPosition;
-				while(Math.abs(pixelsPerMS) > MINIMUM_VELOCITY)
+				idealDuration = this.calculateDynamicThrowDuration(pixelsPerMS);
+			}
+			var actualDuration:Number = idealDuration;
+			var targetVerticalScrollPosition:Number = this._verticalScrollPosition + distance;
+			var isBeyondMaximum:Boolean = targetVerticalScrollPosition > this._maxVerticalScrollPosition;
+			if(isBeyondMaximum || targetVerticalScrollPosition < this._minVerticalScrollPosition)
+			{
+				if(isBeyondMaximum)
 				{
-					targetVerticalScrollPosition -= pixelsPerMS;
-					if(targetVerticalScrollPosition < this._minVerticalScrollPosition || targetVerticalScrollPosition > this._maxVerticalScrollPosition)
-					{
-						if(this._hasElasticEdges)
-						{
-							pixelsPerMS *= FRICTION * EXTRA_FRICTION;
-						}
-						else
-						{
-							if(targetVerticalScrollPosition < this._minVerticalScrollPosition)
-							{
-								targetVerticalScrollPosition = this._minVerticalScrollPosition;
-							}
-							else if(targetVerticalScrollPosition > this._maxVerticalScrollPosition)
-							{
-								targetVerticalScrollPosition = this._maxVerticalScrollPosition;
-							}
-							duration++;
-							break;
-						}
-					}
-					else
-					{
-						pixelsPerMS *= FRICTION;
-					}
-					duration++;
+					var ratioOutOfBounds:Number = (targetVerticalScrollPosition - this._maxVerticalScrollPosition) / Math.abs(distance);
 				}
+				else
+				{
+					ratioOutOfBounds = (this._minVerticalScrollPosition - targetVerticalScrollPosition) / Math.abs(distance);
+				}
+				var ratioInBounds:Number = 1 - ratioOutOfBounds;
+				ratioOutOfBounds *= this._throwElasticity;
+				var newRatio:Number = ratioInBounds + ratioOutOfBounds;
+				targetVerticalScrollPosition = this._verticalScrollPosition + distance * newRatio;
+				actualDuration = idealDuration * newRatio;
 			}
-			else
-			{
-				duration = Math.log(MINIMUM_VELOCITY / absPixelsPerMS) / Math.log(FRICTION);
-			}
-			this.throwTo(NaN, targetVerticalScrollPosition, duration / 1000);
+			this.throwTo(NaN, targetVerticalScrollPosition, actualDuration);
 		}
 
 		/**
