@@ -205,6 +205,20 @@ package feathers.controls
 		public static const INTERACTION_MODE_TOUCH_AND_SCROLL_BARS:String = "touchAndScrollBars";
 
 		/**
+		 * @copy feathers.controls.Scroller#DECELERATION_RATE_NORMAL
+		 *
+		 * @see feathers.controls.Scroller#decelerationRate
+		 */
+		public static const DECELERATION_RATE_NORMAL:Number = 0.998;
+
+		/**
+		 * @copy feathers.controls.Scroller#DECELERATION_RATE_FAST
+		 *
+		 * @see feathers.controls.Scroller#decelerationRate
+		 */
+		public static const DECELERATION_RATE_FAST:Number = 0.99;
+
+		/**
 		 * The <code>TextArea</code> is enabled and does not have focus.
 		 */
 		public static const STATE_ENABLED:String = "enabled";
