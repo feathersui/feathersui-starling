@@ -632,18 +632,20 @@ package feathers.controls
 
 			if(dataInvalid || sizeInvalid || stateInvalid || stylesInvalid)
 			{
-				this.currentFill.x = this._paddingLeft;
-				this.currentFill.y = this._paddingTop;
-				const percentage:Number = (this._value - this._minimum) / (this._maximum - this._minimum);
+				var percentage:Number = (this._value - this._minimum) / (this._maximum - this._minimum);
 				if(this._direction == DIRECTION_VERTICAL)
 				{
 					this.currentFill.width = this.actualWidth - this._paddingLeft - this._paddingRight;
 					this.currentFill.height = this._originalFillHeight + percentage * (this.actualHeight - this._paddingTop - this._paddingBottom - this._originalFillHeight);
+					this.currentFill.x = this._paddingLeft;
+					this.currentFill.y = this.actualHeight - this._paddingBottom - this.currentFill.height;
 				}
 				else
 				{
 					this.currentFill.width = this._originalFillWidth + percentage * (this.actualWidth - this._paddingLeft - this._paddingRight - this._originalFillWidth);
 					this.currentFill.height = this.actualHeight - this._paddingTop - this._paddingBottom;
+					this.currentFill.x = this._paddingLeft;
+					this.currentFill.y = this._paddingTop;
 				}
 			}
 
