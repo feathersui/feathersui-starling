@@ -790,7 +790,8 @@ package feathers.controls.text
 
 		/**
 		 * Restricts the set of characters that a user can enter into the text
-		 * field.
+		 * field. Only user interaction is restricted; a script can put any text
+		 * into the text field.
 		 *
 		 * <p>In the following example, the text is restricted to numbers:</p>
 		 *
