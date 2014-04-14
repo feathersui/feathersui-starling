@@ -1206,10 +1206,26 @@ package feathers.themes
 		protected function setProgressBarStyles(progress:ProgressBar):void
 		{
 			var backgroundSkin:Scale9Image = new Scale9Image(simpleBorderBackgroundSkinTextures);
-			backgroundSkin.width = backgroundSkin.height * 30;
+			if(progress.direction == ProgressBar.DIRECTION_VERTICAL)
+			{
+				backgroundSkin.height = backgroundSkin.width * 30;
+			}
+			else
+			{
+				backgroundSkin.width = backgroundSkin.height * 30;
+			}
 			progress.backgroundSkin = backgroundSkin;
 
-			progress.fillSkin = new Image(progressBarFillSkinTexture);
+			var fillSkin:Image = new Image(progressBarFillSkinTexture);
+			if(progress.direction == ProgressBar.DIRECTION_VERTICAL)
+			{
+				fillSkin.height = 0;
+			}
+			else
+			{
+				fillSkin.width = 0;
+			}
+			progress.fillSkin = fillSkin;
 
 			progress.paddingTop = progress.paddingRight = progress.paddingBottom =
 				progress.paddingLeft = 1;
