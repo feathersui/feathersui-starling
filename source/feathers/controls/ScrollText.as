@@ -77,6 +77,7 @@ package feathers.controls
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/scroll-text
 	 * @see feathers.controls.text.TextFieldTextRenderer
+	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html flash.text.TextField
 	 */
 	public class ScrollText extends Scroller
 	{
@@ -217,7 +218,6 @@ package feathers.controls
 		 * @default ""
 		 *
 		 * @see #isHTML
-		 * @see flash.text.TextField#htmlText
 		 */
 		public function get text():String
 		{
@@ -257,8 +257,8 @@ package feathers.controls
 		 *
 		 * @default false
 		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html#htmlText flash.text.TextField.htmlText
 		 * @see #text
-		 * @see flash.text.TextField#htmlText
 		 */
 		public function get isHTML():Boolean
 		{
@@ -294,7 +294,7 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see #disabledTextFormat
-		 * @see flash.text.TextFormat
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextFormat.html flash.text.TextFormat
 		 */
 		public function get textFormat():TextFormat
 		{
@@ -331,7 +331,7 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see #textFormat
-		 * @see flash.text.TextFormat
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextFormat.html flash.text.TextFormat
 		 */
 		public function get disabledTextFormat():TextFormat
 		{
@@ -359,9 +359,29 @@ package feathers.controls
 		/**
 		 * The <code>StyleSheet</code> object to pass to the TextField.
 		 *
+		 * <p>In the following example, a style sheet is applied:</p>
+		 *
+		 * <listing version="3.0">
+		 * var style:StyleSheet = new StyleSheet();
+		 * var heading:Object = new Object();
+		 * heading.fontWeight = "bold";
+		 * heading.color = "#FF0000";
+		 *
+		 * var body:Object = new Object();
+		 * body.fontStyle = "italic";
+		 *
+		 * style.setStyle(".heading", heading);
+		 * style.setStyle("body", body);
+		 *
+		 * scrollText.styleSheet = style;
+		 * scrollText.isHTML = true;
+		 * scrollText.text = "&lt;body&gt;&lt;span class='heading'&gt;Hello&lt;/span&gt; World...&lt;/body&gt;";</listing>
+		 *
 		 * @default null
 		 *
-		 * @see flash.text.StyleSheet
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html#styleSheet Full description of flash.text.TextField.styleSheet in Adobe's Flash Platform API Reference
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StyleSheet.html flash.text.StyleSheet
+		 * @see #isHTML
 		 */
 		public function get styleSheet():StyleSheet
 		{
@@ -387,7 +407,8 @@ package feathers.controls
 		protected var _embedFonts:Boolean = false;
 
 		/**
-		 * Determines if the TextField should use an embedded font or not.
+		 * Determines if the TextField should use an embedded font or not. If
+		 * the specified font is not embedded, the text is not displayed.
 		 *
 		 * <p>In the following example, some text is formatted with an embedded
 		 * font:</p>
@@ -397,6 +418,8 @@ package feathers.controls
 		 * scrollText.embedFonts = true;</listing>
 		 *
 		 * @default false
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html#embedFonts Full description of flash.text.TextField.embedFonts in Adobe's Flash Platform API Reference
 		 */
 		public function get embedFonts():Boolean
 		{
@@ -422,11 +445,18 @@ package feathers.controls
 		private var _antiAliasType:String = AntiAliasType.ADVANCED;
 
 		/**
-		 * Same as the flash.text.TextField property with the same name.
+		 * The type of anti-aliasing used for this text field, defined as
+		 * constants in the <code>flash.text.AntiAliasType</code> class.
 		 *
-		 * @see flash.text.TextField#antiAliasType
+		 * <p>In the following example, the anti-alias type is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.antiAliasType = AntiAliasType.NORMAL;</listing>
 		 *
 		 * @default flash.text.AntiAliasType.ADVANCED
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html#antiAliasType Full description of flash.text.TextField.antiAliasType in Adobe's Flash Platform API Reference
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/AntiAliasType.html flash.text.AntiAliasType
 		 */
 		public function get antiAliasType():String
 		{
@@ -452,11 +482,20 @@ package feathers.controls
 		private var _background:Boolean = false;
 
 		/**
-		 * Same as the flash.text.TextField property with the same name.
+		 * Specifies whether the text field has a background fill. Use the
+		 * <code>backgroundColor</code> property to set the background color of
+		 * a text field.
 		 *
-		 * @see flash.text.TextField#background
+		 * <p>In the following example, the background is enabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollText.background = true;
+		 * scrollText.backgroundColor = 0xff0000;</listing>
 		 *
 		 * @default false
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html#background Full description of flash.text.TextField.background in Adobe's Flash Platform API Reference
+		 * @see #backgroundColor
 		 */
 		public function get background():Boolean
 		{
@@ -482,11 +521,19 @@ package feathers.controls
 		private var _backgroundColor:uint = 0xffffff;
 
 		/**
-		 * Same as the flash.text.TextField property with the same name.
+		 * The color of the text field background that is displayed if the
+		 * <code>background</code> property is set to <code>true</code>.
 		 *
-		 * @see flash.text.TextField#backgroundColor
+		 * <p>In the following example, the background color is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollText.background = true;
+		 * scrollText.backgroundColor = 0xff000ff;</listing>
 		 *
 		 * @default 0xffffff
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html#backgroundColor Full description of flash.text.TextField.backgroundColor in Adobe's Flash Platform API Reference
+		 * @see #background
 		 */
 		public function get backgroundColor():uint
 		{
@@ -512,11 +559,19 @@ package feathers.controls
 		private var _border:Boolean = false;
 
 		/**
-		 * Same as the flash.text.TextField property with the same name.
+		 * Specifies whether the text field has a border. Use the
+		 * <code>borderColor</code> property to set the border color.
+		 *
+		 * <p>In the following example, the border is enabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollText.border = true;
+		 * scrollText.borderColor = 0xff0000;</listing>
 		 *
 		 * @default false
 		 *
-		 * @see flash.text.TextField#border
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html#border Full description of flash.text.TextField.border in Adobe's Flash Platform API Reference
+		 * @see #borderColor
 		 */
 		public function get border():Boolean
 		{
@@ -542,11 +597,19 @@ package feathers.controls
 		private var _borderColor:uint = 0x000000;
 
 		/**
-		 * Same as the flash.text.TextField property with the same name.
+		 * The color of the text field border that is displayed if the
+		 * <code>border</code> property is set to <code>true</code>.
+		 *
+		 * <p>In the following example, the border color is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollText.border = true;
+		 * scrollText.borderColor = 0xff00ff;</listing>
 		 *
 		 * @default 0x000000
 		 *
-		 * @see flash.text.TextField#borderColor
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html#borderColor Full description of flash.text.TextField.borderColor in Adobe's Flash Platform API Reference
+		 * @see #border
 		 */
 		public function get borderColor():uint
 		{
@@ -572,11 +635,18 @@ package feathers.controls
 		private var _condenseWhite:Boolean = false;
 
 		/**
-		 * Same as the flash.text.TextField property with the same name.
+		 * A boolean value that specifies whether extra white space (spaces,
+		 * line breaks, and so on) in a text field with HTML text is removed.
+		 *
+		 * <p>In the following example, whitespace is condensed:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollText.condenseWhite = true;</listing>
 		 *
 		 * @default false
 		 *
-		 * @see flash.text.TextField#condenseWhite
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html#condenseWhite Full description of flash.text.TextField.condenseWhite in Adobe's Flash Platform API Reference
+		 * @see #isHTML
 		 */
 		public function get condenseWhite():Boolean
 		{
@@ -602,11 +672,18 @@ package feathers.controls
 		private var _displayAsPassword:Boolean = false;
 
 		/**
-		 * Same as the flash.text.TextField property with the same name.
+		 * Specifies whether the text field is a password text field that hides
+		 * the input characters using asterisks instead of the actual
+		 * characters.
+		 *
+		 * <p>In the following example, the text is displayed as a password:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollText.displayAsPassword = true;</listing>
 		 *
 		 * @default false
 		 *
-		 * @see flash.text.TextField#displayAsPassword
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html#displayAsPassword Full description of flash.text.TextField.displayAsPassword in Adobe's Flash Platform API Reference
 		 */
 		public function get displayAsPassword():Boolean
 		{
@@ -632,11 +709,22 @@ package feathers.controls
 		private var _gridFitType:String = GridFitType.PIXEL;
 
 		/**
-		 * Same as the flash.text.TextField property with the same name.
+		 * Determines whether Flash Player forces strong horizontal and vertical
+		 * lines to fit to a pixel or subpixel grid, or not at all using the
+		 * constants defined in the <code>flash.text.GridFitType</code> class.
+		 * This property applies only if the <code>antiAliasType</code> property
+		 * of the text field is set to <code>flash.text.AntiAliasType.ADVANCED</code>.
+		 *
+		 * <p>In the following example, the grid fit type is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollText.gridFitType = GridFitType.SUBPIXEL;</listing>
 		 *
 		 * @default flash.text.GridFitType.PIXEL
 		 *
-		 * @see flash.text.TextField#gridFitType
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html#gridFitType Full description of flash.text.TextField.gridFitType in Adobe's Flash Platform API Reference
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/GridFitType.html flash.text.GridFitType
+		 * @see #antiAliasType
 		 */
 		public function get gridFitType():String
 		{
@@ -662,11 +750,21 @@ package feathers.controls
 		private var _sharpness:Number = 0;
 
 		/**
-		 * Same as the flash.text.TextField property with the same name.
+		 * The sharpness of the glyph edges in this text field. This property
+		 * applies only if the <code>antiAliasType</code> property of the text
+		 * field is set to <code>flash.text.AntiAliasType.ADVANCED</code>. The
+		 * range for <code>sharpness</code> is a number from <code>-400</code>
+		 * to <code>400</code>.
+		 *
+		 * <p>In the following example, the sharpness is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollText.sharpness = 200;</listing>
 		 *
 		 * @default 0
 		 *
-		 * @see flash.text.TextField#sharpness
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html#sharpness Full description of flash.text.TextField.sharpness in Adobe's Flash Platform API Reference
+		 * @see #antiAliasType
 		 */
 		public function get sharpness():Number
 		{
@@ -692,11 +790,21 @@ package feathers.controls
 		private var _thickness:Number = 0;
 
 		/**
-		 * Same as the flash.text.TextField property with the same name.
+		 * The thickness of the glyph edges in this text field. This property
+		 * applies only if the <code>antiAliasType</code> property is set to
+		 * <code>flash.text.AntiAliasType.ADVANCED</code>. The range for
+		 * <code>thickness</code> is a number from <code>-200</code> to
+		 * <code>200</code>.
+		 *
+		 * <p>In the following example, the thickness is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * scrollText.thickness = 100;</listing>
 		 *
 		 * @default 0
 		 *
-		 * @see flash.text.TextField#thickness
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html#thickness Full description of flash.text.TextField.thickness in Adobe's Flash Platform API Reference
+		 * @see #antiAliasType
 		 */
 		public function get thickness():Number
 		{
