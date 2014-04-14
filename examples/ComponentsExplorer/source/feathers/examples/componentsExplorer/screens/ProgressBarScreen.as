@@ -4,8 +4,7 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.PanelScreen;
 	import feathers.controls.ProgressBar;
 	import feathers.events.FeathersEventType;
-	import feathers.layout.AnchorLayout;
-	import feathers.layout.AnchorLayoutData;
+	import feathers.layout.HorizontalLayout;
 	import feathers.system.DeviceCapabilities;
 
 	import starling.animation.Tween;
@@ -23,23 +22,33 @@ package feathers.examples.componentsExplorer.screens
 		}
 
 		private var _backButton:Button;
-		private var _progress:ProgressBar;
+		private var _horizontalProgress:ProgressBar;
+		private var _verticalProgress:ProgressBar;
 
-		private var _progressTween:Tween;
+		private var _horizontalProgressTween:Tween;
+		private var _verticalProgressTween:Tween;
 
 		protected function initializeHandler(event:Event):void
 		{
-			this.layout = new AnchorLayout();
+			var layout:HorizontalLayout = new HorizontalLayout();
+			layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_CENTER;
+			layout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_MIDDLE;
+			layout.gap = 44 * this.dpiScale;
+			this.layout = layout;
 
-			this._progress = new ProgressBar();
-			this._progress.minimum = 0;
-			this._progress.maximum = 1;
-			this._progress.value = 0;
-			const progressLayoutData:AnchorLayoutData = new AnchorLayoutData();
-			progressLayoutData.horizontalCenter = 0;
-			progressLayoutData.verticalCenter = 0;
-			this._progress.layoutData = progressLayoutData;
-			this.addChild(this._progress);
+			this._horizontalProgress = new ProgressBar();
+			this._horizontalProgress.direction = ProgressBar.DIRECTION_HORIZONTAL;
+			this._horizontalProgress.minimum = 0;
+			this._horizontalProgress.maximum = 1;
+			this._horizontalProgress.value = 0;
+			this.addChild(this._horizontalProgress);
+
+			this._verticalProgress = new ProgressBar();
+			this._verticalProgress.direction = ProgressBar.DIRECTION_VERTICAL;
+			this._verticalProgress.minimum = 0;
+			this._verticalProgress.maximum = 100;
+			this._verticalProgress.value = 0;
+			this.addChild(this._verticalProgress);
 
 			this.headerProperties.title = "Progress Bar";
 
@@ -58,18 +67,28 @@ package feathers.examples.componentsExplorer.screens
 				this.backButtonHandler = this.onBackButton;
 			}
 
-			this._progressTween = new Tween(this._progress, 5);
-			this._progressTween.animate("value", 1);
-			this._progressTween.repeatCount = int.MAX_VALUE;
-			Starling.juggler.add(this._progressTween);
+			this._horizontalProgressTween = new Tween(this._horizontalProgress, 5);
+			this._horizontalProgressTween.animate("value", 1);
+			this._horizontalProgressTween.repeatCount = int.MAX_VALUE;
+			Starling.juggler.add(this._horizontalProgressTween);
+
+			this._verticalProgressTween = new Tween(this._verticalProgress, 8);
+			this._verticalProgressTween.animate("value", 100);
+			this._verticalProgressTween.repeatCount = int.MAX_VALUE;
+			Starling.juggler.add(this._verticalProgressTween);
 		}
 
 		private function onBackButton():void
 		{
-			if(this._progressTween)
+			if(this._horizontalProgressTween)
 			{
-				Starling.juggler.remove(this._progressTween);
-				this._progressTween = null;
+				Starling.juggler.remove(this._horizontalProgressTween);
+				this._horizontalProgressTween = null;
+			}
+			if(this._verticalProgressTween)
+			{
+				Starling.juggler.remove(this._verticalProgressTween);
+				this._verticalProgressTween = null;
 			}
 			this.dispatchEventWith(Event.COMPLETE);
 		}
