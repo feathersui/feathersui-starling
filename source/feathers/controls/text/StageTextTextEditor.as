@@ -187,7 +187,7 @@ package feathers.controls.text
 	 * compatible with the Feathers <code>FocusManager</code>.</p>
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/text-editors
-	 * @see flash.text.StageText
+	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html flash.text.StageText
 	 * @see feathers.text.StageTextField
 	 */
 	public class StageTextTextEditor extends FeathersControl implements ITextEditor
@@ -334,7 +334,9 @@ package feathers.controls.text
 		protected var _autoCapitalize:String = "none";
 
 		/**
-		 * Same as the <code>StageText</code> property with the same name.
+		 * Controls how a device applies auto capitalization to user input. This
+		 * property is only a hint to the underlying platform, because not all
+		 * devices and operating systems support this functionality.
 		 *
 		 * <p>In the following example, the auto capitalize behavior is changed:</p>
 		 *
@@ -342,6 +344,8 @@ package feathers.controls.text
 		 * textEditor.autoCapitalize = AutoCapitalize.WORD;</listing>
 		 *
 		 * @default flash.text.AutoCapitalize.NONE
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html#autoCapitalize Full description of flash.text.StageText.autoCapitalize in Adobe's Flash Platform API Reference
 		 */
 		public function get autoCapitalize():String
 		{
@@ -367,7 +371,10 @@ package feathers.controls.text
 		protected var _autoCorrect:Boolean = false;
 
 		/**
-		 * Same as the <code>StageText</code> property with the same name.
+		 * Indicates whether a device auto-corrects user input for spelling or
+		 * punctuation mistakes. This property is only a hint to the underlying
+		 * platform, because not all devices and operating systems support this
+		 * functionality.
 		 *
 		 * <p>In the following example, auto correct is enabled:</p>
 		 *
@@ -375,6 +382,8 @@ package feathers.controls.text
 		 * textEditor.autoCorrect = true;</listing>
 		 *
 		 * @default false
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html#autoCorrect Full description of flash.text.StageText.autoCorrect in Adobe's Flash Platform API Reference
 		 */
 		public function get autoCorrect():Boolean
 		{
@@ -400,7 +409,8 @@ package feathers.controls.text
 		protected var _color:uint = 0x000000;
 
 		/**
-		 * Same as the <code>StageText</code> property with the same name.
+		 * Specifies text color as a number containing three 8-bit RGB
+		 * components.
 		 *
 		 * <p>In the following example, the text color is changed:</p>
 		 *
@@ -408,6 +418,8 @@ package feathers.controls.text
 		 * textEditor.color = 0xff9900;</listing>
 		 *
 		 * @default 0x000000
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html#color Full description of flash.text.StageText.color in Adobe's Flash Platform API Reference
 		 */
 		public function get color():uint
 		{
@@ -433,7 +445,8 @@ package feathers.controls.text
 		protected var _displayAsPassword:Boolean = false;
 
 		/**
-		 * Same as the <code>StageText</code> property with the same name.
+		 * Indicates whether the text field is a password text field that hides
+		 * input characters using a substitute character.
 		 *
 		 * <p>In the following example, the text is displayed as a password:</p>
 		 *
@@ -441,6 +454,8 @@ package feathers.controls.text
 		 * textEditor.displayAsPassword = true;</listing>
 		 *
 		 * @default false
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html#displayAsPassword Full description of flash.text.StageText.displayAsPassword in Adobe's Flash Platform API Reference
 		 */
 		public function get displayAsPassword():Boolean
 		{
@@ -510,7 +525,8 @@ package feathers.controls.text
 		protected var _fontFamily:String = null;
 
 		/**
-		 * Same as the <code>StageText</code> property with the same name.
+		 * Indicates the name of the current font family. A value of null
+		 * indicates the system default.
 		 *
 		 * <p>In the following example, the font family is changed:</p>
 		 *
@@ -518,6 +534,8 @@ package feathers.controls.text
 		 * textEditor.fontFamily = "Source Sans Pro";</listing>
 		 *
 		 * @default null
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html#fontFamily Full description of flash.text.StageText.fontFamily in Adobe's Flash Platform API Reference
 		 */
 		public function get fontFamily():String
 		{
@@ -543,7 +561,8 @@ package feathers.controls.text
 		protected var _fontPosture:String = FontPosture.NORMAL;
 
 		/**
-		 * Same as the <code>StageText</code> property with the same name.
+		 * Specifies the font posture, using constants defined in the
+		 * <code>flash.text.engine.FontPosture</code> class.
 		 *
 		 * <p>In the following example, the font posture is changed:</p>
 		 *
@@ -551,6 +570,9 @@ package feathers.controls.text
 		 * textEditor.fontPosture = FontPosture.ITALIC;</listing>
 		 *
 		 * @default flash.text.engine.FontPosture.NORMAL
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html#fontPosture Full description of flash.text.StageText.fontPosture in Adobe's Flash Platform API Reference
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/FontPosture.html flash.text.engine.FontPosture
 		 */
 		public function get fontPosture():String
 		{
@@ -576,14 +598,16 @@ package feathers.controls.text
 		protected var _fontSize:int = 12;
 
 		/**
-		 * Same as the <code>StageText</code> property with the same name.
+		 * The size in pixels for the current font family.
 		 *
-		 * <p>In the following example, the font size is changed:</p>
+		 * <p>In the following example, the font size is increased to 16 pixels:</p>
 		 *
 		 * <listing version="3.0">
 		 * textEditor.fontSize = 16;</listing>
 		 *
 		 * @default 12
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html#fontSize Full description of flash.text.StageText.fontSize in Adobe's Flash Platform API Reference
 		 */
 		public function get fontSize():int
 		{
@@ -609,14 +633,18 @@ package feathers.controls.text
 		protected var _fontWeight:String = FontWeight.NORMAL;
 
 		/**
-		 * Same as the <code>StageText</code> property with the same name.
+		 * Specifies the font weight, using constants defined in the
+		 * <code>flash.text.engine.FontWeight</code> class.
 		 *
-		 * <p>In the following example, the font weight is changed:</p>
+		 * <p>In the following example, the font weight is changed to bold:</p>
 		 *
 		 * <listing version="3.0">
 		 * textEditor.fontWeight = FontWeight.BOLD;</listing>
 		 *
 		 * @default flash.text.engine.FontWeight.NORMAL
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html#fontWeight Full description of flash.text.StageText.fontWeight in Adobe's Flash Platform API Reference
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/FontWeight.html flash.text.engine.FontWeight
 		 */
 		public function get fontWeight():String
 		{
@@ -642,14 +670,18 @@ package feathers.controls.text
 		protected var _locale:String = "en";
 
 		/**
-		 * Same as the <code>StageText</code> property with the same name.
+		 * Indicates the locale of the text. <code>StageText</code> uses the
+		 * standard locale identifiers. For example <code>"en"</code>,
+		 * <code>"en_US"</code> and <code>"en-US"</code> are all English.
 		 *
-		 * <p>In the following example, the locale is changed:</p>
+		 * <p>In the following example, the locale is changed to Russian:</p>
 		 *
 		 * <listing version="3.0">
 		 * textEditor.locale = "ru";</listing>
 		 *
 		 * @default "en"
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html#locale Full description of flash.text.StageText.locale in Adobe's Flash Platform API Reference
 		 */
 		public function get locale():String
 		{
@@ -675,7 +707,10 @@ package feathers.controls.text
 		protected var _maxChars:int = 0;
 
 		/**
-		 * Same as the <code>StageText</code> property with the same name.
+		 * Indicates the maximum number of characters that a user can enter into
+		 * the text editor. A script can insert more text than <code>maxChars</code>
+		 * allows. If <code>maxChars</code> equals zero, a user can enter an
+		 * unlimited amount of text into the text editor.
 		 *
 		 * <p>In the following example, the maximum character count is changed:</p>
 		 *
@@ -683,6 +718,8 @@ package feathers.controls.text
 		 * textEditor.maxChars = 10;</listing>
 		 *
 		 * @default 0
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html#maxChars Full description of flash.text.StageText.maxChars in Adobe's Flash Platform API Reference
 		 */
 		public function get maxChars():int
 		{
@@ -708,11 +745,12 @@ package feathers.controls.text
 		protected var _multiline:Boolean = false;
 
 		/**
-		 * Same as the <code>StageText</code> property with the same name,
-		 * except it is configurable after the text renderer is created. The
-		 * <code>StageText</code> instance will be disposed and recreated when
-		 * this property changes after the <code>StageText</code> text was
-		 * initially created.
+		 * Indicates whether the StageText object can display more than one line
+		 * of text. This property is configurable after the text editor is
+		 * created, unlike a regular <code>StageText</code> instance. The text
+		 * editor will dispose and recreate its internal <code>StageText</code>
+		 * instance if the value of the <code>multiline</code> property is
+		 * changed after the <code>StageText</code> is initially created.
 		 *
 		 * <p>In the following example, multiline is enabled:</p>
 		 *
@@ -724,6 +762,8 @@ package feathers.controls.text
 		 * <code>TextInput.VERTICAL_ALIGN_JUSTIFY</code>.
 		 *
 		 * @default false
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html#multiline Full description of flash.text.StageText.multiline in Adobe's Flash Platform API Reference
 		 */
 		public function get multiline():Boolean
 		{
@@ -749,7 +789,8 @@ package feathers.controls.text
 		protected var _restrict:String;
 
 		/**
-		 * Same as the <code>StageText</code> property with the same name.
+		 * Restricts the set of characters that a user can enter into the text
+		 * field.
 		 *
 		 * <p>In the following example, the text is restricted to numbers:</p>
 		 *
@@ -757,6 +798,8 @@ package feathers.controls.text
 		 * textEditor.restrict = "0-9";</listing>
 		 *
 		 * @default null
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html#restrict Full description of flash.text.StageText.restrict in Adobe's Flash Platform API Reference
 		 */
 		public function get restrict():String
 		{
@@ -782,7 +825,11 @@ package feathers.controls.text
 		protected var _returnKeyLabel:String = "default";
 
 		/**
-		 * Same as the <code>StageText</code> property with the same name.
+		 * Indicates the label on the Return key for devices that feature a soft
+		 * keyboard. The available values are constants defined in the
+		 * <code>flash.text.ReturnKeyLabel</code> class. This property is only a
+		 * hint to the underlying platform, because not all devices and
+		 * operating systems support this functionality.
 		 *
 		 * <p>In the following example, the return key label is changed:</p>
 		 *
@@ -790,6 +837,9 @@ package feathers.controls.text
 		 * textEditor.returnKeyLabel = ReturnKeyLabel.GO;</listing>
 		 *
 		 * @default flash.text.ReturnKeyLabel.DEFAULT
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html#returnKeyLabel Full description of flash.text.StageText.returnKeyLabel in Adobe's Flash Platform API Reference
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/ReturnKeyLabel.html flash.text.ReturnKeyLabel
 		 */
 		public function get returnKeyLabel():String
 		{
@@ -815,7 +865,11 @@ package feathers.controls.text
 		protected var _softKeyboardType:String = "default";
 
 		/**
-		 * Same as the <code>StageText</code> property with the same name.
+		 * Controls the appearance of the soft keyboard. Valid values are
+		 * defined as constants in the <code>flash.text.SoftKeyboardType</code>
+		 * class. This property is only a hint to the underlying platform,
+		 * because not all devices and operating systems support this
+		 * functionality.
 		 *
 		 * <p>In the following example, the soft keyboard type is changed:</p>
 		 *
@@ -823,6 +877,9 @@ package feathers.controls.text
 		 * textEditor.softKeyboardType = SoftKeyboardType.NUMBER;</listing>
 		 *
 		 * @default flash.text.SoftKeyboardType.DEFAULT
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html#softKeyboardType Full description of flash.text.StageText.softKeyboardType in Adobe's Flash Platform API Reference
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/SoftKeyboardType.html flash.text.SoftKeyboardType
 		 */
 		public function get softKeyboardType():String
 		{
@@ -848,7 +905,8 @@ package feathers.controls.text
 		protected var _textAlign:String = TextFormatAlign.START;
 
 		/**
-		 * Same as the <code>StageText</code> property with the same name.
+		 * Indicates the paragraph alignment. Valid values are defined as
+		 * constants in the <code>flash.text.TextFormatAlign</code> class.
 		 *
 		 * <p>In the following example, the text is centered:</p>
 		 *
@@ -856,6 +914,9 @@ package feathers.controls.text
 		 * textEditor.textAlign = TextFormatAlign.CENTER;</listing>
 		 *
 		 * @default flash.text.TextFormatAlign.START
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html#textAlign Full description of flash.text.StageText.textAlign in Adobe's Flash Platform API Reference
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextFormatAlign.html flash.text.TextFormatAlign
 		 */
 		public function get textAlign():String
 		{
