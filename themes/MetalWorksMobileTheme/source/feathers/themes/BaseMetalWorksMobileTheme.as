@@ -1430,23 +1430,55 @@ package feathers.themes
 		protected function setProgressBarStyles(progress:ProgressBar):void
 		{
 			var backgroundSkin:Scale9Image = new Scale9Image(this.backgroundSkinTextures, this.scale);
-			backgroundSkin.width = 240 * this.scale;
-			backgroundSkin.height = 22 * this.scale;
+			if(progress.direction == ProgressBar.DIRECTION_VERTICAL)
+			{
+				backgroundSkin.width = 22 * this.scale;
+				backgroundSkin.height = 240 * this.scale;
+			}
+			else
+			{
+				backgroundSkin.width = 240 * this.scale;
+				backgroundSkin.height = 22 * this.scale;
+			}
 			progress.backgroundSkin = backgroundSkin;
 
 			var backgroundDisabledSkin:Scale9Image = new Scale9Image(this.backgroundDisabledSkinTextures, this.scale);
-			backgroundDisabledSkin.width = 240 * this.scale;
-			backgroundDisabledSkin.height = 22 * this.scale;
+			if(progress.direction == ProgressBar.DIRECTION_VERTICAL)
+			{
+				backgroundDisabledSkin.width = 22 * this.scale;
+				backgroundDisabledSkin.height = 240 * this.scale;
+			}
+			else
+			{
+				backgroundDisabledSkin.width = 240 * this.scale;
+				backgroundDisabledSkin.height = 22 * this.scale;
+			}
 			progress.backgroundDisabledSkin = backgroundDisabledSkin;
 
 			var fillSkin:Scale9Image = new Scale9Image(this.buttonUpSkinTextures, this.scale);
-			fillSkin.width = 8 * this.scale;
-			fillSkin.height = 22 * this.scale;
+			if(progress.direction == ProgressBar.DIRECTION_VERTICAL)
+			{
+				fillSkin.width = 22 * this.scale;
+				fillSkin.height = 8 * this.scale;
+			}
+			else
+			{
+				fillSkin.width = 8 * this.scale;
+				fillSkin.height = 22 * this.scale;
+			}
 			progress.fillSkin = fillSkin;
 
 			var fillDisabledSkin:Scale9Image = new Scale9Image(this.buttonDisabledSkinTextures, this.scale);
-			fillDisabledSkin.width = 8 * this.scale;
-			fillDisabledSkin.height = 22 * this.scale;
+			if(progress.direction == ProgressBar.DIRECTION_VERTICAL)
+			{
+				fillDisabledSkin.width = 22 * this.scale;
+				fillDisabledSkin.height = 8 * this.scale;
+			}
+			else
+			{
+				fillDisabledSkin.width = 8 * this.scale;
+				fillDisabledSkin.height = 22 * this.scale;
+			}
 			progress.fillDisabledSkin = fillDisabledSkin;
 		}
 
