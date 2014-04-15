@@ -10,6 +10,7 @@ package feathers.controls.renderers
 	import feathers.controls.Button;
 	import feathers.controls.ImageLoader;
 	import feathers.controls.Scroller;
+	import feathers.controls.ToggleButton;
 	import feathers.controls.text.BitmapFontTextRenderer;
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
@@ -31,7 +32,7 @@ package feathers.controls.renderers
 	/**
 	 * An abstract class for item renderer implementations.
 	 */
-	public class BaseDefaultItemRenderer extends Button
+	public class BaseDefaultItemRenderer extends ToggleButton
 	{
 		/**
 		 * The default value added to the <code>nameList</code> of the icon

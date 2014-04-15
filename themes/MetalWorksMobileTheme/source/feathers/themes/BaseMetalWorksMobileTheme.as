@@ -52,6 +52,7 @@ package feathers.themes
 	import feathers.controls.TabBar;
 	import feathers.controls.TextArea;
 	import feathers.controls.TextInput;
+	import feathers.controls.ToggleButton;
 	import feathers.controls.ToggleSwitch;
 	import feathers.controls.popups.CalloutPopUpContentManager;
 	import feathers.controls.popups.VerticalCenteredPopUpContentManager;
@@ -718,7 +719,10 @@ package feathers.themes
 		{
 			button.defaultLabelProperties.elementFormat = this.darkUIElementFormat;
 			button.disabledLabelProperties.elementFormat = this.darkUIDisabledElementFormat;
-			button.selectedDisabledLabelProperties.elementFormat = this.darkUIDisabledElementFormat;
+			if(button is ToggleButton)
+			{
+				ToggleButton(button).selectedDisabledLabelProperties.elementFormat = this.darkUIDisabledElementFormat;
+			}
 
 			button.paddingTop = button.paddingBottom = 8 * this.scale;
 			button.paddingLeft = button.paddingRight = 16 * this.scale;
@@ -779,8 +783,12 @@ package feathers.themes
 			button.defaultLabelProperties.elementFormat = this.lightUIElementFormat;
 			button.downLabelProperties.elementFormat = this.darkUIElementFormat;
 			button.disabledLabelProperties.elementFormat = this.lightUIDisabledElementFormat;
-			button.defaultSelectedLabelProperties.elementFormat = this.darkUIElementFormat;
-			button.selectedDisabledLabelProperties.elementFormat = this.darkUIDisabledElementFormat;
+			if(button is ToggleButton)
+			{
+				var toggleButton:ToggleButton = ToggleButton(button);
+				toggleButton.defaultSelectedLabelProperties.elementFormat = this.darkUIElementFormat;
+				toggleButton.selectedDisabledLabelProperties.elementFormat = this.darkUIDisabledElementFormat;
+			}
 
 			button.paddingTop = button.paddingBottom = 8 * this.scale;
 			button.paddingLeft = button.paddingRight = 16 * this.scale;
@@ -858,7 +866,10 @@ package feathers.themes
 
 			button.defaultLabelProperties.elementFormat = this.largeUIDarkElementFormat;
 			button.disabledLabelProperties.elementFormat = this.largeUIDarkDisabledElementFormat;
-			button.selectedDisabledLabelProperties.elementFormat = this.largeUIDarkDisabledElementFormat;
+			if(button is ToggleButton)
+			{
+				ToggleButton(button).selectedDisabledLabelProperties.elementFormat = this.largeUIDarkDisabledElementFormat;
+			}
 
 			button.paddingTop = button.paddingBottom = 8 * this.scale;
 			button.paddingLeft = button.paddingRight = 16 * this.scale;
@@ -908,7 +919,7 @@ package feathers.themes
 			tabBar.distributeTabSizes = true;
 		}
 
-		protected function setTabStyles(tab:Button):void
+		protected function setTabStyles(tab:ToggleButton):void
 		{
 			var defaultSkin:Quad = new Quad(88 * this.scale, 88 * this.scale, TAB_BACKGROUND_COLOR);
 			tab.defaultSkin = defaultSkin;

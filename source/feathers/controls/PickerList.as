@@ -12,6 +12,8 @@ package feathers.controls
 	import feathers.controls.popups.VerticalCenteredPopUpContentManager;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.core.FeathersControl;
+	import feathers.core.IToggle;
+	import feathers.core.IToggle;
 	import feathers.core.PropertyProxy;
 	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
@@ -924,7 +926,10 @@ package feathers.controls
 		/**
 		 * Determines if the <code>isSelected</code> property of the picker
 		 * list's button sub-component is toggled when the list is opened and
-		 * closed.
+		 * closed, if the class used to create the thumb implements the
+		 * <code>IToggle</code> interface. Useful for skinning to provide a
+		 * different appearance for the button based on whether the list is open
+		 * or not.
 		 *
 		 * <p>In the following example, the button is toggled on open and close:</p>
 		 *
@@ -933,7 +938,8 @@ package feathers.controls
 		 *
 		 * @default false
 		 *
-		 * @see feathers.controls.Button#isSelected
+		 * @see feathers.core.IToggle
+		 * @see feathers.controls.ToggleButton
 		 */
 		public function get toggleButtonOnOpenAndClose():Boolean
 		{
@@ -950,9 +956,9 @@ package feathers.controls
 				return;
 			}
 			this._toggleButtonOnOpenAndClose = value;
-			if(!this._toggleButtonOnOpenAndClose && this.button)
+			if(!this._toggleButtonOnOpenAndClose && this.button is IToggle)
 			{
-				this.button.isSelected = false;
+				IToggle(this.button).isSelected = false;
 			}
 		}
 
@@ -1415,11 +1421,11 @@ package feathers.controls
 		 */
 		protected function list_addedToStageHandler(event:Event):void
 		{
-			if(!this._toggleButtonOnOpenAndClose)
+			if(!this._toggleButtonOnOpenAndClose || !(this.button is IToggle))
 			{
 				return;
 			}
-			this.button.isSelected = true;
+			IToggle(this.button).isSelected = true;
 		}
 
 		/**
@@ -1427,11 +1433,11 @@ package feathers.controls
 		 */
 		protected function list_removedFromStageHandler(event:Event):void
 		{
-			if(!this._toggleButtonOnOpenAndClose)
+			if(!this._toggleButtonOnOpenAndClose || !(this.button is IToggle))
 			{
 				return;
 			}
-			this.button.isSelected = false;
+			IToggle(this.button).isSelected = false;
 		}
 
 		/**

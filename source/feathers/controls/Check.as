@@ -30,7 +30,7 @@ package feathers.controls
 	 * @see http://wiki.starling-framework.org/feathers/check
 	 * @see ToggleSwitch
 	 */
-	public class Check extends Button
+	public class Check extends ToggleButton
 	{
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>Check</code>
