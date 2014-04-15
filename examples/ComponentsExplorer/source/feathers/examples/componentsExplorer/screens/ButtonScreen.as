@@ -3,6 +3,7 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.Button;
 	import feathers.controls.ImageLoader;
 	import feathers.controls.PanelScreen;
+	import feathers.controls.ToggleButton;
 	import feathers.events.FeathersEventType;
 	import feathers.examples.componentsExplorer.data.EmbeddedAssets;
 	import feathers.layout.VerticalLayout;
@@ -27,7 +28,7 @@ package feathers.examples.componentsExplorer.screens
 		private var _normalButton:Button;
 		private var _disabledButton:Button;
 		private var _iconButton:Button;
-		private var _toggleButton:Button;
+		private var _toggleButton:ToggleButton;
 		private var _callToActionButton:Button;
 		private var _quietButton:Button;
 		private var _dangerButton:Button;
@@ -70,9 +71,8 @@ package feathers.examples.componentsExplorer.screens
 			this._iconButton.defaultIcon = this._icon;
 			this.addChild(this._iconButton);
 
-			this._toggleButton = new Button();
+			this._toggleButton = new ToggleButton();
 			this._toggleButton.label = "Toggle Button";
-			this._toggleButton.isToggle = true;
 			this._toggleButton.isSelected = true;
 			this._toggleButton.addEventListener(Event.CHANGE, toggleButton_changeHandler);
 			this.addChild(this._toggleButton);

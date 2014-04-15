@@ -52,6 +52,7 @@ package feathers.themes
 	import feathers.controls.TabBar;
 	import feathers.controls.TextArea;
 	import feathers.controls.TextInput;
+	import feathers.controls.ToggleButton;
 	import feathers.controls.ToggleSwitch;
 	import feathers.controls.popups.CalloutPopUpContentManager;
 	import feathers.controls.popups.VerticalCenteredPopUpContentManager;
@@ -623,7 +624,10 @@ package feathers.themes
 		{
 			button.defaultLabelProperties.textFormat = this.primaryTextFormat;
 			button.disabledLabelProperties.textFormat = this.disabledTextFormat;
-			button.selectedDisabledLabelProperties.textFormat = this.disabledTextFormat;
+			if(button is ToggleButton)
+			{
+				ToggleButton(button).selectedDisabledLabelProperties.textFormat = this.disabledTextFormat;
+			}
 
 			button.paddingTop = button.paddingBottom = 8 * this.scale;
 			button.paddingLeft = button.paddingRight = 16 * this.scale;
@@ -757,7 +761,10 @@ package feathers.themes
 
 			button.defaultLabelProperties.textFormat = this.primaryTextFormat;
 			button.disabledLabelProperties.textFormat = this.disabledTextFormat;
-			button.selectedDisabledLabelProperties.textFormat = this.disabledTextFormat;
+			if(button is ToggleButton)
+			{
+				ToggleButton(button).selectedDisabledLabelProperties.textFormat = this.disabledTextFormat;
+			}
 
 			button.paddingTop = button.paddingBottom = 8 * this.scale;
 			button.paddingLeft = button.paddingRight = 16 * this.scale;
@@ -773,7 +780,7 @@ package feathers.themes
 			tabBar.distributeTabSizes = true;
 		}
 
-		protected function setTabStyles(tab:Button):void
+		protected function setTabStyles(tab:ToggleButton):void
 		{
 			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = this.headerSkinTextures;

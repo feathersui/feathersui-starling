@@ -1000,8 +1000,10 @@ package feathers.controls
 		/**
 		 * Determines if the <code>isSelected</code> property of the thumb
 		 * is updated to match the <code>isSelected</code> property of the
-		 * toggle switch. Useful for skinning to provide a different appearance
-		 * for the thumb based on whether the toggle switch is selected or not.
+		 * toggle switch, if the class used to create the thumb implements the
+		 * <code>IToggle</code> interface. Useful for skinning to provide a
+		 * different appearance for the thumb based on whether the toggle switch
+		 * is selected or not.
 		 *
 		 * <p>In the following example, the thumb selection is toggled:</p>
 		 *
@@ -1009,6 +1011,9 @@ package feathers.controls
 		 * toggle.toggleThumbSelection = true;</listing>
 		 *
 		 * @default false
+		 *
+		 * @see feathers.core.IToggle
+		 * @see feathers.controls.ToggleButton
 		 */
 		public function get toggleThumbSelection():Boolean
 		{
@@ -2076,13 +2081,17 @@ package feathers.controls
 		 */
 		protected function updateSelection():void
 		{
-			if(this._toggleThumbSelection)
+			if(this.thumb is IToggle)
 			{
-				this.thumb.isSelected = this._isSelected;
-			}
-			else
-			{
-				this.thumb.isSelected = false;
+				var toggleThumb:IToggle = IToggle(this.thumb);
+				if(this._toggleThumbSelection)
+				{
+					toggleThumb.isSelected = this._isSelected;
+				}
+				else
+				{
+					toggleThumb.isSelected = false;
+				}
 			}
 			this.thumb.validate();
 
