@@ -170,7 +170,7 @@ package feathers.controls
 		 */
 		public function NumericStepper()
 		{
-			this._styleProvider = NumericStepper.styleProvider;
+			super();
 			this.addEventListener(Event.REMOVED_FROM_STAGE, numericStepper_removedFromStageHandler);
 		}
 
@@ -247,6 +247,14 @@ package feathers.controls
 		 * @private
 		 */
 		protected var touchPointID:int = -1;
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return NumericStepper.styleProvider;
+		}
 
 		/**
 		 * @private

@@ -75,7 +75,7 @@ package feathers.controls
 		 */
 		public function LayoutGroup()
 		{
-			this._styleProvider = LayoutGroup.styleProvider;
+			super();
 		}
 
 		/**
@@ -93,6 +93,14 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _layoutResult:LayoutBoundsResult = new LayoutBoundsResult();
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return LayoutGroup.styleProvider;
+		}
 
 		/**
 		 * @private

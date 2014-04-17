@@ -46,8 +46,16 @@ package feathers.controls
 		 */
 		public function Check()
 		{
-			this._styleProvider = Check.styleProvider;
+			super();
 			super.isToggle = true;
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return Check.styleProvider;
 		}
 
 		/**

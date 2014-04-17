@@ -227,7 +227,6 @@ package feathers.controls
 		public function Alert()
 		{
 			super();
-			this._styleProvider = Alert.styleProvider;
 			this.headerName = DEFAULT_CHILD_NAME_HEADER;
 			this.footerName = DEFAULT_CHILD_NAME_BUTTON_GROUP;
 			this.buttonGroupFactory = defaultButtonGroupFactory;
@@ -264,6 +263,14 @@ package feathers.controls
 		 * <p>For internal use in subclasses.</p>
 		 */
 		protected var messageTextRenderer:ITextRenderer;
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return Alert.styleProvider;
+		}
 
 		/**
 		 * @private

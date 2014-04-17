@@ -176,7 +176,7 @@ package feathers.controls
 		 */
 		public function PageIndicator()
 		{
-			this._styleProvider = PageIndicator.styleProvider;
+			super();
 			this.isQuickHitAreaEnabled = true;
 			this.addEventListener(TouchEvent.TOUCH, touchHandler);
 		}
@@ -205,6 +205,14 @@ package feathers.controls
 		 * @private
 		 */
 		protected var touchPointID:int = -1;
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return PageIndicator.styleProvider;
+		}
 
 		/**
 		 * @private

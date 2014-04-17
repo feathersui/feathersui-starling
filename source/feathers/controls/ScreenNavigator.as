@@ -172,7 +172,6 @@ package feathers.controls
 		public function ScreenNavigator()
 		{
 			super();
-			this._styleProvider = ScreenNavigator.styleProvider;
 			if(!SIGNAL_TYPE)
 			{
 				try
@@ -186,6 +185,14 @@ package feathers.controls
 			}
 			this.addEventListener(Event.ADDED_TO_STAGE, screenNavigator_addedToStageHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, screenNavigator_removedFromStageHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return ScreenNavigator.styleProvider;
 		}
 
 		/**

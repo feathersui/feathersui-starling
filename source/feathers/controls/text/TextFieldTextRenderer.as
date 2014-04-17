@@ -70,7 +70,7 @@ package feathers.controls.text
 		 */
 		public function TextFieldTextRenderer()
 		{
-			this._styleProvider = TextFieldTextRenderer.styleProvider;
+			super();
 			this.isQuickHitAreaEnabled = true;
 			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
@@ -123,6 +123,14 @@ package feathers.controls.text
 		 * @private
 		 */
 		protected var _hasMeasured:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return TextFieldTextRenderer.styleProvider;
+		}
 
 		/**
 		 * @private

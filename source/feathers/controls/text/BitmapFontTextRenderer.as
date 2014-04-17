@@ -95,6 +95,7 @@ package feathers.controls.text
 		 */
 		public function BitmapFontTextRenderer()
 		{
+			super();
 			if(!CHAR_LOCATION_POOL)
 			{
 				//compiler doesn't like referencing CharLocation class in a
@@ -105,7 +106,6 @@ package feathers.controls.text
 			{
 				CHARACTER_BUFFER = new <CharLocation>[];
 			}
-			this._styleProvider = BitmapFontTextRenderer.styleProvider;
 			this.isQuickHitAreaEnabled = true;
 		}
 
@@ -123,6 +123,14 @@ package feathers.controls.text
 		 * @private
 		 */
 		protected var currentTextFormat:BitmapFontTextFormat;
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return BitmapFontTextRenderer.styleProvider;
+		}
 		
 		/**
 		 * @private

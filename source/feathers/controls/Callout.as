@@ -591,7 +591,7 @@ package feathers.controls
 		 */
 		public function Callout()
 		{
-			this._styleProvider = Callout.styleProvider;
+			super();
 			this.addEventListener(Event.ADDED_TO_STAGE, callout_addedToStageHandler);
 		}
 
@@ -682,6 +682,14 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _isReadyToClose:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return Callout.styleProvider;
+		}
 
 		/**
 		 * @private

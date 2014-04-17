@@ -180,7 +180,14 @@ package feathers.controls.renderers
 		public function DefaultGroupedListItemRenderer()
 		{
 			super();
-			this._styleProvider = DefaultGroupedListItemRenderer.styleProvider;
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return DefaultGroupedListItemRenderer.styleProvider;
 		}
 		
 		/**

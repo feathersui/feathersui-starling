@@ -47,7 +47,15 @@ package feathers.controls.renderers
 		 */
 		public function LayoutGroupListItemRenderer()
 		{
-			this._styleProvider = LayoutGroupListItemRenderer.styleProvider;
+			super();
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return LayoutGroupListItemRenderer.styleProvider;
 		}
 
 		/**

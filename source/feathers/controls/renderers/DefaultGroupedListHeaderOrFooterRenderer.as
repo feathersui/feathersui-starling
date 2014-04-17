@@ -113,7 +113,7 @@ package feathers.controls.renderers
 		 */
 		public function DefaultGroupedListHeaderOrFooterRenderer()
 		{
-			this._styleProvider = DefaultGroupedListHeaderOrFooterRenderer.styleProvider;
+			super();
 		}
 
 		/**
@@ -137,6 +137,14 @@ package feathers.controls.renderers
 		 * @private
 		 */
 		protected var content:DisplayObject;
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return DefaultGroupedListHeaderOrFooterRenderer.styleProvider;
+		}
 
 		/**
 		 * @private

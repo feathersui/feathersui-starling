@@ -248,7 +248,6 @@ package feathers.controls
 		public function TextArea()
 		{
 			super();
-			this._styleProvider = TextArea.styleProvider;
 			this.addEventListener(TouchEvent.TOUCH, textArea_touchHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, textArea_removedFromStageHandler);
 		}
@@ -292,6 +291,14 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _ignoreTextChanges:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return TextArea.styleProvider;
+		}
 
 		/**
 		 * @private

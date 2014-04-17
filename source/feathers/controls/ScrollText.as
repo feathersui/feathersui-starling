@@ -189,7 +189,7 @@ package feathers.controls
 		 */
 		public function ScrollText()
 		{
-			this._styleProvider = ScrollText.styleProvider;
+			super();
 			this.textViewPort = new TextFieldViewPort();
 			this.textViewPort.addEventListener(Event.TRIGGERED, textViewPort_triggeredHandler);
 			this.viewPort = this.textViewPort;
@@ -199,6 +199,14 @@ package feathers.controls
 		 * @private
 		 */
 		protected var textViewPort:TextFieldViewPort;
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return ScrollText.styleProvider;
+		}
 
 		/**
 		 * @private

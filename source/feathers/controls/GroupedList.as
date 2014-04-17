@@ -396,7 +396,6 @@ package feathers.controls
 		public function GroupedList()
 		{
 			super();
-			this._styleProvider = GroupedList.styleProvider;
 		}
 
 		/**
@@ -404,6 +403,14 @@ package feathers.controls
 		 * The guts of the List's functionality. Handles layout and selection.
 		 */
 		protected var dataViewPort:GroupedListDataViewPort;
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return GroupedList.styleProvider;
+		}
 
 		/**
 		 * @private

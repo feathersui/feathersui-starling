@@ -187,7 +187,6 @@ package feathers.controls
 		public function Panel()
 		{
 			super();
-			this._styleProvider = Panel.styleProvider;
 		}
 
 		/**
@@ -237,6 +236,14 @@ package feathers.controls
 		 * @see feathers.core.IFeathersControl#nameList
 		 */
 		protected var footerName:String = DEFAULT_CHILD_NAME_FOOTER;
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return Panel.styleProvider;
+		}
 
 		/**
 		 * @private

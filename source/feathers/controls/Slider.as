@@ -258,7 +258,6 @@ package feathers.controls
 		public function Slider()
 		{
 			super();
-			this._styleProvider = Slider.styleProvider;
 			this.addEventListener(Event.REMOVED_FROM_STAGE, slider_removedFromStageHandler);
 		}
 
@@ -353,6 +352,14 @@ package feathers.controls
 		 * @private
 		 */
 		protected var maximumTrackOriginalHeight:Number = NaN;
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return Slider.styleProvider;
+		}
 		
 		/**
 		 * @private

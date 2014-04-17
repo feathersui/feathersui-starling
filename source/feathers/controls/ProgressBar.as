@@ -57,7 +57,15 @@ package feathers.controls
 		 */
 		public function ProgressBar()
 		{
-			this._styleProvider = ProgressBar.styleProvider;
+			super();
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return ProgressBar.styleProvider;
 		}
 
 		/**

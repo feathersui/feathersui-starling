@@ -127,7 +127,7 @@ package feathers.controls.text
 		 */
 		public function TextBlockTextRenderer()
 		{
-			this._styleProvider = TextBlockTextRenderer.styleProvider;
+			super();
 			this.isQuickHitAreaEnabled = true;
 			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
@@ -205,6 +205,14 @@ package feathers.controls.text
 		 * @private
 		 */
 		protected var _textElement:TextElement;
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return TextBlockTextRenderer.styleProvider;
+		}
 
 		/**
 		 * @private

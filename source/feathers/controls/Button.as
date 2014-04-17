@@ -374,7 +374,7 @@ package feathers.controls
 		 */
 		public function Button()
 		{
-			this._styleProvider = Button.styleProvider;
+			super();
 			this.isQuickHitAreaEnabled = true;
 			this.addEventListener(TouchEvent.TOUCH, button_touchHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, button_removedFromStageHandler);
@@ -424,6 +424,14 @@ package feathers.controls
 		 * <p>For internal use in subclasses.</p>
 		 */
 		protected var touchPointID:int = -1;
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return Button.styleProvider;
+		}
 		
 		/**
 		 * @private

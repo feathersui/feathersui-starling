@@ -180,7 +180,14 @@ package feathers.controls.renderers
 		public function DefaultListItemRenderer()
 		{
 			super();
-			this._styleProvider = DefaultListItemRenderer.styleProvider;
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return DefaultListItemRenderer.styleProvider;
 		}
 		
 		/**

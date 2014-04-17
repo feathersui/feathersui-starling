@@ -252,7 +252,6 @@ package feathers.controls
 		public function List()
 		{
 			super();
-			this._styleProvider = List.styleProvider;
 			this._selectedIndices.addEventListener(Event.CHANGE, selectedIndices_changeHandler);
 		}
 
@@ -261,6 +260,14 @@ package feathers.controls
 		 * The guts of the List's functionality. Handles layout and selection.
 		 */
 		protected var dataViewPort:ListDataViewPort;
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return List.styleProvider;
+		}
 
 		/**
 		 * @private

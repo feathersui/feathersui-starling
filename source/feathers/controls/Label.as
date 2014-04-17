@@ -87,7 +87,7 @@ package feathers.controls
 		 */
 		public function Label()
 		{
-			this._styleProvider = Label.styleProvider;
+			super();
 			this.isQuickHitAreaEnabled = true;
 		}
 
@@ -98,6 +98,14 @@ package feathers.controls
 		 * @see #textRendererFactory
 		 */
 		protected var textRenderer:ITextRenderer;
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return Label.styleProvider;
+		}
 
 		/**
 		 * @private

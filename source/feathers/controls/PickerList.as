@@ -136,7 +136,6 @@ package feathers.controls
 		public function PickerList()
 		{
 			super();
-			this._styleProvider = PickerList.styleProvider;
 		}
 
 		/**
@@ -186,6 +185,14 @@ package feathers.controls
 		 * @see #createList()
 		 */
 		protected var list:List;
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return PickerList.styleProvider;
+		}
 		
 		/**
 		 * @private
