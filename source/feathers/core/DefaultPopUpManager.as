@@ -7,6 +7,7 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.core
 {
+	import feathers.core.FocusManager;
 	import feathers.events.FeathersEventType;
 
 	import flash.utils.Dictionary;
@@ -171,7 +172,7 @@ package feathers.core
 
 			if(FocusManager.isEnabled && popUp is DisplayObjectContainer)
 			{
-				this._popUpToFocusManager[popUp] = new FocusManager(DisplayObjectContainer(popUp));
+				this._popUpToFocusManager[popUp] = FocusManager.pushFocusManager(DisplayObjectContainer(popUp));
 			}
 
 			if(isCentered)
