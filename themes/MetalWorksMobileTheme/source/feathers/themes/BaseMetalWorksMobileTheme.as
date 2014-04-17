@@ -636,21 +636,14 @@ package feathers.themes
 			return image;
 		}
 
-		protected function setScreenStyles(screen:Screen):void
-		{
-			screen.originalDPI = this._originalDPI;
-		}
+	//-------------------------
+	// Shared
+	//-------------------------
 
-		protected function setPanelScreenStyles(screen:PanelScreen):void
+		protected function setScrollerStyles(scroller:Scroller):void
 		{
-			this.setScrollerStyles(screen);
-			screen.originalDPI = this._originalDPI;
-		}
-
-		protected function setScrollScreenStyles(screen:ScrollScreen):void
-		{
-			this.setScrollerStyles(screen);
-			screen.originalDPI = this._originalDPI;
+			scroller.horizontalScrollBarFactory = horizontalScrollBarFactory;
+			scroller.verticalScrollBarFactory = verticalScrollBarFactory;
 		}
 
 		protected function setSimpleButtonStyles(button:Button):void
@@ -671,32 +664,45 @@ package feathers.themes
 			button.minTouchWidth = button.minTouchHeight = 88 * this.scale;
 		}
 
-		protected function setLabelStyles(label:Label):void
+	//-------------------------
+	// Alert
+	//-------------------------
+
+		protected function setAlertStyles(alert:Alert):void
 		{
-			label.textRendererProperties.elementFormat = this.lightElementFormat;
-			label.textRendererProperties.disabledElementFormat = this.disabledElementFormat;
+			this.setScrollerStyles(alert);
+
+			var backgroundSkin:Scale9Image = new Scale9Image(this.backgroundPopUpSkinTextures, this.scale);
+			alert.backgroundSkin = backgroundSkin;
+
+			alert.paddingTop = 0;
+			alert.paddingRight = 24 * this.scale;
+			alert.paddingBottom = 16 * this.scale;
+			alert.paddingLeft = 24 * this.scale;
+			alert.gap = 16 * this.scale;
+			alert.maxWidth = alert.maxHeight = 560 * this.scale;
 		}
 
-		protected function setHeadingLabelStyles(label:Label):void
+		//see Panel section for Header styles
+
+		protected function setAlertButtonGroupStyles(group:ButtonGroup):void
 		{
-			label.textRendererProperties.elementFormat = this.largeLightElementFormat;
-			label.textRendererProperties.disabledElementFormat = this.largeDisabledElementFormat;
+			group.direction = ButtonGroup.DIRECTION_HORIZONTAL;
+			group.horizontalAlign = ButtonGroup.HORIZONTAL_ALIGN_CENTER;
+			group.verticalAlign = ButtonGroup.VERTICAL_ALIGN_JUSTIFY;
+			group.distributeButtonSizes = false;
+			group.gap = 12 * this.scale;
+			group.paddingTop = 12 * this.scale;
+			group.paddingRight = 12 * this.scale;
+			group.paddingBottom = 12 * this.scale;
+			group.paddingLeft = 12 * this.scale;
+			group.customButtonName = THEME_NAME_ALERT_BUTTON_GROUP_BUTTON;
 		}
 
-		protected function setDetailLabelStyles(label:Label):void
+		protected function setAlertButtonGroupButtonStyles(button:Button):void
 		{
-			label.textRendererProperties.elementFormat = this.smallLightElementFormat;
-			label.textRendererProperties.disabledElementFormat = this.smallDisabledElementFormat;
-		}
-
-		protected function setItemRendererAccessoryLabelRendererStyles(renderer:TextBlockTextRenderer):void
-		{
-			renderer.elementFormat = this.lightElementFormat;
-		}
-
-		protected function setItemRendererIconLabelStyles(renderer:TextBlockTextRenderer):void
-		{
-			renderer.elementFormat = this.lightElementFormat;
+			this.setButtonStyles(button);
+			button.minWidth = 120 * this.scale;
 		}
 
 		protected function setAlertMessageTextRendererStyles(renderer:TextBlockTextRenderer):void
@@ -705,15 +711,9 @@ package feathers.themes
 			renderer.elementFormat = this.lightElementFormat;
 		}
 
-		protected function setScrollTextStyles(text:ScrollText):void
-		{
-			this.setScrollerStyles(text);
-
-			text.textFormat = this.scrollTextTextFormat;
-			text.disabledTextFormat = this.scrollTextDisabledTextFormat;
-			text.paddingTop = text.paddingBottom = text.paddingLeft = 32 * this.scale;
-			text.paddingRight = 36 * this.scale;
-		}
+	//-------------------------
+	// Button
+	//-------------------------
 
 		protected function setBaseButtonStyles(button:Button):void
 		{
@@ -848,6 +848,16 @@ package feathers.themes
 			button.paddingRight = 28 * this.scale;
 		}
 
+	//-------------------------
+	// ButtonGroup
+	//-------------------------
+
+		protected function setButtonGroupStyles(group:ButtonGroup):void
+		{
+			group.minWidth = 560 * this.scale;
+			group.gap = 18 * this.scale;
+		}
+
 		protected function setButtonGroupButtonStyles(button:Button):void
 		{
 			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
@@ -879,169 +889,135 @@ package feathers.themes
 			button.minTouchWidth = button.minTouchHeight = 88 * this.scale;
 		}
 
-		protected function setAlertButtonGroupButtonStyles(button:Button):void
+	//-------------------------
+	// Callout
+	//-------------------------
+
+		protected function setCalloutStyles(callout:Callout):void
 		{
-			this.setButtonStyles(button);
-			button.minWidth = 120 * this.scale;
+			var backgroundSkin:Scale9Image = new Scale9Image(this.backgroundPopUpSkinTextures, this.scale);
+			//arrow size is 40 pixels, so this should be a bit larger
+			backgroundSkin.width = 50 * this.scale;
+			backgroundSkin.height = 50 * this.scale;
+			callout.backgroundSkin = backgroundSkin;
+
+			var topArrowSkin:Image = new Image(this.calloutTopArrowSkinTexture);
+			topArrowSkin.scaleX = topArrowSkin.scaleY = this.scale;
+			callout.topArrowSkin = topArrowSkin;
+
+			var rightArrowSkin:Image = new Image(this.calloutRightArrowSkinTexture);
+			rightArrowSkin.scaleX = rightArrowSkin.scaleY = this.scale;
+			callout.rightArrowSkin = rightArrowSkin;
+
+			var bottomArrowSkin:Image = new Image(this.calloutBottomArrowSkinTexture);
+			bottomArrowSkin.scaleX = bottomArrowSkin.scaleY = this.scale;
+			callout.bottomArrowSkin = bottomArrowSkin;
+
+			var leftArrowSkin:Image = new Image(this.calloutLeftArrowSkinTexture);
+			leftArrowSkin.scaleX = leftArrowSkin.scaleY = this.scale;
+			callout.leftArrowSkin = leftArrowSkin;
+
+			callout.paddingTop = callout.paddingBottom = 12 * this.scale;
+			callout.paddingLeft = callout.paddingRight = 14 * this.scale;
 		}
 
-		protected function setPickerListButtonStyles(button:Button):void
+	//-------------------------
+	// Check
+	//-------------------------
+
+		protected function setCheckStyles(check:Check):void
 		{
-			this.setButtonStyles(button);
-
-			var defaultIcon:ImageLoader = new ImageLoader();
-			defaultIcon.source = this.pickerListButtonIconTexture;
-			defaultIcon.textureScale = this.scale;
-			defaultIcon.snapToPixels = true;
-			button.defaultIcon = defaultIcon;
-
-			button.gap = Number.POSITIVE_INFINITY;
-			button.minGap = 12 * this.scale
-			button.iconPosition = Button.ICON_POSITION_RIGHT;
-		}
-
-		protected function setToggleSwitchTrackStyles(track:Button):void
-		{
-			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
-			skinSelector.defaultValue = this.backgroundSkinTextures;
-			skinSelector.setValueForState(this.backgroundDisabledSkinTextures, Button.STATE_DISABLED, false);
-			skinSelector.displayObjectProperties =
+			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			iconSelector.defaultValue = this.checkUpIconTexture;
+			iconSelector.defaultSelectedValue = this.checkSelectedUpIconTexture;
+			iconSelector.setValueForState(this.checkDownIconTexture, Button.STATE_DOWN, false);
+			iconSelector.setValueForState(this.checkDisabledIconTexture, Button.STATE_DISABLED, false);
+			iconSelector.setValueForState(this.checkSelectedDownIconTexture, Button.STATE_DOWN, true);
+			iconSelector.setValueForState(this.checkSelectedDisabledIconTexture, Button.STATE_DISABLED, true);
+			iconSelector.displayObjectProperties =
 			{
-				width: 140 * this.scale,
-				height: 60 * this.scale,
-				textureScale: this.scale
+				scaleX: this.scale,
+				scaleY: this.scale
 			};
-			track.stateToSkinFunction = skinSelector.updateValue;
+			check.stateToIconFunction = iconSelector.updateValue;
+
+			check.defaultLabelProperties.elementFormat = this.lightUIElementFormat;
+			check.disabledLabelProperties.elementFormat = this.lightUIDisabledElementFormat;
+			check.selectedDisabledLabelProperties.elementFormat = this.lightUIDisabledElementFormat;
+
+			check.gap = 8 * this.scale;
+			check.minTouchWidth = check.minTouchHeight = 88 * this.scale;
 		}
 
-		protected function setTabBarStyles(tabBar:TabBar):void
+	//-------------------------
+	// Drawers
+	//-------------------------
+
+		protected function setDrawersStyles(drawers:Drawers):void
 		{
-			tabBar.distributeTabSizes = true;
+			var overlaySkin:Quad = new Quad(10, 10, DRAWER_OVERLAY_COLOR);
+			overlaySkin.alpha = DRAWER_OVERLAY_ALPHA;
+			drawers.overlaySkin = overlaySkin;
 		}
 
-		protected function setTabStyles(tab:ToggleButton):void
+	//-------------------------
+	// GroupedList
+	//-------------------------
+
+		protected function setGroupedListStyles(list:GroupedList):void
 		{
-			var defaultSkin:Quad = new Quad(88 * this.scale, 88 * this.scale, TAB_BACKGROUND_COLOR);
-			tab.defaultSkin = defaultSkin;
-
-			var downSkin:Scale9Image = new Scale9Image(this.tabDownSkinTextures, this.scale);
-			tab.downSkin = downSkin;
-
-			var defaultSelectedSkin:Scale9Image = new Scale9Image(this.tabSelectedSkinTextures, this.scale);
-			tab.defaultSelectedSkin = defaultSelectedSkin;
-
-			var disabledSkin:Quad = new Quad(88 * this.scale, 88 * this.scale, TAB_DISABLED_BACKGROUND_COLOR);
-			tab.disabledSkin = disabledSkin;
-
-			var selectedDisabledSkin:Scale9Image = new Scale9Image(this.tabSelectedDisabledSkinTextures, this.scale);
-			tab.selectedDisabledSkin = selectedDisabledSkin;
-
-			tab.defaultLabelProperties.elementFormat = this.lightUIElementFormat;
-			tab.defaultSelectedLabelProperties.elementFormat = this.darkUIElementFormat;
-			tab.disabledLabelProperties.elementFormat = this.darkUIDisabledElementFormat;
-			tab.selectedDisabledLabelProperties.elementFormat = this.darkUIDisabledElementFormat;
-
-			tab.paddingTop = tab.paddingBottom = 8 * this.scale;
-			tab.paddingLeft = tab.paddingRight = 16 * this.scale;
-			tab.gap = 12 * this.scale;
-			tab.minWidth = tab.minHeight = 88 * this.scale;
-			tab.minTouchWidth = tab.minTouchHeight = 88 * this.scale;
+			this.setScrollerStyles(list);
+			var backgroundSkin:Quad = new Quad(88 * this.scale, 88 * this.scale, LIST_BACKGROUND_COLOR);
+			list.backgroundSkin = backgroundSkin;
 		}
 
-		protected function setButtonGroupStyles(group:ButtonGroup):void
+		//see List section for item renderer styles
+
+		protected function setGroupedListHeaderRendererStyles(renderer:DefaultGroupedListHeaderOrFooterRenderer):void
 		{
-			group.minWidth = 560 * this.scale;
-			group.gap = 18 * this.scale;
+			renderer.backgroundSkin = new Quad(44 * this.scale, 44 * this.scale, GROUPED_LIST_HEADER_BACKGROUND_COLOR);
+
+			renderer.horizontalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_LEFT;
+			renderer.contentLabelProperties.elementFormat = this.lightUIElementFormat;
+			renderer.paddingTop = renderer.paddingBottom = 4 * this.scale;
+			renderer.paddingLeft = renderer.paddingRight = 16 * this.scale;
+			renderer.minWidth = renderer.minHeight = 44 * this.scale;
+			renderer.minTouchWidth = renderer.minTouchHeight = 44 * this.scale;
+
+			renderer.contentLoaderFactory = this.imageLoaderFactory;
 		}
 
-		protected function setAlertButtonGroupStyles(group:ButtonGroup):void
+		protected function setGroupedListFooterRendererStyles(renderer:DefaultGroupedListHeaderOrFooterRenderer):void
 		{
-			group.direction = ButtonGroup.DIRECTION_HORIZONTAL;
-			group.horizontalAlign = ButtonGroup.HORIZONTAL_ALIGN_CENTER;
-			group.verticalAlign = ButtonGroup.VERTICAL_ALIGN_JUSTIFY;
-			group.distributeButtonSizes = false;
-			group.gap = 12 * this.scale;
-			group.paddingTop = 12 * this.scale;
-			group.paddingRight = 12 * this.scale;
-			group.paddingBottom = 12 * this.scale;
-			group.paddingLeft = 12 * this.scale;
-			group.customButtonName = THEME_NAME_ALERT_BUTTON_GROUP_BUTTON;
+			renderer.backgroundSkin = new Quad(44 * this.scale, 44 * this.scale, GROUPED_LIST_FOOTER_BACKGROUND_COLOR);
+
+			renderer.horizontalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_CENTER;
+			renderer.contentLabelProperties.elementFormat = this.lightElementFormat;
+			renderer.paddingTop = renderer.paddingBottom = 4 * this.scale;
+			renderer.paddingLeft = renderer.paddingRight = 16 * this.scale;
+			renderer.minWidth = renderer.minHeight = 44 * this.scale;
+			renderer.minTouchWidth = renderer.minTouchHeight = 44 * this.scale;
+
+			renderer.contentLoaderFactory = this.imageLoaderFactory;
 		}
 
-		protected function setItemRendererStyles(renderer:BaseDefaultItemRenderer):void
+		protected function setInsetGroupedListStyles(list:GroupedList):void
 		{
-			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
-			skinSelector.defaultValue = this.itemRendererUpSkinTextures;
-			skinSelector.defaultSelectedValue = this.itemRendererSelectedSkinTextures;
-			skinSelector.setValueForState(this.itemRendererSelectedSkinTextures, Button.STATE_DOWN, false);
-			skinSelector.displayObjectProperties =
-			{
-				width: 88 * this.scale,
-				height: 88 * this.scale,
-				textureScale: this.scale
-			};
-			renderer.stateToSkinFunction = skinSelector.updateValue;
+			list.itemRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_ITEM_RENDERER;
+			list.firstItemRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_FIRST_ITEM_RENDERER;
+			list.lastItemRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_LAST_ITEM_RENDERER;
+			list.singleItemRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_SINGLE_ITEM_RENDERER;
+			list.headerRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_HEADER_RENDERER;
+			list.footerRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_FOOTER_RENDERER;
 
-			renderer.defaultLabelProperties.elementFormat = this.largeLightElementFormat;
-			renderer.downLabelProperties.elementFormat = this.largeDarkElementFormat;
-			renderer.defaultSelectedLabelProperties.elementFormat = this.largeDarkElementFormat;
-			renderer.disabledLabelProperties.elementFormat = this.largeDisabledElementFormat;
-
-			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
-			renderer.paddingTop = renderer.paddingBottom = 8 * this.scale;
-			renderer.paddingLeft = 32 * this.scale;
-			renderer.paddingRight = 24 * this.scale;
-			renderer.gap = 20 * this.scale;
-			renderer.minGap = 24 * this.scale;
-			renderer.iconPosition = Button.ICON_POSITION_LEFT;
-			renderer.accessoryGap = Number.POSITIVE_INFINITY;
-			renderer.minAccessoryGap = 24 * this.scale;
-			renderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
-			renderer.minWidth = renderer.minHeight = 88 * this.scale;
-			renderer.minTouchWidth = renderer.minTouchHeight = 88 * this.scale;
-
-			renderer.accessoryLoaderFactory = this.imageLoaderFactory;
-			renderer.iconLoaderFactory = this.imageLoaderFactory;
-		}
-
-		protected function setPickerListItemRendererStyles(renderer:BaseDefaultItemRenderer):void
-		{
-			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
-			skinSelector.defaultValue = this.itemRendererUpSkinTextures;
-			skinSelector.setValueForState(this.itemRendererSelectedSkinTextures, Button.STATE_DOWN, false);
-			skinSelector.displayObjectProperties =
-			{
-				width: 88 * this.scale,
-				height: 88 * this.scale,
-				textureScale: this.scale
-			};
-			renderer.stateToSkinFunction = skinSelector.updateValue;
-
-			var defaultSelectedIcon:Image = new Image(this.pickerListItemSelectedIconTexture);
-			defaultSelectedIcon.scaleX = defaultSelectedIcon.scaleY = this.scale;
-			renderer.defaultSelectedIcon = defaultSelectedIcon;
-
-			var defaultIcon:Quad = new Quad(defaultSelectedIcon.width, defaultSelectedIcon.height, 0xff00ff);
-			defaultIcon.alpha = 0;
-			renderer.defaultIcon = defaultIcon;
-
-			renderer.defaultLabelProperties.elementFormat = this.largeLightElementFormat;
-			renderer.downLabelProperties.elementFormat = this.largeDarkElementFormat;
-			renderer.disabledLabelProperties.elementFormat = this.largeDisabledElementFormat;
-
-			renderer.itemHasIcon = false;
-			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
-			renderer.paddingTop = renderer.paddingBottom = 8 * this.scale;
-			renderer.paddingLeft = 32 * this.scale;
-			renderer.paddingRight = 24 * this.scale;
-			renderer.gap = Number.POSITIVE_INFINITY;
-			renderer.minGap = 24 * this.scale;
-			renderer.iconPosition = Button.ICON_POSITION_RIGHT;
-			renderer.accessoryGap = Number.POSITIVE_INFINITY;
-			renderer.minAccessoryGap = 24 * this.scale;
-			renderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
-			renderer.minWidth = renderer.minHeight = 88 * this.scale;
-			renderer.minTouchWidth = renderer.minTouchHeight = 88 * this.scale;
+			var layout:VerticalLayout = new VerticalLayout();
+			layout.useVirtualLayout = true;
+			layout.padding = 18 * this.scale;
+			layout.gap = 0;
+			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
+			layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
+			layout.manageVisibility = true;
+			list.layout = layout;
 		}
 
 		protected function setInsetGroupedListItemRendererStyles(renderer:DefaultGroupedListItemRenderer, defaultSkinTextures:Scale9Textures, selectedAndDownSkinTextures:Scale9Textures):void
@@ -1100,34 +1076,6 @@ package feathers.themes
 			this.setInsetGroupedListItemRendererStyles(renderer, this.insetItemRendererSingleUpSkinTextures, this.insetItemRendererSingleSelectedSkinTextures);
 		}
 
-		protected function setGroupedListHeaderRendererStyles(renderer:DefaultGroupedListHeaderOrFooterRenderer):void
-		{
-			renderer.backgroundSkin = new Quad(44 * this.scale, 44 * this.scale, GROUPED_LIST_HEADER_BACKGROUND_COLOR);
-
-			renderer.horizontalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_LEFT;
-			renderer.contentLabelProperties.elementFormat = this.lightUIElementFormat;
-			renderer.paddingTop = renderer.paddingBottom = 4 * this.scale;
-			renderer.paddingLeft = renderer.paddingRight = 16 * this.scale;
-			renderer.minWidth = renderer.minHeight = 44 * this.scale;
-			renderer.minTouchWidth = renderer.minTouchHeight = 44 * this.scale;
-
-			renderer.contentLoaderFactory = this.imageLoaderFactory;
-		}
-
-		protected function setGroupedListFooterRendererStyles(renderer:DefaultGroupedListHeaderOrFooterRenderer):void
-		{
-			renderer.backgroundSkin = new Quad(44 * this.scale, 44 * this.scale, GROUPED_LIST_FOOTER_BACKGROUND_COLOR);
-
-			renderer.horizontalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_CENTER;
-			renderer.contentLabelProperties.elementFormat = this.lightElementFormat;
-			renderer.paddingTop = renderer.paddingBottom = 4 * this.scale;
-			renderer.paddingLeft = renderer.paddingRight = 16 * this.scale;
-			renderer.minWidth = renderer.minHeight = 44 * this.scale;
-			renderer.minTouchWidth = renderer.minTouchHeight = 44 * this.scale;
-
-			renderer.contentLoaderFactory = this.imageLoaderFactory;
-		}
-
 		protected function setInsetGroupedListHeaderRendererStyles(renderer:DefaultGroupedListHeaderOrFooterRenderer):void
 		{
 			var defaultSkin:Quad = new Quad(66 * this.scale, 66 * this.scale, 0xff00ff);
@@ -1160,6 +1108,364 @@ package feathers.themes
 			renderer.contentLoaderFactory = this.imageLoaderFactory;
 		}
 
+	//-------------------------
+	// Header
+	//-------------------------
+
+		protected function setHeaderStyles(header:Header):void
+		{
+			header.minWidth = 88 * this.scale;
+			header.minHeight = 88 * this.scale;
+			header.paddingTop = header.paddingRight = header.paddingBottom =
+				header.paddingLeft = 14 * this.scale;
+			header.gap = 8 * this.scale;
+			header.titleGap = 12 * this.scale;
+
+			var backgroundSkin:TiledImage = new TiledImage(this.headerBackgroundSkinTexture, this.scale);
+			backgroundSkin.width = backgroundSkin.height = 88 * this.scale;
+			header.backgroundSkin = backgroundSkin;
+			header.titleProperties.elementFormat = this.headerElementFormat;
+		}
+
+	//-------------------------
+	// Label
+	//-------------------------
+
+		protected function setLabelStyles(label:Label):void
+		{
+			label.textRendererProperties.elementFormat = this.lightElementFormat;
+			label.textRendererProperties.disabledElementFormat = this.disabledElementFormat;
+		}
+
+		protected function setHeadingLabelStyles(label:Label):void
+		{
+			label.textRendererProperties.elementFormat = this.largeLightElementFormat;
+			label.textRendererProperties.disabledElementFormat = this.largeDisabledElementFormat;
+		}
+
+		protected function setDetailLabelStyles(label:Label):void
+		{
+			label.textRendererProperties.elementFormat = this.smallLightElementFormat;
+			label.textRendererProperties.disabledElementFormat = this.smallDisabledElementFormat;
+		}
+
+	//-------------------------
+	// List
+	//-------------------------
+
+		protected function setListStyles(list:List):void
+		{
+			this.setScrollerStyles(list);
+			var backgroundSkin:Quad = new Quad(88 * this.scale, 88 * this.scale, LIST_BACKGROUND_COLOR);
+			list.backgroundSkin = backgroundSkin;
+		}
+
+		protected function setItemRendererStyles(renderer:BaseDefaultItemRenderer):void
+		{
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.itemRendererUpSkinTextures;
+			skinSelector.defaultSelectedValue = this.itemRendererSelectedSkinTextures;
+			skinSelector.setValueForState(this.itemRendererSelectedSkinTextures, Button.STATE_DOWN, false);
+			skinSelector.displayObjectProperties =
+			{
+				width: 88 * this.scale,
+				height: 88 * this.scale,
+				textureScale: this.scale
+			};
+			renderer.stateToSkinFunction = skinSelector.updateValue;
+
+			renderer.defaultLabelProperties.elementFormat = this.largeLightElementFormat;
+			renderer.downLabelProperties.elementFormat = this.largeDarkElementFormat;
+			renderer.defaultSelectedLabelProperties.elementFormat = this.largeDarkElementFormat;
+			renderer.disabledLabelProperties.elementFormat = this.largeDisabledElementFormat;
+
+			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
+			renderer.paddingTop = renderer.paddingBottom = 8 * this.scale;
+			renderer.paddingLeft = 32 * this.scale;
+			renderer.paddingRight = 24 * this.scale;
+			renderer.gap = 20 * this.scale;
+			renderer.minGap = 24 * this.scale;
+			renderer.iconPosition = Button.ICON_POSITION_LEFT;
+			renderer.accessoryGap = Number.POSITIVE_INFINITY;
+			renderer.minAccessoryGap = 24 * this.scale;
+			renderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
+			renderer.minWidth = renderer.minHeight = 88 * this.scale;
+			renderer.minTouchWidth = renderer.minTouchHeight = 88 * this.scale;
+
+			renderer.accessoryLoaderFactory = this.imageLoaderFactory;
+			renderer.iconLoaderFactory = this.imageLoaderFactory;
+		}
+
+		protected function setItemRendererAccessoryLabelRendererStyles(renderer:TextBlockTextRenderer):void
+		{
+			renderer.elementFormat = this.lightElementFormat;
+		}
+
+		protected function setItemRendererIconLabelStyles(renderer:TextBlockTextRenderer):void
+		{
+			renderer.elementFormat = this.lightElementFormat;
+		}
+
+	//-------------------------
+	// NumericStepper
+	//-------------------------
+
+		protected function setNumericStepperStyles(stepper:NumericStepper):void
+		{
+			stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_SPLIT_HORIZONTAL;
+			stepper.incrementButtonLabel = "+";
+			stepper.decrementButtonLabel = "-";
+		}
+
+		protected function setNumericStepperTextInputStyles(input:TextInput):void
+		{
+			var backgroundSkin:Scale9Image = new Scale9Image(this.backgroundSkinTextures, this.scale);
+			backgroundSkin.width = 60 * this.scale;
+			backgroundSkin.height = 60 * this.scale;
+			input.backgroundSkin = backgroundSkin;
+
+			var backgroundDisabledSkin:Scale9Image = new Scale9Image(this.backgroundDisabledSkinTextures, this.scale);
+			backgroundDisabledSkin.width = 60 * this.scale;
+			backgroundDisabledSkin.height = 60 * this.scale;
+			input.backgroundDisabledSkin = backgroundDisabledSkin;
+
+			var backgroundFocusedSkin:Scale9Image = new Scale9Image(this.backgroundFocusedSkinTextures, this.scale);
+			backgroundFocusedSkin.width = 60 * this.scale;
+			backgroundFocusedSkin.height = 60 * this.scale;
+			input.backgroundFocusedSkin = backgroundFocusedSkin;
+
+			input.minWidth = input.minHeight = 60 * this.scale;
+			input.minTouchWidth = input.minTouchHeight = 88 * this.scale;
+			input.gap = 12 * this.scale;
+			input.paddingTop = 12 * this.scale;
+			input.paddingBottom = 10 * this.scale;
+			input.paddingLeft = input.paddingRight = 14 * this.scale;
+			input.isEditable = false;
+			input.textEditorFactory = stepperTextEditorFactory;
+			input.textEditorProperties.textFormat = this.lightUICenteredTextFormat;
+			input.textEditorProperties.embedFonts = true;
+		}
+
+	//-------------------------
+	// PageIndicator
+	//-------------------------
+
+		protected function setPageIndicatorStyles(pageIndicator:PageIndicator):void
+		{
+			pageIndicator.normalSymbolFactory = this.pageIndicatorNormalSymbolFactory;
+			pageIndicator.selectedSymbolFactory = this.pageIndicatorSelectedSymbolFactory;
+			pageIndicator.gap = 10 * this.scale;
+			pageIndicator.paddingTop = pageIndicator.paddingRight = pageIndicator.paddingBottom =
+				pageIndicator.paddingLeft = 6 * this.scale;
+			pageIndicator.minTouchWidth = pageIndicator.minTouchHeight = 44 * this.scale;
+		}
+
+	//-------------------------
+	// Panel
+	//-------------------------
+
+		protected function setPanelStyles(panel:Panel):void
+		{
+			this.setScrollerStyles(panel);
+
+			panel.backgroundSkin = new Scale9Image(this.backgroundPopUpSkinTextures, this.scale);
+
+			panel.paddingTop = 0;
+			panel.paddingRight = 8 * this.scale;
+			panel.paddingBottom = 8 * this.scale;
+			panel.paddingLeft = 8 * this.scale;
+		}
+
+		protected function setHeaderWithoutBackgroundStyles(header:Header):void
+		{
+			header.minWidth = 88 * this.scale;
+			header.minHeight = 88 * this.scale;
+			header.paddingTop = header.paddingBottom = 14 * this.scale;
+			header.paddingLeft = header.paddingRight = 18 * this.scale;
+
+			header.titleProperties.elementFormat = this.headerElementFormat;
+		}
+
+	//-------------------------
+	// PanelScreen
+	//-------------------------
+
+		protected function setPanelScreenStyles(screen:PanelScreen):void
+		{
+			this.setScrollerStyles(screen);
+			screen.originalDPI = this._originalDPI;
+		}
+
+		protected function setPanelScreenHeaderStyles(header:Header):void
+		{
+			this.setHeaderStyles(header);
+			header.useExtraPaddingForOSStatusBar = true;
+		}
+
+	//-------------------------
+	// PickerList
+	//-------------------------
+
+		protected function setPickerListStyles(list:PickerList):void
+		{
+			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
+			{
+				list.popUpContentManager = new CalloutPopUpContentManager();
+			}
+			else
+			{
+				var centerStage:VerticalCenteredPopUpContentManager = new VerticalCenteredPopUpContentManager();
+				centerStage.marginTop = centerStage.marginRight = centerStage.marginBottom =
+					centerStage.marginLeft = 24 * this.scale;
+				list.popUpContentManager = centerStage;
+			}
+
+			var layout:VerticalLayout = new VerticalLayout();
+			layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_BOTTOM;
+			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
+			layout.useVirtualLayout = true;
+			layout.gap = 0;
+			layout.paddingTop = layout.paddingRight = layout.paddingBottom =
+				layout.paddingLeft = 0;
+			list.listProperties.layout = layout;
+			list.listProperties.verticalScrollPolicy = List.SCROLL_POLICY_ON;
+
+			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
+			{
+				list.listProperties.minWidth = 560 * this.scale;
+				list.listProperties.maxHeight = 528 * this.scale;
+			}
+			else
+			{
+				var backgroundSkin:Scale9Image = new Scale9Image(this.backgroundSkinTextures, this.scale);
+				backgroundSkin.width = 20 * this.scale;
+				backgroundSkin.height = 20 * this.scale;
+				list.listProperties.backgroundSkin = backgroundSkin;
+				list.listProperties.paddingTop = list.listProperties.paddingRight =
+					list.listProperties.paddingBottom = list.listProperties.paddingLeft = 8 * this.scale;
+			}
+
+			list.listProperties.itemRendererName = THEME_NAME_PICKER_LIST_ITEM_RENDERER;
+		}
+
+		protected function setPickerListButtonStyles(button:Button):void
+		{
+			this.setButtonStyles(button);
+
+			var defaultIcon:ImageLoader = new ImageLoader();
+			defaultIcon.source = this.pickerListButtonIconTexture;
+			defaultIcon.textureScale = this.scale;
+			defaultIcon.snapToPixels = true;
+			button.defaultIcon = defaultIcon;
+
+			button.gap = Number.POSITIVE_INFINITY;
+			button.minGap = 12 * this.scale
+			button.iconPosition = Button.ICON_POSITION_RIGHT;
+		}
+
+		protected function setPickerListItemRendererStyles(renderer:BaseDefaultItemRenderer):void
+		{
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.itemRendererUpSkinTextures;
+			skinSelector.setValueForState(this.itemRendererSelectedSkinTextures, Button.STATE_DOWN, false);
+			skinSelector.displayObjectProperties =
+			{
+				width: 88 * this.scale,
+				height: 88 * this.scale,
+				textureScale: this.scale
+			};
+			renderer.stateToSkinFunction = skinSelector.updateValue;
+
+			var defaultSelectedIcon:Image = new Image(this.pickerListItemSelectedIconTexture);
+			defaultSelectedIcon.scaleX = defaultSelectedIcon.scaleY = this.scale;
+			renderer.defaultSelectedIcon = defaultSelectedIcon;
+
+			var defaultIcon:Quad = new Quad(defaultSelectedIcon.width, defaultSelectedIcon.height, 0xff00ff);
+			defaultIcon.alpha = 0;
+			renderer.defaultIcon = defaultIcon;
+
+			renderer.defaultLabelProperties.elementFormat = this.largeLightElementFormat;
+			renderer.downLabelProperties.elementFormat = this.largeDarkElementFormat;
+			renderer.disabledLabelProperties.elementFormat = this.largeDisabledElementFormat;
+
+			renderer.itemHasIcon = false;
+			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
+			renderer.paddingTop = renderer.paddingBottom = 8 * this.scale;
+			renderer.paddingLeft = 32 * this.scale;
+			renderer.paddingRight = 24 * this.scale;
+			renderer.gap = Number.POSITIVE_INFINITY;
+			renderer.minGap = 24 * this.scale;
+			renderer.iconPosition = Button.ICON_POSITION_RIGHT;
+			renderer.accessoryGap = Number.POSITIVE_INFINITY;
+			renderer.minAccessoryGap = 24 * this.scale;
+			renderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
+			renderer.minWidth = renderer.minHeight = 88 * this.scale;
+			renderer.minTouchWidth = renderer.minTouchHeight = 88 * this.scale;
+		}
+
+	//-------------------------
+	// ProgressBar
+	//-------------------------
+
+		protected function setProgressBarStyles(progress:ProgressBar):void
+		{
+			var backgroundSkin:Scale9Image = new Scale9Image(this.backgroundSkinTextures, this.scale);
+			if(progress.direction == ProgressBar.DIRECTION_VERTICAL)
+			{
+				backgroundSkin.width = 22 * this.scale;
+				backgroundSkin.height = 240 * this.scale;
+			}
+			else
+			{
+				backgroundSkin.width = 240 * this.scale;
+				backgroundSkin.height = 22 * this.scale;
+			}
+			progress.backgroundSkin = backgroundSkin;
+
+			var backgroundDisabledSkin:Scale9Image = new Scale9Image(this.backgroundDisabledSkinTextures, this.scale);
+			if(progress.direction == ProgressBar.DIRECTION_VERTICAL)
+			{
+				backgroundDisabledSkin.width = 22 * this.scale;
+				backgroundDisabledSkin.height = 240 * this.scale;
+			}
+			else
+			{
+				backgroundDisabledSkin.width = 240 * this.scale;
+				backgroundDisabledSkin.height = 22 * this.scale;
+			}
+			progress.backgroundDisabledSkin = backgroundDisabledSkin;
+
+			var fillSkin:Scale9Image = new Scale9Image(this.buttonUpSkinTextures, this.scale);
+			if(progress.direction == ProgressBar.DIRECTION_VERTICAL)
+			{
+				fillSkin.width = 22 * this.scale;
+				fillSkin.height = 8 * this.scale;
+			}
+			else
+			{
+				fillSkin.width = 8 * this.scale;
+				fillSkin.height = 22 * this.scale;
+			}
+			progress.fillSkin = fillSkin;
+
+			var fillDisabledSkin:Scale9Image = new Scale9Image(this.buttonDisabledSkinTextures, this.scale);
+			if(progress.direction == ProgressBar.DIRECTION_VERTICAL)
+			{
+				fillDisabledSkin.width = 22 * this.scale;
+				fillDisabledSkin.height = 8 * this.scale;
+			}
+			else
+			{
+				fillDisabledSkin.width = 8 * this.scale;
+				fillDisabledSkin.height = 22 * this.scale;
+			}
+			progress.fillDisabledSkin = fillDisabledSkin;
+		}
+
+	//-------------------------
+	// Radio
+	//-------------------------
+
 		protected function setRadioStyles(radio:Radio):void
 		{
 			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
@@ -1184,36 +1490,102 @@ package feathers.themes
 			radio.minTouchWidth = radio.minTouchHeight = 88 * this.scale;
 		}
 
-		protected function setCheckStyles(check:Check):void
+	//-------------------------
+	// Screen
+	//-------------------------
+
+		protected function setScreenStyles(screen:Screen):void
 		{
-			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
-			iconSelector.defaultValue = this.checkUpIconTexture;
-			iconSelector.defaultSelectedValue = this.checkSelectedUpIconTexture;
-			iconSelector.setValueForState(this.checkDownIconTexture, Button.STATE_DOWN, false);
-			iconSelector.setValueForState(this.checkDisabledIconTexture, Button.STATE_DISABLED, false);
-			iconSelector.setValueForState(this.checkSelectedDownIconTexture, Button.STATE_DOWN, true);
-			iconSelector.setValueForState(this.checkSelectedDisabledIconTexture, Button.STATE_DISABLED, true);
-			iconSelector.displayObjectProperties =
+			screen.originalDPI = this._originalDPI;
+		}
+
+	//-------------------------
+	// ScrollContainer
+	//-------------------------
+
+		protected function setScrollContainerStyles(container:ScrollContainer):void
+		{
+			this.setScrollerStyles(container);
+		}
+
+		protected function setToolbarScrollContainerStyles(container:ScrollContainer):void
+		{
+			this.setScrollerStyles(container);
+			if(!container.layout)
 			{
-				scaleX: this.scale,
-				scaleY: this.scale
-			};
-			check.stateToIconFunction = iconSelector.updateValue;
+				var layout:HorizontalLayout = new HorizontalLayout();
+				layout.paddingTop = layout.paddingRight = layout.paddingBottom =
+					layout.paddingLeft = 14 * this.scale;
+				layout.gap = 8 * this.scale;
+				container.layout = layout;
+			}
+			container.minWidth = 88 * this.scale;
+			container.minHeight = 88 * this.scale;
 
-			check.defaultLabelProperties.elementFormat = this.lightUIElementFormat;
-			check.disabledLabelProperties.elementFormat = this.lightUIDisabledElementFormat;
-			check.selectedDisabledLabelProperties.elementFormat = this.lightUIDisabledElementFormat;
-
-			check.gap = 8 * this.scale;
-			check.minTouchWidth = check.minTouchHeight = 88 * this.scale;
+			var backgroundSkin:TiledImage = new TiledImage(this.headerBackgroundSkinTexture, this.scale);
+			backgroundSkin.width = backgroundSkin.height = 88 * this.scale;
+			container.backgroundSkin = backgroundSkin;
 		}
 
-		protected function setDrawersStyles(drawers:Drawers):void
+	//-------------------------
+	// ScrollScreen
+	//-------------------------
+
+		protected function setScrollScreenStyles(screen:ScrollScreen):void
 		{
-			var overlaySkin:Quad = new Quad(10, 10, DRAWER_OVERLAY_COLOR);
-			overlaySkin.alpha = DRAWER_OVERLAY_ALPHA;
-			drawers.overlaySkin = overlaySkin;
+			this.setScrollerStyles(screen);
+			screen.originalDPI = this._originalDPI;
 		}
+
+	//-------------------------
+	// ScrollText
+	//-------------------------
+
+		protected function setScrollTextStyles(text:ScrollText):void
+		{
+			this.setScrollerStyles(text);
+
+			text.textFormat = this.scrollTextTextFormat;
+			text.disabledTextFormat = this.scrollTextDisabledTextFormat;
+			text.paddingTop = text.paddingBottom = text.paddingLeft = 32 * this.scale;
+			text.paddingRight = 36 * this.scale;
+		}
+
+	//-------------------------
+	// SimpleScrollBar
+	//-------------------------
+
+		protected function setSimpleScrollBarStyles(scrollBar:SimpleScrollBar):void
+		{
+			if(scrollBar.direction == SimpleScrollBar.DIRECTION_HORIZONTAL)
+			{
+				scrollBar.paddingRight = scrollBar.paddingBottom = scrollBar.paddingLeft = 4 * this.scale;
+				scrollBar.customThumbName = THEME_NAME_HORIZONTAL_SIMPLE_SCROLL_BAR_THUMB;
+			}
+			else
+			{
+				scrollBar.paddingTop = scrollBar.paddingRight = scrollBar.paddingBottom = 4 * this.scale;
+				scrollBar.customThumbName = THEME_NAME_VERTICAL_SIMPLE_SCROLL_BAR_THUMB;
+			}
+		}
+
+		protected function setHorizontalSimpleScrollBarThumbStyles(thumb:Button):void
+		{
+			var defaultSkin:Scale3Image = new Scale3Image(this.horizontalScrollBarThumbSkinTextures, this.scale);
+			defaultSkin.width = 10 * this.scale;
+			thumb.defaultSkin = defaultSkin;
+		}
+
+		protected function setVerticalSimpleScrollBarThumbStyles(thumb:Button):void
+		{
+			var defaultSkin:Scale3Image = new Scale3Image(this.verticalScrollBarThumbSkinTextures, this.scale);
+			defaultSkin.height = 10 * this.scale;
+			thumb.defaultSkin = defaultSkin;
+		}
+
+	//-------------------------
+	// Slider
+	//-------------------------
 
 		protected function setSliderStyles(slider:Slider):void
 		{
@@ -1290,48 +1662,75 @@ package feathers.themes
 			track.stateToSkinFunction = skinSelector.updateValue;
 		}
 
-		protected function setToggleSwitchStyles(toggle:ToggleSwitch):void
-		{
-			toggle.trackLayoutMode = ToggleSwitch.TRACK_LAYOUT_MODE_SINGLE;
+	//-------------------------
+	// TabBar
+	//-------------------------
 
-			toggle.defaultLabelProperties.elementFormat = this.lightUIElementFormat;
-			toggle.onLabelProperties.elementFormat = this.selectedUIElementFormat;
+		protected function setTabBarStyles(tabBar:TabBar):void
+		{
+			tabBar.distributeTabSizes = true;
 		}
 
-		protected function setNumericStepperStyles(stepper:NumericStepper):void
+		protected function setTabStyles(tab:ToggleButton):void
 		{
-			stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_SPLIT_HORIZONTAL;
-			stepper.incrementButtonLabel = "+";
-			stepper.decrementButtonLabel = "-";
+			var defaultSkin:Quad = new Quad(88 * this.scale, 88 * this.scale, TAB_BACKGROUND_COLOR);
+			tab.defaultSkin = defaultSkin;
+
+			var downSkin:Scale9Image = new Scale9Image(this.tabDownSkinTextures, this.scale);
+			tab.downSkin = downSkin;
+
+			var defaultSelectedSkin:Scale9Image = new Scale9Image(this.tabSelectedSkinTextures, this.scale);
+			tab.defaultSelectedSkin = defaultSelectedSkin;
+
+			var disabledSkin:Quad = new Quad(88 * this.scale, 88 * this.scale, TAB_DISABLED_BACKGROUND_COLOR);
+			tab.disabledSkin = disabledSkin;
+
+			var selectedDisabledSkin:Scale9Image = new Scale9Image(this.tabSelectedDisabledSkinTextures, this.scale);
+			tab.selectedDisabledSkin = selectedDisabledSkin;
+
+			tab.defaultLabelProperties.elementFormat = this.lightUIElementFormat;
+			tab.defaultSelectedLabelProperties.elementFormat = this.darkUIElementFormat;
+			tab.disabledLabelProperties.elementFormat = this.darkUIDisabledElementFormat;
+			tab.selectedDisabledLabelProperties.elementFormat = this.darkUIDisabledElementFormat;
+
+			tab.paddingTop = tab.paddingBottom = 8 * this.scale;
+			tab.paddingLeft = tab.paddingRight = 16 * this.scale;
+			tab.gap = 12 * this.scale;
+			tab.minWidth = tab.minHeight = 88 * this.scale;
+			tab.minTouchWidth = tab.minTouchHeight = 88 * this.scale;
 		}
 
-		protected function setSimpleScrollBarStyles(scrollBar:SimpleScrollBar):void
+	//-------------------------
+	// TextArea
+	//-------------------------
+
+		protected function setTextAreaStyles(textArea:TextArea):void
 		{
-			if(scrollBar.direction == SimpleScrollBar.DIRECTION_HORIZONTAL)
+			this.setScrollerStyles(textArea);
+
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.backgroundInsetSkinTextures;
+			skinSelector.setValueForState(this.backgroundDisabledSkinTextures, TextArea.STATE_DISABLED);
+			skinSelector.setValueForState(this.backgroundFocusedSkinTextures, TextArea.STATE_FOCUSED);
+			skinSelector.displayObjectProperties =
 			{
-				scrollBar.paddingRight = scrollBar.paddingBottom = scrollBar.paddingLeft = 4 * this.scale;
-				scrollBar.customThumbName = THEME_NAME_HORIZONTAL_SIMPLE_SCROLL_BAR_THUMB;
-			}
-			else
-			{
-				scrollBar.paddingTop = scrollBar.paddingRight = scrollBar.paddingBottom = 4 * this.scale;
-				scrollBar.customThumbName = THEME_NAME_VERTICAL_SIMPLE_SCROLL_BAR_THUMB;
-			}
+				width: 264 * this.scale,
+				height: 120 * this.scale,
+				textureScale: this.scale
+			};
+			textArea.stateToSkinFunction = skinSelector.updateValue;
+
+			textArea.paddingTop = 12 * this.scale;
+			textArea.paddingBottom = 10 * this.scale;
+			textArea.paddingLeft = textArea.paddingRight = 14 * this.scale;
+
+			textArea.textEditorProperties.textFormat = this.scrollTextTextFormat;
+			textArea.textEditorProperties.disabledTextFormat = this.scrollTextDisabledTextFormat;
 		}
 
-		protected function setHorizontalSimpleScrollBarThumbStyles(thumb:Button):void
-		{
-			var defaultSkin:Scale3Image = new Scale3Image(this.horizontalScrollBarThumbSkinTextures, this.scale);
-			defaultSkin.width = 10 * this.scale;
-			thumb.defaultSkin = defaultSkin;
-		}
-
-		protected function setVerticalSimpleScrollBarThumbStyles(thumb:Button):void
-		{
-			var defaultSkin:Scale3Image = new Scale3Image(this.verticalScrollBarThumbSkinTextures, this.scale);
-			defaultSkin.height = 10 * this.scale;
-			thumb.defaultSkin = defaultSkin;
-		}
+	//-------------------------
+	// TextInput
+	//-------------------------
 
 		protected function setBaseTextInputStyles(input:TextInput):void
 		{
@@ -1375,313 +1774,32 @@ package feathers.themes
 			input.defaultIcon = searchIcon;
 		}
 
-		protected function setTextAreaStyles(textArea:TextArea):void
-		{
-			this.setScrollerStyles(textArea);
+	//-------------------------
+	// ToggleSwitch
+	//-------------------------
 
+		protected function setToggleSwitchStyles(toggle:ToggleSwitch):void
+		{
+			toggle.trackLayoutMode = ToggleSwitch.TRACK_LAYOUT_MODE_SINGLE;
+
+			toggle.defaultLabelProperties.elementFormat = this.lightUIElementFormat;
+			toggle.onLabelProperties.elementFormat = this.selectedUIElementFormat;
+		}
+
+		//see Shared section for thumb styles
+
+		protected function setToggleSwitchTrackStyles(track:Button):void
+		{
 			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
-			skinSelector.defaultValue = this.backgroundInsetSkinTextures;
-			skinSelector.setValueForState(this.backgroundDisabledSkinTextures, TextArea.STATE_DISABLED);
-			skinSelector.setValueForState(this.backgroundFocusedSkinTextures, TextArea.STATE_FOCUSED);
+			skinSelector.defaultValue = this.backgroundSkinTextures;
+			skinSelector.setValueForState(this.backgroundDisabledSkinTextures, Button.STATE_DISABLED, false);
 			skinSelector.displayObjectProperties =
 			{
-				width: 264 * this.scale,
-				height: 120 * this.scale,
+				width: 140 * this.scale,
+				height: 60 * this.scale,
 				textureScale: this.scale
 			};
-			textArea.stateToSkinFunction = skinSelector.updateValue;
-
-			textArea.paddingTop = 12 * this.scale;
-			textArea.paddingBottom = 10 * this.scale;
-			textArea.paddingLeft = textArea.paddingRight = 14 * this.scale;
-
-			textArea.textEditorProperties.textFormat = this.scrollTextTextFormat;
-			textArea.textEditorProperties.disabledTextFormat = this.scrollTextDisabledTextFormat;
-		}
-
-		protected function setNumericStepperTextInputStyles(input:TextInput):void
-		{
-			var backgroundSkin:Scale9Image = new Scale9Image(this.backgroundSkinTextures, this.scale);
-			backgroundSkin.width = 60 * this.scale;
-			backgroundSkin.height = 60 * this.scale;
-			input.backgroundSkin = backgroundSkin;
-
-			var backgroundDisabledSkin:Scale9Image = new Scale9Image(this.backgroundDisabledSkinTextures, this.scale);
-			backgroundDisabledSkin.width = 60 * this.scale;
-			backgroundDisabledSkin.height = 60 * this.scale;
-			input.backgroundDisabledSkin = backgroundDisabledSkin;
-
-			var backgroundFocusedSkin:Scale9Image = new Scale9Image(this.backgroundFocusedSkinTextures, this.scale);
-			backgroundFocusedSkin.width = 60 * this.scale;
-			backgroundFocusedSkin.height = 60 * this.scale;
-			input.backgroundFocusedSkin = backgroundFocusedSkin;
-
-			input.minWidth = input.minHeight = 60 * this.scale;
-			input.minTouchWidth = input.minTouchHeight = 88 * this.scale;
-			input.gap = 12 * this.scale;
-			input.paddingTop = 12 * this.scale;
-			input.paddingBottom = 10 * this.scale;
-			input.paddingLeft = input.paddingRight = 14 * this.scale;
-			input.isEditable = false;
-			input.textEditorFactory = stepperTextEditorFactory;
-			input.textEditorProperties.textFormat = this.lightUICenteredTextFormat;
-			input.textEditorProperties.embedFonts = true;
-		}
-
-		protected function setPageIndicatorStyles(pageIndicator:PageIndicator):void
-		{
-			pageIndicator.normalSymbolFactory = this.pageIndicatorNormalSymbolFactory;
-			pageIndicator.selectedSymbolFactory = this.pageIndicatorSelectedSymbolFactory;
-			pageIndicator.gap = 10 * this.scale;
-			pageIndicator.paddingTop = pageIndicator.paddingRight = pageIndicator.paddingBottom =
-				pageIndicator.paddingLeft = 6 * this.scale;
-			pageIndicator.minTouchWidth = pageIndicator.minTouchHeight = 44 * this.scale;
-		}
-
-		protected function setProgressBarStyles(progress:ProgressBar):void
-		{
-			var backgroundSkin:Scale9Image = new Scale9Image(this.backgroundSkinTextures, this.scale);
-			if(progress.direction == ProgressBar.DIRECTION_VERTICAL)
-			{
-				backgroundSkin.width = 22 * this.scale;
-				backgroundSkin.height = 240 * this.scale;
-			}
-			else
-			{
-				backgroundSkin.width = 240 * this.scale;
-				backgroundSkin.height = 22 * this.scale;
-			}
-			progress.backgroundSkin = backgroundSkin;
-
-			var backgroundDisabledSkin:Scale9Image = new Scale9Image(this.backgroundDisabledSkinTextures, this.scale);
-			if(progress.direction == ProgressBar.DIRECTION_VERTICAL)
-			{
-				backgroundDisabledSkin.width = 22 * this.scale;
-				backgroundDisabledSkin.height = 240 * this.scale;
-			}
-			else
-			{
-				backgroundDisabledSkin.width = 240 * this.scale;
-				backgroundDisabledSkin.height = 22 * this.scale;
-			}
-			progress.backgroundDisabledSkin = backgroundDisabledSkin;
-
-			var fillSkin:Scale9Image = new Scale9Image(this.buttonUpSkinTextures, this.scale);
-			if(progress.direction == ProgressBar.DIRECTION_VERTICAL)
-			{
-				fillSkin.width = 22 * this.scale;
-				fillSkin.height = 8 * this.scale;
-			}
-			else
-			{
-				fillSkin.width = 8 * this.scale;
-				fillSkin.height = 22 * this.scale;
-			}
-			progress.fillSkin = fillSkin;
-
-			var fillDisabledSkin:Scale9Image = new Scale9Image(this.buttonDisabledSkinTextures, this.scale);
-			if(progress.direction == ProgressBar.DIRECTION_VERTICAL)
-			{
-				fillDisabledSkin.width = 22 * this.scale;
-				fillDisabledSkin.height = 8 * this.scale;
-			}
-			else
-			{
-				fillDisabledSkin.width = 8 * this.scale;
-				fillDisabledSkin.height = 22 * this.scale;
-			}
-			progress.fillDisabledSkin = fillDisabledSkin;
-		}
-
-		protected function setHeaderStyles(header:Header):void
-		{
-			header.minWidth = 88 * this.scale;
-			header.minHeight = 88 * this.scale;
-			header.paddingTop = header.paddingRight = header.paddingBottom =
-				header.paddingLeft = 14 * this.scale;
-			header.gap = 8 * this.scale;
-			header.titleGap = 12 * this.scale;
-
-			var backgroundSkin:TiledImage = new TiledImage(this.headerBackgroundSkinTexture, this.scale);
-			backgroundSkin.width = backgroundSkin.height = 88 * this.scale;
-			header.backgroundSkin = backgroundSkin;
-			header.titleProperties.elementFormat = this.headerElementFormat;
-		}
-
-		protected function setHeaderWithoutBackgroundStyles(header:Header):void
-		{
-			header.minWidth = 88 * this.scale;
-			header.minHeight = 88 * this.scale;
-			header.paddingTop = header.paddingBottom = 14 * this.scale;
-			header.paddingLeft = header.paddingRight = 18 * this.scale;
-
-			header.titleProperties.elementFormat = this.headerElementFormat;
-		}
-
-		protected function setPanelScreenHeaderStyles(header:Header):void
-		{
-			this.setHeaderStyles(header);
-			header.useExtraPaddingForOSStatusBar = true;
-		}
-
-		protected function setPickerListStyles(list:PickerList):void
-		{
-			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
-			{
-				list.popUpContentManager = new CalloutPopUpContentManager();
-			}
-			else
-			{
-				var centerStage:VerticalCenteredPopUpContentManager = new VerticalCenteredPopUpContentManager();
-				centerStage.marginTop = centerStage.marginRight = centerStage.marginBottom =
-					centerStage.marginLeft = 24 * this.scale;
-				list.popUpContentManager = centerStage;
-			}
-
-			var layout:VerticalLayout = new VerticalLayout();
-			layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_BOTTOM;
-			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
-			layout.useVirtualLayout = true;
-			layout.gap = 0;
-			layout.paddingTop = layout.paddingRight = layout.paddingBottom =
-				layout.paddingLeft = 0;
-			list.listProperties.layout = layout;
-			list.listProperties.verticalScrollPolicy = List.SCROLL_POLICY_ON;
-
-			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
-			{
-				list.listProperties.minWidth = 560 * this.scale;
-				list.listProperties.maxHeight = 528 * this.scale;
-			}
-			else
-			{
-				var backgroundSkin:Scale9Image = new Scale9Image(this.backgroundSkinTextures, this.scale);
-				backgroundSkin.width = 20 * this.scale;
-				backgroundSkin.height = 20 * this.scale;
-				list.listProperties.backgroundSkin = backgroundSkin;
-				list.listProperties.paddingTop = list.listProperties.paddingRight =
-					list.listProperties.paddingBottom = list.listProperties.paddingLeft = 8 * this.scale;
-			}
-
-			list.listProperties.itemRendererName = THEME_NAME_PICKER_LIST_ITEM_RENDERER;
-		}
-
-		protected function setCalloutStyles(callout:Callout):void
-		{
-			var backgroundSkin:Scale9Image = new Scale9Image(this.backgroundPopUpSkinTextures, this.scale);
-			//arrow size is 40 pixels, so this should be a bit larger
-			backgroundSkin.width = 50 * this.scale;
-			backgroundSkin.height = 50 * this.scale;
-			callout.backgroundSkin = backgroundSkin;
-
-			var topArrowSkin:Image = new Image(this.calloutTopArrowSkinTexture);
-			topArrowSkin.scaleX = topArrowSkin.scaleY = this.scale;
-			callout.topArrowSkin = topArrowSkin;
-
-			var rightArrowSkin:Image = new Image(this.calloutRightArrowSkinTexture);
-			rightArrowSkin.scaleX = rightArrowSkin.scaleY = this.scale;
-			callout.rightArrowSkin = rightArrowSkin;
-
-			var bottomArrowSkin:Image = new Image(this.calloutBottomArrowSkinTexture);
-			bottomArrowSkin.scaleX = bottomArrowSkin.scaleY = this.scale;
-			callout.bottomArrowSkin = bottomArrowSkin;
-
-			var leftArrowSkin:Image = new Image(this.calloutLeftArrowSkinTexture);
-			leftArrowSkin.scaleX = leftArrowSkin.scaleY = this.scale;
-			callout.leftArrowSkin = leftArrowSkin;
-
-			callout.paddingTop = callout.paddingBottom = 12 * this.scale;
-			callout.paddingLeft = callout.paddingRight = 14 * this.scale;
-		}
-
-		protected function setPanelStyles(panel:Panel):void
-		{
-			this.setScrollerStyles(panel);
-
-			panel.backgroundSkin = new Scale9Image(this.backgroundPopUpSkinTextures, this.scale);
-
-			panel.paddingTop = 0;
-			panel.paddingRight = 8 * this.scale;
-			panel.paddingBottom = 8 * this.scale;
-			panel.paddingLeft = 8 * this.scale;
-		}
-
-		protected function setAlertStyles(alert:Alert):void
-		{
-			this.setScrollerStyles(alert);
-
-			var backgroundSkin:Scale9Image = new Scale9Image(this.backgroundPopUpSkinTextures, this.scale);
-			alert.backgroundSkin = backgroundSkin;
-
-			alert.paddingTop = 0;
-			alert.paddingRight = 24 * this.scale;
-			alert.paddingBottom = 16 * this.scale;
-			alert.paddingLeft = 24 * this.scale;
-			alert.gap = 16 * this.scale;
-			alert.maxWidth = alert.maxHeight = 560 * this.scale;
-		}
-
-		protected function setListStyles(list:List):void
-		{
-			this.setScrollerStyles(list);
-			var backgroundSkin:Quad = new Quad(88 * this.scale, 88 * this.scale, LIST_BACKGROUND_COLOR);
-			list.backgroundSkin = backgroundSkin;
-		}
-
-		protected function setGroupedListStyles(list:GroupedList):void
-		{
-			this.setScrollerStyles(list);
-			var backgroundSkin:Quad = new Quad(88 * this.scale, 88 * this.scale, LIST_BACKGROUND_COLOR);
-			list.backgroundSkin = backgroundSkin;
-		}
-
-		protected function setScrollerStyles(scroller:Scroller):void
-		{
-			scroller.horizontalScrollBarFactory = horizontalScrollBarFactory;
-			scroller.verticalScrollBarFactory = verticalScrollBarFactory;
-		}
-
-		protected function setScrollContainerStyles(container:ScrollContainer):void
-		{
-			this.setScrollerStyles(container);
-		}
-
-		protected function setToolbarScrollContainerStyles(container:ScrollContainer):void
-		{
-			this.setScrollerStyles(container);
-			if(!container.layout)
-			{
-				var layout:HorizontalLayout = new HorizontalLayout();
-				layout.paddingTop = layout.paddingRight = layout.paddingBottom =
-					layout.paddingLeft = 14 * this.scale;
-				layout.gap = 8 * this.scale;
-				container.layout = layout;
-			}
-			container.minWidth = 88 * this.scale;
-			container.minHeight = 88 * this.scale;
-
-			var backgroundSkin:TiledImage = new TiledImage(this.headerBackgroundSkinTexture, this.scale);
-			backgroundSkin.width = backgroundSkin.height = 88 * this.scale;
-			container.backgroundSkin = backgroundSkin;
-		}
-
-		protected function setInsetGroupedListStyles(list:GroupedList):void
-		{
-			list.itemRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_ITEM_RENDERER;
-			list.firstItemRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_FIRST_ITEM_RENDERER;
-			list.lastItemRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_LAST_ITEM_RENDERER;
-			list.singleItemRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_SINGLE_ITEM_RENDERER;
-			list.headerRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_HEADER_RENDERER;
-			list.footerRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_FOOTER_RENDERER;
-
-			var layout:VerticalLayout = new VerticalLayout();
-			layout.useVirtualLayout = true;
-			layout.padding = 18 * this.scale;
-			layout.gap = 0;
-			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
-			layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
-			layout.manageVisibility = true;
-			list.layout = layout;
+			track.stateToSkinFunction = skinSelector.updateValue;
 		}
 
 	}

@@ -579,7 +579,7 @@ package feathers.themes
 
 			//slider
 			this.getStyleProviderForClass(Slider).defaultStyleFunction = this.setSliderStyles;
-			this.getStyleProviderForClass(Button).setFunctionForStyleName(THEME_NAME_HORIZONTAL_SLIDER_THUMB, this.setHorizontalSliderThumbInitializer);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(THEME_NAME_HORIZONTAL_SLIDER_THUMB, this.setHorizontalSliderThumbStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(THEME_NAME_HORIZONTAL_SLIDER_MINIMUM_TRACK, this.setHorizontalSliderMinimumTrackStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(THEME_NAME_VERTICAL_SLIDER_THUMB, this.setVerticalSliderThumbStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(THEME_NAME_VERTICAL_SLIDER_MINIMUM_TRACK, this.setVerticalSliderMinimumTrackStyles);
@@ -611,10 +611,9 @@ package feathers.themes
 			return new Image(this.pageIndicatorSelectedSkinTexture);
 		}
 
-		protected function setScreenStyles(screen:Screen):void
-		{
-			screen.originalDPI = this.originalDPI;
-		}
+	//-------------------------
+	// Shared
+	//-------------------------
 
 		protected function setScrollerStyles(scroller:Scroller):void
 		{
@@ -625,19 +624,247 @@ package feathers.themes
 			scroller.scrollBarDisplayMode = ScrollContainer.SCROLL_BAR_DISPLAY_MODE_FIXED;
 		}
 
-		protected function setPanelScreenStyles(screen:PanelScreen):void
-		{
-			this.setScrollerStyles(screen);
+	//-------------------------
+	// Alert
+	//-------------------------
 
-			screen.originalDPI = this.originalDPI;
+		protected function setAlertStyles(alert:Alert):void
+		{
+			this.setScrollerStyles(alert);
+
+			alert.backgroundSkin = new Scale9Image(panelBorderBackgroundSkinTextures);
+
+			alert.paddingTop = 0;
+			alert.paddingRight = 14;
+			alert.paddingBottom = 0;
+			alert.paddingLeft = 14;
+			alert.gap = 12;
+
+			alert.maxWidth = alert.maxHeight = 300;
 		}
 
-		protected function setScrollScreenStyles(screen:ScrollScreen):void
+		protected function setAlertButtonGroupStyles(group:ButtonGroup):void
 		{
-			this.setScrollerStyles(screen);
-
-			screen.originalDPI = this.originalDPI;
+			group.direction = ButtonGroup.DIRECTION_HORIZONTAL;
+			group.horizontalAlign = ButtonGroup.HORIZONTAL_ALIGN_CENTER;
+			group.verticalAlign = ButtonGroup.VERTICAL_ALIGN_JUSTIFY;
+			group.gap = 4;
+			group.paddingTop = 12;
+			group.paddingRight = 12;
+			group.paddingBottom = 12;
+			group.paddingLeft = 12;
 		}
+
+		protected function setAlertMessageTextRendererStyles(renderer:TextFieldTextRenderer):void
+		{
+			renderer.textFormat = this.defaultTextFormat;
+			renderer.wordWrap = true;
+		}
+
+	//-------------------------
+	// Button
+	//-------------------------
+
+		protected function setBaseButtonStyles(button:Button):void
+		{
+			button.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
+			button.focusPadding = -1;
+
+			button.defaultLabelProperties.textFormat = this.defaultTextFormat;
+			button.disabledLabelProperties.textFormat = this.disabledTextFormat;
+
+			button.paddingTop = button.paddingBottom = 2;
+			button.paddingLeft = button.paddingRight = 10;
+			button.gap = 2;
+			button.minGap = 2;
+			button.minWidth = button.minHeight = 12;
+		}
+
+		protected function setButtonStyles(button:Button):void
+		{
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.buttonUpSkinTextures;
+			skinSelector.defaultSelectedValue = this.buttonSelectedUpSkinTextures;
+			skinSelector.setValueForState(this.buttonHoverSkinTextures, Button.STATE_HOVER, false);
+			skinSelector.setValueForState(this.buttonDownSkinTextures, Button.STATE_DOWN, false);
+			skinSelector.setValueForState(this.buttonDisabledSkinTextures, Button.STATE_DISABLED, false);
+			skinSelector.setValueForState(this.buttonSelectedHoverSkinTextures, Button.STATE_HOVER, true);
+			skinSelector.setValueForState(this.buttonSelectedDownSkinTextures, Button.STATE_DOWN, true);
+			skinSelector.setValueForState(this.buttonSelectedDisabledSkinTextures, Button.STATE_DISABLED, true);
+			button.stateToSkinFunction = skinSelector.updateValue;
+			this.setBaseButtonStyles(button);
+		}
+
+		protected function setQuietButtonStyles(button:Button):void
+		{
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = null;
+			skinSelector.defaultSelectedValue = this.buttonSelectedUpSkinTextures;
+			skinSelector.setValueForState(this.buttonHoverSkinTextures, Button.STATE_HOVER, false);
+			skinSelector.setValueForState(this.buttonDownSkinTextures, Button.STATE_DOWN, false);
+			skinSelector.setValueForState(this.buttonDisabledSkinTextures, Button.STATE_DISABLED, false);
+			skinSelector.setValueForState(this.buttonSelectedHoverSkinTextures, Button.STATE_HOVER, true);
+			skinSelector.setValueForState(this.buttonSelectedDownSkinTextures, Button.STATE_DOWN, true);
+			skinSelector.setValueForState(this.buttonSelectedDisabledSkinTextures, Button.STATE_DISABLED, true);
+			button.stateToSkinFunction = skinSelector.updateValue;
+			this.setBaseButtonStyles(button);
+		}
+
+	//-------------------------
+	// ButtonGroup
+	//-------------------------
+
+		protected function setButtonGroupStyles(group:ButtonGroup):void
+		{
+			group.gap = 4;
+		}
+
+	//-------------------------
+	// Callout
+	//-------------------------
+
+		protected function setCalloutStyles(callout:Callout):void
+		{
+			callout.backgroundSkin = new Scale9Image(panelBorderBackgroundSkinTextures);
+
+			var arrowSkin:Quad = new Quad(8, 8, 0xff00ff);
+			arrowSkin.alpha = 0;
+			callout.topArrowSkin =  callout.rightArrowSkin =  callout.bottomArrowSkin =
+				callout.leftArrowSkin = arrowSkin;
+
+			callout.paddingTop = callout.paddingBottom = 6;
+			callout.paddingRight = callout.paddingLeft = 10;
+		}
+
+	//-------------------------
+	// Check
+	//-------------------------
+
+		protected function setCheckStyles(check:Check):void
+		{
+			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			iconSelector.setValueTypeHandler(SubTexture, textureValueTypeHandler);
+			iconSelector.defaultValue = this.checkUpIconTexture;
+			iconSelector.defaultSelectedValue = this.checkSelectedUpIconTexture;
+			iconSelector.setValueForState(this.checkHoverIconTexture, Button.STATE_HOVER, false);
+			iconSelector.setValueForState(this.checkDownIconTexture, Button.STATE_DOWN, false);
+			iconSelector.setValueForState(this.checkDisabledIconTexture, Button.STATE_DISABLED, false);
+			iconSelector.setValueForState(this.checkSelectedHoverIconTexture, Button.STATE_HOVER, true);
+			iconSelector.setValueForState(this.checkSelectedDownIconTexture, Button.STATE_DOWN, true);
+			iconSelector.setValueForState(this.checkSelectedDisabledIconTexture, Button.STATE_DISABLED, true);
+			iconSelector.displayObjectProperties =
+			{
+				snapToPixels: true
+			};
+			check.stateToIconFunction = iconSelector.updateValue;
+
+			check.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
+			check.focusPadding = -2;
+
+			check.defaultLabelProperties.textFormat = this.defaultTextFormat;
+			check.disabledLabelProperties.textFormat = this.disabledTextFormat;
+
+			check.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
+			check.verticalAlign = Button.VERTICAL_ALIGN_MIDDLE;
+
+			check.gap = 4;
+		}
+
+	//-------------------------
+	// Drawers
+	//-------------------------
+
+		protected function setDrawersStyles(drawers:Drawers):void
+		{
+			var overlaySkin:Quad = new Quad(10, 10, MODAL_OVERLAY_COLOR);
+			overlaySkin.alpha = MODAL_OVERLAY_ALPHA;
+			drawers.overlaySkin = overlaySkin;
+		}
+
+	//-------------------------
+	// GroupedList
+	//-------------------------
+
+		protected function setGroupedListStyles(list:GroupedList):void
+		{
+			this.setScrollerStyles(list);
+
+			list.verticalScrollPolicy = GroupedList.SCROLL_POLICY_AUTO;
+
+			list.backgroundSkin = new Scale9Image(simpleBorderBackgroundSkinTextures);
+
+			list.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
+			list.focusPadding = -1;
+
+			list.paddingTop = list.paddingRight = list.paddingBottom =
+				list.paddingLeft = 1;
+		}
+
+		//see List section for item renderer styles
+
+		protected function setGroupedListHeaderOrFooterRendererStyles(renderer:DefaultGroupedListHeaderOrFooterRenderer):void
+		{
+			renderer.backgroundSkin = new Scale9Image(groupedListHeaderBackgroundSkinTextures);
+			renderer.backgroundSkin.height = 18;
+
+			renderer.contentLabelProperties.textFormat = this.defaultTextFormat;
+
+			renderer.paddingTop = renderer.paddingBottom = 2;
+			renderer.paddingRight = renderer.paddingLeft = 6;
+			renderer.minWidth = renderer.minHeight = 18;
+		}
+
+		protected function setInsetGroupedListStyles(list:GroupedList):void
+		{
+			this.setScrollerStyles(list);
+
+			list.verticalScrollPolicy = GroupedList.SCROLL_POLICY_AUTO;
+
+			list.headerRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_HEADER_RENDERER;
+			list.footerRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_FOOTER_RENDERER;
+
+			var layout:VerticalLayout = new VerticalLayout();
+			layout.useVirtualLayout = true;
+			layout.padding = 10;
+			layout.paddingTop = 0;
+			layout.gap = 0;
+			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
+			layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
+			list.layout = layout;
+		}
+
+		protected function setInsetGroupedListHeaderOrFooterRendererStyles(renderer:DefaultGroupedListHeaderOrFooterRenderer):void
+		{
+			renderer.contentLabelProperties.textFormat = this.defaultTextFormat;
+
+			renderer.paddingTop = 8;
+			renderer.paddingBottom = 2;
+			renderer.paddingRight = renderer.paddingLeft = 6;
+			renderer.minWidth = renderer.minHeight = 18;
+		}
+
+	//-------------------------
+	// Header
+	//-------------------------
+
+		protected function setHeaderStyles(header:Header):void
+		{
+			header.backgroundSkin = new Scale9Image(headerBackgroundSkinTextures);
+
+			header.minHeight = 22;
+
+			header.titleProperties.textFormat = this.headerTitleTextFormat;
+
+			header.paddingTop = header.paddingBottom = 4;
+			header.paddingRight = header.paddingLeft = 6;
+
+			header.gap = 2;
+			header.titleGap = 4;
+		}
+
+	//-------------------------
+	// Label
+	//-------------------------
 
 		protected function setLabelStyles(label:Label):void
 		{
@@ -657,13 +884,49 @@ package feathers.themes
 			label.textRendererProperties.disabledTextFormat = this.detailDisabledTextFormat;
 		}
 
-		protected function setScrollTextStyles(text:ScrollText):void
-		{
-			this.setScrollerStyles(text);
+	//-------------------------
+	// List
+	//-------------------------
 
-			text.textFormat = this.defaultTextFormat;
-			text.disabledTextFormat = this.disabledTextFormat;
-			text.paddingTop = text.paddingRight = text.paddingBottom = text.paddingLeft = 8;
+		protected function setListStyles(list:List):void
+		{
+			this.setScrollerStyles(list);
+
+			list.verticalScrollPolicy = List.SCROLL_POLICY_AUTO;
+
+			list.backgroundSkin = new Scale9Image(simpleBorderBackgroundSkinTextures);
+
+			list.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
+			list.focusPadding = -1;
+
+			list.paddingTop = list.paddingRight = list.paddingBottom =
+				list.paddingLeft = 1;
+		}
+
+		protected function setItemRendererStyles(renderer:BaseDefaultItemRenderer):void
+		{
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.itemRendererUpSkinTexture;
+			skinSelector.defaultSelectedValue = this.itemRendererSelectedUpSkinTexture;
+			skinSelector.setValueForState(this.itemRendererHoverSkinTexture, Button.STATE_HOVER, false);
+			skinSelector.setValueForState(this.itemRendererSelectedUpSkinTexture, Button.STATE_DOWN, false);
+			renderer.stateToSkinFunction = skinSelector.updateValue;
+
+			renderer.defaultLabelProperties.textFormat = this.defaultTextFormat;
+			renderer.disabledLabelProperties.textFormat = this.disabledTextFormat;
+
+			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
+
+			renderer.iconPosition = Button.ICON_POSITION_LEFT;
+			renderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
+
+			renderer.paddingTop = renderer.paddingBottom = 2;
+			renderer.paddingRight = renderer.paddingLeft = 6;
+			renderer.gap = 2;
+			renderer.minGap = 2;
+			renderer.accessoryGap = Number.POSITIVE_INFINITY;
+			renderer.minAccessoryGap = 2;
+			renderer.minWidth = renderer.minHeight = 22;
 		}
 
 		protected function setItemRendererAccessoryLabelStyles(renderer:TextFieldTextRenderer):void
@@ -676,55 +939,123 @@ package feathers.themes
 			renderer.textFormat = this.defaultTextFormat;
 		}
 
-		protected function setAlertMessageTextRendererStyles(renderer:TextFieldTextRenderer):void
+	//-------------------------
+	// NumericStepper
+	//-------------------------
+
+		protected function setNumericStepperStyles(stepper:NumericStepper):void
 		{
-			renderer.textFormat = this.defaultTextFormat;
-			renderer.wordWrap = true;
+			stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL;
+
+			stepper.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
+			stepper.focusPadding = -1;
 		}
 
-		protected function setButtonStyles(button:Button):void
+		protected function setNumericStepperIncrementButtonStyles(button:Button):void
 		{
 			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
-			skinSelector.defaultValue = this.buttonUpSkinTextures;
-			skinSelector.defaultSelectedValue = this.buttonSelectedUpSkinTextures;
-			skinSelector.setValueForState(this.buttonHoverSkinTextures, Button.STATE_HOVER, false);
-			skinSelector.setValueForState(this.buttonDownSkinTextures, Button.STATE_DOWN, false);
-			skinSelector.setValueForState(this.buttonDisabledSkinTextures, Button.STATE_DISABLED, false);
-			skinSelector.setValueForState(this.buttonSelectedHoverSkinTextures, Button.STATE_HOVER, true);
-			skinSelector.setValueForState(this.buttonSelectedDownSkinTextures, Button.STATE_DOWN, true);
-			skinSelector.setValueForState(this.buttonSelectedDisabledSkinTextures, Button.STATE_DISABLED, true);
+			skinSelector.defaultValue = this.stepperIncrementButtonUpSkinTextures;
+			skinSelector.setValueForState(this.stepperIncrementButtonHoverSkinTextures, Button.STATE_HOVER, false);
+			skinSelector.setValueForState(this.stepperIncrementButtonDownSkinTextures, Button.STATE_DOWN, false);
+			skinSelector.setValueForState(this.stepperIncrementButtonDisabledSkinTextures, Button.STATE_DISABLED, false);
 			button.stateToSkinFunction = skinSelector.updateValue;
-			this.baseButtonInitializer(button);
 		}
 
-		protected function setQuietButtonStyles(button:Button):void
+		protected function setNumericStepperDecrementButtonStyles(button:Button):void
 		{
 			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
-			skinSelector.defaultValue = null;
-			skinSelector.defaultSelectedValue = this.buttonSelectedUpSkinTextures;
-			skinSelector.setValueForState(this.buttonHoverSkinTextures, Button.STATE_HOVER, false);
-			skinSelector.setValueForState(this.buttonDownSkinTextures, Button.STATE_DOWN, false);
-			skinSelector.setValueForState(this.buttonDisabledSkinTextures, Button.STATE_DISABLED, false);
-			skinSelector.setValueForState(this.buttonSelectedHoverSkinTextures, Button.STATE_HOVER, true);
-			skinSelector.setValueForState(this.buttonSelectedDownSkinTextures, Button.STATE_DOWN, true);
-			skinSelector.setValueForState(this.buttonSelectedDisabledSkinTextures, Button.STATE_DISABLED, true);
+			skinSelector.defaultValue = this.stepperDecrementButtonUpSkinTextures;
+			skinSelector.setValueForState(this.stepperDecrementButtonHoverSkinTextures, Button.STATE_HOVER, false);
+			skinSelector.setValueForState(this.stepperDecrementButtonDownSkinTextures, Button.STATE_DOWN, false);
+			skinSelector.setValueForState(this.stepperDecrementButtonDisabledSkinTextures, Button.STATE_DISABLED, false);
 			button.stateToSkinFunction = skinSelector.updateValue;
-			this.baseButtonInitializer(button);
 		}
 
-		protected function baseButtonInitializer(button:Button):void
+		protected function setNumericStepperTextInputStyles(input:TextInput):void
 		{
-			button.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
-			button.focusPadding = -1;
+			input.minWidth = input.minHeight = 22;
+			input.gap = 2;
+			input.paddingTop = input.paddingBottom = 2;
+			input.paddingRight = input.paddingLeft = 4;
+			input.textEditorProperties.textFormat = this.defaultTextFormat;
 
-			button.defaultLabelProperties.textFormat = this.defaultTextFormat;
-			button.disabledLabelProperties.textFormat = this.disabledTextFormat;
+			var backgroundSkin:Scale9Image = new Scale9Image(textInputBackgroundSkinTextures);
+			backgroundSkin.width = backgroundSkin.height;
+			input.backgroundSkin = backgroundSkin;
 
-			button.paddingTop = button.paddingBottom = 2;
-			button.paddingLeft = button.paddingRight = 10;
-			button.gap = 2;
-			button.minGap = 2;
-			button.minWidth = button.minHeight = 12;
+			var backgroundDisabledSkin:Scale9Image = new Scale9Image(textInputBackgroundDisabledSkinTextures);
+			backgroundDisabledSkin.width = backgroundDisabledSkin.height;
+			input.backgroundDisabledSkin = backgroundDisabledSkin;
+		}
+
+	//-------------------------
+	// PageIndicator
+	//-------------------------
+
+		protected function setPageIndicatorStyles(pageIndicator:PageIndicator):void
+		{
+			pageIndicator.interactionMode = PageIndicator.INTERACTION_MODE_PRECISE;
+			pageIndicator.normalSymbolFactory = this.pageIndicatorNormalSymbolFactory;
+			pageIndicator.selectedSymbolFactory = this.pageIndicatorSelectedSymbolFactory;
+			pageIndicator.gap = 12;
+			pageIndicator.paddingTop = pageIndicator.paddingRight = pageIndicator.paddingBottom =
+				pageIndicator.paddingLeft = 12;
+			pageIndicator.minTouchWidth = pageIndicator.minTouchHeight = 12;
+		}
+
+	//-------------------------
+	// Panel
+	//-------------------------
+
+		protected function setPanelStyles(panel:Panel):void
+		{
+			this.setScrollerStyles(panel);
+
+			panel.backgroundSkin = new Scale9Image(panelBorderBackgroundSkinTextures);
+
+			panel.paddingTop = 0;
+			panel.paddingRight = 10;
+			panel.paddingBottom = 10;
+			panel.paddingLeft = 10;
+		}
+
+		protected function setPanelHeaderStyles(header:Header):void
+		{
+			header.titleProperties.textFormat = this.headerTitleTextFormat;
+
+			header.minHeight = 22;
+
+			header.paddingTop = header.paddingBottom = 6;
+			header.paddingRight = header.paddingLeft = 6;
+
+			header.gap = 2;
+			header.titleGap = 4;
+		}
+
+	//-------------------------
+	// PanelScreen
+	//-------------------------
+
+		protected function setPanelScreenStyles(screen:PanelScreen):void
+		{
+			this.setScrollerStyles(screen);
+
+			screen.originalDPI = this.originalDPI;
+		}
+
+	//-------------------------
+	// PickerList
+	//-------------------------
+
+		protected function setPickerListStyles(list:PickerList):void
+		{
+			list.popUpContentManager = new DropDownPopUpContentManager();
+		}
+
+		protected function setPickerListListStyles(list:List):void
+		{
+			this.setListStyles(list);
+			list.maxHeight = 110;
 		}
 
 		protected function setPickerListButtonStyles(button:Button):void
@@ -745,24 +1076,100 @@ package feathers.themes
 			button.paddingRight = 6;
 		}
 
-		protected function setToggleSwitchOnTrackStyles(track:Button):void
-		{
-			track.defaultSkin = new Scale9Image(buttonSelectedUpSkinTextures);
-		}
+	//-------------------------
+	// ProgressBar
+	//-------------------------
 
-		protected function setToggleSwitchThumbStyles(thumb:Button):void
+		protected function setProgressBarStyles(progress:ProgressBar):void
 		{
-			this.setButtonStyles(thumb);
-
-			var frame:Rectangle = this.buttonUpSkinTextures.texture.frame;
-			if(frame)
+			var backgroundSkin:Scale9Image = new Scale9Image(simpleBorderBackgroundSkinTextures);
+			if(progress.direction == ProgressBar.DIRECTION_VERTICAL)
 			{
-				thumb.width = thumb.height = buttonUpSkinTextures.texture.frame.height;
+				backgroundSkin.height = backgroundSkin.width * 30;
 			}
 			else
 			{
-				thumb.width = thumb.height = buttonUpSkinTextures.texture.height;
+				backgroundSkin.width = backgroundSkin.height * 30;
 			}
+			progress.backgroundSkin = backgroundSkin;
+
+			var fillSkin:Image = new Image(progressBarFillSkinTexture);
+			if(progress.direction == ProgressBar.DIRECTION_VERTICAL)
+			{
+				fillSkin.height = 0;
+			}
+			else
+			{
+				fillSkin.width = 0;
+			}
+			progress.fillSkin = fillSkin;
+
+			progress.paddingTop = progress.paddingRight = progress.paddingBottom =
+				progress.paddingLeft = 1;
+		}
+
+	//-------------------------
+	// Radio
+	//-------------------------
+
+		protected function setRadioStyles(radio:Radio):void
+		{
+			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			iconSelector.defaultValue = this.radioUpIconTexture;
+			iconSelector.defaultSelectedValue = this.radioSelectedUpIconTexture;
+			iconSelector.setValueForState(this.radioHoverIconTexture, Button.STATE_HOVER, false);
+			iconSelector.setValueForState(this.radioDownIconTexture, Button.STATE_DOWN, false);
+			iconSelector.setValueForState(this.radioDisabledIconTexture, Button.STATE_DISABLED, false);
+			iconSelector.setValueForState(this.radioSelectedHoverIconTexture, Button.STATE_HOVER, true);
+			iconSelector.setValueForState(this.radioSelectedDownIconTexture, Button.STATE_DOWN, true);
+			iconSelector.setValueForState(this.radioSelectedDisabledIconTexture, Button.STATE_DISABLED, true);
+			radio.stateToIconFunction = iconSelector.updateValue;
+
+			radio.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
+			radio.focusPadding = -2;
+
+			radio.defaultLabelProperties.textFormat = this.defaultTextFormat;
+			radio.disabledLabelProperties.textFormat = this.disabledTextFormat;
+
+			radio.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
+			radio.verticalAlign = Button.VERTICAL_ALIGN_MIDDLE;
+
+			radio.gap = 4;
+		}
+
+	//-------------------------
+	// Screen
+	//-------------------------
+
+		protected function setScreenStyles(screen:Screen):void
+		{
+			screen.originalDPI = this.originalDPI;
+		}
+
+	//-------------------------
+	// ScrollBar
+	//-------------------------
+
+		protected function setHorizontalScrollBarStyles(scrollBar:ScrollBar):void
+		{
+			scrollBar.direction = ScrollBar.DIRECTION_HORIZONTAL;
+			scrollBar.trackLayoutMode = ScrollBar.TRACK_LAYOUT_MODE_SINGLE;
+
+			scrollBar.customIncrementButtonName = THEME_NAME_HORIZONTAL_SCROLL_BAR_INCREMENT_BUTTON;
+			scrollBar.customDecrementButtonName = THEME_NAME_HORIZONTAL_SCROLL_BAR_DECREMENT_BUTTON;
+			scrollBar.customThumbName = THEME_NAME_HORIZONTAL_SCROLL_BAR_THUMB;
+			scrollBar.customMinimumTrackName = THEME_NAME_HORIZONTAL_SCROLL_BAR_MINIMUM_TRACK;
+		}
+
+		protected function setVerticalScrollBarStyles(scrollBar:ScrollBar):void
+		{
+			scrollBar.direction = ScrollBar.DIRECTION_VERTICAL;
+			scrollBar.trackLayoutMode = ScrollBar.TRACK_LAYOUT_MODE_SINGLE;
+
+			scrollBar.customIncrementButtonName = THEME_NAME_VERTICAL_SCROLL_BAR_INCREMENT_BUTTON;
+			scrollBar.customDecrementButtonName = THEME_NAME_VERTICAL_SCROLL_BAR_DECREMENT_BUTTON;
+			scrollBar.customThumbName = THEME_NAME_VERTICAL_SCROLL_BAR_THUMB;
+			scrollBar.customMinimumTrackName = THEME_NAME_VERTICAL_SCROLL_BAR_MINIMUM_TRACK;
 		}
 
 		protected function setHorizontalScrollBarIncrementButtonStyles(button:Button):void
@@ -865,6 +1272,71 @@ package feathers.themes
 			track.defaultSkin = new Scale9Image(this.vScrollBarTrackSkinTextures);
 		}
 
+	//-------------------------
+	// ScrollContainer
+	//-------------------------
+
+		protected function setScrollContainerStyles(container:ScrollContainer):void
+		{
+			this.setScrollerStyles(container);
+		}
+
+		protected function setToolbarScrollContainerStyles(container:ScrollContainer):void
+		{
+			this.setScrollerStyles(container);
+
+			if(!container.layout)
+			{
+				var layout:HorizontalLayout = new HorizontalLayout();
+				layout.paddingTop = layout.paddingBottom = 2;
+				layout.paddingRight = layout.paddingLeft = 6;
+				layout.gap = 2;
+				container.layout = layout;
+			}
+
+			container.minHeight = 22;
+
+			container.backgroundSkin = new Scale9Image(headerBackgroundSkinTextures);
+		}
+
+	//-------------------------
+	// ScrollScreen
+	//-------------------------
+
+		protected function setScrollScreenStyles(screen:ScrollScreen):void
+		{
+			this.setScrollerStyles(screen);
+
+			screen.originalDPI = this.originalDPI;
+		}
+
+	//-------------------------
+	// ScrollText
+	//-------------------------
+
+		protected function setScrollTextStyles(text:ScrollText):void
+		{
+			this.setScrollerStyles(text);
+
+			text.textFormat = this.defaultTextFormat;
+			text.disabledTextFormat = this.disabledTextFormat;
+			text.paddingTop = text.paddingRight = text.paddingBottom = text.paddingLeft = 8;
+		}
+
+	//-------------------------
+	// SimpleScrollBar
+	//-------------------------
+
+		protected function setHorizontalSimpleScrollBarStyles(scrollBar:SimpleScrollBar):void
+		{
+			scrollBar.customThumbName = THEME_NAME_HORIZONTAL_SIMPLE_SCROLL_BAR_THUMB;
+		}
+
+		protected function setVerticalSimpleScrollBarStyles(scrollBar:SimpleScrollBar):void
+		{
+			scrollBar.customThumbName = THEME_NAME_VERTICAL_SIMPLE_SCROLL_BAR_THUMB;
+		}
+
 		protected function setHorizontalSimpleScrollBarThumbStyles(thumb:Button):void
 		{
 			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
@@ -891,7 +1363,36 @@ package feathers.themes
 			thumb.paddingLeft = 4;
 		}
 
-		protected function setHorizontalSliderThumbInitializer(thumb:Button):void
+	//-------------------------
+	// Slider
+	//-------------------------
+
+		protected function setSliderStyles(slider:Slider):void
+		{
+			slider.trackLayoutMode = Slider.TRACK_LAYOUT_MODE_SINGLE;
+			slider.minimumPadding = slider.maximumPadding = -vSliderThumbUpSkinTexture.height / 2;
+
+			if(slider.direction == Slider.DIRECTION_VERTICAL)
+			{
+				slider.customThumbName = THEME_NAME_VERTICAL_SLIDER_THUMB;
+				slider.customMinimumTrackName = THEME_NAME_VERTICAL_SLIDER_MINIMUM_TRACK;
+
+				slider.focusPaddingLeft = slider.focusPaddingRight = -2;
+				slider.focusPaddingTop = slider.focusPaddingBottom = -2 + slider.minimumPadding;
+			}
+			else //horizontal
+			{
+				slider.customThumbName = THEME_NAME_HORIZONTAL_SLIDER_THUMB;
+				slider.customMinimumTrackName = THEME_NAME_HORIZONTAL_SLIDER_MINIMUM_TRACK;
+
+				slider.focusPaddingTop = slider.focusPaddingBottom = -2;
+				slider.focusPaddingLeft = slider.focusPaddingRight = -2 + slider.minimumPadding;
+			}
+
+			slider.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
+		}
+
+		protected function setHorizontalSliderThumbStyles(thumb:Button):void
 		{
 			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = this.hSliderThumbUpSkinTexture;
@@ -921,60 +1422,9 @@ package feathers.themes
 			track.defaultSkin = new Scale3Image(this.vSliderTrackSkinTextures);
 		}
 
-		protected function setCheckStyles(check:Check):void
-		{
-			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
-			iconSelector.setValueTypeHandler(SubTexture, textureValueTypeHandler);
-			iconSelector.defaultValue = this.checkUpIconTexture;
-			iconSelector.defaultSelectedValue = this.checkSelectedUpIconTexture;
-			iconSelector.setValueForState(this.checkHoverIconTexture, Button.STATE_HOVER, false);
-			iconSelector.setValueForState(this.checkDownIconTexture, Button.STATE_DOWN, false);
-			iconSelector.setValueForState(this.checkDisabledIconTexture, Button.STATE_DISABLED, false);
-			iconSelector.setValueForState(this.checkSelectedHoverIconTexture, Button.STATE_HOVER, true);
-			iconSelector.setValueForState(this.checkSelectedDownIconTexture, Button.STATE_DOWN, true);
-			iconSelector.setValueForState(this.checkSelectedDisabledIconTexture, Button.STATE_DISABLED, true);
-			iconSelector.displayObjectProperties =
-			{
-				snapToPixels: true
-			};
-			check.stateToIconFunction = iconSelector.updateValue;
-
-			check.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
-			check.focusPadding = -2;
-
-			check.defaultLabelProperties.textFormat = this.defaultTextFormat;
-			check.disabledLabelProperties.textFormat = this.disabledTextFormat;
-
-			check.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
-			check.verticalAlign = Button.VERTICAL_ALIGN_MIDDLE;
-
-			check.gap = 4;
-		}
-
-		protected function setRadioStyles(radio:Radio):void
-		{
-			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
-			iconSelector.defaultValue = this.radioUpIconTexture;
-			iconSelector.defaultSelectedValue = this.radioSelectedUpIconTexture;
-			iconSelector.setValueForState(this.radioHoverIconTexture, Button.STATE_HOVER, false);
-			iconSelector.setValueForState(this.radioDownIconTexture, Button.STATE_DOWN, false);
-			iconSelector.setValueForState(this.radioDisabledIconTexture, Button.STATE_DISABLED, false);
-			iconSelector.setValueForState(this.radioSelectedHoverIconTexture, Button.STATE_HOVER, true);
-			iconSelector.setValueForState(this.radioSelectedDownIconTexture, Button.STATE_DOWN, true);
-			iconSelector.setValueForState(this.radioSelectedDisabledIconTexture, Button.STATE_DISABLED, true);
-			radio.stateToIconFunction = iconSelector.updateValue;
-
-			radio.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
-			radio.focusPadding = -2;
-
-			radio.defaultLabelProperties.textFormat = this.defaultTextFormat;
-			radio.disabledLabelProperties.textFormat = this.disabledTextFormat;
-
-			radio.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
-			radio.verticalAlign = Button.VERTICAL_ALIGN_MIDDLE;
-
-			radio.gap = 4;
-		}
+	//-------------------------
+	// TabBar
+	//-------------------------
 
 		protected function setTabBarStyles(tabBar:TabBar):void
 		{
@@ -1003,169 +1453,9 @@ package feathers.themes
 			tab.minWidth = tab.minHeight = 12;
 		}
 
-		protected function setNumericStepperIncrementButtonStyles(button:Button):void
-		{
-			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
-			skinSelector.defaultValue = this.stepperIncrementButtonUpSkinTextures;
-			skinSelector.setValueForState(this.stepperIncrementButtonHoverSkinTextures, Button.STATE_HOVER, false);
-			skinSelector.setValueForState(this.stepperIncrementButtonDownSkinTextures, Button.STATE_DOWN, false);
-			skinSelector.setValueForState(this.stepperIncrementButtonDisabledSkinTextures, Button.STATE_DISABLED, false);
-			button.stateToSkinFunction = skinSelector.updateValue;
-		}
-
-		protected function setNumericStepperDecrementButtonStyles(button:Button):void
-		{
-			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
-			skinSelector.defaultValue = this.stepperDecrementButtonUpSkinTextures;
-			skinSelector.setValueForState(this.stepperDecrementButtonHoverSkinTextures, Button.STATE_HOVER, false);
-			skinSelector.setValueForState(this.stepperDecrementButtonDownSkinTextures, Button.STATE_DOWN, false);
-			skinSelector.setValueForState(this.stepperDecrementButtonDisabledSkinTextures, Button.STATE_DISABLED, false);
-			button.stateToSkinFunction = skinSelector.updateValue;
-		}
-
-		protected function setToggleSwitchStyles(toggle:ToggleSwitch):void
-		{
-			toggle.trackLayoutMode = ToggleSwitch.TRACK_LAYOUT_MODE_SINGLE;
-			toggle.labelAlign = ToggleSwitch.LABEL_ALIGN_MIDDLE;
-			toggle.defaultLabelProperties.textFormat = this.defaultTextFormat;
-			toggle.disabledLabelProperties.textFormat = this.disabledTextFormat;
-
-			toggle.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
-			toggle.focusPadding = -1;
-		}
-
-		protected function setButtonGroupStyles(group:ButtonGroup):void
-		{
-			group.gap = 4;
-		}
-
-		protected function setAlertButtonGroupStyles(group:ButtonGroup):void
-		{
-			group.direction = ButtonGroup.DIRECTION_HORIZONTAL;
-			group.horizontalAlign = ButtonGroup.HORIZONTAL_ALIGN_CENTER;
-			group.verticalAlign = ButtonGroup.VERTICAL_ALIGN_JUSTIFY;
-			group.gap = 4;
-			group.paddingTop = 12;
-			group.paddingRight = 12;
-			group.paddingBottom = 12;
-			group.paddingLeft = 12;
-		}
-
-		protected function setSliderStyles(slider:Slider):void
-		{
-			slider.trackLayoutMode = Slider.TRACK_LAYOUT_MODE_SINGLE;
-			slider.minimumPadding = slider.maximumPadding = -vSliderThumbUpSkinTexture.height / 2;
-
-			if(slider.direction == Slider.DIRECTION_VERTICAL)
-			{
-				slider.customThumbName = THEME_NAME_VERTICAL_SLIDER_THUMB;
-				slider.customMinimumTrackName = THEME_NAME_VERTICAL_SLIDER_MINIMUM_TRACK;
-
-				slider.focusPaddingLeft = slider.focusPaddingRight = -2;
-				slider.focusPaddingTop = slider.focusPaddingBottom = -2 + slider.minimumPadding;
-			}
-			else //horizontal
-			{
-				slider.customThumbName = THEME_NAME_HORIZONTAL_SLIDER_THUMB;
-				slider.customMinimumTrackName = THEME_NAME_HORIZONTAL_SLIDER_MINIMUM_TRACK;
-
-				slider.focusPaddingTop = slider.focusPaddingBottom = -2;
-				slider.focusPaddingLeft = slider.focusPaddingRight = -2 + slider.minimumPadding;
-			}
-
-			slider.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
-		}
-
-		protected function setVerticalScrollBarStyles(scrollBar:ScrollBar):void
-		{
-			scrollBar.direction = ScrollBar.DIRECTION_VERTICAL;
-			scrollBar.trackLayoutMode = ScrollBar.TRACK_LAYOUT_MODE_SINGLE;
-
-			scrollBar.customIncrementButtonName = THEME_NAME_VERTICAL_SCROLL_BAR_INCREMENT_BUTTON;
-			scrollBar.customDecrementButtonName = THEME_NAME_VERTICAL_SCROLL_BAR_DECREMENT_BUTTON;
-			scrollBar.customThumbName = THEME_NAME_VERTICAL_SCROLL_BAR_THUMB;
-			scrollBar.customMinimumTrackName = THEME_NAME_VERTICAL_SCROLL_BAR_MINIMUM_TRACK;
-		}
-
-		protected function setHorizontalScrollBarStyles(scrollBar:ScrollBar):void
-		{
-			scrollBar.direction = ScrollBar.DIRECTION_HORIZONTAL;
-			scrollBar.trackLayoutMode = ScrollBar.TRACK_LAYOUT_MODE_SINGLE;
-
-			scrollBar.customIncrementButtonName = THEME_NAME_HORIZONTAL_SCROLL_BAR_INCREMENT_BUTTON;
-			scrollBar.customDecrementButtonName = THEME_NAME_HORIZONTAL_SCROLL_BAR_DECREMENT_BUTTON;
-			scrollBar.customThumbName = THEME_NAME_HORIZONTAL_SCROLL_BAR_THUMB;
-			scrollBar.customMinimumTrackName = THEME_NAME_HORIZONTAL_SCROLL_BAR_MINIMUM_TRACK;
-		}
-
-		protected function setHorizontalSimpleScrollBarStyles(scrollBar:SimpleScrollBar):void
-		{
-			scrollBar.customThumbName = THEME_NAME_HORIZONTAL_SIMPLE_SCROLL_BAR_THUMB;
-		}
-
-		protected function setVerticalSimpleScrollBarStyles(scrollBar:SimpleScrollBar):void
-		{
-			scrollBar.customThumbName = THEME_NAME_VERTICAL_SIMPLE_SCROLL_BAR_THUMB;
-		}
-
-		protected function setNumericStepperStyles(stepper:NumericStepper):void
-		{
-			stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL;
-
-			stepper.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
-			stepper.focusPadding = -1;
-		}
-
-		protected function baseTextInputInitializer(input:TextInput):void
-		{
-			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
-			skinSelector.defaultValue = this.textInputBackgroundSkinTextures;
-			skinSelector.setValueForState(this.textInputBackgroundDisabledSkinTextures, TextInput.STATE_DISABLED);
-			input.stateToSkinFunction = skinSelector.updateValue;
-
-			input.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
-			input.focusPadding = -1;
-
-			input.minWidth = input.minHeight = 22;
-			input.gap = 2;
-			input.paddingTop = input.paddingBottom = 2;
-			input.paddingRight = input.paddingLeft = 4;
-
-			input.textEditorProperties.textFormat = this.defaultTextFormat;
-			input.promptProperties.textFormat = this.defaultTextFormat;
-		}
-
-		protected function setTextInputStyles(input:TextInput):void
-		{
-			this.baseTextInputInitializer(input);
-		}
-
-		protected function setSearchTextInputStyles(input:TextInput):void
-		{
-			this.baseTextInputInitializer(input);
-
-			var searchIcon:ImageLoader = new ImageLoader();
-			searchIcon.source = this.textInputSearchIconTexture;
-			searchIcon.snapToPixels = true;
-			input.defaultIcon = searchIcon;
-		}
-
-		protected function setNumericStepperTextInputStyles(input:TextInput):void
-		{
-			input.minWidth = input.minHeight = 22;
-			input.gap = 2;
-			input.paddingTop = input.paddingBottom = 2;
-			input.paddingRight = input.paddingLeft = 4;
-			input.textEditorProperties.textFormat = this.defaultTextFormat;
-
-			var backgroundSkin:Scale9Image = new Scale9Image(textInputBackgroundSkinTextures);
-			backgroundSkin.width = backgroundSkin.height;
-			input.backgroundSkin = backgroundSkin;
-
-			var backgroundDisabledSkin:Scale9Image = new Scale9Image(textInputBackgroundDisabledSkinTextures);
-			backgroundDisabledSkin.width = backgroundDisabledSkin.height;
-			input.backgroundDisabledSkin = backgroundDisabledSkin;
-		}
+	//-------------------------
+	// TextArea
+	//-------------------------
 
 		protected function setTextAreaStyles(textArea:TextArea):void
 		{
@@ -1192,249 +1482,77 @@ package feathers.themes
 			textArea.backgroundDisabledSkin = backgroundDisabledSkin;
 		}
 
-		protected function setPageIndicatorStyles(pageIndicator:PageIndicator):void
-		{
-			pageIndicator.interactionMode = PageIndicator.INTERACTION_MODE_PRECISE;
-			pageIndicator.normalSymbolFactory = this.pageIndicatorNormalSymbolFactory;
-			pageIndicator.selectedSymbolFactory = this.pageIndicatorSelectedSymbolFactory;
-			pageIndicator.gap = 12;
-			pageIndicator.paddingTop = pageIndicator.paddingRight = pageIndicator.paddingBottom =
-				pageIndicator.paddingLeft = 12;
-			pageIndicator.minTouchWidth = pageIndicator.minTouchHeight = 12;
-		}
+	//-------------------------
+	// TextInput
+	//-------------------------
 
-		protected function setProgressBarStyles(progress:ProgressBar):void
-		{
-			var backgroundSkin:Scale9Image = new Scale9Image(simpleBorderBackgroundSkinTextures);
-			if(progress.direction == ProgressBar.DIRECTION_VERTICAL)
-			{
-				backgroundSkin.height = backgroundSkin.width * 30;
-			}
-			else
-			{
-				backgroundSkin.width = backgroundSkin.height * 30;
-			}
-			progress.backgroundSkin = backgroundSkin;
-
-			var fillSkin:Image = new Image(progressBarFillSkinTexture);
-			if(progress.direction == ProgressBar.DIRECTION_VERTICAL)
-			{
-				fillSkin.height = 0;
-			}
-			else
-			{
-				fillSkin.width = 0;
-			}
-			progress.fillSkin = fillSkin;
-
-			progress.paddingTop = progress.paddingRight = progress.paddingBottom =
-				progress.paddingLeft = 1;
-		}
-
-		protected function setScrollContainerStyles(container:ScrollContainer):void
-		{
-			this.setScrollerStyles(container);
-		}
-
-		protected function setToolbarScrollContainerStyles(container:ScrollContainer):void
-		{
-			this.setScrollerStyles(container);
-
-			if(!container.layout)
-			{
-				var layout:HorizontalLayout = new HorizontalLayout();
-				layout.paddingTop = layout.paddingBottom = 2;
-				layout.paddingRight = layout.paddingLeft = 6;
-				layout.gap = 2;
-				container.layout = layout;
-			}
-
-			container.minHeight = 22;
-
-			container.backgroundSkin = new Scale9Image(headerBackgroundSkinTextures);
-		}
-
-		protected function setPanelStyles(panel:Panel):void
-		{
-			this.setScrollerStyles(panel);
-
-			panel.backgroundSkin = new Scale9Image(panelBorderBackgroundSkinTextures);
-
-			panel.paddingTop = 0;
-			panel.paddingRight = 10;
-			panel.paddingBottom = 10;
-			panel.paddingLeft = 10;
-		}
-
-		protected function setAlertStyles(alert:Alert):void
-		{
-			this.setScrollerStyles(alert);
-
-			alert.backgroundSkin = new Scale9Image(panelBorderBackgroundSkinTextures);
-
-			alert.paddingTop = 0;
-			alert.paddingRight = 14;
-			alert.paddingBottom = 0;
-			alert.paddingLeft = 14;
-			alert.gap = 12;
-
-			alert.maxWidth = alert.maxHeight = 300;
-		}
-
-		protected function setDrawersStyles(drawers:Drawers):void
-		{
-			var overlaySkin:Quad = new Quad(10, 10, MODAL_OVERLAY_COLOR);
-			overlaySkin.alpha = MODAL_OVERLAY_ALPHA;
-			drawers.overlaySkin = overlaySkin;
-		}
-
-		protected function setListStyles(list:List):void
-		{
-			this.setScrollerStyles(list);
-
-			list.verticalScrollPolicy = List.SCROLL_POLICY_AUTO;
-
-			list.backgroundSkin = new Scale9Image(simpleBorderBackgroundSkinTextures);
-
-			list.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
-			list.focusPadding = -1;
-
-			list.paddingTop = list.paddingRight = list.paddingBottom =
-				list.paddingLeft = 1;
-		}
-
-		protected function setGroupedListStyles(list:GroupedList):void
-		{
-			this.setScrollerStyles(list);
-
-			list.verticalScrollPolicy = GroupedList.SCROLL_POLICY_AUTO;
-
-			list.backgroundSkin = new Scale9Image(simpleBorderBackgroundSkinTextures);
-
-			list.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
-			list.focusPadding = -1;
-
-			list.paddingTop = list.paddingRight = list.paddingBottom =
-				list.paddingLeft = 1;
-		}
-
-		protected function setInsetGroupedListStyles(list:GroupedList):void
-		{
-			this.setScrollerStyles(list);
-
-			list.verticalScrollPolicy = GroupedList.SCROLL_POLICY_AUTO;
-
-			list.headerRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_HEADER_RENDERER;
-			list.footerRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_FOOTER_RENDERER;
-
-			var layout:VerticalLayout = new VerticalLayout();
-			layout.useVirtualLayout = true;
-			layout.padding = 10;
-			layout.paddingTop = 0;
-			layout.gap = 0;
-			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
-			layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
-			list.layout = layout;
-		}
-
-		protected function setPickerListStyles(list:PickerList):void
-		{
-			list.popUpContentManager = new DropDownPopUpContentManager();
-		}
-
-		protected function setPickerListListStyles(list:List):void
-		{
-			this.setListStyles(list);
-			list.maxHeight = 110;
-		}
-
-		protected function setItemRendererStyles(renderer:BaseDefaultItemRenderer):void
+		protected function setBaseTextInputStyles(input:TextInput):void
 		{
 			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
-			skinSelector.defaultValue = this.itemRendererUpSkinTexture;
-			skinSelector.defaultSelectedValue = this.itemRendererSelectedUpSkinTexture;
-			skinSelector.setValueForState(this.itemRendererHoverSkinTexture, Button.STATE_HOVER, false);
-			skinSelector.setValueForState(this.itemRendererSelectedUpSkinTexture, Button.STATE_DOWN, false);
-			renderer.stateToSkinFunction = skinSelector.updateValue;
+			skinSelector.defaultValue = this.textInputBackgroundSkinTextures;
+			skinSelector.setValueForState(this.textInputBackgroundDisabledSkinTextures, TextInput.STATE_DISABLED);
+			input.stateToSkinFunction = skinSelector.updateValue;
 
-			renderer.defaultLabelProperties.textFormat = this.defaultTextFormat;
-			renderer.disabledLabelProperties.textFormat = this.disabledTextFormat;
+			input.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
+			input.focusPadding = -1;
 
-			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
+			input.minWidth = input.minHeight = 22;
+			input.gap = 2;
+			input.paddingTop = input.paddingBottom = 2;
+			input.paddingRight = input.paddingLeft = 4;
 
-			renderer.iconPosition = Button.ICON_POSITION_LEFT;
-			renderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
-
-			renderer.paddingTop = renderer.paddingBottom = 2;
-			renderer.paddingRight = renderer.paddingLeft = 6;
-			renderer.gap = 2;
-			renderer.minGap = 2;
-			renderer.accessoryGap = Number.POSITIVE_INFINITY;
-			renderer.minAccessoryGap = 2;
-			renderer.minWidth = renderer.minHeight = 22;
+			input.textEditorProperties.textFormat = this.defaultTextFormat;
+			input.promptProperties.textFormat = this.defaultTextFormat;
 		}
 
-		protected function setGroupedListHeaderOrFooterRendererStyles(renderer:DefaultGroupedListHeaderOrFooterRenderer):void
+		protected function setTextInputStyles(input:TextInput):void
 		{
-			renderer.backgroundSkin = new Scale9Image(groupedListHeaderBackgroundSkinTextures);
-			renderer.backgroundSkin.height = 18;
-
-			renderer.contentLabelProperties.textFormat = this.defaultTextFormat;
-
-			renderer.paddingTop = renderer.paddingBottom = 2;
-			renderer.paddingRight = renderer.paddingLeft = 6;
-			renderer.minWidth = renderer.minHeight = 18;
+			this.setBaseTextInputStyles(input);
 		}
 
-		protected function setInsetGroupedListHeaderOrFooterRendererStyles(renderer:DefaultGroupedListHeaderOrFooterRenderer):void
+		protected function setSearchTextInputStyles(input:TextInput):void
 		{
-			renderer.contentLabelProperties.textFormat = this.defaultTextFormat;
+			this.setBaseTextInputStyles(input);
 
-			renderer.paddingTop = 8;
-			renderer.paddingBottom = 2;
-			renderer.paddingRight = renderer.paddingLeft = 6;
-			renderer.minWidth = renderer.minHeight = 18;
+			var searchIcon:ImageLoader = new ImageLoader();
+			searchIcon.source = this.textInputSearchIconTexture;
+			searchIcon.snapToPixels = true;
+			input.defaultIcon = searchIcon;
 		}
 
-		protected function setCalloutStyles(callout:Callout):void
+	//-------------------------
+	// ToggleSwitch
+	//-------------------------
+
+		protected function setToggleSwitchStyles(toggle:ToggleSwitch):void
 		{
-			callout.backgroundSkin = new Scale9Image(panelBorderBackgroundSkinTextures);
+			toggle.trackLayoutMode = ToggleSwitch.TRACK_LAYOUT_MODE_SINGLE;
+			toggle.labelAlign = ToggleSwitch.LABEL_ALIGN_MIDDLE;
+			toggle.defaultLabelProperties.textFormat = this.defaultTextFormat;
+			toggle.disabledLabelProperties.textFormat = this.disabledTextFormat;
 
-			var arrowSkin:Quad = new Quad(8, 8, 0xff00ff);
-			arrowSkin.alpha = 0;
-			callout.topArrowSkin =  callout.rightArrowSkin =  callout.bottomArrowSkin =
-				callout.leftArrowSkin = arrowSkin;
-
-			callout.paddingTop = callout.paddingBottom = 6;
-			callout.paddingRight = callout.paddingLeft = 10;
+			toggle.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
+			toggle.focusPadding = -1;
 		}
 
-		protected function setHeaderStyles(header:Header):void
+		protected function setToggleSwitchOnTrackStyles(track:Button):void
 		{
-			header.backgroundSkin = new Scale9Image(headerBackgroundSkinTextures);
-
-			header.minHeight = 22;
-
-			header.titleProperties.textFormat = this.headerTitleTextFormat;
-
-			header.paddingTop = header.paddingBottom = 4;
-			header.paddingRight = header.paddingLeft = 6;
-
-			header.gap = 2;
-			header.titleGap = 4;
+			track.defaultSkin = new Scale9Image(buttonSelectedUpSkinTextures);
 		}
 
-		protected function setPanelHeaderStyles(header:Header):void
+		protected function setToggleSwitchThumbStyles(thumb:Button):void
 		{
-			header.titleProperties.textFormat = this.headerTitleTextFormat;
+			this.setButtonStyles(thumb);
 
-			header.minHeight = 22;
-
-			header.paddingTop = header.paddingBottom = 6;
-			header.paddingRight = header.paddingLeft = 6;
-
-			header.gap = 2;
-			header.titleGap = 4;
+			var frame:Rectangle = this.buttonUpSkinTextures.texture.frame;
+			if(frame)
+			{
+				thumb.width = thumb.height = buttonUpSkinTextures.texture.frame.height;
+			}
+			else
+			{
+				thumb.width = thumb.height = buttonUpSkinTextures.texture.height;
+			}
 		}
 	}
 }
