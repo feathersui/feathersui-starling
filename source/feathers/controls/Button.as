@@ -1863,45 +1863,6 @@ package feathers.controls
 			this._iconSelector.setValueForState(value, STATE_DISABLED, false);
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
-		
-		/**
-		 * @private
-		 */
-		protected var _autoFlatten:Boolean = false;
-		
-		/**
-		 * Determines if the button should automatically call <code>flatten()</code>
-		 * after it finishes drawing. In some cases, this will improve
-		 * performance.
-		 *
-		 * <p>The following example tells the button to flatten after it validates:</p>
-		 *
-		 * <listing version="3.0">
-		 * button.autoFlatten = true;</listing>
-		 *
-		 * @default false
-		 */
-		public function get autoFlatten():Boolean
-		{
-			return this._autoFlatten;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set autoFlatten(value:Boolean):void
-		{
-			if(this._autoFlatten == value)
-			{
-				return;
-			}
-			this._autoFlatten = value;
-			this.unflatten();
-			if(this._autoFlatten)
-			{
-				this.flatten();
-			}
-		}
 
 		/**
 		 * @private
@@ -2028,17 +1989,11 @@ package feathers.controls
 			if(textRendererInvalid || stylesInvalid || stateInvalid || dataInvalid || sizeInvalid)
 			{
 				this.layoutContent();
-				}
+			}
 
-				if(sizeInvalid || focusInvalid)
-				{
-					this.refreshFocusIndicator();
-				}
-			
-			if(this._autoFlatten)
+			if(sizeInvalid || focusInvalid)
 			{
-				this.unflatten();
-				this.flatten();
+				this.refreshFocusIndicator();
 			}
 		}
 
