@@ -48,6 +48,9 @@
 		<package name="feathers.system"> 
 			<shortDescription><![CDATA[Higher level queries for system-level capabilities.]]></shortDescription>
 		</package>
+		<package name="feathers.themes"> 
+			<shortDescription><![CDATA[Classes related to theming and styling components.]]></shortDescription>
+		</package>
 		<package name="feathers.utils"> 
 			<shortDescription><![CDATA[Utility classes and function.]]></shortDescription>
 		</package>
