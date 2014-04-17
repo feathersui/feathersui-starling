@@ -170,7 +170,7 @@ package feathers.core
 				this._root.stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
 			}
 
-			if(FocusManager.isEnabled && popUp is DisplayObjectContainer)
+			if(isModal && FocusManager.isEnabled && popUp is DisplayObjectContainer)
 			{
 				this._popUpToFocusManager[popUp] = FocusManager.pushFocusManager(DisplayObjectContainer(popUp));
 			}
