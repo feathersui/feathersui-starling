@@ -168,7 +168,7 @@ package feathers.controls
 		 */
 		public function SimpleScrollBar()
 		{
-			this._styleProvider = SimpleScrollBar.styleProvider;
+			super();
 			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 		}
 
@@ -210,6 +210,14 @@ package feathers.controls
 		 * @private
 		 */
 		protected var track:Quad;
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return SimpleScrollBar.styleProvider;
+		}
 
 		/**
 		 * @private

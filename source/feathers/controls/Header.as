@@ -187,7 +187,6 @@ package feathers.controls
 		public function Header()
 		{
 			super();
-			this._styleProvider = Header.styleProvider;
 			this.addEventListener(Event.ADDED_TO_STAGE, header_addedToStageHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, header_removedFromStageHandler);
 		}
@@ -227,6 +226,14 @@ package feathers.controls
 		 * The layout algorithm. Shared by both sides.
 		 */
 		protected var _layout:HorizontalLayout;
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return Header.styleProvider;
+		}
 
 		/**
 		 * @private

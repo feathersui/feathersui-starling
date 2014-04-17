@@ -70,10 +70,18 @@ package feathers.controls
 		 */
 		public function Radio()
 		{
-			this._styleProvider = Radio.styleProvider;
+			super();
 			super.isToggle = true;
 			this.addEventListener(Event.ADDED_TO_STAGE, radio_addedToStageHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, radio_removedFromStageHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return Radio.styleProvider;
 		}
 
 		/**

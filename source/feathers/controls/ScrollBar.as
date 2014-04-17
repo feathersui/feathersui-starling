@@ -283,7 +283,7 @@ package feathers.controls
 		 */
 		public function ScrollBar()
 		{
-			this._styleProvider = ScrollBar.styleProvider;
+			super();
 			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 		}
 
@@ -436,6 +436,14 @@ package feathers.controls
 		 * @see #createMaximumTrack()
 		 */
 		protected var maximumTrack:Button;
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return ScrollBar.styleProvider;
+		}
 
 		/**
 		 * @private

@@ -158,7 +158,6 @@ package feathers.controls
 		 */
 		public function ImageLoader()
 		{
-			this._styleProvider = ImageLoader.styleProvider;
 			this.isQuickHitAreaEnabled = true;
 		}
 
@@ -218,6 +217,14 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _isTextureOwner:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return ImageLoader.styleProvider;
+		}
 
 		/**
 		 * @private

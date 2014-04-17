@@ -73,8 +73,15 @@ package feathers.controls
 			this.addEventListener(Event.ADDED_TO_STAGE, screen_addedToStageHandler);
 			this.addEventListener(FeathersEventType.RESIZE, screen_resizeHandler);
 			super();
-			this._styleProvider = Screen.styleProvider;
 			this.originalDPI = DeviceCapabilities.dpi;
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return Screen.styleProvider;
 		}
 		
 		/**

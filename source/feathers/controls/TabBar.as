@@ -202,7 +202,7 @@ package feathers.controls
 		 */
 		public function TabBar()
 		{
-			this._styleProvider = TabBar.styleProvider;
+			super();
 		}
 
 		/**
@@ -286,6 +286,14 @@ package feathers.controls
 		 * @private
 		 */
 		protected var inactiveTabs:Vector.<ToggleButton> = new <ToggleButton>[];
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return TabBar.styleProvider;
+		}
 
 		/**
 		 * @private

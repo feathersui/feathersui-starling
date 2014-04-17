@@ -285,7 +285,7 @@ package feathers.controls
 		 */
 		public function TextInput()
 		{
-			this._styleProvider = TextInput.styleProvider;
+			super();
 			this.isQuickHitAreaEnabled = true;
 			this.addEventListener(TouchEvent.TOUCH, textInput_touchHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, textInput_removedFromStageHandler);
@@ -334,6 +334,14 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _touchPointID:int = -1;
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return TextInput.styleProvider;
+		}
 
 		/**
 		 * @private

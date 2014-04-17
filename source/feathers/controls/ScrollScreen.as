@@ -165,8 +165,15 @@ package feathers.controls
 		{
 			this.addEventListener(Event.ADDED_TO_STAGE, scrollScreen_addedToStageHandler);
 			super();
-			this._styleProvider = ScrollScreen.styleProvider;
 			this.originalDPI = DeviceCapabilities.dpi;
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return ScrollScreen.styleProvider;
 		}
 
 		/**

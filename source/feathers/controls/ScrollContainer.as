@@ -203,7 +203,6 @@ package feathers.controls
 		public function ScrollContainer()
 		{
 			super();
-			this._styleProvider = ScrollContainer.styleProvider;
 			this.layoutViewPort = new LayoutViewPort();
 			this.viewPort = this.layoutViewPort;
 		}
@@ -219,6 +218,14 @@ package feathers.controls
 		 * @private
 		 */
 		protected var layoutViewPort:LayoutViewPort;
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return ScrollContainer.styleProvider;
+		}
 
 		/**
 		 * @private

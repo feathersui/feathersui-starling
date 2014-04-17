@@ -198,7 +198,6 @@ package feathers.controls
 		public function ToggleSwitch()
 		{
 			super();
-			this._styleProvider = ToggleSwitch.styleProvider;
 			this.addEventListener(TouchEvent.TOUCH, toggleSwitch_touchHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, toggleSwitch_removedFromStageHandler);
 		}
@@ -310,6 +309,14 @@ package feathers.controls
 		 * @see #createOffTrack()
 		 */
 		protected var offTrack:Button;
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return ToggleSwitch.styleProvider;
+		}
 
 		/**
 		 * @private

@@ -241,6 +241,7 @@ package feathers.core
 			{
 				throw new Error(ABSTRACT_CLASS_ERROR);
 			}
+			this._styleProvider = this.defaultStyleProvider;
 			this.addEventListener(Event.ADDED_TO_STAGE, feathersControl_addedToStageHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, feathersControl_removedFromStageHandler);
 			this.addEventListener(Event.FLATTEN, feathersControl_flattenHandler);
@@ -350,6 +351,29 @@ package feathers.core
 				throw new IllegalOperationError("The styleProvider property cannot be changed after a component is initialized.");
 			}
 			this._styleProvider = value;
+		}
+
+		/**
+		 * When the <code>FeathersControl</code> constructor is called, the
+		 * <code>styleProvider</code> property is set to this value. May be
+		 * <code>null</code>.
+		 *
+		 * <p>Typically, a subclass of <code>FeathersControl</code> will
+		 * override this function to return its static <code>styleProvider</code>
+		 * value. For instance, <code>feathers.controls.Button</code> overrides
+		 * this function, and its implementation looks like this:</p>
+		 *
+		 * <listing version="3.0">
+		 * override protected function get defaultStyleProvider():IStyleProvider
+		 * {
+		 *     return Button.styleProvider;
+		 * }</listing>
+		 *
+		 * @see #styleProvider
+		 */
+		protected function get defaultStyleProvider():IStyleProvider
+		{
+			return null;
 		}
 
 		/**

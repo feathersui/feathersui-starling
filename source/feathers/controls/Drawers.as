@@ -314,7 +314,7 @@ package feathers.controls
 		 */
 		public function Drawers(content:DisplayObject = null)
 		{
-			this._styleProvider = Drawers.styleProvider;
+			super();
 			this.content = content;
 			this.addEventListener(Event.ADDED_TO_STAGE, drawers_addedToStageHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, drawers_removedFromStageHandler);
@@ -333,6 +333,14 @@ package feathers.controls
 		 * @see #contentEventDispatcherFunction
 		 */
 		protected var contentEventDispatcher:EventDispatcher;
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return Drawers.styleProvider;
+		}
 
 		/**
 		 * @private

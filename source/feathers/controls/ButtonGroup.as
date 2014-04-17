@@ -231,7 +231,7 @@ package feathers.controls
 		 */
 		public function ButtonGroup()
 		{
-			this._styleProvider = ButtonGroup.styleProvider;
+			super();
 		}
 
 		/**
@@ -304,6 +304,14 @@ package feathers.controls
 		 * @private
 		 */
 		protected var inactiveButtons:Vector.<Button> = new <Button>[];
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return ButtonGroup.styleProvider;
+		}
 
 		/**
 		 * @private

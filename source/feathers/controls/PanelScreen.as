@@ -172,10 +172,17 @@ package feathers.controls
 		{
 			this.addEventListener(Event.ADDED_TO_STAGE, panelScreen_addedToStageHandler);
 			super();
-			this._styleProvider = PanelScreen.styleProvider;
 			this.headerName = DEFAULT_CHILD_NAME_HEADER;
 			this.originalDPI = DeviceCapabilities.dpi;
 			this.clipContent = false;
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return PanelScreen.styleProvider;
 		}
 
 		/**

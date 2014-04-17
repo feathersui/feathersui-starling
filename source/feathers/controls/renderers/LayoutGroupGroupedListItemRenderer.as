@@ -9,6 +9,7 @@ package feathers.controls.renderers
 {
 	import feathers.controls.GroupedList;
 	import feathers.controls.LayoutGroup;
+	import feathers.skins.IStyleProvider;
 
 	import starling.events.Event;
 
@@ -33,10 +34,28 @@ package feathers.controls.renderers
 	public class LayoutGroupGroupedListItemRenderer extends LayoutGroup implements IGroupedListItemRenderer
 	{
 		/**
+		 * The default <code>IStyleProvider</code> for all <code>LayoutGroupGroupedListItemRenderer</code>
+		 * components.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var styleProvider:IStyleProvider;
+
+		/**
 		 * Constructor.
 		 */
 		public function LayoutGroupGroupedListItemRenderer()
 		{
+			super();
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return LayoutGroupGroupedListItemRenderer.styleProvider;
 		}
 
 		/**
