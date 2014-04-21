@@ -1892,16 +1892,12 @@ package feathers.controls
 				return;
 			}
 
-			if(this._backgroundSkin && this._backgroundSkin != this._backgroundDisabledSkin)
+			if(this._backgroundSkin && this.currentBackgroundSkin == this._backgroundSkin)
 			{
 				this.removeRawChildInternal(this._backgroundSkin);
+				this.currentBackgroundSkin = null;
 			}
 			this._backgroundSkin = value;
-			if(this._backgroundSkin && this._backgroundSkin.parent != this)
-			{
-				this._backgroundSkin.visible = false;
-				this.addRawChildInternal(this._backgroundSkin);
-			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -1935,16 +1931,12 @@ package feathers.controls
 				return;
 			}
 
-			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin != this._backgroundSkin)
+			if(this._backgroundDisabledSkin && this.currentBackgroundSkin == this._backgroundDisabledSkin)
 			{
 				this.removeRawChildInternal(this._backgroundDisabledSkin);
+				this.currentBackgroundSkin = null;
 			}
 			this._backgroundDisabledSkin = value;
-			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin.parent != this)
-			{
-				this._backgroundDisabledSkin.visible = false;
-				this.addRawChildInternal(this._backgroundDisabledSkin);
-			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -3046,29 +3038,33 @@ package feathers.controls
 		 */
 		protected function refreshBackgroundSkin():void
 		{
-			this.currentBackgroundSkin = this._backgroundSkin;
+			var newCurrentBackgroundSkin:DisplayObject = this._backgroundSkin;
 			if(!this._isEnabled && this._backgroundDisabledSkin)
 			{
-				if(this._backgroundSkin)
-				{
-					this._backgroundSkin.visible = false;
-				}
-				this.currentBackgroundSkin = this._backgroundDisabledSkin;
+				newCurrentBackgroundSkin = this._backgroundDisabledSkin;
 			}
-			else if(this._backgroundDisabledSkin)
+			if(this.currentBackgroundSkin != newCurrentBackgroundSkin)
 			{
-				this._backgroundDisabledSkin.visible = false;
+				if(this.currentBackgroundSkin)
+				{
+					this.removeRawChildInternal(this.currentBackgroundSkin);
+				}
+				this.currentBackgroundSkin = newCurrentBackgroundSkin;
+				if(this.currentBackgroundSkin)
+				{
+					this.addRawChildAtInternal(this.currentBackgroundSkin, 0);
+				}
 			}
 			if(this.currentBackgroundSkin)
 			{
 				//force it to the bottom
 				this.setRawChildIndexInternal(this.currentBackgroundSkin, 0);
 
-				if(isNaN(this.originalBackgroundWidth))
+				if(this.originalBackgroundWidth != this.originalBackgroundWidth) //isNaN
 				{
 					this.originalBackgroundWidth = this.currentBackgroundSkin.width;
 				}
-				if(isNaN(this.originalBackgroundHeight))
+				if(this.originalBackgroundHeight != this.originalBackgroundHeight) //isNaN
 				{
 					this.originalBackgroundHeight = this.currentBackgroundSkin.height;
 				}
@@ -3590,8 +3586,6 @@ package feathers.controls
 				{
 					this._touchBlocker = new Quad(100, 100, 0xff00ff);
 					this._touchBlocker.alpha = 0;
-					this._touchBlocker.visible = false;
-					this.addRawChildInternal(this._touchBlocker);
 				}
 			}
 			else
@@ -4377,7 +4371,7 @@ package feathers.controls
 			this._isScrolling = true;
 			if(this._touchBlocker)
 			{
-				this._touchBlocker.visible = true;
+				this.addRawChildInternal(this._touchBlocker);
 			}
 			this.dispatchEventWith(FeathersEventType.SCROLL_START);
 		}
@@ -4397,7 +4391,7 @@ package feathers.controls
 			this._isScrolling = false;
 			if(this._touchBlocker)
 			{
-				this._touchBlocker.visible = false;
+				this.removeRawChildInternal(this._touchBlocker, false);
 			}
 			this.hideHorizontalScrollBar();
 			this.hideVerticalScrollBar();
