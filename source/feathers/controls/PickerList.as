@@ -1324,11 +1324,8 @@ package feathers.controls
 		{
 			for(var propertyName:String in this._buttonProperties)
 			{
-				if(this.button.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._buttonProperties[propertyName];
-					this.button[propertyName] = propertyValue;
-				}
+				var propertyValue:Object = this._buttonProperties[propertyName];
+				this.button[propertyName] = propertyValue;
 			}
 		}
 		
@@ -1339,11 +1336,8 @@ package feathers.controls
 		{
 			for(var propertyName:String in this._listProperties)
 			{
-				if(this.list.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._listProperties[propertyName];
-					this.list[propertyName] = propertyValue;
-				}
+				var propertyValue:Object = this._listProperties[propertyName];
+				this.list[propertyName] = propertyValue;
 			}
 		}
 

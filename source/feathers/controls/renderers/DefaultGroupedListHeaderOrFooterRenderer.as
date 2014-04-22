@@ -1445,14 +1445,10 @@ package feathers.controls.renderers
 			{
 				return;
 			}
-			const displayContentLabel:DisplayObject = DisplayObject(this.contentLabel);
 			for(var propertyName:String in this._contentLabelProperties)
 			{
-				if(displayContentLabel.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._contentLabelProperties[propertyName];
-					displayContentLabel[propertyName] = propertyValue;
-				}
+				var propertyValue:Object = this._contentLabelProperties[propertyName];
+				this.contentLabel[propertyName] = propertyValue;
 			}
 		}
 

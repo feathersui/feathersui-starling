@@ -821,14 +821,10 @@ package feathers.controls
 		 */
 		protected function refreshHeaderStyles():void
 		{
-			const headerAsObject:Object = this.header;
 			for(var propertyName:String in this._headerProperties)
 			{
-				if(headerAsObject.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._headerProperties[propertyName];
-					this.header[propertyName] = propertyValue;
-				}
+				var propertyValue:Object = this._headerProperties[propertyName];
+				this.header[propertyName] = propertyValue;
 			}
 		}
 
@@ -837,14 +833,10 @@ package feathers.controls
 		 */
 		protected function refreshFooterStyles():void
 		{
-			const footerAsObject:Object = this.footer;
 			for(var propertyName:String in this._footerProperties)
 			{
-				if(footerAsObject.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._footerProperties[propertyName];
-					this.footer[propertyName] = propertyValue;
-				}
+				var propertyValue:Object = this._footerProperties[propertyName];
+				this.footer[propertyName] = propertyValue;
 			}
 		}
 

@@ -1892,14 +1892,10 @@ package feathers.controls
 			this.textEditor.maxChars = this._maxChars;
 			this.textEditor.restrict = this._restrict;
 			this.textEditor.isEditable = this._isEditable;
-			const displayTextEditor:DisplayObject = DisplayObject(this.textEditor);
 			for(var propertyName:String in this._textEditorProperties)
 			{
-				if(displayTextEditor.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._textEditorProperties[propertyName];
-					this.textEditor[propertyName] = propertyValue;
-				}
+				var propertyValue:Object = this._textEditorProperties[propertyName];
+				this.textEditor[propertyName] = propertyValue;
 			}
 		}
 
@@ -1912,11 +1908,8 @@ package feathers.controls
 			const displayPrompt:DisplayObject = DisplayObject(this.promptTextRenderer);
 			for(var propertyName:String in this._promptProperties)
 			{
-				if(displayPrompt.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._promptProperties[propertyName];
-					this.promptTextRenderer[propertyName] = propertyValue;
-				}
+				var propertyValue:Object = this._promptProperties[propertyName];
+				this.promptTextRenderer[propertyName] = propertyValue;
 			}
 		}
 

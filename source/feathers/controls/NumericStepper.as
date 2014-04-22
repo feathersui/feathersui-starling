@@ -1375,11 +1375,8 @@ package feathers.controls
 		{
 			for(var propertyName:String in this._decrementButtonProperties)
 			{
-				if(this.decrementButton.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._decrementButtonProperties[propertyName];
-					this.decrementButton[propertyName] = propertyValue;
-				}
+				var propertyValue:Object = this._decrementButtonProperties[propertyName];
+				this.decrementButton[propertyName] = propertyValue;
 			}
 			this.decrementButton.label = this._decrementButtonLabel;
 		}
@@ -1391,11 +1388,8 @@ package feathers.controls
 		{
 			for(var propertyName:String in this._incrementButtonProperties)
 			{
-				if(this.incrementButton.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._incrementButtonProperties[propertyName];
-					this.incrementButton[propertyName] = propertyValue;
-				}
+				var propertyValue:Object = this._incrementButtonProperties[propertyName];
+				this.incrementButton[propertyName] = propertyValue;
 			}
 			this.incrementButton.label = this._incrementButtonLabel;
 		}
@@ -1407,11 +1401,8 @@ package feathers.controls
 		{
 			for(var propertyName:String in this._textInputProperties)
 			{
-				if(this.textInput.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._textInputProperties[propertyName];
-					this.textInput[propertyName] = propertyValue;
-				}
+				var propertyValue:Object = this._textInputProperties[propertyName];
+				this.textInput[propertyName] = propertyValue;
 			}
 		}
 

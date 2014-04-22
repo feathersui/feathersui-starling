@@ -1272,37 +1272,28 @@ package feathers.controls.supportClasses
 			const displayRenderer:DisplayObject = DisplayObject(renderer);
 			for(var propertyName:String in this._itemRendererProperties)
 			{
-				if(displayRenderer.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._itemRendererProperties[propertyName];
-					displayRenderer[propertyName] = propertyValue;
-				}
+				var propertyValue:Object = this._itemRendererProperties[propertyName];
+				displayRenderer[propertyName] = propertyValue;
 			}
 		}
 
 		private function refreshOneHeaderRendererStyles(renderer:IGroupedListHeaderOrFooterRenderer):void
 		{
-			const displayRenderer:DisplayObject = DisplayObject(renderer);
+			var displayRenderer:DisplayObject = DisplayObject(renderer);
 			for(var propertyName:String in this._headerRendererProperties)
 			{
-				if(displayRenderer.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._headerRendererProperties[propertyName];
-					displayRenderer[propertyName] = propertyValue;
-				}
+				var propertyValue:Object = this._headerRendererProperties[propertyName];
+				displayRenderer[propertyName] = propertyValue;
 			}
 		}
 
 		private function refreshOneFooterRendererStyles(renderer:IGroupedListHeaderOrFooterRenderer):void
 		{
-			const displayRenderer:DisplayObject = DisplayObject(renderer);
+			var displayRenderer:DisplayObject = DisplayObject(renderer);
 			for(var propertyName:String in this._footerRendererProperties)
 			{
-				if(displayRenderer.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._footerRendererProperties[propertyName];
-					displayRenderer[propertyName] = propertyValue;
-				}
+				var propertyValue:Object = this._footerRendererProperties[propertyName];
+				displayRenderer[propertyName] = propertyValue;
 			}
 		}
 

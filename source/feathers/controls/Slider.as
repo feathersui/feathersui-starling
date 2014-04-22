@@ -1681,11 +1681,8 @@ package feathers.controls
 		{
 			for(var propertyName:String in this._thumbProperties)
 			{
-				if(this.thumb.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._thumbProperties[propertyName];
-					this.thumb[propertyName] = propertyValue;
-				}
+				var propertyValue:Object = this._thumbProperties[propertyName];
+				this.thumb[propertyName] = propertyValue;
 			}
 			this.thumb.visible = this._showThumb;
 		}
@@ -1697,11 +1694,8 @@ package feathers.controls
 		{
 			for(var propertyName:String in this._minimumTrackProperties)
 			{
-				if(this.minimumTrack.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._minimumTrackProperties[propertyName];
-					this.minimumTrack[propertyName] = propertyValue;
-				}
+				var propertyValue:Object = this._minimumTrackProperties[propertyName];
+				this.minimumTrack[propertyName] = propertyValue;
 			}
 		}
 
@@ -1716,11 +1710,8 @@ package feathers.controls
 			}
 			for(var propertyName:String in this._maximumTrackProperties)
 			{
-				if(this.maximumTrack.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._maximumTrackProperties[propertyName];
-					this.maximumTrack[propertyName] = propertyValue;
-				}
+				var propertyValue:Object = this._maximumTrackProperties[propertyName];
+				this.maximumTrack[propertyName] = propertyValue;
 			}
 		}
 

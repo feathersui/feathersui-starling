@@ -3664,11 +3664,8 @@ package feathers.controls.renderers
 				var displayIconLabel:DisplayObject = DisplayObject(this.iconLabel);
 				for(var propertyName:String in this._iconLabelProperties)
 				{
-					if(displayIconLabel.hasOwnProperty(propertyName))
-					{
-						var propertyValue:Object = this._iconLabelProperties[propertyName];
-						displayIconLabel[propertyName] = propertyValue;
-					}
+					var propertyValue:Object = this._iconLabelProperties[propertyName];
+					displayIconLabel[propertyName] = propertyValue;
 				}
 			}
 		}
@@ -3687,11 +3684,8 @@ package feathers.controls.renderers
 				var displayAccessoryLabel:DisplayObject = DisplayObject(this.accessoryLabel);
 				for(var propertyName:String in this._accessoryLabelProperties)
 				{
-					if(displayAccessoryLabel.hasOwnProperty(propertyName))
-					{
-						var propertyValue:Object = this._accessoryLabelProperties[propertyName];
-						displayAccessoryLabel[propertyName] = propertyValue;
-					}
+					var propertyValue:Object = this._accessoryLabelProperties[propertyName];
+					displayAccessoryLabel[propertyName] = propertyValue;
 				}
 			}
 		}

@@ -1332,15 +1332,12 @@ package feathers.controls
 		 */
 		protected function refreshButtonStyles():void
 		{
-			for each(var button:Button in this.activeButtons)
+			for(var propertyName:String in this._buttonProperties)
 			{
-				for(var propertyName:String in this._buttonProperties)
+				var propertyValue:Object = this._buttonProperties[propertyName];
+				for each(var button:Button in this.activeButtons)
 				{
-					var propertyValue:Object = this._buttonProperties[propertyName];
-					if(button.hasOwnProperty(propertyName))
-					{
-						button[propertyName] = propertyValue;
-					}
+					button[propertyName] = propertyValue;
 				}
 			}
 		}

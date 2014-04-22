@@ -2159,14 +2159,11 @@ package feathers.controls
 			this.onTextRenderer.text = this._onText;
 			if(properties)
 			{
-				const displayRenderer:DisplayObject = DisplayObject(this.onTextRenderer);
+				var displayRenderer:DisplayObject = DisplayObject(this.onTextRenderer);
 				for(var propertyName:String in properties)
 				{
-					if(displayRenderer.hasOwnProperty(propertyName))
-					{
-						var propertyValue:Object = properties[propertyName];
-						displayRenderer[propertyName] = propertyValue;
-					}
+					var propertyValue:Object = properties[propertyName];
+					displayRenderer[propertyName] = propertyValue;
 				}
 			}
 			this.onTextRenderer.validate();
@@ -2202,14 +2199,11 @@ package feathers.controls
 			this.offTextRenderer.text = this._offText;
 			if(properties)
 			{
-				const displayRenderer:DisplayObject = DisplayObject(this.offTextRenderer);
+				var displayRenderer:DisplayObject = DisplayObject(this.offTextRenderer);
 				for(var propertyName:String in properties)
 				{
-					if(displayRenderer.hasOwnProperty(propertyName))
-					{
-						var propertyValue:Object = properties[propertyName];
-						displayRenderer[propertyName] = propertyValue;
-					}
+					var propertyValue:Object = properties[propertyName];
+					displayRenderer[propertyName] = propertyValue;
 				}
 			}
 			this.offTextRenderer.validate();
@@ -2223,11 +2217,8 @@ package feathers.controls
 		{
 			for(var propertyName:String in this._thumbProperties)
 			{
-				if(this.thumb.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._thumbProperties[propertyName];
-					this.thumb[propertyName] = propertyValue;
-				}
+				var propertyValue:Object = this._thumbProperties[propertyName];
+				this.thumb[propertyName] = propertyValue;
 			}
 			this.thumb.visible = this._showThumb;
 		}
@@ -2239,11 +2230,8 @@ package feathers.controls
 		{
 			for(var propertyName:String in this._onTrackProperties)
 			{
-				if(this.onTrack.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._onTrackProperties[propertyName];
-					this.onTrack[propertyName] = propertyValue;
-				}
+				var propertyValue:Object = this._onTrackProperties[propertyName];
+				this.onTrack[propertyName] = propertyValue;
 			}
 		}
 
@@ -2258,11 +2246,8 @@ package feathers.controls
 			}
 			for(var propertyName:String in this._offTrackProperties)
 			{
-				if(this.offTrack.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._offTrackProperties[propertyName];
-					this.offTrack[propertyName] = propertyValue;
-				}
+				var propertyValue:Object = this._offTrackProperties[propertyName];
+				this.offTrack[propertyName] = propertyValue;
 			}
 		}
 
