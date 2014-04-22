@@ -87,11 +87,8 @@ package feathers.skins
 
 			for(var propertyName:String in this._imageProperties)
 			{
-				if(image.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._imageProperties[propertyName];
-					image[propertyName] = propertyValue;
-				}
+				var propertyValue:Object = this._imageProperties[propertyName];
+				image[propertyName] = propertyValue;
 			}
 
 			return image;

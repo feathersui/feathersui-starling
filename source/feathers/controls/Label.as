@@ -416,14 +416,10 @@ package feathers.controls
 		 */
 		protected function refreshTextRendererStyles():void
 		{
-			const displayTextRenderer:DisplayObject = DisplayObject(this.textRenderer);
 			for(var propertyName:String in this._textRendererProperties)
 			{
-				if(displayTextRenderer.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._textRendererProperties[propertyName];
-					displayTextRenderer[propertyName] = propertyValue;
-				}
+				var propertyValue:Object = this._textRendererProperties[propertyName];
+				this.textRenderer[propertyName] = propertyValue;
 			}
 		}
 

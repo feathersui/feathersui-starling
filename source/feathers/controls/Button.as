@@ -2239,15 +2239,10 @@ package feathers.controls
 			{
 				properties = this._labelPropertiesSelector.updateValue(this, this._currentState);
 			}
-
-			const displayLabelRenderer:DisplayObject = DisplayObject(this.labelTextRenderer);
 			for(var propertyName:String in properties)
 			{
-				if(displayLabelRenderer.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = properties[propertyName];
-					displayLabelRenderer[propertyName] = propertyValue;
-				}
+				var propertyValue:Object = properties[propertyName];
+				this.labelTextRenderer[propertyName] = propertyValue;
 			}
 		}
 		

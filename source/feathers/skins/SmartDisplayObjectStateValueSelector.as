@@ -190,11 +190,8 @@ package feathers.skins
 
 			for(var propertyName:String in this._displayObjectProperties)
 			{
-				if(displayObject.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._displayObjectProperties[propertyName];
-					displayObject[propertyName] = propertyValue;
-				}
+				var propertyValue:Object = this._displayObjectProperties[propertyName];
+				displayObject[propertyName] = propertyValue;
 			}
 
 			return displayObject;

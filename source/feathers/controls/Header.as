@@ -1473,14 +1473,10 @@ package feathers.controls
 		 */
 		protected function refreshTitleStyles():void
 		{
-			const displayTitleRenderer:DisplayObject = DisplayObject(this.titleTextRenderer);
 			for(var propertyName:String in this._titleProperties)
 			{
-				if(displayTitleRenderer.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._titleProperties[propertyName];
-					displayTitleRenderer[propertyName] = propertyValue;
-				}
+				var propertyValue:Object = this._titleProperties[propertyName];
+				this.titleTextRenderer[propertyName] = propertyValue;
 			}
 		}
 

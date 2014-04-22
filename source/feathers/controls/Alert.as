@@ -891,14 +891,10 @@ package feathers.controls
 		 */
 		protected function refreshMessageStyles():void
 		{
-			const displayMessageRenderer:DisplayObject = DisplayObject(this.messageTextRenderer);
 			for(var propertyName:String in this._messageProperties)
 			{
-				if(displayMessageRenderer.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._messageProperties[propertyName];
-					displayMessageRenderer[propertyName] = propertyValue;
-				}
+				var propertyValue:Object = this._messageProperties[propertyName];
+				this.messageTextRenderer[propertyName] = propertyValue;
 			}
 		}
 

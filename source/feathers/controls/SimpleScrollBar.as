@@ -1039,11 +1039,8 @@ package feathers.controls
 		{
 			for(var propertyName:String in this._thumbProperties)
 			{
-				if(this.thumb.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._thumbProperties[propertyName];
-					this.thumb[propertyName] = propertyValue;
-				}
+				var propertyValue:Object = this._thumbProperties[propertyName];
+				this.thumb[propertyName] = propertyValue;
 			}
 		}
 

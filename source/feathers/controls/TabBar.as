@@ -1468,15 +1468,12 @@ package feathers.controls
 		 */
 		protected function refreshTabStyles():void
 		{
-			for each(var tab:ToggleButton in this.activeTabs)
+			for(var propertyName:String in this._tabProperties)
 			{
-				for(var propertyName:String in this._tabProperties)
+				var propertyValue:Object = this._tabProperties[propertyName];
+				for each(var tab:ToggleButton in this.activeTabs)
 				{
-					var propertyValue:Object = this._tabProperties[propertyName];
-					if(tab.hasOwnProperty(propertyName))
-					{
-						tab[propertyName] = propertyValue;
-					}
+					tab[propertyName] = propertyValue;
 				}
 			}
 		}

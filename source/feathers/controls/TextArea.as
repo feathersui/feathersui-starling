@@ -964,14 +964,10 @@ package feathers.controls
 			this.textEditorViewPort.maxChars = this._maxChars;
 			this.textEditorViewPort.restrict = this._restrict;
 			this.textEditorViewPort.isEditable = this._isEditable;
-			const displayTextEditor:DisplayObject = DisplayObject(this.textEditorViewPort);
 			for(var propertyName:String in this._textEditorProperties)
 			{
-				if(displayTextEditor.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._textEditorProperties[propertyName];
-					this.textEditorViewPort[propertyName] = propertyValue;
-				}
+				var propertyValue:Object = this._textEditorProperties[propertyName];
+				this.textEditorViewPort[propertyName] = propertyValue;
 			}
 		}
 

@@ -729,14 +729,11 @@ package feathers.controls.supportClasses
 
 		private function refreshOneItemRendererStyles(renderer:IListItemRenderer):void
 		{
-			const displayRenderer:DisplayObject = DisplayObject(renderer);
+			var displayRenderer:DisplayObject = DisplayObject(renderer);
 			for(var propertyName:String in this._itemRendererProperties)
 			{
-				if(displayRenderer.hasOwnProperty(propertyName))
-				{
-					var propertyValue:Object = this._itemRendererProperties[propertyName];
-					displayRenderer[propertyName] = propertyValue;
-				}
+				var propertyValue:Object = this._itemRendererProperties[propertyName];
+				displayRenderer[propertyName] = propertyValue;
 			}
 		}
 

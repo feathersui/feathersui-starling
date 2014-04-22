@@ -3078,14 +3078,10 @@ package feathers.controls
 		{
 			if(this.horizontalScrollBar)
 			{
-				var objectScrollBar:Object = this.horizontalScrollBar;
 				for(var propertyName:String in this._horizontalScrollBarProperties)
 				{
-					if(objectScrollBar.hasOwnProperty(propertyName))
-					{
-						var propertyValue:Object = this._horizontalScrollBarProperties[propertyName];
-						this.horizontalScrollBar[propertyName] = propertyValue;
-					}
+					var propertyValue:Object = this._horizontalScrollBarProperties[propertyName];
+					this.horizontalScrollBar[propertyName] = propertyValue;
 				}
 				if(this._horizontalScrollBarHideTween)
 				{
@@ -3097,14 +3093,10 @@ package feathers.controls
 			}
 			if(this.verticalScrollBar)
 			{
-				objectScrollBar = this.verticalScrollBar;
 				for(propertyName in this._verticalScrollBarProperties)
 				{
-					if(objectScrollBar.hasOwnProperty(propertyName))
-					{
-						propertyValue = this._verticalScrollBarProperties[propertyName];
-						this.verticalScrollBar[propertyName] = propertyValue;
-					}
+					propertyValue = this._verticalScrollBarProperties[propertyName];
+					this.verticalScrollBar[propertyName] = propertyValue;
 				}
 				if(this._verticalScrollBarHideTween)
 				{
