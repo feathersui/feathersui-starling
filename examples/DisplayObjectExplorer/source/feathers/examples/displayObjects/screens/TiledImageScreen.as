@@ -5,6 +5,7 @@ package feathers.examples.displayObjects.screens
 	import feathers.controls.Screen;
 	import feathers.display.TiledImage;
 	import feathers.examples.displayObjects.themes.DisplayObjectExplorerTheme;
+	import feathers.skins.IStyleProvider;
 
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -15,6 +16,8 @@ package feathers.examples.displayObjects.screens
 	{
 		[Embed(source="/../assets/images/tile-pattern.png")]
 		private static const TILE_TEXTURE:Class;
+
+		public static var styleProvider:IStyleProvider;
 
 		public function TiledImageScreen()
 		{
@@ -36,13 +39,49 @@ package feathers.examples.displayObjects.screens
 		private var _rightTouchPointID:int = -1;
 		private var _bottomTouchPointID:int = -1;
 
+		private var _texture:Texture;
+
+		private var _padding:Number = 0;
+
+		public function get padding():Number
+		{
+			return this._padding;
+		}
+
+		public function set padding(value:Number):void
+		{
+			if(this._padding == value)
+			{
+				return;
+			}
+			this._padding = value;
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+		}
+
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return TiledImageScreen.styleProvider;
+		}
+
+		override public function dispose():void
+		{
+			if(this._texture)
+			{
+				this._texture.dispose();
+				this._texture = null;
+			}
+			super.dispose();
+		}
+
 		override protected function initialize():void
 		{
 			this._header = new Header();
 			this._header.title = "Tiled Image";
 			this.addChild(this._header);
 
-			this._image = new TiledImage(Texture.fromBitmap(new TILE_TEXTURE(), false), this.dpiScale);
+			this._texture = Texture.fromEmbeddedAsset(TILE_TEXTURE);
+
+			this._image = new TiledImage(this._texture);
 			this._minDisplayObjectWidth = this._image.width;
 			this._minDisplayObjectHeight = this._image.height;
 			this.addChild(this._image);
@@ -63,8 +102,8 @@ package feathers.examples.displayObjects.screens
 			this._header.width = this.actualWidth;
 			this._header.validate();
 
-			this._image.x = 30 * this.dpiScale;
-			this._image.y = this._header.height + 30 * this.dpiScale;
+			this._image.x = this._padding;
+			this._image.y = this._header.height + this._padding;
 
 			this._rightButton.validate();
 			this._bottomButton.validate();

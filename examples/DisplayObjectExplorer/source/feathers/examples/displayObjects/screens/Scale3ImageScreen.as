@@ -5,6 +5,7 @@ package feathers.examples.displayObjects.screens
 	import feathers.controls.Screen;
 	import feathers.display.Scale3Image;
 	import feathers.examples.displayObjects.themes.DisplayObjectExplorerTheme;
+	import feathers.skins.IStyleProvider;
 	import feathers.textures.Scale3Textures;
 
 	import starling.events.Touch;
@@ -16,6 +17,8 @@ package feathers.examples.displayObjects.screens
 	{
 		[Embed(source="/../assets/images/scale3.png")]
 		private static const SCALE_3_TEXTURE:Class;
+
+		public static var styleProvider:IStyleProvider;
 
 		public function Scale3ImageScreen()
 		{
@@ -37,15 +40,49 @@ package feathers.examples.displayObjects.screens
 		private var _rightTouchPointID:int = -1;
 		private var _bottomTouchPointID:int = -1;
 
+		private var _texture:Texture;
+
+		private var _padding:Number = 0;
+
+		public function get padding():Number
+		{
+			return this._padding;
+		}
+
+		public function set padding(value:Number):void
+		{
+			if(this._padding == value)
+			{
+				return;
+			}
+			this._padding = value;
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+		}
+
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return Scale3ImageScreen.styleProvider;
+		}
+
+		override public function dispose():void
+		{
+			if(this._texture)
+			{
+				this._texture.dispose();
+				this._texture = null;
+			}
+			super.dispose();
+		}
+
 		override protected function initialize():void
 		{
 			this._header = new Header();
 			this._header.title = "Scale 3 Image";
 			this.addChild(this._header);
 
-			var texture:Texture = Texture.fromBitmap(new SCALE_3_TEXTURE(), false);
-			var textures:Scale3Textures = new Scale3Textures(texture, 60, 80, Scale3Textures.DIRECTION_HORIZONTAL);
-			this._image = new Scale3Image(textures, this.dpiScale);
+			this._texture = Texture.fromEmbeddedAsset(SCALE_3_TEXTURE, false);
+			var textures:Scale3Textures = new Scale3Textures(this._texture, 60, 80, Scale3Textures.DIRECTION_HORIZONTAL);
+			this._image = new Scale3Image(textures);
 			this._image.width /= 2;
 			this._image.height /= 2;
 			this._minDisplayObjectWidth = this._image.width;
@@ -68,8 +105,8 @@ package feathers.examples.displayObjects.screens
 			this._header.width = this.actualWidth;
 			this._header.validate();
 
-			this._image.x = 30 * this.dpiScale;
-			this._image.y = this._header.height + 30 * this.dpiScale;
+			this._image.x = this._padding;
+			this._image.y = this._header.height + this._padding;
 
 			this._rightButton.validate();
 			this._bottomButton.validate();
