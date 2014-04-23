@@ -989,7 +989,7 @@ package feathers.controls
 			//but the animation is triggered by the draw cycle, so we always
 			//need to invalidate. notice that the event isn't dispatched
 			//unless the value changes.
-			const oldSelected:Boolean = this._isSelected;
+			var oldSelected:Boolean = this._isSelected;
 			this._isSelected = value;
 			this._isSelectionChangedByUser = false;
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
@@ -1365,7 +1365,7 @@ package feathers.controls
 			}
 			if(!(value is PropertyProxy))
 			{
-				const newValue:PropertyProxy = new PropertyProxy();
+				var newValue:PropertyProxy = new PropertyProxy();
 				for(var propertyName:String in value)
 				{
 					newValue[propertyName] = value[propertyName];
@@ -1536,7 +1536,7 @@ package feathers.controls
 			}
 			if(!(value is PropertyProxy))
 			{
-				const newValue:PropertyProxy = new PropertyProxy();
+				var newValue:PropertyProxy = new PropertyProxy();
 				for(var propertyName:String in value)
 				{
 					newValue[propertyName] = value[propertyName];
@@ -1705,7 +1705,7 @@ package feathers.controls
 			}
 			if(!(value is PropertyProxy))
 			{
-				const newValue:PropertyProxy = new PropertyProxy();
+				var newValue:PropertyProxy = new PropertyProxy();
 				for(var propertyName:String in value)
 				{
 					newValue[propertyName] = value[propertyName];
@@ -1846,8 +1846,8 @@ package feathers.controls
 				}
 			}
 
-			const needsWidth:Boolean = isNaN(this.explicitWidth);
-			const needsHeight:Boolean = isNaN(this.explicitHeight);
+			var needsWidth:Boolean = isNaN(this.explicitWidth);
+			var needsHeight:Boolean = isNaN(this.explicitHeight);
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -1899,8 +1899,8 @@ package feathers.controls
 				this.thumb = null;
 			}
 
-			const factory:Function = this._thumbFactory != null ? this._thumbFactory : defaultThumbFactory;
-			const thumbName:String = this._customThumbName != null ? this._customThumbName : this.thumbName;
+			var factory:Function = this._thumbFactory != null ? this._thumbFactory : defaultThumbFactory;
+			var thumbName:String = this._customThumbName != null ? this._customThumbName : this.thumbName;
 			this.thumb = Button(factory());
 			this.thumb.styleNameList.add(thumbName);
 			this.thumb.keepDownStateOnRollOut = true;
@@ -1927,8 +1927,8 @@ package feathers.controls
 				this.onTrack = null;
 			}
 
-			const factory:Function = this._onTrackFactory != null ? this._onTrackFactory : defaultOnTrackFactory;
-			const onTrackName:String = this._customOnTrackName != null ? this._customOnTrackName : this.onTrackName;
+			var factory:Function = this._onTrackFactory != null ? this._onTrackFactory : defaultOnTrackFactory;
+			var onTrackName:String = this._customOnTrackName != null ? this._customOnTrackName : this.onTrackName;
 			this.onTrack = Button(factory());
 			this.onTrack.styleNameList.add(onTrackName);
 			this.onTrack.keepDownStateOnRollOut = true;
@@ -1956,8 +1956,8 @@ package feathers.controls
 					this.offTrack.removeFromParent(true);
 					this.offTrack = null;
 				}
-				const factory:Function = this._offTrackFactory != null ? this._offTrackFactory : defaultOffTrackFactory;
-				const offTrackName:String = this._customOffTrackName != null ? this._customOffTrackName : this.offTrackName;
+				var factory:Function = this._offTrackFactory != null ? this._offTrackFactory : defaultOffTrackFactory;
+				var offTrackName:String = this._customOffTrackName != null ? this._customOffTrackName : this.offTrackName;
 				this.offTrack = Button(factory());
 				this.offTrack.styleNameList.add(offTrackName);
 				this.offTrack.keepDownStateOnRollOut = true;
@@ -1986,7 +1986,7 @@ package feathers.controls
 				this.onTextRenderer = null;
 			}
 
-			const index:int = this.getChildIndex(this.thumb);
+			var index:int = this.getChildIndex(this.thumb);
 			var offLabelFactory:Function = this._offLabelFactory;
 			if(offLabelFactory == null)
 			{
@@ -2024,7 +2024,7 @@ package feathers.controls
 			this.thumb.validate();
 			this.thumb.y = (this.actualHeight - this.thumb.height) / 2;
 
-			const maxLabelWidth:Number = Math.max(0, this.actualWidth - this.thumb.width - this._paddingLeft - this._paddingRight);
+			var maxLabelWidth:Number = Math.max(0, this.actualWidth - this.thumb.width - this._paddingLeft - this._paddingRight);
 			var totalLabelHeight:Number = Math.max(this.onTextRenderer.height, this.offTextRenderer.height);
 			var labelHeight:Number;
 			if(this._labelAlign == LABEL_ALIGN_MIDDLE)
@@ -2058,8 +2058,8 @@ package feathers.controls
 		 */
 		protected function layoutTracks():void
 		{
-			const maxLabelWidth:Number = Math.max(0, this.actualWidth - this.thumb.width - this._paddingLeft - this._paddingRight);
-			const thumbOffset:Number = this.thumb.x - this._paddingLeft;
+			var maxLabelWidth:Number = Math.max(0, this.actualWidth - this.thumb.width - this._paddingLeft - this._paddingRight);
+			var thumbOffset:Number = this.thumb.x - this._paddingLeft;
 
 			var onScrollOffset:Number = maxLabelWidth - thumbOffset - (maxLabelWidth - this.onTextRenderer.width) / 2;
 			var currentClipRect:Rectangle = this.onTextRenderer.clipRect;
@@ -2371,17 +2371,17 @@ package feathers.controls
 					return;
 				}
 				touch.getLocation(this, HELPER_POINT);
-				const trackScrollableWidth:Number = this.actualWidth - this._paddingLeft - this._paddingRight - this.thumb.width;
+				var trackScrollableWidth:Number = this.actualWidth - this._paddingLeft - this._paddingRight - this.thumb.width;
 				if(touch.phase == TouchPhase.MOVED)
 				{
-					const xOffset:Number = HELPER_POINT.x - this._touchStartX;
-					const xPosition:Number = Math.min(Math.max(this._paddingLeft, this._thumbStartX + xOffset), this._paddingLeft + trackScrollableWidth);
+					var xOffset:Number = HELPER_POINT.x - this._touchStartX;
+					var xPosition:Number = Math.min(Math.max(this._paddingLeft, this._thumbStartX + xOffset), this._paddingLeft + trackScrollableWidth);
 					this.thumb.x = xPosition;
 					this.layoutTracks();
 				}
 				else if(touch.phase == TouchPhase.ENDED)
 				{
-					const inchesMoved:Number = Math.abs(HELPER_POINT.x - this._touchStartX) / DeviceCapabilities.dpi;
+					var inchesMoved:Number = Math.abs(HELPER_POINT.x - this._touchStartX) / DeviceCapabilities.dpi;
 					if(inchesMoved > MINIMUM_DRAG_DISTANCE)
 					{
 						this._touchPointID = -1;

@@ -327,7 +327,7 @@ package feathers.data
 		 */
 		public function removeItemAt(index:int):Object
 		{
-			const item:Object = this._dataDescriptor.removeItemAt(this._data, index);
+			var item:Object = this._dataDescriptor.removeItemAt(this._data, index);
 			this.dispatchEventWith(Event.CHANGE);
 			this.dispatchEventWith(CollectionEventType.REMOVE_ITEM, false, index);
 			return item;
@@ -338,7 +338,7 @@ package feathers.data
 		 */
 		public function removeItem(item:Object):void
 		{
-			const index:int = this.getItemIndex(item);
+			var index:int = this.getItemIndex(item);
 			if(index >= 0)
 			{
 				this.removeItemAt(index);
@@ -390,7 +390,7 @@ package feathers.data
 		 */
 		public function addAll(collection:ListCollection):void
 		{
-			const otherCollectionLength:int = collection.length;
+			var otherCollectionLength:int = collection.length;
 			for(var i:int = 0; i < otherCollectionLength; i++)
 			{
 				var item:Object = collection.getItemAt(i);
@@ -404,7 +404,7 @@ package feathers.data
 		 */
 		public function addAllAt(collection:ListCollection, index:int):void
 		{
-			const otherCollectionLength:int = collection.length;
+			var otherCollectionLength:int = collection.length;
 			var currentIndex:int = index;
 			for(var i:int = 0; i < otherCollectionLength; i++)
 			{

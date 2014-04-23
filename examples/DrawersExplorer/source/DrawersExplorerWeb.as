@@ -47,7 +47,7 @@ package
 			
 			Starling.handleLostContext = true;
 			Starling.multitouchEnabled = true;
-			const MainType:Class = getDefinitionByName("feathers.examples.drawersExplorer.Main") as Class;
+			var MainType:Class = getDefinitionByName("feathers.examples.drawersExplorer.Main") as Class;
 			this._starling = new Starling(MainType, this.stage);
 			this._starling.enableErrorChecking = false;
 			//this._starling.showStats = true;

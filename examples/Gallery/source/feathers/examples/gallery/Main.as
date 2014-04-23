@@ -71,7 +71,7 @@ package feathers.examples.gallery
 
 		protected function list_changeHandler(event:starling.events.Event):void
 		{
-			const item:GalleryItem = GalleryItem(this.list.selectedItem);
+			var item:GalleryItem = GalleryItem(this.list.selectedItem);
 			if(!item)
 			{
 				if(this.selectedImage)
@@ -118,7 +118,7 @@ package feathers.examples.gallery
 
 			this.stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
 
-			const listLayout:HorizontalLayout = new HorizontalLayout();
+			var listLayout:HorizontalLayout = new HorizontalLayout();
 			listLayout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_JUSTIFY;
 			listLayout.hasVariableItemDimensions = true;
 			listLayout.manageVisibility = true;
@@ -146,16 +146,16 @@ package feathers.examples.gallery
 
 		protected function apiLoader_completeListener(event:flash.events.Event):void
 		{
-			const result:XML = XML(this.apiLoader.data);
+			var result:XML = XML(this.apiLoader.data);
 			if(result.attribute("stat") == "fail")
 			{
 				message.text = "Unable to load the list of images from Flickr at this time.";
 				this.layout();
 				return;
 			}
-			const items:Vector.<GalleryItem> = new <GalleryItem>[];
-			const photosList:XMLList = result.photos.photo;
-			const photoCount:int = photosList.length();
+			var items:Vector.<GalleryItem> = new <GalleryItem>[];
+			var photosList:XMLList = result.photos.photo;
+			var photoCount:int = photosList.length();
 			for(var i:int = 0; i < photoCount; i++)
 			{
 				var photoXML:XML = photosList[i];
@@ -183,7 +183,7 @@ package feathers.examples.gallery
 
 		protected function loader_completeHandler(event:flash.events.Event):void
 		{
-			const texture:Texture = Texture.fromBitmap(Bitmap(this.loader.content));
+			var texture:Texture = Texture.fromBitmap(Bitmap(this.loader.content));
 			if(this.selectedImage)
 			{
 				this.selectedImage.texture.dispose();

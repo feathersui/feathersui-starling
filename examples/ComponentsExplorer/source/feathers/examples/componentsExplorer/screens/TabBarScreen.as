@@ -44,7 +44,7 @@ package feathers.examples.componentsExplorer.screens
 
 			this._label = new Label();
 			this._label.text = "selectedIndex: " + this._tabBar.selectedIndex.toString();
-			const labelLayoutData:AnchorLayoutData = new AnchorLayoutData();
+			var labelLayoutData:AnchorLayoutData = new AnchorLayoutData();
 			labelLayoutData.horizontalCenter = 0;
 			labelLayoutData.verticalCenter = 0;
 			this._label.layoutData = labelLayoutData;

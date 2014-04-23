@@ -305,7 +305,7 @@ package feathers.data
 		{
 			rest.unshift(index);
 			rest.unshift(this._data);
-			const item:Object = this._dataDescriptor.removeItemAt.apply(null, rest);
+			var item:Object = this._dataDescriptor.removeItemAt.apply(null, rest);
 			this.dispatchEventWith(Event.CHANGE);
 			rest.shift();
 			this.dispatchEventWith(CollectionEventType.REMOVE_ITEM, false, rest);
@@ -317,12 +317,12 @@ package feathers.data
 		 */
 		public function removeItem(item:Object):void
 		{
-			const location:Vector.<int> = this.getItemLocation(item);
+			var location:Vector.<int> = this.getItemLocation(item);
 			if(location)
 			{
 				//this is hacky. a future version probably won't use rest args.
-				const locationAsArray:Array = [];
-				const indexCount:int = location.length;
+				var locationAsArray:Array = [];
+				var indexCount:int = location.length;
 				for(var i:int = 0; i < indexCount; i++)
 				{
 					locationAsArray.push(location[i]);

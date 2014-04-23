@@ -47,12 +47,12 @@ package feathers.examples.componentsExplorer.screens
 		{
 			this.layout = new AnchorLayout();
 
-			const margin:Number = 20 * this.dpiScale;
+			var margin:Number = 20 * this.dpiScale;
 
 			this._rightButton = new Button();
 			this._rightButton.label = "Right";
 			this._rightButton.addEventListener(Event.TRIGGERED, rightButton_triggeredHandler);
-			const rightButtonLayoutData:AnchorLayoutData = new AnchorLayoutData();
+			var rightButtonLayoutData:AnchorLayoutData = new AnchorLayoutData();
 			rightButtonLayoutData.top = margin;
 			rightButtonLayoutData.left = margin;
 			this._rightButton.layoutData = rightButtonLayoutData;
@@ -61,7 +61,7 @@ package feathers.examples.componentsExplorer.screens
 			this._downButton = new Button();
 			this._downButton.label = "Down";
 			this._downButton.addEventListener(Event.TRIGGERED, downButton_triggeredHandler);
-			const downButtonLayoutData:AnchorLayoutData = new AnchorLayoutData();
+			var downButtonLayoutData:AnchorLayoutData = new AnchorLayoutData();
 			downButtonLayoutData.top = margin;
 			downButtonLayoutData.right = margin;
 			this._downButton.layoutData = downButtonLayoutData;
@@ -70,7 +70,7 @@ package feathers.examples.componentsExplorer.screens
 			this._upButton = new Button();
 			this._upButton.label = "Up";
 			this._upButton.addEventListener(Event.TRIGGERED, upButton_triggeredHandler);
-			const upButtonLayoutData:AnchorLayoutData = new AnchorLayoutData();
+			var upButtonLayoutData:AnchorLayoutData = new AnchorLayoutData();
 			upButtonLayoutData.bottom = margin;
 			upButtonLayoutData.left = margin;
 			this._upButton.layoutData = upButtonLayoutData;
@@ -79,7 +79,7 @@ package feathers.examples.componentsExplorer.screens
 			this._leftButton = new Button();
 			this._leftButton.label = "Left";
 			this._leftButton.addEventListener(Event.TRIGGERED, leftButton_triggeredHandler);
-			const leftButtonLayoutData:AnchorLayoutData = new AnchorLayoutData();
+			var leftButtonLayoutData:AnchorLayoutData = new AnchorLayoutData();
 			leftButtonLayoutData.right = margin;
 			leftButtonLayoutData.bottom = margin;
 			this._leftButton.layoutData = leftButtonLayoutData;
@@ -110,7 +110,7 @@ package feathers.examples.componentsExplorer.screens
 				this._message = new Label();
 				this._message.text = CONTENT_TEXT;
 			}
-			const callout:Callout = Callout.show(DisplayObject(this._message), origin, direction);
+			var callout:Callout = Callout.show(DisplayObject(this._message), origin, direction);
 			//we're reusing the message every time that this screen shows a
 			//callout, so we don't want the message to be disposed. we'll
 			//dispose of it manually later when the screen is disposed.

@@ -31,7 +31,7 @@ package feathers.examples.componentsExplorer.screens
 			this._pageIndicator = new PageIndicator();
 			this._pageIndicator.pageCount = 5;
 			this._pageIndicator.addEventListener(Event.CHANGE, pageIndicator_changeHandler);
-			const pageIndicatorLayoutData:AnchorLayoutData = new AnchorLayoutData();
+			var pageIndicatorLayoutData:AnchorLayoutData = new AnchorLayoutData();
 			pageIndicatorLayoutData.left = 0;
 			pageIndicatorLayoutData.right = 0;
 			pageIndicatorLayoutData.verticalCenter = 0;

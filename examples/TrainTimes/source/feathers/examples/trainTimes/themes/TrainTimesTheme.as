@@ -72,7 +72,7 @@ package feathers.examples.trainTimes.themes
 
 		protected static function textRendererFactory():ITextRenderer
 		{
-			const renderer:TextFieldTextRenderer = new TextFieldTextRenderer();
+			var renderer:TextFieldTextRenderer = new TextFieldTextRenderer();
 			renderer.embedFonts = true;
 			return renderer;
 		}
@@ -84,7 +84,7 @@ package feathers.examples.trainTimes.themes
 
 		protected static function popUpOverlayFactory():DisplayObject
 		{
-			const quad:Quad = new Quad(100, 100, 0x1a1a1a);
+			var quad:Quad = new Quad(100, 100, 0x1a1a1a);
 			quad.alpha = 0.85;
 			return quad;
 		}
@@ -178,7 +178,7 @@ package feathers.examples.trainTimes.themes
 
 		protected function initialize():void
 		{
-			const scaledDPI:int = DeviceCapabilities.dpi / Starling.contentScaleFactor;
+			var scaledDPI:int = DeviceCapabilities.dpi / Starling.contentScaleFactor;
 			this._originalDPI = scaledDPI;
 			if(this._scaleToDPI)
 			{
@@ -201,7 +201,7 @@ package feathers.examples.trainTimes.themes
 			Callout.stagePaddingTop = Callout.stagePaddingRight = Callout.stagePaddingBottom =
 				Callout.stagePaddingLeft = 16 * this.scale;
 
-			const atlasBitmapData:BitmapData = (new ATLAS_IMAGE()).bitmapData;
+			var atlasBitmapData:BitmapData = (new ATLAS_IMAGE()).bitmapData;
 			this.atlas = new TextureAtlas(Texture.fromBitmapData(atlasBitmapData, false), XML(new ATLAS_XML()));
 			if(Starling.handleLostContext)
 			{
@@ -232,9 +232,9 @@ package feathers.examples.trainTimes.themes
 			//defaultTextFormat value causes the new TextFormat to be ignored,
 			//even if the new TextFormat has different bold or italic values.
 			//wtf, right?
-			const regularFontName:String = "SourceSansPro";
-			const boldFontName:String = "SourceSansProBold";
-			const boldItalicFontName:String = "SourceSansProBoldItalic";
+			var regularFontName:String = "SourceSansPro";
+			var boldFontName:String = "SourceSansProBold";
+			var boldItalicFontName:String = "SourceSansProBoldItalic";
 			this.defaultTextFormat = new TextFormat(regularFontName, Math.round(36 * this.scale), PRIMARY_TEXT_COLOR);
 			this.selectedTextFormat = new TextFormat(boldFontName, Math.round(36 * this.scale), PRIMARY_TEXT_COLOR, true);
 			this.headerTitleTextFormat = new TextFormat(regularFontName, Math.round(36 * this.scale), PRIMARY_TEXT_COLOR);
@@ -269,16 +269,16 @@ package feathers.examples.trainTimes.themes
 
 		protected function imageLoaderFactory():ImageLoader
 		{
-			const image:ImageLoader = new ImageLoader();
+			var image:ImageLoader = new ImageLoader();
 			image.textureScale = this.scale;
 			return image;
 		}
 
 		protected function horizontalScrollBarFactory():SimpleScrollBar
 		{
-			const scrollBar:SimpleScrollBar = new SimpleScrollBar();
+			var scrollBar:SimpleScrollBar = new SimpleScrollBar();
 			scrollBar.direction = SimpleScrollBar.DIRECTION_HORIZONTAL;
-			const defaultSkin:Scale3Image = new Scale3Image(this.horizontalScrollBarThumbSkinTextures, this.scale);
+			var defaultSkin:Scale3Image = new Scale3Image(this.horizontalScrollBarThumbSkinTextures, this.scale);
 			defaultSkin.width = 10 * this.scale;
 			scrollBar.thumbProperties.defaultSkin = defaultSkin;
 			scrollBar.paddingRight = scrollBar.paddingBottom = scrollBar.paddingLeft = 4 * this.scale;
@@ -287,9 +287,9 @@ package feathers.examples.trainTimes.themes
 
 		protected function verticalScrollBarFactory():SimpleScrollBar
 		{
-			const scrollBar:SimpleScrollBar = new SimpleScrollBar();
+			var scrollBar:SimpleScrollBar = new SimpleScrollBar();
 			scrollBar.direction = SimpleScrollBar.DIRECTION_VERTICAL;
-			const defaultSkin:Scale3Image = new Scale3Image(this.verticalScrollBarThumbSkinTextures, this.scale);
+			var defaultSkin:Scale3Image = new Scale3Image(this.verticalScrollBarThumbSkinTextures, this.scale);
 			defaultSkin.height = 10 * this.scale;
 			scrollBar.thumbProperties.defaultSkin = defaultSkin;
 			scrollBar.paddingTop = scrollBar.paddingRight = scrollBar.paddingBottom = 4 * this.scale;
@@ -320,7 +320,7 @@ package feathers.examples.trainTimes.themes
 
 		protected function buttonInitializer(button:Button):void
 		{
-			const defaultIcon:ImageLoader = new ImageLoader();
+			var defaultIcon:ImageLoader = new ImageLoader();
 			defaultIcon.source = this.backIconTexture;
 			defaultIcon.textureScale = this.scale;
 			defaultIcon.snapToPixels = true;
@@ -331,7 +331,7 @@ package feathers.examples.trainTimes.themes
 
 		protected function confirmButtonInitializer(button:Button):void
 		{
-			const defaultIcon:ImageLoader = new ImageLoader();
+			var defaultIcon:ImageLoader = new ImageLoader();
 			defaultIcon.source = this.confirmIconTexture;
 			defaultIcon.textureScale = this.scale;
 			defaultIcon.snapToPixels = true;
@@ -342,7 +342,7 @@ package feathers.examples.trainTimes.themes
 
 		protected function cancelButtonInitializer(button:Button):void
 		{
-			const defaultIcon:ImageLoader = new ImageLoader();
+			var defaultIcon:ImageLoader = new ImageLoader();
 			defaultIcon.source = this.cancelIconTexture;
 			defaultIcon.textureScale = this.scale;
 			defaultIcon.snapToPixels = true;
@@ -359,7 +359,7 @@ package feathers.examples.trainTimes.themes
 				header.paddingLeft = 14 * this.scale;
 			header.titleAlign = Header.TITLE_ALIGN_PREFER_RIGHT;
 
-			const backgroundSkin:Scale9Image = new Scale9Image(this.headerBackgroundTextures, this.scale);
+			var backgroundSkin:Scale9Image = new Scale9Image(this.headerBackgroundTextures, this.scale);
 			header.backgroundSkin = backgroundSkin;
 			header.titleProperties.textFormat = this.headerTitleTextFormat;
 		}
@@ -381,10 +381,10 @@ package feathers.examples.trainTimes.themes
 
 		protected function timesListItemRendererInitializer(renderer:DefaultListItemRenderer):void
 		{
-			const defaultSkin:Quad = new Quad(88 * this.scale, 88 * this.scale, 0xff00ff);
+			var defaultSkin:Quad = new Quad(88 * this.scale, 88 * this.scale, 0xff00ff);
 			defaultSkin.alpha = 0;
 			renderer.defaultSkin = defaultSkin;
-			const defaultSelectedSkin:Quad = new Quad(88 * this.scale, 88 * this.scale, 0xcc2a41);
+			var defaultSelectedSkin:Quad = new Quad(88 * this.scale, 88 * this.scale, 0xcc2a41);
 			renderer.defaultSelectedSkin = defaultSelectedSkin;
 			renderer.defaultLabelProperties.textFormat = this.defaultTextFormat;
 			renderer.defaultSelectedLabelProperties.textFormat = this.selectedTextFormat;
@@ -407,10 +407,10 @@ package feathers.examples.trainTimes.themes
 
 		protected function actionContainerInitializer(container:ScrollContainer):void
 		{
-			const backgroundSkin:Quad = new Quad(48 * this.scale, 48 * this.scale, 0xcc2a41);
+			var backgroundSkin:Quad = new Quad(48 * this.scale, 48 * this.scale, 0xcc2a41);
 			container.backgroundSkin = backgroundSkin;
 
-			const layout:HorizontalLayout = new HorizontalLayout();
+			var layout:HorizontalLayout = new HorizontalLayout();
 			layout.paddingRight = 32 * this.scale;
 			layout.gap = 48 * this.scale;
 			layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_CENTER;

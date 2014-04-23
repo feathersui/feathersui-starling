@@ -9,6 +9,7 @@ package feathers.examples.displayObjects
 	import feathers.examples.displayObjects.screens.Scale3ImageScreen;
 	import feathers.examples.displayObjects.screens.Scale9ImageScreen;
 	import feathers.examples.displayObjects.screens.TiledImageScreen;
+	import feathers.examples.displayObjects.themes.DisplayObjectExplorerTheme;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 	import feathers.motion.transitions.TabBarSlideTransitionManager;
@@ -26,23 +27,13 @@ package feathers.examples.displayObjects
 		private static const SCALE_3_IMAGE:String = "scale3Image";
 		private static const TILED_IMAGE:String = "tiledImage";
 
-		[Embed(source="/../assets/images/horizontal-grip.png")]
-		private static const HORIZONTAL_GRIP:Class;
-
-		[Embed(source="/../assets/images/vertical-grip.png")]
-		private static const VERTICAL_GRIP:Class;
-
 		public function Main()
 		{
 		}
 
-		private var _theme:MetalWorksMobileTheme;
 		private var _navigator:ScreenNavigator;
 		private var _tabBar:TabBar;
 		private var _transitionManager:TabBarSlideTransitionManager;
-
-		private var _rightGripTexture:Texture = Texture.fromBitmap(new VERTICAL_GRIP(), false);
-		private var _bottomGripTexture:Texture = Texture.fromBitmap(new HORIZONTAL_GRIP(), false);
 
 		override protected function initialize():void
 		{
@@ -54,9 +45,7 @@ package feathers.examples.displayObjects
 
 			this.stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
 
-			this._theme = new MetalWorksMobileTheme();
-			this._theme.setInitializerForClass(Button, rightGripInitializer, "right-grip");
-			this._theme.setInitializerForClass(Button, bottomGripInitializer, "bottom-grip");
+			new DisplayObjectExplorerTheme();
 
 			this._navigator = new ScreenNavigator();
 			this._navigator.addScreen(SCALE_9_IMAGE, new ScreenNavigatorItem(Scale9ImageScreen));
@@ -95,24 +84,10 @@ package feathers.examples.displayObjects
 			this._transitionManager.duration = 0.4;
 		}
 
-		private function rightGripInitializer(button:Button):void
-		{
-			const rightSkin:Image = new Image(this._rightGripTexture);
-			rightSkin.scaleX = rightSkin.scaleY = DeviceCapabilities.dpi / this._theme.originalDPI;
-			button.defaultSkin = rightSkin;
-		}
-
-		private function bottomGripInitializer(button:Button):void
-		{
-			const bottomSkin:Image = new Image(this._bottomGripTexture);
-			bottomSkin.scaleX = bottomSkin.scaleY = DeviceCapabilities.dpi / this._theme.originalDPI;
-			button.defaultSkin = bottomSkin;
-		}
-
 		private function navigator_changeHandler(event:Event):void
 		{
-			const dataProvider:ListCollection = this._tabBar.dataProvider;
-			const itemCount:int = dataProvider.length;
+			var dataProvider:ListCollection = this._tabBar.dataProvider;
+			var itemCount:int = dataProvider.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var item:Object = dataProvider.getItemAt(i);

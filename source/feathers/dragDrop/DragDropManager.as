@@ -212,8 +212,8 @@ package feathers.dragDrop
 				dropTarget.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_EXIT, _dragData, false, dropTargetLocalX, dropTargetLocalY));
 				dropTarget = null;
 			}
-			const source:IDragSource = _dragSource;
-			const data:DragData = _dragData;
+			var source:IDragSource = _dragSource;
+			var data:DragData = _dragData;
 			cleanup();
 			source.dispatchEvent(new DragDropEvent(DragDropEvent.DRAG_COMPLETE, data, isDropped));
 		}
@@ -294,7 +294,7 @@ package feathers.dragDrop
 		 */
 		protected static function stage_touchHandler(event:TouchEvent):void
 		{
-			const stage:Stage = Starling.current.stage;
+			var stage:Stage = Starling.current.stage;
 			var touch:Touch = event.getTouch(stage, null, _touchPointID);
 			if(!touch)
 			{

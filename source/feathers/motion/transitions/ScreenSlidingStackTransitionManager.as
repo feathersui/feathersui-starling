@@ -206,7 +206,7 @@ package feathers.motion.transitions
 		{
 			if(this._savedOtherTarget)
 			{
-				const newScreen:DisplayObject = DisplayObject(this._activeTransition.target);
+				var newScreen:DisplayObject = DisplayObject(this._activeTransition.target);
 				this._savedOtherTarget.x = newScreen.x - this.navigator.width;
 			}
 		}
@@ -218,7 +218,7 @@ package feathers.motion.transitions
 		{
 			if(this._savedOtherTarget)
 			{
-				const newScreen:DisplayObject = DisplayObject(this._activeTransition.target);
+				var newScreen:DisplayObject = DisplayObject(this._activeTransition.target);
 				this._savedOtherTarget.x = newScreen.x + this.navigator.width;
 			}
 		}

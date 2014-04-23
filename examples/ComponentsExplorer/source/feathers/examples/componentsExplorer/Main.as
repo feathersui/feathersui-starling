@@ -133,7 +133,7 @@ package feathers.examples.componentsExplorer
 				complete: MAIN_MENU
 			}));
 
-			const sliderSettings:SliderSettings = new SliderSettings();
+			var sliderSettings:SliderSettings = new SliderSettings();
 			this._navigator.addScreen(SLIDER, new ScreenNavigatorItem(SliderScreen,
 			{
 				complete: MAIN_MENU,
@@ -156,7 +156,7 @@ package feathers.examples.componentsExplorer
 				complete: MAIN_MENU
 			}));
 
-			const groupedListSettings:GroupedListSettings = new GroupedListSettings();
+			var groupedListSettings:GroupedListSettings = new GroupedListSettings();
 			this._navigator.addScreen(GROUPED_LIST, new ScreenNavigatorItem(GroupedListScreen,
 			{
 				complete: MAIN_MENU,
@@ -174,7 +174,7 @@ package feathers.examples.componentsExplorer
 				settings: groupedListSettings
 			}));
 
-			const itemRendererSettings:ItemRendererSettings = new ItemRendererSettings();
+			var itemRendererSettings:ItemRendererSettings = new ItemRendererSettings();
 			this._navigator.addScreen(ITEM_RENDERER, new ScreenNavigatorItem(ItemRendererScreen,
 			{
 				complete: MAIN_MENU,
@@ -197,7 +197,7 @@ package feathers.examples.componentsExplorer
 				complete: MAIN_MENU
 			}));
 
-			const listSettings:ListSettings = new ListSettings();
+			var listSettings:ListSettings = new ListSettings();
 			this._navigator.addScreen(LIST, new ScreenNavigatorItem(ListScreen,
 			{
 				complete: MAIN_MENU,
@@ -215,7 +215,7 @@ package feathers.examples.componentsExplorer
 				settings: listSettings
 			}));
 
-			const numericStepperSettings:NumericStepperSettings = new NumericStepperSettings();
+			var numericStepperSettings:NumericStepperSettings = new NumericStepperSettings();
 			this._navigator.addScreen(NUMERIC_STEPPER, new ScreenNavigatorItem(NumericStepperScreen,
 			{
 				complete: MAIN_MENU,
@@ -284,7 +284,7 @@ package feathers.examples.componentsExplorer
 
 		private function mainMenuEventHandler(event:Event):void
 		{
-			const screenName:String = MAIN_MENU_EVENTS[event.type];
+			var screenName:String = MAIN_MENU_EVENTS[event.type];
 			//because we're controlling the navigation externally, it doesn't
 			//make sense to transition or keep a history
 			this._transitionManager.clearStack();

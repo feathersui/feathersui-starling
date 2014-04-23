@@ -118,7 +118,7 @@ package feathers.examples.componentsExplorer.screens
 
 		private function list_changeHandler(event:Event):void
 		{
-			const selectedIndices:Vector.<int> = this._list.selectedIndices;
+			var selectedIndices:Vector.<int> = this._list.selectedIndices;
 			trace("List onChange:", selectedIndices.length > 0 ? selectedIndices : this._list.selectedIndex);
 		}
 	}

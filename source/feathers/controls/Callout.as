@@ -330,7 +330,7 @@ package feathers.controls
 			{
 				factory = calloutFactory != null ? calloutFactory : defaultCalloutFactory;
 			}
-			const callout:Callout = Callout(factory());
+			var callout:Callout = Callout(factory());
 			callout.content = content;
 			callout.supportedDirections = supportedDirections;
 			callout.origin = origin;
@@ -351,7 +351,7 @@ package feathers.controls
 		 */
 		public static function defaultCalloutFactory():Callout
 		{
-			const callout:Callout = new Callout();
+			var callout:Callout = new Callout();
 			callout.closeOnTouchBeganOutside = true;
 			callout.closeOnTouchEndedOutside = true;
 			callout.closeOnKeys = new <uint>[Keyboard.BACK, Keyboard.ESCAPE];
@@ -365,7 +365,7 @@ package feathers.controls
 		{
 			if(DIRECTION_TO_FUNCTION.hasOwnProperty(direction))
 			{
-				const calloutPositionFunction:Function = DIRECTION_TO_FUNCTION[direction];
+				var calloutPositionFunction:Function = DIRECTION_TO_FUNCTION[direction];
 				calloutPositionFunction(callout, globalOrigin);
 			}
 			else
@@ -380,7 +380,7 @@ package feathers.controls
 		protected static function positionBestSideOfOrigin(callout:Callout, globalOrigin:Rectangle):void
 		{
 			callout.measureWithArrowPosition(ARROW_POSITION_TOP, HELPER_POINT);
-			const downSpace:Number = (Starling.current.stage.stageHeight - HELPER_POINT.y) - (globalOrigin.y + globalOrigin.height);
+			var downSpace:Number = (Starling.current.stage.stageHeight - HELPER_POINT.y) - (globalOrigin.y + globalOrigin.height);
 			if(downSpace >= stagePaddingBottom)
 			{
 				positionBelowOrigin(callout, globalOrigin);
@@ -388,7 +388,7 @@ package feathers.controls
 			}
 
 			callout.measureWithArrowPosition(ARROW_POSITION_BOTTOM, HELPER_POINT);
-			const upSpace:Number = globalOrigin.y - HELPER_POINT.y;
+			var upSpace:Number = globalOrigin.y - HELPER_POINT.y;
 			if(upSpace >= stagePaddingTop)
 			{
 				positionAboveOrigin(callout, globalOrigin);
@@ -396,7 +396,7 @@ package feathers.controls
 			}
 
 			callout.measureWithArrowPosition(ARROW_POSITION_LEFT, HELPER_POINT);
-			const rightSpace:Number = (Starling.current.stage.stageWidth - HELPER_POINT.x) - (globalOrigin.x + globalOrigin.width);
+			var rightSpace:Number = (Starling.current.stage.stageWidth - HELPER_POINT.x) - (globalOrigin.x + globalOrigin.width);
 			if(rightSpace >= stagePaddingRight)
 			{
 				positionToRightOfOrigin(callout, globalOrigin);
@@ -404,7 +404,7 @@ package feathers.controls
 			}
 
 			callout.measureWithArrowPosition(ARROW_POSITION_RIGHT, HELPER_POINT);
-			const leftSpace:Number = globalOrigin.x - HELPER_POINT.x;
+			var leftSpace:Number = globalOrigin.x - HELPER_POINT.x;
 			if(leftSpace >= stagePaddingLeft)
 			{
 				positionToLeftOfOrigin(callout, globalOrigin);
@@ -436,7 +436,7 @@ package feathers.controls
 		protected static function positionAboveOrBelowOrigin(callout:Callout, globalOrigin:Rectangle):void
 		{
 			callout.measureWithArrowPosition(ARROW_POSITION_TOP, HELPER_POINT);
-			const downSpace:Number = (Starling.current.stage.stageHeight - HELPER_POINT.y) - (globalOrigin.y + globalOrigin.height);
+			var downSpace:Number = (Starling.current.stage.stageHeight - HELPER_POINT.y) - (globalOrigin.y + globalOrigin.height);
 			if(downSpace >= stagePaddingBottom)
 			{
 				positionBelowOrigin(callout, globalOrigin);
@@ -444,7 +444,7 @@ package feathers.controls
 			}
 
 			callout.measureWithArrowPosition(ARROW_POSITION_BOTTOM, HELPER_POINT);
-			const upSpace:Number = globalOrigin.y - HELPER_POINT.y;
+			var upSpace:Number = globalOrigin.y - HELPER_POINT.y;
 			if(upSpace >= stagePaddingTop)
 			{
 				positionAboveOrigin(callout, globalOrigin);
@@ -468,7 +468,7 @@ package feathers.controls
 		protected static function positionToLeftOrRightOfOrigin(callout:Callout, globalOrigin:Rectangle):void
 		{
 			callout.measureWithArrowPosition(ARROW_POSITION_LEFT, HELPER_POINT);
-			const rightSpace:Number = (Starling.current.stage.stageWidth - HELPER_POINT.x) - (globalOrigin.x + globalOrigin.width);
+			var rightSpace:Number = (Starling.current.stage.stageWidth - HELPER_POINT.x) - (globalOrigin.x + globalOrigin.width);
 			if(rightSpace >= stagePaddingRight)
 			{
 				positionToRightOfOrigin(callout, globalOrigin);
@@ -476,7 +476,7 @@ package feathers.controls
 			}
 
 			callout.measureWithArrowPosition(ARROW_POSITION_RIGHT, HELPER_POINT);
-			const leftSpace:Number = globalOrigin.x - HELPER_POINT.x;
+			var leftSpace:Number = globalOrigin.x - HELPER_POINT.x;
 			if(leftSpace >= stagePaddingLeft)
 			{
 				positionToLeftOfOrigin(callout, globalOrigin);
@@ -500,8 +500,8 @@ package feathers.controls
 		protected static function positionBelowOrigin(callout:Callout, globalOrigin:Rectangle):void
 		{
 			callout.measureWithArrowPosition(ARROW_POSITION_TOP, HELPER_POINT);
-			const idealXPosition:Number = globalOrigin.x + (globalOrigin.width - HELPER_POINT.x) / 2;
-			const xPosition:Number = Math.max(stagePaddingLeft, Math.min(Starling.current.stage.stageWidth - HELPER_POINT.x - stagePaddingRight, idealXPosition));
+			var idealXPosition:Number = globalOrigin.x + (globalOrigin.width - HELPER_POINT.x) / 2;
+			var xPosition:Number = Math.max(stagePaddingLeft, Math.min(Starling.current.stage.stageWidth - HELPER_POINT.x - stagePaddingRight, idealXPosition));
 			callout.x = xPosition;
 			callout.y = globalOrigin.y + globalOrigin.height;
 			if(callout._isValidating)
@@ -523,8 +523,8 @@ package feathers.controls
 		protected static function positionAboveOrigin(callout:Callout, globalOrigin:Rectangle):void
 		{
 			callout.measureWithArrowPosition(ARROW_POSITION_BOTTOM, HELPER_POINT);
-			const idealXPosition:Number = globalOrigin.x + (globalOrigin.width - HELPER_POINT.x) / 2;
-			const xPosition:Number = Math.max(stagePaddingLeft, Math.min(Starling.current.stage.stageWidth - HELPER_POINT.x - stagePaddingRight, idealXPosition));
+			var idealXPosition:Number = globalOrigin.x + (globalOrigin.width - HELPER_POINT.x) / 2;
+			var xPosition:Number = Math.max(stagePaddingLeft, Math.min(Starling.current.stage.stageWidth - HELPER_POINT.x - stagePaddingRight, idealXPosition));
 			callout.x = xPosition;
 			callout.y = globalOrigin.y - HELPER_POINT.y;
 			if(callout._isValidating)
@@ -547,8 +547,8 @@ package feathers.controls
 		{
 			callout.measureWithArrowPosition(ARROW_POSITION_LEFT, HELPER_POINT);
 			callout.x = globalOrigin.x + globalOrigin.width;
-			const idealYPosition:Number = globalOrigin.y + (globalOrigin.height - HELPER_POINT.y) / 2;
-			const yPosition:Number = Math.max(stagePaddingTop, Math.min(Starling.current.stage.stageHeight - HELPER_POINT.y - stagePaddingBottom, idealYPosition));
+			var idealYPosition:Number = globalOrigin.y + (globalOrigin.height - HELPER_POINT.y) / 2;
+			var yPosition:Number = Math.max(stagePaddingTop, Math.min(Starling.current.stage.stageHeight - HELPER_POINT.y - stagePaddingBottom, idealYPosition));
 			callout.y = yPosition;
 			if(callout._isValidating)
 			{
@@ -570,8 +570,8 @@ package feathers.controls
 		{
 			callout.measureWithArrowPosition(ARROW_POSITION_RIGHT, HELPER_POINT);
 			callout.x = globalOrigin.x - HELPER_POINT.x;
-			const idealYPosition:Number = globalOrigin.y + (globalOrigin.height - HELPER_POINT.y) / 2;
-			const yPosition:Number = Math.max(stagePaddingLeft, Math.min(Starling.current.stage.stageHeight - HELPER_POINT.y - stagePaddingBottom, idealYPosition));
+			var idealYPosition:Number = globalOrigin.y + (globalOrigin.height - HELPER_POINT.y) / 2;
+			var yPosition:Number = Math.max(stagePaddingLeft, Math.min(Starling.current.stage.stageHeight - HELPER_POINT.y - stagePaddingBottom, idealYPosition));
 			callout.y = yPosition;
 			if(callout._isValidating)
 			{
@@ -1183,7 +1183,7 @@ package feathers.controls
 			if(this._bottomArrowSkin)
 			{
 				this._bottomArrowSkin.visible = false;
-				const index:int = this.getChildIndex(this._content);
+				var index:int = this.getChildIndex(this._content);
 				if(index < 0)
 				{
 					this.addChild(this._bottomArrowSkin);
@@ -1237,7 +1237,7 @@ package feathers.controls
 			if(this._topArrowSkin)
 			{
 				this._topArrowSkin.visible = false;
-				const index:int = this.getChildIndex(this._content);
+				var index:int = this.getChildIndex(this._content);
 				if(index < 0)
 				{
 					this.addChild(this._topArrowSkin);
@@ -1291,7 +1291,7 @@ package feathers.controls
 			if(this._leftArrowSkin)
 			{
 				this._leftArrowSkin.visible = false;
-				const index:int = this.getChildIndex(this._content);
+				var index:int = this.getChildIndex(this._content);
 				if(index < 0)
 				{
 					this.addChild(this._leftArrowSkin);
@@ -1345,7 +1345,7 @@ package feathers.controls
 			if(this._rightArrowSkin)
 			{
 				this._rightArrowSkin.visible = false;
-				const index:int = this.getChildIndex(this._content);
+				var index:int = this.getChildIndex(this._content);
 				if(index < 0)
 				{
 					this.addChild(this._rightArrowSkin);
@@ -1571,7 +1571,7 @@ package feathers.controls
 		override public function dispose():void
 		{
 			this.origin = null;
-			const savedContent:DisplayObject = this._content;
+			var savedContent:DisplayObject = this._content;
 			this.content = null;
 			//remove the content safely if it should not be disposed
 			if(savedContent && this.disposeContent)
@@ -1682,8 +1682,8 @@ package feathers.controls
 			{
 				result = new Point();
 			}
-			const needsWidth:Boolean = isNaN(this.explicitWidth);
-			const needsHeight:Boolean = isNaN(this.explicitHeight);
+			var needsWidth:Boolean = isNaN(this.explicitWidth);
+			var needsHeight:Boolean = isNaN(this.explicitHeight);
 			if(!needsWidth && !needsHeight)
 			{
 				result.x = this.explicitWidth;
@@ -1943,7 +1943,7 @@ package feathers.controls
 		 */
 		protected function stage_touchHandler(event:TouchEvent):void
 		{
-			const target:DisplayObject = DisplayObject(event.target);
+			var target:DisplayObject = DisplayObject(event.target);
 			if(!this._isReadyToClose ||
 				(!this.closeOnTouchEndedOutside && !this.closeOnTouchBeganOutside) || this.contains(target) ||
 				(PopUpManager.isPopUp(this) && !PopUpManager.isTopLevelPopUp(this)))

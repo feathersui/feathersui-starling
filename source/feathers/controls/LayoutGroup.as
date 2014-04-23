@@ -182,7 +182,7 @@ package feathers.controls
 			}
 			if(this._mxmlContent && this._mxmlContentIsReady)
 			{
-				const childCount:int = this._mxmlContent.length;
+				var childCount:int = this._mxmlContent.length;
 				for(var i:int = 0; i < childCount; i++)
 				{
 					var child:DisplayObject = DisplayObject(this._mxmlContent[i]);
@@ -278,7 +278,7 @@ package feathers.controls
 		 */
 		override public function removeChildAt(index:int, dispose:Boolean = false):DisplayObject
 		{
-			const child:DisplayObject = super.removeChildAt(index, dispose);
+			var child:DisplayObject = super.removeChildAt(index, dispose);
 			if(child is IFeathersControl)
 			{
 				child.removeEventListener(FeathersEventType.RESIZE, child_resizeHandler);
@@ -432,7 +432,7 @@ package feathers.controls
 			var maxX:Number = isNaN(this.viewPortBounds.explicitWidth) ? 0 : this.viewPortBounds.explicitWidth;
 			var maxY:Number = isNaN(this.viewPortBounds.explicitHeight) ? 0 : this.viewPortBounds.explicitHeight;
 			this._ignoreChildChanges = true;
-			const itemCount:int = this.items.length;
+			var itemCount:int = this.items.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var item:DisplayObject = this.items[i];
@@ -460,7 +460,7 @@ package feathers.controls
 		 */
 		protected function validateChildren():void
 		{
-			const itemCount:int = this.items.length;
+			var itemCount:int = this.items.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var item:DisplayObject = this.items[i];
@@ -480,7 +480,7 @@ package feathers.controls
 			{
 				return;
 			}
-			const childCount:int = this._mxmlContent.length;
+			var childCount:int = this._mxmlContent.length;
 			for(var i:int = 0; i < childCount; i++)
 			{
 				var child:DisplayObject = DisplayObject(this._mxmlContent[i]);
@@ -501,7 +501,7 @@ package feathers.controls
 					this.clipRect = new Rectangle();
 				}
 
-				const clipRect:Rectangle = this.clipRect;
+				var clipRect:Rectangle = this.clipRect;
 				clipRect.x = 0;
 				clipRect.y = 0;
 				clipRect.width = this.actualWidth;

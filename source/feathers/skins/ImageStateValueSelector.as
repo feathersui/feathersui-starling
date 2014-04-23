@@ -68,7 +68,7 @@ package feathers.skins
 		 */
 		override public function updateValue(target:Object, state:Object, oldValue:Object = null):Object
 		{
-			const texture:Texture = super.updateValue(target, state) as Texture;
+			var texture:Texture = super.updateValue(target, state) as Texture;
 			if(!texture)
 			{
 				return null;

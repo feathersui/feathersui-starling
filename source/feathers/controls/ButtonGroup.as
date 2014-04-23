@@ -1252,7 +1252,7 @@ package feathers.controls
 			}
 			if(!(value is PropertyProxy))
 			{
-				const newValue:PropertyProxy = new PropertyProxy();
+				var newValue:PropertyProxy = new PropertyProxy();
 				for(var propertyName:String in value)
 				{
 					newValue[propertyName] = value[propertyName];
@@ -1285,10 +1285,10 @@ package feathers.controls
 		 */
 		override protected function draw():void
 		{
-			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
-			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
-			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
-			const buttonFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_BUTTON_FACTORY);
+			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
+			var buttonFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_BUTTON_FACTORY);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 
 			if(dataInvalid || stateInvalid || buttonFactoryInvalid)
@@ -1319,7 +1319,7 @@ package feathers.controls
 		 */
 		protected function commitEnabled():void
 		{
-			const buttonCount:int = this.activeButtons.length;
+			var buttonCount:int = this.activeButtons.length;
 			for(var i:int = 0; i < buttonCount; i++)
 			{
 				var button:Button = this.activeButtons[i];
@@ -1486,8 +1486,8 @@ package feathers.controls
 			this.activeLastButton = null;
 
 			var pushIndex:int = 0;
-			const itemCount:int = this._dataProvider ? this._dataProvider.length : 0;
-			const lastItemIndex:int = itemCount - 1;
+			var itemCount:int = this._dataProvider ? this._dataProvider.length : 0;
+			var lastItemIndex:int = itemCount - 1;
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var item:Object = this._dataProvider.getItemAt(i);
@@ -1515,7 +1515,7 @@ package feathers.controls
 		 */
 		protected function clearInactiveButtons():void
 		{
-			const itemCount:int = this.inactiveButtons.length;
+			var itemCount:int = this.inactiveButtons.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var button:Button = this.inactiveButtons.shift();

@@ -96,20 +96,20 @@ package feathers.layout
 		 */
 		public function layout(items:Vector.<DisplayObject>, viewPortBounds:ViewPortBounds = null, result:LayoutBoundsResult = null):LayoutBoundsResult
 		{
-			const boundsX:Number = viewPortBounds ? viewPortBounds.x : 0;
-			const boundsY:Number = viewPortBounds ? viewPortBounds.y : 0;
-			const minWidth:Number = viewPortBounds ? viewPortBounds.minWidth : 0;
-			const minHeight:Number = viewPortBounds ? viewPortBounds.minHeight : 0;
-			const maxWidth:Number = viewPortBounds ? viewPortBounds.maxWidth : Number.POSITIVE_INFINITY;
-			const maxHeight:Number = viewPortBounds ? viewPortBounds.maxHeight : Number.POSITIVE_INFINITY;
-			const explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
-			const explicitHeight:Number = viewPortBounds ? viewPortBounds.explicitHeight : NaN;
+			var boundsX:Number = viewPortBounds ? viewPortBounds.x : 0;
+			var boundsY:Number = viewPortBounds ? viewPortBounds.y : 0;
+			var minWidth:Number = viewPortBounds ? viewPortBounds.minWidth : 0;
+			var minHeight:Number = viewPortBounds ? viewPortBounds.minHeight : 0;
+			var maxWidth:Number = viewPortBounds ? viewPortBounds.maxWidth : Number.POSITIVE_INFINITY;
+			var maxHeight:Number = viewPortBounds ? viewPortBounds.maxHeight : Number.POSITIVE_INFINITY;
+			var explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
+			var explicitHeight:Number = viewPortBounds ? viewPortBounds.explicitHeight : NaN;
 
 			var viewPortWidth:Number = explicitWidth;
 			var viewPortHeight:Number = explicitHeight;
 
-			const needsWidth:Boolean = isNaN(explicitWidth);
-			const needsHeight:Boolean = isNaN(explicitHeight);
+			var needsWidth:Boolean = isNaN(explicitWidth);
+			var needsHeight:Boolean = isNaN(explicitHeight);
 			if(needsWidth || needsHeight)
 			{
 				this.validateItems(items, true);
@@ -318,15 +318,15 @@ package feathers.layout
 		{
 			if(item is ILayoutDisplayObject)
 			{
-				const layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(item);
-				const layoutData:AnchorLayoutData = layoutItem.layoutData as AnchorLayoutData;
+				var layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(item);
+				var layoutData:AnchorLayoutData = layoutItem.layoutData as AnchorLayoutData;
 				if(layoutData)
 				{
 					var top:Number = layoutData.top;
-					const hasTopPosition:Boolean = !isNaN(top);
+					var hasTopPosition:Boolean = !isNaN(top);
 					if(hasTopPosition)
 					{
-						const topAnchorDisplayObject:DisplayObject = layoutData.topAnchorDisplayObject;
+						var topAnchorDisplayObject:DisplayObject = layoutData.topAnchorDisplayObject;
 						if(topAnchorDisplayObject)
 						{
 							top += topAnchorDisplayObject.height + this.getTopOffset(topAnchorDisplayObject);
@@ -340,24 +340,24 @@ package feathers.layout
 					{
 						top = 0;
 					}
-					const bottom:Number = layoutData.bottom;
-					const hasBottomPosition:Boolean = !isNaN(bottom);
+					var bottom:Number = layoutData.bottom;
+					var hasBottomPosition:Boolean = !isNaN(bottom);
 					if(hasBottomPosition)
 					{
-						const bottomAnchorDisplayObject:DisplayObject = layoutData.bottomAnchorDisplayObject;
+						var bottomAnchorDisplayObject:DisplayObject = layoutData.bottomAnchorDisplayObject;
 						if(bottomAnchorDisplayObject)
 						{
 							top = Math.max(top, -bottomAnchorDisplayObject.height - bottom + this.getTopOffset(bottomAnchorDisplayObject));
 						}
 					}
-					const verticalCenter:Number = layoutData.verticalCenter;
-					const hasVerticalCenterPosition:Boolean = !isNaN(verticalCenter);
+					var verticalCenter:Number = layoutData.verticalCenter;
+					var hasVerticalCenterPosition:Boolean = !isNaN(verticalCenter);
 					if(hasVerticalCenterPosition)
 					{
-						const verticalCenterAnchorDisplayObject:DisplayObject = layoutData.verticalCenterAnchorDisplayObject;
+						var verticalCenterAnchorDisplayObject:DisplayObject = layoutData.verticalCenterAnchorDisplayObject;
 						if(verticalCenterAnchorDisplayObject)
 						{
-							const verticalOffset:Number = verticalCenter - (item.height - verticalCenterAnchorDisplayObject.height) / 2;
+							var verticalOffset:Number = verticalCenter - (item.height - verticalCenterAnchorDisplayObject.height) / 2;
 							top = Math.max(top, verticalOffset + this.getTopOffset(verticalCenterAnchorDisplayObject));
 						}
 						else if(verticalCenter > 0)
@@ -378,15 +378,15 @@ package feathers.layout
 		{
 			if(item is ILayoutDisplayObject)
 			{
-				const layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(item);
-				const layoutData:AnchorLayoutData = layoutItem.layoutData as AnchorLayoutData;
+				var layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(item);
+				var layoutData:AnchorLayoutData = layoutItem.layoutData as AnchorLayoutData;
 				if(layoutData)
 				{
 					var right:Number = layoutData.right;
-					const hasRightPosition:Boolean = !isNaN(right);
+					var hasRightPosition:Boolean = !isNaN(right);
 					if(hasRightPosition)
 					{
-						const rightAnchorDisplayObject:DisplayObject = layoutData.rightAnchorDisplayObject;
+						var rightAnchorDisplayObject:DisplayObject = layoutData.rightAnchorDisplayObject;
 						if(rightAnchorDisplayObject)
 						{
 							right += rightAnchorDisplayObject.width + this.getRightOffset(rightAnchorDisplayObject);
@@ -400,24 +400,24 @@ package feathers.layout
 					{
 						right = 0;
 					}
-					const left:Number = layoutData.left;
-					const hasLeftPosition:Boolean = !isNaN(left);
+					var left:Number = layoutData.left;
+					var hasLeftPosition:Boolean = !isNaN(left);
 					if(hasLeftPosition)
 					{
-						const leftAnchorDisplayObject:DisplayObject = layoutData.leftAnchorDisplayObject;
+						var leftAnchorDisplayObject:DisplayObject = layoutData.leftAnchorDisplayObject;
 						if(leftAnchorDisplayObject)
 						{
 							right = Math.max(right, -leftAnchorDisplayObject.width - left + this.getRightOffset(leftAnchorDisplayObject));
 						}
 					}
-					const horizontalCenter:Number = layoutData.horizontalCenter;
-					const hasHorizontalCenterPosition:Boolean = !isNaN(horizontalCenter);
+					var horizontalCenter:Number = layoutData.horizontalCenter;
+					var hasHorizontalCenterPosition:Boolean = !isNaN(horizontalCenter);
 					if(hasHorizontalCenterPosition)
 					{
-						const horizontalCenterAnchorDisplayObject:DisplayObject = layoutData.horizontalCenterAnchorDisplayObject;
+						var horizontalCenterAnchorDisplayObject:DisplayObject = layoutData.horizontalCenterAnchorDisplayObject;
 						if(horizontalCenterAnchorDisplayObject)
 						{
-							const horizontalOffset:Number = -horizontalCenter - (item.width - horizontalCenterAnchorDisplayObject.width) / 2;
+							var horizontalOffset:Number = -horizontalCenter - (item.width - horizontalCenterAnchorDisplayObject.width) / 2;
 							right = Math.max(right, horizontalOffset + this.getRightOffset(horizontalCenterAnchorDisplayObject));
 						}
 						else if(horizontalCenter < 0)
@@ -438,15 +438,15 @@ package feathers.layout
 		{
 			if(item is ILayoutDisplayObject)
 			{
-				const layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(item);
-				const layoutData:AnchorLayoutData = layoutItem.layoutData as AnchorLayoutData;
+				var layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(item);
+				var layoutData:AnchorLayoutData = layoutItem.layoutData as AnchorLayoutData;
 				if(layoutData)
 				{
 					var bottom:Number = layoutData.bottom;
-					const hasBottomPosition:Boolean = !isNaN(bottom);
+					var hasBottomPosition:Boolean = !isNaN(bottom);
 					if(hasBottomPosition)
 					{
-						const bottomAnchorDisplayObject:DisplayObject = layoutData.bottomAnchorDisplayObject;
+						var bottomAnchorDisplayObject:DisplayObject = layoutData.bottomAnchorDisplayObject;
 						if(bottomAnchorDisplayObject)
 						{
 							bottom += bottomAnchorDisplayObject.height + this.getBottomOffset(bottomAnchorDisplayObject);
@@ -460,24 +460,24 @@ package feathers.layout
 					{
 						bottom = 0;
 					}
-					const top:Number = layoutData.top;
-					const hasTopPosition:Boolean = !isNaN(top);
+					var top:Number = layoutData.top;
+					var hasTopPosition:Boolean = !isNaN(top);
 					if(hasTopPosition)
 					{
-						const topAnchorDisplayObject:DisplayObject = layoutData.topAnchorDisplayObject;
+						var topAnchorDisplayObject:DisplayObject = layoutData.topAnchorDisplayObject;
 						if(topAnchorDisplayObject)
 						{
 							bottom = Math.max(bottom, -topAnchorDisplayObject.height - top + this.getBottomOffset(topAnchorDisplayObject));
 						}
 					}
-					const verticalCenter:Number = layoutData.verticalCenter;
-					const hasVerticalCenterPosition:Boolean = !isNaN(verticalCenter);
+					var verticalCenter:Number = layoutData.verticalCenter;
+					var hasVerticalCenterPosition:Boolean = !isNaN(verticalCenter);
 					if(hasVerticalCenterPosition)
 					{
-						const verticalCenterAnchorDisplayObject:DisplayObject = layoutData.verticalCenterAnchorDisplayObject;
+						var verticalCenterAnchorDisplayObject:DisplayObject = layoutData.verticalCenterAnchorDisplayObject;
 						if(verticalCenterAnchorDisplayObject)
 						{
-							const verticalOffset:Number = -verticalCenter - (item.height - verticalCenterAnchorDisplayObject.height) / 2;
+							var verticalOffset:Number = -verticalCenter - (item.height - verticalCenterAnchorDisplayObject.height) / 2;
 							bottom = Math.max(bottom, verticalOffset + this.getBottomOffset(verticalCenterAnchorDisplayObject));
 						}
 						else if(verticalCenter < 0)
@@ -498,15 +498,15 @@ package feathers.layout
 		{
 			if(item is ILayoutDisplayObject)
 			{
-				const layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(item);
-				const layoutData:AnchorLayoutData = layoutItem.layoutData as AnchorLayoutData;
+				var layoutItem:ILayoutDisplayObject = ILayoutDisplayObject(item);
+				var layoutData:AnchorLayoutData = layoutItem.layoutData as AnchorLayoutData;
 				if(layoutData)
 				{
 					var left:Number = layoutData.left;
-					const hasLeftPosition:Boolean = !isNaN(left);
+					var hasLeftPosition:Boolean = !isNaN(left);
 					if(hasLeftPosition)
 					{
-						const leftAnchorDisplayObject:DisplayObject = layoutData.leftAnchorDisplayObject;
+						var leftAnchorDisplayObject:DisplayObject = layoutData.leftAnchorDisplayObject;
 						if(leftAnchorDisplayObject)
 						{
 							left += leftAnchorDisplayObject.width + this.getLeftOffset(leftAnchorDisplayObject);
@@ -520,24 +520,24 @@ package feathers.layout
 					{
 						left = 0;
 					}
-					const right:Number = layoutData.right;
-					const hasRightPosition:Boolean = !isNaN(right);
+					var right:Number = layoutData.right;
+					var hasRightPosition:Boolean = !isNaN(right);
 					if(hasRightPosition)
 					{
-						const rightAnchorDisplayObject:DisplayObject = layoutData.rightAnchorDisplayObject;
+						var rightAnchorDisplayObject:DisplayObject = layoutData.rightAnchorDisplayObject;
 						if(rightAnchorDisplayObject)
 						{
 							left = Math.max(left, -rightAnchorDisplayObject.width - right + this.getLeftOffset(rightAnchorDisplayObject));
 						}
 					}
-					const horizontalCenter:Number = layoutData.horizontalCenter;
-					const hasHorizontalCenterPosition:Boolean = !isNaN(horizontalCenter);
+					var horizontalCenter:Number = layoutData.horizontalCenter;
+					var hasHorizontalCenterPosition:Boolean = !isNaN(horizontalCenter);
 					if(hasHorizontalCenterPosition)
 					{
-						const horizontalCenterAnchorDisplayObject:DisplayObject = layoutData.horizontalCenterAnchorDisplayObject;
+						var horizontalCenterAnchorDisplayObject:DisplayObject = layoutData.horizontalCenterAnchorDisplayObject;
 						if(horizontalCenterAnchorDisplayObject)
 						{
-							const horizontalOffset:Number = horizontalCenter - (item.width - horizontalCenterAnchorDisplayObject.width) / 2;
+							var horizontalOffset:Number = horizontalCenter - (item.width - horizontalCenterAnchorDisplayObject.width) / 2;
 							left = Math.max(left, horizontalOffset + this.getLeftOffset(horizontalCenterAnchorDisplayObject));
 						}
 						else if(horizontalCenter > 0)
@@ -917,7 +917,7 @@ package feathers.layout
 		{
 			var maxX:Number = viewPortWidth;
 			var maxY:Number = viewPortHeight;
-			const itemCount:int = items.length;
+			var itemCount:int = items.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var item:DisplayObject = items[i];
@@ -971,7 +971,7 @@ package feathers.layout
 		 */
 		protected function isReferenced(item:DisplayObject, items:Vector.<DisplayObject>):Boolean
 		{
-			const itemCount:int = items.length;
+			var itemCount:int = items.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var otherItem:ILayoutDisplayObject = items[i] as ILayoutDisplayObject;
@@ -999,7 +999,7 @@ package feathers.layout
 		 */
 		protected function validateItems(items:Vector.<DisplayObject>, force:Boolean):void
 		{
-			const itemCount:int = items.length;
+			var itemCount:int = items.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var control:IFeathersControl = items[i] as IFeathersControl;

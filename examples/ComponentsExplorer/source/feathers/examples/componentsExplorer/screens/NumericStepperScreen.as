@@ -45,7 +45,7 @@ package feathers.examples.componentsExplorer.screens
 			this._stepper.value = 50;
 			this._stepper.step = this.settings.step;
 			this._stepper.addEventListener(Event.CHANGE, slider_changeHandler);
-			const stepperLayoutData:AnchorLayoutData = new AnchorLayoutData();
+			var stepperLayoutData:AnchorLayoutData = new AnchorLayoutData();
 			stepperLayoutData.horizontalCenter = 0;
 			stepperLayoutData.verticalCenter = 0;
 			this._stepper.layoutData = stepperLayoutData;

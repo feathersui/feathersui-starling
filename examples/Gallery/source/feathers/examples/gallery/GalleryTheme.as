@@ -18,7 +18,7 @@ package feathers.examples.gallery
 		override protected function initializeStyleProviders():void
 		{
 			super.initializeStyleProviders();
-			this._listStyleProvider.setFunctionForStyleName(Main.THUMBNAIL_LIST_NAME, this.setThumbnailListStyles);
+			this.getStyleProviderForClass(List).setFunctionForStyleName(Main.THUMBNAIL_LIST_NAME, this.setThumbnailListStyles);
 		}
 
 		protected function setThumbnailListStyles(list:List):void

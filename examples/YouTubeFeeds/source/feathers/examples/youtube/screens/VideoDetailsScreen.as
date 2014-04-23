@@ -76,7 +76,7 @@ package feathers.examples.youtube.screens
 
 		override protected function draw():void
 		{
-			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			if(dataInvalid)
 			{
 				if(this._model && this._model.selectedVideo)

@@ -44,7 +44,7 @@ package
 			this._starling.stage.stageWidth = this.stage.stageWidth;
 			this._starling.stage.stageHeight = this.stage.stageHeight;
 
-			const viewPort:Rectangle = this._starling.viewPort;
+			var viewPort:Rectangle = this._starling.viewPort;
 			viewPort.width = this.stage.stageWidth;
 			viewPort.height = this.stage.stageHeight;
 			try

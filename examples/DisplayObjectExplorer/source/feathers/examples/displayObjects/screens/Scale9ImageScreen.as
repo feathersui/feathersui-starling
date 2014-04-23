@@ -4,6 +4,7 @@ package feathers.examples.displayObjects.screens
 	import feathers.controls.Header;
 	import feathers.controls.Screen;
 	import feathers.display.Scale9Image;
+	import feathers.examples.displayObjects.themes.DisplayObjectExplorerTheme;
 	import feathers.textures.Scale9Textures;
 
 	import flash.geom.Rectangle;
@@ -44,20 +45,20 @@ package feathers.examples.displayObjects.screens
 			this._header.title = "Scale 9 Image";
 			this.addChild(this._header);
 
-			const texture:Texture = Texture.fromBitmap(new SCALE_9_TEXTURE(), false);
-			const textures:Scale9Textures = new Scale9Textures(texture, new Rectangle(20, 20, 20, 20));
+			var texture:Texture = Texture.fromBitmap(new SCALE_9_TEXTURE(), false);
+			var textures:Scale9Textures = new Scale9Textures(texture, new Rectangle(20, 20, 20, 20));
 			this._image = new Scale9Image(textures, this.dpiScale);
 			this._minDisplayObjectWidth = 40;
 			this._minDisplayObjectHeight = 40;
 			this.addChild(this._image);
 
 			this._rightButton = new Button();
-			this._rightButton.styleNameList.add("right-grip");
+			this._rightButton.styleNameList.add(DisplayObjectExplorerTheme.THEME_NAME_RIGHT_GRIP);
 			this._rightButton.addEventListener(TouchEvent.TOUCH, rightButton_touchHandler);
 			this.addChild(this._rightButton);
 
 			this._bottomButton = new Button();
-			this._bottomButton.styleNameList.add("bottom-grip");
+			this._bottomButton.styleNameList.add(DisplayObjectExplorerTheme.THEME_NAME_BOTTOM_GRIP);
 			this._bottomButton.addEventListener(TouchEvent.TOUCH, bottomButton_touchHandler);
 			this.addChild(this._bottomButton);
 		}
@@ -93,7 +94,7 @@ package feathers.examples.displayObjects.screens
 
 		private function rightButton_touchHandler(event:TouchEvent):void
 		{
-			const touch:Touch = event.getTouch(this._rightButton);
+			var touch:Touch = event.getTouch(this._rightButton);
 			if(!touch || (this._rightTouchPointID >= 0 && touch.id != this._rightTouchPointID))
 			{
 				return;
@@ -118,7 +119,7 @@ package feathers.examples.displayObjects.screens
 
 		private function bottomButton_touchHandler(event:TouchEvent):void
 		{
-			const touch:Touch = event.getTouch(this._bottomButton);
+			var touch:Touch = event.getTouch(this._bottomButton);
 			if(!touch || (this._bottomTouchPointID >= 0 && touch.id != this._bottomTouchPointID))
 			{
 				return;

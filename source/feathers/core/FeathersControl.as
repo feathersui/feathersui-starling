@@ -556,7 +556,7 @@ package feathers.core
 			{
 				return;
 			}
-			const valueIsNaN:Boolean = isNaN(value);
+			var valueIsNaN:Boolean = isNaN(value);
 			if(valueIsNaN && isNaN(this.explicitWidth))
 			{
 				return;
@@ -640,7 +640,7 @@ package feathers.core
 			{
 				return;
 			}
-			const valueIsNaN:Boolean = isNaN(value);
+			var valueIsNaN:Boolean = isNaN(value);
 			if(valueIsNaN && isNaN(this.explicitHeight))
 			{
 				return;
@@ -1469,7 +1469,7 @@ package feathers.core
 				{
 					return null;
 				}
-				const clipRect:Rectangle = this.clipRect;
+				var clipRect:Rectangle = this.clipRect;
 				if(clipRect && !clipRect.containsPoint(localPoint))
 				{
 					return null;
@@ -1505,7 +1505,7 @@ package feathers.core
 		 */
 		public function invalidate(flag:String = INVALIDATION_FLAG_ALL):void
 		{
-			const isAlreadyInvalid:Boolean = this.isInvalid();
+			var isAlreadyInvalid:Boolean = this.isInvalid();
 			var isAlreadyDelayedInvalid:Boolean = false;
 			if(this._isValidating)
 			{

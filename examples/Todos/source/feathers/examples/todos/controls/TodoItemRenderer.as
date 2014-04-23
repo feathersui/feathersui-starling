@@ -55,7 +55,7 @@ package feathers.examples.todos.controls
 		override protected function commitData():void
 		{
 			super.commitData();
-			const item:TodoItem = this._data as TodoItem;
+			var item:TodoItem = this._data as TodoItem;
 			if(!item)
 			{
 				return;
@@ -87,7 +87,7 @@ package feathers.examples.todos.controls
 
 		protected function check_changeHandler(event:Event):void
 		{
-			const item:TodoItem = this._data as TodoItem;
+			var item:TodoItem = this._data as TodoItem;
 			if(!item)
 			{
 				return;

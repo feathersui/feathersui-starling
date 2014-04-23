@@ -108,7 +108,7 @@ package feathers.examples.trainTimes.screens
 		private function onBackButton():void
 		{
 			this.selectedDepartureStation.isDepartingFromHere = false;
-			const index:int = this._stationList.dataProvider.getItemIndex(this.selectedDepartureStation);
+			var index:int = this._stationList.dataProvider.getItemIndex(this.selectedDepartureStation);
 			this._stationList.dataProvider.updateItemAt(index);
 			this._stationList.selectedItem = this.selectedDepartureStation;
 			this.selectedDepartureStation = null;

@@ -45,13 +45,13 @@ package feathers.examples.componentsExplorer.screens
 		
 		protected function initializeHandler(event:Event):void
 		{
-			const layout:VerticalLayout = new VerticalLayout();
+			var layout:VerticalLayout = new VerticalLayout();
 			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_CENTER;
 			layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_MIDDLE;
 			layout.gap = 44 * this.dpiScale;
 			this.layout = layout;
 
-			const containerLayout:HorizontalLayout = new HorizontalLayout();
+			var containerLayout:HorizontalLayout = new HorizontalLayout();
 			containerLayout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_CENTER;
 			containerLayout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_MIDDLE;
 			containerLayout.gap = 20 * this.dpiScale;

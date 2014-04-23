@@ -380,7 +380,7 @@ package feathers.text
 		{
 			this._textField = new TextField();
 			this._textField.type = TextFieldType.INPUT;
-			const isMultiline:Boolean = initOptions && initOptions.hasOwnProperty("multiline") && initOptions.multiline;
+			var isMultiline:Boolean = initOptions && initOptions.hasOwnProperty("multiline") && initOptions.multiline;
 			this._textField.multiline = isMultiline;
 			this._textField.wordWrap = isMultiline;
 			this._textField.addEventListener(Event.CHANGE, textField_eventHandler);
