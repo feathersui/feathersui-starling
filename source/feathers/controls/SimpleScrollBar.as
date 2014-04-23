@@ -817,7 +817,7 @@ package feathers.controls
 			}
 			if(!(value is PropertyProxy))
 			{
-				const newValue:PropertyProxy = new PropertyProxy();
+				var newValue:PropertyProxy = new PropertyProxy();
 				for(var propertyName:String in value)
 				{
 					newValue[propertyName] = value[propertyName];
@@ -885,11 +885,11 @@ package feathers.controls
 		 */
 		override protected function draw():void
 		{
-			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA)
-			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA)
+			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
-			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
-			const thumbFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_THUMB_FACTORY);
+			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
+			var thumbFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_THUMB_FACTORY);
 
 			if(thumbFactoryInvalid)
 			{
@@ -936,16 +936,16 @@ package feathers.controls
 				this.thumbOriginalHeight = this.thumb.height;
 			}
 
-			const needsWidth:Boolean = isNaN(this.explicitWidth);
-			const needsHeight:Boolean = isNaN(this.explicitHeight);
+			var needsWidth:Boolean = isNaN(this.explicitWidth);
+			var needsHeight:Boolean = isNaN(this.explicitHeight);
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
 			}
 
-			const range:Number = this._maximum - this._minimum;
+			var range:Number = this._maximum - this._minimum;
 			//we're just going to make something up in this case
-			const adjustedPageStep:Number = this._page == 0 ? range / 10 : this._page;
+			var adjustedPageStep:Number = this._page == 0 ? range / 10 : this._page;
 			var newWidth:Number = this.explicitWidth;
 			var newHeight:Number = this.explicitHeight;
 			if(needsWidth)
@@ -1022,8 +1022,8 @@ package feathers.controls
 				this.thumb = null;
 			}
 
-			const factory:Function = this._thumbFactory != null ? this._thumbFactory : defaultThumbFactory;
-			const thumbName:String = this._customThumbName != null ? this._customThumbName : this.thumbName;
+			var factory:Function = this._thumbFactory != null ? this._thumbFactory : defaultThumbFactory;
+			var thumbName:String = this._customThumbName != null ? this._customThumbName : this.thumbName;
 			this.thumb = Button(factory());
 			this.thumb.styleNameList.add(thumbName);
 			this.thumb.isFocusEnabled = false;
@@ -1052,7 +1052,7 @@ package feathers.controls
 			this.track.width = this.actualWidth;
 			this.track.height = this.actualHeight;
 
-			const range:Number = this._maximum - this._minimum;
+			var range:Number = this._maximum - this._minimum;
 			this.thumb.visible = range > 0;
 			if(!this.thumb.visible)
 			{
@@ -1062,9 +1062,9 @@ package feathers.controls
 			//this will auto-size the thumb, if needed
 			this.thumb.validate();
 
-			const contentWidth:Number = this.actualWidth - this._paddingLeft - this._paddingRight;
-			const contentHeight:Number = this.actualHeight - this._paddingTop - this._paddingBottom;
-			const adjustedPageStep:Number = Math.min(range, this._page == 0 ? range : this._page);
+			var contentWidth:Number = this.actualWidth - this._paddingLeft - this._paddingRight;
+			var contentHeight:Number = this.actualHeight - this._paddingTop - this._paddingBottom;
+			var adjustedPageStep:Number = Math.min(range, this._page == 0 ? range : this._page);
 			var valueOffset:Number = 0;
 			if(this._value < this._minimum)
 			{
@@ -1077,7 +1077,7 @@ package feathers.controls
 			if(this._direction == DIRECTION_VERTICAL)
 			{
 				this.thumb.width = this.thumbOriginalWidth;
-				const thumbMinHeight:Number = this.thumb.minHeight > 0 ? this.thumb.minHeight : this.thumbOriginalHeight;
+				var thumbMinHeight:Number = this.thumb.minHeight > 0 ? this.thumb.minHeight : this.thumbOriginalHeight;
 				var thumbHeight:Number = contentHeight * adjustedPageStep / range;
 				var heightOffset:Number = contentHeight - thumbHeight;
 				if(heightOffset > thumbHeight)
@@ -1092,7 +1092,7 @@ package feathers.controls
 				}
 				this.thumb.height = thumbHeight;
 				this.thumb.x = this._paddingLeft + (this.actualWidth - this._paddingLeft - this._paddingRight - this.thumb.width) / 2;
-				const trackScrollableHeight:Number = contentHeight - this.thumb.height;
+				var trackScrollableHeight:Number = contentHeight - this.thumb.height;
 				var thumbY:Number = trackScrollableHeight * (this._value - this._minimum) / range;
 				if(thumbY > trackScrollableHeight)
 				{
@@ -1106,7 +1106,7 @@ package feathers.controls
 			}
 			else //horizontal
 			{
-				const thumbMinWidth:Number = this.thumb.minWidth > 0 ? this.thumb.minWidth : this.thumbOriginalWidth;
+				var thumbMinWidth:Number = this.thumb.minWidth > 0 ? this.thumb.minWidth : this.thumbOriginalWidth;
 				var thumbWidth:Number = contentWidth * adjustedPageStep / range;
 				var widthOffset:Number = contentWidth - thumbWidth;
 				if(widthOffset > thumbWidth)
@@ -1121,7 +1121,7 @@ package feathers.controls
 				}
 				this.thumb.width = thumbWidth;
 				this.thumb.height = this.thumbOriginalHeight;
-				const trackScrollableWidth:Number = contentWidth - this.thumb.width;
+				var trackScrollableWidth:Number = contentWidth - this.thumb.width;
 				var thumbX:Number = trackScrollableWidth * (this._value - this._minimum) / range;
 				if(thumbX > trackScrollableWidth)
 				{

@@ -1462,7 +1462,7 @@ package feathers.controls
 			{
 				value = PropertyProxy.fromObject(value);
 			}
-			const oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.defaultValue);
+			var oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.defaultValue);
 			if(oldValue)
 			{
 				oldValue.removeOnChangeCallback(childProperties_onChange);
@@ -1518,7 +1518,7 @@ package feathers.controls
 			{
 				value = PropertyProxy.fromObject(value);
 			}
-			const oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_UP, false));
+			var oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_UP, false));
 			if(oldValue)
 			{
 				oldValue.removeOnChangeCallback(childProperties_onChange);
@@ -1574,7 +1574,7 @@ package feathers.controls
 			{
 				value = PropertyProxy.fromObject(value);
 			}
-			const oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_DOWN, false));
+			var oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_DOWN, false));
 			if(oldValue)
 			{
 				oldValue.removeOnChangeCallback(childProperties_onChange);
@@ -1630,7 +1630,7 @@ package feathers.controls
 			{
 				value = PropertyProxy.fromObject(value);
 			}
-			const oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_HOVER, false));
+			var oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_HOVER, false));
 			if(oldValue)
 			{
 				oldValue.removeOnChangeCallback(childProperties_onChange);
@@ -1686,7 +1686,7 @@ package feathers.controls
 			{
 				value = PropertyProxy.fromObject(value);
 			}
-			const oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_DISABLED, false));
+			var oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_DISABLED, false));
 			if(oldValue)
 			{
 				oldValue.removeOnChangeCallback(childProperties_onChange);
@@ -2135,7 +2135,7 @@ package feathers.controls
 				this.labelTextRenderer = null;
 			}
 
-			const factory:Function = this._labelFactory != null ? this._labelFactory : FeathersControl.defaultTextRendererFactory;
+			var factory:Function = this._labelFactory != null ? this._labelFactory : FeathersControl.defaultTextRendererFactory;
 			this.labelTextRenderer = ITextRenderer(factory());
 			this.labelTextRenderer.styleNameList.add(this.labelName);
 			this.addChild(DisplayObject(this.labelTextRenderer));
@@ -2158,7 +2158,7 @@ package feathers.controls
 		 */
 		protected function refreshSkin():void
 		{
-			const oldSkin:DisplayObject = this.currentSkin;
+			var oldSkin:DisplayObject = this.currentSkin;
 			if(this._stateToSkinFunction != null)
 			{
 				this.currentSkin = DisplayObject(this._stateToSkinFunction(this, this._currentState, oldSkin));
@@ -2198,7 +2198,7 @@ package feathers.controls
 		 */
 		protected function refreshIcon():void
 		{
-			const oldIcon:DisplayObject = this.currentIcon;
+			var oldIcon:DisplayObject = this.currentIcon;
 			if(this._stateToIconFunction != null)
 			{
 				this.currentIcon = DisplayObject(this._stateToIconFunction(this, this._currentState, oldIcon));
@@ -2589,7 +2589,7 @@ package feathers.controls
 				}
 
 				touch.getLocation(this.stage, HELPER_POINT);
-				const isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
+				var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
 				if(touch.phase == TouchPhase.MOVED)
 				{
 					if(isInBounds || this.keepDownStateOnRollOut)

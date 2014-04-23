@@ -734,7 +734,7 @@ package feathers.controls
 			}
 			if(!(value is PropertyProxy))
 			{
-				const newValue:PropertyProxy = new PropertyProxy();
+				var newValue:PropertyProxy = new PropertyProxy();
 				for(var propertyName:String in value)
 				{
 					newValue[propertyName] = value[propertyName];
@@ -906,7 +906,7 @@ package feathers.controls
 			}
 			if(!(value is PropertyProxy))
 			{
-				const newValue:PropertyProxy = new PropertyProxy();
+				var newValue:PropertyProxy = new PropertyProxy();
 				for(var propertyName:String in value)
 				{
 					newValue[propertyName] = value[propertyName];
@@ -1103,13 +1103,13 @@ package feathers.controls
 		 */
 		override protected function draw():void
 		{
-			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
-			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
-			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
-			const selectionInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SELECTED);
+			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
+			var selectionInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SELECTED);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
-			const buttonFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_BUTTON_FACTORY);
-			const listFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LIST_FACTORY);
+			var buttonFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_BUTTON_FACTORY);
+			var listFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LIST_FACTORY);
 
 			if(buttonFactoryInvalid)
 			{
@@ -1203,8 +1203,8 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			const needsWidth:Boolean = isNaN(this.explicitWidth);
-			const needsHeight:Boolean = isNaN(this.explicitHeight);
+			var needsWidth:Boolean = isNaN(this.explicitWidth);
+			var needsHeight:Boolean = isNaN(this.explicitHeight);
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -1262,8 +1262,8 @@ package feathers.controls
 				this.button = null;
 			}
 
-			const factory:Function = this._buttonFactory != null ? this._buttonFactory : defaultButtonFactory;
-			const buttonName:String = this._customButtonName != null ? this._customButtonName : this.buttonName;
+			var factory:Function = this._buttonFactory != null ? this._buttonFactory : defaultButtonFactory;
+			var buttonName:String = this._customButtonName != null ? this._customButtonName : this.buttonName;
 			this.button = Button(factory());
 			this.button.styleNameList.add(buttonName);
 			this.button.addEventListener(Event.TRIGGERED, button_triggeredHandler);
@@ -1291,8 +1291,8 @@ package feathers.controls
 				this.list = null;
 			}
 
-			const factory:Function = this._listFactory != null ? this._listFactory : defaultListFactory;
-			const listName:String = this._customListName != null ? this._customListName : this.listName;
+			var factory:Function = this._listFactory != null ? this._listFactory : defaultListFactory;
+			var listName:String = this._customListName != null ? this._customListName : this.listName;
 			this.list = List(factory());
 			this.list.styleNameList.add(listName);
 			this.list.addEventListener(Event.CHANGE, list_changeHandler);

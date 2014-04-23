@@ -38,7 +38,7 @@ package feathers.examples.componentsExplorer.screens
 				{ label: "Three", triggered: button_triggeredHandler },
 				{ label: "Four", triggered: button_triggeredHandler },
 			]);
-			const buttonGroupLayoutData:AnchorLayoutData = new AnchorLayoutData();
+			var buttonGroupLayoutData:AnchorLayoutData = new AnchorLayoutData();
 			buttonGroupLayoutData.horizontalCenter = 0;
 			buttonGroupLayoutData.verticalCenter = 0;
 			this._buttonGroup.layoutData = buttonGroupLayoutData;
@@ -74,7 +74,7 @@ package feathers.examples.componentsExplorer.screens
 
 		private function button_triggeredHandler(event:Event):void
 		{
-			const button:Button = Button(event.currentTarget);
+			var button:Button = Button(event.currentTarget);
 			trace(button.label + " triggered.");
 		}
 	}

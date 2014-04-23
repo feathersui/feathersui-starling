@@ -485,11 +485,11 @@ package feathers.display
 				this._batch.batchable = !this._useSeparateBatch;
 				this._batch.reset();
 				this._image.scaleX = this._image.scaleY = this._textureScale;
-				const scaledTextureWidth:Number = this._originalImageWidth * this._textureScale;
-				const scaledTextureHeight:Number = this._originalImageHeight * this._textureScale;
-				const xImageCount:int = Math.ceil(this._width / scaledTextureWidth);
-				const yImageCount:int = Math.ceil(this._height / scaledTextureHeight);
-				const imageCount:int = xImageCount * yImageCount;
+				var scaledTextureWidth:Number = this._originalImageWidth * this._textureScale;
+				var scaledTextureHeight:Number = this._originalImageHeight * this._textureScale;
+				var xImageCount:int = Math.ceil(this._width / scaledTextureWidth);
+				var yImageCount:int = Math.ceil(this._height / scaledTextureHeight);
+				var imageCount:int = xImageCount * yImageCount;
 				var xPosition:Number = 0;
 				var yPosition:Number = 0;
 				var nextXPosition:Number = xPosition + scaledTextureWidth;

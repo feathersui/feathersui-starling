@@ -840,7 +840,7 @@ package feathers.controls.renderers
 			}
 			if(!(value is PropertyProxy))
 			{
-				const newValue:PropertyProxy = new PropertyProxy();
+				var newValue:PropertyProxy = new PropertyProxy();
 				for(var propertyName:String in value)
 				{
 					newValue[propertyName] = value[propertyName];
@@ -1236,9 +1236,9 @@ package feathers.controls.renderers
 		 */
 		override protected function draw():void
 		{
-			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
-			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
-			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
+			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 
 			if(stylesInvalid || stateInvalid)
@@ -1291,8 +1291,8 @@ package feathers.controls.renderers
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			const needsWidth:Boolean = isNaN(this.explicitWidth);
-			const needsHeight:Boolean = isNaN(this.explicitHeight);
+			var needsWidth:Boolean = isNaN(this.explicitWidth);
+			var needsHeight:Boolean = isNaN(this.explicitHeight);
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -1378,7 +1378,7 @@ package feathers.controls.renderers
 		{
 			if(this._owner)
 			{
-				const newContent:DisplayObject = this.itemToContent(this._data);
+				var newContent:DisplayObject = this.itemToContent(this._data);
 				if(newContent != this.content)
 				{
 					if(this.content)
@@ -1423,7 +1423,7 @@ package feathers.controls.renderers
 			{
 				if(!this.contentLabel)
 				{
-					const factory:Function = this._contentLabelFactory != null ? this._contentLabelFactory : FeathersControl.defaultTextRendererFactory;
+					var factory:Function = this._contentLabelFactory != null ? this._contentLabelFactory : FeathersControl.defaultTextRendererFactory;
 					this.contentLabel = ITextRenderer(factory());
 					FeathersControl(this.contentLabel).styleNameList.add(this.contentLabelName);
 				}

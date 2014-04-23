@@ -34,7 +34,7 @@ package feathers.examples.layoutExplorer.screens
 
 		protected function initializeHandler(event:Event):void
 		{
-			const layout:HorizontalLayout = new HorizontalLayout();
+			var layout:HorizontalLayout = new HorizontalLayout();
 			layout.gap = this.settings.gap;
 			layout.paddingTop = this.settings.paddingTop;
 			layout.paddingRight = this.settings.paddingRight;

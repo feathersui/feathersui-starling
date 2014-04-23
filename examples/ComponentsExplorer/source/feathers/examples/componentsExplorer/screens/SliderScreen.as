@@ -47,7 +47,7 @@ package feathers.examples.componentsExplorer.screens
 			this._slider.direction = this.settings.direction;
 			this._slider.liveDragging = this.settings.liveDragging;
 			this._slider.addEventListener(Event.CHANGE, slider_changeHandler);
-			const sliderLayoutData:AnchorLayoutData = new AnchorLayoutData();
+			var sliderLayoutData:AnchorLayoutData = new AnchorLayoutData();
 			sliderLayoutData.horizontalCenter = 0;
 			sliderLayoutData.verticalCenter = 0;
 			this._slider.layoutData = sliderLayoutData;
@@ -55,7 +55,7 @@ package feathers.examples.componentsExplorer.screens
 			
 			this._valueLabel = new Label();
 			this._valueLabel.text = this._slider.value.toString();
-			const valueLabelLayoutData:AnchorLayoutData = new AnchorLayoutData();
+			var valueLabelLayoutData:AnchorLayoutData = new AnchorLayoutData();
 			valueLabelLayoutData.left = 20 * this.dpiScale;
 			valueLabelLayoutData.leftAnchorDisplayObject = this._slider;
 			valueLabelLayoutData.verticalCenter = 0;

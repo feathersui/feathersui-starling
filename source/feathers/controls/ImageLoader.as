@@ -993,9 +993,9 @@ package feathers.controls
 		 */
 		override protected function draw():void
 		{
-			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
-			const layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
-			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			var layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
+			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 
 			if(dataInvalid)
@@ -1096,7 +1096,7 @@ package feathers.controls
 			}
 			else
 			{
-				const sourceURL:String = this._source as String;
+				var sourceURL:String = this._source as String;
 				if(!sourceURL)
 				{
 					this._lastURL = null;
@@ -1470,13 +1470,13 @@ package feathers.controls
 		{
 			if(this._pendingBitmapDataTexture)
 			{
-				const bitmapData:BitmapData = this._pendingBitmapDataTexture;
+				var bitmapData:BitmapData = this._pendingBitmapDataTexture;
 				this._pendingBitmapDataTexture = null;
 				this.replaceBitmapDataTexture(bitmapData);
 			}
 			if(this._pendingRawTextureData)
 			{
-				const rawData:ByteArray = this._pendingRawTextureData;
+				var rawData:ByteArray = this._pendingRawTextureData;
 				this._pendingRawTextureData = null;
 				this.replaceRawTextureData(rawData);
 			}
@@ -1515,14 +1515,14 @@ package feathers.controls
 		 */
 		protected function loader_completeHandler(event:flash.events.Event):void
 		{
-			const bitmap:Bitmap = Bitmap(this.loader.content);
+			var bitmap:Bitmap = Bitmap(this.loader.content);
 			this.loader.contentLoaderInfo.removeEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
 			this.loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, loader_errorHandler);
 			this.loader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_errorHandler);
 			this.loader = null;
 
 			this.cleanupTexture();
-			const bitmapData:BitmapData = bitmap.bitmapData;
+			var bitmapData:BitmapData = bitmap.bitmapData;
 			if(this._delayTextureCreation)
 			{
 				this._pendingBitmapDataTexture = bitmapData;
@@ -1557,7 +1557,7 @@ package feathers.controls
 		 */
 		protected function rawDataLoader_completeHandler(event:flash.events.Event):void
 		{
-			const rawData:ByteArray = ByteArray(this.urlLoader.data);
+			var rawData:ByteArray = ByteArray(this.urlLoader.data);
 			this.urlLoader.removeEventListener(flash.events.Event.COMPLETE, rawDataLoader_completeHandler);
 			this.urlLoader.removeEventListener(IOErrorEvent.IO_ERROR, rawDataLoader_errorHandler);
 			this.urlLoader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, rawDataLoader_errorHandler);

@@ -739,10 +739,10 @@ package feathers.controls
 		 */
 		override protected function draw():void
 		{
-			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
-			const selectionInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SELECTED);
-			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
-			const layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
+			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			var selectionInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SELECTED);
+			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			var layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
 
 			if(dataInvalid || selectionInvalid || stylesInvalid)
 			{
@@ -758,7 +758,7 @@ package feathers.controls
 		protected function refreshSymbols(symbolsInvalid:Boolean):void
 		{
 			this.symbols.length = 0;
-			const temp:Vector.<DisplayObject> = this.cache;
+			var temp:Vector.<DisplayObject> = this.cache;
 			if(symbolsInvalid)
 			{
 				var symbolCount:int = this.unselectedSymbols.length;
@@ -838,7 +838,7 @@ package feathers.controls
 				}
 				if(this._layout is VerticalLayout)
 				{
-					const verticalLayout:VerticalLayout = VerticalLayout(this._layout);
+					var verticalLayout:VerticalLayout = VerticalLayout(this._layout);
 					verticalLayout.paddingTop = this._paddingTop;
 					verticalLayout.paddingRight = this._paddingRight;
 					verticalLayout.paddingBottom = this._paddingBottom;
@@ -849,7 +849,7 @@ package feathers.controls
 				}
 				if(this._layout is HorizontalLayout)
 				{
-					const horizontalLayout:HorizontalLayout = HorizontalLayout(this._layout);
+					var horizontalLayout:HorizontalLayout = HorizontalLayout(this._layout);
 					horizontalLayout.paddingTop = this._paddingTop;
 					horizontalLayout.paddingRight = this._paddingRight;
 					horizontalLayout.paddingBottom = this._paddingBottom;

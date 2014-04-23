@@ -55,7 +55,7 @@ package feathers.data
 		public function getLength(data:Object, ...rest:Array):int
 		{
 			var branch:Array = data as Array;
-			const indexCount:int = rest.length;
+			var indexCount:int = rest.length;
 			for(var i:int = 0; i < indexCount; i++)
 			{
 				var index:int = rest[i] as int;
@@ -72,13 +72,13 @@ package feathers.data
 		{
 			rest.unshift(index);
 			var branch:Array = data as Array;
-			const indexCount:int = rest.length - 1;
+			var indexCount:int = rest.length - 1;
 			for(var i:int = 0; i < indexCount; i++)
 			{
 				index = rest[i] as int;
 				branch = branch[index][childrenField] as Array;
 			}
-			const lastIndex:int = rest[indexCount] as int;
+			var lastIndex:int = rest[indexCount] as int;
 			return branch[lastIndex];
 		}
 
@@ -89,13 +89,13 @@ package feathers.data
 		{
 			rest.unshift(index);
 			var branch:Array = data as Array;
-			const indexCount:int = rest.length - 1;
+			var indexCount:int = rest.length - 1;
 			for(var i:int = 0; i < indexCount; i++)
 			{
 				index = rest[i] as int;
 				branch = branch[index][childrenField] as Array;
 			}
-			const lastIndex:int = rest[indexCount];
+			var lastIndex:int = rest[indexCount];
 			branch[lastIndex] = item;
 		}
 
@@ -106,13 +106,13 @@ package feathers.data
 		{
 			rest.unshift(index);
 			var branch:Array = data as Array;
-			const indexCount:int = rest.length - 1;
+			var indexCount:int = rest.length - 1;
 			for(var i:int = 0; i < indexCount; i++)
 			{
 				index = rest[i] as int;
 				branch = branch[index][childrenField] as Array;
 			}
-			const lastIndex:int = rest[indexCount];
+			var lastIndex:int = rest[indexCount];
 			branch.splice(lastIndex, 0, item);
 		}
 
@@ -123,14 +123,14 @@ package feathers.data
 		{
 			rest.unshift(index);
 			var branch:Array = data as Array;
-			const indexCount:int = rest.length - 1;
+			var indexCount:int = rest.length - 1;
 			for(var i:int = 0; i < indexCount; i++)
 			{
 				index = rest[i] as int;
 				branch = branch[index][childrenField] as Array;
 			}
-			const lastIndex:int = rest[indexCount];
-			const item:Object = branch[lastIndex];
+			var lastIndex:int = rest[indexCount];
+			var item:Object = branch[lastIndex];
 			branch.splice(lastIndex, 1);
 			return item;
 		}
@@ -149,7 +149,7 @@ package feathers.data
 				result.length = 0;
 			}
 			var branch:Array = data as Array;
-			const restCount:int = rest.length;
+			var restCount:int = rest.length;
 			for(var i:int = 0; i < restCount; i++)
 			{
 				var index:int = rest[i] as int;
@@ -157,7 +157,7 @@ package feathers.data
 				branch = branch[index][childrenField] as Array;
 			}
 
-			const isFound:Boolean = this.findItemInBranch(branch, item, result);
+			var isFound:Boolean = this.findItemInBranch(branch, item, result);
 			if(!isFound)
 			{
 				result.length = 0;
@@ -178,14 +178,14 @@ package feathers.data
 		 */
 		protected function findItemInBranch(branch:Array, item:Object, result:Vector.<int>):Boolean
 		{
-			const index:int = branch.indexOf(item);
+			var index:int = branch.indexOf(item);
 			if(index >= 0)
 			{
 				result.push(index);
 				return true;
 			}
 
-			const branchLength:int = branch.length;
+			var branchLength:int = branch.length;
 			for(var i:int = 0; i < branchLength; i++)
 			{
 				var branchItem:Object = branch[i];

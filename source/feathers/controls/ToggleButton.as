@@ -379,7 +379,7 @@ package feathers.controls
 			{
 				value = PropertyProxy.fromObject(value);
 			}
-			const oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.defaultSelectedValue);
+			var oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.defaultSelectedValue);
 			if(oldValue)
 			{
 				oldValue.removeOnChangeCallback(childProperties_onChange);
@@ -439,7 +439,7 @@ package feathers.controls
 			{
 				value = PropertyProxy.fromObject(value);
 			}
-			const oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_UP, true));
+			var oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_UP, true));
 			if(oldValue)
 			{
 				oldValue.removeOnChangeCallback(childProperties_onChange);
@@ -499,7 +499,7 @@ package feathers.controls
 			{
 				value = PropertyProxy.fromObject(value);
 			}
-			const oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_DOWN, true));
+			var oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_DOWN, true));
 			if(oldValue)
 			{
 				oldValue.removeOnChangeCallback(childProperties_onChange);
@@ -559,7 +559,7 @@ package feathers.controls
 			{
 				value = PropertyProxy.fromObject(value);
 			}
-			const oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_HOVER, true));
+			var oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_HOVER, true));
 			if(oldValue)
 			{
 				oldValue.removeOnChangeCallback(childProperties_onChange);
@@ -619,7 +619,7 @@ package feathers.controls
 			{
 				value = PropertyProxy.fromObject(value);
 			}
-			const oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_DISABLED, true));
+			var oldValue:PropertyProxy = PropertyProxy(this._labelPropertiesSelector.getValueForState(STATE_DISABLED, true));
 			if(oldValue)
 			{
 				oldValue.removeOnChangeCallback(childProperties_onChange);

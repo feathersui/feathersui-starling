@@ -30,7 +30,7 @@ package feathers.examples.componentsExplorer.screens
 
 		protected function initializeHandler(event:Event):void
 		{
-			const verticalLayout:VerticalLayout = new VerticalLayout();
+			var verticalLayout:VerticalLayout = new VerticalLayout();
 			verticalLayout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_CENTER;
 			verticalLayout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
 			verticalLayout.padding = 20 * this.dpiScale;

@@ -4,6 +4,7 @@ package feathers.examples.displayObjects.screens
 	import feathers.controls.Header;
 	import feathers.controls.Screen;
 	import feathers.display.TiledImage;
+	import feathers.examples.displayObjects.themes.DisplayObjectExplorerTheme;
 
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -47,12 +48,12 @@ package feathers.examples.displayObjects.screens
 			this.addChild(this._image);
 
 			this._rightButton = new Button();
-			this._rightButton.styleNameList.add("right-grip");
+			this._rightButton.styleNameList.add(DisplayObjectExplorerTheme.THEME_NAME_RIGHT_GRIP);
 			this._rightButton.addEventListener(TouchEvent.TOUCH, rightButton_touchHandler);
 			this.addChild(this._rightButton);
 
 			this._bottomButton = new Button();
-			this._bottomButton.styleNameList.add("bottom-grip");
+			this._bottomButton.styleNameList.add(DisplayObjectExplorerTheme.THEME_NAME_BOTTOM_GRIP);
 			this._bottomButton.addEventListener(TouchEvent.TOUCH, bottomButton_touchHandler);
 			this.addChild(this._bottomButton);
 		}
@@ -88,7 +89,7 @@ package feathers.examples.displayObjects.screens
 
 		private function rightButton_touchHandler(event:TouchEvent):void
 		{
-			const touch:Touch = event.getTouch(this._rightButton);
+			var touch:Touch = event.getTouch(this._rightButton);
 			if(!touch || (this._rightTouchPointID >= 0 && touch.id != this._rightTouchPointID))
 			{
 				return;
@@ -113,7 +114,7 @@ package feathers.examples.displayObjects.screens
 
 		private function bottomButton_touchHandler(event:TouchEvent):void
 		{
-			const touch:Touch = event.getTouch(this._bottomButton);
+			var touch:Touch = event.getTouch(this._bottomButton);
 			if(!touch || (this._bottomTouchPointID >= 0 && touch.id != this._bottomTouchPointID))
 			{
 				return;

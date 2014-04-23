@@ -493,13 +493,13 @@ package feathers.display
 				helperImage.smoothing = this._smoothing;
 				helperImage.color = this._color;
 
-				const grid:Rectangle = this._textures.scale9Grid;
+				var grid:Rectangle = this._textures.scale9Grid;
 				var scaledLeftWidth:Number = grid.x * this._textureScale;
 				var scaledTopHeight:Number = grid.y * this._textureScale;
 				var scaledRightWidth:Number = (this._frame.width - grid.x - grid.width) * this._textureScale;
 				var scaledBottomHeight:Number = (this._frame.height - grid.y - grid.height) * this._textureScale;
-				const scaledCenterWidth:Number = this._width - scaledLeftWidth - scaledRightWidth;
-				const scaledMiddleHeight:Number = this._height - scaledTopHeight - scaledBottomHeight;
+				var scaledCenterWidth:Number = this._width - scaledLeftWidth - scaledRightWidth;
+				var scaledMiddleHeight:Number = this._height - scaledTopHeight - scaledBottomHeight;
 				if(scaledCenterWidth < 0)
 				{
 					var offset:Number = scaledCenterWidth / 2;

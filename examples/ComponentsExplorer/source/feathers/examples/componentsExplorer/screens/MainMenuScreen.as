@@ -130,7 +130,7 @@ package feathers.examples.componentsExplorer.screens
 		
 		private function list_changeHandler(event:Event):void
 		{
-			const eventType:String = this._list.selectedItem.event as String;
+			var eventType:String = this._list.selectedItem.event as String;
 			this.dispatchEventWith(eventType);
 		}
 	}

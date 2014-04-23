@@ -26,7 +26,7 @@ package feathers.core
 		 */
 		public static function fromObject(source:Object, onChangeCallback:Function = null):PropertyProxy
 		{
-			const newValue:PropertyProxy = new PropertyProxy(onChangeCallback);
+			var newValue:PropertyProxy = new PropertyProxy(onChangeCallback);
 			for(var propertyName:String in source)
 			{
 				newValue[propertyName] = source[propertyName];
@@ -80,10 +80,10 @@ package feathers.core
 		{
 			if(this.flash_proxy::isAttribute(name))
 			{
-				const nameAsString:String = name is QName ? QName(name).localName : name.toString();
+				var nameAsString:String = name is QName ? QName(name).localName : name.toString();
 				if(!this._storage.hasOwnProperty(nameAsString))
 				{
-					const subProxy:PropertyProxy = new PropertyProxy(subProxy_onChange);
+					var subProxy:PropertyProxy = new PropertyProxy(subProxy_onChange);
 					subProxy._subProxyName = nameAsString;
 					this._storage[nameAsString] = subProxy;
 					this._names[this._names.length] = nameAsString;
@@ -99,7 +99,7 @@ package feathers.core
 		 */
 		override flash_proxy function setProperty(name:*, value:*):void
 		{
-			const nameAsString:String = name is QName ? QName(name).localName : name.toString();
+			var nameAsString:String = name is QName ? QName(name).localName : name.toString();
 			this._storage[nameAsString] = value;
 			if(this._names.indexOf(nameAsString) < 0)
 			{
@@ -164,7 +164,7 @@ package feathers.core
 		 */
 		override flash_proxy function nextValue(index:int):*
 		{
-			const name:* = this._names[index - 1];
+			var name:* = this._names[index - 1];
 			return this._storage[name];
 		}
 
@@ -205,7 +205,7 @@ package feathers.core
 		 */
 		private function fireOnChangeCallback(forName:String):void
 		{
-			const callbackCount:int = this._onChangeCallbacks.length;
+			var callbackCount:int = this._onChangeCallbacks.length;
 			for(var i:int = 0; i < callbackCount; i++)
 			{
 				var callback:Function = this._onChangeCallbacks[i] as Function;

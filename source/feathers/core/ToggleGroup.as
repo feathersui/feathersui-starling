@@ -155,12 +155,12 @@ package feathers.core
 		 */
 		public function set selectedIndex(value:int):void
 		{
-			const itemCount:int = this._items.length;
+			var itemCount:int = this._items.length;
 			if(value < -1 || value >= itemCount)
 			{
 				throw new RangeError("Index " + value + " is out of range " + itemCount + " for ToggleGroup.");
 			}
-			const hasChanged:Boolean = this._selectedIndex != value;
+			var hasChanged:Boolean = this._selectedIndex != value;
 			this._selectedIndex = value;
 
 			//refresh all the items
@@ -198,7 +198,7 @@ package feathers.core
 				throw new ArgumentError("IToggle passed to ToggleGroup addItem() must not be null.");
 			}
 			
-			const index:int = this._items.indexOf(item);
+			var index:int = this._items.indexOf(item);
 			if(index >= 0)
 			{
 				throw new IllegalOperationError("Cannot add an item to a ToggleGroup more than once.");
@@ -233,7 +233,7 @@ package feathers.core
 		 */
 		public function removeItem(item:IToggle):void
 		{
-			const index:int = this._items.indexOf(item);
+			var index:int = this._items.indexOf(item);
 			if(index < 0)
 			{
 				return;
@@ -267,7 +267,7 @@ package feathers.core
 		 */
 		public function removeAllItems():void
 		{
-			const itemCount:int = this._items.length;
+			var itemCount:int = this._items.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var item:IToggle = this._items.shift();
@@ -293,7 +293,7 @@ package feathers.core
 		 */
 		public function hasItem(item:IToggle):Boolean
 		{
-			const index:int = this._items.indexOf(item);
+			var index:int = this._items.indexOf(item);
 			return index >= 0;
 		}
 
@@ -361,8 +361,8 @@ package feathers.core
 				return;
 			}
 
-			const item:IToggle = IToggle(event.currentTarget);
-			const index:int = this._items.indexOf(item);
+			var item:IToggle = IToggle(event.currentTarget);
+			var index:int = this._items.indexOf(item);
 			if(item.isSelected || (this._isSelectionRequired && this._selectedIndex == index))
 			{
 				//don't let it deselect the item

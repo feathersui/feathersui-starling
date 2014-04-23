@@ -44,8 +44,8 @@ package feathers.examples.tileList
 			this._pageIndicator.validate();
 			this._pageIndicator.y = this.stage.stageHeight - this._pageIndicator.height;
 
-			const shorterSide:Number = Math.min(this.stage.stageWidth, this.stage.stageHeight);
-			const layout:TiledRowsLayout = TiledRowsLayout(this._list.layout);
+			var shorterSide:Number = Math.min(this.stage.stageWidth, this.stage.stageHeight);
+			var layout:TiledRowsLayout = TiledRowsLayout(this._list.layout);
 			layout.paddingTop = layout.paddingRight = layout.paddingBottom =
 				layout.paddingLeft = shorterSide * 0.06;
 			layout.gap = shorterSide * 0.04;
@@ -67,7 +67,7 @@ package feathers.examples.tileList
 			this._iconAtlas = new TextureAtlas(Texture.fromBitmap(new ICONS_IMAGE(), false), XML(new ICONS_XML()));
 			this._font = new BitmapFont(this._iconAtlas.getTexture("arial20_0"), XML(new FONT_XML()));
 
-			const collection:ListCollection = new ListCollection(
+			var collection:ListCollection = new ListCollection(
 			[
 				{ label: "Facebook", texture: this._iconAtlas.getTexture("facebook") },
 				{ label: "Twitter", texture: this._iconAtlas.getTexture("twitter") },
@@ -97,7 +97,7 @@ package feathers.examples.tileList
 				{ label: "Orkut", texture: this._iconAtlas.getTexture("orkut") },
 			]);
 
-			const listLayout:TiledRowsLayout = new TiledRowsLayout();
+			var listLayout:TiledRowsLayout = new TiledRowsLayout();
 			listLayout.paging = TiledRowsLayout.PAGING_HORIZONTAL;
 			listLayout.useSquareTiles = false;
 			listLayout.tileHorizontalAlign = TiledRowsLayout.TILE_HORIZONTAL_ALIGN_CENTER;
@@ -114,8 +114,8 @@ package feathers.examples.tileList
 			this._list.addEventListener(Event.SCROLL, list_scrollHandler);
 			this.addChild(this._list);
 
-			const normalSymbolTexture:Texture = this._iconAtlas.getTexture("normal-page-symbol");
-			const selectedSymbolTexture:Texture = this._iconAtlas.getTexture("selected-page-symbol");
+			var normalSymbolTexture:Texture = this._iconAtlas.getTexture("normal-page-symbol");
+			var selectedSymbolTexture:Texture = this._iconAtlas.getTexture("selected-page-symbol");
 			this._pageIndicator = new PageIndicator();
 			this._pageIndicator.normalSymbolFactory = function():Image
 			{
@@ -138,7 +138,7 @@ package feathers.examples.tileList
 		
 		protected function tileListItemRendererFactory():IListItemRenderer
 		{
-			const renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
+			var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
 			renderer.labelField = "label";
 			renderer.iconSourceField = "texture";
 			renderer.iconPosition = Button.ICON_POSITION_TOP;

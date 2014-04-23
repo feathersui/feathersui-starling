@@ -155,7 +155,7 @@ package feathers.motion.transitions
 		{
 			if(this._savedOtherTarget)
 			{
-				const newScreen:DisplayObject = DisplayObject(this._activeTransition.target);
+				var newScreen:DisplayObject = DisplayObject(this._activeTransition.target);
 				this._savedOtherTarget.alpha = 1 - newScreen.alpha;
 			}
 		}

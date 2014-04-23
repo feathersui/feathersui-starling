@@ -33,7 +33,7 @@ package feathers.examples.layoutExplorer.screens
 
 		protected function initializeHandler(event:Event):void
 		{
-			const layout:TiledColumnsLayout = new TiledColumnsLayout();
+			var layout:TiledColumnsLayout = new TiledColumnsLayout();
 			layout.paging = this.settings.paging;
 			layout.horizontalGap = this.settings.horizontalGap;
 			layout.verticalGap = this.settings.verticalGap;
@@ -51,7 +51,7 @@ package feathers.examples.layoutExplorer.screens
 			this.snapToPages = this.settings.paging != TiledColumnsLayout.PAGING_NONE;
 			this.snapScrollPositionsToPixels = true;
 
-			const isTablet:Boolean = DeviceCapabilities.isTablet(Starling.current.nativeStage);
+			var isTablet:Boolean = DeviceCapabilities.isTablet(Starling.current.nativeStage);
 			for(var i:int = 0; i < this.settings.itemCount; i++)
 			{
 				var size:Number = (44 + 88 * Math.random()) * this.dpiScale;

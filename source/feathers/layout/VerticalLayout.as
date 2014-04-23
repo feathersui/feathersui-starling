@@ -791,16 +791,16 @@ package feathers.layout
 		 */
 		public function layout(items:Vector.<DisplayObject>, viewPortBounds:ViewPortBounds = null, result:LayoutBoundsResult = null):LayoutBoundsResult
 		{
-			const scrollX:Number = viewPortBounds ? viewPortBounds.scrollX : 0;
-			const scrollY:Number = viewPortBounds ? viewPortBounds.scrollY : 0;
-			const boundsX:Number = viewPortBounds ? viewPortBounds.x : 0;
-			const boundsY:Number = viewPortBounds ? viewPortBounds.y : 0;
-			const minWidth:Number = viewPortBounds ? viewPortBounds.minWidth : 0;
-			const minHeight:Number = viewPortBounds ? viewPortBounds.minHeight : 0;
-			const maxWidth:Number = viewPortBounds ? viewPortBounds.maxWidth : Number.POSITIVE_INFINITY;
-			const maxHeight:Number = viewPortBounds ? viewPortBounds.maxHeight : Number.POSITIVE_INFINITY;
-			const explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
-			const explicitHeight:Number = viewPortBounds ? viewPortBounds.explicitHeight : NaN;
+			var scrollX:Number = viewPortBounds ? viewPortBounds.scrollX : 0;
+			var scrollY:Number = viewPortBounds ? viewPortBounds.scrollY : 0;
+			var boundsX:Number = viewPortBounds ? viewPortBounds.x : 0;
+			var boundsY:Number = viewPortBounds ? viewPortBounds.y : 0;
+			var minWidth:Number = viewPortBounds ? viewPortBounds.minWidth : 0;
+			var minHeight:Number = viewPortBounds ? viewPortBounds.minHeight : 0;
+			var maxWidth:Number = viewPortBounds ? viewPortBounds.maxWidth : Number.POSITIVE_INFINITY;
+			var maxHeight:Number = viewPortBounds ? viewPortBounds.maxHeight : Number.POSITIVE_INFINITY;
+			var explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
+			var explicitHeight:Number = viewPortBounds ? viewPortBounds.explicitHeight : NaN;
 
 			if(this._useVirtualLayout)
 			{
@@ -928,8 +928,8 @@ package feathers.layout
 				}
 			}
 
-			const discoveredItems:Vector.<DisplayObject> = this._useVirtualLayout ? this._discoveredItemsCache : items;
-			const totalWidth:Number = maxItemWidth + this._paddingLeft + this._paddingRight;
+			var discoveredItems:Vector.<DisplayObject> = this._useVirtualLayout ? this._discoveredItemsCache : items;
+			var totalWidth:Number = maxItemWidth + this._paddingLeft + this._paddingRight;
 			var availableWidth:Number = explicitWidth;
 			if(isNaN(availableWidth))
 			{
@@ -943,7 +943,7 @@ package feathers.layout
 					availableWidth = maxWidth;
 				}
 			}
-			const discoveredItemCount:int = discoveredItems.length;
+			var discoveredItemCount:int = discoveredItems.length;
 
 			var totalHeight:Number = positionY - this._gap + this._paddingBottom - boundsY;
 			var availableHeight:Number = explicitHeight;
@@ -1088,20 +1088,20 @@ package feathers.layout
 				throw new IllegalOperationError("measureViewPort() may be called only if useVirtualLayout is true.")
 			}
 
-			const explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
-			const explicitHeight:Number = viewPortBounds ? viewPortBounds.explicitHeight : NaN;
-			const needsWidth:Boolean = isNaN(explicitWidth);
-			const needsHeight:Boolean = isNaN(explicitHeight);
+			var explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
+			var explicitHeight:Number = viewPortBounds ? viewPortBounds.explicitHeight : NaN;
+			var needsWidth:Boolean = isNaN(explicitWidth);
+			var needsHeight:Boolean = isNaN(explicitHeight);
 			if(!needsWidth && !needsHeight)
 			{
 				result.x = explicitWidth;
 				result.y = explicitHeight;
 				return result;
 			}
-			const minWidth:Number = viewPortBounds ? viewPortBounds.minWidth : 0;
-			const minHeight:Number = viewPortBounds ? viewPortBounds.minHeight : 0;
-			const maxWidth:Number = viewPortBounds ? viewPortBounds.maxWidth : Number.POSITIVE_INFINITY;
-			const maxHeight:Number = viewPortBounds ? viewPortBounds.maxHeight : Number.POSITIVE_INFINITY;
+			var minWidth:Number = viewPortBounds ? viewPortBounds.minWidth : 0;
+			var minHeight:Number = viewPortBounds ? viewPortBounds.minHeight : 0;
+			var maxWidth:Number = viewPortBounds ? viewPortBounds.maxWidth : Number.POSITIVE_INFINITY;
+			var maxHeight:Number = viewPortBounds ? viewPortBounds.maxHeight : Number.POSITIVE_INFINITY;
 
 			this.prepareTypicalItem(explicitWidth - this._paddingLeft - this._paddingRight);
 			var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
@@ -1212,7 +1212,7 @@ package feathers.layout
 		 */
 		public function addToVariableVirtualCacheAtIndex(index:int, item:DisplayObject = null):void
 		{
-			const heightValue:* = item ? item.height : undefined;
+			var heightValue:* = item ? item.height : undefined;
 			this._heightCache.splice(index, 0, heightValue);
 		}
 
@@ -1249,7 +1249,7 @@ package feathers.layout
 			var hasFirstGap:Boolean = !isNaN(this._firstGap);
 			var hasLastGap:Boolean = !isNaN(this._lastGap);
 			var resultLastIndex:int = 0;
-			const visibleTypicalItemCount:int = Math.ceil(height / (calculatedTypicalItemHeight + this._gap));
+			var visibleTypicalItemCount:int = Math.ceil(height / (calculatedTypicalItemHeight + this._gap));
 			if(!this._hasVariableItemDimensions)
 			{
 				//this case can be optimized because we know that every item has
@@ -1345,7 +1345,7 @@ package feathers.layout
 			if(visibleItemCountDifference > 0 && resultLength > 0)
 			{
 				//add extra items before the first index
-				const firstExistingIndex:int = result[0];
+				var firstExistingIndex:int = result[0];
 				var lastIndexToAdd:int = firstExistingIndex - visibleItemCountDifference;
 				if(lastIndexToAdd < 0)
 				{
@@ -1362,7 +1362,7 @@ package feathers.layout
 			if(visibleItemCountDifference > 0)
 			{
 				//add extra items after the last index
-				const startIndex:int = (resultLength > 0) ? (result[resultLength - 1] + 1) : 0;
+				var startIndex:int = (resultLength > 0) ? (result[resultLength - 1] + 1) : 0;
 				var endIndex:int = startIndex + visibleItemCountDifference;
 				if(endIndex > itemCount)
 				{

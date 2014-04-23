@@ -132,7 +132,7 @@ package feathers.core
 				this._root.removeEventListener(TouchEvent.TOUCH, topLevelContainer_touchHandler);
 				Starling.current.nativeStage.removeEventListener(FocusEvent.KEY_FOCUS_CHANGE, stage_keyFocusChangeHandler);
 				Starling.current.nativeStage.addEventListener(FocusEvent.MOUSE_FOCUS_CHANGE, stage_mouseFocusChangeHandler);
-				const focusToSave:IFocusDisplayObject = this.focus;
+				var focusToSave:IFocusDisplayObject = this.focus;
 				this.focus = null;
 				this._savedFocus = focusToSave;
 			}
@@ -534,7 +534,7 @@ package feathers.core
 			}
 
 			var newFocus:IFocusDisplayObject;
-			const currentFocus:IFocusDisplayObject = this._focus;
+			var currentFocus:IFocusDisplayObject = this._focus;
 			if(event.shiftKey)
 			{
 				if(currentFocus)
@@ -605,7 +605,7 @@ package feathers.core
 		 */
 		protected function topLevelContainer_touchHandler(event:TouchEvent):void
 		{
-			const touch:Touch = event.getTouch(this._root, TouchPhase.BEGAN);
+			var touch:Touch = event.getTouch(this._root, TouchPhase.BEGAN);
 			if(!touch)
 			{
 				return;

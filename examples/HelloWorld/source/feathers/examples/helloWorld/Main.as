@@ -78,7 +78,7 @@ package feathers.examples.helloWorld
 		 */
 		protected function button_triggeredHandler(event:Event):void
 		{
-			const label:Label = new Label();
+			var label:Label = new Label();
 			label.text = "Hi, I'm Feathers!\nHave a nice day.";
 			Callout.show(label, this.button);
 		}

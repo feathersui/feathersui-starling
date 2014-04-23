@@ -742,7 +742,7 @@ package feathers.controls.supportClasses
 
 		override public function render(support:RenderSupport, parentAlpha:Number):void
 		{
-			const starlingViewPort:Rectangle = Starling.current.viewPort;
+			var starlingViewPort:Rectangle = Starling.current.viewPort;
 			HELPER_POINT.x = HELPER_POINT.y = 0;
 			this.parent.getTransformationMatrix(this.stage, HELPER_MATRIX);
 			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
@@ -780,10 +780,10 @@ package feathers.controls.supportClasses
 
 		override protected function draw():void
 		{
-			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
-			const scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
-			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			var scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
+			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 
 			if(stylesInvalid)
 			{
@@ -831,10 +831,10 @@ package feathers.controls.supportClasses
 				this._scrollStep = this._textField.getLineMetrics(0).height * Starling.contentScaleFactor;
 			}
 
-			const calculatedVisibleWidth:Number = !isNaN(this._visibleWidth) ? this._visibleWidth : Math.max(this._minVisibleWidth, Math.min(this._maxVisibleWidth, this.stage.stageWidth));
+			var calculatedVisibleWidth:Number = !isNaN(this._visibleWidth) ? this._visibleWidth : Math.max(this._minVisibleWidth, Math.min(this._maxVisibleWidth, this.stage.stageWidth));
 			this._textField.width = calculatedVisibleWidth - this._paddingLeft - this._paddingRight;
-			const totalContentHeight:Number = this._textField.height + this._paddingTop + this._paddingBottom;
-			const calculatedVisibleHeight:Number = !isNaN(this._visibleHeight) ? this._visibleHeight : Math.max(this._minVisibleHeight, Math.min(this._maxVisibleHeight, totalContentHeight));
+			var totalContentHeight:Number = this._textField.height + this._paddingTop + this._paddingBottom;
+			var calculatedVisibleHeight:Number = !isNaN(this._visibleHeight) ? this._visibleHeight : Math.max(this._minVisibleHeight, Math.min(this._maxVisibleHeight, totalContentHeight));
 			sizeInvalid = this.setSizeInternal(calculatedVisibleWidth, totalContentHeight, false) || sizeInvalid;
 
 			if(sizeInvalid || scrollInvalid)

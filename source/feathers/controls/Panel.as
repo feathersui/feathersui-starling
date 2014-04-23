@@ -416,7 +416,7 @@ package feathers.controls
 			}
 			if(!(value is PropertyProxy))
 			{
-				const newValue:PropertyProxy = new PropertyProxy();
+				var newValue:PropertyProxy = new PropertyProxy();
 				for(var propertyName:String in value)
 				{
 					newValue[propertyName] = value[propertyName];
@@ -593,7 +593,7 @@ package feathers.controls
 			}
 			if(!(value is PropertyProxy))
 			{
-				const newValue:PropertyProxy = new PropertyProxy();
+				var newValue:PropertyProxy = new PropertyProxy();
 				for(var propertyName:String in value)
 				{
 					newValue[propertyName] = value[propertyName];
@@ -653,9 +653,9 @@ package feathers.controls
 		 */
 		override protected function draw():void
 		{
-			const headerFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_HEADER_FACTORY);
-			const footerFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_FOOTER_FACTORY);
-			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			var headerFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_HEADER_FACTORY);
+			var footerFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_FOOTER_FACTORY);
+			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 
 			if(headerFactoryInvalid)
 			{
@@ -685,8 +685,8 @@ package feathers.controls
 		 */
 		override protected function autoSizeIfNeeded():Boolean
 		{
-			const needsWidth:Boolean = isNaN(this.explicitWidth);
-			const needsHeight:Boolean = isNaN(this.explicitHeight);
+			var needsWidth:Boolean = isNaN(this.explicitWidth);
+			var needsHeight:Boolean = isNaN(this.explicitHeight);
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -697,8 +697,8 @@ package feathers.controls
 			var oldIgnoreFooterResizing:Boolean = this._ignoreFooterResizing;
 			this._ignoreFooterResizing = true;
 
-			const oldHeaderWidth:Number = this.header.width;
-			const oldHeaderHeight:Number = this.header.height;
+			var oldHeaderWidth:Number = this.header.width;
+			var oldHeaderHeight:Number = this.header.height;
 			this.header.width = this.explicitWidth;
 			this.header.maxWidth = this._maxWidth;
 			this.header.height = NaN;
@@ -706,8 +706,8 @@ package feathers.controls
 
 			if(this.footer)
 			{
-				const oldFooterWidth:Number = this.footer.width;
-				const oldFooterHeight:Number = this.footer.height;
+				var oldFooterWidth:Number = this.footer.width;
+				var oldFooterHeight:Number = this.footer.height;
 				this.footer.width = this.explicitWidth;
 				this.footer.maxWidth = this._maxWidth;
 				this.footer.height = NaN;
@@ -771,8 +771,8 @@ package feathers.controls
 				this.header = null;
 			}
 
-			const factory:Function = this._headerFactory != null ? this._headerFactory : defaultHeaderFactory;
-			const headerName:String = this._customHeaderName != null ? this._customHeaderName : this.headerName;
+			var factory:Function = this._headerFactory != null ? this._headerFactory : defaultHeaderFactory;
+			var headerName:String = this._customHeaderName != null ? this._customHeaderName : this.headerName;
 			this.header = IFeathersControl(factory());
 			this.header.styleNameList.add(headerName);
 			this.header.addEventListener(FeathersEventType.RESIZE, header_resizeHandler);
@@ -807,7 +807,7 @@ package feathers.controls
 			{
 				return;
 			}
-			const footerName:String = this._customFooterName != null ? this._customFooterName : this.footerName;
+			var footerName:String = this._customFooterName != null ? this._customFooterName : this.footerName;
 			this.footer = IFeathersControl(this._footerFactory());
 			this.footer.styleNameList.add(footerName);
 			this.footer.addEventListener(FeathersEventType.RESIZE, footer_resizeHandler);
@@ -849,8 +849,8 @@ package feathers.controls
 
 			var oldIgnoreHeaderResizing:Boolean = this._ignoreHeaderResizing;
 			this._ignoreHeaderResizing = true;
-			const oldHeaderWidth:Number = this.header.width;
-			const oldHeaderHeight:Number = this.header.height;
+			var oldHeaderWidth:Number = this.header.width;
+			var oldHeaderHeight:Number = this.header.height;
 			this.header.width = useActualBounds ? this.actualWidth : this.explicitWidth;
 			this.header.maxWidth = this._maxWidth;
 			this.header.height = NaN;
@@ -864,8 +864,8 @@ package feathers.controls
 			{
 				var oldIgnoreFooterResizing:Boolean = this._ignoreFooterResizing;
 				this._ignoreFooterResizing = true;
-				const oldFooterWidth:Number = this.footer.width;
-				const oldFooterHeight:Number = this.footer.height;
+				var oldFooterWidth:Number = this.footer.width;
+				var oldFooterHeight:Number = this.footer.height;
 				this.footer.width = useActualBounds ? this.actualWidth : this.explicitWidth;
 				this.footer.maxWidth = this._maxWidth;
 				this.footer.height = NaN;

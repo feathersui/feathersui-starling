@@ -2058,8 +2058,8 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			const needsWidth:Boolean = isNaN(this.explicitWidth);
-			const needsHeight:Boolean = isNaN(this.explicitHeight);
+			var needsWidth:Boolean = isNaN(this.explicitWidth);
+			var needsHeight:Boolean = isNaN(this.explicitHeight);
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -2871,8 +2871,8 @@ package feathers.controls
 			touch.getLocation(this, HELPER_POINT);
 			this._currentTouchX = HELPER_POINT.x;
 			this._currentTouchY = HELPER_POINT.y;
-			const now:int = getTimer();
-			const timeOffset:int = now - this._previousTouchTime;
+			var now:int = getTimer();
+			var timeOffset:int = now - this._previousTouchTime;
 			if(timeOffset > 0)
 			{
 				//we're keeping previous velocity updates to improve accuracy

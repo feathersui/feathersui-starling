@@ -46,7 +46,7 @@ package feathers.examples.componentsExplorer.screens
 			this._list.dataProvider = new ListCollection(items);
 			//normally, the first item is selected, but let's show the prompt
 			this._list.selectedIndex = -1;
-			const listLayoutData:AnchorLayoutData = new AnchorLayoutData();
+			var listLayoutData:AnchorLayoutData = new AnchorLayoutData();
 			listLayoutData.horizontalCenter = 0;
 			listLayoutData.verticalCenter = 0;
 			this._list.layoutData = listLayoutData;

@@ -440,9 +440,9 @@ package feathers.examples.trainTimes.controls
 
 		override protected function draw():void
 		{
-			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
-			const selectionInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SELECTED);
-			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			var selectionInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SELECTED);
+			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 
 			if(stylesInvalid)
@@ -465,8 +465,8 @@ package feathers.examples.trainTimes.controls
 
 		protected function autoSizeIfNeeded():Boolean
 		{
-			const needsWidth:Boolean = isNaN(this.explicitWidth);
-			const needsHeight:Boolean = isNaN(this.explicitHeight);
+			var needsWidth:Boolean = isNaN(this.explicitWidth);
+			var needsHeight:Boolean = isNaN(this.explicitHeight);
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -508,7 +508,7 @@ package feathers.examples.trainTimes.controls
 				}
 				this.nameLabel.text = nameLabelText;
 
-				const displayAsSelected:Boolean = this._isSelected || this._data.isDepartingFromHere;
+				var displayAsSelected:Boolean = this._isSelected || this._data.isDepartingFromHere;
 				if(this.isFirstItem)
 				{
 					this.icon.source = displayAsSelected ? this._firstSelectedIconTexture : this._firstNormalIconTexture;
@@ -568,9 +568,9 @@ package feathers.examples.trainTimes.controls
 
 			this.icon.validate();
 			this.icon.x = this._paddingLeft;
-			const leftMarginWidth:Number = this._paddingLeft + this.icon.width + this._gap;
-			const availableLabelWidth:Number = this.actualWidth - this._paddingRight - leftMarginWidth;
-			const availableLabelHeight:Number = this.actualHeight - this._paddingTop - this._paddingBottom;
+			var leftMarginWidth:Number = this._paddingLeft + this.icon.width + this._gap;
+			var availableLabelWidth:Number = this.actualWidth - this._paddingRight - leftMarginWidth;
+			var availableLabelHeight:Number = this.actualHeight - this._paddingTop - this._paddingBottom;
 
 			this.actionContainer.width = availableLabelWidth;
 
@@ -578,7 +578,7 @@ package feathers.examples.trainTimes.controls
 			this.detailsLabel.validate();
 			this.actionContainer.validate();
 
-			const displayAsSelected:Boolean = this._isSelected || this._data.isDepartingFromHere;
+			var displayAsSelected:Boolean = this._isSelected || this._data.isDepartingFromHere;
 			if((displayAsSelected && this.isSelectionWaitingToBeAnimated) ||
 				(!displayAsSelected && !this.isSelectionWaitingToBeAnimated))
 			{
@@ -664,7 +664,7 @@ package feathers.examples.trainTimes.controls
 				return;
 			}
 
-			const touches:Vector.<Touch> = event.getTouches(this, null, HELPER_TOUCHES_VECTOR);
+			var touches:Vector.<Touch> = event.getTouches(this, null, HELPER_TOUCHES_VECTOR);
 			if(touches.length == 0)
 			{
 				//end of hover

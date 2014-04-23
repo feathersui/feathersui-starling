@@ -294,7 +294,7 @@ package feathers.controls
 			}
 			if(this._mxmlContent && this._mxmlContentIsReady)
 			{
-				const childCount:int = this._mxmlContent.length;
+				var childCount:int = this._mxmlContent.length;
 				for(var i:int = 0; i < childCount; i++)
 				{
 					var child:DisplayObject = DisplayObject(this._mxmlContent[i]);
@@ -601,11 +601,11 @@ package feathers.controls
 		 */
 		override protected function draw():void
 		{
-			const sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
-			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
-			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
-			const layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
-			const mxmlContentInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_MXML_CONTENT);
+			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
+			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
+			var layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
+			var mxmlContentInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_MXML_CONTENT);
 
 			if(mxmlContentInvalid)
 			{
@@ -633,7 +633,7 @@ package feathers.controls
 			{
 				return;
 			}
-			const childCount:int = this._mxmlContent.length;
+			var childCount:int = this._mxmlContent.length;
 			for(var i:int = 0; i < childCount; i++)
 			{
 				var child:DisplayObject = DisplayObject(this._mxmlContent[i]);

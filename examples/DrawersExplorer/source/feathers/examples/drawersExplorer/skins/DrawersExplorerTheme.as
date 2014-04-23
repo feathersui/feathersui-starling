@@ -19,15 +19,15 @@ package feathers.examples.drawersExplorer.skins
 			super();
 		}
 
-		override protected function initialize():void
+		override protected function initializeStyleProviders():void
 		{
-			super.initialize();
-			this.setInitializerForClass(ContentView, contentViewInitializer);
-			this.setInitializerForClass(DrawerView, topAndBottomDrawerViewInitializer, THEME_NAME_TOP_AND_BOTTOM_DRAWER);
-			this.setInitializerForClass(DrawerView, leftAndRightDrawerViewInitializer, THEME_NAME_LEFT_AND_RIGHT_DRAWER);
+			super.initializeStyleProviders();
+			this.getStyleProviderForClass(ContentView).defaultStyleFunction = setContentViewStyles;
+			this.getStyleProviderForClass(DrawerView).setFunctionForStyleName(THEME_NAME_TOP_AND_BOTTOM_DRAWER, setTopAndBottomDrawerViewStyles);
+			this.getStyleProviderForClass(DrawerView).setFunctionForStyleName(THEME_NAME_LEFT_AND_RIGHT_DRAWER, setLeftAndRightDrawerViewStyles);
 		}
 
-		protected function contentViewInitializer(view:ContentView):void
+		protected function setContentViewStyles(view:ContentView):void
 		{
 			var layout:VerticalLayout = new VerticalLayout();
 			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_CENTER;
@@ -35,7 +35,7 @@ package feathers.examples.drawersExplorer.skins
 			view.layout = layout;
 		}
 
-		protected function leftAndRightDrawerViewInitializer(view:DrawerView):void
+		protected function setLeftAndRightDrawerViewStyles(view:DrawerView):void
 		{
 			view.backgroundSkin = new Quad(10, 10, LIST_BACKGROUND_COLOR);
 
@@ -47,7 +47,7 @@ package feathers.examples.drawersExplorer.skins
 			view.layout = layout;
 		}
 
-		protected function topAndBottomDrawerViewInitializer(view:DrawerView):void
+		protected function setTopAndBottomDrawerViewStyles(view:DrawerView):void
 		{
 			view.backgroundSkin = new Quad(10, 10, GROUPED_LIST_HEADER_BACKGROUND_COLOR);
 

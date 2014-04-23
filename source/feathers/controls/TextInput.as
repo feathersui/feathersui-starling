@@ -846,7 +846,7 @@ package feathers.controls
 			}
 			if(!(value is PropertyProxy))
 			{
-				const newValue:PropertyProxy = new PropertyProxy();
+				var newValue:PropertyProxy = new PropertyProxy();
 				for(var propertyName:String in value)
 				{
 					newValue[propertyName] = value[propertyName];
@@ -1535,7 +1535,7 @@ package feathers.controls
 			}
 			if(!(value is PropertyProxy))
 			{
-				const newValue:PropertyProxy = new PropertyProxy();
+				var newValue:PropertyProxy = new PropertyProxy();
 				for(var propertyName:String in value)
 				{
 					newValue[propertyName] = value[propertyName];
@@ -1658,14 +1658,14 @@ package feathers.controls
 		 */
 		override protected function draw():void
 		{
-			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
-			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
-			const dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
-			const skinInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SKIN);
+			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
+			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			var skinInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SKIN);
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
-			const textEditorInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_TEXT_EDITOR);
-			const promptFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_PROMPT_FACTORY);
-			const focusInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_FOCUS);
+			var textEditorInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_TEXT_EDITOR);
+			var promptFactoryInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_PROMPT_FACTORY);
+			var focusInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_FOCUS);
 
 			if(textEditorInvalid)
 			{
@@ -1689,7 +1689,7 @@ package feathers.controls
 
 			if(textEditorInvalid || dataInvalid)
 			{
-				const oldIgnoreTextChanges:Boolean = this._ignoreTextChanges;
+				var oldIgnoreTextChanges:Boolean = this._ignoreTextChanges;
 				this._ignoreTextChanges = true;
 				this.textEditor.text = this._text;
 				this._ignoreTextChanges = oldIgnoreTextChanges;
@@ -1754,8 +1754,8 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			const needsWidth:Boolean = isNaN(this.explicitWidth);
-			const needsHeight:Boolean = isNaN(this.explicitHeight);
+			var needsWidth:Boolean = isNaN(this.explicitWidth);
+			var needsHeight:Boolean = isNaN(this.explicitHeight);
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -1827,7 +1827,7 @@ package feathers.controls
 				this.textEditor = null;
 			}
 
-			const factory:Function = this._textEditorFactory != null ? this._textEditorFactory : FeathersControl.defaultTextEditorFactory;
+			var factory:Function = this._textEditorFactory != null ? this._textEditorFactory : FeathersControl.defaultTextEditorFactory;
 			this.textEditor = ITextEditor(factory());
 			this.textEditor.addEventListener(Event.CHANGE, textEditor_changeHandler);
 			this.textEditor.addEventListener(FeathersEventType.ENTER, textEditor_enterHandler);
@@ -1847,7 +1847,7 @@ package feathers.controls
 				this.promptTextRenderer = null;
 			}
 
-			const factory:Function = this._promptFactory != null ? this._promptFactory : FeathersControl.defaultTextRendererFactory;
+			var factory:Function = this._promptFactory != null ? this._promptFactory : FeathersControl.defaultTextRendererFactory;
 			this.promptTextRenderer = ITextRenderer(factory());
 			this.addChild(DisplayObject(this.promptTextRenderer));
 		}
@@ -1905,7 +1905,7 @@ package feathers.controls
 		protected function refreshPromptProperties():void
 		{
 			this.promptTextRenderer.text = this._prompt;
-			const displayPrompt:DisplayObject = DisplayObject(this.promptTextRenderer);
+			var displayPrompt:DisplayObject = DisplayObject(this.promptTextRenderer);
 			for(var propertyName:String in this._promptProperties)
 			{
 				var propertyValue:Object = this._promptProperties[propertyName];
@@ -1920,7 +1920,7 @@ package feathers.controls
 		 */
 		protected function refreshBackgroundSkin():void
 		{
-			const oldSkin:DisplayObject = this.currentBackground;
+			var oldSkin:DisplayObject = this.currentBackground;
 			if(this._stateToSkinFunction != null)
 			{
 				this.currentBackground = DisplayObject(this._stateToSkinFunction(this, this._currentState, oldSkin));
@@ -1958,7 +1958,7 @@ package feathers.controls
 		 */
 		protected function refreshIcon():void
 		{
-			const oldIcon:DisplayObject = this.currentIcon;
+			var oldIcon:DisplayObject = this.currentIcon;
 			if(this._stateToIconFunction != null)
 			{
 				this.currentIcon = DisplayObject(this._stateToIconFunction(this, this._currentState, oldIcon));
@@ -2079,7 +2079,7 @@ package feathers.controls
 				return;
 			}
 			touch.getLocation(this.stage, HELPER_POINT);
-			const isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
+			var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
 			if(!this._textEditorHasFocus && isInBounds)
 			{
 				this.globalToLocal(HELPER_POINT, HELPER_POINT);

@@ -168,7 +168,7 @@ package feathers.motion.transitions
 			if(!this._oldScreen || !this._newScreen || this.skipNextTransition)
 			{
 				this.skipNextTransition = false;
-				const savedCompleteHandler:Function = this._savedCompleteHandler;
+				var savedCompleteHandler:Function = this._savedCompleteHandler;
 				this._savedCompleteHandler = null;
 				if(this._oldScreen)
 				{
@@ -219,7 +219,7 @@ package feathers.motion.transitions
 		{
 			if(this._savedOtherTarget)
 			{
-				const newScreen:DisplayObject = DisplayObject(this._activeTransition.target);
+				var newScreen:DisplayObject = DisplayObject(this._activeTransition.target);
 				this._savedOtherTarget.x = newScreen.x - this.navigator.width;
 			}
 		}
@@ -231,7 +231,7 @@ package feathers.motion.transitions
 		{
 			if(this._savedOtherTarget)
 			{
-				const newScreen:DisplayObject = DisplayObject(this._activeTransition.target);
+				var newScreen:DisplayObject = DisplayObject(this._activeTransition.target);
 				this._savedOtherTarget.x = newScreen.x + this.navigator.width;
 			}
 		}

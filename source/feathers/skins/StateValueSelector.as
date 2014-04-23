@@ -48,7 +48,7 @@ package feathers.skins
 		 */
 		public function clearValueForState(state:Object):Object
 		{
-			const value:Object = this.stateToValue[state];
+			var value:Object = this.stateToValue[state];
 			delete this.stateToValue[state];
 			return value;
 		}
