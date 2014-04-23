@@ -1,6 +1,9 @@
 package feathers.examples.displayObjects.themes
 {
 	import feathers.controls.Button;
+	import feathers.examples.displayObjects.screens.Scale3ImageScreen;
+	import feathers.examples.displayObjects.screens.Scale9ImageScreen;
+	import feathers.examples.displayObjects.screens.TiledImageScreen;
 	import feathers.system.DeviceCapabilities;
 	import feathers.themes.MetalWorksMobileTheme;
 
@@ -39,6 +42,9 @@ package feathers.examples.displayObjects.themes
 			super.initializeStyleProviders();
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(THEME_NAME_RIGHT_GRIP, setRightGripStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(THEME_NAME_BOTTOM_GRIP, setBottomGripStyles);
+			this.getStyleProviderForClass(Scale9ImageScreen).defaultStyleFunction = setScale9ImageScreenStyles;
+			this.getStyleProviderForClass(Scale3ImageScreen).defaultStyleFunction = setScale3ImageScreenStyles;
+			this.getStyleProviderForClass(TiledImageScreen).defaultStyleFunction = setTiledImageScreenStyles;
 		}
 
 		private function setRightGripStyles(button:Button):void
@@ -53,6 +59,21 @@ package feathers.examples.displayObjects.themes
 			var bottomSkin:Image = new Image(this._bottomGripTexture);
 			bottomSkin.scaleX = bottomSkin.scaleY = this.scale;
 			button.defaultSkin = bottomSkin;
+		}
+
+		private function setScale9ImageScreenStyles(screen:Scale9ImageScreen):void
+		{
+			screen.padding = 30 * this.scale;
+		}
+
+		private function setScale3ImageScreenStyles(screen:Scale3ImageScreen):void
+		{
+			screen.padding = 30 * this.scale;
+		}
+
+		private function setTiledImageScreenStyles(screen:TiledImageScreen):void
+		{
+			screen.padding = 30 * this.scale;
 		}
 	}
 }
