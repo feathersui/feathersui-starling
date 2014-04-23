@@ -20,7 +20,7 @@ package feathers.examples.componentsExplorer.screens
 	{
 		public function GroupedListSettingsScreen()
 		{
-			this.addEventListener(FeathersEventType.INITIALIZE, initializeHandler);
+			super();
 		}
 
 		public var settings:GroupedListSettings;
@@ -32,8 +32,11 @@ package feathers.examples.componentsExplorer.screens
 		private var _isSelectableToggle:ToggleSwitch;
 		private var _hasElasticEdgesToggle:ToggleSwitch;
 
-		protected function initializeHandler(event:Event):void
+		override protected function initialize():void
 		{
+			//never forget to call super.initialize()
+			super.initialize();
+
 			this.layout = new AnchorLayout();
 
 			this._stylePicker = new PickerList();

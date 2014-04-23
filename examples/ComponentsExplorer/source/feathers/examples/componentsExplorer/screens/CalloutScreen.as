@@ -7,6 +7,7 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.events.FeathersEventType;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
+	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
 
 	import starling.core.Starling;
@@ -19,9 +20,11 @@ package feathers.examples.componentsExplorer.screens
 	{
 		private static const CONTENT_TEXT:String = "Thank you for trying Feathers.\nHappy coding.";
 
+		public static var styleProvider:IStyleProvider;
+
 		public function CalloutScreen()
 		{
-			this.addEventListener(FeathersEventType.INITIALIZE, initializeHandler);
+			super();
 		}
 
 		private var _rightButton:Button;
@@ -30,6 +33,33 @@ package feathers.examples.componentsExplorer.screens
 		private var _leftButton:Button;
 		private var _backButton:Button;
 		private var _message:Label;
+
+		private var _topLeftLayoutData:AnchorLayoutData;
+		private var _topRightLayoutData:AnchorLayoutData;
+		private var _bottomRightLayoutData:AnchorLayoutData;
+		private var _bottomLeftLayoutData:AnchorLayoutData;
+
+		private var _layoutPadding:Number = 0;
+
+		public function get layoutPadding():Number
+		{
+			return this._layoutPadding;
+		}
+
+		public function set layoutPadding(value:Number):void
+		{
+			if(this._layoutPadding == value)
+			{
+				return;
+			}
+			this._layoutPadding = value;
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+		}
+
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return CalloutScreen.styleProvider;
+		}
 
 		override public function dispose():void
 		{
@@ -43,46 +73,39 @@ package feathers.examples.componentsExplorer.screens
 			super.dispose();
 		}
 
-		protected function initializeHandler(event:Event):void
+		override protected function initialize():void
 		{
-			this.layout = new AnchorLayout();
+			//never forget to call super.initialize()
+			super.initialize();
 
-			var margin:Number = 20 * this.dpiScale;
+			this.layout = new AnchorLayout();
+			this._topLeftLayoutData = new AnchorLayoutData();
+			this._topRightLayoutData = new AnchorLayoutData();
+			this._bottomRightLayoutData = new AnchorLayoutData();
+			this._bottomLeftLayoutData = new AnchorLayoutData();
 
 			this._rightButton = new Button();
 			this._rightButton.label = "Right";
 			this._rightButton.addEventListener(Event.TRIGGERED, rightButton_triggeredHandler);
-			var rightButtonLayoutData:AnchorLayoutData = new AnchorLayoutData();
-			rightButtonLayoutData.top = margin;
-			rightButtonLayoutData.left = margin;
-			this._rightButton.layoutData = rightButtonLayoutData;
+			this._rightButton.layoutData = this._topLeftLayoutData;
 			this.addChild(this._rightButton);
 
 			this._downButton = new Button();
 			this._downButton.label = "Down";
 			this._downButton.addEventListener(Event.TRIGGERED, downButton_triggeredHandler);
-			var downButtonLayoutData:AnchorLayoutData = new AnchorLayoutData();
-			downButtonLayoutData.top = margin;
-			downButtonLayoutData.right = margin;
-			this._downButton.layoutData = downButtonLayoutData;
+			this._downButton.layoutData = this._topRightLayoutData;
 			this.addChild(this._downButton);
 
 			this._upButton = new Button();
 			this._upButton.label = "Up";
 			this._upButton.addEventListener(Event.TRIGGERED, upButton_triggeredHandler);
-			var upButtonLayoutData:AnchorLayoutData = new AnchorLayoutData();
-			upButtonLayoutData.bottom = margin;
-			upButtonLayoutData.left = margin;
-			this._upButton.layoutData = upButtonLayoutData;
+			this._upButton.layoutData = this._bottomLeftLayoutData;
 			this.addChild(this._upButton);
 
 			this._leftButton = new Button();
 			this._leftButton.label = "Left";
 			this._leftButton.addEventListener(Event.TRIGGERED, leftButton_triggeredHandler);
-			var leftButtonLayoutData:AnchorLayoutData = new AnchorLayoutData();
-			leftButtonLayoutData.right = margin;
-			leftButtonLayoutData.bottom = margin;
-			this._leftButton.layoutData = leftButtonLayoutData;
+			this._leftButton.layoutData = this._bottomRightLayoutData;
 			this.addChild(this._leftButton);
 
 			this.headerProperties.title = "Callout";
@@ -101,6 +124,26 @@ package feathers.examples.componentsExplorer.screens
 
 				this.backButtonHandler = this.onBackButton;
 			}
+		}
+
+		override protected function draw():void
+		{
+			var layoutInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_LAYOUT);
+
+			if(layoutInvalid)
+			{
+				this._topLeftLayoutData.top = this._layoutPadding;
+				this._topLeftLayoutData.left = this._layoutPadding;
+				this._topRightLayoutData.top = this._layoutPadding;
+				this._topRightLayoutData.right = this._layoutPadding;
+				this._bottomLeftLayoutData.bottom = this._layoutPadding;
+				this._bottomLeftLayoutData.left = this._layoutPadding;
+				this._bottomRightLayoutData.bottom = this._layoutPadding;
+				this._bottomRightLayoutData.right = this._layoutPadding;
+			}
+
+			//never forget to call super.draw()
+			super.draw();
 		}
 
 		private function showCallout(origin:DisplayObject, direction:String):void

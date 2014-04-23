@@ -5,6 +5,7 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.PanelScreen;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.VerticalLayout;
+	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
 
 	import starling.core.Starling;
@@ -15,10 +16,11 @@ package feathers.examples.componentsExplorer.screens
 
 	public class LabelScreen extends PanelScreen
 	{
+		public static var styleProvider:IStyleProvider;
+
 		public function LabelScreen()
 		{
 			super();
-			this.addEventListener(FeathersEventType.INITIALIZE, initializeHandler);
 		}
 
 		private var _normalLabel:Label;
@@ -28,15 +30,15 @@ package feathers.examples.componentsExplorer.screens
 
 		private var _backButton:Button;
 
-		protected function initializeHandler(event:Event):void
+		override protected function get defaultStyleProvider():IStyleProvider
 		{
-			var verticalLayout:VerticalLayout = new VerticalLayout();
-			verticalLayout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_CENTER;
-			verticalLayout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
-			verticalLayout.padding = 20 * this.dpiScale;
-			verticalLayout.gap = 16 * this.dpiScale;
-			verticalLayout.manageVisibility = true;
-			this.layout = verticalLayout;
+			return LabelScreen.styleProvider;
+		}
+
+		override protected function initialize():void
+		{
+			//never forget to call super.initialize()
+			super.initialize();
 
 			this._normalLabel = new Label();
 			this._normalLabel.text = "This is a normal label.";

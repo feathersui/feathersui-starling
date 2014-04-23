@@ -25,7 +25,7 @@ package feathers.examples.componentsExplorer.screens
 
 		public function ItemRendererSettingsScreen()
 		{
-			this.addEventListener(FeathersEventType.INITIALIZE, initializeHandler);
+			super();
 		}
 
 		public var settings:ItemRendererSettings;
@@ -44,8 +44,11 @@ package feathers.examples.componentsExplorer.screens
 		private var _horizontalAlignPicker:PickerList;
 		private var _verticalAlignPicker:PickerList;
 
-		protected function initializeHandler(event:Event):void
+		override protected function initialize():void
 		{
+			//never forget to call super.initialize()
+			super.initialize();
+
 			this.layout = new AnchorLayout();
 
 			this._hasIconToggle = new ToggleSwitch();

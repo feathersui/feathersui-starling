@@ -26,7 +26,6 @@ package feathers.examples.componentsExplorer.screens
 		public function NumericStepperScreen()
 		{
 			super();
-			this.addEventListener(FeathersEventType.INITIALIZE, initializeHandler);
 		}
 
 		public var settings:NumericStepperSettings;
@@ -35,8 +34,11 @@ package feathers.examples.componentsExplorer.screens
 		private var _backButton:Button;
 		private var _settingsButton:Button;
 
-		protected function initializeHandler(event:Event):void
+		override protected function initialize():void
 		{
+			//never forget to call super.initialize()
+			super.initialize();
+
 			this.layout = new AnchorLayout();
 
 			this._stepper = new NumericStepper();
