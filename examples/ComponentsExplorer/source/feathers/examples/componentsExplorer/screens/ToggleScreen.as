@@ -3,6 +3,7 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.Button;
 	import feathers.controls.Check;
 	import feathers.controls.Header;
+	import feathers.controls.LayoutGroup;
 	import feathers.controls.Panel;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.Radio;
@@ -27,12 +28,11 @@ package feathers.examples.componentsExplorer.screens
 		public function ToggleScreen()
 		{
 			super();
-			this.addEventListener(FeathersEventType.INITIALIZE, initializeHandler);
 		}
 
-		private var _toggleSwitchContainer:ScrollContainer;
-		private var _checkContainer:ScrollContainer;
-		private var _radioContainer:ScrollContainer;
+		private var _toggleSwitchContainer:LayoutGroup;
+		private var _checkContainer:LayoutGroup;
+		private var _radioContainer:LayoutGroup;
 		private var _toggleSwitch:ToggleSwitch;
 		private var _check1:Check;
 		private var _check2:Check;
@@ -42,9 +42,12 @@ package feathers.examples.componentsExplorer.screens
 		private var _radio3:Radio;
 		private var _radioGroup:ToggleGroup;
 		private var _backButton:Button;
-		
-		protected function initializeHandler(event:Event):void
+
+		override protected function initialize():void
 		{
+			//never forget to call super.initialize()
+			super.initialize();
+
 			var layout:VerticalLayout = new VerticalLayout();
 			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_CENTER;
 			layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_MIDDLE;
@@ -56,10 +59,8 @@ package feathers.examples.componentsExplorer.screens
 			containerLayout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_MIDDLE;
 			containerLayout.gap = 20 * this.dpiScale;
 
-			this._toggleSwitchContainer = new ScrollContainer();
+			this._toggleSwitchContainer = new LayoutGroup();
 			this._toggleSwitchContainer.layout = containerLayout;
-			this._toggleSwitchContainer.horizontalScrollPolicy = ScrollContainer.SCROLL_POLICY_OFF;
-			this._toggleSwitchContainer.verticalScrollPolicy = ScrollContainer.SCROLL_POLICY_OFF;
 			this.addChild(this._toggleSwitchContainer);
 
 			this._toggleSwitch = new ToggleSwitch();
@@ -67,10 +68,8 @@ package feathers.examples.componentsExplorer.screens
 			this._toggleSwitch.addEventListener(Event.CHANGE, toggleSwitch_changeHandler);
 			this._toggleSwitchContainer.addChild(this._toggleSwitch);
 
-			this._checkContainer = new ScrollContainer();
+			this._checkContainer = new LayoutGroup();
 			this._checkContainer.layout = containerLayout;
-			this._checkContainer.horizontalScrollPolicy = ScrollContainer.SCROLL_POLICY_OFF;
-			this._checkContainer.verticalScrollPolicy = ScrollContainer.SCROLL_POLICY_OFF;
 			this.addChild(this._checkContainer);
 
 			this._check1 = new Check();
@@ -91,10 +90,8 @@ package feathers.examples.componentsExplorer.screens
 			this._radioGroup = new ToggleGroup();
 			this._radioGroup.addEventListener(Event.CHANGE, radioGroup_changeHandler);
 
-			this._radioContainer = new ScrollContainer();
+			this._radioContainer = new LayoutGroup();
 			this._radioContainer.layout = containerLayout;
-			this._radioContainer.horizontalScrollPolicy = ScrollContainer.SCROLL_POLICY_OFF;
-			this._radioContainer.verticalScrollPolicy = ScrollContainer.SCROLL_POLICY_OFF;
 			this.addChild(this._radioContainer);
 
 			this._radio1 = new Radio();

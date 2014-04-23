@@ -23,14 +23,16 @@ package feathers.examples.componentsExplorer.screens
 		public function PickerListScreen()
 		{
 			super();
-			this.addEventListener(FeathersEventType.INITIALIZE, initializeHandler);
 		}
 
 		private var _backButton:Button;
 		private var _list:PickerList;
-		
-		protected function initializeHandler(event:Event):void
+
+		override protected function initialize():void
 		{
+			//never forget to call super.initialize()
+			super.initialize();
+
 			this.layout = new AnchorLayout();
 
 			var items:Array = [];

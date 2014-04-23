@@ -5,6 +5,7 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.TextInput;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.VerticalLayout;
+	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
 
 	import starling.core.Starling;
@@ -15,9 +16,10 @@ package feathers.examples.componentsExplorer.screens
 
 	public class TextInputScreen extends PanelScreen
 	{
+		public static var styleProvider:IStyleProvider;
+
 		public function TextInputScreen()
 		{
-			this.addEventListener(FeathersEventType.INITIALIZE, initializeHandler);
 		}
 
 		private var _backButton:Button;
@@ -27,15 +29,15 @@ package feathers.examples.componentsExplorer.screens
 		private var _notEditableInput:TextInput;
 		private var _searchInput:TextInput;
 
-		protected function initializeHandler(event:Event):void
+		override protected function get defaultStyleProvider():IStyleProvider
 		{
-			var verticalLayout:VerticalLayout = new VerticalLayout();
-			verticalLayout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_CENTER;
-			verticalLayout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
-			verticalLayout.padding = 20 * this.dpiScale;
-			verticalLayout.gap = 16 * this.dpiScale;
-			verticalLayout.manageVisibility = true;
-			this.layout = verticalLayout;
+			return TextInputScreen.styleProvider;
+		}
+
+		override protected function initialize():void
+		{
+			//never forget to call super.initialize()
+			super.initialize();
 
 			this._input = new TextInput();
 			this._input.prompt = "Normal Text Input";

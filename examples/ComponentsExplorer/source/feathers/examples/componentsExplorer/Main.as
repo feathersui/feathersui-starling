@@ -33,9 +33,9 @@ package feathers.examples.componentsExplorer
 	import feathers.examples.componentsExplorer.screens.TabBarScreen;
 	import feathers.examples.componentsExplorer.screens.TextInputScreen;
 	import feathers.examples.componentsExplorer.screens.ToggleScreen;
+	import feathers.examples.componentsExplorer.themes.ComponentsExplorerTheme;
 	import feathers.motion.transitions.ScreenSlidingStackTransitionManager;
 	import feathers.system.DeviceCapabilities;
-	import feathers.themes.MetalWorksMobileTheme;
 
 	import starling.core.Starling;
 	import starling.events.Event;
@@ -102,7 +102,7 @@ package feathers.examples.componentsExplorer
 		{
 			EmbeddedAssets.initialize();
 
-			new MetalWorksMobileTheme();
+			new ComponentsExplorerTheme();
 			
 			this._navigator = new ScreenNavigator();
 			this.content = this._navigator;
