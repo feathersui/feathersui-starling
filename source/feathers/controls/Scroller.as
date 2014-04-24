@@ -1164,7 +1164,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(isNaN(value))
+			if(value != value) //isNaN
 			{
 				//there isn't any recovery from this, so stop it early
 				throw new ArgumentError("horizontalScrollPosition cannot be NaN.");
@@ -1400,7 +1400,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(isNaN(value))
+			if(value != value) //isNaN
 			{
 				//there isn't any recovery from this, so stop it early
 				throw new ArgumentError("verticalScrollPosition cannot be NaN.");
@@ -1597,8 +1597,8 @@ package feathers.controls
 			{
 				return;
 			}
-			var valueIsNaN:Boolean = isNaN(value);
-			if(valueIsNaN && isNaN(this.explicitPageWidth))
+			var valueIsNaN:Boolean = value != value; //isNaN
+			if(valueIsNaN && this.explicitPageWidth != this.explicitPageWidth)
 			{
 				return;
 			}
@@ -1649,8 +1649,8 @@ package feathers.controls
 			{
 				return;
 			}
-			var valueIsNaN:Boolean = isNaN(value);
-			if(valueIsNaN && isNaN(this.explicitPageHeight))
+			var valueIsNaN:Boolean = value != value; //isNaN
+			if(valueIsNaN && this.explicitPageHeight != this.explicitPageHeight)
 			{
 				return;
 			}
@@ -2948,8 +2948,8 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = isNaN(this.explicitWidth);
-			var needsHeight:Boolean = isNaN(this.explicitHeight);
+			var needsWidth:Boolean = this.explicitWidth != this.explicitWidth; //isNaN
+			var needsHeight:Boolean = this.explicitHeight != this.explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -2960,7 +2960,7 @@ package feathers.controls
 			if(needsWidth)
 			{
 				newWidth = this._viewPort.width + this._rightViewPortOffset + this._leftViewPortOffset;
-				if(!isNaN(this.originalBackgroundWidth))
+				if(this.originalBackgroundWidth == this.originalBackgroundWidth) //!isNaN
 				{
 					newWidth = Math.max(newWidth, this.originalBackgroundWidth);
 				}
@@ -2968,7 +2968,7 @@ package feathers.controls
 			if(needsHeight)
 			{
 				newHeight = this._viewPort.height + this._bottomViewPortOffset + this._topViewPortOffset;
-				if(!isNaN(this.originalBackgroundHeight))
+				if(this.originalBackgroundHeight == this.originalBackgroundHeight) //!isNaN
 				{
 					newHeight = Math.max(newHeight, this.originalBackgroundHeight);
 				}
@@ -3258,7 +3258,7 @@ package feathers.controls
 		 */
 		protected function refreshScrollSteps():void
 		{
-			if(isNaN(this.explicitHorizontalScrollStep))
+			if(this.explicitHorizontalScrollStep != this.explicitHorizontalScrollStep) //isNaN
 			{
 				if(this._viewPort)
 				{
@@ -3273,7 +3273,7 @@ package feathers.controls
 			{
 				this.actualHorizontalScrollStep = this.explicitHorizontalScrollStep;
 			}
-			if(isNaN(this.explicitVerticalScrollStep))
+			if(this.explicitVerticalScrollStep != this.explicitVerticalScrollStep) //isNaN
 			{
 				if(this._viewPort)
 				{
@@ -3297,11 +3297,11 @@ package feathers.controls
 		{
 			var visibleViewPortWidth:Number = this.actualWidth - (this._leftViewPortOffset + this._rightViewPortOffset);
 			var visibleViewPortHeight:Number = this.actualHeight - (this._topViewPortOffset + this._bottomViewPortOffset);
-			if(isNaN(this.explicitPageWidth))
+			if(this.explicitPageWidth != this.explicitPageWidth) //isNaN
 			{
 				this.actualPageWidth = visibleViewPortWidth;
 			}
-			if(isNaN(this.explicitPageHeight))
+			if(this.explicitPageHeight != this.explicitPageHeight) //isNaN
 			{
 				this.actualPageHeight = visibleViewPortHeight;
 			}
@@ -3891,7 +3891,7 @@ package feathers.controls
 		 */
 		protected function throwTo(targetHorizontalScrollPosition:Number = NaN, targetVerticalScrollPosition:Number = NaN, duration:Number = 0.5):void
 		{
-			if(!isNaN(targetHorizontalScrollPosition))
+			if(targetHorizontalScrollPosition == targetHorizontalScrollPosition) //!isNaN
 			{
 				if(this._horizontalAutoScrollTween)
 				{
@@ -3921,7 +3921,7 @@ package feathers.controls
 				}
 			}
 
-			if(!isNaN(targetVerticalScrollPosition))
+			if(targetVerticalScrollPosition == targetVerticalScrollPosition) //!isNaN
 			{
 				if(this._verticalAutoScrollTween)
 				{
@@ -4044,7 +4044,7 @@ package feathers.controls
 			}
 
 			this._isDraggingHorizontally = false;
-			if(isNaN(targetHorizontalScrollPosition))
+			if(targetHorizontalScrollPosition != targetHorizontalScrollPosition) //isNaN
 			{
 				this.completeScroll();
 			}
@@ -4070,7 +4070,7 @@ package feathers.controls
 			}
 
 			this._isDraggingVertically = false;
-			if(isNaN(targetVerticalScrollPosition))
+			if(targetVerticalScrollPosition != targetVerticalScrollPosition) //isNaN
 			{
 				this.completeScroll();
 			}
@@ -4408,7 +4408,8 @@ package feathers.controls
 		 */
 		protected function handlePendingScroll():void
 		{
-			if(!isNaN(this.pendingHorizontalScrollPosition) || !isNaN(this.pendingVerticalScrollPosition))
+			if(this.pendingHorizontalScrollPosition == this.pendingHorizontalScrollPosition ||
+				this.pendingVerticalScrollPosition == this.pendingVerticalScrollPosition) //!isNaN
 			{
 				this.throwTo(this.pendingHorizontalScrollPosition, this.pendingVerticalScrollPosition, this.pendingScrollDuration);
 				this.pendingHorizontalScrollPosition = NaN;
@@ -4881,7 +4882,7 @@ package feathers.controls
 				}
 				this.revealVerticalScrollBar();
 				var scrollStep:Number = this._verticalMouseWheelScrollStep;
-				if(isNaN(scrollStep))
+				if(scrollStep != scrollStep) //isNaN
 				{
 					scrollStep = this.actualVerticalScrollStep;
 				}

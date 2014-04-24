@@ -556,8 +556,8 @@ package feathers.core
 			{
 				return;
 			}
-			var valueIsNaN:Boolean = isNaN(value);
-			if(valueIsNaN && isNaN(this.explicitWidth))
+			var valueIsNaN:Boolean = value != value; //isNaN
+			if(valueIsNaN && this.explicitWidth != this.explicitWidth)
 			{
 				return;
 			}
@@ -640,8 +640,8 @@ package feathers.core
 			{
 				return;
 			}
-			var valueIsNaN:Boolean = isNaN(value);
-			if(valueIsNaN && isNaN(this.explicitHeight))
+			var valueIsNaN:Boolean = value != value; //isNaN
+			if(valueIsNaN && this.explicitHeight != this.explicitHeight)
 			{
 				return;
 			}
@@ -761,7 +761,7 @@ package feathers.core
 			{
 				return;
 			}
-			if(isNaN(value))
+			if(value != value) //isNaN
 			{
 				throw new ArgumentError("minWidth cannot be NaN");
 			}
@@ -803,7 +803,7 @@ package feathers.core
 			{
 				return;
 			}
-			if(isNaN(value))
+			if(value != value) //isNaN
 			{
 				throw new ArgumentError("minHeight cannot be NaN");
 			}
@@ -845,7 +845,7 @@ package feathers.core
 			{
 				return;
 			}
-			if(isNaN(value))
+			if(value != value) //isNaN
 			{
 				throw new ArgumentError("maxWidth cannot be NaN");
 			}
@@ -887,7 +887,7 @@ package feathers.core
 			{
 				return;
 			}
-			if(isNaN(value))
+			if(value != value) //isNaN
 			{
 				throw new ArgumentError("maxHeight cannot be NaN");
 			}
@@ -1646,13 +1646,13 @@ package feathers.core
 		public function setSize(width:Number, height:Number):void
 		{
 			this.explicitWidth = width;
-			var widthIsNaN:Boolean = isNaN(width);
+			var widthIsNaN:Boolean = width != width;
 			if(widthIsNaN)
 			{
 				this.actualWidth = 0;
 			}
 			this.explicitHeight = height;
-			var heightIsNaN:Boolean = isNaN(height);
+			var heightIsNaN:Boolean = height != height;
 			if(heightIsNaN)
 			{
 				this.actualHeight = 0;
@@ -1704,7 +1704,7 @@ package feathers.core
 		 */
 		protected function setSizeInternal(width:Number, height:Number, canInvalidate:Boolean):Boolean
 		{
-			if(!isNaN(this.explicitWidth))
+			if(this.explicitWidth == this.explicitWidth) //!isNaN
 			{
 				width = this.explicitWidth;
 			}
@@ -1719,7 +1719,7 @@ package feathers.core
 					width = this._maxWidth;
 				}
 			}
-			if(!isNaN(this.explicitHeight))
+			if(this.explicitHeight == this.explicitHeight) //!isNaN
 			{
 				height = this.explicitHeight;
 			}
@@ -1734,11 +1734,11 @@ package feathers.core
 					height = this._maxHeight;
 				}
 			}
-			if(isNaN(width))
+			if(width != width) //isNaN
 			{
 				throw new ArgumentError(ILLEGAL_WIDTH_ERROR);
 			}
-			if(isNaN(height))
+			if(height != height) //isNaN
 			{
 				throw new ArgumentError(ILLEGAL_HEIGHT_ERROR);
 			}

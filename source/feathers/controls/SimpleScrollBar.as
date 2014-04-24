@@ -929,15 +929,16 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			if(isNaN(this.thumbOriginalWidth) || isNaN(this.thumbOriginalHeight))
+			if(this.thumbOriginalWidth != this.thumbOriginalWidth ||
+				this.thumbOriginalHeight != this.thumbOriginalHeight) //isNaN
 			{
 				this.thumb.validate();
 				this.thumbOriginalWidth = this.thumb.width;
 				this.thumbOriginalHeight = this.thumb.height;
 			}
 
-			var needsWidth:Boolean = isNaN(this.explicitWidth);
-			var needsHeight:Boolean = isNaN(this.explicitHeight);
+			var needsWidth:Boolean = this.explicitWidth != this.explicitWidth; //isNaN
+			var needsHeight:Boolean = this.explicitHeight != this.explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;

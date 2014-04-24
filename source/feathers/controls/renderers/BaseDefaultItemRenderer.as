@@ -3092,8 +3092,8 @@ package feathers.controls.renderers
 		 */
 		override protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = isNaN(this.explicitWidth);
-			var needsHeight:Boolean = isNaN(this.explicitHeight);
+			var needsWidth:Boolean = this.explicitWidth != this.explicitWidth; //isNaN
+			var needsHeight:Boolean = this.explicitHeight != this.explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -3866,7 +3866,11 @@ package feathers.controls.renderers
 			var calculatedWidth:Number = this.actualWidth;
 			if(forMeasurement)
 			{
-				calculatedWidth = isNaN(this.explicitWidth) ? this._maxWidth : this.explicitWidth;
+				calculatedWidth = this.explicitWidth;
+				if(calculatedWidth != calculatedWidth) //isNaN
+				{
+					calculatedWidth = this._maxWidth;
+				}
 			}
 			calculatedWidth -= (this._paddingLeft + this._paddingRight);
 
