@@ -1291,8 +1291,8 @@ package feathers.controls.renderers
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = isNaN(this.explicitWidth);
-			var needsHeight:Boolean = isNaN(this.explicitHeight);
+			var needsWidth:Boolean = this.explicitWidth != this.explicitWidth; //isNaN
+			var needsHeight:Boolean = this.explicitHeight != this.explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -1304,7 +1304,12 @@ package feathers.controls.renderers
 			if(this.contentLabel)
 			{
 				//special case for label to allow word wrap
-				this.contentLabel.maxWidth = (isNaN(this.explicitWidth) ? this._maxWidth : this.explicitWidth) - this._paddingLeft - this._paddingRight;
+				var labelMaxWidth:Number = this.explicitWidth;
+				if(needsWidth)
+				{
+					labelMaxWidth = this._maxWidth;
+				}
+				this.contentLabel.maxWidth = labelMaxWidth - this._paddingLeft - this._paddingRight;
 			}
 			if(this._horizontalAlign == HORIZONTAL_ALIGN_JUSTIFY)
 			{
@@ -1323,7 +1328,7 @@ package feathers.controls.renderers
 			if(needsWidth)
 			{
 				newWidth = this.content.width + this._paddingLeft + this._paddingRight;
-				if(!isNaN(this.originalBackgroundWidth))
+				if(this.originalBackgroundWidth == this.originalBackgroundWidth) //!isNaN
 				{
 					newWidth = Math.max(newWidth, this.originalBackgroundWidth);
 				}
@@ -1331,7 +1336,7 @@ package feathers.controls.renderers
 			if(needsHeight)
 			{
 				newHeight = this.content.height + this._paddingTop + this._paddingBottom;
-				if(!isNaN(this.originalBackgroundHeight))
+				if(this.originalBackgroundHeight == this.originalBackgroundHeight) //!isNaN
 				{
 					newHeight = Math.max(newHeight, this.originalBackgroundHeight);
 				}
@@ -1359,11 +1364,11 @@ package feathers.controls.renderers
 			}
 			if(this.currentBackgroundSkin)
 			{
-				if(isNaN(this.originalBackgroundWidth))
+				if(this.originalBackgroundWidth != this.originalBackgroundWidth) //isNaN
 				{
 					this.originalBackgroundWidth = this.currentBackgroundSkin.width;
 				}
-				if(isNaN(this.originalBackgroundHeight))
+				if(this.originalBackgroundHeight != this.originalBackgroundHeight) //isNaN
 				{
 					this.originalBackgroundHeight = this.currentBackgroundSkin.height;
 				}

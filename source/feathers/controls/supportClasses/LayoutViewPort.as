@@ -35,7 +35,7 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
-			if(isNaN(value))
+			if(value != value) //isNaN
 			{
 				throw new ArgumentError("minVisibleWidth cannot be NaN");
 			}
@@ -56,7 +56,7 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
-			if(isNaN(value))
+			if(value != value) //isNaN
 			{
 				throw new ArgumentError("maxVisibleWidth cannot be NaN");
 			}
@@ -73,7 +73,8 @@ package feathers.controls.supportClasses
 
 		public function set visibleWidth(value:Number):void
 		{
-			if(this._visibleWidth == value || (isNaN(value) && isNaN(this._visibleWidth)))
+			if(this._visibleWidth == value ||
+				(value != value && this._visibleWidth != this._visibleWidth)) //isNaN
 			{
 				return;
 			}
@@ -94,7 +95,7 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
-			if(isNaN(value))
+			if(value != value) //isNaN
 			{
 				throw new ArgumentError("minVisibleHeight cannot be NaN");
 			}
@@ -115,7 +116,7 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
-			if(isNaN(value))
+			if(value != value) //isNaN
 			{
 				throw new ArgumentError("maxVisibleHeight cannot be NaN");
 			}
@@ -132,7 +133,8 @@ package feathers.controls.supportClasses
 
 		public function set visibleHeight(value:Number):void
 		{
-			if(this._visibleHeight == value || (isNaN(value) && isNaN(this._visibleHeight)))
+			if(this._visibleHeight == value ||
+				(value != value && this._visibleHeight != this._visibleHeight)) //isNaN
 			{
 				return;
 			}
@@ -240,8 +242,16 @@ package feathers.controls.supportClasses
 		{
 			var minX:Number = 0;
 			var minY:Number = 0;
-			var maxX:Number = isNaN(this.viewPortBounds.explicitWidth) ? 0 : this.viewPortBounds.explicitWidth;
-			var maxY:Number = isNaN(this.viewPortBounds.explicitHeight) ? 0 : this.viewPortBounds.explicitHeight;
+			var maxX:Number = this.viewPortBounds.explicitWidth;
+			if(maxX != maxX) //isNaN
+			{
+				maxX = 0;
+			}
+			var maxY:Number = this.viewPortBounds.explicitHeight;
+			if(maxY != maxY) //isNaN
+			{
+				maxY = 0;
+			}
 			this._ignoreChildChanges = true;
 			var itemCount:int = this.items.length;
 			for(var i:int = 0; i < itemCount; i++)
@@ -255,19 +265,23 @@ package feathers.controls.supportClasses
 				var itemY:Number = item.y;
 				var itemMaxX:Number = itemX + item.width;
 				var itemMaxY:Number = itemY + item.height;
-				if(!isNaN(itemX) && itemX < minX)
+				if(itemX == itemX && //!isNaN
+					itemX < minX)
 				{
 					minX = itemX;
 				}
-				if(!isNaN(itemY) && itemY < minY)
+				if(itemY == itemY && //!isNaN
+					itemY < minY)
 				{
 					minY = itemY;
 				}
-				if(!isNaN(itemMaxX) && itemMaxX > maxX)
+				if(itemMaxX == itemMaxX && //!isNaN
+					itemMaxX > maxX)
 				{
 					maxX = itemMaxX;
 				}
-				if(!isNaN(itemMaxY) && itemMaxY > maxY)
+				if(itemMaxY == itemMaxY && //!isNaN
+					itemMaxY > maxY)
 				{
 					maxY = itemMaxY;
 				}

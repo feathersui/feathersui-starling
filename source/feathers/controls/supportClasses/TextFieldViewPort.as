@@ -480,7 +480,7 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
-			if(isNaN(value))
+			if(value != value) //isNaN
 			{
 				throw new ArgumentError("minVisibleWidth cannot be NaN");
 			}
@@ -501,7 +501,7 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
-			if(isNaN(value))
+			if(value != value) //isNaN
 			{
 				throw new ArgumentError("maxVisibleWidth cannot be NaN");
 			}
@@ -518,7 +518,8 @@ package feathers.controls.supportClasses
 
 		public function set visibleWidth(value:Number):void
 		{
-			if(this._visibleWidth == value || (isNaN(value) && isNaN(this._visibleWidth)))
+			if(this._visibleWidth == value ||
+				(value != value && this._visibleWidth != this._visibleWidth)) //isNaN
 			{
 				return;
 			}
@@ -539,7 +540,7 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
-			if(isNaN(value))
+			if(value != value) //isNaN
 			{
 				throw new ArgumentError("minVisibleHeight cannot be NaN");
 			}
@@ -560,7 +561,7 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
-			if(isNaN(value))
+			if(value != value) //isNaN
 			{
 				throw new ArgumentError("maxVisibleHeight cannot be NaN");
 			}
@@ -577,7 +578,8 @@ package feathers.controls.supportClasses
 
 		public function set visibleHeight(value:Number):void
 		{
-			if(this._visibleHeight == value || (isNaN(value) && isNaN(this._visibleHeight)))
+			if(this._visibleHeight == value ||
+				(value != value && this._visibleHeight != this._visibleHeight)) //isNaN
 			{
 				return;
 			}
@@ -831,10 +833,34 @@ package feathers.controls.supportClasses
 				this._scrollStep = this._textField.getLineMetrics(0).height * Starling.contentScaleFactor;
 			}
 
-			var calculatedVisibleWidth:Number = !isNaN(this._visibleWidth) ? this._visibleWidth : Math.max(this._minVisibleWidth, Math.min(this._maxVisibleWidth, this.stage.stageWidth));
+			var calculatedVisibleWidth:Number = this._visibleWidth;
+			if(calculatedVisibleWidth != calculatedVisibleWidth)
+			{
+				calculatedVisibleWidth = this.stage.stageWidth;
+				if(calculatedVisibleWidth < this._minVisibleWidth)
+				{
+					calculatedVisibleWidth = this._minVisibleWidth;
+				}
+				else if(calculatedVisibleWidth > this._maxVisibleWidth)
+				{
+					calculatedVisibleWidth = this._maxVisibleWidth;
+				}
+			}
 			this._textField.width = calculatedVisibleWidth - this._paddingLeft - this._paddingRight;
 			var totalContentHeight:Number = this._textField.height + this._paddingTop + this._paddingBottom;
-			var calculatedVisibleHeight:Number = !isNaN(this._visibleHeight) ? this._visibleHeight : Math.max(this._minVisibleHeight, Math.min(this._maxVisibleHeight, totalContentHeight));
+			var calculatedVisibleHeight:Number = this._visibleHeight;
+			if(calculatedVisibleHeight != calculatedVisibleHeight)
+			{
+				calculatedVisibleHeight = totalContentHeight;
+				if(calculatedVisibleHeight < this._minVisibleHeight)
+				{
+					calculatedVisibleHeight = this._minVisibleHeight;
+				}
+				else if(calculatedVisibleHeight > this._maxVisibleHeight)
+				{
+					calculatedVisibleHeight = this._maxVisibleHeight;
+				}
+			}
 			sizeInvalid = this.setSizeInternal(calculatedVisibleWidth, totalContentHeight, false) || sizeInvalid;
 
 			if(sizeInvalid || scrollInvalid)
