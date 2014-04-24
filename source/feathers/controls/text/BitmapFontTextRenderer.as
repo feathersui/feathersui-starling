@@ -417,12 +417,17 @@ package feathers.controls.text
 			}
 			var font:BitmapFont = this._textFormat.font;
 			var formatSize:Number = this._textFormat.size;
-			var fontSizeScale:Number = isNaN(formatSize) ? 1 : (formatSize / font.size);
-			if(isNaN(font.baseline))
+			var fontSizeScale:Number = formatSize / font.size;
+			if(fontSizeScale != fontSizeScale) //isNaN
+			{
+				fontSizeScale = 1;
+			}
+			var baseline:Number = font.baseline;
+			if(baseline != baseline) //isNaN
 			{
 				return font.lineHeight * fontSizeScale;
 			}
-			return font.baseline * fontSizeScale;
+			return baseline * fontSizeScale;
 		}
 
 		/**
@@ -469,9 +474,17 @@ package feathers.controls.text
 			var customSize:Number = this.currentTextFormat.size;
 			var customLetterSpacing:Number = this.currentTextFormat.letterSpacing;
 			var isKerningEnabled:Boolean = this.currentTextFormat.isKerningEnabled;
-			var scale:Number = isNaN(customSize) ? 1 : (customSize / font.size);
+			var scale:Number = customSize / font.size;
+			if(scale != scale) //isNaN
+			{
+				scale = 1;
+			}
 			var lineHeight:Number = font.lineHeight * scale;
-			var maxLineWidth:Number = !isNaN(this.explicitWidth) ? this.explicitWidth : this._maxWidth;
+			var maxLineWidth:Number = this.explicitWidth;
+			if(maxLineWidth != maxLineWidth) //isNaN
+			{
+				maxLineWidth = this._maxWidth;
+			}
 
 			var maxX:Number = 0;
 			var currentX:Number = 0;
@@ -506,7 +519,8 @@ package feathers.controls.text
 					continue;
 				}
 
-				if(isKerningEnabled && !isNaN(previousCharID))
+				if(isKerningEnabled &&
+					previousCharID == previousCharID) //!isNaN
 				{
 					currentX += charData.getKerning(previousCharID) * scale;
 				}
@@ -618,10 +632,14 @@ package feathers.controls.text
 			var customSize:Number = this.currentTextFormat.size;
 			var customLetterSpacing:Number = this.currentTextFormat.letterSpacing;
 			var isKerningEnabled:Boolean = this.currentTextFormat.isKerningEnabled;
-			var scale:Number = isNaN(customSize) ? 1 : (customSize / font.size);
+			var scale:Number = customSize / font.size;
+			if(scale != scale) //isNaN
+			{
+				scale = 1;
+			}
 			var lineHeight:Number = font.lineHeight * scale;
 
-			var hasExplicitWidth:Boolean = !isNaN(this.explicitWidth);
+			var hasExplicitWidth:Boolean = this.explicitWidth == this.explicitWidth; //!isNaN
 			var isAligned:Boolean = this.currentTextFormat.align != TextFormatAlign.LEFT;
 			var maxLineWidth:Number = hasExplicitWidth ? this.explicitWidth : this._maxWidth;
 			if(isAligned && maxLineWidth == Number.POSITIVE_INFINITY)
@@ -674,7 +692,8 @@ package feathers.controls.text
 					continue;
 				}
 
-				if(isKerningEnabled && !isNaN(previousCharID))
+				if(isKerningEnabled &&
+					previousCharID == previousCharID) //!isNaN
 				{
 					currentX += charData.getKerning(previousCharID) * scale;
 				}
@@ -920,7 +939,11 @@ package feathers.controls.text
 			var customSize:Number = this.currentTextFormat.size;
 			var customLetterSpacing:Number = this.currentTextFormat.letterSpacing;
 			var isKerningEnabled:Boolean = this.currentTextFormat.isKerningEnabled;
-			var scale:Number = isNaN(customSize) ? 1 : (customSize / font.size);
+			var scale:Number = customSize / font.size;
+			if(scale != scale) //isNaN
+			{
+				scale = 1;
+			}
 			var currentX:Number = 0;
 			var previousCharID:Number = NaN;
 			var charCount:int = this._text.length;
@@ -934,7 +957,8 @@ package feathers.controls.text
 					continue;
 				}
 				var currentKerning:Number = 0;
-				if(isKerningEnabled && !isNaN(previousCharID))
+				if(isKerningEnabled &&
+					previousCharID == previousCharID) //!isNaN
 				{
 					currentKerning = charData.getKerning(previousCharID) * scale;
 				}
@@ -968,7 +992,8 @@ package feathers.controls.text
 						continue;
 					}
 					currentKerning = 0;
-					if(isKerningEnabled && !isNaN(previousCharID))
+					if(isKerningEnabled &&
+						previousCharID == previousCharID) //!isNaN
 					{
 						currentKerning = charData.getKerning(previousCharID) * scale;
 					}
@@ -988,7 +1013,8 @@ package feathers.controls.text
 						continue;
 					}
 					currentKerning = 0;
-					if(isKerningEnabled && !isNaN(previousCharID))
+					if(isKerningEnabled &&
+						previousCharID == previousCharID) //!isNaN
 					{
 						currentKerning = charData.getKerning(previousCharID) * scale;
 					}
