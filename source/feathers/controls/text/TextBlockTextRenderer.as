@@ -73,6 +73,11 @@ package feathers.controls.text
 
 		/**
 		 * @private
+		 */
+		private static var HELPER_TEXT_LINES:Vector.<TextLine> = new <TextLine>[];
+
+		/**
+		 * @private
 		 * This is enforced by the runtime.
 		 */
 		protected static const MAX_TEXT_LINE_WIDTH:Number = 1000000;
@@ -1459,10 +1464,11 @@ package feathers.controls.text
 				this._textElement.text = this._text;
 				this._truncationOffset = 0;
 			}
-			var textLineCache:Vector.<TextLine>;
+			HELPER_TEXT_LINES.length = 0;
 			var yPosition:Number = 0;
 			var lineCount:int = textLines.length;
 			var lastLine:TextLine;
+			var cacheIndex:int = lineCount;
 			for(var i:int = 0; i < lineCount; i++)
 			{
 				var line:TextLine = textLines[i];
@@ -1470,6 +1476,7 @@ package feathers.controls.text
 				{
 					line.filters = this._nativeFilters;
 					lastLine = line;
+					textLines[i] = line;
 					continue;
 				}
 				else
@@ -1481,17 +1488,24 @@ package feathers.controls.text
 						//we're using this value in the next loop
 						lastLine = null;
 					}
-					textLineCache = textLines.splice(i, lineCount - i);
+					cacheIndex = i;
 					break;
 				}
 			}
+			//copy the invalid text lines over to the helper vector so that we
+			//can reuse them
+			for(; i < lineCount; i++)
+			{
+				HELPER_TEXT_LINES[int(i - cacheIndex)] = textLines[i];
+			}
+			textLines.length = cacheIndex;
 
 			if(width >= 0)
 			{
 				var lineStartIndex:int = 0;
 				var canTruncate:Boolean = this._truncateToFit && this._textElement && !this._wordWrap;
 				var pushIndex:int = textLines.length;
-				var inactiveTextLineCount:int = textLineCache ? textLineCache.length : 0;
+				var inactiveTextLineCount:int = HELPER_TEXT_LINES.length;
 				while(true)
 				{
 					var previousLine:TextLine = line;
@@ -1502,11 +1516,11 @@ package feathers.controls.text
 					}
 					if(inactiveTextLineCount > 0)
 					{
-						var inactiveLine:TextLine = textLineCache[0];
+						var inactiveLine:TextLine = HELPER_TEXT_LINES[0];
 						line = this.textBlock.recreateTextLine(inactiveLine, previousLine, lineWidth, 0, true);
 						if(line)
 						{
-							textLineCache.shift();
+							HELPER_TEXT_LINES.shift();
 							inactiveTextLineCount--;
 						}
 					}
@@ -1592,17 +1606,13 @@ package feathers.controls.text
 				}
 			}
 
-			if(!textLineCache)
-			{
-				return;
-			}
-
-			inactiveTextLineCount = textLineCache.length;
+			inactiveTextLineCount = HELPER_TEXT_LINES.length;
 			for(i = 0; i < inactiveTextLineCount; i++)
 			{
-				line = textLineCache.shift();
+				line = HELPER_TEXT_LINES[i];
 				textLineParent.removeChild(line);
 			}
+			HELPER_TEXT_LINES.length = 0;
 		}
 
 		/**
