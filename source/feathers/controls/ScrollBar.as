@@ -2279,15 +2279,14 @@ package feathers.controls
 
 			var contentWidth:Number = this.actualWidth - this._paddingLeft - this._paddingRight;
 			var contentHeight:Number = this.actualHeight - this._paddingTop - this._paddingBottom;
-			var adjustedPageStep:Number = Math.min(range, this._page == 0 ? range : this._page);
-			var valueOffset:Number = 0;
-			if(this._value < this._minimum)
+			var adjustedPageStep:Number = this._page;
+			if(this._page == 0)
 			{
-				valueOffset = (this._minimum - this._value);
+				adjustedPageStep = range;
 			}
-			if(this._value > this._maximum)
+			else if(adjustedPageStep > range)
 			{
-				valueOffset = (this._value - this._maximum);
+				adjustedPageStep = range;
 			}
 			if(this._direction == DIRECTION_VERTICAL)
 			{

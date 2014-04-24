@@ -3140,9 +3140,19 @@ package feathers.controls
 			//view port fills the entire bounds.
 			this._viewPort.visibleWidth = this.explicitWidth - horizontalWidthOffset;
 			this._viewPort.visibleHeight = this.explicitHeight - verticalHeightOffset;
-			this._viewPort.minVisibleWidth = Math.max(0, this._minWidth - horizontalWidthOffset);
+			var minVisibleWidth:Number = this._minWidth - horizontalWidthOffset;
+			if(minVisibleWidth < 0)
+			{
+				minVisibleWidth = 0;
+			}
+			this._viewPort.minVisibleWidth = minVisibleWidth;
 			this._viewPort.maxVisibleWidth = this._maxWidth - horizontalWidthOffset;
-			this._viewPort.minVisibleHeight = Math.max(0, this._minHeight - verticalHeightOffset);
+			var minVisibleHeight:Number = this._minHeight - verticalHeightOffset;
+			if(minVisibleHeight < 0)
+			{
+				minVisibleHeight = 0;
+			}
+			this._viewPort.minVisibleHeight = minVisibleHeight;
 			this._viewPort.maxVisibleHeight = this._maxHeight - verticalHeightOffset;
 			this._viewPort.horizontalScrollPosition = this._horizontalScrollPosition;
 			this._viewPort.verticalScrollPosition = this._verticalScrollPosition;

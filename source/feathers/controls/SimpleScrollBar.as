@@ -968,7 +968,11 @@ package feathers.controls
 						}
 						else
 						{
-							newWidth = Math.max(this.thumbOriginalWidth, this.thumbOriginalWidth * range / adjustedPageStep);
+							newWidth = this.thumbOriginalWidth * range / adjustedPageStep;
+							if(newWidth < this.thumbOriginalWidth)
+							{
+								newWidth = this.thumbOriginalWidth;
+							}
 						}
 					}
 				}
@@ -990,7 +994,11 @@ package feathers.controls
 						}
 						else
 						{
-							newHeight = Math.max(this.thumbOriginalHeight, this.thumbOriginalHeight * range / adjustedPageStep);
+							newHeight = this.thumbOriginalHeight * range / adjustedPageStep;
+							if(newHeight < this.thumbOriginalHeight)
+							{
+								newHeight = this.thumbOriginalHeight;
+							}
 						}
 					}
 				}
@@ -1064,7 +1072,15 @@ package feathers.controls
 
 			var contentWidth:Number = this.actualWidth - this._paddingLeft - this._paddingRight;
 			var contentHeight:Number = this.actualHeight - this._paddingTop - this._paddingBottom;
-			var adjustedPageStep:Number = Math.min(range, this._page == 0 ? range : this._page);
+			var adjustedPageStep:Number = this._page;
+			if(this._page == 0)
+			{
+				adjustedPageStep = range;
+			}
+			else if(range < adjustedPageStep)
+			{
+				adjustedPageStep = range;
+			}
 			var valueOffset:Number = 0;
 			if(this._value < this._minimum)
 			{
