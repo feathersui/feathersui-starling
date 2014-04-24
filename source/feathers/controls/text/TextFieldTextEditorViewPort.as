@@ -79,7 +79,7 @@ package feathers.controls.text
 			{
 				return;
 			}
-			if(isNaN(value))
+			if(value != value) //isNaN
 			{
 				throw new ArgumentError("minVisibleWidth cannot be NaN");
 			}
@@ -109,7 +109,7 @@ package feathers.controls.text
 			{
 				return;
 			}
-			if(isNaN(value))
+			if(value != value) //isNaN
 			{
 				throw new ArgumentError("maxVisibleWidth cannot be NaN");
 			}
@@ -135,7 +135,8 @@ package feathers.controls.text
 		 */
 		public function set visibleWidth(value:Number):void
 		{
-			if(this._visibleWidth == value || (isNaN(value) && isNaN(this._visibleWidth)))
+			if(this._visibleWidth == value ||
+				(value != value && this._visibleWidth != this._visibleWidth)) //isNaN
 			{
 				return;
 			}
@@ -165,7 +166,7 @@ package feathers.controls.text
 			{
 				return;
 			}
-			if(isNaN(value))
+			if(value != value) //isNaN
 			{
 				throw new ArgumentError("minVisibleHeight cannot be NaN");
 			}
@@ -195,7 +196,7 @@ package feathers.controls.text
 			{
 				return;
 			}
-			if(isNaN(value))
+			if(value != value) //isNaN
 			{
 				throw new ArgumentError("maxVisibleHeight cannot be NaN");
 			}
@@ -221,7 +222,8 @@ package feathers.controls.text
 		 */
 		public function set visibleHeight(value:Number):void
 		{
-			if(this._visibleHeight == value || (isNaN(value) && isNaN(this._visibleHeight)))
+			if(this._visibleHeight == value ||
+				(value != value && this._visibleHeight != this._visibleHeight)) //isNaN
 			{
 				return;
 			}
@@ -322,7 +324,7 @@ package feathers.controls.text
 				result = new Point();
 			}
 
-			var needsWidth:Boolean = isNaN(this._visibleWidth);
+			var needsWidth:Boolean = this._visibleWidth != this._visibleWidth; //isNaN
 
 			this.commitStylesAndData(this.measureTextField);
 			var newWidth:Number = this._visibleWidth;
@@ -345,7 +347,7 @@ package feathers.controls.text
 		override protected function refreshSnapshotParameters():void
 		{
 			var textFieldWidth:Number = this._visibleWidth;
-			if(isNaN(textFieldWidth))
+			if(textFieldWidth != textFieldWidth) //isNaN
 			{
 				if(this._maxVisibleWidth < Number.POSITIVE_INFINITY)
 				{
@@ -357,7 +359,7 @@ package feathers.controls.text
 				}
 			}
 			var textFieldHeight:Number = this._visibleHeight;
-			if(isNaN(textFieldHeight))
+			if(textFieldHeight != textFieldHeight) //isNaN
 			{
 				if(this._maxVisibleHeight < Number.POSITIVE_INFINITY)
 				{

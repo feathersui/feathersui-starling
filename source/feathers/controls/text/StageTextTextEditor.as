@@ -1109,8 +1109,8 @@ package feathers.controls.text
 				return result;
 			}
 
-			var needsWidth:Boolean = isNaN(this.explicitWidth);
-			var needsHeight:Boolean = isNaN(this.explicitHeight);
+			var needsWidth:Boolean = this.explicitWidth != this.explicitWidth; //isNaN
+			var needsHeight:Boolean = this.explicitHeight != this.explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				result.x = this.explicitWidth;
@@ -1197,8 +1197,8 @@ package feathers.controls.text
 				result = new Point();
 			}
 
-			var needsWidth:Boolean = isNaN(this.explicitWidth);
-			var needsHeight:Boolean = isNaN(this.explicitHeight);
+			var needsWidth:Boolean = this.explicitWidth != this.explicitWidth; //isNaN
+			var needsHeight:Boolean = this.explicitHeight != this.explicitHeight; //isNaN
 
 			this._measureTextField.autoSize = TextFieldAutoSize.LEFT;
 
@@ -1283,8 +1283,8 @@ package feathers.controls.text
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = isNaN(this.explicitWidth);
-			var needsHeight:Boolean = isNaN(this.explicitHeight);
+			var needsWidth:Boolean = this.explicitWidth != this.explicitWidth; //isNaN
+			var needsHeight:Boolean = this.explicitHeight != this.explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -1490,12 +1490,14 @@ package feathers.controls.text
 			stageTextViewPort.x = Math.round(starlingViewPort.x + HELPER_POINT.x * scaleFactor);
 			stageTextViewPort.y = Math.round(starlingViewPort.y + HELPER_POINT.y * scaleFactor);
 			var viewPortWidth:Number = Math.round(this.actualWidth * scaleFactor * globalScaleX);
-			if(viewPortWidth < 1 || isNaN(viewPortWidth))
+			if(viewPortWidth < 1 ||
+				viewPortWidth != viewPortWidth) //isNaN
 			{
 				viewPortWidth = 1;
 			}
 			var viewPortHeight:Number = Math.round(this.actualHeight * scaleFactor * globalScaleY);
-			if(viewPortHeight < 1 || isNaN(viewPortHeight))
+			if(viewPortHeight < 1 ||
+				viewPortHeight != viewPortHeight) //isNaN
 			{
 				viewPortHeight = 1;
 			}
