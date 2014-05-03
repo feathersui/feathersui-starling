@@ -1323,7 +1323,15 @@ package feathers.controls
 		 */
 		protected function replaceBitmapDataTexture(bitmapData:BitmapData):void
 		{
-			this._texture = Texture.fromBitmapData(bitmapData, false, false, 1, this._textureFormat);
+			try
+			{
+				this._texture = Texture.fromBitmapData(bitmapData, false, false, 1, this._textureFormat);
+			} 
+			catch(error:Error) 
+			{
+				error.message += ' in ' + String(this) + ' from source "' + String(this._source) + '"';
+				throw error;
+			}
 			if(Starling.handleLostContext)
 			{
 				//we're saving it so that we can dispose it when we get a new
