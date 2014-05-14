@@ -114,8 +114,9 @@ package feathers.core
 			}
 			else
 			{
-				for(var stage:Stage in STAGE_TO_STACK)
+				for(var key:Object in STAGE_TO_STACK)
 				{
+					var stage:Stage = Stage(key);
 					var stack:Vector.<IFocusManager> = STAGE_TO_STACK[stage];
 					while(stack.length > 0)
 					{
