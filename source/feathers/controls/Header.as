@@ -366,7 +366,7 @@ package feathers.controls
 		 */
 		public function get leftItems():Vector.<DisplayObject>
 		{
-			return this._leftItems.concat();
+			return this._leftItems;
 		}
 
 		/**
@@ -428,7 +428,7 @@ package feathers.controls
 		 */
 		public function get centerItems():Vector.<DisplayObject>
 		{
-			return this._centerItems.concat();
+			return this._centerItems;
 		}
 
 		/**
@@ -487,7 +487,7 @@ package feathers.controls
 		 */
 		public function get rightItems():Vector.<DisplayObject>
 		{
-			return this._rightItems.concat();
+			return this._rightItems;
 		}
 
 		/**
