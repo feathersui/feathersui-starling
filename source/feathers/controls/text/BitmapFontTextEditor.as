@@ -15,7 +15,11 @@ package feathers.controls.text
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
+	import starling.events.Event;
 	import starling.events.KeyboardEvent;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	import starling.text.BitmapChar;
 	import starling.text.BitmapFont;
 
@@ -121,9 +125,18 @@ package feathers.controls.text
 	 */
 	public class BitmapFontTextEditor extends BitmapFontTextRenderer implements ITextEditor
 	{
+		/**
+		 * @private
+		 */
+		private static const HELPER_POINT:Point = new Point();
+
+		/**
+		 * Constructor.
+		 */
 		public function BitmapFontTextEditor()
 		{
 			this.isQuickHitAreaEnabled = true;
+			this.addEventListener(TouchEvent.TOUCH, touchHandler);
 		}
 
 		/**
@@ -281,6 +294,24 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		override public function set text(value:String):void
+		{
+			if(value === null)
+			{
+				//don't allow null or undefined
+				value = "";
+			}
+			if(this._text == value)
+			{
+				return;
+			}
+			super.text = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _maxChars:int = 0;
 
 		/**
@@ -369,6 +400,11 @@ package feathers.controls.text
 		 */
 		public function setFocus(position:Point = null):void
 		{
+			//we already have focus, so there's no reason to change
+			if(this._hasFocus && !position)
+			{
+				return;
+			}
 			if(this.isCreated)
 			{
 				var newIndex:int = -1;
@@ -385,9 +421,11 @@ package feathers.controls.text
 						newIndex = this.getSelectionIndexAtPoint(positionX, positionY);
 					}
 				}
-				this.selectRange(newIndex, newIndex);
-				this._cursorSkin.visible = this._selectionStartIndex >= 0;
-				this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+				if(newIndex >= 0)
+				{
+					this.selectRange(newIndex, newIndex);
+				}
+				this.focusIn();
 			}
 			else
 			{
@@ -404,6 +442,7 @@ package feathers.controls.text
 			{
 				return;
 			}
+			this._hasFocus = false;
 			this._cursorSkin.visible = false;
 			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 			Starling.current.nativeStage.focus = Starling.current.nativeStage;
@@ -452,6 +491,23 @@ package feathers.controls.text
 				}
 				this._cursorSkin.height = font.lineHeight * scale;
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function focusIn():void
+		{
+			this._cursorSkin.visible = this._selectionStartIndex >= 0;
+			if(this._hasFocus)
+			{
+				return;
+			}
+			//we're reusing this variable. since this isn't a display object
+			//that the focus manager can see, it's going unused.
+			this._hasFocus = true;
+			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+			this.dispatchEventWith(FeathersEventType.FOCUS_IN);
 		}
 
 		/**
@@ -553,6 +609,23 @@ package feathers.controls.text
 			}
 			this._cursorSkin.x = int(currentX - (this._cursorSkin.width / 2));
 			this._cursorSkin.y = 0;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function touchHandler(event:TouchEvent):void
+		{
+			if(!this._isEnabled || !this._isEditable)
+			{
+				return;
+			}
+			var touch:Touch = event.getTouch(this, TouchPhase.BEGAN);
+			if(touch)
+			{
+				touch.getLocation(this, HELPER_POINT);
+				this.setFocus(HELPER_POINT);
+			}
 		}
 
 		/**
