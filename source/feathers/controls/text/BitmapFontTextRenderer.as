@@ -466,7 +466,7 @@ package feathers.controls.text
 			{
 				result.x = result.y = 0;
 			}
-			if(!this.currentTextFormat || !this._text)
+			if(!this.currentTextFormat || this._text === null)
 			{
 				return result;
 			}
@@ -501,8 +501,15 @@ package feathers.controls.text
 				var charID:int = this._text.charCodeAt(i);
 				if(charID == CHARACTER_ID_LINE_FEED || charID == CHARACTER_ID_CARRIAGE_RETURN) //new line \n or \r
 				{
-					currentX = Math.max(0, currentX - customLetterSpacing);
-					maxX = Math.max(maxX, currentX);
+					currentX = currentX - customLetterSpacing;
+					if(currentX < 0)
+					{
+						currentX = 0;
+					}
+					if(maxX < currentX)
+					{
+						maxX = currentX;
+					}
 					previousCharID = NaN;
 					currentX = 0;
 					currentY += lineHeight;
@@ -547,7 +554,13 @@ package feathers.controls.text
 
 					if(wordCountForLine > 0 && (currentX + offsetX) > maxLineWidth)
 					{
-						maxX = Math.max(maxX, startXOfPreviousWord - widthOfWhitespaceAfterWord);
+						//we're just reusing this variable to avoid creating a
+						//new one. it'll be reset to 0 in a moment.
+						widthOfWhitespaceAfterWord = startXOfPreviousWord - widthOfWhitespaceAfterWord;
+						if(maxX < widthOfWhitespaceAfterWord)
+						{
+							maxX = widthOfWhitespaceAfterWord;
+						}
 						previousCharID = NaN;
 						currentX -= startXOfPreviousWord;
 						currentY += lineHeight;
@@ -561,8 +574,15 @@ package feathers.controls.text
 				previousCharID = charID;
 				word += String.fromCharCode(charID);
 			}
-			currentX = Math.max(0, currentX - customLetterSpacing);
-			maxX = Math.max(maxX, currentX);
+			currentX = currentX - customLetterSpacing;
+			if(currentX < 0)
+			{
+				currentX = 0;
+			}
+			if(maxX < currentX)
+			{
+				maxX = currentX;
+			}
 
 			result.x = maxX;
 			result.y = currentY + font.lineHeight * scale;
@@ -601,7 +621,7 @@ package feathers.controls.text
 			{
 				this._characterBatch.batchable = !this._useSeparateBatch;
 				this._characterBatch.reset();
-				if(!this.currentTextFormat || !this._text)
+				if(!this.currentTextFormat || this._text === null)
 				{
 					this.setSizeInternal(0, 0, false);
 					return;
@@ -609,13 +629,6 @@ package feathers.controls.text
 				this.layoutCharacters(HELPER_POINT);
 				this.setSizeInternal(HELPER_POINT.x, HELPER_POINT.y, false);
 			}
-		}
-
-		/**
-		 * @private
-		 */
-		protected function refreshBatching():void
-		{
 		}
 
 		/**
@@ -668,13 +681,20 @@ package feathers.controls.text
 				var charID:int = textToDraw.charCodeAt(i);
 				if(charID == CHARACTER_ID_LINE_FEED || charID == CHARACTER_ID_CARRIAGE_RETURN) //new line \n or \r
 				{
-					currentX = Math.max(0, currentX - customLetterSpacing);
+					currentX = currentX - customLetterSpacing;
+					if(currentX < 0)
+					{
+						currentX = 0;
+					}
 					if(this._wordWrap || isAligned)
 					{
 						this.alignBuffer(maxLineWidth, currentX, 0);
 						this.addBufferToBatch(0);
 					}
-					maxX = Math.max(maxX, currentX);
+					if(maxX < currentX)
+					{
+						maxX = currentX;
+					}
 					previousCharID = NaN;
 					currentX = 0;
 					currentY += lineHeight;
@@ -736,7 +756,13 @@ package feathers.controls.text
 							this.addBufferToBatch(wordLength);
 						}
 						this.moveBufferedCharacters(-startXOfPreviousWord, lineHeight, 0);
-						maxX = Math.max(maxX, startXOfPreviousWord - widthOfWhitespaceAfterWord);
+						//we're just reusing this variable to avoid creating a
+						//new one. it'll be reset to 0 in a moment.
+						widthOfWhitespaceAfterWord = startXOfPreviousWord - widthOfWhitespaceAfterWord;
+						if(maxX < widthOfWhitespaceAfterWord)
+						{
+							maxX = widthOfWhitespaceAfterWord;
+						}
 						previousCharID = NaN;
 						currentX -= startXOfPreviousWord;
 						currentY += lineHeight;
@@ -765,13 +791,20 @@ package feathers.controls.text
 				currentX += offsetX + customLetterSpacing;
 				previousCharID = charID;
 			}
-			currentX = Math.max(0, currentX - customLetterSpacing);
+			currentX = currentX - customLetterSpacing;
+			if(currentX < 0)
+			{
+				currentX = 0;
+			}
 			if(this._wordWrap || isAligned)
 			{
 				this.alignBuffer(maxLineWidth, currentX, 0);
 				this.addBufferToBatch(0);
 			}
-			maxX = Math.max(maxX, currentX);
+			if(maxX < currentX)
+			{
+				maxX = currentX;
+			}
 
 			if(isAligned && !hasExplicitWidth)
 			{
