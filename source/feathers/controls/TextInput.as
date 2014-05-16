@@ -287,7 +287,6 @@ package feathers.controls
 		public function TextInput()
 		{
 			super();
-			this.isQuickHitAreaEnabled = true;
 			this.addEventListener(TouchEvent.TOUCH, textInput_touchHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, textInput_removedFromStageHandler);
 		}
