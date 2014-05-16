@@ -10,6 +10,7 @@ package feathers.controls
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
 	import feathers.core.IFocusDisplayObject;
+	import feathers.core.IMultilineTextEditor;
 	import feathers.core.ITextEditor;
 	import feathers.core.ITextRenderer;
 	import feathers.core.IValidating;
@@ -1754,8 +1755,8 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = isNaN(this.explicitWidth);
-			var needsHeight:Boolean = isNaN(this.explicitHeight);
+			var needsWidth:Boolean = this.explicitWidth != this.explicitWidth; //isNaN
+			var needsHeight:Boolean = this.explicitHeight != this.explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -1796,7 +1797,8 @@ package feathers.controls
 				newHeight = Math.max(this._originalSkinHeight, typicalTextHeight + this._paddingTop + this._paddingBottom);
 			}
 
-			if(this._typicalText && this._verticalAlign == VERTICAL_ALIGN_JUSTIFY)
+			var isMultiline:Boolean = this.textEditor is IMultilineTextEditor && IMultilineTextEditor(this.textEditor).multiline;
+			if(this._typicalText && (this._verticalAlign == VERTICAL_ALIGN_JUSTIFY || isMultiline))
 			{
 				this.textEditor.width = oldTextEditorWidth;
 				this.textEditor.height = oldTextEditorHeight;
@@ -2020,50 +2022,71 @@ package feathers.controls
 			this.textEditor.width = this.actualWidth - this._paddingRight - this.textEditor.x;
 			this.promptTextRenderer.width = this.actualWidth - this._paddingRight - this.promptTextRenderer.x;
 
+			var isMultiline:Boolean = this.textEditor is IMultilineTextEditor && IMultilineTextEditor(this.textEditor).multiline;
+			if(isMultiline)
+			{
+				//multiline is treated the same as justify
+				this.textEditor.height = this.actualHeight - this._paddingTop - this._paddingBottom;
+			}
+			else
+			{
+				//clear the height and auto-size instead
+				this.textEditor.height = NaN;
+			}
 			this.textEditor.validate();
 			this.promptTextRenderer.validate();
 
-			switch(this._verticalAlign)
+			if(isMultiline)
 			{
-				case VERTICAL_ALIGN_JUSTIFY:
+				this.promptTextRenderer.y = this._paddingTop;
+				this.promptTextRenderer.height = this.actualHeight - this._paddingTop - this._paddingBottom;
+				if(this.currentIcon)
 				{
-					this.textEditor.y = this._paddingTop;
-					this.textEditor.height = this.actualHeight - this._paddingTop - this._paddingBottom;
-					this.promptTextRenderer.y = this._paddingTop;
-					this.promptTextRenderer.height = this.actualHeight - this._paddingTop - this._paddingBottom;
-					if(this.currentIcon)
-					{
-						this.currentIcon.y = this._paddingTop;
-					}
-					break;
+					this.currentIcon.y = this._paddingTop;
 				}
-				case VERTICAL_ALIGN_TOP:
+			}
+			else
+			{
+				switch(this._verticalAlign)
 				{
-					this.textEditor.y = this._paddingTop;
-					this.promptTextRenderer.y = this._paddingTop;
-					if(this.currentIcon)
+					case VERTICAL_ALIGN_JUSTIFY:
 					{
-						this.currentIcon.y = this._paddingTop;
+						this.promptTextRenderer.y = this._paddingTop;
+						this.promptTextRenderer.height = this.actualHeight - this._paddingTop - this._paddingBottom;
+						if(this.currentIcon)
+						{
+							this.currentIcon.y = this._paddingTop;
+						}
+						break;
 					}
-					break;
-				}
-				case VERTICAL_ALIGN_BOTTOM:
-				{
-					this.textEditor.y = this.actualHeight - this._paddingBottom - this.textEditor.height;
-					this.promptTextRenderer.y = this.actualHeight - this._paddingBottom - this.promptTextRenderer.height;
-					if(this.currentIcon)
+					case VERTICAL_ALIGN_TOP:
 					{
-						this.currentIcon.y = this.actualHeight - this._paddingBottom - this.currentIcon.height;
+						this.textEditor.y = this._paddingTop;
+						this.promptTextRenderer.y = this._paddingTop;
+						if(this.currentIcon)
+						{
+							this.currentIcon.y = this._paddingTop;
+						}
+						break;
 					}
-					break;
-				}
-				default:
-				{
-					this.textEditor.y = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - this.textEditor.height) / 2;
-					this.promptTextRenderer.y = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - this.promptTextRenderer.height) / 2;
-					if(this.currentIcon)
+					case VERTICAL_ALIGN_BOTTOM:
 					{
-						this.currentIcon.y = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - this.currentIcon.height) / 2;
+						this.textEditor.y = this.actualHeight - this._paddingBottom - this.textEditor.height;
+						this.promptTextRenderer.y = this.actualHeight - this._paddingBottom - this.promptTextRenderer.height;
+						if(this.currentIcon)
+						{
+							this.currentIcon.y = this.actualHeight - this._paddingBottom - this.currentIcon.height;
+						}
+						break;
+					}
+					default: //middle
+					{
+						this.textEditor.y = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - this.textEditor.height) / 2;
+						this.promptTextRenderer.y = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - this.promptTextRenderer.height) / 2;
+						if(this.currentIcon)
+						{
+							this.currentIcon.y = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - this.currentIcon.height) / 2;
+						}
 					}
 				}
 			}
