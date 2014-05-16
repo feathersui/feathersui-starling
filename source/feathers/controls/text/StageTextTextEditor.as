@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.text
 {
 	import feathers.core.FeathersControl;
+	import feathers.core.IMultilineTextEditor;
 	import feathers.core.ITextEditor;
 	import feathers.events.FeathersEventType;
 	import feathers.text.StageTextField;
@@ -190,7 +191,7 @@ package feathers.controls.text
 	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html flash.text.StageText
 	 * @see feathers.text.StageTextField
 	 */
-	public class StageTextTextEditor extends FeathersControl implements ITextEditor
+	public class StageTextTextEditor extends FeathersControl implements IMultilineTextEditor
 	{
 		/**
 		 * @private
