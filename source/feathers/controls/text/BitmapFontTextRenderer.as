@@ -340,6 +340,47 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _truncateToFit:Boolean = true;
+
+		/**
+		 * If word wrap is disabled, and the text is longer than the width of
+		 * the label, the text may be truncated using <code>truncationText</code>.
+		 *
+		 * <p>This feature may be disabled to improve performance.</p>
+		 *
+		 * <p>This feature does not currently support the truncation of text
+		 * displayed on multiple lines.</p>
+		 *
+		 * <p>In the following example, truncation is disabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * textRenderer.truncateToFit = false;</listing>
+		 *
+		 * @default true
+		 *
+		 * @see #truncationText
+		 */
+		public function get truncateToFit():Boolean
+		{
+			return _truncateToFit;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set truncateToFit(value:Boolean):void
+		{
+			if(this._truncateToFit == value)
+			{
+				return;
+			}
+			this._truncateToFit = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _truncationText:String = "...";
 
 		/**
@@ -662,7 +703,11 @@ package feathers.controls.text
 				this.measureText(HELPER_POINT);
 				maxLineWidth = HELPER_POINT.x;
 			}
-			var textToDraw:String = this.getTruncatedText(maxLineWidth);
+			var textToDraw:String = this._text;
+			if(this._truncateToFit)
+			{
+				textToDraw = this.getTruncatedText(maxLineWidth);
+			}
 			CHARACTER_BUFFER.length = 0;
 
 			var maxX:Number = 0;
