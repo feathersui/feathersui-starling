@@ -11,7 +11,10 @@ package feathers.controls.text
 	import feathers.events.FeathersEventType;
 
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
+
+	import starling.core.RenderSupport;
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
@@ -136,6 +139,7 @@ package feathers.controls.text
 		public function BitmapFontTextEditor()
 		{
 			this.isQuickHitAreaEnabled = true;
+			this.truncateToFit = false;
 			this.addEventListener(TouchEvent.TOUCH, touchHandler);
 		}
 
@@ -393,6 +397,11 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _scrollX:Number = 0;
+
+		/**
+		 * @private
+		 */
 		protected var _isWaitingToSetFocus:Boolean = false;
 
 		/**
@@ -472,6 +481,38 @@ package feathers.controls.text
 			}
 			this.positionCursorAtIndex(endIndex);
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
+		}
+
+		/**
+		 * @private
+		 */
+		override public function render(support:RenderSupport, parentAlpha:Number):void
+		{
+			var oldBatchX:Number = this._batchX;
+			var oldCursorX:Number = this._cursorSkin.x;
+			this._batchX -= this._scrollX;
+			this._cursorSkin.x -= this._scrollX;
+			super.render(support, parentAlpha);
+			this._batchX = oldBatchX;
+			this._cursorSkin.x = oldCursorX;
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function draw():void
+		{
+			super.draw();
+
+			var clipRect:Rectangle = this.clipRect;
+			if(clipRect)
+			{
+				clipRect.setTo(0, 0, this.actualWidth, this.actualHeight);
+			}
+			else
+			{
+				this.clipRect = new Rectangle(0, 0, this.actualWidth, this.actualHeight)
+			}
 		}
 
 		/**
@@ -607,8 +648,19 @@ package feathers.controls.text
 				currentX += customLetterSpacing + currentKerning + charData.xAdvance * scale;
 				previousCharID = charID;
 			}
-			this._cursorSkin.x = int(currentX - (this._cursorSkin.width / 2));
+			var cursorX:Number = int(currentX - (this._cursorSkin.width / 2));
+			this._cursorSkin.x = cursorX;
 			this._cursorSkin.y = 0;
+
+			var minScrollX:Number = cursorX + this._cursorSkin.width - this.actualWidth;
+			if(this._scrollX < minScrollX)
+			{
+				this._scrollX = minScrollX;
+			}
+			else if(this._scrollX > cursorX)
+			{
+				this._scrollX = cursorX;
+			}
 		}
 
 		/**
@@ -624,6 +676,7 @@ package feathers.controls.text
 			if(touch)
 			{
 				touch.getLocation(this, HELPER_POINT);
+				HELPER_POINT.x += this._scrollX;
 				this.setFocus(HELPER_POINT);
 			}
 		}
