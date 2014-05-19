@@ -134,6 +134,16 @@ package feathers.controls.text
 		private static const HELPER_POINT:Point = new Point();
 
 		/**
+		 * @private
+		 */
+		protected static const IS_WORD:RegExp = /\w/;
+
+		/**
+		 * @private
+		 */
+		protected static const IS_WHITESPACE:RegExp = /\s/;
+
+		/**
 		 * Constructor.
 		 */
 		public function BitmapFontTextEditor()
@@ -663,6 +673,47 @@ package feathers.controls.text
 			}
 		}
 
+		protected function findPreviousWordStartIndex():int
+		{
+			if(this._selectionStartIndex <= 0)
+			{
+				return 0;
+			}
+			var nextCharIsWord:Boolean = IS_WORD.test(this._text.charAt(this._selectionStartIndex - 1));
+			for(var i:int = this._selectionStartIndex - 2; i >= 0; i--)
+			{
+				var charIsWord:Boolean = IS_WORD.test(this._text.charAt(i));
+				if(!charIsWord && nextCharIsWord)
+				{
+					return i + 1;
+				}
+				nextCharIsWord = charIsWord;
+			}
+			return 0;
+		}
+
+		protected function findNextWordStartIndex():int
+		{
+			var textLength:int = this._text.length;
+			if(this._selectionEndIndex >= textLength - 1)
+			{
+				return textLength;
+			}
+			//the first character is a special case. any non-whitespace is
+			//considered part of the word.
+			var prevCharIsWord:Boolean = !IS_WHITESPACE.test(this._text.charAt(this._selectionEndIndex));
+			for(var i:int = this._selectionEndIndex + 1; i < textLength; i++)
+			{
+				var charIsWord:Boolean = IS_WORD.test(this._text.charAt(i));
+				if(charIsWord && !prevCharIsWord)
+				{
+					return i;
+				}
+				prevCharIsWord = charIsWord;
+			}
+			return textLength;
+		}
+
 		/**
 		 * @private
 		 */
@@ -703,7 +754,14 @@ package feathers.controls.text
 				}
 				else
 				{
-					newIndex = this._selectionStartIndex - 1;
+					if(event.altKey || event.ctrlKey)
+					{
+						newIndex = this.findPreviousWordStartIndex();
+					}
+					else
+					{
+						newIndex = this._selectionStartIndex - 1;
+					}
 					if(newIndex < 0)
 					{
 						newIndex = 0;
@@ -718,8 +776,15 @@ package feathers.controls.text
 				}
 				else
 				{
-					newIndex = this._selectionEndIndex + 1;
-					if(newIndex > this._text.length)
+					if(event.altKey || event.ctrlKey)
+					{
+						newIndex = this.findNextWordStartIndex();
+					}
+					else
+					{
+						newIndex = this._selectionEndIndex + 1;
+					}
+					if(newIndex < 0 || newIndex > this._text.length)
 					{
 						newIndex = this._text.length;
 					}
@@ -734,30 +799,40 @@ package feathers.controls.text
 				}
 				else if(event.keyCode == Keyboard.DELETE)
 				{
-					if(this._selectionStartIndex != this._selectionEndIndex)
+					if(event.altKey || event.ctrlKey)
 					{
-						this.text = this.text.substr(0, this._selectionStartIndex) + this.text.substr(this._selectionEndIndex);
+						this.text = this._text.substr(0, this._selectionStartIndex) + this._text.substr(this.findNextWordStartIndex());
+
+					}
+					else if(this._selectionStartIndex != this._selectionEndIndex)
+					{
+						this.text = this._text.substr(0, this._selectionStartIndex) + this._text.substr(this._selectionEndIndex);
 					}
 					else if(this._selectionEndIndex < this._text.length)
 					{
-						this.text = this.text.substr(0, this._selectionStartIndex) + this.text.substr(this._selectionEndIndex + 1);
+						this.text = this._text.substr(0, this._selectionStartIndex) + this._text.substr(this._selectionEndIndex + 1);
 					}
 				}
 				else if(event.keyCode == Keyboard.BACKSPACE)
 				{
-					if(this._selectionStartIndex != this._selectionEndIndex)
+					if(event.altKey || event.ctrlKey)
 					{
-						this.text = this.text.substr(0, this._selectionStartIndex) + this.text.substr(this._selectionEndIndex);
+						newIndex = this.findPreviousWordStartIndex();
+						this.text = this._text.substr(0, newIndex) + this._text.substr(this._selectionEndIndex);
+					}
+					else if(this._selectionStartIndex != this._selectionEndIndex)
+					{
+						this.text = this._text.substr(0, this._selectionStartIndex) + this._text.substr(this._selectionEndIndex);
 					}
 					else if(this._selectionStartIndex > 0)
 					{
-						this.text = this.text.substr(0, this._selectionStartIndex - 1) + this.text.substr(this._selectionEndIndex);
+						this.text = this._text.substr(0, this._selectionStartIndex - 1) + this._text.substr(this._selectionEndIndex);
 						newIndex = this._selectionStartIndex - 1;
 					}
 				}
 				else if(event.charCode >= 32) //ignore control characters
 				{
-					this.text = this.text.substr(0, this._selectionStartIndex) + String.fromCharCode(event.charCode) + this.text.substr(this._selectionEndIndex);
+					this.text = this._text.substr(0, this._selectionStartIndex) + String.fromCharCode(event.charCode) + this._text.substr(this._selectionEndIndex);
 					newIndex = this._selectionEndIndex + 1;
 				}
 			}
