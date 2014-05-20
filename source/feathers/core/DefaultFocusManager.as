@@ -643,14 +643,19 @@ package feathers.core
 		 */
 		protected function nativeFocus_focusOutHandler(event:FocusEvent):void
 		{
-			//if there's still a feathers focus, but the native stage object has
-			//lost focus for some reason, and there's no focus at all, force it
-			//back into focus.
-			//this can happen on app deactivate!
 			var nativeStage:Stage = Starling.current.nativeStage;
 			if(this._focus && !nativeStage.focus)
 			{
+				//if there's still a feathers focus, but the native stage object has
+				//lost focus for some reason, and there's no focus at all, force it
+				//back into focus.
+				//this can happen on app deactivate!
 				nativeStage.focus = _nativeFocusTarget;
+			}
+			else
+			{
+				//otherwise, we should stop listening for this event
+				nativeStage.focus.removeEventListener(FocusEvent.FOCUS_OUT, nativeFocus_focusOutHandler);
 			}
 		}
 	}
