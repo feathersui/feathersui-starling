@@ -18,6 +18,7 @@ package feathers.controls.text
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
+	import starling.display.Quad;
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
 	import starling.events.Touch;
@@ -150,7 +151,42 @@ package feathers.controls.text
 		{
 			this.isQuickHitAreaEnabled = true;
 			this.truncateToFit = false;
-			this.addEventListener(TouchEvent.TOUCH, touchHandler);
+			this.addEventListener(TouchEvent.TOUCH, textEditor_touchHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _selectionSkin:DisplayObject;
+
+		/**
+		 *
+		 */
+		public function get selectionSkin():DisplayObject
+		{
+			return this._selectionSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set selectionSkin(value:DisplayObject):void
+		{
+			if(this._selectionSkin == value)
+			{
+				return;
+			}
+			if(this._selectionSkin && this._selectionSkin.parent == this)
+			{
+				this._selectionSkin.removeFromParent();
+			}
+			this._selectionSkin = value;
+			if(this._selectionSkin)
+			{
+				this._selectionSkin.visible = false;
+				this.addChildAt(this._selectionSkin, 0);
+			}
+			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
 		/**
@@ -407,7 +443,17 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _selectionAnchorIndex:int = -1;
+
+		/**
+		 * @private
+		 */
 		protected var _scrollX:Number = 0;
+
+		/**
+		 * @private
+		 */
+		protected var touchPointID:int = -1;
 
 		/**
 		 * @private
@@ -485,11 +531,30 @@ package feathers.controls.text
 			}
 			this._selectionStartIndex = startIndex;
 			this._selectionEndIndex = endIndex;
-			if(startIndex < 0)
+			if(startIndex == endIndex)
+			{
+				if(startIndex < 0)
+				{
+					this._cursorSkin.visible = false;
+				}
+				else if(this._hasFocus)
+				{
+					this._cursorSkin.visible = this._selectionStartIndex >= 0;
+				}
+				this._selectionSkin.visible = false;
+			}
+			else
 			{
 				this._cursorSkin.visible = false;
+				this._selectionSkin.visible = true;
 			}
-			this.positionCursorAtIndex(endIndex);
+			var cursorIndex:int = endIndex;
+			if(this._selectionAnchorIndex >= 0 && this._selectionAnchorIndex == endIndex)
+			{
+				cursorIndex = startIndex;
+			}
+			this.positionCursorAtIndex(cursorIndex);
+			this.positionSelectionBackground();
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
 
@@ -505,6 +570,18 @@ package feathers.controls.text
 			super.render(support, parentAlpha);
 			this._batchX = oldBatchX;
 			this._cursorSkin.x = oldCursorX;
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function initialize():void
+		{
+			if(!this._selectionSkin)
+			{
+				this.selectionSkin = new Quad(1, 1, 0x000000);
+			}
+			super.initialize();
 		}
 
 		/**
@@ -609,7 +686,7 @@ package feathers.controls.text
 				currentX += charWidth;
 				previousCharID = charID;
 			}
-			if(pointX > currentX)
+			if(pointX >= currentX)
 			{
 				return this._text.length;
 			}
@@ -619,12 +696,8 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function positionCursorAtIndex(index:int):void
+		protected function getXPositionOfIndex(index:int):Number
 		{
-			if(index < 0)
-			{
-				return;
-			}
 			var font:BitmapFont = this.currentTextFormat.font;
 			var customSize:Number = this.currentTextFormat.size;
 			var customLetterSpacing:Number = this.currentTextFormat.letterSpacing;
@@ -658,11 +731,30 @@ package feathers.controls.text
 				currentX += customLetterSpacing + currentKerning + charData.xAdvance * scale;
 				previousCharID = charID;
 			}
-			var cursorX:Number = int(currentX - (this._cursorSkin.width / 2));
+			return currentX;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function positionCursorAtIndex(index:int):void
+		{
+			if(index < 0)
+			{
+				index = 0;
+			}
+			var cursorX:Number = this.getXPositionOfIndex(index);
+			cursorX = int(cursorX - (this._cursorSkin.width / 2));
 			this._cursorSkin.x = cursorX;
 			this._cursorSkin.y = 0;
 
+			//then we update the scroll to always show the cursor
 			var minScrollX:Number = cursorX + this._cursorSkin.width - this.actualWidth;
+			var maxScrollX:Number = this.getXPositionOfIndex(this._text.length) - this.actualWidth;
+			if(maxScrollX < 0)
+			{
+				maxScrollX = 0;
+			}
 			if(this._scrollX < minScrollX)
 			{
 				this._scrollX = minScrollX;
@@ -671,6 +763,39 @@ package feathers.controls.text
 			{
 				this._scrollX = cursorX;
 			}
+			if(this._scrollX > maxScrollX)
+			{
+				this._scrollX = maxScrollX;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function positionSelectionBackground():void
+		{
+			var font:BitmapFont = this.currentTextFormat.font;
+			var customSize:Number = this.currentTextFormat.size;
+			var scale:Number = customSize / font.size;
+			if(scale != scale) //isNaN
+			{
+				scale = 1;
+			}
+
+			var startX:Number = this.getXPositionOfIndex(this._selectionStartIndex) - this._scrollX;
+			if(startX < 0)
+			{
+				startX = 0;
+			}
+			var endX:Number = this.getXPositionOfIndex(this._selectionEndIndex) - this._scrollX;
+			if(endX < 0)
+			{
+				endX = 0;
+			}
+			this._selectionSkin.x = startX;
+			this._selectionSkin.width = endX - startX;
+			this._selectionSkin.y = 0;
+			this._selectionSkin.height = font.lineHeight * scale;
 		}
 
 		protected function findPreviousWordStartIndex():int
@@ -717,18 +842,37 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function touchHandler(event:TouchEvent):void
+		protected function textEditor_touchHandler(event:TouchEvent):void
 		{
 			if(!this._isEnabled || !this._isEditable)
 			{
+				this.touchPointID = -1;
 				return;
 			}
-			var touch:Touch = event.getTouch(this, TouchPhase.BEGAN);
-			if(touch)
+			if(this.touchPointID >= 0)
 			{
+				var touch:Touch = event.getTouch(this, null, this.touchPointID);
+				touch.getLocation(this, HELPER_POINT);
+				HELPER_POINT.x += this._scrollX;
+				this.selectRange(this._selectionAnchorIndex, this.getSelectionIndexAtPoint(HELPER_POINT.x, HELPER_POINT.y));
+				if(touch.phase == TouchPhase.ENDED)
+				{
+					this.touchPointID = -1;
+					this._selectionAnchorIndex = -1;
+				}
+			}
+			else //if we get here, we don't have a saved touch ID yet
+			{
+				touch = event.getTouch(this, TouchPhase.BEGAN);
+				if(!touch)
+				{
+					return;
+				}
+				this.touchPointID = touch.id;
 				touch.getLocation(this, HELPER_POINT);
 				HELPER_POINT.x += this._scrollX;
 				this.setFocus(HELPER_POINT);
+				this._selectionAnchorIndex = this._selectionStartIndex;
 			}
 		}
 
@@ -737,6 +881,11 @@ package feathers.controls.text
 		 */
 		protected function stage_keyDownHandler(event:KeyboardEvent):void
 		{
+			//if a touch is active, ignore the keyboard
+			if(this.touchPointID >= 0)
+			{
+				return;
+			}
 			var newIndex:int = -1;
 			if(event.keyCode == Keyboard.HOME || event.keyCode == Keyboard.UP)
 			{
@@ -807,6 +956,7 @@ package feathers.controls.text
 					else if(this._selectionStartIndex != this._selectionEndIndex)
 					{
 						this.text = this._text.substr(0, this._selectionStartIndex) + this._text.substr(this._selectionEndIndex);
+						this.selectRange(this._selectionStartIndex, this._selectionStartIndex);
 					}
 					else if(this._selectionEndIndex < this._text.length)
 					{
@@ -823,6 +973,7 @@ package feathers.controls.text
 					else if(this._selectionStartIndex != this._selectionEndIndex)
 					{
 						this.text = this._text.substr(0, this._selectionStartIndex) + this._text.substr(this._selectionEndIndex);
+						this.selectRange(this._selectionStartIndex, this._selectionStartIndex);
 					}
 					else if(this._selectionStartIndex > 0)
 					{
