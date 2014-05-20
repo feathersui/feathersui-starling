@@ -925,8 +925,19 @@ package feathers.controls.text
 				this.touchPointID = touch.id;
 				touch.getLocation(this, HELPER_POINT);
 				HELPER_POINT.x += this._scrollX;
-				this.setFocus(HELPER_POINT);
-				this._selectionAnchorIndex = this._selectionStartIndex;
+				if(event.shiftKey)
+				{
+					if(this._selectionAnchorIndex < 0)
+					{
+						this._selectionAnchorIndex = this._selectionStartIndex;
+					}
+					this.selectRange(this._selectionAnchorIndex, this.getSelectionIndexAtPoint(HELPER_POINT.x, HELPER_POINT.y));
+				}
+				else
+				{
+					this.setFocus(HELPER_POINT);
+					this._selectionAnchorIndex = this._selectionStartIndex;
+				}
 			}
 		}
 
