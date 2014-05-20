@@ -10,12 +10,15 @@ package feathers.controls.text
 	import feathers.core.ITextEditor;
 	import feathers.events.FeathersEventType;
 
+	import flash.desktop.Clipboard;
+	import flash.desktop.ClipboardFormats;
+	import flash.display.InteractiveObject;
+	import flash.events.Event;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
 
 	import starling.core.RenderSupport;
-
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
@@ -356,7 +359,7 @@ package feathers.controls.text
 				return;
 			}
 			super.text = value;
-			this.dispatchEventWith(Event.CHANGE);
+			this.dispatchEventWith(starling.events.Event.CHANGE);
 		}
 
 		/**
@@ -458,6 +461,11 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _nativeFocus:InteractiveObject;
+
+		/**
+		 * @private
+		 */
 		protected var _isWaitingToSetFocus:Boolean = false;
 
 		/**
@@ -509,8 +517,12 @@ package feathers.controls.text
 			}
 			this._hasFocus = false;
 			this._cursorSkin.visible = false;
+			this._selectionSkin.visible = false;
 			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
-			Starling.current.nativeStage.focus = Starling.current.nativeStage;
+			this._nativeFocus.removeEventListener(flash.events.Event.CUT, nativeStage_cutHandler);
+			this._nativeFocus.removeEventListener(flash.events.Event.COPY, nativeStage_copyHandler);
+			this._nativeFocus.removeEventListener(flash.events.Event.PASTE, nativeStage_pasteHandler);
+			this._nativeFocus = null;
 			this.dispatchEventWith(FeathersEventType.FOCUS_OUT);
 		}
 
@@ -524,10 +536,6 @@ package feathers.controls.text
 				var temp:int = endIndex;
 				endIndex = startIndex;
 				startIndex = temp;
-			}
-			if(this._selectionStartIndex == startIndex && this._selectionEndIndex == endIndex)
-			{
-				return;
 			}
 			this._selectionStartIndex = startIndex;
 			this._selectionEndIndex = endIndex;
@@ -549,7 +557,7 @@ package feathers.controls.text
 				this._selectionSkin.visible = true;
 			}
 			var cursorIndex:int = endIndex;
-			if(this._selectionAnchorIndex >= 0 && this._selectionAnchorIndex == endIndex)
+			if(this.touchPointID >= 0 && this._selectionAnchorIndex >= 0 && this._selectionAnchorIndex == endIndex)
 			{
 				cursorIndex = startIndex;
 			}
@@ -626,7 +634,9 @@ package feathers.controls.text
 		 */
 		protected function focusIn():void
 		{
-			this._cursorSkin.visible = this._selectionStartIndex >= 0;
+			var showCursor:Boolean = this._selectionStartIndex >= 0 && this._selectionStartIndex != this._selectionEndIndex;
+			this._cursorSkin.visible = showCursor;
+			this._selectionSkin.visible = !showCursor;
 			if(this._hasFocus)
 			{
 				return;
@@ -636,6 +646,10 @@ package feathers.controls.text
 			this._hasFocus = true;
 			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 			this.dispatchEventWith(FeathersEventType.FOCUS_IN);
+			this._nativeFocus = Starling.current.nativeStage.focus;
+			this._nativeFocus.addEventListener(flash.events.Event.CUT, nativeStage_cutHandler, false, 0, true);
+			this._nativeFocus.addEventListener(flash.events.Event.COPY, nativeStage_copyHandler, false, 0, true);
+			this._nativeFocus.addEventListener(flash.events.Event.PASTE, nativeStage_pasteHandler, false, 0, true);
 		}
 
 		/**
@@ -798,6 +812,9 @@ package feathers.controls.text
 			this._selectionSkin.height = font.lineHeight * scale;
 		}
 
+		/**
+		 * @private
+		 */
 		protected function findPreviousWordStartIndex():int
 		{
 			if(this._selectionStartIndex <= 0)
@@ -817,6 +834,9 @@ package feathers.controls.text
 			return 0;
 		}
 
+		/**
+		 * @private
+		 */
 		protected function findNextWordStartIndex():int
 		{
 			var textLength:int = this._text.length;
@@ -842,6 +862,37 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected function getSelectedText():String
+		{
+			if(this._selectionStartIndex == this._selectionEndIndex)
+			{
+				return null;
+			}
+			return this._text.substr(this._selectionStartIndex, this._selectionEndIndex - this._selectionStartIndex);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function deleteSelectedText():void
+		{
+			this.text = this._text.substr(0, this._selectionStartIndex) + this._text.substr(this._selectionEndIndex);
+			this.selectRange(this._selectionStartIndex, this._selectionStartIndex);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function replaceSelectedText(text:String, select:Boolean = false):void
+		{
+			this.text = this._text.substr(0, this._selectionStartIndex) + text + this._text.substr(this._selectionEndIndex);
+			var selectionIndex:int = this._selectionStartIndex + text.length;
+			this.selectRange(selectionIndex, selectionIndex);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function textEditor_touchHandler(event:TouchEvent):void
 		{
 			if(!this._isEnabled || !this._isEditable)
@@ -858,7 +909,10 @@ package feathers.controls.text
 				if(touch.phase == TouchPhase.ENDED)
 				{
 					this.touchPointID = -1;
-					this._selectionAnchorIndex = -1;
+					if(this._selectionStartIndex == this._selectionEndIndex)
+					{
+						this._selectionAnchorIndex = -1;
+					}
 				}
 			}
 			else //if we get here, we don't have a saved touch ID yet
@@ -881,8 +935,13 @@ package feathers.controls.text
 		 */
 		protected function stage_keyDownHandler(event:KeyboardEvent):void
 		{
-			//if a touch is active, ignore the keyboard
-			if(this.touchPointID >= 0)
+			if(!this._isEnabled || !this._isEditable || this.touchPointID >= 0)
+			{
+				return;
+			}
+			//ignore cut, copy, and paste
+			var charCode:uint = event.charCode;
+			if(event.ctrlKey && (charCode == 99 || charCode == 118 || charCode == 120))
 			{
 				return;
 			}
@@ -897,7 +956,30 @@ package feathers.controls.text
 			}
 			else if(event.keyCode == Keyboard.LEFT)
 			{
-				if(this._selectionStartIndex != this._selectionEndIndex)
+				if(event.shiftKey)
+				{
+					if(this._selectionAnchorIndex < 0)
+					{
+						this._selectionAnchorIndex = this._selectionStartIndex;
+					}
+					if(this._selectionAnchorIndex >= 0 && this._selectionAnchorIndex == this._selectionStartIndex &&
+						this._selectionStartIndex != this._selectionEndIndex)
+					{
+						newIndex = this._selectionEndIndex - 1;
+						this.selectRange(this._selectionStartIndex, newIndex);
+					}
+					else
+					{
+						newIndex = this._selectionStartIndex - 1;
+						if(newIndex < 0)
+						{
+							newIndex = 0;
+						}
+						this.selectRange(newIndex, this._selectionEndIndex);
+					}
+					return;
+				}
+				else if(this._selectionStartIndex != this._selectionEndIndex)
 				{
 					newIndex = this._selectionStartIndex;
 				}
@@ -919,7 +1001,30 @@ package feathers.controls.text
 			}
 			else if(event.keyCode == Keyboard.RIGHT)
 			{
-				if(this._selectionStartIndex != this._selectionEndIndex)
+				if(event.shiftKey)
+				{
+					if(this._selectionAnchorIndex < 0)
+					{
+						this._selectionAnchorIndex = this._selectionStartIndex;
+					}
+					if(this._selectionAnchorIndex >= 0 && this._selectionAnchorIndex == this._selectionEndIndex &&
+						this._selectionStartIndex != this._selectionEndIndex)
+					{
+						newIndex = this._selectionStartIndex + 1;
+						this.selectRange(newIndex, this._selectionEndIndex);
+					}
+					else
+					{
+						newIndex = this._selectionEndIndex + 1;
+						if(newIndex < 0 || newIndex > this._text.length)
+						{
+							newIndex = this._text.length;
+						}
+						this.selectRange(this._selectionStartIndex, newIndex);
+					}
+					return;
+				}
+				else if(this._selectionStartIndex != this._selectionEndIndex)
 				{
 					newIndex = this._selectionEndIndex;
 				}
@@ -955,8 +1060,7 @@ package feathers.controls.text
 					}
 					else if(this._selectionStartIndex != this._selectionEndIndex)
 					{
-						this.text = this._text.substr(0, this._selectionStartIndex) + this._text.substr(this._selectionEndIndex);
-						this.selectRange(this._selectionStartIndex, this._selectionStartIndex);
+						this.deleteSelectedText();
 					}
 					else if(this._selectionEndIndex < this._text.length)
 					{
@@ -972,8 +1076,7 @@ package feathers.controls.text
 					}
 					else if(this._selectionStartIndex != this._selectionEndIndex)
 					{
-						this.text = this._text.substr(0, this._selectionStartIndex) + this._text.substr(this._selectionEndIndex);
-						this.selectRange(this._selectionStartIndex, this._selectionStartIndex);
+						this.deleteSelectedText();
 					}
 					else if(this._selectionStartIndex > 0)
 					{
@@ -981,16 +1084,52 @@ package feathers.controls.text
 						newIndex = this._selectionStartIndex - 1;
 					}
 				}
-				else if(event.charCode >= 32) //ignore control characters
+				else if(charCode >= 32) //ignore control characters
 				{
-					this.text = this._text.substr(0, this._selectionStartIndex) + String.fromCharCode(event.charCode) + this._text.substr(this._selectionEndIndex);
-					newIndex = this._selectionEndIndex + 1;
+					this.replaceSelectedText(String.fromCharCode(charCode));
 				}
 			}
 			if(newIndex >= 0)
 			{
 				this.selectRange(newIndex, newIndex);
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function nativeStage_cutHandler(event:flash.events.Event):void
+		{
+			if(!this._isEditable || !this._isEnabled || this._selectionStartIndex == this._selectionEndIndex)
+			{
+				return;
+			}
+			Clipboard.generalClipboard.setData(ClipboardFormats.TEXT_FORMAT, this.getSelectedText());
+			this.deleteSelectedText();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function nativeStage_copyHandler(event:flash.events.Event):void
+		{
+			if(!this._isEditable || !this._isEnabled || this._selectionStartIndex == this._selectionEndIndex)
+			{
+				return;
+			}
+			Clipboard.generalClipboard.setData(ClipboardFormats.TEXT_FORMAT, this.getSelectedText());
+		}
+
+		/**
+		 * @private
+		 */
+		protected function nativeStage_pasteHandler(event:flash.events.Event):void
+		{
+			if(!this._isEditable || !this._isEnabled)
+			{
+				return;
+			}
+			this.replaceSelectedText(Clipboard.generalClipboard.getData(ClipboardFormats.TEXT_FORMAT) as String);
 		}
 	}
 }
