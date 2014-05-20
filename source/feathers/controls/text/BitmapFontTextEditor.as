@@ -941,7 +941,7 @@ package feathers.controls.text
 			}
 			//ignore cut, copy, and paste
 			var charCode:uint = event.charCode;
-			if(event.ctrlKey && (charCode == 99 || charCode == 118 || charCode == 120))
+			if(event.ctrlKey && (charCode == 99 || charCode == 118 || charCode == 120)) //c, p, and x
 			{
 				return;
 			}
@@ -1083,6 +1083,10 @@ package feathers.controls.text
 						this.text = this._text.substr(0, this._selectionStartIndex - 1) + this._text.substr(this._selectionEndIndex);
 						newIndex = this._selectionStartIndex - 1;
 					}
+				}
+				else if(event.ctrlKey && charCode == 97) //a
+				{
+					this.selectRange(0, this._text.length);
 				}
 				else if(charCode >= 32) //ignore control characters
 				{
