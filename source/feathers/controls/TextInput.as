@@ -1941,7 +1941,9 @@ package feathers.controls
 					this.addChildAt(this.currentBackground, 0);
 				}
 			}
-			if(this.currentBackground && (isNaN(this._originalSkinWidth) || isNaN(this._originalSkinHeight)))
+			if(this.currentBackground &&
+				(this._originalSkinWidth != this._originalSkinWidth || //isNaN
+					this._originalSkinHeight != this._originalSkinHeight)) //isNaN
 			{
 				if(this.currentBackground is IValidating)
 				{

@@ -429,8 +429,16 @@ package feathers.controls
 		 */
 		protected function handleManualLayout():Boolean
 		{
-			var maxX:Number = isNaN(this.viewPortBounds.explicitWidth) ? 0 : this.viewPortBounds.explicitWidth;
-			var maxY:Number = isNaN(this.viewPortBounds.explicitHeight) ? 0 : this.viewPortBounds.explicitHeight;
+			var maxX:Number = this.viewPortBounds.explicitWidth;
+			if(maxX != maxX) //isNaN
+			{
+				maxX = 0;
+			}
+			var maxY:Number = this.viewPortBounds.explicitHeight;
+			if(maxY != maxY) //isNaN
+			{
+				maxY = 0;
+			}
 			this._ignoreChildChanges = true;
 			var itemCount:int = this.items.length;
 			for(var i:int = 0; i < itemCount; i++)
@@ -442,11 +450,13 @@ package feathers.controls
 				}
 				var itemMaxX:Number = item.x + item.width;
 				var itemMaxY:Number = item.y + item.height;
-				if(!isNaN(itemMaxX) && itemMaxX > maxX)
+				if(itemMaxX == itemMaxX && //!isNaN
+					itemMaxX > maxX)
 				{
 					maxX = itemMaxX;
 				}
-				if(!isNaN(itemMaxY) && itemMaxY > maxY)
+				if(itemMaxY == itemMaxY && //!isNaN
+					itemMaxY > maxY)
 				{
 					maxY = itemMaxY;
 				}

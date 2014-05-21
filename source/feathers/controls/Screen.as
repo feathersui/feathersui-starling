@@ -363,7 +363,7 @@ package feathers.controls
 			var loaderInfo:LoaderInfo = DisplayObjectContainer(Starling.current.nativeStage.root).getChildAt(0).loaderInfo;
 			//if originalWidth or originalHeight is NaN, it's because the Screen
 			//has been added to the display list, and we really need values now.
-			if(isNaN(this._originalWidth))
+			if(this._originalWidth != this._originalWidth) //isNaN
 			{
 				try
 				{
@@ -374,7 +374,7 @@ package feathers.controls
 					this._originalWidth = this.stage.stageWidth;
 				}
 			}
-			if(isNaN(this._originalHeight))
+			if(this._originalHeight != this._originalHeight) //isNaN
 			{
 				try
 				{

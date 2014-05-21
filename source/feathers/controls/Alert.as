@@ -721,8 +721,8 @@ package feathers.controls
 		 */
 		override protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = isNaN(this.explicitWidth);
-			var needsHeight:Boolean = isNaN(this.explicitHeight);
+			var needsWidth:Boolean = this.explicitWidth != this.explicitWidth; //isNaN
+			var needsHeight:Boolean = this.explicitHeight != this.explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -755,16 +755,20 @@ package feathers.controls
 			if(needsWidth)
 			{
 				newWidth = this._viewPort.width + this._rightViewPortOffset + this._leftViewPortOffset;
-				if(this._icon && !isNaN(this._icon.width))
+				if(this._icon)
 				{
-					newWidth += this._icon.width + this._gap;
+					var iconWidth:Number = this._icon.width;
+					if(iconWidth == iconWidth) //!isNaN
+					{
+						newWidth += this._icon.width + this._gap;
+					}
 				}
 				newWidth = Math.max(newWidth, this.header.width);
 				if(this.footer)
 				{
 					newWidth = Math.max(newWidth, this.footer.width);
 				}
-				if(!isNaN(this.originalBackgroundWidth))
+				if(this.originalBackgroundWidth == this.originalBackgroundWidth) //!isNaN
 				{
 					newWidth = Math.max(newWidth, this.originalBackgroundWidth);
 				}
@@ -772,12 +776,16 @@ package feathers.controls
 			if(needsHeight)
 			{
 				newHeight = this._viewPort.height;
-				if(this._icon && !isNaN(this._icon.height))
+				if(this._icon)
 				{
-					newHeight = Math.max(newHeight, this._icon.height);
+					var iconHeight:Number = this._icon.height;
+					if(iconHeight == iconHeight) //!isNaN
+					{
+						newHeight = Math.max(newHeight, this._icon.height);
+					}
 				}
 				newHeight += this._bottomViewPortOffset + this._topViewPortOffset
-				if(!isNaN(this.originalBackgroundHeight))
+				if(this.originalBackgroundHeight == this.originalBackgroundHeight) //!isNaN
 				{
 					newHeight = Math.max(newHeight, this.originalBackgroundHeight);
 				}
@@ -910,7 +918,8 @@ package feathers.controls
 				{
 					IValidating(this._icon).validate();
 				}
-				if(!isNaN(this._icon.width))
+				var iconWidth:Number = this._icon.width;
+				if(iconWidth == iconWidth) //!isNaN
 				{
 					this._leftViewPortOffset += this._icon.width + this._gap;
 				}

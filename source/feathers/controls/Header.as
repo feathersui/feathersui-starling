@@ -1237,8 +1237,8 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = isNaN(this.explicitWidth);
-			var needsHeight:Boolean = isNaN(this.explicitHeight);
+			var needsWidth:Boolean = this.explicitWidth != this.explicitWidth; //isNaN
+			var needsHeight:Boolean = this.explicitHeight != this.explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -1255,21 +1255,22 @@ package feathers.controls
 				{
 					IValidating(item).validate();
 				}
-				if(needsWidth && !isNaN(item.width))
+				var itemWidth:Number = item.width;
+				if(needsWidth &&
+					itemWidth == itemWidth) //!isNaN
 				{
-					totalItemWidth += item.width;
+					totalItemWidth += itemWidth;
 					if(i > 0)
 					{
 						totalItemWidth += this._gap;
 					}
 				}
-				if(needsHeight && !isNaN(item.height))
+				var itemHeight:Number = item.height;
+				if(needsHeight &&
+					itemHeight == itemHeight && //!isNaN
+					itemHeight > newHeight)
 				{
-					var itemHeight:Number = item.height;
-					if(itemHeight > newHeight)
-					{
-						newHeight = itemHeight;
-					}
+					newHeight = itemHeight;
 				}
 			}
 			var centerItemCount:int = this._centerItems ? this._centerItems.length : 0;
@@ -1280,21 +1281,22 @@ package feathers.controls
 				{
 					IValidating(item).validate();
 				}
-				if(needsWidth && !isNaN(item.width))
+				itemWidth = item.width;
+				if(needsWidth &&
+					itemWidth == itemWidth) //!isNaN
 				{
-					totalItemWidth += item.width;
+					totalItemWidth += itemWidth;
 					if(i > 0)
 					{
 						totalItemWidth += this._gap;
 					}
 				}
-				if(needsHeight && !isNaN(item.height))
+				itemHeight = item.height;
+				if(needsHeight &&
+					itemHeight == itemHeight && //!isNaN
+					itemHeight > newHeight)
 				{
-					itemHeight = item.height;
-					if(itemHeight > newHeight)
-					{
-						newHeight = itemHeight;
-					}
+					newHeight = itemHeight;
 				}
 			}
 			var rightItemCount:int = this._rightItems ? this._rightItems.length : 0;
@@ -1305,28 +1307,33 @@ package feathers.controls
 				{
 					IValidating(item).validate();
 				}
-				if(needsWidth && !isNaN(item.width))
+				itemWidth = item.width
+				if(needsWidth &&
+					itemWidth == itemWidth) //!isNaN
 				{
-					totalItemWidth += item.width;
+					totalItemWidth += itemWidth;
 					if(i > 0)
 					{
 						totalItemWidth += this._gap;
 					}
 				}
-				if(needsHeight && !isNaN(item.height))
+				itemHeight = item.height;
+				if(needsHeight &&
+					itemHeight == itemHeight && //!isNaN
+					itemHeight > newHeight)
 				{
-					itemHeight = item.height;
-					if(itemHeight > newHeight)
-					{
-						newHeight = itemHeight;
-					}
+					newHeight = itemHeight;
 				}
 			}
 			newWidth += totalItemWidth;
 
 			if(this._title && !(this._titleAlign == TITLE_ALIGN_CENTER && this._centerItems))
 			{
-				var calculatedTitleGap:Number = isNaN(this._titleGap) ? this._gap : this._titleGap;
+				var calculatedTitleGap:Number = this._titleGap;
+				if(calculatedTitleGap != calculatedTitleGap) //isNaN
+				{
+					calculatedTitleGap = this._gap;
+				}
 				newWidth += 2 * calculatedTitleGap;
 				var maxTitleWidth:Number = (needsWidth ? this._maxWidth : this.explicitWidth) - totalItemWidth;
 				if(leftItemCount > 0)
@@ -1345,7 +1352,8 @@ package feathers.controls
 				this.titleTextRenderer.measureText(HELPER_POINT);
 				var measuredTitleWidth:Number = HELPER_POINT.x;
 				var measuredTitleHeight:Number = HELPER_POINT.y;
-				if(needsWidth && !isNaN(measuredTitleWidth))
+				if(needsWidth &&
+					measuredTitleWidth == measuredTitleWidth) //!isNaN
 				{
 					newWidth += measuredTitleWidth;
 					if(leftItemCount > 0)
@@ -1357,12 +1365,11 @@ package feathers.controls
 						newWidth += calculatedTitleGap;
 					}
 				}
-				if(needsHeight && !isNaN(measuredTitleHeight))
+				if(needsHeight &&
+					measuredTitleHeight == measuredTitleHeight && //!isNaN
+					measuredTitleHeight > newHeight)
 				{
-					if(measuredTitleHeight > newHeight)
-					{
-						newHeight = measuredTitleHeight;
-					}
+					newHeight = measuredTitleHeight;
 				}
 			}
 			if(needsHeight)
@@ -1379,19 +1386,17 @@ package feathers.controls
 					newHeight += extraPaddingTop;
 				}
 			}
-			if(needsWidth && !isNaN(this.originalBackgroundWidth))
+			if(needsWidth &&
+				this.originalBackgroundWidth == this.originalBackgroundWidth && //!isNaN
+				this.originalBackgroundWidth > newWidth)
 			{
-				if(this.originalBackgroundWidth > newWidth)
-				{
-					newWidth = this.originalBackgroundWidth;
-				}
+				newWidth = this.originalBackgroundWidth;
 			}
-			if(needsHeight && !isNaN(this.originalBackgroundHeight))
+			if(needsHeight &&
+				this.originalBackgroundHeight == this.originalBackgroundHeight && //!isNaN
+				this.originalBackgroundHeight > newHeight)
 			{
-				if(this.originalBackgroundHeight > newHeight)
-				{
-					newHeight = this.originalBackgroundHeight;
-				}
+				newHeight = this.originalBackgroundHeight;
 			}
 
 			return this.setSizeInternal(newWidth, newHeight, false);
@@ -1446,11 +1451,11 @@ package feathers.controls
 			{
 				this.currentBackgroundSkin.visible = true;
 
-				if(isNaN(this.originalBackgroundWidth))
+				if(this.originalBackgroundWidth != this.originalBackgroundWidth) //isNaN
 				{
 					this.originalBackgroundWidth = this.currentBackgroundSkin.width;
 				}
-				if(isNaN(this.originalBackgroundHeight))
+				if(this.originalBackgroundHeight != this.originalBackgroundHeight) //isNaN
 				{
 					this.originalBackgroundHeight = this.currentBackgroundSkin.height;
 				}
@@ -1540,7 +1545,7 @@ package feathers.controls
 			this._layout.paddingLeft = this._paddingLeft;
 			this._layout.layout(this._leftItems, HELPER_BOUNDS, HELPER_LAYOUT_RESULT);
 			this.leftItemsWidth = HELPER_LAYOUT_RESULT.contentWidth;
-			if(isNaN(this.leftItemsWidth))
+			if(this.leftItemsWidth != this.leftItemsWidth) //isNaN
 			{
 				this.leftItemsWidth = 0;
 			}
@@ -1568,7 +1573,7 @@ package feathers.controls
 			this._layout.paddingLeft = 0;
 			this._layout.layout(this._rightItems, HELPER_BOUNDS, HELPER_LAYOUT_RESULT);
 			this.rightItemsWidth = HELPER_LAYOUT_RESULT.contentWidth;
-			if(isNaN(this.rightItemsWidth))
+			if(this.rightItemsWidth != this.rightItemsWidth) //isNaN
 			{
 				this.rightItemsWidth = 0;
 			}
@@ -1607,7 +1612,11 @@ package feathers.controls
 				return;
 			}
 			this.titleTextRenderer.visible = true;
-			var calculatedTitleGap:Number = isNaN(this._titleGap) ? this._gap : this._titleGap;
+			var calculatedTitleGap:Number = this._titleGap;
+			if(calculatedTitleGap != calculatedTitleGap) //isNaN
+			{
+				calculatedTitleGap = this._gap;
+			}
 			//left and right offsets already include padding
 			var leftOffset:Number = (this._leftItems && this._leftItems.length > 0) ? (this.leftItemsWidth + calculatedTitleGap) : 0;
 			var rightOffset:Number = (this._rightItems && this._rightItems.length > 0) ? (this.rightItemsWidth + calculatedTitleGap) : 0;

@@ -1127,11 +1127,11 @@ package feathers.controls
 				//explicit dimensions aren't set.
 				//set this before buttonProperties is used because it might
 				//contain width or height changes.
-				if(isNaN(this.explicitWidth))
+				if(this.explicitWidth != this.explicitWidth) //isNaN
 				{
 					this.button.width = NaN;
 				}
-				if(isNaN(this.explicitHeight))
+				if(this.explicitHeight != this.explicitHeight) //isNaN
 				{
 					this.button.height = NaN;
 				}
@@ -1203,8 +1203,8 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = isNaN(this.explicitWidth);
-			var needsHeight:Boolean = isNaN(this.explicitHeight);
+			var needsWidth:Boolean = this.explicitWidth != this.explicitWidth; //isNaN
+			var needsHeight:Boolean = this.explicitHeight != this.explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -1214,7 +1214,8 @@ package feathers.controls
 			this.button.height = NaN;
 			if(this._typicalItem)
 			{
-				if(isNaN(this._typicalItemWidth) || isNaN(this._typicalItemHeight))
+				if(this._typicalItemWidth != this._typicalItemWidth || //isNaN
+					this._typicalItemHeight != this._typicalItemHeight) //isNaN
 				{
 					this.button.label = this.itemToLabel(this._typicalItem);
 					this.button.validate();

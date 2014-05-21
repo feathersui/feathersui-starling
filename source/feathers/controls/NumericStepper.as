@@ -1197,8 +1197,8 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = isNaN(this.explicitWidth);
-			var needsHeight:Boolean = isNaN(this.explicitHeight);
+			var needsWidth:Boolean = this.explicitWidth != this.explicitWidth; //isNaN
+			var needsHeight:Boolean = this.explicitHeight != this.explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -1552,7 +1552,7 @@ package feathers.controls
 		protected function textInput_enterHandler(event:Event):void
 		{
 			var newValue:Number = parseFloat(this.textInput.text);
-			if(!isNaN(newValue))
+			if(newValue == newValue) //!isNaN
 			{
 				this.value = newValue;
 			}
@@ -1564,7 +1564,7 @@ package feathers.controls
 		protected function textInput_focusOutHandler(event:Event):void
 		{
 			var newValue:Number = parseFloat(this.textInput.text);
-			if(!isNaN(newValue))
+			if(newValue == newValue) //!isNaN
 			{
 				this.value = newValue;
 			}
