@@ -158,12 +158,20 @@ package feathers.controls.supportClasses
 
 		public function get horizontalScrollStep():Number
 		{
-			return Math.min(this.actualWidth, this.actualHeight) / 10;
+			if(this.actualWidth < this.actualHeight)
+			{
+				return this.actualWidth / 10;
+			}
+			return this.actualHeight / 10;
 		}
 
 		public function get verticalScrollStep():Number
 		{
-			return Math.min(this.actualWidth, this.actualHeight) / 10;
+			if(this.actualWidth < this.actualHeight)
+			{
+				return this.actualWidth / 10;
+			}
+			return this.actualHeight / 10;
 		}
 
 		private var _horizontalScrollPosition:Number = 0;

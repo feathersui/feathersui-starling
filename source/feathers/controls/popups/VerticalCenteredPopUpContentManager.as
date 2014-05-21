@@ -233,7 +233,12 @@ package feathers.controls.popups
 		protected function layout():void
 		{
 			var stage:Stage = Starling.current.stage;
-			var maxWidth:Number = Math.min(stage.stageWidth, stage.stageHeight) - this.marginLeft - this.marginRight;
+			var maxWidth:Number = stage.stageWidth;
+			if(maxWidth > stage.stageHeight)
+			{
+				maxWidth = stage.stageHeight;
+			}
+			maxWidth -= (this.marginLeft + this.marginRight);
 			var maxHeight:Number = stage.stageHeight - this.marginTop - this.marginBottom;
 			var hasSetBounds:Boolean = false;
 			if(this.content is IFeathersControl)

@@ -1205,14 +1205,30 @@ package feathers.controls.text
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
 			{
-				newWidth = Math.max(this._minWidth, Math.min(this._maxWidth, this._measureTextField.width));
+				newWidth = this._measureTextField.width;
+				if(newWidth < this._minWidth)
+				{
+					newWidth = this._minWidth;
+				}
+				else if(newWidth > this._maxWidth)
+				{
+					newWidth = this._maxWidth;
+				}
 			}
 
 			this._measureTextField.width = newWidth;
 			var newHeight:Number = this.explicitHeight;
 			if(needsHeight)
 			{
-				newHeight = Math.max(this._minHeight, Math.min(this._maxHeight, this._measureTextField.height));
+				newHeight = this._measureTextField.height;
+				if(newHeight < this._minHeight)
+				{
+					newHeight = this._minHeight;
+				}
+				else if(newHeight > this._maxHeight)
+				{
+					newHeight = this._maxHeight;
+				}
 			}
 
 			this._measureTextField.autoSize = TextFieldAutoSize.NONE;

@@ -1350,7 +1350,7 @@ package feathers.layout
 			{
 				//add extra items after the last index
 				var startIndex:int = resultLength > 0 ? (result[resultLength - 1] + 1) : 0;
-				var endIndex:int = Math.min(itemCount, startIndex + visibleItemCountDifference);
+				var endIndex:int = startIndex + visibleItemCountDifference;
 				if(endIndex > itemCount)
 				{
 					endIndex = itemCount;

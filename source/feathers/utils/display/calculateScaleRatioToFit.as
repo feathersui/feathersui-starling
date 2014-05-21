@@ -16,6 +16,10 @@ package feathers.utils.display
 	{
 		var widthRatio:Number = targetWidth / originalWidth;
 		var heightRatio:Number = targetHeight / originalHeight;
-		return Math.min(widthRatio, heightRatio);
+		if(widthRatio < heightRatio)
+		{
+			return widthRatio;
+		}
+		return heightRatio;
 	}
 }
