@@ -52,9 +52,7 @@ package feathers.controls.text
 
 	/**
 	 * Dispatched when the user presses the Enter key while the editor has
-	 * focus. This event may not be dispatched on some platforms, depending on
-	 * the value of <code>returnKeyLabel</code>. This issue may even occur when
-	 * using the <em>default value</em> of <code>returnKeyLabel</code>!
+	 * focus.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
 	 * <table class="innertable">
@@ -72,8 +70,6 @@ package feathers.controls.text
 	 * </table>
 	 *
 	 * @eventType feathers.events.FeathersEventType.ENTER
-	 * @see #returnKeyLabel
-	 * @see flash.text.ReturnKeyLabel
 	 */
 	[Event(name="enter",type="starling.events.Event")]
 
@@ -519,10 +515,13 @@ package feathers.controls.text
 			this._cursorSkin.visible = false;
 			this._selectionSkin.visible = false;
 			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
-			this._nativeFocus.removeEventListener(flash.events.Event.CUT, nativeStage_cutHandler);
-			this._nativeFocus.removeEventListener(flash.events.Event.COPY, nativeStage_copyHandler);
-			this._nativeFocus.removeEventListener(flash.events.Event.PASTE, nativeStage_pasteHandler);
-			this._nativeFocus = null;
+			if(this._nativeFocus)
+			{
+				this._nativeFocus.removeEventListener(flash.events.Event.CUT, nativeStage_cutHandler);
+				this._nativeFocus.removeEventListener(flash.events.Event.COPY, nativeStage_copyHandler);
+				this._nativeFocus.removeEventListener(flash.events.Event.PASTE, nativeStage_pasteHandler);
+				this._nativeFocus = null;
+			}
 			this.dispatchEventWith(FeathersEventType.FOCUS_OUT);
 		}
 
@@ -647,9 +646,12 @@ package feathers.controls.text
 			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 			this.dispatchEventWith(FeathersEventType.FOCUS_IN);
 			this._nativeFocus = Starling.current.nativeStage.focus;
-			this._nativeFocus.addEventListener(flash.events.Event.CUT, nativeStage_cutHandler, false, 0, true);
-			this._nativeFocus.addEventListener(flash.events.Event.COPY, nativeStage_copyHandler, false, 0, true);
-			this._nativeFocus.addEventListener(flash.events.Event.PASTE, nativeStage_pasteHandler, false, 0, true);
+			if(this._nativeFocus)
+			{
+				this._nativeFocus.addEventListener(flash.events.Event.CUT, nativeStage_cutHandler, false, 0, true);
+				this._nativeFocus.addEventListener(flash.events.Event.COPY, nativeStage_copyHandler, false, 0, true);
+				this._nativeFocus.addEventListener(flash.events.Event.PASTE, nativeStage_pasteHandler, false, 0, true);
+			}
 		}
 
 		/**
