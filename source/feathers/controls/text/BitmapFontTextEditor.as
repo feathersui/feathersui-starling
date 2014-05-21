@@ -7,6 +7,7 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls.text
 {
+	import feathers.core.FocusManager;
 	import feathers.core.ITextEditor;
 	import feathers.events.FeathersEventType;
 
@@ -514,6 +515,7 @@ package feathers.controls.text
 			this._hasFocus = false;
 			this._cursorSkin.visible = false;
 			this._selectionSkin.visible = false;
+			this.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 			if(this._nativeFocus)
 			{
@@ -915,6 +917,10 @@ package feathers.controls.text
 					{
 						this._selectionAnchorIndex = -1;
 					}
+					if(!FocusManager.isEnabled && this._hasFocus)
+					{
+						this.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
+					}
 				}
 			}
 			else //if we get here, we don't have a saved touch ID yet
@@ -946,6 +952,26 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected function stage_touchHandler(event:TouchEvent):void
+		{
+			var touch:Touch = event.getTouch(this.stage, TouchPhase.BEGAN);
+			if(!touch) //we only care about began touches
+			{
+				return;
+			}
+			touch.getLocation(this.stage, HELPER_POINT);
+			var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
+			if(isInBounds) //if the touch is in the text editor, it's all good
+			{
+				return;
+			}
+			//if the touch begins anywhere else, it's a focus out!
+			this.clearFocus();
+		}
+
+		/**
+		 * @private
+		 */
 		protected function stage_keyDownHandler(event:KeyboardEvent):void
 		{
 			if(!this._isEnabled || !this._isEditable || this.touchPointID >= 0)
@@ -959,7 +985,12 @@ package feathers.controls.text
 				return;
 			}
 			var newIndex:int = -1;
-			if(event.keyCode == Keyboard.HOME || event.keyCode == Keyboard.UP)
+			if(!FocusManager.isEnabled && event.keyCode == Keyboard.TAB)
+			{
+				this.clearFocus();
+				return;
+			}
+			else if(event.keyCode == Keyboard.HOME || event.keyCode == Keyboard.UP)
 			{
 				newIndex = 0;
 			}
