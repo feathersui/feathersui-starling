@@ -882,6 +882,8 @@ package feathers.controls.text
 		 * renderer.nativeFilters = [ new GlowFilter() ];</listing>
 		 *
 		 * @default null
+		 *
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/DisplayObject.html#filters Full description of flash.display.DisplayObject.filters in Adobe's Flash Platform API Reference
 		 */
 		public function get nativeFilters():Array
 		{
