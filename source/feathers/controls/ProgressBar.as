@@ -677,8 +677,8 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = isNaN(this.explicitWidth);
-			var needsHeight:Boolean = isNaN(this.explicitHeight);
+			var needsWidth:Boolean = this.explicitWidth != this.explicitWidth; //isNaN
+			var needsHeight:Boolean = this.explicitHeight != this.explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -711,11 +711,11 @@ package feathers.controls
 			}
 			if(this.currentBackground)
 			{
-				if(isNaN(this._originalBackgroundWidth))
+				if(this._originalBackgroundWidth != this._originalBackgroundWidth) //isNaN
 				{
 					this._originalBackgroundWidth = this.currentBackground.width;
 				}
-				if(isNaN(this._originalBackgroundHeight))
+				if(this._originalBackgroundHeight != this._originalBackgroundHeight) //isNaN
 				{
 					this._originalBackgroundHeight = this.currentBackground.height;
 				}
@@ -746,11 +746,11 @@ package feathers.controls
 			}
 			if(this.currentFill)
 			{
-				if(isNaN(this._originalFillWidth))
+				if(this._originalFillWidth != this._originalFillWidth) //isNaN
 				{
 					this._originalFillWidth = this.currentFill.width;
 				}
-				if(isNaN(this._originalFillHeight))
+				if(this._originalFillHeight != this._originalFillHeight) //isNaN
 				{
 					this._originalFillHeight = this.currentFill.height;
 				}

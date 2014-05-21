@@ -1502,7 +1502,8 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			if(isNaN(this.minimumTrackOriginalWidth) || isNaN(this.minimumTrackOriginalHeight))
+			if(this.minimumTrackOriginalWidth != this.minimumTrackOriginalWidth || //isNaN
+				this.minimumTrackOriginalHeight != this.minimumTrackOriginalHeight) //isNaN
 			{
 				this.minimumTrack.validate();
 				this.minimumTrackOriginalWidth = this.minimumTrack.width;
@@ -1510,7 +1511,8 @@ package feathers.controls
 			}
 			if(this.maximumTrack)
 			{
-				if(isNaN(this.maximumTrackOriginalWidth) || isNaN(this.maximumTrackOriginalHeight))
+				if(this.maximumTrackOriginalWidth != this.maximumTrackOriginalWidth || //isNaN
+					this.maximumTrackOriginalHeight != this.maximumTrackOriginalHeight) //isNaN
 				{
 					this.maximumTrack.validate();
 					this.maximumTrackOriginalWidth = this.maximumTrack.width;
@@ -1518,8 +1520,8 @@ package feathers.controls
 				}
 			}
 
-			var needsWidth:Boolean = isNaN(this.explicitWidth);
-			var needsHeight:Boolean = isNaN(this.explicitHeight);
+			var needsWidth:Boolean = this.explicitWidth != this.explicitWidth; //isNaN
+			var needsHeight:Boolean = this.explicitHeight != this.explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -1904,7 +1906,11 @@ package feathers.controls
 		 */
 		protected function adjustPage():void
 		{
-			var page:Number = isNaN(this._page) ? this._step : this._page;
+			var page:Number = this._page;
+			if(page != page) //isNaN
+			{
+				page = this._step;
+			}
 			if(this._touchValue < this._value)
 			{
 				this.value = Math.max(this._touchValue, this._value - page);
@@ -2097,7 +2103,11 @@ package feathers.controls
 				this.value = this._maximum;
 				return;
 			}
-			var page:Number = isNaN(this._page) ? this._step : this._page;
+			var page:Number = this._page;
+			if(page != page) //isNaN
+			{
+				page = this._step;
+			}
 			if(this._direction == Slider.DIRECTION_VERTICAL)
 			{
 				if(event.keyCode == Keyboard.UP)
