@@ -704,8 +704,8 @@ package feathers.controls.renderers
 		 * A function that generates an <code>ImageLoader</code> that uses the result
 		 * of <code>contentSourceField</code> or <code>contentSourceFunction</code>.
 		 * Useful for transforming the <code>ImageLoader</code> in some way. For
-		 * example, you might want to scale it for current DPI or apply pixel
-		 * snapping.
+		 * example, you might want to scale it for current screen density or
+		 * apply pixel snapping.
 		 *
 		 * <p>In the following example, a custom content loader factory is passed
 		 * to the renderer:</p>

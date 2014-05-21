@@ -48,8 +48,7 @@ package feathers.controls
 	 *
 	 * @eventType starling.events.Event.TRIGGERED
 	 *
-	 * @see flash.text.TextField
-	 * @see flash.events.TextEvent.LINK
+	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/events/TextEvent.html#LINK flash.events.TextEvent.LINK
 	 */
 	[Event(name="triggered",type="starling.events.Event")]
 
