@@ -60,6 +60,7 @@ package feathers.themes
 	import feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer;
 	import feathers.controls.renderers.DefaultGroupedListItemRenderer;
 	import feathers.controls.renderers.DefaultListItemRenderer;
+	import feathers.controls.text.BitmapFontTextEditor;
 	import feathers.controls.text.BitmapFontTextRenderer;
 	import feathers.controls.text.TextFieldTextEditor;
 	import feathers.core.FeathersControl;
@@ -140,9 +141,9 @@ package feathers.themes
 			return renderer;
 		}
 
-		protected static function textEditorFactory():TextFieldTextEditor
+		protected static function textEditorFactory():BitmapFontTextEditor
 		{
-			return new TextFieldTextEditor();
+			return new BitmapFontTextEditor();
 		}
 
 		protected static function scrollBarFactory():IScrollBar
@@ -1027,8 +1028,8 @@ package feathers.themes
 			input.gap = 4 * this.scale;
 			input.paddingTop = input.paddingBottom = 0;
 			input.paddingLeft = input.paddingRight = 2 * this.scale;
-			input.textEditorProperties.textFormat = new TextFormat("PF Ronda Seven,Roboto,Helvetica,Arial,_sans", this.inputFontSize, PRIMARY_TEXT_COLOR, null, null, null, null, null, TextFormatAlign.CENTER);
-			input.textEditorProperties.disabledTextFormat = new TextFormat("PF Ronda Seven,Roboto,Helvetica,Arial,_sans", this.inputFontSize, DISABLED_TEXT_COLOR, null, null, null, null, null, TextFormatAlign.CENTER);
+			input.textEditorProperties.textFormat = this.primaryTextFormat;
+			//input.textEditorProperties.disabledTextFormat = this.disabledTextFormat;
 
 			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = this.insetBackgroundSkinTextures;
@@ -1333,6 +1334,7 @@ package feathers.themes
 			this.setBaseScrollBarButtonStyles(button);
 
 			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			iconSelector.setValueTypeHandler(SubTexture, textureValueTypeHandler);
 			iconSelector.defaultValue = this.leftArrowIconTexture;
 			iconSelector.defaultSelectedValue = this.leftArrowDisabledIconTexture;
 			iconSelector.displayObjectProperties =
@@ -1347,6 +1349,7 @@ package feathers.themes
 			this.setBaseScrollBarButtonStyles(button);
 
 			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			iconSelector.setValueTypeHandler(SubTexture, textureValueTypeHandler);
 			iconSelector.defaultValue = this.rightArrowIconTexture;
 			iconSelector.defaultSelectedValue = this.rightArrowDisabledIconTexture;
 			iconSelector.displayObjectProperties =
@@ -1361,6 +1364,7 @@ package feathers.themes
 			this.setBaseScrollBarButtonStyles(button);
 
 			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			iconSelector.setValueTypeHandler(SubTexture, textureValueTypeHandler);
 			iconSelector.defaultValue = this.upArrowIconTexture;
 			iconSelector.defaultSelectedValue = this.upArrowDisabledIconTexture;
 			iconSelector.displayObjectProperties =
@@ -1375,6 +1379,7 @@ package feathers.themes
 			this.setBaseScrollBarButtonStyles(button);
 
 			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			iconSelector.setValueTypeHandler(SubTexture, textureValueTypeHandler);
 			iconSelector.defaultValue = this.downArrowIconTexture;
 			iconSelector.defaultSelectedValue = this.downArrowDisabledIconTexture;
 			iconSelector.displayObjectProperties =
@@ -1573,8 +1578,12 @@ package feathers.themes
 			input.gap = 4 * this.scale;
 			input.paddingTop = input.paddingBottom = 0;
 			input.paddingLeft = input.paddingRight = 2 * this.scale;
-			input.textEditorProperties.textFormat = new TextFormat("PF Ronda Seven,Roboto,Helvetica,Arial,_sans", this.inputFontSize, PRIMARY_TEXT_COLOR);
-			input.textEditorProperties.disabledTextFormat = new TextFormat("PF Ronda Seven,Roboto,Helvetica,Arial,_sans", this.inputFontSize, DISABLED_TEXT_COLOR);
+
+			input.textEditorProperties.textFormat = this.primaryTextFormat;
+			//input.textEditorProperties.disabledTextFormat = this.disabledTextFormat;
+			input.textEditorProperties.cursorSkin = new Quad(1, 1, PRIMARY_TEXT_COLOR);
+			input.textEditorProperties.selectionSkin = new Quad(1, 1, BACKGROUND_COLOR);
+
 			input.promptProperties.textFormat = this.primaryTextFormat;
 			input.promptProperties.disabledTextFormat = this.disabledTextFormat;
 
@@ -1588,6 +1597,7 @@ package feathers.themes
 				height: 18 * this.scale
 			};
 			input.stateToSkinFunction = skinSelector.updateValue;
+
 		}
 
 		protected function setTextInputStyles(input:TextInput):void
