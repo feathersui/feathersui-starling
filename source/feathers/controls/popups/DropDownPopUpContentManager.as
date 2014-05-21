@@ -210,7 +210,15 @@ package feathers.controls.popups
 		protected function layoutAbove(globalOrigin:Rectangle):void
 		{
 			var idealXPosition:Number = globalOrigin.x + (globalOrigin.width - this.content.width) / 2;
-			var xPosition:Number = Math.max(0, Math.min(Starling.current.stage.stageWidth - this.content.width, idealXPosition));
+			var xPosition:Number = Starling.current.stage.stageWidth - this.content.width;
+			if(xPosition > idealXPosition)
+			{
+				xPosition = idealXPosition;
+			}
+			if(xPosition < 0)
+			{
+				xPosition = 0;
+			}
 			this.content.x = xPosition;
 			this.content.y = globalOrigin.y - this.content.height;
 		}
@@ -221,7 +229,15 @@ package feathers.controls.popups
 		protected function layoutBelow(globalOrigin:Rectangle):void
 		{
 			var idealXPosition:Number = globalOrigin.x;
-			var xPosition:Number = Math.max(0, Math.min(Starling.current.stage.stageWidth - this.content.width, idealXPosition));
+			var xPosition:Number = Starling.current.stage.stageWidth - this.content.width;
+			if(xPosition > idealXPosition)
+			{
+				xPosition = idealXPosition;
+			}
+			if(xPosition < 0)
+			{
+				xPosition = 0;
+			}
 			this.content.x = xPosition;
 			this.content.y = globalOrigin.y + globalOrigin.height;
 		}
