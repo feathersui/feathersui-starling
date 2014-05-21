@@ -2375,8 +2375,8 @@ package feathers.controls.renderers
 		 * A function that generates an <code>ImageLoader</code> that uses the result
 		 * of <code>iconSourceField</code> or <code>iconSourceFunction</code>.
 		 * Useful for transforming the <code>ImageLoader</code> in some way. For
-		 * example, you might want to scale the texture for current DPI or apply
-		 * pixel snapping.
+		 * example, you might want to scale the texture for current screen
+		 * density or apply pixel snapping.
 		 *
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function():ImageLoader</pre>
@@ -2554,8 +2554,8 @@ package feathers.controls.renderers
 		 * A function that generates an <code>ImageLoader</code> that uses the result
 		 * of <code>accessorySourceField</code> or <code>accessorySourceFunction</code>.
 		 * Useful for transforming the <code>ImageLoader</code> in some way. For
-		 * example, you might want to scale the texture for current DPI or apply
-		 * pixel snapping.
+		 * example, you might want to scale the texture for current screen
+		 * density or apply pixel snapping.
 		 *
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function():ImageLoader</pre>
@@ -2733,8 +2733,8 @@ package feathers.controls.renderers
 		 * A function that generates an <code>ImageLoader</code> that uses the result
 		 * of <code>skinSourceField</code> or <code>skinSourceFunction</code>.
 		 * Useful for transforming the <code>ImageLoader</code> in some way. For
-		 * example, you might want to scale the texture for current DPI or apply
-		 * pixel snapping.
+		 * example, you might want to scale the texture for current screen
+		 * density or apply pixel snapping.
 		 *
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function():ImageLoader</pre>

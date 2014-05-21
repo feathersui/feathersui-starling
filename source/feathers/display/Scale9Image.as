@@ -212,7 +212,8 @@ package feathers.display
 		private var _textureScale:Number = 1;
 
 		/**
-		 * The amount to scale the texture. Useful for DPI changes.
+		 * Scales the texture dimensions during measurement. Useful for UI that
+		 * should scale based on screen density or resolution.
 		 *
 		 * <p>In the following example, the texture scale is changed:</p>
 		 *

@@ -12,7 +12,7 @@ package feathers.utils.geom
 	/**
 	 * Extracts the y scale value from a <code>flash.geom.Matrix</code>
 	 *
-	 * @see flash.geom.Matrix
+	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/geom/Matrix.html flash.geom.Matrix
 	 */
 	public function matrixToScaleY(matrix:Matrix):Number
 	{

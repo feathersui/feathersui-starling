@@ -386,7 +386,8 @@ package feathers.controls
 		private var _textureScale:Number = 1;
 
 		/**
-		 * The scale of the texture. Useful for UI that scales to DPI.
+		 * Scales the texture dimensions during measurement. Useful for UI that
+		 * should scale based on screen density or resolution.
 		 *
 		 * <p>In the following example, the image loader's texture scale is
 		 * customized:</p>
@@ -503,7 +504,7 @@ package feathers.controls
 		 *
 		 * @default flash.display3d.Context3DTextureFormat.BGRA
 		 *
-		 * @see flash.display3d.Context3DTextureFormat
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display3D/Context3DTextureFormat.html flash.display3d.Context3DTextureFormat
 		 */
 		public function get textureFormat():String
 		{

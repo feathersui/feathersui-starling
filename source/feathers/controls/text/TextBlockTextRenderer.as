@@ -52,7 +52,7 @@ package feathers.controls.text
 	 * caution when displaying a lot of text.</p>
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/text-renderers
-	 * @see flash.text.engine.TextBlock
+	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/TextBlock.html flash.text.engine.TextBlock
 	 */
 	public class TextBlockTextRenderer extends FeathersControl implements ITextRenderer
 	{
@@ -328,7 +328,7 @@ package feathers.controls.text
 		 * @default null
 		 *
 		 * @see #disabledElementFormat
-		 * @see flash.text.engine.ElementFormat
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/ElementFormat.html flash.text.engine.ElementFormat
 		 */
 		public function get elementFormat():ElementFormat
 		{
@@ -367,7 +367,7 @@ package feathers.controls.text
 		 * @default null
 		 *
 		 * @see #elementFormat
-		 * @see flash.text.engine.ElementFormat
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/ElementFormat.html flash.text.engine.ElementFormat
 		 */
 		public function get disabledElementFormat():ElementFormat
 		{
@@ -521,7 +521,7 @@ package feathers.controls.text
 		 *
 		 * @default true
 		 *
-		 * @see flash.text.engine.TextBlock#applyNonLinearFontScaling
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/TextBlock.html#applyNonLinearFontScaling Full description of flash.text.engine.TextBlock.applyNonLinearFontScaling in Adobe's Flash Platform API Reference
 		 */
 		public function get applyNonLinearFontScaling():Boolean
 		{
@@ -556,7 +556,7 @@ package feathers.controls.text
 		 *
 		 * @default null
 		 *
-		 * @see flash.text.engine.TextBlock#baselineFontDescription
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/TextBlock.html#baselineFontDescription Full description of flash.text.engine.TextBlock.baselineFontDescription in Adobe's Flash Platform API Reference
 		 * @see #baselineFontSize
 		 */
 		public function get baselineFontDescription():FontDescription
@@ -593,7 +593,7 @@ package feathers.controls.text
 		 *
 		 * @default 12
 		 *
-		 * @see flash.text.engine.TextBlock#baselineFontSize
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/TextBlock.html#baselineFontSize Full description of flash.text.engine.TextBlock.baselineFontSize in Adobe's Flash Platform API Reference
 		 * @see #baselineFontDescription
 		 */
 		public function get baselineFontSize():Number
@@ -629,8 +629,8 @@ package feathers.controls.text
 		 *
 		 * @default TextBaseline.ROMAN
 		 *
-		 * @see flash.text.engine.TextBlock#baselineZero
-		 * @see flash.text.engine.TextBaseline
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/TextBlock.html#baselineZero Full description of flash.text.engine.TextBlock.baselineZero in Adobe's Flash Platform API Reference
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/TextBaseline.html flash.text.engine.TextBaseline
 		 */
 		public function get baselineZero():String
 		{
@@ -666,7 +666,7 @@ package feathers.controls.text
 		 *
 		 * @default 0
 		 *
-		 * @see flash.text.engine.TextBlock#bidiLevel
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/TextBlock.html#bidiLevel Full description of flash.text.engine.TextBlock.bidiLevel in Adobe's Flash Platform API Reference
 		 */
 		public function get bidiLevel():int
 		{
@@ -701,8 +701,8 @@ package feathers.controls.text
 		 *
 		 * @default TextRotation.ROTATE_0
 		 *
-		 * @see flash.text.engine.TextBlock#lineRotation
-		 * @see flash.text.engine.TextRotation
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/TextBlock.html#lineRotation Full description of flash.text.engine.TextBlock.lineRotation in Adobe's Flash Platform API Reference
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/TextRotation.html flash.text.engine.TextRotation
 		 */
 		public function get lineRotation():String
 		{
@@ -738,7 +738,7 @@ package feathers.controls.text
 		 *
 		 * @default null
 		 *
-		 * @see flash.text.engine.TextBlock#tabStops
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/TextBlock.html#tabStops Full description of flash.text.engine.TextBlock.tabStops in Adobe's Flash Platform API Reference
 		 */
 		public function get tabStops():Vector.<TabStop>
 		{
@@ -769,9 +769,9 @@ package feathers.controls.text
 		 * <p>In the following example, the text justifier is changed:</p>
 		 *
 		 * <listing version="3.0">
-		 * textRenderer.textAlign = new SpaceJustifier( "en", LineJustification.ALL_BUT_LAST );</listing>
+		 * textRenderer.textJustifier = new SpaceJustifier( "en", LineJustification.ALL_BUT_LAST );</listing>
 		 *
-		 * @see flash.text.engine.TextBlock#textJustifier
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/TextBlock.html#textJustifier Full description of flash.text.engine.TextBlock.textJustifier in Adobe's Flash Platform API Reference
 		 */
 		public function get textJustifier():TextJustifier
 		{
@@ -805,7 +805,7 @@ package feathers.controls.text
 		 * <listing version="3.0">
 		 * textRenderer.userData = { author: "William Shakespeare", title: "Much Ado About Nothing" };</listing>
 		 *
-		 * @see flash.text.engine.TextBlock#userData
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/TextBlock.html#userData Full description of flash.text.engine.TextBlock.userData in Adobe's Flash Platform API Reference
 		 */
 		public function get userData():*
 		{

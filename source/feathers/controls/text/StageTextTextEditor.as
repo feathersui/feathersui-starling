@@ -83,7 +83,6 @@ package feathers.controls.text
 	 *
 	 * @eventType feathers.events.FeathersEventType.ENTER
 	 * @see #returnKeyLabel
-	 * @see flash.text.ReturnKeyLabel
 	 */
 	[Event(name="enter",type="starling.events.Event")]
 
