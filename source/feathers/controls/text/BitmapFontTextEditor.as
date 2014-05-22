@@ -14,6 +14,7 @@ package feathers.controls.text
 	import flash.desktop.Clipboard;
 	import flash.desktop.ClipboardFormats;
 	import flash.display.InteractiveObject;
+	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -463,6 +464,38 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected function get nativeFocus():InteractiveObject
+		{
+			return this._nativeFocus;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function set nativeFocus(value:InteractiveObject):void
+		{
+			if(this._nativeFocus == value)
+			{
+				return;
+			}
+			if(this._nativeFocus)
+			{
+				this._nativeFocus.removeEventListener(flash.events.Event.CUT, nativeStage_cutHandler);
+				this._nativeFocus.removeEventListener(flash.events.Event.COPY, nativeStage_copyHandler);
+				this._nativeFocus.removeEventListener(flash.events.Event.PASTE, nativeStage_pasteHandler);
+			}
+			this._nativeFocus = value;
+			if(this._nativeFocus)
+			{
+				this._nativeFocus.addEventListener(flash.events.Event.CUT, nativeStage_cutHandler, false, 0, true);
+				this._nativeFocus.addEventListener(flash.events.Event.COPY, nativeStage_copyHandler, false, 0, true);
+				this._nativeFocus.addEventListener(flash.events.Event.PASTE, nativeStage_pasteHandler, false, 0, true);
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _isWaitingToSetFocus:Boolean = false;
 
 		/**
@@ -517,13 +550,7 @@ package feathers.controls.text
 			this._selectionSkin.visible = false;
 			this.stage.removeEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
-			if(this._nativeFocus)
-			{
-				this._nativeFocus.removeEventListener(flash.events.Event.CUT, nativeStage_cutHandler);
-				this._nativeFocus.removeEventListener(flash.events.Event.COPY, nativeStage_copyHandler);
-				this._nativeFocus.removeEventListener(flash.events.Event.PASTE, nativeStage_pasteHandler);
-				this._nativeFocus = null;
-			}
+			this.nativeFocus = null;
 			this.dispatchEventWith(FeathersEventType.FOCUS_OUT);
 		}
 
@@ -638,22 +665,28 @@ package feathers.controls.text
 			var showCursor:Boolean = this._selectionStartIndex >= 0 && this._selectionStartIndex != this._selectionEndIndex;
 			this._cursorSkin.visible = showCursor;
 			this._selectionSkin.visible = !showCursor;
+			var nativeStage:Stage = Starling.current.nativeStage;
+			//this is before the hasFocus check because the native stage may
+			//have lost focus when clicking on the text editor, so we may need
+			//to put it back in focus
+			if(!FocusManager.isEnabled && !nativeStage.focus)
+			{
+				//something needs to be focused so that we can receive cut,
+				//copy, and paste events
+				nativeStage.focus = nativeStage;
+			}
+			//it shouldn't have changed, but let's be sure we're listening to
+			//the right object for cut/copy/paste events.
+			this.nativeFocus = nativeStage.focus;
 			if(this._hasFocus)
 			{
 				return;
 			}
 			//we're reusing this variable. since this isn't a display object
-			//that the focus manager can see, it's going unused.
+			//that the focus manager can see, it's not being used anyway.
 			this._hasFocus = true;
 			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 			this.dispatchEventWith(FeathersEventType.FOCUS_IN);
-			this._nativeFocus = Starling.current.nativeStage.focus;
-			if(this._nativeFocus)
-			{
-				this._nativeFocus.addEventListener(flash.events.Event.CUT, nativeStage_cutHandler, false, 0, true);
-				this._nativeFocus.addEventListener(flash.events.Event.COPY, nativeStage_copyHandler, false, 0, true);
-				this._nativeFocus.addEventListener(flash.events.Event.PASTE, nativeStage_pasteHandler, false, 0, true);
-			}
 		}
 
 		/**
