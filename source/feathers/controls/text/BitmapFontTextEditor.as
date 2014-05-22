@@ -920,9 +920,14 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function replaceSelectedText(text:String, select:Boolean = false):void
+		protected function replaceSelectedText(text:String):void
 		{
-			this.text = this._text.substr(0, this._selectionStartIndex) + text + this._text.substr(this._selectionEndIndex);
+			var newText:String = this._text.substr(0, this._selectionStartIndex) + text + this._text.substr(this._selectionEndIndex);
+			if(this._maxChars > 0 && newText.length > this._maxChars)
+			{
+				return;
+			}
+			this.text = newText;
 			var selectionIndex:int = this._selectionStartIndex + text.length;
 			this.selectRange(selectionIndex, selectionIndex);
 		}
