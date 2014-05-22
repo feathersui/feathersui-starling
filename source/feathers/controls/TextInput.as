@@ -592,7 +592,7 @@ package feathers.controls
 		 * restricted:</p>
 		 *
 		 * <listing version="3.0">
-		 * input.restrict = "0-9;</listing>
+		 * input.restrict = "0-9";</listing>
 		 *
 		 * @default null
 		 */
