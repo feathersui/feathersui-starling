@@ -1931,10 +1931,6 @@ package feathers.core
 		 */
 		protected function initializeInternal():void
 		{
-			if(this._isInitialized)
-			{
-				return;
-			}
 			this.initialize();
 			this.invalidate(); //invalidate everything
 			this._isInitialized = true;
@@ -1991,7 +1987,10 @@ package feathers.core
 		{
 			this._depth = getDisplayObjectDepthFromStage(this);
 			this._validationQueue = ValidationQueue.forStarling(Starling.current);
-			this.initializeInternal();
+			if(!this._isInitialized)
+			{
+				this.initializeInternal();
+			}
 			if(this.isInvalid())
 			{
 				this._invalidateCount = 0;
