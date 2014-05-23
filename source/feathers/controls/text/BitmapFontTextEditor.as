@@ -19,6 +19,7 @@ package feathers.controls.text
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
+	import flash.utils.Dictionary;
 
 	import starling.core.RenderSupport;
 	import starling.core.Starling;
@@ -144,6 +145,24 @@ package feathers.controls.text
 		 * @private
 		 */
 		protected static const IS_WHITESPACE:RegExp = /\s/;
+
+		/**
+		 * @private
+		 */
+		protected static const REQUIRES_ESCAPE:Dictionary = new Dictionary();
+		REQUIRES_ESCAPE[/\[/g] = "\\[";
+		REQUIRES_ESCAPE[/\]/g] = "\\]";
+		REQUIRES_ESCAPE[/\{/g] = "\\{";
+		REQUIRES_ESCAPE[/\}/g] = "\\}";
+		REQUIRES_ESCAPE[/\(/g] = "\\(";
+		REQUIRES_ESCAPE[/\)/g] = "\\)";
+		REQUIRES_ESCAPE[/\|/g] = "\\|";
+		REQUIRES_ESCAPE[/\//g] = "\\/";
+		REQUIRES_ESCAPE[/\./g] = "\\.";
+		REQUIRES_ESCAPE[/\+/g] = "\\+";
+		REQUIRES_ESCAPE[/\*/g] = "\\*";
+		REQUIRES_ESCAPE[/\?/g] = "\\?";
+		REQUIRES_ESCAPE[/\$/g] = "\\$";
 
 		/**
 		 * Constructor.
@@ -399,6 +418,11 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _restricts:Vector.<RegExp>;
+
+		/**
+		 * @private
+		 */
 		protected var _restrict:String;
 
 		/**
@@ -428,6 +452,46 @@ package feathers.controls.text
 				return;
 			}
 			this._restrict = value;
+			if(value)
+			{
+				if(this._restricts)
+				{
+					this._restricts.length = 0;
+				}
+				else
+				{
+					this._restricts = new <RegExp>[];
+				}
+				if(this._restrict === "")
+				{
+					this._restricts.push(/^$/);
+				}
+				else if(this._restrict)
+				{
+					var startIndex:int = 0;
+					do
+					{
+						var nextStartIndex:int = value.indexOf("^", startIndex + 1);
+						if(nextStartIndex >= 0)
+						{
+							var partialRestrict:String = value.substr(startIndex, nextStartIndex - startIndex);
+							this._restricts.push(this.createRestrictRegExp(partialRestrict));
+						}
+						else
+						{
+							partialRestrict = value.substr(startIndex)
+							this._restricts.push(this.createRestrictRegExp(partialRestrict));
+							break;
+						}
+						startIndex = nextStartIndex;
+					}
+					while(true)
+				}
+			}
+			else
+			{
+				this._restricts = null;
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -655,6 +719,22 @@ package feathers.controls.text
 				}
 				this._cursorSkin.height = font.lineHeight * scale;
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function createRestrictRegExp(restrict:String):RegExp
+		{
+			//we need to do backslash first. otherwise, we'll get duplicates
+			restrict = restrict.replace(/\\/g, "\\\\");
+			for(var key:Object in REQUIRES_ESCAPE)
+			{
+				var keyRegExp:RegExp = key as RegExp;
+				var value:String = REQUIRES_ESCAPE[keyRegExp] as String;
+				restrict = restrict.replace(keyRegExp, value);
+			}
+			return new RegExp("[" + restrict + "]");
 		}
 
 		/**
@@ -1172,7 +1252,20 @@ package feathers.controls.text
 				}
 				else if(charCode >= 32) //ignore control characters
 				{
-					this.replaceSelectedText(String.fromCharCode(charCode));
+					var character:String = String.fromCharCode(charCode);
+					if(this._restricts)
+					{
+						var restrictCount:int = this._restricts.length;
+						for(var i:int = 0; i < restrictCount; i++)
+						{
+							var restrict:RegExp = this._restricts[i];
+							if(!restrict.test(character))
+							{
+								return;
+							}
+						}
+					}
+					this.replaceSelectedText(character);
 				}
 			}
 			if(newIndex >= 0)
@@ -1215,7 +1308,28 @@ package feathers.controls.text
 			{
 				return;
 			}
-			this.replaceSelectedText(Clipboard.generalClipboard.getData(ClipboardFormats.TEXT_FORMAT) as String);
+			var pastedText:String = Clipboard.generalClipboard.getData(ClipboardFormats.TEXT_FORMAT) as String;
+			if(this._restricts)
+			{
+				var textLength:int = pastedText.length;
+				var restrictCount:int = this._restricts.length;
+				for(var i:int = 0; i < textLength; i++)
+				{
+					var character:String = pastedText.charAt(i);
+					inner: for(var j:int = 0; j < restrictCount; j++)
+					{
+						var restrict:RegExp = this._restricts[j];
+						if(!restrict.test(character))
+						{
+							pastedText = pastedText.substr(0, i) + pastedText.substr(i + 1);
+							i--;
+							textLength--;
+							break inner;
+						}
+					}
+				}
+			}
+			this.replaceSelectedText(pastedText);
 		}
 	}
 }
