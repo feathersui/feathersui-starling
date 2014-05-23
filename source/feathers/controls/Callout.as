@@ -1721,7 +1721,10 @@ package feathers.controls
 				{
 					newWidth = Math.max(newWidth, this._bottomArrowSkin.width + this._paddingLeft + this._paddingRight);
 				}
-				newWidth = Math.min(newWidth, this.stage.stageWidth - stagePaddingLeft - stagePaddingRight);
+				if(this.stage)
+				{
+					newWidth = Math.min(newWidth, this.stage.stageWidth - stagePaddingLeft - stagePaddingRight);
+				}
 			}
 			if(needsHeight)
 			{
@@ -1746,7 +1749,10 @@ package feathers.controls
 				{
 					newHeight = Math.max(newHeight, this._rightArrowSkin.height + this._paddingTop + this._paddingBottom);
 				}
-				newHeight = Math.min(newHeight, this.stage.stageHeight - stagePaddingTop - stagePaddingBottom);
+				if(this.stage)
+				{
+					newHeight = Math.min(newHeight, this.stage.stageHeight - stagePaddingTop - stagePaddingBottom);
+				}
 			}
 			result.x = Math.max(this._minWidth, Math.min(this._maxWidth, newWidth));
 			result.y = Math.max(this._minHeight,  Math.min(this._maxHeight, newHeight));

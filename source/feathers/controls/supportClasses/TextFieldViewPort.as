@@ -836,7 +836,14 @@ package feathers.controls.supportClasses
 			var calculatedVisibleWidth:Number = this._visibleWidth;
 			if(calculatedVisibleWidth != calculatedVisibleWidth)
 			{
-				calculatedVisibleWidth = this.stage.stageWidth;
+				if(this.stage)
+				{
+					calculatedVisibleWidth = this.stage.stageWidth;
+				}
+				else
+				{
+					calculatedVisibleWidth = Starling.current.stage.stageWidth;
+				}
 				if(calculatedVisibleWidth < this._minVisibleWidth)
 				{
 					calculatedVisibleWidth = this._minVisibleWidth;

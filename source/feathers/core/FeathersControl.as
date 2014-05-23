@@ -1577,7 +1577,11 @@ package feathers.core
 		 */
 		public function validate():void
 		{
-			if(!this._validationQueue || !this._isInitialized || !this.isInvalid())
+			if(!this._isInitialized)
+			{
+				this.handleAddToStage();
+			}
+			if(!this.isInvalid())
 			{
 				return;
 			}
@@ -1907,6 +1911,34 @@ package feathers.core
 		}
 
 		/**
+		 * @private
+		 */
+		protected function handleAddToStage():void
+		{
+			this._depth = getDisplayObjectDepthFromStage(this);
+			this._validationQueue = ValidationQueue.forStarling(Starling.current);
+
+			if(!this._isInitialized)
+			{
+				this.initialize();
+				this.invalidate(); //invalidate everything
+				this._isInitialized = true;
+				this.dispatchEventWith(FeathersEventType.INITIALIZE);
+
+				if(this._styleProvider)
+				{
+					this._styleProvider.applyStyles(this);
+				}
+			}
+			if(this.isInvalid())
+			{
+				this._invalidateCount = 0;
+				//add to validation queue, if required
+				this._validationQueue.addControl(this, false);
+			}
+		}
+
+		/**
 		 * Default event handler for <code>FeathersEventType.FOCUS_IN</code>
 		 * that may be overridden in subclasses to perform additional actions
 		 * when the component receives focus.
@@ -1949,27 +1981,7 @@ package feathers.core
 		 */
 		protected function feathersControl_addedToStageHandler(event:Event):void
 		{
-			this._depth = getDisplayObjectDepthFromStage(this);
-			this._validationQueue = ValidationQueue.forStarling(Starling.current);
-
-			if(!this._isInitialized)
-			{
-				this.initialize();
-				this.invalidate(); //invalidate everything
-				this._isInitialized = true;
-				this.dispatchEventWith(FeathersEventType.INITIALIZE);
-
-				if(this._styleProvider)
-				{
-					this._styleProvider.applyStyles(this);
-				}
-			}
-			if(this.isInvalid())
-			{
-				this._invalidateCount = 0;
-				//add to validation queue, if required
-				this._validationQueue.addControl(this, false);
-			}
+			this.handleAddToStage();
 		}
 
 		/**
