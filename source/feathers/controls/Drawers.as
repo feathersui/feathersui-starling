@@ -28,6 +28,7 @@ package feathers.controls
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Sprite;
+	import starling.display.Stage;
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
 	import starling.events.ResizeEvent;
@@ -392,10 +393,7 @@ package feathers.controls
 				{
 					this._content.removeEventListener(this._contentEventDispatcherChangeEventType, content_eventDispatcherChangeHandler);
 				}
-				if(this._autoSizeMode == AUTO_SIZE_MODE_CONTENT)
-				{
-					this._content.removeEventListener(FeathersEventType.RESIZE, content_resizeHandler);
-				}
+				this._content.removeEventListener(FeathersEventType.RESIZE, content_resizeHandler);
 				if(this._content.parent == this)
 				{
 					this.removeChild(this._content, false);
@@ -413,7 +411,7 @@ package feathers.controls
 				{
 					this._content.addEventListener(this._contentEventDispatcherChangeEventType, content_eventDispatcherChangeHandler);
 				}
-				if(this._autoSizeMode == AUTO_SIZE_MODE_CONTENT)
+				if(this._autoSizeMode == AUTO_SIZE_MODE_CONTENT || !this.stage)
 				{
 					this._content.addEventListener(FeathersEventType.RESIZE, content_resizeHandler);
 				}
@@ -672,7 +670,7 @@ package feathers.controls
 		 */
 		public function get isTopDrawerDocked():Boolean
 		{
-			if(!this._topDrawer || !this.stage)
+			if(!this._topDrawer)
 			{
 				return false;
 			}
@@ -684,7 +682,13 @@ package feathers.controls
 			{
 				return false;
 			}
-			if(this.stage.stageWidth > this.stage.stageHeight)
+			var stage:Stage = this.stage;
+			if(!stage)
+			{
+				//fall back to the current stage, but it may be wrong...
+				stage = Starling.current.stage;
+			}
+			if(stage.stageWidth > stage.stageHeight)
 			{
 				return this._topDrawerDockMode == DOCK_MODE_LANDSCAPE;
 			}
@@ -881,7 +885,7 @@ package feathers.controls
 		 */
 		public function get isRightDrawerDocked():Boolean
 		{
-			if(!this._rightDrawer || !this.stage)
+			if(!this._rightDrawer)
 			{
 				return false;
 			}
@@ -893,7 +897,13 @@ package feathers.controls
 			{
 				return false;
 			}
-			if(this.stage.stageWidth > this.stage.stageHeight)
+			var stage:Stage = this.stage;
+			if(!stage)
+			{
+				//fall back to the current stage, but it may be wrong...
+				stage = Starling.current.stage;
+			}
+			if(stage.stageWidth > stage.stageHeight)
 			{
 				return this._rightDrawerDockMode == DOCK_MODE_LANDSCAPE;
 			}
@@ -1090,7 +1100,7 @@ package feathers.controls
 		 */
 		public function get isBottomDrawerDocked():Boolean
 		{
-			if(!this._bottomDrawer || !this.stage)
+			if(!this._bottomDrawer)
 			{
 				return false;
 			}
@@ -1102,7 +1112,13 @@ package feathers.controls
 			{
 				return false;
 			}
-			if(this.stage.stageWidth > this.stage.stageHeight)
+			var stage:Stage = this.stage;
+			if(!stage)
+			{
+				//fall back to the current stage, but it may be wrong...
+				stage = Starling.current.stage;
+			}
+			if(stage.stageWidth > stage.stageHeight)
 			{
 				return this._bottomDrawerDockMode == DOCK_MODE_LANDSCAPE;
 			}
@@ -1299,7 +1315,7 @@ package feathers.controls
 		 */
 		public function get isLeftDrawerDocked():Boolean
 		{
-			if(!this._leftDrawer || !this.stage)
+			if(!this._leftDrawer)
 			{
 				return false;
 			}
@@ -1311,7 +1327,13 @@ package feathers.controls
 			{
 				return false;
 			}
-			if(this.stage.stageWidth > this.stage.stageHeight)
+			var stage:Stage = this.stage;
+			if(!stage)
+			{
+				//fall back to the current stage, but it may be wrong...
+				stage = Starling.current.stage;
+			}
+			if(stage.stageWidth > stage.stageHeight)
 			{
 				return this._leftDrawerDockMode == DOCK_MODE_LANDSCAPE;
 			}
@@ -2065,7 +2087,7 @@ package feathers.controls
 				return false;
 			}
 
-			if(this._autoSizeMode == AUTO_SIZE_MODE_CONTENT &&
+			if((this._autoSizeMode == AUTO_SIZE_MODE_CONTENT || !this.stage) &&
 				this._content is IValidating)
 			{
 				IValidating(this._content).validate();
@@ -2094,7 +2116,7 @@ package feathers.controls
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
 			{
-				if(this._autoSizeMode == AUTO_SIZE_MODE_CONTENT)
+				if(this._autoSizeMode == AUTO_SIZE_MODE_CONTENT || !this.stage)
 				{
 					newWidth = this._content ? this._content.width : 0;
 					if(isLeftDrawerDocked)
@@ -2115,7 +2137,7 @@ package feathers.controls
 			var newHeight:Number = this.explicitHeight;
 			if(needsHeight)
 			{
-				if(this._autoSizeMode == AUTO_SIZE_MODE_CONTENT)
+				if(this._autoSizeMode == AUTO_SIZE_MODE_CONTENT || !this.stage)
 				{
 					newHeight = this._content ? this._content.height : 0;
 					if(isTopDrawerDocked)
