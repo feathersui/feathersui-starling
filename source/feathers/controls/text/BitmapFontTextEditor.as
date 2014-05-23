@@ -418,6 +418,11 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _restrictStartsWithExclude:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _restricts:Vector.<RegExp>;
 
 		/**
@@ -469,21 +474,24 @@ package feathers.controls.text
 				else if(this._restrict)
 				{
 					var startIndex:int = 0;
+					var isExcluding:Boolean = value.indexOf("^") == 0;
+					this._restrictStartsWithExclude = isExcluding;
 					do
 					{
 						var nextStartIndex:int = value.indexOf("^", startIndex + 1);
 						if(nextStartIndex >= 0)
 						{
 							var partialRestrict:String = value.substr(startIndex, nextStartIndex - startIndex);
-							this._restricts.push(this.createRestrictRegExp(partialRestrict));
+							this._restricts.push(this.createRestrictRegExp(partialRestrict, isExcluding));
 						}
 						else
 						{
 							partialRestrict = value.substr(startIndex)
-							this._restricts.push(this.createRestrictRegExp(partialRestrict));
+							this._restricts.push(this.createRestrictRegExp(partialRestrict, isExcluding));
 							break;
 						}
 						startIndex = nextStartIndex;
+						isExcluding = !isExcluding;
 					}
 					while(true)
 				}
@@ -724,8 +732,15 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function createRestrictRegExp(restrict:String):RegExp
+		protected function createRestrictRegExp(restrict:String, isExcluding:Boolean):RegExp
 		{
+			if(!isExcluding && restrict.indexOf("^") == 0)
+			{
+				//unlike regular expressions, which always treat ^ as excluding,
+				//restrict uses ^ to swap between excluding and including.
+				//if we're including, we need to remove ^ for the regexp
+				restrict = restrict.substr(1);
+			}
 			//we need to do backslash first. otherwise, we'll get duplicates
 			restrict = restrict.replace(/\\/g, "\\\\");
 			for(var key:Object in REQUIRES_ESCAPE)
@@ -1255,14 +1270,25 @@ package feathers.controls.text
 					var character:String = String.fromCharCode(charCode);
 					if(this._restricts)
 					{
+						var isExcluding:Boolean = this._restrictStartsWithExclude;
+						var isIncluded:Boolean = isExcluding;
 						var restrictCount:int = this._restricts.length;
 						for(var i:int = 0; i < restrictCount; i++)
 						{
 							var restrict:RegExp = this._restricts[i];
-							if(!restrict.test(character))
+							if(isExcluding)
 							{
-								return;
+								isIncluded = isIncluded && restrict.test(character);
 							}
+							else
+							{
+								isIncluded = isIncluded || restrict.test(character);
+							}
+							isExcluding = !isExcluding;
+						}
+						if(!isIncluded)
+						{
+							return;
 						}
 					}
 					this.replaceSelectedText(character);
@@ -1316,16 +1342,26 @@ package feathers.controls.text
 				for(var i:int = 0; i < textLength; i++)
 				{
 					var character:String = pastedText.charAt(i);
-					inner: for(var j:int = 0; j < restrictCount; j++)
+					var isExcluding:Boolean = this._restrictStartsWithExclude;
+					var isIncluded:Boolean = isExcluding;
+					for(var j:int = 0; j < restrictCount; j++)
 					{
 						var restrict:RegExp = this._restricts[j];
-						if(!restrict.test(character))
+						if(isExcluding)
 						{
-							pastedText = pastedText.substr(0, i) + pastedText.substr(i + 1);
-							i--;
-							textLength--;
-							break inner;
+							isIncluded = isIncluded && restrict.test(character);
 						}
+						else
+						{
+							isIncluded = isIncluded || restrict.test(character);
+						}
+						isExcluding = !isExcluding;
+					}
+					if(!isIncluded)
+					{
+						pastedText = pastedText.substr(0, i) + pastedText.substr(i + 1);
+						i--;
+						textLength--;
 					}
 				}
 			}
