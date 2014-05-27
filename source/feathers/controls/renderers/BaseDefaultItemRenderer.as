@@ -3227,7 +3227,7 @@ package feathers.controls.renderers
 				return width;
 			}
 			var accessoryWidth:Number = this.accessory.width;
-			if(accessoryWidth != accessoryWidth)
+			if(accessoryWidth != accessoryWidth) //isNaN
 			{
 				return width;
 			}
