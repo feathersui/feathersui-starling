@@ -1342,8 +1342,6 @@ package feathers.controls.text
 			HELPER_MATRIX.scale(scaleFactor, scaleFactor);
 			var totalBitmapWidth:Number = this._snapshotWidth;
 			var totalBitmapHeight:Number = this._snapshotHeight;
-			var clipWidth:Number = this.actualWidth * scaleFactor;
-			var clipHeight:Number = this.actualHeight * scaleFactor;
 			var xPosition:Number = 0;
 			var yPosition:Number = 0;
 			var bitmapData:BitmapData;
@@ -1379,8 +1377,7 @@ package feathers.controls.text
 					}
 					HELPER_MATRIX.tx = -xPosition;
 					HELPER_MATRIX.ty = -yPosition;
-					HELPER_RECTANGLE.setTo(0, 0, clipWidth, clipHeight);
-					bitmapData.draw(this.textField, HELPER_MATRIX, null, null, HELPER_RECTANGLE);
+					bitmapData.draw(this.textField, HELPER_MATRIX);
 					if(useNativeFilters)
 					{
 						this.measureNativeFilters(bitmapData, HELPER_RECTANGLE);
@@ -1464,15 +1461,12 @@ package feathers.controls.text
 					snapshotIndex++;
 					yPosition += currentBitmapHeight;
 					totalBitmapHeight -= currentBitmapHeight;
-					clipHeight -= currentBitmapHeight;
 				}
 				while(totalBitmapHeight > 0)
 				xPosition += currentBitmapWidth;
 				totalBitmapWidth -= currentBitmapWidth;
-				clipWidth -= currentBitmapWidth;
 				yPosition = 0;
 				totalBitmapHeight = this._snapshotHeight;
-				clipHeight = this.actualHeight * scaleFactor;
 			}
 			while(totalBitmapWidth > 0)
 			bitmapData.dispose();
