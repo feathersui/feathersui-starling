@@ -15,6 +15,7 @@ package feathers.controls.text
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.display3D.Context3DProfile;
+	import flash.filters.BitmapFilter;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -156,6 +157,16 @@ package feathers.controls.text
 		 * snapshots appearing after the first are stored here.
 		 */
 		protected var textSnapshots:Vector.<Image>;
+
+		/**
+		 * @private
+		 */
+		protected var _textSnapshotOffsetX:Number = 0;
+
+		/**
+		 * @private
+		 */
+		protected var _textSnapshotOffsetY:Number = 0;
 
 		/**
 		 * @private
@@ -1035,12 +1046,13 @@ package feathers.controls.text
 				if(this._snapToPixels)
 				{
 					this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-					this.textSnapshot.x = Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx;
-					this.textSnapshot.y = Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty;
+					this.textSnapshot.x = this._textSnapshotOffsetX + Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx;
+					this.textSnapshot.y = this._textSnapshotOffsetY + Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty;
 				}
 				else
 				{
-					this.textSnapshot.x = this.textSnapshot.y = 0;
+					this.textSnapshot.x = this._textSnapshotOffsetX;
+					this.textSnapshot.y = this._textSnapshotOffsetY;
 				}
 			}
 			super.render(support, parentAlpha);
@@ -1314,6 +1326,49 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected function measureNativeFilters(bitmapData:BitmapData, result:Rectangle = null):Rectangle
+		{
+			if(!result)
+			{
+				result = new Rectangle();
+			}
+			var resultX:Number = 0;
+			var resultY:Number = 0;
+			var resultWidth:Number = 0;
+			var resultHeight:Number = 0;
+			var filterCount:int = this._nativeFilters.length;
+			for(var i:int = 0; i < filterCount; i++)
+			{
+				var filter:BitmapFilter = this._nativeFilters[i];
+				var filterRect:Rectangle = bitmapData.generateFilterRect(bitmapData.rect, filter);
+				var filterX:Number = filterRect.x;
+				var filterY:Number = filterRect.y;
+				var filterWidth:Number = filterRect.width;
+				var filterHeight:Number = filterRect.height;
+				if(resultX > filterX)
+				{
+					resultX = filterX;
+				}
+				if(resultY > filterY)
+				{
+					resultY = filterY;
+				}
+				if(resultWidth < filterWidth)
+				{
+					resultWidth = filterWidth;
+				}
+				if(resultHeight < filterHeight)
+				{
+					resultHeight = filterHeight;
+				}
+			}
+			result.setTo(resultX, resultY, resultWidth, resultHeight);
+			return result;
+		}
+
+		/**
+		 * @private
+		 */
 		protected function texture_onRestore():void
 		{
 			this.refreshSnapshot();
@@ -1339,6 +1394,8 @@ package feathers.controls.text
 			var yPosition:Number = 0;
 			var bitmapData:BitmapData;
 			var snapshotIndex:int = -1;
+			var useNativeFilters:Boolean = this._nativeFilters && this._nativeFilters.length > 0 &&
+				totalBitmapWidth <= this._maxTextureDimensions && totalBitmapHeight <= this._maxTextureDimensions;
 			do
 			{
 				var currentBitmapWidth:Number = totalBitmapWidth;
@@ -1370,6 +1427,33 @@ package feathers.controls.text
 					HELPER_MATRIX.ty = -yPosition;
 					HELPER_RECTANGLE.setTo(0, 0, clipWidth, clipHeight);
 					bitmapData.draw(this._textLineContainer, HELPER_MATRIX, null, null, HELPER_RECTANGLE);
+					if(useNativeFilters)
+					{
+						this.measureNativeFilters(bitmapData, HELPER_RECTANGLE);
+						if(bitmapData.rect.equals(HELPER_RECTANGLE))
+						{
+							this._textSnapshotOffsetX = 0;
+							this._textSnapshotOffsetY = 0;
+						}
+						else
+						{
+							HELPER_MATRIX.tx -= HELPER_RECTANGLE.x;
+							HELPER_MATRIX.ty -= HELPER_RECTANGLE.y;
+							var newBitmapData:BitmapData = new BitmapData(HELPER_RECTANGLE.width, HELPER_RECTANGLE.height, true, 0x00ff00ff);
+							this._textSnapshotOffsetX = HELPER_RECTANGLE.x;
+							this._textSnapshotOffsetY = HELPER_RECTANGLE.y;
+							HELPER_RECTANGLE.x = 0;
+							HELPER_RECTANGLE.y = 0;
+							newBitmapData.draw(this._textLineContainer, HELPER_MATRIX, null, null, HELPER_RECTANGLE);
+							bitmapData.dispose();
+							bitmapData = newBitmapData;
+						}
+					}
+					else
+					{
+						this._textSnapshotOffsetX = 0;
+						this._textSnapshotOffsetY = 0;
+					}
 					var newTexture:Texture;
 					if(!this.textSnapshot || this._needsNewTexture)
 					{
