@@ -15,6 +15,7 @@ package feathers.controls.text
 	import feathers.utils.geom.matrixToScaleY;
 	
 	import flash.display.BitmapData;
+	import flash.display3D.Context3DProfile;
 	import flash.events.FocusEvent;
 	import flash.events.KeyboardEvent;
 	import flash.events.SoftKeyboardEvent;
@@ -1134,8 +1135,17 @@ package feathers.controls.text
 		 */
 		protected function checkIfNewSnapshotIsNeeded():void
 		{
-			this._snapshotWidth = getNextPowerOfTwo(this._textFieldClipRect.width);
-			this._snapshotHeight = getNextPowerOfTwo(this._textFieldClipRect.height);
+			var canUseRectangleTexture:Boolean = Starling.current.profile != Context3DProfile.BASELINE_CONSTRAINED;
+			if(canUseRectangleTexture)
+			{
+				this._snapshotWidth = this._textFieldClipRect.width;
+				this._snapshotHeight = this._textFieldClipRect.height;
+			}
+			else
+			{
+				this._snapshotWidth = getNextPowerOfTwo(this._textFieldClipRect.width);
+				this._snapshotHeight = getNextPowerOfTwo(this._textFieldClipRect.height);
+			}
 			var textureRoot:ConcreteTexture = this.textSnapshot ? this.textSnapshot.texture.root : null;
 			this._needsNewTexture = this._needsNewTexture || !this.textSnapshot || this._snapshotWidth != textureRoot.width || this._snapshotHeight != textureRoot.height;
 		}

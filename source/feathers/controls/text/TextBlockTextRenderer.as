@@ -14,6 +14,7 @@ package feathers.controls.text
 	import flash.display.BitmapData;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
+	import flash.display3D.Context3DProfile;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -885,7 +886,11 @@ package feathers.controls.text
 		 */
 		public function set maxTextureDimensions(value:int):void
 		{
-			value = getNextPowerOfTwo(value);
+			//check if we can use rectangle textures or not
+			if(Starling.current.profile == Context3DProfile.BASELINE_CONSTRAINED)
+			{
+				value = getNextPowerOfTwo(value);
+			}
 			if(this._maxTextureDimensions == value)
 			{
 				return;
@@ -1205,23 +1210,52 @@ package feathers.controls.text
 
 			if(sizeInvalid)
 			{
+				var canUseRectangleTexture:Boolean = Starling.current.profile != Context3DProfile.BASELINE_CONSTRAINED;
 				var rectangleSnapshotWidth:Number = this.actualWidth * Starling.contentScaleFactor;
-				if(rectangleSnapshotWidth > this._maxTextureDimensions)
+				if(canUseRectangleTexture)
 				{
-					this._snapshotWidth = int(rectangleSnapshotWidth / this._maxTextureDimensions) * this._maxTextureDimensions + getNextPowerOfTwo(rectangleSnapshotWidth % this._maxTextureDimensions);
+					if(rectangleSnapshotWidth > this._maxTextureDimensions)
+					{
+						this._snapshotWidth = int(rectangleSnapshotWidth / this._maxTextureDimensions) * this._maxTextureDimensions + (rectangleSnapshotWidth % this._maxTextureDimensions);
+					}
+					else
+					{
+						this._snapshotWidth = rectangleSnapshotWidth;
+					}
 				}
 				else
 				{
-					this._snapshotWidth = getNextPowerOfTwo(rectangleSnapshotWidth);
+					if(rectangleSnapshotWidth > this._maxTextureDimensions)
+					{
+						this._snapshotWidth = int(rectangleSnapshotWidth / this._maxTextureDimensions) * this._maxTextureDimensions + getNextPowerOfTwo(rectangleSnapshotWidth % this._maxTextureDimensions);
+					}
+					else
+					{
+						this._snapshotWidth = getNextPowerOfTwo(rectangleSnapshotWidth);
+					}
 				}
 				var rectangleSnapshotHeight:Number = this.actualHeight * Starling.contentScaleFactor;
-				if(rectangleSnapshotHeight > this._maxTextureDimensions)
+				if(canUseRectangleTexture)
 				{
-					this._snapshotHeight = int(rectangleSnapshotHeight / this._maxTextureDimensions) * this._maxTextureDimensions + getNextPowerOfTwo(rectangleSnapshotHeight % this._maxTextureDimensions);
+					if(rectangleSnapshotHeight > this._maxTextureDimensions)
+					{
+						this._snapshotHeight = int(rectangleSnapshotHeight / this._maxTextureDimensions) * this._maxTextureDimensions + (rectangleSnapshotHeight % this._maxTextureDimensions);
+					}
+					else
+					{
+						this._snapshotHeight = rectangleSnapshotHeight;
+					}
 				}
 				else
 				{
-					this._snapshotHeight = getNextPowerOfTwo(rectangleSnapshotHeight);
+					if(rectangleSnapshotHeight > this._maxTextureDimensions)
+					{
+						this._snapshotHeight = int(rectangleSnapshotHeight / this._maxTextureDimensions) * this._maxTextureDimensions + getNextPowerOfTwo(rectangleSnapshotHeight % this._maxTextureDimensions);
+					}
+					else
+					{
+						this._snapshotHeight = getNextPowerOfTwo(rectangleSnapshotHeight);
+					}
 				}
 				var textureRoot:ConcreteTexture = this.textSnapshot ? this.textSnapshot.texture.root : null;
 				this._needsNewTexture = this._needsNewTexture || !this.textSnapshot || this._snapshotWidth != textureRoot.width || this._snapshotHeight != textureRoot.height;
