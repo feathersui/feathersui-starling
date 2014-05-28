@@ -883,7 +883,7 @@ package feathers.layout
 					{
 						continue;
 					}
-					item.y = positionY;
+					item.y = item.pivotY + positionY;
 					var itemWidth:Number = item.width;
 					var itemHeight:Number;
 					if(hasDistributedHeight)
@@ -996,7 +996,7 @@ package feathers.layout
 				}
 				if(this._horizontalAlign == HORIZONTAL_ALIGN_JUSTIFY)
 				{
-					item.x = boundsX + this._paddingLeft;
+					item.x = item.pivotX + boundsX + this._paddingLeft;
 					item.width = availableWidth - this._paddingLeft - this._paddingRight;
 				}
 				else
@@ -1043,23 +1043,23 @@ package feathers.layout
 					{
 						case HORIZONTAL_ALIGN_RIGHT:
 						{
-							item.x = boundsX + availableWidth - this._paddingRight - item.width;
+							item.x = item.pivotX + boundsX + availableWidth - this._paddingRight - item.width;
 							break;
 						}
 						case HORIZONTAL_ALIGN_CENTER:
 						{
-							item.x = boundsX + this._paddingLeft + (availableWidth - this._paddingLeft - this._paddingRight - item.width) / 2;
+							item.x = item.pivotX + boundsX + this._paddingLeft + (availableWidth - this._paddingLeft - this._paddingRight - item.width) / 2;
 							break;
 						}
 						default: //left
 						{
-							item.x = boundsX + this._paddingLeft;
+							item.x = item.pivotX + boundsX + this._paddingLeft;
 						}
 					}
 				}
 				if(this.manageVisibility)
 				{
-					item.visible = ((item.y + item.height) >= (boundsY + scrollY)) && (item.y < (scrollY + availableHeight));
+					item.visible = ((item.y - item.pivotY + item.height) >= (boundsY + scrollY)) && ((item.y - item.pivotY) < (scrollY + availableHeight));
 				}
 			}
 

@@ -866,7 +866,7 @@ package feathers.layout
 					{
 						continue;
 					}
-					item.x = positionX;
+					item.x = item.pivotX + positionX;
 					var itemWidth:Number;
 					if(hasDistributedWidth)
 					{
@@ -980,7 +980,7 @@ package feathers.layout
 				}
 				if(this._verticalAlign == VERTICAL_ALIGN_JUSTIFY)
 				{
-					item.y = boundsY + this._paddingTop;
+					item.y = item.pivotY + boundsY + this._paddingTop;
 					item.height = availableHeight - this._paddingTop - this._paddingBottom;
 				}
 				else
@@ -1027,23 +1027,23 @@ package feathers.layout
 					{
 						case VERTICAL_ALIGN_BOTTOM:
 						{
-							item.y = boundsY + availableHeight - this._paddingBottom - item.height;
+							item.y = item.pivotY + boundsY + availableHeight - this._paddingBottom - item.height;
 							break;
 						}
 						case VERTICAL_ALIGN_MIDDLE:
 						{
-							item.y = boundsY + this._paddingTop + (availableHeight - this._paddingTop - this._paddingBottom - item.height) / 2;
+							item.y = item.pivotY + boundsY + this._paddingTop + (availableHeight - this._paddingTop - this._paddingBottom - item.height) / 2;
 							break;
 						}
 						default: //top
 						{
-							item.y = boundsY + this._paddingTop;
+							item.y = item.pivotY + boundsY + this._paddingTop;
 						}
 					}
 				}
 				if(this.manageVisibility)
 				{
-					item.visible = ((item.x + item.width) >= (boundsX + scrollX)) && (item.x < (scrollX + availableWidth));
+					item.visible = ((item.x - item.pivotX + item.width) >= (boundsX + scrollX)) && ((item.x - item.pivotX) < (scrollX + availableWidth));
 				}
 			}
 			this._discoveredItemsCache.length = 0;
