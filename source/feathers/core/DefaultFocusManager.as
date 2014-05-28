@@ -12,6 +12,8 @@ package feathers.core
 	import feathers.core.FocusManager;
 	import feathers.events.FeathersEventType;
 
+	import flash.display.InteractiveObject;
+
 	import flash.display.Sprite;
 
 	import flash.display.Stage;
@@ -643,6 +645,7 @@ package feathers.core
 		 */
 		protected function nativeFocus_focusOutHandler(event:FocusEvent):void
 		{
+			var nativeFocus:InteractiveObject = InteractiveObject(event.currentTarget);
 			var nativeStage:Stage = Starling.current.nativeStage;
 			if(this._focus && !nativeStage.focus)
 			{
@@ -652,10 +655,10 @@ package feathers.core
 				//this can happen on app deactivate!
 				nativeStage.focus = _nativeFocusTarget;
 			}
-			else
+			if(nativeFocus != nativeStage.focus)
 			{
 				//otherwise, we should stop listening for this event
-				nativeStage.focus.removeEventListener(FocusEvent.FOCUS_OUT, nativeFocus_focusOutHandler);
+				nativeFocus.removeEventListener(FocusEvent.FOCUS_OUT, nativeFocus_focusOutHandler);
 			}
 		}
 	}
