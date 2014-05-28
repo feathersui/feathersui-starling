@@ -1043,46 +1043,46 @@ package feathers.layout
 					{
 						case TILE_HORIZONTAL_ALIGN_JUSTIFY:
 						{
-							item.x = positionX;
+							item.x = item.pivotX + positionX;
 							item.width = tileWidth;
 							break;
 						}
 						case TILE_HORIZONTAL_ALIGN_LEFT:
 						{
-							item.x = positionX;
+							item.x = item.pivotX + positionX;
 							break;
 						}
 						case TILE_HORIZONTAL_ALIGN_RIGHT:
 						{
-							item.x = positionX + tileWidth - item.width;
+							item.x = item.pivotX + positionX + tileWidth - item.width;
 							break;
 						}
 						default: //center or unknown
 						{
-							item.x = positionX + (tileWidth - item.width) / 2;
+							item.x = item.pivotX + positionX + (tileWidth - item.width) / 2;
 						}
 					}
 					switch(this._tileVerticalAlign)
 					{
 						case TILE_VERTICAL_ALIGN_JUSTIFY:
 						{
-							item.y = positionY;
+							item.y = item.pivotY + positionY;
 							item.height = tileHeight;
 							break;
 						}
 						case TILE_VERTICAL_ALIGN_TOP:
 						{
-							item.y = positionY;
+							item.y = item.pivotY + positionY;
 							break;
 						}
 						case TILE_VERTICAL_ALIGN_BOTTOM:
 						{
-							item.y = positionY + tileHeight - item.height;
+							item.y = item.pivotY + positionY + tileHeight - item.height;
 							break;
 						}
 						default: //middle or unknown
 						{
-							item.y = positionY + (tileHeight - item.height) / 2;
+							item.y = item.pivotY + positionY + (tileHeight - item.height) / 2;
 						}
 					}
 					if(this._useVirtualLayout)
@@ -1496,8 +1496,8 @@ package feathers.layout
 				{
 					continue;
 				}
-				var itemX:Number = item.x;
-				var itemY:Number = item.y;
+				var itemX:Number = item.x - item.pivotX;
+				var itemY:Number = item.y - item.pivotY;
 				item.visible = ((itemX + item.width) >= startX) && (itemX < endX) &&
 					((itemY + item.height) >= startY) && (itemY < endY);
 			}
