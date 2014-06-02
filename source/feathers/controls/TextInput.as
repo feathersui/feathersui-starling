@@ -242,24 +242,24 @@ package feathers.controls
 		public static const ALTERNATE_NAME_SEARCH_TEXT_INPUT:String = "feathers-search-text-input";
 
 		/**
-		 * The text editor will be aligned vertically to the top edge of the
-		 * text input.
+		 * The text editor, icon, and prompt will be aligned vertically to the
+		 * top edge of the text input.
 		 *
 		 * @see #verticalAlign
 		 */
 		public static const VERTICAL_ALIGN_TOP:String = "top";
 
 		/**
-		 * The text editor will be aligned vertically to the middle of the text
-		 * input.
+		 * The text editor, icon, and prompt will be aligned vertically to the
+		 * middle of the text input.
 		 *
 		 * @see #verticalAlign
 		 */
 		public static const VERTICAL_ALIGN_MIDDLE:String = "middle";
 
 		/**
-		 * The text editor will be aligned vertically to the bottom edge of the
-		 * text input.
+		 * The text editor, icon, and prompt will be aligned vertically to the
+		 * bottom edge of the text input.
 		 *
 		 * @see #verticalAlign
 		 */
@@ -2050,10 +2050,21 @@ package feathers.controls
 			this.textEditor.validate();
 			this.promptTextRenderer.validate();
 
+			var biggerHeight:Number = this.textEditor.height;
+			var biggerBaseline:Number = this.textEditor.baseline;
+			if(this.promptTextRenderer.baseline > baseline)
+			{
+				biggerBaseline = this.promptTextRenderer.baseline;
+			}
+			if(this.promptTextRenderer.height > biggerHeight)
+			{
+				biggerHeight = this.promptTextRenderer.height;
+			}
+
 			if(isMultiline)
 			{
-				this.promptTextRenderer.y = this._paddingTop;
-				this.promptTextRenderer.height = this.actualHeight - this._paddingTop - this._paddingBottom;
+				this.promptTextRenderer.y = this._paddingTop + biggerBaseline - this.promptTextRenderer.baseline;
+				this.promptTextRenderer.height = this.actualHeight - this.promptTextRenderer.y - this._paddingBottom;
 				if(this.currentIcon)
 				{
 					this.currentIcon.y = this._paddingTop;
@@ -2065,8 +2076,9 @@ package feathers.controls
 				{
 					case VERTICAL_ALIGN_JUSTIFY:
 					{
-						this.promptTextRenderer.y = this._paddingTop;
-						this.promptTextRenderer.height = this.actualHeight - this._paddingTop - this._paddingBottom;
+						this.textEditor.y = this._paddingTop + biggerBaseline - this.textEditor.baseline;
+						this.promptTextRenderer.y = this._paddingTop + biggerBaseline - this.promptTextRenderer.baseline;
+						this.promptTextRenderer.height = this.actualHeight - this.promptTextRenderer.y - this._paddingBottom;
 						if(this.currentIcon)
 						{
 							this.currentIcon.y = this._paddingTop;
@@ -2075,8 +2087,8 @@ package feathers.controls
 					}
 					case VERTICAL_ALIGN_TOP:
 					{
-						this.textEditor.y = this._paddingTop;
-						this.promptTextRenderer.y = this._paddingTop;
+						this.textEditor.y = this._paddingTop + biggerBaseline - this.textEditor.baseline;
+						this.promptTextRenderer.y = this._paddingTop + biggerBaseline - this.promptTextRenderer.baseline;
 						if(this.currentIcon)
 						{
 							this.currentIcon.y = this._paddingTop;
@@ -2085,8 +2097,8 @@ package feathers.controls
 					}
 					case VERTICAL_ALIGN_BOTTOM:
 					{
-						this.textEditor.y = this.actualHeight - this._paddingBottom - this.textEditor.height;
-						this.promptTextRenderer.y = this.actualHeight - this._paddingBottom - this.promptTextRenderer.height;
+						this.textEditor.y = this.actualHeight - this._paddingBottom - biggerHeight + biggerBaseline - this.textEditor.baseline;
+						this.promptTextRenderer.y = this.actualHeight - this._paddingBottom - biggerHeight + biggerBaseline - this.promptTextRenderer.baseline;
 						if(this.currentIcon)
 						{
 							this.currentIcon.y = this.actualHeight - this._paddingBottom - this.currentIcon.height;
@@ -2095,8 +2107,8 @@ package feathers.controls
 					}
 					default: //middle
 					{
-						this.textEditor.y = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - this.textEditor.height) / 2;
-						this.promptTextRenderer.y = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - this.promptTextRenderer.height) / 2;
+						this.textEditor.y = biggerBaseline - this.textEditor.baseline + this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - biggerHeight) / 2;
+						this.promptTextRenderer.y = biggerBaseline - this.promptTextRenderer.baseline + this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - biggerHeight) / 2;
 						if(this.currentIcon)
 						{
 							this.currentIcon.y = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - this.currentIcon.height) / 2;
