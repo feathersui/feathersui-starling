@@ -22,7 +22,6 @@ package feathers.examples.layoutExplorer.screens
 		public function HorizontalLayoutSettingsScreen()
 		{
 			super();
-			this.addEventListener(FeathersEventType.INITIALIZE, initializeHandler);
 		}
 
 		public var settings:HorizontalLayoutSettings;
@@ -39,8 +38,11 @@ package feathers.examples.layoutExplorer.screens
 		private var _horizontalAlignPicker:PickerList;
 		private var _verticalAlignPicker:PickerList;
 
-		protected function initializeHandler(event:Event):void
+		override protected function initialize():void
 		{
+			//never forget to call super.initialize()
+			super.initialize();
+
 			this.layout = new AnchorLayout();
 
 			this._itemCountStepper = new NumericStepper();

@@ -24,7 +24,6 @@ package feathers.examples.layoutExplorer.screens
 		public function VerticalLayoutScreen()
 		{
 			super();
-			this.addEventListener(FeathersEventType.INITIALIZE, initializeHandler);
 		}
 
 		public var settings:VerticalLayoutSettings;
@@ -32,8 +31,11 @@ package feathers.examples.layoutExplorer.screens
 		private var _backButton:Button;
 		private var _settingsButton:Button;
 
-		protected function initializeHandler(event:Event):void
+		override protected function initialize():void
 		{
+			//never forget to call super.initialize()
+			super.initialize();
+
 			var layout:VerticalLayout = new VerticalLayout();
 			layout.gap = this.settings.gap;
 			layout.paddingTop = this.settings.paddingTop;

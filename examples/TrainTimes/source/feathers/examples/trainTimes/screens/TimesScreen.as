@@ -41,14 +41,17 @@ package feathers.examples.trainTimes.screens
 
 		public function TimesScreen()
 		{
-			this.addEventListener(FeathersEventType.INITIALIZE, initializeHandler);
+			super();
 		}
 
 		private var _backButton:Button;
 		private var _list:List;
 
-		protected function initializeHandler(event:Event):void
+		override protected function initialize():void
 		{
+			//never forget to call super.initialize()
+			super.initialize();
+
 			this.layout = new AnchorLayout();
 
 			this._list = new List();

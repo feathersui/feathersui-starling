@@ -23,7 +23,6 @@ package feathers.examples.todos
 		{
 			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
-			this.addEventListener(FeathersEventType.INITIALIZE, initializeHandler);
 		}
 
 		private var _input:TextInput;
@@ -80,8 +79,11 @@ package feathers.examples.todos
 			return this._toolbar;
 		}
 
-		private function initializeHandler():void
+		override protected function initialize():void
 		{
+			//never forget to call super.initialize()
+			super.initialize();
+
 			new MetalWorksMobileTheme();
 
 			this.width = this.stage.stageWidth;

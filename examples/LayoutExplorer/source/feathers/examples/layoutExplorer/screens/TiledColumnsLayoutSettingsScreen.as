@@ -22,7 +22,6 @@ package feathers.examples.layoutExplorer.screens
 		public function TiledColumnsLayoutSettingsScreen()
 		{
 			super();
-			this.addEventListener(FeathersEventType.INITIALIZE, initializeHandler);
 		}
 
 		public var settings:TiledColumnsLayoutSettings;
@@ -43,8 +42,11 @@ package feathers.examples.layoutExplorer.screens
 		private var _tileHorizontalAlignPicker:PickerList;
 		private var _tileVerticalAlignPicker:PickerList;
 
-		protected function initializeHandler(event:Event):void
+		override protected function initialize():void
 		{
+			//never forget to call super.initialize()
+			super.initialize();
+
 			this.layout = new AnchorLayout();
 
 			this._itemCountStepper = new NumericStepper();

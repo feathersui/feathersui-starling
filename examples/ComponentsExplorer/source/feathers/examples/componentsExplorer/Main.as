@@ -91,15 +91,17 @@ package feathers.examples.componentsExplorer
 		public function Main()
 		{
 			super();
-			this.addEventListener(FeathersEventType.INITIALIZE, initializeHandler);
 		}
 
 		private var _navigator:ScreenNavigator;
 		private var _menu:MainMenuScreen;
 		private var _transitionManager:ScreenSlidingStackTransitionManager;
 		
-		private function initializeHandler(event:Event):void
+		override protected function initialize():void
 		{
+			//never forget to call super.initialize()
+			super.initialize();
+
 			EmbeddedAssets.initialize();
 
 			new ComponentsExplorerTheme();
