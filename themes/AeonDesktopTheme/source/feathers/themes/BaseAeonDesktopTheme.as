@@ -649,10 +649,7 @@ package feathers.themes
 			group.horizontalAlign = ButtonGroup.HORIZONTAL_ALIGN_CENTER;
 			group.verticalAlign = ButtonGroup.VERTICAL_ALIGN_JUSTIFY;
 			group.gap = 4;
-			group.paddingTop = 12;
-			group.paddingRight = 12;
-			group.paddingBottom = 12;
-			group.paddingLeft = 12;
+			group.padding = 12;
 		}
 
 		protected function setAlertMessageTextRendererStyles(renderer:TextFieldTextRenderer):void
@@ -796,8 +793,7 @@ package feathers.themes
 			list.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
 			list.focusPadding = -1;
 
-			list.paddingTop = list.paddingRight = list.paddingBottom =
-				list.paddingLeft = 1;
+			list.padding = 1;
 		}
 
 		//see List section for item renderer styles
@@ -899,8 +895,7 @@ package feathers.themes
 			list.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
 			list.focusPadding = -1;
 
-			list.paddingTop = list.paddingRight = list.paddingBottom =
-				list.paddingLeft = 1;
+			list.padding = 1;
 		}
 
 		protected function setItemRendererStyles(renderer:BaseDefaultItemRenderer):void
@@ -998,8 +993,7 @@ package feathers.themes
 			pageIndicator.normalSymbolFactory = this.pageIndicatorNormalSymbolFactory;
 			pageIndicator.selectedSymbolFactory = this.pageIndicatorSelectedSymbolFactory;
 			pageIndicator.gap = 12;
-			pageIndicator.paddingTop = pageIndicator.paddingRight = pageIndicator.paddingBottom =
-				pageIndicator.paddingLeft = 12;
+			pageIndicator.padding = 12;
 			pageIndicator.minTouchWidth = pageIndicator.minTouchHeight = 12;
 		}
 
@@ -1104,8 +1098,7 @@ package feathers.themes
 			}
 			progress.fillSkin = fillSkin;
 
-			progress.paddingTop = progress.paddingRight = progress.paddingBottom =
-				progress.paddingLeft = 1;
+			progress.padding = 1;
 		}
 
 	//-------------------------
@@ -1320,7 +1313,7 @@ package feathers.themes
 
 			text.textFormat = this.defaultTextFormat;
 			text.disabledTextFormat = this.disabledTextFormat;
-			text.paddingTop = text.paddingRight = text.paddingBottom = text.paddingLeft = 8;
+			text.padding = 8;
 		}
 
 	//-------------------------

@@ -581,10 +581,7 @@ package feathers.themes
 			group.horizontalAlign = ButtonGroup.HORIZONTAL_ALIGN_JUSTIFY;
 			group.verticalAlign = ButtonGroup.VERTICAL_ALIGN_JUSTIFY;
 			group.gap = 4 * this.scale;
-			group.paddingTop = 8 * this.scale;
-			group.paddingRight = 8 * this.scale;
-			group.paddingBottom = 8 * this.scale;
-			group.paddingLeft = 8 * this.scale;
+			group.padding = 8 * this.scale;
 		}
 
 		protected function setAlertMessageTextRendererStyles(renderer:BitmapFontTextRenderer):void
@@ -747,8 +744,7 @@ package feathers.themes
 			button.defaultLabelProperties.textFormat = this.primaryTextFormat;
 			button.defaultLabelProperties.disabledTextFormat = this.disabledTextFormat;
 
-			button.paddingTop = button.paddingBottom =
-				button.paddingLeft = button.paddingRight = 2 * this.scale;
+			button.padding = 2 * this.scale;
 			button.gap = 4 * this.scale;
 			button.minGap = 4 * this.scale;
 			button.minWidth = 100 * this.scale;
@@ -763,8 +759,7 @@ package feathers.themes
 		{
 			callout.minWidth = 20 * this.scale;
 			callout.minHeight = 20 * this.scale;
-			callout.paddingTop = callout.paddingRight = callout.paddingBottom =
-				callout.paddingLeft = 4 * this.scale;
+			callout.padding = 4 * this.scale;
 			var backgroundSkin:Scale9Image = new Scale9Image(popUpBackgroundSkinTextures, this.scale);
 			backgroundSkin.width = 20 * this.scale;
 			backgroundSkin.height = 20 * this.scale;
@@ -899,8 +894,7 @@ package feathers.themes
 		{
 			header.minWidth = 30 * this.scale;
 			header.minHeight = 30 * this.scale;
-			header.paddingTop = header.paddingRight = header.paddingBottom =
-				header.paddingLeft = 10 * this.scale;
+			header.padding = 10 * this.scale;
 			header.gap = 4 * this.scale;
 			header.titleGap = 6 * this.scale;
 
@@ -1053,8 +1047,7 @@ package feathers.themes
 			pageIndicator.normalSymbolFactory = this.pageIndicatorNormalSymbolFactory;
 			pageIndicator.selectedSymbolFactory = this.pageIndicatorSelectedSymbolFactory;
 			pageIndicator.gap = 4 * this.scale;
-			pageIndicator.paddingTop = pageIndicator.paddingRight = pageIndicator.paddingBottom =
-				pageIndicator.paddingLeft = 4 * this.scale;
+			pageIndicator.padding = 4 * this.scale;
 		}
 
 	//-------------------------
@@ -1070,16 +1063,14 @@ package feathers.themes
 			backgroundSkin.height = 20 * this.scale;
 			panel.backgroundSkin = backgroundSkin;
 
-			panel.paddingTop = panel.paddingRight = panel.paddingBottom =
-				panel.paddingLeft = 14 * this.scale;
+			panel.padding = 14 * this.scale;
 		}
 
 		protected function setPanelHeaderStyles(header:Header):void
 		{
 			header.minWidth = 30 * this.scale;
 			header.minHeight = 30 * this.scale;
-			header.paddingTop = header.paddingBottom =
-				header.paddingLeft = header.paddingRight = 10 * this.scale;
+			header.padding = 10 * this.scale;
 			header.gap = 4 * this.scale;
 			header.titleGap = 6 * this.scale;
 
@@ -1319,10 +1310,7 @@ package feathers.themes
 
 			button.horizontalAlign = Button.HORIZONTAL_ALIGN_CENTER;
 			button.verticalAlign = Button.VERTICAL_ALIGN_MIDDLE;
-			button.paddingTop = 0;
-			button.paddingRight = 0;
-			button.paddingBottom = 0;
-			button.paddingLeft = 0;
+			button.padding = 0;
 			button.gap = 0;
 			button.minGap = 0;
 			button.minWidth = 10 * this.scale;
@@ -1405,8 +1393,7 @@ package feathers.themes
 			if(!container.layout)
 			{
 				var layout:HorizontalLayout = new HorizontalLayout();
-				layout.paddingTop = layout.paddingRight = layout.paddingBottom =
-					layout.paddingLeft = 14 * this.scale;
+				layout.padding = 14 * this.scale;
 				layout.gap = 8 * this.scale;
 				container.layout = layout;
 			}
@@ -1440,7 +1427,7 @@ package feathers.themes
 
 			text.textFormat = new TextFormat("PF Ronda Seven,Roboto,Helvetica,Arial,_sans", this.fontSize, PRIMARY_TEXT_COLOR);
 			text.disabledTextFormat = new TextFormat("PF Ronda Seven,Roboto,Helvetica,Arial,_sans", this.fontSize, DISABLED_TEXT_COLOR);
-			text.paddingTop = text.paddingRight = text.paddingBottom = text.paddingLeft = 4 * this.scale;
+			text.padding = 4 * this.scale;
 		}
 
 	//-------------------------
