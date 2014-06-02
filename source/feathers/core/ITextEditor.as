@@ -147,7 +147,7 @@ package feathers.core
 	 * @see feathers.controls.TextInput
 	 * @see http://wiki.starling-framework.org/feathers/text-editors
 	 */
-	public interface ITextEditor extends IFeathersControl
+	public interface ITextEditor extends IFeathersControl, ITextBaselineControl
 	{
 		/**
 		 * The text displayed by the editor.
@@ -158,11 +158,6 @@ package feathers.core
 		 * @private
 		 */
 		function set text(value:String):void;
-
-		/**
-		 * The baseline measurement of the text, in pixels.
-		 */
-		function get baseline():Number;
 
 		/**
 		 * Determines if the entered text will be masked so that it cannot be

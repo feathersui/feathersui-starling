@@ -14,7 +14,7 @@ package feathers.core
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/text-renderers
 	 */
-	public interface ITextRenderer extends IFeathersControl
+	public interface ITextRenderer extends IFeathersControl, ITextBaselineControl
 	{
 		/**
 		 * The text to render.
@@ -25,11 +25,6 @@ package feathers.core
 		 * @private
 		 */
 		function set text(value:String):void;
-
-		/**
-		 * The baseline measurement of the text, in pixels.
-		 */
-		function get baseline():Number;
 
 		/**
 		 * Measures the text's bounds (without a full validation, if
