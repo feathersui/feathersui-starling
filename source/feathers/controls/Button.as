@@ -917,6 +917,9 @@ package feathers.controls
 
 		/**
 		 * Offsets the x position of the label by a certain number of pixels.
+		 * This does not affect the measurement of the button. The button will
+		 * measure itself as if the label were not offset from its original
+		 * position.
 		 *
 		 * <p>The following example offsets the x position of the button's label
 		 * by 20 pixels:</p>
@@ -953,6 +956,9 @@ package feathers.controls
 
 		/**
 		 * Offsets the y position of the label by a certain number of pixels.
+		 * This does not affect the measurement of the button. The button will
+		 * measure itself as if the label were not offset from its original
+		 * position.
 		 *
 		 * <p>The following example offsets the y position of the button's label
 		 * by 20 pixels:</p>
@@ -989,6 +995,9 @@ package feathers.controls
 
 		/**
 		 * Offsets the x position of the icon by a certain number of pixels.
+		 * This does not affect the measurement of the button. The button will
+		 * measure itself as if the icon were not offset from its original
+		 * position.
 		 *
 		 * <p>The following example offsets the x position of the button's icon
 		 * by 20 pixels:</p>
@@ -1025,6 +1034,9 @@ package feathers.controls
 
 		/**
 		 * Offsets the y position of the icon by a certain number of pixels.
+		 * This does not affect the measurement of the button. The button will
+		 * measure itself as if the icon were not offset from its original
+		 * position.
 		 *
 		 * <p>The following example offsets the y position of the button's icon
 		 * by 20 pixels:</p>
