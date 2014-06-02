@@ -1116,8 +1116,7 @@ package feathers.themes
 		{
 			header.minWidth = 88 * this.scale;
 			header.minHeight = 88 * this.scale;
-			header.paddingTop = header.paddingRight = header.paddingBottom =
-				header.paddingLeft = 14 * this.scale;
+			header.padding = 14 * this.scale;
 			header.gap = 8 * this.scale;
 			header.titleGap = 12 * this.scale;
 
@@ -1255,8 +1254,7 @@ package feathers.themes
 			pageIndicator.normalSymbolFactory = this.pageIndicatorNormalSymbolFactory;
 			pageIndicator.selectedSymbolFactory = this.pageIndicatorSelectedSymbolFactory;
 			pageIndicator.gap = 10 * this.scale;
-			pageIndicator.paddingTop = pageIndicator.paddingRight = pageIndicator.paddingBottom =
-				pageIndicator.paddingLeft = 6 * this.scale;
+			pageIndicator.padding = 6 * this.scale;
 			pageIndicator.minTouchWidth = pageIndicator.minTouchHeight = 44 * this.scale;
 		}
 
@@ -1325,8 +1323,7 @@ package feathers.themes
 			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
 			layout.useVirtualLayout = true;
 			layout.gap = 0;
-			layout.paddingTop = layout.paddingRight = layout.paddingBottom =
-				layout.paddingLeft = 0;
+			layout.padding = 0;
 			list.listProperties.layout = layout;
 			list.listProperties.verticalScrollPolicy = List.SCROLL_POLICY_ON;
 
@@ -1341,8 +1338,7 @@ package feathers.themes
 				backgroundSkin.width = 20 * this.scale;
 				backgroundSkin.height = 20 * this.scale;
 				list.listProperties.backgroundSkin = backgroundSkin;
-				list.listProperties.paddingTop = list.listProperties.paddingRight =
-					list.listProperties.paddingBottom = list.listProperties.paddingLeft = 8 * this.scale;
+				list.listProperties.padding = 8 * this.scale;
 			}
 
 			list.listProperties.itemRendererName = THEME_NAME_PICKER_LIST_ITEM_RENDERER;
@@ -1514,8 +1510,7 @@ package feathers.themes
 			if(!container.layout)
 			{
 				var layout:HorizontalLayout = new HorizontalLayout();
-				layout.paddingTop = layout.paddingRight = layout.paddingBottom =
-					layout.paddingLeft = 14 * this.scale;
+				layout.padding = 14 * this.scale;
 				layout.gap = 8 * this.scale;
 				container.layout = layout;
 			}

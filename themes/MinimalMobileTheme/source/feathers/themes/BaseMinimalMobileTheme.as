@@ -592,10 +592,7 @@ package feathers.themes
 			group.horizontalAlign = ButtonGroup.HORIZONTAL_ALIGN_JUSTIFY;
 			group.verticalAlign = ButtonGroup.VERTICAL_ALIGN_JUSTIFY;
 			group.gap = 14 * this.scale;
-			group.paddingTop = 14 * this.scale;
-			group.paddingRight = 14 * this.scale;
-			group.paddingBottom = 14 * this.scale;
-			group.paddingLeft = 14 * this.scale;
+			group.padding = 14 * this.scale;
 		}
 
 		protected function setAlertMessageTextRendererStyles(renderer:BitmapFontTextRenderer):void
@@ -781,8 +778,7 @@ package feathers.themes
 		{
 			callout.minWidth = 20 * this.scale;
 			callout.minHeight = 20 * this.scale;
-			callout.paddingTop = callout.paddingRight = callout.paddingBottom =
-				callout.paddingLeft = 12 * this.scale;
+			callout.padding = 12 * this.scale;
 			var backgroundSkin:Scale9Image = new Scale9Image(popUpBackgroundSkinTextures, this.scale);
 			backgroundSkin.width = 20 * this.scale;
 			backgroundSkin.height = 20 * this.scale;
@@ -912,8 +908,7 @@ package feathers.themes
 		{
 			header.minWidth = 88 * this.scale;
 			header.minHeight = 88 * this.scale;
-			header.paddingTop = header.paddingRight = header.paddingBottom =
-				header.paddingLeft = 14 * this.scale;
+			header.padding = 14 * this.scale;
 			header.gap = 8 * this.scale;
 			header.titleGap = 12 * this.scale;
 			var backgroundSkin:Scale9Image = new Scale9Image(headerSkinTextures, this.scale);
@@ -1046,8 +1041,7 @@ package feathers.themes
 			pageIndicator.normalSymbolFactory = this.pageIndicatorNormalSymbolFactory;
 			pageIndicator.selectedSymbolFactory = this.pageIndicatorSelectedSymbolFactory;
 			pageIndicator.gap = 12 * this.scale;
-			pageIndicator.paddingTop = pageIndicator.paddingRight = pageIndicator.paddingBottom =
-				pageIndicator.paddingLeft = 12 * this.scale;
+			pageIndicator.padding = 12 * this.scale;
 			pageIndicator.minTouchWidth = pageIndicator.minTouchHeight = 44 * this.scale;
 		}
 
@@ -1064,8 +1058,7 @@ package feathers.themes
 			backgroundSkin.height = 20 * this.scale;
 			panel.backgroundSkin = backgroundSkin;
 
-			panel.paddingTop = panel.paddingRight = panel.paddingBottom =
-				panel.paddingLeft = 14 * this.scale;
+			panel.padding = 14 * this.scale;
 		}
 
 		protected function setPanelHeaderStyles(header:Header):void
@@ -1125,8 +1118,7 @@ package feathers.themes
 			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
 			layout.useVirtualLayout = true;
 			layout.gap = 0;
-			layout.paddingTop = layout.paddingRight = layout.paddingBottom =
-				layout.paddingLeft = 0;
+			layout.padding = 0;
 			list.listProperties.layout = layout;
 			list.listProperties.verticalScrollPolicy = List.SCROLL_POLICY_ON;
 
@@ -1141,8 +1133,7 @@ package feathers.themes
 				backgroundSkin.width = 20 * this.scale;
 				backgroundSkin.height = 20 * this.scale;
 				list.listProperties.backgroundSkin = backgroundSkin;
-				list.listProperties.paddingTop = list.listProperties.paddingRight =
-					list.listProperties.paddingBottom = list.listProperties.paddingLeft = 4 * this.scale;
+				list.listProperties.padding = 4 * this.scale;
 			}
 
 			list.listProperties.itemRendererName = THEME_NAME_PICKER_LIST_ITEM_RENDERER;
@@ -1326,8 +1317,7 @@ package feathers.themes
 			if(!container.layout)
 			{
 				var layout:HorizontalLayout = new HorizontalLayout();
-				layout.paddingTop = layout.paddingRight = layout.paddingBottom =
-					layout.paddingLeft = 14 * this.scale;
+				layout.padding = 14 * this.scale;
 				layout.gap = 8 * this.scale;
 				container.layout = layout;
 			}
@@ -1456,8 +1446,7 @@ package feathers.themes
 			tab.selectedDisabledLabelProperties.textFormat = this.disabledTextFormat;
 
 			tab.iconPosition = Button.ICON_POSITION_TOP;
-			tab.paddingTop = tab.paddingRight = tab.paddingBottom =
-				tab.paddingLeft = 28 * this.scale;
+			tab.padding = 28 * this.scale;
 			tab.gap = 12 * this.scale;
 			tab.minWidth = tab.minHeight = 88 * this.scale;
 			tab.minTouchWidth = tab.minTouchHeight = 88 * this.scale;
