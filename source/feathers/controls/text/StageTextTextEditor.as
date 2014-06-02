@@ -9,7 +9,6 @@ package feathers.controls.text
 {
 	import feathers.core.FeathersControl;
 	import feathers.core.IMultilineTextEditor;
-	import feathers.core.ITextEditor;
 	import feathers.events.FeathersEventType;
 	import feathers.text.StageTextField;
 	import feathers.utils.geom.matrixToScaleX;
@@ -23,6 +22,7 @@ package feathers.controls.text
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.system.Capabilities;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
@@ -212,6 +212,7 @@ package feathers.controls.text
 		 */
 		public function StageTextTextEditor()
 		{
+			this._stageTextIsTextField = /^(Windows|Mac OS|Linux) .*/.exec(Capabilities.os);
 			this.isQuickHitAreaEnabled = true;
 			this.addEventListener(starling.events.Event.ADDED_TO_STAGE, addedToStageHandler);
 			this.addEventListener(starling.events.Event.REMOVED_FROM_STAGE, removedFromStageHandler);
@@ -302,6 +303,14 @@ package feathers.controls.text
 		 * @private
 		 */
 		protected var _measureTextField:TextField;
+
+		/**
+		 * @private
+		 * This flag tells us if StageText is implemented by a TextField under
+		 * the hood. We want to eliminate that damn TextField gutter to improve
+		 * consistency across platforms.
+		 */
+		protected var _stageTextIsTextField:Boolean = false;
 
 		/**
 		 * @private
@@ -963,9 +972,16 @@ package feathers.controls.text
 		 */
 		override public function render(support:RenderSupport, parentAlpha:Number):void
 		{
+			var desktopGutterPositionOffset:Number = 0;
+			var desktopGutterDimensionsOffset:Number = 0;
+			if(this._stageTextIsTextField)
+			{
+				desktopGutterPositionOffset = 2;
+				desktopGutterDimensionsOffset = 4;
+			}
 			HELPER_POINT.x = HELPER_POINT.y = 0;
 			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
+			MatrixUtil.transformCoords(HELPER_MATRIX, -desktopGutterPositionOffset, -desktopGutterPositionOffset, HELPER_POINT);
 			var starlingViewPort:Rectangle = Starling.current.viewPort;
 			var stageTextViewPort:Rectangle = this.stageText.viewPort;
 			if(!stageTextViewPort)
@@ -1015,8 +1031,8 @@ package feathers.controls.text
 			{
 				if(position)
 				{
-					var positionX:Number = position.x;
-					var positionY:Number = position.y;
+					var positionX:Number = position.x + 2;
+					var positionY:Number = position.y + 2;
 					if(positionX < 0)
 					{
 						this._pendingSelectionStartIndex = this._pendingSelectionEndIndex = 0;
@@ -1217,7 +1233,7 @@ package feathers.controls.text
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
 			{
-				newWidth = this._measureTextField.width;
+				newWidth = this._measureTextField.textWidth;
 				if(newWidth < this._minWidth)
 				{
 					newWidth = this._minWidth;
@@ -1228,11 +1244,11 @@ package feathers.controls.text
 				}
 			}
 
-			this._measureTextField.width = newWidth;
+			this._measureTextField.width = newWidth + 4;
 			var newHeight:Number = this.explicitHeight;
 			if(needsHeight)
 			{
-				newHeight = this._measureTextField.height;
+				newHeight = this._measureTextField.textHeight;
 				if(newHeight < this._minHeight)
 				{
 					newHeight = this._minHeight;
@@ -1247,8 +1263,8 @@ package feathers.controls.text
 
 			//put the width and height back just in case we measured without
 			//a full validation
-			this._measureTextField.width = this.actualWidth;
-			this._measureTextField.height = this.actualHeight;
+			this._measureTextField.width = this.actualWidth + 4;
+			this._measureTextField.height = this.actualHeight + 4;
 
 			result.x = newWidth;
 			result.y = newHeight;
@@ -1454,6 +1470,11 @@ package feathers.controls.text
 			//and height exactly match its view port width and height.
 			var bitmapData:BitmapData = new BitmapData(viewPort.width, viewPort.height, true, 0x00ff00ff);
 			this.stageText.drawViewPortToBitmapData(bitmapData);
+			if(this._stageTextIsTextField)
+			{
+				HELPER_POINT.setTo(0, 0);
+				bitmapData.copyPixels(bitmapData, new Rectangle(2, 2, bitmapData.width, bitmapData.height), HELPER_POINT);
+			}
 
 			var newTexture:Texture;
 			if(!this.textSnapshot || this._needsNewTexture)
@@ -1505,10 +1526,17 @@ package feathers.controls.text
 			}
 
 			HELPER_POINT.x = HELPER_POINT.y = 0;
+			var desktopGutterPositionOffset:Number = 0;
+			var desktopGutterDimensionsOffset:Number = 0;
+			if(this._stageTextIsTextField)
+			{
+				desktopGutterPositionOffset = 2;
+				desktopGutterDimensionsOffset = 4;
+			}
 			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
 			var globalScaleX:Number = matrixToScaleX(HELPER_MATRIX);
 			var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
-			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
+			MatrixUtil.transformCoords(HELPER_MATRIX, -desktopGutterPositionOffset, -desktopGutterPositionOffset, HELPER_POINT);
 			var nativeScaleFactor:Number = 1;
 			if(Starling.current.supportHighResolutions)
 			{
@@ -1517,13 +1545,13 @@ package feathers.controls.text
 			var scaleFactor:Number = Starling.contentScaleFactor / nativeScaleFactor;
 			stageTextViewPort.x = Math.round(starlingViewPort.x + HELPER_POINT.x * scaleFactor);
 			stageTextViewPort.y = Math.round(starlingViewPort.y + HELPER_POINT.y * scaleFactor);
-			var viewPortWidth:Number = Math.round(this.actualWidth * scaleFactor * globalScaleX);
+			var viewPortWidth:Number = Math.round((this.actualWidth + desktopGutterDimensionsOffset) * scaleFactor * globalScaleX);
 			if(viewPortWidth < 1 ||
 				viewPortWidth != viewPortWidth) //isNaN
 			{
 				viewPortWidth = 1;
 			}
-			var viewPortHeight:Number = Math.round(this.actualHeight * scaleFactor * globalScaleY);
+			var viewPortHeight:Number = Math.round((this.actualHeight + desktopGutterDimensionsOffset) * scaleFactor * globalScaleY);
 			if(viewPortHeight < 1 ||
 				viewPortHeight != viewPortHeight) //isNaN
 			{
@@ -1533,8 +1561,8 @@ package feathers.controls.text
 			stageTextViewPort.height = viewPortHeight;
 			this.stageText.viewPort = stageTextViewPort;
 
-			this._measureTextField.width = this.actualWidth;
-			this._measureTextField.height = this.actualHeight;
+			this._measureTextField.width = this.actualWidth + 4;
+			this._measureTextField.height = this.actualHeight + 4;
 		}
 
 		/**
