@@ -160,6 +160,11 @@ package feathers.core
 		function set text(value:String):void;
 
 		/**
+		 * The baseline measurement of the text, in pixels.
+		 */
+		function get baseline():Number;
+
+		/**
 		 * Determines if the entered text will be masked so that it cannot be
 		 * seen, such as for a password input.
 		 */

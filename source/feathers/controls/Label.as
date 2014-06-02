@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.core.FeathersControl;
+	import feathers.core.ITextBaselineControl;
 	import feathers.core.ITextRenderer;
 	import feathers.core.PropertyProxy;
 	import feathers.skins.IStyleProvider;
@@ -22,7 +23,7 @@ package feathers.controls
 	 * @see http://wiki.starling-framework.org/feathers/label
 	 * @see http://wiki.starling-framework.org/feathers/text-renderers
 	 */
-	public class Label extends FeathersControl
+	public class Label extends FeathersControl implements ITextBaselineControl
 	{
 		/**
 		 * @private
@@ -141,16 +142,15 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
-		 */
-		protected var _baseline:Number = 0;
-
-		/**
-		 * The baseline value of the text.
+		 * The baseline measurement of the text, in pixels.
 		 */
 		public function get baseline():Number
 		{
-			return this._baseline;
+			if(!this.textRenderer)
+			{
+				return 0;
+			}
+			return this.textRenderer.y + this.textRenderer.baseline;
 		}
 
 		/**
@@ -431,7 +431,6 @@ package feathers.controls
 			this.textRenderer.width = this.actualWidth;
 			this.textRenderer.height = this.actualHeight;
 			this.textRenderer.validate();
-			this._baseline = this.textRenderer.baseline;
 		}
 
 		/**
