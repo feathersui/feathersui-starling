@@ -293,6 +293,23 @@ package feathers.controls.text
 		}
 
 		/**
+		 * @inheritDoc
+		 */
+		public function get baseline():Number
+		{
+			if(!this.textField)
+			{
+				return 0;
+			}
+			var gutterDimensionsOffset:Number = 0;
+			if(this._useGutter)
+			{
+				gutterDimensionsOffset = 2;
+			}
+			return gutterDimensionsOffset + this.textField.getLineMetrics(0).ascent;
+		}
+
+		/**
 		 * @private
 		 */
 		protected var _textFormat:TextFormat;

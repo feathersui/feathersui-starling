@@ -27,7 +27,7 @@ package feathers.core
 		function set text(value:String):void;
 
 		/**
-		 * The baseline measurement of the text.
+		 * The baseline measurement of the text, in pixels.
 		 */
 		function get baseline():Number;
 

@@ -329,6 +329,18 @@ package feathers.controls.text
 		protected var _stageTextIsComplete:Boolean = false;
 
 		/**
+		 * @inheritDoc
+		 */
+		public function get baseline():Number
+		{
+			if(!this._measureTextField)
+			{
+				return 0;
+			}
+			return this._measureTextField.getLineMetrics(0).ascent;
+		}
+
+		/**
 		 * @private
 		 */
 		protected var _autoCapitalize:String = "none";

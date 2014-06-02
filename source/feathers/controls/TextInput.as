@@ -11,6 +11,7 @@ package feathers.controls
 	import feathers.core.IFeathersControl;
 	import feathers.core.IFocusDisplayObject;
 	import feathers.core.IMultilineTextEditor;
+	import feathers.core.ITextBaselineControl;
 	import feathers.core.ITextEditor;
 	import feathers.core.ITextRenderer;
 	import feathers.core.IValidating;
@@ -191,7 +192,7 @@ package feathers.controls
 	 * @see http://wiki.starling-framework.org/feathers/text-editors
 	 * @see feathers.core.ITextEditor
 	 */
-	public class TextInput extends FeathersControl implements IFocusDisplayObject
+	public class TextInput extends FeathersControl implements IFocusDisplayObject, ITextBaselineControl
 	{
 		/**
 		 * @private
@@ -474,6 +475,18 @@ package feathers.controls
 			this._text = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * The baseline measurement of the text, in pixels.
+		 */
+		public function get baseline():Number
+		{
+			if(!this.textEditor)
+			{
+				return 0;
+			}
+			return this.textEditor.y + this.textEditor.baseline;
 		}
 
 		/**
