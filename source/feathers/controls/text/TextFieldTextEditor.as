@@ -654,6 +654,42 @@ package feathers.controls.text
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _useGutter:Boolean = false;
+
+		/**
+		 * Determines if the 2-pixel gutter around the edges of the
+		 * <code>flash.text.TextField</code> will be used in measurement and
+		 * layout. To visually align with other text renderers and text editors,
+		 * it is often best to leave the gutter disabled.
+		 *
+		 * <p>In the following example, the gutter is enabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.useGutter = true;</listing>
+		 *
+		 * @default false
+		 */
+		public function get useGutter():Boolean
+		{
+			return this._useGutter;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set useGutter(value:Boolean):void
+		{
+			if(this._useGutter == value)
+			{
+				return;
+			}
+			this._useGutter = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
 		 * @inheritDoc
 		 */
 		public function get setTouchFocusOnEndedPhase():Boolean
@@ -726,8 +762,13 @@ package feathers.controls.text
 				}
 				if(position)
 				{
-					var positionX:Number = position.x;
-					var positionY:Number = position.y;
+					var gutterPositionOffset:Number = 2;
+					if(this._useGutter)
+					{
+						gutterPositionOffset = 0;
+					}
+					var positionX:Number = position.x + gutterPositionOffset;
+					var positionY:Number = position.y + gutterPositionOffset;
 					if(positionX < 0)
 					{
 						this._pendingSelectionStartIndex = this._pendingSelectionEndIndex = 0;
@@ -959,11 +1000,18 @@ package feathers.controls.text
 			}
 
 			this.commitStylesAndData(this.measureTextField);
+
+			var gutterDimensionsOffset:Number = 4;
+			if(this._useGutter)
+			{
+				gutterDimensionsOffset = 0;
+			}
+
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
 			{
-				this.measureTextField.width = newWidth;
-				newWidth = this.measureTextField.textWidth + 4;
+				this.measureTextField.width = newWidth + gutterDimensionsOffset;
+				newWidth = this.measureTextField.textWidth;
 				if(newWidth < this._minWidth)
 				{
 					newWidth = this._minWidth;
@@ -977,8 +1025,12 @@ package feathers.controls.text
 			var newHeight:Number = this.explicitHeight;
 			if(needsHeight)
 			{
-				this.measureTextField.width = newWidth;
-				newHeight = this.measureTextField.textHeight + 4;
+				this.measureTextField.width = newWidth + gutterDimensionsOffset;
+				newHeight = this.measureTextField.textHeight;
+				if(this._useGutter)
+				{
+					newHeight += 4;
+				}
 				if(newHeight < this._minHeight)
 				{
 					newHeight = this._minHeight;
@@ -1071,8 +1123,13 @@ package feathers.controls.text
 		 */
 		protected function refreshTextFieldSize():void
 		{
-			this.textField.width = this.actualWidth;
-			this.textField.height = this.actualHeight;
+			var gutterDimensionsOffset:Number = 4;
+			if(this._useGutter)
+			{
+				gutterDimensionsOffset = 0;
+			}
+			this.textField.width = this.actualWidth + gutterDimensionsOffset;
+			this.textField.height = this.actualHeight + gutterDimensionsOffset;
 		}
 
 		/**
@@ -1109,8 +1166,13 @@ package feathers.controls.text
 				nativeScaleFactor = Starling.current.nativeStage.contentsScaleFactor;
 			}
 			var scaleFactor:Number = Starling.contentScaleFactor / nativeScaleFactor;
-			this.textField.x = Math.round(starlingViewPort.x + (HELPER_POINT.x * scaleFactor));
-			this.textField.y = Math.round(starlingViewPort.y + (HELPER_POINT.y * scaleFactor));
+			var gutterPositionOffset:Number = 2;
+			if(this._useGutter)
+			{
+				gutterPositionOffset = 0;
+			}
+			this.textField.x = Math.round(starlingViewPort.x + (HELPER_POINT.x * scaleFactor) - gutterPositionOffset);
+			this.textField.y = Math.round(starlingViewPort.y + (HELPER_POINT.y * scaleFactor) - gutterPositionOffset);
 			this.textField.rotation = matrixToRotation(HELPER_MATRIX) * 180 / Math.PI;
 			this.textField.scaleX = matrixToScaleX(HELPER_MATRIX) * scaleFactor;
 			this.textField.scaleY = matrixToScaleY(HELPER_MATRIX) * scaleFactor;
@@ -1188,12 +1250,17 @@ package feathers.controls.text
 			{
 				return;
 			}
+			var gutterPositionOffset:Number = 2;
+			if(this._useGutter)
+			{
+				gutterPositionOffset = 0;
+			}
 			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
 			var globalScaleX:Number = matrixToScaleX(HELPER_MATRIX);
 			var globalScaleY:Number = matrixToScaleY(HELPER_MATRIX);
 			var scaleFactor:Number = Starling.contentScaleFactor;
 			HELPER_MATRIX.identity();
-			HELPER_MATRIX.translate(this._textFieldOffsetX, this._textFieldOffsetY);
+			HELPER_MATRIX.translate(this._textFieldOffsetX - gutterPositionOffset, this._textFieldOffsetY - gutterPositionOffset);
 			HELPER_MATRIX.scale(scaleFactor * globalScaleX, scaleFactor * globalScaleY);
 			var bitmapData:BitmapData = new BitmapData(this._snapshotWidth, this._snapshotHeight, true, 0x00ff00ff);
 			bitmapData.draw(this.textField, HELPER_MATRIX, null, null, this._textFieldClipRect);
