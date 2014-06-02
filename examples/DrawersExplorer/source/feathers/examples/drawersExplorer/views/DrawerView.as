@@ -14,16 +14,19 @@ package feathers.examples.drawersExplorer.views
 
 		public function DrawerView(title:String)
 		{
+			super();
 			this._title = title;
-			this.addEventListener(FeathersEventType.INITIALIZE, initializeHandler);
 		}
 
 		private var _title:String;
 		private var _titleLabel:Label;
 		private var _dockCheck:Check;
 
-		private function initializeHandler(event:Event):void
+		override protected function initialize():void
 		{
+			//never forget to call super.initialize()
+			super.initialize();
+
 			this._titleLabel = new Label();
 			this._titleLabel.styleNameList.add(Label.ALTERNATE_NAME_HEADING);
 			this._titleLabel.text = this._title;

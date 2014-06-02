@@ -18,13 +18,16 @@ package feathers.examples.trainTimes
 
 		public function Main()
 		{
-			this.addEventListener(FeathersEventType.INITIALIZE, initializeHandler);
+			super();
 		}
 
 		private var _transitionManager:OldFadeNewSlideTransitionManager;
 
-		private function initializeHandler(event:Event):void
+		override protected function initialize():void
 		{
+			//never forget to call super.initialize()
+			super.initialize();
+
 			new TrainTimesTheme();
 
 			this.addScreen(STATION_SCREEN, new ScreenNavigatorItem(StationScreen,

@@ -23,7 +23,6 @@ package feathers.examples.layoutExplorer.screens
 		public function TiledColumnsLayoutScreen()
 		{
 			super();
-			this.addEventListener(FeathersEventType.INITIALIZE, initializeHandler);
 		}
 
 		public var settings:TiledColumnsLayoutSettings;
@@ -31,8 +30,11 @@ package feathers.examples.layoutExplorer.screens
 		private var _backButton:Button;
 		private var _settingsButton:Button;
 
-		protected function initializeHandler(event:Event):void
+		override protected function initialize():void
 		{
+			//never forget to call super.initialize()
+			super.initialize();
+
 			var layout:TiledColumnsLayout = new TiledColumnsLayout();
 			layout.paging = this.settings.paging;
 			layout.horizontalGap = this.settings.horizontalGap;

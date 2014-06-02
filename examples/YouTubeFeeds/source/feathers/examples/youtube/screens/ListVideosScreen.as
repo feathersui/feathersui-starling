@@ -33,7 +33,7 @@ package feathers.examples.youtube.screens
 
 		public function ListVideosScreen()
 		{
-			this.addEventListener(FeathersEventType.INITIALIZE, initializeHandler);
+			super();
 			this.addEventListener(starling.events.Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 		}
 
@@ -63,8 +63,11 @@ package feathers.examples.youtube.screens
 		private var _loader:URLLoader;
 		private var _savedLoaderData:*;
 
-		protected function initializeHandler(event:starling.events.Event):void
+		override protected function initialize():void
 		{
+			//never forget to call super.initialize()
+			super.initialize();
+
 			this.layout = new AnchorLayout();
 
 			this._list = new List();
