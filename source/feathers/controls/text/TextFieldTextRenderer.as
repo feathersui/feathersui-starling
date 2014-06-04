@@ -1294,7 +1294,7 @@ package feathers.controls.text
 				}
 				if(this.textSnapshot)
 				{
-					this.textSnapshot.visible = hasText;
+					this.textSnapshot.visible = hasText && this._snapshotWidth > 0 && this._snapshotHeight > 0;
 				}
 			}
 		}
@@ -1384,7 +1384,7 @@ package feathers.controls.text
 		 */
 		protected function refreshSnapshot():void
 		{
-			if(this._snapshotWidth == 0 || this._snapshotHeight == 0)
+			if(this._snapshotWidth <= 0 || this._snapshotHeight <= 0)
 			{
 				return;
 			}
