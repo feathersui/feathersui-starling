@@ -2037,7 +2037,7 @@ package feathers.controls
 			this.promptTextRenderer.width = this.actualWidth - this._paddingRight - this.promptTextRenderer.x;
 
 			var isMultiline:Boolean = this.textEditor is IMultilineTextEditor && IMultilineTextEditor(this.textEditor).multiline;
-			if(isMultiline)
+			if(isMultiline || this._verticalAlign == VERTICAL_ALIGN_JUSTIFY)
 			{
 				//multiline is treated the same as justify
 				this.textEditor.height = this.actualHeight - this._paddingTop - this._paddingBottom;
