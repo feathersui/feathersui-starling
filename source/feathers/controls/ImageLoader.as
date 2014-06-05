@@ -28,6 +28,7 @@ package feathers.controls
 	import flash.system.ImageDecodingPolicy;
 	import flash.system.LoaderContext;
 	import flash.utils.ByteArray;
+	import flash.utils.setTimeout;
 
 	import starling.core.RenderSupport;
 	import starling.core.Starling;
@@ -38,6 +39,7 @@ package feathers.controls
 	import starling.textures.TextureSmoothing;
 	import starling.utils.RectangleUtil;
 	import starling.utils.ScaleMode;
+	import starling.utils.SystemUtil;
 
 	/**
 	 * Dispatched when the source content finishes loading.
@@ -1324,6 +1326,18 @@ package feathers.controls
 		 */
 		protected function replaceBitmapDataTexture(bitmapData:BitmapData):void
 		{
+			if(Starling.handleLostContext && !Starling.current.contextValid)
+			{
+				trace("ImageLoader: Context lost while processing loaded image, retrying...");
+				setTimeout(replaceBitmapDataTexture, 1, bitmapData);
+				return;
+			}
+			if(!SystemUtil.isDesktop && !SystemUtil.isApplicationActive)
+			{
+				//avoiding stage3d calls when a mobile application isn't active
+				SystemUtil.executeWhenApplicationIsActive(replaceBitmapDataTexture, bitmapData);
+				return;
+			}
 			this._texture = Texture.fromBitmapData(bitmapData, false, false, 1, this._textureFormat);
 			if(Starling.handleLostContext)
 			{
@@ -1348,6 +1362,18 @@ package feathers.controls
 		 */
 		protected function replaceRawTextureData(rawData:ByteArray):void
 		{
+			if(Starling.handleLostContext && !Starling.current.contextValid)
+			{
+				trace("ImageLoader: Context lost while processing loaded image, retrying...");
+				setTimeout(replaceRawTextureData, 1, rawData);
+				return;
+			}
+			if(!SystemUtil.isDesktop && !SystemUtil.isApplicationActive)
+			{
+				//avoiding stage3d calls when a mobile application isn't active
+				SystemUtil.executeWhenApplicationIsActive(replaceRawTextureData, rawData);
+				return;
+			}
 			this._texture = Texture.fromAtfData(rawData);
 			if(Starling.handleLostContext)
 			{
