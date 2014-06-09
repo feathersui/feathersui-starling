@@ -171,7 +171,6 @@ package feathers.core
 			}
 			if(this._focus)
 			{
-				this._focus.removeEventListener(Event.REMOVED_FROM_STAGE, focus_removedFromStageHandler);
 				this._focus.dispatchEventWith(FeathersEventType.FOCUS_OUT);
 				this._focus = null;
 			}
@@ -191,7 +190,6 @@ package feathers.core
 						nativeStage.focus = _nativeFocusTarget;
 					}
 					nativeStage.focus.addEventListener(FocusEvent.FOCUS_OUT, nativeFocus_focusOutHandler, false, 0, true);
-					this._focus.addEventListener(Event.REMOVED_FROM_STAGE, focus_removedFromStageHandler);
 					this._focus.dispatchEventWith(FeathersEventType.FOCUS_IN);
 				}
 				else
@@ -235,6 +233,10 @@ package feathers.core
 			if(target is IFocusDisplayObject)
 			{
 				var targetWithFocus:IFocusDisplayObject = IFocusDisplayObject(target);
+				if(this._focus == targetWithFocus)
+				{
+					this.focus = null;
+				}
 				targetWithFocus.focusManager = null;
 			}
 			if(target is DisplayObjectContainer)
@@ -630,14 +632,6 @@ package feathers.core
 			}
 			while(target)
 			this.focus = focusTarget;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function focus_removedFromStageHandler(event:Event):void
-		{
-			this.focus = null;
 		}
 
 		/**
