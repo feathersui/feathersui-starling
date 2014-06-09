@@ -232,6 +232,8 @@ package feathers.controls.supportClasses
 			}
 		}
 
+		private var _updateForDataReset:Boolean = false;
+
 		private var _dataProvider:ListCollection;
 
 		public function get dataProvider():ListCollection
@@ -268,6 +270,7 @@ package feathers.controls.supportClasses
 			{
 				IVariableVirtualLayout(this._layout).resetVariableVirtualCache();
 			}
+			this._updateForDataReset = true;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
@@ -832,6 +835,7 @@ package feathers.controls.supportClasses
 			this.recoverInactiveRenderers();
 			this.renderUnrenderedData();
 			this.freeInactiveRenderers();
+			this._updateForDataReset = false;
 		}
 
 		private function findUnrenderedData():void
@@ -901,6 +905,20 @@ package feathers.controls.supportClasses
 					//if this item renderer used to be the typical item
 					//renderer, but it isn't anymore, it may have been set invisible!
 					renderer.visible = true;
+					if(this._updateForDataReset)
+					{
+						//similar to calling updateItemAt(), replacing the data
+						//provider or resetting its source means that we should
+						//trick the item renderer into thinking it has new data.
+						//many developers seem to expect this behavior, so while
+						//it's not the most optimal for performance, it saves on
+						//support time in the forums. thankfully, it's still
+						//somewhat optimized since the same item renderer will
+						//receive the same data, and the children generally
+						//won't have changed much, if at all.
+						renderer.data = null;
+						renderer.data = item;
+					}
 
 					//the typical item renderer is a special case, and we will
 					//have already put it into the active renderers, so we don't
@@ -1152,6 +1170,7 @@ package feathers.controls.supportClasses
 		private function dataProvider_resetHandler(event:Event):void
 		{
 			this._selectedIndices.removeAll();
+			this._updateForDataReset = true;
 
 			var layout:IVariableVirtualLayout = this._layout as IVariableVirtualLayout;
 			if(!layout || !layout.hasVariableItemDimensions)
