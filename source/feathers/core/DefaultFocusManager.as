@@ -169,19 +169,24 @@ package feathers.core
 			{
 				return;
 			}
-			if(this._focus)
+			var oldFocus:IFeathersDisplayObject = this._focus;
+			if(this._isEnabled && value && value.isFocusEnabled)
 			{
-				this._focus.dispatchEventWith(FeathersEventType.FOCUS_OUT);
+				this._focus = value;
+			}
+			else
+			{
 				this._focus = null;
 			}
-			if(!value || !value.isFocusEnabled)
+			if(oldFocus)
 			{
-				this._focus = null;
-				return;
+				//this event should be dispatched after setting the new value of
+				//_focus because we want to be able to access it in the event
+				//listener
+				oldFocus.dispatchEventWith(FeathersEventType.FOCUS_OUT);
 			}
 			if(this._isEnabled)
 			{
-				this._focus = value;
 				if(this._focus)
 				{
 					var nativeStage:Stage = Starling.current.nativeStage;
