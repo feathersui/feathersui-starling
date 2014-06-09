@@ -12,6 +12,7 @@ package feathers.controls
 	import feathers.controls.popups.VerticalCenteredPopUpContentManager;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.core.FeathersControl;
+	import feathers.core.IFocusDisplayObject;
 	import feathers.core.IToggle;
 	import feathers.core.IToggle;
 	import feathers.core.PropertyProxy;
@@ -78,7 +79,7 @@ package feathers.controls
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/picker-list
 	 */
-	public class PickerList extends FeathersControl
+	public class PickerList extends FeathersControl implements IFocusDisplayObject
 	{
 		/**
 		 * @private
@@ -1020,6 +1021,11 @@ package feathers.controls
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _buttonHasFocus:Boolean = false;
+
+		/**
 		 * Opens the pop-up list, if it isn't already open.
 		 */
 		public function openList():void
@@ -1038,6 +1044,16 @@ package feathers.controls
 			this._popUpContentManager.open(this.list, this);
 			this.list.scrollToDisplayIndex(this._selectedIndex);
 			this.list.validate();
+			if(this._focusManager)
+			{
+				if(this._buttonHasFocus)
+				{
+					this.button.dispatchEventWith(FeathersEventType.FOCUS_OUT);
+					this._buttonHasFocus = false;
+				}
+				this._focusManager.focus = this.list;
+				this.list.addEventListener(FeathersEventType.FOCUS_OUT, list_focusOutHandler);
+			}
 		}
 
 		/**
@@ -1056,6 +1072,10 @@ package feathers.controls
 				return;
 			}
 			this._isCloseListPending = false;
+			if(this._focusManager)
+			{
+				this.list.removeEventListener(FeathersEventType.FOCUS_OUT, list_focusOutHandler);
+			}
 			this.list.validate();
 			this._popUpContentManager.close();
 		}
@@ -1077,6 +1097,30 @@ package feathers.controls
 				this._popUpContentManager = null;
 			}
 			super.dispose();
+		}
+
+		/**
+		 * @private
+		 */
+		override public function showFocus():void
+		{
+			if(!this.button)
+			{
+				return;
+			}
+			this.button.showFocus();
+		}
+
+		/**
+		 * @private
+		 */
+		override public function hideFocus():void
+		{
+			if(!this.button)
+			{
+				return;
+			}
+			this.button.hideFocus();
 		}
 		
 		/**
@@ -1372,6 +1416,29 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override protected function focusInHandler(event:Event):void
+		{
+			super.focusInHandler(event);
+			this._buttonHasFocus = true;
+			this.button.dispatchEventWith(FeathersEventType.FOCUS_IN);
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function focusOutHandler(event:Event):void
+		{
+			if(this._buttonHasFocus)
+			{
+				this.button.dispatchEventWith(FeathersEventType.FOCUS_OUT);
+				this._buttonHasFocus = false;
+			}
+			super.focusOutHandler(event);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function childProperties_onChange(proxy:PropertyProxy, name:String):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
@@ -1440,6 +1507,18 @@ package feathers.controls
 				return;
 			}
 			IToggle(this.button).isSelected = false;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function list_focusOutHandler(event:Event):void
+		{
+			if(!this._popUpContentManager.isOpen)
+			{
+				return;
+			}
+			this.closeList();
 		}
 
 		/**
