@@ -1296,6 +1296,32 @@ package feathers.controls
 		}
 
 		/**
+		 * @private
+		 */
+		protected function toMinimum():void
+		{
+			this.value = this._minimum;
+			if(this.textInput.isEditable)
+			{
+				this.validate();
+				this.textInput.selectRange(0, this.textInput.text.length);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function toMaximum():void
+		{
+			this.value = this._maximum;
+			if(this.textInput.isEditable)
+			{
+				this.validate();
+				this.textInput.selectRange(0, this.textInput.text.length);
+			}
+		}
+
+		/**
 		 * Creates and adds the <code>decrementButton</code> sub-component and
 		 * removes the old instance, if one exists.
 		 *
@@ -1659,19 +1685,19 @@ package feathers.controls
 		{
 			if(event.keyCode == Keyboard.HOME)
 			{
-				this.value = this._minimum;
+				this.toMinimum();
 			}
 			else if(event.keyCode == Keyboard.END)
 			{
-				this.value = this._maximum;
+				this.toMaximum();
 			}
 			else if(event.keyCode == Keyboard.UP)
 			{
-				this.value += this._step;
+				this.increment();
 			}
 			else if(event.keyCode == Keyboard.DOWN)
 			{
-				this.value -= this._step;
+				this.decrement();
 			}
 		}
 
