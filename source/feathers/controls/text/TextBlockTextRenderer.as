@@ -136,8 +136,6 @@ package feathers.controls.text
 		{
 			super();
 			this.isQuickHitAreaEnabled = true;
-			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
-			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 		}
 
 		/**
@@ -1032,7 +1030,31 @@ package feathers.controls.text
 		 */
 		override public function dispose():void
 		{
-			this.disposeContent();
+			if(this.textSnapshot)
+			{
+				this.textSnapshot.texture.dispose();
+				this.removeChild(this.textSnapshot, true);
+				this.textSnapshot = null;
+			}
+			if(this.textSnapshots)
+			{
+				var snapshotCount:int = this.textSnapshots.length;
+				for(var i:int = 0; i < snapshotCount; i++)
+				{
+					var snapshot:Image = this.textSnapshots[i];
+					snapshot.texture.dispose();
+					this.removeChild(snapshot, true);
+				}
+				this.textSnapshots = null;
+			}
+
+			this._previousContentWidth = NaN;
+			this._previousContentHeight = NaN;
+
+			this._needsNewTexture = false;
+			this._snapshotWidth = 0;
+			this._snapshotHeight = 0;
+
 			super.dispose();
 		}
 
@@ -1546,37 +1568,6 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function disposeContent():void
-		{
-			if(this.textSnapshot)
-			{
-				this.textSnapshot.texture.dispose();
-				this.removeChild(this.textSnapshot, true);
-				this.textSnapshot = null;
-			}
-			if(this.textSnapshots)
-			{
-				var snapshotCount:int = this.textSnapshots.length;
-				for(var i:int = 0; i < snapshotCount; i++)
-				{
-					var snapshot:Image = this.textSnapshots[i];
-					snapshot.texture.dispose();
-					this.removeChild(snapshot, true);
-				}
-				this.textSnapshots = null;
-			}
-
-			this._previousContentWidth = NaN;
-			this._previousContentHeight = NaN;
-
-			this._needsNewTexture = false;
-			this._snapshotWidth = 0;
-			this._snapshotHeight = 0;
-		}
-
-		/**
-		 * @private
-		 */
 		protected function refreshTextLines(textLines:Vector.<TextLine>, textLineParent:DisplayObjectContainer, width:Number, height:Number):void
 		{
 			if(this._textElement)
@@ -1733,25 +1724,6 @@ package feathers.controls.text
 				textLineParent.removeChild(line);
 			}
 			HELPER_TEXT_LINES.length = 0;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function addedToStageHandler(event:Event):void
-		{
-			//we need to invalidate in order to get a fresh snapshot
-			this.invalidate(INVALIDATION_FLAG_SIZE);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function removedFromStageHandler(event:Event):void
-		{
-			//avoid the need to call dispose(). we'll create a new snapshot
-			//when the renderer is added to stage again.
-			this.disposeContent();
 		}
 	}
 }
