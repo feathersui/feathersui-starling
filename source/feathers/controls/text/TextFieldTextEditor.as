@@ -201,8 +201,7 @@ package feathers.controls.text
 		public function TextFieldTextEditor()
 		{
 			this.isQuickHitAreaEnabled = true;
-			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
-			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
+			this.addEventListener(Event.REMOVED_FROM_STAGE, textEditor_removedFromStageHandler);
 		}
 
 		/**
@@ -744,7 +743,20 @@ package feathers.controls.text
 		 */
 		override public function dispose():void
 		{
-			this.disposeContent();
+			if(this.textSnapshot)
+			{
+				//avoid the need to call dispose(). we'll create a new snapshot
+				//when the renderer is added to stage again.
+				this.textSnapshot.texture.dispose();
+				this.removeChild(this.textSnapshot, true);
+				this.textSnapshot = null;
+			}
+
+			if(this.textField.parent)
+			{
+				Starling.current.nativeStage.removeChild(this.textField);
+			}
+
 			super.dispose();
 		}
 
@@ -1130,7 +1142,7 @@ package feathers.controls.text
 			{
 				//we need to wait a frame for the flash.text.TextField to render
 				//properly. sometimes two, and this is a known issue.
-				this.addEventListener(Event.ENTER_FRAME, enterFrameHandler);
+				this.addEventListener(Event.ENTER_FRAME, textEditor_enterFrameHandler);
 			}
 			this.doPendingActions();
 		}
@@ -1327,46 +1339,22 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function disposeContent():void
+		protected function textEditor_removedFromStageHandler(event:Event):void
 		{
-			if(this.textSnapshot)
-			{
-				//avoid the need to call dispose(). we'll create a new snapshot
-				//when the renderer is added to stage again.
-				this.textSnapshot.texture.dispose();
-				this.removeChild(this.textSnapshot, true);
-				this.textSnapshot = null;
-			}
-
 			if(this.textField.parent)
 			{
-				Starling.current.nativeStage.removeChild(this.textField);
+				//remove this from the stage, if needed
+				//it will be added back next time we receive focus
+				this.textField.parent.removeChild(this.textField);
 			}
 		}
 
 		/**
 		 * @private
 		 */
-		protected function addedToStageHandler(event:Event):void
+		protected function textEditor_enterFrameHandler(event:Event):void
 		{
-			//we need to invalidate in order to get a fresh snapshot
-			this.invalidate(INVALIDATION_FLAG_DATA);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function removedFromStageHandler(event:Event):void
-		{
-			this.disposeContent();
-		}
-
-		/**
-		 * @private
-		 */
-		protected function enterFrameHandler(event:Event):void
-		{
-			this.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
+			this.removeEventListener(Event.ENTER_FRAME, textEditor_enterFrameHandler);
 			this.refreshSnapshot();
 			if(this.textSnapshot)
 			{

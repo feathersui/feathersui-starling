@@ -214,8 +214,7 @@ package feathers.controls.text
 		{
 			this._stageTextIsTextField = /^(Windows|Mac OS|Linux) .*/.exec(Capabilities.os);
 			this.isQuickHitAreaEnabled = true;
-			this.addEventListener(starling.events.Event.ADDED_TO_STAGE, addedToStageHandler);
-			this.addEventListener(starling.events.Event.REMOVED_FROM_STAGE, removedFromStageHandler);
+			this.addEventListener(starling.events.Event.REMOVED_FROM_STAGE, textEditor_removedFromStageHandler);
 		}
 
 		/**
@@ -963,7 +962,26 @@ package feathers.controls.text
 		 */
 		override public function dispose():void
 		{
-			this.disposeContent();
+			if(this._measureTextField)
+			{
+				Starling.current.nativeStage.removeChild(this._measureTextField);
+				this._measureTextField = null;
+			}
+
+			if(this.stageText)
+			{
+				this.disposeStageText();
+			}
+
+			if(this.textSnapshot)
+			{
+				//avoid the need to call dispose(). we'll create a new snapshot
+				//when the renderer is added to stage again.
+				this.textSnapshot.texture.dispose();
+				this.removeChild(this.textSnapshot, true);
+				this.textSnapshot = null;
+			}
+
 			super.dispose();
 		}
 
@@ -1158,6 +1176,31 @@ package feathers.controls.text
 			result = this.measure(result);
 
 			return result;
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function initialize():void
+		{
+			if(this._measureTextField && !this._measureTextField.parent)
+			{
+				Starling.current.nativeStage.addChild(this._measureTextField);
+			}
+			else if(!this._measureTextField)
+			{
+				this._measureTextField = new TextField();
+				this._measureTextField.visible = false;
+				this._measureTextField.mouseEnabled = this._measureTextField.mouseWheelEnabled = false;
+				this._measureTextField.autoSize = TextFieldAutoSize.LEFT;
+				this._measureTextField.multiline = false;
+				this._measureTextField.wordWrap = false;
+				this._measureTextField.embedFonts = false;
+				this._measureTextField.defaultTextFormat = new TextFormat(null, 11, 0x000000, false, false, false);
+				Starling.current.nativeStage.addChild(this._measureTextField);
+			}
+
+			this.createStageText();
 		}
 
 		/**
@@ -1568,32 +1611,6 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function disposeContent():void
-		{
-			if(this._measureTextField)
-			{
-				Starling.current.nativeStage.removeChild(this._measureTextField);
-				this._measureTextField = null;
-			}
-
-			if(this.stageText)
-			{
-				this.disposeStageText();
-			}
-
-			if(this.textSnapshot)
-			{
-				//avoid the need to call dispose(). we'll create a new snapshot
-				//when the renderer is added to stage again.
-				this.textSnapshot.texture.dispose();
-				this.removeChild(this.textSnapshot, true);
-				this.textSnapshot = null;
-			}
-		}
-
-		/**
-		 * @private
-		 */
 		protected function disposeStageText():void
 		{
 			if(!this.stageText)
@@ -1651,34 +1668,11 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function addedToStageHandler(event:starling.events.Event):void
+		protected function textEditor_removedFromStageHandler(event:starling.events.Event):void
 		{
-			if(this._measureTextField && !this._measureTextField.parent)
-			{
-				Starling.current.nativeStage.addChild(this._measureTextField);
-			}
-			else if(!this._measureTextField)
-			{
-				this._measureTextField = new TextField();
-				this._measureTextField.visible = false;
-				this._measureTextField.mouseEnabled = this._measureTextField.mouseWheelEnabled = false;
-				this._measureTextField.autoSize = TextFieldAutoSize.LEFT;
-				this._measureTextField.multiline = false;
-				this._measureTextField.wordWrap = false;
-				this._measureTextField.embedFonts = false;
-				this._measureTextField.defaultTextFormat = new TextFormat(null, 11, 0x000000, false, false, false);
-				Starling.current.nativeStage.addChild(this._measureTextField);
-			}
-
-			this.createStageText();
-		}
-
-		/**
-		 * @private
-		 */
-		protected function removedFromStageHandler(event:starling.events.Event):void
-		{
-			this.disposeContent();
+			//remove this from the stage, if needed
+			//it will be added back next time we receive focus
+			this.stageText.stage = null;
 		}
 
 		/**
