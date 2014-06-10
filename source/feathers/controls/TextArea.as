@@ -994,9 +994,17 @@ package feathers.controls
 			{
 				this.currentBackgroundSkin = DisplayObject(this._stateToSkinFunction(this, this._currentState, oldSkin));
 			}
+			else if(!this._isEnabled && this._backgroundDisabledSkin)
+			{
+				this.currentBackgroundSkin = this._backgroundDisabledSkin;
+			}
 			else if(this._hasFocus && this._backgroundFocusedSkin)
 			{
 				this.currentBackgroundSkin = this._backgroundFocusedSkin;
+			}
+			else
+			{
+				this.currentBackgroundSkin = this._backgroundSkin;
 			}
 			if(oldSkin != this.currentBackgroundSkin)
 			{
@@ -1008,26 +1016,27 @@ package feathers.controls
 						this.removeChild(oldSkin);
 					}
 				}
-				if(this._stateToSkinFunction != null)
+				if(this.currentBackgroundSkin)
 				{
-					this.addChildAt(this.currentBackgroundSkin, 0);
+					if(this._stateToSkinFunction != null)
+					{
+						this.addChildAt(this.currentBackgroundSkin, 0);
+					}
+					else
+					{
+						this.setChildIndex(this.currentBackgroundSkin, 0);
+					}
+					this.currentBackgroundSkin.visible = true;
+					if(this.originalBackgroundWidth != this.originalBackgroundWidth) //isNaN
+					{
+						this.originalBackgroundWidth = this.currentBackgroundSkin.width;
+					}
+					if(this.originalBackgroundHeight != this.originalBackgroundHeight) //isNaN
+					{
+						this.originalBackgroundHeight = this.currentBackgroundSkin.height;
+					}
 				}
-				else
-				{
-					this.setChildIndex(this.currentBackgroundSkin, 0);
-				}
-				this.currentBackgroundSkin.visible = true;
-				if(this.originalBackgroundWidth != this.originalBackgroundWidth) //isNaN
-				{
-					this.originalBackgroundWidth = this.currentBackgroundSkin.width;
-				}
-				if(this.originalBackgroundHeight != this.originalBackgroundHeight) //isNaN
-				{
-					this.originalBackgroundHeight = this.currentBackgroundSkin.height;
-				}
-				return;
 			}
-			super.refreshBackgroundSkin();
 		}
 
 		/**
