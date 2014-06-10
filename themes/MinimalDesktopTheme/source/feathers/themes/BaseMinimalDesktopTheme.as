@@ -1022,8 +1022,14 @@ package feathers.themes
 			input.gap = 4 * this.scale;
 			input.paddingTop = input.paddingBottom = 0;
 			input.paddingLeft = input.paddingRight = 2 * this.scale;
+
 			input.textEditorProperties.textFormat = this.primaryTextFormat;
 			//input.textEditorProperties.disabledTextFormat = this.disabledTextFormat;
+			input.textEditorProperties.cursorSkin = new Quad(1, 1, PRIMARY_TEXT_COLOR);
+			input.textEditorProperties.selectionSkin = new Quad(1, 1, BACKGROUND_COLOR);
+
+			input.promptProperties.textFormat = this.primaryTextFormat;
+			input.promptProperties.disabledTextFormat = this.disabledTextFormat;
 
 			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = this.insetBackgroundSkinTextures;
@@ -1584,7 +1590,6 @@ package feathers.themes
 				height: 18 * this.scale
 			};
 			input.stateToSkinFunction = skinSelector.updateValue;
-
 		}
 
 		protected function setTextInputStyles(input:TextInput):void
