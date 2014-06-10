@@ -1160,8 +1160,18 @@ package feathers.controls.text
 			this._textFieldClipRect.y = 0;
 
 			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-			this._textFieldClipRect.width = this.actualWidth * Starling.contentScaleFactor * matrixToScaleX(HELPER_MATRIX);
-			this._textFieldClipRect.height = this.actualHeight * Starling.contentScaleFactor * matrixToScaleY(HELPER_MATRIX);
+			var clipWidth:Number = this.actualWidth * Starling.contentScaleFactor * matrixToScaleX(HELPER_MATRIX);
+			if(clipWidth < 0)
+			{
+				clipWidth = 0;
+			}
+			var clipHeight:Number = this.actualHeight * Starling.contentScaleFactor * matrixToScaleY(HELPER_MATRIX);
+			if(clipHeight < 0)
+			{
+				clipHeight = 0;
+			}
+			this._textFieldClipRect.width = clipWidth;
+			this._textFieldClipRect.height = clipHeight;
 		}
 
 		/**
@@ -1263,7 +1273,7 @@ package feathers.controls.text
 		 */
 		protected function refreshSnapshot():void
 		{
-			if(this.textField.width == 0 || this.textField.height == 0)
+			if(this._snapshotWidth <= 0 || this._snapshotHeight <= 0)
 			{
 				return;
 			}
