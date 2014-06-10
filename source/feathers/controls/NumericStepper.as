@@ -1275,6 +1275,11 @@ package feathers.controls
 		protected function decrement():void
 		{
 			this.value -= this._step;
+			if(this.textInput.isEditable)
+			{
+				this.validate();
+				this.textInput.selectRange(0, this.textInput.text.length);
+			}
 		}
 
 		/**
@@ -1283,6 +1288,11 @@ package feathers.controls
 		protected function increment():void
 		{
 			this.value += this._step;
+			if(this.textInput.isEditable)
+			{
+				this.validate();
+				this.textInput.selectRange(0, this.textInput.text.length);
+			}
 		}
 
 		/**
