@@ -2150,6 +2150,10 @@ package feathers.controls
 		 */
 		protected function textInput_removedFromStageHandler(event:Event):void
 		{
+			if(!this._focusManager && this._textEditorHasFocus)
+			{
+				this.clearFocus();
+			}
 			this._textEditorHasFocus = false;
 			this._isWaitingToSetFocus = false;
 			this._touchPointID = -1;
