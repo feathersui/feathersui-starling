@@ -1720,7 +1720,7 @@ package feathers.themes
 			textArea.paddingLeft = textArea.paddingRight = 14 * this.scale;
 
 			textArea.textEditorProperties.textFormat = this.scrollTextTextFormat;
-			textArea.textEditorProperties.disabledTextFormat = this.scrollTextDisabledTextFormat;
+			//textArea.textEditorProperties.disabledTextFormat = this.scrollTextDisabledTextFormat;
 		}
 
 	//-------------------------
