@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:6b8a4e400b7d1496ec0bbfa0ff7ff940$ -->
-<TextureAtlas imagePath="aeon.png">
+<!-- $TexturePacker:SmartUpdate:a5b612c4c9d89c15ad9ad98e76b37c45$ -->
+<TextureAtlas imagePath="aeon_desktop.png">
     <SubTexture name="button-disabled-skin" x="43" y="62" width="82" height="22"/>
     <SubTexture name="button-down-skin" x="10" y="118" width="82" height="22"/>
     <SubTexture name="button-hover-skin" x="159" y="29" width="82" height="22"/>

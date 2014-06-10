@@ -41,10 +41,10 @@ package feathers.themes
 	 */
 	public class AeonDesktopTheme extends BaseAeonDesktopTheme
 	{
-		[Embed(source="/../assets/images/aeon.png")]
+		[Embed(source="/../assets/images/aeon_desktop.png")]
 		protected static const ATLAS_BITMAP:Class;
 
-		[Embed(source="/../assets/images/aeon.xml",mimeType="application/octet-stream")]
+		[Embed(source="/../assets/images/aeon_desktop.xml",mimeType="application/octet-stream")]
 		protected static const ATLAS_XML:Class;
 
 		public function AeonDesktopTheme()

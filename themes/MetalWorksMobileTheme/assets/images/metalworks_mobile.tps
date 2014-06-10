@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data version="1.0">
     <struct type="Settings">
+        <key>fileFormatVersion</key>
+        <int>1</int>
         <key>variation</key>
         <string>main</string>
         <key>verbose</key>
@@ -17,12 +19,10 @@
         <false/>
         <key>dpi</key>
         <uint>72</uint>
-        <key>allowFreeSize</key>
-        <false/>
         <key>dataFormat</key>
         <string>sparrow</string>
         <key>textureFileName</key>
-        <filename>aeon.png</filename>
+        <filename>metalworks_mobile.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>ditherType</key>
@@ -43,6 +43,8 @@
         <uint>2</uint>
         <key>jpgQuality</key>
         <uint>80</uint>
+        <key>pngOptimizationLevel</key>
+        <uint>2</uint>
         <key>textureSubPath</key>
         <string></string>
         <key>textureFormat</key>
@@ -71,6 +73,12 @@
             <enum type="AlgorithmSettings::AlgorithmId">MaxRects</enum>
             <key>freeSizeMode</key>
             <enum type="AlgorithmSettings::AlgorithmFreeSizeMode">Best</enum>
+            <key>sizeConstraints</key>
+            <enum type="AlgorithmSettings::SizeConstraints">POT</enum>
+            <key>forceSquared</key>
+            <false/>
+            <key>forceWordAligned</key>
+            <false/>
             <key>maxRects</key>
             <struct type="AlgorithmMaxRectsSettings">
                 <key>heuristic</key>
@@ -91,7 +99,7 @@
             <key>packageName</key>
             <string>Texture</string>
             <key>javaFileName</key>
-            <filename>aeon.java</filename>
+            <filename>metalworks.java</filename>
             <key>wrap</key>
             <struct type="AndEngineWrap">
                 <key>s</key>
@@ -103,9 +111,11 @@
             <enum type="AndEngine::MagFilter">MagLinear</enum>
         </struct>
         <key>dataFileName</key>
-        <filename>aeon.xml</filename>
-        <key>defaultExtension</key>
+        <filename>metalworks_mobile.xml</filename>
+        <key>mainExtension</key>
         <string></string>
+        <key>forceIdenticalLayout</key>
+        <false/>
         <key>outputFormat</key>
         <enum type="SettingsBase::OutputFormat">RGBA8888</enum>
         <key>autoAliasEnabled</key>
@@ -118,22 +128,20 @@
             <double>1</double>
             <key>scaleMode</key>
             <enum type="ScaleMode">Smooth</enum>
-            <key>crop</key>
-            <false/>
             <key>innerPadding</key>
             <uint>0</uint>
             <key>extrude</key>
             <uint>1</uint>
             <key>trimThreshold</key>
             <uint>1</uint>
-            <key>trim</key>
-            <true/>
+            <key>trimMode</key>
+            <enum type="SpriteSettings::TrimMode">Trim</enum>
             <key>heuristicMask</key>
             <false/>
         </struct>
         <key>fileList</key>
         <array>
-            <filename>aeon</filename>
+            <filename>metalworks</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

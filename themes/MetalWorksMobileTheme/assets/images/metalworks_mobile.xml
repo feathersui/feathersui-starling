@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:4e4e9d7abe0967a324f7ad2b9439591b$ -->
-<TextureAtlas imagePath="metalworks.png">
+<!-- $TexturePacker:SmartUpdate:fd97ec3e4e3938dd97eb2e0d95069247$ -->
+<TextureAtlas imagePath="metalworks_mobile.png">
     <SubTexture name="background-disabled-skin" x="263" y="271" width="32" height="32"/>
     <SubTexture name="background-down-skin" x="227" y="271" width="32" height="32"/>
     <SubTexture name="background-focused-skin" x="191" y="263" width="32" height="32"/>
