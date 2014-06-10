@@ -775,6 +775,19 @@ package feathers.controls
 		}
 
 		/**
+		 * Manually removes focus from the text input control.
+		 */
+		public function clearFocus():void
+		{
+			this._isWaitingToSetFocus = false;
+			if(!this.textEditorViewPort || !this._textEditorHasFocus)
+			{
+				return;
+			}
+			this.textEditorViewPort.clearFocus();
+		}
+
+		/**
 		 * Sets the range of selected characters. If both values are the same,
 		 * or the end index is <code>-1</code>, the text insertion position is
 		 * changed and nothing is selected.
@@ -1119,6 +1132,10 @@ package feathers.controls
 		 */
 		protected function textArea_removedFromStageHandler(event:Event):void
 		{
+			if(!this._focusManager && this._textEditorHasFocus)
+			{
+				this.clearFocus();
+			}
 			this._isWaitingToSetFocus = false;
 			this._textEditorHasFocus = false;
 			this._textAreaTouchPointID = -1;
