@@ -1010,23 +1010,11 @@ package feathers.controls
 			{
 				if(oldSkin)
 				{
-					oldSkin.visible = false;
-					if(this._stateToSkinFunction != null)
-					{
-						this.removeChild(oldSkin);
-					}
+					this.removeChild(oldSkin, false);
 				}
 				if(this.currentBackgroundSkin)
 				{
-					if(this._stateToSkinFunction != null)
-					{
-						this.addChildAt(this.currentBackgroundSkin, 0);
-					}
-					else
-					{
-						this.setChildIndex(this.currentBackgroundSkin, 0);
-					}
-					this.currentBackgroundSkin.visible = true;
+					this.addChildAt(this.currentBackgroundSkin, 0);
 					if(this.originalBackgroundWidth != this.originalBackgroundWidth) //isNaN
 					{
 						this.originalBackgroundWidth = this.currentBackgroundSkin.width;
