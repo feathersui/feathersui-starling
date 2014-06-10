@@ -41,10 +41,10 @@ package feathers.themes
 	 */
 	public class MetalWorksMobileTheme extends BaseMetalWorksMobileTheme
 	{
-		[Embed(source="/../assets/images/metalworks.xml",mimeType="application/octet-stream")]
+		[Embed(source="/../assets/images/metalworks_mobile.xml",mimeType="application/octet-stream")]
 		public static const ATLAS_XML:Class;
 
-		[Embed(source="/../assets/images/metalworks.png")]
+		[Embed(source="/../assets/images/metalworks_mobile.png")]
 		public static const ATLAS_BITMAP:Class;
 
 		public function MetalWorksMobileTheme(scaleToDPI:Boolean = true)

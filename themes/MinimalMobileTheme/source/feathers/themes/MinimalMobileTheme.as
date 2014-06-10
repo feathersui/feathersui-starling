@@ -42,10 +42,10 @@ package feathers.themes
 	 */
 	public class MinimalMobileTheme extends BaseMinimalMobileTheme
 	{
-		[Embed(source="/../assets/images/minimal.xml",mimeType="application/octet-stream")]
+		[Embed(source="/../assets/images/minimal_mobile.xml",mimeType="application/octet-stream")]
 		protected static const ATLAS_XML:Class;
 
-		[Embed(source="/../assets/images/minimal.png")]
+		[Embed(source="/../assets/images/minimal_mobile.png")]
 		protected static const ATLAS_BITMAP:Class;
 
 		[Embed(source="/../assets/fonts/pf_ronda_seven.fnt",mimeType="application/octet-stream")]

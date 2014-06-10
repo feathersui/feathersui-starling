@@ -42,10 +42,10 @@ package feathers.themes
 	 */
 	public class MinimalDesktopTheme extends BaseMinimalDesktopTheme
 	{
-		[Embed(source="/../assets/images/minimal.xml",mimeType="application/octet-stream")]
+		[Embed(source="/../assets/images/minimal_desktop.xml",mimeType="application/octet-stream")]
 		protected static const ATLAS_XML:Class;
 
-		[Embed(source="/../assets/images/minimal.png")]
+		[Embed(source="/../assets/images/minimal_desktop.png")]
 		protected static const ATLAS_BITMAP:Class;
 
 		[Embed(source="/../assets/fonts/pf_ronda_seven.fnt",mimeType="application/octet-stream")]

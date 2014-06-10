@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:e15eeca56a187273e2b3c1d93ca2c2a1$ -->
-<TextureAtlas imagePath="minimal.png">
+<!-- $TexturePacker:SmartUpdate:901024515526f07728bc24120e033097$ -->
+<TextureAtlas imagePath="minimal_mobile.png">
     <SubTexture name="button-back-disabled-skin" x="215" y="3" width="36" height="60"/>
     <SubTexture name="button-back-down-skin" x="175" y="3" width="36" height="60"/>
     <SubTexture name="button-back-up-skin" x="135" y="3" width="36" height="60"/>
