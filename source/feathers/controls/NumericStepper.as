@@ -1451,10 +1451,20 @@ package feathers.controls
 		protected function refreshTypicalText():void
 		{
 			var typicalText:String = "";
-			var characterCount:int = Math.max(this._minimum.toString().length, this._maximum.toString().length);
+			var maxCharactersBeforeDecimal:Number = Math.max(int(this._minimum).toString().length, int(this._maximum).toString().length, int(this._step).toString().length);
+			var maxCharactersAfterDecimal:Number = Math.max((this._minimum - int(this._minimum)).toString().length, (this._maximum - int(this._maximum)).toString().length, (this._step - int(this._step)).toString().length) - 2;
+			if(maxCharactersAfterDecimal < 0)
+			{
+				maxCharactersAfterDecimal = 0;
+			}
+			var characterCount:int = maxCharactersBeforeDecimal + maxCharactersAfterDecimal;
 			for(var i:int = 0; i < characterCount; i++)
 			{
 				typicalText += "0";
+			}
+			if(maxCharactersAfterDecimal > 0)
+			{
+				typicalText += ".";
 			}
 			this.textInput.typicalText = typicalText;
 		}
