@@ -109,7 +109,7 @@ package feathers.themes
 		[Embed(source="/../assets/fonts/SourceSansPro-Semibold.ttf",fontFamily="SourceSansPro",fontWeight="bold",mimeType="application/x-font",embedAsCFF="true")]
 		protected static const SOURCE_SANS_PRO_SEMIBOLD:Class;
 
-		[Embed(source="/../assets/fonts/SourceSansPro-Semibold.ttf",fontFamily="SourceSansPro",fontWeight="bold",unicodeRange="U+0030-U+0039",mimeType="application/x-font",embedAsCFF="false")]
+		[Embed(source="/../assets/fonts/SourceSansPro-Semibold.ttf",fontFamily="SourceSansPro",fontWeight="bold",unicodeRange="U+002e,U+0030-U+0039",mimeType="application/x-font",embedAsCFF="false")]
 		protected static const SOURCE_SANS_PRO_SEMIBOLD_NUMBERS:Class;
 
 		protected static const FONT_NAME:String = "SourceSansPro";
