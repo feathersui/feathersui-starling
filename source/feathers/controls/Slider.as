@@ -10,6 +10,7 @@ package feathers.controls
 	import feathers.core.FeathersControl;
 	import feathers.core.IFocusDisplayObject;
 	import feathers.core.PropertyProxy;
+	import feathers.events.ExclusiveTouch;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.math.clamp;
@@ -2056,6 +2057,20 @@ package feathers.controls
 				}
 				if(touch.phase == TouchPhase.MOVED)
 				{
+					var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(this.stage);
+					var claim:DisplayObject = exclusiveTouch.getClaim(this._touchPointID);
+					if(claim != this)
+					{
+						if(claim)
+						{
+							//already claimed by another display object
+							return;
+						}
+						else
+						{
+							exclusiveTouch.claimTouch(this._touchPointID, this);
+						}
+					}
 					touch.getLocation(this, HELPER_POINT);
 					this.value = this.locationToValue(HELPER_POINT);
 				}
@@ -2165,6 +2180,12 @@ package feathers.controls
 		 */
 		protected function repeatTimer_timerHandler(event:TimerEvent):void
 		{
+			var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(this.stage);
+			var claim:DisplayObject = exclusiveTouch.getClaim(this._touchPointID);
+			if(claim && claim != this)
+			{
+				return;
+			}
 			if(this._repeatTimer.currentCount < 5)
 			{
 				return;
