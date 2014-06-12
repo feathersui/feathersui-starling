@@ -1575,6 +1575,26 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function parseTextInputValue():void
+		{
+			var newValue:Number = parseFloat(this.textInput.text);
+			if(newValue == newValue) //!isNaN
+			{
+				this.value = newValue;
+				if(this.value != newValue && !this.isInvalid(INVALIDATION_FLAG_DATA))
+				{
+					//if the value setter modified the new value from the text
+					//input, and it returned because the modified value is equal
+					//to the current value, then we need to force invalidation
+					//so that the text input's text is accurate
+					this.invalidate(INVALIDATION_FLAG_DATA);
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function childProperties_onChange(proxy:PropertyProxy, name:Object):void
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
@@ -1617,11 +1637,7 @@ package feathers.controls
 		 */
 		protected function textInput_enterHandler(event:Event):void
 		{
-			var newValue:Number = parseFloat(this.textInput.text);
-			if(newValue == newValue) //!isNaN
-			{
-				this.value = newValue;
-			}
+			this.parseTextInputValue();
 		}
 
 		/**
@@ -1629,11 +1645,7 @@ package feathers.controls
 		 */
 		protected function textInput_focusOutHandler(event:Event):void
 		{
-			var newValue:Number = parseFloat(this.textInput.text);
-			if(newValue == newValue) //!isNaN
-			{
-				this.value = newValue;
-			}
+			this.parseTextInputValue();
 		}
 
 		/**
