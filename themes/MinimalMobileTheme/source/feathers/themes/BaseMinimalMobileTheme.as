@@ -463,6 +463,8 @@ package feathers.themes
 			//numeric stepper
 			this.getStyleProviderForClass(NumericStepper).defaultStyleFunction = this.setNumericStepperStyles;
 			this.getStyleProviderForClass(TextInput).setFunctionForStyleName(NumericStepper.DEFAULT_CHILD_NAME_TEXT_INPUT, this.setNumericStepperTextInputStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(NumericStepper.DEFAULT_CHILD_NAME_DECREMENT_BUTTON, this.setNumericStepperButtonStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(NumericStepper.DEFAULT_CHILD_NAME_INCREMENT_BUTTON, this.setNumericStepperButtonStyles);
 
 			//page indicator
 			this.getStyleProviderForClass(PageIndicator).defaultStyleFunction = this.setPageIndicatorStyles;
@@ -1030,6 +1032,12 @@ package feathers.themes
 			backgroundDisabledSkin.width = 66 * this.scale;
 			backgroundDisabledSkin.height = 66 * this.scale;
 			input.backgroundDisabledSkin = backgroundDisabledSkin;
+		}
+
+		protected function setNumericStepperButtonStyles(button:Button):void
+		{
+			this.setButtonStyles(button);
+			button.keepDownStateOnRollOut = true;
 		}
 
 	//-------------------------

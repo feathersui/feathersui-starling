@@ -954,6 +954,7 @@ package feathers.themes
 			skinSelector.setValueForState(this.stepperIncrementButtonDownSkinTextures, Button.STATE_DOWN, false);
 			skinSelector.setValueForState(this.stepperIncrementButtonDisabledSkinTextures, Button.STATE_DISABLED, false);
 			button.stateToSkinFunction = skinSelector.updateValue;
+			button.keepDownStateOnRollOut = true;
 		}
 
 		protected function setNumericStepperDecrementButtonStyles(button:Button):void
@@ -964,6 +965,7 @@ package feathers.themes
 			skinSelector.setValueForState(this.stepperDecrementButtonDownSkinTextures, Button.STATE_DOWN, false);
 			skinSelector.setValueForState(this.stepperDecrementButtonDisabledSkinTextures, Button.STATE_DISABLED, false);
 			button.stateToSkinFunction = skinSelector.updateValue;
+			button.keepDownStateOnRollOut = true;
 		}
 
 		protected function setNumericStepperTextInputStyles(input:TextInput):void
