@@ -10,6 +10,7 @@ package feathers.controls
 	import feathers.core.FeathersControl;
 	import feathers.core.IFocusDisplayObject;
 	import feathers.core.PropertyProxy;
+	import feathers.events.ExclusiveTouch;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.math.clamp;
@@ -18,6 +19,8 @@ package feathers.controls
 	import flash.events.TimerEvent;
 	import flash.ui.Keyboard;
 	import flash.utils.Timer;
+
+	import starling.display.DisplayObject;
 
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
@@ -1525,6 +1528,23 @@ package feathers.controls
 		 */
 		protected function startRepeatTimer(action:Function):void
 		{
+			if(this.touchPointID >= 0)
+			{
+				var exclusiveTouch:ExclusiveTouch = ExclusiveTouch.forStage(this.stage);
+				var claim:DisplayObject = exclusiveTouch.getClaim(this.touchPointID)
+				if(claim != this)
+				{
+					if(claim)
+					{
+						//already claimed by another display object
+						return;
+					}
+					else
+					{
+						exclusiveTouch.claimTouch(this.touchPointID, this);
+					}
+				}
+			}
 			this.currentRepeatAction = action;
 			if(this._repeatDelay > 0)
 			{
