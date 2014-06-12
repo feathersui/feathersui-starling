@@ -1013,6 +1013,7 @@ package feathers.themes
 				textureScale: this.scale
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
+			button.keepDownStateOnRollOut = true;
 			this.setBaseButtonStyles(button);
 		}
 
