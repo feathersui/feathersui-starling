@@ -327,11 +327,18 @@ package feathers.controls.text
 			var needsWidth:Boolean = this._visibleWidth != this._visibleWidth; //isNaN
 
 			this.commitStylesAndData(this.measureTextField);
+
+			var gutterDimensionsOffset:Number = 4;
+			if(this._useGutter)
+			{
+				gutterDimensionsOffset = 0;
+			}
+
 			var newWidth:Number = this._visibleWidth;
-			this.measureTextField.width = newWidth;
+			this.measureTextField.width = newWidth + gutterDimensionsOffset;
 			if(needsWidth)
 			{
-				newWidth = this.measureTextField.textWidth + 4;
+				newWidth = this.measureTextField.textWidth;
 				if(newWidth < this._minVisibleWidth)
 				{
 					newWidth = this._minVisibleWidth;
@@ -341,7 +348,11 @@ package feathers.controls.text
 					newWidth = this._maxVisibleWidth;
 				}
 			}
-			var newHeight:Number = this.measureTextField.textHeight + 4;
+			var newHeight:Number = this.measureTextField.textHeight;
+			if(this._useGutter)
+			{
+				newHeight += 4;
+			}
 
 			result.x = newWidth;
 			result.y = newHeight;
@@ -395,11 +406,17 @@ package feathers.controls.text
 		override protected function refreshTextFieldSize():void
 		{
 			var oldIgnoreScrolling:Boolean = this._ignoreScrolling;
-			this._ignoreScrolling = true;
-			this.textField.width = this._visibleWidth;
-			if(this.textField.height != this._visibleHeight)
+			var gutterDimensionsOffset:Number = 4;
+			if(this._useGutter)
 			{
-				this.textField.height = this._visibleHeight;
+				gutterDimensionsOffset = 0;
+			}
+			this._ignoreScrolling = true;
+			this.textField.width = this._visibleWidth + gutterDimensionsOffset;
+			var textFieldHeight:Number = this._visibleHeight + gutterDimensionsOffset;
+			if(this.textField.height != textFieldHeight)
+			{
+				this.textField.height = textFieldHeight;
 			}
 			var scroller:Scroller = Scroller(this.parent);
 			this.textField.scrollV = Math.round(1 + ((this.textField.maxScrollV - 1) * (this._verticalScrollPosition / scroller.maxVerticalScrollPosition)));
@@ -439,11 +456,30 @@ package feathers.controls.text
 				nativeScaleFactor = Starling.current.nativeStage.contentsScaleFactor;
 			}
 			var scaleFactor:Number = Starling.contentScaleFactor / nativeScaleFactor;
-			this.textField.x = offsetX + Math.round(starlingViewPort.x + (HELPER_POINT.x * scaleFactor));
-			this.textField.y = offsetY + Math.round(starlingViewPort.y + (HELPER_POINT.y * scaleFactor));
+			var gutterPositionOffset:Number = 2;
+			if(this._useGutter)
+			{
+				gutterPositionOffset = 0;
+			}
+			this.textField.x = offsetX + Math.round(starlingViewPort.x + (HELPER_POINT.x * scaleFactor) - gutterPositionOffset);
+			this.textField.y = offsetY + Math.round(starlingViewPort.y + (HELPER_POINT.y * scaleFactor) - gutterPositionOffset);
 			this.textField.rotation = matrixToRotation(HELPER_MATRIX) * 180 / Math.PI;
 			this.textField.scaleX = matrixToScaleX(HELPER_MATRIX);
 			this.textField.scaleY = matrixToScaleY(HELPER_MATRIX);
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function positionSnapshot():void
+		{
+			if(!this.textSnapshot)
+			{
+				return;
+			}
+			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+			this.textSnapshot.x = this._horizontalScrollPosition + Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx;
+			this.textSnapshot.y = this._verticalScrollPosition + Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty;
 		}
 
 		/**
