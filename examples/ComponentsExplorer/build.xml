@@ -56,6 +56,9 @@
 			<arg value="-package"/>
 			<arg value="-target"/>
 			<arg value="ipa-app-store"/>
+			<!-- uncomment to use the new, faster compiling for ios -->
+			<!--<arg value="-useLegacyAOT"/>
+			<arg value="no"/>-->
 			<!-- uncomment for actionscript sampling with scout on ios -->
 			<!--<arg value="-sampler"/>-->
 			<arg value="-provisioning-profile"/>
