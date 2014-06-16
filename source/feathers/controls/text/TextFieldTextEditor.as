@@ -754,7 +754,7 @@ package feathers.controls.text
 
 			if(this.textField.parent)
 			{
-				Starling.current.nativeStage.removeChild(this.textField);
+				this.textField.parent.removeChild(this.textField);
 			}
 
 			super.dispose();

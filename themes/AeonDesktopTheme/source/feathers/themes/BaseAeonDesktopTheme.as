@@ -338,7 +338,7 @@ package feathers.themes
 
 		protected function initializeGlobals():void
 		{
-			FocusManager.isEnabled = true;
+			FocusManager.setEnabledForStage(Starling.current.stage, true);
 
 			FeathersControl.defaultTextRendererFactory = textRendererFactory;
 			FeathersControl.defaultTextEditorFactory = textEditorFactory;

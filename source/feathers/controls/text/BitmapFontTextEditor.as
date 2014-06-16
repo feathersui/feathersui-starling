@@ -764,7 +764,7 @@ package feathers.controls.text
 			//this is before the hasFocus check because the native stage may
 			//have lost focus when clicking on the text editor, so we may need
 			//to put it back in focus
-			if(!FocusManager.isEnabled && !nativeStage.focus)
+			if(!FocusManager.isEnabledForStage(this.stage) && !nativeStage.focus)
 			{
 				//something needs to be focused so that we can receive cut,
 				//copy, and paste events
@@ -1050,7 +1050,7 @@ package feathers.controls.text
 					{
 						this._selectionAnchorIndex = -1;
 					}
-					if(!FocusManager.isEnabled && this._hasFocus)
+					if(!FocusManager.isEnabledForStage(this.stage) && this._hasFocus)
 					{
 						this.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
 					}
@@ -1118,7 +1118,7 @@ package feathers.controls.text
 				return;
 			}
 			var newIndex:int = -1;
-			if(!FocusManager.isEnabled && event.keyCode == Keyboard.TAB)
+			if(!FocusManager.isEnabledForStage(this.stage) && event.keyCode == Keyboard.TAB)
 			{
 				this.clearFocus();
 				return;

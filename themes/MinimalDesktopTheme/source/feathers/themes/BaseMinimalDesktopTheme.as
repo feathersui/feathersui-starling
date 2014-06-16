@@ -290,7 +290,7 @@ package feathers.themes
 
 		protected function initializeGlobals():void
 		{
-			FocusManager.isEnabled = true;
+			FocusManager.setEnabledForStage(Starling.current.stage, true);
 
 			PopUpManager.overlayFactory = popUpOverlayFactory;
 			Callout.stagePaddingTop = Callout.stagePaddingRight = Callout.stagePaddingBottom =

@@ -31,19 +31,29 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		protected static const STAGE_TO_STACK:Dictionary = new Dictionary(true);
+		protected static const FOCUS_MANAGER_ROOT_MUST_BE_ON_STAGE_ERROR:String = "A focus manager may not be added or removed for a display object that is not on stage.";
 
 		/**
 		 * @private
 		 */
-		protected static function getStackForStage(stage:Stage):Vector.<IFocusManager>
+		protected static const STAGE_TO_STACK:Dictionary = new Dictionary(true);
+
+		/**
+		 * Returns the active focus manager for the specified Starling stage.
+		 * May return <code>null</code> if focus management has not been enabled
+		 * for the specified stage.
+		 *
+		 * @see #isEnabledForStage()
+		 * @see #setEnabledForStage()
+		 */
+		public static function getFocusManagerForStage(stage:Stage):IFocusManager
 		{
 			var stack:Vector.<IFocusManager> = STAGE_TO_STACK[stage] as Vector.<IFocusManager>;
 			if(!stack)
 			{
-				STAGE_TO_STACK[stage] = stack = new <IFocusManager>[];
+				return null;
 			}
-			return stack;
+			return stack[stack.length - 1];
 		}
 
 		/**
@@ -76,11 +86,6 @@ package feathers.core
 		public static var focusManagerFactory:Function = defaultFocusManagerFactory;
 
 		/**
-		 * @private
-		 */
-		protected static var _isEnabled:Boolean = false;
-
-		/**
 		 * Determines if the default focus manager is enabled. For mobile apps,
 		 * the focus manager should generally remain disabled. For desktop apps,
 		 * it is recommended to enable the focus manager to support keyboard
@@ -89,64 +94,125 @@ package feathers.core
 		 * <p>In the following example, focus management is enabled:</p>
 		 *
 		 * <listing version="3.0">
-		 * FocusManager.isEnabled = true;</listing>
+		 * FocusManager.isEnabledForStage(stage, true);</listing>
 		 *
 		 * @default false
 		 */
-		public static function get isEnabled():Boolean
+		public static function isEnabledForStage(stage:Stage):Boolean
 		{
-			return _isEnabled;
+			var stack:Vector.<IFocusManager> = STAGE_TO_STACK[stage];
+			return stack != null;
 		}
 
 		/**
 		 * @private
 		 */
-		public static function set isEnabled(value:Boolean):void
+		public static function setEnabledForStage(stage:Stage, isEnabled:Boolean):void
 		{
-			if(value == _isEnabled)
+			var stack:Vector.<IFocusManager> = STAGE_TO_STACK[stage];
+			if((isEnabled && stack) || (!isEnabled && !stack))
 			{
 				return;
 			}
-			_isEnabled = value;
-			if(_isEnabled)
+			if(isEnabled)
 			{
-				pushFocusManager(Starling.current.stage);
+				STAGE_TO_STACK[stage] = new <IFocusManager>[];
+				pushFocusManager(stage);
 			}
 			else
 			{
-				for(var key:Object in STAGE_TO_STACK)
+				while(stack.length > 0)
 				{
-					var stage:Stage = Stage(key);
-					var stack:Vector.<IFocusManager> = STAGE_TO_STACK[stage];
-					while(stack.length > 0)
-					{
-						var manager:IFocusManager = stack.pop();
-						manager.isEnabled = false;
-					}
-					delete STAGE_TO_STACK[stage];
+					var manager:IFocusManager = stack.pop();
+					manager.isEnabled = false;
 				}
+				delete STAGE_TO_STACK[stage];
 			}
 		}
 
 		/**
-		 * Adds a focus manager to the stack, and gives it exclusive focus.
+		 * Disables focus management on all stages where it has previously been
+		 * enabled.
+		 */
+		public function disableAll():void
+		{
+			for(var key:Object in STAGE_TO_STACK)
+			{
+				var stage:Stage = Stage(key);
+				var stack:Vector.<IFocusManager> = STAGE_TO_STACK[stage];
+				while(stack.length > 0)
+				{
+					var manager:IFocusManager = stack.pop();
+					manager.isEnabled = false;
+				}
+				delete STAGE_TO_STACK[stage];
+			}
+		}
+
+		/**
+		 * The object that currently has focus on <code>Starling.current.stage</code>.
+		 * May return <code>null</code> if no object has focus.
+		 *
+		 * <p>You can call <code>geFocusManagerForStage()</code> to access the
+		 * active <code>IFocusManager</code> instance for any <code>Stage</code>
+		 * instance that isn't equal to <code>Starling.current.stage</code>.</p>
+		 *
+		 * <p>In the following example, the focus is changed on the current stage:</p>
+		 *
+		 * <listing version="3.0">
+		 * FocusManager.focus = someObject;</listing>
+		 *
+		 * @see #getFocusManagerForStage()
+		 */
+		public static function get focus():IFocusDisplayObject
+		{
+			var manager:IFocusManager = getFocusManagerForStage(Starling.current.stage);
+			if(manager)
+			{
+				return manager.focus;
+			}
+			return null;
+		}
+
+		/**
+		 * @private
+		 */
+		public static function set focus(value:IFocusDisplayObject):void
+		{
+			var manager:IFocusManager = getFocusManagerForStage(Starling.current.stage);
+			if(!manager)
+			{
+				throw new Error(FOCUS_MANAGER_NOT_ENABLED_ERROR);
+			}
+			manager.focus = value;
+		}
+
+		/**
+		 * Adds a focus manager to the stack for the <code>root</code>
+		 * argument's stage, and gives it exclusive focus. If focus management
+		 * has not been enabled for the root's stage, then calling this function
+		 * will throw a runtime error.
 		 */
 		public static function pushFocusManager(root:DisplayObjectContainer):IFocusManager
 		{
-			if(!_isEnabled)
+			var stage:Stage = root.stage;
+			if(!stage)
+			{
+				throw new ArgumentError(FOCUS_MANAGER_ROOT_MUST_BE_ON_STAGE_ERROR);
+			}
+			var stack:Vector.<IFocusManager> = STAGE_TO_STACK[stage] as Vector.<IFocusManager>;
+			if(!stack)
 			{
 				throw new Error(FOCUS_MANAGER_NOT_ENABLED_ERROR);
 			}
 			var manager:IFocusManager = FocusManager.focusManagerFactory(root);
-			var stage:Stage = root.stage;
-			var stack:Vector.<IFocusManager> = getStackForStage(stage);
+			manager.isEnabled = true;
 			if(stack.length > 0)
 			{
 				var oldManager:IFocusManager = stack[stack.length - 1];
 				oldManager.isEnabled = false;
 			}
 			stack.push(manager);
-			manager.isEnabled = true;
 			return manager;
 		}
 
@@ -157,12 +223,12 @@ package feathers.core
 		 */
 		public static function removeFocusManager(manager:IFocusManager):void
 		{
-			if(!_isEnabled)
+			var stage:Stage = manager.root.stage;
+			var stack:Vector.<IFocusManager> = STAGE_TO_STACK[stage] as Vector.<IFocusManager>;
+			if(!stack)
 			{
 				throw new Error(FOCUS_MANAGER_NOT_ENABLED_ERROR);
 			}
-			var stage:Stage = manager.root.stage;
-			var stack:Vector.<IFocusManager> = getStackForStage(stage);
 			var index:int = stack.indexOf(manager);
 			if(index < 0)
 			{
