@@ -1836,7 +1836,7 @@ package feathers.layout
 			{
 				horizontalTileCount = 1;
 			}
-			const verticalTileCount:int = Math.ceil((height - this._paddingTop + this._verticalGap) / (tileHeight + this._verticalGap)) + 1;
+			const verticalTileCount:int = Math.ceil((height + this._verticalGap) / (tileHeight + this._verticalGap)) + 1;
 			var minimumItemCount:int = verticalTileCount * horizontalTileCount;
 			if(minimumItemCount > itemCount)
 			{
