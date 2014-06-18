@@ -1583,7 +1583,13 @@ package feathers.controls
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			const stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 			const stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
-			const originInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_ORIGIN);
+			var originInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_ORIGIN);
+
+			if(sizeInvalid)
+			{
+				this._lastGlobalBoundsOfOrigin = null;
+				originInvalid = true;
+			}
 
 			if(originInvalid)
 			{

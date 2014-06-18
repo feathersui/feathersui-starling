@@ -10,6 +10,7 @@ Noteworthy changes in official, stable releases of [Feathers](http://feathersui.
 * Slider: fixed issue where using step to calculate a new value didn't account for the minimum value.
 * Button: validates skin if the skin implements IValidating so that the skin resizes properly if button dimensions are tweened.
 * Callout: fixed issue where callout incorrectly stopped content from resizing.
+* Callout: fixed issue where content resizing wouldn't reposition callout to point to origin.
 * TextInput: fixed issue where sometimes focus was not cleared on removal.
 * TextBlockTextRenderer: fixed issue where sometimes an infinite loop was triggering when attempting to truncate.
 * TextFieldTextEditor: fixed issue where existing text did not render with new text format.
