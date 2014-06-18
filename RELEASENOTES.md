@@ -1,15 +1,17 @@
 # Feathers Release Notes
 
-Noteworthy changes in official releases of [Feathers](http://feathersui.com/).
+Noteworthy changes in official, stable releases of [Feathers](http://feathersui.com/).
 
 ## 1.3.1
 
 * NumericStepper: fixed issue where using step to calculate a new value didn't account for the minimum value.
 * NumericStepper: fixed issue where only some text was selected after changing value.
-* TextInput: fixed issue where FOCUS_OUT event wasn't dispatched when used with a NumericStepper and FocusManager.isEnabled is true.
+* TextInput: fixed issue where FOCUS_OUT event wasn't dispatched when used with a NumericStepper and FocusManager.isEnabled is true, causing NumericStepper to fail to update its value properly.
 * Slider: fixed issue where using step to calculate a new value didn't account for the minimum value.
 * Button: validates skin if the skin implements IValidating so that the skin resizes properly if button dimensions are tweened.
+* Callout: fixed issue where callout incorrectly stopped content from resizing.
 * TextInput: fixed issue where sometimes focus was not cleared on removal.
+* TextBlockTextRenderer: fixed issue where sometimes an infinite loop was triggering when attempting to truncate.
 * TextFieldTextEditor: fixed issue where existing text did not render with new text format.
 * StageTextTextEditor, TextFieldTextEditor: fixed issue where multiple FOCUS_OUT events could be dispatched.
 * TextArea: fixed positioning of texture snapshot when scrolling.
