@@ -1845,9 +1845,7 @@ package feathers.controls
 			const isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
 			if(!this._textEditorHasFocus && isInBounds)
 			{
-				this.globalToLocal(HELPER_POINT, HELPER_POINT);
-				HELPER_POINT.x -= this._paddingLeft;
-				HELPER_POINT.y -= this._paddingTop;
+				this.textEditor.globalToLocal(HELPER_POINT, HELPER_POINT);
 				this._isWaitingToSetFocus = false;
 				this.textEditor.setFocus(HELPER_POINT);
 			}
