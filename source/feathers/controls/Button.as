@@ -2277,6 +2277,10 @@ package feathers.controls
 			{
 				this.currentSkin.height = this.actualHeight;
 			}
+			if(this.currentSkin is IValidating)
+			{
+				IValidating(this.currentSkin).validate();
+			}
 		}
 		
 		/**
