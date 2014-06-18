@@ -417,6 +417,10 @@ package feathers.controls
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var item:DisplayObject = this.items[i];
+				if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
+				{
+					continue;
+				}
 				if(item is IValidating)
 				{
 					IValidating(item).validate();
