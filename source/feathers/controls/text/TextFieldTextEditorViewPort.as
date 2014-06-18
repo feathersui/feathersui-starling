@@ -439,6 +439,20 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		override protected function positionSnapshot():void
+		{
+			if(!this.textSnapshot)
+			{
+				return;
+			}
+			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+			this.textSnapshot.x = this._horizontalScrollPosition + Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx;
+			this.textSnapshot.y = this._verticalScrollPosition + Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty;
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function checkIfNewSnapshotIsNeeded():void
 		{
 			super.checkIfNewSnapshotIsNeeded();
