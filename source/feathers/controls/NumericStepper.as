@@ -1330,7 +1330,7 @@ package feathers.controls
 			this.textInput.nameList.add(textInputName);
 			this.textInput.addEventListener(FeathersEventType.ENTER, textInput_enterHandler);
 			this.textInput.addEventListener(FeathersEventType.FOCUS_OUT, textInput_focusOutHandler);
-			this.textInput.isFocusEnabled = false;
+			this.textInput.isFocusEnabled = this._focusManager == null;
 			this.addChild(this.textInput);
 		}
 
