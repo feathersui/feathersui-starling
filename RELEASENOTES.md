@@ -2,6 +2,23 @@
 
 Noteworthy changes in official releases of [Feathers](http://feathersui.com/).
 
+## 1.3.1
+
+* NumericStepper: fixed issue where using step to calculate a new value didn't account for the minimum value.
+* NumericStepper: fixed issue where only some text was selected after changing value.
+* TextInput: fixed issue where FOCUS_OUT event wasn't dispatched when used with a NumericStepper and FocusManager.isEnabled is true.
+* Slider: fixed issue where using step to calculate a new value didn't account for the minimum value.
+* Button: validates skin if the skin implements IValidating so that the skin resizes properly if button dimensions are tweened.
+* TextInput: fixed issue where sometimes focus was not cleared on removal.
+* TextFieldTextEditor: fixed issue where existing text did not render with new text format.
+* StageTextTextEditor, TextFieldTextEditor: fixed issue where multiple FOCUS_OUT events could be dispatched.
+* TextArea: fixed positioning of texture snapshot when scrolling.
+* TiledRowsLayout, TiledColumnsLayout: fixed issue where some tiles would be incorrectly invisible with top or left padding and manageVisibility.
+* LayoutGroup: respects includeInLayout when no layout is specified.
+* TextInput: fixed selection position on touch when displaying an icon.
+* Gallery Example: updated to use HTTPS URLs since Flickr will soon require it.
+* YouTubeFeeds Example: switched to category feeds since the older feeds were deprecated and displayed the wrong data.
+
 ## 1.3.0
 
 * New Component: ScrollScreen is new base class for ScreenNavigator screens that supports scrolling similar to ScrollContainer.
