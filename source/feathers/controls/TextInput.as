@@ -2010,7 +2010,7 @@ package feathers.controls
 		{
 			this._textEditorHasFocus = false;
 			this.currentState = this._isEnabled ? STATE_ENABLED : STATE_DISABLED;
-			if(this._focusManager)
+			if(this._focusManager && this._isFocusEnabled)
 			{
 				if(this._focusManager.focus == this)
 				{
