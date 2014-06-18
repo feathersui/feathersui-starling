@@ -101,6 +101,11 @@
 			<arg value="-package-description-file=./package-descriptions.xml"/>
 			<arg value="-output=${docs.output}"/>
 		</java>
+		<copy overwrite="true" todir="${docs.output}/images">
+			<fileset dir="${docs.root}/api-reference/images">
+				<include name="logo.jpg"/>
+			</fileset>
+		</copy>
 	</target>
 
 	<target name="-themes" depends="-feathers">
