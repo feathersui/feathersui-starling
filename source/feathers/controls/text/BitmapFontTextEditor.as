@@ -11,6 +11,7 @@ package feathers.controls.text
 	import feathers.core.ITextEditor;
 	import feathers.events.FeathersEventType;
 	import feathers.utils.text.TextInputRestrict;
+	import feathers.utils.text.TextInputNavigation;
 
 	import flash.desktop.Clipboard;
 	import flash.desktop.ClipboardFormats;
@@ -136,16 +137,6 @@ package feathers.controls.text
 		 * @private
 		 */
 		private static const HELPER_POINT:Point = new Point();
-
-		/**
-		 * @private
-		 */
-		protected static const IS_WORD:RegExp = /\w/;
-
-		/**
-		 * @private
-		 */
-		protected static const IS_WHITESPACE:RegExp = /\s/;
 
 		/**
 		 * Constructor.
@@ -938,53 +929,6 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function findPreviousWordStartIndex():int
-		{
-			if(this._selectionStartIndex <= 0)
-			{
-				return 0;
-			}
-			var nextCharIsWord:Boolean = IS_WORD.test(this._text.charAt(this._selectionStartIndex - 1));
-			for(var i:int = this._selectionStartIndex - 2; i >= 0; i--)
-			{
-				var charIsWord:Boolean = IS_WORD.test(this._text.charAt(i));
-				if(!charIsWord && nextCharIsWord)
-				{
-					return i + 1;
-				}
-				nextCharIsWord = charIsWord;
-			}
-			return 0;
-		}
-
-		/**
-		 * @private
-		 */
-		protected function findNextWordStartIndex():int
-		{
-			var textLength:int = this._text.length;
-			if(this._selectionEndIndex >= textLength - 1)
-			{
-				return textLength;
-			}
-			//the first character is a special case. any non-whitespace is
-			//considered part of the word.
-			var prevCharIsWord:Boolean = !IS_WHITESPACE.test(this._text.charAt(this._selectionEndIndex));
-			for(var i:int = this._selectionEndIndex + 1; i < textLength; i++)
-			{
-				var charIsWord:Boolean = IS_WORD.test(this._text.charAt(i));
-				if(charIsWord && !prevCharIsWord)
-				{
-					return i;
-				}
-				prevCharIsWord = charIsWord;
-			}
-			return textLength;
-		}
-
-		/**
-		 * @private
-		 */
 		protected function getSelectedText():String
 		{
 			if(this._selectionStartIndex == this._selectionEndIndex)
@@ -1165,7 +1109,7 @@ package feathers.controls.text
 				{
 					if(event.altKey || event.ctrlKey)
 					{
-						newIndex = this.findPreviousWordStartIndex();
+						newIndex = TextInputNavigation.findPreviousWordStartIndex(this._text, this._selectionStartIndex);
 					}
 					else
 					{
@@ -1210,7 +1154,7 @@ package feathers.controls.text
 				{
 					if(event.altKey || event.ctrlKey)
 					{
-						newIndex = this.findNextWordStartIndex();
+						newIndex = TextInputNavigation.findNextWordStartIndex(this._text, this._selectionEndIndex);
 					}
 					else
 					{
@@ -1238,7 +1182,8 @@ package feathers.controls.text
 				{
 					if(event.altKey || event.ctrlKey)
 					{
-						this.text = currentValue.substr(0, this._selectionStartIndex) + currentValue.substr(this.findNextWordStartIndex());
+						var nextWordStartIndex:int = TextInputNavigation.findNextWordStartIndex(this._text, this._selectionEndIndex);
+						this.text = currentValue.substr(0, this._selectionStartIndex) + currentValue.substr(nextWordStartIndex);
 					}
 					else if(this._selectionStartIndex != this._selectionEndIndex)
 					{
@@ -1253,7 +1198,7 @@ package feathers.controls.text
 				{
 					if(event.altKey || event.ctrlKey)
 					{
-						newIndex = this.findPreviousWordStartIndex();
+						newIndex = TextInputNavigation.findPreviousWordStartIndex(this._text, this._selectionStartIndex);
 						this.text = currentValue.substr(0, newIndex) + currentValue.substr(this._selectionEndIndex);
 					}
 					else if(this._selectionStartIndex != this._selectionEndIndex)
