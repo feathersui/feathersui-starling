@@ -4883,7 +4883,6 @@ package feathers.controls
 				{
 					return;
 				}
-				this.revealVerticalScrollBar();
 				var scrollStep:Number = this._verticalMouseWheelScrollStep;
 				if(scrollStep != scrollStep) //isNaN
 				{
