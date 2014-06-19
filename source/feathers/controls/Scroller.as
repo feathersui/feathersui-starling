@@ -4867,8 +4867,8 @@ package feathers.controls
 			}
 			var starlingViewPort:Rectangle = Starling.current.viewPort;
 			var scaleFactor:Number = nativeScaleFactor / Starling.contentScaleFactor;
-			HELPER_POINT.x = (event.stageX - starlingViewPort.x) / scaleFactor;
-			HELPER_POINT.y = (event.stageY - starlingViewPort.y) / scaleFactor;
+			HELPER_POINT.x = (event.stageX - starlingViewPort.x) * scaleFactor;
+			HELPER_POINT.y = (event.stageY - starlingViewPort.y) * scaleFactor;
 			if(this.contains(this.stage.hitTest(HELPER_POINT, true)))
 			{
 				this.globalToLocal(HELPER_POINT, HELPER_POINT);
