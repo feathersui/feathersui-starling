@@ -3891,6 +3891,7 @@ package feathers.controls
 		 */
 		protected function throwTo(targetHorizontalScrollPosition:Number = NaN, targetVerticalScrollPosition:Number = NaN, duration:Number = 0.5):void
 		{
+			var changedPosition:Boolean = false;
 			if(targetHorizontalScrollPosition == targetHorizontalScrollPosition) //!isNaN
 			{
 				if(this._horizontalAutoScrollTween)
@@ -3900,6 +3901,7 @@ package feathers.controls
 				}
 				if(this._horizontalScrollPosition != targetHorizontalScrollPosition)
 				{
+					changedPosition = true;
 					this.revealHorizontalScrollBar();
 					this.startScroll();
 					if(duration == 0)
@@ -3930,6 +3932,7 @@ package feathers.controls
 				}
 				if(this._verticalScrollPosition != targetVerticalScrollPosition)
 				{
+					changedPosition = true;
 					this.revealVerticalScrollBar();
 					this.startScroll();
 					if(duration == 0)
@@ -3951,7 +3954,7 @@ package feathers.controls
 				}
 			}
 
-			if(duration == 0)
+			if(changedPosition && duration == 0)
 			{
 				this.completeScroll();
 			}
