@@ -10,6 +10,7 @@ package feathers.controls.text
 	import feathers.core.FocusManager;
 	import feathers.core.ITextEditor;
 	import feathers.events.FeathersEventType;
+	import feathers.utils.text.TextInputRestrict;
 
 	import flash.desktop.Clipboard;
 	import flash.desktop.ClipboardFormats;
@@ -145,24 +146,6 @@ package feathers.controls.text
 		 * @private
 		 */
 		protected static const IS_WHITESPACE:RegExp = /\s/;
-
-		/**
-		 * @private
-		 */
-		protected static const REQUIRES_ESCAPE:Dictionary = new Dictionary();
-		REQUIRES_ESCAPE[/\[/g] = "\\[";
-		REQUIRES_ESCAPE[/\]/g] = "\\]";
-		REQUIRES_ESCAPE[/\{/g] = "\\{";
-		REQUIRES_ESCAPE[/\}/g] = "\\}";
-		REQUIRES_ESCAPE[/\(/g] = "\\(";
-		REQUIRES_ESCAPE[/\)/g] = "\\)";
-		REQUIRES_ESCAPE[/\|/g] = "\\|";
-		REQUIRES_ESCAPE[/\//g] = "\\/";
-		REQUIRES_ESCAPE[/\./g] = "\\.";
-		REQUIRES_ESCAPE[/\+/g] = "\\+";
-		REQUIRES_ESCAPE[/\*/g] = "\\*";
-		REQUIRES_ESCAPE[/\?/g] = "\\?";
-		REQUIRES_ESCAPE[/\$/g] = "\\$";
 
 		/**
 		 * Constructor.
@@ -465,17 +448,7 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _restrictStartsWithExclude:Boolean = false;
-
-		/**
-		 * @private
-		 */
-		protected var _restricts:Vector.<RegExp>;
-
-		/**
-		 * @private
-		 */
-		protected var _restrict:String;
+		protected var _restrict:TextInputRestrict;
 
 		/**
 		 * Restricts the set of characters that a user can enter into the text
@@ -491,7 +464,11 @@ package feathers.controls.text
 		 */
 		public function get restrict():String
 		{
-			return this._restrict;
+			if(!this._restrict)
+			{
+				return null;
+			}
+			return this._restrict.restrict;
 		}
 
 		/**
@@ -499,53 +476,29 @@ package feathers.controls.text
 		 */
 		public function set restrict(value:String):void
 		{
-			if(this._restrict == value)
+			if(this._restrict && this._restrict.restrict === value)
 			{
 				return;
 			}
-			this._restrict = value;
-			if(value)
+			if(!this._restrict && value === null)
 			{
-				if(this._restricts)
-				{
-					this._restricts.length = 0;
-				}
-				else
-				{
-					this._restricts = new <RegExp>[];
-				}
-				if(this._restrict === "")
-				{
-					this._restricts.push(/^$/);
-				}
-				else if(this._restrict)
-				{
-					var startIndex:int = 0;
-					var isExcluding:Boolean = value.indexOf("^") == 0;
-					this._restrictStartsWithExclude = isExcluding;
-					do
-					{
-						var nextStartIndex:int = value.indexOf("^", startIndex + 1);
-						if(nextStartIndex >= 0)
-						{
-							var partialRestrict:String = value.substr(startIndex, nextStartIndex - startIndex);
-							this._restricts.push(this.createRestrictRegExp(partialRestrict, isExcluding));
-						}
-						else
-						{
-							partialRestrict = value.substr(startIndex)
-							this._restricts.push(this.createRestrictRegExp(partialRestrict, isExcluding));
-							break;
-						}
-						startIndex = nextStartIndex;
-						isExcluding = !isExcluding;
-					}
-					while(true)
-				}
+				return;
+			}
+			if(value === null)
+			{
+				this._restrict = null;
 			}
 			else
 			{
-				this._restricts = null;
+				if(this._restrict)
+				{
+					this._restrict.restrict = value;
+				}
+				else
+				{
+
+					this._restrict = new TextInputRestrict(value);
+				}
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
@@ -788,29 +741,6 @@ package feathers.controls.text
 			{
 				this._text += maskChar;
 			}
-		}
-
-		/**
-		 * @private
-		 */
-		protected function createRestrictRegExp(restrict:String, isExcluding:Boolean):RegExp
-		{
-			if(!isExcluding && restrict.indexOf("^") == 0)
-			{
-				//unlike regular expressions, which always treat ^ as excluding,
-				//restrict uses ^ to swap between excluding and including.
-				//if we're including, we need to remove ^ for the regexp
-				restrict = restrict.substr(1);
-			}
-			//we need to do backslash first. otherwise, we'll get duplicates
-			restrict = restrict.replace(/\\/g, "\\\\");
-			for(var key:Object in REQUIRES_ESCAPE)
-			{
-				var keyRegExp:RegExp = key as RegExp;
-				var value:String = REQUIRES_ESCAPE[keyRegExp] as String;
-				restrict = restrict.replace(keyRegExp, value);
-			}
-			return new RegExp("[" + restrict + "]");
 		}
 
 		/**
@@ -1342,31 +1272,14 @@ package feathers.controls.text
 				}
 				else if(charCode >= 32) //ignore control characters
 				{
-					var character:String = String.fromCharCode(charCode);
-					if(this._restricts)
+					if(!this._restrict || this._restrict.isCharacterAllowed(charCode))
 					{
-						var isExcluding:Boolean = this._restrictStartsWithExclude;
-						var isIncluded:Boolean = isExcluding;
-						var restrictCount:int = this._restricts.length;
-						for(var i:int = 0; i < restrictCount; i++)
-						{
-							var restrict:RegExp = this._restricts[i];
-							if(isExcluding)
-							{
-								isIncluded = isIncluded && restrict.test(character);
-							}
-							else
-							{
-								isIncluded = isIncluded || restrict.test(character);
-							}
-							isExcluding = !isExcluding;
-						}
-						if(!isIncluded)
-						{
-							return;
-						}
+						this.replaceSelectedText(String.fromCharCode(charCode));
 					}
-					this.replaceSelectedText(character);
+					else
+					{
+						return;
+					}
 				}
 			}
 			if(newIndex >= 0)
@@ -1410,35 +1323,9 @@ package feathers.controls.text
 				return;
 			}
 			var pastedText:String = Clipboard.generalClipboard.getData(ClipboardFormats.TEXT_FORMAT) as String;
-			if(this._restricts)
+			if(this._restrict)
 			{
-				var textLength:int = pastedText.length;
-				var restrictCount:int = this._restricts.length;
-				for(var i:int = 0; i < textLength; i++)
-				{
-					var character:String = pastedText.charAt(i);
-					var isExcluding:Boolean = this._restrictStartsWithExclude;
-					var isIncluded:Boolean = isExcluding;
-					for(var j:int = 0; j < restrictCount; j++)
-					{
-						var restrict:RegExp = this._restricts[j];
-						if(isExcluding)
-						{
-							isIncluded = isIncluded && restrict.test(character);
-						}
-						else
-						{
-							isIncluded = isIncluded || restrict.test(character);
-						}
-						isExcluding = !isExcluding;
-					}
-					if(!isIncluded)
-					{
-						pastedText = pastedText.substr(0, i) + pastedText.substr(i + 1);
-						i--;
-						textLength--;
-					}
-				}
+				pastedText = this._restrict.filterText(pastedText);
 			}
 			this.replaceSelectedText(pastedText);
 		}
