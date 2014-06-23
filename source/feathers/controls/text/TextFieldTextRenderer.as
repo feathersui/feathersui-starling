@@ -590,6 +590,9 @@ package feathers.controls.text
 		 * Specifies whether the text field has a border. Use the
 		 * <code>borderColor</code> property to set the border color.
 		 *
+		 * <p>Note: this property cannot be used when the <code>useGutter</code>
+		 * property is set to <code>false</code> (the default value!).</p>
+		 *
 		 * <p>In the following example, the border is enabled:</p>
 		 *
 		 * <listing version="3.0">
