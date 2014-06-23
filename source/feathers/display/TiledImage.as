@@ -15,6 +15,8 @@ package feathers.display
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
+	import starling.core.RenderSupport;
+
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
@@ -448,6 +450,18 @@ package feathers.display
 		{
 			this.width = width;
 			this.height = height;
+		}
+
+		/**
+		 * @private
+		 */
+		override public function render(support:RenderSupport, parentAlpha:Number):void
+		{
+			if(this._isInvalid)
+			{
+				this.validate();
+			}
+			super.render(support, parentAlpha);
 		}
 
 		/**
