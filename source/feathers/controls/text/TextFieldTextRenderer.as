@@ -1062,6 +1062,9 @@ package feathers.controls.text
 			if(!this.textField)
 			{
 				this.textField = new TextField();
+				var scaleFactor:Number = Starling.contentScaleFactor;
+				this.textField.scaleX = scaleFactor;
+				this.textField.scaleY = scaleFactor;
 				this.textField.mouseEnabled = this.textField.mouseWheelEnabled = false;
 				this.textField.selectable = false;
 				this.textField.multiline = true;
@@ -1154,6 +1157,7 @@ package feathers.controls.text
 			this.textField.autoSize = TextFieldAutoSize.LEFT;
 			this.textField.wordWrap = false;
 
+			var scaleFactor:Number = Starling.contentScaleFactor;
 			var gutterDimensionsOffset:Number = 4;
 			if(this._useGutter)
 			{
@@ -1168,7 +1172,7 @@ package feathers.controls.text
 				//first time results in an incorrect value, but if you query it
 				//again, for some reason, it reports the correct width value.
 				var hackWorkaround:Number = this.textField.width;
-				newWidth = this.textField.width - gutterDimensionsOffset;
+				newWidth = (this.textField.width / scaleFactor) - gutterDimensionsOffset;
 				if(newWidth < this._minWidth)
 				{
 					newWidth = this._minWidth;
@@ -1183,7 +1187,7 @@ package feathers.controls.text
 			//width getter (when TextFieldAutoSize.LEFT is used) to the width
 			//setter. In other words, the value technically isn't changing, but
 			//TextField behaves differently.
-			if(!needsWidth || (this.textField.width - gutterDimensionsOffset) > newWidth)
+			if(!needsWidth || ((this.textField.width / scaleFactor) - gutterDimensionsOffset) > newWidth)
 			{
 				this.textField.width = newWidth + gutterDimensionsOffset;
 				this.textField.wordWrap = this._wordWrap;
@@ -1191,7 +1195,7 @@ package feathers.controls.text
 			var newHeight:Number = this.explicitHeight;
 			if(needsHeight)
 			{
-				newHeight = this.textField.height - gutterDimensionsOffset;
+				newHeight = (this.textField.height / scaleFactor) - gutterDimensionsOffset;
 				if(newHeight < this._minHeight)
 				{
 					newHeight = this._minHeight;
@@ -1224,6 +1228,7 @@ package feathers.controls.text
 			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
 
+			var scaleFactor:Number = Starling.contentScaleFactor;
 			var gutterDimensionsOffset:Number = 4;
 			if(this._useGutter)
 			{
@@ -1236,7 +1241,7 @@ package feathers.controls.text
 			{
 				this.textField.autoSize = TextFieldAutoSize.LEFT;
 				this.textField.wordWrap = false;
-				if((this.textField.width - gutterDimensionsOffset) > this.actualWidth)
+				if(((this.textField.width / scaleFactor) - gutterDimensionsOffset) > this.actualWidth)
 				{
 					this.textField.wordWrap = true;
 				}
@@ -1248,7 +1253,7 @@ package feathers.controls.text
 				this.textField.width = this.actualWidth + gutterDimensionsOffset;
 				this.textField.height = this.actualHeight + gutterDimensionsOffset;
 				var canUseRectangleTexture:Boolean = Starling.current.profile != Context3DProfile.BASELINE_CONSTRAINED;
-				var rectangleSnapshotWidth:Number = this.actualWidth * Starling.contentScaleFactor;
+				var rectangleSnapshotWidth:Number = this.actualWidth * scaleFactor;
 				if(canUseRectangleTexture)
 				{
 					if(rectangleSnapshotWidth > this._maxTextureDimensions)
@@ -1271,7 +1276,7 @@ package feathers.controls.text
 						this._snapshotWidth = getNextPowerOfTwo(rectangleSnapshotWidth);
 					}
 				}
-				var rectangleSnapshotHeight:Number = this.actualHeight * Starling.contentScaleFactor;
+				var rectangleSnapshotHeight:Number = this.actualHeight * scaleFactor;
 				if(canUseRectangleTexture)
 				{
 					if(rectangleSnapshotHeight > this._maxTextureDimensions)
@@ -1421,7 +1426,7 @@ package feathers.controls.text
 			var snapshotIndex:int = -1;
 			var useNativeFilters:Boolean = this._nativeFilters && this._nativeFilters.length > 0 &&
 				totalBitmapWidth <= this._maxTextureDimensions && totalBitmapHeight <= this._maxTextureDimensions;
-			var gutterPositionOffset:Number = 2;
+			var gutterPositionOffset:Number = 2 * scaleFactor;
 			if(this._useGutter)
 			{
 				gutterPositionOffset = 0;
@@ -1455,7 +1460,8 @@ package feathers.controls.text
 					}
 					HELPER_MATRIX.tx = -(xPosition + gutterPositionOffset);
 					HELPER_MATRIX.ty = -(yPosition + gutterPositionOffset);
-					bitmapData.draw(this.textField, HELPER_MATRIX);
+					HELPER_RECTANGLE.setTo(0, 0, this.actualWidth * scaleFactor, this.actualHeight * scaleFactor);
+					bitmapData.draw(this.textField, HELPER_MATRIX, null, null, HELPER_RECTANGLE);
 					if(useNativeFilters)
 					{
 						this.measureNativeFilters(bitmapData, HELPER_RECTANGLE);
