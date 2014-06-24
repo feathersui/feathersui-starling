@@ -232,6 +232,30 @@ package feathers.core
 					var child:DisplayObject = container.getChildAt(i);
 					this.setFocusManager(child);
 				}
+				if(container is IFocusExtras)
+				{
+					var containerWithExtras:IFocusExtras = IFocusExtras(container);
+					var extras:Vector.<DisplayObject> = containerWithExtras.focusExtrasBefore;
+					if(extras)
+					{
+						childCount = extras.length;
+						for(i = 0; i < childCount; i++)
+						{
+							child = extras[i];
+							this.setFocusManager(child);
+						}
+					}
+					extras = containerWithExtras.focusExtrasAfter;
+					if(extras)
+					{
+						childCount = extras.length;
+						for(i = 0; i < childCount; i++)
+						{
+							child = extras[i];
+							this.setFocusManager(child);
+						}
+					}
+				}
 			}
 		}
 
@@ -257,6 +281,30 @@ package feathers.core
 				{
 					var child:DisplayObject = container.getChildAt(i);
 					this.clearFocusManager(child);
+				}
+				if(container is IFocusExtras)
+				{
+					var containerWithExtras:IFocusExtras = IFocusExtras(container);
+					var extras:Vector.<DisplayObject> = containerWithExtras.focusExtrasBefore;
+					if(extras)
+					{
+						childCount = extras.length;
+						for(i = 0; i < childCount; i++)
+						{
+							child = extras[i];
+							this.clearFocusManager(child);
+						}
+					}
+					extras = containerWithExtras.focusExtrasAfter;
+					if(extras)
+					{
+						childCount = extras.length;
+						for(i = 0; i < childCount; i++)
+						{
+							child = extras[i];
+							this.clearFocusManager(child);
+						}
+					}
 				}
 			}
 		}
