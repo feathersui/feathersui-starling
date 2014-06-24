@@ -175,7 +175,7 @@ package feathers.core
 				return;
 			}
 			var oldFocus:IFeathersDisplayObject = this._focus;
-			if(this._isEnabled && value && value.isFocusEnabled)
+			if(this._isEnabled && value && value.isFocusEnabled && value.focusManager == this)
 			{
 				this._focus = value;
 			}
@@ -267,11 +267,14 @@ package feathers.core
 			if(target is IFocusDisplayObject)
 			{
 				var targetWithFocus:IFocusDisplayObject = IFocusDisplayObject(target);
-				if(this._focus == targetWithFocus)
+				if(targetWithFocus.focusManager == this)
 				{
-					this.focus = null;
+					if(this._focus == targetWithFocus)
+					{
+						this.focus = null;
+					}
+					targetWithFocus.focusManager = null;
 				}
-				targetWithFocus.focusManager = null;
 			}
 			if(target is DisplayObjectContainer)
 			{
@@ -561,11 +564,7 @@ package feathers.core
 		 */
 		protected function isValidFocus(child:IFocusDisplayObject):Boolean
 		{
-			if(!child)
-			{
-				return false;
-			}
-			if(!child.isFocusEnabled)
+			if(!child || !child.isFocusEnabled || child.focusManager != this)
 			{
 				return false;
 			}
