@@ -676,6 +676,10 @@ package feathers.controls.text
 		 */
 		override protected function initialize():void
 		{
+			if(!this._cursorSkin)
+			{
+				this.cursorSkin = new Quad(1, 1, 0x000000);
+			}
 			if(!this._selectionSkin)
 			{
 				this.selectionSkin = new Quad(1, 1, 0x000000);
