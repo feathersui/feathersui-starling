@@ -1803,10 +1803,18 @@ package feathers.controls
 			if(needsWidth)
 			{
 				newWidth = Math.max(this._originalSkinWidth, typicalTextWidth + this._paddingLeft + this._paddingRight);
+				if(newWidth != newWidth) //isNaN
+				{
+					newWidth = 0;
+				}
 			}
 			if(needsHeight)
 			{
 				newHeight = Math.max(this._originalSkinHeight, typicalTextHeight + this._paddingTop + this._paddingBottom);
+				if(newHeight != newHeight) //isNaN
+				{
+					newHeight = 0;
+				}
 			}
 
 			var isMultiline:Boolean = this.textEditor is IMultilineTextEditor && IMultilineTextEditor(this.textEditor).multiline;
@@ -1815,7 +1823,7 @@ package feathers.controls
 				this.textEditor.width = oldTextEditorWidth;
 				this.textEditor.height = oldTextEditorHeight;
 			}
-
+			
 			return this.setSizeInternal(newWidth, newHeight, false);
 		}
 
