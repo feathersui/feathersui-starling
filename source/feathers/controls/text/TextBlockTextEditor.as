@@ -139,6 +139,27 @@ package feathers.controls.text
 		private static const HELPER_POINT:Point = new Point();
 
 		/**
+		 * The text will be positioned to the left edge.
+		 *
+		 * @see feathers.controls.text.TextBlockTextRenderer#textAlign
+		 */
+		public static const TEXT_ALIGN_LEFT:String = "left";
+
+		/**
+		 * The text will be centered horizontally.
+		 *
+		 * @see feathers.controls.text.TextBlockTextRenderer#textAlign
+		 */
+		public static const TEXT_ALIGN_CENTER:String = "center";
+
+		/**
+		 * The text will be positioned to the right edge.
+		 *
+		 * @see feathers.controls.text.TextBlockTextRenderer#textAlign
+		 */
+		public static const TEXT_ALIGN_RIGHT:String = "right";
+
+		/**
 		 * Constructor.
 		 */
 		public function TextBlockTextEditor()
