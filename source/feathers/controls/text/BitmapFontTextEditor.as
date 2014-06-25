@@ -743,7 +743,7 @@ package feathers.controls.text
 		 */
 		protected function focusIn():void
 		{
-			var showCursor:Boolean = this._selectionStartIndex >= 0 && this._selectionStartIndex != this._selectionEndIndex;
+			var showCursor:Boolean = this._selectionStartIndex >= 0 && this._selectionStartIndex == this._selectionEndIndex;
 			this._cursorSkin.visible = showCursor;
 			this._selectionSkin.visible = !showCursor;
 			var nativeStage:Stage = Starling.current.nativeStage;
