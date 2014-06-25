@@ -349,11 +349,11 @@ package feathers.controls.text
 		/**
 		 * @inheritDoc
 		 *
-		 * @default true
+		 * @default false
 		 */
 		public function get setTouchFocusOnEndedPhase():Boolean
 		{
-			return true;
+			return false;
 		}
 
 		/**
