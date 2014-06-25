@@ -864,6 +864,10 @@ package feathers.controls.text
 					Starling.current.nativeStage.focus = this.textField;
 				}
 				this.textField.requestSoftKeyboard();
+				if(this._textFieldHasFocus)
+				{
+					this.invalidate(INVALIDATION_FLAG_SELECTED);
+				}
 			}
 			else
 			{
