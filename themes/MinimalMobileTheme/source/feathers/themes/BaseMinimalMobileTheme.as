@@ -60,6 +60,7 @@ package feathers.themes
 	import feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer;
 	import feathers.controls.renderers.DefaultGroupedListItemRenderer;
 	import feathers.controls.renderers.DefaultListItemRenderer;
+	import feathers.controls.text.BitmapFontTextEditor;
 	import feathers.controls.text.BitmapFontTextRenderer;
 	import feathers.controls.text.StageTextTextEditor;
 	import feathers.core.FeathersControl;
@@ -140,6 +141,18 @@ package feathers.themes
 		protected static function textEditorFactory():StageTextTextEditor
 		{
 			return new StageTextTextEditor();
+		}
+
+		protected static function numericStepperTextEditorFactory():BitmapFontTextEditor
+		{
+			//we're only using this text editor in the NumericStepper because
+			//isEditable is false on the TextInput. this text editor is not
+			//suitable for mobile use if the TextInput needs to be editable
+			//because it can't use the soft keyboard or other mobile-friendly UI
+			var editor:BitmapFontTextEditor = new BitmapFontTextEditor();
+			//since it's a pixel font, we don't want to smooth it.
+			editor.smoothing = TextureSmoothing.NONE;
+			return editor;
 		}
 
 		protected static function popUpOverlayFactory():DisplayObject
@@ -261,6 +274,7 @@ package feathers.themes
 
 		protected var primaryTextFormat:BitmapFontTextFormat;
 		protected var disabledTextFormat:BitmapFontTextFormat;
+		protected var centeredTextFormat:BitmapFontTextFormat;
 		protected var headingTextFormat:BitmapFontTextFormat;
 		protected var headingDisabledTextFormat:BitmapFontTextFormat;
 		protected var detailTextFormat:BitmapFontTextFormat;
@@ -398,6 +412,7 @@ package feathers.themes
 
 			this.primaryTextFormat = new BitmapFontTextFormat(FONT_NAME, this.fontSize, PRIMARY_TEXT_COLOR);
 			this.disabledTextFormat = new BitmapFontTextFormat(FONT_NAME, this.fontSize, DISABLED_TEXT_COLOR);
+			this.centeredTextFormat = new BitmapFontTextFormat(FONT_NAME, this.fontSize, PRIMARY_TEXT_COLOR, TextFormatAlign.CENTER);
 			this.headingTextFormat = new BitmapFontTextFormat(FONT_NAME, this.headingFontSize, PRIMARY_TEXT_COLOR);
 			this.headingDisabledTextFormat = new BitmapFontTextFormat(FONT_NAME, this.headingFontSize, DISABLED_TEXT_COLOR);
 			this.detailTextFormat = new BitmapFontTextFormat(FONT_NAME, this.detailFontSize, PRIMARY_TEXT_COLOR);
@@ -1018,10 +1033,8 @@ package feathers.themes
 			input.paddingTop = input.paddingBottom = 14 * this.scale;
 			input.paddingLeft = input.paddingRight = 16 * this.scale;
 			input.isEditable = false;
-			input.textEditorProperties.fontFamily = "_sans";
-			input.textEditorProperties.fontSize = this.inputFontSize;
-			input.textEditorProperties.color = PRIMARY_TEXT_COLOR;
-			input.textEditorProperties.textAlign = TextFormatAlign.CENTER;
+			input.textEditorFactory = numericStepperTextEditorFactory;
+			input.textEditorProperties.textFormat = this.centeredTextFormat;
 
 			var backgroundSkin:Scale9Image = new Scale9Image(insetBackgroundSkinTextures, this.scale);
 			backgroundSkin.width = 66 * this.scale;
