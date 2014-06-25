@@ -25,6 +25,7 @@ package feathers.controls
 	import flash.ui.MouseCursor;
 
 	import starling.display.DisplayObject;
+	import starling.display.DisplayObjectContainer;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -1601,7 +1602,10 @@ package feathers.controls
 		 */
 		public function setFocus():void
 		{
-			if(this._textEditorHasFocus || !this.visible)
+			//if the text editor has focus, no need to set focus
+			//if this is invisible, it wouldn't make sense to set focus
+			//if there's a touch point ID, we'll be setting focus on our own
+			if(this._textEditorHasFocus || !this.visible || this._touchPointID >= 0)
 			{
 				return;
 			}
@@ -1823,7 +1827,7 @@ package feathers.controls
 				this.textEditor.width = oldTextEditorWidth;
 				this.textEditor.height = oldTextEditorHeight;
 			}
-			
+
 			return this.setSizeInternal(newWidth, newHeight, false);
 		}
 
@@ -2136,12 +2140,21 @@ package feathers.controls
 				return;
 			}
 			touch.getLocation(this.stage, HELPER_POINT);
-			var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
-			if(!this._textEditorHasFocus && isInBounds)
+			var hitTestTarget:DisplayObject = this.stage.hitTest(HELPER_POINT, true);
+			var isInBounds:Boolean = this.contains(hitTestTarget);
+			if(isInBounds)
 			{
-				this.textEditor.globalToLocal(HELPER_POINT, HELPER_POINT);
-				this._isWaitingToSetFocus = false;
-				this.textEditor.setFocus(HELPER_POINT);
+				var isInTextEditorBounds:Boolean = hitTestTarget == this.textEditor;
+				if(!isInTextEditorBounds && this.textEditor is DisplayObjectContainer)
+				{
+					isInTextEditorBounds = DisplayObjectContainer(this.textEditor).contains(hitTestTarget);
+				}
+				if(!isInTextEditorBounds || !this._textEditorHasFocus)
+				{
+					this.textEditor.globalToLocal(HELPER_POINT, HELPER_POINT);
+					this._isWaitingToSetFocus = false;
+					this.textEditor.setFocus(HELPER_POINT);
+				}
 			}
 		}
 
@@ -2279,7 +2292,6 @@ package feathers.controls
 		 */
 		protected function textEditor_focusInHandler(event:Event):void
 		{
-			this._touchPointID = -1;
 			if(!this.visible)
 			{
 				this.textEditor.clearFocus();
