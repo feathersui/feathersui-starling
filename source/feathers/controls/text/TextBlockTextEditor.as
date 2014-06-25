@@ -349,11 +349,11 @@ package feathers.controls.text
 		/**
 		 * @inheritDoc
 		 *
-		 * @default true
+		 * @default false
 		 */
 		public function get setTouchFocusOnEndedPhase():Boolean
 		{
-			return true;
+			return false;
 		}
 
 		/**
@@ -575,16 +575,7 @@ package feathers.controls.text
 				var newIndex:int = -1;
 				if(position)
 				{
-					var positionX:Number = position.x;
-					var positionY:Number = position.y;
-					if(positionX < 0)
-					{
-						newIndex = 0;
-					}
-					else
-					{
-						newIndex = this.getSelectionIndexAtPoint(positionX, positionY);
-					}
+					newIndex = this.getSelectionIndexAtPoint(position.x, position.y);
 				}
 				if(newIndex >= 0)
 				{
@@ -651,7 +642,6 @@ package feathers.controls.text
 			{
 				cursorIndex = startIndex;
 			}
-			trace("positioning at:", cursorIndex, "text length:", this._text.length);
 			this.positionCursorAtCharIndex(cursorIndex);
 			this.positionSelectionBackground();
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
@@ -676,6 +666,10 @@ package feathers.controls.text
 		 */
 		override protected function initialize():void
 		{
+			if(!this._cursorSkin)
+			{
+				this.cursorSkin = new Quad(1, 1, 0x000000);
+			}
 			if(!this._selectionSkin)
 			{
 				this.selectionSkin = new Quad(1, 1, 0x000000);
@@ -721,7 +715,7 @@ package feathers.controls.text
 		 */
 		protected function focusIn():void
 		{
-			var showCursor:Boolean = this._selectionStartIndex >= 0 && this._selectionStartIndex != this._selectionEndIndex;
+			var showCursor:Boolean = this._selectionStartIndex >= 0 && this._selectionStartIndex == this._selectionEndIndex;
 			this._cursorSkin.visible = showCursor;
 			this._selectionSkin.visible = !showCursor;
 			var nativeStage:Stage = Starling.current.nativeStage;
@@ -753,7 +747,7 @@ package feathers.controls.text
 		 */
 		protected function getSelectionIndexAtPoint(pointX:Number, pointY:Number):int
 		{
-			if(!this._text || this._textLines.length == 0)
+			if(!this._text || this._textLines.length == 0 || pointX <= 0)
 			{
 				return 0;
 			}
@@ -761,10 +755,6 @@ package feathers.controls.text
 			if(pointX >= line.width)
 			{
 				return line.atomCount;
-			}
-			else if(pointX < 0)
-			{
-				return 0;
 			}
 			var atomIndex:int = line.getAtomIndexAtPoint(pointX, pointY);
 			if(atomIndex < 0)
@@ -816,7 +806,6 @@ package feathers.controls.text
 			cursorX = int(cursorX - (this._cursorSkin.width / 2));
 			this._cursorSkin.x = cursorX;
 			this._cursorSkin.y = 0;
-
 			if(this._cursorSkin && this._textLines.length > 0)
 			{
 				var line:TextLine = this._textLines[0];
