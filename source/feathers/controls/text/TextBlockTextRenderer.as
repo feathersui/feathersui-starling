@@ -45,7 +45,7 @@ package feathers.controls.text
 	 * Flash Text Engine (FTE), and draws it to <code>BitmapData</code> to
 	 * convert to Starling textures. Textures are completely managed by this
 	 * component, and they will be automatically disposed when the component is
-	 * removed from the stage.
+	 * disposed.
 	 *
 	 * <p>For longer passages of text, this component will stitch together
 	 * multiple individual textures both horizontally and vertically, as a grid,

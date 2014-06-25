@@ -172,7 +172,9 @@ package feathers.controls.text
 	/**
 	 * A Feathers text editor that uses the native <code>flash.text.TextField</code>
 	 * class with its <code>type</code> property set to
-	 * <code>flash.text.TextInputType.INPUT</code>.
+	 * <code>flash.text.TextInputType.INPUT</code>. Textures are completely
+	 * managed by this component, and they will be automatically disposed when
+	 * the component is disposed.
 	 *
 	 * <p>For desktop apps, <code>TextFieldTextEditor</code> is recommended
 	 * instead of <code>StageTextTextEditor</code>. <code>StageTextTextEditor</code>

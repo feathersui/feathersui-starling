@@ -36,7 +36,7 @@ package feathers.controls.text
 	 * Renders text with a native <code>flash.text.TextField</code> and draws
 	 * it to <code>BitmapData</code> to convert to Starling textures. Textures
 	 * are completely managed by this component, and they will be automatically
-	 * disposed when the component is removed from the stage.
+	 * disposed when the component is disposed.
 	 *
 	 * <p>For longer passages of text, this component will stitch together
 	 * multiple individual textures both horizontally and vertically, as a grid,
