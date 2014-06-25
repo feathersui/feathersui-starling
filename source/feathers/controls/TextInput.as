@@ -21,6 +21,7 @@ package feathers.controls
 	import feathers.skins.StateValueSelector;
 
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.ui.Mouse;
 	import flash.ui.MouseCursor;
 
@@ -1585,6 +1586,23 @@ package feathers.controls
 		}
 
 		/**
+		 * @private
+		 */
+		override public function hitTest(localPoint:Point, forTouch:Boolean = false):DisplayObject
+		{
+			if(forTouch && (!this.visible || !this.touchable))
+			{
+				return null;
+			}
+			var clipRect:Rectangle = this.clipRect;
+			if(clipRect && !clipRect.containsPoint(localPoint))
+			{
+				return null;
+			}
+			return this._hitArea.containsPoint(localPoint) ? DisplayObject(this.textEditor) : null;
+		}
+
+		/**
 		 * @inheritDoc
 		 */
 		override public function showFocus():void
@@ -2140,21 +2158,12 @@ package feathers.controls
 				return;
 			}
 			touch.getLocation(this.stage, HELPER_POINT);
-			var hitTestTarget:DisplayObject = this.stage.hitTest(HELPER_POINT, true);
-			var isInBounds:Boolean = this.contains(hitTestTarget);
-			if(isInBounds)
+			var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
+			if(isInBounds && !this._textEditorHasFocus)
 			{
-				var isInTextEditorBounds:Boolean = hitTestTarget == this.textEditor;
-				if(!isInTextEditorBounds && this.textEditor is DisplayObjectContainer)
-				{
-					isInTextEditorBounds = DisplayObjectContainer(this.textEditor).contains(hitTestTarget);
-				}
-				if(!isInTextEditorBounds || !this._textEditorHasFocus)
-				{
-					this.textEditor.globalToLocal(HELPER_POINT, HELPER_POINT);
-					this._isWaitingToSetFocus = false;
-					this.textEditor.setFocus(HELPER_POINT);
-				}
+				this.textEditor.globalToLocal(HELPER_POINT, HELPER_POINT);
+				this._isWaitingToSetFocus = false;
+				this.textEditor.setFocus(HELPER_POINT);
 			}
 		}
 
