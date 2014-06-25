@@ -124,12 +124,14 @@ package feathers.controls.text
 
 	/**
 	 * Renders text using <code>starling.text.BitmapFont</code> that may be
-	 * edited at runtime by the user. This text editor is intended for use in
+	 * edited at runtime by the user.
+	 *
+	 * <p><strong>Warning:</strong> This text editor is intended for use in
 	 * desktop applications, and it does not provide support for software
-	 * keyboards on mobile devices.
+	 * keyboards on mobile devices.</p>
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/text-editors
-	 * @see starling.text.BitmapFont
+	 * @see http://doc.starling-framework.org/core/starling/text/BitmapFont.html starling.text.BitmapFont
 	 */
 	public class BitmapFontTextEditor extends BitmapFontTextRenderer implements ITextEditor
 	{

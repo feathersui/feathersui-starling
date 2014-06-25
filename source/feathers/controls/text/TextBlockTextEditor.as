@@ -124,12 +124,18 @@ package feathers.controls.text
 	[Event(name="focusOut",type="starling.events.Event")]
 
 	/**
-	 * Renders text using <code>starling.text.BitmapFont</code> that may be
-	 * edited at runtime by the user. This text editor is intended for use in
+	 * Renders text with a native <code>flash.text.engine.TextBlock</code> from
+	 * Flash Text Engine (FTE) that may be edited at runtime by the user. Draws
+	 * the text to <code>BitmapData</code> to convert to Starling textures.
+	 * Textures are completely managed by this component, and they will be
+	 * automatically disposed when the component is disposed from the stage.
+	 *
+	 * <p><strong>Warning:</strong> This text editor is intended for use in
 	 * desktop applications, and it does not provide support for software
-	 * keyboards on mobile devices.
+	 * keyboards on mobile devices.</p>
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/text-editors
+	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/engine/TextBlock.html flash.text.engine.TextBlock
 	 */
 	public class TextBlockTextEditor extends TextBlockTextRenderer implements ITextEditor
 	{
