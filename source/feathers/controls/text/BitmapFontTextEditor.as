@@ -576,16 +576,7 @@ package feathers.controls.text
 				var newIndex:int = -1;
 				if(position)
 				{
-					var positionX:Number = position.x;
-					var positionY:Number = position.y;
-					if(positionX < 0)
-					{
-						newIndex = 0;
-					}
-					else
-					{
-						newIndex = this.getSelectionIndexAtPoint(positionX, positionY);
-					}
+					newIndex = this.getSelectionIndexAtPoint(position.x, position.y);
 				}
 				if(newIndex >= 0)
 				{
@@ -775,7 +766,7 @@ package feathers.controls.text
 		 */
 		protected function getSelectionIndexAtPoint(pointX:Number, pointY:Number):int
 		{
-			if(!this._text)
+			if(!this._text || pointX <= 0)
 			{
 				return 0;
 			}
