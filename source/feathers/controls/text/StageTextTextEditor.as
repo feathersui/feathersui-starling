@@ -1080,7 +1080,11 @@ package feathers.controls.text
 							}
 							else
 							{
-								this._pendingSelectionStartIndex = this._text.length;
+								this._pendingSelectionStartIndex = this._measureTextField.getCharIndexAtPoint(positionX, this._measureTextField.getLineMetrics(0).ascent / 2);
+								if(this._pendingSelectionStartIndex < 0)
+								{
+									this._pendingSelectionStartIndex = this._text.length;
+								}
 							}
 						}
 						else
