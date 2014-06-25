@@ -61,6 +61,7 @@ package feathers.themes
 	import feathers.controls.renderers.DefaultGroupedListItemRenderer;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.text.StageTextTextEditor;
+	import feathers.controls.text.TextBlockTextEditor;
 	import feathers.controls.text.TextBlockTextRenderer;
 	import feathers.controls.text.TextFieldTextEditor;
 	import feathers.core.FeathersControl;
@@ -108,9 +109,6 @@ package feathers.themes
 
 		[Embed(source="/../assets/fonts/SourceSansPro-Semibold.ttf",fontFamily="SourceSansPro",fontWeight="bold",mimeType="application/x-font",embedAsCFF="true")]
 		protected static const SOURCE_SANS_PRO_SEMIBOLD:Class;
-
-		[Embed(source="/../assets/fonts/SourceSansPro-Semibold.ttf",fontFamily="SourceSansPro",fontWeight="bold",unicodeRange="U+002e,U+0030-U+0039",mimeType="application/x-font",embedAsCFF="false")]
-		protected static const SOURCE_SANS_PRO_SEMIBOLD_NUMBERS:Class;
 
 		protected static const FONT_NAME:String = "SourceSansPro";
 
@@ -172,9 +170,13 @@ package feathers.themes
 			return new StageTextTextEditor();
 		}
 
-		protected static function stepperTextEditorFactory():TextFieldTextEditor
+		protected static function stepperTextEditorFactory():TextBlockTextEditor
 		{
-			return new TextFieldTextEditor();
+			//we're only using this text editor in the NumericStepper because
+			//isEditable is false on the TextInput. this text editor is not
+			//suitable for mobile use if the TextInput needs to be editable
+			//because it can't use the soft keyboard or other mobile-friendly UI
+			return new TextBlockTextEditor();
 		}
 
 		protected static function horizontalScrollBarFactory():SimpleScrollBar
@@ -224,7 +226,6 @@ package feathers.themes
 
 		protected var scrollTextTextFormat:TextFormat;
 		protected var scrollTextDisabledTextFormat:TextFormat;
-		protected var lightUICenteredTextFormat:TextFormat;
 
 		protected var headerElementFormat:ElementFormat;
 
@@ -369,7 +370,6 @@ package feathers.themes
 			//these are for components that don't use FTE
 			this.scrollTextTextFormat = new TextFormat("_sans", 24 * this.scale, LIGHT_TEXT_COLOR);
 			this.scrollTextDisabledTextFormat = new TextFormat("_sans", 24 * this.scale, DISABLED_TEXT_COLOR);
-			this.lightUICenteredTextFormat = new TextFormat(FONT_NAME, 24 * this.scale, LIGHT_TEXT_COLOR, true, null, null, null, null, TextFormatAlign.CENTER);
 
 			this.regularFontDescription = new FontDescription(FONT_NAME, FontWeight.NORMAL, FontPosture.NORMAL, FontLookup.EMBEDDED_CFF, RenderingMode.CFF, CFFHinting.NONE);
 			this.boldFontDescription = new FontDescription(FONT_NAME, FontWeight.BOLD, FontPosture.NORMAL, FontLookup.EMBEDDED_CFF, RenderingMode.CFF, CFFHinting.NONE);
@@ -1243,8 +1243,8 @@ package feathers.themes
 			input.paddingLeft = input.paddingRight = 14 * this.scale;
 			input.isEditable = false;
 			input.textEditorFactory = stepperTextEditorFactory;
-			input.textEditorProperties.textFormat = this.lightUICenteredTextFormat;
-			input.textEditorProperties.embedFonts = true;
+			input.textEditorProperties.elementFormat = this.lightUIElementFormat;
+			input.textEditorProperties.textAlign = TextBlockTextEditor.TEXT_ALIGN_CENTER;
 		}
 
 		protected function setNumericStepperButtonStyles(button:Button):void
