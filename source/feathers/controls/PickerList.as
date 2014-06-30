@@ -578,6 +578,8 @@ package feathers.controls
 				return;
 			}
 			this._typicalItem = value;
+			this._typicalItemWidth = NaN;
+			this._typicalItemHeight = NaN;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -1254,37 +1256,63 @@ package feathers.controls
 				return false;
 			}
 
-			this.button.width = NaN;
-			this.button.height = NaN;
+			var buttonWidth:Number;
+			var buttonHeight:Number;
 			if(this._typicalItem)
 			{
 				if(this._typicalItemWidth != this._typicalItemWidth || //isNaN
 					this._typicalItemHeight != this._typicalItemHeight) //isNaN
 				{
-					this.button.label = this.itemToLabel(this._typicalItem);
+					var oldWidth:Number = this.button.width;
+					var oldHeight:Number = this.button.height;
+					this.button.width = NaN;
+					this.button.height = NaN;
+					if(this._typicalItem)
+					{
+						this.button.label = this.itemToLabel(this._typicalItem);
+					}
 					this.button.validate();
 					this._typicalItemWidth = this.button.width;
 					this._typicalItemHeight = this.button.height;
 					this.refreshButtonLabel();
+					this.button.width = oldWidth;
+					this.button.height = oldHeight;
 				}
+				buttonWidth = this._typicalItemWidth;
+				buttonHeight = this._typicalItemHeight;
 			}
 			else
 			{
 				this.button.validate();
-				this._typicalItemWidth = this.button.width;
-				this._typicalItemHeight = this.button.height;
+				buttonWidth = this.button.width;
+				buttonHeight = this.button.height;
 			}
 
 			var newWidth:Number = this.explicitWidth;
 			var newHeight:Number = this.explicitHeight;
 			if(needsWidth)
 			{
-				newWidth = this._typicalItemWidth;
+				if(buttonWidth == buttonWidth) //!isNaN
+				{
+					newWidth = buttonWidth;
+				}
+				else
+				{
+					newWidth = 0;
+				}
 			}
 			if(needsHeight)
 			{
-				newHeight = this._typicalItemHeight;
+				if(buttonHeight == buttonHeight) //!isNaN
+				{
+					newHeight = buttonHeight;
+				}
+				else
+				{
+					newHeight = 0;
+				}
 			}
+
 			return this.setSizeInternal(newWidth, newHeight, false);
 		}
 
