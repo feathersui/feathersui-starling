@@ -2082,13 +2082,15 @@ package feathers.controls
 
 			var biggerHeight:Number = this.textEditor.height;
 			var biggerBaseline:Number = this.textEditor.baseline;
-			if(this.promptTextRenderer.baseline > baseline)
+			var promptBaseline:Number = this.promptTextRenderer.baseline;
+			var promptHeight:Number = this.promptTextRenderer.height;
+			if(promptBaseline > biggerBaseline)
 			{
-				biggerBaseline = this.promptTextRenderer.baseline;
+				biggerBaseline = promptBaseline;
 			}
-			if(this.promptTextRenderer.height > biggerHeight)
+			if(promptHeight > biggerHeight)
 			{
-				biggerHeight = this.promptTextRenderer.height;
+				biggerHeight = promptHeight;
 			}
 
 			if(isMultiline)
