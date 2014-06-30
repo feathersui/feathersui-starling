@@ -2263,6 +2263,9 @@ package feathers.controls
 				this.incrementButton.x = this.actualWidth - this.incrementButton.width;
 				this.incrementButton.y = (this.actualHeight - this.incrementButton.height) / 2;
 			}
+			var showButtons:Boolean = this._maximum != this._minimum;
+			this.decrementButton.visible = showButtons;
+			this.incrementButton.visible = showButtons;
 		}
 
 		/**
@@ -2318,28 +2321,57 @@ package feathers.controls
 		 */
 		protected function layoutTrackWithMinMax():void
 		{
+			var showButtons:Boolean = this._maximum != this._minimum;
 			if(this._direction == DIRECTION_VERTICAL)
 			{
 				this.minimumTrack.x = 0;
-				this.minimumTrack.y = 0;
+				if(showButtons)
+				{
+					this.minimumTrack.y = this.decrementButton.height;
+				}
+				else
+				{
+					this.minimumTrack.y = 0;
+				}
 				this.minimumTrack.width = this.actualWidth;
 				this.minimumTrack.height = (this.thumb.y + this.thumb.height / 2) - this.minimumTrack.y;
 
 				this.maximumTrack.x = 0;
 				this.maximumTrack.y = this.minimumTrack.y + this.minimumTrack.height;
 				this.maximumTrack.width = this.actualWidth;
-				this.maximumTrack.height = this.actualHeight - this.maximumTrack.y;
+				if(showButtons)
+				{
+					this.maximumTrack.height = this.actualHeight - this.incrementButton.height - this.maximumTrack.y;
+				}
+				else
+				{
+					this.maximumTrack.height = this.actualHeight - this.maximumTrack.y;
+				}
 			}
 			else //horizontal
 			{
-				this.minimumTrack.x = 0;
+				if(showButtons)
+				{
+					this.minimumTrack.x = this.decrementButton.x;
+				}
+				else
+				{
+					this.minimumTrack.x = 0;
+				}
 				this.minimumTrack.y = 0;
 				this.minimumTrack.width = (this.thumb.x + this.thumb.width / 2) - this.minimumTrack.x;
 				this.minimumTrack.height = this.actualHeight;
 
 				this.maximumTrack.x = this.minimumTrack.x + this.minimumTrack.width;
 				this.maximumTrack.y = 0;
-				this.maximumTrack.width = this.actualWidth - this.maximumTrack.x;
+				if(showButtons)
+				{
+					this.maximumTrack.width = this.actualWidth - this.incrementButton.width - this.maximumTrack.x;
+				}
+				else
+				{
+					this.maximumTrack.width = this.actualWidth - this.maximumTrack.x;
+				}
 				this.maximumTrack.height = this.actualHeight;
 			}
 
@@ -2353,18 +2385,47 @@ package feathers.controls
 		 */
 		protected function layoutTrackWithSingle():void
 		{
+			var showButtons:Boolean = this._maximum != this._minimum;
 			if(this._direction == DIRECTION_VERTICAL)
 			{
 				this.minimumTrack.x = 0;
-				this.minimumTrack.y = 0;
+				if(showButtons)
+				{
+					this.minimumTrack.y = this.decrementButton.height;
+				}
+				else
+				{
+					this.minimumTrack.y = 0;
+				}
 				this.minimumTrack.width = this.actualWidth;
-				this.minimumTrack.height = this.actualHeight - this.minimumTrack.y;
+				if(showButtons)
+				{
+					this.minimumTrack.height = this.actualHeight - this.minimumTrack.y - this.incrementButton.height;
+				}
+				else
+				{
+					this.minimumTrack.height = this.actualHeight - this.minimumTrack.y;
+				}
 			}
 			else //horizontal
 			{
-				this.minimumTrack.x = 0;
+				if(showButtons)
+				{
+					this.minimumTrack.x = this.decrementButton.x;
+				}
+				else
+				{
+					this.minimumTrack.x = 0;
+				}
 				this.minimumTrack.y = 0;
-				this.minimumTrack.width = this.actualWidth - this.minimumTrack.x;
+				if(showButtons)
+				{
+					this.minimumTrack.width = this.actualWidth - this.minimumTrack.x - this.incrementButton.width;
+				}
+				else
+				{
+					this.minimumTrack.width = this.actualWidth - this.minimumTrack.x;
+				}
 				this.minimumTrack.height = this.actualHeight;
 			}
 
