@@ -2385,7 +2385,7 @@ package feathers.controls
 			}
 			else //center
 			{
-				displayObject.x = this._paddingLeft + (this.actualWidth - this._paddingLeft - this._paddingRight - displayObject.width) / 2;
+				displayObject.x = this._paddingLeft + Math.round((this.actualWidth - this._paddingLeft - this._paddingRight - displayObject.width) / 2);
 			}
 			if(this._verticalAlign == VERTICAL_ALIGN_TOP)
 			{
@@ -2397,7 +2397,7 @@ package feathers.controls
 			}
 			else //middle
 			{
-				displayObject.y = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - displayObject.height) / 2;
+				displayObject.y = this._paddingTop + Math.round((this.actualHeight - this._paddingTop - this._paddingBottom - displayObject.height) / 2);
 			}
 		}
 		
@@ -2421,7 +2421,7 @@ package feathers.controls
 					}
 					else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
 					{
-						this.labelTextRenderer.y += (this.currentIcon.height + this._gap) / 2;
+						this.labelTextRenderer.y += Math.round((this.currentIcon.height + this._gap) / 2);
 					}
 					this.currentIcon.y = this.labelTextRenderer.y - this.currentIcon.height - this._gap;
 				}
@@ -2441,7 +2441,7 @@ package feathers.controls
 					}
 					else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
 					{
-						this.labelTextRenderer.x -= (this.currentIcon.width + this._gap) / 2;
+						this.labelTextRenderer.x -= Math.round((this.currentIcon.width + this._gap) / 2);
 					}
 					this.currentIcon.x = this.labelTextRenderer.x + this.labelTextRenderer.width + this._gap;
 				}
@@ -2461,7 +2461,7 @@ package feathers.controls
 					}
 					else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
 					{
-						this.labelTextRenderer.y -= (this.currentIcon.height + this._gap) / 2;
+						this.labelTextRenderer.y -= Math.round((this.currentIcon.height + this._gap) / 2);
 					}
 					this.currentIcon.y = this.labelTextRenderer.y + this.labelTextRenderer.height + this._gap;
 				}
@@ -2481,7 +2481,7 @@ package feathers.controls
 					}
 					else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
 					{
-						this.labelTextRenderer.x += (this._gap + this.currentIcon.width) / 2;
+						this.labelTextRenderer.x += Math.round((this._gap + this.currentIcon.width) / 2);
 					}
 					this.currentIcon.x = this.labelTextRenderer.x - this._gap - this.currentIcon.width;
 				}
@@ -2499,7 +2499,7 @@ package feathers.controls
 				}
 				else
 				{
-					this.currentIcon.y = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - this.currentIcon.height) / 2;
+					this.currentIcon.y = this._paddingTop + Math.round((this.actualHeight - this._paddingTop - this._paddingBottom - this.currentIcon.height) / 2);
 				}
 			}
 			else if(this._iconPosition == ICON_POSITION_LEFT_BASELINE || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
@@ -2518,7 +2518,7 @@ package feathers.controls
 				}
 				else
 				{
-					this.currentIcon.x = this._paddingLeft + (this.actualWidth - this._paddingLeft - this._paddingRight - this.currentIcon.width) / 2;
+					this.currentIcon.x = this._paddingLeft + Math.round((this.actualWidth - this._paddingLeft - this._paddingRight - this.currentIcon.width) / 2);
 				}
 			}
 		}

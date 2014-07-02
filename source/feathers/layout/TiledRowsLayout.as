@@ -1060,7 +1060,7 @@ package feathers.layout
 						}
 						default: //center or unknown
 						{
-							item.x = item.pivotX + positionX + (tileWidth - item.width) / 2;
+							item.x = item.pivotX + positionX + Math.round((tileWidth - item.width) / 2);
 						}
 					}
 					switch(this._tileVerticalAlign)
@@ -1083,7 +1083,7 @@ package feathers.layout
 						}
 						default: //middle or unknown
 						{
-							item.y = item.pivotY + positionY + (tileHeight - item.height) / 2;
+							item.y = item.pivotY + positionY + Math.round((tileHeight - item.height) / 2);
 						}
 					}
 					if(this._useVirtualLayout)
@@ -1483,7 +1483,7 @@ package feathers.layout
 			else
 			{
 				result.x = 0;
-				result.y = this._paddingTop + ((tileHeight + this._verticalGap) * int(index / horizontalTileCount)) - (height - tileHeight) / 2;
+				result.y = this._paddingTop + ((tileHeight + this._verticalGap) * int(index / horizontalTileCount)) - Math.round((height - tileHeight) / 2);
 			}
 			return result;
 		}
@@ -1525,7 +1525,7 @@ package feathers.layout
 			{
 				//we're going to default to center if we encounter an
 				//unknown value
-				horizontalAlignOffsetX = (availableWidth - totalItemWidth) / 2;
+				horizontalAlignOffsetX = Math.round((availableWidth - totalItemWidth) / 2);
 			}
 			if(horizontalAlignOffsetX != 0)
 			{
@@ -1557,7 +1557,7 @@ package feathers.layout
 			}
 			else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
 			{
-				verticalAlignOffsetY = (availableHeight - totalItemHeight) / 2;
+				verticalAlignOffsetY = Math.round((availableHeight - totalItemHeight) / 2);
 			}
 			if(verticalAlignOffsetY != 0)
 			{
@@ -1634,7 +1634,7 @@ package feathers.layout
 				}
 				else if(this._horizontalAlign == HORIZONTAL_ALIGN_CENTER)
 				{
-					leftSideOffset = rightSideOffset = (width - this._paddingLeft - this._paddingRight - totalRowWidth) / 2;
+					leftSideOffset = rightSideOffset = Math.round((width - this._paddingLeft - this._paddingRight - totalRowWidth) / 2);
 				}
 				else if(this._horizontalAlign == HORIZONTAL_ALIGN_LEFT)
 				{
@@ -1774,7 +1774,7 @@ package feathers.layout
 				}
 				else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
 				{
-					topSideOffset = bottomSideOffset = (height - this._paddingTop - this._paddingBottom - totalColumnHeight) / 2;
+					topSideOffset = bottomSideOffset = Math.round((height - this._paddingTop - this._paddingBottom - totalColumnHeight) / 2);
 				}
 				else if(this._verticalAlign == VERTICAL_ALIGN_TOP)
 				{

@@ -970,7 +970,7 @@ package feathers.layout
 				}
 				else if(this._verticalAlign == VERTICAL_ALIGN_MIDDLE)
 				{
-					verticalAlignOffsetY = (availableHeight - totalHeight) / 2;
+					verticalAlignOffsetY = Math.round((availableHeight - totalHeight) / 2);
 				}
 				if(verticalAlignOffsetY != 0)
 				{
@@ -1048,7 +1048,7 @@ package feathers.layout
 						}
 						case HORIZONTAL_ALIGN_CENTER:
 						{
-							item.x = item.pivotX + boundsX + this._paddingLeft + (availableWidth - this._paddingLeft - this._paddingRight - item.width) / 2;
+							item.x = item.pivotX + boundsX + this._paddingLeft + Math.round((availableWidth - this._paddingLeft - this._paddingRight - item.width) / 2);
 							break;
 						}
 						default: //left
@@ -1488,7 +1488,7 @@ package feathers.layout
 			positionY -= (lastHeight + gap);
 			if(this._scrollPositionVerticalAlign == VERTICAL_ALIGN_MIDDLE)
 			{
-				positionY -= (height - lastHeight) / 2;
+				positionY -= Math.round((height - lastHeight) / 2);
 			}
 			else if(this._scrollPositionVerticalAlign == VERTICAL_ALIGN_BOTTOM)
 			{
