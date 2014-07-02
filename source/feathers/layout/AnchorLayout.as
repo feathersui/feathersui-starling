@@ -373,7 +373,7 @@ package feathers.layout
 						var verticalCenterAnchorDisplayObject:DisplayObject = layoutData.verticalCenterAnchorDisplayObject;
 						if(verticalCenterAnchorDisplayObject)
 						{
-							var verticalOffset:Number = verticalCenter - (item.height - verticalCenterAnchorDisplayObject.height) / 2;
+							var verticalOffset:Number = verticalCenter - Math.round((item.height - verticalCenterAnchorDisplayObject.height) / 2);
 							top = Math.max(top, verticalOffset + this.getTopOffset(verticalCenterAnchorDisplayObject));
 						}
 						else if(verticalCenter > 0)
@@ -433,7 +433,7 @@ package feathers.layout
 						var horizontalCenterAnchorDisplayObject:DisplayObject = layoutData.horizontalCenterAnchorDisplayObject;
 						if(horizontalCenterAnchorDisplayObject)
 						{
-							var horizontalOffset:Number = -horizontalCenter - (item.width - horizontalCenterAnchorDisplayObject.width) / 2;
+							var horizontalOffset:Number = -horizontalCenter - Math.round((item.width - horizontalCenterAnchorDisplayObject.width) / 2);
 							right = Math.max(right, horizontalOffset + this.getRightOffset(horizontalCenterAnchorDisplayObject));
 						}
 						else if(horizontalCenter < 0)
@@ -493,7 +493,7 @@ package feathers.layout
 						var verticalCenterAnchorDisplayObject:DisplayObject = layoutData.verticalCenterAnchorDisplayObject;
 						if(verticalCenterAnchorDisplayObject)
 						{
-							var verticalOffset:Number = -verticalCenter - (item.height - verticalCenterAnchorDisplayObject.height) / 2;
+							var verticalOffset:Number = -verticalCenter - Math.round((item.height - verticalCenterAnchorDisplayObject.height) / 2);
 							bottom = Math.max(bottom, verticalOffset + this.getBottomOffset(verticalCenterAnchorDisplayObject));
 						}
 						else if(verticalCenter < 0)
@@ -553,7 +553,7 @@ package feathers.layout
 						var horizontalCenterAnchorDisplayObject:DisplayObject = layoutData.horizontalCenterAnchorDisplayObject;
 						if(horizontalCenterAnchorDisplayObject)
 						{
-							var horizontalOffset:Number = horizontalCenter - (item.width - horizontalCenterAnchorDisplayObject.width) / 2;
+							var horizontalOffset:Number = horizontalCenter - Math.round((item.width - horizontalCenterAnchorDisplayObject.width) / 2);
 							left = Math.max(left, horizontalOffset + this.getLeftOffset(horizontalCenterAnchorDisplayObject));
 						}
 						else if(horizontalCenter > 0)
@@ -710,11 +710,11 @@ package feathers.layout
 					var xPositionOfCenter:Number;
 					if(horizontalCenterAnchorDisplayObject)
 					{
-						xPositionOfCenter = horizontalCenterAnchorDisplayObject.x - horizontalCenterAnchorDisplayObject.pivotX + (horizontalCenterAnchorDisplayObject.width / 2) + horizontalCenter;
+						xPositionOfCenter = horizontalCenterAnchorDisplayObject.x - horizontalCenterAnchorDisplayObject.pivotX + Math.round(horizontalCenterAnchorDisplayObject.width / 2) + horizontalCenter;
 					}
 					else
 					{
-						xPositionOfCenter = (viewPortWidth / 2) + horizontalCenter;
+						xPositionOfCenter = Math.round(viewPortWidth / 2) + horizontalCenter;
 					}
 					var xPositionOfRight:Number;
 					if(rightAnchorDisplayObject)
@@ -746,11 +746,11 @@ package feathers.layout
 				horizontalCenterAnchorDisplayObject = layoutData.horizontalCenterAnchorDisplayObject;
 				if(horizontalCenterAnchorDisplayObject)
 				{
-					xPositionOfCenter = horizontalCenterAnchorDisplayObject.x - horizontalCenterAnchorDisplayObject.pivotX + (horizontalCenterAnchorDisplayObject.width / 2) + horizontalCenter;
+					xPositionOfCenter = horizontalCenterAnchorDisplayObject.x - horizontalCenterAnchorDisplayObject.pivotX + Math.round(horizontalCenterAnchorDisplayObject.width / 2) + horizontalCenter;
 				}
 				else
 				{
-					xPositionOfCenter = (viewPortWidth / 2) + horizontalCenter;
+					xPositionOfCenter = Math.round(viewPortWidth / 2) + horizontalCenter;
 				}
 
 				if(hasLeftPosition)
@@ -760,7 +760,7 @@ package feathers.layout
 				}
 				else
 				{
-					item.x = item.pivotX + xPositionOfCenter - (item.width / 2);
+					item.x = item.pivotX + xPositionOfCenter - Math.round(item.width / 2);
 				}
 			}
 			if(checkWidth)
@@ -854,11 +854,11 @@ package feathers.layout
 					var yPositionOfCenter:Number;
 					if(verticalCenterAnchorDisplayObject)
 					{
-						yPositionOfCenter = verticalCenterAnchorDisplayObject.y - verticalCenterAnchorDisplayObject.pivotY + (verticalCenterAnchorDisplayObject.height / 2) + verticalCenter;
+						yPositionOfCenter = verticalCenterAnchorDisplayObject.y - verticalCenterAnchorDisplayObject.pivotY + Math.round(verticalCenterAnchorDisplayObject.height / 2) + verticalCenter;
 					}
 					else
 					{
-						yPositionOfCenter = (viewPortHeight / 2) + verticalCenter;
+						yPositionOfCenter = Math.round(viewPortHeight / 2) + verticalCenter;
 					}
 					var yPositionOfBottom:Number;
 					if(bottomAnchorDisplayObject)
@@ -890,11 +890,11 @@ package feathers.layout
 				verticalCenterAnchorDisplayObject = layoutData.verticalCenterAnchorDisplayObject;
 				if(verticalCenterAnchorDisplayObject)
 				{
-					yPositionOfCenter = verticalCenterAnchorDisplayObject.y - verticalCenterAnchorDisplayObject.pivotY + (verticalCenterAnchorDisplayObject.height / 2) + verticalCenter;
+					yPositionOfCenter = verticalCenterAnchorDisplayObject.y - verticalCenterAnchorDisplayObject.pivotY + Math.round(verticalCenterAnchorDisplayObject.height / 2) + verticalCenter;
 				}
 				else
 				{
-					yPositionOfCenter = (viewPortHeight / 2) + verticalCenter;
+					yPositionOfCenter = Math.round(viewPortHeight / 2) + verticalCenter;
 				}
 
 				if(hasTopPosition)
@@ -904,7 +904,7 @@ package feathers.layout
 				}
 				else
 				{
-					item.y = item.pivotY + yPositionOfCenter - (item.height / 2);
+					item.y = item.pivotY + yPositionOfCenter - Math.round(item.height / 2);
 				}
 			}
 			if(checkHeight)
