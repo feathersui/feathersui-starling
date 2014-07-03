@@ -40,8 +40,8 @@ package feathers.examples.componentsExplorer.themes
 			var verticalLayout:VerticalLayout = new VerticalLayout();
 			verticalLayout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_CENTER;
 			verticalLayout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
-			verticalLayout.padding = 20 * this.scale;
-			verticalLayout.gap = 16 * this.scale;
+			verticalLayout.padding = this.gutterSize;
+			verticalLayout.gap = this.smallGutterSize;
 			verticalLayout.manageVisibility = true;
 			screen.layout = verticalLayout;
 
@@ -53,7 +53,7 @@ package feathers.examples.componentsExplorer.themes
 			//don't forget to set styles from the super class, if required
 			this.setPanelScreenStyles(screen);
 
-			screen.layoutPadding = 30 * this.scale;
+			screen.layoutPadding = this.gutterSize;
 		}
 
 		protected function setItemRendererScreenStyles(screen:ItemRendererScreen):void
@@ -61,7 +61,7 @@ package feathers.examples.componentsExplorer.themes
 			//don't forget to set styles from the super class, if required
 			this.setPanelScreenStyles(screen);
 
-			screen.itemRendererGap = 20 * this.scale;
+			screen.itemRendererGap = this.gutterSize;
 		}
 
 		protected function setLabelScreenStyles(screen:LabelScreen):void
@@ -70,10 +70,10 @@ package feathers.examples.componentsExplorer.themes
 			this.setPanelScreenStyles(screen);
 
 			var verticalLayout:VerticalLayout = new VerticalLayout();
-			verticalLayout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_CENTER;
+			verticalLayout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
 			verticalLayout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
-			verticalLayout.padding = 20 * this.scale;
-			verticalLayout.gap = 16 * this.scale;
+			verticalLayout.padding = this.gutterSize;
+			verticalLayout.gap = this.smallGutterSize;
 			verticalLayout.manageVisibility = true;
 			screen.layout = verticalLayout;
 
@@ -85,7 +85,7 @@ package feathers.examples.componentsExplorer.themes
 			var layout:HorizontalLayout = new HorizontalLayout();
 			layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_CENTER;
 			layout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_MIDDLE;
-			layout.gap = 44 * this.scale;
+			layout.gap = this.gutterSize;
 			screen.layout = layout;
 		}
 
@@ -94,7 +94,7 @@ package feathers.examples.componentsExplorer.themes
 			var layout:HorizontalLayout = new HorizontalLayout();
 			layout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_CENTER;
 			layout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_MIDDLE;
-			layout.gap = 44 * this.scale;
+			layout.gap = this.gutterSize;
 			screen.layout = layout;
 		}
 
@@ -106,8 +106,8 @@ package feathers.examples.componentsExplorer.themes
 			var verticalLayout:VerticalLayout = new VerticalLayout();
 			verticalLayout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_CENTER;
 			verticalLayout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
-			verticalLayout.padding = 20 * this.scale;
-			verticalLayout.gap = 16 * this.scale;
+			verticalLayout.padding = this.gutterSize;
+			verticalLayout.gap = this.smallGutterSize;
 			verticalLayout.manageVisibility = true;
 			screen.layout = verticalLayout;
 
