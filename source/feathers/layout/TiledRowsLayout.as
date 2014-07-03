@@ -418,6 +418,40 @@ package feathers.layout
 		/**
 		 * @private
 		 */
+		protected var _requestedColumnCount:int = 0;
+
+		/**
+		 * Requests that the layout uses a specific number of columns in a row,
+		 * if possible. If the view port's explicit or maximum width is not large
+		 * enough to fit the requested number of columns, it will use fewer.
+		 *
+		 * @default 0
+		 */
+		public function get requestedColumnCount():int
+		{
+			return this._requestedColumnCount;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set requestedColumnCount(value:int):void
+		{
+			if(value < 0)
+			{
+				throw RangeError("requestedColumnCount requires a value >= 0");
+			}
+			if(this._requestedColumnCount == value)
+			{
+				return;
+			}
+			this._requestedColumnCount = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _verticalAlign:String = VERTICAL_ALIGN_TOP;
 
 		[Inspectable(type="String",enumeration="top,middle,bottom")]
@@ -942,7 +976,8 @@ package feathers.layout
 				availableWidth = explicitWidth;
 				horizontalTileCount = (explicitWidth - this._paddingLeft - this._paddingRight + this._horizontalGap) / (tileWidth + this._horizontalGap);
 			}
-			else if(maxWidth == maxWidth) //!isNaN
+			else if(maxWidth == maxWidth && //!isNaN
+				maxWidth < Number.POSITIVE_INFINITY)
 			{
 				availableWidth = maxWidth;
 				horizontalTileCount = (maxWidth - this._paddingLeft - this._paddingRight + this._horizontalGap) / (tileWidth + this._horizontalGap);
@@ -950,6 +985,10 @@ package feathers.layout
 			if(horizontalTileCount < 1)
 			{
 				horizontalTileCount = 1;
+			}
+			if(this._requestedColumnCount > 0 && horizontalTileCount > this._requestedColumnCount)
+			{
+				horizontalTileCount = this._requestedColumnCount;
 			}
 			var verticalTileCount:int = 1;
 			if(explicitHeight == explicitHeight) //!isNaN
@@ -1235,7 +1274,8 @@ package feathers.layout
 				availableWidth = explicitWidth;
 				horizontalTileCount = (explicitWidth - this._paddingLeft - this._paddingRight + this._horizontalGap) / (tileWidth + this._horizontalGap);
 			}
-			else if(maxWidth == maxWidth) //!isNaN
+			else if(maxWidth == maxWidth && //!isNaN
+				maxWidth < Number.POSITIVE_INFINITY)
 			{
 				availableWidth = maxWidth;
 				horizontalTileCount = (maxWidth - this._paddingLeft - this._paddingRight + this._horizontalGap) / (tileWidth + this._horizontalGap);
@@ -1243,6 +1283,10 @@ package feathers.layout
 			if(horizontalTileCount < 1)
 			{
 				horizontalTileCount = 1;
+			}
+			if(this._requestedColumnCount > 0 && horizontalTileCount > this._requestedColumnCount)
+			{
+				horizontalTileCount = this._requestedColumnCount;
 			}
 			var verticalTileCount:int = 1;
 			if(explicitHeight == explicitHeight) //!isNaN
@@ -1460,6 +1504,10 @@ package feathers.layout
 			{
 				horizontalTileCount = 1;
 			}
+			if(this._requestedColumnCount > 0 && horizontalTileCount > this._requestedColumnCount)
+			{
+				horizontalTileCount = this._requestedColumnCount;
+			}
 			if(this._paging != PAGING_NONE)
 			{
 				var verticalTileCount:int = (height - this._paddingTop - this._paddingBottom + this._verticalGap) / (tileHeight + this._verticalGap);
@@ -1608,6 +1656,10 @@ package feathers.layout
 			{
 				horizontalTileCount = 1;
 			}
+			if(this._requestedColumnCount > 0 && horizontalTileCount > this._requestedColumnCount)
+			{
+				horizontalTileCount = this._requestedColumnCount;
+			}
 			var verticalTileCount:int = (height - this._paddingTop - this._paddingBottom + this._verticalGap) / (tileHeight + this._verticalGap);
 			if(verticalTileCount < 1)
 			{
@@ -1748,6 +1800,10 @@ package feathers.layout
 			{
 				horizontalTileCount = 1;
 			}
+			if(this._requestedColumnCount > 0 && horizontalTileCount > this._requestedColumnCount)
+			{
+				horizontalTileCount = this._requestedColumnCount;
+			}
 			var verticalTileCount:int = (height - this._paddingTop - this._paddingBottom + this._verticalGap) / (tileHeight + this._verticalGap);
 			if(verticalTileCount < 1)
 			{
@@ -1860,6 +1916,10 @@ package feathers.layout
 			if(horizontalTileCount < 1)
 			{
 				horizontalTileCount = 1;
+			}
+			if(this._requestedColumnCount > 0 && horizontalTileCount > this._requestedColumnCount)
+			{
+				horizontalTileCount = this._requestedColumnCount;
 			}
 			var verticalTileCount:int = Math.ceil((height + this._verticalGap) / (tileHeight + this._verticalGap)) + 1;
 			var minimumItemCount:int = verticalTileCount * horizontalTileCount;
