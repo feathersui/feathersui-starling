@@ -423,7 +423,9 @@ package feathers.layout
 		/**
 		 * Requests that the layout uses a specific number of columns in a row,
 		 * if possible. If the view port's explicit or maximum width is not large
-		 * enough to fit the requested number of columns, it will use fewer.
+		 * enough to fit the requested number of columns, it will use fewer. Set
+		 * to <code>0</code> to calculate the number of columns automatically
+		 * based on width and height only.
 		 *
 		 * @default 0
 		 */
@@ -992,7 +994,7 @@ package feathers.layout
 				//we must have at least one tile per row
 				horizontalTileCount = 1;
 			}
-			if(this._requestedColumnCount > 0 && horizontalTileCount > this._requestedColumnCount)
+			else if(this._requestedColumnCount > 0 && horizontalTileCount > this._requestedColumnCount)
 			{
 				horizontalTileCount = this._requestedColumnCount;
 			}
@@ -1302,7 +1304,7 @@ package feathers.layout
 			{
 				horizontalTileCount = 1;
 			}
-			if(this._requestedColumnCount > 0 && horizontalTileCount > this._requestedColumnCount)
+			else if(this._requestedColumnCount > 0 && horizontalTileCount > this._requestedColumnCount)
 			{
 				horizontalTileCount = this._requestedColumnCount;
 			}
@@ -1527,7 +1529,7 @@ package feathers.layout
 			{
 				horizontalTileCount = 1;
 			}
-			if(this._requestedColumnCount > 0 && horizontalTileCount > this._requestedColumnCount)
+			else if(this._requestedColumnCount > 0 && horizontalTileCount > this._requestedColumnCount)
 			{
 				horizontalTileCount = this._requestedColumnCount;
 			}
@@ -1679,7 +1681,7 @@ package feathers.layout
 			{
 				horizontalTileCount = 1;
 			}
-			if(this._requestedColumnCount > 0 && horizontalTileCount > this._requestedColumnCount)
+			else if(this._requestedColumnCount > 0 && horizontalTileCount > this._requestedColumnCount)
 			{
 				horizontalTileCount = this._requestedColumnCount;
 			}
@@ -1823,7 +1825,7 @@ package feathers.layout
 			{
 				horizontalTileCount = 1;
 			}
-			if(this._requestedColumnCount > 0 && horizontalTileCount > this._requestedColumnCount)
+			else if(this._requestedColumnCount > 0 && horizontalTileCount > this._requestedColumnCount)
 			{
 				horizontalTileCount = this._requestedColumnCount;
 			}
@@ -1940,7 +1942,7 @@ package feathers.layout
 			{
 				horizontalTileCount = 1;
 			}
-			if(this._requestedColumnCount > 0 && horizontalTileCount > this._requestedColumnCount)
+			else if(this._requestedColumnCount > 0 && horizontalTileCount > this._requestedColumnCount)
 			{
 				horizontalTileCount = this._requestedColumnCount;
 			}
