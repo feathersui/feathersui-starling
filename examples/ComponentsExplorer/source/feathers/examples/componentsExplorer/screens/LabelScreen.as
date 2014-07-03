@@ -69,9 +69,9 @@ package feathers.examples.componentsExplorer.screens
 				this._backButton.addEventListener(Event.TRIGGERED, backButton_triggeredHandler);
 
 				this.headerProperties.leftItems = new <DisplayObject>
-					[
-						this._backButton
-					];
+				[
+					this._backButton
+				];
 
 				this.backButtonHandler = this.onBackButton;
 			}
