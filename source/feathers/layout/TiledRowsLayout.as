@@ -970,7 +970,7 @@ package feathers.layout
 			var availableWidth:Number = NaN;
 			var availableHeight:Number = NaN;
 
-			var horizontalTileCount:int = itemCount;
+			var horizontalTileCount:int;
 			if(explicitWidth == explicitWidth) //!isNaN
 			{
 				availableWidth = explicitWidth;
@@ -982,27 +982,41 @@ package feathers.layout
 				availableWidth = maxWidth;
 				horizontalTileCount = (maxWidth - this._paddingLeft - this._paddingRight + this._horizontalGap) / (tileWidth + this._horizontalGap);
 			}
+			else
+			{
+				//put everything in one row
+				horizontalTileCount = itemCount;
+			}
 			if(horizontalTileCount < 1)
 			{
+				//we must have at least one tile per row
 				horizontalTileCount = 1;
 			}
 			if(this._requestedColumnCount > 0 && horizontalTileCount > this._requestedColumnCount)
 			{
 				horizontalTileCount = this._requestedColumnCount;
 			}
-			var verticalTileCount:int = 1;
+			var verticalTileCount:int;
 			if(explicitHeight == explicitHeight) //!isNaN
 			{
 				availableHeight = explicitHeight;
 				verticalTileCount = (explicitHeight - this._paddingTop - this._paddingBottom + this._verticalGap) / (tileHeight + this._verticalGap);
 			}
-			else if(maxHeight == maxHeight) //!isNaN
+			else if(maxHeight == maxHeight && //!isNaN
+				maxHeight < Number.POSITIVE_INFINITY)
 			{
 				availableHeight = maxHeight;
 				verticalTileCount = (maxHeight - this._paddingTop - this._paddingBottom + this._verticalGap) / (tileHeight + this._verticalGap);
 			}
+			else
+			{
+				//using the horizontal tile count, calculate how many rows will
+				//be required for the total number of items.
+				verticalTileCount = Math.ceil(itemCount / horizontalTileCount);
+			}
 			if(verticalTileCount < 1)
 			{
+				//we must have at least one tile per column
 				verticalTileCount = 1;
 			}
 
@@ -1268,7 +1282,7 @@ package feathers.layout
 			var availableWidth:Number = NaN;
 			var availableHeight:Number = NaN;
 
-			var horizontalTileCount:int = itemCount;
+			var horizontalTileCount:int;
 			if(explicitWidth == explicitWidth) //!isNaN
 			{
 				availableWidth = explicitWidth;
@@ -1280,6 +1294,10 @@ package feathers.layout
 				availableWidth = maxWidth;
 				horizontalTileCount = (maxWidth - this._paddingLeft - this._paddingRight + this._horizontalGap) / (tileWidth + this._horizontalGap);
 			}
+			else
+			{
+				horizontalTileCount = itemCount;
+			}
 			if(horizontalTileCount < 1)
 			{
 				horizontalTileCount = 1;
@@ -1288,16 +1306,21 @@ package feathers.layout
 			{
 				horizontalTileCount = this._requestedColumnCount;
 			}
-			var verticalTileCount:int = 1;
+			var verticalTileCount:int;
 			if(explicitHeight == explicitHeight) //!isNaN
 			{
 				availableHeight = explicitHeight;
 				verticalTileCount = (explicitHeight - this._paddingTop - this._paddingBottom + this._verticalGap) / (tileHeight + this._verticalGap);
 			}
-			else if(maxHeight == maxHeight) //!isNaN
+			else if(maxHeight == maxHeight && //!isNaN
+				maxHeight < Number.POSITIVE_INFINITY)
 			{
 				availableHeight = maxHeight;
 				verticalTileCount = (maxHeight - this._paddingTop - this._paddingBottom + this._verticalGap) / (tileHeight + this._verticalGap);
+			}
+			else
+			{
+				verticalTileCount = Math.ceil(itemCount / horizontalTileCount);
 			}
 			if(verticalTileCount < 1)
 			{
