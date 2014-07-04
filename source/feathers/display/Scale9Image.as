@@ -326,6 +326,27 @@ package feathers.display
 		}
 
 		/**
+		 * Defines if the center parts of the image should be tiled or if they should be stretched.
+		 *
+		 * When set to true the parts in the middle sections are filled with as many tiles as possible and then
+		 * all the tiles are stretched so that the remaining gap is filled. This guaranties that the edges fit
+		 * perfectly to the border parts.
+		 *
+		 * @default false
+		 */
+		public function get isTiled():Boolean
+		{
+			return _isTiled;
+		}
+
+		public function set isTiled(value:Boolean):void
+		{
+			_isTiled = value;
+			this._renderingChanged = true;
+			this.invalidate();
+		}
+
+		/**
 		 * @private
 		 */
 		private var _hitArea:Rectangle;
@@ -354,6 +375,11 @@ package feathers.display
 		 * @private
 		 */
 		private var _depth:int = -1;
+
+		/**
+		 * @private
+		 */
+		private var _isTiled:Boolean = false;
 
 		/**
 		 * @copy feathers.core.IValidating#depth
@@ -497,35 +523,17 @@ package feathers.display
 				{
 					if(scaledLeftWidth > 0)
 					{
-						helperImage.texture = this._textures.topLeft;
-						helperImage.readjustSize();
-						helperImage.width = scaledLeftWidth;
-						helperImage.height = scaledTopHeight;
-						helperImage.x = scaledLeftWidth - helperImage.width;
-						helperImage.y = scaledTopHeight - helperImage.height;
-						this._batch.addImage(helperImage);
+						addPart(this._textures.topLeft, 0, 0, scaledLeftWidth, scaledTopHeight);
 					}
 
 					if(scaledCenterWidth > 0)
 					{
-						helperImage.texture = this._textures.topCenter;
-						helperImage.readjustSize();
-						helperImage.width = scaledCenterWidth;
-						helperImage.height = scaledTopHeight;
-						helperImage.x = scaledLeftWidth;
-						helperImage.y = scaledTopHeight - helperImage.height;
-						this._batch.addImage(helperImage);
+						addPart(_textures.topCenter, scaledLeftWidth, 0, scaledCenterWidth, scaledTopHeight);
 					}
 
 					if(scaledRightWidth > 0)
 					{
-						helperImage.texture = this._textures.topRight;
-						helperImage.readjustSize();
-						helperImage.width = scaledRightWidth;
-						helperImage.height = scaledTopHeight;
-						helperImage.x = this._width - scaledRightWidth;
-						helperImage.y = scaledTopHeight - helperImage.height;
-						this._batch.addImage(helperImage);
+						addPart(this._textures.topRight, this._width - scaledRightWidth, 0, scaledRightWidth, scaledTopHeight);
 					}
 				}
 
@@ -533,35 +541,17 @@ package feathers.display
 				{
 					if(scaledLeftWidth > 0)
 					{
-						helperImage.texture = this._textures.middleLeft;
-						helperImage.readjustSize();
-						helperImage.width = scaledLeftWidth;
-						helperImage.height = scaledMiddleHeight;
-						helperImage.x = scaledLeftWidth - helperImage.width;
-						helperImage.y = scaledTopHeight;
-						this._batch.addImage(helperImage);
+						addPart(this._textures.middleLeft, 0, scaledTopHeight, scaledLeftWidth, scaledMiddleHeight);
 					}
 
 					if(scaledCenterWidth > 0)
 					{
-						helperImage.texture = this._textures.middleCenter;
-						helperImage.readjustSize();
-						helperImage.width = scaledCenterWidth;
-						helperImage.height = scaledMiddleHeight;
-						helperImage.x = scaledLeftWidth;
-						helperImage.y = scaledTopHeight;
-						this._batch.addImage(helperImage);
+						addPart(this._textures.middleCenter, scaledLeftWidth, scaledTopHeight, scaledCenterWidth, scaledMiddleHeight);
 					}
 
 					if(scaledRightWidth > 0)
 					{
-						helperImage.texture = this._textures.middleRight;
-						helperImage.readjustSize();
-						helperImage.width = scaledRightWidth;
-						helperImage.height = scaledMiddleHeight;
-						helperImage.x = this._width - scaledRightWidth;
-						helperImage.y = scaledTopHeight;
-						this._batch.addImage(helperImage);
+						addPart(this._textures.middleRight, this._width - scaledRightWidth, scaledTopHeight, scaledRightWidth, scaledMiddleHeight);
 					}
 				}
 
@@ -569,35 +559,17 @@ package feathers.display
 				{
 					if(scaledLeftWidth > 0)
 					{
-						helperImage.texture = this._textures.bottomLeft;
-						helperImage.readjustSize();
-						helperImage.width = scaledLeftWidth;
-						helperImage.height = scaledBottomHeight;
-						helperImage.x = scaledLeftWidth - helperImage.width;
-						helperImage.y = this._height - scaledBottomHeight;
-						this._batch.addImage(helperImage);
+						addPart(this._textures.bottomLeft, 0, this._height - scaledBottomHeight, scaledLeftWidth, scaledBottomHeight);
 					}
 
 					if(scaledCenterWidth > 0)
 					{
-						helperImage.texture = this._textures.bottomCenter;
-						helperImage.readjustSize();
-						helperImage.width = scaledCenterWidth;
-						helperImage.height = scaledBottomHeight;
-						helperImage.x = scaledLeftWidth;
-						helperImage.y = this._height - scaledBottomHeight;
-						this._batch.addImage(helperImage);
+						addPart(this._textures.bottomCenter, scaledLeftWidth, this._height - scaledBottomHeight, scaledCenterWidth, scaledBottomHeight);
 					}
 
 					if(scaledRightWidth > 0)
 					{
-						helperImage.texture = this._textures.bottomRight;
-						helperImage.readjustSize();
-						helperImage.width = scaledRightWidth;
-						helperImage.height = scaledBottomHeight;
-						helperImage.x = this._width - scaledRightWidth;
-						helperImage.y = this._height - scaledBottomHeight;
-						this._batch.addImage(helperImage);
+						addPart(this._textures.bottomRight, this._width - scaledRightWidth, this._height - scaledBottomHeight, scaledRightWidth, scaledBottomHeight);
 					}
 				}
 			}
@@ -607,6 +579,43 @@ package feathers.display
 			this._renderingChanged = false;
 			this._isInvalid = false;
 			this._isValidating = false;
+		}
+
+		protected function addPart(texture:Texture, x:Number, y:Number, width:Number, height:Number):void
+		{
+			helperImage.texture = texture;
+			helperImage.readjustSize();
+
+			var numberOfColumns: int = 1;
+			var numberOfRows: int = 1;
+
+			if (_isTiled) {
+				var originalTileWidth:Number = texture.width * this._textureScale;
+				numberOfColumns = width / originalTileWidth;
+
+				var originalTileHeight:Number = texture.height * this._textureScale;
+				numberOfRows = height / originalTileHeight;
+			}
+
+			var tileWidth:Number = width / numberOfColumns;
+			var tileHeight:Number = height / numberOfRows;
+
+			var currentX:Number = x;
+			var currentY:Number = y;
+
+			for (var i: int = 0; i < numberOfRows; i++) {
+				for (var j: int = 0; j < numberOfColumns; j++) {
+					helperImage.width = tileWidth;
+					helperImage.height = tileHeight;
+					helperImage.x = currentX;
+					helperImage.y = currentY;
+					this._batch.addImage(helperImage);
+
+					currentX += tileWidth;
+				}
+				currentX = x;
+				currentY += tileHeight;
+			}
 		}
 
 		/**
