@@ -46,9 +46,9 @@ package feathers.themes {
 		[Embed(source="/../assets/images/metalworks_desktop.png")]
 		public static const ATLAS_BITMAP:Class;
 
-		public function MetalWorksDesktopTheme(scaleToDPI:Boolean = true)
+		public function MetalWorksDesktopTheme()
 		{
-			super(scaleToDPI);
+			super();
 			this.initialize();
 			this.dispatchEventWith(Event.COMPLETE);
 		}
