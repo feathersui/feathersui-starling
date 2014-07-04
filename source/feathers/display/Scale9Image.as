@@ -591,10 +591,14 @@ package feathers.display
 
 			if (_isTiled) {
 				var originalTileWidth:Number = texture.width * this._textureScale;
-				numberOfColumns = width / originalTileWidth;
+				if (width > originalTileWidth) {
+					numberOfColumns = width / originalTileWidth;
+				}
 
 				var originalTileHeight:Number = texture.height * this._textureScale;
-				numberOfRows = height / originalTileHeight;
+				if (height > originalTileHeight) {
+					numberOfRows = height / originalTileHeight;
+				}
 			}
 
 			var tileWidth:Number = width / numberOfColumns;
