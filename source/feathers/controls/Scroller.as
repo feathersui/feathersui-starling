@@ -2959,7 +2959,12 @@ package feathers.controls
 			var newHeight:Number = this.explicitHeight;
 			if(needsWidth)
 			{
-				newWidth = this._viewPort.width + this._rightViewPortOffset + this._leftViewPortOffset;
+				var viewPortWidth:Number = this._viewPort.visibleWidth;
+				if(viewPortWidth != viewPortWidth) //isNaN
+				{
+					viewPortWidth = this._viewPort.width;
+				}
+				newWidth = viewPortWidth + this._rightViewPortOffset + this._leftViewPortOffset;
 				if(this.originalBackgroundWidth == this.originalBackgroundWidth) //!isNaN
 				{
 					newWidth = Math.max(newWidth, this.originalBackgroundWidth);
@@ -2967,7 +2972,12 @@ package feathers.controls
 			}
 			if(needsHeight)
 			{
-				newHeight = this._viewPort.height + this._bottomViewPortOffset + this._topViewPortOffset;
+				var viewPortHeight:Number = this._viewPort.visibleHeight;
+				if(viewPortHeight != viewPortHeight) //isNaN
+				{
+					viewPortHeight = this._viewPort.height;
+				}
+				newHeight = viewPortHeight + this._bottomViewPortOffset + this._topViewPortOffset;
 				if(this.originalBackgroundHeight == this.originalBackgroundHeight) //!isNaN
 				{
 					newHeight = Math.max(newHeight, this.originalBackgroundHeight);
