@@ -581,6 +581,20 @@ package feathers.display
 			this._isValidating = false;
 		}
 
+		/**
+		 * Fills a target space with a texture by either just scaling the texture or tiling and scaling it.
+		 *
+		 * When isTiled is true, the texture is tiled as many times as possible and every single tile is stretched so
+		 * that the sum of all tiles matches the requested width & height.
+		 * When isTiled is false or the requested width & height is smaller than 2 tiles the texture is just scaled
+		 * without any tiling.
+		 *
+		 * @param texture The texture to add.
+		 * @param x The x coordinate of the target space.
+		 * @param y The y coordinate of the target space.
+		 * @param width The width of the target space.
+		 * @param height The height of the target space.
+		 */
 		protected function addPart(texture:Texture, x:Number, y:Number, width:Number, height:Number):void
 		{
 			helperImage.texture = texture;
