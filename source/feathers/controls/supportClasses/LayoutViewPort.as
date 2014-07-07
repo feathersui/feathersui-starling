@@ -64,21 +64,27 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
-		private var _visibleWidth:Number = NaN;
+		private var _actualVisibleWidth:Number = 0;
+
+		private var _explicitVisibleWidth:Number = NaN;
 
 		public function get visibleWidth():Number
 		{
-			return this._visibleWidth;
+			if(this._explicitVisibleWidth != this._explicitVisibleWidth) //isNaN
+			{
+				return this._actualVisibleWidth;
+			}
+			return this._explicitVisibleWidth;
 		}
 
 		public function set visibleWidth(value:Number):void
 		{
-			if(this._visibleWidth == value ||
-				(value != value && this._visibleWidth != this._visibleWidth)) //isNaN
+			if(this._explicitVisibleWidth == value ||
+				(value != value && this._explicitVisibleWidth != this._explicitVisibleWidth)) //isNaN
 			{
 				return;
 			}
-			this._visibleWidth = value;
+			this._explicitVisibleWidth = value;
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
@@ -124,21 +130,27 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
-		private var _visibleHeight:Number = NaN;
+		private var _actualVisibleHeight:Number = 0;
+
+		private var _explicitVisibleHeight:Number = NaN;
 
 		public function get visibleHeight():Number
 		{
-			return this._visibleHeight;
+			if(this._explicitVisibleHeight != this._explicitVisibleHeight) //isNaN
+			{
+				return this._actualVisibleHeight;
+			}
+			return this._explicitVisibleHeight;
 		}
 
 		public function set visibleHeight(value:Number):void
 		{
-			if(this._visibleHeight == value ||
-				(value != value && this._visibleHeight != this._visibleHeight)) //isNaN
+			if(this._explicitVisibleHeight == value ||
+				(value != value && this._explicitVisibleHeight != this._explicitVisibleHeight)) //isNaN
 			{
 				return;
 			}
-			this._visibleHeight = value;
+			this._explicitVisibleHeight = value;
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
@@ -228,6 +240,8 @@ package feathers.controls.supportClasses
 				{
 					this._contentX = this._layoutResult.contentX;
 					this._contentY = this._layoutResult.contentY;
+					this._actualVisibleWidth = this._layoutResult.viewPortWidth;
+					this._actualVisibleHeight = this._layoutResult.viewPortHeight;
 				}
 			}
 		}
@@ -238,8 +252,8 @@ package feathers.controls.supportClasses
 			this.viewPortBounds.y = 0;
 			this.viewPortBounds.scrollX = this._horizontalScrollPosition;
 			this.viewPortBounds.scrollY = this._verticalScrollPosition;
-			this.viewPortBounds.explicitWidth = this._visibleWidth;
-			this.viewPortBounds.explicitHeight = this._visibleHeight;
+			this.viewPortBounds.explicitWidth = this._explicitVisibleWidth;
+			this.viewPortBounds.explicitHeight = this._explicitVisibleHeight;
 			this.viewPortBounds.minWidth = this._minVisibleWidth;
 			this.viewPortBounds.minHeight = this._minVisibleHeight;
 			this.viewPortBounds.maxWidth = this._maxVisibleWidth;
