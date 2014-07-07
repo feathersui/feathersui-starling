@@ -425,7 +425,12 @@ package feathers.layout
 		 * if possible. If the view port's explicit or maximum height is not
 		 * large enough to fit the requested number of rows, it will use fewer.
 		 * Set to <code>0</code> to calculate the number of rows automatically
-		 * based on width and height only..
+		 * based on width and height.
+		 *
+		 * <p>If paging is enabled, this value will be used to calculate the
+		 * number of rows in a page. If paging isn't enabled, this value will
+		 * be used to calculate a minimum number of rows, even if there aren't
+		 * enough items to fill each row.</p>
 		 *
 		 * @default 0
 		 */
@@ -448,6 +453,47 @@ package feathers.layout
 				return;
 			}
 			this._requestedRowCount = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _requestedColumnCount:int = 0;
+
+		/**
+		 * Requests that the layout uses a specific number of columns in a row,
+		 * if possible. If the view port's explicit or maximum width is not large
+		 * enough to fit the requested number of columns, it will use fewer. Set
+		 * to <code>0</code> to calculate the number of columns automatically
+		 * based on width and height.
+		 *
+		 * <p>If paging is enabled, this value will be used to calculate the
+		 * number of columns in a page. If paging isn't enabled, this value will
+		 * be used to calculate a minimum number of columns, even if there
+		 * aren't enough items to fill each column.</p>
+		 *
+		 * @default 0
+		 */
+		public function get requestedColumnCount():int
+		{
+			return this._requestedColumnCount;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set requestedColumnCount(value:int):void
+		{
+			if(value < 0)
+			{
+				throw RangeError("requestedColumnCount requires a value >= 0");
+			}
+			if(this._requestedColumnCount == value)
+			{
+				return;
+			}
+			this._requestedColumnCount = value;
 			this.dispatchEventWith(Event.CHANGE);
 		}
 
@@ -993,9 +1039,17 @@ package feathers.layout
 				//we must have at least one tile per column
 				verticalTileCount = 1;
 			}
-			else if(this._requestedRowCount > 0 && verticalTileCount > this._requestedRowCount)
+			else if(this._requestedRowCount > 0)
 			{
-				verticalTileCount = this._requestedRowCount;
+				if(availableHeight != availableHeight) //isNaN
+				{
+					verticalTileCount = this._requestedRowCount;
+					availableHeight = verticalTileCount * (tileHeight + this._verticalGap) - this._verticalGap - this._paddingTop - this._paddingBottom;
+				}
+				else if(verticalTileCount > this._requestedRowCount)
+				{
+					verticalTileCount = this._requestedRowCount;
+				}
 			}
 			var horizontalTileCount:int;
 			if(explicitWidth == explicitWidth) //!isNaN
@@ -1019,6 +1073,18 @@ package feathers.layout
 			{
 				//we must have at least one tile per row
 				horizontalTileCount = 1;
+			}
+			else if(this._requestedColumnCount > 0)
+			{
+				if(availableWidth != availableWidth) //isNaN
+				{
+					horizontalTileCount = this._requestedColumnCount;
+					availableWidth = horizontalTileCount * (tileWidth + this._horizontalGap) - this._horizontalGap - this._paddingLeft - this._paddingRight;
+				}
+				else if(horizontalTileCount > this._requestedColumnCount)
+				{
+					horizontalTileCount = this._requestedColumnCount;
+				}
 			}
 
 			var totalPageWidth:Number = horizontalTileCount * (tileWidth + this._horizontalGap) - this._horizontalGap + this._paddingLeft + this._paddingRight;
@@ -1307,9 +1373,17 @@ package feathers.layout
 			{
 				verticalTileCount = 1;
 			}
-			else if(this._requestedRowCount > 0 && verticalTileCount > this._requestedRowCount)
+			else if(this._requestedRowCount > 0)
 			{
-				verticalTileCount = this._requestedRowCount;
+				if(availableHeight != availableHeight) //isNaN
+				{
+					verticalTileCount = this._requestedRowCount;
+					availableHeight = verticalTileCount * (tileHeight + this._verticalGap) - this._verticalGap - this._paddingTop - this._paddingBottom;
+				}
+				else if(verticalTileCount > this._requestedRowCount)
+				{
+					verticalTileCount = this._requestedRowCount;
+				}
 			}
 			var horizontalTileCount:int;
 			if(explicitWidth == explicitWidth) //!isNaN
@@ -1330,6 +1404,18 @@ package feathers.layout
 			if(horizontalTileCount < 1)
 			{
 				horizontalTileCount = 1;
+			}
+			else if(this._requestedColumnCount > 0)
+			{
+				if(availableWidth != availableWidth) //isNaN
+				{
+					horizontalTileCount = this._requestedColumnCount;
+					availableWidth = horizontalTileCount * (tileWidth + this._horizontalGap) - this._horizontalGap - this._paddingLeft - this._paddingRight;
+				}
+				else if(horizontalTileCount > this._requestedColumnCount)
+				{
+					horizontalTileCount = this._requestedColumnCount;
+				}
 			}
 
 			var totalPageHeight:Number = verticalTileCount * (tileHeight + this._verticalGap) - this._verticalGap + this._paddingTop + this._paddingBottom;
