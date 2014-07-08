@@ -58,11 +58,15 @@ package feathers.controls
 	 * <listing version="3.0">
 	 * list.horizontalScrollBarFactory = function():IScrollBar
 	 * {
-	 *     return new ScrollBar();
+	 *     var scrollBar:ScrollBar = new ScrollBar();
+	 *     scrollBar.direction = ScrollBar.DIRECTION_HORIZONTAL;
+	 *     return scrollBar;
 	 * };
 	 * list.verticalScrollBarFactory = function():IScrollBar
 	 * {
-	 *     return new ScrollBar();
+	 *     var scrollBar:ScrollBar = new ScrollBar();
+	 *     scrollBar.direction = ScrollBar.DIRECTION_VERTICAL;
+	 *     return scrollBar;
 	 * };</listing>
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/scroll-bar
