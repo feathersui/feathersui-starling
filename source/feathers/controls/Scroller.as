@@ -718,7 +718,9 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * scroller.horizontalScrollBarFactory = function():IScrollBar
 		 * {
-		 *    return new ScrollBar();
+		 *     var scrollBar:ScrollBar = new ScrollBar();
+		 *     scrollBar.direction = ScrollBar.DIRECTION_HORIZONTAL;
+		 *     return scrollBar;
 		 * };</listing>
 		 *
 		 * @default null
@@ -931,7 +933,9 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * scroller.verticalScrollBarFactory = function():IScrollBar
 		 * {
-		 *    return new ScrollBar();
+		 *     var scrollBar:ScrollBar = new ScrollBar();
+		 *     scrollBar.direction = ScrollBar.DIRECTION_VERTICAL;
+		 *     return scrollBar;
 		 * };</listing>
 		 *
 		 * @default null
