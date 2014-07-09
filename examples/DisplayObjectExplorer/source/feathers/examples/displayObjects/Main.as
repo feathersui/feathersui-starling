@@ -8,7 +8,6 @@ package feathers.examples.displayObjects
 	import feathers.data.ListCollection;
 	import feathers.examples.displayObjects.screens.Scale3ImageScreen;
 	import feathers.examples.displayObjects.screens.Scale9ImageScreen;
-	import feathers.examples.displayObjects.screens.Scale9TiledImageScreen;
 	import feathers.examples.displayObjects.screens.TiledImageScreen;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
@@ -26,7 +25,6 @@ package feathers.examples.displayObjects
 		private static const SCALE_9_IMAGE:String = "scale9Image";
 		private static const SCALE_3_IMAGE:String = "scale3Image";
 		private static const TILED_IMAGE:String = "tiledImage";
-		private static const SCALE_9_TILED_IMAGE:String = "scale9TiledImage";
 
 		[Embed(source="/../assets/images/horizontal-grip.png")]
 		private static const HORIZONTAL_GRIP:Class;
@@ -64,7 +62,6 @@ package feathers.examples.displayObjects
 			this._navigator.addScreen(SCALE_9_IMAGE, new ScreenNavigatorItem(Scale9ImageScreen));
 			this._navigator.addScreen(SCALE_3_IMAGE, new ScreenNavigatorItem(Scale3ImageScreen));
 			this._navigator.addScreen(TILED_IMAGE, new ScreenNavigatorItem(TiledImageScreen));
-			this._navigator.addScreen(SCALE_9_TILED_IMAGE, new ScreenNavigatorItem(Scale9TiledImageScreen));
 			this._navigator.addEventListener(Event.CHANGE, navigator_changeHandler);
 			this.addChild(this._navigator);
 
@@ -75,8 +72,7 @@ package feathers.examples.displayObjects
 			[
 				{ label: "Scale 9", action: SCALE_9_IMAGE },
 				{ label: "Scale 3", action: SCALE_3_IMAGE },
-				{ label: "Tiled", action: TILED_IMAGE },
-				{ label: "Scale 9 Tiled", action: SCALE_9_TILED_IMAGE }
+				{ label: "Tiled", action: TILED_IMAGE }
 			]);
 
 			var tabBarLayoutData:AnchorLayoutData = new AnchorLayoutData();
