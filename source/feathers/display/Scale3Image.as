@@ -326,6 +326,27 @@ package feathers.display
 		}
 
 		/**
+		 * Defines if the center part of the image should be tiled or if it should be stretched.
+		 *
+		 * When set to true the middle section is filled with as many tiles as possible and then
+		 * all the tiles are stretched so that the remaining gap is filled. This guaranties that the edges fit
+		 * perfectly to the border parts.
+		 *
+		 * @default false
+		 */
+		public function get isTiled():Boolean
+		{
+			return _isTiled;
+		}
+
+		public function set isTiled(value:Boolean):void
+		{
+			_isTiled = value;
+			this._renderingChanged = true;
+			this.invalidate();
+		}
+
+		/**
 		 * @private
 		 */
 		private var _hitArea:Rectangle;
@@ -354,6 +375,11 @@ package feathers.display
 		 * @private
 		 */
 		private var _depth:int = -1;
+
+		/**
+		 * @private
+		 */
+		private var _isTiled:Boolean = false;
 
 		/**
 		 * @copy feathers.core.IValidating#depth
@@ -473,7 +499,8 @@ package feathers.display
 				helperImage.smoothing = this._smoothing;
 				helperImage.color = this._color;
 
-				var image:Image;
+				var numberOfTiles:int = 1;
+
 				if(this._textures.direction == Scale3Textures.DIRECTION_VERTICAL)
 				{
 					var scaledOppositeEdgeSize:Number = this._width;
@@ -503,13 +530,34 @@ package feathers.display
 
 						if(scaledSecondRegionSize > 0)
 						{
+							var tileHeight:Number = scaledSecondRegionSize;
+							var currentY:Number = scaledFirstRegionSize;
+
+							if (isTiled)
+							{
+								// scale the tile height so it matches the scaled width
+								var scaledTileHeight:Number = this._textures.secondRegionSize * oppositeEdgeScale;
+								if (scaledTileHeight < scaledSecondRegionSize)
+								{
+									// calculate how many tiles will fit into the second region
+									numberOfTiles = scaledSecondRegionSize / scaledTileHeight;
+									// scale the tile height again so the remaining gap will be filled
+									tileHeight = scaledSecondRegionSize / numberOfTiles;
+								}
+							}
+
 							helperImage.texture = this._textures.second;
 							helperImage.readjustSize();
 							helperImage.x = 0;
-							helperImage.y = scaledFirstRegionSize;
 							helperImage.width = scaledOppositeEdgeSize;
-							helperImage.height = scaledSecondRegionSize;
-							this._batch.addImage(helperImage);
+							helperImage.height = tileHeight;
+
+							for (var i:int =0; i < numberOfTiles; i++) {
+								helperImage.y = currentY;
+								this._batch.addImage(helperImage);
+
+								currentY += tileHeight;
+							}
 						}
 
 						if(scaledThirdRegionSize > 0)
@@ -553,13 +601,34 @@ package feathers.display
 
 						if(scaledSecondRegionSize > 0)
 						{
+							var tileWidth:Number = scaledSecondRegionSize;
+							var currentX:Number = scaledFirstRegionSize;
+
+							if (isTiled)
+							{
+								// scale the tile width so it matches the scaled height
+								var scaledTileWidth:Number = this._textures.secondRegionSize * oppositeEdgeScale;
+								if (scaledTileWidth < scaledSecondRegionSize)
+								{
+									// calculate how many tiles will fit into the second region
+									numberOfTiles = scaledSecondRegionSize / scaledTileWidth;
+									// scale the tile width again so the remaining gap will be filled
+									tileWidth = scaledSecondRegionSize / numberOfTiles;
+								}
+							}
+
 							helperImage.texture = this._textures.second;
 							helperImage.readjustSize();
-							helperImage.x = scaledFirstRegionSize;
 							helperImage.y = 0;
-							helperImage.width = scaledSecondRegionSize;
+							helperImage.width = tileWidth;
 							helperImage.height = scaledOppositeEdgeSize;
-							this._batch.addImage(helperImage);
+
+							for (var j:int = 0; j < numberOfTiles; j++) {
+								helperImage.x = currentX;
+								this._batch.addImage(helperImage);
+
+								currentX += tileWidth;
+							}
 						}
 
 						if(scaledThirdRegionSize > 0)
