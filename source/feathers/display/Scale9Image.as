@@ -621,16 +621,19 @@ package feathers.display
 			var currentX:Number = x;
 			var currentY:Number = y;
 
+			helperImage.width = tileWidth;
+			helperImage.height = tileHeight;
+
 			for (var i: int = 0; i < numberOfRows; i++) {
+				helperImage.y = currentY;
+
 				for (var j: int = 0; j < numberOfColumns; j++) {
-					helperImage.width = tileWidth;
-					helperImage.height = tileHeight;
 					helperImage.x = currentX;
-					helperImage.y = currentY;
 					this._batch.addImage(helperImage);
 
 					currentX += tileWidth;
 				}
+
 				currentX = x;
 				currentY += tileHeight;
 			}
