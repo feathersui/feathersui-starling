@@ -7,6 +7,7 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.themes
 {
+	import feathers.skins.IStyleProvider;
 	import feathers.skins.StyleNameFunctionStyleProvider;
 
 	import flash.errors.IllegalOperationError;
@@ -26,7 +27,7 @@ package feathers.themes
 		/**
 		 * @private
 		 */
-		protected static const STYLE_PROVIDER_PROPERTY_NAME:String = "styleProvider";
+		protected static const GLOBAL_STYLE_PROVIDER_PROPERTY_NAME:String = "globalStyleProvider";
 
 		/**
 		 * Constructor.
@@ -46,16 +47,16 @@ package feathers.themes
 		 */
 		protected function getStyleProviderForClass(type:Class):StyleNameFunctionStyleProvider
 		{
-			if(!Object(type).hasOwnProperty(STYLE_PROVIDER_PROPERTY_NAME))
+			if(!Object(type).hasOwnProperty(GLOBAL_STYLE_PROVIDER_PROPERTY_NAME))
 			{
-				throw ArgumentError("Class " + type + " does not have a styleProvider static property.");
+				throw ArgumentError("Class " + type + " does not have a " + GLOBAL_STYLE_PROVIDER_PROPERTY_NAME + " static property.");
 			}
 			var styleProvider:StyleNameFunctionStyleProvider = StyleNameFunctionStyleProvider(this._classToStyleProvider[type]);
 			if(!styleProvider)
 			{
 				styleProvider = new StyleNameFunctionStyleProvider();
 				this._classToStyleProvider[type] = styleProvider;
-				type[STYLE_PROVIDER_PROPERTY_NAME] = styleProvider;
+				type[GLOBAL_STYLE_PROVIDER_PROPERTY_NAME] = styleProvider;
 			}
 			return styleProvider;
 		}

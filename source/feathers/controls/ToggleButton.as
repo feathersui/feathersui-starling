@@ -58,13 +58,13 @@ package feathers.controls
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>ToggleButton</code>
 		 * components. If <code>null</code>, falls back to using
-		 * <code>Button.styleProvider</code> instead.
+		 * <code>Button.globalStyleProvider</code> instead.
 		 *
 		 * @default null
 		 * @see feathers.core.FeathersControl#styleProvider
-		 * @see feathers.controls.Button#styleProvider
+		 * @see feathers.controls.Button#globalStyleProvider
 		 */
-		public static var styleProvider:IStyleProvider;
+		public static var globalStyleProvider:IStyleProvider;
 
 		/**
 		 * Constructor.
@@ -79,11 +79,11 @@ package feathers.controls
 		 */
 		override protected function get defaultStyleProvider():IStyleProvider
 		{
-			if(ToggleButton.styleProvider)
+			if(ToggleButton.globalStyleProvider)
 			{
-				return ToggleButton.styleProvider;
+				return ToggleButton.globalStyleProvider;
 			}
-			return Button.styleProvider;
+			return Button.globalStyleProvider;
 		}
 
 		/**

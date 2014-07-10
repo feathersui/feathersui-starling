@@ -24,7 +24,7 @@ package feathers.examples.componentsExplorer.screens
 	{
 		public static const SHOW_SETTINGS:String = "showSettings";
 
-		public static var styleProvider:IStyleProvider;
+		public static var globalStyleProvider:IStyleProvider;
 
 		public function ItemRendererScreen()
 		{
@@ -72,7 +72,7 @@ package feathers.examples.componentsExplorer.screens
 
 		override protected function get defaultStyleProvider():IStyleProvider
 		{
-			return ItemRendererScreen.styleProvider;
+			return ItemRendererScreen.globalStyleProvider;
 		}
 
 		override protected function initialize():void

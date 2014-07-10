@@ -16,7 +16,7 @@ package feathers.examples.componentsExplorer.screens
 
 	public class TextInputScreen extends PanelScreen
 	{
-		public static var styleProvider:IStyleProvider;
+		public static var globalStyleProvider:IStyleProvider;
 
 		public function TextInputScreen()
 		{
@@ -31,7 +31,7 @@ package feathers.examples.componentsExplorer.screens
 
 		override protected function get defaultStyleProvider():IStyleProvider
 		{
-			return TextInputScreen.styleProvider;
+			return TextInputScreen.globalStyleProvider;
 		}
 
 		override protected function initialize():void

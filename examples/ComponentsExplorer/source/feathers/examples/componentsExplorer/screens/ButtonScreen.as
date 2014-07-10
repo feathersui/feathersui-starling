@@ -19,7 +19,7 @@ package feathers.examples.componentsExplorer.screens
 
 	public class ButtonScreen extends PanelScreen
 	{
-		public static var styleProvider:IStyleProvider;
+		public static var globalStyleProvider:IStyleProvider;
 		
 		public function ButtonScreen()
 		{
@@ -42,7 +42,7 @@ package feathers.examples.componentsExplorer.screens
 
 		override protected function get defaultStyleProvider():IStyleProvider
 		{
-			return ButtonScreen.styleProvider;
+			return ButtonScreen.globalStyleProvider;
 		}
 		
 		override protected function initialize():void

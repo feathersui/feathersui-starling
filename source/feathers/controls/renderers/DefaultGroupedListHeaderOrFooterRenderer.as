@@ -98,7 +98,7 @@ package feathers.controls.renderers
 		 * @default null
 		 * @see feathers.core.FeathersControl#styleProvider
 		 */
-		public static var styleProvider:IStyleProvider;
+		public static var globalStyleProvider:IStyleProvider;
 
 		/**
 		 * @private
@@ -143,7 +143,7 @@ package feathers.controls.renderers
 		 */
 		override protected function get defaultStyleProvider():IStyleProvider
 		{
-			return DefaultGroupedListHeaderOrFooterRenderer.styleProvider;
+			return DefaultGroupedListHeaderOrFooterRenderer.globalStyleProvider;
 		}
 
 		/**

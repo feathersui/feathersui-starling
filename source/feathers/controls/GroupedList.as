@@ -172,7 +172,7 @@ package feathers.controls
 		 * @default null
 		 * @see feathers.core.FeathersControl#styleProvider
 		 */
-		public static var styleProvider:IStyleProvider;
+		public static var globalStyleProvider:IStyleProvider;
 
 		/**
 		 * An alternate name to use with GroupedList to allow a theme to give it
@@ -409,7 +409,7 @@ package feathers.controls
 		 */
 		override protected function get defaultStyleProvider():IStyleProvider
 		{
-			return GroupedList.styleProvider;
+			return GroupedList.globalStyleProvider;
 		}
 
 		/**

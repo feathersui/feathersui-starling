@@ -17,7 +17,7 @@ package feathers.examples.displayObjects.screens
 		[Embed(source="/../assets/images/tile-pattern.png")]
 		private static const TILE_TEXTURE:Class;
 
-		public static var styleProvider:IStyleProvider;
+		public static var globalStyleProvider:IStyleProvider;
 
 		public function TiledImageScreen()
 		{
@@ -60,7 +60,7 @@ package feathers.examples.displayObjects.screens
 
 		override protected function get defaultStyleProvider():IStyleProvider
 		{
-			return TiledImageScreen.styleProvider;
+			return TiledImageScreen.globalStyleProvider;
 		}
 
 		override public function dispose():void

@@ -22,7 +22,7 @@ package feathers.examples.componentsExplorer.screens
 	{
 		public static const SHOW_SETTINGS:String = "showSettings";
 
-		public static var styleProvider:IStyleProvider;
+		public static var globalStyleProvider:IStyleProvider;
 
 		public function SliderScreen()
 		{
@@ -38,7 +38,7 @@ package feathers.examples.componentsExplorer.screens
 
 		override protected function get defaultStyleProvider():IStyleProvider
 		{
-			return SliderScreen.styleProvider;
+			return SliderScreen.globalStyleProvider;
 		}
 		
 		override protected function initialize():void
