@@ -42,6 +42,26 @@ package feathers.themes
 		protected var _classToStyleProvider:Dictionary = new Dictionary(true);
 
 		/**
+		 * Disposes the theme.
+		 */
+		public function dispose():void
+		{
+			//clear the global style providers, but only if they still match the
+			//ones that the theme created. a developer could replace the global
+			//style providers with different ones.
+			for(var untypedType:Object in this._classToStyleProvider)
+			{
+				var type:Class = Class(untypedType);
+				var styleProvider:IStyleProvider = IStyleProvider(this._classToStyleProvider[type]);
+				if(type[GLOBAL_STYLE_PROVIDER_PROPERTY_NAME] === styleProvider)
+				{
+					type[GLOBAL_STYLE_PROVIDER_PROPERTY_NAME] = null;
+				}
+			}
+			this._classToStyleProvider = null;
+		}
+
+		/**
 		 * Returns a <code>StyleNameFunctionStyleProvider</code> to be passed to
 		 * the specified class.
 		 */
@@ -49,7 +69,7 @@ package feathers.themes
 		{
 			if(!Object(type).hasOwnProperty(GLOBAL_STYLE_PROVIDER_PROPERTY_NAME))
 			{
-				throw ArgumentError("Class " + type + " does not have a " + GLOBAL_STYLE_PROVIDER_PROPERTY_NAME + " static property.");
+				throw ArgumentError("Class " + type + " must have a " + GLOBAL_STYLE_PROVIDER_PROPERTY_NAME + " static property to support themes.");
 			}
 			var styleProvider:StyleNameFunctionStyleProvider = StyleNameFunctionStyleProvider(this._classToStyleProvider[type]);
 			if(!styleProvider)
