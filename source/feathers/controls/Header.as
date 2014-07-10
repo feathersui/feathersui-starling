@@ -347,6 +347,35 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _disposeItems:Boolean = true;
+
+		/**
+		 * Determines if the <code>leftItems</code>, <code>centerItems</code>,
+		 * and <code>rightItems</code> are disposed or not when the header is
+		 * disposed.
+		 *
+		 * <p>If you change this value to <code>false</code>, you must dispose
+		 * the items manually. Failing to dispose the items may result in a
+		 * memory leak.</p>
+		 *
+		 * @default true
+		 */
+		public function get disposeItems():Boolean
+		{
+			return this._disposeItems;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set disposeItems(value:Boolean):void
+		{
+			this._disposeItems = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _leftItems:Vector.<DisplayObject>;
 
 		/**
@@ -1085,6 +1114,21 @@ package feathers.controls
 		 */
 		override public function dispose():void
 		{
+			if(this._disposeItems)
+			{
+				for each(var item:DisplayObject in this._leftItems)
+				{
+					item.dispose();
+				}
+				for each(item in this._centerItems)
+				{
+					item.dispose();
+				}
+				for each(item in this._rightItems)
+				{
+					item.dispose();
+				}
+			}
 			this.leftItems = null;
 			this.rightItems = null;
 			this.centerItems = null;
