@@ -81,7 +81,7 @@ package feathers.controls
 	 * </table>
 	 *
 	 * @eventType feathers.events.FeathersEventType.END_INTERACTION
-	 * @see #event:beginInteraction feathers.events.FeathersEventType#BEGIN_INTERACTION
+	 * @see #event:beginInteraction feathers.events.FeathersEventType.BEGIN_INTERACTION
 	 */
 	[Event(name="endInteraction",type="starling.events.Event")]
 
