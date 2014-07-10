@@ -51,17 +51,17 @@ package feathers.examples.displayObjects.screens
 		private var _rightTouchPointID:int = -1;
 		private var _bottomTouchPointID:int = -1;
 
-		const texture:Texture = Texture.fromBitmap(new SCALE_3_TEXTURE(), false);
-		const textures:Scale3Textures = new Scale3Textures(texture, 60, 80, Scale3Textures.DIRECTION_HORIZONTAL);
+		private const texture:Texture = Texture.fromBitmap(new SCALE_3_TEXTURE(), false);
+		private const textures:Scale3Textures = new Scale3Textures(texture, 60, 80, Scale3Textures.DIRECTION_HORIZONTAL);
 
-		const gridTexture:Texture = Texture.fromBitmap(new SCALE_3_TILED_TEXTURE(), false);
-		const gridTextures:Scale3Textures = new Scale3Textures(gridTexture, 60, 120, Scale3Textures.DIRECTION_HORIZONTAL);
+		private const gridTexture:Texture = Texture.fromBitmap(new SCALE_3_TILED_TEXTURE(), false);
+		private const gridTextures:Scale3Textures = new Scale3Textures(gridTexture, 60, 120, Scale3Textures.DIRECTION_HORIZONTAL);
 
-		const textureVertical:Texture = Texture.fromBitmap(new SCALE_3_TEXTURE_VERTICAL(), false);
-		const texturesVertical:Scale3Textures = new Scale3Textures(textureVertical, 60, 80, Scale3Textures.DIRECTION_VERTICAL);
+		private const textureVertical:Texture = Texture.fromBitmap(new SCALE_3_TEXTURE_VERTICAL(), false);
+		private const texturesVertical:Scale3Textures = new Scale3Textures(textureVertical, 60, 80, Scale3Textures.DIRECTION_VERTICAL);
 
-		const gridTextureVertical:Texture = Texture.fromBitmap(new SCALE_3_TILED_TEXTURE_VERTICAL(), false);
-		const gridTexturesVertical:Scale3Textures = new Scale3Textures(gridTextureVertical, 60, 120, Scale3Textures.DIRECTION_VERTICAL);
+		private const gridTextureVertical:Texture = Texture.fromBitmap(new SCALE_3_TILED_TEXTURE_VERTICAL(), false);
+		private const gridTexturesVertical:Scale3Textures = new Scale3Textures(gridTextureVertical, 60, 120, Scale3Textures.DIRECTION_VERTICAL);
 
 		override protected function initialize():void
 		{
