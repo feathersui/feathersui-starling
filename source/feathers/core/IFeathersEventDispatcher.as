@@ -14,39 +14,53 @@ package feathers.core
 	 * in helpful interface form.
 	 *
 	 * <p>Never cast an object to this type. Cast to <code>EventDispatcher</code>
-	 * instead. This interface exists only to support easier code hinting.</p>
+	 * instead. This interface exists only to support easier code hinting for
+	 * interfaces.</p>
 	 *
-	 * @see starling.events.EventDispatcher
+	 * @see http://doc.starling-framework.org/core/starling/events/EventDispatcher.html starling.events.EventDispatcher
 	 */
 	public interface IFeathersEventDispatcher
 	{
 		/**
-		 * @see starling.events.EventDispatcher#addEventListener()
+		 * Adds a listener for an event type.
+		 *
+		 * @see http://doc.starling-framework.org/core/starling/events/EventDispatcher.html#addEventListener() Full description of starling.events.EventDispatcher.addEventListener() in Gamua's Starling Framework API Reference
 		 */
 		function addEventListener(type:String, listener:Function):void;
 
 		/**
-		 * @see starling.events.EventDispatcher#removeEventListener()
+		 * Removes a listener for an event type.
+		 *
+		 * @see http://doc.starling-framework.org/core/starling/events/EventDispatcher.html#removeEventListener() Full description of starling.events.EventDispatcher.addEventListener() in Gamua's Starling Framework API Reference
 		 */
 		function removeEventListener(type:String, listener:Function):void;
 
 		/**
-		 * @see starling.events.EventDispatcher#removeEventListeners()
+		 * Removes all listeners for an event type.
+		 *
+		 * @see http://doc.starling-framework.org/core/starling/events/EventDispatcher.html#removeEventListeners() Full description of starling.events.EventDispatcher.removeEventListeners() in Gamua's Starling Framework API Reference
 		 */
 		function removeEventListeners(type:String = null):void;
 
 		/**
-		 * @see starling.events.EventDispatcher#dispatchEvent()
+		 * Dispatches an event to all listeners added for the specified event type.
+		 *
+		 * @see http://doc.starling-framework.org/core/starling/events/EventDispatcher.html#dispatchEvent() Full description of starling.events.EventDispatcher.dispatchEvent() in Gamua's Starling Framework API Reference
 		 */
 		function dispatchEvent(event:Event):void;
 
 		/**
-		 * @see starling.events.EventDispatcher#dispatchEventWith()
+		 * Dispatches an event from the pool with the specified to all listeners
+		 * for the specified event type.
+		 *
+		 * @see http://doc.starling-framework.org/core/starling/events/EventDispatcher.html#dispatchEventWith() Full description of starling.events.EventDispatcher.dispatchEventWith() in Gamua's Starling Framework API Reference
 		 */
 		function dispatchEventWith(type:String, bubbles:Boolean = false, data:Object = null):void;
 
 		/**
-		 * @see starling.events.EventDispatcher#hasEventListener()
+		 * Checks if a listener has been added for the specified event type.
+		 *
+		 * @see http://doc.starling-framework.org/core/starling/events/EventDispatcher.html#hasEventListener() Full description of starling.events.EventDispatcher.hasEventListener() in Gamua's Starling Framework API Reference
 		 */
 		function hasEventListener(type:String):Boolean;
 	}

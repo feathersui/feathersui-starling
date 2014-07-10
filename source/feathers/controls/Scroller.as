@@ -56,8 +56,8 @@ package feathers.controls
 	 * </table>
 	 *
 	 * @eventType starling.events.Event.SCROLL
-	 * @see feathers.events.FeathersEventType.SCROLL_START
-	 * @see feathers.events.FeathersEventType.SCROLL_COMPLETE
+	 * @see #event:scrollStart feathers.events.FeathersEventType.SCROLL_START
+	 * @see #event:scrollComplete feathers.events.FeathersEventType.SCROLL_COMPLETE
 	 */
 	[Event(name="scroll",type="starling.events.Event")]
 
@@ -87,8 +87,8 @@ package feathers.controls
 	 * </table>
 	 *
 	 * @eventType feathers.events.FeathersEventType.SCROLL_START
-	 * @see feathers.events.FeathersEventType.SCROLL_COMPLETE
-	 * @see feathers.events.FeathersEventType.SCROLL
+	 * @see #event:scrollComplete feathers.events.FeathersEventType.SCROLL_COMPLETE
+	 * @see #event:scroll feathers.events.FeathersEventType.SCROLL
 	 */
 	[Event(name="scrollStart",type="starling.events.Event")]
 
@@ -120,8 +120,8 @@ package feathers.controls
 	 * </table>
 	 *
 	 * @eventType feathers.events.FeathersEventType.SCROLL_COMPLETE
-	 * @see feathers.events.FeathersEventType.SCROLL_START
-	 * @see feathers.events.FeathersEventType.SCROLL
+	 * @see #event:scrollStart feathers.events.FeathersEventType.SCROLL_START
+	 * @see #event:scroll feathers.events.FeathersEventType.SCROLL
 	 */
 	[Event(name="scrollComplete",type="starling.events.Event")]
 
@@ -152,8 +152,8 @@ package feathers.controls
 	 * </table>
 	 *
 	 * @eventType feathers.events.FeathersEventType.BEGIN_INTERACTION
-	 * @see feathers.events.FeathersEventType.END_INTERACTION
-	 * @see feathers.events.FeathersEventType.SCROLL
+	 * @see #event:endInteraction feathers.events.FeathersEventType.END_INTERACTION
+	 * @see #event:scroll feathers.events.FeathersEventType.SCROLL
 	 */
 	[Event(name="beginInteraction",type="starling.events.Event")]
 
@@ -186,8 +186,8 @@ package feathers.controls
 	 * </table>
 	 *
 	 * @eventType feathers.events.FeathersEventType.END_INTERACTION
-	 * @see feathers.events.FeathersEventType.BEGIN_INTERACTION
-	 * @see feathers.events.FeathersEventType.SCROLL
+	 * @see #event:beginInteraction feathers.events.FeathersEventType.BEGIN_INTERACTION
+	 * @see #event:scroll feathers.events.FeathersEventType.SCROLL
 	 */
 	[Event(name="endInteraction",type="starling.events.Event")]
 
@@ -2272,7 +2272,7 @@ package feathers.controls
 		 *
 		 * @default starling.animation.Transitions.EASE_OUT
 		 *
-		 * @see starling.animation.Transitions
+		 * @see http://doc.starling-framework.org/core/starling/animation/Transitions.html starling.animation.Transitions
 		 */
 		public function get hideScrollBarAnimationEase():Object
 		{
@@ -2488,7 +2488,7 @@ package feathers.controls
 		 *
 		 * @default starling.animation.Transitions.EASE_OUT
 		 *
-		 * @see starling.animation.Transitions
+		 * @see http://doc.starling-framework.org/core/starling/animation/Transitions.html starling.animation.Transitions
 		 */
 		public function get throwEase():Object
 		{

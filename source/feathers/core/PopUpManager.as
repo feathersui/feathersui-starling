@@ -130,7 +130,7 @@ package feathers.core
 		 * The default factory that creates overlays for modal pop-ups. Creates
 		 * an invisible <code>Quad</code>.
 		 *
-		 * @see starling.display.Quad
+		 * @see http://doc.starling-framework.org/core/starling/display/Quad.html starling.display.Quad
 		 */
 		public static function defaultOverlayFactory():DisplayObject
 		{

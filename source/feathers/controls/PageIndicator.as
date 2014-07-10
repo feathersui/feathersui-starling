@@ -671,7 +671,7 @@ package feathers.controls
 		 *     return new Image( texture );
 		 * };</listing>
 		 *
-		 * @see starling.display.DisplayObject
+		 * @see http://doc.starling-framework.org/core/starling/display/DisplayObject.html starling.display.DisplayObject
 		 * @see #selectedSymbolFactory
 		 */
 		public function get normalSymbolFactory():Function
@@ -713,7 +713,7 @@ package feathers.controls
 		 *     return new Image( texture );
 		 * };</listing>
 		 *
-		 * @see starling.display.DisplayObject
+		 * @see http://doc.starling-framework.org/core/starling/display/DisplayObject.html starling.display.DisplayObject
 		 * @see #normalSymbolFactory
 		 */
 		public function get selectedSymbolFactory():Function

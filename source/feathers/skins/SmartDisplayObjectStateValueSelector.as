@@ -36,7 +36,7 @@ package feathers.skins
 		/**
 		 * The value type handler for type <code>starling.textures.Texture</code>.
 		 *
-		 * @see starling.textures.Texture
+		 * @see http://doc.starling-framework.org/core/starling/textures/Texture.html starling.display.Texture
 		 */
 		public static function textureValueTypeHandler(value:Texture, oldDisplayObject:DisplayObject = null):DisplayObject
 		{
@@ -96,6 +96,8 @@ package feathers.skins
 		/**
 		 * The value type handler for type <code>uint</code> (a color to display
 		 * by a quad).
+		 *
+		 * @see http://doc.starling-framework.org/core/starling/display/Quad.html starling.display.Quad
 		 */
 		public static function uintValueTypeHandler(value:uint, oldDisplayObject:DisplayObject = null):DisplayObject
 		{

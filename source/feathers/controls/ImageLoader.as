@@ -433,8 +433,8 @@ package feathers.controls
 		 *
 		 * @default starling.textures.TextureSmoothing.BILINEAR
 		 *
-		 * @see starling.textures.TextureSmoothing
-		 * @see starling.display.Image#smoothing
+		 * @see http://doc.starling-framework.org/core/starling/textures/TextureSmoothing.html starling.textures.TextureSmoothing
+		 * @see http://doc.starling-framework.org/core/starling/display/Image.html#smoothing starling.display.Image.smoothing
 		 */
 		public function get smoothing():String
 		{
@@ -470,7 +470,7 @@ package feathers.controls
 		 *
 		 * @default 0xffffff
 		 *
-		 * @see starling.display.Image#color
+		 * @see http://doc.starling-framework.org/core/starling/display/Image.html#color starling.display.Image.color
 		 */
 		public function get color():uint
 		{

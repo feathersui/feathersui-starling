@@ -56,7 +56,7 @@ package feathers.controls
 	 * </table>
 	 *
 	 * @eventType feathers.events.FeathersEventType.BEGIN_INTERACTION
-	 * @see feathers.events.FeathersEventType.END_INTERACTION
+	 * @see #event:endInteraction feathers.events.FeathersEventType.END_INTERACTION
 	 */
 	[Event(name="beginInteraction",type="starling.events.Event")]
 
@@ -81,7 +81,7 @@ package feathers.controls
 	 * </table>
 	 *
 	 * @eventType feathers.events.FeathersEventType.END_INTERACTION
-	 * @see feathers.events.FeathersEventType.BEGIN_INTERACTION
+	 * @see #event:beginInteraction feathers.events.FeathersEventType#BEGIN_INTERACTION
 	 */
 	[Event(name="endInteraction",type="starling.events.Event")]
 
@@ -105,7 +105,7 @@ package feathers.controls
 	 * </table>
 	 *
 	 * @eventType starling.events.Event.OPEN
-	 * @see starling.events.Event.CLOSE
+	 * @see #event:close starling.events.Event.CLOSE
 	 */
 	[Event(name="open",type="starling.events.Event")]
 
@@ -129,7 +129,7 @@ package feathers.controls
 	 * </table>
 	 *
 	 * @eventType starling.events.Event.CLOSE
-	 * @see starling.events.Event.OPEN
+	 * @see #event:open starling.events.Event.OPEN
 	 */
 	[Event(name="close",type="starling.events.Event")]
 
@@ -1758,7 +1758,7 @@ package feathers.controls
 		 *
 		 * @default starling.animation.Transitions.EASE_OUT
 		 *
-		 * @see starling.animation.Transitions
+		 * @see http://doc.starling-framework.org/core/starling/animation/Transitions.html starling.animation.Transitions
 		 * @see #openOrCloseDuration
 		 */
 		public function get openOrCloseEase():Object
