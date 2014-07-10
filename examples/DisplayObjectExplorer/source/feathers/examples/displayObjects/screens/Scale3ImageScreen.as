@@ -18,7 +18,7 @@ package feathers.examples.displayObjects.screens
 		[Embed(source="/../assets/images/scale3.png")]
 		private static const SCALE_3_TEXTURE:Class;
 
-		public static var styleProvider:IStyleProvider;
+		public static var globalStyleProvider:IStyleProvider;
 
 		public function Scale3ImageScreen()
 		{
@@ -61,7 +61,7 @@ package feathers.examples.displayObjects.screens
 
 		override protected function get defaultStyleProvider():IStyleProvider
 		{
-			return Scale3ImageScreen.styleProvider;
+			return Scale3ImageScreen.globalStyleProvider;
 		}
 
 		override public function dispose():void

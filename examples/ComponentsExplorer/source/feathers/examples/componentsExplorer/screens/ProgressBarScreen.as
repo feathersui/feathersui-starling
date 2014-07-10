@@ -17,7 +17,7 @@ package feathers.examples.componentsExplorer.screens
 
 	public class ProgressBarScreen extends PanelScreen
 	{
-		public static var styleProvider:IStyleProvider;
+		public static var globalStyleProvider:IStyleProvider;
 
 		public function ProgressBarScreen()
 		{
@@ -33,7 +33,7 @@ package feathers.examples.componentsExplorer.screens
 
 		override protected function get defaultStyleProvider():IStyleProvider
 		{
-			return ProgressBarScreen.styleProvider;
+			return ProgressBarScreen.globalStyleProvider;
 		}
 
 		override protected function initialize():void

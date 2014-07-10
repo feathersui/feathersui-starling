@@ -20,7 +20,7 @@ package feathers.examples.displayObjects.screens
 		[Embed(source="/../assets/images/scale9.png")]
 		private static const SCALE_9_TEXTURE:Class;
 
-		public static var styleProvider:IStyleProvider;
+		public static var globalStyleProvider:IStyleProvider;
 
 		public function Scale9ImageScreen()
 		{
@@ -63,7 +63,7 @@ package feathers.examples.displayObjects.screens
 
 		override protected function get defaultStyleProvider():IStyleProvider
 		{
-			return Scale9ImageScreen.styleProvider;
+			return Scale9ImageScreen.globalStyleProvider;
 		}
 
 		override public function dispose():void

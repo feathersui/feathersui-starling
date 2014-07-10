@@ -16,7 +16,7 @@ package feathers.examples.componentsExplorer.screens
 
 	public class LabelScreen extends PanelScreen
 	{
-		public static var styleProvider:IStyleProvider;
+		public static var globalStyleProvider:IStyleProvider;
 
 		public function LabelScreen()
 		{
@@ -32,7 +32,7 @@ package feathers.examples.componentsExplorer.screens
 
 		override protected function get defaultStyleProvider():IStyleProvider
 		{
-			return LabelScreen.styleProvider;
+			return LabelScreen.globalStyleProvider;
 		}
 
 		override protected function initialize():void

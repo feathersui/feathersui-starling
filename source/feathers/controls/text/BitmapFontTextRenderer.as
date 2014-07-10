@@ -88,7 +88,7 @@ package feathers.controls.text
 		 * @default null
 		 * @see feathers.core.FeathersControl#styleProvider
 		 */
-		public static var styleProvider:IStyleProvider;
+		public static var globalStyleProvider:IStyleProvider;
 
 		/**
 		 * Constructor.
@@ -129,7 +129,7 @@ package feathers.controls.text
 		 */
 		override protected function get defaultStyleProvider():IStyleProvider
 		{
-			return BitmapFontTextRenderer.styleProvider;
+			return BitmapFontTextRenderer.globalStyleProvider;
 		}
 		
 		/**

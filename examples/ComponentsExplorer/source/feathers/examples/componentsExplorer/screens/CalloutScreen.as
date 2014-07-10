@@ -20,7 +20,7 @@ package feathers.examples.componentsExplorer.screens
 	{
 		private static const CONTENT_TEXT:String = "Thank you for trying Feathers.\nHappy coding.";
 
-		public static var styleProvider:IStyleProvider;
+		public static var globalStyleProvider:IStyleProvider;
 
 		public function CalloutScreen()
 		{
@@ -58,7 +58,7 @@ package feathers.examples.componentsExplorer.screens
 
 		override protected function get defaultStyleProvider():IStyleProvider
 		{
-			return CalloutScreen.styleProvider;
+			return CalloutScreen.globalStyleProvider;
 		}
 
 		override public function dispose():void

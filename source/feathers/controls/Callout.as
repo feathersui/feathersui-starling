@@ -85,7 +85,7 @@ package feathers.controls
 		 * @default null
 		 * @see feathers.core.FeathersControl#styleProvider
 		 */
-		public static var styleProvider:IStyleProvider;
+		public static var globalStyleProvider:IStyleProvider;
 
 		/**
 		 * The callout may be positioned on any side of the origin region.
@@ -688,7 +688,7 @@ package feathers.controls
 		 */
 		override protected function get defaultStyleProvider():IStyleProvider
 		{
-			return Callout.styleProvider;
+			return Callout.globalStyleProvider;
 		}
 
 		/**
