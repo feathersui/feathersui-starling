@@ -1086,7 +1086,7 @@ package feathers.controls
 		 *
 		 * @default starling.animation.Transitions.EASE_OUT
 		 *
-		 * @see starling.animation.Transitions
+		 * @see http://doc.starling-framework.org/core/starling/animation/Transitions.html starling.animation.Transitions
 		 */
 		public function get toggleEase():Object
 		{

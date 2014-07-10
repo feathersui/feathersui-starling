@@ -346,8 +346,8 @@ package feathers.controls
 		 *     <li>selectedDownIcon</li>
 		 *     <li>selectedHoverIcon</li>
 		 *     <li>selectedDisabledIcon</li>
-		 *     <li>isSelected</li>
-		 *     <li>isToggle</li>
+		 *     <li>isSelected (only supported by <code>ToggleButton</code>)</li>
+		 *     <li>isToggle (only supported by <code>ToggleButton</code>)</li>
 		 *     <li>isEnabled</li>
 		 * </ul>
 		 *
@@ -355,8 +355,12 @@ package feathers.controls
 		 *
 		 * <ul>
 		 *     <li>Event.TRIGGERED</li>
-		 *     <li>Event.CHANGE</li>
+		 *     <li>Event.CHANGE (only supported by <code>ToggleButton</code>)</li>
 		 * </ul>
+		 *
+		 * <p>To use properties and events that are only supported by
+		 * <code>ToggleButton</code>, you must provide a <code>buttonFactory</code>
+		 * that returns a <code>ToggleButton</code> instead of a <code>Button</code>.</p>
 		 *
 		 * <p>You can pass a function to the <code>buttonInitializer</code>
 		 * property that can provide custom logic to interpret each item in the

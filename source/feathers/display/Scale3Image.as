@@ -258,7 +258,7 @@ package feathers.display
 		 *
 		 * @default starling.textures.TextureSmoothing.BILINEAR
 		 *
-		 * @see starling.textures.TextureSmoothing
+		 * @see http://doc.starling-framework.org/core/starling/textures/TextureSmoothing.html starling.textures.TextureSmoothing
 		 */
 		public function get smoothing():String
 		{

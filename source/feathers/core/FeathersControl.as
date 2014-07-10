@@ -1579,7 +1579,7 @@ package feathers.core
 		 * 
 		 * @see #invalidate()
 		 * @see #initialize()
-		 * @see feathers.events.FeathersEventType#INITIALIZE
+		 * @see #event:initialize feathers.events.FeathersEventType.INITIALIZE
 		 */
 		public function validate():void
 		{
@@ -1801,7 +1801,7 @@ package feathers.core
 		 * After this function is called, <code>FeathersEventType.INITIALIZE</code>
 		 * is dispatched.
 		 *
-		 * @see feathers.events.FeathersEventType#INITIALIZE
+		 * @see #event:initialize feathers.events.FeathersEventType.INITIALIZE
 		 */
 		protected function initialize():void
 		{
