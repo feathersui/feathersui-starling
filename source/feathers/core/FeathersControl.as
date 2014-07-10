@@ -312,7 +312,7 @@ package feathers.core
 		 * DEPRECATED: Replaced by the <code>styleNameList</code> property.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
-		 * starting with Feathers 1.4. It will be removed in a future version of
+		 * starting with Feathers 2.0. It will be removed in a future version of
 		 * Feathers according to the standard
 		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
 		 */
