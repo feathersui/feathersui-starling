@@ -324,7 +324,7 @@ package feathers.themes
 		protected var horizontalScrollBarThumbSkinTextures:Scale3Textures;
 		protected var searchIconTexture:Texture;
 
-		public function dispose():void
+		override public function dispose():void
 		{
 			if(this.atlas)
 			{
@@ -333,6 +333,9 @@ package feathers.themes
 				//no need to dispose the atlas texture because the atlas will do that
 				this.atlasTexture = null;
 			}
+
+			//don't forget to call super.dispose()!
+			super.dispose();
 		}
 
 		protected function initializeStage():void
