@@ -329,7 +329,7 @@ package feathers.display
 		 * Defines if the center part of the image should be tiled or if it should be stretched.
 		 *
 		 * When set to true the middle section is filled with as many tiles as possible and then
-		 * all the tiles are stretched so that the remaining gap is filled. This guaranties that the edges fit
+		 * all the tiles are stretched so that the remaining gap is filled. This guarantees that the edges fit
 		 * perfectly to the border parts.
 		 *
 		 * @default false

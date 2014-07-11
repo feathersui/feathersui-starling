@@ -329,7 +329,7 @@ package feathers.display
 		 * Defines if the center parts of the image should be tiled or if they should be stretched.
 		 *
 		 * When set to true the parts in the middle sections are filled with as many tiles as possible and then
-		 * all the tiles are stretched so that the remaining gap is filled. This guaranties that the edges fit
+		 * all the tiles are stretched so that the remaining gap is filled. This guarantees that the edges fit
 		 * perfectly to the border parts.
 		 *
 		 * @default false
@@ -604,17 +604,20 @@ package feathers.display
 			var numberOfRows: int = 1;
 
 			if (_isTiled) {
+				// Scale the tile size according to the textureScale
 				var originalTileWidth:Number = texture.width * this._textureScale;
+				var originalTileHeight:Number = texture.height * this._textureScale;
+
+				// Calculate how many tiles fit into the target space
 				if (width > originalTileWidth) {
 					numberOfColumns = width / originalTileWidth;
 				}
-
-				var originalTileHeight:Number = texture.height * this._textureScale;
 				if (height > originalTileHeight) {
 					numberOfRows = height / originalTileHeight;
 				}
 			}
 
+			// Scale the tile size according to the number of tiles and the target space
 			var tileWidth:Number = width / numberOfColumns;
 			var tileHeight:Number = height / numberOfRows;
 
@@ -624,6 +627,7 @@ package feathers.display
 			helperImage.width = tileWidth;
 			helperImage.height = tileHeight;
 
+			// Fill the area with the tiles
 			for (var i: int = 0; i < numberOfRows; i++) {
 				helperImage.y = currentY;
 
