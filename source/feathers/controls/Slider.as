@@ -198,6 +198,24 @@ package feathers.controls
 		public static const TRACK_SCALE_MODE_DIRECTIONAL:String = "directional";
 
 		/**
+		 * When the track is touched, the slider's thumb jumps directly to the
+		 * touch position, and the slider's <code>value</code> property is
+		 * updated to match as if the thumb were dragged to that position.
+		 *
+		 * @see #trackInteractionMode
+		 */
+		public static const TRACK_INTERACTION_MODE_TO_VALUE:String = "toValue";
+
+		/**
+		 * When the track is touched, the <code>value</code> is increased or
+		 * decreased (depending on the location of the touch) by the value of
+		 * the <code>page</code> property.
+		 *
+		 * @see #trackInteractionMode
+		 */
+		public static const TRACK_INTERACTION_MODE_BY_PAGE:String = "byPage";
+
+		/**
 		 * The default value added to the <code>nameList</code> of the minimum
 		 * track.
 		 *
@@ -585,10 +603,10 @@ package feathers.controls
 		protected var _page:Number = NaN;
 
 		/**
-		 * If the slider's track is touched, and the thumb is shown, the slider
-		 * value will be incremented or decremented by the page value. If the
-		 * thumb is hidden, this value is ignored, and the track may be dragged
-		 * instead.
+		 * If the <code>trackInteractionMode</code> property is set to
+		 * <code>Slider.TRACK_INTERACTION_MODE_BY_PAGE</code>, and the slider's
+		 * track is touched, and the thumb is shown, the slider value will be
+		 * incremented or decremented by the page value.
 		 *
 		 * <p>If this value is <code>NaN</code>, the <code>step</code> value
 		 * will be used instead. If the <code>step</code> value is zero, paging
@@ -607,6 +625,7 @@ package feathers.controls
 		 *
 		 * @see #value
 		 * @see #page
+		 * @see #trackInteractionMode
 		 */
 		public function get page():Number
 		{
@@ -821,6 +840,45 @@ package feathers.controls
 			}
 			this._trackScaleMode = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _trackInteractionMode:String = TRACK_INTERACTION_MODE_TO_VALUE;
+
+		[Inspectable(type="String",enumeration="toValue,byPage")]
+		/**
+		 * Determines how the slider's value changes when the track is touched.
+		 *
+		 * <p>If <code>showThumb</code> is set to <code>false</code>, the slider
+		 * will always behave as if <code>trackInteractionMode</code> has been
+		 * set to <code>Slider.TRACK_INTERACTION_MODE_TO_VALUE</code>. In other
+		 * words, the value of <code>trackInteractionMode</code> may be ignored
+		 * if the thumb is hidden.</p>
+		 *
+		 * <p>In the following example, the slider's track interaction is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * slider.trackScaleMode = Slider.TRACK_INTERACTION_MODE_BY_PAGE;</listing>
+		 *
+		 * @default Slider.TRACK_INTERACTION_MODE_TO_VALUE
+		 *
+		 * @see #TRACK_INTERACTION_MODE_TO_VALUE
+		 * @see #TRACK_INTERACTION_MODE_BY_PAGE
+		 * @see #page
+		 */
+		public function get trackInteractionMode():String
+		{
+			return this._trackInteractionMode;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set trackInteractionMode(value:String):void
+		{
+			this._trackInteractionMode = value;
 		}
 
 		/**
@@ -2025,7 +2083,7 @@ package feathers.controls
 				this._touchValue = this.locationToValue(HELPER_POINT);
 				this.isDragging = true;
 				this.dispatchEventWith(FeathersEventType.BEGIN_INTERACTION);
-				if(this._showThumb)
+				if(this._showThumb && this._trackInteractionMode == TRACK_INTERACTION_MODE_BY_PAGE)
 				{
 					this.adjustPage();
 					this.startRepeatTimer(this.adjustPage);
