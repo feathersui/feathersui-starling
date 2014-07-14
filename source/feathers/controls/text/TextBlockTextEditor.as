@@ -523,12 +523,28 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _selectionStartIndex:int = 0;
+		protected var _selectionBeginIndex:int = 0;
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get selectionBeginIndex():int
+		{
+			return this._selectionBeginIndex;
+		}
 
 		/**
 		 * @private
 		 */
 		protected var _selectionEndIndex:int = 0;
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get selectionEndIndex():int
+		{
+			return this._selectionEndIndex;
+		}
 
 		/**
 		 * @private
@@ -637,25 +653,25 @@ package feathers.controls.text
 		/**
 		 * @inheritDoc
 		 */
-		public function selectRange(startIndex:int, endIndex:int):void
+		public function selectRange(beginIndex:int, endIndex:int):void
 		{
-			if(endIndex < startIndex)
+			if(endIndex < beginIndex)
 			{
 				var temp:int = endIndex;
-				endIndex = startIndex;
-				startIndex = temp;
+				endIndex = beginIndex;
+				beginIndex = temp;
 			}
-			this._selectionStartIndex = startIndex;
+			this._selectionBeginIndex = beginIndex;
 			this._selectionEndIndex = endIndex;
-			if(startIndex == endIndex)
+			if(beginIndex == endIndex)
 			{
-				if(startIndex < 0)
+				if(beginIndex < 0)
 				{
 					this._cursorSkin.visible = false;
 				}
 				else if(this._hasFocus)
 				{
-					this._cursorSkin.visible = this._selectionStartIndex >= 0;
+					this._cursorSkin.visible = this._selectionBeginIndex >= 0;
 				}
 				this._selectionSkin.visible = false;
 			}
@@ -667,7 +683,7 @@ package feathers.controls.text
 			var cursorIndex:int = endIndex;
 			if(this.touchPointID >= 0 && this._selectionAnchorIndex >= 0 && this._selectionAnchorIndex == endIndex)
 			{
-				cursorIndex = startIndex;
+				cursorIndex = beginIndex;
 			}
 			this.positionCursorAtCharIndex(cursorIndex);
 			this.positionSelectionBackground();
@@ -742,7 +758,7 @@ package feathers.controls.text
 		 */
 		protected function focusIn():void
 		{
-			var showCursor:Boolean = this._selectionStartIndex >= 0 && this._selectionStartIndex == this._selectionEndIndex;
+			var showCursor:Boolean = this._selectionBeginIndex >= 0 && this._selectionBeginIndex == this._selectionEndIndex;
 			this._cursorSkin.visible = showCursor;
 			this._selectionSkin.visible = !showCursor;
 			var nativeStage:Stage = Starling.current.nativeStage;
@@ -865,7 +881,7 @@ package feathers.controls.text
 		 */
 		protected function positionSelectionBackground():void
 		{
-			var startX:Number = this.getXPositionOfCharIndex(this._selectionStartIndex) - this._scrollX;
+			var startX:Number = this.getXPositionOfCharIndex(this._selectionBeginIndex) - this._scrollX;
 			if(startX < 0)
 			{
 				startX = 0;
@@ -889,11 +905,11 @@ package feathers.controls.text
 		 */
 		protected function getSelectedText():String
 		{
-			if(this._selectionStartIndex == this._selectionEndIndex)
+			if(this._selectionBeginIndex == this._selectionEndIndex)
 			{
 				return null;
 			}
-			return this._text.substr(this._selectionStartIndex, this._selectionEndIndex - this._selectionStartIndex);
+			return this._text.substr(this._selectionBeginIndex, this._selectionEndIndex - this._selectionBeginIndex);
 		}
 
 		/**
@@ -906,8 +922,8 @@ package feathers.controls.text
 			{
 				currentValue = this._unmaskedText;
 			}
-			this.text = currentValue.substr(0, this._selectionStartIndex) + currentValue.substr(this._selectionEndIndex);
-			this.selectRange(this._selectionStartIndex, this._selectionStartIndex);
+			this.text = currentValue.substr(0, this._selectionBeginIndex) + currentValue.substr(this._selectionEndIndex);
+			this.selectRange(this._selectionBeginIndex, this._selectionBeginIndex);
 		}
 
 		/**
@@ -920,13 +936,13 @@ package feathers.controls.text
 			{
 				currentValue = this._unmaskedText;
 			}
-			var newText:String = currentValue.substr(0, this._selectionStartIndex) + text + currentValue.substr(this._selectionEndIndex);
+			var newText:String = currentValue.substr(0, this._selectionBeginIndex) + text + currentValue.substr(this._selectionEndIndex);
 			if(this._maxChars > 0 && newText.length > this._maxChars)
 			{
 				return;
 			}
 			this.text = newText;
-			var selectionIndex:int = this._selectionStartIndex + text.length;
+			var selectionIndex:int = this._selectionBeginIndex + text.length;
 			this.selectRange(selectionIndex, selectionIndex);
 		}
 
@@ -949,7 +965,7 @@ package feathers.controls.text
 				if(touch.phase == TouchPhase.ENDED)
 				{
 					this.touchPointID = -1;
-					if(this._selectionStartIndex == this._selectionEndIndex)
+					if(this._selectionBeginIndex == this._selectionEndIndex)
 					{
 						this._selectionAnchorIndex = -1;
 					}
@@ -973,14 +989,14 @@ package feathers.controls.text
 				{
 					if(this._selectionAnchorIndex < 0)
 					{
-						this._selectionAnchorIndex = this._selectionStartIndex;
+						this._selectionAnchorIndex = this._selectionBeginIndex;
 					}
 					this.selectRange(this._selectionAnchorIndex, this.getSelectionIndexAtPoint(HELPER_POINT.x, HELPER_POINT.y));
 				}
 				else
 				{
 					this.setFocus(HELPER_POINT);
-					this._selectionAnchorIndex = this._selectionStartIndex;
+					this._selectionAnchorIndex = this._selectionBeginIndex;
 				}
 			}
 		}
@@ -1040,17 +1056,17 @@ package feathers.controls.text
 				{
 					if(this._selectionAnchorIndex < 0)
 					{
-						this._selectionAnchorIndex = this._selectionStartIndex;
+						this._selectionAnchorIndex = this._selectionBeginIndex;
 					}
-					if(this._selectionAnchorIndex >= 0 && this._selectionAnchorIndex == this._selectionStartIndex &&
-						this._selectionStartIndex != this._selectionEndIndex)
+					if(this._selectionAnchorIndex >= 0 && this._selectionAnchorIndex == this._selectionBeginIndex &&
+						this._selectionBeginIndex != this._selectionEndIndex)
 					{
 						newIndex = this._selectionEndIndex - 1;
-						this.selectRange(this._selectionStartIndex, newIndex);
+						this.selectRange(this._selectionBeginIndex, newIndex);
 					}
 					else
 					{
-						newIndex = this._selectionStartIndex - 1;
+						newIndex = this._selectionBeginIndex - 1;
 						if(newIndex < 0)
 						{
 							newIndex = 0;
@@ -1059,19 +1075,19 @@ package feathers.controls.text
 					}
 					return;
 				}
-				else if(this._selectionStartIndex != this._selectionEndIndex)
+				else if(this._selectionBeginIndex != this._selectionEndIndex)
 				{
-					newIndex = this._selectionStartIndex;
+					newIndex = this._selectionBeginIndex;
 				}
 				else
 				{
 					if(event.altKey || event.ctrlKey)
 					{
-						newIndex = TextInputNavigation.findPreviousWordStartIndex(this._text, this._selectionStartIndex);
+						newIndex = TextInputNavigation.findPreviousWordStartIndex(this._text, this._selectionBeginIndex);
 					}
 					else
 					{
-						newIndex = this._selectionStartIndex - 1;
+						newIndex = this._selectionBeginIndex - 1;
 					}
 					if(newIndex < 0)
 					{
@@ -1085,12 +1101,12 @@ package feathers.controls.text
 				{
 					if(this._selectionAnchorIndex < 0)
 					{
-						this._selectionAnchorIndex = this._selectionStartIndex;
+						this._selectionAnchorIndex = this._selectionBeginIndex;
 					}
 					if(this._selectionAnchorIndex >= 0 && this._selectionAnchorIndex == this._selectionEndIndex &&
-						this._selectionStartIndex != this._selectionEndIndex)
+						this._selectionBeginIndex != this._selectionEndIndex)
 					{
-						newIndex = this._selectionStartIndex + 1;
+						newIndex = this._selectionBeginIndex + 1;
 						this.selectRange(newIndex, this._selectionEndIndex);
 					}
 					else
@@ -1100,11 +1116,11 @@ package feathers.controls.text
 						{
 							newIndex = this._text.length;
 						}
-						this.selectRange(this._selectionStartIndex, newIndex);
+						this.selectRange(this._selectionBeginIndex, newIndex);
 					}
 					return;
 				}
-				else if(this._selectionStartIndex != this._selectionEndIndex)
+				else if(this._selectionBeginIndex != this._selectionEndIndex)
 				{
 					newIndex = this._selectionEndIndex;
 				}
@@ -1141,32 +1157,32 @@ package feathers.controls.text
 					if(event.altKey || event.ctrlKey)
 					{
 						var nextWordStartIndex:int = TextInputNavigation.findNextWordStartIndex(this._text, this._selectionEndIndex);
-						this.text = currentValue.substr(0, this._selectionStartIndex) + currentValue.substr(nextWordStartIndex);
+						this.text = currentValue.substr(0, this._selectionBeginIndex) + currentValue.substr(nextWordStartIndex);
 					}
-					else if(this._selectionStartIndex != this._selectionEndIndex)
+					else if(this._selectionBeginIndex != this._selectionEndIndex)
 					{
 						this.deleteSelectedText();
 					}
 					else if(this._selectionEndIndex < currentValue.length)
 					{
-						this.text = currentValue.substr(0, this._selectionStartIndex) + currentValue.substr(this._selectionEndIndex + 1);
+						this.text = currentValue.substr(0, this._selectionBeginIndex) + currentValue.substr(this._selectionEndIndex + 1);
 					}
 				}
 				else if(event.keyCode == Keyboard.BACKSPACE)
 				{
 					if(event.altKey || event.ctrlKey)
 					{
-						newIndex = TextInputNavigation.findPreviousWordStartIndex(this._text, this._selectionStartIndex);
+						newIndex = TextInputNavigation.findPreviousWordStartIndex(this._text, this._selectionBeginIndex);
 						this.text = currentValue.substr(0, newIndex) + currentValue.substr(this._selectionEndIndex);
 					}
-					else if(this._selectionStartIndex != this._selectionEndIndex)
+					else if(this._selectionBeginIndex != this._selectionEndIndex)
 					{
 						this.deleteSelectedText();
 					}
-					else if(this._selectionStartIndex > 0)
+					else if(this._selectionBeginIndex > 0)
 					{
-						this.text = currentValue.substr(0, this._selectionStartIndex - 1) + currentValue.substr(this._selectionEndIndex);
-						newIndex = this._selectionStartIndex - 1;
+						this.text = currentValue.substr(0, this._selectionBeginIndex - 1) + currentValue.substr(this._selectionEndIndex);
+						newIndex = this._selectionBeginIndex - 1;
 					}
 				}
 				else if(event.ctrlKey && charCode == 97) //a
@@ -1196,7 +1212,7 @@ package feathers.controls.text
 		 */
 		protected function nativeStage_cutHandler(event:flash.events.Event):void
 		{
-			if(!this._isEditable || !this._isEnabled || this._selectionStartIndex == this._selectionEndIndex || this._displayAsPassword)
+			if(!this._isEditable || !this._isEnabled || this._selectionBeginIndex == this._selectionEndIndex || this._displayAsPassword)
 			{
 				return;
 			}
@@ -1209,7 +1225,7 @@ package feathers.controls.text
 		 */
 		protected function nativeStage_copyHandler(event:flash.events.Event):void
 		{
-			if(!this._isEditable || !this._isEnabled || this._selectionStartIndex == this._selectionEndIndex || this._displayAsPassword)
+			if(!this._isEditable || !this._isEnabled || this._selectionBeginIndex == this._selectionEndIndex || this._displayAsPassword)
 			{
 				return;
 			}

@@ -728,12 +728,44 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _pendingSelectionStartIndex:int = -1;
+		protected var _pendingSelectionBeginIndex:int = -1;
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get selectionBeginIndex():int
+		{
+			if(this._pendingSelectionBeginIndex >= 0)
+			{
+				return this._pendingSelectionBeginIndex;
+			}
+			if(this.textField)
+			{
+				return this.textField.selectionBeginIndex;
+			}
+			return 0;
+		}
 
 		/**
 		 * @private
 		 */
 		protected var _pendingSelectionEndIndex:int = -1;
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get selectionEndIndex():int
+		{
+			if(this._pendingSelectionEndIndex >= 0)
+			{
+				return this._pendingSelectionEndIndex;
+			}
+			if(this.textField)
+			{
+				return this.textField.selectionEndIndex;
+			}
+			return 0;
+		}
 
 		/**
 		 * @private
@@ -802,43 +834,43 @@ package feathers.controls.text
 					var positionY:Number = position.y + gutterPositionOffset;
 					if(positionX < 0)
 					{
-						this._pendingSelectionStartIndex = this._pendingSelectionEndIndex = 0;
+						this._pendingSelectionBeginIndex = this._pendingSelectionEndIndex = 0;
 					}
 					else
 					{
-						this._pendingSelectionStartIndex = this.textField.getCharIndexAtPoint(positionX, positionY);
-						if(this._pendingSelectionStartIndex < 0)
+						this._pendingSelectionBeginIndex = this.textField.getCharIndexAtPoint(positionX, positionY);
+						if(this._pendingSelectionBeginIndex < 0)
 						{
 							if(this._multiline)
 							{
 								var lineIndex:int = int(positionY / this.textField.getLineMetrics(0).height) + (this.textField.scrollV - 1);
 								try
 								{
-									this._pendingSelectionStartIndex = this.textField.getLineOffset(lineIndex) + this.textField.getLineLength(lineIndex);
-									if(this._pendingSelectionStartIndex != this._text.length)
+									this._pendingSelectionBeginIndex = this.textField.getLineOffset(lineIndex) + this.textField.getLineLength(lineIndex);
+									if(this._pendingSelectionBeginIndex != this._text.length)
 									{
-										this._pendingSelectionStartIndex--;
+										this._pendingSelectionBeginIndex--;
 									}
 								}
 								catch(error:Error)
 								{
 									//we may be checking for a line beyond the
 									//end that doesn't exist
-									this._pendingSelectionStartIndex = this._text.length;
+									this._pendingSelectionBeginIndex = this._text.length;
 								}
 							}
 							else
 							{
-								this._pendingSelectionStartIndex = this.textField.getCharIndexAtPoint(positionX, this.textField.getLineMetrics(0).ascent / 2);
-								if(this._pendingSelectionStartIndex < 0)
+								this._pendingSelectionBeginIndex = this.textField.getCharIndexAtPoint(positionX, this.textField.getLineMetrics(0).ascent / 2);
+								if(this._pendingSelectionBeginIndex < 0)
 								{
-									this._pendingSelectionStartIndex = this._text.length;
+									this._pendingSelectionBeginIndex = this._text.length;
 								}
 							}
 						}
 						else
 						{
-							var bounds:Rectangle = this.textField.getCharBoundaries(this._pendingSelectionStartIndex);
+							var bounds:Rectangle = this.textField.getCharBoundaries(this._pendingSelectionBeginIndex);
 							//bounds should never be null because the character
 							//index passed to getCharBoundaries() comes from a
 							//call to getCharIndexAtPoint(). however, a user
@@ -850,16 +882,16 @@ package feathers.controls.text
 								var boundsX:Number = bounds.x;
 								if(bounds && (boundsX + bounds.width - positionX) < (positionX - boundsX))
 								{
-									this._pendingSelectionStartIndex++;
+									this._pendingSelectionBeginIndex++;
 								}
 							}
 						}
-						this._pendingSelectionEndIndex = this._pendingSelectionStartIndex;
+						this._pendingSelectionEndIndex = this._pendingSelectionBeginIndex;
 					}
 				}
 				else
 				{
-					this._pendingSelectionStartIndex = this._pendingSelectionEndIndex = -1;
+					this._pendingSelectionBeginIndex = this._pendingSelectionEndIndex = -1;
 				}
 				if(!this._focusManager)
 				{
@@ -892,16 +924,16 @@ package feathers.controls.text
 		/**
 		 * @inheritDoc
 		 */
-		public function selectRange(startIndex:int, endIndex:int):void
+		public function selectRange(beginIndex:int, endIndex:int):void
 		{
 			if(this.textField)
 			{
 				this.validate();
-				this.textField.setSelection(startIndex, endIndex);
+				this.textField.setSelection(beginIndex, endIndex);
 			}
 			else
 			{
-				this._pendingSelectionStartIndex = startIndex;
+				this._pendingSelectionBeginIndex = beginIndex;
 				this._pendingSelectionEndIndex = endIndex;
 			}
 		}
@@ -1109,9 +1141,9 @@ package feathers.controls.text
 			{
 				if(isFormatDifferent || textField.htmlText != this._text)
 				{
-					if(textField == this.textField && this._pendingSelectionStartIndex < 0)
+					if(textField == this.textField && this._pendingSelectionBeginIndex < 0)
 					{
-						this._pendingSelectionStartIndex = this.textField.selectionBeginIndex;
+						this._pendingSelectionBeginIndex = this.textField.selectionBeginIndex;
 						this._pendingSelectionEndIndex = this.textField.selectionEndIndex;
 					}
 					textField.htmlText = this._text;
@@ -1121,9 +1153,9 @@ package feathers.controls.text
 			{
 				if(isFormatDifferent || textField.text != this._text)
 				{
-					if(textField == this.textField && this._pendingSelectionStartIndex < 0)
+					if(textField == this.textField && this._pendingSelectionBeginIndex < 0)
 					{
-						this._pendingSelectionStartIndex = this.textField.selectionBeginIndex;
+						this._pendingSelectionBeginIndex = this.textField.selectionBeginIndex;
 						this._pendingSelectionEndIndex = this.textField.selectionEndIndex;
 					}
 					textField.text = this._text;
@@ -1273,11 +1305,11 @@ package feathers.controls.text
 				this.setFocus();
 			}
 
-			if(this._pendingSelectionStartIndex >= 0)
+			if(this._pendingSelectionBeginIndex >= 0)
 			{
-				var startIndex:int = this._pendingSelectionStartIndex;
+				var startIndex:int = this._pendingSelectionBeginIndex;
 				var endIndex:int = this._pendingSelectionEndIndex;
-				this._pendingSelectionStartIndex = -1;
+				this._pendingSelectionBeginIndex = -1;
 				this._pendingSelectionEndIndex = -1;
 				this.selectRange(startIndex, endIndex);
 			}

@@ -212,6 +212,18 @@ package feathers.core
 		function get setTouchFocusOnEndedPhase():Boolean;
 
 		/**
+		 * The index of the first character of the selection. If no text is
+		 * selected, then this is the value of the caret index.
+		 */
+		function get selectionBeginIndex():int;
+
+		/**
+		 * The index of the last character of the selection. If no text is
+		 * selected, then this is the value of the caret index.
+		 */
+		function get selectionEndIndex():int;
+
+		/**
 		 * Gives focus to the text editor. Includes an optional position which
 		 * may be used by the text editor to determine the cursor position. The
 		 * position may be outside of the editors bounds.
