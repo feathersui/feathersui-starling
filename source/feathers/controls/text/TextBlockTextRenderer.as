@@ -1573,7 +1573,6 @@ package feathers.controls.text
 			if(this._textElement)
 			{
 				this._textElement.text = this._text;
-				this._truncationOffset = 0;
 			}
 			HELPER_TEXT_LINES.length = 0;
 			var yPosition:Number = 0;
@@ -1619,6 +1618,7 @@ package feathers.controls.text
 				var inactiveTextLineCount:int = HELPER_TEXT_LINES.length;
 				while(true)
 				{
+					this._truncationOffset = 0;
 					var previousLine:TextLine = line;
 					var lineWidth:Number = width;
 					if(!this._wordWrap)
