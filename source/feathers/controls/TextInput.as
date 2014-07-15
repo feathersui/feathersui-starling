@@ -2127,6 +2127,7 @@ package feathers.controls
 
 			if(isMultiline)
 			{
+				this.textEditor.y = this._paddingTop + biggerBaseline - this.textEditor.baseline;
 				this.promptTextRenderer.y = this._paddingTop + biggerBaseline - this.promptTextRenderer.baseline;
 				this.promptTextRenderer.height = this.actualHeight - this.promptTextRenderer.y - this._paddingBottom;
 				if(this.currentIcon)
