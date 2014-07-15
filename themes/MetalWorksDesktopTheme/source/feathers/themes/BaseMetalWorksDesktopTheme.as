@@ -222,6 +222,7 @@ package feathers.themes
 		protected var extraSmallGutterSize:int;
 		protected var smallGutterSize:int;
 		protected var gutterSize:int;
+		protected var borderSize:int;
 		protected var controlSize:int;
 		protected var wideControlSize:int;
 		protected var smallControlSize:int;
@@ -371,6 +372,7 @@ package feathers.themes
 			this.extraSmallGutterSize = Math.round(2 * this.scale);
 			this.smallGutterSize = Math.round(4 * this.scale);
 			this.gutterSize = Math.round(8 * this.scale);
+			this.borderSize = Math.max(1, Math.round(1 * this.scale));
 			this.controlSize = Math.round(22 * this.scale);
 			this.smallControlSize = Math.round(12 * this.scale);
 			this.calloutBackgroundMinSize = Math.round(5 * this.scale);
@@ -686,6 +688,7 @@ package feathers.themes
 			alert.paddingRight = this.gutterSize;
 			alert.paddingBottom = this.smallGutterSize;
 			alert.paddingLeft = this.gutterSize;
+			alert.outerPadding = this.borderSize;
 			alert.gap = this.smallGutterSize;
 			alert.maxWidth = this.popUpSize;
 			alert.maxHeight = this.popUpSize;
@@ -1192,8 +1195,10 @@ package feathers.themes
 		{
 			this.setScrollerStyles(panel);
 
-			panel.backgroundSkin = new Scale9Image(this.backgroundPopUpSkinTextures, this.scale);
+			var backgroundSkin:Scale9Image = new Scale9Image(this.backgroundPopUpSkinTextures, this.scale);
+			panel.backgroundSkin = backgroundSkin;
 			panel.padding = this.gutterSize;
+			panel.outerPadding = this.borderSize;
 		}
 
 		protected function setPopupHeaderStyles(header:Header):void
