@@ -515,6 +515,84 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _buttonGap:Number = 0;
+
+		/**
+		 * The gap, in pixels, between the numeric stepper's increment and
+		 * decrement buttons when they are both positioned on the same side. If
+		 * the buttons are split between two sides, this value is not used.
+		 *
+		 * <p>In the following example, the gap between buttons is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL;
+		 * stepper.buttonGap = 20;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #textInputGap
+		 * @see #buttonLayoutMode
+		 */
+		public function get buttonGap():Number
+		{
+			return this._buttonGap;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set buttonGap(value:Number):void
+		{
+			if(this._buttonGap == value)
+			{
+				return;
+			}
+			this._buttonGap = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _textInputGap:Number = 0;
+
+		/**
+		 * The gap, in pixels, between the numeric stepper's text input and its
+		 * buttons. If the buttons are split, this gap is used on both sides. If
+		 * the buttons both appear on the same side, the gap is used only on
+		 * that side.
+		 *
+		 * <p>In the following example, the gap between the text input and buttons is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * stepper.textInputGap = 20;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #buttonGap
+		 * @see #buttonLayoutMode
+		 */
+		public function get textInputGap():Number
+		{
+			return this._textInputGap;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set textInputGap(value:Number):void
+		{
+			if(this._textInputGap == value)
+			{
+				return;
+			}
+			this._textInputGap = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _decrementButtonFactory:Function;
 
 		/**
@@ -1225,11 +1303,11 @@ package feathers.controls
 
 				if(needsWidth)
 				{
-					newWidth = this.textInput.width + maxButtonWidth;
+					newWidth = this.textInput.width + maxButtonWidth + this._textInputGap;
 				}
 				if(needsHeight)
 				{
-					newHeight = Math.max(this.textInput.height, this.decrementButton.height + this.incrementButton.height);
+					newHeight = Math.max(this.textInput.height, this.decrementButton.height + this._buttonGap + this.incrementButton.height);
 				}
 			}
 			else if(this._buttonLayoutMode == BUTTON_LAYOUT_MODE_SPLIT_VERTICAL)
@@ -1246,7 +1324,7 @@ package feathers.controls
 				}
 				if(needsHeight)
 				{
-					newHeight = this.decrementButton.height + this.textInput.height + this.incrementButton.height;
+					newHeight = this.decrementButton.height + this.textInput.height + this.incrementButton.height + 2 * this._textInputGap;
 				}
 			}
 			else //split horizontal
@@ -1259,7 +1337,7 @@ package feathers.controls
 
 				if(needsWidth)
 				{
-					newWidth = this.decrementButton.width + this.textInput.width + this.incrementButton.width;
+					newWidth = this.decrementButton.width + this.textInput.width + this.incrementButton.width + 2 * this._textInputGap;
 				}
 				if(needsHeight)
 				{
@@ -1476,12 +1554,12 @@ package feathers.controls
 		{
 			if(this._buttonLayoutMode == BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL)
 			{
-				var buttonHeight:Number = this.actualHeight / 2;
+				var buttonHeight:Number = (this.actualHeight - this._buttonGap) / 2;
 				this.incrementButton.y = 0;
 				this.incrementButton.height = buttonHeight;
 				this.incrementButton.validate();
 
-				this.decrementButton.y = buttonHeight;
+				this.decrementButton.y = buttonHeight + this._buttonGap;
 				this.decrementButton.height = buttonHeight;
 				this.decrementButton.validate();
 
@@ -1492,7 +1570,7 @@ package feathers.controls
 
 				this.textInput.x = 0;
 				this.textInput.y = 0;
-				this.textInput.width = buttonX;
+				this.textInput.width = buttonX - this._textInputGap;
 				this.textInput.height = this.actualHeight;
 			}
 			else if(this._buttonLayoutMode == BUTTON_LAYOUT_MODE_SPLIT_VERTICAL)
@@ -1508,9 +1586,9 @@ package feathers.controls
 				this.decrementButton.y = this.actualHeight - this.decrementButton.height;
 
 				this.textInput.x = 0;
-				this.textInput.y = this.incrementButton.height;
+				this.textInput.y = this.incrementButton.height + this._textInputGap;
 				this.textInput.width = this.actualWidth;
-				this.textInput.height = Math.max(0, this.decrementButton.y - this.incrementButton.height - this.incrementButton.y);
+				this.textInput.height = Math.max(0, this.actualHeight - this.decrementButton.height - this.incrementButton.height - 2 * this._textInputGap);
 			}
 			else //split horizontal
 			{
@@ -1524,8 +1602,8 @@ package feathers.controls
 				this.incrementButton.validate();
 				this.incrementButton.x = this.actualWidth - this.incrementButton.width;
 
-				this.textInput.x = this.decrementButton.width;
-				this.textInput.width = this.incrementButton.x - this.textInput.x;
+				this.textInput.x = this.decrementButton.width + this._textInputGap;
+				this.textInput.width = this.actualWidth - this.decrementButton.width - this.incrementButton.width - 2 * this._textInputGap;
 				this.textInput.height = this.actualHeight;
 			}
 
