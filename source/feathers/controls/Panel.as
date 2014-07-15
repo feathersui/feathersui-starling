@@ -647,7 +647,7 @@ package feathers.controls
 		 * <p>In the following example, the outer padding is set to 20 pixels:</p>
 		 *
 		 * <listing version="3.0">
-		 * scroller.outerPadding = 20;</listing>
+		 * panel.outerPadding = 20;</listing>
 		 *
 		 * @default 0
 		 *
@@ -655,7 +655,7 @@ package feathers.controls
 		 * @see #outerPaddingRight
 		 * @see #outerPaddingBottom
 		 * @see #outerPaddingLeft
-		 * @see #padding
+		 * @see feathers.controls.Scroller#padding
 		 */
 		public function get outerPadding():Number
 		{
@@ -692,9 +692,11 @@ package feathers.controls
 		 * <p>In the following example, the top padding is set to 20 pixels:</p>
 		 *
 		 * <listing version="3.0">
-		 * scroller.outerPaddingTop = 20;</listing>
+		 * panel.outerPaddingTop = 20;</listing>
 		 *
 		 * @default 0
+		 *
+		 * @see feathers.controls.Scroller#paddingTop
 		 */
 		public function get outerPaddingTop():Number
 		{
@@ -734,9 +736,11 @@ package feathers.controls
 		 * <p>In the following example, the right outer padding is set to 20 pixels:</p>
 		 *
 		 * <listing version="3.0">
-		 * scroller.outerPaddingRight = 20;</listing>
+		 * panel.outerPaddingRight = 20;</listing>
 		 *
 		 * @default 0
+		 *
+		 * @see feathers.controls.Scroller#paddingRight
 		 */
 		public function get outerPaddingRight():Number
 		{
@@ -775,9 +779,11 @@ package feathers.controls
 		 * <p>In the following example, the bottom outer padding is set to 20 pixels:</p>
 		 *
 		 * <listing version="3.0">
-		 * scroller.outerPaddingBottom = 20;</listing>
+		 * panel.outerPaddingBottom = 20;</listing>
 		 *
 		 * @default 0
+		 *
+		 * @see feathers.controls.Scroller#paddingBottom
 		 */
 		public function get outerPaddingBottom():Number
 		{
@@ -821,7 +827,7 @@ package feathers.controls
 		 *
 		 * @default 0
 		 *
-		 * @see #paddingLeft
+		 * @see feathers.controls.Scroller#paddingLeft
 		 */
 		public function get outerPaddingLeft():Number
 		{
