@@ -313,6 +313,11 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _previousTextFormat:TextFormat;
+
+		/**
+		 * @private
+		 */
 		protected var _textFormat:TextFormat;
 
 		/**
@@ -342,6 +347,10 @@ package feathers.controls.text
 				return;
 			}
 			this._textFormat = value;
+			//since the text format has changed, the comparison will return
+			//false whether we use the real previous format or null. might as
+			//well remove the reference to an object we don't need anymore.
+			this._previousTextFormat = null;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -1134,8 +1143,13 @@ package feathers.controls.text
 			var isFormatDifferent:Boolean = false;
 			if(this._textFormat)
 			{
-				isFormatDifferent = textField.defaultTextFormat != this._textFormat;
-				textField.defaultTextFormat = this._textFormat;
+				//for some reason, textField.defaultTextFormat always fails
+				//comparison against this._textFormat. if we save to a member
+				//variable and compare against that instead, it works.
+				//I guess text field creates a different TextFormat object.
+				isFormatDifferent = this._previousTextFormat != this._textFormat;
+				this._previousTextFormat = this._textFormat;
+				textField.defaultTextFormat = this._previousTextFormat;
 			}
 			if(this._isHTML)
 			{
