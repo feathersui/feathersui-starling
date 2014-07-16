@@ -1520,7 +1520,13 @@ package feathers.controls.text
 				var endIndex:int = (this._pendingSelectionEndIndex < 0) ? this._pendingSelectionBeginIndex : this._pendingSelectionEndIndex;
 				this._pendingSelectionBeginIndex = -1;
 				this._pendingSelectionEndIndex = -1;
-				this.selectRange(startIndex, endIndex);
+				if(this.stageText.selectionAnchorIndex != startIndex || this.stageText.selectionActiveIndex != endIndex)
+				{
+					//if the same range is already selected, don't try to do it
+					//again because on iOS, if the StageText is multiline, this
+					//will cause the clipboard menu to appear when it shouldn't.
+					this.selectRange(startIndex, endIndex);
+				}
 			}
 		}
 
