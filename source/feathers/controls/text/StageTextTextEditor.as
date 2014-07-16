@@ -1060,7 +1060,15 @@ package feathers.controls.text
 				}
 				//for some reason, we don't need to account for the native scale factor here
 				scaleFactor = Starling.contentScaleFactor;
-				this.stageText.fontSize = this._fontSize * scaleFactor * smallerGlobalScale;
+				var newFontSize:Number = this._fontSize * scaleFactor * smallerGlobalScale;
+				if(this.stageText.fontSize != newFontSize)
+				{
+					//we need to check if this value has changed because on iOS
+					//if displayAsPassword is set to true, the new character
+					//will not be shown if the font size changes. instead, it
+					//immediately changes to a bullet. (Github issue #881)
+					this.stageText.fontSize = newFontSize;
+				}
 			}
 
 			if(this.textSnapshot)
