@@ -937,7 +937,10 @@ package feathers.controls.text
 		{
 			if(this.textField)
 			{
-				this.validate();
+				if(!this._isValidating)
+				{
+					this.validate();
+				}
 				this.textField.setSelection(beginIndex, endIndex);
 			}
 			else
