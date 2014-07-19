@@ -264,12 +264,14 @@ package feathers.controls.supportClasses
 		{
 			var minX:Number = 0;
 			var minY:Number = 0;
-			var maxX:Number = this.viewPortBounds.explicitWidth;
+			var explicitViewPortWidth:Number = this.viewPortBounds.explicitWidth;
+			var maxX:Number = explicitViewPortWidth;
 			if(maxX != maxX) //isNaN
 			{
 				maxX = 0;
 			}
-			var maxY:Number = this.viewPortBounds.explicitHeight;
+			var explicitViewPortHeight:Number = this.viewPortBounds.explicitHeight;
+			var maxY:Number = explicitViewPortHeight;
 			if(maxY != maxY) //isNaN
 			{
 				maxY = 0;
@@ -333,6 +335,22 @@ package feathers.controls.supportClasses
 				calculatedHeight = maxHeight;
 			}
 			this._ignoreChildChanges = false;
+			if(explicitViewPortWidth != explicitViewPortWidth) //isNaN
+			{
+				this._actualVisibleWidth = calculatedWidth;
+			}
+			else
+			{
+				this._actualVisibleWidth = explicitViewPortWidth;
+			}
+			if(explicitViewPortHeight != explicitViewPortHeight) //isNaN
+			{
+				this._actualVisibleHeight = calculatedHeight;
+			}
+			else
+			{
+				this._actualVisibleHeight = explicitViewPortHeight;
+			}
 			return this.setSizeInternal(calculatedWidth, calculatedHeight, false)
 		}
 	}
