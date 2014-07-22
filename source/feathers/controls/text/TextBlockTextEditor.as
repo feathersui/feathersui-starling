@@ -790,12 +790,16 @@ package feathers.controls.text
 		 */
 		protected function getSelectionIndexAtPoint(pointX:Number, pointY:Number):int
 		{
-			if(!this._text || this._textLines.length == 0 || pointX <= 0)
+			if(!this._text || this._textLines.length == 0)
 			{
 				return 0;
 			}
 			var line:TextLine = this._textLines[0];
-			if(pointX >= line.width)
+			if((pointX - line.x) <= 0)
+			{
+				return 0;
+			}
+			else if((pointX - line.x) >= line.width)
 			{
 				return line.atomCount;
 			}
@@ -811,7 +815,7 @@ package feathers.controls.text
 				return line.atomCount;
 			}
 			var atomBounds:Rectangle = line.getAtomBounds(atomIndex);
-			if((pointX - atomBounds.x) > atomBounds.width / 2)
+			if((pointX - line.x - atomBounds.x) > atomBounds.width / 2)
 			{
 				return atomIndex + 1;
 			}
@@ -830,10 +834,10 @@ package feathers.controls.text
 			var line:TextLine = this._textLines[0];
 			if(index == this._text.length)
 			{
-				return line.width;
+				return line.x + line.width;
 			}
 			var atomIndex:int = line.getAtomIndexAtCharIndex(index);
-			return line.getAtomBounds(atomIndex).x;
+			return line.x + line.getAtomBounds(atomIndex).x;
 		}
 
 		/**
