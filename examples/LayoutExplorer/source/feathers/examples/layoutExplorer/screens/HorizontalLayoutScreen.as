@@ -44,16 +44,17 @@ package feathers.examples.layoutExplorer.screens
 			layout.paddingLeft = this.settings.paddingLeft;
 			layout.horizontalAlign = this.settings.horizontalAlign;
 			layout.verticalAlign = this.settings.verticalAlign;
-			layout.manageVisibility = true;
 
 			this.layout = layout;
 			//when the scroll policy is set to on, the "elastic" edges will be
 			//active even when the max scroll position is zero
 			this.horizontalScrollPolicy = ScrollContainer.SCROLL_POLICY_ON;
 			this.snapScrollPositionsToPixels = true;
+
+			var minQuadSize:Number = Math.min(Starling.current.stage.stageWidth, Starling.current.stage.stageHeight) / 15;
 			for(var i:int = 0; i < this.settings.itemCount; i++)
 			{
-				var size:Number = (44 + 88 * Math.random()) * this.dpiScale;
+				var size:Number = (minQuadSize + minQuadSize * 2 * Math.random());
 				var quad:Quad = new Quad(size, size, 0xff8800);
 				this.addChild(quad);
 			}
