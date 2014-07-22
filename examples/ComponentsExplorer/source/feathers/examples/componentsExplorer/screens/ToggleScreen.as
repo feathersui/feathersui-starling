@@ -51,7 +51,7 @@ package feathers.examples.componentsExplorer.screens
 			return this._innerLayout;
 		}
 
-		public function set innerLayout(value:ILayout)
+		public function set innerLayout(value:ILayout):void
 		{
 			if(this._innerLayout == value)
 			{
