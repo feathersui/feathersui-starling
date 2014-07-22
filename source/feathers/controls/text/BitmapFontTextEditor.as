@@ -20,6 +20,7 @@ package feathers.controls.text
 	import flash.events.Event;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.text.TextFormatAlign;
 	import flash.ui.Keyboard;
 	import flash.utils.Dictionary;
 
@@ -788,7 +789,6 @@ package feathers.controls.text
 			{
 				return 0;
 			}
-
 			var font:BitmapFont = this.currentTextFormat.font;
 			var customSize:Number = this.currentTextFormat.size;
 			var customLetterSpacing:Number = this.currentTextFormat.letterSpacing;
@@ -797,6 +797,24 @@ package feathers.controls.text
 			if(scale != scale) //isNaN
 			{
 				scale = 1;
+			}
+			var align:String = this.currentTextFormat.align;
+			if(align != TextFormatAlign.LEFT)
+			{
+				var lineWidth:Number = this.measureText(HELPER_POINT).x;
+				var hasExplicitWidth:Boolean = this.explicitWidth == this.explicitWidth; //!isNaN
+				var maxLineWidth:Number = hasExplicitWidth ? this.explicitWidth : this._maxWidth;
+				if(maxLineWidth > lineWidth)
+				{
+					if(align == TextFormatAlign.RIGHT)
+					{
+						pointX -= maxLineWidth - lineWidth;
+					}
+					else //center
+					{
+						pointX -= (maxLineWidth - lineWidth) / 2;
+					}
+				}
 			}
 			var currentX:Number = 0;
 			var previousCharID:Number = NaN;
@@ -848,6 +866,25 @@ package feathers.controls.text
 			{
 				scale = 1;
 			}
+			var xPositionOffset:Number = 0;
+			var align:String = this.currentTextFormat.align;
+			if(align != TextFormatAlign.LEFT)
+			{
+				var lineWidth:Number = this.measureText(HELPER_POINT).x;
+				var hasExplicitWidth:Boolean = this.explicitWidth == this.explicitWidth; //!isNaN
+				var maxLineWidth:Number = hasExplicitWidth ? this.explicitWidth : this._maxWidth;
+				if(maxLineWidth > lineWidth)
+				{
+					if(align == TextFormatAlign.RIGHT)
+					{
+						xPositionOffset = maxLineWidth - lineWidth;
+					}
+					else //center
+					{
+						xPositionOffset = (maxLineWidth - lineWidth) / 2;
+					}
+				}
+			}
 			var currentX:Number = 0;
 			var previousCharID:Number = NaN;
 			var charCount:int = this._text.length;
@@ -872,7 +909,7 @@ package feathers.controls.text
 				currentX += customLetterSpacing + currentKerning + charData.xAdvance * scale;
 				previousCharID = charID;
 			}
-			return currentX;
+			return currentX + xPositionOffset;
 		}
 
 		/**
