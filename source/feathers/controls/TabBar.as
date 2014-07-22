@@ -174,9 +174,9 @@ package feathers.controls
 		public static const VERTICAL_ALIGN_JUSTIFY:String = "justify";
 
 		/**
-		 * The default value added to the <code>nameList</code> of the tabs.
+		 * The default value added to the <code>styleNameList</code> of the tabs.
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_NAME_TAB:String = "feathers-tab-bar-tab";
 
@@ -206,7 +206,7 @@ package feathers.controls
 		}
 
 		/**
-		 * The value added to the <code>nameList</code> of the tabs. This
+		 * The value added to the <code>styleNameList</code> of the tabs. This
 		 * variable is <code>protected</code> so that sub-classes can customize
 		 * the tab name in their constructors instead of using the default
 		 * name defined by <code>DEFAULT_CHILD_NAME_TAB</code>.
@@ -215,12 +215,12 @@ package feathers.controls
 		 * <code>customTabName</code>.</p>
 		 *
 		 * @see #customTabName
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var tabName:String = DEFAULT_CHILD_NAME_TAB;
 
 		/**
-		 * The value added to the <code>nameList</code> of the first tab. This
+		 * The value added to the <code>styleNameList</code> of the first tab. This
 		 * variable is <code>protected</code> so that sub-classes can customize
 		 * the first tab name in their constructors instead of using the default
 		 * name defined by <code>DEFAULT_CHILD_NAME_TAB</code>.
@@ -229,12 +229,12 @@ package feathers.controls
 		 * <code>customFirstTabName</code>.</p>
 		 *
 		 * @see #customFirstTabName
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var firstTabName:String = DEFAULT_CHILD_NAME_TAB;
 
 		/**
-		 * The value added to the <code>nameList</code> of the last tab. This
+		 * The value added to the <code>styleNameList</code> of the last tab. This
 		 * variable is <code>protected</code> so that sub-classes can customize
 		 * the last tab name in their constructors instead of using the default
 		 * name defined by <code>DEFAULT_CHILD_NAME_TAB</code>.
@@ -243,7 +243,7 @@ package feathers.controls
 		 * <code>customLastTabName</code>.</p>
 		 *
 		 * @see #customLastTabName
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var lastTabName:String = DEFAULT_CHILD_NAME_TAB;
 
@@ -1187,8 +1187,7 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_TAB
-		 * @see feathers.core.FeathersControl#nameList
-		 * @see feathers.core.DisplayListWatcher
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public function get customTabName():String
 		{
@@ -1231,8 +1230,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
-		 * @see feathers.core.FeathersControl#nameList
-		 * @see feathers.core.DisplayListWatcher
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public function get customFirstTabName():String
 		{
@@ -1275,8 +1273,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
-		 * @see feathers.core.FeathersControl#nameList
-		 * @see feathers.core.DisplayListWatcher
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public function get customLastTabName():String
 		{

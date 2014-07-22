@@ -79,7 +79,7 @@ package feathers.controls
 		 * using the default scroll container skin.
 		 *
 		 * <p>An alternate name should always be added to a component's
-		 * <code>nameList</code> before the component is added to the stage for
+		 * <code>styleNameList</code> before the component is added to the stage for
 		 * the first time. If it is added later, it will be ignored.</p>
 		 *
 		 * <p>In the following example, the toolbar style is applied to a scroll
@@ -90,7 +90,7 @@ package feathers.controls
 		 * container.styleNameList.add( ScrollContainer.ALTERNATE_NAME_TOOLBAR );
 		 * this.addChild( container );</listing>
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const ALTERNATE_NAME_TOOLBAR:String = "feathers-toolbar-scroll-container";
 

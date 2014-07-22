@@ -86,26 +86,26 @@ package feathers.controls
 		protected static const INVALIDATION_FLAG_TEXT_INPUT_FACTORY:String = "textInputFactory";
 
 		/**
-		 * The default value added to the <code>nameList</code> of the decrement
+		 * The default value added to the <code>styleNameList</code> of the decrement
 		 * button.
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_NAME_DECREMENT_BUTTON:String = "feathers-numeric-stepper-decrement-button";
 
 		/**
-		 * The default value added to the <code>nameList</code> of the increment
+		 * The default value added to the <code>styleNameList</code> of the increment
 		 * button.
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_NAME_INCREMENT_BUTTON:String = "feathers-numeric-stepper-increment-button";
 
 		/**
-		 * The default value added to the <code>nameList</code> of the text
+		 * The default value added to the <code>styleNameList</code> of the text
 		 * input.
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_NAME_TEXT_INPUT:String = "feathers-numeric-stepper-text-input";
 
@@ -178,7 +178,7 @@ package feathers.controls
 		}
 
 		/**
-		 * The value added to the <code>nameList</code> of the decrement button. This
+		 * The value added to the <code>styleNameList</code> of the decrement button. This
 		 * variable is <code>protected</code> so that sub-classes can customize
 		 * the decrement button name in their constructors instead of using the default
 		 * name defined by <code>DEFAULT_CHILD_NAME_DECREMENT_BUTTON</code>.
@@ -187,12 +187,12 @@ package feathers.controls
 		 * <code>customDecrementButtonName</code>.</p>
 		 *
 		 * @see #customDecrementButtonName
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var decrementButtonName:String = DEFAULT_CHILD_NAME_DECREMENT_BUTTON;
 
 		/**
-		 * The value added to the <code>nameList</code> of the increment button. This
+		 * The value added to the <code>styleNameList</code> of the increment button. This
 		 * variable is <code>protected</code> so that sub-classes can customize
 		 * the increment button name in their constructors instead of using the default
 		 * name defined by <code>DEFAULT_CHILD_NAME_INCREMENT_BUTTON</code>.
@@ -201,12 +201,12 @@ package feathers.controls
 		 * <code>customIncrementButtonName</code>.</p>
 		 *
 		 * @see #customIncrementButtonName
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var incrementButtonName:String = DEFAULT_CHILD_NAME_INCREMENT_BUTTON;
 
 		/**
-		 * The value added to the <code>nameList</code> of the text input. This
+		 * The value added to the <code>styleNameList</code> of the text input. This
 		 * variable is <code>protected</code> so that sub-classes can customize
 		 * the text input name in their constructors instead of using the default
 		 * name defined by <code>DEFAULT_CHILD_NAME_TEXT_INPUT</code>.
@@ -215,7 +215,7 @@ package feathers.controls
 		 * <code>customTextInputName</code>.</p>
 		 *
 		 * @see #customTextInputName
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var textInputName:String = DEFAULT_CHILD_NAME_TEXT_INPUT;
 
@@ -666,8 +666,7 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_DECREMENT_BUTTON
-		 * @see feathers.core.FeathersControl#nameList
-		 * @see feathers.core.DisplayListWatcher
+		 * @see feathers.core.FeathersControl#styleNameList
 		 * @see #decrementButtonFactory
 		 * @see #decrementButtonProperties
 		 */
@@ -875,8 +874,7 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_INCREMENT_BUTTON
-		 * @see feathers.core.FeathersControl#nameList
-		 * @see feathers.core.DisplayListWatcher
+		 * @see feathers.core.FeathersControl#styleNameList
 		 * @see #incrementButtonFactory
 		 * @see #incrementButtonProperties
 		 */
@@ -1083,8 +1081,7 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_TEXT_INPUT
-		 * @see feathers.core.FeathersControl#nameList
-		 * @see feathers.core.DisplayListWatcher
+		 * @see feathers.core.FeathersControl#styleNameList
 		 * @see #textInputFactory
 		 * @see #textInputProperties
 		 */

@@ -181,7 +181,7 @@ package feathers.controls
 		 * default grouped list skin.
 		 *
 		 * <p>An alternate name should always be added to a component's
-		 * <code>nameList</code> before the component is added to the stage for
+		 * <code>styleNameList</code> before the component is added to the stage for
 		 * the first time. If it is added later, it will be ignored.</p>
 		 *
 		 * <p>In the following example, the inset style is applied to a grouped
@@ -192,14 +192,14 @@ package feathers.controls
 		 * list.styleNameList.add( GroupedList.ALTERNATE_NAME_INSET_GROUPED_LIST );
 		 * this.addChild( list );</listing>
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const ALTERNATE_NAME_INSET_GROUPED_LIST:String = "feathers-inset-grouped-list";
 
 		/**
 		 * The default name to use with header renderers.
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_NAME_HEADER_RENDERER:String = "feathers-grouped-list-header-renderer";
 
@@ -213,14 +213,14 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * list.headerRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_HEADER_RENDERER;</listing>
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const ALTERNATE_CHILD_NAME_INSET_HEADER_RENDERER:String = "feathers-grouped-list-inset-header-renderer";
 
 		/**
 		 * The default name to use with footer renderers.
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_NAME_FOOTER_RENDERER:String = "feathers-grouped-list-footer-renderer";
 
@@ -246,7 +246,7 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * list.itemRendererRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_ITEM_RENDERER;</listing>
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const ALTERNATE_CHILD_NAME_INSET_ITEM_RENDERER:String = "feathers-grouped-list-inset-item-renderer";
 
@@ -261,7 +261,7 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * list.firstItemRendererRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_FIRST_ITEM_RENDERER;</listing>
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const ALTERNATE_CHILD_NAME_INSET_FIRST_ITEM_RENDERER:String = "feathers-grouped-list-inset-first-item-renderer";
 
@@ -276,7 +276,7 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * list.lastItemRendererRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_LAST_ITEM_RENDERER;</listing>
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const ALTERNATE_CHILD_NAME_INSET_LAST_ITEM_RENDERER:String = "feathers-grouped-list-inset-last-item-renderer";
 
@@ -292,7 +292,7 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * list.singleItemRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_SINGLE_ITEM_RENDERER;</listing>
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const ALTERNATE_CHILD_NAME_INSET_SINGLE_ITEM_RENDERER:String = "feathers-grouped-list-inset-single-item-renderer";
 
@@ -900,8 +900,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
-		 * @see feathers.core.FeathersControl#nameList
-		 * @see feathers.core.DisplayListWatcher
+		 * @see feathers.core.FeathersControl#styleNameList
 		 * @see #firstItemRendererName
 		 * @see #lastItemRendererName
 		 * @see #singleItemRendererName
@@ -1128,8 +1127,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
-		 * @see feathers.core.FeathersControl#nameList
-		 * @see feathers.core.DisplayListWatcher
+		 * @see feathers.core.FeathersControl#styleNameList
 		 * @see #itemRendererName
 		 * @see #lastItemRendererName
 		 * @see #singleItemRendererName
@@ -1275,8 +1273,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
-		 * @see feathers.core.FeathersControl#nameList
-		 * @see feathers.core.DisplayListWatcher
+		 * @see feathers.core.FeathersControl#styleNameList
 		 * @see #itemRendererName
 		 * @see #firstItemRendererName
 		 * @see #singleItemRendererName
@@ -1423,8 +1420,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
-		 * @see feathers.core.FeathersControl#nameList
-		 * @see feathers.core.DisplayListWatcher
+		 * @see feathers.core.FeathersControl#styleNameList
 		 * @see #itemRendererName
 		 * @see #firstItemRendererName
 		 * @see #lastItemRendererName
@@ -1558,8 +1554,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
-		 * @see feathers.core.FeathersControl#nameList
-		 * @see feathers.core.DisplayListWatcher
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public function get headerRendererName():String
 		{
@@ -1771,8 +1766,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
-		 * @see feathers.core.FeathersControl#nameList
-		 * @see feathers.core.DisplayListWatcher
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public function get footerRendererName():String
 		{

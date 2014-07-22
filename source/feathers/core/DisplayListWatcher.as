@@ -22,14 +22,14 @@ package feathers.core
 	 *
 	 * <p>In the example below, the <code>buttonInitializer()</code> function
 	 * will be called when a <code>Button</code> is added to the display list,
-	 * and no values are specified in its <code>nameList</code> that match other
-	 * initializers:</p>
+	 * and no values are specified in its <code>styleNameList</code> that match
+	 * other initializers:</p>
 	 *
 	 * <listing version="3.0">
 	 * setInitializerForClass(Button, buttonInitializer);</listing>
 	 *
-	 * <p>You can specify a value in the button's <code>nameList</code> to call
-	 * a different initializer for a button. You might do this to apply
+	 * <p>You can specify a value in the button's <code>styleNameList</code> to
+	 * call a different initializer for a button. You might do this to apply
 	 * different skins for some buttons:</p>
 	 *
 	 * <listing version="3.0">
@@ -40,7 +40,7 @@ package feathers.core
 	 *
 	 * <p>The <code>callToActionButtonInitializer()</code> function will be called
 	 * when a <code>Button</code> with the <code>Button.ALTERNATE_NAME_CALL_TO_ACTION</code>
-	 * value is added to its <code>nameList</code>:</p>
+	 * value is added to its <code>styleNameList</code>:</p>
 	 *
 	 * <listing version="3.0">
 	 * setInitializerForClass( Button, callToActionButtonInitializer, Button.ALTERNATE_NAME_CALL_TO_ACTION );</listing>
@@ -446,11 +446,11 @@ package feathers.core
 				if(nameTable)
 				{
 					var uiControl:IFeathersControl = IFeathersControl(target);
-					var nameList:TokenList = uiControl.nameList;
-					var nameCount:int = nameList.length;
+					var styleNameList:TokenList = uiControl.styleNameList;
+					var nameCount:int = styleNameList.length;
 					for(var i:int = 0; i < nameCount; i++)
 					{
-						var name:String = nameList.item(i);
+						var name:String = styleNameList.item(i);
 						initializer = nameTable[name] as Function;
 						if(initializer != null)
 						{

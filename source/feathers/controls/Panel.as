@@ -47,16 +47,16 @@ package feathers.controls
 	public class Panel extends ScrollContainer implements IFocusExtras
 	{
 		/**
-		 * The default value added to the <code>nameList</code> of the header.
+		 * The default value added to the <code>styleNameList</code> of the header.
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_NAME_HEADER:String = "feathers-panel-header";
 
 		/**
-		 * The default value added to the <code>nameList</code> of the footer.
+		 * The default value added to the <code>styleNameList</code> of the footer.
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_NAME_FOOTER:String = "feathers-panel-footer";
 
@@ -210,7 +210,7 @@ package feathers.controls
 		protected var footer:IFeathersControl;
 
 		/**
-		 * The default value added to the <code>nameList</code> of the header.
+		 * The default value added to the <code>styleNameList</code> of the header.
 		 *
 		 * <p>To customize the header name without subclassing, see
 		 * <code>customHeaderName</code>.</p> This
@@ -219,12 +219,12 @@ package feathers.controls
 		 * name defined by <code>DEFAULT_CHILD_NAME_HEADER</code>.
 		 *
 		 * @see #customHeaderName
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var headerName:String = DEFAULT_CHILD_NAME_HEADER;
 
 		/**
-		 * The default value added to the <code>nameList</code> of the footer. This
+		 * The default value added to the <code>styleNameList</code> of the footer. This
 		 * variable is <code>protected</code> so that sub-classes can customize
 		 * the footer name in their constructors instead of using the default
 		 * name defined by <code>DEFAULT_CHILD_NAME_FOOTER</code>.
@@ -233,7 +233,7 @@ package feathers.controls
 		 * <code>customFooterName</code>.</p>
 		 *
 		 * @see #customFooterName
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var footerName:String = DEFAULT_CHILD_NAME_FOOTER;
 
@@ -282,7 +282,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
-		 * @see feathers.core.IFeathersControl
+		 * @see feathers.core.FeathersControl
 		 * @see feathers.controls.Header
 		 * @see #headerProperties
 		 */
@@ -333,8 +333,7 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_HEADER
-		 * @see feathers.core.FeathersControl#nameList
-		 * @see feathers.core.DisplayListWatcher
+		 * @see feathers.core.FeathersControl#styleNameList
 		 * @see #headerFactory
 		 * @see #headerProperties
 		 */
@@ -462,7 +461,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
-		 * @see feathers.core.IFeathersControl
+		 * @see feathers.core.FeathersControl
 		 * @see #footerProperties
 		 */
 		public function get footerFactory():Function
@@ -512,8 +511,7 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_FOOTER
-		 * @see feathers.core.FeathersControl#nameList
-		 * @see feathers.core.DisplayListWatcher
+		 * @see feathers.core.FeathersControl#styleNameList
 		 * @see #footerFactory
 		 * @see #footerProperties
 		 */

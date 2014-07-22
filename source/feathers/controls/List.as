@@ -913,7 +913,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
-		 * @see feathers.core.FeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public function get itemRendererName():String
 		{

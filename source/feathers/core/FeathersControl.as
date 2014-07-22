@@ -99,6 +99,10 @@ package feathers.core
 	 * Base class for all UI controls. Implements invalidation and sets up some
 	 * basic template functions like <code>initialize()</code> and
 	 * <code>draw()</code>.
+	 *
+	 * <p>For a base component class that supports layouts, see <code>LayoutGroup</code>.</p>
+	 *
+	 * @see feathers.controls.LayoutGroup
 	 */
 	public class FeathersControl extends Sprite implements IFeathersControl, ILayoutDisplayObject
 	{
@@ -258,7 +262,9 @@ package feathers.core
 		 * selectors. In Feathers, they are a non-unique identifier that can
 		 * differentiate multiple styles of the same type of UI control. A
 		 * single control may have many style names, and many controls can share
-		 * a single style name. A <a href="">theme</a> or another
+		 * a single style name. A <a href="http://wiki.starling-framework.org/feathers/themes">theme</a>
+		 * or another skinning mechanism may use style names to provide a
+		 * variety of visual appearances for a single component class.
 		 *
 		 * <p>In general, the <code>styleName</code> property should not be set
 		 * directly on a Feathers component. You should add and remove style
@@ -267,6 +273,7 @@ package feathers.core
 		 * @default ""
 		 *
 		 * @see #styleNameList
+		 * @see http://wiki.starling-framework.org/feathers/themes
 		 * @see http://wiki.starling-framework.org/feathers/extending-themes
 		 */
 		public function get styleName():String
@@ -292,15 +299,20 @@ package feathers.core
 		 * like classes in CSS selectors. They are a non-unique identifier that
 		 * can differentiate multiple styles of the same type of UI control. A
 		 * single control may have many names, and many controls can share a
-		 * single name. Names may be added, removed, or toggled on the <code>nameList</code>.
-		 * Names cannot contain spaces.
+		 * single name. A <a href="http://wiki.starling-framework.org/feathers/themes">theme</a>
+		 * or another skinning mechanism may use style names to provide a
+		 * variety of visual appearances for a single component class.
+		 *
+		 * <p>Names may be added, removed, or toggled on the
+		 * <code>styleNameList</code>. Names cannot contain spaces.</p>
 		 *
 		 * <p>In the following example, a name is added to the name list:</p>
 		 *
 		 * <listing version="3.0">
 		 * control.styleNameList.add( "custom-component-name" );</listing>
 		 *
-		 * @see #name
+		 * @see #styleName
+		 * @see http://wiki.starling-framework.org/feathers/themes
 		 * @see http://wiki.starling-framework.org/feathers/extending-themes
 		 */
 		public function get styleNameList():TokenList
@@ -309,12 +321,15 @@ package feathers.core
 		}
 
 		/**
-		 * DEPRECATED: Replaced by the <code>styleNameList</code> property.
+		 * DEPRECATED: Replaced by the <code>styleNameList</code>
+		 * property.
 		 *
 		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
 		 * starting with Feathers 2.0. It will be removed in a future version of
 		 * Feathers according to the standard
 		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #styleNameList
 		 */
 		public function get nameList():TokenList
 		{
@@ -334,7 +349,7 @@ package feathers.core
 		 *
 		 * @see #styleName
 		 * @see #styleNameList
-		 * @see http://wiki.starling-framework.org/feathers/custom-themes
+		 * @see http://wiki.starling-framework.org/feathers/themes
 		 */
 		public function get styleProvider():IStyleProvider
 		{
@@ -540,7 +555,7 @@ package feathers.core
 		 * <listing version="3.0">
 		 * control.width = NaN;</listing>
 		 * 
-		 * @see feathers.core.IFeathersControl#validate()
+		 * @see feathers.core.FeathersControl#validate()
 		 */
 		override public function get width():Number
 		{
@@ -624,7 +639,7 @@ package feathers.core
 		 * <listing version="3.0">
 		 * control.height = NaN;</listing>
 		 * 
-		 * @see feathers.core.IFeathersControl#validate()
+		 * @see feathers.core.FeathersControl#validate()
 		 */
 		override public function get height():Number
 		{

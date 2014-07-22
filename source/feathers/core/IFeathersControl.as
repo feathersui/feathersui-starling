@@ -163,7 +163,7 @@ package feathers.core
 		function get nameList():TokenList;
 
 		/**
-		 * @copy feathers.core.FeathersControl#styleList
+		 * @copy feathers.core.FeathersControl#styleNameList
 		 */
 		function get styleNameList():TokenList;
 

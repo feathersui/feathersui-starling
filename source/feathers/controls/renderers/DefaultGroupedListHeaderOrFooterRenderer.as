@@ -84,10 +84,10 @@ package feathers.controls.renderers
 		public static const VERTICAL_ALIGN_JUSTIFY:String = "justify";
 
 		/**
-		 * The default value added to the <code>nameList</code> of the content
-		 * label.
+		 * The default value added to the <code>styleNameList</code> of the
+		 * content label.
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_NAME_CONTENT_LABEL:String = "feathers-header-footer-renderer-content-label";
 
@@ -117,9 +117,10 @@ package feathers.controls.renderers
 		}
 
 		/**
-		 * The value added to the <code>nameList</code> of the content label.
+		 * The value added to the <code>styleNameList</code> of the content
+		 * label.
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var contentLabelName:String = DEFAULT_CHILD_NAME_CONTENT_LABEL;
 

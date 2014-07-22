@@ -151,18 +151,18 @@ package feathers.controls
 		public static const VERTICAL_ALIGN_BOTTOM:String = "bottom";
 
 		/**
-		 * The default value added to the <code>nameList</code> of the header's
+		 * The default value added to the <code>styleNameList</code> of the header's
 		 * items.
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_NAME_ITEM:String = "feathers-header-item";
 
 		/**
-		 * The default value added to the <code>nameList</code> of the header's
+		 * The default value added to the <code>styleNameList</code> of the header's
 		 * title.
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_NAME_TITLE:String = "feathers-header-title";
 
@@ -192,22 +192,22 @@ package feathers.controls
 		}
 
 		/**
-		 * The value added to the <code>nameList</code> of the header's title. This
+		 * The value added to the <code>styleNameList</code> of the header's title. This
 		 * variable is <code>protected</code> so that sub-classes can customize
 		 * the title name in their constructors instead of using the default
 		 * name defined by <code>DEFAULT_CHILD_NAME_TITLE</code>.
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var titleName:String = DEFAULT_CHILD_NAME_TITLE;
 
 		/**
-		 * The value added to the <code>nameList</code> of the header's items. This
+		 * The value added to the <code>styleNameList</code> of the header's items. This
 		 * variable is <code>protected</code> so that sub-classes can customize
 		 * the item name in their constructors instead of using the default
 		 * name defined by <code>DEFAULT_CHILD_NAME_ITEM</code>.
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var itemName:String = DEFAULT_CHILD_NAME_ITEM;
 
