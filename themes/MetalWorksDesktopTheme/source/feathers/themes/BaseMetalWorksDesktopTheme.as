@@ -922,6 +922,8 @@ package feathers.themes
 			check.selectedDisabledLabelProperties.elementFormat = this.lightUIDisabledElementFormat;
 
 			check.gap = this.smallGutterSize;
+			check.minWidth = this.controlSize;
+			check.minHeight = this.controlSize;
 		}
 
 	//-------------------------
@@ -1343,6 +1345,8 @@ package feathers.themes
 			radio.selectedDisabledLabelProperties.elementFormat = this.lightUIDisabledElementFormat;
 
 			radio.gap = this.smallGutterSize;
+			radio.minWidth = this.controlSize;
+			radio.minHeight = this.controlSize;
 		}
 
 	//-------------------------

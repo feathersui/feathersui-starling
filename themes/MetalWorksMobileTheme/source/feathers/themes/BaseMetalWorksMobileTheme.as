@@ -978,7 +978,10 @@ package feathers.themes
 			check.selectedDisabledLabelProperties.elementFormat = this.lightUIDisabledElementFormat;
 
 			check.gap = this.smallGutterSize;
-			check.minTouchWidth = check.minTouchHeight = this.gridSize;
+			check.minWidth = this.controlSize;
+			check.minHeight = this.controlSize;
+			check.minTouchWidth = this.gridSize;
+			check.minTouchHeight = this.gridSize;
 		}
 
 	//-------------------------
@@ -1527,7 +1530,10 @@ package feathers.themes
 			radio.selectedDisabledLabelProperties.elementFormat = this.lightUIDisabledElementFormat;
 
 			radio.gap = this.smallGutterSize;
-			radio.minTouchWidth = radio.minTouchHeight = this.gridSize;
+			radio.minWidth = this.controlSize;
+			radio.minHeight = this.controlSize;
+			radio.minTouchWidth = this.gridSize;
+			radio.minTouchHeight = this.gridSize;
 		}
 
 	//-------------------------
