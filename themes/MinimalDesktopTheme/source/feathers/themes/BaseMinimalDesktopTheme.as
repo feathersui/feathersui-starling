@@ -251,6 +251,7 @@ package feathers.themes
 		protected var headingDisabledTextFormat:BitmapFontTextFormat;
 		protected var detailTextFormat:BitmapFontTextFormat;
 		protected var detailDisabledTextFormat:BitmapFontTextFormat;
+		protected var centeredTextFormat:BitmapFontTextFormat;
 
 		override public function dispose():void
 		{
@@ -386,6 +387,7 @@ package feathers.themes
 			this.headingDisabledTextFormat = new BitmapFontTextFormat(FONT_NAME, this.headingFontSize, DISABLED_TEXT_COLOR);
 			this.detailTextFormat = new BitmapFontTextFormat(FONT_NAME, this.detailFontSize, PRIMARY_TEXT_COLOR);
 			this.detailDisabledTextFormat = new BitmapFontTextFormat(FONT_NAME, this.detailFontSize, DISABLED_TEXT_COLOR);
+			this.centeredTextFormat = new BitmapFontTextFormat(FONT_NAME, this.fontSize, PRIMARY_TEXT_COLOR, TextFormatAlign.CENTER);
 		}
 
 		protected function initializeStyleProviders():void
@@ -1027,7 +1029,7 @@ package feathers.themes
 			input.paddingTop = input.paddingBottom = 0;
 			input.paddingLeft = input.paddingRight = 2 * this.scale;
 
-			input.textEditorProperties.textFormat = this.primaryTextFormat;
+			input.textEditorProperties.textFormat = this.centeredTextFormat;
 			//input.textEditorProperties.disabledTextFormat = this.disabledTextFormat;
 			input.textEditorProperties.cursorSkin = new Quad(1, 1, PRIMARY_TEXT_COLOR);
 			input.textEditorProperties.selectionSkin = new Quad(1, 1, BACKGROUND_COLOR);
