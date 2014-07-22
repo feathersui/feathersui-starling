@@ -532,9 +532,6 @@ package feathers.themes
 			this.getStyleProviderForClass(Panel).defaultStyleFunction = this.setPanelStyles;
 			this.getStyleProviderForClass(Header).setFunctionForStyleName(Panel.DEFAULT_CHILD_NAME_HEADER, this.setPanelHeaderStyles);
 
-			//panel screen
-			this.getStyleProviderForClass(PanelScreen).defaultStyleFunction = this.setPanelScreenStyles;
-
 			//page indicator
 			this.getStyleProviderForClass(PageIndicator).defaultStyleFunction = this.setPageIndicatorStyles;
 
@@ -548,9 +545,6 @@ package feathers.themes
 
 			//radio
 			this.getStyleProviderForClass(Radio).defaultStyleFunction = this.setRadioStyles;
-
-			//screen
-			this.getStyleProviderForClass(Screen).defaultStyleFunction = this.setScreenStyles;
 
 			//scroll bar
 			this.getStyleProviderForClass(ScrollBar).setFunctionForStyleName(Scroller.DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR, this.setHorizontalScrollBarStyles);
@@ -567,9 +561,6 @@ package feathers.themes
 			//scroll container
 			this.getStyleProviderForClass(ScrollContainer).defaultStyleFunction = this.setScrollContainerStyles;
 			this.getStyleProviderForClass(ScrollContainer).setFunctionForStyleName(ScrollContainer.ALTERNATE_NAME_TOOLBAR, this.setToolbarScrollContainerStyles);
-
-			//scroll screen
-			this.getStyleProviderForClass(ScrollScreen).defaultStyleFunction = this.setScrollScreenStyles;
 
 			//scroll text
 			this.getStyleProviderForClass(ScrollText).defaultStyleFunction = this.setScrollTextStyles;
@@ -1036,17 +1027,6 @@ package feathers.themes
 		}
 
 	//-------------------------
-	// PanelScreen
-	//-------------------------
-
-		protected function setPanelScreenStyles(screen:PanelScreen):void
-		{
-			this.setScrollerStyles(screen);
-
-			screen.originalDPI = this.originalDPI;
-		}
-
-	//-------------------------
 	// PickerList
 	//-------------------------
 
@@ -1137,15 +1117,6 @@ package feathers.themes
 			radio.verticalAlign = Button.VERTICAL_ALIGN_MIDDLE;
 
 			radio.gap = 4;
-		}
-
-	//-------------------------
-	// Screen
-	//-------------------------
-
-		protected function setScreenStyles(screen:Screen):void
-		{
-			screen.originalDPI = this.originalDPI;
 		}
 
 	//-------------------------
@@ -1299,17 +1270,6 @@ package feathers.themes
 			container.minHeight = 22;
 
 			container.backgroundSkin = new Scale9Image(headerBackgroundSkinTextures);
-		}
-
-	//-------------------------
-	// ScrollScreen
-	//-------------------------
-
-		protected function setScrollScreenStyles(screen:ScrollScreen):void
-		{
-			this.setScrollerStyles(screen);
-
-			screen.originalDPI = this.originalDPI;
 		}
 
 	//-------------------------

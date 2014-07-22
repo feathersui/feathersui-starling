@@ -7,14 +7,9 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
-	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
-	import feathers.system.DeviceCapabilities;
-	import feathers.utils.display.calculateScaleRatioToFit;
 	import feathers.utils.display.getDisplayObjectDepthFromStage;
 
-	import flash.display.DisplayObjectContainer;
-	import flash.display.LoaderInfo;
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
 
@@ -71,9 +66,7 @@ package feathers.controls
 		public function Screen()
 		{
 			this.addEventListener(Event.ADDED_TO_STAGE, screen_addedToStageHandler);
-			this.addEventListener(FeathersEventType.RESIZE, screen_resizeHandler);
 			super();
-			this.originalDPI = DeviceCapabilities.dpi;
 		}
 
 		/**
@@ -82,118 +75,6 @@ package feathers.controls
 		override protected function get defaultStyleProvider():IStyleProvider
 		{
 			return Screen.globalStyleProvider;
-		}
-		
-		/**
-		 * @private
-		 */
-		protected var _originalWidth:Number = NaN;
-		
-		/**
-		 * The original intended width of the application. If not set manually,
-		 * <code>loaderInfo.width</code> is automatically detected (to get
-		 * width value from <code>[SWF]</code> metadata.
-		 *
-		 * <p>In the following example, the original width is customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * this.originalWidth = 960; //iPhone with Retina Display in landscape</listing>
-		 *
-		 * @see #pixelScale
-		 */
-		public function get originalWidth():Number
-		{
-			return this._originalWidth;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set originalWidth(value:Number):void
-		{
-			if(this._originalWidth == value)
-			{
-				return;
-			}
-			this._originalWidth = value;
-			if(this.stage)
-			{
-				this.refreshPixelScale();
-			}
-		}
-		
-		/**
-		 * @private
-		 */
-		protected var _originalHeight:Number = NaN;
-		
-		/**
-		 * The original intended height of the application. If not set manually,
-		 * <code>loaderInfo.height</code> is automatically detected (to get
-		 * height value from <code>[SWF]</code> metadata.
-		 *
-		 * <p>In the following example, the original height is customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * this.originalWidth = 640; //iPhone with Retina Display in landscape</listing>
-		 *
-		 * @see #pixelScale
-		 */
-		public function get originalHeight():Number
-		{
-			return this._originalHeight;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set originalHeight(value:Number):void
-		{
-			if(this._originalHeight == value)
-			{
-				return;
-			}
-			this._originalHeight = value;
-			if(this.stage)
-			{
-				this.refreshPixelScale();
-			}
-		}
-		
-		/**
-		 * @private
-		 */
-		protected var _originalDPI:int = 0;
-		
-		/**
-		 * The original intended screen density of the application. This value
-		 * cannot be automatically detected and it must be set manually.
-		 *
-		 * <p>In the following example, the original screen density is customized:</p>
-		 *
-		 * <listing version="3.0">
-		 * this.originalDPI = 326; //iPhone with Retina Display</listing>
-		 *
-		 * @see #dpiScale
-		 * @see feathers.system.DeviceCapabilities#dpi
-		 */
-		public function get originalDPI():int
-		{
-			return this._originalDPI;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set originalDPI(value:int):void
-		{
-			if(this._originalDPI == value)
-			{
-				return;
-			}
-			this._originalDPI = value;
-			this._dpiScale = DeviceCapabilities.dpi / this._originalDPI;
-			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
 		/**
@@ -236,50 +117,6 @@ package feathers.controls
 		public function set owner(value:ScreenNavigator):void
 		{
 			this._owner = value;
-		}
-
-		/**
-		 * @private
-		 */
-		protected var _pixelScale:Number = 1;
-		
-		/**
-		 * Uses <code>originalWidth</code>, <code>originalHeight</code>,
-		 * <code>actualWidth</code>, and <code>actualHeight</code>,
-		 * to calculate a scale value that will allow all content will fit
-		 * within the current stage bounds using the same relative layout. This
-		 * scale value does not account for differences between the original
-		 * screen density and the current device's screen density.
-		 *
-		 * @see #originalWidth
-		 * @see #originalHeight
-		 */
-		protected function get pixelScale():Number
-		{
-			return this._pixelScale;
-		}
-		
-		/**
-		 * @private
-		 */
-		protected var _dpiScale:Number = 1;
-		
-		/**
-		 * Uses <code>originalDPI</code> and <code>DeviceCapabilities.dpi</code>
-		 * to calculate a scale value to allow all content to be the same
-		 * physical size (in inches or centimeters). Using this value will have
-		 * a much larger effect on the layout of the content, but it can ensure
-		 * that interactive items won't be scaled too small to affect the
-		 * accuracy of touches. Likewise, it won't scale items to become
-		 * ridiculously physically large. Most useful when targeting many
-		 * different platforms with the same code.
-		 *
-		 * @see #originalDPI
-		 * @see feathers.system.DeviceCapabilities#dpi
-		 */
-		protected function get dpiScale():Number
-		{
-			return this._dpiScale;
 		}
 		
 		/**
@@ -354,50 +191,12 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function refreshPixelScale():void
-		{
-			if(!this.stage)
-			{
-				return;
-			}
-			var loaderInfo:LoaderInfo = DisplayObjectContainer(Starling.current.nativeStage.root).getChildAt(0).loaderInfo;
-			//if originalWidth or originalHeight is NaN, it's because the Screen
-			//has been added to the display list, and we really need values now.
-			if(this._originalWidth != this._originalWidth) //isNaN
-			{
-				try
-				{
-					this._originalWidth = loaderInfo.width;
-				} 
-				catch(error:Error) 
-				{
-					this._originalWidth = this.stage.stageWidth;
-				}
-			}
-			if(this._originalHeight != this._originalHeight) //isNaN
-			{
-				try
-				{
-					this._originalHeight = loaderInfo.height;
-				} 
-				catch(error:Error) 
-				{
-					this._originalHeight = this.stage.stageHeight;
-				}
-			}
-			this._pixelScale = calculateScaleRatioToFit(originalWidth, originalHeight, this.actualWidth, this.actualHeight);
-		}
-		
-		/**
-		 * @private
-		 */
 		protected function screen_addedToStageHandler(event:Event):void
 		{
 			if(event.target != this)
 			{
 				return;
 			}
-			this.refreshPixelScale();
 			this.addEventListener(Event.REMOVED_FROM_STAGE, screen_removedFromStageHandler);
 			//using priority here is a hack so that objects higher up in the
 			//display list have a chance to cancel the event first.
@@ -416,14 +215,6 @@ package feathers.controls
 			}
 			this.removeEventListener(Event.REMOVED_FROM_STAGE, screen_removedFromStageHandler);
 			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, screen_nativeStage_keyDownHandler);
-		}
-		
-		/**
-		 * @private
-		 */
-		protected function screen_resizeHandler(event:Event):void
-		{
-			this.refreshPixelScale();
 		}
 		
 		/**

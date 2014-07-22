@@ -492,7 +492,6 @@ package feathers.themes
 			this.getStyleProviderForClass(Header).setFunctionForStyleName(Panel.DEFAULT_CHILD_NAME_HEADER, this.setPanelHeaderStyles);
 
 			//panel screen
-			this.getStyleProviderForClass(PanelScreen).defaultStyleFunction = this.setPanelScreenStyles;
 			this.getStyleProviderForClass(Header).setFunctionForStyleName(PanelScreen.DEFAULT_CHILD_NAME_HEADER, this.setPanelScreenHeaderStyles);
 
 			//picker list (see also: item renderers)
@@ -506,15 +505,9 @@ package feathers.themes
 			//radio
 			this.getStyleProviderForClass(Radio).defaultStyleFunction = this.setRadioStyles;
 
-			//screen
-			this.getStyleProviderForClass(Screen).defaultStyleFunction = this.setScreenStyles;
-
 			//scroll container
 			this.getStyleProviderForClass(ScrollContainer).defaultStyleFunction = this.setScrollContainerStyles;
 			this.getStyleProviderForClass(ScrollContainer).setFunctionForStyleName(ScrollContainer.ALTERNATE_NAME_TOOLBAR, this.setToolbarScrollContainerStyles);
-
-			//scroll screen
-			this.getStyleProviderForClass(ScrollScreen).defaultStyleFunction = this.setScrollScreenStyles;
 
 			//scroll text
 			this.getStyleProviderForClass(ScrollText).defaultStyleFunction = this.setScrollTextStyles;
@@ -1107,12 +1100,6 @@ package feathers.themes
 	// PanelScreen
 	//-------------------------
 
-		protected function setPanelScreenStyles(screen:PanelScreen):void
-		{
-			this.setScrollerStyles(screen);
-			screen.originalDPI = this._originalDPI;
-		}
-
 		protected function setPanelScreenHeaderStyles(header:Header):void
 		{
 			this.setPanelHeaderStyles(header);
@@ -1317,15 +1304,6 @@ package feathers.themes
 		}
 
 	//-------------------------
-	// Screen
-	//-------------------------
-
-		protected function setScreenStyles(screen:Screen):void
-		{
-			screen.originalDPI = this._originalDPI;
-		}
-
-	//-------------------------
 	// ScrollContainer
 	//-------------------------
 
@@ -1353,16 +1331,6 @@ package feathers.themes
 			backgroundSkin.width = 88 * this.scale;
 			backgroundSkin.height = 88 * this.scale;
 			container.backgroundSkin = backgroundSkin;
-		}
-
-	//-------------------------
-	// ScrollScreen
-	//-------------------------
-
-		protected function setScrollScreenStyles(screen:ScrollScreen):void
-		{
-			this.setScrollerStyles(screen);
-			screen.originalDPI = this._originalDPI;
 		}
 
 	//-------------------------
