@@ -35,18 +35,18 @@ package feathers.controls.renderers
 	public class BaseDefaultItemRenderer extends ToggleButton
 	{
 		/**
-		 * The default value added to the <code>nameList</code> of the icon
+		 * The default value added to the <code>styleNameList</code> of the icon
 		 * label, if it exists.
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_NAME_ICON_LABEL:String = "feathers-item-renderer-icon-label";
 
 		/**
-		 * The default value added to the <code>nameList</code> of the accessory
-		 * label, if it exists.
+		 * The default value added to the <code>styleNameList</code> of the
+		 * accessory label, if it exists.
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_NAME_ACCESSORY_LABEL:String = "feathers-item-renderer-accessory-label";
 
@@ -233,18 +233,18 @@ package feathers.controls.renderers
 		}
 
 		/**
-		 * The value added to the <code>nameList</code> of the icon label, if it
-		 * exists.
+		 * The value added to the <code>styleNameList</code> of the icon label,
+		 * if it exists.
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var iconLabelName:String = DEFAULT_CHILD_NAME_ICON_LABEL;
 
 		/**
-		 * The value added to the <code>nameList</code> of the accessory label,
-		 * if it exists.
+		 * The value added to the <code>styleNameList</code> of the accessory
+		 * label, if it exists.
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var accessoryLabelName:String = DEFAULT_CHILD_NAME_ACCESSORY_LABEL;
 

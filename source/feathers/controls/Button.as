@@ -109,9 +109,9 @@ package feathers.controls
 		private static const HELPER_POINT:Point = new Point();
 
 		/**
-		 * The default value added to the <code>nameList</code> of the label.
+		 * The default value added to the <code>styleNameList</code> of the label.
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_NAME_LABEL:String = "feathers-button-label";
 
@@ -122,7 +122,7 @@ package feathers.controls
 		 * fall back to using the default button skin.
 		 *
 		 * <p>An alternate name should always be added to a component's
-		 * <code>nameList</code> before the component is added to the stage for
+		 * <code>styleNameList</code> before the component is added to the stage for
 		 * the first time. If it is added later, it will be ignored.</p>
 		 *
 		 * <p>In the following example, the call-to-action style is applied to
@@ -133,7 +133,7 @@ package feathers.controls
 		 * button.styleNameList.add( Button.ALTERNATE_NAME_CALL_TO_ACTION_BUTTON );
 		 * this.addChild( button );</listing>
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const ALTERNATE_NAME_CALL_TO_ACTION_BUTTON:String = "feathers-call-to-action-button";
 
@@ -144,7 +144,7 @@ package feathers.controls
 		 * to using the default button skin.
 		 *
 		 * <p>An alternate name should always be added to a component's
-		 * <code>nameList</code> before the component is added to the stage for
+		 * <code>styleNameList</code> before the component is added to the stage for
 		 * the first time. If it is added later, it will be ignored.</p>
 		 *
 		 * <p>In the following example, the quiet button style is applied to
@@ -155,7 +155,7 @@ package feathers.controls
 		 * button.styleNameList.add( Button.ALTERNATE_NAME_QUIET_BUTTON );
 		 * this.addChild( button );</listing>
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const ALTERNATE_NAME_QUIET_BUTTON:String = "feathers-quiet-button";
 
@@ -168,7 +168,7 @@ package feathers.controls
 		 * to using the default button skin.
 		 *
 		 * <p>An alternate name should always be added to a component's
-		 * <code>nameList</code> before the component is added to the stage for
+		 * <code>styleNameList</code> before the component is added to the stage for
 		 * the first time. If it is added later, it will be ignored.</p>
 		 *
 		 * <p>In the following example, the danger button style is applied to
@@ -179,7 +179,7 @@ package feathers.controls
 		 * button.styleNameList.add( Button.ALTERNATE_NAME_DANGER_BUTTON );
 		 * this.addChild( button );</listing>
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const ALTERNATE_NAME_DANGER_BUTTON:String = "feathers-danger-button";
 
@@ -190,7 +190,7 @@ package feathers.controls
 		 * automatically fall back to using the default button skin.
 		 *
 		 * <p>An alternate name should always be added to a component's
-		 * <code>nameList</code> before the component is added to the stage for
+		 * <code>styleNameList</code> before the component is added to the stage for
 		 * the first time. If it is added later, it will be ignored.</p>
 		 *
 		 * <p>In the following example, the back button style is applied to
@@ -201,7 +201,7 @@ package feathers.controls
 		 * button.styleNameList.add( Button.ALTERNATE_NAME_BACK_BUTTON );
 		 * this.addChild( button );</listing>
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const ALTERNATE_NAME_BACK_BUTTON:String = "feathers-back-button";
 
@@ -212,7 +212,7 @@ package feathers.controls
 		 * will automatically fall back to using the default button skin.
 		 *
 		 * <p>An alternate name should always be added to a component's
-		 * <code>nameList</code> before the component is added to the stage for
+		 * <code>styleNameList</code> before the component is added to the stage for
 		 * the first time. If it is added later, it will be ignored.</p>
 		 *
 		 * <p>In the following example, the forward button style is applied to
@@ -223,7 +223,7 @@ package feathers.controls
 		 * button.styleNameList.add( Button.ALTERNATE_NAME_FORWARD_BUTTON );
 		 * this.addChild( button );</listing>
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const ALTERNATE_NAME_FORWARD_BUTTON:String = "feathers-forward-button";
 		
@@ -381,12 +381,12 @@ package feathers.controls
 		}
 
 		/**
-		 * The value added to the <code>nameList</code> of the label. This
+		 * The value added to the <code>styleNameList</code> of the label. This
 		 * variable is <code>protected</code> so that sub-classes can customize
 		 * the label name in their constructors instead of using the default
 		 * name defined by <code>DEFAULT_CHILD_NAME_LABEL</code>.
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var labelName:String = DEFAULT_CHILD_NAME_LABEL;
 		

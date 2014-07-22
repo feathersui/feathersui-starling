@@ -375,18 +375,18 @@ package feathers.controls
 		public static const DECELERATION_RATE_FAST:Number = 0.99;
 
 		/**
-		 * The default value added to the <code>nameList</code> of the
+		 * The default value added to the <code>styleNameList</code> of the
 		 * horizontal scroll bar.
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR:String = "feathers-scroller-horizontal-scroll-bar";
 
 		/**
-		 * The default value added to the <code>nameList</code> of the vertical
+		 * The default value added to the <code>styleNameList</code> of the vertical
 		 * scroll bar.
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR:String = "feathers-scroller-vertical-scroll-bar";
 
@@ -422,7 +422,7 @@ package feathers.controls
 		}
 
 		/**
-		 * The value added to the <code>nameList</code> of the horizontal scroll
+		 * The value added to the <code>styleNameList</code> of the horizontal scroll
 		 * bar. This variable is <code>protected</code> so that sub-classes can
 		 * customize the horizontal scroll bar name in their constructors
 		 * instead of using the default name defined by <code>DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR</code>.
@@ -431,12 +431,12 @@ package feathers.controls
 		 * <code>customHorizontalScrollBarName</code>.</p>
 		 *
 		 * @see #customHorizontalScrollBarName
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var horizontalScrollBarName:String = DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR;
 
 		/**
-		 * The value added to the <code>nameList</code> of the vertical scroll
+		 * The value added to the <code>styleNameList</code> of the vertical scroll
 		 * bar. This variable is <code>protected</code> so that sub-classes can
 		 * customize the vertical scroll bar name in their constructors
 		 * instead of using the default name defined by <code>DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR</code>.
@@ -445,7 +445,7 @@ package feathers.controls
 		 * <code>customVerticalScrollBarName</code>.</p>
 		 *
 		 * @see #customVerticalScrollBarName
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var verticalScrollBarName:String = DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR;
 
@@ -771,8 +771,7 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR
-		 * @see feathers.core.FeathersControl#nameList
-		 * @see feathers.core.DisplayListWatcher
+		 * @see feathers.core.FeathersControl#styleNameList
 		 * @see #horizontalScrollBarFactory
 		 * @see #horizontalScrollBarProperties
 		 */
@@ -986,8 +985,7 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR
-		 * @see feathers.core.FeathersControl#nameList
-		 * @see feathers.core.DisplayListWatcher
+		 * @see feathers.core.FeathersControl#styleNameList
 		 * @see #verticalScrollBarFactory
 		 * @see #verticalScrollBarProperties
 		 */

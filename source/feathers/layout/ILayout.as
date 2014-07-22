@@ -69,7 +69,7 @@ package feathers.layout
 		 *     }
 		 * }</listing>
 		 * 
-		 * @see feathers.core.IFeathersControl#validate()  
+		 * @see feathers.core.FeathersControl#validate()
 		 */
 		function layout(items:Vector.<DisplayObject>, viewPortBounds:ViewPortBounds = null, result:LayoutBoundsResult = null):LayoutBoundsResult;
 

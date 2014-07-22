@@ -125,37 +125,37 @@ package feathers.controls
 		public static const TRACK_LAYOUT_MODE_ON_OFF:String = "onOff";
 
 		/**
-		 * The default value added to the <code>nameList</code> of the off label.
+		 * The default value added to the <code>styleNameList</code> of the off label.
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_NAME_OFF_LABEL:String = "feathers-toggle-switch-off-label";
 
 		/**
-		 * The default value added to the <code>nameList</code> of the on label.
+		 * The default value added to the <code>styleNameList</code> of the on label.
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_NAME_ON_LABEL:String = "feathers-toggle-switch-on-label";
 
 		/**
-		 * The default value added to the <code>nameList</code> of the off track.
+		 * The default value added to the <code>styleNameList</code> of the off track.
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_NAME_OFF_TRACK:String = "feathers-toggle-switch-off-track";
 
 		/**
-		 * The default value added to the <code>nameList</code> of the on track.
+		 * The default value added to the <code>styleNameList</code> of the on track.
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_NAME_ON_TRACK:String = "feathers-toggle-switch-on-track";
 
 		/**
-		 * The default value added to the <code>nameList</code> of the thumb.
+		 * The default value added to the <code>styleNameList</code> of the thumb.
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_NAME_THUMB:String = "feathers-toggle-switch-thumb";
 
@@ -203,27 +203,27 @@ package feathers.controls
 		}
 
 		/**
-		 * The value added to the <code>nameList</code> of the off label. This
+		 * The value added to the <code>styleNameList</code> of the off label. This
 		 * variable is <code>protected</code> so that sub-classes can customize
 		 * the on label name in their constructors instead of using the default
 		 * name defined by <code>DEFAULT_CHILD_NAME_ON_LABEL</code>.
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var onLabelName:String = DEFAULT_CHILD_NAME_ON_LABEL;
 
 		/**
-		 * The value added to the <code>nameList</code> of the on label. This
+		 * The value added to the <code>styleNameList</code> of the on label. This
 		 * variable is <code>protected</code> so that sub-classes can customize
 		 * the off label name in their constructors instead of using the default
 		 * name defined by <code>DEFAULT_CHILD_NAME_OFF_LABEL</code>.
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var offLabelName:String = DEFAULT_CHILD_NAME_OFF_LABEL;
 
 		/**
-		 * The value added to the <code>nameList</code> of the on track. This
+		 * The value added to the <code>styleNameList</code> of the on track. This
 		 * variable is <code>protected</code> so that sub-classes can customize
 		 * the on track name in their constructors instead of using the default
 		 * name defined by <code>DEFAULT_CHILD_NAME_ON_TRACK</code>.
@@ -232,12 +232,12 @@ package feathers.controls
 		 * <code>customOnTrackName</code>.</p>
 		 *
 		 * @see #customOnTrackName
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var onTrackName:String = DEFAULT_CHILD_NAME_ON_TRACK;
 
 		/**
-		 * The value added to the <code>nameList</code> of the off track. This
+		 * The value added to the <code>styleNameList</code> of the off track. This
 		 * variable is <code>protected</code> so that sub-classes can customize
 		 * the off track name in their constructors instead of using the default
 		 * name defined by <code>DEFAULT_CHILD_NAME_OFF_TRACK</code>.
@@ -246,12 +246,12 @@ package feathers.controls
 		 * <code>customOffTrackName</code>.</p>
 		 *
 		 * @see #customOffTrackName
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var offTrackName:String = DEFAULT_CHILD_NAME_OFF_TRACK;
 
 		/**
-		 * The value added to the <code>nameList</code> of the thumb. This
+		 * The value added to the <code>styleNameList</code> of the thumb. This
 		 * variable is <code>protected</code> so that sub-classes can customize
 		 * the thumb name in their constructors instead of using the default
 		 * name defined by <code>DEFAULT_CHILD_NAME_THUMB</code>.
@@ -260,7 +260,7 @@ package feathers.controls
 		 * <code>customThumbName</code>.</p>
 		 *
 		 * @see #customThumbName
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var thumbName:String = DEFAULT_CHILD_NAME_THUMB;
 
@@ -1287,8 +1287,7 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_ON_TRACK
-		 * @see feathers.core.FeathersControl#nameList
-		 * @see feathers.core.DisplayListWatcher
+		 * @see feathers.core.FeathersControl#styleNameList
 		 * @see #onTrackFactory
 		 * @see #onTrackProperties
 		 */
@@ -1458,8 +1457,7 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_OFF_TRACK
-		 * @see feathers.core.FeathersControl#nameList
-		 * @see feathers.core.DisplayListWatcher
+		 * @see feathers.core.FeathersControl#styleNameList
 		 * @see #offTrackFactory
 		 * @see #offTrackProperties
 		 */
@@ -1627,8 +1625,7 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_THUMB
-		 * @see feathers.core.FeathersControl#nameList
-		 * @see feathers.core.DisplayListWatcher
+		 * @see feathers.core.FeathersControl#styleNameList
 		 * @see #thumbFactory
 		 * @see #thumbProperties
 		 */

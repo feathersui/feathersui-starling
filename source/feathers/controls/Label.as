@@ -37,7 +37,7 @@ package feathers.controls
 		 * to using the default label skin.
 		 *
 		 * <p>An alternate name should always be added to a component's
-		 * <code>nameList</code> before the component is added to the stage for
+		 * <code>styleNameList</code> before the component is added to the stage for
 		 * the first time. If it is added later, it will be ignored.</p>
 		 *
 		 * <p>In the following example, the heading style is applied to a label:</p>
@@ -48,7 +48,7 @@ package feathers.controls
 		 * label.styleNameList.add( Label.ALTERNATE_NAME_HEADING );
 		 * this.addChild( label );</listing>
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const ALTERNATE_NAME_HEADING:String = "feathers-heading-label";
 
@@ -59,7 +59,7 @@ package feathers.controls
 		 * automatically fall back to using the default label skin.
 		 *
 		 * <p>An alternate name should always be added to a component's
-		 * <code>nameList</code> before the component is added to the stage for
+		 * <code>styleNameList</code> before the component is added to the stage for
 		 * the first time. If it is added later, it will be ignored.</p>
 		 *
 		 * <p>In the following example, the detail style is applied to a label:</p>
@@ -70,7 +70,7 @@ package feathers.controls
 		 * label.styleNameList.add( Label.ALTERNATE_NAME_DETAIL );
 		 * this.addChild( label );</listing>
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const ALTERNATE_NAME_DETAIL:String = "feathers-detail-label";
 

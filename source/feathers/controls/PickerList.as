@@ -92,17 +92,17 @@ package feathers.controls
 		protected static const INVALIDATION_FLAG_LIST_FACTORY:String = "listFactory";
 
 		/**
-		 * The default value added to the <code>nameList</code> of the button.
+		 * The default value added to the <code>styleNameList</code> of the button.
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_NAME_BUTTON:String = "feathers-picker-list-button";
 
 		/**
-		 * The default value added to the <code>nameList</code> of the pop-up
+		 * The default value added to the <code>styleNameList</code> of the pop-up
 		 * list.
 		 *
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_NAME_LIST:String = "feathers-picker-list-list";
 
@@ -140,7 +140,7 @@ package feathers.controls
 		}
 
 		/**
-		 * The default value added to the <code>nameList</code> of the button. This
+		 * The default value added to the <code>styleNameList</code> of the button. This
 		 * variable is <code>protected</code> so that sub-classes can customize
 		 * the button name in their constructors instead of using the default
 		 * name defined by <code>DEFAULT_CHILD_NAME_BUTTON</code>.
@@ -149,12 +149,12 @@ package feathers.controls
 		 * <code>customButtonName</code>.</p>
 		 *
 		 * @see #customButtonName
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var buttonName:String = DEFAULT_CHILD_NAME_BUTTON;
 
 		/**
-		 * The default value added to the <code>nameList</code> of the pop-up list. This
+		 * The default value added to the <code>styleNameList</code> of the pop-up list. This
 		 * variable is <code>protected</code> so that sub-classes can customize
 		 * the list name in their constructors instead of using the default
 		 * name defined by <code>DEFAULT_CHILD_NAME_LIST</code>.
@@ -163,7 +163,7 @@ package feathers.controls
 		 * <code>customListName</code>.</p>
 		 *
 		 * @see #customListName
-		 * @see feathers.core.IFeathersControl#nameList
+		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var listName:String = DEFAULT_CHILD_NAME_LIST;
 
@@ -658,8 +658,7 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_BUTTON
-		 * @see feathers.core.FeathersControl#nameList
-		 * @see feathers.core.DisplayListWatcher
+		 * @see feathers.core.FeathersControl#styleNameList
 		 * @see #buttonFactory
 		 * @see #buttonProperties
 		 */
@@ -830,8 +829,7 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see #DEFAULT_CHILD_NAME_LIST
-		 * @see feathers.core.FeathersControl#nameList
-		 * @see feathers.core.DisplayListWatcher
+		 * @see feathers.core.FeathersControl#styleNameList
 		 * @see #listFactory
 		 * @see #listProperties
 		 */

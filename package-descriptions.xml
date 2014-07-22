@@ -63,5 +63,8 @@
 		<package name="feathers.utils.math"> 
 			<shortDescription><![CDATA[Utilities for common mathematical calculations.]]></shortDescription>
 		</package>
+		<package name="feathers.utils.text"> 
+			<shortDescription><![CDATA[Utilities for text components.]]></shortDescription>
+		</package>
 	</packages>
 </overviews>
