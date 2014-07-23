@@ -1358,6 +1358,8 @@ package feathers.themes
 			thumb.defaultSkin = defaultSkin;
 
 			thumb.minTouchWidth = thumb.minTouchHeight = 12 * this.scale;
+
+			thumb.hasLabelTextRenderer = false;
 		}
 
 	//-------------------------
@@ -1384,6 +1386,8 @@ package feathers.themes
 			sliderTrackDefaultSkin.width = 198 * this.scale;
 			sliderTrackDefaultSkin.height = 66 * this.scale;
 			track.defaultSkin = sliderTrackDefaultSkin;
+
+			track.hasLabelTextRenderer = false;
 		}
 
 		protected function setVerticalSliderMinimumTrackStyles(track:Button):void
@@ -1392,6 +1396,8 @@ package feathers.themes
 			sliderTrackDefaultSkin.width = 66 * this.scale;
 			sliderTrackDefaultSkin.height = 198 * this.scale;
 			track.defaultSkin = sliderTrackDefaultSkin;
+
+			track.hasLabelTextRenderer = false;
 		}
 
 		protected function setSliderThumbStyles(thumb:Button):void
@@ -1407,6 +1413,8 @@ package feathers.themes
 			};
 			thumb.stateToSkinFunction = skinSelector.updateValue;
 			thumb.minTouchWidth = thumb.minTouchHeight = 88 * this.scale;
+
+			thumb.hasLabelTextRenderer = false;
 		}
 
 	//-------------------------
@@ -1540,6 +1548,8 @@ package feathers.themes
 			};
 			track.stateToSkinFunction = skinSelector.updateValue;
 			track.minTouchWidth = track.minTouchHeight = 88 * this.scale;
+
+			track.hasLabelTextRenderer = false;
 		}
 
 		protected function setToggleSwitchThumbStyles(thumb:Button):void
@@ -1555,6 +1565,8 @@ package feathers.themes
 			};
 			thumb.stateToSkinFunction = skinSelector.updateValue;
 			thumb.minTouchWidth = thumb.minTouchHeight = 88 * this.scale;
+
+			thumb.hasLabelTextRenderer = false;
 		}
 	}
 }
