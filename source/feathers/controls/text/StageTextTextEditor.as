@@ -471,11 +471,12 @@ package feathers.controls.text
 		 *
 		 * @default 0x000000
 		 *
+		 * @see #disabledColor
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html#color Full description of flash.text.StageText.color in Adobe's Flash Platform API Reference
 		 */
 		public function get color():uint
 		{
-			return this._color as uint;
+			return this._color;
 		}
 
 		/**
@@ -488,6 +489,44 @@ package feathers.controls.text
 				return;
 			}
 			this._color = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _disabledColor:uint = 0x999999;
+
+		/**
+		 * Specifies text color when the component is disabled as a number
+		 * containing three 8-bit RGB components.
+		 *
+		 * <p>In the following example, the text color is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.isEnabled = false;
+		 * textEditor.disabledColor = 0xff9900;</listing>
+		 *
+		 * @default 0x999999
+		 *
+		 * @see #disabledColor
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html#color Full description of flash.text.StageText.color in Adobe's Flash Platform API Reference
+		 */
+		public function get disabledColor():uint
+		{
+			return this._disabledColor;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set disabledColor(value:uint):void
+		{
+			if(this._disabledColor == value)
+			{
+				return;
+			}
+			this._disabledColor = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -1478,7 +1517,14 @@ package feathers.controls.text
 
 			this.stageText.autoCapitalize = this._autoCapitalize;
 			this.stageText.autoCorrect = this._autoCorrect;
-			this.stageText.color = this._color;
+			if(this._isEnabled)
+			{
+				this.stageText.color = this._color;
+			}
+			else
+			{
+				this.stageText.color = this._disabledColor;
+			}
 			this.stageText.displayAsPassword = this._displayAsPassword;
 			this.stageText.fontFamily = this._fontFamily;
 			this.stageText.fontPosture = this._fontPosture;
