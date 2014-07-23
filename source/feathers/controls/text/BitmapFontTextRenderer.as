@@ -21,6 +21,7 @@ package feathers.controls.text
 	import starling.display.QuadBatch;
 	import starling.text.BitmapChar;
 	import starling.text.BitmapFont;
+	import starling.text.TextField;
 	import starling.textures.TextureSmoothing;
 
 	/**
@@ -992,6 +993,17 @@ package feathers.controls.text
 			}
 			else
 			{
+				//let's fall back to using Starling's embedded mini font if no
+				//text format has been specified
+				if(!this._textFormat)
+				{
+					//if it's not registered, do that first
+					if(!TextField.getBitmapFont(BitmapFont.MINI))
+					{
+						TextField.registerBitmapFont(new BitmapFont());
+					}
+					this._textFormat = new BitmapFontTextFormat(BitmapFont.MINI, NaN, 0x000000);
+				}
 				this.currentTextFormat = this._textFormat;
 			}
 		}
