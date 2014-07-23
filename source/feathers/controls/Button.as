@@ -525,6 +525,41 @@ package feathers.controls
 			this._label = value;
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _hasLabelTextRenderer:Boolean = true;
+
+		/**
+		 * Determines if the button's label text renderer is created or not.
+		 * Useful for button sub-components that may not display text, like
+		 * slider thumbs and tracks, or similar sub-components on scroll bars.
+		 *
+		 * <p>The following example removed the label text renderer:</p>
+		 *
+		 * <listing version="3.0">
+		 * button.hasLabelTextRenderer = false;</listing>
+		 *
+		 * @default true
+		 */
+		public function get hasLabelTextRenderer():Boolean
+		{
+			return this._hasLabelTextRenderer;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set hasLabelTextRenderer(value:Boolean):void
+		{
+			if(this._hasLabelTextRenderer == value)
+			{
+				return;
+			}
+			this._hasLabelTextRenderer = value;
+			this.invalidate(INVALIDATION_FLAG_TEXT_RENDERER);
+		}
 		
 		/**
 		 * @private
@@ -2034,7 +2069,14 @@ package feathers.controls
 				return false;
 			}
 			this.refreshMaxLabelWidth(true);
-			this.labelTextRenderer.measureText(HELPER_POINT);
+			if(this.labelTextRenderer)
+			{
+				this.labelTextRenderer.measureText(HELPER_POINT);
+			}
+			else
+			{
+				HELPER_POINT.setTo(0, 0);
+			}
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
 			{
@@ -2147,10 +2189,13 @@ package feathers.controls
 				this.labelTextRenderer = null;
 			}
 
-			var factory:Function = this._labelFactory != null ? this._labelFactory : FeathersControl.defaultTextRendererFactory;
-			this.labelTextRenderer = ITextRenderer(factory());
-			this.labelTextRenderer.styleNameList.add(this.labelName);
-			this.addChild(DisplayObject(this.labelTextRenderer));
+			if(this._hasLabelTextRenderer)
+			{
+				var factory:Function = this._labelFactory != null ? this._labelFactory : FeathersControl.defaultTextRendererFactory;
+				this.labelTextRenderer = ITextRenderer(factory());
+				this.labelTextRenderer.styleNameList.add(this.labelName);
+				this.addChild(DisplayObject(this.labelTextRenderer));
+			}
 		}
 
 		/**
@@ -2158,6 +2203,10 @@ package feathers.controls
 		 */
 		protected function refreshLabel():void
 		{
+			if(!this.labelTextRenderer)
+			{
+				return;
+			}
 			this.labelTextRenderer.text = this._label;
 			this.labelTextRenderer.visible = this._label !== null && this._label.length > 0;
 			this.labelTextRenderer.isEnabled = this._isEnabled;
@@ -2232,7 +2281,11 @@ package feathers.controls
 				if(this.currentIcon)
 				{
 					//we want the icon to appear below the label text renderer
-					var index:int = this.getChildIndex(DisplayObject(this.labelTextRenderer));
+					var index:int = this.numChildren;
+					if(this.labelTextRenderer)
+					{
+						index = this.getChildIndex(DisplayObject(this.labelTextRenderer));
+					}
 					this.addChildAt(this.currentIcon, index);
 				}
 			}
@@ -2243,6 +2296,10 @@ package feathers.controls
 		 */
 		protected function refreshLabelStyles():void
 		{
+			if(!this.labelTextRenderer)
+			{
+				return;
+			}
 			if(this._stateToLabelPropertiesFunction != null)
 			{
 				var properties:Object = this._stateToLabelPropertiesFunction(this, this._currentState);
@@ -2291,7 +2348,7 @@ package feathers.controls
 		protected function layoutContent():void
 		{
 			this.refreshMaxLabelWidth(false);
-			if(this._label && this.currentIcon)
+			if(this._label && this.labelTextRenderer && this.currentIcon)
 			{
 				this.labelTextRenderer.validate();
 				this.positionSingleChild(DisplayObject(this.labelTextRenderer));
@@ -2301,12 +2358,12 @@ package feathers.controls
 				}
 
 			}
-			else if(this._label && !this.currentIcon)
+			else if(this._label && this.labelTextRenderer && !this.currentIcon)
 			{
 				this.labelTextRenderer.validate();
 				this.positionSingleChild(DisplayObject(this.labelTextRenderer));
 			}
-			else if(!this._label && this.currentIcon && this._iconPosition != ICON_POSITION_MANUAL)
+			else if((!this._label || !this.labelTextRenderer) && this.currentIcon && this._iconPosition != ICON_POSITION_MANUAL)
 			{
 				this.positionSingleChild(this.currentIcon);
 			}
@@ -2321,7 +2378,7 @@ package feathers.controls
 				this.currentIcon.x += this._iconOffsetX;
 				this.currentIcon.y += this._iconOffsetY;
 			}
-			if(this._label)
+			if(this._label && this.labelTextRenderer)
 			{
 				this.labelTextRenderer.x += this._labelOffsetX;
 				this.labelTextRenderer.y += this._labelOffsetY;
@@ -2346,7 +2403,7 @@ package feathers.controls
 					calculatedWidth = this._maxWidth;
 				}
 			}
-			if(this._label && this.currentIcon)
+			if(this._label && this.labelTextRenderer && this.currentIcon)
 			{
 				if(this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE ||
 					this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
@@ -2364,7 +2421,7 @@ package feathers.controls
 				}
 
 			}
-			else if(this._label && !this.currentIcon)
+			else if(this._label && this.labelTextRenderer && !this.currentIcon)
 			{
 				this.labelTextRenderer.maxWidth = calculatedWidth - this._paddingLeft - this._paddingRight;
 			}
