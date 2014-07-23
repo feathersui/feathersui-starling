@@ -949,6 +949,8 @@ package feathers.themes
 			skinSelector.setValueForState(this.stepperIncrementButtonDisabledSkinTextures, Button.STATE_DISABLED, false);
 			button.stateToSkinFunction = skinSelector.updateValue;
 			button.keepDownStateOnRollOut = true;
+
+			button.hasLabelTextRenderer = false;
 		}
 
 		protected function setNumericStepperDecrementButtonStyles(button:Button):void
@@ -960,6 +962,8 @@ package feathers.themes
 			skinSelector.setValueForState(this.stepperDecrementButtonDisabledSkinTextures, Button.STATE_DISABLED, false);
 			button.stateToSkinFunction = skinSelector.updateValue;
 			button.keepDownStateOnRollOut = true;
+
+			button.hasLabelTextRenderer = false;
 		}
 
 		protected function setNumericStepperTextInputStyles(input:TextInput):void
@@ -1159,6 +1163,8 @@ package feathers.themes
 			var incrementButtonDisabledIcon:Quad = new Quad(1, 1, 0xff00ff);
 			incrementButtonDisabledIcon.alpha = 0;
 			button.disabledIcon = incrementButtonDisabledIcon;
+
+			button.hasLabelTextRenderer = false;
 		}
 
 		protected function setHorizontalScrollBarDecrementButtonStyles(button:Button):void
@@ -1175,6 +1181,8 @@ package feathers.themes
 			var decrementButtonDisabledIcon:Quad = new Quad(1, 1, 0xff00ff);
 			decrementButtonDisabledIcon.alpha = 0;
 			button.disabledIcon = decrementButtonDisabledIcon;
+
+			button.hasLabelTextRenderer = false;
 		}
 
 		protected function setHorizontalScrollBarThumbStyles(thumb:Button):void
@@ -1188,11 +1196,15 @@ package feathers.themes
 			thumb.defaultIcon = new Image(this.hScrollBarThumbIconTexture);
 			thumb.verticalAlign = Button.VERTICAL_ALIGN_TOP;
 			thumb.paddingTop = 4;
+
+			thumb.hasLabelTextRenderer = false;
 		}
 
 		protected function setHorizontalScrollBarMinimumTrackStyles(track:Button):void
 		{
 			track.defaultSkin = new Scale9Image(this.hScrollBarTrackSkinTextures);
+
+			track.hasLabelTextRenderer = false;
 		}
 
 		protected function setVerticalScrollBarIncrementButtonStyles(button:Button):void
@@ -1209,6 +1221,8 @@ package feathers.themes
 			var incrementButtonDisabledIcon:Quad = new Quad(1, 1, 0xff00ff);
 			incrementButtonDisabledIcon.alpha = 0;
 			button.disabledIcon = incrementButtonDisabledIcon;
+
+			button.hasLabelTextRenderer = false;
 		}
 
 		protected function setVerticalScrollBarDecrementButtonStyles(button:Button):void
@@ -1225,6 +1239,8 @@ package feathers.themes
 			var decrementButtonDisabledIcon:Quad = new Quad(1, 1, 0xff00ff);
 			decrementButtonDisabledIcon.alpha = 0;
 			button.disabledIcon = decrementButtonDisabledIcon;
+
+			button.hasLabelTextRenderer = false;
 		}
 
 		protected function setVerticalScrollBarThumbStyles(thumb:Button):void
@@ -1238,11 +1254,15 @@ package feathers.themes
 			thumb.defaultIcon = new Image(this.vScrollBarThumbIconTexture);
 			thumb.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			thumb.paddingLeft = 4;
+
+			thumb.hasLabelTextRenderer = false;
 		}
 
 		protected function setVerticalScrollBarMinimumTrackStyles(track:Button):void
 		{
 			track.defaultSkin = new Scale9Image(this.vScrollBarTrackSkinTextures);
+
+			track.hasLabelTextRenderer = false;
 		}
 
 	//-------------------------
@@ -1310,6 +1330,8 @@ package feathers.themes
 			thumb.defaultIcon = new Image(this.hScrollBarThumbIconTexture);
 			thumb.verticalAlign = Button.VERTICAL_ALIGN_TOP;
 			thumb.paddingTop = 4;
+
+			thumb.hasLabelTextRenderer = false;
 		}
 
 		protected function setVerticalSimpleScrollBarThumbStyles(thumb:Button):void
@@ -1323,6 +1345,8 @@ package feathers.themes
 			thumb.defaultIcon = new Image(this.vScrollBarThumbIconTexture);
 			thumb.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			thumb.paddingLeft = 4;
+
+			thumb.hasLabelTextRenderer = false;
 		}
 
 	//-------------------------
@@ -1362,11 +1386,15 @@ package feathers.themes
 			skinSelector.setValueForState(this.hSliderThumbDownSkinTexture, Button.STATE_DOWN, false);
 			skinSelector.setValueForState(this.hSliderThumbDisabledSkinTexture, Button.STATE_DISABLED, false);
 			thumb.stateToSkinFunction = skinSelector.updateValue;
+
+			thumb.hasLabelTextRenderer = false;
 		}
 
 		protected function setHorizontalSliderMinimumTrackStyles(track:Button):void
 		{
 			track.defaultSkin = new Scale3Image(this.hSliderTrackSkinTextures);
+
+			track.hasLabelTextRenderer = false;
 		}
 
 		protected function setVerticalSliderThumbStyles(thumb:Button):void
@@ -1377,11 +1405,15 @@ package feathers.themes
 			skinSelector.setValueForState(this.vSliderThumbDownSkinTexture, Button.STATE_DOWN, false);
 			skinSelector.setValueForState(this.vSliderThumbDisabledSkinTexture, Button.STATE_DISABLED, false);
 			thumb.stateToSkinFunction = skinSelector.updateValue;
+
+			thumb.hasLabelTextRenderer = false;
 		}
 
 		protected function setVerticalSliderMinimumTrackStyles(track:Button):void
 		{
 			track.defaultSkin = new Scale3Image(this.vSliderTrackSkinTextures);
+
+			track.hasLabelTextRenderer = false;
 		}
 
 	//-------------------------
@@ -1503,6 +1535,8 @@ package feathers.themes
 		protected function setToggleSwitchOnTrackStyles(track:Button):void
 		{
 			track.defaultSkin = new Scale9Image(buttonSelectedUpSkinTextures);
+
+			track.hasLabelTextRenderer = false;
 		}
 
 		protected function setToggleSwitchThumbStyles(thumb:Button):void
@@ -1518,6 +1552,8 @@ package feathers.themes
 			{
 				thumb.width = thumb.height = buttonUpSkinTextures.texture.height;
 			}
+
+			thumb.hasLabelTextRenderer = false;
 		}
 	}
 }

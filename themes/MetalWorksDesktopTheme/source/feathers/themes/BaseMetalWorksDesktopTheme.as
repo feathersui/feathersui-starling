@@ -1150,6 +1150,7 @@ package feathers.themes
 			button.disabledIcon = incrementButtonDisabledIcon;
 
 			button.keepDownStateOnRollOut = true;
+			button.hasLabelTextRenderer = false;
 		}
 
 		protected function setNumericStepperIncrementButtonStyles(button:Button):void
@@ -1175,6 +1176,7 @@ package feathers.themes
 			button.disabledIcon = incrementButtonDisabledIcon;
 
 			button.keepDownStateOnRollOut = true;
+			button.hasLabelTextRenderer = false;
 		}
 
 	//-------------------------
@@ -1397,6 +1399,8 @@ package feathers.themes
 			var incrementButtonDisabledIcon:Quad = new Quad(1, 1, 0xff00ff);
 			incrementButtonDisabledIcon.alpha = 0;
 			button.disabledIcon = incrementButtonDisabledIcon;
+
+			button.hasLabelTextRenderer = false;
 		}
 
 		protected function setHorizontalScrollBarDecrementButtonStyles(button:Button):void
@@ -1421,6 +1425,8 @@ package feathers.themes
 			var decrementButtonDisabledIcon:Quad = new Quad(1, 1, 0xff00ff);
 			decrementButtonDisabledIcon.alpha = 0;
 			button.disabledIcon = decrementButtonDisabledIcon;
+
+			button.hasLabelTextRenderer = false;
 		}
 
 		protected function setHorizontalScrollBarThumbStyles(thumb:Button):void
@@ -1435,18 +1441,24 @@ package feathers.themes
 				height: this.smallControlSize,
 				textureScale: this.scale
 			};
+
+			thumb.hasLabelTextRenderer = false;
 		}
 
 		protected function setHorizontalScrollBarMinimumTrackStyles(track:Button):void
 		{
 			track.defaultSkin = new Quad(this.smallControlSize, this.smallControlSize, SCROLL_BAR_TRACK_COLOR);
 			track.downSkin = new Quad(this.smallControlSize, this.smallControlSize, SCROLL_BAR_TRACK_DOWN_COLOR);
+
+			track.hasLabelTextRenderer = false;
 		}
 
 		protected function setHorizontalScrollBarMaximumTrackStyles(track:Button):void
 		{
 			track.defaultSkin = new Quad(this.smallControlSize, this.smallControlSize, SCROLL_BAR_TRACK_COLOR);
 			track.downSkin = new Quad(this.smallControlSize, this.smallControlSize, SCROLL_BAR_TRACK_DOWN_COLOR);
+
+			track.hasLabelTextRenderer = false;
 		}
 
 		protected function setVerticalScrollBarIncrementButtonStyles(button:Button):void
@@ -1470,6 +1482,8 @@ package feathers.themes
 			var incrementButtonDisabledIcon:Quad = new Quad(1, 1, 0xff00ff);
 			incrementButtonDisabledIcon.alpha = 0;
 			button.disabledIcon = incrementButtonDisabledIcon;
+
+			button.hasLabelTextRenderer = false;
 		}
 
 		protected function setVerticalScrollBarDecrementButtonStyles(button:Button):void
@@ -1494,6 +1508,8 @@ package feathers.themes
 			var decrementButtonDisabledIcon:Quad = new Quad(1, 1, 0xff00ff);
 			decrementButtonDisabledIcon.alpha = 0;
 			button.disabledIcon = decrementButtonDisabledIcon;
+
+			button.hasLabelTextRenderer = false;
 		}
 
 		protected function setVerticalScrollBarThumbStyles(thumb:Button):void
@@ -1509,18 +1525,24 @@ package feathers.themes
 				textureScale: this.scale
 			};
 			thumb.stateToSkinFunction = skinSelector.updateValue;
+
+			thumb.hasLabelTextRenderer = false;
 		}
 
 		protected function setVerticalScrollBarMinimumTrackStyles(track:Button):void
 		{
 			track.defaultSkin = new Quad(this.smallControlSize, this.smallControlSize, SCROLL_BAR_TRACK_COLOR);
 			track.downSkin = new Quad(this.smallControlSize, this.smallControlSize, SCROLL_BAR_TRACK_DOWN_COLOR);
+
+			track.hasLabelTextRenderer = false;
 		}
 
 		protected function setVerticalScrollBarMaximumTrackStyles(track:Button):void
 		{
 			track.defaultSkin = new Quad(this.smallControlSize, this.smallControlSize, SCROLL_BAR_TRACK_COLOR);
 			track.downSkin = new Quad(this.smallControlSize, this.smallControlSize, SCROLL_BAR_TRACK_DOWN_COLOR);
+
+			track.hasLabelTextRenderer = false;
 		}
 
 	//-------------------------
@@ -1590,6 +1612,8 @@ package feathers.themes
 			var defaultSkin:Scale3Image = new Scale3Image(this.horizontalSimpleScrollBarThumbSkinTextures, this.scale);
 			defaultSkin.width = this.smallControlSize;
 			thumb.defaultSkin = defaultSkin;
+
+			thumb.hasLabelTextRenderer = false;
 		}
 
 		protected function setVerticalSimpleScrollBarThumbStyles(thumb:Button):void
@@ -1597,6 +1621,8 @@ package feathers.themes
 			var defaultSkin:Scale3Image = new Scale3Image(this.verticalSimpleScrollBarThumbSkinTextures, this.scale);
 			defaultSkin.height = this.smallControlSize;
 			thumb.defaultSkin = defaultSkin;
+
+			thumb.hasLabelTextRenderer = false;
 		}
 
 	//-------------------------
@@ -1618,7 +1644,7 @@ package feathers.themes
 			}
 		}
 
-		protected function setSliderThumbStyles(button:Button):void
+		protected function setSliderThumbStyles(thumb:Button):void
 		{
 			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = this.buttonUpSkinTextures;
@@ -1630,10 +1656,12 @@ package feathers.themes
 				height: this.smallControlSize,
 				textureScale: this.scale
 			};
-			button.stateToSkinFunction = skinSelector.updateValue;
+			thumb.stateToSkinFunction = skinSelector.updateValue;
 
-			button.minWidth = this.smallControlSize;
-			button.minHeight = this.smallControlSize;
+			thumb.minWidth = this.smallControlSize;
+			thumb.minHeight = this.smallControlSize;
+
+			thumb.hasLabelTextRenderer = false;
 		}
 
 		protected function setHorizontalSliderMinimumTrackStyles(track:Button):void
@@ -1648,6 +1676,8 @@ package feathers.themes
 			skinSelector.displayObjectProperties.width = this.wideControlSize;
 			skinSelector.displayObjectProperties.height = this.smallControlSize;
 			track.stateToSkinFunction = skinSelector.updateValue;
+
+			track.hasLabelTextRenderer = false;
 		}
 
 		protected function setHorizontalSliderMaximumTrackStyles(track:Button):void
@@ -1662,6 +1692,8 @@ package feathers.themes
 			skinSelector.displayObjectProperties.width = this.wideControlSize;
 			skinSelector.displayObjectProperties.height = this.smallControlSize;
 			track.stateToSkinFunction = skinSelector.updateValue;
+
+			track.hasLabelTextRenderer = false;
 		}
 
 		protected function setVerticalSliderMinimumTrackStyles(track:Button):void
@@ -1676,6 +1708,8 @@ package feathers.themes
 			skinSelector.displayObjectProperties.width = this.smallControlSize;
 			skinSelector.displayObjectProperties.height = this.wideControlSize;
 			track.stateToSkinFunction = skinSelector.updateValue;
+
+			track.hasLabelTextRenderer = false;
 		}
 
 		protected function setVerticalSliderMaximumTrackStyles(track:Button):void
@@ -1690,6 +1724,8 @@ package feathers.themes
 			skinSelector.displayObjectProperties.width = this.smallControlSize;
 			skinSelector.displayObjectProperties.height = this.wideControlSize;
 			track.stateToSkinFunction = skinSelector.updateValue;
+
+			track.hasLabelTextRenderer = false;
 		}
 
 	//-------------------------
@@ -1819,7 +1855,7 @@ package feathers.themes
 			toggle.onLabelProperties.elementFormat = this.selectedUIElementFormat;
 		}
 
-		protected function setToggleSwitchThumbStyles(button:Button):void
+		protected function setToggleSwitchThumbStyles(thumb:Button):void
 		{
 			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = this.buttonUpSkinTextures;
@@ -1831,9 +1867,12 @@ package feathers.themes
 				height: this.controlSize,
 				textureScale: this.scale
 			};
-			button.stateToSkinFunction = skinSelector.updateValue;
+			thumb.stateToSkinFunction = skinSelector.updateValue;
 
-			button.minWidth = button.minHeight = this.controlSize;
+			thumb.minWidth = this.controlSize;
+			thumb.minHeight = this.controlSize;
+
+			thumb.hasLabelTextRenderer = false;
 		}
 
 		protected function setToggleSwitchTrackStyles(track:Button):void
@@ -1848,6 +1887,8 @@ package feathers.themes
 				textureScale: this.scale
 			};
 			track.stateToSkinFunction = skinSelector.updateValue;
+
+			track.hasLabelTextRenderer = false;
 		}
 
 	}

@@ -1258,6 +1258,8 @@ package feathers.themes
 				textureScale: this.scale
 			};
 			thumb.stateToSkinFunction = skinSelector.updateValue;
+
+			thumb.hasLabelTextRenderer = false;
 		}
 
 		protected function setScrollBarMinimumTrackStyles(track:Button):void
@@ -1266,6 +1268,8 @@ package feathers.themes
 			sliderTrackDefaultSkin.width = 10 * this.scale;
 			sliderTrackDefaultSkin.height = 10 * this.scale;
 			track.defaultSkin = sliderTrackDefaultSkin;
+
+			track.hasLabelTextRenderer = false;
 		}
 
 		protected function setBaseScrollBarButtonStyles(button:Button):void
@@ -1292,6 +1296,8 @@ package feathers.themes
 			button.minGap = 0;
 			button.minWidth = 10 * this.scale;
 			button.minHeight = 10 * this.scale;
+
+			button.hasLabelTextRenderer = false;
 		}
 
 		protected function setHorizontalScrollBarDecrementButtonStyles(button:Button):void
@@ -1407,6 +1413,8 @@ package feathers.themes
 			defaultSkin.width = 4 * this.scale;
 			defaultSkin.height = 4 * this.scale;
 			thumb.defaultSkin = defaultSkin;
+
+			thumb.hasLabelTextRenderer = false;
 		}
 
 	//-------------------------
@@ -1433,6 +1441,8 @@ package feathers.themes
 			sliderTrackDefaultSkin.width = 100 * this.scale;
 			sliderTrackDefaultSkin.height = 10 * this.scale;
 			track.defaultSkin = sliderTrackDefaultSkin;
+
+			track.hasLabelTextRenderer = false;
 		}
 
 		protected function setVerticalSliderMinimumTrackStyles(track:Button):void
@@ -1441,6 +1451,8 @@ package feathers.themes
 			sliderTrackDefaultSkin.width = 10 * this.scale;
 			sliderTrackDefaultSkin.height = 100 * this.scale;
 			track.defaultSkin = sliderTrackDefaultSkin;
+
+			track.hasLabelTextRenderer = false;
 		}
 
 		protected function setSliderThumbStyles(thumb:Button):void
@@ -1455,6 +1467,8 @@ package feathers.themes
 				textureScale: this.scale
 			};
 			thumb.stateToSkinFunction = skinSelector.updateValue;
+
+			thumb.hasLabelTextRenderer = false;
 		}
 
 	//-------------------------
@@ -1592,6 +1606,8 @@ package feathers.themes
 				textureScale: this.scale
 			};
 			track.stateToSkinFunction = skinSelector.updateValue;
+
+			track.hasLabelTextRenderer = false;
 		}
 
 		protected function setToggleSwitchThumbStyles(thumb:Button):void
@@ -1606,6 +1622,8 @@ package feathers.themes
 				textureScale: this.scale
 			};
 			thumb.stateToSkinFunction = skinSelector.updateValue;
+
+			thumb.hasLabelTextRenderer = false;
 		}
 	}
 }

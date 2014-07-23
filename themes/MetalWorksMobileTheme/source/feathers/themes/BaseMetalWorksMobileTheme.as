@@ -687,6 +687,7 @@ package feathers.themes
 				textureScale: this.scale
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
+			button.hasLabelTextRenderer = false;
 
 			button.minWidth = button.minHeight = this.controlSize;
 			button.minTouchWidth = button.minTouchHeight = this.gridSize;
@@ -1587,6 +1588,7 @@ package feathers.themes
 			var defaultSkin:Scale3Image = new Scale3Image(this.horizontalScrollBarThumbSkinTextures, this.scale);
 			defaultSkin.width = this.smallGutterSize;
 			thumb.defaultSkin = defaultSkin;
+			thumb.hasLabelTextRenderer = false;
 		}
 
 		protected function setVerticalSimpleScrollBarThumbStyles(thumb:Button):void
@@ -1594,6 +1596,7 @@ package feathers.themes
 			var defaultSkin:Scale3Image = new Scale3Image(this.verticalScrollBarThumbSkinTextures, this.scale);
 			defaultSkin.height = this.smallGutterSize;
 			thumb.defaultSkin = defaultSkin;
+			thumb.hasLabelTextRenderer = false;
 		}
 
 	//-------------------------
@@ -1627,6 +1630,7 @@ package feathers.themes
 			skinSelector.displayObjectProperties.width = this.wideControlSize;
 			skinSelector.displayObjectProperties.height = this.controlSize;
 			track.stateToSkinFunction = skinSelector.updateValue;
+			track.hasLabelTextRenderer = false;
 		}
 
 		protected function setHorizontalSliderMaximumTrackStyles(track:Button):void
@@ -1641,6 +1645,7 @@ package feathers.themes
 			skinSelector.displayObjectProperties.width = this.wideControlSize;
 			skinSelector.displayObjectProperties.height = this.controlSize;
 			track.stateToSkinFunction = skinSelector.updateValue;
+			track.hasLabelTextRenderer = false;
 		}
 
 		protected function setVerticalSliderMinimumTrackStyles(track:Button):void
@@ -1655,6 +1660,7 @@ package feathers.themes
 			skinSelector.displayObjectProperties.width = this.controlSize;
 			skinSelector.displayObjectProperties.height = this.wideControlSize;
 			track.stateToSkinFunction = skinSelector.updateValue;
+			track.hasLabelTextRenderer = false;
 		}
 
 		protected function setVerticalSliderMaximumTrackStyles(track:Button):void
@@ -1669,6 +1675,7 @@ package feathers.themes
 			skinSelector.displayObjectProperties.width = this.controlSize;
 			skinSelector.displayObjectProperties.height = this.wideControlSize;
 			track.stateToSkinFunction = skinSelector.updateValue;
+			track.hasLabelTextRenderer = false;
 		}
 
 	//-------------------------
@@ -1807,6 +1814,7 @@ package feathers.themes
 				textureScale: this.scale
 			};
 			track.stateToSkinFunction = skinSelector.updateValue;
+			track.hasLabelTextRenderer = false;
 		}
 
 	}
