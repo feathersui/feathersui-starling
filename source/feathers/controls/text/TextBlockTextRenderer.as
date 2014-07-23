@@ -1162,8 +1162,12 @@ package feathers.controls.text
 					{
 						this._textElement.elementFormat = this._disabledElementFormat;
 					}
-					else if(this._elementFormat)
+					else
 					{
+						if(!this._elementFormat)
+						{
+							this._elementFormat = new ElementFormat();
+						}
 						this._textElement.elementFormat = this._elementFormat;
 					}
 				}
