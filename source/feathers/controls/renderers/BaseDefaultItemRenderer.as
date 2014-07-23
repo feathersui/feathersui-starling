@@ -3101,7 +3101,14 @@ package feathers.controls.renderers
 			var oldIgnoreAccessoryResizes:Boolean = this._ignoreAccessoryResizes;
 			this._ignoreAccessoryResizes = true;
 			this.refreshMaxLabelWidth(true);
-			this.labelTextRenderer.measureText(HELPER_POINT);
+			if(this.labelTextRenderer)
+			{
+				this.labelTextRenderer.measureText(HELPER_POINT);
+			}
+			else
+			{
+				HELPER_POINT.setTo(0, 0);
+			}
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
 			{
@@ -3768,7 +3775,7 @@ package feathers.controls.renderers
 			var oldIgnoreAccessoryResizes:Boolean = this._ignoreAccessoryResizes;
 			this._ignoreAccessoryResizes = true;
 			this.refreshMaxLabelWidth(false);
-			if(this._label)
+			if(this._label && this.labelTextRenderer)
 			{
 				this.labelTextRenderer.validate();
 				var labelRenderer:DisplayObject = DisplayObject(this.labelTextRenderer);
@@ -3780,7 +3787,7 @@ package feathers.controls.renderers
 			{
 				accessoryGap = this._gap;
 			}
-			if(this._label && iconIsInLayout && accessoryIsInLayout)
+			if(this._label && this.labelTextRenderer && iconIsInLayout && accessoryIsInLayout)
 			{
 				this.positionSingleChild(labelRenderer);
 				if(this._layoutOrder == LAYOUT_ORDER_LABEL_ACCESSORY_ICON)
@@ -3803,7 +3810,7 @@ package feathers.controls.renderers
 					this.positionRelativeToOthers(this.accessory, labelRenderer, this.currentIcon, this._accessoryPosition, accessoryGap, this._iconPosition, this._gap);
 				}
 			}
-			else if(this._label)
+			else if(this._label && this.labelTextRenderer)
 			{
 				this.positionSingleChild(labelRenderer);
 				//we won't position both the icon and accessory here, otherwise
@@ -3850,7 +3857,7 @@ package feathers.controls.renderers
 				this.currentIcon.x += this._iconOffsetX;
 				this.currentIcon.y += this._iconOffsetY;
 			}
-			if(this._label)
+			if(this._label && this.labelTextRenderer)
 			{
 				this.labelTextRenderer.x += this._labelOffsetX;
 				this.labelTextRenderer.y += this._labelOffsetY;
@@ -3994,7 +4001,10 @@ package feathers.controls.renderers
 			{
 				calculatedWidth = 0;
 			}
-			this.labelTextRenderer.maxWidth = calculatedWidth;
+			if(this.labelTextRenderer)
+			{
+				this.labelTextRenderer.maxWidth = calculatedWidth;
+			}
 		}
 
 		/**
