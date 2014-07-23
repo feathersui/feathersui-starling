@@ -275,6 +275,7 @@ package feathers.themes
 		protected var primaryTextFormat:BitmapFontTextFormat;
 		protected var disabledTextFormat:BitmapFontTextFormat;
 		protected var centeredTextFormat:BitmapFontTextFormat;
+		protected var centeredDisabledTextFormat:BitmapFontTextFormat;
 		protected var headingTextFormat:BitmapFontTextFormat;
 		protected var headingDisabledTextFormat:BitmapFontTextFormat;
 		protected var detailTextFormat:BitmapFontTextFormat;
@@ -416,6 +417,7 @@ package feathers.themes
 			this.primaryTextFormat = new BitmapFontTextFormat(FONT_NAME, this.fontSize, PRIMARY_TEXT_COLOR);
 			this.disabledTextFormat = new BitmapFontTextFormat(FONT_NAME, this.fontSize, DISABLED_TEXT_COLOR);
 			this.centeredTextFormat = new BitmapFontTextFormat(FONT_NAME, this.fontSize, PRIMARY_TEXT_COLOR, TextFormatAlign.CENTER);
+			this.centeredDisabledTextFormat = new BitmapFontTextFormat(FONT_NAME, this.fontSize, DISABLED_TEXT_COLOR, TextFormatAlign.CENTER);
 			this.headingTextFormat = new BitmapFontTextFormat(FONT_NAME, this.headingFontSize, PRIMARY_TEXT_COLOR);
 			this.headingDisabledTextFormat = new BitmapFontTextFormat(FONT_NAME, this.headingFontSize, DISABLED_TEXT_COLOR);
 			this.detailTextFormat = new BitmapFontTextFormat(FONT_NAME, this.detailFontSize, PRIMARY_TEXT_COLOR);
@@ -1031,6 +1033,7 @@ package feathers.themes
 			input.isEditable = false;
 			input.textEditorFactory = numericStepperTextEditorFactory;
 			input.textEditorProperties.textFormat = this.centeredTextFormat;
+			input.textEditorProperties.disabledTextFormat = this.centeredDisabledTextFormat;
 
 			var backgroundSkin:Scale9Image = new Scale9Image(insetBackgroundSkinTextures, this.scale);
 			backgroundSkin.width = 66 * this.scale;
@@ -1461,7 +1464,7 @@ package feathers.themes
 			this.setScrollerStyles(textArea);
 
 			textArea.textEditorProperties.textFormat = new TextFormat("PF Ronda Seven,Roboto,Helvetica,Arial,_sans", this.fontSize, PRIMARY_TEXT_COLOR);
-			//textArea.textEditorProperties.disabledTextFormat = new TextFormat("PF Ronda Seven,Roboto,Helvetica,Arial,_sans", this.fontSize, DISABLED_TEXT_COLOR);
+			textArea.textEditorProperties.disabledTextFormat = new TextFormat("PF Ronda Seven,Roboto,Helvetica,Arial,_sans", this.fontSize, DISABLED_TEXT_COLOR);
 
 			textArea.paddingTop = 14 * this.scale;
 			textArea.paddingBottom = 8 * this.scale;
@@ -1493,6 +1496,7 @@ package feathers.themes
 			input.textEditorProperties.fontFamily = "_sans";
 			input.textEditorProperties.fontSize = this.inputFontSize;
 			input.textEditorProperties.color = PRIMARY_TEXT_COLOR;
+			input.textEditorProperties.disabledColor = DISABLED_TEXT_COLOR;
 
 			var backgroundSkin:Scale9Image = new Scale9Image(insetBackgroundSkinTextures, this.scale);
 			backgroundSkin.width = 264 * this.scale;

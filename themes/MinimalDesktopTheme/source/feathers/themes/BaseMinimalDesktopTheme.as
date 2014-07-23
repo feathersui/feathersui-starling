@@ -252,6 +252,7 @@ package feathers.themes
 		protected var detailTextFormat:BitmapFontTextFormat;
 		protected var detailDisabledTextFormat:BitmapFontTextFormat;
 		protected var centeredTextFormat:BitmapFontTextFormat;
+		protected var centeredDisabledTextFormat:BitmapFontTextFormat;
 
 		override public function dispose():void
 		{
@@ -388,6 +389,7 @@ package feathers.themes
 			this.detailTextFormat = new BitmapFontTextFormat(FONT_NAME, this.detailFontSize, PRIMARY_TEXT_COLOR);
 			this.detailDisabledTextFormat = new BitmapFontTextFormat(FONT_NAME, this.detailFontSize, DISABLED_TEXT_COLOR);
 			this.centeredTextFormat = new BitmapFontTextFormat(FONT_NAME, this.fontSize, PRIMARY_TEXT_COLOR, TextFormatAlign.CENTER);
+			this.centeredDisabledTextFormat = new BitmapFontTextFormat(FONT_NAME, this.fontSize, DISABLED_TEXT_COLOR, TextFormatAlign.CENTER);
 		}
 
 		protected function initializeStyleProviders():void
@@ -1020,7 +1022,7 @@ package feathers.themes
 			input.paddingLeft = input.paddingRight = 2 * this.scale;
 
 			input.textEditorProperties.textFormat = this.centeredTextFormat;
-			//input.textEditorProperties.disabledTextFormat = this.disabledTextFormat;
+			input.textEditorProperties.disabledTextFormat = this.centeredDisabledTextFormat;
 			input.textEditorProperties.cursorSkin = new Quad(1, 1, PRIMARY_TEXT_COLOR);
 			input.textEditorProperties.selectionSkin = new Quad(1, 1, BACKGROUND_COLOR);
 
@@ -1518,11 +1520,12 @@ package feathers.themes
 			this.setScrollerStyles(textArea);
 
 			textArea.textEditorProperties.textFormat = new TextFormat("PF Ronda Seven,Roboto,Helvetica,Arial,_sans", this.fontSize, PRIMARY_TEXT_COLOR);
-			//textArea.textEditorProperties.disabledTextFormat = new TextFormat("PF Ronda Seven,Roboto,Helvetica,Arial,_sans", this.fontSize, DISABLED_TEXT_COLOR);
+			textArea.textEditorProperties.disabledTextFormat = new TextFormat("PF Ronda Seven,Roboto,Helvetica,Arial,_sans", this.fontSize, DISABLED_TEXT_COLOR);
 
-			textArea.paddingTop = 14 * this.scale;
-			textArea.paddingBottom = 8 * this.scale;
-			textArea.paddingLeft = textArea.paddingRight = 16 * this.scale;
+			textArea.paddingTop = 2 * this.scale;
+			textArea.paddingBottom = 2 * this.scale;
+			textArea.paddingLeft = 4 * this.scale;
+			textArea.paddingRight = 4 * this.scale;
 
 			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = this.insetBackgroundSkinTextures;
@@ -1548,7 +1551,7 @@ package feathers.themes
 			input.paddingLeft = input.paddingRight = 2 * this.scale;
 
 			input.textEditorProperties.textFormat = this.primaryTextFormat;
-			//input.textEditorProperties.disabledTextFormat = this.disabledTextFormat;
+			input.textEditorProperties.disabledTextFormat = this.disabledTextFormat;
 			input.textEditorProperties.cursorSkin = new Quad(1, 1, PRIMARY_TEXT_COLOR);
 			input.textEditorProperties.selectionSkin = new Quad(1, 1, BACKGROUND_COLOR);
 

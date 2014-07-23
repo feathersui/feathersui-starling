@@ -1124,6 +1124,7 @@ package feathers.themes
 			input.textEditorProperties.cursorSkin = new Quad(1, 1, LIGHT_TEXT_COLOR);
 			input.textEditorProperties.selectionSkin = new Quad(1, 1, TEXT_SELECTION_BACKGROUND_COLOR);
 			input.textEditorProperties.elementFormat = this.lightUIElementFormat;
+			input.textEditorProperties.disabledElementFormat = this.lightUIDisabledElementFormat;
 			input.textEditorProperties.textAlign = TextBlockTextEditor.TEXT_ALIGN_CENTER;
 		}
 
@@ -1791,7 +1792,7 @@ package feathers.themes
 			textArea.padding = this.gutterSize;
 
 			textArea.textEditorProperties.textFormat = this.scrollTextTextFormat;
-			//textArea.textEditorProperties.disabledTextFormat = this.scrollTextDisabledTextFormat;
+			textArea.textEditorProperties.disabledTextFormat = this.scrollTextDisabledTextFormat;
 		}
 
 	//-------------------------
@@ -1822,10 +1823,12 @@ package feathers.themes
 			input.paddingLeft = this.gutterSize;
 			input.paddingRight = this.gutterSize;
 			input.textEditorProperties.elementFormat = this.lightElementFormat;
+			input.textEditorProperties.disabledElementFormat = this.disabledElementFormat;
 			input.textEditorProperties.cursorSkin = new Quad(1, 1, LIGHT_TEXT_COLOR);
 			input.textEditorProperties.selectionSkin = new Quad(1, 1, TEXT_SELECTION_BACKGROUND_COLOR);
 
 			input.promptProperties.elementFormat = this.lightElementFormat;
+			input.promptProperties.disabledElementFormat = this.disabledElementFormat;
 		}
 
 		protected function setTextInputStyles(input:TextInput):void
