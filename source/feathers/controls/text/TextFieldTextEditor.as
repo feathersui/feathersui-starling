@@ -330,6 +330,7 @@ package feathers.controls.text
 		 *
 		 * @default null
 		 *
+		 * @see #disabledTextFormat
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextFormat.html flash.text.TextFormat
 		 */
 		public function get textFormat():TextFormat
@@ -351,6 +352,43 @@ package feathers.controls.text
 			//false whether we use the real previous format or null. might as
 			//well remove the reference to an object we don't need anymore.
 			this._previousTextFormat = null;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _disabledTextFormat:TextFormat;
+
+		/**
+		 * The font and styles used to draw the text when the component is disabled.
+		 *
+		 * <p>In the following example, the disabled text format is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.isEnabled = false;
+		 * textEditor.disabledTextFormat = new TextFormat( "Source Sans Pro" );</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #textFormat
+		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextFormat.html flash.text.TextFormat
+		 */
+		public function get disabledTextFormat():TextFormat
+		{
+			return this._disabledTextFormat;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set disabledTextFormat(value:TextFormat):void
+		{
+			if(this._disabledTextFormat == value)
+			{
+				return;
+			}
+			this._disabledTextFormat = value;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -1144,15 +1182,24 @@ package feathers.controls.text
 			textField.type = this._isEditable ? TextFieldType.INPUT : TextFieldType.DYNAMIC;
 			textField.selectable = this._isEnabled;
 			var isFormatDifferent:Boolean = false;
-			if(this._textFormat)
+			var currentTextFormat:TextFormat;
+			if(!this._isEnabled && this._disabledTextFormat)
+			{
+				currentTextFormat = this._disabledTextFormat;
+			}
+			else
+			{
+				currentTextFormat = this._textFormat;
+			}
+			if(currentTextFormat)
 			{
 				//for some reason, textField.defaultTextFormat always fails
-				//comparison against this._textFormat. if we save to a member
+				//comparison against currentTextFormat. if we save to a member
 				//variable and compare against that instead, it works.
 				//I guess text field creates a different TextFormat object.
-				isFormatDifferent = this._previousTextFormat != this._textFormat;
-				this._previousTextFormat = this._textFormat;
-				textField.defaultTextFormat = this._previousTextFormat;
+				isFormatDifferent = this._previousTextFormat != currentTextFormat;
+				this._previousTextFormat = currentTextFormat;
+				textField.defaultTextFormat = currentTextFormat;
 			}
 			if(this._isHTML)
 			{
