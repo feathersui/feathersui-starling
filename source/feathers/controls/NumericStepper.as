@@ -15,6 +15,7 @@ package feathers.controls
 	import feathers.skins.IStyleProvider;
 	import feathers.utils.math.clamp;
 	import feathers.utils.math.roundToNearest;
+	import feathers.utils.math.roundToPrecision;
 
 	import flash.events.TimerEvent;
 	import flash.ui.Keyboard;
@@ -294,7 +295,9 @@ package feathers.controls
 		{
 			if(this._step != 0 && newValue != this._maximum && newValue != this._minimum)
 			{
-				newValue = roundToNearest(newValue - this._minimum, this._step) + this._minimum;
+				//roundToPrecision helps us to avoid numbers like 1.00000000000000001
+				//caused by the inaccuracies of floating point math.
+				newValue = roundToPrecision(roundToNearest(newValue - this._minimum, this._step) + this._minimum, 10);
 			}
 			newValue = clamp(newValue, this._minimum, this._maximum);
 			if(this._value == newValue)
@@ -1352,7 +1355,7 @@ package feathers.controls
 		 */
 		protected function decrement():void
 		{
-			this.value -= this._step;
+			this.value = this._value - this._step;
 			if(this.textInput.isEditable)
 			{
 				this.validate();
@@ -1365,7 +1368,7 @@ package feathers.controls
 		 */
 		protected function increment():void
 		{
-			this.value += this._step;
+			this.value = this._value + this._step;
 			if(this.textInput.isEditable)
 			{
 				this.validate();
@@ -1527,7 +1530,12 @@ package feathers.controls
 		{
 			var typicalText:String = "";
 			var maxCharactersBeforeDecimal:Number = Math.max(int(this._minimum).toString().length, int(this._maximum).toString().length, int(this._step).toString().length);
-			var maxCharactersAfterDecimal:Number = Math.max((this._minimum - int(this._minimum)).toString().length, (this._maximum - int(this._maximum)).toString().length, (this._step - int(this._step)).toString().length) - 2;
+
+			//roundToPrecision() helps us to avoid numbers like 1.00000000000000001
+			//caused by the inaccuracies of floating point math.
+			var maxCharactersAfterDecimal:Number = Math.max(roundToPrecision(this._minimum - int(this._minimum), 10).toString().length,
+				roundToPrecision(this._maximum - int(this._maximum), 10).toString().length,
+				roundToPrecision(this._step - int(this._step), 10).toString().length) - 2;
 			if(maxCharactersAfterDecimal < 0)
 			{
 				maxCharactersAfterDecimal = 0;
