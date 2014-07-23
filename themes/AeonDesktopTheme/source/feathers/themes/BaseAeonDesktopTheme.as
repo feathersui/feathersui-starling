@@ -974,7 +974,7 @@ package feathers.themes
 			input.paddingRight = input.paddingLeft = 4;
 
 			input.textEditorProperties.textFormat = this.defaultTextFormat;
-			//input.textEditorProperties.disabledTextFormat = this.defaultTextFormat;
+			input.textEditorProperties.disabledTextFormat = this.disabledTextFormat;
 			input.promptProperties.textFormat = this.defaultTextFormat;
 			input.promptProperties.disabledTextFormat = this.defaultTextFormat;
 
@@ -1456,7 +1456,7 @@ package feathers.themes
 			this.setScrollerStyles(textArea);
 
 			textArea.textEditorProperties.textFormat = this.defaultTextFormat;
-			//textArea.textEditorProperties.disabledTextFormat = this.disabledTextFormat;
+			textArea.textEditorProperties.disabledTextFormat = this.disabledTextFormat;
 
 			textArea.paddingTop = 2;
 			textArea.paddingBottom = 2;
@@ -1497,7 +1497,7 @@ package feathers.themes
 			input.paddingRight = input.paddingLeft = 4;
 
 			input.textEditorProperties.textFormat = this.defaultTextFormat;
-			//input.textEditorProperties.disabledTextFormat = this.disabledTextFormat;
+			input.textEditorProperties.disabledTextFormat = this.disabledTextFormat;
 			input.promptProperties.textFormat = this.defaultTextFormat;
 			input.promptProperties.disabledTextFormat = this.disabledTextFormat;
 		}
