@@ -495,23 +495,22 @@ package feathers.controls.text
 		 */
 		public function measureText(result:Point = null):Point
 		{
+			if(!result)
+			{
+				result = new Point();
+			}
+
 			if(this.isInvalid(INVALIDATION_FLAG_STYLES) || this.isInvalid(INVALIDATION_FLAG_STATE))
 			{
 				this.refreshTextFormat();
 			}
 
-			if(!result)
-			{
-				result = new Point();
-			}
-			else
-			{
-				result.x = result.y = 0;
-			}
 			if(!this.currentTextFormat || this._text === null)
 			{
+				result.setTo(0, 0);
 				return result;
 			}
+
 			var font:BitmapFont = this.currentTextFormat.font;
 			var customSize:Number = this.currentTextFormat.size;
 			var customLetterSpacing:Number = this.currentTextFormat.letterSpacing;
