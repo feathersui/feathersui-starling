@@ -1090,11 +1090,6 @@ package feathers.controls.text
 				result = new Point();
 			}
 
-			if(!this._isInitialized)
-			{
-				this.initializeInternal();
-			}
-
 			var needsWidth:Boolean = this.explicitWidth != this.explicitWidth; //isNaN
 			var needsHeight:Boolean = this.explicitHeight != this.explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
@@ -1102,6 +1097,14 @@ package feathers.controls.text
 				result.x = this.explicitWidth;
 				result.y = this.explicitHeight;
 				return result;
+			}
+
+			//if a parent component validates before we're added to the stage,
+			//measureText() may be called before initialization, so we need to
+			//force it.
+			if(!this._isInitialized)
+			{
+				this.initializeInternal();
 			}
 
 			this.commit();
