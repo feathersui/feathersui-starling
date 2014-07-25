@@ -992,6 +992,10 @@ package feathers.controls.text
 				}
 				this.textSnapshots = null;
 			}
+			//this isn't necessary, but if a memory leak keeps the text renderer
+			//from being garbage collected, freeing up the text field may help
+			//ease major memory pressure from native filters
+			this.textField = null;
 
 			this._previousActualWidth = NaN;
 			this._previousActualHeight = NaN;
