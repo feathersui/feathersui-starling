@@ -1231,12 +1231,6 @@ package feathers.controls.text
 				result = new Point();
 			}
 
-			if(!this._measureTextField)
-			{
-				result.x = result.y = 0;
-				return result;
-			}
-
 			var needsWidth:Boolean = this.explicitWidth != this.explicitWidth; //isNaN
 			var needsHeight:Boolean = this.explicitHeight != this.explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
@@ -1246,6 +1240,13 @@ package feathers.controls.text
 				return result;
 			}
 
+			//if a parent component validates before we're added to the stage,
+			//measureText() may be called before initialization, so we need to
+			//force it.
+			if(!this._isInitialized)
+			{
+				this.initializeInternal();
+			}
 
 			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
