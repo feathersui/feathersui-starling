@@ -1946,6 +1946,10 @@ package feathers.core
 		 */
 		protected function initializeInternal():void
 		{
+			if(this._isInitialized)
+			{
+				return;
+			}
 			this.initialize();
 			this.invalidate(); //invalidate everything
 			this._isInitialized = true;
