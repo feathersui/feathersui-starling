@@ -837,6 +837,11 @@ package feathers.controls.text
 			{
 				this.textField.parent.removeChild(this.textField);
 			}
+			//this isn't necessary, but if a memory leak keeps the text renderer
+			//from being garbage collected, freeing up the text field may help
+			//ease major memory pressure from native filters
+			this.textField = null;
+			this.measureTextField = null;
 
 			super.dispose();
 		}
