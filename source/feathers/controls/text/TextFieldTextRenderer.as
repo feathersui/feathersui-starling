@@ -1035,10 +1035,9 @@ package feathers.controls.text
 				result = new Point();
 			}
 
-			if(!this.textField)
+			if(!this._isInitialized)
 			{
-				result.x = result.y = 0;
-				return result;
+				this.initializeInternal();
 			}
 
 			var needsWidth:Boolean = this.explicitWidth != this.explicitWidth; //isNaN
