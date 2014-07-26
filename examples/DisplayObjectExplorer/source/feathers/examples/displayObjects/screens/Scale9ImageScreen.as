@@ -1,12 +1,15 @@
 package feathers.examples.displayObjects.screens
 {
 	import feathers.controls.Button;
+	import feathers.controls.Check;
 	import feathers.controls.Header;
 	import feathers.controls.Screen;
 	import feathers.display.Scale9Image;
 	import feathers.textures.Scale9Textures;
 
 	import flash.geom.Rectangle;
+
+	import starling.events.Event;
 
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -18,6 +21,9 @@ package feathers.examples.displayObjects.screens
 		[Embed(source="/../assets/images/scale9.png")]
 		private static const SCALE_9_TEXTURE:Class;
 
+		[Embed(source="/../assets/images/scale9-tile-pattern.png")]
+		private static const SCALE_9_TILE_TEXTURE:Class;
+
 		public function Scale9ImageScreen()
 		{
 		}
@@ -26,6 +32,8 @@ package feathers.examples.displayObjects.screens
 		private var _image:Scale9Image;
 		private var _rightButton:Button;
 		private var _bottomButton:Button;
+		private var _gridCheckbox:Check;
+		private var _tiledCheckbox:Check;
 
 		private var _minDisplayObjectWidth:Number;
 		private var _minDisplayObjectHeight:Number;
@@ -38,17 +46,21 @@ package feathers.examples.displayObjects.screens
 		private var _rightTouchPointID:int = -1;
 		private var _bottomTouchPointID:int = -1;
 
+		private const texture:Texture = Texture.fromBitmap(new SCALE_9_TEXTURE(), false);
+		private const textures:Scale9Textures = new Scale9Textures(texture, new Rectangle(20, 20, 20, 20));
+
+		private const gridTexture:Texture = Texture.fromBitmap(new SCALE_9_TILE_TEXTURE(), false);
+		private const gridTextures:Scale9Textures = new Scale9Textures(gridTexture, new Rectangle(20, 20, 48, 48));
+
 		override protected function initialize():void
 		{
 			this._header = new Header();
 			this._header.title = "Scale 9 Image";
 			this.addChild(this._header);
 
-			const texture:Texture = Texture.fromBitmap(new SCALE_9_TEXTURE(), false);
-			const textures:Scale9Textures = new Scale9Textures(texture, new Rectangle(20, 20, 20, 20));
 			this._image = new Scale9Image(textures, this.dpiScale);
-			this._minDisplayObjectWidth = 40;
-			this._minDisplayObjectHeight = 40;
+			this._minDisplayObjectWidth = 20 * this.dpiScale;
+			this._minDisplayObjectHeight = 20 * this.dpiScale;
 			this.addChild(this._image);
 
 			this._rightButton = new Button();
@@ -60,6 +72,16 @@ package feathers.examples.displayObjects.screens
 			this._bottomButton.nameList.add("bottom-grip");
 			this._bottomButton.addEventListener(TouchEvent.TOUCH, bottomButton_touchHandler);
 			this.addChild(this._bottomButton);
+
+			this._tiledCheckbox = new Check();
+			this._tiledCheckbox.label = "tiled";
+			this._tiledCheckbox.addEventListener(Event.CHANGE, onTiledChange);
+			this.addChild(this._tiledCheckbox);
+
+			this._gridCheckbox = new Check();
+			this._gridCheckbox.label = "show grid";
+			this._gridCheckbox.addEventListener(Event.CHANGE, onShowGridChange);
+			this.addChild(this._gridCheckbox);
 		}
 
 		override protected function draw():void
@@ -72,6 +94,14 @@ package feathers.examples.displayObjects.screens
 
 			this._rightButton.validate();
 			this._bottomButton.validate();
+			this._gridCheckbox.validate();
+			this._tiledCheckbox.validate();
+
+			this._gridCheckbox.x = this.width - 30 * this.dpiScale - this._gridCheckbox.width;
+			this._gridCheckbox.y = this._header.height + 30 * this.dpiScale;
+
+			this._tiledCheckbox.x = this._gridCheckbox.x;
+			this._tiledCheckbox.y = this._header.height + this._gridCheckbox.height + 60 * this.dpiScale;
 
 			this._maxDisplayObjectWidth = this.actualWidth - this._rightButton.width - this._image.x;
 			this._maxDisplayObjectHeight = this.actualHeight - this._bottomButton.height - this._image.y;;
@@ -139,6 +169,18 @@ package feathers.examples.displayObjects.screens
 			{
 				this._bottomTouchPointID = -1;
 			}
+		}
+
+		private function onTiledChange(event:Event):void
+		{
+			var check:Check = Check(event.currentTarget);
+			this._image.isTiled = check.isSelected;
+		}
+
+		private function onShowGridChange(event:Event):void
+		{
+			var check:Check = Check(event.currentTarget);
+			this._image.textures = check.isSelected ? gridTextures : textures;
 		}
 	}
 }
