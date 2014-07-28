@@ -15,6 +15,7 @@ package feathers.examples.componentsExplorer.screens
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
+	import starling.display.DisplayObject;
 	import starling.events.Event;
 
 	[Event(name="complete",type="starling.events.Event")]
@@ -73,6 +74,23 @@ package feathers.examples.componentsExplorer.screens
 		override protected function get defaultStyleProvider():IStyleProvider
 		{
 			return ItemRendererScreen.globalStyleProvider;
+		}
+
+		override public function dispose():void
+		{
+			//icon and accessory display objects in the list's data provider
+			//won't be automatically disposed because feathers cannot know if
+			//they need to be used again elsewhere or not. we need to dispose
+			//them manually.
+			if(this._listItem.hasOwnProperty("icon"))
+			{
+				DisplayObject(this._listItem.icon).dispose();
+			}
+			if(this._listItem.hasOwnProperty("accessory"))
+			{
+				DisplayObject(this._listItem.accessory).dispose();
+			}
+			super.dispose();
 		}
 
 		override protected function initialize():void
