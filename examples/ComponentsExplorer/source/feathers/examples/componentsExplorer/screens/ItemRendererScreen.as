@@ -82,14 +82,10 @@ package feathers.examples.componentsExplorer.screens
 			//won't be automatically disposed because feathers cannot know if
 			//they need to be used again elsewhere or not. we need to dispose
 			//them manually.
-			if(this._listItem.hasOwnProperty("icon"))
-			{
-				DisplayObject(this._listItem.icon).dispose();
-			}
-			if(this._listItem.hasOwnProperty("accessory"))
-			{
-				DisplayObject(this._listItem.accessory).dispose();
-			}
+			this._list.dataProvider.dispose(disposeItemIconOrAccessory);
+
+			//never forget to call super.dispose() because you don't want to
+			//create a memory leak!
 			super.dispose();
 		}
 
@@ -236,6 +232,18 @@ package feathers.examples.componentsExplorer.screens
 
 			//never forget to call super.draw()!
 			super.draw();
+		}
+
+		private function disposeItemIconOrAccessory(item:Object):void
+		{
+			if(item.hasOwnProperty("icon"))
+			{
+				DisplayObject(item.icon).dispose();
+			}
+			if(item.hasOwnProperty("accessory"))
+			{
+				DisplayObject(item.accessory).dispose();
+			}
 		}
 
 		private function onBackButton():void

@@ -50,17 +50,10 @@ package feathers.examples.componentsExplorer.screens
 			//won't be automatically disposed because feathers cannot know if
 			//they need to be used again elsewhere or not. we need to dispose
 			//them manually.
-			var collection:HierarchicalCollection = this._list.dataProvider;
-			var groupCount:int = collection.getLength();
-			for(var i:int = 0; i < groupCount; i++)
-			{
-				var itemCount:int = collection.getLength(i);
-				for(var j:int = 0; j < itemCount; j++)
-				{
-					var item:Object = collection.getItemAt(i, j);
-					DisplayObject(item.accessory).dispose();
-				}
-			}
+			this._list.dataProvider.dispose(null, disposeItemAccessory);
+
+			//never forget to call super.dispose() because you don't want to
+			//create a memory leak!
 			super.dispose();
 		}
 
@@ -242,6 +235,11 @@ package feathers.examples.componentsExplorer.screens
 			];
 
 			this.backButtonHandler = this.onBackButton;
+		}
+
+		private function disposeItemAccessory(item:Object):void
+		{
+			DisplayObject(item.accessory).dispose();
 		}
 
 		private function onBackButton():void
