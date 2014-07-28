@@ -42,6 +42,22 @@ package feathers.examples.layoutExplorer.screens
 		private var _tileHorizontalAlignPicker:PickerList;
 		private var _tileVerticalAlignPicker:PickerList;
 
+		override public function dispose():void
+		{
+			//icon and accessory display objects in the list's data provider
+			//won't be automatically disposed because feathers cannot know if
+			//they need to be used again elsewhere or not. we need to dispose
+			//them manually.
+			var collection:ListCollection = this._list.dataProvider;
+			var collectionLength:int = collection.length;
+			for(var i:int = 0; i < collectionLength; i++)
+			{
+				var item:Object = collection.getItemAt(i);
+				DisplayObject(item.accessory).dispose();
+			}
+			super.dispose();
+		}
+
 		override protected function initialize():void
 		{
 			//never forget to call super.initialize()
