@@ -4,6 +4,7 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.List;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.Screen;
+	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ListCollection;
@@ -63,6 +64,8 @@ package feathers.examples.componentsExplorer.screens
 
 		private var _list:List;
 
+		public var savedVerticalScrollPosition:Number = 0;
+
 		override protected function initialize():void
 		{
 			//never forget to call super.initialize()
@@ -98,6 +101,7 @@ package feathers.examples.componentsExplorer.screens
 			this._list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
 			this._list.clipContent = false;
 			this._list.autoHideBackground = true;
+			this._list.verticalScrollPosition = this.savedVerticalScrollPosition;
 			this._list.addEventListener(Event.CHANGE, list_changeHandler);
 
 			var itemRendererAccessorySourceFunction:Function = null;
@@ -132,6 +136,17 @@ package feathers.examples.componentsExplorer.screens
 		
 		private function list_changeHandler(event:Event):void
 		{
+			//we're going to save the position of the list so that when the user
+			//navigates back to this screen, they won't need to scroll back to
+			//the same position manually
+
+			var screenItem:ScreenNavigatorItem = this._owner.getScreen(this.screenID);
+			if(!screenItem.properties)
+			{
+				screenItem.properties = {};
+			}
+			screenItem.properties.savedVerticalScrollPosition = this._list.verticalScrollPosition;
+
 			var eventType:String = this._list.selectedItem.event as String;
 			this.dispatchEventWith(eventType);
 		}
