@@ -1183,6 +1183,10 @@ package feathers.controls.text
 					this._pendingSelectionBeginIndex = this._pendingSelectionEndIndex = -1;
 				}
 				this.stageText.visible = true;
+				if(!this.stageText.stage)
+				{
+					this.stageText.stage = Starling.current.nativeStage;
+				}
 				this.stageText.assignFocus();
 			}
 			else
