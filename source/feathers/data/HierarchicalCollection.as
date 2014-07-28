@@ -345,5 +345,76 @@ package feathers.data
 			this.dispatchEventWith(CollectionEventType.REPLACE_ITEM, false, rest);
 			this.dispatchEventWith(Event.CHANGE);
 		}
+
+		/**
+		 * Calls a function for each group in the collection and another
+		 * function for each item in a group, where each function handles any
+		 * properties that require disposal on these objects. For example,
+		 * display objects or textures may need to be disposed. You may pass in
+		 * a value of <code>null</code> for either function if you don't have
+		 * anything to dispose in one or the other.
+		 *
+		 * <p>The function to dispose a group is expected to have the following signature:</p>
+		 * <pre>function( group:Object ):void</pre>
+		 *
+		 * <p>The function to dispose an item is expected to have the following signature:</p>
+		 * <pre>function( item:Object ):void</pre>
+		 *
+		 * <p>In the following example, the items in the collection are disposed:</p>
+		 *
+		 * <listing version="3.0">
+		 * collection.dispose( function( group:Object ):void
+		 * {
+		 *     var content:DisplayObject = DisplayObject(group.content);
+		 *     content.dispose();
+		 * },
+		 * function( item:Object ):void
+		 * {
+		 *     var accessory:DisplayObject = DisplayObject(item.accessory);
+		 *     accessory.dispose();
+		 * },)</listing>
+		 *
+		 * @see http://doc.starling-framework.org/core/starling/display/DisplayObject.html#dispose() starling.display.DisplayObject.dispose()
+		 * @see http://doc.starling-framework.org/core/starling/textures/Texture.html#dispose() starling.textures.Texture.dispose()
+		 */
+		public function dispose(disposeGroup:Function, disposeItem:Function):void
+		{
+			var groupCount:int = this.getLength();
+			var path:Array = [];
+			for(var i:int = 0; i < groupCount; i++)
+			{
+				var group:Object = this.getItemAt(i);
+				path[0] = i;
+				this.disposeGroupInternal(group, path, disposeGroup, disposeItem);
+				path.length = 0;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function disposeGroupInternal(group:Object, path:Array, disposeGroup:Function, disposeItem:Function):void
+		{
+			if(disposeGroup != null)
+			{
+				disposeGroup(group);
+			}
+
+			var itemCount:int = this.getLength.apply(this, path);
+			for(var i:int = 0; i < itemCount; i++)
+			{
+				path[path.length] = i;
+				var item:Object = this.getItemAt.apply(this, path);
+				if(this.isBranch(item))
+				{
+					this.disposeGroupInternal(item, path, disposeGroup, disposeItem);
+				}
+				else if(disposeItem != null)
+				{
+					disposeItem(item);
+				}
+				path.length--;
+			}
+		}
 	}
 }
