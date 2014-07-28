@@ -1101,6 +1101,12 @@ package feathers.controls.renderers
 		 * The field in the item that contains a display object to be displayed
 		 * as an icon or other graphic next to the label in the renderer.
 		 *
+		 * <p>Warning: It is your responsibility to dispose all icons
+		 * included in the data provider and accessed with <code>iconField</code>,
+		 * or any display objects returned by <code>iconFunction</code>.
+		 * These display objects will not be disposed when the list is disposed.
+		 * Not disposing an icon may result in a memory leak.</p>
+		 *
 		 * <p>All of the icon fields and functions, ordered by priority:</p>
 		 * <ol>
 		 *     <li><code>iconSourceFunction</code></li>
@@ -1157,6 +1163,12 @@ package feathers.controls.renderers
 		 * performance. It's better to return a new icon the first time this
 		 * function is called for a particular item and then return the same
 		 * icon if that item is passed to this function again.</p>
+		 *
+		 * <p>Warning: It is your responsibility to dispose all icons
+		 * included in the data provider and accessed with <code>iconField</code>,
+		 * or any display objects returned by <code>iconFunction</code>.
+		 * These display objects will not be disposed when the list is disposed.
+		 * Not disposing an icon may result in a memory leak.</p>
 		 *
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function( item:Object ):DisplayObject</pre>
@@ -1491,6 +1503,12 @@ package feathers.controls.renderers
 		 * <code>Image</code> in the accessory position, it's better for
 		 * performance to use <code>accessorySourceField</code> instead.
 		 *
+		 * <p>Warning: It is your responsibility to dispose all accessories
+		 * included in the data provider and accessed with <code>accessoryField</code>,
+		 * or any display objects returned by <code>accessoryFunction</code>.
+		 * These display objects will not be disposed when the list is disposed.
+		 * Not disposing an accessory may result in a memory leak.</p>
+		 *
 		 * <p>All of the accessory fields and functions, ordered by priority:</p>
 		 * <ol>
 		 *     <li><code>accessorySourceFunction</code></li>
@@ -1552,6 +1570,12 @@ package feathers.controls.renderers
 		 * and hurt performance. It's better to return a new accessory the first
 		 * time this function is called for a particular item and then return
 		 * the same accessory if that item is passed to this function again.</p>
+		 *
+		 * <p>Warning: It is your responsibility to dispose all accessories
+		 * included in the data provider and accessed with <code>accessoryField</code>,
+		 * or any display objects returned by <code>accessoryFunction</code>.
+		 * These display objects will not be disposed when the list is disposed.
+		 * Not disposing an accessory may result in a memory leak.</p>
 		 *
 		 * <p>The function is expected to have the following signature:</p>
 		 * <pre>function( item:Object ):DisplayObject</pre>
