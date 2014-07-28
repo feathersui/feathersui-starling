@@ -581,7 +581,9 @@ package feathers.controls.supportClasses
 			}
 			if(basicsInvalid)
 			{
+				this._ignoreSelectionChanges = oldIgnoreSelectionChanges;
 				this.refreshRenderers();
+				this._ignoreSelectionChanges = true;
 			}
 			if(stylesInvalid || basicsInvalid)
 			{
