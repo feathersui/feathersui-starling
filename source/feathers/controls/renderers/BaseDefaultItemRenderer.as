@@ -674,8 +674,8 @@ package feathers.controls.renderers
 		 *
 		 * @default BaseDefaultItemRenderer.LAYOUT_ORDER_LABEL_ICON_ACCESSORY
 		 *
-		 * @see LAYOUT_ORDER_LABEL_ICON_ACCESSORY
-		 * @see LAYOUT_ORDER_LABEL_ACCESSORY_ICON
+		 * @see #LAYOUT_ORDER_LABEL_ICON_ACCESSORY
+		 * @see #LAYOUT_ORDER_LABEL_ACCESSORY_ICON
 		 * @see #accessoryPosition
 		 * @see #iconPosition
 		 */
