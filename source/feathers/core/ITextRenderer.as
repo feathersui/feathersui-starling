@@ -27,6 +27,17 @@ package feathers.core
 		function set text(value:String):void;
 
 		/**
+		 * Determines if the text wraps to the next line when it reaches the
+		 * width of the component.
+		 */
+		function get wordWrap():Boolean;
+
+		/**
+		 * @private
+		 */
+		function set wordWrap(value:Boolean):void;
+
+		/**
 		 * Measures the text's bounds (without a full validation, if
 		 * possible).
 		 */
