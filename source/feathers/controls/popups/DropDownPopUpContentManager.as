@@ -66,6 +66,27 @@ package feathers.controls.popups
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _gap:Number = 0;
+
+		/**
+		 * The space, in pixels, between the source and the pop-up.
+		 */
+		public function get gap():Number
+		{
+			return this._gap;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set gap(value:Number):void
+		{
+			this._gap = value;
+		}
+
+		/**
 		 * @inheritDoc
 		 */
 		public function open(content:DisplayObject, source:DisplayObject):void
@@ -164,14 +185,14 @@ package feathers.controls.popups
 				validationQueue.advanceTime(0);
 			}
 
-			var downSpace:Number = (stage.stageHeight - this.content.height) - (globalOrigin.y + globalOrigin.height);
+			var downSpace:Number = (stage.stageHeight - this.content.height) - (globalOrigin.y + globalOrigin.height + this._gap);
 			if(downSpace >= 0)
 			{
 				layoutBelow(globalOrigin);
 				return;
 			}
 
-			var upSpace:Number = globalOrigin.y - this.content.height;
+			var upSpace:Number = globalOrigin.y - this._gap - this.content.height;
 			if(upSpace >= 0)
 			{
 				layoutAbove(globalOrigin);
@@ -220,7 +241,7 @@ package feathers.controls.popups
 				xPosition = 0;
 			}
 			this.content.x = xPosition;
-			this.content.y = globalOrigin.y - this.content.height;
+			this.content.y = globalOrigin.y - this.content.height - this._gap;
 		}
 
 		/**
@@ -239,7 +260,7 @@ package feathers.controls.popups
 				xPosition = 0;
 			}
 			this.content.x = xPosition;
-			this.content.y = globalOrigin.y + globalOrigin.height;
+			this.content.y = globalOrigin.y + globalOrigin.height + this._gap;
 		}
 
 		/**
