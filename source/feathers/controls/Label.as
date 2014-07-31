@@ -142,6 +142,40 @@ package feathers.controls
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _wordWrap:Boolean = false;
+
+		/**
+		 * Determines if the text wraps to the next line when it reaches the
+		 * width of the component.
+		 *
+		 * <p>In the following example, the label's text is wrapped:</p>
+		 *
+		 * <listing version="3.0">
+		 * label.wordWrap = true;</listing>
+		 *
+		 * @default false
+		 */
+		public function get wordWrap():Boolean
+		{
+			return this._wordWrap;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set wordWrap(value:Boolean):void
+		{
+			if(this._wordWrap == value)
+			{
+				return;
+			}
+			this._wordWrap = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
 		 * The baseline measurement of the text, in pixels.
 		 */
 		public function get baseline():Number
@@ -416,6 +450,7 @@ package feathers.controls
 		 */
 		protected function refreshTextRendererStyles():void
 		{
+			this.textRenderer.wordWrap = this._wordWrap;
 			for(var propertyName:String in this._textRendererProperties)
 			{
 				var propertyValue:Object = this._textRendererProperties[propertyName];
