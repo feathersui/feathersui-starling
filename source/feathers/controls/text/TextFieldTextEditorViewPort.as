@@ -286,6 +286,8 @@ package feathers.controls.text
 			}
 			this._horizontalScrollPosition = value;
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
+			//hack because the superclass doesn't know about the scroll flag
+			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
 		/**
@@ -312,6 +314,8 @@ package feathers.controls.text
 			}
 			this._verticalScrollPosition = value;
 			this.invalidate(INVALIDATION_FLAG_SCROLL);
+			//hack because the superclass doesn't know about the scroll flag
+			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
 		/**
