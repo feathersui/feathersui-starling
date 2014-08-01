@@ -42,26 +42,41 @@ package feathers.themes
 	 */
 	public class MinimalMobileTheme extends BaseMinimalMobileTheme
 	{
+		/**
+		 * @private
+		 */
 		[Embed(source="/../assets/images/minimal_mobile.xml",mimeType="application/octet-stream")]
 		protected static const ATLAS_XML:Class;
 
+		/**
+		 * @private
+		 */
 		[Embed(source="/../assets/images/minimal_mobile.png")]
 		protected static const ATLAS_BITMAP:Class;
 
+		/**
+		 * @private
+		 */
 		[Embed(source="/../assets/fonts/pf_ronda_seven.fnt",mimeType="application/octet-stream")]
 		protected static const FONT_XML:Class;
 
+		/**
+		 * Constructor.
+		 */
 		public function MinimalMobileTheme(scaleToDPI:Boolean = true)
 		{
 			super(scaleToDPI);
 			this.initialize();
 		}
 
+		/**
+		 * @private
+		 */
 		override protected function initialize():void
 		{
 			var atlasBitmapData:BitmapData = Bitmap(new ATLAS_BITMAP()).bitmapData;
-			this.atlasTexture = Texture.fromBitmapData(atlasBitmapData, false);
-			this.atlasTexture.root.onRestore = this.atlasTexture_onRestore;
+			var atlasTexture:Texture = Texture.fromBitmapData(atlasBitmapData, false);
+			atlasTexture.root.onRestore = this.atlasTexture_onRestore;
 			atlasBitmapData.dispose();
 			this.atlas = new TextureAtlas(atlasTexture, XML(new ATLAS_XML()));
 
@@ -71,10 +86,13 @@ package feathers.themes
 			super.initialize();
 		}
 
+		/**
+		 * @private
+		 */
 		protected function atlasTexture_onRestore():void
 		{
 			var atlasBitmapData:BitmapData = Bitmap(new ATLAS_BITMAP()).bitmapData;
-			this.atlasTexture.root.uploadBitmapData(atlasBitmapData);
+			this.atlas.texture.root.uploadBitmapData(atlasBitmapData);
 			atlasBitmapData.dispose();
 		}
 	}
