@@ -3504,7 +3504,7 @@ package feathers.controls
 		{
 			if(this.horizontalScrollBar)
 			{
-				var scrollerWidth:Number = useActualBounds ? this.actualWidth : (this.explicitWidth);
+				var scrollerWidth:Number = useActualBounds ? this.actualWidth : this.explicitWidth;
 				var totalWidth:Number = this._viewPort.width + this._leftViewPortOffset + this._rightViewPortOffset;
 				if(forceScrollBars || this._horizontalScrollPolicy == SCROLL_POLICY_ON ||
 					((totalWidth > scrollerWidth || totalWidth > this._maxWidth) &&
