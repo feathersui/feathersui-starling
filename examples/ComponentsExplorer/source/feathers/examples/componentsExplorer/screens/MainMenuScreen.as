@@ -136,16 +136,18 @@ package feathers.examples.componentsExplorer.screens
 		
 		private function list_changeHandler(event:Event):void
 		{
-			//we're going to save the position of the list so that when the user
-			//navigates back to this screen, they won't need to scroll back to
-			//the same position manually
-
-			var screenItem:ScreenNavigatorItem = this._owner.getScreen(this.screenID);
-			if(!screenItem.properties)
+			if(!DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
-				screenItem.properties = {};
+				//we're going to save the position of the list so that when the user
+				//navigates back to this screen, they won't need to scroll back to
+				//the same position manually
+				var screenItem:ScreenNavigatorItem = this._owner.getScreen(this.screenID);
+				if(!screenItem.properties)
+				{
+					screenItem.properties = {};
+				}
+				screenItem.properties.savedVerticalScrollPosition = this._list.verticalScrollPosition;
 			}
-			screenItem.properties.savedVerticalScrollPosition = this._list.verticalScrollPosition;
 
 			var eventType:String = this._list.selectedItem.event as String;
 			this.dispatchEventWith(eventType);
