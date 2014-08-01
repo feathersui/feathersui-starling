@@ -1724,21 +1724,21 @@ package feathers.themes
 			textArea.textEditorProperties.textFormat = this.defaultTextFormat;
 			textArea.textEditorProperties.disabledTextFormat = this.disabledTextFormat;
 
-			textArea.padding = this.extraSmallGutterSize;
-			textArea.paddingLeft = this.smallGutterSize;
+			textArea.padding = this.borderSize;
 
 			textArea.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
 			textArea.focusPadding = -1;
 
-			var backgroundSkin:Scale9Image = new Scale9Image(textInputBackgroundSkinTextures);
-			backgroundSkin.width = this.wideControlSize * 2;
-			backgroundSkin.height = this.wideControlSize;
-			textArea.backgroundSkin = backgroundSkin;
-
-			var backgroundDisabledSkin:Scale9Image = new Scale9Image(textInputBackgroundDisabledSkinTextures);
-			backgroundDisabledSkin.width = this.wideControlSize * 2;
-			backgroundDisabledSkin.height = this.wideControlSize;
-			textArea.backgroundDisabledSkin = backgroundDisabledSkin;
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.textInputBackgroundSkinTextures;
+			skinSelector.setValueForState(this.textInputBackgroundDisabledSkinTextures, TextInput.STATE_DISABLED);
+			skinSelector.displayObjectProperties =
+			{
+				width: this.wideControlSize * 2,
+				height: this.wideControlSize,
+				textureScale: this.scale
+			};
+			textArea.stateToSkinFunction = skinSelector.updateValue;
 		}
 
 	//-------------------------
