@@ -29,6 +29,28 @@ package feathers.themes
 	import starling.text.TextField;
 	import starling.utils.AssetManager;
 
+	/**
+	 * Dispatched when the theme's assets are loaded, and the theme has
+	 * initialized. Feathers component will not be skinned automatically by the
+	 * theme until this event is dispatched.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @eventType starling.events.Event.COMPLETE
+	 */
 	[Event(name="complete",type="starling.events.Event")]
 
 	/**
@@ -49,11 +71,26 @@ package feathers.themes
 	 */
 	public class MinimalDesktopThemeWithAssetManager extends BaseMinimalDesktopTheme
 	{
+		/**
+		 * @private
+		 * The name of the texture atlas in the asset manager.
+		 */
+		protected static const ATLAS_NAME:String = "minimal";
+
+		/**
+		 * Constructor.
+		 * @param assetsBasePath The root folder of the assets.
+		 * @param assetManager An optional pre-created asset manager.
+		 */
 		public function MinimalDesktopThemeWithAssetManager(assetsBasePath:Object = null, assetManager:AssetManager = null)
 		{
 			this.loadAssets(assetsBasePath, assetManager);
 		}
 
+		/**
+		 * @private
+		 * The paths to each of the assets, relative to the base path.
+		 */
 		protected var assetPaths:Vector.<String> = new <String>
 		[
 			"images/minimal.xml",
@@ -61,8 +98,14 @@ package feathers.themes
 			"fonts/pf_ronda_seven.fnt"
 		];
 
+		/**
+		 * @private
+		 */
 		protected var assetManager:AssetManager;
 
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			super.dispose();
@@ -73,6 +116,9 @@ package feathers.themes
 			}
 		}
 
+		/**
+		 * @private
+		 */
 		override protected function initialize():void
 		{
 			this.atlas = this.assetManager.getTextureAtlas(ATLAS_NAME);
@@ -81,6 +127,9 @@ package feathers.themes
 			super.initialize();
 		}
 
+		/**
+		 * @private
+		 */
 		protected function loadAssets(assetsBasePath:Object, assetManager:AssetManager):void
 		{
 			this.assetManager = assetManager;

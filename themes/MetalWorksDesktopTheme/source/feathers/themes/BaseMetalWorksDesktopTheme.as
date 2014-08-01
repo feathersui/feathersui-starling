@@ -117,7 +117,11 @@ package feathers.themes
 		[Embed(source="/../assets/fonts/SourceSansPro-Semibold.ttf",fontFamily="SourceSansPro",fontWeight="bold",mimeType="application/x-font",embedAsCFF="true")]
 		protected static const SOURCE_SANS_PRO_SEMIBOLD:Class;
 
-		protected static const FONT_NAME:String = "SourceSansPro";
+		/**
+		 * The name of the embedded font used by controls in this theme. Comes
+		 * in normal and bold weights.
+		 */
+		public static const FONT_NAME:String = "SourceSansPro";
 
 		protected static const PRIMARY_BACKGROUND_COLOR:uint = 0x4a4137;
 		protected static const LIGHT_TEXT_COLOR:uint = 0xe5e5e5;
@@ -154,39 +158,123 @@ package feathers.themes
 		protected static const SCROLL_BAR_THUMB_REGION1:int = 5;
 		protected static const SCROLL_BAR_THUMB_REGION2:int = 14;
 
-		protected static const ATLAS_NAME:String = "metalworks";
-
+		/**
+		 * @private
+		 * The theme's custom style name for the increment button of a horizontal ScrollBar.
+		 */
 		protected static const THEME_NAME_HORIZONTAL_SCROLL_BAR_INCREMENT_BUTTON:String = "metalworks-desktop-horizontal-scroll-bar-increment-button";
+
+		/**
+		 * @private
+		 * The theme's custom style name for the decrement button of a horizontal ScrollBar.
+		 */
 		protected static const THEME_NAME_HORIZONTAL_SCROLL_BAR_DECREMENT_BUTTON:String = "metalworks-desktop-horizontal-scroll-bar-decrement-button";
+
+		/**
+		 * @private
+		 * The theme's custom style name for the thumb of a horizontal ScrollBar.
+		 */
 		protected static const THEME_NAME_HORIZONTAL_SCROLL_BAR_THUMB:String = "metalworks-desktop-horizontal-scroll-bar-thumb";
+
+		/**
+		 * @private
+		 * The theme's custom style name for the minimum track of a horizontal ScrollBar.
+		 */
 		protected static const THEME_NAME_HORIZONTAL_SCROLL_BAR_MINIMUM_TRACK:String = "metalworks-desktop-horizontal-scroll-bar-minimum-track";
+
+		/**
+		 * @private
+		 * The theme's custom style name for the maximum track of a horizontal ScrollBar.
+		 */
 		protected static const THEME_NAME_HORIZONTAL_SCROLL_BAR_MAXIMUM_TRACK:String = "metalworks-desktop-horizontal-scroll-bar-maximum-track";
 
+		/**
+		 * @private
+		 * The theme's custom style name for the increment button of a vertical ScrollBar.
+		 */
 		protected static const THEME_NAME_VERTICAL_SCROLL_BAR_INCREMENT_BUTTON:String = "metalworks-desktop-vertical-scroll-bar-increment-button";
+
+		/**
+		 * @private
+		 * The theme's custom style name for the decrement button of a vertical ScrollBar.
+		 */
 		protected static const THEME_NAME_VERTICAL_SCROLL_BAR_DECREMENT_BUTTON:String = "metalworks-desktop-vertical-scroll-bar-decrement-button";
+
+		/**
+		 * @private
+		 * The theme's custom style name for the thumb of a vertical ScrollBar.
+		 */
 		protected static const THEME_NAME_VERTICAL_SCROLL_BAR_THUMB:String = "metalworks-desktop-vertical-scroll-bar-thumb";
+
+		/**
+		 * @private
+		 * The theme's custom style name for the minimum track of a vertical ScrollBar.
+		 */
 		protected static const THEME_NAME_VERTICAL_SCROLL_BAR_MINIMUM_TRACK:String = "metalworks-desktop-vertical-scroll-bar-minimum-track";
+
+		/**
+		 * @private
+		 * The theme's custom style name for the maximum track of a vertical ScrollBar.
+		 */
 		protected static const THEME_NAME_VERTICAL_SCROLL_BAR_MAXIMUM_TRACK:String = "metalworks-desktop-vertical-scroll-bar-maximum-track";
 
+		/**
+		 * @private
+		 * The theme's custom style name for the thumb of a horizontal SimpleScrollBar.
+		 */
 		protected static const THEME_NAME_HORIZONTAL_SIMPLE_SCROLL_BAR_THUMB:String = "metalworks-desktop-horizontal-simple-scroll-bar-thumb";
+
+		/**
+		 * @private
+		 * The theme's custom style name for the thumb of a vertical SimpleScrollBar.
+		 */
 		protected static const THEME_NAME_VERTICAL_SIMPLE_SCROLL_BAR_THUMB:String = "metalworks-desktop-vertical-simple-scroll-bar-thumb";
 
+		/**
+		 * @private
+		 * The theme's custom style name for the minimum track of a horizontal slider.
+		 */
 		protected static const THEME_NAME_HORIZONTAL_SLIDER_MINIMUM_TRACK:String = "metalworks-desktop-horizontal-slider-minimum-track";
+
+		/**
+		 * @private
+		 * The theme's custom style name for the maximum track of a horizontal slider.
+		 */
 		protected static const THEME_NAME_HORIZONTAL_SLIDER_MAXIMUM_TRACK:String = "metalworks-desktop-horizontal-slider-maximum-track";
 
+		/**
+		 * @private
+		 * The theme's custom style name for the minimum track of a vertical slider.
+		 */
 		protected static const THEME_NAME_VERTICAL_SLIDER_MINIMUM_TRACK:String = "metalworks-desktop-vertical-slider-minimum-track";
+
+		/**
+		 * @private
+		 * The theme's custom style name for the maximum track of a vertical slider.
+		 */
 		protected static const THEME_NAME_VERTICAL_SLIDER_MAXIMUM_TRACK:String = "metalworks-desktop-vertical-slider-maximum-track";
 
+		/**
+		 * The default global text renderer factory for this theme creates a
+		 * TextBlockTextRenderer.
+		 */
 		protected static function textRendererFactory():TextBlockTextRenderer
 		{
 			return new TextBlockTextRenderer();
 		}
 
+		/**
+		 * The default global text editor factory for this theme creates a
+		 * TextBlockTextEditor.
+		 */
 		protected static function textEditorFactory():TextBlockTextEditor
 		{
 			return new TextBlockTextEditor();
 		}
 
+		/**
+		 * This theme's scroll bar type is ScrollBar.
+		 */
 		protected static function horizontalScrollBarFactory():ScrollBar
 		{
 			var scrollBar:ScrollBar = new ScrollBar();
@@ -194,6 +282,9 @@ package feathers.themes
 			return scrollBar;
 		}
 
+		/**
+		 * This theme's scroll bar type is ScrollBar.
+		 */
 		protected static function verticalScrollBarFactory():ScrollBar
 		{
 			var scrollBar:ScrollBar = new ScrollBar();
@@ -208,55 +299,181 @@ package feathers.themes
 			return quad;
 		}
 
+		/**
+		 * Constructor.
+		 */
 		public function BaseMetalWorksDesktopTheme()
 		{
 		}
 
+		/**
+		 * Skins are scaled by a value based on the content scale factor.
+		 */
 		protected var scale:Number = 1;
 
+		/**
+		 * A smaller font size for details.
+		 */
 		protected var smallFontSize:int;
+
+		/**
+		 * A normal font size.
+		 */
 		protected var regularFontSize:int;
+
+		/**
+		 * A larger font size for headers.
+		 */
 		protected var largeFontSize:int;
 
+		/**
+		 * The size, in pixels, of major regions in the grid. Used for sizing
+		 * containers and larger UI controls.
+		 */
 		protected var gridSize:int;
-		protected var extraSmallGutterSize:int;
-		protected var smallGutterSize:int;
+
+		/**
+		 * The size, in pixels, of minor regions in the grid. Used for larger
+		 * padding and gaps.
+		 */
 		protected var gutterSize:int;
-		protected var borderSize:int;
-		protected var controlSize:int;
+
+		/**
+		 * The size, in pixels, of smaller padding and gaps within the major
+		 * regions in the grid.
+		 */
+		protected var smallGutterSize:int;
+
+		/**
+		 * The size, in pixels, of very smaller padding and gaps.
+		 */
+		protected var extraSmallGutterSize:int;
+
+		/**
+		 * The minimum width, in pixels, of some types of buttons.
+		 */
+		protected var buttonMinWidth:int;
+
+		/**
+		 * The width, in pixels, of UI controls that span across multiple grid regions.
+		 */
 		protected var wideControlSize:int;
+
+		/**
+		 * The size, in pixels, of a typical UI control.
+		 */
+		protected var controlSize:int;
+
+		/**
+		 * The size, in pixels, of smaller UI controls.
+		 */
 		protected var smallControlSize:int;
+
+		/**
+		 * The size, in pixels, of a border around any control.
+		 */
+		protected var borderSize:int;
+
 		protected var calloutArrowOverlapGap:int;
 		protected var calloutBackgroundMinSize:int;
 		protected var progressBarFillMinSize:int;
 		protected var scrollBarGutterSize:int;
 		protected var popUpSize:int;
 
+		/**
+		 * The FTE FontDescription used for text of a normal weight.
+		 */
 		protected var regularFontDescription:FontDescription;
+
+		/**
+		 * The FTE FontDescription used for text of a bold weight.
+		 */
 		protected var boldFontDescription:FontDescription;
 
+		/**
+		 * ScrollText uses TextField instead of FTE, so it has a separate TextFormat.
+		 */
 		protected var scrollTextTextFormat:TextFormat;
+
+		/**
+		 * ScrollText uses TextField instead of FTE, so it has a separate disabled TextFormat.
+		 */
 		protected var scrollTextDisabledTextFormat:TextFormat;
 
+		/**
+		 * An ElementFormat with a dark tint used for UI controls.
+		 */
 		protected var darkUIElementFormat:ElementFormat;
+
+		/**
+		 * An ElementFormat with a light tint used for UI controls.
+		 */
 		protected var lightUIElementFormat:ElementFormat;
+
+		/**
+		 * An ElementFormat with a highlighted tint used for selected UI controls.
+		 */
 		protected var selectedUIElementFormat:ElementFormat;
+
+		/**
+		 * An ElementFormat with a light tint used for disabled UI controls.
+		 */
 		protected var lightUIDisabledElementFormat:ElementFormat;
+
+		/**
+		 * An ElementFormat with a dark tint used for disabled UI controls.
+		 */
 		protected var darkUIDisabledElementFormat:ElementFormat;
 
+		/**
+		 * An ElementFormat with a dark tint used for larger UI controls.
+		 */
 		protected var largeDarkElementFormat:ElementFormat;
+
+		/**
+		 * An ElementFormat with a light tint used for larger UI controls.
+		 */
 		protected var largeLightElementFormat:ElementFormat;
+
+		/**
+		 * An ElementFormat used for larger, disabled UI controls.
+		 */
 		protected var largeDisabledElementFormat:ElementFormat;
 
+
+		/**
+		 * An ElementFormat with a dark tint used for text.
+		 */
 		protected var darkElementFormat:ElementFormat;
+
+		/**
+		 * An ElementFormat with a light tint used for text.
+		 */
 		protected var lightElementFormat:ElementFormat;
+
+		/**
+		 * An ElementFormat used for disabled text.
+		 */
 		protected var disabledElementFormat:ElementFormat;
 
+		/**
+		 * An ElementFormat with a light tint used for smaller text.
+		 */
 		protected var smallLightElementFormat:ElementFormat;
+
+		/**
+		 * An ElementFormat used for smaller, disabled text.
+		 */
 		protected var smallDisabledElementFormat:ElementFormat;
 
+		/**
+		 * The texture atlas that contains skins for this theme. This base class
+		 * does not initialize this member variable. Subclasses are expected to
+		 * load the assets somehow and set the <code>atlas</code> member
+		 * variable before calling <code>initialize()</code>.
+		 */
 		protected var atlas:TextureAtlas;
-		protected var atlasTexture:Texture;
+
 		protected var headerBackgroundSkinTexture:Texture;
 		protected var headerPopupBackgroundSkinTexture:Texture;
 		protected var backgroundSkinTextures:Scale9Textures;
@@ -322,26 +539,25 @@ package feathers.themes
 		protected var verticalScrollBarIncrementButtonUpSkinTextures:Scale9Textures;
 		protected var searchIconTexture:Texture;
 
+		/**
+		 * Disposes the texture atlas before calling super.dispose()
+		 */
 		override public function dispose():void
 		{
 			if(this.atlas)
 			{
 				this.atlas.dispose();
 				this.atlas = null;
-				//no need to dispose the atlas texture because the atlas will do that
-				this.atlasTexture = null;
 			}
 
 			//don't forget to call super.dispose()!
 			super.dispose();
 		}
 
-		protected function initializeStage():void
-		{
-			Starling.current.stage.color = PRIMARY_BACKGROUND_COLOR;
-			Starling.current.nativeStage.color = PRIMARY_BACKGROUND_COLOR;
-		}
-
+		/**
+		 * Initializes the theme. Expected to be called by subclasses after the
+		 * assets have been loaded and the skin texture atlas has been created.
+		 */
 		protected function initialize():void
 		{
 			this.initializeScale();
@@ -352,6 +568,18 @@ package feathers.themes
 			this.initializeStyleProviders();
 		}
 
+		/**
+		 * Sets the stage background color.
+		 */
+		protected function initializeStage():void
+		{
+			Starling.current.stage.color = PRIMARY_BACKGROUND_COLOR;
+			Starling.current.nativeStage.color = PRIMARY_BACKGROUND_COLOR;
+		}
+
+		/**
+		 * Initializes global variables (not including global style providers).
+		 */
 		protected function initializeGlobals():void
 		{
 			FeathersControl.defaultTextRendererFactory = textRendererFactory;
@@ -364,6 +592,10 @@ package feathers.themes
 			FocusManager.setEnabledForStage(Starling.current.stage, true);
 		}
 
+		/**
+		 * Initializes the scale value based on the content scale factor and
+		 * sets up common pixel dimensions for skins.
+		 */
 		protected function initializeScale():void
 		{
 			this.scale = Starling.contentScaleFactor;
@@ -378,11 +610,15 @@ package feathers.themes
 			this.calloutBackgroundMinSize = Math.round(5 * this.scale);
 			this.progressBarFillMinSize = Math.round(7 * this.scale);
 			this.scrollBarGutterSize = Math.round(4 * this.scale);
-			this.wideControlSize = this.gridSize * 4 + this.smallGutterSize * 3;
+			this.buttonMinWidth = this.gridSize * 2 + this.gutterSize * 1;
+			this.wideControlSize = this.gridSize * 4 + this.gutterSize * 3;
 			this.popUpSize = this.gridSize * 10 + this.smallGutterSize * 9;
 			this.calloutArrowOverlapGap = -1 * this.scale;
 		}
 
+		/**
+		 * Initializes font sizes and formats.
+		 */
 		protected function initializeFonts():void
 		{
 			this.smallFontSize = Math.round(11 * this.scale);
@@ -414,6 +650,10 @@ package feathers.themes
 			this.largeDisabledElementFormat = new ElementFormat(this.regularFontDescription, this.largeFontSize, DISABLED_TEXT_COLOR);
 		}
 
+		/**
+		 * Initializes the textures by extracting them from the atlas and
+		 * setting up any scaling grids that are needed.
+		 */
 		protected function initializeTextures():void
 		{
 			var backgroundSkinTexture:Texture = this.atlas.getTexture("background-skin");
@@ -506,6 +746,9 @@ package feathers.themes
 			StandardIcons.listDrillDownAccessoryTexture = this.atlas.getTexture("list-accessory-drill-down-icon");
 		}
 
+		/**
+		 * Sets global style providers for all components.
+		 */
 		protected function initializeStyleProviders():void
 		{
 			//alert
@@ -731,7 +974,8 @@ package feathers.themes
 			button.paddingRight = this.gutterSize;
 			button.gap = this.smallGutterSize;
 			button.minGap = this.smallGutterSize;
-			button.minWidth = button.minHeight = this.smallControlSize;
+			button.minWidth = this.smallControlSize;
+			button.minHeight = this.smallControlSize;
 		}
 
 		protected function setButtonStyles(button:Button):void
@@ -750,7 +994,8 @@ package feathers.themes
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
 			this.setBaseButtonStyles(button);
-			button.minWidth = this.gridSize * 2 + this.gutterSize * 1;
+			button.minWidth = this.buttonMinWidth;
+			button.minHeight = this.controlSize;
 		}
 
 		protected function setCallToActionButtonStyles(button:Button):void
@@ -767,6 +1012,8 @@ package feathers.themes
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
 			this.setBaseButtonStyles(button);
+			button.minWidth = this.buttonMinWidth;
+			button.minHeight = this.controlSize;
 		}
 
 		protected function setQuietButtonStyles(button:Button):void
@@ -800,7 +1047,8 @@ package feathers.themes
 			button.paddingRight = this.gutterSize;
 			button.gap = this.smallGutterSize;
 			button.minGap = this.smallGutterSize;
-			button.minWidth = button.minHeight = this.controlSize;
+			button.minWidth = this.controlSize;
+			button.minHeight = this.controlSize;
 		}
 
 		protected function setDangerButtonStyles(button:Button):void
@@ -817,6 +1065,8 @@ package feathers.themes
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
 			this.setBaseButtonStyles(button);
+			button.minWidth = this.buttonMinWidth;
+			button.minHeight = this.controlSize;
 		}
 
 		protected function setBackButtonStyles(button:Button):void
@@ -833,7 +1083,9 @@ package feathers.themes
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
 			this.setBaseButtonStyles(button);
-			button.paddingLeft = this.gutterSize + this.smallGutterSize;
+			button.paddingLeft = 2 * this.gutterSize;
+			button.minWidth = this.controlSize;
+			button.minHeight = this.controlSize;
 		}
 
 		protected function setForwardButtonStyles(button:Button):void
@@ -850,7 +1102,9 @@ package feathers.themes
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
 			this.setBaseButtonStyles(button);
-			button.paddingRight = this.gutterSize + this.smallGutterSize;
+			button.paddingRight = 2 * this.gutterSize;
+			button.minWidth = this.controlSize;
+			button.minHeight = this.controlSize;
 		}
 
 	//-------------------------
@@ -961,11 +1215,13 @@ package feathers.themes
 
 			renderer.horizontalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_LEFT;
 			renderer.contentLabelProperties.elementFormat = this.lightUIElementFormat;
+
 			renderer.paddingTop = this.smallGutterSize;
 			renderer.paddingBottom = this.smallGutterSize;
 			renderer.paddingLeft = this.gutterSize;
 			renderer.paddingRight = this.gutterSize;
-			renderer.minWidth = renderer.minHeight = this.controlSize;
+			renderer.minWidth = this.controlSize;
+			renderer.minHeight = this.controlSize;
 
 			renderer.contentLoaderFactory = this.imageLoaderFactory;
 		}
@@ -976,6 +1232,7 @@ package feathers.themes
 
 			renderer.horizontalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_CENTER;
 			renderer.contentLabelProperties.elementFormat = this.lightElementFormat;
+
 			renderer.paddingTop = this.smallGutterSize;
 			renderer.paddingBottom = this.smallGutterSize;
 			renderer.paddingLeft = this.gutterSize;
@@ -1075,7 +1332,8 @@ package feathers.themes
 			renderer.accessoryGap = Number.POSITIVE_INFINITY;
 			renderer.minAccessoryGap = this.smallGutterSize;
 			renderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
-			renderer.minWidth = renderer.minHeight = this.controlSize;
+			renderer.minWidth = this.controlSize;
+			renderer.minHeight = this.controlSize;
 
 			renderer.accessoryLoaderFactory = this.imageLoaderFactory;
 			renderer.iconLoaderFactory = this.imageLoaderFactory;
@@ -1121,6 +1379,7 @@ package feathers.themes
 			input.paddingBottom = this.smallGutterSize;
 			input.paddingLeft = this.gutterSize;
 			input.paddingRight = this.gutterSize;
+
 			input.textEditorProperties.cursorSkin = new Quad(1, 1, LIGHT_TEXT_COLOR);
 			input.textEditorProperties.selectionSkin = new Quad(1, 1, TEXT_SELECTION_BACKGROUND_COLOR);
 			input.textEditorProperties.elementFormat = this.lightUIElementFormat;
@@ -1186,10 +1445,15 @@ package feathers.themes
 
 		protected function setPageIndicatorStyles(pageIndicator:PageIndicator):void
 		{
+			pageIndicator.interactionMode = PageIndicator.INTERACTION_MODE_PRECISE;
+
 			pageIndicator.normalSymbolFactory = this.pageIndicatorNormalSymbolFactory;
 			pageIndicator.selectedSymbolFactory = this.pageIndicatorSelectedSymbolFactory;
+
 			pageIndicator.gap = this.gutterSize;
 			pageIndicator.padding = this.smallGutterSize;
+			pageIndicator.minWidth = this.controlSize;
+			pageIndicator.minHeight = this.controlSize;
 		}
 
 	//-------------------------
@@ -1245,7 +1509,7 @@ package feathers.themes
 		protected function setPickerListListStyles(list:List):void
 		{
 			this.setListStyles(list);
-			list.maxHeight = 110;
+			list.maxHeight = this.wideControlSize;
 		}
 
 		protected function setPickerListButtonStyles(button:Button):void
@@ -1258,10 +1522,8 @@ package feathers.themes
 			button.defaultIcon = defaultIcon;
 
 			button.gap = Number.POSITIVE_INFINITY; //fill as completely as possible
-			button.minGap = 10;
 			button.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			button.iconPosition = Button.ICON_POSITION_RIGHT;
-			button.paddingRight = 6;
 		}
 
 	//-------------------------
@@ -1766,7 +2028,8 @@ package feathers.themes
 			tab.paddingLeft = this.gutterSize;
 			tab.paddingRight = this.gutterSize;
 			tab.gap = this.smallGutterSize;
-			tab.minWidth = tab.minHeight = this.controlSize;
+			tab.minWidth = this.controlSize;
+			tab.minHeight = this.controlSize;
 		}
 
 	//-------------------------
@@ -1816,12 +2079,14 @@ package feathers.themes
 			//input.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
 			//input.focusPadding = -1;
 
-			input.minWidth = input.minHeight = this.controlSize;
+			input.minWidth = this.controlSize;
+			input.minHeight = this.controlSize;
 			input.gap = this.smallGutterSize;
 			input.paddingTop = this.smallGutterSize;
 			input.paddingBottom = this.smallGutterSize;
 			input.paddingLeft = this.gutterSize;
 			input.paddingRight = this.gutterSize;
+
 			input.textEditorProperties.elementFormat = this.lightElementFormat;
 			input.textEditorProperties.disabledElementFormat = this.disabledElementFormat;
 			input.textEditorProperties.cursorSkin = new Quad(1, 1, LIGHT_TEXT_COLOR);

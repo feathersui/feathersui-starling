@@ -40,12 +40,21 @@ package feathers.themes {
 	 */
 	public class MetalWorksDesktopTheme extends BaseMetalWorksDesktopTheme
 	{
+		/**
+		 * @private
+		 */
 		[Embed(source="/../assets/images/metalworks_desktop.xml",mimeType="application/octet-stream")]
-		public static const ATLAS_XML:Class;
+		protected static const ATLAS_XML:Class;
 
+		/**
+		 * @private
+		 */
 		[Embed(source="/../assets/images/metalworks_desktop.png")]
-		public static const ATLAS_BITMAP:Class;
+		protected static const ATLAS_BITMAP:Class;
 
+		/**
+		 * Constructor.
+		 */
 		public function MetalWorksDesktopTheme()
 		{
 			super();
@@ -53,21 +62,27 @@ package feathers.themes {
 			this.dispatchEventWith(Event.COMPLETE);
 		}
 
+		/**
+		 * @private
+		 */
 		override protected function initialize():void
 		{
 			var atlasBitmapData:BitmapData = Bitmap(new ATLAS_BITMAP()).bitmapData;
-			this.atlasTexture = Texture.fromBitmapData(atlasBitmapData, false);
-			this.atlasTexture.root.onRestore = this.atlasTexture_onRestore;
+			var atlasTexture:Texture = Texture.fromBitmapData(atlasBitmapData, false);
+			atlasTexture.root.onRestore = this.atlasTexture_onRestore;
 			atlasBitmapData.dispose();
 			this.atlas = new TextureAtlas(atlasTexture, XML(new ATLAS_XML()));
 
 			super.initialize();
 		}
 
+		/**
+		 * @private
+		 */
 		protected function atlasTexture_onRestore():void
 		{
 			var atlasBitmapData:BitmapData = Bitmap(new ATLAS_BITMAP()).bitmapData;
-			this.atlasTexture.root.uploadBitmapData(atlasBitmapData);
+			this.atlas.texture.root.uploadBitmapData(atlasBitmapData);
 			atlasBitmapData.dispose();
 		}
 	}
