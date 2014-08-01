@@ -2906,7 +2906,7 @@ package feathers.controls
 
 			this.showOrHideChildren();
 
-			if(scrollInvalid || sizeInvalid || stylesInvalid || scrollBarInvalid)
+			if(scrollInvalid || sizeInvalid || stylesInvalid || stateInvalid || scrollBarInvalid)
 			{
 				this.layoutChildren();
 			}
