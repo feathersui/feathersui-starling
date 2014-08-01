@@ -867,45 +867,6 @@ package feathers.controls
 		}
 
 		/**
-		 * @inheritDoc
-		 */
-		override protected function autoSizeIfNeeded():Boolean
-		{
-			var needsWidth:Boolean = this.explicitWidth != this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight != this.explicitHeight; //isNaN
-			if(!needsWidth && !needsHeight)
-			{
-				return false;
-			}
-
-			var newWidth:Number = this.explicitWidth;
-			var newHeight:Number = this.explicitHeight;
-			if(needsWidth)
-			{
-				if(this.originalBackgroundWidth == this.originalBackgroundWidth) //!isNaN
-				{
-					newWidth = this.originalBackgroundWidth;
-				}
-				else
-				{
-					newWidth = 0;
-				}
-			}
-			if(needsHeight)
-			{
-				if(this.originalBackgroundHeight == this.originalBackgroundHeight) //!isNaN
-				{
-					newHeight = this.originalBackgroundHeight;
-				}
-				else
-				{
-					newHeight = 0;
-				}
-			}
-			return this.setSizeInternal(newWidth, newHeight, false);
-		}
-
-		/**
 		 * Creates and adds the <code>textEditorViewPort</code> sub-component and
 		 * removes the old instance, if one exists.
 		 *
