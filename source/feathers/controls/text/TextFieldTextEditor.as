@@ -1137,8 +1137,8 @@ package feathers.controls.text
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
 			{
-				this.measureTextField.width = newWidth + gutterDimensionsOffset;
-				newWidth = this.measureTextField.textWidth;
+				this.measureTextField.wordWrap = false;
+				newWidth = this.measureTextField.width - gutterDimensionsOffset;
 				if(newWidth < this._minWidth)
 				{
 					newWidth = this._minWidth;
@@ -1152,8 +1152,9 @@ package feathers.controls.text
 			var newHeight:Number = this.explicitHeight;
 			if(needsHeight)
 			{
+				this.measureTextField.wordWrap = this._wordWrap;
 				this.measureTextField.width = newWidth + gutterDimensionsOffset;
-				newHeight = this.measureTextField.textHeight;
+				newHeight = this.measureTextField.height - gutterDimensionsOffset;
 				if(this._useGutter)
 				{
 					newHeight += 4;
