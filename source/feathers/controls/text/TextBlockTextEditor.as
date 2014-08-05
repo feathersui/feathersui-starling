@@ -20,6 +20,7 @@ package feathers.controls.text
 	import flash.events.Event;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.text.engine.TextElement;
 	import flash.text.engine.TextLine;
 	import flash.ui.Keyboard;
 	import flash.utils.Dictionary;
@@ -172,6 +173,7 @@ package feathers.controls.text
 		{
 			super();
 			this._text = "";
+			this._textElement = new TextElement(this._text);
 			this.isQuickHitAreaEnabled = true;
 			this.truncateToFit = false;
 			this.addEventListener(TouchEvent.TOUCH, textEditor_touchHandler);
@@ -801,7 +803,7 @@ package feathers.controls.text
 			}
 			else if((pointX - line.x) >= line.width)
 			{
-				return line.atomCount;
+				return this._text.length;
 			}
 			var atomIndex:int = line.getAtomIndexAtPoint(pointX, pointY);
 			if(atomIndex < 0)
@@ -812,7 +814,14 @@ package feathers.controls.text
 			if(atomIndex < 0)
 			{
 				//worse case: we couldn't figure it out at all
-				return line.atomCount;
+				return this._text.length;
+			}
+			//we're constraining the atom index to the text length because we
+			//may have added an invisible control character at the end due to
+			//the fact that FTE won't include trailing spaces in measurement
+			if(atomIndex > this._text.length)
+			{
+				atomIndex = this._text.length;
 			}
 			var atomBounds:Rectangle = line.getAtomBounds(atomIndex);
 			if((pointX - line.x - atomBounds.x) > atomBounds.width / 2)
@@ -853,11 +862,7 @@ package feathers.controls.text
 			cursorX = int(cursorX - (this._cursorSkin.width / 2));
 			this._cursorSkin.x = cursorX;
 			this._cursorSkin.y = 0;
-			if(this._cursorSkin && this._textLines.length > 0)
-			{
-				var line:TextLine = this._textLines[0];
-				this._cursorSkin.height = line.height;
-			}
+			this._cursorSkin.height = this._elementFormat.fontSize;
 
 			//then we update the scroll to always show the cursor
 			var minScrollX:Number = cursorX + this._cursorSkin.width - this.actualWidth;
@@ -927,6 +932,7 @@ package feathers.controls.text
 				currentValue = this._unmaskedText;
 			}
 			this.text = currentValue.substr(0, this._selectionBeginIndex) + currentValue.substr(this._selectionEndIndex);
+			this.validate();
 			this.selectRange(this._selectionBeginIndex, this._selectionBeginIndex);
 		}
 
@@ -946,6 +952,7 @@ package feathers.controls.text
 				return;
 			}
 			this.text = newText;
+			this.validate();
 			var selectionIndex:int = this._selectionBeginIndex + text.length;
 			this.selectRange(selectionIndex, selectionIndex);
 		}
@@ -1207,6 +1214,7 @@ package feathers.controls.text
 			}
 			if(newIndex >= 0)
 			{
+				this.validate();
 				this.selectRange(newIndex, newIndex);
 			}
 		}
