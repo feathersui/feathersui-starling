@@ -25,6 +25,7 @@
 package feathers.themes
 {
 	import starling.core.Starling;
+	import starling.events.Event;
 	import starling.text.BitmapFont;
 	import starling.text.TextField;
 	import starling.utils.AssetManager;
@@ -125,6 +126,19 @@ package feathers.themes
 			var font:BitmapFont = TextField.getBitmapFont(FONT_TEXTURE_NAME);
 			TextField.registerBitmapFont(font, FONT_NAME);
 			super.initialize();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function assetManager_onProgress(progress:Number):void
+		{
+			if(progress < 1)
+			{
+				return;
+			}
+			this.initialize();
+			this.dispatchEventWith(Event.COMPLETE);
 		}
 
 		/**
