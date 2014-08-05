@@ -9,6 +9,7 @@ package feathers.controls.supportClasses
 {
 	import feathers.controls.LayoutGroup;
 	import feathers.core.IValidating;
+	import feathers.layout.LayoutBoundsResult;
 
 	import starling.display.DisplayObject;
 
@@ -260,7 +261,7 @@ package feathers.controls.supportClasses
 			this.viewPortBounds.maxHeight = this._maxVisibleHeight;
 		}
 
-		override protected function handleManualLayout():Boolean
+		override protected function handleManualLayout():void
 		{
 			var minX:Number = 0;
 			var minY:Number = 0;
@@ -351,7 +352,12 @@ package feathers.controls.supportClasses
 			{
 				this._actualVisibleHeight = explicitViewPortHeight;
 			}
-			return this.setSizeInternal(calculatedWidth, calculatedHeight, false)
+			this._layoutResult.contentX = 0;
+			this._layoutResult.contentY = 0;
+			this._layoutResult.contentWidth = calculatedWidth;
+			this._layoutResult.contentHeight = calculatedHeight;
+			this._layoutResult.viewPortWidth = this._actualVisibleWidth;
+			this._layoutResult.viewPortHeight = this._actualVisibleHeight;
 		}
 	}
 }

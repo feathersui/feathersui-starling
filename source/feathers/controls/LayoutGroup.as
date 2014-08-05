@@ -18,8 +18,11 @@ package feathers.controls
 	import feathers.layout.ViewPortBounds;
 	import feathers.skins.IStyleProvider;
 
+	import flash.geom.Matrix;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
+	import starling.core.RenderSupport;
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 
@@ -51,6 +54,16 @@ package feathers.controls
 	 */
 	public class LayoutGroup extends FeathersControl
 	{
+		/**
+		 * @private
+		 */
+		private static const HELPER_POINT:Point = new Point();
+
+		/**
+		 * @private
+		 */
+		private static const HELPER_MATRIX:Matrix = new Matrix();
+
 		/**
 		 * @private
 		 */
@@ -210,7 +223,7 @@ package feathers.controls
 		 * <p>In the following example, clipping is enabled:</p>
 		 *
 		 * <listing version="3.0">
-		 * scroller.clipContent = true;</listing>
+		 * group.clipContent = true;</listing>
 		 *
 		 * @default false
 		 */
@@ -230,6 +243,91 @@ package feathers.controls
 			}
 			this._clipContent = value;
 			this.invalidate(INVALIDATION_FLAG_CLIPPING);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var originalBackgroundWidth:Number = NaN;
+
+		/**
+		 * @private
+		 */
+		protected var originalBackgroundHeight:Number = NaN;
+
+		/**
+		 * @private
+		 */
+		protected var currentBackgroundSkin:DisplayObject;
+
+		/**
+		 * @private
+		 */
+		protected var _backgroundSkin:DisplayObject;
+
+		/**
+		 * The default background to display behind all content. The background
+		 * skin is resized to fill the full width and height of the layout
+		 * group.
+		 *
+		 * <p>In the following example, the group is given a background skin:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.backgroundSkin = new Image( texture );</listing>
+		 *
+		 * @default null
+		 */
+		public function get backgroundSkin():DisplayObject
+		{
+			return this._backgroundSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set backgroundSkin(value:DisplayObject):void
+		{
+			if(this._backgroundSkin == value)
+			{
+				return;
+			}
+			this._backgroundSkin = value;
+			this.invalidate(INVALIDATION_FLAG_SKIN);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _backgroundDisabledSkin:DisplayObject;
+
+		/**
+		 * The background to display behind all content when the layout group is
+		 * disabled. The background skin is resized to fill the full width and
+		 * height of the layout group.
+		 *
+		 * <p>In the following example, the group is given a background skin:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.backgroundDisabledSkin = new Image( texture );</listing>
+		 *
+		 * @default null
+		 */
+		public function get backgroundDisabledSkin():DisplayObject
+		{
+			return this._backgroundDisabledSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set backgroundDisabledSkin(value:DisplayObject):void
+		{
+			if(this._backgroundDisabledSkin == value)
+			{
+				return;
+			}
+			this._backgroundDisabledSkin = value;
+			this.invalidate(INVALIDATION_FLAG_SKIN);
 		}
 
 		/**
@@ -338,6 +436,43 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override public function hitTest(localPoint:Point, forTouch:Boolean = false):DisplayObject
+		{
+			var localX:Number = localPoint.x;
+			var localY:Number = localPoint.y;
+			var result:DisplayObject = super.hitTest(localPoint, forTouch);
+			if(result)
+			{
+				return result;
+			}
+			if(this.currentBackgroundSkin && this._hitArea.contains(localX, localY))
+			{
+				return this;
+			}
+			return null;
+		}
+
+		/**
+		 * @private
+		 */
+		override public function render(support:RenderSupport, parentAlpha:Number):void
+		{
+			if(this.currentBackgroundSkin && this.currentBackgroundSkin.hasVisibleArea)
+			{
+				var blendMode:String = this.blendMode;
+				support.pushMatrix();
+				support.transformMatrix(this.currentBackgroundSkin);
+				support.blendMode = this.currentBackgroundSkin.blendMode;
+				this.currentBackgroundSkin.render(support, parentAlpha * this.alpha);
+				support.blendMode = blendMode;
+				support.popMatrix();
+			}
+			super.render(support, parentAlpha);
+		}
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			this.layout = null;
@@ -375,6 +510,8 @@ package feathers.controls
 			var clippingInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_CLIPPING);
 			//we don't have scrolling, but a subclass might
 			var scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
+			var skinInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SKIN);
+			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 
 			//scrolling only affects the layout is requiresLayoutOnScroll is true
 			if(!layoutInvalid && scrollInvalid && this._layout && this._layout.requiresLayoutOnScroll)
@@ -382,7 +519,12 @@ package feathers.controls
 				layoutInvalid = true;
 			}
 
-			if(sizeInvalid || layoutInvalid)
+			if(skinInvalid || stateInvalid)
+			{
+				this.refreshBackgroundSkin();
+			}
+
+			if(sizeInvalid || layoutInvalid || skinInvalid || stateInvalid)
 			{
 				this.refreshViewPortBounds();
 				if(this._layout)
@@ -390,12 +532,30 @@ package feathers.controls
 					this._ignoreChildChanges = true;
 					this._layout.layout(this.items, this.viewPortBounds, this._layoutResult);
 					this._ignoreChildChanges = false;
-					sizeInvalid = this.setSizeInternal(this._layoutResult.contentWidth, this._layoutResult.contentHeight, false) || sizeInvalid;
 				}
 				else
 				{
-					sizeInvalid = this.handleManualLayout() || sizeInvalid;
+					this.handleManualLayout();
 				}
+				var width:Number = this._layoutResult.contentWidth;
+				if(this.originalBackgroundWidth === this.originalBackgroundWidth && //!isNaN
+					this.originalBackgroundWidth > width)
+				{
+					width = this.originalBackgroundWidth;
+				}
+				var height:Number = this._layoutResult.contentHeight;
+				if(this.originalBackgroundHeight === this.originalBackgroundHeight && //!isNaN
+					this.originalBackgroundHeight > height)
+				{
+					height = this.originalBackgroundHeight;
+				}
+				sizeInvalid = this.setSizeInternal(width, height, false) || sizeInvalid;
+				if(this.currentBackgroundSkin)
+				{
+					this.currentBackgroundSkin.width = this.actualWidth;
+					this.currentBackgroundSkin.height = this.actualHeight;
+				}
+
 				//final validation to avoid juggler next frame issues
 				this.validateChildren();
 			}
@@ -403,6 +563,35 @@ package feathers.controls
 			if(sizeInvalid || clippingInvalid)
 			{
 				this.refreshClipRect();
+			}
+		}
+
+		/**
+		 * Choose the appropriate background skin based on the control's current
+		 * state.
+		 */
+		protected function refreshBackgroundSkin():void
+		{
+			if(!this._isEnabled && this._backgroundDisabledSkin)
+			{
+				this.currentBackgroundSkin = this._backgroundDisabledSkin;
+			}
+			else
+			{
+				this.currentBackgroundSkin = this._backgroundSkin
+			}
+			if(this.currentBackgroundSkin)
+			{
+				if(this.originalBackgroundWidth != this.originalBackgroundWidth ||
+					this.originalBackgroundHeight != this.originalBackgroundHeight) //isNaN
+				{
+					if(this.currentBackgroundSkin is IValidating)
+					{
+						IValidating(this.currentBackgroundSkin).validate();
+					}
+					this.originalBackgroundWidth = this.currentBackgroundSkin.width;
+					this.originalBackgroundHeight = this.currentBackgroundSkin.height;
+				}
 			}
 		}
 
@@ -427,7 +616,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function handleManualLayout():Boolean
+		protected function handleManualLayout():void
 		{
 			var maxX:Number = this.viewPortBounds.explicitWidth;
 			if(maxX != maxX) //isNaN
@@ -466,7 +655,12 @@ package feathers.controls
 				}
 			}
 			this._ignoreChildChanges = false;
-			return this.setSizeInternal(maxX, maxY, false)
+			this._layoutResult.contentX = 0;
+			this._layoutResult.contentY = 0;
+			this._layoutResult.contentWidth = maxX;
+			this._layoutResult.contentHeight = maxY;
+			this._layoutResult.viewPortWidth = maxX;
+			this._layoutResult.viewPortHeight = maxY;
 		}
 
 		/**
