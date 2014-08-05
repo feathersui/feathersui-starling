@@ -96,6 +96,13 @@
 	</target>
 	<target name="install-android">
 		<echo message="Installing TrainTimes.apk"/>
+		<java jar="${adt}" dir="${basedir}" fork="true" failonerror="false">
+			<arg value="-uninstallApp"/>
+			<arg value="-platform"/>
+			<arg value="android"/>
+			<arg value="-appid"/>
+			<arg value="com.feathersui.examples.TrainTimes"/>
+		</java>
 		<java jar="${adt}" dir="${basedir}" fork="true" failonerror="true">
 			<arg value="-installApp"/>
 			<arg value="-platform"/>
@@ -106,6 +113,13 @@
 	</target>
 	<target name="install-ios">
 		<echo message="Installing TrainTimes.ipa"/>
+		<java jar="${adt}" dir="${basedir}" fork="true" failonerror="false">
+			<arg value="-uninstallApp"/>
+			<arg value="-platform"/>
+			<arg value="iOS"/>
+			<arg value="-appid"/>
+			<arg value="com.feathersui.examples.TrainTimes"/>
+		</java>
 		<java jar="${adt}" dir="${basedir}" fork="true" failonerror="true">
 			<arg value="-installApp"/>
 			<arg value="-platform"/>
