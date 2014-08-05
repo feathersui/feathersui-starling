@@ -1774,7 +1774,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _throwElasticity:Number = 0.03;
+		protected var _throwElasticity:Number = 0.05;
 
 		/**
 		 * If the scroll position goes outside the minimum or maximum bounds
@@ -1788,9 +1788,9 @@ package feathers.controls
 		 * scroller's edges is customized:</p>
 		 *
 		 * <listing version="3.0">
-		 * scroller.elasticity = 0.5;</listing>
+		 * scroller.throwElasticity = 0.1;</listing>
 		 *
-		 * @default 0.03
+		 * @default 0.05
 		 *
 		 * @see #hasElasticEdges
 		 * @see #elasticity
@@ -2323,20 +2323,20 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _elasticSnapDuration:Number = 0.24;
+		protected var _elasticSnapDuration:Number = 0.5;
 
 		/**
 		 * The duration, in seconds, of the animation when a the scroller snaps
 		 * back to the minimum or maximum position after going out of bounds.
 		 *
 		 * <p>In the following example, the duration of the animation that snaps
-		 * the content back after pulling it beyond the edge is set to 500
+		 * the content back after pulling it beyond the edge is set to 750
 		 * milliseconds:</p>
 		 *
 		 * <listing version="3.0">
-		 * scroller.elasticSnapDuration = 0.5;</listing>
+		 * scroller.elasticSnapDuration = 0.75;</listing>
 		 *
-		 * @default 0.24
+		 * @default 0.5
 		 */
 		public function get elasticSnapDuration():Number
 		{
@@ -2670,6 +2670,16 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _horizontalAutoScrollTweenEndRatio:Number = 1;
+
+		/**
+		 * @private
+		 */
+		protected var _verticalAutoScrollTweenEndRatio:Number = 1;
+
+		/**
+		 * @private
+		 */
 		override public function dispose():void
 		{
 			Starling.current.nativeStage.removeEventListener(MouseEvent.MOUSE_WHEEL, nativeStage_mouseWheelHandler);
@@ -2939,10 +2949,18 @@ package feathers.controls
 			while(this._hasViewPortBoundsChanged)
 			this._lastViewPortWidth = viewPort.width;
 			this._lastViewPortHeight = viewPort.height;
-			if(scrollInvalid || this._maxHorizontalScrollPosition != oldMaxHorizontalScrollPosition ||
-				this._maxVerticalScrollPosition != oldMaxVerticalScrollPosition)
+			if(oldMaxHorizontalScrollPosition != this._maxHorizontalScrollPosition)
 			{
+				this.refreshHorizontalAutoScrollTweenEndRatio();
 				scrollInvalid = true;
+			}
+			if(oldMaxVerticalScrollPosition != this._maxVerticalScrollPosition)
+			{
+				this.refreshVerticalAutoScrollTweenEndRatio();
+				scrollInvalid = true;
+			}
+			if(scrollInvalid)
+			{
 				this.dispatchEventWith(Event.SCROLL);
 			}
 
@@ -4003,9 +4021,12 @@ package feathers.controls
 					}
 					else
 					{
+						this._startHorizontalScrollPosition = this._horizontalScrollPosition;
 						this._targetHorizontalScrollPosition = targetHorizontalScrollPosition;
 						this._horizontalAutoScrollTween = new Tween(this, duration, this._throwEase);
 						this._horizontalAutoScrollTween.animate("horizontalScrollPosition", targetHorizontalScrollPosition);
+						//warning: if you try to set onUpdate here, it may be
+						//replaced elsewhere.
 						this._horizontalAutoScrollTween.onComplete = horizontalAutoScrollTween_onComplete;
 						Starling.juggler.add(this._horizontalAutoScrollTween);
 					}
@@ -4034,9 +4055,12 @@ package feathers.controls
 					}
 					else
 					{
+						this._startVerticalScrollPosition = this._verticalScrollPosition;
 						this._targetVerticalScrollPosition = targetVerticalScrollPosition;
 						this._verticalAutoScrollTween = new Tween(this, duration, this._throwEase);
 						this._verticalAutoScrollTween.animate("verticalScrollPosition", targetVerticalScrollPosition);
+						//warning: if you try to set onUpdate here, it may be
+						//replaced elsewhere.
 						this._verticalAutoScrollTween.onComplete = verticalAutoScrollTween_onComplete;
 						Starling.juggler.add(this._verticalAutoScrollTween);
 					}
@@ -4244,32 +4268,13 @@ package feathers.controls
 				return;
 			}
 
-			var distance:Number = this.calculateThrowDistance(pixelsPerMS);
-			var idealDuration:Number = this._fixedThrowDuration;
+			var duration:Number = this._fixedThrowDuration;
 			if(!this._useFixedThrowDuration)
 			{
-				idealDuration = this.calculateDynamicThrowDuration(pixelsPerMS);
+				duration = this.calculateDynamicThrowDuration(pixelsPerMS);
 			}
-			var actualDuration:Number = idealDuration;
-			var targetHorizontalScrollPosition:Number = this._horizontalScrollPosition + distance;
-			var isBeyondMaximum:Boolean = targetHorizontalScrollPosition > this._maxHorizontalScrollPosition;
-			if(isBeyondMaximum || targetHorizontalScrollPosition < this._minHorizontalScrollPosition)
-			{
-				if(isBeyondMaximum)
-				{
-					var ratioOutOfBounds:Number = (targetHorizontalScrollPosition - this._maxHorizontalScrollPosition) / Math.abs(distance);
-				}
-				else
-				{
-					ratioOutOfBounds = (this._minHorizontalScrollPosition - targetHorizontalScrollPosition) / Math.abs(distance);
-				}
-				var ratioInBounds:Number = 1 - ratioOutOfBounds;
-				ratioOutOfBounds *= this._throwElasticity;
-				var newRatio:Number = ratioInBounds + ratioOutOfBounds;
-				targetHorizontalScrollPosition = this._horizontalScrollPosition + distance * newRatio;
-				actualDuration = idealDuration * newRatio;
-			}
-			this.throwTo(targetHorizontalScrollPosition, NaN, actualDuration);
+			this.throwTo(this._horizontalScrollPosition + this.calculateThrowDistance(pixelsPerMS), NaN, duration);
+			this.refreshHorizontalAutoScrollTweenEndRatio();
 		}
 
 		/**
@@ -4340,32 +4345,149 @@ package feathers.controls
 				return;
 			}
 
-			var distance:Number = this.calculateThrowDistance(pixelsPerMS);
-			var idealDuration:Number = this._fixedThrowDuration;
+			var duration:Number = this._fixedThrowDuration;
 			if(!this._useFixedThrowDuration)
 			{
-				idealDuration = this.calculateDynamicThrowDuration(pixelsPerMS);
+				duration = this.calculateDynamicThrowDuration(pixelsPerMS);
 			}
-			var actualDuration:Number = idealDuration;
-			var targetVerticalScrollPosition:Number = this._verticalScrollPosition + distance;
-			var isBeyondMaximum:Boolean = targetVerticalScrollPosition > this._maxVerticalScrollPosition;
-			if(isBeyondMaximum || targetVerticalScrollPosition < this._minVerticalScrollPosition)
+			this.throwTo(NaN, this._verticalScrollPosition + this.calculateThrowDistance(pixelsPerMS), duration);
+			this.refreshVerticalAutoScrollTweenEndRatio();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function onHorizontalAutoScrollTweenUpdate():void
+		{
+			var ratio:Number = this._horizontalAutoScrollTween.transitionFunc(this._horizontalAutoScrollTween.currentTime / this._horizontalAutoScrollTween.totalTime);
+			if(ratio >= this._horizontalAutoScrollTweenEndRatio)
 			{
-				if(isBeyondMaximum)
+				if(!this._hasElasticEdges)
 				{
-					var ratioOutOfBounds:Number = (targetVerticalScrollPosition - this._maxVerticalScrollPosition) / Math.abs(distance);
+					if(this._horizontalScrollPosition < this._minHorizontalScrollPosition)
+					{
+						this._horizontalScrollPosition = this._minHorizontalScrollPosition;
+					}
+					else if(this._horizontalScrollPosition > this._maxHorizontalScrollPosition)
+					{
+						this._horizontalScrollPosition = this._maxHorizontalScrollPosition;
+					}
+				}
+				Starling.juggler.remove(this._horizontalAutoScrollTween);
+				this._horizontalAutoScrollTween = null;
+				this.finishScrollingHorizontally();
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function onVerticalAutoScrollTweenUpdate():void
+		{
+			var ratio:Number = this._verticalAutoScrollTween.transitionFunc(this._verticalAutoScrollTween.currentTime / this._verticalAutoScrollTween.totalTime);
+			if(ratio >= this._verticalAutoScrollTweenEndRatio)
+			{
+				if(!this._hasElasticEdges)
+				{
+					if(this._verticalScrollPosition < this._minVerticalScrollPosition)
+					{
+						this._verticalScrollPosition = this._minVerticalScrollPosition;
+					}
+					else if(this._verticalScrollPosition > this._maxVerticalScrollPosition)
+					{
+						this._verticalScrollPosition = this._maxVerticalScrollPosition;
+					}
+				}
+				Starling.juggler.remove(this._verticalAutoScrollTween);
+				this._verticalAutoScrollTween = null;
+				this.finishScrollingVertically();
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshHorizontalAutoScrollTweenEndRatio():void
+		{
+			var distance:Number = Math.abs(this._targetHorizontalScrollPosition - this._startHorizontalScrollPosition);
+			var ratioOutOfBounds:Number = 0;
+			if(this._targetHorizontalScrollPosition > this._maxHorizontalScrollPosition)
+			{
+				ratioOutOfBounds = (this._targetHorizontalScrollPosition - this._maxHorizontalScrollPosition) / distance;
+			}
+			else if(this._targetHorizontalScrollPosition < this._minHorizontalScrollPosition)
+			{
+				ratioOutOfBounds = (this._minHorizontalScrollPosition - this._targetHorizontalScrollPosition) / distance;
+			}
+			if(ratioOutOfBounds > 0)
+			{
+				if(this._hasElasticEdges)
+				{
+					this._horizontalAutoScrollTweenEndRatio = (1 - ratioOutOfBounds) + (ratioOutOfBounds * this._throwElasticity);
 				}
 				else
 				{
-					ratioOutOfBounds = (this._minVerticalScrollPosition - targetVerticalScrollPosition) / Math.abs(distance);
+					this._horizontalAutoScrollTweenEndRatio = 1 - ratioOutOfBounds;
 				}
-				var ratioInBounds:Number = 1 - ratioOutOfBounds;
-				ratioOutOfBounds *= this._throwElasticity;
-				var newRatio:Number = ratioInBounds + ratioOutOfBounds;
-				targetVerticalScrollPosition = this._verticalScrollPosition + distance * newRatio;
-				actualDuration = idealDuration * newRatio;
 			}
-			this.throwTo(NaN, targetVerticalScrollPosition, actualDuration);
+			else
+			{
+				this._horizontalAutoScrollTweenEndRatio = 1;
+			}
+			if(this._horizontalAutoScrollTween)
+			{
+				if(this._horizontalAutoScrollTweenEndRatio < 1)
+				{
+					this._horizontalAutoScrollTween.onUpdate = onHorizontalAutoScrollTweenUpdate;
+				}
+				else
+				{
+					this._horizontalAutoScrollTween.onUpdate = null;
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshVerticalAutoScrollTweenEndRatio():void
+		{
+			var distance:Number = Math.abs(this._targetVerticalScrollPosition - this._startVerticalScrollPosition);
+			var ratioOutOfBounds:Number = 0;
+			if(this._targetVerticalScrollPosition > this._maxVerticalScrollPosition)
+			{
+				ratioOutOfBounds = (this._targetVerticalScrollPosition - this._maxVerticalScrollPosition) / distance;
+			}
+			else if(this._targetVerticalScrollPosition < this._minVerticalScrollPosition)
+			{
+				ratioOutOfBounds = (this._minVerticalScrollPosition - this._targetVerticalScrollPosition) / distance;
+			}
+			if(ratioOutOfBounds > 0)
+			{
+				if(this._hasElasticEdges)
+				{
+					this._verticalAutoScrollTweenEndRatio = (1 - ratioOutOfBounds) + (ratioOutOfBounds * this._throwElasticity);
+				}
+				else
+				{
+					this._verticalAutoScrollTweenEndRatio = 1 - ratioOutOfBounds;
+				}
+			}
+			else
+			{
+				this._verticalAutoScrollTweenEndRatio = 1;
+			}
+			if(this._verticalAutoScrollTween)
+			{
+				if(this._verticalAutoScrollTweenEndRatio < 1)
+				{
+					this._verticalAutoScrollTween.onUpdate = onVerticalAutoScrollTweenUpdate;
+				}
+				else
+				{
+					this._verticalAutoScrollTween.onUpdate = null;
+				}
+			}
 		}
 
 		/**
