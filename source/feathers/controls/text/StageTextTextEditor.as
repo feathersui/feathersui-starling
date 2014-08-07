@@ -1112,8 +1112,8 @@ package feathers.controls.text
 
 			if(this.textSnapshot)
 			{
-				this.textSnapshot.x = Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx;
-				this.textSnapshot.y = Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty;
+				this.textSnapshot.x = Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx - desktopGutterPositionOffset;
+				this.textSnapshot.y = Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty - desktopGutterPositionOffset;
 			}
 
 			super.render(support, parentAlpha);
@@ -1613,11 +1613,6 @@ package feathers.controls.text
 			//and height exactly match its view port width and height.
 			var bitmapData:BitmapData = new BitmapData(viewPort.width, viewPort.height, true, 0x00ff00ff);
 			this.stageText.drawViewPortToBitmapData(bitmapData);
-			if(this._stageTextIsTextField)
-			{
-				HELPER_POINT.setTo(0, 0);
-				bitmapData.copyPixels(bitmapData, new Rectangle(2, 2, bitmapData.width, bitmapData.height), HELPER_POINT);
-			}
 
 			var newTexture:Texture;
 			if(!this.textSnapshot || this._needsNewTexture)
