@@ -517,14 +517,16 @@ package feathers.display
 					var scaledOppositeEdgeSize:Number = this._width;
 					var oppositeEdgeScale:Number = scaledOppositeEdgeSize / this._frame.width;
 					var scaledFirstRegionSize:Number = this._textures.firstRegionSize * oppositeEdgeScale;
-					var scaledThirdRegionSize:Number = (this._frame.height - this._textures.firstRegionSize - this._textures.secondRegionSize) * oppositeEdgeScale;
-					var scaledSecondRegionSize:Number = this._height - scaledFirstRegionSize - scaledThirdRegionSize;
-					if(scaledSecondRegionSize < 0)
+					var scaledThirdRegionSize:Number = (this._frame.height - this._textures.firstRegionSize - this._textures.secondRegionSize) * oppositeEdgeScale;sumFirstAndThird = scaledFirstRegionSize + scaledThirdRegionSize;
+					var sumFirstAndThird:Number = scaledFirstRegionSize + scaledThirdRegionSize;
+					if(sumFirstAndThird > this._width)
 					{
-						var firstAndThirdOffset:Number = scaledSecondRegionSize / 2;
-						scaledFirstRegionSize += firstAndThirdOffset;
-						scaledThirdRegionSize += firstAndThirdOffset;
+						var distortionScale:Number = (this._width / sumFirstAndThird);
+						scaledFirstRegionSize *= distortionScale;
+						scaledThirdRegionSize *= distortionScale;
+						sumFirstAndThird = scaledFirstRegionSize + scaledThirdRegionSize;
 					}
+					var scaledSecondRegionSize:Number = this._height - sumFirstAndThird;
 
 					if(scaledOppositeEdgeSize > 0)
 					{
@@ -567,14 +569,16 @@ package feathers.display
 					scaledOppositeEdgeSize = this._height;
 					oppositeEdgeScale = scaledOppositeEdgeSize / this._frame.height;
 					scaledFirstRegionSize = this._textures.firstRegionSize * oppositeEdgeScale;
-					scaledThirdRegionSize = (this._frame.width - this._textures.firstRegionSize - this._textures.secondRegionSize) * oppositeEdgeScale;
-					scaledSecondRegionSize = this._width - scaledFirstRegionSize - scaledThirdRegionSize;
-					if(scaledSecondRegionSize < 0)
+					scaledThirdRegionSize = (this._frame.width - this._textures.firstRegionSize - this._textures.secondRegionSize) * oppositeEdgeScale;sumFirstAndThird = scaledFirstRegionSize + scaledThirdRegionSize;
+					sumFirstAndThird = scaledFirstRegionSize + scaledThirdRegionSize;
+					if(sumFirstAndThird > this._width)
 					{
-						firstAndThirdOffset = scaledSecondRegionSize / 2;
-						scaledFirstRegionSize += firstAndThirdOffset;
-						scaledThirdRegionSize += firstAndThirdOffset;
+						distortionScale = (this._width / sumFirstAndThird);
+						scaledFirstRegionSize *= distortionScale;
+						scaledThirdRegionSize *= distortionScale;
+						sumFirstAndThird = scaledFirstRegionSize + scaledThirdRegionSize;
 					}
+					scaledSecondRegionSize = this._width - sumFirstAndThird;
 
 					if(scaledOppositeEdgeSize > 0)
 					{
