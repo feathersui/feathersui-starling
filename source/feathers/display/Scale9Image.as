@@ -513,23 +513,27 @@ package feathers.display
 
 				var grid:Rectangle = this._textures.scale9Grid;
 				var scaledLeftWidth:Number = grid.x * this._textureScale;
-				var scaledTopHeight:Number = grid.y * this._textureScale;
 				var scaledRightWidth:Number = (this._frame.width - grid.x - grid.width) * this._textureScale;
+				var sumLeftAndRight:Number = scaledLeftWidth + scaledRightWidth;
+				if(sumLeftAndRight > this._width)
+				{
+					var distortionScale:Number = (this._width / sumLeftAndRight);
+					scaledLeftWidth *= distortionScale;
+					scaledRightWidth *= distortionScale;
+					sumLeftAndRight + scaledLeftWidth + scaledRightWidth;
+				}
+				var scaledCenterWidth:Number = this._width - sumLeftAndRight;
+				var scaledTopHeight:Number = grid.y * this._textureScale;
 				var scaledBottomHeight:Number = (this._frame.height - grid.y - grid.height) * this._textureScale;
-				var scaledCenterWidth:Number = this._width - scaledLeftWidth - scaledRightWidth;
-				var scaledMiddleHeight:Number = this._height - scaledTopHeight - scaledBottomHeight;
-				if(scaledCenterWidth < 0)
+				var sumTopAndBottom:Number = scaledTopHeight + scaledBottomHeight;
+				if(sumTopAndBottom > this._height)
 				{
-					var offset:Number = scaledCenterWidth / 2;
-					scaledLeftWidth += offset;
-					scaledRightWidth += offset;
+					distortionScale = (this._height / sumTopAndBottom);
+					scaledTopHeight *= distortionScale;
+					scaledBottomHeight *= distortionScale;
+					sumTopAndBottom = scaledTopHeight + scaledBottomHeight;
 				}
-				if(scaledMiddleHeight < 0)
-				{
-					offset = scaledMiddleHeight / 2;
-					scaledTopHeight += offset;
-					scaledBottomHeight += offset;
-				}
+				var scaledMiddleHeight:Number = this._height - sumTopAndBottom;
 
 				if(scaledTopHeight > 0)
 				{
