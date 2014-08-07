@@ -13,7 +13,7 @@ package feathers.controls.text
 	import feathers.text.StageTextField;
 	import feathers.utils.geom.matrixToScaleX;
 	import feathers.utils.geom.matrixToScaleY;
-
+	
 	import flash.display.BitmapData;
 	import flash.events.Event;
 	import flash.events.FocusEvent;
@@ -31,7 +31,7 @@ package feathers.controls.text
 	import flash.text.engine.FontWeight;
 	import flash.ui.Keyboard;
 	import flash.utils.getDefinitionByName;
-
+	
 	import starling.core.RenderSupport;
 	import starling.core.Starling;
 	import starling.display.Image;
@@ -1621,8 +1621,22 @@ package feathers.controls.text
 			}
 			//StageText sucks because it requires that the BitmapData's width
 			//and height exactly match its view port width and height.
-			//(doubled on Retina Mac) 
-			var bitmapData:BitmapData = new BitmapData(viewPort.width * nativeScaleFactor, viewPort.height * nativeScaleFactor, true, 0x00ff00ff);
+			//(may be doubled on Retina Mac) 
+			try
+			{
+				var bitmapData:BitmapData = new BitmapData(viewPort.width * nativeScaleFactor, viewPort.height * nativeScaleFactor, true, 0x00ff00ff);
+				this.stageText.drawViewPortToBitmapData(bitmapData);
+			} 
+			catch(error:Error) 
+			{
+				//drawing stage text to the bitmap data at double size may fail
+				//on runtime versions less than 15, so fall back to using a
+				//snapshot that is half size. it's not ideal, but better than
+				//nothing.
+				bitmapData.dispose();
+				bitmapData = new BitmapData(viewPort.width, viewPort.height, true, 0x00ff00ff);
+				this.stageText.drawViewPortToBitmapData(bitmapData);
+			}
 			this.stageText.drawViewPortToBitmapData(bitmapData);
 
 			var newTexture:Texture;
