@@ -1608,10 +1608,15 @@ package feathers.controls.text
 			{
 				return;
 			}
-
+			var nativeScaleFactor:Number = 1;
+			if(Starling.current.supportHighResolutions)
+			{
+				nativeScaleFactor = Starling.current.nativeStage.contentsScaleFactor;
+			}
 			//StageText sucks because it requires that the BitmapData's width
 			//and height exactly match its view port width and height.
-			var bitmapData:BitmapData = new BitmapData(viewPort.width, viewPort.height, true, 0x00ff00ff);
+			//(doubled on Retina Mac) 
+			var bitmapData:BitmapData = new BitmapData(viewPort.width * nativeScaleFactor, viewPort.height * nativeScaleFactor, true, 0x00ff00ff);
 			this.stageText.drawViewPortToBitmapData(bitmapData);
 
 			var newTexture:Texture;
