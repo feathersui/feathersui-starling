@@ -218,7 +218,7 @@ package feathers.skins
 		/**
 		 * Returns the function that handles updating a value of a specific type.
 		 */
-		public function getValueTypeHandler(type:Class, handler:Function):Function
+		public function getValueTypeHandler(type:Class):Function
 		{
 			return this._handlers[type] as Function;
 		}
