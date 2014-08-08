@@ -13,7 +13,7 @@ package feathers.controls.text
 	import feathers.text.StageTextField;
 	import feathers.utils.geom.matrixToScaleX;
 	import feathers.utils.geom.matrixToScaleY;
-
+	
 	import flash.display.BitmapData;
 	import flash.events.Event;
 	import flash.events.FocusEvent;
@@ -31,7 +31,7 @@ package feathers.controls.text
 	import flash.text.engine.FontWeight;
 	import flash.ui.Keyboard;
 	import flash.utils.getDefinitionByName;
-
+	
 	import starling.core.RenderSupport;
 	import starling.core.Starling;
 	import starling.display.Image;
@@ -1112,8 +1112,8 @@ package feathers.controls.text
 
 			if(this.textSnapshot)
 			{
-				this.textSnapshot.x = Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx;
-				this.textSnapshot.y = Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty;
+				this.textSnapshot.x = Math.round(HELPER_MATRIX.tx) - HELPER_MATRIX.tx - desktopGutterPositionOffset;
+				this.textSnapshot.y = Math.round(HELPER_MATRIX.ty) - HELPER_MATRIX.ty - desktopGutterPositionOffset;
 			}
 
 			super.render(support, parentAlpha);
@@ -1473,6 +1473,12 @@ package feathers.controls.text
 		 */
 		protected function refreshMeasureProperties():void
 		{
+			var nativeScaleFactor:Number = 1;
+			if(Starling.current.supportHighResolutions)
+			{
+				nativeScaleFactor = Starling.current.nativeStage.contentsScaleFactor;
+			}
+			
 			this._measureTextField.displayAsPassword = this._displayAsPassword;
 			this._measureTextField.maxChars = this._maxChars;
 			this._measureTextField.restrict = this._restrict;
@@ -1482,7 +1488,7 @@ package feathers.controls.text
 			format.color = this._color;
 			format.font = this._fontFamily;
 			format.italic = this._fontPosture == FontPosture.ITALIC;
-			format.size = this._fontSize;
+			format.size = this._fontSize * nativeScaleFactor;
 			format.bold = this._fontWeight == FontWeight.BOLD;
 			var alignValue:String = this._textAlign;
 			if(alignValue == TextFormatAlign.START)
@@ -1608,16 +1614,30 @@ package feathers.controls.text
 			{
 				return;
 			}
-
+			var nativeScaleFactor:Number = 1;
+			if(Starling.current.supportHighResolutions)
+			{
+				nativeScaleFactor = Starling.current.nativeStage.contentsScaleFactor;
+			}
 			//StageText sucks because it requires that the BitmapData's width
 			//and height exactly match its view port width and height.
-			var bitmapData:BitmapData = new BitmapData(viewPort.width, viewPort.height, true, 0x00ff00ff);
-			this.stageText.drawViewPortToBitmapData(bitmapData);
-			if(this._stageTextIsTextField)
+			//(may be doubled on Retina Mac) 
+			try
 			{
-				HELPER_POINT.setTo(0, 0);
-				bitmapData.copyPixels(bitmapData, new Rectangle(2, 2, bitmapData.width, bitmapData.height), HELPER_POINT);
+				var bitmapData:BitmapData = new BitmapData(viewPort.width * nativeScaleFactor, viewPort.height * nativeScaleFactor, true, 0x00ff00ff);
+				this.stageText.drawViewPortToBitmapData(bitmapData);
+			} 
+			catch(error:Error) 
+			{
+				//drawing stage text to the bitmap data at double size may fail
+				//on runtime versions less than 15, so fall back to using a
+				//snapshot that is half size. it's not ideal, but better than
+				//nothing.
+				bitmapData.dispose();
+				bitmapData = new BitmapData(viewPort.width, viewPort.height, true, 0x00ff00ff);
+				this.stageText.drawViewPortToBitmapData(bitmapData);
 			}
+			this.stageText.drawViewPortToBitmapData(bitmapData);
 
 			var newTexture:Texture;
 			if(!this.textSnapshot || this._needsNewTexture)
@@ -1648,6 +1668,11 @@ package feathers.controls.text
 			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
 			this.textSnapshot.scaleX = 1 / matrixToScaleX(HELPER_MATRIX);
 			this.textSnapshot.scaleY = 1 / matrixToScaleY(HELPER_MATRIX);
+			if(nativeScaleFactor > 1 && bitmapData.width == viewPort.width)
+			{
+				this.textSnapshot.scaleX *= nativeScaleFactor;
+				this.textSnapshot.scaleY *= nativeScaleFactor;
+			}
 			bitmapData.dispose();
 			this._needsNewTexture = false;
 		}
