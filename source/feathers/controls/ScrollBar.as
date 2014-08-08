@@ -2351,7 +2351,7 @@ package feathers.controls
 			{
 				if(showButtons)
 				{
-					this.minimumTrack.x = this.decrementButton.x;
+					this.minimumTrack.x = this.decrementButton.width;
 				}
 				else
 				{
@@ -2410,7 +2410,7 @@ package feathers.controls
 			{
 				if(showButtons)
 				{
-					this.minimumTrack.x = this.decrementButton.x;
+					this.minimumTrack.x = this.decrementButton.width;
 				}
 				else
 				{
