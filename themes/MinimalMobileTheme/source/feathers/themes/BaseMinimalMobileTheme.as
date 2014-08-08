@@ -204,21 +204,9 @@ package feathers.themes
 		/**
 		 * This theme's scroll bar type is SimpleScrollBar.
 		 */
-		protected static function horizontalScrollBarFactory():SimpleScrollBar
+		protected static function scrollBarFactory():SimpleScrollBar
 		{
-			var scrollBar:SimpleScrollBar = new SimpleScrollBar();
-			scrollBar.direction = SimpleScrollBar.DIRECTION_HORIZONTAL;
-			return scrollBar;
-		}
-
-		/**
-		 * This theme's scroll bar type is SimpleScrollBar.
-		 */
-		protected static function verticalScrollBarFactory():SimpleScrollBar
-		{
-			var scrollBar:SimpleScrollBar = new SimpleScrollBar();
-			scrollBar.direction = SimpleScrollBar.DIRECTION_VERTICAL;
-			return scrollBar;
+			return new SimpleScrollBar();
 		}
 
 		/**
@@ -758,8 +746,8 @@ package feathers.themes
 
 		protected function setScrollerStyles(scroller:Scroller):void
 		{
-			scroller.horizontalScrollBarFactory = horizontalScrollBarFactory;
-			scroller.verticalScrollBarFactory = verticalScrollBarFactory;
+			scroller.horizontalScrollBarFactory = scrollBarFactory;
+			scroller.verticalScrollBarFactory = scrollBarFactory;
 		}
 
 	//-------------------------
