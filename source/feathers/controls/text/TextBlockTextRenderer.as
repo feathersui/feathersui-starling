@@ -1242,7 +1242,7 @@ package feathers.controls.text
 			if(needsHeight)
 			{
 				newHeight = this._measurementTextLineContainer.height;
-				if(newHeight <= 0)
+				if(newHeight <= 0 && this._elementFormat)
 				{
 					newHeight = this._elementFormat.fontSize;
 				}
@@ -1593,7 +1593,7 @@ package feathers.controls.text
 			if(this._textElement)
 			{
 				this._textElement.text = this._text;
-				if(this._text.charAt(this._text.length - 1) == " ")
+				if(this._text !== null && this._text.charAt(this._text.length - 1) == " ")
 				{
 					//add an invisible control character because FTE apparently
 					//doesn't think that it's important to include trailing
