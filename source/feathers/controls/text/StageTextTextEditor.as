@@ -1668,6 +1668,11 @@ package feathers.controls.text
 			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
 			this.textSnapshot.scaleX = 1 / matrixToScaleX(HELPER_MATRIX);
 			this.textSnapshot.scaleY = 1 / matrixToScaleY(HELPER_MATRIX);
+			if(nativeScaleFactor > 1 && bitmapData.width == viewPort.width)
+			{
+				this.textSnapshot.scaleX *= nativeScaleFactor;
+				this.textSnapshot.scaleY *= nativeScaleFactor;
+			}
 			bitmapData.dispose();
 			this._needsNewTexture = false;
 		}
