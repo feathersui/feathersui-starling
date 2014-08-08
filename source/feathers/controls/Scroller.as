@@ -393,21 +393,9 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected static function defaultHorizontalScrollBarFactory():IScrollBar
+		protected static function defaultScrollBarFactory():IScrollBar
 		{
-			var scrollBar:SimpleScrollBar = new SimpleScrollBar();
-			scrollBar.direction = SimpleScrollBar.DIRECTION_HORIZONTAL;
-			return scrollBar;
-		}
-
-		/**
-		 * @private
-		 */
-		protected static function defaultVerticalScrollBarFactory():IScrollBar
-		{
-			var scrollBar:SimpleScrollBar = new SimpleScrollBar();
-			scrollBar.direction = SimpleScrollBar.DIRECTION_VERTICAL;
-			return scrollBar;
+			return new SimpleScrollBar();
 		}
 
 		/**
@@ -733,7 +721,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _horizontalScrollBarFactory:Function = defaultHorizontalScrollBarFactory;
+		protected var _horizontalScrollBarFactory:Function = defaultScrollBarFactory;
 
 		/**
 		 * Creates the horizontal scroll bar. The horizontal scroll bar must be
@@ -753,9 +741,7 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * scroller.horizontalScrollBarFactory = function():IScrollBar
 		 * {
-		 *     var scrollBar:ScrollBar = new ScrollBar();
-		 *     scrollBar.direction = ScrollBar.DIRECTION_HORIZONTAL;
-		 *     return scrollBar;
+		 *     return new ScrollBar();
 		 * };</listing>
 		 *
 		 * @default null
@@ -947,7 +933,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _verticalScrollBarFactory:Function = defaultVerticalScrollBarFactory;
+		protected var _verticalScrollBarFactory:Function = defaultScrollBarFactory;
 
 		/**
 		 * Creates the vertical scroll bar. The vertical scroll bar must be an
@@ -967,9 +953,7 @@ package feathers.controls
 		 * <listing version="3.0">
 		 * scroller.verticalScrollBarFactory = function():IScrollBar
 		 * {
-		 *     var scrollBar:ScrollBar = new ScrollBar();
-		 *     scrollBar.direction = ScrollBar.DIRECTION_VERTICAL;
-		 *     return scrollBar;
+		 *     return new ScrollBar();
 		 * };</listing>
 		 *
 		 * @default null
@@ -3098,6 +3082,10 @@ package feathers.controls
 				this._horizontalScrollPolicy != SCROLL_POLICY_OFF && this._horizontalScrollBarFactory != null)
 			{
 				this.horizontalScrollBar = IScrollBar(this._horizontalScrollBarFactory());
+				if(this.horizontalScrollBar is IDirectionalScrollBar)
+				{
+					IDirectionalScrollBar(this.horizontalScrollBar).direction = SimpleScrollBar.DIRECTION_HORIZONTAL;
+				}
 				var horizontalScrollBarName:String = this._customHorizontalScrollBarName != null ? this._customHorizontalScrollBarName : this.horizontalScrollBarName;
 				this.horizontalScrollBar.styleNameList.add(horizontalScrollBarName);
 				this.horizontalScrollBar.addEventListener(Event.CHANGE, horizontalScrollBar_changeHandler);
@@ -3109,6 +3097,10 @@ package feathers.controls
 				this._verticalScrollPolicy != SCROLL_POLICY_OFF && this._verticalScrollBarFactory != null)
 			{
 				this.verticalScrollBar = IScrollBar(this._verticalScrollBarFactory());
+				if(this.verticalScrollBar is IDirectionalScrollBar)
+				{
+					IDirectionalScrollBar(this.verticalScrollBar).direction = SimpleScrollBar.DIRECTION_VERTICAL;
+				}
 				var verticalScrollBarName:String = this._customVerticalScrollBarName != null ? this._customVerticalScrollBarName : this.verticalScrollBarName;
 				this.verticalScrollBar.styleNameList.add(verticalScrollBarName);
 				this.verticalScrollBar.addEventListener(Event.CHANGE, verticalScrollBar_changeHandler);

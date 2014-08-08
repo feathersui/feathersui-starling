@@ -118,7 +118,7 @@ package feathers.controls
 	 * @see http://wiki.starling-framework.org/feathers/scroll-bar
 	 * @see SimpleScrollBar
 	 */
-	public class ScrollBar extends FeathersControl implements IScrollBar
+	public class ScrollBar extends FeathersControl implements IDirectionalScrollBar
 	{
 		/**
 		 * @private

@@ -114,7 +114,7 @@ package feathers.controls
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/slider
 	 */
-	public class Slider extends FeathersControl implements IScrollBar, IFocusDisplayObject
+	public class Slider extends FeathersControl implements IDirectionalScrollBar, IFocusDisplayObject
 	{
 		/**
 		 * @private
