@@ -443,6 +443,10 @@ package feathers.controls
 			var result:DisplayObject = super.hitTest(localPoint, forTouch);
 			if(result)
 			{
+				if(!this._isEnabled)
+				{
+					return this;
+				}
 				return result;
 			}
 			if(this.currentBackgroundSkin && this._hitArea.contains(localX, localY))
@@ -524,11 +528,6 @@ package feathers.controls
 				this.refreshBackgroundSkin();
 			}
 
-			if(stateInvalid || layoutInvalid)
-			{
-				this.refreshEnabled();
-			}
-
 			if(sizeInvalid || layoutInvalid || skinInvalid || stateInvalid)
 			{
 				this.refreshViewPortBounds();
@@ -596,22 +595,6 @@ package feathers.controls
 					}
 					this.originalBackgroundWidth = this.currentBackgroundSkin.width;
 					this.originalBackgroundHeight = this.currentBackgroundSkin.height;
-				}
-			}
-		}
-
-		/**
-		 * @private
-		 */
-		protected function refreshEnabled():void
-		{
-			var childCount:int = this.numChildren;
-			for(var i:int = 0; i < childCount; i++)
-			{
-				var child:DisplayObject = this.getChildAt(i);
-				if(child is IFeathersControl)
-				{
-					IFeathersControl(child).isEnabled = this._isEnabled;
 				}
 			}
 		}
