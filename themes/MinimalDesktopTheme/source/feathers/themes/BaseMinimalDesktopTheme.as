@@ -1457,7 +1457,6 @@ package feathers.themes
 
 		protected function setHorizontalScrollBarStyles(scrollBar:ScrollBar):void
 		{
-			scrollBar.direction = ScrollBar.DIRECTION_HORIZONTAL;
 			scrollBar.trackLayoutMode = ScrollBar.TRACK_LAYOUT_MODE_SINGLE;
 
 			scrollBar.customIncrementButtonName = THEME_NAME_HORIZONTAL_SCROLL_BAR_INCREMENT_BUTTON;
@@ -1466,7 +1465,6 @@ package feathers.themes
 
 		protected function setVerticalScrollBarStyles(scrollBar:ScrollBar):void
 		{
-			scrollBar.direction = ScrollBar.DIRECTION_VERTICAL;
 			scrollBar.trackLayoutMode = ScrollBar.TRACK_LAYOUT_MODE_SINGLE;
 
 			scrollBar.customIncrementButtonName = THEME_NAME_VERTICAL_SCROLL_BAR_INCREMENT_BUTTON;

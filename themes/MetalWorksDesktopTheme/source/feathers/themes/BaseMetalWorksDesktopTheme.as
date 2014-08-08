@@ -275,21 +275,9 @@ package feathers.themes
 		/**
 		 * This theme's scroll bar type is ScrollBar.
 		 */
-		protected static function horizontalScrollBarFactory():ScrollBar
+		protected static function scrollBarFactory():ScrollBar
 		{
-			var scrollBar:ScrollBar = new ScrollBar();
-			scrollBar.direction = ScrollBar.DIRECTION_HORIZONTAL;
-			return scrollBar;
-		}
-
-		/**
-		 * This theme's scroll bar type is ScrollBar.
-		 */
-		protected static function verticalScrollBarFactory():ScrollBar
-		{
-			var scrollBar:ScrollBar = new ScrollBar();
-			scrollBar.direction = ScrollBar.DIRECTION_VERTICAL;
-			return scrollBar;
+			return new ScrollBar();
 		}
 
 		protected static function popUpOverlayFactory():DisplayObject
@@ -910,8 +898,8 @@ package feathers.themes
 
 		protected function setScrollerStyles(scroller:Scroller):void
 		{
-			scroller.horizontalScrollBarFactory = horizontalScrollBarFactory;
-			scroller.verticalScrollBarFactory = verticalScrollBarFactory;
+			scroller.horizontalScrollBarFactory = scrollBarFactory;
+			scroller.verticalScrollBarFactory = scrollBarFactory;
 			scroller.scrollBarDisplayMode = Scroller.SCROLL_BAR_DISPLAY_MODE_FIXED;
 			scroller.interactionMode = Scroller.INTERACTION_MODE_MOUSE;
 		}
