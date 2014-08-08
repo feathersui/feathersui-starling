@@ -451,8 +451,10 @@ package feathers.controls.text
 			HELPER_POINT.x = HELPER_POINT.y = 0;
 			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
 			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
-			var offsetX:Number = Math.round(this._horizontalScrollPosition);
-			var offsetY:Number = Math.round(this._verticalScrollPosition);
+			var scaleX:Number = matrixToScaleX(HELPER_MATRIX);
+			var scaleY:Number = matrixToScaleY(HELPER_MATRIX);
+			var offsetX:Number = Math.round(this._horizontalScrollPosition * scaleX);
+			var offsetY:Number = Math.round(this._verticalScrollPosition * scaleY);
 			var starlingViewPort:Rectangle = Starling.current.viewPort;
 			var nativeScaleFactor:Number = 1;
 			if(Starling.current.supportHighResolutions)
@@ -465,11 +467,11 @@ package feathers.controls.text
 			{
 				gutterPositionOffset = 0;
 			}
-			this.textField.x = offsetX + Math.round(starlingViewPort.x + (HELPER_POINT.x * scaleFactor) - gutterPositionOffset);
-			this.textField.y = offsetY + Math.round(starlingViewPort.y + (HELPER_POINT.y * scaleFactor) - gutterPositionOffset);
+			this.textField.x = offsetX + Math.round(starlingViewPort.x + (HELPER_POINT.x * scaleFactor) - gutterPositionOffset * scaleX);
+			this.textField.y = offsetY + Math.round(starlingViewPort.y + (HELPER_POINT.y * scaleFactor) - gutterPositionOffset * scaleY);
 			this.textField.rotation = matrixToRotation(HELPER_MATRIX) * 180 / Math.PI;
-			this.textField.scaleX = matrixToScaleX(HELPER_MATRIX);
-			this.textField.scaleY = matrixToScaleY(HELPER_MATRIX);
+			this.textField.scaleX = scaleX;
+			this.textField.scaleY = scaleY;
 		}
 
 		/**
