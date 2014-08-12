@@ -153,16 +153,19 @@ package feathers.core
 				return;
 			}
 			this._isValidating = true;
-			this._queue = this._queue.sort(queueSortFunction);
-			while(this._queue.length > 0) //rechecking length after the shift
-			{
-				var item:IValidating = this._queue.shift();
-				item.validate();
+			try {
+				this._queue = this._queue.sort(queueSortFunction);
+				while(this._queue.length > 0) //rechecking length after the shift
+				{
+					var item:IValidating = this._queue.shift();
+					item.validate();
+				}
+				const temp:Vector.<IValidating> = this._queue;
+				this._queue = this._delayedQueue;
+				this._delayedQueue = temp;
+			} finally {
+				this._isValidating = false;
 			}
-			const temp:Vector.<IValidating> = this._queue;
-			this._queue = this._delayedQueue;
-			this._delayedQueue = temp;
-			this._isValidating = false;
 		}
 
 		/**
