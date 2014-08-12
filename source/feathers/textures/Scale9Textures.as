@@ -12,7 +12,7 @@ package feathers.textures
 	import starling.textures.Texture;
 
 	/**
-	 * A set of nine textures used by <code>Scale9Image</code>.
+	 * Slices a Starling Texture into nine regions to be used by <code>Scale9Image</code>.
 	 *
 	 * @see feathers.display.Scale9Image
 	 */
@@ -45,6 +45,9 @@ package feathers.textures
 
 		/**
 		 * Constructor.
+		 *
+		 * @param texture		A Starling Texture to slice up into nine regions.
+		 * @param scale9Grid	The rectangle defining the region in the horizontal center and vertical middle, with other regions being calculated automatically. This value should be based on the original texture dimensions, with no adjustments for scale factor.
 		 */
 		public function Scale9Textures(texture:Texture, scale9Grid:Rectangle)
 		{
@@ -55,6 +58,14 @@ package feathers.textures
 			if(scale9Grid.height <= 0)
 			{
 				throw new ArgumentError(ZERO_HEIGHT_ERROR);
+			}
+			var textureScale:Number = texture.scale;
+			//the scale9Grid does not account for the texture's scale factor,
+			//so we need to scale the grid to match.
+			if(textureScale != 1)
+			{
+				scale9Grid = scale9Grid.clone();
+				scale9Grid.setTo(scale9Grid.x / textureScale, scale9Grid.y / textureScale, scale9Grid.width / textureScale, scale9Grid.height / textureScale);
 			}
 			var textureFrame:Rectangle = texture.frame;
 			if(!textureFrame)
