@@ -549,6 +549,7 @@ package feathers.themes
 		protected function initialize():void
 		{
 			this.initializeScale();
+			this.initializeDimensions();
 			this.initializeFonts();
 			this.initializeTextures();
 			this.initializeGlobals();
@@ -581,13 +582,18 @@ package feathers.themes
 		}
 
 		/**
-		 * Initializes the scale value based on the content scale factor and
-		 * sets up common pixel dimensions for skins.
+		 * Initializes the scale value based on the content scale factor.
 		 */
 		protected function initializeScale():void
 		{
 			this.scale = Starling.contentScaleFactor;
+		}
 
+		/**
+		 * Initializes common values used for setting the dimensions of components.
+		 */
+		protected function initializeDimensions():void
+		{
 			this.gridSize = Math.round(30 * this.scale);
 			this.extraSmallGutterSize = Math.round(2 * this.scale);
 			this.smallGutterSize = Math.round(4 * this.scale);

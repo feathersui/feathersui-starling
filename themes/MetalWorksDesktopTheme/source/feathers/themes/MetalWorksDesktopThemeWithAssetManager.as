@@ -26,8 +26,6 @@ package feathers.themes
 {
 	import starling.core.Starling;
 	import starling.events.Event;
-	import starling.text.BitmapFont;
-	import starling.text.TextField;
 	import starling.utils.AssetManager;
 
 	/**
@@ -55,35 +53,34 @@ package feathers.themes
 	[Event(name="complete",type="starling.events.Event")]
 
 	/**
-	 * The "Minimal" theme for desktop Feathers apps.
+	 * The "Metal Works" theme for desktop Feathers apps.
 	 *
 	 * <p>This version of the theme requires loading assets at runtime. To use
-	 * embedded assets, see <code>MinimalDesktopTheme</code> instead.</p>
+	 * embedded assets, see <code>MetalWorksDesktopTheme</code> instead.</p>
 	 *
 	 * <p>To use this theme, the following files must be included when packaging
 	 * your app:</p>
 	 * <ul>
-	 *     <li>images/minimal_desktop.png</li>
-	 *     <li>images/minimal_desktop.xml</li>
-	 *     <li>fonts/pf_ronda_seven.fnt</li>
+	 *     <li>images/metalworks_desktop.png</li>
+	 *     <li>images/metalworks_desktop.xml</li>
 	 * </ul>
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/theme-assets
 	 */
-	public class MinimalDesktopThemeWithAssetManager extends BaseMinimalDesktopTheme
+	public class MetalWorksDesktopThemeWithAssetManager extends BaseMetalWorksDesktopTheme
 	{
 		/**
 		 * @private
 		 * The name of the texture atlas in the asset manager.
 		 */
-		protected static const ATLAS_NAME:String = "minimal_desktop";
+		protected static const ATLAS_NAME:String = "metalworks_desktop";
 
 		/**
 		 * Constructor.
 		 * @param assetsBasePath The root folder of the assets.
 		 * @param assetManager An optional pre-created asset manager.
 		 */
-		public function MinimalDesktopThemeWithAssetManager(assetsBasePath:Object = null, assetManager:AssetManager = null)
+		public function MetalWorksDesktopThemeWithAssetManager(assetsBasePath:String = null, assetManager:AssetManager = null)
 		{
 			this.loadAssets(assetsBasePath, assetManager);
 		}
@@ -93,11 +90,10 @@ package feathers.themes
 		 * The paths to each of the assets, relative to the base path.
 		 */
 		protected var assetPaths:Vector.<String> = new <String>
-		[
-			"images/minimal_desktop.xml",
-			"images/minimal_desktop.png",
-			"fonts/pf_ronda_seven.fnt"
-		];
+			[
+				"images/metalworks_desktop.xml",
+				"images/metalworks_desktop.png"
+			];
 
 		/**
 		 * @private
@@ -123,8 +119,6 @@ package feathers.themes
 		override protected function initialize():void
 		{
 			this.atlas = this.assetManager.getTextureAtlas(ATLAS_NAME);
-			var font:BitmapFont = TextField.getBitmapFont(FONT_TEXTURE_NAME);
-			TextField.registerBitmapFont(font, FONT_NAME);
 			super.initialize();
 		}
 
@@ -144,7 +138,7 @@ package feathers.themes
 		/**
 		 * @private
 		 */
-		protected function loadAssets(assetsBasePath:Object, assetManager:AssetManager):void
+		protected function loadAssets(assetsBasePath:String, assetManager:AssetManager):void
 		{
 			this.assetManager = assetManager;
 			if(!this.assetManager)
@@ -167,3 +161,4 @@ package feathers.themes
 		}
 	}
 }
+

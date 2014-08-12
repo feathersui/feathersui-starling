@@ -61,8 +61,8 @@ package feathers.themes
 	 * <p>To use this theme, the following files must be included when packaging
 	 * your app:</p>
 	 * <ul>
-	 *     <li>images/aeon.png</li>
-	 *     <li>images/aeon.xml</li>
+	 *     <li>images/aeon_desktop.png</li>
+	 *     <li>images/aeon_desktop.xml</li>
 	 * </ul>
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/theme-assets
@@ -73,7 +73,7 @@ package feathers.themes
 		 * @private
 		 * The name of the texture atlas in the asset manager.
 		 */
-		protected static const ATLAS_NAME:String = "aeon";
+		protected static const ATLAS_NAME:String = "aeon_desktop";
 
 		/**
 		 * Constructor.
@@ -96,8 +96,8 @@ package feathers.themes
 		 */
 		protected var assetPaths:Vector.<String> = new <String>
 		[
-			"images/aeon.xml",
-			"images/aeon.png"
+			"images/aeon_desktop.xml",
+			"images/aeon_desktop.png"
 		];
 
 		/**
