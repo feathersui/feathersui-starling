@@ -451,8 +451,7 @@ package feathers.themes
 			FocusManager.setEnabledForStage(Starling.current.stage, true);
 
 			PopUpManager.overlayFactory = popUpOverlayFactory;
-			Callout.stagePaddingTop = Callout.stagePaddingRight = Callout.stagePaddingBottom =
-				Callout.stagePaddingLeft = this.smallGutterSize;
+			Callout.stagePadding = this.smallGutterSize;
 
 			FeathersControl.defaultTextRendererFactory = textRendererFactory;
 			FeathersControl.defaultTextEditorFactory = textEditorFactory;

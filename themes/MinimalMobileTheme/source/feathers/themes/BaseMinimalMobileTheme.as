@@ -452,8 +452,7 @@ package feathers.themes
 		protected function initializeGlobals():void
 		{
 			PopUpManager.overlayFactory = popUpOverlayFactory;
-			Callout.stagePaddingTop = Callout.stagePaddingRight = Callout.stagePaddingBottom =
-				Callout.stagePaddingLeft = this.smallGutterSize;
+			Callout.stagePadding = this.smallGutterSize;
 
 			FeathersControl.defaultTextRendererFactory = textRendererFactory;
 			FeathersControl.defaultTextEditorFactory = textEditorFactory;

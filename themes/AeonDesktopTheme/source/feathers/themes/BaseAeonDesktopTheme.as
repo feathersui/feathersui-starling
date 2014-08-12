@@ -563,8 +563,7 @@ package feathers.themes
 			FeathersControl.defaultTextEditorFactory = textEditorFactory;
 
 			PopUpManager.overlayFactory = popUpOverlayFactory;
-			Callout.stagePaddingTop = Callout.stagePaddingRight = Callout.stagePaddingBottom =
-				Callout.stagePaddingLeft = this.smallGutterSize;
+			Callout.stagePadding = this.smallGutterSize;
 		}
 
 		/**
