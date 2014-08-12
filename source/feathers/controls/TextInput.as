@@ -494,7 +494,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _prompt:String;
+		protected var _prompt:String = null;
 
 		/**
 		 * The prompt, hint, or description text displayed by the input when the
@@ -764,6 +764,9 @@ package feathers.controls
 		 * <p>The factory should have the following function signature:</p>
 		 * <pre>function():ITextRenderer</pre>
 		 *
+		 * <p>If the <code>prompt</code> property is <code>null</code>, the
+		 * prompt text renderer will not be created.</p>
+		 *
 		 * <p>In the following example, a custom prompt factory is passed to the
 		 * text input:</p>
 		 *
@@ -775,6 +778,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
+		 * @see #prompt
 		 * @see feathers.core.ITextRenderer
 		 * @see feathers.core.FeathersControl#defaultTextRendererFactory
 		 * @see feathers.controls.text.BitmapFontTextRenderer
@@ -832,6 +836,7 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
+		 * @see #prompt
 		 * @see #promptFactory
 		 * @see feathers.core.ITextRenderer
 		 * @see feathers.controls.text.BitmapFontTextRenderer
@@ -1762,14 +1767,17 @@ package feathers.controls
 				this._ignoreTextChanges = oldIgnoreTextChanges;
 			}
 
-			if(promptFactoryInvalid || dataInvalid || stylesInvalid)
+			if(this.promptTextRenderer)
 			{
-				this.promptTextRenderer.visible = this._prompt && this._text.length == 0;
-			}
+				if(promptFactoryInvalid || dataInvalid || stylesInvalid)
+				{
+					this.promptTextRenderer.visible = this._prompt && this._text.length == 0;
+				}
 
-			if(promptFactoryInvalid || stateInvalid)
-			{
-				this.promptTextRenderer.isEnabled = this._isEnabled;
+				if(promptFactoryInvalid || stateInvalid)
+				{
+					this.promptTextRenderer.isEnabled = this._isEnabled;
+				}
 			}
 
 			if(textEditorInvalid || stateInvalid)
@@ -1844,7 +1852,7 @@ package feathers.controls
 				typicalTextWidth = HELPER_POINT.x;
 				typicalTextHeight = HELPER_POINT.y;
 			}
-			if(this._prompt)
+			if(this._prompt !== null)
 			{
 				this.promptTextRenderer.setSize(NaN, NaN);
 				this.promptTextRenderer.measureText(HELPER_POINT);
@@ -1923,6 +1931,11 @@ package feathers.controls
 				this.promptTextRenderer = null;
 			}
 
+			if(this._prompt === null)
+			{
+				return;
+			}
+
 			var factory:Function = this._promptFactory != null ? this._promptFactory : FeathersControl.defaultTextRendererFactory;
 			this.promptTextRenderer = ITextRenderer(factory());
 			this.addChild(DisplayObject(this.promptTextRenderer));
@@ -1980,6 +1993,10 @@ package feathers.controls
 		 */
 		protected function refreshPromptProperties():void
 		{
+			if(!this.promptTextRenderer)
+			{
+				return;
+			}
 			this.promptTextRenderer.text = this._prompt;
 			var displayPrompt:DisplayObject = DisplayObject(this.promptTextRenderer);
 			for(var propertyName:String in this._promptProperties)
@@ -2088,15 +2105,24 @@ package feathers.controls
 			{
 				this.currentIcon.x = this._paddingLeft;
 				this.textEditor.x = this.currentIcon.x + this.currentIcon.width + this._gap;
-				this.promptTextRenderer.x = this.currentIcon.x + this.currentIcon.width + this._gap;
+				if(this.promptTextRenderer)
+				{
+					this.promptTextRenderer.x = this.currentIcon.x + this.currentIcon.width + this._gap;
+				}
 			}
 			else
 			{
 				this.textEditor.x = this._paddingLeft;
-				this.promptTextRenderer.x = this._paddingLeft;
+				if(this.promptTextRenderer)
+				{
+					this.promptTextRenderer.x = this._paddingLeft;
+				}
 			}
 			this.textEditor.width = this.actualWidth - this._paddingRight - this.textEditor.x;
-			this.promptTextRenderer.width = this.actualWidth - this._paddingRight - this.promptTextRenderer.x;
+			if(this.promptTextRenderer)
+			{
+				this.promptTextRenderer.width = this.actualWidth - this._paddingRight - this.promptTextRenderer.x;
+			}
 
 			var isMultiline:Boolean = this.textEditor is IMultilineTextEditor && IMultilineTextEditor(this.textEditor).multiline;
 			if(isMultiline || this._verticalAlign == VERTICAL_ALIGN_JUSTIFY)
@@ -2110,26 +2136,35 @@ package feathers.controls
 				this.textEditor.height = NaN;
 			}
 			this.textEditor.validate();
-			this.promptTextRenderer.validate();
+			if(this.promptTextRenderer)
+			{
+				this.promptTextRenderer.validate();
+			}
 
 			var biggerHeight:Number = this.textEditor.height;
 			var biggerBaseline:Number = this.textEditor.baseline;
-			var promptBaseline:Number = this.promptTextRenderer.baseline;
-			var promptHeight:Number = this.promptTextRenderer.height;
-			if(promptBaseline > biggerBaseline)
+			if(this.promptTextRenderer)
 			{
-				biggerBaseline = promptBaseline;
-			}
-			if(promptHeight > biggerHeight)
-			{
-				biggerHeight = promptHeight;
+				var promptBaseline:Number = this.promptTextRenderer.baseline;
+				var promptHeight:Number = this.promptTextRenderer.height;
+				if(promptBaseline > biggerBaseline)
+				{
+					biggerBaseline = promptBaseline;
+				}
+				if(promptHeight > biggerHeight)
+				{
+					biggerHeight = promptHeight;
+				}
 			}
 
 			if(isMultiline)
 			{
 				this.textEditor.y = this._paddingTop + biggerBaseline - this.textEditor.baseline;
-				this.promptTextRenderer.y = this._paddingTop + biggerBaseline - this.promptTextRenderer.baseline;
-				this.promptTextRenderer.height = this.actualHeight - this.promptTextRenderer.y - this._paddingBottom;
+				if(this.promptTextRenderer)
+				{
+					this.promptTextRenderer.y = this._paddingTop + biggerBaseline - promptBaseline;
+					this.promptTextRenderer.height = this.actualHeight - this.promptTextRenderer.y - this._paddingBottom;
+				}
 				if(this.currentIcon)
 				{
 					this.currentIcon.y = this._paddingTop;
@@ -2142,8 +2177,11 @@ package feathers.controls
 					case VERTICAL_ALIGN_JUSTIFY:
 					{
 						this.textEditor.y = this._paddingTop + biggerBaseline - this.textEditor.baseline;
-						this.promptTextRenderer.y = this._paddingTop + biggerBaseline - this.promptTextRenderer.baseline;
-						this.promptTextRenderer.height = this.actualHeight - this.promptTextRenderer.y - this._paddingBottom;
+						if(this.promptTextRenderer)
+						{
+							this.promptTextRenderer.y = this._paddingTop + biggerBaseline - promptBaseline;
+							this.promptTextRenderer.height = this.actualHeight - this.promptTextRenderer.y - this._paddingBottom;
+						}
 						if(this.currentIcon)
 						{
 							this.currentIcon.y = this._paddingTop;
@@ -2153,7 +2191,10 @@ package feathers.controls
 					case VERTICAL_ALIGN_TOP:
 					{
 						this.textEditor.y = this._paddingTop + biggerBaseline - this.textEditor.baseline;
-						this.promptTextRenderer.y = this._paddingTop + biggerBaseline - this.promptTextRenderer.baseline;
+						if(this.promptTextRenderer)
+						{
+							this.promptTextRenderer.y = this._paddingTop + biggerBaseline - promptBaseline;
+						}
 						if(this.currentIcon)
 						{
 							this.currentIcon.y = this._paddingTop;
@@ -2163,7 +2204,10 @@ package feathers.controls
 					case VERTICAL_ALIGN_BOTTOM:
 					{
 						this.textEditor.y = this.actualHeight - this._paddingBottom - biggerHeight + biggerBaseline - this.textEditor.baseline;
-						this.promptTextRenderer.y = this.actualHeight - this._paddingBottom - biggerHeight + biggerBaseline - this.promptTextRenderer.baseline;
+						if(this.promptTextRenderer)
+						{
+							this.promptTextRenderer.y = this.actualHeight - this._paddingBottom - biggerHeight + biggerBaseline - promptBaseline;
+						}
 						if(this.currentIcon)
 						{
 							this.currentIcon.y = this.actualHeight - this._paddingBottom - this.currentIcon.height;
@@ -2173,7 +2217,10 @@ package feathers.controls
 					default: //middle
 					{
 						this.textEditor.y = biggerBaseline - this.textEditor.baseline + this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - biggerHeight) / 2;
-						this.promptTextRenderer.y = biggerBaseline - this.promptTextRenderer.baseline + this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - biggerHeight) / 2;
+						if(this.promptTextRenderer)
+						{
+							this.promptTextRenderer.y = biggerBaseline - promptBaseline + this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - biggerHeight) / 2;
+						}
 						if(this.currentIcon)
 						{
 							this.currentIcon.y = this._paddingTop + (this.actualHeight - this._paddingTop - this._paddingBottom - this.currentIcon.height) / 2;
