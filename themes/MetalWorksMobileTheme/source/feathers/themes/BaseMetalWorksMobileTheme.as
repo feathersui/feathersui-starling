@@ -580,8 +580,7 @@ package feathers.themes
 			FeathersControl.defaultTextEditorFactory = textEditorFactory;
 
 			PopUpManager.overlayFactory = popUpOverlayFactory;
-			Callout.stagePaddingTop = Callout.stagePaddingRight = Callout.stagePaddingBottom =
-				Callout.stagePaddingLeft = this.smallGutterSize;
+			Callout.stagePadding = this.smallGutterSize;
 		}
 
 		/**
@@ -1824,12 +1823,16 @@ package feathers.themes
 		{
 			if(scrollBar.direction == SimpleScrollBar.DIRECTION_HORIZONTAL)
 			{
-				scrollBar.paddingRight = scrollBar.paddingBottom = scrollBar.paddingLeft = this.scrollBarGutterSize;
+				scrollBar.paddingRight = this.scrollBarGutterSize;
+				scrollBar.paddingBottom = this.scrollBarGutterSize;
+				scrollBar.paddingLeft = this.scrollBarGutterSize;
 				scrollBar.customThumbName = THEME_NAME_HORIZONTAL_SIMPLE_SCROLL_BAR_THUMB;
 			}
 			else
 			{
-				scrollBar.paddingTop = scrollBar.paddingRight = scrollBar.paddingBottom = this.scrollBarGutterSize;
+				scrollBar.paddingTop = this.scrollBarGutterSize;
+				scrollBar.paddingRight = this.scrollBarGutterSize;
+				scrollBar.paddingBottom = this.scrollBarGutterSize;
 				scrollBar.customThumbName = THEME_NAME_VERTICAL_SIMPLE_SCROLL_BAR_THUMB;
 			}
 		}
