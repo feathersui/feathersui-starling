@@ -349,11 +349,24 @@ package feathers.controls
 		 *     return renderer;
 		 * };</listing>
 		 *
-		 * <p><em>Warning:</em> A List's data provider cannot contain duplicate
+		 * <p><em>Warning:</em> A list's data provider cannot contain duplicate
 		 * items. To display the same item in multiple item renderers, you must
-		 * use separate objects with the same properties.</p>
+		 * create separate objects with the same properties. This limitation
+		 * exists because it significantly improves performance.</p>
+		 *
+		 * <p><em>Warning:</em> If the data provider contains display objects,
+		 * concrete textures, or anything that needs to be disposed, those
+		 * objects will not be automatically disposed when the list is disposed.
+		 * Similar to how <code>starling.display.Image</code> cannot
+		 * automatically dispose its texture because the texture may be used
+		 * by other display objects, a list cannot dispose its data provider
+		 * because the data provider may be used by other lists. See the
+		 * <code>dispose()</code> function on <code>ListCollection</code> to
+		 * see how the data provider can be disposed properly.</p>
 		 *
 		 * @default null
+		 *
+		 * @see feathers.data.ListCollection#dispose()
 		 */
 		public function get dataProvider():ListCollection
 		{
