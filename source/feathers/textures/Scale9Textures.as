@@ -21,7 +21,22 @@ package feathers.textures
 		/**
 		 * @private
 		 */
-		private static const DIMENSIONS_ERROR:String = "The width and height of the scale9Grid must be greater than zero.";
+		private static const ZERO_WIDTH_ERROR:String = "The width of the scale9Grid must be greater than zero.";
+
+		/**
+		 * @private
+		 */
+		private static const ZERO_HEIGHT_ERROR:String = "The height of the scale9Grid must be greater than zero.";
+
+		/**
+		 * @private
+		 */
+		private static const SUM_X_REGIONS_ERROR:String = "The sum of the x and width properties of the scale9Grid must be greater than the width of the texture.";
+
+		/**
+		 * @private
+		 */
+		private static const SUM_Y_REGIONS_ERROR:String = "The sum of the y and height properties of the scale9Grid must be greater than the height of the texture.";
 
 		/**
 		 * @private
@@ -33,9 +48,27 @@ package feathers.textures
 		 */
 		public function Scale9Textures(texture:Texture, scale9Grid:Rectangle)
 		{
-			if(scale9Grid.width <= 0 || scale9Grid.height <= 0)
+			if(scale9Grid.width <= 0)
 			{
-				throw new ArgumentError(DIMENSIONS_ERROR)
+				throw new ArgumentError(ZERO_WIDTH_ERROR);
+			}
+			if(scale9Grid.height <= 0)
+			{
+				throw new ArgumentError(ZERO_HEIGHT_ERROR);
+			}
+			var textureFrame:Rectangle = texture.frame;
+			if(!textureFrame)
+			{
+				textureFrame = HELPER_RECTANGLE;
+				textureFrame.setTo(0, 0, texture.width, texture.height);
+			}
+			if((scale9Grid.x + scale9Grid.width) > textureFrame.width)
+			{
+				throw new ArgumentError(SUM_X_REGIONS_ERROR);
+			}
+			if((scale9Grid.y + scale9Grid.height) > textureFrame.height)
+			{
+				throw new ArgumentError(SUM_Y_REGIONS_ERROR);
 			}
 			this._texture = texture;
 			this._scale9Grid = scale9Grid;

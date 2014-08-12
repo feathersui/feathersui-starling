@@ -21,7 +21,12 @@ package feathers.textures
 		/**
 		 * @private
 		 */
-		private static const DIMENSIONS_ERROR:String = "The size of the second region must be greater than zero.";
+		private static const SECOND_REGION_ERROR:String = "The size of the second region must be greater than zero.";
+
+		/**
+		 * @private
+		 */
+		private static const SUM_REGIONS_ERROR:String = "The combined size of the first and second regions must not be greater than the texture size.";
 
 		/**
 		 * If the direction is horizontal, the layout will start on the left and continue to the right.
@@ -45,7 +50,18 @@ package feathers.textures
 		{
 			if(secondRegionSize <= 0)
 			{
-				throw new ArgumentError(DIMENSIONS_ERROR);
+				throw new ArgumentError(SECOND_REGION_ERROR);
+			}
+			var textureFrame:Rectangle = texture.frame;
+			if(!textureFrame)
+			{
+				textureFrame = HELPER_RECTANGLE;
+				textureFrame.setTo(0, 0, texture.width, texture.height);
+			}
+			var maxSize:Number = (direction == DIRECTION_HORIZONTAL) ? textureFrame.width : textureFrame.height;
+			if((firstRegionSize + secondRegionSize) > maxSize)
+			{
+				throw new ArgumentError(SUM_REGIONS_ERROR);
 			}
 			this._texture = texture;
 			this._firstRegionSize = firstRegionSize;
@@ -155,7 +171,7 @@ package feathers.textures
 		 */
 		private function initialize():void
 		{
-			var textureFrame:Rectangle = texture.frame;
+			var textureFrame:Rectangle = this._texture.frame;
 			if(!textureFrame)
 			{
 				textureFrame = HELPER_RECTANGLE;
