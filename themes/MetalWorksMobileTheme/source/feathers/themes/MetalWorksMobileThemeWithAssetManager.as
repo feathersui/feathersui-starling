@@ -61,8 +61,8 @@ package feathers.themes
 	 * <p>To use this theme, the following files must be included when packaging
 	 * your app:</p>
 	 * <ul>
-	 *     <li>images/metalworks.png</li>
-	 *     <li>images/metalworks.xml</li>
+	 *     <li>images/metalworks_mobile.png</li>
+	 *     <li>images/metalworks_mobile.xml</li>
 	 * </ul>
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/theme-assets
@@ -73,7 +73,7 @@ package feathers.themes
 		 * @private
 		 * The name of the texture atlas in the asset manager.
 		 */
-		protected static const ATLAS_NAME:String = "metalworks";
+		protected static const ATLAS_NAME:String = "metalworks_mobile";
 
 		/**
 		 * Constructor.
@@ -91,8 +91,8 @@ package feathers.themes
 		 */
 		protected var assetPaths:Vector.<String> = new <String>
 		[
-			"images/metalworks.xml",
-			"images/metalworks.png"
+			"images/metalworks_mobile.xml",
+			"images/metalworks_mobile.png"
 		];
 
 		/**

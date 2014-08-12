@@ -429,6 +429,7 @@ package feathers.themes
 		protected function initialize():void
 		{
 			this.initializeScale();
+			this.initializeDimensions();
 			this.initializeTextures();
 			this.initializeFonts();
 			this.initializeGlobals();
@@ -460,7 +461,7 @@ package feathers.themes
 
 		/**
 		 * Initializes the scale value based on the screen density and content
-		 * scale factor, and sets up common pixel dimensions for skins.
+		 * scale factor.
 		 */
 		protected function initializeScale():void
 		{
@@ -483,7 +484,13 @@ package feathers.themes
 			//our min scale is 0.25 because lines in the graphics are four
 			//pixels wide and this will keep them crisp.
 			this.scale = Math.max(0.25, scaledDPI / this._originalDPI);
+		}
 
+		/**
+		 * Initializes common values used for setting the dimensions of components.
+		 */
+		protected function initializeDimensions():void
+		{
 			this.gridSize = Math.round(88 * this.scale);
 			this.smallGutterSize = Math.round(11 * this.scale);
 			this.gutterSize = Math.round(22 * this.scale);

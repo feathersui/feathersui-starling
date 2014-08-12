@@ -63,8 +63,8 @@ package feathers.themes
 	 * <p>To use this theme, the following files must be included when packaging
 	 * your app:</p>
 	 * <ul>
-	 *     <li>images/minimal.png</li>
-	 *     <li>images/minimal.xml</li>
+	 *     <li>images/minimal_mobile.png</li>
+	 *     <li>images/minimal_mobile.xml</li>
 	 *     <li>fonts/pf_ronda_seven.fnt</li>
 	 * </ul>
 	 *
@@ -76,7 +76,7 @@ package feathers.themes
 		 * @private
 		 * The name of the texture atlas in the asset manager.
 		 */
-		protected static const ATLAS_NAME:String = "minimal";
+		protected static const ATLAS_NAME:String = "minimal_mobile";
 
 		/**
 		 * Constructor.
@@ -94,8 +94,8 @@ package feathers.themes
 		 */
 		protected var assetPaths:Vector.<String> = new <String>
 		[
-			"images/minimal.xml",
-			"images/minimal.png",
+			"images/minimal_mobile.xml",
+			"images/minimal_mobile.png",
 			"fonts/pf_ronda_seven.fnt"
 		];
 
