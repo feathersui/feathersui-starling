@@ -28,6 +28,7 @@ package feathers.controls
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.utils.SystemUtil;
 
 	/**
 	 * @copy feathers.core.IToggle#event:change
@@ -974,6 +975,8 @@ package feathers.controls
 		 * toggle.isSelected = true;</listing>
 		 *
 		 * @default false
+		 *
+		 * @see #setSelectionWithAnimation()
 		 */
 		public function get isSelected():Boolean
 		{
@@ -985,18 +988,14 @@ package feathers.controls
 		 */
 		public function set isSelected(value:Boolean):void
 		{
-			//normally, we'd check to see if selected actually changed or not
-			//but the animation is triggered by the draw cycle, so we always
-			//need to invalidate. notice that the event isn't dispatched
-			//unless the value changes.
-			var oldSelected:Boolean = this._isSelected;
-			this._isSelected = value;
-			this._isSelectionChangedByUser = false;
-			this.invalidate(INVALIDATION_FLAG_SELECTED);
-			if(this._isSelected != oldSelected)
+			this._animateSelectionChange = false;
+			if(this._isSelected == value)
 			{
-				this.dispatchEventWith(Event.CHANGE);
+				return;
 			}
+			this._isSelected = value;
+			this.invalidate(INVALIDATION_FLAG_SELECTED);
+			this.dispatchEventWith(Event.CHANGE);
 		}
 
 		/**
@@ -1205,7 +1204,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _isSelectionChangedByUser:Boolean = false;
+		protected var _animateSelectionChange:Boolean = false;
 
 		/**
 		 * @private
@@ -1722,6 +1721,22 @@ package feathers.controls
 		}
 
 		/**
+		 * Changes the <code>isSelected</code> property, but animates the thumb
+		 * to the new position, as if the user tapped the toggle switch.
+		 *
+		 * @see #isSelected
+		 */
+		public function setSelectionWithAnimation(isSelected:Boolean):void
+		{
+			if(this._isSelected == isSelected)
+			{
+				return;
+			}
+			this.isSelected = isSelected;
+			this._animateSelectionChange = true;
+		}
+
+		/**
 		 * @private
 		 */
 		override protected function draw():void
@@ -2114,7 +2129,7 @@ package feathers.controls
 				this._toggleTween = null;
 			}
 
-			if(this._isSelectionChangedByUser)
+			if(this._animateSelectionChange)
 			{
 				this._toggleTween = new Tween(this.thumb, this._toggleDuration, this._toggleEase);
 				this._toggleTween.animate("x", xPosition);
@@ -2126,7 +2141,7 @@ package feathers.controls
 			{
 				this.thumb.x = xPosition;
 			}
-			this._isSelectionChangedByUser = false;
+			this._animateSelectionChange = false;
 		}
 
 		/**
@@ -2346,8 +2361,7 @@ package feathers.controls
 			var isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
 			if(isInBounds)
 			{
-				this.isSelected = !this._isSelected;
-				this._isSelectionChangedByUser = true;
+				this.setSelectionWithAnimation(!this._isSelected);
 			}
 		}
 
@@ -2380,13 +2394,16 @@ package feathers.controls
 				}
 				else if(touch.phase == TouchPhase.ENDED)
 				{
-					var inchesMoved:Number = Math.abs(HELPER_POINT.x - this._touchStartX) / DeviceCapabilities.dpi;
-					if(inchesMoved > MINIMUM_DRAG_DISTANCE)
+					var pixelsMoved:Number = Math.abs(HELPER_POINT.x - this._touchStartX);
+					var inchesMoved:Number = pixelsMoved / DeviceCapabilities.dpi;
+					if(inchesMoved > MINIMUM_DRAG_DISTANCE || (SystemUtil.isDesktop && pixelsMoved >= 1))
 					{
 						this._touchPointID = -1;
-						this.isSelected = this.thumb.x > (this._paddingLeft + trackScrollableWidth / 2);
-						this._isSelectionChangedByUser = true;
 						this._ignoreTapHandler = true;
+						this.setSelectionWithAnimation(this.thumb.x > (this._paddingLeft + trackScrollableWidth / 2));
+						//we still need to invalidate, even if there's no change
+						//because the thumb may be in the middle!
+						this.invalidate(INVALIDATION_FLAG_SELECTED);
 					}
 				}
 			}
@@ -2430,8 +2447,7 @@ package feathers.controls
 				return;
 			}
 			this._touchPointID = -1;
-			this.isSelected = !this._isSelected;
-			this._isSelectionChangedByUser = true;
+			this.setSelectionWithAnimation(!this._isSelected);
 		}
 
 		/**
