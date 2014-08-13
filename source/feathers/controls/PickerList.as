@@ -21,8 +21,11 @@ package feathers.controls
 	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
 
+	import flash.ui.Keyboard;
+
 	import starling.core.Starling;
 	import starling.events.Event;
+	import starling.events.KeyboardEvent;
 
 	/**
 	 * Dispatched when the selected item changes.
@@ -1052,6 +1055,7 @@ package feathers.controls
 					this._buttonHasFocus = false;
 				}
 				this._focusManager.focus = this.list;
+				this.stage.addEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
 				this.list.addEventListener(FeathersEventType.FOCUS_OUT, list_focusOutHandler);
 			}
 		}
@@ -1072,11 +1076,11 @@ package feathers.controls
 				return;
 			}
 			this._isCloseListPending = false;
-			if(this._focusManager)
-			{
-				this.list.removeEventListener(FeathersEventType.FOCUS_OUT, list_focusOutHandler);
-			}
 			this.list.validate();
+			//don't clean up anything from openList() in closeList(). The list
+			//may be closed by removing it from the PopUpManager, which would
+			//result in closeList() never being called.
+			//instead, clean up in the Event.REMOVED_FROM_STAGE listener.
 			this._popUpContentManager.close();
 		}
 		
@@ -1528,6 +1532,11 @@ package feathers.controls
 		 */
 		protected function list_removedFromStageHandler(event:Event):void
 		{
+			if(this._focusManager)
+			{
+				this.list.stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
+				this.list.removeEventListener(FeathersEventType.FOCUS_OUT, list_focusOutHandler);
+			}
 			if(!this._toggleButtonOnOpenAndClose || !(this.button is IToggle))
 			{
 				return;
@@ -1557,6 +1566,21 @@ package feathers.controls
 				return;
 			}
 			this.closeList();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function stage_keyUpHandler(event:KeyboardEvent):void
+		{
+			if(!this._popUpContentManager.isOpen)
+			{
+				return;
+			}
+			if(event.keyCode == Keyboard.ENTER)
+			{
+				this.closeList();
+			}
 		}
 	}
 }
