@@ -274,7 +274,7 @@ package feathers.controls
 		 */
 		override public function get isFocusEnabled():Boolean
 		{
-			return this._isSelectable && this._isFocusEnabled;
+			return this._isSelectable && this._isEnabled && this._isFocusEnabled;
 		}
 
 		/**
