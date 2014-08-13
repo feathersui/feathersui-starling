@@ -153,6 +153,7 @@ package feathers.themes
 		protected static const BACK_BUTTON_SCALE3_REGION2:Number = 1;
 		protected static const FORWARD_BUTTON_SCALE3_REGION1:Number = 3;
 		protected static const FORWARD_BUTTON_SCALE3_REGION2:Number = 1;
+		protected static const FOCUS_INDICATOR_SCALE_9_GRID:Rectangle = new Rectangle(5, 5, 1, 1);
 		protected static const ITEM_RENDERER_SCALE9_GRID:Rectangle = new Rectangle(13, 0, 2, 82);
 		protected static const TAB_SCALE9_GRID:Rectangle = new Rectangle(7, 7, 1, 11);
 		protected static const SCROLL_BAR_THUMB_REGION1:int = 5;
@@ -362,6 +363,11 @@ package feathers.themes
 		 */
 		protected var borderSize:int;
 
+		/**
+		 * The size, in pixels, of the focus indicator skin's padding.
+		 */
+		protected var focusPaddingSize:int;
+
 		protected var calloutArrowOverlapGap:int;
 		protected var calloutBackgroundMinSize:int;
 		protected var progressBarFillMinSize:int;
@@ -462,6 +468,7 @@ package feathers.themes
 		 */
 		protected var atlas:TextureAtlas;
 
+		protected var focusIndicatorSkinTextures:Scale9Textures;
 		protected var headerBackgroundSkinTexture:Texture;
 		protected var headerPopupBackgroundSkinTexture:Texture;
 		protected var backgroundSkinTextures:Scale9Textures;
@@ -603,10 +610,11 @@ package feathers.themes
 			this.calloutBackgroundMinSize = Math.round(5 * this.scale);
 			this.progressBarFillMinSize = Math.round(7 * this.scale);
 			this.scrollBarGutterSize = Math.round(4 * this.scale);
-			this.buttonMinWidth = this.gridSize * 2 + this.gutterSize * 1;
+			this.calloutArrowOverlapGap = Math.min(-1, Math.round(-1 * this.scale));
+			this.focusPaddingSize = Math.min(-1, Math.round(-2 * this.scale));
+			this.buttonMinWidth = this.gridSize * 2 + this.gutterSize;
 			this.wideControlSize = this.gridSize * 4 + this.gutterSize * 3;
 			this.popUpSize = this.gridSize * 10 + this.smallGutterSize * 9;
-			this.calloutArrowOverlapGap = -1 * this.scale;
 		}
 
 		/**
@@ -658,6 +666,8 @@ package feathers.themes
 			var checkUpIconTexture:Texture = this.atlas.getTexture("check-up-icon");
 			var checkDownIconTexture:Texture = this.atlas.getTexture("check-down-icon");
 			var checkDisabledIconTexture:Texture = this.atlas.getTexture("check-disabled-icon");
+
+			this.focusIndicatorSkinTextures = new Scale9Textures(this.atlas.getTexture("focus-indicator-skin"), FOCUS_INDICATOR_SCALE_9_GRID);
 
 			this.backgroundSkinTextures = new Scale9Textures(backgroundSkinTexture, DEFAULT_SCALE9_GRID);
 			this.backgroundDisabledSkinTextures = new Scale9Textures(backgroundDisabledSkinTexture, DEFAULT_SCALE9_GRID);
@@ -720,7 +730,7 @@ package feathers.themes
 			this.calloutBottomArrowSkinTexture = this.atlas.getTexture("callout-arrow-bottom-skin");
 			this.calloutLeftArrowSkinTexture = this.atlas.getTexture("callout-arrow-left-skin");
 
-			this.horizontalSimpleScrollBarThumbSkinTextures = new Scale3Textures(this.atlas.getTexture("horizontal-simple-scroll-bar-thumb-skin"), SCROLL_BAR_THUMB_REGION1, SCROLL_BAR_THUMB_REGION2);
+			this.horizontalSimpleScrollBarThumbSkinTextures = new Scale3Textures(this.atlas.getTexture("horizontal-simple-scroll-bar-thumb-skin"), SCROLL_BAR_THUMB_REGION1, SCROLL_BAR_THUMB_REGION2, Scale3Textures.DIRECTION_HORIZONTAL);
 			this.horizontalScrollBarDecrementButtonIconTexture = this.atlas.getTexture("horizontal-scroll-bar-decrement-button-icon");
 			this.horizontalScrollBarDecrementButtonDisabledIconTexture = this.atlas.getTexture("horizontal-scroll-bar-decrement-button-disabled-icon");
 			this.horizontalScrollBarDecrementButtonUpSkinTextures = new Scale9Textures(this.atlas.getTexture("horizontal-scroll-bar-decrement-button-up-skin"), SCROLL_BAR_STEP_BUTTON_SCALE9_GRID);
@@ -728,7 +738,7 @@ package feathers.themes
 			this.horizontalScrollBarIncrementButtonDisabledIconTexture = this.atlas.getTexture("horizontal-scroll-bar-increment-button-disabled-icon");
 			this.horizontalScrollBarIncrementButtonUpSkinTextures = new Scale9Textures(this.atlas.getTexture("horizontal-scroll-bar-increment-button-up-skin"), SCROLL_BAR_STEP_BUTTON_SCALE9_GRID);
 
-			this.verticalSimpleScrollBarThumbSkinTextures = new Scale3Textures(this.atlas.getTexture("vertical-simple-scroll-bar-thumb-skin"), SCROLL_BAR_THUMB_REGION1, SCROLL_BAR_THUMB_REGION2);
+			this.verticalSimpleScrollBarThumbSkinTextures = new Scale3Textures(this.atlas.getTexture("vertical-simple-scroll-bar-thumb-skin"), SCROLL_BAR_THUMB_REGION1, SCROLL_BAR_THUMB_REGION2, Scale3Textures.DIRECTION_VERTICAL);
 			this.verticalScrollBarDecrementButtonIconTexture = this.atlas.getTexture("vertical-scroll-bar-decrement-button-icon");
 			this.verticalScrollBarDecrementButtonDisabledIconTexture = this.atlas.getTexture("vertical-scroll-bar-decrement-button-disabled-icon");
 			this.verticalScrollBarDecrementButtonUpSkinTextures = new Scale9Textures(this.atlas.getTexture("vertical-scroll-bar-decrement-button-up-skin"), SCROLL_BAR_STEP_BUTTON_SCALE9_GRID);
@@ -961,6 +971,9 @@ package feathers.themes
 				ToggleButton(button).selectedDisabledLabelProperties.elementFormat = this.darkUIDisabledElementFormat;
 			}
 
+			button.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+			button.focusPadding = this.focusPaddingSize;
+
 			button.paddingTop = this.smallGutterSize;
 			button.paddingBottom = this.smallGutterSize;
 			button.paddingLeft = this.gutterSize;
@@ -1023,6 +1036,9 @@ package feathers.themes
 				textureScale: this.scale
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
+
+			button.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+			button.focusPadding = this.focusPaddingSize;
 
 			button.defaultLabelProperties.elementFormat = this.lightUIElementFormat;
 			button.downLabelProperties.elementFormat = this.darkUIElementFormat;
@@ -1164,6 +1180,10 @@ package feathers.themes
 			};
 			check.stateToIconFunction = iconSelector.updateValue;
 
+			check.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+			check.focusPaddingLeft = this.focusPaddingSize;
+			check.focusPaddingRight = this.focusPaddingSize;
+
 			check.defaultLabelProperties.elementFormat = this.lightUIElementFormat;
 			check.disabledLabelProperties.elementFormat = this.lightUIDisabledElementFormat;
 			check.selectedDisabledLabelProperties.elementFormat = this.lightUIDisabledElementFormat;
@@ -1196,6 +1216,7 @@ package feathers.themes
 			list.backgroundSkin = new Scale9Image(this.listBackgroundSkinTextures, this.scale);
 			list.backgroundDisabledSkin = new Scale9Image(this.backgroundDisabledSkinTextures, this.scale);
 
+			list.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
 
 			list.verticalScrollPolicy = List.SCROLL_POLICY_AUTO;
 		}
@@ -1290,6 +1311,8 @@ package feathers.themes
 			list.backgroundSkin = new Scale9Image(this.listBackgroundSkinTextures, this.scale);
 			list.backgroundDisabledSkin = new Scale9Image(this.backgroundDisabledSkinTextures, this.scale);
 
+			list.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+
 			list.verticalScrollPolicy = List.SCROLL_POLICY_AUTO;
 		}
 
@@ -1349,6 +1372,9 @@ package feathers.themes
 		protected function setNumericStepperStyles(stepper:NumericStepper):void
 		{
 			stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_RIGHT_SIDE_VERTICAL;
+
+			stepper.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+			stepper.focusPadding = this.focusPaddingSize;
 		}
 
 		protected function setNumericStepperTextInputStyles(input:TextInput):void
@@ -1598,6 +1624,10 @@ package feathers.themes
 			};
 			radio.stateToIconFunction = iconSelector.updateValue;
 
+			radio.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+			radio.focusPaddingLeft = this.focusPaddingSize;
+			radio.focusPaddingRight = this.focusPaddingSize;
+
 			radio.defaultLabelProperties.elementFormat = this.lightUIElementFormat;
 			radio.disabledLabelProperties.elementFormat = this.lightUIDisabledElementFormat;
 			radio.selectedDisabledLabelProperties.elementFormat = this.lightUIDisabledElementFormat;
@@ -1836,6 +1866,8 @@ package feathers.themes
 		{
 			this.setScrollerStyles(text);
 
+			text.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+
 			text.textFormat = this.scrollTextTextFormat;
 			text.disabledTextFormat = this.scrollTextDisabledTextFormat;
 			text.padding = this.gutterSize;
@@ -1898,6 +1930,8 @@ package feathers.themes
 				slider.customMinimumTrackName = THEME_NAME_HORIZONTAL_SLIDER_MINIMUM_TRACK;
 				slider.customMaximumTrackName = THEME_NAME_HORIZONTAL_SLIDER_MAXIMUM_TRACK;
 			}
+			slider.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+			slider.focusPadding = this.focusPaddingSize;
 		}
 
 		protected function setSliderThumbStyles(thumb:Button):void
@@ -2011,7 +2045,11 @@ package feathers.themes
 			};
 			tab.stateToSkinFunction = skinSelector.updateValue;
 
+			tab.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+			tab.focusPadding = this.focusPaddingSize;
+
 			tab.defaultLabelProperties.elementFormat = this.lightUIElementFormat;
+			tab.downLabelProperties.elementFormat = this.darkUIElementFormat;
 			tab.defaultSelectedLabelProperties.elementFormat = this.darkUIElementFormat;
 			tab.disabledLabelProperties.elementFormat = this.darkUIDisabledElementFormat;
 			tab.selectedDisabledLabelProperties.elementFormat = this.darkUIDisabledElementFormat;
@@ -2111,6 +2149,9 @@ package feathers.themes
 		protected function setToggleSwitchStyles(toggle:ToggleSwitch):void
 		{
 			toggle.trackLayoutMode = ToggleSwitch.TRACK_LAYOUT_MODE_SINGLE;
+
+			toggle.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+			toggle.focusPadding = this.focusPaddingSize;
 
 			toggle.defaultLabelProperties.elementFormat = this.lightUIElementFormat;
 			toggle.onLabelProperties.elementFormat = this.selectedUIElementFormat;
