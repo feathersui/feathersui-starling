@@ -2631,6 +2631,19 @@ package feathers.controls
 			super.focusOutHandler(event);
 			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
 			this.stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
+
+			if(this.touchPointID >= 0)
+			{
+				this.touchPointID = -1;
+				if(this._isEnabled)
+				{
+					this.currentState = STATE_UP;
+				}
+				else
+				{
+					this.currentState = STATE_DISABLED;
+				}
+			}
 		}
 
 		/**
