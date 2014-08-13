@@ -2431,6 +2431,7 @@ package feathers.controls
 			}
 			this._touchPointID = -1;
 			this.isSelected = !this._isSelected;
+			this._isSelectionChangedByUser = true;
 		}
 
 		/**
