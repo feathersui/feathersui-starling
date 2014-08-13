@@ -290,6 +290,7 @@ package feathers.themes
 		protected var progressBarFillMinSize:int;
 		protected var popUpSize:int;
 		protected var dropDownGapSize:int;
+		protected var focusPaddingSize:int;
 
 		/**
 		 * The texture atlas that contains skins for this theme. This base class
@@ -433,7 +434,8 @@ package feathers.themes
 			this.buttonMinWidth = this.gridSize * 2 + this.smallGutterSize * 1;
 			this.wideControlSize = this.gridSize * 3 + this.smallGutterSize * 2;
 			this.popUpSize = this.gridSize * 10 + this.smallGutterSize * 9;
-			this.dropDownGapSize = Math.round(-1 * this.scale);
+			this.dropDownGapSize = Math.min(-1, Math.round(-1 * this.scale));
+			this.focusPaddingSize = Math.min(-1, Math.round(-2 * this.scale));
 		}
 
 		/**
@@ -767,7 +769,7 @@ package feathers.themes
 		protected function setBaseButtonStyles(button:Button):void
 		{
 			button.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
-			button.focusPadding = -2;
+			button.focusPadding = this.focusPaddingSize;
 
 			button.defaultLabelProperties.textFormat = this.primaryTextFormat;
 			button.defaultLabelProperties.disabledTextFormat = this.disabledTextFormat;
@@ -925,7 +927,7 @@ package feathers.themes
 			button.stateToSkinFunction = skinSelector.updateValue;
 
 			button.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
-			button.focusPadding = -2;
+			button.focusPadding = this.focusPaddingSize;
 
 			button.defaultLabelProperties.textFormat = this.primaryTextFormat;
 			button.defaultLabelProperties.disabledTextFormat = this.disabledTextFormat;
@@ -995,8 +997,8 @@ package feathers.themes
 			check.stateToIconFunction = iconSelector.updateValue;
 
 			check.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
-			check.focusPaddingLeft = -2;
-			check.focusPaddingRight = -2;
+			check.focusPaddingLeft = this.focusPaddingSize;
+			check.focusPaddingRight = this.focusPaddingSize;
 
 			check.defaultLabelProperties.textFormat = this.primaryTextFormat;
 			check.defaultLabelProperties.disabledTextFormat = this.disabledTextFormat;
@@ -1228,7 +1230,7 @@ package feathers.themes
 			stepper.decrementButtonLabel = "-";
 
 			stepper.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
-			stepper.focusPadding = -2;
+			stepper.focusPadding = this.focusPaddingSize;
 		}
 
 		protected function setNumericStepperButtonStyles(button:Button):void
@@ -1467,7 +1469,7 @@ package feathers.themes
 			radio.stateToIconFunction = iconSelector.updateValue;
 
 			radio.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
-			radio.focusPadding = -2;
+			radio.focusPadding = this.focusPaddingSize;
 
 			radio.defaultLabelProperties.textFormat = this.primaryTextFormat;
 			radio.defaultLabelProperties.disabledTextFormat = this.disabledTextFormat;
@@ -1655,6 +1657,8 @@ package feathers.themes
 			text.textFormat = this.scrollTextTextFormat;
 			text.disabledTextFormat = this.scrollTextDisabledTextFormat;
 			text.padding = this.gutterSize;
+
+			text.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
 		}
 
 	//-------------------------
@@ -1689,7 +1693,7 @@ package feathers.themes
 			}
 
 			slider.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
-			slider.focusPadding = -2;
+			slider.focusPadding = this.focusPaddingSize;
 		}
 
 		protected function setHorizontalSliderMinimumTrackStyles(track:Button):void
@@ -1794,7 +1798,7 @@ package feathers.themes
 			textArea.stateToSkinFunction = skinSelector.updateValue;
 
 			textArea.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
-			textArea.focusPadding = -2;
+			textArea.focusPadding = this.focusPaddingSize;
 		}
 
 	//-------------------------
@@ -1831,7 +1835,7 @@ package feathers.themes
 			input.stateToSkinFunction = skinSelector.updateValue;
 
 			input.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
-			input.focusPadding = -2;
+			input.focusPadding = this.focusPaddingSize;
 		}
 
 		protected function setTextInputStyles(input:TextInput):void
@@ -1861,7 +1865,7 @@ package feathers.themes
 			toggleSwitch.defaultLabelProperties.disabledTextFormat = this.disabledTextFormat;
 
 			toggleSwitch.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
-			toggleSwitch.focusPadding = -2;
+			toggleSwitch.focusPadding = this.focusPaddingSize;
 		}
 
 		protected function setToggleSwitchOnTrackStyles(track:Button):void
