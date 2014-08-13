@@ -299,6 +299,8 @@ package feathers.themes
 		 */
 		protected var atlas:TextureAtlas;
 
+		protected var focusIndicatorSkinTextures:Scale9Textures;
+
 		protected var buttonUpSkinTextures:Scale9Textures;
 		protected var buttonDownSkinTextures:Scale9Textures;
 		protected var buttonDisabledSkinTextures:Scale9Textures;
@@ -463,6 +465,8 @@ package feathers.themes
 		 */
 		protected function initializeTextures():void
 		{
+			this.focusIndicatorSkinTextures = new Scale9Textures(this.atlas.getTexture("focus-indicator-skin"), SCALE_9_GRID);
+
 			this.buttonUpSkinTextures = new Scale9Textures(this.atlas.getTexture("button-up-skin"), BUTTON_SCALE_9_GRID);
 			this.buttonDownSkinTextures = new Scale9Textures(this.atlas.getTexture("button-down-skin"), BUTTON_DOWN_SCALE_9_GRID);
 			this.buttonDisabledSkinTextures = new Scale9Textures(this.atlas.getTexture("button-disabled-skin"), BUTTON_SCALE_9_GRID);
@@ -762,6 +766,9 @@ package feathers.themes
 
 		protected function setBaseButtonStyles(button:Button):void
 		{
+			button.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+			button.focusPadding = -2;
+
 			button.defaultLabelProperties.textFormat = this.primaryTextFormat;
 			button.defaultLabelProperties.disabledTextFormat = this.disabledTextFormat;
 
@@ -917,6 +924,9 @@ package feathers.themes
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
 
+			button.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+			button.focusPadding = -2;
+
 			button.defaultLabelProperties.textFormat = this.primaryTextFormat;
 			button.defaultLabelProperties.disabledTextFormat = this.disabledTextFormat;
 
@@ -984,6 +994,10 @@ package feathers.themes
 			};
 			check.stateToIconFunction = iconSelector.updateValue;
 
+			check.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+			check.focusPaddingLeft = -2;
+			check.focusPaddingRight = -2;
+
 			check.defaultLabelProperties.textFormat = this.primaryTextFormat;
 			check.defaultLabelProperties.disabledTextFormat = this.disabledTextFormat;
 
@@ -1024,6 +1038,8 @@ package feathers.themes
 			backgroundDisabledSkin.width = this.gridSize;
 			backgroundDisabledSkin.height = this.gridSize;
 			list.backgroundDisabledSkin = backgroundDisabledSkin;
+
+			list.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
 
 			list.padding = this.borderSize;
 		}
@@ -1150,6 +1166,8 @@ package feathers.themes
 			backgroundDisabledSkin.height = this.gridSize;
 			list.backgroundDisabledSkin = backgroundDisabledSkin;
 
+			list.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+
 			list.padding = this.borderSize;
 			list.paddingRight = 0;
 		}
@@ -1208,6 +1226,9 @@ package feathers.themes
 			stepper.buttonLayoutMode = NumericStepper.BUTTON_LAYOUT_MODE_SPLIT_HORIZONTAL;
 			stepper.incrementButtonLabel = "+";
 			stepper.decrementButtonLabel = "-";
+
+			stepper.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+			stepper.focusPadding = -2;
 		}
 
 		protected function setNumericStepperButtonStyles(button:Button):void
@@ -1445,6 +1466,9 @@ package feathers.themes
 			};
 			radio.stateToIconFunction = iconSelector.updateValue;
 
+			radio.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+			radio.focusPadding = -2;
+
 			radio.defaultLabelProperties.textFormat = this.primaryTextFormat;
 			radio.defaultLabelProperties.disabledTextFormat = this.disabledTextFormat;
 
@@ -1663,6 +1687,9 @@ package feathers.themes
 			{
 				slider.customMinimumTrackName = THEME_NAME_HORIZONTAL_SLIDER_MINIMUM_TRACK;
 			}
+
+			slider.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+			slider.focusPadding = -2;
 		}
 
 		protected function setHorizontalSliderMinimumTrackStyles(track:Button):void
@@ -1765,6 +1792,9 @@ package feathers.themes
 				textureScale: this.scale
 			};
 			textArea.stateToSkinFunction = skinSelector.updateValue;
+
+			textArea.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+			textArea.focusPadding = -2;
 		}
 
 	//-------------------------
@@ -1799,6 +1829,9 @@ package feathers.themes
 				height: this.controlSize
 			};
 			input.stateToSkinFunction = skinSelector.updateValue;
+
+			input.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+			input.focusPadding = -2;
 		}
 
 		protected function setTextInputStyles(input:TextInput):void
@@ -1826,6 +1859,9 @@ package feathers.themes
 
 			toggleSwitch.defaultLabelProperties.textFormat = this.primaryTextFormat;
 			toggleSwitch.defaultLabelProperties.disabledTextFormat = this.disabledTextFormat;
+
+			toggleSwitch.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+			toggleSwitch.focusPadding = -2;
 		}
 
 		protected function setToggleSwitchOnTrackStyles(track:Button):void
