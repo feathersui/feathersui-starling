@@ -1,23 +1,25 @@
 package feathers.examples.tileList
 {
 	import feathers.controls.Button;
+	import feathers.controls.LayoutGroup;
 	import feathers.controls.List;
 	import feathers.controls.PageIndicator;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ListCollection;
+	import feathers.layout.AnchorLayout;
+	import feathers.layout.AnchorLayoutData;
 	import feathers.layout.TiledRowsLayout;
 	import feathers.text.BitmapFontTextFormat;
 
 	import starling.display.Image;
-	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.ResizeEvent;
 	import starling.text.BitmapFont;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 
-	public class Main extends Sprite
+	public class Main extends LayoutGroup
 	{
 		[Embed(source="/../assets/images/atlas.png")]
 		private static const ICONS_IMAGE:Class;
@@ -30,7 +32,6 @@ package feathers.examples.tileList
 
 		public function Main()
 		{
-			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 		}
 
 		private var _iconAtlas:TextureAtlas;
@@ -38,35 +39,67 @@ package feathers.examples.tileList
 		private var _list:List;
 		private var _pageIndicator:PageIndicator;
 
-		protected function layout():void
+		override public function dispose():void
 		{
-			this._pageIndicator.width = this.stage.stageWidth;
-			this._pageIndicator.validate();
-			this._pageIndicator.y = this.stage.stageHeight - this._pageIndicator.height;
-
-			var shorterSide:Number = Math.min(this.stage.stageWidth, this.stage.stageHeight);
-			var layout:TiledRowsLayout = TiledRowsLayout(this._list.layout);
-			layout.paddingTop = layout.paddingRight = layout.paddingBottom =
-				layout.paddingLeft = shorterSide * 0.06;
-			layout.gap = shorterSide * 0.04;
-
-			this._list.itemRendererProperties.gap = shorterSide * 0.01;
-
-			this._list.width = this.stage.stageWidth;
-			this._list.height = this._pageIndicator.y;
-			this._list.validate();
-
-			this._pageIndicator.pageCount = this._list.horizontalPageCount;
+			//don't forget to clean up textures and things!
+			if(this._iconAtlas)
+			{
+				this._iconAtlas.dispose();
+				this._iconAtlas = null;
+			}
+			if(this._font)
+			{
+				this._font.dispose();
+				this._font = null;
+			}
+			super.dispose();
 		}
 
-		protected function addedToStageHandler(event:Event):void
+		override protected function initialize():void
 		{
-			this.removeEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
+			//we want this container to fill the whole stage
+			this.setSize(this.stage.stageWidth, this.stage.stageHeight);
+			//and we'll listen for when the stage resizes to resize the container
 			this.stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
 
+			//a nice, fluid layout
+			this.layout = new AnchorLayout();
+
+			//setting up some assets for skinning
 			this._iconAtlas = new TextureAtlas(Texture.fromBitmap(new ICONS_IMAGE(), false), XML(new ICONS_XML()));
 			this._font = new BitmapFont(this._iconAtlas.getTexture("arial20_0"), XML(new FONT_XML()));
+			var pageIndicatorNormalSymbol:Texture = this._iconAtlas.getTexture("normal-page-symbol");
+			var pageIndicatorSelectedSymbol:Texture = this._iconAtlas.getTexture("selected-page-symbol");
 
+			//the page indicator can be used to scroll the list
+			this._pageIndicator = new PageIndicator();
+			this._pageIndicator.pageCount = 1;
+			this._pageIndicator.normalSymbolFactory = function():Image
+			{
+				return new Image(pageIndicatorNormalSymbol);
+			}
+			this._pageIndicator.selectedSymbolFactory = function():Image
+			{
+				return new Image(pageIndicatorSelectedSymbol);
+			}
+			this._pageIndicator.direction = PageIndicator.DIRECTION_HORIZONTAL;
+			this._pageIndicator.gap = 4;
+			this._pageIndicator.padding = 6;
+
+			//we listen to the change event to update the list's scroll position
+			this._pageIndicator.addEventListener(Event.CHANGE, pageIndicator_changeHandler);
+
+			//we'll position the page indicator on the bottom and stretch its
+			//width to fill the container's width
+			var pageIndicatorLayoutData:AnchorLayoutData = new AnchorLayoutData();
+			pageIndicatorLayoutData.bottom = 0;
+			pageIndicatorLayoutData.left = 0;
+			pageIndicatorLayoutData.right = 0;
+			this._pageIndicator.layoutData = pageIndicatorLayoutData;
+
+			this.addChild(this._pageIndicator);
+
+			//the data that will be displayed in the list
 			var collection:ListCollection = new ListCollection(
 			[
 				{ label: "Facebook", texture: this._iconAtlas.getTexture("facebook") },
@@ -97,43 +130,40 @@ package feathers.examples.tileList
 				{ label: "Orkut", texture: this._iconAtlas.getTexture("orkut") },
 			]);
 
+			this._list = new List();
+			this._list.dataProvider = collection;
+			this._list.snapToPages = true;
+			this._list.scrollBarDisplayMode = List.SCROLL_BAR_DISPLAY_MODE_NONE;
+			this._list.horizontalScrollPolicy = List.SCROLL_POLICY_ON;
+			this._list.itemRendererFactory = tileListItemRendererFactory;
+
+			//we listen to the scroll event to update the page indicator
+			this._list.addEventListener(Event.SCROLL, list_scrollHandler);
+
+			//this is the list's layout...
 			var listLayout:TiledRowsLayout = new TiledRowsLayout();
 			listLayout.paging = TiledRowsLayout.PAGING_HORIZONTAL;
 			listLayout.useSquareTiles = false;
 			listLayout.tileHorizontalAlign = TiledRowsLayout.TILE_HORIZONTAL_ALIGN_CENTER;
 			listLayout.horizontalAlign = TiledRowsLayout.HORIZONTAL_ALIGN_CENTER;
 			listLayout.manageVisibility = true;
-
-			this._list = new List();
-			this._list.dataProvider = collection;
+			var shorterSide:Number = Math.min(this.stage.stageWidth, this.stage.stageHeight);
+			listLayout.padding = shorterSide * 0.06;
+			listLayout.gap = shorterSide * 0.04;
 			this._list.layout = listLayout;
-			this._list.snapToPages = true;
-			this._list.scrollBarDisplayMode = List.SCROLL_BAR_DISPLAY_MODE_NONE;
-			this._list.horizontalScrollPolicy = List.SCROLL_POLICY_ON;
-			this._list.itemRendererFactory = tileListItemRendererFactory;
-			this._list.addEventListener(Event.SCROLL, list_scrollHandler);
+
+			//...while this is the layout data used by the list's parent
+			var listLayoutData:AnchorLayoutData = new AnchorLayoutData();
+			listLayoutData.top = 0;
+			listLayoutData.right = 0;
+			listLayoutData.bottom = 0;
+			listLayoutData.bottomAnchorDisplayObject = this._pageIndicator;
+			listLayoutData.left = 0;
+			//this list fills the container's width and the remaining height
+			//above the page indicator
+			this._list.layoutData = listLayoutData;
+
 			this.addChild(this._list);
-
-			var normalSymbolTexture:Texture = this._iconAtlas.getTexture("normal-page-symbol");
-			var selectedSymbolTexture:Texture = this._iconAtlas.getTexture("selected-page-symbol");
-			this._pageIndicator = new PageIndicator();
-			this._pageIndicator.normalSymbolFactory = function():Image
-			{
-				return new Image(normalSymbolTexture);
-			}
-			this._pageIndicator.selectedSymbolFactory = function():Image
-			{
-				return new Image(selectedSymbolTexture);
-			}
-			this._pageIndicator.direction = PageIndicator.DIRECTION_HORIZONTAL;
-			this._pageIndicator.pageCount = 1;
-			this._pageIndicator.gap = 3;
-			this._pageIndicator.paddingTop = this._pageIndicator.paddingRight = this._pageIndicator.paddingBottom =
-				this._pageIndicator.paddingLeft = 6;
-			this._pageIndicator.addEventListener(Event.CHANGE, pageIndicator_changeHandler);
-			this.addChild(this._pageIndicator);
-
-			this.layout();
 		}
 		
 		protected function tileListItemRendererFactory():IListItemRenderer
@@ -148,6 +178,7 @@ package feathers.examples.tileList
 
 		protected function list_scrollHandler(event:Event):void
 		{
+			this._pageIndicator.pageCount = this._list.horizontalPageCount;
 			this._pageIndicator.selectedIndex = this._list.horizontalPageIndex;
 		}
 
@@ -158,7 +189,7 @@ package feathers.examples.tileList
 
 		protected function stage_resizeHandler(event:ResizeEvent):void
 		{
-			this.layout();
+			this.setSize(this.stage.stageWidth, this.stage.stageHeight);
 		}
 	}
 }
