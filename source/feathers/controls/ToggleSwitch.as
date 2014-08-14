@@ -1772,7 +1772,7 @@ package feathers.controls
 				this.createLabels();
 			}
 
-			if(stylesInvalid)
+			if(stylesInvalid || stateInvalid)
 			{
 				this.refreshOnLabelStyles();
 				this.refreshOffLabelStyles();
