@@ -798,6 +798,7 @@ package feathers.controls.supportClasses
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			var scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
 			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 
 			if(stylesInvalid)
 			{
@@ -816,7 +817,7 @@ package feathers.controls.supportClasses
 				this._textField.y = this._paddingTop;
 			}
 
-			if(dataInvalid || stylesInvalid)
+			if(dataInvalid || stylesInvalid || stateInvalid)
 			{
 				if(this._styleSheet)
 				{
