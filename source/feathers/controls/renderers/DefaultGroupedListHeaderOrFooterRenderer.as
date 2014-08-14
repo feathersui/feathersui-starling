@@ -10,6 +10,7 @@ package feathers.controls.renderers
 	import feathers.controls.GroupedList;
 	import feathers.controls.ImageLoader;
 	import feathers.core.FeathersControl;
+	import feathers.core.IFeathersControl;
 	import feathers.core.ITextRenderer;
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
@@ -1257,6 +1258,11 @@ package feathers.controls.renderers
 				this.refreshContentLabelStyles();
 			}
 
+			if(dataInvalid || stateInvalid)
+			{
+				this.refreshEnabled();
+			}
+
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
 			if(dataInvalid || stylesInvalid || sizeInvalid)
@@ -1441,6 +1447,17 @@ package feathers.controls.renderers
 			{
 				DisplayObject(this.contentLabel).removeFromParent(true);
 				this.contentLabel = null;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshEnabled():void
+		{
+			if(this.content is IFeathersControl)
+			{
+				IFeathersControl(this.content).isEnabled = this._isEnabled;
 			}
 		}
 
