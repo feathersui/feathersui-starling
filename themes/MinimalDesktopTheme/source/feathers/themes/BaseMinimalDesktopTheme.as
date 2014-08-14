@@ -335,6 +335,7 @@ package feathers.themes
 		protected var pickerListButtonIconSelectedTexture:Texture;
 		protected var pickerListButtonIconDisabledTexture:Texture;
 		protected var searchIconTexture:Texture;
+		protected var searchIconDisabledTexture:Texture;
 		protected var upArrowIconTexture:Texture;
 		protected var rightArrowIconTexture:Texture;
 		protected var downArrowIconTexture:Texture;
@@ -505,6 +506,7 @@ package feathers.themes
 			this.pickerListButtonIconSelectedTexture = this.atlas.getTexture("picker-list-selected-icon");
 			this.pickerListButtonIconDisabledTexture = this.atlas.getTexture("picker-list-disabled-icon");
 			this.searchIconTexture = this.atlas.getTexture("search-icon");
+			this.searchIconDisabledTexture = this.atlas.getTexture("search-icon-disabled");
 			this.upArrowIconTexture = this.atlas.getTexture("up-arrow-icon");
 			this.rightArrowIconTexture = this.atlas.getTexture("right-arrow-icon");
 			this.downArrowIconTexture = this.atlas.getTexture("down-arrow-icon");
@@ -916,7 +918,7 @@ package feathers.themes
 			skinSelector.defaultSelectedValue = this.buttonSelectedSkinTextures;
 			skinSelector.setValueForState(this.buttonDownSkinTextures, Button.STATE_DOWN, false);
 			skinSelector.setValueForState(this.buttonDownSkinTextures, Button.STATE_DOWN, true);
-			skinSelector.setValueForState(this.buttonSelectedSkinTextures, Button.STATE_DISABLED, false);
+			skinSelector.setValueForState(this.buttonDisabledSkinTextures, Button.STATE_DISABLED, false);
 			skinSelector.setValueForState(this.buttonSelectedDisabledSkinTextures, Button.STATE_DISABLED, true);
 			skinSelector.displayObjectProperties =
 			{
@@ -1866,10 +1868,16 @@ package feathers.themes
 		{
 			this.setBaseTextInputStyles(input);
 
-			var searchIcon:ImageLoader = new ImageLoader();
-			searchIcon.source = this.searchIconTexture;
-			searchIcon.snapToPixels = true;
-			input.defaultIcon = searchIcon;
+			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			iconSelector.setValueTypeHandler(SubTexture, textureValueTypeHandler);
+			iconSelector.defaultValue = this.searchIconTexture;
+			iconSelector.setValueForState(this.searchIconDisabledTexture, Button.STATE_DISABLED, false);
+			iconSelector.displayObjectProperties =
+			{
+				textureScale: this.scale,
+				snapToPixels: true
+			};
+			input.stateToIconFunction = iconSelector.updateValue;
 		}
 
 	//-------------------------
