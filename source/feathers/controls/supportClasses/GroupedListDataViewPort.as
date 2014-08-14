@@ -1041,7 +1041,7 @@ package feathers.controls.supportClasses
 				var renderer:DisplayObject = DisplayObject(this._activeItemRenderers[i]);
 				if(renderer is IFeathersControl)
 				{
-					FeathersControl(renderer).isEnabled = this._isEnabled;
+					IFeathersControl(renderer).isEnabled = this._isEnabled;
 				}
 			}
 			if(this._activeFirstItemRenderers)
@@ -1052,7 +1052,7 @@ package feathers.controls.supportClasses
 					renderer = DisplayObject(this._activeFirstItemRenderers[i]);
 					if(renderer is IFeathersControl)
 					{
-						FeathersControl(renderer).isEnabled = this._isEnabled;
+						IFeathersControl(renderer).isEnabled = this._isEnabled;
 					}
 				}
 			}
@@ -1064,7 +1064,7 @@ package feathers.controls.supportClasses
 					renderer = DisplayObject(this._activeLastItemRenderers[i]);
 					if(renderer is IFeathersControl)
 					{
-						FeathersControl(renderer).isEnabled = this._isEnabled;
+						IFeathersControl(renderer).isEnabled = this._isEnabled;
 					}
 				}
 			}
@@ -1076,7 +1076,7 @@ package feathers.controls.supportClasses
 					renderer = DisplayObject(this._activeSingleItemRenderers[i]);
 					if(renderer is IFeathersControl)
 					{
-						FeathersControl(renderer).isEnabled = this._isEnabled;
+						IFeathersControl(renderer).isEnabled = this._isEnabled;
 					}
 				}
 			}
@@ -1086,7 +1086,7 @@ package feathers.controls.supportClasses
 				renderer = DisplayObject(this._activeHeaderRenderers[i]);
 				if(renderer is IFeathersControl)
 				{
-					FeathersControl(renderer).isEnabled = this._isEnabled;
+					IFeathersControl(renderer).isEnabled = this._isEnabled;
 				}
 			}
 			rendererCount = this._activeFooterRenderers.length;
@@ -1095,7 +1095,7 @@ package feathers.controls.supportClasses
 				renderer = DisplayObject(this._activeFooterRenderers[i]);
 				if(renderer is IFeathersControl)
 				{
-					FeathersControl(renderer).isEnabled = this._isEnabled;
+					IFeathersControl(renderer).isEnabled = this._isEnabled;
 				}
 			}
 		}
