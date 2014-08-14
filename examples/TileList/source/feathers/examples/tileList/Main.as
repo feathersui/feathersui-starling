@@ -146,10 +146,8 @@ package feathers.examples.tileList
 			listLayout.useSquareTiles = false;
 			listLayout.tileHorizontalAlign = TiledRowsLayout.TILE_HORIZONTAL_ALIGN_CENTER;
 			listLayout.horizontalAlign = TiledRowsLayout.HORIZONTAL_ALIGN_CENTER;
-			listLayout.manageVisibility = true;
-			var shorterSide:Number = Math.min(this.stage.stageWidth, this.stage.stageHeight);
-			listLayout.padding = shorterSide * 0.06;
-			listLayout.gap = shorterSide * 0.04;
+			listLayout.padding = 20;
+			listLayout.gap = 20;
 			this._list.layout = listLayout;
 
 			//...while this is the layout data used by the list's parent
