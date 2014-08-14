@@ -161,10 +161,13 @@ package feathers.skins
 		 */
 		override public function setValueForState(value:Object, state:Object, isSelected:Boolean = false):void
 		{
-			var type:Class = Class(value.constructor);
-			if(this._handlers[type] == null)
+			if(value !== null)
 			{
-				throw new ArgumentError("Handler for value type " + type + " has not been set.");
+				var type:Class = Class(value.constructor);
+				if(this._handlers[type] == null)
+				{
+					throw new ArgumentError("Handler for value type " + type + " has not been set.");
+				}
 			}
 			super.setValueForState(value, state, isSelected);
 		}
