@@ -1231,6 +1231,11 @@ package feathers.controls
 				}
 			}
 
+			if(stateInvalid || textRendererInvalid)
+			{
+				this.refreshEnabled();
+			}
+
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
 			if(sizeInvalid || stylesInvalid)
@@ -1515,6 +1520,14 @@ package feathers.controls
 			this._layout.paddingTop = this._paddingTop + this.calculateExtraOSStatusBarPadding();
 			this._layout.paddingBottom = this._paddingBottom;
 			this._layout.verticalAlign = this._verticalAlign;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshEnabled():void
+		{
+			this.titleTextRenderer.isEnabled = this._isEnabled;
 		}
 
 		/**
