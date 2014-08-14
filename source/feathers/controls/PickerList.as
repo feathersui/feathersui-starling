@@ -26,6 +26,9 @@ package feathers.controls
 	import starling.core.Starling;
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 
 	/**
 	 * Dispatched when the selected item changes.
@@ -1029,6 +1032,16 @@ package feathers.controls
 		protected var _buttonHasFocus:Boolean = false;
 
 		/**
+		 * @private
+		 */
+		protected var _buttonTouchPointID:int = -1;
+
+		/**
+		 * @private
+		 */
+		protected var _listIsOpenOnTouchBegan:Boolean = false;
+
+		/**
 		 * Opens the pop-up list, if it isn't already open.
 		 */
 		public function openList():void
@@ -1049,11 +1062,6 @@ package feathers.controls
 			this.list.validate();
 			if(this._focusManager)
 			{
-				if(this._buttonHasFocus)
-				{
-					this.button.dispatchEventWith(FeathersEventType.FOCUS_OUT);
-					this._buttonHasFocus = false;
-				}
 				this._focusManager.focus = this.list;
 				this.stage.addEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
 				this.list.addEventListener(FeathersEventType.FOCUS_OUT, list_focusOutHandler);
@@ -1341,6 +1349,7 @@ package feathers.controls
 			var buttonName:String = this._customButtonName != null ? this._customButtonName : this.buttonName;
 			this.button = Button(factory());
 			this.button.styleNameList.add(buttonName);
+			this.button.addEventListener(TouchEvent.TOUCH, button_touchHandler);
 			this.button.addEventListener(Event.TRIGGERED, button_triggeredHandler);
 			this.addChild(this.button);
 		}
@@ -1369,6 +1378,7 @@ package feathers.controls
 			var factory:Function = this._listFactory != null ? this._listFactory : defaultListFactory;
 			var listName:String = this._customListName != null ? this._customListName : this.listName;
 			this.list = List(factory());
+			this.list.focusOwner = this;
 			this.list.styleNameList.add(listName);
 			this.list.addEventListener(Event.CHANGE, list_changeHandler);
 			this.list.addEventListener(FeathersEventType.RENDERER_ADD, list_rendererAddHandler);
@@ -1473,12 +1483,47 @@ package feathers.controls
 		{
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
+
+		/**
+		 * @private
+		 */
+		protected function button_touchHandler(event:TouchEvent):void
+		{
+			if(this._buttonTouchPointID >= 0)
+			{
+				var touch:Touch = event.getTouch(this.button, TouchPhase.ENDED, this._buttonTouchPointID);
+				if(!touch)
+				{
+					return;
+				}
+				this._buttonTouchPointID = -1;
+				//the button will dispatch Event.TRIGGERED before this touch
+				//listener is called, so it is safe to clear this flag.
+				//we're clearing it because Event.TRIGGERED may also be
+				//dispatched after keyboard input.
+				this._listIsOpenOnTouchBegan = false;
+			}
+			else
+			{
+				touch = event.getTouch(this.button, TouchPhase.BEGAN);
+				if(!touch)
+				{
+					return;
+				}
+				this._buttonTouchPointID = touch.id;
+				this._listIsOpenOnTouchBegan = this._popUpContentManager.isOpen;
+			}
+		}
 		
 		/**
 		 * @private
 		 */
 		protected function button_triggeredHandler(event:Event):void
 		{
+			if(this._focusManager && this._listIsOpenOnTouchBegan)
+			{
+				return;
+			}
 			if(this._popUpContentManager.isOpen)
 			{
 				this.closeList();
