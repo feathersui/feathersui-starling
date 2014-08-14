@@ -117,6 +117,23 @@ package feathers.core
 		function set previousTabFocus(value:IFocusDisplayObject):void;
 
 		/**
+		 * Used for associating focusable display objects that are not direct
+		 * children with an "owner" focusable display object, such as pop-ups.
+		 * A focus manager may use this property to influence the tab order.
+		 *
+		 * <p>In the following example, the focus owner is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * object.focusOwner = otherObject;</listing>
+		 */
+		function get focusOwner():IFocusDisplayObject;
+
+		/**
+		 * @private
+		 */
+		function set focusOwner(value:IFocusDisplayObject):void;
+
+		/**
 		 * If the object has focus, an additional visual indicator may
 		 * optionally be displayed to highlight the object. Calling this
 		 * function may have no effect. It's merely a suggestion to the object.
