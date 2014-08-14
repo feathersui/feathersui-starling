@@ -1054,6 +1054,7 @@ package feathers.themes
 			renderer.backgroundSkin = backgroundSkin;
 
 			renderer.contentLabelProperties.textFormat = this.primaryTextFormat;
+			renderer.contentLabelProperties.disabledTextFormat = this.disabledTextFormat;
 
 			renderer.paddingTop = this.smallGutterSize;
 			renderer.paddingBottom = this.smallGutterSize;
@@ -1506,7 +1507,7 @@ package feathers.themes
 		{
 			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = this.thumbSkinTextures;
-			skinSelector.defaultSelectedValue = this.thumbDisabledSkinTextures;
+			skinSelector.setValueForState(this.thumbDisabledSkinTextures, Button.STATE_DISABLED, false);
 			skinSelector.displayObjectProperties =
 			{
 				width: this.smallControlSize,
@@ -1520,10 +1521,16 @@ package feathers.themes
 
 		protected function setScrollBarMinimumTrackStyles(track:Button):void
 		{
-			var sliderTrackDefaultSkin:Scale9Image = new Scale9Image(this.insetBackgroundSkinTextures, this.scale);
-			sliderTrackDefaultSkin.width = this.smallControlSize;
-			sliderTrackDefaultSkin.height = this.smallControlSize;
-			track.defaultSkin = sliderTrackDefaultSkin;
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.insetBackgroundSkinTextures;
+			skinSelector.setValueForState(this.insetBackgroundDisabledSkinTextures, Button.STATE_DISABLED, false);
+			skinSelector.displayObjectProperties =
+			{
+				width: this.smallControlSize,
+				height: this.smallControlSize,
+				textureScale: this.scale
+			};
+			track.stateToSkinFunction = skinSelector.updateValue;
 
 			track.hasLabelTextRenderer = false;
 		}
@@ -1563,7 +1570,7 @@ package feathers.themes
 			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			iconSelector.setValueTypeHandler(SubTexture, textureValueTypeHandler);
 			iconSelector.defaultValue = this.leftArrowIconTexture;
-			iconSelector.defaultSelectedValue = this.leftArrowDisabledIconTexture;
+			iconSelector.setValueForState(this.leftArrowDisabledIconTexture, Button.STATE_DISABLED, false);
 			iconSelector.displayObjectProperties =
 			{
 				textureScale: this.scale
@@ -1578,7 +1585,7 @@ package feathers.themes
 			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			iconSelector.setValueTypeHandler(SubTexture, textureValueTypeHandler);
 			iconSelector.defaultValue = this.rightArrowIconTexture;
-			iconSelector.defaultSelectedValue = this.rightArrowDisabledIconTexture;
+			iconSelector.setValueForState(this.rightArrowDisabledIconTexture, Button.STATE_DISABLED, false);
 			iconSelector.displayObjectProperties =
 			{
 				textureScale: this.scale
@@ -1593,7 +1600,7 @@ package feathers.themes
 			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			iconSelector.setValueTypeHandler(SubTexture, textureValueTypeHandler);
 			iconSelector.defaultValue = this.upArrowIconTexture;
-			iconSelector.defaultSelectedValue = this.upArrowDisabledIconTexture;
+			iconSelector.setValueForState(this.upArrowDisabledIconTexture, Button.STATE_DISABLED, false);
 			iconSelector.displayObjectProperties =
 			{
 				textureScale: this.scale
@@ -1608,7 +1615,7 @@ package feathers.themes
 			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			iconSelector.setValueTypeHandler(SubTexture, textureValueTypeHandler);
 			iconSelector.defaultValue = this.downArrowIconTexture;
-			iconSelector.defaultSelectedValue = this.downArrowDisabledIconTexture;
+			iconSelector.setValueForState(this.downArrowDisabledIconTexture, Button.STATE_DISABLED, false);
 			iconSelector.displayObjectProperties =
 			{
 				textureScale: this.scale
@@ -1698,20 +1705,32 @@ package feathers.themes
 
 		protected function setHorizontalSliderMinimumTrackStyles(track:Button):void
 		{
-			var sliderTrackDefaultSkin:Scale9Image = new Scale9Image(insetBackgroundSkinTextures, this.scale);
-			sliderTrackDefaultSkin.width = this.wideControlSize;
-			sliderTrackDefaultSkin.height = this.smallControlSize;
-			track.defaultSkin = sliderTrackDefaultSkin;
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.insetBackgroundSkinTextures;
+			skinSelector.setValueForState(this.insetBackgroundDisabledSkinTextures, Button.STATE_DISABLED, false);
+			skinSelector.displayObjectProperties =
+			{
+				width: this.wideControlSize,
+				height: this.smallControlSize,
+				textureScale: this.scale
+			};
+			track.stateToSkinFunction = skinSelector.updateValue;
 
 			track.hasLabelTextRenderer = false;
 		}
 
 		protected function setVerticalSliderMinimumTrackStyles(track:Button):void
 		{
-			var sliderTrackDefaultSkin:Scale9Image = new Scale9Image(insetBackgroundSkinTextures, this.scale);
-			sliderTrackDefaultSkin.width = this.smallControlSize;
-			sliderTrackDefaultSkin.height = this.wideControlSize;
-			track.defaultSkin = sliderTrackDefaultSkin;
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.insetBackgroundSkinTextures;
+			skinSelector.setValueForState(this.insetBackgroundDisabledSkinTextures, Button.STATE_DISABLED, false);
+			skinSelector.displayObjectProperties =
+			{
+				width: this.smallControlSize,
+				height: this.wideControlSize,
+				textureScale: this.scale
+			};
+			track.stateToSkinFunction = skinSelector.updateValue;
 
 			track.hasLabelTextRenderer = false;
 		}
@@ -1720,7 +1739,7 @@ package feathers.themes
 		{
 			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = this.thumbSkinTextures;
-			skinSelector.defaultSelectedValue = this.thumbDisabledSkinTextures;
+			skinSelector.setValueForState(this.thumbDisabledSkinTextures, Button.STATE_DISABLED, false);
 			skinSelector.displayObjectProperties =
 			{
 				width: this.smallControlSize,
@@ -1872,7 +1891,7 @@ package feathers.themes
 		{
 			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = this.insetBackgroundSkinTextures;
-			skinSelector.defaultSelectedValue = this.insetBackgroundDisabledSkinTextures;
+			skinSelector.setValueForState(this.insetBackgroundDisabledSkinTextures, Button.STATE_DISABLED, false);
 			skinSelector.displayObjectProperties =
 			{
 				width: Math.round(this.controlSize * 2.5),
@@ -1888,7 +1907,7 @@ package feathers.themes
 		{
 			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = this.thumbSkinTextures;
-			skinSelector.defaultSelectedValue = this.thumbDisabledSkinTextures;
+			skinSelector.setValueForState(this.thumbDisabledSkinTextures, Button.STATE_DISABLED, false);
 			skinSelector.displayObjectProperties =
 			{
 				width: this.controlSize,
