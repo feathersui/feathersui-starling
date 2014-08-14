@@ -1000,6 +1000,10 @@ package feathers.core
 		/**
 		 * @copy feathers.core.IFocusDisplayObject#focusManager
 		 *
+		 * <p>The implementation of this property is provided for convenience,
+		 * but it cannot be used unless a subclass implements the
+		 * <code>IFocusDisplayObject</code> interface.</p>
+		 *
 		 * @default null
 		 */
 		public function get focusManager():IFocusManager
@@ -1036,10 +1040,41 @@ package feathers.core
 		/**
 		 * @private
 		 */
+		protected var _focusOwner:IFocusDisplayObject;
+
+		/**
+		 * @copy feathers.core.IFocusDisplayObject#focusOwner
+		 *
+		 * <p>The implementation of this property is provided for convenience,
+		 * but it cannot be used unless a subclass implements the
+		 * <code>IFocusDisplayObject</code> interface.</p>
+		 *
+		 * @default null
+		 */
+		public function get focusOwner():IFocusDisplayObject
+		{
+			return this._focusOwner;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set focusOwner(value:IFocusDisplayObject):void
+		{
+			this._focusOwner = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _isFocusEnabled:Boolean = true;
 
 		/**
 		 * @copy feathers.core.IFocusDisplayObject#isFocusEnabled
+		 *
+		 * <p>The implementation of this property is provided for convenience,
+		 * but it cannot be used unless a subclass implements the
+		 * <code>IFocusDisplayObject</code> interface.</p>
 		 *
 		 * @default true
 		 */
@@ -1072,6 +1107,10 @@ package feathers.core
 		/**
 		 * @copy feathers.core.IFocusDisplayObject#nextTabFocus
 		 *
+		 * <p>The implementation of this property is provided for convenience,
+		 * but it cannot be used unless a subclass implements the
+		 * <code>IFocusDisplayObject</code> interface.</p>
+		 *
 		 * @default null
 		 */
 		public function get nextTabFocus():IFocusDisplayObject
@@ -1098,6 +1137,10 @@ package feathers.core
 
 		/**
 		 * @copy feathers.core.IFocusDisplayObject#previousTabFocus
+		 *
+		 * <p>The implementation of this property is provided for convenience,
+		 * but it cannot be used unless a subclass implements the
+		 * <code>IFocusDisplayObject</code> interface.</p>
 		 *
 		 * @default null
 		 */
@@ -1135,6 +1178,10 @@ package feathers.core
 		 * component or its sub-components. This skin will not affect the
 		 * dimensions of the component or its hit area. It is simply a visual
 		 * indicator of focus.</p>
+		 *
+		 * <p>The implementation of this property is provided for convenience,
+		 * but it cannot be used unless a subclass implements the
+		 * <code>IFocusDisplayObject</code> interface.</p>
 		 *
 		 * <p>In the following example, the focus indicator skin is set:</p>
 		 *
@@ -1182,6 +1229,10 @@ package feathers.core
 		 * <code>focusPaddingTop</code>, but the other focus padding values may
 		 * be different.
 		 *
+		 * <p>The implementation of this property is provided for convenience,
+		 * but it cannot be used unless a subclass implements the
+		 * <code>IFocusDisplayObject</code> interface.</p>
+		 *
 		 * <p>The following example gives the button 2 pixels of focus padding
 		 * on all sides:</p>
 		 *
@@ -1221,6 +1272,10 @@ package feathers.core
 		 * top edge of the focus indicator skin. A negative value may be used
 		 * to expand the focus indicator skin outside the bounds of the object.
 		 *
+		 * <p>The implementation of this property is provided for convenience,
+		 * but it cannot be used unless a subclass implements the
+		 * <code>IFocusDisplayObject</code> interface.</p>
+		 *
 		 * <p>The following example gives the focus indicator skin -2 pixels of
 		 * padding on the top edge only:</p>
 		 *
@@ -1256,6 +1311,10 @@ package feathers.core
 		 * The minimum space, in pixels, between the object's right edge and the
 		 * right edge of the focus indicator skin. A negative value may be used
 		 * to expand the focus indicator skin outside the bounds of the object.
+		 *
+		 * <p>The implementation of this property is provided for convenience,
+		 * but it cannot be used unless a subclass implements the
+		 * <code>IFocusDisplayObject</code> interface.</p>
 		 *
 		 * <p>The following example gives the focus indicator skin -2 pixels of
 		 * padding on the right edge only:</p>
@@ -1293,6 +1352,10 @@ package feathers.core
 		 * bottom edge of the focus indicator skin. A negative value may be used
 		 * to expand the focus indicator skin outside the bounds of the object.
 		 *
+		 * <p>The implementation of this property is provided for convenience,
+		 * but it cannot be used unless a subclass implements the
+		 * <code>IFocusDisplayObject</code> interface.</p>
+		 *
 		 * <p>The following example gives the focus indicator skin -2 pixels of
 		 * padding on the bottom edge only:</p>
 		 *
@@ -1328,6 +1391,10 @@ package feathers.core
 		 * The minimum space, in pixels, between the object's left edge and the
 		 * left edge of the focus indicator skin. A negative value may be used
 		 * to expand the focus indicator skin outside the bounds of the object.
+		 *
+		 * <p>The implementation of this property is provided for convenience,
+		 * but it cannot be used unless a subclass implements the
+		 * <code>IFocusDisplayObject</code> interface.</p>
 		 *
 		 * <p>The following example gives the focus indicator skin -2 pixels of
 		 * padding on the right edge only:</p>
@@ -1705,6 +1772,10 @@ package feathers.core
 
 		/**
 		 * @copy feathers.core.IFocusDisplayObject#showFocus()
+		 *
+		 * <p>The implementation of this method is provided for convenience, but
+		 * it cannot be used unless a subclass implements the
+		 * <code>IFocusDisplayObject</code> interface.</p>
 		 */
 		public function showFocus():void
 		{
@@ -1719,6 +1790,10 @@ package feathers.core
 
 		/**
 		 * @copy feathers.core.IFocusDisplayObject#hideFocus()
+		 *
+		 * <p>The implementation of this method is provided for convenience, but
+		 * it cannot be used unless a subclass implements the
+		 * <code>IFocusDisplayObject</code> interface.</p>
 		 */
 		public function hideFocus():void
 		{

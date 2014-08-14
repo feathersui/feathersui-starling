@@ -271,7 +271,8 @@ package feathers.core
 				{
 					if(this._focus == targetWithFocus)
 					{
-						this.focus = null;
+						//change to focus owner, which falls back to null
+						this.focus = targetWithFocus.focusOwner;
 					}
 					targetWithFocus.focusManager = null;
 				}
@@ -597,7 +598,11 @@ package feathers.core
 
 			var newFocus:IFocusDisplayObject;
 			var currentFocus:IFocusDisplayObject = this._focus;
-			if(event.shiftKey)
+			if(currentFocus && currentFocus.focusOwner)
+			{
+				newFocus = currentFocus.focusOwner;
+			}
+			else if(event.shiftKey)
 			{
 				if(currentFocus)
 				{
