@@ -829,7 +829,7 @@ package feathers.themes
 			skinSelector.defaultSelectedValue = this.buttonSelectedSkinTextures;
 			skinSelector.setValueForState(this.buttonDownSkinTextures, Button.STATE_DOWN, false);
 			skinSelector.setValueForState(this.buttonDownSkinTextures, Button.STATE_DOWN, true);
-			skinSelector.setValueForState(this.buttonDisabledSkinTextures, Button.STATE_DISABLED, false);
+			skinSelector.setValueForState(null, Button.STATE_DISABLED, false);
 			skinSelector.setValueForState(this.buttonSelectedDisabledSkinTextures, Button.STATE_DISABLED, true);
 			skinSelector.displayObjectProperties =
 			{
