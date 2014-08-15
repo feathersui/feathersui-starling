@@ -90,6 +90,7 @@ package feathers.themes
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.Quad;
+	import starling.textures.SubTexture;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 
@@ -251,6 +252,21 @@ package feathers.themes
 			var quad:Quad = new Quad(100, 100, MODAL_OVERLAY_COLOR);
 			quad.alpha = MODAL_OVERLAY_ALPHA;
 			return quad;
+		}
+
+		/**
+		 * SmartDisplayObjectValueSelectors will use ImageLoader instead of
+		 * Image so that we can use extra features like pixel snapping.
+		 */
+		protected static function textureValueTypeHandler(value:Texture, oldDisplayObject:DisplayObject = null):DisplayObject
+		{
+			var displayObject:ImageLoader = oldDisplayObject as ImageLoader;
+			if(!displayObject)
+			{
+				displayObject = new ImageLoader();
+			}
+			displayObject.source = value;
+			return displayObject;
 		}
 
 		/**
@@ -497,6 +513,7 @@ package feathers.themes
 		protected var buttonForwardDownSkinTextures:Scale3Textures;
 		protected var buttonForwardDisabledSkinTextures:Scale3Textures;
 		protected var pickerListButtonIconTexture:Texture;
+		protected var pickerListButtonIconDisabledTexture:Texture;
 		protected var tabDownSkinTextures:Scale9Textures;
 		protected var tabSelectedSkinTextures:Scale9Textures;
 		protected var tabSelectedDisabledSkinTextures:Scale9Textures;
@@ -531,6 +548,7 @@ package feathers.themes
 		protected var verticalScrollBarThumbSkinTextures:Scale3Textures;
 		protected var horizontalScrollBarThumbSkinTextures:Scale3Textures;
 		protected var searchIconTexture:Texture;
+		protected var searchIconDisabledTexture:Texture;
 
 		/**
 		 * Disposes the atlas before calling super.dispose()
@@ -704,6 +722,7 @@ package feathers.themes
 			this.tabSelectedDisabledSkinTextures = new Scale9Textures(this.atlas.getTexture("tab-selected-disabled-skin"), TAB_SCALE9_GRID);
 
 			this.pickerListButtonIconTexture = this.atlas.getTexture("picker-list-icon");
+			this.pickerListButtonIconDisabledTexture = this.atlas.getTexture("picker-list-icon-disabled");
 			this.pickerListItemSelectedIconTexture = this.atlas.getTexture("picker-list-item-selected-icon");
 
 			this.radioUpIconTexture = backgroundSkinTexture;
@@ -724,6 +743,7 @@ package feathers.themes
 			this.pageIndicatorNormalSkinTexture = this.atlas.getTexture("page-indicator-normal-skin");
 
 			this.searchIconTexture = this.atlas.getTexture("search-icon");
+			this.searchIconDisabledTexture = this.atlas.getTexture("search-icon-disabled");
 
 			this.itemRendererUpSkinTextures = new Scale9Textures(this.atlas.getTexture("list-item-up-skin"), ITEM_RENDERER_SCALE9_GRID);
 			this.itemRendererSelectedSkinTextures = new Scale9Textures(this.atlas.getTexture("list-item-selected-skin"), ITEM_RENDERER_SCALE9_GRID);
@@ -1252,6 +1272,7 @@ package feathers.themes
 
 			renderer.horizontalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_LEFT;
 			renderer.contentLabelProperties.elementFormat = this.lightUIElementFormat;
+			renderer.contentLabelProperties.disabledElementFormat = this.lightUIDisabledElementFormat;
 			renderer.paddingTop = this.smallGutterSize;
 			renderer.paddingBottom = this.smallGutterSize;
 			renderer.paddingLeft = this.smallGutterSize + this.gutterSize;
@@ -1266,6 +1287,7 @@ package feathers.themes
 
 			renderer.horizontalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_CENTER;
 			renderer.contentLabelProperties.elementFormat = this.lightElementFormat;
+			renderer.contentLabelProperties.disabledElementFormat = this.disabledElementFormat;
 			renderer.paddingTop = renderer.paddingBottom = this.smallGutterSize;
 			renderer.paddingLeft = this.smallGutterSize + this.gutterSize;
 			renderer.paddingRight = this.gutterSize;
@@ -1357,6 +1379,7 @@ package feathers.themes
 
 			renderer.horizontalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_LEFT;
 			renderer.contentLabelProperties.elementFormat = this.lightUIElementFormat;
+			renderer.contentLabelProperties.disabledElementFormat = this.lightUIDisabledElementFormat;
 			renderer.paddingTop = this.smallGutterSize;
 			renderer.paddingBottom = this.smallGutterSize;
 			renderer.paddingLeft = this.gutterSize + this.smallGutterSize;
@@ -1375,6 +1398,7 @@ package feathers.themes
 
 			renderer.horizontalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_CENTER;
 			renderer.contentLabelProperties.elementFormat = this.lightElementFormat;
+			renderer.contentLabelProperties.disabledElementFormat = this.disabledElementFormat;
 			renderer.paddingTop = this.smallGutterSize;
 			renderer.paddingBottom = this.smallGutterSize;
 			renderer.paddingLeft = this.gutterSize + this.smallGutterSize;
@@ -1630,11 +1654,16 @@ package feathers.themes
 		{
 			this.setButtonStyles(button);
 
-			var defaultIcon:ImageLoader = new ImageLoader();
-			defaultIcon.source = this.pickerListButtonIconTexture;
-			defaultIcon.textureScale = this.scale;
-			defaultIcon.snapToPixels = true;
-			button.defaultIcon = defaultIcon;
+			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			iconSelector.setValueTypeHandler(SubTexture, textureValueTypeHandler);
+			iconSelector.defaultValue = this.pickerListButtonIconTexture;
+			iconSelector.setValueForState(this.pickerListButtonIconDisabledTexture, Button.STATE_DISABLED, false);
+			iconSelector.displayObjectProperties =
+			{
+				textureScale: this.scale,
+				snapToPixels: true
+			}
+			button.stateToIconFunction = iconSelector.updateValue;
 
 			button.gap = Number.POSITIVE_INFINITY;
 			button.minGap = this.gutterSize;
@@ -1960,7 +1989,7 @@ package feathers.themes
 
 			tab.defaultLabelProperties.elementFormat = this.lightUIElementFormat;
 			tab.defaultSelectedLabelProperties.elementFormat = this.darkUIElementFormat;
-			tab.disabledLabelProperties.elementFormat = this.darkUIDisabledElementFormat;
+			tab.disabledLabelProperties.elementFormat = this.lightUIDisabledElementFormat;
 			tab.selectedDisabledLabelProperties.elementFormat = this.darkUIDisabledElementFormat;
 
 			tab.paddingTop = this.smallGutterSize;
@@ -2042,10 +2071,16 @@ package feathers.themes
 		{
 			this.setBaseTextInputStyles(input);
 
-			var searchIcon:ImageLoader = new ImageLoader();
-			searchIcon.source = this.searchIconTexture;
-			searchIcon.snapToPixels = true;
-			input.defaultIcon = searchIcon;
+			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			iconSelector.setValueTypeHandler(SubTexture, textureValueTypeHandler);
+			iconSelector.defaultValue = this.searchIconTexture;
+			iconSelector.setValueForState(this.searchIconDisabledTexture, Button.STATE_DISABLED, false);
+			iconSelector.displayObjectProperties =
+			{
+				textureScale: this.scale,
+				snapToPixels: true
+			}
+			input.stateToIconFunction = iconSelector.updateValue;
 		}
 
 	//-------------------------
@@ -2058,6 +2093,7 @@ package feathers.themes
 
 			toggle.defaultLabelProperties.elementFormat = this.lightUIElementFormat;
 			toggle.onLabelProperties.elementFormat = this.selectedUIElementFormat;
+			toggle.disabledLabelProperties.elementFormat = this.lightUIDisabledElementFormat;
 		}
 
 		//see Shared section for thumb styles
