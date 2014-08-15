@@ -203,6 +203,19 @@ package feathers.core
 		/**
 		 * @private
 		 */
+		public function toString():String
+		{
+			var result:String = "[object PropertyProxy";
+			for(var propertyName:String in this)
+			{
+				result += " " + propertyName;
+			}
+			return result + "]"
+		}
+
+		/**
+		 * @private
+		 */
 		private function fireOnChangeCallback(forName:String):void
 		{
 			var callbackCount:int = this._onChangeCallbacks.length;
