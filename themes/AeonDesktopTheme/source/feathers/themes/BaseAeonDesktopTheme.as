@@ -457,6 +457,7 @@ package feathers.themes
 		protected var textInputBackgroundSkinTextures:Scale9Textures;
 		protected var textInputBackgroundDisabledSkinTextures:Scale9Textures;
 		protected var textInputSearchIconTexture:Texture;
+		protected var textInputSearchIconDisabledTexture:Texture;
 
 		protected var vScrollBarThumbUpSkinTextures:Scale9Textures;
 		protected var vScrollBarThumbHoverSkinTextures:Scale9Textures;
@@ -666,6 +667,7 @@ package feathers.themes
 			this.textInputBackgroundSkinTextures = new Scale9Textures(this.atlas.getTexture("text-input-background-skin"), TEXT_INPUT_SCALE_9_GRID);
 			this.textInputBackgroundDisabledSkinTextures = new Scale9Textures(this.atlas.getTexture("text-input-background-disabled-skin"), TEXT_INPUT_SCALE_9_GRID);
 			this.textInputSearchIconTexture = this.atlas.getTexture("search-icon");
+			this.textInputSearchIconDisabledTexture = this.atlas.getTexture("search-icon-disabled");
 
 			this.vScrollBarThumbUpSkinTextures = new Scale9Textures(this.atlas.getTexture("vertical-scroll-bar-thumb-up-skin"), VERTICAL_SCROLL_BAR_THUMB_SCALE_9_GRID);
 			this.vScrollBarThumbHoverSkinTextures = new Scale9Textures(this.atlas.getTexture("vertical-scroll-bar-thumb-hover-skin"), VERTICAL_SCROLL_BAR_THUMB_SCALE_9_GRID);
@@ -1873,11 +1875,16 @@ package feathers.themes
 		{
 			this.setBaseTextInputStyles(input);
 
-			var searchIcon:ImageLoader = new ImageLoader();
-			searchIcon.source = this.textInputSearchIconTexture;
-			searchIcon.snapToPixels = true;
-			searchIcon.textureScale = this.scale;
-			input.defaultIcon = searchIcon;
+			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			iconSelector.setValueTypeHandler(SubTexture, textureValueTypeHandler);
+			iconSelector.defaultValue = this.textInputSearchIconTexture;
+			iconSelector.setValueForState(this.textInputSearchIconDisabledTexture, TextInput.STATE_DISABLED, false);
+			iconSelector.displayObjectProperties =
+			{
+				snapToPixels: true,
+				textureScale: this.scale
+			};
+			input.stateToIconFunction = iconSelector.updateValue;
 		}
 
 	//-------------------------
