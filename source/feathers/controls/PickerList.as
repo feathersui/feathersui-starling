@@ -1233,7 +1233,7 @@ package feathers.controls
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
-			if(buttonFactoryInvalid || sizeInvalid || selectionInvalid)
+			if(buttonFactoryInvalid || stylesInvalid || sizeInvalid || selectionInvalid)
 			{
 				this.layout();
 			}
