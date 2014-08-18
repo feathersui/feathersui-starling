@@ -25,6 +25,7 @@ package feathers.controls
 
 	import starling.core.Starling;
 	import starling.events.Event;
+	import starling.events.EventDispatcher;
 	import starling.events.KeyboardEvent;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -536,7 +537,19 @@ package feathers.controls
 			{
 				return;
 			}
+			if(this._popUpContentManager is EventDispatcher)
+			{
+				var dispatcher:EventDispatcher = EventDispatcher(this._popUpContentManager);
+				dispatcher.removeEventListener(Event.OPEN, popUpContentManager_openHandler);
+				dispatcher.removeEventListener(Event.CLOSE, popUpContentManager_closeHandler);
+			}
 			this._popUpContentManager = value;
+			if(this._popUpContentManager is EventDispatcher)
+			{
+				dispatcher = EventDispatcher(this._popUpContentManager);
+				dispatcher.addEventListener(Event.OPEN, popUpContentManager_openHandler);
+				dispatcher.addEventListener(Event.CLOSE, popUpContentManager_closeHandler);
+			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
@@ -970,9 +983,16 @@ package feathers.controls
 				return;
 			}
 			this._toggleButtonOnOpenAndClose = value;
-			if(!this._toggleButtonOnOpenAndClose && this.button is IToggle)
+			if(this.button is IToggle)
 			{
-				IToggle(this.button).isSelected = false;
+				if(this._toggleButtonOnOpenAndClose && this._popUpContentManager.isOpen)
+				{
+					IToggle(this.button).isSelected = true;
+				}
+				else
+				{
+					IToggle(this.button).isSelected = false;
+				}
 			}
 		}
 
@@ -1348,6 +1368,11 @@ package feathers.controls
 			var factory:Function = this._buttonFactory != null ? this._buttonFactory : defaultButtonFactory;
 			var buttonName:String = this._customButtonName != null ? this._customButtonName : this.buttonName;
 			this.button = Button(factory());
+			if(this.button is ToggleButton)
+			{
+				//we'll control the value of isSelected manually
+				ToggleButton(this.button).isToggle = false;
+			}
 			this.button.styleNameList.add(buttonName);
 			this.button.addEventListener(TouchEvent.TOUCH, button_touchHandler);
 			this.button.addEventListener(Event.TRIGGERED, button_triggeredHandler);
@@ -1383,7 +1408,6 @@ package feathers.controls
 			this.list.addEventListener(Event.CHANGE, list_changeHandler);
 			this.list.addEventListener(FeathersEventType.RENDERER_ADD, list_rendererAddHandler);
 			this.list.addEventListener(FeathersEventType.RENDERER_REMOVE, list_rendererRemoveHandler);
-			this.list.addEventListener(Event.ADDED_TO_STAGE, list_addedToStageHandler);
 			this.list.addEventListener(Event.REMOVED_FROM_STAGE, list_removedFromStageHandler);
 		}
 		
@@ -1563,13 +1587,23 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function list_addedToStageHandler(event:Event):void
+		protected function popUpContentManager_openHandler(event:Event):void
 		{
-			if(!this._toggleButtonOnOpenAndClose || !(this.button is IToggle))
+			if(this._toggleButtonOnOpenAndClose && this.button is IToggle)
 			{
-				return;
+				IToggle(this.button).isSelected = true;
 			}
-			IToggle(this.button).isSelected = true;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function popUpContentManager_closeHandler(event:Event):void
+		{
+			if(this._toggleButtonOnOpenAndClose && this.button is IToggle)
+			{
+				IToggle(this.button).isSelected = false;
+			}
 		}
 
 		/**
@@ -1582,11 +1616,6 @@ package feathers.controls
 				this.list.stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
 				this.list.removeEventListener(FeathersEventType.FOCUS_OUT, list_focusOutHandler);
 			}
-			if(!this._toggleButtonOnOpenAndClose || !(this.button is IToggle))
-			{
-				return;
-			}
-			IToggle(this.button).isSelected = false;
 		}
 
 		/**
