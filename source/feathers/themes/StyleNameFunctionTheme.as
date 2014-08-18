@@ -9,6 +9,7 @@ package feathers.themes
 {
 	import feathers.skins.IStyleProvider;
 	import feathers.skins.StyleNameFunctionStyleProvider;
+	import feathers.skins.StyleProviderRegistry;
 
 	import flash.errors.IllegalOperationError;
 
@@ -25,40 +26,28 @@ package feathers.themes
 	public class StyleNameFunctionTheme extends EventDispatcher
 	{
 		/**
-		 * @private
-		 */
-		protected static const GLOBAL_STYLE_PROVIDER_PROPERTY_NAME:String = "globalStyleProvider";
-
-		/**
 		 * Constructor.
 		 */
 		public function StyleNameFunctionTheme()
 		{
+			this._registry = new StyleProviderRegistry();
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _classToStyleProvider:Dictionary = new Dictionary(true);
+		protected var _registry:StyleProviderRegistry;
 
 		/**
 		 * Disposes the theme.
 		 */
 		public function dispose():void
 		{
-			//clear the global style providers, but only if they still match the
-			//ones that the theme created. a developer could replace the global
-			//style providers with different ones.
-			for(var untypedType:Object in this._classToStyleProvider)
+			if(this._registry)
 			{
-				var type:Class = Class(untypedType);
-				var styleProvider:IStyleProvider = IStyleProvider(this._classToStyleProvider[type]);
-				if(type[GLOBAL_STYLE_PROVIDER_PROPERTY_NAME] === styleProvider)
-				{
-					type[GLOBAL_STYLE_PROVIDER_PROPERTY_NAME] = null;
-				}
+				this._registry.dispose();
+				this._registry = null;
 			}
-			this._classToStyleProvider = null;
 		}
 
 		/**
@@ -67,18 +56,7 @@ package feathers.themes
 		 */
 		protected function getStyleProviderForClass(type:Class):StyleNameFunctionStyleProvider
 		{
-			if(!Object(type).hasOwnProperty(GLOBAL_STYLE_PROVIDER_PROPERTY_NAME))
-			{
-				throw ArgumentError("Class " + type + " must have a " + GLOBAL_STYLE_PROVIDER_PROPERTY_NAME + " static property to support themes.");
-			}
-			var styleProvider:StyleNameFunctionStyleProvider = StyleNameFunctionStyleProvider(this._classToStyleProvider[type]);
-			if(!styleProvider)
-			{
-				styleProvider = new StyleNameFunctionStyleProvider();
-				this._classToStyleProvider[type] = styleProvider;
-				type[GLOBAL_STYLE_PROVIDER_PROPERTY_NAME] = styleProvider;
-			}
-			return styleProvider;
+			return StyleNameFunctionStyleProvider(this._registry.getStyleProvider(type));
 		}
 	}
 }
