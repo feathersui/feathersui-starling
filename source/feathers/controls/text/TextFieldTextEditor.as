@@ -1242,6 +1242,7 @@ package feathers.controls.text
 		{
 			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 
 			if(sizeInvalid)
 			{
@@ -1253,7 +1254,7 @@ package feathers.controls.text
 
 			this.checkIfNewSnapshotIsNeeded();
 
-			if(!this._textFieldHasFocus && (stylesInvalid || dataInvalid || this._needsNewTexture))
+			if(!this._textFieldHasFocus && (stylesInvalid || dataInvalid || stateInvalid || this._needsNewTexture))
 			{
 				//we need to wait a frame for the flash.text.TextField to render
 				//properly. sometimes two, and this is a known issue.
