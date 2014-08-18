@@ -18,6 +18,11 @@ package feathers.controls.popups
 	/**
 	 * @inheritDoc
 	 */
+	[Event(name="open",type="starling.events.Event")]
+
+	/**
+	 * @inheritDoc
+	 */
 	[Event(name="close",type="starling.events.Event")]
 
 	/**
@@ -118,6 +123,7 @@ package feathers.controls.popups
 			this.content = content;
 			this.callout = Callout.show(content, source, this.direction, this.isModal, this.calloutFactory);
 			this.callout.addEventListener(Event.CLOSE, callout_closeHandler);
+			this.dispatchEventWith(Event.OPEN);
 		}
 
 		/**

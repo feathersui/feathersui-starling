@@ -33,6 +33,11 @@ package feathers.controls.popups
 	/**
 	 * @inheritDoc
 	 */
+	[Event(name="open",type="starling.events.Event")]
+
+	/**
+	 * @inheritDoc
+	 */
 	[Event(name="close",type="starling.events.Event")]
 
 	/**
@@ -112,6 +117,7 @@ package feathers.controls.popups
 			//display list have a chance to cancel the event first.
 			var priority:int = -getDisplayObjectDepthFromStage(this.content);
 			Starling.current.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler, false, priority, true);
+			this.dispatchEventWith(Event.OPEN);
 		}
 
 		/**
