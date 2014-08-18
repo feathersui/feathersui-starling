@@ -1764,7 +1764,7 @@ package feathers.themes
 			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			iconSelector.setValueTypeHandler(SubTexture, textureValueTypeHandler);
 			iconSelector.defaultValue = this.searchIconTexture;
-			iconSelector.setValueForState(this.searchIconDisabledTexture, Button.STATE_DISABLED, false);
+			iconSelector.setValueForState(this.searchIconDisabledTexture, TextInput.STATE_DISABLED, false);
 			iconSelector.displayObjectProperties =
 			{
 				textureScale: this.scale,
