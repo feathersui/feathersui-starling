@@ -2273,7 +2273,7 @@ package feathers.controls
 		protected function layoutThumb():void
 		{
 			var range:Number = this._maximum - this._minimum;
-			this.thumb.visible = range > 0;
+			this.thumb.visible = range > 0 && this._isEnabled;
 			if(!this.thumb.visible)
 			{
 				return;
