@@ -54,6 +54,7 @@ package feathers.themes
 	import feathers.controls.TabBar;
 	import feathers.controls.TextArea;
 	import feathers.controls.TextInput;
+	import feathers.controls.ToggleButton;
 	import feathers.controls.ToggleSwitch;
 	import feathers.controls.popups.DropDownPopUpContentManager;
 	import feathers.controls.renderers.BaseDefaultItemRenderer;
@@ -932,7 +933,7 @@ package feathers.themes
 			skinSelector.defaultSelectedValue = this.buttonSelectedUpSkinTextures;
 			skinSelector.setValueForState(this.buttonHoverSkinTextures, Button.STATE_HOVER, false);
 			skinSelector.setValueForState(this.buttonDownSkinTextures, Button.STATE_DOWN, false);
-			skinSelector.setValueForState(this.buttonDisabledSkinTextures, Button.STATE_DISABLED, false);
+			skinSelector.setValueForState(this.buttonDisabledSkinTextures, null, false);
 			skinSelector.setValueForState(this.buttonSelectedHoverSkinTextures, Button.STATE_HOVER, true);
 			skinSelector.setValueForState(this.buttonSelectedDownSkinTextures, Button.STATE_DOWN, true);
 			skinSelector.setValueForState(this.buttonSelectedDisabledSkinTextures, Button.STATE_DISABLED, true);
@@ -1004,6 +1005,7 @@ package feathers.themes
 
 			check.defaultLabelProperties.textFormat = this.defaultTextFormat;
 			check.disabledLabelProperties.textFormat = this.disabledTextFormat;
+			check.selectedDisabledLabelProperties.textFormat = this.disabledTextFormat;
 
 			check.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			check.verticalAlign = Button.VERTICAL_ALIGN_MIDDLE;
@@ -1050,6 +1052,7 @@ package feathers.themes
 			renderer.backgroundSkin.height = this.controlSize;
 
 			renderer.contentLabelProperties.textFormat = this.defaultTextFormat;
+			renderer.contentLabelProperties.disabledTextFormat = this.disabledTextFormat;
 
 			renderer.paddingTop = this.extraSmallGutterSize;
 			renderer.paddingBottom = this.extraSmallGutterSize;
@@ -1081,6 +1084,7 @@ package feathers.themes
 		protected function setInsetGroupedListHeaderOrFooterRendererStyles(renderer:DefaultGroupedListHeaderOrFooterRenderer):void
 		{
 			renderer.contentLabelProperties.textFormat = this.defaultTextFormat;
+			renderer.contentLabelProperties.disabledTextFormat = this.disabledTextFormat;
 
 			renderer.paddingTop = this.smallGutterSize;
 			renderer.paddingBottom = this.extraSmallGutterSize;
@@ -1408,6 +1412,7 @@ package feathers.themes
 
 			radio.defaultLabelProperties.textFormat = this.defaultTextFormat;
 			radio.disabledLabelProperties.textFormat = this.disabledTextFormat;
+			radio.selectedDisabledLabelProperties.textFormat = this.disabledTextFormat;
 
 			radio.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			radio.verticalAlign = Button.VERTICAL_ALIGN_MIDDLE;
@@ -1769,7 +1774,7 @@ package feathers.themes
 			tabBar.verticalAlign = TabBar.VERTICAL_ALIGN_JUSTIFY;
 		}
 
-		protected function setTabStyles(tab:Button):void
+		protected function setTabStyles(tab:ToggleButton):void
 		{
 			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = this.tabUpSkinTextures;
@@ -1786,6 +1791,7 @@ package feathers.themes
 
 			tab.defaultLabelProperties.textFormat = this.defaultTextFormat;
 			tab.disabledLabelProperties.textFormat = this.disabledTextFormat;
+			tab.selectedDisabledLabelProperties.textFormat = this.disabledTextFormat;
 
 			tab.paddingTop = this.extraSmallGutterSize;
 			tab.paddingBottom = this.extraSmallGutterSize;
