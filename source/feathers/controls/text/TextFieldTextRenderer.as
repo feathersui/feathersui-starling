@@ -1236,6 +1236,7 @@ package feathers.controls.text
 		{
 			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
+			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 
 			var scaleFactor:Number = Starling.contentScaleFactor;
 			var gutterDimensionsOffset:Number = 4;
@@ -1315,7 +1316,7 @@ package feathers.controls.text
 			//instead of checking sizeInvalid, which will often be triggered by
 			//changing maxWidth or something for measurement, we check against
 			//the previous actualWidth/Height used for the snapshot.
-			if(stylesInvalid || dataInvalid || this._needsNewTexture ||
+			if(stylesInvalid || dataInvalid || stateInvalid || this._needsNewTexture ||
 				this.actualWidth != this._previousActualWidth ||
 				this.actualHeight != this._previousActualHeight)
 			{
