@@ -5,11 +5,14 @@ package feathers.examples.drawersExplorer.views
 	import feathers.controls.ScrollContainer;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
+	import feathers.skins.IStyleProvider;
 
 	import starling.events.Event;
 
 	public class ContentView extends ScrollContainer
 	{
+		public static var globalStyleProvider:IStyleProvider;
+
 		public static const TOGGLE_TOP_DRAWER:String = "toggleTopDrawer";
 		public static const TOGGLE_RIGHT_DRAWER:String = "toggleRightDrawer";
 		public static const TOGGLE_BOTTOM_DRAWER:String = "toggleBottomDrawer";
@@ -24,6 +27,11 @@ package feathers.examples.drawersExplorer.views
 		private var _rightButton:Button;
 		private var _bottomButton:Button;
 		private var _leftButton:Button;
+
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return ContentView.globalStyleProvider;
+		}
 
 		override protected function initialize():void
 		{
