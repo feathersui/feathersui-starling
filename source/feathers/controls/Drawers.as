@@ -2082,8 +2082,8 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = this.explicitWidth != this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight != this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
+			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -2576,7 +2576,7 @@ package feathers.controls
 			this._leftDrawer.visible = true;
 			var targetPosition:Number = this._isLeftDrawerOpen ? this._leftDrawer.width : 0;
 			var duration:Number = this.pendingToggleDuration;
-			if(duration != duration) //isNaN
+			if(duration !== duration) //isNaN
 			{
 				duration = this._openOrCloseDuration;
 			}

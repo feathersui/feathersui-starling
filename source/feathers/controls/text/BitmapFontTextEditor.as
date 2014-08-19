@@ -726,7 +726,7 @@ package feathers.controls.text
 				var font:BitmapFont = this.currentTextFormat.font;
 				var customSize:Number = this.currentTextFormat.size;
 				var scale:Number = customSize / font.size;
-				if(scale != scale) //isNaN
+				if(scale !== scale) //isNaN
 				{
 					scale = 1;
 				}
@@ -794,7 +794,7 @@ package feathers.controls.text
 			var customLetterSpacing:Number = this.currentTextFormat.letterSpacing;
 			var isKerningEnabled:Boolean = this.currentTextFormat.isKerningEnabled;
 			var scale:Number = customSize / font.size;
-			if(scale != scale) //isNaN
+			if(scale !== scale) //isNaN
 			{
 				scale = 1;
 			}
@@ -802,7 +802,7 @@ package feathers.controls.text
 			if(align != TextFormatAlign.LEFT)
 			{
 				var lineWidth:Number = this.measureText(HELPER_POINT).x;
-				var hasExplicitWidth:Boolean = this.explicitWidth == this.explicitWidth; //!isNaN
+				var hasExplicitWidth:Boolean = this.explicitWidth === this.explicitWidth; //!isNaN
 				var maxLineWidth:Number = hasExplicitWidth ? this.explicitWidth : this._maxWidth;
 				if(maxLineWidth > lineWidth)
 				{
@@ -829,7 +829,7 @@ package feathers.controls.text
 				}
 				var currentKerning:Number = 0;
 				if(isKerningEnabled &&
-					previousCharID == previousCharID) //!isNaN
+					previousCharID === previousCharID) //!isNaN
 				{
 					currentKerning = charData.getKerning(previousCharID) * scale;
 				}
@@ -862,7 +862,7 @@ package feathers.controls.text
 			var customLetterSpacing:Number = this.currentTextFormat.letterSpacing;
 			var isKerningEnabled:Boolean = this.currentTextFormat.isKerningEnabled;
 			var scale:Number = customSize / font.size;
-			if(scale != scale) //isNaN
+			if(scale !== scale) //isNaN
 			{
 				scale = 1;
 			}
@@ -871,7 +871,7 @@ package feathers.controls.text
 			if(align != TextFormatAlign.LEFT)
 			{
 				var lineWidth:Number = this.measureText(HELPER_POINT).x;
-				var hasExplicitWidth:Boolean = this.explicitWidth == this.explicitWidth; //!isNaN
+				var hasExplicitWidth:Boolean = this.explicitWidth === this.explicitWidth; //!isNaN
 				var maxLineWidth:Number = hasExplicitWidth ? this.explicitWidth : this._maxWidth;
 				if(maxLineWidth > lineWidth)
 				{
@@ -902,7 +902,7 @@ package feathers.controls.text
 				}
 				var currentKerning:Number = 0;
 				if(isKerningEnabled &&
-					previousCharID == previousCharID) //!isNaN
+					previousCharID === previousCharID) //!isNaN
 				{
 					currentKerning = charData.getKerning(previousCharID) * scale;
 				}
@@ -955,7 +955,7 @@ package feathers.controls.text
 			var font:BitmapFont = this.currentTextFormat.font;
 			var customSize:Number = this.currentTextFormat.size;
 			var scale:Number = customSize / font.size;
-			if(scale != scale) //isNaN
+			if(scale !== scale) //isNaN
 			{
 				scale = 1;
 			}

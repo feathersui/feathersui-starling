@@ -604,7 +604,7 @@ package feathers.controls
 		 */
 		public function get originalSourceWidth():Number
 		{
-			if(this._currentTextureWidth == this._currentTextureWidth) //!isNaN
+			if(this._currentTextureWidth === this._currentTextureWidth) //!isNaN
 			{
 				return this._currentTextureWidth;
 			}
@@ -619,7 +619,7 @@ package feathers.controls
 		 */
 		public function get originalSourceHeight():Number
 		{
-			if(this._currentTextureHeight == this._currentTextureHeight) //!isNaN
+			if(this._currentTextureHeight === this._currentTextureHeight) //!isNaN
 			{
 				return this._currentTextureHeight;
 			}
@@ -1037,8 +1037,8 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = this.explicitWidth != this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight != this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
+			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -1047,7 +1047,7 @@ package feathers.controls
 			var newWidth:Number = this.explicitWidth;
 			if(needsWidth)
 			{
-				if(this._currentTextureWidth == this._currentTextureWidth) //!isNaN
+				if(this._currentTextureWidth === this._currentTextureWidth) //!isNaN
 				{
 					newWidth = this._currentTextureWidth * this._textureScale;
 					if(this._maintainAspectRatio && !needsHeight)
@@ -1066,7 +1066,7 @@ package feathers.controls
 			var newHeight:Number = this.explicitHeight;
 			if(needsHeight)
 			{
-				if(this._currentTextureHeight == this._currentTextureHeight) //!isNaN
+				if(this._currentTextureHeight === this._currentTextureHeight) //!isNaN
 				{
 					newHeight = this._currentTextureHeight * this._textureScale;
 					if(this._maintainAspectRatio && !needsWidth)

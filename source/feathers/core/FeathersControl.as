@@ -571,8 +571,8 @@ package feathers.core
 			{
 				return;
 			}
-			var valueIsNaN:Boolean = value != value; //isNaN
-			if(valueIsNaN && this.explicitWidth != this.explicitWidth)
+			var valueIsNaN:Boolean = value !== value; //isNaN
+			if(valueIsNaN && this.explicitWidth !== this.explicitWidth)
 			{
 				return;
 			}
@@ -655,8 +655,8 @@ package feathers.core
 			{
 				return;
 			}
-			var valueIsNaN:Boolean = value != value; //isNaN
-			if(valueIsNaN && this.explicitHeight != this.explicitHeight)
+			var valueIsNaN:Boolean = value !== value; //isNaN
+			if(valueIsNaN && this.explicitHeight !== this.explicitHeight)
 			{
 				return;
 			}
@@ -776,7 +776,7 @@ package feathers.core
 			{
 				return;
 			}
-			if(value != value) //isNaN
+			if(value !== value) //isNaN
 			{
 				throw new ArgumentError("minWidth cannot be NaN");
 			}
@@ -818,7 +818,7 @@ package feathers.core
 			{
 				return;
 			}
-			if(value != value) //isNaN
+			if(value !== value) //isNaN
 			{
 				throw new ArgumentError("minHeight cannot be NaN");
 			}
@@ -860,7 +860,7 @@ package feathers.core
 			{
 				return;
 			}
-			if(value != value) //isNaN
+			if(value !== value) //isNaN
 			{
 				throw new ArgumentError("maxWidth cannot be NaN");
 			}
@@ -902,7 +902,7 @@ package feathers.core
 			{
 				return;
 			}
-			if(value != value) //isNaN
+			if(value !== value) //isNaN
 			{
 				throw new ArgumentError("maxHeight cannot be NaN");
 			}
@@ -1814,7 +1814,7 @@ package feathers.core
 		 */
 		protected function setSizeInternal(width:Number, height:Number, canInvalidate:Boolean):Boolean
 		{
-			if(this.explicitWidth == this.explicitWidth) //!isNaN
+			if(this.explicitWidth === this.explicitWidth) //!isNaN
 			{
 				width = this.explicitWidth;
 			}
@@ -1829,7 +1829,7 @@ package feathers.core
 					width = this._maxWidth;
 				}
 			}
-			if(this.explicitHeight == this.explicitHeight) //!isNaN
+			if(this.explicitHeight === this.explicitHeight) //!isNaN
 			{
 				height = this.explicitHeight;
 			}
@@ -1844,11 +1844,11 @@ package feathers.core
 					height = this._maxHeight;
 				}
 			}
-			if(width != width) //isNaN
+			if(width !== width) //isNaN
 			{
 				throw new ArgumentError(ILLEGAL_WIDTH_ERROR);
 			}
-			if(height != height) //isNaN
+			if(height !== height) //isNaN
 			{
 				throw new ArgumentError(ILLEGAL_HEIGHT_ERROR);
 			}
@@ -1982,7 +1982,7 @@ package feathers.core
 				this._hitArea.width = this.actualWidth;
 			}
 			var hitAreaX:Number = (this.actualWidth - this._hitArea.width) / 2;
-			if(hitAreaX != hitAreaX) //isNaN
+			if(hitAreaX !== hitAreaX) //isNaN
 			{
 				this._hitArea.x = 0;
 			}
@@ -2006,7 +2006,7 @@ package feathers.core
 				this._hitArea.height = this.actualHeight;
 			}
 			var hitAreaY:Number = (this.actualHeight - this._hitArea.height) / 2;
-			if(hitAreaY != hitAreaY) //isNaN
+			if(hitAreaY !== hitAreaY) //isNaN
 			{
 				this._hitArea.y = 0;
 			}

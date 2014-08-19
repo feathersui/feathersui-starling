@@ -36,7 +36,7 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
-			if(value != value) //isNaN
+			if(value !== value) //isNaN
 			{
 				throw new ArgumentError("minVisibleWidth cannot be NaN");
 			}
@@ -57,7 +57,7 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
-			if(value != value) //isNaN
+			if(value !== value) //isNaN
 			{
 				throw new ArgumentError("maxVisibleWidth cannot be NaN");
 			}
@@ -71,7 +71,7 @@ package feathers.controls.supportClasses
 
 		public function get visibleWidth():Number
 		{
-			if(this._explicitVisibleWidth != this._explicitVisibleWidth) //isNaN
+			if(this._explicitVisibleWidth !== this._explicitVisibleWidth) //isNaN
 			{
 				return this._actualVisibleWidth;
 			}
@@ -81,7 +81,7 @@ package feathers.controls.supportClasses
 		public function set visibleWidth(value:Number):void
 		{
 			if(this._explicitVisibleWidth == value ||
-				(value != value && this._explicitVisibleWidth != this._explicitVisibleWidth)) //isNaN
+				(value !== value && this._explicitVisibleWidth !== this._explicitVisibleWidth)) //isNaN
 			{
 				return;
 			}
@@ -102,7 +102,7 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
-			if(value != value) //isNaN
+			if(value !== value) //isNaN
 			{
 				throw new ArgumentError("minVisibleHeight cannot be NaN");
 			}
@@ -123,7 +123,7 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
-			if(value != value) //isNaN
+			if(value !== value) //isNaN
 			{
 				throw new ArgumentError("maxVisibleHeight cannot be NaN");
 			}
@@ -137,7 +137,7 @@ package feathers.controls.supportClasses
 
 		public function get visibleHeight():Number
 		{
-			if(this._explicitVisibleHeight != this._explicitVisibleHeight) //isNaN
+			if(this._explicitVisibleHeight !== this._explicitVisibleHeight) //isNaN
 			{
 				return this._actualVisibleHeight;
 			}
@@ -147,7 +147,7 @@ package feathers.controls.supportClasses
 		public function set visibleHeight(value:Number):void
 		{
 			if(this._explicitVisibleHeight == value ||
-				(value != value && this._explicitVisibleHeight != this._explicitVisibleHeight)) //isNaN
+				(value !== value && this._explicitVisibleHeight !== this._explicitVisibleHeight)) //isNaN
 			{
 				return;
 			}
@@ -267,13 +267,13 @@ package feathers.controls.supportClasses
 			var minY:Number = 0;
 			var explicitViewPortWidth:Number = this.viewPortBounds.explicitWidth;
 			var maxX:Number = explicitViewPortWidth;
-			if(maxX != maxX) //isNaN
+			if(maxX !== maxX) //isNaN
 			{
 				maxX = 0;
 			}
 			var explicitViewPortHeight:Number = this.viewPortBounds.explicitHeight;
 			var maxY:Number = explicitViewPortHeight;
-			if(maxY != maxY) //isNaN
+			if(maxY !== maxY) //isNaN
 			{
 				maxY = 0;
 			}
@@ -290,22 +290,22 @@ package feathers.controls.supportClasses
 				var itemY:Number = item.y;
 				var itemMaxX:Number = itemX + item.width;
 				var itemMaxY:Number = itemY + item.height;
-				if(itemX == itemX && //!isNaN
+				if(itemX === itemX && //!isNaN
 					itemX < minX)
 				{
 					minX = itemX;
 				}
-				if(itemY == itemY && //!isNaN
+				if(itemY === itemY && //!isNaN
 					itemY < minY)
 				{
 					minY = itemY;
 				}
-				if(itemMaxX == itemMaxX && //!isNaN
+				if(itemMaxX === itemMaxX && //!isNaN
 					itemMaxX > maxX)
 				{
 					maxX = itemMaxX;
 				}
-				if(itemMaxY == itemMaxY && //!isNaN
+				if(itemMaxY === itemMaxY && //!isNaN
 					itemMaxY > maxY)
 				{
 					maxY = itemMaxY;
@@ -336,7 +336,7 @@ package feathers.controls.supportClasses
 				calculatedHeight = maxHeight;
 			}
 			this._ignoreChildChanges = false;
-			if(explicitViewPortWidth != explicitViewPortWidth) //isNaN
+			if(explicitViewPortWidth !== explicitViewPortWidth) //isNaN
 			{
 				this._actualVisibleWidth = calculatedWidth;
 			}
@@ -344,7 +344,7 @@ package feathers.controls.supportClasses
 			{
 				this._actualVisibleWidth = explicitViewPortWidth;
 			}
-			if(explicitViewPortHeight != explicitViewPortHeight) //isNaN
+			if(explicitViewPortHeight !== explicitViewPortHeight) //isNaN
 			{
 				this._actualVisibleHeight = calculatedHeight;
 			}

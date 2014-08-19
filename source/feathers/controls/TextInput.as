@@ -1829,8 +1829,8 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = this.explicitWidth != this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight != this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
+			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -1865,7 +1865,7 @@ package feathers.controls
 			if(needsWidth)
 			{
 				newWidth = Math.max(this._originalSkinWidth, typicalTextWidth + this._paddingLeft + this._paddingRight);
-				if(newWidth != newWidth) //isNaN
+				if(newWidth !== newWidth) //isNaN
 				{
 					newWidth = 0;
 				}
@@ -1873,7 +1873,7 @@ package feathers.controls
 			if(needsHeight)
 			{
 				newHeight = Math.max(this._originalSkinHeight, typicalTextHeight + this._paddingTop + this._paddingBottom);
-				if(newHeight != newHeight) //isNaN
+				if(newHeight !== newHeight) //isNaN
 				{
 					newHeight = 0;
 				}
@@ -2034,8 +2034,8 @@ package feathers.controls
 				}
 			}
 			if(this.currentBackground &&
-				(this._originalSkinWidth != this._originalSkinWidth || //isNaN
-					this._originalSkinHeight != this._originalSkinHeight)) //isNaN
+				(this._originalSkinWidth !== this._originalSkinWidth || //isNaN
+					this._originalSkinHeight !== this._originalSkinHeight)) //isNaN
 			{
 				if(this.currentBackground is IValidating)
 				{

@@ -1919,8 +1919,8 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			if(this.minimumTrackOriginalWidth != this.minimumTrackOriginalWidth || //isNaN
-				this.minimumTrackOriginalHeight != this.minimumTrackOriginalHeight) //isNaN
+			if(this.minimumTrackOriginalWidth !== this.minimumTrackOriginalWidth || //isNaN
+				this.minimumTrackOriginalHeight !== this.minimumTrackOriginalHeight) //isNaN
 			{
 				this.minimumTrack.validate();
 				this.minimumTrackOriginalWidth = this.minimumTrack.width;
@@ -1928,16 +1928,16 @@ package feathers.controls
 			}
 			if(this.maximumTrack)
 			{
-				if(this.maximumTrackOriginalWidth != this.maximumTrackOriginalWidth || //isNaN
-					this.maximumTrackOriginalHeight != this.maximumTrackOriginalHeight) //isNaN
+				if(this.maximumTrackOriginalWidth !== this.maximumTrackOriginalWidth || //isNaN
+					this.maximumTrackOriginalHeight !== this.maximumTrackOriginalHeight) //isNaN
 				{
 					this.maximumTrack.validate();
 					this.maximumTrackOriginalWidth = this.maximumTrack.width;
 					this.maximumTrackOriginalHeight = this.maximumTrack.height;
 				}
 			}
-			if(this.thumbOriginalWidth != this.thumbOriginalWidth || //isNaN
-				this.thumbOriginalHeight != this.thumbOriginalHeight) //isNaN
+			if(this.thumbOriginalWidth !== this.thumbOriginalWidth || //isNaN
+				this.thumbOriginalHeight !== this.thumbOriginalHeight) //isNaN
 			{
 				this.thumb.validate();
 				this.thumbOriginalWidth = this.thumb.width;
@@ -1946,8 +1946,8 @@ package feathers.controls
 			this.decrementButton.validate();
 			this.incrementButton.validate();
 
-			var needsWidth:Boolean = this.explicitWidth != this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight != this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
+			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;

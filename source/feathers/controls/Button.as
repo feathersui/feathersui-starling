@@ -2062,8 +2062,8 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = this.explicitWidth != this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight != this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
+			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -2106,7 +2106,7 @@ package feathers.controls
 					newWidth = HELPER_POINT.x;
 				}
 				newWidth += this._paddingLeft + this._paddingRight;
-				if(newWidth != newWidth) //isNaN
+				if(newWidth !== newWidth) //isNaN
 				{
 					newWidth = this._originalSkinWidth;
 					if(newWidth != newWidth)
@@ -2114,7 +2114,7 @@ package feathers.controls
 						newWidth = 0;
 					}
 				}
-				else if(this._originalSkinWidth == this._originalSkinWidth) //!isNaN
+				else if(this._originalSkinWidth === this._originalSkinWidth) //!isNaN
 				{
 					if(this._originalSkinWidth > newWidth)
 					{
@@ -2159,7 +2159,7 @@ package feathers.controls
 						newHeight = 0;
 					}
 				}
-				else if(this._originalSkinHeight == this._originalSkinHeight) //!isNaN
+				else if(this._originalSkinHeight === this._originalSkinHeight) //!isNaN
 				{
 					if(this._originalSkinHeight > newHeight)
 					{
@@ -2240,8 +2240,8 @@ package feathers.controls
 				}
 			}
 			if(this.currentSkin &&
-				(this._originalSkinWidth != this._originalSkinWidth || //isNaN
-				this._originalSkinHeight != this._originalSkinHeight))
+				(this._originalSkinWidth !== this._originalSkinWidth || //isNaN
+				this._originalSkinHeight !== this._originalSkinHeight))
 			{
 				if(this.currentSkin is IValidating)
 				{
@@ -2398,7 +2398,7 @@ package feathers.controls
 			if(forMeasurement)
 			{
 				calculatedWidth = this.explicitWidth;
-				if(calculatedWidth != calculatedWidth) //isNaN
+				if(calculatedWidth !== calculatedWidth) //isNaN
 				{
 					calculatedWidth = this._maxWidth;
 				}

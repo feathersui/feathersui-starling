@@ -976,11 +976,11 @@ package feathers.controls
 				if(this.currentBackgroundSkin)
 				{
 					this.addChildAt(this.currentBackgroundSkin, 0);
-					if(this.originalBackgroundWidth != this.originalBackgroundWidth) //isNaN
+					if(this.originalBackgroundWidth !== this.originalBackgroundWidth) //isNaN
 					{
 						this.originalBackgroundWidth = this.currentBackgroundSkin.width;
 					}
-					if(this.originalBackgroundHeight != this.originalBackgroundHeight) //isNaN
+					if(this.originalBackgroundHeight !== this.originalBackgroundHeight) //isNaN
 					{
 						this.originalBackgroundHeight = this.currentBackgroundSkin.height;
 					}

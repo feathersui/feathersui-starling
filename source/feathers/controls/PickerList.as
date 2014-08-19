@@ -1203,11 +1203,11 @@ package feathers.controls
 				//explicit dimensions aren't set.
 				//set this before buttonProperties is used because it might
 				//contain width or height changes.
-				if(this.explicitWidth != this.explicitWidth) //isNaN
+				if(this.explicitWidth !== this.explicitWidth) //isNaN
 				{
 					this.button.width = NaN;
 				}
-				if(this.explicitHeight != this.explicitHeight) //isNaN
+				if(this.explicitHeight !== this.explicitHeight) //isNaN
 				{
 					this.button.height = NaN;
 				}
@@ -1279,8 +1279,8 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = this.explicitWidth != this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight != this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
+			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -1290,8 +1290,8 @@ package feathers.controls
 			var buttonHeight:Number;
 			if(this._typicalItem)
 			{
-				if(this._typicalItemWidth != this._typicalItemWidth || //isNaN
-					this._typicalItemHeight != this._typicalItemHeight) //isNaN
+				if(this._typicalItemWidth !== this._typicalItemWidth || //isNaN
+					this._typicalItemHeight !== this._typicalItemHeight) //isNaN
 				{
 					var oldWidth:Number = this.button.width;
 					var oldHeight:Number = this.button.height;
@@ -1322,7 +1322,7 @@ package feathers.controls
 			var newHeight:Number = this.explicitHeight;
 			if(needsWidth)
 			{
-				if(buttonWidth == buttonWidth) //!isNaN
+				if(buttonWidth === buttonWidth) //!isNaN
 				{
 					newWidth = buttonWidth;
 				}
@@ -1333,7 +1333,7 @@ package feathers.controls
 			}
 			if(needsHeight)
 			{
-				if(buttonHeight == buttonHeight) //!isNaN
+				if(buttonHeight === buttonHeight) //!isNaN
 				{
 					newHeight = buttonHeight;
 				}

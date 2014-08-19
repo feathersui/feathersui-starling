@@ -55,12 +55,12 @@ package feathers.system
 		public static function isTablet(stage:Stage):Boolean
 		{
 			var screenWidth:Number = screenPixelWidth;
-			if(screenWidth != screenWidth) //isNaN
+			if(screenWidth !== screenWidth) //isNaN
 			{
 				screenWidth = stage.fullScreenWidth;
 			}
 			var screenHeight:Number = screenPixelHeight;
-			if(screenHeight != screenHeight) //isNaN
+			if(screenHeight !== screenHeight) //isNaN
 			{
 				screenHeight = stage.fullScreenHeight;
 			}
@@ -88,7 +88,7 @@ package feathers.system
 		public static function screenInchesX(stage:Stage):Number
 		{
 			var screenWidth:Number = screenPixelWidth;
-			if(screenWidth != screenWidth) //isNaN
+			if(screenWidth !== screenWidth) //isNaN
 			{
 				screenWidth = stage.fullScreenWidth;
 			}
@@ -102,7 +102,7 @@ package feathers.system
 		public static function screenInchesY(stage:Stage):Number
 		{
 			var screenHeight:Number = screenPixelHeight;
-			if(screenHeight != screenHeight) //isNaN
+			if(screenHeight !== screenHeight) //isNaN
 			{
 				screenHeight = stage.fullScreenHeight;
 			}
