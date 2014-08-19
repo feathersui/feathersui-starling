@@ -1942,7 +1942,12 @@ package feathers.controls
 		 */
 		public function toggleTopDrawer(duration:Number = NaN):void
 		{
-			if(!this._topDrawer || this.isToggleTopDrawerPending || this.isTopDrawerDocked)
+			if(!this._topDrawer || this.isTopDrawerDocked)
+			{
+				return;
+			}
+			this.pendingToggleDuration = duration;
+			if(this.isToggleTopDrawerPending)
 			{
 				return;
 			}
@@ -1950,7 +1955,6 @@ package feathers.controls
 			this.isToggleRightDrawerPending = false;
 			this.isToggleBottomDrawerPending = false;
 			this.isToggleLeftDrawerPending = false;
-			this.pendingToggleDuration = duration;
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
 
@@ -1970,7 +1974,12 @@ package feathers.controls
 		 */
 		public function toggleRightDrawer(duration:Number = NaN):void
 		{
-			if(!this._rightDrawer || this.isToggleRightDrawerPending || this.isRightDrawerDocked)
+			if(!this._rightDrawer || this.isRightDrawerDocked)
+			{
+				return;
+			}
+			this.pendingToggleDuration = duration;
+			if(this.isToggleRightDrawerPending)
 			{
 				return;
 			}
@@ -1978,7 +1987,6 @@ package feathers.controls
 			this.isToggleRightDrawerPending = true;
 			this.isToggleBottomDrawerPending = false;
 			this.isToggleLeftDrawerPending = false;
-			this.pendingToggleDuration = duration;
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
 
@@ -1998,7 +2006,12 @@ package feathers.controls
 		 */
 		public function toggleBottomDrawer(duration:Number = NaN):void
 		{
-			if(!this._bottomDrawer || this.isToggleBottomDrawerPending || this.isBottomDrawerDocked)
+			if(!this._bottomDrawer || this.isBottomDrawerDocked)
+			{
+				return;
+			}
+			this.pendingToggleDuration = duration;
+			if(this.isToggleBottomDrawerPending)
 			{
 				return;
 			}
@@ -2006,7 +2019,6 @@ package feathers.controls
 			this.isToggleRightDrawerPending = false;
 			this.isToggleBottomDrawerPending = true;
 			this.isToggleLeftDrawerPending = false;
-			this.pendingToggleDuration = duration;
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
 
@@ -2026,7 +2038,12 @@ package feathers.controls
 		 */
 		public function toggleLeftDrawer(duration:Number = NaN):void
 		{
-			if(!this._leftDrawer || this.isToggleLeftDrawerPending || this.isLeftDrawerDocked)
+			if(!this._leftDrawer || this.isLeftDrawerDocked)
+			{
+				return;
+			}
+			this.pendingToggleDuration = duration;
+			if(this.isToggleLeftDrawerPending)
 			{
 				return;
 			}
@@ -2034,7 +2051,6 @@ package feathers.controls
 			this.isToggleRightDrawerPending = false;
 			this.isToggleBottomDrawerPending = false;
 			this.isToggleLeftDrawerPending = true;
-			this.pendingToggleDuration = duration;
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
 
@@ -2448,7 +2464,13 @@ package feathers.controls
 			}
 			this._topDrawer.visible = true;
 			var targetPosition:Number = this._isTopDrawerOpen ? this._topDrawer.height : 0;
-			this._openOrCloseTween = new Tween(this._content, this._openOrCloseDuration, this._openOrCloseEase);
+			var duration:Number = this.pendingToggleDuration;
+			if(duration !== duration) //isNaN
+			{
+				duration = this._openOrCloseDuration;
+			}
+			this.pendingToggleDuration = NaN;
+			this._openOrCloseTween = new Tween(this._content, duration, this._openOrCloseEase);
 			this._openOrCloseTween.animate("y", targetPosition);
 			this._openOrCloseTween.onUpdate = topDrawerOpenOrCloseTween_onUpdate;
 			this._openOrCloseTween.onComplete = topDrawerOpenOrCloseTween_onComplete;
@@ -2493,7 +2515,13 @@ package feathers.controls
 			{
 				targetPosition += this._leftDrawer.width;
 			}
-			this._openOrCloseTween = new Tween(this._content, this._openOrCloseDuration, this._openOrCloseEase);
+			var duration:Number = this.pendingToggleDuration;
+			if(duration !== duration) //isNaN
+			{
+				duration = this._openOrCloseDuration;
+			}
+			this.pendingToggleDuration = NaN;
+			this._openOrCloseTween = new Tween(this._content, duration, this._openOrCloseEase);
 			this._openOrCloseTween.animate("x", targetPosition);
 			this._openOrCloseTween.onUpdate = rightDrawerOpenOrCloseTween_onUpdate;
 			this._openOrCloseTween.onComplete = rightDrawerOpenOrCloseTween_onComplete;
@@ -2538,7 +2566,13 @@ package feathers.controls
 			{
 				targetPosition += this._topDrawer.height;
 			}
-			this._openOrCloseTween = new Tween(this._content, this._openOrCloseDuration, this._openOrCloseEase);
+			var duration:Number = this.pendingToggleDuration;
+			if(duration !== duration) //isNaN
+			{
+				duration = this._openOrCloseDuration;
+			}
+			this.pendingToggleDuration = NaN;
+			this._openOrCloseTween = new Tween(this._content, duration, this._openOrCloseEase);
 			this._openOrCloseTween.animate("y", targetPosition);
 			this._openOrCloseTween.onUpdate = bottomDrawerOpenOrCloseTween_onUpdate;
 			this._openOrCloseTween.onComplete = bottomDrawerOpenOrCloseTween_onComplete;
@@ -2580,6 +2614,7 @@ package feathers.controls
 			{
 				duration = this._openOrCloseDuration;
 			}
+			this.pendingToggleDuration = NaN;
 			this._openOrCloseTween = new Tween(this._content, duration, this._openOrCloseEase);
 			this._openOrCloseTween.animate("x", targetPosition);
 			this._openOrCloseTween.onUpdate = leftDrawerOpenOrCloseTween_onUpdate;
