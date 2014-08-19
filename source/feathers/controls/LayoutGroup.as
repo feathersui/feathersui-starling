@@ -586,8 +586,8 @@ package feathers.controls
 			}
 			if(this.currentBackgroundSkin)
 			{
-				if(this.originalBackgroundWidth != this.originalBackgroundWidth ||
-					this.originalBackgroundHeight != this.originalBackgroundHeight) //isNaN
+				if(this.originalBackgroundWidth !== this.originalBackgroundWidth ||
+					this.originalBackgroundHeight !== this.originalBackgroundHeight) //isNaN
 				{
 					if(this.currentBackgroundSkin is IValidating)
 					{
@@ -623,12 +623,12 @@ package feathers.controls
 		protected function handleManualLayout():void
 		{
 			var maxX:Number = this.viewPortBounds.explicitWidth;
-			if(maxX != maxX) //isNaN
+			if(maxX !== maxX) //isNaN
 			{
 				maxX = 0;
 			}
 			var maxY:Number = this.viewPortBounds.explicitHeight;
-			if(maxY != maxY) //isNaN
+			if(maxY !== maxY) //isNaN
 			{
 				maxY = 0;
 			}
@@ -647,12 +647,12 @@ package feathers.controls
 				}
 				var itemMaxX:Number = item.x + item.width;
 				var itemMaxY:Number = item.y + item.height;
-				if(itemMaxX == itemMaxX && //!isNaN
+				if(itemMaxX === itemMaxX && //!isNaN
 					itemMaxX > maxX)
 				{
 					maxX = itemMaxX;
 				}
-				if(itemMaxY == itemMaxY && //!isNaN
+				if(itemMaxY === itemMaxY && //!isNaN
 					itemMaxY > maxY)
 				{
 					maxY = itemMaxY;

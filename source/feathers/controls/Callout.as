@@ -1717,8 +1717,8 @@ package feathers.controls
 			{
 				result = new Point();
 			}
-			var needsWidth:Boolean = this.explicitWidth != this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight != this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
+			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				result.x = this.explicitWidth;
@@ -1736,7 +1736,7 @@ package feathers.controls
 			if(needsWidth)
 			{
 				newWidth = this._content.width + this._paddingLeft + this._paddingRight;
-				if(this._originalBackgroundWidth == this._originalBackgroundWidth) //!isNaN
+				if(this._originalBackgroundWidth === this._originalBackgroundWidth) //!isNaN
 				{
 					newWidth = Math.max(this._originalBackgroundWidth, newWidth);
 				}
@@ -1764,7 +1764,7 @@ package feathers.controls
 			if(needsHeight)
 			{
 				newHeight = this._content.height + this._paddingTop + this._paddingBottom;
-				if(this._originalBackgroundHeight == this._originalBackgroundHeight) //!isNaN
+				if(this._originalBackgroundHeight === this._originalBackgroundHeight) //!isNaN
 				{
 					newHeight = Math.max(this._originalBackgroundHeight, newHeight);
 				}

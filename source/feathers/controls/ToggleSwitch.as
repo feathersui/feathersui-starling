@@ -1842,8 +1842,8 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			if(this.onTrackSkinOriginalWidth != this.onTrackSkinOriginalWidth || //isNaN
-				this.onTrackSkinOriginalHeight != this.onTrackSkinOriginalHeight) //isNaN
+			if(this.onTrackSkinOriginalWidth !== this.onTrackSkinOriginalWidth || //isNaN
+				this.onTrackSkinOriginalHeight !== this.onTrackSkinOriginalHeight) //isNaN
 			{
 				this.onTrack.validate();
 				this.onTrackSkinOriginalWidth = this.onTrack.width;
@@ -1851,8 +1851,8 @@ package feathers.controls
 			}
 			if(this.offTrack)
 			{
-				if(this.offTrackSkinOriginalWidth != this.offTrackSkinOriginalWidth || //isNaN
-					this.offTrackSkinOriginalHeight != this.offTrackSkinOriginalHeight) //isNaN
+				if(this.offTrackSkinOriginalWidth !== this.offTrackSkinOriginalWidth || //isNaN
+					this.offTrackSkinOriginalHeight !== this.offTrackSkinOriginalHeight) //isNaN
 				{
 					this.offTrack.validate();
 					this.offTrackSkinOriginalWidth = this.offTrack.width;
@@ -1860,8 +1860,8 @@ package feathers.controls
 				}
 			}
 
-			var needsWidth:Boolean = this.explicitWidth != this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight != this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
+			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;

@@ -1286,8 +1286,8 @@ package feathers.controls
 		 */
 		protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = this.explicitWidth != this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight != this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
+			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -1306,7 +1306,7 @@ package feathers.controls
 				}
 				var itemWidth:Number = item.width;
 				if(needsWidth &&
-					itemWidth == itemWidth) //!isNaN
+					itemWidth === itemWidth) //!isNaN
 				{
 					totalItemWidth += itemWidth;
 					if(i > 0)
@@ -1316,7 +1316,7 @@ package feathers.controls
 				}
 				var itemHeight:Number = item.height;
 				if(needsHeight &&
-					itemHeight == itemHeight && //!isNaN
+					itemHeight === itemHeight && //!isNaN
 					itemHeight > newHeight)
 				{
 					newHeight = itemHeight;
@@ -1332,7 +1332,7 @@ package feathers.controls
 				}
 				itemWidth = item.width;
 				if(needsWidth &&
-					itemWidth == itemWidth) //!isNaN
+					itemWidth === itemWidth) //!isNaN
 				{
 					totalItemWidth += itemWidth;
 					if(i > 0)
@@ -1342,7 +1342,7 @@ package feathers.controls
 				}
 				itemHeight = item.height;
 				if(needsHeight &&
-					itemHeight == itemHeight && //!isNaN
+					itemHeight === itemHeight && //!isNaN
 					itemHeight > newHeight)
 				{
 					newHeight = itemHeight;
@@ -1358,7 +1358,7 @@ package feathers.controls
 				}
 				itemWidth = item.width
 				if(needsWidth &&
-					itemWidth == itemWidth) //!isNaN
+					itemWidth === itemWidth) //!isNaN
 				{
 					totalItemWidth += itemWidth;
 					if(i > 0)
@@ -1368,7 +1368,7 @@ package feathers.controls
 				}
 				itemHeight = item.height;
 				if(needsHeight &&
-					itemHeight == itemHeight && //!isNaN
+					itemHeight === itemHeight && //!isNaN
 					itemHeight > newHeight)
 				{
 					newHeight = itemHeight;
@@ -1379,7 +1379,7 @@ package feathers.controls
 			if(this._title && !(this._titleAlign == TITLE_ALIGN_CENTER && this._centerItems))
 			{
 				var calculatedTitleGap:Number = this._titleGap;
-				if(calculatedTitleGap != calculatedTitleGap) //isNaN
+				if(calculatedTitleGap !== calculatedTitleGap) //isNaN
 				{
 					calculatedTitleGap = this._gap;
 				}
@@ -1402,7 +1402,7 @@ package feathers.controls
 				var measuredTitleWidth:Number = HELPER_POINT.x;
 				var measuredTitleHeight:Number = HELPER_POINT.y;
 				if(needsWidth &&
-					measuredTitleWidth == measuredTitleWidth) //!isNaN
+					measuredTitleWidth === measuredTitleWidth) //!isNaN
 				{
 					newWidth += measuredTitleWidth;
 					if(leftItemCount > 0)
@@ -1415,7 +1415,7 @@ package feathers.controls
 					}
 				}
 				if(needsHeight &&
-					measuredTitleHeight == measuredTitleHeight && //!isNaN
+					measuredTitleHeight === measuredTitleHeight && //!isNaN
 					measuredTitleHeight > newHeight)
 				{
 					newHeight = measuredTitleHeight;
@@ -1436,13 +1436,13 @@ package feathers.controls
 				}
 			}
 			if(needsWidth &&
-				this.originalBackgroundWidth == this.originalBackgroundWidth && //!isNaN
+				this.originalBackgroundWidth === this.originalBackgroundWidth && //!isNaN
 				this.originalBackgroundWidth > newWidth)
 			{
 				newWidth = this.originalBackgroundWidth;
 			}
 			if(needsHeight &&
-				this.originalBackgroundHeight == this.originalBackgroundHeight && //!isNaN
+				this.originalBackgroundHeight === this.originalBackgroundHeight && //!isNaN
 				this.originalBackgroundHeight > newHeight)
 			{
 				newHeight = this.originalBackgroundHeight;
@@ -1500,11 +1500,11 @@ package feathers.controls
 			{
 				this.currentBackgroundSkin.visible = true;
 
-				if(this.originalBackgroundWidth != this.originalBackgroundWidth) //isNaN
+				if(this.originalBackgroundWidth !== this.originalBackgroundWidth) //isNaN
 				{
 					this.originalBackgroundWidth = this.currentBackgroundSkin.width;
 				}
-				if(this.originalBackgroundHeight != this.originalBackgroundHeight) //isNaN
+				if(this.originalBackgroundHeight !== this.originalBackgroundHeight) //isNaN
 				{
 					this.originalBackgroundHeight = this.currentBackgroundSkin.height;
 				}
@@ -1602,7 +1602,7 @@ package feathers.controls
 			this._layout.paddingLeft = this._paddingLeft;
 			this._layout.layout(this._leftItems, HELPER_BOUNDS, HELPER_LAYOUT_RESULT);
 			this.leftItemsWidth = HELPER_LAYOUT_RESULT.contentWidth;
-			if(this.leftItemsWidth != this.leftItemsWidth) //isNaN
+			if(this.leftItemsWidth !== this.leftItemsWidth) //isNaN
 			{
 				this.leftItemsWidth = 0;
 			}
@@ -1630,7 +1630,7 @@ package feathers.controls
 			this._layout.paddingLeft = 0;
 			this._layout.layout(this._rightItems, HELPER_BOUNDS, HELPER_LAYOUT_RESULT);
 			this.rightItemsWidth = HELPER_LAYOUT_RESULT.contentWidth;
-			if(this.rightItemsWidth != this.rightItemsWidth) //isNaN
+			if(this.rightItemsWidth !== this.rightItemsWidth) //isNaN
 			{
 				this.rightItemsWidth = 0;
 			}
@@ -1670,7 +1670,7 @@ package feathers.controls
 			}
 			this.titleTextRenderer.visible = true;
 			var calculatedTitleGap:Number = this._titleGap;
-			if(calculatedTitleGap != calculatedTitleGap) //isNaN
+			if(calculatedTitleGap !== calculatedTitleGap) //isNaN
 			{
 				calculatedTitleGap = this._gap;
 			}

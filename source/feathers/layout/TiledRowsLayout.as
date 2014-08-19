@@ -1019,12 +1019,12 @@ package feathers.layout
 			var availableHeight:Number = NaN;
 
 			var horizontalTileCount:int;
-			if(explicitWidth == explicitWidth) //!isNaN
+			if(explicitWidth === explicitWidth) //!isNaN
 			{
 				availableWidth = explicitWidth;
 				horizontalTileCount = (explicitWidth - this._paddingLeft - this._paddingRight + this._horizontalGap) / (tileWidth + this._horizontalGap);
 			}
-			else if(maxWidth == maxWidth && //!isNaN
+			else if(maxWidth === maxWidth && //!isNaN
 				maxWidth < Number.POSITIVE_INFINITY)
 			{
 				availableWidth = maxWidth;
@@ -1042,7 +1042,7 @@ package feathers.layout
 			}
 			else if(this._requestedColumnCount > 0)
 			{
-				if(availableWidth != availableWidth) //isNaN
+				if(availableWidth !== availableWidth) //isNaN
 				{
 					horizontalTileCount = this._requestedColumnCount;
 					availableWidth = horizontalTileCount * (tileWidth + this._horizontalGap) - this._horizontalGap - this._paddingLeft - this._paddingRight;
@@ -1053,12 +1053,12 @@ package feathers.layout
 				}
 			}
 			var verticalTileCount:int;
-			if(explicitHeight == explicitHeight) //!isNaN
+			if(explicitHeight === explicitHeight) //!isNaN
 			{
 				availableHeight = explicitHeight;
 				verticalTileCount = (explicitHeight - this._paddingTop - this._paddingBottom + this._verticalGap) / (tileHeight + this._verticalGap);
 			}
-			else if(maxHeight == maxHeight && //!isNaN
+			else if(maxHeight === maxHeight && //!isNaN
 				maxHeight < Number.POSITIVE_INFINITY)
 			{
 				availableHeight = maxHeight;
@@ -1077,7 +1077,7 @@ package feathers.layout
 			}
 			else if(this._requestedRowCount > 0)
 			{
-				if(availableHeight != availableHeight) //isNaN
+				if(availableHeight !== availableHeight) //isNaN
 				{
 					verticalTileCount = this._requestedRowCount;
 					availableHeight = verticalTileCount * (tileHeight + this._verticalGap) - this._verticalGap - this._paddingTop - this._paddingBottom;
@@ -1091,12 +1091,12 @@ package feathers.layout
 			var totalPageWidth:Number = horizontalTileCount * (tileWidth + this._horizontalGap) - this._horizontalGap + this._paddingLeft + this._paddingRight;
 			var totalPageHeight:Number = verticalTileCount * (tileHeight + this._verticalGap) - this._verticalGap + this._paddingTop + this._paddingBottom;
 			var availablePageWidth:Number = availableWidth;
-			if(availablePageWidth != availablePageWidth) //isNaN
+			if(availablePageWidth !== availablePageWidth) //isNaN
 			{
 				availablePageWidth = totalPageWidth;
 			}
 			var availablePageHeight:Number = availableHeight;
-			if(availablePageHeight != availablePageHeight) //isNaN
+			if(availablePageHeight !== availablePageHeight) //isNaN
 			{
 				availablePageHeight = totalPageHeight;
 			}
@@ -1232,13 +1232,13 @@ package feathers.layout
 			}
 
 			var totalWidth:Number = totalPageWidth;
-			if(availableWidth == availableWidth && //!isNaN
+			if(availableWidth === availableWidth && //!isNaN
 				this._paging == PAGING_HORIZONTAL)
 			{
 				totalWidth = Math.ceil(itemCount / perPage) * availableWidth;
 			}
 			var totalHeight:Number = positionY + tileHeight + this._paddingBottom;
-			if(availableHeight == availableHeight) //!isNaN
+			if(availableHeight === availableHeight) //!isNaN
 			{
 				if(this._paging == PAGING_HORIZONTAL)
 				{
@@ -1249,11 +1249,11 @@ package feathers.layout
 					totalHeight = Math.ceil(itemCount / perPage) * availableHeight;
 				}
 			}
-			if(availableWidth != availableWidth) //isNaN
+			if(availableWidth !== availableWidth) //isNaN
 			{
 				availableWidth = totalWidth;
 			}
-			if(availableHeight != availableHeight) //isNaN
+			if(availableHeight !== availableHeight) //isNaN
 			{
 				availableHeight = totalHeight;
 			}
@@ -1306,8 +1306,8 @@ package feathers.layout
 
 			var explicitWidth:Number = viewPortBounds ? viewPortBounds.explicitWidth : NaN;
 			var explicitHeight:Number = viewPortBounds ? viewPortBounds.explicitHeight : NaN;
-			var needsWidth:Boolean = explicitWidth != explicitWidth; //isNaN;
-			var needsHeight:Boolean = explicitHeight != explicitHeight; //isNaN
+			var needsWidth:Boolean = explicitWidth !== explicitWidth; //isNaN;
+			var needsHeight:Boolean = explicitHeight !== explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				result.x = explicitWidth;
@@ -1351,12 +1351,12 @@ package feathers.layout
 			var availableHeight:Number = NaN;
 
 			var horizontalTileCount:int;
-			if(explicitWidth == explicitWidth) //!isNaN
+			if(explicitWidth === explicitWidth) //!isNaN
 			{
 				availableWidth = explicitWidth;
 				horizontalTileCount = (explicitWidth - this._paddingLeft - this._paddingRight + this._horizontalGap) / (tileWidth + this._horizontalGap);
 			}
-			else if(maxWidth == maxWidth && //!isNaN
+			else if(maxWidth === maxWidth && //!isNaN
 				maxWidth < Number.POSITIVE_INFINITY)
 			{
 				availableWidth = maxWidth;
@@ -1372,7 +1372,7 @@ package feathers.layout
 			}
 			else if(this._requestedColumnCount > 0)
 			{
-				if(availableWidth != availableWidth) //isNaN
+				if(availableWidth !== availableWidth) //isNaN
 				{
 					horizontalTileCount = this._requestedColumnCount;
 					availableWidth = horizontalTileCount * (tileWidth + this._horizontalGap) - this._horizontalGap - this._paddingLeft - this._paddingRight;
@@ -1383,12 +1383,12 @@ package feathers.layout
 				}
 			}
 			var verticalTileCount:int;
-			if(explicitHeight == explicitHeight) //!isNaN
+			if(explicitHeight === explicitHeight) //!isNaN
 			{
 				availableHeight = explicitHeight;
 				verticalTileCount = (explicitHeight - this._paddingTop - this._paddingBottom + this._verticalGap) / (tileHeight + this._verticalGap);
 			}
-			else if(maxHeight == maxHeight && //!isNaN
+			else if(maxHeight === maxHeight && //!isNaN
 				maxHeight < Number.POSITIVE_INFINITY)
 			{
 				availableHeight = maxHeight;
@@ -1404,7 +1404,7 @@ package feathers.layout
 			}
 			else if(this._requestedRowCount > 0)
 			{
-				if(availableHeight != availableHeight) //isNaN
+				if(availableHeight !== availableHeight) //isNaN
 				{
 					verticalTileCount = this._requestedRowCount;
 					availableHeight = verticalTileCount * (tileHeight + this._verticalGap) - this._verticalGap - this._paddingTop - this._paddingBottom;
@@ -1454,13 +1454,13 @@ package feathers.layout
 			}
 
 			var totalWidth:Number = totalPageWidth;
-			if(availableWidth == availableWidth && //!isNaN
+			if(availableWidth === availableWidth && //!isNaN
 				this._paging == PAGING_HORIZONTAL)
 			{
 				totalWidth = Math.ceil(itemCount / perPage) * availableWidth;
 			}
 			var totalHeight:Number = positionY + tileHeight + this._paddingBottom;
-			if(availableHeight == availableHeight) //!isNaN
+			if(availableHeight === availableHeight) //!isNaN
 			{
 				if(this._paging == PAGING_HORIZONTAL)
 				{

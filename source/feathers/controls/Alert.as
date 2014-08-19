@@ -720,8 +720,8 @@ package feathers.controls
 		 */
 		override protected function autoSizeIfNeeded():Boolean
 		{
-			var needsWidth:Boolean = this.explicitWidth != this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight != this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
+			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				return false;
@@ -757,7 +757,7 @@ package feathers.controls
 				if(this._icon)
 				{
 					var iconWidth:Number = this._icon.width;
-					if(iconWidth == iconWidth) //!isNaN
+					if(iconWidth === iconWidth) //!isNaN
 					{
 						newWidth += this._icon.width + this._gap;
 					}
@@ -767,7 +767,7 @@ package feathers.controls
 				{
 					newWidth = Math.max(newWidth, this.footer.width);
 				}
-				if(this.originalBackgroundWidth == this.originalBackgroundWidth) //!isNaN
+				if(this.originalBackgroundWidth === this.originalBackgroundWidth) //!isNaN
 				{
 					newWidth = Math.max(newWidth, this.originalBackgroundWidth);
 				}
@@ -778,13 +778,13 @@ package feathers.controls
 				if(this._icon)
 				{
 					var iconHeight:Number = this._icon.height;
-					if(iconHeight == iconHeight) //!isNaN
+					if(iconHeight === iconHeight) //!isNaN
 					{
 						newHeight = Math.max(newHeight, this._icon.height);
 					}
 				}
 				newHeight += this._bottomViewPortOffset + this._topViewPortOffset
-				if(this.originalBackgroundHeight == this.originalBackgroundHeight) //!isNaN
+				if(this.originalBackgroundHeight === this.originalBackgroundHeight) //!isNaN
 				{
 					newHeight = Math.max(newHeight, this.originalBackgroundHeight);
 				}

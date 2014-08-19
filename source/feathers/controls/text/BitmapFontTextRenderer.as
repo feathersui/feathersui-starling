@@ -460,12 +460,12 @@ package feathers.controls.text
 			var font:BitmapFont = this._textFormat.font;
 			var formatSize:Number = this._textFormat.size;
 			var fontSizeScale:Number = formatSize / font.size;
-			if(fontSizeScale != fontSizeScale) //isNaN
+			if(fontSizeScale !== fontSizeScale) //isNaN
 			{
 				fontSizeScale = 1;
 			}
 			var baseline:Number = font.baseline;
-			if(baseline != baseline) //isNaN
+			if(baseline !== baseline) //isNaN
 			{
 				return font.lineHeight * fontSizeScale;
 			}
@@ -500,8 +500,8 @@ package feathers.controls.text
 				result = new Point();
 			}
 
-			var needsWidth:Boolean = this.explicitWidth != this.explicitWidth; //isNaN
-			var needsHeight:Boolean = this.explicitHeight != this.explicitHeight; //isNaN
+			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
+			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
 			if(!needsWidth && !needsHeight)
 			{
 				result.x = this.explicitWidth;
@@ -525,13 +525,13 @@ package feathers.controls.text
 			var customLetterSpacing:Number = this.currentTextFormat.letterSpacing;
 			var isKerningEnabled:Boolean = this.currentTextFormat.isKerningEnabled;
 			var scale:Number = customSize / font.size;
-			if(scale != scale) //isNaN
+			if(scale !== scale) //isNaN
 			{
 				scale = 1;
 			}
 			var lineHeight:Number = font.lineHeight * scale;
 			var maxLineWidth:Number = this.explicitWidth;
-			if(maxLineWidth != maxLineWidth) //isNaN
+			if(maxLineWidth !== maxLineWidth) //isNaN
 			{
 				maxLineWidth = this._maxWidth;
 			}
@@ -577,7 +577,7 @@ package feathers.controls.text
 				}
 
 				if(isKerningEnabled &&
-					previousCharID == previousCharID) //!isNaN
+					previousCharID === previousCharID) //!isNaN
 				{
 					currentX += charData.getKerning(previousCharID) * scale;
 				}
@@ -696,13 +696,13 @@ package feathers.controls.text
 			var customLetterSpacing:Number = this.currentTextFormat.letterSpacing;
 			var isKerningEnabled:Boolean = this.currentTextFormat.isKerningEnabled;
 			var scale:Number = customSize / font.size;
-			if(scale != scale) //isNaN
+			if(scale !== scale) //isNaN
 			{
 				scale = 1;
 			}
 			var lineHeight:Number = font.lineHeight * scale;
 
-			var hasExplicitWidth:Boolean = this.explicitWidth == this.explicitWidth; //!isNaN
+			var hasExplicitWidth:Boolean = this.explicitWidth === this.explicitWidth; //!isNaN
 			var isAligned:Boolean = this.currentTextFormat.align != TextFormatAlign.LEFT;
 			var maxLineWidth:Number = hasExplicitWidth ? this.explicitWidth : this._maxWidth;
 			if(isAligned && maxLineWidth == Number.POSITIVE_INFINITY)
@@ -767,7 +767,7 @@ package feathers.controls.text
 				}
 
 				if(isKerningEnabled &&
-					previousCharID == previousCharID) //!isNaN
+					previousCharID === previousCharID) //!isNaN
 				{
 					currentX += charData.getKerning(previousCharID) * scale;
 				}
@@ -1038,7 +1038,7 @@ package feathers.controls.text
 			var customLetterSpacing:Number = this.currentTextFormat.letterSpacing;
 			var isKerningEnabled:Boolean = this.currentTextFormat.isKerningEnabled;
 			var scale:Number = customSize / font.size;
-			if(scale != scale) //isNaN
+			if(scale !== scale) //isNaN
 			{
 				scale = 1;
 			}
@@ -1056,7 +1056,7 @@ package feathers.controls.text
 				}
 				var currentKerning:Number = 0;
 				if(isKerningEnabled &&
-					previousCharID == previousCharID) //!isNaN
+					previousCharID === previousCharID) //!isNaN
 				{
 					currentKerning = charData.getKerning(previousCharID) * scale;
 				}
@@ -1091,7 +1091,7 @@ package feathers.controls.text
 					}
 					currentKerning = 0;
 					if(isKerningEnabled &&
-						previousCharID == previousCharID) //!isNaN
+						previousCharID === previousCharID) //!isNaN
 					{
 						currentKerning = charData.getKerning(previousCharID) * scale;
 					}
@@ -1112,7 +1112,7 @@ package feathers.controls.text
 					}
 					currentKerning = 0;
 					if(isKerningEnabled &&
-						previousCharID == previousCharID) //!isNaN
+						previousCharID === previousCharID) //!isNaN
 					{
 						currentKerning = charData.getKerning(previousCharID) * scale;
 					}

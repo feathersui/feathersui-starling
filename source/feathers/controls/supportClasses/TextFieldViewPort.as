@@ -480,7 +480,7 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
-			if(value != value) //isNaN
+			if(value !== value) //isNaN
 			{
 				throw new ArgumentError("minVisibleWidth cannot be NaN");
 			}
@@ -501,7 +501,7 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
-			if(value != value) //isNaN
+			if(value !== value) //isNaN
 			{
 				throw new ArgumentError("maxVisibleWidth cannot be NaN");
 			}
@@ -515,7 +515,7 @@ package feathers.controls.supportClasses
 
 		public function get visibleWidth():Number
 		{
-			if(this._explicitVisibleWidth != this._explicitVisibleWidth) //isNaN
+			if(this._explicitVisibleWidth !== this._explicitVisibleWidth) //isNaN
 			{
 				return this._actualVisibleWidth;
 			}
@@ -525,7 +525,7 @@ package feathers.controls.supportClasses
 		public function set visibleWidth(value:Number):void
 		{
 			if(this._explicitVisibleWidth == value ||
-				(value != value && this._explicitVisibleWidth != this._explicitVisibleWidth)) //isNaN
+				(value !== value && this._explicitVisibleWidth !== this._explicitVisibleWidth)) //isNaN
 			{
 				return;
 			}
@@ -546,7 +546,7 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
-			if(value != value) //isNaN
+			if(value !== value) //isNaN
 			{
 				throw new ArgumentError("minVisibleHeight cannot be NaN");
 			}
@@ -567,7 +567,7 @@ package feathers.controls.supportClasses
 			{
 				return;
 			}
-			if(value != value) //isNaN
+			if(value !== value) //isNaN
 			{
 				throw new ArgumentError("maxVisibleHeight cannot be NaN");
 			}
@@ -581,7 +581,7 @@ package feathers.controls.supportClasses
 
 		public function get visibleHeight():Number
 		{
-			if(this._explicitVisibleHeight != this._explicitVisibleHeight) //isNaN
+			if(this._explicitVisibleHeight !== this._explicitVisibleHeight) //isNaN
 			{
 				return this._actualVisibleHeight;
 			}
@@ -591,7 +591,7 @@ package feathers.controls.supportClasses
 		public function set visibleHeight(value:Number):void
 		{
 			if(this._explicitVisibleHeight == value ||
-				(value != value && this._explicitVisibleHeight != this._explicitVisibleHeight)) //isNaN
+				(value !== value && this._explicitVisibleHeight !== this._explicitVisibleHeight)) //isNaN
 			{
 				return;
 			}
