@@ -174,6 +174,7 @@ package feathers.controls.text
 			super();
 			this._text = "";
 			this._textElement = new TextElement(this._text);
+			this._content = this._textElement;
 			this.isQuickHitAreaEnabled = true;
 			this.truncateToFit = false;
 			this.addEventListener(TouchEvent.TOUCH, textEditor_touchHandler);
