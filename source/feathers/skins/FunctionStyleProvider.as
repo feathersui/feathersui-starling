@@ -10,8 +10,20 @@ package feathers.skins
 	import feathers.core.IFeathersControl;
 
 	/**
-	 * Passes a Feathers UI component to a function when <code>applyStyles()</code>
-	 * is called to set skin and style properties.
+	 * Sets styles on a Feathers UI component by passing the component to a
+	 * function when the style provider's <code>applyStyles()</code> is called.
+	 *
+	 * <p>In the following example, a <code>FunctionStyleProvider</code> is
+	 * created:</p>
+	 * <listing version="3.0">
+	 * var button:Button = new Button();
+	 * button.label = "Click Me";
+	 * button.styleProvider = new FunctionStyleProvider( function( target:Button ):void
+	 * {
+	 *     target.defaultSkin = new Image( texture );
+	 *     // set other styles...
+	 * });
+	 * this.addChild( button );</listing>
 	 */
 	public class FunctionStyleProvider implements IStyleProvider
 	{
