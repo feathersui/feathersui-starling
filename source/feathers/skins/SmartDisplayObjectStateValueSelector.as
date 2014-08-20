@@ -40,13 +40,14 @@ package feathers.skins
 		 */
 		public static function textureValueTypeHandler(value:Texture, oldDisplayObject:DisplayObject = null):DisplayObject
 		{
-			var displayObject:Image = oldDisplayObject as Image;
-			if(displayObject)
+			var displayObject:Image;
+			if(oldDisplayObject && Object(oldDisplayObject).constructor === Image)
 			{
+				displayObject = Image(oldDisplayObject);
 				displayObject.texture = value;
 				displayObject.readjustSize();
 			}
-			else
+			if(!displayObject)
 			{
 				displayObject = new Image(value);
 			}
@@ -60,13 +61,14 @@ package feathers.skins
 		 */
 		public static function scale3TextureValueTypeHandler(value:Scale3Textures, oldDisplayObject:DisplayObject = null):DisplayObject
 		{
-			var displayObject:Scale3Image = oldDisplayObject as Scale3Image;
-			if(displayObject)
+			var displayObject:Scale3Image;
+			if(oldDisplayObject && Object(oldDisplayObject).constructor === Scale3Image)
 			{
+				displayObject = Scale3Image(oldDisplayObject);
 				displayObject.textures = value;
 				displayObject.readjustSize();
 			}
-			else
+			if(!displayObject)
 			{
 				displayObject = new Scale3Image(value);
 			}
@@ -80,13 +82,14 @@ package feathers.skins
 		 */
 		public static function scale9TextureValueTypeHandler(value:Scale9Textures, oldDisplayObject:DisplayObject = null):DisplayObject
 		{
-			var displayObject:Scale9Image = oldDisplayObject as Scale9Image;
-			if(displayObject)
+			var displayObject:Scale9Image;
+			if(oldDisplayObject && Object(oldDisplayObject).constructor === Scale9Image)
 			{
+				displayObject = Scale9Image(oldDisplayObject);
 				displayObject.textures = value;
 				displayObject.readjustSize();
 			}
-			else
+			if(!displayObject)
 			{
 				displayObject = new Scale9Image(value);
 			}
@@ -101,10 +104,14 @@ package feathers.skins
 		 */
 		public static function uintValueTypeHandler(value:uint, oldDisplayObject:DisplayObject = null):DisplayObject
 		{
-			var displayObject:Quad = oldDisplayObject as Quad;
+			var displayObject:Quad;
+			if(oldDisplayObject && Object(oldDisplayObject).constructor === Quad)
+			{
+				displayObject = Quad(oldDisplayObject);
+			}
 			if(!displayObject)
 			{
-				displayObject = new Quad(100, 100, value);
+				displayObject = new Quad(1, 1, value);
 			}
 			displayObject.color = value;
 			return displayObject;
