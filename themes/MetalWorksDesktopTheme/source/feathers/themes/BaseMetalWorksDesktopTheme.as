@@ -117,13 +117,10 @@ package feathers.themes
 		protected static const SELECTED_TEXT_COLOR:uint = 0xff9900;
 		protected static const DISABLED_TEXT_COLOR:uint = 0x8a8a8a;
 		protected static const DARK_DISABLED_TEXT_COLOR:uint = 0x383430;
-		protected static const LIST_BACKGROUND_COLOR:uint = 0x332f2b;
+		protected static const LIST_BACKGROUND_COLOR:uint = 0x36322e;
 		protected static const LIST_BACKGROUND_HOVER_COLOR:uint = 0xff7700;
-		protected static const LIST_BACKGROUND_SELECTED_COLOR:uint = 0xff9900;
-		protected static const TAB_BACKGROUND_COLOR:uint = 0x1a1816;
-		protected static const TAB_DISABLED_BACKGROUND_COLOR:uint = 0x292624;
-		protected static const GROUPED_LIST_HEADER_BACKGROUND_COLOR:uint = 0x242322;
-		protected static const GROUPED_LIST_FOOTER_BACKGROUND_COLOR:uint = 0x242322;
+		protected static const GROUPED_LIST_HEADER_BACKGROUND_COLOR:uint = 0x292523;
+		protected static const GROUPED_LIST_FOOTER_BACKGROUND_COLOR:uint = 0x292523;
 		protected static const SCROLL_BAR_TRACK_COLOR:uint = 0x1a1816;
 		protected static const SCROLL_BAR_TRACK_DOWN_COLOR:uint = 0xff7700;
 		protected static const TEXT_SELECTION_BACKGROUND_COLOR:uint = 0x574f46;
@@ -142,7 +139,6 @@ package feathers.themes
 		protected static const FORWARD_BUTTON_SCALE3_REGION1:Number = 3;
 		protected static const FORWARD_BUTTON_SCALE3_REGION2:Number = 1;
 		protected static const FOCUS_INDICATOR_SCALE_9_GRID:Rectangle = new Rectangle(5, 5, 1, 1);
-		protected static const ITEM_RENDERER_SCALE9_GRID:Rectangle = new Rectangle(13, 0, 2, 82);
 		protected static const TAB_SCALE9_GRID:Rectangle = new Rectangle(7, 7, 1, 11);
 		protected static const SCROLL_BAR_THUMB_REGION1:int = 5;
 		protected static const SCROLL_BAR_THUMB_REGION2:int = 14;
@@ -521,8 +517,7 @@ package feathers.themes
 		protected var checkSelectedDisabledIconTexture:Texture;
 		protected var pageIndicatorNormalSkinTexture:Texture;
 		protected var pageIndicatorSelectedSkinTexture:Texture;
-		protected var itemRendererUpSkinTextures:Scale9Textures;
-		protected var itemRendererSelectedSkinTextures:Scale9Textures;
+		protected var itemRendererSelectedSkinTexture:Texture;
 		protected var backgroundPopUpSkinTextures:Scale9Textures;
 		protected var calloutTopArrowSkinTexture:Texture;
 		protected var calloutRightArrowSkinTexture:Texture;
@@ -741,9 +736,8 @@ package feathers.themes
 			this.searchIconTexture = this.atlas.getTexture("search-icon");
 			this.searchIconDisabledTexture = this.atlas.getTexture("search-icon-disabled");
 
-/*			this.itemRendererUpSkinTextures = new Scale9Textures(this.atlas.getTexture("list-item-up-skin"), ITEM_RENDERER_SCALE9_GRID);
-			this.itemRendererSelectedSkinTextures = new Scale9Textures(this.atlas.getTexture("list-item-selected-skin"), ITEM_RENDERER_SCALE9_GRID);
-*/
+			this.itemRendererSelectedSkinTexture = this.atlas.getTexture("item-renderer-selected-background-skin");
+
 			this.headerBackgroundSkinTexture = this.atlas.getTexture("header-background-skin");
 			this.headerPopupBackgroundSkinTexture = this.atlas.getTexture("header-popup-background-skin");
 
@@ -1250,7 +1244,7 @@ package feathers.themes
 		{
 			this.setScrollerStyles(list);
 
-			list.padding = this.extraSmallGutterSize;
+			list.padding = this.borderSize;
 			list.backgroundSkin = new Scale9Image(this.listBackgroundSkinTextures, this.scale);
 			list.backgroundDisabledSkin = new Scale9Image(this.backgroundDisabledSkinTextures, this.scale);
 
@@ -1347,7 +1341,7 @@ package feathers.themes
 		{
 			this.setScrollerStyles(list);
 
-			list.padding = this.extraSmallGutterSize;
+			list.padding = this.borderSize;
 			list.backgroundSkin = new Scale9Image(this.listBackgroundSkinTextures, this.scale);
 			list.backgroundDisabledSkin = new Scale9Image(this.backgroundDisabledSkinTextures, this.scale);
 
@@ -1360,14 +1354,13 @@ package feathers.themes
 		{
 			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = LIST_BACKGROUND_COLOR;
-			skinSelector.defaultSelectedValue = LIST_BACKGROUND_SELECTED_COLOR;
+			skinSelector.defaultSelectedValue = this.itemRendererSelectedSkinTexture;
 			skinSelector.setValueForState(LIST_BACKGROUND_HOVER_COLOR, Button.STATE_HOVER, false);
-			skinSelector.setValueForState(LIST_BACKGROUND_SELECTED_COLOR, Button.STATE_DOWN, false);
+			skinSelector.setValueForState(this.itemRendererSelectedSkinTexture, Button.STATE_DOWN, false);
 			skinSelector.displayObjectProperties =
 			{
 				width: this.controlSize,
-				height: this.controlSize/*,
-				textureScale: this.scale*/
+				height: this.controlSize
 			};
 			renderer.stateToSkinFunction = skinSelector.updateValue;
 
@@ -1573,7 +1566,17 @@ package feathers.themes
 
 		protected function setPickerListButtonStyles(button:ToggleButton):void
 		{
-			this.setButtonStyles(button);
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.buttonUpSkinTextures;
+			skinSelector.setValueForState(this.buttonDownSkinTextures, Button.STATE_DOWN, false);
+			skinSelector.setValueForState(this.buttonDisabledSkinTextures, Button.STATE_DISABLED, false);
+			skinSelector.displayObjectProperties =
+			{
+				width: this.controlSize,
+				height: this.controlSize,
+				textureScale: this.scale
+			};
+			button.stateToSkinFunction = skinSelector.updateValue;
 
 			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			iconSelector.setValueTypeHandler(SubTexture, textureValueTypeHandler);
@@ -1588,9 +1591,13 @@ package feathers.themes
 			}
 			button.stateToIconFunction = iconSelector.updateValue;
 
+			this.setBaseButtonStyles(button);
+
 			button.gap = Number.POSITIVE_INFINITY; //fill as completely as possible
 			button.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			button.iconPosition = Button.ICON_POSITION_RIGHT;
+			button.minWidth = this.buttonMinWidth;
+			button.minHeight = this.controlSize;
 		}
 
 	//-------------------------
