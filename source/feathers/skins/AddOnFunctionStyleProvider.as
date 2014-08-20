@@ -10,17 +10,20 @@ package feathers.skins
 	import feathers.core.IFeathersControl;
 
 	/**
-	 * Wraps an existing style provider to calls an additional function after
+	 * Wraps an existing style provider to call an additional function after
 	 * the existing style provider applies its styles.
 	 *
 	 * <p>Expected usage is to replace a component's existing style provider:</p>
-	 *
 	 * <listing version="3.0">
+	 * var button:Button = new Button();
+	 * button.label = "Click Me";
 	 * function setExtraStyles( target:Button ):void
 	 * {
-	 *     button.defaultIcon = new Image( texture );
+	 *     target.defaultIcon = new Image( texture );
+	 *     // set other styles, if desired...
 	 * }
-	 * button.styleProvider = new AddOnFunctionStyleProvider( button.styleProvider, setExtraStyles );</listing>
+	 * button.styleProvider = new AddOnFunctionStyleProvider( button.styleProvider, setExtraStyles );
+	 * this.addChild( button );</listing>
 	 */
 	public class AddOnFunctionStyleProvider implements IStyleProvider
 	{

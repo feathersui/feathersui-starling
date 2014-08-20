@@ -12,6 +12,53 @@ package feathers.skins
 
 	import starling.display.DisplayObjectContainer;
 
+	/**
+	 * Similar to <code>FunctionStyleProvider</code>, sets styles on a Feathers
+	 * UI component by passing it to a function, but also provides a way to
+	 * define alternate functions that may be called based on the contents of
+	 * the component's <code>styleNameList</code>.
+	 *
+	 * <p>Alternate functions may be registered with the style provider by
+	 * calling <code>setFunctionForStyleName()</code> and passing in a style
+	 * name and a function. For each style name in the component's
+	 * <code>styleNameList</code>, the style provider will search its registered
+	 * style names to see if a function should be called. If none of a
+	 * component's style names have been registered with the style provider (or
+	 * if the component has no style names), then the default style function
+	 * will be called.</p>
+	 *
+	 * <p>If a component's <code>styleNameList</code> contains multiple values,
+	 * each of those values is eligible to trigger a call to a function
+	 * registered with the style provider. In other words, adding multiple
+	 * values to a component's <code>styleNameList</code> may be used to call
+	 * multiple functions.</p>
+	 *
+	 * <p>In the following example, a <code>StyleNameFunctionStyleProvider</code> is
+	 * created with a default style function (passed to the constructor) and
+	 * an alternate style function:</p>
+	 * <listing version="3.0">
+	 * var styleProvider:StyleNameFunctionStyleProvider = new StyleNameFunctionStyleProvider( function( target:Button ):void
+	 * {
+	 *     target.defaultSkin = new Image( defaultTexture );
+	 *     // set other styles...
+	 * });
+	 * styleProvider.setFunctionForStyleName( "alternate-button", function( target:Button ):void
+	 * {
+	 *     target.defaultSkin = new Image( alternateTexture );
+	 *     // set other styles...
+	 * });
+	 *
+	 * var button:Button = new Button();
+	 * button.label = "Click Me";
+	 * button.styleProvider = styleProvider;
+	 * this.addChild(button);
+	 *
+	 * var alternateButton:Button = new Button()
+	 * button.label = "No, click me!";
+	 * alternateButton.styleProvider = styleProvider;
+	 * alternateButton.styleNameList.add( "alternate-button" );
+	 * this.addChild( alternateButton );</listing>
+	 */
 	public class StyleNameFunctionStyleProvider implements IStyleProvider
 	{
 		/**
