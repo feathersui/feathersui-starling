@@ -18,6 +18,8 @@ package feathers.examples.layoutExplorer.screens
 	import starling.events.Event;
 	import starling.textures.Texture;
 
+	[Event(name="showAnchor",type="starling.events.Event")]
+
 	[Event(name="showHorizontal",type="starling.events.Event")]
 
 	[Event(name="showVertical",type="starling.events.Event")]
@@ -28,6 +30,7 @@ package feathers.examples.layoutExplorer.screens
 
 	public class MainMenuScreen extends PanelScreen
 	{
+		public static const SHOW_ANCHOR:String = "showAnchor";
 		public static const SHOW_HORIZONTAL:String = "showHorizontal";
 		public static const SHOW_VERTICAL:String = "showVertical";
 		public static const SHOW_TILED_ROWS:String = "showTiledRows";
@@ -54,6 +57,7 @@ package feathers.examples.layoutExplorer.screens
 			this._list = new List();
 			this._list.dataProvider = new ListCollection(
 			[
+				{ text: "Anchor", event: SHOW_ANCHOR },
 				{ text: "Horizontal", event: SHOW_HORIZONTAL },
 				{ text: "Vertical", event: SHOW_VERTICAL },
 				{ text: "Tiled Rows", event: SHOW_TILED_ROWS },

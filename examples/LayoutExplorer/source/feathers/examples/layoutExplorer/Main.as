@@ -8,6 +8,7 @@ package feathers.examples.layoutExplorer
 	import feathers.examples.layoutExplorer.data.TiledColumnsLayoutSettings;
 	import feathers.examples.layoutExplorer.data.TiledRowsLayoutSettings;
 	import feathers.examples.layoutExplorer.data.VerticalLayoutSettings;
+	import feathers.examples.layoutExplorer.screens.AnchorLayoutScreen;
 	import feathers.examples.layoutExplorer.screens.HorizontalLayoutScreen;
 	import feathers.examples.layoutExplorer.screens.HorizontalLayoutSettingsScreen;
 	import feathers.examples.layoutExplorer.screens.MainMenuScreen;
@@ -27,6 +28,7 @@ package feathers.examples.layoutExplorer
 	public class Main extends Drawers
 	{
 		private static const MAIN_MENU:String = "mainMenu";
+		private static const ANCHOR:String = "anchor";
 		private static const HORIZONTAL:String = "horizontal";
 		private static const VERTICAL:String = "vertical";
 		private static const TILED_ROWS:String = "tiledRows";
@@ -38,6 +40,7 @@ package feathers.examples.layoutExplorer
 
 		private static const MAIN_MENU_EVENTS:Object =
 		{
+			showAnchor: ANCHOR,
 			showHorizontal: HORIZONTAL,
 			showVertical: VERTICAL,
 			showTiledRows: TILED_ROWS,
@@ -61,7 +64,14 @@ package feathers.examples.layoutExplorer
 			new MetalWorksMobileTheme();
 
 			this._navigator = new ScreenNavigator();
+			//we're using Drawers because we want to display the menu on the
+			//side when running on tablets.
 			this.content = this._navigator;
+
+			this._navigator.addScreen(ANCHOR, new ScreenNavigatorItem(AnchorLayoutScreen,
+			{
+				complete: MAIN_MENU
+			}));
 
 			var horizontalLayoutSettings:HorizontalLayoutSettings = new HorizontalLayoutSettings();
 			this._navigator.addScreen(HORIZONTAL, new ScreenNavigatorItem(HorizontalLayoutScreen,
