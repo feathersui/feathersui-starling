@@ -248,6 +248,7 @@ package feathers.controls
 		public function TextArea()
 		{
 			super();
+			this._measureViewPort = false;
 			this.addEventListener(TouchEvent.TOUCH, textArea_touchHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, textArea_removedFromStageHandler);
 		}
