@@ -1247,7 +1247,7 @@ package feathers.controls.text
 
 			//if measure() isn't called, we need to apply the same workaround
 			//for the flash.text.TextField bug with wordWrap.
-			if(!this._hasMeasured && this._wordWrap && this.explicitWidth != this.explicitWidth)
+			if(!this._hasMeasured && this._wordWrap)
 			{
 				this.textField.autoSize = TextFieldAutoSize.LEFT;
 				this.textField.wordWrap = false;
