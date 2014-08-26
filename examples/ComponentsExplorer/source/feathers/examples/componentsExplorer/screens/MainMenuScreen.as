@@ -13,9 +13,8 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.layout.AnchorLayoutData;
 	import feathers.skins.StandardIcons;
 	import feathers.system.DeviceCapabilities;
-
+	
 	import starling.core.Starling;
-
 	import starling.events.Event;
 	import starling.textures.Texture;
 
@@ -65,6 +64,7 @@ package feathers.examples.componentsExplorer.screens
 		private var _list:List;
 
 		public var savedVerticalScrollPosition:Number = 0;
+		public var savedSelectedIndex:int = -1;
 
 		override protected function initialize():void
 		{
@@ -101,8 +101,8 @@ package feathers.examples.componentsExplorer.screens
 			this._list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
 			this._list.clipContent = false;
 			this._list.autoHideBackground = true;
+			this._list.selectedIndex = this.savedSelectedIndex;
 			this._list.verticalScrollPosition = this.savedVerticalScrollPosition;
-			this._list.addEventListener(Event.CHANGE, list_changeHandler);
 
 			var itemRendererAccessorySourceFunction:Function = null;
 			if(!isTablet)
@@ -127,6 +127,8 @@ package feathers.examples.componentsExplorer.screens
 				this._list.selectedIndex = 0;
 			}
 			this.addChild(this._list);
+			
+			this.owner.addEventListener(FeathersEventType.TRANSITION_COMPLETE, owner_transitionCompleteHandler);
 		}
 
 		private function accessorySourceFunction(item:Object):Texture
@@ -134,19 +136,30 @@ package feathers.examples.componentsExplorer.screens
 			return StandardIcons.listDrillDownAccessoryTexture;
 		}
 		
+		private function owner_transitionCompleteHandler(event:Event):void
+		{
+			this.owner.removeEventListener(FeathersEventType.TRANSITION_COMPLETE, owner_transitionCompleteHandler);
+			this._list.selectedIndex = -1;
+			this._list.addEventListener(Event.CHANGE, list_changeHandler);
+			this._list.revealScrollBars();
+		}
+		
 		private function list_changeHandler(event:Event):void
 		{
 			if(!DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
-				//we're going to save the position of the list so that when the user
-				//navigates back to this screen, they won't need to scroll back to
-				//the same position manually
 				var screenItem:ScreenNavigatorItem = this._owner.getScreen(this.screenID);
 				if(!screenItem.properties)
 				{
 					screenItem.properties = {};
 				}
+				//we're going to save the position of the list so that when the user
+				//navigates back to this screen, they won't need to scroll back to
+				//the same position manually
 				screenItem.properties.savedVerticalScrollPosition = this._list.verticalScrollPosition;
+				//we'll also save the selected index to temporarily highlight
+				//the previously selected item when transitioning back
+				screenItem.properties.savedSelectedIndex = this._list.selectedIndex;
 			}
 
 			var eventType:String = this._list.selectedItem.event as String;
