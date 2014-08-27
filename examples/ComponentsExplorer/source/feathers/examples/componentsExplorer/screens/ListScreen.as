@@ -101,6 +101,8 @@ package feathers.examples.componentsExplorer.screens
 			[
 				this._settingsButton
 			];
+
+			this.owner.addEventListener(FeathersEventType.TRANSITION_COMPLETE, owner_transitionCompleteHandler);
 		}
 		
 		private function onBackButton():void
@@ -122,6 +124,12 @@ package feathers.examples.componentsExplorer.screens
 		{
 			var selectedIndices:Vector.<int> = this._list.selectedIndices;
 			trace("List onChange:", selectedIndices.length > 0 ? selectedIndices : this._list.selectedIndex);
+		}
+
+		private function owner_transitionCompleteHandler(event:Event):void
+		{
+			this.owner.removeEventListener(FeathersEventType.TRANSITION_COMPLETE, owner_transitionCompleteHandler);
+			this._list.revealScrollBars();
 		}
 	}
 }

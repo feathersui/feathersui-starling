@@ -101,7 +101,6 @@ package feathers.examples.componentsExplorer.screens
 			this._list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
 			this._list.clipContent = false;
 			this._list.autoHideBackground = true;
-			this._list.selectedIndex = this.savedSelectedIndex;
 			this._list.verticalScrollPosition = this.savedVerticalScrollPosition;
 
 			var itemRendererAccessorySourceFunction:Function = null;
@@ -124,10 +123,14 @@ package feathers.examples.componentsExplorer.screens
 
 			if(isTablet)
 			{
+				this._list.addEventListener(Event.CHANGE, list_changeHandler);
 				this._list.selectedIndex = 0;
 			}
+			else
+			{
+				this._list.selectedIndex = this.savedSelectedIndex;
+			}
 			this.addChild(this._list);
-			
 			this.owner.addEventListener(FeathersEventType.TRANSITION_COMPLETE, owner_transitionCompleteHandler);
 		}
 
@@ -139,8 +142,12 @@ package feathers.examples.componentsExplorer.screens
 		private function owner_transitionCompleteHandler(event:Event):void
 		{
 			this.owner.removeEventListener(FeathersEventType.TRANSITION_COMPLETE, owner_transitionCompleteHandler);
-			this._list.selectedIndex = -1;
-			this._list.addEventListener(Event.CHANGE, list_changeHandler);
+
+			if(!DeviceCapabilities.isTablet(Starling.current.nativeStage))
+			{
+				this._list.selectedIndex = -1;
+				this._list.addEventListener(Event.CHANGE, list_changeHandler);
+			}
 			this._list.revealScrollBars();
 		}
 		

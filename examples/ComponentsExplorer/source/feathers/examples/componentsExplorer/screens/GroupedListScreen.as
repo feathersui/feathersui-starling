@@ -155,6 +155,8 @@ package feathers.examples.componentsExplorer.screens
 			[
 				this._settingsButton
 			];
+
+			this.owner.addEventListener(FeathersEventType.TRANSITION_COMPLETE, owner_transitionCompleteHandler);
 		}
 		
 		private function onBackButton():void
@@ -175,6 +177,12 @@ package feathers.examples.componentsExplorer.screens
 		private function list_changeHandler(event:Event):void
 		{
 			trace("GroupedList onChange:", this._list.selectedGroupIndex, this._list.selectedItemIndex);
+		}
+
+		private function owner_transitionCompleteHandler(event:Event):void
+		{
+			this.owner.removeEventListener(FeathersEventType.TRANSITION_COMPLETE, owner_transitionCompleteHandler);
+			this._list.revealScrollBars();
 		}
 	}
 }

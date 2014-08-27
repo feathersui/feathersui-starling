@@ -84,6 +84,8 @@ package feathers.examples.layoutExplorer.screens
 			[
 				this._settingsButton
 			];
+
+			this.owner.addEventListener(FeathersEventType.TRANSITION_COMPLETE, owner_transitionCompleteHandler);
 		}
 
 		private function onBackButton():void
@@ -99,6 +101,12 @@ package feathers.examples.layoutExplorer.screens
 		private function settingsButton_triggeredHandler(event:Event):void
 		{
 			this.dispatchEventWith(SHOW_SETTINGS);
+		}
+
+		private function owner_transitionCompleteHandler(event:Event):void
+		{
+			this.owner.removeEventListener(FeathersEventType.TRANSITION_COMPLETE, owner_transitionCompleteHandler);
+			this.revealScrollBars();
 		}
 	}
 }

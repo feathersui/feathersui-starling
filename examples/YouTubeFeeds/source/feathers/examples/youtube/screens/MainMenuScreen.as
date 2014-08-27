@@ -7,6 +7,7 @@ package feathers.examples.youtube.screens
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ListCollection;
+	import feathers.events.FeathersEventType;
 	import feathers.examples.youtube.models.VideoFeed;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
@@ -42,22 +43,9 @@ package feathers.examples.youtube.screens
 		private var _loader:URLLoader;
 		private var _message:Label;
 
-		private var _dataProvider:ListCollection;
-
-		public function get dataProvider():ListCollection
-		{
-			return this._dataProvider;
-		}
-
-		public function set dataProvider(value:ListCollection):void
-		{
-			if(this._dataProvider == value)
-			{
-				return;
-			}
-			this._dataProvider = value;
-			this.invalidate(INVALIDATION_FLAG_DATA);
-		}
+		public var savedVerticalScrollPosition:Number = 0;
+		public var savedSelectedIndex:int = -1;
+		public var savedDataProvider:ListCollection;
 
 		override protected function initialize():void
 		{
@@ -79,41 +67,46 @@ package feathers.examples.youtube.screens
 				renderer.accessorySourceFunction = accessorySourceFunction;
 				return renderer;
 			}
-			this._list.addEventListener(starling.events.Event.CHANGE, list_changeHandler);
+			//when navigating to video results, we save this information to
+			//restore the list when later navigating back to this screen.
+			if(this.savedDataProvider)
+			{
+				this._list.dataProvider = this.savedDataProvider;
+				this._list.selectedIndex = this.savedSelectedIndex;
+				this._list.verticalScrollPosition = this.savedVerticalScrollPosition;
+			}
 			this.addChild(this._list);
 
 			this._message = new Label();
+			this._message.text = "Loading...";
 			this._message.layoutData = new AnchorLayoutData(NaN, NaN, NaN, NaN, 0, 0);
+			//hide the loading message if we're using restored results
+			this._message.visible = this.savedDataProvider === null;
 			this.addChild(this._message);
 
 			this.headerProperties.title = "YouTube Feeds";
+
+			this.owner.addEventListener(FeathersEventType.TRANSITION_COMPLETE, owner_transitionCompleteHandler);
 		}
 
 		override protected function draw():void
 		{
 			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
-			if(dataInvalid)
+
+			//only load the list of videos if don't have restored results
+			if(!this.savedDataProvider && dataInvalid)
 			{
-				if(this._dataProvider)
+				this._list.dataProvider = null;
+				this._message.visible = true;
+				if(this._loader)
 				{
-					this._message.visible = false;
-					this._list.dataProvider = this._dataProvider;
+					this.cleanUpLoader();
 				}
-				else
-				{
-					this._list.dataProvider = null;
-					this._message.text = "Loading...";
-					this._message.visible = true;
-					if(this._loader)
-					{
-						this.cleanUpLoader();
-					}
-					this._loader = new URLLoader();
-					this._loader.addEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
-					this._loader.addEventListener(IOErrorEvent.IO_ERROR, loader_errorHandler);
-					this._loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_errorHandler);
-					this._loader.load(new URLRequest(CATEGORIES_URL));
-				}
+				this._loader = new URLLoader();
+				this._loader.addEventListener(flash.events.Event.COMPLETE, loader_completeHandler);
+				this._loader.addEventListener(IOErrorEvent.IO_ERROR, loader_errorHandler);
+				this._loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_errorHandler);
+				this._loader.load(new URLRequest(CATEGORIES_URL));
 			}
 
 			//never forget to call super.draw()!
@@ -170,15 +163,8 @@ package feathers.examples.youtube.screens
 			var collection:ListCollection = new ListCollection(items);
 			this._list.dataProvider = collection;
 
-			//we're going to save the loaded data in the ScreenNavigatorItem
-			//so that we don't need to load it again later if the user comes
-			//back to this screen
-			var screenItem:ScreenNavigatorItem = this._owner.getScreen(this.screenID);
-			if(!screenItem.properties)
-			{
-				screenItem.properties = {};
-			}
-			screenItem.properties.dataProvider = collection;
+			//show the scroll bars so that the user knows they can scroll
+			this._list.revealScrollBars();
 		}
 
 		private function accessorySourceFunction(item:Object):Texture
@@ -188,7 +174,33 @@ package feathers.examples.youtube.screens
 
 		private function list_changeHandler(event:starling.events.Event):void
 		{
+			var screenItem:ScreenNavigatorItem = this._owner.getScreen(this.screenID);
+			if(!screenItem.properties)
+			{
+				screenItem.properties = {};
+			}
+			//we're going to save the position of the list so that when the user
+			//navigates back to this screen, they won't need to scroll back to
+			//the same position manually
+			screenItem.properties.savedVerticalScrollPosition = this._list.verticalScrollPosition;
+			//we'll also save the selected index to temporarily highlight
+			//the previously selected item when transitioning back
+			screenItem.properties.savedSelectedIndex = this._list.selectedIndex;
+			//and we'll save the data provider so that we don't need to reload
+			//data when we return to this screen. we can restore it.
+			screenItem.properties.savedDataProvider = this._list.dataProvider;
+
 			this.dispatchEventWith(LIST_VIDEOS, false, VideoFeed(this._list.selectedItem));
+		}
+
+		private function owner_transitionCompleteHandler(event:starling.events.Event):void
+		{
+			this.owner.removeEventListener(FeathersEventType.TRANSITION_COMPLETE, owner_transitionCompleteHandler);
+
+			this._list.selectedIndex = -1;
+			this._list.addEventListener(starling.events.Event.CHANGE, list_changeHandler);
+
+			this._list.revealScrollBars();
 		}
 
 		private function removedFromStageHandler(event:starling.events.Event):void
