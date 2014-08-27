@@ -1374,11 +1374,18 @@ package feathers.controls.text
 				}
 			}
 
+			//the +4 is accounting for the TextField gutter
 			this._measureTextField.width = newWidth + 4;
 			var newHeight:Number = this.explicitHeight;
 			if(needsHeight)
 			{
-				newHeight = this._measureTextField.textHeight;
+				//since we're measuring with TextField, but rendering with
+				//StageText, we're using height instead of textHeight here to be
+				//sure that the measured size is on the larger side, in case the
+				//rendered size is actually bigger than textHeight
+				//if only StageText had an API for text measurement, we wouldn't
+				//be in this mess...
+				newHeight = this._measureTextField.height;
 				if(newHeight < this._minHeight)
 				{
 					newHeight = this._minHeight;
@@ -1393,8 +1400,9 @@ package feathers.controls.text
 
 			//put the width and height back just in case we measured without
 			//a full validation
+			//the +4 is accounting for the TextField gutter
 			this._measureTextField.width = this.actualWidth + 4;
-			this._measureTextField.height = this.actualHeight + 4;
+			this._measureTextField.height = this.actualHeight;
 
 			result.x = newWidth;
 			result.y = newHeight;
@@ -1729,8 +1737,9 @@ package feathers.controls.text
 			stageTextViewPort.height = viewPortHeight;
 			this.stageText.viewPort = stageTextViewPort;
 
+			//the +4 is accounting for the TextField gutter
 			this._measureTextField.width = this.actualWidth + 4;
-			this._measureTextField.height = this.actualHeight + 4;
+			this._measureTextField.height = this.actualHeight;
 		}
 
 		/**
