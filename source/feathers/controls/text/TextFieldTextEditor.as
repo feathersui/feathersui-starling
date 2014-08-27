@@ -13,7 +13,7 @@ package feathers.controls.text
 	import feathers.utils.geom.matrixToRotation;
 	import feathers.utils.geom.matrixToScaleX;
 	import feathers.utils.geom.matrixToScaleY;
-	
+
 	import flash.display.BitmapData;
 	import flash.display3D.Context3DProfile;
 	import flash.events.FocusEvent;
@@ -27,7 +27,7 @@ package feathers.controls.text
 	import flash.text.TextFieldType;
 	import flash.text.TextFormat;
 	import flash.ui.Keyboard;
-	
+
 	import starling.core.RenderSupport;
 	import starling.core.Starling;
 	import starling.display.Image;
@@ -203,6 +203,7 @@ package feathers.controls.text
 		public function TextFieldTextEditor()
 		{
 			this.isQuickHitAreaEnabled = true;
+			this.addEventListener(Event.ADDED_TO_STAGE, textEditor_addedToStageHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, textEditor_removedFromStageHandler);
 		}
 
@@ -1450,6 +1451,18 @@ package feathers.controls.text
 			this.textSnapshot.scaleY = 1 / matrixToScaleY(HELPER_MATRIX);
 			bitmapData.dispose();
 			this._needsNewTexture = false;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function textEditor_addedToStageHandler(event:Event):void
+		{
+			if(!this.textField.parent)
+			{
+				//the text field needs to be on the native stage to measure properly
+				Starling.current.nativeStage.addChild(this.textField);
+			}
 		}
 
 		/**
