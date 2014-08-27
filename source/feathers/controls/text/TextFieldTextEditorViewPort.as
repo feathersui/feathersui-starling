@@ -342,7 +342,7 @@ package feathers.controls.text
 			this.measureTextField.width = newWidth + gutterDimensionsOffset;
 			if(needsWidth)
 			{
-				newWidth = this.measureTextField.textWidth;
+				newWidth = this.measureTextField.width - gutterDimensionsOffset;
 				if(newWidth < this._minVisibleWidth)
 				{
 					newWidth = this._minVisibleWidth;
@@ -352,7 +352,7 @@ package feathers.controls.text
 					newWidth = this._maxVisibleWidth;
 				}
 			}
-			var newHeight:Number = this.measureTextField.textHeight;
+			var newHeight:Number = this.measureTextField.height - gutterDimensionsOffset;
 			if(this._useGutter)
 			{
 				newHeight += 4;
@@ -400,8 +400,18 @@ package feathers.controls.text
 			this._textFieldClipRect.y = 0;
 
 			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-			this._textFieldClipRect.width = textFieldWidth * Starling.contentScaleFactor * matrixToScaleX(HELPER_MATRIX);
-			this._textFieldClipRect.height = textFieldHeight * Starling.contentScaleFactor * matrixToScaleY(HELPER_MATRIX);
+			var clipWidth:Number = textFieldWidth * Starling.contentScaleFactor * matrixToScaleX(HELPER_MATRIX);
+			if(clipWidth < 0)
+			{
+				clipWidth = 0;
+			}
+			var clipHeight:Number = textFieldHeight * Starling.contentScaleFactor * matrixToScaleY(HELPER_MATRIX);
+			if(clipHeight < 0)
+			{
+				clipHeight = 0;
+			}
+			this._textFieldClipRect.width = clipWidth;
+			this._textFieldClipRect.height = clipHeight;
 		}
 
 		/**
@@ -448,20 +458,20 @@ package feathers.controls.text
 			{
 				return;
 			}
-			HELPER_POINT.x = HELPER_POINT.y = 0;
-			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
-			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
-			var scaleX:Number = matrixToScaleX(HELPER_MATRIX);
-			var scaleY:Number = matrixToScaleY(HELPER_MATRIX);
-			var offsetX:Number = Math.round(this._horizontalScrollPosition * scaleX);
-			var offsetY:Number = Math.round(this._verticalScrollPosition * scaleY);
-			var starlingViewPort:Rectangle = Starling.current.viewPort;
 			var nativeScaleFactor:Number = 1;
 			if(Starling.current.supportHighResolutions)
 			{
 				nativeScaleFactor = Starling.current.nativeStage.contentsScaleFactor;
 			}
 			var scaleFactor:Number = Starling.contentScaleFactor / nativeScaleFactor;
+			HELPER_POINT.x = HELPER_POINT.y = 0;
+			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
+			MatrixUtil.transformCoords(HELPER_MATRIX, 0, 0, HELPER_POINT);
+			var scaleX:Number = matrixToScaleX(HELPER_MATRIX) * scaleFactor;
+			var scaleY:Number = matrixToScaleY(HELPER_MATRIX) * scaleFactor;
+			var offsetX:Number = Math.round(this._horizontalScrollPosition * scaleX);
+			var offsetY:Number = Math.round(this._verticalScrollPosition * scaleY);
+			var starlingViewPort:Rectangle = Starling.current.viewPort;
 			var gutterPositionOffset:Number = 2;
 			if(this._useGutter)
 			{
@@ -502,10 +512,6 @@ package feathers.controls.text
 		 */
 		override protected function textField_focusInHandler(event:FocusEvent):void
 		{
-			var oldIgnoreScrolling:Boolean = this._ignoreScrolling;
-			this._ignoreScrolling = true;
-			this.textField.height = this._visibleHeight;
-			this._ignoreScrolling = oldIgnoreScrolling;
 			this.textField.addEventListener(Event.SCROLL, textField_scrollHandler);
 			super.textField_focusInHandler(event);
 			this.invalidate(INVALIDATION_FLAG_SIZE);
