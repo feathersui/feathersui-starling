@@ -4,6 +4,7 @@ package feathers.examples.youtube.screens
 	import feathers.controls.Label;
 	import feathers.controls.List;
 	import feathers.controls.PanelScreen;
+	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ListCollection;
@@ -60,6 +61,10 @@ package feathers.examples.youtube.screens
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
+		public var savedVerticalScrollPosition:Number = 0;
+		public var savedSelectedIndex:int = -1;
+		public var savedDataProvider:ListCollection;
+
 		private var _loader:URLLoader;
 		private var _savedLoaderData:*;
 
@@ -77,15 +82,26 @@ package feathers.examples.youtube.screens
 				var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
 				renderer.labelField = "title";
 				renderer.accessoryLabelField = "author";
+				//no accessory and anything interactive, so we can use the quick
+				//hit area to improve performance.
 				renderer.isQuickHitAreaEnabled = true;
 				return renderer;
 			}
-			this._list.addEventListener(starling.events.Event.CHANGE, list_changeHandler);
+			//when navigating to video details, we save this information to
+			//restore the list when later navigating back to this screen.
+			if(this.savedDataProvider)
+			{
+				this._list.dataProvider = this.savedDataProvider;
+				this._list.selectedIndex = this.savedSelectedIndex;
+				this._list.verticalScrollPosition = this.savedVerticalScrollPosition;
+			}
 			this.addChild(this._list);
 
 			this._message = new Label();
 			this._message.text = "Loading...";
 			this._message.layoutData = new AnchorLayoutData(NaN, NaN, NaN, NaN, 0, 0);
+			//hide the loading message if we're using restored results
+			this._message.visible = this.savedDataProvider === null;
 			this.addChild(this._message);
 
 			this._backButton = new Button();
@@ -106,7 +122,9 @@ package feathers.examples.youtube.screens
 		override protected function draw():void
 		{
 			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
-			if(dataInvalid)
+
+			//only load the list of videos if don't have restored results
+			if(!this.savedDataProvider && dataInvalid)
 			{
 				this._list.dataProvider = null;
 				if(this._model && this._model.selectedList)
@@ -120,6 +138,9 @@ package feathers.examples.youtube.screens
 					{
 						this._message.visible = false;
 						this._list.dataProvider = ListCollection(this._model.cachedLists[this._model.selectedList.url]);
+
+						//show the scroll bars so that the user knows they can scroll
+						this._list.revealScrollBars();
 					}
 					else
 					{
@@ -171,10 +192,24 @@ package feathers.examples.youtube.screens
 			var collection:ListCollection = new ListCollection(items);
 			this._model.cachedLists[this._model.selectedList.url] = collection;
 			this._list.dataProvider = collection;
+
+			//show the scroll bars so that the user knows they can scroll
+			this._list.revealScrollBars();
 		}
 
 		private function onBackButton(event:starling.events.Event = null):void
 		{
+			var screenItem:ScreenNavigatorItem = this._owner.getScreen(this.screenID);
+			if(screenItem.properties)
+			{
+				//if we're going backwards, we should clear the restored results
+				//because next time we come back, we may be asked to display
+				//completely different data
+				delete screenItem.properties.savedVerticalScrollPosition;
+				delete screenItem.properties.savedSelectedIndex;
+				delete screenItem.properties.savedDataProvider;
+			}
+
 			this.dispatchEventWith(starling.events.Event.COMPLETE);
 		}
 
@@ -184,6 +219,23 @@ package feathers.examples.youtube.screens
 			{
 				return;
 			}
+
+			var screenItem:ScreenNavigatorItem = this._owner.getScreen(this.screenID);
+			if(!screenItem.properties)
+			{
+				screenItem.properties = {};
+			}
+			//we're going to save the position of the list so that when the user
+			//navigates back to this screen, they won't need to scroll back to
+			//the same position manually
+			screenItem.properties.savedVerticalScrollPosition = this._list.verticalScrollPosition;
+			//we'll also save the selected index to temporarily highlight
+			//the previously selected item when transitioning back
+			screenItem.properties.savedSelectedIndex = this._list.selectedIndex;
+			//and we'll save the data provider so that we don't need to reload
+			//data when we return to this screen. we can restore it.
+			screenItem.properties.savedDataProvider = this._list.dataProvider;
+
 			this.dispatchEventWith(SHOW_VIDEO_DETAILS, false, VideoDetails(this._list.selectedItem));
 		}
 
@@ -217,6 +269,8 @@ package feathers.examples.youtube.screens
 
 		private function owner_transitionCompleteHandler(event:starling.events.Event):void
 		{
+			this.owner.removeEventListener(FeathersEventType.TRANSITION_COMPLETE, owner_transitionCompleteHandler);
+
 			this._isTransitioning = false;
 
 			if(this._savedLoaderData)
@@ -224,6 +278,10 @@ package feathers.examples.youtube.screens
 				this.parseFeed(new XML(this._savedLoaderData));
 				this._savedLoaderData = null;
 			}
+
+			this._list.selectedIndex = -1;
+			this._list.addEventListener(starling.events.Event.CHANGE, list_changeHandler);
+			this._list.revealScrollBars();
 		}
 	}
 }
