@@ -2,6 +2,120 @@
 
 Noteworthy changes in official, stable releases of [Feathers](http://feathersui.com/).
 
+## 2.0 BETA
+
+* New style provider architecture for skinning and themes.
+* Components may always be validated, even if they are not on the display list yet.
+* New Text Editor: TextBlockTextEditor is a **desktop-only** text editor built on FTE, similar to TextBlockTextRenderer.
+* New Text Editor: BitmapFontTextEditor is a **desktop-only** text editor built on FTE, similar to BitmapFontTextRenderer.
+* All Components: subComponentProperties pattern is now stricter. If properties that don't exist are set, a runtime error will be thrown.
+* BitmapFontTextRenderer: properly redraws when isEnabled is changed.
+* BitmapFontTextRenderer: if textFormat is null, generates a default value so that something will be displayed (using Starling's embedded BitmapFont.MINI).
+* Button: added minGap property that is used when gap is set to Number.POSITIVE_INFINITY.
+* Button: pulled out toggle functionality into a subclass: ToggleButton.
+* Button: removed now-useless autoFlatten property.
+* Button: added new hasLabelTextRenderer that may be set to false to avoid creating the text renderer (for things like scroll bar or slider button sub-components).
+* Button: fixed issue where button didn't return to up state when focus is changed with keyboard while in another state.
+* Callout: added stagePadding property to set stagePaddingTop, stagePaddingRight, stagePaddingBottom, and stagePaddingLeft properties all at once.
+* DefaultGroupedListHeaderOrFooterRenderer: fixed issue where content wasn't disabled when isEnabled changed.
+* Drawers: added optional overlaySkin property to fade in a display object over the content when a drawer is opened.
+* Drawers: checks if event types are null before adding listeners.
+* Drawers: open and close events now pass the display object in the event data.
+* Drawers: fix for issue where wrong toggle duration may used sometimes.
+* DropDownPopUpContentManager: added new gap property.
+* FeathersControl: enforced as an abstract class. If you need a generic Feathers component wrapper for layoutData and things, use LayoutGroup.
+* FeathersControl: added styleName and styleNameList property to replace nameList. The name property is no longer used for styling, and it will work for getChildByName() in the rare situations where it was broken.
+* FeathersControl: fixed issue where changing minTouchWidth or minTouchHeight did not update the hit area if the width or height wasn't changed at the same time.
+* FeathersControl: won't validate if disposed.
+* FocusManager: support for custom IFocusManager instances and support for multiple stages.
+* FocusManager: fixed issue where disabled components could receive focus.
+* Header: added useExtraPaddingForOSStatusBar property to support iOS 7 status bar behavior.
+* Header: getters for leftItems, rightItems, and centerItems no longer duplicate the array.
+* Header: now disposed leftItems, rightItems, and centerItems by default. Can be controlled with new disposeItems property.
+* Header: fixed issue where title text renderer's isEnabled property wasn't properly updated.
+* IFocusDisplayObject: added new focusOwner property to allow pop-ups to be owned by another component. Allows the focus manager to manage focus order better with components like PickerList.
+* ImageLoader: checks for lost context before creating a texture from a loaded URL.
+* Item Renderers: added skinField, skinFunction, and itemHasSkin for background skins from the data provider.
+* Item Renderers: added isSelectableOnAccessoryTouch property to control whether the selection will change or not when the accessory is touched.
+* Item Renderers: added minGap and minAccessoryGap properties that are used when gap or accessoryGap are set to Number.POSITIVE_INFINITY.
+* ITextEditor, ITextRenderer: extend a new IBaselineTextControl interface that defines a common baseline property.
+* Layouts: fixed issue where they didn't account for pivotX and pivotY.
+* Layouts: when centering items, rounds the x and y positions to the nearest integer.
+* LayoutGroup: respects includeInLayout for measurement when no layout is defined.
+* LayoutGroup: added new backgroundSkin and backgroundDisabledSkin properties.
+* List, GroupedList: if dataProvider property is changed, or the collection dispatches CollectionEventType.RESET, automatically behaves as if updateItemAt() were called on all item renderers.
+* ListCollection, HierarchicalCollection: added dispose() function to support a way to dispose things like display objects or textures in items.
+* NumericStepper: claims exclusive touch so that it won't repeat while scrolling with touch.
+* NumericStepper: fixes for obscure situations where text input changes are not reflected in the value.
+* NumericStepper: improved auto-measurement for values that are not integers.
+* NumericStepper: added textInputGap and buttonGap properties.
+* PageIndicator: added new interactionMode property to allow alternate precise selection of symbols on tap, instead of previous back/next behavior.
+* Panel: added new outerPadding properties to support padding that is around the everything, including the header and footer. The existing (inner) padding properties only apply to the content between the header and footer.
+* PanelScreen: turns on clipping by default.
+* PickerList: added toggleButtonOnOpenAndClose property.
+* PickerList: implements IFocusDisplayObject and manages focus of children better.
+* PickerList: closes on enter key to match native behavior.
+* PopUpManager: when centering a pop-up, rounds the x and y positions to the nearest integer.
+* ProgressBar: fixed vertical fill so that it starts from the bottom and fills up.
+* PropertyProxy: added toString() function to allow a PropertyProxy to be output to console.
+* Scale3Image, Scale9Image, fixed issue where scaling smaller than the minimum size would cause overlapping instead of distortion when end regions weren't the same size.
+* Scale3Textures, Scale9Textures: fixed rendering of textures with a scale property that isn't equal to 1.
+* Screens: removed dpiScale, pixelScale, originalWidth, and originalHeight properties. The kinds of calculations these values were used for should be handled in the theme (or somewhere else outside of the screen if not using a theme).
+* ScrollBar: increment and decrement buttons are hidden, like the thumb, if the minimum is equal to the maximum. The track fills the full dimensions.
+* ScrollBar: fix for wrongly positioned track when direction is horizontal.
+* ScrollContainer: fixed wrong measurement when using no layout with children at negative coordinates.
+* Scroller: fixed issue where a floating scroll bar wouldn't disappear.
+* Scroller: refactored scrolling behavior to more closely match iOS native scrolling.
+* Scroller: touch overlay and background skins are added and removed instead of changing visible property. Works better with Monster Debugger.
+* Scroller: fixes issue where events were dispatched for a completed scroll when the scroll position didn't actually change from calling throwTo().
+* Scroller: added support for a view port that doesn't necessarily auto-size to show its full content. In other words, a view port can choose to measure so that it needs to scroll.
+* Scroller: fixed issue where background wasn't sized property when isEnabled was changed.
+* Scroller: skips some unnecessary code when dimensions are explicit to improve performance.
+* Scroller: added new measureViewPort property that can be set to false to exclude the view port from auto-measurement and only use the background skin.
+* Scroller: automatically sets direction property on scroll bars, so that you don't need to, thanks to the new IDirectionalScrollBar interface.
+* ScrollText: added disabledTextFormat property.
+* ScrollText: may receive focus and use keyboard arrow keys to scroll.
+* Slider: added new trackInteractionMode property to control whether touching the track updates the value by page or jumps directly to the nearest value.
+* SmartDisplayObjectValueSelector: fixed issue where getValueTypeHandler() function had an extra parameter.
+* SmartDisplayObjectValueSelector: added support for null value other than the default.
+* SmartDisplayObjectValueSelector: stricter reuse of display objects. Type must match exactly. Fixes issue where Image is incorrectly reused because it is a subclass of Quad.
+* StageTextTextEditor: fixed issue where measurement was wrong when text was an empty string.
+* StageTextTextEditor: fixed issue on iOS where characters were masked immediately instead of showing in the clear for a moment.
+* StageTextTextEditor: fixed issue where the clipboard menu appeared unexpectedly when multiline is true.
+* StageTextTextEditor: draws StageText to BitmapData with double dimensions on Mac HiDPI, thanks to Adobe's bug fix.
+* TabBarSlideTransitionManager: fixes bug where switching between tabs quickly would break the transition.
+* Text: will use non-power-of-two textures for snapshots, if the Stage 3D profile supports it.
+* Text: if a renderer or editor supports native filters, does some extra cleanup in dispose() that is actually unnecessary, but will ease some pressure if there's a memory leak.
+* Text: fixed issue where snapshot wasn't updated when isEnabled changed.
+* TextBlockTextRenderer: if elementFormat is null, generates a default value so that something will be displayed.
+* TextFieldTextEditor, TextFieldTextRenderer: added useGutter property to allow removal of the 2-pixel "gutter" that Flash adds to a TextField.
+* TextInput, TextArea: added hasFocus getter to allow checking focus, even if there is no focus manager.
+* TextInput, Text Editors: added new selectionBeginIndex and selectionEndIndex properties.
+* TextInput: fixes issue where prompt text renderer's isEnabled property wasn't updated.
+* TextInput: added new verticalAlign property to support top, middle, bottom, or justify.
+* TextInput: won't throw an error if there's no background skin, but auto-measurement will result in a width and height of 0, unless typicalText is set.
+* TextInput: improved support for text editors that are completely on the Starling display list without a native overlay.
+* TextInput: doesn't create prompt text renderer if prompt is null.
+* TextArea: added stateToSkinFunction, similar to Button background skin.
+* TextArea: fixed issue where background skin was sometimes missing.
+* TextArea: added clearFocus() function match API of TextInput.
+* TextArea: further improvements to positioning and scaling of texture snapshot.
+* Text Editors: improved support for Mac HiDPI.
+* Text Editors: will use non-power-of-two textures for snapshots, if the Stage 3D profile supports it.
+* Text Editors: added disabled font styles.
+* Text Renderers: uses generateFilterRect() when using nativeFilters for improved texture dimensions.
+* Text Renderers: ITextRenderer now has a first-class wordWrap property that is required by all renderers.
+* TiledColumnsLayout, TiledRowsLayouts: fixed result of getScrollPositionForIndex() when paging is disable to allow the item to be properly centered.
+* TiledColumnsLayout, TiledRowsLayouts: fixed calculation of tile count when padding is used.
+* TiledColumnsLayout, TiledRowsLayout: added requestedRowCount and requestedColumnCount properties.
+* ToggleSwitch: fixed issue where the isEnabled property of text renderers wasn't properly updated.
+* ToggleSwitch: added toggleThumbSelection property to update the isSelected property of the thumb (if it's a ToggleButton) to match the isSelected property of the switch.
+* ToggleSwitch: fixed issue where selection change wasn't animated when triggered with the keyboard instead of a touch.
+* ToggleSwitch: added new setSelectionWithAnimation() method so that programmatic selection changes can be optionally animated.
+* Examples: override initialize() instead of listening for FeathersEventType.INITIALIZE.
+* Example Themes: rewritten using the new style provider system.
+* Example Themes: tweaked padding, gap, dimensions, and other values to be based on a simple grid system for more consistency.
+
 ## 1.3.1
 
 * NumericStepper: fixed issue where using step to calculate a new value didn't account for the minimum value.
