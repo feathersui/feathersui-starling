@@ -125,13 +125,14 @@ package feathers.examples.componentsExplorer.screens
 			{
 				this._list.addEventListener(Event.CHANGE, list_changeHandler);
 				this._list.selectedIndex = 0;
+				this._list.revealScrollBars();
 			}
 			else
 			{
 				this._list.selectedIndex = this.savedSelectedIndex;
+				this.owner.addEventListener(FeathersEventType.TRANSITION_COMPLETE, owner_transitionCompleteHandler);
 			}
 			this.addChild(this._list);
-			this.owner.addEventListener(FeathersEventType.TRANSITION_COMPLETE, owner_transitionCompleteHandler);
 		}
 
 		private function accessorySourceFunction(item:Object):Texture
