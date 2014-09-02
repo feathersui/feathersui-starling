@@ -370,18 +370,18 @@ package feathers.core
 
 		/**
 		 * When the <code>FeathersControl</code> constructor is called, the
-		 * <code>styleProvider</code> property is set to this value. May be
+		 * <code>globalStyleProvider</code> property is set to this value. May be
 		 * <code>null</code>.
 		 *
 		 * <p>Typically, a subclass of <code>FeathersControl</code> will
-		 * override this function to return its static <code>styleProvider</code>
+		 * override this function to return its static <code>globalStyleProvider</code>
 		 * value. For instance, <code>feathers.controls.Button</code> overrides
 		 * this function, and its implementation looks like this:</p>
 		 *
 		 * <listing version="3.0">
 		 * override protected function get defaultStyleProvider():IStyleProvider
 		 * {
-		 *     return Button.styleProvider;
+		 *     return Button.globalStyleProvider;
 		 * }</listing>
 		 *
 		 * @see #styleProvider
