@@ -88,6 +88,7 @@ Noteworthy changes in official, stable releases of [Feathers](http://feathersui.
 * Text: if a renderer or editor supports native filters, does some extra cleanup in dispose() that is actually unnecessary, but will ease some pressure if there's a memory leak.
 * Text: fixed issue where snapshot wasn't updated when isEnabled changed.
 * TextBlockTextRenderer: if elementFormat is null, generates a default value so that something will be displayed.
+* TextBlockTextRenderer: fixed issue where width was calculated wrong when text ended in whitespace.
 * TextFieldTextEditor, TextFieldTextRenderer: added useGutter property to allow removal of the 2-pixel "gutter" that Flash adds to a TextField.
 * TextInput, TextArea: added hasFocus getter to allow checking focus, even if there is no focus manager.
 * TextInput, Text Editors: added new selectionBeginIndex and selectionEndIndex properties.
