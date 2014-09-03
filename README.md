@@ -1,17 +1,26 @@
-# Feathers 2.0 PRERELEASE
+# Feathers 2.0 BETA
+
+---
+
+**Warning:** This is a pre-release version of Feathers. It may contain bugs or unfinished features. It is not recommended for production apps because it is considered unstable. Use at your own risk. To download a stable build, visit the [Feathers website](http://feathersui.com/).
+
+---
 
 Say hello to [Feathers](http://feathersui.com/), a library of light-weight, skinnable, and extensible UI controls for mobile and desktop. The components run on [Starling Framework](http://starling-framework.org/) and the [Adobe Flash runtimes](http://gaming.adobe.com/technologies/) — offering blazing fast GPU powered graphics to create a smooth and responsive experience. Build completely standalone, native applications on iOS, Android, Windows, and Mac OS X, or target Adobe Flash Player in desktop browsers. Created by [Josh Tynjala](http://twitter.com/joshtynjala), Feathers is free and open source.
 
 ## Quick Links
 
-* [Feathers Website](http://feathersui.com/)
-* [List of Features](http://wiki.starling-framework.org/feathers/features)
-* [Feathers Documentation](http://wiki.starling-framework.org/feathers/start)
-* [API Reference](http://feathersui.com/documentation/)
-* [Live Browser Examples](http://feathersui.com/examples/)
-* [Support Forum](http://forum.starling-framework.org/forum/feathers)
+* [Website](http://feathersui.com/)
+* [Documentation](http://wiki.starling-framework.org/feathers/start)
+* [API Reference](http://feathersui.com/beta/documentation/)
+* [Discussion Forum](http://forum.starling-framework.org/forum/feathers)
 * [Github Project](https://github.com/joshtynjala/feathers)
-* [Like on Facebook](http://facebook.com/feathersui)
+
+### News and Updates
+
+* [Like on Facebook](https://facebook.com/feathersui)
+* [Follow on Twitter](https://twitter.com/feathersui)
+* [Find on Google+](https://www.google.com/+feathersui)
 
 ## Minimum Requirements
 
