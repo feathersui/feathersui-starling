@@ -69,8 +69,8 @@ package feathers.examples.helloWorld
 			this.button.validate();
 
 			//center the button
-			this.button.x = (this.stage.stageWidth - this.button.width) / 2;
-			this.button.y = (this.stage.stageHeight - this.button.height) / 2;
+			this.button.x = Math.round((this.stage.stageWidth - this.button.width) / 2);
+			this.button.y = Math.round((this.stage.stageHeight - this.button.height) / 2);
 		}
 
 		/**
