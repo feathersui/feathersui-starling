@@ -117,6 +117,12 @@ Noteworthy changes in official, stable releases of [Feathers](http://feathersui.
 * Example Themes: rewritten using the new style provider system.
 * Example Themes: tweaked padding, gap, dimensions, and other values to be based on a simple grid system for more consistency.
 
+### 2.0 BETA Documentation
+
+* [Feathers BETA API Reference](http://feathersui.com/beta/documentation/)
+* [Skinning Feathers 2.0 Components](http://wiki.starling-framework.org/feathers/skinning-next)
+* [Extending Feathers 2.0 Themes](http://wiki.starling-framework.org/feathers/extending-themes-next)
+
 ## 1.3.1
 
 * NumericStepper: fixed issue where using step to calculate a new value didn't account for the minimum value.
