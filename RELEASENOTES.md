@@ -24,10 +24,10 @@ Noteworthy changes in official, stable releases of [Feathers](http://feathersui.
 * Drawers: fix for issue where wrong toggle duration may used sometimes.
 * DropDownPopUpContentManager: added new gap property.
 * FeathersControl: enforced as an abstract class. If you need a generic Feathers component wrapper for layoutData and things, use LayoutGroup.
-* FeathersControl: added styleName and styleNameList property to replace nameList. The name property is no longer used for styling, and it will work for getChildByName() in the rare situations where it was broken.
+* FeathersControl: added styleName and styleNameList property to replace nameList. The name property is no longer used for styling, and it will work for getChildByName() in the rare situations where it was broken. The nameList property is deprecated.
 * FeathersControl: fixed issue where changing minTouchWidth or minTouchHeight did not update the hit area if the width or height wasn't changed at the same time.
 * FeathersControl: won't validate if disposed.
-* FocusManager: support for custom IFocusManager instances and support for multiple stages.
+* FocusManager: support for custom IFocusManager instances and support for multiple Starling stages.
 * FocusManager: fixed issue where disabled components could receive focus.
 * Header: added useExtraPaddingForOSStatusBar property to support iOS 7 status bar behavior.
 * Header: getters for leftItems, rightItems, and centerItems no longer duplicate the array.
@@ -102,7 +102,6 @@ Noteworthy changes in official, stable releases of [Feathers](http://feathersui.
 * TextArea: added clearFocus() function match API of TextInput.
 * TextArea: further improvements to positioning and scaling of texture snapshot.
 * Text Editors: improved support for Mac HiDPI.
-* Text Editors: will use non-power-of-two textures for snapshots, if the Stage 3D profile supports it.
 * Text Editors: added disabled font styles.
 * Text Renderers: uses generateFilterRect() when using nativeFilters for improved texture dimensions.
 * Text Renderers: ITextRenderer now has a first-class wordWrap property that is required by all renderers.
@@ -122,6 +121,60 @@ Noteworthy changes in official, stable releases of [Feathers](http://feathersui.
 * [Feathers BETA API Reference](http://feathersui.com/beta/documentation/)
 * [Skinning Feathers 2.0 Components](http://wiki.starling-framework.org/feathers/skinning-next)
 * [Extending Feathers 2.0 Themes](http://wiki.starling-framework.org/feathers/extending-themes-next)
+
+### 2.0.0 Deprecated APIs
+
+All deprecated APIs are subject to the [Feathers deprecation policy](http://wiki.starling-framework.org/feathers/deprecation-policy). Please migrate to the new APIs as soon as possible because the deprecated APIs **will** be removed in a future version of Feathers.
+
+The `nameList` property has been deprecated, and it is replaced by the `styleNameList` property. The `name` property is no longer connected to style names, and situations where it failed to work with `getChildByName()` have been resolved. The `styleName` property has been added to replace the former usage of the `name` property as a concatenated version of `nameList` (now, `styleNameList`).
+
+### 2.0.0 Default Behavior and API Changes
+
+This is a major update to Feathers, so it includes more breaking changes than usual. Be sure to read this section thoroughly to see if any of these changes will affect your apps.
+
+`TextFieldTextRenderer` and `TextFieldTextEditor` now have a `useGutter` property that controls whether the 2-pixel gutter around the edges of the `flash.text.TextField` will be used in measurement and layout. In previous versions of Feathers, the gutter was always enabled. The gutter is now disabled by default to allow text controls based on `TextField` to more easily align with other text controls.
+
+The `ITextRenderer` and `ITextEditor` interfaces now extend the `ITextBaselineControl` interface. In the case of `ITextEditor`, a new `baseline` getter is required.
+
+The `ITextRenderer` interface now requires a `wordWrap` property.
+
+The `IFocusDisplayObject` interface now requires a `focusOwner` property.
+
+Properties including `dpiScale`, `pixelScale`, `originalWidth`, `originalHeight`, and `originalDPI` have been removed from `Screen`, `ScrollScreen` and `PanelScreen`. The calculations previously offered by these properties should be handled in skinning code, such as the theme.
+
+The `Button` class no longer supports selection. This functionality has been moved into a subclass, `ToggleButton`.
+
+The `autoFlatten` property has been removed from the `Button` class.
+
+Setting the properties of a sub-component, such as using `thumbProperties` on a `Slider` to set properties on the slider's thumb sub-component, is now stricter. Previously, when a property did not exist, it was silently ignored. Now, an error will be thrown.
+
+If no text format is defined, `BitmapFontTextRenderer` defaults to using `BitmapFont.MINI` so that the text will always be rendered. Previously, it would render nothing.
+
+If no element format is defined, `TextBlockTextRenderer` defaults to using a new `ElementFormat` with default arguments so that the text will always be rendered. Previously, an error was thrown.
+
+A `trackInteractionMode` property has been added to `Slider`. In previous versions, `Slider` behaved as if `trackInteractionMode` were set to `Slider.TRACK_INTERACTION_MODE_BY_PAGE`. Now, the default value is `Slider.TRACK_INTERACTION_MODE_TO_VALUE`.
+
+A `verticalAlign` property has been added to `TextInput`. In previous versions, `TextInput` behaved as if `verticalAlign` were set to `TextInput.VERTICAL_ALIGN_JUSTIFY`. Now, the default value is `TextInput.VERTICAL_ALIGN_MIDDLE`.
+
+The `FeathersControl` class is now considered abstract. It will throw a runtime error if instantiated directly instead of being subclassed. If you need a generic Feathers component as a wrapper for another display object, use `LayoutGroup` instead.
+
+The `leftItems`, `rightItems`, and `centerItems` getters on the `Header` class no longer make a copy of their storage variables. Take care when modifying these values directly.
+
+Focus management now supports multiple Starling stages (for AIR desktop apps). The static `isEnabled` property has been removed. Instead, you should use the static `setEnabledForStage()` function:
+
+```as3
+FocusManger.setEnabledForStage( Starling.current.stage, true );
+```
+
+The `LayoutGroup` class now respects the `includeInLayout` property when its `layout` property is `null`. In previous versions, the `includeInLayout` property was incorrectly ignored in this situation.
+
+All layouts now account for the `pivotX` and `pivotY` properties when positioning display objects. In previous versions, these properties were ignored.
+
+When the `direction` property of a `ProgressBar` is equal to `ProgressBar.DIRECTION_VERTICAL`, the fill now starts at the bottom and fills up.
+
+The increment button and decrement button sub-components of a `ScrollBar` are now hidden when the scroll bar's maximum scroll position is equal to its minimum scroll position, just like how the thumb is hidden. The track will be resized to fill the extra space where the buttons were previously rendered.
+
+When replacing the `dataProvider` of a `List` or `GroupedList` (or replacing the `data` property of a `ListCollection` or `HierarchicalCollection`), it is no longer necessary to call `updateItemAt()` on the new collection if it contains some of the same items as the previous collection. This behavior will happen automatically.
 
 ## 1.3.1
 
