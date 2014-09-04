@@ -132,7 +132,7 @@ package feathers.controls.text
 	 * automatically disposed when the component is disposed from the stage.
 	 *
 	 * <p><strong>Warning:</strong> This text editor is intended for use in
-	 * desktop applications, and it does not provide support for software
+	 * desktop applications only, and it does not provide support for software
 	 * keyboards on mobile devices.</p>
 	 *
 	 * <p><strong>Beta Component:</strong> This is a new component, and its APIs
