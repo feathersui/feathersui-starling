@@ -130,6 +130,15 @@ package feathers.controls.text
 	 * <p><strong>Warning:</strong> This text editor is intended for use in
 	 * desktop applications, and it does not provide support for software
 	 * keyboards on mobile devices.</p>
+	 * 
+	 * <p><strong>Beta Component:</strong> This is a new component, and its APIs
+	 * may need some changes between now and the next version of Feathers to
+	 * account for overlooked requirements or other issues. Upgrading to future
+	 * versions of Feathers may involve manual changes to your code that uses
+	 * this component. The
+	 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>
+	 * will not go into effect until this component's status is upgraded from
+	 * beta to stable.</p>
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/text-editors
 	 * @see http://doc.starling-framework.org/core/starling/text/BitmapFont.html starling.text.BitmapFont
