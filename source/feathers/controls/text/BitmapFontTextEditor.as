@@ -128,9 +128,9 @@ package feathers.controls.text
 	 * edited at runtime by the user.
 	 *
 	 * <p><strong>Warning:</strong> This text editor is intended for use in
-	 * desktop applications, and it does not provide support for software
+	 * desktop applications only, and it does not provide support for software
 	 * keyboards on mobile devices.</p>
-	 * 
+	 *
 	 * <p><strong>Beta Component:</strong> This is a new component, and its APIs
 	 * may need some changes between now and the next version of Feathers to
 	 * account for overlooked requirements or other issues. Upgrading to future
