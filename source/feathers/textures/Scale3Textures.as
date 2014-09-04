@@ -46,7 +46,7 @@ package feathers.textures
 		/**
 		 * Constructor.
 		 *
-		 * @param texture			A Starling Texture to slice up into three regions.
+		 * @param texture			A Starling Texture to slice up into three regions. It is recommended to turn of mip-maps for best rendering results.
 		 * @param firstRegionSize	The size, in pixels, of the first of the three regions. This value should be based on the original texture dimensions, with no adjustments for scale factor.
 		 * @param secondRegionSize	The size, in pixels, of the second of the three regions. This value should be based on the original texture dimensions, with no adjustments for scale factor.
 		 * @param direction			Indicates if the regions should be positioned horizontally or vertically.
