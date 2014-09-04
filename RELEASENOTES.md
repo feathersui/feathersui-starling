@@ -6,8 +6,8 @@ Noteworthy changes in official, stable releases of [Feathers](http://feathersui.
 
 * New style provider architecture for skinning and themes.
 * Components may always be validated, even if they are not on the display list yet.
-* New Text Editor: TextBlockTextEditor is a **desktop-only** text editor built on FTE, similar to TextBlockTextRenderer.
-* New Text Editor: BitmapFontTextEditor is a **desktop-only** text editor built on FTE, similar to BitmapFontTextRenderer.
+* New Text Editor: TextBlockTextEditor is a desktop-only text editor built on FTE, similar to TextBlockTextRenderer.
+* New Text Editor: BitmapFontTextEditor is a desktop-only text editor built on bitmap fonts, similar to BitmapFontTextRenderer.
 * All Components: subComponentProperties pattern is now stricter. If properties that don't exist are set, a runtime error will be thrown.
 * BitmapFontTextRenderer: properly redraws when isEnabled is changed.
 * BitmapFontTextRenderer: if textFormat is null, generates a default value so that something will be displayed (using Starling's embedded BitmapFont.MINI).
