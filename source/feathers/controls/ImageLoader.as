@@ -42,7 +42,8 @@ package feathers.controls
 	import starling.utils.SystemUtil;
 
 	/**
-	 * Dispatched when the source content finishes loading.
+	 * Dispatched when the source finishes loading, if the source is a URL. This
+	 * event is not dispatched when the source is a texture.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
 	 * <table class="innertable">
@@ -281,7 +282,15 @@ package feathers.controls
 				this.image.visible = false;
 			}
 			this._lastURL = null;
-			this._isLoaded = false;
+			if(this._source is Texture)
+			{
+				this._isLoaded = true;
+			}
+			else
+			{
+
+				this._isLoaded = false;
+			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
@@ -366,7 +375,8 @@ package feathers.controls
 		protected var _isLoaded:Boolean = false;
 
 		/**
-		 * Indicates if the source has fully loaded.
+		 * Indicates if the source has completed loading, if the source is a
+		 * URL. Always returns <code>true</code> when the source is a texture.
 		 *
 		 * <p>In the following example, we check if the image loader's source
 		 * has finished loading:</p>
@@ -1095,7 +1105,6 @@ package feathers.controls
 				this._lastURL = null;
 				this._texture = Texture(this._source);
 				this.refreshCurrentTexture();
-				this._isLoaded = true;
 			}
 			else
 			{

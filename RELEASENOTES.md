@@ -35,6 +35,7 @@ Noteworthy changes in official, stable releases of [Feathers](http://feathersui.
 * Header: fixed issue where title text renderer's isEnabled property wasn't properly updated.
 * IFocusDisplayObject: added new focusOwner property to allow pop-ups to be owned by another component. Allows the focus manager to manage focus order better with components like PickerList.
 * ImageLoader: checks for lost context before creating a texture from a loaded URL.
+* ImageLoader: isLoaded getter always returns true if the source is a texture.
 * Item Renderers: added skinField, skinFunction, and itemHasSkin for background skins from the data provider.
 * Item Renderers: added isSelectableOnAccessoryTouch property to control whether the selection will change or not when the accessory is touched.
 * Item Renderers: added minGap and minAccessoryGap properties that are used when gap or accessoryGap are set to Number.POSITIVE_INFINITY.
