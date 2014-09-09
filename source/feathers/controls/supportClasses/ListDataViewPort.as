@@ -541,7 +541,7 @@ package feathers.controls.supportClasses
 			{
 				result = new Point();
 			}
-			return this._layout["getNearestScrollPositionForIndex"](index,
+			return this._layout.getNearestScrollPositionForIndex(index,
 				this._horizontalScrollPosition, this._verticalScrollPosition,
 				this._layoutItems, 0, 0, this.actualVisibleWidth, this.actualVisibleHeight, result);
 		}
