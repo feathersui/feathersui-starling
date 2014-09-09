@@ -1384,6 +1384,139 @@ package feathers.layout
 		/**
 		 * @inheritDoc
 		 */
+		public function getNearestScrollPositionForIndex(index:int, scrollX:Number, scrollY:Number, items:Vector.<DisplayObject>,
+			x:Number, y:Number, width:Number, height:Number, result:Point = null):Point
+		{
+			if(!result)
+			{
+				result = new Point();
+			}
+
+			if(this._useVirtualLayout)
+			{
+				this.prepareTypicalItem(width - this._paddingLeft - this._paddingRight);
+				var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
+				var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
+			}
+
+			var hasFirstGap:Boolean = this._firstGap === this._firstGap; //!isNaN
+			var hasLastGap:Boolean = this._lastGap === this._lastGap; //!isNaN
+			var positionY:Number = y + this._paddingTop;
+			var lastHeight:Number = 0;
+			var gap:Number = this._gap;
+			var startIndexOffset:int = 0;
+			var endIndexOffset:Number = 0;
+			var itemCount:int = items.length;
+			var totalItemCount:int = itemCount;
+			if(this._useVirtualLayout && !this._hasVariableItemDimensions)
+			{
+				totalItemCount += this._beforeVirtualizedItemCount + this._afterVirtualizedItemCount;
+				if(index < this._beforeVirtualizedItemCount)
+				{
+					//this makes it skip the loop below
+					startIndexOffset = index + 1;
+					lastHeight = calculatedTypicalItemHeight;
+					gap = this._gap;
+				}
+				else
+				{
+					startIndexOffset = this._beforeVirtualizedItemCount;
+					endIndexOffset = index - items.length - this._beforeVirtualizedItemCount + 1;
+					if(endIndexOffset < 0)
+					{
+						endIndexOffset = 0;
+					}
+					positionY += (endIndexOffset * (calculatedTypicalItemHeight + this._gap));
+				}
+				positionY += (startIndexOffset * (calculatedTypicalItemHeight + this._gap));
+			}
+			index -= (startIndexOffset + endIndexOffset);
+			var secondToLastIndex:int = totalItemCount - 2;
+			for(var i:int = 0; i <= index; i++)
+			{
+				var item:DisplayObject = items[i];
+				var iNormalized:int = i + startIndexOffset;
+				if(hasFirstGap && iNormalized == 0)
+				{
+					gap = this._firstGap;
+				}
+				else if(hasLastGap && iNormalized > 0 && iNormalized == secondToLastIndex)
+				{
+					gap = this._lastGap;
+				}
+				else
+				{
+					gap = this._gap;
+				}
+				if(this._useVirtualLayout && this._hasVariableItemDimensions)
+				{
+					var cachedHeight:Number = this._heightCache[iNormalized];
+				}
+				if(this._useVirtualLayout && !item)
+				{
+					if(!this._hasVariableItemDimensions ||
+						cachedHeight !== cachedHeight) //isNaN
+					{
+						lastHeight = calculatedTypicalItemHeight;
+					}
+					else
+					{
+						lastHeight = cachedHeight;
+					}
+				}
+				else
+				{
+					var itemHeight:Number = item.height;
+					if(this._useVirtualLayout)
+					{
+						if(this._hasVariableItemDimensions)
+						{
+							if(itemHeight != cachedHeight)
+							{
+								this._heightCache[iNormalized] = itemHeight;
+								this.dispatchEventWith(Event.CHANGE);
+							}
+						}
+						else if(calculatedTypicalItemHeight >= 0)
+						{
+							item.height = itemHeight = calculatedTypicalItemHeight;
+						}
+					}
+					lastHeight = itemHeight;
+				}
+				positionY += lastHeight + gap;
+			}
+			positionY -= (lastHeight + gap);
+
+			result.x = 0;
+
+			var bottomPosition:Number = positionY - (height - lastHeight);
+			if(scrollY >= bottomPosition && scrollY <= positionY)
+			{
+				//keep the current scroll position because the item is already
+				//fully visible
+				result.y = scrollY;
+			}
+			else
+			{
+				var topDifference:Number = Math.abs(positionY - scrollY);
+				var bottomDifference:Number = Math.abs(bottomPosition - scrollY);
+				if(bottomDifference < topDifference)
+				{
+					result.y = bottomPosition;
+				}
+				else
+				{
+					result.y = positionY;
+				}
+			}
+
+			return result;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
 		public function getScrollPositionForIndex(index:int, items:Vector.<DisplayObject>, x:Number, y:Number, width:Number, height:Number, result:Point = null):Point
 		{
 			if(!result)
