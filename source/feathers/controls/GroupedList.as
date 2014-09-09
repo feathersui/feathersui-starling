@@ -2065,6 +2065,36 @@ package feathers.controls
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _keyScrollDuration:Number = 0.25;
+
+		/**
+		 * The duration, in seconds, of the animation when the selected item is
+		 * changed by keyboard navigation and the item scrolls into view.
+		 *
+		 * <p>In the following example, the duration of the animation that
+		 * scrolls the list to a new selected item is set to 500 milliseconds:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.keyScrollDuration = 0.5;</listing>
+		 *
+		 * @default 0.25
+		 */
+		public function get keyScrollDuration():Number
+		{
+			return this._keyScrollDuration;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set keyScrollDuration(value:Number):void
+		{
+			this._keyScrollDuration = value;
+		}
+
+		/**
 		 * The pending group index to scroll to after validating. A value of
 		 * <code>-1</code> means that the scroller won't scroll to a group after
 		 * validating.
@@ -2363,11 +2393,13 @@ package feathers.controls
 			{
 				return;
 			}
+			var changedSelection:Boolean = false;
 			if(event.keyCode == Keyboard.HOME)
 			{
 				if(this._dataProvider.getLength() > 0 && this._dataProvider.getLength(0) > 0)
 				{
 					this.setSelectedLocation(0, 0);
+					changedSelection = true;
 				}
 			}
 			if(event.keyCode == Keyboard.END)
@@ -2386,6 +2418,7 @@ package feathers.controls
 				if(groupIndex >= 0 && itemIndex >= 0)
 				{
 					this.setSelectedLocation(groupIndex, itemIndex);
+					changedSelection = true;
 				}
 			}
 			else if(event.keyCode == Keyboard.UP)
@@ -2407,6 +2440,7 @@ package feathers.controls
 				if(groupIndex >= 0 && itemIndex >= 0)
 				{
 					this.setSelectedLocation(groupIndex, itemIndex);
+					changedSelection = true;
 				}
 			}
 			else if(event.keyCode == Keyboard.DOWN)
@@ -2440,7 +2474,13 @@ package feathers.controls
 				if(groupIndex >= 0 && itemIndex >= 0)
 				{
 					this.setSelectedLocation(groupIndex, itemIndex);
+					changedSelection = true;
 				}
+			}
+			if(changedSelection)
+			{
+				this.dataViewPort.getNearestScrollPositionForIndex(this._selectedGroupIndex, this.selectedItemIndex, HELPER_POINT);
+				this.scrollToPosition(HELPER_POINT.x, HELPER_POINT.y, this._keyScrollDuration);
 			}
 		}
 
