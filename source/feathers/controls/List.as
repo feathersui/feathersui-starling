@@ -1236,24 +1236,34 @@ package feathers.controls
 			{
 				return;
 			}
+			var changedSelection:Boolean = false;
 			if(event.keyCode == Keyboard.HOME)
 			{
 				if(this._dataProvider.length > 0)
 				{
 					this.selectedIndex = 0;
+					changedSelection = true;
 				}
 			}
 			else if(event.keyCode == Keyboard.END)
 			{
 				this.selectedIndex = this._dataProvider.length - 1;
+				changedSelection = true;
 			}
 			else if(event.keyCode == Keyboard.UP)
 			{
 				this.selectedIndex = Math.max(0, this._selectedIndex - 1);
+				changedSelection = true;
 			}
 			else if(event.keyCode == Keyboard.DOWN)
 			{
 				this.selectedIndex = Math.min(this._dataProvider.length - 1, this._selectedIndex + 1);
+				changedSelection = true;
+			}
+			if(changedSelection)
+			{
+				this.dataViewPort.getNearestScrollPositionForIndex(this.selectedIndex, HELPER_POINT);
+				this.scrollToPosition(HELPER_POINT.x, HELPER_POINT.y, 0.25);
 			}
 		}
 
