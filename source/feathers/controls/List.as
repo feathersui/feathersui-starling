@@ -1029,6 +1029,36 @@ package feathers.controls
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _keyScrollDuration:Number = 0.25;
+
+		/**
+		 * The duration, in seconds, of the animation when the selected item is
+		 * changed by keyboard navigation and the item scrolls into view.
+		 *
+		 * <p>In the following example, the duration of the animation that
+		 * scrolls the list to a new selected item is set to 500 milliseconds:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.keyScrollDuration = 0.5;</listing>
+		 *
+		 * @default 0.25
+		 */
+		public function get keyScrollDuration():Number
+		{
+			return this._keyScrollDuration;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set keyScrollDuration(value:Number):void
+		{
+			this._keyScrollDuration = value;
+		}
+
+		/**
 		 * The pending item index to scroll to after validating. A value of
 		 * <code>-1</code> means that the scroller won't scroll to an item after
 		 * validating.
@@ -1263,7 +1293,7 @@ package feathers.controls
 			if(changedSelection)
 			{
 				this.dataViewPort.getNearestScrollPositionForIndex(this.selectedIndex, HELPER_POINT);
-				this.scrollToPosition(HELPER_POINT.x, HELPER_POINT.y, 0.25);
+				this.scrollToPosition(HELPER_POINT.x, HELPER_POINT.y, this._keyScrollDuration);
 			}
 		}
 
