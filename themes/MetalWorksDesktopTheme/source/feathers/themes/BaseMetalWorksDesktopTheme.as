@@ -1780,6 +1780,7 @@ package feathers.themes
 				height: this.smallControlSize,
 				textureScale: this.scale
 			};
+			thumb.stateToSkinFunction = skinSelector.updateValue;
 
 			thumb.hasLabelTextRenderer = false;
 		}
