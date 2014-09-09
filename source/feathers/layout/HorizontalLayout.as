@@ -1367,117 +1367,89 @@ package feathers.layout
 		/**
 		 * @inheritDoc
 		 */
-		public function getScrollPositionForIndex(index:int, items:Vector.<DisplayObject>, x:Number, y:Number, width:Number, height:Number, result:Point = null):Point
+		public function getNearestScrollPositionForIndex(index:int, scrollX:Number, scrollY:Number, items:Vector.<DisplayObject>,
+			x:Number, y:Number, width:Number, height:Number, result:Point = null):Point
 		{
+			var maxScrollX:Number = this.calculateMaxScrollXOfIndex(index, items, x, y, width, height);
+
+			if(this._useVirtualLayout)
+			{
+				if(this._hasVariableItemDimensions)
+				{
+					//we know it will be cached in the call to calculateMaxScrollXOfIndex()
+					var itemWidth:Number = this._widthCache[index];
+				}
+				else
+				{
+					itemWidth = this._typicalItem.width;
+				}
+			}
+			else
+			{
+				itemWidth = items[index].width;
+			}
+
 			if(!result)
 			{
 				result = new Point();
 			}
 
+			var rightPosition:Number = maxScrollX - (width - itemWidth);
+			if(scrollX >= rightPosition && scrollX <= maxScrollX)
+			{
+				//keep the current scroll position because the item is already
+				//fully visible
+				result.x = scrollX;
+			}
+			else
+			{
+				var leftDifference:Number = Math.abs(maxScrollX - scrollX);
+				var rightDifference:Number = Math.abs(rightPosition - scrollX);
+				if(rightDifference < leftDifference)
+				{
+					result.x = rightPosition;
+				}
+				else
+				{
+					result.x = maxScrollX;
+				}
+			}
+			result.y = 0;
+
+			return result;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function getScrollPositionForIndex(index:int, items:Vector.<DisplayObject>, x:Number, y:Number, width:Number, height:Number, result:Point = null):Point
+		{
+			var maxScrollX:Number = this.calculateMaxScrollXOfIndex(index, items, x, y, width, height);
 			if(this._useVirtualLayout)
 			{
-				this.prepareTypicalItem(height - this._paddingTop - this._paddingBottom);
-				var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
-				var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
+				if(this._hasVariableItemDimensions)
+				{
+					//we know it will be cached in the call to calculateMaxScrollXOfIndex()
+					var lastItemWidth:Number = this._widthCache[index];
+				}
+				else
+				{
+					lastItemWidth = this._typicalItem.width;
+				}
 			}
-
-			var hasFirstGap:Boolean = this._firstGap === this._firstGap; //!isNaN
-			var hasLastGap:Boolean = this._lastGap === this._lastGap; //!isNaN
-			var positionX:Number = x + this._paddingLeft;
-			var lastWidth:Number = 0;
-			var gap:Number = this._gap;
-			var startIndexOffset:int = 0;
-			var endIndexOffset:Number = 0;
-			var itemCount:int = items.length;
-			var totalItemCount:int = itemCount;
-			if(this._useVirtualLayout && !this._hasVariableItemDimensions)
+			else
 			{
-				totalItemCount += this._beforeVirtualizedItemCount + this._afterVirtualizedItemCount;
-				if(index < this._beforeVirtualizedItemCount)
-				{
-					//this makes it skip the loop below
-					startIndexOffset = index + 1;
-					lastWidth = calculatedTypicalItemWidth;
-					gap = this._gap;
-				}
-				else
-				{
-					startIndexOffset = this._beforeVirtualizedItemCount;
-					endIndexOffset = index - items.length - this._beforeVirtualizedItemCount + 1;
-					if(endIndexOffset < 0)
-					{
-						endIndexOffset = 0;
-					}
-					positionX += (endIndexOffset * (calculatedTypicalItemWidth + this._gap));
-				}
-				positionX += (startIndexOffset * (calculatedTypicalItemWidth + this._gap));
+				lastItemWidth = items[index].width;
 			}
-			index -= (startIndexOffset + endIndexOffset);
-			var secondToLastIndex:int = totalItemCount - 2;
-			for(var i:int = 0; i <= index; i++)
-			{
-				var item:DisplayObject = items[i];
-				var iNormalized:int = i + startIndexOffset;
-				if(hasFirstGap && iNormalized == 0)
-				{
-					gap = this._firstGap;
-				}
-				else if(hasLastGap && iNormalized > 0 && iNormalized == secondToLastIndex)
-				{
-					gap = this._lastGap;
-				}
-				else
-				{
-					gap = this._gap;
-				}
-				if(this._useVirtualLayout && this._hasVariableItemDimensions)
-				{
-					var cachedWidth:Number = this._widthCache[iNormalized];
-				}
-				if(this._useVirtualLayout && !item)
-				{
-					if(!this._hasVariableItemDimensions ||
-						cachedWidth !== cachedWidth) //isNaN
-					{
-						lastWidth = calculatedTypicalItemWidth;
-					}
-					else
-					{
-						lastWidth = cachedWidth;
-					}
-				}
-				else
-				{
-					var itemWidth:Number = item.width;
-					if(this._useVirtualLayout)
-					{
-						if(this._hasVariableItemDimensions)
-						{
-							if(itemWidth != cachedWidth)
-							{
-								this._widthCache[iNormalized] = itemWidth;
-								this.dispatchEventWith(Event.CHANGE);
-							}
-						}
-						else if(calculatedTypicalItemWidth >= 0)
-						{
-							item.width = itemWidth = calculatedTypicalItemWidth;
-						}
-					}
-					lastWidth = itemWidth;
-				}
-				positionX += lastWidth + gap;
-			}
-			positionX -= (lastWidth + gap);
 			if(this._scrollPositionHorizontalAlign == HORIZONTAL_ALIGN_CENTER)
 			{
-				positionX -= Math.round((width - lastWidth) / 2);
+				maxScrollX -= Math.round((width - lastItemWidth) / 2);
 			}
 			else if(this._scrollPositionHorizontalAlign == HORIZONTAL_ALIGN_RIGHT)
 			{
-				positionX -= (width - lastWidth);
+				maxScrollX -= (width - lastItemWidth);
 			}
-			result.x = positionX;
+			result.x = maxScrollX;
 			result.y = 0;
 
 			return result;
@@ -1710,6 +1682,109 @@ package feathers.layout
 			}
 			while(needsAnotherPass)
 			this._discoveredItemsCache.length = 0;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function calculateMaxScrollXOfIndex(index:int, items:Vector.<DisplayObject>, x:Number, y:Number, width:Number, height:Number):Number
+		{
+			if(this._useVirtualLayout)
+			{
+				this.prepareTypicalItem(height - this._paddingTop - this._paddingBottom);
+				var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
+				var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
+			}
+
+			var hasFirstGap:Boolean = this._firstGap === this._firstGap; //!isNaN
+			var hasLastGap:Boolean = this._lastGap === this._lastGap; //!isNaN
+			var positionX:Number = x + this._paddingLeft;
+			var lastWidth:Number = 0;
+			var gap:Number = this._gap;
+			var startIndexOffset:int = 0;
+			var endIndexOffset:Number = 0;
+			var itemCount:int = items.length;
+			var totalItemCount:int = itemCount;
+			if(this._useVirtualLayout && !this._hasVariableItemDimensions)
+			{
+				totalItemCount += this._beforeVirtualizedItemCount + this._afterVirtualizedItemCount;
+				if(index < this._beforeVirtualizedItemCount)
+				{
+					//this makes it skip the loop below
+					startIndexOffset = index + 1;
+					lastWidth = calculatedTypicalItemWidth;
+					gap = this._gap;
+				}
+				else
+				{
+					startIndexOffset = this._beforeVirtualizedItemCount;
+					endIndexOffset = index - items.length - this._beforeVirtualizedItemCount + 1;
+					if(endIndexOffset < 0)
+					{
+						endIndexOffset = 0;
+					}
+					positionX += (endIndexOffset * (calculatedTypicalItemWidth + this._gap));
+				}
+				positionX += (startIndexOffset * (calculatedTypicalItemWidth + this._gap));
+			}
+			index -= (startIndexOffset + endIndexOffset);
+			var secondToLastIndex:int = totalItemCount - 2;
+			for(var i:int = 0; i <= index; i++)
+			{
+				var item:DisplayObject = items[i];
+				var iNormalized:int = i + startIndexOffset;
+				if(hasFirstGap && iNormalized == 0)
+				{
+					gap = this._firstGap;
+				}
+				else if(hasLastGap && iNormalized > 0 && iNormalized == secondToLastIndex)
+				{
+					gap = this._lastGap;
+				}
+				else
+				{
+					gap = this._gap;
+				}
+				if(this._useVirtualLayout && this._hasVariableItemDimensions)
+				{
+					var cachedWidth:Number = this._widthCache[iNormalized];
+				}
+				if(this._useVirtualLayout && !item)
+				{
+					if(!this._hasVariableItemDimensions ||
+						cachedWidth !== cachedWidth) //isNaN
+					{
+						lastWidth = calculatedTypicalItemWidth;
+					}
+					else
+					{
+						lastWidth = cachedWidth;
+					}
+				}
+				else
+				{
+					var itemWidth:Number = item.width;
+					if(this._useVirtualLayout)
+					{
+						if(this._hasVariableItemDimensions)
+						{
+							if(itemWidth != cachedWidth)
+							{
+								this._widthCache[iNormalized] = itemWidth;
+								this.dispatchEventWith(Event.CHANGE);
+							}
+						}
+						else if(calculatedTypicalItemWidth >= 0)
+						{
+							item.width = itemWidth = calculatedTypicalItemWidth;
+						}
+					}
+					lastWidth = itemWidth;
+				}
+				positionX += lastWidth + gap;
+			}
+			positionX -= (lastWidth + gap);
+			return positionX;
 		}
 	}
 }
