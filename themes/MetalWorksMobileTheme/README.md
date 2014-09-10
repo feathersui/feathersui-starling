@@ -1,6 +1,6 @@
 # Metal Works Mobile Theme for Feathers
 
-This [Feathers](http://feathersui.com/) theme for mobile devices combines has an industrial aesthetic with bright orange highlights.
+This [Feathers](http://feathersui.com/) theme for mobile devices combines an industrial aesthetic with bold orange highlights.
 
 ## Credits
 
