@@ -1751,13 +1751,13 @@ package feathers.core
 			var widthIsNaN:Boolean = width != width;
 			if(widthIsNaN)
 			{
-				this.actualWidth = 0;
+				this.actualWidth = this.scaledActualWidth = 0;
 			}
 			this.explicitHeight = height;
 			var heightIsNaN:Boolean = height != height;
 			if(heightIsNaN)
 			{
-				this.actualHeight = 0;
+				this.actualHeight = this.scaledActualHeight = 0;
 			}
 
 			if(widthIsNaN || heightIsNaN)
