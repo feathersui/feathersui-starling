@@ -129,6 +129,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		private static const CONTEXT_LOST_WARNING:String = "ImageLoader: Context lost while processing loaded image, retrying...";
+
+		/**
+		 * @private
+		 */
 		protected static const LOADER_CONTEXT:LoaderContext = new LoaderContext(true);
 		LOADER_CONTEXT.imageDecodingPolicy = ImageDecodingPolicy.ON_LOAD;
 
@@ -1333,11 +1338,31 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function verifyCurrentStarling():void
+		{
+			if(!this.stage || Starling.current.stage === this.stage)
+			{
+				return;
+			}
+			for each(var starling:Starling in Starling.all)
+			{
+				if(starling.stage === this.stage)
+				{
+					starling.makeCurrent();
+					break;
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function replaceBitmapDataTexture(bitmapData:BitmapData):void
 		{
 			if(Starling.handleLostContext && !Starling.current.contextValid)
 			{
-				trace("ImageLoader: Context lost while processing loaded image, retrying...");
+				//this trace duplicates the behavior of AssetManager
+				trace(CONTEXT_LOST_WARNING);
 				setTimeout(replaceBitmapDataTexture, 1, bitmapData);
 				return;
 			}
@@ -1347,6 +1372,7 @@ package feathers.controls
 				SystemUtil.executeWhenApplicationIsActive(replaceBitmapDataTexture, bitmapData);
 				return;
 			}
+			this.verifyCurrentStarling();
 			this._texture = Texture.fromBitmapData(bitmapData, false, false, 1, this._textureFormat);
 			if(Starling.handleLostContext)
 			{
@@ -1373,7 +1399,8 @@ package feathers.controls
 		{
 			if(Starling.handleLostContext && !Starling.current.contextValid)
 			{
-				trace("ImageLoader: Context lost while processing loaded image, retrying...");
+				//this trace duplicates the behavior of AssetManager
+				trace(CONTEXT_LOST_WARNING);
 				setTimeout(replaceRawTextureData, 1, rawData);
 				return;
 			}
@@ -1383,6 +1410,7 @@ package feathers.controls
 				SystemUtil.executeWhenApplicationIsActive(replaceRawTextureData, rawData);
 				return;
 			}
+			this.verifyCurrentStarling();
 			this._texture = Texture.fromAtfData(rawData);
 			if(Starling.handleLostContext)
 			{
