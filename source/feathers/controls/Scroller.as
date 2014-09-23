@@ -332,6 +332,20 @@ package feathers.controls
 		public static const INTERACTION_MODE_TOUCH_AND_SCROLL_BARS:String = "touchAndScrollBars";
 
 		/**
+		 * The scroller will scroll vertically when the mouse wheel is scrolled.
+		 *
+		 * @see feathers.controls.Scroller#verticalMouseWheelScrollDirection
+		 */
+		public static const MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL:String = "vertical";
+
+		/**
+		 * The scroller will scroll horizontally when the mouse wheel is scrolled.
+		 *
+		 * @see feathers.controls.Scroller#verticalMouseWheelScrollDirection
+		 */
+		public static const MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL:String = "horizontal";
+
+		/**
 		 * Flag to indicate that the clipping has changed.
 		 */
 		protected static const INVALIDATION_FLAG_CLIPPING:String = "clipping";
@@ -2487,6 +2501,41 @@ package feathers.controls
 		public function set mouseWheelScrollDuration(value:Number):void
 		{
 			this._mouseWheelScrollDuration = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _verticalMouseWheelScrollDirection:String = MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL;
+
+		/**
+		 * The direction of scrolling when the user scrolls the mouse wheel
+		 * vertically. In some cases, it is common for a container that only
+		 * scrolls horizontally to scroll even when the mouse wheel is scrolled
+		 * vertically.
+		 *
+		 * <p>In the following example, the direction of scrolling when using
+		 * the mouse wheel is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.verticalMouseWheelScrollDirection = Scroller.MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL;</listing>
+		 *
+		 * @default Scroller.MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL
+		 *
+		 * @see #MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL
+		 * @see #MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL
+		 */
+		public function get verticalMouseWheelScrollDirection():String
+		{
+			return this._verticalMouseWheelScrollDirection;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set verticalMouseWheelScrollDirection(value:String):void
+		{
+			this._verticalMouseWheelScrollDirection = value;
 		}
 
 		/**
@@ -5065,7 +5114,8 @@ package feathers.controls
 				this._touchPointID = -1;
 				return;
 			}
-			if(this._maxVerticalScrollPosition == 0 || this._verticalScrollPolicy == SCROLL_POLICY_OFF)
+			if((this._verticalMouseWheelScrollDirection == MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL && (this._maxVerticalScrollPosition == this._minVerticalScrollPosition || this._verticalScrollPolicy == SCROLL_POLICY_OFF)) ||
+				(this._verticalMouseWheelScrollDirection == MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL && (this._maxHorizontalScrollPosition == this._minHorizontalScrollPosition || this._horizontalScrollPolicy == SCROLL_POLICY_OFF)))
 			{
 				return;
 			}
@@ -5090,21 +5140,42 @@ package feathers.controls
 				{
 					return;
 				}
+				var targetHorizontalScrollPosition:Number = this._horizontalScrollPosition;
+				var targetVerticalScrollPosition:Number = this._verticalScrollPosition;
 				var scrollStep:Number = this._verticalMouseWheelScrollStep;
-				if(scrollStep !== scrollStep) //isNaN
+				if(this._verticalMouseWheelScrollDirection == MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL)
 				{
-					scrollStep = this.actualVerticalScrollStep;
+					if(scrollStep !== scrollStep) //isNaN
+					{
+						scrollStep = this.actualHorizontalScrollStep;
+					}
+					targetHorizontalScrollPosition -= event.delta * scrollStep;
+					if(targetHorizontalScrollPosition < this._minHorizontalScrollPosition)
+					{
+						targetHorizontalScrollPosition = this._minHorizontalScrollPosition;
+					}
+					else if(targetHorizontalScrollPosition > this._maxHorizontalScrollPosition)
+					{
+						targetHorizontalScrollPosition = this._maxHorizontalScrollPosition;
+					}
 				}
-				var targetVerticalScrollPosition:Number = this._verticalScrollPosition - event.delta * scrollStep;
-				if(targetVerticalScrollPosition < this._minVerticalScrollPosition)
+				else //vertical
 				{
-					targetVerticalScrollPosition = this._minVerticalScrollPosition;
+					if(scrollStep !== scrollStep) //isNaN
+					{
+						scrollStep = this.actualVerticalScrollStep;
+					}
+					targetVerticalScrollPosition -= event.delta * scrollStep;
+					if(targetVerticalScrollPosition < this._minVerticalScrollPosition)
+					{
+						targetVerticalScrollPosition = this._minVerticalScrollPosition;
+					}
+					else if(targetVerticalScrollPosition > this._maxVerticalScrollPosition)
+					{
+						targetVerticalScrollPosition = this._maxVerticalScrollPosition;
+					}
 				}
-				else if(targetVerticalScrollPosition > this._maxVerticalScrollPosition)
-				{
-					targetVerticalScrollPosition = this._maxVerticalScrollPosition;
-				}
-				this.throwTo(NaN, targetVerticalScrollPosition, this._mouseWheelScrollDuration);
+				this.throwTo(targetHorizontalScrollPosition, targetVerticalScrollPosition, this._mouseWheelScrollDuration);
 			}
 		}
 
