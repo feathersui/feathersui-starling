@@ -1777,6 +1777,19 @@ package feathers.core
 		}
 
 		/**
+		 * Sets both the x and the y positions of the control in a single
+		 * function call.
+		 *
+		 * @see #x
+		 * @see #y
+		 */
+		public function move(x:Number, y:Number):void
+		{
+			this.x = x;
+			this.y = y;
+		}
+
+		/**
 		 * @copy feathers.core.IFocusDisplayObject#showFocus()
 		 *
 		 * <p>The implementation of this method is provided for convenience, but

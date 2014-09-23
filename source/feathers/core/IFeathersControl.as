@@ -191,5 +191,10 @@ package feathers.core
 		 * @copy feathers.core.FeathersControl#setSize()
 		 */
 		function setSize(width:Number, height:Number):void;
+
+		/**
+		 * @copy feathers.core.FeathersControl#move()
+		 */
+		function move(x:Number, y:Number):void;
 	}
 }
