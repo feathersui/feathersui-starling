@@ -554,7 +554,8 @@ package feathers.core
 		 *
 		 * <listing version="3.0">
 		 * control.width = NaN;</listing>
-		 * 
+		 *
+		 * @see feathers.core.FeathersControl#setSize()
 		 * @see feathers.core.FeathersControl#validate()
 		 */
 		override public function get width():Number
@@ -638,7 +639,8 @@ package feathers.core
 		 *
 		 * <listing version="3.0">
 		 * control.height = NaN;</listing>
-		 * 
+		 *
+		 * @see feathers.core.FeathersControl#setSize()
 		 * @see feathers.core.FeathersControl#validate()
 		 */
 		override public function get height():Number
@@ -1743,7 +1745,11 @@ package feathers.core
 		}
 
 		/**
-		 * Sets both the width and the height of the control.
+		 * Sets both the width and the height of the control in a single
+		 * function call.
+		 *
+		 * @see #width
+		 * @see #height
 		 */
 		public function setSize(width:Number, height:Number):void
 		{
