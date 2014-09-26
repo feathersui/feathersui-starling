@@ -943,7 +943,6 @@ package feathers.controls
 			if(this._backgroundSkin && this._backgroundSkin.parent != this)
 			{
 				this._backgroundSkin.visible = false;
-				this._backgroundSkin.touchable = false;
 				this.addChildAt(this._backgroundSkin, 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
@@ -988,7 +987,6 @@ package feathers.controls
 			if(this._backgroundDisabledSkin && this._backgroundDisabledSkin.parent != this)
 			{
 				this._backgroundDisabledSkin.visible = false;
-				this._backgroundDisabledSkin.touchable = false;
 				this.addChildAt(this._backgroundDisabledSkin, 0);
 			}
 			this.invalidate(INVALIDATION_FLAG_STYLES);
@@ -1474,7 +1472,6 @@ package feathers.controls
 			this.titleTextRenderer = ITextRenderer(factory());
 			var uiTitleRenderer:IFeathersControl = IFeathersControl(this.titleTextRenderer);
 			uiTitleRenderer.styleNameList.add(this.titleName);
-			uiTitleRenderer.touchable = false;
 			this.addChild(DisplayObject(uiTitleRenderer));
 		}
 
