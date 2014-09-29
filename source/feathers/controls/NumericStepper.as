@@ -530,7 +530,7 @@ package feathers.controls
 		 * happens after a delay that is five times longer than the following
 		 * repeats.
 		 *
-		 * <p>In the following example, the slider's repeat delay is set to
+		 * <p>In the following example, the stepper's repeat delay is set to
 		 * 500 milliseconds:</p>
 		 *
 		 * <listing version="3.0">
@@ -694,7 +694,7 @@ package feathers.controls
 		 * to the stepper:</p>
 		 *
 		 * <listing version="3.0">
-		 * slider.decrementButtonFactory = function():Button
+		 * stepper.decrementButtonFactory = function():Button
 		 * {
 		 *     var button:Button = new Button();
 		 *     button.defaultSkin = new Image( upTexture );
@@ -739,7 +739,7 @@ package feathers.controls
 		 * to the stepper:</p>
 		 *
 		 * <listing version="3.0">
-		 * slider.customDecrementButtonName = "my-custom-decrement-button";</listing>
+		 * stepper.customDecrementButtonName = "my-custom-decrement-button";</listing>
 		 *
 		 * <p>In your theme, you can target this sub-component name to provide
 		 * different skins than the default style:</p>
@@ -902,7 +902,7 @@ package feathers.controls
 		 * to the stepper:</p>
 		 *
 		 * <listing version="3.0">
-		 * slider.incrementButtonFactory = function():Button
+		 * stepper.incrementButtonFactory = function():Button
 		 * {
 		 *     var button:Button = new Button();
 		 *     button.defaultSkin = new Image( upTexture );
@@ -947,7 +947,7 @@ package feathers.controls
 		 * to the stepper:</p>
 		 *
 		 * <listing version="3.0">
-		 * slider.customIncrementButtonName = "my-custom-increment-button";</listing>
+		 * stepper.customIncrementButtonName = "my-custom-increment-button";</listing>
 		 *
 		 * <p>In your theme, you can target this sub-component name to provide
 		 * different skins than the default style:</p>
@@ -1154,7 +1154,7 @@ package feathers.controls
 		 * to the stepper:</p>
 		 *
 		 * <listing version="3.0">
-		 * slider.customTextInputName = "my-custom-text-input";</listing>
+		 * stepper.customTextInputName = "my-custom-text-input";</listing>
 		 *
 		 * <p>In your theme, you can target this sub-component name to provide
 		 * different skins than the default style:</p>
