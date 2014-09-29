@@ -1210,7 +1210,7 @@ package feathers.core
 			{
 				return;
 			}
-			if(this._focusIndicatorSkin && this._focusIndicatorSkin.parent)
+			if(this._focusIndicatorSkin && this._focusIndicatorSkin.parent == this)
 			{
 				this._focusIndicatorSkin.removeFromParent(false);
 			}
