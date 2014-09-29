@@ -523,7 +523,8 @@ package feathers.core
 					return childWithFocus;
 				}
 			}
-			else if(child is DisplayObjectContainer)
+			if((child is DisplayObjectContainer && !(child is IFocusDisplayObject)) ||
+				(child is IFocusContainer && IFocusContainer(child).isChildFocusEnabled))
 			{
 				var childContainer:DisplayObjectContainer = DisplayObjectContainer(child);
 				var foundChild:IFocusDisplayObject = this.findPreviousFocus(childContainer);
@@ -548,7 +549,8 @@ package feathers.core
 					return childWithFocus;
 				}
 			}
-			else if(child is DisplayObjectContainer)
+			if((child is DisplayObjectContainer && !(child is IFocusDisplayObject)) ||
+				(child is IFocusContainer && IFocusContainer(child).isChildFocusEnabled))
 			{
 				var childContainer:DisplayObjectContainer = DisplayObjectContainer(child);
 				var foundChild:IFocusDisplayObject = this.findNextFocus(childContainer);
@@ -687,7 +689,10 @@ package feathers.core
 					var tempFocusTarget:IFocusDisplayObject = IFocusDisplayObject(target);
 					if(this.isValidFocus(tempFocusTarget))
 					{
-						focusTarget = tempFocusTarget;
+						if(!focusTarget || !(tempFocusTarget is IFocusContainer) || !(IFocusContainer(tempFocusTarget).isChildFocusEnabled))
+						{
+							focusTarget = tempFocusTarget;
+						}
 					}
 				}
 				target = target.parent;
