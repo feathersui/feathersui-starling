@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.controls.supportClasses.LayoutViewPort;
+	import feathers.core.IFocusContainer;
 	import feathers.layout.ILayout;
 	import feathers.layout.IVirtualLayout;
 	import feathers.skins.IStyleProvider;
@@ -65,7 +66,7 @@ package feathers.controls
 	 * @see http://wiki.starling-framework.org/feathers/scroll-container
 	 * @see feathers.controls.LayoutGroup
 	 */
-	public class ScrollContainer extends Scroller implements IScrollContainer
+	public class ScrollContainer extends Scroller implements IScrollContainer, IFocusContainer
 	{
 		/**
 		 * @private
@@ -239,6 +240,31 @@ package feathers.controls
 		override protected function get defaultStyleProvider():IStyleProvider
 		{
 			return ScrollContainer.globalStyleProvider;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _isChildFocusEnabled:Boolean = true;
+
+		/**
+		 * @copy feathers.core.IFocusContainer#isChildFocusEnabled
+		 *
+		 * @default true
+		 *
+		 * @see #isFocusEnabled
+		 */
+		public function get isChildFocusEnabled():Boolean
+		{
+			return this._isEnabled && this._isChildFocusEnabled;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set isChildFocusEnabled(value:Boolean):void
+		{
+			this._isChildFocusEnabled = value;
 		}
 
 		/**
