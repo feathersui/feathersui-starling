@@ -3067,9 +3067,10 @@ package feathers.controls
 				{
 					newWidth = 0;
 				}
-				if(this.originalBackgroundWidth === this.originalBackgroundWidth) //!isNaN
+				if(this.originalBackgroundWidth === this.originalBackgroundWidth && //!isNaN
+					this.originalBackgroundWidth > newWidth)
 				{
-					newWidth = Math.max(newWidth, this.originalBackgroundWidth);
+					newWidth = this.originalBackgroundWidth;
 				}
 			}
 			if(needsHeight)
@@ -3087,9 +3088,10 @@ package feathers.controls
 				{
 					newHeight = 0;
 				}
-				if(this.originalBackgroundHeight === this.originalBackgroundHeight) //!isNaN
+				if(this.originalBackgroundHeight === this.originalBackgroundHeight && //!isNaN
+					this.originalBackgroundHeight > newHeight)
 				{
-					newHeight = Math.max(newHeight, this.originalBackgroundHeight);
+					newHeight = this.originalBackgroundHeight;
 				}
 			}
 			return this.setSizeInternal(newWidth, newHeight, false);
