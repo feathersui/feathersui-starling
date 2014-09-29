@@ -291,17 +291,26 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _isTransitionActive:Boolean = false;
+
+		/**
+		 * Indicates whether the <code>ScreenNavigator</code> is currently
+		 * transitioning between screens.
+		 */
+		public function get isTransitionActive():Boolean
+		{
+			return this._isTransitionActive;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _screens:Object = {};
 
 		/**
 		 * @private
 		 */
 		protected var _screenEvents:Object = {};
-
-		/**
-		 * @private
-		 */
-		protected var _transitionIsActive:Boolean = false;
 
 		/**
 		 * @private
@@ -385,7 +394,7 @@ package feathers.controls
 				throw new IllegalOperationError("Screen with id '" + id + "' cannot be shown because it has not been defined.");
 			}
 
-			if(this._transitionIsActive)
+			if(this._isTransitionActive)
 			{
 				this._nextScreenID = id;
 				this._clearAfterTransition = false;
@@ -404,7 +413,7 @@ package feathers.controls
 				this.clearScreenInternal(false);
 			}
 			
-			this._transitionIsActive = true;
+			this._isTransitionActive = true;
 
 			var item:ScreenNavigatorItem = ScreenNavigatorItem(this._screens[id]);
 			this._activeScreen = item.getScreen();
@@ -482,7 +491,7 @@ package feathers.controls
 		 */
 		public function clearScreen():void
 		{
-			if(this._transitionIsActive)
+			if(this._isTransitionActive)
 			{
 				this._nextScreenID = null;
 				this._clearAfterTransition = true;
@@ -538,7 +547,7 @@ package feathers.controls
 
 			if(displayTransition)
 			{
-				this._transitionIsActive = true;
+				this._isTransitionActive = true;
 				this._previousScreenInTransition = this._activeScreen;
 				this._previousScreenInTransitionID = this._activeScreenID;
 			}
@@ -751,7 +760,7 @@ package feathers.controls
 		 */
 		protected function transitionComplete():void
 		{
-			this._transitionIsActive = false;
+			this._isTransitionActive = false;
 			this.dispatchEventWith(FeathersEventType.TRANSITION_COMPLETE);
 			if(this._previousScreenInTransition)
 			{
