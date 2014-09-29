@@ -847,6 +847,9 @@ package feathers.themes
 			scroller.verticalScrollBarFactory = scrollBarFactory;
 			scroller.interactionMode = ScrollContainer.INTERACTION_MODE_MOUSE;
 			scroller.scrollBarDisplayMode = ScrollContainer.SCROLL_BAR_DISPLAY_MODE_FIXED;
+
+			scroller.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
+			scroller.focusPadding = 0;
 		}
 
 	//-------------------------
@@ -1040,9 +1043,6 @@ package feathers.themes
 
 			list.backgroundSkin = new Scale9Image(simpleBorderBackgroundSkinTextures);
 
-			list.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
-			list.focusPadding = -1;
-
 			list.padding = this.borderSize;
 		}
 
@@ -1152,9 +1152,6 @@ package feathers.themes
 			list.verticalScrollPolicy = List.SCROLL_POLICY_AUTO;
 
 			list.backgroundSkin = new Scale9Image(simpleBorderBackgroundSkinTextures);
-
-			list.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
-			list.focusPadding = -1;
 
 			list.padding = this.borderSize;
 		}
@@ -1816,9 +1813,6 @@ package feathers.themes
 			textArea.textEditorProperties.disabledTextFormat = this.disabledTextFormat;
 
 			textArea.padding = this.borderSize;
-
-			textArea.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
-			textArea.focusPadding = -1;
 
 			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = this.textInputBackgroundSkinTextures;
