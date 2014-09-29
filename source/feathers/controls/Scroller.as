@@ -9,6 +9,7 @@ package feathers.controls
 {
 	import feathers.controls.supportClasses.IViewPort;
 	import feathers.core.FeathersControl;
+	import feathers.core.IFocusDisplayObject;
 	import feathers.core.PropertyProxy;
 	import feathers.events.ExclusiveTouch;
 	import feathers.events.FeathersEventType;
@@ -20,6 +21,7 @@ package feathers.controls
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.ui.Keyboard;
 	import flash.utils.getTimer;
 
 	import starling.animation.Transitions;
@@ -28,6 +30,7 @@ package feathers.controls
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.events.Event;
+	import starling.events.KeyboardEvent;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -192,6 +195,50 @@ package feathers.controls
 	[Event(name="endInteraction",type="starling.events.Event")]
 
 	/**
+	 * Dispatched when the component receives focus.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @eventType feathers.events.FeathersEventType.FOCUS_IN
+	 */
+	[Event(name="focusIn",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the component loses focus.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @eventType feathers.events.FeathersEventType.FOCUS_OUT
+	 */
+	[Event(name="focusOut",type="starling.events.Event")]
+
+	/**
 	 * Allows horizontal and vertical scrolling of a <em>view port</em>. Not
 	 * meant to be used as a standalone container or component. Generally meant
 	 * to be the super class of another component that needs to support
@@ -207,7 +254,7 @@ package feathers.controls
 	 * @see ScrollContainer
 	 * @see ScrollText
 	 */
-	public class Scroller extends FeathersControl
+	public class Scroller extends FeathersControl implements IFocusDisplayObject
 	{
 		/**
 		 * @private
@@ -470,6 +517,16 @@ package feathers.controls
 		 * @see #createScrollBars()
 		 */
 		protected var verticalScrollBar:IScrollBar;
+
+		/**
+		 * @private
+		 */
+		override public function get isFocusEnabled():Boolean
+		{
+			return (this._maxVerticalScrollPosition != this._minVerticalScrollPosition ||
+				this._maxHorizontalScrollPosition != this._minHorizontalScrollPosition) &&
+				super.isFocusEnabled;
+		}
 
 		/**
 		 * @private
@@ -3013,6 +3070,7 @@ package feathers.controls
 			{
 				this.refreshClipRect();
 			}
+			this.refreshFocusIndicator();
 
 			if(pendingScrollInvalid)
 			{
@@ -5359,6 +5417,63 @@ package feathers.controls
 				oldVerticalScrollPosition != this._verticalScrollPosition)
 			{
 				this.dispatchEventWith(Event.SCROLL);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function focusInHandler(event:Event):void
+		{
+			super.focusInHandler(event);
+			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function focusOutHandler(event:Event):void
+		{
+			super.focusOutHandler(event);
+			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function stage_keyDownHandler(event:KeyboardEvent):void
+		{
+			if(event.keyCode == Keyboard.HOME)
+			{
+				this.verticalScrollPosition = this._minVerticalScrollPosition;
+			}
+			else if(event.keyCode == Keyboard.END)
+			{
+				this.verticalScrollPosition = this._maxVerticalScrollPosition;
+			}
+			else if(event.keyCode == Keyboard.PAGE_UP)
+			{
+				this.verticalScrollPosition = Math.max(this._minVerticalScrollPosition, this._verticalScrollPosition - this.viewPort.visibleHeight);
+			}
+			else if(event.keyCode == Keyboard.PAGE_DOWN)
+			{
+				this.verticalScrollPosition = Math.min(this._maxVerticalScrollPosition, this._verticalScrollPosition + this.viewPort.visibleHeight);
+			}
+			else if(event.keyCode == Keyboard.UP)
+			{
+				this.verticalScrollPosition = Math.max(this._minVerticalScrollPosition, this._verticalScrollPosition - this.verticalScrollStep);
+			}
+			else if(event.keyCode == Keyboard.DOWN)
+			{
+				this.verticalScrollPosition = Math.min(this._maxVerticalScrollPosition, this._verticalScrollPosition + this.verticalScrollStep);
+			}
+			else if(event.keyCode == Keyboard.LEFT)
+			{
+				this.horizontalScrollPosition = Math.max(this._maxHorizontalScrollPosition, this._horizontalScrollPosition - this.horizontalScrollStep);
+			}
+			else if(event.keyCode == Keyboard.RIGHT)
+			{
+				this.horizontalScrollPosition = Math.min(this._maxHorizontalScrollPosition, this._horizontalScrollPosition + this.horizontalScrollStep);
 			}
 		}
 	}

@@ -10,7 +10,7 @@ package feathers.controls
 	import feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer;
 	import feathers.controls.renderers.DefaultGroupedListItemRenderer;
 	import feathers.controls.supportClasses.GroupedListDataViewPort;
-	import feathers.core.IFocusDisplayObject;
+	import feathers.core.IFocusContainer;
 	import feathers.core.PropertyProxy;
 	import feathers.data.HierarchicalCollection;
 	import feathers.events.CollectionEventType;
@@ -158,7 +158,7 @@ package feathers.controls
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/grouped-list
 	 */
-	public class GroupedList extends Scroller implements IFocusDisplayObject
+	public class GroupedList extends Scroller implements IFocusContainer
 	{
 		/**
 		 * @private
@@ -431,7 +431,34 @@ package feathers.controls
 		 */
 		override public function get isFocusEnabled():Boolean
 		{
-			return this._isSelectable && this._isEnabled && this._isFocusEnabled;
+			return (this._isSelectable || this._minHorizontalScrollPosition != this._maxHorizontalScrollPosition ||
+				this._minVerticalScrollPosition != this._maxVerticalScrollPosition) &&
+				this._isEnabled && this._isFocusEnabled;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _isChildFocusEnabled:Boolean = true;
+
+		/**
+		 * @copy feathers.core.IFocusContainer#isChildFocusEnabled
+		 *
+		 * @default true
+		 *
+		 * @see #isFocusEnabled
+		 */
+		public function get isChildFocusEnabled():Boolean
+		{
+			return this._isEnabled && this._isChildFocusEnabled;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set isChildFocusEnabled(value:Boolean):void
+		{
+			this._isChildFocusEnabled = value;
 		}
 
 		/**
@@ -2299,7 +2326,6 @@ package feathers.controls
 		{
 			this.refreshDataViewPortProperties();
 			super.draw();
-			this.refreshFocusIndicator();
 		}
 
 		/**
@@ -2383,25 +2409,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override protected function focusInHandler(event:Event):void
-		{
-			super.focusInHandler(event);
-			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
-		}
-
-		/**
-		 * @private
-		 */
-		override protected function focusOutHandler(event:Event):void
-		{
-			super.focusOutHandler(event);
-			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function stage_keyDownHandler(event:KeyboardEvent):void
+		override protected function stage_keyDownHandler(event:KeyboardEvent):void
 		{
 			if(!this._dataProvider)
 			{

@@ -8,17 +8,14 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.controls.supportClasses.TextFieldViewPort;
-	import feathers.core.IFocusDisplayObject;
 	import feathers.skins.IStyleProvider;
 
 	import flash.text.AntiAliasType;
 	import flash.text.GridFitType;
 	import flash.text.StyleSheet;
 	import flash.text.TextFormat;
-	import flash.ui.Keyboard;
 
 	import starling.events.Event;
-	import starling.events.KeyboardEvent;
 
 	/**
 	 * Dispatched when an anchor (<code>&lt;a&gt;</code>) element in the HTML
@@ -81,7 +78,7 @@ package feathers.controls
 	 * @see feathers.controls.text.TextFieldTextRenderer
 	 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html flash.text.TextField
 	 */
-	public class ScrollText extends Scroller implements IFocusDisplayObject
+	public class ScrollText extends Scroller
 	{
 		/**
 		 * @copy feathers.controls.Scroller#SCROLL_POLICY_AUTO
@@ -222,14 +219,6 @@ package feathers.controls
 		override protected function get defaultStyleProvider():IStyleProvider
 		{
 			return ScrollText.globalStyleProvider;
-		}
-
-		/**
-		 * @private
-		 */
-		override public function get isFocusEnabled():Boolean
-		{
-			return this._maxVerticalScrollPosition != this._minVerticalScrollPosition && this._isEnabled && this._isFocusEnabled;
 		}
 
 		/**
@@ -1097,7 +1086,6 @@ package feathers.controls
 			}
 
 			super.draw();
-			this.refreshFocusIndicator();
 		}
 
 		/**
@@ -1106,55 +1094,6 @@ package feathers.controls
 		protected function textViewPort_triggeredHandler(event:Event, link:String):void
 		{
 			this.dispatchEventWith(Event.TRIGGERED, false, link);
-		}
-
-		/**
-		 * @private
-		 */
-		override protected function focusInHandler(event:Event):void
-		{
-			super.focusInHandler(event);
-			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
-		}
-
-		/**
-		 * @private
-		 */
-		override protected function focusOutHandler(event:Event):void
-		{
-			super.focusOutHandler(event);
-			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function stage_keyDownHandler(event:KeyboardEvent):void
-		{
-			if(event.keyCode == Keyboard.HOME)
-			{
-				this.verticalScrollPosition = this._minVerticalScrollPosition;
-			}
-			else if(event.keyCode == Keyboard.END)
-			{
-				this.verticalScrollPosition = this._maxVerticalScrollPosition;
-			}
-			else if(event.keyCode == Keyboard.PAGE_UP)
-			{
-				this.verticalScrollPosition = Math.max(this._minVerticalScrollPosition, this._verticalScrollPosition - this.viewPort.visibleHeight);
-			}
-			else if(event.keyCode == Keyboard.PAGE_DOWN)
-			{
-				this.verticalScrollPosition = Math.min(this._maxVerticalScrollPosition, this._verticalScrollPosition + this.viewPort.visibleHeight);
-			}
-			else if(event.keyCode == Keyboard.UP)
-			{
-				this.verticalScrollPosition = Math.max(this._minVerticalScrollPosition, this._verticalScrollPosition - this.verticalScrollStep);
-			}
-			else if(event.keyCode == Keyboard.DOWN)
-			{
-				this.verticalScrollPosition = Math.min(this._maxVerticalScrollPosition, this._verticalScrollPosition + this.verticalScrollStep);
-			}
 		}
 	}
 }
