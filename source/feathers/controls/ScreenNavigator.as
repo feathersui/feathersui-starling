@@ -272,15 +272,17 @@ package feathers.controls
 		 * be null when clearing the screen.</p>
 		 *
 		 * <p>The <code>completeCallback</code> function <em>must</em> be called
-		 * when the transition effect finishes. It takes zero arguments and
-		 * returns nothing. In other words, it has the following signature:</p>
+		 * when the transition effect finishes. It has the following signature:</p>
 		 *
-		 * <pre>function():void</pre>
+		 * <pre>function(cancelTransition:Boolean = false):void</pre>
 		 *
-		 * <p>In the future, it may be possible for a transition to cancel
-		 * itself. If this happens, the <code>completeCallback</code> may begin
-		 * accepting arguments, but they will have default values and existing
-		 * uses of <code>completeCallback</code> should continue to work.</p>
+		 * <p>The first argument defaults to <code>false</code>, meaning that
+		 * the transition completed successfully. In most cases, this callback
+		 * may be called without arguments. If a transition is cancelled before
+		 * completion (perhaps through some kind of user interaction), and the
+		 * previous screen should be restored, pass <code>true</code> as the
+		 * first argument to the callback to inform the screen navigator that
+		 * the transition is cancelled.</p>
 		 *
 		 * @see #showScreen()
 		 * @see #clearScreen()
@@ -424,7 +426,46 @@ package feathers.controls
 				screen.owner = this;
 			}
 			this._activeScreenID = id;
+			this.prepareActiveScreen(item);
+			this.addChild(this._activeScreen);
 
+			this.invalidate(INVALIDATION_FLAG_SELECTED);
+			if(this._validationQueue && !this._validationQueue.isValidating)
+			{
+				//force a COMPLETE validation of everything
+				//but only if we're not already doing that...
+				this._validationQueue.advanceTime(0);
+			}
+
+			this.dispatchEventWith(FeathersEventType.TRANSITION_START);
+			this.transition(this._previousScreenInTransition, this._activeScreen, transitionComplete);
+
+			this.dispatchEventWith(Event.CHANGE);
+			return this._activeScreen;
+		}
+
+		/**
+		 * Removes the current screen, leaving the <code>ScreenNavigator</code>
+		 * empty.
+		 */
+		public function clearScreen():void
+		{
+			if(this._isTransitionActive)
+			{
+				this._nextScreenID = null;
+				this._clearAfterTransition = true;
+				return;
+			}
+
+			this.clearScreenInternal(true);
+			this.dispatchEventWith(FeathersEventType.CLEAR);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function prepareActiveScreen(item:ScreenNavigatorItem):void
+		{
 			var events:Object = item.events;
 			var savedScreenEvents:Object = {};
 			for(var eventName:String in events)
@@ -461,45 +502,12 @@ package feathers.controls
 					throw new TypeError("Unknown event action defined for screen:", eventAction.toString());
 				}
 			}
-
-			this._screenEvents[id] = savedScreenEvents;
+			this._screenEvents[this._activeScreenID] = savedScreenEvents;
 
 			if(this._autoSizeMode == AUTO_SIZE_MODE_CONTENT || !this.stage)
 			{
 				this._activeScreen.addEventListener(FeathersEventType.RESIZE, activeScreen_resizeHandler);
 			}
-			this.addChild(this._activeScreen);
-
-			this.invalidate(INVALIDATION_FLAG_SELECTED);
-			if(this._validationQueue && !this._validationQueue.isValidating)
-			{
-				//force a COMPLETE validation of everything
-				//but only if we're not already doing that...
-				this._validationQueue.advanceTime(0);
-			}
-
-			this.dispatchEventWith(FeathersEventType.TRANSITION_START);
-			this.transition(this._previousScreenInTransition, this._activeScreen, transitionComplete);
-
-			this.dispatchEventWith(Event.CHANGE);
-			return this._activeScreen;
-		}
-
-		/**
-		 * Removes the current screen, leaving the <code>ScreenNavigator</code>
-		 * empty.
-		 */
-		public function clearScreen():void
-		{
-			if(this._isTransitionActive)
-			{
-				this._nextScreenID = null;
-				this._clearAfterTransition = true;
-				return;
-			}
-
-			this.clearScreenInternal(true);
-			this.dispatchEventWith(FeathersEventType.CLEAR);
 		}
 
 		/**
@@ -759,24 +767,42 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function transitionComplete():void
+		protected function transitionComplete(cancelTransition:Boolean = false):void
 		{
 			this._isTransitionActive = false;
-			this.dispatchEventWith(FeathersEventType.TRANSITION_COMPLETE);
-			if(this._previousScreenInTransition)
+			if(cancelTransition)
 			{
-				var item:ScreenNavigatorItem = this._screens[this._previousScreenInTransitionID];
-				var canBeDisposed:Boolean = !(item.screen is DisplayObject);
-				if(this._previousScreenInTransition is IScreen)
+				if(this._activeScreen)
 				{
-					var screen:IScreen = IScreen(this._previousScreenInTransition);
-					screen.screenID = null;
-					screen.owner = null;
+					this.clearScreenInternal(false);
+					this.removeChild(this._activeScreen, canBeDisposed);
 				}
-				this._previousScreenInTransition.removeEventListener(FeathersEventType.RESIZE, activeScreen_resizeHandler);
-				this.removeChild(this._previousScreenInTransition, canBeDisposed);
+				this._activeScreen = this._previousScreenInTransition;
+				this._activeScreenID = this._previousScreenInTransitionID;
 				this._previousScreenInTransition = null;
 				this._previousScreenInTransitionID = null;
+				var item:ScreenNavigatorItem = this._screens[this._activeScreenID];
+				this.prepareActiveScreen(item);
+				this.dispatchEventWith(FeathersEventType.TRANSITION_CANCEL);
+			}
+			else
+			{
+				this.dispatchEventWith(FeathersEventType.TRANSITION_COMPLETE);
+				if(this._previousScreenInTransition)
+				{
+					var item:ScreenNavigatorItem = this._screens[this._previousScreenInTransitionID];
+					var canBeDisposed:Boolean = !(item.screen is DisplayObject);
+					if(this._previousScreenInTransition is IScreen)
+					{
+						var screen:IScreen = IScreen(this._previousScreenInTransition);
+						screen.screenID = null;
+						screen.owner = null;
+					}
+					this._previousScreenInTransition.removeEventListener(FeathersEventType.RESIZE, activeScreen_resizeHandler);
+					this.removeChild(this._previousScreenInTransition, canBeDisposed);
+					this._previousScreenInTransition = null;
+					this._previousScreenInTransitionID = null;
+				}
 			}
 
 			if(this._clearAfterTransition)
