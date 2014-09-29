@@ -432,6 +432,87 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _valueFormatFunction:Function;
+
+		/**
+		 * A callback that formats the numeric stepper's value as a string to
+		 * display to the user.
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 * <pre>function(value:Number):String</pre>
+		 *
+		 * <p>In the following example, the stepper's value format function is
+		 * customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * stepper.valueFormatFunction = function(value:Number):String
+		 * {
+		 *     return currencyFormatter.format(value, true);
+		 * };</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #valueParseFunction
+		 */
+		public function get valueFormatFunction():Function
+		{
+			return this._valueFormatFunction;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set valueFormatFunction(value:Function):void
+		{
+			if(this._valueFormatFunction == value)
+			{
+				return;
+			}
+			this._valueFormatFunction = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _valueParseFunction:Function;
+
+		/**
+		 * A callback that accepts the displayed text of the numeric stepper and
+		 * converts it to a simple numeric value.
+		 *
+		 * <p>The function is expected to have the following signature:</p>
+		 * <pre>function(displayedText:String):Number</pre>
+		 *
+		 * <p>In the following example, the stepper's value parse function is
+		 * customized:</p>
+		 *
+		 * <listing version="3.0">
+		 * stepper.valueParseFunction = function(displayedText:String):String
+		 * {
+		 *     return currencyFormatter.parse(displayedText).value;
+		 * };</listing>
+		 *
+		 * @default null
+		 *
+		 * @see #valueFormatFunction
+		 */
+		public function get valueParseFunction():Function
+		{
+			return this._valueParseFunction;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set valueParseFunction(value:Function):void
+		{
+			this._valueParseFunction = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var currentRepeatAction:Function;
 
 		/**
@@ -1228,7 +1309,7 @@ package feathers.controls
 			if(textInputFactoryInvalid || dataInvalid)
 			{
 				this.refreshTypicalText();
-				this.textInput.text = this._value.toString();
+				this.refreshDisplayedText();
 			}
 
 			if(decrementButtonFactoryInvalid || stateInvalid)
@@ -1526,6 +1607,21 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function refreshDisplayedText():void
+		{
+			if(this._valueFormatFunction != null)
+			{
+				this.textInput.text = this._valueFormatFunction(this._value);
+			}
+			else
+			{
+				this.textInput.text = this._value.toString();
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function refreshTypicalText():void
 		{
 			var typicalText:String = "";
@@ -1660,19 +1756,21 @@ package feathers.controls
 		 */
 		protected function parseTextInputValue():void
 		{
-			var newValue:Number = parseFloat(this.textInput.text);
+			if(this._valueParseFunction != null)
+			{
+				var newValue:Number = this._valueParseFunction(this.textInput.text);
+			}
+			else
+			{
+				newValue = parseFloat(this.textInput.text);
+			}
 			if(newValue === newValue) //!isNaN
 			{
 				this.value = newValue;
-				if(this.value != newValue && !this.isInvalid(INVALIDATION_FLAG_DATA))
-				{
-					//if the value setter modified the new value from the text
-					//input, and it returned because the modified value is equal
-					//to the current value, then we need to force invalidation
-					//so that the text input's text is accurate
-					this.invalidate(INVALIDATION_FLAG_DATA);
-				}
 			}
+			//we need to force invalidation just to be sure that the text input
+			//is displaying the correct value.
+			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
 		/**
