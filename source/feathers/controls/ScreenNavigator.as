@@ -790,7 +790,7 @@ package feathers.controls
 				this.dispatchEventWith(FeathersEventType.TRANSITION_COMPLETE);
 				if(this._previousScreenInTransition)
 				{
-					var item:ScreenNavigatorItem = this._screens[this._previousScreenInTransitionID];
+					item = this._screens[this._previousScreenInTransitionID];
 					var canBeDisposed:Boolean = !(item.screen is DisplayObject);
 					if(this._previousScreenInTransition is IScreen)
 					{
