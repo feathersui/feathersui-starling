@@ -556,6 +556,7 @@ package feathers.controls
 			this._activeScreenID = null;
 			if(displayTransition)
 			{
+				this.dispatchEventWith(FeathersEventType.TRANSITION_START);
 				this.transition(this._previousScreenInTransition, null, transitionComplete);
 			}
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
