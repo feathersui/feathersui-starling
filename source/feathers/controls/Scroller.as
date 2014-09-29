@@ -3317,6 +3317,35 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override protected function refreshFocusIndicator():void
+		{
+			if(this._focusIndicatorSkin)
+			{
+				if(this._hasFocus && this._showFocus)
+				{
+					if(this._focusIndicatorSkin.parent != this)
+					{
+						this.addRawChildInternal(this._focusIndicatorSkin);
+					}
+					else
+					{
+						this.setRawChildIndexInternal(this._focusIndicatorSkin, this.numRawChildrenInternal - 1);
+					}
+				}
+				else if(this._focusIndicatorSkin.parent == this)
+				{
+					this.removeRawChildInternal(this._focusIndicatorSkin, false);
+				}
+				this._focusIndicatorSkin.x = this._focusPaddingLeft;
+				this._focusIndicatorSkin.y = this._focusPaddingTop;
+				this._focusIndicatorSkin.width = this.actualWidth - this._focusPaddingLeft - this._focusPaddingRight;
+				this._focusIndicatorSkin.height = this.actualHeight - this._focusPaddingTop - this._focusPaddingBottom;
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function refreshViewPortBoundsWithoutFixedScrollBars():void
 		{
 			var horizontalWidthOffset:Number = this._leftViewPortOffset + this._rightViewPortOffset;
