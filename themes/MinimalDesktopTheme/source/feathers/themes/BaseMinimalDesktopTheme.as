@@ -723,6 +723,9 @@ package feathers.themes
 			scroller.scrollBarDisplayMode = ScrollContainer.SCROLL_BAR_DISPLAY_MODE_FIXED;
 			scroller.horizontalScrollBarFactory = scrollBarFactory;
 			scroller.verticalScrollBarFactory = scrollBarFactory;
+
+			scroller.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+			scroller.focusPadding = 0;
 		}
 
 	//-------------------------
@@ -1043,8 +1046,6 @@ package feathers.themes
 			backgroundDisabledSkin.height = this.gridSize;
 			list.backgroundDisabledSkin = backgroundDisabledSkin;
 
-			list.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
-
 			list.padding = this.borderSize;
 		}
 
@@ -1170,8 +1171,6 @@ package feathers.themes
 			backgroundDisabledSkin.width = this.gridSize;
 			backgroundDisabledSkin.height = this.gridSize;
 			list.backgroundDisabledSkin = backgroundDisabledSkin;
-
-			list.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
 
 			list.padding = this.borderSize;
 			list.paddingRight = 0;
@@ -1666,8 +1665,6 @@ package feathers.themes
 			text.textFormat = this.scrollTextTextFormat;
 			text.disabledTextFormat = this.scrollTextDisabledTextFormat;
 			text.padding = this.gutterSize;
-
-			text.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
 		}
 
 	//-------------------------
@@ -1817,9 +1814,6 @@ package feathers.themes
 				textureScale: this.scale
 			};
 			textArea.stateToSkinFunction = skinSelector.updateValue;
-
-			textArea.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
-			textArea.focusPadding = this.focusPaddingSize;
 		}
 
 	//-------------------------
