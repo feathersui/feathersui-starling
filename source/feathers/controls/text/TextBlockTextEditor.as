@@ -564,11 +564,6 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected var _scrollX:Number = 0;
-
-		/**
-		 * @private
-		 */
 		protected var touchPointID:int = -1;
 
 		/**
@@ -707,8 +702,7 @@ package feathers.controls.text
 		{
 			var oldSnapshotX:Number = this._textSnapshotOffsetX;
 			var oldCursorX:Number = this._cursorSkin.x;
-			this._textSnapshotOffsetX -= this._scrollX;
-			this._cursorSkin.x -= this._scrollX;
+			this._cursorSkin.x -= this._textSnapshotScrollX;
 			super.render(support, parentAlpha);
 			this._textSnapshotOffsetX = oldSnapshotX;
 			this._cursorSkin.x = oldCursorX;
@@ -728,24 +722,6 @@ package feathers.controls.text
 				this.selectionSkin = new Quad(1, 1, 0x000000);
 			}
 			super.initialize();
-		}
-
-		/**
-		 * @private
-		 */
-		override protected function draw():void
-		{
-			super.draw();
-
-			var clipRect:Rectangle = this.clipRect;
-			if(clipRect)
-			{
-				clipRect.setTo(0, 0, this.actualWidth, this.actualHeight);
-			}
-			else
-			{
-				this.clipRect = new Rectangle(0, 0, this.actualWidth, this.actualHeight)
-			}
 		}
 
 		/**
@@ -887,17 +863,22 @@ package feathers.controls.text
 			{
 				maxScrollX = 0;
 			}
-			if(this._scrollX < minScrollX)
+			var oldScrollX:Number = this._textSnapshotScrollX;
+			if(this._textSnapshotScrollX < minScrollX)
 			{
-				this._scrollX = minScrollX;
+				this._textSnapshotScrollX = minScrollX;
 			}
-			else if(this._scrollX > cursorX)
+			else if(this._textSnapshotScrollX > cursorX)
 			{
-				this._scrollX = cursorX;
+				this._textSnapshotScrollX = cursorX;
 			}
-			if(this._scrollX > maxScrollX)
+			if(this._textSnapshotScrollX > maxScrollX)
 			{
-				this._scrollX = maxScrollX;
+				this._textSnapshotScrollX = maxScrollX;
+			}
+			if(this._textSnapshotScrollX != oldScrollX)
+			{
+				this.invalidate(INVALIDATION_FLAG_DATA);
 			}
 		}
 
@@ -906,12 +887,12 @@ package feathers.controls.text
 		 */
 		protected function positionSelectionBackground():void
 		{
-			var startX:Number = this.getXPositionOfCharIndex(this._selectionBeginIndex) - this._scrollX;
+			var startX:Number = this.getXPositionOfCharIndex(this._selectionBeginIndex) - this._textSnapshotScrollX;
 			if(startX < 0)
 			{
 				startX = 0;
 			}
-			var endX:Number = this.getXPositionOfCharIndex(this._selectionEndIndex) - this._scrollX;
+			var endX:Number = this.getXPositionOfCharIndex(this._selectionEndIndex) - this._textSnapshotScrollX;
 			if(endX < 0)
 			{
 				endX = 0;
@@ -987,7 +968,7 @@ package feathers.controls.text
 			{
 				var touch:Touch = event.getTouch(this, null, this.touchPointID);
 				touch.getLocation(this, HELPER_POINT);
-				HELPER_POINT.x += this._scrollX;
+				HELPER_POINT.x += this._textSnapshotScrollX;
 				this.selectRange(this._selectionAnchorIndex, this.getSelectionIndexAtPoint(HELPER_POINT.x, HELPER_POINT.y));
 				if(touch.phase == TouchPhase.ENDED)
 				{
@@ -1011,7 +992,7 @@ package feathers.controls.text
 				}
 				this.touchPointID = touch.id;
 				touch.getLocation(this, HELPER_POINT);
-				HELPER_POINT.x += this._scrollX;
+				HELPER_POINT.x += this._textSnapshotScrollX;
 				if(event.shiftKey)
 				{
 					if(this._selectionAnchorIndex < 0)
