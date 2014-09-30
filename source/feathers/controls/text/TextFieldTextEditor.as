@@ -834,7 +834,7 @@ package feathers.controls.text
 				this.textSnapshot = null;
 			}
 
-			if(this.textField.parent)
+			if(this.textField && this.textField.parent)
 			{
 				this.textField.parent.removeChild(this.textField);
 			}
