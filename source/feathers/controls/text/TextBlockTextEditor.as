@@ -20,10 +20,10 @@ package feathers.controls.text
 	import flash.events.Event;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.text.TextFormatAlign;
 	import flash.text.engine.TextElement;
 	import flash.text.engine.TextLine;
 	import flash.ui.Keyboard;
-	import flash.utils.Dictionary;
 
 	import starling.core.RenderSupport;
 	import starling.core.Starling;
@@ -34,8 +34,6 @@ package feathers.controls.text
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
-	import starling.text.BitmapChar;
-	import starling.text.BitmapFont;
 
 	/**
 	 * Dispatched when the text property changes.
@@ -848,6 +846,14 @@ package feathers.controls.text
 		{
 			if(!this._text || this._textLines.length == 0)
 			{
+				if(this._textAlign == TextFormatAlign.CENTER)
+				{
+					return Math.round(this.actualWidth / 2);
+				}
+				else if(this._textAlign == TextFormatAlign.RIGHT)
+				{
+					return this.actualWidth;
+				}
 				return 0;
 			}
 			var line:TextLine = this._textLines[0];
