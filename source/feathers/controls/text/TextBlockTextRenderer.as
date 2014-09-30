@@ -159,6 +159,16 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _textSnapshotScrollX:Number = 0;
+
+		/**
+		 * @private
+		 */
+		protected var _textSnapshotScrollY:Number = 0;
+
+		/**
+		 * @private
+		 */
 		protected var _textSnapshotOffsetX:Number = 0;
 
 		/**
@@ -1466,8 +1476,8 @@ package feathers.controls.text
 						//clear the bitmap data and reuse it
 						bitmapData.fillRect(bitmapData.rect, 0x00ff00ff);
 					}
-					HELPER_MATRIX.tx = -xPosition;
-					HELPER_MATRIX.ty = -yPosition;
+					HELPER_MATRIX.tx = -xPosition - this._textSnapshotScrollX;
+					HELPER_MATRIX.ty = -yPosition - this._textSnapshotScrollY;
 					HELPER_RECTANGLE.setTo(0, 0, clipWidth, clipHeight);
 					bitmapData.draw(this._textLineContainer, HELPER_MATRIX, null, null, HELPER_RECTANGLE);
 					if(useNativeFilters)
