@@ -1274,7 +1274,7 @@ package feathers.controls.text
 				{
 					this.selectRange(0, currentValue.length);
 				}
-				else if(charCode >= 32) //ignore control characters
+				else if(charCode >= 32 && !event.ctrlKey && !event.altKey) //ignore control characters
 				{
 					if(!this._restrict || this._restrict.isCharacterAllowed(charCode))
 					{
