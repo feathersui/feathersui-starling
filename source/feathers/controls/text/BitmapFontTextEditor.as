@@ -727,6 +727,24 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		override protected function layoutCharacters(result:Point = null):Point
+		{
+			result = super.layoutCharacters(result);
+			if(this.explicitWidth === this.explicitWidth && //!isNaN
+				result.x > this.explicitWidth)
+			{
+				this._characterBatch.reset();
+				var oldTextAlign:String = this.currentTextFormat.align;
+				this.currentTextFormat.align = TextFormatAlign.LEFT;
+				result = super.layoutCharacters(result);
+				this.currentTextFormat.align = oldTextAlign;
+			}
+			return result;
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function refreshTextFormat():void
 		{
 			super.refreshTextFormat();
