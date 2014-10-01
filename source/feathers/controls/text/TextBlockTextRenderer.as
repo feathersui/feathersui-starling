@@ -1746,23 +1746,7 @@ package feathers.controls.text
 				}
 			}
 
-			lineCount = textLines.length;
-			for(i = 0; i < lineCount; i++)
-			{
-				line = textLines[i];
-				if(this._textAlign == TEXT_ALIGN_CENTER)
-				{
-					line.x = (width - line.width) / 2;
-				}
-				else if(this._textAlign == TEXT_ALIGN_RIGHT)
-				{
-					line.x = width - line.width;
-				}
-				else
-				{
-					line.x = 0;
-				}
-			}
+			this.alignTextLines(textLines, width, this._textAlign);
 
 			inactiveTextLineCount = HELPER_TEXT_LINES.length;
 			for(i = 0; i < inactiveTextLineCount; i++)
@@ -1771,6 +1755,30 @@ package feathers.controls.text
 				textLineParent.removeChild(line);
 			}
 			HELPER_TEXT_LINES.length = 0;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function alignTextLines(textLines:Vector.<TextLine>, width:Number, textAlign:String):void
+		{
+			var lineCount:int = textLines.length;
+			for(var i:int = 0; i < lineCount; i++)
+			{
+				var line:TextLine = textLines[i];
+				if(textAlign == TEXT_ALIGN_CENTER)
+				{
+					line.x = (width - line.width) / 2;
+				}
+				else if(textAlign == TEXT_ALIGN_RIGHT)
+				{
+					line.x = width - line.width;
+				}
+				else
+				{
+					line.x = 0;
+				}
+			}
 		}
 	}
 }
