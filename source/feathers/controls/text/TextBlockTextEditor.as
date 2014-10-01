@@ -15,6 +15,7 @@ package feathers.controls.text
 
 	import flash.desktop.Clipboard;
 	import flash.desktop.ClipboardFormats;
+	import flash.display.DisplayObjectContainer;
 	import flash.display.InteractiveObject;
 	import flash.display.Stage;
 	import flash.events.Event;
@@ -722,6 +723,18 @@ package feathers.controls.text
 				this.selectionSkin = new Quad(1, 1, 0x000000);
 			}
 			super.initialize();
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function refreshTextLines(textLines:Vector.<TextLine>, textLineParent:DisplayObjectContainer, width:Number, height:Number):void
+		{
+			super.refreshTextLines(textLines, textLineParent, width, height);
+			if(textLineParent.width > width)
+			{
+				this.alignTextLines(textLines, width, TextFormatAlign.LEFT);
+			}
 		}
 
 		/**
