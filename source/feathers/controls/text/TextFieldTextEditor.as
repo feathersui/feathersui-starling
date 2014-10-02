@@ -30,6 +30,7 @@ package feathers.controls.text
 
 	import starling.core.RenderSupport;
 	import starling.core.Starling;
+	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.ConcreteTexture;
@@ -1537,6 +1538,21 @@ package feathers.controls.text
 				this.textSnapshot.visible = !this._textFieldHasFocus;
 			}
 			this.textField.visible = this._textFieldHasFocus;
+
+			if(this._textFieldHasFocus)
+			{
+				var target:DisplayObject = this;
+				do
+				{
+					if(!target.hasVisibleArea)
+					{
+						this.textField.stage.focus = null;
+						break;
+					}
+					target = target.parent;
+				}
+				while(target)
+			}
 		}
 
 		/**
