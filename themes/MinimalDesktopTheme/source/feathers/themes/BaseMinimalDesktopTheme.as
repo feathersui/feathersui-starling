@@ -1208,6 +1208,8 @@ package feathers.themes
 			renderer.minWidth = this.controlSize;
 			renderer.minHeight = this.controlSize;
 
+			renderer.useStateDelayTimer = false;
+
 			renderer.accessoryLoaderFactory = this.imageLoaderFactory;
 			renderer.iconLoaderFactory = this.imageLoaderFactory;
 		}

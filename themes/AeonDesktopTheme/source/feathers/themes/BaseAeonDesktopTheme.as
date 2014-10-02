@@ -1186,6 +1186,8 @@ package feathers.themes
 			renderer.minAccessoryGap = this.smallGutterSize;
 			renderer.minWidth = this.controlSize;
 			renderer.minHeight = this.controlSize;
+
+			renderer.useStateDelayTimer = false;
 		}
 
 		protected function setItemRendererAccessoryLabelStyles(renderer:TextFieldTextRenderer):void
