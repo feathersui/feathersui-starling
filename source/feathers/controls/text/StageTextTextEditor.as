@@ -34,6 +34,7 @@ package feathers.controls.text
 	
 	import starling.core.RenderSupport;
 	import starling.core.Starling;
+	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.ConcreteTexture;
@@ -1838,6 +1839,7 @@ package feathers.controls.text
 		protected function stageText_focusInHandler(event:FocusEvent):void
 		{
 			this._stageTextHasFocus = true;
+			this.addEventListener(starling.events.Event.ENTER_FRAME, hasFocus_enterFrameHandler);
 			if(this.textSnapshot)
 			{
 				this.textSnapshot.visible = false;
@@ -1861,6 +1863,31 @@ package feathers.controls.text
 			this.invalidate(INVALIDATION_FLAG_DATA);
 			this.invalidate(INVALIDATION_FLAG_SKIN);
 			this.dispatchEventWith(FeathersEventType.FOCUS_OUT);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function hasFocus_enterFrameHandler(event:starling.events.Event):void
+		{
+			if(this._stageTextHasFocus)
+			{
+				var target:DisplayObject = this;
+				do
+				{
+					if(!target.hasVisibleArea)
+					{
+						this.stageText.stage.focus = null;
+						break;
+					}
+					target = target.parent;
+				}
+				while(target)
+			}
+			else
+			{
+				this.removeEventListener(starling.events.Event.ENTER_FRAME, hasFocus_enterFrameHandler);
+			}
 		}
 
 		/**
