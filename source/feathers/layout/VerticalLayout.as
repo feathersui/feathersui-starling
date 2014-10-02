@@ -1252,7 +1252,9 @@ package feathers.layout
 			var hasFirstGap:Boolean = this._firstGap === this._firstGap; //!isNaN
 			var hasLastGap:Boolean = this._lastGap === this._lastGap; //!isNaN
 			var resultLastIndex:int = 0;
-			var visibleTypicalItemCount:int = Math.ceil(height / (calculatedTypicalItemHeight + this._gap));
+			//we add one extra here because the first item renderer in view may
+			//be partially obscured, which would reveal an extra item renderer.
+			var maxVisibleTypicalItemCount:int = Math.ceil(height / (calculatedTypicalItemHeight + this._gap)) + 1;
 			if(!this._hasVariableItemDimensions)
 			{
 				//this case can be optimized because we know that every item has
@@ -1287,12 +1289,12 @@ package feathers.layout
 				//if we're scrolling beyond the final item, we should keep the
 				//indices consistent so that items aren't destroyed and
 				//recreated unnecessarily
-				var maximum:int = minimum + visibleTypicalItemCount;
+				var maximum:int = minimum + maxVisibleTypicalItemCount;
 				if(maximum >= itemCount)
 				{
 					maximum = itemCount - 1;
 				}
-				minimum = maximum - visibleTypicalItemCount;
+				minimum = maximum - maxVisibleTypicalItemCount;
 				if(minimum < 0)
 				{
 					minimum = 0;
@@ -1345,7 +1347,7 @@ package feathers.layout
 			//creation of item renderers, we're going to fill in some extra
 			//indices
 			var resultLength:int = result.length;
-			var visibleItemCountDifference:int = visibleTypicalItemCount - resultLength;
+			var visibleItemCountDifference:int = maxVisibleTypicalItemCount - resultLength;
 			if(visibleItemCountDifference > 0 && resultLength > 0)
 			{
 				//add extra items before the first index
@@ -1361,7 +1363,7 @@ package feathers.layout
 				}
 			}
 			resultLength = result.length;
-			visibleItemCountDifference = visibleTypicalItemCount - resultLength;
+			visibleItemCountDifference = maxVisibleTypicalItemCount - resultLength;
 			resultLastIndex = resultLength;
 			if(visibleItemCountDifference > 0)
 			{
