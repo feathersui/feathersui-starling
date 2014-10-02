@@ -818,6 +818,44 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
+		protected var _useSnapshotDelayWorkaround:Boolean = false;
+
+		/**
+		 * Fixes an issue where <code>flash.text.TextField</code> renders
+		 * incorrectly when drawn to <code>BitmapData</code> by waiting one
+		 * frame.
+		 *
+		 * <p>Warning: enabling this workaround may cause slight flickering
+		 * after the <code>text</code> property is changed.</p>
+		 *
+		 * <p>In the following example, the workaround is enabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * textEditor.useSnapshotDelayWorkaround = true;</listing>
+		 *
+		 * @default false
+		 */
+		public function get useSnapshotDelayWorkaround():Boolean
+		{
+			return this._useSnapshotDelayWorkaround;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set useSnapshotDelayWorkaround(value:Boolean):void
+		{
+			if(this._useSnapshotDelayWorkaround == value)
+			{
+				return;
+			}
+			this._useSnapshotDelayWorkaround = value;
+			this.invalidate(INVALIDATION_FLAG_DATA);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var resetScrollOnFocusOut:Boolean = true;
 
 		/**
@@ -852,16 +890,14 @@ package feathers.controls.text
 		 */
 		override public function render(support:RenderSupport, parentAlpha:Number):void
 		{
-			//theoretically, this will ensure that the TextField is set visible
-			//or invisible immediately after the snapshot changes visibility in
-			//the rendered graphics. the OS might take longer to do the change,
-			//though.
-			var isTextFieldVisible:Boolean = this.textSnapshot ? !this.textSnapshot.visible : this._textFieldHasFocus;
-			this.textField.visible = isTextFieldVisible;
-
-			this.transformTextField();
-			this.positionSnapshot();
-
+			if(this.textSnapshot)
+			{
+				this.positionSnapshot();
+			}
+			if(this.textField)
+			{
+				this.transformTextField();
+			}
 			super.render(support, parentAlpha);
 		}
 
@@ -1034,6 +1070,7 @@ package feathers.controls.text
 		override protected function initialize():void
 		{
 			this.textField = new TextField();
+			this.textField.visible = false;
 			this.textField.needsSoftKeyboard = true;
 			this.textField.addEventListener(flash.events.Event.CHANGE, textField_changeHandler);
 			this.textField.addEventListener(FocusEvent.FOCUS_IN, textField_focusInHandler);
@@ -1257,9 +1294,16 @@ package feathers.controls.text
 
 			if(!this._textFieldHasFocus && (stylesInvalid || dataInvalid || stateInvalid || this._needsNewTexture))
 			{
-				//we need to wait a frame for the flash.text.TextField to render
-				//properly. sometimes two, and this is a known issue.
-				this.addEventListener(Event.ENTER_FRAME, textEditor_enterFrameHandler);
+				if(this._useSnapshotDelayWorkaround)
+				{
+					//sometimes, we need to wait a frame for flash.text.TextField
+					//to render properly when drawing to BitmapData.
+					this.addEventListener(Event.ENTER_FRAME, refreshSnapshot_enterFrameHandler);
+				}
+				else
+				{
+					this.refreshSnapshot();
+				}
 			}
 			this.doPendingActions();
 		}
@@ -1449,6 +1493,7 @@ package feathers.controls.text
 			this.getTransformationMatrix(this.stage, HELPER_MATRIX);
 			this.textSnapshot.scaleX = 1 / matrixToScaleX(HELPER_MATRIX);
 			this.textSnapshot.scaleY = 1 / matrixToScaleY(HELPER_MATRIX);
+			this.textSnapshot.alpha = this._text.length > 0 ? 1 : 0;
 			bitmapData.dispose();
 			this._needsNewTexture = false;
 		}
@@ -1481,15 +1526,26 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function textEditor_enterFrameHandler(event:Event):void
+		protected function hasFocus_enterFrameHandler(event:Event):void
 		{
-			this.removeEventListener(Event.ENTER_FRAME, textEditor_enterFrameHandler);
-			this.refreshSnapshot();
+			if(!this._textFieldHasFocus)
+			{
+				this.removeEventListener(Event.ENTER_FRAME, hasFocus_enterFrameHandler);
+			}
 			if(this.textSnapshot)
 			{
 				this.textSnapshot.visible = !this._textFieldHasFocus;
-				this.textSnapshot.alpha = this._text.length > 0 ? 1 : 0;
 			}
+			this.textField.visible = this._textFieldHasFocus;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function refreshSnapshot_enterFrameHandler(event:Event):void
+		{
+			this.removeEventListener(Event.ENTER_FRAME, refreshSnapshot_enterFrameHandler);
+			this.refreshSnapshot();
 		}
 
 		/**
@@ -1506,10 +1562,7 @@ package feathers.controls.text
 		protected function textField_focusInHandler(event:FocusEvent):void
 		{
 			this._textFieldHasFocus = true;
-			if(this.textSnapshot)
-			{
-				this.textSnapshot.visible = false;
-			}
+			this.addEventListener(Event.ENTER_FRAME, hasFocus_enterFrameHandler);
 			this.invalidate(INVALIDATION_FLAG_SKIN);
 			this.dispatchEventWith(FeathersEventType.FOCUS_IN);
 		}
