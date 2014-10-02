@@ -1529,10 +1529,6 @@ package feathers.controls.text
 		 */
 		protected function hasFocus_enterFrameHandler(event:Event):void
 		{
-			if(!this._textFieldHasFocus)
-			{
-				this.removeEventListener(Event.ENTER_FRAME, hasFocus_enterFrameHandler);
-			}
 			if(this.textSnapshot)
 			{
 				this.textSnapshot.visible = !this._textFieldHasFocus;
@@ -1552,6 +1548,10 @@ package feathers.controls.text
 					target = target.parent;
 				}
 				while(target)
+			}
+			else
+			{
+				this.removeEventListener(Event.ENTER_FRAME, hasFocus_enterFrameHandler);
 			}
 		}
 
