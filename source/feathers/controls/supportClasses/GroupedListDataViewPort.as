@@ -905,7 +905,20 @@ package feathers.controls.supportClasses
 			}
 
 			var displayIndex:int = this.locationToDisplayIndex(groupIndex, itemIndex);
-			return this._layout.getScrollPositionForIndex(displayIndex, this._layoutItems, 0, 0, this.actualVisibleWidth, this.actualVisibleHeight, result);
+			return this._layout.getScrollPositionForIndex(displayIndex, this._layoutItems,
+				0, 0, this.actualVisibleWidth, this.actualVisibleHeight, result);
+		}
+
+		public function getNearestScrollPositionForIndex(groupIndex:int, itemIndex:int, result:Point = null):Point
+		{
+			if(!result)
+			{
+				result = new Point();
+			}
+
+			var displayIndex:int = this.locationToDisplayIndex(groupIndex, itemIndex);
+			return this._layout.getNearestScrollPositionForIndex(displayIndex, this._horizontalScrollPosition,
+				this._verticalScrollPosition, this._layoutItems, 0, 0, this.actualVisibleWidth, this.actualVisibleHeight, result);
 		}
 
 		override public function dispose():void

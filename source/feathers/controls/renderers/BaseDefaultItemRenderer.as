@@ -14,6 +14,7 @@ package feathers.controls.renderers
 	import feathers.controls.text.BitmapFontTextRenderer;
 	import feathers.core.FeathersControl;
 	import feathers.core.IFeathersControl;
+	import feathers.core.IFocusContainer;
 	import feathers.core.ITextRenderer;
 	import feathers.core.IValidating;
 	import feathers.core.PropertyProxy;
@@ -32,7 +33,7 @@ package feathers.controls.renderers
 	/**
 	 * An abstract class for item renderer implementations.
 	 */
-	public class BaseDefaultItemRenderer extends ToggleButton
+	public class BaseDefaultItemRenderer extends ToggleButton implements IFocusContainer
 	{
 		/**
 		 * The default value added to the <code>styleNameList</code> of the icon
@@ -247,6 +248,31 @@ package feathers.controls.renderers
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		protected var accessoryLabelName:String = DEFAULT_CHILD_NAME_ACCESSORY_LABEL;
+
+		/**
+		 * @private
+		 */
+		protected var _isChildFocusEnabled:Boolean = true;
+
+		/**
+		 * @copy feathers.core.IFocusContainer#isChildFocusEnabled
+		 *
+		 * @default true
+		 *
+		 * @see #isFocusEnabled
+		 */
+		public function get isChildFocusEnabled():Boolean
+		{
+			return this._isEnabled && this._isChildFocusEnabled;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set isChildFocusEnabled(value:Boolean):void
+		{
+			this._isChildFocusEnabled = value;
+		}
 
 		/**
 		 * @private

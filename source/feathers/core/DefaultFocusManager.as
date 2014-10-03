@@ -8,6 +8,7 @@ accordance with the terms of the accompanying license agreement.
 package feathers.core
 {
 	import feathers.controls.supportClasses.LayoutViewPort;
+	import feathers.core.IFocusDisplayObject;
 	import feathers.events.FeathersEventType;
 
 	import flash.display.InteractiveObject;
@@ -316,7 +317,7 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		protected function findPreviousFocus(container:DisplayObjectContainer, beforeChild:DisplayObject = null):IFocusDisplayObject
+		protected function findPreviousContainerFocus(container:DisplayObjectContainer, beforeChild:DisplayObject, fallbackToGlobal:Boolean):IFocusDisplayObject
 		{
 			if(container is LayoutViewPort)
 			{
@@ -325,8 +326,8 @@ package feathers.core
 			var hasProcessedBeforeChild:Boolean = beforeChild == null;
 			if(container is IFocusExtras)
 			{
-				var focusContainer:IFocusExtras = IFocusExtras(container);
-				var extras:Vector.<DisplayObject> = focusContainer.focusExtrasAfter;
+				var focusWithExtras:IFocusExtras = IFocusExtras(container);
+				var extras:Vector.<DisplayObject> = focusWithExtras.focusExtrasAfter;
 				if(extras)
 				{
 					var skip:Boolean = false;
@@ -374,7 +375,7 @@ package feathers.core
 			}
 			if(container is IFocusExtras)
 			{
-				extras = focusContainer.focusExtrasBefore;
+				extras = focusWithExtras.focusExtrasBefore;
 				if(extras)
 				{
 					skip = false;
@@ -403,9 +404,18 @@ package feathers.core
 				}
 			}
 
-			if(beforeChild && container != this._root)
+			if(fallbackToGlobal && container != this._root)
 			{
-				return this.findPreviousFocus(container.parent, container);
+				//try the container itself before moving backwards
+				if(container is IFocusDisplayObject)
+				{
+					var focusContainer:IFocusDisplayObject = IFocusDisplayObject(container);
+					if(this.isValidFocus(focusContainer))
+					{
+						return focusContainer;
+					}
+				}
+				return this.findPreviousContainerFocus(container.parent, container, true);
 			}
 			return null;
 		}
@@ -413,7 +423,7 @@ package feathers.core
 		/**
 		 * @private
 		 */
-		protected function findNextFocus(container:DisplayObjectContainer, afterChild:DisplayObject = null):IFocusDisplayObject
+		protected function findNextContainerFocus(container:DisplayObjectContainer, afterChild:DisplayObject, fallbackToGlobal:Boolean):IFocusDisplayObject
 		{
 			if(container is LayoutViewPort)
 			{
@@ -422,8 +432,8 @@ package feathers.core
 			var hasProcessedAfterChild:Boolean = afterChild == null;
 			if(container is IFocusExtras)
 			{
-				var focusContainer:IFocusExtras = IFocusExtras(container);
-				var extras:Vector.<DisplayObject> = focusContainer.focusExtrasBefore;
+				var focusWithExtras:IFocusExtras = IFocusExtras(container);
+				var extras:Vector.<DisplayObject> = focusWithExtras.focusExtrasBefore;
 				if(extras)
 				{
 					var skip:Boolean = false;
@@ -473,7 +483,7 @@ package feathers.core
 			}
 			if(container is IFocusExtras)
 			{
-				extras = focusContainer.focusExtrasAfter;
+				extras = focusWithExtras.focusExtrasAfter;
 				if(extras)
 				{
 					skip = false;
@@ -503,9 +513,9 @@ package feathers.core
 				}
 			}
 
-			if(afterChild && container != this._root)
+			if(fallbackToGlobal && container != this._root)
 			{
-				return this.findNextFocus(container.parent, container);
+				return this.findNextContainerFocus(container.parent, container, true);
 			}
 			return null;
 		}
@@ -515,21 +525,22 @@ package feathers.core
 		 */
 		protected function findPreviousChildFocus(child:DisplayObject):IFocusDisplayObject
 		{
+			if((child is DisplayObjectContainer && !(child is IFocusDisplayObject)) ||
+				(child is IFocusContainer && IFocusContainer(child).isChildFocusEnabled))
+			{
+				var childContainer:DisplayObjectContainer = DisplayObjectContainer(child);
+				var foundChild:IFocusDisplayObject = this.findPreviousContainerFocus(childContainer, null, false);
+				if(foundChild)
+				{
+					return foundChild;
+				}
+			}
 			if(child is IFocusDisplayObject)
 			{
 				var childWithFocus:IFocusDisplayObject = IFocusDisplayObject(child);
 				if(this.isValidFocus(childWithFocus))
 				{
 					return childWithFocus;
-				}
-			}
-			else if(child is DisplayObjectContainer)
-			{
-				var childContainer:DisplayObjectContainer = DisplayObjectContainer(child);
-				var foundChild:IFocusDisplayObject = this.findPreviousFocus(childContainer);
-				if(foundChild)
-				{
-					return foundChild;
 				}
 			}
 			return null;
@@ -548,10 +559,11 @@ package feathers.core
 					return childWithFocus;
 				}
 			}
-			else if(child is DisplayObjectContainer)
+			if((child is DisplayObjectContainer && !(child is IFocusDisplayObject)) ||
+				(child is IFocusContainer && IFocusContainer(child).isChildFocusEnabled))
 			{
 				var childContainer:DisplayObjectContainer = DisplayObjectContainer(child);
-				var foundChild:IFocusDisplayObject = this.findNextFocus(childContainer);
+				var foundChild:IFocusDisplayObject = this.findNextContainerFocus(childContainer, null, false);
 				if(foundChild)
 				{
 					return foundChild;
@@ -612,12 +624,12 @@ package feathers.core
 					}
 					else
 					{
-						newFocus = this.findPreviousFocus(currentFocus.parent, DisplayObject(currentFocus));
+						newFocus = this.findPreviousContainerFocus(currentFocus.parent, DisplayObject(currentFocus), true);
 					}
 				}
 				if(!newFocus)
 				{
-					newFocus = this.findPreviousFocus(this._root);
+					newFocus = this.findPreviousContainerFocus(this._root, null, false);
 				}
 			}
 			else
@@ -628,14 +640,18 @@ package feathers.core
 					{
 						newFocus = currentFocus.nextTabFocus;
 					}
+					else if(currentFocus is IFocusContainer && IFocusContainer(currentFocus).isChildFocusEnabled)
+					{
+						newFocus = this.findNextContainerFocus(DisplayObjectContainer(currentFocus), null, false);
+					}
 					else
 					{
-						newFocus = this.findNextFocus(currentFocus.parent, DisplayObject(currentFocus));
+						newFocus = this.findNextContainerFocus(currentFocus.parent, DisplayObject(currentFocus), true);
 					}
 				}
 				if(!newFocus)
 				{
-					newFocus = this.findNextFocus(this._root);
+					newFocus = this.findNextContainerFocus(this._root, null, false);
 				}
 			}
 			if(newFocus)
@@ -687,7 +703,10 @@ package feathers.core
 					var tempFocusTarget:IFocusDisplayObject = IFocusDisplayObject(target);
 					if(this.isValidFocus(tempFocusTarget))
 					{
-						focusTarget = tempFocusTarget;
+						if(!focusTarget || !(tempFocusTarget is IFocusContainer) || !(IFocusContainer(tempFocusTarget).isChildFocusEnabled))
+						{
+							focusTarget = tempFocusTarget;
+						}
 					}
 				}
 				target = target.parent;

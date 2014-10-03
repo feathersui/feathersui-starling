@@ -47,50 +47,6 @@ package feathers.controls
 	[Event(name="change",type="starling.events.Event")]
 
 	/**
-	 * Dispatched when the text area receives focus.
-	 *
-	 * <p>The properties of the event object have the following values:</p>
-	 * <table class="innertable">
-	 * <tr><th>Property</th><th>Value</th></tr>
-	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
-	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
-	 *   event listener that handles the event. For example, if you use
-	 *   <code>myButton.addEventListener()</code> to register an event listener,
-	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
-	 * <tr><td><code>data</code></td><td>null</td></tr>
-	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
-	 *   it is not always the Object listening for the event. Use the
-	 *   <code>currentTarget</code> property to always access the Object
-	 *   listening for the event.</td></tr>
-	 * </table>
-	 *
-	 * @eventType feathers.events.FeathersEventType.FOCUS_IN
-	 */
-	[Event(name="focusIn",type="starling.events.Event")]
-
-	/**
-	 * Dispatched when the text area loses focus.
-	 *
-	 * <p>The properties of the event object have the following values:</p>
-	 * <table class="innertable">
-	 * <tr><th>Property</th><th>Value</th></tr>
-	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
-	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
-	 *   event listener that handles the event. For example, if you use
-	 *   <code>myButton.addEventListener()</code> to register an event listener,
-	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
-	 * <tr><td><code>data</code></td><td>null</td></tr>
-	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
-	 *   it is not always the Object listening for the event. Use the
-	 *   <code>currentTarget</code> property to always access the Object
-	 *   listening for the event.</td></tr>
-	 * </table>
-	 *
-	 * @eventType feathers.events.FeathersEventType.FOCUS_OUT
-	 */
-	[Event(name="focusOut",type="starling.events.Event")]
-
-	/**
 	 * A text entry control that allows users to enter and edit multiple lines
 	 * of uniformly-formatted text with the ability to scroll.
 	 *
@@ -117,7 +73,7 @@ package feathers.controls
 	 * @see feathers.controls.TextInput
 	 * @see http://wiki.starling-framework.org/feathers/text-editors
 	 */
-	public class TextArea extends Scroller implements IFocusDisplayObject
+	public class TextArea extends Scroller
 	{
 		/**
 		 * @private
@@ -203,6 +159,20 @@ package feathers.controls
 		 * @see feathers.controls.Scroller#interactionMode
 		 */
 		public static const INTERACTION_MODE_TOUCH_AND_SCROLL_BARS:String = "touchAndScrollBars";
+
+		/**
+		 * @copy feathers.controls.Scroller#MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL
+		 *
+		 * @see feathers.controls.Scroller#verticalMouseWheelScrollDirection
+		 */
+		public static const MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL:String = "vertical";
+
+		/**
+		 * @copy feathers.controls.Scroller#MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL
+		 *
+		 * @see feathers.controls.Scroller#verticalMouseWheelScrollDirection
+		 */
+		public static const MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL:String = "horizontal";
 
 		/**
 		 * @copy feathers.controls.Scroller#DECELERATION_RATE_NORMAL
@@ -306,7 +276,7 @@ package feathers.controls
 		 */
 		override public function get isFocusEnabled():Boolean
 		{
-			return this._isEditable && this._isEnabled && this._isFocusEnabled;
+			return this._isEditable && super.isFocusEnabled;
 		}
 
 		/**
@@ -861,8 +831,6 @@ package feathers.controls
 			}
 
 			super.draw();
-
-			this.refreshFocusIndicator();
 
 			this.doPendingActions();
 		}

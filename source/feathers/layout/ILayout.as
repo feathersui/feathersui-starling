@@ -79,10 +79,40 @@ package feathers.layout
 		 * ensure that the item at a given index will be visible within the
 		 * specified bounds.
 		 *
+		 * <p>Typically, this function is used to show the item in the most
+		 * prominent way, such as centering. To scroll a minimum distance
+		 * required to display the full bounds of the item in the view port,
+		 * use <code>getNearestScrollPositionForIndex()</code> instead.</p>
+		 *
 		 * <p>This function should always be called <em>after</em> the
 		 * <code>layout()</code> function. The width and height arguments are
-		 * the final bounds of the view port.</p>
+		 * the final bounds of the view port, which may be calculated in the
+		 * layout() function.</p>
+		 *
+		 * @see #getNearestScrollPositionForIndex()
 		 */
-		function getScrollPositionForIndex(index:int, items:Vector.<DisplayObject>, x:Number, y:Number, width:Number, height:Number, result:Point = null):Point;
+		function getScrollPositionForIndex(index:int, items:Vector.<DisplayObject>,
+			x:Number, y:Number, width:Number, height:Number, result:Point = null):Point;
+
+		/**
+		 * Calculates the scroll position nearest to the current scroll position
+		 * that will display the full bounds of the item within the view port.
+		 * If the item is already fully displayed in the view port, the current
+		 * scroll position will be returned unchanged.
+		 *
+		 * <p>While the item will be displayed in the view port without being
+		 * clipped in any way, it may not be placed in the most prominent
+		 * position possible. To give the item a more prominent location, use
+		 * <code>getScrollPositionForIndex()</code> instead.</p>
+		 *
+		 * <p>This function should always be called <em>after</em> the
+		 * <code>layout()</code> function. The width and height arguments are
+		 * the final bounds of the view port, which may be calculated in the
+		 * layout() function.</p>
+		 *
+		 * @see #getScrollPositionForIndex()
+		 */
+		function getNearestScrollPositionForIndex(index:int, scrollX:Number, scrollY:Number,
+			items:Vector.<DisplayObject>, x:Number, y:Number, width:Number, height:Number, result:Point = null):Point
 	}
 }

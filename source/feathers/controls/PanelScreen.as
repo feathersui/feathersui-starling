@@ -142,6 +142,20 @@ package feathers.controls
 		public static const INTERACTION_MODE_TOUCH_AND_SCROLL_BARS:String = "touchAndScrollBars";
 
 		/**
+		 * @copy feathers.controls.Scroller#MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL
+		 *
+		 * @see feathers.controls.Scroller#verticalMouseWheelScrollDirection
+		 */
+		public static const MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL:String = "vertical";
+
+		/**
+		 * @copy feathers.controls.Scroller#MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL
+		 *
+		 * @see feathers.controls.Scroller#verticalMouseWheelScrollDirection
+		 */
+		public static const MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL:String = "horizontal";
+
+		/**
 		 * @copy feathers.controls.Scroller#DECELERATION_RATE_NORMAL
 		 *
 		 * @see feathers.controls.Scroller#decelerationRate

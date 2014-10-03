@@ -312,6 +312,269 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var originalBackgroundWidth:Number = NaN;
+
+		/**
+		 * @private
+		 */
+		protected var originalBackgroundHeight:Number = NaN;
+
+		/**
+		 * @private
+		 */
+		protected var currentBackgroundSkin:DisplayObject;
+
+		/**
+		 * @private
+		 */
+		protected var _backgroundSkin:DisplayObject;
+
+		/**
+		 * The default background to display behind the label's text.
+		 *
+		 * <p>In the following example, the label is given a background skin:</p>
+		 *
+		 * <listing version="3.0">
+		 * label.backgroundSkin = new Image( texture );</listing>
+		 *
+		 * @default null
+		 */
+		public function get backgroundSkin():DisplayObject
+		{
+			return this._backgroundSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set backgroundSkin(value:DisplayObject):void
+		{
+			if(this._backgroundSkin == value)
+			{
+				return;
+			}
+
+			if(this._backgroundSkin && this.currentBackgroundSkin == this._backgroundSkin)
+			{
+				this.removeChild(this._backgroundSkin);
+				this.currentBackgroundSkin = null;
+			}
+			this._backgroundSkin = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _backgroundDisabledSkin:DisplayObject;
+
+		/**
+		 * A background to display when the label is disabled.
+		 *
+		 * <p>In the following example, the label is given a disabled background skin:</p>
+		 *
+		 * <listing version="3.0">
+		 * label.backgroundDisabledSkin = new Image( texture );</listing>
+		 *
+		 * @default null
+		 */
+		public function get backgroundDisabledSkin():DisplayObject
+		{
+			return this._backgroundDisabledSkin;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set backgroundDisabledSkin(value:DisplayObject):void
+		{
+			if(this._backgroundDisabledSkin == value)
+			{
+				return;
+			}
+
+			if(this._backgroundDisabledSkin && this.currentBackgroundSkin == this._backgroundDisabledSkin)
+			{
+				this.removeChild(this._backgroundDisabledSkin);
+				this.currentBackgroundSkin = null;
+			}
+			this._backgroundDisabledSkin = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * Quickly sets all padding properties to the same value. The
+		 * <code>padding</code> getter always returns the value of
+		 * <code>paddingTop</code>, but the other padding values may be
+		 * different.
+		 *
+		 * <p>In the following example, the padding is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * label.padding = 20;</listing>
+		 *
+		 * @default 0
+		 *
+		 * @see #paddingTop
+		 * @see #paddingRight
+		 * @see #paddingBottom
+		 * @see #paddingLeft
+		 */
+		public function get padding():Number
+		{
+			return this._paddingTop;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set padding(value:Number):void
+		{
+			this.paddingTop = value;
+			this.paddingRight = value;
+			this.paddingBottom = value;
+			this.paddingLeft = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingTop:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the label's top edge and the
+		 * label's text.
+		 *
+		 * <p>In the following example, the top padding is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * label.paddingTop = 20;</listing>
+		 *
+		 * @default 0
+		 */
+		public function get paddingTop():Number
+		{
+			return this._paddingTop;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingTop(value:Number):void
+		{
+			if(this._paddingTop == value)
+			{
+				return;
+			}
+			this._paddingTop = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingRight:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the label's right edge and
+		 * the label's text.
+		 *
+		 * <p>In the following example, the right padding is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * label.paddingRight = 20;</listing>
+		 *
+		 * @default 0
+		 */
+		public function get paddingRight():Number
+		{
+			return this._paddingRight;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingRight(value:Number):void
+		{
+			if(this._paddingRight == value)
+			{
+				return;
+			}
+			this._paddingRight = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingBottom:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the label's bottom edge and
+		 * the label's text.
+		 *
+		 * <p>In the following example, the bottom padding is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * label.paddingBottom = 20;</listing>
+		 *
+		 * @default 0
+		 */
+		public function get paddingBottom():Number
+		{
+			return this._paddingBottom;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingBottom(value:Number):void
+		{
+			if(this._paddingBottom == value)
+			{
+				return;
+			}
+			this._paddingBottom = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _paddingLeft:Number = 0;
+
+		/**
+		 * The minimum space, in pixels, between the label's left edge and the
+		 * label's text.
+		 *
+		 * <p>In the following example, the left padding is set to 20 pixels:</p>
+		 *
+		 * <listing version="3.0">
+		 * label.paddingLeft = 20;</listing>
+		 *
+		 * @default 0
+		 */
+		public function get paddingLeft():Number
+		{
+			return this._paddingLeft;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set paddingLeft(value:Number):void
+		{
+			if(this._paddingLeft == value)
+			{
+				return;
+			}
+			this._paddingLeft = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * @private
+		 */
 		override protected function draw():void
 		{
 			var dataInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_DATA);
@@ -319,6 +582,11 @@ package feathers.controls
 			var sizeInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SIZE);
 			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
 			var textRendererInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_TEXT_RENDERER);
+
+			if(sizeInvalid || stylesInvalid || stateInvalid)
+			{
+				this.refreshBackgroundSkin();
+			}
 
 			if(textRendererInvalid)
 			{
@@ -342,7 +610,7 @@ package feathers.controls
 
 			sizeInvalid = this.autoSizeIfNeeded() || sizeInvalid;
 
-			this.layout();
+			this.layoutChildren();
 		}
 
 		/**
@@ -387,6 +655,12 @@ package feathers.controls
 				{
 					newWidth = 0;
 				}
+				if(this.originalBackgroundWidth === this.originalBackgroundWidth &&
+					this.originalBackgroundWidth > newWidth) //!isNaN
+				{
+					newWidth = this.originalBackgroundWidth;
+				}
+				newWidth += this._paddingLeft + this._paddingRight;
 			}
 
 			var newHeight:Number = this.explicitHeight;
@@ -400,6 +674,12 @@ package feathers.controls
 				{
 					newHeight = 0;
 				}
+				if(this.originalBackgroundHeight === this.originalBackgroundHeight &&
+					this.originalBackgroundHeight > newHeight) //!isNaN
+				{
+					newHeight = this.originalBackgroundHeight;
+				}
+				newHeight += this._paddingTop + this._paddingBottom;
 			}
 
 			return this.setSizeInternal(newWidth, newHeight, false);
@@ -426,6 +706,65 @@ package feathers.controls
 			var factory:Function = this._textRendererFactory != null ? this._textRendererFactory : FeathersControl.defaultTextRendererFactory;
 			this.textRenderer = ITextRenderer(factory());
 			this.addChild(DisplayObject(this.textRenderer));
+		}
+
+		/**
+		 * Choose the appropriate background skin based on the control's current
+		 * state.
+		 */
+		protected function refreshBackgroundSkin():void
+		{
+			var newCurrentBackgroundSkin:DisplayObject = this._backgroundSkin;
+			if(!this._isEnabled && this._backgroundDisabledSkin)
+			{
+				newCurrentBackgroundSkin = this._backgroundDisabledSkin;
+			}
+			if(this.currentBackgroundSkin != newCurrentBackgroundSkin)
+			{
+				if(this.currentBackgroundSkin)
+				{
+					this.removeChild(this.currentBackgroundSkin);
+				}
+				this.currentBackgroundSkin = newCurrentBackgroundSkin;
+				if(this.currentBackgroundSkin)
+				{
+					this.addChildAt(this.currentBackgroundSkin, 0);
+				}
+			}
+			if(this.currentBackgroundSkin)
+			{
+				//force it to the bottom
+				this.setChildIndex(this.currentBackgroundSkin, 0);
+
+				if(this.originalBackgroundWidth !== this.originalBackgroundWidth) //isNaN
+				{
+					this.originalBackgroundWidth = this.currentBackgroundSkin.width;
+				}
+				if(this.originalBackgroundHeight !== this.originalBackgroundHeight) //isNaN
+				{
+					this.originalBackgroundHeight = this.currentBackgroundSkin.height;
+				}
+			}
+		}
+
+		/**
+		 * Positions and sizes children based on the actual width and height
+		 * values.
+		 */
+		protected function layoutChildren():void
+		{
+			if(this.currentBackgroundSkin)
+			{
+				this.currentBackgroundSkin.x = 0;
+				this.currentBackgroundSkin.y = 0;
+				this.currentBackgroundSkin.width = this.actualWidth;
+				this.currentBackgroundSkin.height = this.actualHeight;
+			}
+			this.textRenderer.x = this._paddingLeft;
+			this.textRenderer.y = this._paddingTop;
+			this.textRenderer.width = this.actualWidth - this._paddingLeft - this._paddingRight;
+			this.textRenderer.height = this.actualHeight - this._paddingTop - this._paddingBottom;
+			this.textRenderer.validate();
 		}
 
 		/**
@@ -456,16 +795,6 @@ package feathers.controls
 				var propertyValue:Object = this._textRendererProperties[propertyName];
 				this.textRenderer[propertyName] = propertyValue;
 			}
-		}
-
-		/**
-		 * @private
-		 */
-		protected function layout():void
-		{
-			this.textRenderer.width = this.actualWidth;
-			this.textRenderer.height = this.actualHeight;
-			this.textRenderer.validate();
 		}
 
 		/**

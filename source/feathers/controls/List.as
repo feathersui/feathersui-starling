@@ -9,7 +9,7 @@ package feathers.controls
 {
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.supportClasses.ListDataViewPort;
-	import feathers.core.IFocusDisplayObject;
+	import feathers.core.IFocusContainer;
 	import feathers.core.PropertyProxy;
 	import feathers.data.ListCollection;
 	import feathers.events.CollectionEventType;
@@ -136,7 +136,7 @@ package feathers.controls
 	 * @see http://wiki.starling-framework.org/feathers/list
 	 * @see GroupedList
 	 */
-	public class List extends Scroller implements IFocusDisplayObject
+	public class List extends Scroller implements IFocusContainer
 	{
 		/**
 		 * @private
@@ -224,6 +224,20 @@ package feathers.controls
 		public static const INTERACTION_MODE_TOUCH_AND_SCROLL_BARS:String = "touchAndScrollBars";
 
 		/**
+		 * @copy feathers.controls.Scroller#MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL
+		 *
+		 * @see feathers.controls.Scroller#verticalMouseWheelScrollDirection
+		 */
+		public static const MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL:String = "vertical";
+
+		/**
+		 * @copy feathers.controls.Scroller#MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL
+		 *
+		 * @see feathers.controls.Scroller#verticalMouseWheelScrollDirection
+		 */
+		public static const MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL:String = "horizontal";
+
+		/**
 		 * @copy feathers.controls.Scroller#DECELERATION_RATE_NORMAL
 		 *
 		 * @see feathers.controls.Scroller#decelerationRate
@@ -274,7 +288,34 @@ package feathers.controls
 		 */
 		override public function get isFocusEnabled():Boolean
 		{
-			return this._isSelectable && this._isEnabled && this._isFocusEnabled;
+			return (this._isSelectable || this._minHorizontalScrollPosition != this._maxHorizontalScrollPosition ||
+				this._minVerticalScrollPosition != this._maxVerticalScrollPosition) &&
+				this._isEnabled && this._isFocusEnabled;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _isChildFocusEnabled:Boolean = true;
+
+		/**
+		 * @copy feathers.core.IFocusContainer#isChildFocusEnabled
+		 *
+		 * @default true
+		 *
+		 * @see #isFocusEnabled
+		 */
+		public function get isChildFocusEnabled():Boolean
+		{
+			return this._isEnabled && this._isChildFocusEnabled;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set isChildFocusEnabled(value:Boolean):void
+		{
+			this._isChildFocusEnabled = value;
 		}
 
 		/**
@@ -1029,6 +1070,36 @@ package feathers.controls
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _keyScrollDuration:Number = 0.25;
+
+		/**
+		 * The duration, in seconds, of the animation when the selected item is
+		 * changed by keyboard navigation and the item scrolls into view.
+		 *
+		 * <p>In the following example, the duration of the animation that
+		 * scrolls the list to a new selected item is set to 500 milliseconds:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.keyScrollDuration = 0.5;</listing>
+		 *
+		 * @default 0.25
+		 */
+		public function get keyScrollDuration():Number
+		{
+			return this._keyScrollDuration;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set keyScrollDuration(value:Number):void
+		{
+			this._keyScrollDuration = value;
+		}
+
+		/**
 		 * The pending item index to scroll to after validating. A value of
 		 * <code>-1</code> means that the scroller won't scroll to an item after
 		 * validating.
@@ -1152,7 +1223,6 @@ package feathers.controls
 		{
 			this.refreshDataViewPortProperties();
 			super.draw();
-			this.refreshFocusIndicator();
 		}
 
 		/**
@@ -1212,48 +1282,40 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		override protected function focusInHandler(event:Event):void
-		{
-			super.focusInHandler(event);
-			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
-		}
-
-		/**
-		 * @private
-		 */
-		override protected function focusOutHandler(event:Event):void
-		{
-			super.focusOutHandler(event);
-			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function stage_keyDownHandler(event:KeyboardEvent):void
+		override protected function stage_keyDownHandler(event:KeyboardEvent):void
 		{
 			if(!this._dataProvider)
 			{
 				return;
 			}
+			var changedSelection:Boolean = false;
 			if(event.keyCode == Keyboard.HOME)
 			{
 				if(this._dataProvider.length > 0)
 				{
 					this.selectedIndex = 0;
+					changedSelection = true;
 				}
 			}
 			else if(event.keyCode == Keyboard.END)
 			{
 				this.selectedIndex = this._dataProvider.length - 1;
+				changedSelection = true;
 			}
 			else if(event.keyCode == Keyboard.UP)
 			{
 				this.selectedIndex = Math.max(0, this._selectedIndex - 1);
+				changedSelection = true;
 			}
 			else if(event.keyCode == Keyboard.DOWN)
 			{
 				this.selectedIndex = Math.min(this._dataProvider.length - 1, this._selectedIndex + 1);
+				changedSelection = true;
+			}
+			if(changedSelection)
+			{
+				this.dataViewPort.getNearestScrollPositionForIndex(this.selectedIndex, HELPER_POINT);
+				this.scrollToPosition(HELPER_POINT.x, HELPER_POINT.y, this._keyScrollDuration);
 			}
 		}
 
