@@ -1383,6 +1383,8 @@ package feathers.themes
 			renderer.minWidth = this.controlSize;
 			renderer.minHeight = this.controlSize;
 
+			renderer.useStateDelayTimer = false;
+
 			renderer.accessoryLoaderFactory = this.imageLoaderFactory;
 			renderer.iconLoaderFactory = this.imageLoaderFactory;
 		}
@@ -1779,6 +1781,7 @@ package feathers.themes
 				height: this.smallControlSize,
 				textureScale: this.scale
 			};
+			thumb.stateToSkinFunction = skinSelector.updateValue;
 
 			thumb.hasLabelTextRenderer = false;
 		}

@@ -15,10 +15,11 @@ package feathers.controls
 	import starling.events.Event;
 
 	/**
-	 * Dispatched when the button is selected or unselected. A button's
-	 * selection may be changed by the user when <code>isToggle</code> is set to
-	 * <code>true</code>. The selection may be changed programmatically at any
-	 * time, regardless of the value of <code>isToggle</code>.
+	 * Dispatched when the button is selected or deselected either
+	 * programmatically or as a result of user interaction. The value of the
+	 * <code>isSelected</code> property indicates whether the button is selected
+	 * or not. Use interaction may only change selection when the
+	 * <code>isToggle</code> property is set to <code>true</code>.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
 	 * <table class="innertable">
@@ -36,6 +37,9 @@ package feathers.controls
 	 * </table>
 	 *
 	 * @eventType starling.events.Event.CHANGE
+	 *
+	 * @see #isSelected
+	 * @see #isToggle
 	 */
 	[Event(name="change",type="starling.events.Event")]
 
@@ -92,7 +96,10 @@ package feathers.controls
 		protected var _isToggle:Boolean = true;
 
 		/**
-		 * Determines if the button may be selected or unselected when clicked.
+		 * Determines if the button may be selected or deselected as a result of
+		 * user interaction. If <code>true</code>, the value of the
+		 * <code>isSelected</code> property will be toggled when the button is
+		 * triggered.
 		 *
 		 * <p>The following example disables the ability to toggle:</p>
 		 *
@@ -101,7 +108,8 @@ package feathers.controls
 		 *
 		 * @default true
 		 *
-		 * @see #event:change
+		 * @see #isSelected
+		 * @see #event:triggered Event.TRIGGERED
 		 */
 		public function get isToggle():Boolean
 		{
@@ -125,7 +133,9 @@ package feathers.controls
 		 * Indicates if the button is selected or not. The button may be
 		 * selected programmatically, even if <code>isToggle</code> is <code>false</code>,
 		 * but generally, <code>isToggle</code> should be set to <code>true</code>
-		 * to allow the user to select and deselect it.
+		 * to allow the user to select and deselect it by triggering the button
+		 * with a click or tap. If focus management is enabled, a button may
+		 * also be triggered with the spacebar when the button has focus.
 		 *
 		 * <p>The following example enables the button to toggle and selects it
 		 * automatically:</p>
@@ -136,6 +146,7 @@ package feathers.controls
 		 *
 		 * @default false
 		 *
+		 * @see #event:change Event.CHANGE
 		 * @see #isToggle
 		 */
 		public function get isSelected():Boolean
