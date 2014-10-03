@@ -2,7 +2,7 @@
 
 Noteworthy changes in official, stable releases of [Feathers](http://feathersui.com/).
 
-## 2.0 BETA
+## 2.0.0
 
 * New style provider architecture for skinning and themes.
 * Components may always be validated, even if they are not on the display list yet.
@@ -26,16 +26,19 @@ Noteworthy changes in official, stable releases of [Feathers](http://feathersui.
 * FeathersControl: enforced as an abstract class. If you need a generic Feathers component wrapper for layoutData and things, use LayoutGroup.
 * FeathersControl: added styleName and styleNameList property to replace nameList. The name property is no longer used for styling, and it will work for getChildByName() in the rare situations where it was broken. The nameList property is deprecated.
 * FeathersControl: fixed issue where changing minTouchWidth or minTouchHeight did not update the hit area if the width or height wasn't changed at the same time.
-* FeathersControl: won't validate if disposed.
+* FeathersControl: fixed issue where component would validate when disposed.
+* FeathersControl: fixed issue in setSize() where scaled dimensions weren't updated.
 * FocusManager: support for custom IFocusManager instances and support for multiple Starling stages.
 * FocusManager: fixed issue where disabled components could receive focus.
 * Header: added useExtraPaddingForOSStatusBar property to support iOS 7 status bar behavior.
 * Header: getters for leftItems, rightItems, and centerItems no longer duplicate the array.
 * Header: now disposed leftItems, rightItems, and centerItems by default. Can be controlled with new disposeItems property.
 * Header: fixed issue where title text renderer's isEnabled property wasn't properly updated.
+* Header: fixed issue where the touchable property was incorrectly set to false on some children.
 * IFocusDisplayObject: added new focusOwner property to allow pop-ups to be owned by another component. Allows the focus manager to manage focus order better with components like PickerList.
 * ImageLoader: checks for lost context before creating a texture from a loaded URL.
-* ImageLoader: isLoaded getter always returns true if the source is a texture.
+* ImageLoader: fixed issue where isLoaded getter didn't always return true if the source is a texture.
+* ImageLoader: fixed issue where loaded textures could be uploaded to wrong Starling instance if multiple Starling instances were active.
 * Item Renderers: added skinField, skinFunction, and itemHasSkin for background skins from the data provider.
 * Item Renderers: added isSelectableOnAccessoryTouch property to control whether the selection will change or not when the accessory is touched.
 * Item Renderers: added minGap and minAccessoryGap properties that are used when gap or accessoryGap are set to Number.POSITIVE_INFINITY.
@@ -116,12 +119,6 @@ Noteworthy changes in official, stable releases of [Feathers](http://feathersui.
 * Examples: override initialize() instead of listening for FeathersEventType.INITIALIZE.
 * Example Themes: rewritten using the new style provider system.
 * Example Themes: tweaked padding, gap, dimensions, and other values to be based on a simple grid system for more consistency.
-
-### 2.0 BETA Documentation
-
-* [Feathers BETA API Reference](http://feathersui.com/beta/documentation/)
-* [Skinning Feathers 2.0 Components](http://wiki.starling-framework.org/feathers/skinning-next)
-* [Extending Feathers 2.0 Themes](http://wiki.starling-framework.org/feathers/extending-themes-next)
 
 ### 2.0.0 Deprecated APIs
 
