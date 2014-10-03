@@ -9,6 +9,7 @@ package feathers.controls
 {
 	import feathers.controls.supportClasses.IViewPort;
 	import feathers.core.FeathersControl;
+	import feathers.core.IFocusDisplayObject;
 	import feathers.core.PropertyProxy;
 	import feathers.events.ExclusiveTouch;
 	import feathers.events.FeathersEventType;
@@ -20,6 +21,7 @@ package feathers.controls
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.ui.Keyboard;
 	import flash.utils.getTimer;
 
 	import starling.animation.Transitions;
@@ -28,6 +30,7 @@ package feathers.controls
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.events.Event;
+	import starling.events.KeyboardEvent;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -192,6 +195,50 @@ package feathers.controls
 	[Event(name="endInteraction",type="starling.events.Event")]
 
 	/**
+	 * Dispatched when the component receives focus.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @eventType feathers.events.FeathersEventType.FOCUS_IN
+	 */
+	[Event(name="focusIn",type="starling.events.Event")]
+
+	/**
+	 * Dispatched when the component loses focus.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @eventType feathers.events.FeathersEventType.FOCUS_OUT
+	 */
+	[Event(name="focusOut",type="starling.events.Event")]
+
+	/**
 	 * Allows horizontal and vertical scrolling of a <em>view port</em>. Not
 	 * meant to be used as a standalone container or component. Generally meant
 	 * to be the super class of another component that needs to support
@@ -207,7 +254,7 @@ package feathers.controls
 	 * @see ScrollContainer
 	 * @see ScrollText
 	 */
-	public class Scroller extends FeathersControl
+	public class Scroller extends FeathersControl implements IFocusDisplayObject
 	{
 		/**
 		 * @private
@@ -330,6 +377,20 @@ package feathers.controls
 		 * @see feathers.controls.Scroller#interactionMode
 		 */
 		public static const INTERACTION_MODE_TOUCH_AND_SCROLL_BARS:String = "touchAndScrollBars";
+
+		/**
+		 * The scroller will scroll vertically when the mouse wheel is scrolled.
+		 *
+		 * @see feathers.controls.Scroller#verticalMouseWheelScrollDirection
+		 */
+		public static const MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL:String = "vertical";
+
+		/**
+		 * The scroller will scroll horizontally when the mouse wheel is scrolled.
+		 *
+		 * @see feathers.controls.Scroller#verticalMouseWheelScrollDirection
+		 */
+		public static const MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL:String = "horizontal";
 
 		/**
 		 * Flag to indicate that the clipping has changed.
@@ -456,6 +517,16 @@ package feathers.controls
 		 * @see #createScrollBars()
 		 */
 		protected var verticalScrollBar:IScrollBar;
+
+		/**
+		 * @private
+		 */
+		override public function get isFocusEnabled():Boolean
+		{
+			return (this._maxVerticalScrollPosition != this._minVerticalScrollPosition ||
+				this._maxHorizontalScrollPosition != this._minHorizontalScrollPosition) &&
+				super.isFocusEnabled;
+		}
 
 		/**
 		 * @private
@@ -2492,6 +2563,41 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _verticalMouseWheelScrollDirection:String = MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL;
+
+		/**
+		 * The direction of scrolling when the user scrolls the mouse wheel
+		 * vertically. In some cases, it is common for a container that only
+		 * scrolls horizontally to scroll even when the mouse wheel is scrolled
+		 * vertically.
+		 *
+		 * <p>In the following example, the direction of scrolling when using
+		 * the mouse wheel is changed:</p>
+		 *
+		 * <listing version="3.0">
+		 * scroller.verticalMouseWheelScrollDirection = Scroller.MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL;</listing>
+		 *
+		 * @default Scroller.MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL
+		 *
+		 * @see #MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL
+		 * @see #MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL
+		 */
+		public function get verticalMouseWheelScrollDirection():String
+		{
+			return this._verticalMouseWheelScrollDirection;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set verticalMouseWheelScrollDirection(value:String):void
+		{
+			this._verticalMouseWheelScrollDirection = value;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _throwEase:Object = Transitions.EASE_OUT;
 
 		/**
@@ -2964,6 +3070,7 @@ package feathers.controls
 			{
 				this.refreshClipRect();
 			}
+			this.refreshFocusIndicator();
 
 			if(pendingScrollInvalid)
 			{
@@ -3018,9 +3125,10 @@ package feathers.controls
 				{
 					newWidth = 0;
 				}
-				if(this.originalBackgroundWidth === this.originalBackgroundWidth) //!isNaN
+				if(this.originalBackgroundWidth === this.originalBackgroundWidth && //!isNaN
+					this.originalBackgroundWidth > newWidth)
 				{
-					newWidth = Math.max(newWidth, this.originalBackgroundWidth);
+					newWidth = this.originalBackgroundWidth;
 				}
 			}
 			if(needsHeight)
@@ -3038,9 +3146,10 @@ package feathers.controls
 				{
 					newHeight = 0;
 				}
-				if(this.originalBackgroundHeight === this.originalBackgroundHeight) //!isNaN
+				if(this.originalBackgroundHeight === this.originalBackgroundHeight && //!isNaN
+					this.originalBackgroundHeight > newHeight)
 				{
-					newHeight = Math.max(newHeight, this.originalBackgroundHeight);
+					newHeight = this.originalBackgroundHeight;
 				}
 			}
 			return this.setSizeInternal(newWidth, newHeight, false);
@@ -3202,6 +3311,35 @@ package feathers.controls
 			if(this.verticalScrollBar)
 			{
 				this.verticalScrollBar.isEnabled = this._isEnabled;
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function refreshFocusIndicator():void
+		{
+			if(this._focusIndicatorSkin)
+			{
+				if(this._hasFocus && this._showFocus)
+				{
+					if(this._focusIndicatorSkin.parent != this)
+					{
+						this.addRawChildInternal(this._focusIndicatorSkin);
+					}
+					else
+					{
+						this.setRawChildIndexInternal(this._focusIndicatorSkin, this.numRawChildrenInternal - 1);
+					}
+				}
+				else if(this._focusIndicatorSkin.parent == this)
+				{
+					this.removeRawChildInternal(this._focusIndicatorSkin, false);
+				}
+				this._focusIndicatorSkin.x = this._focusPaddingLeft;
+				this._focusIndicatorSkin.y = this._focusPaddingTop;
+				this._focusIndicatorSkin.width = this.actualWidth - this._focusPaddingLeft - this._focusPaddingRight;
+				this._focusIndicatorSkin.height = this.actualHeight - this._focusPaddingTop - this._focusPaddingBottom;
 			}
 		}
 
@@ -5065,7 +5203,8 @@ package feathers.controls
 				this._touchPointID = -1;
 				return;
 			}
-			if(this._maxVerticalScrollPosition == 0 || this._verticalScrollPolicy == SCROLL_POLICY_OFF)
+			if((this._verticalMouseWheelScrollDirection == MOUSE_WHEEL_SCROLL_DIRECTION_VERTICAL && (this._maxVerticalScrollPosition == this._minVerticalScrollPosition || this._verticalScrollPolicy == SCROLL_POLICY_OFF)) ||
+				(this._verticalMouseWheelScrollDirection == MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL && (this._maxHorizontalScrollPosition == this._minHorizontalScrollPosition || this._horizontalScrollPolicy == SCROLL_POLICY_OFF)))
 			{
 				return;
 			}
@@ -5090,21 +5229,42 @@ package feathers.controls
 				{
 					return;
 				}
+				var targetHorizontalScrollPosition:Number = this._horizontalScrollPosition;
+				var targetVerticalScrollPosition:Number = this._verticalScrollPosition;
 				var scrollStep:Number = this._verticalMouseWheelScrollStep;
-				if(scrollStep !== scrollStep) //isNaN
+				if(this._verticalMouseWheelScrollDirection == MOUSE_WHEEL_SCROLL_DIRECTION_HORIZONTAL)
 				{
-					scrollStep = this.actualVerticalScrollStep;
+					if(scrollStep !== scrollStep) //isNaN
+					{
+						scrollStep = this.actualHorizontalScrollStep;
+					}
+					targetHorizontalScrollPosition -= event.delta * scrollStep;
+					if(targetHorizontalScrollPosition < this._minHorizontalScrollPosition)
+					{
+						targetHorizontalScrollPosition = this._minHorizontalScrollPosition;
+					}
+					else if(targetHorizontalScrollPosition > this._maxHorizontalScrollPosition)
+					{
+						targetHorizontalScrollPosition = this._maxHorizontalScrollPosition;
+					}
 				}
-				var targetVerticalScrollPosition:Number = this._verticalScrollPosition - event.delta * scrollStep;
-				if(targetVerticalScrollPosition < this._minVerticalScrollPosition)
+				else //vertical
 				{
-					targetVerticalScrollPosition = this._minVerticalScrollPosition;
+					if(scrollStep !== scrollStep) //isNaN
+					{
+						scrollStep = this.actualVerticalScrollStep;
+					}
+					targetVerticalScrollPosition -= event.delta * scrollStep;
+					if(targetVerticalScrollPosition < this._minVerticalScrollPosition)
+					{
+						targetVerticalScrollPosition = this._minVerticalScrollPosition;
+					}
+					else if(targetVerticalScrollPosition > this._maxVerticalScrollPosition)
+					{
+						targetVerticalScrollPosition = this._maxVerticalScrollPosition;
+					}
 				}
-				else if(targetVerticalScrollPosition > this._maxVerticalScrollPosition)
-				{
-					targetVerticalScrollPosition = this._maxVerticalScrollPosition;
-				}
-				this.throwTo(NaN, targetVerticalScrollPosition, this._mouseWheelScrollDuration);
+				this.throwTo(targetHorizontalScrollPosition, targetVerticalScrollPosition, this._mouseWheelScrollDuration);
 			}
 		}
 
@@ -5286,6 +5446,63 @@ package feathers.controls
 				oldVerticalScrollPosition != this._verticalScrollPosition)
 			{
 				this.dispatchEventWith(Event.SCROLL);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function focusInHandler(event:Event):void
+		{
+			super.focusInHandler(event);
+			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function focusOutHandler(event:Event):void
+		{
+			super.focusOutHandler(event);
+			this.stage.removeEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function stage_keyDownHandler(event:KeyboardEvent):void
+		{
+			if(event.keyCode == Keyboard.HOME)
+			{
+				this.verticalScrollPosition = this._minVerticalScrollPosition;
+			}
+			else if(event.keyCode == Keyboard.END)
+			{
+				this.verticalScrollPosition = this._maxVerticalScrollPosition;
+			}
+			else if(event.keyCode == Keyboard.PAGE_UP)
+			{
+				this.verticalScrollPosition = Math.max(this._minVerticalScrollPosition, this._verticalScrollPosition - this.viewPort.visibleHeight);
+			}
+			else if(event.keyCode == Keyboard.PAGE_DOWN)
+			{
+				this.verticalScrollPosition = Math.min(this._maxVerticalScrollPosition, this._verticalScrollPosition + this.viewPort.visibleHeight);
+			}
+			else if(event.keyCode == Keyboard.UP)
+			{
+				this.verticalScrollPosition = Math.max(this._minVerticalScrollPosition, this._verticalScrollPosition - this.verticalScrollStep);
+			}
+			else if(event.keyCode == Keyboard.DOWN)
+			{
+				this.verticalScrollPosition = Math.min(this._maxVerticalScrollPosition, this._verticalScrollPosition + this.verticalScrollStep);
+			}
+			else if(event.keyCode == Keyboard.LEFT)
+			{
+				this.horizontalScrollPosition = Math.max(this._maxHorizontalScrollPosition, this._horizontalScrollPosition - this.horizontalScrollStep);
+			}
+			else if(event.keyCode == Keyboard.RIGHT)
+			{
+				this.horizontalScrollPosition = Math.min(this._maxHorizontalScrollPosition, this._horizontalScrollPosition + this.horizontalScrollStep);
 			}
 		}
 	}

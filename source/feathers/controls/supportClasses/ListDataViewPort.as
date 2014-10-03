@@ -532,7 +532,19 @@ package feathers.controls.supportClasses
 			{
 				result = new Point();
 			}
-			return this._layout.getScrollPositionForIndex(index, this._layoutItems, 0, 0, this.actualVisibleWidth, this.actualVisibleHeight, result);
+			return this._layout.getScrollPositionForIndex(index, this._layoutItems,
+				0, 0, this.actualVisibleWidth, this.actualVisibleHeight, result);
+		}
+
+		public function getNearestScrollPositionForIndex(index:int, result:Point = null):Point
+		{
+			if(!result)
+			{
+				result = new Point();
+			}
+			return this._layout.getNearestScrollPositionForIndex(index,
+				this._horizontalScrollPosition, this._verticalScrollPosition,
+				this._layoutItems, 0, 0, this.actualVisibleWidth, this.actualVisibleHeight, result);
 		}
 
 		override public function dispose():void

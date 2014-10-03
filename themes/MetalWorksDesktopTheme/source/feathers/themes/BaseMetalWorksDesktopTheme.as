@@ -941,6 +941,9 @@ package feathers.themes
 			scroller.verticalScrollBarFactory = scrollBarFactory;
 			scroller.scrollBarDisplayMode = Scroller.SCROLL_BAR_DISPLAY_MODE_FIXED;
 			scroller.interactionMode = Scroller.INTERACTION_MODE_MOUSE;
+
+			scroller.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
+			scroller.focusPadding = 0;
 		}
 
 	//-------------------------
@@ -1248,8 +1251,6 @@ package feathers.themes
 			list.backgroundSkin = new Scale9Image(this.listBackgroundSkinTextures, this.scale);
 			list.backgroundDisabledSkin = new Scale9Image(this.backgroundDisabledSkinTextures, this.scale);
 
-			list.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
-
 			list.verticalScrollPolicy = List.SCROLL_POLICY_AUTO;
 		}
 
@@ -1344,8 +1345,6 @@ package feathers.themes
 			list.padding = this.borderSize;
 			list.backgroundSkin = new Scale9Image(this.listBackgroundSkinTextures, this.scale);
 			list.backgroundDisabledSkin = new Scale9Image(this.backgroundDisabledSkinTextures, this.scale);
-
-			list.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
 
 			list.verticalScrollPolicy = List.SCROLL_POLICY_AUTO;
 		}
@@ -1919,8 +1918,6 @@ package feathers.themes
 		{
 			this.setScrollerStyles(text);
 
-			text.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
-
 			text.textFormat = this.scrollTextTextFormat;
 			text.disabledTextFormat = this.scrollTextDisabledTextFormat;
 			text.padding = this.gutterSize;
@@ -2159,9 +2156,6 @@ package feathers.themes
 				textureScale: this.scale
 			};
 			input.stateToSkinFunction = skinSelector.updateValue;
-
-			//input.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures);
-			//input.focusPadding = -1;
 
 			input.minWidth = this.controlSize;
 			input.minHeight = this.controlSize;

@@ -146,6 +146,14 @@ package feathers.layout
 		/**
 		 * @inheritDoc
 		 */
+		public function getNearestScrollPositionForIndex(index:int, scrollX:Number, scrollY:Number, items:Vector.<DisplayObject>, x:Number, y:Number, width:Number, height:Number, result:Point = null):Point
+		{
+			return this.getScrollPositionForIndex(index, items, x, y, width, height, result);
+		}
+
+		/**
+		 * @inheritDoc
+		 */
 		public function getScrollPositionForIndex(index:int, items:Vector.<DisplayObject>, x:Number, y:Number, width:Number, height:Number, result:Point = null):Point
 		{
 			if(!result)

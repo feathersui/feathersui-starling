@@ -100,6 +100,13 @@ package feathers.events
 		public static const TRANSITION_COMPLETE:String = "transitionComplete";
 
 		/**
+		 * The <code>FeathersEventType.TRANSITION_CANCEL</code> event type is
+		 * used by the <code>ScreenNavigator</code> to indicate when a
+		 * transition between screens is cancelled.
+		 */
+		public static const TRANSITION_CANCEL:String = "transitionCancel";
+
+		/**
 		 * The <code>FeathersEventType.FOCUS_IN</code> event type is used by
 		 * Feathers components to indicate when they have received focus.
 		 */
