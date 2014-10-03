@@ -1704,7 +1704,7 @@ package feathers.controls.supportClasses
 							{
 								//see comments in findRendererForItem()
 								headerOrFooterRenderer.data = null;
-								headerOrFooterRenderer.data = item;
+								headerOrFooterRenderer.data = header;
 							}
 							this._activeHeaderRenderers.push(headerOrFooterRenderer);
 							this._inactiveHeaderRenderers.splice(this._inactiveHeaderRenderers.indexOf(headerOrFooterRenderer), 1);
@@ -1773,7 +1773,7 @@ package feathers.controls.supportClasses
 							{
 								//see comments in findRendererForItem()
 								headerOrFooterRenderer.data = null;
-								headerOrFooterRenderer.data = item;
+								headerOrFooterRenderer.data = footer;
 							}
 							this._activeFooterRenderers.push(headerOrFooterRenderer);
 							this._inactiveFooterRenderers.splice(this._inactiveFooterRenderers.indexOf(headerOrFooterRenderer), 1);

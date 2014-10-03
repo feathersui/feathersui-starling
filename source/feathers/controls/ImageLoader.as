@@ -42,7 +42,8 @@ package feathers.controls
 	import starling.utils.SystemUtil;
 
 	/**
-	 * Dispatched when the source content finishes loading.
+	 * Dispatched when the source finishes loading, if the source is a URL. This
+	 * event is not dispatched when the source is a texture.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
 	 * <table class="innertable">
@@ -124,6 +125,11 @@ package feathers.controls
 		 * @private
 		 */
 		private static const HELPER_RECTANGLE2:Rectangle = new Rectangle();
+
+		/**
+		 * @private
+		 */
+		private static const CONTEXT_LOST_WARNING:String = "ImageLoader: Context lost while processing loaded image, retrying...";
 
 		/**
 		 * @private
@@ -281,7 +287,15 @@ package feathers.controls
 				this.image.visible = false;
 			}
 			this._lastURL = null;
-			this._isLoaded = false;
+			if(this._source is Texture)
+			{
+				this._isLoaded = true;
+			}
+			else
+			{
+
+				this._isLoaded = false;
+			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
@@ -366,7 +380,8 @@ package feathers.controls
 		protected var _isLoaded:Boolean = false;
 
 		/**
-		 * Indicates if the source has fully loaded.
+		 * Indicates if the source has completed loading, if the source is a
+		 * URL. Always returns <code>true</code> when the source is a texture.
 		 *
 		 * <p>In the following example, we check if the image loader's source
 		 * has finished loading:</p>
@@ -1095,7 +1110,6 @@ package feathers.controls
 				this._lastURL = null;
 				this._texture = Texture(this._source);
 				this.refreshCurrentTexture();
-				this._isLoaded = true;
 			}
 			else
 			{
@@ -1324,11 +1338,31 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function verifyCurrentStarling():void
+		{
+			if(!this.stage || Starling.current.stage === this.stage)
+			{
+				return;
+			}
+			for each(var starling:Starling in Starling.all)
+			{
+				if(starling.stage === this.stage)
+				{
+					starling.makeCurrent();
+					break;
+				}
+			}
+		}
+
+		/**
+		 * @private
+		 */
 		protected function replaceBitmapDataTexture(bitmapData:BitmapData):void
 		{
 			if(Starling.handleLostContext && !Starling.current.contextValid)
 			{
-				trace("ImageLoader: Context lost while processing loaded image, retrying...");
+				//this trace duplicates the behavior of AssetManager
+				trace(CONTEXT_LOST_WARNING);
 				setTimeout(replaceBitmapDataTexture, 1, bitmapData);
 				return;
 			}
@@ -1338,6 +1372,7 @@ package feathers.controls
 				SystemUtil.executeWhenApplicationIsActive(replaceBitmapDataTexture, bitmapData);
 				return;
 			}
+			this.verifyCurrentStarling();
 			this._texture = Texture.fromBitmapData(bitmapData, false, false, 1, this._textureFormat);
 			if(Starling.handleLostContext)
 			{
@@ -1364,7 +1399,8 @@ package feathers.controls
 		{
 			if(Starling.handleLostContext && !Starling.current.contextValid)
 			{
-				trace("ImageLoader: Context lost while processing loaded image, retrying...");
+				//this trace duplicates the behavior of AssetManager
+				trace(CONTEXT_LOST_WARNING);
 				setTimeout(replaceRawTextureData, 1, rawData);
 				return;
 			}
@@ -1374,6 +1410,7 @@ package feathers.controls
 				SystemUtil.executeWhenApplicationIsActive(replaceRawTextureData, rawData);
 				return;
 			}
+			this.verifyCurrentStarling();
 			this._texture = Texture.fromAtfData(rawData);
 			if(Starling.handleLostContext)
 			{

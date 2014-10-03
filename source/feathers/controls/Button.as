@@ -29,9 +29,10 @@ package feathers.controls
 	import starling.events.TouchPhase;
 
 	/**
-	 * Dispatched when the button is released while the touch is still
-	 * within the button's bounds (a tap or click that should trigger the
-	 * button).
+	 * Dispatched when the the user taps or clicks the button. The touch must
+	 * remain within the bounds of the button on release to register as a tap
+	 * or a click. If focus management is enabled, the button may also be
+	 * triggered by pressing the spacebar while the button has focus.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
 	 * <table class="innertable">

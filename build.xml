@@ -120,6 +120,17 @@
 			<arg value="-output=${themes.output}/AeonDesktopTheme/swc/AeonDesktopTheme.swc"/>
 		</java>
 
+		<echo message="Building MetalWorksDesktopTheme.swc"/>
+		<java jar="${compc}" dir="${themes.root}/MetalWorksDesktopTheme" fork="true" failonerror="true">
+			<arg value="-load-config=${airsdk.config}"/>
+			<arg value="-swf-version=${swf.version}"/>
+			<arg value="-source-path+=${themes.root}/MetalWorksDesktopTheme/source"/>
+			<arg value="-include-sources+=${themes.root}/MetalWorksDesktopTheme/source"/>
+			<arg value="-external-library-path+=${dependency.output}"/>
+			<arg value="-external-library-path+=${output.path}/feathers.swc"/>
+			<arg value="-output=${themes.output}/MetalWorksDesktopTheme/swc/MetalWorksDesktopTheme.swc"/>
+		</java>
+
 		<echo message="Building MetalWorksMobileTheme.swc"/>
 		<java jar="${compc}" dir="${themes.root}/MetalWorksMobileTheme" fork="true" failonerror="true">
 			<arg value="-load-config=${airsdk.config}"/>
@@ -173,6 +184,14 @@
 
 		<copy overwrite="true" todir="${themes.output}/AeonDesktopTheme">
 			<fileset dir="${themes.root}/AeonDesktopTheme">
+				<include name="README.md"/>
+				<include name="source/**"/>
+				<include name="assets/**"/>
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="${themes.output}/MetalWorksDesktopTheme">
+			<fileset dir="${themes.root}/MetalWorksDesktopTheme">
 				<include name="README.md"/>
 				<include name="source/**"/>
 				<include name="assets/**"/>
