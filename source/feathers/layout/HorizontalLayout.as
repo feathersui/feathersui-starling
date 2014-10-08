@@ -809,6 +809,13 @@ package feathers.layout
 		 */
 		public function layout(items:Vector.<DisplayObject>, viewPortBounds:ViewPortBounds = null, result:LayoutBoundsResult = null):LayoutBoundsResult
 		{
+			//this function is very long because it may be called every frame,
+			//in some situations. testing revealed that splitting this function
+			//into separate, smaller functions affected performance.
+			//since the SWC compiler cannot inline functions, we can't use that
+			//feature either.
+
+			//since viewPortBounds can be null, we may need to provide some defaults
 			var scrollX:Number = viewPortBounds ? viewPortBounds.scrollX : 0;
 			var scrollY:Number = viewPortBounds ? viewPortBounds.scrollY : 0;
 			var boundsX:Number = viewPortBounds ? viewPortBounds.x : 0;
@@ -822,6 +829,8 @@ package feathers.layout
 
 			if(this._useVirtualLayout)
 			{
+				//if the layout is virtualized, we'll need the dimensions of the
+				//typical item so that we have fallback values when an item is null
 				this.prepareTypicalItem(explicitHeight - this._paddingTop - this._paddingBottom);
 				var calculatedTypicalItemWidth:Number = this._typicalItem ? this._typicalItem.width : 0;
 				var calculatedTypicalItemHeight:Number = this._typicalItem ? this._typicalItem.height : 0;
@@ -831,22 +840,27 @@ package feathers.layout
 				this._verticalAlign != VERTICAL_ALIGN_JUSTIFY ||
 				explicitHeight !== explicitHeight) //isNaN
 			{
+				//in some cases, we may need to validate all of the items so
+				//that we can use their dimensions below.
 				this.validateItems(items, explicitHeight - this._paddingTop - this._paddingBottom, explicitWidth);
 			}
 
 			if(!this._useVirtualLayout)
 			{
+				//handle the percentWidth property from HorizontalLayoutData,
+				//if available.
 				this.applyPercentWidths(items, explicitWidth, minWidth, maxWidth);
 			}
 
 			var distributedWidth:Number;
 			if(this._distributeWidths)
 			{
+				//distribute the width evenly among all items
 				distributedWidth = this.calculateDistributedWidth(items, explicitWidth, minWidth, maxWidth);
 			}
 			var hasDistributedWidth:Boolean = distributedWidth === distributedWidth; //!isNaN
 
-			this._discoveredItemsCache.length = 0;
+			//this section prepares some variables needed for the following loop
 			var hasFirstGap:Boolean = this._firstGap === this._firstGap; //!isNaN
 			var hasLastGap:Boolean = this._lastGap === this._lastGap; //!isNaN
 			var maxItemHeight:Number = this._useVirtualLayout ? calculatedTypicalItemHeight : 0;
@@ -855,6 +869,9 @@ package feathers.layout
 			var totalItemCount:int = itemCount;
 			if(this._useVirtualLayout && !this._hasVariableItemDimensions)
 			{
+				//if the layout is virtualized, and the items all have the same
+				//width, we can make our loops smaller by skipping some items
+				//at the beginning and end. this improves performance.
 				totalItemCount += this._beforeVirtualizedItemCount + this._afterVirtualizedItemCount;
 				positionX += (this._beforeVirtualizedItemCount * (calculatedTypicalItemWidth + this._gap));
 				if(hasFirstGap && this._beforeVirtualizedItemCount > 0)
@@ -863,11 +880,23 @@ package feathers.layout
 				}
 			}
 			var secondToLastIndex:int = totalItemCount - 2;
+			//this cache is used to save non-null items in virtual layouts. by
+			//using a smaller array, we can improve performance by spending less
+			//time in the upcoming loops.
+			this._discoveredItemsCache.length = 0;
 			var discoveredItemsCacheLastIndex:int = 0;
+
+			//this first loop sets the x position of items, and it calculates
+			//the total width of all items
 			for(var i:int = 0; i < itemCount; i++)
 			{
 				var item:DisplayObject = items[i];
+				//if we're trimming some items at the beginning, we need to
+				//adjust i to account for the missing items in the array
 				var iNormalized:int = i + this._beforeVirtualizedItemCount;
+
+				//pick the gap that will follow this item. the first and second
+				//to last items may have different gaps.
 				var gap:Number = this._gap;
 				if(hasFirstGap && iNormalized == 0)
 				{
@@ -877,24 +906,39 @@ package feathers.layout
 				{
 					gap = this._lastGap;
 				}
+
 				if(this._useVirtualLayout && this._hasVariableItemDimensions)
 				{
 					var cachedWidth:Number = this._widthCache[iNormalized];
 				}
 				if(this._useVirtualLayout && !item)
 				{
+					//the item is null, and the layout is virtualized, so we
+					//need to estimate the width of the item.
+
 					if(!this._hasVariableItemDimensions ||
 						cachedWidth !== cachedWidth) //isNaN
 					{
+						//if all items must have the same width, we will
+						//use the width of the typical item (calculatedTypicalItemWidth).
+
+						//if items may have different widths, we first check
+						//the cache for a width value. if there isn't one, then
+						//we'll use calculatedTypicalItemWidth as a fallback.
 						positionX += calculatedTypicalItemWidth + gap;
 					}
 					else
 					{
+						//if we have variable item widths, we should use a
+						//cached width when there's one available. it will be
+						//more accurate than the typical item's width.
 						positionX += cachedWidth + gap;
 					}
 				}
 				else
 				{
+					//we get here if the item isn't null. it is never null if
+					//the layout isn't virtualized.
 					if(item is ILayoutDisplayObject && !ILayoutDisplayObject(item).includeInLayout)
 					{
 						continue;
@@ -916,18 +960,30 @@ package feathers.layout
 						{
 							if(itemWidth != cachedWidth)
 							{
+								//update the cache if needed. this will notify
+								//the container that the virtualized layout has
+								//changed, and it the view port may need to be
+								//re-measured.
 								this._widthCache[iNormalized] = itemWidth;
 								this.dispatchEventWith(Event.CHANGE);
 							}
 						}
 						else if(calculatedTypicalItemWidth >= 0)
 						{
+							//if all items must have the same width, we will
+							//use the width of the typical item (calculatedTypicalItemWidth).
 							item.width = itemWidth = calculatedTypicalItemWidth;
 						}
 					}
 					positionX += itemWidth + gap;
+					//we compare with > instead of Math.max() because the rest
+					//arguments on Math.max() cause extra garbage collection and
+					//hurt performance
 					if(itemHeight > maxItemHeight)
 					{
+						//we need to know the maximum height of the items in the
+						//case where the height of the view port needs to be
+						//calculated by the layout.
 						maxItemHeight = itemHeight;
 					}
 					if(this._useVirtualLayout)
@@ -939,6 +995,8 @@ package feathers.layout
 			}
 			if(this._useVirtualLayout && !this._hasVariableItemDimensions)
 			{
+				//finish the final calculation of the x position so that it can
+				//be used for the total width of all items
 				positionX += (this._afterVirtualizedItemCount * (calculatedTypicalItemWidth + this._gap));
 				if(hasLastGap && this._afterVirtualizedItemCount > 0)
 				{
@@ -946,10 +1004,16 @@ package feathers.layout
 				}
 			}
 
+			//this array will contain all items that are not null. see the
+			//comment above where the discoveredItemsCache is initialized for
+			//details about why this is important.
 			var discoveredItems:Vector.<DisplayObject> = this._useVirtualLayout ? this._discoveredItemsCache : items;
 			var discoveredItemCount:int = discoveredItems.length;
 
 			var totalHeight:Number = maxItemHeight + this._paddingTop + this._paddingBottom;
+			//the available height is the height of the viewport. if the explicit
+			//height is NaN, we need to calculate the viewport height ourselves
+			//based on the total height of all items.
 			var availableHeight:Number = explicitHeight;
 			if(availableHeight !== availableHeight) //isNaN
 			{
@@ -963,7 +1027,12 @@ package feathers.layout
 					availableHeight = maxHeight;
 				}
 			}
+
+			//this is the total width of all items
 			var totalWidth:Number = positionX - this._gap + this._paddingRight - boundsX;
+			//the available width is the width of the viewport. if the explicit
+			//width is NaN, we need to calculate the viewport width ourselves
+			//based on the total width of all items.
 			var availableWidth:Number = explicitWidth;
 			if(availableWidth !== availableWidth) //isNaN
 			{
@@ -978,6 +1047,9 @@ package feathers.layout
 				}
 			}
 
+			//in this section, we handle horizontal alignment. items will be
+			//aligned horizontally if the total width of all items is less than
+			//the available width of the view port.
 			if(totalWidth < availableWidth)
 			{
 				var horizontalAlignOffsetX:Number = 0;
@@ -1012,6 +1084,9 @@ package feathers.layout
 				{
 					continue;
 				}
+
+				//if we're repeating items, then we may need to adjust the x
+				//position of some items so that they appear inside the viewport
 				if(canRepeatItems)
 				{
 					if(scrollX > 0)
@@ -1031,8 +1106,12 @@ package feathers.layout
 						}
 					}
 				}
+
+				//in this section, we handle vertical alignment and percent
+				//height from HorizontalLayoutData
 				if(this._verticalAlign == VERTICAL_ALIGN_JUSTIFY)
 				{
+					//if we justify items vertically, we can skip percent height
 					item.y = item.pivotY + boundsY + this._paddingTop;
 					item.height = availableHeight - this._paddingTop - this._paddingBottom;
 				}
@@ -1043,6 +1122,8 @@ package feathers.layout
 						var layoutData:HorizontalLayoutData = layoutItem.layoutData as HorizontalLayoutData;
 						if(layoutData)
 						{
+							//in this section, we handle percentage width if
+							//VerticalLayoutData is available.
 							var percentHeight:Number = layoutData.percentHeight;
 							if(percentHeight === percentHeight) //!isNaN
 							{
@@ -1076,6 +1157,8 @@ package feathers.layout
 							}
 						}
 					}
+					//handle all other vertical alignment values (we handled
+					//justify already). the y position of all items is set here.
 					switch(this._verticalAlign)
 					{
 						case VERTICAL_ALIGN_BOTTOM:
@@ -1085,6 +1168,8 @@ package feathers.layout
 						}
 						case VERTICAL_ALIGN_MIDDLE:
 						{
+							//round to the nearest pixel when dividing by 2 to
+							//align in the middle
 							item.y = item.pivotY + boundsY + this._paddingTop + Math.round((availableHeight - this._paddingTop - this._paddingBottom - item.height) / 2);
 							break;
 						}
@@ -1094,13 +1179,19 @@ package feathers.layout
 						}
 					}
 				}
+
 				if(this._manageVisibility)
 				{
 					item.visible = ((item.x - item.pivotX + item.width) >= (boundsX + scrollX)) && ((item.x - item.pivotX) < (scrollX + availableWidth));
 				}
 			}
+			//we don't want to keep a reference to any of the items, so clear
+			//this cache
 			this._discoveredItemsCache.length = 0;
 
+			//finally, we want to calculate the result so that the container
+			//can use it to adjust its viewport and determine the minimum and
+			//maximum scroll positions (if needed)
 			if(!result)
 			{
 				result = new LayoutBoundsResult();
