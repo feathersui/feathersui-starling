@@ -126,6 +126,8 @@ All deprecated APIs are subject to the [Feathers deprecation policy](http://wiki
 
 The `nameList` property has been deprecated, and it is replaced by the `styleNameList` property. The `name` property is no longer connected to style names, and situations where it failed to work with `getChildByName()` have been resolved. The `styleName` property has been added to replace the former usage of the `name` property as a concatenated version of `nameList` (now, `styleNameList`).
 
+The `manageVisibility` property on layouts has been deprecated. In previous versions, this property could be used to improve performance of non-virtual layouts by hiding items that were outside the view port. However, other performance improvements have made it so that setting `manageVisibility` can now sometimes hurt performance instead of improving it.
+
 ### 2.0.0 Default Behavior and API Changes
 
 This is a major update to Feathers, so it includes more breaking changes than usual. Be sure to read this section thoroughly to see if any of these changes will affect your apps.
