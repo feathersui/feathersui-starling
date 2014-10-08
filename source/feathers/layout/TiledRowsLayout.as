@@ -1144,7 +1144,7 @@ package feathers.layout
 						var discoveredItemsLastIndex:int = this._useVirtualLayout ? (this._discoveredItemsCache.length - 1) : (itemIndex - 1);
 						this.applyHorizontalAlign(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex, totalPageWidth, availablePageWidth);
 						this.applyVerticalAlign(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex, totalPageHeight, availablePageHeight);
-						if(this.manageVisibility)
+						if(this._manageVisibility)
 						{
 							this.applyVisible(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex,
 								boundsX + scrollX, scrollX + availableWidth, boundsY + scrollY, scrollY + availableHeight);
@@ -1233,7 +1233,7 @@ package feathers.layout
 				discoveredItemsLastIndex = this._useVirtualLayout ? (discoveredItems.length - 1) : (i - 1);
 				this.applyHorizontalAlign(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex, totalPageWidth, availablePageWidth);
 				this.applyVerticalAlign(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex, totalPageHeight, availablePageHeight);
-				if(this.manageVisibility)
+				if(this._manageVisibility)
 				{
 					this.applyVisible(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex,
 						boundsX + scrollX, scrollX + availableWidth, boundsY + scrollY, scrollY + availableHeight);
@@ -1281,7 +1281,7 @@ package feathers.layout
 				discoveredItemsLastIndex = discoveredItems.length - 1;
 				this.applyHorizontalAlign(discoveredItems, 0, discoveredItemsLastIndex, totalWidth, availableWidth);
 				this.applyVerticalAlign(discoveredItems, 0, discoveredItemsLastIndex, totalHeight, availableHeight);
-				if(this.manageVisibility)
+				if(this._manageVisibility)
 				{
 					this.applyVisible(discoveredItems, discoveredItemsFirstIndex, discoveredItemsLastIndex,
 						boundsX + scrollX, scrollX + availableWidth, boundsY + scrollY, scrollY + availableHeight);
