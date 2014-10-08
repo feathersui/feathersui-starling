@@ -1206,8 +1206,7 @@ package feathers.controls
 
 				var layout:VerticalLayout = new VerticalLayout();
 				layout.useVirtualLayout = true;
-				layout.paddingTop = layout.paddingRight = layout.paddingBottom =
-					layout.paddingLeft = 0;
+				layout.padding = 0;
 				layout.gap = 0;
 				layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
 				layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
