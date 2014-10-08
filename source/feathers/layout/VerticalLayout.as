@@ -1110,7 +1110,7 @@ package feathers.layout
 						}
 					}
 				}
-				if(this.manageVisibility)
+				if(this._manageVisibility)
 				{
 					item.visible = ((item.y - item.pivotY + item.height) >= (boundsY + scrollY)) && ((item.y - item.pivotY) < (scrollY + availableHeight));
 				}
