@@ -544,9 +544,18 @@ package feathers.layout
 
 		/**
 		 * Determines if items will be set invisible if they are outside the
-		 * view port. Can improve performance, especially for non-virtual
-		 * layouts. If <code>true</code>, you will not be able to manually
+		 * view port. If <code>true</code>, you will not be able to manually
 		 * change the <code>visible</code> property of any items in the layout.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.0. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.
+		 * Originally, the <code>manageVisibility</code> property could be used
+		 * to improve performance of non-virtual layouts by hiding items that
+		 * were outside the view port. However, other performance improvements
+		 * have made it so that setting <code>manageVisibility</code> can now
+		 * sometimes hurt performance instead of improving it.</p>
 		 *
 		 * @default false
 		 */
