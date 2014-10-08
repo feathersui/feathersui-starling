@@ -507,6 +507,39 @@ package feathers.layout
 		/**
 		 * @private
 		 */
+		protected var _repeatItems:Boolean = false;
+
+		/**
+		 * Determines whether the items will repeat infinitely when scrolling
+		 * vertically. If all items will fit within the viewport height because
+		 * scrolling isn't required, then the items will not repeat.
+		 *
+		 * <p>This property will be ignored (items will not repeat) if the
+		 * <code>hasVariableItemDimensions</code> property is <code>true</code>.</p>
+		 *
+		 * @default false
+		 */
+		public function get repeatItems():Boolean
+		{
+			return this._repeatItems;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set repeatItems(value:Boolean):void
+		{
+			if(this._repeatItems == value)
+			{
+				return;
+			}
+			this._repeatItems = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _manageVisibility:Boolean = false;
 
 		/**
@@ -783,7 +816,7 @@ package feathers.layout
 		 */
 		public function get requiresLayoutOnScroll():Boolean
 		{
-			return this._manageVisibility || this._useVirtualLayout;
+			return this._useVirtualLayout || this._repeatItems || this._manageVisibility;
 		}
 
 		/**
@@ -986,6 +1019,7 @@ package feathers.layout
 				}
 			}
 
+			var canRepeatItems:Boolean = this._repeatItems && totalHeight > availableHeight && !(this._useVirtualLayout && this._hasVariableItemDimensions);
 			for(i = 0; i < discoveredItemCount; i++)
 			{
 				item = discoveredItems[i];
@@ -993,6 +1027,25 @@ package feathers.layout
 				if(layoutItem && !layoutItem.includeInLayout)
 				{
 					continue;
+				}
+				if(canRepeatItems)
+				{
+					if(scrollY > 0)
+					{
+						item.y += totalHeight * int((scrollY + availableHeight) / totalHeight);
+						if(item.y >= scrollY + availableHeight)
+						{
+							item.y -= totalHeight;
+						}
+					}
+					else if(scrollY < 0)
+					{
+						item.y += totalHeight * (int(scrollY / totalHeight) - 1);
+						if((item.y + item.height) < scrollY)
+						{
+							item.y += totalHeight;
+						}
+					}
 				}
 				if(this._horizontalAlign == HORIZONTAL_ALIGN_JUSTIFY)
 				{
@@ -1069,8 +1122,18 @@ package feathers.layout
 			{
 				result = new LayoutBoundsResult();
 			}
+			result.contentX = 0;
 			result.contentWidth = this._horizontalAlign == HORIZONTAL_ALIGN_JUSTIFY ? availableWidth : totalWidth;
-			result.contentHeight = totalHeight;
+			if(canRepeatItems)
+			{
+				result.contentY = Number.NEGATIVE_INFINITY;
+				result.contentHeight = Number.POSITIVE_INFINITY;
+			}
+			else
+			{
+				result.contentY = 0;
+				result.contentHeight = totalHeight;
+			}
 			result.viewPortWidth = availableWidth;
 			result.viewPortHeight = availableHeight;
 			return result;
@@ -1259,7 +1322,6 @@ package feathers.layout
 			{
 				//this case can be optimized because we know that every item has
 				//the same height
-				var indexOffset:int = 0;
 				var totalItemHeight:Number = itemCount * (calculatedTypicalItemHeight + this._gap) - this._gap;
 				if(hasFirstGap && itemCount > 1)
 				{
@@ -1269,6 +1331,8 @@ package feathers.layout
 				{
 					totalItemHeight = totalItemHeight - this._gap + this._lastGap;
 				}
+				var canRepeatItems:Boolean = this._repeatItems && totalItemHeight > height;
+				var indexOffset:int = 0;
 				if(totalItemHeight < height)
 				{
 					if(this._verticalAlign == VERTICAL_ALIGN_BOTTOM)
@@ -1280,28 +1344,52 @@ package feathers.layout
 						indexOffset = Math.ceil(((height - totalItemHeight) / (calculatedTypicalItemHeight + this._gap)) / 2);
 					}
 				}
-				var minimum:int = (scrollY - this._paddingTop) / (calculatedTypicalItemHeight + this._gap);
-				if(minimum < 0)
+				if(canRepeatItems)
 				{
-					minimum = 0;
+					scrollY %= totalItemHeight;
+					if(scrollY < 0)
+					{
+						scrollY += totalItemHeight;
+					}
+					var minimum:int = (scrollY - this._paddingTop) / (calculatedTypicalItemHeight + this._gap);
+					var maximum:int = minimum + maxVisibleTypicalItemCount;
 				}
-				minimum -= indexOffset;
-				//if we're scrolling beyond the final item, we should keep the
-				//indices consistent so that items aren't destroyed and
-				//recreated unnecessarily
-				var maximum:int = minimum + maxVisibleTypicalItemCount;
-				if(maximum >= itemCount)
+				else
 				{
-					maximum = itemCount - 1;
-				}
-				minimum = maximum - maxVisibleTypicalItemCount;
-				if(minimum < 0)
-				{
-					minimum = 0;
+					minimum = (scrollY - this._paddingTop) / (calculatedTypicalItemHeight + this._gap);
+					if(minimum < 0)
+					{
+						minimum = 0;
+					}
+					minimum -= indexOffset;
+					//if we're scrolling beyond the final item, we should keep the
+					//indices consistent so that items aren't destroyed and
+					//recreated unnecessarily
+					maximum = minimum + maxVisibleTypicalItemCount;
+					if(maximum >= itemCount)
+					{
+						maximum = itemCount - 1;
+					}
+					minimum = maximum - maxVisibleTypicalItemCount;
+					if(minimum < 0)
+					{
+						minimum = 0;
+					}
 				}
 				for(var i:int = minimum; i <= maximum; i++)
 				{
-					result[resultLastIndex] = i;
+					if(!canRepeatItems || (i >= 0 && i < itemCount))
+					{
+						result[resultLastIndex] = i;
+					}
+					else if(i < 0)
+					{
+						result[resultLastIndex] = itemCount + i;
+					}
+					else if(i >= itemCount)
+					{
+						result[resultLastIndex] = i - itemCount;
+					}
 					resultLastIndex++;
 				}
 				return result;
