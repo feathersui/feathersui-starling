@@ -121,7 +121,6 @@ package feathers.examples.gallery
 			var listLayout:HorizontalLayout = new HorizontalLayout();
 			listLayout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_JUSTIFY;
 			listLayout.hasVariableItemDimensions = true;
-			listLayout.manageVisibility = true;
 
 			this.list = new List();
 			this.list.styleNameList.add(THUMBNAIL_LIST_NAME);

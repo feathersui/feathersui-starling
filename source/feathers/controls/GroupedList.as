@@ -2243,7 +2243,6 @@ package feathers.controls
 				layout.gap = 0;
 				layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
 				layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
-				layout.manageVisibility = true;
 				this._layout = layout;
 			}
 		}
