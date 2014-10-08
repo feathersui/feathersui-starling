@@ -1094,7 +1094,7 @@ package feathers.layout
 						}
 					}
 				}
-				if(this.manageVisibility)
+				if(this._manageVisibility)
 				{
 					item.visible = ((item.x - item.pivotX + item.width) >= (boundsX + scrollX)) && ((item.x - item.pivotX) < (scrollX + availableWidth));
 				}
