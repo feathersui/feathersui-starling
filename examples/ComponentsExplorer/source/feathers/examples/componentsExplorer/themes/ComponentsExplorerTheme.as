@@ -60,7 +60,6 @@ package feathers.examples.componentsExplorer.themes
 			verticalLayout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
 			verticalLayout.padding = this.gutterSize;
 			verticalLayout.gap = this.smallGutterSize;
-			verticalLayout.manageVisibility = true;
 			screen.layout = verticalLayout;
 
 			screen.verticalScrollPolicy = PanelScreen.SCROLL_POLICY_ON;
@@ -83,7 +82,6 @@ package feathers.examples.componentsExplorer.themes
 			verticalLayout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
 			verticalLayout.padding = this.gutterSize;
 			verticalLayout.gap = this.smallGutterSize;
-			verticalLayout.manageVisibility = true;
 			screen.layout = verticalLayout;
 
 			screen.verticalScrollPolicy = PanelScreen.SCROLL_POLICY_ON;
@@ -114,7 +112,6 @@ package feathers.examples.componentsExplorer.themes
 			verticalLayout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
 			verticalLayout.padding = this.gutterSize;
 			verticalLayout.gap = this.smallGutterSize;
-			verticalLayout.manageVisibility = true;
 			screen.layout = verticalLayout;
 
 			screen.verticalScrollPolicy = PanelScreen.SCROLL_POLICY_ON;
