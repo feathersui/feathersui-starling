@@ -17,6 +17,7 @@ Noteworthy changes in official, stable releases of [Feathers](http://feathersui.
 * Button: added new hasLabelTextRenderer that may be set to false to avoid creating the text renderer (for things like scroll bar or slider button sub-components).
 * Button: fixed issue where button didn't return to up state when focus is changed with keyboard while in another state.
 * Callout: added stagePadding property to set stagePaddingTop, stagePaddingRight, stagePaddingBottom, and stagePaddingLeft properties all at once.
+* Callout: fixed issue where touch listener was removed when callout was removed, but it wasn't re-added when the same callout instance was shown again.
 * DefaultGroupedListHeaderOrFooterRenderer: fixed issue where content wasn't disabled when isEnabled changed.
 * Drawers: added optional overlaySkin property to fade in a display object over the content when a drawer is opened.
 * Drawers: checks if event types are null before adding listeners.
