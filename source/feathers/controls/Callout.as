@@ -1639,7 +1639,6 @@ package feathers.controls
 		 */
 		override protected function initialize():void
 		{
-			this.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			this.addEventListener(Event.REMOVED_FROM_STAGE, callout_removedFromStageHandler);
 		}
 
@@ -1946,6 +1945,7 @@ package feathers.controls
 			var priority:int = -getDisplayObjectDepthFromStage(this);
 			Starling.current.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, callout_nativeStage_keyDownHandler, false, priority, true);
 
+			this.stage.addEventListener(TouchEvent.TOUCH, stage_touchHandler);
 			//to avoid touch events bubbling up to the callout and causing it to
 			//close immediately, we wait one frame before allowing it to close
 			//based on touches.
