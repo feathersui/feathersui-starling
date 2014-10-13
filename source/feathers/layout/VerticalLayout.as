@@ -507,6 +507,44 @@ package feathers.layout
 		/**
 		 * @private
 		 */
+		protected var _requestedRowCount:int = 0;
+
+		/**
+		 * Requests that the layout set the view port dimensions to display a
+		 * specific number of rows (plus gaps and padding), if possible. If the
+		 * explicit height of the view port is set, then this value will be
+		 * ignored. If the view port's minimum and/or maximum height are set,
+		 * the actual number of visible rows may be adjusted to meet those
+		 * requirements. Set this value to <code>0</code> to display as many
+		 * rows as possible.
+		 *
+		 * @default 0
+		 */
+		public function get requestedRowCount():int
+		{
+			return this._requestedRowCount;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set requestedRowCount(value:int):void
+		{
+			if(value < 0)
+			{
+				throw RangeError("requestedRowCount requires a value >= 0");
+			}
+			if(this._requestedRowCount == value)
+			{
+				return;
+			}
+			this._requestedRowCount = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _repeatItems:Boolean = false;
 
 		/**
@@ -1063,6 +1101,14 @@ package feathers.layout
 			if(availableHeight !== availableHeight) //isNaN
 			{
 				availableHeight = totalHeight;
+				if(this._requestedRowCount > 0)
+				{
+					availableHeight = this._requestedRowCount * (calculatedTypicalItemHeight + this._gap) - this._gap + this._paddingTop + this._paddingBottom;
+				}
+				else
+				{
+					availableHeight = totalHeight;
+				}
 				if(availableHeight < minHeight)
 				{
 					availableHeight = minHeight;
@@ -1333,7 +1379,15 @@ package feathers.layout
 
 			if(needsHeight)
 			{
-				var resultHeight:Number = positionY + this._paddingTop + this._paddingBottom;
+				if(this._requestedRowCount > 0)
+				{
+					var resultHeight:Number = (calculatedTypicalItemHeight + this._gap) * this._requestedRowCount - this._gap;
+				}
+				else
+				{
+					resultHeight = positionY;
+				}
+				resultHeight += this._paddingTop + this._paddingBottom;
 				if(resultHeight < minHeight)
 				{
 					resultHeight = minHeight;
