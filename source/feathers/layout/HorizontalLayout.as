@@ -461,6 +461,44 @@ package feathers.layout
 		/**
 		 * @private
 		 */
+		protected var _requestedColumnCount:int = 0;
+
+		/**
+		 * Requests that the layout set the view port dimensions to display a
+		 * specific number of columns (plus gaps and padding), if possible. If
+		 * the explicit width of the view port is set, then this value will be
+		 * ignored. If the view port's minimum and/or maximum width are set,
+		 * the actual number of visible columns may be adjusted to meet those
+		 * requirements. Set this value to <code>0</code> to display as many
+		 * columns as possible.
+		 *
+		 * @default 0
+		 */
+		public function get requestedColumnCount():int
+		{
+			return this._requestedColumnCount;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set requestedColumnCount(value:int):void
+		{
+			if(value < 0)
+			{
+				throw RangeError("requestedColumnCount requires a value >= 0");
+			}
+			if(this._requestedColumnCount == value)
+			{
+				return;
+			}
+			this._requestedColumnCount = value;
+			this.dispatchEventWith(Event.CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _distributeWidths:Boolean = false;
 
 		/**
@@ -1045,7 +1083,14 @@ package feathers.layout
 			var availableWidth:Number = explicitWidth;
 			if(availableWidth !== availableWidth) //isNaN
 			{
-				availableWidth = totalWidth;
+				if(this._requestedColumnCount > 0)
+				{
+					availableWidth = (calculatedTypicalItemWidth + this._gap) * this._requestedColumnCount - this._gap + this._paddingLeft + this._paddingRight
+				}
+				else
+				{
+					availableWidth = totalWidth;
+				}
 				if(availableWidth < minWidth)
 				{
 					availableWidth = minWidth;
@@ -1298,7 +1343,14 @@ package feathers.layout
 
 			if(needsWidth)
 			{
-				var resultWidth:Number = positionX + this._paddingLeft + this._paddingRight;
+				if(this._requestedColumnCount > 0)
+				{
+					var resultWidth:Number = (calculatedTypicalItemWidth + this._gap) * this._requestedColumnCount - this._gap + this._paddingLeft + this._paddingRight
+				}
+				else
+				{
+					resultWidth = positionX + this._paddingLeft + this._paddingRight;
+				}
 				if(resultWidth < minWidth)
 				{
 					resultWidth = minWidth;
