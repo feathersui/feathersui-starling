@@ -28,7 +28,11 @@ package feathers.motion.transitions
 
 	/**
 	 * A transition for <code>ScreenNavigator</code> that flips the old and new
-	 * screens by modifying rotationY.
+	 * screens by modifying <code>rotationY</code> on a <code>Sprite3D</code>.
+	 *
+	 * <p>Warning: This transition is not compatible with Starling's
+	 * <code>clipRect</code> property. You must disable clipping on screens
+	 * while this transition is in progress.</p>
 	 *
 	 * @see feathers.controls.ScreenNavigator
 	 */
