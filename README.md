@@ -24,7 +24,8 @@ Say hello to [Feathers](http://feathersui.com/), a library of light-weight, skin
 
 ## Minimum Requirements
 
-* Adobe AIR 3.5 or newer for desktop or mobile apps
+* Adobe AIR 15.0 or newer for mobile apps
+* Adobe AIR 3.5 or newer for desktop apps
 * Adobe Flash Player 11.5 or newer for web browser apps
 * Starling Framework from Github
 

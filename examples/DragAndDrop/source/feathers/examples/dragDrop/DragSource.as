@@ -29,7 +29,7 @@ package feathers.examples.dragDrop
 
 		override protected function initialize():void
 		{
-			this._background = new Quad(1, 1, 0xffffff);
+			this._background = new Quad(1, 1, 0x36322e);
 			this.addChildAt(this._background, 0);
 		}
 
@@ -54,7 +54,7 @@ package feathers.examples.dragDrop
 				{
 					this._touchID = -1;
 
-					var avatar:Quad = new Quad(100, 100, 0x00A7FC);
+					var avatar:Quad = new Quad(100, 100, 0xff8800);
 					avatar.alpha = 0.5;
 
 					var dragData:DragData = new DragData();
