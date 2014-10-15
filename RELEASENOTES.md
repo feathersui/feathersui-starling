@@ -46,7 +46,6 @@ Noteworthy changes in official, stable releases of [Feathers](http://feathersui.
 * ITextEditor, ITextRenderer: extend a new IBaselineTextControl interface that defines a common baseline property.
 * Layouts: fixed issue where they didn't account for pivotX and pivotY.
 * Layouts: when centering items, rounds the x and y positions to the nearest integer.
-* LayoutGroup: respects includeInLayout for measurement when no layout is defined.
 * LayoutGroup: added new backgroundSkin and backgroundDisabledSkin properties.
 * List, GroupedList: if dataProvider property is changed, or the collection dispatches CollectionEventType.RESET, automatically behaves as if updateItemAt() were called on all item renderers.
 * ListCollection, HierarchicalCollection: added dispose() function to support a way to dispose things like display objects or textures in items.
@@ -166,8 +165,6 @@ Focus management now supports multiple Starling stages (for AIR desktop apps). T
 ```as3
 FocusManger.setEnabledForStage( Starling.current.stage, true );
 ```
-
-The `LayoutGroup` class now respects the `includeInLayout` property when its `layout` property is `null`. In previous versions, the `includeInLayout` property was incorrectly ignored in this situation.
 
 All layouts now account for the `pivotX` and `pivotY` properties when positioning display objects. In previous versions, these properties were ignored.
 

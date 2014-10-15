@@ -4,7 +4,7 @@ package feathers.examples.dragDrop
 	import feathers.controls.Label;
 	import feathers.dragDrop.IDragSource;
 	import feathers.dragDrop.IDropTarget;
-	import feathers.themes.AeonDesktopTheme;
+	import feathers.themes.MetalWorksDesktopTheme;
 
 	import starling.display.Quad;
 	import starling.display.Sprite;
@@ -33,9 +33,9 @@ package feathers.examples.dragDrop
 
 		private function addedToStageHandler(event:Event):void
 		{
-			new AeonDesktopTheme();
+			new MetalWorksDesktopTheme();
 
-			this._draggableQuad = new Quad(100, 100, 0x0087DC);
+			this._draggableQuad = new Quad(100, 100, 0xff8800);
 
 			this._dragSource = new DragSource(DRAG_FORMAT);
 			this._dragSource.width = 320;
