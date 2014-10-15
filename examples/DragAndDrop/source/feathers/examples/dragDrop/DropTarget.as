@@ -11,8 +11,8 @@ package feathers.examples.dragDrop
 
 	public class DropTarget extends LayoutGroup implements IDropTarget
 	{
-		private static const DEFAULT_COLOR:uint = 0xffffff;
-		private static const HOVER_COLOR:uint = 0x9AD8FF;
+		private static const DEFAULT_COLOR:uint = 0x36322e;
+		private static const HOVER_COLOR:uint = 0x26221e;
 
 		public function DropTarget(dragFormat:String)
 		{
