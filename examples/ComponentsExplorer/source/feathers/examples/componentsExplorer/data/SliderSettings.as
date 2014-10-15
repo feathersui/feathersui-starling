@@ -1,7 +1,5 @@
 package feathers.examples.componentsExplorer.data
 {
-	import feathers.controls.Slider;
-
 	public class SliderSettings
 	{
 		public function SliderSettings()

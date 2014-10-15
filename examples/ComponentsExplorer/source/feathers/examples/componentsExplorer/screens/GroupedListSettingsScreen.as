@@ -6,12 +6,9 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.PickerList;
 	import feathers.controls.ToggleSwitch;
 	import feathers.data.ListCollection;
-	import feathers.events.FeathersEventType;
 	import feathers.examples.componentsExplorer.data.GroupedListSettings;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
-
-	import starling.display.DisplayObject;
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;

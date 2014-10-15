@@ -4,16 +4,12 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.ImageLoader;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.ToggleButton;
-	import feathers.events.FeathersEventType;
-	import feathers.examples.componentsExplorer.data.EmbeddedAssets;
-	import feathers.layout.VerticalLayout;
 	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.events.Event;
-	import starling.textures.Texture;
 
 	[Event(name="complete",type="starling.events.Event")]
 

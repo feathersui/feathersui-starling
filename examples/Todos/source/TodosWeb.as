@@ -1,19 +1,15 @@
 package
 {
+	import feathers.system.DeviceCapabilities;
+
 	import flash.display.MovieClip;
-	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
-	import flash.errors.IllegalOperationError;
 	import flash.events.Event;
 	import flash.ui.ContextMenu;
 	import flash.utils.getDefinitionByName;
 
-	import feathers.system.DeviceCapabilities;
-
 	import starling.core.Starling;
-	import starling.utils.HAlign;
-	import starling.utils.VAlign;
 
 	[SWF(width="960",height="640",frameRate="60",backgroundColor="#4a4137")]
 	public class TodosWeb extends MovieClip

@@ -1,13 +1,9 @@
 package feathers.examples.componentsExplorer.screens
 {
 	import feathers.controls.Button;
-	import feathers.controls.Label;
 	import feathers.controls.NumericStepper;
 	import feathers.controls.PanelScreen;
-	import feathers.controls.Slider;
-	import feathers.events.FeathersEventType;
 	import feathers.examples.componentsExplorer.data.NumericStepperSettings;
-	import feathers.examples.componentsExplorer.data.SliderSettings;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 	import feathers.system.DeviceCapabilities;

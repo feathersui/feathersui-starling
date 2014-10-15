@@ -1,9 +1,7 @@
 package feathers.examples.layoutExplorer.screens
 {
-	import feathers.controls.Header;
 	import feathers.controls.List;
 	import feathers.controls.PanelScreen;
-	import feathers.controls.Screen;
 	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
@@ -15,7 +13,6 @@ package feathers.examples.layoutExplorer.screens
 	import feathers.system.DeviceCapabilities;
 
 	import starling.core.Starling;
-
 	import starling.events.Event;
 	import starling.textures.Texture;
 
