@@ -4,7 +4,6 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.Callout;
 	import feathers.controls.Label;
 	import feathers.controls.PanelScreen;
-	import feathers.events.FeathersEventType;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 	import feathers.skins.IStyleProvider;

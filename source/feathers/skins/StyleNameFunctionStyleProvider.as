@@ -10,8 +10,6 @@ package feathers.skins
 	import feathers.core.IFeathersControl;
 	import feathers.core.TokenList;
 
-	import starling.display.DisplayObjectContainer;
-
 	/**
 	 * Similar to <code>FunctionStyleProvider</code>, sets styles on a Feathers
 	 * UI component by passing it to a function, but also provides a way to

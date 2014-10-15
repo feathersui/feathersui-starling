@@ -18,7 +18,6 @@ package feathers.examples.gallery
 	import starling.animation.Tween;
 	import starling.core.Starling;
 	import starling.display.Image;
-	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.ResizeEvent;

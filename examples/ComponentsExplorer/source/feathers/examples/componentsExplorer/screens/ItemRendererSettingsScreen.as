@@ -8,7 +8,6 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.renderers.BaseDefaultItemRenderer;
 	import feathers.data.HierarchicalCollection;
 	import feathers.data.ListCollection;
-	import feathers.events.FeathersEventType;
 	import feathers.examples.componentsExplorer.data.ItemRendererSettings;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;

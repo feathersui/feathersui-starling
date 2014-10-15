@@ -3,17 +3,12 @@ package feathers.examples.layoutExplorer.screens
 	import feathers.controls.Button;
 	import feathers.controls.Label;
 	import feathers.controls.PanelScreen;
-	import feathers.controls.ScrollContainer;
-	import feathers.events.FeathersEventType;
-	import feathers.examples.layoutExplorer.data.HorizontalLayoutSettings;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
-	import feathers.layout.HorizontalLayout;
 	import feathers.system.DeviceCapabilities;
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
-	import starling.display.Quad;
 	import starling.events.Event;
 
 	[Event(name="complete",type="starling.events.Event")]

@@ -35,7 +35,6 @@ package feathers.controls.text
 	import starling.core.RenderSupport;
 	import starling.core.Starling;
 	import starling.display.Image;
-	import starling.events.Event;
 	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture;
 	import starling.utils.getNextPowerOfTwo;

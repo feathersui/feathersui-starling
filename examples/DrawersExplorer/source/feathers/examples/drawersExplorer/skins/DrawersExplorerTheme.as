@@ -1,6 +1,5 @@
 package feathers.examples.drawersExplorer.skins
 {
-	import feathers.controls.Panel;
 	import feathers.examples.drawersExplorer.views.ContentView;
 	import feathers.examples.drawersExplorer.views.DrawerView;
 	import feathers.layout.HorizontalLayout;
