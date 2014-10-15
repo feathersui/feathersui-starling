@@ -3,8 +3,6 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.Button;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.ProgressBar;
-	import feathers.events.FeathersEventType;
-	import feathers.layout.HorizontalLayout;
 	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
 

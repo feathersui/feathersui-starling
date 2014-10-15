@@ -4,13 +4,8 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.List;
 	import feathers.controls.NumericStepper;
 	import feathers.controls.PanelScreen;
-	import feathers.controls.PickerList;
-	import feathers.controls.Slider;
-	import feathers.controls.ToggleSwitch;
 	import feathers.data.ListCollection;
-	import feathers.events.FeathersEventType;
 	import feathers.examples.componentsExplorer.data.NumericStepperSettings;
-	import feathers.examples.componentsExplorer.data.SliderSettings;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 

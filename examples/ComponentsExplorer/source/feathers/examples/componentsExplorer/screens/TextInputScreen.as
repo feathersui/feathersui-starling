@@ -3,8 +3,6 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.Button;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.TextInput;
-	import feathers.events.FeathersEventType;
-	import feathers.layout.VerticalLayout;
 	import feathers.skins.IStyleProvider;
 	import feathers.system.DeviceCapabilities;
 

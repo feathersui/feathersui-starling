@@ -5,7 +5,6 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.PanelScreen;
 	import feathers.controls.ToggleSwitch;
 	import feathers.data.ListCollection;
-	import feathers.events.FeathersEventType;
 	import feathers.examples.componentsExplorer.data.EmbeddedAssets;
 	import feathers.examples.componentsExplorer.data.ItemRendererSettings;
 	import feathers.layout.AnchorLayout;
@@ -14,7 +13,6 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.system.DeviceCapabilities;
 
 	import starling.core.Starling;
-	import starling.display.DisplayObject;
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 

@@ -1,6 +1,5 @@
 package feathers.examples.displayObjects
 {
-	import feathers.controls.Button;
 	import feathers.controls.LayoutGroup;
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
@@ -13,13 +12,9 @@ package feathers.examples.displayObjects
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 	import feathers.motion.transitions.TabBarSlideTransitionManager;
-	import feathers.system.DeviceCapabilities;
-	import feathers.themes.MetalWorksMobileTheme;
 
-	import starling.display.Image;
 	import starling.events.Event;
 	import starling.events.ResizeEvent;
-	import starling.textures.Texture;
 
 	public class Main extends LayoutGroup
 	{

@@ -9,7 +9,6 @@ package feathers.controls.supportClasses
 {
 	import feathers.controls.LayoutGroup;
 	import feathers.core.IValidating;
-	import feathers.layout.LayoutBoundsResult;
 
 	import starling.display.DisplayObject;
 

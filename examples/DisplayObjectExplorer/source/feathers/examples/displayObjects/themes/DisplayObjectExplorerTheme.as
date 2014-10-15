@@ -4,11 +4,9 @@ package feathers.examples.displayObjects.themes
 	import feathers.examples.displayObjects.screens.Scale3ImageScreen;
 	import feathers.examples.displayObjects.screens.Scale9ImageScreen;
 	import feathers.examples.displayObjects.screens.TiledImageScreen;
-	import feathers.system.DeviceCapabilities;
 	import feathers.themes.MetalWorksMobileTheme;
 
 	import starling.display.Image;
-
 	import starling.textures.Texture;
 
 	public class DisplayObjectExplorerTheme extends MetalWorksMobileTheme

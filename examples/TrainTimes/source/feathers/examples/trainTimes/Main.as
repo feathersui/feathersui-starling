@@ -3,13 +3,10 @@ package feathers.examples.trainTimes
 
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
-	import feathers.events.FeathersEventType;
 	import feathers.examples.trainTimes.screens.StationScreen;
 	import feathers.examples.trainTimes.screens.TimesScreen;
 	import feathers.examples.trainTimes.themes.TrainTimesTheme;
 	import feathers.motion.transitions.OldFadeNewSlideTransitionManager;
-
-	import starling.events.Event;
 
 	public class Main extends ScreenNavigator
 	{

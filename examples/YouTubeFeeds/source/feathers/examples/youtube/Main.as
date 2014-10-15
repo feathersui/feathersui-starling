@@ -2,7 +2,6 @@ package feathers.examples.youtube
 {
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
-	import feathers.events.FeathersEventType;
 	import feathers.examples.youtube.models.VideoDetails;
 	import feathers.examples.youtube.models.VideoFeed;
 	import feathers.examples.youtube.models.YouTubeModel;

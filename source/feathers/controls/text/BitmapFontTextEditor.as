@@ -10,8 +10,8 @@ package feathers.controls.text
 	import feathers.core.FocusManager;
 	import feathers.core.ITextEditor;
 	import feathers.events.FeathersEventType;
-	import feathers.utils.text.TextInputRestrict;
 	import feathers.utils.text.TextInputNavigation;
+	import feathers.utils.text.TextInputRestrict;
 
 	import flash.desktop.Clipboard;
 	import flash.desktop.ClipboardFormats;
@@ -22,7 +22,6 @@ package feathers.controls.text
 	import flash.geom.Rectangle;
 	import flash.text.TextFormatAlign;
 	import flash.ui.Keyboard;
-	import flash.utils.Dictionary;
 
 	import starling.core.RenderSupport;
 	import starling.core.Starling;

@@ -3,7 +3,6 @@ package feathers.examples.drawersExplorer.views
 	import feathers.controls.Check;
 	import feathers.controls.Label;
 	import feathers.controls.ScrollContainer;
-	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
 
 	import starling.events.Event;
