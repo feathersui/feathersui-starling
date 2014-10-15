@@ -1,6 +1,5 @@
 package feathers.examples.todos
 {
-	import feathers.controls.Button;
 	import feathers.controls.Header;
 	import feathers.controls.List;
 	import feathers.controls.PanelScreen;

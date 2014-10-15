@@ -5,7 +5,6 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.PanelScreen;
 	import feathers.controls.ToggleSwitch;
 	import feathers.data.ListCollection;
-	import feathers.events.FeathersEventType;
 	import feathers.examples.componentsExplorer.data.ListSettings;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;

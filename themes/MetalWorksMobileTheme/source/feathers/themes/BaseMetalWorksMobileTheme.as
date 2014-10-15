@@ -42,9 +42,7 @@ package feathers.themes
 	import feathers.controls.PickerList;
 	import feathers.controls.ProgressBar;
 	import feathers.controls.Radio;
-	import feathers.controls.Screen;
 	import feathers.controls.ScrollContainer;
-	import feathers.controls.ScrollScreen;
 	import feathers.controls.ScrollText;
 	import feathers.controls.Scroller;
 	import feathers.controls.SimpleScrollBar;

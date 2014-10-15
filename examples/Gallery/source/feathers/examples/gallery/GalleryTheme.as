@@ -3,8 +3,6 @@ package feathers.examples.gallery
 	import feathers.controls.List;
 	import feathers.themes.MetalWorksMobileTheme;
 
-	import starling.display.DisplayObjectContainer;
-
 	/**
 	 * Extends MetalWorksMobileTheme to make some app-specific styling tweaks
 	 */

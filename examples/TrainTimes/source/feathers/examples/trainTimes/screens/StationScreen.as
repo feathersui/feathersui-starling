@@ -11,11 +11,8 @@ package feathers.examples.trainTimes.screens
 	import flash.ui.Keyboard;
 
 	import starling.animation.Transitions;
-
 	import starling.animation.Tween;
-
 	import starling.core.Starling;
-
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 

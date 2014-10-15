@@ -1,18 +1,14 @@
 package feathers.examples.trainTimes.screens
 {
 	import feathers.controls.Button;
-	import feathers.controls.Header;
 	import feathers.controls.List;
 	import feathers.controls.PanelScreen;
-	import feathers.controls.Screen;
 	import feathers.data.ListCollection;
-	import feathers.events.FeathersEventType;
 	import feathers.examples.trainTimes.model.TimeData;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 
 	import starling.display.DisplayObject;
-
 	import starling.events.Event;
 
 	[Event(name="complete",type="starling.events.Event")]

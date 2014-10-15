@@ -2,10 +2,8 @@ package feathers.examples.componentsExplorer.screens
 {
 	import feathers.controls.Button;
 	import feathers.controls.ButtonGroup;
-	import feathers.controls.Header;
 	import feathers.controls.PanelScreen;
 	import feathers.data.ListCollection;
-	import feathers.events.FeathersEventType;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 	import feathers.system.DeviceCapabilities;

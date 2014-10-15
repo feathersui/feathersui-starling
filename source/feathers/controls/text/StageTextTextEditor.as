@@ -13,7 +13,7 @@ package feathers.controls.text
 	import feathers.text.StageTextField;
 	import feathers.utils.geom.matrixToScaleX;
 	import feathers.utils.geom.matrixToScaleY;
-	
+
 	import flash.display.BitmapData;
 	import flash.events.Event;
 	import flash.events.FocusEvent;
@@ -31,7 +31,7 @@ package feathers.controls.text
 	import flash.text.engine.FontWeight;
 	import flash.ui.Keyboard;
 	import flash.utils.getDefinitionByName;
-	
+
 	import starling.core.RenderSupport;
 	import starling.core.Starling;
 	import starling.display.Image;

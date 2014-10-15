@@ -7,13 +7,8 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.themes
 {
-	import feathers.skins.IStyleProvider;
 	import feathers.skins.StyleNameFunctionStyleProvider;
 	import feathers.skins.StyleProviderRegistry;
-
-	import flash.errors.IllegalOperationError;
-
-	import flash.utils.Dictionary;
 
 	import starling.events.EventDispatcher;
 

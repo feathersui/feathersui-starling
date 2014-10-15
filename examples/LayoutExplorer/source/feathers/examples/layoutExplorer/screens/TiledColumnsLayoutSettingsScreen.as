@@ -6,7 +6,6 @@ package feathers.examples.layoutExplorer.screens
 	import feathers.controls.PanelScreen;
 	import feathers.controls.PickerList;
 	import feathers.data.ListCollection;
-	import feathers.events.FeathersEventType;
 	import feathers.examples.layoutExplorer.data.TiledColumnsLayoutSettings;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;

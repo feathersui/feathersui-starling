@@ -7,7 +7,6 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.core
 {
-	import feathers.core.FocusManager;
 	import feathers.events.FeathersEventType;
 
 	import flash.utils.Dictionary;

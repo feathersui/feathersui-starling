@@ -26,7 +26,6 @@ package feathers.controls
 	import flash.ui.MouseCursor;
 
 	import starling.display.DisplayObject;
-	import starling.display.DisplayObjectContainer;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
