@@ -222,6 +222,10 @@ package feathers.controls.text
 		 */
 		override public function set x(value:Number):void
 		{
+			if(super.x == value)
+			{
+				return;
+			}
 			super.x = value;
 			//we need to know when the position changes to change the position
 			//of the StageText instance.
@@ -233,7 +237,13 @@ package feathers.controls.text
 		 */
 		override public function set y(value:Number):void
 		{
+			if(super.y == value)
+			{
+				return;
+			}
 			super.y = value;
+			//we need to know when the position changes to change the position
+			//of the StageText instance.
 			this.invalidate(INVALIDATION_FLAG_POSITION);
 		}
 
@@ -1617,6 +1627,19 @@ package feathers.controls.text
 		 */
 		protected function refreshSnapshot():void
 		{
+			//StageText's stage property cannot be null when we call
+			//drawViewPortToBitmapData()
+			if(this.stage && !this.stageText.stage)
+			{
+				this.stageText.stage = Starling.current.nativeStage;
+			}
+			if(!this.stageText.stage)
+			{
+				//we need to keep a flag active so that the snapshot will be
+				//refreshed after the text editor is added to the stage
+				this.invalidate(INVALIDATION_FLAG_DATA);
+				return;
+			}
 			var viewPort:Rectangle = this.stageText.viewPort;
 			if(viewPort.width == 0 || viewPort.height == 0)
 			{
@@ -1645,7 +1668,6 @@ package feathers.controls.text
 				bitmapData = new BitmapData(viewPort.width, viewPort.height, true, 0x00ff00ff);
 				this.stageText.drawViewPortToBitmapData(bitmapData);
 			}
-			this.stageText.drawViewPortToBitmapData(bitmapData);
 
 			var newTexture:Texture;
 			if(!this.textSnapshot || this._needsNewTexture)
@@ -1695,10 +1717,6 @@ package feathers.controls.text
 			if(!stageTextViewPort)
 			{
 				stageTextViewPort = new Rectangle();
-			}
-			if(!this.stageText.stage)
-			{
-				this.stageText.stage = Starling.current.nativeStage;
 			}
 
 			HELPER_POINT.x = HELPER_POINT.y = 0;
