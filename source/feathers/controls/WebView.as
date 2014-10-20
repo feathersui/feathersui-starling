@@ -21,6 +21,7 @@ package feathers.controls
 
 	import starling.core.RenderSupport;
 	import starling.core.Starling;
+	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.utils.MatrixUtil;
 
@@ -486,6 +487,7 @@ package feathers.controls
 		protected function webView_addedToStageHandler(event:Event):void
 		{
 			this.stageWebView.stage = Starling.current.nativeStage;
+			this.addEventListener(Event.ENTER_FRAME, webView_enterFrameHandler);
 		}
 
 		/**
@@ -497,6 +499,26 @@ package feathers.controls
 			{
 				this.stageWebView.stage = null;
 			}
+			this.removeEventListener(Event.ENTER_FRAME, webView_enterFrameHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function webView_enterFrameHandler(event:Event):void
+		{
+			var target:DisplayObject = this;
+			do
+			{
+				if(!target.hasVisibleArea)
+				{
+					this.stageWebView.stage = null;
+					return;
+				}
+				target = target.parent;
+			}
+			while(target)
+			this.stageWebView.stage = Starling.current.nativeStage;
 		}
 
 		/**
