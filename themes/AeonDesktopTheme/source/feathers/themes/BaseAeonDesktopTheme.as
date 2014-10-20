@@ -515,11 +515,15 @@ package feathers.themes
 		}
 
 		/**
-		 * Initializes the scale value based on the content scale factor.
+		 * Initializes the value used for scaling things like textures and font
+		 * sizes.
 		 */
 		protected function initializeScale():void
 		{
-			this.scale = Starling.contentScaleFactor;
+			//Starling automatically accounts for the contentScaleFactor on Mac
+			//HiDPI screens, and converts pixels to points, so we don't need to
+			//do any scaling for that.
+			this.scale = 1;
 		}
 
 		/**
