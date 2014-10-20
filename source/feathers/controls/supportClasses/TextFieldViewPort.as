@@ -26,6 +26,7 @@ package feathers.controls.supportClasses
 
 	import starling.core.RenderSupport;
 	import starling.core.Starling;
+	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.utils.MatrixUtil;
 
@@ -723,37 +724,6 @@ package feathers.controls.supportClasses
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 		}
 
-		override public function set visible(value:Boolean):void
-		{
-			if(super.visible == value)
-			{
-				return;
-			}
-			super.visible = value;
-			this._hasPendingRenderChange = true;
-		}
-
-		override public function set alpha(value:Number):void
-		{
-			if(super.alpha == value)
-			{
-				return;
-			}
-			super.alpha = value;
-			this._hasPendingRenderChange = true;
-		}
-
-		private var _hasPendingRenderChange:Boolean = false;
-
-		override public function get hasVisibleArea():Boolean
-		{
-			if(this._hasPendingRenderChange)
-			{
-				return true;
-			}
-			return super.hasVisibleArea;
-		}
-
 		override public function render(support:RenderSupport, parentAlpha:Number):void
 		{
 			var starlingViewPort:Rectangle = Starling.current.viewPort;
@@ -771,10 +741,7 @@ package feathers.controls.supportClasses
 			this._textFieldContainer.scaleX = matrixToScaleX(HELPER_MATRIX) * scaleFactor;
 			this._textFieldContainer.scaleY = matrixToScaleY(HELPER_MATRIX) * scaleFactor;
 			this._textFieldContainer.rotation = matrixToRotation(HELPER_MATRIX) * 180 / Math.PI;
-			this._textFieldContainer.visible = true;
 			this._textFieldContainer.alpha = parentAlpha * this.alpha;
-			this._textFieldContainer.visible = this.visible;
-			this._hasPendingRenderChange = false;
 			super.render(support, parentAlpha);
 		}
 
@@ -903,11 +870,29 @@ package feathers.controls.supportClasses
 		private function addedToStageHandler(event:Event):void
 		{
 			Starling.current.nativeStage.addChild(this._textFieldContainer);
+			this.addEventListener(Event.ENTER_FRAME, enterFrameHandler);
 		}
 
 		private function removedFromStageHandler(event:Event):void
 		{
 			Starling.current.nativeStage.removeChild(this._textFieldContainer);
+			this.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
+		}
+
+		private function enterFrameHandler(event:Event):void
+		{
+			var target:DisplayObject = this;
+			do
+			{
+				if(!target.hasVisibleArea)
+				{
+					this._textFieldContainer.visible = false;
+					return;
+				}
+				target = target.parent;
+			}
+			while(target)
+			this._textFieldContainer.visible = true;
 		}
 
 		protected function textField_linkHandler(event:TextEvent):void
