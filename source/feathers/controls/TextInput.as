@@ -1743,7 +1743,7 @@ package feathers.controls
 				this.createTextEditor();
 			}
 
-			if(promptFactoryInvalid)
+			if(promptFactoryInvalid || (this._prompt !== null && !this.promptTextRenderer))
 			{
 				this.createPrompt();
 			}
