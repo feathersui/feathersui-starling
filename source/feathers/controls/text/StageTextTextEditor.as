@@ -1134,6 +1134,10 @@ package feathers.controls.text
 		 */
 		public function setFocus(position:Point = null):void
 		{
+			if(this.stage && !this.stageText.stage)
+			{
+				this.stageText.stage = Starling.current.nativeStage;
+			}
 			if(this.stageText && this._stageTextIsComplete)
 			{
 				if(position)
@@ -1193,10 +1197,6 @@ package feathers.controls.text
 					this._pendingSelectionBeginIndex = this._pendingSelectionEndIndex = -1;
 				}
 				this.stageText.visible = true;
-				if(!this.stageText.stage)
-				{
-					this.stageText.stage = Starling.current.nativeStage;
-				}
 				this.stageText.assignFocus();
 			}
 			else
