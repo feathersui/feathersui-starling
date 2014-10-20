@@ -163,7 +163,7 @@ The `leftItems`, `rightItems`, and `centerItems` getters on the `Header` class n
 Focus management now supports multiple Starling stages (for AIR desktop apps). The static `isEnabled` property has been removed. Instead, you should use the static `setEnabledForStage()` function:
 
 ```as3
-FocusManger.setEnabledForStage( Starling.current.stage, true );
+FocusManager.setEnabledForStage( Starling.current.stage, true );
 ```
 
 All layouts now account for the `pivotX` and `pivotY` properties when positioning display objects. In previous versions, these properties were ignored.
@@ -346,7 +346,7 @@ The property `requiresLayoutOnScroll` has been added to `ILayout` to provide imp
 * ScreenNavigator: properly resizes if content is resized.
 * ScreenNavigator: clears screen if removeScreen() is called for the active screen.
 * ToggleGroup: added getItemIndex() and setItemIndex().
-* VerticalCenteredPopUpContentManger: touch must begin and end outside of content to close the content.
+* VerticalCenteredPopUpContentManager: touch must begin and end outside of content to close the content.
 * DisplayListWatcher: added initializeObject() function to initialize display objects that are already added when a theme is created.
 * PropertyProxy: support for QName values.
 * SmartDisplayObjectValueSelector: fix to support uint values for Quads.
