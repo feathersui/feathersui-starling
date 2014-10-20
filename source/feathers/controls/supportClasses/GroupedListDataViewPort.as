@@ -1138,7 +1138,7 @@ package feathers.controls.supportClasses
 			var newTypicalItemIsInDataProvider:Boolean = false;
 			var typicalItem:Object = this._typicalItem;
 			var groupCount:int = 0;
-			var firstGroupLength:int = 0;
+			var typicalGroupLength:int = 0;
 			var typicalItemGroupIndex:int = 0;
 			var typicalItemItemIndex:int = 0;
 			if(this._dataProvider)
@@ -1148,11 +1148,15 @@ package feathers.controls.supportClasses
 					groupCount = this._dataProvider.getLength();
 					if(groupCount > 0)
 					{
-						firstGroupLength = this._dataProvider.getLength(0);
-						if(firstGroupLength > 0)
+						for(var i:int = 0; i < groupCount; i++)
 						{
-							newTypicalItemIsInDataProvider = true;
-							typicalItem = this._dataProvider.getItemAt(0, 0);
+							typicalGroupLength = this._dataProvider.getLength(i);
+							if(typicalGroupLength > 0)
+							{
+								newTypicalItemIsInDataProvider = true;
+								typicalItem = this._dataProvider.getItemAt(i, 0);
+								break;
+							}
 						}
 					}
 				}
@@ -1173,7 +1177,7 @@ package feathers.controls.supportClasses
 				var isFirst:Boolean = false;
 				var isSingle:Boolean = false;
 				var typicalItemRenderer:IGroupedListItemRenderer;
-				if(hasCustomSingleItemRenderer && firstGroupLength == 1)
+				if(hasCustomSingleItemRenderer && typicalGroupLength == 1)
 				{
 					if(this._singleItemRendererMap)
 					{
@@ -1181,7 +1185,7 @@ package feathers.controls.supportClasses
 					}
 					isSingle = true;
 				}
-				else if(hasCustomFirstItemRenderer && firstGroupLength > 1)
+				else if(hasCustomFirstItemRenderer && typicalGroupLength > 1)
 				{
 					if(this._firstItemRendererMap)
 					{
