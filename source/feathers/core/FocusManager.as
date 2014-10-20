@@ -86,17 +86,11 @@ package feathers.core
 		public static var focusManagerFactory:Function = defaultFocusManagerFactory;
 
 		/**
-		 * Determines if the default focus manager is enabled. For mobile apps,
-		 * the focus manager should generally remain disabled. For desktop apps,
-		 * it is recommended to enable the focus manager to support keyboard
-		 * navigation.
+		 * Determines if the focus manager is enabled or disabled for the
+		 * specified Starling stage.
 		 *
-		 * <p>In the following example, focus management is enabled:</p>
-		 *
-		 * <listing version="3.0">
-		 * FocusManager.isEnabledForStage(stage, true);</listing>
-		 *
-		 * @default false
+		 * @see #setEnabledForStage()
+		 * @see #getFocusManagerForStage()
 		 */
 		public static function isEnabledForStage(stage:Stage):Boolean
 		{
@@ -105,7 +99,18 @@ package feathers.core
 		}
 
 		/**
-		 * @private
+		 * Enables or disables focus management on the specified Starling stage.
+		 * For mobile apps, the focus manager should generally remain disabled.
+		 * For desktop apps, it is recommended to enable the focus manager to
+		 * support keyboard navigation.
+		 *
+		 * <p>In the following example, focus management is enabled:</p>
+		 *
+		 * <listing version="3.0">
+		 * FocusManager.setEnabledForStage(stage, true);</listing>
+		 *
+		 * @see #isEnabledForStage()
+		 * @see #getFocusManagerForStage()
 		 */
 		public static function setEnabledForStage(stage:Stage, isEnabled:Boolean):void
 		{
