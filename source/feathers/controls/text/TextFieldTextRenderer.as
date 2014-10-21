@@ -1411,9 +1411,80 @@ package feathers.controls.text
 		/**
 		 * @private
 		 */
-		protected function texture_onRestore():void
+		protected function createTextureOnRestoreCallback(snapshot:Image):void
 		{
-			this.refreshSnapshot();
+			var self:TextFieldTextRenderer = this;
+			var texture:Texture = snapshot.texture;
+			texture.root.onRestore = function():void
+			{
+				var bitmapData:BitmapData = self.drawTextFieldRegionToBitmapData(
+					snapshot.x, snapshot.y, snapshot.width, snapshot.height);
+				texture.root.uploadBitmapData(bitmapData);
+			};
+		}
+
+		/**
+		 * @private
+		 */
+		protected function drawTextFieldRegionToBitmapData(textFieldX:Number, textFieldY:Number,
+			bitmapWidth:Number, bitmapHeight:Number, bitmapData:BitmapData = null):BitmapData
+		{
+			var scaleFactor:Number = Starling.contentScaleFactor;
+			var clipWidth:Number = (this.actualWidth * scaleFactor) - textFieldX;
+			var clipHeight:Number = (this.actualHeight * scaleFactor) - textFieldY;
+			if(!bitmapData || bitmapData.width != bitmapWidth || bitmapData.height != bitmapHeight)
+			{
+				if(bitmapData)
+				{
+					bitmapData.dispose();
+				}
+				bitmapData = new BitmapData(bitmapWidth, bitmapHeight, true, 0x00ff00ff);
+			}
+			else
+			{
+				//clear the bitmap data and reuse it
+				bitmapData.fillRect(bitmapData.rect, 0x00ff00ff);
+			}
+			var gutterPositionOffset:Number = 2 * scaleFactor;
+			if(this._useGutter)
+			{
+				gutterPositionOffset = 0;
+			}
+			HELPER_MATRIX.tx = -(textFieldX + gutterPositionOffset);
+			HELPER_MATRIX.ty = -(textFieldY + gutterPositionOffset);
+			HELPER_RECTANGLE.setTo(0, 0, clipWidth, clipHeight);
+			bitmapData.draw(this.textField, HELPER_MATRIX, null, null, HELPER_RECTANGLE);
+
+			var useNativeFilters:Boolean = this._nativeFilters && this._nativeFilters.length > 0 &&
+				this._snapshotWidth <= this._maxTextureDimensions && this._snapshotHeight <= this._maxTextureDimensions;
+			if(useNativeFilters)
+			{
+				this.measureNativeFilters(bitmapData, HELPER_RECTANGLE);
+				if(bitmapData.rect.equals(HELPER_RECTANGLE))
+				{
+					this._textSnapshotOffsetX = 0;
+					this._textSnapshotOffsetY = 0;
+				}
+				else
+				{
+					HELPER_MATRIX.tx -= HELPER_RECTANGLE.x;
+					HELPER_MATRIX.ty -= HELPER_RECTANGLE.y;
+					var newBitmapData:BitmapData = new BitmapData(HELPER_RECTANGLE.width, HELPER_RECTANGLE.height, true, 0x00ff00ff);
+					this._textSnapshotOffsetX = HELPER_RECTANGLE.x;
+					this._textSnapshotOffsetY = HELPER_RECTANGLE.y;
+					HELPER_RECTANGLE.x = 0;
+					HELPER_RECTANGLE.y = 0;
+					newBitmapData.draw(this.textField, HELPER_MATRIX, null, null, HELPER_RECTANGLE);
+					bitmapData.dispose();
+					bitmapData = newBitmapData;
+				}
+			}
+			else
+			{
+				this._textSnapshotOffsetX = 0;
+				this._textSnapshotOffsetY = 0;
+			}
+			return bitmapData;
 		}
 
 		/**
@@ -1434,13 +1505,6 @@ package feathers.controls.text
 			var yPosition:Number = 0;
 			var bitmapData:BitmapData;
 			var snapshotIndex:int = -1;
-			var useNativeFilters:Boolean = this._nativeFilters && this._nativeFilters.length > 0 &&
-				totalBitmapWidth <= this._maxTextureDimensions && totalBitmapHeight <= this._maxTextureDimensions;
-			var gutterPositionOffset:Number = 2 * scaleFactor;
-			if(this._useGutter)
-			{
-				gutterPositionOffset = 0;
-			}
 			do
 			{
 				var currentBitmapWidth:Number = totalBitmapWidth;
@@ -1455,55 +1519,11 @@ package feathers.controls.text
 					{
 						currentBitmapHeight = this._maxTextureDimensions;
 					}
-					if(!bitmapData || bitmapData.width != currentBitmapWidth || bitmapData.height != currentBitmapHeight)
-					{
-						if(bitmapData)
-						{
-							bitmapData.dispose();
-						}
-						bitmapData = new BitmapData(currentBitmapWidth, currentBitmapHeight, true, 0x00ff00ff);
-					}
-					else
-					{
-						//clear the bitmap data and reuse it
-						bitmapData.fillRect(bitmapData.rect, 0x00ff00ff);
-					}
-					HELPER_MATRIX.tx = -(xPosition + gutterPositionOffset);
-					HELPER_MATRIX.ty = -(yPosition + gutterPositionOffset);
-					HELPER_RECTANGLE.setTo(0, 0, this.actualWidth * scaleFactor, this.actualHeight * scaleFactor);
-					bitmapData.draw(this.textField, HELPER_MATRIX, null, null, HELPER_RECTANGLE);
-					if(useNativeFilters)
-					{
-						this.measureNativeFilters(bitmapData, HELPER_RECTANGLE);
-						if(bitmapData.rect.equals(HELPER_RECTANGLE))
-						{
-							this._textSnapshotOffsetX = 0;
-							this._textSnapshotOffsetY = 0;
-						}
-						else
-						{
-							HELPER_MATRIX.tx -= HELPER_RECTANGLE.x;
-							HELPER_MATRIX.ty -= HELPER_RECTANGLE.y;
-							var newBitmapData:BitmapData = new BitmapData(HELPER_RECTANGLE.width, HELPER_RECTANGLE.height, true, 0x00ff00ff);
-							this._textSnapshotOffsetX = HELPER_RECTANGLE.x;
-							this._textSnapshotOffsetY = HELPER_RECTANGLE.y;
-							HELPER_RECTANGLE.x = 0;
-							HELPER_RECTANGLE.y = 0;
-							newBitmapData.draw(this.textField, HELPER_MATRIX, null, null, HELPER_RECTANGLE);
-							bitmapData.dispose();
-							bitmapData = newBitmapData;
-						}
-					}
-					else
-					{
-						this._textSnapshotOffsetX = 0;
-						this._textSnapshotOffsetY = 0;
-					}
+					bitmapData = this.drawTextFieldRegionToBitmapData(xPosition, yPosition, currentBitmapWidth, currentBitmapHeight, bitmapData);
 					var newTexture:Texture;
 					if(!this.textSnapshot || this._needsNewTexture)
 					{
 						newTexture = Texture.fromBitmapData(bitmapData, false, false, scaleFactor);
-						newTexture.root.onRestore = texture_onRestore;
 					}
 					var snapshot:Image = null;
 					if(snapshotIndex >= 0)
@@ -1541,6 +1561,10 @@ package feathers.controls.text
 							var existingTexture:Texture = snapshot.texture;
 							existingTexture.root.uploadBitmapData(bitmapData);
 						}
+					}
+					if(newTexture)
+					{
+						this.createTextureOnRestoreCallback(snapshot);
 					}
 					if(snapshotIndex >= 0)
 					{
