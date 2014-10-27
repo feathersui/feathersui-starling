@@ -83,21 +83,57 @@ package feathers.controls
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const DEFAULT_CHILD_NAME_HEADER:String = "feathers-alert-header";
+		public static const DEFAULT_CHILD_STYLE_NAME_HEADER:String = "feathers-alert-header";
+
+		/**
+		 * DEPRECATED: Replaced by <code>Alert.DEFAULT_CHILD_STYLE_NAME_HEADER</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see Alert#DEFAULT_CHILD_STYLE_NAME_HEADER
+		 */
+		public static const DEFAULT_CHILD_NAME_HEADER:String = DEFAULT_CHILD_STYLE_NAME_HEADER;
 
 		/**
 		 * The default value added to the <code>styleNameList</code> of the button group.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const DEFAULT_CHILD_NAME_BUTTON_GROUP:String = "feathers-alert-button-group";
+		public static const DEFAULT_CHILD_STYLE_NAME_BUTTON_GROUP:String = "feathers-alert-button-group";
+
+		/**
+		 * DEPRECATED: Replaced by <code>Alert.DEFAULT_CHILD_STYLE_NAME_BUTTON_GROUP</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see Alert#DEFAULT_CHILD_STYLE_NAME_BUTTON_GROUP
+		 */
+		public static const DEFAULT_CHILD_NAME_BUTTON_GROUP:String = DEFAULT_CHILD_STYLE_NAME_BUTTON_GROUP;
 
 		/**
 		 * The default value added to the <code>styleNameList</code> of the message.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const DEFAULT_CHILD_NAME_MESSAGE:String = "feathers-alert-message";
+		public static const DEFAULT_CHILD_STYLE_NAME_MESSAGE:String = "feathers-alert-message";
+
+		/**
+		 * DEPRECATED: Replaced by <code>Alert.DEFAULT_CHILD_STYLE_NAME_MESSAGE</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see Alert#DEFAULT_CHILD_STYLE_NAME_MESSAGE
+		 */
+		public static const DEFAULT_CHILD_NAME_MESSAGE:String = DEFAULT_CHILD_STYLE_NAME_MESSAGE;
 
 		/**
 		 * Returns a new <code>Alert</code> instance when <code>Alert.show()</code>
@@ -227,21 +263,44 @@ package feathers.controls
 		public function Alert()
 		{
 			super();
-			this.headerName = DEFAULT_CHILD_NAME_HEADER;
-			this.footerName = DEFAULT_CHILD_NAME_BUTTON_GROUP;
+			this.headerName = DEFAULT_CHILD_STYLE_NAME_HEADER;
+			this.footerName = DEFAULT_CHILD_STYLE_NAME_BUTTON_GROUP;
 			this.buttonGroupFactory = defaultButtonGroupFactory;
 		}
 
 		/**
 		 * The value added to the <code>styleNameList</code> of the alert's
 		 * message text renderer. This variable is <code>protected</code> so
-		 * that sub-classes can customize the message name in their constructors
-		 * instead of using the default name defined by
-		 * <code>DEFAULT_CHILD_NAME_MESSAGE</code>.
+		 * that sub-classes can customize the message style name in their
+		 * constructors instead of using the default style name defined by
+		 * <code>DEFAULT_CHILD_STYLE_NAME_MESSAGE</code>.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		protected var messageName:String = DEFAULT_CHILD_NAME_MESSAGE;
+		protected var messageStyleName:String = DEFAULT_CHILD_STYLE_NAME_MESSAGE;
+
+		/**
+		 * DEPRECATED: Replaced by <code>messageStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #messageStyleName
+		 */
+		protected function get messageName():String
+		{
+			return this.messageStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function set messageName(value:String):void
+		{
+			this.messageStyleName = value;
+		}
 
 		/**
 		 * The header sub-component.
@@ -591,29 +650,29 @@ package feathers.controls
 		}
 
 		/**
-		 * A name to add to the alert's button group sub-component. Typically
-		 * used by a theme to provide different skins to different alerts.
+		 * A style name to add to the alert's button group sub-component.
+		 * Typically used by a theme to provide different styles to different alerts.
 		 *
-		 * <p>In the following example, a custom button group name is passed to
-		 * the alert:</p>
+		 * <p>In the following example, a custom button group style name is
+		 * passed to the alert:</p>
 		 *
 		 * <listing version="3.0">
-		 * alert.customButtonGroupName = "my-custom-button-group";</listing>
+		 * alert.customButtonGroupStyleName = "my-custom-button-group";</listing>
 		 *
-		 * <p>In your theme, you can target this sub-component name to provide
-		 * different skins than the default style:</p>
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( ButtonGroup, customButtonGroupInitializer, "my-custom-button-group");</listing>
 		 *
 		 * @default null
 		 *
-		 * @see #DEFAULT_CHILD_NAME_BUTTON_GROUP
+		 * @see #DEFAULT_CHILD_STYLE_NAME_BUTTON_GROUP
 		 * @see feathers.core.FeathersControl#styleNameList
 		 * @see #buttonGroupFactory
 		 * @see #buttonGroupProperties
 		 */
-		public function get customButtonGroupName():String
+		public function get customButtonGroupStyleName():String
 		{
 			return super.customFooterName;
 		}
@@ -621,9 +680,32 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		public function set customButtonGroupName(value:String):void
+		public function set customButtonGroupStyleName(value:String):void
 		{
 			super.customFooterName = value;
+		}
+
+		/**
+		 * DEPRECATED: Replaced by <code>customButtonGroupStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #customButtonGroupStyleName
+		 */
+		public function get customButtonGroupName():String
+		{
+			return this.customButtonGroupStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customButtonGroupName(value:String):void
+		{
+			this.customButtonGroupStyleName = value;
 		}
 
 		/**
@@ -810,7 +892,7 @@ package feathers.controls
 		 *
 		 * @see #header
 		 * @see #headerFactory
-		 * @see #customHeaderName
+		 * @see #customHeaderStyleName
 		 */
 		override protected function createHeader():void
 		{
@@ -827,7 +909,7 @@ package feathers.controls
 		 *
 		 * @see #buttonGroupFooter
 		 * @see #buttonGroupFactory
-		 * @see #customButtonGroupName
+		 * @see #customButtonGroupStyleName
 		 */
 		protected function createButtonGroup():void
 		{

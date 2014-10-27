@@ -178,7 +178,19 @@ package feathers.controls
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const DEFAULT_CHILD_NAME_TAB:String = "feathers-tab-bar-tab";
+		public static const DEFAULT_CHILD_STYLE_NAME_TAB:String = "feathers-tab-bar-tab";
+
+		/**
+		 * DEPRECATED: Replaced by <code>TabBar.DEFAULT_CHILD_STYLE_NAME_TAB</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see TabBar#DEFAULT_CHILD_STYLE_NAME_TAB
+		 */
+		public static const DEFAULT_CHILD_NAME_TAB:String = DEFAULT_CHILD_STYLE_NAME_TAB;
 
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>TabBar</code>
@@ -208,22 +220,46 @@ package feathers.controls
 		/**
 		 * The value added to the <code>styleNameList</code> of the tabs. This
 		 * variable is <code>protected</code> so that sub-classes can customize
-		 * the tab name in their constructors instead of using the default
-		 * name defined by <code>DEFAULT_CHILD_NAME_TAB</code>.
+		 * the tab style name in their constructors instead of using the default
+		 * style name defined by <code>DEFAULT_CHILD_STYLE_NAME_TAB</code>.
 		 *
-		 * <p>To customize the tab name without subclassing, see
-		 * <code>customTabName</code>.</p>
+		 * <p>To customize the tab style name without subclassing, see
+		 * <code>customTabStyleName</code>.</p>
 		 *
-		 * @see #customTabName
+		 * @see #customTabStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		protected var tabName:String = DEFAULT_CHILD_NAME_TAB;
+		protected var tabStyleName:String = DEFAULT_CHILD_STYLE_NAME_TAB;
 
 		/**
-		 * The value added to the <code>styleNameList</code> of the first tab. This
-		 * variable is <code>protected</code> so that sub-classes can customize
-		 * the first tab name in their constructors instead of using the default
-		 * name defined by <code>DEFAULT_CHILD_NAME_TAB</code>.
+		 * DEPRECATED: Replaced by <code>tabStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #tabStyleName
+		 */
+		protected function get tabName():String
+		{
+			return this.tabStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function set tabName(value:String):void
+		{
+			this.tabStyleName = value;
+		}
+
+		/**
+		 * The value added to the <code>styleNameList</code> of the first tab.
+		 * This variable is <code>protected</code> so that sub-classes can
+		 * customize the first tab style name in their constructors instead of
+		 * using the default style name defined by
+		 * <code>DEFAULT_CHILD_STYLE_NAME_TAB</code>.
 		 *
 		 * <p>To customize the first tab name without subclassing, see
 		 * <code>customFirstTabName</code>.</p>
@@ -231,13 +267,37 @@ package feathers.controls
 		 * @see #customFirstTabName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		protected var firstTabName:String = DEFAULT_CHILD_NAME_TAB;
+		protected var firstTabStyleName:String = DEFAULT_CHILD_STYLE_NAME_TAB;
 
 		/**
-		 * The value added to the <code>styleNameList</code> of the last tab. This
-		 * variable is <code>protected</code> so that sub-classes can customize
-		 * the last tab name in their constructors instead of using the default
-		 * name defined by <code>DEFAULT_CHILD_NAME_TAB</code>.
+		 * DEPRECATED: Replaced by <code>firstTabStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #firstTabStyleName
+		 */
+		protected function get firstTabName():String
+		{
+			return this.firstTabStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function set firstTabName(value:String):void
+		{
+			this.firstTabStyleName = value;
+		}
+
+		/**
+		 * The value added to the <code>styleNameList</code> of the last tab.
+		 * This variable is <code>protected</code> so that sub-classes can
+		 * customize the last tab style name in their constructors instead of
+		 * using the default style name defined by
+		 * <code>DEFAULT_CHILD_STYLE_NAME_TAB</code>.
 		 *
 		 * <p>To customize the last tab name without subclassing, see
 		 * <code>customLastTabName</code>.</p>
@@ -245,7 +305,30 @@ package feathers.controls
 		 * @see #customLastTabName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		protected var lastTabName:String = DEFAULT_CHILD_NAME_TAB;
+		protected var lastTabStyleName:String = DEFAULT_CHILD_STYLE_NAME_TAB;
+
+		/**
+		 * DEPRECATED: Replaced by <code>lastTabStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #lastTabStyleName
+		 */
+		protected function get lastTabName():String
+		{
+			return this.lastTabStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function set lastTabName(value:String):void
+		{
+			this.lastTabStyleName = value;
+		}
 
 		/**
 		 * The toggle group.
@@ -1166,32 +1249,60 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _customTabName:String;
+		protected var _customTabStyleName:String;
 
 		/**
-		 * A name to add to all tabs in this tab bar. Typically used by a theme
-		 * to provide different skins to different tab bars.
+		 * A style name to add to all tabs in this tab bar. Typically used by a
+		 * theme to provide different styles to different tab bars.
 		 *
-		 * <p>In the following example, a custom tab name is provided to the tab
-		 * bar:</p>
+		 * <p>In the following example, a custom tab style name is provided to
+		 * the tab bar:</p>
 		 *
 		 * <listing version="3.0">
-		 * tabs.customTabName = "my-custom-tab";</listing>
+		 * tabs.customTabStyleName = "my-custom-tab";</listing>
 		 *
-		 * <p>In your theme, you can target this sub-component name to provide
-		 * different skins than the default style:</p>
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customTabInitializer, "my-custom-tab");</listing>
 		 *
 		 * @default null
 		 *
-		 * @see #DEFAULT_CHILD_NAME_TAB
+		 * @see #DEFAULT_CHILD_STYLE_NAME_TAB
 		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		public function get customTabStyleName():String
+		{
+			return this._customTabStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customTabStyleName(value:String):void
+		{
+			if(this._customTabStyleName == value)
+			{
+				return;
+			}
+			this._customTabStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_TAB_FACTORY);
+		}
+
+		/**
+		 * DEPRECATED: Replaced by <code>customTabStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #customTabStyleName
 		 */
 		public function get customTabName():String
 		{
-			return this._customTabName;
+			return this.customTabStyleName;
 		}
 
 		/**
@@ -1199,31 +1310,26 @@ package feathers.controls
 		 */
 		public function set customTabName(value:String):void
 		{
-			if(this._customTabName == value)
-			{
-				return;
-			}
-			this._customTabName = value;
-			this.invalidate(INVALIDATION_FLAG_TAB_FACTORY);
+			this.customTabStyleName = value;
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _customFirstTabName:String;
+		protected var _customFirstTabStyleName:String;
 
 		/**
-		 * A name to add to the first tab in this tab bar. Typically used by a
-		 * theme to provide different skins to the first tab.
+		 * A style name to add to the first tab in this tab bar. Typically used
+		 * by a theme to provide different styles to the first tab.
 		 *
-		 * <p>In the following example, a custom first tab name is provided to the tab
-		 * bar:</p>
+		 * <p>In the following example, a custom first tab style name is
+		 * provided to the tab bar:</p>
 		 *
 		 * <listing version="3.0">
-		 * tabs.customFirstTabName = "my-custom-first-tab";</listing>
+		 * tabs.customFirstTabStyleName = "my-custom-first-tab";</listing>
 		 *
-		 * <p>In your theme, you can target this sub-component name to provide
-		 * different skins than the default style:</p>
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customFirstTabInitializer, "my-custom-first-tab");</listing>
@@ -1232,9 +1338,37 @@ package feathers.controls
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
+		public function get customFirstTabStyleName():String
+		{
+			return this._customFirstTabStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customFirstTabStyleName(value:String):void
+		{
+			if(this._customFirstTabStyleName == value)
+			{
+				return;
+			}
+			this._customFirstTabStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_TAB_FACTORY);
+		}
+
+		/**
+		 * DEPRECATED: Replaced by <code>customFirstTabStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #customFirstTabStyleName
+		 */
 		public function get customFirstTabName():String
 		{
-			return this._customFirstTabName;
+			return this.customFirstTabStyleName;
 		}
 
 		/**
@@ -1242,31 +1376,26 @@ package feathers.controls
 		 */
 		public function set customFirstTabName(value:String):void
 		{
-			if(this._customFirstTabName == value)
-			{
-				return;
-			}
-			this._customFirstTabName = value;
-			this.invalidate(INVALIDATION_FLAG_TAB_FACTORY);
+			this.customFirstTabStyleName = value;
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _customLastTabName:String;
+		protected var _customLastTabStyleName:String;
 
 		/**
-		 * A name to add to the last tab in this tab bar. Typically used by a
-		 * theme to provide different skins to the last tab.
+		 * A style name to add to the last tab in this tab bar. Typically used
+		 * by a theme to provide different styles to the last tab.
 		 *
-		 * <p>In the following example, a custom tab name is provided to the tab
-		 * bar:</p>
+		 * <p>In the following example, a custom last tab style name is provided
+		 * to the tab bar:</p>
 		 *
 		 * <listing version="3.0">
-		 * tabs.customLastTabName = "my-custom-last-tab";</listing>
+		 * tabs.customLastTabStyleName = "my-custom-last-tab";</listing>
 		 *
-		 * <p>In your theme, you can target this sub-component name to provide
-		 * different skins than the default style:</p>
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customLastTabInitializer, "my-custom-last-tab");</listing>
@@ -1275,9 +1404,37 @@ package feathers.controls
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
+		public function get customLastTabStyleName():String
+		{
+			return this._customLastTabStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customLastTabStyleName(value:String):void
+		{
+			if(this._customLastTabStyleName == value)
+			{
+				return;
+			}
+			this._customLastTabStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_TAB_FACTORY);
+		}
+
+		/**
+		 * DEPRECATED: Replaced by <code>customLastTabStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #customLastTabStyleName
+		 */
 		public function get customLastTabName():String
 		{
-			return this._customLastTabName;
+			return this.customLastTabStyleName;
 		}
 
 		/**
@@ -1285,12 +1442,7 @@ package feathers.controls
 		 */
 		public function set customLastTabName(value:String):void
 		{
-			if(this._customLastTabName == value)
-			{
-				return;
-			}
-			this._customLastTabName = value;
-			this.invalidate(INVALIDATION_FLAG_TAB_FACTORY);
+			this.customLastTabStyleName = value;
 		}
 
 		/**
@@ -1674,17 +1826,17 @@ package feathers.controls
 			{
 				var factory:Function = this._firstTabFactory != null ? this._firstTabFactory : this._tabFactory;
 				tab = ToggleButton(factory());
-				if(this._customFirstTabName)
+				if(this._customFirstTabStyleName)
 				{
-					tab.styleNameList.add(this._customFirstTabName);
+					tab.styleNameList.add(this._customFirstTabStyleName);
 				}
-				else if(this._customTabName)
+				else if(this._customTabStyleName)
 				{
-					tab.styleNameList.add(this._customTabName);
+					tab.styleNameList.add(this._customTabStyleName);
 				}
 				else
 				{
-					tab.styleNameList.add(this.firstTabName);
+					tab.styleNameList.add(this.firstTabStyleName);
 				}
 				tab.isToggle = true;
 				this.addChild(tab);
@@ -1707,17 +1859,17 @@ package feathers.controls
 			{
 				var factory:Function = this._lastTabFactory != null ? this._lastTabFactory : this._tabFactory;
 				tab = ToggleButton(factory());
-				if(this._customLastTabName)
+				if(this._customLastTabStyleName)
 				{
-					tab.styleNameList.add(this._customLastTabName);
+					tab.styleNameList.add(this._customLastTabStyleName);
 				}
-				else if(this._customTabName)
+				else if(this._customTabStyleName)
 				{
-					tab.styleNameList.add(this._customTabName);
+					tab.styleNameList.add(this._customTabStyleName);
 				}
 				else
 				{
-					tab.styleNameList.add(this.lastTabName);
+					tab.styleNameList.add(this.lastTabStyleName);
 				}
 				tab.isToggle = true;
 				this.addChild(tab);
@@ -1734,13 +1886,13 @@ package feathers.controls
 			if(this.inactiveTabs.length == 0)
 			{
 				var tab:ToggleButton = this._tabFactory();
-				if(this._customTabName)
+				if(this._customTabStyleName)
 				{
-					tab.styleNameList.add(this._customTabName);
+					tab.styleNameList.add(this._customTabStyleName);
 				}
 				else
 				{
-					tab.styleNameList.add(this.tabName);
+					tab.styleNameList.add(this.tabStyleName);
 				}
 				tab.isToggle = true;
 				this.addChild(tab);

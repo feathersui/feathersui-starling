@@ -130,35 +130,95 @@ package feathers.controls
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const DEFAULT_CHILD_NAME_OFF_LABEL:String = "feathers-toggle-switch-off-label";
+		public static const DEFAULT_CHILD_STYLE_NAME_OFF_LABEL:String = "feathers-toggle-switch-off-label";
+
+		/**
+		 * DEPRECATED: Replaced by <code>ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_OFF_LABEL</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see ToggleSwitch#DEFAULT_CHILD_STYLE_NAME_OFF_LABEL
+		 */
+		public static const DEFAULT_CHILD_NAME_OFF_LABEL:String = DEFAULT_CHILD_STYLE_NAME_OFF_LABEL;
 
 		/**
 		 * The default value added to the <code>styleNameList</code> of the on label.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const DEFAULT_CHILD_NAME_ON_LABEL:String = "feathers-toggle-switch-on-label";
+		public static const DEFAULT_CHILD_STYLE_NAME_ON_LABEL:String = "feathers-toggle-switch-on-label";
+
+		/**
+		 * DEPRECATED: Replaced by <code>ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_ON_LABEL</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see ToggleSwitch#DEFAULT_CHILD_STYLE_NAME_ON_LABEL
+		 */
+		public static const DEFAULT_CHILD_NAME_ON_LABEL:String = DEFAULT_CHILD_STYLE_NAME_ON_LABEL;
 
 		/**
 		 * The default value added to the <code>styleNameList</code> of the off track.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const DEFAULT_CHILD_NAME_OFF_TRACK:String = "feathers-toggle-switch-off-track";
+		public static const DEFAULT_CHILD_STYLE_NAME_OFF_TRACK:String = "feathers-toggle-switch-off-track";
+
+		/**
+		 * DEPRECATED: Replaced by <code>ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_OFF_TRACK</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see ToggleSwitch#DEFAULT_CHILD_STYLE_NAME_OFF_TRACK
+		 */
+		public static const DEFAULT_CHILD_NAME_OFF_TRACK:String = DEFAULT_CHILD_STYLE_NAME_OFF_TRACK;
 
 		/**
 		 * The default value added to the <code>styleNameList</code> of the on track.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const DEFAULT_CHILD_NAME_ON_TRACK:String = "feathers-toggle-switch-on-track";
+		public static const DEFAULT_CHILD_STYLE_NAME_ON_TRACK:String = "feathers-toggle-switch-on-track";
+
+		/**
+		 * DEPRECATED: Replaced by <code>ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_ON_TRACK</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see ToggleSwitch#DEFAULT_CHILD_STYLE_NAME_ON_TRACK
+		 */
+		public static const DEFAULT_CHILD_NAME_ON_TRACK:String = DEFAULT_CHILD_STYLE_NAME_ON_TRACK;
 
 		/**
 		 * The default value added to the <code>styleNameList</code> of the thumb.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const DEFAULT_CHILD_NAME_THUMB:String = "feathers-toggle-switch-thumb";
+		public static const DEFAULT_CHILD_STYLE_NAME_THUMB:String = "feathers-toggle-switch-thumb";
+
+		/**
+		 * DEPRECATED: Replaced by <code>ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_THUMB</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see ToggleSwitch#DEFAULT_CHILD_STYLE_NAME_THUMB
+		 */
+		public static const DEFAULT_CHILD_NAME_THUMB:String = DEFAULT_CHILD_STYLE_NAME_THUMB;
 
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>ToggleSwitch</code>
@@ -204,66 +264,185 @@ package feathers.controls
 		}
 
 		/**
-		 * The value added to the <code>styleNameList</code> of the off label. This
-		 * variable is <code>protected</code> so that sub-classes can customize
-		 * the on label name in their constructors instead of using the default
-		 * name defined by <code>DEFAULT_CHILD_NAME_ON_LABEL</code>.
+		 * The value added to the <code>styleNameList</code> of the off label.
+		 * This variable is <code>protected</code> so that sub-classes can
+		 * customize the on label style name in their constructors instead of
+		 * using the default style name defined by
+		 * <code>DEFAULT_CHILD_STYLE_NAME_ON_LABEL</code>.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		protected var onLabelName:String = DEFAULT_CHILD_NAME_ON_LABEL;
+		protected var onLabelStyleName:String = DEFAULT_CHILD_STYLE_NAME_ON_LABEL;
 
 		/**
-		 * The value added to the <code>styleNameList</code> of the on label. This
-		 * variable is <code>protected</code> so that sub-classes can customize
-		 * the off label name in their constructors instead of using the default
-		 * name defined by <code>DEFAULT_CHILD_NAME_OFF_LABEL</code>.
+		 * DEPRECATED: Replaced by <code>onLabelStyleName</code>.
 		 *
-		 * @see feathers.core.FeathersControl#styleNameList
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #onLabelStyleName
 		 */
-		protected var offLabelName:String = DEFAULT_CHILD_NAME_OFF_LABEL;
+		protected function get onLabelName():String
+		{
+			return this.onLabelStyleName;
+		}
 
 		/**
-		 * The value added to the <code>styleNameList</code> of the on track. This
-		 * variable is <code>protected</code> so that sub-classes can customize
-		 * the on track name in their constructors instead of using the default
-		 * name defined by <code>DEFAULT_CHILD_NAME_ON_TRACK</code>.
-		 *
-		 * <p>To customize the on track name without subclassing, see
-		 * <code>customOnTrackName</code>.</p>
-		 *
-		 * @see #customOnTrackName
-		 * @see feathers.core.FeathersControl#styleNameList
+		 * @private
 		 */
-		protected var onTrackName:String = DEFAULT_CHILD_NAME_ON_TRACK;
+		protected function set onLabelName(value:String):void
+		{
+			this.onLabelStyleName = value;
+		}
 
 		/**
-		 * The value added to the <code>styleNameList</code> of the off track. This
-		 * variable is <code>protected</code> so that sub-classes can customize
-		 * the off track name in their constructors instead of using the default
-		 * name defined by <code>DEFAULT_CHILD_NAME_OFF_TRACK</code>.
+		 * The value added to the <code>styleNameList</code> of the off label.
+		 * This variable is <code>protected</code> so that sub-classes can
+		 * customize the off label style name in their constructors instead of
+		 * using the default style name defined by
+		 * <code>DEFAULT_CHILD_STYLE_NAME_OFF_LABEL</code>.
 		 *
-		 * <p>To customize the off track name without subclassing, see
-		 * <code>customOffTrackName</code>.</p>
-		 *
-		 * @see #customOffTrackName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		protected var offTrackName:String = DEFAULT_CHILD_NAME_OFF_TRACK;
+		protected var offLabelStyleName:String = DEFAULT_CHILD_STYLE_NAME_OFF_LABEL;
+
+		/**
+		 * DEPRECATED: Replaced by <code>offLabelStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #offLabelStyleName
+		 */
+		protected function get offLabelName():String
+		{
+			return this.offLabelStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function set offLabelName(value:String):void
+		{
+			this.offLabelStyleName = value;
+		}
+
+		/**
+		 * The value added to the <code>styleNameList</code> of the on track.
+		 * This variable is <code>protected</code> so that sub-classes can
+		 * customize the on track style name in their constructors instead of
+		 * using the default style name defined by
+		 * <code>DEFAULT_CHILD_STYLE_NAME_ON_TRACK</code>.
+		 *
+		 * <p>To customize the on track style name without subclassing, see
+		 * <code>customOnTrackStyleName</code>.</p>
+		 *
+		 * @see #customOnTrackStyleName
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		protected var onTrackStyleName:String = DEFAULT_CHILD_STYLE_NAME_ON_TRACK;
+
+		/**
+		 * DEPRECATED: Replaced by <code>onTrackStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #onTrackStyleName
+		 */
+		protected function get onTrackName():String
+		{
+			return this.onTrackStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function set onTrackName(value:String):void
+		{
+			this.onTrackStyleName = value;
+		}
+
+		/**
+		 * The value added to the <code>styleNameList</code> of the off track.
+		 * This variable is <code>protected</code> so that sub-classes can
+		 * customize the off track style name in their constructors instead of
+		 * using the default style name defined by
+		 * <code>DEFAULT_CHILD_STYLE_NAME_OFF_TRACK</code>.
+		 *
+		 * <p>To customize the off track style name without subclassing, see
+		 * <code>customOffTrackStyleName</code>.</p>
+		 *
+		 * @see #customOffTrackStyleName
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		protected var offTrackStyleName:String = DEFAULT_CHILD_STYLE_NAME_OFF_TRACK;
+
+		/**
+		 * DEPRECATED: Replaced by <code>offTrackStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #offTrackStyleName
+		 */
+		protected function get offTrackName():String
+		{
+			return this.offTrackStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function set offTrackName(value:String):void
+		{
+			this.offTrackStyleName = value;
+		}
 
 		/**
 		 * The value added to the <code>styleNameList</code> of the thumb. This
 		 * variable is <code>protected</code> so that sub-classes can customize
-		 * the thumb name in their constructors instead of using the default
-		 * name defined by <code>DEFAULT_CHILD_NAME_THUMB</code>.
+		 * the thumb style name in their constructors instead of using the
+		 * default stylename defined by <code>DEFAULT_CHILD_STYLE_NAME_THUMB</code>.
 		 *
-		 * <p>To customize the thumb name without subclassing, see
-		 * <code>customThumbName</code>.</p>
+		 * <p>To customize the thumb style name without subclassing, see
+		 * <code>customThumbStyleName</code>.</p>
 		 *
-		 * @see #customThumbName
+		 * @see #customThumbStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		protected var thumbName:String = DEFAULT_CHILD_NAME_THUMB;
+		protected var thumbStyleName:String = DEFAULT_CHILD_STYLE_NAME_THUMB;
+
+		/**
+		 * DEPRECATED: Replaced by <code>tabStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #tabStyleName
+		 */
+		protected function get thumbName():String
+		{
+			return this.thumbStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function set thumbName(value:String):void
+		{
+			this.thumbStyleName = value;
+		}
 
 		/**
 		 * The thumb sub-component.
@@ -1259,40 +1438,63 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _customOnTrackName:String;
+		protected var _customOnTrackStyleName:String;
 
 		/**
-		 * A name to add to the toggle switch's on track sub-component. Typically
-		 * used by a theme to provide different skins to different toggle switches.
+		 * A style name to add to the toggle switch's on track sub-component.
+		 * Typically used by a theme to provide different styles to different
+		 * toggle switches.
 		 *
-		 * <p>In the following example, a custom on track name is passed to
+		 * <p>In the following example, a custom on track style name is passed to
 		 * the toggle switch:</p>
 		 *
 		 * <listing version="3.0">
-		 * toggle.customOnTrackName = "my-custom-on-track";</listing>
+		 * toggle.customOnTrackStyleName = "my-custom-on-track";</listing>
 		 *
-		 * <p>In your theme, you can target this item renderer name to provide
-		 * different skins than the default style:</p>
-		 *
-		 * <listing version="3.0">
-		 * setInitializerForClass( Button, customOnTrackInitializer, "my-custom-on-track");</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component name to provide
-		 * different skins than the default style:</p>
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customOnTrackInitializer, "my-custom-on-track");</listing>
 		 *
 		 * @default null
 		 *
-		 * @see #DEFAULT_CHILD_NAME_ON_TRACK
+		 * @see #DEFAULT_CHILD_STYLE_NAME_ON_TRACK
 		 * @see feathers.core.FeathersControl#styleNameList
 		 * @see #onTrackFactory
 		 * @see #onTrackProperties
 		 */
+		public function get customOnTrackStyleName():String
+		{
+			return this._customOnTrackStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customOnTrackStyleName(value:String):void
+		{
+			if(this._customOnTrackStyleName == value)
+			{
+				return;
+			}
+			this._customOnTrackStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_ON_TRACK_FACTORY);
+		}
+
+		/**
+		 * DEPRECATED: Replaced by <code>customOnTrackStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #customOnTrackStyleName
+		 */
 		public function get customOnTrackName():String
 		{
-			return this._customOnTrackName;
+			return this.customOnTrackStyleName;
 		}
 
 		/**
@@ -1300,12 +1502,7 @@ package feathers.controls
 		 */
 		public function set customOnTrackName(value:String):void
 		{
-			if(this._customOnTrackName == value)
-			{
-				return;
-			}
-			this._customOnTrackName = value;
-			this.invalidate(INVALIDATION_FLAG_ON_TRACK_FACTORY);
+			this.customOnTrackStyleName = value;
 		}
 
 		/**
@@ -1435,34 +1632,63 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _customOffTrackName:String;
+		protected var _customOffTrackStyleName:String;
 
 		/**
-		 * A name to add to the toggle switch's off track sub-component. Typically
-		 * used by a theme to provide different skins to different toggle switches.
+		 * A style name to add to the toggle switch's off track sub-component.
+		 * Typically used by a theme to provide different styles to different
+		 * toggle switches.
 		 *
-		 * <p>In the following example, a custom off track name is passed to the
-		 * toggle switch:</p>
+		 * <p>In the following example, a custom off track style name is passed
+		 * to the toggle switch:</p>
 		 *
 		 * <listing version="3.0">
-		 * toggle.customOnTrackName = "my-custom-off-track";</listing>
+		 * toggle.customOffTrackStyleName = "my-custom-off-track";</listing>
 		 *
-		 * <p>In your theme, you can target this sub-component name to provide
-		 * different skins than the default style:</p>
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customOffTrackInitializer, "my-custom-off-track");</listing>
 		 *
 		 * @default null
 		 *
-		 * @see #DEFAULT_CHILD_NAME_OFF_TRACK
+		 * @see #DEFAULT_CHILD_STYLE_NAME_OFF_TRACK
 		 * @see feathers.core.FeathersControl#styleNameList
 		 * @see #offTrackFactory
 		 * @see #offTrackProperties
 		 */
+		public function get customOffTrackStyleName():String
+		{
+			return this._customOffTrackStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customOffTrackStyleName(value:String):void
+		{
+			if(this._customOffTrackStyleName == value)
+			{
+				return;
+			}
+			this._customOffTrackStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_OFF_TRACK_FACTORY);
+		}
+
+		/**
+		 * DEPRECATED: Replaced by <code>customOffTrackStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #customOffTrackStyleName
+		 */
 		public function get customOffTrackName():String
 		{
-			return this._customOffTrackName;
+			return this.customOffTrackStyleName;
 		}
 
 		/**
@@ -1470,12 +1696,7 @@ package feathers.controls
 		 */
 		public function set customOffTrackName(value:String):void
 		{
-			if(this._customOffTrackName == value)
-			{
-				return;
-			}
-			this._customOffTrackName = value;
-			this.invalidate(INVALIDATION_FLAG_OFF_TRACK_FACTORY);
+			this.customOffTrackStyleName = value;
 		}
 
 		/**
@@ -1603,34 +1824,63 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _customThumbName:String;
+		protected var _customThumbStyleName:String;
 
 		/**
-		 * A name to add to the toggle switch's thumb sub-component. Typically
-		 * used by a theme to provide different skins to different toggle switches.
+		 * A style name to add to the toggle switch's thumb sub-component.
+		 * Typically used by a theme to provide different styles to different
+		 * toggle switches.
 		 *
-		 * <p>In the following example, a custom thumb name is passed to the
-		 * toggle switch:</p>
+		 * <p>In the following example, a custom thumb style name is passed to
+		 * the toggle switch:</p>
 		 *
 		 * <listing version="3.0">
-		 * toggle.customThumbName = "my-custom-thumb";</listing>
+		 * toggle.customThumbStyleName = "my-custom-thumb";</listing>
 		 *
-		 * <p>In your theme, you can target this sub-component name to provide
-		 * different skins than the default style:</p>
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customThumbInitializer, "my-custom-thumb");</listing>
 		 *
 		 * @default null
 		 *
-		 * @see #DEFAULT_CHILD_NAME_THUMB
+		 * @see #DEFAULT_CHILD_STYLE_NAME_THUMB
 		 * @see feathers.core.FeathersControl#styleNameList
 		 * @see #thumbFactory
 		 * @see #thumbProperties
 		 */
+		public function get customThumbStyleName():String
+		{
+			return this._customThumbStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customThumbStyleName(value:String):void
+		{
+			if(this._customThumbStyleName == value)
+			{
+				return;
+			}
+			this._customThumbStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_THUMB_FACTORY);
+		}
+
+		/**
+		 * DEPRECATED: Replaced by <code>customThumbStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #customThumbStyleName
+		 */
 		public function get customThumbName():String
 		{
-			return this._customThumbName;
+			return this.customThumbStyleName;
 		}
 
 		/**
@@ -1638,12 +1888,7 @@ package feathers.controls
 		 */
 		public function set customThumbName(value:String):void
 		{
-			if(this._customThumbName == value)
-			{
-				return;
-			}
-			this._customThumbName = value;
-			this.invalidate(INVALIDATION_FLAG_THUMB_FACTORY);
+			this.customThumbStyleName = value;
 		}
 
 		/**
@@ -1903,7 +2148,7 @@ package feathers.controls
 		 *
 		 * @see #thumb
 		 * @see #thumbFactory
-		 * @see #customThumbName
+		 * @see #customThumbStyleName
 		 */
 		protected function createThumb():void
 		{
@@ -1914,9 +2159,9 @@ package feathers.controls
 			}
 
 			var factory:Function = this._thumbFactory != null ? this._thumbFactory : defaultThumbFactory;
-			var thumbName:String = this._customThumbName != null ? this._customThumbName : this.thumbName;
+			var thumbStyleName:String = this._customThumbStyleName != null ? this._customThumbStyleName : this.thumbStyleName;
 			this.thumb = Button(factory());
-			this.thumb.styleNameList.add(thumbName);
+			this.thumb.styleNameList.add(thumbStyleName);
 			this.thumb.keepDownStateOnRollOut = true;
 			this.thumb.addEventListener(TouchEvent.TOUCH, thumb_touchHandler);
 			this.addChild(this.thumb);
@@ -1931,7 +2176,7 @@ package feathers.controls
 		 *
 		 * @see #onTrack
 		 * @see #onTrackFactory
-		 * @see #customOnTrackName
+		 * @see #customOnTrackStyleName
 		 */
 		protected function createOnTrack():void
 		{
@@ -1942,9 +2187,9 @@ package feathers.controls
 			}
 
 			var factory:Function = this._onTrackFactory != null ? this._onTrackFactory : defaultOnTrackFactory;
-			var onTrackName:String = this._customOnTrackName != null ? this._customOnTrackName : this.onTrackName;
+			var onTrackStyleName:String = this._customOnTrackStyleName != null ? this._customOnTrackStyleName : this.onTrackStyleName;
 			this.onTrack = Button(factory());
-			this.onTrack.styleNameList.add(onTrackName);
+			this.onTrack.styleNameList.add(onTrackStyleName);
 			this.onTrack.keepDownStateOnRollOut = true;
 			this.addChildAt(this.onTrack, 0);
 		}
@@ -1959,7 +2204,7 @@ package feathers.controls
 		 *
 		 * @see #offTrack
 		 * @see #offTrackFactory
-		 * @see #customOffTrackName
+		 * @see #customOffTrackStyleName
 		 */
 		protected function createOffTrack():void
 		{
@@ -1971,9 +2216,9 @@ package feathers.controls
 					this.offTrack = null;
 				}
 				var factory:Function = this._offTrackFactory != null ? this._offTrackFactory : defaultOffTrackFactory;
-				var offTrackName:String = this._customOffTrackName != null ? this._customOffTrackName : this.offTrackName;
+				var offTrackStyleName:String = this._customOffTrackStyleName != null ? this._customOffTrackStyleName : this.offTrackStyleName;
 				this.offTrack = Button(factory());
-				this.offTrack.styleNameList.add(offTrackName);
+				this.offTrack.styleNameList.add(offTrackStyleName);
 				this.offTrack.keepDownStateOnRollOut = true;
 				this.addChildAt(this.offTrack, 1);
 			}

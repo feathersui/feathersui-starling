@@ -216,7 +216,19 @@ package feathers.controls
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const DEFAULT_CHILD_NAME_BUTTON:String = "feathers-button-group-button";
+		public static const DEFAULT_CHILD_STYLE_NAME_BUTTON:String = "feathers-button-group-button";
+
+		/**
+		 * DEPRECATED: Replaced by <code>ButtonGroup.DEFAULT_CHILD_STYLE_NAME_BUTTON</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see ButtonGroup#DEFAULT_CHILD_STYLE_NAME_BUTTON
+		 */
+		public static const DEFAULT_CHILD_NAME_BUTTON:String = DEFAULT_CHILD_STYLE_NAME_BUTTON;
 
 		/**
 		 * @private
@@ -235,40 +247,110 @@ package feathers.controls
 		}
 
 		/**
-		 * The value added to the <code>styleNameList</code> of the buttons. This
-		 * variable is <code>protected</code> so that sub-classes can customize
-		 * the button name in their constructors instead of using the default
-		 * name defined by <code>DEFAULT_CHILD_NAME_BUTTON</code>.
+		 * The value added to the <code>styleNameList</code> of the buttons.
+		 * This variable is <code>protected</code> so that sub-classes can
+		 * customize the button style name in their constructors instead of
+		 * using the default style name defined by
+		 * <code>DEFAULT_CHILD_STYLE_NAME_BUTTON</code>.
 		 *
-		 * <p>To customize the button name without subclassing, see
-		 * <code>customButtonName</code>.</p>
+		 * <p>To customize the button style name without subclassing, see
+		 * <code>customButtonStyleName</code>.</p>
 		 *
-		 * @see #customButtonName
+		 * @see #customButtonStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		protected var buttonName:String = DEFAULT_CHILD_NAME_BUTTON;
+		protected var buttonStyleName:String = DEFAULT_CHILD_STYLE_NAME_BUTTON;
+
+		/**
+		 * DEPRECATED: Replaced by <code>buttonStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #buttonStyleName
+		 */
+		protected function get buttonName():String
+		{
+			return this.buttonStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function set buttonName(value:String):void
+		{
+			this.buttonStyleName = value;
+		}
 
 		/**
 		 * The value added to the <code>styleNameList</code> of the first button.
 		 *
 		 * <p>To customize the first button name without subclassing, see
-		 * <code>customFirstButtonName</code>.</p>
+		 * <code>customFirstButtonStyleName</code>.</p>
 		 *
-		 * @see #customFirstButtonName
+		 * @see #customFirstButtonStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		protected var firstButtonName:String = DEFAULT_CHILD_NAME_BUTTON;
+		protected var firstButtonStyleName:String = DEFAULT_CHILD_STYLE_NAME_BUTTON;
+
+		/**
+		 * DEPRECATED: Replaced by <code>firstButtonStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #firstButtonStyleName
+		 */
+		protected function get firstButtonName():String
+		{
+			return this.firstButtonStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function set firstButtonName(value:String):void
+		{
+			this.firstButtonStyleName = value;
+		}
 
 		/**
 		 * The value added to the <code>styleNameList</code> of the last button.
 		 *
-		 * <p>To customize the last button name without subclassing, see
-		 * <code>customLastButtonName</code>.</p>
+		 * <p>To customize the last button style name without subclassing, see
+		 * <code>customLastButtonStyleName</code>.</p>
 		 *
-		 * @see #customLastButtonName
+		 * @see #customLastButtonStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		protected var lastButtonName:String = DEFAULT_CHILD_NAME_BUTTON;
+		protected var lastButtonStyleName:String = DEFAULT_CHILD_STYLE_NAME_BUTTON;
+
+		/**
+		 * DEPRECATED: Replaced by <code>lastButtonStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #lastButtonStyleName
+		 */
+		protected function get lastButtonName():String
+		{
+			return this.lastButtonStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function set lastButtonName(value:String):void
+		{
+			this.lastButtonStyleName = value;
+		}
 
 		/**
 		 * @private
@@ -1066,31 +1148,59 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _customButtonName:String;
+		protected var _customButtonStyleName:String;
 
 		/**
-		 * A name to add to all buttons in this button group. Typically used by
-		 * a theme to provide different skins to different button groups.
+		 * A style name to add to all buttons in this button group. Typically
+		 * used by a theme to provide different styles to different button groups.
 		 *
-		 * <p>The following example provides a custom button name:</p>
+		 * <p>The following example provides a custom button style name:</p>
 		 *
 		 * <listing version="3.0">
-		 * group.customButtonName = "my-custom-button";</listing>
+		 * group.customButtonStyleName = "my-custom-button";</listing>
 		 *
-		 * <p>In your theme, you can target this sub-component name to provide
-		 * different skins than the default style:</p>
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customButtonInitializer, "my-custom-button");</listing>
 		 *
 		 * @default null
 		 *
-		 * @see #DEFAULT_CHILD_NAME_BUTTON
+		 * @see #DEFAULT_CHILD_STYLE_NAME_BUTTON
 		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		public function get customButtonStyleName():String
+		{
+			return this._customButtonStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customButtonStyleName(value:String):void
+		{
+			if(this._customButtonStyleName == value)
+			{
+				return;
+			}
+			this._customButtonStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_BUTTON_FACTORY);
+		}
+
+		/**
+		 * DEPRECATED: Replaced by <code>customButtonStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #customButtonStyleName
 		 */
 		public function get customButtonName():String
 		{
-			return this._customButtonName;
+			return this.customButtonStyleName;
 		}
 
 		/**
@@ -1098,30 +1208,26 @@ package feathers.controls
 		 */
 		public function set customButtonName(value:String):void
 		{
-			if(this._customButtonName == value)
-			{
-				return;
-			}
-			this._customButtonName = value;
-			this.invalidate(INVALIDATION_FLAG_BUTTON_FACTORY);
+			this.customButtonStyleName = value;
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _customFirstButtonName:String;
+		protected var _customFirstButtonStyleName:String;
 
 		/**
-		 * A name to add to the first button in this button group. Typically
-		 * used by a theme to provide different skins to the first button.
+		 * A style name to add to the first button in this button group.
+		 * Typically used by a theme to provide different styles to the first
+		 * button.
 		 *
-		 * <p>The following example provides a custom first button name:</p>
+		 * <p>The following example provides a custom first button style name:</p>
 		 *
 		 * <listing version="3.0">
-		 * group.customFirstButtonName = "my-custom-first-button";</listing>
+		 * group.customFirstButtonStyleName = "my-custom-first-button";</listing>
 		 *
-		 * <p>In your theme, you can target this sub-component name to provide
-		 * different skins than the default style:</p>
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customFirstButtonInitializer, "my-custom-first-button");</listing>
@@ -1130,9 +1236,37 @@ package feathers.controls
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
+		public function get customFirstButtonStyleName():String
+		{
+			return this._customFirstButtonStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customFirstButtonStyleName(value:String):void
+		{
+			if(this._customFirstButtonStyleName == value)
+			{
+				return;
+			}
+			this._customFirstButtonStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_BUTTON_FACTORY);
+		}
+
+		/**
+		 * DEPRECATED: Replaced by <code>customFirstButtonStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #customFirstButtonStyleName
+		 */
 		public function get customFirstButtonName():String
 		{
-			return this._customFirstButtonName;
+			return this.customFirstButtonStyleName;
 		}
 
 		/**
@@ -1140,30 +1274,26 @@ package feathers.controls
 		 */
 		public function set customFirstButtonName(value:String):void
 		{
-			if(this._customFirstButtonName == value)
-			{
-				return;
-			}
-			this._customFirstButtonName = value;
-			this.invalidate(INVALIDATION_FLAG_BUTTON_FACTORY);
+			this.customFirstButtonStyleName = value;
 		}
 
 		/**
 		 * @private
 		 */
-		protected var _customLastButtonName:String;
+		protected var _customLastButtonStyleName:String;
 
 		/**
-		 * A name to add to the last button in this button group. Typically used
-		 * by a theme to provide different skins to the last button.
+		 * A style name to add to the last button in this button group.
+		 * Typically used by a theme to provide different styles to the last
+		 * button.
 		 *
-		 * <p>The following example provides a custom last button name:</p>
+		 * <p>The following example provides a custom last button style name:</p>
 		 *
 		 * <listing version="3.0">
-		 * group.customLastButtonName = "my-custom-last-button";</listing>
+		 * group.customLastButtonStyleName = "my-custom-last-button";</listing>
 		 *
-		 * <p>In your theme, you can target this sub-component name to provide
-		 * different skins than the default style:</p>
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customLastButtonInitializer, "my-custom-last-button");</listing>
@@ -1172,9 +1302,37 @@ package feathers.controls
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
+		public function get customLastButtonStyleName():String
+		{
+			return this._customLastButtonStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customLastButtonStyleName(value:String):void
+		{
+			if(this._customLastButtonStyleName == value)
+			{
+				return;
+			}
+			this._customLastButtonStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_BUTTON_FACTORY);
+		}
+
+		/**
+		 * DEPRECATED: Replaced by <code>customLastButtonStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #customLastButtonStyleName
+		 */
 		public function get customLastButtonName():String
 		{
-			return this._customLastButtonName;
+			return this.customLastButtonStyleName;
 		}
 
 		/**
@@ -1182,12 +1340,7 @@ package feathers.controls
 		 */
 		public function set customLastButtonName(value:String):void
 		{
-			if(this._customLastButtonName == value)
-			{
-				return;
-			}
-			this._customLastButtonName = value;
-			this.invalidate(INVALIDATION_FLAG_BUTTON_FACTORY);
+			this.customLastButtonStyleName = value;
 		}
 
 		/**
@@ -1549,17 +1702,17 @@ package feathers.controls
 				isNewInstance = true;
 				var factory:Function = this._firstButtonFactory != null ? this._firstButtonFactory : this._buttonFactory;
 				button = Button(factory());
-				if(this._customFirstButtonName)
+				if(this._customFirstButtonStyleName)
 				{
-					button.styleNameList.add(this._customFirstButtonName);
+					button.styleNameList.add(this._customFirstButtonStyleName);
 				}
-				else if(this._customButtonName)
+				else if(this._customButtonStyleName)
 				{
-					button.styleNameList.add(this._customButtonName);
+					button.styleNameList.add(this._customButtonStyleName);
 				}
 				else
 				{
-					button.styleNameList.add(this.firstButtonName);
+					button.styleNameList.add(this.firstButtonStyleName);
 				}
 				this.addChild(button);
 			}
@@ -1590,17 +1743,17 @@ package feathers.controls
 				isNewInstance = true;
 				var factory:Function = this._lastButtonFactory != null ? this._lastButtonFactory : this._buttonFactory;
 				button = Button(factory());
-				if(this._customLastButtonName)
+				if(this._customLastButtonStyleName)
 				{
-					button.styleNameList.add(this._customLastButtonName);
+					button.styleNameList.add(this._customLastButtonStyleName);
 				}
-				else if(this._customButtonName)
+				else if(this._customButtonStyleName)
 				{
-					button.styleNameList.add(this._customButtonName);
+					button.styleNameList.add(this._customButtonStyleName);
 				}
 				else
 				{
-					button.styleNameList.add(this.lastButtonName);
+					button.styleNameList.add(this.lastButtonStyleName);
 				}
 				this.addChild(button);
 			}
@@ -1625,13 +1778,13 @@ package feathers.controls
 			{
 				isNewInstance = true;
 				var button:Button = this._buttonFactory();
-				if(this._customButtonName)
+				if(this._customButtonStyleName)
 				{
-					button.styleNameList.add(this._customButtonName);
+					button.styleNameList.add(this._customButtonStyleName);
 				}
 				else
 				{
-					button.styleNameList.add(this.buttonName);
+					button.styleNameList.add(this.buttonStyleName);
 				}
 				this.addChild(button);
 			}
