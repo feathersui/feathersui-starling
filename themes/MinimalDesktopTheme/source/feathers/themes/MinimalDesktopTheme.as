@@ -74,16 +74,30 @@ package feathers.themes
 		 */
 		override protected function initialize():void
 		{
+			this.initializeTextureAtlas();
+			this.initializeBitmapFont();
+			super.initialize();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function initializeTextureAtlas():void
+		{
 			var atlasBitmapData:BitmapData = Bitmap(new ATLAS_BITMAP()).bitmapData;
 			var atlasTexture:Texture = Texture.fromBitmapData(atlasBitmapData, false, 1);
 			atlasTexture.root.onRestore = this.atlasTexture_onRestore;
 			atlasBitmapData.dispose();
 			this.atlas = new TextureAtlas(atlasTexture, XML(new ATLAS_XML()));
+		}
 
+		/**
+		 * @private
+		 */
+		protected function initializeBitmapFont():void
+		{
 			var bitmapFont:BitmapFont = new BitmapFont(this.atlas.getTexture(FONT_TEXTURE_NAME), XML(new FONT_XML()));
 			TextField.registerBitmapFont(bitmapFont, FONT_NAME);
-
-			super.initialize();
 		}
 
 		/**
