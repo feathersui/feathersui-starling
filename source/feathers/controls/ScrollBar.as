@@ -200,7 +200,19 @@ package feathers.controls
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const DEFAULT_CHILD_NAME_MINIMUM_TRACK:String = "feathers-scroll-bar-minimum-track";
+		public static const DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK:String = "feathers-scroll-bar-minimum-track";
+
+		/**
+		 * DEPRECATED: Replaced by <code>ScrollBar.DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see ScrollBar#DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK
+		 */
+		public static const DEFAULT_CHILD_NAME_MINIMUM_TRACK:String = DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK;
 
 		/**
 		 * The default value added to the <code>styleNameList</code> of the maximum
@@ -208,14 +220,38 @@ package feathers.controls
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const DEFAULT_CHILD_NAME_MAXIMUM_TRACK:String = "feathers-scroll-bar-maximum-track";
+		public static const DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK:String = "feathers-scroll-bar-maximum-track";
+
+		/**
+		 * DEPRECATED: Replaced by <code>ScrollBar.DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see ScrollBar#DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK
+		 */
+		public static const DEFAULT_CHILD_NAME_MAXIMUM_TRACK:String = DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK;
 
 		/**
 		 * The default value added to the <code>styleNameList</code> of the thumb.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const DEFAULT_CHILD_NAME_THUMB:String = "feathers-scroll-bar-thumb";
+		public static const DEFAULT_CHILD_STYLE_NAME_THUMB:String = "feathers-scroll-bar-thumb";
+
+		/**
+		 * DEPRECATED: Replaced by <code>ScrollBar.DEFAULT_CHILD_STYLE_NAME_THUMB</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see ScrollBar#DEFAULT_CHILD_STYLE_NAME_THUMB
+		 */
+		public static const DEFAULT_CHILD_NAME_THUMB:String = DEFAULT_CHILD_STYLE_NAME_THUMB;
 
 		/**
 		 * The default value added to the <code>styleNameList</code> of the decrement
@@ -223,7 +259,19 @@ package feathers.controls
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const DEFAULT_CHILD_NAME_DECREMENT_BUTTON:String = "feathers-scroll-bar-decrement-button";
+		public static const DEFAULT_CHILD_STYLE_NAME_DECREMENT_BUTTON:String = "feathers-scroll-bar-decrement-button";
+
+		/**
+		 * DEPRECATED: Replaced by <code>ScrollBar.DEFAULT_CHILD_STYLE_NAME_DECREMENT_BUTTON</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see ScrollBar#DEFAULT_CHILD_STYLE_NAME_DECREMENT_BUTTON
+		 */
+		public static const DEFAULT_CHILD_NAME_DECREMENT_BUTTON:String = DEFAULT_CHILD_STYLE_NAME_DECREMENT_BUTTON;
 
 		/**
 		 * The default value added to the <code>styleNameList</code> of the increment
@@ -231,7 +279,19 @@ package feathers.controls
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const DEFAULT_CHILD_NAME_INCREMENT_BUTTON:String = "feathers-scroll-bar-increment-button";
+		public static const DEFAULT_CHILD_STYLE_NAME_INCREMENT_BUTTON:String = "feathers-scroll-bar-increment-button";
+
+		/**
+		 * DEPRECATED: Replaced by <code>ScrollBar.DEFAULT_CHILD_STYLE_NAME_INCREMENT_BUTTON</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see ScrollBar#DEFAULT_CHILD_STYLE_NAME_INCREMENT_BUTTON
+		 */
+		public static const DEFAULT_CHILD_NAME_INCREMENT_BUTTON:String = DEFAULT_CHILD_STYLE_NAME_INCREMENT_BUTTON;
 
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>ScrollBar</code>
@@ -292,74 +352,193 @@ package feathers.controls
 		}
 
 		/**
-		 * The value added to the <code>styleNameList</code> of the minimum track. This
-		 * variable is <code>protected</code> so that sub-classes can customize
-		 * the minimum track name in their constructors instead of using the default
-		 * name defined by <code>DEFAULT_CHILD_NAME_MINIMUM_TRACK</code>.
+		 * The value added to the <code>styleNameList</code> of the minimum
+		 * track. This variable is <code>protected</code> so that sub-classes
+		 * can customize the minimum track style name in their constructors
+		 * instead of using the default style name defined by
+		 * <code>DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK</code>.
 		 *
-		 * <p>To customize the minimum track name without subclassing, see
-		 * <code>customMinimumTrackName</code>.</p>
+		 * <p>To customize the minimum track style name without subclassing, see
+		 * <code>customMinimumTrackStyleName</code>.</p>
 		 *
-		 * @see #customMinimumTrackName
+		 * @see #customMinimumTrackStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		protected var minimumTrackName:String = DEFAULT_CHILD_NAME_MINIMUM_TRACK;
+		protected var minimumTrackStyleName:String = DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK;
 
 		/**
-		 * The value added to the <code>styleNameList</code> of the maximum track. This
-		 * variable is <code>protected</code> so that sub-classes can customize
-		 * the maximum track name in their constructors instead of using the default
-		 * name defined by <code>DEFAULT_CHILD_NAME_MAXIMUM_TRACK</code>.
+		 * DEPRECATED: Replaced by <code>minimumTrackStyleName</code>.
 		 *
-		 * <p>To customize the maximum track name without subclassing, see
-		 * <code>customMaximumTrackName</code>.</p>
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
 		 *
-		 * @see #customMaximumTrackName
+		 * @see #minimumTrackStyleName
+		 */
+		protected function get minimumTrackName():String
+		{
+			return this.minimumTrackStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function set minimumTrackName(value:String):void
+		{
+			this.minimumTrackStyleName = value;
+		}
+
+		/**
+		 * The value added to the <code>styleNameList</code> of the maximum
+		 * track. This variable is <code>protected</code> so that sub-classes
+		 * can customize the maximum track style name in their constructors
+		 * instead of using the default style name defined by
+		 * <code>DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK</code>.
+		 *
+		 * <p>To customize the maximum track style name without subclassing, see
+		 * <code>customMaximumTrackStyleName</code>.</p>
+		 *
+		 * @see #customMaximumTrackStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		protected var maximumTrackName:String = DEFAULT_CHILD_NAME_MAXIMUM_TRACK;
+		protected var maximumTrackStyleName:String = DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK;
+
+		/**
+		 * DEPRECATED: Replaced by <code>maximumTrackStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #maximumTrackStyleName
+		 */
+		protected function get maximumTrackName():String
+		{
+			return this.maximumTrackStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function set maximumTrackName(value:String):void
+		{
+			this.maximumTrackStyleName = value;
+		}
 
 		/**
 		 * The value added to the <code>styleNameList</code> of the thumb. This
 		 * variable is <code>protected</code> so that sub-classes can customize
-		 * the thumb name in their constructors instead of using the default
-		 * name defined by <code>DEFAULT_CHILD_NAME_THUMB</code>.
+		 * the thumb style name in their constructors instead of using the
+		 * default style name defined by <code>DEFAULT_CHILD_STYLE_NAME_THUMB</code>.
 		 *
-		 * <p>To customize the thumb name without subclassing, see
-		 * <code>customThumbName</code>.</p>
+		 * <p>To customize the thumb style name without subclassing, see
+		 * <code>customThumbStyleName</code>.</p>
 		 *
-		 * @see #customThumbName
+		 * @see #customThumbStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		protected var thumbName:String = DEFAULT_CHILD_NAME_THUMB;
+		protected var thumbStyleName:String = DEFAULT_CHILD_STYLE_NAME_THUMB;
 
 		/**
-		 * The value added to the <code>styleNameList</code> of the decrement button. This
-		 * variable is <code>protected</code> so that sub-classes can customize
-		 * the decrement button name in their constructors instead of using the default
-		 * name defined by <code>DEFAULT_CHILD_NAME_DECREMENT_BUTTON</code>.
+		 * DEPRECATED: Replaced by <code>thumbStyleName</code>.
 		 *
-		 * <p>To customize the decrement button name without subclassing, see
-		 * <code>customDecrementButtonName</code>.</p>
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
 		 *
-		 * @see #customDecrementButtonName
-		 * @see feathers.core.FeathersControl#styleNameList
+		 * @see #thumbStyleName
 		 */
-		protected var decrementButtonName:String = DEFAULT_CHILD_NAME_DECREMENT_BUTTON;
+		protected function get thumbName():String
+		{
+			return this.thumbStyleName;
+		}
 
 		/**
-		 * The value added to the <code>styleNameList</code> of the increment button. This
-		 * variable is <code>protected</code> so that sub-classes can customize
-		 * the increment button name in their constructors instead of using the default
-		 * name defined by <code>DEFAULT_CHILD_NAME_INCREMENT_BUTTON</code>.
+		 * @private
+		 */
+		protected function set thumbName(value:String):void
+		{
+			this.thumbStyleName = value;
+		}
+
+		/**
+		 * The value added to the <code>styleNameList</code> of the decrement
+		 * button. This variable is <code>protected</code> so that sub-classes
+		 * can customize the decrement button style name in their constructors
+		 * instead of using the default style name defined by
+		 * <code>DEFAULT_CHILD_STYLE_NAME_DECREMENT_BUTTON</code>.
 		 *
-		 * <p>To customize the increment button name without subclassing, see
-		 * <code>customIncrementButtonName</code>.</p>
+		 * <p>To customize the decrement button style name without subclassing,
+		 * see <code>customDecrementButtonStyleName</code>.</p>
 		 *
-		 * @see #customIncrementButtonName
+		 * @see #customDecrementButtonStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		protected var incrementButtonName:String = DEFAULT_CHILD_NAME_INCREMENT_BUTTON;
+		protected var decrementButtonStyleName:String = DEFAULT_CHILD_STYLE_NAME_DECREMENT_BUTTON;
+
+		/**
+		 * DEPRECATED: Replaced by <code>decrementButtonStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #decrementButtonStyleName
+		 */
+		protected function get decrementButtonName():String
+		{
+			return this.decrementButtonStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function set decrementButtonName(value:String):void
+		{
+			this.decrementButtonStyleName = value;
+		}
+
+		/**
+		 * The value added to the <code>styleNameList</code> of the increment
+		 * button. This variable is <code>protected</code> so that sub-classes
+		 * can customize the increment button style name in their constructors
+		 * instead of using the default style name defined by
+		 * <code>DEFAULT_CHILD_STYLE_NAME_INCREMENT_BUTTON</code>.
+		 *
+		 * <p>To customize the increment button style name without subclassing,
+		 * see <code>customIncrementButtonName</code>.</p>
+		 *
+		 * @see #customIncrementButtonStyleName
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		protected var incrementButtonStyleName:String = DEFAULT_CHILD_STYLE_NAME_INCREMENT_BUTTON;
+
+		/**
+		 * DEPRECATED: Replaced by <code>incrementButtonStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #incrementButtonStyleName
+		 */
+		protected function get incrementButtonName():String
+		{
+			return this.incrementButtonStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function set incrementButtonName(value:String):void
+		{
+			this.incrementButtonStyleName = value;
+		}
 
 		/**
 		 * @private
@@ -976,34 +1155,63 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _customMinimumTrackName:String;
+		protected var _customMinimumTrackStyleName:String;
 
 		/**
-		 * A name to add to the scroll bar's minimum track sub-component. Typically
-		 * used by a theme to provide different skins to different scroll bars.
+		 * A style name to add to the scroll bar's minimum track sub-component.
+		 * Typically used by a theme to provide different styles to different
+		 * scroll bars.
 		 *
-		 * <p>In the following example, a custom minimum track name is passed
-		 * to the scroll bar:</p>
+		 * <p>In the following example, a custom minimum track style name is
+		 * passed to the scroll bar:</p>
 		 *
 		 * <listing version="3.0">
-		 * scrollBar.customMinimumTrackName = "my-custom-minimum-track";</listing>
+		 * scrollBar.customMinimumTrackStyleName = "my-custom-minimum-track";</listing>
 		 *
-		 * <p>In your theme, you can target this sub-component name to provide
-		 * different skins than the default style:</p>
+		 * <p>In your theme, you can target this sub-component style name to provide
+		 * different styles than the default:</p>
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customMinimumTrackInitializer, "my-custom-minimum-track");</listing>
 		 *
 		 * @default null
 		 *
-		 * @see #DEFAULT_CHILD_NAME_MINIMUM_TRACK
+		 * @see #DEFAULT_CHILD_STYLE_NAME_MINIMUM_TRACK
 		 * @see feathers.core.FeathersControl#styleNameList
 		 * @see #minimumTrackFactory
 		 * @see #minimumTrackProperties
 		 */
+		public function get customMinimumTrackStyleName():String
+		{
+			return this._customMinimumTrackStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customMinimumTrackStyleName(value:String):void
+		{
+			if(this._customMinimumTrackStyleName == value)
+			{
+				return;
+			}
+			this._customMinimumTrackStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_MINIMUM_TRACK_FACTORY);
+		}
+
+		/**
+		 * DEPRECATED: Replaced by <code>customMinimumTrackStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #customMinimumTrackStyleName
+		 */
 		public function get customMinimumTrackName():String
 		{
-			return this._customMinimumTrackName;
+			return this.customMinimumTrackStyleName;
 		}
 
 		/**
@@ -1011,12 +1219,7 @@ package feathers.controls
 		 */
 		public function set customMinimumTrackName(value:String):void
 		{
-			if(this._customMinimumTrackName == value)
-			{
-				return;
-			}
-			this._customMinimumTrackName = value;
-			this.invalidate(INVALIDATION_FLAG_MINIMUM_TRACK_FACTORY);
+			this.customMinimumTrackStyleName = value;
 		}
 
 		/**
@@ -1149,34 +1352,63 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _customMaximumTrackName:String;
+		protected var _customMaximumTrackStyleName:String;
 
 		/**
-		 * A name to add to the scroll bar's maximum track sub-component. Typically
-		 * used by a theme to provide different skins to different scroll bars.
+		 * A style name to add to the scroll bar's maximum track sub-component.
+		 * Typically used by a theme to provide different styles to different
+		 * scroll bars.
 		 *
-		 * <p>In the following example, a custom maximum track name is passed
-		 * to the scroll bar:</p>
+		 * <p>In the following example, a custom maximum track style name is
+		 * passed to the scroll bar:</p>
 		 *
 		 * <listing version="3.0">
-		 * scrollBar.customMaximumTrackName = "my-custom-maximum-track";</listing>
+		 * scrollBar.customMaximumTrackStyleName = "my-custom-maximum-track";</listing>
 		 *
-		 * <p>In your theme, you can target this sub-component name to provide
-		 * different skins than the default style:</p>
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customMaximumTrackInitializer, "my-custom-maximum-track");</listing>
 		 *
 		 * @default null
 		 *
-		 * @see #DEFAULT_CHILD_NAME_MAXIMUM_TRACK
+		 * @see #DEFAULT_CHILD_STYLE_NAME_MAXIMUM_TRACK
 		 * @see feathers.core.FeathersControl#styleNameList
 		 * @see #maximumTrackFactory
 		 * @see #maximumTrackProperties
 		 */
+		public function get customMaximumTrackStyleName():String
+		{
+			return this._customMaximumTrackStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customMaximumTrackStyleName(value:String):void
+		{
+			if(this._customMaximumTrackStyleName == value)
+			{
+				return;
+			}
+			this._customMaximumTrackStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_MAXIMUM_TRACK_FACTORY);
+		}
+
+		/**
+		 * DEPRECATED: Replaced by <code>customMaximumTrackStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #customMaximumTrackStyleName
+		 */
 		public function get customMaximumTrackName():String
 		{
-			return this._customMaximumTrackName;
+			return this.customMaximumTrackStyleName;
 		}
 
 		/**
@@ -1184,12 +1416,7 @@ package feathers.controls
 		 */
 		public function set customMaximumTrackName(value:String):void
 		{
-			if(this._customMaximumTrackName == value)
-			{
-				return;
-			}
-			this._customMaximumTrackName = value;
-			this.invalidate(INVALIDATION_FLAG_MAXIMUM_TRACK_FACTORY);
+			this.customMaximumTrackStyleName = value;
 		}
 
 		/**
@@ -1322,34 +1549,63 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _customThumbName:String;
+		protected var _customThumbStyleName:String;
 
 		/**
-		 * A name to add to the scroll bar's thumb sub-component. Typically
-		 * used by a theme to provide different skins to different scroll bars.
+		 * A style name to add to the scroll bar's thumb sub-component.
+		 * Typically used by a theme to provide different styles to different
+		 * scroll bars.
 		 *
-		 * <p>In the following example, a custom thumb name is passed
+		 * <p>In the following example, a custom thumb style name is passed
 		 * to the scroll bar:</p>
 		 *
 		 * <listing version="3.0">
-		 * scrollBar.customThumbName = "my-custom-thumb";</listing>
+		 * scrollBar.customThumbStyleName = "my-custom-thumb";</listing>
 		 *
-		 * <p>In your theme, you can target this sub-component name to provide
-		 * different skins than the default style:</p>
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customThumbInitializer, "my-custom-thumb");</listing>
 		 *
 		 * @default null
 		 *
-		 * @see #DEFAULT_CHILD_NAME_THUMB
+		 * @see #DEFAULT_CHILD_STYLE_NAME_THUMB
 		 * @see feathers.core.FeathersControl#styleNameList
 		 * @see #thumbFactory
 		 * @see #thumbProperties
 		 */
+		public function get customThumbStyleName():String
+		{
+			return this._customThumbStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customThumbStyleName(value:String):void
+		{
+			if(this._customThumbStyleName == value)
+			{
+				return;
+			}
+			this._customThumbStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_THUMB_FACTORY);
+		}
+
+		/**
+		 * DEPRECATED: Replaced by <code>customThumbStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #customThumbStyleName
+		 */
 		public function get customThumbName():String
 		{
-			return this._customThumbName;
+			return this.customThumbStyleName;
 		}
 
 		/**
@@ -1357,12 +1613,7 @@ package feathers.controls
 		 */
 		public function set customThumbName(value:String):void
 		{
-			if(this._customThumbName == value)
-			{
-				return;
-			}
-			this._customThumbName = value;
-			this.invalidate(INVALIDATION_FLAG_THUMB_FACTORY);
+			this.customThumbStyleName = value;
 		}
 
 		/**
@@ -1494,34 +1745,63 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _customDecrementButtonName:String;
+		protected var _customDecrementButtonStyleName:String;
 
 		/**
-		 * A name to add to the scroll bar's decrement button sub-component. Typically
-		 * used by a theme to provide different skins to different scroll bars.
+		 * A style name to add to the scroll bar's decrement button
+		 * sub-component. Typically used by a theme to provide different styles
+		 * to different scroll bars.
 		 *
-		 * <p>In the following example, a custom decrement button name is passed
-		 * to the scroll bar:</p>
+		 * <p>In the following example, a custom decrement button style name is
+		 * passed to the scroll bar:</p>
 		 *
 		 * <listing version="3.0">
-		 * scrollBar.customDecrementButtonName = "my-custom-decrement-button";</listing>
+		 * scrollBar.customDecrementButtonStyleName = "my-custom-decrement-button";</listing>
 		 *
-		 * <p>In your theme, you can target this sub-component name to provide
-		 * different skins than the default style:</p>
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different skins than the default style:</p>
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customDecrementButtonInitializer, "my-custom-decrement-button");</listing>
 		 *
 		 * @default null
 		 *
-		 * @see #DEFAULT_CHILD_NAME_DECREMENT_BUTTON
+		 * @see #DEFAULT_CHILD_STYLE_NAME_DECREMENT_BUTTON
 		 * @see feathers.core.FeathersControl#styleNameList
 		 * @see #decrementButtonFactory
 		 * @see #decrementButtonProperties
 		 */
+		public function get customDecrementButtonStyleName():String
+		{
+			return this._customDecrementButtonStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customDecrementButtonStyleName(value:String):void
+		{
+			if(this._customDecrementButtonStyleName == value)
+			{
+				return;
+			}
+			this._customDecrementButtonStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_DECREMENT_BUTTON_FACTORY);
+		}
+
+		/**
+		 * DEPRECATED: Replaced by <code>customDecrementButtonStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #customDecrementButtonStyleName
+		 */
 		public function get customDecrementButtonName():String
 		{
-			return this._customDecrementButtonName;
+			return this.customDecrementButtonStyleName;
 		}
 
 		/**
@@ -1529,12 +1809,7 @@ package feathers.controls
 		 */
 		public function set customDecrementButtonName(value:String):void
 		{
-			if(this._customDecrementButtonName == value)
-			{
-				return;
-			}
-			this._customDecrementButtonName = value;
-			this.invalidate(INVALIDATION_FLAG_DECREMENT_BUTTON_FACTORY);
+			this.customDecrementButtonStyleName = value;
 		}
 
 		/**
@@ -1667,34 +1942,63 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _customIncrementButtonName:String;
+		protected var _customIncrementButtonStyleName:String;
 
 		/**
-		 * A name to add to the scroll bar's increment button sub-component. Typically
-		 * used by a theme to provide different skins to different scroll bars.
+		 * A style name to add to the scroll bar's increment button
+		 * sub-component. Typically used by a theme to provide different styles
+		 * to different scroll bars.
 		 *
-		 * <p>In the following example, a custom increment button name is passed
-		 * to the scroll bar:</p>
+		 * <p>In the following example, a custom increment button style name is
+		 * passed to the scroll bar:</p>
 		 *
 		 * <listing version="3.0">
-		 * scrollBar.customIncrementButtonName = "my-custom-increment-button";</listing>
+		 * scrollBar.customIncrementButtonStyleName = "my-custom-increment-button";</listing>
 		 *
-		 * <p>In your theme, you can target this sub-component name to provide
-		 * different skins than the default style:</p>
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customIncrementInitializer, "my-custom-increment-button");</listing>
 		 *
 		 * @default null
 		 *
-		 * @see #DEFAULT_CHILD_NAME_INCREMENT_BUTTON
+		 * @see #DEFAULT_CHILD_STYLE_NAME_INCREMENT_BUTTON
 		 * @see feathers.core.FeathersControl#styleNameList
 		 * @see #incrementButtonFactory
 		 * @see #incrementButtonProperties
 		 */
+		public function get customIncrementButtonStyleName():String
+		{
+			return this._customIncrementButtonStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customIncrementButtonStyleName(value:String):void
+		{
+			if(this._customIncrementButtonStyleName == value)
+			{
+				return;
+			}
+			this._customIncrementButtonStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_INCREMENT_BUTTON_FACTORY);
+		}
+
+		/**
+		 * DEPRECATED: Replaced by <code>customIncrementButtonStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #customIncrementButtonStyleName
+		 */
 		public function get customIncrementButtonName():String
 		{
-			return this._customIncrementButtonName;
+			return this.customIncrementButtonStyleName;
 		}
 
 		/**
@@ -1702,12 +2006,7 @@ package feathers.controls
 		 */
 		public function set customIncrementButtonName(value:String):void
 		{
-			if(this._customIncrementButtonName == value)
-			{
-				return;
-			}
-			this._customIncrementButtonName = value;
-			this.invalidate(INVALIDATION_FLAG_INCREMENT_BUTTON_FACTORY);
+			this.customIncrementButtonStyleName = value;
 		}
 
 		/**
@@ -2017,7 +2316,7 @@ package feathers.controls
 		 *
 		 * @see #thumb
 		 * @see #thumbFactory
-		 * @see #customThumbName
+		 * @see #customThumbStyleName
 		 */
 		protected function createThumb():void
 		{
@@ -2028,9 +2327,9 @@ package feathers.controls
 			}
 
 			var factory:Function = this._thumbFactory != null ? this._thumbFactory : defaultThumbFactory;
-			var thumbName:String = this._customThumbName != null ? this._customThumbName : this.thumbName;
+			var thumbStyleName:String = this._customThumbStyleName != null ? this._customThumbStyleName : this.thumbStyleName;
 			this.thumb = Button(factory());
-			this.thumb.styleNameList.add(thumbName);
+			this.thumb.styleNameList.add(thumbStyleName);
 			this.thumb.keepDownStateOnRollOut = true;
 			this.thumb.isFocusEnabled = false;
 			this.thumb.addEventListener(TouchEvent.TOUCH, thumb_touchHandler);
@@ -2046,7 +2345,7 @@ package feathers.controls
 		 *
 		 * @see #minimumTrack
 		 * @see #minimumTrackFactory
-		 * @see #customMinimumTrackName
+		 * @see #customMinimumTrackStyleName
 		 */
 		protected function createMinimumTrack():void
 		{
@@ -2057,9 +2356,9 @@ package feathers.controls
 			}
 
 			var factory:Function = this._minimumTrackFactory != null ? this._minimumTrackFactory : defaultMinimumTrackFactory;
-			var minimumTrackName:String = this._customMinimumTrackName != null ? this._customMinimumTrackName : this.minimumTrackName;
+			var minimumTrackStyleName:String = this._customMinimumTrackStyleName != null ? this._customMinimumTrackStyleName : this.minimumTrackStyleName;
 			this.minimumTrack = Button(factory());
-			this.minimumTrack.styleNameList.add(minimumTrackName);
+			this.minimumTrack.styleNameList.add(minimumTrackStyleName);
 			this.minimumTrack.keepDownStateOnRollOut = true;
 			this.minimumTrack.isFocusEnabled = false;
 			this.minimumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
@@ -2076,7 +2375,7 @@ package feathers.controls
 		 *
 		 * @see #maximumTrack
 		 * @see #maximumTrackFactory
-		 * @see #customMaximumTrackName
+		 * @see #customMaximumTrackStyleName
 		 */
 		protected function createMaximumTrack():void
 		{
@@ -2088,9 +2387,9 @@ package feathers.controls
 					this.maximumTrack = null;
 				}
 				var factory:Function = this._maximumTrackFactory != null ? this._maximumTrackFactory : defaultMaximumTrackFactory;
-				var maximumTrackName:String = this._customMaximumTrackName != null ? this._customMaximumTrackName : this.maximumTrackName;
+				var maximumTrackStyleName:String = this._customMaximumTrackStyleName != null ? this._customMaximumTrackStyleName : this.maximumTrackStyleName;
 				this.maximumTrack = Button(factory());
-				this.maximumTrack.styleNameList.add(maximumTrackName);
+				this.maximumTrack.styleNameList.add(maximumTrackStyleName);
 				this.maximumTrack.keepDownStateOnRollOut = true;
 				this.maximumTrack.isFocusEnabled = false;
 				this.maximumTrack.addEventListener(TouchEvent.TOUCH, track_touchHandler);
@@ -2112,7 +2411,7 @@ package feathers.controls
 		 *
 		 * @see #decrementButton
 		 * @see #decrementButtonFactory
-		 * @see #customDecremenButtonName
+		 * @see #customDecremenButtonStyleName
 		 */
 		protected function createDecrementButton():void
 		{
@@ -2123,9 +2422,9 @@ package feathers.controls
 			}
 
 			var factory:Function = this._decrementButtonFactory != null ? this._decrementButtonFactory : defaultDecrementButtonFactory;
-			var decrementButtonName:String = this._customDecrementButtonName != null ? this._customDecrementButtonName : this.decrementButtonName;
+			var decrementButtonStyleName:String = this._customDecrementButtonStyleName != null ? this._customDecrementButtonStyleName : this.decrementButtonStyleName;
 			this.decrementButton = Button(factory());
-			this.decrementButton.styleNameList.add(decrementButtonName);
+			this.decrementButton.styleNameList.add(decrementButtonStyleName);
 			this.decrementButton.keepDownStateOnRollOut = true;
 			this.decrementButton.isFocusEnabled = false;
 			this.decrementButton.addEventListener(TouchEvent.TOUCH, decrementButton_touchHandler);
@@ -2141,7 +2440,7 @@ package feathers.controls
 		 *
 		 * @see #incrementButton
 		 * @see #incrementButtonFactory
-		 * @see #customIncrementButtonName
+		 * @see #customIncrementButtonStyleName
 		 */
 		protected function createIncrementButton():void
 		{
@@ -2152,9 +2451,9 @@ package feathers.controls
 			}
 
 			var factory:Function = this._incrementButtonFactory != null ? this._incrementButtonFactory : defaultIncrementButtonFactory;
-			var incrementButtonName:String = this._customIncrementButtonName != null ? this._customIncrementButtonName : this.incrementButtonName;
+			var incrementButtonStyleName:String = this._customIncrementButtonStyleName != null ? this._customIncrementButtonStyleName : this.incrementButtonStyleName;
 			this.incrementButton = Button(factory());
-			this.incrementButton.styleNameList.add(incrementButtonName);
+			this.incrementButton.styleNameList.add(incrementButtonStyleName);
 			this.incrementButton.keepDownStateOnRollOut = true;
 			this.incrementButton.isFocusEnabled = false;
 			this.incrementButton.addEventListener(TouchEvent.TOUCH, incrementButton_touchHandler);

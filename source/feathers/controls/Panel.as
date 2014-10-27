@@ -51,14 +51,38 @@ package feathers.controls
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const DEFAULT_CHILD_NAME_HEADER:String = "feathers-panel-header";
+		public static const DEFAULT_CHILD_STYLE_NAME_HEADER:String = "feathers-panel-header";
+
+		/**
+		 * DEPRECATED: Replaced by <code>Panel.DEFAULT_CHILD_STYLE_NAME_HEADER</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see Panel#DEFAULT_CHILD_STYLE_NAME_HEADER
+		 */
+		public static const DEFAULT_CHILD_NAME_HEADER:String = DEFAULT_CHILD_STYLE_NAME_HEADER;
 
 		/**
 		 * The default value added to the <code>styleNameList</code> of the footer.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const DEFAULT_CHILD_NAME_FOOTER:String = "feathers-panel-footer";
+		public static const DEFAULT_CHILD_STYLE_NAME_FOOTER:String = "feathers-panel-footer";
+
+		/**
+		 * DEPRECATED: Replaced by <code>Panel.DEFAULT_CHILD_STYLE_NAME_FOOTER</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see Panel#DEFAULT_CHILD_STYLE_NAME_FOOTER
+		 */
+		public static const DEFAULT_CHILD_NAME_FOOTER:String = DEFAULT_CHILD_STYLE_NAME_FOOTER;
 
 		/**
 		 * @copy feathers.controls.Scroller#SCROLL_POLICY_AUTO
@@ -224,32 +248,80 @@ package feathers.controls
 		protected var footer:IFeathersControl;
 
 		/**
-		 * The default value added to the <code>styleNameList</code> of the header.
+		 * The default value added to the <code>styleNameList</code> of the
+		 * header. This variable is <code>protected</code> so that sub-classes
+		 * can customize the header style name in their constructors instead of
+		 * using the default style name defined by
+		 * <code>DEFAULT_CHILD_STYLE_NAME_HEADER</code>.
 		 *
-		 * <p>To customize the header name without subclassing, see
-		 * <code>customHeaderName</code>.</p> This
-		 * variable is <code>protected</code> so that sub-classes can customize
-		 * the header name in their constructors instead of using the default
-		 * name defined by <code>DEFAULT_CHILD_NAME_HEADER</code>.
+		 * <p>To customize the header style name without subclassing, see
+		 * <code>customHeaderStyleName</code>.</p>
 		 *
-		 * @see #customHeaderName
+		 * @see #customHeaderStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		protected var headerName:String = DEFAULT_CHILD_NAME_HEADER;
+		protected var headerStyleName:String = DEFAULT_CHILD_STYLE_NAME_HEADER;
 
 		/**
-		 * The default value added to the <code>styleNameList</code> of the footer. This
-		 * variable is <code>protected</code> so that sub-classes can customize
-		 * the footer name in their constructors instead of using the default
-		 * name defined by <code>DEFAULT_CHILD_NAME_FOOTER</code>.
+		 * DEPRECATED: Replaced by <code>headerStyleName</code>.
 		 *
-		 * <p>To customize the footer name without subclassing, see
-		 * <code>customFooterName</code>.</p>
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
 		 *
-		 * @see #customFooterName
+		 * @see #headerStyleName
+		 */
+		protected function get headerName():String
+		{
+			return this.headerStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function set headerName(value:String):void
+		{
+			this.headerStyleName = value;
+		}
+
+		/**
+		 * The default value added to the <code>styleNameList</code> of the
+		 * footer. This variable is <code>protected</code> so that sub-classes
+		 * can customize the footer style name in their constructors instead of
+		 * using the default style name defined by
+		 * <code>DEFAULT_CHILD_STYLE_NAME_FOOTER</code>.
+		 *
+		 * <p>To customize the footer style name without subclassing, see
+		 * <code>customFooterStyleName</code>.</p>
+		 *
+		 * @see #customFooterStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		protected var footerName:String = DEFAULT_CHILD_NAME_FOOTER;
+		protected var footerStyleName:String = DEFAULT_CHILD_STYLE_NAME_FOOTER;
+
+		/**
+		 * DEPRECATED: Replaced by <code>footerStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #footerStyleName
+		 */
+		protected function get footerName():String
+		{
+			return this.footerStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function set footerName(value:String):void
+		{
+			this.footerStyleName = value;
+		}
 
 		/**
 		 * @private
@@ -324,20 +396,20 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _customHeaderName:String;
+		protected var _customHeaderStyleName:String;
 
 		/**
-		 * A name to add to the panel's header sub-component. Typically
-		 * used by a theme to provide different skins to different panels.
+		 * A style name to add to the panel's header sub-component. Typically
+		 * used by a theme to provide different styles to different panels.
 		 *
-		 * <p>In the following example, a custom header name is passed to the
-		 * panel:</p>
+		 * <p>In the following example, a custom header style name is passed to
+		 * the panel:</p>
 		 *
 		 * <listing version="3.0">
-		 * panel.customHeaderName = "my-custom-header";</listing>
+		 * panel.customHeaderStyleName = "my-custom-header";</listing>
 		 *
-		 * <p>In your theme, you can target this sub-component name to provide
-		 * different skins than the default style (this example assumes that the
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default (this example assumes that the
 		 * header is a <code>Header</code>, but it can be any
 		 * <code>IFeathersControl</code>):</p>
 		 *
@@ -346,14 +418,45 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
-		 * @see #DEFAULT_CHILD_NAME_HEADER
+		 * @see #DEFAULT_CHILD_STYLE_NAME_HEADER
 		 * @see feathers.core.FeathersControl#styleNameList
 		 * @see #headerFactory
 		 * @see #headerProperties
 		 */
+		public function get customHeaderStyleName():String
+		{
+			return this._customHeaderStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customHeaderStyleName(value:String):void
+		{
+			if(this._customHeaderStyleName == value)
+			{
+				return;
+			}
+			this._customHeaderStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_HEADER_FACTORY);
+			//hack because the super class doesn't know anything about the
+			//header factory
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		/**
+		 * DEPRECATED: Replaced by <code>customHeaderStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #customHeaderStyleName
+		 */
 		public function get customHeaderName():String
 		{
-			return this._customHeaderName;
+			return this.customHeaderStyleName;
 		}
 
 		/**
@@ -361,15 +464,7 @@ package feathers.controls
 		 */
 		public function set customHeaderName(value:String):void
 		{
-			if(this._customHeaderName == value)
-			{
-				return;
-			}
-			this._customHeaderName = value;
-			this.invalidate(INVALIDATION_FLAG_HEADER_FACTORY);
-			//hack because the super class doesn't know anything about the
-			//header factory
-			this.invalidate(INVALIDATION_FLAG_SIZE);
+			this.customHeaderStyleName = value;
 		}
 
 		/**
@@ -502,20 +597,20 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _customFooterName:String;
+		protected var _customFooterStyleName:String;
 
 		/**
-		 * A name to add to the panel's footer sub-component. Typically
-		 * used by a theme to provide different skins to different panels.
+		 * A style name to add to the panel's footer sub-component. Typically
+		 * used by a theme to provide different styles to different panels.
 		 *
-		 * <p>In the following example, a custom footer name is passed to the
-		 * panel:</p>
+		 * <p>In the following example, a custom footer style name is passed to
+		 * the panel:</p>
 		 *
 		 * <listing version="3.0">
-		 * panel.customFooterName = "my-custom-footer";</listing>
+		 * panel.customFooterStyleName = "my-custom-footer";</listing>
 		 *
-		 * <p>In your theme, you can target this sub-component name to provide
-		 * different skins than the default style (this example assumes that the
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default (this example assumes that the
 		 * footer is a <code>ScrollContainer</code>, but it can be any
 		 * <code>IFeathersControl</code>):</p>
 		 *
@@ -524,14 +619,45 @@ package feathers.controls
 		 *
 		 * @default null
 		 *
-		 * @see #DEFAULT_CHILD_NAME_FOOTER
+		 * @see #DEFAULT_CHILD_STYLE_NAME_FOOTER
 		 * @see feathers.core.FeathersControl#styleNameList
 		 * @see #footerFactory
 		 * @see #footerProperties
 		 */
+		public function get customFooterStyleName():String
+		{
+			return this._customFooterStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customFooterStyleName(value:String):void
+		{
+			if(this._customFooterStyleName == value)
+			{
+				return;
+			}
+			this._customFooterStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_FOOTER_FACTORY);
+			//hack because the super class doesn't know anything about the
+			//header factory
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		/**
+		 * DEPRECATED: Replaced by <code>customFooterStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #customFooterStyleName
+		 */
 		public function get customFooterName():String
 		{
-			return this._customFooterName;
+			return this.customFooterStyleName;
 		}
 
 		/**
@@ -539,15 +665,7 @@ package feathers.controls
 		 */
 		public function set customFooterName(value:String):void
 		{
-			if(this._customFooterName == value)
-			{
-				return;
-			}
-			this._customFooterName = value;
-			this.invalidate(INVALIDATION_FLAG_FOOTER_FACTORY);
-			//hack because the super class doesn't know anything about the
-			//header factory
-			this.invalidate(INVALIDATION_FLAG_SIZE);
+			this.customFooterStyleName = value;
 		}
 
 		/**
@@ -979,7 +1097,7 @@ package feathers.controls
 		 *
 		 * @see #header
 		 * @see #headerFactory
-		 * @see #customHeaderName
+		 * @see #customHeaderStyleName
 		 */
 		protected function createHeader():void
 		{
@@ -993,9 +1111,9 @@ package feathers.controls
 			}
 
 			var factory:Function = this._headerFactory != null ? this._headerFactory : defaultHeaderFactory;
-			var headerName:String = this._customHeaderName != null ? this._customHeaderName : this.headerName;
+			var headerStyleName:String = this._customHeaderStyleName != null ? this._customHeaderStyleName : this.headerStyleName;
 			this.header = IFeathersControl(factory());
-			this.header.styleNameList.add(headerName);
+			this.header.styleNameList.add(headerStyleName);
 			this.header.addEventListener(FeathersEventType.RESIZE, header_resizeHandler);
 			displayHeader = DisplayObject(this.header);
 			this.addRawChild(displayHeader);
@@ -1011,7 +1129,7 @@ package feathers.controls
 		 *
 		 * @see #footer
 		 * @see #footerFactory
-		 * @see #customFooterName
+		 * @see #customFooterStyleName
 		 */
 		protected function createFooter():void
 		{
@@ -1028,9 +1146,9 @@ package feathers.controls
 			{
 				return;
 			}
-			var footerName:String = this._customFooterName != null ? this._customFooterName : this.footerName;
+			var footerStyleName:String = this._customFooterStyleName != null ? this._customFooterStyleName : this.footerStyleName;
 			this.footer = IFeathersControl(this._footerFactory());
-			this.footer.styleNameList.add(footerName);
+			this.footer.styleNameList.add(footerStyleName);
 			this.footer.addEventListener(FeathersEventType.RESIZE, footer_resizeHandler);
 			displayFooter = DisplayObject(this.footer);
 			this.addRawChild(displayFooter);

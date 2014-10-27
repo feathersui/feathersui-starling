@@ -148,7 +148,19 @@ package feathers.controls
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const DEFAULT_CHILD_NAME_THUMB:String = "feathers-simple-scroll-bar-thumb";
+		public static const DEFAULT_CHILD_STYLE_NAME_THUMB:String = "feathers-simple-scroll-bar-thumb";
+
+		/**
+		 * DEPRECATED: Replaced by <code>Scroller.DEFAULT_CHILD_STYLE_NAME_THUMB</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see Scroller#DEFAULT_CHILD_STYLE_NAME_THUMB
+		 */
+		public static const DEFAULT_CHILD_NAME_THUMB:String = DEFAULT_CHILD_STYLE_NAME_THUMB;
 
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>SimpleScrollBar</code>
@@ -179,16 +191,39 @@ package feathers.controls
 		/**
 		 * The value added to the <code>styleNameList</code> of the thumb. This
 		 * variable is <code>protected</code> so that sub-classes can customize
-		 * the thumb name in their constructors instead of using the default
-		 * name defined by <code>DEFAULT_CHILD_NAME_THUMB</code>.
+		 * the thumb style name in their constructors instead of using the
+		 * default style name defined by <code>DEFAULT_CHILD_STYLE_NAME_THUMB</code>.
 		 *
-		 * <p>To customize the thumb name without subclassing, see
-		 * <code>customThumbName</code>.</p>
+		 * <p>To customize the thumb style name without subclassing, see
+		 * <code>customThumbStyleName</code>.</p>
 		 *
-		 * @see #customThumbName
+		 * @see #customThumbStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		protected var thumbName:String = DEFAULT_CHILD_NAME_THUMB;
+		protected var thumbStyleName:String = DEFAULT_CHILD_STYLE_NAME_THUMB;
+
+		/**
+		 * DEPRECATED: Replaced by <code>thumbStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #thumbStyleName
+		 */
+		protected function get thumbName():String
+		{
+			return this.thumbStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function set thumbName(value:String):void
+		{
+			this.thumbStyleName = value;
+		}
 
 		/**
 		 * @private
@@ -721,34 +756,63 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _customThumbName:String;
+		protected var _customThumbStyleName:String;
 
 		/**
-		 * A name to add to the scroll bar's thumb sub-component. Typically
-		 * used by a theme to provide different skins to different scroll bars.
+		 * A style name to add to the scroll bar's thumb sub-component.
+		 * Typically used by a theme to provide different styles to different
+		 * scroll bars.
 		 *
-		 * <p>In the following example, a custom thumb name is passed
+		 * <p>In the following example, a custom thumb style name is passed
 		 * to the scroll bar:</p>
 		 *
 		 * <listing version="3.0">
-		 * scrollBar.customThumbName = "my-custom-thumb";</listing>
+		 * scrollBar.customThumbStyleName = "my-custom-thumb";</listing>
 		 *
-		 * <p>In your theme, you can target this sub-component name to provide
-		 * different skins than the default style:</p>
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( Button, customThumbInitializer, "my-custom-thumb");</listing>
 		 *
 		 * @default null
 		 *
-		 * @see #DEFAULT_CHILD_NAME_THUMB
+		 * @see #DEFAULT_CHILD_STYLE_NAME_THUMB
 		 * @see feathers.core.FeathersControl#styleNameList
 		 * @see #thumbFactory
 		 * @see #thumbProperties
 		 */
+		public function get customThumbStyleName():String
+		{
+			return this._customThumbStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customThumbStyleName(value:String):void
+		{
+			if(this._customThumbStyleName == value)
+			{
+				return;
+			}
+			this._customThumbStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_THUMB_FACTORY);
+		}
+
+		/**
+		 * DEPRECATED: Replaced by <code>customThumbStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #customThumbStyleName
+		 */
 		public function get customThumbName():String
 		{
-			return this._customThumbName;
+			return this.customThumbStyleName;
 		}
 
 		/**
@@ -756,12 +820,7 @@ package feathers.controls
 		 */
 		public function set customThumbName(value:String):void
 		{
-			if(this._customThumbName == value)
-			{
-				return;
-			}
-			this._customThumbName = value;
-			this.invalidate(INVALIDATION_FLAG_THUMB_FACTORY);
+			this.customThumbStyleName = value;
 		}
 
 		/**
@@ -1024,7 +1083,7 @@ package feathers.controls
 		 *
 		 * @see #thumb
 		 * @see #thumbFactory
-		 * @see #customThumbName
+		 * @see #customThumbStyleName
 		 */
 		protected function createThumb():void
 		{
@@ -1035,9 +1094,9 @@ package feathers.controls
 			}
 
 			var factory:Function = this._thumbFactory != null ? this._thumbFactory : defaultThumbFactory;
-			var thumbName:String = this._customThumbName != null ? this._customThumbName : this.thumbName;
+			var thumbStyleName:String = this._customThumbStyleName != null ? this._customThumbStyleName : this.thumbStyleName;
 			this.thumb = Button(factory());
-			this.thumb.styleNameList.add(thumbName);
+			this.thumb.styleNameList.add(thumbStyleName);
 			this.thumb.isFocusEnabled = false;
 			this.thumb.keepDownStateOnRollOut = true;
 			this.thumb.addEventListener(TouchEvent.TOUCH, thumb_touchHandler);

@@ -441,7 +441,19 @@ package feathers.controls
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR:String = "feathers-scroller-horizontal-scroll-bar";
+		public static const DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR:String = "feathers-scroller-horizontal-scroll-bar";
+
+		/**
+		 * DEPRECATED: Replaced by <code>Scroller.DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see Scroller#DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR
+		 */
+		public static const DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR:String = DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR;
 
 		/**
 		 * The default value added to the <code>styleNameList</code> of the vertical
@@ -449,7 +461,19 @@ package feathers.controls
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR:String = "feathers-scroller-vertical-scroll-bar";
+		public static const DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR:String = "feathers-scroller-vertical-scroll-bar";
+
+		/**
+		 * DEPRECATED: Replaced by <code>Scroller.DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see Scroller#DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR
+		 */
+		public static const DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR:String = DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR;
 
 		/**
 		 * @private
@@ -471,32 +495,80 @@ package feathers.controls
 		}
 
 		/**
-		 * The value added to the <code>styleNameList</code> of the horizontal scroll
-		 * bar. This variable is <code>protected</code> so that sub-classes can
-		 * customize the horizontal scroll bar name in their constructors
-		 * instead of using the default name defined by <code>DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR</code>.
+		 * The value added to the <code>styleNameList</code> of the horizontal
+		 * scroll bar. This variable is <code>protected</code> so that
+		 * sub-classes can customize the horizontal scroll bar style name in
+		 * their constructors instead of using the default style name defined by
+		 * <code>DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR</code>.
 		 *
-		 * <p>To customize the horizontal scroll bar name without subclassing, see
-		 * <code>customHorizontalScrollBarName</code>.</p>
+		 * <p>To customize the horizontal scroll bar style name without
+		 * subclassing, see <code>customHorizontalScrollBarStyleName</code>.</p>
 		 *
-		 * @see #customHorizontalScrollBarName
+		 * @see #customHorizontalScrollBarStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		protected var horizontalScrollBarName:String = DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR;
+		protected var horizontalScrollBarStyleName:String = DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR;
 
 		/**
-		 * The value added to the <code>styleNameList</code> of the vertical scroll
-		 * bar. This variable is <code>protected</code> so that sub-classes can
-		 * customize the vertical scroll bar name in their constructors
-		 * instead of using the default name defined by <code>DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR</code>.
+		 * DEPRECATED: Replaced by <code>horizontalScrollBarStyleName</code>.
 		 *
-		 * <p>To customize the vertical scroll bar name without subclassing, see
-		 * <code>customVerticalScrollBarName</code>.</p>
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
 		 *
-		 * @see #customVerticalScrollBarName
+		 * @see #horizontalScrollBarStyleName
+		 */
+		protected function get horizontalScrollBarName():String
+		{
+			return this.horizontalScrollBarStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function set horizontalScrollBarName(value:String):void
+		{
+			this.horizontalScrollBarStyleName = value;
+		}
+
+		/**
+		 * The value added to the <code>styleNameList</code> of the vertical
+		 * scroll bar. This variable is <code>protected</code> so that
+		 * sub-classes can customize the vertical scroll bar style name in their
+		 * constructors instead of using the default style name defined by
+		 * <code>DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR</code>.
+		 *
+		 * <p>To customize the vertical scroll bar style name without
+		 * subclassing, see <code>customVerticalScrollBarStyleName</code>.</p>
+		 *
+		 * @see #customVerticalScrollBarStyleName
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		protected var verticalScrollBarName:String = DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR;
+		protected var verticalScrollBarStyleName:String = DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR;
+
+		/**
+		 * DEPRECATED: Replaced by <code>verticalScrollBarStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #verticalScrollBarStyleName
+		 */
+		protected function get verticalScrollBarName():String
+		{
+			return this.verticalScrollBarStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function set verticalScrollBarName(value:String):void
+		{
+			this.verticalScrollBarStyleName = value;
+		}
 
 		/**
 		 * The horizontal scrollbar instance. May be null.
@@ -841,35 +913,63 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _customHorizontalScrollBarName:String;
+		protected var _customHorizontalScrollBarStyleName:String;
 
 		/**
-		 * A name to add to the container's horizontal scroll bar sub-component.
-		 * Typically used by a theme to provide different skins to different
-		 * containers.
+		 * A style name to add to the container's horizontal scroll bar
+		 * sub-component. Typically used by a theme to provide different styles
+		 * to different containers.
 		 *
-		 * <p>In the following example, a custom horizontal scroll bar name
-		 * is passed to the scroller:</p>
+		 * <p>In the following example, a custom horizontal scroll bar style
+		 * name is passed to the scroller:</p>
 		 *
 		 * <listing version="3.0">
-		 * scroller.customHorizontalScrollBarName = "my-custom-horizontal-scroll-bar";</listing>
+		 * scroller.customHorizontalScrollBarStyleName = "my-custom-horizontal-scroll-bar";</listing>
 		 *
-		 * <p>In your theme, you can target this sub-component name to provide
-		 * different skins than the default style:</p>
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( SimpleScrollBar, customHorizontalScrollBarInitializer, "my-custom-horizontal-scroll-bar");</listing>
 		 *
 		 * @default null
 		 *
-		 * @see #DEFAULT_CHILD_NAME_HORIZONTAL_SCROLL_BAR
+		 * @see #DEFAULT_CHILD_STYLE_NAME_HORIZONTAL_SCROLL_BAR
 		 * @see feathers.core.FeathersControl#styleNameList
 		 * @see #horizontalScrollBarFactory
 		 * @see #horizontalScrollBarProperties
 		 */
+		public function get customHorizontalScrollBarStyleName():String
+		{
+			return this._customHorizontalScrollBarStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customHorizontalScrollBarStyleName(value:String):void
+		{
+			if(this._customHorizontalScrollBarStyleName == value)
+			{
+				return;
+			}
+			this._customHorizontalScrollBarStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_SCROLL_BAR_RENDERER);
+		}
+
+		/**
+		 * DEPRECATED: Replaced by <code>customHorizontalScrollBarName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #customHorizontalScrollBarName
+		 */
 		public function get customHorizontalScrollBarName():String
 		{
-			return this._customHorizontalScrollBarName;
+			return this.customHorizontalScrollBarStyleName;
 		}
 
 		/**
@@ -877,12 +977,7 @@ package feathers.controls
 		 */
 		public function set customHorizontalScrollBarName(value:String):void
 		{
-			if(this._customHorizontalScrollBarName == value)
-			{
-				return;
-			}
-			this._customHorizontalScrollBarName = value;
-			this.invalidate(INVALIDATION_FLAG_SCROLL_BAR_RENDERER);
+			this.customHorizontalScrollBarStyleName = value;
 		}
 
 		/**
@@ -1053,35 +1148,63 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _customVerticalScrollBarName:String;
+		protected var _customVerticalScrollBarStyleName:String;
 
 		/**
-		 * A name to add to the container's vertical scroll bar sub-component.
-		 * Typically used by a theme to provide different skins to different
-		 * containers.
+		 * A style name to add to the container's vertical scroll bar
+		 * sub-component. Typically used by a theme to provide different styles
+		 * to different containers.
 		 *
-		 * <p>In the following example, a custom vertical scroll bar name
+		 * <p>In the following example, a custom vertical scroll bar style name
 		 * is passed to the scroller:</p>
 		 *
 		 * <listing version="3.0">
-		 * scroller.customVerticalScrollBarName = "my-custom-vertical-scroll-bar";</listing>
+		 * scroller.customVerticalScrollBarStyleName = "my-custom-vertical-scroll-bar";</listing>
 		 *
-		 * <p>In your theme, you can target this sub-component name to provide
-		 * different skins than the default style:</p>
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( SimpleScrollBar, customVerticalScrollBarInitializer, "my-custom-vertical-scroll-bar");</listing>
 		 *
 		 * @default null
 		 *
-		 * @see #DEFAULT_CHILD_NAME_VERTICAL_SCROLL_BAR
+		 * @see #DEFAULT_CHILD_STYLE_NAME_VERTICAL_SCROLL_BAR
 		 * @see feathers.core.FeathersControl#styleNameList
 		 * @see #verticalScrollBarFactory
 		 * @see #verticalScrollBarProperties
 		 */
+		public function get customVerticalScrollBarStyleName():String
+		{
+			return this._customVerticalScrollBarStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customVerticalScrollBarStyleName(value:String):void
+		{
+			if(this._customVerticalScrollBarStyleName == value)
+			{
+				return;
+			}
+			this._customVerticalScrollBarStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_SCROLL_BAR_RENDERER);
+		}
+
+		/**
+		 * DEPRECATED: Replaced by <code>customVerticalScrollBarStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #customVerticalScrollBarStyleName
+		 */
 		public function get customVerticalScrollBarName():String
 		{
-			return this._customVerticalScrollBarName;
+			return this.customVerticalScrollBarStyleName;
 		}
 
 		/**
@@ -1089,12 +1212,7 @@ package feathers.controls
 		 */
 		public function set customVerticalScrollBarName(value:String):void
 		{
-			if(this._customVerticalScrollBarName == value)
-			{
-				return;
-			}
-			this._customVerticalScrollBarName = value;
-			this.invalidate(INVALIDATION_FLAG_SCROLL_BAR_RENDERER);
+			this.customVerticalScrollBarStyleName = value;
 		}
 
 		/**
@@ -3195,8 +3313,8 @@ package feathers.controls
 				{
 					IDirectionalScrollBar(this.horizontalScrollBar).direction = SimpleScrollBar.DIRECTION_HORIZONTAL;
 				}
-				var horizontalScrollBarName:String = this._customHorizontalScrollBarName != null ? this._customHorizontalScrollBarName : this.horizontalScrollBarName;
-				this.horizontalScrollBar.styleNameList.add(horizontalScrollBarName);
+				var horizontalScrollBarStyleName:String = this._customHorizontalScrollBarStyleName != null ? this._customHorizontalScrollBarStyleName : this.horizontalScrollBarStyleName;
+				this.horizontalScrollBar.styleNameList.add(horizontalScrollBarStyleName);
 				this.horizontalScrollBar.addEventListener(Event.CHANGE, horizontalScrollBar_changeHandler);
 				this.horizontalScrollBar.addEventListener(FeathersEventType.BEGIN_INTERACTION, horizontalScrollBar_beginInteractionHandler);
 				this.horizontalScrollBar.addEventListener(FeathersEventType.END_INTERACTION, horizontalScrollBar_endInteractionHandler);
@@ -3210,8 +3328,8 @@ package feathers.controls
 				{
 					IDirectionalScrollBar(this.verticalScrollBar).direction = SimpleScrollBar.DIRECTION_VERTICAL;
 				}
-				var verticalScrollBarName:String = this._customVerticalScrollBarName != null ? this._customVerticalScrollBarName : this.verticalScrollBarName;
-				this.verticalScrollBar.styleNameList.add(verticalScrollBarName);
+				var verticalScrollBarStyleName:String = this._customVerticalScrollBarStyleName != null ? this._customVerticalScrollBarStyleName : this.verticalScrollBarStyleName;
+				this.verticalScrollBar.styleNameList.add(verticalScrollBarStyleName);
 				this.verticalScrollBar.addEventListener(Event.CHANGE, verticalScrollBar_changeHandler);
 				this.verticalScrollBar.addEventListener(FeathersEventType.BEGIN_INTERACTION, verticalScrollBar_beginInteractionHandler);
 				this.verticalScrollBar.addEventListener(FeathersEventType.END_INTERACTION, verticalScrollBar_endInteractionHandler);
