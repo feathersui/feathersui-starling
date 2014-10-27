@@ -161,8 +161,8 @@ package feathers.core
 			}
 
 			this._popUps.push(popUp);
-			this._root.addChild(popUp);
 			popUp.addEventListener(Event.REMOVED_FROM_STAGE, popUp_removedFromStageHandler);
+			this._root.addChild(popUp);
 
 			if(this._popUps.length == 1)
 			{
