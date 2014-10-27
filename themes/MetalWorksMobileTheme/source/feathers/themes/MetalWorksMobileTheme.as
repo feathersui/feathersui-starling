@@ -68,13 +68,20 @@ package feathers.themes
 		 */
 		override protected function initialize():void
 		{
+			this.initializeTextureAtlas();
+			super.initialize();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function initializeTextureAtlas():void
+		{
 			var atlasBitmapData:BitmapData = Bitmap(new ATLAS_BITMAP()).bitmapData;
 			var atlasTexture:Texture = Texture.fromBitmapData(atlasBitmapData, false);
 			atlasTexture.root.onRestore = this.atlasTexture_onRestore;
 			atlasBitmapData.dispose();
 			this.atlas = new TextureAtlas(atlasTexture, XML(new ATLAS_XML()));
-
-			super.initialize();
 		}
 
 		/**

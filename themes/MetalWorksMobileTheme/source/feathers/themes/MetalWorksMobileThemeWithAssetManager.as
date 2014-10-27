@@ -118,8 +118,16 @@ package feathers.themes
 		 */
 		override protected function initialize():void
 		{
-			this.atlas = this.assetManager.getTextureAtlas(ATLAS_NAME);
+			this.initializeTextureAtlas();
 			super.initialize();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function initializeTextureAtlas():void
+		{
+			this.atlas = this.assetManager.getTextureAtlas(ATLAS_NAME);
 		}
 
 		/**

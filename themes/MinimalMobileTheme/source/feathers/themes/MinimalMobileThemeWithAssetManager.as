@@ -122,11 +122,27 @@ package feathers.themes
 		 */
 		override protected function initialize():void
 		{
+			this.initializeTextureAtlas();
+			this.initializeBitmapFont();
+			super.initialize();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function initializeTextureAtlas():void
+		{
 			this.atlas = this.assetManager.getTextureAtlas(ATLAS_NAME);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function initializeBitmapFont():void
+		{
 			var font:BitmapFont = TextField.getBitmapFont(FONT_TEXTURE_NAME);
 			//for convenience, let's also register it using this name
 			TextField.registerBitmapFont(font, FONT_NAME);
-			super.initialize();
 		}
 
 		/**
