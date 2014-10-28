@@ -90,7 +90,19 @@ package feathers.controls.renderers
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const DEFAULT_CHILD_NAME_CONTENT_LABEL:String = "feathers-header-footer-renderer-content-label";
+		public static const DEFAULT_CHILD_STYLE_NAME_CONTENT_LABEL:String = "feathers-header-footer-renderer-content-label";
+
+		/**
+		 * DEPRECATED: Replaced by <code>DefaultGroupedListHeaderOrFooterRenderer.DEFAULT_CHILD_STYLE_NAME_CONTENT_LABEL</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see DefaultGroupedListHeaderOrFooterRenderer#DEFAULT_CHILD_STYLE_NAME_CONTENT_LABEL
+		 */
+		public static const DEFAULT_CHILD_NAME_CONTENT_LABEL:String = DEFAULT_CHILD_STYLE_NAME_CONTENT_LABEL;
 
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>DefaultGroupedListHeaderOrFooterRenderer</code>
@@ -119,11 +131,34 @@ package feathers.controls.renderers
 
 		/**
 		 * The value added to the <code>styleNameList</code> of the content
-		 * label.
+		 * label text renderer.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		protected var contentLabelName:String = DEFAULT_CHILD_NAME_CONTENT_LABEL;
+		protected var contentLabelStyleName:String = DEFAULT_CHILD_STYLE_NAME_CONTENT_LABEL;
+
+		/**
+		 * DEPRECATED: Replaced by <code>contentLabelStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #contentLabelStyleName
+		 */
+		protected function get contentLabelName():String
+		{
+			return this.contentLabelStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function set contentLabelName(value:String):void
+		{
+			this.contentLabelStyleName = value;
+		}
 
 		/**
 		 * @private

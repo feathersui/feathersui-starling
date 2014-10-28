@@ -175,33 +175,57 @@ package feathers.controls
 		public static var globalStyleProvider:IStyleProvider;
 
 		/**
-		 * An alternate name to use with GroupedList to allow a theme to give it
-		 * an inset style. If a theme does not provide a skin for the inset
-		 * grouped list, the theme will automatically fall back to using the
-		 * default grouped list skin.
+		 * An alternate style name to use with <code>GroupedList</code> to allow
+		 * a theme to give it an inset style. If a theme does not provide a
+		 * style for an inset grouped list, the theme will automatically fall
+		 * back to using the default grouped list style.
 		 *
-		 * <p>An alternate name should always be added to a component's
-		 * <code>styleNameList</code> before the component is added to the stage for
-		 * the first time. If it is added later, it will be ignored.</p>
+		 * <p>An alternate style name should always be added to a component's
+		 * <code>styleNameList</code> before the component is initialized. If
+		 * the style name is added later, it will be ignored.</p>
 		 *
 		 * <p>In the following example, the inset style is applied to a grouped
 		 * list:</p>
 		 *
 		 * <listing version="3.0">
 		 * var list:GroupedList = new GroupedList();
-		 * list.styleNameList.add( GroupedList.ALTERNATE_NAME_INSET_GROUPED_LIST );
+		 * list.styleNameList.add( GroupedList.ALTERNATE_STYLE_NAME_INSET_GROUPED_LIST );
 		 * this.addChild( list );</listing>
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const ALTERNATE_NAME_INSET_GROUPED_LIST:String = "feathers-inset-grouped-list";
+		public static const ALTERNATE_STYLE_NAME_INSET_GROUPED_LIST:String = "feathers-inset-grouped-list";
+
+		/**
+		 * DEPRECATED: Replaced by <code>GroupedList.ALTERNATE_STYLE_NAME_INSET_GROUPED_LIST</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see GroupedList#ALTERNATE_STYLE_NAME_INSET_GROUPED_LIST
+		 */
+		public static const ALTERNATE_NAME_INSET_GROUPED_LIST:String = ALTERNATE_STYLE_NAME_INSET_GROUPED_LIST;
 
 		/**
 		 * The default name to use with header renderers.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const DEFAULT_CHILD_NAME_HEADER_RENDERER:String = "feathers-grouped-list-header-renderer";
+		public static const DEFAULT_CHILD_STYLE_NAME_HEADER_RENDERER:String = "feathers-grouped-list-header-renderer";
+
+		/**
+		 * DEPRECATED: Replaced by <code>GroupedList.DEFAULT_CHILD_STYLE_NAME_HEADER_RENDERER</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see GroupedList#DEFAULT_CHILD_STYLE_NAME_HEADER_RENDERER
+		 */
+		public static const DEFAULT_CHILD_NAME_HEADER_RENDERER:String = DEFAULT_CHILD_STYLE_NAME_HEADER_RENDERER;
 
 		/**
 		 * An alternate name to use with header renderers to give them an inset
@@ -211,18 +235,42 @@ package feathers.controls
 		 * list's header:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.headerRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_HEADER_RENDERER;</listing>
+		 * list.customHeaderRendererStyleName = GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_HEADER_RENDERER;</listing>
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const ALTERNATE_CHILD_NAME_INSET_HEADER_RENDERER:String = "feathers-grouped-list-inset-header-renderer";
+		public static const ALTERNATE_CHILD_STYLE_NAME_INSET_HEADER_RENDERER:String = "feathers-grouped-list-inset-header-renderer";
+
+		/**
+		 * DEPRECATED: Replaced by <code>GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_HEADER_RENDERER</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see GroupedList#ALTERNATE_CHILD_STYLE_NAME_INSET_HEADER_RENDERER
+		 */
+		public static const ALTERNATE_CHILD_NAME_INSET_HEADER_RENDERER:String = ALTERNATE_CHILD_STYLE_NAME_INSET_HEADER_RENDERER;
 
 		/**
 		 * The default name to use with footer renderers.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const DEFAULT_CHILD_NAME_FOOTER_RENDERER:String = "feathers-grouped-list-footer-renderer";
+		public static const DEFAULT_CHILD_STYLE_NAME_FOOTER_RENDERER:String = "feathers-grouped-list-footer-renderer";
+
+		/**
+		 * DEPRECATED: Replaced by <code>GroupedList.DEFAULT_CHILD_STYLE_NAME_FOOTER_RENDERER</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see GroupedList#DEFAULT_CHILD_STYLE_NAME_FOOTER_RENDERER
+		 */
+		public static const DEFAULT_CHILD_NAME_FOOTER_RENDERER:String = DEFAULT_CHILD_STYLE_NAME_FOOTER_RENDERER;
 
 		/**
 		 * An alternate name to use with footer renderers to give them an inset
@@ -232,9 +280,21 @@ package feathers.controls
 		 * list's footer:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.footerRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_FOOTER_RENDERER;</listing>
+		 * list.customFooterRendererStyleName = GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_FOOTER_RENDERER;</listing>
 		 */
-		public static const ALTERNATE_CHILD_NAME_INSET_FOOTER_RENDERER:String = "feathers-grouped-list-inset-footer-renderer";
+		public static const ALTERNATE_CHILD_STYLE_NAME_INSET_FOOTER_RENDERER:String = "feathers-grouped-list-inset-footer-renderer";
+
+		/**
+		 * DEPRECATED: Replaced by <code>GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_FOOTER_RENDERER</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see GroupedList#ALTERNATE_CHILD_STYLE_NAME_INSET_FOOTER_RENDERER
+		 */
+		public static const ALTERNATE_CHILD_NAME_INSET_FOOTER_RENDERER:String = ALTERNATE_CHILD_STYLE_NAME_INSET_FOOTER_RENDERER;
 
 		/**
 		 * An alternate name to use with item renderers to give them an inset
@@ -244,11 +304,23 @@ package feathers.controls
 		 * list's item renderer:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.itemRendererRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_ITEM_RENDERER;</listing>
+		 * list.customItemRendererStyleName = GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_ITEM_RENDERER;</listing>
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const ALTERNATE_CHILD_NAME_INSET_ITEM_RENDERER:String = "feathers-grouped-list-inset-item-renderer";
+		public static const ALTERNATE_CHILD_STYLE_NAME_INSET_ITEM_RENDERER:String = "feathers-grouped-list-inset-item-renderer";
+
+		/**
+		 * DEPRECATED: Replaced by <code>GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_ITEM_RENDERER</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see GroupedList#ALTERNATE_CHILD_STYLE_NAME_INSET_ITEM_RENDERER
+		 */
+		public static const ALTERNATE_CHILD_NAME_INSET_ITEM_RENDERER:String = ALTERNATE_CHILD_STYLE_NAME_INSET_ITEM_RENDERER;
 
 		/**
 		 * An alternate name to use for item renderers to give them an inset
@@ -259,11 +331,23 @@ package feathers.controls
 		 * list's first item renderer:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.firstItemRendererRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_FIRST_ITEM_RENDERER;</listing>
+		 * list.customFirstItemRendererStyleName = GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_FIRST_ITEM_RENDERER;</listing>
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const ALTERNATE_CHILD_NAME_INSET_FIRST_ITEM_RENDERER:String = "feathers-grouped-list-inset-first-item-renderer";
+		public static const ALTERNATE_CHILD_STYLE_NAME_INSET_FIRST_ITEM_RENDERER:String = "feathers-grouped-list-inset-first-item-renderer";
+
+		/**
+		 * DEPRECATED: Replaced by <code>GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_FIRST_ITEM_RENDERER</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see GroupedList#ALTERNATE_CHILD_STYLE_NAME_INSET_FIRST_ITEM_RENDERER
+		 */
+		public static const ALTERNATE_CHILD_NAME_INSET_FIRST_ITEM_RENDERER:String = ALTERNATE_CHILD_STYLE_NAME_INSET_FIRST_ITEM_RENDERER;
 
 		/**
 		 * An alternate name to use for item renderers to give them an inset
@@ -274,11 +358,23 @@ package feathers.controls
 		 * list's last item renderer:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.lastItemRendererRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_LAST_ITEM_RENDERER;</listing>
+		 * list.customLastItemRendererStyleName = GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_LAST_ITEM_RENDERER;</listing>
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const ALTERNATE_CHILD_NAME_INSET_LAST_ITEM_RENDERER:String = "feathers-grouped-list-inset-last-item-renderer";
+		public static const ALTERNATE_CHILD_STYLE_NAME_INSET_LAST_ITEM_RENDERER:String = "feathers-grouped-list-inset-last-item-renderer";
+
+		/**
+		 * DEPRECATED: Replaced by <code>GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_LAST_ITEM_RENDERER</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see GroupedList#ALTERNATE_CHILD_STYLE_NAME_INSET_LAST_ITEM_RENDERER
+		 */
+		public static const ALTERNATE_CHILD_NAME_INSET_LAST_ITEM_RENDERER:String = ALTERNATE_CHILD_STYLE_NAME_INSET_LAST_ITEM_RENDERER;
 
 		/**
 		 * An alternate name to use for item renderers to give them an inset
@@ -290,11 +386,23 @@ package feathers.controls
 		 * list's single item renderer:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.singleItemRendererName = GroupedList.ALTERNATE_CHILD_NAME_INSET_SINGLE_ITEM_RENDERER;</listing>
+		 * list.customSingleItemRendererStyleName = GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_SINGLE_ITEM_RENDERER;</listing>
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const ALTERNATE_CHILD_NAME_INSET_SINGLE_ITEM_RENDERER:String = "feathers-grouped-list-inset-single-item-renderer";
+		public static const ALTERNATE_CHILD_STYLE_NAME_INSET_SINGLE_ITEM_RENDERER:String = "feathers-grouped-list-inset-single-item-renderer";
+
+		/**
+		 * DEPRECATED: Replaced by <code>GroupedList.ALTERNATE_CHILD_STYLE_NAME_INSET_SINGLE_ITEM_RENDERER</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see GroupedList#ALTERNATE_CHILD_STYLE_NAME_INSET_SINGLE_ITEM_RENDERER
+		 */
+		public static const ALTERNATE_CHILD_NAME_INSET_SINGLE_ITEM_RENDERER:String = ALTERNATE_CHILD_STYLE_NAME_INSET_SINGLE_ITEM_RENDERER;
 
 		/**
 		 * @copy feathers.controls.Scroller#SCROLL_POLICY_AUTO
@@ -933,19 +1041,20 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _itemRendererName:String;
+		protected var _customItemRendererStyleName:String;
 
 		/**
-		 * A name to add to all item renderers in this list. Typically used by a
-		 * theme to provide different skins to different lists.
+		 * A style name to add to all item renderers in this list. Typically
+		 * used by a theme to provide different styles to different grouped
+		 * lists.
 		 *
-		 * <p>The following example sets the item renderer name:</p>
+		 * <p>The following example sets the item renderer style name:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.itemRendererName = "my-custom-item-renderer";</listing>
+		 * list.customItemRendererStyleName = "my-custom-item-renderer";</listing>
 		 *
-		 * <p>In your theme, you can target this sub-component name to provide
-		 * different skins than the default style:</p>
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different skins than the default:</p>
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( DefaultGroupedListItemRenderer, customItemRendererInitializer, "my-custom-item-renderer");</listing>
@@ -953,13 +1062,41 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #firstItemRendererName
-		 * @see #lastItemRendererName
-		 * @see #singleItemRendererName
+		 * @see #customFirstItemRendererStyleName
+		 * @see #customLastItemRendererStyleName
+		 * @see #customSingleItemRendererStyleName
+		 */
+		public function get customItemRendererStyleName():String
+		{
+			return this._customItemRendererStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customItemRendererStyleName(value:String):void
+		{
+			if(this._customItemRendererStyleName == value)
+			{
+				return;
+			}
+			this._customItemRendererStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * DEPRECATED: Replaced by <code>customItemRendererStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #customItemRendererStyleName
 		 */
 		public function get itemRendererName():String
 		{
-			return this._itemRendererName;
+			return this.customItemRendererStyleName;
 		}
 
 		/**
@@ -967,12 +1104,7 @@ package feathers.controls
 		 */
 		public function set itemRendererName(value:String):void
 		{
-			if(this._itemRendererName == value)
-			{
-				return;
-			}
-			this._itemRendererName = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.customItemRendererStyleName = value;
 		}
 
 		/**
@@ -1156,23 +1288,24 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _firstItemRendererName:String;
+		protected var _customFirstItemRendererStyleName:String;
 
 		/**
-		 * A name to add to all item renderers in this list that are the first
-		 * item in a group. Typically used by a theme to provide different skins
-		 * to different lists, and to differentiate first items from regular
-		 * items if they are created with the same class. If this value is null
-		 * the regular <code>itemRendererName</code> will be used instead.
+		 * A style name to add to all item renderers in this grouped list that
+		 * are the first item in a group. Typically used by a theme to provide
+		 * different styles to different grouped lists, and to differentiate
+		 * first items from regular items if they are created with the same
+		 * class. If this value is <code>null</code>, the regular
+		 * <code>customItemRendererStyleName</code> will be used instead.
 		 *
-		 * <p>The following example provides an name for the first item renderer
-		 * in a group:</p>
+		 * <p>The following example provides a style name for the first item
+		 * renderer in each group:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.firstItemRendererName = "my-custom-first-item-renderer";</listing>
+		 * list.customFirstItemRendererStyleName = "my-custom-first-item-renderer";</listing>
 		 *
-		 * <p>In your theme, you can target this sub-component name to provide
-		 * different skins than the default style:</p>
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( DefaultGroupedListItemRenderer, customFirstItemRendererInitializer, "my-custom-first-item-renderer");</listing>
@@ -1180,13 +1313,41 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #itemRendererName
-		 * @see #lastItemRendererName
-		 * @see #singleItemRendererName
+		 * @see #customItemRendererStyleName
+		 * @see #customLastItemRendererStyleName
+		 * @see #customSingleItemRendererStyleName
+		 */
+		public function get customFirstItemRendererStyleName():String
+		{
+			return this._customFirstItemRendererStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customFirstItemRendererStyleName(value:String):void
+		{
+			if(this._customFirstItemRendererStyleName == value)
+			{
+				return;
+			}
+			this._customFirstItemRendererStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * DEPRECATED: Replaced by <code>customFirstItemRendererStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #customFirstItemRendererStyleName
 		 */
 		public function get firstItemRendererName():String
 		{
-			return this._firstItemRendererName;
+			return this.customFirstItemRendererStyleName;
 		}
 
 		/**
@@ -1194,12 +1355,7 @@ package feathers.controls
 		 */
 		public function set firstItemRendererName(value:String):void
 		{
-			if(this._firstItemRendererName == value)
-			{
-				return;
-			}
-			this._firstItemRendererName = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.customFirstItemRendererStyleName = value;
 		}
 
 		/**
@@ -1302,23 +1458,24 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _lastItemRendererName:String;
+		protected var _customLastItemRendererStyleName:String;
 
 		/**
-		 * A name to add to all item renderers in this list that are the last
-		 * item in a group. Typically used by a theme to provide different skins
-		 * to different lists, and to differentiate last items from regular
-		 * items if they are created with the same class. If this value is null
-		 * the regular <code>itemRendererName</code> will be used instead.
+		 * A style name to add to all item renderers in this grouped list that
+		 * are the last item in a group. Typically used by a theme to provide
+		 * different styles to different grouped lists, and to differentiate
+		 * last items from regular items if they are created with the same
+		 * class. If this value is <code>null</code> the regular
+		 * <code>customItemRendererStyleName</code> will be used instead.
 		 *
-		 * <p>The following example provides an name for the last item renderer
-		 * in a group:</p>
+		 * <p>The following example provides a style name for the last item
+		 * renderer in each group:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.lastItemRendererName = "my-custom-last-item-renderer";</listing>
+		 * list.customLastItemRendererStyleName = "my-custom-last-item-renderer";</listing>
 		 *
-		 * <p>In your theme, you can target this sub-component name to provide
-		 * different skins than the default style:</p>
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( DefaultGroupedListItemRenderer, customLastItemRendererInitializer, "my-custom-last-item-renderer");</listing>
@@ -1326,13 +1483,41 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #itemRendererName
-		 * @see #firstItemRendererName
-		 * @see #singleItemRendererName
+		 * @see #customItemRendererStyleName
+		 * @see #customFirstItemRendererStyleName
+		 * @see #customSingleItemRendererStyleName
+		 */
+		public function get customLastItemRendererStyleName():String
+		{
+			return this._customLastItemRendererStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customLastItemRendererStyleName(value:String):void
+		{
+			if(this._customLastItemRendererStyleName == value)
+			{
+				return;
+			}
+			this._customLastItemRendererStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * DEPRECATED: Replaced by <code>customLastItemRendererStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #customLastItemRendererStyleName
 		 */
 		public function get lastItemRendererName():String
 		{
-			return this._lastItemRendererName;
+			return this.customLastItemRendererStyleName;
 		}
 
 		/**
@@ -1340,12 +1525,7 @@ package feathers.controls
 		 */
 		public function set lastItemRendererName(value:String):void
 		{
-			if(this._lastItemRendererName == value)
-			{
-				return;
-			}
-			this._lastItemRendererName = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.customLastItemRendererStyleName = value;
 		}
 
 		/**
@@ -1448,24 +1628,24 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _singleItemRendererName:String;
+		protected var _customSingleItemRendererStyleName:String;
 
 		/**
-		 * A name to add to all item renderers in this list that are an item in
-		 * a group with no other items. Typically used by a theme to provide
-		 * different skins to different lists, and to differentiate single items
-		 * from other items if they are created with the same class. If this
-		 * value is null the regular <code>itemRendererName</code> will be used
-		 * instead.
+		 * A style name to add to all item renderers in this grouped list that
+		 * are a single item in a group with no other items. Typically used by a
+		 * theme to provide different styles to different grouped lists, and to
+		 * differentiate single items from regular items if they are created
+		 * with the same class. If this value is <code>null</code> the regular
+		 * <code>customItemRendererStyleName</code> will be used instead.
 		 *
-		 * <p>The following example provides an name for a single item renderer
-		 * in a group:</p>
+		 * <p>The following example provides a style name for a single item
+		 * renderer in each group:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.singleItemRendererName = "my-custom-single-item-renderer";</listing>
+		 * list.customSingleItemRendererStyleName = "my-custom-single-item-renderer";</listing>
 		 *
-		 * <p>In your theme, you can target this sub-component name to provide
-		 * different skins than the default style:</p>
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different skins than the default style:</p>
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( DefaultGroupedListItemRenderer, customSingleItemRendererInitializer, "my-custom-single-item-renderer");</listing>
@@ -1473,13 +1653,41 @@ package feathers.controls
 		 * @default null
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
-		 * @see #itemRendererName
-		 * @see #firstItemRendererName
-		 * @see #lastItemRendererName
+		 * @see #customItemRendererStyleName
+		 * @see #customFirstItemRendererStyleName
+		 * @see #customLastItemRendererStyleName
+		 */
+		public function get customSingleItemRendererStyleName():String
+		{
+			return this._customSingleItemRendererStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customSingleItemRendererStyleName(value:String):void
+		{
+			if(this._customSingleItemRendererStyleName == value)
+			{
+				return;
+			}
+			this._customSingleItemRendererStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * DEPRECATED: Replaced by <code>customLastItemRendererStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #customLastItemRendererStyleName
 		 */
 		public function get singleItemRendererName():String
 		{
-			return this._singleItemRendererName;
+			return this.customSingleItemRendererStyleName;
 		}
 
 		/**
@@ -1487,12 +1695,7 @@ package feathers.controls
 		 */
 		public function set singleItemRendererName(value:String):void
 		{
-			if(this._singleItemRendererName == value)
-			{
-				return;
-			}
-			this._singleItemRendererName = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.customSingleItemRendererStyleName = value;
 		}
 
 		/**
@@ -1587,19 +1790,20 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _headerRendererName:String = DEFAULT_CHILD_NAME_HEADER_RENDERER;
+		protected var _customHeaderRendererStyleName:String = DEFAULT_CHILD_STYLE_NAME_HEADER_RENDERER;
 
 		/**
-		 * A name to add to all header renderers in this grouped list. Typically
-		 * used by a theme to provide different skins to different lists.
+		 * A style name to add to all header renderers in this grouped list.
+		 * Typically used by a theme to provide different styles to different
+		 * grouped lists.
 		 *
-		 * <p>The following example sets the header renderer name:</p>
+		 * <p>The following example sets the header renderer style name:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.headerRendererName = "my-custom-header-renderer";</listing>
+		 * list.customHeaderRendererStyleName = "my-custom-header-renderer";</listing>
 		 *
-		 * <p>In your theme, you can target this sub-component name to provide
-		 * different skins than the default style:</p>
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different skins than the default:</p>
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( DefaultGroupedListHeaderOrFooterRenderer, customHeaderRendererInitializer, "my-custom-header-renderer");</listing>
@@ -1608,9 +1812,37 @@ package feathers.controls
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
+		public function get customHeaderRendererStyleName():String
+		{
+			return this._customHeaderRendererStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customHeaderRendererStyleName(value:String):void
+		{
+			if(this._customHeaderRendererStyleName == value)
+			{
+				return;
+			}
+			this._customHeaderRendererStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * DEPRECATED: Replaced by <code>customHeaderRendererStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #customHeaderRendererStyleName
+		 */
 		public function get headerRendererName():String
 		{
-			return this._headerRendererName;
+			return this.customHeaderRendererStyleName;
 		}
 
 		/**
@@ -1618,12 +1850,7 @@ package feathers.controls
 		 */
 		public function set headerRendererName(value:String):void
 		{
-			if(this._headerRendererName == value)
-			{
-				return;
-			}
-			this._headerRendererName = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.customHeaderRendererStyleName = value;
 		}
 
 		/**
@@ -1799,19 +2026,20 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _footerRendererName:String = DEFAULT_CHILD_NAME_FOOTER_RENDERER;
+		protected var _customFooterRendererStyleName:String = DEFAULT_CHILD_STYLE_NAME_FOOTER_RENDERER;
 
 		/**
-		 * A name to add to all footer renderers in this grouped list. Typically
-		 * used by a theme to provide different skins to different lists.
+		 * A style name to add to all footer renderers in this grouped list.
+		 * Typically used by a theme to provide different styles to different
+		 * grouped lists.
 		 *
-		 * <p>The following example sets the footer renderer name:</p>
+		 * <p>The following example sets the footer renderer style name:</p>
 		 *
 		 * <listing version="3.0">
-		 * list.footerRendererName = "my-custom-footer-renderer";</listing>
+		 * list.customFooterRendererStyleName = "my-custom-footer-renderer";</listing>
 		 *
-		 * <p>In your theme, you can target this sub-component name to provide
-		 * different skins than the default style:</p>
+		 * <p>In your theme, you can target this sub-component style name to
+		 * provide different styles than the default:</p>
 		 *
 		 * <listing version="3.0">
 		 * setInitializerForClass( DefaultGroupedListHeaderOrFooterRenderer, customFooterRendererInitializer, "my-custom-footer-renderer");</listing>
@@ -1820,9 +2048,37 @@ package feathers.controls
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
+		public function get customFooterRendererStyleName():String
+		{
+			return this._customFooterRendererStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set customFooterRendererStyleName(value:String):void
+		{
+			if(this._customFooterRendererStyleName == value)
+			{
+				return;
+			}
+			this._customFooterRendererStyleName = value;
+			this.invalidate(INVALIDATION_FLAG_STYLES);
+		}
+
+		/**
+		 * DEPRECATED: Replaced by <code>customFooterRendererStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #customFooterRendererStyleName
+		 */
 		public function get footerRendererName():String
 		{
-			return this._footerRendererName;
+			return this.customFooterRendererStyleName;
 		}
 
 		/**
@@ -1830,12 +2086,7 @@ package feathers.controls
 		 */
 		public function set footerRendererName(value:String):void
 		{
-			if(this._footerRendererName == value)
-			{
-				return;
-			}
-			this._footerRendererName = value;
-			this.invalidate(INVALIDATION_FLAG_STYLES);
+			this.customFooterRendererStyleName = value;
 		}
 
 		/**
@@ -2339,29 +2590,29 @@ package feathers.controls
 			this.dataViewPort.itemRendererType = this._itemRendererType;
 			this.dataViewPort.itemRendererFactory = this._itemRendererFactory;
 			this.dataViewPort.itemRendererProperties = this._itemRendererProperties;
-			this.dataViewPort.itemRendererName = this._itemRendererName;
+			this.dataViewPort.customItemRendererStyleName = this._customItemRendererStyleName;
 
 			this.dataViewPort.firstItemRendererType = this._firstItemRendererType;
 			this.dataViewPort.firstItemRendererFactory = this._firstItemRendererFactory;
-			this.dataViewPort.firstItemRendererName = this._firstItemRendererName;
+			this.dataViewPort.customFirstItemRendererStyleName = this._customFirstItemRendererStyleName;
 
 			this.dataViewPort.lastItemRendererType = this._lastItemRendererType;
 			this.dataViewPort.lastItemRendererFactory = this._lastItemRendererFactory;
-			this.dataViewPort.lastItemRendererName = this._lastItemRendererName;
+			this.dataViewPort.customLastItemRendererStyleName = this._customLastItemRendererStyleName;
 
 			this.dataViewPort.singleItemRendererType = this._singleItemRendererType;
 			this.dataViewPort.singleItemRendererFactory = this._singleItemRendererFactory;
-			this.dataViewPort.singleItemRendererName = this._singleItemRendererName;
+			this.dataViewPort.customSingleItemRendererStyleName = this._customSingleItemRendererStyleName;
 
 			this.dataViewPort.headerRendererType = this._headerRendererType;
 			this.dataViewPort.headerRendererFactory = this._headerRendererFactory;
 			this.dataViewPort.headerRendererProperties = this._headerRendererProperties;
-			this.dataViewPort.headerRendererName = this._headerRendererName;
+			this.dataViewPort.customHeaderRendererStyleName = this._customHeaderRendererStyleName;
 
 			this.dataViewPort.footerRendererType = this._footerRendererType;
 			this.dataViewPort.footerRendererFactory = this._footerRendererFactory;
 			this.dataViewPort.footerRendererProperties = this._footerRendererProperties;
-			this.dataViewPort.footerRendererName = this._footerRendererName;
+			this.dataViewPort.customFooterRendererStyleName = this._customFooterRendererStyleName;
 
 			this.dataViewPort.layout = this._layout;
 		}

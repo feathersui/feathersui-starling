@@ -41,7 +41,19 @@ package feathers.controls.renderers
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const DEFAULT_CHILD_NAME_ICON_LABEL:String = "feathers-item-renderer-icon-label";
+		public static const DEFAULT_CHILD_STYLE_NAME_ICON_LABEL:String = "feathers-item-renderer-icon-label";
+
+		/**
+		 * DEPRECATED: Replaced by <code>BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_ICON_LABEL</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see BaseDefaultItemRenderer#DEFAULT_CHILD_STYLE_NAME_ICON_LABEL
+		 */
+		public static const DEFAULT_CHILD_NAME_ICON_LABEL:String = DEFAULT_CHILD_STYLE_NAME_ICON_LABEL;
 
 		/**
 		 * The default value added to the <code>styleNameList</code> of the
@@ -49,7 +61,19 @@ package feathers.controls.renderers
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const DEFAULT_CHILD_NAME_ACCESSORY_LABEL:String = "feathers-item-renderer-accessory-label";
+		public static const DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL:String = "feathers-item-renderer-accessory-label";
+
+		/**
+		 * DEPRECATED: Replaced by <code>BaseDefaultItemRenderer.DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see BaseDefaultItemRenderer#DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL
+		 */
+		public static const DEFAULT_CHILD_NAME_ACCESSORY_LABEL:String = DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL;
 
 		/**
 		 * @copy feathers.controls.Button#ICON_POSITION_TOP
@@ -234,20 +258,66 @@ package feathers.controls.renderers
 		}
 
 		/**
-		 * The value added to the <code>styleNameList</code> of the icon label,
-		 * if it exists.
+		 * The value added to the <code>styleNameList</code> of the icon label
+		 * text renderer, if it exists.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		protected var iconLabelName:String = DEFAULT_CHILD_NAME_ICON_LABEL;
+		protected var iconLabelStyleName:String = DEFAULT_CHILD_STYLE_NAME_ICON_LABEL;
+
+		/**
+		 * DEPRECATED: Replaced by <code>iconLabelStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #iconLabelStyleName
+		 */
+		protected function get iconLabelName():String
+		{
+			return this.iconLabelStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function set iconLabelName(value:String):void
+		{
+			this.iconLabelStyleName = value;
+		}
 
 		/**
 		 * The value added to the <code>styleNameList</code> of the accessory
-		 * label, if it exists.
+		 * label text renderer, if it exists.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		protected var accessoryLabelName:String = DEFAULT_CHILD_NAME_ACCESSORY_LABEL;
+		protected var accessoryLabelStyleName:String = DEFAULT_CHILD_STYLE_NAME_ACCESSORY_LABEL;
+
+		/**
+		 * DEPRECATED: Replaced by <code>accessoryLabelStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #accessoryLabelStyleName
+		 */
+		protected function get accessoryLabelName():String
+		{
+			return this.accessoryLabelStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function set accessoryLabelName(value:String):void
+		{
+			this.accessoryLabelStyleName = value;
+		}
 
 		/**
 		 * @private
@@ -3770,7 +3840,7 @@ package feathers.controls.renderers
 			{
 				var factory:Function = this._iconLabelFactory != null ? this._iconLabelFactory : FeathersControl.defaultTextRendererFactory;
 				this.iconLabel = ITextRenderer(factory());
-				this.iconLabel.styleNameList.add(this.iconLabelName);
+				this.iconLabel.styleNameList.add(this.iconLabelStyleName);
 			}
 			this.iconLabel.text = label;
 		}
@@ -3798,7 +3868,7 @@ package feathers.controls.renderers
 			{
 				var factory:Function = this._accessoryLabelFactory != null ? this._accessoryLabelFactory : FeathersControl.defaultTextRendererFactory;
 				this.accessoryLabel = ITextRenderer(factory());
-				this.accessoryLabel.styleNameList.add(this.accessoryLabelName);
+				this.accessoryLabel.styleNameList.add(this.accessoryLabelStyleName);
 			}
 			this.accessoryLabel.text = label;
 		}

@@ -264,10 +264,10 @@ package feathers.controls
 		}
 
 		/**
-		 * The value added to the <code>styleNameList</code> of the off label.
-		 * This variable is <code>protected</code> so that sub-classes can
-		 * customize the on label style name in their constructors instead of
-		 * using the default style name defined by
+		 * The value added to the <code>styleNameList</code> of the off label
+		 * text renderer. This variable is <code>protected</code> so that
+		 * sub-classes can customize the on label text renderer style name in
+		 * their constructors instead of using the default style name defined by
 		 * <code>DEFAULT_CHILD_STYLE_NAME_ON_LABEL</code>.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
@@ -298,10 +298,10 @@ package feathers.controls
 		}
 
 		/**
-		 * The value added to the <code>styleNameList</code> of the off label.
-		 * This variable is <code>protected</code> so that sub-classes can
-		 * customize the off label style name in their constructors instead of
-		 * using the default style name defined by
+		 * The value added to the <code>styleNameList</code> of the off label
+		 * text renderer. This variable is <code>protected</code> so that
+		 * sub-classes can customize the off label text renderer style name in
+		 * their constructors instead of using the default style name defined by
 		 * <code>DEFAULT_CHILD_STYLE_NAME_OFF_LABEL</code>.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
