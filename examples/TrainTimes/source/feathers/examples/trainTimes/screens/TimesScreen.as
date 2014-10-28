@@ -15,7 +15,7 @@ package feathers.examples.trainTimes.screens
 
 	public class TimesScreen extends PanelScreen
 	{
-		public static const CHILD_NAME_TIMES_LIST:String = "timesList";
+		public static const CHILD_STYLE_NAME_TIMES_LIST:String = "timesList";
 
 		private static const NORTH_TIMES:Vector.<TimeData> = new <TimeData>
 		[
@@ -51,7 +51,7 @@ package feathers.examples.trainTimes.screens
 			this.layout = new AnchorLayout();
 
 			this._list = new List();
-			this._list.styleNameList.add(CHILD_NAME_TIMES_LIST);
+			this._list.styleNameList.add(CHILD_STYLE_NAME_TIMES_LIST);
 			this._list.dataProvider = new ListCollection(NORTH_TIMES);
 			this._list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
 			this._list.itemRendererProperties.labelFunction = list_labelFunction;

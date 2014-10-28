@@ -17,7 +17,7 @@ package feathers.examples.componentsExplorer.screens
 	{
 		public static var globalStyleProvider:IStyleProvider;
 
-		public static const CHILD_NAME_ICON_BUTTON:String = "components-explorer-button-screen-icon-button";
+		public static const CHILD_STYLE_NAME_ICON_BUTTON:String = "components-explorer-button-screen-icon-button";
 		
 		public function ButtonScreen()
 		{
@@ -60,7 +60,7 @@ package feathers.examples.componentsExplorer.screens
 
 			this._iconButton = new Button();
 			//since it's a skin, we'll specif an icon in the theme
-			this._iconButton.styleNameList.add(CHILD_NAME_ICON_BUTTON);
+			this._iconButton.styleNameList.add(CHILD_STYLE_NAME_ICON_BUTTON);
 			this._iconButton.label = "Icon Button";
 			this._iconButton.defaultIcon = this._icon;
 			this.addChild(this._iconButton);
