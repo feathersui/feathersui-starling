@@ -28,7 +28,7 @@ package feathers.examples.componentsExplorer.themes
 			super.initializeStyleProviders();
 
 			this.getStyleProviderForClass(ButtonScreen).defaultStyleFunction = this.setButtonScreenStyles;
-			this.getStyleProviderForClass(Button).setFunctionForStyleName(ButtonScreen.CHILD_NAME_ICON_BUTTON, this.setButtonScreenIconButtonStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(ButtonScreen.CHILD_STYLE_NAME_ICON_BUTTON, this.setButtonScreenIconButtonStyles);
 
 			this.getStyleProviderForClass(CalloutScreen).defaultStyleFunction = this.setCalloutScreenStyles;
 			this.getStyleProviderForClass(LabelScreen).defaultStyleFunction = this.setLabelScreenStyles;

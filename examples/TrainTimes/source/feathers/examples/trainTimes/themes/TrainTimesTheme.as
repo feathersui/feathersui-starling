@@ -251,18 +251,18 @@ package feathers.examples.trainTimes.themes
 			}
 
 			this.setInitializerForClass(Button, buttonInitializer);
-			this.setInitializerForClass(Button, confirmButtonInitializer, StationListItemRenderer.CHILD_NAME_STATION_LIST_CONFIRM_BUTTON);
-			this.setInitializerForClass(Button, cancelButtonInitializer, StationListItemRenderer.CHILD_NAME_STATION_LIST_CANCEL_BUTTON);
-			this.setInitializerForClass(Button, nothingInitializer, SimpleScrollBar.DEFAULT_CHILD_NAME_THUMB);
+			this.setInitializerForClass(Button, confirmButtonInitializer, StationListItemRenderer.CHILD_STYLE_NAME_STATION_LIST_CONFIRM_BUTTON);
+			this.setInitializerForClass(Button, cancelButtonInitializer, StationListItemRenderer.CHILD_STYLE_NAME_STATION_LIST_CANCEL_BUTTON);
+			this.setInitializerForClass(Button, nothingInitializer, SimpleScrollBar.DEFAULT_CHILD_STYLE_NAME_THUMB);
 			this.setInitializerForClass(Label, labelInitializer);
-			this.setInitializerForClass(Label, stationListNameLabelInitializer, StationListItemRenderer.CHILD_NAME_STATION_LIST_NAME_LABEL);
-			this.setInitializerForClass(Label, stationListDetailLabelInitializer, StationListItemRenderer.CHILD_NAME_STATION_LIST_DETAILS_LABEL);
+			this.setInitializerForClass(Label, stationListNameLabelInitializer, StationListItemRenderer.CHILD_STYLE_NAME_STATION_LIST_NAME_LABEL);
+			this.setInitializerForClass(Label, stationListDetailLabelInitializer, StationListItemRenderer.CHILD_STYLE_NAME_STATION_LIST_DETAILS_LABEL);
 			this.setInitializerForClass(Header, headerInitializer);
-			this.setInitializerForClass(List, stationListInitializer, StationScreen.CHILD_NAME_STATION_LIST);
-			this.setInitializerForClass(List, timesListInitializer, TimesScreen.CHILD_NAME_TIMES_LIST);
+			this.setInitializerForClass(List, stationListInitializer, StationScreen.CHILD_STYLE_NAME_STATION_LIST);
+			this.setInitializerForClass(List, timesListInitializer, TimesScreen.CHILD_STYLE_NAME_TIMES_LIST);
 			this.setInitializerForClass(DefaultListItemRenderer, timesListItemRendererInitializer, TIMES_LIST_ITEM_RENDERER_NAME);
 			this.setInitializerForClass(StationListItemRenderer, stationListItemRendererInitializer);
-			this.setInitializerForClass(ScrollContainer, actionContainerInitializer, StationListItemRenderer.CHILD_NAME_STATION_LIST_ACTION_CONTAINER)
+			this.setInitializerForClass(ScrollContainer, actionContainerInitializer, StationListItemRenderer.CHILD_STYLE_NAME_STATION_LIST_ACTION_CONTAINER)
 		}
 
 		protected function imageLoaderFactory():ImageLoader

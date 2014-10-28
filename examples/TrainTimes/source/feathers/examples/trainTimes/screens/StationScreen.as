@@ -20,7 +20,7 @@ package feathers.examples.trainTimes.screens
 
 	public class StationScreen extends Screen
 	{
-		public static const CHILD_NAME_STATION_LIST:String = "stationList";
+		public static const CHILD_STYLE_NAME_STATION_LIST:String = "stationList";
 
 		public function StationScreen()
 		{
@@ -41,7 +41,7 @@ package feathers.examples.trainTimes.screens
 		override protected function initialize():void
 		{
 			this._stationList = new List();
-			this._stationList.styleNameList.add(CHILD_NAME_STATION_LIST);
+			this._stationList.styleNameList.add(CHILD_STYLE_NAME_STATION_LIST);
 			this._stationList.dataProvider = new ListCollection(
 			[
 				new StationData("Ten Stone Road"),
