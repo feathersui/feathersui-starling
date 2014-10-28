@@ -74,26 +74,38 @@ package feathers.controls
 		protected static const INVALIDATION_FLAG_MXML_CONTENT:String = "mxmlContent";
 
 		/**
-		 * An alternate name to use with <code>ScrollContainer</code> to allow a
-		 * theme to give it a toolbar style. If a theme does not provide a skin
-		 * for the toolbar style, the theme will automatically fall back to
-		 * using the default scroll container skin.
+		 * An alternate style name to use with <code>ScrollContainer</code> to
+		 * allow a theme to give it a toolbar style. If a theme does not provide
+		 * a style for the toolbar container, the theme will automatically fall
+		 * back to using the default scroll container skin.
 		 *
-		 * <p>An alternate name should always be added to a component's
-		 * <code>styleNameList</code> before the component is added to the stage for
-		 * the first time. If it is added later, it will be ignored.</p>
+		 * <p>An alternate style name should always be added to a component's
+		 * <code>styleNameList</code> before the component is initialized. If
+		 * the style name is added later, it will be ignored.</p>
 		 *
 		 * <p>In the following example, the toolbar style is applied to a scroll
 		 * container:</p>
 		 *
 		 * <listing version="3.0">
 		 * var container:ScrollContainer = new ScrollContainer();
-		 * container.styleNameList.add( ScrollContainer.ALTERNATE_NAME_TOOLBAR );
+		 * container.styleNameList.add( ScrollContainer.ALTERNATE_STYLE_NAME_TOOLBAR );
 		 * this.addChild( container );</listing>
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const ALTERNATE_NAME_TOOLBAR:String = "feathers-toolbar-scroll-container";
+		public static const ALTERNATE_STYLE_NAME_TOOLBAR:String = "feathers-toolbar-scroll-container";
+
+		/**
+		 * DEPRECATED: Replaced by <code>ScrollContainer.ALTERNATE_STYLE_NAME_TOOLBAR</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see ScrollContainer#ALTERNATE_STYLE_NAME_TOOLBAR
+		 */
+		public static const ALTERNATE_NAME_TOOLBAR:String = ALTERNATE_STYLE_NAME_TOOLBAR;
 
 		/**
 		 * @copy feathers.controls.Scroller#SCROLL_POLICY_AUTO

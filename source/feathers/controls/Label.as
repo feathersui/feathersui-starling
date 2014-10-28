@@ -31,48 +31,72 @@ package feathers.controls
 		private static const HELPER_POINT:Point = new Point();
 
 		/**
-		 * An alternate name to use with <code>Label</code> to allow a theme to
-		 * give it a larger style meant for headings. If a theme does not provide
-		 * a skin for the heading style, the theme will automatically fall back
-		 * to using the default label skin.
+		 * An alternate style name to use with <code>Label</code> to allow a
+		 * theme to give it a larger style meant for headings. If a theme does
+		 * not provide a style for a heading label, the theme will automatically
+		 * fall back to using the default style for a label.
 		 *
-		 * <p>An alternate name should always be added to a component's
-		 * <code>styleNameList</code> before the component is added to the stage for
-		 * the first time. If it is added later, it will be ignored.</p>
+		 * <p>An alternate style name should always be added to a component's
+		 * <code>styleNameList</code> before the component is initialized. If
+		 * the style name is added later, it will be ignored.</p>
 		 *
 		 * <p>In the following example, the heading style is applied to a label:</p>
 		 *
 		 * <listing version="3.0">
 		 * var label:Label = new Label();
 		 * label.text = "Very Important Heading";
-		 * label.styleNameList.add( Label.ALTERNATE_NAME_HEADING );
+		 * label.styleNameList.add( Label.ALTERNATE_STYLE_NAME_HEADING );
 		 * this.addChild( label );</listing>
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const ALTERNATE_NAME_HEADING:String = "feathers-heading-label";
+		public static const ALTERNATE_STYLE_NAME_HEADING:String = "feathers-heading-label";
 
 		/**
-		 * An alternate name to use with <code>Label</code> to allow a theme to
-		 * give it a smaller style meant for less-important details. If a theme
-		 * does not provide a skin for the detail style, the theme will
-		 * automatically fall back to using the default label skin.
+		 * DEPRECATED: Replaced by <code>Label.ALTERNATE_STYLE_NAME_HEADING</code>.
 		 *
-		 * <p>An alternate name should always be added to a component's
-		 * <code>styleNameList</code> before the component is added to the stage for
-		 * the first time. If it is added later, it will be ignored.</p>
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see Label#ALTERNATE_STYLE_NAME_HEADING
+		 */
+		public static const ALTERNATE_NAME_HEADING:String = ALTERNATE_STYLE_NAME_HEADING;
+
+		/**
+		 * An alternate style name to use with <code>Label</code> to allow a
+		 * theme to give it a smaller style meant for less-important details. If
+		 * a theme does not provide a style for a detail label, the theme will
+		 * automatically fall back to using the default style for a label.
+		 *
+		 * <p>An alternate style name should always be added to a component's
+		 * <code>styleNameList</code> before the component is initialized. If
+		 * the style name is added later, it will be ignored.</p>
 		 *
 		 * <p>In the following example, the detail style is applied to a label:</p>
 		 *
 		 * <listing version="3.0">
 		 * var label:Label = new Label();
 		 * label.text = "Less important, detailed text";
-		 * label.styleNameList.add( Label.ALTERNATE_NAME_DETAIL );
+		 * label.styleNameList.add( Label.ALTERNATE_STYLE_NAME_DETAIL );
 		 * this.addChild( label );</listing>
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const ALTERNATE_NAME_DETAIL:String = "feathers-detail-label";
+		public static const ALTERNATE_STYLE_NAME_DETAIL:String = "feathers-detail-label";
+
+		/**
+		 * DEPRECATED: Replaced by <code>Label.ALTERNATE_STYLE_NAME_DETAIL</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see Label#ALTERNATE_STYLE_NAME_DETAIL
+		 */
+		public static const ALTERNATE_NAME_DETAIL:String = ALTERNATE_STYLE_NAME_DETAIL;
 
 		/**
 		 * The default <code>IStyleProvider</code> for all <code>Label</code>

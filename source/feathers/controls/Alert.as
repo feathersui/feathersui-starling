@@ -25,6 +25,7 @@ package feathers.controls
 	[Exclude(name="footerFactory",kind="property")]
 	[Exclude(name="footerProperties",kind="property")]
 	[Exclude(name="customFooterName",kind="property")]
+	[Exclude(name="customFooterStyleName",kind="property")]
 	[Exclude(name="createFooter",kind="method")]
 
 	/**
@@ -674,7 +675,7 @@ package feathers.controls
 		 */
 		public function get customButtonGroupStyleName():String
 		{
-			return super.customFooterName;
+			return super.customFooterStyleName;
 		}
 
 		/**
@@ -682,7 +683,7 @@ package feathers.controls
 		 */
 		public function set customButtonGroupStyleName(value:String):void
 		{
-			super.customFooterName = value;
+			super.customFooterStyleName = value;
 		}
 
 		/**

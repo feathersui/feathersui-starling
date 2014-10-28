@@ -221,26 +221,38 @@ package feathers.controls
 		public static const STATE_FOCUSED:String = "focused";
 
 		/**
-		 * An alternate name to use with TextInput to allow a theme to give it
-		 * a search input style. If a theme does not provide a skin for the
-		 * search text input, the theme will automatically fall back to using
-		 * the default text input skin.
+		 * An alternate style name to use with <code>TextInput</code> to allow a
+		 * theme to give it a search input style. If a theme does not provide a
+		 * style for the search text input, the theme will automatically fal
+		 * back to using the default text input style.
 		 *
-		 * <p>An alternate name should always be added to a component's
-		 * <code>styleNameList</code> before the component is added to the stage for
-		 * the first time. If it is added later, it will be ignored.</p>
+		 * <p>An alternate style name should always be added to a component's
+		 * <code>styleNameList</code> before the component is initialized. If
+		 * the style name is added later, it will be ignored.</p>
 		 *
-		 * <p>In the following example, the searc style is applied to a text
+		 * <p>In the following example, the search style is applied to a text
 		 * input:</p>
 		 *
 		 * <listing version="3.0">
 		 * var input:TextInput = new TextInput();
-		 * input.styleNameList.add( TextInput.ALTERNATE_NAME_SEARCH_TEXT_INPUT );
+		 * input.styleNameList.add( TextInput.ALTERNATE_STYLE_NAME_SEARCH_TEXT_INPUT );
 		 * this.addChild( input );</listing>
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const ALTERNATE_NAME_SEARCH_TEXT_INPUT:String = "feathers-search-text-input";
+		public static const ALTERNATE_STYLE_NAME_SEARCH_TEXT_INPUT:String = "feathers-search-text-input";
+
+		/**
+		 * DEPRECATED: Replaced by <code>TextInput.ALTERNATE_STYLE_NAME_SEARCH_TEXT_INPUT</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see TextInput#ALTERNATE_STYLE_NAME_SEARCH_TEXT_INPUT
+		 */
+		public static const ALTERNATE_NAME_SEARCH_TEXT_INPUT:String = ALTERNATE_STYLE_NAME_SEARCH_TEXT_INPUT;
 
 		/**
 		 * The text editor, icon, and prompt will be aligned vertically to the

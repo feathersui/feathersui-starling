@@ -114,119 +114,193 @@ package feathers.controls
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const DEFAULT_CHILD_NAME_LABEL:String = "feathers-button-label";
+		public static const DEFAULT_CHILD_STYLE_NAME_LABEL:String = "feathers-button-label";
 
 		/**
-		 * An alternate name to use with Button to allow a theme to give it
-		 * a more prominent, "call-to-action" style. If a theme does not provide
-		 * a skin for the call-to-action button, the theme will automatically
-		 * fall back to using the default button skin.
+		 * DEPRECATED: Replaced by <code>Button.DEFAULT_CHILD_STYLE_NAME_LABEL</code>.
 		 *
-		 * <p>An alternate name should always be added to a component's
-		 * <code>styleNameList</code> before the component is added to the stage for
-		 * the first time. If it is added later, it will be ignored.</p>
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see Button#DEFAULT_CHILD_STYLE_NAME_LABEL
+		 */
+		public static const DEFAULT_CHILD_NAME_LABEL:String = DEFAULT_CHILD_STYLE_NAME_LABEL;
+
+		/**
+		 * An alternate style name to use with <code>Button</code> to allow a
+		 * theme to give it a more prominent, "call-to-action" style. If a theme
+		 * does not provide a style for a call-to-action button, the theme will
+		 * automatically fall back to using the default button style.
+		 *
+		 * <p>An alternate style name should always be added to a component's
+		 * <code>styleNameList</code> before the component is initialized. If
+		 * the style name is added later, it will be ignored.</p>
 		 *
 		 * <p>In the following example, the call-to-action style is applied to
 		 * a button:</p>
 		 *
 		 * <listing version="3.0">
 		 * var button:Button = new Button();
-		 * button.styleNameList.add( Button.ALTERNATE_NAME_CALL_TO_ACTION_BUTTON );
+		 * button.styleNameList.add( Button.ALTERNATE_STYLE_NAME_CALL_TO_ACTION_BUTTON );
 		 * this.addChild( button );</listing>
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const ALTERNATE_NAME_CALL_TO_ACTION_BUTTON:String = "feathers-call-to-action-button";
+		public static const ALTERNATE_STYLE_NAME_CALL_TO_ACTION_BUTTON:String = "feathers-call-to-action-button";
 
 		/**
-		 * An alternate name to use with Button to allow a theme to give it
-		 * a less prominent, "quiet" style. If a theme does not provide
-		 * a skin for the quiet button, the theme will automatically fall back
-		 * to using the default button skin.
+		 * DEPRECATED: Replaced by <code>Button.ALTERNATE_STYLE_NAME_CALL_TO_ACTION_BUTTON</code>.
 		 *
-		 * <p>An alternate name should always be added to a component's
-		 * <code>styleNameList</code> before the component is added to the stage for
-		 * the first time. If it is added later, it will be ignored.</p>
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see Button#ALTERNATE_STYLE_NAME_CALL_TO_ACTION_BUTTON
+		 */
+		public static const ALTERNATE_NAME_CALL_TO_ACTION_BUTTON:String = ALTERNATE_STYLE_NAME_CALL_TO_ACTION_BUTTON;
+
+		/**
+		 * An alternate style name to use with <code>Button</code> to allow a
+		 * theme to give it a less prominent, "quiet" style. If a theme does not
+		 * provide a style for a quiet button, the theme will automatically fall
+		 * back to using the default button style.
+		 *
+		 * <p>An alternate style name should always be added to a component's
+		 * <code>styleNameList</code> before the component is initialized. If
+		 * the style name is added later, it will be ignored.</p>
 		 *
 		 * <p>In the following example, the quiet button style is applied to
 		 * a button:</p>
 		 *
 		 * <listing version="3.0">
 		 * var button:Button = new Button();
-		 * button.styleNameList.add( Button.ALTERNATE_NAME_QUIET_BUTTON );
+		 * button.styleNameList.add( Button.ALTERNATE_STYLE_NAME_QUIET_BUTTON );
 		 * this.addChild( button );</listing>
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const ALTERNATE_NAME_QUIET_BUTTON:String = "feathers-quiet-button";
+		public static const ALTERNATE_STYLE_NAME_QUIET_BUTTON:String = "feathers-quiet-button";
 
 		/**
-		 * An alternate name to use with Button to allow a theme to give it
-		 * a highly prominent, "danger" style. An example would be a delete
-		 * button or some other button that has a destructive action that cannot
-		 * be undone if the button is triggered. If a theme does not provide
-		 * a skin for the danger button, the theme will automatically fall back
-		 * to using the default button skin.
+		 * DEPRECATED: Replaced by <code>Button.ALTERNATE_STYLE_NAME_QUIET_BUTTON</code>.
 		 *
-		 * <p>An alternate name should always be added to a component's
-		 * <code>styleNameList</code> before the component is added to the stage for
-		 * the first time. If it is added later, it will be ignored.</p>
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see Button#ALTERNATE_STYLE_NAME_QUIET_BUTTON
+		 */
+		public static const ALTERNATE_NAME_QUIET_BUTTON:String = ALTERNATE_STYLE_NAME_QUIET_BUTTON;
+
+		/**
+		 * An alternate style name to use with <code>Button</code> to allow a
+		 * theme to give it a highly prominent, "danger" style. An example would
+		 * be a delete button or some other button that has a destructive action
+		 * that cannot be undone if the button is triggered. If a theme does not
+		 * provide a style for the danger button, the theme will automatically
+		 * fall back to using the default button style.
+		 *
+		 * <p>An alternate style name should always be added to a component's
+		 * <code>styleNameList</code> before the component is initialized. If
+		 * the style name is added later, it will be ignored.</p>
 		 *
 		 * <p>In the following example, the danger button style is applied to
 		 * a button:</p>
 		 *
 		 * <listing version="3.0">
 		 * var button:Button = new Button();
-		 * button.styleNameList.add( Button.ALTERNATE_NAME_DANGER_BUTTON );
+		 * button.styleNameList.add( Button.ALTERNATE_STYLE_NAME_DANGER_BUTTON );
 		 * this.addChild( button );</listing>
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const ALTERNATE_NAME_DANGER_BUTTON:String = "feathers-danger-button";
+		public static const ALTERNATE_STYLE_NAME_DANGER_BUTTON:String = "feathers-danger-button";
 
 		/**
-		 * An alternate name to use with Button to allow a theme to give it
-		 * a "back button" style, perhaps with an arrow pointing backward. If a
-		 * theme does not provide a skin for the back button, the theme will
-		 * automatically fall back to using the default button skin.
+		 * DEPRECATED: Replaced by <code>Button.ALTERNATE_STYLE_NAME_DANGER_BUTTON</code>.
 		 *
-		 * <p>An alternate name should always be added to a component's
-		 * <code>styleNameList</code> before the component is added to the stage for
-		 * the first time. If it is added later, it will be ignored.</p>
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see Button#ALTERNATE_STYLE_NAME_DANGER_BUTTON
+		 */
+		public static const ALTERNATE_NAME_DANGER_BUTTON:String = ALTERNATE_STYLE_NAME_DANGER_BUTTON;
+
+		/**
+		 * An alternate style name to use with <code>Button</code> to allow a
+		 * theme to give it a "back button" style, perhaps with an arrow
+		 * pointing backward. If a theme does not provide a style for a back
+		 * button, the theme will automatically fall back to using the default
+		 * button skin.
+		 *
+		 * <p>An alternate style name should always be added to a component's
+		 * <code>styleNameList</code> before the component is initialized. If
+		 * the style name is added later, it will be ignored.</p>
 		 *
 		 * <p>In the following example, the back button style is applied to
 		 * a button:</p>
 		 *
 		 * <listing version="3.0">
 		 * var button:Button = new Button();
-		 * button.styleNameList.add( Button.ALTERNATE_NAME_BACK_BUTTON );
+		 * button.styleNameList.add( Button.ALTERNATE_STYLE_NAME_BACK_BUTTON );
 		 * this.addChild( button );</listing>
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const ALTERNATE_NAME_BACK_BUTTON:String = "feathers-back-button";
+		public static const ALTERNATE_STYLE_NAME_BACK_BUTTON:String = "feathers-back-button";
 
 		/**
-		 * An alternate name to use with Button to allow a theme to give it
-		 * a "forward" button style, perhaps with an arrow pointing forward. If
-		 * a theme does not provide a skin for the forward button, the theme
-		 * will automatically fall back to using the default button skin.
+		 * DEPRECATED: Replaced by <code>Button.ALTERNATE_STYLE_NAME_BACK_BUTTON</code>.
 		 *
-		 * <p>An alternate name should always be added to a component's
-		 * <code>styleNameList</code> before the component is added to the stage for
-		 * the first time. If it is added later, it will be ignored.</p>
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see Button#ALTERNATE_STYLE_NAME_BACK_BUTTON
+		 */
+		public static const ALTERNATE_NAME_BACK_BUTTON:String = ALTERNATE_STYLE_NAME_BACK_BUTTON;
+
+		/**
+		 * An alternate style name to use with <code>Button</code> to allow a
+		 * theme to give it a "forward" button style, perhaps with an arrow
+		 * pointing forward. If a theme does not provide a style for a forward
+		 * button, the theme will automatically fall back to using the default
+		 * button style.
+		 *
+		 * <p>An alternate style name should always be added to a component's
+		 * <code>styleNameList</code> before the component is initialized. If
+		 * the style name is added later, it will be ignored.</p>
 		 *
 		 * <p>In the following example, the forward button style is applied to
 		 * a button:</p>
 		 *
 		 * <listing version="3.0">
 		 * var button:Button = new Button();
-		 * button.styleNameList.add( Button.ALTERNATE_NAME_FORWARD_BUTTON );
+		 * button.styleNameList.add( Button.ALTERNATE_STYLE_NAME_FORWARD_BUTTON );
 		 * this.addChild( button );</listing>
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		public static const ALTERNATE_NAME_FORWARD_BUTTON:String = "feathers-forward-button";
+		public static const ALTERNATE_STYLE_NAME_FORWARD_BUTTON:String = "feathers-forward-button";
+
+		/**
+		 * DEPRECATED: Replaced by <code>Button.ALTERNATE_STYLE_NAME_FORWARD_BUTTON</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see Button#ALTERNATE_STYLE_NAME_FORWARD_BUTTON
+		 */
+		public static const ALTERNATE_NAME_FORWARD_BUTTON:String = ALTERNATE_STYLE_NAME_FORWARD_BUTTON;
 		
 		/**
 		 * Identifier for the button's up state. Can be used for styling purposes.
@@ -382,14 +456,38 @@ package feathers.controls
 		}
 
 		/**
-		 * The value added to the <code>styleNameList</code> of the label. This
-		 * variable is <code>protected</code> so that sub-classes can customize
-		 * the label name in their constructors instead of using the default
-		 * name defined by <code>DEFAULT_CHILD_NAME_LABEL</code>.
+		 * The value added to the <code>styleNameList</code> of the label text
+		 * renderer. This variable is <code>protected</code> so that sub-classes
+		 * can customize the label text renderer style name in their
+		 * constructors instead of using the default style name defined by
+		 * <code>DEFAULT_CHILD_STYLE_NAME_LABEL</code>.
 		 *
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
-		protected var labelName:String = DEFAULT_CHILD_NAME_LABEL;
+		protected var labelStyleName:String = DEFAULT_CHILD_STYLE_NAME_LABEL;
+
+		/**
+		 * DEPRECATED: Replaced by <code>labelStyleName</code>.
+		 *
+		 * <p><strong>DEPRECATION WARNING:</strong> This property is deprecated
+		 * starting with Feathers 2.1. It will be removed in a future version of
+		 * Feathers according to the standard
+		 * <a href="http://wiki.starling-framework.org/feathers/deprecation-policy">Feathers deprecation policy</a>.</p>
+		 *
+		 * @see #labelStyleName
+		 */
+		protected function get labelName():String
+		{
+			return this.labelStyleName;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function set labelName(value:String):void
+		{
+			this.labelStyleName = value;
+		}
 		
 		/**
 		 * The text renderer for the button's label.
