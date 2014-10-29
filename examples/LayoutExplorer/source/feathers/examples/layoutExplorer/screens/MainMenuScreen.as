@@ -94,7 +94,7 @@ package feathers.examples.layoutExplorer.screens
 			else
 			{
 				this._list.selectedIndex = this.savedSelectedIndex;
-				this.owner.addEventListener(FeathersEventType.TRANSITION_COMPLETE, owner_transitionCompleteHandler);
+				this.addEventListener(FeathersEventType.TRANSITION_IN_COMPLETE, transitionInCompleteHandler);
 			}
 			this.addChild(this._list);
 		}
@@ -104,10 +104,8 @@ package feathers.examples.layoutExplorer.screens
 			return StandardIcons.listDrillDownAccessoryTexture;
 		}
 
-		private function owner_transitionCompleteHandler(event:Event):void
+		private function transitionInCompleteHandler(event:Event):void
 		{
-			this.owner.removeEventListener(FeathersEventType.TRANSITION_COMPLETE, owner_transitionCompleteHandler);
-
 			if(!DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
 				this._list.selectedIndex = -1;

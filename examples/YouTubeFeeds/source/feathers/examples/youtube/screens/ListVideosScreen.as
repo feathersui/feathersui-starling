@@ -116,7 +116,7 @@ package feathers.examples.youtube.screens
 			this.backButtonHandler = onBackButton;
 
 			this._isTransitioning = true;
-			this._owner.addEventListener(FeathersEventType.TRANSITION_COMPLETE, owner_transitionCompleteHandler);
+			this.addEventListener(FeathersEventType.TRANSITION_IN_COMPLETE, transitionInCompleteHandler);
 		}
 
 		override protected function draw():void
@@ -213,6 +213,26 @@ package feathers.examples.youtube.screens
 			this.dispatchEventWith(starling.events.Event.COMPLETE);
 		}
 
+		private function removedFromStageHandler(event:starling.events.Event):void
+		{
+			this.cleanUpLoader();
+		}
+
+		private function transitionInCompleteHandler(event:starling.events.Event):void
+		{
+			this._isTransitioning = false;
+
+			if(this._savedLoaderData)
+			{
+				this.parseFeed(new XML(this._savedLoaderData));
+				this._savedLoaderData = null;
+			}
+
+			this._list.selectedIndex = -1;
+			this._list.addEventListener(starling.events.Event.CHANGE, list_changeHandler);
+			this._list.revealScrollBars();
+		}
+
 		private function list_changeHandler(event:starling.events.Event):void
 		{
 			if(this._list.selectedIndex < 0)
@@ -239,11 +259,6 @@ package feathers.examples.youtube.screens
 			this.dispatchEventWith(SHOW_VIDEO_DETAILS, false, VideoDetails(this._list.selectedItem));
 		}
 
-		private function removedFromStageHandler(event:starling.events.Event):void
-		{
-			this.cleanUpLoader();
-		}
-
 		private function loader_completeHandler(event:flash.events.Event):void
 		{
 			var loaderData:* = this._loader.data;
@@ -265,23 +280,6 @@ package feathers.examples.youtube.screens
 			this._message.visible = true;
 			this.invalidate(INVALIDATION_FLAG_STYLES);
 			trace(event.toString());
-		}
-
-		private function owner_transitionCompleteHandler(event:starling.events.Event):void
-		{
-			this.owner.removeEventListener(FeathersEventType.TRANSITION_COMPLETE, owner_transitionCompleteHandler);
-
-			this._isTransitioning = false;
-
-			if(this._savedLoaderData)
-			{
-				this.parseFeed(new XML(this._savedLoaderData));
-				this._savedLoaderData = null;
-			}
-
-			this._list.selectedIndex = -1;
-			this._list.addEventListener(starling.events.Event.CHANGE, list_changeHandler);
-			this._list.revealScrollBars();
 		}
 	}
 }

@@ -89,6 +89,8 @@ package feathers.events
 		 * The <code>FeathersEventType.TRANSITION_START</code> event type is
 		 * used by the <code>ScreenNavigator</code> to indicate when a
 		 * transition between screens begins.
+		 *
+		 * @see feathers.controls.ScreenNavigator
 		 */
 		public static const TRANSITION_START:String = "transitionStart";
 
@@ -96,13 +98,53 @@ package feathers.events
 		 * The <code>FeathersEventType.TRANSITION_COMPLETE</code> event type is
 		 * used by the <code>ScreenNavigator</code> to indicate when a
 		 * transition between screens ends.
+		 *
+		 * @see feathers.controls.ScreenNavigator
 		 */
 		public static const TRANSITION_COMPLETE:String = "transitionComplete";
+
+		/**
+		 * The <code>FeathersEventType.TRANSITION_IN_START</code> event type is
+		 * used by the <code>ScreenNavigator</code> to indicate to a new screen
+		 * when it begins to transition in.
+		 *
+		 * @see feathers.controls.ScreenNavigator
+		 */
+		public static const TRANSITION_IN_START:String = "transitionInStart";
+
+		/**
+		 * The <code>FeathersEventType.TRANSITION_IN_COMPLETE</code> event type is
+		 * used by the <code>ScreenNavigator</code> to indicate to a new screen
+		 * when it has completed transitioning in.
+		 *
+		 * @see feathers.controls.ScreenNavigator
+		 */
+		public static const TRANSITION_IN_COMPLETE:String = "transitionInComplete";
+
+		/**
+		 * The <code>FeathersEventType.TRANSITION_OUT_START</code> event type is
+		 * used by the <code>ScreenNavigator</code> to indicate to an existing
+		 * screen when it begins to transition out.
+		 *
+		 * @see feathers.controls.ScreenNavigator
+		 */
+		public static const TRANSITION_OUT_START:String = "transitionOutStart";
+
+		/**
+		 * The <code>FeathersEventType.TRANSITION_OUT_COMPLETE</code> event type is
+		 * used by the <code>ScreenNavigator</code> to indicate to an existing
+		 * screen when it has completed transitioning out.
+		 *
+		 * @see feathers.controls.ScreenNavigator
+		 */
+		public static const TRANSITION_OUT_COMPLETE:String = "transitionOutComplete";
 
 		/**
 		 * The <code>FeathersEventType.TRANSITION_CANCEL</code> event type is
 		 * used by the <code>ScreenNavigator</code> to indicate when a
 		 * transition between screens is cancelled.
+		 *
+		 * @see feathers.controls.ScreenNavigator
 		 */
 		public static const TRANSITION_CANCEL:String = "transitionCancel";
 

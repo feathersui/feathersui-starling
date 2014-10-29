@@ -443,6 +443,11 @@ package feathers.controls
 			}
 
 			this.dispatchEventWith(FeathersEventType.TRANSITION_START);
+			this._activeScreen.dispatchEventWith(FeathersEventType.TRANSITION_IN_START);
+			if(this._previousScreenInTransition)
+			{
+				this._previousScreenInTransition.dispatchEventWith(FeathersEventType.TRANSITION_OUT_START);
+			}
 			if(transition != null)
 			{
 				transition(this._previousScreenInTransition, this._activeScreen, transitionComplete);
@@ -585,6 +590,7 @@ package feathers.controls
 			if(transition != null)
 			{
 				this.dispatchEventWith(FeathersEventType.TRANSITION_START);
+				this._previousScreenInTransition.dispatchEventWith(FeathersEventType.TRANSITION_OUT_START);
 				transition(this._previousScreenInTransition, null, transitionComplete);
 			}
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
@@ -807,6 +813,14 @@ package feathers.controls
 			}
 			else
 			{
+				if(this._previousScreenInTransition)
+				{
+					this._previousScreenInTransition.dispatchEventWith(FeathersEventType.TRANSITION_OUT_COMPLETE)
+				}
+				if(this._activeScreen)
+				{
+					this._activeScreen.dispatchEventWith(FeathersEventType.TRANSITION_IN_COMPLETE)
+				}
 				this.dispatchEventWith(FeathersEventType.TRANSITION_COMPLETE);
 				if(this._previousScreenInTransition)
 				{

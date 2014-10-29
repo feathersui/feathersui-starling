@@ -76,7 +76,7 @@ package feathers.examples.youtube.screens
 
 			this.backButtonHandler = onBackButton;
 
-			this.owner.addEventListener(FeathersEventType.TRANSITION_COMPLETE, owner_transitionCompleteHandler);
+			this.addEventListener(FeathersEventType.TRANSITION_IN_COMPLETE, transitionInCompleteHandler);
 		}
 
 		override protected function draw():void
@@ -108,15 +108,14 @@ package feathers.examples.youtube.screens
 			this.dispatchEventWith(Event.COMPLETE);
 		}
 
+		private function transitionInCompleteHandler(event:Event):void
+		{
+			this.revealScrollBars();
+		}
+
 		private function watchButton_triggeredHandler(event:Event):void
 		{
 			navigateToURL(new URLRequest(this._model.selectedVideo.url), "_blank");
-		}
-
-		private function owner_transitionCompleteHandler(event:Event):void
-		{
-			this.owner.removeEventListener(FeathersEventType.TRANSITION_COMPLETE, owner_transitionCompleteHandler);
-			this.revealScrollBars();
 		}
 	}
 }
