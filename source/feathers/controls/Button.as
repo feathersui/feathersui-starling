@@ -1251,7 +1251,13 @@ package feathers.controls
 		protected var _stateToSkinFunction:Function;
 
 		/**
-		 * Returns a skin for the current state.
+		 * Returns a skin for the current state. Can be used instead of
+		 * individual skin properties for different states, like
+		 * <code>upSkin</code> or <code>hoverSkin</code>, to reuse the same
+		 * display object for all states. The function should simply change the
+		 * display object's properties. For example, a function could reuse the
+		 * the same <code>starling.display.Image</code> instance among all
+		 * button states, and change its texture for each state.
 		 *
 		 * <p>The following function signature is expected:</p>
 		 * <pre>function(target:Button, state:Object, oldSkin:DisplayObject = null):DisplayObject</pre>
@@ -1282,7 +1288,13 @@ package feathers.controls
 		protected var _stateToIconFunction:Function;
 
 		/**
-		 * Returns an icon for the current state.
+		 * Returns an icon for the current state. Can be used instead of
+		 * individual icon properties for different states, like
+		 * <code>upIcon</code> or <code>hoverIcon</code>, to reuse the same
+		 * display object for all states. the function should simply change the
+		 * display object's properties. For example, a function could reuse the
+		 * the same <code>starling.display.Image</code> instance among all
+		 * button states, and change its texture for each state.
 		 *
 		 * <p>The following function signature is expected:</p>
 		 * <pre>function(target:Button, state:Object, oldIcon:DisplayObject = null):DisplayObject</pre>
@@ -1346,7 +1358,10 @@ package feathers.controls
 		
 		/**
 		 * The skin used when no other skin is defined for the current state.
-		 * Intended for use when multiple states should use the same skin.
+		 * Intended to be used when multiple states should share the same skin.
+		 *
+		 * <p>This property will be ignored if a function is passed to the
+		 * <code>stateToSkinFunction</code> property.</p>
 		 *
 		 * <p>The following example gives the button a default skin to use for
 		 * all states when no specific skin is available:</p>
@@ -1384,6 +1399,9 @@ package feathers.controls
 		 * The skin used for the button's up state. If <code>null</code>, then
 		 * <code>defaultSkin</code> is used instead.
 		 *
+		 * <p>This property will be ignored if a function is passed to the
+		 * <code>stateToSkinFunction</code> property.</p>
+		 *
 		 * <p>The following example gives the button a skin for the up state:</p>
 		 *
 		 * <listing version="3.0">
@@ -1414,6 +1432,9 @@ package feathers.controls
 		/**
 		 * The skin used for the button's down state. If <code>null</code>, then
 		 * <code>defaultSkin</code> is used instead.
+		 *
+		 * <p>This property will be ignored if a function is passed to the
+		 * <code>stateToSkinFunction</code> property.</p>
 		 *
 		 * <p>The following example gives the button a skin for the down state:</p>
 		 *
@@ -1446,6 +1467,9 @@ package feathers.controls
 		 * The skin used for the button's hover state. If <code>null</code>, then
 		 * <code>defaultSkin</code> is used instead.
 		 *
+		 * <p>This property will be ignored if a function is passed to the
+		 * <code>stateToSkinFunction</code> property.</p>
+		 *
 		 * <p>The following example gives the button a skin for the hover state:</p>
 		 *
 		 * <listing version="3.0">
@@ -1476,6 +1500,9 @@ package feathers.controls
 		/**
 		 * The skin used for the button's disabled state. If <code>null</code>,
 		 * then <code>defaultSkin</code> is used instead.
+		 *
+		 * <p>This property will be ignored if a function is passed to the
+		 * <code>stateToSkinFunction</code> property.</p>
 		 *
 		 * <p>The following example gives the button a skin for the disabled state:</p>
 		 *
@@ -1852,7 +1879,10 @@ package feathers.controls
 		
 		/**
 		 * The icon used when no other icon is defined for the current state.
-		 * Intended for use when multiple states should use the same icon.
+		 * Intended to be used when multiple states should share the same icon.
+		 *
+		 * <p>This property will be ignored if a function is passed to the
+		 * <code>stateToIconFunction</code> property.</p>
 		 *
 		 * <p>The following example gives the button a default icon to use for
 		 * all states when no specific icon is available:</p>
@@ -1890,6 +1920,9 @@ package feathers.controls
 		 * The icon used for the button's up state. If <code>null</code>, then
 		 * <code>defaultIcon</code> is used instead.
 		 *
+		 * <p>This property will be ignored if a function is passed to the
+		 * <code>stateToIconFunction</code> property.</p>
+		 *
 		 * <p>The following example gives the button an icon for the up state:</p>
 		 *
 		 * <listing version="3.0">
@@ -1920,6 +1953,9 @@ package feathers.controls
 		/**
 		 * The icon used for the button's down state. If <code>null</code>, then
 		 * <code>defaultIcon</code> is used instead.
+		 *
+		 * <p>This property will be ignored if a function is passed to the
+		 * <code>stateToIconFunction</code> property.</p>
 		 *
 		 * <p>The following example gives the button an icon for the down state:</p>
 		 *
@@ -1952,6 +1988,9 @@ package feathers.controls
 		 * The icon used for the button's hover state. If <code>null</code>, then
 		 * <code>defaultIcon</code> is used instead.
 		 *
+		 * <p>This property will be ignored if a function is passed to the
+		 * <code>stateToIconFunction</code> property.</p>
+		 *
 		 * <p>The following example gives the button an icon for the hover state:</p>
 		 *
 		 * <listing version="3.0">
@@ -1982,6 +2021,9 @@ package feathers.controls
 		/**
 		 * The icon used for the button's disabled state. If <code>null</code>, then
 		 * <code>defaultIcon</code> is used instead.
+		 *
+		 * <p>This property will be ignored if a function is passed to the
+		 * <code>stateToIconFunction</code> property.</p>
 		 *
 		 * <p>The following example gives the button an icon for the disabled state:</p>
 		 *

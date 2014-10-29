@@ -175,6 +175,9 @@ package feathers.controls
 		 * <code>defaultSkin</code>, but a lower priority than other selected
 		 * skins.
 		 *
+		 * <p>This property will be ignored if a function is passed to the
+		 * <code>stateToSkinFunction</code> property.</p>
+		 *
 		 * <p>The following example gives the button a default skin to use for
 		 * all selected states when no specific skin is available:</p>
 		 *
@@ -213,6 +216,9 @@ package feathers.controls
 		 * instead. If <code>defaultSelectedSkin</code> is also
 		 * <code>null</code>, then <code>defaultSkin</code> is used.
 		 *
+		 * <p>This property will be ignored if a function is passed to the
+		 * <code>stateToSkinFunction</code> property.</p>
+		 *
 		 * <p>The following example gives the button a skin for the selected up state:</p>
 		 *
 		 * <listing version="3.0">
@@ -246,6 +252,9 @@ package feathers.controls
 		 * selected. If <code>null</code>, then <code>defaultSelectedSkin</code>
 		 * is used instead. If <code>defaultSelectedSkin</code> is also
 		 * <code>null</code>, then <code>defaultSkin</code> is used.
+		 *
+		 * <p>This property will be ignored if a function is passed to the
+		 * <code>stateToSkinFunction</code> property.</p>
 		 *
 		 * <p>The following example gives the button a skin for the selected down state:</p>
 		 *
@@ -281,6 +290,9 @@ package feathers.controls
 		 * is used instead. If <code>defaultSelectedSkin</code> is also
 		 * <code>null</code>, then <code>defaultSkin</code> is used.
 		 *
+		 * <p>This property will be ignored if a function is passed to the
+		 * <code>stateToSkinFunction</code> property.</p>
+		 *
 		 * <p>The following example gives the button a skin for the selected hover state:</p>
 		 *
 		 * <listing version="3.0">
@@ -314,6 +326,9 @@ package feathers.controls
 		 * selected. If <code>null</code>, then <code>defaultSelectedSkin</code>
 		 * is used instead. If <code>defaultSelectedSkin</code> is also
 		 * <code>null</code>, then <code>defaultSkin</code> is used.
+		 *
+		 * <p>This property will be ignored if a function is passed to the
+		 * <code>stateToSkinFunction</code> property.</p>
 		 *
 		 * <p>The following example gives the button a skin for the selected disabled state:</p>
 		 *
@@ -649,6 +664,9 @@ package feathers.controls
 		 * <code>defaultIcon</code>, but a lower priority than other selected
 		 * icons.
 		 *
+		 * <p>This property will be ignored if a function is passed to the
+		 * <code>stateToIconFunction</code> property.</p>
+		 *
 		 * <p>The following example gives the button a default icon to use for
 		 * all selected states when no specific icon is available:</p>
 		 *
@@ -687,6 +705,9 @@ package feathers.controls
 		 * is used instead. If <code>defaultSelectedIcon</code> is also
 		 * <code>null</code>, then <code>defaultIcon</code> is used.
 		 *
+		 * <p>This property will be ignored if a function is passed to the
+		 * <code>stateToIconFunction</code> property.</p>
+		 *
 		 * <p>The following example gives the button an icon for the selected up state:</p>
 		 *
 		 * <listing version="3.0">
@@ -720,6 +741,9 @@ package feathers.controls
 		 * selected. If <code>null</code>, then <code>defaultSelectedIcon</code>
 		 * is used instead. If <code>defaultSelectedIcon</code> is also
 		 * <code>null</code>, then <code>defaultIcon</code> is used.
+		 *
+		 * <p>This property will be ignored if a function is passed to the
+		 * <code>stateToIconFunction</code> property.</p>
 		 *
 		 * <p>The following example gives the button an icon for the selected down state:</p>
 		 *
@@ -755,6 +779,9 @@ package feathers.controls
 		 * is used instead. If <code>defaultSelectedIcon</code> is also
 		 * <code>null</code>, then <code>defaultIcon</code> is used.
 		 *
+		 * <p>This property will be ignored if a function is passed to the
+		 * <code>stateToIconFunction</code> property.</p>
+		 *
 		 * <p>The following example gives the button an icon for the selected hover state:</p>
 		 *
 		 * <listing version="3.0">
@@ -788,6 +815,9 @@ package feathers.controls
 		 * selected. If <code>null</code>, then <code>defaultSelectedIcon</code>
 		 * is used instead. If <code>defaultSelectedIcon</code> is also
 		 * <code>null</code>, then <code>defaultIcon</code> is used.
+		 *
+		 * <p>This property will be ignored if a function is passed to the
+		 * <code>stateToIconFunction</code> property.</p>
 		 *
 		 * <p>The following example gives the button an icon for the selected disabled state:</p>
 		 *
