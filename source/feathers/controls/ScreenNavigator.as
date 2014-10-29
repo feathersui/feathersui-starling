@@ -388,8 +388,13 @@ package feathers.controls
 		 * Displays a screen and returns a reference to it. If a previous
 		 * transition is running, the new screen will be queued, and no
 		 * reference will be returned.
+		 *
+		 * <p>An optional transition may be specified. If <code>null</code> the
+		 * <code>transition</code> property will be used instead.</p>
+		 *
+		 * @see #transition
 		 */
-		public function showScreen(id:String):DisplayObject
+		public function showScreen(id:String, transition:Function = null):DisplayObject
 		{
 			if(!this._screens.hasOwnProperty(id))
 			{
@@ -412,7 +417,7 @@ package feathers.controls
 			this._previousScreenInTransitionID = this._activeScreenID;
 			if(this._activeScreen)
 			{
-				this.clearScreenInternal(false);
+				this.clearScreenInternal();
 			}
 			
 			this._isTransitionActive = true;
@@ -438,7 +443,14 @@ package feathers.controls
 			}
 
 			this.dispatchEventWith(FeathersEventType.TRANSITION_START);
-			this.transition(this._previousScreenInTransition, this._activeScreen, transitionComplete);
+			if(transition != null)
+			{
+				transition(this._previousScreenInTransition, this._activeScreen, transitionComplete);
+			}
+			else
+			{
+				this.transition(this._previousScreenInTransition, this._activeScreen, transitionComplete);
+			}
 
 			this.dispatchEventWith(Event.CHANGE);
 			return this._activeScreen;
@@ -447,8 +459,13 @@ package feathers.controls
 		/**
 		 * Removes the current screen, leaving the <code>ScreenNavigator</code>
 		 * empty.
+		 *
+		 * <p>An optional transition may be specified. If <code>null</code> the
+		 * <code>transition</code> property will be used instead.</p>
+		 *
+		 * @see #transition
 		 */
-		public function clearScreen():void
+		public function clearScreen(transition:Function = null):void
 		{
 			if(this._isTransitionActive)
 			{
@@ -456,8 +473,11 @@ package feathers.controls
 				this._clearAfterTransition = true;
 				return;
 			}
-
-			this.clearScreenInternal(true);
+			if(transition == null)
+			{
+				transition = this.transition;
+			}
+			this.clearScreenInternal(transition);
 			this.dispatchEventWith(FeathersEventType.CLEAR);
 		}
 
@@ -513,7 +533,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function clearScreenInternal(displayTransition:Boolean):void
+		protected function clearScreenInternal(transition:Function = null):void
 		{
 			if(!this._activeScreen)
 			{
@@ -553,7 +573,7 @@ package feathers.controls
 				}
 			}
 
-			if(displayTransition)
+			if(transition != null)
 			{
 				this._isTransitionActive = true;
 				this._previousScreenInTransition = this._activeScreen;
@@ -562,10 +582,10 @@ package feathers.controls
 			this._screenEvents[this._activeScreenID] = null;
 			this._activeScreen = null;
 			this._activeScreenID = null;
-			if(displayTransition)
+			if(transition != null)
 			{
 				this.dispatchEventWith(FeathersEventType.TRANSITION_START);
-				this.transition(this._previousScreenInTransition, null, transitionComplete);
+				transition(this._previousScreenInTransition, null, transitionComplete);
 			}
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
 		}
@@ -654,7 +674,7 @@ package feathers.controls
 		 */
 		override public function dispose():void
 		{
-			this.clearScreenInternal(false);
+			this.clearScreenInternal();
 			super.dispose();
 		}
 
@@ -774,7 +794,7 @@ package feathers.controls
 			{
 				if(this._activeScreen)
 				{
-					this.clearScreenInternal(false);
+					this.clearScreenInternal();
 					this.removeChild(this._activeScreen, canBeDisposed);
 				}
 				this._activeScreen = this._previousScreenInTransition;
