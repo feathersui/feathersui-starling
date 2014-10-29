@@ -21,6 +21,8 @@ package feathers.controls
 	import flash.ui.Keyboard;
 	import flash.utils.getTimer;
 
+	import starling.core.RenderSupport;
+
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
@@ -2132,6 +2134,48 @@ package feathers.controls
 			{
 				this.removeEventListener(Event.ENTER_FRAME, longPress_enterFrameHandler);
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _scaleWhenDown:Number = 1;
+
+		/**
+		 * The button renders at this scale in the down state.
+		 *
+		 * <p>The following example scales the button in the down state:</p>
+		 *
+		 * <listing version="3.0">
+		 * button.scaleWhenDown = 0.9;</listing>
+		 *
+		 * @default 1
+		 */
+		public function get scaleWhenDown():Number
+		{
+			return this._scaleWhenDown;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set scaleWhenDown(value:Number):void
+		{
+			this._scaleWhenDown = value;
+		}
+
+		/**
+		 * @private
+		 */
+		override public function render(support:RenderSupport, parentAlpha:Number):void
+		{
+			if(this._scaleWhenDown !== 1 && this._currentState == STATE_DOWN)
+			{
+				support.scaleMatrix(this._scaleWhenDown, this._scaleWhenDown);
+				support.translateMatrix(Math.round((1 - this._scaleWhenDown) / 2 * this.actualWidth),
+					Math.round((1 - this._scaleWhenDown) / 2 * this.actualHeight));
+			}
+			super.render(support, parentAlpha);
 		}
 		
 		/**
