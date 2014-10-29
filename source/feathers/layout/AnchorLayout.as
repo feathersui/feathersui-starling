@@ -304,6 +304,13 @@ package feathers.layout
 			if(layoutData && item is IFeathersControl)
 			{
 				var percentWidth:Number = layoutData.percentWidth;
+				//for some reason, if we don't call a function right here,
+				//compiling with the flex 4.6 SDK will throw a VerifyError
+				//for a stack overflow.
+				//we could change the === check back to !isNaN() instead, but
+				//isNaN() can allocate an object, so we should call a different
+				//function without allocation.
+				this.doNothing();
 				if(percentWidth === percentWidth) //!isNaN
 				{
 					itemWidth = IFeathersControl(item).minWidth;
@@ -324,6 +331,13 @@ package feathers.layout
 			if(layoutData && item is IFeathersControl)
 			{
 				var percentHeight:Number = layoutData.percentHeight;
+				//for some reason, if we don't call a function right here,
+				//compiling with the flex 4.6 SDK will throw a VerifyError
+				//for a stack overflow.
+				//we could change the === check back to !isNaN() instead, but
+				//isNaN() can allocate an object, so we should call a different
+				//function without allocation.
+				this.doNothing();
 				if(percentHeight === percentHeight) //!isNaN
 				{
 					itemHeight = IFeathersControl(item).minHeight;
@@ -334,6 +348,13 @@ package feathers.layout
 			var bottom:Number = this.getBottomOffset(displayItem);
 			return itemHeight + top + bottom;
 		}
+
+		/**
+		 * @private
+		 * This function is here to work around a bug in the Flex 4.6 SDK
+		 * compiler. For explanation, see the places where it gets called.
+		 */
+		protected function doNothing():void {}
 
 		/**
 		 * @private

@@ -3373,6 +3373,9 @@ package feathers.controls.renderers
 					//for some reason, if we don't call a function right here,
 					//compiling with the flex 4.6 SDK will throw a VerifyError
 					//for a stack overflow.
+					//we could change the !== check back to isNaN() instead, but
+					//isNaN() can allocate an object, so we should call a different
+					//function without allocation.
 					this.doNothing();
 					if(adjustedAccessoryGap !== adjustedAccessoryGap) //isNaN
 					{
@@ -3471,6 +3474,9 @@ package feathers.controls.renderers
 					//for some reason, if we don't call a function right here,
 					//compiling with the flex 4.6 SDK will throw a VerifyError
 					//for a stack overflow.
+					//we could change the !== check back to isNaN() instead, but
+					//isNaN() can allocate an object, so we should call a different
+					//function without allocation.
 					this.doNothing();
 					if(adjustedAccessoryGap !== adjustedAccessoryGap) //isNaN
 					{
