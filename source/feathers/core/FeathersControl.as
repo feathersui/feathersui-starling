@@ -342,10 +342,15 @@ package feathers.core
 		protected var _styleProvider:IStyleProvider;
 
 		/**
-		 * After the component initializes, it may be passed to a style provider
-		 * to set skin and style properties.
+		 * When a component initializes, a style provider may be used to set
+		 * properties that affect the component's visual appearance.
 		 *
-		 * @default null
+		 * <p>You can set or replace an existing style provider at any time
+		 * before a component initializes without immediately affecting the
+		 * component's visual appearance. After the component initializes, the
+		 * style provider may still be changed, but any properties that
+		 * were set by the previous style provider will not be reset to their
+		 * default values.</p>
 		 *
 		 * @see #styleName
 		 * @see #styleNameList
@@ -361,11 +366,11 @@ package feathers.core
 		 */
 		public function set styleProvider(value:IStyleProvider):void
 		{
-			if(this.isInitialized)
-			{
-				throw new IllegalOperationError("The styleProvider property cannot be changed after a component is initialized.");
-			}
 			this._styleProvider = value;
+			if(this._styleProvider && this.isInitialized)
+			{
+				this._styleProvider.applyStyles(this);
+			}
 		}
 
 		/**
