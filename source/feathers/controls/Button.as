@@ -2167,13 +2167,50 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _scaleWhenHovering:Number = 1;
+
+		/**
+		 * The button renders at this scale in the hover state.
+		 *
+		 * <p>The following example scales the button in the hover state:</p>
+		 *
+		 * <listing version="3.0">
+		 * button.scaleWhenHovering = 0.9;</listing>
+		 *
+		 * @default 1
+		 */
+		public function get scaleWhenHovering():Number
+		{
+			return this._scaleWhenHovering;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set scaleWhenHovering(value:Number):void
+		{
+			this._scaleWhenHovering = value;
+		}
+
+		/**
+		 * @private
+		 */
 		override public function render(support:RenderSupport, parentAlpha:Number):void
 		{
-			if(this._scaleWhenDown !== 1 && this._currentState == STATE_DOWN)
+			var scale:Number = 1;
+			if(this._currentState == STATE_DOWN)
 			{
-				support.scaleMatrix(this._scaleWhenDown, this._scaleWhenDown);
-				support.translateMatrix(Math.round((1 - this._scaleWhenDown) / 2 * this.actualWidth),
-					Math.round((1 - this._scaleWhenDown) / 2 * this.actualHeight));
+				scale = this._scaleWhenDown;
+			}
+			else if(this._currentState == STATE_HOVER)
+			{
+				scale = this._scaleWhenHovering;
+			}
+			if(scale !== 1)
+			{
+				support.scaleMatrix(scale, scale);
+				support.translateMatrix(Math.round((1 - scale) / 2 * this.actualWidth),
+					Math.round((1 - scale) / 2 * this.actualHeight));
 			}
 			super.render(support, parentAlpha);
 		}
