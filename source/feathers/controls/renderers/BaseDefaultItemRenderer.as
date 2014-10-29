@@ -3370,6 +3370,10 @@ package feathers.controls.renderers
 				if(hasPreviousItem)
 				{
 					var adjustedAccessoryGap:Number = this._accessoryGap;
+					//for some reason, if we don't call a function right here,
+					//compiling with the flex 4.6 SDK will throw a VerifyError
+					//for a stack overflow.
+					this.doNothing();
 					if(adjustedAccessoryGap !== adjustedAccessoryGap) //isNaN
 					{
 						adjustedAccessoryGap = this._gap;
@@ -3464,13 +3468,17 @@ package feathers.controls.renderers
 				if(hasPreviousItem)
 				{
 					var adjustedAccessoryGap:Number = this._accessoryGap;
-					if(adjustedAccessoryGap != adjustedAccessoryGap)
+					//for some reason, if we don't call a function right here,
+					//compiling with the flex 4.6 SDK will throw a VerifyError
+					//for a stack overflow.
+					this.doNothing();
+					if(adjustedAccessoryGap !== adjustedAccessoryGap) //isNaN
 					{
 						adjustedAccessoryGap =  this._gap;
 					}
 					if(adjustedAccessoryGap == Number.POSITIVE_INFINITY)
 					{
-						if(this._minAccessoryGap != this._minAccessoryGap)
+						if(this._minAccessoryGap != this._minAccessoryGap) //isNaN
 						{
 							adjustedAccessoryGap = this._minGap;
 						}
@@ -3489,6 +3497,13 @@ package feathers.controls.renderers
 			}
 			return height;
 		}
+
+		/**
+		 * @private
+		 * This function is here to work around a bug in the Flex 4.6 SDK
+		 * compiler. For explanation, see the places where it gets called.
+		 */
+		protected function doNothing():void {}
 
 		/**
 		 * Updates the renderer to display the item's data. Override this
