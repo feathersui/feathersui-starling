@@ -86,7 +86,7 @@ package feathers.examples.youtube.screens
 
 			this.headerProperties.title = "YouTube Feeds";
 
-			this.owner.addEventListener(FeathersEventType.TRANSITION_COMPLETE, owner_transitionCompleteHandler);
+			this.addEventListener(FeathersEventType.TRANSITION_IN_COMPLETE, transitionInCompleteHandler);
 		}
 
 		override protected function draw():void
@@ -172,6 +172,19 @@ package feathers.examples.youtube.screens
 			return StandardIcons.listDrillDownAccessoryTexture;
 		}
 
+		private function removedFromStageHandler(event:starling.events.Event):void
+		{
+			this.cleanUpLoader();
+		}
+
+		private function transitionInCompleteHandler(event:starling.events.Event):void
+		{
+			this._list.selectedIndex = -1;
+			this._list.addEventListener(starling.events.Event.CHANGE, list_changeHandler);
+
+			this._list.revealScrollBars();
+		}
+
 		private function list_changeHandler(event:starling.events.Event):void
 		{
 			var screenItem:ScreenNavigatorItem = this._owner.getScreen(this.screenID);
@@ -191,21 +204,6 @@ package feathers.examples.youtube.screens
 			screenItem.properties.savedDataProvider = this._list.dataProvider;
 
 			this.dispatchEventWith(LIST_VIDEOS, false, VideoFeed(this._list.selectedItem));
-		}
-
-		private function owner_transitionCompleteHandler(event:starling.events.Event):void
-		{
-			this.owner.removeEventListener(FeathersEventType.TRANSITION_COMPLETE, owner_transitionCompleteHandler);
-
-			this._list.selectedIndex = -1;
-			this._list.addEventListener(starling.events.Event.CHANGE, list_changeHandler);
-
-			this._list.revealScrollBars();
-		}
-
-		private function removedFromStageHandler(event:starling.events.Event):void
-		{
-			this.cleanUpLoader();
 		}
 
 		private function loader_completeHandler(event:flash.events.Event):void

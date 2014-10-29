@@ -156,12 +156,17 @@ package feathers.examples.componentsExplorer.screens
 				this._settingsButton
 			];
 
-			this.owner.addEventListener(FeathersEventType.TRANSITION_COMPLETE, owner_transitionCompleteHandler);
+			this.addEventListener(FeathersEventType.TRANSITION_IN_COMPLETE, transitionInCompleteHandler);
 		}
 		
 		private function onBackButton():void
 		{
 			this.dispatchEventWith(Event.COMPLETE);
+		}
+
+		private function transitionInCompleteHandler(event:Event):void
+		{
+			this._list.revealScrollBars();
 		}
 		
 		private function backButton_triggeredHandler(event:Event):void
@@ -177,12 +182,6 @@ package feathers.examples.componentsExplorer.screens
 		private function list_changeHandler(event:Event):void
 		{
 			trace("GroupedList onChange:", this._list.selectedGroupIndex, this._list.selectedItemIndex);
-		}
-
-		private function owner_transitionCompleteHandler(event:Event):void
-		{
-			this.owner.removeEventListener(FeathersEventType.TRANSITION_COMPLETE, owner_transitionCompleteHandler);
-			this._list.revealScrollBars();
 		}
 	}
 }
