@@ -15,6 +15,7 @@ package feathers.controls
 	import feathers.data.HierarchicalCollection;
 	import feathers.events.CollectionEventType;
 	import feathers.layout.ILayout;
+	import feathers.layout.IVariableVirtualLayout;
 	import feathers.layout.VerticalLayout;
 	import feathers.skins.IStyleProvider;
 
@@ -604,7 +605,15 @@ package feathers.controls
 			{
 				return;
 			}
+			if(this._layout)
+			{
+				this._layout.removeEventListener(Event.SCROLL, layout_scrollHandler);
+			}
 			this._layout = value;
+			if(this._layout is IVariableVirtualLayout)
+			{
+				this._layout.addEventListener(Event.SCROLL, layout_scrollHandler);
+			}
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
 
@@ -2410,6 +2419,7 @@ package feathers.controls
 			this._selectedGroupIndex = -1;
 			this._selectedItemIndex = -1;
 			this.dataProvider = null;
+			this.layout = null;
 			super.dispose();
 		}
 
@@ -2564,7 +2574,7 @@ package feathers.controls
 				layout.gap = 0;
 				layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
 				layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
-				this._layout = layout;
+				this.layout = layout;
 			}
 		}
 
@@ -2778,6 +2788,36 @@ package feathers.controls
 		protected function dataViewPort_changeHandler(event:Event):void
 		{
 			this.setSelectedLocation(this.dataViewPort.selectedGroupIndex, this.dataViewPort.selectedItemIndex);
+		}
+
+		/**
+		 * @private
+		 */
+		private function layout_scrollHandler(event:Event, scrollOffset:Point):void
+		{
+			var layout:IVariableVirtualLayout = IVariableVirtualLayout(this._layout);
+			if(!this.isScrolling || !layout.useVirtualLayout || !layout.hasVariableItemDimensions)
+			{
+				return;
+			}
+
+			var scrollOffsetX:Number = scrollOffset.x;
+			this._startHorizontalScrollPosition += scrollOffsetX;
+			this._horizontalScrollPosition += scrollOffsetX;
+			if(this._horizontalAutoScrollTween)
+			{
+				this._targetHorizontalScrollPosition += scrollOffsetX;
+				this.throwTo(this._targetHorizontalScrollPosition, NaN, this._horizontalAutoScrollTween.totalTime - this._horizontalAutoScrollTween.currentTime);
+			}
+
+			var scrollOffsetY:Number = scrollOffset.y;
+			this._startVerticalScrollPosition += scrollOffsetY;
+			this._verticalScrollPosition += scrollOffsetY;
+			if(this._verticalAutoScrollTween)
+			{
+				this._targetVerticalScrollPosition += scrollOffsetY;
+				this.throwTo(NaN, this._targetVerticalScrollPosition, this._verticalAutoScrollTween.totalTime - this._verticalAutoScrollTween.currentTime);
+			}
 		}
 	}
 }
