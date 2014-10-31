@@ -1029,6 +1029,17 @@ package feathers.layout
 								//changed, and it the view port may need to be
 								//re-measured.
 								this._heightCache[iNormalized] = itemHeight;
+
+								//attempt to adjust the scroll position so that
+								//it looks like we're scrolling smoothly after
+								//this item resizes.
+								if(positionY < scrollY &&
+									cachedHeight !== cachedHeight && //isNaN
+									itemHeight != calculatedTypicalItemHeight)
+								{
+									this.dispatchEventWith(Event.SCROLL, false, new Point(0, itemHeight - calculatedTypicalItemHeight));
+								}
+
 								this.dispatchEventWith(Event.CHANGE);
 							}
 						}
