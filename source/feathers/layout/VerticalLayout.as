@@ -41,6 +41,34 @@ package feathers.layout
 	[Event(name="change",type="starling.events.Event")]
 
 	/**
+	 * Dispatched when the layout would like to adjust the container's scroll
+	 * position. Typically, this is used when the virtual dimensions of an item
+	 * differ from its real dimensions. This event allows the container to
+	 * adjust scrolling so that it appears smooth, without jarring jumps or
+	 * shifts when an item resizes.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>A <code>flash.geom.Point</code> object
+	 *   representing how much the scroll position should be adjusted in both
+	 *   horizontal and vertical directions. Measured in pixels.</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @eventType starling.events.Event.SCROLL
+	 */
+	[Event(name="scroll",type="starling.events.Event")]
+
+	/**
 	 * Positions items from top to bottom in a single column.
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/vertical-layout
