@@ -1012,6 +1012,17 @@ package feathers.layout
 								//changed, and it the view port may need to be
 								//re-measured.
 								this._widthCache[iNormalized] = itemWidth;
+
+								//attempt to adjust the scroll position so that
+								//it looks like we're scrolling smoothly after
+								//this item resizes.
+								if(positionX < scrollX &&
+									cachedWidth !== cachedWidth && //isNaN
+									itemWidth != calculatedTypicalItemWidth)
+								{
+									this.dispatchEventWith(Event.SCROLL, false, new Point(itemWidth - calculatedTypicalItemWidth, 0));
+								}
+
 								this.dispatchEventWith(Event.CHANGE);
 							}
 						}
