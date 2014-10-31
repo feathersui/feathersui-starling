@@ -10,11 +10,11 @@ package feathers.layout
 	import starling.display.DisplayObject;
 
 	/**
-	 * Dispatched when the layout would like to adjust the scroll position.
-	 * Typically, this is used when the virtual dimensions of an item differ
-	 * from the real dimensions of the same item. It allows touch-based
-	 * scrolling to appear smooth without jarring jumps or shifts when an item
-	 * resizes.
+	 * Dispatched when the layout would like to adjust the container's scroll
+	 * position. Typically, this is used when the virtual dimensions of an item
+	 * differ from its real dimensions. This event allows the container to
+	 * adjust scrolling so that it appears smooth, without jarring jumps or
+	 * shifts when an item resizes.
 	 *
 	 * <p>The properties of the event object have the following values:</p>
 	 * <table class="innertable">
@@ -24,16 +24,18 @@ package feathers.layout
 	 *   event listener that handles the event. For example, if you use
 	 *   <code>myButton.addEventListener()</code> to register an event listener,
 	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
-	 * <tr><td><code>data</code></td><td>null</td></tr>
+	 * <tr><td><code>data</code></td><td>A <code>flash.geom.Point</code> object
+	 *   representing how much the scroll position should be adjusted in both
+	 *   horizontal and vertical directions. Measured in pixels.</td></tr>
 	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
 	 *   it is not always the Object listening for the event. Use the
 	 *   <code>currentTarget</code> property to always access the Object
 	 *   listening for the event.</td></tr>
 	 * </table>
 	 *
-	 * @eventType starling.events.Event.CHANGE
+	 * @eventType starling.events.Event.SCROLL
 	 */
-	[Event(name="change",type="starling.events.Event")]
+	[Event(name="scroll",type="starling.events.Event")]
 
 	/**
 	 * A virtual layout that supports variable item dimensions.
