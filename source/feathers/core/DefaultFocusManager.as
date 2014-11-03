@@ -224,7 +224,8 @@ package feathers.core
 				var targetWithFocus:IFocusDisplayObject = IFocusDisplayObject(target);
 				targetWithFocus.focusManager = this;
 			}
-			else if(target is DisplayObjectContainer)
+			if((target is DisplayObjectContainer && !(target is IFocusDisplayObject)) ||
+				(target is IFocusContainer && IFocusContainer(target).isChildFocusEnabled))
 			{
 				var container:DisplayObjectContainer = DisplayObjectContainer(target);
 				var childCount:int = container.numChildren;
