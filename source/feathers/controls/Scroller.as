@@ -3667,13 +3667,31 @@ package feathers.controls
 			if(this._viewPort)
 			{
 				this._minHorizontalScrollPosition = this._viewPort.contentX;
-				this._maxHorizontalScrollPosition = this._minHorizontalScrollPosition + this._viewPort.width - visibleViewPortWidth;
+				if(this._viewPort.width == Number.POSITIVE_INFINITY)
+				{
+					//we don't want to risk the possibility of negative infinity
+					//being added to positive infinity. the result is NaN.
+					this._maxHorizontalScrollPosition = Number.POSITIVE_INFINITY;
+				}
+				else
+				{
+					this._maxHorizontalScrollPosition = this._minHorizontalScrollPosition + this._viewPort.width - visibleViewPortWidth;
+				}
 				if(this._maxHorizontalScrollPosition < this._minHorizontalScrollPosition)
 				{
 					this._maxHorizontalScrollPosition = this._minHorizontalScrollPosition;
 				}
 				this._minVerticalScrollPosition = this._viewPort.contentY;
-				this._maxVerticalScrollPosition = this._minVerticalScrollPosition + this._viewPort.height - visibleViewPortHeight;
+				if(this._viewPort.height == Number.POSITIVE_INFINITY)
+				{
+					//we don't want to risk the possibility of negative infinity
+					//being added to positive infinity. the result is NaN.
+					this._maxVerticalScrollPosition = Number.POSITIVE_INFINITY;
+				}
+				else
+				{
+					this._maxVerticalScrollPosition = this._minVerticalScrollPosition + this._viewPort.height - visibleViewPortHeight;
+				}
 				if(this._maxVerticalScrollPosition < this._minVerticalScrollPosition)
 				{
 					this._maxVerticalScrollPosition =  this._minVerticalScrollPosition;
@@ -3702,10 +3720,29 @@ package feathers.controls
 		{
 			if(this._snapToPages)
 			{
-				var horizontalRange:Number = this._maxHorizontalScrollPosition - this._minHorizontalScrollPosition;
-				var verticalPageRange:Number = this._maxVerticalScrollPosition - this._minVerticalScrollPosition;
-				this._horizontalPageCount = Math.ceil(horizontalRange / this.actualPageWidth) + 1;
-				this._verticalPageCount = Math.ceil(verticalPageRange / this.actualPageHeight) + 1;
+				var horizontalScrollRange:Number = this._maxHorizontalScrollPosition - this._minHorizontalScrollPosition;
+				if(horizontalScrollRange == Number.POSITIVE_INFINITY)
+				{
+					//trying to put positive infinity into an int results in 0
+					//so we need a special case to provide a large int value.
+					this._horizontalPageCount = int.MAX_VALUE;
+				}
+				else
+				{
+					this._horizontalPageCount = Math.ceil(horizontalScrollRange / this.actualPageWidth) + 1;
+				}
+
+				var verticalScrollRange:Number = this._maxVerticalScrollPosition - this._minVerticalScrollPosition;
+				if(verticalScrollRange == Number.POSITIVE_INFINITY)
+				{
+					//trying to put positive infinity into an int results in 0
+					//so we need a special case to provide a large int value.
+					this._verticalPageCount = int.MAX_VALUE;
+				}
+				else
+				{
+					this._verticalPageCount = Math.ceil(verticalScrollRange / this.actualPageHeight) + 1;
+				}
 			}
 			else
 			{
