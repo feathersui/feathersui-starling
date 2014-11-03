@@ -2058,6 +2058,7 @@ package feathers.core
 			{
 				this._styleProvider.applyStyles(this);
 			}
+			this._styleNameList.addEventListener(Event.CHANGE, styleNameList_changeHandler);
 		}
 
 		/**
@@ -2132,6 +2133,18 @@ package feathers.core
 		protected function layoutData_changeHandler(event:Event):void
 		{
 			this.dispatchEventWith(FeathersEventType.LAYOUT_DATA_CHANGE);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function styleNameList_changeHandler(event:Event):void
+		{
+			if(!this._styleProvider)
+			{
+				return;
+			}
+			this._styleProvider.applyStyles(this);
 		}
 	}
 }
