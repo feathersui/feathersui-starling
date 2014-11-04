@@ -8,6 +8,7 @@ package feathers.examples.trainTimes.controls
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.core.FeathersControl;
 	import feathers.examples.trainTimes.model.StationData;
+	import feathers.skins.IStyleProvider;
 
 	import flash.geom.Point;
 
@@ -37,6 +38,8 @@ package feathers.examples.trainTimes.controls
 		private static const TRAVEL_TO_TEXT:String = "TRAVEL TO";
 		private static const QUESTION_MARK:String = "?";
 
+		public static var globalStyleProvider:IStyleProvider;
+
 		protected static function defaultLoaderFactory():ImageLoader
 		{
 			return new ImageLoader();
@@ -45,6 +48,11 @@ package feathers.examples.trainTimes.controls
 		public function StationListItemRenderer()
 		{
 			this.addEventListener(TouchEvent.TOUCH, touchHandler);
+		}
+
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			return StationListItemRenderer.globalStyleProvider;
 		}
 
 		protected var background:Quad;

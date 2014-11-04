@@ -11,7 +11,6 @@ package feathers.examples.trainTimes.themes
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.text.StageTextTextEditor;
 	import feathers.controls.text.TextFieldTextRenderer;
-	import feathers.core.DisplayListWatcher;
 	import feathers.core.FeathersControl;
 	import feathers.core.ITextEditor;
 	import feathers.core.ITextRenderer;
@@ -26,6 +25,7 @@ package feathers.examples.trainTimes.themes
 	import feathers.system.DeviceCapabilities;
 	import feathers.textures.Scale3Textures;
 	import feathers.textures.Scale9Textures;
+	import feathers.themes.StyleNameFunctionTheme;
 
 	import flash.display.BitmapData;
 	import flash.geom.Rectangle;
@@ -33,14 +33,12 @@ package feathers.examples.trainTimes.themes
 
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
-	import starling.display.DisplayObjectContainer;
 	import starling.display.Quad;
-	import starling.events.Event;
 	import starling.events.ResizeEvent;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 
-	public class TrainTimesTheme extends DisplayListWatcher
+	public class TrainTimesTheme extends StyleNameFunctionTheme
 	{
 		[Embed(source="/../assets/images/traintimes.png")]
 		protected static const ATLAS_IMAGE:Class;
@@ -88,29 +86,10 @@ package feathers.examples.trainTimes.themes
 			return quad;
 		}
 
-		public function TrainTimesTheme(container:DisplayObjectContainer = null, scaleToDPI:Boolean = true)
+		public function TrainTimesTheme()
 		{
-			if(!container)
-			{
-				container = Starling.current.stage;
-			}
-			super(container);
-			this._scaleToDPI = scaleToDPI;
+			super();
 			this.initialize();
-		}
-
-		protected var _originalDPI:int;
-
-		public function get originalDPI():int
-		{
-			return this._originalDPI;
-		}
-
-		protected var _scaleToDPI:Boolean;
-
-		public function get scaleToDPI():Boolean
-		{
-			return this._scaleToDPI;
 		}
 
 		protected var scale:Number = 1;
@@ -141,16 +120,11 @@ package feathers.examples.trainTimes.themes
 
 		override public function dispose():void
 		{
-			if(this.root)
+			if(this.primaryBackground)
 			{
-				this.root.removeEventListener(Event.ADDED_TO_STAGE, root_addedToStageHandler);
-				if(this.primaryBackground)
-				{
-					this.root.stage.removeEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
-					this.root.removeEventListener(Event.REMOVED_FROM_STAGE, root_removedFromStageHandler);
-					this.root.removeChild(this.primaryBackground, true);
-					this.primaryBackground = null;
-				}
+				Starling.current.stage.removeEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
+				Starling.current.stage.removeChild(this.primaryBackground, true);
+				this.primaryBackground = null;
 			}
 			if(this.atlas)
 			{
@@ -165,41 +139,51 @@ package feathers.examples.trainTimes.themes
 			super.dispose();
 		}
 
-		protected function initializeRoot():void
-		{
-			this.primaryBackground = new TiledImage(this.mainBackgroundTexture);
-			this.primaryBackground.width = root.stage.stageWidth;
-			this.primaryBackground.height = root.stage.stageHeight;
-			this.root.addChildAt(this.primaryBackground, 0);
-			this.root.stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
-			this.root.addEventListener(Event.REMOVED_FROM_STAGE, root_removedFromStageHandler);
-		}
-
 		protected function initialize():void
 		{
+			this.initializeScale();
+			this.initializeGlobals();
+			this.initializeTextures();
+			this.initializeStage();
+			this.initializeStyleProviders();
+		}
+
+		protected function initializeStage():void
+		{
+			this.primaryBackground = new TiledImage(this.mainBackgroundTexture);
+			this.primaryBackground.width = Starling.current.stage.stageWidth;
+			this.primaryBackground.height = Starling.current.stage.stageHeight;
+			Starling.current.stage.addChildAt(this.primaryBackground, 0);
+			Starling.current.stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
+		}
+
+		protected function initializeScale():void
+		{
 			var scaledDPI:int = DeviceCapabilities.dpi / Starling.contentScaleFactor;
-			this._originalDPI = scaledDPI;
-			if(this._scaleToDPI)
+			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
-				if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
-				{
-					this._originalDPI = ORIGINAL_DPI_IPAD_RETINA;
-				}
-				else
-				{
-					this._originalDPI = ORIGINAL_DPI_IPHONE_RETINA;
-				}
+				var originalDPI:int = ORIGINAL_DPI_IPAD_RETINA;
+			}
+			else
+			{
+				originalDPI = ORIGINAL_DPI_IPHONE_RETINA;
 			}
 
-			this.scale = scaledDPI / this._originalDPI;
+			this.scale = scaledDPI / originalDPI;
+		}
 
+		protected function initializeGlobals():void
+		{
 			FeathersControl.defaultTextRendererFactory = textRendererFactory;
 			FeathersControl.defaultTextEditorFactory = textEditorFactory;
 
 			PopUpManager.overlayFactory = popUpOverlayFactory;
 			Callout.stagePaddingTop = Callout.stagePaddingRight = Callout.stagePaddingBottom =
 				Callout.stagePaddingLeft = 16 * this.scale;
+		}
 
+		protected function initializeTextures():void
+		{
 			var atlasBitmapData:BitmapData = (new ATLAS_IMAGE()).bitmapData;
 			this.atlas = new TextureAtlas(Texture.fromBitmapData(atlasBitmapData, false), XML(new ATLAS_XML()));
 			if(Starling.handleLostContext)
@@ -240,29 +224,23 @@ package feathers.examples.trainTimes.themes
 			this.stationListNameTextFormat = new TextFormat(boldItalicFontName, Math.round(48 * this.scale), PRIMARY_TEXT_COLOR, true, true);
 			this.stationListDetailTextFormat = new TextFormat(boldFontName, Math.round(24 * this.scale), DETAIL_TEXT_COLOR, true);
 			this.stationListDetailTextFormat.letterSpacing = 6 * this.scale;
+		}
 
-			if(this.root.stage)
-			{
-				this.initializeRoot();
-			}
-			else
-			{
-				this.root.addEventListener(Event.ADDED_TO_STAGE, root_addedToStageHandler);
-			}
-
-			this.setInitializerForClass(Button, buttonInitializer);
-			this.setInitializerForClass(Button, confirmButtonInitializer, StationListItemRenderer.CHILD_STYLE_NAME_STATION_LIST_CONFIRM_BUTTON);
-			this.setInitializerForClass(Button, cancelButtonInitializer, StationListItemRenderer.CHILD_STYLE_NAME_STATION_LIST_CANCEL_BUTTON);
-			this.setInitializerForClass(Button, nothingInitializer, SimpleScrollBar.DEFAULT_CHILD_STYLE_NAME_THUMB);
-			this.setInitializerForClass(Label, labelInitializer);
-			this.setInitializerForClass(Label, stationListNameLabelInitializer, StationListItemRenderer.CHILD_STYLE_NAME_STATION_LIST_NAME_LABEL);
-			this.setInitializerForClass(Label, stationListDetailLabelInitializer, StationListItemRenderer.CHILD_STYLE_NAME_STATION_LIST_DETAILS_LABEL);
-			this.setInitializerForClass(Header, headerInitializer);
-			this.setInitializerForClass(List, stationListInitializer, StationScreen.CHILD_STYLE_NAME_STATION_LIST);
-			this.setInitializerForClass(List, timesListInitializer, TimesScreen.CHILD_STYLE_NAME_TIMES_LIST);
-			this.setInitializerForClass(DefaultListItemRenderer, timesListItemRendererInitializer, TIMES_LIST_ITEM_RENDERER_NAME);
-			this.setInitializerForClass(StationListItemRenderer, stationListItemRendererInitializer);
-			this.setInitializerForClass(ScrollContainer, actionContainerInitializer, StationListItemRenderer.CHILD_STYLE_NAME_STATION_LIST_ACTION_CONTAINER)
+		protected function initializeStyleProviders():void
+		{
+			this.getStyleProviderForClass(Button).defaultStyleFunction = setButtonStyles;
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(StationListItemRenderer.CHILD_STYLE_NAME_STATION_LIST_CONFIRM_BUTTON, setConfirmButtonStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(StationListItemRenderer.CHILD_STYLE_NAME_STATION_LIST_CANCEL_BUTTON, setCancelButtonStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(SimpleScrollBar.DEFAULT_CHILD_STYLE_NAME_THUMB, setNoStyles);
+			this.getStyleProviderForClass(Label).defaultStyleFunction = setLabelStyles;
+			this.getStyleProviderForClass(Label).setFunctionForStyleName(StationListItemRenderer.CHILD_STYLE_NAME_STATION_LIST_NAME_LABEL, setStationListNameLabelStyles);
+			this.getStyleProviderForClass(Label).setFunctionForStyleName(StationListItemRenderer.CHILD_STYLE_NAME_STATION_LIST_DETAILS_LABEL, setStationListDetailLabelStyles);
+			this.getStyleProviderForClass(Header).defaultStyleFunction = setHeaderStyles;
+			this.getStyleProviderForClass(List).setFunctionForStyleName(StationScreen.CHILD_STYLE_NAME_STATION_LIST, setStationListStyles);
+			this.getStyleProviderForClass(List).setFunctionForStyleName(TimesScreen.CHILD_STYLE_NAME_TIMES_LIST, setTimesListStyles);
+			this.getStyleProviderForClass(DefaultListItemRenderer).setFunctionForStyleName(TIMES_LIST_ITEM_RENDERER_NAME, setTimesListItemRendererStyles);
+			this.getStyleProviderForClass(StationListItemRenderer).defaultStyleFunction = setStationListItemRendererStyles;
+			this.getStyleProviderForClass(ScrollContainer).setFunctionForStyleName(StationListItemRenderer.CHILD_STYLE_NAME_STATION_LIST_ACTION_CONTAINER, setActionContainerStyles);
 		}
 
 		protected function imageLoaderFactory():ImageLoader
@@ -294,24 +272,24 @@ package feathers.examples.trainTimes.themes
 			return scrollBar;
 		}
 
-		protected function nothingInitializer(target:DisplayObject):void {}
+		protected function setNoStyles(target:DisplayObject):void {}
 
-		protected function labelInitializer(label:Label):void
+		protected function setLabelStyles(label:Label):void
 		{
 			label.textRendererProperties.textFormat = this.defaultTextFormat;
 		}
 
-		protected function stationListNameLabelInitializer(label:Label):void
+		protected function setStationListNameLabelStyles(label:Label):void
 		{
 			label.textRendererProperties.textFormat = this.stationListNameTextFormat;
 		}
 
-		protected function stationListDetailLabelInitializer(label:Label):void
+		protected function setStationListDetailLabelStyles(label:Label):void
 		{
 			label.textRendererProperties.textFormat = this.stationListDetailTextFormat;
 		}
 
-		protected function buttonInitializer(button:Button):void
+		protected function setButtonStyles(button:Button):void
 		{
 			var defaultIcon:ImageLoader = new ImageLoader();
 			defaultIcon.source = this.backIconTexture;
@@ -322,7 +300,7 @@ package feathers.examples.trainTimes.themes
 			button.minTouchWidth = button.minTouchHeight = 88 * this.scale;
 		}
 
-		protected function confirmButtonInitializer(button:Button):void
+		protected function setConfirmButtonStyles(button:Button):void
 		{
 			var defaultIcon:ImageLoader = new ImageLoader();
 			defaultIcon.source = this.confirmIconTexture;
@@ -333,7 +311,7 @@ package feathers.examples.trainTimes.themes
 			button.minTouchWidth = button.minTouchHeight = 88 * this.scale;
 		}
 
-		protected function cancelButtonInitializer(button:Button):void
+		protected function setCancelButtonStyles(button:Button):void
 		{
 			var defaultIcon:ImageLoader = new ImageLoader();
 			defaultIcon.source = this.cancelIconTexture;
@@ -344,7 +322,7 @@ package feathers.examples.trainTimes.themes
 			button.minTouchWidth = button.minTouchHeight = 88 * this.scale;
 		}
 
-		protected function headerInitializer(header:Header):void
+		protected function setHeaderStyles(header:Header):void
 		{
 			header.minWidth = 88 * this.scale;
 			header.minHeight = 88 * this.scale;
@@ -357,7 +335,7 @@ package feathers.examples.trainTimes.themes
 			header.titleProperties.textFormat = this.headerTitleTextFormat;
 		}
 
-		protected function stationListInitializer(list:List):void
+		protected function setStationListStyles(list:List):void
 		{
 			list.horizontalScrollBarFactory = this.horizontalScrollBarFactory;
 			list.verticalScrollBarFactory = this.verticalScrollBarFactory;
@@ -365,14 +343,14 @@ package feathers.examples.trainTimes.themes
 			list.itemRendererType = StationListItemRenderer;
 		}
 
-		protected function timesListInitializer(list:List):void
+		protected function setTimesListStyles(list:List):void
 		{
 			list.horizontalScrollBarFactory = this.horizontalScrollBarFactory;
 			list.verticalScrollBarFactory = this.verticalScrollBarFactory;
 			list.itemRendererName = TIMES_LIST_ITEM_RENDERER_NAME;
 		}
 
-		protected function timesListItemRendererInitializer(renderer:DefaultListItemRenderer):void
+		protected function setTimesListItemRendererStyles(renderer:DefaultListItemRenderer):void
 		{
 			var defaultSkin:Quad = new Quad(88 * this.scale, 88 * this.scale, 0xff00ff);
 			defaultSkin.alpha = 0;
@@ -385,7 +363,7 @@ package feathers.examples.trainTimes.themes
 			renderer.paddingRight = 16 * this.scale;
 		}
 
-		protected function stationListItemRendererInitializer(renderer:StationListItemRenderer):void
+		protected function setStationListItemRendererStyles(renderer:StationListItemRenderer):void
 		{
 			renderer.paddingLeft = 44 * this.scale;
 			renderer.paddingRight = 32 * this.scale
@@ -398,7 +376,7 @@ package feathers.examples.trainTimes.themes
 			renderer.lastSelectedIconTexture = this.stationListLastSelectedIconTexture;
 		}
 
-		protected function actionContainerInitializer(container:ScrollContainer):void
+		protected function setActionContainerStyles(container:ScrollContainer):void
 		{
 			var backgroundSkin:Quad = new Quad(48 * this.scale, 48 * this.scale, 0xcc2a41);
 			container.backgroundSkin = backgroundSkin;
@@ -415,20 +393,6 @@ package feathers.examples.trainTimes.themes
 		{
 			this.primaryBackground.width = event.width;
 			this.primaryBackground.height = event.height;
-		}
-
-		protected function root_addedToStageHandler(event:Event):void
-		{
-			this.root.removeEventListener(Event.ADDED_TO_STAGE, root_addedToStageHandler);
-			this.initializeRoot();
-		}
-
-		protected function root_removedFromStageHandler(event:Event):void
-		{
-			this.root.removeEventListener(Event.REMOVED_FROM_STAGE, root_removedFromStageHandler);
-			this.root.stage.removeEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
-			this.root.removeChild(this.primaryBackground, true);
-			this.primaryBackground = null;
 		}
 	}
 }
