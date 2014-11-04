@@ -56,6 +56,8 @@ package feathers.skins
 	 * alternateButton.styleProvider = styleProvider;
 	 * alternateButton.styleNameList.add( "alternate-button" );
 	 * this.addChild( alternateButton );</listing>
+	 *
+	 * @see http://wiki.starling-framework.org/feathers/skinning Skinning Feathers Components
 	 */
 	public class StyleNameFunctionStyleProvider implements IStyleProvider
 	{
