@@ -1446,15 +1446,59 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _horizontalPageCount:int = 1;
+		protected var _minHorizontalPageIndex:int = 0;
+
+		/**
+		 * The minimum horizontal page index that may be displayed by this
+		 * container, if page snapping is enabled.
+		 *
+		 * @see #snapToPages
+		 * @see #horizontalPageCount
+		 * @see #maxHorizontalPageIndex
+		 */
+		public function get minHorizontalPageIndex():int
+		{
+			return this._minHorizontalPageIndex;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _maxHorizontalPageIndex:int = 0;
+
+		/**
+		 * The maximum horizontal page index that may be displayed by this
+		 * container, if page snapping is enabled.
+		 *
+		 * @see #snapToPages
+		 * @see #horizontalPageCount
+		 * @see #minHorizontalPageIndex
+		 */
+		public function get maxHorizontalPageIndex():int
+		{
+			return this._maxHorizontalPageIndex;
+		}
 
 		/**
 		 * The number of horizontal pages, if snapping is enabled. If snapping
 		 * is disabled, the page count will always be <code>1</code>.
+		 *
+		 * <p>If the scroller's view port supports infinite scrolling, this
+		 * property will return <code>int.MAX_VALUE</code>, since an
+		 * <code>int</code> cannot hold the value <code>Number.POSITIVE_INFINITY</code>.</p>
+		 *
+		 * @see #snapToPages
+		 * @see #minHorizontalPageIndex
+		 * @see #maxHorizontalPageIndex
 		 */
 		public function get horizontalPageCount():int
 		{
-			return this._horizontalPageCount;
+			if(this._maxHorizontalPageIndex == int.MAX_VALUE ||
+				this._minHorizontalPageIndex == int.MIN_VALUE)
+			{
+				return int.MAX_VALUE;
+			}
+			return this._maxHorizontalPageIndex - this._minHorizontalPageIndex + 1;
 		}
 
 		/**
@@ -1682,15 +1726,59 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _verticalPageCount:int = 1;
+		protected var _minVerticalPageIndex:int = 0;
+
+		/**
+		 * The minimum vertical page index that may be displayed by this
+		 * container, if page snapping is enabled.
+		 *
+		 * @see #snapToPages
+		 * @see #verticalPageCount
+		 * @see #maxVerticalPageIndex
+		 */
+		public function get minVerticalPageIndex():int
+		{
+			return this._minVerticalPageIndex;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _maxVerticalPageIndex:int = 0;
+
+		/**
+		 * The maximum vertical page index that may be displayed by this
+		 * container, if page snapping is enabled.
+		 *
+		 * @see #snapToPages
+		 * @see #verticalPageCount
+		 * @see #minVerticalPageIndex
+		 */
+		public function get maxVerticalPageIndex():int
+		{
+			return this._maxVerticalPageIndex;
+		}
 
 		/**
 		 * The number of vertical pages, if snapping is enabled. If snapping
 		 * is disabled, the page count will always be <code>1</code>.
+		 *
+		 * <p>If the scroller's view port supports infinite scrolling, this
+		 * property will return <code>int.MAX_VALUE</code>, since an
+		 * <code>int</code> cannot hold the value <code>Number.POSITIVE_INFINITY</code>.</p>
+		 *
+		 * @see #snapToPages
+		 * @see #minVerticalPageIndex
+		 * @see #maxVerticalPageIndex
 		 */
 		public function get verticalPageCount():int
 		{
-			return this._verticalPageCount;
+			if(this._maxVerticalPageIndex == int.MAX_VALUE ||
+				this._minVerticalPageIndex == int.MIN_VALUE)
+			{
+				return int.MAX_VALUE;
+			}
+			return this._maxVerticalPageIndex - this._minVerticalPageIndex + 1;
 		}
 
 		/**
@@ -3725,11 +3813,20 @@ package feathers.controls
 				{
 					//trying to put positive infinity into an int results in 0
 					//so we need a special case to provide a large int value.
-					this._horizontalPageCount = int.MAX_VALUE;
+					if(this._minHorizontalScrollPosition == Number.NEGATIVE_INFINITY)
+					{
+						this._minHorizontalPageIndex = int.MIN_VALUE;
+					}
+					else
+					{
+						this._minHorizontalPageIndex = 0;
+					}
+					this._maxHorizontalPageIndex = int.MAX_VALUE;
 				}
 				else
 				{
-					this._horizontalPageCount = Math.ceil(horizontalScrollRange / this.actualPageWidth) + 1;
+					this._minHorizontalPageIndex = 0;
+					this._maxHorizontalPageIndex = Math.ceil(horizontalScrollRange / this.actualPageWidth) + 1;
 				}
 
 				var verticalScrollRange:Number = this._maxVerticalScrollPosition - this._minVerticalScrollPosition;
@@ -3737,17 +3834,28 @@ package feathers.controls
 				{
 					//trying to put positive infinity into an int results in 0
 					//so we need a special case to provide a large int value.
-					this._verticalPageCount = int.MAX_VALUE;
+					if(this._minVerticalScrollPosition == Number.NEGATIVE_INFINITY)
+					{
+						this._minVerticalPageIndex = int.MIN_VALUE;
+					}
+					else
+					{
+						this._minVerticalPageIndex = 0;
+					}
+					this._maxVerticalPageIndex = int.MAX_VALUE;
 				}
 				else
 				{
-					this._verticalPageCount = Math.ceil(verticalScrollRange / this.actualPageHeight) + 1;
+					this._minVerticalPageIndex = 0;
+					this._maxVerticalPageIndex = Math.ceil(verticalScrollRange / this.actualPageHeight) + 1;
 				}
 			}
 			else
 			{
-				this._horizontalPageCount = 1;
-				this._verticalPageCount = 1;
+				this._maxHorizontalPageIndex = 0;
+				this._maxHorizontalPageIndex = 0;
+				this._minVerticalPageIndex = 0;
+				this._maxVerticalPageIndex = 0;
 			}
 		}
 
@@ -3762,7 +3870,11 @@ package feathers.controls
 				{
 					if(this._horizontalScrollPosition == this._maxHorizontalScrollPosition)
 					{
-						this._horizontalPageIndex = this._horizontalPageCount - 1;
+						this._horizontalPageIndex = this._maxHorizontalPageIndex;
+					}
+					else if(this._horizontalScrollPosition == this._minHorizontalScrollPosition)
+					{
+						this._horizontalPageIndex = this._minHorizontalPageIndex;
 					}
 					else
 					{
@@ -3772,16 +3884,15 @@ package feathers.controls
 				}
 				else
 				{
-					this._horizontalPageIndex = 0;
+					this._horizontalPageIndex = this._minHorizontalPageIndex;
 				}
-				if(this._horizontalPageIndex < 0)
+				if(this._horizontalPageIndex < this._minHorizontalPageIndex)
 				{
-					this._horizontalPageIndex = 0;
+					this._horizontalPageIndex = this._minHorizontalPageIndex;
 				}
-				var maxPageIndex:int = this._horizontalPageCount - 1;
-				if(this._horizontalPageIndex > maxPageIndex)
+				if(this._horizontalPageIndex > this._maxHorizontalPageIndex)
 				{
-					this._horizontalPageIndex = maxPageIndex;
+					this._horizontalPageIndex = this._maxHorizontalPageIndex;
 				}
 			}
 			if(!this._verticalAutoScrollTween && this.pendingVerticalPageIndex < 0)
@@ -3790,7 +3901,11 @@ package feathers.controls
 				{
 					if(this._verticalScrollPosition == this._maxVerticalScrollPosition)
 					{
-						this._verticalPageIndex = this._verticalPageCount - 1;
+						this._verticalPageIndex = this._maxVerticalPageIndex;
+					}
+					else if(this._verticalScrollPosition == this._minVerticalScrollPosition)
+					{
+						this._verticalPageIndex = this._minVerticalPageIndex;
 					}
 					else
 					{
@@ -3800,16 +3915,15 @@ package feathers.controls
 				}
 				else
 				{
-					this._verticalPageIndex = 0;
+					this._verticalPageIndex = this._minVerticalScrollPosition;
 				}
-				if(this._verticalPageIndex < 0)
+				if(this._verticalPageIndex < this._minVerticalScrollPosition)
 				{
-					this._verticalPageIndex = 0;
+					this._verticalPageIndex = this._minVerticalScrollPosition;
 				}
-				maxPageIndex = this._verticalPageCount - 1;
-				if(this._verticalPageIndex > maxPageIndex)
+				if(this._verticalPageIndex > this._maxVerticalPageIndex)
 				{
-					this._verticalPageIndex = maxPageIndex;
+					this._verticalPageIndex = this._maxVerticalPageIndex;
 				}
 			}
 		}
@@ -4373,7 +4487,7 @@ package feathers.controls
 		protected function throwToPage(targetHorizontalPageIndex:int = -1, targetVerticalPageIndex:int = -1, duration:Number = 0.5):void
 		{
 			var targetHorizontalScrollPosition:Number = this._horizontalScrollPosition;
-			if(targetHorizontalPageIndex >= 0)
+			if(targetHorizontalPageIndex >= this._minHorizontalPageIndex)
 			{
 				targetHorizontalScrollPosition = this.actualPageWidth * targetHorizontalPageIndex;
 			}
@@ -4386,7 +4500,7 @@ package feathers.controls
 				targetHorizontalScrollPosition = this._maxHorizontalScrollPosition;
 			}
 			var targetVerticalScrollPosition:Number = this._verticalScrollPosition;
-			if(targetVerticalPageIndex >= 0)
+			if(targetVerticalPageIndex >= this._minVerticalPageIndex)
 			{
 				targetVerticalScrollPosition = this.actualPageHeight * targetVerticalPageIndex;
 			}
@@ -4407,11 +4521,11 @@ package feathers.controls
 				this.horizontalScrollPosition = targetHorizontalScrollPosition;
 				this.verticalScrollPosition = targetVerticalScrollPosition;
 			}
-			if(targetHorizontalPageIndex >= 0)
+			if(targetHorizontalPageIndex >= this._minHorizontalPageIndex)
 			{
 				this._horizontalPageIndex = targetHorizontalPageIndex;
 			}
-			if(targetVerticalPageIndex >= 0)
+			if(targetVerticalPageIndex >= this._minVerticalPageIndex)
 			{
 				this._verticalPageIndex = targetVerticalPageIndex;
 			}
@@ -4536,11 +4650,18 @@ package feathers.controls
 				}
 				if(snappedPageHorizontalScrollPosition == this._maxHorizontalScrollPosition)
 				{
-					var targetHorizontalPageIndex:int = this._horizontalPageCount - 1;
+					var targetHorizontalPageIndex:int = this._maxHorizontalPageIndex;
 				}
 				else
 				{
-					targetHorizontalPageIndex = (snappedPageHorizontalScrollPosition - this._minHorizontalScrollPosition) / this.actualPageWidth;
+					if(this._minHorizontalScrollPosition == Number.NEGATIVE_INFINITY)
+					{
+						targetHorizontalPageIndex = snappedPageHorizontalScrollPosition / this.actualPageWidth;
+					}
+					else
+					{
+						targetHorizontalPageIndex = (snappedPageHorizontalScrollPosition - this._minHorizontalScrollPosition) / this.actualPageWidth;
+					}
 				}
 				this.throwToPage(targetHorizontalPageIndex, -1, this._pageThrowDuration);
 				return;
@@ -4613,11 +4734,18 @@ package feathers.controls
 				}
 				if(snappedPageVerticalScrollPosition == this._maxVerticalScrollPosition)
 				{
-					var targetVerticalPageIndex:int = this._verticalPageCount - 1;
+					var targetVerticalPageIndex:int = this._maxVerticalPageIndex;
 				}
 				else
 				{
-					targetVerticalPageIndex = (snappedPageVerticalScrollPosition - this._minVerticalScrollPosition) / this.actualPageHeight;
+					if(this._minVerticalScrollPosition == Number.NEGATIVE_INFINITY)
+					{
+						targetVerticalPageIndex = snappedPageVerticalScrollPosition / this.actualPageHeight;
+					}
+					else
+					{
+						targetVerticalPageIndex = (snappedPageVerticalScrollPosition - this._minVerticalScrollPosition) / this.actualPageHeight;
+					}
 				}
 				this.throwToPage(-1, targetVerticalPageIndex, this._pageThrowDuration);
 				return;
