@@ -671,7 +671,7 @@ package feathers.controls
 		 * different skins than the default style:</p>
 		 *
 		 * <listing version="3.0">
-		 * setInitializerForClass( Button, customButtonInitializer, "my-custom-button");</listing>
+		 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-button", setCustomButtonStyles );</listing>
 		 *
 		 * @default null
 		 *
@@ -842,7 +842,7 @@ package feathers.controls
 		 * different skins than the default style:</p>
 		 *
 		 * <listing version="3.0">
-		 * setInitializerForClass( List, customListInitializer, "my-custom-list");</listing>
+		 * getStyleProviderForClass( List ).setFunctionForStyleName( "my-custom-list", setCustomListStyles );</listing>
 		 *
 		 * @default null
 		 *

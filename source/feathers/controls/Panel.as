@@ -328,7 +328,7 @@ package feathers.controls
 		 * <code>IFeathersControl</code>):</p>
 		 *
 		 * <listing version="3.0">
-		 * setInitializerForClass( Header, customHeaderInitializer, "my-custom-header");</listing>
+		 * getStyleProviderForClass( Header ).setFunctionForStyleName( "my-custom-header", setCustomHeaderStyles );</listing>
 		 *
 		 * @default null
 		 *
@@ -506,7 +506,7 @@ package feathers.controls
 		 * <code>IFeathersControl</code>):</p>
 		 *
 		 * <listing version="3.0">
-		 * setInitializerForClass( ScrollContainer, customFooterInitializer, "my-custom-footer");</listing>
+		 * getStyleProviderForClass( ScrollContainer ).setFunctionForStyleName( "my-custom-footer", setCustomFooterStyles );</listing>
 		 *
 		 * @default null
 		 *

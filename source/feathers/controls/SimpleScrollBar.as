@@ -737,7 +737,7 @@ package feathers.controls
 		 * different skins than the default style:</p>
 		 *
 		 * <listing version="3.0">
-		 * setInitializerForClass( Button, customThumbInitializer, "my-custom-thumb");</listing>
+		 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-thumb", setCustomThumbStyles );</listing>
 		 *
 		 * @default null
 		 *

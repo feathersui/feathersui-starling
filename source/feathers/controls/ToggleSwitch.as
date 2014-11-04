@@ -1275,13 +1275,7 @@ package feathers.controls
 		 * different skins than the default style:</p>
 		 *
 		 * <listing version="3.0">
-		 * setInitializerForClass( Button, customOnTrackInitializer, "my-custom-on-track");</listing>
-		 *
-		 * <p>In your theme, you can target this sub-component name to provide
-		 * different skins than the default style:</p>
-		 *
-		 * <listing version="3.0">
-		 * setInitializerForClass( Button, customOnTrackInitializer, "my-custom-on-track");</listing>
+		 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-on-track", setCustomOnTrackStyles );</listing>
 		 *
 		 * @default null
 		 *
@@ -1451,7 +1445,7 @@ package feathers.controls
 		 * different skins than the default style:</p>
 		 *
 		 * <listing version="3.0">
-		 * setInitializerForClass( Button, customOffTrackInitializer, "my-custom-off-track");</listing>
+		 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-off-track", setCustomOffTrackStyles );</listing>
 		 *
 		 * @default null
 		 *
@@ -1619,7 +1613,7 @@ package feathers.controls
 		 * different skins than the default style:</p>
 		 *
 		 * <listing version="3.0">
-		 * setInitializerForClass( Button, customThumbInitializer, "my-custom-thumb");</listing>
+		 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-thumb", setCustomThumbStyles );</listing>
 		 *
 		 * @default null
 		 *
