@@ -788,7 +788,7 @@ package feathers.controls
 		 * provide different styles than the default:</p>
 		 *
 		 * <listing version="3.0">
-		 * setInitializerForClass( Button, customButtonInitializer, "my-custom-button");</listing>
+		 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-button", setCustomButtonStyles );</listing>
 		 *
 		 * @default null
 		 *
@@ -983,7 +983,7 @@ package feathers.controls
 		 * different styles than the default:</p>
 		 *
 		 * <listing version="3.0">
-		 * setInitializerForClass( List, customListInitializer, "my-custom-list");</listing>
+		 * getStyleProviderForClass( List ).setFunctionForStyleName( "my-custom-list", setCustomListStyles );</listing>
 		 *
 		 * @default null
 		 *
