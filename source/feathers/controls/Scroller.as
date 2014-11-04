@@ -930,7 +930,7 @@ package feathers.controls
 		 * provide different styles than the default:</p>
 		 *
 		 * <listing version="3.0">
-		 * setInitializerForClass( SimpleScrollBar, customHorizontalScrollBarInitializer, "my-custom-horizontal-scroll-bar");</listing>
+		 * getStyleProviderForClass( SimpleScrollBar ).setFunctionForStyleName( "my-custom-horizontal-scroll-bar", setCustomHorizontalScrollBarStyles );</listing>
 		 *
 		 * @default null
 		 *
@@ -1165,7 +1165,7 @@ package feathers.controls
 		 * provide different styles than the default:</p>
 		 *
 		 * <listing version="3.0">
-		 * setInitializerForClass( SimpleScrollBar, customVerticalScrollBarInitializer, "my-custom-vertical-scroll-bar");</listing>
+		 * getStyleProviderForClass( SimpleScrollBar ).setFunctionForStyleName( "my-custom-vertical-scroll-bar", setCustomVerticalScrollBarStyles );</listing>
 		 *
 		 * @default null
 		 *

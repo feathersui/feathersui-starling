@@ -1105,7 +1105,7 @@ package feathers.controls
 		 * provide different styles than the default:</p>
 		 *
 		 * <listing version="3.0">
-		 * setInitializerForClass( Button, customMinimumTrackInitializer, "my-custom-minimum-track");</listing>
+		 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-minimum-track", setCustomMinimumTrackStyles );</listing>
 		 *
 		 * @default null
 		 *
@@ -1302,7 +1302,7 @@ package feathers.controls
 		 * provide different styles than the default:</p>
 		 *
 		 * <listing version="3.0">
-		 * setInitializerForClass( Button, customMaximumTrackInitializer, "my-custom-maximum-track");</listing>
+		 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-maximum-track", setCustomMaximumTrackStyles );</listing>
 		 *
 		 * @default null
 		 *
@@ -1498,7 +1498,7 @@ package feathers.controls
 		 * provide different styles than the default:</p>
 		 *
 		 * <listing version="3.0">
-		 * setInitializerForClass( Button, customThumbInitializer, "my-custom-thumb");</listing>
+		 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-thumb", setCustomThumbStyles );</listing>
 		 *
 		 * @default null
 		 *

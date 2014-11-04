@@ -1066,7 +1066,7 @@ package feathers.controls
 		 * provide different skins than the default:</p>
 		 *
 		 * <listing version="3.0">
-		 * setInitializerForClass( DefaultGroupedListItemRenderer, customItemRendererInitializer, "my-custom-item-renderer");</listing>
+		 * getStyleProviderForClass( DefaultGroupedListItemRenderer ).setFunctionForStyleName( "my-custom-item-renderer", setCustomItemRendererStyles );</listing>
 		 *
 		 * @default null
 		 *
@@ -1317,7 +1317,7 @@ package feathers.controls
 		 * provide different styles than the default:</p>
 		 *
 		 * <listing version="3.0">
-		 * setInitializerForClass( DefaultGroupedListItemRenderer, customFirstItemRendererInitializer, "my-custom-first-item-renderer");</listing>
+		 * getStyleProviderForClass( DefaultGroupedListItemRenderer ).setFunctionForStyleName( "my-custom-first-item-renderer", setCustomFirstItemRendererStyles );</listing>
 		 *
 		 * @default null
 		 *
@@ -1487,7 +1487,7 @@ package feathers.controls
 		 * provide different styles than the default:</p>
 		 *
 		 * <listing version="3.0">
-		 * setInitializerForClass( DefaultGroupedListItemRenderer, customLastItemRendererInitializer, "my-custom-last-item-renderer");</listing>
+		 * getStyleProviderForClass( DefaultGroupedListItemRenderer ).setFunctionForStyleName( "my-custom-last-item-renderer", setCustomLastItemRendererStyles );</listing>
 		 *
 		 * @default null
 		 *
@@ -1657,7 +1657,7 @@ package feathers.controls
 		 * provide different skins than the default style:</p>
 		 *
 		 * <listing version="3.0">
-		 * setInitializerForClass( DefaultGroupedListItemRenderer, customSingleItemRendererInitializer, "my-custom-single-item-renderer");</listing>
+		 * getStyleProviderForClass( DefaultGroupedListItemRenderer ).setFunctionForStyleName( "my-custom-single-item-renderer", setCustomSingleItemRendererStyles );</listing>
 		 *
 		 * @default null
 		 *
@@ -1815,7 +1815,7 @@ package feathers.controls
 		 * provide different skins than the default:</p>
 		 *
 		 * <listing version="3.0">
-		 * setInitializerForClass( DefaultGroupedListHeaderOrFooterRenderer, customHeaderRendererInitializer, "my-custom-header-renderer");</listing>
+		 * getStyleProviderForClass( DefaultGroupedListHeaderOrFooterRenderer ).setFunctionForStyleName( "my-custom-header-renderer", setCustomHeaderRendererStyles );</listing>
 		 *
 		 * @default null
 		 *
@@ -2051,7 +2051,7 @@ package feathers.controls
 		 * provide different styles than the default:</p>
 		 *
 		 * <listing version="3.0">
-		 * setInitializerForClass( DefaultGroupedListHeaderOrFooterRenderer, customFooterRendererInitializer, "my-custom-footer-renderer");</listing>
+		 * getStyleProviderForClass( DefaultGroupedListHeaderOrFooterRenderer ).setFunctionForStyleName( "my-custom-footer-renderer", setCustomFooterRendererStyles );</listing>
 		 *
 		 * @default null
 		 *

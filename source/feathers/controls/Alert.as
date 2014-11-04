@@ -664,7 +664,7 @@ package feathers.controls
 		 * provide different styles than the default:</p>
 		 *
 		 * <listing version="3.0">
-		 * setInitializerForClass( ButtonGroup, customButtonGroupInitializer, "my-custom-button-group");</listing>
+		 * getStyleProviderForClass( ButtonGroup ).setFunctionForStyleName( "my-custom-button-group", setCustomButtonGroupStyles );</listing>
 		 *
 		 * @default null
 		 *

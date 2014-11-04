@@ -972,7 +972,7 @@ package feathers.controls
 		 * different skins than the default style:</p>
 		 *
 		 * <listing version="3.0">
-		 * setInitializerForClass( DefaultListItemRenderer, customItemRendererInitializer, "my-custom-item-renderer");</listing>
+		 * getStyleProviderForClass( DefaultListItemRenderer ).setFunctionForStyleName( "my-custom-item-renderer", setCustomItemRendererStyles );</listing>
 		 *
 		 * @default null
 		 *
