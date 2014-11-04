@@ -1081,7 +1081,7 @@ package feathers.controls
 		 * different skins than the default style:</p>
 		 *
 		 * <listing version="3.0">
-		 * setInitializerForClass( Button, customButtonInitializer, "my-custom-button");</listing>
+		 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-button", setCustomButtonStyles );</listing>
 		 *
 		 * @default null
 		 *
@@ -1124,7 +1124,7 @@ package feathers.controls
 		 * different skins than the default style:</p>
 		 *
 		 * <listing version="3.0">
-		 * setInitializerForClass( Button, customFirstButtonInitializer, "my-custom-first-button");</listing>
+		 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-first-button", setCustomFirstButtonStyles );</listing>
 		 *
 		 * @default null
 		 *
@@ -1166,7 +1166,7 @@ package feathers.controls
 		 * different skins than the default style:</p>
 		 *
 		 * <listing version="3.0">
-		 * setInitializerForClass( Button, customLastButtonInitializer, "my-custom-last-button");</listing>
+		 * getStyleProviderForClass( Button ).setFunctionForStyleName( "my-custom-last-button", setCustomLastButtonStyles );</listing>
 		 *
 		 * @default null
 		 *

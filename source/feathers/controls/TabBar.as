@@ -1182,7 +1182,7 @@ package feathers.controls
 		 * different skins than the default style:</p>
 		 *
 		 * <listing version="3.0">
-		 * setInitializerForClass( Button, customTabInitializer, "my-custom-tab");</listing>
+		 * getStyleProviderForClass( ToggleButton ).setFunctionForStyleName( "my-custom-tab", setCustomTabStyles );</listing>
 		 *
 		 * @default null
 		 *
@@ -1226,7 +1226,7 @@ package feathers.controls
 		 * different skins than the default style:</p>
 		 *
 		 * <listing version="3.0">
-		 * setInitializerForClass( Button, customFirstTabInitializer, "my-custom-first-tab");</listing>
+		 * getStyleProviderForClass( ToggleButton ).setFunctionForStyleName( "my-custom-first-tab", setCustomFirstTabStyles );</listing>
 		 *
 		 * @default null
 		 *
@@ -1269,7 +1269,7 @@ package feathers.controls
 		 * different skins than the default style:</p>
 		 *
 		 * <listing version="3.0">
-		 * setInitializerForClass( Button, customLastTabInitializer, "my-custom-last-tab");</listing>
+		 * getStyleProviderForClass( ToggleButton ).setFunctionForStyleName( "my-custom-last-tab", setCustomLastTabStyles );</listing>
 		 *
 		 * @default null
 		 *
