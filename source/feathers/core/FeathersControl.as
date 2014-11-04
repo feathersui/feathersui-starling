@@ -2089,10 +2089,6 @@ package feathers.core
 		 */
 		protected function feathersControl_flattenHandler(event:Event):void
 		{
-			if(!this.stage || !this._isInitialized)
-			{
-				throw new IllegalOperationError("Cannot flatten this component until it is initialized and has access to the stage.");
-			}
 			this.validate();
 		}
 
