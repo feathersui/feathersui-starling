@@ -33,6 +33,7 @@ package feathers.skins
 		public function AddOnFunctionStyleProvider(originalStyleProvider:IStyleProvider = null, addOnFunction:Function = null)
 		{
 			this._originalStyleProvider = originalStyleProvider;
+			this._addOnFunction = addOnFunction;
 		}
 
 		/**
