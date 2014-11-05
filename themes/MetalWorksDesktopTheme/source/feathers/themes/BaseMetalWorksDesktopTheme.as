@@ -44,6 +44,7 @@ package feathers.themes
 	import feathers.controls.Radio;
 	import feathers.controls.ScrollBar;
 	import feathers.controls.ScrollContainer;
+	import feathers.controls.ScrollScreen;
 	import feathers.controls.ScrollText;
 	import feathers.controls.Scroller;
 	import feathers.controls.SimpleScrollBar;
@@ -846,6 +847,7 @@ package feathers.themes
 			this.getStyleProviderForClass(Header).setFunctionForStyleName(Panel.DEFAULT_CHILD_STYLE_NAME_HEADER, this.setPopupHeaderStyles);
 
 			//panel screen
+			this.getStyleProviderForClass(PanelScreen).defaultStyleFunction = this.setScrollerStyles;
 			this.getStyleProviderForClass(Header).setFunctionForStyleName(PanelScreen.DEFAULT_CHILD_STYLE_NAME_HEADER, this.setPanelScreenHeaderStyles);
 
 			//picker list (see also: list and item renderers)
@@ -876,6 +878,9 @@ package feathers.themes
 			//scroll container
 			this.getStyleProviderForClass(ScrollContainer).defaultStyleFunction = this.setScrollContainerStyles;
 			this.getStyleProviderForClass(ScrollContainer).setFunctionForStyleName(ScrollContainer.ALTERNATE_STYLE_NAME_TOOLBAR, this.setToolbarScrollContainerStyles);
+
+			//scroll screen
+			this.getStyleProviderForClass(ScrollScreen).defaultStyleFunction = this.setScrollerStyles;
 
 			//scroll text
 			this.getStyleProviderForClass(ScrollText).defaultStyleFunction = this.setScrollTextStyles;
