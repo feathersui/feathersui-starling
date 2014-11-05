@@ -464,15 +464,6 @@ package feathers.display
 		}
 
 		/**
-		 * @private
-		 */
-		override public function flatten(ignoreChildOrder:Boolean = false):void
-		{
-			this.validate();
-			super.flatten(ignoreChildOrder);
-		}
-
-		/**
 		 * @copy feathers.core.IValidating#validate()
 		 */
 		public function validate():void
