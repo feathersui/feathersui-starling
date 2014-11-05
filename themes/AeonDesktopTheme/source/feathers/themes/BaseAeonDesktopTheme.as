@@ -39,11 +39,13 @@ package feathers.themes
 	import feathers.controls.NumericStepper;
 	import feathers.controls.PageIndicator;
 	import feathers.controls.Panel;
+	import feathers.controls.PanelScreen;
 	import feathers.controls.PickerList;
 	import feathers.controls.ProgressBar;
 	import feathers.controls.Radio;
 	import feathers.controls.ScrollBar;
 	import feathers.controls.ScrollContainer;
+	import feathers.controls.ScrollScreen;
 	import feathers.controls.ScrollText;
 	import feathers.controls.Scroller;
 	import feathers.controls.SimpleScrollBar;
@@ -763,6 +765,9 @@ package feathers.themes
 			this.getStyleProviderForClass(Panel).defaultStyleFunction = this.setPanelStyles;
 			this.getStyleProviderForClass(Header).setFunctionForStyleName(Panel.DEFAULT_CHILD_NAME_HEADER, this.setPanelHeaderStyles);
 
+			//panel screen
+			this.getStyleProviderForClass(PanelScreen).defaultStyleFunction = this.setScrollerStyles;
+
 			//page indicator
 			this.getStyleProviderForClass(PageIndicator).defaultStyleFunction = this.setPageIndicatorStyles;
 
@@ -792,6 +797,9 @@ package feathers.themes
 			//scroll container
 			this.getStyleProviderForClass(ScrollContainer).defaultStyleFunction = this.setScrollContainerStyles;
 			this.getStyleProviderForClass(ScrollContainer).setFunctionForStyleName(ScrollContainer.ALTERNATE_NAME_TOOLBAR, this.setToolbarScrollContainerStyles);
+
+			//scroll screen
+			this.getStyleProviderForClass(ScrollScreen).defaultStyleFunction = this.setScrollerStyles;
 
 			//scroll text
 			this.getStyleProviderForClass(ScrollText).defaultStyleFunction = this.setScrollTextStyles;
