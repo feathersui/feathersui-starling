@@ -183,7 +183,7 @@ package feathers.examples.componentsExplorer.screens
 			this._verticalAlignPicker.addEventListener(Event.CHANGE, verticalAlignPicker_changeHandler);
 
 			this._list = new GroupedList();
-			this._list.styleNameList.add(GroupedList.ALTERNATE_NAME_INSET_GROUPED_LIST);
+			this._list.styleNameList.add(GroupedList.ALTERNATE_STYLE_NAME_INSET_GROUPED_LIST);
 			this._list.isSelectable = false;
 			this._list.dataProvider = new HierarchicalCollection(
 			[
@@ -223,7 +223,7 @@ package feathers.examples.componentsExplorer.screens
 			this.addChild(this._list);
 
 			this._backButton = new Button();
-			this._backButton.styleNameList.add(Button.ALTERNATE_NAME_BACK_BUTTON);
+			this._backButton.styleNameList.add(Button.ALTERNATE_STYLE_NAME_BACK_BUTTON);
 			this._backButton.label = "Back";
 			this._backButton.addEventListener(Event.TRIGGERED, backButton_triggeredHandler);
 

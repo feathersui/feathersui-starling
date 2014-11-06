@@ -47,7 +47,7 @@ package feathers.examples.componentsExplorer.screens
 			this.addChild(this._disabledInput);
 
 			this._searchInput = new TextInput();
-			this._searchInput.styleNameList.add(TextInput.ALTERNATE_NAME_SEARCH_TEXT_INPUT);
+			this._searchInput.styleNameList.add(TextInput.ALTERNATE_STYLE_NAME_SEARCH_TEXT_INPUT);
 			this._searchInput.prompt = "Search Input";
 			this.addChild(this._searchInput);
 
@@ -66,7 +66,7 @@ package feathers.examples.componentsExplorer.screens
 			if(!DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
 				this._backButton = new Button();
-				this._backButton.styleNameList.add(Button.ALTERNATE_NAME_BACK_BUTTON);
+				this._backButton.styleNameList.add(Button.ALTERNATE_STYLE_NAME_BACK_BUTTON);
 				this._backButton.label = "Back";
 				this._backButton.addEventListener(Event.TRIGGERED, backButton_triggeredHandler);
 
