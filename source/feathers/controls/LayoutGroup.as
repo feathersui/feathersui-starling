@@ -672,6 +672,10 @@ package feathers.controls
 		 */
 		protected function validateChildren():void
 		{
+			if(this.currentBackgroundSkin is IValidating)
+			{
+				IValidating(this.currentBackgroundSkin).validate();
+			}
 			var itemCount:int = this.items.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
