@@ -105,7 +105,7 @@ package feathers.examples.youtube.screens
 			this.addChild(this._message);
 
 			this._backButton = new Button();
-			this._backButton.styleNameList.add(Button.ALTERNATE_NAME_BACK_BUTTON);
+			this._backButton.styleNameList.add(Button.ALTERNATE_STYLE_NAME_BACK_BUTTON);
 			this._backButton.label = "Back";
 			this._backButton.addEventListener(starling.events.Event.TRIGGERED, onBackButton);
 			this.headerProperties.leftItems = new <DisplayObject>
