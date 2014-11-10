@@ -168,6 +168,12 @@ package feathers.controls.popups
 			if(this.source is IValidating)
 			{
 				IValidating(this.source).validate();
+				if(!this.isOpen)
+				{
+					//it's possible that the source will close its pop-up during
+					//validation, so we should check for that.
+					return;
+				}
 			}
 
 			var sourceWidth:Number = this.source.width;
