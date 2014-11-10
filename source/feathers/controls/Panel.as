@@ -369,7 +369,7 @@ package feathers.controls
 		 * <code>feathers.core.IFeathersControl</code> instance, but the default
 		 * is a <code>feathers.controls.Header</code> instance. The available
 		 * properties depend on what type of component is returned by
-		 * <code>footerFactory</code>.
+		 * <code>headerFactory</code>.
 		 *
 		 * <p>If the subcomponent has its own subcomponents, their properties
 		 * can be set too, using attribute <code>&#64;</code> notation. For example,
