@@ -853,6 +853,7 @@ package feathers.themes
 			//picker list (see also: list and item renderers)
 			this.getStyleProviderForClass(PickerList).defaultStyleFunction = this.setPickerListStyles;
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(PickerList.DEFAULT_CHILD_STYLE_NAME_BUTTON, this.setPickerListButtonStyles);
+			this.getStyleProviderForClass(ToggleButton).setFunctionForStyleName(PickerList.DEFAULT_CHILD_STYLE_NAME_BUTTON, this.setPickerListButtonStyles);
 			this.getStyleProviderForClass(List).setFunctionForStyleName(PickerList.DEFAULT_CHILD_STYLE_NAME_LIST, this.setPickerListListStyles);
 
 			//progress bar
@@ -900,7 +901,7 @@ package feathers.themes
 
 			//tab bar
 			this.getStyleProviderForClass(TabBar).defaultStyleFunction = this.setTabBarStyles;
-			this.getStyleProviderForClass(Button).setFunctionForStyleName(TabBar.DEFAULT_CHILD_STYLE_NAME_TAB, this.setTabStyles);
+			this.getStyleProviderForClass(ToggleButton).setFunctionForStyleName(TabBar.DEFAULT_CHILD_STYLE_NAME_TAB, this.setTabStyles);
 
 			//text input
 			this.getStyleProviderForClass(TextInput).defaultStyleFunction = this.setTextInputStyles;
@@ -909,9 +910,14 @@ package feathers.themes
 			//text area
 			this.getStyleProviderForClass(TextArea).defaultStyleFunction = this.setTextAreaStyles;
 
+			//toggle button
+			this.getStyleProviderForClass(ToggleButton).defaultStyleFunction = this.setButtonStyles;
+			this.getStyleProviderForClass(ToggleButton).setFunctionForStyleName(Button.ALTERNATE_NAME_QUIET_BUTTON, this.setQuietButtonStyles);
+
 			//toggle switch
 			this.getStyleProviderForClass(ToggleSwitch).defaultStyleFunction = this.setToggleSwitchStyles;
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_THUMB, this.setToggleSwitchThumbStyles);
+			this.getStyleProviderForClass(ToggleButton).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_THUMB, this.setToggleSwitchThumbStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_ON_TRACK, this.setToggleSwitchTrackStyles);
 			//we don't need a style function for the off track in this theme
 			//the toggle switch layout uses a single track
@@ -1004,6 +1010,8 @@ package feathers.themes
 			button.disabledLabelProperties.elementFormat = this.darkUIDisabledElementFormat;
 			if(button is ToggleButton)
 			{
+				//for convenience, this function can style both a regular button
+				//and a toggle button
 				ToggleButton(button).selectedDisabledLabelProperties.elementFormat = this.darkUIDisabledElementFormat;
 			}
 
@@ -1028,6 +1036,8 @@ package feathers.themes
 			skinSelector.setValueForState(this.buttonDisabledSkinTextures, Button.STATE_DISABLED, false);
 			if(button is ToggleButton)
 			{
+				//for convenience, this function can style both a regular button
+				//and a toggle button
 				skinSelector.defaultSelectedValue = this.buttonSelectedUpSkinTextures;
 				skinSelector.setValueForState(this.buttonSelectedDisabledSkinTextures, Button.STATE_DISABLED, true);
 			}
@@ -1070,6 +1080,8 @@ package feathers.themes
 			skinSelector.setValueForState(null, Button.STATE_DISABLED, false);
 			if(button is ToggleButton)
 			{
+				//for convenience, this function can style both a regular button
+				//and a toggle button
 				skinSelector.defaultSelectedValue = this.buttonSelectedUpSkinTextures;
 				skinSelector.setValueForState(this.buttonSelectedDisabledSkinTextures, Button.STATE_DISABLED, false);
 			}
@@ -1574,7 +1586,7 @@ package feathers.themes
 			list.maxHeight = this.wideControlSize;
 		}
 
-		protected function setPickerListButtonStyles(button:ToggleButton):void
+		protected function setPickerListButtonStyles(button:Button):void
 		{
 			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = this.buttonUpSkinTextures;
@@ -1591,9 +1603,14 @@ package feathers.themes
 			var iconSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			iconSelector.setValueTypeHandler(SubTexture, textureValueTypeHandler);
 			iconSelector.defaultValue = this.pickerListButtonIconTexture;
-			iconSelector.defaultSelectedValue = this.pickerListButtonIconSelectedTexture;
 			iconSelector.setValueForState(this.pickerListButtonIconDisabledTexture, Button.STATE_DISABLED, false);
-			iconSelector.setValueForState(this.pickerListButtonIconDisabledTexture, Button.STATE_DISABLED, true);
+			if(button is ToggleButton)
+			{
+				//for convenience, this function can style both a regular button
+				//and a toggle button
+				iconSelector.defaultSelectedValue = this.pickerListButtonIconSelectedTexture;
+				iconSelector.setValueForState(this.pickerListButtonIconDisabledTexture, Button.STATE_DISABLED, true);
+			}
 			iconSelector.displayObjectProperties =
 			{
 				snapToPixels: true,
