@@ -775,6 +775,7 @@ package feathers.themes
 			this.getStyleProviderForClass(PickerList).defaultStyleFunction = this.setPickerListStyles;
 			this.getStyleProviderForClass(List).setFunctionForStyleName(PickerList.DEFAULT_CHILD_STYLE_NAME_LIST, this.setPickerListListStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(PickerList.DEFAULT_CHILD_STYLE_NAME_BUTTON, this.setPickerListButtonStyles);
+			this.getStyleProviderForClass(ToggleButton).setFunctionForStyleName(PickerList.DEFAULT_CHILD_STYLE_NAME_BUTTON, this.setPickerListButtonStyles);
 
 			//progress bar
 			this.getStyleProviderForClass(ProgressBar).defaultStyleFunction = this.setProgressBarStyles;
@@ -819,7 +820,7 @@ package feathers.themes
 
 			//tab bar
 			this.getStyleProviderForClass(TabBar).defaultStyleFunction = this.setTabBarStyles;
-			this.getStyleProviderForClass(Button).setFunctionForStyleName(TabBar.DEFAULT_CHILD_STYLE_NAME_TAB, this.setTabStyles);
+			this.getStyleProviderForClass(ToggleButton).setFunctionForStyleName(TabBar.DEFAULT_CHILD_STYLE_NAME_TAB, this.setTabStyles);
 
 			//text area
 			this.getStyleProviderForClass(TextArea).defaultStyleFunction = this.setTextAreaStyles;
@@ -828,10 +829,15 @@ package feathers.themes
 			this.getStyleProviderForClass(TextInput).defaultStyleFunction = this.setTextInputStyles;
 			this.getStyleProviderForClass(TextInput).setFunctionForStyleName(TextInput.ALTERNATE_STYLE_NAME_SEARCH_TEXT_INPUT, this.setSearchTextInputStyles);
 
+			//toggle button
+			this.getStyleProviderForClass(ToggleButton).defaultStyleFunction = this.setButtonStyles;
+			this.getStyleProviderForClass(ToggleButton).setFunctionForStyleName(Button.ALTERNATE_NAME_QUIET_BUTTON, this.setQuietButtonStyles);
+
 			//toggle switch
 			this.getStyleProviderForClass(ToggleSwitch).defaultStyleFunction = this.setToggleSwitchStyles;
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_ON_TRACK, this.setToggleSwitchOnTrackStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_THUMB, this.setToggleSwitchThumbStyles);
+			this.getStyleProviderForClass(ToggleButton).setFunctionForStyleName(ToggleSwitch.DEFAULT_CHILD_STYLE_NAME_THUMB, this.setToggleSwitchThumbStyles);
 		}
 
 		protected function pageIndicatorNormalSymbolFactory():Image
@@ -922,13 +928,18 @@ package feathers.themes
 		{
 			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = this.buttonUpSkinTextures;
-			skinSelector.defaultSelectedValue = this.buttonSelectedUpSkinTextures;
 			skinSelector.setValueForState(this.buttonHoverSkinTextures, Button.STATE_HOVER, false);
 			skinSelector.setValueForState(this.buttonDownSkinTextures, Button.STATE_DOWN, false);
 			skinSelector.setValueForState(this.buttonDisabledSkinTextures, Button.STATE_DISABLED, false);
-			skinSelector.setValueForState(this.buttonSelectedHoverSkinTextures, Button.STATE_HOVER, true);
-			skinSelector.setValueForState(this.buttonSelectedDownSkinTextures, Button.STATE_DOWN, true);
-			skinSelector.setValueForState(this.buttonSelectedDisabledSkinTextures, Button.STATE_DISABLED, true);
+			if(button is ToggleButton)
+			{
+				//for convenience, this function can style both a regular button
+				//and a toggle button
+				skinSelector.defaultSelectedValue = this.buttonSelectedUpSkinTextures;
+				skinSelector.setValueForState(this.buttonSelectedHoverSkinTextures, Button.STATE_HOVER, true);
+				skinSelector.setValueForState(this.buttonSelectedDownSkinTextures, Button.STATE_DOWN, true);
+				skinSelector.setValueForState(this.buttonSelectedDisabledSkinTextures, Button.STATE_DISABLED, true);
+			}
 			skinSelector.displayObjectProperties =
 			{
 				textureScale: this.scale
@@ -943,13 +954,18 @@ package feathers.themes
 		{
 			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			skinSelector.defaultValue = null;
-			skinSelector.defaultSelectedValue = this.buttonSelectedUpSkinTextures;
 			skinSelector.setValueForState(this.buttonHoverSkinTextures, Button.STATE_HOVER, false);
 			skinSelector.setValueForState(this.buttonDownSkinTextures, Button.STATE_DOWN, false);
 			skinSelector.setValueForState(this.buttonDisabledSkinTextures, null, false);
-			skinSelector.setValueForState(this.buttonSelectedHoverSkinTextures, Button.STATE_HOVER, true);
-			skinSelector.setValueForState(this.buttonSelectedDownSkinTextures, Button.STATE_DOWN, true);
-			skinSelector.setValueForState(this.buttonSelectedDisabledSkinTextures, Button.STATE_DISABLED, true);
+			if(button is ToggleButton)
+			{
+				//for convenience, this function can style both a regular button
+				//and a toggle button
+				skinSelector.defaultSelectedValue = this.buttonSelectedUpSkinTextures;
+				skinSelector.setValueForState(this.buttonSelectedHoverSkinTextures, Button.STATE_HOVER, true);
+				skinSelector.setValueForState(this.buttonSelectedDownSkinTextures, Button.STATE_DOWN, true);
+				skinSelector.setValueForState(this.buttonSelectedDisabledSkinTextures, Button.STATE_DISABLED, true);
+			}
 			skinSelector.displayObjectProperties =
 			{
 				width: this.controlSize,
