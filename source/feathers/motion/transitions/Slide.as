@@ -33,14 +33,14 @@ package feathers.motion.transitions
 					}
 					newScreen.x = navigator.width;
 					newScreen.y = 0;
-					var activeTween:SlideTween = new SlideTween(newScreen, oldScreen, -navigator.width, 0, navigator, duration, ease, onComplete, tweenProperties);
+					new SlideTween(newScreen, oldScreen, -navigator.width, 0, navigator, duration, ease, onComplete, tweenProperties);
 				}
 				else //we only have the old screen
 				{
 					navigator = oldScreen is IScreen ? IScreen(oldScreen).owner : oldScreen.parent;
 					oldScreen.x = 0;
 					oldScreen.y = 0;
-					activeTween = new SlideTween(oldScreen, null, -navigator.width, 0, navigator, duration, ease, onComplete, tweenProperties);
+					new SlideTween(oldScreen, null, -navigator.width, 0, navigator, duration, ease, onComplete, tweenProperties);
 				}
 			}
 		}
@@ -62,14 +62,14 @@ package feathers.motion.transitions
 					}
 					newScreen.x = -newScreen.width;
 					newScreen.y = 0;
-					var activeTween:SlideTween = new SlideTween(newScreen, oldScreen, navigator.width, 0, navigator, duration, ease, onComplete, tweenProperties);
+					new SlideTween(newScreen, oldScreen, navigator.width, 0, navigator, duration, ease, onComplete, tweenProperties);
 				}
 				else //we only have the old screen
 				{
 					navigator = oldScreen is IScreen ? IScreen(oldScreen).owner : oldScreen.parent;
 					oldScreen.x = 0;
 					oldScreen.y = 0;
-					activeTween = new SlideTween(oldScreen, null, navigator.width, 0, navigator, duration, ease, onComplete, tweenProperties);
+					new SlideTween(oldScreen, null, navigator.width, 0, navigator, duration, ease, onComplete, tweenProperties);
 				}
 			}
 		}
@@ -91,14 +91,14 @@ package feathers.motion.transitions
 					}
 					newScreen.x = 0;
 					newScreen.y = navigator.height;
-					var activeTween:SlideTween = new SlideTween(newScreen, oldScreen, 0, -navigator.height, navigator, duration, ease, onComplete, tweenProperties);
+					new SlideTween(newScreen, oldScreen, 0, -navigator.height, navigator, duration, ease, onComplete, tweenProperties);
 				}
 				else //we only have the old screen
 				{
 					navigator = oldScreen is IScreen ? IScreen(oldScreen).owner : oldScreen.parent;
 					oldScreen.x = 0;
 					oldScreen.y = 0;
-					activeTween = new SlideTween(oldScreen, null, 0, -navigator.height, navigator, duration, ease, onComplete, tweenProperties);
+					new SlideTween(oldScreen, null, 0, -navigator.height, navigator, duration, ease, onComplete, tweenProperties);
 				}
 			}
 		}
@@ -120,14 +120,14 @@ package feathers.motion.transitions
 					}
 					newScreen.x = 0;
 					newScreen.y = -newScreen.height;
-					var activeTween:SlideTween = new SlideTween(newScreen, oldScreen, 0, navigator.height, navigator, duration, ease, onComplete, tweenProperties);
+					new SlideTween(newScreen, oldScreen, 0, navigator.height, navigator, duration, ease, onComplete, tweenProperties);
 				}
 				else //we only have the old screen
 				{
 					navigator = oldScreen is IScreen ? IScreen(oldScreen).owner : oldScreen.parent;
 					oldScreen.x = 0;
 					oldScreen.y = 0;
-					activeTween = new SlideTween(oldScreen, null, 0, navigator.height, navigator, duration, ease, onComplete, tweenProperties);
+					new SlideTween(oldScreen, null, 0, navigator.height, navigator, duration, ease, onComplete, tweenProperties);
 				}
 			}
 		}
