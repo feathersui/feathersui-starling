@@ -180,6 +180,13 @@ class SlideTween extends Tween
 			this._yOffset = yOffset;
 			this.animate("y", target.y + yOffset);
 		}
+		if(tweenProperties)
+		{
+			for(var propertyName:String in tweenProperties)
+			{
+				this[propertyName] = tweenProperties[propertyName];
+			}
+		}
 		this._navigator = navigator;
 		if(otherTarget)
 		{
@@ -188,13 +195,6 @@ class SlideTween extends Tween
 		}
 		this._onCompleteCallback = onCompleteCallback;
 		this.onComplete = this.cleanupTween;
-		if(tweenProperties)
-		{
-			for(var propertyName:String in tweenProperties)
-			{
-				this[propertyName] = tweenProperties[propertyName];
-			}
-		}
 		Starling.juggler.add(this);
 	}
 

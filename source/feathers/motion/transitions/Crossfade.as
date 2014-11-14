@@ -77,13 +77,6 @@ class CrossfadeTween extends Tween
 		{
 			this.fadeTo(0);
 		}
-		if(otherTarget)
-		{
-			this._otherTarget = otherTarget;
-			this.onUpdate = this.updateOtherTarget;
-		}
-		this._onCompleteCallback = onCompleteCallback;
-		this.onComplete = this.cleanupTween;
 		if(tweenProperties)
 		{
 			for(var propertyName:String in tweenProperties)
@@ -91,6 +84,13 @@ class CrossfadeTween extends Tween
 				this[propertyName] = tweenProperties[propertyName];
 			}
 		}
+		if(otherTarget)
+		{
+			this._otherTarget = otherTarget;
+			this.onUpdate = this.updateOtherTarget;
+		}
+		this._onCompleteCallback = onCompleteCallback;
+		this.onComplete = this.cleanupTween;
 		Starling.juggler.add(this);
 	}
 
