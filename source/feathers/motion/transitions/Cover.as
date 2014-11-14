@@ -10,6 +10,7 @@ package feathers.motion.transitions
 	import feathers.controls.IScreen;
 
 	import starling.animation.Transitions;
+	import starling.animation.Tween;
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
 
@@ -38,7 +39,7 @@ package feathers.motion.transitions
 				else //we only have the old screen
 				{
 					navigator = oldScreen is IScreen ? IScreen(oldScreen).owner : oldScreen.parent;
-					new CoverTween(oldScreen, -navigator.width, 0, duration, ease, onComplete, tweenProperties);
+					new CoverClipTween(oldScreen, -navigator.width, 0, duration, ease, onComplete, tweenProperties);
 				}
 			}
 		}
@@ -64,7 +65,7 @@ package feathers.motion.transitions
 				else //we only have the old screen
 				{
 					navigator = oldScreen is IScreen ? IScreen(oldScreen).owner : oldScreen.parent;
-					new CoverTween(oldScreen, navigator.width, 0, duration, ease, onComplete, tweenProperties);
+					new CoverClipTween(oldScreen, navigator.width, 0, duration, ease, onComplete, tweenProperties);
 				}
 			}
 		}
@@ -90,7 +91,7 @@ package feathers.motion.transitions
 				else //we only have the old screen
 				{
 					navigator = oldScreen is IScreen ? IScreen(oldScreen).owner : oldScreen.parent;
-					new CoverTween(oldScreen, 0, -navigator.height, duration, ease, onComplete, tweenProperties);
+					new CoverClipTween(oldScreen, 0, -navigator.height, duration, ease, onComplete, tweenProperties);
 				}
 			}
 		}
@@ -116,7 +117,7 @@ package feathers.motion.transitions
 				else //we only have the old screen
 				{
 					navigator = oldScreen is IScreen ? IScreen(oldScreen).owner : oldScreen.parent;
-					new CoverTween(oldScreen, 0, navigator.height, duration, ease, onComplete, tweenProperties);
+					new CoverClipTween(oldScreen, 0, navigator.height, duration, ease, onComplete, tweenProperties);
 				}
 			}
 		}
@@ -130,7 +131,7 @@ package feathers.motion.transitions
 
 			if(oldScreen)
 			{
-				var activeTween:CoverTween = CoverTween.SCREEN_TO_TWEEN[oldScreen] as CoverTween;
+				var activeTween:Tween = CoverTween.SCREEN_TO_TWEEN[oldScreen] as Tween;
 				if(activeTween)
 				{
 					//force the existing tween to finish so that the
@@ -142,11 +143,13 @@ package feathers.motion.transitions
 	}
 }
 
+import flash.geom.Rectangle;
 import flash.utils.Dictionary;
 
 import starling.animation.Tween;
 import starling.core.Starling;
 import starling.display.DisplayObject;
+import starling.display.Sprite;
 
 class CoverTween extends Tween
 {
@@ -189,3 +192,66 @@ class CoverTween extends Tween
 		}
 	}
 }
+
+class CoverClipTween extends Tween
+{
+	public function CoverClipTween(target:DisplayObject, xOffset:Number, yOffset:Number,
+			duration:Number, ease:Object, onCompleteCallback:Function,
+			tweenProperties:Object)
+	{
+		var clipRect:Rectangle = new Rectangle(0, 0, target.width, target.height);
+		this._temporaryParent = new Sprite();
+		this._temporaryParent.clipRect = clipRect;
+		target.parent.addChild(this._temporaryParent);
+		this._temporaryParent.addChild(target);
+
+		super(this._temporaryParent.clipRect, duration, ease);
+
+		if(xOffset < 0)
+		{
+			this.animate("width", 0);
+		}
+		else if(xOffset > 0)
+		{
+			this.animate("x", xOffset);
+			this.animate("width", 0);
+		}
+		if(yOffset < 0)
+		{
+			this.animate("height", 0);
+		}
+		else if(yOffset > 0)
+		{
+			this.animate("y", yOffset);
+			this.animate("height", 0);
+		}
+		CoverTween.SCREEN_TO_TWEEN[target] = this;
+		if(tweenProperties)
+		{
+			for(var propertyName:String in tweenProperties)
+			{
+				this[propertyName] = tweenProperties[propertyName];
+			}
+		}
+		this._onCompleteCallback = onCompleteCallback;
+		this.onComplete = this.cleanupTween;
+		Starling.juggler.add(this);
+	}
+
+	private var _temporaryParent:Sprite;
+	private var _onCompleteCallback:Function;
+
+	private function cleanupTween():void
+	{
+		var target:DisplayObject = this._temporaryParent.removeChildAt(0);
+		this._temporaryParent.parent.addChild(target);
+		this._temporaryParent.removeFromParent(true);
+		delete CoverTween.SCREEN_TO_TWEEN[target];
+		if(this._onCompleteCallback !== null)
+		{
+			this._onCompleteCallback();
+		}
+	}
+
+}
+
