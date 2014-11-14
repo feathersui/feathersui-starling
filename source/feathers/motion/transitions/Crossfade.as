@@ -41,12 +41,12 @@ package feathers.motion.transitions
 					{
 						oldScreen.alpha = 1;
 					}
-					activeTween = new CrossfadeTween(newScreen, oldScreen, duration, ease, onComplete, tweenProperties);
+					new CrossfadeTween(newScreen, oldScreen, duration, ease, onComplete, tweenProperties);
 				}
 				else //we only have the old screen
 				{
 					oldScreen.alpha = 1;
-					activeTween = new CrossfadeTween(oldScreen, null, duration, ease, onComplete, tweenProperties);
+					new CrossfadeTween(oldScreen, null, duration, ease, onComplete, tweenProperties);
 				}
 			}
 		}

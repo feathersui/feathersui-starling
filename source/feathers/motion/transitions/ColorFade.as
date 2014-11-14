@@ -41,12 +41,12 @@ package feathers.motion.transitions
 					{
 						oldScreen.alpha = 1;
 					}
-					activeTween = new ColorFadeTween(newScreen, oldScreen, color, duration, ease, onComplete, tweenProperties);
+					new ColorFadeTween(newScreen, oldScreen, color, duration, ease, onComplete, tweenProperties);
 				}
 				else //we only have the old screen
 				{
 					oldScreen.alpha = 1;
-					activeTween = new ColorFadeTween(oldScreen, null, color, duration, ease, onComplete, tweenProperties);
+					new ColorFadeTween(oldScreen, null, color, duration, ease, onComplete, tweenProperties);
 				}
 			}
 		}
