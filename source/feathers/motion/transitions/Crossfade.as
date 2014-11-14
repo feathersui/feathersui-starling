@@ -1,8 +1,13 @@
+/*
+Feathers
+Copyright 2012-2014 Joshua Tynjala. All Rights Reserved.
+
+This program is free software. You can redistribute and/or modify it in
+accordance with the terms of the accompanying license agreement.
+*/
 package feathers.motion.transitions
 {
 	import starling.animation.Transitions;
-	import starling.animation.Tween;
-	import starling.core.Starling;
 	import starling.display.DisplayObject;
 
 	public class Crossfade
@@ -20,7 +25,7 @@ package feathers.motion.transitions
 
 				if(oldScreen)
 				{
-					var activeTween:Tween = CrossfadeTween.SCREEN_TO_TWEEN[oldScreen] as Tween;
+					var activeTween:CrossfadeTween = CrossfadeTween.SCREEN_TO_TWEEN[oldScreen] as CrossfadeTween;
 					if(activeTween)
 					{
 						//force the existing tween to finish so that the
@@ -36,23 +41,13 @@ package feathers.motion.transitions
 					{
 						oldScreen.alpha = 1;
 					}
-					activeTween = new CrossfadeTween(newScreen, oldScreen, duration, ease, onComplete);
-					activeTween.fadeTo(1);
+					activeTween = new CrossfadeTween(newScreen, oldScreen, duration, ease, onComplete, tweenProperties);
 				}
 				else //we only have the old screen
 				{
 					oldScreen.alpha = 1;
-					activeTween = new CrossfadeTween(oldScreen, null, duration, ease, onComplete);
-					activeTween.fadeTo(0);
+					activeTween = new CrossfadeTween(oldScreen, null, duration, ease, onComplete, tweenProperties);
 				}
-				if(tweenProperties)
-				{
-					for(var propertyName:String in tweenProperties)
-					{
-						activeTween[propertyName] = tweenProperties[propertyName];
-					}
-				}
-				Starling.juggler.add(activeTween);
 			}
 		}
 	}
@@ -61,16 +56,27 @@ package feathers.motion.transitions
 import flash.utils.Dictionary;
 
 import starling.animation.Tween;
+import starling.core.Starling;
 import starling.display.DisplayObject;
 
 class CrossfadeTween extends Tween
 {
 	internal static const SCREEN_TO_TWEEN:Dictionary = new Dictionary(true);
 
-	public function CrossfadeTween(target:DisplayObject, otherTarget:DisplayObject, duration:Number, ease:Object, onCompleteCallback:Function)
+	public function CrossfadeTween(target:DisplayObject, otherTarget:DisplayObject,
+		duration:Number, ease:Object, onCompleteCallback:Function,
+		tweenProperties:Object)
 	{
 		super(target, duration, ease);
 		SCREEN_TO_TWEEN[target] = this;
+		if(target.alpha == 0)
+		{
+			this.fadeTo(1);
+		}
+		else
+		{
+			this.fadeTo(0);
+		}
 		if(otherTarget)
 		{
 			this._otherTarget = otherTarget;
@@ -78,6 +84,14 @@ class CrossfadeTween extends Tween
 		}
 		this._onCompleteCallback = onCompleteCallback;
 		this.onComplete = this.cleanupTween;
+		if(tweenProperties)
+		{
+			for(var propertyName:String in tweenProperties)
+			{
+				this[propertyName] = tweenProperties[propertyName];
+			}
+		}
+		Starling.juggler.add(this);
 	}
 
 	private var _otherTarget:DisplayObject;
