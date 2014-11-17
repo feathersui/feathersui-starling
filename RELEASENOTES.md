@@ -2,6 +2,8 @@
 
 Noteworthy changes in official, stable releases of [Feathers](http://feathersui.com/).
 
+## 2.0.1
+
 ## 2.0.0
 
 * New style provider architecture for skinning and themes.
