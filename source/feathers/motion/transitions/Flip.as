@@ -19,7 +19,7 @@ package feathers.motion.transitions
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
 			{
 				validateAndCleanup(oldScreen, newScreen);
-				new FlipTween(null, oldScreen, Math.PI, 0, duration, ease, onComplete, tweenProperties);
+				new FlipTween(newScreen, oldScreen, Math.PI, 0, duration, ease, onComplete, tweenProperties);
 			}
 		}
 
