@@ -3,7 +3,7 @@
 	<id>com.feathersui.examples.Gallery</id>
 	<filename>Feathers Gallery</filename>
 	<name>Feathers Gallery</name>
-	<versionNumber>2.0.0</versionNumber>
+	<versionNumber>2.0.1</versionNumber>
 	<description>Gallery example application built with Feathers UI controls for Starling</description>
 	<copyright>2014 Josh Tynjala</copyright>
 

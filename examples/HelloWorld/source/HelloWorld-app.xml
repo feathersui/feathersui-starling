@@ -3,7 +3,7 @@
 	<id>com.feathersui.examples.HelloWorld</id>
 	<filename>Feathers Hello World</filename>
 	<name>Feathers Hello World</name>
-	<versionNumber>2.0.0</versionNumber>
+	<versionNumber>2.0.1</versionNumber>
 	<description>Hello World example application built with Feathers UI controls for Starling</description>
 	<copyright>2014 Josh Tynjala</copyright>
 
