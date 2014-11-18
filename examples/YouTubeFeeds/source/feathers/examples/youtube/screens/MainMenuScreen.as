@@ -30,7 +30,7 @@ package feathers.examples.youtube.screens
 		public static const LIST_VIDEOS:String = "listVideos";
 
 		private static const CATEGORIES_URL:String = "http://gdata.youtube.com/schemas/2007/categories.cat";
-		private static const FEED_URL_BEFORE:String = "https://gdata.youtube.com/feeds/api/standardfeeds/US/most_popular_";
+		private static const FEED_URL_BEFORE:String = "http://gdata.youtube.com/feeds/api/standardfeeds/US/most_popular_";
 		private static const FEED_URL_AFTER:String = "?v=2";
 
 		public function MainMenuScreen()
