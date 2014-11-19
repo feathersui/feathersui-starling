@@ -43,34 +43,161 @@ package feathers.controls
 			this.events = events ? events : {};
 			this.properties = properties ? properties : {};
 		}
+
+		/**
+		 * @private
+		 */
+		protected var _screen:Object;
 		
 		/**
-		 * A Starling DisplayObject, a Class that may be instantiated to create
-		 * a DisplayObject, or a Function that returns a DisplayObject.
+		 * The screen to be displayed by the <code>ScreenNavigator</code>. It
+		 * may be one of several possible types:
+		 *
+		 * <ul>
+		 *     <li>a <code>Class</code> that may be instantiated to create a <code>DisplayObject</code></li>
+		 *     <li>a <code>Function</code> that returns a <code>DisplayObject</code></li>
+		 *     <li>a Starling <code>DisplayObject</code> that is already instantiated</li>
+		 * </ul>
+		 *
+		 * <p>If the screen is a <code>Class</code> or a <code>Function</code>,
+		 * a new instance of the screen will be instantiated every time that it
+		 * is shown by the <code>ScreenNavigator</code>. The screen's state
+		 * will not be saved automatically. The screen's state may be saved in
+		 * <code>properties</code>, if needed.</p>
+		 *
+		 * <p>If the screen is a <code>DisplayObject</code>, the same instance
+		 * will be reused every time that it is shown by the
+		 * <code>ScreenNavigator</code> When the screen is shown again, its
+		 * state will remain the same as when it was previously hidden. However,
+		 * the screen will be kept in memory even when it isn't visible,
+		 * limiting the resources available for other screens.</p>
 		 *
 		 * @default null
 		 */
-		public var screen:Object;
+		public function get screen():Object
+		{
+			return this._screen;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set screen(value:Object):void
+		{
+			this._screen = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _events:Object;
 		
 		/**
-		 * A hash of events to which the ScreenNavigator will listen. Keys in
-		 * the hash are event types (or the property name of an <code>ISignal</code>),
-		 * and values are one of two possible types. If the value is a
-		 * <code>String</code>, it must refer to a screen ID for the
-		 * <code>ScreenNavigator</code> to display. If the value is a
-		 * <code>Function</code>, it must be a listener for the screen's event
-		 * or <code>ISignal</code>.
+		 * A set of key-value pairs representing actions that should be
+		 * triggered when events are dispatched by the screen when it is shown.
+		 * A pair's key is the event type to listen for (or the property name of
+		 * an <code>ISignal</code> instance), and a pair's value is one of two
+		 * possible types. When this event is dispatched, and a pair's value
+		 * is a <code>String</code>, the <code>ScreenNavigator</code> will show
+		 * another screen with an ID equal to the string value. When this event
+		 * is dispatched, and the pair's value is a <code>Function</code>, the
+		 * function will be called as if it were a listener for the event.
 		 *
-		 * @default null
+		 * @see #setFunctionForEvent()
+		 * @see #setScreenIDForEvent()
 		 */
-		public var events:Object;
+		public function get events():Object
+		{
+			return this._events;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set events(value:Object):void
+		{
+			if(!value)
+			{
+				value = {};
+			}
+			this._events = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _properties:Object;
 		
 		/**
-		 * A hash of properties to set on the screen.
-		 *
-		 * @default null
+		 * A set of key-value pairs representing properties to be set on the
+		 * screen when it is shown. A pair's key is the name of the screen's
+		 * property, and a pair's value is the value to be passed to the
+		 * screen's property.
 		 */
-		public var properties:Object;
+		public function get properties():Object
+		{
+			return this._properties;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set properties(value:Object):void
+		{
+			if(!value)
+			{
+				value = {};
+			}
+			this._properties = value;
+		}
+
+		/**
+		 * Specifies a function to call when an event is dispatched by the
+		 * screen.
+		 *
+		 * <p>If the screen is currently being displayed by a
+		 * <code>ScreenNavigator</code>, and you call <code>setEvent()</code> on
+		 * the <code>ScreenNavigatorItem</code>, the <code>ScreenNavigator</code>
+		 * won't listen for the eventt until the next time that the screen is
+		 * shown.</p>
+		 *
+		 * @see #setScreenIDForEvent()
+		 * @see #clearEvent()
+		 * @see #events
+		 */
+		public function setFunctionForEvent(eventType:String, action:Function):void
+		{
+			this.events[eventType] = action;
+		}
+
+		/**
+		 * Specifies another screen to navigate to when an event is dispatched
+		 * by this screen. The other screen should be specified by its ID that
+		 * is registered with the <code>ScreenNavigator</code>.
+		 *
+		 * <p>If the screen is currently being displayed by a
+		 * <code>ScreenNavigator</code>, and you call <code>setEvent()</code> on
+		 * the <code>ScreenNavigatorItem</code>, the <code>ScreenNavigator</code>
+		 * won't listen for the event until the next time that the screen is
+		 * shown.</p>
+		 *
+		 * @see #setFunctionForEvent()
+		 * @see #clearEvent()
+		 * @see #events
+		 */
+		public function setScreenIDForEvent(eventType:String, screenID:String):void
+		{
+			this.events[eventType] = screenID;
+		}
+
+		/**
+		 * Cancels the action previously registered to be triggered when the
+		 * screen dispatches an event.
+		 */
+		public function clearEvent(eventType:String):void
+		{
+			delete this.events[eventType];
+		}
 		
 		/**
 		 * Creates and instance of the screen type (or uses the screen directly
