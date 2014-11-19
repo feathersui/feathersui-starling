@@ -14,7 +14,7 @@ package feathers.motion.transitions
 	{
 		protected static const SCREEN_REQUIRED_ERROR:String = "Cannot transition if both old screen and new screen are null.";
 
-		public static function createColorFadeTransition(color:uint = 0x000000, duration:Number = 0.25, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
+		public static function createColorFadeTransition(color:uint = 0x000000, duration:Number = 0.75, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
 			{
