@@ -247,6 +247,8 @@ class CoverClipTween extends Tween
 		this._temporaryParent.parent.addChild(target);
 		this._temporaryParent.removeFromParent(true);
 		delete CoverTween.SCREEN_TO_TWEEN[target];
+		target.x = 0;
+		target.y = 0;
 		if(this._onCompleteCallback !== null)
 		{
 			this._onCompleteCallback();

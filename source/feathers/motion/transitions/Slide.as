@@ -228,6 +228,13 @@ class SlideTween extends Tween
 	private function cleanupTween():void
 	{
 		delete SCREEN_TO_TWEEN[this.target];
+		this.target.x = 0;
+		this.target.y = 0;
+		if(this._otherTarget)
+		{
+			this._otherTarget.x = 0;
+			this._otherTarget.y = 0;
+		}
 		if(this._onCompleteCallback !== null)
 		{
 			this._onCompleteCallback();

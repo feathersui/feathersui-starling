@@ -132,6 +132,11 @@ class ColorFadeTween extends Tween
 	{
 		delete SCREEN_TO_TWEEN[this.target];
 		this._overlay.removeFromParent(true);
+		this.target.visible = true;
+		if(this._otherTarget)
+		{
+			this._otherTarget.visible = true;
+		}
 		if(this._onCompleteCallback !== null)
 		{
 			this._onCompleteCallback();
