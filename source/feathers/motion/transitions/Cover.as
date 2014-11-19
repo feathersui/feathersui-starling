@@ -18,7 +18,7 @@ package feathers.motion.transitions
 	{
 		protected static const SCREEN_REQUIRED_ERROR:String = "Cannot transition if both old screen and new screen are null.";
 
-		public static function createCoverLeftTransition(duration:Number = 0.25, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
+		public static function createCoverLeftTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
 			{
@@ -44,7 +44,7 @@ package feathers.motion.transitions
 			}
 		}
 
-		public static function createCoverRightTransition(duration:Number = 0.25, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
+		public static function createCoverRightTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
 			{
@@ -70,7 +70,7 @@ package feathers.motion.transitions
 			}
 		}
 
-		public static function createCoverUpTransition(duration:Number = 0.25, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
+		public static function createCoverUpTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
 			{
@@ -96,7 +96,7 @@ package feathers.motion.transitions
 			}
 		}
 
-		public static function createCoverDownTransition(duration:Number = 0.25, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
+		public static function createCoverDownTransition(duration:Number = 0.5, ease:Object = Transitions.EASE_OUT, tweenProperties:Object = null):Function
 		{
 			return function(oldScreen:DisplayObject, newScreen:DisplayObject, onComplete:Function):void
 			{
