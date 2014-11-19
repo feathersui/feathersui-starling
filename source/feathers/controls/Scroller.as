@@ -3826,7 +3826,7 @@ package feathers.controls
 				else
 				{
 					this._minHorizontalPageIndex = 0;
-					this._maxHorizontalPageIndex = Math.ceil(horizontalScrollRange / this.actualPageWidth) + 1;
+					this._maxHorizontalPageIndex = Math.ceil(horizontalScrollRange / this.actualPageWidth);
 				}
 
 				var verticalScrollRange:Number = this._maxVerticalScrollPosition - this._minVerticalScrollPosition;
@@ -3847,7 +3847,7 @@ package feathers.controls
 				else
 				{
 					this._minVerticalPageIndex = 0;
-					this._maxVerticalPageIndex = Math.ceil(verticalScrollRange / this.actualPageHeight) + 1;
+					this._maxVerticalPageIndex = Math.ceil(verticalScrollRange / this.actualPageHeight);
 				}
 			}
 			else
