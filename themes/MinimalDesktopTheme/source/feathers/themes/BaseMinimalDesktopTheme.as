@@ -35,6 +35,7 @@ package feathers.themes
 	import feathers.controls.IScrollBar;
 	import feathers.controls.ImageLoader;
 	import feathers.controls.Label;
+	import feathers.controls.LayoutGroup;
 	import feathers.controls.List;
 	import feathers.controls.NumericStepper;
 	import feathers.controls.PageIndicator;
@@ -619,6 +620,9 @@ package feathers.themes
 			this.getStyleProviderForClass(Label).setFunctionForStyleName(Label.ALTERNATE_STYLE_NAME_HEADING, this.setHeadingLabelStyles);
 			//no detail label because the font size would be too small
 
+			//layout group
+			this.getStyleProviderForClass(LayoutGroup).setFunctionForStyleName(LayoutGroup.ALTERNATE_STYLE_NAME_TOOLBAR, this.setToolbarLayoutGroupStyles);
+
 			//list (see also: item renderers)
 			this.getStyleProviderForClass(List).defaultStyleFunction = this.setListStyles;
 
@@ -1179,6 +1183,29 @@ package feathers.themes
 		{
 			label.textRendererProperties.textFormat = this.headingTextFormat;
 			label.textRendererProperties.disabledTextFormat = this.headingDisabledTextFormat;
+		}
+
+	//-------------------------
+	// LayoutGroup
+	//-------------------------
+
+		protected function setToolbarLayoutGroupStyles(group:LayoutGroup):void
+		{
+			if(!group.layout)
+			{
+				var layout:HorizontalLayout = new HorizontalLayout();
+				layout.padding = this.gutterSize;
+				layout.gap = this.smallGutterSize;
+				group.layout = layout;
+			}
+
+			group.minWidth = this.gridSize;
+			group.minHeight = this.gridSize;
+
+			var backgroundSkin:Scale9Image = new Scale9Image(headerSkinTextures, this.scale);
+			backgroundSkin.width = this.gridSize;
+			backgroundSkin.height = this.gridSize;
+			group.backgroundSkin = backgroundSkin;
 		}
 
 	//-------------------------

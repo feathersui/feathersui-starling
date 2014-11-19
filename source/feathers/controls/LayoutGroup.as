@@ -75,6 +75,28 @@ package feathers.controls
 		protected static const INVALIDATION_FLAG_CLIPPING:String = "clipping";
 
 		/**
+		 * An alternate style name to use with <code>LayoutGroup</code> to
+		 * allow a theme to give it a toolbar style. If a theme does not provide
+		 * a style for the toolbar container, the theme will automatically fall
+		 * back to using the default scroll container skin.
+		 *
+		 * <p>An alternate style name should always be added to a component's
+		 * <code>styleNameList</code> before the component is initialized. If
+		 * the style name is added later, it will be ignored.</p>
+		 *
+		 * <p>In the following example, the toolbar style is applied to a layout
+		 * group:</p>
+		 *
+		 * <listing version="3.0">
+		 * var group:LayoutGroup = new LayoutGroup();
+		 * group.styleNameList.add( LayoutGroup.ALTERNATE_STYLE_NAME_TOOLBAR );
+		 * this.addChild( group );</listing>
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		public static const ALTERNATE_STYLE_NAME_TOOLBAR:String = "feathers-toolbar-layout-group";
+
+		/**
 		 * The default <code>IStyleProvider</code> for all <code>LayoutGroup</code>
 		 * components.
 		 *

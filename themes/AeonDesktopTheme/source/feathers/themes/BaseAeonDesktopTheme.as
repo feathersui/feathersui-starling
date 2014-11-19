@@ -35,6 +35,7 @@ package feathers.themes
 	import feathers.controls.IScrollBar;
 	import feathers.controls.ImageLoader;
 	import feathers.controls.Label;
+	import feathers.controls.LayoutGroup;
 	import feathers.controls.List;
 	import feathers.controls.NumericStepper;
 	import feathers.controls.PageIndicator;
@@ -752,6 +753,9 @@ package feathers.themes
 			this.getStyleProviderForClass(Label).setFunctionForStyleName(Label.ALTERNATE_STYLE_NAME_HEADING, this.setHeadingLabelStyles);
 			this.getStyleProviderForClass(Label).setFunctionForStyleName(Label.ALTERNATE_STYLE_NAME_DETAIL, this.setDetailLabelStyles);
 
+			//layout group
+			this.getStyleProviderForClass(LayoutGroup).setFunctionForStyleName(LayoutGroup.ALTERNATE_STYLE_NAME_TOOLBAR, this.setToolbarLayoutGroupStyles);
+
 			//list (see also: item renderers)
 			this.getStyleProviderForClass(List).defaultStyleFunction = this.setListStyles;
 
@@ -1163,6 +1167,27 @@ package feathers.themes
 		{
 			label.textRendererProperties.textFormat = this.detailTextFormat;
 			label.textRendererProperties.disabledTextFormat = this.detailDisabledTextFormat;
+		}
+
+	//-------------------------
+	// LayoutGroup
+	//-------------------------
+
+		protected function setToolbarLayoutGroupStyles(group:LayoutGroup):void
+		{
+			if(!group.layout)
+			{
+				var layout:HorizontalLayout = new HorizontalLayout();
+				layout.paddingTop = this.extraSmallGutterSize;
+				layout.paddingBottom = this.extraSmallGutterSize;
+				layout.paddingRight = this.smallGutterSize;
+				layout.paddingLeft = this.smallGutterSize;
+				layout.gap = this.extraSmallGutterSize;
+				group.layout = layout;
+			}
+
+			group.minHeight = this.gridSize;
+			group.backgroundSkin = new Scale9Image(headerBackgroundSkinTextures);
 		}
 
 	//-------------------------
