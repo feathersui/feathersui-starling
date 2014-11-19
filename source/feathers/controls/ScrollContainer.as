@@ -216,6 +216,20 @@ package feathers.controls
 		public static const DECELERATION_RATE_FAST:Number = 0.99;
 
 		/**
+		 * The container will auto size itself to fill the entire stage.
+		 *
+		 * @see #autoSizeMode
+		 */
+		public static const AUTO_SIZE_MODE_STAGE:String = "stage";
+
+		/**
+		 * The container will auto size itself to fit its content.
+		 *
+		 * @see #autoSizeMode
+		 */
+		public static const AUTO_SIZE_MODE_CONTENT:String = "content";
+
+		/**
 		 * The default <code>IStyleProvider</code> for all <code>ScrollContainer</code>
 		 * components.
 		 *
@@ -314,6 +328,45 @@ package feathers.controls
 			}
 			this._layout = value;
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _autoSizeMode:String = AUTO_SIZE_MODE_CONTENT;
+
+		[Inspectable(type="String",enumeration="stage,content")]
+		/**
+		 * Determines how the container will set its own size when its
+		 * dimensions (width and height) aren't set explicitly.
+		 *
+		 * <p>In the following example, the container will be sized to
+		 * match the stage:</p>
+		 *
+		 * <listing version="3.0">
+		 * container.autoSizeMode = ScrollContainer.AUTO_SIZE_MODE_STAGE;</listing>
+		 *
+		 * @default ScrollContainer.AUTO_SIZE_MODE_CONTENT
+		 *
+		 * @see #AUTO_SIZE_MODE_STAGE
+		 * @see #AUTO_SIZE_MODE_CONTENT
+		 */
+		public function get autoSizeMode():String
+		{
+			return this._autoSizeMode;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set autoSizeMode(value:String):void
+		{
+			if(this._autoSizeMode == value)
+			{
+				return;
+			}
+			this._autoSizeMode = value;
+			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
 		/**
@@ -662,6 +715,11 @@ package feathers.controls
 			if(mxmlContentInvalid)
 			{
 				this.refreshMXMLContent();
+			}
+
+			if(sizeInvalid)
+			{
+				this.layoutViewPort.autoSizeMode = this._autoSizeMode;
 			}
 
 			if(layoutInvalid)
