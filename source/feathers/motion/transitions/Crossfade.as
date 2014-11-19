@@ -106,6 +106,11 @@ class CrossfadeTween extends Tween
 	private function cleanupTween():void
 	{
 		delete SCREEN_TO_TWEEN[this.target];
+		this.target.alpha = 1;
+		if(this._otherTarget)
+		{
+			this._otherTarget.alpha = 1;
+		}
 		if(this._onCompleteCallback !== null)
 		{
 			this._onCompleteCallback();
