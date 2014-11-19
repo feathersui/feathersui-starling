@@ -193,6 +193,20 @@ package feathers.controls
 		public static const DECELERATION_RATE_FAST:Number = 0.99;
 
 		/**
+		 * @copy feathers.controls.ScrollContainer#AUTO_SIZE_MODE_STAGE
+		 *
+		 * @see feathers.controls.ScrollContainer#autoSizeMode
+		 */
+		public static const AUTO_SIZE_MODE_STAGE:String = "stage";
+
+		/**
+		 * @copy feathers.controls.ScrollContainer#AUTO_SIZE_MODE_CONTENT
+		 *
+		 * @see feathers.controls.ScrollContainer#autoSizeMode
+		 */
+		public static const AUTO_SIZE_MODE_CONTENT:String = "content";
+
+		/**
 		 * The default <code>IStyleProvider</code> for all <code>Panel</code>
 		 * components.
 		 *
