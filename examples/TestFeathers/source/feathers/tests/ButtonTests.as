@@ -3,8 +3,12 @@ package feathers.tests
 	import feathers.controls.Button;
 	import feathers.events.FeathersEventType;
 
+	import flash.geom.Point;
+
 	import org.flexunit.Assert;
 	import org.flexunit.async.Async;
+
+	import starling.display.DisplayObject;
 
 	import starling.display.Quad;
 	import starling.events.Event;
@@ -41,18 +45,20 @@ package feathers.tests
 			{
 				hasTriggered = true;
 			});
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._button.stage.hitTest(position, true);
 			var touch:Touch = new Touch(0);
-			touch.target = this._button;
+			touch.target = target;
 			touch.phase = TouchPhase.BEGAN;
-			touch.globalX = 10;
-			touch.globalY = 10;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
 			var touches:Vector.<Touch> = new <Touch>[touch];
-			this._button.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
 			//this touch does not move at all, so it should result in triggering
 			//the button.
 			touch.phase = TouchPhase.ENDED;
-			this._button.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
-			Assert.assertTrue(hasTriggered);
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			Assert.assertTrue("TEvent.TRIGGERED was not dispatched", hasTriggered);
 		}
 
 		[Test]
@@ -63,19 +69,21 @@ package feathers.tests
 			{
 				hasTriggered = true;
 			});
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._button.stage.hitTest(position, true);
 			var touch:Touch = new Touch(0);
-			touch.target = this._button;
+			touch.target = target;
 			touch.phase = TouchPhase.BEGAN;
-			touch.globalX = 10;
-			touch.globalY = 10;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
 			var touches:Vector.<Touch> = new <Touch>[touch];
-			this._button.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
 			touch.globalX = 1000; //move the touch way outside the bounds of the button
 			touch.phase = TouchPhase.MOVED;
-			this._button.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
 			touch.phase = TouchPhase.ENDED;
-			this._button.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
-			Assert.assertFalse(hasTriggered);
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			Assert.assertFalse("Event.TRIGGERED was incorrectly dispatched", hasTriggered);
 		}
 
 		[Test(async)]
@@ -96,7 +104,7 @@ package feathers.tests
 			this._button.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
 			Async.delayCall(this, function():void
 			{
-				Assert.assertTrue(hasLongPressed);
+				Assert.assertTrue("FeathersEventType.LONG_PRESS was not dispatched", hasLongPressed);
 			}, 600);
 		}
 

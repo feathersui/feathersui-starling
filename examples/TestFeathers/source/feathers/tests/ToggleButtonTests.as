@@ -2,7 +2,11 @@ package feathers.tests
 {
 	import feathers.controls.ToggleButton;
 
+	import flash.geom.Point;
+
 	import org.flexunit.Assert;
+
+	import starling.display.DisplayObject;
 
 	import starling.display.Quad;
 
@@ -36,7 +40,7 @@ package feathers.tests
 		}
 
 		[Test]
-		public function testChangeEvent():void
+		public function testProgrammaticChangeEvent():void
 		{
 			var beforeIsSelected:Boolean = this._button.isSelected;
 			var hasChanged:Boolean = false;
@@ -44,19 +48,35 @@ package feathers.tests
 			{
 				hasChanged = true;
 			});
+			this._button.isSelected = !this._button.isSelected;
+			Assert.assertTrue("Event.CHANGE was not dispatched", hasChanged);
+			Assert.assertFalse("This isSelected property was not changed", beforeIsSelected === this._button.isSelected);
+		}
+
+		[Test]
+		public function testInteractiveChangeEvent():void
+		{
+			var beforeIsSelected:Boolean = this._button.isSelected;
+			var hasChanged:Boolean = false;
+			this._button.addEventListener(Event.CHANGE, function(event:Event):void
+			{
+				hasChanged = true;
+			});
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._button.stage.hitTest(position, true);
 			var touch:Touch = new Touch(0);
-			touch.target = this._button;
+			touch.target = target;
 			touch.phase = TouchPhase.BEGAN;
-			touch.globalX = 10;
-			touch.globalY = 10;
+			touch.globalX = position.x;
+			touch.globalY = position.y;
 			var touches:Vector.<Touch> = new <Touch>[touch];
-			this._button.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
 			//this touch does not move at all, so it should result in triggering
 			//the button.
 			touch.phase = TouchPhase.ENDED;
-			this._button.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
-			Assert.assertTrue(hasChanged);
-			Assert.assertFalse(beforeIsSelected === this._button.isSelected);
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			Assert.assertTrue("Event.CHANGE was not dispatched", hasChanged);
+			Assert.assertFalse("This isSelected property was not changed", beforeIsSelected === this._button.isSelected);
 		}
 
 		[Test]
@@ -68,20 +88,23 @@ package feathers.tests
 			{
 				hasChanged = true;
 			});
+			var position:Point = new Point(10, 10);
+			var target:DisplayObject = this._button.stage.hitTest(position, true);
 			var touch:Touch = new Touch(0);
-			touch.target = this._button;
+			touch.target = target;
 			touch.phase = TouchPhase.BEGAN;
-			touch.globalX = 10;
-			touch.globalY = 10;
+			touch.globalX = position.x;
+			touch.globalY = position.x;
 			var touches:Vector.<Touch> = new <Touch>[touch];
-			this._button.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
 			touch.globalX = 1000; //move the touch way outside the bounds of the button
 			touch.phase = TouchPhase.MOVED;
-			this._button.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
 			touch.phase = TouchPhase.ENDED;
-			this._button.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
-			Assert.assertFalse(hasChanged);
-			Assert.assertTrue(beforeIsSelected === this._button.isSelected);
+			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
+			Assert.assertFalse("Event.CHANGE was incorrectly dispatched", hasChanged);
+			Assert.assertStrictlyEquals("The isSelected property was incorrectly changed",
+				beforeIsSelected, this._button.isSelected);
 		}
 	}
 }
