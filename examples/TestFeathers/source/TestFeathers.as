@@ -2,6 +2,7 @@ package
 {
     import feathers.system.DeviceCapabilities;
     import feathers.tests.ButtonTests;
+    import feathers.tests.TabBarTests;
     import feathers.tests.ToggleButtonTests;
 
     import flash.display.MovieClip;
@@ -58,10 +59,11 @@ package
             this._flexunit.addListener(new TraceListener());
             this._flexunit.addEventListener(FlexUnitCore.TESTS_COMPLETE, flexunit_testsCompleteHandler);
             this._flexunit.run(
-            [
-                ButtonTests,
-                ToggleButtonTests,
-            ]);
+                    [
+                        ButtonTests,
+                        ToggleButtonTests,
+                        TabBarTests,
+                    ]);
         }
 
         private function flexunit_testsCompleteHandler(event:flash.events.Event):void
