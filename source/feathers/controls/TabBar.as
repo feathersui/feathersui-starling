@@ -75,11 +75,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected static const NOT_PENDING_INDEX:int = -2;
-
-		/**
-		 * @private
-		 */
 		private static const DEFAULT_TAB_FIELDS:Vector.<String> = new <String>
 		[
 			"defaultIcon",
@@ -1144,7 +1139,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _pendingSelectedIndex:int = NOT_PENDING_INDEX;
+		protected var _selectedIndex:int = 0;
 
 		/**
 		 * The index of the currently selected tab. Returns -1 if no tab is
@@ -1166,22 +1161,14 @@ package feathers.controls
 		 *
 		 * }
 		 * tabs.addEventListener( Event.CHANGE, tabs_changeHandler );</listing>
-		 * 
+		 *
 		 * @default -1
-		 * 
+		 *
 		 * @see #selectedItem
 		 */
 		public function get selectedIndex():int
 		{
-			if(this._pendingSelectedIndex != NOT_PENDING_INDEX)
-			{
-				return this._pendingSelectedIndex;
-			}
-			if(!this.toggleGroup)
-			{
-				return -1;
-			}
-			return this.toggleGroup.selectedIndex;
+			return this._selectedIndex;
 		}
 
 		/**
@@ -1189,13 +1176,13 @@ package feathers.controls
 		 */
 		public function set selectedIndex(value:int):void
 		{
-			if(this._pendingSelectedIndex == value ||
-				(this._pendingSelectedIndex == NOT_PENDING_INDEX && this.toggleGroup && this.toggleGroup.selectedIndex == value))
+			if(this._selectedIndex == value)
 			{
 				return;
 			}
-			this._pendingSelectedIndex = value;
+			this._selectedIndex = value;
 			this.invalidate(INVALIDATION_FLAG_SELECTED);
+			this.dispatchEventWith(Event.CHANGE);
 		}
 
 		/**
@@ -1218,9 +1205,9 @@ package feathers.controls
 		 *
 		 * }
 		 * tabs.addEventListener( Event.CHANGE, tabs_changeHandler );</listing>
-		 * 
+		 *
 		 * @default null
-		 * 
+		 *
 		 * @see #selectedIndex
 		 */
 		public function get selectedItem():Object
@@ -1586,13 +1573,7 @@ package feathers.controls
 		 */
 		protected function commitSelection():void
 		{
-			if(this._pendingSelectedIndex == NOT_PENDING_INDEX || !this.toggleGroup)
-			{
-				return;
-			}
-			this.toggleGroup.selectedIndex = this._pendingSelectedIndex;
-			this._pendingSelectedIndex = NOT_PENDING_INDEX;
-			this.dispatchEventWith(Event.CHANGE);
+			this.toggleGroup.selectedIndex = this._selectedIndex;
 		}
 
 		/**
@@ -1947,11 +1928,11 @@ package feathers.controls
 		 */
 		protected function toggleGroup_changeHandler(event:Event):void
 		{
-			if(this._ignoreSelectionChanges || this._pendingSelectedIndex != NOT_PENDING_INDEX)
+			if(this._ignoreSelectionChanges)
 			{
 				return;
 			}
-			this.dispatchEventWith(Event.CHANGE);
+			this.selectedIndex = this.toggleGroup.selectedIndex;
 		}
 
 		/**
@@ -1959,12 +1940,11 @@ package feathers.controls
 		 */
 		protected function dataProvider_addItemHandler(event:Event, index:int):void
 		{
-			if(this.toggleGroup && this.toggleGroup.selectedIndex >= index)
+			if(this._selectedIndex >= index)
 			{
-				//let's keep the same item selected, but we still want to
-				//dispatch the change event, since the selected index is
-				//different
-				this._pendingSelectedIndex = this.toggleGroup.selectedIndex + 1;
+				//we're keeping the same selected item, but the selected index
+				//will change, so we need to manually dispatch the change event
+				this.selectedIndex += 1;
 				this.invalidate(INVALIDATION_FLAG_SELECTED);
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
@@ -1975,30 +1955,33 @@ package feathers.controls
 		 */
 		protected function dataProvider_removeItemHandler(event:Event, index:int):void
 		{
-			if(this.toggleGroup)
+			if(this._selectedIndex > index)
 			{
-				if(this.toggleGroup.selectedIndex > index)
+				//the same item is selected, but its index has changed.
+				this.selectedIndex -= 1;
+			}
+			else if(this._selectedIndex == index)
+			{
+				var oldIndex:int = this._selectedIndex;
+				var newIndex:int = oldIndex;
+				var maxIndex:int = this._dataProvider.length - 1;
+				if(newIndex > maxIndex)
 				{
-					//let's keep the same item selected, but we still want to
-					//dispatch the change event, since the selected index is
-					//different
-					this._pendingSelectedIndex = this.toggleGroup.selectedIndex - 1;
+					newIndex = maxIndex;
 				}
-				else if(this.toggleGroup.selectedIndex == index)
+				if(oldIndex == newIndex)
 				{
-					//we'll keep the same selected index, but the selected item
-					//will change, so let's make sure that the change event will
-					//get dispatched
-					this._pendingSelectedIndex = this.toggleGroup.selectedIndex;
-					var maxIndex:int = this._dataProvider.length - 1;
-					if(this._pendingSelectedIndex > maxIndex)
-					{
-						this._pendingSelectedIndex = maxIndex;
-					}
-				}
-				if(this._pendingSelectedIndex != NOT_PENDING_INDEX)
-				{
+					//we're keeping the same selected index, but the selected
+					//item will change, so we need to manually dispatch the
+					//change event
 					this.invalidate(INVALIDATION_FLAG_SELECTED);
+					this.dispatchEventWith(Event.CHANGE);
+				}
+				else
+				{
+					//we're selecting both a different index and a different
+					//item, so we'll just call the selectedIndex setter
+					this.selectedIndex = newIndex;
 				}
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
@@ -2009,12 +1992,26 @@ package feathers.controls
 		 */
 		protected function dataProvider_resetHandler(event:Event):void
 		{
-			if(this.toggleGroup && this._dataProvider.length > 0)
+			if(this._dataProvider.length > 0)
 			{
 				//the data provider has changed drastically. we should reset the
 				//selection to the first item.
-				this._pendingSelectedIndex = 0;
-				this.invalidate(INVALIDATION_FLAG_SELECTED);
+				if(this._selectedIndex != 0)
+				{
+					this.selectedIndex = 0;
+				}
+				else
+				{
+					//we're keeping the same selected index, but the selected
+					//item will change, so we need to manually dispatch the
+					//change event
+					this.invalidate(INVALIDATION_FLAG_SELECTED);
+					this.dispatchEventWith(Event.CHANGE);
+				}
+			}
+			else if(this._selectedIndex >= 0)
+			{
+				this.selectedIndex = -1;
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -2024,6 +2021,14 @@ package feathers.controls
 		 */
 		protected function dataProvider_replaceItemHandler(event:Event, index:int):void
 		{
+			if(this._selectedIndex == index)
+			{
+				//we're keeping the same selected index, but the selected
+				//item will change, so we need to manually dispatch the
+				//change event
+				this.invalidate(INVALIDATION_FLAG_SELECTED);
+				this.dispatchEventWith(Event.CHANGE);
+			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 
@@ -2032,6 +2037,9 @@ package feathers.controls
 		 */
 		protected function dataProvider_updateItemHandler(event:Event, index:int):void
 		{
+			//no need to dispatch a change event. the index and the item are the
+			//same. the item's properties have changed, but that doesn't require
+			//a change event.
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 	}
