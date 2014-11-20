@@ -60,8 +60,10 @@ package feathers.tests
 			});
 			this._tabBar.selectedIndex = 1;
 			Assert.assertTrue("Event.CHANGE was not dispatched", hasChanged);
-			Assert.assertFalse("This selectedIndex property was not changed", beforeSelectedIndex === this._tabBar.selectedIndex);
-			Assert.assertFalse("This selectedItem property was not changed", beforeSelectedItem === this._tabBar.selectedItem);
+			Assert.assertFalse("The selectedIndex property was not changed",
+				beforeSelectedIndex === this._tabBar.selectedIndex);
+			Assert.assertFalse("The selectedItem property was not changed",
+				beforeSelectedItem === this._tabBar.selectedItem);
 		}
 
 		[Test]
@@ -87,7 +89,8 @@ package feathers.tests
 			touch.phase = TouchPhase.ENDED;
 			target.dispatchEvent(new TouchEvent(TouchEvent.TOUCH, touches));
 			Assert.assertTrue("Event.CHANGE was not dispatched", hasChanged);
-			Assert.assertFalse("This selectedIndex property was not changed", beforeSelectedIndex === this._tabBar.selectedIndex);
+			Assert.assertFalse("The selectedIndex property was not changed",
+				beforeSelectedIndex === this._tabBar.selectedIndex);
 		}
 
 		[Test]
