@@ -1590,12 +1590,6 @@ package feathers.controls
 			{
 				return;
 			}
-			if(this.toggleGroup.selectedIndex == this._pendingSelectedIndex)
-			{
-				this._pendingSelectedIndex = NOT_PENDING_INDEX;
-				return;
-			}
-
 			this.toggleGroup.selectedIndex = this._pendingSelectedIndex;
 			this._pendingSelectedIndex = NOT_PENDING_INDEX;
 			this.dispatchEventWith(Event.CHANGE);
@@ -1967,7 +1961,9 @@ package feathers.controls
 		{
 			if(this.toggleGroup && this.toggleGroup.selectedIndex >= index)
 			{
-				//let's keep the same item selected
+				//let's keep the same item selected, but we still want to
+				//dispatch the change event, since the selected index is
+				//different
 				this._pendingSelectedIndex = this.toggleGroup.selectedIndex + 1;
 				this.invalidate(INVALIDATION_FLAG_SELECTED);
 			}
@@ -1979,11 +1975,31 @@ package feathers.controls
 		 */
 		protected function dataProvider_removeItemHandler(event:Event, index:int):void
 		{
-			if(this.toggleGroup && this.toggleGroup.selectedIndex > index)
+			if(this.toggleGroup)
 			{
-				//let's keep the same item selected
-				this._pendingSelectedIndex = this.toggleGroup.selectedIndex - 1;
-				this.invalidate(INVALIDATION_FLAG_SELECTED);
+				if(this.toggleGroup.selectedIndex > index)
+				{
+					//let's keep the same item selected, but we still want to
+					//dispatch the change event, since the selected index is
+					//different
+					this._pendingSelectedIndex = this.toggleGroup.selectedIndex - 1;
+				}
+				else if(this.toggleGroup.selectedIndex == index)
+				{
+					//we'll keep the same selected index, but the selected item
+					//will change, so let's make sure that the change event will
+					//get dispatched
+					this._pendingSelectedIndex = this.toggleGroup.selectedIndex;
+					var maxIndex:int = this._dataProvider.length - 1;
+					if(this._pendingSelectedIndex > maxIndex)
+					{
+						this._pendingSelectedIndex = maxIndex;
+					}
+				}
+				if(this._pendingSelectedIndex != NOT_PENDING_INDEX)
+				{
+					this.invalidate(INVALIDATION_FLAG_SELECTED);
+				}
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
