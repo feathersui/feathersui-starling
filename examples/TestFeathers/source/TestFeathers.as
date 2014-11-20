@@ -2,6 +2,8 @@ package
 {
     import feathers.system.DeviceCapabilities;
     import feathers.tests.ButtonTests;
+    import feathers.tests.ListTests;
+    import feathers.tests.TabBarEmptyDataProviderTests;
     import feathers.tests.TabBarTests;
     import feathers.tests.ToggleButtonTests;
     import feathers.tests.ToggleGroupTests;
@@ -61,10 +63,12 @@ package
             this._flexunit.addEventListener(FlexUnitCore.TESTS_COMPLETE, flexunit_testsCompleteHandler);
             this._flexunit.run(
             [
-                ToggleGroupTests,
                 ButtonTests,
+                ListTests,
                 ToggleButtonTests,
+                ToggleGroupTests,
                 TabBarTests,
+                TabBarEmptyDataProviderTests,
             ]);
         }
 
