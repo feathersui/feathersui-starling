@@ -125,6 +125,8 @@ package feathers.controls
 		public function LayoutGroup()
 		{
 			super();
+			this.addEventListener(Event.ADDED_TO_STAGE, layoutGroup_addedToStageHandler);
+			this.addEventListener(Event.REMOVED_FROM_STAGE, layoutGroup_removedFromStageHandler);
 		}
 
 		/**
@@ -402,6 +404,17 @@ package feathers.controls
 				return;
 			}
 			this._autoSizeMode = value;
+			if(this.stage)
+			{
+				if(this._autoSizeMode == AUTO_SIZE_MODE_STAGE)
+				{
+					this.stage.addEventListener(Event.RESIZE, stage_resizeHandler);
+				}
+				else
+				{
+					this.stage.removeEventListener(Event.RESIZE, stage_resizeHandler);
+				}
+			}
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
@@ -829,6 +842,25 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function layoutGroup_addedToStageHandler(event:Event):void
+		{
+			if(this._autoSizeMode == AUTO_SIZE_MODE_STAGE)
+			{
+				this.stage.addEventListener(Event.RESIZE, stage_resizeHandler);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function layoutGroup_removedFromStageHandler(event:Event):void
+		{
+			this.stage.removeEventListener(Event.RESIZE, stage_resizeHandler);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function layout_changeHandler(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
@@ -855,6 +887,14 @@ package feathers.controls
 			{
 				return;
 			}
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function stage_resizeHandler(event:Event):void
+		{
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
 	}
