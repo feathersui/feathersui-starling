@@ -441,6 +441,10 @@ package feathers.controls
 				//but only if we're not already doing that...
 				this._validationQueue.advanceTime(0);
 			}
+			else if(!this._isValidating)
+			{
+				this.validate();
+			}
 
 			this.dispatchEventWith(FeathersEventType.TRANSITION_START);
 			this._activeScreen.dispatchEventWith(FeathersEventType.TRANSITION_IN_START);
