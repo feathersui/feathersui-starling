@@ -1139,7 +1139,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _selectedIndex:int = 0;
+		protected var _selectedIndex:int = -1;
 
 		/**
 		 * The index of the currently selected tab. Returns -1 if no tab is
