@@ -49,7 +49,7 @@ package feathers.tests
 		}
 
 		[Test]
-		public function testProgrammaticChangeEvent():void
+		public function testProgrammaticSelectionChange():void
 		{
 			var beforeSelectedIndex:int = this._tabBar.selectedIndex;
 			var beforeSelectedItem:Object = this._tabBar.selectedItem;
@@ -59,14 +59,13 @@ package feathers.tests
 				hasChanged = true;
 			});
 			this._tabBar.selectedIndex = 1;
-			this._tabBar.validate(); //the change doesn't happen until validation
 			Assert.assertTrue("Event.CHANGE was not dispatched", hasChanged);
 			Assert.assertFalse("This selectedIndex property was not changed", beforeSelectedIndex === this._tabBar.selectedIndex);
 			Assert.assertFalse("This selectedItem property was not changed", beforeSelectedItem === this._tabBar.selectedItem);
 		}
 
 		[Test]
-		public function testInteractiveChangeEvent():void
+		public function testInteractiveSelectionChange():void
 		{
 			var beforeSelectedIndex:Boolean = this._tabBar.selectedIndex;
 			var hasChanged:Boolean = false;
@@ -92,10 +91,9 @@ package feathers.tests
 		}
 
 		[Test]
-		public function testRemoveBeforeSelectedIndexChangeEvent():void
+		public function testRemoveItemBeforeSelectedIndex():void
 		{
 			this._tabBar.selectedIndex = 1;
-			this._tabBar.validate(); //the change doesn't happen until validation
 			var beforeSelectedIndex:int = this._tabBar.selectedIndex;
 			var beforeSelectedItem:Object = this._tabBar.selectedItem;
 			var hasChanged:Boolean = false;
@@ -104,7 +102,6 @@ package feathers.tests
 				hasChanged = true;
 			});
 			this._tabBar.dataProvider.removeItemAt(0);
-			this._tabBar.validate();
 			Assert.assertTrue("Event.CHANGE was not dispatched", hasChanged);
 			Assert.assertFalse("The selectedIndex property was not changed",
 				beforeSelectedIndex === this._tabBar.selectedIndex);
@@ -113,10 +110,9 @@ package feathers.tests
 		}
 
 		[Test]
-		public function testRemoveAfterSelectedIndexChangeEvent():void
+		public function testRemoveItemAfterSelectedIndex():void
 		{
 			this._tabBar.selectedIndex = 1;
-			this._tabBar.validate(); //the change doesn't happen until validation
 			var beforeSelectedIndex:int = this._tabBar.selectedIndex;
 			var beforeSelectedItem:Object = this._tabBar.selectedItem;
 			var hasChanged:Boolean = false;
@@ -125,7 +121,6 @@ package feathers.tests
 				hasChanged = true;
 			});
 			this._tabBar.dataProvider.removeItemAt(2);
-			this._tabBar.validate();
 			Assert.assertFalse("Event.CHANGE was incorrectly dispatched", hasChanged);
 			Assert.assertStrictlyEquals("The selectedIndex property was incorrectly changed",
 				beforeSelectedIndex, this._tabBar.selectedIndex);
@@ -134,10 +129,9 @@ package feathers.tests
 		}
 
 		[Test]
-		public function testRemoveSelectedIndexChangeEvent():void
+		public function testRemoveSelectedIndex():void
 		{
 			this._tabBar.selectedIndex = 1;
-			this._tabBar.validate(); //the change doesn't happen until validation
 			var beforeSelectedIndex:int = this._tabBar.selectedIndex;
 			var beforeSelectedItem:Object = this._tabBar.selectedItem;
 			var hasChanged:Boolean = false;
@@ -146,12 +140,81 @@ package feathers.tests
 				hasChanged = true;
 			});
 			this._tabBar.dataProvider.removeItemAt(1);
-			this._tabBar.validate();
 			Assert.assertTrue("Event.CHANGE was not dispatched", hasChanged);
 			Assert.assertStrictlyEquals("The selectedIndex property was incorrectly changed",
 				beforeSelectedIndex, this._tabBar.selectedIndex);
 			Assert.assertFalse("The selectedItem was not changed",
 				beforeSelectedItem === this._tabBar.selectedItem);
+		}
+
+		[Test]
+		public function testReplaceItemAtSelectedIndex():void
+		{
+			this._tabBar.selectedIndex = 1;
+			var beforeSelectedIndex:int = this._tabBar.selectedIndex;
+			var beforeSelectedItem:Object = this._tabBar.selectedItem;
+			var hasChanged:Boolean = false;
+			this._tabBar.addEventListener(Event.CHANGE, function(event:Event):void
+			{
+				hasChanged = true;
+			});
+			this._tabBar.dataProvider.setItemAt({ label: "New Item" }, beforeSelectedIndex);
+			Assert.assertTrue("Event.CHANGE was not dispatched", hasChanged);
+			Assert.assertStrictlyEquals("The selectedIndex property was incorrectly changed",
+				beforeSelectedIndex, this._tabBar.selectedIndex);
+			Assert.assertFalse("The selectedItem was not changed",
+				beforeSelectedItem === this._tabBar.selectedItem);
+		}
+
+		[Test]
+		public function testDeselectAllOnNullDataProvider():void
+		{
+			var hasChanged:Boolean = false;
+			this._tabBar.addEventListener(Event.CHANGE, function(event:Event):void
+			{
+				hasChanged = true;
+			});
+			this._tabBar.dataProvider = null;
+			Assert.assertTrue("Event.CHANGE was not dispatched", hasChanged);
+			Assert.assertStrictlyEquals("The selectedIndex property was not set to -1",
+				-1, this._tabBar.selectedIndex);
+			Assert.assertStrictlyEquals("The selectedItem property was not set to null",
+				null, this._tabBar.selectedItem);
+		}
+
+		[Test]
+		public function testDeselectAllOnDataProviderRemoveAll():void
+		{
+			var hasChanged:Boolean = false;
+			this._tabBar.addEventListener(Event.CHANGE, function(event:Event):void
+			{
+				hasChanged = true;
+			});
+			this._tabBar.dataProvider.removeAll();
+			Assert.assertTrue("Event.CHANGE was not dispatched", hasChanged);
+			Assert.assertStrictlyEquals("The selectedIndex property was not set to -1",
+				-1, this._tabBar.selectedIndex);
+			Assert.assertStrictlyEquals("The selectedItem property was not set to null",
+				null, this._tabBar.selectedItem);
+		}
+
+		[Test]
+		public function testAddItemBeforeSelectedIndex():void
+		{
+			this._tabBar.selectedIndex = 1;
+			var hasChanged:Boolean = false;
+			var beforeSelectedIndex:int = this._tabBar.selectedIndex;
+			var beforeSelectedItem:Object = this._tabBar.selectedItem;
+			this._tabBar.addEventListener(Event.CHANGE, function(event:Event):void
+			{
+				hasChanged = true;
+			});
+			this._tabBar.dataProvider.addItemAt({label: "New Item"}, 0);
+			Assert.assertTrue("Event.CHANGE was not dispatched", hasChanged);
+			Assert.assertFalse("The selectedIndex property was not changed",
+				beforeSelectedIndex === this._tabBar.selectedIndex);
+			Assert.assertStrictlyEquals("The selectedItem was incorrectly changed",
+				beforeSelectedItem, this._tabBar.selectedItem);
 		}
 	}
 }
