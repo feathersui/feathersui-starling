@@ -15,6 +15,7 @@ package feathers.controls
 
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
+	import starling.events.Event;
 
 	/**
 	 * Dispatched when the container is scrolled.
@@ -246,6 +247,8 @@ package feathers.controls
 			super();
 			this.layoutViewPort = new LayoutViewPort();
 			this.viewPort = this.layoutViewPort;
+			this.addEventListener(Event.ADDED_TO_STAGE, scrollContainer_addedToStageHandler);
+			this.addEventListener(Event.REMOVED_FROM_STAGE, scrollContainer_removedFromStageHandler);
 		}
 
 		/**
@@ -366,6 +369,17 @@ package feathers.controls
 				return;
 			}
 			this._autoSizeMode = value;
+			if(this.stage)
+			{
+				if(this._autoSizeMode == AUTO_SIZE_MODE_STAGE)
+				{
+					this.stage.addEventListener(Event.RESIZE, stage_resizeHandler);
+				}
+				else
+				{
+					this.stage.removeEventListener(Event.RESIZE, stage_resizeHandler);
+				}
+			}
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
@@ -750,6 +764,33 @@ package feathers.controls
 				this.addChild(child);
 			}
 			this._mxmlContentIsReady = true;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function scrollContainer_addedToStageHandler(event:Event):void
+		{
+			if(this._autoSizeMode == AUTO_SIZE_MODE_STAGE)
+			{
+				this.stage.addEventListener(Event.RESIZE, stage_resizeHandler);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function scrollContainer_removedFromStageHandler(event:Event):void
+		{
+			this.stage.removeEventListener(Event.RESIZE, stage_resizeHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function stage_resizeHandler(event:Event):void
+		{
+			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 	}
 }
