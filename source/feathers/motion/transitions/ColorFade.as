@@ -53,8 +53,6 @@ package feathers.motion.transitions
 	}
 }
 
-import feathers.controls.IScreen;
-
 import flash.utils.Dictionary;
 
 import starling.animation.Tween;
@@ -97,7 +95,7 @@ class ColorFadeTween extends Tween
 		this._onCompleteCallback = onCompleteCallback;
 		this.onComplete = this.cleanupTween;
 
-		var navigator:DisplayObjectContainer = target is IScreen ? IScreen(target).owner : target.parent;
+		var navigator:DisplayObjectContainer = target.parent;
 		this._overlay = new Quad(navigator.width, navigator.height, color);
 		this._overlay.alpha = 0;
 		this._overlay.touchable = false;

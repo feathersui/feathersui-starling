@@ -71,8 +71,6 @@ package feathers.motion.transitions
 	}
 }
 
-import feathers.controls.IScreen;
-
 import flash.utils.Dictionary;
 
 import starling.animation.Tween;
@@ -93,7 +91,7 @@ class FlipTween extends Tween
 
 		if(newScreen)
 		{
-			this._navigator = newScreen is IScreen ? IScreen(newScreen).owner : newScreen.parent;
+			this._navigator = newScreen.parent;
 			var newScreenParent:Sprite3D = new Sprite3D();
 			if(rotationYOffset != 0)
 			{
@@ -128,7 +126,7 @@ class FlipTween extends Tween
 			oldScreenParent.rotationX = 0;
 			if(!targetParent)
 			{
-				this._navigator = oldScreen is IScreen ? IScreen(oldScreen).owner : oldScreen.parent;
+				this._navigator = oldScreen.parent;
 				duration = duration / 2;
 				targetParent = oldScreenParent;
 			}

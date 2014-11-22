@@ -7,12 +7,9 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.motion.transitions
 {
-	import feathers.controls.IScreen;
-
 	import starling.animation.Transitions;
 	import starling.animation.Tween;
 	import starling.display.DisplayObject;
-	import starling.display.DisplayObjectContainer;
 
 	public class Reveal
 	{
@@ -28,18 +25,15 @@ package feathers.motion.transitions
 					newScreen.x = 0;
 					newScreen.y = 0;
 				}
-				var navigator:DisplayObjectContainer;
 				if(oldScreen)
 				{
-					navigator = oldScreen is IScreen ? IScreen(oldScreen).owner : oldScreen.parent;
 					oldScreen.x = 0;
 					oldScreen.y = 0;
-					new RevealTween(oldScreen, -navigator.width, 0, duration, ease, onComplete, tweenProperties);
+					new RevealTween(oldScreen, -oldScreen.width, 0, duration, ease, onComplete, tweenProperties);
 				}
 				else //we only have the new screen
 				{
-					navigator = newScreen is IScreen ? IScreen(newScreen).owner : newScreen.parent;
-					new RevealClipTween(newScreen, -navigator.width, 0, duration, ease, onComplete, tweenProperties);
+					new RevealClipTween(newScreen, -newScreen.width, 0, duration, ease, onComplete, tweenProperties);
 				}
 			}
 		}
@@ -54,18 +48,15 @@ package feathers.motion.transitions
 					newScreen.x = 0;
 					newScreen.y = 0;
 				}
-				var navigator:DisplayObjectContainer;
 				if(oldScreen)
 				{
-					navigator = oldScreen is IScreen ? IScreen(oldScreen).owner : oldScreen.parent;
 					oldScreen.x = 0;
 					oldScreen.y = 0;
-					new RevealTween(oldScreen, navigator.width, 0, duration, ease, onComplete, tweenProperties);
+					new RevealTween(oldScreen, oldScreen.width, 0, duration, ease, onComplete, tweenProperties);
 				}
 				else //we only have the new screen
 				{
-					navigator = newScreen is IScreen ? IScreen(newScreen).owner : newScreen.parent;
-					new RevealClipTween(newScreen, navigator.width, 0, duration, ease, onComplete, tweenProperties);
+					new RevealClipTween(newScreen, newScreen.width, 0, duration, ease, onComplete, tweenProperties);
 				}
 			}
 		}
@@ -80,18 +71,15 @@ package feathers.motion.transitions
 					newScreen.x = 0;
 					newScreen.y = 0;
 				}
-				var navigator:DisplayObjectContainer;
 				if(oldScreen)
 				{
-					navigator = oldScreen is IScreen ? IScreen(oldScreen).owner : oldScreen.parent;
 					oldScreen.x = 0;
 					oldScreen.y = 0;
-					new RevealTween(oldScreen, 0, -navigator.height, duration, ease, onComplete, tweenProperties);
+					new RevealTween(oldScreen, 0, -oldScreen.height, duration, ease, onComplete, tweenProperties);
 				}
 				else //we only have the new screen
 				{
-					navigator = newScreen is IScreen ? IScreen(newScreen).owner : newScreen.parent;
-					new RevealClipTween(newScreen, 0, -navigator.height, duration, ease, onComplete, tweenProperties);
+					new RevealClipTween(newScreen, 0, -newScreen.height, duration, ease, onComplete, tweenProperties);
 				}
 			}
 		}
@@ -106,18 +94,15 @@ package feathers.motion.transitions
 					newScreen.x = 0;
 					newScreen.y = 0;
 				}
-				var navigator:DisplayObjectContainer;
 				if(oldScreen)
 				{
-					navigator = oldScreen is IScreen ? IScreen(oldScreen).owner : oldScreen.parent;
 					oldScreen.x = 0;
 					oldScreen.y = 0;
-					new RevealTween(oldScreen, 0, navigator.height, duration, ease, onComplete, tweenProperties);
+					new RevealTween(oldScreen, 0, oldScreen.height, duration, ease, onComplete, tweenProperties);
 				}
 				else //we only have the new screen
 				{
-					navigator = newScreen is IScreen ? IScreen(newScreen).owner : newScreen.parent;
-					new RevealClipTween(newScreen, 0, navigator.height, duration, ease, onComplete, tweenProperties);
+					new RevealClipTween(newScreen, 0, newScreen.height, duration, ease, onComplete, tweenProperties);
 				}
 			}
 		}
