@@ -7,12 +7,9 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.motion.transitions
 {
-	import feathers.controls.IScreen;
-
 	import starling.animation.Transitions;
 	import starling.animation.Tween;
 	import starling.display.DisplayObject;
-	import starling.display.DisplayObjectContainer;
 
 	public class Cover
 	{
@@ -28,18 +25,15 @@ package feathers.motion.transitions
 					oldScreen.x = 0;
 					oldScreen.y = 0;
 				}
-				var navigator:DisplayObjectContainer;
 				if(newScreen)
 				{
-					navigator = newScreen is IScreen ? IScreen(newScreen).owner : newScreen.parent;
-					newScreen.x = navigator.width;
+					newScreen.x = newScreen.width;
 					newScreen.y = 0;
-					new CoverTween(newScreen, -navigator.width, 0, duration, ease, onComplete, tweenProperties);
+					new CoverTween(newScreen, -newScreen.width, 0, duration, ease, onComplete, tweenProperties);
 				}
 				else //we only have the old screen
 				{
-					navigator = oldScreen is IScreen ? IScreen(oldScreen).owner : oldScreen.parent;
-					new CoverClipTween(oldScreen, -navigator.width, 0, duration, ease, onComplete, tweenProperties);
+					new CoverClipTween(oldScreen, -oldScreen.width, 0, duration, ease, onComplete, tweenProperties);
 				}
 			}
 		}
@@ -54,18 +48,15 @@ package feathers.motion.transitions
 					oldScreen.x = 0;
 					oldScreen.y = 0;
 				}
-				var navigator:DisplayObjectContainer;
 				if(newScreen)
 				{
-					navigator = newScreen is IScreen ? IScreen(newScreen).owner : newScreen.parent;
 					newScreen.x = -newScreen.width;
 					newScreen.y = 0;
-					new CoverTween(newScreen, navigator.width, 0, duration, ease, onComplete, tweenProperties);
+					new CoverTween(newScreen, newScreen.width, 0, duration, ease, onComplete, tweenProperties);
 				}
 				else //we only have the old screen
 				{
-					navigator = oldScreen is IScreen ? IScreen(oldScreen).owner : oldScreen.parent;
-					new CoverClipTween(oldScreen, navigator.width, 0, duration, ease, onComplete, tweenProperties);
+					new CoverClipTween(oldScreen, oldScreen.width, 0, duration, ease, onComplete, tweenProperties);
 				}
 			}
 		}
@@ -80,18 +71,15 @@ package feathers.motion.transitions
 					oldScreen.x = 0;
 					oldScreen.y = 0;
 				}
-				var navigator:DisplayObjectContainer;
 				if(newScreen)
 				{
-					navigator = newScreen is IScreen ? IScreen(newScreen).owner : newScreen.parent;
 					newScreen.x = 0;
-					newScreen.y = navigator.height;
-					new CoverTween(newScreen, 0, -navigator.height, duration, ease, onComplete, tweenProperties);
+					newScreen.y = newScreen.height;
+					new CoverTween(newScreen, 0, -newScreen.height, duration, ease, onComplete, tweenProperties);
 				}
 				else //we only have the old screen
 				{
-					navigator = oldScreen is IScreen ? IScreen(oldScreen).owner : oldScreen.parent;
-					new CoverClipTween(oldScreen, 0, -navigator.height, duration, ease, onComplete, tweenProperties);
+					new CoverClipTween(oldScreen, 0, -oldScreen.height, duration, ease, onComplete, tweenProperties);
 				}
 			}
 		}
@@ -106,18 +94,15 @@ package feathers.motion.transitions
 					oldScreen.x = 0;
 					oldScreen.y = 0;
 				}
-				var navigator:DisplayObjectContainer;
 				if(newScreen)
 				{
-					navigator = newScreen is IScreen ? IScreen(newScreen).owner : newScreen.parent;
 					newScreen.x = 0;
 					newScreen.y = -newScreen.height;
-					new CoverTween(newScreen, 0, navigator.height, duration, ease, onComplete, tweenProperties);
+					new CoverTween(newScreen, 0, newScreen.height, duration, ease, onComplete, tweenProperties);
 				}
 				else //we only have the old screen
 				{
-					navigator = oldScreen is IScreen ? IScreen(oldScreen).owner : oldScreen.parent;
-					new CoverClipTween(oldScreen, 0, navigator.height, duration, ease, onComplete, tweenProperties);
+					new CoverClipTween(oldScreen, 0, oldScreen.height, duration, ease, onComplete, tweenProperties);
 				}
 			}
 		}

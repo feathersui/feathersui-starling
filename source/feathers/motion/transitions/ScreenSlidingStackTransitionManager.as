@@ -13,8 +13,6 @@ package feathers.motion.transitions
 	import flash.utils.getQualifiedClassName;
 
 	import starling.animation.Transitions;
-	import starling.animation.Tween;
-	import starling.core.Starling;
 	import starling.display.DisplayObject;
 
 	/**

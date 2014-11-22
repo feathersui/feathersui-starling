@@ -7,8 +7,6 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.motion.transitions
 {
-	import feathers.controls.IScreen;
-
 	import starling.animation.Transitions;
 	import starling.display.DisplayObject;
 
@@ -22,25 +20,22 @@ package feathers.motion.transitions
 			{
 				validateAndCleanup(oldScreen, newScreen);
 
-				var navigator:DisplayObject;
 				if(newScreen)
 				{
-					navigator = newScreen is IScreen ? IScreen(newScreen).owner : newScreen.parent;
 					if(oldScreen)
 					{
 						oldScreen.x = 0;
 						oldScreen.y = 0;
 					}
-					newScreen.x = navigator.width;
+					newScreen.x = newScreen.width;
 					newScreen.y = 0;
-					new SlideTween(newScreen, oldScreen, -navigator.width, 0, navigator, duration, ease, onComplete, tweenProperties);
+					new SlideTween(newScreen, oldScreen, -newScreen.width, 0, duration, ease, onComplete, tweenProperties);
 				}
 				else //we only have the old screen
 				{
-					navigator = oldScreen is IScreen ? IScreen(oldScreen).owner : oldScreen.parent;
 					oldScreen.x = 0;
 					oldScreen.y = 0;
-					new SlideTween(oldScreen, null, -navigator.width, 0, navigator, duration, ease, onComplete, tweenProperties);
+					new SlideTween(oldScreen, null, -oldScreen.width, 0, duration, ease, onComplete, tweenProperties);
 				}
 			}
 		}
@@ -51,10 +46,8 @@ package feathers.motion.transitions
 			{
 				validateAndCleanup(oldScreen, newScreen);
 
-				var navigator:DisplayObject;
 				if(newScreen)
 				{
-					navigator = newScreen is IScreen ? IScreen(newScreen).owner : newScreen.parent;
 					if(oldScreen)
 					{
 						oldScreen.x = 0;
@@ -62,14 +55,13 @@ package feathers.motion.transitions
 					}
 					newScreen.x = -newScreen.width;
 					newScreen.y = 0;
-					new SlideTween(newScreen, oldScreen, navigator.width, 0, navigator, duration, ease, onComplete, tweenProperties);
+					new SlideTween(newScreen, oldScreen, newScreen.width, 0, duration, ease, onComplete, tweenProperties);
 				}
 				else //we only have the old screen
 				{
-					navigator = oldScreen is IScreen ? IScreen(oldScreen).owner : oldScreen.parent;
 					oldScreen.x = 0;
 					oldScreen.y = 0;
-					new SlideTween(oldScreen, null, navigator.width, 0, navigator, duration, ease, onComplete, tweenProperties);
+					new SlideTween(oldScreen, null, oldScreen.width, 0, duration, ease, onComplete, tweenProperties);
 				}
 			}
 		}
@@ -80,25 +72,22 @@ package feathers.motion.transitions
 			{
 				validateAndCleanup(oldScreen, newScreen);
 
-				var navigator:DisplayObject;
 				if(newScreen)
 				{
-					navigator = newScreen is IScreen ? IScreen(newScreen).owner : newScreen.parent;
 					if(oldScreen)
 					{
 						oldScreen.x = 0;
 						oldScreen.y = 0;
 					}
 					newScreen.x = 0;
-					newScreen.y = navigator.height;
-					new SlideTween(newScreen, oldScreen, 0, -navigator.height, navigator, duration, ease, onComplete, tweenProperties);
+					newScreen.y = newScreen.height;
+					new SlideTween(newScreen, oldScreen, 0, -newScreen.height, duration, ease, onComplete, tweenProperties);
 				}
 				else //we only have the old screen
 				{
-					navigator = oldScreen is IScreen ? IScreen(oldScreen).owner : oldScreen.parent;
 					oldScreen.x = 0;
 					oldScreen.y = 0;
-					new SlideTween(oldScreen, null, 0, -navigator.height, navigator, duration, ease, onComplete, tweenProperties);
+					new SlideTween(oldScreen, null, 0, -oldScreen.height, duration, ease, onComplete, tweenProperties);
 				}
 			}
 		}
@@ -109,10 +98,8 @@ package feathers.motion.transitions
 			{
 				validateAndCleanup(oldScreen, newScreen);
 
-				var navigator:DisplayObject;
 				if(newScreen)
 				{
-					navigator = newScreen is IScreen ? IScreen(newScreen).owner : newScreen.parent;
 					if(oldScreen)
 					{
 						oldScreen.x = 0;
@@ -120,14 +107,13 @@ package feathers.motion.transitions
 					}
 					newScreen.x = 0;
 					newScreen.y = -newScreen.height;
-					new SlideTween(newScreen, oldScreen, 0, navigator.height, navigator, duration, ease, onComplete, tweenProperties);
+					new SlideTween(newScreen, oldScreen, 0, newScreen.height, duration, ease, onComplete, tweenProperties);
 				}
 				else //we only have the old screen
 				{
-					navigator = oldScreen is IScreen ? IScreen(oldScreen).owner : oldScreen.parent;
 					oldScreen.x = 0;
 					oldScreen.y = 0;
-					new SlideTween(oldScreen, null, 0, navigator.height, navigator, duration, ease, onComplete, tweenProperties);
+					new SlideTween(oldScreen, null, 0, oldScreen.height, duration, ease, onComplete, tweenProperties);
 				}
 			}
 		}
@@ -164,9 +150,8 @@ class SlideTween extends Tween
 	internal static const SCREEN_TO_TWEEN:Dictionary = new Dictionary(true);
 
 	public function SlideTween(target:DisplayObject, otherTarget:DisplayObject,
-		xOffset:Number, yOffset:Number, navigator:DisplayObject,
-		duration:Number, ease:Object, onCompleteCallback:Function,
-		tweenProperties:Object)
+		xOffset:Number, yOffset:Number, duration:Number, ease:Object,
+		onCompleteCallback:Function, tweenProperties:Object)
 	{
 		super(target, duration, ease);
 		SCREEN_TO_TWEEN[target] = this;
@@ -187,7 +172,7 @@ class SlideTween extends Tween
 				this[propertyName] = tweenProperties[propertyName];
 			}
 		}
-		this._navigator = navigator;
+		this._navigator = target.parent;
 		if(otherTarget)
 		{
 			this._otherTarget = otherTarget;

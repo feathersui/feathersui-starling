@@ -71,10 +71,7 @@ package feathers.motion.transitions
 	}
 }
 
-import feathers.controls.IScreen;
-
 import flash.display3D.Context3DTriangleFace;
-
 import flash.utils.Dictionary;
 
 import starling.animation.Tween;
@@ -96,7 +93,7 @@ class CubeTween extends Tween
 		var cube:CulledSprite3D = new CulledSprite3D();
 		if(newScreen)
 		{
-			this._navigator = newScreen is IScreen ? IScreen(newScreen).owner : newScreen.parent;
+			this._navigator = newScreen.parent;
 			this._newScreenParent = new Sprite3D();
 			if(rotationYOffset < 0)
 			{
@@ -125,7 +122,7 @@ class CubeTween extends Tween
 		{
 			if(!this._navigator)
 			{
-				this._navigator = newScreen is IScreen ? IScreen(newScreen).owner : newScreen.parent;
+				this._navigator = oldScreen.parent;
 			}
 			cube.addChildAt(oldScreen, 0);
 		}
