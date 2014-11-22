@@ -246,12 +246,12 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _owner:ScreenNavigator;
+		protected var _owner:IScreenNavigator;
 
 		/**
 		 * @inheritDoc
 		 */
-		public function get owner():ScreenNavigator
+		public function get owner():IScreenNavigator
 		{
 			return this._owner;
 		}
@@ -259,7 +259,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		public function set owner(value:ScreenNavigator):void
+		public function set owner(value:IScreenNavigator):void
 		{
 			this._owner = value;
 		}

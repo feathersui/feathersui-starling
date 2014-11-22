@@ -7,6 +7,8 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
+	import feathers.controls.supportClasses.IScreenNavigatorItem;
+
 	import flash.errors.IllegalOperationError;
 
 	import starling.display.DisplayObject;
@@ -32,16 +34,16 @@ package feathers.controls
 	 * @see http://wiki.starling-framework.org/feathers/screen-navigator
 	 * @see feathers.controls.ScreenNavigator
 	 */
-	public class ScreenNavigatorItem
+	public class ScreenNavigatorItem implements IScreenNavigatorItem
 	{
 		/**
 		 * Constructor.
 		 */
 		public function ScreenNavigatorItem(screen:Object = null, events:Object = null, properties:Object = null)
 		{
-			this.screen = screen;
-			this.events = events ? events : {};
-			this.properties = properties ? properties : {};
+			this._screen = screen;
+			this._events = events ? events : {};
+			this._properties = properties ? properties : {};
 		}
 
 		/**
@@ -152,14 +154,22 @@ package feathers.controls
 		}
 
 		/**
+		 * @inheritDoc
+		 */
+		public function get canDispose():Boolean
+		{
+			return !(this._screen is DisplayObject);
+		}
+
+		/**
 		 * Specifies a function to call when an event is dispatched by the
 		 * screen.
 		 *
 		 * <p>If the screen is currently being displayed by a
-		 * <code>ScreenNavigator</code>, and you call <code>setEvent()</code> on
-		 * the <code>ScreenNavigatorItem</code>, the <code>ScreenNavigator</code>
-		 * won't listen for the eventt until the next time that the screen is
-		 * shown.</p>
+		 * <code>ScreenNavigator</code>, and you call
+		 * <code>setFunctionForEvent()</code> on the <code>ScreenNavigatorItem</code>,
+		 * the <code>ScreenNavigator</code> won't listen for the event until
+		 * the next time that the screen is shown.</p>
 		 *
 		 * @see #setScreenIDForEvent()
 		 * @see #clearEvent()
@@ -167,7 +177,7 @@ package feathers.controls
 		 */
 		public function setFunctionForEvent(eventType:String, action:Function):void
 		{
-			this.events[eventType] = action;
+			this._events[eventType] = action;
 		}
 
 		/**
@@ -176,10 +186,10 @@ package feathers.controls
 		 * is registered with the <code>ScreenNavigator</code>.
 		 *
 		 * <p>If the screen is currently being displayed by a
-		 * <code>ScreenNavigator</code>, and you call <code>setEvent()</code> on
-		 * the <code>ScreenNavigatorItem</code>, the <code>ScreenNavigator</code>
-		 * won't listen for the event until the next time that the screen is
-		 * shown.</p>
+		 * <code>ScreenNavigator</code>, and you call
+		 * <code>setScreenIDForEvent()</code> on the <code>ScreenNavigatorItem</code>,
+		 * the <code>ScreenNavigator</code> won't listen for the event until the
+		 * next time that the screen is shown.</p>
 		 *
 		 * @see #setFunctionForEvent()
 		 * @see #clearEvent()
@@ -187,48 +197,49 @@ package feathers.controls
 		 */
 		public function setScreenIDForEvent(eventType:String, screenID:String):void
 		{
-			this.events[eventType] = screenID;
+			this._events[eventType] = screenID;
 		}
 
 		/**
 		 * Cancels the action previously registered to be triggered when the
 		 * screen dispatches an event.
+		 *
+		 * @see #events
 		 */
 		public function clearEvent(eventType:String):void
 		{
-			delete this.events[eventType];
+			delete this._events[eventType];
 		}
 		
 		/**
-		 * Creates and instance of the screen type (or uses the screen directly
-		 * if it isn't a class).
+		 * @inheritDoc
 		 */
-		internal function getScreen():DisplayObject
+		public function getScreen():DisplayObject
 		{
 			var screenInstance:DisplayObject;
-			if(this.screen is Class)
+			if(this._screen is Class)
 			{
-				var ScreenType:Class = Class(this.screen);
+				var ScreenType:Class = Class(this._screen);
 				screenInstance = new ScreenType();
 			}
-			else if(this.screen is Function)
+			else if(this._screen is Function)
 			{
-				screenInstance = DisplayObject((this.screen as Function)());
-			}
-			else if(this.screen is DisplayObject)
-			{
-				screenInstance = DisplayObject(this.screen);
+				screenInstance = DisplayObject((this._screen as Function)());
 			}
 			else
 			{
-				throw new IllegalOperationError("ScreenNavigatorItem \"screen\" must be a Class, a Function, or a Starling display object.");
+				screenInstance = DisplayObject(this._screen);
+			}
+			if(!(screenInstance is DisplayObject))
+			{
+				throw new ArgumentError("ScreenNavigatorItem \"getScreen()\" must return a Starling display object.");
 			}
 			
-			if(this.properties)
+			if(this._properties)
 			{
-				for(var property:String in this.properties)
+				for(var propertyName:String in this._properties)
 				{
-					screenInstance[property] = this.properties[property];
+					screenInstance[propertyName] = this._properties[propertyName];
 				}
 			}
 			

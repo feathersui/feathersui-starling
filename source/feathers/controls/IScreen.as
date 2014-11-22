@@ -10,10 +10,10 @@ package feathers.controls
 	import feathers.core.IFeathersControl;
 
 	/**
-	 * A screen for use with <code>ScreenNavigator</code>.
+	 * A screen to display in a screen navigator.
 	 *
+	 * @see StackScreenNavigator
 	 * @see ScreenNavigator
-	 * @see ScreenNavigatorItem
 	 */
 	public interface IScreen extends IFeathersControl
 	{
@@ -29,13 +29,13 @@ package feathers.controls
 		function set screenID(value:String):void;
 
 		/**
-		 * The ScreenNavigator that is displaying this screen.
+		 * The screen navigator that is currently displaying this screen.
 		 */
-		function get owner():ScreenNavigator;
+		function get owner():IScreenNavigator;
 
 		/**
 		 * @private
 		 */
-		function set owner(value:ScreenNavigator):void;
+		function set owner(value:IScreenNavigator):void;
 	}
 }
