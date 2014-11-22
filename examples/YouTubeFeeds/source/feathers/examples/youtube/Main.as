@@ -2,6 +2,8 @@ package feathers.examples.youtube
 {
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
+	import feathers.controls.StackScreenNavigator;
+	import feathers.controls.StackScreenNavigatorItem;
 	import feathers.examples.youtube.models.VideoDetails;
 	import feathers.examples.youtube.models.VideoFeed;
 	import feathers.examples.youtube.models.YouTubeModel;
@@ -9,11 +11,12 @@ package feathers.examples.youtube
 	import feathers.examples.youtube.screens.MainMenuScreen;
 	import feathers.examples.youtube.screens.VideoDetailsScreen;
 	import feathers.motion.transitions.ScreenSlidingStackTransitionManager;
+	import feathers.motion.transitions.Slide;
 	import feathers.themes.MetalWorksMobileTheme;
 
 	import starling.events.Event;
 
-	public class Main extends ScreenNavigator
+	public class Main extends StackScreenNavigator
 	{
 		private static const MAIN_MENU:String = "mainMenu";
 		private static const LIST_VIDEOS:String = "listVideos";
@@ -24,7 +27,6 @@ package feathers.examples.youtube
 			super();
 		}
 
-		private var _transitionManager:ScreenSlidingStackTransitionManager;
 		private var _model:YouTubeModel;
 
 		override protected function initialize():void
@@ -36,44 +38,43 @@ package feathers.examples.youtube
 
 			this._model = new YouTubeModel();
 
-			this.addScreen(MAIN_MENU, new ScreenNavigatorItem(MainMenuScreen,
+			this.addScreen(MAIN_MENU, new StackScreenNavigatorItem(MainMenuScreen,
 			{
 				listVideos: mainMenuScreen_listVideosHandler
 			}));
 
-			this.addScreen(LIST_VIDEOS, new ScreenNavigatorItem(ListVideosScreen,
+			this.addScreen(LIST_VIDEOS, new StackScreenNavigatorItem(ListVideosScreen,
 			{
-				complete: MAIN_MENU,
 				showVideoDetails: listVideos_showVideoDetails
-			},
+			}, Event.COMPLETE,
 			{
 				model: this._model
 			}));
 
-			this.addScreen(VIDEO_DETAILS, new ScreenNavigatorItem(VideoDetailsScreen,
-			{
-				complete: LIST_VIDEOS
-			},
+			this.addScreen(VIDEO_DETAILS, new StackScreenNavigatorItem(VideoDetailsScreen,
+				null, Event.COMPLETE,
 			{
 				model: this._model
 			}));
 
-			this.showScreen(MAIN_MENU);
+			this.pushScreen(MAIN_MENU);
 
-			this._transitionManager = new ScreenSlidingStackTransitionManager(this);
-			this._transitionManager.duration = 0.4;
+			this.pushTransition = Slide.createSlideLeftTransition();
+			this.popTransition = Slide.createSlideRightTransition();
 		}
 
-		private function mainMenuScreen_listVideosHandler(event:Event, selectedItem:VideoFeed):void
+		private function mainMenuScreen_listVideosHandler(event:Event, data:Object):void
 		{
-			this._model.selectedList = selectedItem;
-			this.showScreen(LIST_VIDEOS);
+			var screen:MainMenuScreen = MainMenuScreen(this.activeScreen);
+			this._model.selectedList = screen.selectedCategory;
+			this.pushScreen(LIST_VIDEOS, data);
 		}
 
-		private function listVideos_showVideoDetails(event:Event, selectedItem:VideoDetails):void
+		private function listVideos_showVideoDetails(event:Event, data:Object):void
 		{
-			this._model.selectedVideo = selectedItem;
-			this.showScreen(VIDEO_DETAILS);
+			var screen:ListVideosScreen = ListVideosScreen(this.activeScreen);
+			this._model.selectedVideo = screen.selectedVideo;
+			this.pushScreen(VIDEO_DETAILS, data);
 		}
 	}
 }

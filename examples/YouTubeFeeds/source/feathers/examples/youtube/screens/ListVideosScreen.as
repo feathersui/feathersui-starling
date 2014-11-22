@@ -5,6 +5,7 @@ package feathers.examples.youtube.screens
 	import feathers.controls.List;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.ScreenNavigatorItem;
+	import feathers.controls.StackScreenNavigatorItem;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ListCollection;
@@ -68,6 +69,15 @@ package feathers.examples.youtube.screens
 		private var _loader:URLLoader;
 		private var _savedLoaderData:*;
 
+		public function get selectedVideo():VideoDetails
+		{
+			if(!this._list)
+			{
+				return null;
+			}
+			return this._list.selectedItem as VideoDetails;
+		}
+
 		override protected function initialize():void
 		{
 			//never forget to call super.initialize()
@@ -91,6 +101,7 @@ package feathers.examples.youtube.screens
 			//restore the list when later navigating back to this screen.
 			if(this.savedDataProvider)
 			{
+				this.headerProperties.title = this._model.selectedList.name;
 				this._list.dataProvider = this.savedDataProvider;
 				this._list.selectedIndex = this.savedSelectedIndex;
 				this._list.verticalScrollPosition = this.savedVerticalScrollPosition;
@@ -199,17 +210,6 @@ package feathers.examples.youtube.screens
 
 		private function onBackButton(event:starling.events.Event = null):void
 		{
-			var screenItem:ScreenNavigatorItem = this._owner.getScreen(this.screenID);
-			if(screenItem.properties)
-			{
-				//if we're going backwards, we should clear the restored results
-				//because next time we come back, we may be asked to display
-				//completely different data
-				delete screenItem.properties.savedVerticalScrollPosition;
-				delete screenItem.properties.savedSelectedIndex;
-				delete screenItem.properties.savedDataProvider;
-			}
-
 			this.dispatchEventWith(starling.events.Event.COMPLETE);
 		}
 
@@ -240,23 +240,19 @@ package feathers.examples.youtube.screens
 				return;
 			}
 
-			var screenItem:ScreenNavigatorItem = this._owner.getScreen(this.screenID);
-			if(!screenItem.properties)
+			this.dispatchEventWith(SHOW_VIDEO_DETAILS, false,
 			{
-				screenItem.properties = {};
-			}
-			//we're going to save the position of the list so that when the user
-			//navigates back to this screen, they won't need to scroll back to
-			//the same position manually
-			screenItem.properties.savedVerticalScrollPosition = this._list.verticalScrollPosition;
-			//we'll also save the selected index to temporarily highlight
-			//the previously selected item when transitioning back
-			screenItem.properties.savedSelectedIndex = this._list.selectedIndex;
-			//and we'll save the data provider so that we don't need to reload
-			//data when we return to this screen. we can restore it.
-			screenItem.properties.savedDataProvider = this._list.dataProvider;
-
-			this.dispatchEventWith(SHOW_VIDEO_DETAILS, false, VideoDetails(this._list.selectedItem));
+				//we're going to save the position of the list so that when the user
+				//navigates back to this screen, they won't need to scroll back to
+				//the same position manually
+				savedVerticalScrollPosition: this._list.verticalScrollPosition,
+				//we'll also save the selected index to temporarily highlight
+				//the previously selected item when transitioning back
+				savedSelectedIndex: this._list.selectedIndex,
+				//and we'll save the data provider so that we don't need to reload
+				//data when we return to this screen. we can restore it.
+				savedDataProvider: this._list.dataProvider
+			});
 		}
 
 		private function loader_completeHandler(event:flash.events.Event):void
