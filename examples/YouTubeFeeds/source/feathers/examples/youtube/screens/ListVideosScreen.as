@@ -75,6 +75,8 @@ package feathers.examples.youtube.screens
 
 			this.layout = new AnchorLayout();
 
+			this.headerProperties.title = this._model.selectedList.name;
+
 			this._list = new List();
 			this._list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
 			this._list.itemRendererFactory = function():IListItemRenderer
@@ -129,7 +131,6 @@ package feathers.examples.youtube.screens
 				this._list.dataProvider = null;
 				if(this._model && this._model.selectedList)
 				{
-					this.headerProperties.title = this._model.selectedList.name;
 					if(this._loader)
 					{
 						this.cleanUpLoader();
