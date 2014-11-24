@@ -32,7 +32,7 @@ package feathers.controls
 	 * @see http://wiki.starling-framework.org/feathers/transitions
 	 * @see feathers.controls.ScreenNavigatorItem
 	 */
-	public class StackScreenNavigator extends BaseScreenNavigator implements IScreenNavigator
+	public class StackScreenNavigator extends BaseScreenNavigator
 	{
 		/**
 		 * The screen navigator will auto size itself to fill the entire stage.
