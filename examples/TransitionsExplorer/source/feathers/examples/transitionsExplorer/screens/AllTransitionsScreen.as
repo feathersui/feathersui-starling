@@ -3,6 +3,7 @@ package feathers.examples.transitionsExplorer.screens
 	import feathers.controls.List;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.ScreenNavigatorItem;
+	import feathers.controls.StackScreenNavigatorItem;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ListCollection;
@@ -86,7 +87,7 @@ package feathers.examples.transitionsExplorer.screens
 
 		private function list_changeHandler(event:Event):void
 		{
-			var screenItem:ScreenNavigatorItem = this._owner.getScreen(this.screenID);
+			var screenItem:StackScreenNavigatorItem = this._owner.getScreen(this.screenID);
 			//we're going to save the position of the list so that when the user
 			//navigates back to this screen, they won't need to scroll back to
 			//the same position manually
