@@ -8,20 +8,15 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls.supportClasses
 {
 	import feathers.controls.IScreen;
-	import feathers.controls.IScreenNavigator;
-	import feathers.controls.supportClasses.IScreenNavigatorItem;
 	import feathers.core.FeathersControl;
 	import feathers.core.IValidating;
 	import feathers.events.FeathersEventType;
 
 	import flash.errors.IllegalOperationError;
-
 	import flash.geom.Rectangle;
-
 	import flash.utils.getDefinitionByName;
 
 	import starling.display.DisplayObject;
-	import starling.errors.AbstractClassError;
 	import starling.errors.AbstractMethodError;
 	import starling.events.Event;
 
@@ -578,7 +573,7 @@ package feathers.controls.supportClasses
 			{
 				var screen:IScreen = IScreen(this._activeScreen);
 				screen.screenID = this._activeScreenID;
-				screen.owner = IScreenNavigator(this); //subclasses will implement the interface
+				screen.owner = this; //subclasses will implement the interface
 			}
 			if(this._autoSizeMode == AUTO_SIZE_MODE_CONTENT || !this.stage)
 			{

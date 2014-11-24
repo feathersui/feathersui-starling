@@ -31,11 +31,11 @@ package feathers.controls
 		/**
 		 * The screen navigator that is currently displaying this screen.
 		 */
-		function get owner():IScreenNavigator;
+		function get owner():Object;
 
 		/**
 		 * @private
 		 */
-		function set owner(value:IScreenNavigator):void;
+		function set owner(value:Object):void;
 	}
 }

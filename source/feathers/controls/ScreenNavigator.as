@@ -8,21 +8,12 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.controls.supportClasses.BaseScreenNavigator;
-	import feathers.controls.supportClasses.BaseScreenNavigator;
-	import feathers.controls.supportClasses.BaseScreenNavigator;
 	import feathers.controls.supportClasses.IScreenNavigatorItem;
-	import feathers.core.FeathersControl;
-	import feathers.core.IValidating;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
 
-	import flash.errors.IllegalOperationError;
-	import flash.geom.Rectangle;
-	import flash.utils.getDefinitionByName;
-
 	import starling.display.DisplayObject;
 	import starling.events.Event;
-	import starling.events.ResizeEvent;
 
 	/**
 	 * A "view stack"-like container that supports navigation between screens
@@ -42,7 +33,7 @@ package feathers.controls
 	 * @see http://wiki.starling-framework.org/feathers/transitions
 	 * @see feathers.controls.ScreenNavigatorItem
 	 */
-	public class ScreenNavigator extends BaseScreenNavigator implements IScreenNavigator
+	public class ScreenNavigator extends BaseScreenNavigator
 	{
 		/**
 		 * The screen navigator will auto size itself to fill the entire stage.
