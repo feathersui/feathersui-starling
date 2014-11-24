@@ -153,10 +153,6 @@ package feathers.examples.componentsExplorer.screens
 			if(!DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
 				var screenItem:ScreenNavigatorItem = this._owner.getScreen(this.screenID);
-				if(!screenItem.properties)
-				{
-					screenItem.properties = {};
-				}
 				//we're going to save the position of the list so that when the user
 				//navigates back to this screen, they won't need to scroll back to
 				//the same position manually
