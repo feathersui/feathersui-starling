@@ -207,15 +207,15 @@ package feathers.controls
 		 *
 		 * <p>If the screen is currently being displayed by a
 		 * <code>StackScreenNavigator</code>, and you call
-		 * <code>setFunctionForEvent()</code> on the <code>StackScreenNavigatorItem</code>,
+		 * <code>setFunctionForPushEvent()</code> on the <code>StackScreenNavigatorItem</code>,
 		 * the <code>StackScreenNavigator</code> won't listen for the event
 		 * until the next time that the screen is shown.</p>
 		 *
-		 * @see #setScreenIDForEvent()
+		 * @see #setScreenIDForPushEvent()
 		 * @see #clearEvent()
 		 * @see #events
 		 */
-		public function setFunctionForEvent(eventType:String, action:Function):void
+		public function setFunctionForPushEvent(eventType:String, action:Function):void
 		{
 			this._pushEvents[eventType] = action;
 		}
@@ -232,7 +232,7 @@ package feathers.controls
 		 * the <code>StackScreenNavigator</code> won't listen for the event
 		 * until the next time that the screen is shown.</p>
 		 *
-		 * @see #setFunctionForEvent()
+		 * @see #setFunctionForPushEvent()
 		 * @see #clearPushEvent()
 		 * @see #pushEvents
 		 */
