@@ -2231,6 +2231,7 @@ package feathers.controls.supportClasses
 			{
 				rendererMap[item] = renderer;
 				activeRenderers.push(renderer);
+				renderer.addEventListener(Event.TRIGGERED, renderer_triggeredHandler);
 				renderer.addEventListener(Event.CHANGE, renderer_changeHandler);
 				renderer.addEventListener(FeathersEventType.RESIZE, itemRenderer_resizeHandler);
 				this._owner.dispatchEventWith(FeathersEventType.RENDERER_ADD, false, renderer);
@@ -2323,6 +2324,7 @@ package feathers.controls.supportClasses
 
 		private function destroyItemRenderer(renderer:IGroupedListItemRenderer):void
 		{
+			renderer.removeEventListener(Event.TRIGGERED, renderer_triggeredHandler);
 			renderer.removeEventListener(Event.CHANGE, renderer_changeHandler);
 			renderer.removeEventListener(FeathersEventType.RESIZE, itemRenderer_resizeHandler);
 			renderer.owner = null;
@@ -2712,6 +2714,12 @@ package feathers.controls.supportClasses
 			layout.resetVariableVirtualCacheAtIndex(renderer.layoutIndex, DisplayObject(renderer));
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 			this.invalidateParent(INVALIDATION_FLAG_LAYOUT);
+		}
+
+		private function renderer_triggeredHandler(event:Event):void
+		{
+			var renderer:IGroupedListItemRenderer = IGroupedListItemRenderer(event.currentTarget);
+			this.parent.dispatchEventWith(Event.TRIGGERED, false, renderer.data);
 		}
 
 		private function renderer_changeHandler(event:Event):void
