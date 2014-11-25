@@ -1,8 +1,6 @@
 package feathers.examples.layoutExplorer
 {
 	import feathers.controls.Drawers;
-	import feathers.controls.ScreenNavigator;
-	import feathers.controls.ScreenNavigatorItem;
 	import feathers.controls.StackScreenNavigator;
 	import feathers.controls.StackScreenNavigatorItem;
 	import feathers.examples.layoutExplorer.data.HorizontalLayoutSettings;
@@ -19,7 +17,6 @@ package feathers.examples.layoutExplorer
 	import feathers.examples.layoutExplorer.screens.TiledRowsLayoutSettingsScreen;
 	import feathers.examples.layoutExplorer.screens.VerticalLayoutScreen;
 	import feathers.examples.layoutExplorer.screens.VerticalLayoutSettingsScreen;
-	import feathers.motion.transitions.ScreenSlidingStackTransitionManager;
 	import feathers.motion.transitions.Slide;
 	import feathers.system.DeviceCapabilities;
 	import feathers.themes.MetalWorksMobileTheme;
@@ -56,7 +53,6 @@ package feathers.examples.layoutExplorer
 
 		private var _navigator:StackScreenNavigator;
 		private var _menu:MainMenuScreen;
-		private var _transitionManager:ScreenSlidingStackTransitionManager;
 
 		override protected function initialize():void
 		{
