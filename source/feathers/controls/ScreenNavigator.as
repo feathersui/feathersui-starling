@@ -76,6 +76,11 @@ package feathers.controls
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _transition:Function = defaultTransition;
+
+		/**
 		 * A function that is called when a new screen is shown. Typically used
 		 * to provide some kind of animation.
 		 *
@@ -108,7 +113,26 @@ package feathers.controls
 		 * @see #clearScreen()
 		 * @see http://wiki.starling-framework.org/feathers/transitions
 		 */
-		public var transition:Function = defaultTransition;
+		public function get transition():Function
+		{
+			return this._transition;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set transition(value:Function):void
+		{
+			if(this._transition == value)
+			{
+				return;
+			}
+			if(!value)
+			{
+				value = defaultTransition;
+			}
+			this._transition = value;
+		}
 
 		/**
 		 * @private
@@ -179,7 +203,7 @@ package feathers.controls
 		{
 			if(transition === null)
 			{
-				transition = this.transition;
+				transition = this._transition;
 			}
 			return this.showScreenInternal(id, transition);
 		}
@@ -197,7 +221,7 @@ package feathers.controls
 		{
 			if(transition == null)
 			{
-				transition = this.transition;
+				transition = this._transition;
 			}
 			this.clearScreenInternal(transition);
 			this.dispatchEventWith(FeathersEventType.CLEAR);
