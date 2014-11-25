@@ -3,6 +3,8 @@ package feathers.examples.layoutExplorer
 	import feathers.controls.Drawers;
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
+	import feathers.controls.StackScreenNavigator;
+	import feathers.controls.StackScreenNavigatorItem;
 	import feathers.examples.layoutExplorer.data.HorizontalLayoutSettings;
 	import feathers.examples.layoutExplorer.data.TiledColumnsLayoutSettings;
 	import feathers.examples.layoutExplorer.data.TiledRowsLayoutSettings;
@@ -18,6 +20,7 @@ package feathers.examples.layoutExplorer
 	import feathers.examples.layoutExplorer.screens.VerticalLayoutScreen;
 	import feathers.examples.layoutExplorer.screens.VerticalLayoutSettingsScreen;
 	import feathers.motion.transitions.ScreenSlidingStackTransitionManager;
+	import feathers.motion.transitions.Slide;
 	import feathers.system.DeviceCapabilities;
 	import feathers.themes.MetalWorksMobileTheme;
 
@@ -51,7 +54,7 @@ package feathers.examples.layoutExplorer
 			super();
 		}
 
-		private var _navigator:ScreenNavigator;
+		private var _navigator:StackScreenNavigator;
 		private var _menu:MainMenuScreen;
 		private var _transitionManager:ScreenSlidingStackTransitionManager;
 
@@ -62,86 +65,65 @@ package feathers.examples.layoutExplorer
 
 			new MetalWorksMobileTheme();
 
-			this._navigator = new ScreenNavigator();
+			this._navigator = new StackScreenNavigator();
 			//we're using Drawers because we want to display the menu on the
 			//side when running on tablets.
 			this.content = this._navigator;
 
-			this._navigator.addScreen(ANCHOR, new ScreenNavigatorItem(AnchorLayoutScreen,
-			{
-				complete: MAIN_MENU
-			}));
+			this._navigator.addScreen(ANCHOR, new StackScreenNavigatorItem(AnchorLayoutScreen,
+				null, Event.COMPLETE));
 
 			var horizontalLayoutSettings:HorizontalLayoutSettings = new HorizontalLayoutSettings();
-			this._navigator.addScreen(HORIZONTAL, new ScreenNavigatorItem(HorizontalLayoutScreen,
+			this._navigator.addScreen(HORIZONTAL, new StackScreenNavigatorItem(HorizontalLayoutScreen,
 			{
-				complete: MAIN_MENU,
 				showSettings: HORIZONTAL_SETTINGS
-			},
+			}, Event.COMPLETE,
 			{
 				settings: horizontalLayoutSettings
 			}));
-			this._navigator.addScreen(HORIZONTAL_SETTINGS, new ScreenNavigatorItem(HorizontalLayoutSettingsScreen,
-			{
-				complete: HORIZONTAL
-			},
+			this._navigator.addScreen(HORIZONTAL_SETTINGS, new StackScreenNavigatorItem(HorizontalLayoutSettingsScreen, null, Event.COMPLETE,
 			{
 				settings: horizontalLayoutSettings
 			}));
 
 			var verticalLayoutSettings:VerticalLayoutSettings = new VerticalLayoutSettings();
-			this._navigator.addScreen(VERTICAL, new ScreenNavigatorItem(VerticalLayoutScreen,
+			this._navigator.addScreen(VERTICAL, new StackScreenNavigatorItem(VerticalLayoutScreen,
 			{
-				complete: MAIN_MENU,
 				showSettings: VERTICAL_SETTINGS
-			},
+			}, Event.COMPLETE,
 			{
 				settings: verticalLayoutSettings
 			}));
-			this._navigator.addScreen(VERTICAL_SETTINGS, new ScreenNavigatorItem(VerticalLayoutSettingsScreen,
-			{
-				complete: VERTICAL
-			},
+			this._navigator.addScreen(VERTICAL_SETTINGS, new StackScreenNavigatorItem(VerticalLayoutSettingsScreen, null, Event.COMPLETE,
 			{
 				settings: verticalLayoutSettings
 			}));
 
 			var tiledRowsLayoutSettings:TiledRowsLayoutSettings = new TiledRowsLayoutSettings();
-			this._navigator.addScreen(TILED_ROWS, new ScreenNavigatorItem(TiledRowsLayoutScreen,
+			this._navigator.addScreen(TILED_ROWS, new StackScreenNavigatorItem(TiledRowsLayoutScreen,
 			{
-				complete: MAIN_MENU,
 				showSettings: TILED_ROWS_SETTINGS
-			},
+			}, Event.COMPLETE,
 			{
 				settings: tiledRowsLayoutSettings
 			}));
-			this._navigator.addScreen(TILED_ROWS_SETTINGS, new ScreenNavigatorItem(TiledRowsLayoutSettingsScreen,
-			{
-				complete: TILED_ROWS
-			},
+			this._navigator.addScreen(TILED_ROWS_SETTINGS, new StackScreenNavigatorItem(TiledRowsLayoutSettingsScreen, null, Event.COMPLETE,
 			{
 				settings: tiledRowsLayoutSettings
 			}));
 
 			var tiledColumnsLayoutSettings:TiledColumnsLayoutSettings = new TiledColumnsLayoutSettings();
-			this._navigator.addScreen(TILED_COLUMNS, new ScreenNavigatorItem(TiledColumnsLayoutScreen,
+			this._navigator.addScreen(TILED_COLUMNS, new StackScreenNavigatorItem(TiledColumnsLayoutScreen,
 			{
-				complete: MAIN_MENU,
 				showSettings: TILED_COLUMNS_SETTINGS
-			},
+			}, Event.COMPLETE,
 			{
 				settings: tiledColumnsLayoutSettings
 			}));
-			this._navigator.addScreen(TILED_COLUMNS_SETTINGS, new ScreenNavigatorItem(TiledColumnsLayoutSettingsScreen,
-			{
-				complete: TILED_COLUMNS
-			},
+			this._navigator.addScreen(TILED_COLUMNS_SETTINGS, new StackScreenNavigatorItem(TiledColumnsLayoutSettingsScreen, null, Event.COMPLETE,
 			{
 				settings: tiledColumnsLayoutSettings
 			}));
-
-			this._transitionManager = new ScreenSlidingStackTransitionManager(this._navigator);
-			this._transitionManager.duration = 0.4;
 
 			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
@@ -159,19 +141,20 @@ package feathers.examples.layoutExplorer
 			}
 			else
 			{
-				this._navigator.addScreen(MAIN_MENU, new ScreenNavigatorItem(MainMenuScreen, MAIN_MENU_EVENTS));
-				this._navigator.showScreen(MAIN_MENU);
+				this._navigator.addScreen(MAIN_MENU, new StackScreenNavigatorItem(MainMenuScreen, MAIN_MENU_EVENTS));
+				this._navigator.rootScreen = MAIN_MENU;
 			}
+
+			this._navigator.pushTransition = Slide.createSlideLeftTransition();
+			this._navigator.popTransition = Slide.createSlideRightTransition();
 		}
 
 		private function mainMenuEventHandler(event:Event):void
 		{
 			var screenName:String = MAIN_MENU_EVENTS[event.type];
-			//because we're controlling the navigation externally, it doesn't
-			//make sense to transition or keep a history
-			this._transitionManager.clearStack();
-			this._transitionManager.skipNextTransition = true;
-			this._navigator.showScreen(screenName);
+			//since this navigation is triggered by an external menu, we don't
+			//want to push a new screen onto the stack. we want to start fresh.
+			this._navigator.rootScreen = screenName;
 		}
 	}
 }
