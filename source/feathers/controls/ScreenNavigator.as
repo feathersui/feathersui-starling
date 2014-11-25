@@ -127,7 +127,7 @@ package feathers.controls
 			{
 				return;
 			}
-			if(!value)
+			if(value === null)
 			{
 				value = defaultTransition;
 			}
