@@ -48,6 +48,31 @@ package feathers.controls
 	[Event(name="change",type="starling.events.Event")]
 
 	/**
+	 * Dispatched when the the user taps or clicks an item renderer in the list.
+	 * The touch must remain within the bounds of the item renderer on release,
+	 * and the list must not have scrolled, to register as a tap or a click.
+	 *
+	 * <p>The properties of the event object have the following values:</p>
+	 * <table class="innertable">
+	 * <tr><th>Property</th><th>Value</th></tr>
+	 * <tr><td><code>bubbles</code></td><td>false</td></tr>
+	 * <tr><td><code>currentTarget</code></td><td>The Object that defines the
+	 *   event listener that handles the event. For example, if you use
+	 *   <code>myButton.addEventListener()</code> to register an event listener,
+	 *   myButton is the value of the <code>currentTarget</code>.</td></tr>
+	 * <tr><td><code>data</code></td><td>The item associated with the item
+	 *   renderer that was triggered.</td></tr>
+	 * <tr><td><code>target</code></td><td>The Object that dispatched the event;
+	 *   it is not always the Object listening for the event. Use the
+	 *   <code>currentTarget</code> property to always access the Object
+	 *   listening for the event.</td></tr>
+	 * </table>
+	 *
+	 * @eventType starling.events.Event.TRIGGERED
+	 */
+	[Event(name="triggered",type="starling.events.Event")]
+
+	/**
 	 * Dispatched when an item renderer is added to the list. When the layout is
 	 * virtualized, item renderers may not exist for every item in the data
 	 * provider. This event can be used to track which items currently have
