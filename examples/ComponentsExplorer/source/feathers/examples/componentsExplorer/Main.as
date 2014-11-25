@@ -3,6 +3,8 @@ package feathers.examples.componentsExplorer
 	import feathers.controls.Drawers;
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
+	import feathers.controls.StackScreenNavigator;
+	import feathers.controls.StackScreenNavigatorItem;
 	import feathers.examples.componentsExplorer.data.EmbeddedAssets;
 	import feathers.examples.componentsExplorer.data.GroupedListSettings;
 	import feathers.examples.componentsExplorer.data.ItemRendererSettings;
@@ -34,6 +36,7 @@ package feathers.examples.componentsExplorer
 	import feathers.examples.componentsExplorer.screens.ToggleScreen;
 	import feathers.examples.componentsExplorer.themes.ComponentsExplorerTheme;
 	import feathers.motion.transitions.ScreenSlidingStackTransitionManager;
+	import feathers.motion.transitions.Slide;
 	import feathers.system.DeviceCapabilities;
 
 	import starling.core.Starling;
@@ -92,9 +95,8 @@ package feathers.examples.componentsExplorer
 			super();
 		}
 
-		private var _navigator:ScreenNavigator;
+		private var _navigator:StackScreenNavigator;
 		private var _menu:MainMenuScreen;
-		private var _transitionManager:ScreenSlidingStackTransitionManager;
 		
 		override protected function initialize():void
 		{
@@ -105,162 +107,116 @@ package feathers.examples.componentsExplorer
 
 			new ComponentsExplorerTheme();
 			
-			this._navigator = new ScreenNavigator();
+			this._navigator = new StackScreenNavigator();
 			this.content = this._navigator;
 
-			this._navigator.addScreen(ALERT, new ScreenNavigatorItem(AlertScreen,
-			{
-				complete: MAIN_MENU
-			}));
+			this._navigator.addScreen(ALERT, new StackScreenNavigatorItem(AlertScreen,
+				null, Event.COMPLETE));
 
-			this._navigator.addScreen(BUTTON, new ScreenNavigatorItem(ButtonScreen,
+			this._navigator.addScreen(BUTTON, new StackScreenNavigatorItem(ButtonScreen,
 			{
-				complete: MAIN_MENU,
 				showSettings: BUTTON_SETTINGS
-			}));
+			}, Event.COMPLETE));
 
-			this._navigator.addScreen(BUTTON_GROUP, new ScreenNavigatorItem(ButtonGroupScreen,
-			{
-				complete: MAIN_MENU
-			}));
+			this._navigator.addScreen(BUTTON_GROUP, new StackScreenNavigatorItem(ButtonGroupScreen,
+				null, Event.COMPLETE));
 
-			this._navigator.addScreen(CALLOUT, new ScreenNavigatorItem(CalloutScreen,
-			{
-				complete: MAIN_MENU
-			}));
+			this._navigator.addScreen(CALLOUT, new StackScreenNavigatorItem(CalloutScreen,
+				null, Event.COMPLETE));
 
-			this._navigator.addScreen(SCROLL_TEXT, new ScreenNavigatorItem(ScrollTextScreen,
-			{
-				complete: MAIN_MENU
-			}));
+			this._navigator.addScreen(SCROLL_TEXT, new StackScreenNavigatorItem(ScrollTextScreen,
+				null, Event.COMPLETE));
 
 			var sliderSettings:SliderSettings = new SliderSettings();
-			this._navigator.addScreen(SLIDER, new ScreenNavigatorItem(SliderScreen,
+			this._navigator.addScreen(SLIDER, new StackScreenNavigatorItem(SliderScreen,
 			{
-				complete: MAIN_MENU,
 				showSettings: SLIDER_SETTINGS
-			},
+			}, Event.COMPLETE,
 			{
 				settings: sliderSettings
 			}));
 
-			this._navigator.addScreen(SLIDER_SETTINGS, new ScreenNavigatorItem(SliderSettingsScreen,
-			{
-				complete: SLIDER
-			},
+			this._navigator.addScreen(SLIDER_SETTINGS, new StackScreenNavigatorItem(SliderSettingsScreen, null, Event.COMPLETE,
 			{
 				settings: sliderSettings
 			}));
 			
-			this._navigator.addScreen(TOGGLES, new ScreenNavigatorItem(ToggleScreen,
-			{
-				complete: MAIN_MENU
-			}));
+			this._navigator.addScreen(TOGGLES, new StackScreenNavigatorItem(ToggleScreen,
+				null, Event.COMPLETE));
 
 			var groupedListSettings:GroupedListSettings = new GroupedListSettings();
-			this._navigator.addScreen(GROUPED_LIST, new ScreenNavigatorItem(GroupedListScreen,
+			this._navigator.addScreen(GROUPED_LIST, new StackScreenNavigatorItem(GroupedListScreen,
 			{
-				complete: MAIN_MENU,
 				showSettings: GROUPED_LIST_SETTINGS
-			},
+			}, Event.COMPLETE,
 			{
 				settings: groupedListSettings
 			}));
 
-			this._navigator.addScreen(GROUPED_LIST_SETTINGS, new ScreenNavigatorItem(GroupedListSettingsScreen,
-			{
-				complete: GROUPED_LIST
-			},
+			this._navigator.addScreen(GROUPED_LIST_SETTINGS, new StackScreenNavigatorItem(GroupedListSettingsScreen, null, Event.COMPLETE,
 			{
 				settings: groupedListSettings
 			}));
 
 			var itemRendererSettings:ItemRendererSettings = new ItemRendererSettings();
-			this._navigator.addScreen(ITEM_RENDERER, new ScreenNavigatorItem(ItemRendererScreen,
+			this._navigator.addScreen(ITEM_RENDERER, new StackScreenNavigatorItem(ItemRendererScreen,
 			{
-				complete: MAIN_MENU,
 				showSettings: ITEM_RENDERER_SETTINGS
-			},
+			}, Event.COMPLETE,
 			{
 				settings: itemRendererSettings
 			}));
 
-			this._navigator.addScreen(ITEM_RENDERER_SETTINGS, new ScreenNavigatorItem(ItemRendererSettingsScreen,
-			{
-				complete: ITEM_RENDERER
-			},
+			this._navigator.addScreen(ITEM_RENDERER_SETTINGS, new StackScreenNavigatorItem(ItemRendererSettingsScreen, null, Event.COMPLETE,
 			{
 				settings: itemRendererSettings
 			}));
 
-			this._navigator.addScreen(LABEL, new ScreenNavigatorItem(LabelScreen,
-			{
-				complete: MAIN_MENU
-			}));
+			this._navigator.addScreen(LABEL, new StackScreenNavigatorItem(LabelScreen,
+				null, Event.COMPLETE));
 
 			var listSettings:ListSettings = new ListSettings();
-			this._navigator.addScreen(LIST, new ScreenNavigatorItem(ListScreen,
+			this._navigator.addScreen(LIST, new StackScreenNavigatorItem(ListScreen,
 			{
-				complete: MAIN_MENU,
 				showSettings: LIST_SETTINGS
-			},
+			}, Event.COMPLETE,
 			{
 				settings: listSettings
 			}));
 
-			this._navigator.addScreen(LIST_SETTINGS, new ScreenNavigatorItem(ListSettingsScreen,
-			{
-				complete: LIST
-			},
+			this._navigator.addScreen(LIST_SETTINGS, new StackScreenNavigatorItem(ListSettingsScreen, null, Event.COMPLETE,
 			{
 				settings: listSettings
 			}));
 
 			var numericStepperSettings:NumericStepperSettings = new NumericStepperSettings();
-			this._navigator.addScreen(NUMERIC_STEPPER, new ScreenNavigatorItem(NumericStepperScreen,
+			this._navigator.addScreen(NUMERIC_STEPPER, new StackScreenNavigatorItem(NumericStepperScreen,
 			{
-				complete: MAIN_MENU,
 				showSettings: NUMERIC_STEPPER_SETTINGS
-			},
+			}, Event.COMPLETE,
 			{
 				settings: numericStepperSettings
 			}));
 
-			this._navigator.addScreen(NUMERIC_STEPPER_SETTINGS, new ScreenNavigatorItem(NumericStepperSettingsScreen,
-			{
-				complete: NUMERIC_STEPPER
-			},
+			this._navigator.addScreen(NUMERIC_STEPPER_SETTINGS, new StackScreenNavigatorItem(NumericStepperSettingsScreen, null, Event.COMPLETE,
 			{
 				settings: numericStepperSettings
 			}));
 
-			this._navigator.addScreen(PAGE_INDICATOR, new ScreenNavigatorItem(PageIndicatorScreen,
-			{
-				complete: MAIN_MENU
-			}));
+			this._navigator.addScreen(PAGE_INDICATOR, new StackScreenNavigatorItem(PageIndicatorScreen,
+				null, Event.COMPLETE));
 			
-			this._navigator.addScreen(PICKER_LIST, new ScreenNavigatorItem(PickerListScreen,
-			{
-				complete: MAIN_MENU
-			}));
+			this._navigator.addScreen(PICKER_LIST, new StackScreenNavigatorItem(PickerListScreen,
+				null, Event.COMPLETE));
 
-			this._navigator.addScreen(TAB_BAR, new ScreenNavigatorItem(TabBarScreen,
-			{
-				complete: MAIN_MENU
-			}));
+			this._navigator.addScreen(TAB_BAR, new StackScreenNavigatorItem(TabBarScreen,
+				null, Event.COMPLETE));
 
-			this._navigator.addScreen(TEXT_INPUT, new ScreenNavigatorItem(TextInputScreen,
-			{
-				complete: MAIN_MENU
-			}));
+			this._navigator.addScreen(TEXT_INPUT, new StackScreenNavigatorItem(TextInputScreen,
+				null, Event.COMPLETE));
 
-			this._navigator.addScreen(PROGRESS_BAR, new ScreenNavigatorItem(ProgressBarScreen,
-			{
-				complete: MAIN_MENU
-			}));
-
-			this._transitionManager = new ScreenSlidingStackTransitionManager(this._navigator);
-			this._transitionManager.duration = 0.4;
+			this._navigator.addScreen(PROGRESS_BAR, new StackScreenNavigatorItem(ProgressBarScreen,
+				null, Event.COMPLETE));
 
 			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
@@ -279,19 +235,20 @@ package feathers.examples.componentsExplorer
 			}
 			else
 			{
-				this._navigator.addScreen(MAIN_MENU, new ScreenNavigatorItem(MainMenuScreen, MAIN_MENU_EVENTS));
-				this._navigator.showScreen(MAIN_MENU);
+				this._navigator.addScreen(MAIN_MENU, new StackScreenNavigatorItem(MainMenuScreen, MAIN_MENU_EVENTS));
+				this._navigator.rootScreen = MAIN_MENU;
 			}
+
+			this._navigator.pushTransition = Slide.createSlideLeftTransition();
+			this._navigator.popTransition = Slide.createSlideRightTransition();
 		}
 
 		private function mainMenuEventHandler(event:Event):void
 		{
 			var screenName:String = MAIN_MENU_EVENTS[event.type];
-			//because we're controlling the navigation externally, it doesn't
-			//make sense to transition or keep a history
-			this._transitionManager.clearStack();
-			this._transitionManager.skipNextTransition = true;
-			this._navigator.showScreen(screenName);
+			//since this navigation is triggered by an external menu, we don't
+			//want to push a new screen onto the stack. we want to start fresh.
+			this._navigator.rootScreen = screenName;
 		}
 	}
 }
