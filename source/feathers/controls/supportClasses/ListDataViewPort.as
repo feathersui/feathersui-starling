@@ -1072,6 +1072,7 @@ package feathers.controls.supportClasses
 			{
 				this._rendererMap[item] = renderer;
 				this._activeRenderers[this._activeRenderers.length] = renderer;
+				renderer.addEventListener(Event.TRIGGERED, renderer_triggeredHandler);
 				renderer.addEventListener(Event.CHANGE, renderer_changeHandler);
 				renderer.addEventListener(FeathersEventType.RESIZE, renderer_resizeHandler);
 				this._owner.dispatchEventWith(FeathersEventType.RENDERER_ADD, false, renderer);
@@ -1082,6 +1083,7 @@ package feathers.controls.supportClasses
 
 		private function destroyRenderer(renderer:IListItemRenderer):void
 		{
+			renderer.removeEventListener(Event.TRIGGERED, renderer_triggeredHandler);
 			renderer.removeEventListener(Event.CHANGE, renderer_changeHandler);
 			renderer.removeEventListener(FeathersEventType.RESIZE, renderer_resizeHandler);
 			renderer.owner = null;
@@ -1233,6 +1235,12 @@ package feathers.controls.supportClasses
 			layout.resetVariableVirtualCacheAtIndex(renderer.index, DisplayObject(renderer));
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 			this.invalidateParent(INVALIDATION_FLAG_LAYOUT);
+		}
+
+		private function renderer_triggeredHandler(event:Event):void
+		{
+			var renderer:IListItemRenderer = IListItemRenderer(event.currentTarget);
+			this.parent.dispatchEventWith(Event.TRIGGERED, false, renderer.data);
 		}
 
 		private function renderer_changeHandler(event:Event):void
