@@ -333,39 +333,6 @@ package feathers.controls.supportClasses
 		}
 
 		/**
-		 * Registers a new screen by its identifier.
-		 */
-		public function addScreen(id:String, item:IScreenNavigatorItem):void
-		{
-			if(this._screens.hasOwnProperty(id))
-			{
-				throw new ArgumentError("Screen with id '" + id + "' already defined. Cannot add two screens with the same id.");
-			}
-			this._screens[id] = item;
-		}
-
-		/**
-		 * Removes an existing screen using its identifier.
-		 *
-		 * @see #removeAllScreens()
-		 * @see #addScreen()
-		 */
-		public function removeScreen(id:String):IScreenNavigatorItem
-		{
-			if(!this._screens.hasOwnProperty(id))
-			{
-				throw new ArgumentError("Screen '" + id + "' cannot be removed because it has not been added.");
-			}
-			if(this._activeScreenID == id)
-			{
-				throw new IllegalOperationError("Cannot remove screen " + id + " because it is the active screen.");
-			}
-			var item:IScreenNavigatorItem = IScreenNavigatorItem(this._screens[id]);
-			delete this._screens[id];
-			return item;
-		}
-
-		/**
 		 * Removes all screens that were added with <code>addScreen()</code>.
 		 *
 		 * @see #addScreen()
@@ -387,19 +354,6 @@ package feathers.controls.supportClasses
 		public function hasScreen(id:String):Boolean
 		{
 			return this._screens.hasOwnProperty(id);
-		}
-
-		/**
-		 * Returns the <code>ScreenNavigatorItem</code> instance with the
-		 * specified identifier.
-		 */
-		public function getScreen(id:String):IScreenNavigatorItem
-		{
-			if(this._screens.hasOwnProperty(id))
-			{
-				return IScreenNavigatorItem(this._screens[id]);
-			}
-			return null;
 		}
 
 		/**
@@ -528,6 +482,36 @@ package feathers.controls.supportClasses
 			}
 
 			return this.setSizeInternal(newWidth, newHeight, false);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function addScreenInternal(id:String, item:IScreenNavigatorItem):void
+		{
+			if(this._screens.hasOwnProperty(id))
+			{
+				throw new ArgumentError("Screen with id '" + id + "' already defined. Cannot add two screens with the same id.");
+			}
+			this._screens[id] = item;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function removeScreenInternal(id:String):IScreenNavigatorItem
+		{
+			if(!this._screens.hasOwnProperty(id))
+			{
+				throw new ArgumentError("Screen '" + id + "' cannot be removed because it has not been added.");
+			}
+			if(this._activeScreenID == id)
+			{
+				throw new IllegalOperationError("Cannot remove screen " + id + " because it is the active screen.");
+			}
+			var item:IScreenNavigatorItem = IScreenNavigatorItem(this._screens[id]);
+			delete this._screens[id];
+			return item;
 		}
 
 		/**
