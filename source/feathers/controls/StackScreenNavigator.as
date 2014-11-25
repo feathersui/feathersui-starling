@@ -248,12 +248,16 @@ package feathers.controls
 		 * transition is running, the new screen will be queued, and no
 		 * reference will be returned.
 		 *
+		 * <p>A set of key-value pairs representing properties on the previous
+		 * screen may be passed in. If the new screen is popped, these values
+		 * may be used to restore the previous screen's state.</p>
+		 *
 		 * <p>An optional transition may be specified. If <code>null</code> the
-		 * <code>transition</code> property will be used instead.</p>
+		 * <code>pushTransition</code> property will be used instead.</p>
 		 *
 		 * @see #pushTransition
 		 */
-		public function pushScreen(id:String, savedProperties:Object = null, transition:Function = null):DisplayObject
+		public function pushScreen(id:String, savedPreviousScreenProperties:Object = null, transition:Function = null):DisplayObject
 		{
 			if(transition === null)
 			{
@@ -261,7 +265,11 @@ package feathers.controls
 			}
 			if(this._activeScreenID)
 			{
-				this._stack[this._stack.length] = new StackItem(this._activeScreenID, savedProperties);
+				this._stack[this._stack.length] = new StackItem(this._activeScreenID, savedPreviousScreenProperties);
+			}
+			else if(savedPreviousScreenProperties)
+			{
+				throw new ArgumentError("Cannot save properties for the previous screen because there is no previous screen.");
 			}
 			return this.showScreenInternal(id, transition);
 		}
@@ -271,7 +279,7 @@ package feathers.controls
 		 * empty.
 		 *
 		 * <p>An optional transition may be specified. If <code>null</code> the
-		 * <code>transition</code> property will be used instead.</p>
+		 * <code>popTransition</code> property will be used instead.</p>
 		 *
 		 * @see #popTransition
 		 */
@@ -294,8 +302,10 @@ package feathers.controls
 		 * empty.
 		 *
 		 * <p>An optional transition may be specified. If <code>null</code> the
-		 * <code>transition</code> property will be used instead.</p>
+		 * <code>popToRootTransition</code> or <code>popTransition</code>
+		 * property will be used instead.</p>
 		 *
+		 * @see #popToRootTransition
 		 * @see #popTransition
 		 */
 		public function popToRootScreen(transition:Function = null):DisplayObject
