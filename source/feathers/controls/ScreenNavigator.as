@@ -8,7 +8,6 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.controls.supportClasses.BaseScreenNavigator;
-	import feathers.controls.supportClasses.IScreenNavigatorItem;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
 
@@ -117,27 +116,44 @@ package feathers.controls
 		protected var _screenEvents:Object = {};
 
 		/**
-		 * @inheritDoc
+		 * Registers a new screen with a string identifier that can be used
+		 * to reference the screen in other calls, like <code>removeScreen()</code>
+		 * or <code>showScreen()</code>.
+		 *
+		 * @see #removeScreen()
 		 */
-		override public function addScreen(id:String, item:IScreenNavigatorItem):void
+		public function addScreen(id:String, item:ScreenNavigatorItem):void
 		{
-			if(!(item is ScreenNavigatorItem))
-			{
-				throw new ArgumentError("Items added to ScreenNavigator must be of type ScreenNavigatorItem.");
-			}
-			super.addScreen(id, item);
+			this.addScreenInternal(id, item);
 		}
 
 		/**
-		 * @inheritDoc
+		 * Removes an existing screen using the identifier assigned to it in the
+		 * call to <code>addScreen()</code>.
+		 *
+		 * @see #removeAllScreens()
+		 * @see #addScreen()
 		 */
-		override public function removeScreen(id:String):IScreenNavigatorItem
+		public function removeScreen(id:String):ScreenNavigatorItem
 		{
 			if(this._activeScreenID == id)
 			{
 				this.clearScreen();
 			}
-			return super.removeScreen(id);
+			return ScreenNavigatorItem(this.removeScreenInternal(id));
+		}
+
+		/**
+		 * Returns the <code>ScreenNavigatorItem</code> instance with the
+		 * specified identifier.
+		 */
+		public function getScreen(id:String):ScreenNavigatorItem
+		{
+			if(this._screens.hasOwnProperty(id))
+			{
+				return ScreenNavigatorItem(this._screens[id]);
+			}
+			return null;
 		}
 
 		/**

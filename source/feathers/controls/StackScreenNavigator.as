@@ -203,15 +203,44 @@ package feathers.controls
 		protected var _popToRootScreenEvents:Vector.<String>;
 
 		/**
-		 * @inheritDoc
+		 * Registers a new screen with a string identifier that can be used
+		 * to reference the screen in other calls, like <code>removeScreen()</code>
+		 * or <code>pushScreen()</code>.
+		 *
+		 * @see #removeScreen()
 		 */
-		override public function addScreen(id:String, item:IScreenNavigatorItem):void
+		public function addScreen(id:String, item:StackScreenNavigatorItem):void
 		{
-			if(!(item is StackScreenNavigatorItem))
+			this.addScreenInternal(id, item);
+		}
+
+		/**
+		 * Removes an existing screen using the identifier assigned to it in the
+		 * call to <code>addScreen()</code>.
+		 *
+		 * @see #removeAllScreens()
+		 * @see #addScreen()
+		 */
+		public function removeScreen(id:String):ScreenNavigatorItem
+		{
+			if(this._activeScreenID == id)
 			{
-				throw new ArgumentError("Items added to StackScreenNavigator must be of type StackScreenNavigatorItem.");
+				this.popScreen();
 			}
-			super.addScreen(id, item);
+			return ScreenNavigatorItem(this.removeScreenInternal(id));
+		}
+
+		/**
+		 * Returns the <code>StackScreenNavigatorItem</code> instance with the
+		 * specified identifier.
+		 */
+		public function getScreen(id:String):StackScreenNavigatorItem
+		{
+			if(this._screens.hasOwnProperty(id))
+			{
+				return StackScreenNavigatorItem(this._screens[id]);
+			}
+			return null;
 		}
 
 		/**
