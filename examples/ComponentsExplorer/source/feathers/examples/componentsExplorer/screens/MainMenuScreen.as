@@ -159,7 +159,8 @@ package feathers.examples.componentsExplorer.screens
 			}
 
 			//save the list's scroll position and selected index so that we
-			//can restore some context when this screen is shown again later.
+			//can restore some context when this screen when we return to it
+			//again later.
 			this.dispatchEventWith(eventType, false,
 			{
 				savedVerticalScrollPosition: this._list.verticalScrollPosition,
