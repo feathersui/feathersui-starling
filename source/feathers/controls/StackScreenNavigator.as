@@ -22,13 +22,13 @@ package feathers.controls
 	 * displays it:</p>
 	 *
 	 * <listing version="3.0">
-	 * var navigator:ScreenNavigator = new ScreenNavigator();
-	 * navigator.addScreen( "mainMenu", new ScreenNavigatorItem( MainMenuScreen );
+	 * var navigator:StackScreenNavigator = new StackScreenNavigator();
+	 * navigator.addScreen( "mainMenu", new StackScreenNavigatorItem( MainMenuScreen );
 	 * this.addChild( navigator );
 	 *
-	 * navigator.showScreen( "mainMenu" );</listing>
+	 * navigator.rootScreen = "mainMenu";</listing>
 	 *
-	 * @see http://wiki.starling-framework.org/feathers/screen-navigator
+	 * @see http://wiki.starling-framework.org/feathers/stack-screen-navigator
 	 * @see http://wiki.starling-framework.org/feathers/transitions
 	 * @see feathers.controls.ScreenNavigatorItem
 	 */
@@ -74,6 +74,11 @@ package feathers.controls
 		}
 
 		/**
+		 * @private
+		 */
+		protected var _pushTransition:Function = defaultTransition;
+
+		/**
 		 * A function that is called when the screen navigator pushes a new
 		 * screen a new screen onto the stack. Typically used to provide some
 		 * kind of animation.
@@ -106,7 +111,31 @@ package feathers.controls
 		 * @see #pushScreen()
 		 * @see http://wiki.starling-framework.org/feathers/transitions
 		 */
-		public var pushTransition:Function = defaultTransition;
+		public function get pushTransition():Function
+		{
+			return this._pushTransition;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set pushTransition(value:Function):void
+		{
+			if(this._pushTransition == value)
+			{
+				return;
+			}
+			if(value === null)
+			{
+				value = defaultTransition;
+			}
+			this._pushTransition = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _popTransition:Function = defaultTransition;
 
 		/**
 		 * A function that is called when the screen navigator pops a screen
@@ -141,7 +170,31 @@ package feathers.controls
 		 * @see #popScreen()
 		 * @see http://wiki.starling-framework.org/feathers/transitions
 		 */
-		public var popTransition:Function = defaultTransition;
+		public function get popTransition():Function
+		{
+			return this._popTransition;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set popTransition(value:Function):void
+		{
+			if(this._popTransition == value)
+			{
+				return;
+			}
+			if(value === null)
+			{
+				value = defaultTransition;
+			}
+			this._popTransition = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _popToRootTransition:Function = null;
 
 		/**
 		 * A function that is called when the screen navigator clears its stack,
@@ -180,7 +233,26 @@ package feathers.controls
 		 * @see #popToRootScreen()
 		 * @see http://wiki.starling-framework.org/feathers/transitions
 		 */
-		public var popToRootTransition:Function = null;
+		public function get popToRootTransition():Function
+		{
+			return this._popToRootTransition;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set popToRootTransition(value:Function):void
+		{
+			if(this._popToRootTransition == value)
+			{
+				return;
+			}
+			if(value === null)
+			{
+				value = defaultTransition;
+			}
+			this._popToRootTransition = value;
+		}
 
 		/**
 		 * @private
@@ -201,6 +273,41 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _popToRootScreenEvents:Vector.<String>;
+
+		/**
+		 * Sets the first screen at the bottom of the stack, or the root screen.
+		 * When this screen is shown, there will be no transition.
+		 *
+		 * <p>If the stack contains screens when you set this property, they
+		 * will be removed from the stack. In other words, setting this property
+		 * will clear the stack, erasing the current history.</p>
+		 *
+		 * @see #popToRootScreen()
+		 */
+		public function get rootScreen():String
+		{
+			if(this._stack.length == 0)
+			{
+				return this._activeScreenID;
+			}
+			return this._stack[0].id;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set rootScreen(value:String):void
+		{
+			this._stack.length = 0;
+			if(value !== null)
+			{
+				this.showScreenInternal(value, null);
+			}
+			else
+			{
+				this.clearScreenInternal(defaultTransition);
+			}
+		}
 
 		/**
 		 * Registers a new screen with a string identifier that can be used
