@@ -38,43 +38,39 @@ package feathers.examples.youtube
 
 			this._model = new YouTubeModel();
 
-			this.addScreen(MAIN_MENU, new StackScreenNavigatorItem(MainMenuScreen,
-			{
-				listVideos: mainMenuScreen_listVideosHandler
-			}));
+			var mainMenuItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(MainMenuScreen);
+			mainMenuItem.setFunctionForPushEvent(MainMenuScreen.LIST_VIDEOS, this.mainMenuScreen_listVideosHandler);
+			this.addScreen(MAIN_MENU, mainMenuItem);
 
-			this.addScreen(LIST_VIDEOS, new StackScreenNavigatorItem(ListVideosScreen,
-			{
-				showVideoDetails: listVideos_showVideoDetails
-			}, Event.COMPLETE,
-			{
-				model: this._model
-			}));
+			var listVideosItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ListVideosScreen);
+			listVideosItem.setFunctionForPushEvent(ListVideosScreen.SHOW_VIDEO_DETAILS, this.listVideos_showVideoDetails);
+			listVideosItem.addPopEvent(Event.COMPLETE);
+			listVideosItem.properties.model = this._model;
+			this.addScreen(LIST_VIDEOS, listVideosItem);
 
-			this.addScreen(VIDEO_DETAILS, new StackScreenNavigatorItem(VideoDetailsScreen,
-				null, Event.COMPLETE,
-			{
-				model: this._model
-			}));
+			var videoDetailsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(VideoDetailsScreen);
+			videoDetailsItem.addPopEvent(Event.COMPLETE);
+			videoDetailsItem.properties.model = this._model;
+			this.addScreen(VIDEO_DETAILS, videoDetailsItem);
 
-			this.pushScreen(MAIN_MENU);
+			this.rootScreen = MAIN_MENU;
 
 			this.pushTransition = Slide.createSlideLeftTransition();
 			this.popTransition = Slide.createSlideRightTransition();
 		}
 
-		private function mainMenuScreen_listVideosHandler(event:Event, data:Object):void
+		private function mainMenuScreen_listVideosHandler(event:Event, mainMenuProperties:Object):void
 		{
 			var screen:MainMenuScreen = MainMenuScreen(this.activeScreen);
 			this._model.selectedList = screen.selectedCategory;
-			this.pushScreen(LIST_VIDEOS, data);
+			this.pushScreen(LIST_VIDEOS, mainMenuProperties);
 		}
 
-		private function listVideos_showVideoDetails(event:Event, data:Object):void
+		private function listVideos_showVideoDetails(event:Event, listVideosProperties:Object):void
 		{
 			var screen:ListVideosScreen = ListVideosScreen(this.activeScreen);
 			this._model.selectedVideo = screen.selectedVideo;
-			this.pushScreen(VIDEO_DETAILS, data);
+			this.pushScreen(VIDEO_DETAILS, listVideosProperties);
 		}
 	}
 }
