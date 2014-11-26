@@ -1771,8 +1771,8 @@ package feathers.layout
 			//each item before validating because setting one dimension may
 			//cause the other dimension to change, and that will invalidate the
 			//layout if it happens after validation, causing more invalidation
-			var mustSetJustifyWidth:Boolean = this._horizontalAlign == HORIZONTAL_ALIGN_JUSTIFY &&
-				justifyWidth === justifyWidth; //!isNaN
+			var isJustified:Boolean = this._horizontalAlign == HORIZONTAL_ALIGN_JUSTIFY;
+			var mustSetJustifyWidth:Boolean = isJustified && justifyWidth === justifyWidth; //!isNaN
 			var itemCount:int = items.length;
 			for(var i:int = 0; i < itemCount; i++)
 			{
@@ -1784,6 +1784,14 @@ package feathers.layout
 				if(mustSetJustifyWidth)
 				{
 					item.width = justifyWidth;
+				}
+				else if(isJustified && item is IFeathersControl)
+				{
+					//the alignment is justified, but we don't yet have a width
+					//to use, so we need to ensure that we accurately measure
+					//the items instead of using an old justified width that may
+					//be wrong now!
+					item.width = NaN;
 				}
 				if(this._distributeHeights)
 				{
