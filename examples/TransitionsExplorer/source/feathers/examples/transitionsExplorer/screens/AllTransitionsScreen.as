@@ -7,6 +7,7 @@ package feathers.examples.transitionsExplorer.screens
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ListCollection;
+	import feathers.events.FeathersEventType;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 	import feathers.skins.StandardIcons;
@@ -57,6 +58,7 @@ package feathers.examples.transitionsExplorer.screens
 			this._list.clipContent = false;
 			this._list.autoHideBackground = true;
 			this._list.verticalScrollPosition = this.savedVerticalScrollPosition;
+			this._list.selectedIndex = this.savedSelectedIndex;
 
 			this._list.itemRendererFactory = function():IListItemRenderer
 			{
@@ -71,9 +73,10 @@ package feathers.examples.transitionsExplorer.screens
 				return renderer;
 			};
 
-			this._list.addEventListener(Event.CHANGE, list_changeHandler);
-			this._list.revealScrollBars();
+			this._list.addEventListener(Event.TRIGGERED, list_triggeredHandler);
 			this.addChild(this._list);
+
+			this.addEventListener(FeathersEventType.TRANSITION_IN_COMPLETE, transitionInCompleteHandler);
 		}
 
 		private function accessorySourceFunction(item:Object):Texture
@@ -85,19 +88,25 @@ package feathers.examples.transitionsExplorer.screens
 			return StandardIcons.listDrillDownAccessoryTexture;
 		}
 
-		private function list_changeHandler(event:Event):void
+		private function transitionInCompleteHandler(event:Event):void
 		{
-			var screenItem:StackScreenNavigatorItem = this._owner.getScreen(this.screenID);
-			//we're going to save the position of the list so that when the user
-			//navigates back to this screen, they won't need to scroll back to
-			//the same position manually
-			screenItem.properties.savedVerticalScrollPosition = this._list.verticalScrollPosition;
-			//we'll also save the selected index to temporarily highlight
-			//the previously selected item when transitioning back
-			screenItem.properties.savedSelectedIndex = this._list.selectedIndex;
+			this._list.selectedIndex = -1;
+			this._list.revealScrollBars();
+		}
 
-			var eventType:String = this._list.selectedItem.event as String;
-			this.dispatchEventWith(eventType);
+		private function list_triggeredHandler(event:Event, item:Object):void
+		{
+			var eventType:String = item.event as String;
+			this.dispatchEventWith(eventType, false,
+			{
+				//we're going to save the position of the list so that when the user
+				//navigates back to this screen, they won't need to scroll back to
+				//the same position manually
+				savedVerticalScrollPosition: this._list.verticalScrollPosition,
+				//we'll also save the selected index to temporarily highlight
+				//the previously selected item when transitioning back
+				savedSelectedIndex: this._list.selectedIndex
+			});
 		}
 	}
 }

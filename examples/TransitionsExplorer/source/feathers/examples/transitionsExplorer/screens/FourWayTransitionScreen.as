@@ -62,7 +62,7 @@ package feathers.examples.transitionsExplorer.screens
 				return renderer;
 			};
 
-			this._list.addEventListener(Event.CHANGE, list_changeHandler);
+			this._list.addEventListener(Event.TRIGGERED, list_triggeredHandler);
 			this._list.revealScrollBars();
 			this.addChild(this._list);
 
@@ -83,9 +83,9 @@ package feathers.examples.transitionsExplorer.screens
 			return header;
 		}
 
-		private function list_changeHandler(event:Event):void
+		private function list_triggeredHandler(event:Event, item:Object):void
 		{
-			var transition:Function = this._list.selectedItem.transition as Function;
+			var transition:Function = item.transition as Function;
 			this.dispatchEventWith(TRANSITION, false, transition);
 		}
 
