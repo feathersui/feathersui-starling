@@ -75,6 +75,42 @@ package feathers.controls
 		protected static const INVALIDATION_FLAG_CLIPPING:String = "clipping";
 
 		/**
+		 * The layout group will auto size itself to fill the entire stage.
+		 *
+		 * @see #autoSizeMode
+		 */
+		public static const AUTO_SIZE_MODE_STAGE:String = "stage";
+
+		/**
+		 * The layout group will auto size itself to fit its content.
+		 *
+		 * @see #autoSizeMode
+		 */
+		public static const AUTO_SIZE_MODE_CONTENT:String = "content";
+
+		/**
+		 * An alternate style name to use with <code>LayoutGroup</code> to
+		 * allow a theme to give it a toolbar style. If a theme does not provide
+		 * a style for the toolbar container, the theme will automatically fall
+		 * back to using the default scroll container skin.
+		 *
+		 * <p>An alternate style name should always be added to a component's
+		 * <code>styleNameList</code> before the component is initialized. If
+		 * the style name is added later, it will be ignored.</p>
+		 *
+		 * <p>In the following example, the toolbar style is applied to a layout
+		 * group:</p>
+		 *
+		 * <listing version="3.0">
+		 * var group:LayoutGroup = new LayoutGroup();
+		 * group.styleNameList.add( LayoutGroup.ALTERNATE_STYLE_NAME_TOOLBAR );
+		 * this.addChild( group );</listing>
+		 *
+		 * @see feathers.core.FeathersControl#styleNameList
+		 */
+		public static const ALTERNATE_STYLE_NAME_TOOLBAR:String = "feathers-toolbar-layout-group";
+
+		/**
 		 * The default <code>IStyleProvider</code> for all <code>LayoutGroup</code>
 		 * components.
 		 *
@@ -89,6 +125,8 @@ package feathers.controls
 		public function LayoutGroup()
 		{
 			super();
+			this.addEventListener(Event.ADDED_TO_STAGE, layoutGroup_addedToStageHandler);
+			this.addEventListener(Event.REMOVED_FROM_STAGE, layoutGroup_removedFromStageHandler);
 		}
 
 		/**
@@ -333,6 +371,56 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _autoSizeMode:String = AUTO_SIZE_MODE_CONTENT;
+
+		[Inspectable(type="String",enumeration="stage,content")]
+		/**
+		 * Determines how the layout group will set its own size when its
+		 * dimensions (width and height) aren't set explicitly.
+		 *
+		 * <p>In the following example, the layout group will be sized to
+		 * match the stage:</p>
+		 *
+		 * <listing version="3.0">
+		 * group.autoSizeMode = LayoutGroup.AUTO_SIZE_MODE_STAGE;</listing>
+		 *
+		 * @default LayoutGroup.AUTO_SIZE_MODE_CONTENT
+		 *
+		 * @see #AUTO_SIZE_MODE_STAGE
+		 * @see #AUTO_SIZE_MODE_CONTENT
+		 */
+		public function get autoSizeMode():String
+		{
+			return this._autoSizeMode;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set autoSizeMode(value:String):void
+		{
+			if(this._autoSizeMode == value)
+			{
+				return;
+			}
+			this._autoSizeMode = value;
+			if(this.stage)
+			{
+				if(this._autoSizeMode == AUTO_SIZE_MODE_STAGE)
+				{
+					this.stage.addEventListener(Event.RESIZE, stage_resizeHandler);
+				}
+				else
+				{
+					this.stage.removeEventListener(Event.RESIZE, stage_resizeHandler);
+				}
+			}
+			this.invalidate(INVALIDATION_FLAG_SIZE);
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _ignoreChildChanges:Boolean = false;
 
 		/**
@@ -553,6 +641,11 @@ package feathers.controls
 				{
 					height = this.originalBackgroundHeight;
 				}
+				if(this._autoSizeMode == AUTO_SIZE_MODE_STAGE)
+				{
+					width = this.stage.stageWidth;
+					height = this.stage.stageHeight;
+				}
 				sizeInvalid = this.setSizeInternal(width, height, false) || sizeInvalid;
 				if(this.currentBackgroundSkin)
 				{
@@ -609,8 +702,24 @@ package feathers.controls
 			this.viewPortBounds.y = 0;
 			this.viewPortBounds.scrollX = 0;
 			this.viewPortBounds.scrollY = 0;
-			this.viewPortBounds.explicitWidth = this.explicitWidth;
-			this.viewPortBounds.explicitHeight = this.explicitHeight;
+			if(this._autoSizeMode == AUTO_SIZE_MODE_STAGE &&
+				this.explicitWidth !== this.explicitWidth)
+			{
+				this.viewPortBounds.explicitWidth = this.stage.stageWidth;
+			}
+			else
+			{
+				this.viewPortBounds.explicitWidth = this.explicitWidth;
+			}
+			if(this._autoSizeMode == AUTO_SIZE_MODE_STAGE &&
+					this.explicitHeight !== this.explicitHeight)
+			{
+				this.viewPortBounds.explicitHeight = this.stage.stageHeight;
+			}
+			else
+			{
+				this.viewPortBounds.explicitHeight = this.explicitHeight;
+			}
 			this.viewPortBounds.minWidth = this._minWidth;
 			this.viewPortBounds.minHeight = this._minHeight;
 			this.viewPortBounds.maxWidth = this._maxWidth;
@@ -733,6 +842,25 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected function layoutGroup_addedToStageHandler(event:Event):void
+		{
+			if(this._autoSizeMode == AUTO_SIZE_MODE_STAGE)
+			{
+				this.stage.addEventListener(Event.RESIZE, stage_resizeHandler);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function layoutGroup_removedFromStageHandler(event:Event):void
+		{
+			this.stage.removeEventListener(Event.RESIZE, stage_resizeHandler);
+		}
+
+		/**
+		 * @private
+		 */
 		protected function layout_changeHandler(event:Event):void
 		{
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
@@ -759,6 +887,14 @@ package feathers.controls
 			{
 				return;
 			}
+			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function stage_resizeHandler(event:Event):void
+		{
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
 	}

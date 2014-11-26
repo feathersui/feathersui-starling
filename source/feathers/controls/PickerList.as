@@ -1569,8 +1569,7 @@ package feathers.controls
 			this.list.focusOwner = this;
 			this.list.styleNameList.add(listStyleName);
 			this.list.addEventListener(Event.CHANGE, list_changeHandler);
-			this.list.addEventListener(FeathersEventType.RENDERER_ADD, list_rendererAddHandler);
-			this.list.addEventListener(FeathersEventType.RENDERER_REMOVE, list_rendererRemoveHandler);
+			this.list.addEventListener(Event.TRIGGERED, list_triggeredHandler);
 			this.list.addEventListener(Event.REMOVED_FROM_STAGE, list_removedFromStageHandler);
 		}
 		
@@ -1734,22 +1733,6 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function list_rendererAddHandler(event:Event, renderer:IListItemRenderer):void
-		{
-			renderer.addEventListener(Event.TRIGGERED, renderer_triggeredHandler);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function list_rendererRemoveHandler(event:Event, renderer:IListItemRenderer):void
-		{
-			renderer.removeEventListener(Event.TRIGGERED, renderer_triggeredHandler);
-		}
-
-		/**
-		 * @private
-		 */
 		protected function popUpContentManager_openHandler(event:Event):void
 		{
 			if(this._toggleButtonOnOpenAndClose && this.button is IToggle)
@@ -1798,7 +1781,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected function renderer_triggeredHandler(event:Event):void
+		protected function list_triggeredHandler(event:Event):void
 		{
 			if(!this._isEnabled)
 			{

@@ -15,6 +15,7 @@ package feathers.controls
 
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
+	import starling.events.Event;
 
 	/**
 	 * Dispatched when the container is scrolled.
@@ -216,6 +217,20 @@ package feathers.controls
 		public static const DECELERATION_RATE_FAST:Number = 0.99;
 
 		/**
+		 * The container will auto size itself to fill the entire stage.
+		 *
+		 * @see #autoSizeMode
+		 */
+		public static const AUTO_SIZE_MODE_STAGE:String = "stage";
+
+		/**
+		 * The container will auto size itself to fit its content.
+		 *
+		 * @see #autoSizeMode
+		 */
+		public static const AUTO_SIZE_MODE_CONTENT:String = "content";
+
+		/**
 		 * The default <code>IStyleProvider</code> for all <code>ScrollContainer</code>
 		 * components.
 		 *
@@ -232,6 +247,8 @@ package feathers.controls
 			super();
 			this.layoutViewPort = new LayoutViewPort();
 			this.viewPort = this.layoutViewPort;
+			this.addEventListener(Event.ADDED_TO_STAGE, scrollContainer_addedToStageHandler);
+			this.addEventListener(Event.REMOVED_FROM_STAGE, scrollContainer_removedFromStageHandler);
 		}
 
 		/**
@@ -314,6 +331,56 @@ package feathers.controls
 			}
 			this._layout = value;
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _autoSizeMode:String = AUTO_SIZE_MODE_CONTENT;
+
+		[Inspectable(type="String",enumeration="stage,content")]
+		/**
+		 * Determines how the container will set its own size when its
+		 * dimensions (width and height) aren't set explicitly.
+		 *
+		 * <p>In the following example, the container will be sized to
+		 * match the stage:</p>
+		 *
+		 * <listing version="3.0">
+		 * container.autoSizeMode = ScrollContainer.AUTO_SIZE_MODE_STAGE;</listing>
+		 *
+		 * @default ScrollContainer.AUTO_SIZE_MODE_CONTENT
+		 *
+		 * @see #AUTO_SIZE_MODE_STAGE
+		 * @see #AUTO_SIZE_MODE_CONTENT
+		 */
+		public function get autoSizeMode():String
+		{
+			return this._autoSizeMode;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set autoSizeMode(value:String):void
+		{
+			if(this._autoSizeMode == value)
+			{
+				return;
+			}
+			this._autoSizeMode = value;
+			if(this.stage)
+			{
+				if(this._autoSizeMode == AUTO_SIZE_MODE_STAGE)
+				{
+					this.stage.addEventListener(Event.RESIZE, stage_resizeHandler);
+				}
+				else
+				{
+					this.stage.removeEventListener(Event.RESIZE, stage_resizeHandler);
+				}
+			}
+			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 
 		/**
@@ -664,6 +731,11 @@ package feathers.controls
 				this.refreshMXMLContent();
 			}
 
+			if(sizeInvalid)
+			{
+				this.layoutViewPort.autoSizeMode = this._autoSizeMode;
+			}
+
 			if(layoutInvalid)
 			{
 				if(this._layout is IVirtualLayout)
@@ -692,6 +764,33 @@ package feathers.controls
 				this.addChild(child);
 			}
 			this._mxmlContentIsReady = true;
+		}
+
+		/**
+		 * @private
+		 */
+		protected function scrollContainer_addedToStageHandler(event:Event):void
+		{
+			if(this._autoSizeMode == AUTO_SIZE_MODE_STAGE)
+			{
+				this.stage.addEventListener(Event.RESIZE, stage_resizeHandler);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function scrollContainer_removedFromStageHandler(event:Event):void
+		{
+			this.stage.removeEventListener(Event.RESIZE, stage_resizeHandler);
+		}
+
+		/**
+		 * @private
+		 */
+		protected function stage_resizeHandler(event:Event):void
+		{
+			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 	}
 }

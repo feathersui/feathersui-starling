@@ -2,6 +2,20 @@
 
 Noteworthy changes in official, stable releases of [Feathers](http://feathersui.com/).
 
+## 2.0.1
+
+* AddOnFunctionStyleProvider: fixed issue where function passed into constructor would be ignored.
+* LayoutGroup: fixed issue where background skin would not validate after setting its dimensions.
+* Scale3Image, Scale9Image, TiledImage: updated to listen for Event.FLATTEN to validate instead of overriding flatten() to remain compatible with the new flatten() function signature in Starling 1.6.
+* StageTextTextEditor: fixed issue where StageText.stage was null, and calling drawViewPortToBitmapData() resulted in a runtime error.
+* StageTextTextEditor: fixed issue where setFocus() didn't work if StageText.stage was null.
+* TextInput: fixed issue where runtime error would be thrown after changing prompt from null to a valid string after input had validated.
+* Themes: fixed issue in desktop themes where assets displayed at 4x instead of 2x on HiDPI Macs.
+* Themes: fixed issue in desktop themes where PanelScreen and ScrollScreen would incorrectly use mobile scroll bars and behaviors.
+* Themes: fixed issue where a subclass would add a style function for the ToggleSwitch class, and that would cause some ToggleSwitch instances to be missing skins.
+* Themes: fixed issue where wrong arguments were passed to Texture.fromBitmap().
+* Added workarounds for stack overflow runtime errors when compiling with legacy Flex 4.6 compiler.
+
 ## 2.0.0
 
 * New style provider architecture for skinning and themes.
