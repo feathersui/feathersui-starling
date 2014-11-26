@@ -20,6 +20,7 @@ package feathers.controls
 
 	import starling.display.DisplayObject;
 	import starling.events.Event;
+	import starling.events.KeyboardEvent;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -276,7 +277,12 @@ package feathers.controls
 		 */
 		override public function get isFocusEnabled():Boolean
 		{
-			return this._isEditable && super.isFocusEnabled;
+			if(this._isEditable)
+			{
+				//the behavior is different when editable.
+				return this._isEnabled && this._isFocusEnabled;
+			}
+			return super.isFocusEnabled;
 		}
 
 		/**
@@ -1099,6 +1105,18 @@ package feathers.controls
 			super.focusOutHandler(event);
 			this.textEditorViewPort.clearFocus();
 			this.invalidate(INVALIDATION_FLAG_STATE);
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function stage_keyDownHandler(event:KeyboardEvent):void
+		{
+			if(this._isEditable)
+			{
+				return;
+			}
+			super.stage_keyDownHandler(event);
 		}
 
 		/**
