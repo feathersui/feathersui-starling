@@ -3,6 +3,8 @@ package feathers.examples.componentsExplorer
 	import feathers.controls.Drawers;
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
+	import feathers.controls.StackScreenNavigator;
+	import feathers.controls.StackScreenNavigatorItem;
 	import feathers.examples.componentsExplorer.data.EmbeddedAssets;
 	import feathers.examples.componentsExplorer.data.GroupedListSettings;
 	import feathers.examples.componentsExplorer.data.ItemRendererSettings;
@@ -34,6 +36,7 @@ package feathers.examples.componentsExplorer
 	import feathers.examples.componentsExplorer.screens.ToggleScreen;
 	import feathers.examples.componentsExplorer.themes.ComponentsExplorerTheme;
 	import feathers.motion.transitions.ScreenSlidingStackTransitionManager;
+	import feathers.motion.transitions.Slide;
 	import feathers.system.DeviceCapabilities;
 
 	import starling.core.Starling;
@@ -92,9 +95,8 @@ package feathers.examples.componentsExplorer
 			super();
 		}
 
-		private var _navigator:ScreenNavigator;
+		private var _navigator:StackScreenNavigator;
 		private var _menu:MainMenuScreen;
-		private var _transitionManager:ScreenSlidingStackTransitionManager;
 		
 		override protected function initialize():void
 		{
@@ -105,162 +107,116 @@ package feathers.examples.componentsExplorer
 
 			new ComponentsExplorerTheme();
 			
-			this._navigator = new ScreenNavigator();
+			this._navigator = new StackScreenNavigator();
 			this.content = this._navigator;
 
-			this._navigator.addScreen(ALERT, new ScreenNavigatorItem(AlertScreen,
-			{
-				complete: MAIN_MENU
-			}));
+			var alertItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(AlertScreen);
+			alertItem.addPopEvent(Event.COMPLETE);
+			this._navigator.addScreen(ALERT, alertItem);
 
-			this._navigator.addScreen(BUTTON, new ScreenNavigatorItem(ButtonScreen,
-			{
-				complete: MAIN_MENU,
-				showSettings: BUTTON_SETTINGS
-			}));
+			var buttonItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ButtonScreen);
+			buttonItem.addPopEvent(Event.COMPLETE);
+			this._navigator.addScreen(BUTTON, buttonItem);
 
-			this._navigator.addScreen(BUTTON_GROUP, new ScreenNavigatorItem(ButtonGroupScreen,
-			{
-				complete: MAIN_MENU
-			}));
+			var buttonGroupItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ButtonGroupScreen);
+			buttonGroupItem.addPopEvent(Event.COMPLETE);
+			this._navigator.addScreen(BUTTON_GROUP, buttonGroupItem);
 
-			this._navigator.addScreen(CALLOUT, new ScreenNavigatorItem(CalloutScreen,
-			{
-				complete: MAIN_MENU
-			}));
-
-			this._navigator.addScreen(SCROLL_TEXT, new ScreenNavigatorItem(ScrollTextScreen,
-			{
-				complete: MAIN_MENU
-			}));
-
-			var sliderSettings:SliderSettings = new SliderSettings();
-			this._navigator.addScreen(SLIDER, new ScreenNavigatorItem(SliderScreen,
-			{
-				complete: MAIN_MENU,
-				showSettings: SLIDER_SETTINGS
-			},
-			{
-				settings: sliderSettings
-			}));
-
-			this._navigator.addScreen(SLIDER_SETTINGS, new ScreenNavigatorItem(SliderSettingsScreen,
-			{
-				complete: SLIDER
-			},
-			{
-				settings: sliderSettings
-			}));
-			
-			this._navigator.addScreen(TOGGLES, new ScreenNavigatorItem(ToggleScreen,
-			{
-				complete: MAIN_MENU
-			}));
+			var calloutItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(CalloutScreen);
+			calloutItem.addPopEvent(Event.COMPLETE);
+			this._navigator.addScreen(CALLOUT, calloutItem);
 
 			var groupedListSettings:GroupedListSettings = new GroupedListSettings();
-			this._navigator.addScreen(GROUPED_LIST, new ScreenNavigatorItem(GroupedListScreen,
-			{
-				complete: MAIN_MENU,
-				showSettings: GROUPED_LIST_SETTINGS
-			},
-			{
-				settings: groupedListSettings
-			}));
+			var groupedListItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(GroupedListScreen);
+			groupedListItem.setScreenIDForPushEvent(GroupedListScreen.SHOW_SETTINGS, GROUPED_LIST_SETTINGS);
+			groupedListItem.addPopEvent(Event.COMPLETE);
+			groupedListItem.properties.settings = groupedListSettings;
+			this._navigator.addScreen(GROUPED_LIST, groupedListItem);
 
-			this._navigator.addScreen(GROUPED_LIST_SETTINGS, new ScreenNavigatorItem(GroupedListSettingsScreen,
-			{
-				complete: GROUPED_LIST
-			},
-			{
-				settings: groupedListSettings
-			}));
+			var groupedListSettingsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(GroupedListSettingsScreen);
+			groupedListSettingsItem.addPopEvent(Event.COMPLETE);
+			groupedListSettingsItem.properties.settings = groupedListSettings;
+			this._navigator.addScreen(GROUPED_LIST_SETTINGS, groupedListSettingsItem);
 
 			var itemRendererSettings:ItemRendererSettings = new ItemRendererSettings();
-			this._navigator.addScreen(ITEM_RENDERER, new ScreenNavigatorItem(ItemRendererScreen,
-			{
-				complete: MAIN_MENU,
-				showSettings: ITEM_RENDERER_SETTINGS
-			},
-			{
-				settings: itemRendererSettings
-			}));
+			var itemRendererItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ItemRendererScreen);
+			itemRendererItem.setScreenIDForPushEvent(ItemRendererScreen.SHOW_SETTINGS, ITEM_RENDERER_SETTINGS);
+			itemRendererItem.addPopEvent(Event.COMPLETE);
+			itemRendererItem.properties.settings = itemRendererSettings;
+			this._navigator.addScreen(ITEM_RENDERER, itemRendererItem);
 
-			this._navigator.addScreen(ITEM_RENDERER_SETTINGS, new ScreenNavigatorItem(ItemRendererSettingsScreen,
-			{
-				complete: ITEM_RENDERER
-			},
-			{
-				settings: itemRendererSettings
-			}));
+			var itemRendererSettingsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ItemRendererSettingsScreen);
+			itemRendererSettingsItem.addPopEvent(Event.COMPLETE);
+			itemRendererSettingsItem.properties.settings = itemRendererSettings;
+			this._navigator.addScreen(ITEM_RENDERER_SETTINGS, itemRendererSettingsItem);
 
-			this._navigator.addScreen(LABEL, new ScreenNavigatorItem(LabelScreen,
-			{
-				complete: MAIN_MENU
-			}));
+			var labelItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(LabelScreen);
+			labelItem.addPopEvent(Event.COMPLETE);
+			this._navigator.addScreen(LABEL, labelItem);
 
 			var listSettings:ListSettings = new ListSettings();
-			this._navigator.addScreen(LIST, new ScreenNavigatorItem(ListScreen,
-			{
-				complete: MAIN_MENU,
-				showSettings: LIST_SETTINGS
-			},
-			{
-				settings: listSettings
-			}));
+			var listItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ListScreen);
+			listItem.setScreenIDForPushEvent(ListScreen.SHOW_SETTINGS, LIST_SETTINGS);
+			listItem.addPopEvent(Event.COMPLETE);
+			listItem.properties.settings = listSettings;
+			this._navigator.addScreen(LIST, listItem);
 
-			this._navigator.addScreen(LIST_SETTINGS, new ScreenNavigatorItem(ListSettingsScreen,
-			{
-				complete: LIST
-			},
-			{
-				settings: listSettings
-			}));
+			var listSettingsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ListSettingsScreen);
+			listSettingsItem.addPopEvent(Event.COMPLETE);
+			listSettingsItem.properties.settings = listSettings;
+			this._navigator.addScreen(LIST_SETTINGS, listSettingsItem);
 
 			var numericStepperSettings:NumericStepperSettings = new NumericStepperSettings();
-			this._navigator.addScreen(NUMERIC_STEPPER, new ScreenNavigatorItem(NumericStepperScreen,
-			{
-				complete: MAIN_MENU,
-				showSettings: NUMERIC_STEPPER_SETTINGS
-			},
-			{
-				settings: numericStepperSettings
-			}));
+			var numericStepperItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(NumericStepperScreen);
+			numericStepperItem.setScreenIDForPushEvent(NumericStepperScreen.SHOW_SETTINGS, NUMERIC_STEPPER_SETTINGS);
+			numericStepperItem.addPopEvent(Event.COMPLETE);
+			numericStepperItem.properties.settings = numericStepperSettings;
+			this._navigator.addScreen(NUMERIC_STEPPER, numericStepperItem);
 
-			this._navigator.addScreen(NUMERIC_STEPPER_SETTINGS, new ScreenNavigatorItem(NumericStepperSettingsScreen,
-			{
-				complete: NUMERIC_STEPPER
-			},
-			{
-				settings: numericStepperSettings
-			}));
+			var numericStepperSettingsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(NumericStepperSettingsScreen);
+			numericStepperSettingsItem.addPopEvent(Event.COMPLETE);
+			numericStepperSettingsItem.properties.settings = numericStepperSettings;
+			this._navigator.addScreen(NUMERIC_STEPPER_SETTINGS, numericStepperSettingsItem);
 
-			this._navigator.addScreen(PAGE_INDICATOR, new ScreenNavigatorItem(PageIndicatorScreen,
-			{
-				complete: MAIN_MENU
-			}));
-			
-			this._navigator.addScreen(PICKER_LIST, new ScreenNavigatorItem(PickerListScreen,
-			{
-				complete: MAIN_MENU
-			}));
+			var pageIndicatorItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(PageIndicatorScreen);
+			pageIndicatorItem.addPopEvent(Event.COMPLETE);
+			this._navigator.addScreen(PAGE_INDICATOR, pageIndicatorItem);
 
-			this._navigator.addScreen(TAB_BAR, new ScreenNavigatorItem(TabBarScreen,
-			{
-				complete: MAIN_MENU
-			}));
+			var pickerListItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(PickerListScreen);
+			pickerListItem.addPopEvent(Event.COMPLETE);
+			this._navigator.addScreen(PICKER_LIST, pickerListItem);
 
-			this._navigator.addScreen(TEXT_INPUT, new ScreenNavigatorItem(TextInputScreen,
-			{
-				complete: MAIN_MENU
-			}));
+			var progressBarItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ProgressBarScreen);
+			progressBarItem.addPopEvent(Event.COMPLETE);
+			this._navigator.addScreen(PROGRESS_BAR, progressBarItem);
 
-			this._navigator.addScreen(PROGRESS_BAR, new ScreenNavigatorItem(ProgressBarScreen,
-			{
-				complete: MAIN_MENU
-			}));
+			var scrollTextItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ScrollTextScreen);
+			scrollTextItem.addPopEvent(Event.COMPLETE);
+			this._navigator.addScreen(SCROLL_TEXT, scrollTextItem);
 
-			this._transitionManager = new ScreenSlidingStackTransitionManager(this._navigator);
-			this._transitionManager.duration = 0.4;
+			var sliderSettings:SliderSettings = new SliderSettings();
+			var sliderItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(SliderScreen);
+			sliderItem.setScreenIDForPushEvent(SliderScreen.SHOW_SETTINGS, SLIDER_SETTINGS);
+			sliderItem.addPopEvent(Event.COMPLETE);
+			sliderItem.properties.settings = sliderSettings;
+			this._navigator.addScreen(SLIDER, sliderItem);
+
+			var sliderSettingsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(SliderSettingsScreen);
+			sliderSettingsItem.addPopEvent(Event.COMPLETE);
+			sliderSettingsItem.properties.settings = sliderSettings;
+			this._navigator.addScreen(SLIDER_SETTINGS, sliderSettingsItem);
+
+			var tabBarItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(TabBarScreen);
+			tabBarItem.addPopEvent(Event.COMPLETE);
+			this._navigator.addScreen(TAB_BAR, tabBarItem);
+
+			var textInputItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(TextInputScreen);
+			textInputItem.addPopEvent(Event.COMPLETE);
+			this._navigator.addScreen(TEXT_INPUT, textInputItem);
+
+			var togglesItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ToggleScreen);
+			togglesItem.addPopEvent(Event.COMPLETE);
+			this._navigator.addScreen(TOGGLES, togglesItem);
 
 			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
@@ -279,19 +235,38 @@ package feathers.examples.componentsExplorer
 			}
 			else
 			{
-				this._navigator.addScreen(MAIN_MENU, new ScreenNavigatorItem(MainMenuScreen, MAIN_MENU_EVENTS));
-				this._navigator.showScreen(MAIN_MENU);
+				var mainMenuItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(MainMenuScreen);
+				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_ALERT, ALERT);
+				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_BUTTON, BUTTON);
+				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_BUTTON_GROUP, BUTTON_GROUP);
+				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_CALLOUT, CALLOUT);
+				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_GROUPED_LIST, GROUPED_LIST);
+				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_ITEM_RENDERER, ITEM_RENDERER);
+				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_LABEL, LABEL);
+				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_LIST, LIST);
+				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_NUMERIC_STEPPER, NUMERIC_STEPPER);
+				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_PAGE_INDICATOR, PAGE_INDICATOR);
+				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_PICKER_LIST, PICKER_LIST);
+				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_PROGRESS_BAR, PROGRESS_BAR);
+				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_SCROLL_TEXT, SCROLL_TEXT);
+				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_SLIDER, SLIDER);
+				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_TAB_BAR, TAB_BAR);
+				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_TEXT_INPUT, TEXT_INPUT);
+				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_TOGGLES, TOGGLES);
+				this._navigator.addScreen(MAIN_MENU, mainMenuItem);
+				this._navigator.rootScreen = MAIN_MENU;
 			}
+
+			this._navigator.pushTransition = Slide.createSlideLeftTransition();
+			this._navigator.popTransition = Slide.createSlideRightTransition();
 		}
 
 		private function mainMenuEventHandler(event:Event):void
 		{
-			var screenName:String = MAIN_MENU_EVENTS[event.type];
-			//because we're controlling the navigation externally, it doesn't
-			//make sense to transition or keep a history
-			this._transitionManager.clearStack();
-			this._transitionManager.skipNextTransition = true;
-			this._navigator.showScreen(screenName);
+			var screenName:String = MAIN_MENU_EVENTS[event.type] as String;
+			//since this navigation is triggered by an external menu, we don't
+			//want to push a new screen onto the stack. we want to start fresh.
+			this._navigator.rootScreen = screenName;
 		}
 	}
 }

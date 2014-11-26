@@ -3,6 +3,7 @@ package feathers.examples.componentsExplorer.screens
 	import feathers.controls.List;
 	import feathers.controls.PanelScreen;
 	import feathers.controls.ScreenNavigatorItem;
+	import feathers.controls.StackScreenNavigatorItem;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ListCollection;
@@ -150,24 +151,21 @@ package feathers.examples.componentsExplorer.screens
 		
 		private function list_changeHandler(event:Event):void
 		{
-			if(!DeviceCapabilities.isTablet(Starling.current.nativeStage))
+			var eventType:String = this._list.selectedItem.event as String;
+			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
 			{
-				var screenItem:ScreenNavigatorItem = this._owner.getScreen(this.screenID);
-				if(!screenItem.properties)
-				{
-					screenItem.properties = {};
-				}
-				//we're going to save the position of the list so that when the user
-				//navigates back to this screen, they won't need to scroll back to
-				//the same position manually
-				screenItem.properties.savedVerticalScrollPosition = this._list.verticalScrollPosition;
-				//we'll also save the selected index to temporarily highlight
-				//the previously selected item when transitioning back
-				screenItem.properties.savedSelectedIndex = this._list.selectedIndex;
+				this.dispatchEventWith(eventType);
+				return;
 			}
 
-			var eventType:String = this._list.selectedItem.event as String;
-			this.dispatchEventWith(eventType);
+			//save the list's scroll position and selected index so that we
+			//can restore some context when this screen when we return to it
+			//again later.
+			this.dispatchEventWith(eventType, false,
+			{
+				savedVerticalScrollPosition: this._list.verticalScrollPosition,
+				savedSelectedIndex: this._list.selectedIndex
+			});
 		}
 	}
 }

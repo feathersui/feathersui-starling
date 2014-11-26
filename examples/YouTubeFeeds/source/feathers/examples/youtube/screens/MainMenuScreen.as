@@ -3,7 +3,7 @@ package feathers.examples.youtube.screens
 	import feathers.controls.Label;
 	import feathers.controls.List;
 	import feathers.controls.PanelScreen;
-	import feathers.controls.ScreenNavigatorItem;
+	import feathers.controls.StackScreenNavigatorItem;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ListCollection;
@@ -30,7 +30,7 @@ package feathers.examples.youtube.screens
 		public static const LIST_VIDEOS:String = "listVideos";
 
 		private static const CATEGORIES_URL:String = "http://gdata.youtube.com/schemas/2007/categories.cat";
-		private static const FEED_URL_BEFORE:String = "https://gdata.youtube.com/feeds/api/standardfeeds/US/most_popular_";
+		private static const FEED_URL_BEFORE:String = "http://gdata.youtube.com/feeds/api/standardfeeds/US/most_popular_";
 		private static const FEED_URL_AFTER:String = "?v=2";
 
 		public function MainMenuScreen()
@@ -46,6 +46,15 @@ package feathers.examples.youtube.screens
 		public var savedVerticalScrollPosition:Number = 0;
 		public var savedSelectedIndex:int = -1;
 		public var savedDataProvider:ListCollection;
+
+		public function get selectedCategory():VideoFeed
+		{
+			if(!this._list)
+			{
+				return null;
+			}
+			return this._list.selectedItem as VideoFeed;
+		}
 
 		override protected function initialize():void
 		{
@@ -187,23 +196,19 @@ package feathers.examples.youtube.screens
 
 		private function list_changeHandler(event:starling.events.Event):void
 		{
-			var screenItem:ScreenNavigatorItem = this._owner.getScreen(this.screenID);
-			if(!screenItem.properties)
+			this.dispatchEventWith(LIST_VIDEOS, false,
 			{
-				screenItem.properties = {};
-			}
-			//we're going to save the position of the list so that when the user
-			//navigates back to this screen, they won't need to scroll back to
-			//the same position manually
-			screenItem.properties.savedVerticalScrollPosition = this._list.verticalScrollPosition;
-			//we'll also save the selected index to temporarily highlight
-			//the previously selected item when transitioning back
-			screenItem.properties.savedSelectedIndex = this._list.selectedIndex;
-			//and we'll save the data provider so that we don't need to reload
-			//data when we return to this screen. we can restore it.
-			screenItem.properties.savedDataProvider = this._list.dataProvider;
-
-			this.dispatchEventWith(LIST_VIDEOS, false, VideoFeed(this._list.selectedItem));
+				//we're going to save the position of the list so that when the user
+				//navigates back to this screen, they won't need to scroll back to
+				//the same position manually
+				savedVerticalScrollPosition: this._list.verticalScrollPosition,
+				//we'll also save the selected index to temporarily highlight
+				//the previously selected item when transitioning back
+				savedSelectedIndex: this._list.selectedIndex,
+				//and we'll save the data provider so that we don't need to reload
+				//data when we return to this screen. we can restore it.
+				savedDataProvider: this._list.dataProvider
+			});
 		}
 
 		private function loader_completeHandler(event:flash.events.Event):void

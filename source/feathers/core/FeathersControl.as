@@ -100,7 +100,10 @@ package feathers.core
 	 * basic template functions like <code>initialize()</code> and
 	 * <code>draw()</code>.
 	 *
-	 * <p>For a base component class that supports layouts, see <code>LayoutGroup</code>.</p>
+	 * <p>This is a base class for Feathers components that isn't meant to be
+	 * instantiated directly. It should only be subclassed. For a simple
+	 * component that will automatically size itself based on its children,
+	 * and with optional support for layouts, see <code>LayoutGroup</code>.</p>
 	 *
 	 * @see feathers.controls.LayoutGroup
 	 */

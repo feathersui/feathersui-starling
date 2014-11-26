@@ -252,8 +252,24 @@ package feathers.controls.supportClasses
 			this.viewPortBounds.y = 0;
 			this.viewPortBounds.scrollX = this._horizontalScrollPosition;
 			this.viewPortBounds.scrollY = this._verticalScrollPosition;
-			this.viewPortBounds.explicitWidth = this._explicitVisibleWidth;
-			this.viewPortBounds.explicitHeight = this._explicitVisibleHeight;
+			if(this._autoSizeMode == AUTO_SIZE_MODE_STAGE &&
+				this._explicitVisibleWidth !== this._explicitVisibleWidth)
+			{
+				this.viewPortBounds.explicitWidth = this.stage.stageWidth;
+			}
+			else
+			{
+				this.viewPortBounds.explicitWidth = this._explicitVisibleWidth;
+			}
+			if(this._autoSizeMode == AUTO_SIZE_MODE_STAGE &&
+				this._explicitVisibleHeight !== this._explicitVisibleHeight)
+			{
+				this.viewPortBounds.explicitHeight = this.stage.stageHeight;
+			}
+			else
+			{
+				this.viewPortBounds.explicitHeight = this._explicitVisibleHeight;
+			}
 			this.viewPortBounds.minWidth = this._minVisibleWidth;
 			this.viewPortBounds.minHeight = this._minVisibleHeight;
 			this.viewPortBounds.maxWidth = this._maxVisibleWidth;

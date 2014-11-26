@@ -149,6 +149,20 @@ package feathers.controls
 		public static const DECELERATION_RATE_FAST:Number = 0.99;
 
 		/**
+		 * @copy feathers.controls.ScrollContainer#AUTO_SIZE_MODE_STAGE
+		 *
+		 * @see feathers.controls.ScrollContainer#autoSizeMode
+		 */
+		public static const AUTO_SIZE_MODE_STAGE:String = "stage";
+
+		/**
+		 * @copy feathers.controls.ScrollContainer#AUTO_SIZE_MODE_CONTENT
+		 *
+		 * @see feathers.controls.ScrollContainer#autoSizeMode
+		 */
+		public static const AUTO_SIZE_MODE_CONTENT:String = "content";
+
+		/**
 		 * The default <code>IStyleProvider</code> for all <code>ScrollScreen</code>
 		 * components.
 		 *
@@ -198,12 +212,12 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		protected var _owner:ScreenNavigator;
+		protected var _owner:Object;
 
 		/**
 		 * @inheritDoc
 		 */
-		public function get owner():ScreenNavigator
+		public function get owner():Object
 		{
 			return this._owner;
 		}
@@ -211,7 +225,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		public function set owner(value:ScreenNavigator):void
+		public function set owner(value:Object):void
 		{
 			this._owner = value;
 		}

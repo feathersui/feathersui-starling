@@ -32,6 +32,9 @@ package feathers.examples.tileList
 
 		public function Main()
 		{
+			//the container will fill the whole stage and resize when the stage
+			//resizes.
+			this.autoSizeMode = LayoutGroup.AUTO_SIZE_MODE_STAGE;
 		}
 
 		private var _iconAtlas:TextureAtlas;
@@ -57,11 +60,6 @@ package feathers.examples.tileList
 
 		override protected function initialize():void
 		{
-			//we want this container to fill the whole stage
-			this.setSize(this.stage.stageWidth, this.stage.stageHeight);
-			//and we'll listen for when the stage resizes to resize the container
-			this.stage.addEventListener(ResizeEvent.RESIZE, stage_resizeHandler);
-
 			//a nice, fluid layout
 			this.layout = new AnchorLayout();
 
@@ -183,11 +181,6 @@ package feathers.examples.tileList
 		protected function pageIndicator_changeHandler(event:Event):void
 		{
 			this._list.scrollToPageIndex(this._pageIndicator.selectedIndex, 0, this._list.pageThrowDuration);
-		}
-
-		protected function stage_resizeHandler(event:ResizeEvent):void
-		{
-			this.setSize(this.stage.stageWidth, this.stage.stageHeight);
 		}
 	}
 }
