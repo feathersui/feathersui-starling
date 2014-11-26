@@ -1760,8 +1760,8 @@ package feathers.layout
 			//each item before validating because setting one dimension may
 			//cause the other dimension to change, and that will invalidate the
 			//layout if it happens after validation, causing more invalidation
-			var mustSetJustifyHeight:Boolean = this._verticalAlign == VERTICAL_ALIGN_JUSTIFY &&
-				justifyHeight === justifyHeight; //!isNaN
+			var isJustified:Boolean = this._verticalAlign == VERTICAL_ALIGN_JUSTIFY;
+			var mustSetJustifyHeight:Boolean = isJustified && justifyHeight === justifyHeight; //!isNaN
 
 			var itemCount:int = items.length;
 			for(var i:int = 0; i < itemCount; i++)
@@ -1778,6 +1778,14 @@ package feathers.layout
 				if(mustSetJustifyHeight)
 				{
 					item.height = justifyHeight;
+				}
+				else if(isJustified && item is IFeathersControl)
+				{
+					//the alignment is justified, but we don't yet have a width
+					//to use, so we need to ensure that we accurately measure
+					//the items instead of using an old justified height that
+					//may be wrong now!
+					item.height = NaN;
 				}
 				if(item is IValidating)
 				{
