@@ -339,6 +339,10 @@ package feathers.controls.supportClasses
 		 */
 		public function removeAllScreens():void
 		{
+			if(this._isTransitionActive)
+			{
+				throw new IllegalOperationError("Cannot remove all screens while a transition is active.");
+			}
 			if(this._activeScreen)
 			{
 				this.clearScreenInternal(defaultTransition);
@@ -509,6 +513,10 @@ package feathers.controls.supportClasses
 			if(!this._screens.hasOwnProperty(id))
 			{
 				throw new ArgumentError("Screen '" + id + "' cannot be removed because it has not been added.");
+			}
+			if(this._isTransitionActive && (id == this._previousScreenInTransitionID || id == this._activeScreenID))
+			{
+				throw new IllegalOperationError("Cannot remove a screen while it is transitioning in or out.")
 			}
 			if(this._activeScreenID == id)
 			{
