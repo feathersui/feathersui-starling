@@ -30,7 +30,7 @@ package feathers.controls
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/stack-screen-navigator
 	 * @see http://wiki.starling-framework.org/feathers/transitions
-	 * @see feathers.controls.ScreenNavigatorItem
+	 * @see feathers.controls.StackScreenNavigatorItem
 	 */
 	public class StackScreenNavigator extends BaseScreenNavigator
 	{
@@ -328,13 +328,27 @@ package feathers.controls
 		 * @see #removeAllScreens()
 		 * @see #addScreen()
 		 */
-		public function removeScreen(id:String):ScreenNavigatorItem
+		public function removeScreen(id:String):StackScreenNavigatorItem
 		{
-			if(this._activeScreenID == id)
+			var stackCount:int = this._stack.length;
+			for(var i:int = stackCount - 1; i >= 0; i--)
 			{
-				this.popScreen();
+				var item:StackItem = this._stack[i];
+				if(item.id == id)
+				{
+					this._stack.splice(i, 1);
+				}
 			}
-			return ScreenNavigatorItem(this.removeScreenInternal(id));
+			return StackScreenNavigatorItem(this.removeScreenInternal(id));
+		}
+
+		/**
+		 * @private
+		 */
+		override public function removeAllScreens():void
+		{
+			this._stack.length = 0;
+			super.removeAllScreens();
 		}
 
 		/**

@@ -160,10 +160,6 @@ package feathers.controls
 		 */
 		public function removeScreen(id:String):ScreenNavigatorItem
 		{
-			if(this._activeScreenID == id)
-			{
-				this.clearScreen();
-			}
 			return ScreenNavigatorItem(this.removeScreenInternal(id));
 		}
 
@@ -178,15 +174,6 @@ package feathers.controls
 				return ScreenNavigatorItem(this._screens[id]);
 			}
 			return null;
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		override public function removeAllScreens():void
-		{
-			this.clearScreen();
-			super.removeAllScreens();
 		}
 
 		/**

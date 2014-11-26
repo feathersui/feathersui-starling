@@ -339,6 +339,11 @@ package feathers.controls.supportClasses
 		 */
 		public function removeAllScreens():void
 		{
+			if(this._activeScreen)
+			{
+				this.clearScreenInternal(defaultTransition);
+				this.dispatchEventWith(FeathersEventType.CLEAR);
+			}
 			for(var id:String in this._screens)
 			{
 				delete this._screens[id];
@@ -507,7 +512,10 @@ package feathers.controls.supportClasses
 			}
 			if(this._activeScreenID == id)
 			{
-				throw new IllegalOperationError("Cannot remove screen " + id + " because it is the active screen.");
+				//if someone meant to have a transition, they would have called
+				//clearScreen()
+				this.clearScreenInternal(defaultTransition);
+				this.dispatchEventWith(FeathersEventType.CLEAR);
 			}
 			var item:IScreenNavigatorItem = IScreenNavigatorItem(this._screens[id]);
 			delete this._screens[id];
