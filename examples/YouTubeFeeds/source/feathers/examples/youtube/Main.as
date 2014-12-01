@@ -53,7 +53,7 @@ package feathers.examples.youtube
 			videoDetailsItem.properties.model = this._model;
 			this.addScreen(VIDEO_DETAILS, videoDetailsItem);
 
-			this.rootScreen = MAIN_MENU;
+			this.rootScreenID = MAIN_MENU;
 
 			this.pushTransition = Slide.createSlideLeftTransition();
 			this.popTransition = Slide.createSlideRightTransition();

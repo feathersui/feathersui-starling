@@ -254,7 +254,7 @@ package feathers.examples.componentsExplorer
 				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_TEXT_INPUT, TEXT_INPUT);
 				mainMenuItem.setScreenIDForPushEvent(MainMenuScreen.SHOW_TOGGLES, TOGGLES);
 				this._navigator.addScreen(MAIN_MENU, mainMenuItem);
-				this._navigator.rootScreen = MAIN_MENU;
+				this._navigator.rootScreenID = MAIN_MENU;
 			}
 
 			this._navigator.pushTransition = Slide.createSlideLeftTransition();
@@ -266,7 +266,7 @@ package feathers.examples.componentsExplorer
 			var screenName:String = MAIN_MENU_EVENTS[event.type] as String;
 			//since this navigation is triggered by an external menu, we don't
 			//want to push a new screen onto the stack. we want to start fresh.
-			this._navigator.rootScreen = screenName;
+			this._navigator.rootScreenID = screenName;
 		}
 	}
 }

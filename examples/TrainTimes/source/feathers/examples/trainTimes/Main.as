@@ -35,7 +35,7 @@ package feathers.examples.trainTimes
 			timesScreenItem.addPopEvent(Event.COMPLETE);
 			this.addScreen(TIMES_SCREEN, timesScreenItem);
 
-			this.rootScreen = STATION_SCREEN;
+			this.rootScreenID = STATION_SCREEN;
 
 			this.pushTransition = Slide.createSlideLeftTransition();
 			this.popTransition = Slide.createSlideRightTransition();
