@@ -8,20 +8,22 @@ accordance with the terms of the accompanying license agreement.
 package feathers.controls
 {
 	import feathers.controls.autoComplete.IAutoCompleteSource;
-	import feathers.controls.autoComplete.LocalAutoCompleteSource;
 	import feathers.controls.popups.DropDownPopUpContentManager;
 	import feathers.controls.popups.IPopUpContentManager;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.core.PropertyProxy;
 	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
+	import feathers.skins.IStyleProvider;
 
 	import flash.events.KeyboardEvent;
+
 	import flash.ui.Keyboard;
 
 	import starling.core.Starling;
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
+	import starling.events.KeyboardEvent;
 
 	/**
 	 * Dispatched when the pop-up list is opened.
@@ -67,6 +69,11 @@ package feathers.controls
 	 */
 	[Event(name="close",type="starling.events.Event")]
 
+	/**
+	 * A text input that provides a pop-up list with suggestions as you type.
+	 *
+	 * @see http://wiki.starling-framework.org/feathers/auto-complete
+	 */
 	public class AutoComplete extends TextInput
 	{
 		/**
@@ -81,6 +88,16 @@ package feathers.controls
 		 * @see feathers.core.FeathersControl#styleNameList
 		 */
 		public static const DEFAULT_CHILD_STYLE_NAME_LIST:String = "feathers-auto-complete-list";
+
+		/**
+		 * The default <code>IStyleProvider</code> for all
+		 * <code>AutoComplete</code> components. If <code>null</code>, falls
+		 * back to using <code>TextInput.globalStyleProvider</code> instead.
+		 *
+		 * @default null
+		 * @see feathers.core.FeathersControl#styleProvider
+		 */
+		public static var globalStyleProvider:IStyleProvider;
 
 		/**
 		 * @private
@@ -114,7 +131,12 @@ package feathers.controls
 		protected var listStyleName:String = DEFAULT_CHILD_STYLE_NAME_LIST;
 
 		/**
-		 * @private
+		 * The list sub-component.
+		 *
+		 * <p>For internal use in subclasses.</p>
+		 *
+		 * @see #listFactory
+		 * @see #createList()
 		 */
 		protected var list:List;
 
@@ -126,8 +148,23 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		override protected function get defaultStyleProvider():IStyleProvider
+		{
+			if(AutoComplete.globalStyleProvider)
+			{
+				return AutoComplete.globalStyleProvider;
+			}
+			return TextInput.globalStyleProvider;
+		}
+
+		/**
+		 * @private
+		 */
 		protected var _source:IAutoCompleteSource;
 
+		/**
+		 * The source of the suggestions that appear in the pop-up list.
+		 */
 		public function get source():IAutoCompleteSource
 		{
 			return this._source;
@@ -400,8 +437,7 @@ package feathers.controls
 			this.list.validate();
 			if(this._focusManager)
 			{
-				this._focusManager.focus = this.list;
-				this.stage.addEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
+				this.stage.addEventListener(starling.events.KeyboardEvent.KEY_UP, stage_keyUpHandler);
 				this.list.addEventListener(FeathersEventType.FOCUS_OUT, list_focusOutHandler);
 			}
 		}
@@ -551,7 +587,7 @@ package feathers.controls
 		 */
 		override protected function focusInHandler(event:Event):void
 		{
-			Starling.current.nativeStage.addEventListener(KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler, false, 0, true);
+			Starling.current.nativeStage.addEventListener(flash.events.KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler, false, 0, true);
 			super.focusInHandler(event);
 		}
 
@@ -560,22 +596,26 @@ package feathers.controls
 		 */
 		override protected function focusOutHandler(event:Event):void
 		{
-			Starling.current.nativeStage.removeEventListener(KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler);
+			Starling.current.nativeStage.removeEventListener(flash.events.KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler);
 			super.focusOutHandler(event);
 		}
 
 		/**
 		 * @private
 		 */
-		protected function nativeStage_keyDownHandler(event:KeyboardEvent):void
+		protected function nativeStage_keyDownHandler(event:flash.events.KeyboardEvent):void
 		{
+			if(!this._popUpContentManager.isOpen)
+			{
+				return;
+			}
 			if(event.keyCode == Keyboard.DOWN)
 			{
+				//we need to make sure that the text editor doesn't receive
+				//this event because it might change the selection range.
 				event.stopImmediatePropagation();
-			}
-			else if(event.keyCode == Keyboard.UP)
-			{
-				event.stopImmediatePropagation();
+				this._focusManager.focus = this.list;
+				this.list.selectedIndex = 0;
 			}
 		}
 
@@ -659,7 +699,7 @@ package feathers.controls
 		{
 			if(this._focusManager)
 			{
-				this.list.stage.removeEventListener(KeyboardEvent.KEY_UP, stage_keyUpHandler);
+				this.list.stage.removeEventListener(starling.events.KeyboardEvent.KEY_UP, stage_keyUpHandler);
 				this.list.removeEventListener(FeathersEventType.FOCUS_OUT, list_focusOutHandler);
 			}
 		}
@@ -686,12 +726,13 @@ package feathers.controls
 				return;
 			}
 			this.closeList();
+			this.selectRange(this.text.length, this.text.length);
 		}
 
 		/**
 		 * @private
 		 */
-		protected function stage_keyUpHandler(event:KeyboardEvent):void
+		protected function stage_keyUpHandler(event:starling.events.KeyboardEvent):void
 		{
 			if(!this._popUpContentManager.isOpen)
 			{
@@ -700,6 +741,7 @@ package feathers.controls
 			if(event.keyCode == Keyboard.ENTER)
 			{
 				this.closeList();
+				this.selectRange(this.text.length, this.text.length);
 			}
 		}
 	}
