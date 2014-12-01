@@ -160,6 +160,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _originalText:String;
+
+		/**
+		 * @private
+		 */
 		protected var _source:IAutoCompleteSource;
 
 		/**
@@ -410,6 +415,16 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _ignoreAutoCompleteChanges:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected var _listHasFocus:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		protected var _isOpenListPending:Boolean = false;
 
 		/**
@@ -438,7 +453,6 @@ package feathers.controls
 			if(this._focusManager)
 			{
 				this.stage.addEventListener(starling.events.KeyboardEvent.KEY_UP, stage_keyUpHandler);
-				this.list.addEventListener(FeathersEventType.FOCUS_OUT, list_focusOutHandler);
 			}
 		}
 
@@ -456,6 +470,10 @@ package feathers.controls
 			{
 				this._isCloseListPending = true;
 				return;
+			}
+			if(this._listHasFocus)
+			{
+				this.list.dispatchEventWith(FeathersEventType.FOCUS_OUT);
 			}
 			this._isCloseListPending = false;
 			this.list.validate();
@@ -548,10 +566,11 @@ package feathers.controls
 			var listStyleName:String = this._customListStyleName != null ? this._customListStyleName : this.listStyleName;
 			this.list = List(factory());
 			this.list.focusOwner = this;
+			this.list.isFocusEnabled = false;
+			this.list.isChildFocusEnabled = false;
 			this.list.styleNameList.add(listStyleName);
 			this.list.addEventListener(Event.CHANGE, list_changeHandler);
-			this.list.addEventListener(FeathersEventType.RENDERER_ADD, list_rendererAddHandler);
-			this.list.addEventListener(FeathersEventType.RENDERER_REMOVE, list_rendererRemoveHandler);
+			this.list.addEventListener(Event.TRIGGERED, list_triggeredHandler);
 			this.list.addEventListener(Event.REMOVED_FROM_STAGE, list_removedFromStageHandler);
 		}
 
@@ -587,7 +606,10 @@ package feathers.controls
 		 */
 		override protected function focusInHandler(event:Event):void
 		{
-			Starling.current.nativeStage.addEventListener(flash.events.KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler, false, 0, true);
+			//the priority here is 1 so that this listener is called before
+			//starling's listener. we want to know the list's selected index
+			//before the list changes it.
+			Starling.current.nativeStage.addEventListener(flash.events.KeyboardEvent.KEY_DOWN, nativeStage_keyDownHandler, false, 1, true);
 			super.focusInHandler(event);
 		}
 
@@ -609,13 +631,42 @@ package feathers.controls
 			{
 				return;
 			}
-			if(event.keyCode == Keyboard.DOWN)
+			var isDown:Boolean = event.keyCode == Keyboard.DOWN;
+			var isUp:Boolean = event.keyCode == Keyboard.UP;
+			if(!isDown && !isUp)
 			{
-				//we need to make sure that the text editor doesn't receive
-				//this event because it might change the selection range.
+				return;
+			}
+			var oldSelectedIndex:int = this.list.selectedIndex;
+			var lastIndex:int = this.list.dataProvider.length - 1;
+			if(oldSelectedIndex < 0)
+			{
 				event.stopImmediatePropagation();
-				this._focusManager.focus = this.list;
-				this.list.selectedIndex = 0;
+				this._originalText = this._text;
+				if(isDown)
+				{
+					this.list.selectedIndex = 0;
+				}
+				else
+				{
+					this.list.selectedIndex = lastIndex;
+				}
+				this.list.scrollToDisplayIndex(this.list.selectedIndex, this.list.keyScrollDuration);
+				this._listHasFocus = true;
+				this.list.dispatchEventWith(FeathersEventType.FOCUS_IN);
+			}
+			else if((isDown && oldSelectedIndex == lastIndex) ||
+				(isUp && oldSelectedIndex == 0))
+			{
+				event.stopImmediatePropagation();
+				var oldIgnoreAutoCompleteChanges:Boolean = this._ignoreAutoCompleteChanges;
+				this._ignoreAutoCompleteChanges = true;
+				this.text = this._originalText;
+				this._ignoreAutoCompleteChanges = oldIgnoreAutoCompleteChanges;
+				this.list.selectedIndex = -1;
+				this.selectRange(this.text.length, this.text.length);
+				this._listHasFocus = false;
+				this.list.dispatchEventWith(FeathersEventType.FOCUS_OUT);
 			}
 		}
 
@@ -624,7 +675,7 @@ package feathers.controls
 		 */
 		protected function autoComplete_changeHandler(event:Event):void
 		{
-			if(!this._source || !this.hasFocus)
+			if(this._ignoreAutoCompleteChanges || !this._source || !this.hasFocus)
 			{
 				return;
 			}
@@ -657,23 +708,11 @@ package feathers.controls
 			{
 				return;
 			}
+			var oldIgnoreAutoCompleteChanges:Boolean = this._ignoreAutoCompleteChanges;
+			this._ignoreAutoCompleteChanges = true;
 			this.text = this.list.selectedItem.toString();
-		}
-
-		/**
-		 * @private
-		 */
-		protected function list_rendererAddHandler(event:Event, renderer:IListItemRenderer):void
-		{
-			renderer.addEventListener(Event.TRIGGERED, renderer_triggeredHandler);
-		}
-
-		/**
-		 * @private
-		 */
-		protected function list_rendererRemoveHandler(event:Event, renderer:IListItemRenderer):void
-		{
-			renderer.removeEventListener(Event.TRIGGERED, renderer_triggeredHandler);
+			this.selectRange(this.text.length, this.text.length);
+			this._ignoreAutoCompleteChanges = oldIgnoreAutoCompleteChanges;
 		}
 
 		/**
@@ -700,26 +739,13 @@ package feathers.controls
 			if(this._focusManager)
 			{
 				this.list.stage.removeEventListener(starling.events.KeyboardEvent.KEY_UP, stage_keyUpHandler);
-				this.list.removeEventListener(FeathersEventType.FOCUS_OUT, list_focusOutHandler);
 			}
 		}
 
 		/**
 		 * @private
 		 */
-		protected function list_focusOutHandler(event:Event):void
-		{
-			if(!this._popUpContentManager.isOpen)
-			{
-				return;
-			}
-			this.closeList();
-		}
-
-		/**
-		 * @private
-		 */
-		protected function renderer_triggeredHandler(event:Event):void
+		protected function list_triggeredHandler(event:Event):void
 		{
 			if(!this._isEnabled)
 			{
