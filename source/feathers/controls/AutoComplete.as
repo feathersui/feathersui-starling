@@ -7,7 +7,7 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
-	import feathers.controls.autoComplete.IAutoCompleteSource;
+	import feathers.data.IAutoCompleteSource;
 	import feathers.controls.popups.DropDownPopUpContentManager;
 	import feathers.controls.popups.IPopUpContentManager;
 	import feathers.controls.renderers.IListItemRenderer;
