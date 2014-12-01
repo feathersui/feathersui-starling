@@ -577,6 +577,7 @@ package feathers.themes
 			this.getStyleProviderForClass(BitmapFontTextRenderer).setFunctionForStyleName(Alert.DEFAULT_CHILD_STYLE_NAME_MESSAGE, this.setAlertMessageTextRendererStyles);
 
 			//autocomplete
+			this.getStyleProviderForClass(AutoComplete).defaultStyleFunction = this.setTextInputStyles;
 			this.getStyleProviderForClass(List).setFunctionForStyleName(AutoComplete.DEFAULT_CHILD_STYLE_NAME_LIST, this.setDropDownListStyles);
 
 			//button
