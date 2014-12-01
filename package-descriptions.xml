@@ -9,6 +9,9 @@
 		<package name="feathers.controls"> 
 			<shortDescription><![CDATA[User interface controls and containers.]]></shortDescription>
 		</package>
+		<package name="feathers.controls.supportClasses"> 
+			<shortDescription><![CDATA[Supporting class and interfaces used by Feathers user interface components.]]></shortDescription>
+		</package>
 		<package name="feathers.controls.popups"> 
 			<shortDescription><![CDATA[Managers for the display of pop-up sub-components.]]></shortDescription>
 		</package>
