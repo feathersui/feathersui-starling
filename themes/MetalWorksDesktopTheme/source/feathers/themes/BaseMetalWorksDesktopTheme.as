@@ -25,6 +25,7 @@
 package feathers.themes
 {
 	import feathers.controls.Alert;
+	import feathers.controls.AutoComplete;
 	import feathers.controls.Button;
 	import feathers.controls.ButtonGroup;
 	import feathers.controls.Callout;
@@ -69,6 +70,7 @@ package feathers.themes
 	import feathers.display.Scale9Image;
 	import feathers.display.TiledImage;
 	import feathers.layout.HorizontalLayout;
+	import feathers.layout.VerticalLayout;
 	import feathers.skins.SmartDisplayObjectStateValueSelector;
 	import feathers.skins.StandardIcons;
 	import feathers.textures.Scale3Textures;
@@ -790,6 +792,10 @@ package feathers.themes
 			this.getStyleProviderForClass(ButtonGroup).setFunctionForStyleName(Alert.DEFAULT_CHILD_STYLE_NAME_BUTTON_GROUP, this.setAlertButtonGroupStyles);
 			this.getStyleProviderForClass(TextBlockTextRenderer).setFunctionForStyleName(Alert.DEFAULT_CHILD_STYLE_NAME_MESSAGE, this.setAlertMessageTextRendererStyles);
 
+			//autocomplete
+			this.getStyleProviderForClass(AutoComplete).defaultStyleFunction = this.setTextInputStyles;
+			this.getStyleProviderForClass(List).setFunctionForStyleName(AutoComplete.DEFAULT_CHILD_STYLE_NAME_LIST, this.setDropDownListStyles);
+
 			//button
 			this.getStyleProviderForClass(Button).defaultStyleFunction = this.setButtonStyles;
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(Button.ALTERNATE_STYLE_NAME_CALL_TO_ACTION_BUTTON, this.setCallToActionButtonStyles);
@@ -858,7 +864,7 @@ package feathers.themes
 			this.getStyleProviderForClass(PickerList).defaultStyleFunction = this.setPickerListStyles;
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(PickerList.DEFAULT_CHILD_STYLE_NAME_BUTTON, this.setPickerListButtonStyles);
 			this.getStyleProviderForClass(ToggleButton).setFunctionForStyleName(PickerList.DEFAULT_CHILD_STYLE_NAME_BUTTON, this.setPickerListButtonStyles);
-			this.getStyleProviderForClass(List).setFunctionForStyleName(PickerList.DEFAULT_CHILD_STYLE_NAME_LIST, this.setPickerListListStyles);
+			this.getStyleProviderForClass(List).setFunctionForStyleName(PickerList.DEFAULT_CHILD_STYLE_NAME_LIST, this.setDropDownListStyles);
 
 			//progress bar
 			this.getStyleProviderForClass(ProgressBar).defaultStyleFunction = this.setProgressBarStyles;
@@ -963,6 +969,20 @@ package feathers.themes
 
 			scroller.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
 			scroller.focusPadding = 0;
+		}
+
+		protected function setDropDownListStyles(list:List):void
+		{
+			this.setListStyles(list);
+			var layout:VerticalLayout = new VerticalLayout();
+			layout.useVirtualLayout = true;
+			layout.padding = 0;
+			layout.gap = 0;
+			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
+			layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
+			layout.resetTypicalItemDimensionsOnMeasure = true;
+			list.layout = layout;
+			list.maxHeight = this.wideControlSize;
 		}
 
 	//-------------------------
@@ -1603,12 +1623,6 @@ package feathers.themes
 			list.popUpContentManager = new DropDownPopUpContentManager();
 			list.toggleButtonOnOpenAndClose = true;
 			list.buttonFactory = pickerListButtonFactory;
-		}
-
-		protected function setPickerListListStyles(list:List):void
-		{
-			this.setListStyles(list);
-			list.maxHeight = this.wideControlSize;
 		}
 
 		protected function setPickerListButtonStyles(button:Button):void
