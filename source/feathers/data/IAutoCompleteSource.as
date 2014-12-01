@@ -1,4 +1,4 @@
-package feathers.controls.autoComplete
+package feathers.data
 {
 	import feathers.core.IFeathersEventDispatcher;
 	import feathers.data.ListCollection;
