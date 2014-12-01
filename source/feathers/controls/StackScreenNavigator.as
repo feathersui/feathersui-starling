@@ -26,7 +26,7 @@ package feathers.controls
 	 * navigator.addScreen( "mainMenu", new StackScreenNavigatorItem( MainMenuScreen );
 	 * this.addChild( navigator );
 	 *
-	 * navigator.rootScreen = "mainMenu";</listing>
+	 * navigator.rootScreenID = "mainMenu";</listing>
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/stack-screen-navigator
 	 * @see http://wiki.starling-framework.org/feathers/transitions
@@ -284,7 +284,7 @@ package feathers.controls
 		 *
 		 * @see #popToRootScreen()
 		 */
-		public function get rootScreen():String
+		public function get rootScreenID():String
 		{
 			if(this._stack.length == 0)
 			{
@@ -296,7 +296,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		public function set rootScreen(value:String):void
+		public function set rootScreenID(value:String):void
 		{
 			this._stack.length = 0;
 			if(value !== null)
