@@ -25,6 +25,7 @@
 package feathers.themes
 {
 	import feathers.controls.Alert;
+	import feathers.controls.AutoComplete;
 	import feathers.controls.Button;
 	import feathers.controls.ButtonGroup;
 	import feathers.controls.Callout;
@@ -575,6 +576,10 @@ package feathers.themes
 			this.getStyleProviderForClass(ButtonGroup).setFunctionForStyleName(Alert.DEFAULT_CHILD_STYLE_NAME_BUTTON_GROUP, this.setAlertButtonGroupStyles);
 			this.getStyleProviderForClass(BitmapFontTextRenderer).setFunctionForStyleName(Alert.DEFAULT_CHILD_STYLE_NAME_MESSAGE, this.setAlertMessageTextRendererStyles);
 
+			//autocomplete
+			this.getStyleProviderForClass(AutoComplete).defaultStyleFunction = this.setTextInputStyles;
+			this.getStyleProviderForClass(List).setFunctionForStyleName(AutoComplete.DEFAULT_CHILD_STYLE_NAME_LIST, this.setDropDownListStyles);
+
 			//button
 			this.getStyleProviderForClass(Button).defaultStyleFunction = this.setButtonStyles;
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(Button.ALTERNATE_STYLE_NAME_CALL_TO_ACTION_BUTTON, this.setCallToActionButtonStyles);
@@ -646,7 +651,7 @@ package feathers.themes
 			this.getStyleProviderForClass(PickerList).defaultStyleFunction = this.setPickerListStyles;
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(PickerList.DEFAULT_CHILD_STYLE_NAME_BUTTON, this.setPickerListButtonStyles);
 			this.getStyleProviderForClass(ToggleButton).setFunctionForStyleName(PickerList.DEFAULT_CHILD_STYLE_NAME_BUTTON, this.setPickerListButtonStyles);
-			this.getStyleProviderForClass(List).setFunctionForStyleName(PickerList.DEFAULT_CHILD_STYLE_NAME_LIST, this.setPickerListListStyles);
+			this.getStyleProviderForClass(List).setFunctionForStyleName(PickerList.DEFAULT_CHILD_STYLE_NAME_LIST, this.setDropDownListStyles);
 
 			//progress bar
 			this.getStyleProviderForClass(ProgressBar).defaultStyleFunction = this.setProgressBarStyles;
@@ -744,6 +749,12 @@ package feathers.themes
 
 			scroller.focusIndicatorSkin = new Scale9Image(this.focusIndicatorSkinTextures, this.scale);
 			scroller.focusPadding = 0;
+		}
+
+		protected function setDropDownListStyles(list:List):void
+		{
+			this.setListStyles(list);
+			list.maxHeight = this.wideControlSize;
 		}
 
 	//-------------------------
@@ -1229,7 +1240,6 @@ package feathers.themes
 			list.backgroundDisabledSkin = backgroundDisabledSkin;
 
 			list.padding = this.borderSize;
-			list.paddingRight = 0;
 		}
 
 		protected function setItemRendererStyles(renderer:BaseDefaultItemRenderer):void
@@ -1403,12 +1413,6 @@ package feathers.themes
 			var popUpContentManager:DropDownPopUpContentManager = new DropDownPopUpContentManager();
 			popUpContentManager.gap = this.dropDownGapSize;
 			list.popUpContentManager = popUpContentManager;
-		}
-
-		protected function setPickerListListStyles(list:List):void
-		{
-			this.setListStyles(list);
-			list.maxHeight = this.wideControlSize;
 		}
 
 		protected function setPickerListButtonStyles(button:Button):void
