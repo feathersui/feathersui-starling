@@ -14,22 +14,22 @@ package feathers.controls
 	import starling.display.DisplayObject;
 
 	/**
-	 * Data for an individual screen that will be used by a <code>ScreenNavigator</code>
-	 * object.
+	 * Data for an individual screen that will be displayed by a
+	 * <code>ScreenNavigator</code> component.
 	 *
-	 * <p>The following example creates a new screen navigator item that
-	 * navigates to a "main menu" screen on <code>Event.COMPLETE</code> and
-	 * sets the <code>settings</code> property when the screen is displayed:</p>
+	 * <p>The following example creates a new <code>ScreenNavigatorItem</code>
+	 * using the <code>SettingsScreen</code> class to instantiate the screen
+	 * instance. When the screen is shown, its <code>settings</code> property
+	 * will be set. When the screen instance dispatches
+	 * <code>Event.COMPLETE</code>, the <code>ScreenNavigator</code> will
+	 * navigate to a screen with the ID <code>"mainMenu"</code>.</p>
 	 *
 	 * <listing version="3.0">
-	 * var item:ScreenNavigatorItem = new ScreenNavigatorItem( SettingsScreen,
-	 * {
-	 *     complete: MAIN_MENU_SCREEN_ID
-	 * },
-	 * {
-	 *     settings: settingsData
-	 * });
-	 * navigator.addScreen( SETTINGS_SCREEN_ID, item );</listing>
+	 * var settingsData:Object = { volume: 0.8, difficulty: "hard" };
+	 * var item:ScreenNavigatorItem = new ScreenNavigatorItem( SettingsScreen );
+	 * item.properties.settings = settingsData;
+	 * item.setScreenIDForEvent( Event.COMPLETE, "mainMenu" );
+	 * navigator.addScreen( "settings", item );</listing>
 	 *
 	 * @see http://wiki.starling-framework.org/feathers/screen-navigator
 	 * @see feathers.controls.ScreenNavigator
@@ -69,10 +69,10 @@ package feathers.controls
 		 *
 		 * <p>If the screen is a <code>DisplayObject</code>, the same instance
 		 * will be reused every time that it is shown by the
-		 * <code>ScreenNavigator</code> When the screen is shown again, its
+		 * <code>ScreenNavigator</code>. When the screen is shown again, its
 		 * state will remain the same as when it was previously hidden. However,
-		 * the screen will be kept in memory even when it isn't visible,
-		 * limiting the resources available for other screens.</p>
+		 * the screen will also be kept in memory even when it isn't visible,
+		 * limiting the resources that are available for other screens.</p>
 		 *
 		 * @default null
 		 */
