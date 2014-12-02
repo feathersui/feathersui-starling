@@ -108,6 +108,8 @@ package feathers.controls
 		 * first argument to the callback to inform the screen navigator that
 		 * the transition is cancelled.</p>
 		 *
+		 * @default null
+		 *
 		 * @see #pushScreen()
 		 * @see http://wiki.starling-framework.org/feathers/transitions
 		 */
@@ -167,6 +169,8 @@ package feathers.controls
 		 * first argument to the callback to inform the screen navigator that
 		 * the transition is cancelled.</p>
 		 *
+		 * @default null
+		 *
 		 * @see #popScreen()
 		 * @see http://wiki.starling-framework.org/feathers/transitions
 		 */
@@ -198,7 +202,7 @@ package feathers.controls
 
 		/**
 		 * A function that is called when the screen navigator clears its stack,
-		 * to show the first screen that was pushed onto the stack
+		 * to show the first screen that was pushed onto the stack.
 		 * Typically used to provide some kind of animation.
 		 *
 		 * <p>If this property is <code>null</code>, the value of the
@@ -228,6 +232,8 @@ package feathers.controls
 		 * previous screen should be restored, pass <code>true</code> as the
 		 * first argument to the callback to inform the screen navigator that
 		 * the transition is cancelled.</p>
+		 *
+		 * @default null
 		 *
 		 * @see #popTransition
 		 * @see #popToRootScreen()

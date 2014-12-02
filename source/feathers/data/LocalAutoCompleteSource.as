@@ -15,7 +15,8 @@ package feathers.data
 	[Event(name="complete",type="starling.events.Event")]
 
 	/**
-	 * Returns auto-complete results by searching through items in a <code>ListCollection</code>.
+	 * Creates a list of suggestions for an <code>AutoComplete</code> component
+	 * by searching through items in a <code>ListCollection</code>.
 	 *
 	 * @see feathers.data.ListCollection
 	 */
@@ -26,33 +27,33 @@ package feathers.data
 		 */
 		public function LocalAutoCompleteSource(source:ListCollection = null)
 		{
-			this._source = source;
+			this._dataProvider = source;
 		}
 
 		/**
 		 * @private
 		 */
-		private var _source:ListCollection;
+		private var _dataProvider:ListCollection;
 
 		/**
 		 * A collection of items to be used as a source for auto-complete
 		 * results.
 		 */
-		public function get source():ListCollection
+		public function get dataProvider():ListCollection
 		{
-			return this._source;
+			return this._dataProvider;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set source(value:ListCollection):void
+		public function set dataProvider(value:ListCollection):void
 		{
-			this._source = value;
+			this._dataProvider = value;
 		}
 
 		/**
-		 * @inheritDoc
+		 * @copy feathers.data.IAutoCompleteSource#load()
 		 */
 		public function load(text:String, result:ListCollection = null):void
 		{
@@ -64,14 +65,14 @@ package feathers.data
 			{
 				result = new ListCollection();
 			}
-			if(!this._source || text.length == 0)
+			if(!this._dataProvider || text.length == 0)
 			{
 				this.dispatchEventWith(Event.COMPLETE, false, result);
 				return;
 			}
-			for(var i:int = 0; i < this._source.length; i++)
+			for(var i:int = 0; i < this._dataProvider.length; i++)
 			{
-				var item:Object = this._source.getItemAt(i);
+				var item:Object = this._dataProvider.getItemAt(i);
 				if(item.toString().toLowerCase().indexOf(text.toLowerCase()) >= 0)
 				{
 					result.push(item);

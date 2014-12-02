@@ -11,6 +11,32 @@ package feathers.controls
 
 	import starling.display.DisplayObject;
 
+	/**
+	 * Data for an individual screen that will be displayed by a
+	 * <code>StackScreenNavigator</code> component.
+	 *
+	 * <p>The following example creates a new
+	 * <code>StackScreenNavigatorItem</code> using the
+	 * <code>SettingsScreen</code> class to instantiate the screen instance.
+	 * When the screen is shown, its <code>settings</code> property will be set.
+	 * When the screen instance dispatches the
+	 * <code>SettingsScreen.SHOW_ADVANCED_SETTINGS</code> event, the
+	 * <code>StackScreenNavigator</code> will push a screen with the ID
+	 * <code>"advancedSettings"</code> onto its stack. When the screen instance
+	 * dispatches <code>Event.COMPLETE</code>, the <code>StackScreenNavigator</code>
+	 * will pop the screen instance from its stack.</p>
+	 *
+	 * <listing version="3.0">
+	 * var settingsData:Object = { volume: 0.8, difficulty: "hard" };
+	 * var item:StackScreenNavigatorItem = new StackScreenNavigatorItem( SettingsScreen );
+	 * item.properties.settings = settingsData;
+	 * item.setScreenIDForPushEvent( SettingsScreen.SHOW_ADVANCED_SETTINGS, "advancedSettings" );
+	 * item.addPopEvent( Event.COMPLETE );
+	 * navigator.addScreen( "settings", item );</listing>
+	 *
+	 * @see http://wiki.starling-framework.org/feathers/stack-screen-navigator
+	 * @see feathers.controls.StackScreenNavigator
+	 */
 	public class StackScreenNavigatorItem implements IScreenNavigatorItem
 	{
 		/**
@@ -57,8 +83,8 @@ package feathers.controls
 		 * will be reused every time that it is shown by the
 		 * <code>ScreenNavigator</code> When the screen is shown again, its
 		 * state will remain the same as when it was previously hidden. However,
-		 * the screen will be kept in memory even when it isn't visible,
-		 * limiting the resources available for other screens.</p>
+		 * the screen will also be kept in memory even when it isn't visible,
+		 * limiting the resources that are available for other screens.</p>
 		 *
 		 * @default null
 		 */
