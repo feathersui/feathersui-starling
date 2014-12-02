@@ -51,7 +51,7 @@ package feathers.themes
 		 * Returns a <code>StyleNameFunctionStyleProvider</code> to be passed to
 		 * the specified class.
 		 */
-		protected function getStyleProviderForClass(type:Class):StyleNameFunctionStyleProvider
+		public function getStyleProviderForClass(type:Class):StyleNameFunctionStyleProvider
 		{
 			return StyleNameFunctionStyleProvider(this._registry.getStyleProvider(type));
 		}
