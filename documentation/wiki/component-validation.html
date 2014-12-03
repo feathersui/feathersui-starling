@@ -1,0 +1,56 @@
+
+<h1 class="sectionedit1" id="feathers_component_validation_with_draw">Feathers Component Validation with draw()</h1>
+<div class="level1">
+
+<p>
+<code>FeathersControl</code> provides a single, simple <code>draw()</code> function for validation. In general, though, a little extra structure can go a long way to help organize a component&#039;s validation code. The core components in Feathers typically break up validation into three phases. If you&#039;re familiar with the component internals <a href="http://incubator.apache.org/flex/" class="urlextern" title="http://incubator.apache.org/flex/"  rel="nofollow">Apache Flex</a> (formerly Adobe Flex), you should recognize that this is a similar, but also slightly simpler, approach.
+</p>
+
+</div>
+<!-- EDIT1 SECTION "Feathers Component Validation with draw()" [1-535] -->
+<h2 class="sectionedit2" id="phase_1commit">Phase 1: Commit</h2>
+<div class="level2">
+
+<p>
+The first phase passes properties to children. If a property change requires creating or destroying a child dynamically (such as item renderers in a list), it should happen here.
+</p>
+
+</div>
+<!-- EDIT2 SECTION "Phase 1: Commit" [536-744] -->
+<h2 class="sectionedit3" id="phase_2measurement">Phase 2: Measurement</h2>
+<div class="level2">
+
+<p>
+The second phase calculates the ideal dimensions of the component. In general, all children should be created by now, and they may need to be validated so that their own dimensions are known in case they affect the dimensions of their parent.
+</p>
+
+</div>
+<!-- EDIT3 SECTION "Phase 2: Measurement" [745-1022] -->
+<h2 class="sectionedit4" id="phase_3layout">Phase 3: Layout</h2>
+<div class="level2">
+
+<p>
+The third phase is for layout. Children are positioned and resized, using the <code>actualWidth</code> and <code>actualHeight</code> properties as the final dimensions of the component.
+</p>
+
+<p>
+These three phases are not a core part of <code>FeathersControl</code>. They are not required, but they provide a useful structure for organizing validation code. A class that provides a stricter, required structure may be introduced in a future version of Feathers, but it will likely live alongside the current <code>FeathersControl</code> rather than replace it.
+</p>
+
+</div>
+<!-- EDIT4 SECTION "Phase 3: Layout" [1023-1569] -->
+<h2 class="sectionedit5" id="related_links">Related Links</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="/feathers/component-properties-methods" class="wikilink1" title="feathers:component-properties-methods">Anatomy of a Feathers Component</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="/feathers/component-lifecycle" class="wikilink1" title="feathers:component-lifecycle">Feathers Component Lifecycle</a></div>
+</li>
+</ul>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT5 SECTION "Related Links" [1570-] -->

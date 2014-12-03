@@ -1,0 +1,324 @@
+
+<h1 class="sectionedit1" id="how_to_use_the_feathers_button_component">How to use the Feathers Button component</h1>
+<div class="level1">
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/controls/Button.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Button.html"  rel="nofollow">Button</a></code> class displays a touchable button with optional toggle capabilities. It can display an optional label and an optional icon with a variety of layout options. Buttons have states for each of the different touch phases and the skin, label, and icon can all be customized for each state, including variations for selected states.
+</p>
+
+</div>
+<!-- EDIT1 SECTION "How to use the Feathers Button component" [1-468] -->
+<h2 class="sectionedit2" id="the_basics">The Basics</h2>
+<div class="level2">
+
+<p>
+First, let&#039;s create a Button control, give it a label, and add it to the display list:
+</p>
+<pre class="code as3"><span class="kw2">var</span> button<span class="sy0">:</span>Button = <span class="kw1">new</span> Button<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+button<span class="sy0">.</span>label = <span class="st0">&quot;Click Me&quot;</span><span class="sy0">;</span>
+<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">addChild</span><span class="br0">&#40;</span> button <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+If we want to know when the button is tapped or clicked, we can listen for <code>Event.TRIGGERED</code>:
+</p>
+<pre class="code as3">button<span class="sy0">.</span><span class="kw7">addEventListener</span><span class="br0">&#40;</span> <a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a><span class="sy0">.</span>TRIGGERED<span class="sy0">,</span> button_triggeredHandler <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+This event is dispatched when the touch ends <em>and</em> the touch was not dragged outside of the button&#039;s bounds. In other words, the button is only triggered when the touch both begins and ends over the button.
+</p>
+
+<p>
+The listener function might look like this:
+</p>
+<pre class="code as3"><span class="kw3">function</span> button_triggeredHandler<span class="br0">&#40;</span> event<span class="sy0">:</span><a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a> <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+    <span class="kw7">trace</span><span class="br0">&#40;</span> <span class="st0">&quot;button triggered&quot;</span> <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT2 SECTION "The Basics" [469-1237] -->
+<h2 class="sectionedit3" id="toggle_buttons">Toggle Buttons</h2>
+<div class="level2">
+
+<p>
+Optionally, you may allow the button to toggle. A toggle button may be selected and deselected when it is triggered. Let&#039;s set the <code>isToggle</code> property to <code>true</code>:
+</p>
+<pre class="code as3">button<span class="sy0">.</span>isToggle = <span class="kw1">true</span><span class="sy0">;</span></pre>
+
+<p>
+We can change the button&#039;s selection programatically by setting the <code>isSelected</code> property:
+</p>
+<pre class="code as3">button<span class="sy0">.</span>isSelected = <span class="kw1">true</span><span class="sy0">;</span></pre>
+
+<p>
+If we listen to the <code>Event.CHANGE</code> event, we can track whether the user has triggered the button to change the selection:
+</p>
+<pre class="code as3">button<span class="sy0">.</span><span class="kw7">addEventListener</span><span class="br0">&#40;</span> <a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a><span class="sy0">.</span><span class="kw8">CHANGE</span><span class="sy0">,</span> button_changeHandler <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Check for the new value of <code>isSelected</code> in the listener:
+</p>
+<pre class="code as3"><span class="kw3">function</span> button_changeHandler<span class="br0">&#40;</span> event<span class="sy0">:</span><a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a> <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+    <span class="kw2">var</span> button<span class="sy0">:</span>Button = Button<span class="br0">&#40;</span> event<span class="sy0">.</span><span class="kw7">currentTarget</span> <span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="kw7">trace</span><span class="br0">&#40;</span> <span class="st0">&quot;button.isSelected has changed:&quot;</span><span class="sy0">,</span> button<span class="sy0">.</span>isSelected <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT3 SECTION "Toggle Buttons" [1238-2078] -->
+<h2 class="sectionedit4" id="skinning_a_button">Skinning a Button</h2>
+<div class="level2">
+
+<p>
+A number of skins and styles may be customized on a button, including the background skin, the label text format, and the icon.  For full details about what skin and style properties are available, see the <a href="http://feathersui.com/documentation/feathers/controls/Alert.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Alert.html"  rel="nofollow">Alert API reference</a>. We&#039;ll look at a few of the most common properties below.
+</p>
+
+</div>
+<!-- EDIT4 SECTION "Skinning a Button" [2079-2462] -->
+<h3 class="sectionedit5" id="background_skins">Background Skins</h3>
+<div class="level3">
+
+<p>
+We&#039;ll start the skinning process by giving our button appropriate background skins.
+</p>
+<pre class="code as3">button<span class="sy0">.</span>defaultSkin = <span class="kw1">new</span> Image<span class="br0">&#40;</span> myUpTexture <span class="br0">&#41;</span><span class="sy0">;</span>
+button<span class="sy0">.</span>downSkin = <span class="kw1">new</span> Image<span class="br0">&#40;</span> myDownTexture <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Above, we add background skins for a couple of different states. The <code>defaultSkin</code> is a skin that is used for any state where a specific skin isn&#039;t provided. We provided a skin for the down state, so that will take precedence over the default skin. However, other states like up and hover don&#039;t have skins, so they&#039;ll use the default skin. If we wanted to, we could provide an <code>upSkin</code> and a <code>hoverSkin</code> for these states. The skin for the up state of a button almost always makes a good <code>defaultSkin</code>.
+</p>
+
+<p>
+This isn&#039;t a toggle button, but if it were, we could use <code>defaultSelectedSkin</code>, <code>selectedUpSkin</code>, <code>selectedDownSkin</code>, and <code>selectedHoverSkin</code>.
+</p>
+
+<p>
+For a button that can be disabled, we can provide a <code>disabledSkin</code> too.
+</p>
+
+<p>
+<p><div class="noteclassic">
+See the <a href="#advanced_skinning" title="feathers:button ↵" class="wikilink1">Advanced Skinning</a> section below for additional button skinning techniques that can be used for optimized performance.
+
+</div></p>
+</p>
+
+</div>
+<!-- EDIT5 SECTION "Background Skins" [2463-3591] -->
+<h3 class="sectionedit6" id="labels">Labels</h3>
+<div class="level3">
+
+<p>
+Next, let&#039;s ensure that the text is displayed. By default, Feathers uses Starling&#039;s <a href="http://wiki.starling-framework.org/manual/displaying_text#bitmap_fonts" class="urlextern" title="http://wiki.starling-framework.org/manual/displaying_text#bitmap_fonts"  rel="nofollow">bitmap font capabilities</a>.
+</p>
+
+<p>
+To style the text, we pass in a <code><a href="http://feathersui.com/documentation/feathers/text/BitmapFontTextFormat.html" class="urlextern" title="http://feathersui.com/documentation/feathers/text/BitmapFontTextFormat.html"  rel="nofollow">BitmapFontTextFormat</a></code> which allows us to pass in a <code>BitmapFont</code> instance or a String name for a BitmapFont that has been registered with <code><a href="http://doc.starling-framework.org/core/starling/text/TextField.html#registerBitmapFont%28%29" class="urlextern" title="http://doc.starling-framework.org/core/starling/text/TextField.html#registerBitmapFont%28%29"  rel="nofollow">TextField.registerBitmapFont()</a></code>.
+</p>
+<pre class="code as3">button<span class="sy0">.</span>defaultLabelProperties<span class="sy0">.</span>textFormat = <span class="kw1">new</span> BitmapFontTextFormat<span class="br0">&#40;</span> myBitmapFont <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Notice that we refer to <code>defaultLabelProperties</code> in much the same way that we refer to <code>defaultSkin</code> above. Just like with skins, labels may be styled differently depending on which state the button is in. If you want all states to use the same label styles, then you only need to pass your properties to <code>defaultLabelProperties</code>. Label styles for other states, like <code>downLabelProperties</code> exist too. See the <code><a href="http://feathersui.com/documentation/feathers/controls/Button.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Button.html"  rel="nofollow">Button</a></code> documentation for full details.
+</p>
+
+<p>
+If you don&#039;t want to use bitmap font rendering, and you&#039;d prefer to use Flash&#039;s traditional font rendering for device or embedded fonts, you can tell Feathers to use the <code>TextFieldTextRenderer</code> instead. This renderer can use the classic <code><a href="http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextFormat.html" class="urlextern" title="http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextFormat.html"  rel="nofollow">flash.text.TextFormat</a></code>. For more information about using device or embedded fonts, see the <a href="/feathers/text-renderers" class="wikilink1" title="feathers:text-renderers">Text Renderers</a> tutorial.
+</p>
+
+</div>
+<!-- EDIT6 SECTION "Labels" [3592-5294] -->
+<h3 class="sectionedit7" id="icons">Icons</h3>
+<div class="level3">
+
+<p>
+Finally, let&#039;s add an icon to the <code>Button</code>. Icons may be customized for all states, but let&#039;s simply use one icon.
+</p>
+<pre class="code as3">button<span class="sy0">.</span>defaultIcon = <span class="kw1">new</span> Image<span class="br0">&#40;</span> myIcon <span class="br0">&#41;</span><span class="sy0">;</span>
+button<span class="sy0">.</span>iconPosition = Button<span class="sy0">.</span>ICON_POSITION_TOP<span class="sy0">;</span></pre>
+
+<p>
+Again, the <code>Button</code> class provides a default option to supply an icon for all of the button&#039;s states. Icons for all other states, like <code>downIcon</code> and <code>hoverIcon</code> are available too.
+</p>
+
+<p>
+We also set the <code>iconPosition</code> property so that the icon appears above the label. We can position the icon to the top, right, bottom, or left of the label. There are various other useful layout options too:
+</p>
+<pre class="code as3">button<span class="sy0">.</span>gap = <span class="nu0">10</span><span class="sy0">;</span>
+button<span class="sy0">.</span>horizontalAlign = Button<span class="sy0">.</span>HORIZONTAL_ALIGN_CENTER<span class="sy0">;</span>
+button<span class="sy0">.</span>verticalAlign = Button<span class="sy0">.</span>VERTICAL_ALIGN_MIDDLE<span class="sy0">;</span></pre>
+
+<p>
+The <code>gap</code> refers to the space, measured in pixels, between the icon and the label. The <code>horizontalAlign</code> and <code>verticalAlign</code> properties will adjust the alignment of the icon and label inside the button, allowing you to anchor them at the edges or in the center.
+</p>
+
+<p>
+<p><div class="noteclassic">
+See the <a href="#advanced_skinning" title="feathers:button ↵" class="wikilink1">Advanced Skinning</a> section below for additional techniques to optimize performance when providing multiple icons to a button.
+
+</div></p>
+</p>
+
+</div>
+<!-- EDIT7 SECTION "Icons" [5295-6525] -->
+<h3 class="sectionedit8" id="targeting_a_button_in_a_theme">Targeting a Button in a theme</h3>
+<div class="level3">
+
+<p>
+If you are creating a <a href="/feathers/themes" class="wikilink1" title="feathers:themes">theme</a>, you can specify a function for the default styles like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> Button <span class="br0">&#41;</span><span class="sy0">.</span>defaultStyleFunction = setButtonStyles<span class="sy0">;</span></pre>
+
+<p>
+If you want to customize a specific button to look different than the default, you may use a custom style name to call a different function:
+</p>
+<pre class="code as3">button<span class="sy0">.</span>styleNameList<span class="sy0">.</span><span class="kw7">add</span><span class="br0">&#40;</span> <span class="st0">&quot;custom-button&quot;</span> <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+You can specify the function for the custom style name like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> Button <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> <span class="st0">&quot;custom-button&quot;</span><span class="sy0">,</span> setCustomButtonStyles <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Trying to change the button&#039;s styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the button was added to the stage and initialized.  Learn to <a href="/feathers/extending-themes" class="wikilink1" title="feathers:extending-themes">extend an existing theme</a> to add custom skins.
+</p>
+
+<p>
+If you aren&#039;t using a theme, then you may set any of the button&#039;s properties directly.
+</p>
+
+</div>
+<!-- EDIT8 SECTION "Targeting a Button in a theme" [6526-7519] -->
+<h2 class="sectionedit9" id="advanced_skinning">Advanced Skinning</h2>
+<div class="level2">
+
+<p>
+For optimal performance, the same display object may be shared among different button states while simply changing properties. For instance, you might want to share a Starling <code><a href="http://doc.starling-framework.org/core/starling/display/Image.html" class="urlextern" title="http://doc.starling-framework.org/core/starling/display/Image.html"  rel="nofollow">Image</a></code> instance between multiple states while changing the value of <code>texture</code> property, or maybe you&#039;d prefer to use a Feathers <code><a href="/feathers/image-loader" class="wikilink1" title="feathers:image-loader">ImageLoader</a></code> instance and simply change the value of the <code>source</code> property.
+</p>
+
+<p>
+This technique ignores the standard <code>defaultSkin</code>, <code>downSkin</code>, and similar properties, and instead, you should pass a <code>Function</code> to the <code><a href="http://feathersui.com/documentation/feathers/controls/Button.html#stateToSkinFunction" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Button.html#stateToSkinFunction"  rel="nofollow">stateToSkinFunction</a></code> property. This function has the following signature:
+</p>
+<pre class="code as3"><span class="kw3">function</span><span class="br0">&#40;</span> <span class="kw7">target</span><span class="sy0">:</span>Button<span class="sy0">,</span> state<span class="sy0">:</span><a href="http://www.google.com/search?q=object%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:object.html"><span class="kw5">Object</span></a><span class="sy0">,</span> oldSkin<span class="sy0">:</span><a href="http://www.google.com/search?q=displayobject%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:displayobject.html"><span class="kw5">DisplayObject</span></a> = <span class="kw1">null</span> <span class="br0">&#41;</span><span class="sy0">:</span><a href="http://www.google.com/search?q=displayobject%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:displayobject.html"><span class="kw5">DisplayObject</span></a></pre>
+
+<p>
+This function receives the <code>Button</code> instance, the current state, and the skin used for the button&#039;s previous state.
+</p>
+
+<p>
+The following state constants are used by the <code>Button</code> class:
+</p>
+<ul>
+<li class="level1"><div class="li"> <code><a href="http://feathersui.com/documentation/feathers/controls/Button.html#STATE_UP" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Button.html#STATE_UP"  rel="nofollow">Button.STATE_UP</a></code></div>
+</li>
+<li class="level1"><div class="li"> <code><a href="http://feathersui.com/documentation/feathers/controls/Button.html#STATE_HOVER" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Button.html#STATE_HOVER"  rel="nofollow">Button.STATE_HOVER</a></code></div>
+</li>
+<li class="level1"><div class="li"> <code><a href="http://feathersui.com/documentation/feathers/controls/Button.html#STATE_DOWN" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Button.html#STATE_DOWN"  rel="nofollow">Button.STATE_DOWN</a></code></div>
+</li>
+<li class="level1"><div class="li"> <code><a href="http://feathersui.com/documentation/feathers/controls/Button.html#STATE_DISABLED" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Button.html#STATE_DISABLED"  rel="nofollow">Button.STATE_DISABLED</a></code></div>
+</li>
+</ul>
+
+<p>
+The old skin passed in as the final argument may be <code>null</code>. If so, a new skin must be created. If it is not <code>null</code>, and its datatype matches the expected datatype, then it may be reused. If it&#039;s a different datatype, then a new skin must be created.
+</p>
+
+<p>
+Let&#039;s look at an example of a simple <code>stateToSkinFunction</code> implementation:
+</p>
+<pre class="code as3"><span class="kw3">function</span><span class="br0">&#40;</span> <span class="kw7">target</span><span class="sy0">:</span>Button<span class="sy0">,</span> state<span class="sy0">:</span><a href="http://www.google.com/search?q=object%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:object.html"><span class="kw5">Object</span></a><span class="sy0">,</span> oldSkin<span class="sy0">:</span><a href="http://www.google.com/search?q=displayobject%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:displayobject.html"><span class="kw5">DisplayObject</span></a> = <span class="kw1">null</span> <span class="br0">&#41;</span><span class="sy0">:</span><a href="http://www.google.com/search?q=displayobject%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:displayobject.html"><span class="kw5">DisplayObject</span></a>
+<span class="br0">&#123;</span>
+    <span class="kw2">var</span> skin<span class="sy0">:</span>ImageLoader = oldSkin <span class="kw1">as</span> ImageLoader<span class="sy0">;</span>
+    <span class="kw1">if</span><span class="br0">&#40;</span> <span class="sy0">!</span>skin <span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        skin = <span class="kw1">new</span> ImageLoader<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+&nbsp;
+    <span class="kw1">switch</span><span class="br0">&#40;</span> state <span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="kw1">case</span> Button<span class="sy0">.</span>STATE_DISABLED<span class="sy0">:</span>
+        <span class="br0">&#123;</span>
+            skin<span class="sy0">.</span><span class="kw7">source</span> = disabledButtonSkinTexture<span class="sy0">;</span>
+            <span class="kw1">break</span><span class="sy0">;</span>
+        <span class="br0">&#125;</span>
+        <span class="kw1">case</span> Button<span class="sy0">.</span>STATE_DOWN<span class="sy0">:</span>
+        <span class="br0">&#123;</span>
+            skin<span class="sy0">.</span><span class="kw7">source</span> = downButtonSkinTexture<span class="sy0">;</span>
+            <span class="kw1">break</span><span class="sy0">;</span>
+        <span class="br0">&#125;</span>
+        <span class="kw1">case</span> Button<span class="sy0">.</span>STATE_HOVER<span class="sy0">:</span>
+        <span class="br0">&#123;</span>
+            skin<span class="sy0">.</span><span class="kw7">source</span> = hoverButtonSkinTexture<span class="sy0">;</span>
+            <span class="kw1">break</span><span class="sy0">;</span>
+        <span class="br0">&#125;</span>
+        <span class="kw1">default</span><span class="sy0">:</span>
+        <span class="br0">&#123;</span>
+            skin<span class="sy0">.</span><span class="kw7">source</span> = upButtonSkinTexture<span class="sy0">;</span>
+        <span class="br0">&#125;</span>
+    <span class="br0">&#125;</span>
+    <span class="kw1">return</span> skin<span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+In the example above, the button skins are <code><a href="/feathers/image-loader" class="wikilink1" title="feathers:image-loader">ImageLoader</a></code> components. If the old skin is an <code>ImageLoader</code>, it is reused. If it is <code>null</code> or another datatype, then a new <code>ImageLoader</code> is created. The <code>source</code> property is updated to use a different <code>starling.textures.Texture</code> instance depending on the value of the <code>Button</code> instance&#039;s current state.
+</p>
+
+</div>
+<!-- EDIT9 SECTION "Advanced Skinning" [7520-10504] -->
+<h3 class="sectionedit10" id="skin_value_selectors">Skin Value Selectors</h3>
+<div class="level3">
+
+<p>
+The <code><span class="curid"><a href="/feathers/button" class="wikilink1" title="feathers:button">SmartDisplayObjectStateValueSelector</a></span></code> class provides an implementation of <code>stateToSkinFunction</code> that smartly selects the correct display object based on the values passed in. For instance, if you pass in a <code>Texture</code> instance, it will return an <code>Image</code> as the skin. If you pass in a <code>Scale9Textures</code> object, it will return a <code><a href="/feathers/scale9-image" class="wikilink1" title="feathers:scale9-image">Scale9Image</a></code> as the skin. If you pass in a <code>Scale3Textures</code> object, it will return a <code><a href="/feathers/scale3-image" class="wikilink1" title="feathers:scale3-image">Scale3Image</a></code> as the skin.  Finally, if you pass in a <code>uint</code> color value, it will return a <code>Quad</code> as the skin.
+</p>
+
+<p>
+The following <code>SmartDisplayObjectStateValueSelector</code> provides an implementation similar to the example above.
+</p>
+<pre class="code as3"><span class="kw2">var</span> skinSelector<span class="sy0">:</span>SmartDisplayObjectStateValueSelector = <span class="kw1">new</span> SmartDisplayObjectStateValueSelector<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+skinSelector<span class="sy0">.</span>defaultValue = upButtonSkinTexture<span class="sy0">;</span>
+skinSelector<span class="sy0">.</span>defaultSelectedValue = selectedUpButtonSkinTexture<span class="sy0">;</span>
+skinSelector<span class="sy0">.</span>setValueForState<span class="br0">&#40;</span> downSkinTexture<span class="sy0">,</span> Button<span class="sy0">.</span>STATE_DOWN<span class="sy0">,</span> <span class="kw1">false</span><span class="br0">&#41;</span><span class="sy0">;</span>
+skinSelector<span class="sy0">.</span>setValueForState<span class="br0">&#40;</span> hoverSkinTexture<span class="sy0">,</span> Button<span class="sy0">.</span>STATE_HOVER<span class="sy0">,</span> <span class="kw1">false</span><span class="br0">&#41;</span><span class="sy0">;</span>
+skinSelector<span class="sy0">.</span>setValueForState<span class="br0">&#40;</span> disabledSkinTextures<span class="sy0">,</span> Button<span class="sy0">.</span>STATE_DISABLED<span class="sy0">,</span> <span class="kw1">false</span><span class="br0">&#41;</span><span class="sy0">;</span>
+skinSelector<span class="sy0">.</span>setValueForState<span class="br0">&#40;</span> selectedDownSkinTexture<span class="sy0">,</span> Button<span class="sy0">.</span>STATE_DOWN<span class="sy0">,</span> <span class="kw1">true</span><span class="br0">&#41;</span><span class="sy0">;</span>
+skinSelector<span class="sy0">.</span>setValueForState<span class="br0">&#40;</span> selectedHoverSkinTexture<span class="sy0">,</span> Button<span class="sy0">.</span>STATE_HOVER<span class="sy0">,</span> <span class="kw1">true</span><span class="br0">&#41;</span><span class="sy0">;</span>
+skinSelector<span class="sy0">.</span>setValueForState<span class="br0">&#40;</span> selectedDisabledSkinTextures<span class="sy0">,</span> Button<span class="sy0">.</span>STATE_DISABLED<span class="sy0">,</span> <span class="kw1">true</span><span class="br0">&#41;</span><span class="sy0">;</span>
+button<span class="sy0">.</span>stateToSkinFunction = skinSelector<span class="sy0">.</span>updateValue<span class="sy0">;</span></pre>
+
+<p>
+Simply pass the <code>updateValue</code> function to the button&#039;s <code>stateToSkinFunction</code> property.
+</p>
+
+<p>
+Notice that we specified a few more skins in this example. The third argument for <code>setValueForState()</code> specifies whether a skin should be used based on both the button&#039;s state and the value of its <code>isSelected</code> property.
+</p>
+
+<p>
+Obviously, you could check <code>target.isSelected</code> in your own custom <code>stateToSkinFunction</code> to provide skins for states when the button is selected. You could go even check whether the button has focus (if you&#039;re making a desktop app and the <a href="/feathers/focus" class="wikilink1" title="feathers:focus">focus manager</a> is enabled) by using <code>button.focusManager.focus == button</code>.
+</p>
+
+</div>
+<!-- EDIT10 SECTION "Skin Value Selectors" [10505-12663] -->
+<h3 class="sectionedit11" id="icons1">Icons</h3>
+<div class="level3">
+
+<p>
+Similar to <code>stateToSkinFunction</code>, button also provides <code><a href="http://feathersui.com/documentation/feathers/controls/Button.html#stateToIconFunction" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Button.html#stateToIconFunction"  rel="nofollow">stateToIconFunction</a></code> to share a display object between multiple states for the button&#039;s icon.
+</p>
+
+</div>
+<!-- EDIT11 SECTION "Icons" [12664-12924] -->
+<h2 class="sectionedit12" id="related_links">Related Links</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="http://feathersui.com/documentation/feathers/controls/Button.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Button.html"  rel="nofollow">Button API Documentation</a></div>
+</li>
+</ul>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT12 SECTION "Related Links" [12925-] -->

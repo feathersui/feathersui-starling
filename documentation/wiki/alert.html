@@ -1,0 +1,396 @@
+
+<h1 class="sectionedit1" id="how_to_use_the_feathers_alert_component">How to use the Feathers Alert component</h1>
+<div class="level1">
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/controls/Alert.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Alert.html"  rel="nofollow">Alert</a></code> class renders a window as a pop-up over all other content. Typically, an alert displays as a window with a header that displays a title, a message as the main content, and a set of buttons to select different actions.
+</p>
+
+</div>
+<!-- EDIT1 SECTION "How to use the Feathers Alert component" [1-356] -->
+<h2 class="sectionedit2" id="the_basics">The Basics</h2>
+<div class="level2">
+
+<p>
+We create an <code>Alert</code> a bit differently than other components. Rather than calling a constructor, we call the static function <code><a href="http://feathersui.com/documentation/feathers/controls/Alert.html#show%28%29" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Alert.html#show%28%29"  rel="nofollow">Alert.show()</a></code>. Let&#039;s see how this works by displaying a simple message in an <code>Alert</code> when we touch a button. First, let&#039;s create the button:
+</p>
+<pre class="code as3"><span class="kw2">var</span> button<span class="sy0">:</span>Button = <span class="kw1">new</span> Button<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+button<span class="sy0">.</span>label = <span class="st0">&quot;Click Me&quot;</span><span class="sy0">;</span>
+button<span class="sy0">.</span><span class="kw7">addEventListener</span><span class="br0">&#40;</span> <a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a><span class="sy0">.</span>TRIGGERED<span class="sy0">,</span> button_triggeredHandler <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">addChild</span><span class="br0">&#40;</span> button <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Then, in the listener for the <code>Event.TRIGGERED</code> event, we create the alert:
+</p>
+<pre class="code as3"><span class="kw3">function</span> button_triggeredHandler<span class="br0">&#40;</span> event<span class="sy0">:</span><a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a> <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+    <span class="kw2">var</span> button<span class="sy0">:</span>Button = Button<span class="br0">&#40;</span> event<span class="sy0">.</span><span class="kw7">currentTarget</span> <span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="kw2">var</span> alert<span class="sy0">:</span>Alert = Alert<span class="sy0">.</span><span class="kw7">show</span><span class="br0">&#40;</span> <span class="st0">&quot;I have something important to say&quot;</span><span class="sy0">,</span> <span class="st0">&quot;Warning&quot;</span><span class="sy0">,</span> <span class="kw1">new</span> ListCollection<span class="br0">&#40;</span>
+    <span class="br0">&#91;</span>
+        <span class="br0">&#123;</span> label<span class="sy0">:</span> <span class="st0">&quot;OK&quot;</span><span class="sy0">,</span> triggered<span class="sy0">:</span> okButton_triggeredHandler <span class="br0">&#125;</span>
+    <span class="br0">&#93;</span><span class="br0">&#41;</span> <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Three arguments are required. The first is the alert&#039;s message. The second argument is the title displayed in the alert&#039;s header. Finally, a ListCollection of button data must be passed in to display in a <code><a href="/feathers/button-group" class="wikilink1" title="feathers:button-group">ButtonGroup</a></code>.
+</p>
+
+<p>
+In addition to listening for <code>Event.TRIGGERED</code> to be dispatched by individual buttons, you may also listen for <code><a href="http://feathersui.com/documentation/feathers/controls/Alert.html#event:close" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Alert.html#event:close"  rel="nofollow">Event.CLOSE</a></code> on the alert:
+</p>
+<pre class="code as3">alert<span class="sy0">.</span><span class="kw7">addEventListener</span><span class="br0">&#40;</span> <a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a><span class="sy0">.</span><span class="kw8">CLOSE</span><span class="sy0">,</span> alert_closeHandler <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+The event object&#039;s <code>data</code> property will contain the item from the <code>ButtonGroup</code> data provider that is associated with the button that was triggered:
+</p>
+<pre class="code as3"><span class="kw3">function</span> alert_closeHandler<span class="br0">&#40;</span> event<span class="sy0">:</span><a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a><span class="sy0">,</span> <span class="kw7">data</span><span class="sy0">:</span><a href="http://www.google.com/search?q=object%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:object.html"><span class="kw5">Object</span></a> <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+    <span class="kw1">if</span><span class="br0">&#40;</span> <span class="kw7">data</span><span class="sy0">.</span>label == <span class="st0">&quot;OK&quot;</span> <span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+        <span class="co1">// the OK button was clicked</span>
+    <span class="br0">&#125;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Additional, optional arguments are available for <code>Alert.show()</code>. Let&#039;s take a look at those next.
+</p>
+
+</div>
+<!-- EDIT2 SECTION "The Basics" [357-2261] -->
+<h3 class="sectionedit3" id="modality">Modality</h3>
+<div class="level3">
+
+<p>
+Following the button group is the <code>isModal</code> argument. This determines whether there is an overlay between the alert and the rest of the display list. When an alert is modal, the overlay blocks touches to everything that appears under the alert. If the alert isn&#039;t modal, there will be no overlay to block the touch, and anything below the alert will remain interactive.
+</p>
+
+<p>
+Alerts are displayed using the <code><a href="http://feathersui.com/documentation/feathers/core/PopUpManager.html" class="urlextern" title="http://feathersui.com/documentation/feathers/core/PopUpManager.html"  rel="nofollow">PopUpManager</a></code>. By default, modal overlays are managed by the <code>PopUpManager</code>, but you can give a custom overlay to all alerts (that will be different from other modal pop-ups) when you set the static property, <code><a href="http://feathersui.com/documentation/feathers/controls/Alert.html#overlayFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Alert.html#overlayFactory"  rel="nofollow">overlayFactory</a></code>:
+</p>
+<pre class="code as3">Alert<span class="sy0">.</span>overlayFactory = <span class="kw3">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><a href="http://www.google.com/search?q=displayobject%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:displayobject.html"><span class="kw5">DisplayObject</span></a>
+<span class="br0">&#123;</span>
+    <span class="kw1">return</span> <span class="kw1">new</span> TiledImage<span class="br0">&#40;</span> myTexture <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="sy0">;</span></pre>
+
+<p>
+When <code><a href="http://feathersui.com/documentation/feathers/core/PopUpManager.html#addPopUp%28%29" class="urlextern" title="http://feathersui.com/documentation/feathers/core/PopUpManager.html#addPopUp%28%29"  rel="nofollow">PopUpManager.addPopUp()</a></code> is called to show the alert, the custom overlay factory will be passed in as an argument.
+</p>
+
+</div>
+<!-- EDIT3 SECTION "Modality" [2262-3400] -->
+<h3 class="sectionedit4" id="centering">Centering</h3>
+<div class="level3">
+
+<p>
+Following the modality is the <code>isCentered</code> argument. This determines if the alert will be globally centered on the Starling stage. If the alert or the stage is resized, the alert will be automatically repositioned to remain centered.
+</p>
+
+</div>
+<!-- EDIT4 SECTION "Centering" [3401-3657] -->
+<h3 class="sectionedit5" id="custom_alert_factory">Custom Alert Factory</h3>
+<div class="level3">
+
+<p>
+When a alert is created with <code>Alert.show()</code>, <code>Alert.alertFactory()</code> is called to instantiate an <code>Alert</code> instance. One of the final arguments of <code>Alert.show()</code> allows you to specify a custom alert factory. This let&#039;s you customize an individual alert to be different than other alerts. For instance, let&#039;s say that a particular alert should have different background skin than others. We might create an alert factory function like this:
+</p>
+<pre class="code as3"><span class="kw3">function</span> customAlertFactory<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span>Alert
+<span class="br0">&#123;</span>
+    <span class="kw2">var</span> alert<span class="sy0">:</span>Alert = <span class="kw1">new</span> Alert<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    alert<span class="sy0">.</span>styleNameList<span class="sy0">.</span><span class="kw7">add</span><span class="br0">&#40;</span> <span class="st0">&quot;custom-alert&quot;</span> <span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="kw1">return</span> alert<span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="sy0">;</span>
+Alert<span class="sy0">.</span><span class="kw7">show</span><span class="br0">&#40;</span> <span class="st0">&quot;I have something important to say&quot;</span><span class="sy0">,</span> <span class="st0">&quot;Alert Title&quot;</span><span class="sy0">,</span> <span class="kw1">new</span> ListCollection<span class="br0">&#40;</span><span class="br0">&#123;</span>label<span class="sy0">:</span> <span class="st0">&quot;OK&quot;</span><span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">,</span> <span class="kw1">true</span><span class="sy0">,</span> <span class="kw1">true</span><span class="sy0">,</span> customAlertFactory <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+If you&#039;re working with a <a href="/feathers/extending-themes" class="wikilink1" title="feathers:extending-themes">theme</a>, you can set a custom styling function for a <code>Alert</code> with the style name “custom-alert” to provide different skins for this alert.
+</p>
+
+</div>
+<!-- EDIT5 SECTION "Custom Alert Factory" [3658-4615] -->
+<h2 class="sectionedit6" id="skinning_an_alert">Skinning an Alert</h2>
+<div class="level2">
+
+<p>
+The skins for an <code>Alert</code> control are divided into the header, the message text renderer, and the button group. Additionally, an alert may have background skins and various other styles. For full details about what skin and style properties are available, see the <a href="http://feathersui.com/documentation/feathers/controls/Alert.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Alert.html"  rel="nofollow">Alert API reference</a>.
+</p>
+
+</div>
+<!-- EDIT6 SECTION "Skinning an Alert" [4616-5001] -->
+<h3 class="sectionedit7" id="background_skins_and_basic_styles">Background Skins and Basic Styles</h3>
+<div class="level3">
+
+<p>
+We&#039;ll start the skinning process by giving our alert appropriate background skins.
+</p>
+<pre class="code as3">alert<span class="sy0">.</span>backgroundSkin = <span class="kw1">new</span> Scale9Image<span class="br0">&#40;</span> enabledTextures <span class="br0">&#41;</span><span class="sy0">;</span>
+alert<span class="sy0">.</span>backgroundDisabledSkin = <span class="kw1">new</span> Image<span class="br0">&#40;</span> disabledTextures <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#backgroundSkin" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#backgroundSkin"  rel="nofollow">backgroundSkin</a></code> property provides the default background for when the alert is enabled. The <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#backgroundDisabledSkin" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#backgroundDisabledSkin"  rel="nofollow">backgroundDisabledSkin</a></code> is displayed when the alert is disabled. If the <code>backgroundDisabledSkin</code> isn&#039;t provided to a disabled alert, it will fall back to using the <code>backgroundSkin</code> in the disabled state.
+</p>
+
+<p>
+Padding may be added around the edges of the alert. This padding is applied around the edges of the message text renderer, and is generally used to show a bit of the background as a border.
+</p>
+<pre class="code as3">alert<span class="sy0">.</span>paddingTop = <span class="nu0">15</span><span class="sy0">;</span>
+alert<span class="sy0">.</span>paddingRight = <span class="nu0">20</span><span class="sy0">;</span>
+alert<span class="sy0">.</span>paddingBottom = <span class="nu0">15</span><span class="sy0">;</span>
+alert<span class="sy0">.</span>paddingLeft = <span class="nu0">20</span><span class="sy0">;</span></pre>
+
+<p>
+If all four padding values should be the same, you may use the <code>padding</code> property to quickly set them all at once:
+</p>
+<pre class="code as3">alert<span class="sy0">.</span>padding = <span class="nu0">20</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT7 SECTION "Background Skins and Basic Styles" [5002-6232] -->
+<h3 class="sectionedit8" id="targeting_an_alert_in_a_theme">Targeting an Alert in a theme</h3>
+<div class="level3">
+
+<p>
+If you are creating a <a href="/feathers/themes" class="wikilink1" title="feathers:themes">theme</a>, you can specify a function for the default styles like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> Alert <span class="br0">&#41;</span><span class="sy0">.</span>defaultStyleFunction = setAlertStyles<span class="sy0">;</span></pre>
+
+<p>
+If you want to customize a specific alert to look different than the default, you may use a custom style name to call a different function:
+</p>
+<pre class="code as3">alert<span class="sy0">.</span>styleNameList<span class="sy0">.</span><span class="kw7">add</span><span class="br0">&#40;</span> <span class="st0">&quot;custom-alert&quot;</span> <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+You can specify the function for the custom style name like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> Alert <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> <span class="st0">&quot;custom-alert&quot;</span><span class="sy0">,</span> setCustomAlertStyles <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Trying to change the alert&#039;s styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the alert was added to the stage and initialized. Learn to <a href="/feathers/extending-themes" class="wikilink1" title="feathers:extending-themes">extend an existing theme</a> to add custom skins.
+</p>
+
+<p>
+If you aren&#039;t using a theme, then you may set any of the alert&#039;s properties directly.
+</p>
+
+</div>
+<!-- EDIT8 SECTION "Targeting an Alert in a theme" [6233-7214] -->
+<h3 class="sectionedit9" id="skinning_the_header">Skinning the Header</h3>
+<div class="level3">
+
+<p>
+<p><div class="noteclassic">
+This section only explains how to access the header sub-component. Please read <a href="/feathers/header" class="wikilink1" title="feathers:header">How to use the Feathers Header component</a> for full details about the skinning properties that are available on <code>Header</code> components.
+
+</div></p>
+</p>
+
+</div>
+
+<h4 id="with_a_theme">With a Theme</h4>
+<div class="level4">
+
+<p>
+If you&#039;re creating a <a href="/feathers/themes" class="wikilink1" title="feathers:themes">theme</a>, you can target the <code><a href="http://feathersui.com/documentation/feathers/controls/Alert.html#DEFAULT_CHILD_NAME_HEADER" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Alert.html#DEFAULT_CHILD_NAME_HEADER"  rel="nofollow">Alert.DEFAULT_CHILD_NAME_HEADER</a></code> style name.
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> Header <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> Alert<span class="sy0">.</span>DEFAULT_CHILD_NAME_HEADER<span class="sy0">,</span> setAlertHeaderStyles <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+You can override the default style name to use a different one in your theme, if you prefer:
+</p>
+<pre class="code as3">alert<span class="sy0">.</span>customHeaderName = <span class="st0">&quot;custom-header&quot;</span><span class="sy0">;</span></pre>
+
+<p>
+You can set the styling function for the <code><a href="http://feathersui.com/documentation/feathers/controls/Alert.html#customHeaderName" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Alert.html#customHeaderName"  rel="nofollow">customHeaderName</a></code> like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> Header <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> <span class="st0">&quot;custom-header&quot;</span><span class="sy0">,</span> setAlertCustomHeaderStyles <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+
+<h4 id="without_a_theme">Without a Theme</h4>
+<div class="level4">
+
+<p>
+If you are not using a theme, you can use <code><a href="http://feathersui.com/documentation/feathers/controls/Alert.html#headerFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Alert.html#headerFactory"  rel="nofollow">headerFactory</a></code> to provide skins for the alert&#039;s header:
+</p>
+<pre class="code as3">alert<span class="sy0">.</span>headerFactory = <span class="kw3">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span>Header
+<span class="br0">&#123;</span>
+    <span class="kw2">var</span> header<span class="sy0">:</span>Header = <span class="kw1">new</span> Header<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="co1">//skin the header here</span>
+    header<span class="sy0">.</span>backgroundSkin = <span class="kw1">new</span> Scale9Image<span class="br0">&#40;</span> headerBackgroundTextures <span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="kw1">return</span> header<span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Alternatively, or in addition to the <code>headerFactory</code>, you may use the <code><a href="http://feathersui.com/documentation/feathers/controls/Alert.html#headerProperties" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Alert.html#headerProperties"  rel="nofollow">headerProperties</a></code> to pass skins to the header.
+</p>
+<pre class="code as3">alert<span class="sy0">.</span>headerProperties<span class="sy0">.</span>backgroundSkin = <span class="kw1">new</span> Scale9Image<span class="br0">&#40;</span> headerBackgroundTextures <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+In general, you should only pass skins to the alert&#039;s header through <code>headerProperties</code> if you need to change skins after the header is created. Using <code>headerFactory</code> will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
+</p>
+
+</div>
+<!-- EDIT9 SECTION "Skinning the Header" [7215-9349] -->
+<h3 class="sectionedit10" id="skinning_the_button_group">Skinning the Button Group</h3>
+<div class="level3">
+
+<p>
+<p><div class="noteclassic">
+This section only explains how to access the button group sub-component. Please read <a href="/feathers/button-group" class="wikilink1" title="feathers:button-group">How to use the Feathers ButtonGroup component</a> for full details about the skinning properties that are available on <code>ButtonGroup</code> components.
+
+</div></p>
+</p>
+
+</div>
+
+<h4 id="with_a_theme1">With a Theme</h4>
+<div class="level4">
+
+<p>
+If you&#039;re creating a <a href="/feathers/themes" class="wikilink1" title="feathers:themes">theme</a>, you can target the <code><a href="http://feathersui.com/documentation/feathers/controls/Alert.html#DEFAULT_CHILD_NAME_BUTTON_GROUP" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Alert.html#DEFAULT_CHILD_NAME_BUTTON_GROUP"  rel="nofollow">Alert.DEFAULT_CHILD_NAME_BUTTON_GROUP</a></code> style name.
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> ButtonGroup <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> Alert<span class="sy0">.</span>DEFAULT_CHILD_NAME_BUTTON_GROUP<span class="sy0">,</span> setAlertButtonGroupStyles <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+You can override the default style name to use a different one in your theme, if you prefer:
+</p>
+<pre class="code as3">alert<span class="sy0">.</span>customButtonGroupName = <span class="st0">&quot;custom-button-group&quot;</span><span class="sy0">;</span></pre>
+
+<p>
+You can set the styling function for the <code><a href="http://feathersui.com/documentation/feathers/controls/Alert.html#customButtonGroupName" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Alert.html#customButtonGroupName"  rel="nofollow">customButtonGroupName</a></code> like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> ButtonGroup <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> <span class="st0">&quot;custom-button-group&quot;</span><span class="sy0">,</span> setAlertCustomButtonGroupStyles <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+
+<h4 id="without_a_theme1">Without a Theme</h4>
+<div class="level4">
+
+<p>
+If you are not using a theme, you can use <code><a href="http://feathersui.com/documentation/feathers/controls/Alert.html#buttonGroupFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Alert.html#buttonGroupFactory"  rel="nofollow">buttonGroupFactory</a></code> to provide skins for the alert&#039;s button group:
+</p>
+<pre class="code as3">alert<span class="sy0">.</span>buttonGroupFactory = <span class="kw3">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span>Header
+<span class="br0">&#123;</span>
+    <span class="kw2">var</span> group<span class="sy0">:</span>ButtonGroup = <span class="kw1">new</span> ButtonGroup<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="co1">//skin the button group here</span>
+    group<span class="sy0">.</span>gap = <span class="nu0">20</span><span class="sy0">;</span>
+    <span class="kw1">return</span> group<span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Alternatively, or in addition to the <code>buttonGroupFactory</code>, you may use the <code><a href="http://feathersui.com/documentation/feathers/controls/Alert.html#buttonGroupProperties" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Alert.html#buttonGroupProperties"  rel="nofollow">buttonGroupProperties</a></code> to pass skins to the button group.
+</p>
+<pre class="code as3">alert<span class="sy0">.</span>buttonGroupProperties<span class="sy0">.</span>gap = <span class="nu0">20</span><span class="sy0">;</span></pre>
+
+<p>
+In general, you should only pass skins to the alert&#039;s button group through <code>buttonGroupProperties</code> if you need to change skins after the button group is created. Using <code>buttonGroupFactory</code> will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
+</p>
+
+</div>
+<!-- EDIT10 SECTION "Skinning the Button Group" [9350-11554] -->
+<h3 class="sectionedit11" id="skinning_the_message_text_renderer">Skinning the Message Text Renderer</h3>
+<div class="level3">
+
+<p>
+<p><div class="noteclassic">
+This section only explains how to access the message text renderer sub-component. Please read <a href="/feathers/text-renderers" class="wikilink1" title="feathers:text-renderers">Introduction to Feathers Text Renderers</a> for full details about how to style different kinds of Feathers text renderers.
+
+</div></p>
+</p>
+
+</div>
+
+<h4 id="with_a_theme2">With a Theme</h4>
+<div class="level4">
+
+<p>
+If you&#039;re creating a <a href="/feathers/themes" class="wikilink1" title="feathers:themes">theme</a>, you can target the <code><a href="http://feathersui.com/documentation/feathers/controls/Alert.html#DEFAULT_CHILD_NAME_MESSAGE" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Alert.html#DEFAULT_CHILD_NAME_MESSAGE"  rel="nofollow">Alert.DEFAULT_CHILD_NAME_MESSAGE</a></code> style name. In the following examples, we&#039;ll use a <code>BitmapFontTextRenderer</code>, but other text renderers may be used instead, if desired.
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> BitmapFontTextRenderer <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> Alert<span class="sy0">.</span>DEFAULT_CHILD_NAME_MESSAGE<span class="sy0">,</span> setAlertMessageStyles <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+
+<h4 id="without_a_theme2">Without a Theme</h4>
+<div class="level4">
+
+<p>
+If you are not using a theme, you can use <code><a href="http://feathersui.com/documentation/feathers/controls/Alert.html#messageFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Alert.html#messageFactory"  rel="nofollow">messageFactory</a></code> to provide skins for the alert&#039;s message:
+</p>
+<pre class="code as3">alert<span class="sy0">.</span>messageFactory = <span class="kw3">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span>ITextRenderer
+<span class="br0">&#123;</span>
+    <span class="kw2">var</span> <span class="kw7">message</span><span class="sy0">:</span>BitmapFontTextRenderer = <span class="kw1">new</span> BitmapFontTextRenderer<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="co1">//skin the message here</span>
+    <span class="kw7">message</span><span class="sy0">.</span>textFormat = <span class="kw1">new</span> BitmapFontTextFormat<span class="br0">&#40;</span> bitmapFont <span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="kw1">return</span> <span class="kw7">message</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Alternatively, or in addition to the <code>messageFactory</code>, you may use the <code><a href="http://feathersui.com/documentation/feathers/controls/Alert.html#messageProperties" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Alert.html#messageProperties"  rel="nofollow">messageProperties</a></code> to pass properties to the text renderer.
+</p>
+<pre class="code as3">alert<span class="sy0">.</span>messageProperties<span class="sy0">.</span>textFormat = <span class="kw1">new</span> BitmapFontTextFormat<span class="br0">&#40;</span> bitmapFont <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+In general, you should only pass skins to the alert&#039;s message text renderer through <code>messageProperties</code> if you need to change skins after the message text renderer is created. Using <code>messageFactory</code> will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
+</p>
+
+</div>
+<!-- EDIT11 SECTION "Skinning the Message Text Renderer" [11555-13490] -->
+<h3 class="sectionedit12" id="customizing_the_alert_factories">Customizing the Alert Factories</h3>
+<div class="level3">
+
+<p>
+If you&#039;re not using a theme, you can specify a factory to create the alert, including setting skins, in a couple of different ways. The first is to set the <code><a href="http://feathersui.com/documentation/feathers/controls/Alert.html#alertFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Alert.html#alertFactory"  rel="nofollow">Alert.alertFactory</a></code> static property to a function that provides skins for the alert. This factory will be called any time that <code>Alert.show()</code> is used to create an alert.
+</p>
+<pre class="code as3"><span class="kw3">function</span> skinnedAlertFactory<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span>Alert
+<span class="br0">&#123;</span>
+    <span class="kw2">var</span> alert<span class="sy0">:</span>Alert = <span class="kw1">new</span> Alert<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    alert<span class="sy0">.</span>backgroundSkin = <span class="kw1">new</span> Scale9Image<span class="br0">&#40;</span> myTextures <span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="co1">// etc...</span>
+    <span class="kw1">return</span> alert<span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="sy0">;</span>
+Alert<span class="sy0">.</span>alertFactory = skinnedAlertFactory<span class="sy0">;</span></pre>
+
+<p>
+Another option is to pass an alert factory to <code>Alert.show()</code>. This allows you to create a specific alert differently than the default global <code>Alert.alertFactory</code>.
+</p>
+<pre class="code as3"><span class="kw3">function</span> skinnedAlertFactory<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span>Alert
+<span class="br0">&#123;</span>
+    <span class="kw2">var</span> alert<span class="sy0">:</span>Alert = <span class="kw1">new</span> Alert<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    alert<span class="sy0">.</span>backgroundSkin = <span class="kw1">new</span> Scale9Image<span class="br0">&#40;</span> myTextures <span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="co1">// etc...</span>
+    <span class="kw1">return</span> alert<span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="sy0">;</span>
+Alert<span class="sy0">.</span><span class="kw7">show</span><span class="br0">&#40;</span> <span class="kw7">message</span><span class="sy0">,</span> title<span class="sy0">,</span> buttons<span class="sy0">,</span> isModal<span class="sy0">,</span> isCentered<span class="sy0">,</span> skinnedAlertFactory<span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+You should generally always skin the alerts with a factory or with a theme instead of passing the skins to the <code>Alert</code> instance returned by calling <code>Alert.show()</code>. If you skin an alert after <code>Alert.show()</code> is called, it may not be positioned or sized correctly anymore.
+</p>
+
+</div>
+<!-- EDIT12 SECTION "Customizing the Alert Factories" [13491-14887] -->
+<h2 class="sectionedit13" id="closing_and_disposal">Closing and Disposal</h2>
+<div class="level2">
+
+<p>
+The alert will automatically remove itself from the display list and dispose itself when one of its buttons is triggered. To manually close and dispose the alert, you may call <code>removeFromParent(true)</code>.
+</p>
+
+</div>
+<!-- EDIT13 SECTION "Closing and Disposal" [14888-15126] -->
+<h2 class="sectionedit14" id="related_links">Related Links</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="http://feathersui.com/documentation/feathers/controls/Alert.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Alert.html"  rel="nofollow">Alert API Documentation</a></div>
+</li>
+</ul>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT14 SECTION "Related Links" [15127-] -->

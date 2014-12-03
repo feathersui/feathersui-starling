@@ -1,0 +1,66 @@
+
+<h1 class="sectionedit1" id="setting_up_feathers_in_flash_professional">Setting up Feathers in Flash Professional</h1>
+<div class="level1">
+
+<p>
+Let&#039;s get your <a href="http://www.adobe.com/products/flash.html" class="urlextern" title="http://www.adobe.com/products/flash.html"  rel="nofollow">Flash Professional</a> development environment ready to use Feathers.
+</p>
+
+<p>
+<p><div class="noteclassic">
+These instructions apply to Flash Professional CS6. Minor variations may exist between different versions of Flash Professional.
+
+</div></p>
+</p>
+
+<p>
+1. Download the latest stable versions of <a href="http://feathersui.com/download/" class="urlextern" title="http://feathersui.com/download/"  rel="nofollow">Feathers</a> and <a href="http://gamua.com/starling/download/" class="urlextern" title="http://gamua.com/starling/download/"  rel="nofollow">Starling Framework</a>.
+</p>
+
+<p>
+2. In Flash Professional, create a new project. For mobile, you will want to create an <strong>AIR for Android</strong> or <strong>AIR for iOS</strong> project. For desktop, you will want to create an <strong>AIR</strong> project. For Flash Player in the browser, you will want to create an <strong>ActionScript 3.0</strong> project.
+</p>
+
+<p>
+3. In the <strong>Properties</strong> panel, ensure that the <strong>Target</strong> is set to an appropriate version of the Flash runtime that you are targeting. Please check the Feathers README file to see which versions of the Flash runtimes are required for the version of Feathers that you are using.
+</p>
+
+<p>
+<p><div class="noteclassic">
+If the minimum version of Adobe AIR or Flash Player specified in the Feathers README file is not listed, go to the <strong>Help</strong> menu and select <strong>Manage AIR SDK…</strong> to manually add the appropriate version of the AIR SDK. You can <a href="http://www.adobe.com/devnet/air/air-sdk-download.html" class="urlextern" title="http://www.adobe.com/devnet/air/air-sdk-download.html"  rel="nofollow">download the latest AIR SDK</a> from Adobe&#039;s website.
+
+</div></p>
+</p>
+
+<p>
+4a. If you are targeting Adobe AIR, click the button with the <strong>Wrench icon</strong> next to the <strong>Target</strong> in the <strong>Properties</strong> panel. Ensure that <strong>Render mode</strong> is set to <strong>Direct</strong>. Click <strong>OK</strong>.
+</p>
+
+<p>
+4b. If you are using Adobe Flash Player, you will need to ensure that the <strong>wmode</strong> value in your <abbr title="HyperText Markup Language">HTML</abbr> and/or JavaScript is set to <strong>direct</strong>.
+</p>
+
+<p>
+5. Click the button with the <strong>Wrench icon</strong> next to <strong>Script</strong> in the <strong>Properties</strong> panel. In the <strong>Library path</strong> tab, click the <strong>Browse to SWC</strong> button (the one with the Flash Player logo) and specify the location of <strong>starling.swc</strong>. Repeat this step to add <strong>feathers.swc</strong>.
+</p>
+
+<p>
+6. An <strong>FPS</strong> value of <strong>60</strong> is recommended.
+</p>
+
+<p>
+Your project is ready. If you&#039;re unsure how to proceed, start by using the code in the <strong>Create your Game</strong> section of the <a href="http://gamua.com/starling/first-steps/" class="urlextern" title="http://gamua.com/starling/first-steps/"  rel="nofollow">Starling First Steps Tutorial</a>. Then take a look at the <a href="/feathers/getting-started" class="wikilink1" title="feathers:getting-started">Feathers Getting Started Tutorial</a>.
+</p>
+
+<p>
+<p><div class="notewarning">
+Flash Professional&#039;s ability to properly simulate devices on AIR is limited compared to other development environments. Flash Professional&#039;s AIR simulator does not provide the correct screen DPI/PPI for the mobile device that it is simulating. The value of <code>Capabilities.screenDPI</code> is used by Feathers themes to scale skins to an appropriate physical size for each device. In order to use the DPI scaling capabilities of Feathers themes, you will need to run <strong>ADL</strong> from the AIR SDK on the command line or test on a real device. For more details, see <a href="http://wiki.starling-framework.org/feathers/faq#why_do_the_feathers_component_skins_and_font_sizes_appear_very_small" class="urlextern" title="http://wiki.starling-framework.org/feathers/faq#why_do_the_feathers_component_skins_and_font_sizes_appear_very_small"  rel="nofollow">Why do the Feathers component skins and font sizes appear very small?</a> in the <a href="http://wiki.starling-framework.org/feathers/faq" class="urlextern" title="http://wiki.starling-framework.org/feathers/faq"  rel="nofollow">Feathers FAQ</a>.
+
+</div></p>
+</p>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>

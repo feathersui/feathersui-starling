@@ -1,0 +1,148 @@
+
+<h1 class="sectionedit1" id="anatomy_of_a_feathers_component">Anatomy of a Feathers Component</h1>
+<div class="level1">
+
+<p>
+The following properties and methods are core parts of <code>FeathersControl</code> and all component developers should be intimately familiar with them. Please be sure to read <a href="/feathers/component-lifecycle" class="wikilink1" title="feathers:component-lifecycle">Feathers Component Lifecycle</a> for additional, related information.
+</p>
+
+</div>
+<!-- EDIT1 SECTION "Anatomy of a Feathers Component" [1-305] -->
+<h2 class="sectionedit2" id="the_constructor">The Constructor</h2>
+<div class="level2">
+
+<p>
+Any code appearing within the <strong>constructor</strong> should be kept to a minimum. In general, most initialization code should appear within <code>initialize()</code> instead.
+</p>
+
+</div>
+<!-- EDIT2 SECTION "The Constructor" [306-494] -->
+<h2 class="sectionedit3" id="initialize">initialize()</h2>
+<div class="level2">
+
+<p>
+The <code>initialize()</code> method is called the first time that the component is added to the display list. It will only be called once in the component&#039;s lifetime. You may override this method to create children and handle other tasks that should be run when the component is first initialized.
+</p>
+
+</div>
+<!-- EDIT3 SECTION "initialize()" [495-811] -->
+<h2 class="sectionedit4" id="invalidate">invalidate()</h2>
+<div class="level2">
+
+<p>
+The <code>invalidate()</code> method should be called to tell the component that a property has changed and that it needs to redraw itself. Typically, this method is called within a setter function. It takes one or more flags as arguments to inform the component what has changed. The component may use these flags to focus on redrawing only a subset of itself if some parts are able to remain the same.
+</p>
+
+</div>
+<!-- EDIT4 SECTION "invalidate()" [812-1233] -->
+<h2 class="sectionedit5" id="draw">draw()</h2>
+<div class="level2">
+
+<p>
+The <code>draw()</code> method is called immediately before the component is rendered by Starling. You should override it to commit property changes, calculate an ideal size, and layout children.
+</p>
+
+<p>
+Please read <a href="/feathers/component-validation" class="wikilink1" title="feathers:component-validation">Component Validation with draw()</a> for more detailed information about the <code>draw()</code> method.
+</p>
+
+</div>
+<!-- EDIT5 SECTION "draw()" [1234-1571] -->
+<h2 class="sectionedit6" id="isinvalid">isInvalid()</h2>
+<div class="level2">
+
+<p>
+The <code>isInvalid()</code> method is used to determine if a specific flag has been set with <code>invalidate()</code>. Call this in <code>draw()</code> to determine which parts of the component need to be redrawn. If you call it with no arguments, the result will be <code>true</code> if <code>invalidate()</code> has been called regardless of which flags have been passed in.
+</p>
+
+</div>
+<!-- EDIT6 SECTION "isInvalid()" [1572-1931] -->
+<h2 class="sectionedit7" id="setsizeinternal">setSizeInternal()</h2>
+<div class="level2">
+
+<p>
+The <code>setSizeInternal()</code> method is called to specify ideal dimensions. It chooses between explicit and ideal dimensions to calculate the final “actual” dimensions used for layout. 
+</p>
+
+<p>
+The final argument determines if the component should invalidate after adjusting the dimensions. If you call it during validation (during <code>draw()</code>, basically), then you should probably pass <code>false</code>. Otherwise, the component will end up redrawing itself every render cycle, which you probably don&#039;t want.
+</p>
+
+<p>
+See below for more detailed information on component dimensions.
+</p>
+
+</div>
+<!-- EDIT7 SECTION "setSizeInternal()" [1932-2520] -->
+<h2 class="sectionedit8" id="isquickhitareaenabled">isQuickHitAreaEnabled</h2>
+<div class="level2">
+
+<p>
+The <code>isQuickHitAreaEnabled</code> property is similar to <code>mouseChildren</code> from the classic display list. However, it takes things a step further and limits the component&#039;s hit area to a simple rectangle, which can greatly improve performance of touch hit tests. The rectangular hit area is automatically calculated based on the component&#039;s “actual” width and height dimensions (see below). This is most useful in buttons, but any component where the children don&#039;t need to receive touch events can benefit from it.
+</p>
+
+</div>
+<!-- EDIT8 SECTION "isQuickHitAreaEnabled" [2521-3068] -->
+<h2 class="sectionedit9" id="stylename_and_stylenamelist">styleName and styleNameList</h2>
+<div class="level2">
+
+<p>
+A component&#039;s <code>styleNameList</code> is used by <a href="/feathers/themes" class="wikilink1" title="feathers:themes">Feathers themes</a> to provide separate skins to different types of the same component. It is most often used by components that have child components that need to be skinned, such as a <code>Slider</code> has track and a thumb sub-components that are buttons.
+</p>
+
+<p>
+For more information about component style names, please read <a href="/feathers/themes" class="wikilink1" title="feathers:themes">Introduction to Feathers Themes</a>.
+</p>
+
+</div>
+<!-- EDIT9 SECTION "styleName and styleNameList" [3069-3519] -->
+<h2 class="sectionedit10" id="width_and_height">width and height</h2>
+<div class="level2">
+
+<p>
+<code>FeathersControl</code> provides a number of useful width and height values. Understanding the differences among them is important for maximizing performance and getting the most out Feathers&#039; capabilities.
+</p>
+
+<p>
+The <code>width</code> and <code>height</code> getters and setters expose the component&#039;s dimensions externally. The values returned by the getters are determined based on a number of factors. They may be explicit dimensions passed to the setters or they may be ideal dimensions calculated automatically because no explicit dimensions were specified.
+</p>
+
+<p>
+The <code>explicitWidth</code> and <code>explicitHeight</code> variables are changed if the <code>width</code> and <code>height</code> setters are called with numeric values. In the following example, a <code>Button</code> control is created, and its <code>width</code> property is set to <code>150</code> pixels. Internally, the button will store this value in the <code>explicitWidth</code> variable.
+</p>
+<pre class="code as3"><span class="kw2">var</span> button<span class="sy0">:</span>Button = <span class="kw1">new</span> Button<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+button<span class="sy0">.</span><span class="kw7">width</span> = <span class="nu0">150</span><span class="sy0">;</span></pre>
+
+<p>
+The <code>actualWidth</code> and <code>actualHeight</code> variables are the values returned by the <code>width</code> and <code>height</code> getters. These values should also be used when drawing the component. The “actual” dimensions typically default to the values of <code>explicitWidth</code> and <code>explicitHeight</code>, but if explicit dimensions are not specified, the component may try to calculate ideal dimensions. These could be hard-coded pixel values or they could be determined based on the dimensions of skins or other children (such as sub-components). How the ideal dimensions are calculated is often different from component to component.
+</p>
+
+<p>
+A custom component should pass its ideal calculated dimensions to the <code>setSizeInternal()</code> method before the layout phase. This method will determine if the dimensions were already set explicitly. If so, the ideal values will be ignored, and the <code>actualWidth</code> and <code>actualHeight</code> variables will be set to the explicit dimensions. If not, they will be set to the ideal dimensions instead.
+</p>
+
+<p>
+If explicit dimensions have been set, and you want to use the component&#039;s ideal dimensions instead, pass <code>NaN</code> to the <code>width</code> and <code>height</code> setters.
+</p>
+
+<p>
+The <code>minWidth</code> and <code>minHeight</code> properties are used by <code>setSizeInternal()</code> to adjust the ideal dimensions to a minimum value. <code>minWidth</code> and <code>minHeight</code> do _not_ affect explicit dimensions in any way.
+</p>
+
+</div>
+<!-- EDIT10 SECTION "width and height" [3520-5862] -->
+<h2 class="sectionedit11" id="related_links">Related Links</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="/feathers/component-lifecycle" class="wikilink1" title="feathers:component-lifecycle">Feathers Component Lifecycle</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="/feathers/component-validation" class="wikilink1" title="feathers:component-validation">Feathers Component Validation with draw()</a></div>
+</li>
+</ul>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT11 SECTION "Related Links" [5863-] -->

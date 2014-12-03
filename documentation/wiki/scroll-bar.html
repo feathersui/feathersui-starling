@@ -1,0 +1,329 @@
+
+<h1 class="sectionedit1" id="how_to_use_the_feathers_scrollbar_component">How to use the Feathers ScrollBar Component</h1>
+<div class="level1">
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/controls/ScrollBar.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScrollBar.html"  rel="nofollow">ScrollBar</a></code> component displays a numeric value between a minimum and maximum. The value may be changed by sliding a thumb along a track in either a horizontal or a vertical direction. A scroll bar also has a button on each side of the track that adjusts the value by a small step when triggered. This component is designed to be used with subclasses of the <code>Scroller</code> class like the <code><a href="/feathers/scroll-container" class="wikilink1" title="feathers:scroll-container">ScrollContainer</a></code> and <code><a href="/feathers/list" class="wikilink1" title="feathers:list">List</a></code> components.
+</p>
+
+<p>
+<p><div class="noteclassic">
+Additionally, Feathers offers a <code><a href="/feathers/simple-scroll-bar" class="wikilink1" title="feathers:simple-scroll-bar">SimpleScrollBar</a></code> component. This is a mobile-style scroll bar that only has a thumb to visually indicate the scroll position and range. It has no visible track nor buttons for stepping the scroll position.
+
+</div></p>
+</p>
+
+</div>
+<!-- EDIT1 SECTION "How to use the Feathers ScrollBar Component" [1-878] -->
+<h2 class="sectionedit2" id="the_basics">The Basics</h2>
+<div class="level2">
+
+<p>
+You can use the <code>ScrollBar</code> with a <code>Scroller</code> by instantiating it in the <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#horizontalScrollBarFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#horizontalScrollBarFactory"  rel="nofollow">horizontalScrollBarFactory</a></code> or the <code><a href="http://feathersui.com/documentation/feathers/controls/Scroller.html#verticalScrollBarFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Scroller.html#verticalScrollBarFactory"  rel="nofollow">verticalScrollBarFactory</a></code>.
+</p>
+<pre class="code as3">list<span class="sy0">.</span>horizontalScrollBarFactory = <span class="kw3">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span>IScrollBar
+<span class="br0">&#123;</span>
+    <span class="kw2">var</span> scrollBar<span class="sy0">:</span>ScrollBar = <span class="kw1">new</span> ScrollBar<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    scrollBar<span class="sy0">.</span>direction = ScrollBar<span class="sy0">.</span>DIRECTION_HORIZONTAL<span class="sy0">;</span>
+    <span class="kw1">return</span> scrollBar<span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Make sure that you set the <code>direction</code> property to an appropriate value. However, the <code>Scroller</code> will handle setting properties like <code>minimum</code>, <code>maximum</code>, and <code>step</code>, and it will automatically listen for <code>Event.CHANGE</code> to know when the <code>value</code> property changes.
+</p>
+
+<p>
+If, for some reason, you want to use a <code>ScrollBar</code> outside of a subclass of <code>Scroller</code>, the values like <code>minimum</code>, <code>maximum</code>, <code>step</code> and <code>value</code> that the <code>Scroller</code> normally handles work similarly to a <code><a href="/feathers/slider" class="wikilink1" title="feathers:slider">Slider</a></code> component.
+</p>
+
+</div>
+<!-- EDIT2 SECTION "The Basics" [879-1978] -->
+<h2 class="sectionedit3" id="skinning_a_scrollbar">Skinning a ScrollBar</h2>
+<div class="level2">
+
+<p>
+The skins for a <code>ScrollBar</code> control are divided into several parts, including the thumb, the track(s), and the increment and decrement buttons. For full details about what skin and style properties are available, see the <a href="http://feathersui.com/documentation/feathers/controls/ScrollBar.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScrollBar.html"  rel="nofollow">ScrollBar API reference</a>.
+</p>
+
+</div>
+<!-- EDIT3 SECTION "Skinning a ScrollBar" [1979-2334] -->
+<h3 class="sectionedit4" id="targeting_a_scrollbar_in_a_theme">Targeting a ScrollBar in a theme</h3>
+<div class="level3">
+
+<p>
+If you are creating a <a href="/feathers/themes" class="wikilink1" title="feathers:themes">theme</a>, you can set a function for the default styles like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> ScrollBar <span class="br0">&#41;</span><span class="sy0">.</span>defaultStyleFunction = setScrollBarStyles<span class="sy0">;</span></pre>
+
+<p>
+If you want to customize a specific scroll bar to look different than the default, you may use a custom style name to call a different function:
+</p>
+<pre class="code as3">scrollBar<span class="sy0">.</span>styleNameList<span class="sy0">.</span><span class="kw7">add</span><span class="br0">&#40;</span> <span class="st0">&quot;custom-scroll-bar&quot;</span> <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+You can set the function for the custom style name like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> ScrollBar <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> <span class="st0">&quot;custom-scroll-bar&quot;</span><span class="sy0">,</span> setCustomScrollBarStyles <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Trying to change the scroll bar&#039;s styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the scroll bar was added to the stage and initialized. Learn to <a href="/feathers/extending-themes" class="wikilink1" title="feathers:extending-themes">extend an existing theme</a> to add custom skins.
+</p>
+
+<p>
+If you aren&#039;t using a theme, then you may set any of the scroll bar&#039;s properties directly.
+</p>
+
+</div>
+<!-- EDIT4 SECTION "Targeting a ScrollBar in a theme" [2335-3361] -->
+<h3 class="sectionedit5" id="skinning_the_thumb">Skinning the Thumb</h3>
+<div class="level3">
+
+<p>
+<p><div class="noteclassic">
+This section only explains how to access the thumb sub-component. Please read <a href="/feathers/button" class="wikilink1" title="feathers:button">How to use the Feathers Button component</a> for full details about the skinning properties that are available on <code>Button</code> components.
+
+</div></p>
+</p>
+
+</div>
+
+<h4 id="with_a_theme">With a Theme</h4>
+<div class="level4">
+
+<p>
+If you&#039;re creating a <a href="/feathers/themes" class="wikilink1" title="feathers:themes">theme</a>, you can target the <code><a href="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#DEFAULT_CHILD_NAME_THUMB" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#DEFAULT_CHILD_NAME_THUMB"  rel="nofollow">ScrollBar.DEFAULT_CHILD_NAME_THUMB</a></code> style name.
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> Button <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> ScrollBar<span class="sy0">.</span>DEFAULT_CHILD_NAME_THUMB<span class="sy0">,</span> setScrollBarThumbStyles <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+You can override the default style name to use a different one in your theme, if you prefer:
+</p>
+<pre class="code as3">scrollBar<span class="sy0">.</span>customThumbName = <span class="st0">&quot;custom-thumb&quot;</span><span class="sy0">;</span></pre>
+
+<p>
+You can set the function for the <code><a href="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#customThumbName" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#customThumbName"  rel="nofollow">customThumbName</a></code> like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> Button <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> <span class="st0">&quot;custom-thumb&quot;</span><span class="sy0">,</span> setScrollBarCustomThumbStyles <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+
+<h4 id="without_a_theme">Without a Theme</h4>
+<div class="level4">
+
+<p>
+If you are not using a theme, you can use <code><a href="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#thumbFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#thumbFactory"  rel="nofollow">thumbFactory</a></code> to provide skins for the scroll bar&#039;s thumb:
+</p>
+<pre class="code as3">scrollBar<span class="sy0">.</span>thumbFactory = <span class="kw3">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span>Button
+<span class="br0">&#123;</span>
+    <span class="kw2">var</span> button<span class="sy0">:</span>Button = <span class="kw1">new</span> Button<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="co1">//skin the thumb here</span>
+    button<span class="sy0">.</span>defaultSkin = <span class="kw1">new</span> Image<span class="br0">&#40;</span> upTexture <span class="br0">&#41;</span><span class="sy0">;</span>
+    button<span class="sy0">.</span>downSkin = <span class="kw1">new</span> Image<span class="br0">&#40;</span> downTexture <span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="kw1">return</span> button<span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Alternatively, or in addition to the <code>thumbFactory</code>, you may use the <code><a href="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#thumbProperties" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#thumbProperties"  rel="nofollow">thumbProperties</a></code> to pass skins to the thumb.
+</p>
+<pre class="code as3">scrollBar<span class="sy0">.</span>thumbProperties<span class="sy0">.</span>defaultSkin = <span class="kw1">new</span> Image<span class="br0">&#40;</span> upTexture <span class="br0">&#41;</span><span class="sy0">;</span>
+scrollBar<span class="sy0">.</span>thumbProperties<span class="sy0">.</span>downSkin = <span class="kw1">new</span> Image<span class="br0">&#40;</span> downTexture <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+In general, you should only pass skins to the scroll bar&#039;s thumb through <code>thumbProperties</code> if you need to change skins after the thumb is created. Using <code>thumbFactory</code> will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
+</p>
+
+</div>
+<!-- EDIT5 SECTION "Skinning the Thumb" [3362-5578] -->
+<h3 class="sectionedit6" id="track_s_and_layout">Track(s) and Layout</h3>
+<div class="level3">
+
+<p>
+The scroll bar&#039;s track is made from either one or two buttons, depending on the value of the <code><a href="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#trackLayoutMode" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#trackLayoutMode"  rel="nofollow">trackLayoutMode</a></code> property. The default value of this property is <code><a href="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#TRACK_LAYOUT_MODE_SINGLE" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#TRACK_LAYOUT_MODE_SINGLE"  rel="nofollow">ScrollBar.TRACK_LAYOUT_MODE_SINGLE</a></code>, which creates a single track that fills the entire width and height of the scroll bar.
+</p>
+
+<p>
+If we&#039;d like to have separate buttons for both sides of the track (one for the minimum side and another for the maximum side), we can set <code>trackLayoutMode</code> to <code><a href="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#TRACK_LAYOUT_MODE_MIN_MAX" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#TRACK_LAYOUT_MODE_MIN_MAX"  rel="nofollow">ScrollBar.TRACK_LAYOUT_MODE_MIN_MAX</a></code>. In this mode, the width or height of each track (depending on the direction of the scroll bar) is adjusted as the thumb moves to ensure that the two tracks always meet at the center of the thumb.
+</p>
+
+<p>
+<code>ScrollBar.TRACK_LAYOUT_MODE_SINGLE</code> is often best for cases where the track&#039;s appearance is mostly static. When you want down or hover states for the track, <code>ScrollBar.TRACK_LAYOUT_MODE_MIN_MAX</code> works better because the state will only change on one side of the thumb, making it more visually clear to the user what is happening.
+</p>
+
+<p>
+When the value of <code>trackLayoutMode</code> is <code>ScrollBar.TRACK_LAYOUT_MODE_SINGLE</code>, the scroll bar will have a minimum track, but it will not have a maximum track. The minimum track will fill the entire region that is scrollable.
+</p>
+
+</div>
+<!-- EDIT6 SECTION "Track(s) and Layout" [5579-7147] -->
+<h3 class="sectionedit7" id="skinning_the_minimum_track">Skinning the Minimum Track</h3>
+<div class="level3">
+
+<p>
+<p><div class="noteclassic">
+This section only explains how to access the minimum track sub-component. Please read <a href="/feathers/button" class="wikilink1" title="feathers:button">How to use the Feathers Button component</a> for full details about the skinning properties that are available on <code>Button</code> components.
+
+</div></p>
+</p>
+
+</div>
+
+<h4 id="with_a_theme1">With a Theme</h4>
+<div class="level4">
+
+<p>
+If you&#039;re creating a <a href="/feathers/themes" class="wikilink1" title="feathers:themes">theme</a>, you can target the <code><a href="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#DEFAULT_CHILD_NAME_MINIMUM_TRACK" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#DEFAULT_CHILD_NAME_MINIMUM_TRACK"  rel="nofollow">ScrollBar.DEFAULT_CHILD_NAME_MINIMUM_TRACK</a></code> style name.
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> Button <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> ScrollBar<span class="sy0">.</span>DEFAULT_CHILD_NAME_MINIMUM_TRACK<span class="sy0">,</span> setScrollBarMinimumTrackStyles <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+You can override the default style name to use a different one in your theme, if you prefer:
+</p>
+<pre class="code as3">scrollBar<span class="sy0">.</span>customMinimumTrackName = <span class="st0">&quot;custom-minimum-track&quot;</span><span class="sy0">;</span></pre>
+
+<p>
+You can set the function for the <code><a href="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#customMinimumTrackName" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#customMinimumTrackName"  rel="nofollow">customMinimumTrackName</a></code> like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> Button <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> <span class="st0">&quot;custom-minimum-track&quot;</span><span class="sy0">,</span> setScrollBarCustomMinimumTrackStyles <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+
+<h4 id="without_a_theme1">Without a Theme</h4>
+<div class="level4">
+
+<p>
+If you are not using a theme, you can use <code><a href="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#minimumTrackFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#minimumTrackFactory"  rel="nofollow">minimumTrackFactory</a></code> to provide skins for the scroll bar&#039;s minimum track:
+</p>
+<pre class="code as3">scrollBar<span class="sy0">.</span>minimumTrackFactory = <span class="kw3">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span>Button
+<span class="br0">&#123;</span>
+    <span class="kw2">var</span> button<span class="sy0">:</span>Button = <span class="kw1">new</span> Button<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="co1">//skin the minimum track here</span>
+    button<span class="sy0">.</span>defaultSkin = <span class="kw1">new</span> Image<span class="br0">&#40;</span> upTexture <span class="br0">&#41;</span><span class="sy0">;</span>
+    button<span class="sy0">.</span>downSkin = <span class="kw1">new</span> Image<span class="br0">&#40;</span> downTexture <span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="kw1">return</span> button<span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Alternatively, or in addition to the <code>minimumTrackFactory</code>, you may use the <code><a href="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#minimumTrackProperties" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#minimumTrackProperties"  rel="nofollow">minimumTrackProperties</a></code> to pass skins to the minimum track.
+</p>
+<pre class="code as3">scrollBar<span class="sy0">.</span>minimumTrackProperties<span class="sy0">.</span>defaultSkin = <span class="kw1">new</span> Image<span class="br0">&#40;</span> upTexture <span class="br0">&#41;</span><span class="sy0">;</span>
+scrollBar<span class="sy0">.</span>minimumTrackProperties<span class="sy0">.</span>downSkin = <span class="kw1">new</span> Image<span class="br0">&#40;</span> downTexture <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+In general, you should only pass properties to the scroll bar&#039;s minimum track through <code>minimumTrackProperties</code> if you need to change these values after the minimum track is created. Using <code>minimumTrackFactory</code> will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
+</p>
+
+</div>
+<!-- EDIT7 SECTION "Skinning the Minimum Track" [7148-9577] -->
+<h3 class="sectionedit8" id="skinning_the_maximum_track">Skinning the Maximum Track</h3>
+<div class="level3">
+
+<p>
+<p><div class="noteclassic">
+This section only explains how to access the maximum track sub-component. Please read <a href="/feathers/button" class="wikilink1" title="feathers:button">How to use the Feathers Button component</a> for full details about the skinning properties that are available on <code>Button</code> components.
+
+</div></p>
+</p>
+
+<p>
+The scroll bar&#039;s maximum track may be skinned similarly to the minimum track. The name to use with <a href="/feathers/themes" class="wikilink1" title="feathers:themes">themes</a> is <code><a href="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#DEFAULT_CHILD_NAME_MAXIMUM_TRACK" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#DEFAULT_CHILD_NAME_MAXIMUM_TRACK"  rel="nofollow">ScrollBar.DEFAULT_CHILD_NAME_MAXIMUM_TRACK</a></code> or you can customize the name with <code><a href="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#customMaximumTrackName" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#customMaximumTrackName"  rel="nofollow">customMaximumTrackName</a></code>. If you aren&#039;t using a theme, then you can use <code><a href="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#maximumTrackFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#maximumTrackFactory"  rel="nofollow">maximumTrackFactory</a></code> and <code><a href="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#maximumTrackProperties" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#maximumTrackProperties"  rel="nofollow">maximumTrackProperties</a></code>.
+</p>
+
+</div>
+<!-- EDIT8 SECTION "Skinning the Maximum Track" [9578-10577] -->
+<h3 class="sectionedit9" id="skinning_the_decrement_button">Skinning the Decrement Button</h3>
+<div class="level3">
+
+<p>
+<p><div class="noteclassic">
+This section only explains how to access the decrement button sub-component. Please read <a href="/feathers/button" class="wikilink1" title="feathers:button">How to use the Feathers Button component</a> for full details about the skinning properties that are available on <code>Button</code> components.
+
+</div></p>
+</p>
+
+</div>
+
+<h4 id="with_a_theme2">With a Theme</h4>
+<div class="level4">
+
+<p>
+If you&#039;re creating a <a href="/feathers/themes" class="wikilink1" title="feathers:themes">theme</a>, you can target the <code><a href="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#DEFAULT_CHILD_NAME_DECREMENT_BUTTON" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#DEFAULT_CHILD_NAME_DECREMENT_BUTTON"  rel="nofollow">ScrollBar.DEFAULT_CHILD_NAME_DECREMENT_BUTTON</a></code> style name.
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> Button <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> ScrollBar<span class="sy0">.</span>DEFAULT_CHILD_NAME_DECREMENT_BUTTON<span class="sy0">,</span> setScrollBarDecrementButtonStyles <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+You can override the default style name to use a different one in your theme, if you prefer:
+</p>
+<pre class="code as3">scrollBar<span class="sy0">.</span>customDecrementButtonName = <span class="st0">&quot;custom-decrement-button&quot;</span><span class="sy0">;</span></pre>
+
+<p>
+You can set the function for the <code><a href="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#customDecrementButtonName" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#customDecrementButtonName"  rel="nofollow">customDecrementButtonName</a></code> like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> Button <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> <span class="st0">&quot;custom-decrement-button&quot;</span><span class="sy0">,</span> setScrollBarCustomDecrementButtonStyles <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+
+<h4 id="without_a_theme2">Without a Theme</h4>
+<div class="level4">
+
+<p>
+If you are not using a theme, you can use <code><a href="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#decrementButtonFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#decrementButtonFactory"  rel="nofollow">decrementButtonFactory</a></code> to provide skins for the scroll bar&#039;s decrement button:
+</p>
+<pre class="code as3">scrollBar<span class="sy0">.</span>decrementButtonFactory = <span class="kw3">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span>Button
+<span class="br0">&#123;</span>
+    <span class="kw2">var</span> button<span class="sy0">:</span>Button = <span class="kw1">new</span> Button<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="co1">//skin the decrement button here</span>
+    button<span class="sy0">.</span>defaultSkin = <span class="kw1">new</span> Image<span class="br0">&#40;</span> upTexture <span class="br0">&#41;</span><span class="sy0">;</span>
+    button<span class="sy0">.</span>downSkin = <span class="kw1">new</span> Image<span class="br0">&#40;</span> downTexture <span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="kw1">return</span> button<span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Alternatively, or in addition to the <code>decrementButtonFactory</code>, you may use the <code><a href="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#decrementButtonProperties" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#decrementButtonProperties"  rel="nofollow">decrementButtonProperties</a></code> to pass skins to the decrement button.
+</p>
+<pre class="code as3">scrollBar<span class="sy0">.</span>decrementButtonProperties<span class="sy0">.</span>defaultSkin = <span class="kw1">new</span> Image<span class="br0">&#40;</span> upTexture <span class="br0">&#41;</span><span class="sy0">;</span>
+scrollBar<span class="sy0">.</span>decrementButtonProperties<span class="sy0">.</span>downSkin = <span class="kw1">new</span> Image<span class="br0">&#40;</span> downTexture <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+In general, you should only pass properties to the scroll bar&#039;s decrement button through <code>decrementButtonProperties</code> if you need to change these values after the decrement button is created. Using <code>decrementButtonFactory</code> will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
+</p>
+
+</div>
+<!-- EDIT9 SECTION "Skinning the Decrement Button" [10578-13088] -->
+<h3 class="sectionedit10" id="skinning_the_increment_button">Skinning the Increment Button</h3>
+<div class="level3">
+
+<p>
+<p><div class="noteclassic">
+This section only explains how to access the increment button sub-component. Please read <a href="/feathers/button" class="wikilink1" title="feathers:button">How to use the Feathers Button component</a> for full details about the skinning properties that are available on <code>Button</code> components.
+
+</div></p>
+</p>
+
+<p>
+The scroll bar&#039;s increment button may be skinned similarly to the decrement button. The name to use with <a href="/feathers/themes" class="wikilink1" title="feathers:themes">themes</a> is <code><a href="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#DEFAULT_CHILD_NAME_INCREMENT_BUTTON" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#DEFAULT_CHILD_NAME_INCREMENT_BUTTON"  rel="nofollow">ScrollBar.DEFAULT_CHILD_NAME_INCREMENT_BUTTON</a></code> or you can customize the name with <code><a href="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#customIncrementButtonName" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#customIncrementButtonName"  rel="nofollow">customIncrementButtonName</a></code>. If you aren&#039;t using a theme, then you can use <code><a href="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#incrementButtonFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#incrementButtonFactory"  rel="nofollow">incrementButtonFactory</a></code> and <code><a href="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#incrementButtonProperties" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScrollBar.html#incrementButtonProperties"  rel="nofollow">incrementButtonProperties</a></code>.
+</p>
+
+</div>
+<!-- EDIT10 SECTION "Skinning the Increment Button" [13089-14125] -->
+<h2 class="sectionedit11" id="related_links">Related Links</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="http://feathersui.com/documentation/feathers/controls/ScrollBar.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScrollBar.html"  rel="nofollow">ScrollBar API Documentation</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="/feathers/simple-scroll-bar" class="wikilink1" title="feathers:simple-scroll-bar">How to use the Feathers SimpleScrollBar Component</a></div>
+</li>
+</ul>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT11 SECTION "Related Links" [14126-] -->

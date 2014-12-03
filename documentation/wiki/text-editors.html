@@ -1,0 +1,103 @@
+
+<h1 class="sectionedit1" id="introduction_to_feathers_text_editors">Introduction to Feathers Text Editors</h1>
+<div class="level1">
+
+<p>
+The Flash runtimes provide more than one way to edit text. In order to allow you to choose the method that works best in your app, Feathers provides the <code><a href="http://feathersui.com/documentation/feathers/core/text/ITextEditor.html" class="urlextern" title="http://feathersui.com/documentation/feathers/core/text/ITextEditor.html"  rel="nofollow">ITextEditor</a></code> interface that is used by the <a href="/feathers/text-input" class="wikilink1" title="feathers:text-input">TextInput component</a>. Each method of entering text has its own advantages and disadvantages, and it&#039;s best to understand how each works.
+</p>
+
+<p>
+By default, Feathers allows entering text using a text editor that wraps around <code>flash.text.StageText</code>. Since Starling and Feathers are most often used on mobile, and because <code>StageText</code> is more optimized for mobile, it is often the best choice.
+</p>
+
+<p>
+When using a <a href="/feathers/themes" class="wikilink1" title="feathers:themes">theme</a>, you should check which text editor is the default. Themes may choose a text editor that is optimized for their specific needs. For instance, desktop themes often choose a text editor that uses <code>flash.text.TextField</code> instead of <code>flash.text.StageText</code> because a <code>StageText</code> is more suited for mobile and has some restrictions on desktop.
+</p>
+
+</div>
+<!-- EDIT1 SECTION "Introduction to Feathers Text Editors" [1-1105] -->
+<h2 class="sectionedit2" id="stage_text">Stage Text</h2>
+<div class="level2">
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/controls/text/StageTextTextEditor.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/text/StageTextTextEditor.html"  rel="nofollow">StageTextTextEditor</a></code> implementation uses <code><a href="http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html" class="urlextern" title="http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html"  rel="nofollow">flash.text.StageText</a></code>. <code>StageText</code> is optimized to use the native text input controls on mobile platforms. <code>StageText</code> supports native copy/paste, auto-correction, auto-completion, text selection, and other advanced text input capabilities.
+</p>
+
+<p>
+One limitation of <code>StageText</code> is that it appears above all other displayed content in the Flash runtime. This includes both the native display list and the Starling display list. This means that <code>StageText</code> is always on top and nothing can be placed above it. In order to make <code>StageText</code> feel more integrated with Starling, this text editor takes a bitmap snapshot of the <code>StageText</code> instance and displays the snapshot when the editing field does not have focus. This allows you to easily put a <code>TextInput</code> or other control that uses this text editor into a scrolling container, and it will be properly clipped without the <code>StageText</code> appearing on top where it should be hidden.
+</p>
+
+<p>
+<code>StageText</code> does not support embedded or bitmap fonts. It may only use fonts that are installed on the target mobile device.
+</p>
+
+<p>
+Features of <code>StageText</code> vary both in availability and behavior per platform. On some platforms, some properties may be completely ignored. Check the <a href="http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html" class="urlextern" title="http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/StageText.html"  rel="nofollow">StageText API documentation</a> for full details.
+</p>
+
+</div>
+<!-- EDIT2 SECTION "Stage Text" [1106-2727] -->
+<h2 class="sectionedit3" id="text_field">Text Field</h2>
+<div class="level2">
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/controls/text/TextFieldTextEditor.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/text/TextFieldTextEditor.html"  rel="nofollow">TextFieldTextEditor</a></code> implementation uses <code><a href="http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html" class="urlextern" title="http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/text/TextField.html"  rel="nofollow">flash.text.TextField</a></code> with its <code>type</code> property set to <code>TextFieldType.INPUT</code>. This is the classic way that the Flash runtimes allow the user to enter text. However, it provides a limited set of features on mobile, and advanced capabilities like copy and paste may not be available.
+</p>
+
+<p>
+<code>TextField</code> always appears on the Flash runtime&#039;s native display list. This means that <code>TextField</code> is always above Starling content, and you cannot place Starling content above the <code>TextField</code>. In order to make this <code>TextField</code> feel more integrated with Starling, this text editor takes a bitmap snapshot of the <code>TextField</code> instance and displays the snapshot when the editing field does not have focus. This allows you to easily put a <code>TextInput</code> or other control that uses this text editor into a scrolling container, and it will be properly clipped without the <code>TextField</code> appearing on top where it should be hidden.
+</p>
+
+<p>
+<code>TextField</code> supports embedded vector fonts and fonts installed on the target device. It does not support bitmap fonts.
+</p>
+
+</div>
+<!-- EDIT3 SECTION "Text Field" [2728-4029] -->
+<h2 class="sectionedit4" id="custom_text_editors">Custom Text Editors</h2>
+<div class="level2">
+
+<p>
+By implementing the <code><a href="http://feathersui.com/documentation/feathers/core/text/ITextEditor.html" class="urlextern" title="http://feathersui.com/documentation/feathers/core/text/ITextEditor.html"  rel="nofollow">ITextEditor</a></code> interface, you can provide a custom text editor. For instance, you might want to create a text editor that supports bitmap fonts.
+</p>
+
+</div>
+<!-- EDIT4 SECTION "Custom Text Editors" [4030-4305] -->
+<h2 class="sectionedit5" id="multiline_text_editors">Multiline Text Editors</h2>
+<div class="level2">
+
+<p>
+The <code><a href="/feathers/text-area" class="wikilink1" title="feathers:text-area">TextArea</a></code> component introduced in 1.1 allows you edit multiline text in desktop apps. It supports text editors with an extended the <code>ITextEditorViewPort</code> interface. Currently, the only supported text editor for <code>TextArea</code> is <code><a href="http://feathersui.com/documentation/feathers/controls/text/TextFieldTextEditorViewPort.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/text/TextFieldTextEditorViewPort.html"  rel="nofollow">TextFieldTextEditorViewPort</a></code>. Similar to <code>TextFieldTextEditor</code>, it uses a <code>flash.display.TextField</code>.
+</p>
+
+<p>
+On mobile, you generally should not use <code>TextArea</code>. It is designed specifically for desktop, and it may not behave as expected on mobile. Instead, use the <code><a href="/feathers/text-input" class="wikilink1" title="feathers:text-input">TextInput</a></code> component with a <code>StageTextTextEditor</code>. Set its <code>multiline</code> property to <code>true</code>.
+</p>
+
+</div>
+<!-- EDIT5 SECTION "Multiline Text Editors" [4306-5068] -->
+<h2 class="sectionedit6" id="related_links">Related Links</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="http://feathersui.com/documentation/feathers/core/text/ITextEditor.html" class="urlextern" title="http://feathersui.com/documentation/feathers/core/text/ITextEditor.html"  rel="nofollow">ITextEditor API Documentation</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="http://feathersui.com/documentation/feathers/controls/text/StageTextTextEditor.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/text/StageTextTextEditor.html"  rel="nofollow">StageTextTextEditor API Documentation</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="http://feathersui.com/documentation/feathers/controls/text/TextFieldTextEditor.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/text/TextFieldTextEditor.html"  rel="nofollow">TextFieldTextEditor API Documentation</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="http://feathersui.com/documentation/feathers/controls/text/TextFieldTextEditorViewPort.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/text/TextFieldTextEditorViewPort.html"  rel="nofollow">TextFieldTextEditorViewPort API Documentation</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="/feathers/text-input" class="wikilink1" title="feathers:text-input">How to use the Feathers TextInput component</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="/feathers/text-area" class="wikilink1" title="feathers:text-area">How to use the Feathers TextArea component</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="/feathers/text-renderers" class="wikilink1" title="feathers:text-renderers">Introduction to Feathers Text Renderers</a></div>
+</li>
+</ul>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT6 SECTION "Related Links" [5069-] -->

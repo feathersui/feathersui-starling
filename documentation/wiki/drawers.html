@@ -1,0 +1,212 @@
+
+<h1 class="sectionedit1" id="how_to_use_the_feathers_drawers_component">How to use the Feathers Drawers Component</h1>
+<div class="level1">
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/controls/Drawers.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Drawers.html"  rel="nofollow">Drawers</a></code> class provides a container that supports main content in the center with “drawers”, or slide-out menus, that may be opened and closed with a gesture around all four edges. Drawers may also be docked to remain open at all times, or based on the stage orientation. Drawers may be opened by listening to an event from the main content, such as one triggered by a button press.
+</p>
+
+</div>
+<!-- EDIT1 SECTION "How to use the Feathers Drawers Component" [1-518] -->
+<h2 class="sectionedit2" id="the_basics">The Basics</h2>
+<div class="level2">
+
+<p>
+Let&#039;s start by creating a <code>Drawers</code> container and adding it to the display list:
+</p>
+<pre class="code as3"><span class="kw2">var</span> drawers<span class="sy0">:</span>Drawers = <span class="kw1">new</span> Drawers<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">addChild</span><span class="br0">&#40;</span> drawers <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+You may also set its width and height, but that&#039;s optional because the <code>Drawers</code> will automatically resize itself to fill the entire stage if you don&#039;t provide explicit dimensions.
+</p>
+
+<p>
+First, we&#039;ll want to set its main content:
+</p>
+<pre class="code as3"><span class="kw2">var</span> navigator<span class="sy0">:</span>ScreenNavigator = <span class="kw1">new</span> ScreenNavigator<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+drawers<span class="sy0">.</span><span class="kw7">content</span> = navigator<span class="sy0">;</span></pre>
+
+<p>
+The main content will always fill the entire width and height of the <code>Drawers</code> container. In this case, we&#039;ve created a <code><a href="/feathers/screen-navigator" class="wikilink1" title="feathers:screen-navigator">ScreenNavigator</a></code> component. To properly demonstrate the capabilities of the <code>Drawers</code> component, we need a bit of boilerplate code. Let&#039;s quickly add some screens to the <code>ScreenNavigator</code>:
+</p>
+<pre class="code as3">navigator<span class="sy0">.</span>addScreen<span class="br0">&#40;</span> <span class="st0">&quot;start&quot;</span><span class="sy0">,</span> <span class="kw1">new</span> ScreenNavigatorItem<span class="br0">&#40;</span> StartScreen <span class="br0">&#41;</span> <span class="br0">&#41;</span><span class="sy0">;</span>
+navigator<span class="sy0">.</span>addScreen<span class="br0">&#40;</span> <span class="st0">&quot;options&quot;</span><span class="sy0">,</span> <span class="kw1">new</span> ScreenNavigatorItem<span class="br0">&#40;</span> OptionsScreen <span class="br0">&#41;</span> <span class="br0">&#41;</span><span class="sy0">;</span>
+navigator<span class="sy0">.</span>showScreen<span class="br0">&#40;</span> <span class="st0">&quot;start&quot;</span> <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+The <code>StartScreen</code> and <code>OptionsScreen</code> classes extend <code><a href="/feathers/panel-screen" class="wikilink1" title="feathers:panel-screen">PanelScreen</a></code>. We&#039;ll simply start out by displaying a title, and we&#039;ll add a bit more later:
+</p>
+<pre class="code as3"><span class="kw4">package</span>
+<span class="br0">&#123;</span>
+	<span class="kw1">import</span> feathers<span class="sy0">.</span>controls<span class="sy0">.</span>PanelScreen<span class="sy0">;</span>
+&nbsp;
+	<span class="kw1">public</span> <span class="kw4">class</span> StartScreen <span class="kw1">extends</span> PanelScreen
+	<span class="br0">&#123;</span>
+		<span class="kw1">public</span> <span class="kw3">function</span> StartScreen<span class="br0">&#40;</span><span class="br0">&#41;</span>
+		<span class="br0">&#123;</span>
+		<span class="br0">&#125;</span>
+&nbsp;
+		override <span class="kw1">protected</span> <span class="kw3">function</span> initialize<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+		<span class="br0">&#123;</span>
+			<span class="kw1">super</span><span class="sy0">.</span>initialize<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+			<span class="kw1">this</span><span class="sy0">.</span>headerProperties<span class="sy0">.</span>title = <span class="st0">&quot;Start&quot;</span><span class="sy0">;</span>
+		<span class="br0">&#125;</span>
+	<span class="br0">&#125;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+The initial code for these two classes is almost identical, so the <code>OptionScreen</code> class is not shown. To create the <code>OptionsScreen</code>, copy the code from the <code>StartScreen</code> and change the class and constructor names to <code>OptionsScreen</code> and change the title to <code>“Options”</code>. That&#039;s it!
+</p>
+
+<p>
+Next, we&#039;ll want to add some content to a drawer. Let&#039;s add a <code><a href="/feathers/list" class="wikilink1" title="feathers:list">List</a></code> component to act as a menu.
+</p>
+<pre class="code as3"><span class="kw2">var</span> list<span class="sy0">:</span>List = <span class="kw1">new</span> List<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+list<span class="sy0">.</span>dataProvider = <span class="kw1">new</span> ListCollection<span class="br0">&#40;</span>
+<span class="br0">&#91;</span>
+    <span class="br0">&#123;</span> screen<span class="sy0">:</span> <span class="st0">&quot;start&quot;</span><span class="sy0">,</span> label<span class="sy0">:</span> <span class="st0">&quot;Start&quot;</span> <span class="br0">&#125;</span><span class="sy0">,</span>
+    <span class="br0">&#123;</span> screen<span class="sy0">:</span> <span class="st0">&quot;options&quot;</span><span class="sy0">,</span> label<span class="sy0">:</span> <span class="st0">&quot;Options&quot;</span> <span class="br0">&#125;</span><span class="sy0">,</span>
+<span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+list<span class="sy0">.</span>selectedIndex = <span class="nu0">0</span><span class="sy0">;</span>
+list<span class="sy0">.</span><span class="kw7">addEventListener</span><span class="br0">&#40;</span> <a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a><span class="sy0">.</span><span class="kw8">CHANGE</span><span class="sy0">,</span> list_changeHandler <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+The list&#039;s <code>Event.CHANGE</code> listener looks like this:
+</p>
+<pre class="code as3"><span class="kw3">function</span> list_changeHandler<span class="br0">&#40;</span> event<span class="sy0">:</span><a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a> <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+     <span class="kw2">var</span> screen<span class="sy0">:</span><a href="http://www.google.com/search?q=string%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:string.html"><span class="kw5">String</span></a> = list<span class="sy0">.</span>selectedItem<span class="sy0">.</span>screen<span class="sy0">;</span>
+     navigator<span class="sy0">.</span>showScreen<span class="br0">&#40;</span> screen <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+To use the list as a drawer, simply set the <code><a href="http://feathersui.com/documentation/feathers/controls/Drawers.html#leftDrawer" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Drawers.html#leftDrawer"  rel="nofollow">leftDrawer</a></code> property:
+</p>
+<pre class="code as3">drawers<span class="sy0">.</span>leftDrawer = list<span class="sy0">;</span></pre>
+
+<p>
+<p><div class="noteclassic">
+For simplicity, we&#039;re focusing on the left drawer for every code example. However, drawers may be placed on all four sides of the main content, so every property or method with the word “left” in the name will have a cousin with “top”, “right”, or “bottom” in the name.
+
+</div></p>
+</p>
+
+<p>
+If you run the code right now, you will see the <code>StartScreen</code> displayed and nothing else. If you touch near the left edge of the <code>StartScreen</code>, you can drag to the right to reveal the list with the two screens. Select the Options item in the list, and the options screen will be displayed. Tap the main content to close the drawer.
+</p>
+
+</div>
+<!-- EDIT2 SECTION "The Basics" [519-3737] -->
+<h2 class="sectionedit3" id="opening_drawers_with_events">Opening Drawers with Events</h2>
+<div class="level2">
+
+<p>
+It&#039;s often common to open a drawer with a <a href="/feathers/button" class="wikilink1" title="feathers:button">button</a>. Let&#039;s add a button to our <code>StartScreen</code> and dispatch an event when it is triggered:
+</p>
+<pre class="code as3"><span class="kw2">var</span> menuButton<span class="sy0">:</span>Button = <span class="kw1">new</span> Button<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+menuButton<span class="sy0">.</span>label = <span class="st0">&quot;Menu&quot;</span><span class="sy0">;</span>
+menuButton<span class="sy0">.</span><span class="kw7">addEventListener</span><span class="br0">&#40;</span> <a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a><span class="sy0">.</span>TRIGGERED<span class="sy0">,</span> menuButton_triggeredHandler <span class="br0">&#41;</span><span class="sy0">;</span> 
+&nbsp;
+<span class="kw1">this</span><span class="sy0">.</span>headerProperties<span class="sy0">.</span>leftItems = <span class="kw1">new</span> <span class="sy0">&lt;</span>DisplayObject<span class="sy0">&gt;</span>
+<span class="br0">&#91;</span>
+	menuButton
+<span class="br0">&#93;</span><span class="sy0">;</span></pre>
+
+<p>
+The <code>Event.TRIGGERED</code> listener looks like this:
+</p>
+<pre class="code as3"><span class="kw1">private</span> <span class="kw3">function</span> menuButton_triggeredHandler<span class="br0">&#40;</span>event<span class="sy0">:</span><a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="kw1">this</span><span class="sy0">.</span>dispatchEventWith<span class="br0">&#40;</span> <span class="st0">&quot;showMenu&quot;</span> <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Now, the <code>Drawers</code> container can listen for that event to open a drawer:
+</p>
+<pre class="code as3">drawers<span class="sy0">.</span>leftDrawerToggleEventType = <span class="st0">&quot;showMenu&quot;</span><span class="sy0">;</span></pre>
+
+<p>
+<p><div class="noteclassic">
+In production code, you probably want to make the <code>“showMenu”</code> event type into a constant somewhere that various classes can access it.
+
+</div></p>
+</p>
+
+<p>
+Now, when you press the new menu button in the <code>StartScreen</code> header, the left drawer will open.
+</p>
+
+</div>
+<!-- EDIT3 SECTION "Opening Drawers with Events" [3738-4734] -->
+<h2 class="sectionedit4" id="docking_drawers">Docking Drawers</h2>
+<div class="level2">
+
+<p>
+If you would prefer that a drawer is open all of the time, you can “dock” it. When a drawer is docked, it cannot be closed. Think of it like a permanent side bar, rather than a menu that you can show and hide. Let&#039;s dock the drawer:
+</p>
+<pre class="code as3">drawers<span class="sy0">.</span>leftDrawerDockMode = Drawers<span class="sy0">.</span>DOCK_MODE_BOTH<span class="sy0">;</span></pre>
+
+<p>
+When using <code><a href="http://feathersui.com/documentation/feathers/controls/Drawers.html#DOCK_MODE_BOTH" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Drawers.html#DOCK_MODE_BOTH"  rel="nofollow">Drawers.DOCK_MODE_BOTH</a></code>, you will not need a gesture or an event to open a drawer. It will remain open in all orientations.
+</p>
+
+<p>
+There are three other options.  <code><a href="http://feathersui.com/documentation/feathers/controls/Drawers.html#DOCK_MODE_PORTRAIT" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Drawers.html#DOCK_MODE_PORTRAIT"  rel="nofollow">Drawers.DOCK_MODE_PORTRAIT</a></code> and  <code><a href="http://feathersui.com/documentation/feathers/controls/Drawers.html#DOCK_MODE_LANDSCAPE" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Drawers.html#DOCK_MODE_LANDSCAPE"  rel="nofollow">Drawers.DOCK_MODE_LANDSCAPE</a></code> allow you to dock a drawer, depending on the stage orientation. In one orientation, the drawer will be docked. In the other, it can be opened with a gesture or an event. The default docking value is <code><a href="http://feathersui.com/documentation/feathers/controls/Drawers.html#DOCK_MODE_NONE" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Drawers.html#DOCK_MODE_NONE"  rel="nofollow">Drawers.DOCK_MODE_NONE</a></code> where a drawer is not docked at all and must be opened with a gesture or an event.
+</p>
+
+<p>
+If needed, you may check the <code><a href="http://feathersui.com/documentation/feathers/controls/Drawers.html#isLeftDrawerDocked" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Drawers.html#isLeftDrawerDocked"  rel="nofollow">isLeftDrawerDocked</a></code> property to see if a drawer is docked:
+</p>
+<pre class="code as3"><span class="kw1">if</span><span class="br0">&#40;</span> drawers<span class="sy0">.</span>isLeftDrawerDocked <span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+    <span class="co1">// do something</span>
+<span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT4 SECTION "Docking Drawers" [4735-6230] -->
+<h2 class="sectionedit5" id="opening_and_closing_drawers_in_code">Opening and closing drawers in code</h2>
+<div class="level2">
+
+<p>
+If you want to programmatically open or close a drawer, you can simply call a function:
+</p>
+<pre class="code as3">drawers<span class="sy0">.</span>toggleLeftDrawer<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+<code><a href="http://feathersui.com/documentation/feathers/controls/Drawers.html#toggleLeftDrawer()" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Drawers.html#toggleLeftDrawer()"  rel="nofollow">toggleLeftDrawer</a></code> takes one argument, to specify a duration in seconds of the open or close animation. You can omit this argument, like the code above, and it will use <code><a href="http://feathersui.com/documentation/feathers/controls/Drawers.html#openOrCloseDuration" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Drawers.html#openOrCloseDuration"  rel="nofollow">openOrCloseDuration</a></code> by default.
+</p>
+
+<p>
+In our example above, we might want to modify the listener for the list&#039;s <code>Event.CHANGE</code> to close the drawer after telling the <code>ScreenNavigator</code> to show a different screen:
+</p>
+<pre class="code as3"><span class="kw3">function</span> list_changeHandler<span class="br0">&#40;</span> event<span class="sy0">:</span><a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a> <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+     <span class="kw2">var</span> screen<span class="sy0">:</span><a href="http://www.google.com/search?q=string%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:string.html"><span class="kw5">String</span></a> = list<span class="sy0">.</span>selectedItem<span class="sy0">.</span>screen<span class="sy0">;</span>
+     navigator<span class="sy0">.</span>showScreen<span class="br0">&#40;</span> screen <span class="br0">&#41;</span><span class="sy0">;</span>
+     drawers<span class="sy0">.</span>toggleLeftDrawer<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+You may easily check the <code><a href="http://feathersui.com/documentation/feathers/controls/Drawers.html#isLeftDrawerOpen" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Drawers.html#isLeftDrawerOpen"  rel="nofollow">isLeftDrawerOpen</a></code> property to see if a drawer is open:
+</p>
+<pre class="code as3"><span class="kw1">if</span><span class="br0">&#40;</span> drawers<span class="sy0">.</span>isLeftDrawerOpen <span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+    <span class="co1">// do something</span>
+<span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT5 SECTION "Opening and closing drawers in code" [6231-7422] -->
+<h2 class="sectionedit6" id="related_links">Related Links</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="http://feathersui.com/documentation/feathers/controls/Drawers.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Drawers.html"  rel="nofollow">Drawers API Documentation</a></div>
+</li>
+</ul>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT6 SECTION "Related Links" [7423-] -->

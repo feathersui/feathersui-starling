@@ -1,0 +1,163 @@
+
+<h1 class="sectionedit1" id="extending_legacy_feathers_1x_themes">Extending Legacy Feathers 1.x Themes</h1>
+<div class="level1">
+
+<p>
+Sometimes, you want to use an existing Feathers <a href="/feathers/themes" class="wikilink1" title="feathers:themes">theme</a>, but you want certain components to look different than the default style. Sometimes, you can just modify the component&#039;s properties directly, but often, you will need to extend the theme and apply different skins and styles through the theme architecture.
+</p>
+
+<p>
+<p><div class="noteclassic">
+The tutorial explains the theme architecture in Feathers 1.3.1 and below. For newer versions of Feathers, see <a href="/feathers/extending-themes" class="wikilink1" title="feathers:extending-themes">Extending Feathers 2.0 Themes</a>. For information about upgrading themes to use the new architecture, see <a href="/feathers/migrating-themes" class="wikilink1" title="feathers:migrating-themes">Migrating legacy themes to Feathers 2.0</a>.
+
+</div></p>
+</p>
+
+</div>
+<!-- EDIT1 SECTION "Extending Legacy Feathers 1.x Themes" [1-691] -->
+<h2 class="sectionedit2" id="names">Names</h2>
+<div class="level2">
+
+<p>
+In <a href="/feathers/themes" class="wikilink1" title="feathers:themes">Introduction to Feathers themes</a>, you learned about <em>alternate style names</em>. When you extend a theme to style certain components differently than the default, you will be creating your own custom alternate skin names.
+</p>
+
+<p>
+To add a name to a component, you use the <a href="http://feathersui.com/documentation/feathers/core/FeathersControl.html#nameList" class="urlextern" title="http://feathersui.com/documentation/feathers/core/FeathersControl.html#nameList"  rel="nofollow">nameList</a> property.
+</p>
+<pre class="code as3"><span class="kw2">var</span> button<span class="sy0">:</span>Button = <span class="kw1">new</span> Button<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+button<span class="sy0">.</span>nameList<span class="sy0">.</span><span class="kw7">add</span><span class="br0">&#40;</span> <span class="st0">&quot;my-custom-button&quot;</span> <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">addChild</span><span class="br0">&#40;</span> button <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+In the code above, we&#039;ve added the <code>“my-custom-button”</code> name to the button. We can now use this name when we create our extended theme. As you can see, it is just a string. The only restriction is that names cannot contain spaces.
+</p>
+
+<p>
+<p><div class="noteclassic">
+Names only work when added to a component <em>before</em> it is added to the stage for the first time. You <strong>cannot</strong> change names later to give a component a different skin.
+
+</div></p>
+</p>
+
+</div>
+<!-- EDIT2 SECTION "Names" [692-1631] -->
+<h2 class="sectionedit3" id="quick_and_dirty">Quick and Dirty</h2>
+<div class="level2">
+
+<p>
+If you&#039;re providing your own textures and other assets, and you don&#039;t need any of the existing textures from the theme, you can simply instantiate the theme normally, and call the <code><a href="http://feathersui.com/documentation/feathers/core/DisplayListWatcher.html#getInitializerForClass()" class="urlextern" title="http://feathersui.com/documentation/feathers/core/DisplayListWatcher.html#getInitializerForClass()"  rel="nofollow">setInitializerForClass()</a></code> function to pass in a function that will apply your component&#039;s skin. Let&#039;s use the button name we created above to do exactly that:
+</p>
+<pre class="code as3"><span class="kw2">var</span> theme<span class="sy0">:</span>MetalWorksMobileTheme = <span class="kw1">new</span> MetalWorksMobileTheme<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+theme<span class="sy0">.</span>setInitializerForClass<span class="br0">&#40;</span> Button<span class="sy0">,</span> myCustomButtonInitializer<span class="sy0">,</span> <span class="st0">&quot;my-custom-button&quot;</span> <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Then, the initializer might look something like this:
+</p>
+<pre class="code as3"><span class="kw1">private</span> <span class="kw3">function</span> myCustomButtonInitializer<span class="br0">&#40;</span> button<span class="sy0">:</span>Button <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	button<span class="sy0">.</span>defaultSkin = <span class="kw1">new</span> Image<span class="br0">&#40;</span> upTexture <span class="br0">&#41;</span><span class="sy0">;</span>
+	button<span class="sy0">.</span>downSkin = <span class="kw1">new</span> Image<span class="br0">&#40;</span> downTexture <span class="br0">&#41;</span><span class="sy0">;</span>
+	button<span class="sy0">.</span>hoverSkin = <span class="kw1">new</span> Image<span class="br0">&#40;</span> hoverTexture <span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+	button<span class="sy0">.</span>defaultLabelProperties<span class="sy0">.</span>elementFormat = <span class="kw1">new</span> ElementFormat<span class="br0">&#40;</span>
+		<span class="kw1">new</span> FontDescription<span class="br0">&#40;</span> <span class="st0">&quot;fontName&quot;</span> <span class="br0">&#41;</span><span class="sy0">,</span> <span class="nu0">18</span><span class="sy0">,</span> 0xffffff <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+That&#039;s the most basic way to extend a theme. It&#039;s best for simple changes that don&#039;t rely on the textures and other assets that the theme already uses. Let&#039;s look at a more formal example next.
+</p>
+
+</div>
+<!-- EDIT3 SECTION "Quick and Dirty" [1632-2874] -->
+<h2 class="sectionedit4" id="using_a_subclass">Using a Subclass</h2>
+<div class="level2">
+
+<p>
+In general, to extend a theme, it&#039;s best to create a subclass of it. This way, you can access its textures, fonts, and other <code>protected</code> variables and functions. Often, you may want to change one or the other of a component&#039;s background skins or fonts, but leave the other the same as the rest of the theme.
+</p>
+
+<p>
+Let&#039;s start by creating the subclass:
+</p>
+<pre class="code as3"><span class="kw4">package</span> com<span class="sy0">.</span>example<span class="sy0">.</span>themes
+<span class="br0">&#123;</span>
+	<span class="kw1">import</span> feathers<span class="sy0">.</span>themes<span class="sy0">.</span>MetalWorksMobileTheme<span class="sy0">;</span>
+	<span class="kw1">import</span> starling<span class="sy0">.</span>display<span class="sy0">.</span><a href="http://www.google.com/search?q=displayobjectcontainer%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:displayobjectcontainer.html"><span class="kw5">DisplayObjectContainer</span></a><span class="sy0">;</span>
+&nbsp;
+&nbsp;
+	<span class="kw1">public</span> <span class="kw4">class</span> ExtendedMetalWorksTheme <span class="kw1">extends</span> MetalWorksMobileTheme
+	<span class="br0">&#123;</span>
+		<span class="kw1">public</span> <span class="kw3">function</span> ExtendedMetalWorksTheme<span class="br0">&#40;</span> <span class="kw7">root</span><span class="sy0">:</span><a href="http://www.google.com/search?q=displayobjectcontainer%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:displayobjectcontainer.html"><span class="kw5">DisplayObjectContainer</span></a><span class="sy0">,</span> scaleToDPI<span class="sy0">:</span><a href="http://www.google.com/search?q=boolean%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:boolean.html"><span class="kw5">Boolean</span></a> = <span class="kw1">true</span> <span class="br0">&#41;</span>
+		<span class="br0">&#123;</span>
+			<span class="kw1">super</span><span class="br0">&#40;</span> <span class="kw7">root</span><span class="sy0">,</span> scaleToDPI <span class="br0">&#41;</span><span class="sy0">;</span>
+		<span class="br0">&#125;</span>
+&nbsp;
+		override <span class="kw1">protected</span> <span class="kw3">function</span> initialize<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+		<span class="br0">&#123;</span>
+			<span class="kw1">super</span><span class="sy0">.</span>initialize<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+			<span class="co1">// set new initializers here</span>
+		<span class="br0">&#125;</span>
+	<span class="br0">&#125;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Next, let&#039;s make our custom name into a static constant so that we can get proper compile time checking:
+</p>
+<pre class="code as3"><span class="kw1">public</span> static const ALTERNATE_NAME_MY_CUSTOM_BUTTON<span class="sy0">:</span><a href="http://www.google.com/search?q=string%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:string.html"><span class="kw5">String</span></a> = <span class="st0">&quot;my-custom-button&quot;</span><span class="sy0">;</span></pre>
+
+<p>
+Then, we can add it to our button&#039;s <code>nameList</code> like this instead:
+</p>
+<pre class="code as3">button<span class="sy0">.</span>nameList<span class="sy0">.</span><span class="kw7">add</span><span class="br0">&#40;</span> ExtendedMetalWorksTheme<span class="sy0">.</span>ALTERNATE_NAME_MY_CUSTOM_BUTTON <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Any other button in your app can use the same name too. That&#039;s the beauty of using the theming architecture.
+</p>
+
+<p>
+Inside the <code>initialize()</code> function of the theme, we can add our initializer function:
+</p>
+<pre class="code as3">override <span class="kw1">protected</span> <span class="kw3">function</span> initialize<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="kw1">super</span><span class="sy0">.</span>initialize<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+	<span class="kw1">this</span><span class="sy0">.</span>setInitializerForClass<span class="br0">&#40;</span> Button<span class="sy0">,</span> myCustomButtonInitializer<span class="sy0">,</span> ALTERNATE_NAME_MY_CUSTOM_BUTTON <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Then, we add the initializer to our theme class too:
+</p>
+<pre class="code as3"><span class="kw1">private</span> <span class="kw3">function</span> myCustomButtonInitializer<span class="br0">&#40;</span> button<span class="sy0">:</span>Button <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	button<span class="sy0">.</span>defaultSkin = <span class="kw1">new</span> Image<span class="br0">&#40;</span> upTexture <span class="br0">&#41;</span><span class="sy0">;</span>
+	button<span class="sy0">.</span>downSkin = <span class="kw1">new</span> Image<span class="br0">&#40;</span> downTexture <span class="br0">&#41;</span><span class="sy0">;</span>
+	button<span class="sy0">.</span>hoverSkin = <span class="kw1">new</span> Image<span class="br0">&#40;</span> hoverTexture <span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+	button<span class="sy0">.</span>defaultLabelProperties<span class="sy0">.</span>elementFormat = <span class="kw1">this</span><span class="sy0">.</span>darkUIElementFormat<span class="sy0">;</span>
+	button<span class="sy0">.</span>disabledLabelProperties<span class="sy0">.</span>elementFormat = <span class="kw1">this</span><span class="sy0">.</span>darkUIDisabledElementFormat<span class="sy0">;</span>
+	button<span class="sy0">.</span>selectedDisabledLabelProperties<span class="sy0">.</span>elementFormat = <span class="kw1">this</span><span class="sy0">.</span>darkUIDisabledElementFormat<span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Notice that custom skin textures are still used like above, but I used some text formats defined in the super class to match the rest of the theme.
+</p>
+
+</div>
+<!-- EDIT4 SECTION "Using a Subclass" [2875-5170] -->
+<h2 class="sectionedit5" id="related_links">Related Links</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="/feathers/extending-themes" class="wikilink1" title="feathers:extending-themes">Extending Feathers 2.0 themes</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="/feathers/migrating-themes" class="wikilink1" title="feathers:migrating-themes">Migrating legacy themes to Feathers 2.0</a></div>
+</li>
+</ul>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT5 SECTION "Related Links" [5171-] -->

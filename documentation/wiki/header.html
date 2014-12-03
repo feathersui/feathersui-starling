@@ -1,0 +1,149 @@
+
+<h1 class="sectionedit1" id="how_to_use_the_feathers_header_component">How to use the Feathers Header Component</h1>
+<div class="level1">
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/controls/Header.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Header.html"  rel="nofollow">Header</a></code> component displays an optional title and a region on the left and right sides for extra controls (usually buttons for navigation).
+</p>
+
+</div>
+<!-- EDIT1 SECTION "How to use the Feathers Header Component" [1-273] -->
+<h2 class="sectionedit2" id="the_basics">The Basics</h2>
+<div class="level2">
+
+<p>
+Let&#039;s start by creating a header with a title.
+</p>
+<pre class="code as3"><span class="kw2">var</span> header<span class="sy0">:</span>Header = <span class="kw1">new</span> Header<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+header<span class="sy0">.</span>title = <span class="st0">&quot;Settings&quot;</span><span class="sy0">;</span>
+<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">addChild</span><span class="br0">&#40;</span> header <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Next, we&#039;ll add a back button to the <code><a href="http://feathersui.com/documentation/feathers/controls/Header.html#leftItems" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Header.html#leftItems"  rel="nofollow">left items</a></code> region.
+</p>
+<pre class="code as3"><span class="kw2">var</span> backButton<span class="sy0">:</span>Button = <span class="kw1">new</span> Button<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+backButton<span class="sy0">.</span>label = <span class="st0">&quot;Back&quot;</span><span class="sy0">;</span>
+backButton<span class="sy0">.</span><span class="kw7">addEventListener</span><span class="br0">&#40;</span> <a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a><span class="sy0">.</span>TRIGGERED<span class="sy0">,</span> backButton_triggeredHandler <span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+header<span class="sy0">.</span>leftItems = <span class="kw1">new</span> <span class="sy0">&lt;</span>DisplayObject<span class="sy0">&gt;</span><span class="br0">&#91;</span> backButton <span class="br0">&#93;</span><span class="sy0">;</span></pre>
+
+<p>
+Notice that we create our button just like we would any regular button, including adding an event listener, except we don&#039;t add it to the display list. We pass it to the <code>leftItems</code> property in a <code>Vector.&lt;DisplayObject&gt;</code> and the header manages adding it as a child and keeping it in the header&#039;s layout.
+</p>
+
+<p>
+We could add additional buttons or controls to the <a href="http://feathersui.com/documentation/feathers/controls/Header.html#rightItems" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Header.html#rightItems"  rel="nofollow">right items</a> region, if we wanted.
+</p>
+
+</div>
+<!-- EDIT2 SECTION "The Basics" [274-1284] -->
+<h2 class="sectionedit3" id="skinning_a_header">Skinning a Header</h2>
+<div class="level2">
+
+<p>
+A headers offers a number of properties that may be used to customize its appearance. For full details about what skin and style properties are available, see the <a href="http://feathersui.com/documentation/feathers/controls/Header.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Header.html"  rel="nofollow">Header API reference</a>. We&#039;ll look at a few of the most common properties below.
+</p>
+
+<p>
+The header has a <code><a href="http://feathersui.com/documentation/feathers/controls/Header.html#backgroundSkin" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Header.html#backgroundSkin"  rel="nofollow">backgroundSkin</a></code> and <code><a href="http://feathersui.com/documentation/feathers/controls/Header.html#backgroundDisabledSkin" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Header.html#backgroundDisabledSkin"  rel="nofollow">backgroundDisabledSkin</a></code>. If the header is disabled, the <code>backgroundDisabledSkin</code> will be used. However, if the <code>backgroundDisabledSkin</code> isn&#039;t provided, the header will fall back to the <code>backgroundSkin</code>.
+</p>
+<pre class="code as3">header<span class="sy0">.</span>backgroundSkin = <span class="kw1">new</span> Scale9Image<span class="br0">&#40;</span> textures <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+The background stretches to fill the entire width and height of the header.
+</p>
+
+<p>
+By default the header&#039;s title appears in the center. There are special alignment options named <code><a href="http://feathersui.com/documentation/feathers/controls/Header.html#TITLE_ALIGN_PREFER_LEFT" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Header.html#TITLE_ALIGN_PREFER_LEFT"  rel="nofollow">TITLE_ALIGN_PREFER_LEFT</a></code> and <code><a href="http://feathersui.com/documentation/feathers/controls/Header.html#TITLE_ALIGN_PREFER_RIGHT" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Header.html#TITLE_ALIGN_PREFER_RIGHT"  rel="nofollow">TITLE_ALIGN_PREFER_RIGHT</a></code> which will align the title to the left or right side of the header, but <em>only</em> when there are no items on the left or right side respectively.
+</p>
+
+<p>
+In this case, we don&#039;t have any items on the right, so we can align the title to the right, if we&#039;d like:
+</p>
+<pre class="code as3">header<span class="sy0">.</span>titleAlign = Header<span class="sy0">.</span>TITLE_ALIGN_PREFER_RIGHT<span class="sy0">;</span></pre>
+
+<p>
+Similar to many Feathers components, the <code>Header</code> provides gap and padding values for layouts.
+</p>
+<pre class="code as3">header<span class="sy0">.</span>gap = <span class="nu0">10</span><span class="sy0">;</span>
+header<span class="sy0">.</span>paddingTop = <span class="nu0">15</span><span class="sy0">;</span>
+header<span class="sy0">.</span>paddingRight = <span class="nu0">20</span><span class="sy0">;</span>
+header<span class="sy0">.</span>paddingBottom = <span class="nu0">15</span><span class="sy0">;</span>
+header<span class="sy0">.</span>paddingLeft = <span class="nu0">20</span><span class="sy0">;</span></pre>
+
+<p>
+If all four padding values should be the same, you may use the <code>padding</code> property to set them all at once:
+</p>
+<pre class="code as3">header<span class="sy0">.</span>padding = <span class="nu0">20</span><span class="sy0">;</span></pre>
+
+</div>
+
+<h4 id="styling_a_header_s_title">Styling a Header&#039;s Title</h4>
+<div class="level4">
+
+<p>
+You can customize the header&#039;s title in two ways. You might create a custom title <a href="/feathers/text-renderers" class="wikilink1" title="feathers:text-renderers">text renderer</a> factory:
+</p>
+<pre class="code as3">header<span class="sy0">.</span>titleFactory = <span class="kw3">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span>ITextRenderer
+<span class="br0">&#123;</span>
+    <span class="kw2">var</span> titleRenderer<span class="sy0">:</span>BitmapFontTextRenderer = <span class="kw1">new</span> BitmapFontTextRenderer<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+    <span class="co1">//styles here</span>
+    titleRenderer<span class="sy0">.</span>textFormat = <span class="kw1">new</span> BitmapFontTextFormat<span class="br0">&#40;</span> bitmapFont <span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+    <span class="kw1">return</span> titleRenderer<span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Alternatively, you can pass in the title&#039;s styles through the header&#039;s <code><span class="curid"><a href="/feathers/header" class="wikilink1" title="feathers:header">titleProperties</a></span></code> property:
+</p>
+<pre class="code as3">header<span class="sy0">.</span>titleProperties<span class="sy0">.</span>textFormat = <span class="kw1">new</span> BitmapFontTextFormat<span class="br0">&#40;</span> bitmapFont <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Using a custom factory is better for performance and it will allow you to use code hinting in your IDE, if available.
+</p>
+
+</div>
+<!-- EDIT3 SECTION "Skinning a Header" [1285-4023] -->
+<h3 class="sectionedit4" id="targeting_a_header_in_a_theme">Targeting a Header in a theme</h3>
+<div class="level3">
+
+<p>
+If you are creating a <a href="/feathers/themes" class="wikilink1" title="feathers:themes">theme</a>, you can set a function for the default styles like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> Header <span class="br0">&#41;</span><span class="sy0">.</span>defaultStyleFunction = setHeaderStyles<span class="sy0">;</span></pre>
+
+<p>
+If you want to customize a specific header to look different than the default, you may use a custom style name to call a different function:
+</p>
+<pre class="code as3">header<span class="sy0">.</span>styleNameList<span class="sy0">.</span><span class="kw7">add</span><span class="br0">&#40;</span> <span class="st0">&quot;custom-header&quot;</span> <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+You can set the function for the custom style name like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> Header <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> <span class="st0">&quot;custom-header&quot;</span><span class="sy0">,</span> setCustomHeaderStyles <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Trying to change the header&#039;s styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the header was added to the stage and initialized. Learn to <a href="/feathers/extending-themes" class="wikilink1" title="feathers:extending-themes">extend an existing theme</a> to add custom skins.
+</p>
+
+<p>
+If you aren&#039;t using a theme, then you may set any of the header&#039;s properties directly.
+</p>
+
+</div>
+<!-- EDIT4 SECTION "Targeting a Header in a theme" [4024-5008] -->
+<h2 class="sectionedit5" id="related_links">Related Links</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="http://feathersui.com/documentation/feathers/controls/Header.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Header.html"  rel="nofollow">Header API Documentation</a></div>
+</li>
+</ul>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT5 SECTION "Related Links" [5009-] -->

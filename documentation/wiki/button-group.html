@@ -1,0 +1,207 @@
+
+<h1 class="sectionedit1" id="how_to_use_the_feathers_buttongroup_component">How to use the Feathers ButtonGroup Component</h1>
+<div class="level1">
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/controls/Button.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Button.html"  rel="nofollow">ButtonGroup</a></code> class displays a set of <a href="/feathers/button" class="wikilink1" title="feathers:button">buttons</a> displayed one after the other in a simple horizontal or vertical layout. It is best used for a set of related buttons that generally look the same and are meant to be displayed together meaningfully. For instance, an alert dialog might populate its OK/Cancel/Yes/No/etc. buttons using a <code>ButtonGroup</code>.
+</p>
+
+</div>
+<!-- EDIT1 SECTION "How to use the Feathers ButtonGroup Component" [1-499] -->
+<h2 class="sectionedit2" id="the_basics">The Basics</h2>
+<div class="level2">
+
+<p>
+First, let&#039;s create a <code>ButtonGroup</code> control and add it to the display list:
+</p>
+<pre class="code as3"><span class="kw2">var</span> group<span class="sy0">:</span>ButtonGroup = <span class="kw1">new</span> ButtonGroup<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">addChild</span><span class="br0">&#40;</span>group<span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+This won&#039;t display anything because we haven&#039;t populated the data provider with information about the buttons we want. Let&#039;s do that next:
+</p>
+<pre class="code as3">group<span class="sy0">.</span>dataProvider = <span class="kw1">new</span> ListCollection<span class="br0">&#40;</span>
+<span class="br0">&#91;</span>
+    <span class="br0">&#123;</span> label<span class="sy0">:</span> <span class="st0">&quot;One&quot;</span><span class="sy0">,</span> triggered<span class="sy0">:</span> oneButton_triggeredHandler <span class="br0">&#125;</span><span class="sy0">,</span>
+    <span class="br0">&#123;</span> label<span class="sy0">:</span> <span class="st0">&quot;Two&quot;</span><span class="sy0">,</span> triggered<span class="sy0">:</span> twoButton_triggeredHandler <span class="br0">&#125;</span><span class="sy0">,</span>
+    <span class="br0">&#123;</span> label<span class="sy0">:</span> <span class="st0">&quot;Three&quot;</span><span class="sy0">,</span> triggered<span class="sy0">:</span> threeButton_triggeredHandler <span class="br0">&#125;</span><span class="sy0">,</span>
+<span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Like the <code><a href="/feathers/list" class="wikilink1" title="feathers:list">List</a></code> or <code><a href="/feathers/tab-bar" class="wikilink1" title="feathers:tab-bar">TabBar</a></code> components, the <code>ButtonGroup</code> uses a <code><a href="http://feathersui.com/documentation/feathers/data/ListCollection.html" class="urlextern" title="http://feathersui.com/documentation/feathers/data/ListCollection.html"  rel="nofollow">ListCollection</a></code> as its data provider.
+</p>
+
+<p>
+A number of fields in each item from the collection are automatically detected by the button group. For instance, we set the <code>label</code> on each button above. Each of a button&#039;s icon states may also be used here, along with <code>isToggle</code> and <code>isSelected</code> to make them into toggling buttons.
+</p>
+
+<p>
+Additionally, we can add a few event listeners to each button, including <code>Event.TRIGGERED</code> and <code>Event.CHANGE</code> (using the <code>String</code> values, <code>triggered</code> and <code>change</code>). In the example above, we add a listener to <code>triggered</code>. The listener on the first item might look something like this:
+</p>
+<pre class="code as3"><span class="kw3">function</span> oneButton_triggeredHandler<span class="br0">&#40;</span> event<span class="sy0">:</span><a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a> <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+    <span class="kw2">var</span> button<span class="sy0">:</span>Button = Button<span class="br0">&#40;</span> event<span class="sy0">.</span><span class="kw7">currentTarget</span> <span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="kw7">trace</span><span class="br0">&#40;</span> <span class="st0">&quot;button triggered:&quot;</span><span class="sy0">,</span> button<span class="sy0">.</span>label <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT2 SECTION "The Basics" [500-2060] -->
+<h2 class="sectionedit3" id="skinning">Skinning</h2>
+<div class="level2">
+
+<p>
+A button group&#039;s buttons may all be skinned, with the first and last buttons having optional custom styles. A few other properties exist to customize the layout. For full details about what skin and style properties are available, see the <a href="http://feathersui.com/documentation/feathers/controls/ButtonGroup.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ButtonGroup.html"  rel="nofollow">ButtonGroup API reference</a>. We&#039;ll look at a few of the most common properties below.
+</p>
+
+</div>
+<!-- EDIT3 SECTION "Skinning" [2061-2480] -->
+<h3 class="sectionedit4" id="layout">Layout</h3>
+<div class="level3">
+
+<p>
+The <code>ButtonGroup</code> has a strict horizontal or vertical layout that you can customize using the <code><a href="http://feathersui.com/documentation/feathers/controls/ButtonGroup.html#direction" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ButtonGroup.html#direction"  rel="nofollow">direction</a></code> property. Additionally, you can set the <code><a href="http://feathersui.com/documentation/feathers/controls/ButtonGroup.html#gap" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ButtonGroup.html#gap"  rel="nofollow">gap</a></code> between buttons, including special gaps for the first and last buttons.
+</p>
+<pre class="code as3">group<span class="sy0">.</span>direction = ButtonGroup<span class="sy0">.</span>DIRECTION_VERTICAL<span class="sy0">;</span>
+group<span class="sy0">.</span>gap = <span class="nu0">10</span><span class="sy0">;</span>
+group<span class="sy0">.</span>lastGap = <span class="nu0">20</span><span class="sy0">;</span></pre>
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/controls/ButtonGroup.html#firstGap" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ButtonGroup.html#firstGap"  rel="nofollow">firstGap</a></code> and <code><a href="http://feathersui.com/documentation/feathers/controls/ButtonGroup.html#lastGap" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ButtonGroup.html#lastGap"  rel="nofollow">lastGap</a></code> are completely optional, and if they are not defined, the regular <code>gap</code> value will be used.
+</p>
+
+<p>
+With a vertical layout, each button&#039;s width will match the width of the button group. Similarly, with a horizontal layout, the buttons will fill the entire height.
+</p>
+
+</div>
+<!-- EDIT4 SECTION "Layout" [2481-3459] -->
+<h3 class="sectionedit5" id="targeting_a_buttongroup_in_a_theme">Targeting a ButtonGroup in a theme</h3>
+<div class="level3">
+
+<p>
+If you are creating a <a href="/feathers/themes" class="wikilink1" title="feathers:themes">theme</a>, you can specify a function for the default styles like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> ButtonGroup <span class="br0">&#41;</span><span class="sy0">.</span>defaultStyleFunction = setButtonGroupStyles<span class="sy0">;</span></pre>
+
+<p>
+If you want to customize a specific button group to look different than the default, you may use a custom style name to call a different function:
+</p>
+<pre class="code as3">group<span class="sy0">.</span>styleNameList<span class="sy0">.</span><span class="kw7">add</span><span class="br0">&#40;</span> <span class="st0">&quot;custom-button-group&quot;</span> <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+You can specify the function for the custom style name like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> ButtonGroup <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> <span class="st0">&quot;custom-button-group&quot;</span><span class="sy0">,</span> setCustomButtonGroupStyles <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Trying to change the button group&#039;s styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the button group was added to the stage and initialized.  Learn to <a href="/feathers/extending-themes" class="wikilink1" title="feathers:extending-themes">extend an existing theme</a> to add custom skins.
+</p>
+
+<p>
+If you aren&#039;t using a theme, then you may set any of the button group&#039;s properties directly.
+</p>
+
+</div>
+<!-- EDIT5 SECTION "Targeting a ButtonGroup in a theme" [3460-4513] -->
+<h3 class="sectionedit6" id="skinning_the_buttons">Skinning the Buttons</h3>
+<div class="level3">
+
+<p>
+<p><div class="noteclassic">
+This section only explains how to access the button sub-components. Please read <a href="/feathers/button" class="wikilink1" title="feathers:button">How to use the Feathers Button component</a> for full details about the skinning properties that are available on <code>Button</code> components.
+
+</div></p>
+</p>
+
+</div>
+
+<h4 id="with_a_theme">With a Theme</h4>
+<div class="level4">
+
+<p>
+If you&#039;re creating a <a href="/feathers/themes" class="wikilink1" title="feathers:themes">theme</a>, you can target the <code><a href="http://feathersui.com/documentation/feathers/controls/ButtonGroup.html#DEFAULT_CHILD_NAME_BUTTON" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ButtonGroup.html#DEFAULT_CHILD_NAME_BUTTON"  rel="nofollow">ButtonGroup.DEFAULT_CHILD_NAME_BUTTON</a></code> style name.
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> Button <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> ButtonGroup<span class="sy0">.</span>DEFAULT_CHILD_NAME_BUTTON<span class="sy0">,</span> setButtonBarButtonStyles <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+You can override the default style name to use a different one in your theme, if you prefer:
+</p>
+<pre class="code as3">group<span class="sy0">.</span>customButtonName = <span class="st0">&quot;my-custom-button&quot;</span><span class="sy0">;</span></pre>
+
+<p>
+You can set the styling function for the <code><a href="http://feathersui.com/documentation/feathers/controls/ButtonGroup.html#customButtonName" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ButtonGroup.html#customButtonName"  rel="nofollow">customButtonName</a></code> like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> Button <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> <span class="st0">&quot;my-custom-button&quot;</span><span class="sy0">,</span> setButtonGroupCustomButtonStyles <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+
+<h4 id="without_a_theme">Without a Theme</h4>
+<div class="level4">
+
+<p>
+If you are not using a theme, you can use <code><a href="http://feathersui.com/documentation/feathers/controls/ButtonGroup.html#buttonFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ButtonGroup.html#buttonFactory"  rel="nofollow">buttonFactory</a></code> to provide skins for the buttons:
+</p>
+<pre class="code as3">group<span class="sy0">.</span>buttonFactory = <span class="kw3">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span>Button
+<span class="br0">&#123;</span>
+    <span class="kw2">var</span> button<span class="sy0">:</span>Button = <span class="kw1">new</span> Button<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    button<span class="sy0">.</span>defaultSkin = <span class="kw1">new</span> Image<span class="br0">&#40;</span> texture <span class="br0">&#41;</span><span class="sy0">;</span>
+    button<span class="sy0">.</span>downSkin = <span class="kw1">new</span> Image<span class="br0">&#40;</span> texture <span class="br0">&#41;</span><span class="sy0">;</span>
+    button<span class="sy0">.</span>defaultLabelProperties<span class="sy0">.</span>textFormat = <span class="kw1">new</span> <a href="http://www.google.com/search?q=textformat%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:textformat.html"><span class="kw5">TextFormat</span></a><span class="br0">&#40;</span><span class="st0">&quot;Arial&quot;</span><span class="sy0">,</span> <span class="nu0">24</span><span class="sy0">,</span> 0x323232<span class="sy0">,</span> <span class="kw1">true</span> <span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="kw1">return</span> button<span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="sy0">;</span></pre>
+
+<p>
+In addition to the <code>buttonFactory</code>, you may use the <code><a href="http://feathersui.com/documentation/feathers/controls/ButtonGroup.html#buttonProperties" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ButtonGroup.html#buttonProperties"  rel="nofollow">buttonProperties</a></code> to pass properties to the buttons. The values of these properties are shared by <em>all</em> buttons, so display objects should never be passed in using <code>buttonProperties</code>. A display object may only have one parent, so passing in a display object as a skin to every button is impossible. Other types of styles, like gap and padding, can be passed in through <code>buttonProperties</code>:
+</p>
+<pre class="code as3">group<span class="sy0">.</span>buttonProperties<span class="sy0">.</span>gap = <span class="nu0">20</span><span class="sy0">;</span></pre>
+
+<p>
+In general, you should only pass properties to the button group&#039;s buttons through <code>buttonProperties</code> if you need to change these values after the buttons are created. Using <code>buttonFactory</code> will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
+</p>
+
+</div>
+<!-- EDIT6 SECTION "Skinning the Buttons" [4514-7079] -->
+<h3 class="sectionedit7" id="skinning_the_first_and_last_buttons">Skinning the First and Last Buttons</h3>
+<div class="level3">
+
+<p>
+<p><div class="noteclassic">
+This section only explains how to access the first and last button sub-components. Please read <a href="/feathers/button" class="wikilink1" title="feathers:button">How to use the Feathers Button component</a> for full details about the skinning properties that are available on <code>Button</code> components.
+
+</div></p>
+</p>
+
+<p>
+The button group&#039;s first and last buttons will have the same skins as the other buttons by default. However, their skins may be customized separately, if desired.
+</p>
+
+<p>
+For the first button, you can customize the style name with <code><a href="http://feathersui.com/documentation/feathers/controls/ButtonGroup.html#customFirstButtonName" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ButtonGroup.html#customFirstButtonName"  rel="nofollow">customFirstButtonName</a></code>. If you aren&#039;t using a theme, then you can use <code><a href="http://feathersui.com/documentation/feathers/controls/ButtonGroup.html#firstButtonFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ButtonGroup.html#firstButtonFactory"  rel="nofollow">firstButtonFactory</a></code>.
+</p>
+
+<p>
+For the last button, you can customize the style name with <code><a href="http://feathersui.com/documentation/feathers/controls/ButtonGroup.html#customLastButtonName" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ButtonGroup.html#customLastButtonName"  rel="nofollow">customLastButtonName</a></code>. If you aren&#039;t using a theme, then you can use <code><a href="http://feathersui.com/documentation/feathers/controls/ButtonGroup.html#lastButtonFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ButtonGroup.html#lastButtonFactory"  rel="nofollow">lastButtonFactory</a></code>.
+</p>
+
+<p>
+Separate skins for the first and last buttons are completely optional.
+</p>
+
+</div>
+<!-- EDIT7 SECTION "Skinning the First and Last Buttons" [7080-8310] -->
+<h2 class="sectionedit8" id="related_links">Related Links</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="http://feathersui.com/documentation/feathers/controls/ButtonGroup.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ButtonGroup.html"  rel="nofollow">ButtonGroup API Documentation</a></div>
+</li>
+</ul>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT8 SECTION "Related Links" [8311-] -->

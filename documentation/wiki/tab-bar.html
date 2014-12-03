@@ -1,0 +1,201 @@
+
+<h1 class="sectionedit1" id="how_to_use_the_feathers_tabbar_component">How to use the Feathers TabBar Component</h1>
+<div class="level1">
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/controls/TabBar.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/TabBar.html"  rel="nofollow">TabBar</a></code> class displays a set of togglable buttons with a vertical or horizontal layout, where only one button at a time may be selected. A tab bar&#039;s tabs may be added or removed at runtime through its data provider, and the first and last tabs may be optionally styled differently. For instance, one could create a more “pill” shaped control that looks more like a segmented button bar than a set of tabs.
+</p>
+
+<p>
+The <a href="http://feathersui.com/examples/display-object-explorer" class="urlextern" title="http://feathersui.com/examples/display-object-explorer"  rel="nofollow">DisplayObjectExplorer example</a> demonstrates how to connect a <code>TabBar</code> to a <code><a href="/feathers/screen-navigator" class="wikilink1" title="feathers:screen-navigator">ScreenNavigator</a></code>.
+</p>
+
+</div>
+<!-- EDIT1 SECTION "How to use the Feathers TabBar Component" [1-722] -->
+<h2 class="sectionedit2" id="the_basics">The Basics</h2>
+<div class="level2">
+
+<p>
+Let&#039;s start by creating a tab bar, setting it&#039;s data provider to display a few tabs, and adding it to the display list:
+</p>
+<pre class="code as3"><span class="kw2">var</span> tabs<span class="sy0">:</span>TabBar = <span class="kw1">new</span> TabBar<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+tabs<span class="sy0">.</span>dataProvider = <span class="kw1">new</span> ListCollection<span class="br0">&#40;</span>
+<span class="br0">&#91;</span>
+    <span class="br0">&#123;</span> label<span class="sy0">:</span> <span class="st0">&quot;One&quot;</span> <span class="br0">&#125;</span><span class="sy0">,</span>
+    <span class="br0">&#123;</span> label<span class="sy0">:</span> <span class="st0">&quot;Two&quot;</span> <span class="br0">&#125;</span><span class="sy0">,</span>
+    <span class="br0">&#123;</span> label<span class="sy0">:</span> <span class="st0">&quot;Three&quot;</span> <span class="br0">&#125;</span><span class="sy0">,</span>
+<span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">addChild</span><span class="br0">&#40;</span> tabs <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+The <code>label</code> field in each item from the data provider will set the <code><a href="http://feathersui.com/documentation/feathers/controls/Button.html#label" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Button.html#label"  rel="nofollow">label</a></code> property on the corresponding tab. In addition to the label, you can also set the various icons available on the <code><a href="/feathers/button" class="wikilink1" title="feathers:button">Button</a></code> class, such as <code>defaultIcon</code>, <code>upIcon</code>, or <code>downIcon</code>.
+</p>
+
+<p>
+To know when the selected tab changes, we need to listen to <code><a href="http://feathersui.com/documentation/feathers/controls/TabBar.html#event:change" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/TabBar.html#event:change"  rel="nofollow">Event.CHANGE</a></code>:
+</p>
+<pre class="code as3">tabs<span class="sy0">.</span><span class="kw7">addEventListener</span><span class="br0">&#40;</span> <a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a><span class="sy0">.</span><span class="kw8">CHANGE</span><span class="sy0">,</span> tabs_changeHandler <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+A listener might look something like this:
+</p>
+<pre class="code as3"><span class="kw3">function</span> tabs_changeHandler<span class="br0">&#40;</span> event<span class="sy0">:</span><a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a> <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+    <span class="kw2">var</span> tabs<span class="sy0">:</span>TabBar = TabBar<span class="br0">&#40;</span> event<span class="sy0">.</span><span class="kw7">currentTarget</span> <span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="kw7">trace</span><span class="br0">&#40;</span> <span class="st0">&quot;selectedIndex:&quot;</span><span class="sy0">,</span> tabs<span class="sy0">.</span>selectedIndex <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/controls/TabBar.html#selectedIndex" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/TabBar.html#selectedIndex"  rel="nofollow">selectedIndex</a></code> property indicates the zero-based index of the currently selected tab.
+</p>
+
+</div>
+<!-- EDIT2 SECTION "The Basics" [723-2047] -->
+<h2 class="sectionedit3" id="skinning_a_tab_bar">Skinning a Tab Bar</h2>
+<div class="level2">
+
+<p>
+Except for a couple of layout properties, most of the skinning happens on the tabs. For full details about what skin and style properties are available, see the <a href="http://feathersui.com/documentation/feathers/controls/TabBar.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/TabBar.html"  rel="nofollow">TabBar API reference</a>. We&#039;ll look at a few of the most common properties below.
+</p>
+
+</div>
+<!-- EDIT3 SECTION "Skinning a Tab Bar" [2048-2389] -->
+<h3 class="sectionedit4" id="layout">Layout</h3>
+<div class="level3">
+
+<p>
+For layout, you can set the <code><a href="http://feathersui.com/documentation/feathers/controls/TabBar.html#direction" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/TabBar.html#direction"  rel="nofollow">direction</a></code> property to <code><a href="http://feathersui.com/documentation/feathers/controls/TabBar.html#DIRECTION_HORIZONTAL" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/TabBar.html#DIRECTION_HORIZONTAL"  rel="nofollow">DIRECTION_HORIZONTAL</a></code> or <code><a href="http://feathersui.com/documentation/feathers/controls/TabBar.html#DIRECTION_VERTICAL" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/TabBar.html#DIRECTION_VERTICAL"  rel="nofollow">DIRECTION_VERTICAL</a></code>. The <code><a href="http://feathersui.com/documentation/feathers/controls/TabBar.html#gap" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/TabBar.html#gap"  rel="nofollow">gap</a></code> property sets the extra space, measured in pixels, between tabs.
+</p>
+
+</div>
+<!-- EDIT4 SECTION "Layout" [2390-2925] -->
+<h3 class="sectionedit5" id="targeting_a_tabbar_in_a_theme">Targeting a TabBar in a theme</h3>
+<div class="level3">
+
+<p>
+If you are creating a <a href="/feathers/themes" class="wikilink1" title="feathers:themes">theme</a>, you can set a function for the default styles like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> TabBar <span class="br0">&#41;</span><span class="sy0">.</span>defaultStyleFunction = setTabBarStyles<span class="sy0">;</span></pre>
+
+<p>
+If you want to customize a specific tab bar to look different than the default, you may use a custom style name to call a different function:
+</p>
+<pre class="code as3">tabs<span class="sy0">.</span>styleNameList<span class="sy0">.</span><span class="kw7">add</span><span class="br0">&#40;</span> <span class="st0">&quot;custom-tab-bar&quot;</span> <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+You can set the function for the custom style name like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> TabBar <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> <span class="st0">&quot;custom-tab-bar&quot;</span><span class="sy0">,</span> setCustomTabBarStyles <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Trying to change the tab bar&#039;s styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the tab bar was added to the stage and initialized. Learn to <a href="/feathers/extending-themes" class="wikilink1" title="feathers:extending-themes">extend an existing theme</a> to add custom skins.
+</p>
+
+<p>
+If you aren&#039;t using a theme, then you may set any of the tab bar&#039;s properties directly.
+</p>
+
+</div>
+<!-- EDIT5 SECTION "Targeting a TabBar in a theme" [2926-3914] -->
+<h3 class="sectionedit6" id="skinning_the_tabs">Skinning the Tabs</h3>
+<div class="level3">
+
+<p>
+<p><div class="noteclassic">
+This section only explains how to access the tab sub-components, which are simply buttons. Please read <a href="/feathers/button" class="wikilink1" title="feathers:button">How to use the Feathers Button component</a> for full details about the skinning properties that are available on <code>Button</code> components.
+
+</div></p>
+</p>
+
+</div>
+
+<h4 id="with_a_theme">With a Theme</h4>
+<div class="level4">
+
+<p>
+If you&#039;re creating a <a href="/feathers/themes" class="wikilink1" title="feathers:themes">theme</a>, you can target the <code><a href="http://feathersui.com/documentation/feathers/controls/TabBar.html#DEFAULT_CHILD_NAME_TAB" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/TabBar.html#DEFAULT_CHILD_NAME_TAB"  rel="nofollow">TabBar.DEFAULT_CHILD_NAME_TAB</a></code> style name.
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> Button <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> setTabStyles<span class="sy0">,</span> TabBar<span class="sy0">.</span>DEFAULT_CHILD_NAME_TAB <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+You can override the default style name to use a different one in your theme, if you prefer:
+</p>
+<pre class="code as3">tabBar<span class="sy0">.</span>customTabName = <span class="st0">&quot;custom-tab&quot;</span><span class="sy0">;</span></pre>
+
+<p>
+You can set the function for the <code><a href="http://feathersui.com/documentation/feathers/controls/TabBar.html#customTabName" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/TabBar.html#customTabName"  rel="nofollow">customTabName</a></code> like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> Button <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> setCustomTabStyles<span class="sy0">,</span> <span class="st0">&quot;custom-tab&quot;</span> <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+
+<h4 id="without_a_theme">Without a Theme</h4>
+<div class="level4">
+
+<p>
+If you are not using a theme, you can use <code><a href="http://feathersui.com/documentation/feathers/controls/TabBar.html#tabFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/TabBar.html#tabFactory"  rel="nofollow">tabFactory</a></code> to provide skins for the tabs:
+</p>
+<pre class="code as3">tabBar<span class="sy0">.</span>tabFactory = <span class="kw3">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span>Button
+<span class="br0">&#123;</span>
+    <span class="kw2">var</span> tab<span class="sy0">:</span>Button = <span class="kw1">new</span> Button<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    tab<span class="sy0">.</span>defaultSkin = <span class="kw1">new</span> Image<span class="br0">&#40;</span> texture <span class="br0">&#41;</span><span class="sy0">;</span>
+    tab<span class="sy0">.</span>downSkin = <span class="kw1">new</span> Image<span class="br0">&#40;</span> texture <span class="br0">&#41;</span><span class="sy0">;</span>
+    tab<span class="sy0">.</span>defaultLabelProperties<span class="sy0">.</span>textFormat = <span class="kw1">new</span> <a href="http://www.google.com/search?q=textformat%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:textformat.html"><span class="kw5">TextFormat</span></a><span class="br0">&#40;</span><span class="st0">&quot;Arial&quot;</span><span class="sy0">,</span> <span class="nu0">24</span><span class="sy0">,</span> 0x323232<span class="sy0">,</span> <span class="kw1">true</span> <span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="kw1">return</span> tab<span class="sy0">;</span>
+<span class="br0">&#125;</span><span class="sy0">;</span></pre>
+
+<p>
+In addition to the <code>tabFactory</code>, you may use the <code><a href="http://feathersui.com/documentation/feathers/controls/TabBar.html#tabProperties" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/TabBar.html#tabProperties"  rel="nofollow">tabProperties</a></code> to pass properties to the tabs. The values of these properties are shared by <em>all</em> tabs, so display objects should never be passed in using <code>tabProperties</code>. A display object may only have one parent, so passing in a display object as a skin to every tab is impossible. Other types of styles, like gap and padding, can be passed in through <code>tabProperties</code>:
+</p>
+<pre class="code as3">tabBar<span class="sy0">.</span>tabProperties<span class="sy0">.</span>gap = <span class="nu0">20</span><span class="sy0">;</span></pre>
+
+<p>
+In general, you should only pass properties to the tab bar&#039;s tabs through <code>tabProperties</code> if you need to change these values after the tabs are created. Using <code>tabFactory</code> will provide slightly better performance, and your development environment will be able to provide code hinting thanks to stronger typing.
+</p>
+
+</div>
+<!-- EDIT6 SECTION "Skinning the Tabs" [3915-6339] -->
+<h3 class="sectionedit7" id="skinning_the_first_and_last_tabs">Skinning the First and Last Tabs</h3>
+<div class="level3">
+
+<p>
+<p><div class="noteclassic">
+This section only explains how to access the first and last tab sub-components. Please read <a href="/feathers/button" class="wikilink1" title="feathers:button">How to use the Feathers Button component</a> for full details about the skinning properties that are available on <code>Button</code> components.
+
+</div></p>
+</p>
+
+<p>
+The tab bar&#039;s first and last tabs will have the same skins as the other tabs by default. However, their skins may be customized separately, if desired.
+</p>
+
+<p>
+For the first tab, you can customize the name with <code><a href="http://feathersui.com/documentation/feathers/controls/TabBar.html#customFirstTabName" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/TabBar.html#customFirstTabName"  rel="nofollow">customFirstTabName</a></code>. If you aren&#039;t using a theme, then you can use <code><a href="http://feathersui.com/documentation/feathers/controls/TabBar.html#firstTabFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/TabBar.html#firstTabFactory"  rel="nofollow">firstTabFactory</a></code> and <code><a href="http://feathersui.com/documentation/feathers/controls/TabBar.html#firstTabProperties" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/TabBar.html#firstTabProperties"  rel="nofollow">firstTabProperties</a></code>.
+</p>
+
+<p>
+For the last tab, you can customize the name with <code><a href="http://feathersui.com/documentation/feathers/controls/TabBar.html#customLastTabName" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/TabBar.html#customLastTabName"  rel="nofollow">customLastTabName</a></code>. If you aren&#039;t using a theme, then you can use <code><a href="http://feathersui.com/documentation/feathers/controls/TabBar.html#lastTabFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/TabBar.html#lastTabFactory"  rel="nofollow">lastTabFactory</a></code> and <code><a href="http://feathersui.com/documentation/feathers/controls/TabBar.html#lastTabProperties" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/TabBar.html#lastTabProperties"  rel="nofollow">lastTabProperties</a></code>.
+</p>
+
+<p>
+Separate skins for the first and last tabs are completely optional.
+</p>
+
+</div>
+<!-- EDIT7 SECTION "Skinning the First and Last Tabs" [6340-7717] -->
+<h2 class="sectionedit8" id="related_links">Related Links</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="http://feathersui.com/documentation/feathers/controls/TabBar.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/TabBar.html"  rel="nofollow">TabBar API Documentation</a></div>
+</li>
+</ul>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT8 SECTION "Related Links" [7718-] -->

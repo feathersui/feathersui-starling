@@ -1,0 +1,240 @@
+
+<h1 class="sectionedit1" id="how_to_use_the_feathers_default_item_renderers">How to use the Feathers Default Item Renderers</h1>
+<div class="level1">
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/DefaultListItemRenderer.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/DefaultListItemRenderer.html"  rel="nofollow">DefaultListItemRenderer</a></code> and <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/DefaultGroupedListItemRenderer.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/DefaultGroupedListItemRenderer.html"  rel="nofollow">DefaultGroupedListItemRenderer</a></code> classes provide a basic way to display items from data collections in the <code><a href="/feathers/list" class="wikilink1" title="feathers:list">List</a></code> and <code><a href="/feathers/grouped-list" class="wikilink1" title="feathers:grouped-list">GroupedList</a></code> components. These default item renderers are derived from the same base class, and their functionality is virtually identical.
+</p>
+
+<p>
+<p><div class="noteclassic">
+In many of the examples below, code and descriptions will refer to the <code>DefaultListItemRenderer</code> class and the <code>IListItemRenderer</code> interface, which are both used by the <code>List</code> component. When using a <code>GroupedList</code> component, you should substitute the <code>DefaultGroupedListItemRenderer</code> class and the <code>IGroupedListItemRenderer</code> instead.
+</p>
+
+<p>
+These item renderer types for <code>GroupedList</code> will have all of the same properties that are used in the examples below. The differences between the <code>List</code> and <code>GroupedList</code> versions of item renderers are entirely behind the scenes.
+
+</div></p>
+</p>
+
+</div>
+<!-- EDIT1 SECTION "How to use the Feathers Default Item Renderers" [1-1190] -->
+<h2 class="sectionedit2" id="the_basics">The Basics</h2>
+<div class="level2">
+
+<p>
+Item renderers are managed by a <code>List</code> or <code>GroupedList</code> component, and you generally don&#039;t add them to the display list directly. To customize properties on a default item renderer, you can use the list&#039;s <code><a href="http://feathersui.com/documentation/feathers/controls/List.html#itemRendererFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/List.html#itemRendererFactory"  rel="nofollow">itemRendererFactory</a></code>:
+</p>
+<pre class="code as3">list<span class="sy0">.</span>itemRendererFactory = <span class="kw3">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span>IListItemRenderer
+<span class="br0">&#123;</span>
+	<span class="kw2">var</span> renderer<span class="sy0">:</span>DefaultListItemRenderer = <span class="kw1">new</span> DefaultListItemRenderer<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	renderer<span class="sy0">.</span>labelField = <span class="st0">&quot;text&quot;</span><span class="sy0">;</span>
+	<span class="kw1">return</span> renderer<span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+In the next section, we&#039;ll look at several examples of properties that we can set in the <code>itemRendererFactory</code>.
+</p>
+
+</div>
+<!-- EDIT2 SECTION "The Basics" [1191-1851] -->
+<h2 class="sectionedit3" id="children_of_a_default_item_renderer">Children of a default item renderer</h2>
+<div class="level2">
+
+<p>
+An item renderer provides up to three children to display data. A label, an icon, and an accessory. A label must always display a string in a text renderer. However, both the icon and the accessory have three different ways to display data. They may display either a texture or <abbr title="Uniform Resource Locator">URL</abbr> in an <code>ImageLoader</code>, a string in a text renderer, or they can add an arbitrary display object like a Feathers component as a child.
+</p>
+
+</div>
+<!-- EDIT3 SECTION "Children of a default item renderer" [1852-2317] -->
+<h3 class="sectionedit4" id="label">Label</h3>
+<div class="level3">
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/BaseDefaultItemRenderer.html#labelField" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/BaseDefaultItemRenderer.html#labelField"  rel="nofollow">labelField</a></code> property displays a string in the primary <a href="/feathers/text-renderers" class="wikilink1" title="feathers:text-renderers">text renderer</a>.
+</p>
+
+<p>
+Consider the following item in a data provider:
+</p>
+<pre class="code as3"><span class="br0">&#123;</span> <span class="kw7">text</span><span class="sy0">:</span> <span class="st0">&quot;Example Item&quot;</span> <span class="br0">&#125;</span></pre>
+
+<p>
+For an item renderer to display “Example Item” string, it needs to know about the item&#039;s <code>text</code> property:
+</p>
+<pre class="code as3">renderer<span class="sy0">.</span>labelField = <span class="st0">&quot;text&quot;</span><span class="sy0">;</span></pre>
+
+<p>
+The default item renderer also has a <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/BaseDefaultItemRenderer.html#labelFunction" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/BaseDefaultItemRenderer.html#labelFunction"  rel="nofollow">labelFunction</a></code> property that may be used to generate a string dynamically.
+</p>
+
+</div>
+<!-- EDIT4 SECTION "Label" [2318-3017] -->
+<h3 class="sectionedit5" id="icon">Icon</h3>
+<div class="level3">
+
+<p>
+The icon is typically intended for displaying a texture (either preloaded or from a <abbr title="Uniform Resource Locator">URL</abbr>) in an <code><a href="/feathers/image-loader" class="wikilink1" title="feathers:image-loader">ImageLoader</a></code> component. However, for convenience, it may also display a string in another text renderer, or it may add any Starling display object as a child.
+</p>
+
+<p>
+When loading a texture or <abbr title="Uniform Resource Locator">URL</abbr>, the item renderer will create and manage its own internal <code>ImageLoader</code> instance. If the texture is loaded from a <abbr title="Uniform Resource Locator">URL</abbr>, we do not need to dispose this texture when we are finished with it. The texture will be disposed when the <code>ImageLoader</code> is disposed. If we pass in a preloaded texture, it is our responsibility to dispose it when needed.
+</p>
+
+<p>
+To display a texture or a <abbr title="Uniform Resource Locator">URL</abbr>, you may use the <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/BaseDefaultItemRenderer.html#iconSourceField" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/BaseDefaultItemRenderer.html#iconSourceField"  rel="nofollow">iconSourceField</a></code> property.
+</p>
+
+<p>
+Consider the following item from the data provider:
+</p>
+<pre class="code as3"><span class="br0">&#123;</span> label<span class="sy0">:</span> <span class="st0">&quot;Example Label&quot;</span><span class="sy0">,</span> thumbnail<span class="sy0">:</span> atlas<span class="sy0">.</span>getTexture<span class="br0">&#40;</span> <span class="st0">&quot;texture-name&quot;</span> <span class="br0">&#41;</span> <span class="br0">&#125;</span></pre>
+
+<p>
+For an item renderer to display the texture from the altas, it needs to know about the item&#039;s <code>thumbnail</code> property:
+</p>
+<pre class="code as3">renderer<span class="sy0">.</span>iconSourceField = <span class="st0">&quot;thumbnail&quot;</span><span class="sy0">;</span></pre>
+
+<p>
+Similar to the <code>labelField</code> property, the <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/BaseDefaultItemRenderer.html#iconLabelField" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/BaseDefaultItemRenderer.html#iconLabelField"  rel="nofollow">iconLabelField</a></code> property can be used to display a string in another text renderer. This can be a convenient way to display another line of text, or it could even be used to display symbols using icon fonts.
+</p>
+
+<p>
+Finally, if you need to display a Feathers component or any other type of Starling display object, you can use the <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/BaseDefaultItemRenderer.html#iconField" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/BaseDefaultItemRenderer.html#iconField"  rel="nofollow">iconField</a></code> property.
+</p>
+
+<p>
+Consider the following code where a <code><a href="/feathers/slider" class="wikilink1" title="feathers:slider">Slider</a></code> component is included in a list&#039;s data provider:
+</p>
+<pre class="code as3"><span class="kw2">var</span> slider<span class="sy0">:</span>Slider = <span class="kw1">new</span> Slider<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+slider<span class="sy0">.</span>minimum = <span class="nu0">0</span><span class="sy0">;</span>
+slider<span class="sy0">.</span>maximum = <span class="nu0">10</span><span class="sy0">;</span>
+slider<span class="sy0">.</span>step = <span class="nu0">1</span><span class="sy0">;</span>
+slider<span class="sy0">.</span><span class="kw7">value</span> = <span class="nu0">0</span><span class="sy0">;</span>
+&nbsp;
+list<span class="sy0">.</span>dataProvider = <span class="kw1">new</span> ListCollection<span class="br0">&#40;</span>
+<span class="br0">&#91;</span>
+	<span class="br0">&#123;</span> label<span class="sy0">:</span> <span class="st0">&quot;Example Label&quot;</span><span class="sy0">,</span> control<span class="sy0">:</span> slider <span class="br0">&#125;</span>
+<span class="br0">&#93;</span><span class="sy0">;</span></pre>
+
+<p>
+For an item renderer to add the display object as a child, it needs to know about the item&#039;s <code>control</code> property:
+</p>
+<pre class="code as3">renderer<span class="sy0">.</span>iconField = <span class="st0">&quot;control&quot;</span><span class="sy0">;</span></pre>
+
+<p>
+<p><div class="noteclassic">
+When using <code>iconField</code>, it&#039;s important to understand that the display object in the data provider will not be automatically disposed when the item renderer or the list is disposed. This display object may need to be used in another list later, and Feathers cannot know whether it is safe to dispose it, similar to how a <code>starling.display.Image</code> cannot dispose its <code>starling.textures.Texture</code>. To avoid memory leaks, remember to dispose any display objects included in the list&#039;s data provider when the list is disposed.
+
+</div></p>
+</p>
+
+</div>
+<!-- EDIT5 SECTION "Icon" [3018-5853] -->
+<h3 class="sectionedit6" id="accessory">Accessory</h3>
+<div class="level3">
+
+<p>
+In addition to the label and the icon, the default item renderer can display a third child, an <em>accessory</em>. This is a display object that is added as a child and it is often meant to be interactive in some way. For instance, you might create a list of settings with labels on the left and some user interface controls like sliders and toggle switches on the right.
+</p>
+
+<p>
+<p><div class="noteclassic">
+When using interactive accessories, it&#039;s a good idea to set the list&#039;s <code>isSelectable</code> property to <code>false</code> to avoid touch conflicts and user confusion. When a list displays interactive accessories, it may not be obvious that the items in a list may be touched to select them too.
+
+</div></p>
+</p>
+
+<p>
+Similar to icons, for extra convenience and flexibility, an accessory may be a text renderer that displays a string, an <code><a href="/feathers/image-loader" class="wikilink1" title="feathers:image-loader">ImageLoader</a></code> that displays a texture, or a Starling display object that is added as a child. You may use the <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/BaseDefaultItemRenderer.html#accessorySourceField" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/BaseDefaultItemRenderer.html#accessorySourceField"  rel="nofollow">accessorySourceField</a></code> property, the <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/BaseDefaultItemRenderer.html#accessoryLabelField" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/BaseDefaultItemRenderer.html#accessoryLabelField"  rel="nofollow">accessoryLabelField</a></code> property, and the <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/BaseDefaultItemRenderer.html#accessoryField" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/BaseDefaultItemRenderer.html#accessoryField"  rel="nofollow">accessoryField</a></code> property. These properties work the same as they would for icons. 
+</p>
+
+<p>
+<p><div class="noteclassic">
+Similar to <code>iconField</code>, a display object in the list&#039;s data provider that is displayed using <code>accessoryField</code> will not be automatically disposed when the item renderer or the list is disposed. See the note above about <code>iconField</code> for details.
+
+</div></p>
+</p>
+
+</div>
+<!-- EDIT6 SECTION "Accessory" [5854-7569] -->
+<h2 class="sectionedit7" id="skinning_a_default_item_renderer">Skinning a Default Item Renderer</h2>
+<div class="level2">
+
+<p>
+The <code>DefaultListItemRenderer</code> class is a subclass of the <code><a href="/feathers/button" class="wikilink1" title="feathers:button">Button</a></code> component. Like a button, the default item renderer can change its background skin based on the touch state, and it supports different background skins when selected too. Similarly, an item renderer may have both a label and an icon, and all of the layout options used by buttons for alignment, gap, and padding apply to an item renderer too. For full details about these style properties, see <a href="/feathers/button" class="wikilink1" title="feathers:button">How to use the Feathers Button component</a>. For the full listing of all style properties available on the default item renderers, see the <a href="http://feathersui.com/documentation/feathers/controls/renderers/DefaultListItemRenderer.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/DefaultListItemRenderer.html"  rel="nofollow">DefaultListItemRenderer API reference</a>.
+</p>
+
+<p>
+Next, we&#039;ll look at a few of the common properties that the default item renderers add beyond what normal button&#039;s provide.
+</p>
+
+</div>
+<!-- EDIT7 SECTION "Skinning a Default Item Renderer" [7570-8492] -->
+<h3 class="sectionedit8" id="layout_with_an_accessory">Layout with an accessory</h3>
+<div class="level3">
+
+<p>
+Buttons have two children, a label text renderer and an icon, but the default item renderers add a third child, known as an accessory. Earlier, we looked at how an accessory may be accessed from the data provider. Now, let&#039;s look at some of the layout options available when adding an accessory into the mix.
+</p>
+
+<p>
+Positioning the accessory in the item renderer&#039;s layout is very similar to positioning the icon relative to the label text renderer. The default item renderer has an <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/BaseDefaultItemRenderer.html#accessoryPosition" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/BaseDefaultItemRenderer.html#accessoryPosition"  rel="nofollow">accessoryPosition</a></code> property that will allow it to be positioned relative to the other children. The <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/BaseDefaultItemRenderer.html#accessoryGap" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/BaseDefaultItemRenderer.html#accessoryGap"  rel="nofollow">accessoryGap</a></code> property defines the gap in pixels between the accessory and the other children.
+</p>
+
+<p>
+When displaying all three children that the default item renderer supports (the label text renderer, the icon, and the accessory), you can use the <code><a href="http://feathersui.com/documentation/feathers/controls/renderers/BaseDefaultItemRenderer.html#layoutOrder" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/BaseDefaultItemRenderer.html#layoutOrder"  rel="nofollow">layoutOrder</a></code> property to customize the order that the children are positioned in the layout. By default, the label text renderer is positioned first, followed by the icon (relative to the label), and finally, the accessory is positioned last (relative to the combined bounding box of the label and the icon). Alternatively, you can change the order so that the label text renderer is positioned first, followed by the accessory (relative to the label), and the icon is positioned last (relative to the combined bounding box of the label and the accessory).
+</p>
+
+</div>
+<!-- EDIT8 SECTION "Layout with an accessory" [8493-10247] -->
+<h3 class="sectionedit9" id="targeting_a_default_item_renderer_in_a_theme">Targeting a default item renderer in a theme</h3>
+<div class="level3">
+
+<p>
+If you are creating a <a href="/feathers/themes" class="wikilink1" title="feathers:themes">theme</a>, you can specify a function for the default styles like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> DefaultListItemRenderer <span class="br0">&#41;</span><span class="sy0">.</span>defaultStyleFunction = setItemRendererStyles<span class="sy0">;</span></pre>
+
+<p>
+If you want to customize a specific item renderer to look different than the default, you may use a custom style name to call a different function:
+</p>
+<pre class="code as3">list<span class="sy0">.</span>itemRendererName = <span class="st0">&quot;custom-item-renderer&quot;</span><span class="sy0">;</span></pre>
+
+<p>
+You can set the function for the custom style name like this:
+</p>
+<pre class="code as3">getStyleProviderForClass<span class="br0">&#40;</span> DefaultListItemRenderer <span class="br0">&#41;</span>
+	<span class="sy0">.</span>setFunctionForStyleName<span class="br0">&#40;</span> <span class="st0">&quot;custom-item-renderer&quot;</span><span class="sy0">,</span> customItemRendererInitializer <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Trying to change the item renderer&#039;s styles and skins outside of the theme may result in the theme overriding the properties, if you set them before the item renderer was added to the stage and initialized.  Learn to <a href="/feathers/extending-themes" class="wikilink1" title="feathers:extending-themes">extend an existing theme</a> to add custom skins.
+</p>
+
+<p>
+Of you aren&#039;t using a theme, then you may set the item renderer&#039;s properties through the List&#039;s <code><a href="http://feathersui.com/documentation/feathers/controls/List.html#itemRendererFactory" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/List.html#itemRendererFactory"  rel="nofollow">itemRendererFactory</a></code> or <code><a href="http://feathersui.com/documentation/feathers/controls/List.html#itemRendererProperties" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/List.html#itemRendererProperties"  rel="nofollow">itemRendererProperties</a></code>.
+</p>
+
+</div>
+<!-- EDIT9 SECTION "Targeting a default item renderer in a theme" [10248-11574] -->
+<h2 class="sectionedit10" id="related_links">Related Links</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="http://feathersui.com/documentation/feathers/controls/renderers/DefaultListItemRenderer.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/DefaultListItemRenderer.html"  rel="nofollow">DefaultListItemRenderer API Documentation</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="http://feathersui.com/documentation/feathers/controls/renderers/DefaultListItemRenderer.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/renderers/DefaultListItemRenderer.html"  rel="nofollow">DefaultListItemRenderer API Documentation</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="/feathers/list" class="wikilink1" title="feathers:list">How to use the Feathers List component</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="/feathers/grouped-list" class="wikilink1" title="feathers:grouped-list">How to use the Feathers Grouped List component</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="/feathers/item-renderers" class="wikilink1" title="feathers:item-renderers">Creating Custom Item Renderers</a></div>
+</li>
+</ul>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT10 SECTION "Related Links" [11575-] -->

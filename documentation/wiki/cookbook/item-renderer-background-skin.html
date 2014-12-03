@@ -1,0 +1,120 @@
+
+<h1 class="sectionedit1" id="feathers_cookbookadding_a_background_skin_to_a_custom_item_renderer_based_on_featherscontrol_and_ilistitemrenderer">Feathers Cookbook: Adding a background skin to a custom item renderer based on FeathersControl and IListItemRenderer</h1>
+<div class="level1">
+
+<p>
+The example <a href="/feathers/feathers-control-item-renderers" class="wikilink1" title="feathers:feathers-control-item-renderers">custom item renderer with FeathersControl and IListItemRenderer</a> offers an easy-to-understand foundation to build upon. It&#039;s pretty limited in features, though. For instance, you may want some kind of background skin.
+</p>
+
+</div>
+<!-- EDIT1 SECTION "Feathers Cookbook: Adding a background skin to a custom item renderer based on FeathersControl and IListItemRenderer" [1-407] -->
+<h2 class="sectionedit2" id="a_backgroundskin_getter_and_setter">A backgroundSkin getter and setter</h2>
+<div class="level2">
+
+<p>
+Let&#039;s start by adding a <code>backgroundSkin</code> property to our custom item renderer class:
+</p>
+<pre class="code as3"><span class="kw1">private</span> <span class="kw2">var</span> _backgroundSkin<span class="sy0">:</span><a href="http://www.google.com/search?q=displayobject%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:displayobject.html"><span class="kw5">DisplayObject</span></a><span class="sy0">;</span>
+&nbsp;
+<span class="kw1">public</span> <span class="kw3">function</span> <span class="kw1">get</span> backgroundSkin<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><a href="http://www.google.com/search?q=displayobject%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:displayobject.html"><span class="kw5">DisplayObject</span></a>
+<span class="br0">&#123;</span>
+	<span class="kw1">return</span> <span class="kw1">this</span><span class="sy0">.</span>_backgroundSkin<span class="sy0">;</span>
+<span class="br0">&#125;</span>
+&nbsp;
+<span class="kw1">public</span> <span class="kw3">function</span> <span class="kw1">set</span> backgroundSkin<span class="br0">&#40;</span><span class="kw7">value</span><span class="sy0">:</span><a href="http://www.google.com/search?q=displayobject%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:displayobject.html"><span class="kw5">DisplayObject</span></a><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="kw1">if</span><span class="br0">&#40;</span><span class="kw1">this</span><span class="sy0">.</span>_backgroundSkin == <span class="kw7">value</span><span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+		<span class="kw1">return</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+	<span class="kw1">if</span><span class="br0">&#40;</span><span class="kw1">this</span><span class="sy0">.</span>_backgroundSkin<span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+		<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">removeChild</span><span class="br0">&#40;</span><span class="kw1">this</span><span class="sy0">.</span>_backgroundSkin<span class="sy0">,</span> <span class="kw1">true</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+	<span class="kw1">this</span><span class="sy0">.</span>_backgroundSkin = <span class="kw7">value</span><span class="sy0">;</span>
+	<span class="kw1">if</span><span class="br0">&#40;</span><span class="kw1">this</span><span class="sy0">.</span>_backgroundSkin<span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+		<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">addChildAt</span><span class="br0">&#40;</span><span class="kw1">this</span><span class="sy0">.</span>_backgroundSkin<span class="sy0">,</span> <span class="nu0">0</span><span class="br0">&#41;</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+	<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">invalidate</span><span class="br0">&#40;</span>INVALIDATION_FLAG_SKIN<span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Notice that if an old background skin already exists, we remove it. Then, if the new background skin isn&#039;t <code>null</code>, we add it as a child at index <code>0</code>. This will ensure that the background skin is always at the bottom.
+</p>
+
+</div>
+<!-- EDIT2 SECTION "A backgroundSkin getter and setter" [408-1260] -->
+<h3 class="sectionedit3" id="resizing_the_background_skin">Resizing the background skin</h3>
+<div class="level3">
+
+<p>
+As you may recall, the example custom item renderer based on <code>FeathersControl</code> and <code>IListItemRenderer</code> had a <code>layoutChildren()</code> function. Let&#039;s simply set the width and height of the background skin in there.
+</p>
+<pre class="code as3"><span class="kw1">protected</span> <span class="kw3">function</span> layoutChildren<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="kw1">if</span><span class="br0">&#40;</span><span class="kw1">this</span><span class="sy0">.</span>_backgroundSkin<span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+		<span class="kw1">this</span><span class="sy0">.</span>_backgroundSkin<span class="sy0">.</span><span class="kw7">width</span> = <span class="kw1">this</span><span class="sy0">.</span>actualWidth<span class="sy0">;</span>
+		<span class="kw1">this</span><span class="sy0">.</span>_backgroundSkin<span class="sy0">.</span><span class="kw7">height</span> = <span class="kw1">this</span><span class="sy0">.</span>actualHeight<span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+&nbsp;
+	<span class="co1">// position and resize other children here</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+You probably also want to include the background skin with the measurement calculations inside the <code>autoSizeIfNeeded()</code> function:
+</p>
+<pre class="code as3"><span class="kw2">var</span> newWidth<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = <span class="kw1">this</span><span class="sy0">.</span>explicitWidth<span class="sy0">;</span>
+<span class="kw1">if</span><span class="br0">&#40;</span>needsWidth<span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+	newWidth = <span class="kw1">this</span><span class="sy0">.</span>_label<span class="sy0">.</span><span class="kw7">width</span> <span class="sy0">+</span> <span class="nu0">2</span> <span class="sy0">*</span> <span class="kw1">this</span><span class="sy0">.</span>_padding<span class="sy0">;</span>
+	<span class="kw2">var</span> backgroundWidth<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = <span class="kw1">this</span><span class="sy0">.</span>_backgroundSkin<span class="sy0">.</span><span class="kw7">width</span><span class="sy0">;</span>
+	<span class="kw1">if</span><span class="br0">&#40;</span>backgroundWidth <span class="sy0">&gt;</span> newWidth<span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+		newWidth = backgroundWidth<span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+<span class="br0">&#125;</span>
+<span class="kw2">var</span> newHeight<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = <span class="kw1">this</span><span class="sy0">.</span>explicitHeight<span class="sy0">;</span>
+<span class="kw1">if</span><span class="br0">&#40;</span>needsHeight<span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+	newHeight = <span class="kw1">this</span><span class="sy0">.</span>_label<span class="sy0">.</span><span class="kw7">height</span> <span class="sy0">+</span> <span class="nu0">2</span> <span class="sy0">*</span> <span class="kw1">this</span><span class="sy0">.</span>_padding<span class="sy0">;</span>
+	<span class="kw2">var</span> backgroundHeight<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a> = <span class="kw1">this</span><span class="sy0">.</span>_backgroundSkin<span class="sy0">.</span><span class="kw7">height</span><span class="sy0">;</span>
+	<span class="kw1">if</span><span class="br0">&#40;</span>backgroundHeight <span class="sy0">&gt;</span> newWidth<span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+		newWidth = backgroundHeight<span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Instead of always using the current dimensions of the background skin for measurement, we could save the dimensions of the background skin in member variables when the <code>backgroundSkin</code> setter is called. Let&#039;s say that we call the variables <code>originalBackgroundSkinWidth</code> and <code>originalBackgroundSkinHeight</code>. This will allow us to always measure using the original dimensions of the background skin instead of basing the measurement on the <code>this._backgroundSkin.width</code> and <code>this._backgroundSkin.height</code> values that may get changed in <code>layoutChildren()</code>.
+</p>
+
+</div>
+<!-- EDIT3 SECTION "Resizing the background skin" [1261-2960] -->
+<h2 class="sectionedit4" id="multiple_background_skins">Multiple background skins</h2>
+<div class="level2">
+
+<p>
+The example code above adds only a single background skin. What if you want to display a different background skin for each touch phase?
+</p>
+<ul>
+<li class="level1"><div class="li"> <a href="/feathers/cookbook/item-renderer-touch-states" class="wikilink1" title="feathers:cookbook:item-renderer-touch-states">Cookbook: Handling touch states in a custom item renderer</a></div>
+</li>
+</ul>
+
+</div>
+<!-- EDIT4 SECTION "Multiple background skins" [2961-3231] -->
+<h2 class="sectionedit5" id="related_links">Related Links</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="/feathers/item-renderers" class="wikilink1" title="feathers:item-renderers">Introduction to Custom Item Renderers</a></div>
+</li>
+</ul>
+
+<p>
+This is a recipe in the <a href="/feathers/cookbook/start" class="wikilink1" title="feathers:cookbook:start">Feathers Cookbook</a>. For more information about Feathers, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT5 SECTION "Related Links" [3232-] -->

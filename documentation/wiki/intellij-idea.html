@@ -1,0 +1,96 @@
+
+<h1 class="sectionedit1" id="setting_up_feathers_in_intellij_idea">Setting up Feathers in IntelliJ IDEA</h1>
+<div class="level1">
+
+<p>
+Let&#039;s get your <a href="http://www.jetbrains.com/idea/" class="urlextern" title="http://www.jetbrains.com/idea/"  rel="nofollow">IntelliJ IDEA</a> development environment ready to use Feathers.
+</p>
+
+<p>
+<p><div class="noteclassic">
+These instructions apply to IntelliJ IDEA 12. Minor variations may exist between different versions of IntelliJ IDEA.
+
+</div></p>
+</p>
+
+<p>
+1. Download the latest stable versions of <a href="http://feathersui.com/download/" class="urlextern" title="http://feathersui.com/download/"  rel="nofollow">Feathers</a> and <a href="http://gamua.com/starling/download/" class="urlextern" title="http://gamua.com/starling/download/"  rel="nofollow">Starling Framework</a>.
+</p>
+
+<p>
+2. In IDEA, select the <strong>File</strong> menu → <strong>New Project</strong>. A wizard will guide you through the creation process.
+</p>
+
+<p>
+3. Select <strong>Flash Module</strong> and enter your <strong>Project name</strong>. The default Project location is usually okay. The Module name and Module location will update automatically when you set values for your project, and the default values are usually okay. Click <strong>Next</strong>.
+</p>
+
+<p>
+4. In the next section, select the approporite <strong>Target platform</strong> (Web, Desktop, or Mobile) and select <strong>Pure ActionScript</strong>. For <strong>Output type</strong>, select <strong>Application</strong>. Select an appropriate <strong>Flex/AIR SDK</strong> (see below where to download the latest version of the AIR SDK). Then click <strong>Finish</strong>.
+</p>
+
+<p>
+<p><div class="noteclassic">
+You can download the latest <a href="http://www.adobe.com/devnet/air/air-sdk-download.html" class="urlextern" title="http://www.adobe.com/devnet/air/air-sdk-download.html"  rel="nofollow">Adobe AIR SDK and Compiler</a> from Adobe&#039;s website. This SDK can be used to target both Adobe AIR and Adobe Flash Player in the browser. Check the Feathers README file to see the minimum required versions of Adobe AIR and Flash Player for the version of Feathers that you are using.
+
+</div></p>
+</p>
+
+<p>
+5. Now that the project is created, you will need to add Feathers and Starling Framework to the project. Select the <strong>File</strong> menu → <strong>Project Structure</strong>, then under <strong>Project Settings</strong> choose <strong>Libraries</strong>. Click the <strong>+</strong> (plus sign) at the top. Next, select <strong>ActionScript/Flex</strong> and specify the location of <strong>starling.swc</strong>.
+</p>
+
+<p>
+6. Follow the same steps to add <strong>feathers.swc</strong> as a library.
+</p>
+
+<p>
+Follow steps 7 and 8 if you are targeting <strong>Adobe AIR</strong>. Then, proceed to the conclusion. If you are targeting Adobe Flash Player, skip steps 7 and 8 and continue at step 9.
+</p>
+
+<p>
+7. Next, we&#039;ll create the Adobe AIR <em>application descriptor</em> file. Select <strong>Modules</strong> in the same <strong>Project Structure</strong> window that should still be open from the previous step. Expand your new module in the tree and select the default build configuration with the module&#039;s name. For mobile AIR apps, you&#039;ll want to navigate to the <strong>Android</strong> tab. For desktop AIR apps, navigate to the <strong>AIR Package</strong> tab instead.
+</p>
+
+<p>
+Under <strong>Application descriptor</strong>, choose <strong>Custom template</strong> and click <strong>Create…</strong>. The default values for the application descriptor are usually okay, so simply click <strong>Create</strong>. You can open the application descriptor file later to make changes, if needed. For mobile apps, if IDEA asks if you want to use the created application descriptor template for both Android and iOS, click <strong>Yes</strong>. Click <strong>OK</strong> in the <strong>Project Structure</strong> window.
+</p>
+
+<p>
+8. Open your module&#039;s new <strong>-app.xml</strong> file that was created in the previous step. Inside the <code>&lt;initialWindow&gt;</code> section, add <code>&lt;renderMode&gt;direct&lt;/renderMode&gt;</code> to enable Stage 3D.
+</p>
+
+<p>
+Follow step 9 if you are targeting <strong>Adobe Flash Player</strong>. If you are targeting Adobe AIR, skip step 9 and proceed to the conclusion.
+</p>
+
+<p>
+9. Open your modules <strong>index.template.html</strong> file in the <strong>html-template</strong> folder. Search for the following line of JavaScript:
+</p>
+<pre class="code js">var params = {};</pre>
+
+<p>
+Add the following line after it:
+</p>
+<pre class="code js">params.wmode = &quot;direct&quot;;</pre>
+
+<p>
+Next, look for the <code>&lt;object&gt;</code> <abbr title="HyperText Markup Language">HTML</abbr> elements near the bottom of the document. Add the following <code>&lt;param&gt;</code> element inside <em>both</em> <code>&lt;object&gt;</code> elements.
+</p>
+<pre class="code html4strict"><span class="sc2">&lt;<a href="http://december.com/html/4/element/param.html"><span class="kw2">param</span></a> <span class="kw3">name</span><span class="sy0">=</span><span class="st0">&quot;wmode&quot;</span> <span class="kw3">value</span><span class="sy0">=</span><span class="st0">&quot;direct&quot;</span> <span class="sy0">/</span>&gt;</span></pre>
+
+</div>
+<!-- EDIT1 SECTION "Setting up Feathers in IntelliJ IDEA" [1-3718] -->
+<h2 class="sectionedit2" id="conclusion">Conclusion</h2>
+<div class="level2">
+
+<p>
+Your project is ready. If you&#039;re unsure how to proceed, start by using the code in the <strong>Create your Game</strong> section of the <a href="http://gamua.com/starling/first-steps/" class="urlextern" title="http://gamua.com/starling/first-steps/"  rel="nofollow">Starling First Steps Tutorial</a>. Then, take a look at the <a href="/feathers/getting-started" class="wikilink1" title="feathers:getting-started">Feathers Getting Started Tutorial</a>.
+</p>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT2 SECTION "Conclusion" [3719-] -->

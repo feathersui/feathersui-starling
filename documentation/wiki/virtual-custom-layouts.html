@@ -1,0 +1,104 @@
+
+<h1 class="sectionedit1" id="creating_virtualized_custom_feathers_layouts">Creating Virtualized Custom Feathers Layouts</h1>
+<div class="level1">
+
+<p>
+<p><div class="noteclassic">
+This is an advanced tutorial about creating custom layouts. Before continuing, please be sure that you read the <a href="/feathers/custom-layouts" class="wikilink1" title="feathers:custom-layouts">Introduction to Custom Layouts</a> first.
+</p>
+
+<p>
+Please note that this tutorial is a work in progress and should be considered incomplete.
+
+</div></p>
+</p>
+
+</div>
+<!-- EDIT1 SECTION "Creating Virtualized Custom Feathers Layouts" [1-336] -->
+<h2 class="sectionedit2" id="the_measureviewport_function">The measureViewPort() function</h2>
+<div class="level2">
+
+<p>
+The first function defined by <code>IVirtualLayout</code> is <code><a href="http://feathersui.com/beta/documentation/feathers/layout/IVirtualLayout.html#measureViewPort()" class="urlextern" title="http://feathersui.com/beta/documentation/feathers/layout/IVirtualLayout.html#measureViewPort()"  rel="nofollow">measureViewPort()</a></code>. Please take a moment to review its signature below:
+</p>
+<pre class="code as3">measureViewPort<span class="br0">&#40;</span>itemCount<span class="sy0">:</span><a href="http://www.google.com/search?q=int%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:int.html"><span class="kw5">int</span></a><span class="sy0">,</span> viewPortBounds<span class="sy0">:</span>ViewPortBounds = <span class="kw1">null</span><span class="sy0">,</span> result<span class="sy0">:</span><a href="http://www.google.com/search?q=point%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:point.html"><span class="kw5">Point</span></a> = <span class="kw1">null</span><span class="br0">&#41;</span><span class="sy0">:</span><a href="http://www.google.com/search?q=point%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:point.html"><span class="kw5">Point</span></a></pre>
+
+<p>
+Using a <code><a href="/feathers/custom-layouts#the_viewportbounds_properties" class="wikilink1" title="feathers:custom-layouts">ViewPortBounds</a></code> object and the number of items displayed, this function estimates the final width and height of the view port.
+</p>
+
+</div>
+<!-- EDIT2 SECTION "The measureViewPort() function" [337-911] -->
+<h2 class="sectionedit3" id="the_getvisibleindicesatscrollposition_function">The getVisibleIndicesAtScrollPosition() function</h2>
+<div class="level2">
+
+<p>
+The second function defined by <code>IVirtualLayout</code> is <code><a href="http://feathersui.com/beta/documentation/feathers/layout/IVirtualLayout.html#getVisibleIndicesAtScrollPosition()" class="urlextern" title="http://feathersui.com/beta/documentation/feathers/layout/IVirtualLayout.html#getVisibleIndicesAtScrollPosition()"  rel="nofollow">getVisibleIndicesAtScrollPosition()</a></code>. Please take a moment to review its signature below:
+</p>
+<pre class="code as3">getVisibleIndicesAtScrollPosition<span class="br0">&#40;</span>scrollX<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a><span class="sy0">,</span> scrollY<span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a><span class="sy0">,</span> <span class="kw7">width</span><span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a><span class="sy0">,</span> <span class="kw7">height</span><span class="sy0">:</span><a href="http://www.google.com/search?q=number%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:number.html"><span class="kw5">Number</span></a><span class="sy0">,</span> itemCount<span class="sy0">:</span><a href="http://www.google.com/search?q=int%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:int.html"><span class="kw5">int</span></a><span class="sy0">,</span> result<span class="sy0">:</span>Vector<span class="sy0">.&lt;</span>int<span class="sy0">&gt;</span> = <span class="kw1">null</span><span class="br0">&#41;</span><span class="sy0">:</span>Vector<span class="sy0">.&lt;</span>int<span class="sy0">&gt;</span></pre>
+
+<p>
+This function determines which items won&#039;t be virtual in the layout. In other words, it determines which items are visible within the view port.
+</p>
+
+</div>
+<!-- EDIT3 SECTION "The getVisibleIndicesAtScrollPosition() function" [912-1554] -->
+<h2 class="sectionedit4" id="variable_virtualized_layouts">Variable Virtualized Layouts</h2>
+<div class="level2">
+
+<p>
+<code>IVirtualLayout</code> normally expects all of its items to have the same dimensions. If item A has a width and height of 100 pixels by 50 pixels, then item B must also have a width and height of 100 pixels by 50 pixels. The <code><a href="http://feathersui.com/beta/documentation/feathers/layout/IVariableVirtualLayout.html" class="urlextern" title="http://feathersui.com/beta/documentation/feathers/layout/IVariableVirtualLayout.html"  rel="nofollow">IVariableVirtualLayout</a></code> interface extends <code>IVirtualLayout</code> to provide additional functions that allow the layout to keep a cache of item dimensions that can be used in the virtualization process so that items can each have different dimensions. This cache allows the layout to remain as stable as possible when real items are replaced by virtual items as they scroll out of view. If a cache were not kept, the virtual items would have different dimensions, and the items in the view port could jump around unexpectedly and ruin the user experience.
+</p>
+
+<p>
+The <code><a href="http://feathersui.com/beta/documentation/feathers/layout/IVariableVirtualLayout.html#hasVariableItemDimensions" class="urlextern" title="http://feathersui.com/beta/documentation/feathers/layout/IVariableVirtualLayout.html#hasVariableItemDimensions"  rel="nofollow">hasVariableItemDimensions</a></code> property indicates whether the layout allows items with variable widths and heights or not. The layout is expected to have an optimized version of its functions for equal-sized items when <code>hasVariableItemDimensions</code> is <code>false</code>.
+</p>
+
+<p>
+When the <code>layout()</code> function is called, an <code>ILayout</code> will usually ask each item for its width and height. When this happens, the item&#039;s dimensions should be cached and the <code>ILayout</code> should dispatch <code>Event.CHANGE</code>. This may cause the container using the layout to invalidate so that it can ask the <code>ILayout</code> to determine if the same items are still visible, of if new indices have come into view. This isn&#039;t a more inefficient process than a layout where the item dimensions are all the same, as you can probably image, so it&#039;s recommended to enable variable item dimensions only when needed. Eventually, after one or more attempts, the layout will stabilize (at least until it needs to scroll).
+</p>
+
+<p>
+The container using the layout listens for when its items are resized. When this happens, the container will tell the layout that its cache is out of date, and the layout will adjust accordingly. Several functions are defined by <code>IVariableVirtualLayout</code> to make changes to the cache:
+</p>
+
+<p>
+The <code><a href="http://feathersui.com/beta/documentation/feathers/layout/IVariableVirtualLayout.html#resetVariableVirtualCache()" class="urlextern" title="http://feathersui.com/beta/documentation/feathers/layout/IVariableVirtualLayout.html#resetVariableVirtualCache()"  rel="nofollow">resetVariableVirtualCache()</a></code> function clears the entire cache. The layout needs to build its cache from scratch, as if it were brand new. Other functions offer fine-grained control, so this function is often a last resort for major changes to the items in the layout.
+</p>
+
+<p>
+The <code><a href="http://feathersui.com/beta/documentation/feathers/layout/IVariableVirtualLayout.html#addToVariableVirtualCacheAtIndex()" class="urlextern" title="http://feathersui.com/beta/documentation/feathers/layout/IVariableVirtualLayout.html#addToVariableVirtualCacheAtIndex()"  rel="nofollow">addToVariableVirtualCacheAtIndex()</a></code> function inserts a new item into the cache. The existing item at that index, and any items appearing after it, will remain in the cache, but the index will increase by one.
+</p>
+
+<p>
+The <code><a href="http://feathersui.com/beta/documentation/feathers/layout/IVariableVirtualLayout.html#removeFromVariableVirtualCacheAtIndex()" class="urlextern" title="http://feathersui.com/beta/documentation/feathers/layout/IVariableVirtualLayout.html#removeFromVariableVirtualCacheAtIndex()"  rel="nofollow">removeFromVariableVirtualCacheAtIndex()</a></code> function will completely remove an item from the cache. The items that appear after the removed item will remain in the cache, but their indices will decrease by one to fill in the empty space.
+</p>
+
+<p>
+The <code><a href="http://feathersui.com/beta/documentation/feathers/layout/IVariableVirtualLayout.html#resetVariableVirtualCacheAtIndex()" class="urlextern" title="http://feathersui.com/beta/documentation/feathers/layout/IVariableVirtualLayout.html#resetVariableVirtualCacheAtIndex()"  rel="nofollow">resetVariableVirtualCacheAtIndex()</a></code> tells the layout that the cached dimensions for an item at a specific index are no longer valid, and it needs to be remeasured. The item is not removed and no other item&#039;s index will be changed.
+</p>
+
+</div>
+<!-- EDIT4 SECTION "Variable Virtualized Layouts" [1555-5304] -->
+<h2 class="sectionedit5" id="trimmed_virtualized_layouts">Trimmed Virtualized Layouts</h2>
+<div class="level2">
+
+<p>
+For layouts with tens of thousands of items (or more, depending on the system), performance may begin to degrade. In these cases, the vast majority of those items are virtual, and most of them are clustered together at the beginning and end of the layout. With this in mind, we can optimize some types of virtual layouts to quickly skip many of these virtual items instead of looping through each one using the <code><a href="http://feathersui.com/beta/documentation/feathers/layout/ITrimmedVirtualLayout.html" class="urlextern" title="http://feathersui.com/beta/documentation/feathers/layout/ITrimmedVirtualLayout.html"  rel="nofollow">ITrimmedVirtualLayout</a></code> interface.
+</p>
+
+</div>
+<!-- EDIT5 SECTION "Trimmed Virtualized Layouts" [5305-5882] -->
+<h2 class="sectionedit6" id="related_links">Related Links</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="/feathers/custom-layouts" class="wikilink1" title="feathers:custom-layouts">Introduction to Custom Feathers Layouts</a></div>
+</li>
+</ul>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT6 SECTION "Related Links" [5883-] -->

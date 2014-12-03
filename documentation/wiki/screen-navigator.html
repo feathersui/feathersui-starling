@@ -1,0 +1,336 @@
+
+<h1 class="sectionedit1" id="how_to_use_the_feathers_screennavigator_component">How to use the Feathers ScreenNavigator component</h1>
+<div class="level1">
+
+<p>
+The <code><a href="http://feathersui.com/documentation/feathers/controls/ScreenNavigator.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScreenNavigator.html"  rel="nofollow">ScreenNavigator</a></code> class offers a powerful system for displaying screens or menus in your application and navigating between them. It supports navigation based on events (or <a href="https://github.com/robertpenner/as3-signals" class="urlextern" title="https://github.com/robertpenner/as3-signals"  rel="nofollow">as3-signals</a>, if you prefer), and it can inject properties into screens as they are shown.
+</p>
+
+</div>
+<!-- EDIT1 SECTION "How to use the Feathers ScreenNavigator component" [1-462] -->
+<h2 class="sectionedit2" id="the_basics">The Basics</h2>
+<div class="level2">
+
+<p>
+Create a <code>ScreenNavigator</code> like this:
+</p>
+<pre class="code as3"><span class="kw1">this</span><span class="sy0">.</span>_navigator = <span class="kw1">new</span> ScreenNavigator<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">addChild</span><span class="br0">&#40;</span> <span class="kw1">this</span><span class="sy0">.</span>_navigator <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+You may also set its <code>width</code> and <code>height</code>, but that&#039;s optional because the <code>ScreenNavigator</code> will automatically resize itself to fill the entire stage if you don&#039;t provide explicit dimensions.
+</p>
+
+<p>
+To add a new screen to the navigator, call <code><a href="http://feathersui.com/documentation/feathers/controls/ScreenNavigator.html#addScreen%28%29" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScreenNavigator.html#addScreen%28%29"  rel="nofollow">addScreen()</a></code> and pass in a <code>String</code> indentifier for the screen along with a <code><a href="http://feathersui.com/documentation/feathers/controls/ScreenNavigatorItem.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScreenNavigatorItem.html"  rel="nofollow">ScreenNavigatorItem</a></code>:
+</p>
+<pre class="code as3"><span class="kw1">this</span><span class="sy0">.</span>_navigator<span class="sy0">.</span>addScreen<span class="br0">&#40;</span> <span class="st0">&quot;mainMenu&quot;</span><span class="sy0">,</span> <span class="kw1">new</span> ScreenNavigatorItem<span class="br0">&#40;</span> MainMenuScreen <span class="br0">&#41;</span> <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+The first argument required by the <code>ScreenNavigatorItem</code> constructor is either a <code>Class</code> to instantiate or a <code>DisplayObject</code> that has already been instantiated. In general, your screen class, whether you instantiate it directly or allow the <code>ScreenNavigatorItem</code> to instantiate it, should extend <code><a href="http://feathersui.com/documentation/feathers/controls/Screen.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/Screen.html"  rel="nofollow">Screen</a></code>. This is not required, though.
+</p>
+
+<p>
+In this case, <code>MainMenuScreen</code> is another class in our project. There are a couple more arguments that the constructor supports, and we&#039;ll look at them later.
+</p>
+
+<p>
+To show a specific screen, call <code><a href="http://feathersui.com/documentation/feathers/controls/ScreenNavigator.html#showScreen%28%29" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScreenNavigator.html#showScreen%28%29"  rel="nofollow">showScreen()</a></code> and pass in the screen&#039;s identifier:
+</p>
+<pre class="code as3"><span class="kw1">this</span><span class="sy0">.</span>_navigator<span class="sy0">.</span>showScreen<span class="br0">&#40;</span> <span class="st0">&quot;mainMenu&quot;</span> <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+To access the currently visible screen, use the <code><a href="http://feathersui.com/documentation/feathers/controls/ScreenNavigator.html#activeScreen" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScreenNavigator.html#activeScreen"  rel="nofollow">activeScreen</a></code> property.
+</p>
+<pre class="code as3"><span class="kw2">var</span> mainMenu<span class="sy0">:</span>MainMenuScreen = MainMenuScreen<span class="br0">&#40;</span> _navigator<span class="sy0">.</span>activeScreen <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+You can also use <code><a href="http://feathersui.com/documentation/feathers/controls/ScreenNavigator.html#activeScreenID" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScreenNavigator.html#activeScreenID"  rel="nofollow">activeScreenID</a></code> to get the <code>String</code> identifier for the active screen.
+</p>
+
+<p>
+To make the <code>ScreenNavigator</code> show nothing, call <code><a href="http://feathersui.com/documentation/feathers/controls/ScreenNavigator.html#clearScreen%28%29" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScreenNavigator.html#clearScreen%28%29"  rel="nofollow">clearScreen()</a></code>.
+</p>
+<pre class="code as3"><span class="kw1">this</span><span class="sy0">.</span>_navigator<span class="sy0">.</span>clearScreen<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT2 SECTION "The Basics" [463-2744] -->
+<h2 class="sectionedit3" id="navigation">Navigation</h2>
+<div class="level2">
+
+<p>
+If a particular screen dispatches an event or a signal, the <code>ScreenNavigator</code> can use it to automatically navigate to another screen.
+</p>
+
+<p>
+Before we get to that, let&#039;s make a couple of changes. First, let&#039;s move the main menu screen&#039;s identifier to a constant. Then, let&#039;s add a second screen.
+</p>
+<pre class="code as3"><span class="kw1">private</span> static const MAIN_MENU<span class="sy0">:</span><a href="http://www.google.com/search?q=string%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:string.html"><span class="kw5">String</span></a> = <span class="st0">&quot;mainMenu&quot;</span><span class="sy0">;</span>
+<span class="kw1">private</span> static const OPTIONS<span class="sy0">:</span><a href="http://www.google.com/search?q=string%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:string.html"><span class="kw5">String</span></a> = <span class="st0">&quot;options&quot;</span><span class="sy0">;</span></pre>
+
+<p>
+The constants will help us avoid typing mistakes. Now, let&#039;s add the options screen.
+</p>
+<pre class="code as3"><span class="kw1">this</span><span class="sy0">.</span>_navigator<span class="sy0">.</span>addScreen<span class="br0">&#40;</span> OPTIONS<span class="sy0">,</span> <span class="kw1">new</span> ScreenNavigatorItem<span class="br0">&#40;</span> OptionsScreen <span class="br0">&#41;</span> <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Now that we have a second screen, let&#039;s allow the main menu to navigate to it.
+</p>
+
+</div>
+<!-- EDIT3 SECTION "Navigation" [2745-3448] -->
+<h3 class="sectionedit4" id="with_events">With Events</h3>
+<div class="level3">
+
+<p>
+The second argument to the <code>ScreenNavigatorItem</code> constructor is an event map. We can map event types to screen identifiers so that the <code>ScreenNavigator</code> will navigate to a different screen when a specific event is dispatched by the current screen. Let&#039;s change the call where we added the main menu screen to the <code>ScreenNavigator</code>:
+</p>
+<pre class="code as3"><span class="kw1">this</span><span class="sy0">.</span>_navigator<span class="sy0">.</span>addScreen<span class="br0">&#40;</span> MAIN_MENU<span class="sy0">,</span> <span class="kw1">new</span> ScreenNavigatorItem<span class="br0">&#40;</span> MainMenuScreen<span class="sy0">,</span>
+<span class="br0">&#123;</span>
+	showOptions<span class="sy0">:</span> OPTIONS
+<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Inside <code>MainMenuScreen</code>, we can add a constant named <code>SHOW_OPTIONS</code> that we&#039;ll use as an event type:
+</p>
+<pre class="code as3"><span class="kw1">public</span> static const SHOW_OPTIONS<span class="sy0">:</span><a href="http://www.google.com/search?q=string%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:string.html"><span class="kw5">String</span></a> = <span class="st0">&quot;showOptions&quot;</span><span class="sy0">;</span></pre>
+
+<p>
+The <code>MainMenuScreen</code> might dispatch the event when a button is triggered:
+</p>
+<pre class="code as3"><span class="kw1">protected</span> <span class="kw3">function</span> optionsButton_triggeredHandler<span class="br0">&#40;</span> event<span class="sy0">:</span><a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a> <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="kw1">this</span><span class="sy0">.</span>dispatchEventWith<span class="br0">&#40;</span> SHOW_OPTIONS <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Next, let&#039;s repeat the process to add a “complete” event to the event map for <code>OptionsScreen</code> so that we can navigate back to the <code>MainMenuScreen</code>:
+</p>
+<pre class="code as3"><span class="kw1">this</span><span class="sy0">.</span>_navigator<span class="sy0">.</span>addScreen<span class="br0">&#40;</span> OPTIONS<span class="sy0">,</span> <span class="kw1">new</span> ScreenNavigatorItem<span class="br0">&#40;</span> OptionsScreen<span class="sy0">,</span>
+<span class="br0">&#123;</span>
+	<span class="kw7">complete</span><span class="sy0">:</span> MAIN_MENU
+<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Inside <code>OptionsScreen</code>, we&#039;ll dispatch an event when a button is triggered. This time, we&#039;ll just use the built in <code>Event.COMPLETE</code> constant instead of defining a new one:
+</p>
+<pre class="code as3"><span class="kw1">protected</span> <span class="kw3">function</span> optionsButton_triggeredHandler<span class="br0">&#40;</span> event<span class="sy0">:</span><a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a> <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="kw1">this</span><span class="sy0">.</span>dispatchEventWith<span class="br0">&#40;</span> <a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a><span class="sy0">.</span><span class="kw8">COMPLETE</span> <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Now we can navigate back and forth between the two screens.
+</p>
+
+</div>
+<!-- EDIT4 SECTION "With Events" [3449-4985] -->
+<h3 class="sectionedit5" id="with_the_owner_property">With the owner property</h3>
+<div class="level3">
+
+<p>
+Classes like <code>Screen</code> and <code>PanelScreen</code> define an <code><a href="http://feathersui.com/documentation/feathers/controls/IScreen.html#owner" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/IScreen.html#owner"  rel="nofollow">owner</a></code> property that references the parent <code>ScreenNavigator</code>. You can use <code>owner</code> to call <code>showScreen()</code> directly, if you prefer not to use events.
+</p>
+
+<p>
+For example, in <code>MainMenuScreen</code>, we might change the button&#039;s <code>Event.TRIGGERED</code> listener:
+</p>
+<pre class="code as3"><span class="kw1">protected</span> <span class="kw3">function</span> optionsButton_triggeredHandler<span class="br0">&#40;</span> event<span class="sy0">:</span><a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a> <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="kw1">this</span><span class="sy0">.</span>owner<span class="sy0">.</span>showScreen<span class="br0">&#40;</span> <span class="st0">&quot;options&quot;</span> <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+However, this approach of using the <code>owner</code> property is not recommended. In general, dispatching events is a best practice that will keep your classes decoupled.
+</p>
+
+</div>
+<!-- EDIT5 SECTION "With the owner property" [4986-5701] -->
+<h3 class="sectionedit6" id="optionalwith_signals">Optional: With Signals</h3>
+<div class="level3">
+
+<p>
+Alternatively, you may use the <a href="https://github.com/robertpenner/as3-signals" class="urlextern" title="https://github.com/robertpenner/as3-signals"  rel="nofollow">as3-signals</a> library to trigger navigation. Feathers doesn&#039;t actually require as3-signals as a dependency. At runtime, Feathers will check to see if as3-signals is compiled into the SWF. If it is, then it will enable special behavior to listen for signals, if they&#039;re defined.
+</p>
+
+<p>
+If as3-signals has been detected, the <code>ScreenNavigator</code> will first check a screen for a signal that&#039;s a public property before falling back to adding an event listener. For example, if the event map defines a “complete” key, the <code>ScreenNavigator</code> will check of the screen has a property named <code>complete</code>. If it does, then it will check if that value of that property implements the <code>ISignal</code> interface. If both of these conditions are true, a listener will be added to the signal. If either condition is false, then the <code>ScreenNavigator</code> will fall back to adding a listener for the “complete” event instead.
+</p>
+
+<p>
+Let&#039;s rework the example above to use signals instead of events. Let&#039;s start with changing how <code>MainMenuScreen</code> is added to the <code>ScreenNavigator</code>:
+</p>
+<pre class="code as3"><span class="kw1">this</span><span class="sy0">.</span>_navigator<span class="sy0">.</span>addScreen<span class="br0">&#40;</span> MAIN_MENU<span class="sy0">,</span> <span class="kw1">new</span> ScreenNavigatorItem<span class="br0">&#40;</span> MainMenuScreen<span class="sy0">,</span>
+<span class="br0">&#123;</span>
+	onOptions<span class="sy0">:</span> OPTIONS
+<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Inside <code>MainMenuScreen</code>, we add a signal called <code>onOptions</code> that will automatically be detected when the <code>ScreenNavigator</code> reads the event map:
+</p>
+<pre class="code as3"><span class="kw1">protected</span> <span class="kw2">var</span> _onOptions<span class="sy0">:</span>Signal = <span class="kw1">new</span> Signal<span class="br0">&#40;</span> MainMenuScreen <span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="kw1">public</span> <span class="kw3">function</span> <span class="kw1">get</span> onOptions<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span>ISignal
+<span class="br0">&#123;</span>
+	<span class="kw1">return</span> <span class="kw1">this</span><span class="sy0">.</span>_onOptions<span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+The <code>MainMenuScreen</code> might dispatch <code>onOptions</code> when a button is triggered:
+</p>
+<pre class="code as3"><span class="kw1">protected</span> <span class="kw3">function</span> optionsButton_triggeredHandler<span class="br0">&#40;</span> event<span class="sy0">:</span><a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a> <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="kw1">this</span><span class="sy0">.</span>_onOptions<span class="sy0">.</span>dispatch<span class="br0">&#40;</span> <span class="kw1">this</span> <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Modifying <code>OptionsScreen</code> to use signals instead of events would be the same.
+</p>
+
+</div>
+<!-- EDIT6 SECTION "Optional: With Signals" [5702-7586] -->
+<h2 class="sectionedit7" id="property_injection">Property Injection</h2>
+<div class="level2">
+
+<p>
+The third argument you can pass to the <code>ScreenNavigatorItem</code> constructor is an initializer object. This is a set of key-value pairs that map to properties on the screen being defined. When the screen is shown, each of these properties will be passed to the screen. If you have multiple screens that need to share some data, this is a useful way to ensure that they each have access to it. For instance, you might have an <code>OptionsData</code> class that stores things like audio volume and other common options.
+</p>
+
+<p>
+In our main app, we store the <code>OptionsData</code> instance.
+</p>
+<pre class="code as3"><span class="kw1">this</span><span class="sy0">.</span>_optionsData = <span class="kw1">new</span> OptionsData<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Then, when we add our <code>OptionsScreen</code>, we pass it the <code>OptionsData</code> instance in using the initializer.
+</p>
+<pre class="code as3"><span class="kw1">this</span><span class="sy0">.</span>_navigator<span class="sy0">.</span>addScreen<span class="br0">&#40;</span> OPTIONS<span class="sy0">,</span> <span class="kw1">new</span> ScreenNavigatorItem<span class="br0">&#40;</span> OptionsScreen<span class="sy0">,</span>
+<span class="br0">&#123;</span>
+	<span class="kw7">complete</span><span class="sy0">:</span> MAIN_MENU
+<span class="br0">&#125;</span><span class="sy0">,</span>
+<span class="br0">&#123;</span>
+	optionsData<span class="sy0">:</span> _optionsData
+<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+In <code>OptionsScreen</code>, we need to add a variable or a getter and setter for this data:
+</p>
+<pre class="code as3"><span class="kw1">protected</span> <span class="kw2">var</span> _optionsData<span class="sy0">:</span>OptionsData<span class="sy0">;</span>
+&nbsp;
+<span class="kw1">public</span> <span class="kw3">function</span> <span class="kw1">get</span> optionsData<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span>OptionsData
+<span class="br0">&#123;</span>
+	<span class="kw1">return</span> <span class="kw1">this</span><span class="sy0">.</span>_optionsData<span class="sy0">;</span>
+<span class="br0">&#125;</span>
+&nbsp;
+<span class="kw1">public</span> <span class="kw3">function</span> <span class="kw1">set</span> optionsData<span class="br0">&#40;</span> <span class="kw7">value</span><span class="sy0">:</span>OptionsData <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="kw1">this</span><span class="sy0">.</span>_optionsData = <span class="kw7">value</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+If you want to redraw when <code>optionsData</code> changes, you should invalidate the screen, and the <code>draw()</code> function will be called again:
+</p>
+<pre class="code as3"><span class="kw1">public</span> <span class="kw3">function</span> <span class="kw1">set</span> optionsData<span class="br0">&#40;</span> <span class="kw7">value</span><span class="sy0">:</span>OptionsData <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="kw1">if</span><span class="br0">&#40;</span><span class="kw1">this</span><span class="sy0">.</span>_optionsData == <span class="kw7">value</span><span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+		<span class="kw1">return</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+	<span class="kw1">this</span><span class="sy0">.</span>_optionsData = <span class="kw7">value</span><span class="sy0">;</span>
+	<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">invalidate</span><span class="br0">&#40;</span> INVALIDATION_FLAG_DATA <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT7 SECTION "Property Injection" [7587-9161] -->
+<h2 class="sectionedit8" id="transitions">Transitions</h2>
+<div class="level2">
+
+<p>
+<p><div class="noteclassic">
+See <a href="/feathers/transitions" class="wikilink1" title="feathers:transitions">ScreenNavigator Transitions</a> for a more detailed look at transitions.
+
+</div></p>
+</p>
+
+<p>
+The <code>ScreenNavigator</code> class supports transition animations when changing screens. A number of useful transition “manager” classes are pre-defined in the <code><a href="http://feathersui.com/documentation/feathers/motion/transitions/package-detail.html" class="urlextern" title="http://feathersui.com/documentation/feathers/motion/transitions/package-detail.html"  rel="nofollow">feathers.motion.transitions</a></code> package. Some of these track the history of screens to add a little extra context to their animations. For instance, the <code><a href="http://feathersui.com/documentation/feathers/motion/transitions/ScreenSlidingStackTransitionManager.html" class="urlextern" title="http://feathersui.com/documentation/feathers/motion/transitions/ScreenSlidingStackTransitionManager.html"  rel="nofollow">ScreenSlidingStackTransitionManager</a></code> stores a stack of recent screens to intelligently choose the direction a screen slides in from when it is shown (either the left side or the right side).
+</p>
+
+<p>
+To use the <code>ScreenSlidingStackTransitionManager</code>, we simply need to pass a <code>ScreenNavigator</code> instance to the constructor.
+</p>
+<pre class="code as3"><span class="kw1">this</span><span class="sy0">.</span>_transitionManager = <span class="kw1">new</span> ScreenSlidingStackTransitionManager<span class="br0">&#40;</span> _navigator <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+Many of the transition managers expose some properties that can be used to adjust the animation. For instance, the <code>ScreenSlidingStackTransitionManager</code> exposes the duration of the animation and the easing function.
+</p>
+<pre class="code as3"><span class="kw1">this</span><span class="sy0">.</span>_transitionManager<span class="sy0">.</span>duration = <span class="nu0">0.4</span><span class="sy0">;</span>
+<span class="kw1">this</span><span class="sy0">.</span>_transitionManager<span class="sy0">.</span>ease = Transitions<span class="sy0">.</span>EASE_OUT_BACK<span class="sy0">;</span></pre>
+
+</div>
+<!-- EDIT8 SECTION "Transitions" [9162-10555] -->
+<h3 class="sectionedit9" id="transition_events">Transition Events</h3>
+<div class="level3">
+
+<p>
+The <code>ScreenNavigator</code> dispatches <code>FeathersEventType.TRANSITION_START</code> and <code>FeathersEventType.TRANSITION_COMPLETE</code> events when the transition starts and ends. You might listen to <code>FeathersEventType.TRANSITION_COMPLETE</code> to delay the initialization of your screen until the transition has completed. For instance, you might have other animations that need to play, but once the screen is fully visible.
+</p>
+<pre class="code as3"><span class="kw1">this</span><span class="sy0">.</span>owner<span class="sy0">.</span><span class="kw7">addEventListener</span><span class="br0">&#40;</span> FeathersEventType<span class="sy0">.</span>TRANSITION_COMPLETE<span class="sy0">,</span> owner_transitionCompleteHandler <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+The event listener might look like this:
+</p>
+<pre class="code as3"><span class="kw1">private</span> <span class="kw3">function</span> owner_transitionCompleteHandler<span class="br0">&#40;</span> event<span class="sy0">:</span><a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a> <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+    <span class="kw1">this</span><span class="sy0">.</span>owner<span class="sy0">.</span><span class="kw7">removeEventListener</span><span class="br0">&#40;</span> FeathersEventType<span class="sy0">.</span>TRANSITION_COMPLETE<span class="sy0">,</span> owner_transitionCompleteHandler <span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+    <span class="co1">// finish initialization here</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+Note that the <code>ScreenNavigator</code> will dispatch the <code>FeathersEventType.TRANSITION_START</code> and <code>FeathersEventType.TRANSITION_COMPLETE</code> events when a screen is being removed too. You will need to remove event listeners meant to be called only when the screen is added if you don&#039;t want them to run again when the screen is removed.
+</p>
+
+</div>
+<!-- EDIT9 SECTION "Transition Events" [10556-11733] -->
+<h2 class="sectionedit10" id="advanced_functionality">Advanced Functionality</h2>
+<div class="level2">
+
+<p>
+The <code>ScreenNavigatorItem</code> event map can be used for more than just navigation. You can also call a function when an event or signal is dispatched. Let&#039;s add a new signal to the main menu that will be dispatched when a “About Our Product” button is clicked. We want it to open a website in the browser.
+</p>
+<pre class="code as3"><span class="kw1">this</span><span class="sy0">.</span>_navigator<span class="sy0">.</span>addScreen<span class="br0">&#40;</span> MAIN_MENU<span class="sy0">,</span> <span class="kw1">new</span> ScreenNavigatorItem<span class="br0">&#40;</span> MainMenuScreen<span class="sy0">,</span>
+<span class="br0">&#123;</span>
+	onOptions<span class="sy0">:</span> OPTIONS<span class="sy0">,</span>
+	onHomePage<span class="sy0">:</span> mainMenuScreen_onHomePage
+<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+The function receives the signal or event listener arguments.
+</p>
+<pre class="code as3"><span class="kw1">protected</span> <span class="kw3">function</span> mainMenuScreen_onHomePage<span class="br0">&#40;</span> sender<span class="sy0">:</span>MainMenuScreen <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="kw7">navigateToURL</span><span class="br0">&#40;</span> <span class="kw1">new</span> <a href="http://www.google.com/search?q=urlrequest%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:urlrequest.html"><span class="kw5">URLRequest</span></a><span class="br0">&#40;</span> <span class="st0">&quot;http://www.example.com/&quot;</span> <span class="br0">&#41;</span><span class="sy0">,</span> <span class="st0">&quot;_blank&quot;</span> <span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+</div>
+<!-- EDIT10 SECTION "Advanced Functionality" [11734-12474] -->
+<h2 class="sectionedit11" id="related_links">Related Links</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="http://feathersui.com/documentation/feathers/controls/ScreenNavigator.html" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/ScreenNavigator.html"  rel="nofollow">ScreenNavigator API Documentation</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="/feathers/transitions" class="wikilink1" title="feathers:transitions">ScreenNavigator Transitions</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="/feathers/screen" class="wikilink1" title="feathers:screen">How to use the Feathers Screen component</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="/feathers/panel-screen" class="wikilink1" title="feathers:panel-screen">How to use the Feathers PanelScreen component</a></div>
+</li>
+</ul>
+
+<p>
+For more tutorials, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT11 SECTION "Related Links" [12475-] -->

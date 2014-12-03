@@ -1,0 +1,176 @@
+
+<h1 class="sectionedit1" id="feathers_cookbookselecting_a_custom_item_renderer_on_tap_or_click">Feathers Cookbook: Selecting a custom item renderer on tap or click</h1>
+<div class="level1">
+
+<p>
+The example <a href="/feathers/item-renderers" class="wikilink1" title="feathers:item-renderers">custom item renderers</a> have an <code>isSelected</code> property, but they don&#039;t offer any way to change it. This is because some item renderers may support a variety of interactions to select, such as a long-press, a swipe, or a tap/click. Since it&#039;s the simplest interaction, let&#039;s take a look at how to select a custom item renderer on tap or click.
+</p>
+
+<p>
+First, let&#039;s make sure that we&#039;re only tracking a single touch ID:
+</p>
+<pre class="code as3"><span class="kw1">protected</span> <span class="kw2">var</span> touchID<span class="sy0">:</span><a href="http://www.google.com/search?q=int%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:int.html"><span class="kw5">int</span></a> = <span class="sy0">-</span><span class="nu0">1</span><span class="sy0">;</span></pre>
+
+<p>
+There&#039;s no reason to track more than one touch here, so if a touch begins, we&#039;ll ignore other touches that begin before the original touch ends.
+</p>
+
+<p>
+Inside our constructor, or in the component&#039;s <code>initialize()</code> function, we can listen for <code>TouchEvent.TOUCH</code>:
+</p>
+<pre class="code as3">override <span class="kw1">protected</span> <span class="kw3">function</span> initialize<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="kw1">this</span><span class="sy0">.</span><span class="kw7">addEventListener</span><span class="br0">&#40;</span> TouchEvent<span class="sy0">.</span>TOUCH<span class="sy0">,</span> touchHandler <span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+	<span class="co1">// you may be initializing other things here too</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+<p><div class="noteclassic">
+For more information about the <code>initialize()</code> function and other parts of the Feathers architecture, see <a href="http://wiki.starling-framework.org/feathers/component-properties-methods" class="urlextern" title="http://wiki.starling-framework.org/feathers/component-properties-methods"  rel="nofollow">Anatomy of a Feathers Component</a>.
+
+</div></p>
+</p>
+
+<p>
+Now, let&#039;s create our <code>TouchEvent.TOUCH</code> listener. Comments appear inline to explain each step of the process. To see where a touch begins, look at the <code>else</code> block near the bottom.
+</p>
+<pre class="code as3"><span class="kw1">private</span> <span class="kw3">function</span> touchHandler<span class="br0">&#40;</span> event<span class="sy0">:</span>TouchEvent <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="kw1">if</span><span class="br0">&#40;</span> <span class="sy0">!</span><span class="kw1">this</span><span class="sy0">.</span>_isEnabled <span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+		<span class="co1">// if we were disabled while tracking touches, clear the touch id.</span>
+		<span class="kw1">this</span><span class="sy0">.</span>touchID = <span class="sy0">-</span><span class="nu0">1</span><span class="sy0">;</span>
+		<span class="kw1">return</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+&nbsp;
+	<span class="kw1">if</span><span class="br0">&#40;</span> <span class="kw1">this</span><span class="sy0">.</span>touchID <span class="sy0">&gt;</span>= <span class="nu0">0</span> <span class="br0">&#41;</span>
+	<span class="br0">&#123;</span>
+		<span class="co1">// a touch has begun, so we'll ignore all other touches.</span>
+&nbsp;
+		<span class="kw2">var</span> touch<span class="sy0">:</span>Touch = event<span class="sy0">.</span>getTouch<span class="br0">&#40;</span> <span class="kw1">this</span><span class="sy0">,</span> <span class="kw1">null</span><span class="sy0">,</span> <span class="kw1">this</span><span class="sy0">.</span>touchID <span class="br0">&#41;</span><span class="sy0">;</span>
+		<span class="kw1">if</span><span class="br0">&#40;</span> <span class="sy0">!</span>touch <span class="br0">&#41;</span>
+		<span class="br0">&#123;</span>
+			<span class="co1">// this should not happen.</span>
+			<span class="kw1">return</span><span class="sy0">;</span>
+		<span class="br0">&#125;</span>
+&nbsp;
+		<span class="kw1">if</span><span class="br0">&#40;</span> touch<span class="sy0">.</span>phase == TouchPhase<span class="sy0">.</span>ENDED <span class="br0">&#41;</span>
+		<span class="br0">&#123;</span>
+			touch<span class="sy0">.</span>getLocation<span class="br0">&#40;</span> <span class="kw1">this</span><span class="sy0">.</span><span class="kw7">stage</span><span class="sy0">,</span> HELPER_POINT <span class="br0">&#41;</span><span class="sy0">;</span>
+			<span class="kw2">var</span> isInBounds<span class="sy0">:</span><a href="http://www.google.com/search?q=boolean%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:boolean.html"><span class="kw5">Boolean</span></a> = <span class="kw1">this</span><span class="sy0">.</span><span class="kw7">contains</span><span class="br0">&#40;</span> <span class="kw1">this</span><span class="sy0">.</span><span class="kw7">stage</span><span class="sy0">.</span><span class="kw7">hitTest</span><span class="br0">&#40;</span> HELPER_POINT<span class="sy0">,</span> <span class="kw1">true</span> <span class="br0">&#41;</span> <span class="br0">&#41;</span><span class="sy0">;</span>
+			<span class="kw1">if</span><span class="br0">&#40;</span> isInBounds <span class="br0">&#41;</span>
+			<span class="br0">&#123;</span>
+				<span class="kw1">this</span><span class="sy0">.</span>isSelected = <span class="kw1">true</span><span class="sy0">;</span>
+			<span class="br0">&#125;</span>
+&nbsp;
+			<span class="co1">// the touch has ended, so now we can start watching for a new one.</span>
+			<span class="kw1">this</span><span class="sy0">.</span>touchID = <span class="sy0">-</span><span class="nu0">1</span><span class="sy0">;</span>
+		<span class="br0">&#125;</span>
+		<span class="kw1">return</span><span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+	<span class="kw1">else</span>
+	<span class="br0">&#123;</span>
+		<span class="co1">// we aren't tracking another touch, so let's look for a new one.</span>
+&nbsp;
+		touch = event<span class="sy0">.</span>getTouch<span class="br0">&#40;</span> <span class="kw1">this</span><span class="sy0">,</span> TouchPhase<span class="sy0">.</span>BEGAN <span class="br0">&#41;</span><span class="sy0">;</span>
+		<span class="kw1">if</span><span class="br0">&#40;</span> <span class="sy0">!</span>touch <span class="br0">&#41;</span>
+		<span class="br0">&#123;</span>
+			<span class="co1">// we only care about the began phase. ignore all other phases.</span>
+			<span class="kw1">return</span><span class="sy0">;</span>
+		<span class="br0">&#125;</span>
+&nbsp;
+		<span class="co1">// save the touch ID so that we can track this touch's phases.</span>
+		<span class="kw1">this</span><span class="sy0">.</span>touchID = touch<span class="sy0">.</span>id<span class="sy0">;</span>
+	<span class="br0">&#125;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+It&#039;s a little complicated, but it will ensure that we are only tracking a single touch ID at a time. In multi-touch environments, this is essential.
+</p>
+
+<p>
+The key part is the line with the <code>isInBounds</code> local variable. What we&#039;re doing there with the call to <code>contains()</code> and <code>hitTest()</code> is ensuring two things: 1) the touch hasn&#039;t moved outside the bounds of the item renderer and 2) nothing else on the display list has moved above the item renderer to block the touch.
+</p>
+
+<p>
+Also, you may have seen the <code>HELPER_POINT</code> object we passed to <code>getLocation()</code>. We&#039;re going to add a static constant that we can pass into that function so that it doesn&#039;t need to create a new <code>flash.geom.Point</code> for its return value. This will help us avoid some unnecessary garbage collection when we check a touch&#039;s location to help performance a bit:
+</p>
+<pre class="code as3"><span class="kw1">private</span> static const HELPER_POINT<span class="sy0">:</span><a href="http://www.google.com/search?q=point%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:point.html"><span class="kw5">Point</span></a> = <span class="kw1">new</span> <a href="http://www.google.com/search?q=point%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:point.html"><span class="kw5">Point</span></a><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+It&#039;s static to avoid creating a different <code>Point</code> object for every item renderer. We simply need to ensure that multiple item renderers won&#039;t be modifying it at the same time. Since the item renderer isn&#039;t dispatching any events between the call to <code>getLocation()</code> and the call to <code>hitTest()</code>, we know that only one item renderer may be using <code>HELPER_POINT</code> at any given time.
+</p>
+
+<p>
+Finally, add a listener for <code>Event.REMOVED_FROM_STAGE</code> inside the constructor or in the <code>initialize()</code> function:
+</p>
+<pre class="code as3"><span class="kw1">this</span><span class="sy0">.</span><span class="kw7">addEventListener</span><span class="br0">&#40;</span> <a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a><span class="sy0">.</span><span class="kw8">REMOVED_FROM_STAGE</span><span class="sy0">,</span> removedFromStageHandler <span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+<p>
+The listener will clear the <code>touchID</code> to <code>-1</code> just we did in <code>TouchPhase.ENDED</code>:
+</p>
+<pre class="code as3"><span class="kw1">private</span> <span class="kw3">function</span> removedFromStageHandler<span class="br0">&#40;</span> event<span class="sy0">:</span><a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a> <span class="br0">&#41;</span><span class="sy0">:</span><span class="kw1">void</span>
+<span class="br0">&#123;</span>
+	<span class="kw1">this</span><span class="sy0">.</span>touchID = <span class="sy0">-</span><span class="nu0">1</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+This ensures that if a component is reused later, it won&#039;t be trying to track a touch that doesn&#039;t exist anymore.
+</p>
+
+</div>
+<!-- EDIT1 SECTION "Feathers Cookbook: Selecting a custom item renderer on tap or click" [1-4372] -->
+<h2 class="sectionedit2" id="deselect_on_tap_or_click">Deselect on Tap or Click</h2>
+<div class="level2">
+
+<p>
+You may have noticed in the code above that the <code>isSelected</code> property is set to <code>true</code> on tap or click. If you want it to be possible to deselect an item renderer by tapping it again, it&#039;s very easy to change that line:
+</p>
+<pre class="code as3"><span class="kw1">this</span><span class="sy0">.</span>isSelected = <span class="sy0">!</span><span class="kw1">this</span><span class="sy0">.</span>isSelected<span class="sy0">;</span></pre>
+
+<p>
+By default, the <code><a href="/feathers/list" class="wikilink1" title="feathers:list">List</a></code> component may select only one item at a time. If you select one item by tapping it, and then select another item by tapping it, the first item will be deselected automatically. If you wish to keep both the first item and the second item selected at the same time, set the <code><a href="http://feathersui.com/documentation/feathers/controls/List.html#allowMultipleSelection" class="urlextern" title="http://feathersui.com/documentation/feathers/controls/List.html#allowMultipleSelection"  rel="nofollow">allowMultipleSelection</a></code> property on the <code>List</code> to <code>true</code>.
+</p>
+
+</div>
+<!-- EDIT2 SECTION "Deselect on Tap or Click" [4373-5163] -->
+<h2 class="sectionedit3" id="eventtriggered_in_pickerlist">Event.TRIGGERED in PickerList</h2>
+<div class="level2">
+
+<p>
+The <code><a href="/feathers/picker-list" class="wikilink1" title="feathers:picker-list">PickerList</a></code> component additionally listens for <code><a href="/feathers/cookbook/item-renderer-triggered-on-tap" class="wikilink1" title="feathers:cookbook:item-renderer-triggered-on-tap">Event.TRIGGERED</a></code> to know when to close its pop-up list. If you tap or click an item that is already selected, it may not change the selection, so an additional event is required.
+</p>
+
+<p>
+Before you set <code>isSelected</code>, simply dispatch <code>Event.TRIGGERED</code>:
+</p>
+<pre class="code as3"><span class="kw1">if</span><span class="br0">&#40;</span> isInBounds <span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+    <span class="kw1">this</span><span class="sy0">.</span>dispatchEventWith<span class="br0">&#40;</span> <a href="http://www.google.com/search?q=event%20inurl:http://livedocs.adobe.com/flex/201/langref/%20inurl:event.html"><span class="kw5">Event</span></a><span class="sy0">.</span>TRIGGERED <span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="kw1">this</span><span class="sy0">.</span>isSelected = <span class="kw1">true</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre>
+
+<p>
+The <code>TouchEvent.TOUCH</code> listener is exactly the same everywhere else.
+</p>
+
+</div>
+<!-- EDIT3 SECTION "Event.TRIGGERED in PickerList" [5164-5760] -->
+<h2 class="sectionedit4" id="related_links">Related Links</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="/feathers/item-renderers" class="wikilink1" title="feathers:item-renderers">Introduction to Custom Item Renderers</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="/feathers/cookbook/item-renderer-triggered-on-tap" class="wikilink1" title="feathers:cookbook:item-renderer-triggered-on-tap">Feathers Cookbook: Dispatching a triggered event from a custom item renderer</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="/feathers/cookbook/item-renderer-long-press" class="wikilink1" title="feathers:cookbook:item-renderer-long-press">Feathers Cookbook: Dispatching a long press event from a custom item renderer</a></div>
+</li>
+</ul>
+
+<p>
+This is a recipe in the <a href="/feathers/cookbook/start" class="wikilink1" title="feathers:cookbook:start">Feathers Cookbook</a>. For more information about Feathers, return to the <a href="/feathers/start" class="wikilink1" title="feathers:start">Feathers Documentation</a>.
+</p>
+
+</div>
+<!-- EDIT4 SECTION "Related Links" [5761-] -->
