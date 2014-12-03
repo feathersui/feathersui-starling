@@ -19,6 +19,7 @@ package feathers.controls
 	import flash.events.KeyboardEvent;
 
 	import flash.ui.Keyboard;
+	import flash.utils.getTimer;
 
 	import starling.core.Starling;
 	import starling.events.Event;
@@ -193,6 +194,58 @@ package feathers.controls
 			{
 				this._source.addEventListener(Event.COMPLETE, dataProvider_completeHandler);
 			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _autoCompleteDelay:Number = 0.5;
+
+		/**
+		 * The time, in seconds, after the text has changed before requesting
+		 * suggestions from the <code>IAutoCompleteSource</code>.
+		 *
+		 * @default 0.5
+		 *
+		 * @see #source
+		 */
+		public function get autoCompleteDelay():Number
+		{
+			return this._autoCompleteDelay;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set autoCompleteDelay(value:Number):void
+		{
+			this._autoCompleteDelay = value;
+		}
+
+		/**
+		 * @private
+		 */
+		protected var _minimumAutoCompleteLength:int = 2;
+
+		/**
+		 * The minimum number of entered characters required to request
+		 * suggestions from the <code>IAutoCompleteSource</code>.
+		 *
+		 * @default 2
+		 *
+		 * @see #source
+		 */
+		public function get minimumAutoCompleteLength():Number
+		{
+			return this._minimumAutoCompleteLength;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set minimumAutoCompleteLength(value:Number):void
+		{
+			this._minimumAutoCompleteLength = value;
 		}
 
 		/**
@@ -416,6 +469,11 @@ package feathers.controls
 		 * @private
 		 */
 		protected var _ignoreAutoCompleteChanges:Boolean = false;
+
+		/**
+		 * @private
+		 */
+		protected var _lastChangeTime:int = 0;
 
 		/**
 		 * @private
@@ -679,6 +737,40 @@ package feathers.controls
 			{
 				return;
 			}
+			if(this.text.length < this._minimumAutoCompleteLength)
+			{
+				this.removeEventListener(Event.ENTER_FRAME, autoComplete_enterFrameHandler);
+				this.closeList();
+				return;
+			}
+
+			if(this._autoCompleteDelay == 0)
+			{
+				//just in case the enter frame listener was added before
+				//sourceUpdateDelay was set to 0.
+				this.removeEventListener(Event.ENTER_FRAME, autoComplete_enterFrameHandler);
+
+				this._source.load(this.text, this._listCollection);
+			}
+			else
+			{
+				this._lastChangeTime = getTimer();
+				this.addEventListener(Event.ENTER_FRAME, autoComplete_enterFrameHandler);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		protected function autoComplete_enterFrameHandler():void
+		{
+			var currentTime:int = getTimer();
+			var secondsSinceLastUpdate:Number = (currentTime - this._lastChangeTime) / 1000;
+			if(secondsSinceLastUpdate < this._autoCompleteDelay)
+			{
+				return;
+			}
+			this.removeEventListener(Event.ENTER_FRAME, autoComplete_enterFrameHandler);
 			this._source.load(this.text, this._listCollection);
 		}
 
