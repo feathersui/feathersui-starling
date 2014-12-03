@@ -3,6 +3,7 @@ package
     import feathers.system.DeviceCapabilities;
     import feathers.tests.ButtonTests;
     import feathers.tests.ListTests;
+    import feathers.tests.SliderHorizontalTests;
     import feathers.tests.TabBarEmptyDataProviderTests;
     import feathers.tests.TabBarTests;
     import feathers.tests.ToggleButtonTests;
@@ -65,6 +66,7 @@ package
             [
                 ButtonTests,
                 ListTests,
+                SliderHorizontalTests,
                 ToggleButtonTests,
                 ToggleGroupTests,
                 TabBarTests,
