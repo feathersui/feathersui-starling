@@ -163,7 +163,6 @@ package feathers.data
 		protected function urlLoader_completeHandler(event:flash.events.Event):void
 		{
 			var result:ListCollection = this._savedResult;
-			result.removeAll();
 			this._savedResult = null;
 
 			var loadedData:String = this._urlLoader.data as String;
@@ -174,6 +173,7 @@ package feathers.data
 			}
 			else
 			{
+				result.removeAll();
 				this.dispatchEventWith(starling.events.Event.COMPLETE, false, result);
 			}
 		}
