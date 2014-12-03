@@ -61,7 +61,7 @@ package feathers.tests
 			Assert.assertTrue("Event.CHANGE was not dispatched", hasChanged);
 			Assert.assertStrictlyEquals("The selectedIndex property was not equal to 0",
 				0, this._tabBar.selectedIndex);
-			Assert.assertStrictlyEquals("The selectedItem property was not equal to null",
+			Assert.assertStrictlyEquals("The selectedItem property was not equal to the first item",
 				dataProvider.getItemAt(0), this._tabBar.selectedItem);
 		}
 	}
