@@ -77,7 +77,7 @@ package feathers.data
 
 		/**
 		 * A function called by the auto-complete source that builds the
-		 * <code>flash.net.URLRequest</a> that is to be loaded.
+		 * <code>flash.net.URLRequest</code> that is to be loaded.
 		 *
 		 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/net/URLRequest.html Full description of flash.net.URLRequest in Adobe's Flash Platform API Reference
 		 */
